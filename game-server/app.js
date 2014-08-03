@@ -6,8 +6,8 @@ var globalChannel = require("pomelo-globalchannel-plugin")
 var app = pomelo.createApp()
 app.set("name", "KODServer")
 
-app.configure("production", function(){
-	app.set("ssh_config_params", "-i ~/.ssh/AWS.pem")
+app.configure("production|development", function(){
+	app.set("ssh_config_params", "-i /home/ec2-user/.ssh/AWS.pem")
 })
 
 app.configure("production|development", "gate", function(){
