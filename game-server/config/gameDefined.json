@@ -1,0 +1,22 @@
+{
+	"development":{
+		"redis":{
+			"host":"127.0.0.1",
+			"port":6379
+		},
+		"mongo":{
+			"host":"127.0.0.1",
+			"port":27017
+		}
+	},
+	"production":{
+		"redis":{
+			"host":"172.31.15.88",
+			"port":6379
+		},
+		"mongo":{
+			"host":"127.0.0.1",
+			"port":27017
+		}
+	}
+}
