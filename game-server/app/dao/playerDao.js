@@ -10,7 +10,7 @@ var util = require("util")
 var _ = require("underscore")
 
 var BaseDao = require("./baseDao")
-var Player = require("../domains/Player")
+var Player = require("../domains/player")
 
 var PlayerDao = function(redis){
 	BaseDao.call(this, redis, Player)
