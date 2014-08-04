@@ -9,11 +9,20 @@
 				"frontend":true
 			}
 		],
-		"chat":[
+		"logic":[
 			{
-				"id":"chat-server-1",
+				"id":"logic-server-1",
 				"host":"127.0.0.1",
-				"port":5151
+				"port":4151,
+				"clientPort":4011,
+				"frontend":true
+			},
+			{
+				"id":"logic-server-2",
+				"host":"127.0.0.1",
+				"port":4152,
+				"clientPort":4012,
+				"frontend":true
 			}
 		]
 	},
@@ -27,11 +36,20 @@
 				"frontend":true
 			}
 		],
-		"chat":[
+		"logic":[
 			{
-				"id":"chat-server-1",
+				"id":"logic-server-1",
 				"host":"127.0.0.1",
-				"port":5151
+				"port":4151,
+				"clientPort":4011,
+				"frontend":true
+			},
+			{
+				"id":"logic-server-2",
+				"host":"127.0.0.1",
+				"port":4152,
+				"clientPort":4012,
+				"frontend":true
 			}
 		]
 	}
