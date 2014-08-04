@@ -59,19 +59,19 @@ app.configure("production|development", "gate", function(){
 //	app.set("mongoose", mongooseClient)
 //})
 //
-//app.configure("development", "chat", function(){
-//	var redisClient = redis.createClient(6379, "127.0.0.1")
-//	app.set("redis", redisClient)
-//	var mongooseClient = mongoose.connect("mongodb://127.0.0.1:27017/kod")
-//	app.set("mongoose", mongooseClient)
-//})
-//
-//app.configure("production", "chat", function(){
-//	var redisClient = redis.createClient(6379, "172.31.15.88")
-//	app.set("redis", redisClient)
-//	var mongooseClient = mongoose.connect("mongodb://127.0.0.1:27017/kod")
-//	app.set("mongoose", mongooseClient)
-//})
+app.configure("development", "chat", function(){
+	var redisClient = redis.createClient(6379, "127.0.0.1")
+	app.set("redis", redisClient)
+	var mongooseClient = mongoose.connect("mongodb://127.0.0.1:27017/kod")
+	app.set("mongoose", mongooseClient)
+})
+
+app.configure("production", "chat", function(){
+	var redisClient = redis.createClient(6379, "172.31.15.88")
+	app.set("redis", redisClient)
+	var mongooseClient = mongoose.connect("mongodb://127.0.0.1:27017/kod")
+	app.set("mongoose", mongooseClient)
+})
 
 app.start()
 
