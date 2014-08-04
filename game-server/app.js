@@ -66,7 +66,7 @@ app.configure("development", "chat", function(){
 app.configure("production", "chat", function(){
 	var redisClient = redis.createClient(6379, "172.31.15.88")
 	app.set("redis", redisClient)
-	var mongooseClient = mongoose.connect("mongodb://127.0.0.1:27017/kod")
+	var mongooseClient = mongoose.connect("mongodb://54.178.151.193:27017/kod")
 	app.set("mongoose", mongooseClient)
 })
 
