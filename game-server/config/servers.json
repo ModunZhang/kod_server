@@ -24,6 +24,13 @@
 				"clientPort":4012,
 				"frontend":true
 			}
+		],
+		"chat":[
+			{
+				"id":"chat-server-1",
+				"host":"127.0.0.1",
+				"port":5151
+			}
 		]
 	},
 	"production":{
@@ -50,6 +57,13 @@
 				"port":4152,
 				"clientPort":4012,
 				"frontend":true
+			}
+		],
+		"chat":[
+			{
+				"id":"chat-server-1",
+				"host":"127.0.0.1",
+				"port":5151
 			}
 		]
 	}
