@@ -12,4 +12,4 @@
 *.sublime-workspace
 *.swp
 .DS_Store
-update-server/public/*
+update-server/public/update/*
