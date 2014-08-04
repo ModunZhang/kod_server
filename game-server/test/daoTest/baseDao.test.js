@@ -27,7 +27,7 @@ describe("BaseDao", function(){
 		})
 		mongoose.connect(Config.mongoAddr, function(){
 			Demo = mongoose.model('demo',demoSchema)
-			var redisClient = redis.createClient(6379)
+			var redisClient = redis.createClient(6379, "172.31.15.88")
 			baseDao = Promise.promisifyAll(new BaseDao(redisClient, Demo))
 
 			Demo.remove({}, function(){
