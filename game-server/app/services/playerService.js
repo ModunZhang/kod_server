@@ -20,7 +20,7 @@ pro.getPlayerByDeviceId = function(deviceId, callback){
 	var self = this
 	var createPlayer = Promisify(CreatePlayer, this)
 
-	this.dao.findFromMongoAsync({deviceId:deviceId}).then(function(doc){
+	this.dao.findFromMongoAsync({"basicInfo.deviceId":deviceId}).then(function(doc){
 		if(_.isNull(doc)){
 			return createPlayer(deviceId)
 		}else{
@@ -48,9 +48,11 @@ var CreatePlayer = function(deviceId, callback){
 		return Promise.resolve(token)
 	}).then(function(token){
 		var doc = {
-			deviceId:deviceId,
-			name:"player_" + token,
-			icon:"playerIcon_default.png"
+			basicInfo:{
+				deviceId:deviceId,
+				name:"player_" + token,
+				icon:"playerIcon_default.png"
+			}
 		}
 		return Promise.resolve(doc)
 	}).then(function(doc){
