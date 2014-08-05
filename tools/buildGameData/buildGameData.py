@@ -60,7 +60,7 @@ def exportAsLua(fileName, file):
 	for tableid in range(sheetnum):
 		sheet = data.sheets()[tableid]
 		exportSheetAsLua(sheet)
-		list.append(nakeName(sheet.name))
+		list.append(sheet.name)
 
 	file.write("\n" + g_fileNamePrefix + "." + g_currentFileNamePrefix + " = {\n");
 	for item in list:
@@ -72,7 +72,7 @@ def exportAsLua(fileName, file):
 		sheet = data.sheets()[tableid]
 		rowNum = sheet.nrows
 		colNum = sheet.ncols
-		file.write('require("app.datas.%s_%s")\n' % (g_currentFileNamePrefix, nakeName(sheet.name)))
+		file.write('require("app.datas.%s_%s")\n' % (g_currentFileNamePrefix, sheet.name))
 
 def exportAsJs(fileName, file):
 	global g_currentFileNamePrefix
@@ -83,8 +83,8 @@ def exportAsJs(fileName, file):
 	for tableid in range(sheetnum):
 		sheet = data.sheets()[tableid]
 		exportSheetAsJs(sheet)
-		require = 'require("./%s_%s.js")' % (g_currentFileNamePrefix, nakeName(sheet.name))
-		file.write(prefix + "." + nakeName(sheet.name) + " = " + require)
+		require = 'require("./%s_%s.js")' % (g_currentFileNamePrefix, sheet.name)
+		file.write(prefix + "." + sheet.name + " = " + require)
 
 def exportSheetAsLua(sheet):
 	global g_currentFileNamePrefix
@@ -93,11 +93,7 @@ def exportSheetAsLua(sheet):
 	colNum = sheet.ncols
 	if ((0 == rowNum) or (0 == colNum)):
 		return
-	details = sheetName.split('_')
-	isKeyType = 0
-	if ("KEY" == details[0]):
-		isKeyType = 1
-	sheetName = nakeName(sheetName)
+	sheetName = sheetName
 	file = open(g_exportDir + "/" + g_currentFileNamePrefix + "_" + sheetName + '.lua', "w")
 	file.write('local %s = %s.%s.%s\n\n' % (sheetName, g_fileNamePrefix, g_currentFileNamePrefix, sheetName))
 	#export title
@@ -118,13 +114,7 @@ def exportSheetAsLua(sheet):
 		elif ("STR" == valueType):
 			keyName = ('"%s"' % (datarow[0]))
 
-		luaStr = ""
-		if (isKeyType):
-			luaStr += ('%s[%s] = ' % (sheetName, keyName))
-		else:
-			luaStr += ('table.insert(%s, ' % (sheetName))
-		luaStr += '{\n'
-
+		luaStr = ('%s[%s] = {\n' % (sheetName, keyName))
 		for j in range(0, colNum):
 			details = title[j].split('_')
 			valueType = details[0]
@@ -146,16 +136,14 @@ def exportSheetAsLua(sheet):
 			if j == colNum - 1:
 				text = text.split(",")[0] + "\n"
 			luaStr += text
-		if (isKeyType):
-			luaStr += '}\n'
-		else:
-			luaStr += '})\n'
+		
+		luaStr += '}\n'
 		file.write(luaStr.encode('utf-8'))
 	file.close()
 
 def exportSheetAsJs(sheet):
 	global g_currentFileNamePrefix
-	sheetName = nakeName(sheet.name)
+	sheetName = sheet.name
 	rowNum = sheet.nrows
 	colNum = sheet.ncols
 	if ((0 == rowNum) or (0 == colNum)):
@@ -182,7 +170,6 @@ def exportSheetAsJs(sheet):
 	for i in range(1, rowNum):
 		#export one row
 		datarow = sheet.row_values(i)
-
 		details = title[0].split('_')
 		valueType = details[0]
 		keyName = ""

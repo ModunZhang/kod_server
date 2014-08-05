@@ -4,6 +4,10 @@
 var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
+var GameDatas = require("../datas/GameDatas")
+
+var LocationInitData = GameDatas.LocationInitData.locations
+
 var playerSchema = new Schema({
 	basicInfo:{
 		deviceId:{type:String, index:true, unique:true, required:true},
@@ -27,83 +31,100 @@ var playerSchema = new Schema({
 		gold:{type:Number, required:true, default:5000}
 	},
 	buildings:{
-		keep:{//城堡
-			name:{type:String, required:true, default:"keep"},
+		location_1:{//城堡
+			type:{type:String, required:true, default:LocationInitData[1].type},
 			level:{type:Number, required:true, default:1},
+			location:{type:Number, required:true, default:1},
 			updateTime:{type:Number, required:true, default:0}
 		},
-		watchTower:{//瞭望塔
-			name:{type:String, required:true, default:"watchTower"},
+		location_2:{//瞭望塔
+			type:{type:String, required:true, default:LocationInitData[2].type},
 			level:{type:Number, required:true, default:1},
+			location:{type:Number, required:true, default:1},
 			updateTime:{type:Number, required:true, default:0}
 		},
-		hospital:{//医院
-			name:{type:String, required:true, default:"hospital"},
+		location_3:{//资源仓库
+			type:{type:String, required:true, default:LocationInitData[3].type},
+			level:{type:Number, required:true, default:1},
+			location:{type:Number, required:true, default:3},
+			updateTime:{type:Number, required:true, default:0}
+		},
+		location_4:{//龙巢
+			type:{type:String, required:true, default:LocationInitData[4].type},
+			level:{type:Number, required:true, default:1},
+			location:{type:Number, required:true, default:4},
+			updateTime:{type:Number, required:true, default:0}
+		},
+		location_5:{//医院
+			type:{type:String, required:true, default:LocationInitData[5].type},
 			level:{type:Number, required:true, default:0},
+			location:{type:Number, required:true, default:5},
 			updateTime:{type:Number, required:true, default:0}
 		},
-		foundry:{//锻造工坊
-			name:{type:String, required:true, default:"foundry"},
-			level:{type:Number, required:true, default:-1},
-			updateTime:{type:Number, required:true, default:0}
-		},
-		dragonEyire:{//龙巢
-			name:{type:String, required:true, default:"dragonEyire"},
-			level:{type:Number, required:true, default:1}
-		},
-		warehouse:{//资源仓库
-			name:{type:String, required:true, default:"warehouse"},
-			level:{type:Number, required:true, default:1},
-			updateTime:{type:Number, required:true, default:0}
-		},
-		materialDepot:{//材料库房
-			name:{type:String, required:true, default:"materialDepot"},
+		location_6:{//材料库房
+			type:{type:String, required:true, default:LocationInitData[6].type},
 			level:{type:Number, required:true, default:0},
+			location:{type:Number, required:true, default:6},
 			updateTime:{type:Number, required:true, default:0}
 		},
-		stoneMason:{//石匠工坊
-			name:{type:String, required:true, default:"stoneMason"},
-			level:{type:Number, required:true, default:-1},
-			updateTime:{type:Number, required:true, default:0}
-		},
-		blackSmith:{//铁匠铺
-			name:{type:String, required:true, default:"blackSmith"},
-			level:{type:Number, required:true, default:1},
-			updateTime:{type:Number, required:true, default:0}
-		},
-		barracks:{//兵营
-			name:{type:String, required:true, default:"barracks"},
-			level:{type:Number, required:true, default:1},
-			updateTime:{type:Number, required:true, default:0}
-		},
-		armyCamp:{//军用帐篷
-			name:{type:String, required:true, default:"armyCamp"},
+		location_7:{//军用帐篷
+			type:{type:String, required:true, default:LocationInitData[7].type},
 			level:{type:Number, required:true, default:0},
+			location:{type:Number, required:true, default:7},
 			updateTime:{type:Number, required:true, default:0}
 		},
-		lumbermill:{//锯木工房
-			name:{type:String, required:true, default:"lumbermill"},
-			level:{type:Number, required:true, default:-1},
+		location_8:{//兵营
+			type:{type:String, required:true, default:LocationInitData[8].type},
+			level:{type:Number, required:true, default:0},
+			location:{type:Number, required:true, default:8},
 			updateTime:{type:Number, required:true, default:0}
 		},
-		academy:{//学院
-			name:{type:String, required:true, default:"academy"},
-			level:{type:Number, required:true, default:-1},
+		location_9:{//铁匠铺
+			type:{type:String, required:true, default:LocationInitData[9].type},
+			level:{type:Number, required:true, default:0},
+			location:{type:Number, required:true, default:9},
 			updateTime:{type:Number, required:true, default:0}
 		},
-		townHall:{//市政厅
-			name:{type:String, required:true, default:"townHall"},
+		location_10:{//锻造工坊
+			type:{type:String, required:true, default:LocationInitData[10].type},
 			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:10},
 			updateTime:{type:Number, required:true, default:0}
 		},
-		toolShop:{//工具作坊
-			name:{type:String, required:true, default:"toolShop"},
+		location_11:{//石匠工坊
+			type:{type:String, required:true, default:LocationInitData[11].type},
 			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:11},
 			updateTime:{type:Number, required:true, default:0}
 		},
-		mill:{//磨坊
-			name:{type:String, required:true, default:"mill"},
+		location_12:{//锯木工房
+			type:{type:String, required:true, default:LocationInitData[12].type},
 			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:12},
+			updateTime:{type:Number, required:true, default:0}
+		},
+		location_13:{//磨坊
+			type:{type:String, required:true, default:LocationInitData[13].type},
+			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:13},
+			updateTime:{type:Number, required:true, default:0}
+		},
+		location_14:{//工具作坊
+			type:{type:String, required:true, default:LocationInitData[14].type},
+			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:14},
+			updateTime:{type:Number, required:true, default:0}
+		},
+		location_15:{//市政厅
+			type:{type:String, required:true, default:LocationInitData[15].type},
+			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:15},
+			updateTime:{type:Number, required:true, default:0}
+		},
+		location_16:{//学院
+			type:{type:String, required:true, default:LocationInitData[16].type},
+			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:16},
 			updateTime:{type:Number, required:true, default:0}
 		}
 	}
