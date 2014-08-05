@@ -16,15 +16,15 @@ var playerSchema = new Schema({
 		power:{type:Number, required:true, default:0},
 		vip:{type:Number, required:true, default:1},
 		vipExp:{type:Number, required:true, default:0},
-		gem:{type:Number, required:true, default:0}
+		gem:{type:Number, required:true, default:2000}
 	},
 	resource:{
-		wood:{type:Number, required:true, default:0},
-		stone:{type:Number, required:true, default:0},
-		iron:{type:Number, required:true, default:0},
-		population:{type:Number, required:true, default:0},
-		food:{type:Number, required:true, default:0},
-		gold:{type:Number, required:true, default:0}
+		wood:{type:Number, required:true, default:5000},
+		stone:{type:Number, required:true, default:5000},
+		iron:{type:Number, required:true, default:5000},
+		population:{type:Number, required:true, default:5000},
+		food:{type:Number, required:true, default:5000},
+		gold:{type:Number, required:true, default:5000}
 	},
 	buildings:{
 		keep:{//城堡
