@@ -59,9 +59,20 @@ describe("LogicServer", function(){
 		it("upgradeBuilding", function(done){
 			var buildingInfo = {
 				location:1,
-				finishNow:true
+				finishNow:false
 			}
 			var route = "logic.playerHandler.upgradeBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("speedupBuildingBuild", function(done){
+			var buildingInfo = {
+				location:1
+			}
+			var route = "logic.playerHandler.speedupBuildingBuild"
 			pomelo.request(route, buildingInfo, function(doc){
 				doc.code.should.equal(200)
 			})

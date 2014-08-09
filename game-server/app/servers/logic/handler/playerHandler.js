@@ -52,7 +52,19 @@ pro.upgradeBuilding = function(msg, session, next){
  * @param next
  */
 pro.speedupBuildingBuild = function(msg, session, next){
+	var location = msg.location
 
+	if(!_.isNumber(location)){
+		next(null, {code:500})
+		return
+	}
+
+	this.playerService.speedupBuildingBuildAsync(session.uid, location).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(null, {code:500})
+		console.error(e)
+	})
 }
 
 /**

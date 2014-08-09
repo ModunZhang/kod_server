@@ -84,14 +84,14 @@ pro.savePlayer = function(playerId, callback){
 
 /**
  * 升级大型建筑
- * @param userId
+ * @param playerId
  * @param buildingLocation
  * @param finishNow
  * @param callback
  */
-pro.upgradeBuilding = function(userId, buildingLocation, finishNow, callback){
+pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 	var self = this
-	self.dao.findAsync(userId).then(function(doc){
+	self.dao.findAsync(playerId).then(function(doc){
 		var gem = 0
 		var used = {}
 		var building = doc.buildings["location_" + buildingLocation]
@@ -150,6 +150,46 @@ pro.upgradeBuilding = function(userId, buildingLocation, finishNow, callback){
 			building.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			self.callbackService.addPlayerCallback(doc._id, building.finishTime, self.excutePlayerCallback.bind(self))
 		}
+		return self.dao.updateAsync(doc)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+pro.speedupBuildingBuild = function(playerId, buildingLocation, callback){
+	var self = this
+	self.dao.findAsync(playerId).then(function(doc){
+		var gem = 0
+		var used = {}
+		var building = doc.buildings["location_" + buildingLocation]
+		//检查建筑是否存在
+		if(_.isElement(building)){
+			return Promise.reject(new Error("建筑不存在"))
+		}
+		//检查建筑是否正在升级
+		if(building.finishTime <= 0){
+			return Promise.reject(new Error("建筑未处于升级状态"))
+		}
+		//获取剩余升级时间
+		var timeRemain = building.finishTime - Date.now()
+		//获取需要的宝石数量
+		var gem = DataUtils.getGemByTimeInterval(timeRemain / 1000)
+		//宝石是否足够
+		if(gem > doc.basicInfo.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		//修改玩家宝石数据
+		doc.basicInfo.gem -= gem
+		//修改建筑数据
+		building.level = building.level + 1
+		building.finishTime = 0
+		//检查更新其他建筑等级数据
+		LogicUtils.updateBuildingsLevel(doc.buildings)
+		//推送玩家数据到客户端
+		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, Utils.filter(doc), doc._id)
+		//保存玩家数据
 		return self.dao.updateAsync(doc)
 	}).then(function(){
 		callback()
