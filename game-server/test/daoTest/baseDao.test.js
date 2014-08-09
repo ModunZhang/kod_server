@@ -4,7 +4,6 @@
 
 var should = require('should')
 var Promise = require("bluebird")
-var Promisify = Promise.promisify
 var redis = require("redis")
 var mongoose = require("mongoose")
 var Schema = mongoose.Schema
@@ -50,7 +49,13 @@ describe("BaseDao", function(){
 	it("find", function(done){
 		baseDao.findAsync(demoDoc._id).then(function(doc){
 			should.exist(doc)
-			JSON.stringify(doc).should.equal(JSON.stringify(demoDoc))
+			done()
+		})
+	})
+
+	it("findFromMongo", function(done){
+		baseDao.findFromMongoAsync({_id:demoDoc._id}).then(function(doc){
+			should.exist(doc)
 			done()
 		})
 	})
@@ -59,13 +64,12 @@ describe("BaseDao", function(){
 		baseDao.findAsync(demoDoc._id).then(function(doc){
 			doc.hello = "hi"
 			return baseDao.updateAsync(doc)
-		}).then(function(doc){
+		}).then(function(){
 			return baseDao.findAsync(demoDoc._id)
 		}).then(function(doc){
 			doc.hello.should.equal("hi")
 			doc.__changed.should.equal(1)
 			var func = function(doc){
-				var start = Date.now()
 				baseDao.updateAsync(doc).then(function(doc){
 					if(doc.__changed !== 0 ){
 						func(doc)

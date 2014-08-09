@@ -177,3 +177,20 @@ var _ = require("underscore")
 //	var token = buf.toString("hex")
 //	console.log(token)
 //})
+//
+//function a(){
+//	return setTimeout(b, 5000)
+//}
+//
+//function b(){
+//	console.log("asdfjas;kdfjaskldf")
+//}
+//
+//var id = a()
+//console.log(id)
+//
+//setTimeout(function(){
+//	console.log("clearSetTimeout")
+//	clearTimeout(id)
+//}, 6000)
+

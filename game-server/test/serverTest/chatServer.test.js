@@ -45,10 +45,13 @@ describe("ChatServer", function(){
 
 		it("send", function(done){
 			var chatInfo = {
-				text:"this is blood"
+				text:"this is blood",
+				type:"global"
 			}
 			var route = "chat.chatHandler.send"
-			pomelo.notify(route, chatInfo)
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
 			pomelo.on("onChat", function(doc){
 				doc.fromId.should.equal(m_user._id)
 				done()

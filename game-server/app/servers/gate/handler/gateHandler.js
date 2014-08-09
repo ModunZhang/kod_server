@@ -15,6 +15,12 @@ var Handler = function(app) {
 
 var pro = Handler.prototype
 
+/**
+ * 获取逻辑服务器
+ * @param msg
+ * @param session
+ * @param next
+ */
 pro.queryEntry = function(msg, session, next){
 	var logicServers = this.app.getServersByType('logic')
 	var logicServer = dispatcher.dispatch(logicServers)

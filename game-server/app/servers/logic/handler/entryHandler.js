@@ -7,7 +7,7 @@ var Promisify = Promise.promisify
 var _ = require("underscore")
 var utils = require("../../../utils/utils")
 
-var PlayerService = require("../../../services/playerService")
+var Consts = require("../../../consts/consts")
 
 module.exports = function(app){
 	return new Handler(app)
@@ -15,33 +15,48 @@ module.exports = function(app){
 
 var Handler = function(app){
 	this.app = app
-	this.playerService = Promise.promisifyAll(new PlayerService(this.app.get("redis")))
+	this.playerService = this.app.get("playerService")
+	this.callbackService = this.app.get("callbackService")
+	this.pushService = this.app.get("pushService")
 	this.globalChannelService = this.app.get("globalChannelService")
-	this.globalChannelName = "logicChannel"
+	this.globalChannelName = Consts.GlobalChannelName
 	this.serverId = this.app.getServerId()
 }
 
 var pro = Handler.prototype
 
+/**
+ * 玩家登陆
+ * @param msg
+ * @param session
+ * @param next
+ */
 pro.login = function(msg, session, next){
+	var self = this
 	var deviceId = msg.deviceId
 	if(_.isNull(deviceId) || _.isUndefined(deviceId)){
 		next(null, {code:500})
 		return
 	}
 
-	var bindUserSession = Promisify(BindUserSession, this)
-	var addUserToLogicChannel = Promisify(AddUserToLogicChannel, this)
-	var addUserToChatChannel = Promisify(AddUserToChatChannel, this)
+	var updatePlayerData = Promisify(UpdatePlayerData, this)
+	var bindPlayerSession = Promisify(BindPlayerSession, this)
+	var addPlayerToLogicChannel = Promisify(AddPlayerToLogicChannel, this)
+	var addPlayerToChatChannel = Promisify(AddPlayerToChatChannel, this)
 
 	var userDoc
+
 	this.playerService.getPlayerByDeviceIdAsync(deviceId).then(function(doc){
 		userDoc = doc
-		return bindUserSession(session, doc)
+		return updatePlayerData(userDoc)
 	}).then(function(){
-		return addUserToLogicChannel(session)
+		return self.playerService.updatePlayerAsync(userDoc)
 	}).then(function(){
-		return addUserToChatChannel(session)
+		return bindPlayerSession(session, userDoc)
+	}).then(function(){
+		return addPlayerToLogicChannel(session)
+	}).then(function(){
+		return addPlayerToChatChannel(session)
 	}).then(function(){
 		userDoc.time = Date.now()
 		next(null, utils.next(utils.filter(userDoc), 200))
@@ -51,37 +66,76 @@ pro.login = function(msg, session, next){
 	})
 }
 
-var BindUserSession = function(session, doc, callback){
+
+var BindPlayerSession = function(session, doc, callback){
 	session.bind(doc._id)
-	session.on("closed", UserLeave.bind(this))
+	session.on("closed", PlayerLeave.bind(this))
 	session.pushAll()
 	process.nextTick(callback)
 }
 
-var UserLeave = function(session, reason){
+var PlayerLeave = function(session, reason){
 	console.log("user [" + session.uid + "] logout with reason [" + reason + "]")
 
-	var removeUserFromLogicChannel = Promisify(RemoveUserFromLogicChannel, this)
-	var removeUserFromChatChannel = Promisify(RemoveUserFromChatChannel, this)
-	removeUserFromLogicChannel(session).then(function(){
-		return removeUserFromChatChannel(session)
+	var savePlayerData = Promisify(SavePlayerData, this)
+	var clearPlayerCallback = Promisify(ClearPlayerCallback, this)
+	var removePlayerFromGlobalChannel = Promisify(RemovePlayerFromGlobalChannel, this)
+	var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, this)
+
+	savePlayerData(session).then(function(){
+		return clearPlayerCallback(session)
+	}).then(function(){
+		return removePlayerFromGlobalChannel(session)
+	}).then(function(){
+		return removePlayerFromChatChannel(session)
 	}).catch(function(e){
 		console.error(e)
 	})
 }
 
-var AddUserToLogicChannel = function(session, callback){
+var AddPlayerToLogicChannel = function(session, callback){
 	this.globalChannelService.add(this.globalChannelName, session.uid, this.serverId, callback)
 }
 
-var RemoveUserFromLogicChannel = function(session, callback){
+var RemovePlayerFromGlobalChannel = function(session, callback){
 	this.globalChannelService.leave(this.globalChannelName, session.uid, this.serverId, callback)
 }
 
-var AddUserToChatChannel = function(session, callback){
+var AddPlayerToChatChannel = function(session, callback){
 	this.app.rpc.chat.chatRemote.add(session, session.uid, this.serverId, callback)
 }
 
-var RemoveUserFromChatChannel = function(session, callback){
+var RemovePlayerFromChatChannel = function(session, callback){
 	this.app.rpc.chat.chatRemote.leave(session, session.uid, this.serverId, callback)
+}
+
+var ClearPlayerCallback = function(session, callback){
+	this.callbackService.removeAllPlayerCallback(session.uid)
+	callback()
+}
+
+var SavePlayerData = function(session, callback){
+	this.playerService.savePlayerAsync(session.uid).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+var UpdatePlayerData = function(userDoc, callback){
+	var self = this
+	userDoc.basicInfo.lastLoginTime = Date.now()
+	userDoc.basicInfo.loginCount += 1
+	_.each(userDoc.buildings, function(building){
+		if(building.finishTime > 0){
+			if(building.finishTime <= Date.now()){
+				building.finishTime = 0
+				building.level += 1
+			}else{
+				self.callbackService.addPlayerCallback(userDoc._id, building.finishTime, self.playerService.excutePlayerCallback.bind(self.playerService))
+			}
+		}
+	})
+
+	callback()
 }

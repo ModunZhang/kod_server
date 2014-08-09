@@ -55,9 +55,10 @@ utils.filter = function(doc){
 }
 
 utils.next = function(doc, code){
-	var resp = {
-		code:code,
-		data:doc
+	var resp = {}
+	resp.code = code
+	if(!_.isEmpty(doc)){
+		resp.data = doc
 	}
 	return resp
 }

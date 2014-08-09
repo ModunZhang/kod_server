@@ -1,4 +1,4 @@
-var locations = {}
+var locations = []
 module.exports = locations
 
 locations[1] = {
@@ -23,8 +23,8 @@ locations[4] = {
 }
 locations[5] = {
 	"location":5,
-	"type":"hospital",
-	"desc":"医院"
+	"type":"toolShop",
+	"desc":"工具作坊"
 }
 locations[6] = {
 	"location":6,
@@ -68,8 +68,8 @@ locations[13] = {
 }
 locations[14] = {
 	"location":14,
-	"type":"toolShop",
-	"desc":"工具作坊"
+	"type":"hospital",
+	"desc":"医院"
 }
 locations[15] = {
 	"location":15,

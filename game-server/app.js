@@ -2,6 +2,8 @@ var pomelo = require("pomelo")
 var redis = require("redis")
 var mongoose = require("mongoose")
 var globalChannel = require("pomelo-globalchannel-plugin")
+var path = require("path")
+
 
 var app = pomelo.createApp()
 app.set("name", "KODServer")
@@ -11,64 +13,46 @@ app.configure("production|development", "gate", function(){
 	app.set("connectorConfig", {
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
-		useDict:true,
-		useProtobuf:true
+		useDict:false,
+		useProtobuf:false
 	})
 })
 
-app.configure("development", "logic", function(){
+
+app.configure("production|development", "logic", function(){
 	app.set("connectorConfig", {
 		connector:pomelo.connectors.hybridconnector,
-		heartbeat:5,
+		heartbeat:10,
 		useDict:true,
 		useProtobuf:true
 	})
 
+	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
+	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
+
 	app.use(globalChannel, {globalChannel:{
-		host:"127.0.0.1",
-		port:6379,
+		host:app.get("redisConfig").host,
+		port:app.get("redisConfig").port,
 		db:"1"
 	}})
 
-	var redisClient = redis.createClient(6379, "127.0.0.1")
+	var redisClient = redis.createClient(app.get("redisConfig").port, app.get("redisConfig").host)
 	app.set("redis", redisClient)
-	var mongooseClient = mongoose.connect("mongodb://127.0.0.1:27017/kod")
+	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("production", "logic", function(){
-	app.set("connectorConfig", {
-		connector:pomelo.connectors.hybridconnector,
-		heartbeat:5,
-		useDict:true,
-		useProtobuf:true
-	})
 
-	app.use(globalChannel, {globalChannel:{
-		host:"172.31.15.88",
-		port:6379,
-		db:"1"
-	}})
+app.configure("production|development", "chat", function(){
+	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
+	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
 
-	var redisClient = redis.createClient(6379, "172.31.15.88")
+	var redisClient = redis.createClient(app.get("redisConfig").port, app.get("redisConfig").host)
 	app.set("redis", redisClient)
-	var mongooseClient = mongoose.connect("mongodb://127.0.0.1:27017/kod")
+	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("development", "chat", function(){
-	var redisClient = redis.createClient(6379, "127.0.0.1")
-	app.set("redis", redisClient)
-	var mongooseClient = mongoose.connect("mongodb://127.0.0.1:27017/kod")
-	app.set("mongoose", mongooseClient)
-})
-
-app.configure("production", "chat", function(){
-	var redisClient = redis.createClient(6379, "172.31.15.88")
-	app.set("redis", redisClient)
-	var mongooseClient = mongoose.connect("mongodb://127.0.0.1:27017/kod")
-	app.set("mongoose", mongooseClient)
-})
 
 app.start()
 

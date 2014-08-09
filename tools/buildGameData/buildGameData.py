@@ -152,11 +152,13 @@ def exportSheetAsJs(sheet):
 	row = sheet.row_values(0)
 	value = row[0]
 	valueType = value.split("_")[0]
-	valueType = "{}"
 	if "INT" == valueType:
 		valueType = "[]"
 	elif "STR" == valueType:
 		valueType = "{}"
+	else:
+		return
+
 
 	file = open(g_exportDir + "/" + g_currentFileNamePrefix + "_" + sheetName + '.js', "w")
 	file.write("var %s = %s\n" % (sheetName, valueType))
