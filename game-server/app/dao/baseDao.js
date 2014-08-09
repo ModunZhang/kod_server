@@ -128,7 +128,7 @@ pro.update = function(doc, callback){
 		doc.__changed = 0
 	}
 
-	if(doc.__changed >= 10){
+	if(doc.__changed >= 1){
 		doc.__changed = 0
 		SaveToMongo.call(this, doc, function(){})
 	}else{

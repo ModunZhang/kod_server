@@ -9,30 +9,34 @@ var mongoose = require("mongoose")
 var Config = require("../config")
 var Player = require("../../app/domains/player")
 
+var ClearTestAccount = function(callback){
+	mongoose.connect(Config.mongoAddr, function(){
+		Player.findOneAndRemove({"basicInfo.deviceId":Config.deviceId}, callback)
+	})
+}
+
 describe("LogicServer", function(){
 	var m_user
 
 	before(function(done){
-		mongoose.connect(Config.mongoAddr, function(){
-			Player.findOneAndRemove({"basicInfo.deviceId":Config.deviceId}, function(){
-				pomelo.init({
-					host:Config.gateHost,
-					port:Config.gatePort,
-					log:true
-				}, function(){
-					var loginInfo = {
-						deviceId:Config.deviceId
-					}
-					var route = "gate.gateHandler.queryEntry"
-					pomelo.request(route, loginInfo, function(doc){
-						pomelo.disconnect()
-						pomelo.init({
-							host:doc.data.host,
-							port:doc.data.port,
-							log:true
-						}, function(){
-							done()
-						})
+		ClearTestAccount(function(){
+			pomelo.init({
+				host:Config.gateHost,
+				port:Config.gatePort,
+				log:true
+			}, function(){
+				var loginInfo = {
+					deviceId:Config.deviceId
+				}
+				var route = "gate.gateHandler.queryEntry"
+				pomelo.request(route, loginInfo, function(doc){
+					pomelo.disconnect()
+					pomelo.init({
+						host:doc.data.host,
+						port:doc.data.port,
+						log:true
+					}, function(){
+						done()
 					})
 				})
 			})
@@ -84,7 +88,6 @@ describe("LogicServer", function(){
 			})
 		})
 	})
-
 	after(function(){
 		pomelo.disconnect()
 	})
