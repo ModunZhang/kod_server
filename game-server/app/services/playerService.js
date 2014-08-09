@@ -145,11 +145,12 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(finishNow){
 			building.level = building.level + 1
 			LogicUtils.updateBuildingsLevel(doc.buildings)
-			self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, Utils.filter(doc), doc._id)
 		}else{
 			building.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			self.callbackService.addPlayerCallback(doc._id, building.finishTime, self.excutePlayerCallback.bind(self))
 		}
+		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, Utils.filter(doc), doc._id)
+
 		return self.dao.updateAsync(doc)
 	}).then(function(){
 		callback()
