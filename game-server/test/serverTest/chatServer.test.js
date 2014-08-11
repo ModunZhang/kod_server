@@ -107,7 +107,6 @@ describe("ChatServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				console.log(doc)
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 				done()
 
