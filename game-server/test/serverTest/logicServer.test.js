@@ -92,9 +92,9 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("upgradeBuilding location_2", function(done){
+		it("upgradeBuilding location_4", function(done){
 			var buildingInfo = {
-				location:2,
+				location:4,
 				finishNow:false
 			}
 			var route = "logic.playerHandler.upgradeBuilding"
@@ -104,9 +104,9 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("speedupBuildingBuild location_2", function(done){
+		it("speedupBuildingBuild location_4", function(done){
 			var buildingInfo = {
-				location:2
+				location:4
 			}
 			var route = "logic.playerHandler.speedupBuildingBuild"
 			pomelo.request(route, buildingInfo, function(doc){
@@ -116,7 +116,7 @@ describe("LogicServer", function(){
 			var onPlayerDataChanged = function(doc){
 				m_user = doc
 				should.exist(doc)
-				m_user.buildings["location_2"].finishTime.should.equal(0)
+				m_user.buildings["location_4"].finishTime.should.equal(0)
 				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}

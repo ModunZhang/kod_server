@@ -21,7 +21,7 @@ buildings[3] = {
 }
 buildings[4] = {
 	"location":4,
-	"name":"dragonEyire",
+	"name":"dragonEyrie",
 	"hasHouse":false,
 	"desc":"龙巢"
 }
