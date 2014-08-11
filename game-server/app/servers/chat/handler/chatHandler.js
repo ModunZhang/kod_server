@@ -29,6 +29,7 @@ var ChatHandler = function(app){
 				var basicPlayerInfo = require("../../../consts/basicPlayerInfo")
 				basicPlayerInfo._id = userInfo._id
 				basicPlayerInfo.__v = userInfo.__v
+				basicPlayerInfo.basicInfo.deviceId = userInfo.basicInfo.deviceId
 				this.playerService.updatePlayerAsync(basicPlayerInfo).then(function(doc){
 					PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
 				})
