@@ -2,9 +2,6 @@
  * Created by modun on 14-7-25.
  */
 
-var should = require('should')
-var Promise = require("bluebird")
-var Promisify = Promise.promisify
 var pomelo = require("../pomelo-client")
 
 var Config = require("../config")

@@ -213,7 +213,7 @@ pro.remove = function(doc, callback){
  * @constructor
  */
 var SaveToMongo = function(doc, callback){
-	if(!_.isUndefined(doc._id) && !_.isNull(doc._id)){
+	if(_.isString(doc._id)){
 		this.model.findByIdAndUpdate(doc._id, _.omit(doc, [ '_id', '__v' ]), function(err, doc){
 			callback(err, doc)
 		})

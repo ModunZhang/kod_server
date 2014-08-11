@@ -78,17 +78,17 @@ var BindPlayerSession = function(session, doc, callback){
 var PlayerLeave = function(session, reason){
 	console.log("user [" + session.uid + "] logout with reason [" + reason + "]")
 
-	var savePlayerData = Promisify(SavePlayerData, this)
 	var clearPlayerCallback = Promisify(ClearPlayerCallback, this)
+	var savePlayerData = Promisify(SavePlayerData, this)
 	var removePlayerFromGlobalChannel = Promisify(RemovePlayerFromGlobalChannel, this)
 	var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, this)
 
-	savePlayerData(session).then(function(){
-		return clearPlayerCallback(session)
+	clearPlayerCallback(session).then(function(){
+		return removePlayerFromChatChannel(session)
 	}).then(function(){
 		return removePlayerFromGlobalChannel(session)
 	}).then(function(){
-		return removePlayerFromChatChannel(session)
+		return savePlayerData(session)
 	}).catch(function(e){
 		console.error(e)
 	})

@@ -127,7 +127,6 @@ var GetPlayerCommand = function(text){
 	for(var i = 0; i < this.commands.length; i ++){
 		var value = this.commands[i]
 		if(_.isEqual(value.command, command)){
-			console.log(value.callback)
 			return value.callback
 		}
 	}

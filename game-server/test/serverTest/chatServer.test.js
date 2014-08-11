@@ -114,8 +114,9 @@ describe("ChatServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		after(function(){
+		after(function(done){
 			pomelo.disconnect()
+			setTimeout(done, 100)
 		})
 	})
 })

@@ -53,7 +53,6 @@ describe("LogicServer", function(){
 			pomelo.request(route, loginInfo, function(doc){
 				doc.code.should.equal(200)
 				m_user = doc.data
-				m_basicUser = m_user
 				done()
 			})
 		})
@@ -81,16 +80,50 @@ describe("LogicServer", function(){
 			pomelo.request(route, buildingInfo, function(doc){
 				doc.code.should.equal(200)
 			})
-			pomelo.on("onPlayerDataChanged", function(doc){
+
+			var onPlayerDataChanged = function(doc){
 				m_user = doc
 				should.exist(doc)
 				m_user.buildings["location_1"].finishTime.should.equal(0)
 				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("upgradeBuilding location_2", function(done){
+			var buildingInfo = {
+				location:2,
+				finishNow:false
+			}
+			var route = "logic.playerHandler.upgradeBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(200)
+				done()
 			})
+		})
+
+		it("speedupBuildingBuild location_2", function(done){
+			var buildingInfo = {
+				location:2
+			}
+			var route = "logic.playerHandler.speedupBuildingBuild"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				m_user = doc
+				should.exist(doc)
+				m_user.buildings["location_2"].finishTime.should.equal(0)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 	})
 
-	
+
 	after(function(){
 		pomelo.disconnect()
 	})
