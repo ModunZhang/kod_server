@@ -59,7 +59,7 @@ GameDatas.BuildingLevelUp.stable = require("./BuildingLevelUp_stable.js")
 GameDatas.BuildingLevelUp.workshop = require("./BuildingLevelUp_workshop.js")
 
 GameDatas.Buildings = {}
-GameDatas.Buildings.locations = require("./Buildings_locations.js")
+GameDatas.Buildings.buildings = require("./Buildings_buildings.js")
 
 GameDatas.GemsPayment = {}
 GameDatas.GemsPayment.time = require("./GemsPayment_time.js")
