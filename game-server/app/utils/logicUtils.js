@@ -13,10 +13,9 @@ var Utils = module.exports
  * @param has
  */
 Utils.isEnough = function(need, has){
-	_.each(need, function(value, key){
-		if(value > has[key]) return false
-	})
-
+	for(var key in need){
+		if(need[key] > has[key]) return false
+	}
 	return true
 }
 

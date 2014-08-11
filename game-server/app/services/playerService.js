@@ -99,6 +99,10 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(_.isElement(building)){
 			return Promise.reject(new Error("建筑不存在"))
 		}
+		//建筑是否正在升级中
+		if(building.finishTime > 0){
+			return Promise.reject(new Error("建筑正在升级"))
+		}
 		//是否已到最高等级
 		if(DataUtils.isBuildingReachMaxLevel(building.type, building.level)){
 			return Promise.reject(new Error("建筑已达到最高等级"))
@@ -120,6 +124,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		//资源是否足够
 		if(!LogicUtils.isEnough(upgradeRequired.resources, doc.resources)){
 			var returned = DataUtils.getGemByResources(upgradeRequired.resources)
+			console.error(returned)
 			gem += returned.gem
 			used.resources = returned.resources
 		}else{

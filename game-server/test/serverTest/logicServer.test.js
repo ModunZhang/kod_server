@@ -5,6 +5,7 @@
 var should = require('should')
 var pomelo = require("../pomelo-client")
 var mongoose = require("mongoose")
+var _ = require("underscore")
 
 var Config = require("../config")
 var Player = require("../../app/domains/player")
@@ -120,6 +121,24 @@ describe("LogicServer", function(){
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("upgradeBuilding Until Gem not enough", function(done){
+			var buildingInfo = {
+				location:1,
+				finishNow:true
+			}
+			var route = "logic.playerHandler.upgradeBuilding"
+			var func = function(){
+				pomelo.request(route, buildingInfo, function(doc){
+					if(_.isEqual(200, doc.code)){
+						func()
+					}else{
+						done()
+					}
+				})
+			}
+			func()
 		})
 	})
 

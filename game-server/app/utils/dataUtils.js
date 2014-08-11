@@ -20,14 +20,14 @@ var Utils = module.exports
 Utils.getGemByResources = function(resources){
 	var gem = 0
 	var returned = {}
-	_.each(resource, function(value, key){
+	_.each(resources, function(value, key){
 		var config = GemsPayment[key]
 		while(value > 0){
 			for(var i = config.length; i = 1; i--){
 				var item = config[i]
 				if(item.min < value){
 					gem += item.gem
-					value -= item.speedup
+					value -= item.resource
 					break
 				}
 			}
@@ -35,7 +35,7 @@ Utils.getGemByResources = function(resources){
 		returned[key] = value
 	})
 
-	return {gem:gem, resources:resources}
+	return {gem:gem, resources:returned}
 }
 
 /**

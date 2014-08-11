@@ -28,19 +28,23 @@ describe("ChatServer", function(){
 						port:doc.data.port,
 						log:true
 					}, function(){
-						var loginInfo = {
-							deviceId:Config.deviceId
-						}
-						var route = "logic.entryHandler.login"
-						pomelo.request(route, loginInfo, function(doc){
-							m_user = doc.data
-							done()
-						})
+						done()
 					})
 				})
 			})
 		})
 
+		it("login", function(done){
+			var loginInfo = {
+				deviceId:Config.deviceId
+			}
+			var route = "logic.entryHandler.login"
+			pomelo.request(route, loginInfo, function(doc){
+				doc.code.should.equal(200)
+				m_user = doc.data
+				done()
+			})
+		})
 
 		it("send", function(done){
 			var chatInfo = {
