@@ -7,6 +7,7 @@ var utils = require("../../../utils/utils")
 var Promise = require("bluebird")
 
 var Consts = require("../../../consts/consts")
+var Events = require("../../../consts/events")
 
 module.exports = function(app){
 	return new ChatHandler(app)
@@ -19,6 +20,21 @@ var ChatHandler = function(app){
 	this.gloablChatChannel = this.channelService.getChannel(Consts.GloablChatChannelName, true)
 	this.chats = []
 	this.maxChatCount = 50
+	this.commands = [
+		{
+			command:"reset",
+			desc:"重置玩家数据",
+			callback:function(text, session, userInfo){
+				var self = this
+				var basicPlayerInfo = require("../../../consts/basicPlayerInfo")
+				basicPlayerInfo._id = userInfo._id
+				basicPlayerInfo.__v = userInfo.__v
+				this.playerService.updatePlayerAsync(basicPlayerInfo).then(function(doc){
+					PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
+				})
+			}
+		}
+	]
 }
 
 var pro = ChatHandler.prototype
@@ -42,26 +58,23 @@ pro.send = function(msg, session, next){
 	}
 
 	this.playerService.getPlayerByIdAsync(session.uid).then(function(doc){
-		if(_.isElement(doc)){
-			next(null, utils.next(null, 500))
-		}else if(FilterCommand.call(self, text, doc)){
-			next(null, utils.next(null, 200))
-		}else{
-			var time = Date.now()
-			var response = {
-				fromId:doc._id,
-				from:doc.name,
-				text:text,
-				time:time
-			}
+		FilterCommand.call(self, text, doc, session)
 
-			if(self.chats.length > self.maxChatCount){
-				self.chats.shift()
-			}
-			self.chats.push(response)
-			self.gloablChatChannel.pushMessage("onChat", response)
-			next(null, utils.next(null, 200))
+		var time = Date.now()
+		var response = {
+			fromId:doc._id,
+			fromIcon:doc.basicInfo.icon,
+			from:doc.name,
+			text:text,
+			time:time
 		}
+
+		if(self.chats.length > self.maxChatCount){
+			self.chats.shift()
+		}
+		self.chats.push(response)
+		self.gloablChatChannel.pushMessage(Events.chat.onChat, response)
+		next(null, {code:200})
 	})
 }
 
@@ -72,9 +85,57 @@ pro.send = function(msg, session, next){
  * @param next
  */
 pro.getAll = function(msg, session, next){
-	next(null, utils.next(this.chats, 200))
+	PushToPlayer.call(this, Events.chat.onAllChat, session, this.chats)
+	next(null, {code:200})
 }
 
-var FilterCommand = function(text, userInfo){
-	return false
+var FilterCommand = function(text, userInfo, session){
+	if(_.isEqual("help", text)){
+		PushHelpMessageToPlayer.call(this, session)
+	}else{
+		var callback = GetPlayerCommand.call(this, text)
+		if(_.isFunction(callback)){
+			callback.call(this, text, session, userInfo)
+		}
+	}
+}
+
+var PushHelpMessageToPlayer = function(session){
+	var commands = ""
+	_.each(this.commands, function(value){
+		commands += value.command + ":" + value.desc + "\n"
+	})
+
+	var msg = {
+		fromId:"system",
+		from:"系统",
+		fromIcon:"playerIcon_default.png",
+		text:commands,
+		time:Date.now()
+	}
+
+	PushToPlayer.call(this, Events.chat.onChat, session, msg)
+}
+
+var GetPlayerCommand = function(text){
+	var command = text.split(" ")
+	if(command.length > 0){
+		command = command[0]
+	}
+
+	for(var i = 0; i < this.commands.length; i ++){
+		var value = this.commands[i]
+		if(_.isEqual(value.command, command)){
+			console.log(value.callback)
+			return value.callback
+		}
+	}
+
+	return null
+}
+
+var PushToPlayer = function(event, session, msg){
+	this.channelService.pushMessageByUids(event, msg, [
+		{uid:session.uid, sid:session.get("serverId")}
+	])
 }

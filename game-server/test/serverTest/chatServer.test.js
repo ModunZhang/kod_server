@@ -4,7 +4,6 @@
 
 var should = require('should')
 var Promise = require("bluebird")
-var Promisify = Promise.promisify
 var pomelo = require("../pomelo-client")
 
 var Config = require("../config")
@@ -52,21 +51,69 @@ describe("ChatServer", function(){
 			pomelo.request(route, chatInfo, function(doc){
 				doc.code.should.equal(200)
 			})
-			pomelo.on("onChat", function(doc){
+
+			var onChat = function(doc){
 				doc.fromId.should.equal(m_user._id)
+				pomelo.removeListener("onChat", onChat)
 				done()
-			})
+			}
+			pomelo.on("onChat", onChat)
 		})
 
 		it("getAll", function(done){
 			var route = "chat.chatHandler.getAll"
 			pomelo.request(route, null, function(doc){
 				doc.code.should.equal(200)
-				doc.data.should.be.an.instanceOf(Array)
-				done()
 			})
+
+			var onAllChat = function(doc){
+				doc.should.be.an.instanceOf(Array)
+				pomelo.removeListener("onAllChat", onAllChat)
+				done()
+			}
+			pomelo.on("onAllChat", onAllChat)
 		})
 
+
+		it("send Help", function(done){
+			var chatInfo = {
+				text:"help",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var count = 0
+			var onChat = function(doc){
+				count += 1
+				if(count == 2){
+					pomelo.removeListener("onChat", onChat)
+					done()
+				}
+			}
+			pomelo.on("onChat", onChat)
+		})
+
+		it("send Reset", function(done){
+			var chatInfo = {
+				text:"reset",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				console.log(doc)
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+				done()
+
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
 
 		after(function(){
 			pomelo.disconnect()

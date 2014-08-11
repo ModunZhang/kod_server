@@ -53,6 +53,7 @@ describe("LogicServer", function(){
 			pomelo.request(route, loginInfo, function(doc){
 				doc.code.should.equal(200)
 				m_user = doc.data
+				m_basicUser = m_user
 				done()
 			})
 		})
@@ -88,6 +89,8 @@ describe("LogicServer", function(){
 			})
 		})
 	})
+
+	
 	after(function(){
 		pomelo.disconnect()
 	})

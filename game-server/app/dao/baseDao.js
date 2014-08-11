@@ -128,14 +128,24 @@ pro.update = function(doc, callback){
 		doc.__changed = 0
 	}
 
-	if(doc.__changed >= 1){
-		doc.__changed = 0
-		SaveToMongo.call(this, doc, function(){})
-	}else{
-		doc.__changed ++
-	}
+	var saveToMongo = Promisify(SaveToMongo, this)
+	var loadObjToRedis = Promisify(LoadObjToRedis, this)
 
-	LoadObjToRedis.call(this, doc, callback)
+	Promise.method(function(){
+		if(doc.__changed >= 1){
+			doc.__changed = 0
+			return saveToMongo(doc)
+		}else{
+			doc.__changed++
+			return null
+		}
+	})().then(function(){
+		return loadObjToRedis(doc)
+	}).then(function(){
+		callback(null, doc)
+	}).catch(function(e){
+		callback(e)
+	})
 }
 
 /**
@@ -204,10 +214,9 @@ pro.remove = function(doc, callback){
  */
 var SaveToMongo = function(doc, callback){
 	if(!_.isUndefined(doc._id) && !_.isNull(doc._id)){
-		this.model.findOneAndUpdate(doc._id, _.omit(doc, [ '_id', '__v' ]), function(err, doc){
+		this.model.findByIdAndUpdate(doc._id, _.omit(doc, [ '_id', '__v' ]), function(err, doc){
 			callback(err, doc)
 		})
-		callback(null, doc)
 	}else{
 		var po = new this.model(doc)
 		po.save(function(err, doc){

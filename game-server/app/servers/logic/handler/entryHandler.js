@@ -69,6 +69,7 @@ pro.login = function(msg, session, next){
 
 var BindPlayerSession = function(session, doc, callback){
 	session.bind(doc._id)
+	session.set("serverId", this.serverId)
 	session.on("closed", PlayerLeave.bind(this))
 	session.pushAll()
 	process.nextTick(callback)

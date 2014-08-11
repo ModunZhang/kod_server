@@ -4,7 +4,6 @@ var Package = Protocol.Package;
 var Message = Protocol.Message;
 var EventEmitter = require('events').EventEmitter;
 var protobuf = require('pomelo-protobuf');
-var util = require('util');
 var JS_WS_CLIENT_TYPE = 'js-websocket';
 var JS_WS_CLIENT_VERSION = '0.0.1';
 

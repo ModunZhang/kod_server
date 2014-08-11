@@ -47,7 +47,7 @@ pro.getPlayerByDeviceId = function(deviceId, callback){
 
 /**
  * 根据主键获取玩家信息
- * @param id
+ * @param playerId
  * @param callback
  */
 pro.getPlayerById = function(playerId, callback){
@@ -59,8 +59,8 @@ pro.getPlayerById = function(playerId, callback){
 }
 
 pro.updatePlayer = function(doc, callback){
-	this.dao.updateAsync(doc).then(function(){
-		callback()
+	this.dao.updateAsync(doc).then(function(doc){
+		callback(null, doc)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -68,15 +68,15 @@ pro.updatePlayer = function(doc, callback){
 
 /**
  * 将玩家数据持久化到mongo,通常在玩家下线时调用
- * @param doc
+ * @param playerId
  * @param callback
  */
 pro.savePlayer = function(playerId, callback){
 	var self = this
 	this.dao.findAsync(playerId).then(function(doc){
 		return self.dao.clearAsync(doc)
-	}).then(function(){
-		callback()
+	}).then(function(doc){
+		callback(null, doc)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -159,11 +159,19 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 	})
 }
 
+pro.createHouse = function(){
+
+}
+
+/**
+ * 建筑加速
+ * @param playerId
+ * @param buildingLocation
+ * @param callback
+ */
 pro.speedupBuildingBuild = function(playerId, buildingLocation, callback){
 	var self = this
 	self.dao.findAsync(playerId).then(function(doc){
-		var gem = 0
-		var used = {}
 		var building = doc.buildings["location_" + buildingLocation]
 		//检查建筑是否存在
 		if(_.isElement(building)){
@@ -224,6 +232,8 @@ pro.excutePlayerCallback = function(playerId, finishTime){
 	})
 }
 
+
+
 var CreatePlayer = function(deviceId, callback){
 	var self = this
 	Promisify(crypto.randomBytes)(4).then(function(buf){
@@ -233,8 +243,7 @@ var CreatePlayer = function(deviceId, callback){
 		var doc = {
 			basicInfo:{
 				deviceId:deviceId,
-				name:"player_" + token,
-				icon:"playerIcon_default.png"
+				name:"player_" + token
 			}
 		}
 		return Promise.resolve(doc)

@@ -3,81 +3,97 @@ module.exports = locations
 
 locations[1] = {
 	"location":1,
-	"type":"keep",
+	"name":"keep",
+	"hasHouse":false,
 	"desc":"城堡"
 }
 locations[2] = {
 	"location":2,
-	"type":"watchTower",
+	"name":"watchTower",
+	"hasHouse":false,
 	"desc":"瞭望塔"
 }
 locations[3] = {
 	"location":3,
-	"type":"warehouse",
+	"name":"warehouse",
+	"hasHouse":true,
 	"desc":"资源仓库"
 }
 locations[4] = {
 	"location":4,
-	"type":"dragonEyire",
+	"name":"dragonEyire",
+	"hasHouse":false,
 	"desc":"龙巢"
 }
 locations[5] = {
 	"location":5,
-	"type":"toolShop",
+	"name":"toolShop",
+	"hasHouse":true,
 	"desc":"工具作坊"
 }
 locations[6] = {
 	"location":6,
-	"type":"materialDepot",
+	"name":"materialDepot",
+	"hasHouse":true,
 	"desc":"材料库房"
 }
 locations[7] = {
 	"location":7,
-	"type":"armyCamp",
+	"name":"armyCamp",
+	"hasHouse":true,
 	"desc":"军用帐篷"
 }
 locations[8] = {
 	"location":8,
-	"type":"barracks",
+	"name":"barracks",
+	"hasHouse":true,
 	"desc":"兵营"
 }
 locations[9] = {
 	"location":9,
-	"type":"blackSmith",
+	"name":"blackSmith",
+	"hasHouse":true,
 	"desc":"铁匠铺"
 }
 locations[10] = {
 	"location":10,
-	"type":"foundry",
+	"name":"foundry",
+	"hasHouse":true,
 	"desc":"锻造工坊"
 }
 locations[11] = {
 	"location":11,
-	"type":"stoneMason",
+	"name":"stoneMason",
+	"hasHouse":true,
 	"desc":"石匠工坊"
 }
 locations[12] = {
 	"location":12,
-	"type":"lumbermill",
+	"name":"lumbermill",
+	"hasHouse":true,
 	"desc":"锯木工房"
 }
 locations[13] = {
 	"location":13,
-	"type":"mill",
+	"name":"mill",
+	"hasHouse":true,
 	"desc":"磨坊"
 }
 locations[14] = {
 	"location":14,
-	"type":"hospital",
+	"name":"hospital",
+	"hasHouse":true,
 	"desc":"医院"
 }
 locations[15] = {
 	"location":15,
-	"type":"townHall",
+	"name":"townHall",
+	"hasHouse":true,
 	"desc":"市政厅"
 }
 locations[16] = {
 	"location":16,
-	"type":"academy",
+	"name":"academy",
+	"hasHouse":true,
 	"desc":"学院"
 }

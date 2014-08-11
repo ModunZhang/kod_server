@@ -193,4 +193,17 @@ var _ = require("underscore")
 //	console.log("clearSetTimeout")
 //	clearTimeout(id)
 //}, 6000)
-
+//
+//Promise.method(function(){
+//	console.log("aaaa")
+//	return
+//})().then(function(){
+//	console.log("bbbb")
+//})
+//
+//function a(){
+//	return "b"
+//}
+//
+//var b = a.call(this)
+//console.log(b + "----------")

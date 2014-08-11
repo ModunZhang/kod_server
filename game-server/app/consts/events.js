@@ -5,5 +5,9 @@
 module.exports = {
 	player:{
 		onPlayerDataChanged:"onPlayerDataChanged"
+	},
+	chat:{
+		onChat:"onChat",
+		onAllChat:"onAllChat"
 	}
 }
