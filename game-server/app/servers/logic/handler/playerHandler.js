@@ -3,7 +3,6 @@
  */
 
 var Promise = require("bluebird")
-var Promisify = Promise.promisify
 var _ = require("underscore")
 var utils = require("../../../utils/utils")
 
@@ -29,18 +28,18 @@ pro.upgradeBuilding = function(msg, session, next){
 	var finishNow = msg.finishNow
 
 	if(!_.isNumber(location)){
-		next(null, {code:500})
+		next(null, {code:500, message:"location 信息不能为空"})
 		return
 	}
 	if(!_.isBoolean(finishNow)){
-		next(null, {code:500})
+		next(null, {code:500, message:"finishNow 不能为空"})
 		return
 	}
 
 	this.playerService.upgradeBuildingAsync(session.uid, location, finishNow).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(null, {code:500})
+		next(null, {code:500, message:e.message})
 		console.error(e)
 	})
 }
@@ -62,7 +61,7 @@ pro.speedupBuildingBuild = function(msg, session, next){
 	this.playerService.speedupBuildingBuildAsync(session.uid, location).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(null, {code:500})
+		next(null, {code:500, message:e.message})
 		console.error(e)
 	})
 }

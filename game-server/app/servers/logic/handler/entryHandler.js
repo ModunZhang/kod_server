@@ -62,7 +62,7 @@ pro.login = function(msg, session, next){
 		next(null, utils.next(utils.filter(userDoc), 200))
 	}).catch(function(e){
 		console.error(e)
-		next(null, {code:500})
+		next(null, {code:500, message:e.message})
 	})
 }
 
