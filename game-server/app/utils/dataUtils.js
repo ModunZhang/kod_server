@@ -106,7 +106,6 @@ Utils.getBuildingUpgradeRequired = function(buildingType, buildingLevel){
  * @param buildingLevel
  */
 Utils.isBuildingReachMaxLevel = function(buildingType, buildingLevel){
-	console.log(buildingType + "-------------------------------" + buildingLevel)
 	var config = BuildingLevelUp[buildingType][buildingLevel + 1]
 	if(_.isEqual(config)){
 		return true
