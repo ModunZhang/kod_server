@@ -49,10 +49,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -70,10 +67,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -91,10 +85,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -112,10 +103,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -133,10 +121,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -154,10 +139,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -175,10 +157,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -196,10 +175,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -217,10 +193,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -238,10 +211,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -259,10 +229,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -280,10 +247,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -301,10 +265,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -322,10 +283,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -343,10 +301,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}
@@ -364,10 +319,7 @@ var playerSchema = new Schema({
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
-					location:{
-						x:{type:Number, required:true},
-						y:{type:Number, required:true}
-					},
+					location:{type:Number, required:true},
 					size:{
 						width:{type:Number, required:true},
 						height:{type:Number, required:true}

@@ -164,8 +164,80 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 	})
 }
 
-pro.createHouse = function(){
+/**
+ * 创建小屋
+ * @param playerId
+ * @param buildingLocation
+ * @param houseType
+ * @param houseLocation
+ * @param finishNow
+ * @param callback
+ */
+pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation, finishNow, callback){
+	var self = this
+	self.dao.findAsync(playerId).then(function(doc){
+		var gem = 0
+		var used = {}
+		var building = doc.buildings["location_" + buildingLocation]
+		//检查建筑是否存在
+		if(_.isElement(building)){
+			return Promise.reject(new Error("建筑不存在"))
+		}
+		//检查建筑等级是否大于1
+		if(building.level <= 0){
+			return Promise.reject(new Error("主体建筑必须大于等于1级"))
+		}
+		//检查建造坑位是否合法
+		if(!CheckHouseCreateLocation(doc, buildingLocation)){
+			return Promise.reject(new Error("创建小屋时,小屋坑位不合法"))
+		}
 
+		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, building.level + 1)
+		//是否立即完成
+		if(finishNow){
+			gem += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
+		}
+		//资源是否足够
+		if(!LogicUtils.isEnough(upgradeRequired.resources, doc.resources)){
+			var returned = DataUtils.getGemByResources(upgradeRequired.resources)
+			console.error(returned)
+			gem += returned.gem
+			used.resources = returned.resources
+		}else{
+			used.resources = upgradeRequired.resources
+		}
+		//材料是否足够
+		if(!LogicUtils.isEnough(upgradeRequired.materials, doc.materials)){
+			gem += DataUtils.getGemByMaterials(upgradeRequired.materials)
+			used.materials = {}
+		}else{
+			used.materials = upgradeRequired.materials
+		}
+		//宝石是否足够
+		if(gem > doc.basicInfo.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		//修改玩家宝石数据
+		doc.basicInfo.gem -= gem
+		//修改玩家资源数据
+		LogicUtils.reduce(used.resources, doc.resources)
+		LogicUtils.reduce(used.materials, doc.materials)
+		//是否立即完成
+		if(finishNow){
+			building.level = building.level + 1
+			LogicUtils.updateBuildingsLevel(doc.buildings)
+		}else{
+			building.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
+			self.callbackService.addPlayerCallback(doc._id, building.finishTime, self.excutePlayerCallback.bind(self))
+		}
+		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, Utils.filter(doc), doc._id)
+
+		return self.dao.updateAsync(doc)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
 }
 
 /**
@@ -280,4 +352,10 @@ var CheckBuildingUpgradeLocation = function(userDoc, location){
 	}
 
 	return true
+}
+
+var CheckHouseCreateLocation = function(userDoc, buildingLocation, houseType, houseLocation){
+	var building = userDoc.buildings["location_" + buildingLocation]
+	var houses = building.houses
+
 }
