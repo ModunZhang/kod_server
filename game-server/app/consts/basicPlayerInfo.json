@@ -101,7 +101,7 @@
 		"location_2":{
 			"houses":[],
 			"finishTime":0,
-			"location":1,
+			"location":2,
 			"level":1,
 			"type":"watchTower"
 		},
