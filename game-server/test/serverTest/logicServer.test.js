@@ -69,8 +69,15 @@ describe("LogicServer", function(){
 			var route = "logic.playerHandler.upgradeBuilding"
 			pomelo.request(route, buildingInfo, function(doc){
 				doc.code.should.equal(200)
-				done()
 			})
+			var onPlayerDataChanged = function(doc){
+				m_user = doc
+				should.exist(doc)
+				m_user.buildings["location_1"].finishTime.should.not.equal(0)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
 		it("speedupBuildingBuild", function(done){
@@ -80,13 +87,13 @@ describe("LogicServer", function(){
 			var route = "logic.playerHandler.speedupBuildingBuild"
 			pomelo.request(route, buildingInfo, function(doc){
 				doc.code.should.equal(200)
-				done()
 			})
 
 			var onPlayerDataChanged = function(doc){
 				m_user = doc
 				should.exist(doc)
 				m_user.buildings["location_1"].finishTime.should.equal(0)
+				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
@@ -102,13 +109,13 @@ describe("LogicServer", function(){
 			var route = "logic.playerHandler.createHouse"
 			pomelo.request(route, houseInfo, function(doc){
 				doc.code.should.equal(200)
-				done()
 			})
 
 			var onPlayerDataChanged = function(doc){
 				m_user = doc
 				should.exist(doc)
 				m_user.buildings["location_3"].houses.length.should.equal(1)
+				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
@@ -124,13 +131,13 @@ describe("LogicServer", function(){
 			var route = "logic.playerHandler.createHouse"
 			pomelo.request(route, houseInfo, function(doc){
 				doc.code.should.equal(200)
-				done()
 			})
 
 			var onPlayerDataChanged = function(doc){
 				m_user = doc
 				should.exist(doc)
 				m_user.buildings["location_3"].houses.length.should.equal(2)
+				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
@@ -144,13 +151,13 @@ describe("LogicServer", function(){
 			var route = "logic.playerHandler.speedupHouseBuild"
 			pomelo.request(route, houseInfo, function(doc){
 				doc.code.should.equal(200)
-				done()
 			})
 
 			var onPlayerDataChanged = function(doc){
 				m_user = doc
 				should.exist(doc)
 				m_user.buildings["location_3"].houses[0].level.should.equal(1)
+				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
@@ -165,13 +172,13 @@ describe("LogicServer", function(){
 			var route = "logic.playerHandler.upgradeHouse"
 			pomelo.request(route, houseInfo, function(doc){
 				doc.code.should.equal(200)
-				done()
 			})
 
 			var onPlayerDataChanged = function(doc){
 				m_user = doc
 				should.exist(doc)
 				m_user.buildings["location_3"].houses[0].level.should.equal(2)
+				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
@@ -185,7 +192,6 @@ describe("LogicServer", function(){
 			var route = "logic.playerHandler.destroyHouse"
 			pomelo.request(route, houseInfo, function(doc){
 				doc.code.should.equal(200)
-				done()
 			})
 
 			var onPlayerDataChanged = function(doc){
@@ -193,6 +199,7 @@ describe("LogicServer", function(){
 				should.exist(doc)
 				m_user.buildings["location_3"].houses.length.should.equal(1)
 				m_user.buildings["location_3"].houses[0].location.should.equal(2)
+				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
