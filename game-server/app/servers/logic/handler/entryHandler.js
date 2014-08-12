@@ -128,6 +128,7 @@ var UpdatePlayerData = function(userDoc, callback){
 	userDoc.basicInfo.lastLoginTime = Date.now()
 	userDoc.basicInfo.loginCount += 1
 	_.each(userDoc.buildings, function(building){
+		//检查建筑
 		if(building.finishTime > 0){
 			if(building.finishTime <= Date.now()){
 				building.finishTime = 0
@@ -136,6 +137,17 @@ var UpdatePlayerData = function(userDoc, callback){
 				self.callbackService.addPlayerCallback(userDoc._id, building.finishTime, self.playerService.excutePlayerCallback.bind(self.playerService))
 			}
 		}
+		//检查小屋
+		_.each(building.houses, function(house){
+			if(house.finishTime > 0){
+				if(house.finishTime <= Date.now()){
+					house.finishTime = 0
+					house.level += 1
+				}else{
+					self.callbackService.addPlayerCallback(userDoc._id, house.finishTime, self.playerService.excutePlayerCallback.bind(self.playerService))
+				}
+			}
+		})
 	})
 
 	callback()

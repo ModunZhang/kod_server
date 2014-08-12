@@ -664,6 +664,13 @@ pro.excutePlayerCallback = function(playerId, finishTime){
 				building.finishTime = 0
 				building.level += 1
 			}
+			//检查小屋
+			_.each(building.houses, function(house){
+				if(house.finishTime > 0 && house.finishTime <= finishTime){
+					house.finishTime = 0
+					house.level += 1
+				}
+			})
 		})
 		//更新玩家数据
 		return self.dao.updateAsync(doc)
