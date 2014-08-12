@@ -50,10 +50,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -61,17 +57,13 @@ var playerSchema = new Schema({
 		location_2:{
 			type:{type:String, required:true, default:BuildingInitData[2].name},
 			level:{type:Number, required:true, default:1},
-			location:{type:Number, required:true, default:1},
+			location:{type:Number, required:true, default:2},
 			finishTime:{type:Number, required:true, default:0},
 			houses:[
 				{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -86,10 +78,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -104,10 +92,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -122,10 +106,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -140,10 +120,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -158,10 +134,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -176,10 +148,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -194,10 +162,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -212,10 +176,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -230,10 +190,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -248,10 +204,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -266,10 +218,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -284,10 +232,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -302,10 +246,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
@@ -320,10 +260,6 @@ var playerSchema = new Schema({
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{type:Number, required:true},
-					size:{
-						width:{type:Number, required:true},
-						height:{type:Number, required:true}
-					},
 					finishTime:{type:Number, required:true}
 				}
 			]
