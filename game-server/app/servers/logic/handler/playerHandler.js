@@ -27,20 +27,10 @@ pro.upgradeBuilding = function(msg, session, next){
 	var location = msg.location
 	var finishNow = msg.finishNow
 
-	if(!_.isNumber(location)){
-		next(null, {code:500, message:"location 信息不能为空"})
-		return
-	}
-	if(!_.isBoolean(finishNow)){
-		next(null, {code:500, message:"finishNow 不能为空"})
-		return
-	}
-
 	this.playerService.upgradeBuildingAsync(session.uid, location, finishNow).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(null, {code:500, message:e.message})
-		console.error(e)
+		next(e, {code:500, message:e.message})
 	})
 }
 
@@ -53,16 +43,10 @@ pro.upgradeBuilding = function(msg, session, next){
 pro.speedupBuildingBuild = function(msg, session, next){
 	var location = msg.location
 
-	if(!_.isNumber(location)){
-		next(null, {code:500})
-		return
-	}
-
 	this.playerService.speedupBuildingBuildAsync(session.uid, location).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(null, {code:500, message:e.message})
-		console.error(e)
+		next(e, {code:500, message:e.message})
 	})
 }
 
@@ -73,7 +57,16 @@ pro.speedupBuildingBuild = function(msg, session, next){
  * @param next
  */
 pro.createHouse = function(msg, session, next){
+	var buildingLocation = msg.buildingLocation
+	var houseType = msg.houseType
+	var houseLocation = msg.houseLocation
+	var finishNow = msg.finishNow
 
+	this.playerService.createHouseAsync(session.uid, buildingLocation, houseType, houseLocation, finishNow).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
 }
 
 /**
@@ -83,10 +76,32 @@ pro.createHouse = function(msg, session, next){
  * @param next
  */
 pro.upgradeHouse = function(msg, session, next){
+	var buildingLocation = msg.buildingLocation
+	var houseLocation = msg.houseLocation
+	var finishNow = msg.finishNow
 
+	this.playerService.upgradeHouseAsync(session.uid, buildingLocation, houseLocation, finishNow).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
 }
 
-pro.speedup
+/**
+ * 加速小屋建造和升级
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.speedupHouseBuild = function(msg, session, next){
+	var buildingLocation = msg.buildingLocation
+	var houseLocation = msg.houseLocation
+	this.playerService.speedupHouseBuildAsync(session.uid, buildingLocation, houseLocation).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
 
 /**
  * 拆除小建筑
@@ -95,5 +110,11 @@ pro.speedup
  * @param next
  */
 pro.destroyHouse = function(msg, session, next){
-
+	var buildingLocation = msg.buildingLocation
+	var houseLocation = msg.houseLocation
+	this.playerService.destroyHouseAsync(session.uid, buildingLocation, houseLocation).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
 }

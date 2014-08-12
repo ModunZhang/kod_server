@@ -53,6 +53,10 @@ app.configure("production|development", "chat", function(){
 	app.set("mongoose", mongooseClient)
 })
 
+app.set('errorHandler', function(err, msg, resp, session, opts, cb){
+	console.error(err.stack)
+	cb(err, resp)
+})
 
 app.start()
 

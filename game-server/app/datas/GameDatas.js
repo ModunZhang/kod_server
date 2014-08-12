@@ -68,6 +68,7 @@ GameDatas.GemsPayment.stone = require("./GemsPayment_stone.js")
 GameDatas.GemsPayment.iron = require("./GemsPayment_iron.js")
 GameDatas.GemsPayment.food = require("./GemsPayment_food.js")
 GameDatas.GemsPayment.coin = require("./GemsPayment_coin.js")
+GameDatas.GemsPayment.citizen = require("./GemsPayment_citizen.js")
 GameDatas.GemsPayment.material = require("./GemsPayment_material.js")
 
 GameDatas.HouseFunction = {}
