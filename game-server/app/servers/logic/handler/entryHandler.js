@@ -61,8 +61,7 @@ pro.login = function(msg, session, next){
 		userDoc.time = Date.now()
 		next(null, utils.next(utils.filter(userDoc), 200))
 	}).catch(function(e){
-		console.error(e)
-		next(null, {code:500, message:e.message})
+		next(e, {code:500, message:e.message})
 	})
 }
 
