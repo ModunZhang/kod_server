@@ -235,7 +235,7 @@ Utils.getPlayerCitizen = function(userDoc){
 		return userDoc.resources["citizen"]
 	}
 
-	var houses = this.getPlayerHousesByType(userdoc, "dwelling")
+	var houses = this.getPlayerHousesByType(userDoc, "dwelling")
 	var totalPerHour = 0
 	_.each(houses, function(house){
 		var config = HouseFunction[house.type][house.level]

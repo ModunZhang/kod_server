@@ -54,6 +54,13 @@ app.configure("production|development", "chat", function(){
 })
 
 app.set('errorHandler', function(err, msg, resp, session, opts, cb){
+	console.error("handle Error-----------------------------")
+	console.error(err.stack)
+	cb(err, resp)
+})
+
+app.set('globalErrorHandler', function(err, msg, resp, session, opts, cb){
+	console.error("handle globalError-----------------------------")
 	console.error(err.stack)
 	cb(err, resp)
 })
