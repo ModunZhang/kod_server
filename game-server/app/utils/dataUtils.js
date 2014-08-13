@@ -246,7 +246,7 @@ Utils.getPlayerCitizen = function(userDoc){
 	var totalSecond = (Date.now() - userDoc.basicInfo.resourceRefreshTime) / 1000
 	var output = Math.floor(totalSecond * totalPerSecond)
 	var totalCitizen = userDoc.resources["citizen"] + output
-	if(totalCitizen - usedCitizen > resourceLimit) totalCitizen = citizenLimit - usedCitizen
+	if(totalCitizen - usedCitizen > citizenLimit) totalCitizen = citizenLimit - usedCitizen
 	return totalCitizen
 }
 
