@@ -40,6 +40,7 @@ describe("ChatServer", function(){
 			}
 			var route = "logic.entryHandler.login"
 			pomelo.request(route, loginInfo, function(doc){
+				console.log(doc.data.resources)
 				doc.code.should.equal(200)
 				m_user = doc.data
 				done()

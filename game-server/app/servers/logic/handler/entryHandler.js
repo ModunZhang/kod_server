@@ -127,6 +127,8 @@ var UpdatePlayerData = function(userDoc, callback){
 	var self = this
 	userDoc.basicInfo.lastLoginTime = Date.now()
 	userDoc.basicInfo.loginCount += 1
+	//更新资源数据
+	self.playerService.refreshPlayerResources(userDoc)
 	_.each(userDoc.buildings, function(building){
 		//检查建筑
 		if(building.finishTime > 0){

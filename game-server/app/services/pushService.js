@@ -6,6 +6,8 @@ var _ = require("underscore")
 var Promise = require("bluebird")
 
 var Consts = require("../consts/consts")
+var Events = require("../consts/events")
+var Utils = require("../utils/utils")
 
 var PushService = function(app){
 	this.app = app
@@ -26,5 +28,8 @@ var pro = PushService.prototype
  * @param playerId
  */
 pro.pushToPlayer = function(eventName, data, playerId){
+	if(_.isEqual(Events.player.onPlayerDataChanged, eventName)){
+		data = Utils.filter(data)
+	}
 	this.channelService.pushMessageByUids(eventName, data, [{uid:playerId, sid:this.app.getServerId()}])
 }
