@@ -565,7 +565,7 @@ pro.speedupHouseBuild = function(playerId, buildingLocation, houseLocation, call
 			return Promise.reject(new Error("小屋不存在"))
 		}
 		//检查小屋是否正在升级
-		if(house.finishTime == 0){
+		if(house.finishTime <= 0){
 			return Promise.reject(new Error("小屋未处于升级状态"))
 		}
 		//获取剩余升级时间
@@ -639,7 +639,10 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		if(!_.isObject(house)){
 			return Promise.reject(new Error("小屋不存在"))
 		}
-
+		//检查是否正在升级
+		if(house.finishTime > 0){
+			return Promise.reject(new Error("小屋正在升级"))
+		}
 		//获取需要的宝石数量
 		var gem = 100
 		//宝石是否足够
