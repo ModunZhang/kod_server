@@ -10,6 +10,7 @@ var Schema = mongoose.Schema
 
 var Config = require("../config")
 var BaseDao = require("../../app/dao/baseDao")
+var Player = require("../../app/domains/player")
 
 describe("BaseDao", function(){
 	var baseDao
@@ -32,6 +33,18 @@ describe("BaseDao", function(){
 			Demo.remove({}, function(){
 				done()
 			})
+
+//			var doc = {
+//				basicInfo:{
+//					deviceId:Config.deviceId2,
+//					name:"player_111111"
+//				}
+//			}
+//
+//			Player.findOneAndRemove({deviceId:Config.deviceId2}, function(){
+//				var player = new Player(doc)
+//				player.save()
+//			})
 		})
 	})
 
