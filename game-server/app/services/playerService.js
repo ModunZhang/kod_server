@@ -339,6 +339,13 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		}
 		//将小屋添加到大型建筑中
 		building.houses.push(house)
+		//如果是住宅,送玩家城民
+		if(_.isEqual("dwelling", house.type) && finishNow){
+			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
+			var next = DataUtils.getDwellingPopulationByLevel(house.level)
+			doc.basicInfo.citizen += next - previous
+			self.refreshPlayerResources(doc)
+		}
 		//保存玩家数据
 		return self.dao.updateAsync(doc)
 	}).then(function(doc){
@@ -459,6 +466,13 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		}else{
 			house.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			self.callbackService.addPlayerCallback(doc._id, house.finishTime, self.excutePlayerCallback.bind(self))
+		}
+		//如果是住宅,送玩家城民
+		if(_.isEqual("dwelling", house.type) && finishNow){
+			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
+			var next = DataUtils.getDwellingPopulationByLevel(house.level)
+			doc.basicInfo.citizen += next - previous
+			self.refreshPlayerResources(doc)
 		}
 		//保存玩家数据
 		return self.dao.updateAsync(doc)
@@ -600,6 +614,13 @@ pro.speedupHouseBuild = function(playerId, buildingLocation, houseLocation, call
 		//修改建筑数据
 		house.level = house.level + 1
 		house.finishTime = 0
+		//如果是住宅,送玩家城民
+		if(_.isEqual("dwelling", house.type)){
+			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
+			var next = DataUtils.getDwellingPopulationByLevel(house.level)
+			doc.basicInfo.citizen += next - previous
+			self.refreshPlayerResources(doc)
+		}
 		//保存玩家数据
 		return self.dao.updateAsync(doc)
 	}).then(function(doc){

@@ -368,3 +368,13 @@ Utils.getHouseTypeByResourceName = function(resourceName){
 Utils.getResourceNameByHouseType = function(houseType){
 	return Houses[houseType].output
 }
+
+/**
+ * 获取住宅城民上限
+ * @param houseLevel
+ * @returns {population|*}
+ */
+Utils.getDwellingPopulationByLevel = function(houseLevel){
+	var config = HouseFunction["dwelling"][houseLevel]
+	return config.population
+}
