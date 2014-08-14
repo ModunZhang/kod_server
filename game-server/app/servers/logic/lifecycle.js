@@ -40,7 +40,6 @@ life.beforeShutdown = function(app, cb){
 	var globalSessionService = app.get("globalChannelService")
 	var getMembersBySid = Promise.promisify(globalSessionService.getMembersBySid, globalSessionService)
 	getMembersBySid(Consts.GlobalChannelName, app.getServerId()).then(function(uids){
-		console.log(uids)
 		var sessionService = app.get("sessionService")
 		var kick = Promise.promisify(sessionService.kick, sessionService)
 		var funcs = []
