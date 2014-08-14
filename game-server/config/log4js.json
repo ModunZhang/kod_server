@@ -132,11 +132,10 @@
 		"pomelo":"DEBUG",
 		"pomelo-admin":"DEBUG",
 		"pomelo-rpc":"DEBUG",
-		"kod-error":"DEBUG",
-		"kod-mail-error":"DEBUG"
+		"kod-error":"ERROR",
+		"kod-mail-error":"ERROR"
 	},
 
 	"replaceConsole":true,
-	"lineDebug":true,
-	"globalLogLevel" : "error"
+	"lineDebug":true
 }
