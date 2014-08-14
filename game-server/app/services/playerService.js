@@ -734,6 +734,13 @@ pro.excutePlayerCallback = function(playerId, finishTime){
 				if(house.finishTime > 0 && house.finishTime <= finishTime){
 					house.finishTime = 0
 					house.level += 1
+					//如果是住宅,送玩家城民
+					if(_.isEqual("dwelling", house.type)){
+						var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
+						var next = DataUtils.getDwellingPopulationByLevel(house.level)
+						doc.basicInfo.citizen += next - previous
+						self.refreshPlayerResources(doc)
+					}
 				}
 			})
 		})

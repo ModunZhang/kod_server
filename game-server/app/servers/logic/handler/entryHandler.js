@@ -8,6 +8,8 @@ var _ = require("underscore")
 var utils = require("../../../utils/utils")
 
 var Consts = require("../../../consts/consts")
+var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
+var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 
 module.exports = function(app){
 	return new Handler(app)
@@ -18,6 +20,7 @@ var Handler = function(app){
 	this.playerService = this.app.get("playerService")
 	this.callbackService = this.app.get("callbackService")
 	this.pushService = this.app.get("pushService")
+	this.sessionService = this.app.get("sessionService")
 	this.globalChannelService = this.app.get("globalChannelService")
 	this.globalChannelName = Consts.GlobalChannelName
 	this.serverId = this.app.getServerId()
@@ -65,7 +68,6 @@ pro.login = function(msg, session, next){
 	})
 }
 
-
 var BindPlayerSession = function(session, doc, callback){
 	session.bind(doc._id)
 	session.set("serverId", this.serverId)
@@ -89,7 +91,10 @@ var PlayerLeave = function(session, reason){
 	}).then(function(){
 		return savePlayerData(session)
 	}).catch(function(e){
-		console.error(e)
+		errorLogger.error("handle playerLogout Error -----------------------------")
+		errorLogger.error(e.stack)
+		//		errorMailLogger.error("handle playerLogout Error -----------------------------")
+		//		errorMailLogger.error(e.stack)
 	})
 }
 
@@ -144,6 +149,13 @@ var UpdatePlayerData = function(userDoc, callback){
 				if(house.finishTime <= Date.now()){
 					house.finishTime = 0
 					house.level += 1
+					//如果是住宅,送玩家城民
+					if(_.isEqual("dwelling", house.type)){
+						var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
+						var next = DataUtils.getDwellingPopulationByLevel(house.level)
+						doc.basicInfo.citizen += next - previous
+						self.refreshPlayerResources(doc)
+					}
 				}else{
 					self.callbackService.addPlayerCallback(userDoc._id, house.finishTime, self.playerService.excutePlayerCallback.bind(self.playerService))
 				}
