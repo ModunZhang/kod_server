@@ -2,6 +2,8 @@ var pomelo = require("pomelo")
 var redis = require("redis")
 var mongoose = require("mongoose")
 var globalChannel = require("pomelo-globalchannel-plugin")
+var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
+var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 var path = require("path")
 
 
@@ -54,19 +56,26 @@ app.configure("production|development", "chat", function(){
 })
 
 app.set('errorHandler', function(err, msg, resp, session, opts, cb){
-	console.error("handle Error-----------------------------")
-	console.error(err.stack)
+	errorLogger.error("handle Error-----------------------------")
+	errorLogger.error(err.stack)
+	errorMailLogger.error("handle Error-----------------------------")
+	errorMailLogger.error(err.stack)
 	cb(err, resp)
 })
 
 app.set('globalErrorHandler', function(err, msg, resp, session, opts, cb){
-	console.error("handle globalError-----------------------------")
-	console.error(err.stack)
+	errorLogger.error("handle Error-----------------------------")
+	errorLogger.error(err.stack)
+	errorMailLogger.error("handle globalError-----------------------------")
+	errorMailLogger.error(err.stack)
 	cb(err, resp)
 })
 
 app.start()
 
 process.on("uncaughtException", function(err){
-	console.error(" Caught exception: " + err.stack)
+	errorLogger.error("handle Error-----------------------------")
+	errorLogger.error(err.stack)
+	errorMailLogger.error("handle uncaughtException-----------------------------")
+	errorMailLogger.error(err.stack)
 })

@@ -301,7 +301,8 @@ Utils.getPlayerUsedCitizen = function(userDoc){
 
 /**
  * 获取指定建筑占用的城民
- * @param house
+ * @param houseType
+ * @param houseLevel
  * @returns {number}
  */
 Utils.getPlayerHouseUsedCitizen = function(houseType, houseLevel){

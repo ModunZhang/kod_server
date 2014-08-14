@@ -2,7 +2,6 @@
  * Created by modun on 14-7-22.
  */
 
-var async = require("async")
 var Promise = require("bluebird")
 var Promisify = Promise.promisify
 var utils = require("../utils/utils")
