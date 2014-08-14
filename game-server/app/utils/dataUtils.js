@@ -115,7 +115,7 @@ Utils.getBuildingUpgradeRequired = function(buildingType, buildingLevel){
  * @returns {{resources: {wood: *, stone: *, iron: *, citizen: *}, materials: {blueprints: *, tools: *, tiles: *, pulley: *}, buildTime: *}}
  */
 Utils.getHouseUpgradeRequired = function(houseType, houseLevel){
-	var houseUsed = this.getPlayerHouseUsedCitizen(houseType, houseLevel - 1)
+	var houseUsed = this.getHouseUsedCitizen(houseType, houseLevel - 1)
 	var config = HouseLevelUp[houseType][houseLevel]
 	var required = {
 		resources:{
@@ -224,7 +224,7 @@ Utils.getPlayerResource = function(userDoc, resourceName){
 }
 
 /**
- * 获取玩家城民数据
+ * 获取玩家可用城民数据
  * @param userDoc
  * @returns {*}
  */
@@ -232,7 +232,7 @@ Utils.getPlayerCitizen = function(userDoc){
 	var citizenLimit = this.getCitizenUpLimit(userDoc)
 	var usedCitizen = this.getPlayerUsedCitizen(userDoc)
 	if(citizenLimit <= userDoc.resources["citizen"] + usedCitizen){
-		return userDoc.resources["citizen"]
+		return citizenLimit - usedCitizen
 	}
 
 	var houses = this.getPlayerHousesByType(userDoc, "dwelling")
@@ -278,7 +278,6 @@ Utils.getCitizenUpLimit = function(userDoc){
 		var config = HouseFunction["dwelling"][house.level]
 		totalUpLimit += config.population
 	})
-
 	return totalUpLimit
 }
 
@@ -305,7 +304,7 @@ Utils.getPlayerUsedCitizen = function(userDoc){
  * @param houseLevel
  * @returns {number}
  */
-Utils.getPlayerHouseUsedCitizen = function(houseType, houseLevel){
+Utils.getHouseUsedCitizen = function(houseType, houseLevel){
 	return HouseLevelUp[houseType][houseLevel].citizen
 }
 

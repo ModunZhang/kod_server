@@ -278,7 +278,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		if(!DataUtils.isBuildingHasHouse(buildingLocation)){
 			return Promise.reject(new Error("建筑周围不允许建造小屋"))
 		}
-
 		if(!CheckHouseCreateLocation(doc, buildingLocation, houseType, houseLocation)){
 			return Promise.reject(new Error("创建小屋时,小屋坑位不合法"))
 		}
@@ -313,6 +312,15 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		self.refreshPlayerResources(doc)
 		LogicUtils.reduce(used.resources, doc.resources)
 		LogicUtils.reduce(used.materials, doc.materials)
+
+		//检查是否建造小屋会造成可用城民小于0
+		if(!_.isEqual("dwelling", houseType)){
+			var willUse = DataUtils.getHouseUsedCitizen(houseType, 1)
+			if(DataUtils.getPlayerCitizen(doc) - willUse < 0){
+				return Promise.reject(new Error("建造小屋会造成可用城民小于0"))
+			}
+		}
+
 		//再次更新玩家数据,防止城民爆仓
 		self.refreshPlayerResources(doc)
 		//创建小屋
@@ -434,6 +442,15 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		self.refreshPlayerResources(doc)
 		LogicUtils.reduce(used.resources, doc.resources)
 		LogicUtils.reduce(used.materials, doc.materials)
+		//检查是否建造小屋会造成可用城民小于0
+		if(!_.isEqual("dwelling", house.type)){
+			var currentLevelUsed = DataUtils.getHouseUsedCitizen(house.type, house.level)
+			var nextLevelUsed = DataUtils.getHouseUsedCitizen(house.type, house.level + 1)
+			var willUse = nextLevelUsed - currentLevelUsed
+			if(DataUtils.getPlayerCitizen(doc) - willUse < 0){
+				return Promise.reject(new Error("升级小屋会造成可用城民小于0"))
+			}
+		}
 		//再次更新玩家数据,防止城民爆仓
 		self.refreshPlayerResources(doc)
 		//是否立即完成
@@ -654,12 +671,16 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		//更新资源数据
 		self.refreshPlayerResources(doc)
 		//退还城民给玩家
-		doc.resources.citizen += DataUtils.getPlayerHouseUsedCitizen(house.type, house.level)
+		doc.resources.citizen += DataUtils.getHouseUsedCitizen(house.type, house.level)
 		//删除小屋
 		var index = building.houses.indexOf(house)
 		building.houses.splice(index, 1)
 		//再次更新玩家数据,防止城民爆仓
 		self.refreshPlayerResources(doc)
+		//检查是否在拆除民宅,且民宅拆除后,是否会造成城民数量小于0
+		if(DataUtils.getPlayerCitizen(doc) < 0){
+			return Promise.reject(new Error("拆除此建筑后会造成可用城民数量小于0"))
+		}
 		//保存玩家数据
 		return self.dao.updateAsync(doc)
 	}).then(function(doc){

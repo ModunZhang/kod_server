@@ -107,7 +107,7 @@
 		{
 			"type":"smtp",
 			"recipients":"zhangxuemin@batcatstudio.com",
-			"sendInterval":1,
+			"sendInterval":5,
 			"transport":"SMTP",
 			"SMTP":{
 				"host":"smtp.gmail.com",
