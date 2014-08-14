@@ -74,8 +74,8 @@ app.set('globalErrorHandler', function(err, msg, resp, session, opts, cb){
 app.start()
 
 process.on("uncaughtException", function(err){
-	errorLogger.error("handle Error-----------------------------")
+	errorLogger.error("handle uncaughtError-----------------------------")
 	errorLogger.error(err.stack)
-//	errorMailLogger.error("handle uncaughtException-----------------------------")
+//	errorMailLogger.error("handle uncaughtError-----------------------------")
 //	errorMailLogger.error(err.stack)
 })
