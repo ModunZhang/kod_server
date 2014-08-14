@@ -137,6 +137,6 @@
 	},
 
 	"replaceConsole":true,
-
-	"lineDebug":true
+	"lineDebug":true,
+	"globalLogLevel" : "error"
 }
