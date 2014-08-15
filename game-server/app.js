@@ -58,16 +58,20 @@ app.configure("production|development", "chat", function(){
 app.set('errorHandler', function(err, msg, resp, session, opts, cb){
 	errorLogger.error("handle Error-----------------------------")
 	errorLogger.error(err.stack)
-//	errorMailLogger.error("handle Error-----------------------------")
-//	errorMailLogger.error(err.stack)
+	if(_.isEqual("production", app.get("env"))){
+		errorMailLogger.error("handle Error-----------------------------")
+		errorMailLogger.error(err.stack)
+	}
 	cb(err, resp)
 })
 
 app.set('globalErrorHandler', function(err, msg, resp, session, opts, cb){
 	errorLogger.error("handle Error-----------------------------")
 	errorLogger.error(err.stack)
-//	errorMailLogger.error("handle globalError-----------------------------")
-//	errorMailLogger.error(err.stack)
+	if(_.isEqual("production", app.get("env"))){
+		errorMailLogger.error("handle globalError-----------------------------")
+		errorMailLogger.error(err.stack)
+	}
 	cb(err, resp)
 })
 
@@ -76,6 +80,8 @@ app.start()
 process.on("uncaughtException", function(err){
 	errorLogger.error("handle uncaughtError-----------------------------")
 	errorLogger.error(err.stack)
-//	errorMailLogger.error("handle uncaughtError-----------------------------")
-//	errorMailLogger.error(err.stack)
+	if(_.isEqual("production", app.get("env"))){
+		errorMailLogger.error("handle uncaughtError-----------------------------")
+		errorMailLogger.error(err.stack)
+	}
 })

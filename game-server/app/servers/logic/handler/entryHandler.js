@@ -79,6 +79,7 @@ var BindPlayerSession = function(session, doc, callback){
 var PlayerLeave = function(session, reason){
 	console.log("user [" + session.uid + "] logout with reason [" + reason + "]")
 
+	var self = this
 	var clearPlayerCallback = Promisify(ClearPlayerCallback, this)
 	var savePlayerData = Promisify(SavePlayerData, this)
 	var removePlayerFromGlobalChannel = Promisify(RemovePlayerFromGlobalChannel, this)
@@ -93,8 +94,10 @@ var PlayerLeave = function(session, reason){
 	}).catch(function(e){
 		errorLogger.error("handle playerLogout Error -----------------------------")
 		errorLogger.error(e.stack)
-		//		errorMailLogger.error("handle playerLogout Error -----------------------------")
-		//		errorMailLogger.error(e.stack)
+		if(_.isEqual("production", self.app.get("env"))){
+			errorMailLogger.error("handle playerLogout Error -----------------------------")
+			errorMailLogger.error(e.stack)
+		}
 	})
 }
 

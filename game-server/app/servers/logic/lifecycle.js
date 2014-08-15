@@ -30,8 +30,10 @@ life.afterStartup = function(app, cb){
 	}).catch(function(e){
 		errorLogger.error("handle afterStartup Error -----------------------------")
 		errorLogger.error(e.stack)
-		//		errorMailLogger.error("handle afterStartup Error -----------------------------")
-		//		errorMailLogger.error(e.stack)
+		if(_.isEqual("production", app.get("env"))){
+			errorMailLogger.error("handle afterStartup Error -----------------------------")
+			errorMailLogger.error(e.stack)
+		}
 		cb()
 	})
 }
@@ -44,23 +46,26 @@ life.beforeShutdown = function(app, cb){
 		var kick = Promise.promisify(sessionService.kick, sessionService)
 		var funcs = []
 		_.each(uids, function(uid){
-			funcs.push(kick(uid, "server shutdown"))
+			funcs.push(kick(uid, "服务器关闭"))
 		})
 		Promise.all(funcs).then(function(){
 			cb()
 		}).catch(function(e){
 			errorLogger.error("handle beforeShutdown Error -----------------------------")
 			errorLogger.error(e.stack)
-			//		errorMailLogger.error("handle beforeShutdown Error -----------------------------")
-			//		errorMailLogger.error(e.stack)
-			cb()
+			if(_.isEqual("production", app.get("env"))){
+				errorMailLogger.error("handle beforeShutdown Error -----------------------------")
+				errorMailLogger.error(e.stack)
+			}
 			cb()
 		})
 	}).catch(function(e){
 		errorLogger.error("handle beforeShutdown Error -----------------------------")
 		errorLogger.error(e.stack)
-//		errorMailLogger.error("handle beforeShutdown Error -----------------------------")
-//		errorMailLogger.error(e.stack)
+		if(_.isEqual("production", app.get("env"))){
+			errorMailLogger.error("handle beforeShutdown Error -----------------------------")
+			errorMailLogger.error(e.stack)
+		}
 		cb()
 	})
 }
