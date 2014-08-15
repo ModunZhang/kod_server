@@ -33,7 +33,26 @@ var ChatHandler = function(app){
 				basicPlayerInfo.basicInfo.name = userInfo.basicInfo.name
 				this.playerService.updatePlayerAsync(basicPlayerInfo).then(function(doc){
 					PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
+				}).catch(function(e){
+					console.error(e)
 				})
+			}
+		},
+		{
+			command:"gem",
+			desc:"修改玩家宝石数量, 如: gem 2000 为修改玩家宝石数量为2000",
+			callback:function(text, session, userInfo){
+				var self = this
+				var gemCount = text.split(" ")[1]
+				gemCount = parseInt(gemCount)
+				if(_.isNumber(gemCount)){
+					userInfo.basicInfo.gem = gemCount
+					self.playerService.updatePlayerAsync(userInfo).then(function(doc){
+						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
+					}).catch(function(e){
+						console.error(e)
+					})
+				}
 			}
 		}
 	]
@@ -127,8 +146,7 @@ var GetPlayerCommand = function(text){
 	if(command.length > 0){
 		command = command[0]
 	}
-
-	for(var i = 0; i < this.commands.length; i ++){
+	for(var i = 0; i < this.commands.length; i++){
 		var value = this.commands[i]
 		if(_.isEqual(value.command, command)){
 			return value.callback

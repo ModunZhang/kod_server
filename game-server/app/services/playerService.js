@@ -896,6 +896,7 @@ var CheckBuildingUpgradeLevelLimit = function(userDoc, location){
 
 var CheckBuildingUpgradeLocation = function(userDoc, location){
 	var building = userDoc.buildings["location_" + location]
+
 	return building.level >= 0
 }
 

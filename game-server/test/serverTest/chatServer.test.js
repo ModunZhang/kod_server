@@ -110,10 +110,27 @@ describe("ChatServer", function(){
 				doc.code.should.equal(200)
 			})
 
-			var onPlayerDataChanged = function(doc){
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			var onPlayerDataChanged = function(){
 				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
 
+		it("send Gem", function(done){
+			var chatInfo = {
+				text:"gem 5000",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.basicInfo.gem.should.equal(5000)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
