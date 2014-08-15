@@ -143,6 +143,7 @@ Utils.getHouseUpgradeRequired = function(houseType, houseLevel){
  * @returns {boolean}
  */
 Utils.isBuildingReachMaxLevel = function(buildingType, buildingLevel){
+	console
 	var config = BuildingLevelUp[buildingType][buildingLevel + 1]
 	return !_.isObject(config)
 }

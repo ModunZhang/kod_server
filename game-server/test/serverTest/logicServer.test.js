@@ -99,6 +99,43 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
+		it("createBuilding", function(done){
+			var buildingInfo = {
+				location:5
+			}
+			var route = "logic.playerHandler.createBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+			var onPlayerDataChanged = function(doc){
+				m_user = doc
+				should.exist(doc)
+				m_user.buildings["location_5"].level.should.equal(1)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("upgradeBuilding", function(done){
+			var buildingInfo = {
+				location:5,
+				finishNow:true
+			}
+			var route = "logic.playerHandler.upgradeBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+			var onPlayerDataChanged = function(doc){
+				m_user = doc
+				should.exist(doc)
+				m_user.buildings["location_5"].level.should.equal(2)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
 		it("createHouse", function(done){
 			var houseInfo = {
 				buildingLocation:3,

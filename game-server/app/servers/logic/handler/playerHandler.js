@@ -18,6 +18,22 @@ var Handler = function(app){
 var pro = Handler.prototype
 
 /**
+ * 创建大建筑
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.createBuilding = function(msg, session, next){
+	var location = msg.location
+
+	this.playerService.createBuildingAsync(session.uid, location).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
  * 升级大建筑
  * @param msg
  * @param session

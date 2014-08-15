@@ -11,6 +11,8 @@ var PlayerDao = require("../dao/playerDao")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var Events = require("../consts/events")
+var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
+var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 
 var PlayerService = function(app){
 	this.app = app
@@ -114,6 +116,95 @@ pro.savePlayer = function(playerId, callback){
 }
 
 /**
+ * 创建建筑
+ * @param playerId
+ * @param buildingLocation
+ * @param callback
+ */
+pro.createBuilding = function(playerId, buildingLocation, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(buildingLocation)){
+		callback(new Error("buildingLocation 不合法"))
+		return
+	}
+
+	var self = this
+	self.dao.findAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
+		var gem = 0
+		var used = {}
+		var building = doc.buildings["location_" + buildingLocation]
+		//检查建筑是否存在
+		if(!_.isObject(building)){
+			return Promise.reject(new Error("建筑不存在"))
+		}
+		//建筑是否正在升级中
+		if(building.finishTime > 0){
+			return Promise.reject(new Error("建筑正在升级"))
+		}
+		//检查是否小于1级
+		if(building.level > 0){
+			return Promise.reject(new Error("建筑等级已经大于1级"))
+		}
+		//检查升级坑位是否合法
+		if(!CheckBuildingUpgradeLocation(doc, buildingLocation)){
+			return Promise.reject(new Error("建筑升级时,建筑坑位不合法"))
+		}
+		//检查建造数量是否超过上限
+		if(DataUtils.getPlayerFreeBuildingsCount(doc) <= 0){
+			return Promise.reject(new Error("建造数量已达建造上限"))
+		}
+
+		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, 1)
+		//资源是否足够
+		if(!LogicUtils.isEnough(upgradeRequired.resources, DataUtils.getPlayerResources(doc))){
+			var returned = DataUtils.getGemByResources(upgradeRequired.resources)
+			gem += returned.gem
+			used.resources = returned.resources
+		}else{
+			used.resources = upgradeRequired.resources
+		}
+		//材料是否足够
+		if(!LogicUtils.isEnough(upgradeRequired.materials, doc.materials)){
+			gem += DataUtils.getGemByMaterials(upgradeRequired.materials)
+			used.materials = {}
+		}else{
+			used.materials = upgradeRequired.materials
+		}
+		//宝石是否足够
+		if(gem > doc.basicInfo.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		//修改玩家宝石数据
+		doc.basicInfo.gem -= gem
+		//修改玩家资源数据
+		self.refreshPlayerResources(doc)
+		LogicUtils.reduce(used.resources, doc.resources)
+		LogicUtils.reduce(used.materials, doc.materials)
+		//是否立即完成
+		building.level = 1
+		LogicUtils.updateBuildingsLevel(doc.buildings)
+		//保存玩家数据
+		return self.dao.updateAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * 升级大型建筑
  * @param playerId
  * @param buildingLocation
@@ -154,6 +245,10 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(building.finishTime > 0){
 			return Promise.reject(new Error("建筑正在升级"))
 		}
+		//检查是否小于1级
+		if(building.level < 1){
+			return Promise.reject(new Error("建造还未建造"))
+		}
 		//是否已到最高等级
 		if(DataUtils.isBuildingReachMaxLevel(building.type, building.level)){
 			return Promise.reject(new Error("建筑已达到最高等级"))
@@ -165,10 +260,6 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		//检查升级坑位是否合法
 		if(!CheckBuildingUpgradeLocation(doc, buildingLocation)){
 			return Promise.reject(new Error("建筑升级时,建筑坑位不合法"))
-		}
-		//检查建造数量是否超过上限
-		if(building.level == 0 && DataUtils.getPlayerFreeBuildingsCount(doc) <= 0){
-			return Promise.reject(new Error("建造数量已达建造上限"))
 		}
 
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, building.level + 1)
@@ -204,7 +295,6 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		//是否立即完成
 		if(finishNow){
 			building.level = building.level + 1
-			LogicUtils.updateBuildingsLevel(doc.buildings)
 		}else{
 			building.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			self.callbackService.addPlayerCallback(doc._id, building.finishTime, self.excutePlayerCallback.bind(self))
@@ -754,7 +844,12 @@ pro.excutePlayerCallback = function(playerId, finishTime){
 		//推送玩家信息到客户端
 		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
 	}).catch(function(e){
-		console.error(e)
+		errorLogger.error("handle excutePlayerCallback Error -----------------------------")
+		errorLogger.error(e.stack)
+		if(_.isEqual("production", self.app.get("env"))){
+			errorMailLogger.error("handle excutePlayerCallback Error -----------------------------")
+			errorMailLogger.error(e.stack)
+		}
 	})
 }
 
