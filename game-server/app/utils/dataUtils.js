@@ -115,7 +115,7 @@ Utils.getBuildingUpgradeRequired = function(buildingType, buildingLevel){
  * @returns {{resources: {wood: *, stone: *, iron: *, citizen: *}, materials: {blueprints: *, tools: *, tiles: *, pulley: *}, buildTime: *}}
  */
 Utils.getHouseUpgradeRequired = function(houseType, houseLevel){
-	var houseUsed = this.getHouseUsedCitizen(houseType, houseLevel - 1)
+	var houseUsed = this.getPlayerHouseUsedCitizen(houseType, houseLevel - 1)
 	var config = HouseLevelUp[houseType][houseLevel]
 	var required = {
 		resources:{
@@ -202,7 +202,7 @@ Utils.getPlayerResources = function(userDoc){
  * @returns {*}
  */
 Utils.getPlayerResource = function(userDoc, resourceName){
-	var resourceLimit = this.getResourceUpLimit(userDoc, resourceName)
+	var resourceLimit = this.getPlayerResourceUpLimit(userDoc, resourceName)
 	if(resourceLimit <= userDoc.resources[resourceName]){
 		return userDoc.resources[resourceName]
 	}
@@ -229,7 +229,7 @@ Utils.getPlayerResource = function(userDoc, resourceName){
  * @returns {*}
  */
 Utils.getPlayerCitizen = function(userDoc){
-	var citizenLimit = this.getCitizenUpLimit(userDoc)
+	var citizenLimit = this.getPlayerCitizenUpLimit(userDoc)
 	var usedCitizen = this.getPlayerUsedCitizen(userDoc)
 	if(citizenLimit <= userDoc.resources["citizen"] + usedCitizen){
 		return citizenLimit - usedCitizen
@@ -256,7 +256,7 @@ Utils.getPlayerCitizen = function(userDoc){
  * @param resourceName
  * @returns {number}
  */
-Utils.getResourceUpLimit = function(userDoc, resourceName){
+Utils.getPlayerResourceUpLimit = function(userDoc, resourceName){
 	var buildings = this.getPlayerBuildingsByType(userDoc, "warehouse")
 	var totalUpLimit = 0
 	_.each(buildings, function(building){
@@ -271,7 +271,7 @@ Utils.getResourceUpLimit = function(userDoc, resourceName){
  * 获取玩家城民上限信息
  * @returns {number}
  */
-Utils.getCitizenUpLimit = function(userDoc){
+Utils.getPlayerCitizenUpLimit = function(userDoc){
 	var houses = this.getPlayerHousesByType(userDoc, "dwelling")
 	var totalUpLimit = 0
 	_.each(houses, function(house){
@@ -304,7 +304,7 @@ Utils.getPlayerUsedCitizen = function(userDoc){
  * @param houseLevel
  * @returns {number}
  */
-Utils.getHouseUsedCitizen = function(houseType, houseLevel){
+Utils.getPlayerHouseUsedCitizen = function(houseType, houseLevel){
 	return HouseLevelUp[houseType][houseLevel].citizen
 }
 
@@ -377,4 +377,24 @@ Utils.getResourceNameByHouseType = function(houseType){
 Utils.getDwellingPopulationByLevel = function(houseLevel){
 	var config = HouseFunction["dwelling"][houseLevel]
 	return config.population
+}
+
+Utils.getPlayerBuildingsCount = function(userDoc){
+	var count = 0
+	_.each(userDoc.buildings, function(building){
+		if(building.level > 0 || (building.level == 0 && building.finishTime > 0)){
+			count += 1
+		}
+	})
+	return count
+}
+
+Utils.getPlayerMaxBuildingsCount = function(userDoc){
+	var building = userDoc.buildings["location_1"]
+	var config = BuildingFunction[building.type][building.level]
+	return config.unlock
+}
+
+Utils.getPlayerFreeBuildingsCount = function(userDoc){
+	return this.getPlayerMaxBuildingsCount(userDoc) - this.getPlayerBuildingsCount(userDoc)
 }
