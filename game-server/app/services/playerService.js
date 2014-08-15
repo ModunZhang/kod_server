@@ -166,6 +166,10 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(!CheckBuildingUpgradeLocation(doc, buildingLocation)){
 			return Promise.reject(new Error("建筑升级时,建筑坑位不合法"))
 		}
+		//检查建造数量是否超过上限
+		if(building.level == 0 && DataUtils.getPlayerFreeBuildingsCount(doc) <= 0){
+			return Promise.reject(new Error("建造数量已达建造上限"))
+		}
 
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, building.level + 1)
 		//是否立即完成
@@ -315,7 +319,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 
 		//检查是否建造小屋会造成可用城民小于0
 		if(!_.isEqual("dwelling", houseType)){
-			var willUse = DataUtils.getHouseUsedCitizen(houseType, 1)
+			var willUse = DataUtils.getPlayerHouseUsedCitizen(houseType, 1)
 			if(DataUtils.getPlayerCitizen(doc) - willUse < 0){
 				return Promise.reject(new Error("建造小屋会造成可用城民小于0"))
 			}
@@ -451,8 +455,8 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		LogicUtils.reduce(used.materials, doc.materials)
 		//检查是否建造小屋会造成可用城民小于0
 		if(!_.isEqual("dwelling", house.type)){
-			var currentLevelUsed = DataUtils.getHouseUsedCitizen(house.type, house.level)
-			var nextLevelUsed = DataUtils.getHouseUsedCitizen(house.type, house.level + 1)
+			var currentLevelUsed = DataUtils.getPlayerHouseUsedCitizen(house.type, house.level)
+			var nextLevelUsed = DataUtils.getPlayerHouseUsedCitizen(house.type, house.level + 1)
 			var willUse = nextLevelUsed - currentLevelUsed
 			if(DataUtils.getPlayerCitizen(doc) - willUse < 0){
 				return Promise.reject(new Error("升级小屋会造成可用城民小于0"))
@@ -692,7 +696,7 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		//更新资源数据
 		self.refreshPlayerResources(doc)
 		//退还城民给玩家
-		doc.resources.citizen += DataUtils.getHouseUsedCitizen(house.type, house.level)
+		doc.resources.citizen += DataUtils.getPlayerHouseUsedCitizen(house.type, house.level)
 		//删除小屋
 		var index = building.houses.indexOf(house)
 		building.houses.splice(index, 1)
