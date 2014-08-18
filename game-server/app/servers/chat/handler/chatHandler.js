@@ -74,16 +74,15 @@ pro.send = function(msg, session, next){
 	if(_.isEmpty(text) || _.isEmpty(text.trim())){
 		next(null, utils.next(null, 500))
 	}
-	if(_.isEmpty(type)){
-		next(null, utils.next(null, 500))
-	}
 
 	this.playerService.getPlayerByIdAsync(session.uid).then(function(doc){
 		var time = Date.now()
 		var response = {
 			fromId:doc._id,
 			fromIcon:doc.basicInfo.icon,
-			from:doc.basicInfo.name,
+			fromName:doc.basicInfo.name,
+			fromVip:1,
+			fromType:type,
 			text:text,
 			time:time
 		}
