@@ -286,8 +286,18 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(gem > doc.basicInfo.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
+		console.log("before-------------------")
+		console.log(gem)
+		console.log(doc.basicInfo.gem)
+		console.log(_.isNumber(gem))
+		console.log(_.isNumber(doc.basicInfo.gem))
 		//修改玩家宝石数据
 		doc.basicInfo.gem -= gem
+		console.log("after-------------------")
+		console.log(gem)
+		console.log(doc.basicInfo.gem)
+		console.log(_.isNumber(gem))
+		console.log(_.isNumber(doc.basicInfo.gem))
 		//修改玩家资源数据
 		self.refreshPlayerResources(doc)
 		LogicUtils.reduce(used.resources, doc.resources)

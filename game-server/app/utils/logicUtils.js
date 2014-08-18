@@ -35,30 +35,105 @@ Utils.reduce = function(need, has){
  * @param buildings
  */
 Utils.updateBuildingsLevel = function(buildings){
-	for(var i = 1; i <= buildings.length; i++){
+	for(var i = 1; i <= _.size(buildings); i++){
 		var building = buildings["location_" + i]
-		if(building.level = -1){
-			for(var j = i; j >= 1; j--){
+		if(building.level == -1){
+			for(var j = i - 1; j >= 1; j--){
 				var preBuilding = buildings["location_" + j]
 				if(preBuilding.level <= 0){
 					return
 				}
 			}
-			var pre = 0
-			for(var k = 1; k <= i; k++){
-				var current = pre + (2 * (k - 1)) - 1
-				if(current == i){
-					var end = current + (2 * (k - 1))
-					for(var l = current; l <= end; l++){
-						var currentBuilding = buildings["location_" + l]
-						currentBuilding.level = 0
-					}
-					return
-				}
-				pre = current
+
+			var round = this.getBuildingCurrentRound(i)
+			var fromToEnd = this.getBuildingRoundFromAndEnd(round)
+			for(var k = fromToEnd.from; k < fromToEnd.to; k ++){
+				buildings["location_" + k].level = 0
 			}
 			return
 		}
-		return
 	}
+}
+
+
+/**
+ * 获取当前坐标的上一个坐标
+ * @param currentLocation
+ * @returns {*}
+ */
+Utils.getPreviousBuildingLocation = function(currentLocation){
+	var round = this.getBuildingCurrentRound(currentLocation)
+	var previousRound = this.getBuildingCurrentRound(currentLocation - 1)
+	if(_.isEqual(round, previousRound)) return currentLocation - 1
+	return null
+}
+
+/**
+ * 获取当前坐标的下一个坐标
+ * @param currentLocation
+ * @returns {*}
+ */
+Utils.getNextBuildingLocation = function(currentLocation){
+	var round = this.getBuildingCurrentRound(currentLocation)
+	var previousRound = this.getBuildingCurrentRound(currentLocation + 1)
+	if(_.isEqual(round, previousRound)) return currentLocation + 1
+	return null
+}
+
+/**
+ * 获取当前坐标的前一个坐标
+ * @param currentLocation
+ * @returns {*}
+ */
+Utils.getFrontBuildingLocation = function(currentLocation){
+	var round = this.getBuildingCurrentRound(currentLocation)
+	var middle = Math.floor(this.getBuildingRoundMiddleLocation(round))
+
+	console.log(round + "__" + middle)
+
+	if(currentLocation == middle) return null
+	if(currentLocation < middle){
+		return currentLocation - ((round - 1) * 2) + 1
+	}else if(currentLocation > middle){
+		return currentLocation - ((round - 1) * 2) - 1
+	}
+	return null
+}
+
+/**
+ *
+ * @param currentLocation
+ * @returns {*}
+ */
+Utils.getBuildingCurrentRound = function(currentLocation){
+	var nextFrom = 1
+	for(var i = 1; i <= 5; i++){
+		var from = nextFrom
+		var to = from + (i - 1) * 2 + 1
+		nextFrom = to
+		if(currentLocation >= from && currentLocation < to){
+			return i
+		}
+	}
+
+	return null
+}
+
+Utils.getBuildingRoundFromAndEnd = function(currentRound){
+	var from = null
+	var to = null
+	var nextFrom = 1
+	for(var i = 1; i <= currentRound; i++){
+		var from = nextFrom
+		var to = from + (i - 1) * 2 + 1
+		nextFrom = to
+	}
+
+	return {from:from, to:to}
+}
+
+Utils.getBuildingRoundMiddleLocation = function(currentRound){
+	var fromAndTo = this.getBuildingRoundFromAndEnd(currentRound)
+	var middle = fromAndTo.from + ((fromAndTo.to - fromAndTo.from) / 2)
+	return middle
 }

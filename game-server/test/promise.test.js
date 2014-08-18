@@ -2,6 +2,7 @@ var pomelo = require("./pomelo-client")
 var Promise = require("bluebird")
 var Promisify = Promise.promisify
 var _ = require("underscore")
+var should = require('should')
 
 //function a(a, cb){
 //	console.log(a)
@@ -207,3 +208,189 @@ var _ = require("underscore")
 //
 //var b = a.call(this)
 //console.log(b + "----------")
+//
+//
+//var Utils = {}
+//
+//Utils.getPreviousBuildingLocation = function(currentLocation){
+//	var round = this.getBuildingCurrentRound(currentLocation)
+//	var previousRound = this.getBuildingCurrentRound(currentLocation - 1)
+//	if(_.isEqual(round, previousRound)) return currentLocation - 1
+//	return null
+//}
+//
+//Utils.getNextBuildingLocation = function(currentLocation){
+//	var round = this.getBuildingCurrentRound(currentLocation)
+//	var previousRound = this.getBuildingCurrentRound(currentLocation + 1)
+//	if(_.isEqual(round, previousRound)) return currentLocation + 1
+//	return null
+//}
+//
+//Utils.getFrontBuildingLocation = function(currentLocation){
+//	var round = this.getBuildingCurrentRound(currentLocation)
+//	var middle = Math.floor(this.getBuildingRoundMiddleLocation(round))
+//
+//	console.log(round + "__" + middle)
+//
+//	if(currentLocation == middle) return null
+//	if(currentLocation < middle){
+//		return currentLocation - ((round - 1) * 2) + 1
+//	}else if(currentLocation > middle){
+//		return currentLocation - ((round - 1) * 2) - 1
+//	}
+//	return null
+//}
+//
+//Utils.getBuildingCurrentRound = function(currentLocation){
+//	var nextFrom = 1
+//	for(var i = 1; i <= 5; i++){
+//		var from = nextFrom
+//		var to = from + (i - 1) * 2 + 1
+//		nextFrom = to
+//		if(currentLocation >= from && currentLocation < to){
+//			return i
+//		}
+//	}
+//
+//	return null
+//}
+//
+//Utils.getBuildingRoundFromAndEnd = function(currentRound){
+//	var from = null
+//	var to = null
+//	var nextFrom = 1
+//	for(var i = 1; i <= currentRound; i++){
+//		var from = nextFrom
+//		var to = from + (i - 1) * 2 + 1
+//		nextFrom = to
+//	}
+//
+//	return {from:from, to:to}
+//}
+//
+//Utils.getBuildingRoundMiddleLocation = function(currentRound){
+//	var fromAndTo = this.getBuildingRoundFromAndEnd(currentRound)
+//	var middle = fromAndTo.from + ((fromAndTo.to - fromAndTo.from) / 2)
+//	return middle
+//}
+//
+//Utils.updateBuildingsLevel = function(buildings){
+//	for(var i = 1; i <= _.size(buildings); i++){
+//		var building = buildings["location_" + i]
+//		if(building.level == -1){
+//			for(var j = i - 1; j >= 1; j--){
+//				var preBuilding = buildings["location_" + j]
+//				if(preBuilding.level <= 0){
+//					return
+//				}
+//			}
+//
+//			var round = this.getBuildingCurrentRound(i)
+//			var fromToEnd = this.getBuildingRoundFromAndEnd(round)
+//			for(var j = fromToEnd.from; j < fromToEnd.to; j ++){
+//				buildings["location_" + j].level = 0
+//			}
+//			return
+//		}
+//	}
+//}
+//
+//
+//describe("getPreviousBuildingLocation", function(){
+//	should(Utils.getPreviousBuildingLocation(1)).eql(null)
+//	should(Utils.getPreviousBuildingLocation(2)).eql(null)
+//	should(Utils.getPreviousBuildingLocation(3)).eql(2)
+//	should(Utils.getPreviousBuildingLocation(4)).eql(3)
+//	should(Utils.getPreviousBuildingLocation(5)).eql(null)
+//	should(Utils.getPreviousBuildingLocation(6)).eql(5)
+//	should(Utils.getPreviousBuildingLocation(10)).eql(null)
+//	should(Utils.getPreviousBuildingLocation(11)).eql(10)
+//})
+//
+//describe("getNextBuildingLocation", function(){
+//	should(Utils.getNextBuildingLocation(1)).eql(null)
+//	should(Utils.getNextBuildingLocation(2)).eql(3)
+//	should(Utils.getNextBuildingLocation(3)).eql(4)
+//	should(Utils.getNextBuildingLocation(4)).eql(null)
+//	should(Utils.getNextBuildingLocation(5)).eql(6)
+//	should(Utils.getNextBuildingLocation(9)).eql(null)
+//	should(Utils.getNextBuildingLocation(15)).eql(16)
+//	should(Utils.getNextBuildingLocation(16)).eql(null)
+//	should(Utils.getNextBuildingLocation(17)).eql(18)
+//	should(Utils.getNextBuildingLocation(21)).eql(22)
+//	should(Utils.getNextBuildingLocation(24)).eql(25)
+//	should(Utils.getNextBuildingLocation(25)).eql(null)
+//})
+//
+//describe("getFrontBuildingLocation", function(){
+//	should(Utils.getFrontBuildingLocation(1)).eql(null)
+//	should(Utils.getFrontBuildingLocation(2)).eql(1)
+//	should(Utils.getFrontBuildingLocation(3)).eql(null)
+//	should(Utils.getFrontBuildingLocation(4)).eql(1)
+//	should(Utils.getFrontBuildingLocation(5)).eql(2)
+//	should(Utils.getFrontBuildingLocation(7)).eql(null)
+//	should(Utils.getFrontBuildingLocation(9)).eql(4)
+//	should(Utils.getFrontBuildingLocation(15)).eql(8)
+//	should(Utils.getFrontBuildingLocation(16)).eql(9)
+//	should(Utils.getFrontBuildingLocation(17)).eql(10)
+//	should(Utils.getFrontBuildingLocation(20)).eql(13)
+//	should(Utils.getFrontBuildingLocation(21)).eql(null)
+//	should(Utils.getFrontBuildingLocation(24)).eql(15)
+//	should(Utils.getFrontBuildingLocation(25)).eql(16)
+//})
+//
+//var buildings = {
+//	"location_1":{
+//		level:1
+//	},
+//	"location_2":{
+//		level:1
+//	},
+//	"location_3":{
+//		level:1
+//	},
+//	"location_4":{
+//		level:1
+//	},
+//	"location_5":{
+//		level:1
+//	},
+//	"location_6":{
+//		level:1
+//	},
+//	"location_7":{
+//		level:1
+//	},
+//	"location_8":{
+//		level:1
+//	},
+//	"location_9":{
+//		level:1
+//	},
+//	"location_10":{
+//		level:-1
+//	},
+//	"location_11":{
+//		level:-1
+//	},
+//	"location_12":{
+//		level:-1
+//	},
+//	"location_13":{
+//		level:-1
+//	},
+//	"location_14":{
+//		level:-1
+//	},
+//	"location_15":{
+//		level:-1
+//	},
+//	"location_16":{
+//		level:-1
+//	}
+//}
+//
+//describe("updateBuildingsLevel", function(){
+//	Utils.updateBuildingsLevel(buildings)
+//	console.log(buildings)
+//})

@@ -203,7 +203,6 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				console.log(doc)
 				m_user = doc
 				should.exist(doc)
 				m_user.buildings["location_3"].houses[0].level.should.equal(1)
