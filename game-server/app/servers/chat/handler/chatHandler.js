@@ -83,7 +83,7 @@ pro.send = function(msg, session, next){
 		var response = {
 			fromId:doc._id,
 			fromIcon:doc.basicInfo.icon,
-			from:doc.name,
+			from:doc.basicInfo.name,
 			text:text,
 			time:time
 		}
