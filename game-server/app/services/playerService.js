@@ -267,17 +267,23 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(finishNow){
 			gem += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 		}
+		console.log("111")
+		console.log(gem)
 		//资源是否足够
 		if(!LogicUtils.isEnough(upgradeRequired.resources, DataUtils.getPlayerResources(doc))){
 			var returned = DataUtils.getGemByResources(upgradeRequired.resources)
 			gem += returned.gem
 			used.resources = returned.resources
+			console.log("222")
+			console.log(gem)
 		}else{
 			used.resources = upgradeRequired.resources
 		}
 		//材料是否足够
 		if(!LogicUtils.isEnough(upgradeRequired.materials, doc.materials)){
 			gem += DataUtils.getGemByMaterials(upgradeRequired.materials)
+			console.log("333")
+			console.log(gem)
 			used.materials = {}
 		}else{
 			used.materials = upgradeRequired.materials
