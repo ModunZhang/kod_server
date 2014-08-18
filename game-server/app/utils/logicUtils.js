@@ -89,8 +89,6 @@ Utils.getFrontBuildingLocation = function(currentLocation){
 	var round = this.getBuildingCurrentRound(currentLocation)
 	var middle = Math.floor(this.getBuildingRoundMiddleLocation(round))
 
-	console.log(round + "__" + middle)
-
 	if(currentLocation == middle) return null
 	if(currentLocation < middle){
 		return currentLocation - ((round - 1) * 2) + 1

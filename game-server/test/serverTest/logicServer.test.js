@@ -69,15 +69,8 @@ describe("LogicServer", function(){
 			var route = "logic.playerHandler.upgradeBuilding"
 			pomelo.request(route, buildingInfo, function(doc){
 				doc.code.should.equal(200)
-			})
-			var onPlayerDataChanged = function(doc){
-				m_user = doc
-				should.exist(doc)
-				m_user.buildings["location_1"].finishTime.should.not.equal(0)
 				done()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			})
 		})
 
 		it("speedupBuildingBuild", function(done){
@@ -110,29 +103,43 @@ describe("LogicServer", function(){
 			})
 		})
 
+		it("upgradeBuilding2", function(done){
+			var buildingInfo = {
+				location:1,
+				finishNow:true
+			}
+			var route = "logic.playerHandler.upgradeBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
 		it("createBuilding", function(done){
+			var buildingInfo = {
+				location:2
+			}
+			var route = "logic.playerHandler.createBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(500)
+				done()
+			})
+		})
+		it("createBuilding2", function(done){
 			var buildingInfo = {
 				location:5
 			}
 			var route = "logic.playerHandler.createBuilding"
 			pomelo.request(route, buildingInfo, function(doc){
 				doc.code.should.equal(200)
-			})
-			var onPlayerDataChanged = function(doc){
-				m_user = doc
-				should.exist(doc)
-				m_user.buildings["location_5"].level.should.equal(1)
 				done()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			})
 		})
-
-		it("createBuilding2", function(done){
+		it("createBuilding3", function(done){
 			var buildingInfo = {
-				location:2
+				location:7
 			}
-			var route = "logic.playerHandler.upgradeBuilding"
+			var route = "logic.playerHandler.createBuilding"
 			pomelo.request(route, buildingInfo, function(doc){
 				doc.code.should.equal(500)
 				done()

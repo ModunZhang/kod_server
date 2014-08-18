@@ -151,13 +151,13 @@ pro.createBuilding = function(playerId, buildingLocation, callback){
 		if(building.finishTime > 0){
 			return Promise.reject(new Error("建筑正在升级"))
 		}
-		//检查是否小于1级
-		if(building.level > 0){
-			return Promise.reject(new Error("建筑等级已经大于1级"))
+		//检查是否不等于0级
+		if(building.level != 0){
+			return Promise.reject(new Error("建筑不存在或已经大于1级"))
 		}
 		//检查升级坑位是否合法
-		if(!CheckBuildingUpgradeLocation(doc, buildingLocation)){
-			return Promise.reject(new Error("建筑升级时,建筑坑位不合法"))
+		if(!CheckBuildingCreateLocation(doc, buildingLocation)){
+			return Promise.reject(new Error("建筑建造时,建筑坑位不合法"))
 		}
 		//检查建造数量是否超过上限
 		if(DataUtils.getPlayerFreeBuildingsCount(doc) <= 0){
@@ -256,10 +256,6 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		//检查升级等级是否合法
 		if(!CheckBuildingUpgradeLevelLimit(doc, buildingLocation)){
 			return Promise.reject(new Error("建筑升级时,建筑等级不合法"))
-		}
-		//检查升级坑位是否合法
-		if(!CheckBuildingUpgradeLocation(doc, buildingLocation)){
-			return Promise.reject(new Error("建筑升级时,建筑坑位不合法"))
 		}
 
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, building.level + 1)
@@ -896,10 +892,24 @@ var CheckBuildingUpgradeLevelLimit = function(userDoc, location){
 	return building.level <= keep.level
 }
 
-var CheckBuildingUpgradeLocation = function(userDoc, location){
-	var building = userDoc.buildings["location_" + location]
+var CheckBuildingCreateLocation = function(userDoc, location){
+	var previousLocation = LogicUtils.getPreviousBuildingLocation(location)
+	var nextLocation = LogicUtils.getNextBuildingLocation(location)
+	var frontLocation = LogicUtils.getFrontBuildingLocation(location)
+	if(previousLocation){
+		var previousBuilding = userDoc.buildings["location_" + previousLocation]
+		if(previousBuilding.level > 0) return true
+	}
+	if(nextLocation){
+		var nextBuilding = userDoc.buildings["location_" + nextLocation]
+		if(nextBuilding.level > 0) return true
+	}
+	if(frontLocation){
+		var frontBuilding = userDoc.buildings["location_" + frontLocation]
+		if(frontBuilding.level > 0) return true
+	}
 
-	return building.level >= 0
+	return false
 }
 
 var CheckHouseCreateLocation = function(userDoc, buildingLocation, houseType, houseLocation){
