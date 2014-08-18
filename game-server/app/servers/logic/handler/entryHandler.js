@@ -157,7 +157,7 @@ var UpdatePlayerData = function(userDoc, callback){
 					if(_.isEqual("dwelling", house.type)){
 						var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 						var next = DataUtils.getDwellingPopulationByLevel(house.level)
-						userDoc.basicInfo.citizen += next - previous
+						userDoc.resources.citizen += next - previous
 						self.playerService.refreshPlayerResources(userDoc)
 					}
 				}else{

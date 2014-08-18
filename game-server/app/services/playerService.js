@@ -437,7 +437,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		if(_.isEqual("dwelling", house.type) && finishNow){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
-			doc.basicInfo.citizen += next - previous
+			doc.resources.citizen += next - previous
 			self.refreshPlayerResources(doc)
 		}
 		//保存玩家数据
@@ -565,7 +565,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		if(_.isEqual("dwelling", house.type) && finishNow){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
-			doc.basicInfo.citizen += next - previous
+			doc.resources.citizen += next - previous
 			self.refreshPlayerResources(doc)
 		}
 		//保存玩家数据
@@ -712,7 +712,7 @@ pro.speedupHouseBuild = function(playerId, buildingLocation, houseLocation, call
 		if(_.isEqual("dwelling", house.type)){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
-			doc.basicInfo.citizen += next - previous
+			doc.resources.citizen += next - previous
 			self.refreshPlayerResources(doc)
 		}
 		//保存玩家数据
@@ -832,7 +832,7 @@ pro.excutePlayerCallback = function(playerId, finishTime){
 					if(_.isEqual("dwelling", house.type)){
 						var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 						var next = DataUtils.getDwellingPopulationByLevel(house.level)
-						doc.basicInfo.citizen += next - previous
+						doc.resources.citizen += next - previous
 						self.refreshPlayerResources(doc)
 					}
 				}
