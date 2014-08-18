@@ -10,6 +10,7 @@ var utils = require("../../../utils/utils")
 var Consts = require("../../../consts/consts")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
+var DataUtils = require("../../../utils/dataUtils")
 
 module.exports = function(app){
 	return new Handler(app)
