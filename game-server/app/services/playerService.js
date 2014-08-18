@@ -267,23 +267,19 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(finishNow){
 			gem += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 		}
-		console.log("111")
-		console.log(gem)
 		//资源是否足够
 		if(!LogicUtils.isEnough(upgradeRequired.resources, DataUtils.getPlayerResources(doc))){
 			var returned = DataUtils.getGemByResources(upgradeRequired.resources)
 			gem += returned.gem
 			used.resources = returned.resources
-			console.log("222")
-			console.log(gem)
 		}else{
 			used.resources = upgradeRequired.resources
 		}
+
+		DataUtils.getGemByMaterials(upgradeRequired.materials)
 		//材料是否足够
 		if(!LogicUtils.isEnough(upgradeRequired.materials, doc.materials)){
 			gem += DataUtils.getGemByMaterials(upgradeRequired.materials)
-			console.log("333")
-			console.log(gem)
 			used.materials = {}
 		}else{
 			used.materials = upgradeRequired.materials
@@ -292,18 +288,8 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(gem > doc.basicInfo.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		console.log("before-------------------")
-		console.log(gem)
-		console.log(doc.basicInfo.gem)
-		console.log(_.isNumber(gem))
-		console.log(_.isNumber(doc.basicInfo.gem))
 		//修改玩家宝石数据
 		doc.basicInfo.gem -= gem
-		console.log("after-------------------")
-		console.log(gem)
-		console.log(doc.basicInfo.gem)
-		console.log(_.isNumber(gem))
-		console.log(_.isNumber(doc.basicInfo.gem))
 		//修改玩家资源数据
 		self.refreshPlayerResources(doc)
 		LogicUtils.reduce(used.resources, doc.resources)
