@@ -230,8 +230,6 @@ var should = require('should')
 //	var round = this.getBuildingCurrentRound(currentLocation)
 //	var middle = Math.floor(this.getBuildingRoundMiddleLocation(round))
 //
-//	console.log(round + "__" + middle)
-//
 //	if(currentLocation == middle) return null
 //	if(currentLocation < middle){
 //		return currentLocation - ((round - 1) * 2) + 1
@@ -274,7 +272,9 @@ var should = require('should')
 //	return middle
 //}
 //
-//Utils.updateBuildingsLevel = function(buildings){
+//Utils.updateBuildingsLevel = function(userDoc){
+//	var buildings = userDoc.buildings
+//	var towers = userDoc.towers
 //	for(var i = 1; i <= _.size(buildings); i++){
 //		var building = buildings["location_" + i]
 //		if(building.level == -1){
@@ -287,9 +287,17 @@ var should = require('should')
 //
 //			var round = this.getBuildingCurrentRound(i)
 //			var fromToEnd = this.getBuildingRoundFromAndEnd(round)
-//			for(var j = fromToEnd.from; j < fromToEnd.to; j ++){
-//				buildings["location_" + j].level = 0
+//			for(var k = fromToEnd.from; k < fromToEnd.to; k ++){
+//				buildings["location_" + k].level = 0
 //			}
+//
+//			fromToEnd = this.getBuildingRoundFromAndEnd(round - 1)
+//			var totalActiveTowerCount = fromToEnd.to - fromToEnd.from + 2
+//			for(var l = totalActiveTowerCount - 2 + 1; l <= totalActiveTowerCount; l ++){
+//				var tower = towers["location_" + l]
+//				tower.level = 1
+//			}
+//
 //			return
 //		}
 //	}
@@ -339,7 +347,9 @@ var should = require('should')
 //	should(Utils.getFrontBuildingLocation(25)).eql(16)
 //})
 //
-//var buildings = {
+//var userDoc = {}
+//
+//userDoc.buildings = {
 //	"location_1":{
 //		level:1
 //	},
@@ -365,7 +375,7 @@ var should = require('should')
 //		level:1
 //	},
 //	"location_9":{
-//		level:1
+//		level:0
 //	},
 //	"location_10":{
 //		level:-1
@@ -390,7 +400,43 @@ var should = require('should')
 //	}
 //}
 //
+//userDoc.towers = {
+//	"location_1":{
+//		level:1
+//	},
+//	"location_2":{
+//		level:1
+//	},
+//	"location_3":{
+//		level:1
+//	},
+//	"location_4":{
+//		level:-1
+//	},
+//	"location_5":{
+//		level:-1
+//	},
+//	"location_6":{
+//		level:-1
+//	},
+//	"location_7":{
+//		level:-1
+//	},
+//	"location_8":{
+//		level:-1
+//	},
+//	"location_9":{
+//		level:-1
+//	},
+//	"location_10":{
+//		level:-1
+//	},
+//	"location_11":{
+//		level:-1
+//	}
+//}
+//
 //describe("updateBuildingsLevel", function(){
-//	Utils.updateBuildingsLevel(buildings)
-//	console.log(buildings)
+//	Utils.updateBuildingsLevel(userDoc)
+//	console.log(userDoc)
 //})

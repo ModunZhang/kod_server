@@ -167,5 +167,26 @@ var UpdatePlayerData = function(userDoc, callback){
 		})
 	})
 
+	//检查箭塔
+	_.each(userDoc.towers, function(tower){
+		if(tower.finishTime > 0){
+			if(tower.finishTime <= Date.now()){
+				tower.finishTime = 0
+				tower.level += 1
+			}else{
+				self.callbackService.addPlayerCallback(userDoc._id, tower.finishTime, self.playerService.excutePlayerCallback.bind(self.playerService))
+			}
+		}
+	})
+	//检查城墙
+	if(userDoc.wall.finishTime > 0){
+		if(userDoc.wall.finishTime <= Date.now()){
+			userDoc.wall.finishTime = 0
+			userDoc.wall.level += 1
+		}else{
+			self.callbackService.addPlayerCallback(userDoc._id, userDoc.wall.finishTime, self.playerService.excutePlayerCallback.bind(self.playerService))
+		}
+	}
+
 	callback()
 }

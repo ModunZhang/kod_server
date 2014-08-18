@@ -303,6 +303,76 @@ describe("LogicServer", function(){
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
+
+		it("upgradeTower", function(done){
+			var buildingInfo = {
+				location:1,
+				finishNow:false
+			}
+			var route = "logic.playerHandler.upgradeTower"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+			var onPlayerDataChanged = function(doc){
+				m_user = doc
+				should.exist(doc)
+				m_user.towers["location_1"].finishTime.should.not.equal(0)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("speedupTowerBuild", function(done){
+			var buildingInfo = {
+				location:1
+			}
+			var route = "logic.playerHandler.speedupTowerBuild"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+			var onPlayerDataChanged = function(doc){
+				m_user = doc
+				should.exist(doc)
+				m_user.towers["location_1"].level.should.equal(2)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("upgradeWall", function(done){
+			var buildingInfo = {
+				finishNow:false
+			}
+			var route = "logic.playerHandler.upgradeWall"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+			var onPlayerDataChanged = function(doc){
+				m_user = doc
+				should.exist(doc)
+				m_user.wall.finishTime.should.not.equal(0)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("speedupWallBuild", function(done){
+			var route = "logic.playerHandler.speedupWallBuild"
+			pomelo.request(route, null, function(doc){
+				doc.code.should.equal(200)
+			})
+			var onPlayerDataChanged = function(doc){
+				m_user = doc
+				should.exist(doc)
+				m_user.wall.level.should.equal(2)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
 	})
 
 

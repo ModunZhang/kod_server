@@ -31,10 +31,12 @@ Utils.reduce = function(need, has){
 }
 
 /**
- * 检测是否有建筑需要从-1级升级到0级
- * @param buildings
+ * 检测是否有建筑和箭塔需要从-1级升级到0级
+ * @param userDoc
  */
-Utils.updateBuildingsLevel = function(buildings){
+Utils.updateBuildingsLevel = function(userDoc){
+	var buildings = userDoc.buildings
+	var towers = userDoc.towers
 	for(var i = 1; i <= _.size(buildings); i++){
 		var building = buildings["location_" + i]
 		if(building.level == -1){
@@ -50,11 +52,18 @@ Utils.updateBuildingsLevel = function(buildings){
 			for(var k = fromToEnd.from; k < fromToEnd.to; k ++){
 				buildings["location_" + k].level = 0
 			}
+
+			fromToEnd = this.getBuildingRoundFromAndEnd(round - 1)
+			var totalActiveTowerCount = fromToEnd.to - fromToEnd.from + 2
+			for(var l = totalActiveTowerCount - 2 + 1; l <= totalActiveTowerCount; l ++){
+				var tower = towers["location_" + l]
+				tower.level = 1
+			}
+
 			return
 		}
 	}
 }
-
 
 /**
  * 获取当前坐标的上一个坐标
@@ -122,8 +131,8 @@ Utils.getBuildingRoundFromAndEnd = function(currentRound){
 	var to = null
 	var nextFrom = 1
 	for(var i = 1; i <= currentRound; i++){
-		var from = nextFrom
-		var to = from + (i - 1) * 2 + 1
+		from = nextFrom
+		to = from + (i - 1) * 2 + 1
 		nextFrom = to
 	}
 

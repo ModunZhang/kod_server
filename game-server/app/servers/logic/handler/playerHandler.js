@@ -134,3 +134,66 @@ pro.destroyHouse = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 升级箭塔
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.upgradeTower = function(msg, session, next){
+	var location = msg.location
+	var finishNow = msg.finishNow
+
+	this.playerService.upgradeTowerAsync(session.uid, location, finishNow).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 箭塔升级加速
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.speedupTowerBuild = function(msg, session, next){
+	var location = msg.location
+
+	this.playerService.speedupTowerBuildAsync(session.uid, location).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 升级城墙
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.upgradeWall = function(msg, session, next){
+	var finishNow = msg.finishNow
+
+	this.playerService.upgradeWallAsync(session.uid, finishNow).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 城墙升级加速
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.speedupWallBuild = function(msg, session, next){
+	this.playerService.speedupWallBuildAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

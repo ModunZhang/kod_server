@@ -190,9 +190,8 @@ pro.createBuilding = function(playerId, buildingLocation, callback){
 		self.refreshPlayerResources(doc)
 		LogicUtils.reduce(used.resources, doc.resources)
 		LogicUtils.reduce(used.materials, doc.materials)
-		//是否立即完成
 		building.level = 1
-		LogicUtils.updateBuildingsLevel(doc.buildings)
+		LogicUtils.updateBuildingsLevel(doc)
 		//保存玩家数据
 		return self.dao.updateAsync(doc)
 	}).then(function(doc){
@@ -247,7 +246,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		}
 		//检查是否小于1级
 		if(building.level < 1){
-			return Promise.reject(new Error("建造还未建造"))
+			return Promise.reject(new Error("建筑还未建造"))
 		}
 		//是否已到最高等级
 		if(DataUtils.isBuildingReachMaxLevel(building.type, building.level)){
@@ -578,7 +577,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 }
 
 /**
- * 建筑加速
+ * 建筑建造加速
  * @param playerId
  * @param buildingLocation
  * @param callback
@@ -625,8 +624,6 @@ pro.speedupBuildingBuild = function(playerId, buildingLocation, callback){
 		//修改建筑数据
 		building.level = building.level + 1
 		building.finishTime = 0
-		//检查更新其他建筑等级数据
-		LogicUtils.updateBuildingsLevel(doc.buildings)
 		//保存玩家数据
 		return self.dao.updateAsync(doc)
 	}).then(function(doc){
@@ -806,6 +803,323 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 }
 
 /**
+ * 升级箭塔
+ * @param playerId
+ * @param towerLocation
+ * @param finishNow
+ * @param callback
+ */
+pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(towerLocation)){
+		callback(new Error("buildingLocation 不合法"))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		callback(new Error("finishNow 不合法"))
+		return
+	}
+
+	var self = this
+	self.dao.findAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
+		var gem = 0
+		var used = {}
+		var tower = doc.towers["location_" + towerLocation]
+		//检查箭塔是否存在
+		if(!_.isObject(tower)){
+			return Promise.reject(new Error("箭塔不存在"))
+		}
+		//箭塔是否正在升级中
+		if(tower.finishTime > 0){
+			return Promise.reject(new Error("箭塔正在升级"))
+		}
+		//检查是否小于1级
+		if(tower.level < 1){
+			return Promise.reject(new Error("箭塔还未建造"))
+		}
+		//是否已到最高等级
+		if(DataUtils.isBuildingReachMaxLevel("tower", tower.level)){
+			return Promise.reject(new Error("箭塔已达到最高等级"))
+		}
+		//检查升级等级是否合法
+		if(!CheckTowerUpgradeLevelLimit(doc, towerLocation)){
+			return Promise.reject(new Error("箭塔升级时,建筑等级不合法"))
+		}
+
+		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("tower", tower.level + 1)
+		//是否立即完成
+		if(finishNow){
+			gem += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
+		}
+		//资源是否足够
+		if(!LogicUtils.isEnough(upgradeRequired.resources, DataUtils.getPlayerResources(doc))){
+			var returned = DataUtils.getGemByResources(upgradeRequired.resources)
+			gem += returned.gem
+			used.resources = returned.resources
+		}else{
+			used.resources = upgradeRequired.resources
+		}
+
+		DataUtils.getGemByMaterials(upgradeRequired.materials)
+		//材料是否足够
+		if(!LogicUtils.isEnough(upgradeRequired.materials, doc.materials)){
+			gem += DataUtils.getGemByMaterials(upgradeRequired.materials)
+			used.materials = {}
+		}else{
+			used.materials = upgradeRequired.materials
+		}
+		//宝石是否足够
+		if(gem > doc.basicInfo.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		//修改玩家宝石数据
+		doc.basicInfo.gem -= gem
+		//修改玩家资源数据
+		self.refreshPlayerResources(doc)
+		LogicUtils.reduce(used.resources, doc.resources)
+		LogicUtils.reduce(used.materials, doc.materials)
+		//是否立即完成
+		if(finishNow){
+			tower.level = tower.level + 1
+		}else{
+			tower.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
+			self.callbackService.addPlayerCallback(doc._id, tower.finishTime, self.excutePlayerCallback.bind(self))
+		}
+		//保存玩家数据
+		return self.dao.updateAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 箭塔建造加速
+ * @param playerId
+ * @param towerLocation
+ * @param callback
+ */
+pro.speedupTowerBuild = function(playerId, towerLocation, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(towerLocation)){
+		callback(new Error("towerLocation 不合法"))
+		return
+	}
+
+	var self = this
+	self.dao.findAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var tower = doc.towers["location_" + towerLocation]
+		//检查箭塔是否存在
+		if(_.isElement(tower)){
+			return Promise.reject(new Error("箭塔不存在"))
+		}
+		//检查箭塔是否正在升级
+		if(tower.finishTime <= 0){
+			return Promise.reject(new Error("箭塔未处于升级状态"))
+		}
+		//获取剩余升级时间
+		var timeRemain = tower.finishTime - Date.now()
+		//获取需要的宝石数量
+		var gem = DataUtils.getGemByTimeInterval(timeRemain / 1000)
+		//宝石是否足够
+		if(gem > doc.basicInfo.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		//修改玩家宝石数据
+		doc.basicInfo.gem -= gem
+		//更新资源数据
+		self.refreshPlayerResources(doc)
+		//修改建筑数据
+		tower.level = tower.level + 1
+		tower.finishTime = 0
+		//保存玩家数据
+		return self.dao.updateAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 升级城墙
+ * @param playerId
+ * @param finishNow
+ * @param callback
+ */
+pro.upgradeWall = function(playerId, finishNow, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		callback(new Error("finishNow 不合法"))
+		return
+	}
+
+	var self = this
+	self.dao.findAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
+		var gem = 0
+		var used = {}
+		var wall = doc.wall
+		//检查城墙是否存在
+		if(!_.isObject(wall)){
+			return Promise.reject(new Error("城墙不存在"))
+		}
+		//城墙是否正在升级中
+		if(wall.finishTime > 0){
+			return Promise.reject(new Error("城墙正在升级"))
+		}
+		//检查是否小于1级
+		if(wall.level < 1){
+			return Promise.reject(new Error("城墙还未建造"))
+		}
+		//是否已到最高等级
+		if(DataUtils.isBuildingReachMaxLevel("wall", wall.level)){
+			return Promise.reject(new Error("城墙已达到最高等级"))
+		}
+		//检查升级等级是否合法
+		if(!CheckWallUpgradeLevelLimit(doc)){
+			return Promise.reject(new Error("城墙升级时,建筑等级不合法"))
+		}
+
+		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("wall", wall.level + 1)
+		//是否立即完成
+		if(finishNow){
+			gem += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
+		}
+		//资源是否足够
+		if(!LogicUtils.isEnough(upgradeRequired.resources, DataUtils.getPlayerResources(doc))){
+			var returned = DataUtils.getGemByResources(upgradeRequired.resources)
+			gem += returned.gem
+			used.resources = returned.resources
+		}else{
+			used.resources = upgradeRequired.resources
+		}
+
+		DataUtils.getGemByMaterials(upgradeRequired.materials)
+		//材料是否足够
+		if(!LogicUtils.isEnough(upgradeRequired.materials, doc.materials)){
+			gem += DataUtils.getGemByMaterials(upgradeRequired.materials)
+			used.materials = {}
+		}else{
+			used.materials = upgradeRequired.materials
+		}
+		//宝石是否足够
+		if(gem > doc.basicInfo.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		//修改玩家宝石数据
+		doc.basicInfo.gem -= gem
+		//修改玩家资源数据
+		self.refreshPlayerResources(doc)
+		LogicUtils.reduce(used.resources, doc.resources)
+		LogicUtils.reduce(used.materials, doc.materials)
+		//是否立即完成
+		if(finishNow){
+			wall.level = tower.level + 1
+		}else{
+			wall.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
+			self.callbackService.addPlayerCallback(doc._id, wall.finishTime, self.excutePlayerCallback.bind(self))
+		}
+		//保存玩家数据
+		return self.dao.updateAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 箭塔建造加速
+ * @param playerId
+ * @param towerLocation
+ * @param callback
+ */
+pro.speedupWallBuild = function(playerId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+
+	var self = this
+	self.dao.findAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var wall = doc.wall
+		//检查城墙是否存在
+		if(_.isElement(wall)){
+			return Promise.reject(new Error("城墙不存在"))
+		}
+		//检查城墙是否正在升级
+		if(wall.finishTime <= 0){
+			return Promise.reject(new Error("城墙未处于升级状态"))
+		}
+		//获取剩余升级时间
+		var timeRemain = wall.finishTime - Date.now()
+		//获取需要的宝石数量
+		var gem = DataUtils.getGemByTimeInterval(timeRemain / 1000)
+		//宝石是否足够
+		if(gem > doc.basicInfo.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		//修改玩家宝石数据
+		doc.basicInfo.gem -= gem
+		//更新资源数据
+		self.refreshPlayerResources(doc)
+		//修改建筑数据
+		wall.level = wall.level + 1
+		wall.finishTime = 0
+		//保存玩家数据
+		return self.dao.updateAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * 延迟执行玩家回调
  * @param playerId
  * @param finishTime
@@ -836,6 +1150,19 @@ pro.excutePlayerCallback = function(playerId, finishTime){
 				}
 			})
 		})
+		//检查箭塔
+		_.each(doc.towers, function(tower){
+			if(tower.finishTime > 0 && tower.finishTime <= finishTime){
+				tower.finishTime = 0
+				tower.level += 1
+			}
+		})
+		//检查城墙
+		if(doc.wall.finishTime > 0 && doc.wall.finishTime <= finishTime){
+			doc.wall.finishTime = 0
+			doc.wall.level += 1
+		}
+
 		//更新玩家数据
 		return self.dao.updateAsync(doc)
 	}).then(function(doc){
@@ -890,6 +1217,18 @@ var CheckBuildingUpgradeLevelLimit = function(userDoc, location){
 	var keep = userDoc.buildings["location_1"]
 	if(location == 1) return true
 	return building.level <= keep.level
+}
+
+var CheckTowerUpgradeLevelLimit = function(userDoc, location){
+	var tower = userDoc.towers["location_" + location]
+	var keep = userDoc.buildings["location_1"]
+	return tower.level <= keep.level
+}
+
+var CheckWallUpgradeLevelLimit = function(userDoc){
+	var wall = userDoc.wall
+	var keep = userDoc.buildings["location_1"]
+	return wall.level <= keep.level
 }
 
 var CheckBuildingCreateLocation = function(userDoc, location){

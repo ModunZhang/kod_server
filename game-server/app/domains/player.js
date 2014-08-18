@@ -265,6 +265,67 @@ var playerSchema = new Schema({
 				}
 			]
 		}
+	},
+	towers:{
+		location_1:{
+			level:{type:Number, required:true, default:1},
+			location:{type:Number, required:true, default:1},
+			finishTime:{type:Number, required:true, default:0}
+		},
+		location_2:{
+			level:{type:Number, required:true, default:1},
+			location:{type:Number, required:true, default:2},
+			finishTime:{type:Number, required:true, default:0}
+		},
+		location_3:{
+			level:{type:Number, required:true, default:1},
+			location:{type:Number, required:true, default:3},
+			finishTime:{type:Number, required:true, default:0}
+		},
+		location_4:{
+			level:{type:Number, required:true, default:1},
+			location:{type:Number, required:true, default:4},
+			finishTime:{type:Number, required:true, default:0}
+		},
+		location_5:{
+			level:{type:Number, required:true, default:1},
+			location:{type:Number, required:true, default:5},
+			finishTime:{type:Number, required:true, default:0}
+		},
+		location_6:{
+			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:6},
+			finishTime:{type:Number, required:true, default:0}
+		},
+		location_7:{
+			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:7},
+			finishTime:{type:Number, required:true, default:0}
+		},
+		location_8:{
+			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:8},
+			finishTime:{type:Number, required:true, default:0}
+		},
+		location_9:{
+			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:9},
+			finishTime:{type:Number, required:true, default:0}
+		},
+		location_10:{
+			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:10},
+			finishTime:{type:Number, required:true, default:0}
+		},
+		location_11:{
+			level:{type:Number, required:true, default:-1},
+			location:{type:Number, required:true, default:11},
+			finishTime:{type:Number, required:true, default:0}
+		}
+	},
+	wall:{
+		level:{type:Number, required:true, default:1},
+		finishTime:{type:Number, required:true, default:0}
 	}
 })
 
