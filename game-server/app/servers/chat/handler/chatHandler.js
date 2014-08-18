@@ -79,8 +79,6 @@ pro.send = function(msg, session, next){
 	}
 
 	this.playerService.getPlayerByIdAsync(session.uid).then(function(doc){
-		FilterCommand.call(self, text, doc, session)
-
 		var time = Date.now()
 		var response = {
 			fromId:doc._id,
@@ -95,6 +93,8 @@ pro.send = function(msg, session, next){
 		}
 		self.chats.push(response)
 		self.gloablChatChannel.pushMessage(Events.chat.onChat, response)
+
+		FilterCommand.call(self, text, doc, session)
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
