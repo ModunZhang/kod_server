@@ -131,8 +131,10 @@ var PushHelpMessageToPlayer = function(session){
 
 	var msg = {
 		fromId:"system",
-		from:"系统",
-		fromIcon:"playerIcon_default.png",
+		fromIcon:doc.basicInfo.icon,
+		fromName:"系统",
+		fromVip:1,
+		fromType:"system",
 		text:commands,
 		time:Date.now()
 	}
