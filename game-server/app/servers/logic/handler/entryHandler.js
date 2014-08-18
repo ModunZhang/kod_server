@@ -158,7 +158,7 @@ var UpdatePlayerData = function(userDoc, callback){
 						var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 						var next = DataUtils.getDwellingPopulationByLevel(house.level)
 						userDoc.basicInfo.citizen += next - previous
-						self.refreshPlayerResources(userDoc)
+						self.playerService.refreshPlayerResources(userDoc)
 					}
 				}else{
 					self.callbackService.addPlayerCallback(userDoc._id, house.finishTime, self.playerService.excutePlayerCallback.bind(self.playerService))
