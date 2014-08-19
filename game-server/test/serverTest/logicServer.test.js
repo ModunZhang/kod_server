@@ -61,7 +61,7 @@ describe("LogicServer", function(){
 
 
 	describe("playerHandler", function(){
-		it("upgradeBuilding", function(done){
+		it("upgradeBuilding 正常升级", function(done){
 			var buildingInfo = {
 				location:1,
 				finishNow:false
@@ -73,7 +73,7 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("speedupBuildingBuild", function(done){
+		it("speedupBuildingBuild 加速建筑升级", function(done){
 			var buildingInfo = {
 				location:1
 			}
@@ -92,61 +92,28 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("speedupBuildingBuild2", function(done){
+		it("upgradeBuilding 测试建造等级限制", function(done){
 			var buildingInfo = {
-				location:1
-			}
-			var route = "logic.playerHandler.speedupBuildingBuild"
-			pomelo.request(route, buildingInfo, function(doc){
-				doc.code.should.equal(500)
-				done()
-			})
-		})
-
-		it("upgradeBuilding2", function(done){
-			var buildingInfo = {
-				location:1,
+				location:2,
 				finishNow:true
 			}
 			var route = "logic.playerHandler.upgradeBuilding"
 			pomelo.request(route, buildingInfo, function(doc){
 				doc.code.should.equal(200)
-				done()
+
+				var buildingInfo = {
+					location:2,
+					finishNow:true
+				}
+				var route = "logic.playerHandler.upgradeBuilding"
+				pomelo.request(route, buildingInfo, function(doc){
+					doc.code.should.equal(500)
+					done()
+				})
 			})
 		})
 
-		it("createBuilding", function(done){
-			var buildingInfo = {
-				location:2
-			}
-			var route = "logic.playerHandler.createBuilding"
-			pomelo.request(route, buildingInfo, function(doc){
-				doc.code.should.equal(500)
-				done()
-			})
-		})
-		it("createBuilding2", function(done){
-			var buildingInfo = {
-				location:5
-			}
-			var route = "logic.playerHandler.createBuilding"
-			pomelo.request(route, buildingInfo, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-		it("createBuilding3", function(done){
-			var buildingInfo = {
-				location:7
-			}
-			var route = "logic.playerHandler.createBuilding"
-			pomelo.request(route, buildingInfo, function(doc){
-				doc.code.should.equal(500)
-				done()
-			})
-		})
-
-		it("upgradeBuilding", function(done){
+		it("upgradeBuilding 测试建造数量限制", function(done){
 			var buildingInfo = {
 				location:5,
 				finishNow:true
@@ -154,30 +121,41 @@ describe("LogicServer", function(){
 			var route = "logic.playerHandler.upgradeBuilding"
 			pomelo.request(route, buildingInfo, function(doc){
 				doc.code.should.equal(200)
+
+				var buildingInfo = {
+					location:9,
+					finishNow:true
+				}
+				var route = "logic.playerHandler.upgradeBuilding"
+				pomelo.request(route, buildingInfo, function(doc){
+					doc.code.should.equal(500)
+					done()
+				})
 			})
-			var onPlayerDataChanged = function(doc){
-				m_user = doc
-				should.exist(doc)
-				m_user.buildings["location_5"].level.should.equal(2)
-				done()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("upgradeBuilding2", function(done){
+		it("upgradeBuilding 测试坑位规则限制", function(done){
 			var buildingInfo = {
-				location:6,
+				location:1,
 				finishNow:true
 			}
 			var route = "logic.playerHandler.upgradeBuilding"
 			pomelo.request(route, buildingInfo, function(doc){
-				doc.code.should.equal(500)
-				done()
+				doc.code.should.equal(200)
+
+				var buildingInfo = {
+					location:7,
+					finishNow:true
+				}
+				var route = "logic.playerHandler.upgradeBuilding"
+				pomelo.request(route, buildingInfo, function(doc){
+					doc.code.should.equal(500)
+					done()
+				})
 			})
 		})
 
-		it("createHouse", function(done){
+		it("createHouse 正常建造", function(done){
 			var houseInfo = {
 				buildingLocation:3,
 				houseType:"dwelling",
@@ -199,7 +177,7 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("speedupHouseBuild", function(done){
+		it("speedupHouseBuild 建造加速", function(done){
 			var houseInfo = {
 				buildingLocation:3,
 				houseLocation:1
@@ -219,7 +197,7 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("createHouse 2", function(done){
+		it("createHouse 立即完成建造", function(done){
 			var houseInfo = {
 				buildingLocation:3,
 				houseType:"farmer",
@@ -241,7 +219,7 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("upgradeHouse", function(done){
+		it("upgradeHouse 立即完成建筑升级", function(done){
 			var houseInfo = {
 				buildingLocation:3,
 				houseLocation:1,
@@ -262,28 +240,20 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("upgradeHouse 2", function(done){
+		it("upgradeHouse 小屋坑位信息测试", function(done){
 			var houseInfo = {
 				buildingLocation:3,
-				houseLocation:2,
+				houseLocation:4,
 				finishNow:true
 			}
 			var route = "logic.playerHandler.upgradeHouse"
 			pomelo.request(route, houseInfo, function(doc){
-				doc.code.should.equal(200)
-			})
-
-			var onPlayerDataChanged = function(doc){
-				m_user = doc
-				should.exist(doc)
-				m_user.buildings["location_3"].houses[1].level.should.equal(2)
+				doc.code.should.equal(500)
 				done()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			})
 		})
 
-		it("destroyHouse", function(done){
+		it("destroyHouse 摧毁小屋测试", function(done){
 			var houseInfo = {
 				buildingLocation:3,
 				houseLocation:2
@@ -304,7 +274,7 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("upgradeTower", function(done){
+		it("upgradeTower 普通升级箭塔", function(done){
 			var buildingInfo = {
 				location:1,
 				finishNow:false
@@ -323,7 +293,7 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("speedupTowerBuild", function(done){
+		it("speedupTowerBuild 加速升级箭塔", function(done){
 			var buildingInfo = {
 				location:1
 			}
@@ -341,7 +311,7 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("upgradeWall", function(done){
+		it("upgradeWall 升级城墙", function(done){
 			var buildingInfo = {
 				finishNow:false
 			}
@@ -359,7 +329,7 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("speedupWallBuild", function(done){
+		it("speedupWallBuild 加速升级城墙", function(done){
 			var route = "logic.playerHandler.speedupWallBuild"
 			pomelo.request(route, null, function(doc){
 				doc.code.should.equal(200)
