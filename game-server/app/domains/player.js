@@ -17,6 +17,7 @@ var playerSchema = new Schema({
 		lastLoginTime:{type:Number, required:true, default:Date.now()},
 		loginCount:{type:Number, required:true, default:0},
 		name:{type:String, index:true, unique:true, required:true},
+		cityName:{type:String, required:true},
 		icon:{type:String, required:true, default:"playerIcon_default.png"},
 		level:{type:Number, required:true, default:1},
 		levelExp:{type:Number, required:true, default:0},

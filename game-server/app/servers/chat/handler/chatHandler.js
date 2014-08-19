@@ -31,7 +31,8 @@ var ChatHandler = function(app){
 				basicPlayerInfo.__v = userDoc.__v
 				basicPlayerInfo.basicInfo.deviceId = userDoc.basicInfo.deviceId
 				basicPlayerInfo.basicInfo.name = userDoc.basicInfo.name
-				this.playerService.updatePlayerAsync(basicPlayerInfo).then(function(doc){
+				basicPlayerInfo.basicInfo.cityName = userDoc.basicInfo.cityName
+				self.playerService.updatePlayerAsync(basicPlayerInfo).then(function(doc){
 					PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
 				}).catch(function(e){
 					console.error(e)

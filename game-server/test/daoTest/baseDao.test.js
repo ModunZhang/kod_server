@@ -37,7 +37,8 @@ describe("BaseDao", function(){
 //			var doc = {
 //				basicInfo:{
 //					deviceId:Config.deviceId2,
-//					name:"player_111111"
+//					name:"player_111111",
+//					cityName:"city_111111"
 //				}
 //			}
 //

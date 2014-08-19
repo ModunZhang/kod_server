@@ -1,5 +1,5 @@
 {
-	"_id":"53f2b57093815dad5699ea07",
+	"_id":"53f30b9496f7483c5a000af4",
 	"wall":{
 		"finishTime":0,
 		"level":1
@@ -191,8 +191,9 @@
 	"basicInfo":{
 		"deviceId":"__testDeviceId2",
 		"name":"player_111111",
+		"cityName":"city_111111",
 		"coin":50000,
-		"resourceRefreshTime":1408415088530,
+		"resourceRefreshTime":1408437140174,
 		"gem":2000,
 		"vipExp":0,
 		"vip":1,
@@ -201,8 +202,8 @@
 		"level":1,
 		"icon":"playerIcon_default.png",
 		"loginCount":0,
-		"lastLoginTime":1408415088530,
-		"registerTime":1408415088530
+		"lastLoginTime":1408437140173,
+		"registerTime":1408437140173
 	},
 	"__v":0
 }

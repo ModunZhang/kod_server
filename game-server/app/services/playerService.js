@@ -1214,7 +1214,8 @@ var CreatePlayer = function(deviceId, callback){
 		var doc = {
 			basicInfo:{
 				deviceId:deviceId,
-				name:"player_" + token
+				name:"player_" + token,
+				cityName:"city_" + token
 			}
 		}
 		return Promise.resolve(doc)
