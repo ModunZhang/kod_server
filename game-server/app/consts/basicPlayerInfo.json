@@ -1,4 +1,66 @@
 {
+	"_id":"53f2b57093815dad5699ea07",
+	"wall":{
+		"finishTime":0,
+		"level":1
+	},
+	"towers":{
+		"location_11":{
+			"finishTime":0,
+			"location":11,
+			"level":-1
+		},
+		"location_10":{
+			"finishTime":0,
+			"location":10,
+			"level":-1
+		},
+		"location_9":{
+			"finishTime":0,
+			"location":9,
+			"level":-1
+		},
+		"location_8":{
+			"finishTime":0,
+			"location":8,
+			"level":-1
+		},
+		"location_7":{
+			"finishTime":0,
+			"location":7,
+			"level":-1
+		},
+		"location_6":{
+			"finishTime":0,
+			"location":6,
+			"level":-1
+		},
+		"location_5":{
+			"finishTime":0,
+			"location":5,
+			"level":1
+		},
+		"location_4":{
+			"finishTime":0,
+			"location":4,
+			"level":1
+		},
+		"location_3":{
+			"finishTime":0,
+			"location":3,
+			"level":1
+		},
+		"location_2":{
+			"finishTime":0,
+			"location":2,
+			"level":1
+		},
+		"location_1":{
+			"finishTime":0,
+			"location":1,
+			"level":1
+		}
+	},
 	"buildings":{
 		"location_16":{
 			"houses":[],
@@ -130,7 +192,7 @@
 		"deviceId":"__testDeviceId2",
 		"name":"player_111111",
 		"coin":50000,
-		"resourceRefreshTime":1407921845555,
+		"resourceRefreshTime":1408415088530,
 		"gem":2000,
 		"vipExp":0,
 		"vip":1,
@@ -139,8 +201,8 @@
 		"level":1,
 		"icon":"playerIcon_default.png",
 		"loginCount":0,
-		"lastLoginTime":1407921845554,
-		"registerTime":1407921845554
+		"lastLoginTime":1408415088530,
+		"registerTime":1408415088530
 	},
 	"__v":0
 }

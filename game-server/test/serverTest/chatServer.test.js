@@ -90,7 +90,7 @@ describe("ChatServer", function(){
 			})
 
 			var count = 0
-			var onChat = function(doc){
+			var onChat = function(){
 				count += 1
 				if(count == 2){
 					pomelo.removeListener("onChat", onChat)
@@ -100,7 +100,7 @@ describe("ChatServer", function(){
 			pomelo.on("onChat", onChat)
 		})
 
-		it("send Reset", function(done){
+		it("send reset", function(done){
 			var chatInfo = {
 				text:"reset",
 				type:"global"
@@ -117,7 +117,7 @@ describe("ChatServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("send Gem", function(done){
+		it("send gem", function(done){
 			var chatInfo = {
 				text:"gem 5000",
 				type:"global"
@@ -129,6 +129,71 @@ describe("ChatServer", function(){
 
 			var onPlayerDataChanged = function(doc){
 				doc.basicInfo.gem.should.equal(5000)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("send rs", function(done){
+			var chatInfo = {
+				text:"rs 5000",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.resources.iron.should.equal(5000)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("send citizen", function(done){
+			var houseInfo = {
+				buildingLocation:3,
+				houseType:"dwelling",
+				houseLocation:1,
+				finishNow:true
+			}
+			var route = "logic.playerHandler.createHouse"
+			pomelo.request(route, houseInfo, function(doc){
+				doc.code.should.equal(200)
+
+				var chatInfo = {
+					text:"citizen 100",
+					type:"global"
+				}
+				var route = "chat.chatHandler.send"
+				pomelo.request(route, chatInfo, function(doc){
+					doc.code.should.equal(200)
+				})
+
+				var onPlayerDataChanged = function(doc){
+					doc.resources.citizen.should.equal(100)
+					done()
+					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+				}
+				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			})
+		})
+
+		it("send coin", function(done){
+			var chatInfo = {
+				text:"coin 5000",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.basicInfo.coin.should.equal(5000)
 				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}

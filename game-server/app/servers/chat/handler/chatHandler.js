@@ -24,13 +24,13 @@ var ChatHandler = function(app){
 		{
 			command:"reset",
 			desc:"重置玩家数据",
-			callback:function(text, session, userInfo){
+			callback:function(text, session, userDoc){
 				var self = this
 				var basicPlayerInfo = require("../../../consts/basicPlayerInfo")
-				basicPlayerInfo._id = userInfo._id
-				basicPlayerInfo.__v = userInfo.__v
-				basicPlayerInfo.basicInfo.deviceId = userInfo.basicInfo.deviceId
-				basicPlayerInfo.basicInfo.name = userInfo.basicInfo.name
+				basicPlayerInfo._id = userDoc._id
+				basicPlayerInfo.__v = userDoc.__v
+				basicPlayerInfo.basicInfo.deviceId = userDoc.basicInfo.deviceId
+				basicPlayerInfo.basicInfo.name = userDoc.basicInfo.name
 				this.playerService.updatePlayerAsync(basicPlayerInfo).then(function(doc){
 					PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
 				}).catch(function(e){
@@ -41,13 +41,71 @@ var ChatHandler = function(app){
 		{
 			command:"gem",
 			desc:"修改玩家宝石数量, 如: gem 2000 为修改玩家宝石数量为2000",
-			callback:function(text, session, userInfo){
+			callback:function(text, session, userDoc){
 				var self = this
-				var gemCount = text.split(" ")[1]
-				gemCount = parseInt(gemCount)
-				if(_.isNumber(gemCount)){
-					userInfo.basicInfo.gem = gemCount
-					self.playerService.updatePlayerAsync(userInfo).then(function(doc){
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					userDoc.basicInfo.gem = count
+					self.playerService.refreshPlayerResources(userDoc)
+					self.playerService.updatePlayerAsync(userDoc).then(function(doc){
+						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
+					}).catch(function(e){
+						console.error(e)
+					})
+				}
+			}
+		},
+		{
+			command:"rs",
+			desc:"修改玩家资源数量, 如: rs 2000 为修改玩家所有资源数量为2000",
+			callback:function(text, session, userDoc){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					userDoc.resources.wood = count
+					userDoc.resources.stone = count
+					userDoc.resources.iron = count
+					userDoc.resources.food = count
+					self.playerService.refreshPlayerResources(userDoc)
+					self.playerService.updatePlayerAsync(userDoc).then(function(doc){
+						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
+					}).catch(function(e){
+						console.error(e)
+					})
+				}
+			}
+		},
+		{
+			command:"citizen",
+			desc:"修改玩家空闲居民数量, 如: citizen 2000 为修改玩家空闲居民数量为2000",
+			callback:function(text, session, userDoc){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					userDoc.resources.citizen = count
+					self.playerService.refreshPlayerResources(userDoc)
+					self.playerService.updatePlayerAsync(userDoc).then(function(doc){
+						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
+					}).catch(function(e){
+						console.error(e)
+					})
+				}
+			}
+		},
+		{
+			command:"coin",
+			desc:"修改玩家银币数量, 如: coin 2000 为修改玩家银币数量为2000",
+			callback:function(text, session, userDoc){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					userDoc.basicInfo.coin = count
+					self.playerService.refreshPlayerResources(userDoc)
+					self.playerService.updatePlayerAsync(userDoc).then(function(doc){
 						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
 					}).catch(function(e){
 						console.error(e)
@@ -112,13 +170,13 @@ pro.getAll = function(msg, session, next){
 	next(null, {code:200})
 }
 
-var FilterCommand = function(text, userInfo, session){
+var FilterCommand = function(text, userDoc, session){
 	if(_.isEqual("help", text)){
 		PushHelpMessageToPlayer.call(this, session)
 	}else{
 		var callback = GetPlayerCommand.call(this, text)
 		if(_.isFunction(callback)){
-			callback.call(this, text, session, userInfo)
+			callback.call(this, text, session, userDoc)
 		}
 	}
 }
