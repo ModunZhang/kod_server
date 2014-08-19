@@ -22,7 +22,7 @@ armyCamp[1] = {
 	"tools":0,
 	"tiles":0,
 	"pulley":0,
-	"buildTime":0,
+	"buildTime":55,
 	"citizen":0
 }
 armyCamp[2] = {

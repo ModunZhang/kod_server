@@ -22,7 +22,7 @@ warehouse[1] = {
 	"tools":0,
 	"tiles":0,
 	"pulley":0,
-	"buildTime":0,
+	"buildTime":60,
 	"citizen":0
 }
 warehouse[2] = {

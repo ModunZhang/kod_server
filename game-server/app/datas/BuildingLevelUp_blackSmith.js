@@ -22,7 +22,7 @@ blackSmith[1] = {
 	"tools":0,
 	"tiles":0,
 	"pulley":0,
-	"buildTime":0,
+	"buildTime":45,
 	"citizen":0
 }
 blackSmith[2] = {

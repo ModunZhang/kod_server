@@ -22,7 +22,7 @@ keep[1] = {
 	"tools":0,
 	"tiles":0,
 	"pulley":0,
-	"buildTime":0,
+	"buildTime":120,
 	"citizen":0
 }
 keep[2] = {

@@ -22,7 +22,7 @@ tower[1] = {
 	"tools":0,
 	"tiles":0,
 	"pulley":0,
-	"buildTime":0,
+	"buildTime":10,
 	"citizen":0
 }
 tower[2] = {

@@ -22,7 +22,7 @@ watchTower[1] = {
 	"tools":0,
 	"tiles":0,
 	"pulley":0,
-	"buildTime":0,
+	"buildTime":100,
 	"citizen":0
 }
 watchTower[2] = {
