@@ -31,5 +31,25 @@ pro.pushToPlayer = function(eventName, data, playerId){
 	if(_.isEqual(Events.player.onPlayerDataChanged, eventName)){
 		data = Utils.filter(data)
 	}
-	this.channelService.pushMessageByUids(eventName, data, [{uid:playerId, sid:this.app.getServerId()}])
+	this.channelService.pushMessageByUids(eventName, data, [
+		{uid:playerId, sid:this.app.getServerId()}
+	])
+}
+
+/**
+ * 建筑升级成功事件推送
+ * @param buildingType
+ * @param level
+ */
+pro.pushBuildingLevelUpEvent = function(buildingType, buildingSubType, level, playerId){
+	var data = {
+		buildingType:buildingType,
+		level:level
+	}
+	if(_.isString(buildingSubType)){
+		data.buildingSubType = buildingSubType
+	}
+	this.pushToPlayer(Events.player.onBuildingLevelUp, data, [
+		{uid:playerId, sid:this.app.getServerId()}
+	])
 }

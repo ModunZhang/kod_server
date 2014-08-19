@@ -6,5 +6,11 @@ module.exports = {
 	GlobalChannelName:"globalChannel",
 	GloablChatChannelName:"globalChatChannel",
 	PushServiceName:"pushService",
-	CallbackService:"callbackService"
+	CallbackService:"callbackService",
+	BuildingType:{
+		Building:"building",
+		House:"house",
+		Tower:"tower",
+		Wall:"wall"
+	}
 }

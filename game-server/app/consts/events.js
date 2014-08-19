@@ -4,7 +4,8 @@
 
 module.exports = {
 	player:{
-		onPlayerDataChanged:"onPlayerDataChanged"
+		onPlayerDataChanged:"onPlayerDataChanged",
+		onBuildingLevelUp:"onBuildingLevelUp"
 	},
 	chat:{
 		onChat:"onChat",

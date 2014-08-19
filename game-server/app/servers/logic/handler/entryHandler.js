@@ -143,6 +143,7 @@ var UpdatePlayerData = function(userDoc, callback){
 			if(building.finishTime <= Date.now()){
 				building.finishTime = 0
 				building.level += 1
+				self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.Building, building.type, building.level, userDoc._id)
 			}else{
 				self.callbackService.addPlayerCallback(userDoc._id, building.finishTime, self.playerService.excutePlayerCallback.bind(self.playerService))
 			}
@@ -153,6 +154,7 @@ var UpdatePlayerData = function(userDoc, callback){
 				if(house.finishTime <= Date.now()){
 					house.finishTime = 0
 					house.level += 1
+					self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.House, house.type, house.level, userDoc._id)
 					//如果是住宅,送玩家城民
 					if(_.isEqual("dwelling", house.type)){
 						var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
@@ -173,6 +175,7 @@ var UpdatePlayerData = function(userDoc, callback){
 			if(tower.finishTime <= Date.now()){
 				tower.finishTime = 0
 				tower.level += 1
+				self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.Tower, null, tower.level, userDoc._id)
 			}else{
 				self.callbackService.addPlayerCallback(userDoc._id, tower.finishTime, self.playerService.excutePlayerCallback.bind(self.playerService))
 			}
@@ -183,6 +186,7 @@ var UpdatePlayerData = function(userDoc, callback){
 		if(userDoc.wall.finishTime <= Date.now()){
 			userDoc.wall.finishTime = 0
 			userDoc.wall.level += 1
+			self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.Wall, null, userDoc.wall.level, userDoc._id)
 		}else{
 			self.callbackService.addPlayerCallback(userDoc._id, userDoc.wall.finishTime, self.playerService.excutePlayerCallback.bind(self.playerService))
 		}
