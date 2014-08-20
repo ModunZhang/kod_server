@@ -61,7 +61,20 @@ describe("LogicServer", function(){
 
 
 	describe("playerHandler", function(){
-		it("upgradeBuilding 正常升级", function(done){
+		it("upgradeBuilding 建筑不存在", function(done){
+			var buildingInfo = {
+				location:1.5,
+				finishNow:false
+			}
+			var route = "logic.playerHandler.upgradeBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("建筑不存在")
+				done()
+			})
+		})
+
+		it("upgradeBuilding 建筑正在升级", function(done){
 			var buildingInfo = {
 				location:1,
 				finishNow:false
@@ -69,6 +82,81 @@ describe("LogicServer", function(){
 			var route = "logic.playerHandler.upgradeBuilding"
 			pomelo.request(route, buildingInfo, function(doc){
 				doc.code.should.equal(200)
+
+				var buildingInfo = {
+					location:1,
+					finishNow:false
+				}
+				var route = "logic.playerHandler.upgradeBuilding"
+				pomelo.request(route, buildingInfo, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("建筑正在升级")
+					done()
+				})
+			})
+		})
+
+		it("upgradeBuilding 建筑还未建造", function(done){
+			var buildingInfo = {
+				location:10,
+				finishNow:false
+			}
+			var route = "logic.playerHandler.upgradeBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("建筑还未建造")
+				done()
+			})
+		})
+
+		it("upgradeBuilding 建筑建造时,建筑坑位不合法", function(done){
+			var buildingInfo = {
+				location:7,
+				finishNow:false
+			}
+			var route = "logic.playerHandler.upgradeBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("建筑建造时,建筑坑位不合法")
+				done()
+			})
+		})
+
+		it("upgradeBuilding 建造数量已达建造上限", function(done){
+			var buildingInfo = {
+				location:6,
+				finishNow:false
+			}
+			var route = "logic.playerHandler.upgradeBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("建造数量已达建造上限")
+				done()
+			})
+		})
+
+		it("upgradeBuilding 建筑升级时,建筑等级不合法", function(done){
+			var buildingInfo = {
+				location:2,
+				finishNow:false
+			}
+			var route = "logic.playerHandler.upgradeBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("建筑升级时,建筑等级不合法")
+				done()
+			})
+		})
+
+		it("upgradeBuilding 建筑已达到最高等级", function(done){
+			var buildingInfo = {
+				location:2,
+				finishNow:false
+			}
+			var route = "logic.playerHandler.upgradeBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("建筑升级时,建筑等级不合法")
 				done()
 			})
 		})

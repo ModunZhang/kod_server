@@ -169,13 +169,13 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(building.level == 0 && DataUtils.getPlayerFreeBuildingsCount(doc) <= 0){
 			return Promise.reject(new Error("建造数量已达建造上限"))
 		}
-		//是否已到最高等级
-		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.type, building.level)){
-			return Promise.reject(new Error("建筑已达到最高等级"))
-		}
 		//检查升级等级是否合法
 		if(building.level > 0 && !CheckBuildingUpgradeLevelLimit(doc, buildingLocation)){
 			return Promise.reject(new Error("建筑升级时,建筑等级不合法"))
+		}
+		//是否已到最高等级
+		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.type, building.level)){
+			return Promise.reject(new Error("建筑已达到最高等级"))
 		}
 
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, building.level + 1)
