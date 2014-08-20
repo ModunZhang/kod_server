@@ -253,6 +253,18 @@ describe("LogicServer", function(){
 			})
 		})
 
+		it("destroyHouse 摧毁小屋因城民数量摧毁失败", function(done){
+			var houseInfo = {
+				buildingLocation:3,
+				houseLocation:1
+			}
+			var route = "logic.playerHandler.destroyHouse"
+			pomelo.request(route, houseInfo, function(doc){
+				doc.code.should.equal(500)
+				done()
+			})
+		})
+
 		it("destroyHouse 摧毁小屋测试", function(done){
 			var houseInfo = {
 				buildingLocation:3,

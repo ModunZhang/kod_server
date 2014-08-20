@@ -31,6 +31,17 @@ Utils.reduce = function(need, has){
 }
 
 /**
+ * 增加相应数量
+ * @param willAdd
+ * @param has
+ */
+Utils.increace = function(willAdd, has){
+	_.each(willAdd, function(value, key){
+		has[key] += value
+	})
+}
+
+/**
  * 检测是否有建筑和箭塔需要从-1级升级到0级
  * @param userDoc
  */

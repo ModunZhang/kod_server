@@ -9,6 +9,7 @@ var GameData = require("../datas/GameDatas")
 var BuildingLevelUp = GameData.BuildingLevelUp
 var BuildingFunction = GameData.BuildingFunction
 var HouseLevelUp = GameData.HouseLevelUp
+var HouseReturn = GameData.HouseReturn
 var HouseFunction = GameData.HouseFunction
 var GemsPayment = GameData.GemsPayment
 var Houses = GameData.Houses.houses
@@ -134,6 +135,24 @@ Utils.getHouseUpgradeRequired = function(houseType, houseLevel){
 	}
 
 	return required
+}
+
+/**
+ * 拆除小屋时,返还的资源
+ * @param houseType
+ * @param houseLevel
+ * @returns {{wood: *, stone: *, iron: *, citizen: *}}
+ */
+Utils.getHouseDestroyReturned = function(houseType, houseLevel){
+	var config = HouseReturn[houseType][houseLevel]
+	var returned = {
+		wood:config.wood,
+		stone:config.stone,
+		iron:config.iron,
+		citizen:config.citizen
+	}
+
+	return returned
 }
 
 /**

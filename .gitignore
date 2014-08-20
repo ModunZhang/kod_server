@@ -8,6 +8,7 @@
 .settings/
 .idea
 *.svn
+~$*
 *.sublime-project
 *.sublime-workspace
 *.swp

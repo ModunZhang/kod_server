@@ -706,15 +706,18 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		doc.basicInfo.gem -= gem
 		//更新资源数据
 		self.refreshPlayerResources(doc)
-		//退还城民给玩家
-		doc.resources.citizen += DataUtils.getPlayerHouseUsedCitizen(house.type, house.level)
 		//删除小屋
 		var index = building.houses.indexOf(house)
 		building.houses.splice(index, 1)
 		//再次更新玩家数据,防止城民爆仓
 		self.refreshPlayerResources(doc)
+		//退还资源和城民给玩家
+		var returnedResources = DataUtils.getHouseDestroyReturned(house.type, house.level)
+		LogicUtils.increace(returnedResources, doc.resources)
+		//再次更新玩家数据,防止城民爆仓
+		self.refreshPlayerResources(doc)
 		//检查是否在拆除民宅,且民宅拆除后,是否会造成城民数量小于0
-		if(DataUtils.getPlayerCitizen(doc) < 0){
+		if(_.isEqual("dwelling", house.type) && DataUtils.getPlayerCitizen(doc) < 0){
 			return Promise.reject(new Error("拆除此建筑后会造成可用城民数量小于0"))
 		}
 		//保存玩家数据
