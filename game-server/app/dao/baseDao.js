@@ -106,7 +106,7 @@ pro.findFromMongo = function(msg, callback){
 }
 
 /**
- * update a object in redis, notice: will not persistence it to mongo
+ * update a object in redis
  * @param doc json object
  * @param callback
  */
@@ -127,19 +127,17 @@ pro.update = function(doc, callback){
 		doc.__changed = 0
 	}
 
+	doc.__changed++
 	var saveToMongo = Promisify(SaveToMongo, this)
 	var loadObjToRedis = Promisify(LoadObjToRedis, this)
 
-	Promise.method(function(){
+	loadObjToRedis(doc).then(function(){
 		if(doc.__changed >= 1){
 			doc.__changed = 0
 			return saveToMongo(doc)
 		}else{
-			doc.__changed++
-			return null
+			return Promise.resolve(doc)
 		}
-	})().then(function(){
-		return loadObjToRedis(doc)
 	}).then(function(){
 		callback(null, doc)
 	}).catch(function(e){
@@ -231,8 +229,8 @@ var SaveToMongo = function(doc, callback){
  * @constructor
  */
 var LoadObjToRedis = function(doc, callback){
-	var modelName = this.model.modelName
-	this.redis.set(modelName + ":_id:" + doc._id, JSON.stringify(doc), function(err){
+	var fullKey = this.model.modelName + ":_id:" + doc._id
+	this.redis.set(fullKey, JSON.stringify(doc), function(err){
 		callback(err, doc)
 	})
 }
@@ -262,7 +260,8 @@ var FindObjFromRedis = function(id, callback){
 		}else if(_.isNull(docString)){
 			callback(null, null)
 		}else{
-			callback(null, JSON.parse(docString))
+			var json = JSON.parse(docString)
+			callback(null, json)
 		}
 	})
 }

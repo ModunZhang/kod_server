@@ -8,6 +8,8 @@ var Promise = require("bluebird")
 
 var Consts = require("../../../consts/consts")
 var Events = require("../../../consts/events")
+var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
+var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 
 module.exports = function(app){
 	return new ChatHandler(app)
@@ -35,7 +37,12 @@ var ChatHandler = function(app){
 				self.playerService.updatePlayerAsync(basicPlayerInfo).then(function(doc){
 					PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
 				}).catch(function(e){
-					console.error(e)
+					errorLogger.error("handle TextCommand Error-----------------------------")
+					errorLogger.error(e.stack)
+					if(_.isEqual("production", app.get("env"))){
+						errorLogger.error("handle TextCommand Error-----------------------------")
+						errorMailLogger.error(e.stack)
+					}
 				})
 			}
 		},
@@ -52,7 +59,12 @@ var ChatHandler = function(app){
 					self.playerService.updatePlayerAsync(userDoc).then(function(doc){
 						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
 					}).catch(function(e){
-						console.error(e)
+						errorLogger.error("handle TextCommand Error-----------------------------")
+						errorLogger.error(e.stack)
+						if(_.isEqual("production", app.get("env"))){
+							errorLogger.error("handle TextCommand Error-----------------------------")
+							errorMailLogger.error(e.stack)
+						}
 					})
 				}
 			}
@@ -73,7 +85,12 @@ var ChatHandler = function(app){
 					self.playerService.updatePlayerAsync(userDoc).then(function(doc){
 						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
 					}).catch(function(e){
-						console.error(e)
+						errorLogger.error("handle TextCommand Error-----------------------------")
+						errorLogger.error(e.stack)
+						if(_.isEqual("production", app.get("env"))){
+							errorLogger.error("handle TextCommand Error-----------------------------")
+							errorMailLogger.error(e.stack)
+						}
 					})
 				}
 			}
@@ -91,7 +108,12 @@ var ChatHandler = function(app){
 					self.playerService.updatePlayerAsync(userDoc).then(function(doc){
 						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
 					}).catch(function(e){
-						console.error(e)
+						errorLogger.error("handle TextCommand Error-----------------------------")
+						errorLogger.error(e.stack)
+						if(_.isEqual("production", app.get("env"))){
+							errorLogger.error("handle TextCommand Error-----------------------------")
+							errorMailLogger.error(e.stack)
+						}
 					})
 				}
 			}
@@ -109,7 +131,12 @@ var ChatHandler = function(app){
 					self.playerService.updatePlayerAsync(userDoc).then(function(doc){
 						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
 					}).catch(function(e){
-						console.error(e)
+						errorLogger.error("handle TextCommand Error-----------------------------")
+						errorLogger.error(e.stack)
+						if(_.isEqual("production", app.get("env"))){
+							errorLogger.error("handle TextCommand Error-----------------------------")
+							errorMailLogger.error(e.stack)
+						}
 					})
 				}
 			}

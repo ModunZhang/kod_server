@@ -66,7 +66,7 @@ app.set('errorHandler', function(err, msg, resp, session, opts, cb){
 })
 
 app.set('globalErrorHandler', function(err, msg, resp, session, opts, cb){
-	errorLogger.error("handle Error-----------------------------")
+	errorLogger.error("handle globalError-----------------------------")
 	errorLogger.error(err.stack)
 	if(_.isEqual("production", app.get("env"))){
 		errorMailLogger.error("handle globalError-----------------------------")
