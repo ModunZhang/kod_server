@@ -9,7 +9,7 @@ var Promise = require("bluebird")
 var PlayerDao = require("../dao/playerDao")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
-var utils = require("../utils/utils")
+var Utils = require("../utils/utils")
 
 var CacheService = function(){
 	this.playerDao = Promise.promisifyAll(new PlayerDao())
@@ -34,8 +34,8 @@ pro.addPlayer = function(id, callback){
 		}
 		return Promise.resolve(doc)
 	}).then(function(doc){
-		self.players[doc._id] = utils.clone(doc)
-		callback(null, utils.clone(doc))
+		self.players[doc._id] = Utils.clone(doc)
+		callback(null, Utils.clone(doc))
 	}).catch(function(e){
 		callback(e)
 	})
@@ -52,7 +52,7 @@ pro.getPlayer = function(id, callback){
 		callback(new Error("玩家不存在"))
 		return
 	}
-	callback(null, utils.clone(doc))
+	callback(null, Utils.clone(doc))
 }
 
 /**
@@ -72,8 +72,8 @@ pro.updatePlayer = function(doc, callback){
 	}else{
 		doc.__v = docInCache.__v
 	}
-	this.players[doc._id] = utils.clone(doc)
-	callback(null, utils.clone(doc))
+	this.players[doc._id] = Utils.clone(doc)
+	callback(null, Utils.clone(doc))
 	if(docInCache.__v >= this.maxChangedCount){
 		this.playerDao.updateAsync(this.players[doc._id]).catch(function(e){
 			errorLogger.error("handle updatePlayer Error -----------------------------")
@@ -100,7 +100,7 @@ pro.removePlayer = function(id, callback){
 	}
 	this.playerDao.updateAsync(doc).then(function(){
 		delete self.players[id]
-		callback(null,utils.clone(doc))
+		callback(null,Utils.clone(doc))
 	}).catch(function(e){
 		callback(e)
 	})

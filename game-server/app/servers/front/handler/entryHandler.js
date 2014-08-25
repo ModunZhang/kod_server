@@ -7,7 +7,6 @@
 var Promise = require("bluebird")
 var Promisify = Promise.promisify
 var _ = require("underscore")
-var utils = require("../../../utils/utils")
 var crypto = require('crypto')
 
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")

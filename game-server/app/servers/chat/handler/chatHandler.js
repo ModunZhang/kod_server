@@ -3,7 +3,6 @@
  */
 
 var _ = require("underscore")
-var utils = require("../../../utils/utils")
 var Promise = require("bluebird")
 
 var Consts = require("../../../consts/consts")

@@ -4,7 +4,6 @@
 
 var Promise = require("bluebird")
 var _ = require("underscore")
-var utils = require("../../../utils/utils")
 
 module.exports = function(app){
 	return new Handler(app)

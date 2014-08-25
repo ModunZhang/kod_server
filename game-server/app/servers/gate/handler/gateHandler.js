@@ -5,7 +5,7 @@
  */
 
 var dispatcher = require('../../../utils/dispatcher')
-var utils = require("../../../utils/utils")
+var Utils = require("../../../utils/utils")
 
 module.exports = function(app) {
   return new Handler(app)
@@ -26,7 +26,7 @@ var pro = Handler.prototype
 pro.queryEntry = function(msg, session, next){
 	var frontServers = this.app.getServersByType('front')
 	var frontServer = dispatcher.dispatch(frontServers)
-	next(null,utils.next({
+	next(null,Utils.next({
 		id:frontServer.id,
 		host:frontServer.host,
 		port:frontServer.clientPort

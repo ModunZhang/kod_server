@@ -5,7 +5,7 @@
  */
 
 var BasicPlayerInfo = require("../../../consts/basicPlayerInfo")
-var utils = require("../../../utils/utils")
+var Utils = require("../../../utils/utils")
 var DataUtis = require("../../../utils/dataUtils")
 
 module.exports = function(app){
@@ -29,7 +29,7 @@ var pro = CommandRemote.prototype
  */
 pro.reset = function(uid, callback){
 	var self = this
-	var basicPlayerInfo = utils.clone(BasicPlayerInfo)
+	var basicPlayerInfo = Utils.clone(BasicPlayerInfo)
 	this.cacheService.getPlayerAsync(uid).then(function(doc){
 		basicPlayerInfo._id = doc._id
 		basicPlayerInfo.__v = doc.__v
