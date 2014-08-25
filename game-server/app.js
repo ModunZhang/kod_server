@@ -1,3 +1,5 @@
+"use strict"
+
 var pomelo = require("pomelo")
 var redis = require("redis")
 var mongoose = require("mongoose")

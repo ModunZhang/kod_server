@@ -1,3 +1,5 @@
+"use strict"
+
 /**
  * 和读取配置文件相关工具方法写在这里
  * Created by modun on 14-8-6.

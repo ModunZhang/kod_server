@@ -1,3 +1,5 @@
+"use strict"
+
 var crc = require('crc')
 
 module.exports.dispatch = function(servers) {

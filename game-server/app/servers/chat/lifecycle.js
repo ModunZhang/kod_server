@@ -7,7 +7,6 @@
 var Promise = require("bluebird")
 var _ = require("underscore")
 
-var Consts = require("../../consts/consts")
 var PlayerService = require("../../services/playerService")
 
 

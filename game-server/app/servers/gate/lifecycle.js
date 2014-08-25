@@ -1,3 +1,5 @@
+"use strict"
+
 /**
  * Created by modun on 14-8-9.
  */
