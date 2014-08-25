@@ -51,7 +51,7 @@ pro.playerLogin = function(playerId, frontServerId, callback){
 		AfterLogin.call(self, doc)
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		self.pushService.onPlayerLoginSuccess(doc)
 		callback(null, doc)
 	}).catch(function(e){
 		callback(e)
@@ -570,11 +570,8 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		if(_.isEqual("dwelling", house.type) && finishNow){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
-			console.log(next + "--" + previous)
 			doc.resources.citizen += next - previous
-			console.log(doc.resources.citizen)
 			self.refreshPlayerResources(doc)
-			console.log(doc.resources.citizen)
 		}
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)

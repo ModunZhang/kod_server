@@ -4,6 +4,7 @@
 
 module.exports = {
 	player:{
+		onPlayerLoginSuccess:"onPlayerLoginSuccess",
 		onPlayerDataChanged:"onPlayerDataChanged",
 		onBuildingLevelUp:"onBuildingLevelUp",
 		onHouseLevelUp:"onHouseLevelUp",

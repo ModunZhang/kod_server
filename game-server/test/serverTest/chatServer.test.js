@@ -54,12 +54,12 @@ describe("ChatServer", function(){
 			pomelo.request(route, loginInfo, function(doc){
 				doc.code.should.equal(200)
 			})
-			var onPlayerDataChanged = function(doc){
+			var onPlayerLoginSuccess = function(doc){
 				m_user = doc
 				done()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
 			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
 		})
 
 		it("send", function(done){

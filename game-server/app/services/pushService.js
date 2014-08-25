@@ -40,6 +40,15 @@ pro.onPlayerDataChanged = function(playerData){
 }
 
 /**
+ * 玩家登陆成功时,推送数据给玩家
+ * @param playerData
+ */
+pro.onPlayerLoginSuccess = function(playerData){
+	playerData.serverTime = Date.now()
+	this.pushToPlayer(playerData, Events.player.onPlayerLoginSuccess, Utils.filter(playerData))
+}
+
+/**
  * 建筑升级成功事件推送
  * @param playerData
  * @param location
