@@ -5,6 +5,7 @@
  */
 
 var Promise = require("bluebird")
+var _ = require("underscore")
 
 var PlayerDao = require("../dao/playerDao")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")

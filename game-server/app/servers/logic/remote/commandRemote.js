@@ -4,6 +4,8 @@
  * Created by modun on 14-8-23.
  */
 
+var _ = require("underscore")
+
 var BasicPlayerInfo = require("../../../consts/basicPlayerInfo")
 var Utils = require("../../../utils/utils")
 var DataUtis = require("../../../utils/dataUtils")
