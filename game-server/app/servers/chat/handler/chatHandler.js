@@ -19,7 +19,7 @@ module.exports = function(app){
 var ChatHandler = function(app){
 	this.app = app
 	this.channelService = this.app.get("channelService")
-	this.globalChannel = this.channelService.getChannel(Consts.GloablChatChannelName)
+	this.globalChatChannel = this.channelService.getChannel(Consts.GloablChatChannelName)
 	this.chats = []
 	this.maxChatCount = 50
 	this.commands = [
@@ -203,7 +203,7 @@ pro.send = function(msg, session, next){
 			self.chats.shift()
 		}
 		self.chats.push(response)
-		self.globalChannel.pushMessage(Events.chat.onChat, response)
+		self.globalChatChannel.pushMessage(Events.chat.onChat, response)
 
 		FilterCommand.call(self, doc, text, session)
 	}).then(function(){

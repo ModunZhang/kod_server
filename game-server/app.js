@@ -29,6 +29,9 @@ app.configure("production|development", "front", function(){
 		useDict:true,
 		useProtobuf:true
 	})
+	app.set('sessionConfig', {
+		singleSession:true
+	})
 
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
