@@ -4,16 +4,16 @@
 
 var life = module.exports
 
-life.beforeStartup = function(app, cb){
-	cb()
+life.beforeStartup = function(app, callback){
+	callback()
 }
 
-life.afterStartup = function(app, cb){
-	cb()
+life.afterStartup = function(app, callback){
+	callback()
 }
 
-life.beforeShutdown = function(app, cb){
-	cb()
+life.beforeShutdown = function(app, callback){
+	callback()
 }
 
 life.afterStartAll = function(app){

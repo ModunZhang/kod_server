@@ -22,6 +22,36 @@ var pro = CacheService.prototype
 
 
 /**
+ * 保存所有缓存数据到mongo数据库
+ * @param callback
+ */
+pro.saveAllCaches = function(callback){
+	this.saveAllPlayersAsync().then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 保存所有玩家数据到mongo
+ * @param callback
+ */
+pro.saveAllPlayers = function(callback){
+	var self = this
+	var funcs = []
+	_.each(this.players, function(playerDoc){
+		funcs.push(self.removePlayerAsync(playerDoc._id))
+	})
+
+	Promise.all(funcs).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * 从mongo查询玩家并将玩家添加到缓存
  * @param id
  * @param callback

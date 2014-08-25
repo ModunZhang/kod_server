@@ -13,18 +13,17 @@ var PlayerService = require("../../services/playerService")
 
 var life = module.exports
 
-life.beforeStartup = function(app, cb){
-	cb()
-}
-
-life.afterStartup = function(app, cb){
+life.beforeStartup = function(app, callback){
 	app.set("playerService", Promise.promisifyAll(new PlayerService(app)))
-
-	cb()
+	callback()
 }
 
-life.beforeShutdown = function(app, cb){
-	cb()
+life.afterStartup = function(app, callback){
+	callback()
+}
+
+life.beforeShutdown = function(app, callback){
+	callback()
 }
 
 life.afterStartAll = function(app){
