@@ -4,7 +4,7 @@
  * Created by modun on 14-8-6.
  */
 
-_ = require("underscore")
+var _ = require("underscore")
 
 var Utils = module.exports
 
