@@ -15,6 +15,7 @@ var LogicRemote = function(app) {
 	this.app = app
 	this.playerService = this.app.get("playerService")
 	this.cacheService = this.app.get("cacheService")
+	this.sessionService = this.app.get("backendSessionService")
 }
 
 var pro = LogicRemote.prototype
@@ -54,4 +55,22 @@ pro.logout = function(uid, frontServerId, callback){
  */
 pro.getPlayerInfo = function(uid, callback){
 	this.cacheService.getPlayer(uid, callback)
+}
+
+/**
+ * 将玩家踢下线
+ * @param uid
+ * @param callback
+ */
+pro.kickPlayer = function(uid, callback){
+	var kickPlayer = Promise.promisify(this.sessionService.kickByUid, this)
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		return kickPlayer(doc.frontServerId, doc._id)
+	}, function(){
+		return Promise.resolve()
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
 }

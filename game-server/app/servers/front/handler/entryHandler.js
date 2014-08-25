@@ -43,7 +43,7 @@ pro.login = function(msg, session, next){
 	var bindPlayerSession = Promisify(BindPlayerSession, this)
 	var addPlayerToChatChannel = Promisify(AddPlayerToChatChannel, this)
 	var loginToLogicServer = Promisify(LoginToLogicServer, this)
-	var kickPlayer = Promisify(this.app.get('sessionService').kick, this)
+	var kickPlayerFromLogicServer = Promisify(KickPlayerFromLogicServer, this)
 
 	this.playerDao.findAsync({"countInfo.deviceId":deviceId}).then(function(doc){
 		if(!_.isObject(doc)){
@@ -54,8 +54,10 @@ pro.login = function(msg, session, next){
 		}
 	}).then(function(doc){
 		return Promise.method(function(){
-			return kickPlayer(doc._id, "当前账号的另外一个设备登录了游戏").then(function(){
-				return doc
+			return kickPlayerFromLogicServer(doc).then(function(){
+				return Promise.resolve(doc)
+			}).catch(function(e){
+				return Promise.reject(e)
 			})
 		})()
 	}).then(function(doc){
@@ -72,7 +74,6 @@ pro.login = function(msg, session, next){
 }
 
 var BindPlayerSession = function(session, doc, callback){
-	console.log(doc)
 	session.bind(doc._id)
 	session.set("frontServerId", this.serverId)
 	session.set("logicServerId", doc.countInfo.logicServerId)
@@ -121,6 +122,10 @@ var LoginToLogicServer = function(session, callback){
 
 var LogoutFromLogicServer = function(session, callback){
 	this.app.rpc.logic.logicRemote.logout(session, session.uid, session.get("frontServerId"), callback)
+}
+
+var KickPlayerFromLogicServer = function(playerDoc, callback){
+	this.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.countInfo.logicServerId, playerDoc._id, callback)
 }
 
 var CreatePlayer = function(deviceId, logicServerId, callback){
