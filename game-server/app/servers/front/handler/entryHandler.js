@@ -43,6 +43,7 @@ pro.login = function(msg, session, next){
 	var bindPlayerSession = Promisify(BindPlayerSession, this)
 	var addPlayerToChatChannel = Promisify(AddPlayerToChatChannel, this)
 	var loginToLogicServer = Promisify(LoginToLogicServer, this)
+	var kickPlayer = Promisify(this.app.get('sessionService').kick, this)
 
 	this.playerDao.findAsync({"countInfo.deviceId":deviceId}).then(function(doc){
 		if(!_.isObject(doc)){
@@ -51,6 +52,12 @@ pro.login = function(msg, session, next){
 		}else{
 			return Promise.resolve(doc)
 		}
+	}).then(function(doc){
+		return Promise.method(function(){
+			return kickPlayer(doc._id, "当前账号的另外一个设备登录了游戏").then(function(){
+				return doc
+			})
+		})()
 	}).then(function(doc){
 		return bindPlayerSession(session, doc)
 	}).then(function(){
@@ -65,6 +72,7 @@ pro.login = function(msg, session, next){
 }
 
 var BindPlayerSession = function(session, doc, callback){
+	console.log(doc)
 	session.bind(doc._id)
 	session.set("frontServerId", this.serverId)
 	session.set("logicServerId", doc.countInfo.logicServerId)
