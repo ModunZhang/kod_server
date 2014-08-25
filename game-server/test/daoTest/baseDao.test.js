@@ -4,7 +4,6 @@
 
 var should = require('should')
 var Promise = require("bluebird")
-var redis = require("redis")
 var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
@@ -27,16 +26,18 @@ describe("BaseDao", function(){
 		})
 		mongoose.connect(Config.mongoAddr, function(){
 			Demo = mongoose.model('demo',demoSchema)
-			var redisClient = redis.createClient(6379)
-			baseDao = Promise.promisifyAll(new BaseDao(redisClient, Demo))
+			baseDao = Promise.promisifyAll(new BaseDao(Demo))
 
 			Demo.remove({}, function(){
 				done()
 			})
 
 //			var doc = {
-//				basicInfo:{
+//				countInfo:{
 //					deviceId:Config.deviceId2,
+//					logicServerId:"logic-server-1"
+//				},
+//				basicInfo:{
 //					name:"player_111111",
 //					cityName:"city_111111"
 //				}
@@ -54,66 +55,39 @@ describe("BaseDao", function(){
 
 		baseDao.addAsync(demo).then(function(doc){
 			should.exist(doc)
-			doc.hello.should.equal("world")
 			demoDoc = doc
 			done()
 		})
 	})
 
 	it("find", function(done){
-		baseDao.findAsync(demoDoc._id).then(function(doc){
+		baseDao.findAsync({"_id":demoDoc._id}).then(function(doc){
 			should.exist(doc)
+			demoDoc = doc
 			done()
 		})
 	})
 
-	it("findFromMongo", function(done){
-		baseDao.findFromMongoAsync({_id:demoDoc._id}).then(function(doc){
+	it("findById", function(done){
+		baseDao.findByIdAsync(demoDoc._id).then(function(doc){
 			should.exist(doc)
+			demoDoc = doc
 			done()
 		})
 	})
 
 	it("update", function(done){
-		baseDao.findAsync(demoDoc._id).then(function(doc){
-			doc.hello = "hi"
-			return baseDao.updateAsync(doc)
-		}).then(function(){
-			return baseDao.findAsync(demoDoc._id)
-		}).then(function(doc){
-			doc.hello.should.equal("hi")
-			doc.__changed.should.equal(1)
-			var func = function(doc){
-				baseDao.updateAsync(doc).then(function(doc){
-					if(doc.__changed !== 0 ){
-						func(doc)
-					}else{
-						done()
-					}
-				})
-			}
-			func(doc)
-		})
-	})
-
-	it("clear", function(done){
-		baseDao.findAsync(demoDoc._id).then(function(doc){
-			return baseDao.clearAsync(doc)
-		}).then(function(){
-			return baseDao.findAsync(demoDoc._id)
-		}).then(function(doc){
+		demoDoc.hello = "hi"
+		baseDao.updateAsync(demoDoc).then(function(doc){
 			should.exist(doc)
+			demoDoc = doc
+			demoDoc.hello.should.equal("hi")
 			done()
 		})
 	})
 
 	it("remove", function(done){
-		baseDao.findAsync(demoDoc._id).then(function(doc){
-			return baseDao.removeAsync(doc)
-		}).then(function(doc){
-			return baseDao.findAsync(doc._id)
-		}).then(function(doc){
-			should.not.exist(doc)
+		baseDao.removeAsync(demoDoc).then(function(){
 			done()
 		})
 	})

@@ -4,15 +4,15 @@
 		"token":"agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3rasfpaagl29w4rxn"
 	},
 	{
+		"type":"front",
+		"token":"aagvxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
+	},
+	{
 		"type":"logic",
 		"token":"agarxhqb98rpajloaxn34ga8xrunzxfkjwlaw3ruxnpaagl29w4rxn"
 	},
 	{
 		"type":"chat",
 		"token":"agarxhqb98rpajdfhxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
-	},
-	{
-		"type":"db",
-		"token":"aagvxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
 	}
 ]

@@ -1,116 +1,135 @@
+"use strict"
+
 /**
  * Created by modun on 14-7-23.
  */
 
 var Promise = require("bluebird")
-var Promisify = Promise.promisify
 var _ = require("underscore")
 var crypto = require('crypto')
 
-var PlayerDao = require("../dao/playerDao")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var Events = require("../consts/events")
-var Consts = require("../consts/consts")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 
 var PlayerService = function(app){
 	this.app = app
-	this.dao = Promise.promisifyAll(new PlayerDao(this.app.get("redis")))
 	this.pushService = this.app.get("pushService")
 	this.callbackService = this.app.get("callbackService")
+	this.cacheService = this.app.get("cacheService")
 }
 
 module.exports = PlayerService
 var pro = PlayerService.prototype
 
+
+
 /**
- * 根据设备号获取玩家信息
- * @param deviceId
+ * 玩家登陆逻辑服务器
+ * @param playerId
+ * @param frontServerId
  * @param callback
  */
-pro.getPlayerByDeviceId = function(deviceId, callback){
+pro.playerLogin = function(playerId, frontServerId, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
-	if(!_.isString(deviceId)){
-		callback(new Error("deviceId 不合法"))
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(frontServerId)){
+		callback(new Error("frontServerId 不合法"))
 		return
 	}
 
 	var self = this
-	var createPlayer = Promisify(CreatePlayer, this)
+	this.cacheService.addPlayerAsync(playerId).then(function(doc){
+		doc.frontServerId = frontServerId
+		AfterLogin.call(self, doc)
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback(null, doc)
+	}).catch(function(e){
+		callback(e)
+	})
+}
 
-	this.dao.findFromMongoAsync({"basicInfo.deviceId":deviceId}).then(function(doc){
-		if(_.isNull(doc)){
-			return createPlayer(deviceId)
-		}else{
-			return self.dao.findAsync(doc._id)
+var AfterLogin = function(doc){
+	var self = this
+	doc.countInfo.lastLoginTime = Date.now()
+	doc.countInfo.loginCount += 1
+	//更新资源数据
+	self.refreshPlayerResources(doc)
+	_.each(doc.buildings, function(building){
+		//检查建筑
+		if(building.finishTime > 0){
+			if(building.finishTime <= Date.now()){
+				building.finishTime = 0
+				building.level += 1
+				self.pushService.onBuildingLevelUp(doc, building.location)
+			}else{
+				self.callbackService.addPlayerCallback(doc._id, building.finishTime, ExcutePlayerCallback.bind(self))
+			}
 		}
-	}).then(function(doc){
-		callback(null, doc)
-	}).catch(function(e){
-		callback(e)
+		//检查小屋
+		_.each(building.houses, function(house){
+			if(house.finishTime > 0){
+				if(house.finishTime <= Date.now()){
+					house.finishTime = 0
+					house.level += 1
+					self.pushService.onHouseLevelUp(doc, building.location, house.location)
+					//如果是住宅,送玩家城民
+					if(_.isEqual("dwelling", house.type)){
+						var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
+						var next = DataUtils.getDwellingPopulationByLevel(house.level)
+						doc.resources.citizen += next - previous
+						self.refreshPlayerResources.call(doc)
+					}
+				}else{
+					self.callbackService.addPlayerCallback(doc._id, house.finishTime, ExcutePlayerCallback.bind(self))
+				}
+			}
+		})
 	})
+
+	//检查箭塔
+	_.each(doc.towers, function(tower){
+		if(tower.finishTime > 0){
+			if(tower.finishTime <= Date.now()){
+				tower.finishTime = 0
+				tower.level += 1
+				self.pushService.onTowerLevelUp(doc, tower.location)
+			}else{
+				self.callbackService.addPlayerCallback(doc._id, tower.finishTime, ExcutePlayerCallback.bind(self))
+			}
+		}
+	})
+	//检查城墙
+	if(doc.wall.finishTime > 0){
+		if(doc.wall.finishTime <= Date.now()){
+			doc.wall.finishTime = 0
+			doc.wall.level += 1
+			self.pushService.onWallLevelUp(doc)
+		}else{
+			self.callbackService.addPlayerCallback(doc._id, doc.wall.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	}
 }
 
 /**
- * 根据主键获取玩家信息
+ * 玩家登出逻辑服
  * @param playerId
+ * @param frontServerId
  * @param callback
  */
-pro.getPlayerById = function(playerId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-
-	this.dao.findAsync(playerId).then(function(doc){
-		callback(null, doc)
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-pro.updatePlayer = function(doc, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isObject(doc)){
-		callback(new Error("doc 不合法"))
-		return
-	}
-
-	this.dao.updateAsync(doc).then(function(doc){
-		callback(null, doc)
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 将玩家数据持久化到mongo,通常在玩家下线时调用
- * @param playerId
- * @param callback
- */
-pro.savePlayer = function(playerId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-
-	var self = this
-	this.dao.findAsync(playerId).then(function(doc){
-		return self.dao.clearAsync(doc)
-	}).then(function(doc){
-		callback(null, doc)
+pro.playerLogout = function(playerId, frontServerId, callback){
+	this.callbackService.removeAllPlayerCallback(playerId)
+	this.cacheService.removePlayerAsync(playerId).then(function(){
+		callback()
 	}).catch(function(e){
 		callback(e)
 	})
@@ -141,7 +160,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 	}
 
 	var self = this
-	self.dao.findAsync(playerId).then(function(doc){
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -213,16 +232,16 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		//是否立即完成
 		if(finishNow){
 			building.level = building.level + 1
-			self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.Building, building.type, building.level, doc._id)
+			self.pushService.onBuildingLevelUp(doc, building.location)
 		}else{
 			building.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			self.callbackService.addPlayerCallback(doc._id, building.finishTime, self.excutePlayerCallback.bind(self))
+			self.callbackService.addPlayerCallback(doc._id, building.finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//保存玩家数据
-		return self.dao.updateAsync(doc)
+		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		//推送玩家数据到客户端
-		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		self.pushService.onPlayerDataChanged(doc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -249,13 +268,13 @@ pro.speedupBuildingBuild = function(playerId, buildingLocation, callback){
 	}
 
 	var self = this
-	self.dao.findAsync(playerId).then(function(doc){
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		var building = doc.buildings["location_" + buildingLocation]
 		//检查建筑是否存在
-		if(_.isElement(building)){
+		if(!_.isObject(building)){
 			return Promise.reject(new Error("建筑不存在"))
 		}
 		//检查建筑是否正在升级
@@ -277,12 +296,12 @@ pro.speedupBuildingBuild = function(playerId, buildingLocation, callback){
 		//修改建筑数据
 		building.level = building.level + 1
 		building.finishTime = 0
-		self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.Building, building.type, building.level, doc._id)
+		self.pushService.onBuildingLevelUp(doc, building.location)
 		//保存玩家数据
-		return self.dao.updateAsync(doc)
+		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		//推送玩家数据到客户端
-		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		self.pushService.onPlayerDataChanged(doc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -324,7 +343,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 	}
 
 	var self = this
-	self.dao.findAsync(playerId).then(function(doc){
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -345,14 +364,23 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			return Promise.reject(new Error("小屋类型不存在"))
 		}
 		//检查建造坑位是否合法
-		if(houseLocation < 1 || houseLocation > 3){
+		if(houseLocation % 1 != 0 || houseLocation < 1 || houseLocation > 3){
 			return Promise.reject(new Error("小屋location只能1<=location<=3"))
 		}
+		//建筑周围不允许建造小屋
 		if(!DataUtils.isBuildingHasHouse(buildingLocation)){
 			return Promise.reject(new Error("建筑周围不允许建造小屋"))
 		}
+		//创建小屋时,小屋坑位是否合法
 		if(!CheckHouseCreateLocation(doc, buildingLocation, houseType, houseLocation)){
 			return Promise.reject(new Error("创建小屋时,小屋坑位不合法"))
+		}
+		//检查是否建造小屋会造成可用城民小于0
+		if(!_.isEqual("dwelling", houseType)){
+			var willUse = DataUtils.getPlayerHouseUsedCitizen(houseType, 1)
+			if(DataUtils.getPlayerCitizen(doc) - willUse < 0){
+				return Promise.reject(new Error("建造小屋会造成可用城民小于0"))
+			}
 		}
 
 		var upgradeRequired = DataUtils.getHouseUpgradeRequired(houseType, 1)
@@ -385,15 +413,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		self.refreshPlayerResources(doc)
 		LogicUtils.reduce(used.resources, doc.resources)
 		LogicUtils.reduce(used.materials, doc.materials)
-
-		//检查是否建造小屋会造成可用城民小于0
-		if(!_.isEqual("dwelling", houseType)){
-			var willUse = DataUtils.getPlayerHouseUsedCitizen(houseType, 1)
-			if(DataUtils.getPlayerCitizen(doc) - willUse < 0){
-				return Promise.reject(new Error("建造小屋会造成可用城民小于0"))
-			}
-		}
-
 		//再次更新玩家数据,防止城民爆仓
 		self.refreshPlayerResources(doc)
 		//创建小屋
@@ -403,16 +422,17 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			location:houseLocation,
 			finishTime:0
 		}
+		//将小屋添加到大型建筑中
+		building.houses.push(house)
 		//是否立即完成
 		if(finishNow){
 			house.level += 1
-			self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.House, house.type, house.level, doc._id)
+			self.pushService.onHouseLevelUp(doc, building.location, house.location)
 		}else{
 			house.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			self.callbackService.addPlayerCallback(doc._id, house.finishTime, self.excutePlayerCallback.bind(self))
+			self.callbackService.addPlayerCallback(doc._id, house.finishTime, ExcutePlayerCallback.bind(self))
 		}
-		//将小屋添加到大型建筑中
-		building.houses.push(house)
+
 		//如果是住宅,送玩家城民
 		if(_.isEqual("dwelling", house.type) && finishNow){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
@@ -421,10 +441,10 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			self.refreshPlayerResources(doc)
 		}
 		//保存玩家数据
-		return self.dao.updateAsync(doc)
+		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		//推送玩家数据到客户端
-		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		self.pushService.onPlayerDataChanged(doc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -462,7 +482,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 	}
 
 	var self = this
-	self.dao.findAsync(playerId).then(function(doc){
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -471,7 +491,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		var used = {}
 		var building = doc.buildings["location_" + buildingLocation]
 		//检查建筑是否存在
-		if(_.isElement(building)){
+		if(!_.isObject(building)){
 			return Promise.reject(new Error("主体建筑不存在"))
 		}
 		//检查建筑等级是否大于1
@@ -492,8 +512,21 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		if(house.finishTime > 0){
 			return Promise.reject(new Error("小屋正在升级"))
 		}
-		var upgradeRequired = DataUtils.getHouseUpgradeRequired(house.type, house.level + 1)
+		//是否已到最高等级
+		if(DataUtils.isHouseReachMaxLevel(house.type, house.level)){
+			return Promise.reject(new Error("小屋已达到最高等级"))
+		}
+		//检查是否升级小屋会造成可用城民小于0
+		if(!_.isEqual("dwelling", house.type)){
+			var currentLevelUsed = DataUtils.getPlayerHouseUsedCitizen(house.type, house.level)
+			var nextLevelUsed = DataUtils.getPlayerHouseUsedCitizen(house.type, house.level + 1)
+			var willUse = nextLevelUsed - currentLevelUsed
+			if(DataUtils.getPlayerCitizen(doc) - willUse < 0){
+				return Promise.reject(new Error("升级小屋会造成可用城民小于0"))
+			}
+		}
 
+		var upgradeRequired = DataUtils.getHouseUpgradeRequired(house.type, house.level + 1)
 		//是否立即完成
 		if(finishNow){
 			gem += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -523,37 +556,31 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		self.refreshPlayerResources(doc)
 		LogicUtils.reduce(used.resources, doc.resources)
 		LogicUtils.reduce(used.materials, doc.materials)
-		//检查是否建造小屋会造成可用城民小于0
-		if(!_.isEqual("dwelling", house.type)){
-			var currentLevelUsed = DataUtils.getPlayerHouseUsedCitizen(house.type, house.level)
-			var nextLevelUsed = DataUtils.getPlayerHouseUsedCitizen(house.type, house.level + 1)
-			var willUse = nextLevelUsed - currentLevelUsed
-			if(DataUtils.getPlayerCitizen(doc) - willUse < 0){
-				return Promise.reject(new Error("升级小屋会造成可用城民小于0"))
-			}
-		}
 		//再次更新玩家数据,防止城民爆仓
 		self.refreshPlayerResources(doc)
 		//是否立即完成
 		if(finishNow){
 			house.level += 1
-			self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.House, house.type, house.level, doc._id)
+			self.pushService.onHouseLevelUp(doc, building.location, house.location)
 		}else{
 			house.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			self.callbackService.addPlayerCallback(doc._id, house.finishTime, self.excutePlayerCallback.bind(self))
+			self.callbackService.addPlayerCallback(doc._id, house.finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//如果是住宅,送玩家城民
 		if(_.isEqual("dwelling", house.type) && finishNow){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
+			console.log(next + "--" + previous)
 			doc.resources.citizen += next - previous
+			console.log(doc.resources.citizen)
 			self.refreshPlayerResources(doc)
+			console.log(doc.resources.citizen)
 		}
 		//保存玩家数据
-		return self.dao.updateAsync(doc)
+		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		//推送玩家数据到客户端
-		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		self.pushService.onPlayerDataChanged(doc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -585,14 +612,14 @@ pro.speedupHouseBuild = function(playerId, buildingLocation, houseLocation, call
 	}
 
 	var self = this
-	self.dao.findAsync(playerId).then(function(doc){
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 
 		var building = doc.buildings["location_" + buildingLocation]
 		//检查建筑是否存在
-		if(_.isElement(building)){
+		if(!_.isObject(building)){
 			return Promise.reject(new Error("主体建筑不存在"))
 		}
 		//检查建筑等级是否大于1
@@ -628,7 +655,7 @@ pro.speedupHouseBuild = function(playerId, buildingLocation, houseLocation, call
 		//修改建筑数据
 		house.level = house.level + 1
 		house.finishTime = 0
-		self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.House, house.type, house.level, doc._id)
+		self.pushService.onHouseLevelUp(doc, building.location, house.location)
 		//如果是住宅,送玩家城民
 		if(_.isEqual("dwelling", house.type)){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
@@ -637,10 +664,10 @@ pro.speedupHouseBuild = function(playerId, buildingLocation, houseLocation, call
 			self.refreshPlayerResources(doc)
 		}
 		//保存玩家数据
-		return self.dao.updateAsync(doc)
+		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		//推送玩家数据到客户端
-		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		self.pushService.onPlayerDataChanged(doc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -672,14 +699,14 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 	}
 
 	var self = this
-	self.dao.findAsync(playerId).then(function(doc){
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 
 		var building = doc.buildings["location_" + buildingLocation]
 		//检查建筑是否存在
-		if(_.isElement(building)){
+		if(!_.isObject(building)){
 			return Promise.reject(new Error("主体建筑不存在"))
 		}
 		//检查小屋是否存在
@@ -692,9 +719,20 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		if(!_.isObject(house)){
 			return Promise.reject(new Error("小屋不存在"))
 		}
-		//检查是否正在升级
-		if(house.finishTime > 0){
-			return Promise.reject(new Error("小屋正在升级"))
+//		//检查是否正在升级
+//		if(house.finishTime > 0){
+//			return Promise.reject(new Error("小屋正在升级"))
+//		}
+		//更新资源数据
+		self.refreshPlayerResources(doc)
+		//删除小屋
+		var index = building.houses.indexOf(house)
+		building.houses.splice(index, 1)
+		//更新资源数据
+		self.refreshPlayerResources(doc)
+		//检查是否在拆除民宅,且民宅拆除后,是否会造成城民数量小于0
+		if(_.isEqual("dwelling", house.type) && DataUtils.getPlayerCitizen(doc) < 0){
+			return Promise.reject(new Error("拆除此建筑后会造成可用城民数量小于0"))
 		}
 		//获取需要的宝石数量
 		var gem = 100
@@ -704,27 +742,16 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		}
 		//修改玩家宝石数据
 		doc.basicInfo.gem -= gem
-		//更新资源数据
-		self.refreshPlayerResources(doc)
-		//删除小屋
-		var index = building.houses.indexOf(house)
-		building.houses.splice(index, 1)
-		//再次更新玩家数据,防止城民爆仓
-		self.refreshPlayerResources(doc)
 		//退还资源和城民给玩家
 		var returnedResources = DataUtils.getHouseDestroyReturned(house.type, house.level)
 		LogicUtils.increace(returnedResources, doc.resources)
 		//再次更新玩家数据,防止城民爆仓
 		self.refreshPlayerResources(doc)
-		//检查是否在拆除民宅,且民宅拆除后,是否会造成城民数量小于0
-		if(_.isEqual("dwelling", house.type) && DataUtils.getPlayerCitizen(doc) < 0){
-			return Promise.reject(new Error("拆除此建筑后会造成可用城民数量小于0"))
-		}
 		//保存玩家数据
-		return self.dao.updateAsync(doc)
+		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		//推送玩家数据到客户端
-		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		self.pushService.onPlayerDataChanged(doc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -756,7 +783,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 	}
 
 	var self = this
-	self.dao.findAsync(playerId).then(function(doc){
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -820,16 +847,16 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		//是否立即完成
 		if(finishNow){
 			tower.level = tower.level + 1
-			self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.Tower, null, tower.level, doc._id)
+			self.pushService.onTowerLevelUp(doc, tower.location)
 		}else{
 			tower.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			self.callbackService.addPlayerCallback(doc._id, tower.finishTime, self.excutePlayerCallback.bind(self))
+			self.callbackService.addPlayerCallback(doc._id, tower.finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//保存玩家数据
-		return self.dao.updateAsync(doc)
+		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		//推送玩家数据到客户端
-		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		self.pushService.onPlayerDataChanged(doc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -856,13 +883,13 @@ pro.speedupTowerBuild = function(playerId, towerLocation, callback){
 	}
 
 	var self = this
-	self.dao.findAsync(playerId).then(function(doc){
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		var tower = doc.towers["location_" + towerLocation]
 		//检查箭塔是否存在
-		if(_.isElement(tower)){
+		if(!_.isObject(tower)){
 			return Promise.reject(new Error("箭塔不存在"))
 		}
 		//检查箭塔是否正在升级
@@ -884,12 +911,12 @@ pro.speedupTowerBuild = function(playerId, towerLocation, callback){
 		//修改建筑数据
 		tower.level = tower.level + 1
 		tower.finishTime = 0
-		self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.Tower, null, tower.level, doc._id)
+		self.pushService.onTowerLevelUp(doc, tower.location)
 		//保存玩家数据
-		return self.dao.updateAsync(doc)
+		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		//推送玩家数据到客户端
-		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		self.pushService.onPlayerDataChanged(doc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -916,7 +943,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 	}
 
 	var self = this
-	self.dao.findAsync(playerId).then(function(doc){
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -942,7 +969,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		}
 		//检查升级等级是否合法
 		if(!CheckWallUpgradeLevelLimit(doc)){
-			return Promise.reject(new Error("城墙升级时,建筑等级不合法"))
+			return Promise.reject(new Error("城墙升级时,城墙等级不合法"))
 		}
 
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("wall", wall.level + 1)
@@ -979,17 +1006,17 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		LogicUtils.reduce(used.materials, doc.materials)
 		//是否立即完成
 		if(finishNow){
-			wall.level = tower.level + 1
-			self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.Wall, null, userDoc.wall.level, doc._id)
+			wall.level = wall.level + 1
+			self.pushService.onWallLevelUp(doc)
 		}else{
 			wall.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			self.callbackService.addPlayerCallback(doc._id, wall.finishTime, self.excutePlayerCallback.bind(self))
+			self.callbackService.addPlayerCallback(doc._id, wall.finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//保存玩家数据
-		return self.dao.updateAsync(doc)
+		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		//推送玩家数据到客户端
-		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		self.pushService.onPlayerDataChanged(doc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -1011,13 +1038,13 @@ pro.speedupWallBuild = function(playerId, callback){
 	}
 
 	var self = this
-	self.dao.findAsync(playerId).then(function(doc){
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		var wall = doc.wall
 		//检查城墙是否存在
-		if(_.isElement(wall)){
+		if(!_.isObject(wall)){
 			return Promise.reject(new Error("城墙不存在"))
 		}
 		//检查城墙是否正在升级
@@ -1039,12 +1066,12 @@ pro.speedupWallBuild = function(playerId, callback){
 		//修改建筑数据
 		wall.level = wall.level + 1
 		wall.finishTime = 0
-		self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.Wall, null, doc.wall.level, doc._id)
+		self.pushService.onWallLevelUp(doc)
 		//保存玩家数据
-		return self.dao.updateAsync(doc)
+		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		//推送玩家数据到客户端
-		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		self.pushService.onPlayerDataChanged(doc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -1052,13 +1079,20 @@ pro.speedupWallBuild = function(playerId, callback){
 }
 
 /**
- * 延迟执行玩家回调
- * @param playerId
- * @param finishTime
+ * 更新玩家资源数据
+ * @param doc
  */
-pro.excutePlayerCallback = function(playerId, finishTime){
+pro.refreshPlayerResources = function(doc){
+	var resources = DataUtils.getPlayerResources(doc)
+	_.each(resources, function(value, key){
+		doc.resources[key] = value
+	})
+	doc.basicInfo.resourceRefreshTime = Date.now()
+}
+
+var ExcutePlayerCallback = function(playerId, finishTime){
 	var self = this
-	this.dao.findAsync(playerId).then(function(doc){
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		//更新资源数据
 		self.refreshPlayerResources(doc)
 		//检查建筑
@@ -1066,14 +1100,14 @@ pro.excutePlayerCallback = function(playerId, finishTime){
 			if(building.finishTime > 0 && building.finishTime <= finishTime){
 				building.finishTime = 0
 				building.level += 1
-				self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.Building, building.type, building.level, doc._id)
+				self.pushService.onBuildingLevelUp(doc, building.location)
 			}
 			//检查小屋
 			_.each(building.houses, function(house){
 				if(house.finishTime > 0 && house.finishTime <= finishTime){
 					house.finishTime = 0
 					house.level += 1
-					self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.House, house.type, house.level, doc._id)
+					self.pushService.onHouseLevelUp(doc, building.location, house.location)
 					//如果是住宅,送玩家城民
 					if(_.isEqual("dwelling", house.type)){
 						var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
@@ -1089,21 +1123,21 @@ pro.excutePlayerCallback = function(playerId, finishTime){
 			if(tower.finishTime > 0 && tower.finishTime <= finishTime){
 				tower.finishTime = 0
 				tower.level += 1
-				self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.Tower, null, tower.level, doc._id)
+				self.pushService.onTowerLevelUp(doc, tower.location)
 			}
 		})
 		//检查城墙
 		if(doc.wall.finishTime > 0 && doc.wall.finishTime <= finishTime){
 			doc.wall.finishTime = 0
 			doc.wall.level += 1
-			self.pushService.pushBuildingLevelUpEvent(Consts.BuildingType.Wall, null, doc.wall.level, doc._id)
+			self.pushService.onWallLevelUp(doc)
 		}
 
 		//更新玩家数据
-		return self.dao.updateAsync(doc)
+		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		//推送玩家信息到客户端
-		self.pushService.pushToPlayer(Events.player.onPlayerDataChanged, doc, doc._id)
+		self.pushService.onPlayerDataChanged(doc)
 	}).catch(function(e){
 		errorLogger.error("handle excutePlayerCallback Error -----------------------------")
 		errorLogger.error(e.stack)
@@ -1114,81 +1148,46 @@ pro.excutePlayerCallback = function(playerId, finishTime){
 	})
 }
 
-/**
- * 刷新玩家资源数据
- * @param userDoc
- */
-pro.refreshPlayerResources = function(userDoc){
-	var resources = DataUtils.getPlayerResources(userDoc)
-	_.each(resources, function(value, key){
-		userDoc.resources[key] = value
-	})
-	userDoc.basicInfo.resourceRefreshTime = Date.now()
-}
-
-var CreatePlayer = function(deviceId, callback){
-	var self = this
-	Promisify(crypto.randomBytes)(4).then(function(buf){
-		var token = buf.toString("hex")
-		return Promise.resolve(token)
-	}).then(function(token){
-		var doc = {
-			basicInfo:{
-				deviceId:deviceId,
-				name:"player_" + token,
-				cityName:"city_" + token
-			}
-		}
-		return Promise.resolve(doc)
-	}).then(function(doc){
-		return self.dao.addAsync(doc)
-	}).then(function(doc){
-		return callback(null, doc)
-	}).catch(function(e){
-		return callback(e)
-	})
-}
-
-var CheckBuildingUpgradeLevelLimit = function(userDoc, location){
-	var building = userDoc.buildings["location_" + location]
-	var keep = userDoc.buildings["location_1"]
+var CheckBuildingUpgradeLevelLimit = function(playerDoc, location){
+	var building = playerDoc.buildings["location_" + location]
+	var keep = playerDoc.buildings["location_1"]
 	if(location == 1) return true
 	return building.level + 1 <= keep.level
 }
 
-var CheckTowerUpgradeLevelLimit = function(userDoc, location){
-	var tower = userDoc.towers["location_" + location]
-	var keep = userDoc.buildings["location_1"]
+var CheckTowerUpgradeLevelLimit = function(playerDoc, location){
+	var tower = playerDoc.towers["location_" + location]
+	var keep = playerDoc.buildings["location_1"]
 	return tower.level + 1 <= keep.level
 }
 
-var CheckWallUpgradeLevelLimit = function(userDoc){
-	var wall = userDoc.wall
-	var keep = userDoc.buildings["location_1"]
+var CheckWallUpgradeLevelLimit = function(playerDoc){
+	var wall = playerDoc.wall
+	var keep = playerDoc.buildings["location_1"]
 	return wall.level + 1 <= keep.level
 }
 
-var CheckBuildingCreateLocation = function(userDoc, location){
+var CheckBuildingCreateLocation = function(playerDoc, location){
 	var previousLocation = LogicUtils.getPreviousBuildingLocation(location)
 	var nextLocation = LogicUtils.getNextBuildingLocation(location)
 	var frontLocation = LogicUtils.getFrontBuildingLocation(location)
 	if(previousLocation){
-		var previousBuilding = userDoc.buildings["location_" + previousLocation]
+		var previousBuilding = playerDoc.buildings["location_" + previousLocation]
 		if(previousBuilding.level > 0) return true
 	}
 	if(nextLocation){
-		var nextBuilding = userDoc.buildings["location_" + nextLocation]
+		var nextBuilding = playerDoc.buildings["location_" + nextLocation]
 		if(nextBuilding.level > 0) return true
 	}
 	if(frontLocation){
-		var frontBuilding = userDoc.buildings["location_" + frontLocation]
+		var frontBuilding = playerDoc.buildings["location_" + frontLocation]
 		if(frontBuilding.level > 0) return true
 	}
 
 	return false
 }
 
-var CheckHouseCreateLocation = function(userDoc, buildingLocation, houseType, houseLocation){
+var CheckHouseCreateLocation = function(playerDoc, buildingLocation, houseType, houseLocation){
 	var conditions = {
 		location_1:{
 			widthMax:2,
@@ -1204,7 +1203,7 @@ var CheckHouseCreateLocation = function(userDoc, buildingLocation, houseType, ho
 		}
 	}
 
-	var building = userDoc.buildings["location_" + buildingLocation]
+	var building = playerDoc.buildings["location_" + buildingLocation]
 	var houses = building.houses
 	var willBeSize = DataUtils.getHouseSize(houseType)
 	var condition = conditions["location_" + houseLocation]

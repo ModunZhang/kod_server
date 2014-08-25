@@ -272,9 +272,9 @@ var should = require('should')
 //	return middle
 //}
 //
-//Utils.updateBuildingsLevel = function(userDoc){
-//	var buildings = userDoc.buildings
-//	var towers = userDoc.towers
+//Utils.updateBuildingsLevel = function(playerDoc){
+//	var buildings = playerDoc.buildings
+//	var towers = playerDoc.towers
 //	for(var i = 1; i <= _.size(buildings); i++){
 //		var building = buildings["location_" + i]
 //		if(building.level == -1){
@@ -347,9 +347,9 @@ var should = require('should')
 //	should(Utils.getFrontBuildingLocation(25)).eql(16)
 //})
 //
-//var userDoc = {}
+//var playerDoc = {}
 //
-//userDoc.buildings = {
+//playerDoc.buildings = {
 //	"location_1":{
 //		level:1
 //	},
@@ -400,7 +400,7 @@ var should = require('should')
 //	}
 //}
 //
-//userDoc.towers = {
+//playerDoc.towers = {
 //	"location_1":{
 //		level:1
 //	},
@@ -437,6 +437,6 @@ var should = require('should')
 //}
 //
 //describe("updateBuildingsLevel", function(){
-//	Utils.updateBuildingsLevel(userDoc)
-//	console.log(userDoc)
+//	Utils.updateBuildingsLevel(playerDoc)
+//	console.log(playerDoc)
 //})

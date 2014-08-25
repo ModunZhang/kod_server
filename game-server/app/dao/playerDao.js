@@ -3,7 +3,6 @@
  */
 
 var Promise = require("bluebird")
-var Promisify = Promise.promisify
 var utils = require("../utils/utils")
 var util = require("util")
 var _ = require("underscore")
@@ -11,8 +10,8 @@ var _ = require("underscore")
 var BaseDao = require("./baseDao")
 var Player = require("../domains/player")
 
-var PlayerDao = function(redis){
-	BaseDao.call(this, redis, Player)
+var PlayerDao = function(){
+	BaseDao.call(this, Player)
 }
 
 util.inherits(PlayerDao, BaseDao)

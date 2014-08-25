@@ -17,31 +17,24 @@ module.exports = function(app){
 
 var ChatHandler = function(app){
 	this.app = app
-	this.playerService = this.app.get("playerService")
 	this.channelService = this.app.get("channelService")
-	this.gloablChatChannel = this.channelService.getChannel(Consts.GloablChatChannelName, true)
+	this.globalChannel = this.channelService.getChannel(Consts.GloablChatChannelName)
 	this.chats = []
 	this.maxChatCount = 50
 	this.commands = [
 		{
 			command:"reset",
 			desc:"重置玩家数据",
-			callback:function(text, session, userDoc){
+			callback:function(session, uid){
 				var self = this
-				var basicPlayerInfo = require("../../../consts/basicPlayerInfo")
-				basicPlayerInfo._id = userDoc._id
-				basicPlayerInfo.__v = userDoc.__v
-				basicPlayerInfo.basicInfo.deviceId = userDoc.basicInfo.deviceId
-				basicPlayerInfo.basicInfo.name = userDoc.basicInfo.name
-				basicPlayerInfo.basicInfo.cityName = userDoc.basicInfo.cityName
-				self.playerService.updatePlayerAsync(basicPlayerInfo).then(function(doc){
-					PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
-				}).catch(function(e){
-					errorLogger.error("handle TextCommand Error-----------------------------")
-					errorLogger.error(e.stack)
-					if(_.isEqual("production", app.get("env"))){
+				self.app.rpc.logic.commandRemote.reset(session, uid, function(e){
+					if(_.isObject(e)){
 						errorLogger.error("handle TextCommand Error-----------------------------")
-						errorMailLogger.error(e.stack)
+						errorLogger.error(e.stack)
+						if(_.isEqual("production", self.app.get("env"))){
+							errorLogger.error("handle TextCommand Error-----------------------------")
+							errorMailLogger.error(e.stack)
+						}
 					}
 				})
 			}
@@ -49,21 +42,19 @@ var ChatHandler = function(app){
 		{
 			command:"gem",
 			desc:"修改玩家宝石数量, 如: gem 2000 为修改玩家宝石数量为2000",
-			callback:function(text, session, userDoc){
+			callback:function(session, uid, text){
 				var self = this
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					userDoc.basicInfo.gem = count
-					self.playerService.refreshPlayerResources(userDoc)
-					self.playerService.updatePlayerAsync(userDoc).then(function(doc){
-						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
-					}).catch(function(e){
-						errorLogger.error("handle TextCommand Error-----------------------------")
-						errorLogger.error(e.stack)
-						if(_.isEqual("production", app.get("env"))){
+					self.app.rpc.logic.commandRemote.gem(session, uid, count, function(e){
+						if(_.isObject(e)){
 							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorMailLogger.error(e.stack)
+							errorLogger.error(e.stack)
+							if(_.isEqual("production", self.app.get("env"))){
+								errorLogger.error("handle TextCommand Error-----------------------------")
+								errorMailLogger.error(e.stack)
+							}
 						}
 					})
 				}
@@ -72,24 +63,19 @@ var ChatHandler = function(app){
 		{
 			command:"rs",
 			desc:"修改玩家资源数量, 如: rs 2000 为修改玩家所有资源数量为2000",
-			callback:function(text, session, userDoc){
+			callback:function(session, uid, text){
 				var self = this
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					userDoc.resources.wood = count
-					userDoc.resources.stone = count
-					userDoc.resources.iron = count
-					userDoc.resources.food = count
-					self.playerService.refreshPlayerResources(userDoc)
-					self.playerService.updatePlayerAsync(userDoc).then(function(doc){
-						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
-					}).catch(function(e){
-						errorLogger.error("handle TextCommand Error-----------------------------")
-						errorLogger.error(e.stack)
-						if(_.isEqual("production", app.get("env"))){
+					self.app.rpc.logic.commandRemote.rs(session, uid, count, function(e){
+						if(_.isObject(e)){
 							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorMailLogger.error(e.stack)
+							errorLogger.error(e.stack)
+							if(_.isEqual("production", self.app.get("env"))){
+								errorLogger.error("handle TextCommand Error-----------------------------")
+								errorMailLogger.error(e.stack)
+							}
 						}
 					})
 				}
@@ -98,21 +84,19 @@ var ChatHandler = function(app){
 		{
 			command:"citizen",
 			desc:"修改玩家空闲居民数量, 如: citizen 2000 为修改玩家空闲居民数量为2000",
-			callback:function(text, session, userDoc){
+			callback:function(session, uid, text){
 				var self = this
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					userDoc.resources.citizen = count
-					self.playerService.refreshPlayerResources(userDoc)
-					self.playerService.updatePlayerAsync(userDoc).then(function(doc){
-						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
-					}).catch(function(e){
-						errorLogger.error("handle TextCommand Error-----------------------------")
-						errorLogger.error(e.stack)
-						if(_.isEqual("production", app.get("env"))){
+					self.app.rpc.logic.commandRemote.citizen(session, uid, count, function(e){
+						if(_.isObject(e)){
 							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorMailLogger.error(e.stack)
+							errorLogger.error(e.stack)
+							if(_.isEqual("production", self.app.get("env"))){
+								errorLogger.error("handle TextCommand Error-----------------------------")
+								errorMailLogger.error(e.stack)
+							}
 						}
 					})
 				}
@@ -121,21 +105,61 @@ var ChatHandler = function(app){
 		{
 			command:"coin",
 			desc:"修改玩家银币数量, 如: coin 2000 为修改玩家银币数量为2000",
-			callback:function(text, session, userDoc){
+			callback:function(session, uid, text){
 				var self = this
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					userDoc.basicInfo.coin = count
-					self.playerService.refreshPlayerResources(userDoc)
-					self.playerService.updatePlayerAsync(userDoc).then(function(doc){
-						PushToPlayer.call(self, Events.player.onPlayerDataChanged, session, utils.filter(doc))
-					}).catch(function(e){
-						errorLogger.error("handle TextCommand Error-----------------------------")
-						errorLogger.error(e.stack)
-						if(_.isEqual("production", app.get("env"))){
+					self.app.rpc.logic.commandRemote.coin(session, uid, count, function(e){
+						if(_.isObject(e)){
 							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorMailLogger.error(e.stack)
+							errorLogger.error(e.stack)
+							if(_.isEqual("production", self.app.get("env"))){
+								errorLogger.error("handle TextCommand Error-----------------------------")
+								errorMailLogger.error(e.stack)
+							}
+						}
+					})
+				}
+			}
+		},
+		{
+			command:"building",
+			desc:"修改玩家银币数量, 如: building 5 为修改玩家所有玩家建筑等级为5级",
+			callback:function(session, uid, text){
+				var self = this
+				var level = text.split(" ")[1]
+				level = parseInt(level)
+				if(_.isNumber(level)){
+					self.app.rpc.logic.commandRemote.building(session, uid, level, function(e){
+						if(_.isObject(e)){
+							errorLogger.error("handle TextCommand Error-----------------------------")
+							errorLogger.error(e.stack)
+							if(_.isEqual("production", self.app.get("env"))){
+								errorLogger.error("handle TextCommand Error-----------------------------")
+								errorMailLogger.error(e.stack)
+							}
+						}
+					})
+				}
+			}
+		},
+		{
+			command:"keep",
+			desc:"修改玩家城堡等级, 如: keep 5 为修改玩家城堡等级为5级",
+			callback:function(session, uid, text){
+				var self = this
+				var level = text.split(" ")[1]
+				level = parseInt(level)
+				if(_.isNumber(level)){
+					self.app.rpc.logic.commandRemote.keep(session, uid, level, function(e){
+						if(_.isObject(e)){
+							errorLogger.error("handle TextCommand Error-----------------------------")
+							errorLogger.error(e.stack)
+							if(_.isEqual("production", self.app.get("env"))){
+								errorLogger.error("handle TextCommand Error-----------------------------")
+								errorMailLogger.error(e.stack)
+							}
 						}
 					})
 				}
@@ -145,7 +169,6 @@ var ChatHandler = function(app){
 }
 
 var pro = ChatHandler.prototype
-
 
 /**
  * 发送聊天信息
@@ -158,10 +181,12 @@ pro.send = function(msg, session, next){
 	var text = msg.text
 	var type = msg.type
 	if(_.isEmpty(text) || _.isEmpty(text.trim())){
-		next(null, utils.next(null, 500))
+		var e = new Error("聊天内容不能为空")
+		next(e, {code:500, message:e.message})
 	}
 
-	this.playerService.getPlayerByIdAsync(session.uid).then(function(doc){
+	var getPlayerInfo = Promise.promisify(this.app.rpc.logic.logicRemote.getPlayerInfo, this)
+	getPlayerInfo(session, session.uid).then(function(doc){
 		var time = Date.now()
 		var response = {
 			fromId:doc._id,
@@ -177,9 +202,9 @@ pro.send = function(msg, session, next){
 			self.chats.shift()
 		}
 		self.chats.push(response)
-		self.gloablChatChannel.pushMessage(Events.chat.onChat, response)
+		self.globalChannel.pushMessage(Events.chat.onChat, response)
 
-		FilterCommand.call(self, text, doc, session)
+		FilterCommand.call(self, doc, text, session)
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
@@ -198,13 +223,13 @@ pro.getAll = function(msg, session, next){
 	next(null, {code:200})
 }
 
-var FilterCommand = function(text, userDoc, session){
-	if(_.isEqual("help", text)){
+var FilterCommand = function(playerDoc, chatText, session){
+	if(_.isEqual("help", chatText)){
 		PushHelpMessageToPlayer.call(this, session)
 	}else{
-		var callback = GetPlayerCommand.call(this, text)
+		var callback = GetPlayerCommand.call(this, chatText)
 		if(_.isFunction(callback)){
-			callback.call(this, text, session, userDoc)
+			callback.call(this, session, session.uid, chatText)
 		}
 	}
 }
@@ -245,6 +270,6 @@ var GetPlayerCommand = function(text){
 
 var PushToPlayer = function(event, session, msg){
 	this.channelService.pushMessageByUids(event, msg, [
-		{uid:session.uid, sid:session.get("serverId")}
+		{uid:session.uid, sid:session.get("frontServerId")}
 	])
 }

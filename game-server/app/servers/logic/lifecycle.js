@@ -1,3 +1,5 @@
+"use strict"
+
 /**
  * Created by modun on 14-8-9.
  */
@@ -8,6 +10,7 @@ var _ = require("underscore")
 var PlayerService = require("../../services/playerService")
 var PushService = require("../../services/pushService")
 var CallbackService = require("../../services/callbackService")
+var CacheService = require("../../services/cacheService")
 var Consts = require("../../consts/consts")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
@@ -15,59 +18,20 @@ var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("ko
 var life = module.exports
 
 life.beforeStartup = function(app, cb){
+	app.set("pushService", new PushService(app))
+	app.set("callbackService", new CallbackService(app))
+	app.set("cacheService", Promise.promisifyAll(new CacheService()))
+	app.set("playerService", Promise.promisifyAll(new PlayerService(app)))
+
 	cb()
 }
 
 life.afterStartup = function(app, cb){
-	app.set("pushService", new PushService(app))
-	app.set("callbackService", new CallbackService(app))
-	app.set("playerService", Promise.promisifyAll(new PlayerService(app)))
-
-	var globalSessionService = app.get("globalChannelService")
-	var destroyChannel = Promise.promisify(globalSessionService.destroyChannel, globalSessionService)
-	destroyChannel(Consts.GlobalChannelName).then(function(){
-		cb()
-	}).catch(function(e){
-		errorLogger.error("handle afterStartup Error -----------------------------")
-		errorLogger.error(e.stack)
-		if(_.isEqual("production", app.get("env"))){
-			errorMailLogger.error("handle afterStartup Error -----------------------------")
-			errorMailLogger.error(e.stack)
-		}
-		cb()
-	})
+	cb()
 }
 
 life.beforeShutdown = function(app, cb){
-	var globalSessionService = app.get("globalChannelService")
-	var getMembersBySid = Promise.promisify(globalSessionService.getMembersBySid, globalSessionService)
-	getMembersBySid(Consts.GlobalChannelName, app.getServerId()).then(function(uids){
-		var sessionService = app.get("sessionService")
-		var kick = Promise.promisify(sessionService.kick, sessionService)
-		var funcs = []
-		_.each(uids, function(uid){
-			funcs.push(kick(uid, "服务器关闭"))
-		})
-		Promise.all(funcs).then(function(){
-			cb()
-		}).catch(function(e){
-			errorLogger.error("handle beforeShutdown Error -----------------------------")
-			errorLogger.error(e.stack)
-			if(_.isEqual("production", app.get("env"))){
-				errorMailLogger.error("handle beforeShutdown Error -----------------------------")
-				errorMailLogger.error(e.stack)
-			}
-			cb()
-		})
-	}).catch(function(e){
-		errorLogger.error("handle beforeShutdown Error -----------------------------")
-		errorLogger.error(e.stack)
-		if(_.isEqual("production", app.get("env"))){
-			errorMailLogger.error("handle beforeShutdown Error -----------------------------")
-			errorMailLogger.error(e.stack)
-		}
-		cb()
-	})
+	cb()
 }
 
 life.afterStartAll = function(app){

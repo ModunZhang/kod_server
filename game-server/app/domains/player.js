@@ -11,11 +11,14 @@ var ResourceInitData = GameDatas.PlayerInitData.resources[1]
 var MaterialInitData = GameDatas.PlayerInitData.materials[1]
 
 var playerSchema = new Schema({
-	basicInfo:{
+	countInfo:{
 		deviceId:{type:String, index:true, unique:true, required:true},
+		logicServerId:{type:String, index:true, required:true},
 		registerTime:{type:Number, required:true, default:Date.now()},
 		lastLoginTime:{type:Number, required:true, default:Date.now()},
-		loginCount:{type:Number, required:true, default:0},
+		loginCount:{type:Number, required:true, default:0}
+	},
+	basicInfo:{
 		name:{type:String, index:true, unique:true, required:true},
 		cityName:{type:String, required:true},
 		icon:{type:String, required:true, default:"playerIcon_default.png"},

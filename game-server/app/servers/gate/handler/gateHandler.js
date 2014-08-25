@@ -1,3 +1,5 @@
+"use strict"
+
 /**
  * Created by modun on 14-7-22.
  */
@@ -16,17 +18,17 @@ var Handler = function(app) {
 var pro = Handler.prototype
 
 /**
- * 获取逻辑服务器
+ * 获取前端服务器
  * @param msg
  * @param session
  * @param next
  */
 pro.queryEntry = function(msg, session, next){
-	var logicServers = this.app.getServersByType('logic')
-	var logicServer = dispatcher.dispatch(logicServers)
+	var frontServers = this.app.getServersByType('front')
+	var frontServer = dispatcher.dispatch(frontServers)
 	next(null,utils.next({
-		id:logicServer.id,
-		host:logicServer.host,
-		port:logicServer.clientPort
+		id:frontServer.id,
+		host:frontServer.host,
+		port:frontServer.clientPort
 	}, 200))
 }

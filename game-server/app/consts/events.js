@@ -5,7 +5,10 @@
 module.exports = {
 	player:{
 		onPlayerDataChanged:"onPlayerDataChanged",
-		onBuildingLevelUp:"onBuildingLevelUp"
+		onBuildingLevelUp:"onBuildingLevelUp",
+		onHouseLevelUp:"onHouseLevelUp",
+		onTowerLevelUp:"onTowerLevelUp",
+		onWallLevelUp:"onWallLevelUp"
 	},
 	chat:{
 		onChat:"onChat",

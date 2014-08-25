@@ -3,7 +3,7 @@
  */
 
 module.exports = {
-	GlobalChannelName:"globalChannel",
+	LogicChatChannelPrefix:"logicChatChannel_",
 	GloablChatChannelName:"globalChatChannel",
 	PushServiceName:"pushService",
 	CallbackService:"callbackService",

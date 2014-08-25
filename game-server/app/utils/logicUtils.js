@@ -43,11 +43,11 @@ Utils.increace = function(willAdd, has){
 
 /**
  * 检测是否有建筑和箭塔需要从-1级升级到0级
- * @param userDoc
+ * @param playerDoc
  */
-Utils.updateBuildingsLevel = function(userDoc){
-	var buildings = userDoc.buildings
-	var towers = userDoc.towers
+Utils.updateBuildingsLevel = function(playerDoc){
+	var buildings = playerDoc.buildings
+	var towers = playerDoc.towers
 	for(var i = 1; i <= _.size(buildings); i++){
 		var building = buildings["location_" + i]
 		if(building.level == -1){

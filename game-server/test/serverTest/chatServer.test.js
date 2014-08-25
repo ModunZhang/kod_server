@@ -3,15 +3,24 @@
  */
 
 var should = require('should')
-var Promise = require("bluebird")
 var pomelo = require("../pomelo-client")
+var mongoose = require("mongoose")
+var _ = require("underscore")
 
 var Config = require("../config")
+var Player = require("../../app/domains/player")
+
+var ClearTestAccount = function(callback){
+	mongoose.connect(Config.mongoAddr, function(){
+		Player.findOneAndRemove({"countInfo.deviceId":Config.deviceId}, callback)
+	})
+}
 
 describe("ChatServer", function(){
 	var m_user
-	describe("chatHandler", function(){
-		before(function(done){
+
+	before(function(done){
+		ClearTestAccount(function(){
 			pomelo.init({
 				host:Config.gateHost,
 				port:Config.gatePort,
@@ -33,17 +42,24 @@ describe("ChatServer", function(){
 				})
 			})
 		})
+	})
 
+
+	describe("chatHandler", function(){
 		it("login", function(done){
 			var loginInfo = {
 				deviceId:Config.deviceId
 			}
-			var route = "logic.entryHandler.login"
+			var route = "front.entryHandler.login"
 			pomelo.request(route, loginInfo, function(doc){
 				doc.code.should.equal(200)
-				m_user = doc.data
-				done()
 			})
+			var onPlayerDataChanged = function(doc){
+				m_user = doc
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
 		it("send", function(done){
@@ -79,7 +95,7 @@ describe("ChatServer", function(){
 		})
 
 
-		it("send Help", function(done){
+		it("send help", function(done){
 			var chatInfo = {
 				text:"help",
 				type:"global"
@@ -90,9 +106,10 @@ describe("ChatServer", function(){
 			})
 
 			var count = 0
-			var onChat = function(){
+			var onChat = function(doc){
 				count += 1
 				if(count == 2){
+					doc.fromId.should.equal("system")
 					pomelo.removeListener("onChat", onChat)
 					done()
 				}
@@ -200,9 +217,45 @@ describe("ChatServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		after(function(done){
-			pomelo.disconnect()
-			setTimeout(done, 100)
+		it("send building", function(done){
+			var chatInfo = {
+				text:"building 30",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.buildings["location_1"].level.should.equal(22)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
+
+		it("send keep", function(done){
+			var chatInfo = {
+				text:"keep 8",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.buildings["location_1"].level.should.equal(8)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+	})
+
+
+	after(function(){
+		pomelo.disconnect()
 	})
 })

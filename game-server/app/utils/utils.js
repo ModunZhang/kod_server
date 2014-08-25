@@ -50,8 +50,7 @@ utils.print = function(){
 }
 
 utils.filter = function(doc){
-	var resp = _.omit(doc, "__v", "__changed")
-	return resp
+	return doc
 }
 
 utils.next = function(doc, code){
@@ -61,4 +60,8 @@ utils.next = function(doc, code){
 		resp.data = doc
 	}
 	return resp
+}
+
+utils.clone = function(json){
+	return JSON.parse(JSON.stringify(json))
 }

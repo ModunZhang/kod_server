@@ -22,10 +22,10 @@ var pro = CallbackService.prototype
  * 添加某个玩家的时间回调
  * @param playerId
  * @param finishTime
- * @param callback
+ * @param func
  */
-pro.addPlayerCallback = function(playerId, finishTime, callback){
-	var id = setTimeout(excutePlayerCallback.bind(this), finishTime - Date.now(), playerId, finishTime, callback)
+pro.addPlayerCallback = function(playerId, finishTime, func){
+	var id = setTimeout(excutePlayerFunc.bind(this), finishTime - Date.now(), playerId, finishTime, func)
 	var key = this.callbackPrefix.player + playerId
 	var callbacks = this.callbacks[key]
 	if(_.isEmpty(callbacks)){
@@ -64,10 +64,10 @@ pro.removeAllPlayerCallback = function(playerId){
 }
 
 
-var excutePlayerCallback = function(playerId, finishTime, callback){
+var excutePlayerFunc = function(playerId, finishTime, func){
 	var key = this.callbackPrefix.player + playerId
 	var callbacks = this.callbacks[key]
 	delete callbacks[finishTime]
 
-	callback(playerId, finishTime)
+	func(playerId, finishTime)
 }

@@ -1,5 +1,5 @@
 {
-	"_id":"53f30b9496f7483c5a000af4",
+	"_id":"53f7ed10f0c513a202721989",
 	"wall":{
 		"finishTime":0,
 		"level":1
@@ -189,21 +189,24 @@
 		"wood":25000
 	},
 	"basicInfo":{
-		"deviceId":"__testDeviceId2",
 		"name":"player_111111",
 		"cityName":"city_111111",
 		"coin":50000,
-		"resourceRefreshTime":1408437140174,
+		"resourceRefreshTime":1408757008810,
 		"gem":2000,
 		"vipExp":0,
 		"vip":1,
 		"power":0,
 		"levelExp":0,
 		"level":1,
-		"icon":"playerIcon_default.png",
+		"icon":"playerIcon_default.png"
+	},
+	"countInfo":{
+		"deviceId":"__testDeviceId2",
+		"logicServerId":"logic-server-1",
 		"loginCount":0,
-		"lastLoginTime":1408437140173,
-		"registerTime":1408437140173
+		"lastLoginTime":1408757008809,
+		"registerTime":1408757008809
 	},
 	"__v":0
 }
