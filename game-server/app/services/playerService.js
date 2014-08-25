@@ -87,7 +87,7 @@ var AfterLogin = function(doc){
 						var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 						var next = DataUtils.getDwellingPopulationByLevel(house.level)
 						doc.resources.citizen += next - previous
-						self.refreshPlayerResources.call(doc)
+						self.refreshPlayerResources(doc)
 					}
 				}else{
 					self.callbackService.addPlayerCallback(doc._id, house.finishTime, ExcutePlayerCallback.bind(self))
