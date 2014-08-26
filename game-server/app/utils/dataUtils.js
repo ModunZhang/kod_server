@@ -46,7 +46,7 @@ Utils.buyResources = function(need, has){
 					if(item.min < required){
 						gemUsed += item.gem
 						required -= item.resource
-						currentBuy += item.resources
+						currentBuy += item.resource
 						break
 					}
 				}

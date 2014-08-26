@@ -233,6 +233,24 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
+		it("upgradeBuilding 正常升级", function(done){
+			var buildingInfo = {
+				location:2,
+				finishNow:true
+			}
+			var route = "logic.playerHandler.upgradeBuilding"
+			pomelo.request(route, buildingInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.buildings["location_2"].level.should.equal(2)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
 		it("createHouse 主体建筑不存在", function(done){
 			var houseInfo = {
 				buildingLocation:55,
