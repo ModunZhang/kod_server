@@ -152,25 +152,6 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("speedupBuildingBuild 加速建筑升级", function(done){
-			var buildingInfo = {
-				location:1
-			}
-			var route = "logic.playerHandler.speedupBuildingBuild"
-			pomelo.request(route, buildingInfo, function(doc){
-				doc.code.should.equal(200)
-			})
-
-			var onPlayerDataChanged = function(doc){
-				m_user = doc
-				should.exist(doc)
-				m_user.buildings["location_1"].finishTime.should.equal(0)
-				done()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
 		it("upgradeBuilding 建筑已达到最高等级", function(done){
 			var func = function(){
 				var buildingInfo = {
@@ -183,29 +164,13 @@ describe("LogicServer", function(){
 						func()
 					}else{
 						doc.code.should.equal(500)
-						doc.message.should.equal("建筑已达到最高等级")
-
-						var chatInfo = {
-							text:"gem 5000",
-							type:"global"
-						}
-						var route = "chat.chatHandler.send"
-						pomelo.request(route, chatInfo, function(doc){
-							doc.code.should.equal(200)
-						})
-
-						var onPlayerDataChanged = function(doc){
-							doc.basicInfo.gem.should.equal(5000)
-							done()
-							pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-						}
-						pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+						done()
 					}
 				})
 			}
 
 			var chatInfo = {
-				text:"gem 5000000",
+				text:"keep 22",
 				type:"global"
 			}
 			var route = "chat.chatHandler.send"
@@ -214,7 +179,8 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(5000000)
+				doc.buildings["location_1"].level.should.equal(22)
+				doc.buildings["location_1"].finishTime.should.equal(0)
 				func()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -261,69 +227,6 @@ describe("LogicServer", function(){
 
 			var onPlayerDataChanged = function(doc){
 				doc.basicInfo.gem.should.equal(0)
-				func()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
-		it("speedupBuildingBuild 建筑不存在", function(done){
-			var buildingInfo = {
-				location:60
-			}
-			var route = "logic.playerHandler.speedupBuildingBuild"
-			pomelo.request(route, buildingInfo, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("建筑不存在")
-				done()
-			})
-		})
-
-		it("speedupBuildingBuild 建筑未处于升级状态", function(done){
-			var buildingInfo = {
-				location:1
-			}
-			var route = "logic.playerHandler.speedupBuildingBuild"
-			pomelo.request(route, buildingInfo, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("建筑未处于升级状态")
-				done()
-			})
-		})
-
-		it("speedupBuildingBuild 宝石不足", function(done){
-			var func = function(){
-				var buildingInfo = {
-					location:2,
-					finishNow:false
-				}
-				var route = "logic.playerHandler.upgradeBuilding"
-				pomelo.request(route, buildingInfo, function(doc){
-					doc.code.should.equal(200)
-
-					var buildingInfo = {
-						location:2
-					}
-					var route = "logic.playerHandler.speedupBuildingBuild"
-					pomelo.request(route, buildingInfo, function(doc){
-						doc.code.should.equal(500)
-						doc.message.should.equal("宝石不足")
-						done()
-					})
-				})
-			}
-
-			var chatInfo = {
-				text:"gem 10",
-				type:"global"
-			}
-			var route = "chat.chatHandler.send"
-			pomelo.request(route, chatInfo, function(doc){
-				doc.code.should.equal(200)
-			})
-
-			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(10)
 				func()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -660,58 +563,52 @@ describe("LogicServer", function(){
 
 		it("upgradeHouse 升级小屋会造成可用城民小于0", function(done){
 			var func = function(){
-				var buildingInfo = {
+				var houseInfo = {
 					buildingLocation:3,
-					houseLocation:3
+					houseLocation:3,
+					finishNow:true
 				}
-				var route = "logic.playerHandler.speedupHouseBuild"
-				pomelo.request(route, buildingInfo, function(doc){
-					doc.code.should.equal(200)
+				var route = "logic.playerHandler.upgradeHouse"
+				pomelo.request(route, houseInfo, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("升级小屋会造成可用城民小于0")
 
-					var houseInfo = {
-						buildingLocation:3,
-						houseLocation:3,
-						finishNow:true
+					var chatInfo = {
+						text:"citizen 100",
+						type:"global"
 					}
-					var route = "logic.playerHandler.upgradeHouse"
-					pomelo.request(route, houseInfo, function(doc){
-						doc.code.should.equal(500)
-						doc.message.should.equal("升级小屋会造成可用城民小于0")
-
-						var chatInfo = {
-							text:"citizen 100",
-							type:"global"
-						}
-						var route = "chat.chatHandler.send"
-						pomelo.request(route, chatInfo, function(doc){
-							doc.code.should.equal(200)
-						})
-
-						var onPlayerDataChanged = function(doc){
-							doc.resources.citizen.should.equal(100)
-							done()
-							pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-						}
-						pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+					var route = "chat.chatHandler.send"
+					pomelo.request(route, chatInfo, function(doc){
+						doc.code.should.equal(200)
 					})
+
+					var onPlayerDataChanged = function(doc){
+						doc.resources.citizen.should.equal(100)
+						done()
+						pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+					}
+					pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 				})
 			}
 
 			var chatInfo = {
-				text:"citizen 0",
+				text:"resetfinishtime",
 				type:"global"
 			}
 			var route = "chat.chatHandler.send"
 			pomelo.request(route, chatInfo, function(doc){
 				doc.code.should.equal(200)
-			})
 
-			var onPlayerDataChanged = function(doc){
-				doc.resources.citizen.should.equal(0)
-				func()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+				var chatInfo = {
+					text:"citizen 0",
+					type:"global"
+				}
+				var route = "chat.chatHandler.send"
+				pomelo.request(route, chatInfo, function(doc){
+					doc.code.should.equal(200)
+					func()
+				})
+			})
 		})
 
 		it("upgradeHouse 宝石不足", function(done){
@@ -774,124 +671,7 @@ describe("LogicServer", function(){
 
 			var onPlayerDataChanged = function(doc){
 				should.exist(doc)
-				doc.buildings["location_3"].houses[2].level.should.equal(2)
-				done()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
-		it("speedupHouseBuild 主体建筑不存在", function(done){
-			var houseInfo = {
-				buildingLocation:55,
-				houseLocation:1
-			}
-			var route = "logic.playerHandler.speedupHouseBuild"
-			pomelo.request(route, houseInfo, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("主体建筑不存在")
-				done()
-			})
-		})
-
-		it("speedupHouseBuild 主体建筑必须大于等于1级", function(done){
-			var houseInfo = {
-				buildingLocation:5,
-				houseLocation:1
-			}
-			var route = "logic.playerHandler.speedupHouseBuild"
-			pomelo.request(route, houseInfo, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("主体建筑必须大于等于1级")
-				done()
-			})
-		})
-
-		it("speedupHouseBuild 小屋不存在", function(done){
-			var houseInfo = {
-				buildingLocation:4,
-				houseLocation:1
-			}
-			var route = "logic.playerHandler.speedupHouseBuild"
-			pomelo.request(route, houseInfo, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("小屋不存在")
-				done()
-			})
-		})
-
-		it("speedupHouseBuild 小屋未处于升级状态", function(done){
-			var houseInfo = {
-				buildingLocation:3,
-				houseLocation:2
-			}
-			var route = "logic.playerHandler.speedupHouseBuild"
-			pomelo.request(route, houseInfo, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("小屋未处于升级状态")
-				done()
-			})
-		})
-
-		it("speedupHouseBuild 宝石不足", function(done){
-			var func = function(){
-				var houseInfo = {
-					buildingLocation:3,
-					houseLocation:1
-				}
-				var route = "logic.playerHandler.speedupHouseBuild"
-				pomelo.request(route, houseInfo, function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("宝石不足")
-
-					var chatInfo = {
-						text:"gem 5000",
-						type:"global"
-					}
-					var route = "chat.chatHandler.send"
-					pomelo.request(route, chatInfo, function(doc){
-						doc.code.should.equal(200)
-					})
-
-					var onPlayerDataChanged = function(doc){
-						doc.basicInfo.gem.should.equal(5000)
-						done()
-						pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-					}
-					pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-				})
-			}
-
-			var chatInfo = {
-				text:"gem 0",
-				type:"global"
-			}
-			var route = "chat.chatHandler.send"
-			pomelo.request(route, chatInfo, function(doc){
-				doc.code.should.equal(200)
-			})
-
-			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(0)
-				func()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
-		it("speedupHouseBuild 正常加速", function(done){
-			var houseInfo = {
-				buildingLocation:3,
-				houseLocation:1
-			}
-			var route = "logic.playerHandler.speedupHouseBuild"
-			pomelo.request(route, houseInfo, function(doc){
-				doc.code.should.equal(200)
-			})
-
-			var onPlayerDataChanged = function(doc){
-				should.exist(doc)
-				doc.buildings["location_3"].houses[0].level.should.equal(1)
+				doc.buildings["location_3"].houses[2].level.should.equal(1)
 				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -931,18 +711,9 @@ describe("LogicServer", function(){
 			}
 			var route = "logic.playerHandler.destroyHouse"
 			pomelo.request(route, houseInfo, function(doc){
-				doc.code.should.equal(200)
-
-				var houseInfo = {
-					buildingLocation:3,
-					houseLocation:1
-				}
-				var route = "logic.playerHandler.destroyHouse"
-				pomelo.request(route, houseInfo, function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("拆除此建筑后会造成可用城民数量小于0")
-					done()
-				})
+				doc.code.should.equal(500)
+				doc.message.should.equal("拆除此建筑后会造成可用城民数量小于0")
+				done()
 			})
 		})
 
@@ -1003,7 +774,7 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.buildings["location_3"].houses.length.should.equal(1)
+				doc.buildings["location_3"].houses.length.should.equal(2)
 				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -1218,109 +989,6 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
-		it("speedupTowerBuild 箭塔不存在", function(done){
-			var houseInfo = {
-				location:1.5,
-				finishNow:false
-			}
-			var route = "logic.playerHandler.speedupTowerBuild"
-			pomelo.request(route, houseInfo, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("箭塔不存在")
-				done()
-			})
-		})
-
-		it("speedupTowerBuild 箭塔未处于升级状态", function(done){
-			var houseInfo = {
-				location:1,
-				finishNow:false
-			}
-			var route = "logic.playerHandler.speedupTowerBuild"
-			pomelo.request(route, houseInfo, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("箭塔未处于升级状态")
-
-				var houseInfo = {
-					location:2,
-					finishNow:false
-				}
-				var route = "logic.playerHandler.upgradeTower"
-				pomelo.request(route, houseInfo, function(doc){
-					doc.code.should.equal(200)
-				})
-
-				var onPlayerDataChanged = function(doc){
-					doc.towers["location_2"].finishTime.should.not.equal(0)
-					done()
-					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-				}
-				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-			})
-		})
-
-		it("speedupTowerBuild 宝石不足", function(done){
-			var func = function(){
-				var houseInfo = {
-					location:2
-				}
-				var route = "logic.playerHandler.speedupTowerBuild"
-				pomelo.request(route, houseInfo, function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("宝石不足")
-
-					var chatInfo = {
-						text:"gem 5000",
-						type:"global"
-					}
-					var route = "chat.chatHandler.send"
-					pomelo.request(route, chatInfo, function(doc){
-						doc.code.should.equal(200)
-					})
-
-					var onPlayerDataChanged = function(doc){
-						doc.basicInfo.gem.should.equal(5000)
-						done()
-						pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-					}
-					pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-				})
-			}
-
-			var chatInfo = {
-				text:"gem 0",
-				type:"global"
-			}
-			var route = "chat.chatHandler.send"
-			pomelo.request(route, chatInfo, function(doc){
-				doc.code.should.equal(200)
-			})
-
-			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(0)
-				func()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
-		it("speedupTowerBuild 正常加速", function(done){
-			var houseInfo = {
-				location:2
-			}
-			var route = "logic.playerHandler.speedupTowerBuild"
-			pomelo.request(route, houseInfo, function(doc){
-				doc.code.should.equal(200)
-			})
-
-			var onPlayerDataChanged = function(doc){
-				doc.towers["location_2"].level.should.equal(6)
-				done()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
 		it("upgradeWall 城墙正在升级", function(done){
 			var houseInfo = {
 				finishNow:false
@@ -1337,11 +1005,20 @@ describe("LogicServer", function(){
 					doc.code.should.equal(500)
 					doc.message.should.equal("城墙正在升级")
 
-					var route = "logic.playerHandler.speedupWallBuild"
-					pomelo.request(route, null, function(doc){
+					var chatInfo = {
+						text:"resetfinishtime",
+						type:"global"
+					}
+					var route = "chat.chatHandler.send"
+					pomelo.request(route, chatInfo, function(doc){
 						doc.code.should.equal(200)
-						done()
 					})
+
+					var onPlayerDataChanged = function(){
+						done()
+						pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+					}
+					pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 				})
 			})
 		})
@@ -1481,88 +1158,6 @@ describe("LogicServer", function(){
 			var onPlayerDataChanged = function(doc){
 				doc.basicInfo.gem.should.equal(0)
 				func()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
-		it("speedupWallBuild 城墙未处于升级状态", function(done){
-			var houseInfo = {
-				finishNow:false
-			}
-			var route = "logic.playerHandler.speedupWallBuild"
-			pomelo.request(route, houseInfo, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("城墙未处于升级状态")
-
-				var houseInfo = {
-					finishNow:false
-				}
-				var route = "logic.playerHandler.upgradeWall"
-				pomelo.request(route, houseInfo, function(doc){
-					doc.code.should.equal(200)
-				})
-
-				var onPlayerDataChanged = function(doc){
-					doc.wall.finishTime.should.not.equal(0)
-					done()
-					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-				}
-				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-			})
-		})
-
-		it("speedupWallBuild 宝石不足", function(done){
-			var func = function(){
-				var route = "logic.playerHandler.speedupWallBuild"
-				pomelo.request(route, null, function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("宝石不足")
-
-					var chatInfo = {
-						text:"gem 5000",
-						type:"global"
-					}
-					var route = "chat.chatHandler.send"
-					pomelo.request(route, chatInfo, function(doc){
-						doc.code.should.equal(200)
-					})
-
-					var onPlayerDataChanged = function(doc){
-						doc.basicInfo.gem.should.equal(5000)
-						done()
-						pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-					}
-					pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-				})
-			}
-
-			var chatInfo = {
-				text:"gem 0",
-				type:"global"
-			}
-			var route = "chat.chatHandler.send"
-			pomelo.request(route, chatInfo, function(doc){
-				doc.code.should.equal(200)
-			})
-
-			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(0)
-				func()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
-		it("speedupWallBuild 正常加速", function(done){
-			var route = "logic.playerHandler.speedupWallBuild"
-			pomelo.request(route, null, function(doc){
-				doc.code.should.equal(200)
-			})
-
-			var onPlayerDataChanged = function(doc){
-				doc.wall.level.should.equal(6)
-				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)

@@ -159,9 +159,9 @@ pro.building = function(uid, level, callback){
 				tower.finishTime = 0
 			}
 		})
-
 		var wallMaxLevel = DataUtis.getBuildingMaxLevel("wall")
 		doc.wall.level = level > wallMaxLevel ? wallMaxLevel : level
+		doc.wall.finishTime = 0
 		self.playerService.refreshPlayerResources(doc)
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -177,6 +177,34 @@ pro.keep = function(uid, level, callback){
 	this.cacheService.getPlayerAsync(uid).then(function(doc){
 		var keepMaxLevel = DataUtis.getBuildingMaxLevel("keep")
 		doc.buildings["location_1"].level = level > keepMaxLevel ? keepMaxLevel : level
+		doc.buildings["location_1"].finishTime = 0
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+pro.resetfinishtime = function(uid, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		_.each(doc.buildings, function(building){
+			if(building.level > 0){
+				building.finishTime = 0
+			}
+			_.each(building.houses, function(house){
+				house.finishTime = 0
+			})
+		})
+		_.each(doc.towers, function(tower){
+			if(tower.level > 0){
+				tower.finishTime = 0
+			}
+		})
+		doc.wall.finishTime = 0
+		self.playerService.refreshPlayerResources(doc)
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)

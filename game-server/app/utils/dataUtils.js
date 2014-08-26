@@ -19,45 +19,68 @@ var Buildings = GameData.Buildings.buildings
 
 var Utils = module.exports
 
-
 /**
- * 根据所缺资源换算成宝石,并返回宝石和剩余的资源
- * @param resources
- * @returns {{gem: number, resources: {}}}
+ * 购买资源
+ * @param need
+ * @param has
+ * @returns {{gemUsed: number, totalBuy: {}}}
  */
-Utils.getGemByResources = function(resources){
-	var gem = 0
-	var returned = {}
-	_.each(resources, function(value, key){
+Utils.buyResources = function(need, has){
+	var gemUsed = 0
+	var totalBuy = {}
+	_.each(need, function(value, key){
 		var config = GemsPayment[key]
-		while(value > 0){
-			for(var i = config.length; i = 1; i--){
-				var item = config[i]
-				if(item.min < value){
-					gem += item.gem
-					value -= item.resource
-					break
+		var required = null
+		if(_.isNumber(has[key])){
+			required = has[key] - value
+		}else{
+			required = -value
+		}
+		required = -required
+		if(required > 0){
+			var currentBuy = 0
+			while(required > 0){
+				for(var i = config.length; i = 1; i--){
+					var item = config[i]
+					if(!_.isObject(item)) continue
+					if(item.min < required){
+						gemUsed += item.gem
+						required -= item.resource
+						currentBuy += item.resources
+						break
+					}
 				}
 			}
+			totalBuy[key] = currentBuy
 		}
-		returned[key] = value
 	})
 
-	return {gem:gem, resources:returned}
+	return {gemUsed:gemUsed, totalBuy:totalBuy}
 }
 
 /**
- * 根据所缺道具换算成宝石,并返回宝石
- * @param equipments
- * @returns {number}
+ * 购买材料
+ * @param need
+ * @param has
  */
-Utils.getGemByMaterials = function(equipments){
-	var gem = 0
+Utils.buyMaterials = function(need, has){
+	var gemUsed = 0
+	var totalBuy = {}
 	var config = GemsPayment.material[1]
-	_.each(equipments, function(value, key){
-		gem += config[key] * value
+	_.each(need, function(value, key){
+		var required = null
+		if(_.isNumber(has[key])){
+			required = has[key] - value
+		}else{
+			required = -value
+		}
+		required = -required
+		if(required > 0){
+			gemUsed += config[key] * required
+			totalBuy[key] = required
+		}
 	})
-	return gem
+	return {gemUsed:gemUsed, totalBuy:totalBuy}
 }
 
 /**
@@ -69,10 +92,9 @@ Utils.getGemByTimeInterval = function(interval){
 	var gem = 0
 	var config = GemsPayment.time
 	while(interval > 0){
-		for(var i = config.length; i = 1; i--){
+		for(var i = config.length; i >= 1; i--){
 			var item = config[i]
-			if(!_.isObject(item))
-				console.log(item)
+			if(!_.isObject(item)) continue
 			if(item.min < interval){
 				gem += item.gem
 				interval -= item.speedup
@@ -80,7 +102,6 @@ Utils.getGemByTimeInterval = function(interval){
 			}
 		}
 	}
-
 	return gem
 }
 
@@ -434,6 +455,11 @@ Utils.getDwellingPopulationByLevel = function(houseLevel){
 	return config.population
 }
 
+/**
+ * 获取建筑数量
+ * @param playerDoc
+ * @returns {number}
+ */
 Utils.getPlayerBuildingsCount = function(playerDoc){
 	var count = 0
 	_.each(playerDoc.buildings, function(building){
@@ -444,12 +470,22 @@ Utils.getPlayerBuildingsCount = function(playerDoc){
 	return count
 }
 
+/**
+ * 获取可建建筑总数量
+ * @param playerDoc
+ * @returns {unlock|*}
+ */
 Utils.getPlayerMaxBuildingsCount = function(playerDoc){
 	var building = playerDoc.buildings["location_1"]
 	var config = BuildingFunction[building.type][building.level]
 	return config.unlock
 }
 
+/**
+ * 获取可造建筑数量
+ * @param playerDoc
+ * @returns {number}
+ */
 Utils.getPlayerFreeBuildingsCount = function(playerDoc){
 	return this.getPlayerMaxBuildingsCount(playerDoc) - this.getPlayerBuildingsCount(playerDoc)
 }

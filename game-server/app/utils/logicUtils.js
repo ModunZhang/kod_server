@@ -28,7 +28,11 @@ Utils.isEnough = function(need, has){
  */
 Utils.reduce = function(need, has){
 	_.each(need, function(value, key){
-		has[key] -= value
+		if(_.isNumber(has[key])){
+			has[key] -= value
+		}else{
+			has[key] = -value
+		}
 	})
 }
 
@@ -39,7 +43,11 @@ Utils.reduce = function(need, has){
  */
 Utils.increace = function(willAdd, has){
 	_.each(willAdd, function(value, key){
-		has[key] += value
+		if(_.isNumber(has[key])){
+			has[key] += value
+		}else{
+			has[key] = value
+		}
 	})
 }
 
@@ -139,6 +147,11 @@ Utils.getBuildingCurrentRound = function(currentLocation){
 	return null
 }
 
+/**
+ * 根据当前建筑坐标获取当前坐标所属圈数的起点坐标和结束坐标
+ * @param currentRound
+ * @returns {{from: *, to: *}}
+ */
 Utils.getBuildingRoundFromAndEnd = function(currentRound){
 	var from = null
 	var to = null
@@ -152,6 +165,11 @@ Utils.getBuildingRoundFromAndEnd = function(currentRound){
 	return {from:from, to:to}
 }
 
+/**
+ * 根据当前建筑坐标获取当前圈数的中间坐标
+ * @param currentRound
+ * @returns {*}
+ */
 Utils.getBuildingRoundMiddleLocation = function(currentRound){
 	var fromAndTo = this.getBuildingRoundFromAndEnd(currentRound)
 	var middle = fromAndTo.from + ((fromAndTo.to - fromAndTo.from) / 2)

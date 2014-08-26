@@ -25,7 +25,6 @@ module.exports = PlayerService
 var pro = PlayerService.prototype
 
 
-
 /**
  * 玩家登陆逻辑服务器
  * @param playerId
@@ -165,8 +164,6 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 
-		var gem = 0
-		var used = {}
 		var building = doc.buildings["location_" + buildingLocation]
 		//检查建筑是否存在
 		if(!_.isObject(building)){
@@ -197,38 +194,39 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			return Promise.reject(new Error("建筑已达到最高等级"))
 		}
 
+		var gemUsed = 0
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, building.level + 1)
-		//是否立即完成
+		var buyedResources = null
+		var buyedMaterials = null
+		self.refreshPlayerResources(doc)
 		if(finishNow){
-			gem += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
-		}
-		//资源是否足够
-		if(!LogicUtils.isEnough(upgradeRequired.resources, DataUtils.getPlayerResources(doc))){
-			var returned = DataUtils.getGemByResources(upgradeRequired.resources)
-			gem += returned.gem
-			used.resources = returned.resources
+			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
+			gemUsed += buyedMaterials.gemUsed
+			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 		}else{
-			used.resources = upgradeRequired.resources
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, doc.resources)
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
+			gemUsed += buyedMaterials.gemUsed
+			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 		}
 
-		DataUtils.getGemByMaterials(upgradeRequired.materials)
-		//材料是否足够
-		if(!LogicUtils.isEnough(upgradeRequired.materials, doc.materials)){
-			gem += DataUtils.getGemByMaterials(upgradeRequired.materials)
-			used.materials = {}
-		}else{
-			used.materials = upgradeRequired.materials
-		}
 		//宝石是否足够
-		if(gem > doc.basicInfo.gem){
+		if(gemUsed > doc.basicInfo.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
 		//修改玩家宝石数据
-		doc.basicInfo.gem -= gem
+		doc.basicInfo.gem -= gemUsed
 		//修改玩家资源数据
+		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
+		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
+		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
-		LogicUtils.reduce(used.resources, doc.resources)
-		LogicUtils.reduce(used.materials, doc.materials)
 		//是否立即完成
 		if(finishNow){
 			building.level = building.level + 1
@@ -237,66 +235,6 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			building.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			self.callbackService.addPlayerCallback(doc._id, building.finishTime, ExcutePlayerCallback.bind(self))
 		}
-		//保存玩家数据
-		return self.cacheService.updatePlayerAsync(doc)
-	}).then(function(doc){
-		//推送玩家数据到客户端
-		self.pushService.onPlayerDataChanged(doc)
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 建筑建造加速
- * @param playerId
- * @param buildingLocation
- * @param callback
- */
-pro.speedupBuildingBuild = function(playerId, buildingLocation, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isNumber(buildingLocation)){
-		callback(new Error("buildingLocation 不合法"))
-		return
-	}
-
-	var self = this
-	this.cacheService.getPlayerAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		var building = doc.buildings["location_" + buildingLocation]
-		//检查建筑是否存在
-		if(!_.isObject(building)){
-			return Promise.reject(new Error("建筑不存在"))
-		}
-		//检查建筑是否正在升级
-		if(building.finishTime <= 0){
-			return Promise.reject(new Error("建筑未处于升级状态"))
-		}
-		//获取剩余升级时间
-		var timeRemain = building.finishTime - Date.now()
-		//获取需要的宝石数量
-		var gem = DataUtils.getGemByTimeInterval(timeRemain / 1000)
-		//宝石是否足够
-		if(gem > doc.basicInfo.gem){
-			return Promise.reject(new Error("宝石不足"))
-		}
-		//修改玩家宝石数据
-		doc.basicInfo.gem -= gem
-		//更新资源数据
-		self.refreshPlayerResources(doc)
-		//修改建筑数据
-		building.level = building.level + 1
-		building.finishTime = 0
-		self.pushService.onBuildingLevelUp(doc, building.location)
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -341,15 +279,12 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		callback(new Error("finishNow 不合法"))
 		return
 	}
-
 	var self = this
 	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 
-		var gem = 0
-		var used = {}
 		var building = doc.buildings["location_" + buildingLocation]
 		//检查建筑是否存在
 		if(!_.isObject(building)){
@@ -383,37 +318,38 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			}
 		}
 
+		var gemUsed = 0
 		var upgradeRequired = DataUtils.getHouseUpgradeRequired(houseType, 1)
-		//是否立即完成
+		var buyedResources = null
+		var buyedMaterials = null
+		self.refreshPlayerResources(doc)
 		if(finishNow){
-			gem += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
-		}
-		//资源是否足够
-		if(!LogicUtils.isEnough(upgradeRequired.resources, DataUtils.getPlayerResources(doc))){
-			var returned = DataUtils.getGemByResources(upgradeRequired.resources)
-			gem += returned.gem
-			used.resources = returned.resources
+			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
+			gemUsed += buyedMaterials.gemUsed
+			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 		}else{
-			used.resources = upgradeRequired.resources
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, doc.resources)
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
+			gemUsed += buyedMaterials.gemUsed
+			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 		}
-		//材料是否足够
-		if(!LogicUtils.isEnough(upgradeRequired.materials, doc.materials)){
-			gem += DataUtils.getGemByMaterials(upgradeRequired.materials)
-			used.materials = {}
-		}else{
-			used.materials = upgradeRequired.materials
-		}
+
 		//宝石是否足够
-		if(gem > doc.basicInfo.gem){
+		if(gemUsed > doc.basicInfo.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
 		//修改玩家宝石数据
-		doc.basicInfo.gem -= gem
+		doc.basicInfo.gem -= gemUsed
 		//修改玩家资源数据
-		self.refreshPlayerResources(doc)
-		LogicUtils.reduce(used.resources, doc.resources)
-		LogicUtils.reduce(used.materials, doc.materials)
-		//再次更新玩家数据,防止城民爆仓
+		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
+		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
+		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		//创建小屋
 		var house = {
@@ -432,12 +368,12 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			house.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			self.callbackService.addPlayerCallback(doc._id, house.finishTime, ExcutePlayerCallback.bind(self))
 		}
-
 		//如果是住宅,送玩家城民
 		if(_.isEqual("dwelling", house.type) && finishNow){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			doc.resources.citizen += next - previous
+			//刷新玩家数据,防止城民爆仓
 			self.refreshPlayerResources(doc)
 		}
 		//保存玩家数据
@@ -487,8 +423,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			return Promise.reject(new Error("玩家不存在"))
 		}
 
-		var gem = 0
-		var used = {}
 		var building = doc.buildings["location_" + buildingLocation]
 		//检查建筑是否存在
 		if(!_.isObject(building)){
@@ -526,37 +460,38 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			}
 		}
 
+		var gemUsed = 0
 		var upgradeRequired = DataUtils.getHouseUpgradeRequired(house.type, house.level + 1)
-		//是否立即完成
+		var buyedResources = null
+		var buyedMaterials = null
+		self.refreshPlayerResources(doc)
 		if(finishNow){
-			gem += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
-		}
-		//资源是否足够
-		if(!LogicUtils.isEnough(upgradeRequired.resources, DataUtils.getPlayerResources(doc))){
-			var returned = DataUtils.getGemByResources(upgradeRequired.resources)
-			gem += returned.gem
-			used.resources = returned.resources
+			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
+			gemUsed += buyedMaterials.gemUsed
+			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 		}else{
-			used.resources = upgradeRequired.resources
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, doc.resources)
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
+			gemUsed += buyedMaterials.gemUsed
+			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 		}
-		//材料是否足够
-		if(!LogicUtils.isEnough(upgradeRequired.materials, doc.materials)){
-			gem += DataUtils.getGemByMaterials(upgradeRequired.materials)
-			used.materials = {}
-		}else{
-			used.materials = upgradeRequired.materials
-		}
+
 		//宝石是否足够
-		if(gem > doc.basicInfo.gem){
+		if(gemUsed > doc.basicInfo.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
 		//修改玩家宝石数据
-		doc.basicInfo.gem -= gem
+		doc.basicInfo.gem -= gemUsed
 		//修改玩家资源数据
-		self.refreshPlayerResources(doc)
-		LogicUtils.reduce(used.resources, doc.resources)
-		LogicUtils.reduce(used.materials, doc.materials)
-		//再次更新玩家数据,防止城民爆仓
+		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
+		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
+		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		//是否立即完成
 		if(finishNow){
@@ -568,93 +503,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		}
 		//如果是住宅,送玩家城民
 		if(_.isEqual("dwelling", house.type) && finishNow){
-			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
-			var next = DataUtils.getDwellingPopulationByLevel(house.level)
-			doc.resources.citizen += next - previous
-			self.refreshPlayerResources(doc)
-		}
-		//保存玩家数据
-		return self.cacheService.updatePlayerAsync(doc)
-	}).then(function(doc){
-		//推送玩家数据到客户端
-		self.pushService.onPlayerDataChanged(doc)
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 加速建造小屋
- * @param playerId
- * @param buildingLocation
- * @param houseLocation
- * @param callback
- */
-pro.speedupHouseBuild = function(playerId, buildingLocation, houseLocation, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isNumber(buildingLocation)){
-		callback(new Error("buildingLocation 不合法"))
-		return
-	}
-	if(!_.isNumber(houseLocation)){
-		callback(new Error("houseLocation 不合法"))
-		return
-	}
-
-	var self = this
-	this.cacheService.getPlayerAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-
-		var building = doc.buildings["location_" + buildingLocation]
-		//检查建筑是否存在
-		if(!_.isObject(building)){
-			return Promise.reject(new Error("主体建筑不存在"))
-		}
-		//检查建筑等级是否大于1
-		if(building.level <= 0){
-			return Promise.reject(new Error("主体建筑必须大于等于1级"))
-		}
-		//检查小屋是否存在
-		var house = null
-		_.each(building.houses, function(value){
-			if(value.location == houseLocation){
-				house = value
-			}
-		})
-		if(!_.isObject(house)){
-			return Promise.reject(new Error("小屋不存在"))
-		}
-		//检查小屋是否正在升级
-		if(house.finishTime <= 0){
-			return Promise.reject(new Error("小屋未处于升级状态"))
-		}
-		//获取剩余升级时间
-		var timeRemain = house.finishTime - Date.now()
-		//获取需要的宝石数量
-		var gem = DataUtils.getGemByTimeInterval(timeRemain / 1000)
-		//宝石是否足够
-		if(gem > doc.basicInfo.gem){
-			return Promise.reject(new Error("宝石不足"))
-		}
-		//修改玩家宝石数据
-		doc.basicInfo.gem -= gem
-		//更新资源数据
-		self.refreshPlayerResources(doc)
-		//修改建筑数据
-		house.level = house.level + 1
-		house.finishTime = 0
-		self.pushService.onHouseLevelUp(doc, building.location, house.location)
-		//如果是住宅,送玩家城民
-		if(_.isEqual("dwelling", house.type)){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			doc.resources.citizen += next - previous
@@ -716,10 +564,10 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		if(!_.isObject(house)){
 			return Promise.reject(new Error("小屋不存在"))
 		}
-//		//检查是否正在升级
-//		if(house.finishTime > 0){
-//			return Promise.reject(new Error("小屋正在升级"))
-//		}
+		//检查是否正在升级
+		if(house.finishTime > 0){
+			return Promise.reject(new Error("小屋正在升级"))
+		}
 		//更新资源数据
 		self.refreshPlayerResources(doc)
 		//删除小屋
@@ -785,8 +633,6 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 
-		var gem = 0
-		var used = {}
 		var tower = doc.towers["location_" + towerLocation]
 		//检查箭塔是否存在
 		if(!_.isObject(tower)){
@@ -809,38 +655,39 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			return Promise.reject(new Error("箭塔升级时,建筑等级不合法"))
 		}
 
+		var gemUsed = 0
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("tower", tower.level + 1)
-		//是否立即完成
+		var buyedResources = null
+		var buyedMaterials = null
+		self.refreshPlayerResources(doc)
 		if(finishNow){
-			gem += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
-		}
-		//资源是否足够
-		if(!LogicUtils.isEnough(upgradeRequired.resources, DataUtils.getPlayerResources(doc))){
-			var returned = DataUtils.getGemByResources(upgradeRequired.resources)
-			gem += returned.gem
-			used.resources = returned.resources
+			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
+			gemUsed += buyedMaterials.gemUsed
+			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 		}else{
-			used.resources = upgradeRequired.resources
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, doc.resources)
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
+			gemUsed += buyedMaterials.gemUsed
+			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 		}
 
-		DataUtils.getGemByMaterials(upgradeRequired.materials)
-		//材料是否足够
-		if(!LogicUtils.isEnough(upgradeRequired.materials, doc.materials)){
-			gem += DataUtils.getGemByMaterials(upgradeRequired.materials)
-			used.materials = {}
-		}else{
-			used.materials = upgradeRequired.materials
-		}
 		//宝石是否足够
-		if(gem > doc.basicInfo.gem){
+		if(gemUsed > doc.basicInfo.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
 		//修改玩家宝石数据
-		doc.basicInfo.gem -= gem
+		doc.basicInfo.gem -= gemUsed
 		//修改玩家资源数据
+		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
+		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
+		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
-		LogicUtils.reduce(used.resources, doc.resources)
-		LogicUtils.reduce(used.materials, doc.materials)
 		//是否立即完成
 		if(finishNow){
 			tower.level = tower.level + 1
@@ -849,66 +696,6 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			tower.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			self.callbackService.addPlayerCallback(doc._id, tower.finishTime, ExcutePlayerCallback.bind(self))
 		}
-		//保存玩家数据
-		return self.cacheService.updatePlayerAsync(doc)
-	}).then(function(doc){
-		//推送玩家数据到客户端
-		self.pushService.onPlayerDataChanged(doc)
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 箭塔建造加速
- * @param playerId
- * @param towerLocation
- * @param callback
- */
-pro.speedupTowerBuild = function(playerId, towerLocation, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isNumber(towerLocation)){
-		callback(new Error("towerLocation 不合法"))
-		return
-	}
-
-	var self = this
-	this.cacheService.getPlayerAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		var tower = doc.towers["location_" + towerLocation]
-		//检查箭塔是否存在
-		if(!_.isObject(tower)){
-			return Promise.reject(new Error("箭塔不存在"))
-		}
-		//检查箭塔是否正在升级
-		if(tower.finishTime <= 0){
-			return Promise.reject(new Error("箭塔未处于升级状态"))
-		}
-		//获取剩余升级时间
-		var timeRemain = tower.finishTime - Date.now()
-		//获取需要的宝石数量
-		var gem = DataUtils.getGemByTimeInterval(timeRemain / 1000)
-		//宝石是否足够
-		if(gem > doc.basicInfo.gem){
-			return Promise.reject(new Error("宝石不足"))
-		}
-		//修改玩家宝石数据
-		doc.basicInfo.gem -= gem
-		//更新资源数据
-		self.refreshPlayerResources(doc)
-		//修改建筑数据
-		tower.level = tower.level + 1
-		tower.finishTime = 0
-		self.pushService.onTowerLevelUp(doc, tower.location)
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -945,8 +732,6 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 
-		var gem = 0
-		var used = {}
 		var wall = doc.wall
 		//检查城墙是否存在
 		if(!_.isObject(wall)){
@@ -969,38 +754,39 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			return Promise.reject(new Error("城墙升级时,城墙等级不合法"))
 		}
 
+		var gemUsed = 0
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("wall", wall.level + 1)
-		//是否立即完成
+		var buyedResources = null
+		var buyedMaterials = null
+		self.refreshPlayerResources(doc)
 		if(finishNow){
-			gem += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
-		}
-		//资源是否足够
-		if(!LogicUtils.isEnough(upgradeRequired.resources, DataUtils.getPlayerResources(doc))){
-			var returned = DataUtils.getGemByResources(upgradeRequired.resources)
-			gem += returned.gem
-			used.resources = returned.resources
+			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
+			gemUsed += buyedMaterials.gemUsed
+			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 		}else{
-			used.resources = upgradeRequired.resources
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, doc.resources)
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
+			gemUsed += buyedMaterials.gemUsed
+			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 		}
 
-		DataUtils.getGemByMaterials(upgradeRequired.materials)
-		//材料是否足够
-		if(!LogicUtils.isEnough(upgradeRequired.materials, doc.materials)){
-			gem += DataUtils.getGemByMaterials(upgradeRequired.materials)
-			used.materials = {}
-		}else{
-			used.materials = upgradeRequired.materials
-		}
 		//宝石是否足够
-		if(gem > doc.basicInfo.gem){
+		if(gemUsed > doc.basicInfo.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
 		//修改玩家宝石数据
-		doc.basicInfo.gem -= gem
+		doc.basicInfo.gem -= gemUsed
 		//修改玩家资源数据
+		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
+		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
+		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
-		LogicUtils.reduce(used.resources, doc.resources)
-		LogicUtils.reduce(used.materials, doc.materials)
 		//是否立即完成
 		if(finishNow){
 			wall.level = wall.level + 1
@@ -1009,61 +795,6 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			wall.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			self.callbackService.addPlayerCallback(doc._id, wall.finishTime, ExcutePlayerCallback.bind(self))
 		}
-		//保存玩家数据
-		return self.cacheService.updatePlayerAsync(doc)
-	}).then(function(doc){
-		//推送玩家数据到客户端
-		self.pushService.onPlayerDataChanged(doc)
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 城墙建造加速
- * @param playerId
- * @param callback
- */
-pro.speedupWallBuild = function(playerId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-
-	var self = this
-	this.cacheService.getPlayerAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		var wall = doc.wall
-		//检查城墙是否存在
-		if(!_.isObject(wall)){
-			return Promise.reject(new Error("城墙不存在"))
-		}
-		//检查城墙是否正在升级
-		if(wall.finishTime <= 0){
-			return Promise.reject(new Error("城墙未处于升级状态"))
-		}
-		//获取剩余升级时间
-		var timeRemain = wall.finishTime - Date.now()
-		//获取需要的宝石数量
-		var gem = DataUtils.getGemByTimeInterval(timeRemain / 1000)
-		//宝石是否足够
-		if(gem > doc.basicInfo.gem){
-			return Promise.reject(new Error("宝石不足"))
-		}
-		//修改玩家宝石数据
-		doc.basicInfo.gem -= gem
-		//更新资源数据
-		self.refreshPlayerResources(doc)
-		//修改建筑数据
-		wall.level = wall.level + 1
-		wall.finishTime = 0
-		self.pushService.onWallLevelUp(doc)
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
