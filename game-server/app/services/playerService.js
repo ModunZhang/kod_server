@@ -63,23 +63,27 @@ var AfterLogin = function(doc){
 	doc.countInfo.loginCount += 1
 	//更新资源数据
 	self.refreshPlayerResources(doc)
-	_.each(doc.buildingEvents, function(event, index){
-		//检查建筑
+	//检查建筑
+	var buildingFinishedEvents = []
+	_.each(doc.buildingEvents, function(event){
+
 		if(event.finishTime <= Date.now()){
 			var building = LogicUtils.getBuildingByEvent(doc, event)
 			building.level += 1
-			self.pushService.onBuildingLevelUp(doc, building.location)
-			doc.buildingEvents.splice(index, 1)
+			self.pushService.onBuildingLevelUp(doc, event.location)
+			buildingFinishedEvents.push(event)
 		}else{
 			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
 		}
 	})
+	LogicUtils.removeEvents(buildingFinishedEvents, doc.buildingEvents)
 	//检查小屋
-	_.each(doc.houseEvents, function(event, index){
+	var houseFinishedEvents = []
+	_.each(doc.houseEvents, function(event){
 		if(event.finishTime <= Date.now()){
 			var house = LogicUtils.getHouseByEvent(doc, event)
 			house.level += 1
-			self.pushService.onHouseLevelUp(doc, building.location, house.location)
+			self.pushService.onHouseLevelUp(doc, event.buildingLocation, event.houseLocation)
 			//如果是住宅,送玩家城民
 			if(_.isEqual("dwelling", house.type)){
 				var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
@@ -87,32 +91,37 @@ var AfterLogin = function(doc){
 				doc.resources.citizen += next - previous
 				self.refreshPlayerResources(doc)
 			}
-			doc.houseEvents.splice(index, 1)
+			houseFinishedEvents.push(event)
 		}else{
 			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
 		}
 	})
+	LogicUtils.removeEvents(houseFinishedEvents, doc.houseEvents)
 	//检查箭塔
-	_.each(doc.towerEvents, function(event, index){
+	var towerFinishedEvents = []
+	_.each(doc.towerEvents, function(event){
 		if(event.finishTime <= Date.now()){
 			event.level += 1
-			self.pushService.onTowerLevelUp(doc, tower.location)
-			doc.towerEvents.splice(index, 1)
+			self.pushService.onTowerLevelUp(doc, event.location)
+			towerFinishedEvents.push(event)
 		}else{
 			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
 		}
 	})
+	LogicUtils.removeEvents(towerFinishedEvents, doc.towerEvents)
 	//检查城墙
-	_.each(doc.wallEvents, function(event, index){
+	var wallFinishedEvents = []
+	_.each(doc.wallEvents, function(event){
 		if(event.finishTime <= Date.now()){
 			var wall = doc.wall
 			wall.level += 1
 			self.pushService.onWallLevelUp(doc)
-			doc.wallEvents.splice(index, 1)
+			wallFinishedEvents.push(event)
 		}else{
 			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
 		}
 	})
+	LogicUtils.removeEvents(wallFinishedEvents, doc.wallEvents)
 }
 
 /**
@@ -828,7 +837,7 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 				buildingFinishedEvents.push(event)
 				var building = LogicUtils.getBuildingByEvent(doc, event)
 				building.level += 1
-				self.pushService.onBuildingLevelUp(doc, building.location)
+				self.pushService.onBuildingLevelUp(doc, event.location)
 			}
 		})
 		LogicUtils.removeEvents(buildingFinishedEvents, doc.buildingEvents)
@@ -856,7 +865,7 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 			if(event.finishTime > 0 && event.finishTime <= finishTime){
 				var tower = LogicUtils.getTowerByEvent(doc, event)
 				tower.level += 1
-				self.pushService.onTowerLevelUp(doc, tower.location)
+				self.pushService.onTowerLevelUp(doc, event.location)
 				towerFinishedEvents.push(event)
 			}
 		})
