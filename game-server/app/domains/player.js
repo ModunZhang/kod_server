@@ -72,14 +72,12 @@ var playerSchema = new Schema({
 	},
 	buildingEvents:[
 		{
-			level:{type:Number, required:true},
 			location:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
 		}
 	],
 	houseEvents:[
 		{
-			level:{type:Number, required:true},
 			buildingLocation:{type:Number, required:true},
 			houseLocation:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
@@ -87,14 +85,12 @@ var playerSchema = new Schema({
 	],
 	towerEvents:[
 		{
-			level:{type:Number, required:true},
 			location:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
 		}
 	],
 	wallEvents:[
 		{
-			level:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
 		}
 	],

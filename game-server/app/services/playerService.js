@@ -229,7 +229,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			self.pushService.onBuildingLevelUp(doc, building.location)
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			LogicUtils.addBuildingEvent(doc, building.level, building.location, finishTime)
+			LogicUtils.addBuildingEvent(doc, building.location, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//保存玩家数据
@@ -362,7 +362,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			self.pushService.onHouseLevelUp(doc, building.location, house.location)
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			LogicUtils.addHouseEvent(doc, house.level, buildingLocation, houseLocation, finishTime)
+			LogicUtils.addHouseEvent(doc, buildingLocation, houseLocation, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//如果是住宅,送玩家城民
@@ -496,7 +496,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			self.pushService.onHouseLevelUp(doc, building.location, house.location)
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			LogicUtils.addHouseEvent(doc, house.level, building.location, house.location, finishTime)
+			LogicUtils.addHouseEvent(doc, building.location, house.location, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//如果是住宅,送玩家城民
@@ -692,7 +692,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			self.pushService.onTowerLevelUp(doc, tower.location)
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			LogicUtils.addTowerEvent(doc, tower.level, tower.location, finishTime)
+			LogicUtils.addTowerEvent(doc, tower.location, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//保存玩家数据
@@ -792,7 +792,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			self.pushService.onWallLevelUp(doc)
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			LogicUtils.addWallEvent(doc, doc.wall.level, finishTime)
+			LogicUtils.addWallEvent(doc, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//保存玩家数据

@@ -16,7 +16,9 @@ var Utils = module.exports
  */
 Utils.isEnough = function(need, has){
 	for(var key in need){
-		if(need[key] > has[key]) return false
+		if (need.hasOwnProperty(key)){
+			if(!_.isNumber(has[key]) || has[key] < need[key]) return false
+		}
 	}
 	return true
 }
@@ -230,14 +232,12 @@ Utils.hasWallEvents = function(playerDoc){
 
 /**
  * 创建建筑建造事件
- * @param level
  * @param location
  * @param finishTime
  * @returns {{location: *, finishTime: *}}
  */
-Utils.createBuildingEvent = function(level, location, finishTime){
+Utils.createBuildingEvent = function(location, finishTime){
 	var event = {
-		level:level,
 		location : location,
 		finishTime : finishTime
 	}
@@ -247,25 +247,22 @@ Utils.createBuildingEvent = function(level, location, finishTime){
 /**
  * 为玩家添加建筑建造事件
  * @param playerDoc
- * @param level
  * @param location
  * @param finishTime
  */
-Utils.addBuildingEvent = function(playerDoc, level, location, finishTime){
-	playerDoc.buildingEvents.push(this.createBuildingEvent(level, location, finishTime))
+Utils.addBuildingEvent = function(playerDoc, location, finishTime){
+	playerDoc.buildingEvents.push(this.createBuildingEvent(location, finishTime))
 }
 
 /**
  * 创建小屋建造事件
- * @param level
  * @param buildingLocation
  * @param houseLocation
  * @param finishTime
  * @returns {{buildingLocation: *, houseLocation: *, finishTime: *}}
  */
-Utils.createHouseEvent = function(level, buildingLocation, houseLocation, finishTime){
+Utils.createHouseEvent = function(buildingLocation, houseLocation, finishTime){
 	var event = {
-		level:level,
 		buildingLocation:buildingLocation,
 		houseLocation:houseLocation,
 		finishTime:finishTime
@@ -276,25 +273,22 @@ Utils.createHouseEvent = function(level, buildingLocation, houseLocation, finish
 /**
  * 为玩家添加小屋建造事件
  * @param playerDoc
- * @param level
  * @param buildingLocation
  * @param houseLocation
  * @param finishTime
  */
-Utils.addHouseEvent = function(playerDoc, level, buildingLocation, houseLocation, finishTime){
-	playerDoc.houseEvents.push(this.createHouseEvent(level, buildingLocation, houseLocation, finishTime))
+Utils.addHouseEvent = function(playerDoc, buildingLocation, houseLocation, finishTime){
+	playerDoc.houseEvents.push(this.createHouseEvent(buildingLocation, houseLocation, finishTime))
 }
 
 /**
  * 创建防御塔建造事件
- * @param level
  * @param location
  * @param finishTime
  * @returns {{location: *, finishTime: *}}
  */
-Utils.createTowerEvent = function(level, location, finishTime){
+Utils.createTowerEvent = function(location, finishTime){
 	var event = {
-		level:level,
 		location : location,
 		finishTime : finishTime
 	}
@@ -304,23 +298,20 @@ Utils.createTowerEvent = function(level, location, finishTime){
 /**
  * 为玩家添加防御塔建造事件
  * @param playerDoc
- * @param level
  * @param location
  * @param finishTime
  */
-Utils.addTowerEvent = function(playerDoc, level, location, finishTime){
-	playerDoc.towerEvents.push(this.createTowerEvent(level, location, finishTime))
+Utils.addTowerEvent = function(playerDoc, location, finishTime){
+	playerDoc.towerEvents.push(this.createTowerEvent(location, finishTime))
 }
 
 /**
  * 创建城墙事件
- * @param level
  * @param finishTime
  * @returns {{finishTime: *}}
  */
-Utils.createWallEvent = function(level, finishTime){
+Utils.createWallEvent = function(finishTime){
 	var event = {
-		level:level,
 		finishTime:finishTime
 	}
 	return event
@@ -329,11 +320,10 @@ Utils.createWallEvent = function(level, finishTime){
 /**
  * 为玩家添加城墙事件
  * @param playerDoc
- * @param level
  * @param finishTime
  */
-Utils.addWallEvent = function(playerDoc, level, finishTime){
-	playerDoc.wallEvents.push(this.createWallEvent(level, finishTime))
+Utils.addWallEvent = function(playerDoc, finishTime){
+	playerDoc.wallEvents.push(this.createWallEvent(finishTime))
 }
 
 /**
