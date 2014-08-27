@@ -9,6 +9,7 @@ var _ = require("underscore")
 var BasicPlayerInfo = require("../../../consts/basicPlayerInfo")
 var Utils = require("../../../utils/utils")
 var DataUtis = require("../../../utils/dataUtils")
+var LogicUtils = require("../../../utils/logicUtils")
 
 module.exports = function(app){
 	return new CommandRemote(app)
@@ -140,28 +141,37 @@ pro.coin = function(uid, count, callback){
 pro.building = function(uid, level, callback){
 	var self = this
 	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		self.playerService.refreshPlayerResources(doc)
 		_.each(doc.buildings, function(building){
 			if(building.level > 0){
 				var buildingMaxLevel = DataUtis.getBuildingMaxLevel(building.type)
 				building.level = level > buildingMaxLevel ? buildingMaxLevel : level
-				building.finishTime = 0
 			}
 			_.each(building.houses, function(house){
 				var houseMaxLevel = DataUtis.getHouseMaxLevel(house.type)
 				house.level = level > houseMaxLevel ? houseMaxLevel : level
-				house.finishTime = 0
 			})
 		})
 		_.each(doc.towers, function(tower){
 			if(tower.level > 0){
 				var towerMaxLevel = DataUtis.getBuildingMaxLevel("tower")
 				tower.level = level > towerMaxLevel ? towerMaxLevel : level
-				tower.finishTime = 0
 			}
 		})
 		var wallMaxLevel = DataUtis.getBuildingMaxLevel("wall")
 		doc.wall.level = level > wallMaxLevel ? wallMaxLevel : level
-		doc.wall.finishTime = 0
+		while(doc.buildingEvents.length > 0){
+			doc.buildingEvents.pop()
+		}
+		while(doc.houseEvents.length > 0){
+			doc.houseEvents.pop()
+		}
+		while(doc.towerEvents.length > 0){
+			doc.towerEvents.pop()
+		}
+		while(doc.wallEvents.length > 0){
+			doc.wallEvents.pop()
+		}
 		self.playerService.refreshPlayerResources(doc)
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -177,7 +187,16 @@ pro.keep = function(uid, level, callback){
 	this.cacheService.getPlayerAsync(uid).then(function(doc){
 		var keepMaxLevel = DataUtis.getBuildingMaxLevel("keep")
 		doc.buildings["location_1"].level = level > keepMaxLevel ? keepMaxLevel : level
-		doc.buildings["location_1"].finishTime = 0
+
+		var events = []
+		for(var i = 0; i < doc.buildingEvents.length; i++){
+			var event = doc.buildingEvents[i]
+			if(_.isEqual(event.location, 1)){
+				events.push(event)
+			}
+		}
+		LogicUtils.removeEvents(events, doc.buildingEvents)
+
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
@@ -187,23 +206,21 @@ pro.keep = function(uid, level, callback){
 	})
 }
 
-pro.resetfinishtime = function(uid, callback){
+pro.rmbuildingevents = function(uid, callback){
 	var self = this
 	this.cacheService.getPlayerAsync(uid).then(function(doc){
-		_.each(doc.buildings, function(building){
-			if(building.level > 0){
-				building.finishTime = 0
-			}
-			_.each(building.houses, function(house){
-				house.finishTime = 0
-			})
-		})
-		_.each(doc.towers, function(tower){
-			if(tower.level > 0){
-				tower.finishTime = 0
-			}
-		})
-		doc.wall.finishTime = 0
+		while(doc.buildingEvents.length > 0){
+			doc.buildingEvents.pop()
+		}
+		while(doc.houseEvents.length > 0){
+			doc.houseEvents.pop()
+		}
+		while(doc.towerEvents.length > 0){
+			doc.towerEvents.pop()
+		}
+		while(doc.wallEvents.length > 0){
+			doc.wallEvents.pop()
+		}
 		self.playerService.refreshPlayerResources(doc)
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){

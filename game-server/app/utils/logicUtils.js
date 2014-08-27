@@ -175,3 +175,216 @@ Utils.getBuildingRoundMiddleLocation = function(currentRound){
 	var middle = fromAndTo.from + ((fromAndTo.to - fromAndTo.from) / 2)
 	return middle
 }
+
+/**
+ * 是否有指定坑位的建筑建造事件
+ * @param playerDoc
+ * @param buildingLocation
+ * @returns {boolean}
+ */
+Utils.hasBuildingEvents = function(playerDoc, buildingLocation){
+	for(var i = 0; i < playerDoc.buildingEvents.length; i ++){
+		var event = playerDoc.buildingEvents[i]
+		if(_.isEqual(buildingLocation, event.location)) return true
+	}
+	return false
+}
+
+/**
+ * 是否有指定坑位的小屋建造事件
+ * @param playerDoc
+ * @param buildingLocation
+ * @param houseLocation
+ * @returns {boolean}
+ */
+Utils.hasHouseEvents = function(playerDoc, buildingLocation, houseLocation){
+	for(var i = 0; i < playerDoc.houseEvents.length; i ++){
+		var event = playerDoc.houseEvents[i]
+		if(_.isEqual(event.buildingLocation, buildingLocation) && _.isEqual(event.houseLocation, houseLocation)) return true
+	}
+	return false
+}
+
+/**
+ * 是否有指定坑位的防御塔建造事件
+ * @param playerDoc
+ * @param towerLocation
+ * @returns {boolean}
+ */
+Utils.hasTowerEvents = function(playerDoc, towerLocation){
+	for(var i = 0; i < playerDoc.towerEvents.length; i ++){
+		var event = playerDoc.towerEvents[i]
+		if(_.isEqual(towerLocation, event.location)) return true
+	}
+	return false
+}
+
+/**
+ * 是否有城墙建造事件
+ * @param playerDoc
+ * @returns {boolean}
+ */
+Utils.hasWallEvents = function(playerDoc){
+	return playerDoc.wallEvents.length > 0
+}
+
+/**
+ * 创建建筑建造事件
+ * @param level
+ * @param location
+ * @param finishTime
+ * @returns {{location: *, finishTime: *}}
+ */
+Utils.createBuildingEvent = function(level, location, finishTime){
+	var event = {
+		level:level,
+		location : location,
+		finishTime : finishTime
+	}
+	return event
+}
+
+/**
+ * 为玩家添加建筑建造事件
+ * @param playerDoc
+ * @param level
+ * @param location
+ * @param finishTime
+ */
+Utils.addBuildingEvent = function(playerDoc, level, location, finishTime){
+	playerDoc.buildingEvents.push(this.createBuildingEvent(level, location, finishTime))
+}
+
+/**
+ * 创建小屋建造事件
+ * @param level
+ * @param buildingLocation
+ * @param houseLocation
+ * @param finishTime
+ * @returns {{buildingLocation: *, houseLocation: *, finishTime: *}}
+ */
+Utils.createHouseEvent = function(level, buildingLocation, houseLocation, finishTime){
+	var event = {
+		level:level,
+		buildingLocation:buildingLocation,
+		houseLocation:houseLocation,
+		finishTime:finishTime
+	}
+	return event
+}
+
+/**
+ * 为玩家添加小屋建造事件
+ * @param playerDoc
+ * @param level
+ * @param buildingLocation
+ * @param houseLocation
+ * @param finishTime
+ */
+Utils.addHouseEvent = function(playerDoc, level, buildingLocation, houseLocation, finishTime){
+	playerDoc.houseEvents.push(this.createHouseEvent(level, buildingLocation, houseLocation, finishTime))
+}
+
+/**
+ * 创建防御塔建造事件
+ * @param level
+ * @param location
+ * @param finishTime
+ * @returns {{location: *, finishTime: *}}
+ */
+Utils.createTowerEvent = function(level, location, finishTime){
+	var event = {
+		level:level,
+		location : location,
+		finishTime : finishTime
+	}
+	return event
+}
+
+/**
+ * 为玩家添加防御塔建造事件
+ * @param playerDoc
+ * @param level
+ * @param location
+ * @param finishTime
+ */
+Utils.addTowerEvent = function(playerDoc, level, location, finishTime){
+	playerDoc.towerEvents.push(this.createTowerEvent(level, location, finishTime))
+}
+
+/**
+ * 创建城墙事件
+ * @param level
+ * @param finishTime
+ * @returns {{finishTime: *}}
+ */
+Utils.createWallEvent = function(level, finishTime){
+	var event = {
+		level:level,
+		finishTime:finishTime
+	}
+	return event
+}
+
+/**
+ * 为玩家添加城墙事件
+ * @param playerDoc
+ * @param level
+ * @param finishTime
+ */
+Utils.addWallEvent = function(playerDoc, level, finishTime){
+	playerDoc.wallEvents.push(this.createWallEvent(level, finishTime))
+}
+
+/**
+ * 根据建筑建造事件查找建筑
+ * @param playerDoc
+ * @param buildingEvent
+ * @returns {*}
+ */
+Utils.getBuildingByEvent = function(playerDoc, buildingEvent){
+	return playerDoc.buildings["location_" + buildingEvent.location]
+}
+
+/**
+ * 根据小屋建造事件查找小屋
+ * @param playerDoc
+ * @param houseEvent
+ * @returns {*}
+ */
+Utils.getHouseByEvent = function(playerDoc, houseEvent){
+	var building = playerDoc.buildings["location_" + houseEvent.buildingLocation]
+	for(var i = 0; i < building.houses.length; i ++){
+		var house = building.houses[i]
+		if(_.isEqual(house.location, houseEvent.houseLocation)){
+			return house
+		}
+	}
+	return null
+}
+
+/**
+ * 根据防御塔建造事件查找防御塔
+ * @param playerDoc
+ * @param towerEvent
+ * @returns {*}
+ */
+Utils.getTowerByEvent = function(playerDoc, towerEvent){
+	return playerDoc.towers["location_" + towerEvent.location]
+}
+
+/**
+ * 移除所有事件数组中指定的事件数组
+ * @param eventsTobeRemoved
+ * @param allEvents
+ */
+Utils.removeEvents = function(eventsTobeRemoved, allEvents){
+	for(var i = 0; i < eventsTobeRemoved.length; i ++){
+		for(var j = 0; j < allEvents.length; j ++){
+			if(_.isEqual(allEvents[j], eventsTobeRemoved[i])){
+				allEvents.splice(j, 1)
+				break
+			}
+		}
+	}
+}

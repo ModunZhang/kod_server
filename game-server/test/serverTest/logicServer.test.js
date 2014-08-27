@@ -180,7 +180,6 @@ describe("LogicServer", function(){
 
 			var onPlayerDataChanged = function(doc){
 				doc.buildings["location_1"].level.should.equal(22)
-				doc.buildings["location_1"].finishTime.should.equal(0)
 				func()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -610,7 +609,7 @@ describe("LogicServer", function(){
 			}
 
 			var chatInfo = {
-				text:"resetfinishtime",
+				text:"rmbuildingevents",
 				type:"global"
 			}
 			var route = "chat.chatHandler.send"
@@ -1024,7 +1023,7 @@ describe("LogicServer", function(){
 					doc.message.should.equal("城墙正在升级")
 
 					var chatInfo = {
-						text:"resetfinishtime",
+						text:"rmbuildingevents",
 						type:"global"
 					}
 					var route = "chat.chatHandler.send"

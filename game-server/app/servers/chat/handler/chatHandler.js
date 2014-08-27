@@ -167,11 +167,11 @@ var ChatHandler = function(app){
 			}
 		},
 		{
-			command:"resetfinishtime",
-			desc:"充值所有玩家finishTime 为 0",
+			command:"rmbuildingevents",
+			desc:"删除所有建筑的升级事件",
 			callback:function(session, uid){
 				var self = this
-				self.app.rpc.logic.commandRemote.resetfinishtime(session, uid, function(e){
+				self.app.rpc.logic.commandRemote.rmbuildingevents(session, uid, function(e){
 					if(_.isObject(e)){
 						errorLogger.error("handle TextCommand Error-----------------------------")
 						errorLogger.error(e.stack)

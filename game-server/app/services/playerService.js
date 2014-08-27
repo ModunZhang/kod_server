@@ -63,60 +63,56 @@ var AfterLogin = function(doc){
 	doc.countInfo.loginCount += 1
 	//更新资源数据
 	self.refreshPlayerResources(doc)
-	_.each(doc.buildings, function(building){
+	_.each(doc.buildingEvents, function(event, index){
 		//检查建筑
-		if(building.finishTime > 0){
-			if(building.finishTime <= Date.now()){
-				building.finishTime = 0
-				building.level += 1
-				self.pushService.onBuildingLevelUp(doc, building.location)
-			}else{
-				self.callbackService.addPlayerCallback(doc._id, building.finishTime, ExcutePlayerCallback.bind(self))
-			}
+		if(event.finishTime <= Date.now()){
+			var building = LogicUtils.getBuildingByEvent(doc, event)
+			building.level += 1
+			self.pushService.onBuildingLevelUp(doc, building.location)
+			doc.buildingEvents.splice(index, 1)
+		}else{
+			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
 		}
-		//检查小屋
-		_.each(building.houses, function(house){
-			if(house.finishTime > 0){
-				if(house.finishTime <= Date.now()){
-					house.finishTime = 0
-					house.level += 1
-					self.pushService.onHouseLevelUp(doc, building.location, house.location)
-					//如果是住宅,送玩家城民
-					if(_.isEqual("dwelling", house.type)){
-						var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
-						var next = DataUtils.getDwellingPopulationByLevel(house.level)
-						doc.resources.citizen += next - previous
-						self.refreshPlayerResources(doc)
-					}
-				}else{
-					self.callbackService.addPlayerCallback(doc._id, house.finishTime, ExcutePlayerCallback.bind(self))
-				}
-			}
-		})
 	})
-
-	//检查箭塔
-	_.each(doc.towers, function(tower){
-		if(tower.finishTime > 0){
-			if(tower.finishTime <= Date.now()){
-				tower.finishTime = 0
-				tower.level += 1
-				self.pushService.onTowerLevelUp(doc, tower.location)
-			}else{
-				self.callbackService.addPlayerCallback(doc._id, tower.finishTime, ExcutePlayerCallback.bind(self))
+	//检查小屋
+	_.each(doc.houseEvents, function(event, index){
+		if(event.finishTime <= Date.now()){
+			var house = LogicUtils.getHouseByEvent(doc, event)
+			house.level += 1
+			self.pushService.onHouseLevelUp(doc, building.location, house.location)
+			//如果是住宅,送玩家城民
+			if(_.isEqual("dwelling", house.type)){
+				var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
+				var next = DataUtils.getDwellingPopulationByLevel(house.level)
+				doc.resources.citizen += next - previous
+				self.refreshPlayerResources(doc)
 			}
+			doc.houseEvents.splice(index, 1)
+		}else{
+			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	//检查箭塔
+	_.each(doc.towerEvents, function(event, index){
+		if(event.finishTime <= Date.now()){
+			event.level += 1
+			self.pushService.onTowerLevelUp(doc, tower.location)
+			doc.towerEvents.splice(index, 1)
+		}else{
+			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
 		}
 	})
 	//检查城墙
-	if(doc.wall.finishTime > 0){
-		if(doc.wall.finishTime <= Date.now()){
-			doc.wall.finishTime = 0
-			doc.wall.level += 1
+	_.each(doc.wallEvents, function(event, index){
+		if(event.finishTime <= Date.now()){
+			var wall = doc.wall
+			wall.level += 1
 			self.pushService.onWallLevelUp(doc)
+			doc.wallEvents.splice(index, 1)
 		}else{
-			self.callbackService.addPlayerCallback(doc._id, doc.wall.finishTime, ExcutePlayerCallback.bind(self))
+			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
 		}
-	}
+	})
 }
 
 /**
@@ -170,7 +166,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			return Promise.reject(new Error("建筑不存在"))
 		}
 		//建筑是否正在升级中
-		if(building.finishTime > 0){
+		if(LogicUtils.hasBuildingEvents(doc, buildingLocation)){
 			return Promise.reject(new Error("建筑正在升级"))
 		}
 		//检查是否小于0级
@@ -232,8 +228,9 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			building.level = building.level + 1
 			self.pushService.onBuildingLevelUp(doc, building.location)
 		}else{
-			building.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			self.callbackService.addPlayerCallback(doc._id, building.finishTime, ExcutePlayerCallback.bind(self))
+			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
+			LogicUtils.addBuildingEvent(doc, building.level, building.location, finishTime)
+			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
@@ -355,8 +352,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		var house = {
 			type:houseType,
 			level:0,
-			location:houseLocation,
-			finishTime:0
+			location:houseLocation
 		}
 		//将小屋添加到大型建筑中
 		building.houses.push(house)
@@ -365,8 +361,9 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			house.level += 1
 			self.pushService.onHouseLevelUp(doc, building.location, house.location)
 		}else{
-			house.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			self.callbackService.addPlayerCallback(doc._id, house.finishTime, ExcutePlayerCallback.bind(self))
+			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
+			LogicUtils.addHouseEvent(doc, house.level, buildingLocation, houseLocation, finishTime)
+			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//如果是住宅,送玩家城民
 		if(_.isEqual("dwelling", house.type) && finishNow){
@@ -443,7 +440,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			return Promise.reject(new Error("小屋不存在"))
 		}
 		//检查小屋是否正在升级
-		if(house.finishTime > 0){
+		if(LogicUtils.hasHouseEvents(doc, building.location, house.location)){
 			return Promise.reject(new Error("小屋正在升级"))
 		}
 		//是否已到最高等级
@@ -498,8 +495,9 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			house.level += 1
 			self.pushService.onHouseLevelUp(doc, building.location, house.location)
 		}else{
-			house.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			self.callbackService.addPlayerCallback(doc._id, house.finishTime, ExcutePlayerCallback.bind(self))
+			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
+			LogicUtils.addHouseEvent(doc, house.level, building.location, house.location, finishTime)
+			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//如果是住宅,送玩家城民
 		if(_.isEqual("dwelling", house.type) && finishNow){
@@ -565,7 +563,7 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 			return Promise.reject(new Error("小屋不存在"))
 		}
 		//检查是否正在升级
-		if(house.finishTime > 0){
+		if(LogicUtils.hasHouseEvents(doc, building.location, house.location)){
 			return Promise.reject(new Error("小屋正在升级"))
 		}
 		//更新资源数据
@@ -639,7 +637,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			return Promise.reject(new Error("箭塔不存在"))
 		}
 		//箭塔是否正在升级中
-		if(tower.finishTime > 0){
+		if(LogicUtils.hasTowerEvents(doc, tower.location)){
 			return Promise.reject(new Error("箭塔正在升级"))
 		}
 		//检查是否小于1级
@@ -693,8 +691,9 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			tower.level = tower.level + 1
 			self.pushService.onTowerLevelUp(doc, tower.location)
 		}else{
-			tower.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			self.callbackService.addPlayerCallback(doc._id, tower.finishTime, ExcutePlayerCallback.bind(self))
+			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
+			LogicUtils.addTowerEvent(doc, tower.level, tower.location, finishTime)
+			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
@@ -738,7 +737,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			return Promise.reject(new Error("城墙不存在"))
 		}
 		//城墙是否正在升级中
-		if(wall.finishTime > 0){
+		if(LogicUtils.hasWallEvents(doc)){
 			return Promise.reject(new Error("城墙正在升级"))
 		}
 		//检查是否小于1级
@@ -792,8 +791,9 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			wall.level = wall.level + 1
 			self.pushService.onWallLevelUp(doc)
 		}else{
-			wall.finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			self.callbackService.addPlayerCallback(doc._id, wall.finishTime, ExcutePlayerCallback.bind(self))
+			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
+			LogicUtils.addWallEvent(doc, doc.wall.level, finishTime)
+			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
@@ -824,43 +824,57 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 		//更新资源数据
 		self.refreshPlayerResources(doc)
 		//检查建筑
-		_.each(doc.buildings, function(building){
-			if(building.finishTime > 0 && building.finishTime <= finishTime){
-				building.finishTime = 0
+		var buildingFinishedEvents = []
+		_.each(doc.buildingEvents, function(event){
+
+			if(event.finishTime > 0 && event.finishTime <= finishTime){
+				buildingFinishedEvents.push(event)
+				var building = LogicUtils.getBuildingByEvent(doc, event)
 				building.level += 1
 				self.pushService.onBuildingLevelUp(doc, building.location)
 			}
-			//检查小屋
-			_.each(building.houses, function(house){
-				if(house.finishTime > 0 && house.finishTime <= finishTime){
-					house.finishTime = 0
-					house.level += 1
-					self.pushService.onHouseLevelUp(doc, building.location, house.location)
-					//如果是住宅,送玩家城民
-					if(_.isEqual("dwelling", house.type)){
-						var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
-						var next = DataUtils.getDwellingPopulationByLevel(house.level)
-						doc.resources.citizen += next - previous
-						self.refreshPlayerResources(doc)
-					}
-				}
-			})
 		})
-		//检查箭塔
-		_.each(doc.towers, function(tower){
-			if(tower.finishTime > 0 && tower.finishTime <= finishTime){
-				tower.finishTime = 0
-				tower.level += 1
-				self.pushService.onTowerLevelUp(doc, tower.location)
+		LogicUtils.removeEvents(buildingFinishedEvents, doc.buildingEvents)
+		//检查小屋
+		var houseFinishedEvents = []
+		_.each(doc.houseEvents, function(event){
+			if(event.finishTime > 0 && event.finishTime <= finishTime){
+				houseFinishedEvents.push(event)
+				var house = LogicUtils.getHouseByEvent(doc, event)
+				house.level += 1
+				self.pushService.onHouseLevelUp(doc, event.buildingLocation, event.houseLocation)
+				//如果是住宅,送玩家城民
+				if(_.isEqual("dwelling", house.type)){
+					var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
+					var next = DataUtils.getDwellingPopulationByLevel(house.level)
+					doc.resources.citizen += next - previous
+					self.refreshPlayerResources(doc)
+				}
 			}
 		})
+		LogicUtils.removeEvents(houseFinishedEvents, doc.houseEvents)
+		//检查箭塔
+		var towerFinishedEvents = []
+		_.each(doc.towerEvents, function(event){
+			if(event.finishTime > 0 && event.finishTime <= finishTime){
+				var tower = LogicUtils.getTowerByEvent(doc, event)
+				tower.level += 1
+				self.pushService.onTowerLevelUp(doc, tower.location)
+				towerFinishedEvents.push(event)
+			}
+		})
+		LogicUtils.removeEvents(towerFinishedEvents, doc.towerEvents)
 		//检查城墙
-		if(doc.wall.finishTime > 0 && doc.wall.finishTime <= finishTime){
-			doc.wall.finishTime = 0
-			doc.wall.level += 1
-			self.pushService.onWallLevelUp(doc)
-		}
-
+		var wallFinishedEvents = []
+		_.each(doc.wallEvents, function(event){
+			if(event.finishTime > 0 && event.finishTime <= finishTime){
+				var wall = doc.wall
+				wall.level += 1
+				self.pushService.onWallLevelUp(doc)
+				wallFinishedEvents.push(event)
+			}
+		})
+		LogicUtils.removeEvents(wallFinishedEvents, doc.wallEvents)
 		//更新玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){

@@ -12,6 +12,30 @@ var BuildingInitData = GameDatas.Buildings.buildings
 var ResourceInitData = GameDatas.PlayerInitData.resources[1]
 var MaterialInitData = GameDatas.PlayerInitData.materials[1]
 
+var createBuildingSchema = function(location){
+	var schema = {
+		type:{type:String, required:true, default:BuildingInitData[location].type},
+		level:{type:Number, required:true, default:location <= 4 ? 1 : location > 4 && location <= 9 ? 0 : -1 },
+		location:{type:Number, required:true, default:location},
+		houses:[
+			{
+				type:{type:String, required:true},
+				level:{type:Number, required:true},
+				location:{type:Number, required:true}
+			}
+		]
+	}
+	return schema
+}
+
+var createTowerSchema = function(location){
+	var schema = {
+		level:{type:Number, required:true, default:location <= 5 ? 1 : -1 },
+		location:{type:Number, required:true, default:location}
+	}
+	return schema
+}
+
 var playerSchema = new Schema({
 	countInfo:{
 		deviceId:{type:String, index:true, unique:true, required:true},
@@ -46,292 +70,67 @@ var playerSchema = new Schema({
 		tiles:{type:Number, required:true, default:MaterialInitData.tiles},
 		pulley:{type:Number, required:true, default:MaterialInitData.pulley}
 	},
-	buildings:{
-		location_1:{
-			type:{type:String, required:true, default:BuildingInitData[1].type},
-			level:{type:Number, required:true, default:1},
-			location:{type:Number, required:true, default:1},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_2:{
-			type:{type:String, required:true, default:BuildingInitData[2].type},
-			level:{type:Number, required:true, default:1},
-			location:{type:Number, required:true, default:2},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_3:{
-			type:{type:String, required:true, default:BuildingInitData[3].type},
-			level:{type:Number, required:true, default:1},
-			location:{type:Number, required:true, default:3},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_4:{
-			type:{type:String, required:true, default:BuildingInitData[4].type},
-			level:{type:Number, required:true, default:1},
-			location:{type:Number, required:true, default:4},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_5:{
-			type:{type:String, required:true, default:BuildingInitData[5].type},
-			level:{type:Number, required:true, default:0},
-			location:{type:Number, required:true, default:5},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_6:{
-			type:{type:String, required:true, default:BuildingInitData[6].type},
-			level:{type:Number, required:true, default:0},
-			location:{type:Number, required:true, default:6},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_7:{
-			type:{type:String, required:true, default:BuildingInitData[7].type},
-			level:{type:Number, required:true, default:0},
-			location:{type:Number, required:true, default:7},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_8:{
-			type:{type:String, required:true, default:BuildingInitData[8].type},
-			level:{type:Number, required:true, default:0},
-			location:{type:Number, required:true, default:8},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_9:{
-			type:{type:String, required:true, default:BuildingInitData[9].type},
-			level:{type:Number, required:true, default:0},
-			location:{type:Number, required:true, default:9},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_10:{
-			type:{type:String, required:true, default:BuildingInitData[10].type},
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:10},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_11:{
-			type:{type:String, required:true, default:BuildingInitData[11].type},
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:11},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_12:{
-			type:{type:String, required:true, default:BuildingInitData[12].type},
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:12},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_13:{
-			type:{type:String, required:true, default:BuildingInitData[13].type},
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:13},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_14:{
-			type:{type:String, required:true, default:BuildingInitData[14].type},
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:14},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_15:{
-			type:{type:String, required:true, default:BuildingInitData[15].type},
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:15},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
-		},
-		location_16:{
-			type:{type:String, required:true, default:BuildingInitData[16].type},
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:16},
-			finishTime:{type:Number, required:true, default:0},
-			houses:[
-				{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					location:{type:Number, required:true},
-					finishTime:{type:Number, required:true}
-				}
-			]
+	buildingEvents:[
+		{
+			level:{type:Number, required:true},
+			location:{type:Number, required:true},
+			finishTime:{type:Number, required:true}
 		}
+	],
+	houseEvents:[
+		{
+			level:{type:Number, required:true},
+			buildingLocation:{type:Number, required:true},
+			houseLocation:{type:Number, required:true},
+			finishTime:{type:Number, required:true}
+		}
+	],
+	towerEvents:[
+		{
+			level:{type:Number, required:true},
+			location:{type:Number, required:true},
+			finishTime:{type:Number, required:true}
+		}
+	],
+	wallEvents:[
+		{
+			level:{type:Number, required:true},
+			finishTime:{type:Number, required:true}
+		}
+	],
+	buildings:{
+		location_1:createBuildingSchema(1),
+		location_2:createBuildingSchema(2),
+		location_3:createBuildingSchema(3),
+		location_4:createBuildingSchema(4),
+		location_5:createBuildingSchema(5),
+		location_6:createBuildingSchema(6),
+		location_7:createBuildingSchema(7),
+		location_8:createBuildingSchema(8),
+		location_9:createBuildingSchema(9),
+		location_10:createBuildingSchema(10),
+		location_11:createBuildingSchema(11),
+		location_12:createBuildingSchema(12),
+		location_13:createBuildingSchema(13),
+		location_14:createBuildingSchema(14),
+		location_15:createBuildingSchema(15),
+		location_16:createBuildingSchema(16)
 	},
 	towers:{
-		location_1:{
-			level:{type:Number, required:true, default:1},
-			location:{type:Number, required:true, default:1},
-			finishTime:{type:Number, required:true, default:0}
-		},
-		location_2:{
-			level:{type:Number, required:true, default:1},
-			location:{type:Number, required:true, default:2},
-			finishTime:{type:Number, required:true, default:0}
-		},
-		location_3:{
-			level:{type:Number, required:true, default:1},
-			location:{type:Number, required:true, default:3},
-			finishTime:{type:Number, required:true, default:0}
-		},
-		location_4:{
-			level:{type:Number, required:true, default:1},
-			location:{type:Number, required:true, default:4},
-			finishTime:{type:Number, required:true, default:0}
-		},
-		location_5:{
-			level:{type:Number, required:true, default:1},
-			location:{type:Number, required:true, default:5},
-			finishTime:{type:Number, required:true, default:0}
-		},
-		location_6:{
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:6},
-			finishTime:{type:Number, required:true, default:0}
-		},
-		location_7:{
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:7},
-			finishTime:{type:Number, required:true, default:0}
-		},
-		location_8:{
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:8},
-			finishTime:{type:Number, required:true, default:0}
-		},
-		location_9:{
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:9},
-			finishTime:{type:Number, required:true, default:0}
-		},
-		location_10:{
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:10},
-			finishTime:{type:Number, required:true, default:0}
-		},
-		location_11:{
-			level:{type:Number, required:true, default:-1},
-			location:{type:Number, required:true, default:11},
-			finishTime:{type:Number, required:true, default:0}
-		}
+		location_1:createTowerSchema(1),
+		location_2:createTowerSchema(2),
+		location_3:createTowerSchema(3),
+		location_4:createTowerSchema(4),
+		location_5:createTowerSchema(5),
+		location_6:createTowerSchema(6),
+		location_7:createTowerSchema(7),
+		location_8:createTowerSchema(8),
+		location_9:createTowerSchema(9),
+		location_10:createTowerSchema(10),
+		location_11:createTowerSchema(11)
 	},
 	wall:{
-		level:{type:Number, required:true, default:1},
-		finishTime:{type:Number, required:true, default:0}
+		level:{type:Number, required:true, default:1}
 	}
 })
 

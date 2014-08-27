@@ -7,6 +7,7 @@
 
 var _ = require("underscore")
 
+var LogicUtils = require("./logicUtils")
 var GameData = require("../datas/GameDatas")
 var BuildingLevelUp = GameData.BuildingLevelUp
 var BuildingFunction = GameData.BuildingFunction
@@ -365,7 +366,7 @@ Utils.getPlayerUsedCitizen = function(playerDoc){
 	var used = 0
 	_.each(playerDoc.buildings, function(building){
 		_.each(building.houses, function(house){
-			var houseLevel = house.finishTime > 0 ? house.level + 1 : house.level
+			var houseLevel = LogicUtils.hasHouseEvents(playerDoc, building.location, house.location) ? house.level + 1 : house.level
 			var config = HouseLevelUp[house.type][houseLevel]
 			used += config.citizen
 		})
@@ -463,7 +464,7 @@ Utils.getDwellingPopulationByLevel = function(houseLevel){
 Utils.getPlayerBuildingsCount = function(playerDoc){
 	var count = 0
 	_.each(playerDoc.buildings, function(building){
-		if(building.level > 0 || (building.level == 0 && building.finishTime > 0)){
+		if(building.level > 0 || (building.level == 0 && LogicUtils.hasBuildingEvents(playerDoc, building.location))){
 			count += 1
 		}
 	})

@@ -1,62 +1,50 @@
 {
-	"_id":"53f7ed10f0c513a202721989",
+	"_id":"53fca89a9735ee49246ace96",
 	"wall":{
-		"finishTime":0,
 		"level":1
 	},
 	"towers":{
 		"location_11":{
-			"finishTime":0,
 			"location":11,
 			"level":-1
 		},
 		"location_10":{
-			"finishTime":0,
 			"location":10,
 			"level":-1
 		},
 		"location_9":{
-			"finishTime":0,
 			"location":9,
 			"level":-1
 		},
 		"location_8":{
-			"finishTime":0,
 			"location":8,
 			"level":-1
 		},
 		"location_7":{
-			"finishTime":0,
 			"location":7,
 			"level":-1
 		},
 		"location_6":{
-			"finishTime":0,
 			"location":6,
 			"level":-1
 		},
 		"location_5":{
-			"finishTime":0,
 			"location":5,
 			"level":1
 		},
 		"location_4":{
-			"finishTime":0,
 			"location":4,
 			"level":1
 		},
 		"location_3":{
-			"finishTime":0,
 			"location":3,
 			"level":1
 		},
 		"location_2":{
-			"finishTime":0,
 			"location":2,
 			"level":1
 		},
 		"location_1":{
-			"finishTime":0,
 			"location":1,
 			"level":1
 		}
@@ -64,117 +52,105 @@
 	"buildings":{
 		"location_16":{
 			"houses":[],
-			"finishTime":0,
 			"location":16,
 			"level":-1,
 			"type":"academy"
 		},
 		"location_15":{
 			"houses":[],
-			"finishTime":0,
 			"location":15,
 			"level":-1,
 			"type":"townHall"
 		},
 		"location_14":{
 			"houses":[],
-			"finishTime":0,
 			"location":14,
 			"level":-1,
 			"type":"hospital"
 		},
 		"location_13":{
 			"houses":[],
-			"finishTime":0,
 			"location":13,
 			"level":-1,
 			"type":"mill"
 		},
 		"location_12":{
 			"houses":[],
-			"finishTime":0,
 			"location":12,
 			"level":-1,
 			"type":"lumbermill"
 		},
 		"location_11":{
 			"houses":[],
-			"finishTime":0,
 			"location":11,
 			"level":-1,
 			"type":"stoneMason"
 		},
 		"location_10":{
 			"houses":[],
-			"finishTime":0,
 			"location":10,
 			"level":-1,
 			"type":"foundry"
 		},
 		"location_9":{
 			"houses":[],
-			"finishTime":0,
 			"location":9,
 			"level":0,
 			"type":"blackSmith"
 		},
 		"location_8":{
 			"houses":[],
-			"finishTime":0,
 			"location":8,
 			"level":0,
 			"type":"barracks"
 		},
 		"location_7":{
 			"houses":[],
-			"finishTime":0,
 			"location":7,
 			"level":0,
 			"type":"armyCamp"
 		},
 		"location_6":{
 			"houses":[],
-			"finishTime":0,
 			"location":6,
 			"level":0,
 			"type":"materialDepot"
 		},
 		"location_5":{
 			"houses":[],
-			"finishTime":0,
 			"location":5,
 			"level":0,
 			"type":"toolShop"
 		},
 		"location_4":{
 			"houses":[],
-			"finishTime":0,
 			"location":4,
 			"level":1,
 			"type":"dragonEyrie"
 		},
 		"location_3":{
 			"houses":[],
-			"finishTime":0,
 			"location":3,
 			"level":1,
 			"type":"warehouse"
 		},
 		"location_2":{
 			"houses":[],
-			"finishTime":0,
 			"location":2,
 			"level":1,
 			"type":"watchTower"
 		},
 		"location_1":{
 			"houses":[],
-			"finishTime":0,
 			"location":1,
 			"level":1,
 			"type":"keep"
 		}
 	},
+	"wallEvents":[],
+	"towerEvents":[],
+	"houseEvents":[],
+	"buildingEvents":[],
 	"materials":{
 		"pulley":1000,
 		"tiles":1000,
@@ -192,7 +168,7 @@
 		"name":"player_111111",
 		"cityName":"city_111111",
 		"coin":50000,
-		"resourceRefreshTime":1408757008810,
+		"resourceRefreshTime":1409067162351,
 		"gem":2000,
 		"vipExp":0,
 		"vip":1,
@@ -205,8 +181,8 @@
 		"deviceId":"__testDeviceId2",
 		"logicServerId":"logic-server-1",
 		"loginCount":0,
-		"lastLoginTime":1408757008809,
-		"registerTime":1408757008809
+		"lastLoginTime":1409067162351,
+		"registerTime":1409067162351
 	},
 	"__v":0
 }

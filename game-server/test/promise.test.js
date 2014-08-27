@@ -440,3 +440,16 @@ var should = require('should')
 //	Utils.updateBuildingsLevel(playerDoc)
 //	console.log(playerDoc)
 //})
+//
+//var a = [1, 2, 3, 4]
+//var b = [2, 4, 2]
+//for(var i = 0; i < b.length; i++){
+//	for(var j = 0; j < a.length; j++){
+//		if(_.isEqual(b[i], a[j])){
+//			a.splice(j, 1)
+//			break
+//		}
+//	}
+//}
+//
+//console.log(a)
