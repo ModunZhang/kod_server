@@ -68,7 +68,11 @@ var playerSchema = new Schema({
 		blueprints:{type:Number, required:true, default:MaterialInitData.blueprints},
 		tools:{type:Number, required:true, default:MaterialInitData.tools},
 		tiles:{type:Number, required:true, default:MaterialInitData.tiles},
-		pulley:{type:Number, required:true, default:MaterialInitData.pulley}
+		pulley:{type:Number, required:true, default:MaterialInitData.pulley},
+		trainingFigure:{type:Number, required:true, default:MaterialInitData.trainingFigure},
+		bowTarget:{type:Number, required:true, default:MaterialInitData.bowTarget},
+		saddle:{type:Number, required:true, default:MaterialInitData.saddle},
+		ironPart:{type:Number, required:true, default:MaterialInitData.ironPart}
 	},
 	buildingEvents:[
 		{
@@ -92,6 +96,11 @@ var playerSchema = new Schema({
 	wallEvents:[
 		{
 			finishTime:{type:Number, required:true}
+		}
+	],
+	materialEvents:[
+		{
+			type:{type:String, required:true}
 		}
 	],
 	buildings:{

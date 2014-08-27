@@ -462,6 +462,10 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		var buyedResources = null
 		var buyedMaterials = null
 		self.refreshPlayerResources(doc)
+		console.log("1111111")
+		console.log(doc.resources)
+		console.log("2222222")
+		console.log(upgradeRequired)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -490,6 +494,8 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
 		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
+		console.log("333333")
+		console.log(doc.resources)
 		//是否立即完成
 		if(finishNow){
 			house.level += 1
