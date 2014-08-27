@@ -305,8 +305,11 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
  * @returns {*}
  */
 Utils.getPlayerCitizen = function(playerDoc){
+	console.log(playerDoc.resources)
 	var citizenLimit = this.getPlayerCitizenUpLimit(playerDoc)
+	console.log(citizenLimit)
 	var usedCitizen = this.getPlayerUsedCitizen(playerDoc)
+	console.log(usedCitizen)
 	if(citizenLimit <= playerDoc.resources["citizen"] + usedCitizen){
 		return citizenLimit - usedCitizen
 	}
