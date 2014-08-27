@@ -506,6 +506,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			doc.resources.citizen += next - previous
 			self.refreshPlayerResources(doc)
 		}
+		console.log(doc.resources)
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
