@@ -221,8 +221,6 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		//修改玩家资源数据
 		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
 		//是否立即完成
 		if(finishNow){
 			building.level = building.level + 1
@@ -232,6 +230,8 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			LogicUtils.addBuildingEvent(doc, building.location, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -346,8 +346,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		//修改玩家资源数据
 		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
 		//创建小屋
 		var house = {
 			type:houseType,
@@ -370,9 +368,9 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			doc.resources.citizen += next - previous
-			//刷新玩家数据,防止城民爆仓
-			self.refreshPlayerResources(doc)
 		}
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -488,8 +486,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		//修改玩家资源数据
 		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
 		//是否立即完成
 		if(finishNow){
 			house.level += 1
@@ -504,9 +500,9 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			doc.resources.citizen += next - previous
-			self.refreshPlayerResources(doc)
 		}
-		console.log(doc.resources)
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -685,8 +681,6 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		//修改玩家资源数据
 		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
 		//是否立即完成
 		if(finishNow){
 			tower.level = tower.level + 1
@@ -696,6 +690,8 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			LogicUtils.addTowerEvent(doc, tower.location, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -785,8 +781,6 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		//修改玩家资源数据
 		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
 		//是否立即完成
 		if(finishNow){
 			wall.level = wall.level + 1
@@ -796,6 +790,8 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			LogicUtils.addWallEvent(doc, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
