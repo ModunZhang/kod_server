@@ -18,7 +18,21 @@ app.configure("production|development", "gate", function(){
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:5,
 		useDict:false,
-		useProtobuf:false
+		useProtobuf:false,
+		disconnectOnTimeout:true,
+		"max-connections":1000
+	})
+	app.set("proxyConfig", {
+		bufferMsg:true,
+		interval:10,
+		failMode:"failfast"
+	})
+	app.set("remoteConfig", {
+		bufferMsg:true,
+		interval:10
+	})
+	app.set('sessionConfig', {
+		singleSession:true
 	})
 })
 
@@ -27,7 +41,18 @@ app.configure("production|development", "front", function(){
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
 		useDict:true,
-		useProtobuf:true
+		useProtobuf:true,
+		disconnectOnTimeout:true,
+		"max-connections":1000
+	})
+	app.set("proxyConfig", {
+		bufferMsg:true,
+		interval:10,
+		failMode:"failfast"
+	})
+	app.set("remoteConfig", {
+		bufferMsg:true,
+		interval:10
 	})
 	app.set('sessionConfig', {
 		singleSession:true
