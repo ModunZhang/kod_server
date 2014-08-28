@@ -646,7 +646,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		return
 	}
 	if(!_.isNumber(towerLocation)){
-		callback(new Error("buildingLocation 不合法"))
+		callback(new Error("towerLocation 不合法"))
 		return
 	}
 	if(!_.isBoolean(finishNow)){
