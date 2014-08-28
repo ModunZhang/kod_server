@@ -106,7 +106,7 @@
 		},
 		{
 			"type":"smtp",
-			"recipients":"zhangxuemin@batcatstudio.com",
+			"recipients":"programmers@batcatstudio.com",
 			"sendInterval":5,
 			"transport":"SMTP",
 			"SMTP":{
