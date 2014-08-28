@@ -182,3 +182,34 @@ pro.speedupWallBuild = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 制作材料
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.makeMaterial = function(msg, session, next){
+	var category = msg.category
+	var finishNow = msg.finishNow
+	this.playerService.makeMaterialAsync(session.uid, category, finishNow).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 领取制作完成
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getMaterials = function(msg, session, next){
+	var category = msg.category
+	this.playerService.getMaterialsAsync(session.uid, category).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

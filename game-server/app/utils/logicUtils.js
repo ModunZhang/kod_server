@@ -378,3 +378,17 @@ Utils.removeEvents = function(eventsTobeRemoved, allEvents){
 		}
 	}
 }
+
+/**
+ * 获取指定类型的建造事件
+ * @param playerDoc
+ * @param category
+ * @returns {*}
+ */
+Utils.getMaterialEventByCategory = function(playerDoc, category){
+	for(var i = 0; i < playerDoc.materialEvents.length; i ++){
+		var event = playerDoc.materialEvents[i]
+		if(_.isEqual(event.category, category)) return event
+	}
+	return null
+}

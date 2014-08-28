@@ -182,6 +182,12 @@ pro.building = function(uid, level, callback){
 	})
 }
 
+/**
+ * 设置城堡等级
+ * @param uid
+ * @param level
+ * @param callback
+ */
 pro.keep = function(uid, level, callback){
 	var self = this
 	this.cacheService.getPlayerAsync(uid).then(function(doc){
@@ -206,6 +212,11 @@ pro.keep = function(uid, level, callback){
 	})
 }
 
+/**
+ * 清除所有建筑的建造事件
+ * @param uid
+ * @param callback
+ */
 pro.rmbuildingevents = function(uid, callback){
 	var self = this
 	this.cacheService.getPlayerAsync(uid).then(function(doc){
@@ -222,6 +233,26 @@ pro.rmbuildingevents = function(uid, callback){
 			doc.wallEvents.pop()
 		}
 		self.playerService.refreshPlayerResources(doc)
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 清除材料制造事件
+ * @param uid
+ * @param callback
+ */
+pro.rmmaterialevents = function(uid, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		while(doc.materialEvents.length > 0){
+			doc.materialEvents.pop()
+		}
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)

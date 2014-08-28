@@ -7,6 +7,8 @@
 
 var _ = require("underscore")
 
+var Consts = require("../consts/consts")
+var CommonUtils = require("./utils")
 var LogicUtils = require("./logicUtils")
 var GameData = require("../datas/GameDatas")
 var BuildingLevelUp = GameData.BuildingLevelUp
@@ -489,4 +491,120 @@ Utils.getPlayerMaxBuildingsCount = function(playerDoc){
  */
 Utils.getPlayerFreeBuildingsCount = function(playerDoc){
 	return this.getPlayerMaxBuildingsCount(playerDoc) - this.getPlayerBuildingsCount(playerDoc)
+}
+
+Utils.getMaterialUpLimit = function(playerDoc){
+	var buildings = this.getPlayerBuildingsByType(playerDoc, "materialDepot")
+	var totalUpLimit = 0
+	_.each(buildings, function(building){
+		var config = BuildingFunction["materialDepot"][building.level]
+		totalUpLimit += config.maxmaterial
+	})
+
+	return totalUpLimit
+}
+
+/**
+ * 将材料添加到材料仓库中,超过仓库上限后直接丢失
+ * @param playerDoc
+ * @param materials
+ */
+Utils.addPlayerMaterials = function(playerDoc, materials){
+	var materialUpLimit = this.getMaterialUpLimit(playerDoc)
+	_.each(materials, function(material){
+		var currentMaterial = playerDoc.materials[material.type]
+		if(currentMaterial < materialUpLimit){
+			currentMaterial += material.count
+			currentMaterial = currentMaterial > materialUpLimit ? materialUpLimit : currentMaterial
+			playerDoc.materials[material.type] = currentMaterial
+		}
+	})
+}
+
+/**
+ * 获取制造材料所需的资源
+ * @param category
+ * @param toolShopLevel
+ * @returns {{}}
+ */
+Utils.getMakeMaterialRequired = function(category, toolShopLevel){
+	var required = {}
+	var config = BuildingFunction["toolShop"][toolShopLevel]
+	if(_.isEqual(Consts.MaterialType.Building, category)){
+		required.resources = {
+			wood:config.productBmWood,
+			stone:config.productBmStone,
+			iron:config.productBmIron
+		}
+		required.buildTime = config.productBmtime
+	}else if(_.isEqual(Consts.MaterialType.Technology, category)){
+		required.resources = {
+			wood:config.productAmWood,
+			stone:config.productAmStone,
+			iron:config.productAmIron
+		}
+		required.buildTime = config.productAmtime
+	}
+	return required
+}
+
+/**
+ * 产生制作材料的事件
+ * @param toolShop
+ * @param category
+ * @param finishNow
+ */
+Utils.generateMaterialEvent = function(toolShop, category, finishNow){
+	var categoryConfig = {}
+	categoryConfig[Consts.MaterialType.Building] = [
+		"blueprints",
+		"tools",
+		"tiles",
+		"pulley"
+	]
+	categoryConfig[Consts.MaterialType.Technology] = [
+		"trainingFigure",
+		"bowTarget",
+		"saddle",
+		"ironPart"
+	]
+
+	var config = BuildingFunction["toolShop"][toolShop.level]
+	var poduction = config.poduction
+	var materialTypeCount = config.poductionType
+	var materialTypes = categoryConfig[category]
+	materialTypes = CommonUtils.shuffle(materialTypes)
+	var materialCountArray = []
+	for(var i = 1; i <= poduction; i ++){
+		materialCountArray.push(i)
+	}
+	materialCountArray = CommonUtils.shuffle(materialCountArray)
+
+	var materials = []
+	var totalGenerated = 0
+	for(i = 0; i < materialTypeCount; i ++){
+		var material = {
+			type:materialTypes[i],
+			count:materialCountArray[i]
+		}
+		materials.push(material)
+		totalGenerated += materialCountArray[i]
+
+		if(poduction <= totalGenerated){
+			material.count -= totalGenerated - poduction
+			break
+		}
+
+		if(i == materialTypeCount - 1 && poduction > totalGenerated){
+			material.count += poduction - totalGenerated
+		}
+	}
+
+	var buildTime = _.isEqual(Consts.MaterialType.Building, category) ? config.productBmtime : config.productAmtime
+	var event = {
+		category:category,
+		materials:materials,
+		finishTime:finishNow ? 0 : (Date.now() + (buildTime * 1000))
+	}
+	return event
 }

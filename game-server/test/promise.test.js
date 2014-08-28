@@ -3,6 +3,7 @@ var Promise = require("bluebird")
 var Promisify = Promise.promisify
 var _ = require("underscore")
 var should = require('should')
+var Utils = require("../app/utils/utils")
 
 //function a(a, cb){
 //	console.log(a)
@@ -453,3 +454,49 @@ var should = require('should')
 //}
 //
 //console.log(a)
+//
+//var a = ["a", "b", "c", "d", "e"]
+//console.log(Utils.shuffle(a)[0])
+//
+//var b = [1,2,3,4,5]
+//console.log(Utils.shuffle(b)[0])
+//
+//var categoryConfig = [
+//	"blueprints",
+//	"tools",
+//	"tiles",
+//	"pulley"
+//]
+//
+//var poduction = 15
+//var materialTypeCount = 3
+//var materialTypes = categoryConfig
+//materialTypes = Utils.shuffle(materialTypes)
+//var materialCountArray = []
+//for(var i = 1; i <= poduction; i ++){
+//	materialCountArray.push(i)
+//}
+//materialCountArray = Utils.shuffle(materialCountArray)
+//
+//var materials = []
+//var totalGenerated = 0
+//for(var i = 0; i < materialTypeCount; i ++){
+//	var material = {
+//		type:materialTypes[i],
+//		count:materialCountArray[i]
+//	}
+//	materials.push(material)
+//	totalGenerated += materialCountArray[i]
+//
+//	console.log(poduction + "__" + totalGenerated + "__" + materialCountArray[i])
+//	if(poduction <= totalGenerated){
+//		material.count -= totalGenerated - poduction
+//		break
+//	}
+//
+//	if(i == materialTypeCount - 1 && poduction > totalGenerated){
+//		material.count += poduction - totalGenerated
+//	}
+//}
+//
+//console.log(materials)

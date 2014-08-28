@@ -1,5 +1,5 @@
 {
-	"_id":"53fca89a9735ee49246ace96",
+	"_id":"53fed9e7687978184583b36b",
 	"wall":{
 		"level":1
 	},
@@ -147,11 +147,16 @@
 			"type":"keep"
 		}
 	},
+	"materialEvents":[],
 	"wallEvents":[],
 	"towerEvents":[],
 	"houseEvents":[],
 	"buildingEvents":[],
 	"materials":{
+		"ironPart":1000,
+		"saddle":1000,
+		"bowTarget":1000,
+		"trainingFigure":1000,
 		"pulley":1000,
 		"tiles":1000,
 		"tools":1000,
@@ -168,7 +173,7 @@
 		"name":"player_111111",
 		"cityName":"city_111111",
 		"coin":50000,
-		"resourceRefreshTime":1409067162351,
+		"resourceRefreshTime":1409210855011,
 		"gem":2000,
 		"vipExp":0,
 		"vip":1,
@@ -181,8 +186,8 @@
 		"deviceId":"__testDeviceId2",
 		"logicServerId":"logic-server-1",
 		"loginCount":0,
-		"lastLoginTime":1409067162351,
-		"registerTime":1409067162351
+		"lastLoginTime":1409210855011,
+		"registerTime":1409210855011
 	},
 	"__v":0
 }

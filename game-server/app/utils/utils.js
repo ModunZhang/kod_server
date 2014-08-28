@@ -7,6 +7,16 @@ utils.filter = function(doc){
 	return doc
 }
 
+utils.shuffle = function(array){
+	for(var tmp, cur, top = array.length; top--;){
+		cur = (Math.random() * (top + 1)) << 0
+		tmp = array[cur]
+		array[cur] = array[top]
+		array[top] = tmp
+	}
+	return array
+}
+
 utils.next = function(doc, code){
 	var resp = {}
 	resp.code = code

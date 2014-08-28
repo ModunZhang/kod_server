@@ -11,7 +11,9 @@ module.exports = {
 		onBuildingLevelUp:"onBuildingLevelUp",
 		onHouseLevelUp:"onHouseLevelUp",
 		onTowerLevelUp:"onTowerLevelUp",
-		onWallLevelUp:"onWallLevelUp"
+		onWallLevelUp:"onWallLevelUp",
+		onMakeMaterialFinished:"onMakeMaterialFinished",
+		onGetMaterialSuccess:"onGetMaterialSuccess"
 	},
 	chat:{
 		onChat:"onChat",

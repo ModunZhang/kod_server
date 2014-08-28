@@ -108,3 +108,27 @@ pro.onWallLevelUp = function(playerData){
 	}
 	this.pushToPlayer(playerData, Events.player.onWallLevelUp, data)
 }
+
+/**
+ * 材料制作完成事件推送
+ * @param playerData
+ * @param event
+ */
+pro.onMakeMaterialFinished = function(playerData, event){
+	var data = {
+		category:event.category
+	}
+	this.pushToPlayer(playerData, Events.player.onMakeMaterialFinished, data)
+}
+
+/**
+ * 获取由工具作坊制作的材料成功
+ * @param playerData
+ * @param event
+ */
+pro.onGetMaterialSuccess = function(playerData, event){
+	var data = {
+		category:event.category
+	}
+	this.pushToPlayer(playerData, Events.player.onGetMaterialSuccess, data)
+}

@@ -100,7 +100,14 @@ var playerSchema = new Schema({
 	],
 	materialEvents:[
 		{
-			type:{type:String, required:true}
+			category:{type:String, required:true},
+			materials:[
+				{
+					type:{type:String, required:true},
+					count:{type:Number, required:true}
+				}
+			],
+			finishTime:{type:Number, required:true}
 		}
 	],
 	buildings:{

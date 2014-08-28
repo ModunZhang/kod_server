@@ -14,5 +14,9 @@ module.exports = {
 		House:"house",
 		Tower:"tower",
 		Wall:"wall"
+	},
+	MaterialType:{
+		Building:"building",
+		Technology:"tochnology"
 	}
 }

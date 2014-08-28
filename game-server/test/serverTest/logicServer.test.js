@@ -6,6 +6,7 @@ var should = require('should')
 var pomelo = require("../pomelo-client")
 var mongoose = require("mongoose")
 var _ = require("underscore")
+var Consts = require("../../app/consts/consts")
 
 var Config = require("../config")
 var Player = require("../../app/domains/player")
@@ -1178,6 +1179,223 @@ describe("LogicServer", function(){
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("upgradeWall 正常升级", function(done){
+			var houseInfo = {
+				finishNow:true
+			}
+			var route = "logic.playerHandler.upgradeWall"
+			pomelo.request(route, houseInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.wall.level.should.equal(6)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("makeMaterial 工具作坊还未建造", function(done){
+			var houseInfo = {
+				finishNow:true,
+				category:Consts.MaterialType.Building
+			}
+			var route = "logic.playerHandler.makeMaterial"
+			pomelo.request(route, houseInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("工具作坊还未建造")
+				done()
+			})
+		})
+
+		it("makeMaterial 同类型的材料正在制造", function(done){
+			var makeMaterialNotFinishedNow = function(){
+				var houseInfo = {
+					finishNow:false,
+					category:Consts.MaterialType.Building
+				}
+				var route = "logic.playerHandler.makeMaterial"
+				pomelo.request(route, houseInfo, function(doc){
+					doc.code.should.equal(200)
+				})
+
+				var onPlayerDataChanged = function(doc){
+					doc.materialEvents.length.should.equal(1)
+					makeMaterialNotFinishedNowError()
+					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+				}
+				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			}
+
+			var makeMaterialNotFinishedNowError = function(){
+				var houseInfo = {
+					finishNow:false,
+					category:Consts.MaterialType.Building
+				}
+				var route = "logic.playerHandler.makeMaterial"
+				pomelo.request(route, houseInfo, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("同类型的材料正在制造")
+					done()
+				})
+			}
+
+			var houseInfo = {
+				location:5,
+				finishNow:true
+			}
+			var route = "logic.playerHandler.upgradeBuilding"
+			pomelo.request(route, houseInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.buildings["location_5"].level.should.equal(1)
+				makeMaterialNotFinishedNow()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("makeMaterial 同类型的材料制作完成后还未领取", function(done){
+			var makeMaterialFinishedNow = function(){
+				var houseInfo = {
+					finishNow:true,
+					category:Consts.MaterialType.Technology
+				}
+				var route = "logic.playerHandler.makeMaterial"
+				pomelo.request(route, houseInfo, function(doc){
+					doc.code.should.equal(200)
+				})
+
+				var onPlayerDataChanged = function(doc){
+					doc.materialEvents.length.should.equal(2)
+					makeMaterialNotFinishedNowError()
+					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+				}
+				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			}
+
+			var makeMaterialNotFinishedNowError = function(){
+				var houseInfo = {
+					finishNow:false,
+					category:Consts.MaterialType.Technology
+				}
+				var route = "logic.playerHandler.makeMaterial"
+				pomelo.request(route, houseInfo, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("同类型的材料制作完成后还未领取")
+					done()
+				})
+			}
+
+			makeMaterialFinishedNow()
+		})
+
+		it("makeMaterials 正常制造", function(done){
+			var clearEvents = function(){
+				var chatInfo = {
+					text:"rmmaterialevents",
+					type:"global"
+				}
+				var route = "chat.chatHandler.send"
+				pomelo.request(route, chatInfo, function(doc){
+					doc.code.should.equal(200)
+				})
+
+				var onPlayerDataChanged = function(doc){
+					doc.materialEvents.length.should.equal(0)
+					makeMaterialsNotFinishNow()
+					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+				}
+				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			}
+
+			var makeMaterialsNotFinishNow = function(){
+				var houseInfo = {
+					finishNow:false,
+					category:Consts.MaterialType.Building
+				}
+				var route = "logic.playerHandler.makeMaterial"
+				pomelo.request(route, houseInfo, function(doc){
+					doc.code.should.equal(200)
+				})
+
+				var onPlayerDataChanged = function(doc){
+					doc.materialEvents.length.should.equal(1)
+					done()
+					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+				}
+				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			}
+
+			clearEvents()
+		})
+
+		it("getMaterials 没有材料建造事件存在", function(done){
+			var houseInfo = {
+				category:Consts.MaterialType.Technology
+			}
+			var route = "logic.playerHandler.getMaterials"
+			pomelo.request(route, houseInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("没有材料建造事件存在")
+				done()
+			})
+		})
+
+		it("getMaterials 同类型的材料正在制造", function(done){
+			var houseInfo = {
+				category:Consts.MaterialType.Building
+			}
+			var route = "logic.playerHandler.getMaterials"
+			pomelo.request(route, houseInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("同类型的材料正在制造")
+				done()
+			})
+		})
+
+		it("getMaterials 正常领取", function(done){
+			var makeMaterialFinishNow = function(){
+				var houseInfo = {
+					finishNow:true,
+					category:Consts.MaterialType.Technology
+				}
+				var route = "logic.playerHandler.makeMaterial"
+				pomelo.request(route, houseInfo, function(doc){
+					doc.code.should.equal(200)
+				})
+
+				var onPlayerDataChanged = function(doc){
+					doc.materialEvents.length.should.equal(2)
+					getMaterial()
+					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+				}
+				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			}
+
+			var getMaterial = function(){
+				var houseInfo = {
+					category:Consts.MaterialType.Technology
+				}
+				var route = "logic.playerHandler.getMaterials"
+				pomelo.request(route, houseInfo, function(doc){
+					doc.code.should.equal(200)
+				})
+
+				var onPlayerDataChanged = function(doc){
+					doc.materialEvents.length.should.equal(1)
+					done()
+					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+				}
+				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			}
+
+			makeMaterialFinishNow()
 		})
 	})
 

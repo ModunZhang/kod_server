@@ -13,6 +13,7 @@ var LogicUtils = require("../utils/logicUtils")
 var Events = require("../consts/events")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
+var Consts = require("../consts/consts")
 
 var PlayerService = function(app){
 	this.app = app
@@ -61,13 +62,12 @@ var AfterLogin = function(doc){
 	var self = this
 	doc.countInfo.lastLoginTime = Date.now()
 	doc.countInfo.loginCount += 1
-	//更新资源数据
+	//刷新玩家资源数据
 	self.refreshPlayerResources(doc)
 	//检查建筑
 	var buildingFinishedEvents = []
 	_.each(doc.buildingEvents, function(event){
-
-		if(event.finishTime <= Date.now()){
+		if(event.finishTime > 0 && event.finishTime <= Date.now()){
 			var building = LogicUtils.getBuildingByEvent(doc, event)
 			building.level += 1
 			self.pushService.onBuildingLevelUp(doc, event.location)
@@ -80,7 +80,7 @@ var AfterLogin = function(doc){
 	//检查小屋
 	var houseFinishedEvents = []
 	_.each(doc.houseEvents, function(event){
-		if(event.finishTime <= Date.now()){
+		if(event.finishTime > 0 && event.finishTime <= Date.now()){
 			var house = LogicUtils.getHouseByEvent(doc, event)
 			house.level += 1
 			self.pushService.onHouseLevelUp(doc, event.buildingLocation, event.houseLocation)
@@ -89,6 +89,7 @@ var AfterLogin = function(doc){
 				var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 				var next = DataUtils.getDwellingPopulationByLevel(house.level)
 				doc.resources.citizen += next - previous
+				//刷新玩家资源数据
 				self.refreshPlayerResources(doc)
 			}
 			houseFinishedEvents.push(event)
@@ -100,7 +101,7 @@ var AfterLogin = function(doc){
 	//检查箭塔
 	var towerFinishedEvents = []
 	_.each(doc.towerEvents, function(event){
-		if(event.finishTime <= Date.now()){
+		if(event.finishTime > 0 && event.finishTime <= Date.now()){
 			event.level += 1
 			self.pushService.onTowerLevelUp(doc, event.location)
 			towerFinishedEvents.push(event)
@@ -112,7 +113,7 @@ var AfterLogin = function(doc){
 	//检查城墙
 	var wallFinishedEvents = []
 	_.each(doc.wallEvents, function(event){
-		if(event.finishTime <= Date.now()){
+		if(event.finishTime > 0 && event.finishTime <= Date.now()){
 			var wall = doc.wall
 			wall.level += 1
 			self.pushService.onWallLevelUp(doc)
@@ -122,6 +123,15 @@ var AfterLogin = function(doc){
 		}
 	})
 	LogicUtils.removeEvents(wallFinishedEvents, doc.wallEvents)
+	//检查材料制造
+	_.each(doc.materialEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= Date.now()){
+			event.finishTime = 0
+			self.pushService.onMakeMaterialFinished(doc, event)
+		}else if(event.finishTime > 0){
+			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
 }
 
 /**
@@ -203,6 +213,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, building.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
+		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -328,6 +339,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		var upgradeRequired = DataUtils.getHouseUpgradeRequired(houseType, 1)
 		var buyedResources = null
 		var buyedMaterials = null
+		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -468,6 +480,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		var upgradeRequired = DataUtils.getHouseUpgradeRequired(house.type, house.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
+		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -663,6 +676,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("tower", tower.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
+		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -763,6 +777,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("wall", wall.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
+		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -813,6 +828,140 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 }
 
 /**
+ * 制造材料
+ * @param playerId
+ * @param category
+ * @param finishNow
+ * @param callback
+ */
+pro.makeMaterial = function(playerId, category, finishNow, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isEqual(Consts.MaterialType.Building, category) && !_.isEqual(Consts.MaterialType.Technology, category)){
+		callback(new Error("category 不合法"))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		callback(new Error("finishNow 不合法"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var toolShop = doc.buildings["location_5"]
+		if(toolShop.level < 1){
+			return Promise.reject(new Error("工具作坊还未建造"))
+		}
+		//同类型的材料正在制造或制造完成后还未领取
+		var event = LogicUtils.getMaterialEventByCategory(doc, category)
+		if(event){
+			if(event.finishTime > 0){
+				return Promise.reject(new Error("同类型的材料正在制造"))
+			}else{
+				return Promise.reject(new Error("同类型的材料制作完成后还未领取"))
+			}
+		}
+
+		var gemUsed = 0
+		var makeRequired = DataUtils.getMakeMaterialRequired(category, toolShop.level)
+		var buyedResources = null
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
+		if(finishNow){
+			gemUsed += DataUtils.getGemByTimeInterval(makeRequired.buildTime)
+			buyedResources = DataUtils.buyResources(makeRequired.resources, {})
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+		}else{
+			buyedResources = DataUtils.buyResources(makeRequired.resources, doc.resources)
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+		}
+
+		//宝石是否足够
+		if(gemUsed > doc.basicInfo.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		//修改玩家宝石数据
+		doc.basicInfo.gem -= gemUsed
+		//修改玩家资源数据
+		LogicUtils.reduce(makeRequired.resources, doc.resources)
+		//产生制造事件
+		event = DataUtils.generateMaterialEvent(toolShop, category, finishNow)
+		doc.materialEvents.push(event)
+		//是否立即完成
+		if(finishNow){
+			self.pushService.onMakeMaterialFinished(doc, event)
+		}else{
+			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+pro.getMaterials = function(playerId, category, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isEqual(Consts.MaterialType.Building, category) && !_.isEqual(Consts.MaterialType.Technology, category)){
+		callback(new Error("category 不合法"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var event = LogicUtils.getMaterialEventByCategory(doc, category)
+		if(!_.isObject(event)){
+			return Promise.reject(new Error("没有材料建造事件存在"))
+		}
+		if(event.finishTime > 0){
+			return Promise.reject(new Error("同类型的材料正在制造"))
+		}
+		//移除制造事件
+		LogicUtils.removeEvents([event], doc.materialEvents)
+		self.pushService.onGetMaterialSuccess(doc, event)
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
+		//将材料添加到材料仓库,超过仓库上限的直接丢弃
+		DataUtils.addPlayerMaterials(doc, event.materials)
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * 更新玩家资源数据
  * @param doc
  */
@@ -832,7 +981,6 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 		//检查建筑
 		var buildingFinishedEvents = []
 		_.each(doc.buildingEvents, function(event){
-
 			if(event.finishTime > 0 && event.finishTime <= finishTime){
 				buildingFinishedEvents.push(event)
 				var building = LogicUtils.getBuildingByEvent(doc, event)
@@ -881,6 +1029,13 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 			}
 		})
 		LogicUtils.removeEvents(wallFinishedEvents, doc.wallEvents)
+		//检查材料制造
+		_.each(doc.materialEvents, function(event){
+			if(event.finishTime > 0 && event.finishTime <= Date.now()){
+				event.finishTime = 0
+				self.pushService.onMakeMaterialFinished(doc, event)
+			}
+		})
 		//更新玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
