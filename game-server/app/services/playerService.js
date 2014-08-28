@@ -132,6 +132,8 @@ var AfterLogin = function(doc){
 			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
 		}
 	})
+	//刷新玩家战力
+	self.refreshPlayerPower(doc)
 }
 
 /**
@@ -244,6 +246,8 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		//是否立即完成
 		if(finishNow){
 			building.level = building.level + 1
+			//刷新玩家战力
+			self.refreshPlayerPower(doc)
 			self.pushService.onBuildingLevelUp(doc, building.location)
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
@@ -378,6 +382,8 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		//是否立即完成
 		if(finishNow){
 			house.level += 1
+			//刷新玩家战力
+			self.refreshPlayerPower(doc)
 			self.pushService.onHouseLevelUp(doc, building.location, house.location)
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
@@ -511,6 +517,8 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		//是否立即完成
 		if(finishNow){
 			house.level += 1
+			//刷新玩家战力
+			self.refreshPlayerPower(doc)
 			self.pushService.onHouseLevelUp(doc, building.location, house.location)
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
@@ -609,6 +617,8 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		LogicUtils.increace(returnedResources, doc.resources)
 		//再次更新玩家数据,防止城民爆仓
 		self.refreshPlayerResources(doc)
+		//刷新玩家战力
+		self.refreshPlayerPower(doc)
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -707,6 +717,8 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		//是否立即完成
 		if(finishNow){
 			tower.level = tower.level + 1
+			//刷新玩家战力
+			self.refreshPlayerPower(doc)
 			self.pushService.onTowerLevelUp(doc, tower.location)
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
@@ -808,6 +820,8 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		//是否立即完成
 		if(finishNow){
 			wall.level = wall.level + 1
+			//刷新玩家战力
+			self.refreshPlayerPower(doc)
 			self.pushService.onWallLevelUp(doc)
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
@@ -973,6 +987,15 @@ pro.refreshPlayerResources = function(doc){
 	doc.basicInfo.resourceRefreshTime = Date.now()
 }
 
+/**
+ * 刷新玩家兵力信息
+ * @param doc
+ */
+pro.refreshPlayerPower = function(doc){
+	var power = DataUtils.getPlayerPower(doc)
+	doc.basicInfo.power = power
+}
+
 var ExcutePlayerCallback = function(playerId, finishTime){
 	var self = this
 	this.cacheService.getPlayerAsync(playerId).then(function(doc){
@@ -1036,6 +1059,8 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 				self.pushService.onMakeMaterialFinished(doc, event)
 			}
 		})
+		//刷新玩家战力
+		self.refreshPlayerPower(doc)
 		//更新玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){

@@ -557,16 +557,10 @@ Utils.getMakeMaterialRequired = function(category, toolShopLevel){
 Utils.generateMaterialEvent = function(toolShop, category, finishNow){
 	var categoryConfig = {}
 	categoryConfig[Consts.MaterialType.Building] = [
-		"blueprints",
-		"tools",
-		"tiles",
-		"pulley"
+		"blueprints", "tools", "tiles", "pulley"
 	]
 	categoryConfig[Consts.MaterialType.Technology] = [
-		"trainingFigure",
-		"bowTarget",
-		"saddle",
-		"ironPart"
+		"trainingFigure", "bowTarget", "saddle", "ironPart"
 	]
 
 	var config = BuildingFunction["toolShop"][toolShop.level]
@@ -575,14 +569,14 @@ Utils.generateMaterialEvent = function(toolShop, category, finishNow){
 	var materialTypes = categoryConfig[category]
 	materialTypes = CommonUtils.shuffle(materialTypes)
 	var materialCountArray = []
-	for(var i = 1; i <= poduction; i ++){
+	for(var i = 1; i <= poduction; i++){
 		materialCountArray.push(i)
 	}
 	materialCountArray = CommonUtils.shuffle(materialCountArray)
 
 	var materials = []
 	var totalGenerated = 0
-	for(i = 0; i < materialTypeCount; i ++){
+	for(i = 0; i < materialTypeCount; i++){
 		var material = {
 			type:materialTypes[i],
 			count:materialCountArray[i]
@@ -607,4 +601,40 @@ Utils.generateMaterialEvent = function(toolShop, category, finishNow){
 		finishTime:finishNow ? 0 : (Date.now() + (buildTime * 1000))
 	}
 	return event
+}
+
+Utils.getPlayerPower = function(playerDoc){
+	var buildingPower = this.getBuildingPower(playerDoc)
+	var housePower = this.getHousePower(playerDoc)
+	var soldierPower = this.getHousePower(playerDoc)
+
+	return buildingPower + housePower + soldierPower
+}
+
+Utils.getBuildingPower = function(playerDoc){
+	var totalPower = 0
+	_.each(playerDoc.buildings, function(building){
+		if(building.level > 0){
+			var config = BuildingFunction[building.type][building.level]
+			totalPower += config.power
+		}
+	})
+
+	return totalPower
+}
+
+Utils.getHousePower = function(playerDoc){
+	var totalPower = 0
+	_.each(playerDoc.buildings, function(building){
+		_.each(building.houses, function(house){
+			var config = HouseFunction[house.type][house.level]
+			totalPower += config.power
+		})
+	})
+
+	return totalPower
+}
+
+Utils.getSoldierPower = function(playerDoc){
+	return 0
 }

@@ -55,7 +55,7 @@ var playerSchema = new Schema({
 		vipExp:{type:Number, required:true, default:0},
 		gem:{type:Number, required:true, default:ResourceInitData.gem},
 		resourceRefreshTime:{type:Number, required:true, default:Date.now()},
-		coin:{type:Number, required:true, default:ResourceInitData.coin}
+		coin:{type:Number, required:true, default:ResourceInitData.coin},
 	},
 	resources:{
 		wood:{type:Number, required:true, default:ResourceInitData.wood},
