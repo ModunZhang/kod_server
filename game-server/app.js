@@ -38,7 +38,7 @@ app.configure("production|development", "gate", function(){
 
 app.configure("production|development", "front", function(){
 	app.set("connectorConfig", {
-		connector:pomelo.connectors.hybridcproonnector,
+		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
 		useDict:true,
 		useProtobuf:true,
