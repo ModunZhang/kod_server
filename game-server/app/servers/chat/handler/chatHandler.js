@@ -199,6 +199,23 @@ var ChatHandler = function(app){
 					}
 				})
 			}
+		},
+		{
+			command:"kickme",
+			desc:"将自己踢出服务器",
+			callback:function(session, uid){
+				var self = this
+				self.app.rpc.logic.commandRemote.kickme(session, uid, function(e){
+					if(_.isObject(e)){
+						errorLogger.error("handle TextCommand Error-----------------------------")
+						errorLogger.error(e.stack)
+						if(_.isEqual("production", self.app.get("env"))){
+							errorLogger.error("handle TextCommand Error-----------------------------")
+							errorMailLogger.error(e.stack)
+						}
+					}
+				})
+			}
 		}
 	]
 }
