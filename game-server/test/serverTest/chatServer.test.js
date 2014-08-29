@@ -252,6 +252,57 @@ describe("ChatServer", function(){
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
+
+		it("send rmbuildingevents", function(done){
+			var chatInfo = {
+				text:"rmbuildingevents",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(){
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("send rmmaterialevents", function(done){
+			var chatInfo = {
+				text:"rmmaterialevents",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(){
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("send kickme", function(done){
+			var chatInfo = {
+				text:"kickme",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onKick = function(reason){
+				done()
+				pomelo.removeListener("onKick", onKick)
+			}
+			pomelo.on("onKick", onKick)
+		})
 	})
 
 

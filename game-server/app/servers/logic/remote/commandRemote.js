@@ -4,6 +4,7 @@
  * Created by modun on 14-8-23.
  */
 
+var Promise = require("bluebird")
 var _ = require("underscore")
 
 var BasicPlayerInfo = require("../../../consts/basicPlayerInfo")
