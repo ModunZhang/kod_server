@@ -53,16 +53,17 @@ var playerSchema = new Schema({
 		power:{type:Number, required:true, default:0},
 		vip:{type:Number, required:true, default:1},
 		vipExp:{type:Number, required:true, default:0},
-		gem:{type:Number, required:true, default:ResourceInitData.gem},
-		resourceRefreshTime:{type:Number, required:true, default:Date.now()},
-		coin:{type:Number, required:true, default:ResourceInitData.coin},
+		resourceRefreshTime:{type:Number, required:true, default:Date.now()}
 	},
 	resources:{
 		wood:{type:Number, required:true, default:ResourceInitData.wood},
 		stone:{type:Number, required:true, default:ResourceInitData.stone},
 		iron:{type:Number, required:true, default:ResourceInitData.iron},
 		food:{type:Number, required:true, default:ResourceInitData.food},
-		citizen:{type:Number, required:true, default:ResourceInitData.citizen}
+		citizen:{type:Number, required:true, default:ResourceInitData.citizen},
+		gem:{type:Number, required:true, default:ResourceInitData.gem},
+		coin:{type:Number, required:true, default:ResourceInitData.coin},
+		cart:{type:Number, required:true, default:ResourceInitData.cart}
 	},
 	materials:{
 		blueprints:{type:Number, required:true, default:MaterialInitData.blueprints},
@@ -74,30 +75,6 @@ var playerSchema = new Schema({
 		saddle:{type:Number, required:true, default:MaterialInitData.saddle},
 		ironPart:{type:Number, required:true, default:MaterialInitData.ironPart}
 	},
-	buildingEvents:[
-		{
-			location:{type:Number, required:true},
-			finishTime:{type:Number, required:true}
-		}
-	],
-	houseEvents:[
-		{
-			buildingLocation:{type:Number, required:true},
-			houseLocation:{type:Number, required:true},
-			finishTime:{type:Number, required:true}
-		}
-	],
-	towerEvents:[
-		{
-			location:{type:Number, required:true},
-			finishTime:{type:Number, required:true}
-		}
-	],
-	wallEvents:[
-		{
-			finishTime:{type:Number, required:true}
-		}
-	],
 	materialEvents:[
 		{
 			category:{type:String, required:true},
@@ -107,6 +84,20 @@ var playerSchema = new Schema({
 					count:{type:Number, required:true}
 				}
 			],
+			finishTime:{type:Number, required:true}
+		}
+	],
+	soldiers:[
+		{
+			type:{type:String, required:true},
+			count:{type:Number, required:true},
+			star:{type:Number, required:true}
+		}
+	],
+	soldierEvents:[
+		{
+			type:{type:String, required:true},
+			count:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
 		}
 	],
@@ -128,6 +119,19 @@ var playerSchema = new Schema({
 		location_15:createBuildingSchema(15),
 		location_16:createBuildingSchema(16)
 	},
+	buildingEvents:[
+		{
+			location:{type:Number, required:true},
+			finishTime:{type:Number, required:true}
+		}
+	],
+	houseEvents:[
+		{
+			buildingLocation:{type:Number, required:true},
+			houseLocation:{type:Number, required:true},
+			finishTime:{type:Number, required:true}
+		}
+	],
 	towers:{
 		location_1:createTowerSchema(1),
 		location_2:createTowerSchema(2),
@@ -141,9 +145,20 @@ var playerSchema = new Schema({
 		location_10:createTowerSchema(10),
 		location_11:createTowerSchema(11)
 	},
+	towerEvents:[
+		{
+			location:{type:Number, required:true},
+			finishTime:{type:Number, required:true}
+		}
+	],
 	wall:{
 		level:{type:Number, required:true, default:1}
-	}
+	},
+	wallEvents:[
+		{
+			finishTime:{type:Number, required:true}
+		}
+	]
 })
 
 module.exports = mongoose.model('player', playerSchema)

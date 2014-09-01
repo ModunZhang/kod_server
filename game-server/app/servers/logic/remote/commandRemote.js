@@ -60,7 +60,7 @@ pro.reset = function(uid, callback){
 pro.gem = function(uid, gem, callback){
 	var self = this
 	this.cacheService.getPlayerAsync(uid).then(function(doc){
-		doc.basicInfo.gem = gem
+		doc.resources.gem = gem
 		self.playerService.refreshPlayerResources(doc)
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -123,7 +123,7 @@ pro.citizen = function(uid, count, callback){
 pro.coin = function(uid, count, callback){
 	var self = this
 	this.cacheService.getPlayerAsync(uid).then(function(doc){
-		doc.basicInfo.coin = count
+		doc.resources.coin = count
 		self.playerService.refreshPlayerResources(doc)
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){

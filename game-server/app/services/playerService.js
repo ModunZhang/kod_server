@@ -235,11 +235,11 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		}
 
 		//宝石是否足够
-		if(gemUsed > doc.basicInfo.gem){
+		if(gemUsed > doc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
 		//修改玩家宝石数据
-		doc.basicInfo.gem -= gemUsed
+		doc.resources.gem -= gemUsed
 		//修改玩家资源数据
 		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
@@ -363,11 +363,11 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		}
 
 		//宝石是否足够
-		if(gemUsed > doc.basicInfo.gem){
+		if(gemUsed > doc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
 		//修改玩家宝石数据
-		doc.basicInfo.gem -= gemUsed
+		doc.resources.gem -= gemUsed
 		//修改玩家资源数据
 		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
@@ -506,11 +506,11 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		}
 
 		//宝石是否足够
-		if(gemUsed > doc.basicInfo.gem){
+		if(gemUsed > doc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
 		//修改玩家宝石数据
-		doc.basicInfo.gem -= gemUsed
+		doc.resources.gem -= gemUsed
 		//修改玩家资源数据
 		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
@@ -607,11 +607,11 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		//获取需要的宝石数量
 		var gem = 100
 		//宝石是否足够
-		if(gem > doc.basicInfo.gem){
+		if(gem > doc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
 		//修改玩家宝石数据
-		doc.basicInfo.gem -= gem
+		doc.resources.gem -= gem
 		//退还资源和城民给玩家
 		var returnedResources = DataUtils.getHouseDestroyReturned(house.type, house.level)
 		LogicUtils.increace(returnedResources, doc.resources)
@@ -706,11 +706,11 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		}
 
 		//宝石是否足够
-		if(gemUsed > doc.basicInfo.gem){
+		if(gemUsed > doc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
 		//修改玩家宝石数据
-		doc.basicInfo.gem -= gemUsed
+		doc.resources.gem -= gemUsed
 		//修改玩家资源数据
 		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
@@ -809,11 +809,11 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		}
 
 		//宝石是否足够
-		if(gemUsed > doc.basicInfo.gem){
+		if(gemUsed > doc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
 		//修改玩家宝石数据
-		doc.basicInfo.gem -= gemUsed
+		doc.resources.gem -= gemUsed
 		//修改玩家资源数据
 		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
@@ -901,11 +901,11 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		}
 
 		//宝石是否足够
-		if(gemUsed > doc.basicInfo.gem){
+		if(gemUsed > doc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
 		//修改玩家宝石数据
-		doc.basicInfo.gem -= gemUsed
+		doc.resources.gem -= gemUsed
 		//修改玩家资源数据
 		LogicUtils.reduce(makeRequired.resources, doc.resources)
 		//产生制造事件

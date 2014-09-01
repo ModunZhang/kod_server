@@ -1,8 +1,10 @@
 {
-	"_id":"53fed9e7687978184583b36b",
+	"_id":"5404303a196e71545175cc31",
+	"wallEvents":[],
 	"wall":{
 		"level":1
 	},
+	"towerEvents":[],
 	"towers":{
 		"location_11":{
 			"location":11,
@@ -49,12 +51,14 @@
 			"level":1
 		}
 	},
+	"houseEvents":[],
+	"buildingEvents":[],
 	"buildings":{
 		"location_16":{
 			"houses":[],
 			"location":16,
 			"level":-1,
-			"type":"academy"
+			"type":"tradeGuild"
 		},
 		"location_15":{
 			"houses":[],
@@ -147,11 +151,9 @@
 			"type":"keep"
 		}
 	},
+	"soldierEvents":[],
+	"soldiers":[],
 	"materialEvents":[],
-	"wallEvents":[],
-	"towerEvents":[],
-	"houseEvents":[],
-	"buildingEvents":[],
 	"materials":{
 		"ironPart":1000,
 		"saddle":1000,
@@ -163,6 +165,9 @@
 		"blueprints":1000
 	},
 	"resources":{
+		"cart":0,
+		"coin":50000,
+		"gem":2000,
 		"citizen":0,
 		"food":25000,
 		"iron":25000,
@@ -172,9 +177,7 @@
 	"basicInfo":{
 		"name":"player_111111",
 		"cityName":"city_111111",
-		"coin":50000,
-		"resourceRefreshTime":1409210855011,
-		"gem":2000,
+		"resourceRefreshTime":1409560634722,
 		"vipExp":0,
 		"vip":1,
 		"power":0,
@@ -186,8 +189,8 @@
 		"deviceId":"__testDeviceId2",
 		"logicServerId":"logic-server-1",
 		"loginCount":0,
-		"lastLoginTime":1409210855011,
-		"registerTime":1409210855011
+		"lastLoginTime":1409560634722,
+		"registerTime":1409560634722
 	},
 	"__v":0
 }

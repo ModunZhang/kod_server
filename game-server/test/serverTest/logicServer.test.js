@@ -208,7 +208,7 @@ describe("LogicServer", function(){
 					})
 
 					var onPlayerDataChanged = function(doc){
-						doc.basicInfo.gem.should.equal(5000)
+						doc.resources.gem.should.equal(5000)
 						done()
 						pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 					}
@@ -226,7 +226,7 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(0)
+				doc.resources.gem.should.equal(0)
 				func()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -415,7 +415,7 @@ describe("LogicServer", function(){
 					})
 
 					var onPlayerDataChanged = function(doc){
-						doc.basicInfo.gem.should.equal(5000)
+						doc.resources.gem.should.equal(5000)
 						done()
 						pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 					}
@@ -433,7 +433,7 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(0)
+				doc.resources.gem.should.equal(0)
 				func()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -553,7 +553,7 @@ describe("LogicServer", function(){
 						})
 
 						var onPlayerDataChanged = function(doc){
-							doc.basicInfo.gem.should.equal(5000)
+							doc.resources.gem.should.equal(5000)
 							done()
 							pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 						}
@@ -572,7 +572,7 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(5000000)
+				doc.resources.gem.should.equal(5000000)
 				func()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -651,7 +651,7 @@ describe("LogicServer", function(){
 					})
 
 					var onPlayerDataChanged = function(doc){
-						doc.basicInfo.gem.should.equal(5000)
+						doc.resources.gem.should.equal(5000)
 						done()
 						pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 					}
@@ -669,7 +669,7 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(0)
+				doc.resources.gem.should.equal(0)
 				func()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -756,7 +756,7 @@ describe("LogicServer", function(){
 					})
 
 					var onPlayerDataChanged = function(doc){
-						doc.basicInfo.gem.should.equal(5000)
+						doc.resources.gem.should.equal(5000)
 						done()
 						pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 					}
@@ -774,7 +774,7 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(0)
+				doc.resources.gem.should.equal(0)
 				func()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -871,7 +871,7 @@ describe("LogicServer", function(){
 						})
 
 						var onPlayerDataChanged = function(doc){
-							doc.basicInfo.gem.should.equal(5000)
+							doc.resources.gem.should.equal(5000)
 							done()
 							pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 						}
@@ -890,7 +890,7 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(5000000)
+				doc.resources.gem.should.equal(5000000)
 				func()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -964,7 +964,7 @@ describe("LogicServer", function(){
 					})
 
 					var onPlayerDataChanged = function(doc){
-						doc.basicInfo.gem.should.equal(5000)
+						doc.resources.gem.should.equal(5000)
 						done()
 						pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 					}
@@ -982,7 +982,7 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(0)
+				doc.resources.gem.should.equal(0)
 				func()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -1065,7 +1065,7 @@ describe("LogicServer", function(){
 						})
 
 						var onPlayerDataChanged = function(doc){
-							doc.basicInfo.gem.should.equal(5000)
+							doc.resources.gem.should.equal(5000)
 
 							var chatInfo = {
 								text:"building 5",
@@ -1094,7 +1094,7 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(5000000)
+				doc.resources.gem.should.equal(5000000)
 
 				var chatInfo = {
 					text:"keep 22",
@@ -1156,7 +1156,7 @@ describe("LogicServer", function(){
 					})
 
 					var onPlayerDataChanged = function(doc){
-						doc.basicInfo.gem.should.equal(5000)
+						doc.resources.gem.should.equal(5000)
 						done()
 						pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 					}
@@ -1174,7 +1174,7 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(0)
+				doc.resources.gem.should.equal(0)
 				func()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}

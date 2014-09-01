@@ -9,5 +9,6 @@ resources[1] = {
 	"iron":25000,
 	"food":25000,
 	"citizen":0,
-	"coin":50000
+	"coin":50000,
+	"cart":0
 }

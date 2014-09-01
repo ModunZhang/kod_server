@@ -145,7 +145,7 @@ describe("ChatServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.gem.should.equal(5000)
+				doc.resources.gem.should.equal(5000)
 				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -210,7 +210,7 @@ describe("ChatServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.basicInfo.coin.should.equal(5000)
+				doc.resources.coin.should.equal(5000)
 				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
