@@ -3,169 +3,169 @@ module.exports = warehouse
 
 warehouse[0] = {
 	"level":0,
-	"maxwood":0,
-	"maxstone":0,
-	"maxiron":0,
-	"maxfood":0,
+	"maxWood":0,
+	"maxStone":0,
+	"maxIron":0,
+	"maxFood":0,
 	"power":0
 }
 warehouse[1] = {
 	"level":1,
-	"maxwood":60000,
-	"maxstone":60000,
-	"maxiron":60000,
-	"maxfood":60000,
+	"maxWood":60000,
+	"maxStone":60000,
+	"maxIron":60000,
+	"maxFood":60000,
 	"power":10
 }
 warehouse[2] = {
 	"level":2,
-	"maxwood":120000,
-	"maxstone":120000,
-	"maxiron":120000,
-	"maxfood":120000,
+	"maxWood":120000,
+	"maxStone":120000,
+	"maxIron":120000,
+	"maxFood":120000,
 	"power":20
 }
 warehouse[3] = {
 	"level":3,
-	"maxwood":240000,
-	"maxstone":240000,
-	"maxiron":240000,
-	"maxfood":240000,
+	"maxWood":240000,
+	"maxStone":240000,
+	"maxIron":240000,
+	"maxFood":240000,
 	"power":60
 }
 warehouse[4] = {
 	"level":4,
-	"maxwood":640000,
-	"maxstone":640000,
-	"maxiron":640000,
-	"maxfood":640000,
+	"maxWood":640000,
+	"maxStone":640000,
+	"maxIron":640000,
+	"maxFood":640000,
 	"power":120
 }
 warehouse[5] = {
 	"level":5,
-	"maxwood":1040000,
-	"maxstone":1040000,
-	"maxiron":1040000,
-	"maxfood":1040000,
+	"maxWood":1040000,
+	"maxStone":1040000,
+	"maxIron":1040000,
+	"maxFood":1040000,
 	"power":360
 }
 warehouse[6] = {
 	"level":6,
-	"maxwood":1440000,
-	"maxstone":1440000,
-	"maxiron":1440000,
-	"maxfood":1440000,
+	"maxWood":1440000,
+	"maxStone":1440000,
+	"maxIron":1440000,
+	"maxFood":1440000,
 	"power":600
 }
 warehouse[7] = {
 	"level":7,
-	"maxwood":1840000,
-	"maxstone":1840000,
-	"maxiron":1840000,
-	"maxfood":1840000,
+	"maxWood":1840000,
+	"maxStone":1840000,
+	"maxIron":1840000,
+	"maxFood":1840000,
 	"power":840
 }
 warehouse[8] = {
 	"level":8,
-	"maxwood":2240000,
-	"maxstone":2240000,
-	"maxiron":2240000,
-	"maxfood":2240000,
+	"maxWood":2240000,
+	"maxStone":2240000,
+	"maxIron":2240000,
+	"maxFood":2240000,
 	"power":1080
 }
 warehouse[9] = {
 	"level":9,
-	"maxwood":2640000,
-	"maxstone":2640000,
-	"maxiron":2640000,
-	"maxfood":2640000,
+	"maxWood":2640000,
+	"maxStone":2640000,
+	"maxIron":2640000,
+	"maxFood":2640000,
 	"power":1320
 }
 warehouse[10] = {
 	"level":10,
-	"maxwood":3040000,
-	"maxstone":3040000,
-	"maxiron":3040000,
-	"maxfood":3040000,
+	"maxWood":3040000,
+	"maxStone":3040000,
+	"maxIron":3040000,
+	"maxFood":3040000,
 	"power":1560
 }
 warehouse[11] = {
 	"level":11,
-	"maxwood":3440000,
-	"maxstone":3440000,
-	"maxiron":3440000,
-	"maxfood":3440000,
+	"maxWood":3440000,
+	"maxStone":3440000,
+	"maxIron":3440000,
+	"maxFood":3440000,
 	"power":1800
 }
 warehouse[12] = {
 	"level":12,
-	"maxwood":3840000,
-	"maxstone":3840000,
-	"maxiron":3840000,
-	"maxfood":3840000,
+	"maxWood":3840000,
+	"maxStone":3840000,
+	"maxIron":3840000,
+	"maxFood":3840000,
 	"power":2040
 }
 warehouse[13] = {
 	"level":13,
-	"maxwood":4240000,
-	"maxstone":4240000,
-	"maxiron":4240000,
-	"maxfood":4240000,
+	"maxWood":4240000,
+	"maxStone":4240000,
+	"maxIron":4240000,
+	"maxFood":4240000,
 	"power":2280
 }
 warehouse[14] = {
 	"level":14,
-	"maxwood":4640000,
-	"maxstone":4640000,
-	"maxiron":4640000,
-	"maxfood":4640000,
+	"maxWood":4640000,
+	"maxStone":4640000,
+	"maxIron":4640000,
+	"maxFood":4640000,
 	"power":2520
 }
 warehouse[15] = {
 	"level":15,
-	"maxwood":5040000,
-	"maxstone":5040000,
-	"maxiron":5040000,
-	"maxfood":5040000,
+	"maxWood":5040000,
+	"maxStone":5040000,
+	"maxIron":5040000,
+	"maxFood":5040000,
 	"power":2760
 }
 warehouse[16] = {
 	"level":16,
-	"maxwood":5440000,
-	"maxstone":5440000,
-	"maxiron":5440000,
-	"maxfood":5440000,
+	"maxWood":5440000,
+	"maxStone":5440000,
+	"maxIron":5440000,
+	"maxFood":5440000,
 	"power":3000
 }
 warehouse[17] = {
 	"level":17,
-	"maxwood":5840000,
-	"maxstone":5840000,
-	"maxiron":5840000,
-	"maxfood":5840000,
+	"maxWood":5840000,
+	"maxStone":5840000,
+	"maxIron":5840000,
+	"maxFood":5840000,
 	"power":3240
 }
 warehouse[18] = {
 	"level":18,
-	"maxwood":6240000,
-	"maxstone":6240000,
-	"maxiron":6240000,
-	"maxfood":6240000,
+	"maxWood":6240000,
+	"maxStone":6240000,
+	"maxIron":6240000,
+	"maxFood":6240000,
 	"power":3480
 }
 warehouse[19] = {
 	"level":19,
-	"maxwood":6640000,
-	"maxstone":6640000,
-	"maxiron":6640000,
-	"maxfood":6640000,
+	"maxWood":6640000,
+	"maxStone":6640000,
+	"maxIron":6640000,
+	"maxFood":6640000,
 	"power":3720
 }
 warehouse[20] = {
 	"level":20,
-	"maxwood":7040000,
-	"maxstone":7040000,
-	"maxiron":7040000,
-	"maxfood":7040000,
+	"maxWood":7040000,
+	"maxStone":7040000,
+	"maxIron":7040000,
+	"maxFood":7040000,
 	"power":3960
 }

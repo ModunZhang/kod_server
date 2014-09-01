@@ -265,6 +265,12 @@ Utils.getPlayerResources = function(playerDoc){
 	_.each(playerDoc.resources, function(value, key){
 		if(_.isEqual("citizen", key)){
 			resources[key] = self.getPlayerCitizen(playerDoc)
+		}else if(_.isEqual("coin", key)){
+			resources["coin"] = playerDoc.resources.coin
+		}else if(_.isEqual("cart", key)){
+			resources["coin"] = playerDoc.resources.cart
+		}else if(_.isEqual("gem", key)){
+			resources["gem"] = playerDoc.resources.gem
 		}else{
 			resources[key] = self.getPlayerResource(playerDoc, key)
 		}
@@ -339,7 +345,10 @@ Utils.getPlayerResourceUpLimit = function(playerDoc, resourceName){
 	var totalUpLimit = 0
 	_.each(buildings, function(building){
 		var config = BuildingFunction["warehouse"][building.level]
-		totalUpLimit += config["max" + resourceName]
+		resourceName = resourceName.charAt(0).toUpperCase() + resourceName.slice(1)
+		resourceName = "max" + resourceName
+		totalUpLimit += config[resourceName]
+
 	})
 
 	return totalUpLimit
