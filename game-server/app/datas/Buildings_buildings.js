@@ -93,9 +93,9 @@ buildings[15] = {
 }
 buildings[16] = {
 	"location":16,
-	"type":"academy",
+	"type":"tradeGuild",
 	"hasHouse":true,
-	"desc":"学院"
+	"desc":"贸易行会"
 }
 buildings[17] = {
 	"location":17,
@@ -111,9 +111,9 @@ buildings[18] = {
 }
 buildings[19] = {
 	"location":19,
-	"type":"tradeGuild",
+	"type":"academy",
 	"hasHouse":true,
-	"desc":"贸易行会"
+	"desc":"学院"
 }
 buildings[20] = {
 	"location":20,

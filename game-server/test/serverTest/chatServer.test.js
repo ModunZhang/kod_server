@@ -297,7 +297,7 @@ describe("ChatServer", function(){
 				doc.code.should.equal(200)
 			})
 
-			var onKick = function(reason){
+			var onKick = function(){
 				done()
 				pomelo.removeListener("onKick", onKick)
 			}
