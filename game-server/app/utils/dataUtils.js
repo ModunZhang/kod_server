@@ -323,7 +323,7 @@ Utils.getPlayerCitizen = function(playerDoc){
 	var totalPerHour = 0
 	_.each(houses, function(house){
 		var config = HouseFunction[house.type][house.level]
-		totalPerHour += config.recoverycitizen
+		totalPerHour += config.recoveryCitizen
 	})
 
 	var totalPerSecond = totalPerHour / 60 / 60
