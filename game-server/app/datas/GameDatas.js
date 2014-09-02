@@ -1,10 +1,6 @@
 var GameDatas = {}
 module.exports = GameDatas
 
-GameDatas.PlayerInitData = {}
-GameDatas.PlayerInitData.resources = require("./PlayerInitData_resources.js")
-GameDatas.PlayerInitData.materials = require("./PlayerInitData_materials.js")
-
 GameDatas.BuildingFunction = {}
 GameDatas.BuildingFunction.wall = require("./BuildingFunction_wall.js")
 GameDatas.BuildingFunction.tower = require("./BuildingFunction_tower.js")
@@ -93,3 +89,12 @@ GameDatas.HouseReturn.farmer = require("./HouseReturn_farmer.js")
 
 GameDatas.Houses = {}
 GameDatas.Houses.houses = require("./Houses_houses.js")
+
+GameDatas.PlayerInitData = {}
+GameDatas.PlayerInitData.resources = require("./PlayerInitData_resources.js")
+GameDatas.PlayerInitData.materials = require("./PlayerInitData_materials.js")
+GameDatas.PlayerInitData.houses = require("./PlayerInitData_houses.js")
+
+GameDatas.UnitsConfig = {}
+GameDatas.UnitsConfig.normal = require("./UnitsConfig_normal.js")
+GameDatas.UnitsConfig.special = require("./UnitsConfig_special.js")

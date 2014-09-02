@@ -296,6 +296,84 @@ describe("LogicServer", function(){
 			})
 		})
 
+		it("createHouse 小屋数量超过限制", function(done){
+			var createHouse = function(buildingLocation, houseLocation, callback){
+				var houseInfo = {
+					buildingLocation:buildingLocation,
+					houseType:"dwelling",
+					houseLocation:houseLocation,
+					finishNow:false
+				}
+				var route = "logic.playerHandler.createHouse"
+				pomelo.request(route, houseInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			var clearEvents = function(callback){
+				var chatInfo = {
+					text:"rmbuildingevents",
+					type:"global"
+				}
+				var route = "chat.chatHandler.send"
+				pomelo.request(route, chatInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			var destroyHouse = function(buildingLocation, houseLocation, callback){
+				var houseInfo = {
+					buildingLocation:buildingLocation,
+					houseLocation:houseLocation
+				}
+				var route = "logic.playerHandler.destroyHouse"
+				pomelo.request(route, houseInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			var upgradeBuilding = function(){
+				var buildingInfo = {
+					location:6,
+					finishNow:true
+				}
+				var route = "logic.playerHandler.upgradeBuilding"
+				pomelo.request(route, buildingInfo, function(doc){
+					doc.code.should.equal(200)
+
+					createHouse(3, 1, function(doc){
+						doc.code.should.equal(200)
+						createHouse(3, 2, function(doc){
+							doc.code.should.equal(200)
+							createHouse(3, 3, function(doc){
+								doc.code.should.equal(200)
+								createHouse(6, 1, function(doc){
+									doc.code.should.equal(500)
+									doc.message.should.equal("小屋数量超过限制")
+
+									clearEvents(function(doc){
+										doc.code.should.equal(200)
+										destroyHouse(3,1, function(doc){
+											doc.code.should.equal(200)
+											destroyHouse(3,2, function(doc){
+												doc.code.should.equal(200)
+												destroyHouse(3,3, function(doc){
+													doc.code.should.equal(200)
+													done()
+												})
+											})
+										})
+									})
+								})
+							})
+						})
+					})
+				})
+			}
+
+			upgradeBuilding()
+		})
+
 		it("createHouse 小屋location只能1<=location<=3", function(done){
 			var houseInfo = {
 				buildingLocation:3,

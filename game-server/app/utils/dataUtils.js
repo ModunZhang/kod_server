@@ -19,6 +19,8 @@ var HouseFunction = GameData.HouseFunction
 var GemsPayment = GameData.GemsPayment
 var Houses = GameData.Houses.houses
 var Buildings = GameData.Buildings.buildings
+var HouseInit = GameData.PlayerInitData.houses[1]
+
 
 var Utils = module.exports
 
@@ -399,13 +401,13 @@ Utils.getPlayerHouseUsedCitizen = function(houseType, houseLevel){
 /**
  * 根据建筑类型获取所有相关建筑
  * @param playerDoc
- * @param houseType
+ * @param buildingType
  * @returns {Array}
  */
-Utils.getPlayerBuildingsByType = function(playerDoc, houseType){
+Utils.getPlayerBuildingsByType = function(playerDoc, buildingType){
 	var buildings = []
 	_.each(playerDoc.buildings, function(building){
-		if(_.isEqual(houseType, building.type)){
+		if(_.isEqual(buildingType, building.type)){
 			buildings.push(building)
 		}
 	})
@@ -612,6 +614,11 @@ Utils.generateMaterialEvent = function(toolShop, category, finishNow){
 	return event
 }
 
+/**
+ * 获取玩家战斗力
+ * @param playerDoc
+ * @returns {*}
+ */
 Utils.getPlayerPower = function(playerDoc){
 	var buildingPower = this.getBuildingPower(playerDoc)
 	var housePower = this.getHousePower(playerDoc)
@@ -620,6 +627,11 @@ Utils.getPlayerPower = function(playerDoc){
 	return buildingPower + housePower + soldierPower
 }
 
+/**
+ * 获取建筑战斗力
+ * @param playerDoc
+ * @returns {number}
+ */
 Utils.getBuildingPower = function(playerDoc){
 	var totalPower = 0
 	_.each(playerDoc.buildings, function(building){
@@ -632,6 +644,11 @@ Utils.getBuildingPower = function(playerDoc){
 	return totalPower
 }
 
+/**
+ * 获取小屋战斗力
+ * @param playerDoc
+ * @returns {number}
+ */
 Utils.getHousePower = function(playerDoc){
 	var totalPower = 0
 	_.each(playerDoc.buildings, function(building){
@@ -644,6 +661,90 @@ Utils.getHousePower = function(playerDoc){
 	return totalPower
 }
 
+/**
+ * 获取士兵战斗力
+ * @param playerDoc
+ * @returns {number}
+ */
 Utils.getSoldierPower = function(playerDoc){
 	return 0
+}
+
+/**
+ * 获取玩家城堡等级
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getPlayerKeepLevel = function(playerDoc){
+	return playerDoc.buildings["location_1"].level
+}
+
+/**
+ * 获取玩家建筑等级限制
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getBuildingLevelLimit = function(playerDoc){
+	return this.getPlayerKeepLevel(playerDoc)
+}
+
+/**
+ * 根据建筑类型获取建筑
+ * @param playerDoc
+ * @param buildingType
+ * @returns {*}
+ */
+Utils.getPlayerBuildingByType = function(playerDoc, buildingType){
+	var buildings = this.getPlayerBuildingsByType(playerDoc, buildingType)
+	return buildings.length > 0 ? buildings[0] : null
+}
+
+/**
+ * 获取指定小屋最大建造数量
+ * @param playerDoc
+ * @param houseType
+ * @returns {*}
+ */
+Utils.getPlayerHouseMaxCountByType = function(playerDoc, houseType){
+	var config = Houses[houseType]
+	var limitBy = config.limitBy
+	var totalCount = HouseInit[houseType]
+	var building = this.getPlayerBuildingByType(playerDoc, limitBy)
+
+	if(building.level > 0){
+		var buildingFunction = BuildingFunction[limitBy][building.level]
+		totalCount += buildingFunction[houseType]
+	}
+	return totalCount
+}
+
+/**
+ * 获取指定小屋建造数量
+ * @param playerDoc
+ * @param houseType
+ * @returns {number}
+ */
+Utils.getPlayerHouseCountByType = function(playerDoc, houseType){
+	var count = 0
+	_.each(playerDoc.buildings, function(building){
+		_.each(building.houses, function(house){
+			if(_.isEqual(houseType, house.type)){
+				count += 1
+			}
+		})
+	})
+
+	return count
+}
+
+/**
+ * 获取指定小屋可建造数量
+ * @param playerDoc
+ * @param houseType
+ * @returns {number}
+ */
+Utils.getPlayerFreeHousesCount = function(playerDoc, houseType){
+	var maxCount = this.getPlayerHouseMaxCountByType(playerDoc, houseType)
+	var currentCount = this.getPlayerHouseCountByType(playerDoc, houseType)
+	return maxCount - currentCount
 }

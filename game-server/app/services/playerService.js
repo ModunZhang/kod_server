@@ -203,7 +203,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			return Promise.reject(new Error("建造数量已达建造上限"))
 		}
 		//检查升级等级是否合法
-		if(building.level > 0 && !CheckBuildingUpgradeLevelLimit(doc, buildingLocation)){
+		if(!_.isEqual(building.type, "keep") && building.level > 0 && building.level + 1 > DataUtils.getBuildingLevelLimit(doc)){
 			return Promise.reject(new Error("建筑升级时,建筑等级不合法"))
 		}
 		//是否已到最高等级
@@ -318,6 +318,10 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		//检查小屋类型是否存在
 		if(!DataUtils.isHouseTypeExist(houseType)){
 			return Promise.reject(new Error("小屋类型不存在"))
+		}
+		//检查小屋个数是否超标
+		if(DataUtils.getPlayerFreeHousesCount(doc, houseType) <= 0){
+			return Promise.reject(new Error("小屋数量超过限制"))
 		}
 		//检查建造坑位是否合法
 		if(houseLocation % 1 != 0 || houseLocation < 1 || houseLocation > 3){
@@ -467,6 +471,10 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		//检查小屋是否正在升级
 		if(LogicUtils.hasHouseEvents(doc, building.location, house.location)){
 			return Promise.reject(new Error("小屋正在升级"))
+		}
+		//检查等级是否合法
+		if(house.level + 1 > DataUtils.getBuildingLevelLimit(doc)){
+			return Promise.reject(new Error("小屋升级时,小屋等级不合法"))
 		}
 		//是否已到最高等级
 		if(DataUtils.isHouseReachMaxLevel(house.type, house.level)){
@@ -678,7 +686,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			return Promise.reject(new Error("箭塔已达到最高等级"))
 		}
 		//检查升级等级是否合法
-		if(!CheckTowerUpgradeLevelLimit(doc, towerLocation)){
+		if(tower.level + 1 > DataUtils.getBuildingLevelLimit(doc)){
 			return Promise.reject(new Error("箭塔升级时,建筑等级不合法"))
 		}
 
@@ -781,7 +789,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			return Promise.reject(new Error("城墙已达到最高等级"))
 		}
 		//检查升级等级是否合法
-		if(!CheckWallUpgradeLevelLimit(doc)){
+		if(wall.level + 1 > DataUtils.getBuildingLevelLimit(doc)){
 			return Promise.reject(new Error("城墙升级时,城墙等级不合法"))
 		}
 
@@ -930,6 +938,12 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 	})
 }
 
+/**
+ * 领取材料
+ * @param playerId
+ * @param category
+ * @param callback
+ */
 pro.getMaterials = function(playerId, category, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
@@ -1074,25 +1088,6 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 			errorMailLogger.error(e.stack)
 		}
 	})
-}
-
-var CheckBuildingUpgradeLevelLimit = function(playerDoc, location){
-	var building = playerDoc.buildings["location_" + location]
-	var keep = playerDoc.buildings["location_1"]
-	if(location == 1) return true
-	return building.level + 1 <= keep.level
-}
-
-var CheckTowerUpgradeLevelLimit = function(playerDoc, location){
-	var tower = playerDoc.towers["location_" + location]
-	var keep = playerDoc.buildings["location_1"]
-	return tower.level + 1 <= keep.level
-}
-
-var CheckWallUpgradeLevelLimit = function(playerDoc){
-	var wall = playerDoc.wall
-	var keep = playerDoc.buildings["location_1"]
-	return wall.level + 1 <= keep.level
 }
 
 var CheckBuildingCreateLocation = function(playerDoc, location){
