@@ -132,6 +132,22 @@ var AfterLogin = function(doc){
 			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
 		}
 	})
+	//检查招募事件
+	var soldierFinishedEvents = []
+	_.each(doc.soldierEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= Date.now()){
+			var soldierInfo = {
+				name:event.name,
+				count:event.count
+			}
+			LogicUtils.addSoldier(doc, soldierInfo)
+			self.pushService.onRecruitSoldierSuccess(doc, soldierInfo)
+			soldierFinishedEvents.push(event)
+		}else{
+			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	LogicUtils.removeEvents(soldierFinishedEvents, doc.soldierEvents)
 	//刷新玩家战力
 	self.refreshPlayerPower(doc)
 }
@@ -149,6 +165,27 @@ pro.playerLogout = function(playerId, frontServerId, callback){
 	}).catch(function(e){
 		callback(e)
 	})
+}
+
+/**
+ * 更新玩家资源数据
+ * @param doc
+ */
+pro.refreshPlayerResources = function(doc){
+	var resources = DataUtils.getPlayerResources(doc)
+	_.each(resources, function(value, key){
+		doc.resources[key] = value
+	})
+	doc.basicInfo.resourceRefreshTime = Date.now()
+}
+
+/**
+ * 刷新玩家兵力信息
+ * @param doc
+ */
+pro.refreshPlayerPower = function(doc){
+	var power = DataUtils.getPlayerPower(doc)
+	doc.basicInfo.power = power
 }
 
 /**
@@ -195,7 +232,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			return Promise.reject(new Error("建筑还未建造"))
 		}
 		//检查升级坑位是否合法
-		if(building.level == 0 && !CheckBuildingCreateLocation(doc, buildingLocation)){
+		if(building.level == 0 && !LogicUtils.isBuildingCanCreateAtLocation(doc, buildingLocation)){
 			return Promise.reject(new Error("建筑建造时,建筑坑位不合法"))
 		}
 		//检查建造数量是否超过上限
@@ -332,7 +369,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			return Promise.reject(new Error("建筑周围不允许建造小屋"))
 		}
 		//创建小屋时,小屋坑位是否合法
-		if(!CheckHouseCreateLocation(doc, buildingLocation, houseType, houseLocation)){
+		if(!LogicUtils.isHouseCanCreateAtLocation(doc, buildingLocation, houseType, houseLocation)){
 			return Promise.reject(new Error("创建小屋时,小屋坑位不合法"))
 		}
 		//检查是否建造小屋会造成可用城民小于0
@@ -990,25 +1027,162 @@ pro.getMaterials = function(playerId, category, callback){
 }
 
 /**
- * 更新玩家资源数据
- * @param doc
+ * 招募普通士兵
+ * @param playerId
+ * @param soldierName
+ * @param count
+ * @param finishNow
+ * @param callback
  */
-pro.refreshPlayerResources = function(doc){
-	var resources = DataUtils.getPlayerResources(doc)
-	_.each(resources, function(value, key){
-		doc.resources[key] = value
+pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.hasNormalSoldier(soldierName)){
+		callback(new Error("soldierName 普通兵种不存在"))
+		return
+	}
+	if(!_.isNumber(count)){
+		callback(new Error("count 不合法"))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		callback(new Error("finishNow 不合法"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var barracks = doc.buildings["location_8"]
+		if(barracks.level < 1){
+			return Promise.reject(new Error("兵营还未建造"))
+		}
+		if(count > DataUtils.getSoldierMaxRecruitCount(doc, soldierName)){
+			return Promise.reject(new Error("招募数量超过最大上限"))
+		}
+
+		var gemUsed = 0
+		var recruitRequired = DataUtils.getRecruitNormalSoldierRequired(soldierName, count)
+		var buyedResources = null
+
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
+		if(finishNow){
+			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
+			buyedResources = DataUtils.buyResources(recruitRequired.resources, {})
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+		}else{
+			buyedResources = DataUtils.buyResources(recruitRequired.resources, doc.resources)
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+		}
+
+		//宝石是否足够
+		if(gemUsed > doc.resources.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		//修改玩家宝石数据
+		doc.resources.gem -= gemUsed
+		//修改玩家资源数据
+		LogicUtils.reduce(recruitRequired.resources, doc.resources)
+		//是否立即完成
+		if(finishNow){
+			var soldierInfo = {
+				name:soldierName,
+				count:count
+			}
+			LogicUtils.addSoldier(doc, soldierInfo)
+			//刷新玩家战力
+			self.refreshPlayerPower(doc)
+			self.pushService.onRecruitSoldierSuccess(doc, soldierInfo)
+		}else{
+			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
+			LogicUtils.addSoldierEvent(doc, soldierName, count, finishTime)
+			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+		}
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
 	})
-	doc.basicInfo.resourceRefreshTime = Date.now()
 }
 
 /**
- * 刷新玩家兵力信息
- * @param doc
+ * 招募特殊士兵
+ * @param playerId
+ * @param soldierName
+ * @param count
+ * @param callback
  */
-pro.refreshPlayerPower = function(doc){
-	var power = DataUtils.getPlayerPower(doc)
-	doc.basicInfo.power = power
+pro.recruitSpecialSoldier = function(playerId, soldierName, count, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.hasSpecialSoldier(soldierName)){
+		callback(new Error("soldierName 特殊兵种不存在"))
+		return
+	}
+	if(!_.isNumber(count)){
+		callback(new Error("count 不合法"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var barracks = doc.buildings["location_8"]
+		if(barracks.level < 1){
+			return Promise.reject(new Error("兵营还未建造"))
+		}
+		if(count > DataUtils.getSoldierMaxRecruitCount(doc, soldierName)){
+			return Promise.reject(new Error("招募数量超过最大上限"))
+		}
+		var recruitRequired = DataUtils.getRecruitSpecialSoldierRequired(soldierName, count)
+		if(!LogicUtils.isEnough(recruitRequired.materials, doc.soldierMaterials)){
+			return Promise.reject(new Error("材料不足"))
+		}
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
+		//修改玩家资源数据
+		LogicUtils.reduce(recruitRequired.materials, doc.soldierMaterials)
+
+		var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
+		LogicUtils.addSoldierEvent(doc, soldierName, count, finishTime)
+		self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
 }
+
 
 var ExcutePlayerCallback = function(playerId, finishTime){
 	var self = this
@@ -1073,6 +1247,20 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 				self.pushService.onMakeMaterialFinished(doc, event)
 			}
 		})
+		//检查招募事件
+		var soldierFinishedEvents = []
+		_.each(doc.soldierEvents, function(event){
+			if(event.finishTime > 0 && event.finishTime <= Date.now()){
+				var soldierInfo = {
+					name:event.name,
+					count:event.count
+				}
+				LogicUtils.addSoldier(doc, soldierInfo)
+				self.pushService.onRecruitSoldierSuccess(doc, soldierInfo)
+				soldierFinishedEvents.push(event)
+			}
+		})
+		LogicUtils.removeEvents(soldierFinishedEvents, doc.soldierEvents)
 		//刷新玩家战力
 		self.refreshPlayerPower(doc)
 		//更新玩家数据
@@ -1088,64 +1276,4 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 			errorMailLogger.error(e.stack)
 		}
 	})
-}
-
-var CheckBuildingCreateLocation = function(playerDoc, location){
-	var previousLocation = LogicUtils.getPreviousBuildingLocation(location)
-	var nextLocation = LogicUtils.getNextBuildingLocation(location)
-	var frontLocation = LogicUtils.getFrontBuildingLocation(location)
-	if(previousLocation){
-		var previousBuilding = playerDoc.buildings["location_" + previousLocation]
-		if(previousBuilding.level > 0) return true
-	}
-	if(nextLocation){
-		var nextBuilding = playerDoc.buildings["location_" + nextLocation]
-		if(nextBuilding.level > 0) return true
-	}
-	if(frontLocation){
-		var frontBuilding = playerDoc.buildings["location_" + frontLocation]
-		if(frontBuilding.level > 0) return true
-	}
-
-	return false
-}
-
-var CheckHouseCreateLocation = function(playerDoc, buildingLocation, houseType, houseLocation){
-	var conditions = {
-		location_1:{
-			widthMax:2,
-			heightMax:1
-		},
-		location_2:{
-			widthMax:1,
-			heightMax:1
-		},
-		location_3:{
-			widthMax:1,
-			heightMax:1
-		}
-	}
-
-	var building = playerDoc.buildings["location_" + buildingLocation]
-	var houses = building.houses
-	var willBeSize = DataUtils.getHouseSize(houseType)
-	var condition = conditions["location_" + houseLocation]
-	if(willBeSize.width > condition.widthMax) return false
-	if(willBeSize.height > condition.heightMax) return false
-	var wantUse = [houseLocation]
-	if(willBeSize.width > 1 || willBeSize.height > 1){
-		wantUse.push(houseLocation + 1)
-	}
-
-	var alreadyUsed = []
-	for(var i = 0; i < houses.length; i++){
-		var house = houses[i]
-		var houseSize = DataUtils.getHouseSize(house.type)
-		alreadyUsed.push(house.location)
-		if(houseSize.width > 1 || houseSize.height > 1){
-			wantUse.push(house.location + 1)
-		}
-	}
-
-	return _.intersection(wantUse, alreadyUsed).length == 0
 }

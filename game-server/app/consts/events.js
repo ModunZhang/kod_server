@@ -13,7 +13,8 @@ module.exports = {
 		onTowerLevelUp:"onTowerLevelUp",
 		onWallLevelUp:"onWallLevelUp",
 		onMakeMaterialFinished:"onMakeMaterialFinished",
-		onGetMaterialSuccess:"onGetMaterialSuccess"
+		onGetMaterialSuccess:"onGetMaterialSuccess",
+		onRecruitSoldierSuccess:"onRecruitSoldierSuccess"
 	},
 	chat:{
 		onChat:"onChat",

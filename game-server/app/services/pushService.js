@@ -132,3 +132,12 @@ pro.onGetMaterialSuccess = function(playerData, event){
 	}
 	this.pushToPlayer(playerData, Events.player.onGetMaterialSuccess, data)
 }
+
+/**
+ * 士兵招募成功推送
+ * @param playerData
+ * @param soldierInfo
+ */
+pro.onRecruitSoldierSuccess = function(playerData, soldierInfo){
+	this.pushToPlayer(playerData, Events.player.onRecruitSoldierSuccess, soldierInfo)
+}

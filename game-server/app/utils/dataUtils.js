@@ -20,6 +20,9 @@ var GemsPayment = GameData.GemsPayment
 var Houses = GameData.Houses.houses
 var Buildings = GameData.Buildings.buildings
 var HouseInit = GameData.PlayerInitData.houses[1]
+var UnitConfig = GameData.UnitsConfig
+var SoldierConfig = UnitConfig.normal
+var SpecialSoldierConfig = UnitConfig.special
 
 
 var Utils = module.exports
@@ -622,7 +625,7 @@ Utils.generateMaterialEvent = function(toolShop, category, finishNow){
 Utils.getPlayerPower = function(playerDoc){
 	var buildingPower = this.getBuildingPower(playerDoc)
 	var housePower = this.getHousePower(playerDoc)
-	var soldierPower = this.getHousePower(playerDoc)
+	var soldierPower = this.getSoldierPower(playerDoc)
 
 	return buildingPower + housePower + soldierPower
 }
@@ -667,7 +670,19 @@ Utils.getHousePower = function(playerDoc){
  * @returns {number}
  */
 Utils.getSoldierPower = function(playerDoc){
-	return 0
+	var totalPower = 0
+	var config = null
+	_.each(playerDoc.soldiers, function(soldier){
+		if(Utils.isSpecialSoldier(soldier.name)){
+			config = SpecialSoldierConfig[soldier.name]
+		}else{
+			var fullName = soldier.name + "_" + Utils.getSoldierStar(soldier.name)
+			config = SoldierConfig[fullName]
+		}
+		totalPower += config.power * soldier.count
+	})
+
+	return totalPower
 }
 
 /**
@@ -747,4 +762,138 @@ Utils.getPlayerFreeHousesCount = function(playerDoc, houseType){
 	var maxCount = this.getPlayerHouseMaxCountByType(playerDoc, houseType)
 	var currentCount = this.getPlayerHouseCountByType(playerDoc, houseType)
 	return maxCount - currentCount
+}
+
+/**
+ * 是否有普通兵种
+ * @param soldierName
+ */
+Utils.hasNormalSoldier = function(soldierName){
+	var hasSoldier = false
+	var fullSoldierName = soldierName + "_" + this.getSoldierStar(soldierName)
+	_.each(SoldierConfig, function(value, key){
+		if(_.isEqual(fullSoldierName, key)){
+			hasSoldier = true
+		}
+	})
+
+	return hasSoldier
+}
+
+/**
+ * 是否有特殊兵种
+ * @param soldierName
+ * @returns {boolean}
+ */
+Utils.hasSpecialSoldier = function(soldierName){
+	var hasSoldier = false
+	_.each(SpecialSoldierConfig, function(value, key){
+		if(_.isEqual(soldierName, key)){
+			hasSoldier = true
+		}
+	})
+
+	return hasSoldier
+}
+
+/**
+ * 获取英雄星级
+ * @param soldierName
+ * @returns {number}
+ */
+Utils.getSoldierStar = function(soldierName){
+	if(this.isSpecialSoldier(soldierName)) return 3
+	return 1
+}
+
+/**
+ * 是否特殊兵种
+ * @param soldierName
+ * @returns {boolean}
+ */
+Utils.isSpecialSoldier = function(soldierName){
+	var isSpecial = false
+	_.each(SpecialSoldierConfig, function(value, key){
+		if(_.isEqual(soldierName, key)){
+			isSpecial = true
+		}
+	})
+
+	return isSpecial
+}
+
+/**
+ * 获取招募普通兵种所需的资源
+ * @param soldierName
+ * @param count
+ * @returns {{resources: {wood: number, stone: number, iron: number, food: number}, recruitTime: (*|Array)}}
+ */
+Utils.getRecruitNormalSoldierRequired = function(soldierName, count){
+	var star = this.getSoldierStar(soldierName)
+	var fullSoldierName = soldierName + "_" + star
+	var config = SoldierConfig[fullSoldierName]
+	var resources = {
+		wood:config.wood * count,
+		stone:config.stone * count,
+		iron:config.iron * count,
+		food:config.food * count
+	}
+	var totalNeed = {
+		resources:resources,
+		recruitTime:this.getRecruitSoldierTime(soldierName, count)
+	}
+	return totalNeed
+}
+
+/**
+ * 获取招募特殊兵种所需的材料
+ * @param soldierName
+ * @param count
+ * @returns {{materials: (*|Array), recruitTime: *}}
+ */
+Utils.getRecruitSpecialSoldierRequired = function(soldierName, count){
+	var config = SpecialSoldierConfig[soldierName]
+	var materialNames = config.specialMaterials.split(",")
+	var materials = {}
+	_.each(materialNames, function(value){
+		materials[value] = count
+	})
+	var totalNeed = {
+		materials:materials,
+		recruitTime:this.getRecruitSoldierTime(soldierName, count)
+	}
+	return totalNeed
+}
+
+/**
+ * 获取招募士兵时需要的时间
+ * @param soldierName
+ * @param count
+ * @returns {number}
+ */
+Utils.getRecruitSoldierTime = function(soldierName, count){
+	var config = null
+	if(this.isSpecialSoldier(soldierName)){
+		config = SpecialSoldierConfig[soldierName]
+	}else{
+		var star = this.getSoldierStar(soldierName)
+		var fullSoldierName = soldierName + "_" + star
+		config = SoldierConfig[fullSoldierName]
+	}
+	return config.recruitTime * count
+}
+
+Utils.getSoldierMaxRecruitCount = function(playerDoc, soldierName){
+	var building = playerDoc.buildings["location_8"]
+	var config = BuildingFunction[building.type][building.level]
+	var maxRecruit = config.maxRecruit
+	var soldierConfig = null
+	if(this.isSpecialSoldier(soldierName)){
+		soldierConfig = SpecialSoldierConfig[soldierName]
+	}else{
+		var fullSoldierName = soldierName + "_" + this.getSoldierStar(soldierName)
+		soldierConfig = SoldierConfig[fullSoldierName]
+	}
+	var maxCount = Math.floor(maxRecruit / soldierConfig.population)
+	return maxCount
 }

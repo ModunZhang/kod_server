@@ -9,8 +9,6 @@ var Promise = require("bluebird")
 
 var Consts = require("../../../consts/consts")
 var Events = require("../../../consts/events")
-var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
-var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 
 module.exports = function(app){
 	return new ChatHandler(app)
@@ -26,37 +24,23 @@ var ChatHandler = function(app){
 		{
 			command:"reset",
 			desc:"重置玩家数据",
-			callback:function(session, uid){
+			func:function(session, uid, text, callback){
 				var self = this
 				self.app.rpc.logic.commandRemote.reset(session, uid, function(e){
-					if(_.isObject(e)){
-						errorLogger.error("handle TextCommand Error-----------------------------")
-						errorLogger.error(e.stack)
-						if(_.isEqual("production", self.app.get("env"))){
-							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorMailLogger.error(e.stack)
-						}
-					}
+					callback(e)
 				})
 			}
 		},
 		{
 			command:"gem",
 			desc:"修改玩家宝石数量, 如: gem 2000 为修改玩家宝石数量为2000",
-			callback:function(session, uid, text){
+			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
 					self.app.rpc.logic.commandRemote.gem(session, uid, count, function(e){
-						if(_.isObject(e)){
-							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorLogger.error(e.stack)
-							if(_.isEqual("production", self.app.get("env"))){
-								errorLogger.error("handle TextCommand Error-----------------------------")
-								errorMailLogger.error(e.stack)
-							}
-						}
+						callback(e)
 					})
 				}
 			}
@@ -64,20 +48,13 @@ var ChatHandler = function(app){
 		{
 			command:"rs",
 			desc:"修改玩家资源数量, 如: rs 2000 为修改玩家所有资源数量为2000",
-			callback:function(session, uid, text){
+			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
 					self.app.rpc.logic.commandRemote.rs(session, uid, count, function(e){
-						if(_.isObject(e)){
-							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorLogger.error(e.stack)
-							if(_.isEqual("production", self.app.get("env"))){
-								errorLogger.error("handle TextCommand Error-----------------------------")
-								errorMailLogger.error(e.stack)
-							}
-						}
+						callback(e)
 					})
 				}
 			}
@@ -85,20 +62,13 @@ var ChatHandler = function(app){
 		{
 			command:"citizen",
 			desc:"修改玩家空闲居民数量, 如: citizen 2000 为修改玩家空闲居民数量为2000",
-			callback:function(session, uid, text){
+			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
 					self.app.rpc.logic.commandRemote.citizen(session, uid, count, function(e){
-						if(_.isObject(e)){
-							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorLogger.error(e.stack)
-							if(_.isEqual("production", self.app.get("env"))){
-								errorLogger.error("handle TextCommand Error-----------------------------")
-								errorMailLogger.error(e.stack)
-							}
-						}
+						callback(e)
 					})
 				}
 			}
@@ -106,20 +76,13 @@ var ChatHandler = function(app){
 		{
 			command:"coin",
 			desc:"修改玩家银币数量, 如: coin 2000 为修改玩家银币数量为2000",
-			callback:function(session, uid, text){
+			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
 					self.app.rpc.logic.commandRemote.coin(session, uid, count, function(e){
-						if(_.isObject(e)){
-							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorLogger.error(e.stack)
-							if(_.isEqual("production", self.app.get("env"))){
-								errorLogger.error("handle TextCommand Error-----------------------------")
-								errorMailLogger.error(e.stack)
-							}
-						}
+						callback(e)
 					})
 				}
 			}
@@ -127,20 +90,13 @@ var ChatHandler = function(app){
 		{
 			command:"building",
 			desc:"修改玩家银币数量, 如: building 5 为修改玩家所有玩家建筑等级为5级",
-			callback:function(session, uid, text){
+			func:function(session, uid, text, callback){
 				var self = this
 				var level = text.split(" ")[1]
 				level = parseInt(level)
 				if(_.isNumber(level)){
 					self.app.rpc.logic.commandRemote.building(session, uid, level, function(e){
-						if(_.isObject(e)){
-							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorLogger.error(e.stack)
-							if(_.isEqual("production", self.app.get("env"))){
-								errorLogger.error("handle TextCommand Error-----------------------------")
-								errorMailLogger.error(e.stack)
-							}
-						}
+						callback(e)
 					})
 				}
 			}
@@ -148,20 +104,13 @@ var ChatHandler = function(app){
 		{
 			command:"keep",
 			desc:"修改玩家城堡等级, 如: keep 5 为修改玩家城堡等级为5级",
-			callback:function(session, uid, text){
+			func:function(session, uid, text, callback){
 				var self = this
 				var level = text.split(" ")[1]
 				level = parseInt(level)
 				if(_.isNumber(level)){
 					self.app.rpc.logic.commandRemote.keep(session, uid, level, function(e){
-						if(_.isObject(e)){
-							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorLogger.error(e.stack)
-							if(_.isEqual("production", self.app.get("env"))){
-								errorLogger.error("handle TextCommand Error-----------------------------")
-								errorMailLogger.error(e.stack)
-							}
-						}
+						callback(e)
 					})
 				}
 			}
@@ -169,52 +118,59 @@ var ChatHandler = function(app){
 		{
 			command:"rmbuildingevents",
 			desc:"删除所有建筑的升级事件",
-			callback:function(session, uid){
+			func:function(session, uid, text, callback){
 				var self = this
 				self.app.rpc.logic.commandRemote.rmbuildingevents(session, uid, function(e){
-					if(_.isObject(e)){
-						errorLogger.error("handle TextCommand Error-----------------------------")
-						errorLogger.error(e.stack)
-						if(_.isEqual("production", self.app.get("env"))){
-							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorMailLogger.error(e.stack)
-						}
-					}
+					callback(e)
 				})
 			}
 		},
 		{
 			command:"rmmaterialevents",
 			desc:"清除材料制造事件",
-			callback:function(session, uid){
+			func:function(session, uid, text, callback){
 				var self = this
 				self.app.rpc.logic.commandRemote.rmmaterialevents(session, uid, function(e){
-					if(_.isObject(e)){
-						errorLogger.error("handle TextCommand Error-----------------------------")
-						errorLogger.error(e.stack)
-						if(_.isEqual("production", self.app.get("env"))){
-							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorMailLogger.error(e.stack)
-						}
-					}
+					callback(e)
 				})
 			}
 		},
 		{
 			command:"kickme",
 			desc:"将自己踢出服务器",
-			callback:function(session, uid){
+			func:function(session, uid, text, callback){
 				var self = this
 				self.app.rpc.logic.commandRemote.kickme(session, uid, function(e){
-					if(_.isObject(e)){
-						errorLogger.error("handle TextCommand Error-----------------------------")
-						errorLogger.error(e.stack)
-						if(_.isEqual("production", self.app.get("env"))){
-							errorLogger.error("handle TextCommand Error-----------------------------")
-							errorMailLogger.error(e.stack)
-						}
-					}
+					callback(e)
 				})
+			}
+		},
+		{
+			command:"material",
+			desc:"统一修改玩家材料数量",
+			func:function(session, uid, text, callback){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					self.app.rpc.logic.commandRemote.material(session, uid, count, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
+			command:"soldiermaterial",
+			desc:"统一修改玩家招募特殊兵种材料数量",
+			func:function(session, uid, text, callback){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					self.app.rpc.logic.commandRemote.soldiermaterial(session, uid, count, function(e){
+						callback(e)
+					})
+				}
 			}
 		}
 	]
@@ -238,7 +194,10 @@ pro.send = function(msg, session, next){
 	}
 
 	var getPlayerInfo = Promise.promisify(this.app.rpc.logic.logicRemote.getPlayerInfo, this)
+	var filterCommand = Promise.promisify(FilterCommand, this)
 	getPlayerInfo(session, session.uid).then(function(doc){
+		return filterCommand(doc, text, session)
+	}).then(function(doc){
 		var time = Date.now()
 		var response = {
 			fromId:doc._id,
@@ -255,8 +214,6 @@ pro.send = function(msg, session, next){
 		}
 		self.chats.push(response)
 		self.globalChatChannel.pushMessage(Events.chat.onChat, response)
-
-		FilterCommand.call(self, doc, text, session)
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
@@ -275,13 +232,18 @@ pro.getAll = function(msg, session, next){
 	next(null, {code:200})
 }
 
-var FilterCommand = function(playerDoc, chatText, session){
+var FilterCommand = function(playerDoc, chatText, session, callback){
 	if(_.isEqual("help", chatText)){
 		PushHelpMessageToPlayer.call(this, session)
+		callback(null, playerDoc)
 	}else{
-		var callback = GetPlayerCommand.call(this, chatText)
-		if(_.isFunction(callback)){
-			callback.call(this, session, session.uid, chatText)
+		var func = GetPlayerCommand.call(this, chatText)
+		if(_.isFunction(func)){
+			func.call(this, session, session.uid, chatText, function(e){
+				callback(e, playerDoc)
+			})
+		}else{
+			callback(null, playerDoc)
 		}
 	}
 }
@@ -313,7 +275,7 @@ var GetPlayerCommand = function(text){
 	for(var i = 0; i < this.commands.length; i++){
 		var value = this.commands[i]
 		if(_.isEqual(value.command, command)){
-			return value.callback
+			return value.func
 		}
 	}
 

@@ -1,5 +1,5 @@
 {
-	"_id":"5404303a196e71545175cc31",
+	"_id":"540684a6f3c5063e6a6eb07b",
 	"wallEvents":[],
 	"wall":{
 		"level":1
@@ -153,6 +153,16 @@
 	},
 	"soldierEvents":[],
 	"soldiers":[],
+	"soldierMaterials":{
+		"brightAlloy":1000,
+		"holyBook":1000,
+		"brightRing":1000,
+		"confessionHood":1000,
+		"magicBox":1000,
+		"soulStone":1000,
+		"heroBones":1000,
+		"deathHand":1000
+	},
 	"materialEvents":[],
 	"materials":{
 		"ironPart":1000,
@@ -177,7 +187,7 @@
 	"basicInfo":{
 		"name":"player_111111",
 		"cityName":"city_111111",
-		"resourceRefreshTime":1409560634722,
+		"resourceRefreshTime":1409713318236,
 		"vipExp":0,
 		"vip":1,
 		"power":0,
@@ -189,8 +199,8 @@
 		"deviceId":"__testDeviceId2",
 		"logicServerId":"logic-server-1",
 		"loginCount":0,
-		"lastLoginTime":1409560634722,
-		"registerTime":1409560634722
+		"lastLoginTime":1409713318236,
+		"registerTime":1409713318236
 	},
 	"__v":0
 }

@@ -93,6 +93,7 @@ GameDatas.Houses.houses = require("./Houses_houses.js")
 GameDatas.PlayerInitData = {}
 GameDatas.PlayerInitData.resources = require("./PlayerInitData_resources.js")
 GameDatas.PlayerInitData.materials = require("./PlayerInitData_materials.js")
+GameDatas.PlayerInitData.soldierMaterials = require("./PlayerInitData_soldierMaterials.js")
 GameDatas.PlayerInitData.houses = require("./PlayerInitData_houses.js")
 
 GameDatas.UnitsConfig = {}

@@ -106,11 +106,9 @@ describe("ChatServer", function(){
 			})
 
 			var count = 0
-			var onChat = function(doc){
+			var onChat = function(){
 				count += 1
 				if(count == 2){
-					doc.fromId.should.equal("system")
-					pomelo.removeListener("onChat", onChat)
 					done()
 				}
 			}
@@ -273,6 +271,40 @@ describe("ChatServer", function(){
 		it("send rmmaterialevents", function(done){
 			var chatInfo = {
 				text:"rmmaterialevents",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(){
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("send material", function(done){
+			var chatInfo = {
+				text:"material 5",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(){
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("send soldiermaterial", function(done){
+			var chatInfo = {
+				text:"soldiermaterial 5",
 				type:"global"
 			}
 			var route = "chat.chatHandler.send"

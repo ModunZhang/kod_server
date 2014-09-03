@@ -213,3 +213,38 @@ pro.getMaterials = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 招募普通士兵
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.recruitNormalSoldier = function(msg, session, next){
+	var soldierName = msg.soldierName
+	var count = msg.count
+	var finishNow = msg.finishNow
+
+	this.playerService.recruitNormalSoldierAsync(session.uid, soldierName, count, finishNow).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 招募特殊士兵
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.recruitSpecialSoldier = function(msg, session, next){
+	var soldierName = msg.soldierName
+	var count = msg.count
+
+	this.playerService.recruitSpecialSoldierAsync(session.uid, soldierName, count).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

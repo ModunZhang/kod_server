@@ -353,11 +353,11 @@ describe("LogicServer", function(){
 
 									clearEvents(function(doc){
 										doc.code.should.equal(200)
-										destroyHouse(3,1, function(doc){
+										destroyHouse(3, 1, function(doc){
 											doc.code.should.equal(200)
-											destroyHouse(3,2, function(doc){
+											destroyHouse(3, 2, function(doc){
 												doc.code.should.equal(200)
-												destroyHouse(3,3, function(doc){
+												destroyHouse(3, 3, function(doc){
 													doc.code.should.equal(200)
 													done()
 												})
@@ -1474,6 +1474,219 @@ describe("LogicServer", function(){
 			}
 
 			makeMaterialFinishNow()
+		})
+
+		it("recruitNormalSoldier soldierName 普通兵种不存在", function(done){
+			var soldierInfo = {
+				soldierName:"adf",
+				count:12,
+				finishNow:true
+			}
+			var route = "logic.playerHandler.recruitNormalSoldier"
+			pomelo.request(route, soldierInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("soldierName 普通兵种不存在")
+				done()
+			})
+		})
+
+		it("recruitNormalSoldier 兵营还未建造", function(done){
+			var soldierInfo = {
+				soldierName:"swordsman",
+				count:12,
+				finishNow:true
+			}
+			var route = "logic.playerHandler.recruitNormalSoldier"
+			pomelo.request(route, soldierInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("兵营还未建造")
+				done()
+			})
+		})
+
+		it("recruitNormalSoldier 招募数量超过最大上限", function(done){
+			var upgradeBuilding = function(callback){
+				var buildingInfo = {
+					location:8,
+					finishNow:true
+				}
+				var route = "logic.playerHandler.upgradeBuilding"
+				pomelo.request(route, buildingInfo, function(doc){
+					callback(doc)
+				})
+			}
+			var recruiteSoldier = function(callback){
+				var soldierInfo = {
+					soldierName:"swordsman",
+					count:500,
+					finishNow:true
+				}
+				var route = "logic.playerHandler.recruitNormalSoldier"
+				pomelo.request(route, soldierInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			upgradeBuilding(function(doc){
+				doc.code.should.equal(200)
+				recruiteSoldier(function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("招募数量超过最大上限")
+					done()
+				})
+			})
+		})
+
+		it("recruitNormalSoldier 宝石不足", function(done){
+			var resetGem = function(gem, callback){
+				var chatInfo = {
+					text:"gem " + gem,
+					type:"global"
+				}
+				var route = "chat.chatHandler.send"
+				pomelo.request(route, chatInfo, function(doc){
+					callback(doc)
+				})
+			}
+			var recruiteSoldier = function(callback){
+				var soldierInfo = {
+					soldierName:"swordsman",
+					count:5,
+					finishNow:true
+				}
+				var route = "logic.playerHandler.recruitNormalSoldier"
+				pomelo.request(route, soldierInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			resetGem(0, function(doc){
+				doc.code.should.equal(200)
+				recruiteSoldier(function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("宝石不足")
+					resetGem(5000, function(){
+						done()
+					})
+				})
+			})
+		})
+
+		it("recruitNormalSoldier 正常立即招募", function(done){
+			var soldierInfo = {
+				soldierName:"swordsman",
+				count:5,
+				finishNow:true
+			}
+			var route = "logic.playerHandler.recruitNormalSoldier"
+			pomelo.request(route, soldierInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.soldiers.length.should.equal(1)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("recruitNormalSoldier 正常普通招募", function(done){
+			var soldierInfo = {
+				soldierName:"swordsman",
+				count:5,
+				finishNow:false
+			}
+			var route = "logic.playerHandler.recruitNormalSoldier"
+			pomelo.request(route, soldierInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.soldiers.length.should.equal(1)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("recruitSpecialSoldier soldierName 特殊兵种不存在", function(done){
+			var soldierInfo = {
+				soldierName:"adf",
+				count:12
+			}
+			var route = "logic.playerHandler.recruitSpecialSoldier"
+			pomelo.request(route, soldierInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("soldierName 特殊兵种不存在")
+				done()
+			})
+		})
+
+		it("recruitSpecialSoldier 招募数量超过最大上限", function(done){
+			var soldierInfo = {
+				soldierName:"skeletonWarrior",
+				count:100
+			}
+			var route = "logic.playerHandler.recruitSpecialSoldier"
+			pomelo.request(route, soldierInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("招募数量超过最大上限")
+				done()
+			})
+		})
+
+		it("recruitSpecialSoldier 材料不足", function(done){
+			var resetRs = function(rs, callback){
+				var chatInfo = {
+					text:"soldiermaterial " + rs,
+					type:"global"
+				}
+				var route = "chat.chatHandler.send"
+				pomelo.request(route, chatInfo, function(doc){
+					callback(doc)
+				})
+			}
+			var recruiteSoldier = function(callback){
+				var soldierInfo = {
+					soldierName:"skeletonWarrior",
+					count:5,
+					finishNow:true
+				}
+				var route = "logic.playerHandler.recruitSpecialSoldier"
+				pomelo.request(route, soldierInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			resetRs(0, function(doc){
+				doc.code.should.equal(200)
+				recruiteSoldier(function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("材料不足")
+					resetRs(1000, function(){
+						done()
+					})
+				})
+			})
+		})
+
+		it("recruitSpecialSoldier 正常普通招募", function(done){
+			var soldierInfo = {
+				soldierName:"skeletonWarrior",
+				count:5
+			}
+			var route = "logic.playerHandler.recruitSpecialSoldier"
+			pomelo.request(route, soldierInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.soldierEvents.length.should.equal(2)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 	})
 

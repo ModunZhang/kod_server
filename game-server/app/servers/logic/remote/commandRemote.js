@@ -281,3 +281,57 @@ pro.kickme = function(uid, callback){
 		callback(e)
 	})
 }
+
+/**
+ * 统一修改玩家材料数量
+ * @param uid
+ * @param count
+ * @param callback
+ */
+pro.material = function(uid, count, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		doc.materials.blueprints = count
+		doc.materials.tools = count
+		doc.materials.tiles = count
+		doc.materials.pulley = count
+		doc.materials.trainingFigure = count
+		doc.materials.bowTarget = count
+		doc.materials.saddle = count
+		doc.materials.ironPart = count
+		self.playerService.refreshPlayerResources(doc)
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 统一修改玩家特殊材料数量
+ * @param uid
+ * @param count
+ * @param callback
+ */
+pro.soldiermaterial = function(uid, count, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		doc.soldierMaterials.deathHand = count
+		doc.soldierMaterials.heroBones = count
+		doc.soldierMaterials.soulStone = count
+		doc.soldierMaterials.magicBox = count
+		doc.soldierMaterials.confessionHood = count
+		doc.soldierMaterials.brightRing = count
+		doc.soldierMaterials.holyBook = count
+		doc.soldierMaterials.brightAlloy = count
+		self.playerService.refreshPlayerResources(doc)
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}

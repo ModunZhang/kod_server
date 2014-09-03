@@ -11,6 +11,7 @@ var GameDatas = require("../datas/GameDatas")
 var BuildingInitData = GameDatas.Buildings.buildings
 var ResourceInitData = GameDatas.PlayerInitData.resources[1]
 var MaterialInitData = GameDatas.PlayerInitData.materials[1]
+var SoldierMaterialInitData = GameDatas.PlayerInitData.soldierMaterials[1]
 
 var createBuildingSchema = function(location){
 	var schema = {
@@ -87,16 +88,28 @@ var playerSchema = new Schema({
 			finishTime:{type:Number, required:true}
 		}
 	],
+	dragonMaterials:{
+
+	},
+	soldierMaterials:{
+		deathHand:{type:Number, required:true, default:SoldierMaterialInitData.deathHand},
+		heroBones:{type:Number, required:true, default:SoldierMaterialInitData.heroBones},
+		soulStone:{type:Number, required:true, default:SoldierMaterialInitData.soulStone},
+		magicBox:{type:Number, required:true, default:SoldierMaterialInitData.magicBox},
+		confessionHood:{type:Number, required:true, default:SoldierMaterialInitData.confessionHood},
+		brightRing:{type:Number, required:true, default:SoldierMaterialInitData.brightRing},
+		holyBook:{type:Number, required:true, default:SoldierMaterialInitData.holyBook},
+		brightAlloy:{type:Number, required:true, default:SoldierMaterialInitData.brightAlloy}
+	},
 	soldiers:[
 		{
-			type:{type:String, required:true},
+			name:{type:String, required:true},
 			count:{type:Number, required:true},
-			star:{type:Number, required:true}
 		}
 	],
 	soldierEvents:[
 		{
-			type:{type:String, required:true},
+			name:{type:String, required:true},
 			count:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
 		}
