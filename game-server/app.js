@@ -17,7 +17,7 @@ app.set("name", "KODServer")
 app.configure("production|development", "gate", function(){
 	app.set("connectorConfig", {
 		connector:pomelo.connectors.hybridconnector,
-		heartbeat:5,
+		heartbeat:60,
 		useDict:false,
 		useProtobuf:false,
 		disconnectOnTimeout:true,
@@ -25,12 +25,11 @@ app.configure("production|development", "gate", function(){
 	})
 	app.set("proxyConfig", {
 		bufferMsg:true,
-		interval:20,
+		interval:30,
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
-		bufferMsg:true,
-		interval:20
+		bufferMsg:false
 	})
 	app.set('sessionConfig', {
 		singleSession:true
@@ -52,8 +51,7 @@ app.configure("production|development", "front", function(){
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
-		bufferMsg:true,
-		interval:20
+		bufferMsg:false
 	})
 	app.set('sessionConfig', {
 		singleSession:true
@@ -65,6 +63,14 @@ app.configure("production|development", "front", function(){
 })
 
 app.configure("production|development", "logic", function(){
+	app.set("proxyConfig", {
+		bufferMsg:false,
+		failMode:"failfast"
+	})
+	app.set("remoteConfig", {
+		bufferMsg:false
+	})
+
 	app.before(loginFilter())
 
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
@@ -73,6 +79,14 @@ app.configure("production|development", "logic", function(){
 })
 
 app.configure("production|development", "chat", function(){
+	app.set("proxyConfig", {
+		bufferMsg:false,
+		failMode:"failfast"
+	})
+	app.set("remoteConfig", {
+		bufferMsg:false
+	})
+
 	app.before(loginFilter())
 
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))

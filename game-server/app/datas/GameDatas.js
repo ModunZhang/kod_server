@@ -97,6 +97,9 @@ GameDatas.PlayerInitData.soldierMaterials = require("./PlayerInitData_soldierMat
 GameDatas.PlayerInitData.dragonMaterials = require("./PlayerInitData_dragonMaterials.js")
 GameDatas.PlayerInitData.houses = require("./PlayerInitData_houses.js")
 
+GameDatas.SmithConfig = {}
+GameDatas.SmithConfig.equipments = require("./SmithConfig_equipments.js")
+
 GameDatas.UnitsConfig = {}
 GameDatas.UnitsConfig.normal = require("./UnitsConfig_normal.js")
 GameDatas.UnitsConfig.special = require("./UnitsConfig_special.js")

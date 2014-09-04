@@ -12,6 +12,7 @@ var BuildingInitData = GameDatas.Buildings.buildings
 var ResourceInitData = GameDatas.PlayerInitData.resources[1]
 var MaterialInitData = GameDatas.PlayerInitData.materials[1]
 var SoldierMaterialInitData = GameDatas.PlayerInitData.soldierMaterials[1]
+var DragonMaterialInitData = GameDatas.PlayerInitData.dragonMaterials[1]
 
 var createBuildingSchema = function(location){
 	var schema = {
@@ -104,10 +105,56 @@ var playerSchema = new Schema({
 	soldiers:[
 		{
 			name:{type:String, required:true},
-			count:{type:Number, required:true},
+			count:{type:Number, required:true}
 		}
 	],
 	soldierEvents:[
+		{
+			name:{type:String, required:true},
+			count:{type:Number, required:true},
+			finishTime:{type:Number, required:true}
+		}
+	],
+	dragonEquipments:{
+		ironIngot:{type:Number, required:true, default:DragonMaterialInitData.ironIngot},
+		steelIngot:{type:Number, required:true, default:DragonMaterialInitData.steelIngot},
+		mithrilIngot:{type:Number, required:true, default:DragonMaterialInitData.mithrilIngot},
+		blackIronIngot:{type:Number, required:true, default:DragonMaterialInitData.blackIronIngot},
+		arcaniteIngot:{type:Number, required:true, default:DragonMaterialInitData.arcaniteIngot},
+		wispOfFire:{type:Number, required:true, default:DragonMaterialInitData.wispOfFire},
+		wispOfCold:{type:Number, required:true, default:DragonMaterialInitData.wispOfCold},
+		wispOfWind:{type:Number, required:true, default:DragonMaterialInitData.wispOfWind},
+		lavaSoul:{type:Number, required:true, default:DragonMaterialInitData.lavaSoul},
+		iceSoul:{type:Number, required:true, default:DragonMaterialInitData.iceSoul},
+		forestSoul:{type:Number, required:true, default:DragonMaterialInitData.forestSoul},
+		infernoSoul:{type:Number, required:true, default:DragonMaterialInitData.infernoSoul},
+		blizzardSoul:{type:Number, required:true, default:DragonMaterialInitData.blizzardSoul},
+		fairySoul:{type:Number, required:true, default:DragonMaterialInitData.fairySoul},
+		moltenShard:{type:Number, required:true, default:DragonMaterialInitData.moltenShard},
+		glacierShard:{type:Number, required:true, default:DragonMaterialInitData.glacierShard},
+		chargedShard:{type:Number, required:true, default:DragonMaterialInitData.chargedShard},
+		moltenShiver:{type:Number, required:true, default:DragonMaterialInitData.moltenShiver},
+		glacierShiver:{type:Number, required:true, default:DragonMaterialInitData.glacierShiver},
+		chargedShiver:{type:Number, required:true, default:DragonMaterialInitData.chargedShiver},
+		moltenCore:{type:Number, required:true, default:DragonMaterialInitData.moltenCore},
+		glacierCore:{type:Number, required:true, default:DragonMaterialInitData.glacierCore},
+		chargedCore:{type:Number, required:true, default:DragonMaterialInitData.chargedCore},
+		moltenMagnet:{type:Number, required:true, default:DragonMaterialInitData.moltenMagnet},
+		glacierMagnet:{type:Number, required:true, default:DragonMaterialInitData.glacierMagnet},
+		chargedMagnet:{type:Number, required:true, default:DragonMaterialInitData.chargedMagnet},
+		challengeRune:{type:Number, required:true, default:DragonMaterialInitData.challengeRune},
+		suppressRune:{type:Number, required:true, default:DragonMaterialInitData.suppressRune},
+		rageRune:{type:Number, required:true, default:DragonMaterialInitData.rageRune},
+		guardRune:{type:Number, required:true, default:DragonMaterialInitData.guardRune},
+		poisonRune:{type:Number, required:true, default:DragonMaterialInitData.poisonRune},
+		giantRune:{type:Number, required:true, default:DragonMaterialInitData.giantRune},
+		dolanRune:{type:Number, required:true, default:DragonMaterialInitData.dolanRune},
+		warsongRune:{type:Number, required:true, default:DragonMaterialInitData.warsongRune},
+		infernoRune:{type:Number, required:true, default:DragonMaterialInitData.infernoRune},
+		arcanaRune:{type:Number, required:true, default:DragonMaterialInitData.arcanaRune},
+		eternityRune:{type:Number, required:true, default:DragonMaterialInitData.eternityRune}
+	},
+	dragonEquipmentEvents:[
 		{
 			name:{type:String, required:true},
 			count:{type:Number, required:true},
