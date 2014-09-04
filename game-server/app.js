@@ -8,6 +8,7 @@ var _ = require("underscore")
 
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
+var loginFilter = require("./app/utils/loginFilter")
 
 var app = pomelo.createApp()
 app.set("name", "KODServer")
@@ -64,12 +65,16 @@ app.configure("production|development", "front", function(){
 })
 
 app.configure("production|development", "logic", function(){
+	app.before(loginFilter())
+
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
 })
 
 app.configure("production|development", "chat", function(){
+	app.before(loginFilter())
+
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
