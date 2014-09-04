@@ -70,6 +70,8 @@ var AfterLogin = function(doc){
 		if(event.finishTime > 0 && event.finishTime <= Date.now()){
 			var building = LogicUtils.getBuildingByEvent(doc, event)
 			building.level += 1
+			//检查是否有建筑需要从-1级升级到0级
+			LogicUtils.updateBuildingsLevel(doc)
 			self.pushService.onBuildingLevelUp(doc, event.location)
 			buildingFinishedEvents.push(event)
 		}else{
@@ -283,6 +285,8 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		//是否立即完成
 		if(finishNow){
 			building.level = building.level + 1
+			//检查是否有建筑需要从-1级升级到0级
+			LogicUtils.updateBuildingsLevel(doc)
 			//刷新玩家战力
 			self.refreshPlayerPower(doc)
 			self.pushService.onBuildingLevelUp(doc, building.location)
@@ -1196,6 +1200,8 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 				buildingFinishedEvents.push(event)
 				var building = LogicUtils.getBuildingByEvent(doc, event)
 				building.level += 1
+				//检查是否有建筑需要从-1级升级到0级
+				LogicUtils.updateBuildingsLevel(doc)
 				self.pushService.onBuildingLevelUp(doc, event.location)
 			}
 		})
