@@ -51,7 +51,7 @@ Utils.buyResources = function(need, has){
 				for(var i = config.length; i = 1; i--){
 					var item = config[i]
 					console.log(item)
-					config.log(item.min + "---------" + item.gem)
+					console.log(item.min + "---------" + item.gem)
 					if(!_.isObject(item)) continue
 					if(item.min < required){
 						gemUsed += item.gem
