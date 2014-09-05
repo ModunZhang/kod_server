@@ -233,6 +233,7 @@ pro.getAll = function(msg, session, next){
 }
 
 var FilterCommand = function(playerDoc, chatText, session, callback){
+	chatText = chatText.toLowerCase()
 	if(_.isEqual("help", chatText)){
 		PushHelpMessageToPlayer.call(this, session)
 		callback(null, playerDoc)

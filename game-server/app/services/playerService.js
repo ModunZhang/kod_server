@@ -257,15 +257,11 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		if(finishNow){
-			console.log(upgradeRequired)
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
-			console.log(gemUsed)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
-			console.log(buyedResources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
-			console.log(buyedMaterials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 		}else{
