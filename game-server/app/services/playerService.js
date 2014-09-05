@@ -257,11 +257,15 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		if(finishNow){
+			console.log(upgradeRequired)
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
+			console.log(gemUsed)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
+			console.log(buyedResources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
+			console.log(buyedMaterials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 		}else{
@@ -1187,6 +1191,79 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, callback){
 	})
 }
 
+/**
+ * 制作龙的装备
+ * @param playerId
+ * @param equipmentName
+ * @param finishNow
+ * @param callback
+ */
+pro.makeDragonEquipment = function(playerId, equipmentName, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonEquipment(equipmentName)){
+		callback(new Error("equipmentName 装备不存在"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var toolShop = doc.buildings["location_9"]
+		if(toolShop.level < 1){
+			return Promise.reject(new Error("铁匠铺还未建造"))
+		}
+		//是否有装备已近在制作
+		if(doc.dragonEquipmentEvents.length > 0){
+			return Promise.reject(new Error("已近有装备正在制作"))
+		}
+
+		var gemUsed = 0
+		var makeRequired = DataUtils.getMakeDragonEquipmentRequired(doc, equipmentName)
+		var buyedResources = null
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
+		buyedResources = DataUtils.buyResources(makeRequired.resources, doc.resources)
+		gemUsed += buyedResources.gemUsed
+		LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+
+
+		//宝石是否足够
+		if(gemUsed > doc.resources.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		//修改玩家宝石数据
+		doc.resources.gem -= gemUsed
+		//修改玩家资源数据
+		LogicUtils.reduce(makeRequired.resources, doc.resources)
+		//产生制造事件
+		var event = DataUtils.generateMaterialEvent(toolShop, category, finishNow)
+		doc.materialEvents.push(event)
+		//是否立即完成
+		if(finishNow){
+			self.pushService.onMakeMaterialFinished(doc, event)
+		}else{
+			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
 
 var ExcutePlayerCallback = function(playerId, finishTime){
 	var self = this

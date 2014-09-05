@@ -500,3 +500,8 @@ var Utils = require("../app/utils/utils")
 //}
 //
 //console.log(materials)
+//
+//var res = 1 / 1.02
+//console.log(res)
+//res = Math.floor(res * 1000000) / 1000000
+//console.log(res)

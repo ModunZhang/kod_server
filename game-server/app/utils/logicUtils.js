@@ -10,6 +10,10 @@ var DataUtils = require("./dataUtils")
 var Utils = module.exports
 
 
+Utils.getEfficiency = function(origin, efficiency){
+	return Math.floor(origin / (1 + efficiency) * 1000000) / 1000000
+}
+
 /**
  * 检查是否足够
  * @param need

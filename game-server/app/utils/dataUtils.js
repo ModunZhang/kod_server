@@ -23,7 +23,7 @@ var HouseInit = GameData.PlayerInitData.houses[1]
 var UnitConfig = GameData.UnitsConfig
 var SoldierConfig = UnitConfig.normal
 var SpecialSoldierConfig = UnitConfig.special
-
+var DragonEquipmentConfig = GameData.SmithConfig.equipments
 
 var Utils = module.exports
 
@@ -883,6 +883,12 @@ Utils.getRecruitSoldierTime = function(soldierName, count){
 	return config.recruitTime * count
 }
 
+/**
+ * 获取士兵招募单次最大数量
+ * @param playerDoc
+ * @param soldierName
+ * @returns {number}
+ */
 Utils.getSoldierMaxRecruitCount = function(playerDoc, soldierName){
 	var building = playerDoc.buildings["location_8"]
 	var config = BuildingFunction[building.type][building.level]
@@ -896,4 +902,54 @@ Utils.getSoldierMaxRecruitCount = function(playerDoc, soldierName){
 	}
 	var maxCount = Math.floor(maxRecruit / soldierConfig.population)
 	return maxCount
+}
+
+/**
+ * 龙装备是否存在
+ * @param equipmentName
+ * @returns {boolean}
+ */
+Utils.isDragonEquipment = function(equipmentName){
+	var has = false
+	_.each(DragonEquipmentConfig, function(value, key){
+		if(_.isEqual(equipmentName, key)){
+			has = true
+		}
+	})
+	return has
+}
+
+/**
+ * 获取龙装备制造需求
+ * @param playerDoc
+ * @param equipmentName
+ * @returns {{}}
+ */
+Utils.getMakeDragonEquipmentRequired = function(playerDoc, equipmentName){
+	var required = {}
+	var config = DragonEquipmentConfig[equipmentName]
+	var materialNameArray = config.materials.split(",")
+	var materials = {}
+	_.each(materialNameArray, function(materialName){
+		var nameAndCountArray = materialName.split(":")
+		materials[nameAndCountArray[0]] = Number(nameAndCountArray[1])
+	})
+	required.materials = materials
+	required.coin = config.coin
+	required.buildTime = this.getMakeDragonEquipmentTime(playerDoc, equipmentName)
+	return required
+}
+
+/**
+ * 获取龙装备制造时间
+ * @param playerDoc
+ * @param equipmentName
+ * @returns {*}
+ */
+Utils.getMakeDragonEquipmentTime = function(playerDoc, equipmentName){
+	var building = playerDoc.buildings["location_9"]
+	var smithConfig = BuildingFunction[building.type][building.level]
+	var dragonEquipmentConfig = DragonEquipmentConfig[equipmentName]
+	var makeTime = dragonEquipmentConfig.makeTime
+	return LogicUtils.getEfficiency(makeTime, smithConfig.efficiency)
 }
