@@ -7,10 +7,11 @@
 var Promise = require("bluebird")
 var _ = require("underscore")
 
-var BasicPlayerInfo = require("../../../consts/basicPlayerInfo")
 var Utils = require("../../../utils/utils")
 var DataUtis = require("../../../utils/dataUtils")
 var LogicUtils = require("../../../utils/logicUtils")
+
+var Player = require("../../../domains/player")
 
 module.exports = function(app){
 	return new CommandRemote(app)
@@ -34,15 +35,26 @@ var pro = CommandRemote.prototype
  */
 pro.reset = function(uid, callback){
 	var self = this
-	var basicPlayerInfo = Utils.clone(BasicPlayerInfo)
 	this.cacheService.getPlayerAsync(uid).then(function(doc){
-		basicPlayerInfo._id = doc._id
-		basicPlayerInfo.__v = doc.__v
-		basicPlayerInfo.frontServerId = doc.frontServerId
-		basicPlayerInfo.countInfo.deviceId = doc.countInfo.deviceId
-		basicPlayerInfo.basicInfo.name = doc.basicInfo.name
-		basicPlayerInfo.basicInfo.cityName = doc.basicInfo.cityName
-		return self.cacheService.updatePlayerAsync(basicPlayerInfo)
+		var requiredInfo = {
+			countInfo:{
+				deviceId:"__testDeviceId2",
+				logicServerId:"logic-server-1"
+			},
+			basicInfo:{
+				name:"player_111111",
+				cityName:"city_111111"
+			}
+		}
+		var newPlayer = new Player(requiredInfo)
+		newPlayer = Utils.clone(newPlayer)
+		newPlayer._id = doc._id
+		newPlayer.__v = doc.__v
+		newPlayer.frontServerId = doc.frontServerId
+		newPlayer.countInfo.deviceId = doc.countInfo.deviceId
+		newPlayer.basicInfo.name = doc.basicInfo.name
+		newPlayer.basicInfo.cityName = doc.basicInfo.cityName
+		return self.cacheService.updatePlayerAsync(newPlayer)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -327,6 +339,187 @@ pro.soldiermaterial = function(uid, count, callback){
 		doc.soldierMaterials.holyBook = count
 		doc.soldierMaterials.brightAlloy = count
 		self.playerService.refreshPlayerResources(doc)
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 清除士兵招募事件
+ * @param uid
+ * @param callback
+ */
+pro.rmsoldierevents = function(uid, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		while(doc.soldierEvents.length > 0){
+			doc.soldierEvents.pop()
+		}
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 统一修改玩家制作龙装备的材料数量
+ * @param uid
+ * @param count
+ * @param callback
+ */
+pro.dragonmaterial = function(uid, count, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		doc.dragonMaterials.ironIngot = count
+		doc.dragonMaterials.steelIngot = count
+		doc.dragonMaterials.mithrilIngot = count
+		doc.dragonMaterials.blackIronIngot = count
+		doc.dragonMaterials.arcaniteIngot = count
+		doc.dragonMaterials.wispOfFire = count
+		doc.dragonMaterials.wispOfCold = count
+		doc.dragonMaterials.wispOfWind = count
+		doc.dragonMaterials.lavaSoul = count
+		doc.dragonMaterials.iceSoul = count
+		doc.dragonMaterials.forestSoul = count
+		doc.dragonMaterials.infernoSoul = count
+		doc.dragonMaterials.blizzardSoul = count
+		doc.dragonMaterials.fairySoul = count
+		doc.dragonMaterials.moltenShard = count
+		doc.dragonMaterials.glacierShard = count
+		doc.dragonMaterials.chargedShard = count
+		doc.dragonMaterials.moltenShiver = count
+		doc.dragonMaterials.glacierShiver = count
+		doc.dragonMaterials.chargedShiver = count
+		doc.dragonMaterials.moltenCore = count
+		doc.dragonMaterials.glacierCore = count
+		doc.dragonMaterials.chargedCore = count
+		doc.dragonMaterials.moltenMagnet = count
+		doc.dragonMaterials.glacierMagnet = count
+		doc.dragonMaterials.chargedMagnet = count
+		doc.dragonMaterials.challengeRune = count
+		doc.dragonMaterials.suppressRune = count
+		doc.dragonMaterials.rageRune = count
+		doc.dragonMaterials.guardRune = count
+		doc.dragonMaterials.poisonRune = count
+		doc.dragonMaterials.giantRune = count
+		doc.dragonMaterials.dolanRune = count
+		doc.dragonMaterials.warsongRune = count
+		doc.dragonMaterials.infernoRune = count
+		doc.dragonMaterials.arcanaRune = count
+		doc.dragonMaterials.eternityRune = count
+		self.playerService.refreshPlayerResources(doc)
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 统一修改玩家龙装备的数量
+ * @param uid
+ * @param count
+ * @param callback
+ */
+pro.dragonequipment = function(uid, count, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		doc.dragonEquipments.moltenCrown = count
+		doc.dragonEquipments.glacierCrown = count
+		doc.dragonEquipments.chargedCrown = count
+		doc.dragonEquipments.fireSuppressCrown = count
+		doc.dragonEquipments.coldSuppressCrown = count
+		doc.dragonEquipments.windSuppressCrown = count
+		doc.dragonEquipments.rageCrown = count
+		doc.dragonEquipments.frostCrown = count
+		doc.dragonEquipments.poisonCrown = count
+		doc.dragonEquipments.giantCrown = count
+		doc.dragonEquipments.dolanCrown = count
+		doc.dragonEquipments.warsongCrown = count
+		doc.dragonEquipments.infernoCrown = count
+		doc.dragonEquipments.blizzardCrown = count
+		doc.dragonEquipments.eternityCrown = count
+		doc.dragonEquipments.fireSuppressChest = count
+		doc.dragonEquipments.coldSuppressChest = count
+		doc.dragonEquipments.windSuppressChest = count
+		doc.dragonEquipments.rageChest = count
+		doc.dragonEquipments.frostChest = count
+		doc.dragonEquipments.poisonChest = count
+		doc.dragonEquipments.giantChest = count
+		doc.dragonEquipments.dolanChest = count
+		doc.dragonEquipments.warsongChest = count
+		doc.dragonEquipments.infernoChest = count
+		doc.dragonEquipments.blizzardChest = count
+		doc.dragonEquipments.eternityChest = count
+		doc.dragonEquipments.fireSuppressSting = count
+		doc.dragonEquipments.coldSuppressSting = count
+		doc.dragonEquipments.windSuppressSting = count
+		doc.dragonEquipments.rageSting = count
+		doc.dragonEquipments.frostSting = count
+		doc.dragonEquipments.poisonSting = count
+		doc.dragonEquipments.giantSting = count
+		doc.dragonEquipments.dolanSting = count
+		doc.dragonEquipments.warsongSting = count
+		doc.dragonEquipments.infernoSting = count
+		doc.dragonEquipments.blizzardSting = count
+		doc.dragonEquipments.eternitySting = count
+		doc.dragonEquipments.fireSuppressOrb = count
+		doc.dragonEquipments.coldSuppressOrb = count
+		doc.dragonEquipments.windSuppressOrb = count
+		doc.dragonEquipments.rageOrb = count
+		doc.dragonEquipments.frostOrb = count
+		doc.dragonEquipments.poisonOrb = count
+		doc.dragonEquipments.giantOrb = count
+		doc.dragonEquipments.dolanOrb = count
+		doc.dragonEquipments.warsongOrb = count
+		doc.dragonEquipments.infernoOrb = count
+		doc.dragonEquipments.blizzardOrb = count
+		doc.dragonEquipments.eternityOrb = count
+		doc.dragonEquipments.moltenArmguard = count
+		doc.dragonEquipments.glacierArmguard = count
+		doc.dragonEquipments.chargedArmguard = count
+		doc.dragonEquipments.fireSuppressArmguard = count
+		doc.dragonEquipments.coldSuppressArmguard = count
+		doc.dragonEquipments.windSuppressArmguard = count
+		doc.dragonEquipments.rageArmguard = count
+		doc.dragonEquipments.frostArmguard = count
+		doc.dragonEquipments.poisonArmguard = count
+		doc.dragonEquipments.giantArmguard = count
+		doc.dragonEquipments.dolanArmguard = count
+		doc.dragonEquipments.warsongArmguard = count
+		doc.dragonEquipments.infernoArmguard = count
+		doc.dragonEquipments.blizzardArmguard = count
+		doc.dragonEquipments.eternityArmguard = count
+		self.playerService.refreshPlayerResources(doc)
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 清除龙装备制造事件
+ * @param uid
+ * @param callback
+ */
+pro.rmdragonequipmentevents = function(uid, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		while(doc.dragonEquipmentEvents.length > 0){
+			doc.dragonEquipmentEvents.pop()
+		}
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)

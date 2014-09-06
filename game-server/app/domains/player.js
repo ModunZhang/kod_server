@@ -89,9 +89,6 @@ var playerSchema = new Schema({
 			finishTime:{type:Number, required:true}
 		}
 	],
-	dragonMaterials:{
-
-	},
 	soldierMaterials:{
 		deathHand:{type:Number, required:true, default:SoldierMaterialInitData.deathHand},
 		heroBones:{type:Number, required:true, default:SoldierMaterialInitData.heroBones},
@@ -102,12 +99,24 @@ var playerSchema = new Schema({
 		holyBook:{type:Number, required:true, default:SoldierMaterialInitData.holyBook},
 		brightAlloy:{type:Number, required:true, default:SoldierMaterialInitData.brightAlloy}
 	},
-	soldiers:[
-		{
-			name:{type:String, required:true},
-			count:{type:Number, required:true}
-		}
-	],
+	soldiers:{
+		swordsman:{type:Number, required:true, default:0},
+		sentinel:{type:Number, required:true, default:0},
+		archer:{type:Number, required:true, default:0},
+		crossbowman:{type:Number, required:true, default:0},
+		lancer:{type:Number, required:true, default:0},
+		horseArcher:{type:Number, required:true, default:0},
+		catapult:{type:Number, required:true, default:0},
+		ballista:{type:Number, required:true, default:0},
+		skeletonWarrior:{type:Number, required:true, default:0},
+		skeletonArcher:{type:Number, required:true, default:0},
+		deathKnight:{type:Number, required:true, default:0},
+		meatWagon:{type:Number, required:true, default:0},
+		priest:{type:Number, required:true, default:0},
+		demonHunter:{type:Number, required:true, default:0},
+		paladin:{type:Number, required:true, default:0},
+		steamTank:{type:Number, required:true, default:0}
+	},
 	soldierEvents:[
 		{
 			name:{type:String, required:true},
@@ -115,7 +124,7 @@ var playerSchema = new Schema({
 			finishTime:{type:Number, required:true}
 		}
 	],
-	dragonEquipments:{
+	dragonMaterials:{
 		ironIngot:{type:Number, required:true, default:DragonMaterialInitData.ironIngot},
 		steelIngot:{type:Number, required:true, default:DragonMaterialInitData.steelIngot},
 		mithrilIngot:{type:Number, required:true, default:DragonMaterialInitData.mithrilIngot},
@@ -154,10 +163,77 @@ var playerSchema = new Schema({
 		arcanaRune:{type:Number, required:true, default:DragonMaterialInitData.arcanaRune},
 		eternityRune:{type:Number, required:true, default:DragonMaterialInitData.eternityRune}
 	},
+	dragonEquipments:{
+		moltenCrown:{type:Number, required:true, default:0},
+		glacierCrown:{type:Number, required:true, default:0},
+		chargedCrown:{type:Number, required:true, default:0},
+		fireSuppressCrown:{type:Number, required:true, default:0},
+		coldSuppressCrown:{type:Number, required:true, default:0},
+		windSuppressCrown:{type:Number, required:true, default:0},
+		rageCrown:{type:Number, required:true, default:0},
+		frostCrown:{type:Number, required:true, default:0},
+		poisonCrown:{type:Number, required:true, default:0},
+		giantCrown:{type:Number, required:true, default:0},
+		dolanCrown:{type:Number, required:true, default:0},
+		warsongCrown:{type:Number, required:true, default:0},
+		infernoCrown:{type:Number, required:true, default:0},
+		blizzardCrown:{type:Number, required:true, default:0},
+		eternityCrown:{type:Number, required:true, default:0},
+		fireSuppressChest:{type:Number, required:true, default:0},
+		coldSuppressChest:{type:Number, required:true, default:0},
+		windSuppressChest:{type:Number, required:true, default:0},
+		rageChest:{type:Number, required:true, default:0},
+		frostChest:{type:Number, required:true, default:0},
+		poisonChest:{type:Number, required:true, default:0},
+		giantChest:{type:Number, required:true, default:0},
+		dolanChest:{type:Number, required:true, default:0},
+		warsongChest:{type:Number, required:true, default:0},
+		infernoChest:{type:Number, required:true, default:0},
+		blizzardChest:{type:Number, required:true, default:0},
+		eternityChest:{type:Number, required:true, default:0},
+		fireSuppressSting:{type:Number, required:true, default:0},
+		coldSuppressSting:{type:Number, required:true, default:0},
+		windSuppressSting:{type:Number, required:true, default:0},
+		rageSting:{type:Number, required:true, default:0},
+		frostSting:{type:Number, required:true, default:0},
+		poisonSting:{type:Number, required:true, default:0},
+		giantSting:{type:Number, required:true, default:0},
+		dolanSting:{type:Number, required:true, default:0},
+		warsongSting:{type:Number, required:true, default:0},
+		infernoSting:{type:Number, required:true, default:0},
+		blizzardSting:{type:Number, required:true, default:0},
+		eternitySting:{type:Number, required:true, default:0},
+		fireSuppressOrb:{type:Number, required:true, default:0},
+		coldSuppressOrb:{type:Number, required:true, default:0},
+		windSuppressOrb:{type:Number, required:true, default:0},
+		rageOrb:{type:Number, required:true, default:0},
+		frostOrb:{type:Number, required:true, default:0},
+		poisonOrb:{type:Number, required:true, default:0},
+		giantOrb:{type:Number, required:true, default:0},
+		dolanOrb:{type:Number, required:true, default:0},
+		warsongOrb:{type:Number, required:true, default:0},
+		infernoOrb:{type:Number, required:true, default:0},
+		blizzardOrb:{type:Number, required:true, default:0},
+		eternityOrb:{type:Number, required:true, default:0},
+		moltenArmguard:{type:Number, required:true, default:0},
+		glacierArmguard:{type:Number, required:true, default:0},
+		chargedArmguard:{type:Number, required:true, default:0},
+		fireSuppressArmguard:{type:Number, required:true, default:0},
+		coldSuppressArmguard:{type:Number, required:true, default:0},
+		windSuppressArmguard:{type:Number, required:true, default:0},
+		rageArmguard:{type:Number, required:true, default:0},
+		frostArmguard:{type:Number, required:true, default:0},
+		poisonArmguard:{type:Number, required:true, default:0},
+		giantArmguard:{type:Number, required:true, default:0},
+		dolanArmguard:{type:Number, required:true, default:0},
+		warsongArmguard:{type:Number, required:true, default:0},
+		infernoArmguard:{type:Number, required:true, default:0},
+		blizzardArmguard:{type:Number, required:true, default:0},
+		eternityArmguard:{type:Number, required:true, default:0}
+	},
 	dragonEquipmentEvents:[
 		{
 			name:{type:String, required:true},
-			count:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
 		}
 	],

@@ -319,6 +319,76 @@ describe("ChatServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
+		it("send rmsoldierevents", function(done){
+			var chatInfo = {
+				text:"rmsoldierevents",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.soldierEvents.length.should.equal(0)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("send dragonmaterial", function(done){
+			var chatInfo = {
+				text:"dragonmaterial 5",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(){
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("send dragonequipment", function(done){
+			var chatInfo = {
+				text:"dragonequipment 5",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(){
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("send rmdragonequipmentevents", function(done){
+			var chatInfo = {
+				text:"rmdragonequipmentevents",
+				type:"global"
+			}
+			var route = "chat.chatHandler.send"
+			pomelo.request(route, chatInfo, function(doc){
+				doc.code.should.equal(200)
+			})
+
+			var onPlayerDataChanged = function(doc){
+				doc.dragonEquipmentEvents.length.should.equal(0)
+				done()
+				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			}
+			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
 		it("send kickme", function(done){
 			var chatInfo = {
 				text:"kickme",

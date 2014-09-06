@@ -31,22 +31,6 @@ describe("BaseDao", function(){
 			Demo.remove({}, function(){
 				done()
 			})
-
-//			var doc = {
-//				countInfo:{
-//					deviceId:Config.deviceId2,
-//					logicServerId:"logic-server-1"
-//				},
-//				basicInfo:{
-//					name:"player_111111",
-//					cityName:"city_111111"
-//				}
-//			}
-//
-//			Player.findOneAndRemove({deviceId:Config.deviceId2}, function(){
-//				var player = new Player(doc)
-//				player.save()
-//			})
 		})
 	})
 

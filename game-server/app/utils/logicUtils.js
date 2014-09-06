@@ -10,8 +10,8 @@ var DataUtils = require("./dataUtils")
 var Utils = module.exports
 
 
-Utils.getEfficiency = function(origin, efficiency){
-	return Math.floor(origin / (1 + efficiency) * 1000000) / 1000000
+Utils.getEfficiency = function(origin, effect){
+	return
 }
 
 /**
@@ -368,6 +368,13 @@ Utils.addWallEvent = function(playerDoc, finishTime){
 	playerDoc.wallEvents.push(event)
 }
 
+/**
+ * 为玩家添加士兵招募事件
+ * @param playerDoc
+ * @param soldierName
+ * @param count
+ * @param finishTime
+ */
 Utils.addSoldierEvent = function(playerDoc, soldierName, count, finishTime){
 	var event = {
 		name:soldierName,
@@ -376,6 +383,21 @@ Utils.addSoldierEvent = function(playerDoc, soldierName, count, finishTime){
 	}
 
 	playerDoc.soldierEvents.push(event)
+}
+
+/**
+ * 为玩家添加龙装备制造事件
+ * @param playerDoc
+ * @param equipmentName
+ * @param finishTime
+ */
+Utils.addDragonEquipmentEvent = function(playerDoc, equipmentName, finishTime){
+	var event = {
+		name:equipmentName,
+		finishTime:finishTime
+	}
+
+	playerDoc.dragonEquipmentEvents.push(event)
 }
 
 /**
@@ -443,23 +465,4 @@ Utils.getMaterialEventByCategory = function(playerDoc, category){
 		if(_.isEqual(event.category, category)) return event
 	}
 	return null
-}
-
-/**
- * 将士兵添加到玩家数据中
- * @param playerDoc
- * @param soldierInfo
- */
-Utils.addSoldier = function(playerDoc, soldierInfo){
-	var hasSoldier = false
-	_.each(playerDoc.soldiers, function(value){
-		if(_.isEqual(value.name, soldierInfo.name)){
-			hasSoldier = true
-			value.count += soldierInfo.count
-		}
-	})
-
-	if(!hasSoldier){
-		playerDoc.soldiers.push(soldierInfo)
-	}
 }

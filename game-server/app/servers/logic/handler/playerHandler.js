@@ -241,8 +241,25 @@ pro.recruitNormalSoldier = function(msg, session, next){
 pro.recruitSpecialSoldier = function(msg, session, next){
 	var soldierName = msg.soldierName
 	var count = msg.count
+	var finishNow = msg.finishNow
 
-	this.playerService.recruitSpecialSoldierAsync(session.uid, soldierName, count).then(function(){
+	this.playerService.recruitSpecialSoldierAsync(session.uid, soldierName, count, finishNow).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 制作龙装备
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.makeDragonEquipment = function(msg, session, next){
+	var equipmentName = msg.equipmentName
+	var finishNow = msg.finishNow
+	this.playerService.makeDragonEquipmentAsync(session.uid, equipmentName, finishNow).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

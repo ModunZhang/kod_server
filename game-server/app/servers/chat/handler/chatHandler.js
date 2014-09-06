@@ -172,6 +172,62 @@ var ChatHandler = function(app){
 					})
 				}
 			}
+		},
+		{
+			command:"rmsoldierevents",
+			desc:"清除士兵招募事件",
+			func:function(session, uid, text, callback){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					self.app.rpc.logic.commandRemote.rmsoldierevents(session, uid, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
+			command:"dragonmaterial",
+			desc:"统一修改玩家制作龙装备的材料数量",
+			func:function(session, uid, text, callback){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					self.app.rpc.logic.commandRemote.dragonmaterial(session, uid, count, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
+			command:"dragonequipment",
+			desc:"统一修改玩家龙装备的数量",
+			func:function(session, uid, text, callback){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					self.app.rpc.logic.commandRemote.dragonequipment(session, uid, count, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
+			command:"rmdragonequipmentevents",
+			desc:"清除龙装备制造事件",
+			func:function(session, uid, text, callback){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					self.app.rpc.logic.commandRemote.rmdragonequipmentevents(session, uid, function(e){
+						callback(e)
+					})
+				}
+			}
 		}
 	]
 }

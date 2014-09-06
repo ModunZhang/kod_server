@@ -1338,6 +1338,23 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
 
+		it("makeMaterial 不同类型的材料正在制造", function(done){
+			var makeMaterialNotFinishedNowError = function(){
+				var houseInfo = {
+					finishNow:false,
+					category:Consts.MaterialType.Technology
+				}
+				var route = "logic.playerHandler.makeMaterial"
+				pomelo.request(route, houseInfo, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("不同类型的材料正在制造")
+					done()
+				})
+			}
+
+			makeMaterialNotFinishedNowError()
+		})
+
 		it("makeMaterial 同类型的材料制作完成后还未领取", function(done){
 			var makeMaterialFinishedNow = function(){
 				var houseInfo = {
@@ -1350,7 +1367,7 @@ describe("LogicServer", function(){
 				})
 
 				var onPlayerDataChanged = function(doc){
-					doc.materialEvents.length.should.equal(2)
+					doc.materialEvents.length.should.equal(1)
 					makeMaterialNotFinishedNowError()
 					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 				}
@@ -1370,7 +1387,25 @@ describe("LogicServer", function(){
 				})
 			}
 
-			makeMaterialFinishedNow()
+			var clearEvents = function(){
+				var chatInfo = {
+					text:"rmmaterialevents",
+					type:"global"
+				}
+				var route = "chat.chatHandler.send"
+				pomelo.request(route, chatInfo, function(doc){
+					doc.code.should.equal(200)
+				})
+
+				var onPlayerDataChanged = function(doc){
+					doc.materialEvents.length.should.equal(0)
+					makeMaterialFinishedNow()
+					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+				}
+				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			}
+
+			clearEvents()
 		})
 
 		it("makeMaterials 正常制造", function(done){
@@ -1504,7 +1539,7 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("recruitNormalSoldier 招募数量超过最大上限", function(done){
+		it("recruitNormalSoldier 招募数量超过单次招募上限", function(done){
 			var upgradeBuilding = function(callback){
 				var buildingInfo = {
 					location:8,
@@ -1531,7 +1566,30 @@ describe("LogicServer", function(){
 				doc.code.should.equal(200)
 				recruiteSoldier(function(doc){
 					doc.code.should.equal(500)
-					doc.message.should.equal("招募数量超过最大上限")
+					doc.message.should.equal("招募数量超过单次招募上限")
+					done()
+				})
+			})
+		})
+
+		it("recruitNormalSoldier 已有士兵正在被招募", function(done){
+			var recruiteSoldier = function(callback){
+				var soldierInfo = {
+					soldierName:"swordsman",
+					count:5,
+					finishNow:false
+				}
+				var route = "logic.playerHandler.recruitNormalSoldier"
+				pomelo.request(route, soldierInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			recruiteSoldier(function(doc){
+				doc.code.should.equal(200)
+				recruiteSoldier(function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("已有士兵正在被招募")
 					done()
 				})
 			})
@@ -1559,14 +1617,27 @@ describe("LogicServer", function(){
 					callback(doc)
 				})
 			}
+			var rmsoldierevents = function(callback){
+				var chatInfo = {
+					text:"rmsoldierevents",
+					type:"global"
+				}
+				var route = "chat.chatHandler.send"
+				pomelo.request(route, chatInfo, function(doc){
+					callback(doc)
+				})
+			}
 
-			resetGem(0, function(doc){
+			rmsoldierevents(function(doc){
 				doc.code.should.equal(200)
-				recruiteSoldier(function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("宝石不足")
-					resetGem(5000, function(){
-						done()
+				resetGem(0, function(doc){
+					doc.code.should.equal(200)
+					recruiteSoldier(function(doc){
+						doc.code.should.equal(500)
+						doc.message.should.equal("宝石不足")
+						resetGem(5000, function(){
+							done()
+						})
 					})
 				})
 			})
@@ -1584,7 +1655,7 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.soldiers.length.should.equal(1)
+				doc.soldiers["swordsman"].should.equal(5)
 				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -1603,7 +1674,7 @@ describe("LogicServer", function(){
 			})
 
 			var onPlayerDataChanged = function(doc){
-				doc.soldiers.length.should.equal(1)
+				doc.soldiers["swordsman"].should.equal(5)
 				done()
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
@@ -1623,16 +1694,54 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("recruitSpecialSoldier 招募数量超过最大上限", function(done){
+		it("recruitSpecialSoldier 招募数量超过单次招募上限", function(done){
 			var soldierInfo = {
 				soldierName:"skeletonWarrior",
-				count:100
+				count:100,
+				finishNow:true
 			}
 			var route = "logic.playerHandler.recruitSpecialSoldier"
 			pomelo.request(route, soldierInfo, function(doc){
 				doc.code.should.equal(500)
-				doc.message.should.equal("招募数量超过最大上限")
+				doc.message.should.equal("招募数量超过单次招募上限")
 				done()
+			})
+		})
+
+		it("recruitSpecialSoldier 已有士兵正在被招募", function(done){
+			var rmsoldierevents = function(callback){
+				var chatInfo = {
+					text:"rmsoldierevents",
+					type:"global"
+				}
+				var route = "chat.chatHandler.send"
+				pomelo.request(route, chatInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			var recruiteSoldier = function(callback){
+				var soldierInfo = {
+					soldierName:"skeletonWarrior",
+					count:5,
+					finishNow:false
+				}
+				var route = "logic.playerHandler.recruitSpecialSoldier"
+				pomelo.request(route, soldierInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			rmsoldierevents(function(doc){
+				doc.code.should.equal(200)
+				recruiteSoldier(function(doc){
+					doc.code.should.equal(200)
+					recruiteSoldier(function(doc){
+						doc.code.should.equal(500)
+						doc.message.should.equal("已有士兵正在被招募")
+						done()
+					})
+				})
 			})
 		})
 
@@ -1671,22 +1780,200 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("recruitSpecialSoldier 正常普通招募", function(done){
-			var soldierInfo = {
-				soldierName:"skeletonWarrior",
-				count:5
+		it("recruitSpecialSoldier 正常立即招募", function(done){
+			var rmsoldierEvents = function(callback){
+				var chatInfo = {
+					text:"rmsoldierevents",
+					type:"global"
+				}
+				var route = "chat.chatHandler.send"
+				pomelo.request(route, chatInfo, function(doc){
+					callback(doc)
+				})
 			}
-			var route = "logic.playerHandler.recruitSpecialSoldier"
-			pomelo.request(route, soldierInfo, function(doc){
-				doc.code.should.equal(200)
-			})
+			var recruitSpecialSoldier = function(soldierName, count, finishNow, callback){
+				var soldierInfo = {
+					soldierName:soldierName,
+					count:count,
+					finishNow:finishNow
+				}
+				var route = "logic.playerHandler.recruitSpecialSoldier"
+				pomelo.request(route, soldierInfo, function(doc){
+					callback(doc)
+				})
+			}
 
-			var onPlayerDataChanged = function(doc){
-				doc.soldierEvents.length.should.equal(2)
-				done()
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+			rmsoldierEvents(function(doc){
+				doc.code.should.equal(200)
+				recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("recruitSpecialSoldier 正常普通招募", function(done){
+			var recruitSpecialSoldier = function(soldierName, count, finishNow, callback){
+				var soldierInfo = {
+					soldierName:soldierName,
+					count:count,
+					finishNow:finishNow
+				}
+				var route = "logic.playerHandler.recruitSpecialSoldier"
+				pomelo.request(route, soldierInfo, function(doc){
+					callback(doc)
+				})
 			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+
+			recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("makeDragonEquipment equipmentName 装备不存在", function(done){
+			var soldierInfo = {
+				equipmentName:"adf",
+				finishNow:false
+			}
+			var route = "logic.playerHandler.makeDragonEquipment"
+			pomelo.request(route, soldierInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("equipmentName 装备不存在")
+				done()
+			})
+		})
+
+		it("makeDragonEquipment 铁匠铺还未建造", function(done){
+			var soldierInfo = {
+				equipmentName:"moltenCrown",
+				finishNow:false
+			}
+			var route = "logic.playerHandler.makeDragonEquipment"
+			pomelo.request(route, soldierInfo, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("铁匠铺还未建造")
+				done()
+			})
+		})
+
+		it("makeDragonEquipment 材料不足", function(done){
+			var dragonmaterial = function(count, callback){
+				var chatInfo = {
+					text:"dragonmaterial " + count,
+					type:"global"
+				}
+				var route = "chat.chatHandler.send"
+				pomelo.request(route, chatInfo, function(doc){
+					callback(doc)
+				})
+			}
+			var upgradeBuilding = function(location, finishNow, callback){
+				var buildingInfo = {
+					location:location,
+					finishNow:finishNow
+				}
+				var route = "logic.playerHandler.upgradeBuilding"
+				pomelo.request(route, buildingInfo, function(doc){
+					callback(doc)
+				})
+			}
+			var makeEquipment = function(equipmentName, finishNow, callback){
+				var soldierInfo = {
+					equipmentName:equipmentName,
+					finishNow:finishNow
+				}
+				var route = "logic.playerHandler.makeDragonEquipment"
+				pomelo.request(route, soldierInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			upgradeBuilding(9, true, function(doc){
+				doc.code.should.equal(200)
+				dragonmaterial(0, function(doc){
+					doc.code.should.equal(200)
+					makeEquipment("moltenCrown", false, function(doc){
+						doc.code.should.equal(500)
+						doc.message.should.equal("材料不足")
+						dragonmaterial(1000, function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
+					})
+				})
+			})
+		})
+
+		it("makeDragonEquipment 已近有装备正在制作", function(done){
+			var makeEquipment = function(equipmentName, finishNow, callback){
+				var soldierInfo = {
+					equipmentName:equipmentName,
+					finishNow:finishNow
+				}
+				var route = "logic.playerHandler.makeDragonEquipment"
+				pomelo.request(route, soldierInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			makeEquipment("moltenCrown", false, function(doc){
+				doc.code.should.equal(200)
+				makeEquipment("moltenCrown", false, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("已近有装备正在制作")
+					done()
+				})
+			})
+		})
+
+		it("makeDragonEquipment 正常普通制造", function(done){
+			var rmdragonequipmentevents = function(callback){
+				var chatInfo = {
+					text:"rmdragonequipmentevents",
+					type:"global"
+				}
+				var route = "chat.chatHandler.send"
+				pomelo.request(route, chatInfo, function(doc){
+					callback(doc)
+				})
+			}
+			var makeEquipment = function(equipmentName, finishNow, callback){
+				var soldierInfo = {
+					equipmentName:equipmentName,
+					finishNow:finishNow
+				}
+				var route = "logic.playerHandler.makeDragonEquipment"
+				pomelo.request(route, soldierInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			rmdragonequipmentevents(function(doc){
+				doc.code.should.equal(200)
+				makeEquipment("moltenCrown", false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("makeDragonEquipment 正常立即制造", function(done){
+			var makeEquipment = function(equipmentName, finishNow, callback){
+				var soldierInfo = {
+					equipmentName:equipmentName,
+					finishNow:finishNow
+				}
+				var route = "logic.playerHandler.makeDragonEquipment"
+				pomelo.request(route, soldierInfo, function(doc){
+					callback(doc)
+				})
+			}
+
+			makeEquipment("moltenCrown", true, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
 		})
 	})
 

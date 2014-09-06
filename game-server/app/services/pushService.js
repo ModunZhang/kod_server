@@ -136,8 +136,25 @@ pro.onGetMaterialSuccess = function(playerData, event){
 /**
  * 士兵招募成功推送
  * @param playerData
- * @param soldierInfo
+ * @param soldierName
+ * @param count
  */
-pro.onRecruitSoldierSuccess = function(playerData, soldierInfo){
-	this.pushToPlayer(playerData, Events.player.onRecruitSoldierSuccess, soldierInfo)
+pro.onRecruitSoldierSuccess = function(playerData, soldierName, count){
+	var data = {
+		soldierName:soldierName,
+		count:count
+	}
+	this.pushToPlayer(playerData, Events.player.onRecruitSoldierSuccess, data)
+}
+
+/**
+ * 龙装备制作完成
+ * @param playerData
+ * @param equipmentName
+ */
+pro.onMakeDragonEquipmentSuccess = function(playerData, equipmentName){
+	var data = {
+		equipmentName:equipmentName
+	}
+	this.pushToPlayer(playerData, Events.player.onMakeDragonEquipmentSuccess, data)
 }

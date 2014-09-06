@@ -507,6 +507,11 @@ Utils.getPlayerFreeBuildingsCount = function(playerDoc){
 	return this.getPlayerMaxBuildingsCount(playerDoc) - this.getPlayerBuildingsCount(playerDoc)
 }
 
+/**
+ * 获取材料仓库单个材料上限
+ * @param playerDoc
+ * @returns {number}
+ */
 Utils.getMaterialUpLimit = function(playerDoc){
 	var buildings = this.getPlayerBuildingsByType(playerDoc, "materialDepot")
 	var totalUpLimit = 0
@@ -519,7 +524,7 @@ Utils.getMaterialUpLimit = function(playerDoc){
 }
 
 /**
- * 将材料添加到材料仓库中,超过仓库上限后直接丢失
+ * 将材料添加到材料仓库中,超过仓库上限后直接丢弃
  * @param playerDoc
  * @param materials
  */
@@ -672,14 +677,14 @@ Utils.getHousePower = function(playerDoc){
 Utils.getSoldierPower = function(playerDoc){
 	var totalPower = 0
 	var config = null
-	_.each(playerDoc.soldiers, function(soldier){
-		if(Utils.isSpecialSoldier(soldier.name)){
-			config = SpecialSoldierConfig[soldier.name]
+	_.each(playerDoc.soldiers, function(soldierCount, soldierName){
+		if(Utils.isSpecialSoldier(soldierName)){
+			config = SpecialSoldierConfig[soldierName]
 		}else{
-			var fullName = soldier.name + "_" + Utils.getSoldierStar(soldier.name)
+			var fullName = soldierName + "_" + Utils.getSoldierStar(soldierName)
 			config = SoldierConfig[fullName]
 		}
-		totalPower += config.power * soldier.count
+		totalPower += config.power * soldierCount
 	})
 
 	return totalPower
@@ -936,7 +941,7 @@ Utils.getMakeDragonEquipmentRequired = function(playerDoc, equipmentName){
 	})
 	required.materials = materials
 	required.coin = config.coin
-	required.buildTime = this.getMakeDragonEquipmentTime(playerDoc, equipmentName)
+	required.makeTime = this.getMakeDragonEquipmentTime(playerDoc, equipmentName)
 	return required
 }
 

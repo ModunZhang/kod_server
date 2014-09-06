@@ -138,18 +138,27 @@ var AfterLogin = function(doc){
 	var soldierFinishedEvents = []
 	_.each(doc.soldierEvents, function(event){
 		if(event.finishTime > 0 && event.finishTime <= Date.now()){
-			var soldierInfo = {
-				name:event.name,
-				count:event.count
-			}
-			LogicUtils.addSoldier(doc, soldierInfo)
-			self.pushService.onRecruitSoldierSuccess(doc, soldierInfo)
+			doc.soldiers[event.name] = event.count
+			self.pushService.onRecruitSoldierSuccess(doc, event.name, event.count)
 			soldierFinishedEvents.push(event)
 		}else{
 			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
 		}
 	})
 	LogicUtils.removeEvents(soldierFinishedEvents, doc.soldierEvents)
+	//检查龙装备制作事件
+	var dragonEquipmentFinishedEvents = []
+	_.each(doc.dragonEquipmentEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= Date.now()){
+			doc.dragonEquipments[event.name] += 1
+			self.pushService.onMakeDragonEquipmentSuccess(doc, event.name)
+			dragonEquipmentFinishedEvents.push(event)
+		}else{
+			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	LogicUtils.removeEvents(dragonEquipmentFinishedEvents, doc.dragonEquipmentEvents)
+
 	//刷新玩家战力
 	self.refreshPlayerPower(doc)
 }
@@ -923,13 +932,19 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		if(toolShop.level < 1){
 			return Promise.reject(new Error("工具作坊还未建造"))
 		}
-		//同类型的材料正在制造或制造完成后还未领取
-		var event = LogicUtils.getMaterialEventByCategory(doc, category)
-		if(event){
-			if(event.finishTime > 0){
-				return Promise.reject(new Error("同类型的材料正在制造"))
+		var event = null
+		for(var i = 0; i < doc.materialEvents.length; i++){
+			event = doc.materialEvents[i]
+			if(_.isEqual(event.category, category)){
+				if(event.finishTime > 0){
+					return Promise.reject(new Error("同类型的材料正在制造"))
+				}else{
+					return Promise.reject(new Error("同类型的材料制作完成后还未领取"))
+				}
 			}else{
-				return Promise.reject(new Error("同类型的材料制作完成后还未领取"))
+				if(!finishNow && event.finishTime > 0){
+					return Promise.reject(new Error("不同类型的材料正在制造"))
+				}
 			}
 		}
 
@@ -1068,8 +1083,11 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		if(barracks.level < 1){
 			return Promise.reject(new Error("兵营还未建造"))
 		}
+		if(!finishNow && doc.soldierEvents.length > 0){
+			return Promise.reject(new Error("已有士兵正在被招募"))
+		}
 		if(count > DataUtils.getSoldierMaxRecruitCount(doc, soldierName)){
-			return Promise.reject(new Error("招募数量超过最大上限"))
+			return Promise.reject(new Error("招募数量超过单次招募上限"))
 		}
 
 		var gemUsed = 0
@@ -1099,14 +1117,10 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		LogicUtils.reduce(recruitRequired.resources, doc.resources)
 		//是否立即完成
 		if(finishNow){
-			var soldierInfo = {
-				name:soldierName,
-				count:count
-			}
-			LogicUtils.addSoldier(doc, soldierInfo)
+			doc.soldiers[soldierName] += count
 			//刷新玩家战力
 			self.refreshPlayerPower(doc)
-			self.pushService.onRecruitSoldierSuccess(doc, soldierInfo)
+			self.pushService.onRecruitSoldierSuccess(doc, soldierName, count)
 		}else{
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
 			LogicUtils.addSoldierEvent(doc, soldierName, count, finishTime)
@@ -1130,9 +1144,10 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
  * @param playerId
  * @param soldierName
  * @param count
+ * @param finishNow
  * @param callback
  */
-pro.recruitSpecialSoldier = function(playerId, soldierName, count, callback){
+pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -1148,6 +1163,10 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, callback){
 		callback(new Error("count 不合法"))
 		return
 	}
+	if(!_.isBoolean(finishNow)){
+		callback(new Error("finishNow 不合法"))
+		return
+	}
 
 	var self = this
 	this.cacheService.getPlayerAsync(playerId).then(function(doc){
@@ -1158,24 +1177,39 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, callback){
 		if(barracks.level < 1){
 			return Promise.reject(new Error("兵营还未建造"))
 		}
-		if(count > DataUtils.getSoldierMaxRecruitCount(doc, soldierName)){
-			return Promise.reject(new Error("招募数量超过最大上限"))
+		if(!finishNow && doc.soldierEvents.length > 0){
+			return Promise.reject(new Error("已有士兵正在被招募"))
 		}
+		if(count > DataUtils.getSoldierMaxRecruitCount(doc, soldierName)){
+			return Promise.reject(new Error("招募数量超过单次招募上限"))
+		}
+
+		var gemUsed = 0
 		var recruitRequired = DataUtils.getRecruitSpecialSoldierRequired(soldierName, count)
 		if(!LogicUtils.isEnough(recruitRequired.materials, doc.soldierMaterials)){
 			return Promise.reject(new Error("材料不足"))
 		}
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
+		if(finishNow){
+			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
+		}
+		//宝石是否足够
+		if(gemUsed > doc.resources.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		//修改玩家宝石数据
+		doc.resources.gem -= gemUsed
 		//修改玩家资源数据
 		LogicUtils.reduce(recruitRequired.materials, doc.soldierMaterials)
-
-		var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
-		LogicUtils.addSoldierEvent(doc, soldierName, count, finishTime)
-		self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
-
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
+		if(finishNow){
+			doc.soldiers[soldierName] += count
+			//刷新玩家战力
+			self.refreshPlayerPower(doc)
+			self.pushService.onRecruitSoldierSuccess(doc, soldierName, count)
+		}else{
+			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
+			LogicUtils.addSoldierEvent(doc, soldierName, count, finishTime)
+			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+		}
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -1194,7 +1228,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, callback){
  * @param finishNow
  * @param callback
  */
-pro.makeDragonEquipment = function(playerId, equipmentName, callback){
+pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -1216,21 +1250,26 @@ pro.makeDragonEquipment = function(playerId, equipmentName, callback){
 		if(toolShop.level < 1){
 			return Promise.reject(new Error("铁匠铺还未建造"))
 		}
-		//是否有装备已近在制作
-		if(doc.dragonEquipmentEvents.length > 0){
+		if(!finishNow && doc.dragonEquipmentEvents.length > 0){
 			return Promise.reject(new Error("已近有装备正在制作"))
 		}
-
 		var gemUsed = 0
 		var makeRequired = DataUtils.getMakeDragonEquipmentRequired(doc, equipmentName)
 		var buyedResources = null
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
-		buyedResources = DataUtils.buyResources(makeRequired.resources, doc.resources)
-		gemUsed += buyedResources.gemUsed
-		LogicUtils.increace(buyedResources.totalBuy, doc.resources)
-
-
+		//材料是否足够
+		if(!LogicUtils.isEnough(makeRequired.materials, doc.dragonMaterials)){
+			return Promise.reject(new Error("材料不足"))
+		}
+		if(finishNow){
+			gemUsed += DataUtils.getGemByTimeInterval(makeRequired.makeTime)
+			buyedResources = DataUtils.buyResources({coin:makeRequired.coin}, {})
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+		}else{
+			buyedResources = DataUtils.buyResources({coin:makeRequired.coin}, doc.resources)
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+		}
 		//宝石是否足够
 		if(gemUsed > doc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
@@ -1238,18 +1277,18 @@ pro.makeDragonEquipment = function(playerId, equipmentName, callback){
 		//修改玩家宝石数据
 		doc.resources.gem -= gemUsed
 		//修改玩家资源数据
-		LogicUtils.reduce(makeRequired.resources, doc.resources)
-		//产生制造事件
-		var event = DataUtils.generateMaterialEvent(toolShop, category, finishNow)
-		doc.materialEvents.push(event)
+		LogicUtils.reduce({coin:makeRequired.coin}, doc.resources)
+		//修改玩家制作龙的材料数据
+		LogicUtils.reduce(makeRequired.materials, doc.dragonMaterials)
 		//是否立即完成
 		if(finishNow){
-			self.pushService.onMakeMaterialFinished(doc, event)
+			doc.dragonEquipmentEvents[equipmentName] += 1
+			self.pushService.onMakeDragonEquipmentSuccess(doc, equipmentName)
 		}else{
-			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+			var finishTime = Date.now() + (makeRequired.makeTime * 1000)
+			LogicUtils.addDragonEquipmentEvent(doc, equipmentName, finishTime)
+			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -1330,16 +1369,23 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 		var soldierFinishedEvents = []
 		_.each(doc.soldierEvents, function(event){
 			if(event.finishTime > 0 && event.finishTime <= Date.now()){
-				var soldierInfo = {
-					name:event.name,
-					count:event.count
-				}
-				LogicUtils.addSoldier(doc, soldierInfo)
-				self.pushService.onRecruitSoldierSuccess(doc, soldierInfo)
+				doc.soldiers[event.name] += event.count
+				self.pushService.onRecruitSoldierSuccess(doc, event.name, event.count)
 				soldierFinishedEvents.push(event)
 			}
 		})
 		LogicUtils.removeEvents(soldierFinishedEvents, doc.soldierEvents)
+		//检查龙装备制作事件
+		var dragonEquipmentFinishedEvents = []
+		_.each(doc.dragonEquipmentEvents, function(event){
+			if(event.finishTime > 0 && event.finishTime <= Date.now()){
+				doc.dragonEquipments[event.name] += 1
+				self.pushService.onMakeDragonEquipmentSuccess(doc, event.name)
+				dragonEquipmentFinishedEvents.push(event)
+			}
+		})
+		LogicUtils.removeEvents(dragonEquipmentFinishedEvents, doc.dragonEquipmentEvents)
+
 		//刷新玩家战力
 		self.refreshPlayerPower(doc)
 		//更新玩家数据
