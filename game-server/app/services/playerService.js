@@ -258,6 +258,10 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.type, building.level)){
 			return Promise.reject(new Error("建筑已达到最高等级"))
 		}
+		//是否有可用的建造队列
+		if(!finishNow && !DataUtils.hasFreeBuildQueue(doc)){
+			return Promise.reject(new Error("没有空闲的建造队列"))
+		}
 
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, building.level + 1)
@@ -391,6 +395,10 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			if(DataUtils.getPlayerCitizen(doc) - willUse < 0){
 				return Promise.reject(new Error("建造小屋会造成可用城民小于0"))
 			}
+		}
+		//是否有可用的建造队列
+		if(!finishNow && !DataUtils.hasFreeBuildQueue(doc)){
+			return Promise.reject(new Error("没有空闲的建造队列"))
 		}
 
 		var gemUsed = 0
@@ -538,6 +546,10 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			if(DataUtils.getPlayerCitizen(doc) - willUse < 0){
 				return Promise.reject(new Error("升级小屋会造成可用城民小于0"))
 			}
+		}
+		//是否有可用的建造队列
+		if(!finishNow && !DataUtils.hasFreeBuildQueue(doc)){
+			return Promise.reject(new Error("没有空闲的建造队列"))
 		}
 
 		var gemUsed = 0
@@ -739,6 +751,10 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		if(tower.level + 1 > DataUtils.getBuildingLevelLimit(doc)){
 			return Promise.reject(new Error("箭塔升级时,建筑等级不合法"))
 		}
+		//是否有可用的建造队列
+		if(!finishNow && !DataUtils.hasFreeBuildQueue(doc)){
+			return Promise.reject(new Error("没有空闲的建造队列"))
+		}
 
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("tower", tower.level + 1)
@@ -841,6 +857,10 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		//检查升级等级是否合法
 		if(wall.level + 1 > DataUtils.getBuildingLevelLimit(doc)){
 			return Promise.reject(new Error("城墙升级时,城墙等级不合法"))
+		}
+		//是否有可用的建造队列
+		if(!finishNow && !DataUtils.hasFreeBuildQueue(doc)){
+			return Promise.reject(new Error("没有空闲的建造队列"))
 		}
 
 		var gemUsed = 0

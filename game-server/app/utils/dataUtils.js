@@ -958,3 +958,35 @@ Utils.getMakeDragonEquipmentTime = function(playerDoc, equipmentName){
 	var makeTime = dragonEquipmentConfig.makeTime
 	return LogicUtils.getEfficiency(makeTime, smithConfig.efficiency)
 }
+
+/**
+ * 获取已经使用的建筑建造队列
+ * @param playerDoc
+ * @returns {number}
+ */
+Utils.getUsedBuildQueue = function(playerDoc){
+	var usedBuildQueue = 0
+	usedBuildQueue += playerDoc.buildingEvents.length
+	usedBuildQueue += playerDoc.houseEvents.length
+	usedBuildQueue += playerDoc.towerEvents.length
+	usedBuildQueue += playerDoc.wallEvents.length
+
+	return usedBuildQueue
+}
+
+/**
+ * 获取总共有多少建造队列
+ * @param playerDoc
+ * @returns {number}
+ */
+Utils.getTotalBuildQueue = function(playerDoc){
+	return 1
+}
+
+/**
+ * 是否还有可用的建筑建造队列
+ * @param playerDoc
+ */
+Utils.hasFreeBuildQueue = function(playerDoc){
+	return this.getTotalBuildQueue(playerDoc) - this.getUsedBuildQueue(playerDoc) > 0
+}
