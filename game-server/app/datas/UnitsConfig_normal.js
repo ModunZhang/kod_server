@@ -20,7 +20,12 @@ normal["swordsman_1"] = {
 	"stone":500,
 	"iron":300,
 	"food":200,
-	"recruitTime":30
+	"recruitTime":30,
+	"treatWood":0,
+	"treatStone":167,
+	"treatIron":100,
+	"treatFood":67,
+	"treatTime":10
 }
 normal["swordsman_2"] = {
 	"type":"swordsman_2",
@@ -41,7 +46,12 @@ normal["swordsman_2"] = {
 	"stone":850,
 	"iron":510,
 	"food":340,
-	"recruitTime":30
+	"recruitTime":30,
+	"treatWood":0,
+	"treatStone":284,
+	"treatIron":170,
+	"treatFood":114,
+	"treatTime":10
 }
 normal["swordsman_3"] = {
 	"type":"swordsman_3",
@@ -62,7 +72,12 @@ normal["swordsman_3"] = {
 	"stone":1200,
 	"iron":720,
 	"food":480,
-	"recruitTime":30
+	"recruitTime":30,
+	"treatWood":0,
+	"treatStone":400,
+	"treatIron":240,
+	"treatFood":160,
+	"treatTime":10
 }
 normal["sentinel_1"] = {
 	"type":"sentinel_1",
@@ -83,7 +98,12 @@ normal["sentinel_1"] = {
 	"stone":440,
 	"iron":440,
 	"food":220,
-	"recruitTime":35
+	"recruitTime":35,
+	"treatWood":0,
+	"treatStone":147,
+	"treatIron":147,
+	"treatFood":74,
+	"treatTime":12
 }
 normal["sentinel_2"] = {
 	"type":"sentinel_2",
@@ -104,7 +124,12 @@ normal["sentinel_2"] = {
 	"stone":748,
 	"iron":748,
 	"food":374,
-	"recruitTime":35
+	"recruitTime":35,
+	"treatWood":0,
+	"treatStone":250,
+	"treatIron":250,
+	"treatFood":125,
+	"treatTime":12
 }
 normal["sentinel_3"] = {
 	"type":"sentinel_3",
@@ -125,7 +150,12 @@ normal["sentinel_3"] = {
 	"stone":1056,
 	"iron":1056,
 	"food":528,
-	"recruitTime":35
+	"recruitTime":35,
+	"treatWood":0,
+	"treatStone":352,
+	"treatIron":352,
+	"treatFood":176,
+	"treatTime":12
 }
 normal["archer_1"] = {
 	"type":"archer_1",
@@ -146,7 +176,12 @@ normal["archer_1"] = {
 	"stone":315,
 	"iron":0,
 	"food":210,
-	"recruitTime":50
+	"recruitTime":50,
+	"treatWood":175,
+	"treatStone":105,
+	"treatIron":0,
+	"treatFood":70,
+	"treatTime":17
 }
 normal["archer_2"] = {
 	"type":"archer_2",
@@ -167,7 +202,12 @@ normal["archer_2"] = {
 	"stone":536,
 	"iron":0,
 	"food":357,
-	"recruitTime":50
+	"recruitTime":50,
+	"treatWood":298,
+	"treatStone":179,
+	"treatIron":0,
+	"treatFood":119,
+	"treatTime":17
 }
 normal["archer_3"] = {
 	"type":"archer_3",
@@ -188,7 +228,12 @@ normal["archer_3"] = {
 	"stone":756,
 	"iron":0,
 	"food":504,
-	"recruitTime":50
+	"recruitTime":50,
+	"treatWood":420,
+	"treatStone":252,
+	"treatIron":0,
+	"treatFood":168,
+	"treatTime":17
 }
 normal["crossbowman_1"] = {
 	"type":"crossbowman_1",
@@ -209,7 +254,12 @@ normal["crossbowman_1"] = {
 	"stone":315,
 	"iron":0,
 	"food":210,
-	"recruitTime":55
+	"recruitTime":55,
+	"treatWood":175,
+	"treatStone":105,
+	"treatIron":0,
+	"treatFood":70,
+	"treatTime":19
 }
 normal["crossbowman_2"] = {
 	"type":"crossbowman_2",
@@ -230,7 +280,12 @@ normal["crossbowman_2"] = {
 	"stone":536,
 	"iron":0,
 	"food":357,
-	"recruitTime":55
+	"recruitTime":55,
+	"treatWood":298,
+	"treatStone":179,
+	"treatIron":0,
+	"treatFood":119,
+	"treatTime":19
 }
 normal["crossbowman_3"] = {
 	"type":"crossbowman_3",
@@ -251,7 +306,12 @@ normal["crossbowman_3"] = {
 	"stone":756,
 	"iron":0,
 	"food":504,
-	"recruitTime":55
+	"recruitTime":55,
+	"treatWood":420,
+	"treatStone":252,
+	"treatIron":0,
+	"treatFood":168,
+	"treatTime":19
 }
 normal["lancer_1"] = {
 	"type":"lancer_1",
@@ -272,7 +332,12 @@ normal["lancer_1"] = {
 	"stone":0,
 	"iron":1000,
 	"food":400,
-	"recruitTime":110
+	"recruitTime":110,
+	"treatWood":200,
+	"treatStone":0,
+	"treatIron":334,
+	"treatFood":134,
+	"treatTime":37
 }
 normal["lancer_2"] = {
 	"type":"lancer_2",
@@ -293,7 +358,12 @@ normal["lancer_2"] = {
 	"stone":0,
 	"iron":1700,
 	"food":680,
-	"recruitTime":110
+	"recruitTime":110,
+	"treatWood":340,
+	"treatStone":0,
+	"treatIron":567,
+	"treatFood":227,
+	"treatTime":37
 }
 normal["lancer_3"] = {
 	"type":"lancer_3",
@@ -314,7 +384,12 @@ normal["lancer_3"] = {
 	"stone":0,
 	"iron":2400,
 	"food":960,
-	"recruitTime":110
+	"recruitTime":110,
+	"treatWood":480,
+	"treatStone":0,
+	"treatIron":800,
+	"treatFood":320,
+	"treatTime":37
 }
 normal["horseArcher_1"] = {
 	"type":"horseArcher_1",
@@ -335,7 +410,12 @@ normal["horseArcher_1"] = {
 	"stone":0,
 	"iron":880,
 	"food":440,
-	"recruitTime":120
+	"recruitTime":120,
+	"treatWood":294,
+	"treatStone":0,
+	"treatIron":294,
+	"treatFood":147,
+	"treatTime":40
 }
 normal["horseArcher_2"] = {
 	"type":"horseArcher_2",
@@ -356,7 +436,12 @@ normal["horseArcher_2"] = {
 	"stone":0,
 	"iron":1496,
 	"food":748,
-	"recruitTime":120
+	"recruitTime":120,
+	"treatWood":499,
+	"treatStone":0,
+	"treatIron":499,
+	"treatFood":250,
+	"treatTime":40
 }
 normal["horseArcher_3"] = {
 	"type":"horseArcher_3",
@@ -377,7 +462,12 @@ normal["horseArcher_3"] = {
 	"stone":0,
 	"iron":2112,
 	"food":1056,
-	"recruitTime":120
+	"recruitTime":120,
+	"treatWood":704,
+	"treatStone":0,
+	"treatIron":704,
+	"treatFood":352,
+	"treatTime":40
 }
 normal["catapult_1"] = {
 	"type":"catapult_1",
@@ -398,7 +488,12 @@ normal["catapult_1"] = {
 	"stone":1200,
 	"iron":400,
 	"food":800,
-	"recruitTime":180
+	"recruitTime":180,
+	"treatWood":400,
+	"treatStone":400,
+	"treatIron":134,
+	"treatFood":267,
+	"treatTime":60
 }
 normal["catapult_2"] = {
 	"type":"catapult_2",
@@ -419,7 +514,12 @@ normal["catapult_2"] = {
 	"stone":2040,
 	"iron":680,
 	"food":1360,
-	"recruitTime":180
+	"recruitTime":180,
+	"treatWood":680,
+	"treatStone":680,
+	"treatIron":227,
+	"treatFood":454,
+	"treatTime":60
 }
 normal["catapult_3"] = {
 	"type":"catapult_3",
@@ -440,7 +540,12 @@ normal["catapult_3"] = {
 	"stone":2880,
 	"iron":960,
 	"food":1920,
-	"recruitTime":180
+	"recruitTime":180,
+	"treatWood":960,
+	"treatStone":960,
+	"treatIron":320,
+	"treatFood":640,
+	"treatTime":60
 }
 normal["ballista_1"] = {
 	"type":"ballista_1",
@@ -461,7 +566,12 @@ normal["ballista_1"] = {
 	"stone":1100,
 	"iron":1100,
 	"food":1100,
-	"recruitTime":190
+	"recruitTime":190,
+	"treatWood":367,
+	"treatStone":367,
+	"treatIron":367,
+	"treatFood":367,
+	"treatTime":64
 }
 normal["ballista_2"] = {
 	"type":"ballista_2",
@@ -482,7 +592,12 @@ normal["ballista_2"] = {
 	"stone":1870,
 	"iron":1870,
 	"food":1870,
-	"recruitTime":190
+	"recruitTime":190,
+	"treatWood":624,
+	"treatStone":624,
+	"treatIron":624,
+	"treatFood":624,
+	"treatTime":64
 }
 normal["ballista_3"] = {
 	"type":"ballista_3",
@@ -503,5 +618,10 @@ normal["ballista_3"] = {
 	"stone":2640,
 	"iron":2640,
 	"food":2640,
-	"recruitTime":190
+	"recruitTime":190,
+	"treatWood":880,
+	"treatStone":880,
+	"treatIron":880,
+	"treatFood":880,
+	"treatTime":64
 }

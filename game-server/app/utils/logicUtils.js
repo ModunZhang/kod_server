@@ -401,6 +401,20 @@ Utils.addDragonEquipmentEvent = function(playerDoc, equipmentName, finishTime){
 }
 
 /**
+ * 为玩家添加士兵治疗事件
+ * @param playerDoc
+ * @param soldiers
+ * @param finishTime
+ */
+Utils.addTreatSoldierEvent = function(playerDoc, soldiers, finishTime){
+	var event = {
+		soldiers:soldiers,
+		finishTime:finishTime
+	}
+	playerDoc.treatSoldierEvents.push(event)
+}
+
+/**
  * 根据建筑建造事件查找建筑
  * @param playerDoc
  * @param buildingEvent
@@ -465,4 +479,25 @@ Utils.getMaterialEventByCategory = function(playerDoc, category){
 		if(_.isEqual(event.category, category)) return event
 	}
 	return null
+}
+
+/**
+ * 检查需要治疗的伤兵数据是否合法
+ * @param playerDoc
+ * @param soldiers
+ * @returns {boolean}
+ */
+Utils.isTreatSoldierLegal = function(playerDoc, soldiers){
+	if(soldiers.length == 0) return false
+	for(var i = 0; i < soldiers.length; i++){
+		var soldier = soldiers[i]
+		var soldierName = soldier.name
+		var count = soldier.count
+		if(!_.isString(soldierName) || !_.isNumber(count)) return false
+		count = Math.floor(count)
+		if(count <= 0) return false
+
+		if(!playerDoc.treatSoldiers[soldierName] || playerDoc.treatSoldiers[soldierName] < count) return false
+	}
+	return true
 }

@@ -178,13 +178,9 @@ var ChatHandler = function(app){
 			desc:"清除士兵招募事件",
 			func:function(session, uid, text, callback){
 				var self = this
-				var count = text.split(" ")[1]
-				count = parseInt(count)
-				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.rmsoldierevents(session, uid, function(e){
-						callback(e)
-					})
-				}
+				self.app.rpc.logic.commandRemote.rmsoldierevents(session, uid, function(e){
+					callback(e)
+				})
 			}
 		},
 		{
@@ -220,13 +216,33 @@ var ChatHandler = function(app){
 			desc:"清除龙装备制造事件",
 			func:function(session, uid, text, callback){
 				var self = this
+				self.app.rpc.logic.commandRemote.rmdragonequipmentevents(session, uid, function(e){
+					callback(e)
+				})
+			}
+		},
+		{
+			command:"addtreatsoldiers",
+			desc:"设置伤兵数量",
+			func:function(session, uid, text, callback){
+				var self = this
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.rmdragonequipmentevents(session, uid, function(e){
+					self.app.rpc.logic.commandRemote.addtreatsoldiers(session, uid, count, function(e){
 						callback(e)
 					})
 				}
+			}
+		},
+		{
+			command:"rmtreatsoldierevents",
+			desc:"清除士兵治疗事件",
+			func:function(session, uid, text, callback){
+				var self = this
+				self.app.rpc.logic.commandRemote.rmtreatsoldierevents(session, uid, function(e){
+					callback(e)
+				})
 			}
 		}
 	]

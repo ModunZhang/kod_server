@@ -990,3 +990,49 @@ Utils.getTotalBuildQueue = function(playerDoc){
 Utils.hasFreeBuildQueue = function(playerDoc){
 	return this.getTotalBuildQueue(playerDoc) - this.getUsedBuildQueue(playerDoc) > 0
 }
+
+/**
+ * 获取治疗指定伤兵所需时间
+ * @param soldierName
+ * @param count
+ * @returns {number}
+ */
+Utils.getTreatSoldierTime = function(soldierName, count){
+	var star = this.getSoldierStar(soldierName)
+	var fullSoldierName = soldierName + "_" + star
+	var config = SoldierConfig[fullSoldierName]
+	return config.treatTime * count
+}
+
+/**
+ * 获取招募普通兵种所需的资源
+ * @param playerDoc
+ * @param soldiers
+ * @returns {{resources: {wood: number, stone: number, iron: number, food: number}, recruitTime: (*|Array)}}
+ */
+Utils.getTreatSoldierRequired = function(playerDoc, soldiers){
+	var totalNeed = {
+		resources:{
+			wood:0,
+			stone:0,
+			iron:0,
+			food:0
+		},
+		treatTime:0
+	}
+	for(var i = 0; i < soldiers.length; i++){
+		var soldier = soldiers[i]
+		var soldierName = soldier.name
+		var count = soldier.count
+		var star = this.getSoldierStar(soldierName)
+		var fullSoldierName = soldierName + "_" + star
+		var config = SoldierConfig[fullSoldierName]
+		totalNeed.resources.wood += config.treatWood * count
+		totalNeed.resources.stone += config.treatStone * count
+		totalNeed.resources.iron += config.treatIron * count
+		totalNeed.resources.food += config.treatFood * count
+		totalNeed.treatTime += this.getTreatSoldierTime(soldierName, count)
+	}
+
+	return totalNeed
+}

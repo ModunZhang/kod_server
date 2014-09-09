@@ -124,6 +124,27 @@ var playerSchema = new Schema({
 			finishTime:{type:Number, required:true}
 		}
 	],
+	treatSoldiers:{
+		swordsman:{type:Number, required:true, default:0},
+		sentinel:{type:Number, required:true, default:0},
+		archer:{type:Number, required:true, default:0},
+		crossbowman:{type:Number, required:true, default:0},
+		lancer:{type:Number, required:true, default:0},
+		horseArcher:{type:Number, required:true, default:0},
+		catapult:{type:Number, required:true, default:0},
+		ballista:{type:Number, required:true, default:0}
+	},
+	treatSoldierEvents:[
+		{
+			soldiers:[
+				{
+					name:{type:String, required:true},
+					count:{type:Number, required:true}
+				}
+			],
+			finishTime:{type:Number, required:true}
+		}
+	],
 	dragonMaterials:{
 		ironIngot:{type:Number, required:true, default:DragonMaterialInitData.ironIngot},
 		steelIngot:{type:Number, required:true, default:DragonMaterialInitData.steelIngot},

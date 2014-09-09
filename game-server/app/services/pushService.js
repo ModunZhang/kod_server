@@ -158,3 +158,15 @@ pro.onMakeDragonEquipmentSuccess = function(playerData, equipmentName){
 	}
 	this.pushToPlayer(playerData, Events.player.onMakeDragonEquipmentSuccess, data)
 }
+
+/**
+ * 治疗士兵成功通知
+ * @param playerData
+ * @param soldiers
+ */
+pro.onTreatSoldierSuccess = function(playerData, soldiers){
+	var data = {
+		soldiers:soldiers
+	}
+	this.pushToPlayer(playerData, Events.player.onTreatSoldierSuccess, data)
+}

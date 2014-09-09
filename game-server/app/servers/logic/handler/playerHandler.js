@@ -265,3 +265,19 @@ pro.makeDragonEquipment = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 治疗士兵
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.treatSoldier = function(msg, session, next){
+	var soldiers = msg.soldiers
+	var finishNow = msg.finishNow
+	this.playerService.treatSoldierAsync(session.uid, soldiers, finishNow).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

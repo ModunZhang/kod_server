@@ -16,6 +16,17 @@ var ClearTestAccount = function(callback){
 	})
 }
 
+var sendChat = function(text, callback){
+	var info = {
+		text:text,
+		type:"global"
+	}
+	var route = "chat.chatHandler.send"
+	pomelo.request(route, info, function(doc){
+		callback(doc)
+	})
+}
+
 describe("ChatServer", function(){
 	var m_user
 
@@ -387,6 +398,20 @@ describe("ChatServer", function(){
 				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+		})
+
+		it("send addtreatsoldiers", function(done){
+			sendChat("addtreatsoldiers 5", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("send rmtreatsoldierevents", function(done){
+			sendChat("rmtreatsoldierevents", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
 		})
 
 		it("send kickme", function(done){

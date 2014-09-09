@@ -1271,7 +1271,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			return Promise.reject(new Error("铁匠铺还未建造"))
 		}
 		if(!finishNow && doc.dragonEquipmentEvents.length > 0){
-			return Promise.reject(new Error("已近有装备正在制作"))
+			return Promise.reject(new Error("已有装备正在制作"))
 		}
 		var gemUsed = 0
 		var makeRequired = DataUtils.getMakeDragonEquipmentRequired(doc, equipmentName)
@@ -1307,6 +1307,90 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		}else{
 			var finishTime = Date.now() + (makeRequired.makeTime * 1000)
 			LogicUtils.addDragonEquipmentEvent(doc, equipmentName, finishTime)
+			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+		}
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 治疗伤兵
+ * @param playerId
+ * @param soldiers
+ * @param finishNow
+ * @param callback
+ */
+pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isArray(soldiers)){
+		callback(new Error("soldiers 不合法"))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		callback(new Error("finishNow 不合法"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var hospital = doc.buildings["location_14"]
+		if(hospital.level < 1){
+			return Promise.reject(new Error("医院还未建造"))
+		}
+		if(!LogicUtils.isTreatSoldierLegal(doc, soldiers)){
+			return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
+		}
+		if(!finishNow && doc.treatSoldierEvents.length > 0){
+			return Promise.reject(new Error("已有士兵正在治疗"))
+		}
+
+		var gemUsed = 0
+		var treatRequired = DataUtils.getTreatSoldierRequired(doc, soldiers)
+		var buyedResources = null
+		if(finishNow){
+			gemUsed += DataUtils.getGemByTimeInterval(treatRequired.treatTime)
+			buyedResources = DataUtils.buyResources(treatRequired.resources, {})
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+		}else{
+			buyedResources = DataUtils.buyResources(treatRequired.resources, doc.resources)
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+		}
+		//宝石是否足够
+		if(gemUsed > doc.resources.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		//修改玩家宝石数据
+		doc.resources.gem -= gemUsed
+		//修改玩家资源数据
+		LogicUtils.reduce(treatRequired.resources, doc.resources)
+		//是否立即完成
+		if(finishNow){
+			_.each(soldiers, function(soldier){
+				doc.soldiers[soldier.name] = soldier.count
+				doc.treatSoldiers[soldier.name] -= soldier.count
+			})
+			self.pushService.onTreatSoldierSuccess(doc, soldiers)
+		}else{
+			var finishTime = Date.now() + (treatRequired.treatTime * 1000)
+			LogicUtils.addTreatSoldierEvent(doc, soldiers, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
 		//保存玩家数据

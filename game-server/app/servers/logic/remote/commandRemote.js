@@ -528,3 +528,44 @@ pro.rmdragonequipmentevents = function(uid, callback){
 		callback(e)
 	})
 }
+
+/**
+ * 设置伤兵数量
+ * @param uid
+ * @param count
+ * @param callback
+ */
+pro.addtreatsoldiers = function(uid, count, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		_.each(doc.treatSoldiers, function(value, key){
+			doc.treatSoldiers[key] = count
+		})
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 清除士兵治疗事件
+ * @param uid
+ * @param callback
+ */
+pro.rmtreatsoldierevents = function(uid, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		while(doc.treatSoldierEvents.length > 0){
+			doc.treatSoldierEvents.pop()
+		}
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}

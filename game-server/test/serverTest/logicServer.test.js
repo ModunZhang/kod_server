@@ -152,6 +152,18 @@ var makeDragonEquipment = function(equipmentName, finishNow, callback){
 	})
 }
 
+var treatSoldier = function(soldiers, finishNow, callback){
+	var info = {
+		soldiers:soldiers,
+		finishNow:finishNow
+	}
+	var route = "logic.playerHandler.treatSoldier"
+	pomelo.request(route, info, function(doc){
+		callback(doc)
+	})
+}
+
+
 describe("LogicServer", function(){
 	var m_user
 
@@ -1015,6 +1027,7 @@ describe("LogicServer", function(){
 
 		it("recruitSpecialSoldier 招募数量超过单次招募上限", function(done){
 			sendChat("rmsoldierevents", function(doc){
+				doc.code.should.equal(200)
 				recruitSpecialSoldier("skeletonWarrior", 100, false, function(doc){
 					doc.code.should.equal(500)
 					doc.message.should.equal("招募数量超过单次招募上限")
@@ -1101,12 +1114,12 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("makeDragonEquipment 已近有装备正在制作", function(done){
+		it("makeDragonEquipment 已有装备正在制作", function(done){
 			makeDragonEquipment("moltenCrown", false, function(doc){
 				doc.code.should.equal(200)
 				makeDragonEquipment("moltenCrown", false, function(doc){
 					doc.code.should.equal(500)
-					doc.message.should.equal("已近有装备正在制作")
+					doc.message.should.equal("已有装备正在制作")
 					done()
 				})
 			})
@@ -1124,6 +1137,141 @@ describe("LogicServer", function(){
 
 		it("makeDragonEquipment 正常立即制造", function(done){
 			makeDragonEquipment("moltenCrown", true, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("treatSoldier soldiers 不合法", function(done){
+			treatSoldier("ad", true, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("soldiers 不合法")
+				done()
+			})
+		})
+
+		it("treatSoldier 医院还未建造", function(done){
+			treatSoldier([], true, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("医院还未建造")
+				done()
+			})
+		})
+
+		it("treatSoldier 士兵不存在或士兵数量不合法1", function(done){
+			upgradeBuilding(1, true, function(doc){
+				doc.code.should.equal(200)
+				upgradeBuilding(7, true, function(doc){
+					doc.code.should.equal(200)
+					upgradeBuilding(14, true, function(doc){
+						doc.code.should.equal(200)
+						treatSoldier([], true, function(doc){
+							doc.code.should.equal(500)
+							doc.message.should.equal("士兵不存在或士兵数量不合法")
+							done()
+						})
+					})
+				})
+			})
+		})
+
+		it("treatSoldier 士兵不存在或士兵数量不合法2", function(done){
+			treatSoldier([
+				{name:"add", count:12}
+			], true, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("士兵不存在或士兵数量不合法")
+				done()
+			})
+		})
+
+		it("treatSoldier 士兵不存在或士兵数量不合法3", function(done){
+			treatSoldier([
+				{name:"swordsman", count:1}
+			], true, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("士兵不存在或士兵数量不合法")
+				done()
+			})
+		})
+
+		it("treatSoldier 士兵不存在或士兵数量不合法4", function(done){
+			sendChat("addtreatsoldiers 5", function(doc){
+				doc.code.should.equal(200)
+				treatSoldier([
+					{name:"swordsman", count:6}
+				], true, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("士兵不存在或士兵数量不合法")
+					done()
+				})
+			})
+		})
+
+		it("treatSoldier 士兵不存在或士兵数量不合法5", function(done){
+			treatSoldier([
+				{name:"swordsman", count:5}
+			], true, function(doc){
+				doc.code.should.equal(200)
+				treatSoldier([
+					{name:"swordsman", count:5}
+				], true, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("士兵不存在或士兵数量不合法")
+					done()
+				})
+			})
+		})
+
+		it("treatSoldier 已有士兵正在治疗", function(done){
+			treatSoldier([
+				{name:"sentinel", count:5},
+				{name:"archer", count:5}
+			], false, function(doc){
+				doc.code.should.equal(200)
+				treatSoldier([
+					{name:"crossbowman", count:5}
+				], false, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("已有士兵正在治疗")
+					done()
+				})
+			})
+		})
+
+		it("treatSoldier 宝石不足", function(done){
+			sendChat("gem 0", function(doc){
+				doc.code.should.equal(200)
+				treatSoldier([
+					{name:"crossbowman", count:5}
+				], true, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("宝石不足")
+					sendChat("gem 5000", function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("treatSoldier 正常普通治疗", function(done){
+			sendChat("rmtreatsoldierevents", function(doc){
+				doc.code.should.equal(200)
+				treatSoldier([
+					{name:"sentinel", count:5},
+					{name:"archer", count:5}
+				], false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("treatSoldier 正常加速治疗", function(done){
+			treatSoldier([
+				{name:"catapult", count:5}
+			], true, function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
