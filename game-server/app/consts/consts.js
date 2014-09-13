@@ -15,6 +15,13 @@ module.exports = {
 		Tower:"tower",
 		Wall:"wall"
 	},
+	DragonStatus:{
+		Free:"free",
+		Fight:"fight",
+		Defenc:"defence"
+	},
+	DragonEquipmentCategory:["crown", "armguardLeft", "armguardRight", "chest", "sting", "orb"],
+	BasicResource:["wood", "stone", "iron", "food"],
 	MaterialType:{
 		Building:"building",
 		Technology:"tochnology"

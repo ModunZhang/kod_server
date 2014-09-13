@@ -24,6 +24,8 @@ var UnitConfig = GameData.UnitsConfig
 var SoldierConfig = UnitConfig.normal
 var SpecialSoldierConfig = UnitConfig.special
 var DragonEquipmentConfig = GameData.SmithConfig.equipments
+var DragonEyrie = GameData.DragonEyrie
+
 
 var Utils = module.exports
 
@@ -268,16 +270,14 @@ Utils.getPlayerResources = function(playerDoc){
 	var self = this
 	var resources = {}
 	_.each(playerDoc.resources, function(value, key){
-		if(_.isEqual("citizen", key)){
-			resources[key] = self.getPlayerCitizen(playerDoc)
-		}else if(_.isEqual("coin", key)){
-			resources["coin"] = playerDoc.resources.coin
-		}else if(_.isEqual("cart", key)){
-			resources["coin"] = playerDoc.resources.cart
-		}else if(_.isEqual("gem", key)){
-			resources["gem"] = playerDoc.resources.gem
-		}else{
+		if(_.contains(Consts.BasicResource, key)){
 			resources[key] = self.getPlayerResource(playerDoc, key)
+		}else if(_.isEqual("citizen", key)){
+			resources[key] = self.getPlayerCitizen(playerDoc)
+		}else if(_.isEqual("energy", key)){
+			resources[key] = self.getPlayerEnergy(playerDoc)
+		}else{
+			resources[key] = playerDoc.resources[key]
 		}
 	})
 
@@ -399,6 +399,40 @@ Utils.getPlayerUsedCitizen = function(playerDoc){
  */
 Utils.getPlayerHouseUsedCitizen = function(houseType, houseLevel){
 	return HouseLevelUp[houseType][houseLevel].citizen
+}
+
+/**
+ * 获取玩家能量值
+ * @param playerDoc
+ * @returns {energyMax|*}
+ */
+Utils.getPlayerEnergy = function(playerDoc){
+	var building = playerDoc.buildings["location_4"]
+	if(building.level < 1) return playerDoc.resources["energy"]
+
+	var config = BuildingFunction.dragonEyrie[building.level]
+	var energyLimit = config.energyMax
+	if(energyLimit <= playerDoc.resources["energy"]){
+		return energyLimit
+	}
+
+	var totalPerSecond = 1 / config.perEnergyTime
+	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
+	var output = Math.floor(totalSecond * totalPerSecond)
+	var totalEnergy = playerDoc.resources["energy"] + output
+	return totalEnergy > energyLimit ? energyLimit : totalEnergy
+}
+
+/**
+ * 获取玩家能量值上限
+ * @param playerDoc
+ * @returns {energyMax|*}
+ */
+Utils.getPlayerEnergyUpLimit = function(playerDoc){
+	var building = playerDoc.buildings["location_4"]
+	var config = BuildingFunction.dragonEyrie[building.level]
+	var energyLimit = config.energyMax
+	return energyLimit
 }
 
 /**
@@ -1035,4 +1069,294 @@ Utils.getTreatSoldierRequired = function(playerDoc, soldiers){
 	}
 
 	return totalNeed
+}
+
+/**
+ * 获取龙的最大活力值
+ * @param playerDoc
+ * @param dragon
+ * @returns {*}
+ */
+Utils.getDragonMaxVitality = function(playerDoc, dragon){
+	var config = DragonEyrie.dragonAttribute[dragon.star]
+	var vitality = config.initVitality + config.perLevelVitality * dragon.star
+	return vitality
+}
+
+/**
+ * 获取龙的力量
+ * @param playerDoc
+ * @param dragon
+ * @returns {*}
+ */
+Utils.getDragonStrength = function(playerDoc, dragon){
+	var config = DragonEyrie.dragonAttribute[dragon.star]
+	var vitality = config.initStrength + config.perLevelStrength * dragon.star
+	return vitality
+}
+
+/**
+ * 随机生成Buff加成类型
+ * @param equipmentName
+ * @returns {Array}
+ */
+Utils.generateDragonEquipmentBuffs = function(equipmentName){
+	var generatedBuffs = []
+	var star = DragonEquipmentConfig[equipmentName].maxStar
+	var buffs = DragonEyrie.equipmentBuff
+	var buffKeys = Object.keys(buffs)
+	for(var i = 0; i < star; i++){
+		buffKeys = CommonUtils.shuffle(buffKeys)
+		var key = buffKeys[0]
+		generatedBuffs.push(key)
+	}
+
+	return generatedBuffs
+}
+
+/**
+ * 检查某装备是否能装配到龙的制定位置上
+ * @param equipmentName
+ * @param equipmentCategory
+ * @returns {boolean}
+ */
+Utils.isDragonEquipmentLegalAtCategory = function(equipmentName, equipmentCategory){
+	var config = DragonEquipmentConfig[equipmentName]
+	var categories = config.category.split(",")
+	return _.contains(categories, equipmentCategory)
+
+}
+
+/**
+ * 检查装备是否是属于此龙的类型
+ * @param equipmentName
+ * @param dragonType
+ * @returns {*}
+ */
+Utils.isDragonEquipmentLegalOnDragon = function(equipmentName, dragonType){
+	var config = DragonEquipmentConfig[equipmentName]
+	return _.isEqual(dragonType, config.usedFor)
+}
+
+/**
+ * 检查龙的装备的星级是否和龙的星级匹配
+ * @param equipmentName
+ * @param dragon
+ * @returns {*}
+ */
+Utils.isDragonEquipmentStarEqualWithDragonStar = function(equipmentName, dragon){
+	var config = DragonEquipmentConfig[equipmentName]
+	return _.isEqual(config.maxStar, dragon.star)
+}
+
+/**
+ * 龙装备是否已强化到最高等级
+ * @param equipment
+ * @returns {boolean}
+ */
+Utils.isDragonEquipmentReachMaxStar = function(equipment){
+	var config = DragonEquipmentConfig[equipment.name]
+	return config.maxStar <= equipment.star
+}
+
+/**
+ * 获取指龙装备的最大星级
+ * @param equipmentName
+ * @returns {*}
+ */
+Utils.getDragonEquipmentMaxStar = function(equipmentName){
+	var config = DragonEquipmentConfig[equipmentName]
+	return config.maxStar
+}
+
+/**
+ * 检查对龙技能的升级是否合法
+ * @param dragon
+ * @param skillName
+ * @returns {boolean}
+ */
+Utils.isDragonSkillUnlocked = function(dragon, skillName){
+	var config = DragonEyrie.dragonSkill[skillName]
+	return config.unlockStar <= dragon.star
+}
+
+/**
+ * 此龙类型是否存在
+ * @param dragonType
+ * @returns {*}
+ */
+Utils.isDragonTypeExist = function(dragonType){
+	var config = DragonEyrie.dragons
+	return _.contains(Object.keys(config), dragonType)
+}
+
+/**
+ * 获取升级龙的技能所需的资源
+ * @param playerDoc
+ * @param dragon
+ * @param skill
+ * @returns {{}}
+ */
+Utils.getDragonSkillUpgradeRequired = function(playerDoc, dragon, skill){
+	var config = DragonEyrie.dragonSkill[skill.name]
+	var totalNeed = {}
+	totalNeed.energy = config.energyCostPerLevel
+	totalNeed.blood = config.heroBloodCostPerLevel * (skill.level + 1) * (skill.level + 1)
+	return totalNeed
+}
+
+/**
+ * 技能是否以达到最高等级
+ * @param skill
+ * @returns {boolean}
+ */
+Utils.isDragonSkillReachMaxLevel = function(skill){
+	var config = DragonEyrie.dragonSkill[skill.name]
+	return skill.level >= config.maxLevel
+}
+
+/**
+ * 获取龙的指定技能的最高等级
+ * @param skill
+ * @returns {dragonSkill.dragonBlood.maxLevel|*|dragonSkill.infantryEnhance.maxLevel|dragonSkill.dragonBreath.maxLevel|dragonSkill.siegeEnhance.maxLevel|dragonSkill.cavalryEnhance.maxLevel}
+ */
+Utils.getDragonSkillMaxLevel = function(skill){
+	var config = DragonEyrie.dragonSkill[skill.name]
+	return config.maxLevel
+}
+
+/**
+ * 强化龙的装备
+ * @param playerDoc
+ * @param dragonType
+ * @param category
+ * @param equipments
+ */
+Utils.enhanceDragonEquipment = function(playerDoc, dragonType, category, equipments){
+	var dragon = playerDoc.dragons[dragonType]
+	var equipmentInDragon = dragon.equipments[category]
+	var config = DragonEquipmentConfig[equipmentInDragon.name]
+	var maxStar = config.maxStar
+	var currentStar = equipmentInDragon.star
+	var currentExp = Number(equipmentInDragon.exp)
+	var totalExp = this.getDragonEquipmentsExp(dragonType, equipmentInDragon, equipments)
+	while(totalExp > 0 && currentStar < maxStar){
+		var nextStar = currentStar + 1
+		var categoryConfig = DragonEyrie[category][maxStar + "_" + nextStar]
+		var expNeeded = categoryConfig.enhanceExp - currentExp
+		if(expNeeded <= totalExp){
+			currentStar += 1
+			currentExp = 0
+			totalExp -= expNeeded
+		}else{
+			currentExp += totalExp
+			totalExp = 0
+		}
+	}
+	equipmentInDragon.star = currentStar
+	equipmentInDragon.exp = currentExp
+
+	_.each(equipments, function(equipment){
+		playerDoc.dragonEquipments[equipment.name] -= equipment.count
+	})
+}
+
+/**
+ * 获取龙装备的经验值
+ * @param dragonType
+ * @param equipmentInDragon
+ * @param equipments
+ * @returns {number}
+ */
+Utils.getDragonEquipmentsExp = function(dragonType, equipmentInDragon, equipments){
+	var self = this
+	var totalExp = 0
+	_.each(equipments, function(equipment){
+		var exp = self.getDragonEquipmentExp(dragonType, equipmentInDragon, equipment.name, equipment.count)
+		totalExp += exp
+	})
+	return totalExp
+}
+
+/**
+ * 获取单个龙装备的经验值
+ * @param dragonType
+ * @param equipmentInDragon
+ * @param equipmentName
+ * @param count
+ * @returns {number}
+ */
+Utils.getDragonEquipmentExp = function(dragonType, equipmentInDragon, equipmentName, count){
+	var config = DragonEquipmentConfig[equipmentName]
+	var usedFor = config.usedFor
+	if(_.isEqual(equipmentInDragon.name, equipmentName)){
+		return config.resolveLExp * count
+	}else if(_.isEqual(dragonType, usedFor)){
+		return config.resolveMExp * count
+	}else{
+		return config.resolveSExp * count
+	}
+}
+
+/**
+ * 龙的等级是否达到让龙晋级的条件
+ * @param dragon
+ * @returns {boolean}
+ */
+Utils.isDragonReachUpgradeLevel = function(dragon){
+	var config = DragonEyrie.dragonAttribute[dragon.star + 1]
+	return dragon.level >= config.promotionLevel
+}
+
+/**
+ * 获取指定龙的星级下的最小等级
+ * @param dragon
+ * @returns {promotionLevel|*}
+ */
+Utils.getDragonLowestLevelOnStar = function(dragon){
+	var config = DragonEyrie.dragonAttribute[dragon.star]
+	return config.promotionLevel
+}
+
+/**
+ * 获取指定龙的星级下的最大等级
+ * @param dragon
+ * @returns {levelMax|*}
+ */
+Utils.getDragonHighestLevelOnStar = function(dragon){
+	var config = DragonEyrie.dragonAttribute[dragon.star]
+	return config.levelMax
+}
+
+/**
+ * 龙的装备是否达到让龙晋级的条件
+ * @param dragon
+ */
+Utils.isDragonEquipmentsReachUpgradeLevel = function(dragon){
+	var allCategory = DragonEyrie.dragonAttribute[dragon.star + 1].allCategory.split(",")
+	for(var i = 0; i < allCategory.length; i ++){
+		var category = allCategory[i]
+		var equipment = dragon.equipments[category]
+		if(_.isEmpty(equipment.name)) return false
+		var maxStar = DragonEquipmentConfig[equipment.name].maxStar
+		if(equipment.star < maxStar) return false
+	}
+	return true
+}
+
+/**
+ * 获取龙的最大星级
+ * @returns {number}
+ */
+Utils.getDragonMaxStar = function(){
+	return 4
+}
+
+/**
+ *龙是否已达到最高星级
+ * @param dragon
+ * @returns {boolean}
+ */
+Utils.isDragonReachMaxStar = function(dragon){
+	return dragon.star >= 4
 }

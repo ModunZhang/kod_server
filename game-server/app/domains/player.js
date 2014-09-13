@@ -6,6 +6,7 @@
 var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
+var Consts = require("../consts/consts")
 var GameDatas = require("../datas/GameDatas")
 
 var BuildingInitData = GameDatas.Buildings.buildings
@@ -13,6 +14,7 @@ var ResourceInitData = GameDatas.PlayerInitData.resources[1]
 var MaterialInitData = GameDatas.PlayerInitData.materials[1]
 var SoldierMaterialInitData = GameDatas.PlayerInitData.soldierMaterials[1]
 var DragonMaterialInitData = GameDatas.PlayerInitData.dragonMaterials[1]
+var DragonsConfig = GameDatas.DragonEyrie.dragons
 
 var createBuildingSchema = function(location){
 	var schema = {
@@ -34,6 +36,56 @@ var createTowerSchema = function(location){
 	var schema = {
 		level:{type:Number, required:true, default:location <= 5 ? 1 : -1 },
 		location:{type:Number, required:true, default:location}
+	}
+	return schema
+}
+
+var createDragonEquipmentSchema = function(){
+	var schema = {
+		name:{type:String, required:false, default:""},
+		star:{type:Number, required:true, default:0},
+		exp:{type:Number, required:true, default:0},
+		buffs:[String]
+	}
+	return schema
+}
+
+var createDragonSkillSchema = function(skillName){
+	var schema = {
+		name:{type:String, required:true, default:skillName},
+		level:{type:Number, required:true, default:0}
+	}
+	return schema
+}
+
+var createDragonSchema = function(dragonType){
+	var schema = {
+		type:{type:String, required:true, default:dragonType},
+		level:{type:Number, required:true, default:0},
+		exp:{type:Number, required:true, default:0},
+		star:{type:Number, required:true, default:0},
+		strength:{type:Number, required:true, default:0},
+		vitality:{type:Number, required:true, default:0},//在龙蛋时期,此属性表示龙蛋孵化的进度,达到100时,龙蛋孵化出来,龙蛋孵化出来后,此属性会被清零
+		status:{type:String, required:true, default:Consts.DragonStatus.Free},
+		equipments:{
+			crown:createDragonEquipmentSchema(),
+			armguardLeft:createDragonEquipmentSchema(),
+			armguardRight:createDragonEquipmentSchema(),
+			chest:createDragonEquipmentSchema(),
+			sting:createDragonEquipmentSchema(),
+			orb:createDragonEquipmentSchema()
+		},
+		skills:{
+			skill_1:createDragonSkillSchema(DragonsConfig[dragonType].skill_1),
+			skill_2:createDragonSkillSchema(DragonsConfig[dragonType].skill_2),
+			skill_3:createDragonSkillSchema(DragonsConfig[dragonType].skill_3),
+			skill_4:createDragonSkillSchema(DragonsConfig[dragonType].skill_4),
+			skill_5:createDragonSkillSchema(DragonsConfig[dragonType].skill_5),
+			skill_6:createDragonSkillSchema(DragonsConfig[dragonType].skill_6),
+			skill_7:createDragonSkillSchema(DragonsConfig[dragonType].skill_7),
+			skill_8:createDragonSkillSchema(DragonsConfig[dragonType].skill_8),
+			skill_9:createDragonSkillSchema(DragonsConfig[dragonType].skill_9)
+		}
 	}
 	return schema
 }
@@ -65,7 +117,9 @@ var playerSchema = new Schema({
 		citizen:{type:Number, required:true, default:ResourceInitData.citizen},
 		gem:{type:Number, required:true, default:ResourceInitData.gem},
 		coin:{type:Number, required:true, default:ResourceInitData.coin},
-		cart:{type:Number, required:true, default:ResourceInitData.cart}
+		cart:{type:Number, required:true, default:ResourceInitData.cart},
+		energy:{type:Number, required:true, default:ResourceInitData.energy},
+		blood:{type:Number, required:true, default:ResourceInitData.blood}
 	},
 	materials:{
 		blueprints:{type:Number, required:true, default:MaterialInitData.blueprints},
@@ -258,6 +312,11 @@ var playerSchema = new Schema({
 			finishTime:{type:Number, required:true}
 		}
 	],
+	dragons:{
+		redDragon:createDragonSchema("redDragon"),
+		blueDragon:createDragonSchema("blueDragon"),
+		greenDragon:createDragonSchema("greenDragon")
+	},
 	buildings:{
 		location_1:createBuildingSchema(1),
 		location_2:createBuildingSchema(2),

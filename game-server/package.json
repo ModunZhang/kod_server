@@ -4,10 +4,10 @@
 	"private":true,
 	"dependencies":{
 		"pomelo":"1.0.4",
-		"mongoose":"3.8.12",
-		"bluebird":"2.2.2",
-		"underscore":"1.6.0",
-		"redis":"0.11.0",
+		"mongoose":"3.8.16",
+		"bluebird":"2.3.2 ",
+		"underscore":"1.7.0",
+		"redis":"0.12.1",
 		"pomelo-globalchannel-plugin":"0.0.7",
 		"crc":"2.1.1",
 		"nodemailer":"0.7"

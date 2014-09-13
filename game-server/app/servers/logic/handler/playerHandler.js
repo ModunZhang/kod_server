@@ -281,3 +281,99 @@ pro.treatSoldier = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 孵化龙蛋
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.hatchDragon = function(msg, session, next){
+	var dragonType = msg.dragonType
+	this.playerService.hatchDragonAsync(session.uid, dragonType).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 设置龙的装备
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.setDragonEquipment = function(msg, session, next){
+	var dragonType = msg.dragonType
+	var equipmentCategory = msg.equipmentCategory
+	var equipmentName = msg.equipmentName
+	this.playerService.setDragonEquipmentAsync(session.uid, dragonType, equipmentCategory, equipmentName).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 强化龙的装备
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.enhanceDragonEquipment = function(msg, session, next){
+	var dragonType = msg.dragonType
+	var equipmentCategory = msg.equipmentCategory
+	var equipments = msg.equipments
+	this.playerService.enhanceDragonEquipmentAsync(session.uid, dragonType, equipmentCategory, equipments).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 重置龙的装备的随机Buff
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.resetDragonEquipment = function(msg, session, next){
+	var dragonType = msg.dragonType
+	var equipmentCategory = msg.equipmentCategory
+	this.playerService.resetDragonEquipmentAsync(session.uid, dragonType, equipmentCategory).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 升级龙的技能
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.upgradeDragonSkill = function(msg, session, next){
+	var dragonType = msg.dragonType
+	var skillLocation = msg.skillLocation
+	this.playerService.upgradeDragonSkillAsync(session.uid, dragonType, skillLocation).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 升级龙的星级
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.upgradeDragonStar = function(msg, session, next){
+	var dragonType = msg.dragonType
+	this.playerService.upgradeDragonStarAsync(session.uid, dragonType).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

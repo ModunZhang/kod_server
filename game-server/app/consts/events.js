@@ -16,7 +16,8 @@ module.exports = {
 		onGetMaterialSuccess:"onGetMaterialSuccess",
 		onRecruitSoldierSuccess:"onRecruitSoldierSuccess",
 		onMakeDragonEquipmentSuccess:"onMakeDragonEquipmentSuccess",
-		onTreatSoldierSuccess:"onTreatSoldierSuccess"
+		onTreatSoldierSuccess:"onTreatSoldierSuccess",
+		onHatchDragonSuccess:"onHatchDragonSuccess"
 	},
 	chat:{
 		onChat:"onChat",

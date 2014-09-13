@@ -24,7 +24,7 @@ app.configure("production|development", "gate", function(){
 		"max-connections":1000
 	})
 	app.set("proxyConfig", {
-		bufferMsg:true,
+		bufferMsg:false,
 		interval:30,
 		failMode:"failfast"
 	})
@@ -46,7 +46,7 @@ app.configure("production|development", "front", function(){
 		"max-connections":1000
 	})
 	app.set("proxyConfig", {
-		bufferMsg:true,
+		bufferMsg:false,
 		interval:20,
 		failMode:"failfast"
 	})

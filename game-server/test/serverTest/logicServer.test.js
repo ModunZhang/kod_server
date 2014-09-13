@@ -163,6 +163,71 @@ var treatSoldier = function(soldiers, finishNow, callback){
 	})
 }
 
+var hatchDragon = function(dragonType, callback){
+	var info = {
+		dragonType:dragonType
+	}
+	var route = "logic.playerHandler.hatchDragon"
+	pomelo.request(route, info, function(doc){
+		callback(doc)
+	})
+}
+
+var setDragonEquipment = function(dragonType, equipmentCategory, equipmentName, callback){
+	var info = {
+		dragonType:dragonType,
+		equipmentCategory:equipmentCategory,
+		equipmentName:equipmentName
+	}
+	var route = "logic.playerHandler.setDragonEquipment"
+	pomelo.request(route, info, function(doc){
+		callback(doc)
+	})
+}
+
+var enhanceDragonEquipment = function(dragonType, equipmentCategory, equipments, callback){
+	var info = {
+		dragonType:dragonType,
+		equipmentCategory:equipmentCategory,
+		equipments:equipments
+	}
+	var route = "logic.playerHandler.enhanceDragonEquipment"
+	pomelo.request(route, info, function(doc){
+		callback(doc)
+	})
+}
+
+var resetDragonEquipment = function(dragonType, equipmentCategory, callback){
+	var info = {
+		dragonType:dragonType,
+		equipmentCategory:equipmentCategory
+	}
+	var route = "logic.playerHandler.resetDragonEquipment"
+	pomelo.request(route, info, function(doc){
+		callback(doc)
+	})
+}
+
+var upgradeDragonDragonSkill = function(dragonType, skillLocation, callback){
+	var info = {
+		dragonType:dragonType,
+		skillLocation:skillLocation
+	}
+	var route = "logic.playerHandler.upgradeDragonSkill"
+	pomelo.request(route, info, function(doc){
+		callback(doc)
+	})
+}
+
+var upgradeDragonStar = function(dragonType, callback){
+	var info = {
+		dragonType:dragonType
+	}
+	var route = "logic.playerHandler.upgradeDragonStar"
+	pomelo.request(route, info, function(doc){
+		callback(doc)
+	})
+}
 
 describe("LogicServer", function(){
 	var m_user
@@ -214,7 +279,7 @@ describe("LogicServer", function(){
 
 	describe("playerHandler", function(){
 		it("upgradeBuilding 建筑不存在", function(done){
-			upgradeBuilding(1.5, false, function(doc){
+			upgradeBuilding(60, false, function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("建筑不存在")
 				done()
@@ -441,12 +506,7 @@ describe("LogicServer", function(){
 				createHouse("dwelling", 3, 0, false, function(doc){
 					doc.code.should.equal(500)
 					doc.message.should.equal("小屋location只能1<=location<=3")
-
-					createHouse("dwelling", 3, 1.5, false, function(doc){
-						doc.code.should.equal(500)
-						doc.message.should.equal("小屋location只能1<=location<=3")
-						done()
-					})
+					done()
 				})
 			})
 		})
@@ -678,7 +738,7 @@ describe("LogicServer", function(){
 		})
 
 		it("upgradeTower 箭塔不存在", function(done){
-			upgradeTower(1.5, false, function(doc){
+			upgradeTower(20, false, function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("箭塔不存在")
 				done()
@@ -1274,6 +1334,356 @@ describe("LogicServer", function(){
 			], true, function(doc){
 				doc.code.should.equal(200)
 				done()
+			})
+		})
+
+		it("hatchDragon 能量不足", function(done){
+			sendChat("energy 0", function(doc){
+				doc.code.should.equal(200)
+				hatchDragon("redDragon", function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("能量不足")
+					sendChat("energy 100", function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("hatchDragon 龙蛋早已成功孵化", function(done){
+			sendChat("dragonvitality redDragon 90", function(doc){
+				doc.code.should.equal(200)
+				hatchDragon("redDragon", function(doc){
+					doc.code.should.equal(200)
+					hatchDragon("redDragon", function(doc){
+						doc.code.should.equal(500)
+						doc.message.should.equal("龙蛋早已成功孵化")
+						done()
+					})
+				})
+			})
+		})
+
+		it("setDragonEquipment dragonType 不合法", function(done){
+			setDragonEquipment("redDragona", "crown", "moltenCrown", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("dragonType 不合法")
+				done()
+			})
+		})
+
+		it("setDragonEquipment equipmentCategory 不合法", function(done){
+			setDragonEquipment("redDragon", "crowna", "moltenCrown", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("equipmentCategory 不合法")
+				done()
+			})
+		})
+
+		it("setDragonEquipment equipmentName 不合法", function(done){
+			setDragonEquipment("redDragon", "crown", "moltenCrowna", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("equipmentName 不合法")
+				done()
+			})
+		})
+
+		it("setDragonEquipment equipmentName 不能装备到equipmentCategory", function(done){
+			setDragonEquipment("redDragon", "crown", "fireSuppressChest", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("equipmentName 不能装备到equipmentCategory")
+				done()
+			})
+		})
+
+		it("setDragonEquipment equipmentName 不能装备到dragonType", function(done){
+			setDragonEquipment("redDragon", "crown", "glacierCrown", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("equipmentName 不能装备到dragonType")
+				done()
+			})
+		})
+
+		it("setDragonEquipment 龙还未孵化", function(done){
+			setDragonEquipment("blueDragon", "crown", "glacierCrown", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("龙还未孵化")
+				done()
+			})
+		})
+
+		it("setDragonEquipment 装备与龙的星级不匹配", function(done){
+			setDragonEquipment("redDragon", "crown", "fireSuppressCrown", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("装备与龙的星级不匹配")
+				done()
+			})
+		})
+
+		it("setDragonEquipment 仓库中没有此装备", function(done){
+			setDragonEquipment("redDragon", "crown", "moltenCrown", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("仓库中没有此装备")
+				done()
+			})
+		})
+
+		it("setDragonEquipment 龙身上已经存在相同类型的装备", function(done){
+			sendChat("dragonequipment 10", function(doc){
+				doc.code.should.equal(200)
+				setDragonEquipment("redDragon", "crown", "moltenCrown", function(doc){
+					doc.code.should.equal(200)
+					setDragonEquipment("redDragon", "crown", "moltenCrown", function(doc){
+						doc.code.should.equal(500)
+						doc.message.should.equal("龙身上已经存在相同类型的装备")
+						done()
+					})
+				})
+			})
+		})
+
+		it("enhanceDragonEquipment 此分类还没有配置装备", function(done){
+			enhanceDragonEquipment("redDragon", "chest", [], function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("此分类还没有配置装备")
+				done()
+			})
+		})
+
+		it("enhanceDragonEquipment 装备已到最高星级", function(done){
+			sendChat("dragonequipmentstar redDragon 10", function(doc){
+				doc.code.should.equal(200)
+				enhanceDragonEquipment("redDragon", "crown", [
+					{name:"moltenCrown", count:5}
+				], function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("装备已到最高星级")
+					done()
+				})
+			})
+		})
+
+		it("enhanceDragonEquipment 被强化的装备不存在或数量不足1", function(done){
+			setDragonEquipment("redDragon", "armguardLeft", "moltenArmguard", function(doc){
+				doc.code.should.equal(200)
+				enhanceDragonEquipment("redDragon", "armguardLeft", [], function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("被强化的装备不存在或数量不足")
+					done()
+				})
+			})
+		})
+
+		it("enhanceDragonEquipment 被强化的装备不存在或数量不足2", function(done){
+			enhanceDragonEquipment("redDragon", "armguardLeft", [
+				{name:"moltenArmguard", count:30}
+			], function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("被强化的装备不存在或数量不足")
+				done()
+			})
+		})
+
+		it("enhanceDragonEquipment 被强化的装备不存在或数量不足3", function(done){
+			enhanceDragonEquipment("redDragon", "armguardLeft", [
+				{name:"moltenArmguarda", count:5}
+			], function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("被强化的装备不存在或数量不足")
+				done()
+			})
+		})
+
+		it("enhanceDragonEquipment 被强化的装备不存在或数量不足4", function(done){
+			enhanceDragonEquipment("redDragon", "armguardLeft", [
+				{name:"moltenArmguard", count:-1}
+			], function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("被强化的装备不存在或数量不足")
+				done()
+			})
+		})
+
+		it("enhanceDragonEquipment 正常强化", function(done){
+			enhanceDragonEquipment("redDragon", "armguardLeft", [
+				{name:"moltenArmguard", count:5}
+			], function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("resetDragonEquipment 此分类还没有配置装备", function(done){
+			resetDragonEquipment("redDragon", "chest", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("此分类还没有配置装备")
+				done()
+			})
+		})
+
+		it("resetDragonEquipment 仓库中没有此装备", function(done){
+			sendChat("dragonequipment 0", function(doc){
+				doc.code.should.equal(200)
+				resetDragonEquipment("redDragon", "crown", function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("仓库中没有此装备")
+					sendChat("dragonequipment 10", function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("resetDragonEquipment 正常重置", function(done){
+			resetDragonEquipment("redDragon", "crown", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("upgradeDragonSkill skillLocation 不合法1", function(done){
+			upgradeDragonDragonSkill("redDragon", 0, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("skillLocation 不合法")
+				done()
+			})
+		})
+
+		it("upgradeDragonSkill skillLocation 不合法2", function(done){
+			upgradeDragonDragonSkill("redDragon", 1.5, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("skillLocation 不合法")
+				done()
+			})
+		})
+
+		it("upgradeDragonSkill 龙还未孵化", function(done){
+			upgradeDragonDragonSkill("blueDragon", 1, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("龙还未孵化")
+				done()
+			})
+		})
+
+		it("upgradeDragonSkill 此技能还未解锁", function(done){
+			upgradeDragonDragonSkill("redDragon", 2, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("此技能还未解锁")
+				done()
+			})
+		})
+
+		it("upgradeDragonSkill 技能已达最高等级", function(done){
+			sendChat("dragonskill redDragon 60", function(doc){
+				doc.code.should.equal(200)
+				upgradeDragonDragonSkill("redDragon", 1, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("技能已达最高等级")
+					done()
+				})
+			})
+		})
+
+		it("upgradeDragonSkill 能量不足", function(done){
+			sendChat("dragonskill redDragon 0", function(doc){
+				doc.code.should.equal(200)
+				sendChat("energy 0", function(doc){
+					doc.code.should.equal(200)
+					upgradeDragonDragonSkill("redDragon", 1, function(doc){
+						doc.code.should.equal(500)
+						doc.message.should.equal("能量不足")
+						sendChat("energy 100", function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
+					})
+				})
+			})
+		})
+
+		it("upgradeDragonSkill 英雄之血不足", function(done){
+			sendChat("blood 0", function(doc){
+				doc.code.should.equal(200)
+				upgradeDragonDragonSkill("redDragon", 1, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("英雄之血不足")
+					sendChat("blood 1000", function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("upgradeDragonSkill 正常升级", function(done){
+			upgradeDragonDragonSkill("redDragon", 1, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("upgradeDragonStar 龙还未孵化", function(done){
+			upgradeDragonStar("blueDragon", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("龙还未孵化")
+				done()
+			})
+		})
+
+		it("upgradeDragonStar 龙的星级已达最高", function(done){
+			sendChat("dragonstar redDragon 10", function(doc){
+				doc.code.should.equal(200)
+				upgradeDragonStar("redDragon", function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("龙的星级已达最高")
+					done()
+				})
+			})
+		})
+
+		it("upgradeDragonStar 龙的等级未达到晋级要求", function(done){
+			sendChat("dragonstar redDragon 1", function(doc){
+				doc.code.should.equal(200)
+				sendChat("dragonstar redDragon 2", function(doc){
+					doc.code.should.equal(200)
+					upgradeDragonStar("redDragon", function(doc){
+						doc.code.should.equal(500)
+						doc.message.should.equal("龙的等级未达到晋级要求")
+						done()
+					})
+				})
+			})
+		})
+
+		it("upgradeDragonStar 龙的装备未达到晋级要求", function(done){
+			sendChat("dragonstar redDragon 1", function(doc){
+				doc.code.should.equal(200)
+				upgradeDragonStar("redDragon", function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("龙的装备未达到晋级要求")
+					done()
+				})
+			})
+		})
+
+		it("upgradeDragonStar 正常晋级", function(done){
+			setDragonEquipment("redDragon", "crown", "moltenCrown", function(doc){
+				doc.code.should.equal(200)
+				setDragonEquipment("redDragon", "armguardLeft", "moltenArmguard", function(doc){
+					doc.code.should.equal(200)
+					setDragonEquipment("redDragon", "armguardRight", "moltenArmguard", function(doc){
+						doc.code.should.equal(200)
+						sendChat("dragonequipmentstar redDragon 5", function(doc){
+							doc.code.should.equal(200)
+							upgradeDragonStar("redDragon", function(doc){
+								doc.code.should.equal(200)
+								done()
+							})
+						})
+					})
+				})
 			})
 		})
 	})

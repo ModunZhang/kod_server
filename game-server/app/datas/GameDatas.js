@@ -56,6 +56,18 @@ GameDatas.BuildingLevelUp.workshop = require("./BuildingLevelUp_workshop.js")
 GameDatas.Buildings = {}
 GameDatas.Buildings.buildings = require("./Buildings_buildings.js")
 
+GameDatas.DragonEyrie = {}
+GameDatas.DragonEyrie.crown = require("./DragonEyrie_crown.js")
+GameDatas.DragonEyrie.armguardLeft = require("./DragonEyrie_armguardLeft.js")
+GameDatas.DragonEyrie.armguardRight = require("./DragonEyrie_armguardRight.js")
+GameDatas.DragonEyrie.chest = require("./DragonEyrie_chest.js")
+GameDatas.DragonEyrie.sting = require("./DragonEyrie_sting.js")
+GameDatas.DragonEyrie.orb = require("./DragonEyrie_orb.js")
+GameDatas.DragonEyrie.equipmentBuff = require("./DragonEyrie_equipmentBuff.js")
+GameDatas.DragonEyrie.dragonAttribute = require("./DragonEyrie_dragonAttribute.js")
+GameDatas.DragonEyrie.dragons = require("./DragonEyrie_dragons.js")
+GameDatas.DragonEyrie.dragonSkill = require("./DragonEyrie_dragonSkill.js")
+
 GameDatas.GemsPayment = {}
 GameDatas.GemsPayment.time = require("./GemsPayment_time.js")
 GameDatas.GemsPayment.wood = require("./GemsPayment_wood.js")

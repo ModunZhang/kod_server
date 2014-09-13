@@ -158,6 +158,22 @@ var AfterLogin = function(doc){
 		}
 	})
 	LogicUtils.removeEvents(dragonEquipmentFinishedEvents, doc.dragonEquipmentEvents)
+	//检查医院治疗伤兵事件
+	var treatSoldierFinishedEvents = []
+	_.each(doc.treatSoldierEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= Date.now()){
+			_.each(event.soldiers, function(soldier){
+				doc.soldiers[soldier.name] += soldier.count
+				doc.treatSoldiers[soldier.name] -= soldier.count
+			})
+			self.pushService.onTreatSoldierSuccess(doc, event.soldiers)
+			treatSoldierFinishedEvents.push(event)
+		}else{
+			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	LogicUtils.removeEvents(treatSoldierFinishedEvents, doc.treatSoldierEvents)
+
 
 	//刷新玩家战力
 	self.refreshPlayerPower(doc)
@@ -214,7 +230,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(buildingLocation)){
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0){
 		callback(new Error("buildingLocation 不合法"))
 		return
 	}
@@ -338,7 +354,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(buildingLocation)){
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0){
 		callback(new Error("buildingLocation 不合法"))
 		return
 	}
@@ -346,7 +362,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		callback(new Error("houseType 不合法"))
 		return
 	}
-	if(!_.isNumber(houseLocation)){
+	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0){
 		callback(new Error("houseLocation 不合法"))
 		return
 	}
@@ -378,7 +394,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			return Promise.reject(new Error("小屋数量超过限制"))
 		}
 		//检查建造坑位是否合法
-		if(houseLocation % 1 != 0 || houseLocation < 1 || houseLocation > 3){
+		if(houseLocation % 1 !== 0 || houseLocation < 1 || houseLocation > 3){
 			return Promise.reject(new Error("小屋location只能1<=location<=3"))
 		}
 		//建筑周围不允许建造小屋
@@ -488,11 +504,11 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(buildingLocation)){
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0){
 		callback(new Error("buildingLocation 不合法"))
 		return
 	}
-	if(!_.isNumber(houseLocation)){
+	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0){
 		callback(new Error("houseLocation 不合法"))
 		return
 	}
@@ -629,11 +645,11 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(buildingLocation)){
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0){
 		callback(new Error("buildingLocation 不合法"))
 		return
 	}
-	if(!_.isNumber(houseLocation)){
+	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0){
 		callback(new Error("houseLocation 不合法"))
 		return
 	}
@@ -715,7 +731,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(towerLocation)){
+	if(!_.isNumber(towerLocation) || towerLocation % 1 !== 0){
 		callback(new Error("towerLocation 不合法"))
 		return
 	}
@@ -934,7 +950,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isEqual(Consts.MaterialType.Building, category) && !_.isEqual(Consts.MaterialType.Technology, category)){
+	if(!_.contains(Consts.MaterialType, category)){
 		callback(new Error("category 不合法"))
 		return
 	}
@@ -1028,7 +1044,7 @@ pro.getMaterials = function(playerId, category, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isEqual(Consts.MaterialType.Building, category) && !_.isEqual(Consts.MaterialType.Technology, category)){
+	if(!_.contains(Consts.MaterialType, category)){
 		callback(new Error("category 不合法"))
 		return
 	}
@@ -1384,7 +1400,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		//是否立即完成
 		if(finishNow){
 			_.each(soldiers, function(soldier){
-				doc.soldiers[soldier.name] = soldier.count
+				doc.soldiers[soldier.name] += soldier.count
 				doc.treatSoldiers[soldier.name] -= soldier.count
 			})
 			self.pushService.onTreatSoldierSuccess(doc, soldiers)
@@ -1393,6 +1409,358 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			LogicUtils.addTreatSoldierEvent(doc, soldiers, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
 		}
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 孵化龙蛋
+ * @param playerId
+ * @param dragonType
+ * @param callback
+ */
+pro.hatchDragon = function(playerId, dragonType, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		callback(new Error("dragonType 不合法"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var hospital = doc.buildings["location_4"]
+		if(hospital.level < 1){
+			return Promise.reject(new Error("龙巢还未建造"))
+		}
+		self.refreshPlayerResources(doc)
+		if(doc.resources.energy < 10){
+			return Promise.reject(new Error("能量不足"))
+		}
+		var dragon = doc.dragons[dragonType]
+		if(dragon.star > 0){
+			return Promise.reject(new Error("龙蛋早已成功孵化"))
+		}
+		dragon.vitality += 10
+		doc.resources.energy -= 10
+		if(dragon.vitality >= 100){
+			dragon.star = 1
+			dragon.vitality = DataUtils.getDragonMaxVitality(doc, dragon)
+			dragon.strength = DataUtils.getDragonStrength(doc, dragon)
+		}
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 设置龙的某部位的装备
+ * @param playerId
+ * @param dragonType
+ * @param equipmentCategory
+ * @param equipmentName
+ * @param callback
+ */
+pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equipmentName, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		callback(new Error("dragonType 不合法"))
+		return
+	}
+	if(!_.contains(Consts.DragonEquipmentCategory, equipmentCategory)){
+		callback(new Error("equipmentCategory 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonEquipment(equipmentName)){
+		callback(new Error("equipmentName 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonEquipmentLegalAtCategory(equipmentName, equipmentCategory)){
+		callback(new Error("equipmentName 不能装备到equipmentCategory"))
+		return
+	}
+	if(!DataUtils.isDragonEquipmentLegalOnDragon(equipmentName, dragonType)){
+		callback(new Error("equipmentName 不能装备到dragonType"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var dragon = doc.dragons[dragonType]
+		if(dragon.star <= 0){
+			return Promise.reject(new Error("龙还未孵化"))
+		}
+		if(!DataUtils.isDragonEquipmentStarEqualWithDragonStar(equipmentName, dragon)){
+			return Promise.reject(new Error("装备与龙的星级不匹配"))
+		}
+		if(doc.dragonEquipments[equipmentName] <= 0){
+			return Promise.reject(new Error("仓库中没有此装备"))
+		}
+		var equipment = dragon.equipments[equipmentCategory]
+		if(!_.isEmpty(equipment.name)){
+			return Promise.reject(new Error("龙身上已经存在相同类型的装备"))
+		}
+		equipment.name = equipmentName
+		equipment.buffs = DataUtils.generateDragonEquipmentBuffs(equipmentName)
+		doc.dragonEquipments[equipmentName] -= 1
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 强化龙的装备
+ * @param playerId
+ * @param dragonType
+ * @param equipmentCategory
+ * @param equipments
+ * @param callback
+ */
+pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, equipments, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		callback(new Error("dragonType 不合法"))
+		return
+	}
+	if(!_.contains(Consts.DragonEquipmentCategory, equipmentCategory)){
+		callback(new Error("equipmentCategory 不合法"))
+		return
+	}
+	if(!_.isArray(equipments)){
+		callback(new Error("equipments 不合法"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var dragon = doc.dragons[dragonType]
+		var equipment = dragon.equipments[equipmentCategory]
+		if(_.isEmpty(equipment.name)){
+			return Promise.reject(new Error("此分类还没有配置装备"))
+		}
+		if(DataUtils.isDragonEquipmentReachMaxStar(equipment)){
+			return Promise.reject(new Error("装备已到最高星级"))
+		}
+		if(!LogicUtils.isEnhanceDragonEquipmentLegal(doc, equipments)){
+			return Promise.reject(new Error("被强化的装备不存在或数量不足"))
+		}
+		DataUtils.enhanceDragonEquipment(doc, dragonType, equipmentCategory, equipments)
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 重置装备随机属性
+ * @param playerId
+ * @param dragonType
+ * @param equipmentCategory
+ * @param callback
+ */
+pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		callback(new Error("dragonType 不合法"))
+		return
+	}
+	if(!_.contains(Consts.DragonEquipmentCategory, equipmentCategory)){
+		callback(new Error("equipmentCategory 不合法"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var dragon = doc.dragons[dragonType]
+		var equipment = dragon.equipments[equipmentCategory]
+		if(_.isEmpty(equipment.name)){
+			return Promise.reject(new Error("此分类还没有配置装备"))
+		}
+		if(doc.dragonEquipments[equipment.name] <= 0){
+			return Promise.reject(new Error("仓库中没有此装备"))
+		}
+		equipment.buffs = DataUtils.generateDragonEquipmentBuffs(equipment.name)
+		doc.dragonEquipments[equipment.name] -= 1
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 升级龙的技能
+ * @param playerId
+ * @param dragonType
+ * @param skillLocation
+ * @param callback
+ */
+pro.upgradeDragonSkill = function(playerId, dragonType, skillLocation, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		callback(new Error("dragonType 不合法"))
+		return
+	}
+	if(!_.isNumber(skillLocation) || skillLocation % 1 !== 0 || skillLocation < 1 || skillLocation > 9){
+		callback(new Error("skillLocation 不合法"))
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var dragon = doc.dragons[dragonType]
+		if(dragon.star <= 0){
+			return Promise.reject(new Error("龙还未孵化"))
+		}
+		var skill = dragon.skills["skill_" + skillLocation]
+		if(!DataUtils.isDragonSkillUnlocked(dragon, skill.name)){
+			return Promise.reject(new Error("此技能还未解锁"))
+		}
+		if(DataUtils.isDragonSkillReachMaxLevel(skill)){
+			return Promise.reject(new Error("技能已达最高等级"))
+		}
+
+		var upgradeRequired = DataUtils.getDragonSkillUpgradeRequired(doc, dragon, skill)
+		self.refreshPlayerResources(doc)
+		if(doc.resources.energy < upgradeRequired.energy){
+			return Promise.reject(new Error("能量不足"))
+		}
+		if(doc.resources.blood < upgradeRequired.blood){
+			return Promise.reject(new Error("英雄之血不足"))
+		}
+		skill.level += 1
+		doc.resources.energy -= upgradeRequired.energy
+		doc.resources.blood -= upgradeRequired.blood
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 升级龙的星级
+ * @param playerId
+ * @param dragonType
+ * @param callback
+ */
+pro.upgradeDragonStar = function(playerId, dragonType, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		callback(new Error("dragonType 不合法"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var dragon = doc.dragons[dragonType]
+		if(dragon.star <= 0){
+			return Promise.reject(new Error("龙还未孵化"))
+		}
+		if(DataUtils.isDragonReachMaxStar(dragon)){
+			return Promise.reject(new Error("龙的星级已达最高"))
+		}
+		if(!DataUtils.isDragonReachUpgradeLevel(dragon)){
+			return Promise.reject(new Error("龙的等级未达到晋级要求"))
+		}
+		if(!DataUtils.isDragonEquipmentsReachUpgradeLevel(dragon)){
+			return Promise.reject(new Error("龙的装备未达到晋级要求"))
+		}
+		//晋级
+		dragon.star += 1
+		dragon.vitality = DataUtils.getDragonMaxVitality(doc, dragon)
+		dragon.strength = DataUtils.getDragonStrength(doc, dragon)
+		//清除装备
+		_.each(dragon.equipments, function(equipment){
+			equipment.name = ""
+			equipment.star = 0
+			equipment.exp = 0
+			equipment.buffs = []
+		})
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -1489,6 +1857,19 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 			}
 		})
 		LogicUtils.removeEvents(dragonEquipmentFinishedEvents, doc.dragonEquipmentEvents)
+		//检查医院治疗伤兵事件
+		var treatSoldierFinishedEvents = []
+		_.each(doc.treatSoldierEvents, function(event){
+			if(event.finishTime > 0 && event.finishTime <= Date.now()){
+				_.each(event.soldiers, function(soldier){
+					doc.soldiers[soldier.name] += soldier.count
+					doc.treatSoldiers[soldier.name] -= soldier.count
+				})
+				self.pushService.onTreatSoldierSuccess(doc, event.soldiers)
+				treatSoldierFinishedEvents.push(event)
+			}
+		})
+		LogicUtils.removeEvents(treatSoldierFinishedEvents, doc.treatSoldierEvents)
 
 		//刷新玩家战力
 		self.refreshPlayerPower(doc)

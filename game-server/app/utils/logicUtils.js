@@ -10,8 +10,17 @@ var DataUtils = require("./dataUtils")
 var Utils = module.exports
 
 
+/**
+ * 获取Buff加成效果
+ * @param origin
+ * @param effect
+ * @returns {number}
+ */
 Utils.getEfficiency = function(origin, effect){
-	return
+	var res = 1 / (1 + effect)
+	res = Math.floor(res * 1000000) / 1000000
+	res = Math.floor(origin * res)
+	return res
 }
 
 /**
@@ -496,8 +505,27 @@ Utils.isTreatSoldierLegal = function(playerDoc, soldiers){
 		if(!_.isString(soldierName) || !_.isNumber(count)) return false
 		count = Math.floor(count)
 		if(count <= 0) return false
-
 		if(!playerDoc.treatSoldiers[soldierName] || playerDoc.treatSoldiers[soldierName] < count) return false
+	}
+	return true
+}
+
+/**
+ * 检查强化龙装备是否合法
+ * @param playerDoc
+ * @param equipments
+ * @returns {boolean}
+ */
+Utils.isEnhanceDragonEquipmentLegal = function(playerDoc, equipments){
+	if(equipments.length == 0) return false
+	for(var i = 0; i < equipments.length; i ++){
+		var equipment = equipments[i]
+		var equipmentName = equipment.name
+		var count = equipment.count
+		if(!_.isString(equipmentName) || !_.isNumber(count)) return false
+		count = Math.floor(count)
+		if(count <= 0) return false
+		if(!playerDoc.dragonEquipments[equipmentName] || playerDoc.dragonEquipments[equipmentName] < count) return false
 	}
 	return true
 }

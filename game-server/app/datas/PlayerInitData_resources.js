@@ -11,9 +11,6 @@ resources[1] = {
 	"citizen":0,
 	"coin":50000,
 	"cart":0,
-	"dwelling":3,
-	"woodcutter":3,
-	"farmer":3,
-	"quarrier":3,
-	"miner":3
+	"energy":100,
+	"blood":1000
 }

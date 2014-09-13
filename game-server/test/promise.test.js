@@ -505,3 +505,57 @@ var Utils = require("../app/utils/utils")
 //console.log(res)
 //res = Math.floor(res * 1000000) / 1000000
 //console.log(res)
+//
+//var a = {}
+//if(!a["1"]){
+//	console.log("success")
+//}else{
+//	console.log("failed")
+//}
+//
+//var equipmentInDragon = {
+//	star:0,
+//	exp:0
+//}
+//var config = {
+//	"1_0":40,
+//	"1_1":40,
+//	"2_0":120,
+//	"2_1":160,
+//	"2_2":200,
+//	"3_0":600,
+//	"3_1":800,
+//	"3_2":1000,
+//	"3_3":1200,
+//	"4_0":1600,
+//	"4_1":2000,
+//	"4_2":2400,
+//	"4_3":2800,
+//	"4_4":3200,
+//	"5_0":4000,
+//	"5_1":4800,
+//	"5_2":5600,
+//	"5_3":6400,
+//	"5_4":7200,
+//	"5_5":8000
+//}
+//var maxStar = 5
+//var currentStar = equipmentInDragon.star
+//var currentExp = equipmentInDragon.exp
+//var totalExp = 17000
+//while(totalExp > 0 && currentStar < maxStar){
+//	var maxExp = config[maxStar + "_" + currentStar]
+//	var expNeeded = maxExp - currentExp
+//	if(expNeeded <= totalExp){
+//		currentStar += 1
+//		currentExp = 0
+//		totalExp -= expNeeded
+//	}else{
+//		currentExp += totalExp
+//		totalExp = 0
+//	}
+//}
+//equipmentInDragon.star = currentStar
+//equipmentInDragon.exp = currentExp
+//
+//console.log(equipmentInDragon)

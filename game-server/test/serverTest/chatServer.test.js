@@ -414,6 +414,48 @@ describe("ChatServer", function(){
 			})
 		})
 
+		it("send energy", function(done){
+			sendChat("energy 500", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("send blood", function(done){
+			sendChat("blood 500", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("send dragonvitality", function(done){
+			sendChat("dragonvitality redDragon 80", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("send dragonskill", function(done){
+			sendChat("dragonskill redDragon 20", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("send dragonequipmentstar", function(done){
+			sendChat("dragonequipmentstar redDragon 10", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("send dragonstar", function(done){
+			sendChat("dragonstar redDragon 10", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
 		it("send kickme", function(done){
 			var chatInfo = {
 				text:"kickme",

@@ -147,6 +147,47 @@ pro.coin = function(uid, count, callback){
 }
 
 /**
+ * 修改玩家能量数据
+ * @param uid
+ * @param count
+ * @param callback
+ */
+pro.energy = function(uid, count, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		var maxEnergy = DataUtis.getPlayerEnergyUpLimit(doc)
+		doc.resources.energy = maxEnergy > count ? count : maxEnergy
+		self.playerService.refreshPlayerResources(doc)
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 修改玩家英雄之血的数量
+ * @param uid
+ * @param count
+ * @param callback
+ */
+pro.blood = function(uid, count, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		doc.resources.blood = count
+		self.playerService.refreshPlayerResources(doc)
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * 修改所有建筑的等级
  * @param uid
  * @param level
@@ -560,6 +601,127 @@ pro.rmtreatsoldierevents = function(uid, callback){
 	this.cacheService.getPlayerAsync(uid).then(function(doc){
 		while(doc.treatSoldierEvents.length > 0){
 			doc.treatSoldierEvents.pop()
+		}
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 修改指定龙的活力
+ * @param uid
+ * @param dragonType
+ * @param count
+ * @param callback
+ */
+pro.dragonvitality = function(uid, dragonType, count, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		var dragon = _.find(doc.dragons, function(dragon){
+			if(_.isEqual(dragon.type.toLowerCase(), dragonType)) return true
+		})
+		if(dragon && count >= 0){
+			dragon.vitality = count
+		}
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 设置龙的技能的等级
+ * @param uid
+ * @param dragonType
+ * @param level
+ * @param callback
+ */
+pro.dragonskill = function(uid, dragonType, level, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		var dragon = _.find(doc.dragons, function(dragon){
+			if(_.isEqual(dragon.type.toLowerCase(), dragonType)) return true
+		})
+		if(dragon && level >= 0){
+			_.each(dragon.skills, function(skill){
+				if(DataUtis.isDragonSkillUnlocked(dragon, skill.name)){
+					var maxLevel = DataUtis.getDragonSkillMaxLevel(skill)
+					skill.level = maxLevel > level ? level : maxLevel
+				}
+			})
+		}
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 设置龙装备的星级
+ * @param uid
+ * @param dragonType
+ * @param star
+ * @param callback
+ */
+pro.dragonequipmentstar = function(uid, dragonType, star, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		var dragon = _.find(doc.dragons, function(dragon){
+			if(_.isEqual(dragon.type.toLowerCase(), dragonType)) return true
+		})
+		if(dragon && star >= 0){
+			_.each(dragon.equipments, function(equipment){
+				if(!_.isEmpty(equipment.name)){
+					var maxStar = DataUtis.getDragonEquipmentMaxStar(equipment.name)
+					equipment.star = maxStar > star ? star : maxStar
+				}
+			})
+		}
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 设置龙的星级
+ * @param uid
+ * @param dragonType
+ * @param star
+ * @param callback
+ */
+pro.dragonstar = function(uid, dragonType, star, callback){
+	var self = this
+	this.cacheService.getPlayerAsync(uid).then(function(doc){
+		var dragon = _.find(doc.dragons, function(dragon){
+			if(_.isEqual(dragon.type.toLowerCase(), dragonType)) return true
+		})
+		if(dragon && star >= 0){
+			var maxStar = DataUtis.getDragonMaxStar()
+			dragon.star = maxStar > star ? star : maxStar
+			var lowestLevel = DataUtis.getDragonLowestLevelOnStar(dragon)
+			var highestLevel = DataUtis.getDragonHighestLevelOnStar(dragon)
+			if(dragon.level < lowestLevel) dragon.level = lowestLevel
+			if(dragon.level > highestLevel) dragon.level = highestLevel
+			_.each(dragon.equipments, function(equipment){
+				equipment.name = ""
+				equipment.star = 0
+				equipment.exp = 0
+				equipment.buffs = []
+			})
 		}
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){

@@ -33,7 +33,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"gem",
-			desc:"修改玩家宝石数量, 如: gem 2000 为修改玩家宝石数量为2000",
+			desc:"修改玩家宝石数量",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -47,7 +47,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"rs",
-			desc:"修改玩家资源数量, 如: rs 2000 为修改玩家所有资源数量为2000",
+			desc:"修改玩家资源数量",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -61,7 +61,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"citizen",
-			desc:"修改玩家空闲居民数量, 如: citizen 2000 为修改玩家空闲居民数量为2000",
+			desc:"修改玩家空闲居民数量",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -75,7 +75,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"coin",
-			desc:"修改玩家银币数量, 如: coin 2000 为修改玩家银币数量为2000",
+			desc:"修改玩家银币数量",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -88,8 +88,36 @@ var ChatHandler = function(app){
 			}
 		},
 		{
+			command:"energy",
+			desc:"修改玩家能量数据",
+			func:function(session, uid, text, callback){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					self.app.rpc.logic.commandRemote.energy(session, uid, count, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
+			command:"blood",
+			desc:"修改玩家英雄之血的数量",
+			func:function(session, uid, text, callback){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					self.app.rpc.logic.commandRemote.blood(session, uid, count, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
 			command:"building",
-			desc:"修改玩家银币数量, 如: building 5 为修改玩家所有玩家建筑等级为5级",
+			desc:"修改玩家银币数量",
 			func:function(session, uid, text, callback){
 				var self = this
 				var level = text.split(" ")[1]
@@ -103,7 +131,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"keep",
-			desc:"修改玩家城堡等级, 如: keep 5 为修改玩家城堡等级为5级",
+			desc:"修改玩家城堡等级",
 			func:function(session, uid, text, callback){
 				var self = this
 				var level = text.split(" ")[1]
@@ -243,6 +271,66 @@ var ChatHandler = function(app){
 				self.app.rpc.logic.commandRemote.rmtreatsoldierevents(session, uid, function(e){
 					callback(e)
 				})
+			}
+		},
+		{
+			command:"dragonvitality",
+			desc:"修改指定龙的活力",
+			func:function(session, uid, text, callback){
+				var self = this
+				var dragonType = text.split(" ")[1]
+				var count = text.split(" ")[2]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					self.app.rpc.logic.commandRemote.dragonvitality(session, uid, dragonType, count, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
+			command:"dragonskill",
+			desc:"设置龙的技能的等级",
+			func:function(session, uid, text, callback){
+				var self = this
+				var dragonType = text.split(" ")[1]
+				var level = text.split(" ")[2]
+				level = parseInt(level)
+				if(_.isNumber(level)){
+					self.app.rpc.logic.commandRemote.dragonskill(session, uid, dragonType, level, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
+			command:"dragonequipmentstar",
+			desc:"设置龙装备的星级",
+			func:function(session, uid, text, callback){
+				var self = this
+				var dragonType = text.split(" ")[1]
+				var star = text.split(" ")[2]
+				star = parseInt(star)
+				if(_.isNumber(star)){
+					self.app.rpc.logic.commandRemote.dragonequipmentstar(session, uid, dragonType, star, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
+			command:"dragonstar",
+			desc:"设置龙的星级",
+			func:function(session, uid, text, callback){
+				var self = this
+				var dragonType = text.split(" ")[1]
+				var star = text.split(" ")[2]
+				star = parseInt(star)
+				if(_.isNumber(star)){
+					self.app.rpc.logic.commandRemote.dragonstar(session, uid, dragonType, star, function(e){
+						callback(e)
+					})
+				}
 			}
 		}
 	]
