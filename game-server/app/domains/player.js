@@ -380,7 +380,34 @@ var playerSchema = new Schema({
 		{
 			finishTime:{type:Number, required:true}
 		}
-	]
+	],
+	requestToAllianceEvents:[{
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		tag:{type:String, required:true},
+		requestDate:{type:Number, required:true},
+		flag:[String],
+		level:{type:Number, required:true},
+		members:{type:Number, required:true},
+		power:{type:Number, required:true},
+		language:{type:String, required:true},
+		kill:{type:String, required:true}
+	}],
+	inviteToAllianceEvents:[{
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		tag:{type:String, required:true},
+		inviteDate:{type:Number, required:true},
+		flag:[String],
+		level:{type:Number, required:true},
+		members:{type:Number, required:true},
+		power:{type:Number, required:true},
+		language:{type:String, required:true},
+		kill:{type:String, required:true}
+	}],
+	alliance:{
+		id:{type:String, required:false}
+	}
 })
 
 module.exports = mongoose.model('player', playerSchema)

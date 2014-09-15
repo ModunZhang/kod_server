@@ -24,6 +24,16 @@ module.exports = {
 	BasicResource:["wood", "stone", "iron", "food"],
 	MaterialType:{
 		Building:"building",
-		Technology:"tochnology"
+		Technology:"technology"
+	},
+	AllianceLanguage:{
+		All:"all"
+	},
+	AllianceTerrain:{
+
+	},
+	AllianceJoinType:{
+		All:"all",
+		Audit:"audit"
 	}
 }
