@@ -229,6 +229,13 @@ var upgradeDragonStar = function(dragonType, callback){
 	})
 }
 
+var impose = function(callback){
+	var route = "logic.playerHandler.impose"
+	pomelo.request(route, null, function(doc){
+		callback(doc)
+	})
+}
+
 describe("LogicServer", function(){
 	var m_user
 
@@ -278,8 +285,16 @@ describe("LogicServer", function(){
 
 
 	describe("playerHandler", function(){
+		it("upgradeBuilding buildingLocation 不合法", function(done){
+			upgradeBuilding(26, false, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("buildingLocation 不合法")
+				done()
+			})
+		})
+
 		it("upgradeBuilding 建筑不存在", function(done){
-			upgradeBuilding(60, false, function(doc){
+			upgradeBuilding(25, false, function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("建筑不存在")
 				done()
@@ -396,8 +411,24 @@ describe("LogicServer", function(){
 			})
 		})
 
+		it("createHouse buildingLocation 不合法", function(done){
+			createHouse("dwelling", 26, 1, false, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("buildingLocation 不合法")
+				done()
+			})
+		})
+
+		it("createHouse houseLocation 不合法", function(done){
+			createHouse("dwelling", 25, 4, false, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("houseLocation 不合法")
+				done()
+			})
+		})
+
 		it("createHouse 主体建筑不存在", function(done){
-			createHouse("dwelling", 55, 1, false, function(doc){
+			createHouse("dwelling", 25, 1, false, function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("主体建筑不存在")
 				done()
@@ -496,19 +527,6 @@ describe("LogicServer", function(){
 			}
 
 			upgradeBuilding()
-		})
-
-		it("createHouse 小屋location只能1<=location<=3", function(done){
-			createHouse("dwelling", 3, 4, false, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("小屋location只能1<=location<=3")
-
-				createHouse("dwelling", 3, 0, false, function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("小屋location只能1<=location<=3")
-					done()
-				})
-			})
 		})
 
 		it("createHouse 建筑周围不允许建造小屋", function(done){
@@ -693,7 +711,7 @@ describe("LogicServer", function(){
 		})
 
 		it("destroyHouse 主体建筑不存在", function(done){
-			destroyHouse(55, 1, function(doc){
+			destroyHouse(25, 1, function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("主体建筑不存在")
 				done()
@@ -737,10 +755,10 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("upgradeTower 箭塔不存在", function(done){
+		it("upgradeTower towerLocation 不合法", function(done){
 			upgradeTower(20, false, function(doc){
 				doc.code.should.equal(500)
-				doc.message.should.equal("箭塔不存在")
+				doc.message.should.equal("towerLocation 不合法")
 				done()
 			})
 		})
@@ -1682,6 +1700,54 @@ describe("LogicServer", function(){
 								done()
 							})
 						})
+					})
+				})
+			})
+		})
+
+		it("impose 市政厅还未建造", function(done){
+			impose(function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("市政厅还未建造")
+				done()
+			})
+		})
+
+		it("impose 空闲城民不足", function(done){
+			sendChat("gem 500000", function(doc){
+				doc.code.should.equal(200)
+				upgradeBuilding(1, true, function(doc){
+					doc.code.should.equal(200)
+					upgradeBuilding(8, true, function(doc){
+						doc.code.should.equal(200)
+						upgradeBuilding(9, true, function(doc){
+							doc.code.should.equal(200)
+							upgradeBuilding(15, true, function(doc){
+								doc.code.should.equal(200)
+								sendChat("citizen 0", function(doc){
+									doc.code.should.equal(200)
+									impose(function(doc){
+										doc.code.should.equal(500)
+										doc.message.should.equal("空闲城民不足")
+										done()
+									})
+								})
+							})
+						})
+					})
+				})
+			})
+		})
+
+		it("impose 正在收税中", function(done){
+			sendChat("citizen 1600", function(doc){
+				doc.code.should.equal(200)
+				impose(function(doc){
+					doc.code.should.equal(200)
+					impose(function(doc){
+						doc.code.should.equal(500)
+						doc.message.should.equal("正在收税中")
+						done()
 					})
 				})
 			})

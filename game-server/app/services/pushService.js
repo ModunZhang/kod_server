@@ -170,3 +170,15 @@ pro.onTreatSoldierSuccess = function(playerData, soldiers){
 	}
 	this.pushToPlayer(playerData, Events.player.onTreatSoldierSuccess, data)
 }
+
+/**
+ * 收税完成通知
+ * @param playerData
+ * @param coinCount
+ */
+pro.onImposeSuccess = function(playerData, coinCount){
+	var data = {
+		coinCount:coinCount
+	}
+	this.pushToPlayer(playerData, Events.player.onImposeSuccess, data)
+}

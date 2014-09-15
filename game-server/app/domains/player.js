@@ -121,6 +121,12 @@ var playerSchema = new Schema({
 		energy:{type:Number, required:true, default:ResourceInitData.energy},
 		blood:{type:Number, required:true, default:ResourceInitData.blood}
 	},
+	coinEvents:[
+		{
+			coin:{type:Number, required:true},
+			finishTime:{type:Number, required:true}
+		}
+	],
 	materials:{
 		blueprints:{type:Number, required:true, default:MaterialInitData.blueprints},
 		tools:{type:Number, required:true, default:MaterialInitData.tools},

@@ -377,3 +377,17 @@ pro.upgradeDragonStar = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 向城民收取税收
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.impose = function(msg, session, next){
+	this.playerService.imposeAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

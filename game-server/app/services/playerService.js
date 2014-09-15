@@ -173,6 +173,18 @@ var AfterLogin = function(doc){
 		}
 	})
 	LogicUtils.removeEvents(treatSoldierFinishedEvents, doc.treatSoldierEvents)
+	//检查城民税收事件
+	var coinFinishedEvents = []
+	_.each(doc.coinEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= Date.now()){
+			doc.resources.coin += event.coin
+			self.pushService.onImposeSuccess(doc, event.coin)
+			coinFinishedEvents.push(event)
+		}else{
+			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	LogicUtils.removeEvents(coinFinishedEvents, doc.coinEvents)
 
 
 	//刷新玩家战力
@@ -230,7 +242,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0){
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1 || buildingLocation > 25){
 		callback(new Error("buildingLocation 不合法"))
 		return
 	}
@@ -354,7 +366,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0){
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1 || buildingLocation > 25){
 		callback(new Error("buildingLocation 不合法"))
 		return
 	}
@@ -362,7 +374,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		callback(new Error("houseType 不合法"))
 		return
 	}
-	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0){
+	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0 || houseLocation < 1 || houseLocation > 3){
 		callback(new Error("houseLocation 不合法"))
 		return
 	}
@@ -392,10 +404,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		//检查小屋个数是否超标
 		if(DataUtils.getPlayerFreeHousesCount(doc, houseType) <= 0){
 			return Promise.reject(new Error("小屋数量超过限制"))
-		}
-		//检查建造坑位是否合法
-		if(houseLocation % 1 !== 0 || houseLocation < 1 || houseLocation > 3){
-			return Promise.reject(new Error("小屋location只能1<=location<=3"))
 		}
 		//建筑周围不允许建造小屋
 		if(!DataUtils.isBuildingHasHouse(buildingLocation)){
@@ -504,11 +512,11 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0){
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1 || buildingLocation > 25){
 		callback(new Error("buildingLocation 不合法"))
 		return
 	}
-	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0){
+	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0 || houseLocation < 1 || houseLocation > 3){
 		callback(new Error("houseLocation 不合法"))
 		return
 	}
@@ -645,11 +653,11 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0){
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1 || buildingLocation > 25){
 		callback(new Error("buildingLocation 不合法"))
 		return
 	}
-	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0){
+	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0 || houseLocation < 1 || houseLocation > 3){
 		callback(new Error("houseLocation 不合法"))
 		return
 	}
@@ -731,7 +739,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(towerLocation) || towerLocation % 1 !== 0){
+	if(!_.isNumber(towerLocation) || towerLocation % 1 !== 0 || towerLocation < 1 || towerLocation > 11){
 		callback(new Error("towerLocation 不合法"))
 		return
 	}
@@ -1101,7 +1109,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		callback(new Error("soldierName 普通兵种不存在"))
 		return
 	}
-	if(!_.isNumber(count)){
+	if(!_.isNumber(count) || count % 1 !== 0 || count < 1){
 		callback(new Error("count 不合法"))
 		return
 	}
@@ -1195,7 +1203,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		callback(new Error("soldierName 特殊兵种不存在"))
 		return
 	}
-	if(!_.isNumber(count)){
+	if(!_.isNumber(count) || count % 1 !== 0 || count < 1){
 		callback(new Error("count 不合法"))
 		return
 	}
@@ -1772,6 +1780,55 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 	})
 }
 
+/**
+ * 向城民收取银币
+ * @param playerId
+ * @param callback
+ */
+pro.impose = function(playerId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var building = doc.buildings["location_15"]
+		if(building.level <= 0){
+			return Promise.reject(new Error("市政厅还未建造"))
+		}
+		if(doc.coinEvents.length > 0){
+			return Promise.reject(new Error("正在收税中"))
+		}
+
+		self.refreshPlayerResources(doc)
+		var required = DataUtils.getImposeRequired(doc)
+		var imposedCoin = DataUtils.getImposedCoin(doc)
+		if(required.citizen > doc.resources.citizen){
+			return Promise.reject(new Error("空闲城民不足"))
+		}
+		doc.resources.citizen -= required.citizen
+		var finishTime = Date.now() + (required.imposeTime * 1000)
+		LogicUtils.addCoinEvent(doc, imposedCoin, finishTime)
+		self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
 var ExcutePlayerCallback = function(playerId, finishTime){
 	var self = this
 	this.cacheService.getPlayerAsync(playerId).then(function(doc){
@@ -1870,6 +1927,16 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 			}
 		})
 		LogicUtils.removeEvents(treatSoldierFinishedEvents, doc.treatSoldierEvents)
+		//检查城民税收事件
+		var coinFinishedEvents = []
+		_.each(doc.coinEvents, function(event){
+			if(event.finishTime > 0 && event.finishTime <= Date.now()){
+				doc.resources.coin += event.coin
+				self.pushService.onImposeSuccess(doc, event.coin)
+				coinFinishedEvents.push(event)
+			}
+		})
+		LogicUtils.removeEvents(coinFinishedEvents, doc.coinEvents)
 
 		//刷新玩家战力
 		self.refreshPlayerPower(doc)

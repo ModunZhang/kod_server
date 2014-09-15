@@ -424,6 +424,20 @@ Utils.addTreatSoldierEvent = function(playerDoc, soldiers, finishTime){
 }
 
 /**
+ * 添加城民收税事件
+ * @param playerDoc
+ * @param coin
+ * @param finishTime
+ */
+Utils.addCoinEvent = function(playerDoc, coin, finishTime){
+	var event = {
+		coin:coin,
+		finishTime:finishTime
+	}
+	playerDoc.coinEvents.push(event)
+}
+
+/**
  * 根据建筑建造事件查找建筑
  * @param playerDoc
  * @param buildingEvent

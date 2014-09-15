@@ -1360,3 +1360,29 @@ Utils.getDragonMaxStar = function(){
 Utils.isDragonReachMaxStar = function(dragon){
 	return dragon.star >= 4
 }
+
+/**
+ * 获取收税所需的城民
+ * @param playerDoc
+ * @returns {{citizen: (taxCitizen|*), imposeTime: (taxTime|*)}}
+ */
+Utils.getImposeRequired = function(playerDoc){
+	var building = playerDoc.buildings["location_15"]
+	var config = BuildingFunction.townHall[building.level]
+	var required = {
+		citizen:config.taxCitizen,
+		imposeTime:config.taxTime
+	}
+	return required
+}
+
+/**
+ * 获取收税将要获得的银币
+ * @param playerDoc
+ * @returns {totalTax|*}
+ */
+Utils.getImposedCoin = function(playerDoc){
+	var building = playerDoc.buildings["location_15"]
+	var config = BuildingFunction.townHall[building.level]
+	return config.totalTax
+}
