@@ -559,3 +559,19 @@ var Utils = require("../app/utils/utils")
 //equipmentInDragon.exp = currentExp
 //
 //console.log(equipmentInDragon)
+//
+//String.prototype.toUnicode = function(){
+//    var result = "";
+//    for(var i = 0; i < this.length; i++){
+//        result += "\\u" + ("000" + this[i].charCodeAt(0).toString(16)).substr(-4);
+//    }
+//    return result;
+//}
+//var pattern = /([\uE000-\uF8FF]|\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDDFF])/g
+//
+//var str = "😄"
+//for(var i = 0; i < str.length; i ++){
+//	var code = str[i].toUnicode()
+//	console.log(code)
+//	console.log(pattern.test(code))
+//}

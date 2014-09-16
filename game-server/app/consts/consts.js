@@ -27,10 +27,22 @@ module.exports = {
 		Technology:"technology"
 	},
 	AllianceLanguage:{
-		All:"all"
+		All:"all",
+		Cn:"cn",
+		Tw:"tw",
+		En:"en",
+		Fr:"fr",
+		De:"de",
+		Ko:"ko",
+		Ja:"ja",
+		Ru:"ru",
+		Es:"es",
+		Pt:"pt"
 	},
 	AllianceTerrain:{
-
+		GrassLand:"grassLand",
+		Desert:"desert",
+		IceField:"iceField"
 	},
 	AllianceJoinType:{
 		All:"all",

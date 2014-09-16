@@ -8,6 +8,9 @@ var Promise = require("bluebird")
 var _ = require("underscore")
 var crypto = require('crypto')
 
+var AllianceDao = require("../dao/allianceDao")
+var PlayerDao = require("../dao/playerDao")
+
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var Events = require("../consts/events")
@@ -20,6 +23,8 @@ var PlayerService = function(app){
 	this.pushService = this.app.get("pushService")
 	this.callbackService = this.app.get("callbackService")
 	this.cacheService = this.app.get("cacheService")
+	this.allianceDao = Promise.promisifyAll(new AllianceDao())
+	this.playerDao = Promise.promisifyAll(new PlayerDao())
 }
 
 module.exports = PlayerService
@@ -1829,6 +1834,70 @@ pro.impose = function(playerId, callback){
 	})
 }
 
+/**
+ * 创建联盟
+ * @param playerId
+ * @param name
+ * @param tag
+ * @param language
+ * @param terrain
+ * @param flag
+ * @param callback
+ */
+pro.createAlliance = function(playerId, name, tag, language, terrain, flag, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(name)){
+		callback(new Error("name 不合法"))
+		return
+	}
+	if(!_.isString(tag)){
+		callback(new Error("tag 不合法"))
+		return
+	}
+	if(!_.contains(Consts.AllianceLanguage, language)){
+		callback(new Error("language 不合法"))
+		return
+	}
+	if(!_.contains(Consts.AllianceTerrain, terrain)){
+		callback(new Error("terrain 不合法"))
+		return
+	}
+	if(!_.isString(flag)){
+		callback(new Error("flag 不合法"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家已加入了联盟"))
+		}
+		self.allianceDao.findAsync({"basicInfo.name":name}).then(function(doc){
+
+		}).catch(function(e){
+			return Promise.reject(e)
+		})
+
+		//保存玩家数据
+		return self.cacheService.updatePlayerAsync(doc)
+	}).then(function(doc){
+		//推送玩家数据到客户端
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
 var ExcutePlayerCallback = function(playerId, finishTime){
 	var self = this
 	this.cacheService.getPlayerAsync(playerId).then(function(doc){
@@ -1889,7 +1958,7 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 		LogicUtils.removeEvents(wallFinishedEvents, doc.wallEvents)
 		//检查材料制造
 		_.each(doc.materialEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= Date.now()){
+			if(event.finishTime > 0 && event.finishTime <= finishTime){
 				event.finishTime = 0
 				self.pushService.onMakeMaterialFinished(doc, event)
 			}
@@ -1897,7 +1966,7 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 		//检查招募事件
 		var soldierFinishedEvents = []
 		_.each(doc.soldierEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= Date.now()){
+			if(event.finishTime > 0 && event.finishTime <= finishTime){
 				doc.soldiers[event.name] += event.count
 				self.pushService.onRecruitSoldierSuccess(doc, event.name, event.count)
 				soldierFinishedEvents.push(event)
@@ -1907,7 +1976,7 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 		//检查龙装备制作事件
 		var dragonEquipmentFinishedEvents = []
 		_.each(doc.dragonEquipmentEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= Date.now()){
+			if(event.finishTime > 0 && event.finishTime <= finishTime){
 				doc.dragonEquipments[event.name] += 1
 				self.pushService.onMakeDragonEquipmentSuccess(doc, event.name)
 				dragonEquipmentFinishedEvents.push(event)
@@ -1917,7 +1986,7 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 		//检查医院治疗伤兵事件
 		var treatSoldierFinishedEvents = []
 		_.each(doc.treatSoldierEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= Date.now()){
+			if(event.finishTime > 0 && event.finishTime <= finishTime){
 				_.each(event.soldiers, function(soldier){
 					doc.soldiers[soldier.name] += soldier.count
 					doc.treatSoldiers[soldier.name] -= soldier.count
@@ -1930,7 +1999,7 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 		//检查城民税收事件
 		var coinFinishedEvents = []
 		_.each(doc.coinEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= Date.now()){
+			if(event.finishTime > 0 && event.finishTime <= finishTime){
 				doc.resources.coin += event.coin
 				self.pushService.onImposeSuccess(doc, event.coin)
 				coinFinishedEvents.push(event)
