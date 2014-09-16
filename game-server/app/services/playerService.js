@@ -1077,12 +1077,8 @@ pro.getMaterials = function(playerId, category, callback){
 		//移除制造事件
 		LogicUtils.removeEvents([event], doc.materialEvents)
 		self.pushService.onGetMaterialSuccess(doc, event)
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
 		//将材料添加到材料仓库,超过仓库上限的直接丢弃
 		DataUtils.addPlayerMaterials(doc, event.materials)
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
 		//保存玩家数据
 		return self.cacheService.updatePlayerAsync(doc)
 	}).then(function(doc){
@@ -1874,28 +1870,44 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 	}
 
 	var self = this
+	var playerDoc = null
 	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
+		playerDoc = doc
 		if(!_.isEmpty(doc.alliance.id)){
 			return Promise.reject(new Error("玩家已加入了联盟"))
 		}
+		var gemUsed = DataUtils.getGemByCreateAlliance()
+		if(playerDoc.basicInfo.gem < gemUsed){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		return Promise.resolve()
+	}).then(function(){
 		self.allianceDao.findAsync({"basicInfo.name":name}).then(function(doc){
-
-		}).catch(function(e){
-			return Promise.reject(e)
+			if(_.isObject(doc)){
+				return Promise.reject(new Error("联盟名称已经存在"))
+			}
+			return Promise.resolve()
 		})
+	}).then(function(){
+		self.allianceDao.findAsync({"basicInfo.tag":tag}).then(function(doc){
+			if(_.isObject(doc)){
+				return Promise.reject(new Error("联盟标签已经存在"))
+			}
+			return Promise.resolve()
+		})
+	}).then(function(){
 
-		//保存玩家数据
-		return self.cacheService.updatePlayerAsync(doc)
-	}).then(function(doc){
-		//推送玩家数据到客户端
-		self.pushService.onPlayerDataChanged(doc)
-		callback()
-	}).catch(function(e){
-		callback(e)
 	})
+		.then(function(doc){
+			//推送玩家数据到客户端
+			self.pushService.onPlayerDataChanged(doc)
+			callback()
+		}).catch(function(e){
+			callback(e)
+		})
 }
 
 var ExcutePlayerCallback = function(playerId, finishTime){

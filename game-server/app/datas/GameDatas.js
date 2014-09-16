@@ -1,6 +1,9 @@
 var GameDatas = {}
 module.exports = GameDatas
 
+GameDatas.AllianceInitData = {}
+GameDatas.AllianceInitData.resources = require("./AllianceInitData_resources.js")
+
 GameDatas.BuildingFunction = {}
 GameDatas.BuildingFunction.wall = require("./BuildingFunction_wall.js")
 GameDatas.BuildingFunction.tower = require("./BuildingFunction_tower.js")

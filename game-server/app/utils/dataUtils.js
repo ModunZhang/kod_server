@@ -25,6 +25,7 @@ var SoldierConfig = UnitConfig.normal
 var SpecialSoldierConfig = UnitConfig.special
 var DragonEquipmentConfig = GameData.SmithConfig.equipments
 var DragonEyrie = GameData.DragonEyrie
+var AllianceInit = GameData.AllianceInitData
 
 
 var Utils = module.exports
@@ -551,7 +552,7 @@ Utils.getMaterialUpLimit = function(playerDoc){
 	var totalUpLimit = 0
 	_.each(buildings, function(building){
 		var config = BuildingFunction["materialDepot"][building.level]
-		totalUpLimit += config.maxmaterial
+		totalUpLimit += config.maxMaterial
 	})
 
 	return totalUpLimit
@@ -1385,4 +1386,12 @@ Utils.getImposedCoin = function(playerDoc){
 	var building = playerDoc.buildings["location_15"]
 	var config = BuildingFunction.townHall[building.level]
 	return config.totalTax
+}
+
+/**
+ * 获取建造联盟所消耗的宝石
+ * @returns {gem|*|playerSchema.resources.gem|.resources.gem}
+ */
+Utils.getGemByCreateAlliance = function(){
+	return AllianceInit.resources[1].gem
 }
