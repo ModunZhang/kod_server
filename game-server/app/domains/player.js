@@ -105,6 +105,7 @@ var playerSchema = new Schema({
 		level:{type:Number, required:true, default:1},
 		levelExp:{type:Number, required:true, default:0},
 		power:{type:Number, required:true, default:0},
+		kill:{type:Number, required:true, default:0},
 		vip:{type:Number, required:true, default:1},
 		vipExp:{type:Number, required:true, default:0},
 		resourceRefreshTime:{type:Number, required:true, default:Date.now()}
@@ -385,7 +386,7 @@ var playerSchema = new Schema({
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		tag:{type:String, required:true},
-		requestDate:{type:Number, required:true},
+		requestTime:{type:Number, required:true},
 		flag:[String],
 		level:{type:Number, required:true},
 		members:{type:Number, required:true},
@@ -397,7 +398,7 @@ var playerSchema = new Schema({
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		tag:{type:String, required:true},
-		inviteDate:{type:Number, required:true},
+		inviteTime:{type:Number, required:true},
 		flag:[String],
 		level:{type:Number, required:true},
 		members:{type:Number, required:true},
@@ -406,8 +407,27 @@ var playerSchema = new Schema({
 		kill:{type:String, required:true}
 	}],
 	alliance:{
-		id:{type:String, required:false}
-	}
+		id:{type:String, required:false},
+		name:{type:String, required:false},
+		title:{type:String, required:false},
+		titleName:{type:String, required:false}
+	},
+	mails:[{
+		title:{type:String, required:true},
+		from:{type:String, required:true},
+		fromName:{type:String, required:true},
+		sendTime:{type:Number, required:true},
+		content:{type:String, required:true}
+	}],
+	notices:[{
+
+	}],
+	reports:[{
+
+	}],
+	saved:[{
+
+	}]
 })
 
 module.exports = mongoose.model('player', playerSchema)

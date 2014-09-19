@@ -7,6 +7,7 @@
 var _ = require("underscore")
 var Promise = require("bluebird")
 
+var Consts = require("../consts/consts")
 var Events = require("../consts/events")
 var Utils = require("../utils/utils")
 
@@ -29,6 +30,16 @@ pro.pushToPlayer = function(playerData, eventName, data){
 	this.channelService.pushMessageByUids(eventName, data, [
 		{uid:playerData._id, sid:playerData.frontServerId}
 	])
+}
+
+/**
+ * 推送消息给某个Channel
+ * @param channel
+ * @param eventName
+ * @param data
+ */
+pro.pushToChannel = function(channel, eventName, data){
+	channel.pushMessage(eventName, data)
 }
 
 /**
@@ -181,4 +192,32 @@ pro.onImposeSuccess = function(playerData, coinCount){
 		coinCount:coinCount
 	}
 	this.pushToPlayer(playerData, Events.player.onImposeSuccess, data)
+}
+
+/**
+ * 查看玩家个人信息通知
+ * @param playerData
+ */
+pro.onGetPlayerInfoSuccess = function(playerData){
+	var data = {
+		name:playerData.basicInfo.name,
+		power:playerData.basicInfo.power,
+		level:playerData.basicInfo.level,
+		exp:playerData.basicInfo.exp,
+		vip:playerData.basicInfo.vip,
+		alliance:playerData.alliance.name,
+		title:playerData.alliance.title,
+		titleName:playerData.alliance.titleName,
+		lastLoginTime:playerData.countInfo.lastLoginTime
+	}
+	this.pushToPlayer(playerData, Events.player.onGetPlayerInfoSuccess, data)
+}
+
+/**
+ * 推送联盟数据给玩家
+ * @param allianceData
+ */
+pro.onAllianceDataChanged = function(allianceData){
+	var channel = self.channelService.getChannel(Consts.AllianceChannelPrefix + allianceData._id, false)
+	self.pushToChannel(channel, Events.alliance.onAllianceDataChanged, allianceData)
 }

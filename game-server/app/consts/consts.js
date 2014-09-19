@@ -7,6 +7,7 @@
 module.exports = {
 	LogicChatChannelPrefix:"logicChatChannel_",
 	GloablChatChannelName:"globalChatChannel",
+	AllianceChannelPrefix:"allianceChannel_",
 	PushServiceName:"pushService",
 	CallbackService:"callbackService",
 	BuildingType:{
@@ -47,5 +48,14 @@ module.exports = {
 	AllianceJoinType:{
 		All:"all",
 		Audit:"audit"
+	},
+	AllianceTitle:{
+		Archon:"archon",
+		General:"general",
+		Diplomat:"diplomat",
+		Quartermaster:"quartermaster",
+		Supervisor:"supervisor",
+		Elite:"elite",
+		Member:"member"
 	}
 }

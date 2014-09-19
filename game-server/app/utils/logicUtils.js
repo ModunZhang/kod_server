@@ -40,6 +40,18 @@ Utils.isEnough = function(need, has){
 }
 
 /**
+ * 从Array中移除Item
+ * @param array
+ * @param item
+ */
+Utils.removeItemInArray = function(array, item){
+	var index = array.indexOf(item)
+	if(index >= 0){
+		array.splice(index, 1)
+	}
+}
+
+/**
  * 减少相应数值
  * @param need
  * @param has
@@ -542,4 +554,53 @@ Utils.isEnhanceDragonEquipmentLegal = function(playerDoc, equipments){
 		if(!playerDoc.dragonEquipments[equipmentName] || playerDoc.dragonEquipments[equipmentName] < count) return false
 	}
 	return true
+}
+
+/**
+ * 更新玩家在联盟的属性,并刷新联盟相关属性
+ * @param playerDoc
+ * @param allianceDoc
+ */
+Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
+	var totalPower = 0
+	var totalKill = 0
+	_.each(allianceDoc.members, function(member){
+		if(_.isEqual(member.id, playerDoc._id)){
+			member.name = playerDoc.basicInfo.name
+			member.level = playerDoc.basicInfo.level
+			member.power = playerDoc.basicInfo.power
+			member.kill = playerDoc.basicInfo.kill
+		}
+		totalPower += member.power
+		totalKill += member.kill
+	})
+}
+
+/**
+ * 联盟是否存在此玩家
+ * @param allianceDoc
+ * @param playerId
+ * @returns {boolean}
+ */
+Utils.isAllianceHasMember = function(allianceDoc, playerId){
+	for(var i = 0; i < allianceDoc.members.length; i ++){
+		var member = allianceDoc.members[i]
+		if(_.isEqual(member.id, playerId)) return true
+	}
+	return false
+}
+
+/**
+ * 根据玩家Id获取联盟成员数据
+ * @param allianceDoc
+ * @param memberId
+ */
+Utils.getAllianceMemberById = function(allianceDoc, memberId){
+	for(var i = 0; i < allianceDoc.members.length; i ++){
+		var member = allianceDoc.members[i]
+		if(_.isEqual(member.id, memberId)){
+			return member
+		}
+	}
+	return null
 }

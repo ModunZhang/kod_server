@@ -25,6 +25,7 @@ var PlayerService = function(app){
 	this.cacheService = this.app.get("cacheService")
 	this.allianceDao = Promise.promisifyAll(new AllianceDao())
 	this.playerDao = Promise.promisifyAll(new PlayerDao())
+	this.channelService = this.app.get("channelService")
 }
 
 module.exports = PlayerService
@@ -51,13 +52,47 @@ pro.playerLogin = function(playerId, frontServerId, callback){
 	}
 
 	var self = this
+	var playerDoc = null
+	var allianceDoc = null
 	this.cacheService.addPlayerAsync(playerId).then(function(doc){
-		doc.frontServerId = frontServerId
-		AfterLogin.call(self, doc)
-		return self.cacheService.updatePlayerAsync(doc)
-	}).then(function(doc){
-		self.pushService.onPlayerLoginSuccess(doc)
-		callback(null, doc)
+		playerDoc = doc
+		playerDoc.frontServerId = frontServerId
+		AfterLogin.call(self, playerDoc)
+
+		if(!!doc.alliance && !_.isEmpty(doc.alliance.id)){
+			//联盟是否在内存中
+			self.cacheService.getAllianceAsync(doc.alliance.id).then(function(doc){
+				//存在,下一步
+				return Promise.resolve(doc)
+			}, function(){
+				//不存在,立即加载到内存
+				return self.cacheService.addAllianceAsync(doc.alliance.id)
+			}).then(function(doc){
+				allianceDoc = doc
+				//更新联盟数据
+				LogicUtils.updateMyPropertyInAlliance(playerDoc, allianceDoc)
+				return Promise.resolve()
+			}).catch(function(e){
+				Promise.reject(e)
+			})
+		}else{
+			return Promise.resolve()
+		}
+	}).then(function(){
+		var funcs = []
+		funcs.push(self.cacheService.updatePlayerAsync(playerDoc))
+		if(!!allianceDoc){
+			var channel = self.channelService.getChannel(Consts.AllianceChannelPrefix + allianceDoc._id, true)
+			channel.add(playerDoc._id, playerDoc.frontServerId)
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc))
+		}
+		return Promise.all(funcs)
+	}).then(function(){
+		self.pushService.onPlayerLoginSuccess(playerDoc)
+		if(!!allianceDoc){
+			self.pushService.onAllianceDataChanged(allianceDoc)
+		}
+		callback(null, playerDoc, allianceDoc)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -191,7 +226,6 @@ var AfterLogin = function(doc){
 	})
 	LogicUtils.removeEvents(coinFinishedEvents, doc.coinEvents)
 
-
 	//刷新玩家战力
 	self.refreshPlayerPower(doc)
 }
@@ -204,7 +238,28 @@ var AfterLogin = function(doc){
  */
 pro.playerLogout = function(playerId, frontServerId, callback){
 	this.callbackService.removeAllPlayerCallback(playerId)
-	this.cacheService.removePlayerAsync(playerId).then(function(){
+
+	var self = this
+	this.cacheService.removePlayerAsync(playerId).then(function(doc){
+		if(!!doc.alliance && !_.isEmpty(doc.alliance.id)){
+			return self.cacheService.getAllianceAsync(doc.alliance.id)
+		}else{
+			return Promise.resolve()
+		}
+	}).then(function(doc){
+		if(!!doc){
+			var channel = self.channelService.getChannel(Consts.AllianceChannelPrefix + doc._id, false)
+			channel.leave(playerId, frontServerId)
+			if(channel.getMembers().length <= 0){
+				channel.destroy()
+				return self.cacheService.removeAllianceAsync(doc)
+			}else{
+				return Promise.resolve()
+			}
+		}else{
+			return Promise.resolve()
+		}
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -1871,43 +1926,923 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 
 	var self = this
 	var playerDoc = null
+	var allianceDoc = null
 	this.cacheService.getPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isEmpty(doc.alliance.id)){
+		if(!!doc.alliance && !_.isEmpty(doc.alliance.id)){
 			return Promise.reject(new Error("玩家已加入了联盟"))
 		}
 		var gemUsed = DataUtils.getGemByCreateAlliance()
 		if(playerDoc.basicInfo.gem < gemUsed){
 			return Promise.reject(new Error("宝石不足"))
 		}
+		playerDoc.basicInfo.gem -= gemUsed
 		return Promise.resolve()
 	}).then(function(){
-		self.allianceDao.findAsync({"basicInfo.name":name}).then(function(doc){
-			if(_.isObject(doc)){
-				return Promise.reject(new Error("联盟名称已经存在"))
-			}
-			return Promise.resolve()
-		})
-	}).then(function(){
-		self.allianceDao.findAsync({"basicInfo.tag":tag}).then(function(doc){
-			if(_.isObject(doc)){
-				return Promise.reject(new Error("联盟标签已经存在"))
-			}
-			return Promise.resolve()
-		})
-	}).then(function(){
+		return self.allianceDao.findAsync({"basicInfo.name":name})
+	}).then(function(doc){
+		if(_.isObject(doc)){
+			return Promise.reject(new Error("联盟名称已经存在"))
+		}
+		self.allianceDao.findAsync({"basicInfo.tag":tag})
+	}).then(function(doc){
+		if(_.isObject(doc)){
+			return Promise.reject(new Error("联盟标签已经存在"))
+		}
 
+		var alliance = {
+			basicInfo:{
+				name:name,
+				tag:tag,
+				language:language,
+				terrain:terrain,
+				flag:flag,
+				power:playerDoc.basicInfo.power
+			},
+			members:[
+				{
+					id:playerDoc._id,
+					name:playerDoc.basicInfo.name,
+					level:playerDoc.basicInfo.level,
+					power:playerDoc.basicInfo.power,
+					title:Consts.AllianceTitle.Archon
+				}
+			]
+		}
+		return self.allianceDao.addAsync(alliance)
+	}).then(function(doc){
+		return self.cacheService.addAllianceAsync(doc._id)
+	}).then(function(doc){
+		allianceDoc = doc
+		playerDoc.alliance.id = allianceDoc._id
+		playerDoc.alliance.name = allianceDoc.basicInfo.name
+		playerDoc.alliance.title = Consts.AllianceTitle.Archon
+		playerDoc.alliance.titleName = allianceDoc.titles.archon
+
+		return self.cacheService.updatePlayerAsync(playerDoc)
+	}).then(function(){
+		var channel = self.channelService.getChannel(Consts.AllianceChannelPrefix + allianceDoc._id, true)
+		channel.add(playerDoc._id, playerDoc.frontServerId)
+
+		self.pushService.onAllianceDataChanged(allianceDoc)
+		self.pushService.onPlayerDataChanged(playerDoc)
+		callback()
+	}).catch(function(e){
+		callback(e)
 	})
-		.then(function(doc){
-			//推送玩家数据到客户端
-			self.pushService.onPlayerDataChanged(doc)
-			callback()
-		}).catch(function(e){
-			callback(e)
+}
+
+/**
+ * 编辑联盟基础信息
+ * @param playerId
+ * @param name
+ * @param tag
+ * @param language
+ * @param terrain
+ * @param flag
+ * @param callback
+ */
+pro.editAllianceBasicInfo = function(playerId, name, tag, language, terrain, flag, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(name)){
+		callback(new Error("name 不合法"))
+		return
+	}
+	if(!_.isString(tag)){
+		callback(new Error("tag 不合法"))
+		return
+	}
+	if(!_.contains(Consts.AllianceLanguage, language)){
+		callback(new Error("language 不合法"))
+		return
+	}
+	if(!_.contains(Consts.AllianceTerrain, terrain)){
+		callback(new Error("terrain 不合法"))
+		return
+	}
+	if(!_.isString(flag)){
+		callback(new Error("flag 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		playerDoc = doc
+		return self.cacheService.getAllianceAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editAllianceBasicInfo")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		allianceDoc = doc
+		return self.allianceDao.findAsync({"basicInfo.name":name})
+	}).then(function(doc){
+		if(_.isObject(doc) && !_.isEqual(doc._id, allianceDoc._id)){
+			return Promise.reject(new Error("联盟名称已经存在"))
+		}
+		return self.allianceDao.findAsync({"basicInfo.tag":tag})
+	}).then(function(doc){
+		if(_.isObject(doc) && !_.isEqual(doc._id, allianceDoc._id)){
+			return Promise.reject(new Error("联盟标签已经存在"))
+		}
+
+		allianceDoc.basicInfo.name = name
+		allianceDoc.basicInfo.tag = tag
+		allianceDoc.basicInfo.language = language
+		allianceDoc.basicInfo.terrain = terrain
+		allianceDoc.basicInfo.flag = flag
+
+		return self.cacheService.updateAllianceAsync(allianceDoc)
+	}).then(function(doc){
+		return self.cacheService.addAllianceAsync(doc._id)
+	}).then(function(){
+		self.pushService.onAllianceDataChanged(allianceDoc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 编辑职位名称
+ * @param playerId
+ * @param title
+ * @param titleName
+ * @param callback
+ */
+pro.editTitleName = function(playerId, title, titleName, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.contains(Consts.AllianceTitle, title)){
+		callback(new Error("title 不合法"))
+		return
+	}
+	if(!_.isString(titleName)){
+		callback(new Error("titleName 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		playerDoc = doc
+		return self.cacheService.getAllianceAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editTitleName")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		allianceDoc = doc
+		allianceDoc.titles[title] = titleName
+		return self.cacheService.updateAllianceAsync(allianceDoc)
+	}).then(function(){
+		var func = function(member, callback){
+			if(_.isEqual(member.title, title)){
+				self.cacheService.getPlayerAsync(member.id).then(function(doc){
+					doc.alliance.titleName = titleName
+					self.cacheService.updatePlayerAsync(doc).then(function(doc){
+						self.pushService.onPlayerDataChanged(doc)
+						callback()
+					}).catch(function(e){
+						callback(e)
+					})
+				}, function(){
+					self.allianceDao.getModel().findByIdAndUpdateAsync(member.id, {"alliance.titleName":titleName}).then(function(doc){
+						doc.alliance.titleName = titleName
+						self.allianceDao.updateAsync(doc).then(function(){
+							callback()
+						}).catch(function(e){
+							callback(e)
+						})
+					}).catch(function(e){
+						callback(e)
+					})
+				})
+			}
+		}
+		func = Promise.promisify(func, self)
+		var funcs = []
+		_.each(allianceDoc.members, function(member){
+			funcs.push(func(member))
 		})
+		return Promise.all(funcs)
+	}).then(function(){
+		self.pushService.onAllianceDataChanged(allianceDoc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 编辑联盟公告
+ * @param playerId
+ * @param notice
+ * @param callback
+ */
+pro.editAllianceNotice = function(playerId, notice, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(notice)){
+		callback(new Error("notice 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		playerDoc = doc
+		return self.cacheService.getAllianceAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editAllianceNotice")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		allianceDoc = doc
+		allianceDoc.notice = notice
+		return self.cacheService.updateAllianceAsync(allianceDoc)
+	}).then(function(){
+		self.pushService.onAllianceDataChanged(allianceDoc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 编辑联盟描述
+ * @param playerId
+ * @param description
+ * @param callback
+ */
+pro.editAllianceDescription = function(playerId, description, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(description)){
+		callback(new Error("description 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		playerDoc = doc
+		return self.cacheService.getAllianceAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editAllianceDescription")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		allianceDoc = doc
+		allianceDoc.desc = description
+		return self.cacheService.updateAllianceAsync(allianceDoc)
+	}).then(function(){
+		self.pushService.onAllianceDataChanged(allianceDoc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ *
+ * @param playerId
+ * @param memberId
+ * @param title
+ * @param callback
+ */
+pro.modifyAllianceMemberTitle = function(playerId, memberId, title, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(memberId)){
+		callback(new Error("memberId 不合法"))
+		return
+	}
+	if(!_.contains(Consts.AllianceTitle, title)){
+		callback(new Error("title 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var memberDoc = null
+	var memberInAllianceDoc = null
+	var isMemberInCache = null
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		playerDoc = doc
+		return self.cacheService.getAllianceAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "modifyAllianceMemberTitle")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		allianceDoc = doc
+		self.cacheService.getPlayerAsync(memberId).then(function(doc){
+			memberDoc = doc
+			isMemberInCache = true
+			return Promise.resolve()
+		}, function(){
+			self.playerDao.findByIdAsync(memberId).then(function(doc){
+				memberDoc = doc
+				isMemberInCache = true
+				return Promise.resolve()
+			}).cache(function(e){
+				return Promise.reject(e)
+			})
+		})
+	}).then(function(){
+		memberInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
+		if(!_.isObject(memberInAllianceDoc)){
+			return Promise.reject(new Error("联盟没有此玩家"))
+		}
+
+		var currentMemberLevel = DataUtils.getAllianceTitleLevel(member.title)
+		var myMemberLevel = DataUtils.getAllianceTitleLevel(playerDoc.alliance.title)
+		var afterMemberLevel = DataUtils.getAllianceTitleLevel(title)
+		if(currentMemberLevel >= myMemberLevel){
+			return Promise.reject(new Error("不能对等级大于等于自己的玩家进行升级降级操作"))
+		}
+		if(afterMemberLevel >= myMemberLevel){
+			return Promise.reject(new Error("不能将玩家的等级调整到与自己平级或者比自己高"))
+		}
+
+		memberInAllianceDoc.title = title
+		memberDoc.title = title
+		memberDoc.titleName = allianceDoc.titles[title]
+
+		self.cacheService.updateAllianceAsync(allianceDoc).then(function(){
+			if(isMemberInCache){
+				return self.cacheService.updatePlayerAsync(memberDoc)
+			}else{
+				return self.playerDao.updateAsync(memberDoc)
+			}
+		}).then(function(){
+			return Promise.resolve()
+		}).catch(function(e){
+			return Promise.reject(e)
+		})
+	}).then(function(){
+		self.pushService.onAllianceDataChanged(allianceDoc)
+		if(isMemberInCache){
+			self.pushService.onPlayerDataChanged(memberDoc)
+		}
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 获取玩家个人信息
+ * @param memberId
+ * @param callback
+ */
+pro.getPlayerInfo = function(memberId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(memberId)){
+		callback(new Error("memberId 不合法"))
+		return
+	}
+
+	var self = this
+	this.cacheService.getPlayerAsync(memberId).then(function(doc){
+		return Promise.resolve(doc)
+	}, function(){
+		return self.playerDao.findByIdAsync(memberId)
+	}).then(function(doc){
+		if(_.isObject(doc)){
+			return Promise.resolve(doc)
+		}else{
+			return Promise.reject(new Error("玩家不存在"))
+		}
+	}).then(function(doc){
+		self.pushService.onGetPlayerInfoSuccess(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 将玩家踢出联盟
+ * @param playerId
+ * @param memberId
+ * @param callback
+ */
+pro.kickAllianceMemberOff = function(playerId, memberId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(memberId)){
+		callback(new Error("memberId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var memberDoc = null
+	var memberInAllianceDoc = null
+	var isMemberInCache = null
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		playerDoc = doc
+		return self.cacheService.getAllianceAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "modifyAllianceMemberTitle")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		allianceDoc = doc
+		self.cacheService.getPlayerAsync(memberId).then(function(doc){
+			memberDoc = doc
+			isMemberInCache = true
+			return Promise.resolve()
+		}, function(){
+			self.playerDao.findByIdAsync(memberId).then(function(doc){
+				memberDoc = doc
+				isMemberInCache = true
+				return Promise.resolve()
+			}).catch(function(e){
+				return Promise.reject(e)
+			})
+		})
+	}).then(function(){
+		memberInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
+		if(!_.isObject(memberInAllianceDoc)){
+			return Promise.reject(new Error("联盟没有此玩家"))
+		}
+
+		var currentMemberLevel = DataUtils.getAllianceTitleLevel(member.title)
+		var myMemberLevel = DataUtils.getAllianceTitleLevel(playerDoc.alliance.title)
+		if(currentMemberLevel >= myMemberLevel){
+			return Promise.reject(new Error("不能将等级大于等于自己的玩家踢出联盟"))
+		}
+
+		LogicUtils.removeItemInArray(allianceDoc.members, memberInAllianceDoc)
+		memberDoc.alliance = null
+
+		self.cacheService.updateAllianceAsync(allianceDoc).then(function(){
+			if(isMemberInCache){
+				return self.cacheService.updatePlayerAsync(memberDoc)
+			}else{
+				return self.playerDao.updateAsync(memberDoc)
+			}
+		}).then(function(){
+			return Promise.resolve()
+		}).catch(function(e){
+			return Promise.reject(e)
+		})
+	}).then(function(){
+		self.pushService.onAllianceDataChanged(allianceDoc)
+		if(isMemberInCache){
+			self.pushService.onPlayerDataChanged(memberDoc)
+		}
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 移交盟主职位
+ * @param playerId
+ * @param memberId
+ * @param callback
+ */
+pro.handOverArchon = function(playerId, memberId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(memberId)){
+		callback(new Error("memberId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var memberDoc = null
+	var memberInAllianceDoc = null
+	var isMemberInCache = null
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		if(!_.isEqual(doc.alliance.title, Consts.AllianceTitle.Archon)){
+			return Promise.reject(new Error("别逗了,你是不盟主好么"))
+		}
+		playerDoc = doc
+		return self.cacheService.getAllianceAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+
+		allianceDoc = doc
+		self.cacheService.getPlayerAsync(memberId).then(function(doc){
+			memberDoc = doc
+			isMemberInCache = true
+			return Promise.resolve()
+		}, function(){
+			self.playerDao.findByIdAsync(memberId).then(function(doc){
+				memberDoc = doc
+				isMemberInCache = true
+				return Promise.resolve()
+			}).catch(function(e){
+				return Promise.reject(e)
+			})
+		})
+	}).then(function(){
+		memberInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
+		if(!_.isObject(memberInAllianceDoc)){
+			return Promise.reject(new Error("联盟没有此玩家"))
+		}
+
+		var playerInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		if(!_.isObject(playerInAllianceDoc)){
+			return Promise.reject(new Error("联盟没有此玩家"))
+		}
+		playerInAllianceDoc.title = Consts.AllianceTitle.Member
+		playerDoc.alliance.title = Consts.AllianceTitle.Member
+		playerDoc.alliance.titleName = allianceDoc.titles.member
+
+		memberInAllianceDoc.title = Consts.AllianceTitle.Archon
+		memberDoc.alliance.title = Consts.AllianceTitle.Archon
+		memberDoc.alliance.titleName = allianceDoc.titles.archon
+
+		self.cacheService.updateAllianceAsync(allianceDoc).then(function(){
+			if(isMemberInCache){
+				return self.cacheService.updatePlayerAsync(memberDoc)
+			}else{
+				return self.playerDao.updateAsync(memberDoc)
+			}
+		}).then(function(){
+			return self.cacheService.updatePlayerAsync(playerDoc)
+		}).catch(function(e){
+			return Promise.reject(e)
+		})
+	}).then(function(){
+		self.pushService.onAllianceDataChanged(allianceDoc)
+		if(isMemberInCache){
+			self.pushService.onPlayerDataChanged(memberDoc)
+		}
+		self.pushService.onPlayerDataChanged(playerDoc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 发送邮件
+ * @param playerId
+ * @param memberId
+ * @param title
+ * @param content
+ * @param callback
+ */
+pro.sendMail = function(playerId, memberId, title, content, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(memberId)){
+		callback(new Error("memberId 不合法"))
+		return
+	}
+	if(!_.isString(title)){
+		callback(new Error("title 不合法"))
+		return
+	}
+	if(!_.isString(content)){
+		callback(new Error("content 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var memberDoc = null
+	var isMemberInCache = null
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+	}).then(function(){
+		self.cacheService.getPlayerAsync(memberId).then(function(doc){
+			memberDoc = doc
+			isMemberInCache = true
+			return Promise.resolve()
+		}, function(){
+			self.playerDao.findByIdAsync(memberId).then(function(doc){
+				memberDoc = doc
+				isMemberInCache = true
+				return Promise.resolve()
+			}).catch(function(e){
+				return Promise.reject(e)
+			})
+		})
+	}).then(function(){
+		var mail = {
+			title:title,
+			from:playerDoc._id,
+			fromName:playerDoc.basicInfo.name,
+			sendTime:Date.now(),
+			content:content
+		}
+		memberDoc.mails.push(mail)
+		if(isMemberInCache){
+			return self.cacheService.updatePlayerAsync(memberDoc)
+		}else{
+			return self.playerDao.updateAsync(memberDoc)
+		}
+	}).then(function(){
+		if(isMemberInCache){
+			self.pushService.onPlayerDataChanged(memberDoc)
+		}
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 退出联盟
+ * @param playerId
+ * @param callback
+ */
+pro.quitAlliance = function(playerId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var playerInAlliance = null
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		if(_.isEqual(doc.alliance.title, Consts.AllianceTitle.Archon)){
+			return Promise.reject(new Error("别逗了,盟主不能直接退出联盟好么"))
+		}
+		playerDoc = doc
+		return self.cacheService.getAllianceAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+
+		allianceDoc = doc
+		playerInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		if(!_.isObject(playerInAlliance)){
+			return Promise.reject(new Error("联盟没有此玩家"))
+		}
+		LogicUtils.removeItemInArray(allianceDoc.members, playerInAlliance)
+		playerDoc.alliance = null
+
+		self.cacheService.updateAllianceAsync(allianceDoc).then(function(){
+			return self.cacheService.updatePlayerAsync(playerDoc)
+		}).catch(function(e){
+			return Promise.reject(e)
+		})
+	}).then(function(){
+		self.pushService.onAllianceDataChanged(allianceDoc)
+		self.pushService.onPlayerDataChanged(playerDoc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 发送联盟邮件
+ * @param playerId
+ * @param title
+ * @param content
+ * @param callback
+ */
+pro.sendAllianceMail = function(playerId, title, content, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(title)){
+		callback(new Error("title 不合法"))
+		return
+	}
+	if(!_.isString(content)){
+		callback(new Error("content 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	this.cacheService.getPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		playerDoc = doc
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "sendAllianceMail")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		return self.cacheService.getAllianceAsync(doc.alliance.id)
+	}).then(function(doc){
+		allianceDoc = doc
+		var mail = {
+			title:title,
+			from:playerDoc._id,
+			fromName:playerDoc.basicInfo.name,
+			sendTime:Date.now(),
+			content:content
+		}
+		var func = function(member, callback){
+			self.cacheService.getPlayerAsync(member.id).then(function(doc){
+				doc.mails.push(mail)
+				self.cacheService.updatePlayerAsync(doc).then(function(doc){
+					self.pushService.onPlayerDataChanged(doc)
+					callback()
+				}).catch(function(e){
+					callback(e)
+				})
+			}, function(){
+				self.allianceDao.getModel().findByIdAndUpdate(member.id, {"alliance.titleName":titleName}, function(err, doc){
+					if(_.isObject(err)){
+						callback(err)
+						return
+					}
+					doc.mails.push(mail)
+					self.allianceDao.updateAsync(doc).then(function(){
+						callback()
+					}).catch(function(e){
+						callback(e)
+					})
+				})
+			})
+		}
+		func = Promise.promisify(func, self)
+		var funcs = []
+		_.each(allianceDoc.members, function(member){
+			funcs.push(func(member))
+		})
+		return Promise.all(funcs)
+
+	}).then(function(){
+		var mail = {
+			title:title,
+			from:playerDoc._id,
+			fromName:playerDoc.basicInfo.name,
+			sendTime:Date.now(),
+			content:content
+		}
+		memberDoc.mails.push(mail)
+		if(isMemberInCache){
+			return self.cacheService.updatePlayerAsync(memberDoc)
+		}else{
+			return self.playerDao.updateAsync(memberDoc)
+		}
+	}).then(function(){
+		if(isMemberInCache){
+			self.pushService.onPlayerDataChanged(memberDoc)
+		}
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+//申请加入联盟
+pro.requestToJoinAlliance = function(){
+
+}
+
+//处理加入联盟申请
+pro.handleJoinAllianceRequest = function(){
+
+}
+
+//邀请玩家加入联盟
+pro.inviteToJoinAlliance = function(){
+
+}
+
+//处理加入联盟邀请
+pro.handleJoinAllianceInvite = function(){
+
 }
 
 var ExcutePlayerCallback = function(playerId, finishTime){

@@ -7,14 +7,12 @@ var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
 var Consts = require("../consts/consts")
-var GameDatas = require("../datas/GameDatas")
 
 
 var allianceSchema = new Schema({
 	basicInfo:{
 		name:{type:String, required:true},
 		tag:{type:String, required:true},
-		desc:{type:String, required:false},
 		language:{type:String, required:true},
 		terrain:{type:String, required:true},
 		flag:{type:String, required:true},
@@ -22,18 +20,25 @@ var allianceSchema = new Schema({
 		kill:{type:Number, required:true, default:0},
 		joinType:{type:String, required:true, default:Consts.AllianceJoinType.All},
 		level:{type:Number, required:true, default:0},
-		exp:{type:Number, required:true, default:0}
+		exp:{type:Number, required:true, default:0},
+		createTime:{type:Number, required:true, default:Date.now()},
+		lastActiveTime:{type:Number, required:true, default:Date.now()}
+	},
+	notice:{type:String, required:false},
+	desc:{type:String, required:false},
+	titles:{
+		archon:{type:String, required:true, default:"__archon"},
+		general:{type:String, required:true, default:"__general"},
+		diplomat:{type:String, required:true, default:"__diplomat"},
+		quartermaster:{type:String, required:true, default:"__quartermaster"},
+		supervisor:{type:String, required:true, default:"__supervisor"},
+		elite:{type:String, required:true, default:"__elite"},
+		member:{type:String, required:true, default:"__member"}
 	},
 	events:[
 		{
 			type:{type:String, required:true},
 			keys:[String]
-		}
-	],
-	notices:[
-		{
-			content:{type:String, reuqired:true},
-			date:{type:Number, required:true}
 		}
 	],
 	members:[
@@ -42,7 +47,9 @@ var allianceSchema = new Schema({
 			name:{type:String, required:true},
 			level:{type:Number, required:true},
 			power:{type:Number, required:true},
-			title:{type:String, required:true}
+			kill:{type:Number, required:true},
+			loyalty:{type:Number, reuqired:true, default:0},
+			title:{type:Number, required:true}
 		}
 	],
 	joinRequests:[

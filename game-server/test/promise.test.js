@@ -575,3 +575,8 @@ var Utils = require("../app/utils/utils")
 //	console.log(code)
 //	console.log(pattern.test(code))
 //}
+
+var a = {1:"a", 2:"b", 3:"c", 4:"d"}
+console.log(a)
+var b = 1
+console.log(a[b])

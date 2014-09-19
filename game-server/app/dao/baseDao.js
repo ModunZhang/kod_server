@@ -21,6 +21,14 @@ module.exports = BaseDao
 var pro = BaseDao.prototype
 
 /**
+ * 获取Model
+ * @returns {*}
+ */
+pro.getModel = function(){
+	return this.model
+}
+
+/**
  * create a object
  * @param doc json object
  * @param callback

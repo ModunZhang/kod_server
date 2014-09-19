@@ -10,22 +10,23 @@ var _ = require("underscore")
 var Consts = require("../consts/consts")
 var CommonUtils = require("./utils")
 var LogicUtils = require("./logicUtils")
-var GameData = require("../datas/GameDatas")
-var BuildingLevelUp = GameData.BuildingLevelUp
-var BuildingFunction = GameData.BuildingFunction
-var HouseLevelUp = GameData.HouseLevelUp
-var HouseReturn = GameData.HouseReturn
-var HouseFunction = GameData.HouseFunction
-var GemsPayment = GameData.GemsPayment
-var Houses = GameData.Houses.houses
-var Buildings = GameData.Buildings.buildings
-var HouseInit = GameData.PlayerInitData.houses[1]
-var UnitConfig = GameData.UnitsConfig
+var GameDatas = require("../datas/GameDatas")
+var BuildingLevelUp = GameDatas.BuildingLevelUp
+var BuildingFunction = GameDatas.BuildingFunction
+var HouseLevelUp = GameDatas.HouseLevelUp
+var HouseReturn = GameDatas.HouseReturn
+var HouseFunction = GameDatas.HouseFunction
+var GemsPayment = GameDatas.GemsPayment
+var Houses = GameDatas.Houses.houses
+var Buildings = GameDatas.Buildings.buildings
+var HouseInit = GameDatas.PlayerInitData.houses[1]
+var UnitConfig = GameDatas.UnitsConfig
 var SoldierConfig = UnitConfig.normal
 var SpecialSoldierConfig = UnitConfig.special
-var DragonEquipmentConfig = GameData.SmithConfig.equipments
-var DragonEyrie = GameData.DragonEyrie
-var AllianceInit = GameData.AllianceInitData
+var DragonEquipmentConfig = GameDatas.SmithConfig.equipments
+var DragonEyrie = GameDatas.DragonEyrie
+var AllianceInit = GameDatas.AllianceInitData
+var AllianceRights = AllianceInit.rights
 
 
 var Utils = module.exports
@@ -1394,4 +1395,25 @@ Utils.getImposedCoin = function(playerDoc){
  */
 Utils.getGemByCreateAlliance = function(){
 	return AllianceInit.resources[1].gem
+}
+
+
+/**
+ * 检查操作联盟相关API的权限是否足够
+ * @param title
+ * @param api
+ * @returns {*}
+ */
+Utils.isAllianceOperationLegal = function(title, api){
+	var config = AllianceRights[title]
+	return config[api]
+}
+
+/**
+ * 获取联盟职称等级
+ * @param title
+ * @returns {*}
+ */
+Utils.getAllianceTitleLevel = function(title){
+	return AllianceRights[title].level
 }

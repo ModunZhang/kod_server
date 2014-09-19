@@ -18,7 +18,11 @@ module.exports = {
 		onMakeDragonEquipmentSuccess:"onMakeDragonEquipmentSuccess",
 		onTreatSoldierSuccess:"onTreatSoldierSuccess",
 		onHatchDragonSuccess:"onHatchDragonSuccess",
-		onImposeSuccess:"onImposeSuccess"
+		onImposeSuccess:"onImposeSuccess",
+		onGetPlayerInfoSuccess:"onGetPlayerInfoSuccess"
+	},
+	alliance:{
+		onAllianceDataChanged:"onAllianceDataChanged"
 	},
 	chat:{
 		onChat:"onChat",
