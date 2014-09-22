@@ -16,7 +16,7 @@ special["skeletonWarrior"] = {
 	"load":17,
 	"march":50,
 	"upkeep":5,
-	"population":1,
+	"citizen":1,
 	"recruitTime":40
 }
 special["skeletonArcher"] = {
@@ -34,7 +34,7 @@ special["skeletonArcher"] = {
 	"load":18,
 	"march":64,
 	"upkeep":18,
-	"population":1,
+	"citizen":1,
 	"recruitTime":60
 }
 special["deathKnight"] = {
@@ -52,7 +52,7 @@ special["deathKnight"] = {
 	"load":48,
 	"march":80,
 	"upkeep":48,
-	"population":2,
+	"citizen":2,
 	"recruitTime":80
 }
 special["meatWagon"] = {
@@ -70,7 +70,7 @@ special["meatWagon"] = {
 	"load":96,
 	"march":52,
 	"upkeep":96,
-	"population":4,
+	"citizen":4,
 	"recruitTime":95
 }
 special["priest"] = {
@@ -88,7 +88,7 @@ special["priest"] = {
 	"load":27,
 	"march":52,
 	"upkeep":27,
-	"population":1,
+	"citizen":1,
 	"recruitTime":140
 }
 special["demonHunter"] = {
@@ -106,7 +106,7 @@ special["demonHunter"] = {
 	"load":28,
 	"march":72,
 	"upkeep":28,
-	"population":1,
+	"citizen":1,
 	"recruitTime":180
 }
 special["paladin"] = {
@@ -124,7 +124,7 @@ special["paladin"] = {
 	"load":53,
 	"march":75,
 	"upkeep":53,
-	"population":2,
+	"citizen":2,
 	"recruitTime":240
 }
 special["steamTank"] = {
@@ -142,6 +142,6 @@ special["steamTank"] = {
 	"load":106,
 	"march":48,
 	"upkeep":106,
-	"population":4,
+	"citizen":4,
 	"recruitTime":280
 }

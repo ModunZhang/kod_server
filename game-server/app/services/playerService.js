@@ -1332,11 +1332,22 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 
 		var gemUsed = 0
 		var recruitRequired = DataUtils.getRecruitSpecialSoldierRequired(soldierName, count)
+		var buyedResources = null
+
+		//刷新玩家资源数据
+		self.refreshPlayerResources(doc)
 		if(!LogicUtils.isEnough(recruitRequired.materials, doc.soldierMaterials)){
 			return Promise.reject(new Error("材料不足"))
 		}
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
+			buyedResources = DataUtils.buyResources({citizen:recruitRequired.citizen}, {})
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+		}else{
+			buyedResources = DataUtils.buyResources({citizen:recruitRequired.citizen}, doc.resources)
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
 		}
 		//宝石是否足够
 		if(gemUsed > doc.resources.gem){
@@ -1346,6 +1357,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		doc.resources.gem -= gemUsed
 		//修改玩家资源数据
 		LogicUtils.reduce(recruitRequired.materials, doc.soldierMaterials)
+		LogicUtils.reduce({citizen:recruitRequired.citizen}, doc.resources)
 		if(finishNow){
 			doc.soldiers[soldierName] += count
 			//刷新玩家战力

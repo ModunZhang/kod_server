@@ -370,7 +370,7 @@ Utils.getPlayerCitizenUpLimit = function(playerDoc){
 	var totalUpLimit = 0
 	_.each(houses, function(house){
 		var config = HouseFunction["dwelling"][house.level]
-		totalUpLimit += config.population
+		totalUpLimit += config.citizen
 	})
 	return totalUpLimit
 }
@@ -389,7 +389,6 @@ Utils.getPlayerUsedCitizen = function(playerDoc){
 			used += config.citizen
 		})
 	})
-
 	return used
 }
 
@@ -501,11 +500,11 @@ Utils.getResourceNameByHouseType = function(houseType){
 /**
  * 获取住宅城民上限
  * @param houseLevel
- * @returns {population|*}
+ * @returns {citizen|*}
  */
 Utils.getDwellingPopulationByLevel = function(houseLevel){
 	var config = HouseFunction["dwelling"][houseLevel]
-	return config.population
+	return config.citizen
 }
 
 /**
@@ -877,7 +876,8 @@ Utils.getRecruitNormalSoldierRequired = function(soldierName, count){
 		wood:config.wood * count,
 		stone:config.stone * count,
 		iron:config.iron * count,
-		food:config.food * count
+		food:config.food * count,
+		citizen:config.citizen * count
 	}
 	var totalNeed = {
 		resources:resources,
@@ -901,7 +901,8 @@ Utils.getRecruitSpecialSoldierRequired = function(soldierName, count){
 	})
 	var totalNeed = {
 		materials:materials,
-		recruitTime:this.getRecruitSoldierTime(soldierName, count)
+		recruitTime:this.getRecruitSoldierTime(soldierName, count),
+		citizen:config.citizen * count
 	}
 	return totalNeed
 }
@@ -941,7 +942,7 @@ Utils.getSoldierMaxRecruitCount = function(playerDoc, soldierName){
 		var fullSoldierName = soldierName + "_" + this.getSoldierStar(soldierName)
 		soldierConfig = SoldierConfig[fullSoldierName]
 	}
-	var maxCount = Math.floor(maxRecruit / soldierConfig.population)
+	var maxCount = Math.floor(maxRecruit / soldierConfig.citizen)
 	return maxCount
 }
 
