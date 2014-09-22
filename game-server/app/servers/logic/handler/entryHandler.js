@@ -109,7 +109,7 @@ var RemovePlayerFromChatChannel = function(session, callback){
 }
 
 var KickPlayerFromLogicServer = function(playerDoc, callback){
-	this.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, session, session.uid, function(err){
+	this.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, function(err){
 		callback(err, playerDoc)
 	})
 }
