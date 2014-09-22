@@ -4,15 +4,36 @@
 
 var should = require('should')
 var pomelo = require("../pomelo-client")
-var mongoose = require("mongoose")
+//var mongoose = require("mongoose")
+var redis = require("redis")
 var _ = require("underscore")
+var path = require("path")
+var Scripto = require('redis-scripto')
+var Promise = require("bluebird")
 
 var Config = require("../config")
-var Player = require("../../app/domains/player")
+var AllianceDao = require("../../app/dao/allianceDao")
+var PlayerDao = require("../../app/dao/playerDao")
+
+var commandDir = path.resolve(__dirname + "/../../app/commands")
+var redisClient = redis.createClient(Config.redisPort, Config.redisAddr)
+//mongoose.connect(Config.mongoAddr)
+var scripto = new Scripto(redisClient)
+scripto.loadFromDir(commandDir)
+var allianceDao = Promise.promisifyAll(new AllianceDao(redisClient, scripto))
+var playerDao = Promise.promisifyAll(new PlayerDao(redisClient, scripto))
 
 var ClearTestAccount = function(callback){
-	mongoose.connect(Config.mongoAddr, function(){
-		Player.findOneAndRemove({"countInfo.deviceId":Config.deviceId}, callback)
+	playerDao.findByIndexAsync("countInfo.deviceId", Config.deviceId).then(function(doc){
+		if(_.isObject(doc)){
+			return playerDao.deleteByIdAsync(doc._id)
+		}
+		return Promise.resolve()
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		console.log(e)
+		callback()
 	})
 }
 
@@ -61,7 +82,7 @@ describe("ChatServer", function(){
 			var loginInfo = {
 				deviceId:Config.deviceId
 			}
-			var route = "front.entryHandler.login"
+			var route = "logic.entryHandler.login"
 			pomelo.request(route, loginInfo, function(doc){
 				doc.code.should.equal(200)
 			})

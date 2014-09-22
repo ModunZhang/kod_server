@@ -11,8 +11,8 @@ var Consts = require("../consts/consts")
 
 var allianceSchema = new Schema({
 	basicInfo:{
-		name:{type:String, required:true},
-		tag:{type:String, required:true},
+		name:{type:String, required:true, unique:true},
+		tag:{type:String, required:true, unique:true},
 		language:{type:String, required:true},
 		terrain:{type:String, required:true},
 		flag:{type:String, required:true},

@@ -16,7 +16,8 @@ module.exports = function(app){
 
 var ChatHandler = function(app){
 	this.app = app
-	this.channelService = this.app.get("channelService")
+	this.playerService = app.get("playerService")
+	this.channelService = app.get("channelService")
 	this.globalChatChannel = this.channelService.getChannel(Consts.GloablChatChannelName)
 	this.chats = []
 	this.maxChatCount = 50
@@ -353,9 +354,8 @@ pro.send = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	}
 
-	var getPlayerInfo = Promise.promisify(this.app.rpc.logic.logicRemote.getPlayerInfo, this)
 	var filterCommand = Promise.promisify(FilterCommand, this)
-	getPlayerInfo(session, session.uid).then(function(doc){
+	this.playerService.getPlayerByIdAsync(session.uid).then(function(doc){
 		return filterCommand(doc, text, session)
 	}).then(function(doc){
 		var time = Date.now()
@@ -445,6 +445,6 @@ var GetPlayerCommand = function(text){
 
 var PushToPlayer = function(event, session, msg){
 	this.channelService.pushMessageByUids(event, msg, [
-		{uid:session.uid, sid:session.get("frontServerId")}
+		{uid:session.uid, sid:session.get("logicServerId")}
 	])
 }

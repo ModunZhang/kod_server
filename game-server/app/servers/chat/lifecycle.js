@@ -1,8 +1,8 @@
 "use strict"
 
 /**
- * Created by modun on 14-8-9.
- */
+* Created by modun on 14-8-9.
+*/
 
 var Promise = require("bluebird")
 var _ = require("underscore")

@@ -577,6 +577,19 @@ Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
 }
 
 /**
+ * 刷新联盟属性
+ * @param allianceDoc
+ */
+Utils.refreshAlliance = function(allianceDoc){
+	var totalPower = 0
+	var totalKill = 0
+	_.each(allianceDoc.members, function(member){
+		totalPower += member.power
+		totalKill += member.kill
+	})
+}
+
+/**
  * 联盟是否存在此玩家
  * @param allianceDoc
  * @param playerId

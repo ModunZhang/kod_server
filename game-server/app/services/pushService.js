@@ -13,8 +13,10 @@ var Utils = require("../utils/utils")
 
 var PushService = function(app){
 	this.app = app
-	this.channelService = this.app.get("channelService")
-	this.serverId = this.app.getServerId()
+	this.channelService = app.get("channelService")
+	this.globalChannelService = Promise.promisifyAll(app.get("globalChannelService"))
+	this.serverId = app.getServerId()
+	this.serverType = app.getServerType()
 }
 
 module.exports = PushService
@@ -28,18 +30,8 @@ var pro = PushService.prototype
  */
 pro.pushToPlayer = function(playerData, eventName, data){
 	this.channelService.pushMessageByUids(eventName, data, [
-		{uid:playerData._id, sid:playerData.frontServerId}
+		{uid:playerData._id, sid:playerData.logicServerId}
 	])
-}
-
-/**
- * 推送消息给某个Channel
- * @param channel
- * @param eventName
- * @param data
- */
-pro.pushToChannel = function(channel, eventName, data){
-	channel.pushMessage(eventName, data)
 }
 
 /**
@@ -218,6 +210,7 @@ pro.onGetPlayerInfoSuccess = function(playerData){
  * @param allianceData
  */
 pro.onAllianceDataChanged = function(allianceData){
-	var channel = self.channelService.getChannel(Consts.AllianceChannelPrefix + allianceData._id, false)
-	self.pushToChannel(channel, Events.alliance.onAllianceDataChanged, allianceData)
+	var eventName = Events.alliance.onAllianceDataChanged
+	var channelName = Consts.AllianceChannelPrefix + allianceData._id
+	this.globalChannelService.pushMessage(this.serverType, eventName, allianceData, channelName)
 }

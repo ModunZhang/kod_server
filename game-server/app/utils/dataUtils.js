@@ -1081,7 +1081,7 @@ Utils.getTreatSoldierRequired = function(playerDoc, soldiers){
  */
 Utils.getDragonMaxVitality = function(playerDoc, dragon){
 	var config = DragonEyrie.dragonAttribute[dragon.star]
-	var vitality = config.initVitality + config.perLevelVitality * dragon.star
+	var vitality = config.initVitality + config.perLevelVitality * dragon.level
 	return vitality
 }
 

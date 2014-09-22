@@ -8,32 +8,31 @@ var Promise = require("bluebird")
 var _ = require("underscore")
 
 /**
- *
- * @param model mongoose domain object model
+ * @param redis
+ * @param scripto
+ * @param modelName
+ * @param model
+ * @param indexs
  * @constructor
  */
-var BaseDao = function(model){
-	this.model = model
-	this.entities = {}
+var BaseDao = function(redis, scripto, modelName, model, indexs){
+	this.redis = Promise.promisifyAll(redis)
+	this.modelName = modelName
+	this.model = Promise.promisifyAll(model)
+	this.scripto = Promise.promisifyAll(scripto)
+	this.indexs = indexs
+	this.maxChangedCount = 1
 }
 
 module.exports = BaseDao
 var pro = BaseDao.prototype
 
 /**
- * 获取Model
- * @returns {*}
- */
-pro.getModel = function(){
-	return this.model
-}
-
-/**
- * create a object
+ * create a object to mongo and add it to redis
  * @param doc json object
  * @param callback
  */
-pro.add = function(doc, callback){
+pro.create = function(doc, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
@@ -45,29 +44,42 @@ pro.add = function(doc, callback){
 		callback(new Error("obj's _id must be empty"))
 		return
 	}
-	this.model.create(doc, function(err, doc){
-		doc = _.isObject(doc) ? JSON.parse(JSON.stringify(doc)) : null
-		callback(err, doc)
+
+	var self = this
+	var docString = null
+	this.model.createAsync(doc).then(function(doc){
+		docString = JSON.stringify(doc)
+		return self.scripto.runAsync("add", [self.modelName, docString], self.indexs)
+	}).then(function(){
+		callback(null, JSON.parse(docString))
+	}).catch(function(e){
+		callback(e)
 	})
 }
 
 /**
- * find obj from mongo
- * @param condition
+ * find obj from redis
+ * @param index
+ * @param value
  * @param callback
  */
-pro.find = function(condition, callback){
+pro.findByIndex = function(index, value, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
-	if(!_.isObject(condition)){
-		callback(new Error("condition must an object"))
+	if(!_.contains(this.indexs, index)){
+		callback(new Error("index must be a item of indexs"))
+		return
+	}
+	if(_.isNull(value) || _.isUndefined(value)){
+		callback(new Error("value must not be empty"))
 		return
 	}
 
-	this.model.findOne(condition, function(err, doc){
-		doc = _.isObject(doc) ? JSON.parse(JSON.stringify(doc)) : null
-		callback(err, doc)
+	this.scripto.runAsync("findByIndex", [this.modelName, index, value]).then(function(docString){
+		callback(null, JSON.parse(docString))
+	}).catch(function(e){
+		callback(e)
 	})
 }
 
@@ -85,9 +97,10 @@ pro.findById = function(id, callback){
 		return
 	}
 
-	this.model.findById(id, function(err, doc){
-		doc = _.isObject(doc) ? JSON.parse(JSON.stringify(doc)) : null
-		callback(err, doc)
+	this.scripto.runAsync("findById", [this.modelName, id]).then(function(docString){
+		callback(null, JSON.parse(docString))
+	}).catch(function(e){
+		callback(e)
 	})
 }
 
@@ -109,32 +122,83 @@ pro.update = function(doc, callback){
 		return
 	}
 
-	this.model.findByIdAndUpdate(doc._id, _.omit(doc, "_id", "__v"), function(err, doc){
-		doc = _.isObject(doc) ? JSON.parse(JSON.stringify(doc)) : null
-		callback(err, doc)
+	doc.__v++
+	var shouldSaveToMongo = false
+	if(doc.__v >= this.maxChangedCount){
+		shouldSaveToMongo = true
+		doc.__v = 0
+	}
+	var self = this
+	this.scripto.runAsync("update", [self.modelName, JSON.stringify(doc)], self.indexs).then(function(){
+		if(shouldSaveToMongo){
+			return self.model.findByIdAndUpdateAsync(doc._id, _.omit(doc, "_id", "__v"))
+		}else{
+			return Promise.resolve()
+		}
+	}).then(function(){
+		callback(null, doc)
+	}).catch(function(e){
+		callback(e)
 	})
 }
 
 /**
- * delete obj from mongo
- * @param doc
+ * delete obj from redis and mongo
+ * @param id
  * @param callback
  */
-pro.remove = function(doc, callback){
+pro.deleteById = function(id, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
-	if(!_.isObject(doc)){
-		callback(new Error("obj must be a json object"))
+	if(!_.isString(id)){
+		callback(new Error("id must be a string"))
 		return
 	}
-	if(!_.isString(doc._id)){
-		callback(new Error("obj's _id must be a string"))
-		return
-	}
+	var self = this
+	this.model.findByIdAndRemoveAsync(id).then(function(){
+		return self.scripto.runAsync("removeById", [self.modelName, id], self.indexs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
 
-	this.model.findByIdAndRemove(doc._id, function(err){
-		doc = _.isObject(doc) ? JSON.parse(JSON.stringify(doc)) : null
-		callback(err, doc)
+/**
+ * load all the same model's object to redis
+ * @param callback
+ */
+pro.loadAll = function(callback){
+	var self = this
+	this.model.findAsync({}).then(function(docs){
+		if(docs.length === 0) return Promise.resolve()
+		var docsString = JSON.stringify(docs)
+		return self.scripto.runAsync("addAll", [self.modelName, docsString], self.indexs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * save all the same model's object from redis to mongo
+ * @param callback
+ */
+pro.unloadAll = function(callback){
+	var self = this
+	this.scripto.runAsync("findAll", [this.modelName]).then(function(docStrings){
+		if(!_.isObject(docStrings)) return Promise.resolve()
+		var funcs = []
+		for(var i = 0; i < docStrings.length; i++){
+			var doc = JSON.parse(docStrings[i])
+			funcs.push(self.model.findByIdAndUpdateAsync(doc._id, _.omit(doc, "_id", "__v")))
+		}
+		return Promise.all(funcs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
 	})
 }

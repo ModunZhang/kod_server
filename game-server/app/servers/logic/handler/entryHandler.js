@@ -11,7 +11,7 @@ var crypto = require('crypto')
 
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
-var PlayerDao = require("../../../dao/playerDao")
+var Consts = require("../../../consts/consts")
 
 module.exports = function(app){
 	return new Handler(app)
@@ -19,8 +19,10 @@ module.exports = function(app){
 
 var Handler = function(app){
 	this.app = app
-	this.playerDao = Promise.promisifyAll(new PlayerDao())
 	this.serverId = this.app.getServerId()
+	this.playerService = app.get("playerService")
+	this.globalChannelService = Promise.promisifyAll(this.app.get("globalChannelService"))
+	this.sessionService = this.app.get("sessionService")
 }
 
 var pro = Handler.prototype
@@ -39,33 +41,26 @@ pro.login = function(msg, session, next){
 		return
 	}
 
-	var createPlayer = Promisify(CreatePlayer, this)
 	var bindPlayerSession = Promisify(BindPlayerSession, this)
 	var addPlayerToChatChannel = Promisify(AddPlayerToChatChannel, this)
-	var loginToLogicServer = Promisify(LoginToLogicServer, this)
 	var kickPlayerFromLogicServer = Promisify(KickPlayerFromLogicServer, this)
 
-	this.playerDao.findAsync({"countInfo.deviceId":deviceId}).then(function(doc){
+	this.playerService.getPlayerByIndexAsync("countInfo.deviceId", deviceId).then(function(doc){
 		if(!_.isObject(doc)){
-			var server = self.app.getServersByType("logic")[0]
-			return createPlayer(deviceId, server.id)
+			return self.playerService.createPlayerAsync(deviceId)
+		}else if(!_.isEmpty(doc.logicServerId)){
+			return kickPlayerFromLogicServer(doc)
 		}else{
 			return Promise.resolve(doc)
 		}
-	}).then(function(doc){
-		return Promise.method(function(){
-			return kickPlayerFromLogicServer(doc).then(function(){
-				return Promise.resolve(doc)
-			}).catch(function(e){
-				return Promise.reject(e)
-			})
-		})()
 	}).then(function(doc){
 		return bindPlayerSession(session, doc)
 	}).then(function(){
 		return addPlayerToChatChannel(session)
 	}).then(function(){
-		return loginToLogicServer(session)
+		return self.globalChannelService.addAsync(Consts.LogicChannelName, session.uid, self.serverId)
+	}).then(function(){
+		return self.playerService.playerLoginAsync(session.uid, self.serverId)
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
@@ -75,8 +70,7 @@ pro.login = function(msg, session, next){
 
 var BindPlayerSession = function(session, doc, callback){
 	session.bind(doc._id)
-	session.set("frontServerId", this.serverId)
-	session.set("logicServerId", doc.countInfo.logicServerId)
+	session.set("logicServerId", this.serverId)
 	session.on("closed", PlayerLeave.bind(this))
 	session.pushAll(function(err){
 		process.nextTick(function(){
@@ -89,11 +83,12 @@ var PlayerLeave = function(session, reason){
 	console.log("user [" + session.uid + "] logout with reason [" + reason + "]")
 
 	var self = this
-	var logoutFromLogicServer = Promisify(LogoutFromLogicServer, this)
 	var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, this)
 
-	logoutFromLogicServer(session).then(function(){
+	this.playerService.playerLogoutAsync(session.uid, this.serverId).then(function(){
 		return removePlayerFromChatChannel(session)
+	}).then(function(){
+		return self.globalChannelService.leaveAsync(Consts.LogicChannelName, session.uid, self.serverId)
 	}).catch(function(e){
 		errorLogger.error("handle playerLogout Error -----------------------------")
 		errorLogger.error(e.stack)
@@ -106,47 +101,15 @@ var PlayerLeave = function(session, reason){
 
 
 var AddPlayerToChatChannel = function(session, callback){
-	var frontServerId = session.get("frontServerId")
-	var logicServerId = session.get("logicServerId")
-	this.app.rpc.chat.chatRemote.add(session, session.uid, frontServerId, logicServerId, callback)
+	this.app.rpc.chat.chatRemote.add(session, session.uid, this.serverId, callback)
 }
+
 var RemovePlayerFromChatChannel = function(session, callback){
-	var frontServerId = session.get("frontServerId")
-	var logicServerId = session.get("logicServerId")
-	this.app.rpc.chat.chatRemote.leave(session, session.uid, frontServerId, logicServerId, callback)
-}
-
-var LoginToLogicServer = function(session, callback){
-	this.app.rpc.logic.logicRemote.login(session, session.uid, session.get("frontServerId"), callback)
-}
-
-var LogoutFromLogicServer = function(session, callback){
-	this.app.rpc.logic.logicRemote.logout(session, session.uid, session.get("frontServerId"), callback)
+	this.app.rpc.chat.chatRemote.leave(session, session.uid, this.serverId, callback)
 }
 
 var KickPlayerFromLogicServer = function(playerDoc, callback){
-	this.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.countInfo.logicServerId, playerDoc._id, callback)
-}
-
-var CreatePlayer = function(deviceId, logicServerId, callback){
-	var self = this
-	Promisify(crypto.randomBytes)(4).then(function(buf){
-		var token = buf.toString("hex")
-		var doc = {
-			countInfo:{
-				logicServerId:logicServerId,
-				deviceId:deviceId
-			},
-			basicInfo:{
-				name:"player_" + token,
-				cityName:"city_" + token
-			}
-		}
-
-		return self.playerDao.addAsync(doc)
-	}).then(function(doc){
-		callback(null, doc)
-	}).catch(function(e){
-		callback(e)
+	this.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, session, session.uid, function(err){
+		callback(err, playerDoc)
 	})
 }

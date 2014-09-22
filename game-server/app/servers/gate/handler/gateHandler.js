@@ -5,7 +5,6 @@
  */
 
 var dispatcher = require('../../../utils/dispatcher')
-var Utils = require("../../../utils/utils")
 
 module.exports = function(app) {
   return new Handler(app)
@@ -24,11 +23,15 @@ var pro = Handler.prototype
  * @param next
  */
 pro.queryEntry = function(msg, session, next){
-	var frontServers = this.app.getServersByType('front')
-	var frontServer = dispatcher.dispatch(frontServers)
-	next(null,Utils.next({
-		id:frontServer.id,
-		host:frontServer.host,
-		port:frontServer.clientPort
-	}, 200))
+	var logicServers = this.app.getServersByType('logic')
+	var logicServer = dispatcher.dispatch(logicServers)
+	var data = {
+		id:logicServer.id,
+		host:logicServer.host,
+		port:logicServer.clientPort
+	}
+	next(null,{
+		data:data,
+		code:200
+	})
 }
