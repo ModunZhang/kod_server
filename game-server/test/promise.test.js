@@ -1,12 +1,12 @@
-var path = require("path")
-var pomelo = require("./pomelo-client")
-var Promise = require("bluebird")
-var Promisify = Promise.promisify
-var _ = require("underscore")
-var should = require('should')
-var Utils = require("../app/utils/utils")
-var redis = require("redis")
-var redisClient = redis.createClient(6379)
+//var path = require("path")
+//var pomelo = require("./pomelo-client")
+//var Promise = require("bluebird")
+//var Promisify = Promise.promisify
+//var _ = require("underscore")
+//var should = require('should')
+//var Utils = require("../app/utils/utils")
+//var redis = require("redis")
+//var redisClient = redis.createClient(6379)
 //var Scripto = require('redis-scripto')
 //var scriptManager = new Scripto(redisClient)
 //

@@ -173,9 +173,13 @@ pro.loadAll = function(callback){
 	var self = this
 	this.model.findAsync({}).then(function(docs){
 		if(docs.length === 0) return Promise.resolve()
-		var docsString = JSON.stringify(docs)
-		return self.scripto.runAsync("addAll", [self.modelName, docsString], self.indexs)
-	}).then(function(){
+		var funcs = []
+		for(var i = 0; i < docs.length; i++){
+			var docString = JSON.stringify(docs[i])
+			funcs.push(self.scripto.runAsync("add", [self.modelName, docString], self.indexs))
+		}
+		return Promise.all(funcs)
+	}).then(function(docString){
 		callback()
 	}).catch(function(e){
 		callback(e)
