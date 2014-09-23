@@ -1571,19 +1571,22 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 			return Promise.reject(new Error("龙巢还未建造"))
 		}
 		self.refreshPlayerResources(doc)
-		if(doc.resources.energy < 10){
+		if(doc.resources.energy <= 0){
 			return Promise.reject(new Error("能量不足"))
 		}
 		var dragon = doc.dragons[dragonType]
 		if(dragon.star > 0){
 			return Promise.reject(new Error("龙蛋早已成功孵化"))
 		}
-		dragon.vitality += 10
-		doc.resources.energy -= 10
-		if(dragon.vitality >= 100){
+		var  energyNeed = 100 - dragon.vitality
+		if(doc.resources.energy >= energyNeed){
 			dragon.star = 1
 			dragon.vitality = DataUtils.getDragonMaxVitality(doc, dragon)
 			dragon.strength = DataUtils.getDragonStrength(doc, dragon)
+			doc.resources.energy -= energyNeed
+		}else{
+			dragon.vitality += doc.resources.energy
+			doc.resources.energy = 0
 		}
 		//保存玩家数据
 		return self.playerDao.updateAsync(doc)
