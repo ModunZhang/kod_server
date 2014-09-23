@@ -57,5 +57,9 @@ module.exports = {
 		Supervisor:"supervisor",
 		Elite:"elite",
 		Member:"member"
+	},
+	AllianceJoinStatus:{
+		Pending:"pending",
+		Reject:"reject"
 	}
 }

@@ -52,12 +52,13 @@ var allianceSchema = new Schema({
 			title:{type:Number, required:true}
 		}
 	],
-	joinRequests:[
+	joinRequestEvents:[
 		{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			level:{type:Number, required:true},
-			power:{type:Number, required:true}
+			power:{type:Number, required:true},
+			requestTime:{type:Number, required:true}
 		}
 	]
 })

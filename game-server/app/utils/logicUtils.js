@@ -6,6 +6,8 @@
 
 var _ = require("underscore")
 var DataUtils = require("./dataUtils")
+var Consts = require("../consts/consts")
+var Define = require("../consts/define")
 
 var Utils = module.exports
 
@@ -544,7 +546,7 @@ Utils.isTreatSoldierLegal = function(playerDoc, soldiers){
  */
 Utils.isEnhanceDragonEquipmentLegal = function(playerDoc, equipments){
 	if(equipments.length == 0) return false
-	for(var i = 0; i < equipments.length; i ++){
+	for(var i = 0; i < equipments.length; i++){
 		var equipment = equipments[i]
 		var equipmentName = equipment.name
 		var count = equipment.count
@@ -596,7 +598,7 @@ Utils.refreshAlliance = function(allianceDoc){
  * @returns {boolean}
  */
 Utils.isAllianceHasMember = function(allianceDoc, playerId){
-	for(var i = 0; i < allianceDoc.members.length; i ++){
+	for(var i = 0; i < allianceDoc.members.length; i++){
 		var member = allianceDoc.members[i]
 		if(_.isEqual(member.id, playerId)) return true
 	}
@@ -609,11 +611,100 @@ Utils.isAllianceHasMember = function(allianceDoc, playerId){
  * @param memberId
  */
 Utils.getAllianceMemberById = function(allianceDoc, memberId){
-	for(var i = 0; i < allianceDoc.members.length; i ++){
+	for(var i = 0; i < allianceDoc.members.length; i++){
 		var member = allianceDoc.members[i]
 		if(_.isEqual(member.id, memberId)){
 			return member
 		}
 	}
 	return null
+}
+
+/**
+ * 是否有对某联盟的有效申请存在
+ * @param playerDoc
+ * @param allianceId
+ * @returns {boolean}
+ */
+Utils.hasPendingRequestMessageToAlliance = function(playerDoc, allianceId){
+	var has = false
+	_.each(playerDoc.requestToAllianceEvents, function(event){
+		if(_.isEqual(event.id, allianceId) && _.isEqual(event.status, Consts.AllianceJoinStatus.Pending) && event.requestTime + (Define.JoinAllianceMessageExpireTime) < Date.now()){
+			has = true
+		}
+	})
+	return has
+}
+
+/**
+ * 玩家对联盟的申请消息是否已满
+ * @param playerDoc
+ * @returns {boolean}
+ */
+Utils.isRequestMessageToAllianceFull = function(playerDoc){
+	var count = 0
+	_.each(playerDoc.requestToAllianceEvents, function(event){
+		if(_.isEqual(event.status, Consts.AllianceJoinStatus.Pending) && event.requestTime + (Define.JoinAllianceMessageExpireTime) < Date.now()){
+			count += 1
+		}
+	})
+	return count >= Define.RequestJoinAllianceMessageMaxSize
+}
+
+/**
+ * 添加联盟申请事件
+ * @param allianceDoc
+ * @param playerDoc
+ * @param requestTime
+ */
+Utils.addAllianceRequestEvent = function(allianceDoc, playerDoc, requestTime){
+	var event = {
+		id:playerDoc._id,
+		name:palyerDoc.basicInfo.name,
+		level:playerDoc.basicInfo.level,
+		power:playerDoc.basicInfo.power,
+		requestTime:requestTime
+	}
+	allianceDoc.joinRequestEvents.push(event)
+}
+
+/**
+ * 添加玩家对联盟的申请事件
+ * @param playerDoc
+ * @param allianceDoc
+ * @param requestTime
+ */
+Utils.addRequestToAllianceEvent = function(playerDoc, allianceDoc, requestTime){
+	if(playerDoc.requestToAllianceEvents.length >= Define.RequestJoinAllianceMessageMaxSize){
+		var willBeRemovedIndex = -1
+		for(var i = 0; i < playerDoc.requestToAllianceEvents.length; i++){
+			var event = playerDoc.requestToAllianceEvents[i]
+			if(_.isEqual(event.status, Consts.AllianceJoinStatus.Pending) && event.requestTime + (Define.JoinAllianceMessageExpireTime) > Date.now()){
+				willBeRemovedIndex = i
+				break
+			}else if(_.isEqual(event.status, Consts.AllianceJoinStatus.Reject)){
+				willBeRemovedIndex = i
+				break
+			}
+		}
+		if(willBeRemovedIndex >= 0){
+			playerDoc.requestToAllianceEvents.splice(willBeRemovedIndex, 1)
+		}
+	}
+
+	var event = {
+		id:allianceDoc._id,
+		name:allianceDoc.basicInfo.name,
+		tag:allianceDoc.basicInfo.tag,
+		flag:allianceDoc.basicInfo.flag,
+		level:allianceDoc.basicInfo.level,
+		members:allianceDoc.members.length,
+		power:allianceDoc.basicInfo.power,
+		language:allianceDoc.basicInfo.language,
+		kill:allianceDoc.basicInfo.kill,
+		status:Consts.AllianceJoinStatus.Pending,
+		requestTime:requestTime
+	}
+
+	playerDoc.requestToAllianceEvents.push(event)
 }

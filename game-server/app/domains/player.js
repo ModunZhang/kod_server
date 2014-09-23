@@ -61,7 +61,7 @@ var createDragonSkillSchema = function(skillName){
 var createDragonSchema = function(dragonType){
 	var schema = {
 		type:{type:String, required:true, default:dragonType},
-		level:{type:Number, required:true, default:0},
+		level:{type:Number, required:true, default:1},
 		exp:{type:Number, required:true, default:0},
 		star:{type:Number, required:true, default:0},
 		strength:{type:Number, required:true, default:0},
@@ -391,7 +391,8 @@ var playerSchema = new Schema({
 		members:{type:Number, required:true},
 		power:{type:Number, required:true},
 		language:{type:String, required:true},
-		kill:{type:String, required:true}
+		kill:{type:String, required:true},
+		status:{type:String, required:true}
 	}],
 	inviteToAllianceEvents:[{
 		id:{type:String, required:true},

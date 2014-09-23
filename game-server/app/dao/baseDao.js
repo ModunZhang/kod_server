@@ -179,7 +179,7 @@ pro.loadAll = function(callback){
 			funcs.push(self.scripto.runAsync("add", [self.modelName, docString], self.indexs))
 		}
 		return Promise.all(funcs)
-	}).then(function(docString){
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)

@@ -17,6 +17,7 @@ var Events = require("../consts/events")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 var Consts = require("../consts/consts")
+var Define = require("../consts/define")
 
 var PlayerService = function(app){
 	this.app = app
@@ -1578,7 +1579,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		if(dragon.star > 0){
 			return Promise.reject(new Error("龙蛋早已成功孵化"))
 		}
-		var  energyNeed = 100 - dragon.vitality
+		var energyNeed = 100 - dragon.vitality
 		if(doc.resources.energy >= energyNeed){
 			dragon.star = 1
 			dragon.vitality = DataUtils.getDragonMaxVitality(doc, dragon)
@@ -2712,7 +2713,7 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "sendAllianceMail")){
+		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "sendAllianceMail")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
 		playerDoc = doc
@@ -2759,14 +2760,163 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 	})
 }
 
-//申请加入联盟
-pro.requestToJoinAlliance = function(){
+/**
+ * 申请加入联盟
+ * @param playerId
+ * @param allianceId
+ * @param callback
+ */
+pro.requestToJoinAlliance = function(playerId, allianceId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(allianceId)){
+		callback(new Error("allianceId 不合法"))
+		return
+	}
 
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(_.isObject(doc.alliance) && !_.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家已加入联盟"))
+		}
+		if(LogicUtils.isRequestMessageToAllianceFull(doc)){
+			return Promise.reject(new Error("联盟申请已满,请撤消部分申请后再来申请"))
+		}
+		if(LogicUtils.hasPendingRequestMessageToAlliance(doc, allianceId)){
+			return Promise.reject(new Error("对此联盟的申请已发出,请耐心等候审核"))
+		}
+		playerDoc = doc
+		return self.allianceDao.findByIdAsync(allianceId)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		if(doc.joinRequestEvents.length >= Define.AllianceRequestMessageMaxSize){
+			return Promise.reject(new Error("此联盟的申请信息已满,请等候其处理后再进行申请"))
+		}
+		allianceDoc = doc
+		var requestTime = Date.now()
+		LogicUtils.addAllianceRequestEvent(allianceDoc, playerDoc, requestTime)
+		LogicUtils.addRequestToAllianceEvent(playerDoc, allianceDoc, requestTime)
+		var funcs = []
+		funcs.push(self.allianceDao.updateAsync(allianceDoc))
+		funcs.push(self.playerDao.updateAsync(playerDoc))
+		return Promise.all(funcs)
+	}).then(function(){
+		self.pushService.onPlayerDataChanged(playerDoc)
+		self.pushService.onAllianceDataChanged(allianceDoc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
 }
 
-//处理加入联盟申请
-pro.handleJoinAllianceRequest = function(){
+/**
+ * 处理加入联盟申请
+ * @param playerId
+ * @param requestIndex
+ * @param agree
+ * @param callback
+ */
+pro.handleJoinAllianceRequest = function(playerId, requestIndex, agree, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(requestIndex) || requestIndex % 1 !== 0 || requestIndex < 1 || requestIndex > Define.AllianceRequestMessageMaxSize){
+		callback(new Error("requestIndex 不合法"))
+		return
+	}
+	if(!_.isBoolean(agree)){
+		callback(new Error("agree 不合法"))
+		return
+	}
 
+	var self = this
+	var allianceDoc = null
+	var memberDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "handleJoinAllianceRequest")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		return self.allianceDao.findByIdAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var event = allianceDoc.joinRequestEvents[requestIndex]
+		if(!_.isObject(event)){
+			return Promise.reject(new Error("申请不存在"))
+		}
+		return self.playerDao.findByIdAsync(event.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error(""))
+		}
+		var member = {
+			id:event.id,
+			name:playerDoc.basicInfo.name,
+			level:playerDoc.basicInfo.level,
+			power:playerDoc.basicInfo.power,
+			title:Consts.AllianceTitle.Archon
+		}
+
+
+		allianceDoc = doc
+		var mail = {
+			title:title,
+			from:playerDoc._id,
+			fromName:playerDoc.basicInfo.name,
+			sendTime:Date.now(),
+			content:content
+		}
+		var func = function(member, callback){
+			var memberDoc = null
+			self.playerDao.findByIdAsync(member.id).then(function(doc){
+				memberDoc = doc
+				memberDoc.mails.push(mail)
+				return self.playerDao.updateAsync(memberDoc)
+			}).then(function(){
+				if(!_.isEmpty(memberDoc.logicServerId)){
+					self.pushService.onPlayerDataChanged(memberDoc)
+				}
+			}).then(function(){
+				callback()
+			}).catch(function(e){
+				callback(e)
+			})
+		}
+		func = Promise.promisify(func, self)
+		var funcs = []
+		_.each(allianceDoc.members, function(member){
+			funcs.push(func(member))
+		})
+		return Promise.all(funcs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
 }
 
 //邀请玩家加入联盟
