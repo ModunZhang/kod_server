@@ -95,7 +95,8 @@ var playerSchema = new Schema({
 		deviceId:{type:String, index:true, unique:true, required:true},
 		registerTime:{type:Number, required:true, default:Date.now()},
 		lastLoginTime:{type:Number, required:true, default:Date.now()},
-		loginCount:{type:Number, required:true, default:0}
+		loginCount:{type:Number, required:true, default:0},
+		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn}
 	},
 	basicInfo:{
 		name:{type:String, unique:true, required:true},
@@ -416,17 +417,27 @@ var playerSchema = new Schema({
 		title:{type:String, required:true},
 		from:{type:String, required:true},
 		fromName:{type:String, required:true},
-		sendTime:{type:Number, required:true},
-		content:{type:String, required:true}
-	}],
-	notices:[{
-
+		content:{type:String, required:true},
+		sendTime:{type:Number, required:true}
 	}],
 	reports:[{
 
 	}],
-	saved:[{
+	savedMails:[{
+		title:{type:String, required:true},
+		from:{type:String, required:true},
+		fromName:{type:String, required:true},
+		content:{type:String, required:true},
+		sendTime:{type:Number, required:true}
+	}],
+	savedReports:[{
 
+	}],
+	sendMails:[{
+		title:{type:String, required:true},
+		fromName:{type:String, required:true},
+		content:{type:String, required:true},
+		sendTime:{type:Number, required:true}
 	}]
 })
 

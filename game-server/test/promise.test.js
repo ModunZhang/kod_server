@@ -1,6 +1,6 @@
 //var path = require("path")
 //var pomelo = require("./pomelo-client")
-//var Promise = require("bluebird")
+var Promise = require("bluebird")
 //var Promisify = Promise.promisify
 //var _ = require("underscore")
 //var should = require('should')
@@ -110,4 +110,15 @@
 //	console.log(a)
 //	console.log(b)
 //	console.log(c)
+//})
+//
+//var func = function(a){
+//	return Promise.resolve(a)
+//}
+//
+//var funcs = []
+//funcs.push(func("123"))
+//
+//Promise.all(funcs).then(function(res){
+//	console.log(res[0])
 //})
