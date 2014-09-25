@@ -49,7 +49,7 @@ var allianceSchema = new Schema({
 			power:{type:Number, required:true},
 			kill:{type:Number, required:true},
 			loyalty:{type:Number, reuqired:true, default:0},
-			title:{type:Number, required:true}
+			title:{type:String, required:true}
 		}
 	],
 	joinRequestEvents:[

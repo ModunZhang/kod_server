@@ -386,26 +386,27 @@ var playerSchema = new Schema({
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		tag:{type:String, required:true},
-		requestTime:{type:Number, required:true},
 		flag:[String],
 		level:{type:Number, required:true},
 		members:{type:Number, required:true},
 		power:{type:Number, required:true},
 		language:{type:String, required:true},
 		kill:{type:String, required:true},
-		status:{type:String, required:true}
+		status:{type:String, required:true},
+		requestTime:{type:Number, required:true}
 	}],
 	inviteToAllianceEvents:[{
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		tag:{type:String, required:true},
-		inviteTime:{type:Number, required:true},
 		flag:[String],
 		level:{type:Number, required:true},
 		members:{type:Number, required:true},
 		power:{type:Number, required:true},
 		language:{type:String, required:true},
-		kill:{type:String, required:true}
+		kill:{type:String, required:true},
+		inviterId:{type:String, reuqired:true},
+		inviteTime:{type:Number, required:true}
 	}],
 	alliance:{
 		id:{type:String, required:false},

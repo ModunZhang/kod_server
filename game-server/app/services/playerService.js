@@ -2041,6 +2041,318 @@ pro.impose = function(playerId, callback){
 }
 
 /**
+ * 获取玩家个人信息
+ * @param playerId
+ * @param memberId
+ * @param callback
+ */
+pro.getPlayerInfo = function(playerId, memberId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(memberId)){
+		callback(new Error("memberId 不合法"))
+		return
+	}
+
+	var self = this
+	this.playerDao.findByIdAsync(memberId).then(function(doc){
+		if(_.isObject(doc)){
+			return Promise.resolve(doc)
+		}else{
+			return Promise.reject(new Error("玩家不存在"))
+		}
+	}).then(function(doc){
+		self.pushService.onGetPlayerInfoSuccess(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 发送个人邮件
+ * @param playerId
+ * @param memberId
+ * @param title
+ * @param content
+ * @param callback
+ */
+pro.sendMail = function(playerId, memberId, title, content, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(memberId)){
+		callback(new Error("memberId 不合法"))
+		return
+	}
+	if(!_.isString(title)){
+		callback(new Error("title 不合法"))
+		return
+	}
+	if(!_.isString(content)){
+		callback(new Error("content 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var memberDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(_.isEqual(doc._id, memberId)){
+			return Promise.reject(new Error("不能给自己发邮件"))
+		}
+		playerDoc = doc
+	}).then(function(){
+		return self.playerDao.findByIdAsync(memberId)
+	}).then(function(doc){
+		memberDoc = doc
+		if(!_.isObject(memberDoc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
+		var mailToMember = {
+			title:title,
+			from:playerDoc._id,
+			fromName:playerDoc.basicInfo.name,
+			content:content,
+			sendTime:Date.now()
+		}
+		if(memberDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
+			memberDoc.mails.shift()
+		}
+		memberDoc.mails.push(mailToMember)
+
+		var mailToPlayer = {
+			title:title,
+			fromName:playerDoc.basicInfo.name,
+			content:content,
+			sendTime:Date.now()
+		}
+		if(playerDoc.sendMails.length >= Define.PlayerMailSendboxMessageMaxSize){
+			playerDoc.sendMails.shift()
+		}
+		playerDoc.sendMails.push(mailToPlayer)
+
+		var funcs = []
+		funcs.push(self.playerDao.updateAsync(playerDoc))
+		funcs.push(self.playerDao.updateAsync(memberDoc))
+		return Promise.all(funcs)
+	}).then(function(){
+		self.pushService.onPlayerDataChanged(playerDoc)
+		if(!_.isEmpty(memberDoc.logicServerId)){
+			self.pushService.onPlayerDataChanged(memberDoc)
+		}
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 发送系统邮件
+ * @param memberId
+ * @param title
+ * @param content
+ * @param callback
+ */
+pro.sendSystemMail = function(memberId, title, content, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(memberId)){
+		callback(new Error("memberId 不合法"))
+		return
+	}
+	if(!_.isString(title)){
+		callback(new Error("title 不合法"))
+		return
+	}
+	if(!_.isString(content)){
+		callback(new Error("content 不合法"))
+		return
+	}
+
+	var self = this
+	this.playerDao.findByIdAsync(memberId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
+		var mail = {
+			title:title,
+			from:"system",
+			fromName:"system",
+			sendTime:Date.now(),
+			content:content
+		}
+		if(memberDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
+			memberDoc.mails.shift()
+		}
+		memberDoc.mails.push(mail)
+		return self.playerDao.updateAsync(memberDoc)
+	}).then(function(){
+		if(!_.isEmpty(memberDoc.logicServerId)){
+			self.pushService.onPlayerDataChanged(memberDoc)
+		}
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 保存邮件
+ * @param playerId
+ * @param mailIndex
+ * @param callback
+ */
+pro.saveMail = function(playerId, mailIndex, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(mailIndex) || mailIndex % 1 !== 0 || mailIndex < 0){
+		callback(new Error("mailIndex 不合法"))
+		return
+	}
+
+	var self = this
+	this.playerDao.findById(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		var mail = doc.mails[mailIndex]
+		if(!_.isObject(mail)){
+			return Promise.reject(new Error("邮件不存在"))
+		}
+		if(doc.savedMails.length >= Define.PlayerMailFavoriteMessageMaxSize){
+			doc.savedMails.shift()
+		}
+		doc.savedMails.push(mail)
+		return self.playerDao.updateAsync(doc)
+	}).then(function(){
+		self.pushService.onPlayerDataChanged(doc)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+
+/**
+ * 发送联盟邮件
+ * @param playerId
+ * @param title
+ * @param content
+ * @param callback
+ */
+pro.sendAllianceMail = function(playerId, title, content, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(title)){
+		callback(new Error("title 不合法"))
+		return
+	}
+	if(!_.isString(content)){
+		callback(new Error("content 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "sendAllianceMail")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		playerDoc = doc
+		return self.allianceDao.findByIdAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+
+		allianceDoc = doc
+		var mailToPlayer = {
+			title:title,
+			fromName:playerDoc.basicInfo.name,
+			contend:content,
+			sendTime:Date.now()
+		}
+		if(playerDoc.sendMails.length >= Define.PlayerMailSendboxMessageMaxSize){
+			playerDoc.sendMails.shift()
+		}
+		playerDoc.sendMails.push(mailToPlayer)
+
+		var mailToMember = {
+			title:title,
+			from:playerDoc._id,
+			fromName:playerDoc.basicInfo.name,
+			content:content,
+			sendTime:Date.now()
+		}
+		var func = function(member){
+			var memberDoc = null
+			self.playerDao.findByIdAsync(member.id).then(function(doc){
+				memberDoc = doc
+				if(memberDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
+					memberDoc.mails.shift()
+				}
+				memberDoc.mails.push(mailToMember)
+				return self.playerDao.updateAsync(memberDoc)
+			}).then(function(){
+				if(!_.isEmpty(memberDoc.logicServerId)){
+					self.pushService.onPlayerDataChanged(memberDoc)
+				}
+			}).then(function(){
+				return Promise.resolve()
+			}).catch(function(e){
+				return Promise.reject(e)
+			})
+		}
+		var funcs = []
+		funcs.push(function(){
+			self.playerDao.updateAsync(playerDoc).then(function(){
+				self.pushService.onPlayerDataChanged(playerDoc)
+				return Promise.resolve()
+			}).catch(function(e){
+				return Promise.reject(e)
+			})
+		})
+		_.each(allianceDoc.members, function(member){
+			funcs.push(func(member))
+		})
+		return Promise.all(funcs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * 创建联盟
  * @param playerId
  * @param name
@@ -2091,18 +2403,18 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 			return Promise.reject(new Error("玩家已加入了联盟"))
 		}
 		var gemUsed = DataUtils.getGemByCreateAlliance()
-		if(playerDoc.basicInfo.gem < gemUsed){
+		if(playerDoc.resources.gem < gemUsed){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		playerDoc.basicInfo.gem -= gemUsed
+		playerDoc.resources.gem -= gemUsed
 		return Promise.resolve()
 	}).then(function(){
-		return self.allianceDao.findAsync({"basicInfo.name":name})
+		return self.allianceDao.findByIndexAsync("basicInfo.name", name)
 	}).then(function(doc){
 		if(_.isObject(doc)){
 			return Promise.reject(new Error("联盟名称已经存在"))
 		}
-		self.allianceDao.findAsync({"basicInfo.tag":tag})
+		return self.allianceDao.findByIndexAsync("basicInfo.tag", tag)
 	}).then(function(doc){
 		if(_.isObject(doc)){
 			return Promise.reject(new Error("联盟标签已经存在"))
@@ -2115,7 +2427,8 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 				language:language,
 				terrain:terrain,
 				flag:flag,
-				power:playerDoc.basicInfo.power
+				power:playerDoc.basicInfo.power,
+				kill:playerDoc.basicInfo.kill
 			},
 			members:[
 				{
@@ -2123,6 +2436,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 					name:playerDoc.basicInfo.name,
 					level:playerDoc.basicInfo.level,
 					power:playerDoc.basicInfo.power,
+					kill:playerDoc.basicInfo.kill,
 					title:Consts.AllianceTitle.Archon
 				}
 			]
@@ -2130,15 +2444,17 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		return self.allianceDao.createAsync(alliance)
 	}).then(function(doc){
 		allianceDoc = doc
-		playerDoc.alliance.id = allianceDoc._id
-		playerDoc.alliance.name = allianceDoc.basicInfo.name
-		playerDoc.alliance.title = Consts.AllianceTitle.Archon
-		playerDoc.alliance.titleName = allianceDoc.titles.archon
+		playerDoc.alliance = {
+			id:allianceDoc._id,
+			name:allianceDoc.basicInfo.name,
+			title:Consts.AllianceTitle.Archon,
+			titleName:allianceDoc.titles.archon
+		}
 
 		var funcs = []
 		funcs.push(self.playerDao.updateAsync(playerDoc))
 		funcs.push(self.globalChannelService.addAsync(Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId))
-		return Promise.all()
+		return Promise.all(funcs)
 	}).then(function(){
 		self.pushService.onAllianceDataChanged(allianceDoc)
 		self.pushService.onPlayerDataChanged(playerDoc)
@@ -2400,7 +2716,7 @@ pro.editAllianceDescription = function(playerId, description, callback){
 }
 
 /**
- * 修改联盟玩家职位
+ * 修改联盟某个玩家的职位
  * @param playerId
  * @param memberId
  * @param title
@@ -2467,41 +2783,12 @@ pro.modifyAllianceMemberTitle = function(playerId, memberId, title, callback){
 		var funcs = []
 		funcs.push(self.playerDao.updateAsync(memberDoc))
 		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		return Promise.all()
+		return Promise.all(funcs)
 	}).then(function(){
 		self.pushService.onAllianceDataChanged(allianceDoc)
 		if(!_.isEmpty(memberDoc.logicServerId)){
 			self.pushService.onPlayerDataChanged(memberDoc)
 		}
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 获取玩家个人信息
- * @param memberId
- * @param callback
- */
-pro.getPlayerInfo = function(memberId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(memberId)){
-		callback(new Error("memberId 不合法"))
-		return
-	}
-
-	var self = this
-	this.playerDao.findByIdAsync(memberId).then(function(doc){
-		if(_.isObject(doc)){
-			return Promise.resolve(doc)
-		}else{
-			return Promise.reject(new Error("玩家不存在"))
-		}
-	}).then(function(doc){
-		self.pushService.onGetPlayerInfoSuccess(doc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -2567,7 +2854,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		var funcs = []
 		funcs.push(self.playerDao.updateAsync(memberDoc))
 		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		return Promise.all()
+		return Promise.all(funcs)
 	}).then(function(){
 		self.pushService.onAllianceDataChanged(allianceDoc)
 		if(!_.isEmpty(memberDoc.logicServerId)){
@@ -2642,189 +2929,13 @@ pro.handOverArchon = function(playerId, memberId, callback){
 		funcs.push(self.playerDao.updateAsync(playerDoc))
 		funcs.push(self.playerDao.updateAsync(memberDoc))
 		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		return Promise.all()
+		return Promise.all(funcs)
 	}).then(function(){
 		self.pushService.onAllianceDataChanged(allianceDoc)
 		if(!_.isEmpty(memberDoc.logicServerId)){
 			self.pushService.onPlayerDataChanged(memberDoc)
 		}
 		self.pushService.onPlayerDataChanged(playerDoc)
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 发送邮件
- * @param playerId
- * @param memberId
- * @param title
- * @param content
- * @param callback
- */
-pro.sendMail = function(playerId, memberId, title, content, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isString(memberId)){
-		callback(new Error("memberId 不合法"))
-		return
-	}
-	if(!_.isString(title)){
-		callback(new Error("title 不合法"))
-		return
-	}
-	if(!_.isString(content)){
-		callback(new Error("content 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var memberDoc = null
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		playerDoc = doc
-	}).then(function(){
-		return self.playerDao.findByIdAsync(memberId)
-	}).then(function(doc){
-		memberDoc = doc
-		if(!_.isObject(memberDoc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-
-		var mailToMember = {
-			title:title,
-			from:playerDoc._id,
-			fromName:playerDoc.basicInfo.name,
-			content:content,
-			sendTime:Date.now()
-		}
-		if(memberDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
-			memberDoc.mails.shift()
-		}
-		memberDoc.mails.push(mailToMember)
-
-		var mailToPlayer = {
-			title:title,
-			fromName:playerDoc.basicInfo.name,
-			content:content,
-			sendTime:Date.now()
-		}
-		if(playerDoc.sendMails.length >= Define.PlayerMailSendboxMessageMaxSize){
-			playerDoc.sendMails.shift()
-		}
-		playerDoc.sendMails.push(mailToPlayer)
-
-		var funcs = []
-		funcs.push(self.playerDao.updateAsync(playerDoc))
-		funcs.push(self.playerDao.updateAsync(memberDoc))
-		return Promise.all(funcs)
-	}).then(function(){
-		self.pushService.onPlayerDataChanged(playerDoc)
-		if(!_.isEmpty(memberDoc.logicServerId)){
-			self.pushService.onPlayerDataChanged(memberDoc)
-		}
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 发送系统邮件
- * @param memberId
- * @param title
- * @param content
- * @param callback
- */
-pro.sendSystemMail = function(memberId, title, content, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(memberId)){
-		callback(new Error("memberId 不合法"))
-		return
-	}
-	if(!_.isString(title)){
-		callback(new Error("title 不合法"))
-		return
-	}
-	if(!_.isString(content)){
-		callback(new Error("content 不合法"))
-		return
-	}
-
-	var self = this
-	this.playerDao.findByIdAsync(memberId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-
-		var mail = {
-			title:title,
-			from:"system",
-			fromName:"system",
-			sendTime:Date.now(),
-			content:content
-		}
-		if(memberDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
-			memberDoc.mails.shift()
-		}
-		memberDoc.mails.push(mail)
-		return self.playerDao.updateAsync(memberDoc)
-	}).then(function(){
-		if(!_.isEmpty(memberDoc.logicServerId)){
-			self.pushService.onPlayerDataChanged(memberDoc)
-		}
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 保存邮件
- * @param playerId
- * @param mailIndex
- * @param callback
- */
-pro.saveMail = function(playerId, mailIndex, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isNumber(mailIndex) || mailIndex % 1 !== 0 || mailIndex < 0){
-		callback(new Error("mailIndex 不合法"))
-		return
-	}
-
-	var self = this
-	this.playerDao.findById(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		var mail = doc.mails[mailIndex]
-		if(!_.isObject(mail)){
-			return Promise.reject(new Error("邮件不存在"))
-		}
-		if(doc.savedMails.length >= Define.PlayerMailFavoriteMessageMaxSize){
-			doc.savedMails.shift()
-		}
-		doc.savedMails.push(mail)
-		return self.playerDao.updateAsync(doc)
-	}).then(function(){
-		self.pushService.onPlayerDataChanged(doc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -2874,7 +2985,7 @@ pro.quitAlliance = function(playerId, callback){
 		var funcs = []
 		funcs.push(self.allianceDao.updateAsync(allianceDoc))
 		funcs.push(self.playerDao.updateAsync(playerDoc))
-		return Promise.all()
+		return Promise.all(funcs)
 	}).then(function(){
 		self.pushService.onAllianceDataChanged(allianceDoc)
 		self.pushService.onPlayerDataChanged(playerDoc)
@@ -2885,13 +2996,12 @@ pro.quitAlliance = function(playerId, callback){
 }
 
 /**
- * 发送联盟邮件
+ * 直接加入某联盟
  * @param playerId
- * @param title
- * @param content
+ * @param allianceId
  * @param callback
  */
-pro.sendAllianceMail = function(playerId, title, content, callback){
+pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -2899,12 +3009,8 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isString(title)){
-		callback(new Error("title 不合法"))
-		return
-	}
-	if(!_.isString(content)){
-		callback(new Error("content 不合法"))
+	if(!_.isString(allianceId)){
+		callback(new Error("allianceId 不合法"))
 		return
 	}
 
@@ -2915,71 +3021,72 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
-			return Promise.reject(new Error("玩家未加入联盟"))
-		}
-		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "sendAllianceMail")){
-			return Promise.reject(new Error("此操作权限不足"))
+		if(_.isObject(doc.alliance) && !_.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家已加入联盟"))
 		}
 		playerDoc = doc
-		return self.allianceDao.findByIdAsync(doc.alliance.id)
+		return self.allianceDao.findByIdAsync(allianceId)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
 		}
-
+		if(!_.isEqual(doc.basicInfo.joinType, Consts.AllianceJoinType.All)){
+			return Promise.reject(new Error("联盟不允许直接加入"))
+		}
 		allianceDoc = doc
-		var mailToPlayer = {
-			title:title,
-			fromName:playerDoc.basicInfo.name,
-			contend:content,
-			sendTime:Date.now()
-		}
-		if(playerDoc.sendMails.length >= Define.PlayerMailSendboxMessageMaxSize){
-			playerDoc.sendMails.shift()
-		}
-		playerDoc.sendMails.push(mailToPlayer)
 
-		var mailToMember = {
-			title:title,
-			from:playerDoc._id,
-			fromName:playerDoc.basicInfo.name,
-			content:content,
-			sendTime:Date.now()
+		var member = {
+			id:playerDoc._id,
+			name:playerDoc.basicInfo.name,
+			level:playerDoc.basicInfo.level,
+			power:playerDoc.basicInfo.power,
+			title:Consts.AllianceTitle.Member
 		}
-		var func = function(member){
-			var memberDoc = null
-			self.playerDao.findByIdAsync(member.id).then(function(doc){
-				memberDoc = doc
-				if(memberDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
-					memberDoc.mails.shift()
-				}
-				memberDoc.mails.push(mailToMember)
-				return self.playerDao.updateAsync(memberDoc)
-			}).then(function(){
-				if(!_.isEmpty(memberDoc.logicServerId)){
-					self.pushService.onPlayerDataChanged(memberDoc)
-				}
-			}).then(function(){
-				return Promise.resolve()
-			}).catch(function(e){
-				return Promise.reject(e)
-			})
-		}
+		allianceDoc.members.push(member)
+		LogicUtils.refreshAlliance(allianceDoc)
+
+		playerDoc.alliance.id = allianceDoc._id
+		playerDoc.alliance.name = allianceDoc.basicInfo.name
+		playerDoc.alliance.title = Consts.AllianceTitle.Member
+		playerDoc.alliance.titleName = allianceDoc.titles.member
+
 		var funcs = []
-		funcs.push(function(){
-			self.playerDao.updateAsync(playerDoc).then(function(){
-				self.pushService.onPlayerDataChanged(playerDoc)
-				return Promise.resolve()
-			}).catch(function(e){
-				return Promise.reject(e)
+
+		var removeRequestEvent = function(event){
+			self.allianceDao.findByIdAsync(event.id).then(function(doc){
+				if(!_.isObject(doc)){
+					return Promise.reject(new Error("联盟不存在"))
+				}
+				var joinRequestEvent = LogicUtils.getPlayerRequestEventAtAlliance(doc, playerId)
+				if(!_.isObject(joinRequestEvent)){
+					return Promise.reject(new Error("玩家请求事件不存在"))
+				}
+				LogicUtils.removeItemInArray(doc.joinRequestEvents, joinRequestEvent)
+				self.pushService.onAllianceDataChanged(doc)
+				return self.allianceDao.updateAsync(doc)
 			})
+		}
+		_.each(playerDoc.requestToAllianceEvents, function(event){
+			funcs.push(removeRequestEvent(event))
 		})
-		_.each(allianceDoc.members, function(member){
-			funcs.push(func(member))
+		LogicUtils.clearArray(playerDoc.requestToAllianceEvents)
+
+		var sendMailToInviter = function(inviterId){
+			var title = Localizations.Alliance.InviteRejectedTitle
+			var content = sprintf(Localizations.Alliance.InviteRejectedContent, playerDoc.basicInfo.name)
+			return self.sendSystemMailAsync(inviterId, title, content)
+		}
+		_.each(playerDoc.inviteToAllianceEvents, function(event){
+			funcs.push(sendMailToInviter(event.inviterId))
 		})
+		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
+
+		funcs.push(self.allianceDao.updateAsync(allianceDoc))
+		funcs.push(self.playerDao.updateAsync(playerDoc))
 		return Promise.all(funcs)
 	}).then(function(){
+		self.pushService.onPlayerDataChanged(playerDoc)
+		self.pushService.onAllianceDataChanged(allianceDoc)
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -3155,8 +3262,8 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(requestIndex) || requestIndex % 1 !== 0 || requestIndex < 1 || requestIndex > Define.AllianceRequestMessageMaxSize){
-		callback(new Error("requestIndex 不合法"))
+	if(!_.isString(memberId)){
+		callback(new Error("memberId 不合法"))
 		return
 	}
 	if(!_.isBoolean(agree)){
@@ -3197,11 +3304,14 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		if(!_.isObject(eventInAlliance)){
 			return Promise.reject(new Error("申请事件不存在"))
 		}
-		LogicUtils.removeItemInArray(playerDoc.requestToAllianceEvents, eventInPlayer)
+		LogicUtils.removeItemInArray(memberDoc.requestToAllianceEvents, eventInPlayer)
 		LogicUtils.removeItemInArray(allianceDoc.joinRequestEvents, eventInAlliance)
 
+		var funcs = []
 		if(!agree){
-			return Promise.resolve()
+			funcs.push(self.allianceDao.updateAsync(allianceDoc))
+			funcs.push(self.playerDao.updateAsync(memberDoc))
+			return Promise.all(funcs)
 		}
 
 		var member = {
@@ -3219,13 +3329,43 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		memberDoc.alliance.title = Consts.AllianceTitle.Member
 		memberDoc.alliance.titleName = allianceDoc.titles.member
 
-		var funcs = []
+		funcs = []
+
+		var removeRequestEvent = function(event){
+			self.allianceDao.findByIdAsync(event.id).then(function(doc){
+				if(!_.isObject(doc)){
+					return Promise.reject(new Error("联盟不存在"))
+				}
+				var joinRequestEvent = LogicUtils.getPlayerRequestEventAtAlliance(doc, playerId)
+				if(!_.isObject(joinRequestEvent)){
+					return Promise.reject(new Error("玩家请求事件不存在"))
+				}
+				LogicUtils.removeItemInArray(doc.joinRequestEvents, joinRequestEvent)
+				self.pushService.onAllianceDataChanged(doc)
+				return self.allianceDao.updateAsync(doc)
+			})
+		}
+		_.each(memberDoc.requestToAllianceEvents, function(event){
+			funcs.push(removeRequestEvent(event))
+		})
+		LogicUtils.clearArray(playerDoc.requestToAllianceEvents)
+
+		var sendMailToInviter = function(inviterId){
+			var title = Localizations.Alliance.InviteRejectedTitle
+			var content = sprintf(Localizations.Alliance.InviteRejectedContent, memberDoc.basicInfo.name)
+			return self.sendSystemMailAsync(inviterId, title, content)
+		}
+		_.each(memberDoc.inviteToAllianceEvents, function(event){
+			funcs.push(sendMailToInviter(event.inviterId))
+		})
+		LogicUtils.clearArray(memberDoc.inviteToAllianceEvents)
+
 		funcs.push(self.allianceDao.updateAsync(allianceDoc))
 		funcs.push(self.playerDao.updateAsync(memberDoc))
 		return Promise.all(funcs)
 	}).then(function(){
-		var title = agree ? Localizations.Alliance.RequestApprovedTitle : Localizations.Alliance.RequestApprovedTitle
-		var content = agree ? sprintf(Localizations.Alliance.RequestApprovedContent, allianceDoc.basicInfo.name) : sprintf(Localizations.Alliance.RequestApprovedContent, allianceDoc.basicInfo.name)
+		var title = agree ? Localizations.Alliance.RequestApprovedTitle : Localizations.Alliance.RequestRejectedTitle
+		var content = agree ? sprintf(Localizations.Alliance.RequestApprovedContent, allianceDoc.basicInfo.name) : sprintf(Localizations.Alliance.RequestRejectedContent, allianceDoc.basicInfo.name)
 		return self.sendSystemMailAsync(memberId, title, content)
 	}).then(function(){
 		self.pushService.onAllianceDataChanged(allianceDoc)
@@ -3255,6 +3395,7 @@ pro.inviteToJoinAlliance = function(playerId, memberId, callback){
 	}
 
 	var self = this
+	var playerDoc = null
 	var memberDoc = null
 	var allianceDoc = null
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
@@ -3267,40 +3408,150 @@ pro.inviteToJoinAlliance = function(playerId, memberId, callback){
 		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "inviteToJoinAlliance")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
+		playerDoc = doc
 		var funcs = []
 		funcs.push(self.allianceDao.findByIdAsync(doc.alliance.id))
 		funcs.push(self.playerDao.findByIdAsync(memberId))
 		return Promise.all(funcs)
-	}).spread(function(alliDoc, memDoc){
-		if(!_.isObject(alliDoc)){
+	}).spread(function(theAllianceDoc, theMemberDoc){
+		if(!_.isObject(theAllianceDoc)){
 			return Promise.reject(new Error("联盟不存在"))
 		}
-		if(!_.isObject(memDoc)){
+		if(!_.isObject(theMemberDoc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
-		if(memDoc.inviteToAllianceEvents.length >= Define.InviteJoinAllianceMessageMaxSize){
+		if(theMemberDoc.inviteToAllianceEvents.length >= Define.InviteJoinAllianceMessageMaxSize){
 			return Promise.reject(new Error("此玩家的邀请信息已满,请等候其处理后再进行邀请"))
 		}
-		allianceDoc = alliDoc
-		memberDoc = memDoc
-		var requestTime = Date.now()
-		LogicUtils.addPlayerJoinAllianceEvent(playerDoc, allianceDoc, requestTime)
-		var funcs = []
-		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		funcs.push(self.playerDao.updateAsync(playerDoc))
-		return Promise.all(funcs)
+		allianceDoc = theAllianceDoc
+		memberDoc = theMemberDoc
+		var inviteTime = Date.now()
+		LogicUtils.addPlayerInviteAllianceEvent(playerDoc._id, memberDoc, allianceDoc, inviteTime)
+		return self.playerDao.updateAsync(memberDoc)
 	}).then(function(){
-		self.pushService.onPlayerDataChanged(playerDoc)
-		self.pushService.onAllianceDataChanged(allianceDoc)
+		self.pushService.onPlayerDataChanged(memberDoc)
 		callback()
 	}).catch(function(e){
 		callback(e)
 	})
 }
 
-//处理加入联盟邀请
-pro.handleJoinAllianceInvite = function(){
+/**
+ * 处理加入联盟邀请
+ * @param playerId
+ * @param allianceId
+ * @param agree
+ * @param callback
+ */
+pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(allianceId)){
+		callback(new Error("allianceId 不合法"))
+		return
+	}
+	if(!_.isBoolean(agree)){
+		callback(new Error("agree 不合法"))
+		return
+	}
 
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var inviterId = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(_.isObject(doc.alliance) && !_.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家已加入联盟"))
+		}
+		playerDoc = doc
+		return self.allianceDao.findByIdAsync(allianceId)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var event = LogicUtils.getInviteToAllianceEvent(playerDoc, allianceDoc._id)
+		inviterId = event.inviterId
+		if(!_.isObject(event)){
+			return Promise.reject(new Error("邀请事件不存在"))
+		}
+		LogicUtils.removeItemInArray(playerDoc.inviteToAllianceEvents, event)
+
+		if(!agree){
+			return self.playerDao.updateAsync(playerDoc)
+		}
+
+		var member = {
+			id:playerDoc._id,
+			name:playerDoc.basicInfo.name,
+			level:playerDoc.basicInfo.level,
+			power:playerDoc.basicInfo.power,
+			title:Consts.AllianceTitle.Member
+		}
+		allianceDoc.members.push(member)
+		LogicUtils.refreshAlliance(allianceDoc)
+
+		playerDoc.alliance.id = allianceDoc._id
+		playerDoc.alliance.name = allianceDoc.basicInfo.name
+		playerDoc.alliance.title = Consts.AllianceTitle.Member
+		playerDoc.alliance.titleName = allianceDoc.titles.member
+
+		var funcs = []
+
+		var removeRequestEvent = function(event){
+			self.allianceDao.findByIdAsync(event.id).then(function(doc){
+				if(!_.isObject(doc)){
+					return Promise.reject(new Error("联盟不存在"))
+				}
+				var joinRequestEvent = LogicUtils.getPlayerRequestEventAtAlliance(doc, playerId)
+				if(!_.isObject(joinRequestEvent)){
+					return Promise.reject(new Error("玩家请求事件不存在"))
+				}
+				LogicUtils.removeItemInArray(doc.joinRequestEvents, joinRequestEvent)
+				self.pushService.onAllianceDataChanged(doc)
+				return self.allianceDao.updateAsync(doc)
+			})
+		}
+		_.each(playerDoc.requestToAllianceEvents, function(event){
+			funcs.push(removeRequestEvent(event))
+		})
+		LogicUtils.clearArray(playerDoc.requestToAllianceEvents)
+
+		var sendMailToInviter = function(inviterId){
+			var title = Localizations.Alliance.InviteRejectedTitle
+			var content = sprintf(Localizations.Alliance.InviteRejectedContent, playerDoc.basicInfo.name)
+			return self.sendSystemMailAsync(inviterId, title, content)
+		}
+		_.each(playerDoc.inviteToAllianceEvents, function(event){
+			funcs.push(sendMailToInviter(event.inviterId))
+		})
+		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
+
+
+		funcs.push(self.allianceDao.updateAsync(allianceDoc))
+		funcs.push(self.playerDao.updateAsync(playerDoc))
+		return Promise.all(funcs)
+	}).then(function(){
+		var title = agree ? Localizations.Alliance.InviteApprovedTitle : Localizations.Alliance.InviteRejectedTitle
+		var content = agree ? sprintf(Localizations.Alliance.InviteApprovedContent, playerDoc.basicInfo.name) : sprintf(Localizations.Alliance.InviteRejectedContent, playerDoc.basicInfo.name)
+		return self.sendSystemMailAsync(inviterId, title, content)
+	}).then(function(){
+		self.pushService.onPlayerDataChanged(playerDoc)
+		if(agree){
+			self.pushService.onAllianceDataChanged(allianceDoc)
+		}
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
 }
 
 var ExcutePlayerCallback = function(playerId, finishTime){

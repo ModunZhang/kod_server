@@ -143,7 +143,7 @@ pro.update = function(doc, callback){
 }
 
 /**
- * delete obj from redis and mongo
+ * delete obj from mongo and redis by id
  * @param id
  * @param callback
  */
@@ -158,6 +158,36 @@ pro.deleteById = function(id, callback){
 	var self = this
 	this.model.findByIdAndRemoveAsync(id).then(function(){
 		return self.scripto.runAsync("removeById", [self.modelName, id], self.indexs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * delete obj from mongo and redis by index
+ * @param index
+ * @param value
+ * @param callback
+ */
+pro.deleteByIndex = function(index, value, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback must be a function")
+	}
+	if(!_.contains(this.indexs, index)){
+		callback(new Error("index must be a item of indexs"))
+		return
+	}
+	if(_.isNull(value) || _.isUndefined(value)){
+		callback(new Error("value must not be empty"))
+		return
+	}
+	var self = this
+	var condition = {}
+	condition[index] = value
+	this.model.findOneAndRemoveAsync(condition).then(function(){
+		return self.scripto.runAsync("removeByIndex", [self.modelName, index, value], self.indexs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){

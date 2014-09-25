@@ -100,6 +100,15 @@ describe("BaseDao", function(){
 		})
 	})
 
+	it("deleteByIndex", function(done){
+		baseDao.createAsync(player2).then(function(doc){
+			should.exist(doc)
+			baseDao.deleteByIndexAsync("basicInfo.name", "modun2").then(function(){
+				done()
+			})
+		})
+	})
+
 	it("loadAll", function(done){
 		var p2 = null
 		var p3 = null

@@ -54,6 +54,16 @@ Utils.removeItemInArray = function(array, item){
 }
 
 /**
+ * 清空Array
+ * @param array
+ */
+Utils.clearArray = function(array){
+	while(array.length > 0){
+		array.pop()
+	}
+}
+
+/**
  * 减少相应数值
  * @param need
  * @param has
@@ -653,6 +663,22 @@ Utils.getRequestToAllianceEvent = function(playerDoc, allianceId){
 }
 
 /**
+ * 获取联盟邀请事件
+ * @param playerDoc
+ * @param allianceId
+ * @returns {*}
+ */
+Utils.getInviteToAllianceEvent = function(playerDoc, allianceId){
+	var theEvent = null
+	_.each(playerDoc.inviteToAllianceEvents, function(event){
+		if(_.isEqual(event.id, allianceId)){
+			theEvent = event
+		}
+	})
+	return theEvent
+}
+
+/**
  * 获取联盟中某人的申请信息
  * @param allianceDoc
  * @param playerId
@@ -710,11 +736,12 @@ Utils.addPlayerJoinAllianceEvent = function(playerDoc, allianceDoc, requestTime)
 
 /**
  * 添加联盟对玩家的邀请事件
+ * @param inviteById
  * @param playerDoc
  * @param allianceDoc
- * @param requestTime
+ * @param inviteTime
  */
-Utils.addPlayerInviteAllianceEvent = function(playerDoc, allianceDoc, requestTime){
+Utils.addPlayerInviteAllianceEvent = function(inviteById, playerDoc, allianceDoc, inviteTime){
 	var event = {
 		id:allianceDoc._id,
 		name:allianceDoc.basicInfo.name,
@@ -725,8 +752,8 @@ Utils.addPlayerInviteAllianceEvent = function(playerDoc, allianceDoc, requestTim
 		power:allianceDoc.basicInfo.power,
 		language:allianceDoc.basicInfo.language,
 		kill:allianceDoc.basicInfo.kill,
-		status:Consts.AllianceJoinStatus.Pending,
-		requestTime:requestTime
+		inviteBy:inviteById,
+		inviteTime:inviteTime
 	}
-	playerDoc.requestToAllianceEvents.push(event)
+	playerDoc.inviteToAllianceEvents.push(event)
 }

@@ -77,7 +77,7 @@ app.configure("production|development", "logic", function(){
 		singleSession:true
 	})
 
-//	app.before(loginFilter())
+	app.before(loginFilter())
 
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
@@ -107,7 +107,7 @@ app.configure("production|development", "chat", function(){
 		bufferMsg:false
 	})
 
-//	app.before(loginFilter())
+	app.before(loginFilter())
 
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))

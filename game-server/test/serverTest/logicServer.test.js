@@ -26,13 +26,106 @@ var playerDao = Promise.promisifyAll(new PlayerDao(redisClient, scripto))
 
 
 var ClearTestAccount = function(callback){
-	playerDao.findByIndexAsync("countInfo.deviceId", Config.deviceId).then(function(doc){
-		if(_.isObject(doc)){
-			return playerDao.deleteByIdAsync(doc._id)
-		}
-		return Promise.resolve()
+	playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId).then(function(){
+		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId2)
+	}).then(function(){
+		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId3)
+	}).then(function(){
+		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId4)
 	}).then(function(){
 		callback()
+	})
+}
+
+var ClearAlliance = function(callback){
+	allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName).then(function(){
+		return allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName2)
+	}).then(function(){
+		callback()
+	})
+}
+
+var LoginPlayer1 = function(callback){
+	pomelo.disconnect()
+	pomelo.init({
+		host:Config.gateHost,
+		port:Config.gatePort,
+		log:true
+	}, function(){
+		var loginInfo = {
+			deviceId:Config.deviceId2
+		}
+		var route = "gate.gateHandler.queryEntry"
+		pomelo.request(route, loginInfo, function(doc){
+			pomelo.disconnect()
+			pomelo.init({
+				host:doc.data.host,
+				port:doc.data.port,
+				log:true
+			}, function(){
+				var loginInfo = {
+					deviceId:Config.deviceId
+				}
+				var route = "logic.entryHandler.login"
+				pomelo.request(route, loginInfo, callback)
+			})
+		})
+	})
+}
+
+var LoginPlayer2 = function(callback){
+	pomelo.disconnect()
+	pomelo.init({
+		host:Config.gateHost,
+		port:Config.gatePort,
+		log:true
+	}, function(){
+		var loginInfo = {
+			deviceId:Config.deviceId2
+		}
+		var route = "gate.gateHandler.queryEntry"
+		pomelo.request(route, loginInfo, function(doc){
+			pomelo.disconnect()
+			pomelo.init({
+				host:doc.data.host,
+				port:doc.data.port,
+				log:true
+			}, function(){
+				var loginInfo = {
+					deviceId:Config.deviceId2
+				}
+				var route = "logic.entryHandler.login"
+				pomelo.request(route, loginInfo, callback)
+			})
+		})
+	})
+}
+
+var LoginPlayer3 = function(callback){
+	pomelo.disconnect()
+	pomelo.init({
+		host:Config.gateHost,
+		port:Config.gatePort,
+		log:true
+	}, function(){
+		var loginInfo = {
+			deviceId:Config.deviceId3
+		}
+		var route = "gate.gateHandler.queryEntry"
+		pomelo.request(route, loginInfo, function(doc){
+			pomelo.disconnect()
+			pomelo.init({
+				host:doc.data.host,
+				port:doc.data.port,
+				log:true
+			}, function(){
+				var loginInfo = {
+					deviceId:Config.deviceId2
+				}
+				var route = "logic.entryHandler.login"
+				pomelo.request(route, loginInfo, callback)
+			})
+		})
 	})
 }
 
@@ -42,9 +135,7 @@ var sendChat = function(text, callback){
 		type:"global"
 	}
 	var route = "chat.chatHandler.send"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var upgradeBuilding = function(location, finishNow, callback){
@@ -53,9 +144,7 @@ var upgradeBuilding = function(location, finishNow, callback){
 		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.upgradeBuilding"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var createHouse = function(houseType, buildingLocation, houseLocation, finishNow, callback){
@@ -66,9 +155,7 @@ var createHouse = function(houseType, buildingLocation, houseLocation, finishNow
 		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.createHouse"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var upgradeHouse = function(buildingLocation, houseLocation, finishNow, callback){
@@ -78,9 +165,7 @@ var upgradeHouse = function(buildingLocation, houseLocation, finishNow, callback
 		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.upgradeHouse"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var destroyHouse = function(buildingLocation, houseLocation, callback){
@@ -89,9 +174,7 @@ var destroyHouse = function(buildingLocation, houseLocation, callback){
 		houseLocation:houseLocation
 	}
 	var route = "logic.playerHandler.destroyHouse"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var upgradeTower = function(location, finishNow, callback){
@@ -100,9 +183,7 @@ var upgradeTower = function(location, finishNow, callback){
 		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.upgradeTower"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var upgradeWall = function(finishNow, callback){
@@ -110,9 +191,7 @@ var upgradeWall = function(finishNow, callback){
 		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.upgradeWall"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var makeMaterial = function(category, finishNow, callback){
@@ -121,9 +200,7 @@ var makeMaterial = function(category, finishNow, callback){
 		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.makeMaterial"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var getMaterials = function(category, callback){
@@ -131,9 +208,7 @@ var getMaterials = function(category, callback){
 		category:category
 	}
 	var route = "logic.playerHandler.getMaterials"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var recruitNormalSoldier = function(soldierName, count, finishNow, callback){
@@ -143,9 +218,7 @@ var recruitNormalSoldier = function(soldierName, count, finishNow, callback){
 		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.recruitNormalSoldier"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var recruitSpecialSoldier = function(soldierName, count, finishNow, callback){
@@ -155,9 +228,7 @@ var recruitSpecialSoldier = function(soldierName, count, finishNow, callback){
 		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.recruitSpecialSoldier"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var makeDragonEquipment = function(equipmentName, finishNow, callback){
@@ -166,9 +237,7 @@ var makeDragonEquipment = function(equipmentName, finishNow, callback){
 		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.makeDragonEquipment"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var treatSoldier = function(soldiers, finishNow, callback){
@@ -177,9 +246,7 @@ var treatSoldier = function(soldiers, finishNow, callback){
 		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.treatSoldier"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var hatchDragon = function(dragonType, callback){
@@ -187,9 +254,7 @@ var hatchDragon = function(dragonType, callback){
 		dragonType:dragonType
 	}
 	var route = "logic.playerHandler.hatchDragon"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var setDragonEquipment = function(dragonType, equipmentCategory, equipmentName, callback){
@@ -199,9 +264,7 @@ var setDragonEquipment = function(dragonType, equipmentCategory, equipmentName, 
 		equipmentName:equipmentName
 	}
 	var route = "logic.playerHandler.setDragonEquipment"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var enhanceDragonEquipment = function(dragonType, equipmentCategory, equipments, callback){
@@ -211,9 +274,7 @@ var enhanceDragonEquipment = function(dragonType, equipmentCategory, equipments,
 		equipments:equipments
 	}
 	var route = "logic.playerHandler.enhanceDragonEquipment"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var resetDragonEquipment = function(dragonType, equipmentCategory, callback){
@@ -222,9 +283,7 @@ var resetDragonEquipment = function(dragonType, equipmentCategory, callback){
 		equipmentCategory:equipmentCategory
 	}
 	var route = "logic.playerHandler.resetDragonEquipment"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var upgradeDragonDragonSkill = function(dragonType, skillLocation, callback){
@@ -233,9 +292,7 @@ var upgradeDragonDragonSkill = function(dragonType, skillLocation, callback){
 		skillLocation:skillLocation
 	}
 	var route = "logic.playerHandler.upgradeDragonSkill"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var upgradeDragonStar = function(dragonType, callback){
@@ -243,42 +300,205 @@ var upgradeDragonStar = function(dragonType, callback){
 		dragonType:dragonType
 	}
 	var route = "logic.playerHandler.upgradeDragonStar"
-	pomelo.request(route, info, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, info, callback)
 }
 
 var impose = function(callback){
 	var route = "logic.playerHandler.impose"
-	pomelo.request(route, null, function(doc){
-		callback(doc)
-	})
+	pomelo.request(route, null, callback)
 }
+
+var createAlliance = function(name, tag, language, terrain, flag, callback){
+	var info = {
+		name:name,
+		tag:tag,
+		language:language,
+		terrain:terrain,
+		flag:flag
+	}
+	var route = "logic.playerHandler.createAlliance"
+	pomelo.request(route, info, callback)
+}
+
+var editAllianceBasicInfo = function(name, tag, language, terrain, flag, callback){
+	var info = {
+		name:name,
+		tag:tag,
+		language:language,
+		terrain:terrain,
+		flag:flag
+	}
+	var route = "logic.playerHandler.editAllianceBasicInfo"
+	pomelo.request(route, info, callback)
+}
+
+var editTitleName = function(title, titleName, callback){
+	var info = {
+		title:title,
+		titleName:titleName
+	}
+	var route = "logic.playerHandler.editTitleName"
+	pomelo.request(route, info, callback)
+}
+
+var editAllianceNotice = function(notice, callback){
+	var info = {
+		notice:notice
+	}
+	var route = "logic.playerHandler.editAllianceNotice"
+	pomelo.request(route, info, callback)
+}
+
+var editAllianceDescription = function(description, callback){
+	var info = {
+		description:description
+	}
+	var route = "logic.playerHandler.editAllianceDescription"
+	pomelo.request(route, info, callback)
+}
+
+var modifyAllianceMemberTitle = function(memberId, title, callback){
+	var info = {
+		memberId:memberId,
+		title:title
+	}
+	var route = "logic.playerHandler.modifyAllianceMemberTitle"
+	pomelo.request(route, info, callback)
+}
+
+var getPlayerInfo = function(memberId, callback){
+	var info = {
+		memberId:memberId
+	}
+	var route = "logic.playerHandler.getPlayerInfo"
+	pomelo.request(route, info, callback)
+}
+
+var kickAllianceMemberOff = function(memberId, callback){
+	var info = {
+		memberId:memberId
+	}
+	var route = "logic.playerHandler.kickAllianceMemberOff"
+	pomelo.request(route, info, callback)
+}
+
+var handOverArchon = function(memberId, callback){
+	var info = {
+		memberId:memberId
+	}
+	var route = "logic.playerHandler.handOverArchon"
+	pomelo.request(route, info, callback)
+}
+
+var sendMail = function(memberId, title, content, callback){
+	var info = {
+		memberId:memberId,
+		title:title,
+		content:content
+	}
+	var route = "logic.playerHandler.sendMail"
+	pomelo.request(route, info, callback)
+}
+
+var sendSystemMail = function(memberId, title, content, callback){
+	var info = {
+		memberId:memberId,
+		title:title,
+		content:content
+	}
+	var route = "logic.playerHandler.sendSystemMail"
+	pomelo.request(route, info, callback)
+}
+
+var saveMail = function(mailIndex, callback){
+	var info = {
+		mailIndex:mailIndex
+	}
+	var route = "logic.playerHandler.saveMail"
+	pomelo.request(route, info, callback)
+}
+
+var quitAlliance = function(callback){
+	var route = "logic.playerHandler.quitAlliance"
+	pomelo.request(route, null, callback)
+}
+
+var sendAllianceMail = function(title, content, callback){
+	var info = {
+		title:title,
+		content:content
+	}
+	var route = "logic.playerHandler.sendAllianceMail"
+	pomelo.request(route, info, callback)
+}
+
+var requestToJoinAlliance = function(allianceId, callback){
+	var info = {
+		allianceId:allianceId
+	}
+	var route = "logic.playerHandler.requestToJoinAlliance"
+	pomelo.request(route, info, callback)
+}
+
+var cancelJoinAllianceRequest = function(allianceId, callback){
+	var info = {
+		allianceId:allianceId
+	}
+	var route = "logic.playerHandler.cancelJoinAllianceRequest"
+	pomelo.request(route, info, callback)
+}
+
+var setPlayerLanguage = function(language, callback){
+	var info = {
+		language:language
+	}
+	var route = "logic.playerHandler.setPlayerLanguage"
+	pomelo.request(route, info, callback)
+}
+
+var handleJoinAllianceRequest = function(memberId, agree, callback){
+	var info = {
+		memberId:memberId,
+		agree:agree
+	}
+	var route = "logic.playerHandler.handleJoinAllianceRequest"
+	pomelo.request(route, info, callback)
+}
+
+var inviteToJoinAlliance = function(memberId, callback){
+	var info = {
+		memberId:memberId
+	}
+	var route = "logic.playerHandler.inviteToJoinAlliance"
+	pomelo.request(route, info, callback)
+}
+
+var handleJoinAllianceInvite = function(allianceId, agree, callback){
+	var info = {
+		allianceId:allianceId,
+		agree:agree
+	}
+	var route = "logic.playerHandler.handleJoinAllianceInvite"
+	pomelo.request(route, info, callback)
+}
+
+var handleJoinAllianceInvite = function(allianceId, agree, callback){
+	var info = {
+		allianceId:allianceId,
+		agree:agree
+	}
+	var route = "logic.playerHandler.handleJoinAllianceInvite"
+	pomelo.request(route, info, callback)
+}
+
 
 describe("LogicServer", function(){
 	var m_user
 
 	before(function(done){
 		ClearTestAccount(function(){
-			pomelo.init({
-				host:Config.gateHost,
-				port:Config.gatePort,
-				log:true
-			}, function(){
-				var loginInfo = {
-					deviceId:Config.deviceId
-				}
-				var route = "gate.gateHandler.queryEntry"
-				pomelo.request(route, loginInfo, function(doc){
-					pomelo.disconnect()
-					pomelo.init({
-						host:doc.data.host,
-						port:doc.data.port,
-						log:true
-					}, function(){
-						done()
-					})
-				})
+			ClearAlliance(function(){
+				done()
 			})
 		})
 	})
@@ -286,11 +506,7 @@ describe("LogicServer", function(){
 
 	describe("entryHandler", function(){
 		it("login", function(done){
-			var loginInfo = {
-				deviceId:Config.deviceId
-			}
-			var route = "logic.entryHandler.login"
-			pomelo.request(route, loginInfo, function(doc){
+			LoginPlayer1(function(doc){
 				doc.code.should.equal(200)
 			})
 			var onPlayerLoginSuccess = function(doc){
@@ -1459,10 +1675,13 @@ describe("LogicServer", function(){
 		})
 
 		it("setDragonEquipment 仓库中没有此装备", function(done){
-			setDragonEquipment("redDragon", "crown", "moltenCrown", function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("仓库中没有此装备")
-				done()
+			sendChat("dragonequipment 0", function(doc){
+				doc.code.should.equal(200)
+				setDragonEquipment("redDragon", "crown", "moltenCrown", function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("仓库中没有此装备")
+					done()
+				})
 			})
 		})
 
@@ -1769,6 +1988,102 @@ describe("LogicServer", function(){
 						done()
 					})
 				})
+			})
+		})
+
+		it("getPlayerInfo", function(done){
+			getPlayerInfo(m_user._id ,function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("sendMail 不能给自己发邮件", function(done){
+			sendMail(m_user._id, "testMail", "this is a testMail" ,function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("不能给自己发邮件")
+				done()
+			})
+		})
+
+		it("sendMail 不能给自己发邮件", function(done){
+			sendMail(m_user._id, "testMail", "this is a testMail" ,function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("不能给自己发邮件")
+				done()
+			})
+		})
+
+		it("createAlliance language 不合法", function(done){
+			createAlliance(Config.allianceName, Config.allianceTag, "c", "grassLand", "e", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("language 不合法")
+				done()
+			})
+		})
+
+		it("createAlliance terrain 不合法", function(done){
+			createAlliance(Config.allianceName, Config.allianceTag, "cn", "d", "e", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("terrain 不合法")
+				done()
+			})
+		})
+
+		it("createAlliance 宝石不足", function(done){
+			sendChat("gem 0", function(){
+				createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("宝石不足")
+					sendChat("gem 5000", function(){
+						done()
+					})
+				})
+			})
+		})
+
+		it("createAlliance 正常创建", function(done){
+			createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("createAlliance 玩家已加入了联盟", function(done){
+			createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("玩家已加入了联盟")
+				done()
+			})
+		})
+
+		it("createAlliance 联盟名称已经存在", function(done){
+			LoginPlayer2(function(doc){
+				doc.code.should.equal(200)
+				createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("联盟名称已经存在")
+					done()
+				})
+			})
+		})
+
+		it("createAlliance 联盟标签已经存在", function(done){
+			LoginPlayer2(function(doc){
+				doc.code.should.equal(200)
+				createAlliance("Hello", Config.allianceTag, "cn", "grassLand", "e", function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("联盟标签已经存在")
+					done()
+				})
+			})
+		})
+
+		it("editAllianceBasicInfo 玩家未加入联盟", function(done){
+			editAllianceBasicInfo(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("玩家未加入联盟")
+				done()
 			})
 		})
 	})

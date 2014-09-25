@@ -24,55 +24,55 @@ var pro = PushService.prototype
 
 /**
  * 推送消息给单个玩家
- * @param playerData
+ * @param playerDoc
  * @param eventName
  * @param data
  */
-pro.pushToPlayer = function(playerData, eventName, data){
+pro.pushToPlayer = function(playerDoc, eventName, data){
 	this.channelService.pushMessageByUids(eventName, data, [
-		{uid:playerData._id, sid:playerData.logicServerId}
+		{uid:playerDoc._id, sid:playerDoc.logicServerId}
 	])
 }
 
 /**
  * 推送玩家数据给玩家
- * @param playerData
+ * @param playerDoc
  */
-pro.onPlayerDataChanged = function(playerData){
-	this.pushToPlayer(playerData, Events.player.onPlayerDataChanged, Utils.filter(playerData))
+pro.onPlayerDataChanged = function(playerDoc){
+	this.pushToPlayer(playerDoc, Events.player.onPlayerDataChanged, Utils.filter(playerDoc))
 }
 
 /**
  * 玩家登陆成功时,推送数据给玩家
- * @param playerData
+ * @param playerDoc
  */
-pro.onPlayerLoginSuccess = function(playerData){
-	playerData.serverTime = Date.now()
-	this.pushToPlayer(playerData, Events.player.onPlayerLoginSuccess, Utils.filter(playerData))
+pro.onPlayerLoginSuccess = function(playerDoc){
+	playerDoc.serverTime = Date.now()
+	this.pushToPlayer(playerDoc, Events.player.onPlayerLoginSuccess, Utils.filter(playerDoc))
 }
 
 /**
  * 建筑升级成功事件推送
- * @param playerData
+ * @param playerDoc
  * @param location
  */
-pro.onBuildingLevelUp = function(playerData, location){
-	var building = playerData.buildings["location_" + location]
+pro.onBuildingLevelUp = function(playerDoc, location){
+	var building = playerDoc.buildings["location_" + location]
 	var data = {
 		buildingType:building.type,
 		level:building.level
 	}
-	this.pushToPlayer(playerData, Events.player.onBuildingLevelUp, data)
+	this.pushToPlayer(playerDoc, Events.player.onBuildingLevelUp, data)
 }
 
 /**
  * 小屋升级成功事件推送
- * @param playerData
+ * @param playerDoc
  * @param buildingLocation
  * @param houseLocation
  */
-pro.onHouseLevelUp = function(playerData, buildingLocation, houseLocation){
-	var building = playerData.buildings["location_" + buildingLocation]
+pro.onHouseLevelUp = function(playerDoc, buildingLocation, houseLocation){
+	var building = playerDoc.buildings["location_" + buildingLocation]
 	var house = null
 	_.each(building.houses, function(v){
 		if(_.isEqual(houseLocation, v.location)){
@@ -84,125 +84,126 @@ pro.onHouseLevelUp = function(playerData, buildingLocation, houseLocation){
 		houseType:house.type,
 		level:house.level
 	}
-	this.pushToPlayer(playerData, Events.player.onHouseLevelUp, data)
+	this.pushToPlayer(playerDoc, Events.player.onHouseLevelUp, data)
 }
 
 /**
  * 箭塔升级成功事件推送
- * @param playerData
+ * @param playerDoc
  * @param location
  */
-pro.onTowerLevelUp = function(playerData, location){
-	var tower = playerData.towers["location_" + location]
+pro.onTowerLevelUp = function(playerDoc, location){
+	var tower = playerDoc.towers["location_" + location]
 	var data = {
 		level:tower.level
 	}
-	this.pushToPlayer(playerData, Events.player.onTowerLevelUp, data)
+	this.pushToPlayer(playerDoc, Events.player.onTowerLevelUp, data)
 }
 
 /**
  * 城墙成绩成功事件推送
- * @param playerData
+ * @param playerDoc
  */
-pro.onWallLevelUp = function(playerData){
-	var wall = playerData.wall
+pro.onWallLevelUp = function(playerDoc){
+	var wall = playerDoc.wall
 	var data = {
 		level:wall.level
 	}
-	this.pushToPlayer(playerData, Events.player.onWallLevelUp, data)
+	this.pushToPlayer(playerDoc, Events.player.onWallLevelUp, data)
 }
 
 /**
  * 材料制作完成事件推送
- * @param playerData
+ * @param playerDoc
  * @param event
  */
-pro.onMakeMaterialFinished = function(playerData, event){
+pro.onMakeMaterialFinished = function(playerDoc, event){
 	var data = {
 		category:event.category
 	}
-	this.pushToPlayer(playerData, Events.player.onMakeMaterialFinished, data)
+	this.pushToPlayer(playerDoc, Events.player.onMakeMaterialFinished, data)
 }
 
 /**
  * 获取由工具作坊制作的材料成功
- * @param playerData
+ * @param playerDoc
  * @param event
  */
-pro.onGetMaterialSuccess = function(playerData, event){
+pro.onGetMaterialSuccess = function(playerDoc, event){
 	var data = {
 		category:event.category
 	}
-	this.pushToPlayer(playerData, Events.player.onGetMaterialSuccess, data)
+	this.pushToPlayer(playerDoc, Events.player.onGetMaterialSuccess, data)
 }
 
 /**
  * 士兵招募成功推送
- * @param playerData
+ * @param playerDoc
  * @param soldierName
  * @param count
  */
-pro.onRecruitSoldierSuccess = function(playerData, soldierName, count){
+pro.onRecruitSoldierSuccess = function(playerDoc, soldierName, count){
 	var data = {
 		soldierName:soldierName,
 		count:count
 	}
-	this.pushToPlayer(playerData, Events.player.onRecruitSoldierSuccess, data)
+	this.pushToPlayer(playerDoc, Events.player.onRecruitSoldierSuccess, data)
 }
 
 /**
  * 龙装备制作完成
- * @param playerData
+ * @param playerDoc
  * @param equipmentName
  */
-pro.onMakeDragonEquipmentSuccess = function(playerData, equipmentName){
+pro.onMakeDragonEquipmentSuccess = function(playerDoc, equipmentName){
 	var data = {
 		equipmentName:equipmentName
 	}
-	this.pushToPlayer(playerData, Events.player.onMakeDragonEquipmentSuccess, data)
+	this.pushToPlayer(playerDoc, Events.player.onMakeDragonEquipmentSuccess, data)
 }
 
 /**
  * 治疗士兵成功通知
- * @param playerData
+ * @param playerDoc
  * @param soldiers
  */
-pro.onTreatSoldierSuccess = function(playerData, soldiers){
+pro.onTreatSoldierSuccess = function(playerDoc, soldiers){
 	var data = {
 		soldiers:soldiers
 	}
-	this.pushToPlayer(playerData, Events.player.onTreatSoldierSuccess, data)
+	this.pushToPlayer(playerDoc, Events.player.onTreatSoldierSuccess, data)
 }
 
 /**
  * 收税完成通知
- * @param playerData
+ * @param playerDoc
  * @param coinCount
  */
-pro.onImposeSuccess = function(playerData, coinCount){
+pro.onImposeSuccess = function(playerDoc, coinCount){
 	var data = {
 		coinCount:coinCount
 	}
-	this.pushToPlayer(playerData, Events.player.onImposeSuccess, data)
+	this.pushToPlayer(playerDoc, Events.player.onImposeSuccess, data)
 }
 
 /**
  * 查看玩家个人信息通知
- * @param playerData
+ * @param playerDoc
  */
-pro.onGetPlayerInfoSuccess = function(playerData){
+pro.onGetPlayerInfoSuccess = function(playerDoc){
+	var hasAlliance = _.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)
 	var data = {
-		name:playerData.basicInfo.name,
-		power:playerData.basicInfo.power,
-		level:playerData.basicInfo.level,
-		exp:playerData.basicInfo.exp,
-		vip:playerData.basicInfo.vip,
-		alliance:playerData.alliance.name,
-		title:playerData.alliance.title,
-		titleName:playerData.alliance.titleName,
-		lastLoginTime:playerData.countInfo.lastLoginTime
+		name:playerDoc.basicInfo.name,
+		power:playerDoc.basicInfo.power,
+		level:playerDoc.basicInfo.level,
+		exp:playerDoc.basicInfo.exp,
+		vip:playerDoc.basicInfo.vip,
+		alliance:hasAlliance ? playerDoc.alliance.name : "",
+		title:hasAlliance ? playerDoc.alliance.title : "",
+		titleName:hasAlliance ? playerDoc.alliance.titleName : "",
+		lastLoginTime:playerDoc.countInfo.lastLoginTime
 	}
-	this.pushToPlayer(playerData, Events.player.onGetPlayerInfoSuccess, data)
+	this.pushToPlayer(playerDoc, Events.player.onGetPlayerInfoSuccess, data)
 }
 
 /**

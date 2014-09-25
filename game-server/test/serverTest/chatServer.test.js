@@ -24,12 +24,7 @@ var allianceDao = Promise.promisifyAll(new AllianceDao(redisClient, scripto))
 var playerDao = Promise.promisifyAll(new PlayerDao(redisClient, scripto))
 
 var ClearTestAccount = function(callback){
-	playerDao.findByIndexAsync("countInfo.deviceId", Config.deviceId).then(function(doc){
-		if(_.isObject(doc)){
-			return playerDao.deleteByIdAsync(doc._id)
-		}
-		return Promise.resolve()
-	}).then(function(){
+	playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId).then(function(){
 		callback()
 	}).catch(function(e){
 		console.log(e)
