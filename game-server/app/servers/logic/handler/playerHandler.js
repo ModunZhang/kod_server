@@ -540,6 +540,21 @@ pro.editAllianceDescription = function(msg, session, next){
 }
 
 /**
+ * 编辑联盟加入方式
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.editAllianceJoinType = function(msg, session, next){
+	var joinType = msg.joinType
+	this.playerService.editAllianceJoinTypeAsync(session.uid, joinType).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
  * 修改联盟某个玩家的职位
  * @param msg
  * @param session
@@ -593,6 +608,21 @@ pro.handOverArchon = function(msg, session, next){
  */
 pro.quitAlliance = function(msg, session, next){
 	this.playerService.quitAllianceAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 直接加入某联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.joinAllianceDirectly = function(msg, session, next){
+	var allianceId = msg.allianceId
+	this.playerService.joinAllianceDirectlyAsync(session.uid, allianceId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -668,7 +698,7 @@ pro.handleJoinAllianceRequest = function(msg, session, next){
  */
 pro.inviteToJoinAlliance = function(msg, session, next){
 	var memberId = msg.memberId
-	this.playerService.inviteToJoinAlliance(session.uid, memberId).then(function(){
+	this.playerService.inviteToJoinAllianceAsync(session.uid, memberId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

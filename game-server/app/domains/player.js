@@ -416,7 +416,7 @@ var playerSchema = new Schema({
 	},
 	mails:[{
 		title:{type:String, required:true},
-		from:{type:String, required:true},
+		fromId:{type:String, required:true},
 		fromName:{type:String, required:true},
 		content:{type:String, required:true},
 		sendTime:{type:Number, required:true}
@@ -426,7 +426,7 @@ var playerSchema = new Schema({
 	}],
 	savedMails:[{
 		title:{type:String, required:true},
-		from:{type:String, required:true},
+		fromId:{type:String, required:true},
 		fromName:{type:String, required:true},
 		content:{type:String, required:true},
 		sendTime:{type:Number, required:true}

@@ -64,6 +64,18 @@ Utils.clearArray = function(array){
 }
 
 /**
+ * 清空Object
+ * @param object
+ */
+Utils.clearObject = function(object){
+	for(var property in object){
+		if(object.hasOwnProperty(property)){
+			delete object[property]
+		}
+	}
+}
+
+/**
  * 减少相应数值
  * @param need
  * @param has
@@ -574,8 +586,6 @@ Utils.isEnhanceDragonEquipmentLegal = function(playerDoc, equipments){
  * @param allianceDoc
  */
 Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
-	var totalPower = 0
-	var totalKill = 0
 	_.each(allianceDoc.members, function(member){
 		if(_.isEqual(member.id, playerDoc._id)){
 			member.name = playerDoc.basicInfo.name
@@ -583,8 +593,6 @@ Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
 			member.power = playerDoc.basicInfo.power
 			member.kill = playerDoc.basicInfo.kill
 		}
-		totalPower += member.power
-		totalKill += member.kill
 	})
 }
 
@@ -703,7 +711,7 @@ Utils.getPlayerRequestEventAtAlliance = function(allianceDoc, playerId){
 Utils.addAllianceRequestEvent = function(allianceDoc, playerDoc, requestTime){
 	var event = {
 		id:playerDoc._id,
-		name:palyerDoc.basicInfo.name,
+		name:playerDoc.basicInfo.name,
 		level:playerDoc.basicInfo.level,
 		power:playerDoc.basicInfo.power,
 		requestTime:requestTime
@@ -736,12 +744,12 @@ Utils.addPlayerJoinAllianceEvent = function(playerDoc, allianceDoc, requestTime)
 
 /**
  * 添加联盟对玩家的邀请事件
- * @param inviteById
+ * @param inviterId
  * @param playerDoc
  * @param allianceDoc
  * @param inviteTime
  */
-Utils.addPlayerInviteAllianceEvent = function(inviteById, playerDoc, allianceDoc, inviteTime){
+Utils.addPlayerInviteAllianceEvent = function(inviterId, playerDoc, allianceDoc, inviteTime){
 	var event = {
 		id:allianceDoc._id,
 		name:allianceDoc.basicInfo.name,
@@ -752,7 +760,7 @@ Utils.addPlayerInviteAllianceEvent = function(inviteById, playerDoc, allianceDoc
 		power:allianceDoc.basicInfo.power,
 		language:allianceDoc.basicInfo.language,
 		kill:allianceDoc.basicInfo.kill,
-		inviteBy:inviteById,
+		inviterId:inviterId,
 		inviteTime:inviteTime
 	}
 	playerDoc.inviteToAllianceEvents.push(event)

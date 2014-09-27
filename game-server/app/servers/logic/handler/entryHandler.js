@@ -45,6 +45,7 @@ pro.login = function(msg, session, next){
 	var addPlayerToChatChannel = Promisify(AddPlayerToChatChannel, this)
 	var kickPlayerFromLogicServer = Promisify(KickPlayerFromLogicServer, this)
 
+	var playerDoc = null
 	this.playerService.getPlayerByIndexAsync("countInfo.deviceId", deviceId).then(function(doc){
 		if(!_.isObject(doc)){
 			return self.playerService.createPlayerAsync(deviceId)
@@ -54,11 +55,17 @@ pro.login = function(msg, session, next){
 			return Promise.resolve(doc)
 		}
 	}).then(function(doc){
+		playerDoc = doc
 		return bindPlayerSession(session, doc)
 	}).then(function(){
 		return addPlayerToChatChannel(session)
 	}).then(function(){
-		return self.globalChannelService.addAsync(Consts.LogicChannelName, session.uid, self.serverId)
+		var funcs = []
+		funcs.push(self.globalChannelService.addAsync(Consts.LogicChannelName, session.uid, self.serverId))
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
+			funcs.push(self.globalChannelService.addAsync(Consts.AllianceChannelPrefix + playerDoc.alliance.id, playerDoc._id, self.serverId))
+		}
+		return Promise.all(funcs)
 	}).then(function(){
 		return self.playerService.playerLoginAsync(session.uid, self.serverId)
 	}).then(function(){
@@ -68,8 +75,8 @@ pro.login = function(msg, session, next){
 	})
 }
 
-var BindPlayerSession = function(session, doc, callback){
-	session.bind(doc._id)
+var BindPlayerSession = function(session, playerDoc, callback){
+	session.bind(playerDoc._id)
 	session.set("logicServerId", this.serverId)
 	session.on("closed", PlayerLeave.bind(this))
 	session.pushAll(function(err){
@@ -84,11 +91,25 @@ var PlayerLeave = function(session, reason){
 
 	var self = this
 	var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, this)
-
-	this.playerService.playerLogoutAsync(session.uid, this.serverId).then(function(){
+	var playerDoc = null
+	this.playerService.getPlayerByIdAsync(session.uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(_.isEmpty(doc.logicServerId)){
+			return Promise.reject(new Error("玩家未登录"))
+		}
+		playerDoc = doc
+		return self.playerService.playerLogoutAsync(doc._id, self.serverId)
+	}).then(function(){
 		return removePlayerFromChatChannel(session)
 	}).then(function(){
-		return self.globalChannelService.leaveAsync(Consts.LogicChannelName, session.uid, self.serverId)
+		var funcs = []
+		funcs.push(self.globalChannelService.leaveAsync(Consts.LogicChannelName, playerDoc._id, self.serverId))
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
+			funcs.push(self.globalChannelService.leaveAsync(Consts.AllianceChannelPrefix + playerDoc.alliance.id, playerDoc._id, self.serverId))
+		}
+		return Promise.all(funcs)
 	}).catch(function(e){
 		errorLogger.error("handle playerLogout Error -----------------------------")
 		errorLogger.error(e.stack)

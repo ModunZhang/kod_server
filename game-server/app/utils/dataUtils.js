@@ -1398,7 +1398,6 @@ Utils.getGemByCreateAlliance = function(){
 	return AllianceInit.resources[1].gem
 }
 
-
 /**
  * 检查操作联盟相关API的权限是否足够
  * @param title
@@ -1416,5 +1415,5 @@ Utils.isAllianceOperationLegal = function(title, api){
  * @returns {*}
  */
 Utils.getAllianceTitleLevel = function(title){
-	return AllianceRights[title].level
+	return AllianceRights[title].titleLevel
 }

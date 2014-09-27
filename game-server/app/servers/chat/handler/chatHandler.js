@@ -353,6 +353,10 @@ pro.send = function(msg, session, next){
 		var e = new Error("聊天内容不能为空")
 		next(e, {code:500, message:e.message})
 	}
+	if(_.isEmpty(type) || _.isEmpty(type.trim())){
+		var e = new Error("type 不能为空")
+		next(e, {code:500, message:e.message})
+	}
 
 	var filterCommand = Promise.promisify(FilterCommand, this)
 	this.playerService.getPlayerByIdAsync(session.uid).then(function(doc){
