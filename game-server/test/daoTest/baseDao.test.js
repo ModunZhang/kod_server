@@ -128,8 +128,38 @@ describe("BaseDao", function(){
 	})
 
 	it("unloadAll", function(done){
-		baseDao.unloadAllAsync().then(function(){
-			done()
+		var p2 = null
+		var p3 = null
+		baseDao.createAsync(player2).then(function(doc){
+			p2 = doc
+			baseDao.createAsync(player3).then(function(doc){
+				p3 = doc
+				baseDao.unloadAllAsync().then(function(){
+					baseDao.deleteByIdAsync(p2._id).then(function(){
+						baseDao.deleteByIdAsync(p3._id).then(function(){
+							done()
+						})
+					})
+				})
+			})
+		})
+	})
+
+	it("searchByIndex", function(done){
+		var p2 = null
+		var p3 = null
+		baseDao.createAsync(player2).then(function(doc){
+			p2 = doc
+			baseDao.createAsync(player3).then(function(doc){
+				p3 = doc
+				baseDao.searchByIndexAsync("basicInfo.name", "m").then(function(docs){
+					baseDao.deleteByIdAsync(p2._id).then(function(){
+						baseDao.deleteByIdAsync(p3._id).then(function(){
+							done()
+						})
+					})
+				})
+			})
 		})
 	})
 

@@ -2446,6 +2446,41 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 }
 
 /**
+ * 搜索联盟
+ * @param playerId
+ * @param tag
+ * @param callback
+ */
+pro.searchAllianceByTag = function(playerId, tag, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(tag)){
+		callback(new Error("tag 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		return self.allianceDao.searchByIndexAsync("basicInfo.tag", tag)
+	}).then(function(docs){
+		self.pushService.onSearchAllianceSuccess(playerDoc, docs)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * 编辑联盟基础信息
  * @param playerId
  * @param name

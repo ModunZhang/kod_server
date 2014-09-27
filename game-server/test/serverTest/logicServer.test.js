@@ -290,6 +290,14 @@ var createAlliance = function(name, tag, language, terrain, flag, callback){
 	pomelo.request(route, info, callback)
 }
 
+var searchAllianceByTag = function(tag, callback){
+	var info = {
+		tag:tag
+	}
+	var route = "logic.playerHandler.searchAllianceByTag"
+	pomelo.request(route, info, callback)
+}
+
 var editAllianceBasicInfo = function(name, tag, language, terrain, flag, callback){
 	var info = {
 		name:name,
@@ -438,15 +446,6 @@ var inviteToJoinAlliance = function(memberId, callback){
 		memberId:memberId
 	}
 	var route = "logic.playerHandler.inviteToJoinAlliance"
-	pomelo.request(route, info, callback)
-}
-
-var handleJoinAllianceInvite = function(allianceId, agree, callback){
-	var info = {
-		allianceId:allianceId,
-		agree:agree
-	}
-	var route = "logic.playerHandler.handleJoinAllianceInvite"
 	pomelo.request(route, info, callback)
 }
 
@@ -2707,6 +2706,13 @@ describe("LogicServer", function(){
 				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
 			}
 			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+		})
+
+		it("searchAllianceByTag 正常搜索", function(done){
+			searchAllianceByTag("test", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
 		})
 	})
 

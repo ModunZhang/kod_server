@@ -28,6 +28,14 @@ module.exports = BaseDao
 var pro = BaseDao.prototype
 
 /**
+ * 获取mongoose model
+ * @returns {*}
+ */
+pro.getModel = function(){
+	return this.model
+}
+
+/**
  * create a object to mongo and add it to redis
  * @param doc json object
  * @param callback
@@ -223,7 +231,6 @@ pro.loadAll = function(callback){
 pro.unloadAll = function(callback){
 	var self = this
 	this.scripto.runAsync("findAll", [this.modelName]).then(function(docStrings){
-		if(!_.isObject(docStrings)) return Promise.resolve()
 		var funcs = []
 		for(var i = 0; i < docStrings.length; i++){
 			var doc = JSON.parse(docStrings[i])
@@ -232,6 +239,25 @@ pro.unloadAll = function(callback){
 		return Promise.all(funcs)
 	}).then(function(){
 		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 根据Index模糊查找对象
+ * @param index
+ * @param value
+ * @param callback
+ */
+pro.searchByIndex = function(index, value, callback){
+	var docs = []
+	this.scripto.runAsync("searchByIndex", [this.modelName, index, value]).then(function(docStrings){
+		for(var i = 0; i < docStrings.length; i ++){
+			var doc = JSON.parse(docStrings[i])
+			docs.push(doc)
+		}
+		callback(null, docs)
 	}).catch(function(e){
 		callback(e)
 	})

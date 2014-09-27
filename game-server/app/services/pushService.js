@@ -208,10 +208,22 @@ pro.onGetPlayerInfoSuccess = function(playerDoc){
 
 /**
  * 推送联盟数据给玩家
- * @param allianceData
+ * @param allianceDoc
  */
-pro.onAllianceDataChanged = function(allianceData){
+pro.onAllianceDataChanged = function(allianceDoc){
 	var eventName = Events.alliance.onAllianceDataChanged
-	var channelName = Consts.AllianceChannelPrefix + allianceData._id
-	this.globalChannelService.pushMessage(this.serverType, eventName, allianceData, channelName)
+	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
+	this.globalChannelService.pushMessage(this.serverType, eventName, allianceDoc, channelName)
+}
+
+/**
+ * 联盟搜索数据返回
+ * @param playerDoc
+ * @param allianceDocs
+ */
+pro.onSearchAllianceSuccess = function(playerDoc, allianceDocs){
+	var data = {
+		alliances:allianceDocs
+	}
+	this.pushToPlayer(playerDoc, Events.player.onSearchAllianceSuccess, data)
 }
