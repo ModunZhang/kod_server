@@ -23,6 +23,20 @@
 				"port":4152,
 				"clientPort":4012,
 				"frontend":true
+			},
+			{
+				"id":"logic-server-3",
+				"host":"127.0.0.1",
+				"port":4153,
+				"clientPort":4013,
+				"frontend":true
+			},
+			{
+				"id":"logic-server-4",
+				"host":"127.0.0.1",
+				"port":4154,
+				"clientPort":4014,
+				"frontend":true
 			}
 		],
 		"chat":[
@@ -56,6 +70,20 @@
 				"host":"54.178.151.193",
 				"port":4152,
 				"clientPort":4012,
+				"frontend":true
+			},
+			{
+				"id":"logic-server-3",
+				"host":"54.178.151.193",
+				"port":4153,
+				"clientPort":4013,
+				"frontend":true
+			},
+			{
+				"id":"logic-server-4",
+				"host":"54.178.151.193",
+				"port":4154,
+				"clientPort":4014,
 				"frontend":true
 			}
 		],
