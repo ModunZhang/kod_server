@@ -404,7 +404,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			if(_.isObject(buildEvent)){
 				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
 				buildEvent.finishTime = Date.now()
-				RefreshPlayerEvents.callback(self, doc, buildEvent.finishTime, false)
+				RefreshPlayerEvents.call(self, doc, buildEvent.finishTime, false)
 			}
 		}
 		//刷新玩家资源数据
@@ -551,7 +551,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			if(_.isObject(buildEvent)){
 				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
 				buildEvent.finishTime = Date.now()
-				RefreshPlayerEvents.callback(self, doc, buildEvent.finishTime, false)
+				RefreshPlayerEvents.call(self, doc, buildEvent.finishTime, false)
 			}
 		}
 		//如果是住宅,送玩家城民
@@ -701,7 +701,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			if(_.isObject(buildEvent)){
 				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
 				buildEvent.finishTime = Date.now()
-				RefreshPlayerEvents.callback(self, doc, buildEvent.finishTime, false)
+				RefreshPlayerEvents.call(self, doc, buildEvent.finishTime, false)
 			}
 		}
 		//如果是住宅,送玩家城民
@@ -912,7 +912,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			if(_.isObject(buildEvent)){
 				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
 				buildEvent.finishTime = Date.now()
-				RefreshPlayerEvents.callback(self, doc, buildEvent.finishTime, false)
+				RefreshPlayerEvents.call(self, doc, buildEvent.finishTime, false)
 			}
 		}
 		//刷新玩家资源数据
@@ -1026,7 +1026,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			if(_.isObject(buildEvent)){
 				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
 				buildEvent.finishTime = Date.now()
-				RefreshPlayerEvents.callback(self, doc, buildEvent.finishTime, false)
+				RefreshPlayerEvents.call(self, doc, buildEvent.finishTime, false)
 			}
 		}
 		//刷新玩家资源数据
