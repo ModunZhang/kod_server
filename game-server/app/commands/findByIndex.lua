@@ -1,6 +1,7 @@
 local modelName = KEYS[1]
 local index = KEYS[2]
 local value = KEYS[3]
+local lock = KEYS[4]
 local fullIndex = modelName .. "." .. index .. ":" .. value
 local objectString = redis.call("get", fullIndex)
 if not objectString then return end

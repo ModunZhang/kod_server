@@ -69,9 +69,14 @@ pro.create = function(doc, callback){
  * find obj from redis
  * @param index
  * @param value
+ * @param lock
  * @param callback
  */
-pro.findByIndex = function(index, value, callback){
+pro.findByIndex = function(index, value, lock, callback){
+	if(!_.isFunction(callback)){
+		callback = lock
+		lock = false
+	}
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
@@ -83,8 +88,11 @@ pro.findByIndex = function(index, value, callback){
 		callback(new Error("value must not be empty"))
 		return
 	}
+	if(!_.isBoolean(lock)){
+		callback(new Error("lock must be a bool value"))
+	}
 
-	this.scripto.runAsync("findByIndex", [this.modelName, index, value]).then(function(docString){
+	this.scripto.runAsync("findByIndex", [this.modelName, index, value, lock]).then(function(docString){
 		callback(null, JSON.parse(docString))
 	}).catch(function(e){
 		callback(e)
@@ -94,9 +102,14 @@ pro.findByIndex = function(index, value, callback){
 /**
  * find obj by id
  * @param id
+ * @param lock
  * @param callback
  */
-pro.findById = function(id, callback){
+pro.findById = function(id, lock, callback){
+	if(!_.isFunction(callback)){
+		callback = lock
+		lock = false
+	}
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
@@ -104,8 +117,11 @@ pro.findById = function(id, callback){
 		callback(new Error("id must be a string"))
 		return
 	}
+	if(!_.isBoolean(lock)){
+		callback(new Error("lock must be a bool value"))
+	}
 
-	this.scripto.runAsync("findById", [this.modelName, id]).then(function(docString){
+	this.scripto.runAsync("findById", [this.modelName, id, lock]).then(function(docString){
 		callback(null, JSON.parse(docString))
 	}).catch(function(e){
 		callback(e)
@@ -115,9 +131,14 @@ pro.findById = function(id, callback){
 /**
  * update a object
  * @param doc json object
+ * @param unlock
  * @param callback
  */
-pro.update = function(doc, callback){
+pro.update = function(doc, unlock, callback){
+	if(!_.isFunction(callback)){
+		callback = unlock
+		unlock = false
+	}
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
@@ -128,6 +149,9 @@ pro.update = function(doc, callback){
 	if(!_.isString(doc._id)){
 		callback(new Error("obj's _id must be a string"))
 		return
+	}
+	if(!_.isBoolean(unlock)){
+		callback(new Error("unlock must be a bool value"))
 	}
 
 	doc.__v++

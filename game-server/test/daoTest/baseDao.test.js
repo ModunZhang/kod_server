@@ -152,7 +152,7 @@ describe("BaseDao", function(){
 			p2 = doc
 			baseDao.createAsync(player3).then(function(doc){
 				p3 = doc
-				baseDao.searchByIndexAsync("basicInfo.name", "m").then(function(docs){
+				baseDao.searchByIndexAsync("basicInfo.name", "2").then(function(docs){
 					baseDao.deleteByIdAsync(p2._id).then(function(){
 						baseDao.deleteByIdAsync(p3._id).then(function(){
 							done()
