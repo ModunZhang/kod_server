@@ -375,7 +375,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 			if(!DataUtils.hasFreeBuildQueue(doc)){
 				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
-				var timeRemain = buildEvent.finishTime - Date.now()
+				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
@@ -516,7 +516,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 			if(!DataUtils.hasFreeBuildQueue(doc)){
 				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
-				var timeRemain = buildEvent.finishTime - Date.now()
+				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
@@ -674,7 +674,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 			if(!DataUtils.hasFreeBuildQueue(doc)){
 				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
-				var timeRemain = buildEvent.finishTime - Date.now()
+				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
@@ -885,7 +885,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 			if(!DataUtils.hasFreeBuildQueue(doc)){
 				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
-				var timeRemain = buildEvent.finishTime - Date.now()
+				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
@@ -999,7 +999,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
 			if(!DataUtils.hasFreeBuildQueue(doc)){
 				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
-				var timeRemain = buildEvent.finishTime - Date.now()
+				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
