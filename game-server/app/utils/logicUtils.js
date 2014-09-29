@@ -8,6 +8,7 @@ var _ = require("underscore")
 var DataUtils = require("./dataUtils")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
+var CallbackService = require("../services/callbackService")
 
 var Utils = module.exports
 
@@ -764,4 +765,50 @@ Utils.addPlayerInviteAllianceEvent = function(inviterId, playerDoc, allianceDoc,
 		inviteTime:inviteTime
 	}
 	playerDoc.inviteToAllianceEvents.push(event)
+}
+
+/**
+ * 获取已经使用的建筑建造队列
+ * @param playerDoc
+ * @returns {number}
+ */
+Utils.getUsedBuildQueue = function(playerDoc){
+	var usedBuildQueue = 0
+	usedBuildQueue += playerDoc.buildingEvents.length
+	usedBuildQueue += playerDoc.houseEvents.length
+	usedBuildQueue += playerDoc.towerEvents.length
+	usedBuildQueue += playerDoc.wallEvents.length
+
+	return usedBuildQueue
+}
+
+/**
+ * 获取最先完成的建筑建造事件
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getSmallestBuildEvent = function(playerDoc){
+	var event = null
+	_.each(playerDoc.buildingEvents, function(theEvent){
+		if(event == null || event.finishTime > theEvent){
+			event = theEvent
+		}
+	})
+	_.each(playerDoc.houseEvents, function(theEvent){
+		if(event == null || event.finishTime > theEvent){
+			event = theEvent
+		}
+	})
+	_.each(playerDoc.towerEvents, function(theEvent){
+		if(event == null || event.finishTime > theEvent){
+			event = theEvent
+		}
+	})
+	_.each(playerDoc.wallEvents, function(theEvent){
+		if(event == null || event.finishTime > theEvent){
+			event = theEvent
+		}
+	})
+
+	return event
 }

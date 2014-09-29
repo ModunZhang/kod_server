@@ -997,21 +997,6 @@ Utils.getMakeDragonEquipmentTime = function(playerDoc, equipmentName){
 }
 
 /**
- * 获取已经使用的建筑建造队列
- * @param playerDoc
- * @returns {number}
- */
-Utils.getUsedBuildQueue = function(playerDoc){
-	var usedBuildQueue = 0
-	usedBuildQueue += playerDoc.buildingEvents.length
-	usedBuildQueue += playerDoc.houseEvents.length
-	usedBuildQueue += playerDoc.towerEvents.length
-	usedBuildQueue += playerDoc.wallEvents.length
-
-	return usedBuildQueue
-}
-
-/**
  * 获取总共有多少建造队列
  * @param playerDoc
  * @returns {number}
@@ -1025,7 +1010,7 @@ Utils.getTotalBuildQueue = function(playerDoc){
  * @param playerDoc
  */
 Utils.hasFreeBuildQueue = function(playerDoc){
-	return this.getTotalBuildQueue(playerDoc) - this.getUsedBuildQueue(playerDoc) > 0
+	return this.getTotalBuildQueue(playerDoc) - LogicUtils.getUsedBuildQueue(playerDoc) > 0
 }
 
 /**

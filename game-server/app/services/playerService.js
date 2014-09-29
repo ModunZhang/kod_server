@@ -244,135 +244,9 @@ pro.playerLogin = function(playerId, logicServerId, callback){
 }
 
 var AfterLogin = function(doc){
-	var self = this
 	doc.countInfo.lastLoginTime = Date.now()
 	doc.countInfo.loginCount += 1
-	//刷新玩家资源数据
-	self.refreshPlayerResources(doc)
-	//检查建筑
-	var buildingFinishedEvents = []
-	_.each(doc.buildingEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= Date.now()){
-			var building = LogicUtils.getBuildingByEvent(doc, event)
-			building.level += 1
-			//检查是否有建筑需要从-1级升级到0级
-			LogicUtils.updateBuildingsLevel(doc)
-			self.pushService.onBuildingLevelUp(doc, event.location)
-			buildingFinishedEvents.push(event)
-		}else{
-			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(buildingFinishedEvents, doc.buildingEvents)
-	//检查小屋
-	var houseFinishedEvents = []
-	_.each(doc.houseEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= Date.now()){
-			var house = LogicUtils.getHouseByEvent(doc, event)
-			house.level += 1
-			self.pushService.onHouseLevelUp(doc, event.buildingLocation, event.houseLocation)
-			//如果是住宅,送玩家城民
-			if(_.isEqual("dwelling", house.type)){
-				var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
-				var next = DataUtils.getDwellingPopulationByLevel(house.level)
-				doc.resources.citizen += next - previous
-				//刷新玩家资源数据
-				self.refreshPlayerResources(doc)
-			}
-			houseFinishedEvents.push(event)
-		}else{
-			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(houseFinishedEvents, doc.houseEvents)
-	//检查箭塔
-	var towerFinishedEvents = []
-	_.each(doc.towerEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= Date.now()){
-			event.level += 1
-			self.pushService.onTowerLevelUp(doc, event.location)
-			towerFinishedEvents.push(event)
-		}else{
-			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(towerFinishedEvents, doc.towerEvents)
-	//检查城墙
-	var wallFinishedEvents = []
-	_.each(doc.wallEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= Date.now()){
-			var wall = doc.wall
-			wall.level += 1
-			self.pushService.onWallLevelUp(doc)
-			wallFinishedEvents.push(event)
-		}else{
-			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(wallFinishedEvents, doc.wallEvents)
-	//检查材料制造
-	_.each(doc.materialEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= Date.now()){
-			event.finishTime = 0
-			self.pushService.onMakeMaterialFinished(doc, event)
-		}else if(event.finishTime > 0){
-			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	//检查招募事件
-	var soldierFinishedEvents = []
-	_.each(doc.soldierEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= Date.now()){
-			doc.soldiers[event.name] = event.count
-			self.pushService.onRecruitSoldierSuccess(doc, event.name, event.count)
-			soldierFinishedEvents.push(event)
-		}else{
-			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(soldierFinishedEvents, doc.soldierEvents)
-	//检查龙装备制作事件
-	var dragonEquipmentFinishedEvents = []
-	_.each(doc.dragonEquipmentEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= Date.now()){
-			doc.dragonEquipments[event.name] += 1
-			self.pushService.onMakeDragonEquipmentSuccess(doc, event.name)
-			dragonEquipmentFinishedEvents.push(event)
-		}else{
-			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(dragonEquipmentFinishedEvents, doc.dragonEquipmentEvents)
-	//检查医院治疗伤兵事件
-	var treatSoldierFinishedEvents = []
-	_.each(doc.treatSoldierEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= Date.now()){
-			_.each(event.soldiers, function(soldier){
-				doc.soldiers[soldier.name] += soldier.count
-				doc.treatSoldiers[soldier.name] -= soldier.count
-			})
-			self.pushService.onTreatSoldierSuccess(doc, event.soldiers)
-			treatSoldierFinishedEvents.push(event)
-		}else{
-			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(treatSoldierFinishedEvents, doc.treatSoldierEvents)
-	//检查城民税收事件
-	var coinFinishedEvents = []
-	_.each(doc.coinEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= Date.now()){
-			doc.resources.coin += event.coin
-			self.pushService.onImposeSuccess(doc, event.coin)
-			coinFinishedEvents.push(event)
-		}else{
-			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(coinFinishedEvents, doc.coinEvents)
-
-	//刷新玩家战力
-	self.refreshPlayerPower(doc)
+	RefreshPlayerEvents.call(this, doc, Date.now(), true)
 }
 
 /**
@@ -476,15 +350,12 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.type, building.level)){
 			return Promise.reject(new Error("建筑已达到最高等级"))
 		}
-		//是否有可用的建造队列
-		if(!finishNow && !DataUtils.hasFreeBuildQueue(doc)){
-			return Promise.reject(new Error("没有空闲的建造队列"))
-		}
 
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, building.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
+		var buildEvent = null
 		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		if(finishNow){
@@ -502,6 +373,11 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
+			if(!DataUtils.hasFreeBuildQueue(doc)){
+				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
+				var timeRemain = buildEvent.finishTime - Date.now()
+				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
+			}
 		}
 
 		//宝石是否足够
@@ -525,6 +401,11 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			LogicUtils.addBuildingEvent(doc, building.location, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+			if(_.isObject(buildEvent)){
+				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
+				buildEvent.finishTime = Date.now()
+				RefreshPlayerEvents.callback(self, doc, buildEvent.finishTime, false)
+			}
 		}
 		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
@@ -610,15 +491,12 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 				return Promise.reject(new Error("建造小屋会造成可用城民小于0"))
 			}
 		}
-		//是否有可用的建造队列
-		if(!finishNow && !DataUtils.hasFreeBuildQueue(doc)){
-			return Promise.reject(new Error("没有空闲的建造队列"))
-		}
 
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getHouseUpgradeRequired(houseType, 1)
 		var buyedResources = null
 		var buyedMaterials = null
+		var buildEvent = null
 		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		if(finishNow){
@@ -636,6 +514,11 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
+			if(!DataUtils.hasFreeBuildQueue(doc)){
+				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
+				var timeRemain = buildEvent.finishTime - Date.now()
+				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
+			}
 		}
 
 		//宝石是否足够
@@ -665,6 +548,11 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			LogicUtils.addHouseEvent(doc, buildingLocation, houseLocation, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+			if(_.isObject(buildEvent)){
+				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
+				buildEvent.finishTime = Date.now()
+				RefreshPlayerEvents.callback(self, doc, buildEvent.finishTime, false)
+			}
 		}
 		//如果是住宅,送玩家城民
 		if(_.isEqual("dwelling", house.type) && finishNow){
@@ -761,15 +649,12 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 				return Promise.reject(new Error("升级小屋会造成可用城民小于0"))
 			}
 		}
-		//是否有可用的建造队列
-		if(!finishNow && !DataUtils.hasFreeBuildQueue(doc)){
-			return Promise.reject(new Error("没有空闲的建造队列"))
-		}
 
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getHouseUpgradeRequired(house.type, house.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
+		var buildEvent = null
 		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		if(finishNow){
@@ -787,6 +672,11 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
+			if(!DataUtils.hasFreeBuildQueue(doc)){
+				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
+				var timeRemain = buildEvent.finishTime - Date.now()
+				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
+			}
 		}
 
 		//宝石是否足够
@@ -808,6 +698,11 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			LogicUtils.addHouseEvent(doc, building.location, house.location, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+			if(_.isObject(buildEvent)){
+				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
+				buildEvent.finishTime = Date.now()
+				RefreshPlayerEvents.callback(self, doc, buildEvent.finishTime, false)
+			}
 		}
 		//如果是住宅,送玩家城民
 		if(_.isEqual("dwelling", house.type) && finishNow){
@@ -965,15 +860,12 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		if(tower.level + 1 > DataUtils.getBuildingLevelLimit(doc)){
 			return Promise.reject(new Error("箭塔升级时,建筑等级不合法"))
 		}
-		//是否有可用的建造队列
-		if(!finishNow && !DataUtils.hasFreeBuildQueue(doc)){
-			return Promise.reject(new Error("没有空闲的建造队列"))
-		}
 
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("tower", tower.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
+		var buildEvent = null
 		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		if(finishNow){
@@ -991,6 +883,11 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
+			if(!DataUtils.hasFreeBuildQueue(doc)){
+				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
+				var timeRemain = buildEvent.finishTime - Date.now()
+				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
+			}
 		}
 
 		//宝石是否足够
@@ -1012,6 +909,11 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			LogicUtils.addTowerEvent(doc, tower.location, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+			if(_.isObject(buildEvent)){
+				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
+				buildEvent.finishTime = Date.now()
+				RefreshPlayerEvents.callback(self, doc, buildEvent.finishTime, false)
+			}
 		}
 		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
@@ -1072,15 +974,12 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		if(wall.level + 1 > DataUtils.getBuildingLevelLimit(doc)){
 			return Promise.reject(new Error("城墙升级时,城墙等级不合法"))
 		}
-		//是否有可用的建造队列
-		if(!finishNow && !DataUtils.hasFreeBuildQueue(doc)){
-			return Promise.reject(new Error("没有空闲的建造队列"))
-		}
 
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("wall", wall.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
+		var buildEvent = null
 		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
 		if(finishNow){
@@ -1098,6 +997,11 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
+			if(!DataUtils.hasFreeBuildQueue(doc)){
+				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
+				var timeRemain = buildEvent.finishTime - Date.now()
+				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
+			}
 		}
 
 		//宝石是否足够
@@ -1119,6 +1023,11 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			LogicUtils.addWallEvent(doc, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+			if(_.isObject(buildEvent)){
+				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
+				buildEvent.finishTime = Date.now()
+				RefreshPlayerEvents.callback(self, doc, buildEvent.finishTime, false)
+			}
 		}
 		//刷新玩家资源数据
 		self.refreshPlayerResources(doc)
@@ -3625,6 +3534,143 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 }
 
 /**
+ * 刷新玩家事件
+ * @param playerDoc
+ * @param finishTime
+ * @param isLogin
+ * @constructor
+ */
+var RefreshPlayerEvents = function(playerDoc, finishTime, isLogin){
+	var self = this
+	//更新资源数据
+	this.refreshPlayerResources(playerDoc)
+	//检查建筑
+	var buildingFinishedEvents = []
+	_.each(playerDoc.buildingEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			buildingFinishedEvents.push(event)
+			var building = LogicUtils.getBuildingByEvent(playerDoc, event)
+			building.level += 1
+			//检查是否有建筑需要从-1级升级到0级
+			LogicUtils.updateBuildingsLevel(playerDoc)
+			self.pushService.onBuildingLevelUp(playerDoc, event.location)
+		}else if(event.finishTime > 0 && isLogin){
+			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	LogicUtils.removeEvents(buildingFinishedEvents, playerDoc.buildingEvents)
+	//检查小屋
+	var houseFinishedEvents = []
+	_.each(playerDoc.houseEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			houseFinishedEvents.push(event)
+			var house = LogicUtils.getHouseByEvent(playerDoc, event)
+			house.level += 1
+			self.pushService.onHouseLevelUp(playerDoc, event.buildingLocation, event.houseLocation)
+			//如果是住宅,送玩家城民
+			if(_.isEqual("dwelling", house.type)){
+				var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
+				var next = DataUtils.getDwellingPopulationByLevel(house.level)
+				playerDoc.resources.citizen += next - previous
+				self.refreshPlayerResources(playerDoc)
+			}else if(event.finishTime > 0 && isLogin){
+				self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+			}
+		}
+	})
+	LogicUtils.removeEvents(houseFinishedEvents, playerDoc.houseEvents)
+	//检查箭塔
+	var towerFinishedEvents = []
+	_.each(playerDoc.towerEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			var tower = LogicUtils.getTowerByEvent(playerDoc, event)
+			tower.level += 1
+			self.pushService.onTowerLevelUp(playerDoc, event.location)
+			towerFinishedEvents.push(event)
+		}else if(event.finishTime > 0 && isLogin){
+			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	LogicUtils.removeEvents(towerFinishedEvents, playerDoc.towerEvents)
+	//检查城墙
+	var wallFinishedEvents = []
+	_.each(playerDoc.wallEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			var wall = playerDoc.wall
+			wall.level += 1
+			self.pushService.onWallLevelUp(playerDoc)
+			wallFinishedEvents.push(event)
+		}else if(event.finishTime > 0 && isLogin){
+			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	LogicUtils.removeEvents(wallFinishedEvents, playerDoc.wallEvents)
+	//检查材料制造
+	_.each(playerDoc.materialEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			event.finishTime = 0
+			self.pushService.onMakeMaterialFinished(playerDoc, event)
+		}else if(event.finishTime > 0 && isLogin){
+			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	//检查招募事件
+	var soldierFinishedEvents = []
+	_.each(playerDoc.soldierEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			playerDoc.soldiers[event.name] += event.count
+			self.pushService.onRecruitSoldierSuccess(playerDoc, event.name, event.count)
+			soldierFinishedEvents.push(event)
+		}else if(event.finishTime > 0 && isLogin){
+			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	LogicUtils.removeEvents(soldierFinishedEvents, playerDoc.soldierEvents)
+	//检查龙装备制作事件
+	var dragonEquipmentFinishedEvents = []
+	_.each(playerDoc.dragonEquipmentEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			playerDoc.dragonEquipments[event.name] += 1
+			self.pushService.onMakeDragonEquipmentSuccess(playerDoc, event.name)
+			dragonEquipmentFinishedEvents.push(event)
+		}else if(event.finishTime > 0 && isLogin){
+			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	LogicUtils.removeEvents(dragonEquipmentFinishedEvents, playerDoc.dragonEquipmentEvents)
+	//检查医院治疗伤兵事件
+	var treatSoldierFinishedEvents = []
+	_.each(playerDoc.treatSoldierEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			_.each(event.soldiers, function(soldier){
+				playerDoc.soldiers[soldier.name] += soldier.count
+				playerDoc.treatSoldiers[soldier.name] -= soldier.count
+			})
+			self.pushService.onTreatSoldierSuccess(playerDoc, event.soldiers)
+			treatSoldierFinishedEvents.push(event)
+		}else if(event.finishTime > 0 && isLogin){
+			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	LogicUtils.removeEvents(treatSoldierFinishedEvents, playerDoc.treatSoldierEvents)
+	//检查城民税收事件
+	var coinFinishedEvents = []
+	_.each(playerDoc.coinEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			playerDoc.resources.coin += event.coin
+			self.pushService.onImposeSuccess(playerDoc, event.coin)
+			coinFinishedEvents.push(event)
+		}else if(event.finishTime > 0 && isLogin){
+			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+		}
+	})
+	LogicUtils.removeEvents(coinFinishedEvents, playerDoc.coinEvents)
+
+	//刷新玩家战力
+	this.refreshPlayerPower(playerDoc)
+}
+
+/**
  * 执行玩家延迟执行事件
  * @param playerId
  * @param finishTime
@@ -3633,114 +3679,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 var ExcutePlayerCallback = function(playerId, finishTime){
 	var self = this
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
-		//更新资源数据
-		self.refreshPlayerResources(doc)
-		//检查建筑
-		var buildingFinishedEvents = []
-		_.each(doc.buildingEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= finishTime){
-				buildingFinishedEvents.push(event)
-				var building = LogicUtils.getBuildingByEvent(doc, event)
-				building.level += 1
-				//检查是否有建筑需要从-1级升级到0级
-				LogicUtils.updateBuildingsLevel(doc)
-				self.pushService.onBuildingLevelUp(doc, event.location)
-			}
-		})
-		LogicUtils.removeEvents(buildingFinishedEvents, doc.buildingEvents)
-		//检查小屋
-		var houseFinishedEvents = []
-		_.each(doc.houseEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= finishTime){
-				houseFinishedEvents.push(event)
-				var house = LogicUtils.getHouseByEvent(doc, event)
-				house.level += 1
-				self.pushService.onHouseLevelUp(doc, event.buildingLocation, event.houseLocation)
-				//如果是住宅,送玩家城民
-				if(_.isEqual("dwelling", house.type)){
-					var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
-					var next = DataUtils.getDwellingPopulationByLevel(house.level)
-					doc.resources.citizen += next - previous
-					self.refreshPlayerResources(doc)
-				}
-			}
-		})
-		LogicUtils.removeEvents(houseFinishedEvents, doc.houseEvents)
-		//检查箭塔
-		var towerFinishedEvents = []
-		_.each(doc.towerEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= finishTime){
-				var tower = LogicUtils.getTowerByEvent(doc, event)
-				tower.level += 1
-				self.pushService.onTowerLevelUp(doc, event.location)
-				towerFinishedEvents.push(event)
-			}
-		})
-		LogicUtils.removeEvents(towerFinishedEvents, doc.towerEvents)
-		//检查城墙
-		var wallFinishedEvents = []
-		_.each(doc.wallEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= finishTime){
-				var wall = doc.wall
-				wall.level += 1
-				self.pushService.onWallLevelUp(doc)
-				wallFinishedEvents.push(event)
-			}
-		})
-		LogicUtils.removeEvents(wallFinishedEvents, doc.wallEvents)
-		//检查材料制造
-		_.each(doc.materialEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= finishTime){
-				event.finishTime = 0
-				self.pushService.onMakeMaterialFinished(doc, event)
-			}
-		})
-		//检查招募事件
-		var soldierFinishedEvents = []
-		_.each(doc.soldierEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= finishTime){
-				doc.soldiers[event.name] += event.count
-				self.pushService.onRecruitSoldierSuccess(doc, event.name, event.count)
-				soldierFinishedEvents.push(event)
-			}
-		})
-		LogicUtils.removeEvents(soldierFinishedEvents, doc.soldierEvents)
-		//检查龙装备制作事件
-		var dragonEquipmentFinishedEvents = []
-		_.each(doc.dragonEquipmentEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= finishTime){
-				doc.dragonEquipments[event.name] += 1
-				self.pushService.onMakeDragonEquipmentSuccess(doc, event.name)
-				dragonEquipmentFinishedEvents.push(event)
-			}
-		})
-		LogicUtils.removeEvents(dragonEquipmentFinishedEvents, doc.dragonEquipmentEvents)
-		//检查医院治疗伤兵事件
-		var treatSoldierFinishedEvents = []
-		_.each(doc.treatSoldierEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= finishTime){
-				_.each(event.soldiers, function(soldier){
-					doc.soldiers[soldier.name] += soldier.count
-					doc.treatSoldiers[soldier.name] -= soldier.count
-				})
-				self.pushService.onTreatSoldierSuccess(doc, event.soldiers)
-				treatSoldierFinishedEvents.push(event)
-			}
-		})
-		LogicUtils.removeEvents(treatSoldierFinishedEvents, doc.treatSoldierEvents)
-		//检查城民税收事件
-		var coinFinishedEvents = []
-		_.each(doc.coinEvents, function(event){
-			if(event.finishTime > 0 && event.finishTime <= finishTime){
-				doc.resources.coin += event.coin
-				self.pushService.onImposeSuccess(doc, event.coin)
-				coinFinishedEvents.push(event)
-			}
-		})
-		LogicUtils.removeEvents(coinFinishedEvents, doc.coinEvents)
-
-		//刷新玩家战力
-		self.refreshPlayerPower(doc)
+		RefreshPlayerEvents.call(self, doc, finishTime, false)
 		//更新玩家数据
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){

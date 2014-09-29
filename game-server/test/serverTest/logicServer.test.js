@@ -577,16 +577,6 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("upgradeBuilding 没有空闲的建造队列", function(done){
-			upgradeBuilding(2, false, function(doc){
-				doc.code.should.equal(200)
-				upgradeBuilding(3, false, function(doc){
-					doc.code.should.equal(500)
-					done()
-				})
-			})
-		})
-
 		it("upgradeBuilding 宝石不足", function(done){
 			sendChat("gem 0", function(doc){
 				doc.code.should.equal(200)
@@ -766,14 +756,6 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("createHouse 没有空闲的建造队列", function(done){
-			createHouse("dwelling", 3, 3, false, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("没有空闲的建造队列")
-				done()
-			})
-		})
-
 		it("createHouse 宝石不足", function(done){
 			sendChat("gem 0", function(doc){
 				doc.code.should.equal(200)
@@ -888,14 +870,6 @@ describe("LogicServer", function(){
 					})
 				})
 
-			})
-		})
-
-		it("upgradeHouse 没有空闲的建造队列", function(done){
-			upgradeHouse(3, 3, false, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("没有空闲的建造队列")
-				done()
 			})
 		})
 
@@ -1032,20 +1006,6 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("upgradeTower 没有空闲的建造队列", function(done){
-			upgradeTower(1, false, function(doc){
-				doc.code.should.equal(200)
-				upgradeTower(2, false, function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("没有空闲的建造队列")
-					sendChat("rmbuildingevents", function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-			})
-		})
-
 		it("upgradeTower 宝石不足", function(done){
 			sendChat("gem 0", function(doc){
 				doc.code.should.equal(200)
@@ -1114,20 +1074,6 @@ describe("LogicServer", function(){
 					doc.code.should.equal(500)
 					doc.message.should.equal("城墙升级时,城墙等级不合法")
 					sendChat("keep 6", function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-			})
-		})
-
-		it("upgradeWall 没有空闲的建造队列", function(done){
-			upgradeBuilding(2, false, function(doc){
-				doc.code.should.equal(200)
-				upgradeWall(false, function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("没有空闲的建造队列")
-					sendChat("rmbuildingevents", function(doc){
 						doc.code.should.equal(200)
 						done()
 					})

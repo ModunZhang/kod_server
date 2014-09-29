@@ -34,7 +34,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"gem",
-			desc:"修改玩家宝石数量",
+			desc:"修改玩家宝石数量:gem 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -48,7 +48,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"rs",
-			desc:"修改玩家资源数量",
+			desc:"修改玩家资源数量:rs 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -62,7 +62,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"citizen",
-			desc:"修改玩家空闲居民数量",
+			desc:"修改玩家空闲居民数量:citizen 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -76,7 +76,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"coin",
-			desc:"修改玩家银币数量",
+			desc:"修改玩家银币数量:coin 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -90,7 +90,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"energy",
-			desc:"修改玩家能量数据",
+			desc:"修改玩家能量数据:energy 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -104,7 +104,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"blood",
-			desc:"修改玩家英雄之血的数量",
+			desc:"修改玩家英雄之血的数量:blood 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -118,7 +118,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"building",
-			desc:"修改玩家银币数量",
+			desc:"修改已经建造建筑等级:building 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var level = text.split(" ")[1]
@@ -132,7 +132,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"keep",
-			desc:"修改玩家城堡等级",
+			desc:"修改玩家城堡等级:keep 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var level = text.split(" ")[1]
@@ -176,7 +176,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"material",
-			desc:"统一修改玩家材料数量",
+			desc:"统一修改玩家材料数量 material 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -190,7 +190,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"soldiermaterial",
-			desc:"统一修改玩家招募特殊兵种材料数量",
+			desc:"统一修改玩家招募特殊兵种材料数量:soldiermaterial 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -214,7 +214,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"dragonmaterial",
-			desc:"统一修改玩家制作龙装备的材料数量",
+			desc:"统一修改玩家制作龙装备的材料数量:dragonmaterial 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -228,7 +228,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"dragonequipment",
-			desc:"统一修改玩家龙装备的数量",
+			desc:"统一修改玩家龙装备的数量:dragonequipment 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -252,7 +252,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"addtreatsoldiers",
-			desc:"设置伤兵数量",
+			desc:"设置伤兵数量:addtreatsoldiers 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
@@ -276,7 +276,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"dragonvitality",
-			desc:"修改指定龙的活力",
+			desc:"修改指定龙的活力:dragonvitality redDragon 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var dragonType = text.split(" ")[1]
@@ -291,7 +291,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"dragonskill",
-			desc:"设置龙的技能的等级",
+			desc:"设置龙的技能的等级:dragonskill redDragon 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var dragonType = text.split(" ")[1]
@@ -306,7 +306,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"dragonequipmentstar",
-			desc:"设置龙装备的星级",
+			desc:"设置龙装备的星级:dragonequipmentstar redDragon 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var dragonType = text.split(" ")[1]
@@ -321,7 +321,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"dragonstar",
-			desc:"设置龙的星级",
+			desc:"设置龙的星级:dragonstar redDragon 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var dragonType = text.split(" ")[1]
