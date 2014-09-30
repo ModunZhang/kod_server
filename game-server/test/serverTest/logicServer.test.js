@@ -1490,14 +1490,17 @@ describe("LogicServer", function(){
 		})
 
 		it("treatSoldier 正常普通治疗", function(done){
-			sendChat("rmtreatsoldierevents", function(doc){
+			sendChat("addtreatsoldiers 5", function(doc){
 				doc.code.should.equal(200)
-				treatSoldier([
-					{name:"sentinel", count:5},
-					{name:"archer", count:5}
-				], false, function(doc){
+				sendChat("rmtreatsoldierevents", function(doc){
 					doc.code.should.equal(200)
-					done()
+					treatSoldier([
+						{name:"sentinel", count:5},
+						{name:"archer", count:5}
+					], false, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
 				})
 			})
 		})

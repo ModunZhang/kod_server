@@ -38,6 +38,8 @@ app.configure("production|development", "gate", function(){
 		singleSession:true
 	})
 
+	app.filter(pomelo.filters.serial())
+
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
 
@@ -77,6 +79,7 @@ app.configure("production|development", "logic", function(){
 		singleSession:true
 	})
 
+	app.filter(pomelo.filters.serial())
 	app.before(loginFilter())
 
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
@@ -107,6 +110,7 @@ app.configure("production|development", "chat", function(){
 		bufferMsg:false
 	})
 
+	app.filter(pomelo.filters.serial())
 	app.before(loginFilter())
 
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))

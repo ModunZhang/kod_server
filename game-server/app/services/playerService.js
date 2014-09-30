@@ -1520,6 +1520,9 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			})
 			self.pushService.onTreatSoldierSuccess(doc, soldiers)
 		}else{
+			_.each(soldiers, function(soldier){
+				doc.treatSoldiers[soldier.name] -= soldier.count
+			})
 			var finishTime = Date.now() + (treatRequired.treatTime * 1000)
 			LogicUtils.addTreatSoldierEvent(doc, soldiers, finishTime)
 			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
@@ -3644,7 +3647,6 @@ var RefreshPlayerEvents = function(playerDoc, finishTime, isLogin){
 		if(event.finishTime > 0 && event.finishTime <= finishTime){
 			_.each(event.soldiers, function(soldier){
 				playerDoc.soldiers[soldier.name] += soldier.count
-				playerDoc.treatSoldiers[soldier.name] -= soldier.count
 			})
 			self.pushService.onTreatSoldierSuccess(playerDoc, event.soldiers)
 			treatSoldierFinishedEvents.push(event)

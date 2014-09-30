@@ -81,6 +81,8 @@ describe("BaseDao", function(){
 			should.exist(doc)
 			demoDoc = doc
 			done()
+		}).catch(function(e){
+			console.log(e)
 		})
 	})
 
