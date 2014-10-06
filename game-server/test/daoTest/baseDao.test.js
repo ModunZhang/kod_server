@@ -76,17 +76,14 @@ describe("BaseDao", function(){
 		})
 	})
 
-	it("findById", function(done){
-		baseDao.findByIdAsync(demoDoc._id).then(function(doc){
-			should.exist(doc)
-			demoDoc = doc
+	it("findById 抛出错误", function(done){
+		baseDao.findByIdAsync(demoDoc._id).catch(function(e){
+			should.exist(e)
 			done()
-		}).catch(function(e){
-			console.log(e)
 		})
 	})
 
-	it("update", function(done){
+	it("update 更新1", function(done){
 		demoDoc.basicInfo.name = "zhang"
 		baseDao.updateAsync(demoDoc).then(function(doc){
 			should.exist(doc)
@@ -96,7 +93,32 @@ describe("BaseDao", function(){
 		})
 	})
 
-	it("deleteById", function(done){
+	it("findById 正常查找", function(done){
+		baseDao.findByIdAsync(demoDoc._id).then(function(doc){
+			should.exist(doc)
+			demoDoc = doc
+			done()
+		})
+	})
+
+	it("deleteById 抛出错误", function(done){
+		baseDao.deleteByIdAsync(demoDoc._id).catch(function(e){
+			should.exist(e)
+			done()
+		})
+	})
+
+	it("update 更新2", function(done){
+		demoDoc.basicInfo.name = "zhang"
+		baseDao.updateAsync(demoDoc).then(function(doc){
+			should.exist(doc)
+			demoDoc = doc
+			demoDoc.basicInfo.name.should.equal("zhang")
+			done()
+		})
+	})
+
+	it("deleteById 正常删除", function(done){
 		baseDao.deleteByIdAsync(demoDoc._id).then(function(){
 			done()
 		})
@@ -155,6 +177,7 @@ describe("BaseDao", function(){
 			baseDao.createAsync(player3).then(function(doc){
 				p3 = doc
 				baseDao.searchByIndexAsync("basicInfo.name", "2").then(function(docs){
+					should.exist(docs)
 					baseDao.deleteByIdAsync(p2._id).then(function(){
 						baseDao.deleteByIdAsync(p3._id).then(function(){
 							done()
@@ -164,6 +187,59 @@ describe("BaseDao", function(){
 			})
 		})
 	})
+
+	it("removeLockById", function(done){
+		baseDao.createAsync(player1).then(function(doc){
+			baseDao.findByIdAsync(doc._id).then(function(doc){
+				baseDao.removeLockByIdAsync(doc._id).then(function(){
+					done()
+				})
+			})
+		})
+	})
+
+	it("removeLockByIndex", function(done){
+		baseDao.findByIndexAsync("basicInfo.name", "modun1").then(function(doc){
+			baseDao.removeLockByIndexAsync("basicInfo.name", doc.basicInfo.name).then(function(){
+				baseDao.deleteByIdAsync(doc._id).then(function(){
+					done()
+				})
+			})
+		})
+	})
+
+//	it("findById  testTimeout", function(done){
+//		baseDao.createAsync(player1).then(function(doc){
+//			baseDao.findByIdAsync(doc._id).then(function(doc){
+//				should.exist(doc)
+//				setTimeout(function(){
+//					baseDao.findByIdAsync(doc._id).then(function(doc){
+//						should.exist(doc)
+//						baseDao.removeLockByIdAsync(doc._id).then(function(){
+//							done()
+//						})
+//					})
+//				}, 2000)
+//			})
+//		})
+//	})
+//
+//	it("findByIndex  testTimeout", function(done){
+//		baseDao.findByIndexAsync("basicInfo.name", "modun1").then(function(doc){
+//			should.exist(doc)
+//			setTimeout(function(){
+//				baseDao.findByIndexAsync("basicInfo.name", "modun1").then(function(doc){
+//					should.exist(doc)
+//					baseDao.removeLockByIdAsync(doc._id).then(function(){
+//						baseDao.deleteByIdAsync(doc._id).then(function(){
+//							done()
+//						})
+//					})
+//				})
+//			}, 2000)
+//		})
+//	})
+
 
 	after(function(done){
 		mongoose.connection.collections["demos"].drop(function(){

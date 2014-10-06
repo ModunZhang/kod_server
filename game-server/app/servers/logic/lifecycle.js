@@ -14,8 +14,8 @@ var PlayerService = require("../../services/playerService")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
-	app.set("pushService", new PushService(app))
-	app.set("callbackService", new CallbackService(app))
+	app.set("pushService", Promise.promisifyAll(new PushService(app)))
+	app.set("callbackService", Promise.promisifyAll(new CallbackService(app)))
 	app.set("playerService", Promise.promisifyAll(new PlayerService(app)))
 
 	callback()

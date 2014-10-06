@@ -10,12 +10,19 @@ var Promise = require("bluebird")
 var Consts = require("../../../consts/consts")
 var Events = require("../../../consts/events")
 
+var AllianceDao = require("../../../dao/allianceDao")
+var PlayerDao = require("../../../dao/playerDao")
+
 module.exports = function(app){
 	return new ChatHandler(app)
 }
 
 var ChatHandler = function(app){
 	this.app = app
+	this.redis = app.get("redis")
+	this.scripto = app.get("scripto")
+	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto))
+	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto))
 	this.playerService = app.get("playerService")
 	this.channelService = app.get("channelService")
 	this.globalChatChannel = this.channelService.getChannel(Consts.GloablChatChannelName)
@@ -359,8 +366,15 @@ pro.send = function(msg, session, next){
 	}
 
 	var filterCommand = Promise.promisify(FilterCommand, this)
-	this.playerService.getPlayerByIdAsync(session.uid).then(function(doc){
-		return filterCommand(doc, text, session)
+	var playerDoc = null
+	this.playerDao.findByIdAsync(session.uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		return self.playerDao.removeLockByIdAsync(playerDoc._id)
+	}).then(function(){
+		return filterCommand(playerDoc, text, session)
 	}).then(function(doc){
 		var time = Date.now()
 		var response = {

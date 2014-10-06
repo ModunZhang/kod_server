@@ -122,3 +122,14 @@ var Promise = require("bluebird")
 //Promise.all(funcs).then(function(res){
 //	console.log(res[0])
 //})
+//
+//var func = function(callback){
+//	return Promise.reject(new Error("asdfasdfa"))
+//}
+//
+//func().then(function(){
+//
+//}).catch(function(e){
+//	console.log(e.message)
+//	console.log(e)
+//})

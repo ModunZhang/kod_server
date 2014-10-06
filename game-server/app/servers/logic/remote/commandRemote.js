@@ -12,6 +12,8 @@ var DataUtis = require("../../../utils/dataUtils")
 var LogicUtils = require("../../../utils/logicUtils")
 
 var Player = require("../../../domains/player")
+var AllianceDao = require("../../../dao/allianceDao")
+var PlayerDao = require("../../../dao/playerDao")
 
 module.exports = function(app){
 	return new CommandRemote(app)
@@ -19,6 +21,11 @@ module.exports = function(app){
 
 var CommandRemote = function(app){
 	this.app = app
+	this.serverId = this.app.getServerId()
+	this.redis = app.get("redis")
+	this.scripto = app.get("scripto")
+	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto))
+	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto))
 	this.playerService = this.app.get("playerService")
 	this.pushService = this.app.get("pushService")
 	this.sessionService = this.app.get("backendSessionService")
@@ -33,7 +40,11 @@ var pro = CommandRemote.prototype
  */
 pro.reset = function(uid, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		var requiredInfo = {
 			countInfo:{
 				deviceId:"__testDeviceId2",
@@ -52,7 +63,7 @@ pro.reset = function(uid, callback){
 		newPlayer.countInfo.deviceId = doc.countInfo.deviceId
 		newPlayer.basicInfo.name = doc.basicInfo.name
 		newPlayer.basicInfo.cityName = doc.basicInfo.cityName
-		return self.playerService.updatePlayerAsync(newPlayer)
+		return self.playerDao.updateAsync(newPlayer)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -69,10 +80,14 @@ pro.reset = function(uid, callback){
  */
 pro.gem = function(uid, gem, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		doc.resources.gem = gem
 		self.playerService.refreshPlayerResources(doc)
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -89,13 +104,17 @@ pro.gem = function(uid, gem, callback){
  */
 pro.rs = function(uid, count, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		doc.resources.wood = count
 		doc.resources.stone = count
 		doc.resources.iron = count
 		doc.resources.food = count
 		self.playerService.refreshPlayerResources(doc)
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -112,10 +131,14 @@ pro.rs = function(uid, count, callback){
  */
 pro.citizen = function(uid, count, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		doc.resources.citizen = count
 		self.playerService.refreshPlayerResources(doc)
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -132,10 +155,14 @@ pro.citizen = function(uid, count, callback){
  */
 pro.coin = function(uid, count, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		doc.resources.coin = count
 		self.playerService.refreshPlayerResources(doc)
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -152,11 +179,15 @@ pro.coin = function(uid, count, callback){
  */
 pro.energy = function(uid, count, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		var maxEnergy = DataUtis.getPlayerEnergyUpLimit(doc)
 		doc.resources.energy = maxEnergy > count ? count : maxEnergy
 		self.playerService.refreshPlayerResources(doc)
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -173,10 +204,14 @@ pro.energy = function(uid, count, callback){
  */
 pro.blood = function(uid, count, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		doc.resources.blood = count
 		self.playerService.refreshPlayerResources(doc)
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -193,7 +228,11 @@ pro.blood = function(uid, count, callback){
  */
 pro.building = function(uid, level, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		self.playerService.refreshPlayerResources(doc)
 		_.each(doc.buildings, function(building){
 			if(building.level > 0){
@@ -226,7 +265,7 @@ pro.building = function(uid, level, callback){
 			doc.wallEvents.pop()
 		}
 		self.playerService.refreshPlayerResources(doc)
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -243,7 +282,11 @@ pro.building = function(uid, level, callback){
  */
 pro.keep = function(uid, level, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		var keepMaxLevel = DataUtis.getBuildingMaxLevel("keep")
 		doc.buildings["location_1"].level = level > keepMaxLevel ? keepMaxLevel : level
 
@@ -256,7 +299,7 @@ pro.keep = function(uid, level, callback){
 		}
 		LogicUtils.removeEvents(events, doc.buildingEvents)
 
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -272,7 +315,11 @@ pro.keep = function(uid, level, callback){
  */
 pro.rmbuildingevents = function(uid, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		while(doc.buildingEvents.length > 0){
 			doc.buildingEvents.pop()
 		}
@@ -286,7 +333,7 @@ pro.rmbuildingevents = function(uid, callback){
 			doc.wallEvents.pop()
 		}
 		self.playerService.refreshPlayerResources(doc)
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -302,11 +349,15 @@ pro.rmbuildingevents = function(uid, callback){
  */
 pro.rmmaterialevents = function(uid, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		while(doc.materialEvents.length > 0){
 			doc.materialEvents.pop()
 		}
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -321,11 +372,16 @@ pro.rmmaterialevents = function(uid, callback){
  * @param callback
  */
 pro.kickme = function(uid, callback){
+	var self = this
 	var kickPlayer = Promise.promisify(this.sessionService.kickByUid, this)
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
+		return self.playerDao.updateAsync(doc)
+	}).then(function(doc){
 		return kickPlayer(doc.logicServerId, doc._id)
-	}, function(){
-		return Promise.resolve()
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -341,7 +397,11 @@ pro.kickme = function(uid, callback){
  */
 pro.material = function(uid, count, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		doc.materials.blueprints = count
 		doc.materials.tools = count
 		doc.materials.tiles = count
@@ -351,7 +411,7 @@ pro.material = function(uid, count, callback){
 		doc.materials.saddle = count
 		doc.materials.ironPart = count
 		self.playerService.refreshPlayerResources(doc)
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -368,7 +428,11 @@ pro.material = function(uid, count, callback){
  */
 pro.soldiermaterial = function(uid, count, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		doc.soldierMaterials.deathHand = count
 		doc.soldierMaterials.heroBones = count
 		doc.soldierMaterials.soulStone = count
@@ -378,7 +442,7 @@ pro.soldiermaterial = function(uid, count, callback){
 		doc.soldierMaterials.holyBook = count
 		doc.soldierMaterials.brightAlloy = count
 		self.playerService.refreshPlayerResources(doc)
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -394,11 +458,15 @@ pro.soldiermaterial = function(uid, count, callback){
  */
 pro.rmsoldierevents = function(uid, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		while(doc.soldierEvents.length > 0){
 			doc.soldierEvents.pop()
 		}
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -415,7 +483,11 @@ pro.rmsoldierevents = function(uid, callback){
  */
 pro.dragonmaterial = function(uid, count, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		doc.dragonMaterials.ironIngot = count
 		doc.dragonMaterials.steelIngot = count
 		doc.dragonMaterials.mithrilIngot = count
@@ -454,7 +526,7 @@ pro.dragonmaterial = function(uid, count, callback){
 		doc.dragonMaterials.arcanaRune = count
 		doc.dragonMaterials.eternityRune = count
 		self.playerService.refreshPlayerResources(doc)
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -471,7 +543,11 @@ pro.dragonmaterial = function(uid, count, callback){
  */
 pro.dragonequipment = function(uid, count, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		doc.dragonEquipments.moltenCrown = count
 		doc.dragonEquipments.glacierCrown = count
 		doc.dragonEquipments.chargedCrown = count
@@ -539,7 +615,7 @@ pro.dragonequipment = function(uid, count, callback){
 		doc.dragonEquipments.blizzardArmguard = count
 		doc.dragonEquipments.eternityArmguard = count
 		self.playerService.refreshPlayerResources(doc)
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -555,11 +631,15 @@ pro.dragonequipment = function(uid, count, callback){
  */
 pro.rmdragonequipmentevents = function(uid, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		while(doc.dragonEquipmentEvents.length > 0){
 			doc.dragonEquipmentEvents.pop()
 		}
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -576,11 +656,15 @@ pro.rmdragonequipmentevents = function(uid, callback){
  */
 pro.addtreatsoldiers = function(uid, count, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		_.each(doc.treatSoldiers, function(value, key){
 			doc.treatSoldiers[key] = count
 		})
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -596,11 +680,15 @@ pro.addtreatsoldiers = function(uid, count, callback){
  */
 pro.rmtreatsoldierevents = function(uid, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		while(doc.treatSoldierEvents.length > 0){
 			doc.treatSoldierEvents.pop()
 		}
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -618,14 +706,18 @@ pro.rmtreatsoldierevents = function(uid, callback){
  */
 pro.dragonvitality = function(uid, dragonType, count, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		var dragon = _.find(doc.dragons, function(dragon){
 			if(_.isEqual(dragon.type.toLowerCase(), dragonType)) return true
 		})
 		if(dragon && count >= 0){
 			dragon.vitality = count
 		}
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -643,7 +735,11 @@ pro.dragonvitality = function(uid, dragonType, count, callback){
  */
 pro.dragonskill = function(uid, dragonType, level, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		var dragon = _.find(doc.dragons, function(dragon){
 			if(_.isEqual(dragon.type.toLowerCase(), dragonType)) return true
 		})
@@ -655,7 +751,7 @@ pro.dragonskill = function(uid, dragonType, level, callback){
 				}
 			})
 		}
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -673,7 +769,11 @@ pro.dragonskill = function(uid, dragonType, level, callback){
  */
 pro.dragonequipmentstar = function(uid, dragonType, star, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		var dragon = _.find(doc.dragons, function(dragon){
 			if(_.isEqual(dragon.type.toLowerCase(), dragonType)) return true
 		})
@@ -685,7 +785,7 @@ pro.dragonequipmentstar = function(uid, dragonType, star, callback){
 				}
 			})
 		}
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()
@@ -703,7 +803,11 @@ pro.dragonequipmentstar = function(uid, dragonType, star, callback){
  */
 pro.dragonstar = function(uid, dragonType, star, callback){
 	var self = this
-	this.playerService.getPlayerByIdAsync(uid).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+
 		var dragon = _.find(doc.dragons, function(dragon){
 			if(_.isEqual(dragon.type.toLowerCase(), dragonType)) return true
 		})
@@ -721,7 +825,7 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 				equipment.buffs = []
 			})
 		}
-		return self.playerService.updatePlayerAsync(doc)
+		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
 		callback()

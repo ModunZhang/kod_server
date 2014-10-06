@@ -84,7 +84,7 @@ pro.findByIndex = function(index, value, callback){
 		return
 	}
 
-	this.scripto.runAsync("findByIndex", [this.modelName, index, value]).then(function(docString){
+	this.scripto.runAsync("findByIndex", [this.modelName, index, value, Date.now()]).then(function(docString){
 		callback(null, JSON.parse(docString))
 	}).catch(function(e){
 		callback(e)
@@ -105,7 +105,7 @@ pro.findById = function(id, callback){
 		return
 	}
 
-	this.scripto.runAsync("findById", [this.modelName, id]).then(function(docString){
+	this.scripto.runAsync("findById", [this.modelName, id, Date.now()]).then(function(docString){
 		callback(null, JSON.parse(docString))
 	}).catch(function(e){
 		callback(e)
@@ -258,6 +258,52 @@ pro.searchByIndex = function(index, value, callback){
 			docs.push(doc)
 		}
 		callback(null, docs)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 根据Id移除对象锁
+ * @param id
+ * @param callback
+ */
+pro.removeLockById = function(id, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback must be a function")
+	}
+	if(!_.isString(id)){
+		callback(new Error("id must be a string"))
+		return
+	}
+	this.scripto.runAsync("removeLockById", [this.modelName, id]).then(function(){
+		callback(null, true)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 根据Index移除对象锁
+ * @param index
+ * @param value
+ * @param callback
+ */
+pro.removeLockByIndex = function(index, value, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback must be a function")
+	}
+	if(!_.contains(this.indexs, index)){
+		callback(new Error("index must be a item of indexs"))
+		return
+	}
+	if(_.isNull(value) || _.isUndefined(value)){
+		callback(new Error("value must not be empty"))
+		return
+	}
+
+	this.scripto.runAsync("removeLockByIndex", [this.modelName, index, value]).then(function(){
+		callback(null, true)
 	}).catch(function(e){
 		callback(e)
 	})

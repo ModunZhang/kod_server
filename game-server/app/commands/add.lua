@@ -9,7 +9,7 @@ local objectString = KEYS[2]
 local indexs = ARGV
 local object = cjson.decode(objectString)
 local fullKey = modelName .. ":" .. object._id
-
+assert(not redis.call("get", fullKey), "add:object already exist")
 redis.call("set", fullKey, objectString)
 for _, index in ipairs(indexs) do
     local value = object

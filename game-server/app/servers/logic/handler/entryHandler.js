@@ -13,6 +13,9 @@ var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-er
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 var Consts = require("../../../consts/consts")
 
+var AllianceDao = require("../../../dao/allianceDao")
+var PlayerDao = require("../../../dao/playerDao")
+
 module.exports = function(app){
 	return new Handler(app)
 }
@@ -20,6 +23,10 @@ module.exports = function(app){
 var Handler = function(app){
 	this.app = app
 	this.serverId = this.app.getServerId()
+	this.redis = app.get("redis")
+	this.scripto = app.get("scripto")
+	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto))
+	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto))
 	this.playerService = app.get("playerService")
 	this.globalChannelService = Promise.promisifyAll(this.app.get("globalChannelService"))
 	this.sessionService = this.app.get("sessionService")
@@ -46,17 +53,29 @@ pro.login = function(msg, session, next){
 	var kickPlayerFromLogicServer = Promisify(KickPlayerFromLogicServer, this)
 
 	var playerDoc = null
-	this.playerService.getPlayerByIndexAsync("countInfo.deviceId", deviceId).then(function(doc){
+	this.playerDao.findByIndexAsync("countInfo.deviceId", deviceId).then(function(doc){
 		if(!_.isObject(doc)){
-			return self.playerService.createPlayerAsync(deviceId)
+			return self.playerService.createPlayerAsync(deviceId).then(function(doc){
+				return self.playerDao.findByIdAsync(doc._id)
+			}).then(function(doc){
+				playerDoc = doc
+				return Promise.resolve()
+			}).catch(function(e){
+				return Promise.reject(e)
+			})
 		}else if(!_.isEmpty(doc.logicServerId)){
-			return kickPlayerFromLogicServer(doc)
+			playerDoc = doc
+			return kickPlayerFromLogicServer(playerDoc).then(function(){
+				return Promise.resolve()
+			}).catch(function(e){
+				return Promise.reject(e)
+			})
 		}else{
+			playerDoc = doc
 			return Promise.resolve(doc)
 		}
-	}).then(function(doc){
-		playerDoc = doc
-		return bindPlayerSession(session, doc)
+	}).then(function(){
+		return bindPlayerSession(session, playerDoc)
 	}).then(function(){
 		return addPlayerToChatChannel(session)
 	}).then(function(){
@@ -67,7 +86,10 @@ pro.login = function(msg, session, next){
 		}
 		return Promise.all(funcs)
 	}).then(function(){
-		return self.playerService.playerLoginAsync(session.uid, self.serverId)
+		playerDoc.logicServerId = self.serverId
+		return  self.playerService.playerLoginAsync(playerDoc)
+	}).then(function(){
+		return self.playerDao.updateAsync(playerDoc)
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
@@ -88,36 +110,47 @@ var BindPlayerSession = function(session, playerDoc, callback){
 
 var PlayerLeave = function(session, reason){
 	console.log("user [" + session.uid + "] logout with reason [" + reason + "]")
+	var tryTimes = 2
+	var func = function(){
+		var self = this
+		var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, this)
+		var playerDoc = null
+		this.playerDao.findByIdAsync(session.uid).then(function(doc){
+			if(!_.isObject(doc)){
+				return Promise.reject(new Error("玩家不存在"))
+			}
+			playerDoc = doc
+			return self.playerService.playerLogoutAsync(playerDoc)
+		}).then(function(){
+			var funcs = []
+			funcs.push(removePlayerFromChatChannel(session))
+			funcs.push(self.globalChannelService.leaveAsync(Consts.LogicChannelName, playerDoc._id, self.serverId))
+			if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
+				funcs.push(self.globalChannelService.leaveAsync(Consts.AllianceChannelPrefix + playerDoc.alliance.id, playerDoc._id, self.serverId))
+			}
+			return Promise.all(funcs)
+		}).then(function(){
+			self.playerDao.updateAsync(playerDoc)
+		}).catch(function(e){
+			errorLogger.error("handle playerLogout Error -----------------------------")
+			errorLogger.error(e.stack)
+			if(_.isEqual("production", self.app.get("env"))){
+				errorMailLogger.error("handle playerLogout Error -----------------------------")
+				errorMailLogger.error(e.stack)
+			}
+			tryTimes --
+			if(tryTimes >= 0){
+				setTimeout(func.bind(self), 2000)
+			}else{
+				errorLogger.error("trying to save player data failed -----------------------------")
+				if(_.isEqual("production", self.app.get("env"))){
+					errorMailLogger.error("trying to save player data failed -----------------------------")
+				}
+			}
+		})
+	}
 
-	var self = this
-	var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, this)
-	var playerDoc = null
-	this.playerService.getPlayerByIdAsync(session.uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		if(_.isEmpty(doc.logicServerId)){
-			return Promise.reject(new Error("玩家未登录"))
-		}
-		playerDoc = doc
-		return self.playerService.playerLogoutAsync(doc._id, self.serverId)
-	}).then(function(){
-		return removePlayerFromChatChannel(session)
-	}).then(function(){
-		var funcs = []
-		funcs.push(self.globalChannelService.leaveAsync(Consts.LogicChannelName, playerDoc._id, self.serverId))
-		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
-			funcs.push(self.globalChannelService.leaveAsync(Consts.AllianceChannelPrefix + playerDoc.alliance.id, playerDoc._id, self.serverId))
-		}
-		return Promise.all(funcs)
-	}).catch(function(e){
-		errorLogger.error("handle playerLogout Error -----------------------------")
-		errorLogger.error(e.stack)
-		if(_.isEqual("production", self.app.get("env"))){
-			errorMailLogger.error("handle playerLogout Error -----------------------------")
-			errorMailLogger.error(e.stack)
-		}
-	})
+	func.call(this)
 }
 
 

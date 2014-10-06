@@ -5,12 +5,14 @@ local function split(s, p)
 end
 
 local modelName = KEYS[1]
-local id = KEYS[2]
+local objectId = KEYS[2]
 local indexs = ARGV
-local fullKey = modelName .. ":" .. id
+local fullKey = modelName .. ":" .. objectId
+local lockKey = "lock." .. fullKey
+assert(not redis.call("get", lockKey), "removeById:" .. modelName .. "[" .. objectId .. "]" ..  " object is locked")
 local objectString = redis.call("get", fullKey)
+if not objectString then return end
 local object = cjson.decode(objectString)
-if not object then return end
 for _, index in ipairs(indexs) do
     local value = object
     local levels = split(index, ".")
@@ -21,3 +23,4 @@ for _, index in ipairs(indexs) do
     redis.call("del", key)
 end
 redis.call("del", fullKey)
+

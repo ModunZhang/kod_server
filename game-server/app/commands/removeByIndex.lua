@@ -9,12 +9,14 @@ local index = KEYS[2]
 local value = KEYS[3]
 local indexs = ARGV
 local fullIndex = modelName .. "." .. index .. ":" .. value
-local key = redis.call("get", fullIndex)
-if not key then return end
-local fullKey = modelName .. ":" .. key
+local objectId = redis.call("get", fullIndex)
+if not objectId then return end
+local fullKey = modelName .. ":" .. objectId
+local lockKey = "lock." .. fullKey
+assert(not redis.call("get", lockKey), "removeByIndex:" .. modelName .. "[" .. objectId .. "]" ..  " object is locked")
 local objectString = redis.call("get", fullKey)
+assert(objectString, "removeByIndex:" .. modelName .. "[" .. objectId .. "]" ..  " object not exist")
 local object = cjson.decode(objectString)
-if not object then return end
 for _, index in ipairs(indexs) do
     local value = object
     local levels = split(index, ".")
