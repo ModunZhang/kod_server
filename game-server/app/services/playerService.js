@@ -117,8 +117,8 @@ pro.loadAllData = function(callback){
  */
 pro.unloadAllData = function(callback){
 	var self = this
-	this.loadAllPlayerAsync().then(function(){
-		return self.loadAllAllianceAsync()
+	this.unloadAllPlayerAsync().then(function(){
+		return self.unloadAllAllianceAsync()
 	}).then(function(){
 		callback()
 	}).catch(function(e){
