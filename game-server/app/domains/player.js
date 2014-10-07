@@ -96,7 +96,7 @@ var playerSchema = new Schema({
 		registerTime:{type:Number, required:true, default:Date.now()},
 		lastLoginTime:{type:Number, required:true, default:Date.now()},
 		loginCount:{type:Number, required:true, default:0},
-		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn}
+		gemUsed:{type:Number, required:true, default:0}
 	},
 	basicInfo:{
 		name:{type:String, unique:true, required:true},
@@ -106,9 +106,11 @@ var playerSchema = new Schema({
 		levelExp:{type:Number, required:true, default:0},
 		power:{type:Number, required:true, default:0},
 		kill:{type:Number, required:true, default:0},
-		vip:{type:Number, required:true, default:1},
 		vipExp:{type:Number, required:true, default:0},
-		resourceRefreshTime:{type:Number, required:true, default:Date.now()}
+		vipFinishTime:{type:Number, required:true, default:0},
+		resourceRefreshTime:{type:Number, required:true, default:Date.now()},
+		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn},
+		buildQueue:{type:Number, required:true, default:1}
 	},
 	resources:{
 		wood:{type:Number, required:true, default:ResourceInitData.wood},
@@ -386,7 +388,7 @@ var playerSchema = new Schema({
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		tag:{type:String, required:true},
-		flag:[String],
+		flag:{type:String, required:true},
 		level:{type:Number, required:true},
 		members:{type:Number, required:true},
 		power:{type:Number, required:true},
@@ -399,7 +401,7 @@ var playerSchema = new Schema({
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		tag:{type:String, required:true},
-		flag:[String],
+		flag:{type:String, required:true},
 		level:{type:Number, required:true},
 		members:{type:Number, required:true},
 		power:{type:Number, required:true},

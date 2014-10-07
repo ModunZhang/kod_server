@@ -2074,7 +2074,7 @@ pro.setPlayerLanguage = function(playerId, language, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		doc.countInfo.language = language
+		doc.basicInfo.language = language
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc)
@@ -4258,7 +4258,7 @@ var SendSystemMail = function(playerId, titleKey, titleArgs, contentKey, content
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var language = doc.countInfo.language
+		var language = doc.basicInfo.language
 		var title = titleKey[language]
 		var content = contentKey[language]
 		if(!_.isString(title)){
@@ -4294,10 +4294,10 @@ var SendSystemMail = function(playerId, titleKey, titleArgs, contentKey, content
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
 			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
-				callback(e)
+				return Promise.reject(e)
 			})
 		}else{
-			callback(e)
+			return Promise.reject(e)
 		}
 	})
 }

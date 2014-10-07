@@ -119,3 +119,6 @@ GameDatas.SmithConfig.equipments = require("./SmithConfig_equipments.js")
 GameDatas.UnitsConfig = {}
 GameDatas.UnitsConfig.normal = require("./UnitsConfig_normal.js")
 GameDatas.UnitsConfig.special = require("./UnitsConfig_special.js")
+
+GameDatas.Vip = {}
+GameDatas.Vip.exp = require("./Vip_exp.js")

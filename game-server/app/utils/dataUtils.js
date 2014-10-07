@@ -27,6 +27,7 @@ var DragonEquipmentConfig = GameDatas.SmithConfig.equipments
 var DragonEyrie = GameDatas.DragonEyrie
 var AllianceInit = GameDatas.AllianceInitData
 var AllianceRights = AllianceInit.rights
+var Vip = GameDatas.Vip
 
 
 var Utils = module.exports
@@ -997,20 +998,11 @@ Utils.getMakeDragonEquipmentTime = function(playerDoc, equipmentName){
 }
 
 /**
- * 获取总共有多少建造队列
- * @param playerDoc
- * @returns {number}
- */
-Utils.getTotalBuildQueue = function(playerDoc){
-	return 1
-}
-
-/**
  * 是否还有可用的建筑建造队列
  * @param playerDoc
  */
 Utils.hasFreeBuildQueue = function(playerDoc){
-	return this.getTotalBuildQueue(playerDoc) - LogicUtils.getUsedBuildQueue(playerDoc) > 0
+	return playerDoc.basicInfo.buildQueue - LogicUtils.getUsedBuildQueue(playerDoc) > 0
 }
 
 /**
@@ -1401,4 +1393,19 @@ Utils.isAllianceOperationLegal = function(title, api){
  */
 Utils.getAllianceTitleLevel = function(title){
 	return AllianceRights[title].titleLevel
+}
+
+/**
+ * 获取玩家Vip等级
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getVipLevel = function(playerDoc){
+	var vipExpConfig = Vip.exp
+	var vipExp = playerDoc.basicInfo.vipExp
+	for(var i = vipExpConfig.length; i >= 1; i ++){
+		var minExp = vipExpConfig[i].exp
+		if(vipExp >= minExp) return i
+	}
+	return 1
 }
