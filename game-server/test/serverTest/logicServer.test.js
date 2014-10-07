@@ -22,8 +22,8 @@ var redisClient = redis.createClient(Config.redisPort, Config.redisAddr)
 //mongoose.connect(Config.mongoAddr)
 var scripto = new Scripto(redisClient)
 scripto.loadFromDir(commandDir)
-var allianceDao = Promise.promisifyAll(new AllianceDao(redisClient, scripto))
-var playerDao = Promise.promisifyAll(new PlayerDao(redisClient, scripto))
+var allianceDao = Promise.promisifyAll(new AllianceDao(redisClient, scripto, "production"))
+var playerDao = Promise.promisifyAll(new PlayerDao(redisClient, scripto, "production"))
 
 
 var ClearTestAccount = function(callback){

@@ -6,6 +6,8 @@
 
 var Promise = require("bluebird")
 var _ = require("underscore")
+var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
+var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 
 /**
  * @param redis
@@ -15,13 +17,14 @@ var _ = require("underscore")
  * @param indexs
  * @constructor
  */
-var BaseDao = function(redis, scripto, modelName, model, indexs){
+var BaseDao = function(redis, scripto, modelName, model, indexs, env){
 	this.redis = Promise.promisifyAll(redis)
 	this.modelName = modelName
 	this.model = Promise.promisifyAll(model)
 	this.scripto = Promise.promisifyAll(scripto)
 	this.indexs = indexs
 	this.maxChangedCount = 1
+	this.env = env
 }
 
 module.exports = BaseDao
@@ -83,11 +86,17 @@ pro.findByIndex = function(index, value, callback){
 		callback(new Error("value must not be empty"))
 		return
 	}
-
+	var self = this
 	this.scripto.runAsync("findByIndex", [this.modelName, index, value, Date.now()]).then(function(docString){
 		callback(null, JSON.parse(docString))
 	}).catch(function(e){
-		callback(e)
+		errorLogger.error("handle baseDao:findByIndex Error -----------------------------")
+		errorLogger.error(e.stack)
+		if(_.isEqual("production", self.env)){
+			errorMailLogger.error("handle baseDao:findByIndex Error -----------------------------")
+			errorMailLogger.error(e.stack)
+		}
+		callback()
 	})
 }
 
@@ -104,11 +113,17 @@ pro.findById = function(id, callback){
 		callback(new Error("id must be a string"))
 		return
 	}
-
+	var self = this
 	this.scripto.runAsync("findById", [this.modelName, id, Date.now()]).then(function(docString){
 		callback(null, JSON.parse(docString))
 	}).catch(function(e){
-		callback(e)
+		errorLogger.error("handle baseDao:findById Error -----------------------------")
+		errorLogger.error(e.stack)
+		if(_.isEqual("production", self.env)){
+			errorMailLogger.error("handle baseDao:findById Error -----------------------------")
+			errorMailLogger.error(e.stack)
+		}
+		callback()
 	})
 }
 

@@ -11,9 +11,9 @@ var _ = require("underscore")
 var BaseDao = require("./baseDao")
 var Alliance = require("../domains/alliance")
 
-var AllianceDao = function(redis, scripto){
+var AllianceDao = function(redis, scripto, env){
 	var indexs = ["basicInfo.name", "basicInfo.tag"]
-	BaseDao.call(this, redis, scripto, "alliance", Alliance, indexs)
+	BaseDao.call(this, redis, scripto, "alliance", Alliance, indexs, env)
 }
 
 util.inherits(AllianceDao, BaseDao)

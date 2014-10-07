@@ -19,10 +19,11 @@ module.exports = function(app){
 
 var ChatHandler = function(app){
 	this.app = app
+	this.env = app.get("env")
 	this.redis = app.get("redis")
 	this.scripto = app.get("scripto")
-	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto))
-	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto))
+	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto, this.env))
+	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto, this.env))
 	this.playerService = app.get("playerService")
 	this.channelService = app.get("channelService")
 	this.globalChatChannel = this.channelService.getChannel(Consts.GloablChatChannelName)

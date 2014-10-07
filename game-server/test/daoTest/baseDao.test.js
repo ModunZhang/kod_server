@@ -52,7 +52,7 @@ describe("BaseDao", function(){
 			var scripto = new Scripto(redisClient)
 			scripto.loadFromDir(CommandDir)
 			var indexs = ["basicInfo.name", "cityName"]
-			baseDao = Promise.promisifyAll(new BaseDao(redisClient, scripto, "demo", Demo, indexs))
+			baseDao = Promise.promisifyAll(new BaseDao(redisClient, scripto, "demo", Demo, indexs, "develop"))
 
 			Demo.remove({}, function(){
 				done()
@@ -77,8 +77,8 @@ describe("BaseDao", function(){
 	})
 
 	it("findById 抛出错误", function(done){
-		baseDao.findByIdAsync(demoDoc._id).catch(function(e){
-			should.exist(e)
+		baseDao.findByIdAsync(demoDoc._id).then(function(doc){
+			should.not.exist(doc)
 			done()
 		})
 	})

@@ -23,13 +23,14 @@ var Localizations = require("../consts/localizations")
 
 var PlayerService = function(app){
 	this.app = app
+	this.env = app.get("env")
 	this.redis = app.get("redis")
 	this.scripto = app.get("scripto")
 	this.pushService = this.app.get("pushService")
 	this.callbackService = this.app.get("callbackService")
 	this.globalChannelService = this.app.get("globalChannelService")
-	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto))
-	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto))
+	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto, this.env))
+	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto, this.env))
 }
 
 module.exports = PlayerService
@@ -2168,7 +2169,6 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 		if(_.isEqual(doc._id, memberId)){
 			return Promise.reject(new Error("不能给自己发邮件"))
 		}
-	}).then(function(){
 		return self.playerDao.findByIdAsync(memberId)
 	}).then(function(doc){
 		if(!_.isObject(doc)){

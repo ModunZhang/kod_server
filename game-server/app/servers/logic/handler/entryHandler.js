@@ -22,11 +22,12 @@ module.exports = function(app){
 
 var Handler = function(app){
 	this.app = app
+	this.env = app.get("env")
 	this.serverId = this.app.getServerId()
 	this.redis = app.get("redis")
 	this.scripto = app.get("scripto")
-	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto))
-	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto))
+	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto, this.env))
+	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto, this.env))
 	this.playerService = app.get("playerService")
 	this.globalChannelService = Promise.promisifyAll(this.app.get("globalChannelService"))
 	this.sessionService = this.app.get("sessionService")
