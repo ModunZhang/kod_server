@@ -15,6 +15,7 @@ var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("ko
  * @param modelName
  * @param model
  * @param indexs
+ * @param env
  * @constructor
  */
 var BaseDao = function(redis, scripto, modelName, model, indexs, env){
@@ -60,7 +61,7 @@ pro.create = function(doc, callback){
 	var docString = null
 	this.model.createAsync(doc).then(function(doc){
 		docString = JSON.stringify(doc)
-		return self.scripto.runAsync("add", [self.modelName, docString], self.indexs)
+		return self.scripto.runAsync("addAndLock", [self.modelName, docString, Date.now()], self.indexs)
 	}).then(function(){
 		callback(null, JSON.parse(docString))
 	}).catch(function(e){

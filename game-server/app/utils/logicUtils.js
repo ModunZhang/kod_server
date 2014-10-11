@@ -5,10 +5,12 @@
  */
 
 var _ = require("underscore")
+var sprintf = require("sprintf")
+var Promise = require("bluebird")
+
 var DataUtils = require("./dataUtils")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
-var CallbackService = require("../services/callbackService")
 
 var Utils = module.exports
 
@@ -104,6 +106,21 @@ Utils.increace = function(willAdd, has){
 			has[key] = value
 		}
 	})
+}
+
+/**
+ * 一次执行所有函数
+ * @param functionObjects
+ * @returns {*}
+ */
+Utils.excuteAll = function(functionObjects){
+	var funcs = []
+	_.each(functionObjects, function(functionObj){
+		var caller = functionObj[0]
+		var func = functionObj[1]
+		funcs.push(func.apply(caller, Array.prototype.slice.call(functionObj, 2)))
+	})
+	return Promise.all(funcs)
 }
 
 /**
@@ -362,6 +379,7 @@ Utils.hasWallEvents = function(playerDoc){
  * @param playerDoc
  * @param location
  * @param finishTime
+ * @returns {{location: *, finishTime: *}}
  */
 Utils.addBuildingEvent = function(playerDoc, location, finishTime){
 	var event = {
@@ -369,6 +387,7 @@ Utils.addBuildingEvent = function(playerDoc, location, finishTime){
 		finishTime:finishTime
 	}
 	playerDoc.buildingEvents.push(event)
+	return event
 }
 
 /**
@@ -377,6 +396,7 @@ Utils.addBuildingEvent = function(playerDoc, location, finishTime){
  * @param buildingLocation
  * @param houseLocation
  * @param finishTime
+ * @returns {{buildingLocation: *, houseLocation: *, finishTime: *}}
  */
 Utils.addHouseEvent = function(playerDoc, buildingLocation, houseLocation, finishTime){
 	var event = {
@@ -385,6 +405,7 @@ Utils.addHouseEvent = function(playerDoc, buildingLocation, houseLocation, finis
 		finishTime:finishTime
 	}
 	playerDoc.houseEvents.push(event)
+	return event
 }
 
 /**
@@ -392,6 +413,7 @@ Utils.addHouseEvent = function(playerDoc, buildingLocation, houseLocation, finis
  * @param playerDoc
  * @param location
  * @param finishTime
+ * @returns {{location: *, finishTime: *}}
  */
 Utils.addTowerEvent = function(playerDoc, location, finishTime){
 	var event = {
@@ -400,18 +422,21 @@ Utils.addTowerEvent = function(playerDoc, location, finishTime){
 	}
 
 	playerDoc.towerEvents.push(event)
+	return event
 }
 
 /**
  * 为玩家添加城墙事件
  * @param playerDoc
  * @param finishTime
+ * @returns {{finishTime: *}}
  */
 Utils.addWallEvent = function(playerDoc, finishTime){
 	var event = {
 		finishTime:finishTime
 	}
 	playerDoc.wallEvents.push(event)
+	return event
 }
 
 /**
@@ -420,6 +445,7 @@ Utils.addWallEvent = function(playerDoc, finishTime){
  * @param soldierName
  * @param count
  * @param finishTime
+ * @returns {{name: *, count: *, finishTime: *}}
  */
 Utils.addSoldierEvent = function(playerDoc, soldierName, count, finishTime){
 	var event = {
@@ -427,8 +453,8 @@ Utils.addSoldierEvent = function(playerDoc, soldierName, count, finishTime){
 		count:count,
 		finishTime:finishTime
 	}
-
 	playerDoc.soldierEvents.push(event)
+	return event
 }
 
 /**
@@ -436,6 +462,7 @@ Utils.addSoldierEvent = function(playerDoc, soldierName, count, finishTime){
  * @param playerDoc
  * @param equipmentName
  * @param finishTime
+ * @returns {{name: *, finishTime: *}}
  */
 Utils.addDragonEquipmentEvent = function(playerDoc, equipmentName, finishTime){
 	var event = {
@@ -444,6 +471,7 @@ Utils.addDragonEquipmentEvent = function(playerDoc, equipmentName, finishTime){
 	}
 
 	playerDoc.dragonEquipmentEvents.push(event)
+	return event
 }
 
 /**
@@ -451,6 +479,7 @@ Utils.addDragonEquipmentEvent = function(playerDoc, equipmentName, finishTime){
  * @param playerDoc
  * @param soldiers
  * @param finishTime
+ * @returns {{soldiers: *, finishTime: *}}
  */
 Utils.addTreatSoldierEvent = function(playerDoc, soldiers, finishTime){
 	var event = {
@@ -458,6 +487,7 @@ Utils.addTreatSoldierEvent = function(playerDoc, soldiers, finishTime){
 		finishTime:finishTime
 	}
 	playerDoc.treatSoldierEvents.push(event)
+	return event
 }
 
 /**
@@ -465,6 +495,7 @@ Utils.addTreatSoldierEvent = function(playerDoc, soldiers, finishTime){
  * @param playerDoc
  * @param coin
  * @param finishTime
+ * @returns {{coin: *, finishTime: *}}
  */
 Utils.addCoinEvent = function(playerDoc, coin, finishTime){
 	var event = {
@@ -472,6 +503,7 @@ Utils.addCoinEvent = function(playerDoc, coin, finishTime){
 		finishTime:finishTime
 	}
 	playerDoc.coinEvents.push(event)
+	return event
 }
 
 /**
@@ -811,4 +843,118 @@ Utils.getSmallestBuildEvent = function(playerDoc){
 	})
 
 	return event
+}
+
+/**
+ * 玩家是否已经帮助了此事件
+ * @param playerId
+ * @param allianceDoc
+ * @param eventIndex
+ * @returns {boolean}
+ */
+Utils.isPlayerAlreadyHelpedThisMember = function(playerId, allianceDoc, eventIndex){
+	var event = allianceDoc.helpEvents[eventIndex]
+	return !!_.contains(event.helpedMembers, playerId)
+}
+
+/**
+ * 获取玩家建造事件
+ * @param playerDoc
+ * @param eventType
+ * @param eventIndex
+ * @returns {*}
+ */
+Utils.getPlayerBuildEvent = function(playerDoc, eventType, eventIndex){
+	if(_.isEqual(eventType, Consts.AllianceHelpEventType.Building)){
+		return playerDoc.buildingEvents[eventIndex]
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.House)){
+		return playerDoc.houseEvents[eventIndex]
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Tower)){
+		return playerDoc.towerEvents[eventIndex]
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Wall)){
+		return playerDoc.wallEvents[eventIndex]
+	}
+	return null
+}
+
+/**
+ * 为联盟添加帮助事件
+ * @param allianceDoc
+ * @param playerDoc
+ * @param level
+ * @param eventType
+ * @param eventIndex
+ * @returns {{id: *, type: *, level: *, index: *, maxHelpCount: *, helpedMembers: Array}}
+ */
+Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, level, eventType, eventIndex){
+	var castle = playerDoc.buildings["location_1"]
+	var event = {
+		id:playerDoc._id,
+		type:eventType,
+		level:level,
+		index:eventIndex,
+		maxHelpCount:castle.level,
+		helpedMembers:[]
+	}
+	allianceDoc.helpEvents.push(event)
+	return event
+}
+
+/**
+ * 更新玩家资源数据
+ * @param doc
+ */
+Utils.refreshPlayerResources = function(doc){
+	var resources = DataUtils.getPlayerResources(doc)
+	_.each(resources, function(value, key){
+		doc.resources[key] = value
+	})
+	doc.basicInfo.resourceRefreshTime = Date.now()
+}
+
+/**
+ * 刷新玩家兵力信息
+ * @param doc
+ */
+Utils.refreshPlayerPower = function(doc){
+	var power = DataUtils.getPlayerPower(doc)
+	doc.basicInfo.power = power
+}
+
+/**
+ * 发送系统邮件
+ * @param playerDoc
+ * @param titleKey
+ * @param titleArgs
+ * @param contentKey
+ * @param contentArgs
+ */
+Utils.sendSystemMail = function(playerDoc, titleKey, titleArgs, contentKey, contentArgs){
+	var language = playerDoc.basicInfo.language
+	var title = titleKey[language]
+	var content = contentKey[language]
+	if(!_.isString(title)){
+		return Promise.reject(new Error("title 本地化不存在"))
+	}
+	if(!_.isString(content)){
+		return Promise.reject(new Error("content 本地化不存在"))
+	}
+	if(titleArgs.length > 0){
+		title = sprintf.vsprintf(title, titleArgs)
+	}
+	if(contentArgs.length > 0){
+		content = sprintf.vsprintf(content, contentArgs)
+	}
+
+	var mail = {
+		title:title,
+		fromId:"system",
+		fromName:"system",
+		sendTime:Date.now(),
+		content:content
+	}
+	if(playerDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
+		playerDoc.mails.shift()
+	}
+	playerDoc.mails.push(mail)
 }

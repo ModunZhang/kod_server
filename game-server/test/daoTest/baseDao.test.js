@@ -64,6 +64,8 @@ describe("BaseDao", function(){
 		baseDao.createAsync(player1).then(function(doc){
 			should.exist(doc)
 			demoDoc = doc
+			return baseDao.removeLockByIdAsync(demoDoc._id)
+		}).then(function(){
 			done()
 		})
 	})
@@ -72,13 +74,6 @@ describe("BaseDao", function(){
 		baseDao.findByIndexAsync("basicInfo.name", "modun1").then(function(doc){
 			should.exist(doc)
 			demoDoc = doc
-			done()
-		})
-	})
-
-	it("findById 抛出错误", function(done){
-		baseDao.findByIdAsync(demoDoc._id).then(function(doc){
-			should.not.exist(doc)
 			done()
 		})
 	})
@@ -97,13 +92,6 @@ describe("BaseDao", function(){
 		baseDao.findByIdAsync(demoDoc._id).then(function(doc){
 			should.exist(doc)
 			demoDoc = doc
-			done()
-		})
-	})
-
-	it("deleteById 抛出错误", function(done){
-		baseDao.deleteByIdAsync(demoDoc._id).catch(function(e){
-			should.exist(e)
 			done()
 		})
 	})
@@ -127,119 +115,13 @@ describe("BaseDao", function(){
 	it("deleteByIndex", function(done){
 		baseDao.createAsync(player2).then(function(doc){
 			should.exist(doc)
-			baseDao.deleteByIndexAsync("basicInfo.name", "modun2").then(function(){
-				done()
-			})
+			return baseDao.removeLockByIdAsync(doc._id)
+		}).then(function(){
+			baseDao.deleteByIndexAsync("basicInfo.name", "modun2")
+		}).then(function(){
+			done()
 		})
 	})
-
-	it("loadAll", function(done){
-		var p2 = null
-		var p3 = null
-		baseDao.createAsync(player2).then(function(doc){
-			p2 = doc
-			baseDao.createAsync(player3).then(function(doc){
-				p3 = doc
-				baseDao.loadAllAsync(function(){
-					baseDao.deleteByIdAsync(p2._id).then(function(){
-						baseDao.deleteByIdAsync(p3._id).then(function(){
-							done()
-						})
-					})
-				})
-			})
-		})
-	})
-
-	it("unloadAll", function(done){
-		var p2 = null
-		var p3 = null
-		baseDao.createAsync(player2).then(function(doc){
-			p2 = doc
-			baseDao.createAsync(player3).then(function(doc){
-				p3 = doc
-				baseDao.unloadAllAsync().then(function(){
-					baseDao.deleteByIdAsync(p2._id).then(function(){
-						baseDao.deleteByIdAsync(p3._id).then(function(){
-							done()
-						})
-					})
-				})
-			})
-		})
-	})
-
-	it("searchByIndex", function(done){
-		var p2 = null
-		var p3 = null
-		baseDao.createAsync(player2).then(function(doc){
-			p2 = doc
-			baseDao.createAsync(player3).then(function(doc){
-				p3 = doc
-				baseDao.searchByIndexAsync("basicInfo.name", "2").then(function(docs){
-					should.exist(docs)
-					baseDao.deleteByIdAsync(p2._id).then(function(){
-						baseDao.deleteByIdAsync(p3._id).then(function(){
-							done()
-						})
-					})
-				})
-			})
-		})
-	})
-
-	it("removeLockById", function(done){
-		baseDao.createAsync(player1).then(function(doc){
-			baseDao.findByIdAsync(doc._id).then(function(doc){
-				baseDao.removeLockByIdAsync(doc._id).then(function(){
-					done()
-				})
-			})
-		})
-	})
-
-	it("removeLockByIndex", function(done){
-		baseDao.findByIndexAsync("basicInfo.name", "modun1").then(function(doc){
-			baseDao.removeLockByIndexAsync("basicInfo.name", doc.basicInfo.name).then(function(){
-				baseDao.deleteByIdAsync(doc._id).then(function(){
-					done()
-				})
-			})
-		})
-	})
-
-//	it("findById  testTimeout", function(done){
-//		baseDao.createAsync(player1).then(function(doc){
-//			baseDao.findByIdAsync(doc._id).then(function(doc){
-//				should.exist(doc)
-//				setTimeout(function(){
-//					baseDao.findByIdAsync(doc._id).then(function(doc){
-//						should.exist(doc)
-//						baseDao.removeLockByIdAsync(doc._id).then(function(){
-//							done()
-//						})
-//					})
-//				}, 2000)
-//			})
-//		})
-//	})
-//
-//	it("findByIndex  testTimeout", function(done){
-//		baseDao.findByIndexAsync("basicInfo.name", "modun1").then(function(doc){
-//			should.exist(doc)
-//			setTimeout(function(){
-//				baseDao.findByIndexAsync("basicInfo.name", "modun1").then(function(doc){
-//					should.exist(doc)
-//					baseDao.removeLockByIdAsync(doc._id).then(function(){
-//						baseDao.deleteByIdAsync(doc._id).then(function(){
-//							done()
-//						})
-//					})
-//				})
-//			}, 2000)
-//		})
-//	})
-
 
 	after(function(done){
 		mongoose.connection.collections["demos"].drop(function(){

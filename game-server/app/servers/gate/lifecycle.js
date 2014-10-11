@@ -19,10 +19,10 @@ life.beforeStartup = function(app, callback){
 	playerService.loadAllDataAsync().then(function(){
 		callback()
 	}).catch(function(e){
-		errorLogger.error("handle beforeStartup Error -----------------------------")
+		errorLogger.error("handle gate.lifecycle:beforeStartup Error -----------------------------")
 		errorLogger.error(e.stack)
 		if(_.isEqual("production", app.get("env"))){
-			errorMailLogger.error("handle beforeStartup Error -----------------------------")
+			errorMailLogger.error("handle gate.lifecycle:beforeStartup Error -----------------------------")
 			errorMailLogger.error(e.stack)
 		}
 		callback()
@@ -38,10 +38,10 @@ life.beforeShutdown = function(app, callback){
 	playerService.unloadAllDataAsync().then(function(){
 		callback()
 	}).catch(function(e){
-		errorLogger.error("handle beforeShutdown Error -----------------------------")
+		errorLogger.error("handle gate.lifecycle:beforeShutdown Error -----------------------------")
 		errorLogger.error(e.stack)
 		if(_.isEqual("production", app.get("env"))){
-			errorMailLogger.error("handle beforeShutdown Error -----------------------------")
+			errorMailLogger.error("handle gate.lifecycle:beforeShutdown Error -----------------------------")
 			errorMailLogger.error(e.stack)
 		}
 		callback()

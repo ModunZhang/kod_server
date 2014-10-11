@@ -7,7 +7,6 @@
 var Promise = require("bluebird")
 var _ = require("underscore")
 var crypto = require("crypto")
-var sprintf = require("sprintf")
 
 var AllianceDao = require("../dao/allianceDao")
 var PlayerDao = require("../dao/playerDao")
@@ -15,8 +14,6 @@ var PlayerDao = require("../dao/playerDao")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var Events = require("../consts/events")
-var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
-var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
 var Localizations = require("../consts/localizations")
@@ -27,7 +24,6 @@ var PlayerService = function(app){
 	this.redis = app.get("redis")
 	this.scripto = app.get("scripto")
 	this.pushService = this.app.get("pushService")
-	this.callbackService = this.app.get("callbackService")
 	this.globalChannelService = this.app.get("globalChannelService")
 	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto, this.env))
 	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto, this.env))
@@ -163,15 +159,22 @@ pro.playerLogin = function(playerDoc, callback){
 	var allianceDoc = null
 	playerDoc.countInfo.lastLoginTime = Date.now()
 	playerDoc.countInfo.loginCount += 1
-	var pushFuncs = RefreshPlayerEvents.call(this, playerDoc, Date.now(), true)
+	var params = AfterPlayerLogin.call(this, playerDoc)
+	var pushFuncs = params.pushFuncs
+	var eventFuncs = params.eventFuncs
+
 	if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
-		self.pushService.onPlayerLoginSuccessAsync(playerDoc).then(function(){
+		pushFuncs.unshift([self.pushService, self.pushService.onPlayerLoginSuccessAsync, playerDoc])
+		LogicUtils.excuteAll(eventFuncs).then(function(){
+			return LogicUtils.excuteAll(pushFuncs)
+		}).then(function(){
 			callback()
 		}).catch(function(e){
 			callback(e)
 		})
 		return
 	}
+
 	this.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -181,9 +184,11 @@ pro.playerLogin = function(playerDoc, callback){
 		LogicUtils.refreshAlliance(allianceDoc)
 		return self.allianceDao.updateAsync(allianceDoc)
 	}).then(function(){
-		pushFuncs.unshift(self.pushService.onPlayerLoginSuccessAsync(playerDoc))
-		pushFuncs.unshift(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		return Promise.all(pushFuncs)
+		pushFuncs.unshift([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+		pushFuncs.unshift([self.pushService, self.pushService.onPlayerLoginSuccessAsync, playerDoc])
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -203,31 +208,32 @@ pro.playerLogin = function(playerDoc, callback){
  * @param callback
  */
 pro.playerLogout = function(playerDoc, callback){
-	var self = this
-	self.callbackService.removeAllPlayerCallback(playerDoc._id)
-	callback()
-}
-
-/**
- * 更新玩家资源数据
- * @param doc
- */
-pro.refreshPlayerResources = function(doc){
-	var resources = DataUtils.getPlayerResources(doc)
-	_.each(resources, function(value, key){
-		doc.resources[key] = value
+	ClearPlayerTimeEvents.call(this, playerDoc).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
 	})
-	doc.basicInfo.resourceRefreshTime = Date.now()
 }
 
 /**
- * 刷新玩家兵力信息
- * @param doc
+ * 到达指定时间时,触发的消息
+ * @param key
+ * @param finishTime
+ * @param callback
  */
-pro.refreshPlayerPower = function(doc){
-	var power = DataUtils.getPlayerPower(doc)
-	doc.basicInfo.power = power
+pro.onTimeEvent = function(key, finishTime, callback){
+	var params = key.split("_")
+	var eventType = params[0]
+	var id = params[1]
+	if(_.isEqual(Consts.TimeEventType.Player, eventType)){
+		ExcutePlayerCallback.call(this, id, finishTime).then(function(){
+			callback()
+		}).catch(function(e){
+			callback(e)
+		})
+	}
 }
+
 
 /**
  * 升级大型建筑
@@ -255,111 +261,124 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
+	var allianceDoc = null
 	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var building = doc.buildings["location_" + buildingLocation]
-		//检查建筑是否存在
+		var building = playerDoc.buildings["location_" + buildingLocation]
 		if(!_.isObject(building)){
 			return Promise.reject(new Error("建筑不存在"))
 		}
-		//建筑是否正在升级中
-		if(LogicUtils.hasBuildingEvents(doc, buildingLocation)){
+		if(LogicUtils.hasBuildingEvents(playerDoc, buildingLocation)){
 			return Promise.reject(new Error("建筑正在升级"))
 		}
-		//检查是否小于0级
 		if(building.level < 0){
 			return Promise.reject(new Error("建筑还未建造"))
 		}
-		//检查升级坑位是否合法
-		if(building.level == 0 && !LogicUtils.isBuildingCanCreateAtLocation(doc, buildingLocation)){
+		if(building.level == 0 && !LogicUtils.isBuildingCanCreateAtLocation(playerDoc, buildingLocation)){
 			return Promise.reject(new Error("建筑建造时,建筑坑位不合法"))
 		}
-		//检查建造数量是否超过上限
-		if(building.level == 0 && DataUtils.getPlayerFreeBuildingsCount(doc) <= 0){
+		if(building.level == 0 && DataUtils.getPlayerFreeBuildingsCount(playerDoc) <= 0){
 			return Promise.reject(new Error("建造数量已达建造上限"))
 		}
-		//检查升级等级是否合法
-		if(!_.isEqual(building.type, "keep") && building.level > 0 && building.level + 1 > DataUtils.getBuildingLevelLimit(doc)){
+		if(!_.isEqual(building.type, "keep") && building.level > 0 && building.level + 1 > DataUtils.getBuildingLevelLimit(playerDoc)){
 			return Promise.reject(new Error("建筑升级时,建筑等级不合法"))
 		}
-		//是否已到最高等级
 		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.type, building.level)){
 			return Promise.reject(new Error("建筑已达到最高等级"))
 		}
-
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, building.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
-		var buildEvent = null
-		var pushFuncs = []
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
+		var preBuildEvent = null
+		var currentBuildEventIndex = null
+		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
 		}else{
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, doc.resources)
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
-			if(!DataUtils.hasFreeBuildQueue(doc)){
-				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
-				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
+				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
+				var timeRemain = (preBuildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
 
-		//宝石是否足够
-		if(gemUsed > doc.resources.gem){
+		if(gemUsed > playerDoc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		//修改玩家宝石数据
-		doc.resources.gem -= gemUsed
-		//修改玩家资源数据
-		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
-		//是否立即完成
+		playerDoc.resources.gem -= gemUsed
+		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
+		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+
 		if(finishNow){
 			building.level = building.level + 1
-			//检查是否有建筑需要从-1级升级到0级
-			LogicUtils.updateBuildingsLevel(doc)
-			//刷新玩家战力
-			self.refreshPlayerPower(doc)
-			pushFuncs.push(self.pushService.onBuildingLevelUpAsync(doc, building.location))
+			LogicUtils.updateBuildingsLevel(playerDoc)
+			LogicUtils.refreshPlayerPower(playerDoc)
+			pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, building.location])
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			LogicUtils.addBuildingEvent(doc, building.location, finishTime)
-			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
-			if(_.isObject(buildEvent)){
-				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
-				buildEvent.finishTime = Date.now()
-				RefreshPlayerEvents.call(self, doc, buildEvent.finishTime, false)
+			var currentBuildEvent = LogicUtils.addBuildingEvent(playerDoc, building.location, finishTime)
+			currentBuildEventIndex = playerDoc.buildingEvents.indexOf(currentBuildEvent)
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
+			if(_.isObject(preBuildEvent)){
+				eventFuncs.push([self, RemovePlayerTimeEvent, playerDoc, preBuildEvent.finishTime])
+				preBuildEvent.finishTime = Date.now()
+				pushFuncs.concat(RefreshPlayerEvents.call(self, playerDoc, preBuildEvent.finishTime))
 			}
 		}
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(doc))
-		return Promise.all(pushFuncs)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
+			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+				if(!_.isObject(doc)){
+					return Promise.reject(new Error("联盟不存在"))
+				}
+				allianceDoc = doc
+				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc,  building.level, Consts.AllianceHelpEventType.Building, currentBuildEventIndex)
+				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+				return Promise.resolve()
+			})
+		}
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -403,41 +422,37 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 	}
 	var self = this
 	var playerDoc = null
+	var allianceDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
 	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var building = doc.buildings["location_" + buildingLocation]
-		//检查建筑是否存在
+		var building = playerDoc.buildings["location_" + buildingLocation]
 		if(!_.isObject(building)){
 			return Promise.reject(new Error("主体建筑不存在"))
 		}
-		//检查建筑等级是否大于1
 		if(building.level <= 0){
 			return Promise.reject(new Error("主体建筑必须大于等于1级"))
 		}
-		//检查小屋类型是否存在
 		if(!DataUtils.isHouseTypeExist(houseType)){
 			return Promise.reject(new Error("小屋类型不存在"))
 		}
-		//检查小屋个数是否超标
-		if(DataUtils.getPlayerFreeHousesCount(doc, houseType) <= 0){
+		if(DataUtils.getPlayerFreeHousesCount(playerDoc, houseType) <= 0){
 			return Promise.reject(new Error("小屋数量超过限制"))
 		}
-		//建筑周围不允许建造小屋
 		if(!DataUtils.isBuildingHasHouse(buildingLocation)){
 			return Promise.reject(new Error("建筑周围不允许建造小屋"))
 		}
-		//创建小屋时,小屋坑位是否合法
-		if(!LogicUtils.isHouseCanCreateAtLocation(doc, buildingLocation, houseType, houseLocation)){
+		if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, buildingLocation, houseType, houseLocation)){
 			return Promise.reject(new Error("创建小屋时,小屋坑位不合法"))
 		}
-		//检查是否建造小屋会造成可用城民小于0
 		if(!_.isEqual("dwelling", houseType)){
 			var willUse = DataUtils.getPlayerHouseUsedCitizen(houseType, 1)
-			if(DataUtils.getPlayerCitizen(doc) - willUse < 0){
+			if(DataUtils.getPlayerCitizen(playerDoc) - willUse < 0){
 				return Promise.reject(new Error("建造小屋会造成可用城民小于0"))
 			}
 		}
@@ -446,82 +461,98 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		var upgradeRequired = DataUtils.getHouseUpgradeRequired(houseType, 1)
 		var buyedResources = null
 		var buyedMaterials = null
-		var buildEvent = null
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
+		var preBuildEvent = null
+		var currentBuildEventIndex = null
+		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
 		}else{
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, doc.resources)
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
-			if(!DataUtils.hasFreeBuildQueue(doc)){
-				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
+				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-
-		//宝石是否足够
-		if(gemUsed > doc.resources.gem){
+		if(gemUsed > playerDoc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		//修改玩家宝石数据
-		doc.resources.gem -= gemUsed
-		//修改玩家资源数据
-		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
-		//创建小屋
+		playerDoc.resources.gem -= gemUsed
+		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
+		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
 		var house = {
 			type:houseType,
 			level:0,
 			location:houseLocation
 		}
-		//将小屋添加到大型建筑中
 		building.houses.push(house)
-		//是否立即完成
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+
 		if(finishNow){
 			house.level += 1
-			//刷新玩家战力
-			self.refreshPlayerPower(doc)
-			pushFuncs.push(self.pushService.onHouseLevelUpAsync(doc, building.location, house.location))
+			LogicUtils.refreshPlayerPower(playerDoc)
+			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, building.location, house.location])
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			LogicUtils.addHouseEvent(doc, buildingLocation, houseLocation, finishTime)
-			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
-			if(_.isObject(buildEvent)){
-				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
-				buildEvent.finishTime = Date.now()
-				RefreshPlayerEvents.call(self, doc, buildEvent.finishTime, false)
+			var currentBuildEvent = LogicUtils.addHouseEvent(playerDoc, buildingLocation, houseLocation, finishTime)
+			currentBuildEventIndex = playerDoc.houseEvents.indexOf(currentBuildEvent)
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
+			if(_.isObject(preBuildEvent)){
+				eventFuncs.push([self, RemovePlayerTimeEvent, playerDoc, preBuildEvent.finishTime])
+				preBuildEvent.finishTime = Date.now()
+				pushFuncs.concat(RefreshPlayerEvents.call(self, playerDoc, preBuildEvent.finishTime))
 			}
 		}
-		//如果是住宅,送玩家城民
 		if(_.isEqual("dwelling", house.type) && finishNow){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
-			doc.resources.citizen += next - previous
+			playerDoc.resources.citizen += next - previous
 		}
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(doc))
-		return Promise.all(pushFuncs)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
+			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+				if(!_.isObject(doc)){
+					return Promise.reject(new Error("联盟不存在"))
+				}
+				allianceDoc = doc
+				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc,  house.level, Consts.AllianceHelpEventType.House, currentBuildEventIndex)
+				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+				return Promise.resolve()
+			})
+		}
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -562,22 +593,22 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 
 	var self = this
 	var playerDoc = null
+	var allianceDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
 	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var building = doc.buildings["location_" + buildingLocation]
-		//检查建筑是否存在
+		var building = playerDoc.buildings["location_" + buildingLocation]
 		if(!_.isObject(building)){
 			return Promise.reject(new Error("主体建筑不存在"))
 		}
-		//检查建筑等级是否大于1
 		if(building.level <= 0){
 			return Promise.reject(new Error("主体建筑必须大于等于1级"))
 		}
-		//检查小屋是否存在
 		var house = null
 		_.each(building.houses, function(value){
 			if(value.location == houseLocation){
@@ -587,24 +618,20 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		if(!_.isObject(house)){
 			return Promise.reject(new Error("小屋不存在"))
 		}
-		//检查小屋是否正在升级
-		if(LogicUtils.hasHouseEvents(doc, building.location, house.location)){
+		if(LogicUtils.hasHouseEvents(playerDoc, building.location, house.location)){
 			return Promise.reject(new Error("小屋正在升级"))
 		}
-		//检查等级是否合法
-		if(house.level + 1 > DataUtils.getBuildingLevelLimit(doc)){
+		if(house.level + 1 > DataUtils.getBuildingLevelLimit(playerDoc)){
 			return Promise.reject(new Error("小屋升级时,小屋等级不合法"))
 		}
-		//是否已到最高等级
 		if(DataUtils.isHouseReachMaxLevel(house.type, house.level)){
 			return Promise.reject(new Error("小屋已达到最高等级"))
 		}
-		//检查是否升级小屋会造成可用城民小于0
 		if(!_.isEqual("dwelling", house.type)){
 			var currentLevelUsed = DataUtils.getPlayerHouseUsedCitizen(house.type, house.level)
 			var nextLevelUsed = DataUtils.getPlayerHouseUsedCitizen(house.type, house.level + 1)
 			var willUse = nextLevelUsed - currentLevelUsed
-			if(DataUtils.getPlayerCitizen(doc) - willUse < 0){
+			if(DataUtils.getPlayerCitizen(playerDoc) - willUse < 0){
 				return Promise.reject(new Error("升级小屋会造成可用城民小于0"))
 			}
 		}
@@ -613,74 +640,92 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		var upgradeRequired = DataUtils.getHouseUpgradeRequired(house.type, house.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
-		var buildEvent = null
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
+		var preBuildEvent = null
+		var currentBuildEventIndex = null
+		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
 		}else{
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, doc.resources)
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
-			if(!DataUtils.hasFreeBuildQueue(doc)){
-				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
+				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-
-		//宝石是否足够
-		if(gemUsed > doc.resources.gem){
+		if(gemUsed > playerDoc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		//修改玩家宝石数据
-		doc.resources.gem -= gemUsed
-		//修改玩家资源数据
-		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
-		//是否立即完成
+		playerDoc.resources.gem -= gemUsed
+		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
+		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+
 		if(finishNow){
 			house.level += 1
-			//刷新玩家战力
-			self.refreshPlayerPower(doc)
-			pushFuncs.push(self.pushService.onHouseLevelUpAsync(doc, building.location, house.location))
+			LogicUtils.refreshPlayerPower(playerDoc)
+			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, building.location, house.location])
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			LogicUtils.addHouseEvent(doc, building.location, house.location, finishTime)
-			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
-			if(_.isObject(buildEvent)){
-				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
-				buildEvent.finishTime = Date.now()
-				RefreshPlayerEvents.call(self, doc, buildEvent.finishTime, false)
+			var currentBuildEvent = LogicUtils.addHouseEvent(playerDoc, building.location, house.location, finishTime)
+			currentBuildEventIndex = playerDoc.houseEvents.indexOf(currentBuildEvent)
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
+			if(_.isObject(preBuildEvent)){
+				eventFuncs.push([self, RemovePlayerTimeEvent, self, playerDoc, preBuildEvent.finishTime])
+				preBuildEvent.finishTime = Date.now()
+				pushFuncs.concat(RefreshPlayerEvents.call(self, playerDoc, preBuildEvent.finishTime))
 			}
 		}
-		//如果是住宅,送玩家城民
 		if(_.isEqual("dwelling", house.type) && finishNow){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
-			doc.resources.citizen += next - previous
+			playerDoc.resources.citizen += next - previous
 		}
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(doc))
-		return Promise.all(pushFuncs)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
+			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+				if(!_.isObject(doc)){
+					return Promise.reject(new Error("联盟不存在"))
+				}
+				allianceDoc = doc
+				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc,  house.level, Consts.AllianceHelpEventType.House, currentBuildEventIndex)
+				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+				return Promise.resolve()
+			})
+		}
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -720,12 +765,10 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var building = doc.buildings["location_" + buildingLocation]
-		//检查建筑是否存在
+		var building = playerDoc.buildings["location_" + buildingLocation]
 		if(!_.isObject(building)){
 			return Promise.reject(new Error("主体建筑不存在"))
 		}
-		//检查小屋是否存在
 		var house = null
 		_.each(building.houses, function(value){
 			if(value.location == houseLocation){
@@ -735,40 +778,28 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		if(!_.isObject(house)){
 			return Promise.reject(new Error("小屋不存在"))
 		}
-		//检查是否正在升级
-		if(LogicUtils.hasHouseEvents(doc, building.location, house.location)){
+		if(LogicUtils.hasHouseEvents(playerDoc, building.location, house.location)){
 			return Promise.reject(new Error("小屋正在升级"))
 		}
-		//更新资源数据
-		self.refreshPlayerResources(doc)
-		//删除小屋
+		LogicUtils.refreshPlayerResources(playerDoc)
 		var index = building.houses.indexOf(house)
 		building.houses.splice(index, 1)
-		//更新资源数据
-		self.refreshPlayerResources(doc)
-		//检查是否在拆除民宅,且民宅拆除后,是否会造成城民数量小于0
-		if(_.isEqual("dwelling", house.type) && DataUtils.getPlayerCitizen(doc) < 0){
+		LogicUtils.refreshPlayerResources(playerDoc)
+		if(_.isEqual("dwelling", house.type) && DataUtils.getPlayerCitizen(playerDoc) < 0){
 			return Promise.reject(new Error("拆除此建筑后会造成可用城民数量小于0"))
 		}
-		//获取需要的宝石数量
 		var gem = 100
-		//宝石是否足够
-		if(gem > doc.resources.gem){
+		if(gem > playerDoc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		//修改玩家宝石数据
-		doc.resources.gem -= gem
-		//退还资源和城民给玩家
+		playerDoc.resources.gem -= gem
 		var returnedResources = DataUtils.getHouseDestroyReturned(house.type, house.level)
-		LogicUtils.increace(returnedResources, doc.resources)
-		//再次更新玩家数据,防止城民爆仓
-		self.refreshPlayerResources(doc)
-		//刷新玩家战力
-		self.refreshPlayerPower(doc)
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc)
+		LogicUtils.increace(returnedResources, playerDoc.resources)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		LogicUtils.refreshPlayerPower(playerDoc)
+		return self.playerDao.updateAsync(playerDoc)
+	}).then(function(playerDoc){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -808,19 +839,22 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
+	var allianceDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
 	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var tower = doc.towers["location_" + towerLocation]
+		var tower = playerDoc.towers["location_" + towerLocation]
 		//检查箭塔是否存在
 		if(!_.isObject(tower)){
 			return Promise.reject(new Error("箭塔不存在"))
 		}
 		//箭塔是否正在升级中
-		if(LogicUtils.hasTowerEvents(doc, tower.location)){
+		if(LogicUtils.hasTowerEvents(playerDoc, tower.location)){
 			return Promise.reject(new Error("箭塔正在升级"))
 		}
 		//检查是否小于1级
@@ -832,7 +866,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			return Promise.reject(new Error("箭塔已达到最高等级"))
 		}
 		//检查升级等级是否合法
-		if(tower.level + 1 > DataUtils.getBuildingLevelLimit(doc)){
+		if(tower.level + 1 > DataUtils.getBuildingLevelLimit(playerDoc)){
 			return Promise.reject(new Error("箭塔升级时,建筑等级不合法"))
 		}
 
@@ -840,68 +874,87 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("tower", tower.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
-		var buildEvent = null
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
+		var preBuildEvent = null
+		var currentBuildEventIndex = null
+		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
 		}else{
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, doc.resources)
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
-			if(!DataUtils.hasFreeBuildQueue(doc)){
-				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
+				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-
-		//宝石是否足够
-		if(gemUsed > doc.resources.gem){
+		if(gemUsed > playerDoc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		//修改玩家宝石数据
-		doc.resources.gem -= gemUsed
-		//修改玩家资源数据
-		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
-		//是否立即完成
+		playerDoc.resources.gem -= gemUsed
+		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
+		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+
 		if(finishNow){
 			tower.level = tower.level + 1
-			//刷新玩家战力
-			self.refreshPlayerPower(doc)
-			pushFuncs.push(self.pushService.onTowerLevelUpAsync(doc, tower.location))
+			LogicUtils.refreshPlayerPower(playerDoc)
+			pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc, tower.location])
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			LogicUtils.addTowerEvent(doc, tower.location, finishTime)
-			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
-			if(_.isObject(buildEvent)){
-				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
-				buildEvent.finishTime = Date.now()
-				RefreshPlayerEvents.call(self, doc, buildEvent.finishTime, false)
+			var currentBuildEvent = LogicUtils.addTowerEvent(playerDoc, tower.location, finishTime)
+			currentBuildEventIndex = playerDoc.towerEvents.indexOf(currentBuildEvent)
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
+			if(_.isObject(preBuildEvent)){
+				eventFuncs.push([self, RemovePlayerTimeEvent, playerDoc, preBuildEvent.finishTime])
+				preBuildEvent.finishTime = Date.now()
+				RefreshPlayerEvents.call(self, playerDoc, preBuildEvent.finishTime)
 			}
 		}
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(doc))
-		return Promise.all(pushFuncs)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
+			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+				if(!_.isObject(doc)){
+					return Promise.reject(new Error("联盟不存在"))
+				}
+				allianceDoc = doc
+				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc,  tower.level, Consts.AllianceHelpEventType.Tower, currentBuildEventIndex)
+				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+				return Promise.resolve()
+			})
+		}
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -931,31 +984,29 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
+	var allianceDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
 	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var wall = doc.wall
-		//检查城墙是否存在
+		var wall = playerDoc.wall
 		if(!_.isObject(wall)){
 			return Promise.reject(new Error("城墙不存在"))
 		}
-		//城墙是否正在升级中
-		if(LogicUtils.hasWallEvents(doc)){
+		if(LogicUtils.hasWallEvents(playerDoc)){
 			return Promise.reject(new Error("城墙正在升级"))
 		}
-		//检查是否小于1级
 		if(wall.level < 1){
 			return Promise.reject(new Error("城墙还未建造"))
 		}
-		//是否已到最高等级
 		if(DataUtils.isBuildingReachMaxLevel("wall", wall.level)){
 			return Promise.reject(new Error("城墙已达到最高等级"))
 		}
-		//检查升级等级是否合法
-		if(wall.level + 1 > DataUtils.getBuildingLevelLimit(doc)){
+		if(wall.level + 1 > DataUtils.getBuildingLevelLimit(playerDoc)){
 			return Promise.reject(new Error("城墙升级时,城墙等级不合法"))
 		}
 
@@ -963,68 +1014,87 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("wall", wall.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
-		var buildEvent = null
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
+		var preBuildEvent = null
+		var currentBuildEventIndex = null
+		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
 		}else{
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, doc.resources)
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, doc.materials)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, doc.materials)
-			if(!DataUtils.hasFreeBuildQueue(doc)){
-				buildEvent = LogicUtils.getSmallestBuildEvent(doc)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
+				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-
-		//宝石是否足够
-		if(gemUsed > doc.resources.gem){
+		if(gemUsed > playerDoc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		//修改玩家宝石数据
-		doc.resources.gem -= gemUsed
-		//修改玩家资源数据
-		LogicUtils.reduce(upgradeRequired.resources, doc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, doc.materials)
-		//是否立即完成
+		playerDoc.resources.gem -= gemUsed
+		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
+		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+
 		if(finishNow){
 			wall.level = wall.level + 1
-			//刷新玩家战力
-			self.refreshPlayerPower(doc)
-			pushFuncs.push(self.pushService.onWallLevelUpAsync(doc))
+			LogicUtils.refreshPlayerPower(playerDoc)
+			pushFuncs.push([self.pushService, self.pushService.onWallLevelUpAsync, playerDoc])
 		}else{
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			LogicUtils.addWallEvent(doc, finishTime)
-			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
-			if(_.isObject(buildEvent)){
-				self.callbackService.removePlayerCallback(doc._id, buildEvent.finishTime)
-				buildEvent.finishTime = Date.now()
-				RefreshPlayerEvents.call(self, doc, buildEvent.finishTime, false)
+			var currentBuildEvent = LogicUtils.addWallEvent(playerDoc, finishTime)
+			currentBuildEventIndex = playerDoc.wallEvents.indexOf(currentBuildEvent)
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
+			if(_.isObject(preBuildEvent)){
+				eventFuncs.push([self, RemovePlayerTimeEvent, playerDoc, preBuildEvent.finishTime])
+				preBuildEvent.finishTime = Date.now()
+				RefreshPlayerEvents.call(self, playerDoc, preBuildEvent.finishTime)
 			}
 		}
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(doc))
-		return Promise.all(pushFuncs)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
+			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+				if(!_.isObject(doc)){
+					return Promise.reject(new Error("联盟不存在"))
+				}
+				allianceDoc = doc
+				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc,  tower.level, Consts.AllianceHelpEventType.Tower, currentBuildEventIndex)
+				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+				return Promise.resolve()
+			})
+		}
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -1059,19 +1129,21 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
 	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var toolShop = doc.buildings["location_5"]
+		var toolShop = playerDoc.buildings["location_5"]
 		if(toolShop.level < 1){
 			return Promise.reject(new Error("工具作坊还未建造"))
 		}
 		var event = null
-		for(var i = 0; i < doc.materialEvents.length; i++){
-			event = doc.materialEvents[i]
+		for(var i = 0; i < playerDoc.materialEvents.length; i++){
+			event = playerDoc.materialEvents[i]
 			if(_.isEqual(event.category, category)){
 				if(event.finishTime > 0){
 					return Promise.reject(new Error("同类型的材料正在制造"))
@@ -1088,48 +1160,49 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		var gemUsed = 0
 		var makeRequired = DataUtils.getMakeMaterialRequired(category, toolShop.level)
 		var buyedResources = null
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
+		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(makeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(makeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
-			buyedResources = DataUtils.buyResources(makeRequired.resources, doc.resources)
+			buyedResources = DataUtils.buyResources(makeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
-
-		//宝石是否足够
-		if(gemUsed > doc.resources.gem){
+		if(gemUsed > playerDoc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		//修改玩家宝石数据
-		doc.resources.gem -= gemUsed
-		//修改玩家资源数据
-		LogicUtils.reduce(makeRequired.resources, doc.resources)
-		//产生制造事件
+		playerDoc.resources.gem -= gemUsed
+		LogicUtils.reduce(makeRequired.resources, playerDoc.resources)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+
 		event = DataUtils.generateMaterialEvent(toolShop, category, finishNow)
-		doc.materialEvents.push(event)
-		//是否立即完成
+		playerDoc.materialEvents.push(event)
 		if(finishNow){
-			pushFuncs.push(self.pushService.onMakeMaterialFinishedAsync(doc, event))
+			pushFuncs.push([self.pushService, self.pushService.onMakeMaterialFinishedAsync, playerDoc, event])
 		}else{
-			self.callbackService.addPlayerCallback(doc._id, event.finishTime, ExcutePlayerCallback.bind(self))
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, event.finishTime])
 		}
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(doc))
-		return Promise.all(pushFuncs)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -1165,28 +1238,29 @@ pro.getMaterials = function(playerId, category, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var event = LogicUtils.getMaterialEventByCategory(doc, category)
+		var event = LogicUtils.getMaterialEventByCategory(playerDoc, category)
 		if(!_.isObject(event)){
 			return Promise.reject(new Error("没有材料建造事件存在"))
 		}
 		if(event.finishTime > 0){
 			return Promise.reject(new Error("同类型的材料正在制造"))
 		}
-		//移除制造事件
-		LogicUtils.removeEvents([event], doc.materialEvents)
-		pushFuncs.push(self.pushService.onGetMaterialSuccessAsync(doc, event))
-		//将材料添加到材料仓库,超过仓库上限的直接丢弃
-		DataUtils.addPlayerMaterials(doc, event.materials)
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(doc))
-		return Promise.all(pushFuncs)
+		LogicUtils.removeEvents([event], playerDoc.materialEvents)
+		DataUtils.addPlayerMaterials(playerDoc, event.materials)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onGetMaterialSuccessAsync, playerDoc, event])
+		return self.playerDao.updateAsync(playerDoc)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -1226,71 +1300,73 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
 	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var barracks = doc.buildings["location_8"]
+		var barracks = playerDoc.buildings["location_8"]
 		if(barracks.level < 1){
 			return Promise.reject(new Error("兵营还未建造"))
 		}
-		if(!finishNow && doc.soldierEvents.length > 0){
+		if(!finishNow && playerDoc.soldierEvents.length > 0){
 			return Promise.reject(new Error("已有士兵正在被招募"))
 		}
-		if(count > DataUtils.getSoldierMaxRecruitCount(doc, soldierName)){
+		if(count > DataUtils.getSoldierMaxRecruitCount(playerDoc, soldierName)){
 			return Promise.reject(new Error("招募数量超过单次招募上限"))
 		}
 
 		var gemUsed = 0
 		var recruitRequired = DataUtils.getRecruitNormalSoldierRequired(soldierName, count)
 		var buyedResources = null
-
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
+		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
 			buyedResources = DataUtils.buyResources(recruitRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
-			buyedResources = DataUtils.buyResources(recruitRequired.resources, doc.resources)
+			buyedResources = DataUtils.buyResources(recruitRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
-
-		//宝石是否足够
-		if(gemUsed > doc.resources.gem){
+		if(gemUsed > playerDoc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		//修改玩家宝石数据
-		doc.resources.gem -= gemUsed
-		//修改玩家资源数据
-		LogicUtils.reduce(recruitRequired.resources, doc.resources)
-		//是否立即完成
+		playerDoc.resources.gem -= gemUsed
+		LogicUtils.reduce(recruitRequired.resources, playerDoc.resources)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+
 		if(finishNow){
-			doc.soldiers[soldierName] += count
-			//刷新玩家战力
-			self.refreshPlayerPower(doc)
-			pushFuncs.push(self.pushService.onRecruitSoldierSuccessAsync(doc, soldierName, count))
+			playerDoc.soldiers[soldierName] += count
+			LogicUtils.refreshPlayerPower(playerDoc)
+			pushFuncs.push([self.pushService, self.pushService.onRecruitSoldierSuccessAsync, playerDoc, soldierName, count])
 		}else{
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
-			LogicUtils.addSoldierEvent(doc, soldierName, count, finishTime)
-			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+			LogicUtils.addSoldierEvent(playerDoc, soldierName, count, finishTime)
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
 		}
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(doc))
-		return Promise.all(pushFuncs)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -1330,71 +1406,77 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
 	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var barracks = doc.buildings["location_8"]
+		var barracks = playerDoc.buildings["location_8"]
 		if(barracks.level < 1){
 			return Promise.reject(new Error("兵营还未建造"))
 		}
-		if(!finishNow && doc.soldierEvents.length > 0){
+		if(!finishNow && playerDoc.soldierEvents.length > 0){
 			return Promise.reject(new Error("已有士兵正在被招募"))
 		}
-		if(count > DataUtils.getSoldierMaxRecruitCount(doc, soldierName)){
+		if(count > DataUtils.getSoldierMaxRecruitCount(playerDoc, soldierName)){
 			return Promise.reject(new Error("招募数量超过单次招募上限"))
 		}
 
 		var gemUsed = 0
 		var recruitRequired = DataUtils.getRecruitSpecialSoldierRequired(soldierName, count)
 		var buyedResources = null
-
-		//刷新玩家资源数据
-		self.refreshPlayerResources(doc)
-		if(!LogicUtils.isEnough(recruitRequired.materials, doc.soldierMaterials)){
+		LogicUtils.refreshPlayerResources(playerDoc)
+		if(!LogicUtils.isEnough(recruitRequired.materials, playerDoc.soldierMaterials)){
 			return Promise.reject(new Error("材料不足"))
 		}
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
 			buyedResources = DataUtils.buyResources({citizen:recruitRequired.citizen}, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
-			buyedResources = DataUtils.buyResources({citizen:recruitRequired.citizen}, doc.resources)
+			buyedResources = DataUtils.buyResources({citizen:recruitRequired.citizen}, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
-		//宝石是否足够
-		if(gemUsed > doc.resources.gem){
+		if(gemUsed > playerDoc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		//修改玩家宝石数据
-		doc.resources.gem -= gemUsed
-		//修改玩家资源数据
-		LogicUtils.reduce(recruitRequired.materials, doc.soldierMaterials)
-		LogicUtils.reduce({citizen:recruitRequired.citizen}, doc.resources)
+		playerDoc.resources.gem -= gemUsed
+		LogicUtils.reduce(recruitRequired.materials, playerDoc.soldierMaterials)
+		LogicUtils.reduce({citizen:recruitRequired.citizen}, playerDoc.resources)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+
 		if(finishNow){
-			doc.soldiers[soldierName] += count
-			//刷新玩家战力
-			self.refreshPlayerPower(doc)
-			pushFuncs.push(self.pushService.onRecruitSoldierSuccessAsync(doc, soldierName, count))
+			playerDoc.soldiers[soldierName] += count
+			LogicUtils.refreshPlayerPower(playerDoc)
+			pushFuncs.push([self.pushService, self.pushService.onRecruitSoldierSuccessAsync, playerDoc, soldierName, count])
 		}else{
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
-			LogicUtils.addSoldierEvent(doc, soldierName, count, finishTime)
-			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+			LogicUtils.addSoldierEvent(playerDoc, soldierName, count, finishTime)
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
 		}
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(doc))
-		return Promise.all(pushFuncs)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -1425,65 +1507,70 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
 	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var toolShop = doc.buildings["location_9"]
+		var toolShop = playerDoc.buildings["location_9"]
 		if(toolShop.level < 1){
 			return Promise.reject(new Error("铁匠铺还未建造"))
 		}
-		if(!finishNow && doc.dragonEquipmentEvents.length > 0){
+		if(!finishNow && playerDoc.dragonEquipmentEvents.length > 0){
 			return Promise.reject(new Error("已有装备正在制作"))
 		}
 		var gemUsed = 0
-		var makeRequired = DataUtils.getMakeDragonEquipmentRequired(doc, equipmentName)
+		var makeRequired = DataUtils.getMakeDragonEquipmentRequired(playerDoc, equipmentName)
 		var buyedResources = null
-		//材料是否足够
-		if(!LogicUtils.isEnough(makeRequired.materials, doc.dragonMaterials)){
+		if(!LogicUtils.isEnough(makeRequired.materials, playerDoc.dragonMaterials)){
 			return Promise.reject(new Error("材料不足"))
 		}
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(makeRequired.makeTime)
 			buyedResources = DataUtils.buyResources({coin:makeRequired.coin}, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
-			buyedResources = DataUtils.buyResources({coin:makeRequired.coin}, doc.resources)
+			buyedResources = DataUtils.buyResources({coin:makeRequired.coin}, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
-		//宝石是否足够
-		if(gemUsed > doc.resources.gem){
+		if(gemUsed > playerDoc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		//修改玩家宝石数据
-		doc.resources.gem -= gemUsed
-		//修改玩家资源数据
-		LogicUtils.reduce({coin:makeRequired.coin}, doc.resources)
-		//修改玩家制作龙的材料数据
-		LogicUtils.reduce(makeRequired.materials, doc.dragonMaterials)
-		//是否立即完成
+		playerDoc.resources.gem -= gemUsed
+		LogicUtils.reduce({coin:makeRequired.coin}, playerDoc.resources)
+		LogicUtils.reduce(makeRequired.materials, playerDoc.dragonMaterials)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+
 		if(finishNow){
-			doc.dragonEquipments[equipmentName] += 1
-			pushFuncs.push(self.pushService.onMakeDragonEquipmentSuccessAsync(doc, equipmentName))
+			playerDoc.dragonEquipments[equipmentName] += 1
+			pushFuncs.push([self.pushService, self.pushService.onMakeDragonEquipmentSuccessAsync, playerDoc, equipmentName])
 		}else{
 			var finishTime = Date.now() + (makeRequired.makeTime * 1000)
-			LogicUtils.addDragonEquipmentEvent(doc, equipmentName, finishTime)
-			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+			LogicUtils.addDragonEquipmentEvent(playerDoc, equipmentName, finishTime)
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
 		}
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(doc))
-		return Promise.all(pushFuncs)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -1518,69 +1605,78 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
 	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var hospital = doc.buildings["location_14"]
+		var hospital = playerDoc.buildings["location_14"]
 		if(hospital.level < 1){
 			return Promise.reject(new Error("医院还未建造"))
 		}
-		if(!LogicUtils.isTreatSoldierLegal(doc, soldiers)){
+		if(!LogicUtils.isTreatSoldierLegal(playerDoc, soldiers)){
 			return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
 		}
-		if(!finishNow && doc.treatSoldierEvents.length > 0){
+		if(!finishNow && playerDoc.treatSoldierEvents.length > 0){
 			return Promise.reject(new Error("已有士兵正在治疗"))
 		}
 
 		var gemUsed = 0
-		var treatRequired = DataUtils.getTreatSoldierRequired(doc, soldiers)
+		var treatRequired = DataUtils.getTreatSoldierRequired(playerDoc, soldiers)
 		var buyedResources = null
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(treatRequired.treatTime)
 			buyedResources = DataUtils.buyResources(treatRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
-			buyedResources = DataUtils.buyResources(treatRequired.resources, doc.resources)
+			buyedResources = DataUtils.buyResources(treatRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, doc.resources)
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
-		//宝石是否足够
-		if(gemUsed > doc.resources.gem){
+		if(gemUsed > playerDoc.resources.gem){
 			return Promise.reject(new Error("宝石不足"))
 		}
-		//修改玩家宝石数据
-		doc.resources.gem -= gemUsed
-		//修改玩家资源数据
-		LogicUtils.reduce(treatRequired.resources, doc.resources)
-		//是否立即完成
+		playerDoc.resources.gem -= gemUsed
+		LogicUtils.reduce(treatRequired.resources, playerDoc.resources)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+
 		if(finishNow){
 			_.each(soldiers, function(soldier){
-				doc.soldiers[soldier.name] += soldier.count
-				doc.treatSoldiers[soldier.name] -= soldier.count
+				playerDoc.soldiers[soldier.name] += soldier.count
+				playerDoc.treatSoldiers[soldier.name] -= soldier.count
 			})
-			pushFuncs.push(self.pushService.onTreatSoldierSuccessAsync(doc, soldiers))
+			LogicUtils.refreshPlayerPower(playerDoc)
+			pushFuncs.push([self.pushService, self.pushService.onTreatSoldierSuccessAsync, playerDoc, soldiers])
 		}else{
 			_.each(soldiers, function(soldier){
-				doc.treatSoldiers[soldier.name] -= soldier.count
+				playerDoc.treatSoldiers[soldier.name] -= soldier.count
 			})
 			var finishTime = Date.now() + (treatRequired.treatTime * 1000)
-			LogicUtils.addTreatSoldierEvent(doc, soldiers, finishTime)
-			self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
+			LogicUtils.addTreatSoldierEvent(playerDoc, soldiers, finishTime)
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
 		}
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(doc))
-		return Promise.all(pushFuncs)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -1610,42 +1706,54 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var hospital = doc.buildings["location_4"]
+		var hospital = playerDoc.buildings["location_4"]
 		if(hospital.level < 1){
 			return Promise.reject(new Error("龙巢还未建造"))
 		}
-		self.refreshPlayerResources(doc)
-		if(doc.resources.energy <= 0){
+		LogicUtils.refreshPlayerResources(playerDoc)
+		if(playerDoc.resources.energy <= 0){
 			return Promise.reject(new Error("能量不足"))
 		}
-		var dragon = doc.dragons[dragonType]
+		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star > 0){
 			return Promise.reject(new Error("龙蛋早已成功孵化"))
 		}
 		var energyNeed = 100 - dragon.vitality
-		if(doc.resources.energy >= energyNeed){
+		if(playerDoc.resources.energy >= energyNeed){
 			dragon.star = 1
-			dragon.vitality = DataUtils.getDragonMaxVitality(doc, dragon)
-			dragon.strength = DataUtils.getDragonStrength(doc, dragon)
-			doc.resources.energy -= energyNeed
+			dragon.vitality = DataUtils.getDragonMaxVitality(playerDoc, dragon)
+			dragon.strength = DataUtils.getDragonStrength(playerDoc, dragon)
+			playerDoc.resources.energy -= energyNeed
 		}else{
-			dragon.vitality += doc.resources.energy
-			doc.resources.energy = 0
+			dragon.vitality += playerDoc.resources.energy
+			playerDoc.resources.energy = 0
 		}
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -1693,19 +1801,22 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var dragon = doc.dragons[dragonType]
+		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0){
 			return Promise.reject(new Error("龙还未孵化"))
 		}
 		if(!DataUtils.isDragonEquipmentStarEqualWithDragonStar(equipmentName, dragon)){
 			return Promise.reject(new Error("装备与龙的星级不匹配"))
 		}
-		if(doc.dragonEquipments[equipmentName] <= 0){
+		if(playerDoc.dragonEquipments[equipmentName] <= 0){
 			return Promise.reject(new Error("仓库中没有此装备"))
 		}
 		var equipment = dragon.equipments[equipmentCategory]
@@ -1714,16 +1825,25 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 		}
 		equipment.name = equipmentName
 		equipment.buffs = DataUtils.generateDragonEquipmentBuffs(equipmentName)
-		doc.dragonEquipments[equipmentName] -= 1
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc)
+		playerDoc.dragonEquipments[equipmentName] -= 1
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -1763,12 +1883,15 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var dragon = doc.dragons[dragonType]
+		var dragon = playerDoc.dragons[dragonType]
 		var equipment = dragon.equipments[equipmentCategory]
 		if(_.isEmpty(equipment.name)){
 			return Promise.reject(new Error("此分类还没有配置装备"))
@@ -1776,19 +1899,28 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 		if(DataUtils.isDragonEquipmentReachMaxStar(equipment)){
 			return Promise.reject(new Error("装备已到最高星级"))
 		}
-		if(!LogicUtils.isEnhanceDragonEquipmentLegal(doc, equipments)){
+		if(!LogicUtils.isEnhanceDragonEquipmentLegal(playerDoc, equipments)){
 			return Promise.reject(new Error("被强化的装备不存在或数量不足"))
 		}
-		DataUtils.enhanceDragonEquipment(doc, dragonType, equipmentCategory, equipments)
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc)
+		DataUtils.enhanceDragonEquipment(playerDoc, dragonType, equipmentCategory, equipments)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -1823,30 +1955,42 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var dragon = doc.dragons[dragonType]
+		var dragon = playerDoc.dragons[dragonType]
 		var equipment = dragon.equipments[equipmentCategory]
 		if(_.isEmpty(equipment.name)){
 			return Promise.reject(new Error("此分类还没有配置装备"))
 		}
-		if(doc.dragonEquipments[equipment.name] <= 0){
+		if(playerDoc.dragonEquipments[equipment.name] <= 0){
 			return Promise.reject(new Error("仓库中没有此装备"))
 		}
 		equipment.buffs = DataUtils.generateDragonEquipmentBuffs(equipment.name)
-		doc.dragonEquipments[equipment.name] -= 1
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc)
+		playerDoc.dragonEquipments[equipment.name] -= 1
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -1880,12 +2024,15 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillLocation, callback)
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var dragon = doc.dragons[dragonType]
+		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0){
 			return Promise.reject(new Error("龙还未孵化"))
 		}
@@ -1897,26 +2044,35 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillLocation, callback)
 			return Promise.reject(new Error("技能已达最高等级"))
 		}
 
-		var upgradeRequired = DataUtils.getDragonSkillUpgradeRequired(doc, dragon, skill)
-		self.refreshPlayerResources(doc)
-		if(doc.resources.energy < upgradeRequired.energy){
+		var upgradeRequired = DataUtils.getDragonSkillUpgradeRequired(playerDoc, dragon, skill)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		if(playerDoc.resources.energy < upgradeRequired.energy){
 			return Promise.reject(new Error("能量不足"))
 		}
-		if(doc.resources.blood < upgradeRequired.blood){
+		if(playerDoc.resources.blood < upgradeRequired.blood){
 			return Promise.reject(new Error("英雄之血不足"))
 		}
 		skill.level += 1
-		doc.resources.energy -= upgradeRequired.energy
-		doc.resources.blood -= upgradeRequired.blood
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc)
+		playerDoc.resources.energy -= upgradeRequired.energy
+		playerDoc.resources.blood -= upgradeRequired.blood
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -1946,12 +2102,15 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var dragon = doc.dragons[dragonType]
+		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0){
 			return Promise.reject(new Error("龙还未孵化"))
 		}
@@ -1964,26 +2123,33 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 		if(!DataUtils.isDragonEquipmentsReachUpgradeLevel(dragon)){
 			return Promise.reject(new Error("龙的装备未达到晋级要求"))
 		}
-		//晋级
 		dragon.star += 1
-		dragon.vitality = DataUtils.getDragonMaxVitality(doc, dragon)
-		dragon.strength = DataUtils.getDragonStrength(doc, dragon)
-		//清除装备
+		dragon.vitality = DataUtils.getDragonMaxVitality(playerDoc, dragon)
+		dragon.strength = DataUtils.getDragonStrength(playerDoc, dragon)
 		_.each(dragon.equipments, function(equipment){
 			equipment.name = ""
 			equipment.star = 0
 			equipment.exp = 0
 			equipment.buffs = []
 		})
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -2008,39 +2174,50 @@ pro.impose = function(playerId, callback){
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var building = doc.buildings["location_15"]
+		var building = playerDoc.buildings["location_15"]
 		if(building.level <= 0){
 			return Promise.reject(new Error("市政厅还未建造"))
 		}
-		if(doc.coinEvents.length > 0){
+		if(playerDoc.coinEvents.length > 0){
 			return Promise.reject(new Error("正在收税中"))
 		}
 
-		self.refreshPlayerResources(doc)
-		var required = DataUtils.getImposeRequired(doc)
-		var imposedCoin = DataUtils.getImposedCoin(doc)
-		if(required.citizen > doc.resources.citizen){
+		LogicUtils.refreshPlayerResources(playerDoc)
+		var required = DataUtils.getImposeRequired(playerDoc)
+		var imposedCoin = DataUtils.getImposedCoin(playerDoc)
+		if(required.citizen > playerDoc.resources.citizen){
 			return Promise.reject(new Error("空闲城民不足"))
 		}
-		doc.resources.citizen -= required.citizen
+		playerDoc.resources.citizen -= required.citizen
 		var finishTime = Date.now() + (required.imposeTime * 1000)
-		LogicUtils.addCoinEvent(doc, imposedCoin, finishTime)
-		self.callbackService.addPlayerCallback(doc._id, finishTime, ExcutePlayerCallback.bind(self))
-
-		//保存玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc)
+		LogicUtils.addCoinEvent(playerDoc, imposedCoin, finishTime)
+		eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -2069,20 +2246,33 @@ pro.setPlayerLanguage = function(playerId, language, callback){
 	}
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		doc.basicInfo.language = language
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc)
+		playerDoc.basicInfo.language = language
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -2132,12 +2322,12 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 /**
  * 发送个人邮件
  * @param playerId
- * @param memberId
+ * @param memberName
  * @param title
  * @param content
  * @param callback
  */
-pro.sendMail = function(playerId, memberId, title, content, callback){
+pro.sendMail = function(playerId, memberName, title, content, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -2145,8 +2335,8 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isString(memberId)){
-		callback(new Error("memberId 不合法"))
+	if(!_.isString(memberName)){
+		callback(new Error("memberName 不合法"))
 		return
 	}
 	if(!_.isString(title)){
@@ -2161,15 +2351,17 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 	var self = this
 	var playerDoc = null
 	var memberDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(_.isEqual(doc._id, memberId)){
+		if(_.isEqual(playerDoc.basicInfo.name, memberName)){
 			return Promise.reject(new Error("不能给自己发邮件"))
 		}
-		return self.playerDao.findByIdAsync(memberId)
+		return self.playerDao.findByIndexAsync("basicInfo.name", memberName)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
@@ -2198,17 +2390,15 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 		}
 		playerDoc.sendMails.push(mailToPlayer)
 
-		var funcs = []
-		funcs.push(self.playerDao.updateAsync(playerDoc))
-		funcs.push(self.playerDao.updateAsync(memberDoc))
-		return Promise.all(funcs)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc])
+		return Promise.resolve()
 	}).then(function(){
-		var funcs = []
-		funcs.push(self.pushService.onPlayerDataChangedAsync(playerDoc))
-		if(!_.isEmpty(memberDoc.logicServerId)){
-			funcs.push(self.pushService.onPlayerDataChangedAsync(memberDoc))
-		}
-		return Promise.all(funcs)
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -2255,22 +2445,26 @@ pro.saveMail = function(playerId, mailIndex, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var mail = doc.mails[mailIndex]
+		var mail = playerDoc.mails[mailIndex]
 		if(!_.isObject(mail)){
 			return Promise.reject(new Error("邮件不存在"))
 		}
-		if(doc.savedMails.length >= Define.PlayerMailFavoriteMessageMaxSize){
-			doc.savedMails.shift()
+		if(playerDoc.savedMails.length >= Define.PlayerMailFavoriteMessageMaxSize){
+			playerDoc.savedMails.shift()
 		}
-		doc.savedMails.push(mail)
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc)
+		playerDoc.savedMails.push(mail)
+		return self.playerDao.updateAsync(playerDoc)
+	}).then(function(playerDoc){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -2309,25 +2503,25 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 	var allianceDoc = null
 	var memberDocs = []
 	var pushFuncs = []
+	var updateFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "sendAllianceMail")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "sendAllianceMail")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
-		return self.allianceDao.findByIdAsync(doc.alliance.id)
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
-		var funcs = []
-		funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 		var mailToPlayer = {
 			title:title,
 			fromName:playerDoc.basicInfo.name,
@@ -2350,49 +2544,37 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 			playerDoc.mails.shift()
 		}
 		playerDoc.mails.push(mailToMember)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
 
-		var savePlayerDoc = function(){
-			return self.playerDao.updateAsync(playerDoc).then(function(){
-				pushFuncs.push(self.pushService.onPlayerDataChangedAsync(playerDoc))
-				return Promise.resolve()
-			}).catch(function(e){
-				return Promise.reject(e)
-			})
-		}
-		funcs.push(savePlayerDoc())
-
-		var saveMemberDoc = function(member){
-			var memberDoc = null
+		var sendMailToMember = function(member){
 			return self.playerDao.findByIdAsync(member.id).then(function(doc){
 				if(!_.isObject(doc)){
 					return Promise.reject(new Error("玩家不存在"))
 				}
-				memberDoc = doc
-				memberDocs.push(memberDoc)
-				if(memberDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
-					memberDoc.mails.shift()
+				memberDocs.push(doc)
+				if(doc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
+					doc.mails.shift()
 				}
-				memberDoc.mails.push(mailToMember)
-				return self.playerDao.updateAsync(memberDoc)
-			}).then(function(){
-				if(!_.isEmpty(memberDoc.logicServerId)){
-					pushFuncs.push(self.pushService.onPlayerDataChangedAsync(memberDoc))
-				}
-			}).then(function(){
+				doc.mails.push(mailToMember)
+				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc])
 				return Promise.resolve()
 			}).catch(function(e){
 				return Promise.reject(e)
 			})
 		}
+		var funcs = []
 		_.each(allianceDoc.members, function(member){
 			if(!_.isEqual(member.id, playerDoc._id)){
-				funcs.push(saveMemberDoc(member))
+				funcs.push(sendMailToMember(member))
 			}
 		})
-
 		return Promise.all(funcs)
 	}).then(function(){
-		return Promise.all(pushFuncs)
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -2459,12 +2641,14 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceFinded = null
+	var pushFuncs = []
+	var updateFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!!doc.alliance && !_.isEmpty(doc.alliance.id)){
+		if(!!playerDoc.alliance && !_.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家已加入了联盟"))
 		}
 		var gemUsed = DataUtils.getGemByCreateAlliance()
@@ -2493,40 +2677,41 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 				tag:tag,
 				language:language,
 				terrain:terrain,
-				flag:flag,
-				power:playerDoc.basicInfo.power,
-				kill:playerDoc.basicInfo.kill
-			},
-			members:[
-				{
-					id:playerDoc._id,
-					name:playerDoc.basicInfo.name,
-					level:playerDoc.basicInfo.level,
-					power:playerDoc.basicInfo.power,
-					kill:playerDoc.basicInfo.kill,
-					title:Consts.AllianceTitle.Archon
-				}
-			]
+				flag:flag
+			}
 		}
 		return self.allianceDao.createAsync(alliance)
 	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟创建失败"))
+		}
 		allianceDoc = doc
+		var member = {
+				id:playerDoc._id,
+				name:playerDoc.basicInfo.name,
+				level:playerDoc.basicInfo.level,
+				power:playerDoc.basicInfo.power,
+				kill:playerDoc.basicInfo.kill,
+				title:Consts.AllianceTitle.Archon
+		}
+		allianceDoc.members.push(member)
+		LogicUtils.refreshAlliance(allianceDoc)
 		playerDoc.alliance = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
 			title:Consts.AllianceTitle.Archon,
 			titleName:allianceDoc.titles.archon
 		}
-
-		var funcs = []
-		funcs.push(self.playerDao.updateAsync(playerDoc))
-		funcs.push(self.globalChannelService.addAsync(Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId))
-		return Promise.all(funcs)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+		return Promise.resolve()
 	}).then(function(){
-		var funcs = []
-		funcs.push(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		funcs.push(self.pushService.onPlayerDataChangedAsync(playerDoc))
-		return Promise.all(funcs)
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -2536,6 +2721,9 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		}
 		if(_.isObject(allianceFinded)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(allianceFinded._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -2577,7 +2765,7 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 		funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
 		funcs.push(self.allianceDao.searchByIndexAsync("basicInfo.tag", tag))
 		return Promise.all(funcs)
-	}).spread(function(removeStatus, docs){
+	}).spread(function(tmp, docs){
 		return self.pushService.onSearchAllianceSuccessAsync(playerDoc, docs)
 	}).then(function(){
 		callback()
@@ -2637,18 +2825,19 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, terrain, fla
 	var allianceDocFinded = null
 	var allianceMemberDocs = []
 	var pushFuncs = []
+	var updateFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "editAllianceBasicInfo")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editAllianceBasicInfo")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
-		return self.allianceDao.findByIdAsync(doc.alliance.id)
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -2680,11 +2869,17 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, terrain, fla
 		allianceDoc.basicInfo.language = language
 		allianceDoc.basicInfo.terrain = terrain
 		allianceDoc.basicInfo.flag = flag
-
-		var funcs = []
-		funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		funcs.push(self.allianceDao.updateAsync(allianceDoc))
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		if(isNameChanged){
+			playerDoc.alliance.name = name
+			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		}else{
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		}
+
+		if(isNameChanged){
+			var funcs = []
 			var updateMember = function(member){
 				return self.playerDao.findByIdAsync(member.id).then(function(doc){
 					if(!_.isObject(doc)){
@@ -2692,24 +2887,26 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, terrain, fla
 					}
 					allianceMemberDocs.push(doc)
 					doc.alliance.name = name
-					return self.playerDao.updateAsync(doc)
-				}).then(function(doc){
-					if(!_.isEmpty(doc.logicServerId)){
-						pushFuncs.push(self.pushService.onPlayerDataChangedAsync(doc))
-					}
+					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc])
 					return Promise.resolve()
 				}).catch(function(e){
 					return Promise.reject(e)
 				})
 			}
 			_.each(allianceDoc.members, function(member){
-				funcs.push(updateMember(member))
+				if(!_.isEqual(member.id, playerDoc._id)){
+					funcs.push(updateMember(member))
+				}
 			})
+			return Promise.all(funcs)
 		}
-		return Promise.all(funcs)
+		return Promise.resolve()
 	}).then(function(){
-		pushFuncs.push(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		return Promise.all(pushFuncs)
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -2763,54 +2960,62 @@ pro.editTitleName = function(playerId, title, titleName, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
+	var allianceMemberDocs = []
 	var pushFuncs = []
+	var updateFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "editTitleName")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editTitleName")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
-		return self.allianceDao.findByIdAsync(doc.alliance.id)
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
 		allianceDoc.titles[title] = titleName
-		return self.allianceDao.updateAsync(allianceDoc)
-	}).then(function(){
-		var func = function(member){
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		if(_.isEqual(playerDoc.alliance.title, title)){
+			playerDoc.alliance.titleName = titleName
+			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		}else{
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		}
+
+		var updateMemberTitleName = function(member){
 			return self.playerDao.findByIdAsync(member.id).then(function(doc){
 				if(!_.isObject(doc)){
 					return Promise.reject(new Error("玩家不存在"))
 				}
+				allianceMemberDocs.push(doc)
 				doc.alliance.titleName = titleName
-				return self.playerDao.updateAsync(doc)
-			}).then(function(doc){
-				if(!_.isEmpty(doc.logicServerId)){
-					pushFuncs.push(self.pushService.onPlayerDataChangedAsync(doc))
-				}
+				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc])
 				return Promise.resolve()
 			}).catch(function(e){
 				return Promise.reject(e)
 			})
 		}
 		var funcs = []
-		funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
 		_.each(allianceDoc.members, function(member){
-			if(_.isEqual(member.title, title)){
-				funcs.push(func(member))
+			if(_.isEqual(member.title, title) && !_.isEqual(member.id, playerDoc._id)){
+				funcs.push(updateMemberTitleName(member))
 			}
 		})
 		return Promise.all(funcs)
 	}).then(function(){
-		pushFuncs.push(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		return Promise.all(pushFuncs)
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -2821,6 +3026,9 @@ pro.editTitleName = function(playerId, title, titleName, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
 		}
+		_.each(allianceMemberDocs, function(memberDoc){
+			funcs.push(self.playerDao.removeLockByIdAsync(memberDoc._id))
+		})
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
 				callback(e)
@@ -2858,13 +3066,13 @@ pro.editAllianceNotice = function(playerId, notice, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "editAllianceNotice")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editAllianceNotice")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
-		return self.allianceDao.findByIdAsync(doc.alliance.id)
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -2924,13 +3132,13 @@ pro.editAllianceDescription = function(playerId, description, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "editAllianceDescription")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editAllianceDescription")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
-		return self.allianceDao.findByIdAsync(doc.alliance.id)
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -2990,13 +3198,13 @@ pro.editAllianceJoinType = function(playerId, joinType, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "editAllianceJoinType")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editAllianceJoinType")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
-		return self.allianceDao.findByIdAsync(doc.alliance.id)
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -3058,18 +3266,20 @@ pro.modifyAllianceMemberTitle = function(playerId, memberId, title, callback){
 	var allianceDoc = null
 	var memberDoc = null
 	var memberInAllianceDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "modifyAllianceMemberTitle")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "modifyAllianceMemberTitle")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
-		return self.allianceDao.findByIdAsync(doc.alliance.id)
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -3094,23 +3304,20 @@ pro.modifyAllianceMemberTitle = function(playerId, memberId, title, callback){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
-		memberInAllianceDoc.title = title
 		memberDoc = doc
 		memberDoc.alliance.title = title
 		memberDoc.alliance.titleName = allianceDoc.titles[title]
-
-		var funcs = []
-		funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		funcs.push(self.playerDao.updateAsync(memberDoc))
-		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		return Promise.all(funcs)
+		memberInAllianceDoc.title = title
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+		return Promise.resolve()
 	}).then(function(){
-		var funcs = []
-		funcs.push(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		if(!_.isEmpty(memberDoc.logicServerId)){
-			funcs.push(self.pushService.onPlayerDataChangedAsync(memberDoc))
-		}
-		return Promise.all(funcs)
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -3158,18 +3365,20 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 	var allianceDoc = null
 	var memberDoc = null
 	var memberInAllianceDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "modifyAllianceMemberTitle")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "modifyAllianceMemberTitle")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
-		return self.allianceDao.findByIdAsync(doc.alliance.id)
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -3195,21 +3404,17 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		LogicUtils.removeItemInArray(allianceDoc.members, memberInAllianceDoc)
 		LogicUtils.refreshAlliance(allianceDoc)
 
-		var funcs = []
-		funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		if(memberDoc.logicServerId){
-			funcs.push(self.globalChannelService.leaveAsync(Consts.AllianceChannelPrefix + allianceDoc._id, memberDoc._id, memberDoc.logicServerId))
-		}
-		funcs.push(self.playerDao.updateAsync(memberDoc))
-		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		return Promise.all(funcs)
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.globalChannelService, self.globalChannelService.leaveAsync, Consts.AllianceChannelPrefix + allianceDoc._id, memberDoc._id, memberDoc.logicServerId])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+		return Promise.resolve()
 	}).then(function(){
-		var funcs = []
-		funcs.push(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		if(!_.isEmpty(memberDoc.logicServerId)){
-			funcs.push(self.pushService.onPlayerDataChangedAsync(memberDoc))
-		}
-		return Promise.all(funcs)
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -3257,18 +3462,20 @@ pro.handOverArchon = function(playerId, memberId, callback){
 	var allianceDoc = null
 	var memberDoc = null
 	var memberInAllianceDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!_.isEqual(doc.alliance.title, Consts.AllianceTitle.Archon)){
+		if(!_.isEqual(playerDoc.alliance.title, Consts.AllianceTitle.Archon)){
 			return Promise.reject(new Error("别逗了,你是不盟主好么"))
 		}
-		return self.allianceDao.findByIdAsync(doc.alliance.id)
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -3294,19 +3501,17 @@ pro.handOverArchon = function(playerId, memberId, callback){
 		memberDoc.alliance.title = Consts.AllianceTitle.Archon
 		memberDoc.alliance.titleName = allianceDoc.titles.archon
 
-		var funcs = []
-		funcs.push(self.playerDao.updateAsync(playerDoc))
-		funcs.push(self.playerDao.updateAsync(memberDoc))
-		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		return Promise.all(funcs)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+		return Promise.resolve()
 	}).then(function(){
-		var funcs = []
-		funcs.push(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		if(!_.isEmpty(memberDoc.logicServerId)){
-			funcs.push(self.pushService.onPlayerDataChangedAsync(memberDoc))
-		}
-		funcs.push(self.pushService.onPlayerDataChangedAsync(playerDoc))
-		return Promise.all(funcs)
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -3348,18 +3553,20 @@ pro.quitAlliance = function(playerId, callback){
 	var playerDoc = null
 	var allianceDoc = null
 	var playerInAlliance = null
+	var updateFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(_.isEqual(doc.alliance.title, Consts.AllianceTitle.Archon)){
+		if(_.isEqual(playerDoc.alliance.title, Consts.AllianceTitle.Archon)){
 			return Promise.reject(new Error("别逗了,盟主不能直接退出联盟好么"))
 		}
-		return self.allianceDao.findByIdAsync(doc.alliance.id)
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -3370,16 +3577,16 @@ pro.quitAlliance = function(playerId, callback){
 		LogicUtils.refreshAlliance(allianceDoc)
 		playerDoc.alliance = null
 
-		var funcs = []
-		funcs.push(self.playerDao.updateAsync(playerDoc))
-		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		funcs.push(self.globalChannelService.leaveAsync(Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId))
-		return Promise.all(funcs)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync,playerDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		updateFuncs.push([self.globalChannelService, self.globalChannelService.leaveAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+		return Promise.resolve()
 	}).then(function(){
-		var funcs = []
-		funcs.push(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		funcs.push(self.pushService.onPlayerDataChangedAsync(playerDoc))
-		return Promise.all(funcs)
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -3422,13 +3629,16 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
+	var inviterDocs = []
+	var requestedAllianceDocs = []
+	var updateFuncs = []
 	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(_.isObject(doc.alliance) && !_.isEmpty(doc.alliance.id)){
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家已加入联盟"))
 		}
 		return self.allianceDao.findByIdAsync(allianceId)
@@ -3450,6 +3660,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		}
 		allianceDoc.members.push(member)
 		LogicUtils.refreshAlliance(allianceDoc)
+		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 
 		playerDoc.alliance = {
 			id:allianceDoc._id,
@@ -3457,21 +3668,26 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 			title:Consts.AllianceTitle.Member,
 			titleName:allianceDoc.titles.member
 		}
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
 
 		var funcs = []
-
 		var removeRequestEvent = function(event){
 			return self.allianceDao.findByIdAsync(event.id).then(function(doc){
 				if(!_.isObject(doc)){
 					return Promise.reject(new Error("联盟不存在"))
 				}
+				requestedAllianceDocs.push(doc)
 				var joinRequestEvent = LogicUtils.getPlayerRequestEventAtAlliance(doc, playerId)
 				if(!_.isObject(joinRequestEvent)){
 					return Promise.reject(new Error("玩家请求事件不存在"))
 				}
 				LogicUtils.removeItemInArray(doc.joinRequestEvents, joinRequestEvent)
-				pushFuncs.push(self.pushService.onAllianceDataChangedAsync(doc))
-				return self.allianceDao.updateAsync(doc)
+				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, doc])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, doc])
+				return Promise.resolve()
 			})
 		}
 		_.each(playerDoc.requestToAllianceEvents, function(event){
@@ -3482,20 +3698,26 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		var sendMailToInviter = function(inviterId){
 			var titleKey = Localizations.Alliance.InviteRejectedTitle
 			var contentKey = Localizations.Alliance.InviteRejectedContent
-			return SendSystemMail.call(self, inviterId, titleKey, [], contentKey, [playerDoc.basicInfo.name])
+			return self.playerDao.findByIdAsync(inviterId).then(function(doc){
+				if(!_.isObject(doc)){
+					return Promise.reject(new Error("玩家不存在"))
+				}
+				inviterDocs.push(doc)
+				LogicUtils.sendSystemMail(doc, titleKey, [], contentKey, [playerDoc.basicInfo.name])
+				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc])
+			})
 		}
 		_.each(playerDoc.inviteToAllianceEvents, function(event){
 			funcs.push(sendMailToInviter(event.inviterId))
 		})
 		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
 
-		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		funcs.push(self.playerDao.updateAsync(playerDoc))
 		return Promise.all(funcs)
 	}).then(function(){
-		pushFuncs.push(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		pushFuncs.push(self.pushService.onPlayerDataChangedAsync(playerDoc))
-		return Promise.all(pushFuncs)
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -3506,6 +3728,12 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
 		}
+		_.each(requestedAllianceDocs, function(doc){
+			funcs.push(self.allianceDao.removeLockByIdAsync(doc))
+		})
+		_.each(inviterDocs, function(doc){
+			funcs.push(self.playerDao.removeLockByIdAsync(doc))
+		})
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
 				callback(e)
@@ -3538,18 +3766,20 @@ pro.requestToJoinAlliance = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(_.isObject(doc.alliance) && !_.isEmpty(doc.alliance.id)){
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家已加入联盟"))
 		}
-		if(doc.requestToAllianceEvents.length >= Define.RequestJoinAllianceMessageMaxSize){
+		if(playerDoc.requestToAllianceEvents.length >= Define.RequestJoinAllianceMessageMaxSize){
 			return Promise.reject(new Error("联盟申请已满,请撤消部分申请后再来申请"))
 		}
-		if(LogicUtils.hasPendingRequestEventToAlliance(doc, allianceId)){
+		if(LogicUtils.hasPendingRequestEventToAlliance(playerDoc, allianceId)){
 			return Promise.reject(new Error("对此联盟的申请已发出,请耐心等候审核"))
 		}
 		return self.allianceDao.findByIdAsync(allianceId)
@@ -3564,15 +3794,15 @@ pro.requestToJoinAlliance = function(playerId, allianceId, callback){
 		var requestTime = Date.now()
 		LogicUtils.addAllianceRequestEvent(allianceDoc, playerDoc, requestTime)
 		LogicUtils.addPlayerJoinAllianceEvent(playerDoc, allianceDoc, requestTime)
-		var funcs = []
-		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		funcs.push(self.playerDao.updateAsync(playerDoc))
-		return Promise.all(funcs)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+		return Promise.resolve()
 	}).then(function(){
-		var funcs = []
-		funcs.push(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		funcs.push(self.pushService.onPlayerDataChangedAsync(playerDoc))
-		return Promise.all(funcs)
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -3615,12 +3845,14 @@ pro.cancelJoinAllianceRequest = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(_.isObject(doc.alliance) && !_.isEmpty(doc.alliance.id)){
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家已加入联盟"))
 		}
 		return self.allianceDao.findByIdAsync(allianceId)
@@ -3640,15 +3872,15 @@ pro.cancelJoinAllianceRequest = function(playerId, allianceId, callback){
 		LogicUtils.removeItemInArray(playerDoc.requestToAllianceEvents, eventInPlayer)
 		LogicUtils.removeItemInArray(allianceDoc.joinRequestEvents, eventInAlliance)
 
-		var funcs = []
-		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		funcs.push(self.playerDao.updateAsync(playerDoc))
-		return Promise.all(funcs)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+		return Promise.resolve()
 	}).then(function(){
-		var funcs = []
-		funcs.push(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		funcs.push(self.pushService.onPlayerDataChangedAsync(playerDoc))
-		return Promise.all(funcs)
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -3697,19 +3929,22 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 	var playerDoc = null
 	var allianceDoc = null
 	var memberDoc = null
+	var requestedAllianceDocs = []
+	var inviterDocs = []
+	var updateFuncs = []
 	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "handleJoinAllianceRequest")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "handleJoinAllianceRequest")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
-		return self.allianceDao.findByIdAsync(doc.alliance.id)
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -3732,12 +3967,22 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		LogicUtils.removeItemInArray(memberDoc.requestToAllianceEvents, eventInMember)
 		LogicUtils.removeItemInArray(allianceDoc.joinRequestEvents, eventInAlliance)
 
-		var funcs = []
-		funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		var titleKeyApproved = Localizations.Alliance.RequestApprovedTitle
+		var titleKeyRejected = Localizations.Alliance.RequestRejectedTitle
+		var contentKeyApproved = Localizations.Alliance.RequestApprovedContent
+		var contentKeyRejected = Localizations.Alliance.RequestRejectedContent
+		var titleKey = agree ? titleKeyApproved : titleKeyRejected
+		var contentKey = agree ? contentKeyApproved : contentKeyRejected
+		LogicUtils.sendSystemMail(memberDoc, titleKey, [], contentKey, [allianceDoc.basicInfo.name])
+
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+
 		if(!agree){
-			funcs.push(self.allianceDao.updateAsync(allianceDoc))
-			funcs.push(self.playerDao.updateAsync(memberDoc))
-			return Promise.all(funcs)
+			return Promise.resolve()
 		}
 
 		var member = {
@@ -3749,6 +3994,9 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		}
 		allianceDoc.members.push(member)
 		LogicUtils.refreshAlliance(allianceDoc)
+		if(!_.isEmpty(memberDoc.logicServerId)){
+			updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, memberDoc._id, memberDoc.logicServerId])
+		}
 
 		memberDoc.alliance = {
 			id:allianceDoc._id,
@@ -3757,18 +4005,21 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 			titleName:allianceDoc.titles.member
 		}
 
+		var funcs = []
 		var removeRequestEvent = function(event){
 			return self.allianceDao.findByIdAsync(event.id).then(function(doc){
 				if(!_.isObject(doc)){
 					return Promise.reject(new Error("联盟不存在"))
 				}
+				requestedAllianceDocs.push(doc)
 				var joinRequestEvent = LogicUtils.getPlayerRequestEventAtAlliance(doc, memberId)
 				if(!_.isObject(joinRequestEvent)){
 					return Promise.reject(new Error("玩家请求事件不存在"))
 				}
 				LogicUtils.removeItemInArray(doc.joinRequestEvents, joinRequestEvent)
-				pushFuncs.push(self.pushService.onAllianceDataChangedAsync(doc))
-				return self.allianceDao.updateAsync(doc)
+				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, doc])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, doc])
+				return Promise.resolve()
 			})
 		}
 		_.each(memberDoc.requestToAllianceEvents, function(event){
@@ -3779,30 +4030,27 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		var sendMailToInviter = function(inviterId){
 			var titleKey = Localizations.Alliance.InviteRejectedTitle
 			var contentKey = Localizations.Alliance.InviteRejectedContent
-			return SendSystemMail.call(self, inviterId, titleKey, [], contentKey, [memberDoc.basicInfo.name])
+			return self.playerDao.findByIdAsync(inviterId).then(function(doc){
+				if(!_.isObject(doc)){
+					return Promise.reject(new Error("玩家不存在"))
+				}
+				inviterDocs.push(doc)
+				LogicUtils.sendSystemMail(doc, titleKey, [], contentKey, [memberDoc.basicInfo.name])
+				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc])
+				return Promise.resolve()
+			})
 		}
 		_.each(memberDoc.inviteToAllianceEvents, function(event){
 			funcs.push(sendMailToInviter(event.inviterId))
 		})
 		LogicUtils.clearArray(memberDoc.inviteToAllianceEvents)
 
-		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		funcs.push(self.playerDao.updateAsync(memberDoc))
 		return Promise.all(funcs)
 	}).then(function(){
-		var titleKeyApproved = Localizations.Alliance.RequestApprovedTitle
-		var titleKeyRejected = Localizations.Alliance.RequestRejectedTitle
-		var contentKeyApproved = Localizations.Alliance.RequestApprovedContent
-		var contentKeyRejected = Localizations.Alliance.RequestRejectedContent
-		var titleKey = agree ? titleKeyApproved : titleKeyRejected
-		var contentKey = agree ? contentKeyApproved : contentKeyRejected
-		return SendSystemMail.call(self, memberId, titleKey, [], contentKey, [allianceDoc.basicInfo.name])
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		pushFuncs.push(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		if(!_.isEmpty(memberDoc.logicServerId)){
-			pushFuncs.push(self.pushService.onPlayerDataChangedAsync(memberDoc))
-		}
-		return Promise.all(pushFuncs)
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -3816,6 +4064,13 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		if(_.isObject(memberDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(memberDoc._id))
 		}
+		_.each(requestedAllianceDocs, function(doc){
+			funcs.push(self.allianceDao.removeLockByIdAsync(doc))
+		})
+		_.each(inviterDocs, function(doc){
+			funcs.push(self.playerDao.removeLockByIdAsync(doc))
+		})
+
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
 				callback(e)
@@ -3849,19 +4104,21 @@ pro.inviteToJoinAlliance = function(playerId, memberId, callback){
 	var playerDoc = null
 	var memberDoc = null
 	var allianceDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(doc.alliance.title, "inviteToJoinAlliance")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "inviteToJoinAlliance")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
 		var funcs = []
-		funcs.push(self.allianceDao.findByIdAsync(doc.alliance.id))
+		funcs.push(self.allianceDao.findByIdAsync(playerDoc.alliance.id))
 		funcs.push(self.playerDao.findByIdAsync(memberId))
 		return Promise.all(funcs)
 	}).spread(function(theAllianceDoc, theMemberDoc){
@@ -3881,16 +4138,16 @@ pro.inviteToJoinAlliance = function(playerId, memberId, callback){
 		}
 		var inviteTime = Date.now()
 		LogicUtils.addPlayerInviteAllianceEvent(playerDoc._id, memberDoc, allianceDoc, inviteTime)
-		var funcs = []
-		funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
-		funcs.push(self.playerDao.updateAsync(memberDoc))
-		return Promise.all(funcs)
-	}).then(function(){
-		if(!_.isEmpty(memberDoc.logicServerId)){
-			return self.pushService.onPlayerDataChangedAsync(memberDoc)
-		}
+
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc])
 		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -3940,33 +4197,57 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
+	var inviterDoc = null
 	var inviteEvent = null
+	var requestedAllianceDocs = []
+	var inviterDocs = []
 	var pushFuncs = []
+	var updateFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(_.isObject(doc.alliance) && !_.isEmpty(doc.alliance.id)){
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家已加入联盟"))
 		}
-		var event = LogicUtils.getInviteToAllianceEvent(doc, allianceId)
+		var event = LogicUtils.getInviteToAllianceEvent(playerDoc, allianceId)
 		if(!_.isObject(event)){
 			return Promise.reject(new Error("邀请事件不存在"))
 		}
 		inviteEvent = event
-		return self.allianceDao.findByIdAsync(allianceId)
-	}).then(function(doc){
-		if(!_.isObject(doc)){
+		var funcs = []
+		funcs.push(self.allianceDao.findByIdAsync(allianceId))
+		funcs.push(self.playerDao.findByIdAsync(inviteEvent.inviterId))
+		return Promise.all(funcs)
+	}).spread(function(theAllianceDoc, theInviterDoc){
+		if(!_.isObject(theAllianceDoc)){
 			return Promise.reject(new Error("联盟不存在"))
 		}
-		allianceDoc = doc
+		allianceDoc = theAllianceDoc
+		if(!_.isObject(theInviterDoc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		inviterDoc = theInviterDoc
+
 		LogicUtils.removeItemInArray(playerDoc.inviteToAllianceEvents, inviteEvent)
-		var funcs = []
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
+
+
+		var titleKeyApproved = Localizations.Alliance.InviteApprovedTitle
+		var titleKeyRejected = Localizations.Alliance.InviteRejectedTitle
+		var contentKeyApproved = Localizations.Alliance.InviteApprovedContent
+		var contentKeyRejected = Localizations.Alliance.InviteRejectedContent
+		var titleKey = agree ? titleKeyApproved : titleKeyRejected
+		var contentKey = agree ? contentKeyApproved : contentKeyRejected
+		LogicUtils.sendSystemMail(inviterDoc, titleKey, [], contentKey, [playerDoc.basicInfo.name])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, inviterDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, inviterDoc])
+
 		if(!agree){
-			funcs.push(self.playerDao.updateAsync(playerDoc))
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
-			return
+			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
+			return Promise.resolve()
 		}
 
 		var member = {
@@ -3978,6 +4259,9 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		}
 		allianceDoc.members.push(member)
 		LogicUtils.refreshAlliance(allianceDoc)
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
 
 		playerDoc.alliance = {
 			id:allianceDoc._id,
@@ -3986,18 +4270,21 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			titleName:allianceDoc.titles.member
 		}
 
+		var funcs = []
 		var removeRequestEvent = function(event){
 			return self.allianceDao.findByIdAsync(event.id).then(function(doc){
 				if(!_.isObject(doc)){
 					return Promise.reject(new Error("联盟不存在"))
 				}
+				requestedAllianceDocs.push(doc)
 				var joinRequestEvent = LogicUtils.getPlayerRequestEventAtAlliance(doc, playerId)
 				if(!_.isObject(joinRequestEvent)){
 					return Promise.reject(new Error("玩家请求事件不存在"))
 				}
 				LogicUtils.removeItemInArray(doc.joinRequestEvents, joinRequestEvent)
-				pushFuncs.push(self.pushService.onAllianceDataChangedAsync(doc))
-				return self.allianceDao.updateAsync(doc)
+				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, doc])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, doc])
+				return Promise.resolve()
 			})
 		}
 		_.each(playerDoc.requestToAllianceEvents, function(event){
@@ -4008,36 +4295,149 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		var sendMailToInviter = function(inviterId){
 			var titleKey = Localizations.Alliance.InviteRejectedTitle
 			var contentKey = Localizations.Alliance.InviteRejectedContent
-			return SendSystemMail.call(self, inviterId, titleKey, [], contentKey, [playerDoc.basicInfo.name])
+			return self.playerDao.findByIdAsync(inviterId).then(function(doc){
+				if(!_.isObject(doc)){
+					return Promise.reject(new Error("玩家不存在"))
+				}
+				inviterDocs.push(doc)
+				LogicUtils.sendSystemMail(doc, titleKey, [], contentKey, [playerDoc.basicInfo.name])
+				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc])
+				return Promise.resolve()
+			})
 		}
 		_.each(playerDoc.inviteToAllianceEvents, function(event){
 			funcs.push(sendMailToInviter(event.inviterId))
 		})
 		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
 
-		funcs.push(self.allianceDao.updateAsync(allianceDoc))
-		funcs.push(self.playerDao.updateAsync(playerDoc))
 		return Promise.all(funcs)
 	}).then(function(){
-		var titleKeyApproved = Localizations.Alliance.InviteApprovedTitle
-		var titleKeyRejected = Localizations.Alliance.InviteRejectedTitle
-		var contentKeyApproved = Localizations.Alliance.InviteApprovedContent
-		var contentKeyRejected = Localizations.Alliance.InviteRejectedContent
-		var titleKey = agree ? titleKeyApproved : titleKeyRejected
-		var contentKey = agree ? contentKeyApproved : contentKeyRejected
-		return SendSystemMail.call(self, inviteEvent.inviterId, titleKey, [], contentKey, [playerDoc.basicInfo.name])
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		if(agree){
-			pushFuncs.push(self.pushService.onAllianceDataChangedAsync(allianceDoc))
-		}
-		pushFuncs.push(self.pushService.onPlayerDataChangedAsync(playerDoc))
-		return Promise.all(pushFuncs)
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		_.each(requestedAllianceDocs, function(doc){
+			funcs.push(self.allianceDao.removeLockByIdAsync(doc._id))
+		})
+		_.each(inviterDocs, function(doc){
+			funcs.push(self.playerDao.removeLockByIdAsync(doc._id))
+		})
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 协助联盟玩家加速
+ * @param playerId
+ * @param eventIndex
+ * @param callback
+ */
+pro.helpAllianceMemberSpeedUp = function(playerId, eventIndex, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(eventIndex) || eventIndex % 1 !== 0 || eventIndex < 0){
+		callback(new Error("eventIndex 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var memberDoc = null
+	var helpEvent = null
+	var eventFuncs = []
+	var pushFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		return self.allianceDao.findByIdAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		helpEvent = allianceDoc.helpEvents[eventIndex]
+		if(!_.isObject(helpEvent)){
+			return Promise.reject("帮助事件不存在")
+		}
+		if(_.isEqual(playerDoc._id, helpEvent.id)){
+			return Promise.reject(new Error("不能帮助自己加速建造"))
+		}
+		if(LogicUtils.isPlayerAlreadyHelpedThisMember(playerId, allianceDoc, eventIndex)){
+			return Promise.reject("玩家已经帮助过此事件了")
+		}
+		return self.playerDao.findByIdAsync(helpEvent.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		memberDoc = doc
+		var buildEvent = LogicUtils.getPlayerBuildEvent(memberDoc, helpEvent.type, helpEvent.index)
+		if(!_.isObject(buildEvent)){
+			return Promise.reject(new Error("玩家建造事件不存在"))
+		}
+
+		helpEvent.helpedMembers.push(memberDoc._id)
+		var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc)
+		var newFinishTime = buildEvent.finishTime - effect
+		if(newFinishTime <= Date.now()){
+			eventFuncs.push([self, RemovePlayerTimeEvent, memberDoc, buildEvent.finishTime])
+			buildEvent.finishTime = newFinishTime
+			pushFuncs.concat(RefreshPlayerEvents.call(self, memberDoc, buildEvent.finishTime))
+		}else{
+			eventFuncs.push([self, UpdatePlayerTimeEvent, memberDoc, buildEvent.finishTime, newFinishTime])
+			buildEvent.finishTime = newFinishTime
+		}
+		if(newFinishTime <= Date.now() || helpEvent.helpedMembers.length >= helpEvent.maxHelpCount){
+			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+		}
+
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(memberDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(memberDoc._id))
 		}
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
@@ -4052,244 +4452,27 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 	})
 }
 
-/**
- * 刷新玩家事件
- * @param playerDoc
- * @param finishTime
- * @param isLogin
- * @returns {Array}
- * @constructor
- */
-var RefreshPlayerEvents = function(playerDoc, finishTime, isLogin){
-	var self = this
-	var pushFuncs = []
-	//更新资源数据
-	this.refreshPlayerResources(playerDoc)
-	//检查建筑
-	var buildingFinishedEvents = []
-	_.each(playerDoc.buildingEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= finishTime){
-			buildingFinishedEvents.push(event)
-			var building = LogicUtils.getBuildingByEvent(playerDoc, event)
-			building.level += 1
-			//检查是否有建筑需要从-1级升级到0级
-			LogicUtils.updateBuildingsLevel(playerDoc)
-			pushFuncs.push(self.pushService.onBuildingLevelUpAsync(playerDoc, event.location))
-		}else if(event.finishTime > 0 && isLogin){
-			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(buildingFinishedEvents, playerDoc.buildingEvents)
-	//检查小屋
-	var houseFinishedEvents = []
-	_.each(playerDoc.houseEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= finishTime){
-			houseFinishedEvents.push(event)
-			var house = LogicUtils.getHouseByEvent(playerDoc, event)
-			house.level += 1
-			pushFuncs.push(self.pushService.onHouseLevelUpAsync(playerDoc, event.buildingLocation, event.houseLocation))
-			//如果是住宅,送玩家城民
-			if(_.isEqual("dwelling", house.type)){
-				var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
-				var next = DataUtils.getDwellingPopulationByLevel(house.level)
-				playerDoc.resources.citizen += next - previous
-				self.refreshPlayerResources(playerDoc)
-			}else if(event.finishTime > 0 && isLogin){
-				self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-			}
-		}
-	})
-	LogicUtils.removeEvents(houseFinishedEvents, playerDoc.houseEvents)
-	//检查箭塔
-	var towerFinishedEvents = []
-	_.each(playerDoc.towerEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= finishTime){
-			var tower = LogicUtils.getTowerByEvent(playerDoc, event)
-			tower.level += 1
-			pushFuncs.push(self.pushService.onTowerLevelUpAsync(playerDoc, event.location))
-			towerFinishedEvents.push(event)
-		}else if(event.finishTime > 0 && isLogin){
-			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(towerFinishedEvents, playerDoc.towerEvents)
-	//检查城墙
-	var wallFinishedEvents = []
-	_.each(playerDoc.wallEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= finishTime){
-			var wall = playerDoc.wall
-			wall.level += 1
-			pushFuncs.push(self.pushService.onWallLevelUpAsync(playerDoc))
-			wallFinishedEvents.push(event)
-		}else if(event.finishTime > 0 && isLogin){
-			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(wallFinishedEvents, playerDoc.wallEvents)
-	//检查材料制造
-	_.each(playerDoc.materialEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= finishTime){
-			event.finishTime = 0
-			pushFuncs.push(self.pushService.onMakeMaterialFinishedAsync(playerDoc, event))
-		}else if(event.finishTime > 0 && isLogin){
-			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	//检查招募事件
-	var soldierFinishedEvents = []
-	_.each(playerDoc.soldierEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= finishTime){
-			playerDoc.soldiers[event.name] += event.count
-			pushFuncs.push(self.pushService.onRecruitSoldierSuccessAsync(playerDoc, event.name, event.count))
-			soldierFinishedEvents.push(event)
-		}else if(event.finishTime > 0 && isLogin){
-			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(soldierFinishedEvents, playerDoc.soldierEvents)
-	//检查龙装备制作事件
-	var dragonEquipmentFinishedEvents = []
-	_.each(playerDoc.dragonEquipmentEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= finishTime){
-			playerDoc.dragonEquipments[event.name] += 1
-			pushFuncs.push(self.pushService.onMakeDragonEquipmentSuccessAsync(playerDoc, event.name))
-			dragonEquipmentFinishedEvents.push(event)
-		}else if(event.finishTime > 0 && isLogin){
-			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(dragonEquipmentFinishedEvents, playerDoc.dragonEquipmentEvents)
-	//检查医院治疗伤兵事件
-	var treatSoldierFinishedEvents = []
-	_.each(playerDoc.treatSoldierEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= finishTime){
-			_.each(event.soldiers, function(soldier){
-				playerDoc.soldiers[soldier.name] += soldier.count
-			})
-			pushFuncs.push(self.pushService.onTreatSoldierSuccessAsync(playerDoc, event.soldiers))
-			treatSoldierFinishedEvents.push(event)
-		}else if(event.finishTime > 0 && isLogin){
-			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(treatSoldierFinishedEvents, playerDoc.treatSoldierEvents)
-	//检查城民税收事件
-	var coinFinishedEvents = []
-	_.each(playerDoc.coinEvents, function(event){
-		if(event.finishTime > 0 && event.finishTime <= finishTime){
-			playerDoc.resources.coin += event.coin
-			pushFuncs.push(self.pushService.onImposeSuccessAsync(playerDoc, event.coin))
-			coinFinishedEvents.push(event)
-		}else if(event.finishTime > 0 && isLogin){
-			self.callbackService.addPlayerCallback(playerDoc._id, event.finishTime, ExcutePlayerCallback.bind(self))
-		}
-	})
-	LogicUtils.removeEvents(coinFinishedEvents, playerDoc.coinEvents)
-
-	//刷新玩家战力
-	this.refreshPlayerPower(playerDoc)
-	return pushFuncs
-}
 
 /**
  * 执行玩家延迟执行事件
  * @param playerId
  * @param finishTime
- * @constructor
  */
 var ExcutePlayerCallback = function(playerId, finishTime){
 	var self = this
 	var pushFuncs = null
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		pushFuncs = RefreshPlayerEvents.call(self, doc, finishTime, false)
-		//更新玩家数据
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		//推送玩家信息到客户端
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(doc))
-	}).catch(function(e){
-		errorLogger.error("handle excutePlayerCallback Error -----------------------------")
-		errorLogger.error(e.stack)
-		if(_.isEqual("production", self.app.get("env"))){
-			errorMailLogger.error("handle excutePlayerCallback Error -----------------------------")
-			errorMailLogger.error(e.stack)
-		}
-	})
-}
-
-
-/**
- * 发送系统邮件
- * @param playerId
- * @param titleKey
- * @param titleArgs
- * @param contentKey
- * @param contentArgs
- */
-var SendSystemMail = function(playerId, titleKey, titleArgs, contentKey, contentArgs){
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isObject(titleKey)){
-		callback(new Error("titleKey 不合法"))
-		return
-	}
-	if(!_.isArray(titleArgs)){
-		callback(new Error("titleArgs 不合法"))
-		return
-	}
-	if(!_.isObject(contentKey)){
-		callback(new Error("contentKey 不合法"))
-		return
-	}
-	if(!_.isArray(contentArgs)){
-		callback(new Error("contentArgs 不合法"))
-		return
-	}
-
-	var self = this
 	var playerDoc = null
 	return this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var language = doc.basicInfo.language
-		var title = titleKey[language]
-		var content = contentKey[language]
-		if(!_.isString(title)){
-			return Promise.reject(new Error("title 本地化不存在"))
-		}
-		if(!_.isString(content)){
-			return Promise.reject(new Error("content 本地化不存在"))
-		}
-		if(titleArgs.length > 0){
-			title = sprintf.vsprintf(title, titleArgs)
-		}
-		if(contentArgs.length > 0){
-			content = sprintf.vsprintf(content, contentArgs)
-		}
-
-		var mail = {
-			title:title,
-			fromId:"system",
-			fromName:"system",
-			sendTime:Date.now(),
-			content:content
-		}
-		if(doc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
-			doc.mails.shift()
-		}
-		doc.mails.push(mail)
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		if(!_.isEmpty(doc.logicServerId)){
-			self.pushService.onPlayerDataChanged(doc)
-		}
+		pushFuncs = RefreshPlayerEvents.call(self, playerDoc, finishTime)
+		return self.playerDao.updateAsync(playerDoc)
+	}).then(function(){
+		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(playerDoc))
+		return Promise.all(pushFuncs)
+	}).then(function(){
 		return Promise.resolve()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
@@ -4300,4 +4483,266 @@ var SendSystemMail = function(playerId, titleKey, titleArgs, contentKey, content
 			return Promise.reject(e)
 		}
 	})
+}
+
+/**
+ * 玩家登陆后刷新玩家事件数据
+ * @param playerDoc
+ */
+var AfterPlayerLogin = function(playerDoc){
+	return RefreshPlayerEventsAndGetCallbacks.call(this, playerDoc, Date.now(), true)
+}
+
+/**
+ * 刷新玩家事件
+ * @param playerDoc
+ * @param finishTime
+ * @returns {Array}
+ */
+var RefreshPlayerEvents = function(playerDoc, finishTime){
+	return RefreshPlayerEventsAndGetCallbacks.call(this, playerDoc, finishTime, false).pushFuncs
+}
+
+/**
+ * 刷新玩家时间数据并获取返回的执行函数
+ * @param playerDoc
+ * @param finishTime
+ * @param isLogin
+ * @returns {{pushFuncs: Array, eventFuncs: Array}}
+ */
+var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, finishTime, isLogin){
+	var self = this
+	var pushFuncs = []
+	var eventFuncs = []
+	//更新资源数据
+	LogicUtils.refreshPlayerResources(playerDoc)
+	//检查建筑
+	var buildingFinishedEvents = []
+	_.each(playerDoc.buildingEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			buildingFinishedEvents.push(event)
+			var building = LogicUtils.getBuildingByEvent(playerDoc, event)
+			building.level += 1
+			//检查是否有建筑需要从-1级升级到0级
+			LogicUtils.updateBuildingsLevel(playerDoc)
+			pushFuncs.push([self.pushService,  self.pushService.onBuildingLevelUpAsync, playerDoc, event.location])
+		}else if(event.finishTime > 0 && isLogin){
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, event.finishTime])
+		}
+	})
+	LogicUtils.removeEvents(buildingFinishedEvents, playerDoc.buildingEvents)
+	//检查小屋
+	var houseFinishedEvents = []
+	_.each(playerDoc.houseEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			houseFinishedEvents.push(event)
+			var house = LogicUtils.getHouseByEvent(playerDoc, event)
+			house.level += 1
+			pushFuncs.push([self.pushService,  self.pushService.onHouseLevelUpAsync, playerDoc, event.buildingLocation, event.houseLocation])
+			//如果是住宅,送玩家城民
+			if(_.isEqual("dwelling", house.type)){
+				var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
+				var next = DataUtils.getDwellingPopulationByLevel(house.level)
+				playerDoc.resources.citizen += next - previous
+				LogicUtils.refreshPlayerResources(playerDoc)
+			}else if(event.finishTime > 0 && isLogin){
+				eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, event.finishTime])
+			}
+		}
+	})
+	LogicUtils.removeEvents(houseFinishedEvents, playerDoc.houseEvents)
+	//检查箭塔
+	var towerFinishedEvents = []
+	_.each(playerDoc.towerEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			var tower = LogicUtils.getTowerByEvent(playerDoc, event)
+			tower.level += 1
+			pushFuncs.push([self.pushService,  self.pushService.onTowerLevelUpAsync, playerDoc, event.location])
+			towerFinishedEvents.push(event)
+		}else if(event.finishTime > 0 && isLogin){
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, event.finishTime])
+		}
+	})
+	LogicUtils.removeEvents(towerFinishedEvents, playerDoc.towerEvents)
+	//检查城墙
+	var wallFinishedEvents = []
+	_.each(playerDoc.wallEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			var wall = playerDoc.wall
+			wall.level += 1
+			pushFuncs.push([self.pushService,  self.pushService.onWallLevelUpAsync, playerDoc])
+			wallFinishedEvents.push(event)
+		}else if(event.finishTime > 0 && isLogin){
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, event.finishTime])
+		}
+	})
+	LogicUtils.removeEvents(wallFinishedEvents, playerDoc.wallEvents)
+	//检查材料制造
+	_.each(playerDoc.materialEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			event.finishTime = 0
+			pushFuncs.push([self.pushService,  self.pushService.onMakeMaterialFinishedAsync, playerDoc, event])
+		}else if(event.finishTime > 0 && isLogin){
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, event.finishTime])
+		}
+	})
+	//检查招募事件
+	var soldierFinishedEvents = []
+	_.each(playerDoc.soldierEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			playerDoc.soldiers[event.name] += event.count
+			pushFuncs.push([self.pushService,  self.pushService.onRecruitSoldierSuccessAsync, playerDoc, event.name, event.count])
+			soldierFinishedEvents.push(event)
+		}else if(event.finishTime > 0 && isLogin){
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, event.finishTime])
+		}
+	})
+	LogicUtils.removeEvents(soldierFinishedEvents, playerDoc.soldierEvents)
+	//检查龙装备制作事件
+	var dragonEquipmentFinishedEvents = []
+	_.each(playerDoc.dragonEquipmentEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			playerDoc.dragonEquipments[event.name] += 1
+			pushFuncs.push([self.pushService,  self.pushService.onMakeDragonEquipmentSuccessAsync, playerDoc, event.name])
+			dragonEquipmentFinishedEvents.push(event)
+		}else if(event.finishTime > 0 && isLogin){
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, event.finishTime])
+		}
+	})
+	LogicUtils.removeEvents(dragonEquipmentFinishedEvents, playerDoc.dragonEquipmentEvents)
+	//检查医院治疗伤兵事件
+	var treatSoldierFinishedEvents = []
+	_.each(playerDoc.treatSoldierEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			_.each(event.soldiers, function(soldier){
+				playerDoc.soldiers[soldier.name] += soldier.count
+			})
+			pushFuncs.push([self.pushService,  self.pushService.onTreatSoldierSuccessAsync, playerDoc, event.soldiers])
+			treatSoldierFinishedEvents.push(event)
+		}else if(event.finishTime > 0 && isLogin){
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, event.finishTime])
+		}
+	})
+	LogicUtils.removeEvents(treatSoldierFinishedEvents, playerDoc.treatSoldierEvents)
+	//检查城民税收事件
+	var coinFinishedEvents = []
+	_.each(playerDoc.coinEvents, function(event){
+		if(event.finishTime > 0 && event.finishTime <= finishTime){
+			playerDoc.resources.coin += event.coin
+			pushFuncs.push([self.pushService,  self.pushService.onImposeSuccessAsync, playerDoc, event.coin])
+			coinFinishedEvents.push(event)
+		}else if(event.finishTime > 0 && isLogin){
+			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, event.finishTime])
+		}
+	})
+	LogicUtils.removeEvents(coinFinishedEvents, playerDoc.coinEvents)
+
+	//刷新玩家战力
+	LogicUtils.refreshPlayerPower(playerDoc)
+	return {pushFuncs:pushFuncs, eventFuncs:eventFuncs}
+}
+
+/**
+ * 添加时间回调
+ * @param key
+ * @param eventServerId
+ * @param logicServerId
+ * @param finishTime
+ * @param callback
+ */
+var AddTimeEvent = function(key, eventServerId, logicServerId, finishTime, callback){
+	this.app.rpc.event.eventRemote.addTimeEvent.toServer(eventServerId, key, logicServerId, finishTime, Date.now(), callback)
+}
+
+/**
+ * 移除时间回调
+ * @param key
+ * @param eventServerId
+ * @param finishTime
+ * @param callback
+ */
+var RemoveTimeEvent = function(key, eventServerId, finishTime, callback){
+	this.app.rpc.event.eventRemote.removeTimeEvent.toServer(eventServerId, key, finishTime, callback)
+}
+
+/**
+ * 更新时间回调
+ * @param key
+ * @param eventServerId
+ * @param oldFinishTime
+ * @param newFinishTime
+ * @param callback
+ */
+var UpdateTimeEvent = function(key, eventServerId, oldFinishTime, newFinishTime, callback){
+	this.app.rpc.event.eventRemote.updateTimeEvent.toServer(eventServerId, key, oldFinishTime, newFinishTime, Date.now(), callback)
+}
+
+/**
+ * 清除指定Key的时间回调
+ * @param key
+ * @param eventServerId
+ * @param callback
+ */
+var ClearTimeEvents = function(key, eventServerId, callback){
+	this.app.rpc.event.eventRemote.clearTimeEventsByKey.toServer(eventServerId, key, callback)
+}
+
+/**
+ * 添加玩家时间回调
+ * @param playerDoc
+ * @param finishTime
+ * @returns {*}
+ */
+var AddPlayerTimeEvent = function(playerDoc, finishTime){
+	if(!_.isEmpty(playerDoc.logicServerId)){
+		var key = Consts.TimeEventType.Player + "_" + playerDoc._id
+		var addTimeEvent = Promise.promisify(AddTimeEvent, this)
+		return addTimeEvent(key, playerDoc.eventServerId, playerDoc.logicServerId, finishTime)
+	}
+	return Promise.resolve()
+}
+
+/**
+ * 移除玩家时间回调
+ * @param playerDoc
+ * @param finishTime
+ * @returns {*}
+ */
+var RemovePlayerTimeEvent = function(playerDoc, finishTime){
+	if(!_.isEmpty(playerDoc.logicServerId)){
+		var key = Consts.TimeEventType.Player + "_" + playerDoc._id
+		var removeTimeEvent = Promise.promisify(RemoveTimeEvent, this)
+		return removeTimeEvent(key, playerDoc.eventServerId, finishTime)
+	}
+	return Promise.resolve()
+}
+
+/**
+ * 更新玩家时间回调
+ * @param playerDoc
+ * @param oldFinishTime
+ * @param newFinishTime
+ * @returns {*}
+ */
+var UpdatePlayerTimeEvent = function(playerDoc, oldFinishTime, newFinishTime){
+	if(!_.isEmpty(playerDoc.logicServerId)){
+		var key = Consts.TimeEventType.Player + "_" + playerDoc._id
+		var updateTimeEvent = Promise.promisify(UpdateTimeEvent, this)
+		return updateTimeEvent(key, playerDoc.eventServerId, oldFinishTime, newFinishTime)
+	}
+	return Promise.resolve()
+}
+
+/**
+ * 清除指定玩家的全部时间回调
+ * @param playerDoc
+ * @returns {*}
+ */
+var ClearPlayerTimeEvents = function(playerDoc){
+	if(!_.isEmpty(playerDoc.logicServerId)){
+		var key = Consts.TimeEventType.Player + "_" + playerDoc._id
+		var clearTimeEvents = Promise.promisify(ClearTimeEvents, this)
+		return clearTimeEvents(key, playerDoc.eventServerId)
+	}
+	return Promise.resolve()
 }

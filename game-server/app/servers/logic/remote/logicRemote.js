@@ -13,6 +13,7 @@ module.exports = function(app) {
 
 var LogicRemote = function(app) {
 	this.app = app
+	this.callbackService = this.app.get("callbackService")
 	this.playerService = this.app.get("playerService")
 	this.sessionService = this.app.get("sessionService")
 }
@@ -26,4 +27,14 @@ var pro = LogicRemote.prototype
  */
 pro.kickPlayer = function(uid, callback){
 	this.sessionService.kick(uid, callback)
+}
+
+/**
+ * 执行时间回调
+ * @param key
+ * @param finishTime
+ * @param callback
+ */
+pro.onTimeEvent = function(key, finishTime, callback){
+	this.playerService.onTimeEvent(key, finishTime, callback)
 }

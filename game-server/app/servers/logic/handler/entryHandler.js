@@ -8,9 +8,10 @@ var Promise = require("bluebird")
 var Promisify = Promise.promisify
 var _ = require("underscore")
 var crypto = require('crypto')
-
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
+
+var dispatcher = require('../../../utils/dispatcher')
 var Consts = require("../../../consts/consts")
 
 var AllianceDao = require("../../../dao/allianceDao")
@@ -57,8 +58,6 @@ pro.login = function(msg, session, next){
 	this.playerDao.findByIndexAsync("countInfo.deviceId", deviceId).then(function(doc){
 		if(!_.isObject(doc)){
 			return self.playerService.createPlayerAsync(deviceId).then(function(doc){
-				return self.playerDao.findByIdAsync(doc._id)
-			}).then(function(doc){
 				playerDoc = doc
 				return Promise.resolve()
 			}).catch(function(e){
@@ -88,6 +87,9 @@ pro.login = function(msg, session, next){
 		return Promise.all(funcs)
 	}).then(function(){
 		playerDoc.logicServerId = self.serverId
+		var eventServers = self.app.getServersByType('event')
+		var eventServer = dispatcher.dispatch(eventServers)
+		playerDoc.eventServerId = eventServer.id
 		return  self.playerService.playerLoginAsync(playerDoc)
 	}).then(function(){
 		return self.playerDao.updateAsync(playerDoc)
@@ -131,21 +133,23 @@ var PlayerLeave = function(session, reason){
 			}
 			return Promise.all(funcs)
 		}).then(function(){
+			playerDoc.logicServerId = null
+			playerDoc.eventServerId = null
 			self.playerDao.updateAsync(playerDoc)
 		}).catch(function(e){
-			errorLogger.error("handle playerLogout Error -----------------------------")
+			errorLogger.error("handle entryHandler:playerLogout Error -----------------------------")
 			errorLogger.error(e.stack)
 			if(_.isEqual("production", self.app.get("env"))){
-				errorMailLogger.error("handle playerLogout Error -----------------------------")
+				errorMailLogger.error("handle entryHandler:playerLogout Error -----------------------------")
 				errorMailLogger.error(e.stack)
 			}
 			tryTimes --
 			if(tryTimes >= 0){
 				setTimeout(func.bind(self), 2000)
 			}else{
-				errorLogger.error("trying to save player data failed -----------------------------")
+				errorLogger.error("entryHandler:trying to save player data failed -----------------------------")
 				if(_.isEqual("production", self.app.get("env"))){
-					errorMailLogger.error("trying to save player data failed -----------------------------")
+					errorMailLogger.error("entryHandler:trying to save player data failed -----------------------------")
 				}
 			}
 		})

@@ -32,7 +32,8 @@ app.configure("production|development", "gate", function(){
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
-		bufferMsg:false
+		bufferMsg:false,
+		failMode:"failfast"
 	})
 	app.set('sessionConfig', {
 		singleSession:true
@@ -73,7 +74,8 @@ app.configure("production|development", "logic", function(){
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
-		bufferMsg:false
+		bufferMsg:false,
+		failMode:"failfast"
 	})
 	app.set('sessionConfig', {
 		singleSession:true
@@ -107,7 +109,33 @@ app.configure("production|development", "chat", function(){
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
-		bufferMsg:false
+		bufferMsg:false,
+		failMode:"failfast"
+	})
+
+	app.filter(pomelo.filters.serial())
+	app.before(loginFilter())
+
+	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
+	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
+
+	var redisClient = redis.createClient(app.get("redisConfig").port, app.get("redisConfig").host)
+	app.set("redis", redisClient)
+	var scripto = new Scripto(redisClient)
+	scripto.loadFromDir(commandDir)
+	app.set("scripto", scripto)
+	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
+	app.set("mongoose", mongooseClient)
+})
+
+app.configure("production|development", "event", function(){
+	app.set("proxyConfig", {
+		bufferMsg:false,
+		failMode:"failfast"
+	})
+	app.set("remoteConfig", {
+		bufferMsg:false,
+		failMode:"failfast"
 	})
 
 	app.filter(pomelo.filters.serial())
@@ -126,20 +154,20 @@ app.configure("production|development", "chat", function(){
 })
 
 app.set('errorHandler', function(err, msg, resp, session, opts, cb){
-	errorLogger.error("handle Error-----------------------------")
+	errorLogger.error("handle app:Error-----------------------------")
 	errorLogger.error(err.stack)
 	if(_.isEqual("production", app.get("env"))){
-		errorMailLogger.error("handle Error-----------------------------")
+		errorMailLogger.error("handle app:Error-----------------------------")
 		errorMailLogger.error(err.stack)
 	}
 	cb(err, resp)
 })
 
 app.set('globalErrorHandler', function(err, msg, resp, session, opts, cb){
-	errorLogger.error("handle globalError-----------------------------")
+	errorLogger.error("handle app:globalError-----------------------------")
 	errorLogger.error(err.stack)
 	if(_.isEqual("production", app.get("env"))){
-		errorMailLogger.error("handle globalError-----------------------------")
+		errorMailLogger.error("handle app:globalError-----------------------------")
 		errorMailLogger.error(err.stack)
 	}
 	cb(err, resp)
@@ -148,10 +176,10 @@ app.set('globalErrorHandler', function(err, msg, resp, session, opts, cb){
 app.start()
 
 process.on("uncaughtException", function(err){
-	errorLogger.error("handle uncaughtError-----------------------------")
+	errorLogger.error("handle app:uncaughtError-----------------------------")
 	errorLogger.error(err.stack)
 	if(_.isEqual("production", app.get("env"))){
-		errorMailLogger.error("handle uncaughtError-----------------------------")
+		errorMailLogger.error("handle app:uncaughtError-----------------------------")
 		errorMailLogger.error(err.stack)
 	}
 })

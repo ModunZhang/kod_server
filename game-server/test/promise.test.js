@@ -2,7 +2,7 @@
 //var pomelo = require("./pomelo-client")
 var Promise = require("bluebird")
 //var Promisify = Promise.promisify
-//var _ = require("underscore")
+var _ = require("underscore")
 //var should = require('should')
 //var Utils = require("../app/utils/utils")
 //var redis = require("redis")
@@ -133,3 +133,49 @@ var Promise = require("bluebird")
 //	console.log(e.message)
 //	console.log(e)
 //})
+//
+//var a = {}
+//a.b = function(param){
+//	console.log(param)
+//}
+//
+//console.log([a])
+//[a].b("adaf")
+//var funca = Promise.method(function(a){
+//	console.log(a)
+//})
+//
+//var array = []
+//array.push(funca)
+//Promise.all(array).spread(function(res){
+//	console.log(res)
+//})
+//
+//var excuteAll = function(functionObjects){
+//	var funcs = []
+//	_.each(functionObjects, function(functionObj){
+//		var caller = functionObj[0]
+//		var func = functionObj[1]
+//		funcs.push(func.apply(caller, Array.prototype.slice.call(functionObj, 2)))
+//	})
+//	return Promise.all(funcs)
+//}
+//
+//var func = function(a){
+//	console.log(a)
+//	return Promise.resolve(a)
+//}
+//
+//var func2 = function(a, b){
+//	console.log(a + "__" + b)
+//	return Promise.resolve(a + "__" + b)
+//}
+//
+//var functionObjects = []
+//functionObjects.push([null, func, "a"])
+//functionObjects.push([null, func2, "a", "b"])
+//
+////excuteAll(functionObjects).spread(function(a, b){
+////	console.log(a)
+////	console.log(b)
+////})

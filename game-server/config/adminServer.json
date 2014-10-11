@@ -1,18 +1,22 @@
 [
 	{
 		"type":"gate",
-		"token":"agarxhqb98rpajloaxn34ga8xrunpagkjwlaw3rasfpaagl29w4rxn"
+		"token":"x8d4oTiN59vwOnoxWDxL"
 	},
 	{
 		"type":"front",
-		"token":"aagvxhqb98rpajloaxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
+		"token":"y86W18XiVaxNrmYB0Kqy"
 	},
 	{
 		"type":"logic",
-		"token":"agarxhqb98rpajloaxn34ga8xrunzxfkjwlaw3ruxnpaagl29w4rxn"
+		"token":"hqZHlSR9edKiKNyAz8oi"
 	},
 	{
 		"type":"chat",
-		"token":"agarxhqb98rpajdfhxn34ga8xrunpagkjwlaw3ruxnpaagl29w4rxn"
+		"token":"w8WDmWioU3uYywMEzElD"
+	},
+	{
+		"type":"event",
+		"token":"IeuEyUbGurFjWX9UKf43"
 	}
 ]

@@ -27,6 +27,10 @@ module.exports = {
 		Building:"building",
 		Technology:"technology"
 	},
+	TimeEventType:{
+		Player:"player",
+		Alliance:"alliance"
+	},
 	AllianceLanguage:{
 		All:"all",
 		Cn:"cn",
@@ -61,5 +65,11 @@ module.exports = {
 	AllianceJoinStatus:{
 		Pending:"pending",
 		Reject:"reject"
+	},
+	AllianceHelpEventType:{
+		Building:"building",
+		House:"house",
+		Tower:"tower",
+		Wall:"wall"
 	}
 }

@@ -1409,3 +1409,12 @@ Utils.getVipLevel = function(playerDoc){
 	}
 	return 1
 }
+
+/**
+ * 获取玩家协助加速效果
+ * @param playerDoc
+ * @returns {number}
+ */
+Utils.getPlayerHelpAllianceMemberSpeedUpEffect = function(playerDoc){
+	return 2 * 60 * 1000
+}

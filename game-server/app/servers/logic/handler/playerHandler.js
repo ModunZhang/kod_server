@@ -414,10 +414,10 @@ pro.getPlayerInfo = function(msg, session, next){
  * @param next
  */
 pro.sendMail = function(msg, session, next){
-	var memberId = msg.memberId
+	var memberName = msg.memberName
 	var title = msg.title
 	var content = msg.content
-	this.playerService.sendMailAsync(session.uid, memberId, title, content).then(function(){
+	this.playerService.sendMailAsync(session.uid, memberName, title, content).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -730,6 +730,21 @@ pro.handleJoinAllianceInvite = function(msg, session, next){
 	var allianceId = msg.allianceId
 	var agree = msg.agree
 	this.playerService.handleJoinAllianceInviteAsync(session.uid, allianceId, agree).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 协助玩家加速
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.helpAllianceMemberSpeedUp = function(msg, session, next){
+	var eventIndex = msg.eventIndex
+	this.playerService.helpAllianceMemberSpeedUpAsync(session.uid, eventIndex).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

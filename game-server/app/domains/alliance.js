@@ -16,13 +16,12 @@ var allianceSchema = new Schema({
 		language:{type:String, required:true},
 		terrain:{type:String, required:true},
 		flag:{type:String, required:true},
-		power:{type:Number, required:true},
+		power:{type:Number, required:true, default:0},
 		kill:{type:Number, required:true, default:0},
 		joinType:{type:String, required:true, default:Consts.AllianceJoinType.All},
 		level:{type:Number, required:true, default:0},
 		exp:{type:Number, required:true, default:0},
-		createTime:{type:Number, required:true, default:Date.now()},
-		lastActiveTime:{type:Number, required:true, default:Date.now()}
+		createTime:{type:Number, required:true, default:Date.now()}
 	},
 	notice:{type:String, required:false},
 	desc:{type:String, required:false},
@@ -37,12 +36,14 @@ var allianceSchema = new Schema({
 	},
 	events:[
 		{
+			_id : false,
 			type:{type:String, required:true},
 			keys:[String]
 		}
 	],
 	members:[
 		{
+			_id : false,
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			level:{type:Number, required:true},
@@ -54,11 +55,23 @@ var allianceSchema = new Schema({
 	],
 	joinRequestEvents:[
 		{
+			_id : false,
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			level:{type:Number, required:true},
 			power:{type:Number, required:true},
 			requestTime:{type:Number, required:true}
+		}
+	],
+	helpEvents:[
+		{
+			_id : false,
+			id:{type:String, required:true},
+			type:{type:String, required:true},
+			level:{type:Number, required:true},
+			index:{type:Number, required:true},
+			maxHelpCount:{type:Number, required:true},
+			helpedMembers:[String]
 		}
 	]
 })

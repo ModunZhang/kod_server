@@ -27,45 +27,53 @@ var playerDao = Promise.promisifyAll(new PlayerDao(redisClient, scripto, "produc
 
 
 var ClearTestAccount = function(callback){
-	playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId).then(function(){
-		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId2)
-	}).then(function(){
-		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId3)
-	}).then(function(){
-		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId4)
-	}).then(function(){
-		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId5)
-	}).then(function(){
-		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId6)
-	}).then(function(){
-		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId7)
-	}).then(function(){
-		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId8)
-	}).then(function(){
-		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId9)
-	}).then(function(){
-		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId10)
-	}).then(function(){
-		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId11)
-	}).then(function(){
-		return playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId12)
-	}).then(function(){
+	var funcs = []
+	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId))
+	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId))
+	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId2))
+	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId2))
+	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId3))
+	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId3))
+	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId4))
+	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId4))
+	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId5))
+	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId5))
+	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId6))
+	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId6))
+	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId7))
+	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId7))
+	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId8))
+	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId8))
+	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId9))
+	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId9))
+	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId10))
+	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId10))
+	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId11))
+	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId11))
+	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId12))
+	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId12))
+
+	Promise.all(funcs).then(function(){
 		callback()
 	})
 }
 
 var ClearAlliance = function(callback){
-	allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName).then(function(){
-		return allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName2)
-	}).then(function(){
-		return allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName3)
-	}).then(function(){
-		return allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName4)
-	}).then(function(){
-		return allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName5)
-	}).then(function(){
-		return allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName6)
-	}).then(function(){
+	var funcs = []
+	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName))
+	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName))
+	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName2))
+	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName2))
+	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName3))
+	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName3))
+	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName4))
+	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName4))
+	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName5))
+	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName5))
+	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName6))
+	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName6))
+
+	Promise.all(funcs).then(function(){
 		callback()
 	})
 }
@@ -376,9 +384,9 @@ var handOverArchon = function(memberId, callback){
 	pomelo.request(route, info, callback)
 }
 
-var sendMail = function(memberId, title, content, callback){
+var sendMail = function(memberName, title, content, callback){
 	var info = {
-		memberId:memberId,
+		memberName:memberName,
 		title:title,
 		content:content
 	}
@@ -463,6 +471,14 @@ var joinAllianceDirectly = function(allianceId, callback){
 		allianceId:allianceId
 	}
 	var route = "logic.playerHandler.joinAllianceDirectly"
+	pomelo.request(route, info, callback)
+}
+
+var helpAllianceMemberSpeedUp = function(eventIndex, callback){
+	var info = {
+		eventIndex:eventIndex
+	}
+	var route = "logic.playerHandler.helpAllianceMemberSpeedUp"
 	pomelo.request(route, info, callback)
 }
 
@@ -1930,7 +1946,7 @@ describe("LogicServer", function(){
 		})
 
 		it("sendMail 不能给自己发邮件", function(done){
-			sendMail(m_user._id, "testMail", "this is a testMail", function(doc){
+			sendMail(m_user.basicInfo.name, "testMail", "this is a testMail", function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("不能给自己发邮件")
 				done()
@@ -1948,7 +1964,7 @@ describe("LogicServer", function(){
 		it("sendMail 正常发送", function(done){
 			LoginPlayer(Config.deviceId2, function(doc){
 				doc.code.should.equal(200)
-				sendMail(m_user._id, "testMail", "this is a testMail", function(doc){
+				sendMail(m_user.basicInfo.name, "testMail", "this is a testMail", function(doc){
 					doc.code.should.equal(200)
 					LoginPlayer(Config.deviceId, function(doc){
 						doc.code.should.equal(200)
@@ -2041,21 +2057,18 @@ describe("LogicServer", function(){
 		})
 
 		it("sendAllianceMail 玩家未加入联盟", function(done){
-			LoginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("玩家未加入联盟")
-					LoginPlayer(Config.deviceId, function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-					var onPlayerLoginSuccess = function(doc){
-						m_user = doc
-						pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-					}
-					pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+			sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("玩家未加入联盟")
+				LoginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					done()
 				})
+				var onPlayerLoginSuccess = function(doc){
+					m_user = doc
+					pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+				}
+				pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
 			})
 		})
 
@@ -2665,6 +2678,23 @@ describe("LogicServer", function(){
 			searchAllianceByTag("test", function(doc){
 				doc.code.should.equal(200)
 				done()
+			})
+		})
+
+		it("upgradeBuilding 加入联盟后", function(done){
+			upgradeBuilding(1, false, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("helpAllianceMemberSpeedUp 正常帮助", function(done){
+			LoginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				helpAllianceMemberSpeedUp(0, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
 			})
 		})
 	})
