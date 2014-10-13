@@ -526,6 +526,20 @@ pro.createAlliance = function(msg, session, next){
  * @param session
  * @param next
  */
+pro.getCanDirectJoinAlliances = function(msg, session, next){
+	this.playerService.getCanDirectJoinAlliancesAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 根据Tag搜索联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
 pro.searchAllianceByTag = function(msg, session, next){
 	var tag = msg.tag
 	this.playerService.searchAllianceByTagAsync(session.uid, tag).then(function(){

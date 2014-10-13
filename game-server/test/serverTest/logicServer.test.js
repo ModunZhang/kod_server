@@ -306,6 +306,11 @@ var searchAllianceByTag = function(tag, callback){
 	pomelo.request(route, info, callback)
 }
 
+var getCanDirectJoinAlliances = function(callback){
+	var route = "logic.playerHandler.getCanDirectJoinAlliances"
+	pomelo.request(route, null, callback)
+}
+
 var editAllianceBasicInfo = function(name, tag, language, terrain, flag, callback){
 	var info = {
 		name:name,
@@ -2715,6 +2720,13 @@ describe("LogicServer", function(){
 
 		it("searchAllianceByTag 正常搜索", function(done){
 			searchAllianceByTag("test", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getCanDirectJoinAlliances 正常获取", function(done){
+			getCanDirectJoinAlliances(function(doc){
 				doc.code.should.equal(200)
 				done()
 			})

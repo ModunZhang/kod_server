@@ -409,7 +409,6 @@ var playerSchema = new Schema({
 			power:{type:Number, required:true},
 			language:{type:String, required:true},
 			kill:{type:String, required:true},
-			status:{type:String, required:true},
 			requestTime:{type:Number, required:true}
 		}
 	],

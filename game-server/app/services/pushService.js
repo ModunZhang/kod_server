@@ -247,3 +247,16 @@ pro.onSearchAllianceSuccess = function(playerDoc, allianceDocs, callback){
 	}
 	this.pushToPlayer(playerDoc, Events.player.onSearchAllianceSuccess, data, callback)
 }
+
+/**
+ * 联盟搜索数据返回
+ * @param playerDoc
+ * @param allianceDocs
+ * @param callback
+ */
+pro.onGetAllianceSuccess = function(playerDoc, allianceDocs, callback){
+	var data = {
+		alliances:allianceDocs
+	}
+	this.pushToPlayer(playerDoc, Events.player.onGetAllianceSuccess, data, callback)
+}
