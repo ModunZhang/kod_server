@@ -18,7 +18,7 @@ var allianceSchema = new Schema({
 		flag:{type:String, required:true},
 		power:{type:Number, required:true, default:0},
 		kill:{type:Number, required:true, default:0},
-		joinType:{type:String, required:true, default:Consts.AllianceJoinType.All},
+		joinType:{type:String, required:true, default:Consts.AllianceJoinType.Audit},
 		level:{type:Number, required:true, default:0},
 		exp:{type:Number, required:true, default:0},
 		createTime:{type:Number, required:true, default:Date.now()}
