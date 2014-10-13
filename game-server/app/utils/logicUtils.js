@@ -887,13 +887,13 @@ Utils.getPlayerBuildEvent = function(playerDoc, eventType, eventIndex){
  * @returns {{id: *, type: *, level: *, index: *, maxHelpCount: *, helpedMembers: Array}}
  */
 Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, level, eventType, eventIndex){
-	var castle = playerDoc.buildings["location_1"]
+	var keep = playerDoc.buildings["location_1"]
 	var event = {
 		id:playerDoc._id,
 		type:eventType,
 		level:level,
 		index:eventIndex,
-		maxHelpCount:castle.level,
+		maxHelpCount:keep.level,
 		helpedMembers:[]
 	}
 	allianceDoc.helpEvents.push(event)
@@ -957,4 +957,22 @@ Utils.sendSystemMail = function(playerDoc, titleKey, titleArgs, contentKey, cont
 		playerDoc.mails.shift()
 	}
 	playerDoc.mails.push(mail)
+}
+
+/**
+ * 根据事件类型和Index获取联盟帮助事件
+ * @param allianceDoc
+ * @param playerId
+ * @param helpEventType
+ * @param eventIndex
+ * @returns {*}
+ */
+Utils.getAllianceHelpEvent = function(allianceDoc, playerId, helpEventType, eventIndex){
+	for(var i = 0; i < allianceDoc.helpEvents.length; i++){
+		var event = allianceDoc.helpEvents[i]
+		if(_.isEqual(event.type, helpEventType) && _.isEqual(event.id, playerId) && _.isEqual(event.index, eventIndex)){
+			return event
+		}
+	}
+	return null
 }

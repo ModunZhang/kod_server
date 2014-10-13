@@ -111,7 +111,7 @@ var playerSchema = new Schema({
 		vipFinishTime:{type:Number, required:true, default:0},
 		resourceRefreshTime:{type:Number, required:true, default:Date.now()},
 		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn},
-		buildQueue:{type:Number, required:true, default:1}
+		buildQueue:{type:Number, required:true, default:5}
 	},
 	resources:{
 		wood:{type:Number, required:true, default:ResourceInitData.wood},

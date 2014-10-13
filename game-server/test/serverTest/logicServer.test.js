@@ -2046,13 +2046,10 @@ describe("LogicServer", function(){
 		})
 
 		it("createAlliance 联盟标签已经存在", function(done){
-			LoginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				createAlliance("Hello", Config.allianceTag, "cn", "grassLand", "e", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("联盟标签已经存在")
-					done()
-				})
+			createAlliance("Hello", Config.allianceTag, "cn", "grassLand", "e", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("联盟标签已经存在")
+				done()
 			})
 		})
 
@@ -2682,19 +2679,81 @@ describe("LogicServer", function(){
 		})
 
 		it("upgradeBuilding 加入联盟后", function(done){
-			upgradeBuilding(1, false, function(doc){
+			upgradeBuilding(1, true, function(doc){
+				doc.code.should.equal(200)
+				upgradeBuilding(1, false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("createHouse 加入联盟后", function(done){
+			createHouse("dwelling", 3, 3, false, function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
 		})
 
-		it("helpAllianceMemberSpeedUp 正常帮助", function(done){
+		it("upgradeHouse 加入联盟后", function(done){
+			createHouse("dwelling", 3, 1, true, function(doc){
+				doc.code.should.equal(200)
+				upgradeHouse(3, 1, false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("upgradeTower 加入联盟后", function(done){
+			upgradeTower(1, false, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("upgradeWall 加入联盟后", function(done){
+			upgradeWall(false, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("helpAllianceMemberSpeedUp 正常帮助1", function(done){
 			LoginPlayer(Config.deviceId3, function(doc){
 				doc.code.should.equal(200)
 				helpAllianceMemberSpeedUp(0, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
+			})
+		})
+
+		it("helpAllianceMemberSpeedUp 正常帮助2", function(done){
+			helpAllianceMemberSpeedUp(1, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("helpAllianceMemberSpeedUp 正常帮助3", function(done){
+			helpAllianceMemberSpeedUp(2, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("helpAllianceMemberSpeedUp 正常帮助4", function(done){
+			helpAllianceMemberSpeedUp(1, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("helpAllianceMemberSpeedUp 正常帮助5", function(done){
+			helpAllianceMemberSpeedUp(1, function(doc){
+				doc.code.should.equal(200)
+				done()
 			})
 		})
 	})
