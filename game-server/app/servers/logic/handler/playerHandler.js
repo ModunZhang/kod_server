@@ -425,14 +425,60 @@ pro.sendMail = function(msg, session, next){
 }
 
 /**
- * 保存邮件
+ * 阅读邮件
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.readMail = function(msg, session, next){
+	var mailId = msg.mailId
+	this.playerService.readMailAsync(session.uid, mailId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+
+/**
+ * 收藏邮件
  * @param msg
  * @param session
  * @param next
  */
 pro.saveMail = function(msg, session, next){
-	var mailIndex = msg.mailIndex
-	this.playerService.saveMailAsync(session.uid, mailIndex).then(function(){
+	var mailId = msg.mailId
+	this.playerService.saveMailAsync(session.uid, mailId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 取消收藏邮件
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.unSaveMail = function(msg, session, next){
+	var mailId = msg.mailId
+	this.playerService.unSaveMailAsync(session.uid, mailId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 删除邮件
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.deleteMail = function(msg, session, next){
+	var mailId = msg.mailId
+	this.playerService.deleteMailAsync(session.uid, mailId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

@@ -232,13 +232,6 @@ pro.onGetPlayerInfoSuccess = function(playerDoc, callback){
 pro.onAllianceDataChanged = function(allianceDoc, callback){
 	var eventName = Events.alliance.onAllianceDataChanged
 	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
-	for(var i = 0; i < allianceDoc.members.length; i ++){
-		var member = allianceDoc.members[i]
-		if(_.isEqual(member.title, Consts.AllianceTitle.Archon)){
-			allianceDoc.archonName = member.name
-			break
-		}
-	}
 	this.globalChannelService.pushMessage(this.serverType, eventName, allianceDoc, channelName, null, callback)
 }
 

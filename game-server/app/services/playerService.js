@@ -3,7 +3,7 @@
 /**
  * Created by modun on 14-7-23.
  */
-
+var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
 var crypto = require("crypto")
@@ -2415,6 +2415,7 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 		}
 		memberDoc = doc
 		var mailToMember = {
+			id:ShortId.generate(),
 			title:title,
 			fromId:playerDoc._id,
 			fromName:playerDoc.basicInfo.name,
@@ -2429,6 +2430,8 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 		var mailToPlayer = {
 			title:title,
 			fromName:playerDoc.basicInfo.name,
+			toId:memberDoc._id,
+			toName:memberDoc.basicInfo.name,
 			content:content,
 			sendTime:Date.now()
 		}
@@ -2467,12 +2470,12 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 }
 
 /**
- * 保存邮件
+ * 阅读邮件
  * @param playerId
- * @param mailIndex
+ * @param mailId
  * @param callback
  */
-pro.saveMail = function(playerId, mailIndex, callback){
+pro.readMail = function(playerId, mailId, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -2480,8 +2483,8 @@ pro.saveMail = function(playerId, mailIndex, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(mailIndex) || mailIndex % 1 !== 0 || mailIndex < 0){
-		callback(new Error("mailIndex 不合法"))
+	if(!_.isString(mailId)){
+		callback(new Error("mailId 不合法"))
 		return
 	}
 
@@ -2492,13 +2495,65 @@ pro.saveMail = function(playerId, mailIndex, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var mail = playerDoc.mails[mailIndex]
+		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
+		if(!_.isObject(mail)){
+			return Promise.reject(new Error("邮件不存在"))
+		}
+		mail.isRead = true
+		return self.playerDao.updateAsync(playerDoc)
+	}).then(function(playerDoc){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 收藏邮件
+ * @param playerId
+ * @param mailId
+ * @param callback
+ */
+pro.saveMail = function(playerId, mailId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(mailId)){
+		callback(new Error("mailId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
 		if(!_.isObject(mail)){
 			return Promise.reject(new Error("邮件不存在"))
 		}
 		if(playerDoc.savedMails.length >= Define.PlayerMailFavoriteMessageMaxSize){
 			playerDoc.savedMails.shift()
 		}
+		mail.isSaved = true
 		playerDoc.savedMails.push(mail)
 		return self.playerDao.updateAsync(playerDoc)
 	}).then(function(playerDoc){
@@ -2520,6 +2575,111 @@ pro.saveMail = function(playerId, mailIndex, callback){
 	})
 }
 
+/**
+ * 取消收藏邮件
+ * @param playerId
+ * @param mailId
+ * @param callback
+ */
+pro.unSaveMail = function(playerId, mailId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(mailId)){
+		callback(new Error("mailId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var mailInSavedMails = LogicUtils.getPlayerSavedMailById(playerDoc, mailId)
+		var mailInMails = LogicUtils.getPlayerMailById(playerDoc, mailId)
+		if(!_.isObject(mailInSavedMails)){
+			return Promise.reject(new Error("邮件不存在"))
+		}
+		LogicUtils.removeItemInArray(playerDoc.savedMails, mailInSavedMails)
+		if(_.isObject(mailInMails)){
+			mailInMails.isSaved = false
+		}
+		return self.playerDao.updateAsync(playerDoc)
+	}).then(function(playerDoc){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 删除邮件
+ * @param playerId
+ * @param mailId
+ * @param callback
+ */
+pro.deleteMail = function(playerId, mailId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(mailId)){
+		callback(new Error("mailId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
+		if(!_.isObject(mail)){
+			return Promise.reject(new Error("邮件不存在"))
+		}
+		LogicUtils.removeItemInArray(playerDoc.mails, mail)
+		return self.playerDao.updateAsync(playerDoc)
+	}).then(function(playerDoc){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
 
 /**
  * 发送联盟邮件
@@ -2572,10 +2732,13 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		var mailToPlayer = {
 			title:title,
 			fromName:playerDoc.basicInfo.name,
+			toId:"__allianceMembers",
+			toName:"__allianceMembers",
 			contend:content,
 			sendTime:Date.now()
 		}
 		var mailToMember = {
+			id:ShortId.generate(),
 			title:title,
 			fromId:playerDoc._id,
 			fromName:playerDoc.basicInfo.name,

@@ -4,6 +4,7 @@
  * Created by modun on 14-8-6.
  */
 
+var ShortId = require("shortid")
 var _ = require("underscore")
 var sprintf = require("sprintf")
 var Promise = require("bluebird")
@@ -947,6 +948,7 @@ Utils.sendSystemMail = function(playerDoc, titleKey, titleArgs, contentKey, cont
 	}
 
 	var mail = {
+		id:ShortId.generate(),
 		title:title,
 		fromId:"system",
 		fromName:"system",
@@ -973,6 +975,34 @@ Utils.getAllianceHelpEvent = function(allianceDoc, playerId, helpEventType, even
 		if(_.isEqual(event.type, helpEventType) && _.isEqual(event.id, playerId) && _.isEqual(event.index, eventIndex)){
 			return event
 		}
+	}
+	return null
+}
+
+/**
+ * 根据邮件Id获取邮件
+ * @param playerDoc
+ * @param mailId
+ * @returns {*}
+ */
+Utils.getPlayerMailById = function(playerDoc, mailId){
+	for(var i = 0; i < playerDoc.mails.length; i ++){
+		var mail = playerDoc.mails[i]
+		if(_.isEqual(mail.id, mailId)) return mail
+	}
+	return null
+}
+
+/**
+ * 根据邮件Id获取已保存的邮件
+ * @param playerDoc
+ * @param mailId
+ * @returns {*}
+ */
+Utils.getPlayerSavedMailById = function(playerDoc, mailId){
+	for(var i = 0; i < playerDoc.savedMails.length; i ++){
+		var mail = playerDoc.savedMails[i]
+		if(_.isEqual(mail.id, mailId)) return mail
 	}
 	return null
 }

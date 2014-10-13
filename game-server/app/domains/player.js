@@ -3,6 +3,7 @@
 /**
  * Created by modun on 14-7-22.
  */
+var ShortId = require("shortid")
 var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
@@ -100,7 +101,7 @@ var playerSchema = new Schema({
 		gemUsed:{type:Number, required:true, default:0}
 	},
 	basicInfo:{
-		name:{type:String, unique:true, required:true},
+		name:{type:String, required:true, unique:true},
 		cityName:{type:String, required:true},
 		icon:{type:String, required:true, default:"playerIcon_default.png"},
 		level:{type:Number, required:true, default:1},
@@ -127,7 +128,7 @@ var playerSchema = new Schema({
 	},
 	coinEvents:[
 		{
-			_id : false,
+			_id:false,
 			coin:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
 		}
@@ -144,11 +145,11 @@ var playerSchema = new Schema({
 	},
 	materialEvents:[
 		{
-			_id : false,
+			_id:false,
 			category:{type:String, required:true},
 			materials:[
 				{
-					_id : false,
+					_id:false,
 					type:{type:String, required:true},
 					count:{type:Number, required:true}
 				}
@@ -186,7 +187,7 @@ var playerSchema = new Schema({
 	},
 	soldierEvents:[
 		{
-			_id : false,
+			_id:false,
 			name:{type:String, required:true},
 			count:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
@@ -204,10 +205,10 @@ var playerSchema = new Schema({
 	},
 	treatSoldierEvents:[
 		{
-			_id : false,
+			_id:false,
 			soldiers:[
 				{
-					_id : false,
+					_id:false,
 					name:{type:String, required:true},
 					count:{type:Number, required:true}
 				}
@@ -324,7 +325,7 @@ var playerSchema = new Schema({
 	},
 	dragonEquipmentEvents:[
 		{
-			_id : false,
+			_id:false,
 			name:{type:String, required:true},
 			finishTime:{type:Number, required:true}
 		}
@@ -354,14 +355,14 @@ var playerSchema = new Schema({
 	},
 	buildingEvents:[
 		{
-			_id : false,
+			_id:false,
 			location:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
 		}
 	],
 	houseEvents:[
 		{
-			_id : false,
+			_id:false,
 			buildingLocation:{type:Number, required:true},
 			houseLocation:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
@@ -382,7 +383,7 @@ var playerSchema = new Schema({
 	},
 	towerEvents:[
 		{
-			_id : false,
+			_id:false,
 			location:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
 		}
@@ -392,13 +393,13 @@ var playerSchema = new Schema({
 	},
 	wallEvents:[
 		{
-			_id : false,
+			_id:false,
 			finishTime:{type:Number, required:true}
 		}
 	],
 	requestToAllianceEvents:[
 		{
-			_id : false,
+			_id:false,
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			tag:{type:String, required:true},
@@ -414,7 +415,7 @@ var playerSchema = new Schema({
 	],
 	inviteToAllianceEvents:[
 		{
-			_id : false,
+			_id:false,
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			tag:{type:String, required:true},
@@ -436,15 +437,21 @@ var playerSchema = new Schema({
 	},
 	mails:[
 		{
+			_id:false,
+			id:{type:String, required:true},
 			title:{type:String, required:true},
 			fromId:{type:String, required:true},
 			fromName:{type:String, required:true},
 			content:{type:String, required:true},
-			sendTime:{type:Number, required:true}
+			sendTime:{type:Number, required:true},
+			isRead:{type:Boolean, require:true, default:false},
+			isSaved:{type:Boolean, require:true, default:false}
 		}
 	],
 	reports:[
 		{
+			_id:false,
+			id:{type:Number, required:true}
 		}
 	],
 	savedMails:[
@@ -461,14 +468,16 @@ var playerSchema = new Schema({
 	savedReports:[
 		{
 			_id:false,
-			id:{type:String, required:true}
+			id:{type:Number, required:true}
 		}
 	],
 	sendMails:[
 		{
-			_id : false,
+			_id:false,
 			title:{type:String, required:true},
 			fromName:{type:String, required:true},
+			toId:{type:String, required:true},
+			toName:{type:String, required:true},
 			content:{type:String, required:true},
 			sendTime:{type:Number, required:true}
 		}

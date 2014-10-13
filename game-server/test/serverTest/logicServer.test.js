@@ -394,17 +394,36 @@ var sendMail = function(memberName, title, content, callback){
 	pomelo.request(route, info, callback)
 }
 
-var saveMail = function(mailIndex, callback){
+var readMail = function(mailId, callback){
 	var info = {
-		mailIndex:mailIndex
+		mailId:mailId
+	}
+	var route = "logic.playerHandler.readMail"
+	pomelo.request(route, info, callback)
+}
+
+var saveMail = function(mailId, callback){
+	var info = {
+		mailId:mailId
 	}
 	var route = "logic.playerHandler.saveMail"
 	pomelo.request(route, info, callback)
 }
 
-var quitAlliance = function(callback){
-	var route = "logic.playerHandler.quitAlliance"
-	pomelo.request(route, null, callback)
+var unSaveMail = function(mailId, callback){
+	var info = {
+		mailId:mailId
+	}
+	var route = "logic.playerHandler.unSaveMail"
+	pomelo.request(route, info, callback)
+}
+
+var deleteMail = function(mailId, callback){
+	var info = {
+		mailId:mailId
+	}
+	var route = "logic.playerHandler.deleteMail"
+	pomelo.request(route, info, callback)
 }
 
 var sendAllianceMail = function(title, content, callback){
@@ -414,6 +433,11 @@ var sendAllianceMail = function(title, content, callback){
 	}
 	var route = "logic.playerHandler.sendAllianceMail"
 	pomelo.request(route, info, callback)
+}
+
+var quitAlliance = function(callback){
+	var route = "logic.playerHandler.quitAlliance"
+	pomelo.request(route, null, callback)
 }
 
 var requestToJoinAlliance = function(allianceId, callback){
@@ -1970,20 +1994,38 @@ describe("LogicServer", function(){
 						doc.code.should.equal(200)
 						done()
 					})
+					var onPlayerLoginSuccess = function(doc){
+						m_user = doc
+						pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+					}
+					pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
 				})
 			})
 		})
 
-		it("saveMail 邮件不存在", function(done){
-			saveMail(12, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("邮件不存在")
+		it("readMail 正常阅读", function(done){
+				readMail(m_user.mails[0].id, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+		})
+
+		it("saveMail 正常收藏", function(done){
+			saveMail(m_user.mails[0].id, function(doc){
+				doc.code.should.equal(200)
 				done()
 			})
 		})
 
-		it("saveMail 正常保存", function(done){
-			saveMail(0, function(doc){
+		it("unSaveMail 正常取消收藏", function(done){
+			unSaveMail(m_user.mails[0].id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("deleteMail 正常删除收藏", function(done){
+			deleteMail(m_user.mails[0].id, function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
