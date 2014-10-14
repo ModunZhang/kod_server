@@ -22,5 +22,5 @@ for _, index in ipairs(indexs) do
     local key = modelName .. "." .. index .. ":" .. value
     redis.call("del", key)
 end
-redis.call("del", fullKey)
+return redis.call("del", fullKey)
 

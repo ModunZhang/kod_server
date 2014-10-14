@@ -47,8 +47,7 @@ pro.reset = function(uid, callback){
 
 		var requiredInfo = {
 			countInfo:{
-				deviceId:"__testDeviceId2",
-				logicServerId:"logic-server-1"
+				deviceId:"__testDeviceId2"
 			},
 			basicInfo:{
 				name:"player_111111",
@@ -64,6 +63,7 @@ pro.reset = function(uid, callback){
 		newPlayer.countInfo.deviceId = doc.countInfo.deviceId
 		newPlayer.basicInfo.name = doc.basicInfo.name
 		newPlayer.basicInfo.cityName = doc.basicInfo.cityName
+		newPlayer.alliance = doc.alliance
 		return self.playerDao.updateAsync(newPlayer)
 	}).then(function(doc){
 		self.pushService.onPlayerDataChanged(doc)
@@ -374,15 +374,16 @@ pro.rmmaterialevents = function(uid, callback){
  */
 pro.kickme = function(uid, callback){
 	var self = this
+	var playerDoc = null
 	var kickPlayer = Promise.promisify(this.sessionService.kickByUid, this)
 	this.playerDao.findByIdAsync(uid).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
-
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return kickPlayer(doc.logicServerId, doc._id)
+		playerDoc = doc
+		return self.playerDao.removeLockByIdAsync(playerDoc._id)
+	}).then(function(){
+		return kickPlayer(playerDoc.logicServerId, playerDoc._id)
 	}).then(function(){
 		callback()
 	}).catch(function(e){

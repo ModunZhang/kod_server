@@ -35,4 +35,4 @@ for _, index in ipairs(indexs) do
     local key = modelName .. "." .. index .. ":" .. value
     redis.call("set", key, objectNew._id)
 end
-redis.call("del", lockKey)
+return redis.call("del", lockKey)

@@ -12,4 +12,4 @@ local objectId = redis.call("get", fullIndex)
 if not objectId then return end
 local fullKey = modelName .. ":" .. objectId
 local lockKey = "lock." .. fullKey
-redis.call("del", lockKey)
+return redis.call("del", lockKey)

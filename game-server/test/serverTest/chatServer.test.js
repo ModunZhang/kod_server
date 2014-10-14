@@ -1,6 +1,6 @@
 /**
- * Created by modun on 14-7-29.
- */
+* Created by modun on 14-7-29.
+*/
 
 var should = require('should')
 var pomelo = require("../pomelo-client")

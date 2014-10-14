@@ -528,10 +528,10 @@ describe("LogicServer", function(){
 		it("login", function(done){
 			LoginPlayer(Config.deviceId, function(doc){
 				doc.code.should.equal(200)
+				done()
 			})
 			var onPlayerLoginSuccess = function(doc){
 				m_user = doc
-				done()
 				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
 			}
 			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)

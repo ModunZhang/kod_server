@@ -113,12 +113,12 @@ var BindPlayerSession = function(session, playerDoc, callback){
 
 var PlayerLeave = function(session, reason){
 	console.log("user [" + session.uid + "] logout with reason [" + reason + "]")
+	var self = this
 	var tryTimes = 2
 	var func = function(){
-		var self = this
-		var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, this)
+		var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, self)
 		var playerDoc = null
-		this.playerDao.findByIdAsync(session.uid).then(function(doc){
+		self.playerDao.findByIdAsync(session.uid).then(function(doc){
 			if(!_.isObject(doc)){
 				return Promise.reject(new Error("玩家不存在"))
 			}
@@ -135,7 +135,7 @@ var PlayerLeave = function(session, reason){
 		}).then(function(){
 			playerDoc.logicServerId = null
 			playerDoc.eventServerId = null
-			self.playerDao.updateAsync(playerDoc)
+			return self.playerDao.updateAsync(playerDoc)
 		}).catch(function(e){
 			errorLogger.error("handle entryHandler:playerLogout Error -----------------------------")
 			errorLogger.error(e.stack)
@@ -155,7 +155,7 @@ var PlayerLeave = function(session, reason){
 		})
 	}
 
-	func.call(this)
+	func()
 }
 
 
