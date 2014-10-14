@@ -950,8 +950,9 @@ Utils.sendSystemMail = function(playerDoc, titleKey, titleArgs, contentKey, cont
 	var mail = {
 		id:ShortId.generate(),
 		title:title,
-		fromId:"system",
-		fromName:"system",
+		fromId:"__system",
+		fromName:"__system",
+		fromAllianceTag:"",
 		sendTime:Date.now(),
 		content:content
 	}

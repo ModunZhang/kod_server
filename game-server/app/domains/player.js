@@ -3,6 +3,7 @@
 /**
  * Created by modun on 14-7-22.
  */
+
 var ShortId = require("shortid")
 var mongoose = require("mongoose")
 var Schema = mongoose.Schema
@@ -93,8 +94,9 @@ var createDragonSchema = function(dragonType){
 }
 
 var playerSchema = new Schema({
+	_id:{type:String, required:true, unique:true, default:ShortId.generate},
 	countInfo:{
-		deviceId:{type:String, index:true, required:true, unique:true},
+		deviceId:{type:String, required:true, index:true, unique:true},
 		registerTime:{type:Number, required:true, default:Date.now()},
 		lastLoginTime:{type:Number, required:true, default:Date.now()},
 		loginCount:{type:Number, required:true, default:0},
@@ -431,6 +433,7 @@ var playerSchema = new Schema({
 	alliance:{
 		id:{type:String, required:false},
 		name:{type:String, required:false},
+		tag:{type:String, required:false},
 		title:{type:String, required:false},
 		titleName:{type:String, required:false}
 	},
@@ -440,6 +443,7 @@ var playerSchema = new Schema({
 			id:{type:String, required:true},
 			title:{type:String, required:true},
 			fromId:{type:String, required:true},
+			fromAllianceTag:{type:String},
 			fromName:{type:String, required:true},
 			content:{type:String, required:true},
 			sendTime:{type:Number, required:true},
@@ -475,6 +479,7 @@ var playerSchema = new Schema({
 			_id:false,
 			title:{type:String, required:true},
 			fromName:{type:String, required:true},
+			fromAllianceTag:{type:String},
 			toId:{type:String, required:true},
 			toName:{type:String, required:true},
 			content:{type:String, required:true},

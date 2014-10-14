@@ -2419,6 +2419,7 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 			title:title,
 			fromId:playerDoc._id,
 			fromName:playerDoc.basicInfo.name,
+			fromAllianceTag:(!!playerDoc.alliance && !!playerDoc.alliance.id) ? playerDoc.alliance.tag : "",
 			content:content,
 			sendTime:Date.now()
 		}
@@ -2430,6 +2431,7 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 		var mailToPlayer = {
 			title:title,
 			fromName:playerDoc.basicInfo.name,
+			fromAllianceTag:(!!playerDoc.alliance && !!playerDoc.alliance.id) ? playerDoc.alliance.tag : "",
 			toId:memberDoc._id,
 			toName:memberDoc.basicInfo.name,
 			content:content,
@@ -2732,9 +2734,10 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		var mailToPlayer = {
 			title:title,
 			fromName:playerDoc.basicInfo.name,
+			fromAllianceTag:(!!playerDoc.alliance && !!playerDoc.alliance.id) ? playerDoc.alliance.tag : "",
 			toId:"__allianceMembers",
 			toName:"__allianceMembers",
-			contend:content,
+			content:content,
 			sendTime:Date.now()
 		}
 		var mailToMember = {
@@ -2742,6 +2745,7 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 			title:title,
 			fromId:playerDoc._id,
 			fromName:playerDoc.basicInfo.name,
+			fromAllianceTag:playerDoc.alliance.tag,
 			content:content,
 			sendTime:Date.now()
 		}
@@ -2909,6 +2913,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		playerDoc.alliance = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag,
 			title:Consts.AllianceTitle.Archon,
 			titleName:allianceDoc.titles.archon
 		}
@@ -2970,7 +2975,7 @@ pro.getCanDirectJoinAlliances = function(playerId, callback){
 		playerDoc = doc
 		var funcs = []
 		funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		funcs.push(self.allianceDao.getModel().find({"basicInfo.joinType":Consts.AllianceJoinType.All}).sort({"basicInfo.power": -1}).limit(10).exec())
+		funcs.push(self.allianceDao.getModel().find({"basicInfo.joinType":Consts.AllianceJoinType.All}).sort({"basicInfo.power":-1}).limit(10).exec())
 		return Promise.all(funcs)
 	}).spread(function(tmp, docs){
 		return self.pushService.onGetAllianceSuccessAsync(playerDoc, docs)
@@ -3116,14 +3121,16 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, terrain, fla
 			return Promise.reject(new Error("联盟标签已经存在"))
 		}
 		var isNameChanged = !_.isEqual(allianceDoc.basicInfo.name, name)
+		var isTagChanged = !_.isEqual(allianceDoc.basicInfo.tag, tag)
 		allianceDoc.basicInfo.name = name
 		allianceDoc.basicInfo.tag = tag
 		allianceDoc.basicInfo.language = language
 		allianceDoc.basicInfo.terrain = terrain
 		allianceDoc.basicInfo.flag = flag
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		if(isNameChanged){
+		if(isNameChanged || isTagChanged){
 			playerDoc.alliance.name = name
+			playerDoc.alliance.tag = tag
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
 		}else{
@@ -3917,6 +3924,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		playerDoc.alliance = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag,
 			title:Consts.AllianceTitle.Member,
 			titleName:allianceDoc.titles.member
 		}
@@ -4253,6 +4261,7 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		memberDoc.alliance = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag,
 			title:Consts.AllianceTitle.Member,
 			titleName:allianceDoc.titles.member
 		}
@@ -4518,6 +4527,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		playerDoc.alliance = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag,
 			title:Consts.AllianceTitle.Member,
 			titleName:allianceDoc.titles.member
 		}
