@@ -510,7 +510,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
 			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
-				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
+				var timeRemain = (preBuildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
@@ -698,7 +698,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
 			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
-				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
+				var timeRemain = (preBuildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
@@ -936,7 +936,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
 			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
-				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
+				var timeRemain = (preBuildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
@@ -1085,7 +1085,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
 			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
-				var timeRemain = (buildEvent.finishTime - Date.now()) / 1000
+				var timeRemain = (preBuildEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
@@ -4736,11 +4736,11 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 		var params = RefreshPlayerEventsAndGetCallbacks.call(self, playerDoc, allianceDoc, finishTime, false)
 		pushFuncs = pushFuncs.concat(params.pushFuncs)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		if(params.findHelpEvent){
+		if(!!params.findHelpEvent){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-			pushFuncs.unshift(self.pushService.onAllianceDataChangedAsync(allianceDoc))
+			pushFuncs.unshift([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc])
 		}
-		pushFuncs.unshift(self.pushService.onPlayerDataChangedAsync(playerDoc))
+		pushFuncs.unshift([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc])
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)

@@ -103,7 +103,6 @@ pro.clearTimeEventsByKey = function(key, callback){
  * 执行事件回调
  * @param key
  * @param finishTime
- * @constructor
  */
 var ExcuteTimeEvent = function(key, finishTime){
 	var callbacks = this.callbacks[key]
