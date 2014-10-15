@@ -1023,6 +1023,7 @@ Utils.refreshBuildingEventsData = function(playerDoc, playerData){
 	playerData.towers = playerDoc.towers
 	playerData.wall = playerDoc.wall
 	playerData.buildingEvents = playerDoc.buildingEvents
+	playerData.houseEvents = playerDoc.houseEvents
 	playerData.towerEvents = playerDoc.towerEvents
 	playerData.wallEvents = playerDoc.wallEvents
 }
