@@ -1015,8 +1015,9 @@ Utils.getPlayerSavedMailById = function(playerDoc, mailId){
  * @param playerDoc
  * @param playerData
  */
-Utils.addUpgradeBuildingChangedData = function(playerDoc, playerData){
+Utils.refreshBuildingEventsData = function(playerDoc, playerData){
 	playerData.resources = playerDoc.resources
+	playerData.materials = playerDoc.materials
 	playerData.basicInfo = playerDoc.basicInfo
 	playerData.buildings = playerDoc.buildings
 	playerData.towers = playerDoc.towers

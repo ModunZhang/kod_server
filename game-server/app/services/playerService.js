@@ -378,7 +378,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 				allianceData.helpEvents = allianceDoc.helpEvents
 			}
 		}
-		LogicUtils.addUpgradeBuildingChangedData(playerDoc, playerData)
+		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
 		LogicUtils.refreshPlayerResources(playerDoc)
 		return Promise.resolve()
 	}).then(function(){
@@ -446,7 +446,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-
 	var building = null
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
@@ -496,6 +495,8 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var currentBuildEventIndex = null
+		var playerData = {}
+		var allianceData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -530,7 +531,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			location:houseLocation
 		}
 		building.houses.push(house)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 
 		if(finishNow){
@@ -554,7 +555,8 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			if(_.isObject(allianceDoc)){
 				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, house.level, Consts.AllianceHelpEventType.House, currentBuildEventIndex)
 				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceDoc])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+				allianceData.helpEvents = allianceDoc.helpEvents
 			}
 		}
 		if(_.isEqual("dwelling", house.type) && finishNow){
@@ -562,6 +564,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
 		}
+		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
 		LogicUtils.refreshPlayerResources(playerDoc)
 		return Promise.resolve()
 	}).then(function(){
@@ -626,7 +629,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-
 	var building = null
 	var house = null
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
@@ -684,6 +686,8 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var currentBuildEventIndex = null
+		var playerData = {}
+		var allianceData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -712,7 +716,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 
 		if(finishNow){
@@ -737,6 +741,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, house.level, Consts.AllianceHelpEventType.House, currentBuildEventIndex)
 				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceDoc])
+				allianceData.helpEvents = allianceDoc.helpEvents
 			}
 		}
 		if(_.isEqual("dwelling", house.type) && finishNow){
@@ -744,6 +749,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
 		}
+		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
 		LogicUtils.refreshPlayerResources(playerDoc)
 		return Promise.resolve()
 	}).then(function(){
@@ -837,7 +843,9 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		LogicUtils.refreshPlayerPower(playerDoc)
 		return self.playerDao.updateAsync(playerDoc)
 	}).then(function(playerDoc){
-		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerDoc)
+		var playerData = {}
+		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
+		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -881,7 +889,6 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-
 	var tower = null
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
@@ -922,6 +929,8 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var currentBuildEventIndex = null
+		var playerData = {}
+		var allianceData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -950,7 +959,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 
 		if(finishNow){
@@ -974,9 +983,11 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			if(_.isObject(allianceDoc)){
 				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, tower.level, Consts.AllianceHelpEventType.Tower, currentBuildEventIndex)
 				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceDoc])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+				allianceData.helpEvents = allianceDoc.helpEvents
 			}
 		}
+		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
 		LogicUtils.refreshPlayerResources(playerDoc)
 		return Promise.resolve()
 	}).then(function(){
@@ -1071,6 +1082,8 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var currentBuildEventIndex = null
+		var playerData = {}
+		var allianceData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -1099,7 +1112,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 
 		if(finishNow){
@@ -1123,9 +1136,11 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			if(_.isObject(allianceDoc)){
 				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, wall.level, Consts.AllianceHelpEventType.Wall, currentBuildEventIndex)
 				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceDoc])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+				allianceData.helpEvents = allianceDoc.helpEvents
 			}
 		}
+		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
 		LogicUtils.refreshPlayerResources(playerDoc)
 		return Promise.resolve()
 	}).then(function(){
@@ -1211,6 +1226,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		var gemUsed = 0
 		var makeRequired = DataUtils.getMakeMaterialRequired(category, toolShop.level)
 		var buyedResources = null
+		var playerData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(makeRequired.buildTime)
@@ -1227,7 +1243,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		}
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(makeRequired.resources, playerDoc.resources)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 
 		event = DataUtils.generateMaterialEvent(toolShop, category, finishNow)
 		playerDoc.materialEvents.push(event)
@@ -1238,6 +1254,9 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.resources = playerDoc.resources
+		playerData.materialEvents = playerDoc.materialEvents
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1296,10 +1315,13 @@ pro.getMaterials = function(playerId, category, callback){
 		if(event.finishTime > 0){
 			return Promise.reject(new Error("同类型的材料正在制造"))
 		}
+		var playerData = {}
 		LogicUtils.removeEvents([event], playerDoc.materialEvents)
 		DataUtils.addPlayerMaterials(playerDoc, event.materials)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onGetMaterialSuccessAsync, playerDoc, event])
+		playerData.materialEvents = playerDoc.materialEvents
+		playerData.materials = playerDoc.materials
 		return self.playerDao.updateAsync(playerDoc)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
@@ -1373,6 +1395,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		var gemUsed = 0
 		var recruitRequired = DataUtils.getRecruitNormalSoldierRequired(soldierName, count)
 		var buyedResources = null
+		var playerData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
@@ -1389,7 +1412,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		}
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(recruitRequired.resources, playerDoc.resources)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 
 		if(finishNow){
 			playerDoc.soldiers[soldierName] += count
@@ -1402,6 +1425,10 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.resources = playerDoc.resources
+		playerData.soldierEvents = playerDoc.soldierEvents
+		playerData.soldiers = playerDoc.soldiers
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1479,6 +1506,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		var gemUsed = 0
 		var recruitRequired = DataUtils.getRecruitSpecialSoldierRequired(soldierName, count)
 		var buyedResources = null
+		var playerData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(!LogicUtils.isEnough(recruitRequired.materials, playerDoc.soldierMaterials)){
 			return Promise.reject(new Error("材料不足"))
@@ -1499,7 +1527,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(recruitRequired.materials, playerDoc.soldierMaterials)
 		LogicUtils.reduce({citizen:recruitRequired.citizen}, playerDoc.resources)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 
 		if(finishNow){
 			playerDoc.soldiers[soldierName] += count
@@ -1512,6 +1540,11 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.resources = playerDoc.resources
+		playerData.soldierEvents = playerDoc.soldierEvents
+		playerData.soldiers = playerDoc.soldiers
+		playerData.soldierMaterials = playerDoc.soldierMaterials
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1576,6 +1609,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		var gemUsed = 0
 		var makeRequired = DataUtils.getMakeDragonEquipmentRequired(playerDoc, equipmentName)
 		var buyedResources = null
+		var playerData = {}
 		if(!LogicUtils.isEnough(makeRequired.materials, playerDoc.dragonMaterials)){
 			return Promise.reject(new Error("材料不足"))
 		}
@@ -1595,7 +1629,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce({coin:makeRequired.coin}, playerDoc.resources)
 		LogicUtils.reduce(makeRequired.materials, playerDoc.dragonMaterials)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 
 		if(finishNow){
 			playerDoc.dragonEquipments[equipmentName] += 1
@@ -1606,6 +1640,11 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.resources = playerDoc.resources
+		playerData.dragonMaterials = playerDoc.dragonMaterials
+		playerData.dragonEquipments = playerDoc.dragonEquipments
+		playerData.dragonEquipmentEvents = playerDoc.dragonEquipmentEvents
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1678,6 +1717,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		var gemUsed = 0
 		var treatRequired = DataUtils.getTreatSoldierRequired(playerDoc, soldiers)
 		var buyedResources = null
+		var playerData = {}
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(treatRequired.treatTime)
 			buyedResources = DataUtils.buyResources(treatRequired.resources, {})
@@ -1693,7 +1733,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		}
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(treatRequired.resources, playerDoc.resources)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 
 		if(finishNow){
 			_.each(soldiers, function(soldier){
@@ -1712,6 +1752,11 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.resources = playerDoc.resources
+		playerData.soldiers = playerDoc.soldiers
+		playerData.treatSoldiers = playerDoc.treatSoldiers
+		playerData.treatSoldierEvents = playerDoc.treatSoldierEvents
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1777,6 +1822,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		if(dragon.star > 0){
 			return Promise.reject(new Error("龙蛋早已成功孵化"))
 		}
+		var playerData = {}
 		var energyNeed = 100 - dragon.vitality
 		if(playerDoc.resources.energy >= energyNeed){
 			dragon.star = 1
@@ -1787,8 +1833,12 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 			dragon.vitality += playerDoc.resources.energy
 			playerDoc.resources.energy = 0
 		}
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.resources = playerDoc.resources
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.dragons = {}
+		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1874,11 +1924,15 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 		if(!_.isEmpty(equipment.name)){
 			return Promise.reject(new Error("龙身上已经存在相同类型的装备"))
 		}
+		var playerData = {}
 		equipment.name = equipmentName
 		equipment.buffs = DataUtils.generateDragonEquipmentBuffs(equipmentName)
 		playerDoc.dragonEquipments[equipmentName] -= 1
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.dragonEquipments = playerDoc.dragonEquipments
+		playerData.dragons = {}
+		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1953,9 +2007,13 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 		if(!LogicUtils.isEnhanceDragonEquipmentLegal(playerDoc, equipments)){
 			return Promise.reject(new Error("被强化的装备不存在或数量不足"))
 		}
+		var playerData = {}
 		DataUtils.enhanceDragonEquipment(playerDoc, dragonType, equipmentCategory, equipments)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.dragons = {}
+		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+		playerData.dragonEquipments = playerDoc.dragonEquipments
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -2022,10 +2080,14 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 		if(playerDoc.dragonEquipments[equipment.name] <= 0){
 			return Promise.reject(new Error("仓库中没有此装备"))
 		}
+		var playerData = {}
 		equipment.buffs = DataUtils.generateDragonEquipmentBuffs(equipment.name)
 		playerDoc.dragonEquipments[equipment.name] -= 1
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.dragons = {}
+		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+		playerData.dragonEquipmentEvents = playerDoc.dragonEquipmentEvents
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -2094,8 +2156,8 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillLocation, callback)
 		if(DataUtils.isDragonSkillReachMaxLevel(skill)){
 			return Promise.reject(new Error("技能已达最高等级"))
 		}
-
 		var upgradeRequired = DataUtils.getDragonSkillUpgradeRequired(playerDoc, dragon, skill)
+		var playerData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(playerDoc.resources.energy < upgradeRequired.energy){
 			return Promise.reject(new Error("能量不足"))
@@ -2106,8 +2168,12 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillLocation, callback)
 		skill.level += 1
 		playerDoc.resources.energy -= upgradeRequired.energy
 		playerDoc.resources.blood -= upgradeRequired.blood
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.resources = playerDoc.resources
+		playerData.dragons = {}
+		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -2174,6 +2240,7 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 		if(!DataUtils.isDragonEquipmentsReachUpgradeLevel(dragon)){
 			return Promise.reject(new Error("龙的装备未达到晋级要求"))
 		}
+		var playerData = {}
 		dragon.star += 1
 		dragon.vitality = DataUtils.getDragonMaxVitality(playerDoc, dragon)
 		dragon.strength = DataUtils.getDragonStrength(playerDoc, dragon)
@@ -2183,8 +2250,10 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 			equipment.exp = 0
 			equipment.buffs = []
 		})
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.dragons = {}
+		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -2240,19 +2309,23 @@ pro.impose = function(playerId, callback){
 		if(playerDoc.coinEvents.length > 0){
 			return Promise.reject(new Error("正在收税中"))
 		}
-
 		LogicUtils.refreshPlayerResources(playerDoc)
 		var required = DataUtils.getImposeRequired(playerDoc)
 		var imposedCoin = DataUtils.getImposedCoin(playerDoc)
 		if(required.citizen > playerDoc.resources.citizen){
 			return Promise.reject(new Error("空闲城民不足"))
 		}
+		var playerData = {}
 		playerDoc.resources.citizen -= required.citizen
 		var finishTime = Date.now() + (required.imposeTime * 1000)
 		LogicUtils.addCoinEvent(playerDoc, imposedCoin, finishTime)
 		eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		LogicUtils.refreshPlayerResources(playerDoc)
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.resources = playerDoc.resources
+		playerData.coinEvents = playerDoc.coinEvents
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -2305,9 +2378,11 @@ pro.setPlayerLanguage = function(playerId, language, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
+		var playerData = {}
 		playerDoc.basicInfo.language = language
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.basicInfo = playerDoc.basicInfo
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
