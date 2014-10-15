@@ -21,7 +21,12 @@ module.exports = {
 		onImposeSuccess:"onImposeSuccess",
 		onGetPlayerInfoSuccess:"onGetPlayerInfoSuccess",
 		onSearchAlliancesSuccess:"onSearchAlliancesSuccess",
-		onGetAlliancesSuccess:"onGetAlliancesSuccess"
+		onGetAlliancesSuccess:"onGetAlliancesSuccess",
+		onNewMailReceived:"onNewMailReceived",
+		onSendMailSuccess:"onSendMailSuccess",
+		onGetMailsSuccess:"onGetMailsSuccess",
+		onGetSendMailsSuccess:"onGetSendMailsSuccess",
+		onGetSavedMailsSuccess:"onGetSavedMailsSuccess"
 	},
 	alliance:{
 		onGetAllianceDataSuccess:"onGetAllianceDataSuccess",

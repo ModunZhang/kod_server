@@ -58,35 +58,30 @@ pro.onPlayerDataChanged = function(playerDoc, data, callback){
 pro.onPlayerLoginSuccess = function(playerDoc, callback){
 	var data = Utils.clone(playerDoc)
 	data.serverTime = Date.now()
+	data.mails.reverse()
+	data.savedMails.reverse()
+	data.sendMails.reverse()
+	data.reports.reverse()
+	data.savedReports.reverse()
 
 	var unreadMails = 0
 	_.each(data.mails, function(mail){
 		if(!mail.isRead){
-			unreadMails ++
+			unreadMails++
 		}
 	})
-	if(data.mails.length > this.maxReturnMailSize){
-		data.mails.splice(0, data.mails.length - this.maxReturnMailSize)
-	}
-	if(data.savedMails.length > this.maxReturnMailSize){
-		data.savedMails.splice(0, data.savedMails.length - this.maxReturnMailSize)
-	}
-	if(data.sendMails.length > this.maxReturnMailSize){
-		data.sendMails.splice(0, data.sendMails.length - this.maxReturnMailSize)
-	}
+	data.mails = data.mails.slice(0, this.maxReturnMailSize)
+	data.savedMails = data.savedMails.slice(0, this.maxReturnMailSize)
+	data.sendMails = data.sendMails.slice(0, this.maxReturnMailSize)
 
 	var unreadReports = 0
 	_.each(data.reports, function(report){
 		if(!report.isRead){
-			unreadReports ++
+			unreadReports++
 		}
 	})
-	if(data.reports.length > this.maxReturnMailSize){
-		data.reports.splice(0, data.reports.length - this.maxReturnMailSize)
-	}
-	if(data.savedReports.length > this.maxReturnMailSize){
-		data.savedReports.splice(0, data.savedReports.length - this.maxReturnMailSize)
-	}
+	data.reports = data.reports.slice(0, this.maxReturnMailSize)
+	data.savedReports = data.savedReports.slice(0, this.maxReturnMailSize)
 
 	data.mailStatus = {
 		unreadMails:unreadMails,
@@ -309,4 +304,78 @@ pro.onGetAlliancesSuccess = function(playerDoc, allianceDocs, callback){
 		alliances:allianceDocs
 	}
 	this.pushToPlayer(playerDoc, Events.player.onGetAlliancesSuccess, data, callback)
+}
+
+/**
+ * 接受到新邮件
+ * @param playerDoc
+ * @param mail
+ * @param callback
+ */
+pro.onNewMailReceived = function(playerDoc, mail, callback){
+	var data = {
+		mail:mail
+	}
+	this.pushToPlayer(playerDoc, Events.player.onNewMailReceived, data, callback)
+}
+
+/**
+ * 发送邮件成功
+ * @param playerDoc
+ * @param mail
+ * @param callback
+ */
+pro.onSendMailSuccess = function(playerDoc, mail, callback){
+	var data = {
+		mail:mail
+	}
+	this.pushToPlayer(playerDoc, Events.player.onSendMailSuccess, data, callback)
+}
+
+/**
+ * 获取玩家邮件成功
+ * @param playerDoc
+ * @param fromIndex
+ * @param callback
+ */
+pro.onGetMailsSuccess = function(playerDoc, fromIndex, callback){
+	var mails = Utils.clone(playerDoc.mails)
+	mails.reverse()
+	mails = mails.slice(fromIndex, fromIndex + this.maxReturnMailSize)
+	var data = {
+		mails:mails
+	}
+	this.pushToPlayer(playerDoc, Events.player.onGetMailsSuccess, data, callback)
+}
+
+/**
+ * 获取玩家已发邮件成功
+ * @param playerDoc
+ * @param fromIndex
+ * @param callback
+ */
+pro.onGetSendMailsSuccess = function(playerDoc, fromIndex, callback){
+	var mails = Utils.clone(playerDoc.sendMails)
+	mails.reverse()
+	mails = mails.slice(fromIndex, fromIndex + this.maxReturnMailSize)
+	var data = {
+		mails:mails
+	}
+	this.pushToPlayer(playerDoc, Events.player.onGetSendMailsSuccess, data, callback)
+}
+
+/**
+ * 获取玩家已存邮件成功
+ * @param playerDoc
+ * @param fromIndex
+ * @param callback
+ */
+pro.onGetSavedMailsSuccess = function(playerDoc, fromIndex, callback){
+	var mails = Utils.clone(playerDoc.savedMails)
+	mails.reverse()
+	mails = mails.slice(fromIndex, fromIndex + this.maxReturnMailSize)
+	var data = {
+		mails:mails
+	}
+	this.pushToPlayer(playerDoc, Events.player.onGetSavedMailsSuccess, data, callback)
 }

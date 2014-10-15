@@ -471,6 +471,51 @@ pro.unSaveMail = function(msg, session, next){
 }
 
 /**
+ * 获取玩家邮件
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getMails = function(msg, session, next){
+	var fromIndex = msg.fromIndex
+	this.playerService.getMailsAsync(session.uid, fromIndex).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 获取玩家已发邮件
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getSendMails = function(msg, session, next){
+	var fromIndex = msg.fromIndex
+	this.playerService.getSendMailsAsync(session.uid, fromIndex).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 获取玩家已存邮件
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getSavedMails = function(msg, session, next){
+	var fromIndex = msg.fromIndex
+	this.playerService.getSavedMailsAsync(session.uid, fromIndex).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
  * 删除邮件
  * @param msg
  * @param session

@@ -180,6 +180,9 @@ var _ = require("underscore")
 ////	console.log(b)
 ////})
 //
-//var a = ["a", "b"]
-//a.splice(-1,1)
-//console.log(a)
+//var a = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+//var b = [1, 2, 3]
+//console.log(a.slice(0, 10))
+//console.log(a.slice(10, 10 + 10))
+//console.log(b.slice(0, 10))
+//console.log(b.slice(5, 15))

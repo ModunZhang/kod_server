@@ -431,6 +431,30 @@ var deleteMail = function(mailId, callback){
 	pomelo.request(route, info, callback)
 }
 
+var getMails = function(fromIndex, callback){
+	var info = {
+		fromIndex:fromIndex
+	}
+	var route = "logic.playerHandler.getMails"
+	pomelo.request(route, info, callback)
+}
+
+var getSendMails = function(fromIndex, callback){
+	var info = {
+		fromIndex:fromIndex
+	}
+	var route = "logic.playerHandler.getSendMails"
+	pomelo.request(route, info, callback)
+}
+
+var getSavedMails = function(fromIndex, callback){
+	var info = {
+		fromIndex:fromIndex
+	}
+	var route = "logic.playerHandler.getSavedMails"
+	pomelo.request(route, info, callback)
+}
+
 var sendAllianceMail = function(title, content, callback){
 	var info = {
 		title:title,
@@ -2024,6 +2048,27 @@ describe("LogicServer", function(){
 
 		it("unSaveMail 正常取消收藏", function(done){
 			unSaveMail(m_user.mails[0].id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getMails 获取邮件", function(done){
+			getMails(0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getSendMails 获取已发邮件", function(done){
+			getSendMails(0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getSavedMails 获取已存邮件", function(done){
+			getSavedMails(0, function(doc){
 				doc.code.should.equal(200)
 				done()
 			})

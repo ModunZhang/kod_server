@@ -2492,6 +2492,7 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
+
 		memberDoc = doc
 		var mailToMember = {
 			id:ShortId.generate(),
@@ -2503,7 +2504,6 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 			sendTime:Date.now(),
 			isRead:false,
 			isSaved:false
-
 		}
 		if(memberDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
 			memberDoc.mails.shift()
@@ -2526,8 +2526,8 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberDoc])
+		pushFuncs.push([self.pushService, self.pushService.onSendMailSuccessAsync, playerDoc, mailToPlayer])
+		pushFuncs.push([self.pushService, self.pushService.onNewMailReceivedAsync, memberDoc, mailToMember])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -2585,8 +2585,6 @@ pro.readMail = function(playerId, mailId, callback){
 		}
 		mail.isRead = true
 		return self.playerDao.updateAsync(playerDoc)
-	}).then(function(playerDoc){
-		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerDoc)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -2640,8 +2638,6 @@ pro.saveMail = function(playerId, mailId, callback){
 		mail.isSaved = true
 		playerDoc.savedMails.push(mail)
 		return self.playerDao.updateAsync(playerDoc)
-	}).then(function(playerDoc){
-		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerDoc)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -2695,8 +2691,52 @@ pro.unSaveMail = function(playerId, mailId, callback){
 			mailInMails.isSaved = false
 		}
 		return self.playerDao.updateAsync(playerDoc)
-	}).then(function(playerDoc){
-		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerDoc)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 获取玩家邮件
+ * @param playerId
+ * @param fromIndex
+ * @param callback
+ */
+pro.getMails = function(playerId, fromIndex, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
+		callback(new Error("fromIndex 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		return self.playerDao.removeLockByIdAsync(playerDoc._id)
+	}).then(function(){
+		return self.pushService.onGetMailsSuccessAsync(playerDoc, fromIndex)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -2746,8 +2786,98 @@ pro.deleteMail = function(playerId, mailId, callback){
 		}
 		LogicUtils.removeItemInArray(playerDoc.mails, mail)
 		return self.playerDao.updateAsync(playerDoc)
-	}).then(function(playerDoc){
-		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerDoc)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 获取玩家已发邮件
+ * @param playerId
+ * @param fromIndex
+ * @param callback
+ */
+pro.getSendMails = function(playerId, fromIndex, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
+		callback(new Error("fromIndex 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		return self.playerDao.removeLockByIdAsync(playerDoc._id)
+	}).then(function(){
+		return self.pushService.onGetSendMailsSuccessAsync(playerDoc, fromIndex)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 获取玩家已存邮件
+ * @param playerId
+ * @param fromIndex
+ * @param callback
+ */
+pro.getSavedMails = function(playerId, fromIndex, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
+		callback(new Error("fromIndex 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		return self.playerDao.removeLockByIdAsync(playerDoc._id)
+	}).then(function(){
+		return self.pushService.onGetSavedMailsSuccessAsync(playerDoc, fromIndex)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -2843,7 +2973,8 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		}
 		playerDoc.mails.push(mailToMember)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onSendMailSuccessAsync, playerDoc, mailToPlayer])
+		pushFuncs.push([self.pushService, self.pushService.onNewMailReceivedAsync, playerDoc, mailToMember])
 
 		var sendMailToMember = function(member){
 			return self.playerDao.findByIdAsync(member.id).then(function(doc){
@@ -2856,7 +2987,7 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 				}
 				doc.mails.push(mailToMember)
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, doc])
+				pushFuncs.push([self.pushService, self.pushService.onNewMailReceivedAsync, doc, mailToMember])
 				return Promise.resolve()
 			}).catch(function(e){
 				return Promise.reject(e)
