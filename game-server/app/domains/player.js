@@ -447,14 +447,8 @@ var playerSchema = new Schema({
 			fromName:{type:String, required:true},
 			content:{type:String, required:true},
 			sendTime:{type:Number, required:true},
-			isRead:{type:Boolean, require:true, default:false},
-			isSaved:{type:Boolean, require:true, default:false}
-		}
-	],
-	reports:[
-		{
-			_id:false,
-			id:{type:Number, required:true}
+			isRead:{type:Boolean, require:true},
+			isSaved:{type:Boolean, require:true}
 		}
 	],
 	savedMails:[
@@ -468,12 +462,6 @@ var playerSchema = new Schema({
 			sendTime:{type:Number, required:true}
 		}
 	],
-	savedReports:[
-		{
-			_id:false,
-			id:{type:Number, required:true}
-		}
-	],
 	sendMails:[
 		{
 			_id:false,
@@ -484,6 +472,20 @@ var playerSchema = new Schema({
 			toName:{type:String, required:true},
 			content:{type:String, required:true},
 			sendTime:{type:Number, required:true}
+		}
+	],
+	reports:[
+		{
+			_id:false,
+			id:{type:Number, required:true},
+			isRead:{type:Boolean, require:true},
+			isSaved:{type:Boolean, require:true}
+		}
+	],
+	savedReports:[
+		{
+			_id:false,
+			id:{type:Number, required:true}
 		}
 	]
 })

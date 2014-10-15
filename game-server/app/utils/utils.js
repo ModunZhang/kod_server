@@ -3,10 +3,6 @@
 var utils = module.exports
 var _ = require("underscore")
 
-utils.filter = function(doc){
-	return doc
-}
-
 /**
  * 顺序随机
  * @param array

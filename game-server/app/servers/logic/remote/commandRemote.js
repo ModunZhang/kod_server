@@ -66,7 +66,8 @@ pro.reset = function(uid, callback){
 		newPlayer.alliance = doc.alliance
 		return self.playerDao.updateAsync(newPlayer)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -90,7 +91,8 @@ pro.gem = function(uid, gem, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -117,7 +119,8 @@ pro.rs = function(uid, count, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -141,7 +144,8 @@ pro.citizen = function(uid, count, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -165,7 +169,8 @@ pro.coin = function(uid, count, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -190,7 +195,8 @@ pro.energy = function(uid, count, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -214,7 +220,8 @@ pro.blood = function(uid, count, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -268,7 +275,8 @@ pro.building = function(uid, level, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -302,7 +310,8 @@ pro.keep = function(uid, level, callback){
 
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -336,7 +345,8 @@ pro.rmbuildingevents = function(uid, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -360,7 +370,8 @@ pro.rmmaterialevents = function(uid, callback){
 		}
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -415,7 +426,8 @@ pro.material = function(uid, count, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -446,7 +458,8 @@ pro.soldiermaterial = function(uid, count, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -470,7 +483,8 @@ pro.rmsoldierevents = function(uid, callback){
 		}
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -530,7 +544,8 @@ pro.dragonmaterial = function(uid, count, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -619,7 +634,8 @@ pro.dragonequipment = function(uid, count, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -643,7 +659,8 @@ pro.rmdragonequipmentevents = function(uid, callback){
 		}
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -668,7 +685,8 @@ pro.addtreatsoldiers = function(uid, count, callback){
 		})
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -692,7 +710,8 @@ pro.rmtreatsoldierevents = function(uid, callback){
 		}
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -721,7 +740,8 @@ pro.dragonvitality = function(uid, dragonType, count, callback){
 		}
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -755,7 +775,8 @@ pro.dragonskill = function(uid, dragonType, level, callback){
 		}
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -789,7 +810,8 @@ pro.dragonequipmentstar = function(uid, dragonType, star, callback){
 		}
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -829,7 +851,8 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 		}
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
-		self.pushService.onPlayerDataChanged(doc)
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)

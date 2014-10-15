@@ -17,6 +17,7 @@ var PushService = function(app){
 	this.globalChannelService = Promise.promisifyAll(app.get("globalChannelService"))
 	this.serverId = app.getServerId()
 	this.serverType = app.getServerType()
+	this.maxReturnMailSize = 10
 }
 
 module.exports = PushService
@@ -42,20 +43,57 @@ pro.pushToPlayer = function(playerDoc, eventName, data, callback){
 /**
  * 推送玩家数据给玩家
  * @param playerDoc
+ * @param data
  * @param callback
  */
-pro.onPlayerDataChanged = function(playerDoc, callback){
-	this.pushToPlayer(playerDoc, Events.player.onPlayerDataChanged, Utils.filter(playerDoc), callback)
+pro.onPlayerDataChanged = function(playerDoc, data, callback){
+	this.pushToPlayer(playerDoc, Events.player.onPlayerDataChanged, data, callback)
 }
 
 /**
- * 玩家登陆成功时,推送数据给玩家
+ * 玩家登陆成功时,推送所有玩家数据给玩家
  * @param playerDoc
  * @param callback
  */
 pro.onPlayerLoginSuccess = function(playerDoc, callback){
-	playerDoc.serverTime = Date.now()
-	this.pushToPlayer(playerDoc, Events.player.onPlayerLoginSuccess, Utils.filter(playerDoc), callback)
+	var data = Utils.clone(playerDoc)
+	data.serverTime = Date.now()
+
+	var unreadMails = 0
+	_.each(data.mails, function(mail){
+		if(!mail.isRead){
+			unreadMails ++
+		}
+	})
+	if(data.mails.length > this.maxReturnMailSize){
+		data.mails.splice(0, data.mails.length - this.maxReturnMailSize)
+	}
+	if(data.savedMails.length > this.maxReturnMailSize){
+		data.savedMails.splice(0, data.savedMails.length - this.maxReturnMailSize)
+	}
+	if(data.sendMails.length > this.maxReturnMailSize){
+		data.sendMails.splice(0, data.sendMails.length - this.maxReturnMailSize)
+	}
+
+	var unreadReports = 0
+	_.each(data.reports, function(report){
+		if(!report.isRead){
+			unreadReports ++
+		}
+	})
+	if(data.reports.length > this.maxReturnMailSize){
+		data.reports.splice(0, data.reports.length - this.maxReturnMailSize)
+	}
+	if(data.savedReports.length > this.maxReturnMailSize){
+		data.savedReports.splice(0, data.savedReports.length - this.maxReturnMailSize)
+	}
+
+	data.mailStatus = {
+		unreadMails:unreadMails,
+		unreadReports:unreadReports
+	}
+
+	this.pushToPlayer(playerDoc, Events.player.onPlayerLoginSuccess, data, callback)
 }
 
 /**
@@ -227,9 +265,21 @@ pro.onGetPlayerInfoSuccess = function(playerDoc, callback){
 /**
  * 推送联盟数据给玩家
  * @param allianceDoc
+ * @param data
  * @param callback
  */
-pro.onAllianceDataChanged = function(allianceDoc, callback){
+pro.onAllianceDataChanged = function(allianceDoc, data, callback){
+	var eventName = Events.alliance.onAllianceDataChanged
+	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
+	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
+}
+
+/**
+ * 成功获取联盟完整数据
+ * @param allianceDoc
+ * @param callback
+ */
+pro.onGetAllianceDataSuccess = function(allianceDoc, callback){
 	var eventName = Events.alliance.onAllianceDataChanged
 	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
 	this.globalChannelService.pushMessage(this.serverType, eventName, allianceDoc, channelName, null, callback)
@@ -241,11 +291,11 @@ pro.onAllianceDataChanged = function(allianceDoc, callback){
  * @param allianceDocs
  * @param callback
  */
-pro.onSearchAllianceSuccess = function(playerDoc, allianceDocs, callback){
+pro.onSearchAlliancesSuccess = function(playerDoc, allianceDocs, callback){
 	var data = {
 		alliances:allianceDocs
 	}
-	this.pushToPlayer(playerDoc, Events.player.onSearchAllianceSuccess, data, callback)
+	this.pushToPlayer(playerDoc, Events.player.onSearchAlliancesSuccess, data, callback)
 }
 
 /**
@@ -254,9 +304,9 @@ pro.onSearchAllianceSuccess = function(playerDoc, allianceDocs, callback){
  * @param allianceDocs
  * @param callback
  */
-pro.onGetAllianceSuccess = function(playerDoc, allianceDocs, callback){
+pro.onGetAlliancesSuccess = function(playerDoc, allianceDocs, callback){
 	var data = {
 		alliances:allianceDocs
 	}
-	this.pushToPlayer(playerDoc, Events.player.onGetAllianceSuccess, data, callback)
+	this.pushToPlayer(playerDoc, Events.player.onGetAlliancesSuccess, data, callback)
 }

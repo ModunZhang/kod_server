@@ -179,3 +179,7 @@ var _ = require("underscore")
 ////	console.log(a)
 ////	console.log(b)
 ////})
+//
+//var a = ["a", "b"]
+//a.splice(-1,1)
+//console.log(a)

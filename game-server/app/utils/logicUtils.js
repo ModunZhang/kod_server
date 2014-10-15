@@ -137,7 +137,7 @@ Utils.updateBuildingsLevel = function(playerDoc){
 			for(var j = i - 1; j >= 1; j--){
 				var preBuilding = buildings["location_" + j]
 				if(preBuilding.level <= 0){
-					return
+					return false
 				}
 			}
 
@@ -153,10 +153,10 @@ Utils.updateBuildingsLevel = function(playerDoc){
 				var tower = towers["location_" + l]
 				tower.level = 1
 			}
-
-			return
+			return true
 		}
 	}
+	return false
 }
 
 /**
@@ -954,7 +954,9 @@ Utils.sendSystemMail = function(playerDoc, titleKey, titleArgs, contentKey, cont
 		fromName:"__system",
 		fromAllianceTag:"",
 		sendTime:Date.now(),
-		content:content
+		content:content,
+		isRead:false,
+		isSaved:false
 	}
 	if(playerDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
 		playerDoc.mails.shift()
@@ -1006,4 +1008,20 @@ Utils.getPlayerSavedMailById = function(playerDoc, mailId){
 		if(_.isEqual(mail.id, mailId)) return mail
 	}
 	return null
+}
+
+/**
+ * 获取升级建筑后,获取玩家被修改的数据
+ * @param playerDoc
+ * @param playerData
+ */
+Utils.addUpgradeBuildingChangedData = function(playerDoc, playerData){
+	playerData.resources = playerDoc.resources
+	playerData.basicInfo = playerDoc.basicInfo
+	playerData.buildings = playerDoc.buildings
+	playerData.towers = playerDoc.towers
+	playerData.wall = playerDoc.wall
+	playerData.buildingEvents = playerDoc.buildingEvents
+	playerData.towerEvents = playerDoc.towerEvents
+	playerData.wallEvents = playerDoc.wallEvents
 }

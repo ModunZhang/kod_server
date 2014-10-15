@@ -20,10 +20,11 @@ module.exports = {
 		onHatchDragonSuccess:"onHatchDragonSuccess",
 		onImposeSuccess:"onImposeSuccess",
 		onGetPlayerInfoSuccess:"onGetPlayerInfoSuccess",
-		onSearchAllianceSuccess:"onSearchAllianceSuccess",
-		onGetAllianceSuccess:"onGetAllianceSuccess"
+		onSearchAlliancesSuccess:"onSearchAlliancesSuccess",
+		onGetAlliancesSuccess:"onGetAlliancesSuccess"
 	},
 	alliance:{
+		onGetAllianceDataSuccess:"onGetAllianceDataSuccess",
 		onAllianceDataChanged:"onAllianceDataChanged"
 	},
 	chat:{
