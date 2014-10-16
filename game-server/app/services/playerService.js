@@ -5237,11 +5237,13 @@ var ExcutePlayerCallback = function(playerId, finishTime){
 		var params = RefreshPlayerEventsAndGetCallbacks.call(self, playerDoc, allianceDoc, finishTime, false)
 		pushFuncs = pushFuncs.concat(params.pushFuncs)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		if(!!params.findHelpEvent){
+		var playerData = params.playerData
+		var allianceData = params.allianceData
+		if(!_.isEmpty(allianceData)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-			pushFuncs.unshift([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceDoc])
+			pushFuncs.unshift([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		}
-		pushFuncs.unshift([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+		pushFuncs.unshift([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
@@ -5286,7 +5288,6 @@ var RefreshPlayerEvents = function(playerDoc, allianceDoc, finishTime){
  */
 var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finishTime, isLogin){
 	var self = this
-	var findHelpEvent = false
 	var pushFuncs = []
 	var eventFuncs = []
 	var playerData = {}
@@ -5302,15 +5303,14 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 			building.level += 1
 			//检查是否有建筑需要从-1级升级到0级
 			LogicUtils.updateBuildingsLevel(playerDoc)
-			pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, event.location])
 			playerData.buildings = playerDoc.buildings
 			playerData.towers = playerDoc.towers
 			playerData.buildingEvents = playerDoc.buildingEvents
+			pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, event.location])
 			if(_.isObject(allianceDoc)){
 				var eventIndex = playerDoc.buildingEvents.indexOf(event)
 				var helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, playerDoc._id, Consts.AllianceHelpEventType.Building, eventIndex)
 				if(helpEvent){
-					findHelpEvent = true
 					LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 					allianceData.helpEvents = allianceDoc.helpEvents
 				}
@@ -5327,9 +5327,9 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 			houseFinishedEvents.push(event)
 			var house = LogicUtils.getHouseByEvent(playerDoc, event)
 			house.level += 1
-			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, event.buildingLocation, event.houseLocation])
 			playerData.buildings = playerDoc.buildings
 			playerData.houseEvents = playerDoc.houseEvents
+			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, event.buildingLocation, event.houseLocation])
 			//如果是住宅,送玩家城民
 			if(_.isEqual("dwelling", house.type)){
 				var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
@@ -5342,7 +5342,6 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 				var eventIndex = playerDoc.houseEvents.indexOf(event)
 				var helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, playerDoc._id, Consts.AllianceHelpEventType.House, eventIndex)
 				if(helpEvent){
-					findHelpEvent = true
 					LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 					allianceData.helpEvents = allianceDoc.helpEvents
 				}
@@ -5358,15 +5357,14 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 		if(event.finishTime > 0 && event.finishTime <= finishTime){
 			var tower = LogicUtils.getTowerByEvent(playerDoc, event)
 			tower.level += 1
-			pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc, event.location])
 			playerData.towers = playerDoc.towers
 			playerData.towerEvents = playerDoc.towerEvents
+			pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc, event.location])
 			towerFinishedEvents.push(event)
 			if(_.isObject(allianceDoc)){
 				var eventIndex = playerDoc.towerEvents.indexOf(event)
 				var helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, playerDoc._id, Consts.AllianceHelpEventType.Tower, eventIndex)
 				if(helpEvent){
-					findHelpEvent = true
 					LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 					allianceData.helpEvents = allianceDoc.helpEvents
 				}
@@ -5382,13 +5380,14 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 		if(event.finishTime > 0 && event.finishTime <= finishTime){
 			var wall = playerDoc.wall
 			wall.level += 1
+			playerData.wall = playerDoc.wall
+			playerData.wallEvents = playerDoc.wallEvents
 			pushFuncs.push([self.pushService, self.pushService.onWallLevelUpAsync, playerDoc])
 			wallFinishedEvents.push(event)
 			if(_.isObject(allianceDoc)){
 				var eventIndex = playerDoc.wallEvents.indexOf(event)
 				var helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, playerDoc._id, Consts.AllianceHelpEventType.Wall, eventIndex)
 				if(helpEvent){
-					findHelpEvent = true
 					LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 					allianceData.helpEvents = allianceDoc.helpEvents
 				}
@@ -5402,6 +5401,7 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 	_.each(playerDoc.materialEvents, function(event){
 		if(event.finishTime > 0 && event.finishTime <= finishTime){
 			event.finishTime = 0
+			playerData.materialEvents = playerDoc.materialEvents
 			pushFuncs.push([self.pushService, self.pushService.onMakeMaterialFinishedAsync, playerDoc, event])
 		}else if(event.finishTime > 0 && isLogin){
 			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, event.finishTime])
@@ -5412,6 +5412,8 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 	_.each(playerDoc.soldierEvents, function(event){
 		if(event.finishTime > 0 && event.finishTime <= finishTime){
 			playerDoc.soldiers[event.name] += event.count
+			playerData.soldiers = playerDoc.soldiers
+			playerData.soldierEvents = playerDoc.soldierEvents
 			pushFuncs.push([self.pushService, self.pushService.onRecruitSoldierSuccessAsync, playerDoc, event.name, event.count])
 			soldierFinishedEvents.push(event)
 		}else if(event.finishTime > 0 && isLogin){
@@ -5424,6 +5426,8 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 	_.each(playerDoc.dragonEquipmentEvents, function(event){
 		if(event.finishTime > 0 && event.finishTime <= finishTime){
 			playerDoc.dragonEquipments[event.name] += 1
+			playerData.dragonEquipments = playerDoc.dragonEquipments
+			playerData.dragonEquipmentEvents = playerDoc.dragonEquipmentEvents
 			pushFuncs.push([self.pushService, self.pushService.onMakeDragonEquipmentSuccessAsync, playerDoc, event.name])
 			dragonEquipmentFinishedEvents.push(event)
 		}else if(event.finishTime > 0 && isLogin){
@@ -5438,6 +5442,8 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 			_.each(event.soldiers, function(soldier){
 				playerDoc.soldiers[soldier.name] += soldier.count
 			})
+			playerData.soldiers = playerDoc.soldiers
+			playerData.treatSoldierEvents = playerDoc.treatSoldierEvents
 			pushFuncs.push([self.pushService, self.pushService.onTreatSoldierSuccessAsync, playerDoc, event.soldiers])
 			treatSoldierFinishedEvents.push(event)
 		}else if(event.finishTime > 0 && isLogin){
@@ -5450,6 +5456,8 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 	_.each(playerDoc.coinEvents, function(event){
 		if(event.finishTime > 0 && event.finishTime <= finishTime){
 			playerDoc.resources.coin += event.coin
+			playerData.resources = playerDoc.resources
+			playerData.coinEvents = playerDoc.coinEvents
 			pushFuncs.push([self.pushService, self.pushService.onImposeSuccessAsync, playerDoc, event.coin])
 			coinFinishedEvents.push(event)
 		}else if(event.finishTime > 0 && isLogin){
@@ -5463,7 +5471,14 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 	playerData.basicInfo = playerDoc.basicInfo
 	playerData.resources = playerDoc.resources
 
-	return {pushFuncs:pushFuncs, eventFuncs:eventFuncs, findHelpEvent:findHelpEvent}
+	var response = {
+		pushFuncs:pushFuncs,
+		eventFuncs:eventFuncs,
+		playerData:playerData,
+		allianceData:allianceData
+	}
+
+	return response
 }
 
 /**
