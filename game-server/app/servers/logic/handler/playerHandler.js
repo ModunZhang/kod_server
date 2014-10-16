@@ -19,6 +19,20 @@ var Handler = function(app){
 var pro = Handler.prototype
 
 /**
+ * 主动获取玩家联盟的信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getMyAllianceData = function(msg, session, next){
+	this.playerService.getMyAllianceDataAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
  * 升级大建筑
  * @param msg
  * @param session

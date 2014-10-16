@@ -10,6 +10,7 @@ var Promise = require("bluebird")
 var Consts = require("../consts/consts")
 var Events = require("../consts/events")
 var Utils = require("../utils/utils")
+var LogicUtils = require("../utils/logicUtils")
 
 var PushService = function(app){
 	this.app = app
@@ -63,6 +64,9 @@ pro.onPlayerLoginSuccess = function(playerDoc, callback){
 	data.sendMails.reverse()
 	data.reports.reverse()
 	data.savedReports.reverse()
+	if(!_.isObject(data.alliance) || _.isEmpty(data.alliance.id)){
+		data.alliance = {}
+	}
 
 	var unreadMails = 0
 	_.each(data.mails, function(mail){
@@ -89,6 +93,16 @@ pro.onPlayerLoginSuccess = function(playerDoc, callback){
 	}
 
 	this.pushToPlayer(playerDoc, Events.player.onPlayerLoginSuccess, data, callback)
+}
+
+/**
+ * 成功获取联盟完整数据
+ * @param playerDoc
+ * @param allianceDoc
+ * @param callback
+ */
+pro.onGetAllianceDataSuccess = function(playerDoc, allianceDoc, callback){
+	this.pushToPlayer(playerDoc, Events.player.onGetAllianceDataSuccess, allianceDoc, callback)
 }
 
 /**
@@ -258,37 +272,31 @@ pro.onGetPlayerInfoSuccess = function(playerDoc, callback){
 }
 
 /**
- * 推送联盟数据给玩家
- * @param allianceDoc
- * @param data
- * @param callback
- */
-pro.onAllianceDataChanged = function(allianceDoc, data, callback){
-	var eventName = Events.alliance.onAllianceDataChanged
-	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
-	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
-}
-
-/**
- * 成功获取联盟完整数据
- * @param allianceDoc
- * @param callback
- */
-pro.onGetAllianceDataSuccess = function(allianceDoc, callback){
-	var eventName = Events.alliance.onAllianceDataChanged
-	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
-	this.globalChannelService.pushMessage(this.serverType, eventName, allianceDoc, channelName, null, callback)
-}
-
-/**
  * 联盟搜索数据返回
  * @param playerDoc
  * @param allianceDocs
  * @param callback
  */
 pro.onSearchAlliancesSuccess = function(playerDoc, allianceDocs, callback){
+	var alliances = []
+	_.each(allianceDocs, function(allianceDoc){
+		var shortDoc = {
+			id:allianceDoc._id,
+			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag,
+			flag:allianceDoc.basicInfo.flag,
+			level:allianceDoc.basicInfo.level,
+			members:allianceDoc.members.length,
+			power:allianceDoc.basicInfo.power,
+			language:allianceDoc.basicInfo.language,
+			kill:allianceDoc.basicInfo.kill,
+			archon:LogicUtils.getAllianceArchon(allianceDoc).name,
+			joinType:allianceDoc.basicInfo.joinType
+		}
+		alliances.push(shortDoc)
+	})
 	var data = {
-		alliances:allianceDocs
+		alliances:alliances
 	}
 	this.pushToPlayer(playerDoc, Events.player.onSearchAlliancesSuccess, data, callback)
 }
@@ -300,8 +308,25 @@ pro.onSearchAlliancesSuccess = function(playerDoc, allianceDocs, callback){
  * @param callback
  */
 pro.onGetAlliancesSuccess = function(playerDoc, allianceDocs, callback){
+	var alliances = []
+	_.each(allianceDocs, function(allianceDoc){
+		var shortDoc = {
+			id:allianceDoc._id,
+			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag,
+			flag:allianceDoc.basicInfo.flag,
+			level:allianceDoc.basicInfo.level,
+			members:allianceDoc.members.length,
+			power:allianceDoc.basicInfo.power,
+			language:allianceDoc.basicInfo.language,
+			kill:allianceDoc.basicInfo.kill,
+			archon:LogicUtils.getAllianceArchon(allianceDoc).name,
+			joinType:allianceDoc.basicInfo.joinType
+		}
+		alliances.push(shortDoc)
+	})
 	var data = {
-		alliances:allianceDocs
+		alliances:alliances
 	}
 	this.pushToPlayer(playerDoc, Events.player.onGetAlliancesSuccess, data, callback)
 }
@@ -378,4 +403,61 @@ pro.onGetSavedMailsSuccess = function(playerDoc, fromIndex, callback){
 		mails:mails
 	}
 	this.pushToPlayer(playerDoc, Events.player.onGetSavedMailsSuccess, data, callback)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * 推送联盟数据给玩家
+ * @param allianceDoc
+ * @param data
+ * @param callback
+ */
+pro.onAllianceDataChanged = function(allianceDoc, data, callback){
+	var eventName = Events.alliance.onAllianceDataChanged
+	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
+	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
+}
+
+/**
+ * 联盟玩家数据和联盟基础数据有变化
+ * @param allianceDoc
+ * @param memberDoc
+ * @param callback
+ */
+pro.onAllianceBasicInfoAndMemberDataChanged = function(allianceDoc, memberDoc, callback){
+	var eventName = Events.alliance.onAllianceBasicInfoAndMemberDataChanged
+	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
+	var data = {
+		basicInfo:allianceDoc.basicInfo,
+		memberDoc:memberDoc
+	}
+	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
+}
+
+/**
+ * 联盟玩家数据有变化
+ * @param allianceDoc
+ * @param memberDoc
+ * @param callback
+ */
+pro.onAllianceMemberDataChanged = function(allianceDoc, memberDoc, callback){
+	var eventName = Events.alliance.onAllianceMemberDataChanged
+	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
+	var data = {
+		memberDoc:memberDoc
+	}
+	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
 }

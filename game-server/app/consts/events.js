@@ -8,6 +8,7 @@ module.exports = {
 	player:{
 		onPlayerLoginSuccess:"onPlayerLoginSuccess",
 		onPlayerDataChanged:"onPlayerDataChanged",
+		onGetAllianceDataSuccess:"onGetAllianceDataSuccess",
 		onBuildingLevelUp:"onBuildingLevelUp",
 		onHouseLevelUp:"onHouseLevelUp",
 		onTowerLevelUp:"onTowerLevelUp",
@@ -29,8 +30,9 @@ module.exports = {
 		onGetSavedMailsSuccess:"onGetSavedMailsSuccess"
 	},
 	alliance:{
-		onGetAllianceDataSuccess:"onGetAllianceDataSuccess",
-		onAllianceDataChanged:"onAllianceDataChanged"
+		onAllianceDataChanged:"onAllianceDataChanged",
+		onAllianceMemberDataChanged:"onAllianceMemberDataChanged",
+		onAllianceBasicInfoAndMemberDataChanged:"onAllianceBasicInfoAndMemberDataChanged"
 	},
 	chat:{
 		onChat:"onChat",

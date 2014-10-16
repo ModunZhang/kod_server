@@ -52,7 +52,7 @@ var allianceSchema = new Schema({
 			level:{type:Number, required:true},
 			power:{type:Number, required:true},
 			kill:{type:Number, required:true},
-			loyalty:{type:Number, reuqired:true, default:0},
+			loyalty:{type:Number, reuqired:true},
 			title:{type:String, required:true}
 		}
 	],

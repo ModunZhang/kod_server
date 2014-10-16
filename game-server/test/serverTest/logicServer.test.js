@@ -535,6 +535,10 @@ var helpAllianceMemberSpeedUp = function(eventIndex, callback){
 	pomelo.request(route, info, callback)
 }
 
+var getMyAllianceData = function(callback){
+	var route = "logic.playerHandler.getMyAllianceData"
+	pomelo.request(route, null, callback)
+}
 
 describe("LogicServer", function(){
 	var m_user
@@ -2554,17 +2558,6 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("quitAlliance 别逗了,盟主不能直接退出联盟好么", function(done){
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				quitAlliance(function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("别逗了,盟主不能直接退出联盟好么")
-					done()
-				})
-			})
-		})
-
 		it("quitAlliance 正常退出", function(done){
 			LoginPlayer(Config.deviceId, function(doc){
 				doc.code.should.equal(200)
@@ -2661,21 +2654,25 @@ describe("LogicServer", function(){
 
 		it("handleJoinAllianceRequest 正常处理 拒绝加入", function(done){
 			var memberDoc = null
-			requestToJoinAlliance(m_user.alliance.id, function(doc){
+			LoginPlayer(Config.deviceId5, function(doc){
 				doc.code.should.equal(200)
-				LoginPlayer(Config.deviceId3, function(doc){
+				requestToJoinAlliance(m_user.alliance.id, function(doc){
 					doc.code.should.equal(200)
-					handleJoinAllianceRequest(memberDoc._id, false, function(doc){
+					LoginPlayer(Config.deviceId3, function(doc){
 						doc.code.should.equal(200)
-						done()
+						handleJoinAllianceRequest(memberDoc._id, false, function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
 					})
 				})
 			})
-			var onPlayerDataChanged = function(doc){
+
+			var onPlayerLoginSuccess = function(doc){
 				memberDoc = doc
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
 			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
 		})
 
 		it("handleJoinAllianceRequest 正常处理 允许加入", function(done){
@@ -2692,12 +2689,12 @@ describe("LogicServer", function(){
 						})
 					})
 				})
-				var onPlayerDataChanged = function(doc){
-					memberDoc = doc
-					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-				}
-				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 			})
+			var onPlayerLoginSuccess = function(doc){
+				memberDoc = doc
+				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+			}
+			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
 		})
 
 		it("inviteToJoinAlliance 正常邀请", function(done){
@@ -2851,6 +2848,13 @@ describe("LogicServer", function(){
 
 		it("helpAllianceMemberSpeedUp 正常帮助5", function(done){
 			helpAllianceMemberSpeedUp(1, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getMyAllianceData 正常获取", function(done){
+			getMyAllianceData(function(doc){
 				doc.code.should.equal(200)
 				done()
 			})

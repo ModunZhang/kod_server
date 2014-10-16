@@ -618,16 +618,20 @@ Utils.isEnhanceDragonEquipmentLegal = function(playerDoc, equipments){
  * 更新玩家在联盟的属性,并刷新联盟相关属性
  * @param playerDoc
  * @param allianceDoc
+ * @returns {*}
  */
 Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
-	_.each(allianceDoc.members, function(member){
+	for(var i = 0; i < allianceDoc.members.length; i ++){
+		var member = allianceDoc.members[i]
 		if(_.isEqual(member.id, playerDoc._id)){
 			member.name = playerDoc.basicInfo.name
 			member.level = playerDoc.basicInfo.level
 			member.power = playerDoc.basicInfo.power
 			member.kill = playerDoc.basicInfo.kill
+			return member
 		}
-	})
+	}
+	return null
 }
 
 /**
@@ -641,6 +645,8 @@ Utils.refreshAlliance = function(allianceDoc){
 		totalPower += member.power
 		totalKill += member.kill
 	})
+	allianceDoc.basicInfo.power = totalPower
+	allianceDoc.basicInfo.kill = totalKill
 }
 
 /**
@@ -929,6 +935,7 @@ Utils.refreshPlayerPower = function(doc){
  * @param titleArgs
  * @param contentKey
  * @param contentArgs
+ * @returns {*}
  */
 Utils.sendSystemMail = function(playerDoc, titleKey, titleArgs, contentKey, contentArgs){
 	var language = playerDoc.basicInfo.language
@@ -962,6 +969,8 @@ Utils.sendSystemMail = function(playerDoc, titleKey, titleArgs, contentKey, cont
 		playerDoc.mails.shift()
 	}
 	playerDoc.mails.push(mail)
+
+	return mail
 }
 
 /**
@@ -989,7 +998,7 @@ Utils.getAllianceHelpEvent = function(allianceDoc, playerId, helpEventType, even
  * @returns {*}
  */
 Utils.getPlayerMailById = function(playerDoc, mailId){
-	for(var i = 0; i < playerDoc.mails.length; i ++){
+	for(var i = 0; i < playerDoc.mails.length; i++){
 		var mail = playerDoc.mails[i]
 		if(_.isEqual(mail.id, mailId)) return mail
 	}
@@ -1003,7 +1012,7 @@ Utils.getPlayerMailById = function(playerDoc, mailId){
  * @returns {*}
  */
 Utils.getPlayerSavedMailById = function(playerDoc, mailId){
-	for(var i = 0; i < playerDoc.savedMails.length; i ++){
+	for(var i = 0; i < playerDoc.savedMails.length; i++){
 		var mail = playerDoc.savedMails[i]
 		if(_.isEqual(mail.id, mailId)) return mail
 	}
@@ -1026,4 +1035,19 @@ Utils.refreshBuildingEventsData = function(playerDoc, playerData){
 	playerData.houseEvents = playerDoc.houseEvents
 	playerData.towerEvents = playerDoc.towerEvents
 	playerData.wallEvents = playerDoc.wallEvents
+}
+
+/**
+ * 获取联盟盟主信息
+ * @param allianceDoc
+ * @returns {*}
+ */
+Utils.getAllianceArchon = function(allianceDoc){
+	for(var i = 0; i < allianceDoc.members.length; i++){
+		var member = allianceDoc.members[i]
+		if(_.isEqual(member.title, Consts.AllianceTitle.Archon)){
+			return member
+		}
+	}
+	return null
 }
