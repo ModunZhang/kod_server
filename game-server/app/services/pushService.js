@@ -307,7 +307,7 @@ pro.onSearchAlliancesSuccess = function(playerDoc, allianceDocs, callback){
  * @param allianceDocs
  * @param callback
  */
-pro.onGetAlliancesSuccess = function(playerDoc, allianceDocs, callback){
+pro.onGetCanDirectJoinAlliancesSuccess = function(playerDoc, allianceDocs, callback){
 	var alliances = []
 	_.each(allianceDocs, function(allianceDoc){
 		var shortDoc = {
@@ -328,7 +328,7 @@ pro.onGetAlliancesSuccess = function(playerDoc, allianceDocs, callback){
 	var data = {
 		alliances:alliances
 	}
-	this.pushToPlayer(playerDoc, Events.player.onGetAlliancesSuccess, data, callback)
+	this.pushToPlayer(playerDoc, Events.player.onGetCanDirectJoinAlliancesSuccess, data, callback)
 }
 
 /**

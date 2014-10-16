@@ -3400,7 +3400,7 @@ pro.getCanDirectJoinAlliances = function(playerId, callback){
 		funcs.push(self.allianceDao.getModel().find({"basicInfo.joinType":Consts.AllianceJoinType.All}).sort({"basicInfo.power":-1}).limit(10).exec())
 		return Promise.all(funcs)
 	}).spread(function(tmp, docs){
-		return self.pushService.onGetAlliancesSuccessAsync(playerDoc, docs)
+		return self.pushService.onGetCanDirectJoinAlliancesSuccessAsync(playerDoc, docs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -5289,6 +5289,8 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 	var findHelpEvent = false
 	var pushFuncs = []
 	var eventFuncs = []
+	var playerData = {}
+	var allianceData = {}
 	//更新资源数据
 	LogicUtils.refreshPlayerResources(playerDoc)
 	//检查建筑
@@ -5301,12 +5303,16 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 			//检查是否有建筑需要从-1级升级到0级
 			LogicUtils.updateBuildingsLevel(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, event.location])
+			playerData.buildings = playerDoc.buildings
+			playerData.towers = playerDoc.towers
+			playerData.buildingEvents = playerDoc.buildingEvents
 			if(_.isObject(allianceDoc)){
 				var eventIndex = playerDoc.buildingEvents.indexOf(event)
 				var helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, playerDoc._id, Consts.AllianceHelpEventType.Building, eventIndex)
 				if(helpEvent){
 					findHelpEvent = true
 					LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+					allianceData.helpEvents = allianceDoc.helpEvents
 				}
 			}
 		}else if(event.finishTime > 0 && isLogin){
@@ -5322,6 +5328,8 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 			var house = LogicUtils.getHouseByEvent(playerDoc, event)
 			house.level += 1
 			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, event.buildingLocation, event.houseLocation])
+			playerData.buildings = playerDoc.buildings
+			playerData.houseEvents = playerDoc.houseEvents
 			//如果是住宅,送玩家城民
 			if(_.isEqual("dwelling", house.type)){
 				var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
@@ -5336,6 +5344,7 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 				if(helpEvent){
 					findHelpEvent = true
 					LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+					allianceData.helpEvents = allianceDoc.helpEvents
 				}
 			}
 		}else if(event.finishTime > 0 && isLogin){
@@ -5350,6 +5359,8 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 			var tower = LogicUtils.getTowerByEvent(playerDoc, event)
 			tower.level += 1
 			pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc, event.location])
+			playerData.towers = playerDoc.towers
+			playerData.towerEvents = playerDoc.towerEvents
 			towerFinishedEvents.push(event)
 			if(_.isObject(allianceDoc)){
 				var eventIndex = playerDoc.towerEvents.indexOf(event)
@@ -5357,6 +5368,7 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 				if(helpEvent){
 					findHelpEvent = true
 					LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+					allianceData.helpEvents = allianceDoc.helpEvents
 				}
 			}
 		}else if(event.finishTime > 0 && isLogin){
@@ -5378,6 +5390,7 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 				if(helpEvent){
 					findHelpEvent = true
 					LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+					allianceData.helpEvents = allianceDoc.helpEvents
 				}
 			}
 		}else if(event.finishTime > 0 && isLogin){
@@ -5447,6 +5460,9 @@ var RefreshPlayerEventsAndGetCallbacks = function(playerDoc, allianceDoc, finish
 
 	//刷新玩家战力
 	LogicUtils.refreshPlayerPower(playerDoc)
+	playerData.basicInfo = playerDoc.basicInfo
+	playerData.resources = playerDoc.resources
+
 	return {pushFuncs:pushFuncs, eventFuncs:eventFuncs, findHelpEvent:findHelpEvent}
 }
 
