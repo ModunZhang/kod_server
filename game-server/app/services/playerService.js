@@ -4059,6 +4059,10 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		callback(new Error("memberId 不合法"))
 		return
 	}
+	if(_.isEqual(playerId, memberId)){
+		callback(new Error("不能将自己踢出联盟"))
+		return
+	}
 
 	var self = this
 	var playerDoc = null
@@ -4283,16 +4287,24 @@ pro.quitAlliance = function(playerId, callback){
 		playerInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		LogicUtils.removeItemInArray(allianceDoc.members, playerInAlliance)
 		LogicUtils.refreshAlliance(allianceDoc)
+
 		playerDoc.alliance = null
 		var playerData = {}
 		playerData.alliance = {}
-		var allianceData = {}
-		allianceData.members = allianceDoc.members
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		updateFuncs.push([self.globalChannelService, self.globalChannelService.leaveAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		if(allianceDoc.members.length <= 1){
+			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
+			updateFuncs.push([self.allianceDao, self.allianceDao.deleteByIdAsync, allianceDoc._id])
+			updateFuncs.push([self.globalChannelService, self.globalChannelService.destroyChannelAsync, Consts.AllianceChannelPrefix + allianceDoc._id])
+		}else{
+			var allianceData = {}
+			allianceData.basicInfo = allianceDoc.basicInfo
+			allianceData.members = allianceDoc.members
+			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+			updateFuncs.push([self.globalChannelService, self.globalChannelService.leaveAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		}
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
