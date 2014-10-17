@@ -4285,7 +4285,7 @@ pro.quitAlliance = function(playerId, callback){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
-		if(_.isEqual(playerDoc.alliance.title, Consts.AllianceTitle.Archon) && allianceDoc.members.length <= 1){
+		if(_.isEqual(playerDoc.alliance.title, Consts.AllianceTitle.Archon) && allianceDoc.members.length > 1){
 			return Promise.reject(new Error("别逗了,仅当联盟成员为空时,盟主才能退出联盟"))
 		}
 		playerInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
