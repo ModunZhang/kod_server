@@ -457,6 +457,7 @@ var playerSchema = new Schema({
 			id:{type:String, required:true},
 			title:{type:String, required:true},
 			fromId:{type:String, required:true},
+			fromAllianceTag:{type:String},
 			fromName:{type:String, required:true},
 			content:{type:String, required:true},
 			sendTime:{type:Number, required:true}

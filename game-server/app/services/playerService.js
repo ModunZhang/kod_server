@@ -11,6 +11,7 @@ var crypto = require("crypto")
 var AllianceDao = require("../dao/allianceDao")
 var PlayerDao = require("../dao/playerDao")
 
+var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var Events = require("../consts/events")
@@ -2836,7 +2837,10 @@ pro.saveMail = function(playerId, mailId, callback){
 			playerDoc.savedMails.shift()
 		}
 		mail.isSaved = true
-		playerDoc.savedMails.push(mail)
+		var savedMail = Utils.clone(mail)
+		delete savedMail.isRead
+		delete savedMail.isSaved
+		playerDoc.savedMails.push(savedMail)
 		return self.playerDao.updateAsync(playerDoc)
 	}).then(function(){
 		callback()
@@ -4293,7 +4297,7 @@ pro.quitAlliance = function(playerId, callback){
 		playerData.alliance = {}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		if(allianceDoc.members.length <= 1){
+		if(allianceDoc.members.length <= 0){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			updateFuncs.push([self.allianceDao, self.allianceDao.deleteByIdAsync, allianceDoc._id])
 			updateFuncs.push([self.globalChannelService, self.globalChannelService.destroyChannelAsync, Consts.AllianceChannelPrefix + allianceDoc._id])
