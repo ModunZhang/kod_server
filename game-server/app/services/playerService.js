@@ -177,7 +177,6 @@ pro.playerLogin = function(playerDoc, callback){
 		return
 	}
 
-
 	this.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -190,7 +189,6 @@ pro.playerLogin = function(playerDoc, callback){
 		eventFuncs = params.eventFuncs
 		return self.allianceDao.updateAsync(allianceDoc).then(function(){
 			pushFuncs.unshift([self.pushService, self.pushService.onAllianceBasicInfoAndMemberDataChangedAsync, allianceDoc, memberDoc])
-			pushFuncs.unshift([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, playerDoc, allianceDoc])
 			pushFuncs.unshift([self.pushService, self.pushService.onPlayerLoginSuccessAsync, playerDoc])
 			return LogicUtils.excuteAll(eventFuncs)
 		})
