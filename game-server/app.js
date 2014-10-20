@@ -158,6 +158,9 @@ app.set('errorHandler', function(err, msg, resp, session, opts, cb){
 		errorMailLogger.error(err.stack)
 	}
 	cb(err, resp)
+	if(_.isEqual(err.message, "Illegal request!")){
+		app.get("sessionService").kickBySessionId(session.id)
+	}
 })
 
 app.set('globalErrorHandler', function(err, msg, resp, session, opts, cb){

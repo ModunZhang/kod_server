@@ -21,6 +21,7 @@ pro.before = function(msg, session, next){
 	}else if(!!session.uid){
 		next()
 	}else{
-		next(new Error("玩家未登录"))
+		next(new Error("Illegal request!"))
+
 	}
 }
