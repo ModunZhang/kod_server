@@ -461,3 +461,18 @@ pro.onAllianceMemberDataChanged = function(allianceDoc, memberDoc, callback){
 	}
 	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
 }
+
+/**
+ * 联盟数据有变化
+ * @param allianceDoc
+ * @param event
+ * @param callback
+ */
+pro.onAllianceNewEventReceived = function(allianceDoc, event, callback){
+	var eventName = Events.alliance.onAllianceNewEventReceived
+	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
+	var data = {
+		event:event
+	}
+	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
+}

@@ -65,7 +65,10 @@ pro.login = function(msg, session, next){
 			})
 		}else if(!_.isEmpty(doc.logicServerId)){
 			playerDoc = doc
-			return kickPlayerFromLogicServer(playerDoc).then(function(){
+			return self.playerDao.removeLockByIdAsync(doc._id).then(function(){
+				return kickPlayerFromLogicServer(playerDoc)
+			}).then(function(doc){
+				playerDoc = doc
 				return Promise.resolve()
 			}).catch(function(e){
 				return Promise.reject(e)
@@ -168,7 +171,26 @@ var RemovePlayerFromChatChannel = function(session, callback){
 }
 
 var KickPlayerFromLogicServer = function(playerDoc, callback){
+	var self = this
 	this.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, function(err){
-		callback(err, playerDoc)
+		if(_.isObject(err)){
+			callback(err)
+			return
+		}
+		setTimeout(function(){
+			self.playerDao.findByIdAsync(playerDoc._id).then(function(doc){
+				if(!_.isObject(doc)){
+					callback(new Error("将玩家踢出服务器失败,玩家不存在"))
+					return
+				}
+				if(!_.isEmpty(doc.logicServerId)){
+					callback(new Error("将玩家踢出服务器失败,玩家logicServerId不为空"))
+					return
+				}
+				callback(null, doc)
+			}).catch(function(e){
+				callback(e)
+			})
+		}, 2000)
 	})
 }

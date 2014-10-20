@@ -77,9 +77,6 @@ app.configure("production|development", "logic", function(){
 		bufferMsg:false,
 		failMode:"failfast"
 	})
-	app.set('sessionConfig', {
-		singleSession:true
-	})
 
 	app.filter(pomelo.filters.serial())
 	app.before(loginFilter())

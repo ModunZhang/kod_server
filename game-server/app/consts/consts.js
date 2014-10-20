@@ -71,5 +71,30 @@ module.exports = {
 		House:"house",
 		Tower:"tower",
 		Wall:"wall"
+	},
+	AllianceEventCategory:{
+		Normal:"normal",
+		Important:"important",
+		War:"war"
+	},
+	AllianceEventType:{
+		Donate:"donate",//捐赠
+		Promotion:"promotion",//升级,降级
+		Join:"join",//新成员加入
+		Kick:"kick",//踢出玩家
+		Quit:"quit",//玩家退出
+		Request:"request",//玩家申请
+		Notice:"notice",//联盟公告
+		Desc:"desc",//联盟描述
+		Diplomacy:"diplomacy",//外交关系
+		HandOver:"handover",//转让盟主
+		Tools:"tools",//补充道具
+		Upgrade:"upgrade",//联盟建筑升级
+		Name:"name",//联盟名字修改
+		Tag:"tag",//联盟Tag修改
+		Flag:"flag",//联盟旗帜修改
+		Terrain:"terrain",//联盟地形修改
+		Language:"language",//联盟语言修改
+		Gve:"gve"//联盟圣地事件
 	}
 }

@@ -1051,3 +1051,28 @@ Utils.getAllianceArchon = function(allianceDoc){
 	}
 	return null
 }
+
+/**
+ * 添加联盟事件
+ * @param allianceDoc
+ * @param category
+ * @param type
+ * @param key
+ * @param params
+ * @returns {{category: *, type: *, key: *, time: number, params: *}}
+ */
+Utils.AddAllianceEvent = function(allianceDoc, category, type, key, params){
+	var event = {
+		category:category,
+		type:type,
+		key:key,
+		time:Date.now(),
+		params:params
+	}
+
+	if(allianceDoc.events.length >= Define.AllianceEventsMaxSize){
+		allianceDoc.events.shift()
+	}
+	allianceDoc.events.push(event)
+	return event
+}

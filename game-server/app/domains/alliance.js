@@ -40,8 +40,11 @@ var allianceSchema = new Schema({
 	events:[
 		{
 			_id : false,
+			category:{type:String, required:true},
 			type:{type:String, required:true},
-			keys:[String]
+			time:{type:Number, required:true},
+			key:{type:String, required:true},
+			params:[String]
 		}
 	],
 	members:[
