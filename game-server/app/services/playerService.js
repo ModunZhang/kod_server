@@ -5250,6 +5250,8 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
