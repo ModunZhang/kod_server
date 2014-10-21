@@ -51,10 +51,12 @@ var allianceSchema = new Schema({
 			_id : false,
 			id:{type:String, required:true},
 			name:{type:String, required:true},
+			icon:{type:String, required:true},
 			level:{type:Number, required:true},
 			power:{type:Number, required:true},
 			kill:{type:Number, required:true},
 			loyalty:{type:Number, reuqired:true},
+			lastLoginTime:{type:Number, required:true},
 			title:{type:String, required:true}
 		}
 	],

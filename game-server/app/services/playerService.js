@@ -278,16 +278,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 			return Promise.reject(new Error("联盟不允许直接加入"))
 		}
 
-		var member = {
-			id:playerDoc._id,
-			name:playerDoc.basicInfo.name,
-			level:playerDoc.basicInfo.level,
-			power:playerDoc.basicInfo.power,
-			kill:playerDoc.basicInfo.kill,
-			loyalty:playerDoc.basicInfo.loyalty,
-			title:Consts.AllianceTitle.Member
-		}
-		allianceDoc.members.push(member)
+		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member)
 		LogicUtils.refreshAlliance(allianceDoc)
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 
@@ -3309,16 +3300,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 			return Promise.reject(new Error("联盟创建失败"))
 		}
 		allianceDoc = doc
-		var member = {
-			id:playerDoc._id,
-			name:playerDoc.basicInfo.name,
-			level:playerDoc.basicInfo.level,
-			power:playerDoc.basicInfo.power,
-			kill:playerDoc.basicInfo.kill,
-			loyalty:playerDoc.basicInfo.loyalty,
-			title:Consts.AllianceTitle.Archon
-		}
-		allianceDoc.members.push(member)
+		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Archon)
 		LogicUtils.refreshAlliance(allianceDoc)
 		playerDoc.alliance = {
 			id:allianceDoc._id,
@@ -4402,18 +4384,9 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 			return Promise.reject(new Error("联盟不允许直接加入"))
 		}
 
-		var member = {
-			id:playerDoc._id,
-			name:playerDoc.basicInfo.name,
-			level:playerDoc.basicInfo.level,
-			power:playerDoc.basicInfo.power,
-			kill:playerDoc.basicInfo.kill,
-			loyalty:playerDoc.basicInfo.loyalty,
-			title:Consts.AllianceTitle.Member
-		}
-		allianceDoc.members.push(member)
+		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member)
 		LogicUtils.refreshAlliance(allianceDoc)
-		LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, member.name, [])
+		LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 
 		playerDoc.alliance = {
@@ -4760,19 +4733,9 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		if(!agree){
 			return Promise.resolve()
 		}
-
-		var member = {
-			id:memberDoc._id,
-			name:memberDoc.basicInfo.name,
-			level:memberDoc.basicInfo.level,
-			power:memberDoc.basicInfo.power,
-			kill:memberDoc.basicInfo.kill,
-			loyalty:memberDoc.basicInfo.loyalty,
-			title:Consts.AllianceTitle.Member
-		}
-		allianceDoc.members.push(member)
+		LogicUtils.addAllianceMember(allianceDoc, memberDoc, Consts.AllianceTitle.Member)
 		LogicUtils.refreshAlliance(allianceDoc)
-		LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, member.name, [])
+		LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, memberDoc.basicInfo.name, [])
 		allianceData.basicInfo = allianceDoc.basicInfo
 		allianceData.members = allianceDoc.members
 		allianceData.events = allianceDoc.events
@@ -5037,19 +5000,9 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			return Promise.resolve()
 		}
-
-		var member = {
-			id:playerDoc._id,
-			name:playerDoc.basicInfo.name,
-			level:playerDoc.basicInfo.level,
-			power:playerDoc.basicInfo.power,
-			kill:playerDoc.basicInfo.kill,
-			loyalty:playerDoc.basicInfo.loyalty,
-			title:Consts.AllianceTitle.Member
-		}
-		allianceDoc.members.push(member)
+		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member)
 		LogicUtils.refreshAlliance(allianceDoc)
-		LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, member.name, [])
+		LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 		var allianceData = {}

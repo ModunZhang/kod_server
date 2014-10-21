@@ -1100,3 +1100,26 @@ Utils.AddAllianceEvent = function(allianceDoc, category, type, key, params){
 	allianceDoc.events.push(event)
 	return event
 }
+
+/**
+ * 为联盟添加成员
+ * @param allianceDoc
+ * @param playerDoc
+ * @param title
+ * @return {*}
+ */
+Utils.addAllianceMember = function(allianceDoc, playerDoc, title){
+	var member = {
+		id:playerDoc._id,
+		name:playerDoc.basicInfo.name,
+		icon:playerDoc.basicInfo.icon,
+		level:playerDoc.basicInfo.level,
+		power:playerDoc.basicInfo.power,
+		kill:playerDoc.basicInfo.kill,
+		loyalty:playerDoc.basicInfo.loyalty,
+		lastLoginTime:playerDoc.countInfo.lastLoginTime,
+		title:title
+	}
+	allianceDoc.members.push(member)
+	return member
+}

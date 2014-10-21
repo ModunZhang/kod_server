@@ -481,7 +481,6 @@ pro.onAllianceHelpEventChanged = function(allianceDoc, event, callback){
 	var eventName = Events.alliance.onAllianceHelpEventChanged
 	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
 	var data = {
-		index:allianceDoc.helpEvents.indexOf(event),
 		event:event
 	}
 	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
