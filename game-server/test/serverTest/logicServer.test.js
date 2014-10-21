@@ -519,6 +519,11 @@ var handleJoinAllianceInvite = function(allianceId, agree, callback){
 	pomelo.request(route, info, callback)
 }
 
+var buyAllianceArchon = function(callback){
+	var route = "logic.playerHandler.buyAllianceArchon"
+	pomelo.request(route, null, callback)
+}
+
 var joinAllianceDirectly = function(allianceId, callback){
 	var info = {
 		allianceId:allianceId
@@ -2774,161 +2779,177 @@ describe("LogicServer", function(){
 			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
 		})
 
-		it("searchAllianceByTag 正常搜索", function(done){
-			searchAllianceByTag("test", function(doc){
+		it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
+			buyAllianceArchon(function(doc){
 				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("getCanDirectJoinAlliances 正常获取", function(done){
-			getCanDirectJoinAlliances(function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("upgradeBuilding 加入联盟后", function(done){
-			var playerDoc = null
-			upgradeBuilding(1, true, function(doc){
-				doc.code.should.equal(200)
-				upgradeBuilding(1, false, function(doc){
+				LoginPlayer(Config.deviceId3, function(doc){
 					doc.code.should.equal(200)
-					var buildEvent = playerDoc.buildingEvents[0]
-					requestToSpeedUp(Consts.AllianceHelpEventType.Building, buildEvent.id, function(doc){
+					buyAllianceArchon(function(doc){
 						doc.code.should.equal(200)
-						done()
+						LoginPlayer(Config.deviceId5, function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
 					})
 				})
-				var onPlayerDataChanged = function(doc){
-					playerDoc = doc
-					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-				}
-				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 			})
 		})
 
-		it("createHouse 加入联盟后", function(done){
-			var playerDoc = null
-			createHouse("dwelling", 3, 3, false, function(doc){
-				doc.code.should.equal(200)
-				var buildEvent = playerDoc.houseEvents[0]
-				requestToSpeedUp(Consts.AllianceHelpEventType.House, buildEvent.id, function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-			var onPlayerDataChanged = function(doc){
-				playerDoc = doc
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
-		it("upgradeHouse 加入联盟后", function(done){
-			var playerDoc = null
-			createHouse("dwelling", 3, 1, true, function(doc){
-				doc.code.should.equal(200)
-				upgradeHouse(3, 1, false, function(doc){
-					doc.code.should.equal(200)
-					var buildEvent = playerDoc.houseEvents[1]
-					requestToSpeedUp(Consts.AllianceHelpEventType.House, buildEvent.id, function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-				var onPlayerDataChanged = function(doc){
-					playerDoc = doc
-					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-				}
-				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-			})
-		})
-
-		it("upgradeTower 加入联盟后", function(done){
-			var playerDoc = null
-			upgradeTower(1, false, function(doc){
-				doc.code.should.equal(200)
-				var buildEvent = playerDoc.towerEvents[0]
-				requestToSpeedUp(Consts.AllianceHelpEventType.Tower, buildEvent.id, function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-			var onPlayerDataChanged = function(doc){
-				playerDoc = doc
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
-		it("upgradeWall 加入联盟后", function(done){
-			var playerDoc = null
-			upgradeWall(false, function(doc){
-				doc.code.should.equal(200)
-				var buildEvent = playerDoc.wallEvents[0]
-				requestToSpeedUp(Consts.AllianceHelpEventType.Wall, buildEvent.id, function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-			var onPlayerDataChanged = function(doc){
-				playerDoc = doc
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
-		it("helpAllianceMemberSpeedUp 正常帮助1", function(done){
-			var alliance = null
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				getMyAllianceData(function(doc){
-					doc.code.should.equal(200)
-					var event = alliance.helpEvents[0]
-					helpAllianceMemberSpeedUp(event.eventId, function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-				var onGetAllianceDataSuccess = function(doc){
-					alliance = doc
-					pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-				}
-				pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-			})
-		})
-
-		it("helpAllianceMemberSpeedUp 正常帮助2", function(done){
-			var alliance = null
-			getMyAllianceData(function(doc){
-				doc.code.should.equal(200)
-				var event = alliance.helpEvents[1]
-				helpAllianceMemberSpeedUp(event.eventId, function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-			var onGetAllianceDataSuccess = function(doc){
-				alliance = doc
-				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-			}
-			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		})
-
-		it("helpAllAllianceMemberSpeedUp 正常帮助", function(done){
-			helpAllAllianceMemberSpeedUp(function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("getMyAllianceData 正常获取", function(done){
-			getMyAllianceData(function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
+//		it("searchAllianceByTag 正常搜索", function(done){
+//			searchAllianceByTag("test", function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getCanDirectJoinAlliances 正常获取", function(done){
+//			getCanDirectJoinAlliances(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("upgradeBuilding 加入联盟后", function(done){
+//			var playerDoc = null
+//			upgradeBuilding(1, true, function(doc){
+//				doc.code.should.equal(200)
+//				upgradeBuilding(1, false, function(doc){
+//					doc.code.should.equal(200)
+//					var buildEvent = playerDoc.buildingEvents[0]
+//					requestToSpeedUp(Consts.AllianceHelpEventType.Building, buildEvent.id, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//				var onPlayerDataChanged = function(doc){
+//					playerDoc = doc
+//					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+//				}
+//				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+//			})
+//		})
+//
+//		it("createHouse 加入联盟后", function(done){
+//			var playerDoc = null
+//			createHouse("dwelling", 3, 3, false, function(doc){
+//				doc.code.should.equal(200)
+//				var buildEvent = playerDoc.houseEvents[0]
+//				requestToSpeedUp(Consts.AllianceHelpEventType.House, buildEvent.id, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//			var onPlayerDataChanged = function(doc){
+//				playerDoc = doc
+//				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+//			}
+//			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+//		})
+//
+//		it("upgradeHouse 加入联盟后", function(done){
+//			var playerDoc = null
+//			createHouse("dwelling", 3, 1, true, function(doc){
+//				doc.code.should.equal(200)
+//				upgradeHouse(3, 1, false, function(doc){
+//					doc.code.should.equal(200)
+//					var buildEvent = playerDoc.houseEvents[1]
+//					requestToSpeedUp(Consts.AllianceHelpEventType.House, buildEvent.id, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//				var onPlayerDataChanged = function(doc){
+//					playerDoc = doc
+//					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+//				}
+//				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+//			})
+//		})
+//
+//		it("upgradeTower 加入联盟后", function(done){
+//			var playerDoc = null
+//			upgradeTower(1, false, function(doc){
+//				doc.code.should.equal(200)
+//				var buildEvent = playerDoc.towerEvents[0]
+//				requestToSpeedUp(Consts.AllianceHelpEventType.Tower, buildEvent.id, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//			var onPlayerDataChanged = function(doc){
+//				playerDoc = doc
+//				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+//			}
+//			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+//		})
+//
+//		it("upgradeWall 加入联盟后", function(done){
+//			var playerDoc = null
+//			upgradeWall(false, function(doc){
+//				doc.code.should.equal(200)
+//				var buildEvent = playerDoc.wallEvents[0]
+//				requestToSpeedUp(Consts.AllianceHelpEventType.Wall, buildEvent.id, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//			var onPlayerDataChanged = function(doc){
+//				playerDoc = doc
+//				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+//			}
+//			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+//		})
+//
+//		it("helpAllianceMemberSpeedUp 正常帮助1", function(done){
+//			var alliance = null
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				getMyAllianceData(function(doc){
+//					doc.code.should.equal(200)
+//					var event = alliance.helpEvents[0]
+//					helpAllianceMemberSpeedUp(event.eventId, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//				var onGetAllianceDataSuccess = function(doc){
+//					alliance = doc
+//					pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//				}
+//				pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//			})
+//		})
+//
+//		it("helpAllianceMemberSpeedUp 正常帮助2", function(done){
+//			var alliance = null
+//			getMyAllianceData(function(doc){
+//				doc.code.should.equal(200)
+//				var event = alliance.helpEvents[1]
+//				helpAllianceMemberSpeedUp(event.eventId, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//			var onGetAllianceDataSuccess = function(doc){
+//				alliance = doc
+//				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//			}
+//			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//		})
+//
+//		it("helpAllAllianceMemberSpeedUp 正常帮助", function(done){
+//			helpAllAllianceMemberSpeedUp(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getMyAllianceData 正常获取", function(done){
+//			getMyAllianceData(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
 	})
 
 

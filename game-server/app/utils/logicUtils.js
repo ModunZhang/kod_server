@@ -619,7 +619,7 @@ Utils.isEnhanceDragonEquipmentLegal = function(playerDoc, equipments){
 }
 
 /**
- * 更新玩家在联盟的属性,并刷新联盟相关属性
+ * 更新玩家在联盟的属性
  * @param playerDoc
  * @param allianceDoc
  * @returns {*}
@@ -629,10 +629,12 @@ Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
 		var member = allianceDoc.members[i]
 		if(_.isEqual(member.id, playerDoc._id)){
 			member.name = playerDoc.basicInfo.name
+			member.icon = playerDoc.basicInfo.icon
 			member.level = playerDoc.basicInfo.level
 			member.power = playerDoc.basicInfo.power
 			member.kill = playerDoc.basicInfo.kill
 			member.loyalty = playerDoc.basicInfo.loyalty
+			member.lastLoginTime = playerDoc.countInfo.lastLoginTime
 			return member
 		}
 	}

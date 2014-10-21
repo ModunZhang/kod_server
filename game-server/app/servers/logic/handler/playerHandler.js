@@ -856,6 +856,20 @@ pro.handleJoinAllianceInvite = function(msg, session, next){
 }
 
 /**
+ * 购买联盟盟主职位
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.buyAllianceArchon = function(msg, session, next){
+	this.playerService.buyAllianceArchonAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
  * 请求加速
  * @param msg
  * @param session

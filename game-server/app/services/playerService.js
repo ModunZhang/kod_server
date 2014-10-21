@@ -4969,6 +4969,107 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 	})
 }
 
+/**
+ * 盟主长时间不登录时,玩家可宝石购买盟主职位
+ * @param playerId
+ * @param callback
+ */
+pro.buyAllianceArchon = function(playerId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var archonDoc = null
+	var allianceDoc = null
+	var pushFuncs = []
+	var updateFuncs = []
+	var neededGem = 100
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		if(_.isEqual(doc.alliance.title, Consts.AllianceTitle.Archon)){
+			return Promise.reject(new Error("玩家已经是盟主了"))
+		}
+		if(playerDoc.resources.gem < neededGem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		return self.allianceDao.findByIdAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var archonDocInAlliance = LogicUtils.getAllianceArchon(allianceDoc)
+		var canBuyInterval = 0//1000 * 60 * 60 * 24 * 7 //7天
+		if(archonDocInAlliance.lastLoginTime + canBuyInterval > Date.now()){
+			return Promise.reject(new Error("盟主连续7天不登陆时才能购买盟主职位"))
+		}
+		return self.playerDao.findByIdAsync(archonDocInAlliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		archonDoc = doc
+		playerDoc.resources.gem -= neededGem
+		var archonDocInAlliance = LogicUtils.getAllianceArchon(allianceDoc)
+		var playerInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		playerInAllianceDoc.title = Consts.AllianceTitle.Archon
+		playerDoc.alliance.title = Consts.AllianceTitle.Archon
+		playerDoc.alliance.titleName = allianceDoc.titles.archon
+		var playerData = {}
+		playerData.alliance = playerDoc.alliance
+		playerData.resources = playerDoc.resources
+		archonDocInAlliance.title = Consts.AllianceTitle.Member
+		archonDoc.alliance.title = Consts.AllianceTitle.Member
+		archonDoc.alliance.titleName = allianceDoc.titles.member
+		var archonData = {}
+		archonData.alliance = archonDoc.alliance
+		LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.HandOver, playerDoc.basicInfo.name, [])
+		var allianceData = {}
+		allianceData.members = allianceDoc.members
+		allianceData.events = allianceDoc.events
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, archonDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, archonDoc, archonData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
 pro.requestToSpeedUp = function(playerId, eventType, eventId, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
