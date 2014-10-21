@@ -877,12 +877,45 @@ Utils.getPlayerBuildEvent = function(playerDoc, eventType, eventId){
 	return null
 }
 
+/**
+ * 根据Id获取事件
+ * @param events
+ * @param id
+ * @returns {*}
+ */
 Utils.getEventById = function(events, id){
 	for(var i = 0; i < events.length; i ++){
 		var event = events[i]
 		if(_.isEqual(event.id, id)){
 			return event
 		}
+	}
+	return null
+}
+
+/**
+ * 根据协助加速类型和建造事件获取建筑
+ * @param playerDoc
+ * @param eventType
+ * @param buildEvent
+ * @returns {*}
+ */
+Utils.getBuildingByEventTypeAndBuildEvent = function(playerDoc, eventType, buildEvent){
+	if(_.isEqual(eventType, Consts.AllianceHelpEventType.Building)){
+		return playerDoc.buildings["location_" + buildEvent.location]
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.House)){
+		var building = playerDoc.buildings["location_" + buildEvent.buildingLocation]
+		for(var i = 0; i < building.houses.length; i++){
+			var house = building.houses[i]
+			if(_.isEqual(house.location, buildEvent.houseLocation)){
+				return house
+			}
+		}
+		return null
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Tower)){
+		return playerDoc.towers["location_" + buildEvent.location]
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Wall)){
+		return playerDoc.wall
 	}
 	return null
 }

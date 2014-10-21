@@ -459,7 +459,6 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
-	var allianceDoc = null
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -492,17 +491,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.type, building.level)){
 			return Promise.reject(new Error("建筑已达到最高等级"))
 		}
-		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
-			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
-				if(!_.isObject(doc)){
-					return Promise.reject(new Error("联盟不存在"))
-				}
-				allianceDoc = doc
-				return Promise.resolve()
-			})
-		}else{
-			return Promise.resolve()
-		}
+		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, building.level + 1)
@@ -510,7 +499,6 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var playerData = {}
-		var allianceData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -548,9 +536,6 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			LogicUtils.updateBuildingsLevel(playerDoc)
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, building.location])
-			if(_.isObject(allianceDoc)){
-				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-			}
 		}else{
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self, RemovePlayerTimeEvent, playerDoc, preBuildEvent.finishTime])
@@ -558,15 +543,8 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 				pushFuncs.concat(RefreshPlayerEvents.call(self, playerDoc, allianceDoc, preBuildEvent.finishTime))
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			var currentBuildEvent = LogicUtils.addBuildingEvent(playerDoc, building.location, finishTime)
+			LogicUtils.addBuildingEvent(playerDoc, building.location, finishTime)
 			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
-
-			if(_.isObject(allianceDoc)){
-				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, building.level, Consts.AllianceHelpEventType.Building, building.type, currentBuildEvent.id)
-				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-				allianceData.helpEvents = allianceDoc.helpEvents
-			}
 		}
 		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
 		LogicUtils.refreshPlayerResources(playerDoc)
@@ -583,9 +561,6 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -632,7 +607,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 	}
 	var self = this
 	var playerDoc = null
-	var allianceDoc = null
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
@@ -667,17 +641,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 				return Promise.reject(new Error("建造小屋会造成可用城民小于0"))
 			}
 		}
-		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
-			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
-				if(!_.isObject(doc)){
-					return Promise.reject(new Error("联盟不存在"))
-				}
-				allianceDoc = doc
-				return Promise.resolve()
-			})
-		}else{
-			return Promise.resolve()
-		}
+		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getHouseUpgradeRequired(houseType, 1)
@@ -685,7 +649,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var playerData = {}
-		var allianceData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -727,9 +690,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			house.level += 1
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, building.location, house.location])
-			if(_.isObject(allianceDoc)){
-				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-			}
 		}else{
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self, RemovePlayerTimeEvent, playerDoc, preBuildEvent.finishTime])
@@ -737,15 +697,8 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 				pushFuncs.concat(RefreshPlayerEvents.call(self, playerDoc, allianceDoc, preBuildEvent.finishTime))
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			var currentBuildEvent = LogicUtils.addHouseEvent(playerDoc, buildingLocation, houseLocation, finishTime)
+			LogicUtils.addHouseEvent(playerDoc, buildingLocation, houseLocation, finishTime)
 			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
-
-			if(_.isObject(allianceDoc)){
-				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, house.level, Consts.AllianceHelpEventType.House, house.type, currentBuildEvent.id)
-				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-				allianceData.helpEvents = allianceDoc.helpEvents
-			}
 		}
 		if(_.isEqual("dwelling", house.type) && finishNow){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
@@ -767,9 +720,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -813,7 +763,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 
 	var self = this
 	var playerDoc = null
-	var allianceDoc = null
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
@@ -856,17 +805,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 				return Promise.reject(new Error("升级小屋会造成可用城民小于0"))
 			}
 		}
-		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
-			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
-				if(!_.isObject(doc)){
-					return Promise.reject(new Error("联盟不存在"))
-				}
-				allianceDoc = doc
-				return Promise.resolve()
-			})
-		}else{
-			return Promise.resolve()
-		}
+		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getHouseUpgradeRequired(house.type, house.level + 1)
@@ -874,7 +813,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var playerData = {}
-		var allianceData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -910,9 +848,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			house.level += 1
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, building.location, house.location])
-			if(_.isObject(allianceDoc)){
-				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-			}
 		}else{
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self, RemovePlayerTimeEvent, self, playerDoc, preBuildEvent.finishTime])
@@ -920,15 +855,8 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 				pushFuncs.concat(RefreshPlayerEvents.call(self, playerDoc, allianceDoc, preBuildEvent.finishTime))
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			var currentBuildEvent = LogicUtils.addHouseEvent(playerDoc, building.location, house.location, finishTime)
+			LogicUtils.addHouseEvent(playerDoc, building.location, house.location, finishTime)
 			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
-
-			if(_.isObject(allianceDoc)){
-				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, house.level, Consts.AllianceHelpEventType.House, house.type, currentBuildEvent.id)
-				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceDoc])
-				allianceData.helpEvents = allianceDoc.helpEvents
-			}
 		}
 		if(_.isEqual("dwelling", house.type) && finishNow){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
@@ -950,9 +878,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1071,7 +996,6 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
-	var allianceDoc = null
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
@@ -1097,17 +1021,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		if(tower.level + 1 > DataUtils.getBuildingLevelLimit(playerDoc)){
 			return Promise.reject(new Error("箭塔升级时,建筑等级不合法"))
 		}
-		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
-			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
-				if(!_.isObject(doc)){
-					return Promise.reject(new Error("联盟不存在"))
-				}
-				allianceDoc = doc
-				return Promise.resolve()
-			})
-		}else{
-			return Promise.resolve()
-		}
+		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("tower", tower.level + 1)
@@ -1115,7 +1029,6 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var playerData = {}
-		var allianceData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -1151,9 +1064,6 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			tower.level = tower.level + 1
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc, tower.location])
-			if(_.isObject(allianceDoc)){
-				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-			}
 		}else{
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self, RemovePlayerTimeEvent, playerDoc, preBuildEvent.finishTime])
@@ -1161,15 +1071,8 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 				RefreshPlayerEvents.call(self, playerDoc, allianceDoc, preBuildEvent.finishTime)
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			var currentBuildEvent = LogicUtils.addTowerEvent(playerDoc, tower.location, finishTime)
+			LogicUtils.addTowerEvent(playerDoc, tower.location, finishTime)
 			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
-
-			if(_.isObject(allianceDoc)){
-				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, tower.level, Consts.AllianceHelpEventType.Tower, "tower", currentBuildEvent.id)
-				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-				allianceData.helpEvents = allianceDoc.helpEvents
-			}
 		}
 		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
 		LogicUtils.refreshPlayerResources(playerDoc)
@@ -1186,9 +1089,6 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1221,7 +1121,6 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
-	var allianceDoc = null
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
@@ -1248,17 +1147,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		if(wall.level + 1 > DataUtils.getBuildingLevelLimit(playerDoc)){
 			return Promise.reject(new Error("城墙升级时,城墙等级不合法"))
 		}
-		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
-			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
-				if(!_.isObject(doc)){
-					return Promise.reject(new Error("联盟不存在"))
-				}
-				allianceDoc = doc
-				return Promise.resolve()
-			})
-		}else{
-			return Promise.resolve()
-		}
+		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("wall", wall.level + 1)
@@ -1266,7 +1155,6 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var playerData = {}
-		var allianceData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
@@ -1302,9 +1190,6 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			wall.level = wall.level + 1
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onWallLevelUpAsync, playerDoc])
-			if(_.isObject(allianceDoc)){
-				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-			}
 		}else{
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self, RemovePlayerTimeEvent, playerDoc, preBuildEvent.finishTime])
@@ -1312,15 +1197,8 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 				RefreshPlayerEvents.call(self, playerDoc, allianceDoc, preBuildEvent.finishTime)
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			var currentBuildEvent = LogicUtils.addWallEvent(playerDoc, finishTime)
+			LogicUtils.addWallEvent(playerDoc, finishTime)
 			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
-
-			if(_.isObject(allianceDoc)){
-				LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, wall.level, Consts.AllianceHelpEventType.Wall, "wall", currentBuildEvent.id)
-				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-				allianceData.helpEvents = allianceDoc.helpEvents
-			}
 		}
 		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
 		LogicUtils.refreshPlayerResources(playerDoc)
@@ -1337,9 +1215,6 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -5084,6 +4959,84 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		_.each(inviterDocs, function(doc){
 			funcs.push(self.playerDao.removeLockByIdAsync(doc._id))
 		})
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+pro.requestToSpeedUp = function(playerId, eventType, eventId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.contains(Consts.AllianceHelpEventType, eventType)){
+		callback(new Error("eventType 不合法"))
+		return
+	}
+	if(!_.isString(eventId)){
+		callback(new Error("eventId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var pushFuncs = []
+	var updateFuncs = []
+	var buildEvent = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		buildEvent = LogicUtils.getPlayerBuildEvent(playerDoc, eventType, eventId)
+		if(!_.isObject(buildEvent)){
+			return Promise.reject(new Error("玩家建造事件不存在"))
+		}
+		return self.allianceDao.findByIdAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, eventId)
+		if(_.isObject(helpEvent)){
+			return Promise.reject("此建筑已经发送了加速请求")
+		}
+
+		var building = LogicUtils.getBuildingByEventTypeAndBuildEvent(playerDoc, eventType, buildEvent)
+		var buildingName = _.isEqual(eventType, Consts.AllianceHelpEventType.Wall) ? "wall" : _.isEqual(eventType, Consts.AllianceHelpEventType.Tower) ? "tower" : building.type
+		LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, building.level + 1, eventType, buildingName, buildEvent.id)
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		var allianceData = {}
+		allianceData.helpEvents = allianceDoc.helpEvents
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
 				callback(e)
