@@ -72,10 +72,11 @@ pro.removeTimeEvent = function(key, finishTime, callback){
  * @param callback
  */
 pro.updateTimeEvent = function(key, oldFinishTime, newFinishTime, now, callback){
-	console.warn(key)
-	console.warn(oldFinishTime)
-	console.warn(newFinishTime)
-	console.warn(now)
+	console.error("updateTimeEvent ----------------------------------------")
+	console.error(key)
+	console.error(oldFinishTime)
+	console.error(newFinishTime)
+	console.error(now)
 	var callbacks = this.callbacks[key]
 	console.warn(callbacks)
 	var callbackObj = callbacks[oldFinishTime]
