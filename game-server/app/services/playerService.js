@@ -5216,8 +5216,8 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 		var allianceData = {}
 		console.error("helpAllianceMemberSpeedUp -----------------------------------------")
 		console.error(effect)
-		console.error(buildEvent.finishTime)
-		console.error(Date.now() - newFinishTime)
+		console.error(buildEvent.finishTime - Date.now())
+		console.error(newFinishTime - Date.now())
 
 		if(newFinishTime <= Date.now()){
 			eventFuncs.push([self, RemovePlayerTimeEvent, memberDoc, buildEvent.finishTime])
