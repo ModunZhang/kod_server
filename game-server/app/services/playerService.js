@@ -549,6 +549,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			console.error("upgradeBuilding -----------------------------------------")
 			console.error(Date.now())
 			console.error(finishTime)
+			console.error(upgradeRequired.buildTime * 1000)
 			console.error(finishTime - Date.now())
 		}
 		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
