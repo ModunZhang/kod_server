@@ -31,21 +31,6 @@ rights["general"] = {
 	"handleJoinAllianceRequest":false,
 	"inviteToJoinAlliance":false
 }
-rights["diplomat"] = {
-	"title":"diplomat",
-	"titleLevel":3,
-	"editTitleName":false,
-	"editAllianceBasicInfo":false,
-	"editAllianceNotice":false,
-	"editAllianceDescription":false,
-	"editAllianceJoinType":false,
-	"modifyAllianceMemberTitle":false,
-	"kickAllianceMemberOff":false,
-	"handOverArchon":false,
-	"sendAllianceMail":false,
-	"handleJoinAllianceRequest":false,
-	"inviteToJoinAlliance":false
-}
 rights["quartermaster"] = {
 	"title":"quartermaster",
 	"titleLevel":4,
