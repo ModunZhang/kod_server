@@ -72,16 +72,22 @@ pro.removeTimeEvent = function(key, finishTime, callback){
  * @param callback
  */
 pro.updateTimeEvent = function(key, oldFinishTime, newFinishTime, now, callback){
+	console.warn(key)
+	console.warn(oldFinishTime)
+	console.warn(newFinishTime)
+	console.warn(now)
 	var callbacks = this.callbacks[key]
+	console.warn(callbacks)
 	var callbackObj = callbacks[oldFinishTime]
 	if(_.isObject(callbackObj)){
 		clearTimeout(callbackObj.id)
 	}
-	delete callbacks[finishTime]
+	delete callbacks[oldFinishTime]
 
 	var id = setTimeout(ExcuteTimeEvent.bind(this), newFinishTime - now, key, newFinishTime)
 	callbackObj.id = id
 	callbacks[newFinishTime] = callbackObj
+	console.warn(callbacks)
 	callback()
 }
 
