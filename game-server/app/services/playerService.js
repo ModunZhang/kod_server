@@ -545,12 +545,6 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			LogicUtils.addBuildingEvent(playerDoc, building.location, finishTime)
 			eventFuncs.push([self, AddPlayerTimeEvent, playerDoc, finishTime])
-
-			console.error("upgradeBuilding -----------------------------------------")
-			console.error(Date.now())
-			console.error(finishTime)
-			console.error(upgradeRequired.buildTime * 1000)
-			console.error(finishTime - Date.now())
 		}
 		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
 		LogicUtils.refreshPlayerResources(playerDoc)
@@ -5220,13 +5214,6 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 		var newFinishTime = buildEvent.finishTime - effect
 		var memberData = {}
 		var allianceData = {}
-		console.error("helpAllianceMemberSpeedUp -----------------------------------------")
-		console.error(effect)
-		console.error(Date.now())
-		console.error(buildEvent.finishTime)
-		console.error(buildEvent.finishTime - Date.now())
-		console.error(newFinishTime - Date.now())
-
 		if(newFinishTime <= Date.now()){
 			eventFuncs.push([self, RemovePlayerTimeEvent, memberDoc, buildEvent.finishTime])
 			buildEvent.finishTime = newFinishTime
