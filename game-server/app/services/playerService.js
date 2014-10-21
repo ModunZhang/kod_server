@@ -5227,7 +5227,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 		}else{
 			eventFuncs.push([self, UpdatePlayerTimeEvent, memberDoc, buildEvent.finishTime, newFinishTime])
 			buildEvent.finishTime = newFinishTime
-			var eventsInfo = LogicUtils.getPlayerBuildEvents(memberDoc, helpEvent.type)
+			var eventsInfo = LogicUtils.getPlayerBuildEvents(memberDoc, helpEvent.helpEventType)
 			_.extend(memberData, eventsInfo)
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 			if(helpEvent.helpedMembers.length >= helpEvent.maxHelpCount){
@@ -5336,7 +5336,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 					}else{
 						eventFuncs.push([self, UpdatePlayerTimeEvent, memberDoc, buildEvent.finishTime, newFinishTime])
 						buildEvent.finishTime = newFinishTime
-						var eventsInfo = LogicUtils.getPlayerBuildEvents(memberDoc, helpEvent.type)
+						var eventsInfo = LogicUtils.getPlayerBuildEvents(memberDoc, helpEvent.helpEventType)
 						_.extend(memberData, eventsInfo)
 						if(helpEvent.helpedMembers.length >= helpEvent.maxHelpCount){
 							LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
