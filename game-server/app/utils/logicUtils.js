@@ -384,6 +384,7 @@ Utils.hasWallEvents = function(playerDoc){
  */
 Utils.addBuildingEvent = function(playerDoc, location, finishTime){
 	var event = {
+		id:ShortId.generate(),
 		location:location,
 		finishTime:finishTime
 	}
@@ -401,6 +402,7 @@ Utils.addBuildingEvent = function(playerDoc, location, finishTime){
  */
 Utils.addHouseEvent = function(playerDoc, buildingLocation, houseLocation, finishTime){
 	var event = {
+		id:ShortId.generate(),
 		buildingLocation:buildingLocation,
 		houseLocation:houseLocation,
 		finishTime:finishTime
@@ -418,6 +420,7 @@ Utils.addHouseEvent = function(playerDoc, buildingLocation, houseLocation, finis
  */
 Utils.addTowerEvent = function(playerDoc, location, finishTime){
 	var event = {
+		id:ShortId.generate(),
 		location:location,
 		finishTime:finishTime
 	}
@@ -434,6 +437,7 @@ Utils.addTowerEvent = function(playerDoc, location, finishTime){
  */
 Utils.addWallEvent = function(playerDoc, finishTime){
 	var event = {
+		id:ShortId.generate(),
 		finishTime:finishTime
 	}
 	playerDoc.wallEvents.push(event)
@@ -628,6 +632,7 @@ Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
 			member.level = playerDoc.basicInfo.level
 			member.power = playerDoc.basicInfo.power
 			member.kill = playerDoc.basicInfo.kill
+			member.loyalty = playerDoc.basicInfo.loyalty
 			return member
 		}
 	}
@@ -853,33 +858,50 @@ Utils.getSmallestBuildEvent = function(playerDoc){
 }
 
 /**
- * 玩家是否已经帮助了此事件
- * @param playerId
- * @param allianceDoc
- * @param eventIndex
- * @returns {boolean}
- */
-Utils.isPlayerAlreadyHelpedThisMember = function(playerId, allianceDoc, eventIndex){
-	var event = allianceDoc.helpEvents[eventIndex]
-	return !!_.contains(event.helpedMembers, playerId)
-}
-
-/**
  * 获取玩家建造事件
  * @param playerDoc
  * @param eventType
- * @param eventIndex
+ * @param eventId
  * @returns {*}
  */
-Utils.getPlayerBuildEvent = function(playerDoc, eventType, eventIndex){
+Utils.getPlayerBuildEvent = function(playerDoc, eventType, eventId){
 	if(_.isEqual(eventType, Consts.AllianceHelpEventType.Building)){
-		return playerDoc.buildingEvents[eventIndex]
+		return this.getEventById(playerDoc.buildingEvents, eventId)
 	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.House)){
-		return playerDoc.houseEvents[eventIndex]
+		return this.getEventById(playerDoc.houseEvents, eventId)
 	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Tower)){
-		return playerDoc.towerEvents[eventIndex]
+		return this.getEventById(playerDoc.towerEvents, eventId)
 	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Wall)){
-		return playerDoc.wallEvents[eventIndex]
+		return this.getEventById(playerDoc.wallEvents, eventId)
+	}
+	return null
+}
+
+Utils.getEventById = function(events, id){
+	for(var i = 0; i < events.length; i ++){
+		var event = events[i]
+		if(_.isEqual(event.id, id)){
+			return event
+		}
+	}
+	return null
+}
+
+/**
+ * 根据帮助时间类型获取玩家时间队列
+ * @param playerDoc
+ * @param eventType
+ * @returns {*}
+ */
+Utils.getPlayerBuildEvents = function(playerDoc, eventType){
+	if(_.isEqual(eventType, Consts.AllianceHelpEventType.Building)){
+		return {buildingEvents:playerDoc.buildingEvents}
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.House)){
+		return {houseEvents:playerDoc.houseEvents}
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Tower)){
+		return {towerEvents:towerEventsplayerDoc.towerEvents}
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Wall)){
+		return {wallEvents:playerDoc.wallEvents}
 	}
 	return null
 }
@@ -888,18 +910,22 @@ Utils.getPlayerBuildEvent = function(playerDoc, eventType, eventIndex){
  * 为联盟添加帮助事件
  * @param allianceDoc
  * @param playerDoc
- * @param level
- * @param eventType
- * @param eventIndex
- * @returns {{id: *, type: *, level: *, index: *, maxHelpCount: *, helpedMembers: Array}}
+ * @param buildingLevel
+ * @param helpEventType
+ * @param buildingName
+ * @param eventId
+ * @returns {*}
  */
-Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, level, eventType, eventIndex){
+Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, buildingLevel, helpEventType, buildingName, eventId){
 	var keep = playerDoc.buildings["location_1"]
 	var event = {
 		id:playerDoc._id,
-		type:eventType,
-		level:level,
-		index:eventIndex,
+		name:playerDoc.basicInfo.name,
+		vipExp:playerDoc.basicInfo.vipExp,
+		helpEventType:helpEventType,
+		buildingName:buildingName,
+		buildingLevel:buildingLevel,
+		eventId:eventId,
 		maxHelpCount:keep.level,
 		helpedMembers:[]
 	}
@@ -976,15 +1002,13 @@ Utils.sendSystemMail = function(playerDoc, titleKey, titleArgs, contentKey, cont
 /**
  * 根据事件类型和Index获取联盟帮助事件
  * @param allianceDoc
- * @param playerId
- * @param helpEventType
- * @param eventIndex
+ * @param eventId
  * @returns {*}
  */
-Utils.getAllianceHelpEvent = function(allianceDoc, playerId, helpEventType, eventIndex){
+Utils.getAllianceHelpEvent = function(allianceDoc, eventId){
 	for(var i = 0; i < allianceDoc.helpEvents.length; i++){
 		var event = allianceDoc.helpEvents[i]
-		if(_.isEqual(event.type, helpEventType) && _.isEqual(event.id, playerId) && _.isEqual(event.index, eventIndex)){
+		if(_.isEqual(event.eventId, eventId)){
 			return event
 		}
 	}

@@ -527,12 +527,17 @@ var joinAllianceDirectly = function(allianceId, callback){
 	pomelo.request(route, info, callback)
 }
 
-var helpAllianceMemberSpeedUp = function(eventIndex, callback){
+var helpAllianceMemberSpeedUp = function(eventId, callback){
 	var info = {
-		eventIndex:eventIndex
+		eventId:eventId
 	}
 	var route = "logic.playerHandler.helpAllianceMemberSpeedUp"
 	pomelo.request(route, info, callback)
+}
+
+var helpAllAllianceMemberSpeedUp = function(callback){
+	var route = "logic.playerHandler.helpAllAllianceMemberSpeedUp"
+	pomelo.request(route, null, callback)
 }
 
 var getMyAllianceData = function(callback){
@@ -2816,38 +2821,44 @@ describe("LogicServer", function(){
 		})
 
 		it("helpAllianceMemberSpeedUp 正常帮助1", function(done){
+			var alliance = null
 			LoginPlayer(Config.deviceId3, function(doc){
 				doc.code.should.equal(200)
-				helpAllianceMemberSpeedUp(0, function(doc){
+				getMyAllianceData(function(doc){
 					doc.code.should.equal(200)
-					done()
+					var event = alliance.helpEvents[0]
+					helpAllianceMemberSpeedUp(event.eventId, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
 				})
+				var onGetAllianceDataSuccess = function(doc){
+					alliance = doc
+					pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+				}
+				pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 			})
 		})
 
 		it("helpAllianceMemberSpeedUp 正常帮助2", function(done){
-			helpAllianceMemberSpeedUp(1, function(doc){
+			var alliance = null
+			getMyAllianceData(function(doc){
 				doc.code.should.equal(200)
-				done()
+				var event = alliance.helpEvents[1]
+				helpAllianceMemberSpeedUp(event.eventId, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
 			})
+			var onGetAllianceDataSuccess = function(doc){
+				alliance = doc
+				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+			}
+			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		})
 
-		it("helpAllianceMemberSpeedUp 正常帮助3", function(done){
-			helpAllianceMemberSpeedUp(2, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("helpAllianceMemberSpeedUp 正常帮助4", function(done){
-			helpAllianceMemberSpeedUp(1, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("helpAllianceMemberSpeedUp 正常帮助5", function(done){
-			helpAllianceMemberSpeedUp(1, function(doc){
+		it("helpAllAllianceMemberSpeedUp 正常帮助", function(done){
+			helpAllAllianceMemberSpeedUp(function(doc){
 				doc.code.should.equal(200)
 				done()
 			})

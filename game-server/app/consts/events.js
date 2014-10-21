@@ -33,7 +33,8 @@ module.exports = {
 		onAllianceDataChanged:"onAllianceDataChanged",
 		onAllianceMemberDataChanged:"onAllianceMemberDataChanged",
 		onAllianceBasicInfoAndMemberDataChanged:"onAllianceBasicInfoAndMemberDataChanged",
-		onAllianceNewEventReceived:"onAllianceNewEventReceived"
+		onAllianceNewEventReceived:"onAllianceNewEventReceived",
+		onAllianceHelpEventChanged:"onAllianceHelpEventChanged"
 	},
 	chat:{
 		onChat:"onChat",

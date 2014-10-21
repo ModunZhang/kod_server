@@ -31,7 +31,6 @@ var allianceSchema = new Schema({
 	titles:{
 		archon:{type:String, required:true, default:"__archon"},
 		general:{type:String, required:true, default:"__general"},
-		diplomat:{type:String, required:true, default:"__diplomat"},
 		quartermaster:{type:String, required:true, default:"__quartermaster"},
 		supervisor:{type:String, required:true, default:"__supervisor"},
 		elite:{type:String, required:true, default:"__elite"},
@@ -73,9 +72,12 @@ var allianceSchema = new Schema({
 		{
 			_id : false,
 			id:{type:String, required:true},
-			type:{type:String, required:true},
-			level:{type:Number, required:true},
-			index:{type:Number, required:true},
+			name:{type:String, required:true},
+			vipExp:{type:Number, required:true},
+			helpEventType:{type:String, required:true},
+			buildingName:{type:String, required:true},
+			buildingLevel:{type:Number, required:true},
+			eventId:{type:String, required:true},
 			maxHelpCount:{type:Number, required:true},
 			helpedMembers:[String]
 		}

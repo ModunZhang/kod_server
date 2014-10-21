@@ -56,7 +56,6 @@ module.exports = {
 	AllianceTitle:{
 		Archon:"archon",
 		General:"general",
-		Diplomat:"diplomat",
 		Quartermaster:"quartermaster",
 		Supervisor:"supervisor",
 		Elite:"elite",

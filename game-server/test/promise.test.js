@@ -186,3 +186,15 @@ var _ = require("underscore")
 //console.log(a.slice(10, 10 + 10))
 //console.log(b.slice(0, 10))
 //console.log(b.slice(5, 15))
+//
+//var testArray = [
+//	{a:"1", b:"2"},
+//	{a:"2", b:"3"},
+//	{a:"1", b:"4"}
+//]
+//
+//var res = _.indexBy(testArray, "a")
+//_.each(res, function(value, key){
+//	console.log(value)
+//	console.log(key)
+//})

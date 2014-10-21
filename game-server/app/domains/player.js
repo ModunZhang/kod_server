@@ -110,6 +110,7 @@ var playerSchema = new Schema({
 		levelExp:{type:Number, required:true, default:0},
 		power:{type:Number, required:true, default:0},
 		kill:{type:Number, required:true, default:0},
+		loyalty:{type:Number, reuqired:true, default:0},
 		vipExp:{type:Number, required:true, default:0},
 		vipFinishTime:{type:Number, required:true, default:0},
 		resourceRefreshTime:{type:Number, required:true, default:Date.now()},
@@ -358,6 +359,7 @@ var playerSchema = new Schema({
 	buildingEvents:[
 		{
 			_id:false,
+			id:{type:String, required:true},
 			location:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
 		}
@@ -365,6 +367,7 @@ var playerSchema = new Schema({
 	houseEvents:[
 		{
 			_id:false,
+			id:{type:String, required:true},
 			buildingLocation:{type:Number, required:true},
 			houseLocation:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
@@ -386,6 +389,7 @@ var playerSchema = new Schema({
 	towerEvents:[
 		{
 			_id:false,
+			id:{type:String, required:true},
 			location:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
 		}
@@ -396,6 +400,7 @@ var playerSchema = new Schema({
 	wallEvents:[
 		{
 			_id:false,
+			id:{type:String, required:true},
 			finishTime:{type:Number, required:true}
 		}
 	],
