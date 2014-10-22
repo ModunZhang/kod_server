@@ -190,6 +190,7 @@ pro.playerLogin = function(playerDoc, callback){
 		eventFuncs = params.eventFuncs
 		return self.allianceDao.updateAsync(allianceDoc).then(function(){
 			pushFuncs.unshift([self.pushService, self.pushService.onAllianceBasicInfoAndMemberDataChangedAsync, allianceDoc, memberDoc])
+			pushFuncs.unshift([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, playerDoc, allianceDoc])
 			pushFuncs.unshift([self.pushService, self.pushService.onPlayerLoginSuccessAsync, playerDoc])
 			return LogicUtils.excuteAll(eventFuncs)
 		})
