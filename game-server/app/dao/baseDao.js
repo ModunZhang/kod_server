@@ -153,7 +153,7 @@ pro.update = function(doc, callback){
 		doc.__v = 0
 	}
 	var self = this
-	this.scripto.runAsync("update", [self.modelName, JSON.stringify(doc)], self.indexs).then(function(){
+	this.scripto.runAsync("update", [this.modelName, JSON.stringify(doc)], this.indexs).then(function(){
 		if(shouldSaveToMongo){
 			return self.model.findByIdAndUpdateAsync(doc._id, _.omit(doc, "_id", "__v"))
 		}else{
@@ -325,8 +325,49 @@ pro.removeLockByIndex = function(index, value, callback){
 	})
 }
 
+/**
+ * 查询所有玩家
+ * @param callback
+ */
 pro.findAll = function(callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
+	var docs = []
+	this.scripto.runAsync("findAll", [this.modelName]).then(function(docStrings){
+		for(var i = 0; i < docStrings.length; i ++){
+			var doc = JSON.parse(docStrings[i])
+			docs.push(doc)
+		}
+		callback(null, docs)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 更新所有
+ * @param docs
+ * @param callback
+ */
+pro.updateAll = function(docs, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback must be a function")
+	}
+	if(!_.isArray(docs)){
+		callback(new Error("docs must be an array"))
+		return
+	}
+
+//	var docStrings = []
+//	_.each(docs, function(doc){
+//		var docString = JSON.stringify(doc)
+//		docStrings.push(docString)
+//	})
+	this.scripto.runAsync("updateAll", [this.modelName, JSON.stringify(docs)], this.indexs).then(function(docStrings){
+		console.warn(docStrings)
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
 }
