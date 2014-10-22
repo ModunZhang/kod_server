@@ -26,7 +26,7 @@ var SpecialSoldierConfig = UnitConfig.special
 var DragonEquipmentConfig = GameDatas.SmithConfig.equipments
 var DragonEyrie = GameDatas.DragonEyrie
 var AllianceInit = GameDatas.AllianceInitData
-var AllianceRights = AllianceInit.rights
+var AllianceRight = AllianceInit.right
 var Vip = GameDatas.Vip
 
 
@@ -1372,7 +1372,7 @@ Utils.getImposedCoin = function(playerDoc){
  * @returns {gem|*|playerSchema.resources.gem|.resources.gem}
  */
 Utils.getGemByCreateAlliance = function(){
-	return AllianceInit.resources.createAlliance.gem
+	return AllianceInit.resource.createAlliance.gem
 }
 
 /**
@@ -1380,7 +1380,7 @@ Utils.getGemByCreateAlliance = function(){
  * @returns {resources.buyArchon.gem|*}
  */
 Utils.getGemByBuyAllianceArchon = function(){
-	return AllianceInit.resources.buyArchon.gem
+	return AllianceInit.resource.buyArchon.gem
 }
 
 /**
@@ -1390,7 +1390,7 @@ Utils.getGemByBuyAllianceArchon = function(){
  * @returns {*}
  */
 Utils.isAllianceOperationLegal = function(title, api){
-	var config = AllianceRights[title]
+	var config = AllianceRight[title]
 	return config[api]
 }
 
@@ -1400,7 +1400,7 @@ Utils.isAllianceOperationLegal = function(title, api){
  * @returns {*}
  */
 Utils.getAllianceTitleLevel = function(title){
-	return AllianceRights[title].titleLevel
+	return AllianceRight[title].titleLevel
 }
 
 /**

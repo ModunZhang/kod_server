@@ -2,11 +2,10 @@ var GameDatas = {}
 module.exports = GameDatas
 
 GameDatas.AllianceInitData = {}
-GameDatas.AllianceInitData.resources = require("./AllianceInitData_resources.js")
-GameDatas.AllianceInitData.rights = require("./AllianceInitData_rights.js")
-
-GameDatas.AllianceMap = {}
-GameDatas.AllianceMap.type = require("./AllianceMap_type.js")
+GameDatas.AllianceInitData.resource = require("./AllianceInitData_resource.js")
+GameDatas.AllianceInitData.right = require("./AllianceInitData_right.js")
+GameDatas.AllianceInitData.buildingType = require("./AllianceInitData_buildingType.js")
+GameDatas.AllianceInitData.donate = require("./AllianceInitData_donate.js")
 
 GameDatas.BuildingFunction = {}
 GameDatas.BuildingFunction.wall = require("./BuildingFunction_wall.js")

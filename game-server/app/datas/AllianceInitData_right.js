@@ -1,7 +1,7 @@
-var rights = {}
-module.exports = rights
+var right = {}
+module.exports = right
 
-rights["archon"] = {
+right["archon"] = {
 	"title":"archon",
 	"titleLevel":1,
 	"editTitleName":true,
@@ -16,7 +16,7 @@ rights["archon"] = {
 	"handleJoinAllianceRequest":true,
 	"inviteToJoinAlliance":1
 }
-rights["general"] = {
+right["general"] = {
 	"title":"general",
 	"titleLevel":2,
 	"editTitleName":false,
@@ -31,7 +31,7 @@ rights["general"] = {
 	"handleJoinAllianceRequest":false,
 	"inviteToJoinAlliance":false
 }
-rights["quartermaster"] = {
+right["quartermaster"] = {
 	"title":"quartermaster",
 	"titleLevel":4,
 	"editTitleName":false,
@@ -46,7 +46,7 @@ rights["quartermaster"] = {
 	"handleJoinAllianceRequest":false,
 	"inviteToJoinAlliance":false
 }
-rights["supervisor"] = {
+right["supervisor"] = {
 	"title":"supervisor",
 	"titleLevel":5,
 	"editTitleName":false,
@@ -61,7 +61,7 @@ rights["supervisor"] = {
 	"handleJoinAllianceRequest":false,
 	"inviteToJoinAlliance":false
 }
-rights["elite"] = {
+right["elite"] = {
 	"title":"elite",
 	"titleLevel":6,
 	"editTitleName":false,
@@ -76,7 +76,7 @@ rights["elite"] = {
 	"handleJoinAllianceRequest":false,
 	"inviteToJoinAlliance":false
 }
-rights["member"] = {
+right["member"] = {
 	"title":"member",
 	"titleLevel":7,
 	"editTitleName":false,
