@@ -5419,6 +5419,9 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 	})
 }
 
+pro.donateToAlliance = function(playerId, donateType, callback){
+
+}
 
 /**
  * 执行玩家延迟执行事件

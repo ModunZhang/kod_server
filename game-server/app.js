@@ -150,6 +150,31 @@ app.configure("production|development", "event", function(){
 	app.set("mongoose", mongooseClient)
 })
 
+app.configure("production|development", "time", function(){
+	app.set("proxyConfig", {
+		bufferMsg:false,
+		failMode:"failfast"
+	})
+	app.set("remoteConfig", {
+		bufferMsg:false,
+		failMode:"failfast"
+	})
+
+	app.filter(pomelo.filters.serial())
+	app.before(loginFilter())
+
+	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
+	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
+
+	var redisClient = redis.createClient(app.get("redisConfig").port, app.get("redisConfig").host)
+	app.set("redis", redisClient)
+	var scripto = new Scripto(redisClient)
+	scripto.loadFromDir(commandDir)
+	app.set("scripto", scripto)
+	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
+	app.set("mongoose", mongooseClient)
+})
+
 app.set('errorHandler', function(err, msg, resp, session, opts, cb){
 	errorLogger.error("handle app:Error-----------------------------")
 	errorLogger.error(err.stack)

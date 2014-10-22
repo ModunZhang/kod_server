@@ -69,6 +69,14 @@ var allianceSchema = new Schema({
 			loyalty:{type:Number, reuqired:true},
 			lastLoginTime:{type:Number, required:true},
 			title:{type:String, required:true},
+			donateStatus:{
+				wood:{type:Number, required:true},
+				stone:{type:Number, required:true},
+				iron:{type:Number, required:true},
+				food:{type:Number, required:true},
+				coin:{type:Number, required:true},
+				gem:{type:Number, required:true}
+			},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}

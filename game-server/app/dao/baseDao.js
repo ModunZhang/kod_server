@@ -324,3 +324,9 @@ pro.removeLockByIndex = function(index, value, callback){
 		callback(e)
 	})
 }
+
+pro.findAll = function(callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback must be a function")
+	}
+}

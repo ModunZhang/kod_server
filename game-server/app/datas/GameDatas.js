@@ -1,3 +1,5 @@
+"use strict"
+
 var GameDatas = {}
 module.exports = GameDatas
 

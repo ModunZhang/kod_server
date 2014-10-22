@@ -1153,7 +1153,19 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title){
 		kill:playerDoc.basicInfo.kill,
 		loyalty:playerDoc.allianceInfo.loyalty,
 		lastLoginTime:playerDoc.countInfo.lastLoginTime,
-		title:title
+		title:title,
+		donateStatus:{
+			wood:2,
+			stone:2,
+			iron:2,
+			food:2,
+			coin:2,
+			gem:2
+		},
+		location:{
+			x:0,
+			y:0
+		}
 	}
 	allianceDoc.members.push(member)
 	return member

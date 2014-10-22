@@ -57,6 +57,13 @@
 				"host":"127.0.0.1",
 				"port":6152
 			}
+		],
+		"time":[
+			{
+				"id":"time-server-1",
+				"host":"127.0.0.1",
+				"port":7151
+			}
 		]
 	},
 	"production":{
@@ -116,6 +123,13 @@
 				"id":"event-server-2",
 				"host":"54.178.151.193",
 				"port":6152
+			}
+		],
+		"time":[
+			{
+				"id":"time-server-1",
+				"host":"54.178.151.193",
+				"port":7151
 			}
 		]
 	}

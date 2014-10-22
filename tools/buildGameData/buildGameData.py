@@ -43,6 +43,7 @@ def exportLuaFiles(files):
 
 def exportJsFiles(files):
 	file = open(g_exportDir + "/" + g_fileNamePrefix + '.js', "w")
+	file.write("\"use strict\"\n\n")
 	file.write("var %s = {}\n" % (g_fileNamePrefix))
 	file.write("module.exports = %s" % (g_fileNamePrefix))
 	for fileName in files:
@@ -159,6 +160,7 @@ def exportSheetAsJs(sheet):
 
 
 	file = open(g_exportDir + "/" + g_currentFileNamePrefix + "_" + sheetName + '.js', "w")
+	file.write("\"use strict\"\n\n")
 	file.write("var %s = %s\n" % (sheetName, valueType))
 	file.write("module.exports = %s\n\n" % (sheetName))
 	#export title
@@ -183,17 +185,17 @@ def exportSheetAsJs(sheet):
 			details = title[j].split('_')
 			valueType = details[0]
 			if("nil" == datarow[j]):
-				text = ('\t"%s":%s,\n' % (nakeName(title[j]), "null") )
+				text = ('\t%s:%s,\n' % (nakeName(title[j]), "null") )
 			elif ("" == datarow[j]):
 				continue
 			elif ("INT" == valueType):
-				text = ('\t"%s":%d,\n' % (nakeName(title[j]), datarow[j]) )
+				text = ('\t%s:%d,\n' % (nakeName(title[j]), datarow[j]) )
 			elif ("FLOAT" == valueType):
-				text = ('\t"%s":%f,\n' % (nakeName(title[j]), datarow[j]) )
+				text = ('\t%s:%f,\n' % (nakeName(title[j]), datarow[j]) )
 			elif ("BOOL" == valueType):
-				text = ('\t"%s":%s,\n' % (nakeName(title[j]), datarow[j]) )
+				text = ('\t%s:%s,\n' % (nakeName(title[j]), datarow[j]) )
 			elif ("STR" == valueType):
-				text = ('\t"%s":"%s",\n' % (nakeName(title[j]), datarow[j]) )
+				text = ('\t%s:"%s",\n' % (nakeName(title[j]), datarow[j]) )
 			else:
 				continue	
 			jsStr += text

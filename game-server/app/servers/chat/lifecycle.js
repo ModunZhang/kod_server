@@ -5,7 +5,6 @@
 */
 
 var Promise = require("bluebird")
-var _ = require("underscore")
 
 var PlayerService = require("../../services/playerService")
 
