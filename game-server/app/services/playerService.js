@@ -3983,6 +3983,14 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		memberDoc = doc
+
+		var helpEvents = _.filter(allianceDoc.helpEvents, function(event){
+			return _.isEqual(memberId, event.id)
+		})
+		_.each(helpEvents, function(helpEvent){
+			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+		})
+
 		memberDoc.alliance = null
 		var memberData = {}
 		memberData.alliance = {}
@@ -3993,6 +4001,9 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		allianceData.basicInfo = allianceDoc.basicInfo
 		allianceData.members = allianceDoc.members
 		allianceData.events = allianceDoc.events
+		if(helpEvents.length > 0){
+			allianceData.helpEvents = allianceDoc.helpEvents
+		}
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.leaveAsync, Consts.AllianceChannelPrefix + allianceDoc._id, memberDoc._id, memberDoc.logicServerId])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
@@ -4167,6 +4178,14 @@ pro.quitAlliance = function(playerId, callback){
 		if(_.isEqual(playerDoc.alliance.title, Consts.AllianceTitle.Archon) && allianceDoc.members.length > 1){
 			return Promise.reject(new Error("别逗了,仅当联盟成员为空时,盟主才能退出联盟"))
 		}
+
+		var helpEvents = _.filter(allianceDoc.helpEvents, function(event){
+			return _.isEqual(playerId, event.id)
+		})
+		_.each(helpEvents, function(helpEvent){
+			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+		})
+
 		playerInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		LogicUtils.removeItemInArray(allianceDoc.members, playerInAlliance)
 		LogicUtils.refreshAlliance(allianceDoc)
@@ -4186,6 +4205,9 @@ pro.quitAlliance = function(playerId, callback){
 			allianceData.basicInfo = allianceDoc.basicInfo
 			allianceData.members = allianceDoc.members
 			allianceData.events = allianceDoc.events
+			if(helpEvents.length > 0){
+				allianceData.helpEvents = allianceDoc.helpEvents
+			}
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 			updateFuncs.push([self.globalChannelService, self.globalChannelService.leaveAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
@@ -5369,6 +5391,8 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 		return Promise.all(funcs)
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
