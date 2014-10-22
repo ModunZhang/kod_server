@@ -258,6 +258,7 @@ pro.onImposeSuccess = function(playerDoc, coinCount, callback){
 pro.onGetPlayerInfoSuccess = function(playerDoc, callback){
 	var hasAlliance = _.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)
 	var data = {
+		id:playerDoc._id,
 		name:playerDoc.basicInfo.name,
 		power:playerDoc.basicInfo.power,
 		level:playerDoc.basicInfo.level,
