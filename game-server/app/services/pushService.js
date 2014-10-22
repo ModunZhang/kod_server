@@ -262,7 +262,7 @@ pro.onGetPlayerInfoSuccess = function(playerDoc, callback){
 		power:playerDoc.basicInfo.power,
 		level:playerDoc.basicInfo.level,
 		exp:playerDoc.basicInfo.exp,
-		vip:playerDoc.basicInfo.vip,
+		vipExp:playerDoc.basicInfo.vipExp,
 		alliance:hasAlliance ? playerDoc.alliance.name : "",
 		title:hasAlliance ? playerDoc.alliance.title : "",
 		titleName:hasAlliance ? playerDoc.alliance.titleName : "",
