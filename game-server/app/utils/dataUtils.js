@@ -1372,7 +1372,15 @@ Utils.getImposedCoin = function(playerDoc){
  * @returns {gem|*|playerSchema.resources.gem|.resources.gem}
  */
 Utils.getGemByCreateAlliance = function(){
-	return AllianceInit.resources[1].gem
+	return AllianceInit.resources.createAlliance.gem
+}
+
+/**
+ * 获取购买盟主职位所需要的宝石
+ * @returns {resources.buyArchon.gem|*}
+ */
+Utils.getGemByBuyAllianceArchon = function(){
+	return AllianceInit.resources.buyArchon.gem
 }
 
 /**

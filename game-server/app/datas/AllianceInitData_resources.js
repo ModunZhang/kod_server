@@ -1,7 +1,11 @@
-var resources = []
+var resources = {}
 module.exports = resources
 
-resources[1] = {
-	"level":1,
+resources["createAlliance"] = {
+	"type":"createAlliance",
 	"gem":50
+}
+resources["buyArchon"] = {
+	"type":"buyArchon",
+	"gem":100
 }

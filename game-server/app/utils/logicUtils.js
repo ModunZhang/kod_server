@@ -633,7 +633,7 @@ Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
 			member.level = playerDoc.basicInfo.level
 			member.power = playerDoc.basicInfo.power
 			member.kill = playerDoc.basicInfo.kill
-			member.loyalty = playerDoc.basicInfo.loyalty
+			member.loyalty = playerDoc.allianceInfo.loyalty
 			member.lastLoginTime = playerDoc.countInfo.lastLoginTime
 			return member
 		}
@@ -1151,7 +1151,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title){
 		level:playerDoc.basicInfo.level,
 		power:playerDoc.basicInfo.power,
 		kill:playerDoc.basicInfo.kill,
-		loyalty:playerDoc.basicInfo.loyalty,
+		loyalty:playerDoc.allianceInfo.loyalty,
 		lastLoginTime:playerDoc.countInfo.lastLoginTime,
 		title:title
 	}

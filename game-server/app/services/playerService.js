@@ -4989,7 +4989,6 @@ pro.buyAllianceArchon = function(playerId, callback){
 	var allianceDoc = null
 	var pushFuncs = []
 	var updateFuncs = []
-	var neededGem = 100
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
@@ -5001,9 +5000,11 @@ pro.buyAllianceArchon = function(playerId, callback){
 		if(_.isEqual(doc.alliance.title, Consts.AllianceTitle.Archon)){
 			return Promise.reject(new Error("玩家已经是盟主了"))
 		}
-		if(playerDoc.resources.gem < neededGem){
+		var gemUsed = DataUtils.getGemByBuyAllianceArchon()
+		if(playerDoc.resources.gem < gemUsed){
 			return Promise.reject(new Error("宝石不足"))
 		}
+		playerDoc.resources.gem -= gemUsed
 		return self.allianceDao.findByIdAsync(doc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
@@ -5021,7 +5022,6 @@ pro.buyAllianceArchon = function(playerId, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		archonDoc = doc
-		playerDoc.resources.gem -= neededGem
 		var archonDocInAlliance = LogicUtils.getAllianceArchon(allianceDoc)
 		var playerInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		playerInAllianceDoc.title = Consts.AllianceTitle.Archon

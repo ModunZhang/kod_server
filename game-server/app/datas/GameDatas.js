@@ -5,6 +5,9 @@ GameDatas.AllianceInitData = {}
 GameDatas.AllianceInitData.resources = require("./AllianceInitData_resources.js")
 GameDatas.AllianceInitData.rights = require("./AllianceInitData_rights.js")
 
+GameDatas.AllianceMap = {}
+GameDatas.AllianceMap.type = require("./AllianceMap_type.js")
+
 GameDatas.BuildingFunction = {}
 GameDatas.BuildingFunction.wall = require("./BuildingFunction_wall.js")
 GameDatas.BuildingFunction.tower = require("./BuildingFunction_tower.js")

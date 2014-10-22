@@ -10,6 +10,17 @@ var Schema = mongoose.Schema
 
 var Consts = require("../consts/consts")
 
+var createBuildingSchema = function(name, x, y){
+	var schema = {
+		name:{type:String, required:true, default:name},
+		level:{type:Number, required:true, default:1},
+		location:{
+			x:{type:Number, required:true, default:x},
+			y:{type:Number, required:true, default:y}
+		}
+	}
+	return schema
+}
 
 var allianceSchema = new Schema({
 	_id:{type:String, required:true, unique:true, default:ShortId.generate},
@@ -57,7 +68,31 @@ var allianceSchema = new Schema({
 			kill:{type:Number, required:true},
 			loyalty:{type:Number, reuqired:true},
 			lastLoginTime:{type:Number, required:true},
-			title:{type:String, required:true}
+			title:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			}
+		}
+	],
+	buildings:{
+		palace:createBuildingSchema("palace", 0, 0),
+		gate:createBuildingSchema("gate", 0, 0),
+		hall:createBuildingSchema("hall", 0, 0),
+		shrine:createBuildingSchema("shrine", 0, 0),
+		shop:createBuildingSchema("shop", 0, 0)
+	},
+	villages:[{
+		_id:false
+	}],
+	map:[
+		{
+			_id:false,
+			type:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			}
 		}
 	],
 	joinRequestEvents:[

@@ -110,12 +110,14 @@ var playerSchema = new Schema({
 		levelExp:{type:Number, required:true, default:0},
 		power:{type:Number, required:true, default:0},
 		kill:{type:Number, required:true, default:0},
-		loyalty:{type:Number, reuqired:true, default:0},
 		vipExp:{type:Number, required:true, default:0},
 		vipFinishTime:{type:Number, required:true, default:0},
 		resourceRefreshTime:{type:Number, required:true, default:Date.now()},
 		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn},
 		buildQueue:{type:Number, required:true, default:5}
+	},
+	allianceInfo:{
+		loyalty:{type:Number, reuqired:true, default:0}
 	},
 	resources:{
 		wood:{type:Number, required:true, default:ResourceInitData.wood},
