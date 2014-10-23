@@ -16,6 +16,17 @@ GameDatas.AllianceInitData.right = require("./AllianceInitData_right.js")
 GameDatas.AllianceInitData.buildingType = require("./AllianceInitData_buildingType.js")
 GameDatas.AllianceInitData.donate = require("./AllianceInitData_donate.js")
 
+GameDatas.AllianceShrine = {}
+GameDatas.AllianceShrine.ShrineStage = require("./AllianceShrine_ShrineStage.js")
+
+GameDatas.AllianceVillage = {}
+GameDatas.AllianceVillage.wood = require("./AllianceVillage_wood.js")
+GameDatas.AllianceVillage.food = require("./AllianceVillage_food.js")
+GameDatas.AllianceVillage.stone = require("./AllianceVillage_stone.js")
+GameDatas.AllianceVillage.iron = require("./AllianceVillage_iron.js")
+GameDatas.AllianceVillage.coin = require("./AllianceVillage_coin.js")
+GameDatas.AllianceVillage.gem = require("./AllianceVillage_gem.js")
+
 GameDatas.BuildingFunction = {}
 GameDatas.BuildingFunction.wall = require("./BuildingFunction_wall.js")
 GameDatas.BuildingFunction.tower = require("./BuildingFunction_tower.js")
@@ -123,6 +134,16 @@ GameDatas.PlayerInitData.materials = require("./PlayerInitData_materials.js")
 GameDatas.PlayerInitData.soldierMaterials = require("./PlayerInitData_soldierMaterials.js")
 GameDatas.PlayerInitData.dragonMaterials = require("./PlayerInitData_dragonMaterials.js")
 GameDatas.PlayerInitData.houses = require("./PlayerInitData_houses.js")
+GameDatas.PlayerInitData.playerLevel = require("./PlayerInitData_playerLevel.js")
+GameDatas.PlayerInitData.vipLevel = require("./PlayerInitData_vipLevel.js")
+
+GameDatas.PlayerVillageExp = {}
+GameDatas.PlayerVillageExp.exp = require("./PlayerVillageExp_exp.js")
+GameDatas.PlayerVillageExp.wood = require("./PlayerVillageExp_wood.js")
+GameDatas.PlayerVillageExp.stone = require("./PlayerVillageExp_stone.js")
+GameDatas.PlayerVillageExp.iron = require("./PlayerVillageExp_iron.js")
+GameDatas.PlayerVillageExp.food = require("./PlayerVillageExp_food.js")
+GameDatas.PlayerVillageExp.coin = require("./PlayerVillageExp_coin.js")
 
 GameDatas.SmithConfig = {}
 GameDatas.SmithConfig.equipments = require("./SmithConfig_equipments.js")
@@ -130,6 +151,3 @@ GameDatas.SmithConfig.equipments = require("./SmithConfig_equipments.js")
 GameDatas.UnitsConfig = {}
 GameDatas.UnitsConfig.normal = require("./UnitsConfig_normal.js")
 GameDatas.UnitsConfig.special = require("./UnitsConfig_special.js")
-
-GameDatas.Vip = {}
-GameDatas.Vip.exp = require("./Vip_exp.js")

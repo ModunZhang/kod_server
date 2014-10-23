@@ -117,7 +117,12 @@ var playerSchema = new Schema({
 		buildQueue:{type:Number, required:true, default:5}
 	},
 	allianceInfo:{
-		loyalty:{type:Number, reuqired:true, default:0}
+		loyalty:{type:Number, reuqired:true, default:0},
+		woodExp:{type:Number, required:true, default:0},
+		stoneExp:{type:Number, required:true, default:0},
+		ironExp:{type:Number, required:true, default:0},
+		foodExp:{type:Number, required:true, default:0},
+		coinExp:{type:Number, required:true, default:0}
 	},
 	resources:{
 		wood:{type:Number, required:true, default:ResourceInitData.wood},

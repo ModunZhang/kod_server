@@ -89,6 +89,13 @@ var allianceSchema = new Schema({
 		shrine:createBuildingSchema("shrine", 10, 7),
 		shop:createBuildingSchema("shop", 13, 10)
 	},
+	villageLevels:{
+		wood:{type:Number, required:true, default:1},
+		stone:{type:Number, required:true, default:1},
+		iron:{type:Number, required:true, default:1},
+		food:{type:Number, required:true, default:1},
+		coin:{type:Number, required:true, default:1}
+	},
 	villages:[{
 		_id:false
 	}],
