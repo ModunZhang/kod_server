@@ -253,21 +253,22 @@ pro.onImposeSuccess = function(playerDoc, coinCount, callback){
 /**
  * 查看玩家个人信息通知
  * @param playerDoc
+ * @param memberDoc
  * @param callback
  */
-pro.onGetPlayerInfoSuccess = function(playerDoc, callback){
-	var hasAlliance = _.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)
+pro.onGetPlayerInfoSuccess = function(playerDoc, memberDoc, callback){
+	var hasAlliance = _.isObject(memberDoc.alliance) && !_.isEmpty(memberDoc.alliance.id)
 	var data = {
-		id:playerDoc._id,
-		name:playerDoc.basicInfo.name,
-		power:playerDoc.basicInfo.power,
-		level:playerDoc.basicInfo.level,
-		exp:playerDoc.basicInfo.exp,
-		vipExp:playerDoc.basicInfo.vipExp,
-		alliance:hasAlliance ? playerDoc.alliance.name : "",
-		title:hasAlliance ? playerDoc.alliance.title : "",
-		titleName:hasAlliance ? playerDoc.alliance.titleName : "",
-		lastLoginTime:playerDoc.countInfo.lastLoginTime
+		id:memberDoc._id,
+		name:memberDoc.basicInfo.name,
+		power:memberDoc.basicInfo.power,
+		level:memberDoc.basicInfo.level,
+		exp:memberDoc.basicInfo.exp,
+		vipExp:memberDoc.basicInfo.vipExp,
+		alliance:hasAlliance ? memberDoc.alliance.name : "",
+		title:hasAlliance ? memberDoc.alliance.title : "",
+		titleName:hasAlliance ? memberDoc.alliance.titleName : "",
+		lastLoginTime:memberDoc.countInfo.lastLoginTime
 	}
 	this.pushToPlayer(playerDoc, Events.player.onGetPlayerInfoSuccess, data, callback)
 }
