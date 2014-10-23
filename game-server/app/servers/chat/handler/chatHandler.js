@@ -341,6 +341,20 @@ var ChatHandler = function(app){
 					})
 				}
 			}
+		},
+		{
+			command:"donatelevel",
+			desc:"设置捐赠级别:donatelevel 1  (1 - 6)",
+			func:function(session, uid, text, callback){
+				var self = this
+				var donatelevel = text.split(" ")[1]
+				donatelevel = parseInt(donatelevel)
+				if(_.isNumber(donatelevel) && donatelevel >= 1 && donatelevel <= 6){
+					self.app.rpc.logic.commandRemote.donatelevel(session, uid, donatelevel, function(e){
+						callback(e)
+					})
+				}
+			}
 		}
 	]
 }

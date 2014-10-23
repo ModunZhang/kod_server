@@ -554,6 +554,14 @@ var helpAllAllianceMemberSpeedUp = function(callback){
 	pomelo.request(route, null, callback)
 }
 
+var donateToAlliance = function(donateType, callback){
+	var info = {
+		donateType:donateType
+	}
+	var route = "logic.playerHandler.donateToAlliance"
+	pomelo.request(route, info, callback)
+}
+
 var getMyAllianceData = function(callback){
 	var route = "logic.playerHandler.getMyAllianceData"
 	pomelo.request(route, null, callback)
@@ -2056,10 +2064,10 @@ describe("LogicServer", function(){
 		})
 
 		it("readMail 正常阅读", function(done){
-				readMail(m_user.mails[0].id, function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
+			readMail(m_user.mails[0].id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
 		})
 
 		it("saveMail 正常收藏", function(done){
@@ -2948,6 +2956,47 @@ describe("LogicServer", function(){
 			getMyAllianceData(function(doc){
 				doc.code.should.equal(200)
 				done()
+			})
+		})
+
+		it("donateToAlliance 资源不足", function(done){
+			sendChat("rs 500", function(doc){
+				doc.code.should.equal(200)
+				donateToAlliance("wood", function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("资源不足")
+					done()
+				})
+			})
+		})
+
+		it("donateToAlliance 正常捐赠1", function(done){
+			sendChat("rs 5000000", function(doc){
+				doc.code.should.equal(200)
+				sendChat("donatelevel 6", function(doc){
+					doc.code.should.equal(200)
+					donateToAlliance("wood", function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("donateToAlliance 正常捐赠2", function(done){
+			donateToAlliance("wood", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("donateToAlliance 正常捐赠3", function(done){
+			sendChat("donatelevel 1", function(doc){
+				doc.code.should.equal(200)
+				donateToAlliance("stone", function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
 			})
 		})
 	})

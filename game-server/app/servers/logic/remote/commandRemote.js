@@ -858,3 +858,47 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 		callback(e)
 	})
 }
+
+pro.donatelevel = function(uid, donatelevel, callback){
+	var self = this
+	var updateFuncs = []
+	var pushFuncs = []
+	var playerDoc = null
+	var allianceDoc = null
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		playerDoc = doc
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var docInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, uid)
+		docInAlliance.donateStatus = {
+			wood:donatelevel,
+			stone:donatelevel,
+			iron:donatelevel,
+			food:donatelevel,
+			coin:donatelevel,
+			gem:donatelevel
+		}
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, uid])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceMemberDataChangedAsync, allianceDoc, docInAlliance])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}

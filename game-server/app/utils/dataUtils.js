@@ -1426,3 +1426,54 @@ Utils.getVipLevel = function(playerDoc){
 Utils.getPlayerHelpAllianceMemberSpeedUpEffect = function(playerDoc){
 	return 2 * 60 * 1000
 }
+
+/**
+ * 联盟捐赠是否含有此捐赠类型
+ * @param donateType
+ * @returns {boolean}
+ */
+Utils.hasAllianceDonateType = function(donateType){
+	var has = false
+	_.each(AllianceInit.donate, function(config){
+		if(_.isEqual(config.type, donateType)){
+			has = true
+		}
+	})
+	return has
+}
+
+/**
+ * 根据捐赠类型和捐赠级别获取捐赠配置
+ * @param donateType
+ * @param donateLevel
+ * @returns {*}
+ */
+Utils.getAllianceDonateConfigByTypeAndLevel = function(donateType, donateLevel){
+	var donateConfig = null
+	_.each(AllianceInit.donate, function(config){
+		if(_.isEqual(config.type, donateType) && _.isEqual(config.level, donateLevel)){
+			donateConfig = config
+		}
+	})
+	return donateConfig
+}
+
+/**
+ * 更新联盟玩家指定捐赠类型的下次捐赠等级
+ * @param memberInAllianceDoc
+ * @param donateType
+ * @returns {*}
+ */
+Utils.updateAllianceMemberDonateLevel = function(memberInAllianceDoc, donateType){
+	var currentLevel = memberInAllianceDoc.donateStatus[donateType]
+	var hasFound = false
+	_.each(AllianceInit.donate, function(config){
+		if(!hasFound && _.isEqual(config.type, donateType)){
+			if(config.level > currentLevel){
+				currentLevel += 1
+				hasFound = true
+			}
+		}
+	})
+	memberInAllianceDoc.donateStatus[donateType] = currentLevel
+}

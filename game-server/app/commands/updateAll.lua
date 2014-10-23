@@ -4,11 +4,11 @@ local function split(s, p)
     return rt
 end
 
-local modelName = KEYS[1]
-local objectStrings = KEYS[2]
+local modelName = table.remove(KEYS, 1)
+local objectStrings = KEYS
 local indexs = ARGV
-local objectStrings = cjson.decode(objectStrings)
-for _, objectNew in ipairs(objectStrings) do
+
+for _, objectStringNew in ipairs(objectStrings) do
     local objectNew = cjson.decode(objectStringNew)
     local fullKey = modelName .. ":" .. objectNew._id
     local objectStringOld = redis.call("get", fullKey)

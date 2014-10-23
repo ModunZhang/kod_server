@@ -435,15 +435,15 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 /**
  * 联盟玩家数据和联盟基础数据有变化
  * @param allianceDoc
- * @param memberDoc
+ * @param memberInAllianceDoc
  * @param callback
  */
-pro.onAllianceBasicInfoAndMemberDataChanged = function(allianceDoc, memberDoc, callback){
+pro.onAllianceBasicInfoAndMemberDataChanged = function(allianceDoc, memberInAllianceDoc, callback){
 	var eventName = Events.alliance.onAllianceBasicInfoAndMemberDataChanged
 	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
 	var data = {
 		basicInfo:allianceDoc.basicInfo,
-		memberDoc:memberDoc
+		memberDoc:memberInAllianceDoc
 	}
 	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
 }

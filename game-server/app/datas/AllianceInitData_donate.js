@@ -48,9 +48,9 @@ donate["wood_500k"] = {
 	loyalty:50000,
 	extra:0.200000
 }
-donate["stone_1m"] = {
-	resource:"stone_1m",
-	type:"stone",
+donate["wood_1m"] = {
+	resource:"wood_1m",
+	type:"wood",
 	level:6,
 	count:1000000,
 	honour:100000,
@@ -102,9 +102,9 @@ donate["stone_500k"] = {
 	loyalty:50000,
 	extra:0.200000
 }
-donate["iron_1m"] = {
-	resource:"iron_1m",
-	type:"iron",
+donate["stone_1m"] = {
+	resource:"stone_1m",
+	type:"stone",
 	level:6,
 	count:1000000,
 	honour:100000,

@@ -33,8 +33,7 @@ var allianceSchema = new Schema({
 		power:{type:Number, required:true, index:true, default:0},
 		kill:{type:Number, required:true, default:0},
 		joinType:{type:String, required:true, index:true, default:Consts.AllianceJoinType.All},
-		level:{type:Number, required:true, default:0},
-		exp:{type:Number, required:true, default:0},
+		honour:{type:Number, required:true, default:0},
 		createTime:{type:Number, required:true, default:Date.now()}
 	},
 	notice:{type:String, required:false},
@@ -84,11 +83,11 @@ var allianceSchema = new Schema({
 		}
 	],
 	buildings:{
-		palace:createBuildingSchema("palace", 0, 0),
-		gate:createBuildingSchema("gate", 0, 0),
-		hall:createBuildingSchema("hall", 0, 0),
-		shrine:createBuildingSchema("shrine", 0, 0),
-		shop:createBuildingSchema("shop", 0, 0)
+		palace:createBuildingSchema("palace", 10, 10),
+		gate:createBuildingSchema("gate", 10, 13),
+		hall:createBuildingSchema("hall", 7, 10),
+		shrine:createBuildingSchema("shrine", 10, 7),
+		shop:createBuildingSchema("shop", 13, 10)
 	},
 	villages:[{
 		_id:false

@@ -227,12 +227,13 @@ pro.loadAll = function(callback){
 	var self = this
 	this.model.findAsync({}).then(function(docs){
 		if(docs.length === 0) return Promise.resolve()
-		var funcs = []
-		for(var i = 0; i < docs.length; i++){
-			var docString = JSON.stringify(docs[i])
-			funcs.push(self.scripto.runAsync("add", [self.modelName, docString], self.indexs))
-		}
-		return Promise.all(funcs)
+		var docStrings = []
+		_.each(docs, function(doc){
+			var docString = JSON.stringify(doc)
+			docStrings.push(docString)
+		})
+		docStrings.unshift(self.modelName)
+		return self.scripto.runAsync("addAll", docStrings, self.indexs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -326,7 +327,7 @@ pro.removeLockByIndex = function(index, value, callback){
 }
 
 /**
- * 查询所有玩家
+ * 查询所有
  * @param callback
  */
 pro.findAll = function(callback){
@@ -359,12 +360,13 @@ pro.updateAll = function(docs, callback){
 		return
 	}
 
-//	var docStrings = []
-//	_.each(docs, function(doc){
-//		var docString = JSON.stringify(doc)
-//		docStrings.push(docString)
-//	})
-	this.scripto.runAsync("updateAll", [this.modelName, JSON.stringify(docs)], this.indexs).then(function(docStrings){
+	var docStrings = []
+	_.each(docs, function(doc){
+		var docString = JSON.stringify(doc)
+		docStrings.push(docString)
+	})
+	docStrings.unshift(this.modelName)
+	this.scripto.runAsync("updateAll", docStrings, this.indexs).then(function(docStrings){
 		console.warn(docStrings)
 		callback()
 	}).catch(function(e){

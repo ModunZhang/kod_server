@@ -1155,12 +1155,12 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title){
 		lastLoginTime:playerDoc.countInfo.lastLoginTime,
 		title:title,
 		donateStatus:{
-			wood:2,
-			stone:2,
-			iron:2,
-			food:2,
-			coin:2,
-			gem:2
+			wood:1,
+			stone:1,
+			iron:1,
+			food:1,
+			coin:1,
+			gem:1
 		},
 		location:{
 			x:0,
@@ -1169,4 +1169,14 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title){
 	}
 	allianceDoc.members.push(member)
 	return member
+}
+
+/**
+ * 获取联盟成员当前捐赠等级
+ * @param memberDocInAlliance
+ * @param donateType
+ * @returns {*}
+ */
+Utils.getAllianceMemberDonateLevelByType = function(memberDocInAlliance, donateType){
+	return memberDocInAlliance.donateStatus[donateType]
 }

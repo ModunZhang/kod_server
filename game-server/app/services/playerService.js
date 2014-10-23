@@ -5419,8 +5419,88 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 	})
 }
 
+/**
+ * 联盟捐赠
+ * @param playerId
+ * @param donateType
+ * @param callback
+ */
 pro.donateToAlliance = function(playerId, donateType, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.hasAllianceDonateType(donateType)){
+		callback(new Error("donateType "))
+		return
+	}
 
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var pushFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		return self.allianceDao.findByIdAsync(doc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var memberDocInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		var donateLevel = LogicUtils.getAllianceMemberDonateLevelByType(memberDocInAlliance, donateType)
+		var donateConfig = DataUtils.getAllianceDonateConfigByTypeAndLevel(donateType, donateLevel)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		if(playerDoc.resources[donateType] < donateConfig.count){
+			return Promise.reject(new Error("资源不足"))
+		}
+		playerDoc.resources[donateType] -= donateConfig.count
+		LogicUtils.refreshPlayerResources(playerDoc)
+
+		playerDoc.allianceInfo.loyalty += donateConfig.loyalty * (1 + donateConfig.extra)
+		allianceDoc.basicInfo.honour += donateConfig.honour * (1 + donateConfig.extra)
+		memberDocInAlliance.loyalty = playerDoc.allianceInfo.loyalty
+		DataUtils.updateAllianceMemberDonateLevel(memberDocInAlliance, donateType)
+		var playerData = {}
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.resources = playerDoc.resouces
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceBasicInfoAndMemberDataChangedAsync, allianceDoc, memberDocInAlliance])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
 }
 
 /**

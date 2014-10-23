@@ -1,6 +1,8 @@
 "use strict"
 
 var _ = require("underscore")
+var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
+var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 
 /**
  * Created by modun on 14-10-22.
@@ -34,9 +36,12 @@ pro.resetDonateStatus = function(){
 			})
 		})
 		return self.allianceDao.updateAllAsync(docs)
-	}).then(function(){
-		console.warn("updateAll success")
 	}).catch(function(e){
-		console.warn(e)
+		errorLogger.error("handle time.cron.resetDonateStatus Error -----------------------------")
+		errorLogger.error(e.stack)
+		if(_.isEqual("production", self.app.get("env"))){
+			errorMailLogger.error("handle time.cron.resetDonateStatus Error -----------------------------")
+			errorMailLogger.error(e.stack)
+		}
 	})
 }
