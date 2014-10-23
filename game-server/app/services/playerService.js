@@ -2482,19 +2482,46 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 
 	var self = this
 	var playerDoc = null
-	this.playerDao.findByIdAsync(memberId).then(function(doc){
+	var memberDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		return self.playerDao.removeLockByIdAsync(playerDoc._id)
+		if(_.isEqual(playerId, memberId)){
+			return Promise.resolve(Utils.clone(playerDoc))
+		}else{
+			return self.playerDao.findByIdAsync(memberId)
+		}
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		memberDoc = doc
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		if(!_.isElement(playerId, memberId)){
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, memberDoc._id])
+		}
+		pushFuncs.push([self.pushService, self.pushService.onGetPlayerInfoSuccessAsync, playerDoc, memberDoc])
+		return Promise.resolve()
 	}).then(function(){
-		return self.pushService.onGetPlayerInfoSuccessAsync(playerDoc)
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(memberDoc) && !_.isEqual(playerId, memberId)){
+			funcs.push(self.playerDao.removeLockByIdAsync(memberDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
