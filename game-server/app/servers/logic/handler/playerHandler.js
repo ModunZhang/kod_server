@@ -618,9 +618,23 @@ pro.editAllianceBasicInfo = function(msg, session, next){
 	var name = msg.name
 	var tag = msg.tag
 	var language = msg.language
-	var terrain = msg.terrain
 	var flag = msg.flag
-	this.playerService.editAllianceBasicInfoAsync(session.uid, name, tag, language, terrain, flag).then(function(){
+	this.playerService.editAllianceBasicInfoAsync(session.uid, name, tag, language, flag).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 编辑联盟地形
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.editAllianceTerrian = function(msg, session, next){
+	var terrain = msg.terrain
+	this.playerService.editAllianceTerrianAsync(session.uid, terrain).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -923,6 +937,21 @@ pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
 pro.donateToAlliance = function(msg, session, next){
 	var donateType = msg.donateType
 	this.playerService.donateToAllianceAsync(session.uid, donateType).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 升级联盟建筑
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.upgradeAllianceBuilding = function(msg, session, next){
+	var buildingName = msg.buildingName
+	this.playerService.upgradeAllianceBuildingAsync(session.uid, buildingName).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

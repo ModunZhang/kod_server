@@ -95,5 +95,12 @@ module.exports = {
 		Terrain:"terrain",//联盟地形修改
 		Language:"language",//联盟语言修改
 		Gve:"gve"//联盟圣地事件
+	},
+	AllianceBuildingNames:{
+		Palace:"palace",//联盟宫殿
+		Gate:"gate",//月门
+		Hall:"hall",//秩序大厅
+		Shrine:"shrine",//圣地
+		Shop:"shop"//联盟商店
 	}
 }

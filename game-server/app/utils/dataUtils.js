@@ -27,6 +27,7 @@ var DragonEquipmentConfig = GameDatas.SmithConfig.equipments
 var DragonEyrie = GameDatas.DragonEyrie
 var AllianceInit = GameDatas.AllianceInitData
 var AllianceRight = AllianceInit.right
+var AllianceBuildingConfig = GameDatas.AllianceBuilding
 var Vip = GameDatas.Vip
 
 
@@ -1476,4 +1477,46 @@ Utils.updateAllianceMemberDonateLevel = function(memberInAllianceDoc, donateType
 		}
 	})
 	memberInAllianceDoc.donateStatus[donateType] = currentLevel
+}
+
+/**
+ * 获取升级联盟建筑所需的资源
+ * @param buildingName
+ * @param buildingLevel
+ * @returns {{keepLevel: (needKeep|*), honour: (needHonour|*)}}
+ */
+Utils.getAllianceBuildingUpgradeRequired = function(buildingName, buildingLevel){
+	var config = AllianceBuildingConfig[buildingName][buildingLevel]
+	var required = {
+		keepLevel:config.needKeep,
+		honour:config.needHonour
+	}
+	return required
+}
+
+/**
+ * 指定联盟建筑是否到达最高等级
+ * @param buildingName
+ * @param buildingLevel
+ * @returns {boolean}
+ */
+Utils.isAllianceBuildingReachMaxLevel = function(buildingName, buildingLevel){
+	var config = AllianceBuildingConfig[buildingName][buildingLevel + 1]
+	return !_.isObject(config)
+}
+
+/**
+ * 获取编辑联盟基础信息消耗的宝石
+ * @returns {resource.editAllianceBasicInfo.gem|*}
+ */
+Utils.getEditAllianceBasicInfoGem = function(){
+	return AllianceInit.resource.editAllianceBasicInfo.gem
+}
+
+/**
+ * 获取改变联盟地形所消耗的荣耀值
+ * @returns {resource.editAllianceTerrian.honour|*}
+ */
+Utils.getEditAllianceTerrianHonour = function(){
+	return AllianceInit.resource.editAllianceTerrian.honour
 }

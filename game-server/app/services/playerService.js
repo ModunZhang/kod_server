@@ -3315,11 +3315,10 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
  * @param name
  * @param tag
  * @param language
- * @param terrain
  * @param flag
  * @param callback
  */
-pro.editAllianceBasicInfo = function(playerId, name, tag, language, terrain, flag, callback){
+pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -3337,10 +3336,6 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, terrain, fla
 	}
 	if(!_.contains(Consts.AllianceLanguage, language)){
 		callback(new Error("language 不合法"))
-		return
-	}
-	if(!_.contains(Consts.AllianceTerrain, terrain)){
-		callback(new Error("terrain 不合法"))
 		return
 	}
 	if(!_.isString(flag)){
@@ -3366,6 +3361,11 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, terrain, fla
 		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editAllianceBasicInfo")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
+		var gemUsed = DataUtils.getEditAllianceBasicInfoGem()
+		if(playerDoc.resources.gem < gemUsed){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		playerDoc.resources.gem -= gemUsed
 		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
@@ -3395,12 +3395,10 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, terrain, fla
 		var isNameChanged = !_.isEqual(allianceDoc.basicInfo.name, name)
 		var isTagChanged = !_.isEqual(allianceDoc.basicInfo.tag, tag)
 		var isFlagChanged = !_.isEqual(allianceDoc.basicInfo.flag, flag)
-		var isTerrainChanged = !_.isEqual(allianceDoc.basicInfo.terrain, terrain)
 		var isLanguageChanged = !_.isEqual(allianceDoc.basicInfo.language, language)
 		allianceDoc.basicInfo.name = name
 		allianceDoc.basicInfo.tag = tag
 		allianceDoc.basicInfo.language = language
-		allianceDoc.basicInfo.terrain = terrain
 		allianceDoc.basicInfo.flag = flag
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		if(isNameChanged){
@@ -3412,24 +3410,18 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, terrain, fla
 		if(isFlagChanged){
 			LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Flag, playerDoc.basicInfo.name, [allianceDoc.basicInfo.flag])
 		}
-		if(isTerrainChanged){
-			LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Terrain, playerDoc.basicInfo.name, [allianceDoc.basicInfo.terrain])
-		}
 		if(isLanguageChanged){
 			LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Language, playerDoc.basicInfo.name, [allianceDoc.basicInfo.language])
 		}
-
+		var playerData = {}
+		playerData.resources = playerDoc.resources
 		if(isNameChanged || isTagChanged){
 			playerDoc.alliance.name = name
 			playerDoc.alliance.tag = tag
-			var playerData = {}
 			playerData.alliance = playerDoc.alliance
-			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		}else{
-			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		}
-
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		if(isNameChanged || isTagChanged){
 			var funcs = []
 			var updateMember = function(member){
@@ -3462,6 +3454,94 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, terrain, fla
 		allianceData.basicInfo = allianceDoc.basicInfo
 		allianceData.events = allianceDoc.events
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(_.isObject(allianceDocFinded)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDocFinded._id))
+		}
+		_.each(allianceMemberDocs, function(memberDoc){
+			funcs.push(self.playerDao.removeLockByIdAsync(memberDoc._id))
+		})
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 编辑联盟地形
+ * @param playerId
+ * @param terrain
+ * @param callback
+ */
+pro.editAllianceTerrian = function(playerId, terrain, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.contains(Consts.AllianceTerrain, terrain)){
+		callback(new Error("terrain 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var allianceDocFinded = null
+	var allianceMemberDocs = []
+	var pushFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editAllianceTerrian")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var honourUsed = DataUtils.getEditAllianceTerrianHonour()
+		if(allianceDoc.basicInfo.honour < honourUsed){
+			return Promise.reject(new Error("联盟荣耀值不足"))
+		}
+		allianceDoc.basicInfo.honour -= honourUsed
+		allianceDoc.basicInfo.terrain = terrain
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Terrain, playerDoc.basicInfo.name, [allianceDoc.basicInfo.terrain])
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		var allianceData = {}
+		allianceData.basicInfo = allianceDoc.basicInfo
+		allianceData.events = allianceDoc.events
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+
+		return Promise.resolve()
+	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
@@ -5478,6 +5558,92 @@ pro.donateToAlliance = function(playerId, donateType, callback){
 		pushFuncs.push([self.pushService, self.pushService.onAllianceBasicInfoAndMemberDataChangedAsync, allianceDoc, memberDocInAlliance])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 升级联盟建筑
+ * @param playerId
+ * @param buildingName
+ * @param callback
+ */
+pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.contains(Consts.AllianceBuildingNames, buildingName)){
+		callback(new Error("buildingName 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var pushFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "upgradeAllianceBuilding")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var building = allianceDoc.buildings[buildingName]
+		var keepLevel = playerDoc.buildings["location_1"].level
+		var upgradeRequired = DataUtils.getAllianceBuildingUpgradeRequired(buildingName, building.level + 1)
+		if(upgradeRequired.keepLevel > keepLevel){
+			return Promise.reject(new Error("盟主城堡等级不足"))
+		}
+		if(upgradeRequired.honour > allianceDoc.basicInfo.honour){
+			return Promise.reject(new Error("联盟荣耀值不足"))
+		}
+		if(DataUtils.isAllianceBuildingReachMaxLevel(buildingName, building.level)){
+			return Promise.reject(new Error("建筑已达到最高等级"))
+		}
+		allianceDoc.basicInfo.honour -= upgradeRequired.honour
+		building.level += 1
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		var allianceData = {}
+		allianceData.basicInfo = allianceDoc.basicInfo
+		allianceData.buildings = allianceDoc.buildings
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

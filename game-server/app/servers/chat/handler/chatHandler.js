@@ -355,6 +355,20 @@ var ChatHandler = function(app){
 					})
 				}
 			}
+		},
+		{
+			command:"alliancehonour",
+			desc:"设置联盟荣耀:alliancehonour 500",
+			func:function(session, uid, text, callback){
+				var self = this
+				var alliancehonour = text.split(" ")[1]
+				alliancehonour = parseInt(alliancehonour)
+				if(_.isNumber(alliancehonour)){
+					self.app.rpc.logic.commandRemote.alliancehonour(session, uid, alliancehonour, function(e){
+						callback(e)
+					})
+				}
+			}
 		}
 	]
 }

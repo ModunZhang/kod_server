@@ -16,7 +16,9 @@ right["archon"] = {
 	handOverArchon:true,
 	sendAllianceMail:true,
 	handleJoinAllianceRequest:true,
-	inviteToJoinAlliance:1
+	inviteToJoinAlliance:true,
+	upgradeAllianceBuilding:true,
+	editAllianceTerrian:true
 }
 right["general"] = {
 	title:"general",
@@ -31,10 +33,29 @@ right["general"] = {
 	handOverArchon:false,
 	sendAllianceMail:false,
 	handleJoinAllianceRequest:false,
-	inviteToJoinAlliance:false
+	inviteToJoinAlliance:false,
+	upgradeAllianceBuilding:false,
+	editAllianceTerrian:false
 }
 right["quartermaster"] = {
 	title:"quartermaster",
+	titleLevel:3,
+	editTitleName:false,
+	editAllianceBasicInfo:false,
+	editAllianceNotice:false,
+	editAllianceDescription:false,
+	editAllianceJoinType:false,
+	modifyAllianceMemberTitle:false,
+	kickAllianceMemberOff:false,
+	handOverArchon:false,
+	sendAllianceMail:false,
+	handleJoinAllianceRequest:false,
+	inviteToJoinAlliance:false,
+	upgradeAllianceBuilding:false,
+	editAllianceTerrian:false
+}
+right["supervisor"] = {
+	title:"supervisor",
 	titleLevel:4,
 	editTitleName:false,
 	editAllianceBasicInfo:false,
@@ -46,10 +67,12 @@ right["quartermaster"] = {
 	handOverArchon:false,
 	sendAllianceMail:false,
 	handleJoinAllianceRequest:false,
-	inviteToJoinAlliance:false
+	inviteToJoinAlliance:false,
+	upgradeAllianceBuilding:false,
+	editAllianceTerrian:false
 }
-right["supervisor"] = {
-	title:"supervisor",
+right["elite"] = {
+	title:"elite",
 	titleLevel:5,
 	editTitleName:false,
 	editAllianceBasicInfo:false,
@@ -61,10 +84,12 @@ right["supervisor"] = {
 	handOverArchon:false,
 	sendAllianceMail:false,
 	handleJoinAllianceRequest:false,
-	inviteToJoinAlliance:false
+	inviteToJoinAlliance:false,
+	upgradeAllianceBuilding:false,
+	editAllianceTerrian:false
 }
-right["elite"] = {
-	title:"elite",
+right["member"] = {
+	title:"member",
 	titleLevel:6,
 	editTitleName:false,
 	editAllianceBasicInfo:false,
@@ -76,20 +101,7 @@ right["elite"] = {
 	handOverArchon:false,
 	sendAllianceMail:false,
 	handleJoinAllianceRequest:false,
-	inviteToJoinAlliance:false
-}
-right["member"] = {
-	title:"member",
-	titleLevel:7,
-	editTitleName:false,
-	editAllianceBasicInfo:false,
-	editAllianceNotice:false,
-	editAllianceDescription:false,
-	editAllianceJoinType:false,
-	modifyAllianceMemberTitle:false,
-	kickAllianceMemberOff:false,
-	handOverArchon:false,
-	sendAllianceMail:false,
-	handleJoinAllianceRequest:false,
-	inviteToJoinAlliance:false
+	inviteToJoinAlliance:false,
+	upgradeAllianceBuilding:false,
+	editAllianceTerrian:false
 }

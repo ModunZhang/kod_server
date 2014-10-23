@@ -3,6 +3,13 @@
 var GameDatas = {}
 module.exports = GameDatas
 
+GameDatas.AllianceBuilding = {}
+GameDatas.AllianceBuilding.palace = require("./AllianceBuilding_palace.js")
+GameDatas.AllianceBuilding.moonGate = require("./AllianceBuilding_moonGate.js")
+GameDatas.AllianceBuilding.orderHall = require("./AllianceBuilding_orderHall.js")
+GameDatas.AllianceBuilding.Shrine = require("./AllianceBuilding_Shrine.js")
+GameDatas.AllianceBuilding.allianceShop = require("./AllianceBuilding_allianceShop.js")
+
 GameDatas.AllianceInitData = {}
 GameDatas.AllianceInitData.resource = require("./AllianceInitData_resource.js")
 GameDatas.AllianceInitData.right = require("./AllianceInitData_right.js")
