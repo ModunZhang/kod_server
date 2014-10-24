@@ -102,5 +102,12 @@ module.exports = {
 		Hall:"hall",//秩序大厅
 		Shrine:"shrine",//圣地
 		Shop:"shop"//联盟商店
+	},
+	AllianceVillageType:{
+		Wood:"wood",
+		Stone:"stone",
+		Iron:"iron",
+		Food:"food",
+		Coin:"coin"
 	}
 }

@@ -625,7 +625,7 @@ Utils.isEnhanceDragonEquipmentLegal = function(playerDoc, equipments){
  * @returns {*}
  */
 Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
-	for(var i = 0; i < allianceDoc.members.length; i ++){
+	for(var i = 0; i < allianceDoc.members.length; i++){
 		var member = allianceDoc.members[i]
 		if(_.isEqual(member.id, playerDoc._id)){
 			member.name = playerDoc.basicInfo.name
@@ -635,6 +635,11 @@ Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
 			member.kill = playerDoc.basicInfo.kill
 			member.loyalty = playerDoc.allianceInfo.loyalty
 			member.lastLoginTime = playerDoc.countInfo.lastLoginTime
+			member.allianceExp.woodExp = playerDoc.allianceInfo.woodExp
+			member.allianceExp.stoneExp = playerDoc.allianceInfo.stoneExp
+			member.allianceExp.ironExp = playerDoc.allianceInfo.ironExp
+			member.allianceExp.foodExp = playerDoc.allianceInfo.foodExp
+			member.allianceExp.coinExp = playerDoc.allianceInfo.coinExp
 			return member
 		}
 	}
@@ -886,7 +891,7 @@ Utils.getPlayerBuildEvent = function(playerDoc, eventType, eventId){
  * @returns {*}
  */
 Utils.getEventById = function(events, id){
-	for(var i = 0; i < events.length; i ++){
+	for(var i = 0; i < events.length; i++){
 		var event = events[i]
 		if(_.isEqual(event.id, id)){
 			return event
@@ -1161,6 +1166,13 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title){
 			food:1,
 			coin:1,
 			gem:1
+		},
+		allianceExp:{
+			woodExp:playerDoc.allianceInfo.woodExp,
+			stoneExp:playerDoc.allianceInfo.stoneExp,
+			ironExp:playerDoc.allianceInfo.ironExp,
+			foodExp:playerDoc.allianceInfo.foodExp,
+			coinExp:playerDoc.allianceInfo.coinExp
 		},
 		location:{
 			x:0,

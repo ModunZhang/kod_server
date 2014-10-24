@@ -5,7 +5,7 @@ module.exports = iron
 
 iron[1] = {
 	level:1,
-	needhonour:200,
+	needHonour:200,
 	infsCount:100,
 	arcsCount:100,
 	cavsCount:100,
@@ -15,7 +15,7 @@ iron[1] = {
 }
 iron[2] = {
 	level:2,
-	needhonour:400,
+	needHonour:400,
 	infsCount:200,
 	arcsCount:200,
 	cavsCount:200,
@@ -25,7 +25,7 @@ iron[2] = {
 }
 iron[3] = {
 	level:3,
-	needhonour:1000,
+	needHonour:1000,
 	infsCount:300,
 	arcsCount:300,
 	cavsCount:300,
@@ -35,7 +35,7 @@ iron[3] = {
 }
 iron[4] = {
 	level:4,
-	needhonour:2000,
+	needHonour:2000,
 	infsCount:400,
 	arcsCount:400,
 	cavsCount:400,
@@ -45,7 +45,7 @@ iron[4] = {
 }
 iron[5] = {
 	level:5,
-	needhonour:4000,
+	needHonour:4000,
 	infsCount:500,
 	arcsCount:500,
 	cavsCount:500,
@@ -55,7 +55,7 @@ iron[5] = {
 }
 iron[6] = {
 	level:6,
-	needhonour:8000,
+	needHonour:8000,
 	infsCount:600,
 	arcsCount:600,
 	cavsCount:600,
@@ -65,7 +65,7 @@ iron[6] = {
 }
 iron[7] = {
 	level:7,
-	needhonour:15000,
+	needHonour:15000,
 	infsCount:700,
 	arcsCount:700,
 	cavsCount:700,
@@ -75,7 +75,7 @@ iron[7] = {
 }
 iron[8] = {
 	level:8,
-	needhonour:30000,
+	needHonour:30000,
 	infsCount:800,
 	arcsCount:800,
 	cavsCount:800,
@@ -85,7 +85,7 @@ iron[8] = {
 }
 iron[9] = {
 	level:9,
-	needhonour:60000,
+	needHonour:60000,
 	infsCount:900,
 	arcsCount:900,
 	cavsCount:900,
@@ -95,7 +95,7 @@ iron[9] = {
 }
 iron[10] = {
 	level:10,
-	needhonour:100000,
+	needHonour:100000,
 	infsCount:1000,
 	arcsCount:1000,
 	cavsCount:1000,

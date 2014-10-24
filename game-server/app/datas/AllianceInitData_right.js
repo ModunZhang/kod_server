@@ -18,7 +18,8 @@ right["archon"] = {
 	handleJoinAllianceRequest:true,
 	inviteToJoinAlliance:true,
 	upgradeAllianceBuilding:true,
-	editAllianceTerrian:true
+	editAllianceTerrian:true,
+	upgradeAllianceVillage:true
 }
 right["general"] = {
 	title:"general",
@@ -35,7 +36,8 @@ right["general"] = {
 	handleJoinAllianceRequest:false,
 	inviteToJoinAlliance:false,
 	upgradeAllianceBuilding:false,
-	editAllianceTerrian:false
+	editAllianceTerrian:false,
+	upgradeAllianceVillage:false
 }
 right["quartermaster"] = {
 	title:"quartermaster",
@@ -52,7 +54,8 @@ right["quartermaster"] = {
 	handleJoinAllianceRequest:false,
 	inviteToJoinAlliance:false,
 	upgradeAllianceBuilding:false,
-	editAllianceTerrian:false
+	editAllianceTerrian:false,
+	upgradeAllianceVillage:false
 }
 right["supervisor"] = {
 	title:"supervisor",
@@ -69,7 +72,8 @@ right["supervisor"] = {
 	handleJoinAllianceRequest:false,
 	inviteToJoinAlliance:false,
 	upgradeAllianceBuilding:false,
-	editAllianceTerrian:false
+	editAllianceTerrian:false,
+	upgradeAllianceVillage:false
 }
 right["elite"] = {
 	title:"elite",
@@ -86,7 +90,8 @@ right["elite"] = {
 	handleJoinAllianceRequest:false,
 	inviteToJoinAlliance:false,
 	upgradeAllianceBuilding:false,
-	editAllianceTerrian:false
+	editAllianceTerrian:false,
+	upgradeAllianceVillage:false
 }
 right["member"] = {
 	title:"member",
@@ -103,5 +108,6 @@ right["member"] = {
 	handleJoinAllianceRequest:false,
 	inviteToJoinAlliance:false,
 	upgradeAllianceBuilding:false,
-	editAllianceTerrian:false
+	editAllianceTerrian:false,
+	upgradeAllianceVillage:false
 }

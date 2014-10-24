@@ -5697,6 +5697,88 @@ pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
 }
 
 /**
+ * 升级联盟村落
+ * @param playerId
+ * @param villageType
+ * @param callback
+ */
+pro.upgradeAllianceVillage = function(playerId, villageType, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.contains(Consts.AllianceVillageType, villageType)){
+		callback(new Error("villageType 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var pushFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "upgradeAllianceVillage")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var villageLevel = allianceDoc.villageLevels[villageType]
+		var upgradeRequired = DataUtils.getAllianceVillageUpgradeRequired(villageType, villageLevel)
+		if(upgradeRequired.honour > allianceDoc.basicInfo.honour){
+			return Promise.reject(new Error("联盟荣耀值不足"))
+		}
+		if(DataUtils.isAllianceVillageReachMaxLevel(villageType, villageLevel)){
+			return Promise.reject(new Error("村落已达到最高等级"))
+		}
+		allianceDoc.basicInfo.honour -= upgradeRequired.honour
+		allianceDoc.villageLevels[villageType] += 1
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		var allianceData = {}
+		allianceData.basicInfo = allianceDoc.basicInfo
+		allianceData.villageLevels = allianceDoc.villageLevels
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
  * 执行玩家延迟执行事件
  * @param playerId
  * @param finishTime

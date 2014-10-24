@@ -582,6 +582,14 @@ var upgradeAllianceBuilding = function(buildingName, callback){
 	pomelo.request(route, info, callback)
 }
 
+var upgradeAllianceVillage = function(villageType, callback){
+	var info = {
+		villageType:villageType
+	}
+	var route = "logic.playerHandler.upgradeAllianceVillage"
+	pomelo.request(route, info, callback)
+}
+
 describe("LogicServer", function(){
 	var m_user
 
@@ -2164,906 +2172,913 @@ describe("LogicServer", function(){
 			})
 		})
 
-		it("createAlliance 玩家已加入了联盟", function(done){
-			createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("玩家已加入了联盟")
-				done()
-			})
-		})
-
-		it("createAlliance 联盟名称已经存在", function(done){
-			LoginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("联盟名称已经存在")
-					done()
-				})
-			})
-		})
-
-		it("createAlliance 联盟标签已经存在", function(done){
-			createAlliance("Hello", Config.allianceTag, "cn", "grassLand", "e", function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("联盟标签已经存在")
-				done()
-			})
-		})
-
-		it("sendAllianceMail 玩家未加入联盟", function(done){
-			sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("玩家未加入联盟")
-				LoginPlayer(Config.deviceId, function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-				var onPlayerLoginSuccess = function(doc){
-					m_user = doc
-					pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-				}
-				pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-			})
-		})
-
-		it("sendAllianceMail 此操作权限不足", function(done){
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				joinAllianceDirectly(m_user.alliance.id, function(doc){
-					doc.code.should.equal(200)
-					sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
-						doc.code.should.equal(500)
-						doc.message.should.equal("此操作权限不足")
-						done()
-					})
-				})
-			})
-		})
-
-		it("sendAllianceMail 正常发送", function(done){
-			LoginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("editAllianceBasicInfo 玩家未加入联盟", function(done){
-			LoginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				editAllianceBasicInfo(Config.allianceName, Config.allianceTag, "cn", "e", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("玩家未加入联盟")
-					done()
-				})
-			})
-		})
-
-		it("editAllianceBasicInfo 此操作权限不足", function(done){
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				editAllianceBasicInfo(Config.allianceName, Config.allianceTag, "cn", "e", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("此操作权限不足")
-					done()
-				})
-			})
-		})
-
-		it("editAllianceBasicInfo 联盟名称已经存在", function(done){
-			LoginPlayer(Config.deviceId4, function(doc){
-				doc.code.should.equal(200)
-				createAlliance("31231", Config.allianceTag2, "cn", "grassLand","e", function(doc){
-					doc.code.should.equal(200)
-					editAllianceBasicInfo(Config.allianceName, "adfad", "cn", "e", function(doc){
-						doc.code.should.equal(500)
-						doc.message.should.equal("联盟名称已经存在")
-						done()
-					})
-				})
-			})
-		})
-
-		it("editAllianceBasicInfo 联盟标签已经存在", function(done){
-			editAllianceBasicInfo("adfad", Config.allianceTag, "cn", "e", function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("联盟标签已经存在")
-				done()
-			})
-		})
-
-		it("editAllianceBasicInfo 正常修改", function(done){
-			editAllianceBasicInfo(Config.allianceName2, Config.allianceTag2, "cn", "e", function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("editAllianceTerrian 联盟荣耀值不足", function(done){
-			editAllianceTerrian("grassLand", function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("联盟荣耀值不足")
-				done()
-			})
-		})
-
-		it("editAllianceTerrian 正常编辑", function(done){
-			sendChat("alliancehonour 5000", function(doc){
-				doc.code.should.equal(200)
-				editAllianceTerrian("grassLand", function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("editTitleName 玩家未加入联盟", function(done){
-			LoginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				editTitleName("archon", "老大", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("玩家未加入联盟")
-					done()
-				})
-			})
-		})
-
-		it("editTitleName 此操作权限不足", function(done){
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				editTitleName("archon", "老大", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("此操作权限不足")
-					done()
-				})
-			})
-		})
-
-		it("editTitleName 正常修改", function(done){
-			LoginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				editTitleName("archon", "老大", function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("editAllianceNotice 玩家未加入联盟", function(done){
-			LoginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				editAllianceNotice("这是第一条公告", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("玩家未加入联盟")
-					done()
-				})
-			})
-		})
-
-		it("editAllianceNotice 此操作权限不足", function(done){
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				editAllianceNotice("这是第一条公告", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("此操作权限不足")
-					done()
-				})
-			})
-		})
-
-		it("editAllianceNotice 正常发布公告", function(done){
-			LoginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				editAllianceNotice("这是第一条公告", function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("editAllianceDescription 玩家未加入联盟", function(done){
-			LoginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				editAllianceDescription("这是第一条描述", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("玩家未加入联盟")
-					done()
-				})
-			})
-		})
-
-		it("editAllianceDescription 此操作权限不足", function(done){
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				editAllianceDescription("这是第一条描述", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("此操作权限不足")
-					done()
-				})
-			})
-		})
-
-		it("editAllianceDescription 正常修改联盟描述", function(done){
-			LoginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				editAllianceDescription("这是第一条描述", function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("editAllianceJoinType 玩家未加入联盟", function(done){
-			LoginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				editAllianceJoinType("all", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("玩家未加入联盟")
-					done()
-				})
-			})
-		})
-
-		it("editAllianceJoinType 此操作权限不足", function(done){
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				editAllianceJoinType("all", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("此操作权限不足")
-					done()
-				})
-			})
-		})
-
-		it("editAllianceJoinType 正常修改联盟描述", function(done){
-			LoginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				editAllianceJoinType("all", function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("modifyAllianceMemberTitle 玩家未加入联盟", function(done){
-			LoginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				modifyAllianceMemberTitle("asdfasdf", "general", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("玩家未加入联盟")
-					done()
-				})
-			})
-		})
-
-		it("modifyAllianceMemberTitle 此操作权限不足", function(done){
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				modifyAllianceMemberTitle("asdfasdf", "general", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("此操作权限不足")
-					done()
-				})
-			})
-		})
-
-		it("modifyAllianceMemberTitle 联盟没有此玩家", function(done){
-			LoginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				modifyAllianceMemberTitle("asdfasdf", "general", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("联盟没有此玩家")
-					done()
-				})
-			})
-		})
-
-		it("modifyAllianceMemberTitle 不能将玩家的职级调整到与自己平级或者比自己高", function(done){
-			var memberDoc = null
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				LoginPlayer(Config.deviceId, function(doc){
-					doc.code.should.equal(200)
-					modifyAllianceMemberTitle(memberDoc._id, "archon", function(doc){
-						doc.code.should.equal(500)
-						doc.message.should.equal("不能将玩家的职级调整到与自己平级或者比自己高")
-						done()
-					})
-				})
-			})
-			var onPlayerLoginSuccess = function(doc){
-				memberDoc = doc
-				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-			}
-			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		})
-
-		it("modifyAllianceMemberTitle 正常编辑", function(done){
-			var memberDoc = null
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				LoginPlayer(Config.deviceId, function(doc){
-					doc.code.should.equal(200)
-					modifyAllianceMemberTitle(memberDoc._id, "general", function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-			})
-			var onPlayerLoginSuccess = function(doc){
-				memberDoc = doc
-				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-			}
-			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		})
-
-		it("kickAllianceMemberOff 玩家未加入联盟", function(done){
-			LoginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				kickAllianceMemberOff("asdfasdf", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("玩家未加入联盟")
-					done()
-				})
-			})
-		})
-
-		it("kickAllianceMemberOff 此操作权限不足", function(done){
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				kickAllianceMemberOff("asdfasdf", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("此操作权限不足")
-					done()
-				})
-			})
-		})
-
-		it("kickAllianceMemberOff 联盟没有此玩家", function(done){
-			LoginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				kickAllianceMemberOff("asdfasdf", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("联盟没有此玩家")
-					done()
-				})
-			})
-		})
-
-		it("kickAllianceMemberOff 正常踢出", function(done){
-			var memberDoc = null
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				LoginPlayer(Config.deviceId, function(doc){
-					doc.code.should.equal(200)
-					kickAllianceMemberOff(memberDoc._id, function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-			})
-			var onPlayerLoginSuccess = function(doc){
-				memberDoc = doc
-				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-			}
-			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		})
-
-		it("handOverArchon 玩家未加入联盟", function(done){
-			LoginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				handOverArchon("asdfasdf", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("玩家未加入联盟")
-					done()
-				})
-			})
-		})
-
-		it("handOverArchon 别逗了,你是不盟主好么", function(done){
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				joinAllianceDirectly(m_user.alliance.id, function(doc){
-					doc.code.should.equal(200)
-					handOverArchon("asdfasdf", function(doc){
-						doc.code.should.equal(500)
-						doc.message.should.equal("别逗了,你是不盟主好么")
-						done()
-					})
-				})
-			})
-		})
-
-		it("handOverArchon 玩家不存在", function(done){
-			LoginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				handOverArchon("asdfasdf", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("玩家不存在")
-					done()
-				})
-			})
-		})
-
-		it("handOverArchon 正常移交", function(done){
-			var memberDoc = null
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				LoginPlayer(Config.deviceId, function(doc){
-					doc.code.should.equal(200)
-					handOverArchon(memberDoc._id, function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-			})
-			var onPlayerLoginSuccess = function(doc){
-				memberDoc = doc
-				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-			}
-			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		})
-
-		it("quitAlliance 玩家未加入联盟", function(done){
-			LoginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				quitAlliance(function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("玩家未加入联盟")
-					done()
-				})
-			})
-		})
-
-		it("quitAlliance 正常退出", function(done){
-			LoginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				quitAlliance(function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("joinAllianceDirectly 玩家已加入联盟", function(done){
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				joinAllianceDirectly("asdfasdf", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("玩家已加入联盟")
-					done()
-				})
-			})
-		})
-
-		it("joinAllianceDirectly 联盟不存在", function(done){
-			LoginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				joinAllianceDirectly("asdfasdf", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("联盟不存在")
-					done()
-				})
-			})
-		})
-
-		it("joinAllianceDirectly 联盟不允许直接加入", function(done){
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				editAllianceJoinType("audit", function(doc){
-					doc.code.should.equal(200)
-					LoginPlayer(Config.deviceId, function(doc){
-						doc.code.should.equal(200)
-						joinAllianceDirectly(m_user.alliance.id, function(doc){
-							doc.code.should.equal(500)
-							doc.message.should.equal("联盟不允许直接加入")
-							LoginPlayer(Config.deviceId3, function(doc){
-								doc.code.should.equal(200)
-								editAllianceJoinType("all", function(doc){
-									doc.code.should.equal(200)
-									done()
-								})
-							})
-						})
-					})
-				})
-			})
-		})
-
-		it("joinAllianceDirectly 正常加入", function(done){
-			LoginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				joinAllianceDirectly(m_user.alliance.id, function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("requestToJoinAlliance 玩家已加入联盟", function(done){
-			requestToJoinAlliance(m_user.alliance.id, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("玩家已加入联盟")
-				done()
-			})
-		})
-
-		it("requestToJoinAlliance 对此联盟的申请已发出,请耐心等候审核", function(done){
-			LoginPlayer(Config.deviceId5, function(doc){
-				doc.code.should.equal(200)
-				requestToJoinAlliance(m_user.alliance.id, function(doc){
-					doc.code.should.equal(200)
-					requestToJoinAlliance(m_user.alliance.id, function(doc){
-						doc.code.should.equal(500)
-						doc.message.should.equal("对此联盟的申请已发出,请耐心等候审核")
-						done()
-					})
-				})
-			})
-		})
-
-		it("cancelJoinAllianceRequest 正常取消", function(done){
-			cancelJoinAllianceRequest(m_user.alliance.id, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("handleJoinAllianceRequest 正常处理 拒绝加入", function(done){
-			var memberDoc = null
-			LoginPlayer(Config.deviceId5, function(doc){
-				doc.code.should.equal(200)
-				requestToJoinAlliance(m_user.alliance.id, function(doc){
-					doc.code.should.equal(200)
-					LoginPlayer(Config.deviceId3, function(doc){
-						doc.code.should.equal(200)
-						handleJoinAllianceRequest(memberDoc._id, false, function(doc){
-							doc.code.should.equal(200)
-							done()
-						})
-					})
-				})
-			})
-
-			var onPlayerLoginSuccess = function(doc){
-				memberDoc = doc
-				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-			}
-			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		})
-
-		it("handleJoinAllianceRequest 正常处理 允许加入", function(done){
-			var memberDoc = null
-			LoginPlayer(Config.deviceId5, function(doc){
-				doc.code.should.equal(200)
-				requestToJoinAlliance(m_user.alliance.id, function(doc){
-					doc.code.should.equal(200)
-					LoginPlayer(Config.deviceId3, function(doc){
-						doc.code.should.equal(200)
-						handleJoinAllianceRequest(memberDoc._id, true, function(doc){
-							doc.code.should.equal(200)
-							done()
-						})
-					})
-				})
-			})
-			var onPlayerLoginSuccess = function(doc){
-				memberDoc = doc
-				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-			}
-			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		})
-
-		it("inviteToJoinAlliance 正常邀请", function(done){
-			var memberDoc = null
-			LoginPlayer(Config.deviceId5, function(doc){
-				doc.code.should.equal(200)
-				quitAlliance(function(doc){
-					doc.code.should.equal(200)
-					LoginPlayer(Config.deviceId3, function(doc){
-						doc.code.should.equal(200)
-						inviteToJoinAlliance(memberDoc._id, function(doc){
-							doc.code.should.equal(200)
-							done()
-						})
-					})
-				})
-			})
-			var onPlayerLoginSuccess = function(doc){
-				memberDoc = doc
-				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-			}
-			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		})
-
-		it("handleJoinAllianceInvite 正常处理 拒绝邀请", function(done){
-			LoginPlayer(Config.deviceId5, function(doc){
-				doc.code.should.equal(200)
-				handleJoinAllianceInvite(m_user.alliance.id, false, function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("handleJoinAllianceInvite 正常处理 同意邀请", function(done){
-			var memberDoc = null
-			LoginPlayer(Config.deviceId5, function(doc){
-				doc.code.should.equal(200)
-				LoginPlayer(Config.deviceId3, function(doc){
-					doc.code.should.equal(200)
-					inviteToJoinAlliance(memberDoc._id, function(doc){
-						doc.code.should.equal(200)
-						LoginPlayer(Config.deviceId4, function(doc){
-							doc.code.should.equal(200)
-							inviteToJoinAlliance(memberDoc._id, function(doc){
-								doc.code.should.equal(200)
-								LoginPlayer(Config.deviceId5, function(doc){
-									doc.code.should.equal(200)
-									handleJoinAllianceInvite(m_user.alliance.id, true, function(doc){
-										doc.code.should.equal(200)
-										done()
-									})
-								})
-							})
-						})
-					})
-				})
-			})
-			var onPlayerLoginSuccess = function(doc){
-				memberDoc = doc
-				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-			}
-			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		})
-
-		it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
-			buyAllianceArchon(function(doc){
-				doc.code.should.equal(200)
-				LoginPlayer(Config.deviceId3, function(doc){
-					doc.code.should.equal(200)
-					buyAllianceArchon(function(doc){
-						doc.code.should.equal(200)
-						LoginPlayer(Config.deviceId5, function(doc){
-							doc.code.should.equal(200)
-							done()
-						})
-					})
-				})
-			})
-		})
-
-		it("searchAllianceByTag 正常搜索", function(done){
-			searchAllianceByTag("test", function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("getCanDirectJoinAlliances 正常获取", function(done){
-			getCanDirectJoinAlliances(function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("upgradeBuilding 加入联盟后", function(done){
-			var playerDoc = null
-			upgradeBuilding(1, true, function(doc){
-				doc.code.should.equal(200)
-				upgradeBuilding(1, false, function(doc){
-					doc.code.should.equal(200)
-					var buildEvent = playerDoc.buildingEvents[0]
-					requestToSpeedUp(Consts.AllianceHelpEventType.Building, buildEvent.id, function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-				var onPlayerDataChanged = function(doc){
-					playerDoc = doc
-					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-				}
-				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-			})
-		})
-
-		it("createHouse 加入联盟后", function(done){
-			var playerDoc = null
-			createHouse("dwelling", 3, 3, false, function(doc){
-				doc.code.should.equal(200)
-				var buildEvent = playerDoc.houseEvents[0]
-				requestToSpeedUp(Consts.AllianceHelpEventType.House, buildEvent.id, function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-			var onPlayerDataChanged = function(doc){
-				playerDoc = doc
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
-		it("upgradeHouse 加入联盟后", function(done){
-			var playerDoc = null
-			createHouse("dwelling", 3, 1, true, function(doc){
-				doc.code.should.equal(200)
-				upgradeHouse(3, 1, false, function(doc){
-					doc.code.should.equal(200)
-					var buildEvent = playerDoc.houseEvents[1]
-					requestToSpeedUp(Consts.AllianceHelpEventType.House, buildEvent.id, function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-				var onPlayerDataChanged = function(doc){
-					playerDoc = doc
-					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-				}
-				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-			})
-		})
-
-		it("upgradeTower 加入联盟后", function(done){
-			var playerDoc = null
-			upgradeTower(1, false, function(doc){
-				doc.code.should.equal(200)
-				var buildEvent = playerDoc.towerEvents[0]
-				requestToSpeedUp(Consts.AllianceHelpEventType.Tower, buildEvent.id, function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-			var onPlayerDataChanged = function(doc){
-				playerDoc = doc
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
-		it("upgradeWall 加入联盟后", function(done){
-			var playerDoc = null
-			upgradeWall(false, function(doc){
-				doc.code.should.equal(200)
-				var buildEvent = playerDoc.wallEvents[0]
-				requestToSpeedUp(Consts.AllianceHelpEventType.Wall, buildEvent.id, function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-			var onPlayerDataChanged = function(doc){
-				playerDoc = doc
-				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-			}
-			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		})
-
-		it("helpAllianceMemberSpeedUp 正常帮助1", function(done){
-			var alliance = null
-			LoginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				getMyAllianceData(function(doc){
-					doc.code.should.equal(200)
-					var event = alliance.helpEvents[0]
-					helpAllianceMemberSpeedUp(event.eventId, function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-				var onGetAllianceDataSuccess = function(doc){
-					alliance = doc
-					pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-				}
-				pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-			})
-		})
-
-		it("helpAllianceMemberSpeedUp 正常帮助2", function(done){
-			var alliance = null
-			getMyAllianceData(function(doc){
-				doc.code.should.equal(200)
-				var event = alliance.helpEvents[1]
-				helpAllianceMemberSpeedUp(event.eventId, function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-			var onGetAllianceDataSuccess = function(doc){
-				alliance = doc
-				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-			}
-			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		})
-
-		it("helpAllAllianceMemberSpeedUp 正常帮助", function(done){
-			helpAllAllianceMemberSpeedUp(function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("getMyAllianceData 正常获取", function(done){
-			getMyAllianceData(function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("donateToAlliance 资源不足", function(done){
-			sendChat("rs 500", function(doc){
-				doc.code.should.equal(200)
-				donateToAlliance("wood", function(doc){
-					doc.code.should.equal(500)
-					doc.message.should.equal("资源不足")
-					done()
-				})
-			})
-		})
-
-		it("donateToAlliance 正常捐赠1", function(done){
-			sendChat("rs 5000000", function(doc){
-				doc.code.should.equal(200)
-				sendChat("donatelevel 6", function(doc){
-					doc.code.should.equal(200)
-					donateToAlliance("wood", function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-			})
-		})
-
-		it("donateToAlliance 正常捐赠2", function(done){
-			donateToAlliance("wood", function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("donateToAlliance 正常捐赠3", function(done){
-			sendChat("donatelevel 1", function(doc){
-				doc.code.should.equal(200)
-				donateToAlliance("stone", function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("upgradeAllianceBuilding 盟主城堡等级不足", function(done){
-			upgradeAllianceBuilding("palace", function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("盟主城堡等级不足")
-				done()
-			})
-		})
-
-		it("upgradeAllianceBuilding 联盟荣耀值不足", function(done){
-			sendChat("allianceHonour 10", function(doc){
-				doc.code.should.equal(200)
-				sendChat("keep 5", function(doc){
-					doc.code.should.equal(200)
-					upgradeAllianceBuilding("palace", function(doc){
-						doc.code.should.equal(500)
-						doc.message.should.equal("联盟荣耀值不足")
-						done()
-					})
-				})
-			})
-		})
-
-		it("upgradeAllianceBuilding 正常升级", function(done){
-			sendChat("allianceHonour 5000", function(doc){
-				doc.code.should.equal(200)
-				upgradeAllianceBuilding("palace", function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
+//		it("createAlliance 玩家已加入了联盟", function(done){
+//			createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
+//				doc.code.should.equal(500)
+//				doc.message.should.equal("玩家已加入了联盟")
+//				done()
+//			})
+//		})
+//
+//		it("createAlliance 联盟名称已经存在", function(done){
+//			LoginPlayer(Config.deviceId2, function(doc){
+//				doc.code.should.equal(200)
+//				createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("联盟名称已经存在")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("createAlliance 联盟标签已经存在", function(done){
+//			createAlliance("Hello", Config.allianceTag, "cn", "grassLand", "e", function(doc){
+//				doc.code.should.equal(500)
+//				doc.message.should.equal("联盟标签已经存在")
+//				done()
+//			})
+//		})
+//
+//		it("sendAllianceMail 玩家未加入联盟", function(done){
+//			sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
+//				doc.code.should.equal(500)
+//				doc.message.should.equal("玩家未加入联盟")
+//				LoginPlayer(Config.deviceId, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//				var onPlayerLoginSuccess = function(doc){
+//					m_user = doc
+//					pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//				}
+//				pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//			})
+//		})
+//
+//		it("sendAllianceMail 此操作权限不足", function(done){
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				joinAllianceDirectly(m_user.alliance.id, function(doc){
+//					doc.code.should.equal(200)
+//					sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
+//						doc.code.should.equal(500)
+//						doc.message.should.equal("此操作权限不足")
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("sendAllianceMail 正常发送", function(done){
+//			LoginPlayer(Config.deviceId, function(doc){
+//				doc.code.should.equal(200)
+//				sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editAllianceBasicInfo 玩家未加入联盟", function(done){
+//			LoginPlayer(Config.deviceId2, function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceBasicInfo(Config.allianceName, Config.allianceTag, "cn", "e", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("玩家未加入联盟")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editAllianceBasicInfo 此操作权限不足", function(done){
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceBasicInfo(Config.allianceName, Config.allianceTag, "cn", "e", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("此操作权限不足")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editAllianceBasicInfo 联盟名称已经存在", function(done){
+//			LoginPlayer(Config.deviceId4, function(doc){
+//				doc.code.should.equal(200)
+//				createAlliance("31231", Config.allianceTag2, "cn", "grassLand", "e", function(doc){
+//					doc.code.should.equal(200)
+//					editAllianceBasicInfo(Config.allianceName, "adfad", "cn", "e", function(doc){
+//						doc.code.should.equal(500)
+//						doc.message.should.equal("联盟名称已经存在")
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("editAllianceBasicInfo 联盟标签已经存在", function(done){
+//			editAllianceBasicInfo("adfad", Config.allianceTag, "cn", "e", function(doc){
+//				doc.code.should.equal(500)
+//				doc.message.should.equal("联盟标签已经存在")
+//				done()
+//			})
+//		})
+//
+//		it("editAllianceBasicInfo 正常修改", function(done){
+//			editAllianceBasicInfo(Config.allianceName2, Config.allianceTag2, "cn", "e", function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("editAllianceTerrian 联盟荣耀值不足", function(done){
+//			editAllianceTerrian("grassLand", function(doc){
+//				doc.code.should.equal(500)
+//				doc.message.should.equal("联盟荣耀值不足")
+//				done()
+//			})
+//		})
+//
+//		it("editAllianceTerrian 正常编辑", function(done){
+//			sendChat("alliancehonour 5000", function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceTerrian("grassLand", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editTitleName 玩家未加入联盟", function(done){
+//			LoginPlayer(Config.deviceId2, function(doc){
+//				doc.code.should.equal(200)
+//				editTitleName("archon", "老大", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("玩家未加入联盟")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editTitleName 此操作权限不足", function(done){
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				editTitleName("archon", "老大", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("此操作权限不足")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editTitleName 正常修改", function(done){
+//			LoginPlayer(Config.deviceId, function(doc){
+//				doc.code.should.equal(200)
+//				editTitleName("archon", "老大", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editAllianceNotice 玩家未加入联盟", function(done){
+//			LoginPlayer(Config.deviceId2, function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceNotice("这是第一条公告", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("玩家未加入联盟")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editAllianceNotice 此操作权限不足", function(done){
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceNotice("这是第一条公告", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("此操作权限不足")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editAllianceNotice 正常发布公告", function(done){
+//			LoginPlayer(Config.deviceId, function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceNotice("这是第一条公告", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editAllianceDescription 玩家未加入联盟", function(done){
+//			LoginPlayer(Config.deviceId2, function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceDescription("这是第一条描述", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("玩家未加入联盟")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editAllianceDescription 此操作权限不足", function(done){
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceDescription("这是第一条描述", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("此操作权限不足")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editAllianceDescription 正常修改联盟描述", function(done){
+//			LoginPlayer(Config.deviceId, function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceDescription("这是第一条描述", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editAllianceJoinType 玩家未加入联盟", function(done){
+//			LoginPlayer(Config.deviceId2, function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceJoinType("all", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("玩家未加入联盟")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editAllianceJoinType 此操作权限不足", function(done){
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceJoinType("all", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("此操作权限不足")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("editAllianceJoinType 正常修改联盟描述", function(done){
+//			LoginPlayer(Config.deviceId, function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceJoinType("all", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("modifyAllianceMemberTitle 玩家未加入联盟", function(done){
+//			LoginPlayer(Config.deviceId2, function(doc){
+//				doc.code.should.equal(200)
+//				modifyAllianceMemberTitle("asdfasdf", "general", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("玩家未加入联盟")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("modifyAllianceMemberTitle 此操作权限不足", function(done){
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				modifyAllianceMemberTitle("asdfasdf", "general", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("此操作权限不足")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("modifyAllianceMemberTitle 联盟没有此玩家", function(done){
+//			LoginPlayer(Config.deviceId, function(doc){
+//				doc.code.should.equal(200)
+//				modifyAllianceMemberTitle("asdfasdf", "general", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("联盟没有此玩家")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("modifyAllianceMemberTitle 不能将玩家的职级调整到与自己平级或者比自己高", function(done){
+//			var memberDoc = null
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				LoginPlayer(Config.deviceId, function(doc){
+//					doc.code.should.equal(200)
+//					modifyAllianceMemberTitle(memberDoc._id, "archon", function(doc){
+//						doc.code.should.equal(500)
+//						doc.message.should.equal("不能将玩家的职级调整到与自己平级或者比自己高")
+//						done()
+//					})
+//				})
+//			})
+//			var onPlayerLoginSuccess = function(doc){
+//				memberDoc = doc
+//				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//			}
+//			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//		})
+//
+//		it("modifyAllianceMemberTitle 正常编辑", function(done){
+//			var memberDoc = null
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				LoginPlayer(Config.deviceId, function(doc){
+//					doc.code.should.equal(200)
+//					modifyAllianceMemberTitle(memberDoc._id, "general", function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//			})
+//			var onPlayerLoginSuccess = function(doc){
+//				memberDoc = doc
+//				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//			}
+//			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//		})
+//
+//		it("kickAllianceMemberOff 玩家未加入联盟", function(done){
+//			LoginPlayer(Config.deviceId2, function(doc){
+//				doc.code.should.equal(200)
+//				kickAllianceMemberOff("asdfasdf", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("玩家未加入联盟")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("kickAllianceMemberOff 此操作权限不足", function(done){
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				kickAllianceMemberOff("asdfasdf", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("此操作权限不足")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("kickAllianceMemberOff 联盟没有此玩家", function(done){
+//			LoginPlayer(Config.deviceId, function(doc){
+//				doc.code.should.equal(200)
+//				kickAllianceMemberOff("asdfasdf", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("联盟没有此玩家")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("kickAllianceMemberOff 正常踢出", function(done){
+//			var memberDoc = null
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				LoginPlayer(Config.deviceId, function(doc){
+//					doc.code.should.equal(200)
+//					kickAllianceMemberOff(memberDoc._id, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//			})
+//			var onPlayerLoginSuccess = function(doc){
+//				memberDoc = doc
+//				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//			}
+//			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//		})
+//
+//		it("handOverArchon 玩家未加入联盟", function(done){
+//			LoginPlayer(Config.deviceId2, function(doc){
+//				doc.code.should.equal(200)
+//				handOverArchon("asdfasdf", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("玩家未加入联盟")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("handOverArchon 别逗了,你是不盟主好么", function(done){
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				joinAllianceDirectly(m_user.alliance.id, function(doc){
+//					doc.code.should.equal(200)
+//					handOverArchon("asdfasdf", function(doc){
+//						doc.code.should.equal(500)
+//						doc.message.should.equal("别逗了,你是不盟主好么")
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("handOverArchon 玩家不存在", function(done){
+//			LoginPlayer(Config.deviceId, function(doc){
+//				doc.code.should.equal(200)
+//				handOverArchon("asdfasdf", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("玩家不存在")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("handOverArchon 正常移交", function(done){
+//			var memberDoc = null
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				LoginPlayer(Config.deviceId, function(doc){
+//					doc.code.should.equal(200)
+//					handOverArchon(memberDoc._id, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//			})
+//			var onPlayerLoginSuccess = function(doc){
+//				memberDoc = doc
+//				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//			}
+//			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//		})
+//
+//		it("quitAlliance 玩家未加入联盟", function(done){
+//			LoginPlayer(Config.deviceId2, function(doc){
+//				doc.code.should.equal(200)
+//				quitAlliance(function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("玩家未加入联盟")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("quitAlliance 正常退出", function(done){
+//			LoginPlayer(Config.deviceId, function(doc){
+//				doc.code.should.equal(200)
+//				quitAlliance(function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("joinAllianceDirectly 玩家已加入联盟", function(done){
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				joinAllianceDirectly("asdfasdf", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("玩家已加入联盟")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("joinAllianceDirectly 联盟不存在", function(done){
+//			LoginPlayer(Config.deviceId, function(doc){
+//				doc.code.should.equal(200)
+//				joinAllianceDirectly("asdfasdf", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("联盟不存在")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("joinAllianceDirectly 联盟不允许直接加入", function(done){
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				editAllianceJoinType("audit", function(doc){
+//					doc.code.should.equal(200)
+//					LoginPlayer(Config.deviceId, function(doc){
+//						doc.code.should.equal(200)
+//						joinAllianceDirectly(m_user.alliance.id, function(doc){
+//							doc.code.should.equal(500)
+//							doc.message.should.equal("联盟不允许直接加入")
+//							LoginPlayer(Config.deviceId3, function(doc){
+//								doc.code.should.equal(200)
+//								editAllianceJoinType("all", function(doc){
+//									doc.code.should.equal(200)
+//									done()
+//								})
+//							})
+//						})
+//					})
+//				})
+//			})
+//		})
+//
+//		it("joinAllianceDirectly 正常加入", function(done){
+//			LoginPlayer(Config.deviceId, function(doc){
+//				doc.code.should.equal(200)
+//				joinAllianceDirectly(m_user.alliance.id, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("requestToJoinAlliance 玩家已加入联盟", function(done){
+//			requestToJoinAlliance(m_user.alliance.id, function(doc){
+//				doc.code.should.equal(500)
+//				doc.message.should.equal("玩家已加入联盟")
+//				done()
+//			})
+//		})
+//
+//		it("requestToJoinAlliance 对此联盟的申请已发出,请耐心等候审核", function(done){
+//			LoginPlayer(Config.deviceId5, function(doc){
+//				doc.code.should.equal(200)
+//				requestToJoinAlliance(m_user.alliance.id, function(doc){
+//					doc.code.should.equal(200)
+//					requestToJoinAlliance(m_user.alliance.id, function(doc){
+//						doc.code.should.equal(500)
+//						doc.message.should.equal("对此联盟的申请已发出,请耐心等候审核")
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("cancelJoinAllianceRequest 正常取消", function(done){
+//			cancelJoinAllianceRequest(m_user.alliance.id, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("handleJoinAllianceRequest 正常处理 拒绝加入", function(done){
+//			var memberDoc = null
+//			LoginPlayer(Config.deviceId5, function(doc){
+//				doc.code.should.equal(200)
+//				requestToJoinAlliance(m_user.alliance.id, function(doc){
+//					doc.code.should.equal(200)
+//					LoginPlayer(Config.deviceId3, function(doc){
+//						doc.code.should.equal(200)
+//						handleJoinAllianceRequest(memberDoc._id, false, function(doc){
+//							doc.code.should.equal(200)
+//							done()
+//						})
+//					})
+//				})
+//			})
+//
+//			var onPlayerLoginSuccess = function(doc){
+//				memberDoc = doc
+//				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//			}
+//			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//		})
+//
+//		it("handleJoinAllianceRequest 正常处理 允许加入", function(done){
+//			var memberDoc = null
+//			LoginPlayer(Config.deviceId5, function(doc){
+//				doc.code.should.equal(200)
+//				requestToJoinAlliance(m_user.alliance.id, function(doc){
+//					doc.code.should.equal(200)
+//					LoginPlayer(Config.deviceId3, function(doc){
+//						doc.code.should.equal(200)
+//						handleJoinAllianceRequest(memberDoc._id, true, function(doc){
+//							doc.code.should.equal(200)
+//							done()
+//						})
+//					})
+//				})
+//			})
+//			var onPlayerLoginSuccess = function(doc){
+//				memberDoc = doc
+//				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//			}
+//			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//		})
+//
+//		it("inviteToJoinAlliance 正常邀请", function(done){
+//			var memberDoc = null
+//			LoginPlayer(Config.deviceId5, function(doc){
+//				doc.code.should.equal(200)
+//				quitAlliance(function(doc){
+//					doc.code.should.equal(200)
+//					LoginPlayer(Config.deviceId3, function(doc){
+//						doc.code.should.equal(200)
+//						inviteToJoinAlliance(memberDoc._id, function(doc){
+//							doc.code.should.equal(200)
+//							done()
+//						})
+//					})
+//				})
+//			})
+//			var onPlayerLoginSuccess = function(doc){
+//				memberDoc = doc
+//				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//			}
+//			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//		})
+//
+//		it("handleJoinAllianceInvite 正常处理 拒绝邀请", function(done){
+//			LoginPlayer(Config.deviceId5, function(doc){
+//				doc.code.should.equal(200)
+//				handleJoinAllianceInvite(m_user.alliance.id, false, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("handleJoinAllianceInvite 正常处理 同意邀请", function(done){
+//			var memberDoc = null
+//			LoginPlayer(Config.deviceId5, function(doc){
+//				doc.code.should.equal(200)
+//				LoginPlayer(Config.deviceId3, function(doc){
+//					doc.code.should.equal(200)
+//					inviteToJoinAlliance(memberDoc._id, function(doc){
+//						doc.code.should.equal(200)
+//						LoginPlayer(Config.deviceId4, function(doc){
+//							doc.code.should.equal(200)
+//							inviteToJoinAlliance(memberDoc._id, function(doc){
+//								doc.code.should.equal(200)
+//								LoginPlayer(Config.deviceId5, function(doc){
+//									doc.code.should.equal(200)
+//									handleJoinAllianceInvite(m_user.alliance.id, true, function(doc){
+//										doc.code.should.equal(200)
+//										done()
+//									})
+//								})
+//							})
+//						})
+//					})
+//				})
+//			})
+//			var onPlayerLoginSuccess = function(doc){
+//				memberDoc = doc
+//				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//			}
+//			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//		})
+//
+//		it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
+//			buyAllianceArchon(function(doc){
+//				doc.code.should.equal(200)
+//				LoginPlayer(Config.deviceId3, function(doc){
+//					doc.code.should.equal(200)
+//					buyAllianceArchon(function(doc){
+//						doc.code.should.equal(200)
+//						LoginPlayer(Config.deviceId5, function(doc){
+//							doc.code.should.equal(200)
+//							done()
+//						})
+//					})
+//				})
+//			})
+//		})
+//
+//		it("searchAllianceByTag 正常搜索", function(done){
+//			searchAllianceByTag("test", function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getCanDirectJoinAlliances 正常获取", function(done){
+//			getCanDirectJoinAlliances(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("upgradeBuilding 加入联盟后", function(done){
+//			var playerDoc = null
+//			upgradeBuilding(1, true, function(doc){
+//				doc.code.should.equal(200)
+//				upgradeBuilding(1, false, function(doc){
+//					doc.code.should.equal(200)
+//					var buildEvent = playerDoc.buildingEvents[0]
+//					requestToSpeedUp(Consts.AllianceHelpEventType.Building, buildEvent.id, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//				var onPlayerDataChanged = function(doc){
+//					playerDoc = doc
+//					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+//				}
+//				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+//			})
+//		})
+//
+//		it("createHouse 加入联盟后", function(done){
+//			var playerDoc = null
+//			createHouse("dwelling", 3, 3, false, function(doc){
+//				doc.code.should.equal(200)
+//				var buildEvent = playerDoc.houseEvents[0]
+//				requestToSpeedUp(Consts.AllianceHelpEventType.House, buildEvent.id, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//			var onPlayerDataChanged = function(doc){
+//				playerDoc = doc
+//				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+//			}
+//			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+//		})
+//
+//		it("upgradeHouse 加入联盟后", function(done){
+//			var playerDoc = null
+//			createHouse("dwelling", 3, 1, true, function(doc){
+//				doc.code.should.equal(200)
+//				upgradeHouse(3, 1, false, function(doc){
+//					doc.code.should.equal(200)
+//					var buildEvent = playerDoc.houseEvents[1]
+//					requestToSpeedUp(Consts.AllianceHelpEventType.House, buildEvent.id, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//				var onPlayerDataChanged = function(doc){
+//					playerDoc = doc
+//					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+//				}
+//				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+//			})
+//		})
+//
+//		it("upgradeTower 加入联盟后", function(done){
+//			var playerDoc = null
+//			upgradeTower(1, false, function(doc){
+//				doc.code.should.equal(200)
+//				var buildEvent = playerDoc.towerEvents[0]
+//				requestToSpeedUp(Consts.AllianceHelpEventType.Tower, buildEvent.id, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//			var onPlayerDataChanged = function(doc){
+//				playerDoc = doc
+//				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+//			}
+//			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+//		})
+//
+//		it("upgradeWall 加入联盟后", function(done){
+//			var playerDoc = null
+//			upgradeWall(false, function(doc){
+//				doc.code.should.equal(200)
+//				var buildEvent = playerDoc.wallEvents[0]
+//				requestToSpeedUp(Consts.AllianceHelpEventType.Wall, buildEvent.id, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//			var onPlayerDataChanged = function(doc){
+//				playerDoc = doc
+//				pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+//			}
+//			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+//		})
+//
+//		it("helpAllianceMemberSpeedUp 正常帮助1", function(done){
+//			var alliance = null
+//			LoginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				getMyAllianceData(function(doc){
+//					doc.code.should.equal(200)
+//					var event = alliance.helpEvents[0]
+//					helpAllianceMemberSpeedUp(event.eventId, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//				var onGetAllianceDataSuccess = function(doc){
+//					alliance = doc
+//					pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//				}
+//				pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//			})
+//		})
+//
+//		it("helpAllianceMemberSpeedUp 正常帮助2", function(done){
+//			var alliance = null
+//			getMyAllianceData(function(doc){
+//				doc.code.should.equal(200)
+//				var event = alliance.helpEvents[1]
+//				helpAllianceMemberSpeedUp(event.eventId, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//			var onGetAllianceDataSuccess = function(doc){
+//				alliance = doc
+//				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//			}
+//			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//		})
+//
+//		it("helpAllAllianceMemberSpeedUp 正常帮助", function(done){
+//			helpAllAllianceMemberSpeedUp(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getMyAllianceData 正常获取", function(done){
+//			getMyAllianceData(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("donateToAlliance 资源不足", function(done){
+//			sendChat("rs 500", function(doc){
+//				doc.code.should.equal(200)
+//				donateToAlliance("wood", function(doc){
+//					doc.code.should.equal(500)
+//					doc.message.should.equal("资源不足")
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("donateToAlliance 正常捐赠1", function(done){
+//			sendChat("rs 5000000", function(doc){
+//				doc.code.should.equal(200)
+//				sendChat("donatelevel 6", function(doc){
+//					doc.code.should.equal(200)
+//					donateToAlliance("wood", function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("donateToAlliance 正常捐赠2", function(done){
+//			donateToAlliance("wood", function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("donateToAlliance 正常捐赠3", function(done){
+//			sendChat("donatelevel 1", function(doc){
+//				doc.code.should.equal(200)
+//				donateToAlliance("stone", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("upgradeAllianceBuilding 盟主城堡等级不足", function(done){
+//			upgradeAllianceBuilding("palace", function(doc){
+//				doc.code.should.equal(500)
+//				doc.message.should.equal("盟主城堡等级不足")
+//				done()
+//			})
+//		})
+//
+//		it("upgradeAllianceBuilding 联盟荣耀值不足", function(done){
+//			sendChat("allianceHonour 10", function(doc){
+//				doc.code.should.equal(200)
+//				sendChat("keep 5", function(doc){
+//					doc.code.should.equal(200)
+//					upgradeAllianceBuilding("palace", function(doc){
+//						doc.code.should.equal(500)
+//						doc.message.should.equal("联盟荣耀值不足")
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("upgradeAllianceBuilding 正常升级", function(done){
+//			sendChat("allianceHonour 5000", function(doc){
+//				doc.code.should.equal(200)
+//				upgradeAllianceBuilding("palace", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("upgradeAllianceVillage 正常升级", function(done){
+//			upgradeAllianceVillage("wood", function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
 	})
 
 

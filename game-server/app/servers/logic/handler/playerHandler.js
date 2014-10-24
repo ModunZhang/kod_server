@@ -957,3 +957,18 @@ pro.upgradeAllianceBuilding = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 升级联盟村落
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.upgradeAllianceVillage = function(msg, session, next){
+	var villageType = msg.villageType
+	this.playerService.upgradeAllianceVillageAsync(session.uid, villageType).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

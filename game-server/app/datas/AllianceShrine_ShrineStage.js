@@ -15,9 +15,9 @@ ShrineStage["1,1"] = {
 	cavsCount:10,
 	siegeCount:10,
 	specialCount:10,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["1,2"] = {
 	stageLevel:"1,2",
@@ -31,9 +31,9 @@ ShrineStage["1,2"] = {
 	cavsCount:20,
 	siegeCount:20,
 	specialCount:20,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["1,3"] = {
 	stageLevel:"1,3",
@@ -47,9 +47,9 @@ ShrineStage["1,3"] = {
 	cavsCount:30,
 	siegeCount:30,
 	specialCount:30,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["1,4"] = {
 	stageLevel:"1,4",
@@ -63,9 +63,9 @@ ShrineStage["1,4"] = {
 	cavsCount:40,
 	siegeCount:40,
 	specialCount:40,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["1,5"] = {
 	stageLevel:"1,5",
@@ -79,9 +79,9 @@ ShrineStage["1,5"] = {
 	cavsCount:50,
 	siegeCount:50,
 	specialCount:50,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["2,1"] = {
 	stageLevel:"2,1",
@@ -95,9 +95,9 @@ ShrineStage["2,1"] = {
 	cavsCount:200,
 	siegeCount:200,
 	specialCount:200,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["2,2"] = {
 	stageLevel:"2,2",
@@ -111,9 +111,9 @@ ShrineStage["2,2"] = {
 	cavsCount:300,
 	siegeCount:300,
 	specialCount:300,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["2,3"] = {
 	stageLevel:"2,3",
@@ -127,9 +127,9 @@ ShrineStage["2,3"] = {
 	cavsCount:400,
 	siegeCount:400,
 	specialCount:400,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["2,4"] = {
 	stageLevel:"2,4",
@@ -143,9 +143,9 @@ ShrineStage["2,4"] = {
 	cavsCount:500,
 	siegeCount:500,
 	specialCount:500,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["2,5"] = {
 	stageLevel:"2,5",
@@ -159,9 +159,9 @@ ShrineStage["2,5"] = {
 	cavsCount:600,
 	siegeCount:600,
 	specialCount:600,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["3,1"] = {
 	stageLevel:"3,1",
@@ -175,9 +175,9 @@ ShrineStage["3,1"] = {
 	cavsCount:1000,
 	siegeCount:1000,
 	specialCount:1000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["3,2"] = {
 	stageLevel:"3,2",
@@ -191,9 +191,9 @@ ShrineStage["3,2"] = {
 	cavsCount:1500,
 	siegeCount:1500,
 	specialCount:1500,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["3,3"] = {
 	stageLevel:"3,3",
@@ -207,9 +207,9 @@ ShrineStage["3,3"] = {
 	cavsCount:2000,
 	siegeCount:2000,
 	specialCount:2000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["3,4"] = {
 	stageLevel:"3,4",
@@ -223,9 +223,9 @@ ShrineStage["3,4"] = {
 	cavsCount:2500,
 	siegeCount:2500,
 	specialCount:2500,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["3,5"] = {
 	stageLevel:"3,5",
@@ -239,9 +239,9 @@ ShrineStage["3,5"] = {
 	cavsCount:3000,
 	siegeCount:3000,
 	specialCount:3000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["4,1"] = {
 	stageLevel:"4,1",
@@ -255,9 +255,9 @@ ShrineStage["4,1"] = {
 	cavsCount:4000,
 	siegeCount:4000,
 	specialCount:4000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["4,2"] = {
 	stageLevel:"4,2",
@@ -271,9 +271,9 @@ ShrineStage["4,2"] = {
 	cavsCount:5000,
 	siegeCount:5000,
 	specialCount:5000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["4,3"] = {
 	stageLevel:"4,3",
@@ -287,9 +287,9 @@ ShrineStage["4,3"] = {
 	cavsCount:6000,
 	siegeCount:6000,
 	specialCount:6000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["4,4"] = {
 	stageLevel:"4,4",
@@ -303,9 +303,9 @@ ShrineStage["4,4"] = {
 	cavsCount:7000,
 	siegeCount:7000,
 	specialCount:7000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["4,5"] = {
 	stageLevel:"4,5",
@@ -319,9 +319,9 @@ ShrineStage["4,5"] = {
 	cavsCount:8000,
 	siegeCount:8000,
 	specialCount:8000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["5,1"] = {
 	stageLevel:"5,1",
@@ -335,9 +335,9 @@ ShrineStage["5,1"] = {
 	cavsCount:9000,
 	siegeCount:9000,
 	specialCount:9000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["5,2"] = {
 	stageLevel:"5,2",
@@ -351,9 +351,9 @@ ShrineStage["5,2"] = {
 	cavsCount:10000,
 	siegeCount:10000,
 	specialCount:10000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["5,3"] = {
 	stageLevel:"5,3",
@@ -367,9 +367,9 @@ ShrineStage["5,3"] = {
 	cavsCount:11000,
 	siegeCount:11000,
 	specialCount:11000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["5,4"] = {
 	stageLevel:"5,4",
@@ -383,9 +383,9 @@ ShrineStage["5,4"] = {
 	cavsCount:12000,
 	siegeCount:12000,
 	specialCount:12000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["5,5"] = {
 	stageLevel:"5,5",
@@ -399,9 +399,9 @@ ShrineStage["5,5"] = {
 	cavsCount:13000,
 	siegeCount:13000,
 	specialCount:13000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["6,1"] = {
 	stageLevel:"6,1",
@@ -415,9 +415,9 @@ ShrineStage["6,1"] = {
 	cavsCount:14000,
 	siegeCount:14000,
 	specialCount:14000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["6,2"] = {
 	stageLevel:"6,2",
@@ -431,9 +431,9 @@ ShrineStage["6,2"] = {
 	cavsCount:15000,
 	siegeCount:15000,
 	specialCount:15000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["6,3"] = {
 	stageLevel:"6,3",
@@ -447,9 +447,9 @@ ShrineStage["6,3"] = {
 	cavsCount:16000,
 	siegeCount:16000,
 	specialCount:16000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["6,4"] = {
 	stageLevel:"6,4",
@@ -463,9 +463,9 @@ ShrineStage["6,4"] = {
 	cavsCount:17000,
 	siegeCount:17000,
 	specialCount:17000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }
 ShrineStage["6,5"] = {
 	stageLevel:"6,5",
@@ -479,7 +479,7 @@ ShrineStage["6,5"] = {
 	cavsCount:18000,
 	siegeCount:18000,
 	specialCount:18000,
-	1starBonus:"100，jewel1，jewel2",
-	2starBonus:"300，jewel3，jewel4",
-	3starBonus:"500，jewel5，jewel6"
+	star1_Bonus:"100，jewel1，jewel2",
+	star2_Bonus:"300，jewel3，jewel4",
+	star3_Bonus:"500，jewel5，jewel6"
 }

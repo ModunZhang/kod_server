@@ -76,6 +76,13 @@ var allianceSchema = new Schema({
 				coin:{type:Number, required:true},
 				gem:{type:Number, required:true}
 			},
+			allianceExp:{
+				woodExp:{type:Number, required:true},
+				stoneExp:{type:Number, required:true},
+				ironExp:{type:Number, required:true},
+				foodExp:{type:Number, required:true},
+				coinExp:{type:Number, required:true}
+			},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
@@ -97,7 +104,8 @@ var allianceSchema = new Schema({
 		coin:{type:Number, required:true, default:1}
 	},
 	villages:[{
-		_id:false
+		_id:false,
+		id:{type:String, required:true}
 	}],
 	map:[
 		{

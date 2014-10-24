@@ -28,6 +28,7 @@ var DragonEyrie = GameDatas.DragonEyrie
 var AllianceInit = GameDatas.AllianceInitData
 var AllianceRight = AllianceInit.right
 var AllianceBuildingConfig = GameDatas.AllianceBuilding
+var AllianceVillageConfig = GameDatas.AllianceVillage
 var Vip = GameDatas.Vip
 
 
@@ -1495,6 +1496,20 @@ Utils.getAllianceBuildingUpgradeRequired = function(buildingName, buildingLevel)
 }
 
 /**
+ * 获取升级联盟村落所需要的资源
+ * @param allianceType
+ * @param allianceLevel
+ * @returns {{honour: (needHonour|*)}}
+ */
+Utils.getAllianceVillageUpgradeRequired = function(allianceType, allianceLevel){
+	var config = AllianceVillageConfig[allianceType][allianceLevel]
+	var required = {
+		honour:config.needHonour
+	}
+	return required
+}
+
+/**
  * 指定联盟建筑是否到达最高等级
  * @param buildingName
  * @param buildingLevel
@@ -1502,6 +1517,17 @@ Utils.getAllianceBuildingUpgradeRequired = function(buildingName, buildingLevel)
  */
 Utils.isAllianceBuildingReachMaxLevel = function(buildingName, buildingLevel){
 	var config = AllianceBuildingConfig[buildingName][buildingLevel + 1]
+	return !_.isObject(config)
+}
+
+/**
+ * 指定联盟村落类型是否到达最高等级
+ * @param allianceType
+ * @param allianceLevel
+ * @returns {boolean}
+ */
+Utils.isAllianceVillageReachMaxLevel = function(allianceType, allianceLevel){
+	var config = AllianceVillageConfig[allianceType][allianceLevel + 1]
 	return !_.isObject(config)
 }
 
