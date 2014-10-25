@@ -708,10 +708,10 @@ pro.editAllianceJoinType = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.modifyAllianceMemberTitle = function(msg, session, next){
+pro.editAllianceMemberTitle = function(msg, session, next){
 	var memberId = msg.memberId
 	var title = msg.title
-	this.playerService.modifyAllianceMemberTitleAsync(session.uid, memberId, title).then(function(){
+	this.playerService.editAllianceMemberTitleAsync(session.uid, memberId, title).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

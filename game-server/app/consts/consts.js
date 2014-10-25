@@ -16,6 +16,16 @@ module.exports = {
 		Tower:"tower",
 		Wall:"wall"
 	},
+	NormalSoldierType:{
+		swordsman:"swordsman",
+		sentinel:"sentinel",
+		archer:"archer",
+		crossbowman:"crossbowman",
+		lancer:"lancer",
+		horseArcher:"horseArcher",
+		catapult:"catapult",
+		ballista:"ballista"
+	},
 	DragonStatus:{
 		Free:"free",
 		Fight:"fight",
@@ -102,12 +112,5 @@ module.exports = {
 		Hall:"hall",//秩序大厅
 		Shrine:"shrine",//圣地
 		Shop:"shop"//联盟商店
-	},
-	AllianceVillageType:{
-		Wood:"wood",
-		Stone:"stone",
-		Iron:"iron",
-		Food:"food",
-		Coin:"coin"
 	}
 }

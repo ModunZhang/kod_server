@@ -15,17 +15,18 @@ GameDatas.AllianceInitData.resource = require("./AllianceInitData_resource.js")
 GameDatas.AllianceInitData.right = require("./AllianceInitData_right.js")
 GameDatas.AllianceInitData.buildingType = require("./AllianceInitData_buildingType.js")
 GameDatas.AllianceInitData.donate = require("./AllianceInitData_donate.js")
+GameDatas.AllianceInitData.decorateCount = require("./AllianceInitData_decorateCount.js")
 
 GameDatas.AllianceShrine = {}
 GameDatas.AllianceShrine.ShrineStage = require("./AllianceShrine_ShrineStage.js")
 
 GameDatas.AllianceVillage = {}
-GameDatas.AllianceVillage.wood = require("./AllianceVillage_wood.js")
-GameDatas.AllianceVillage.food = require("./AllianceVillage_food.js")
-GameDatas.AllianceVillage.stone = require("./AllianceVillage_stone.js")
-GameDatas.AllianceVillage.iron = require("./AllianceVillage_iron.js")
-GameDatas.AllianceVillage.coin = require("./AllianceVillage_coin.js")
-GameDatas.AllianceVillage.gem = require("./AllianceVillage_gem.js")
+GameDatas.AllianceVillage.woodVillage = require("./AllianceVillage_woodVillage.js")
+GameDatas.AllianceVillage.foodVillage = require("./AllianceVillage_foodVillage.js")
+GameDatas.AllianceVillage.stoneVillage = require("./AllianceVillage_stoneVillage.js")
+GameDatas.AllianceVillage.ironVillage = require("./AllianceVillage_ironVillage.js")
+GameDatas.AllianceVillage.coinVillage = require("./AllianceVillage_coinVillage.js")
+GameDatas.AllianceVillage.gemVillage = require("./AllianceVillage_gemVillage.js")
 
 GameDatas.BuildingFunction = {}
 GameDatas.BuildingFunction.wall = require("./BuildingFunction_wall.js")

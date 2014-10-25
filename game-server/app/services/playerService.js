@@ -14,6 +14,7 @@ var PlayerDao = require("../dao/playerDao")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var MapUtils = require("../utils/mapUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -3195,15 +3196,25 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 				language:language,
 				terrain:terrain,
 				flag:flag
-			}
+			},
+			members:[]
 		}
+		var mapObjects = MapUtils.create()
+		alliance.mapObjects = mapObjects
+		var villages = DataUtils.createMapVillages(mapObjects)
+		alliance.villages = villages
 		return self.allianceDao.createAsync(alliance)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟创建失败"))
 		}
 		allianceDoc = doc
-		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Archon)
+		var mapObjects = allianceDoc.mapObjects
+		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
+		var memberRect = LogicUtils.getFreePointInAllianceMap(mapObjects, memberSizeInMap.width, memberSizeInMap.height)
+		var memberObjInMap = LogicUtils.createAllianceMapObject("member", memberRect)
+		mapObjects.push(memberObjInMap)
+		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Archon, memberRect)
 		LogicUtils.refreshAlliance(allianceDoc)
 		playerDoc.alliance = {
 			id:allianceDoc._id,
@@ -3925,7 +3936,7 @@ pro.editAllianceJoinType = function(playerId, joinType, callback){
  * @param title
  * @param callback
  */
-pro.modifyAllianceMemberTitle = function(playerId, memberId, title, callback){
+pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -3957,7 +3968,7 @@ pro.modifyAllianceMemberTitle = function(playerId, memberId, title, callback){
 		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "modifyAllianceMemberTitle")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editAllianceMemberTitle")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
 		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
@@ -4066,7 +4077,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "modifyAllianceMemberTitle")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editAllianceMemberTitle")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
 		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)

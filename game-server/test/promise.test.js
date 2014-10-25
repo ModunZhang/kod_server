@@ -3,6 +3,8 @@
 var Promise = require("bluebird")
 //var Promisify = Promise.promisify
 var _ = require("underscore")
+var MapUtils = require("../app/utils/mapUtils")
+var DataUtils = require("../app/utils/dataUtils")
 //var should = require('should')
 //var Utils = require("../app/utils/utils")
 //var redis = require("redis")
@@ -198,3 +200,11 @@ var _ = require("underscore")
 //	console.log(value)
 //	console.log(key)
 //})
+//
+//var mapObjects = MapUtils.create()
+//var map = MapUtils.buildMap(mapObjects)
+//MapUtils.outputMap(map)
+//
+//var random = Math.random()
+//var res = Math.round(80 + ((120 - 80) * random))
+//console.log(res)

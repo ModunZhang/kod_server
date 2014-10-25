@@ -48,7 +48,7 @@ var allianceSchema = new Schema({
 	},
 	events:[
 		{
-			_id : false,
+			_id:false,
 			category:{type:String, required:true},
 			type:{type:String, required:true},
 			time:{type:Number, required:true},
@@ -58,7 +58,7 @@ var allianceSchema = new Schema({
 	],
 	members:[
 		{
-			_id : false,
+			_id:false,
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			icon:{type:String, required:true},
@@ -103,11 +103,25 @@ var allianceSchema = new Schema({
 		food:{type:Number, required:true, default:1},
 		coin:{type:Number, required:true, default:1}
 	},
-	villages:[{
-		_id:false,
-		id:{type:String, required:true}
-	}],
-	map:[
+	villages:[
+		{
+			_id:false,
+			id:{type:String, required:true},
+			soldiers:[
+				{
+					_id:false,
+					type:{type:String, required:true},
+					level:{type:Number, required:true},
+					count:{type:String, required:true}
+				}
+			],
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			}
+		}
+	],
+	mapObjects:[
 		{
 			_id:false,
 			type:{type:String, required:true},
@@ -119,7 +133,7 @@ var allianceSchema = new Schema({
 	],
 	joinRequestEvents:[
 		{
-			_id : false,
+			_id:false,
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			level:{type:Number, required:true},
@@ -129,7 +143,7 @@ var allianceSchema = new Schema({
 	],
 	helpEvents:[
 		{
-			_id : false,
+			_id:false,
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			vipExp:{type:Number, required:true},

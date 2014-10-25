@@ -10,6 +10,7 @@ var sprintf = require("sprintf")
 var Promise = require("bluebird")
 
 var DataUtils = require("./dataUtils")
+var MapUtils = require("./mapUtils")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
 
@@ -1146,9 +1147,10 @@ Utils.AddAllianceEvent = function(allianceDoc, category, type, key, params){
  * @param allianceDoc
  * @param playerDoc
  * @param title
+ * @param rect
  * @return {*}
  */
-Utils.addAllianceMember = function(allianceDoc, playerDoc, title){
+Utils.addAllianceMember = function(allianceDoc, playerDoc, title, rect){
 	var member = {
 		id:playerDoc._id,
 		name:playerDoc.basicInfo.name,
@@ -1175,8 +1177,8 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title){
 			coinExp:playerDoc.allianceInfo.coinExp
 		},
 		location:{
-			x:0,
-			y:0
+			x:rect.x,
+			y:rect.y
 		}
 	}
 	allianceDoc.members.push(member)
@@ -1191,4 +1193,34 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title){
  */
 Utils.getAllianceMemberDonateLevelByType = function(memberDocInAlliance, donateType){
 	return memberDocInAlliance.donateStatus[donateType]
+}
+
+/**
+ * 获取可用的地图坐标
+ * @param mapObjects
+ * @param width
+ * @param height
+ * @returns {{x: *, y: *, width: *, height: *}}
+ */
+Utils.getFreePointInAllianceMap = function(mapObjects, width, height){
+	var map = MapUtils.buildMap(mapObjects)
+	var rect = MapUtils.getRect(map, width, height)
+	return rect
+}
+
+/**
+ * 创建联盟建筑对象
+ * @param buildingType
+ * @param rect
+ * @returns {{type: *, location: {x: (rect.x|*), y: (rect.y|*)}}}
+ */
+Utils.createAllianceMapObject = function(buildingType, rect){
+	var object = {
+		type:buildingType,
+		location:{
+			x:rect.x,
+			y:rect.y
+		}
+	}
+	return object
 }

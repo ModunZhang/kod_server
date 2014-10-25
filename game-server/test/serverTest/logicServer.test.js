@@ -363,12 +363,12 @@ var editAllianceJoinType = function(joinType, callback){
 	pomelo.request(route, info, callback)
 }
 
-var modifyAllianceMemberTitle = function(memberId, title, callback){
+var editAllianceMemberTitle = function(memberId, title, callback){
 	var info = {
 		memberId:memberId,
 		title:title
 	}
-	var route = "logic.playerHandler.modifyAllianceMemberTitle"
+	var route = "logic.playerHandler.editAllianceMemberTitle"
 	pomelo.request(route, info, callback)
 }
 
@@ -2436,10 +2436,10 @@ describe("LogicServer", function(){
 //			})
 //		})
 //
-//		it("modifyAllianceMemberTitle 玩家未加入联盟", function(done){
+//		it("editAllianceMemberTitle 玩家未加入联盟", function(done){
 //			LoginPlayer(Config.deviceId2, function(doc){
 //				doc.code.should.equal(200)
-//				modifyAllianceMemberTitle("asdfasdf", "general", function(doc){
+//				editAllianceMemberTitle("asdfasdf", "general", function(doc){
 //					doc.code.should.equal(500)
 //					doc.message.should.equal("玩家未加入联盟")
 //					done()
@@ -2447,10 +2447,10 @@ describe("LogicServer", function(){
 //			})
 //		})
 //
-//		it("modifyAllianceMemberTitle 此操作权限不足", function(done){
+//		it("editAllianceMemberTitle 此操作权限不足", function(done){
 //			LoginPlayer(Config.deviceId3, function(doc){
 //				doc.code.should.equal(200)
-//				modifyAllianceMemberTitle("asdfasdf", "general", function(doc){
+//				editAllianceMemberTitle("asdfasdf", "general", function(doc){
 //					doc.code.should.equal(500)
 //					doc.message.should.equal("此操作权限不足")
 //					done()
@@ -2458,10 +2458,10 @@ describe("LogicServer", function(){
 //			})
 //		})
 //
-//		it("modifyAllianceMemberTitle 联盟没有此玩家", function(done){
+//		it("editAllianceMemberTitle 联盟没有此玩家", function(done){
 //			LoginPlayer(Config.deviceId, function(doc){
 //				doc.code.should.equal(200)
-//				modifyAllianceMemberTitle("asdfasdf", "general", function(doc){
+//				editAllianceMemberTitle("asdfasdf", "general", function(doc){
 //					doc.code.should.equal(500)
 //					doc.message.should.equal("联盟没有此玩家")
 //					done()
@@ -2469,13 +2469,13 @@ describe("LogicServer", function(){
 //			})
 //		})
 //
-//		it("modifyAllianceMemberTitle 不能将玩家的职级调整到与自己平级或者比自己高", function(done){
+//		it("editAllianceMemberTitle 不能将玩家的职级调整到与自己平级或者比自己高", function(done){
 //			var memberDoc = null
 //			LoginPlayer(Config.deviceId3, function(doc){
 //				doc.code.should.equal(200)
 //				LoginPlayer(Config.deviceId, function(doc){
 //					doc.code.should.equal(200)
-//					modifyAllianceMemberTitle(memberDoc._id, "archon", function(doc){
+//					editAllianceMemberTitle(memberDoc._id, "archon", function(doc){
 //						doc.code.should.equal(500)
 //						doc.message.should.equal("不能将玩家的职级调整到与自己平级或者比自己高")
 //						done()
@@ -2489,13 +2489,13 @@ describe("LogicServer", function(){
 //			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
 //		})
 //
-//		it("modifyAllianceMemberTitle 正常编辑", function(done){
+//		it("editAllianceMemberTitle 正常编辑", function(done){
 //			var memberDoc = null
 //			LoginPlayer(Config.deviceId3, function(doc){
 //				doc.code.should.equal(200)
 //				LoginPlayer(Config.deviceId, function(doc){
 //					doc.code.should.equal(200)
-//					modifyAllianceMemberTitle(memberDoc._id, "general", function(doc){
+//					editAllianceMemberTitle(memberDoc._id, "general", function(doc){
 //						doc.code.should.equal(200)
 //						done()
 //					})

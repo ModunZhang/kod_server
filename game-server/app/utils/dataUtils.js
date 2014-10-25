@@ -6,6 +6,7 @@
  */
 
 var _ = require("underscore")
+var ShortId = require("shortid")
 
 var Consts = require("../consts/consts")
 var CommonUtils = require("./utils")
@@ -1316,7 +1317,7 @@ Utils.getDragonHighestLevelOnStar = function(dragon){
  */
 Utils.isDragonEquipmentsReachUpgradeLevel = function(dragon){
 	var allCategory = DragonEyrie.dragonAttribute[dragon.star + 1].allCategory.split(",")
-	for(var i = 0; i < allCategory.length; i ++){
+	for(var i = 0; i < allCategory.length; i++){
 		var category = allCategory[i]
 		var equipment = dragon.equipments[category]
 		if(_.isEmpty(equipment.name)) return false
@@ -1413,7 +1414,7 @@ Utils.getAllianceTitleLevel = function(title){
 Utils.getVipLevel = function(playerDoc){
 	var vipExpConfig = Vip.exp
 	var vipExp = playerDoc.basicInfo.vipExp
-	for(var i = vipExpConfig.length; i >= 1; i ++){
+	for(var i = vipExpConfig.length; i >= 1; i++){
 		var minExp = vipExpConfig[i].exp
 		if(vipExp >= minExp) return i
 	}
@@ -1545,4 +1546,74 @@ Utils.getEditAllianceBasicInfoGem = function(){
  */
 Utils.getEditAllianceTerrianHonour = function(){
 	return AllianceInit.resource.editAllianceTerrian.honour
+}
+
+Utils.getAllianceVillageTypeConfigs = function(){
+	var config = AllianceInit.buildingType
+	var villages = _.filter(config, function(configObj){
+		return _.isEqual(configObj.category, "village")
+	})
+	return villages
+}
+
+/**
+ * 获取村落士兵信息
+ * @param villageType
+ * @param villageLevel
+ * @returns {Array}
+ */
+Utils.getVillageConfigedSoldiers = function(villageType, villageLevel){
+	var soldiers = []
+	var config = AllianceVillageConfig[villageType][villageLevel]
+	_.each(Consts.NormalSoldierType, function(soldierType){
+		var params = config[soldierType].split(":")
+		var soldierLevel = parseInt(params[0])
+		var soldierCount = parseInt(params[1])
+		var soldierCountMax = Math.round(soldierCount * 1.2)
+		var soldierCountMin = Math.round(soldierCount * 0.8)
+		soldierCount = Math.round(soldierCountMin + (Math.random() * (soldierCountMax - soldierCountMin)))
+		if(soldierCount > 0){
+			var soldier = {
+				type:soldierType,
+				level:soldierLevel,
+				count:soldierCount
+			}
+			soldiers.push(soldier)
+		}
+	})
+	return soldiers
+}
+
+/**
+ * 创建联盟村落
+ * @param mapObjects
+ * @returns {Array}
+ */
+Utils.createMapVillages = function(mapObjects){
+	var self = this
+	var villages = []
+	var villageObjects = _.filter(mapObjects, function(mapObject){
+		var buildingType = mapObject.type
+		var config = AllianceInit.buildingType[buildingType]
+		return _.isEqual(config.category, "village")
+	})
+	_.each(villageObjects, function(villageObject){
+		var village = {
+			id:ShortId.generate(),
+			soldiers:self.getVillageConfigedSoldiers(villageObject.type, 1),
+			location:villageObject.location
+		}
+		villages.push(village)
+	})
+	return villages
+}
+
+/**
+ * 获取建筑类型在联盟的宽高
+ * @param buildingType
+ * @returns {{width: *, height: *}}
+ */
+Utils.getSizeInAllianceMap = function(buildingType){
+	var config = AllianceInit.buildingType[buildingType]
+	return {width:config.width, height:config.height}
 }
