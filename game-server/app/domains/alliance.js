@@ -107,6 +107,7 @@ var allianceSchema = new Schema({
 		{
 			_id:false,
 			id:{type:String, required:true},
+			type:{type:String, required:true},
 			soldiers:[
 				{
 					_id:false,
@@ -155,17 +156,27 @@ var allianceSchema = new Schema({
 			helpedMembers:[String]
 		}
 	],
-	spyEvents:[
+	spyVillageEvents:[
 		{
 			_id:false,
+			id:{type:String, required:true},
+			fromId:{type:String, required:true},
+			fromName:{type:String, required:true},
+			fromLocation:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			dragion:{
+				type:{type:String, required:true},
+				strength:{type:Number, required:true},
+				vitality:{type:Number, required:true}
+			},
 			targetType:{type:String, required:true},
 			targetId:{type:String, required:true},
-			targetName:{type:String, required:true},
 			targetLocation:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
 			},
-			dragonType:{type:String, requreid:true},
 			finishTime:{type:Number, required:true}
 		}
 	]

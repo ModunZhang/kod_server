@@ -1600,6 +1600,7 @@ Utils.createMapVillages = function(mapObjects){
 	_.each(villageObjects, function(villageObject){
 		var village = {
 			id:ShortId.generate(),
+			type:villageObject.type,
 			soldiers:self.getVillageConfigedSoldiers(villageObject.type, 1),
 			location:villageObject.location
 		}

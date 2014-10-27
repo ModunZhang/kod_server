@@ -280,7 +280,12 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 			return Promise.reject(new Error("联盟不允许直接加入"))
 		}
 
-		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member)
+		var mapObjects = allianceDoc.mapObjects
+		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
+		var memberRect = LogicUtils.getFreePointInAllianceMap(mapObjects, memberSizeInMap.width, memberSizeInMap.height)
+		var memberObjInMap = LogicUtils.createAllianceMapObject("member", memberRect)
+		mapObjects.push(memberObjInMap)
+		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member, memberRect)
 		LogicUtils.refreshAlliance(allianceDoc)
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 
@@ -4279,6 +4284,7 @@ pro.quitAlliance = function(playerId, callback){
 	var allianceDoc = null
 	var playerInAlliance = null
 	var updateFuncs = []
+	var eventFuncs = []
 	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
@@ -4319,6 +4325,7 @@ pro.quitAlliance = function(playerId, callback){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			updateFuncs.push([self.allianceDao, self.allianceDao.deleteByIdAsync, allianceDoc._id])
 			updateFuncs.push([self.globalChannelService, self.globalChannelService.destroyChannelAsync, Consts.AllianceChannelPrefix + allianceDoc._id])
+			eventFuncs.push([self, ClearAllianceTimeEvents, allianceDoc])
 		}else{
 			var allianceData = {}
 			allianceData.basicInfo = allianceDoc.basicInfo
@@ -4334,6 +4341,8 @@ pro.quitAlliance = function(playerId, callback){
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
@@ -4400,7 +4409,12 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 			return Promise.reject(new Error("联盟不允许直接加入"))
 		}
 
-		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member)
+		var mapObjects = allianceDoc.mapObjects
+		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
+		var memberRect = LogicUtils.getFreePointInAllianceMap(mapObjects, memberSizeInMap.width, memberSizeInMap.height)
+		var memberObjInMap = LogicUtils.createAllianceMapObject("member", memberRect)
+		mapObjects.push(memberObjInMap)
+		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member, memberRect)
 		LogicUtils.refreshAlliance(allianceDoc)
 		LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
@@ -4749,7 +4763,13 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		if(!agree){
 			return Promise.resolve()
 		}
-		LogicUtils.addAllianceMember(allianceDoc, memberDoc, Consts.AllianceTitle.Member)
+
+		var mapObjects = allianceDoc.mapObjects
+		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
+		var memberRect = LogicUtils.getFreePointInAllianceMap(mapObjects, memberSizeInMap.width, memberSizeInMap.height)
+		var memberObjInMap = LogicUtils.createAllianceMapObject("member", memberRect)
+		mapObjects.push(memberObjInMap)
+		LogicUtils.addAllianceMember(allianceDoc, memberDoc, Consts.AllianceTitle.Member, memberRect)
 		LogicUtils.refreshAlliance(allianceDoc)
 		LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, memberDoc.basicInfo.name, [])
 		allianceData.basicInfo = allianceDoc.basicInfo
@@ -5016,7 +5036,13 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			return Promise.resolve()
 		}
-		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member)
+
+		var mapObjects = allianceDoc.mapObjects
+		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
+		var memberRect = LogicUtils.getFreePointInAllianceMap(mapObjects, memberSizeInMap.width, memberSizeInMap.height)
+		var memberObjInMap = LogicUtils.createAllianceMapObject("member", memberRect)
+		mapObjects.push(memberObjInMap)
+		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member, memberRect)
 		LogicUtils.refreshAlliance(allianceDoc)
 		LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
@@ -5817,6 +5843,7 @@ pro.spyVillage = function(playerId, villageId, dragonType, callback){
 	var playerDoc = null
 	var allianceDoc = null
 	var pushFuncs = []
+	var eventFuncs = []
 	var updateFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
@@ -5832,13 +5859,21 @@ pro.spyVillage = function(playerId, villageId, dragonType, callback){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
+		var dragon = playerDoc.dragons[dragonType]
+		if(!_.isEqual(dragon.status, Consts.DragonStatus.Free)){
+			return Promise.reject(new Error("龙必须是空闲状态才能派出"))
+		}
 		var playerInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		var villageInAlliance = LogicUtils.getAllianceVillageById(allianceDoc, villageId)
+		var spyEvent = LogicUtils.createAllianceSpyVillageEvent(playerDoc, playerInAlliance, villageInAlliance)
+		dragon.status = Consts.DragonStatus.March
 
 
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
@@ -6235,4 +6270,52 @@ var ClearPlayerTimeEvents = function(playerDoc){
 		return clearTimeEvents(key, playerDoc.eventServerId)
 	}
 	return Promise.resolve()
+}
+
+/**
+ * 添加联盟时间回调
+ * @param allianceDoc
+ * @param finishTime
+ * @returns {*}
+ */
+var AddAllianceTimeEvent = function(allianceDoc, finishTime){
+	var key = Consts.TimeEventType.Alliance + "_" + allianceDoc._id
+	var addTimeEvent = Promise.promisify(AddTimeEvent, this)
+	return addTimeEvent.call(this, key, "event-server-1", "logic-server-1", finishTime)
+}
+
+/**
+ * 移除联盟时间回调
+ * @param allianceDoc
+ * @param finishTime
+ * @returns {*}
+ */
+var RemoveAllianceTimeEvent = function(allianceDoc, finishTime){
+	var key = Consts.TimeEventType.Alliance + "_" + allianceDoc._id
+	var removeTimeEvent = Promise.promisify(RemoveTimeEvent, this)
+	return removeTimeEvent(key, "event-server-1", finishTime)
+}
+
+/**
+ * 更新联盟时间回调
+ * @param allianceDoc
+ * @param oldFinishTime
+ * @param newFinishTime
+ * @returns {*}
+ */
+var UpdateAllianceTimeEvent = function(allianceDoc, oldFinishTime, newFinishTime){
+	var key = Consts.TimeEventType.Alliance + "_" + allianceDoc._id
+	var updateTimeEvent = Promise.promisify(UpdateTimeEvent, this)
+	return updateTimeEvent(key, "event-server-1", oldFinishTime, newFinishTime)
+}
+
+/**
+ * 清除指定玩家的全部时间回调
+ * @param allianceDoc
+ * @returns {*}
+ */
+var ClearAllianceTimeEvents = function(allianceDoc){
+	var key = Consts.TimeEventType.Alliance + "_" + allianceDoc._id
+	var clearTimeEvents = Promise.promisify(ClearTimeEvents, this)
+	return clearTimeEvents(key, "event-server-1")
 }

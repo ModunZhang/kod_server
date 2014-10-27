@@ -1240,3 +1240,35 @@ Utils.createAllianceMapObject = function(buildingType, rect){
 	}
 	return object
 }
+
+/**
+ * 获取玩家行军时间
+ * @param playerDoc
+ * @param fromLocation
+ * @param toLocation
+ * @returns {number}
+ */
+Utils.getPlayerSpyTime = function(playerDoc, fromLocation, toLocation){
+	return 30
+}
+
+/**
+ * 创建侦查村落事件
+ * @param playerDoc
+ * @param playerInAlliance
+ * @param villageInAlliance
+ * @returns {*}
+ */
+Utils.createAllianceSpyVillageEvent = function(playerDoc, playerInAlliance, playerDragon, villageInAlliance){
+	var event = {
+		id:ShortId.generate(),
+		fromId:playerDoc._id,
+		fromName:playerDoc.basicInfo.name,
+		fromLocation:playerInAlliance.location,
+		targetType:villageInAlliance.type,
+		targetId:villageInAlliance.id,
+		targetLocation:villageInAlliance.location,
+		finishTime:this.getPlayerSpyTime(playerDoc, playerInAlliance.location, villageInAlliance.location)
+	}
+	return event
+}
