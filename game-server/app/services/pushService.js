@@ -293,7 +293,8 @@ pro.onSearchAlliancesSuccess = function(playerDoc, allianceDocs, callback){
 			language:allianceDoc.basicInfo.language,
 			kill:allianceDoc.basicInfo.kill,
 			archon:LogicUtils.getAllianceArchon(allianceDoc).name,
-			joinType:allianceDoc.basicInfo.joinType
+			joinType:allianceDoc.basicInfo.joinType,
+			terrain:allianceDoc.basicInfo.terrain
 		}
 		alliances.push(shortDoc)
 	})
@@ -323,7 +324,8 @@ pro.onGetCanDirectJoinAlliancesSuccess = function(playerDoc, allianceDocs, callb
 			language:allianceDoc.basicInfo.language,
 			kill:allianceDoc.basicInfo.kill,
 			archon:LogicUtils.getAllianceArchon(allianceDoc).name,
-			joinType:allianceDoc.basicInfo.joinType
+			joinType:allianceDoc.basicInfo.joinType,
+			terrain:allianceDoc.basicInfo.terrain
 		}
 		alliances.push(shortDoc)
 	})
