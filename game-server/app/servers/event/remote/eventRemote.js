@@ -112,8 +112,8 @@ var ExcuteTimeEvent = function(key, finishTime){
 		delete this.callbacks[key]
 	}
 
-	this.app.rpc.logic.logicRemote.onTimeEvent.toServer(callbackObj.logicServerId, key, finishTime, function(err){
-		if(_.isObject(err)){
+	this.app.rpc.logic.logicRemote.onTimeEvent.toServer(callbackObj.logicServerId, key, finishTime, function(e){
+		if(_.isObject(e)){
 			errorLogger.error("handle eventRemote:ExcuteTimeEvent Error -----------------------------")
 			errorLogger.error(e.stack)
 			if(_.isEqual("production", self.app.get("env"))){
