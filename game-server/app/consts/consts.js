@@ -28,6 +28,7 @@ module.exports = {
 	},
 	DragonStatus:{
 		Free:"free",
+		March:"march",
 		Fight:"fight",
 		Defenc:"defence"
 	},

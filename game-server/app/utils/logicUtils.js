@@ -692,6 +692,22 @@ Utils.getAllianceMemberById = function(allianceDoc, memberId){
 }
 
 /**
+ * 根据村落ID查找村落
+ * @param allianceDoc
+ * @param villageId
+ * @returns {*}
+ */
+Utils.getAllianceVillageById = function(allianceDoc, villageId){
+	for(var i = 0; i < allianceDoc.villages.length; i++){
+		var village = allianceDoc.villages[i]
+		if(_.isEqual(village.id, villageId)){
+			return village
+		}
+	}
+	return null
+}
+
+/**
  * 是否有对某联盟的有效申请存在
  * @param playerDoc
  * @param allianceId

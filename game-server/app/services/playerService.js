@@ -5460,7 +5460,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 				var memberDoc = doc
 				var memberData = {}
 				memberDocs.push(memberDoc)
-				for(var i = 0; i < needHelpedEvents.length; i ++){
+				for(var i = 0; i < needHelpedEvents.length; i++){
 					var helpEvent = needHelpedEvents[i]
 					var buildEvent = LogicUtils.getPlayerBuildEvent(memberDoc, helpEvent.helpEventType, helpEvent.eventId)
 					if(!_.isObject(buildEvent)){
@@ -5764,6 +5764,78 @@ pro.upgradeAllianceVillage = function(playerId, villageType, callback){
 		allianceData.basicInfo = allianceDoc.basicInfo
 		allianceData.villageLevels = allianceDoc.villageLevels
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 侦查村落
+ * @param playerId
+ * @param villageId
+ * @param dragonType
+ * @param callback
+ */
+pro.spyVillage = function(playerId, villageId, dragonType, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(villageId)){
+		callback(new Error("villageId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		callback(new Error("dragonType 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var pushFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var playerInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		var villageInAlliance = LogicUtils.getAllianceVillageById(allianceDoc, villageId)
+
+
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

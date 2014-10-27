@@ -154,6 +154,20 @@ var allianceSchema = new Schema({
 			maxHelpCount:{type:Number, required:true},
 			helpedMembers:[String]
 		}
+	],
+	spyEvents:[
+		{
+			_id:false,
+			targetType:{type:String, required:true},
+			targetId:{type:String, required:true},
+			targetName:{type:String, required:true},
+			targetLocation:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			dragonType:{type:String, requreid:true},
+			finishTime:{type:Number, required:true}
+		}
 	]
 })
 
