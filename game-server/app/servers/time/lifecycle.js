@@ -10,19 +10,23 @@ var _ = require("underscore")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 var PlayerService = require("../../services/playerService")
+var AllianceDao = require("../../dao/allianceDao")
+var PlayerDao = require("../../dao/playerDao")
 
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
+	app.set("allianceDao", Promise.promisifyAll(new AllianceDao(app.get("redis"), app.get("scripto"), app.get("env"))))
+	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	var playerService = Promise.promisifyAll(new PlayerService(app))
 	app.set("playerService", playerService)
 	playerService.loadAllDataAsync().then(function(){
 		callback()
 	}).catch(function(e){
-		errorLogger.error("handle gate.lifecycle:beforeStartup Error -----------------------------")
+		errorLogger.error("handle time.lifecycle:beforeStartup Error -----------------------------")
 		errorLogger.error(e.stack)
 		if(_.isEqual("production", app.get("env"))){
-			errorMailLogger.error("handle gate.lifecycle:beforeStartup Error -----------------------------")
+			errorMailLogger.error("handle time.lifecycle:beforeStartup Error -----------------------------")
 			errorMailLogger.error(e.stack)
 		}
 		callback()

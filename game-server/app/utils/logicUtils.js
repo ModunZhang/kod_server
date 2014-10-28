@@ -1256,6 +1256,7 @@ Utils.getPlayerSpyTime = function(playerDoc, fromLocation, toLocation){
  * 创建侦查村落事件
  * @param playerDoc
  * @param playerInAlliance
+ * @param playerDragon
  * @param villageInAlliance
  * @returns {*}
  */
@@ -1265,6 +1266,11 @@ Utils.createAllianceSpyVillageEvent = function(playerDoc, playerInAlliance, play
 		fromId:playerDoc._id,
 		fromName:playerDoc.basicInfo.name,
 		fromLocation:playerInAlliance.location,
+		dragion:{
+			type:playerDragon.type,
+			strength:playerDragon.strength,
+			vitality:playerDragon.vitality
+		},
 		targetType:villageInAlliance.type,
 		targetId:villageInAlliance.id,
 		targetLocation:villageInAlliance.location,

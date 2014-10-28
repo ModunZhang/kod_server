@@ -8,9 +8,6 @@ var Promise = require("bluebird")
 var _ = require("underscore")
 var crypto = require("crypto")
 
-var AllianceDao = require("../dao/allianceDao")
-var PlayerDao = require("../dao/playerDao")
-
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
@@ -25,10 +22,10 @@ var PlayerService = function(app){
 	this.env = app.get("env")
 	this.redis = app.get("redis")
 	this.scripto = app.get("scripto")
-	this.pushService = this.app.get("pushService")
-	this.globalChannelService = this.app.get("globalChannelService")
-	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto, this.env))
-	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto, this.env))
+	this.pushService = app.get("pushService")
+	this.globalChannelService = app.get("globalChannelService")
+	this.allianceDao = app.get("allianceDao")
+	this.playerDao = app.get("allianceDao")
 }
 
 module.exports = PlayerService
@@ -5863,12 +5860,14 @@ pro.spyVillage = function(playerId, villageId, dragonType, callback){
 		if(!_.isEqual(dragon.status, Consts.DragonStatus.Free)){
 			return Promise.reject(new Error("龙必须是空闲状态才能派出"))
 		}
+		dragon.status = Consts.DragonStatus.March
 		var playerInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		var villageInAlliance = LogicUtils.getAllianceVillageById(allianceDoc, villageId)
-		var spyEvent = LogicUtils.createAllianceSpyVillageEvent(playerDoc, playerInAlliance, villageInAlliance)
-		dragon.status = Consts.DragonStatus.March
-
-
+		var spyEvent = LogicUtils.createAllianceSpyVillageEvent(playerDoc, playerInAlliance, dragon, villageInAlliance)
+		allianceDoc.spyVillageEvents.push(spyEvent)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		eventFuncs.push([self, AddAllianceTimeEvent, allianceDoc, spyEvent.finishTime])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

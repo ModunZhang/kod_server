@@ -7,11 +7,14 @@
 var Promise = require("bluebird")
 
 var PlayerService = require("../../services/playerService")
-
+var AllianceDao = require("../../dao/allianceDao")
+var PlayerDao = require("../../dao/playerDao")
 
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
+	app.set("allianceDao", Promise.promisifyAll(new AllianceDao(app.get("redis"), app.get("scripto"), app.get("env"))))
+	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("playerService", Promise.promisifyAll(new PlayerService(app)))
 	callback()
 }
