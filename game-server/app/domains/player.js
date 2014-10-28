@@ -426,6 +426,7 @@ var playerSchema = new Schema({
 			name:{type:String, required:true},
 			tag:{type:String, required:true},
 			flag:{type:String, required:true},
+			terrain:{type:String, required:true},
 			level:{type:Number, required:true},
 			members:{type:Number, required:true},
 			power:{type:Number, required:true},
