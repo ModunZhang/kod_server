@@ -816,13 +816,13 @@ Utils.addPlayerInviteAllianceEvent = function(inviterId, playerDoc, allianceDoc,
 /**
  * 是否有对某联盟的要求存在
  * @param playerDoc
- * @param allianceId
+ * @param allianceDoc
  * @returns {boolean}
  */
-Utils.hasInviteEventToAlliance = function(playerDoc, allianceId){
+Utils.hasInviteEventToAlliance = function(playerDoc, allianceDoc){
 	for(var i = 0; i < playerDoc.inviteToAllianceEvents.length; i ++){
 		var event = playerDoc.inviteToAllianceEvents[i]
-		if(_.isEqual(event.id, allianceId)) return true
+		if(_.isEqual(event.id, allianceDoc._id)) return true
 	}
 	return false
 }
