@@ -814,7 +814,7 @@ Utils.addPlayerInviteAllianceEvent = function(inviterId, playerDoc, allianceDoc,
 }
 
 /**
- * 是否有对某联盟的要求存在
+ * 是否有对某联盟的邀请存在
  * @param playerDoc
  * @param allianceDoc
  * @returns {boolean}

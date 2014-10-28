@@ -4807,8 +4807,8 @@ pro.inviteToJoinAlliance = function(playerId, memberId, callback){
 		if(_.isObject(theMemberDoc.alliance) && !_.isEmpty(theMemberDoc.alliance.id)){
 			return Promise.reject(new Error("玩家已加入联盟"))
 		}
-		if(LogicUtils.hasInviteEventToAlliance(playerDoc, allianceDoc)){
-			return Promise.reject(new Error("此玩家已被要求加入我方联盟,请等候其处理"))
+		if(LogicUtils.hasInviteEventToAlliance(memberDoc, allianceDoc)){
+			return Promise.reject(new Error("此玩家已被邀请加入我方联盟,请等候其处理"))
 		}
 		if(theMemberDoc.inviteToAllianceEvents.length >= Define.InviteJoinAllianceMessageMaxSize){
 			return Promise.reject(new Error("此玩家的邀请信息已满,请等候其处理后再进行邀请"))
