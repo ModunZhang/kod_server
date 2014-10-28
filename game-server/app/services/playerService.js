@@ -20,9 +20,8 @@ var Localizations = require("../consts/localizations")
 var PlayerService = function(app){
 	this.app = app
 	this.env = app.get("env")
-	this.redis = app.get("redis")
-	this.scripto = app.get("scripto")
 	this.pushService = app.get("pushService")
+	this.timeEventService = app.get("timeEventService")
 	this.globalChannelService = app.get("globalChannelService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
@@ -31,96 +30,6 @@ var PlayerService = function(app){
 module.exports = PlayerService
 var pro = PlayerService.prototype
 
-/**
- * 清空redis中的数据
- */
-pro.flushAll = function(callback){
-	this.redis.flushallAsync().then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 加载所有玩家到redis
- * @param callback
- */
-pro.loadAllPlayer = function(callback){
-	this.playerDao.loadAllAsync().then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 将所有玩家保存到Mongo
- * @param callback
- */
-pro.unloadAllPlayer = function(callback){
-	this.playerDao.unloadAllAsync().then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 加载所有联盟到redis
- * @param callback
- */
-pro.loadAllAlliance = function(callback){
-	this.allianceDao.loadAllAsync().then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 将所有联盟保存到Mongo
- * @param callback
- */
-pro.unloadAllAlliance = function(callback){
-	this.allianceDao.unloadAllAsync().then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 加载所有数据到内存
- * @param callback
- */
-pro.loadAllData = function(callback){
-	var self = this
-	this.flushAllAsync().then(function(){
-		return self.loadAllPlayerAsync()
-	}).then(function(){
-		return self.loadAllAllianceAsync()
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 将所有数据保存到Mongo
- * @param callback
- */
-pro.unloadAllData = function(callback){
-	var self = this
-	this.unloadAllPlayerAsync().then(function(){
-		return self.unloadAllAllianceAsync()
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
 
 /**
  * 创建新玩家

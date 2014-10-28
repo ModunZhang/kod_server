@@ -5,14 +5,12 @@
  */
 
 var _ = require("underscore")
-var ShortId = require("shortid")
 
 var Consts = require("../consts/consts")
 var GameDatas = require("../datas/GameDatas")
 var DataUtils = require("./dataUtils")
 var AllianceInit = GameDatas.AllianceInitData
 var AllianceBuildingConfig = GameDatas.AllianceBuilding
-var AllianceVillageConfig = GameDatas.AllianceVillage
 
 var Utils = module.exports
 

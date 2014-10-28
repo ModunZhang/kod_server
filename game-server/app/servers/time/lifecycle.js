@@ -12,15 +12,15 @@ var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("ko
 var PlayerService = require("../../services/playerService")
 var AllianceDao = require("../../dao/allianceDao")
 var PlayerDao = require("../../dao/playerDao")
+var DbUtils = Promise.promisifyAll(require("../../utils/dbUtils"))
 
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
 	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("allianceDao", Promise.promisifyAll(new AllianceDao(app.get("redis"), app.get("scripto"), app.get("env"))))
-	var playerService = Promise.promisifyAll(new PlayerService(app))
-	app.set("playerService", playerService)
-	playerService.loadAllDataAsync().then(function(){
+	app.set("playerService", Promise.promisifyAll(new PlayerService(app)))
+	DbUtils.loadAllDataAsync(app.get("redis"), app.get("playerDao"), app.get("allianceDao")).then(function(){
 		callback()
 	}).catch(function(e){
 		errorLogger.error("handle time.lifecycle:beforeStartup Error -----------------------------")
@@ -38,8 +38,7 @@ life.afterStartup = function(app, callback){
 }
 
 life.beforeShutdown = function(app, callback){
-	var playerService = app.get("playerService")
-	playerService.unloadAllDataAsync().then(function(){
+	DbUtils.unloadAllDataAsync(app.get("playerDao"), app.get("allianceDao")).then(function(){
 		callback()
 	}).catch(function(e){
 		errorLogger.error("handle time.lifecycle:beforeShutdown Error -----------------------------")
