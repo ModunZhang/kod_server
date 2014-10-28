@@ -7,72 +7,74 @@
 var _ = require("underscore")
 var Promise = require("bluebird")
 
-
 var TimeEventService = function(app){
 	this.app = app
+	this.eventServerId = "event-server-1"
 }
 
 module.exports = TimeEventService
 var pro = TimeEventService.prototype
 
 
-
 /**
  * 添加时间回调
  * @param key
- * @param eventServerId
- * @param logicServerId
+ * @param eventType
+ * @param eventId
  * @param finishTime
  * @param callback
  */
-pro.addTimeEvent = function(key, eventServerId, logicServerId, finishTime, callback){
-	this.app.rpc.event.eventRemote.addTimeEvent.toServer(eventServerId, key, logicServerId, finishTime, Date.now(), callback)
+pro.addTimeEvent = function(key, eventType, eventId, finishTime, callback){
+	this.app.rpc.event.eventRemote.addTimeEvent.toServer(key, eventType, eventId, finishTime - Date.now(), callback)
 }
 
 /**
  * 移除时间回调
- * @param key
  * @param eventServerId
- * @param finishTime
+ * @param key
+ * @param eventId
  * @param callback
  */
-pro.removeTimeEvent = function(key, eventServerId, finishTime, callback){
-	this.app.rpc.event.eventRemote.removeTimeEvent.toServer(eventServerId, key, finishTime, callback)
+pro.removeTimeEvent = function(eventServerId, key, eventId, callback){
+	this.app.rpc.event.eventRemote.removeTimeEvent.toServer(eventServerId, key, eventId, callback)
 }
 
 /**
  * 更新时间回调
  * @param key
  * @param eventServerId
- * @param oldFinishTime
+ * @param eventId
  * @param newFinishTime
  * @param callback
  */
-pro.updateTimeEvent = function(key, eventServerId, oldFinishTime, newFinishTime, callback){
-	this.app.rpc.event.eventRemote.updateTimeEvent.toServer(eventServerId, key, oldFinishTime, newFinishTime, Date.now(), callback)
+pro.updateTimeEvent = function(eventServerId, key, eventId, newFinishTime, callback){
+	this.app.rpc.event.eventRemote.updateTimeEvent.toServer(eventServerId, key, eventId, newFinishTime - Date.now(), callback)
 }
 
 /**
  * 清除指定Key的时间回调
- * @param key
  * @param eventServerId
+ * @param key
  * @param callback
  */
-pro.clearTimeEvents = function(key, eventServerId, callback){
+pro.clearTimeEvents = function(eventServerId, key, callback){
 	this.app.rpc.event.eventRemote.clearTimeEventsByKey.toServer(eventServerId, key, callback)
 }
+
 
 /**
  * 添加玩家时间回调
  * @param playerDoc
+ * @param eventType
+ * @param eventId
  * @param finishTime
  * @param callback
  * @returns {*}
  */
-pro.addPlayerTimeEvent = function(playerDoc, finishTime, callback){
+pro.addPlayerTimeEvent = function(playerDoc, eventType, eventId, finishTime, callback){
 	if(!_.isEmpty(playerDoc.logicServerId)){
 		var key = Consts.TimeEventType.Player + "_" + playerDoc._id
-		this.addTimeEvent(key, playerDoc.eventServerId, playerDoc.logicServerId, finishTime, callback)
+		this.addTimeEvent(playerDoc.eventServerId, playerDoc.logicServerId, key, eventType, eventId, finishTime, callback)
 	}else{
 		callback()
 	}
@@ -81,14 +83,14 @@ pro.addPlayerTimeEvent = function(playerDoc, finishTime, callback){
 /**
  * 移除玩家时间回调
  * @param playerDoc
- * @param finishTime
+ * @param eventId
  * @param callback
  * @returns {*}
  */
-pro.removePlayerTimeEvent = function(playerDoc, finishTime, callback){
+pro.removePlayerTimeEvent = function(playerDoc, eventId, callback){
 	if(!_.isEmpty(playerDoc.logicServerId)){
 		var key = Consts.TimeEventType.Player + "_" + playerDoc._id
-		this.removeTimeEvent(key, playerDoc.eventServerId, finishTime, callback)
+		this.removeTimeEvent(playerDoc.eventServerId, key, eventId, callback)
 	}else{
 		callback()
 	}
@@ -97,15 +99,15 @@ pro.removePlayerTimeEvent = function(playerDoc, finishTime, callback){
 /**
  * 更新玩家时间回调
  * @param playerDoc
- * @param oldFinishTime
+ * @param eventId
  * @param newFinishTime
  * @param callback
  * @returns {*}
  */
-pro.updatePlayerTimeEvent = function(playerDoc, oldFinishTime, newFinishTime, callback){
+pro.updatePlayerTimeEvent = function(playerDoc, eventId, newFinishTime, callback){
 	if(!_.isEmpty(playerDoc.logicServerId)){
 		var key = Consts.TimeEventType.Player + "_" + playerDoc._id
-		this.updateTimeEvent(key, playerDoc.eventServerId, oldFinishTime, newFinishTime, callback)
+		this.updateTimeEvent(playerDoc.eventServerId, key, eventId, newFinishTime, callback)
 	}else{
 		callback()
 	}
@@ -120,7 +122,7 @@ pro.updatePlayerTimeEvent = function(playerDoc, oldFinishTime, newFinishTime, ca
 pro.clearPlayerTimeEvents = function(playerDoc, callback){
 	if(!_.isEmpty(playerDoc.logicServerId)){
 		var key = Consts.TimeEventType.Player + "_" + playerDoc._id
-		this.clearTimeEvents(key, playerDoc.eventServerId, callback)
+		this.clearTimeEvents(playerDoc.eventServerId, key, callback)
 	}else{
 		callback()
 	}
@@ -129,38 +131,40 @@ pro.clearPlayerTimeEvents = function(playerDoc, callback){
 /**
  * 添加联盟时间回调
  * @param allianceDoc
+ * @param eventType
+ * @param eventId
  * @param finishTime
  * @param callback
  * @returns {*}
  */
-pro.addAllianceTimeEvent = function(allianceDoc, finishTime, callback){
+pro.addAllianceTimeEvent = function(allianceDoc, eventType, eventId, finishTime, callback){
 	var key = Consts.TimeEventType.Alliance + "_" + allianceDoc._id
-	this.addTimeEvent(key, "event-server-1", "logic-server-1", finishTime, callback)
+	this.addTimeEvent("event-server-1", "logic-server-1", key, eventType, eventId, finishTime, callback)
 }
 
 /**
  * 移除联盟时间回调
  * @param allianceDoc
- * @param finishTime
+ * @param eventId
  * @param callback
  * @returns {*}
  */
-pro.removeAllianceTimeEvent = function(allianceDoc, finishTime, callback){
+pro.removeAllianceTimeEvent = function(allianceDoc, eventId, callback){
 	var key = Consts.TimeEventType.Alliance + "_" + allianceDoc._id
-	this.removeTimeEvent(key, "event-server-1", finishTime, callback)
+	this.removeTimeEvent("event-server-1", key, eventId, callback)
 }
 
 /**
  * 更新联盟时间回调
  * @param allianceDoc
- * @param oldFinishTime
+ * @param eventId
  * @param newFinishTime
  * @param callback
  * @returns {*}
  */
-pro.updateAllianceTimeEvent = function(allianceDoc, oldFinishTime, newFinishTime, callback){
+pro.updateAllianceTimeEvent = function(allianceDoc, eventId, newFinishTime, callback){
 	var key = Consts.TimeEventType.Alliance + "_" + allianceDoc._id
-	this.updateTimeEvent(key, "event-server-1", oldFinishTime, newFinishTime, callback)
+	this.updateTimeEvent("event-server-1", key, eventId, newFinishTime, callback)
 }
 
 /**
@@ -171,5 +175,5 @@ pro.updateAllianceTimeEvent = function(allianceDoc, oldFinishTime, newFinishTime
  */
 pro.clearAllianceTimeEvents = function(allianceDoc, callback){
 	var key = Consts.TimeEventType.Alliance + "_" + allianceDoc._id
-	this.clearTimeEvents(key, "event-server-1", callback)
+	this.clearTimeEvents("event-server-1", key, callback)
 }

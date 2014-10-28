@@ -8,6 +8,8 @@ var _ = require("underscore")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 
+
+var Dispatcher = require('../../../utils/dispatcher')
 var Consts = require("../../../consts/consts")
 
 module.exports = function(app){
@@ -17,6 +19,7 @@ module.exports = function(app){
 var EventRemote = function(app){
 	this.app = app
 	this.callbacks = {}
+	this.logicServers = app.getServersByType('logic')
 }
 
 var pro = EventRemote.prototype
@@ -24,13 +27,13 @@ var pro = EventRemote.prototype
 /**
  * 添加时间回调
  * @param key
- * @param logicServerId
- * @param finishTime
- * @param now
+ * @param eventType
+ * @param eventId
+ * @param timeInterval
  * @param callback
  */
-pro.addTimeEvent = function(key, logicServerId, finishTime, now, callback){
-	var id = setTimeout(ExcuteTimeEvent.bind(this), finishTime - now, key, finishTime)
+pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
+	var id = setTimeout(ExcuteTimeEvent.bind(this), timeInterval, key, eventId)
 	var callbacks = this.callbacks[key]
 	if(_.isEmpty(callbacks)){
 		callbacks = {}
@@ -38,25 +41,25 @@ pro.addTimeEvent = function(key, logicServerId, finishTime, now, callback){
 	}
 	var callbackObj = {
 		id:id,
-		logicServerId:logicServerId
+		eventType:eventType
 	}
-	callbacks[finishTime] = callbackObj
+	callbacks[eventId] = callbackObj
 	callback()
 }
 
 /**
  * 移除时间回调
  * @param key
- * @param finishTime
+ * @param eventId
  * @param callback
  */
-pro.removeTimeEvent = function(key, finishTime, callback){
+pro.removeTimeEvent = function(key, eventId, callback){
 	var callbacks = this.callbacks[key]
-	var callbackObj = callbacks[finishTime]
+	var callbackObj = callbacks[eventId]
 	if(_.isObject(callbackObj)){
 		clearTimeout(callbackObj.id)
 	}
-	delete callbacks[finishTime]
+	delete callbacks[eventId]
 	if(_.isEmpty(callbacks)){
 		delete this.callbacks[key]
 	}
@@ -66,22 +69,21 @@ pro.removeTimeEvent = function(key, finishTime, callback){
 /**
  * 更新时间回调
  * @param key
- * @param oldFinishTime
- * @param newFinishTime
- * @param now
+ * @param eventId
+ * @param timeInterval
  * @param callback
  */
-pro.updateTimeEvent = function(key, oldFinishTime, newFinishTime, now, callback){
+pro.updateTimeEvent = function(key, eventId, timeInterval, callback){
 	var callbacks = this.callbacks[key]
-	var callbackObj = callbacks[oldFinishTime]
+	var callbackObj = callbacks[eventId]
 	if(_.isObject(callbackObj)){
 		clearTimeout(callbackObj.id)
 	}
-	delete callbacks[oldFinishTime]
+	delete callbacks[eventId]
 
-	var id = setTimeout(ExcuteTimeEvent.bind(this), newFinishTime - now, key, newFinishTime)
+	var id = setTimeout(ExcuteTimeEvent.bind(this), timeInterval, key, eventId)
 	callbackObj.id = id
-	callbacks[newFinishTime] = callbackObj
+	callbacks[eventId] = callbackObj
 	callback()
 }
 
@@ -102,17 +104,19 @@ pro.clearTimeEventsByKey = function(key, callback){
 /**
  * 执行事件回调
  * @param key
- * @param finishTime
+ * @param eventId
  */
-var ExcuteTimeEvent = function(key, finishTime){
+var ExcuteTimeEvent = function(key, eventId){
 	var callbacks = this.callbacks[key]
-	var callbackObj = callbacks[finishTime]
-	delete callbacks[finishTime]
+	var callbackObj = callbacks[eventId]
+	delete callbacks[eventId]
 	if(_.isEmpty(callbacks)){
 		delete this.callbacks[key]
 	}
 
-	this.app.rpc.logic.logicRemote.onTimeEvent.toServer(callbackObj.logicServerId, key, finishTime, function(e){
+	var logicServerId = Dispatcher.dispatch(this.logicServers).id
+	var eventType = callbackObj.eventType
+	this.app.rpc.logic.logicRemote.onTimeEvent.toServer(logicServerId, key, eventType, eventId, function(e){
 		if(_.isObject(e)){
 			errorLogger.error("handle eventRemote:ExcuteTimeEvent Error -----------------------------")
 			errorLogger.error(e.stack)

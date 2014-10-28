@@ -11,7 +11,7 @@ var crypto = require('crypto')
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 
-var dispatcher = require('../../../utils/dispatcher')
+var Dispatcher = require('../../../utils/dispatcher')
 var Consts = require("../../../consts/consts")
 
 module.exports = function(app){
@@ -88,7 +88,7 @@ pro.login = function(msg, session, next){
 	}).then(function(){
 		playerDoc.logicServerId = self.serverId
 		var eventServers = self.app.getServersByType('event')
-		var eventServer = dispatcher.dispatch(eventServers)
+		var eventServer = Dispatcher.dispatch(eventServers)
 		playerDoc.eventServerId = eventServer.id
 		return  self.playerService.playerLoginAsync(playerDoc)
 	}).then(function(){
