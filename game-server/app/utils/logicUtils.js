@@ -814,6 +814,20 @@ Utils.addPlayerInviteAllianceEvent = function(inviterId, playerDoc, allianceDoc,
 }
 
 /**
+ * 是否有对某联盟的要求存在
+ * @param playerDoc
+ * @param allianceId
+ * @returns {boolean}
+ */
+Utils.hasInviteEventToAlliance = function(playerDoc, allianceId){
+	for(var i = 0; i < playerDoc.inviteToAllianceEvents.length; i ++){
+		var event = playerDoc.inviteToAllianceEvents[i]
+		if(_.isEqual(event.id, allianceId)) return true
+	}
+	return false
+}
+
+/**
  * 获取已经使用的建筑建造队列
  * @param playerDoc
  * @returns {number}
