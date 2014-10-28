@@ -19,6 +19,7 @@ life.beforeStartup = function(app, callback){
 	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))
 	app.set("playerService", Promise.promisifyAll(new PlayerService(app)))
+	app.set("globalChannelService", Promise.promisifyAll(app.get("globalChannelService")))
 	callback()
 }
 

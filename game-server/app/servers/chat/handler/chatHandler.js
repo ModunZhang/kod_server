@@ -10,9 +10,6 @@ var Promise = require("bluebird")
 var Consts = require("../../../consts/consts")
 var Events = require("../../../consts/events")
 
-var AllianceDao = require("../../../dao/allianceDao")
-var PlayerDao = require("../../../dao/playerDao")
-
 module.exports = function(app){
 	return new ChatHandler(app)
 }
@@ -22,8 +19,8 @@ var ChatHandler = function(app){
 	this.env = app.get("env")
 	this.redis = app.get("redis")
 	this.scripto = app.get("scripto")
-	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto, this.env))
-	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto, this.env))
+	this.allianceDao = app.get("allianceDao")
+	this.playerDao = app.get("playerDao")
 	this.playerService = app.get("playerService")
 	this.channelService = app.get("channelService")
 	this.globalChatChannel = this.channelService.getChannel(Consts.GloablChatChannelName)

@@ -12,8 +12,6 @@ var DataUtis = require("../../../utils/dataUtils")
 var LogicUtils = require("../../../utils/logicUtils")
 
 var Player = require("../../../domains/player")
-var AllianceDao = require("../../../dao/allianceDao")
-var PlayerDao = require("../../../dao/playerDao")
 
 module.exports = function(app){
 	return new CommandRemote(app)
@@ -21,14 +19,14 @@ module.exports = function(app){
 
 var CommandRemote = function(app){
 	this.app = app
-	this.serverId = this.app.getServerId()
+	this.serverId = app.getServerId()
 	this.redis = app.get("redis")
 	this.scripto = app.get("scripto")
-	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto))
-	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto))
-	this.playerService = this.app.get("playerService")
-	this.pushService = this.app.get("pushService")
-	this.sessionService = this.app.get("backendSessionService")
+	this.allianceDao = app.get("allianceDao")
+	this.playerDao = app.get("playerDao")
+	this.playerService = app.get("playerService")
+	this.pushService = app.get("pushService")
+	this.sessionService = app.get("backendSessionService")
 }
 
 var pro = CommandRemote.prototype

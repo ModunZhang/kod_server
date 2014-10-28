@@ -25,7 +25,7 @@ var PlayerService = function(app){
 	this.pushService = app.get("pushService")
 	this.globalChannelService = app.get("globalChannelService")
 	this.allianceDao = app.get("allianceDao")
-	this.playerDao = app.get("allianceDao")
+	this.playerDao = app.get("playerDao")
 }
 
 module.exports = PlayerService

@@ -13,7 +13,7 @@ module.exports = function(app){
 
 var Handler = function(app){
 	this.app = app
-	this.playerService = this.app.get("playerService")
+	this.playerService = app.get("playerService")
 }
 
 var pro = Handler.prototype

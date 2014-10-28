@@ -14,9 +14,6 @@ var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("ko
 var dispatcher = require('../../../utils/dispatcher')
 var Consts = require("../../../consts/consts")
 
-var AllianceDao = require("../../../dao/allianceDao")
-var PlayerDao = require("../../../dao/playerDao")
-
 module.exports = function(app){
 	return new Handler(app)
 }
@@ -24,14 +21,14 @@ module.exports = function(app){
 var Handler = function(app){
 	this.app = app
 	this.env = app.get("env")
-	this.serverId = this.app.getServerId()
+	this.serverId = app.getServerId()
 	this.redis = app.get("redis")
 	this.scripto = app.get("scripto")
-	this.allianceDao = Promise.promisifyAll(new AllianceDao(this.redis, this.scripto, this.env))
-	this.playerDao = Promise.promisifyAll(new PlayerDao(this.redis, this.scripto, this.env))
+	this.allianceDao = app.get("allianceDao")
+	this.playerDao = app.get("playerDao")
 	this.playerService = app.get("playerService")
-	this.globalChannelService = Promise.promisifyAll(this.app.get("globalChannelService"))
-	this.sessionService = this.app.get("sessionService")
+	this.globalChannelService = app.get("globalChannelService")
+	this.sessionService = app.get("sessionService")
 }
 
 var pro = Handler.prototype

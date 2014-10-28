@@ -13,9 +13,8 @@ module.exports = function(app){
 }
 var Cron = function(app){
 	this.app = app
-	this.playerService = this.app.get("playerService")
-	this.playerDao = this.playerService.playerDao
-	this.allianceDao = this.playerService.allianceDao
+	this.playerDao = app.get("playerDao")
+	this.allianceDao = app.get("allianceDao")
 }
 var pro = Cron.prototype
 

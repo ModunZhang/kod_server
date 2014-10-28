@@ -13,9 +13,9 @@ module.exports = function(app) {
 
 var LogicRemote = function(app) {
 	this.app = app
-	this.callbackService = this.app.get("callbackService")
-	this.playerService = this.app.get("playerService")
-	this.sessionService = this.app.get("sessionService")
+	this.callbackService = app.get("callbackService")
+	this.playerService = app.get("playerService")
+	this.sessionService = app.get("sessionService")
 }
 
 var pro = LogicRemote.prototype
