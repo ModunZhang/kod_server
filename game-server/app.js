@@ -136,7 +136,6 @@ app.configure("production|development", "event", function(){
 	})
 
 	app.filter(pomelo.filters.serial())
-	app.before(loginFilter())
 
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
@@ -159,9 +158,6 @@ app.configure("production|development", "time", function(){
 		bufferMsg:false,
 		failMode:"failfast"
 	})
-
-	app.filter(pomelo.filters.serial())
-	app.before(loginFilter())
 
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))

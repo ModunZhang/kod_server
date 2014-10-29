@@ -11,7 +11,6 @@ var crypto = require('crypto')
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 
-var Dispatcher = require('../../../utils/dispatcher')
 var Consts = require("../../../consts/consts")
 
 module.exports = function(app){
@@ -30,7 +29,6 @@ var Handler = function(app){
 	this.globalChannelService = app.get("globalChannelService")
 	this.sessionService = app.get("sessionService")
 }
-
 var pro = Handler.prototype
 
 /**
@@ -40,6 +38,14 @@ var pro = Handler.prototype
  * @param next
  */
 pro.login = function(msg, session, next){
+	if(!this.app.get("isReady")){
+		next(null,{
+			message:"服务器维护中",
+			code:500
+		})
+		return
+	}
+
 	var self = this
 	var deviceId = msg.deviceId
 	if(!_.isString(deviceId)){
@@ -87,9 +93,6 @@ pro.login = function(msg, session, next){
 		return Promise.all(funcs)
 	}).then(function(){
 		playerDoc.logicServerId = self.serverId
-		var eventServers = self.app.getServersByType('event')
-		var eventServer = Dispatcher.dispatch(eventServers)
-		playerDoc.eventServerId = eventServer.id
 		return  self.playerService.playerLoginAsync(playerDoc)
 	}).then(function(){
 		return self.playerDao.updateAsync(playerDoc)
@@ -124,8 +127,6 @@ var PlayerLeave = function(session, reason){
 				return Promise.reject(new Error("玩家不存在"))
 			}
 			playerDoc = doc
-			return self.playerService.playerLogoutAsync(playerDoc)
-		}).then(function(){
 			var funcs = []
 			funcs.push(removePlayerFromChatChannel(session))
 			funcs.push(self.globalChannelService.leaveAsync(Consts.LogicChannelName, playerDoc._id, self.serverId))
@@ -135,7 +136,6 @@ var PlayerLeave = function(session, reason){
 			return Promise.all(funcs)
 		}).then(function(){
 			playerDoc.logicServerId = null
-			playerDoc.eventServerId = null
 			return self.playerDao.updateAsync(playerDoc)
 		}).catch(function(e){
 			errorLogger.error("handle entryHandler:playerLogout Error -----------------------------")

@@ -6,6 +6,7 @@
 
 var Promise = require("bluebird")
 var _ = require("underscore")
+var Consts = require("../../../consts/consts")
 
 module.exports = function(app) {
 	return new LogicRemote(app)
@@ -17,7 +18,6 @@ var LogicRemote = function(app) {
 	this.playerService = app.get("playerService")
 	this.sessionService = app.get("sessionService")
 }
-
 var pro = LogicRemote.prototype
 
 /**
@@ -32,9 +32,27 @@ pro.kickPlayer = function(uid, callback){
 /**
  * 执行时间回调
  * @param key
- * @param finishTime
+ * @param eventType
+ * @param eventId
  * @param callback
  */
-pro.onTimeEvent = function(key, finishTime, callback){
-	this.playerService.onTimeEvent(key, finishTime, callback)
+pro.onTimeEvent = function(key, eventType, eventId, callback){
+	var params = key.split(":")
+	var targetType = params[0]
+	var id = params[1]
+	if(_.isEqual(Consts.TimeEventType.Player, targetType)){
+		this.playerService.onTimeEvent(id, eventType, eventId, callback)
+	}else{
+		callback(new Error("未知的事件类型"))
+	}
+}
+
+/**
+ * 设置服务器状态
+ * @param status
+ * @param callback
+ */
+pro.setServerStatus = function(status, callback){
+	this.app.set("isReady", status)
+	callback()
 }

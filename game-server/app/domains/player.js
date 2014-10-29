@@ -139,6 +139,7 @@ var playerSchema = new Schema({
 	coinEvents:[
 		{
 			_id:false,
+			id:{type:String, required:true},
 			coin:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
 		}
@@ -156,6 +157,7 @@ var playerSchema = new Schema({
 	materialEvents:[
 		{
 			_id:false,
+			id:{type:String, required:true},
 			category:{type:String, required:true},
 			materials:[
 				{
@@ -198,6 +200,7 @@ var playerSchema = new Schema({
 	soldierEvents:[
 		{
 			_id:false,
+			id:{type:String, required:true},
 			name:{type:String, required:true},
 			count:{type:Number, required:true},
 			finishTime:{type:Number, required:true}
@@ -216,6 +219,7 @@ var playerSchema = new Schema({
 	treatSoldierEvents:[
 		{
 			_id:false,
+			id:{type:String, required:true},
 			soldiers:[
 				{
 					_id:false,
@@ -336,6 +340,7 @@ var playerSchema = new Schema({
 	dragonEquipmentEvents:[
 		{
 			_id:false,
+			id:{type:String, required:true},
 			name:{type:String, required:true},
 			finishTime:{type:Number, required:true}
 		}

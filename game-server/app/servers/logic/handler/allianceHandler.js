@@ -13,5 +13,420 @@ module.exports = function(app){
 
 var Handler = function(app){
 	this.app = app
-	this.playerService = app.get("playerService")
+	this.allianceService = app.get("allianceService")
+}
+var pro = Handler.prototype
+
+/**
+ * 创建联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.createAlliance = function(msg, session, next){
+	var name = msg.name
+	var tag = msg.tag
+	var language = msg.language
+	var terrain = msg.terrain
+	var flag = msg.flag
+	this.allianceService.createAllianceAsync(session.uid, name, tag, language, terrain, flag).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 发送联盟邮件
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.sendAllianceMail = function(msg, session, next){
+	var title = msg.title
+	var content = msg.content
+	this.allianceService.sendAllianceMailAsync(session.uid, title, content).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 根据Tag搜索联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getCanDirectJoinAlliances = function(msg, session, next){
+	this.allianceService.getCanDirectJoinAlliancesAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 根据Tag搜索联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.searchAllianceByTag = function(msg, session, next){
+	var tag = msg.tag
+	this.allianceService.searchAllianceByTagAsync(session.uid, tag).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 编辑联盟基础信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.editAllianceBasicInfo = function(msg, session, next){
+	var name = msg.name
+	var tag = msg.tag
+	var language = msg.language
+	var flag = msg.flag
+	this.allianceService.editAllianceBasicInfoAsync(session.uid, name, tag, language, flag).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 编辑联盟地形
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.editAllianceTerrian = function(msg, session, next){
+	var terrain = msg.terrain
+	this.allianceService.editAllianceTerrianAsync(session.uid, terrain).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 编辑职位名称
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.editAllianceTitleName = function(msg, session, next){
+	var title = msg.title
+	var titleName = msg.titleName
+	this.allianceService.editAllianceTitleNameAsync(session.uid, title, titleName).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 编辑联盟公告
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.editAllianceNotice = function(msg, session, next){
+	var notice = msg.notice
+	this.allianceService.editAllianceNoticeAsync(session.uid, notice).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 编辑联盟描述
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.editAllianceDescription = function(msg, session, next){
+	var description = msg.description
+	this.allianceService.editAllianceDescriptionAsync(session.uid, description).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 编辑联盟加入方式
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.editAllianceJoinType = function(msg, session, next){
+	var joinType = msg.joinType
+	this.allianceService.editAllianceJoinTypeAsync(session.uid, joinType).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 修改联盟某个玩家的职位
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.editAllianceMemberTitle = function(msg, session, next){
+	var memberId = msg.memberId
+	var title = msg.title
+	this.allianceService.editAllianceMemberTitleAsync(session.uid, memberId, title).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 将玩家踢出联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.kickAllianceMemberOff = function(msg, session, next){
+	var memberId = msg.memberId
+	this.allianceService.kickAllianceMemberOffAsync(session.uid, memberId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 移交盟主职位
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.handOverAllianceArchon = function(msg, session, next){
+	var memberId = msg.memberId
+	this.allianceService.handOverAllianceArchonAsync(session.uid, memberId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 退出联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.quitAlliance = function(msg, session, next){
+	this.allianceService.quitAllianceAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 直接加入某联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.joinAllianceDirectly = function(msg, session, next){
+	var allianceId = msg.allianceId
+	this.allianceService.joinAllianceDirectlyAsync(session.uid, allianceId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 申请加入联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.requestToJoinAlliance = function(msg, session, next){
+	var allianceId = msg.allianceId
+	this.allianceService.requestToJoinAllianceAsync(session.uid, allianceId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 取消对某联盟的申请
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.cancelJoinAllianceRequest = function(msg, session, next){
+	var allianceId = msg.allianceId
+	this.allianceService.cancelJoinAllianceRequestAsync(session.uid, allianceId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 处理加入联盟申请
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.handleJoinAllianceRequest = function(msg, session, next){
+	var memberId = msg.memberId
+	var agree = msg.agree
+	this.allianceService.handleJoinAllianceRequestAsync(session.uid, memberId, agree).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 邀请玩家加入联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.inviteToJoinAlliance = function(msg, session, next){
+	var memberId = msg.memberId
+	this.allianceService.inviteToJoinAllianceAsync(session.uid, memberId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 处理加入联盟邀请
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.handleJoinAllianceInvite = function(msg, session, next){
+	var allianceId = msg.allianceId
+	var agree = msg.agree
+	this.allianceService.handleJoinAllianceInviteAsync(session.uid, allianceId, agree).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 购买联盟盟主职位
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.buyAllianceArchon = function(msg, session, next){
+	this.allianceService.buyAllianceArchonAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 请求加速
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.requestAllianceToSpeedUp = function(msg, session, next){
+	var eventType = msg.eventType
+	var eventId = msg.eventId
+	this.allianceService.requestAllianceToSpeedUpAsync(session.uid, eventType, eventId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 协助玩家加速
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.helpAllianceMemberSpeedUp = function(msg, session, next){
+	var eventId = msg.eventId
+	this.allianceService.helpAllianceMemberSpeedUpAsync(session.uid, eventId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 协助所有玩家加速
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
+	this.allianceService.helpAllAllianceMemberSpeedUpAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 联盟捐赠
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.donateToAlliance = function(msg, session, next){
+	var donateType = msg.donateType
+	this.allianceService.donateToAllianceAsync(session.uid, donateType).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 升级联盟建筑
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.upgradeAllianceBuilding = function(msg, session, next){
+	var buildingName = msg.buildingName
+	this.allianceService.upgradeAllianceBuildingAsync(session.uid, buildingName).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 升级联盟村落
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.upgradeAllianceVillage = function(msg, session, next){
+	var villageType = msg.villageType
+	this.allianceService.upgradeAllianceVillageAsync(session.uid, villageType).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
 }

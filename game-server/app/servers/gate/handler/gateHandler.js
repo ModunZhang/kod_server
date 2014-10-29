@@ -4,7 +4,7 @@
  * Created by modun on 14-7-22.
  */
 
-var dispatcher = require('../../../utils/dispatcher')
+var Dispatcher = require('../../../utils/dispatcher')
 
 module.exports = function(app) {
   return new Handler(app)
@@ -23,8 +23,16 @@ var pro = Handler.prototype
  * @param next
  */
 pro.queryEntry = function(msg, session, next){
+	if(!this.app.get("isReady")){
+		next(null,{
+			message:"服务器维护中",
+			code:500
+		})
+		return
+	}
+
 	var logicServers = this.app.getServersByType('logic')
-	var logicServer = dispatcher.dispatch(logicServers)
+	var logicServer = Dispatcher.dispatch(logicServers)
 	var data = {
 		id:logicServer.id,
 		host:logicServer.host,

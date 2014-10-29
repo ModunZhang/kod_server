@@ -19,9 +19,7 @@ module.exports = function(app){
 var EventRemote = function(app){
 	this.app = app
 	this.callbacks = {}
-	this.logicServers = app.getServersByType('logic')
 }
-
 var pro = EventRemote.prototype
 
 /**
@@ -107,14 +105,15 @@ pro.clearTimeEventsByKey = function(key, callback){
  * @param eventId
  */
 var ExcuteTimeEvent = function(key, eventId){
+	var self = this
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	delete callbacks[eventId]
 	if(_.isEmpty(callbacks)){
 		delete this.callbacks[key]
 	}
-
-	var logicServerId = Dispatcher.dispatch(this.logicServers).id
+	var logicServers = this.app.getServersByType('logic')
+	var logicServerId = Dispatcher.dispatch(logicServers).id
 	var eventType = callbackObj.eventType
 	this.app.rpc.logic.logicRemote.onTimeEvent.toServer(logicServerId, key, eventType, eventId, function(e){
 		if(_.isObject(e)){

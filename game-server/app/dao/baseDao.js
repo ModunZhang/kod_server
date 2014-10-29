@@ -225,7 +225,9 @@ pro.deleteByIndex = function(index, value, callback){
  */
 pro.loadAll = function(callback){
 	var self = this
-	this.model.findAsync({}).then(function(docs){
+	var docs = null
+	this.model.findAsync({}).then(function(theDocs){
+		docs = theDocs
 		if(docs.length === 0) return Promise.resolve()
 		var docStrings = []
 		_.each(docs, function(doc){
@@ -235,7 +237,7 @@ pro.loadAll = function(callback){
 		docStrings.unshift(self.modelName)
 		return self.scripto.runAsync("addAll", docStrings, self.indexs)
 	}).then(function(){
-		callback()
+		callback(null, docs)
 	}).catch(function(e){
 		callback(e)
 	})

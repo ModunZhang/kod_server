@@ -20,7 +20,6 @@ var PushService = function(app){
 	this.serverType = app.getServerType()
 	this.maxReturnMailSize = 10
 }
-
 module.exports = PushService
 var pro = PushService.prototype
 

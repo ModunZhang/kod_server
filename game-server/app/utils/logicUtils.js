@@ -377,138 +377,132 @@ Utils.hasWallEvents = function(playerDoc){
 }
 
 /**
- * 为玩家添加建筑建造事件
+ * 创建建筑建造事件
  * @param playerDoc
  * @param location
  * @param finishTime
  * @returns {{location: *, finishTime: *}}
  */
-Utils.addBuildingEvent = function(playerDoc, location, finishTime){
+Utils.createBuildingEvent = function(playerDoc, location, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		location:location,
 		finishTime:finishTime
 	}
-	playerDoc.buildingEvents.push(event)
 	return event
 }
 
 /**
- * 为玩家添加小屋建造事件
+ * 创建小屋建造事件
  * @param playerDoc
  * @param buildingLocation
  * @param houseLocation
  * @param finishTime
  * @returns {{buildingLocation: *, houseLocation: *, finishTime: *}}
  */
-Utils.addHouseEvent = function(playerDoc, buildingLocation, houseLocation, finishTime){
+Utils.createHouseEvent = function(playerDoc, buildingLocation, houseLocation, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		buildingLocation:buildingLocation,
 		houseLocation:houseLocation,
 		finishTime:finishTime
 	}
-	playerDoc.houseEvents.push(event)
 	return event
 }
 
 /**
- * 为玩家添加防御塔建造事件
+ * 创建防御塔建造事件
  * @param playerDoc
  * @param location
  * @param finishTime
  * @returns {{location: *, finishTime: *}}
  */
-Utils.addTowerEvent = function(playerDoc, location, finishTime){
+Utils.createTowerEvent = function(playerDoc, location, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		location:location,
 		finishTime:finishTime
 	}
-
-	playerDoc.towerEvents.push(event)
 	return event
 }
 
 /**
- * 为玩家添加城墙事件
+ * 创建城墙事件
  * @param playerDoc
  * @param finishTime
  * @returns {{finishTime: *}}
  */
-Utils.addWallEvent = function(playerDoc, finishTime){
+Utils.createWallEvent = function(playerDoc, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		finishTime:finishTime
 	}
-	playerDoc.wallEvents.push(event)
 	return event
 }
 
 /**
- * 为玩家添加士兵招募事件
+ * 创建士兵招募事件
  * @param playerDoc
  * @param soldierName
  * @param count
  * @param finishTime
  * @returns {{name: *, count: *, finishTime: *}}
  */
-Utils.addSoldierEvent = function(playerDoc, soldierName, count, finishTime){
+Utils.createSoldierEvent = function(playerDoc, soldierName, count, finishTime){
 	var event = {
+		id:ShortId.generate(),
 		name:soldierName,
 		count:count,
 		finishTime:finishTime
 	}
-	playerDoc.soldierEvents.push(event)
 	return event
 }
 
 /**
- * 为玩家添加龙装备制造事件
+ * 创建龙装备制造事件
  * @param playerDoc
  * @param equipmentName
  * @param finishTime
  * @returns {{name: *, finishTime: *}}
  */
-Utils.addDragonEquipmentEvent = function(playerDoc, equipmentName, finishTime){
+Utils.createDragonEquipmentEvent = function(playerDoc, equipmentName, finishTime){
 	var event = {
+		id:ShortId.generate(),
 		name:equipmentName,
 		finishTime:finishTime
 	}
-
-	playerDoc.dragonEquipmentEvents.push(event)
 	return event
 }
 
 /**
- * 为玩家添加士兵治疗事件
+ * 创建士兵治疗事件
  * @param playerDoc
  * @param soldiers
  * @param finishTime
  * @returns {{soldiers: *, finishTime: *}}
  */
-Utils.addTreatSoldierEvent = function(playerDoc, soldiers, finishTime){
+Utils.createTreatSoldierEvent = function(playerDoc, soldiers, finishTime){
 	var event = {
+		id:ShortId.generate(),
 		soldiers:soldiers,
 		finishTime:finishTime
 	}
-	playerDoc.treatSoldierEvents.push(event)
 	return event
 }
 
 /**
- * 添加城民收税事件
+ * 创建收税事件
  * @param playerDoc
  * @param coin
  * @param finishTime
  * @returns {{coin: *, finishTime: *}}
  */
-Utils.addCoinEvent = function(playerDoc, coin, finishTime){
+Utils.createCoinEvent = function(playerDoc, coin, finishTime){
 	var event = {
+		id:ShortId.generate(),
 		coin:coin,
 		finishTime:finishTime
 	}
-	playerDoc.coinEvents.push(event)
 	return event
 }
 
@@ -871,29 +865,41 @@ Utils.getUsedBuildQueue = function(playerDoc){
  * @returns {*}
  */
 Utils.getSmallestBuildEvent = function(playerDoc){
-	var event = null
+	var eventObj = null
 	_.each(playerDoc.buildingEvents, function(theEvent){
-		if(event == null || event.finishTime > theEvent){
-			event = theEvent
+		if(eventObj == null || eventObj.event.finishTime > theEvent){
+			eventObj = {
+				eventType:"buildingEvents",
+				event:theEvent
+			}
 		}
 	})
 	_.each(playerDoc.houseEvents, function(theEvent){
-		if(event == null || event.finishTime > theEvent){
-			event = theEvent
+		if(eventObj == null || eventObj.event.finishTime > theEvent){
+			eventObj = {
+				eventType:"houseEvents",
+				event:theEvent
+			}
 		}
 	})
 	_.each(playerDoc.towerEvents, function(theEvent){
-		if(event == null || event.finishTime > theEvent){
-			event = theEvent
+		if(eventObj == null || eventObj.event.finishTime > theEvent){
+			eventObj = {
+				eventType:"towerEvents",
+				event:theEvent
+			}
 		}
 	})
 	_.each(playerDoc.wallEvents, function(theEvent){
-		if(event == null || event.finishTime > theEvent){
-			event = theEvent
+		if(eventObj == null || eventObj.event.finishTime > theEvent){
+			eventObj = {
+				eventType:"wallEvents",
+				event:theEvent
+			}
 		}
 	})
 
-	return event
+	return eventObj
 }
 
 /**

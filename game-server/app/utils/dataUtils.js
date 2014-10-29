@@ -612,7 +612,7 @@ Utils.getMakeMaterialRequired = function(category, toolShopLevel){
  * @param category
  * @param finishNow
  */
-Utils.generateMaterialEvent = function(toolShop, category, finishNow){
+Utils.createMaterialEvent = function(toolShop, category, finishNow){
 	var categoryConfig = {}
 	categoryConfig[Consts.MaterialType.Building] = [
 		"blueprints", "tools", "tiles", "pulley"
@@ -654,6 +654,7 @@ Utils.generateMaterialEvent = function(toolShop, category, finishNow){
 
 	var buildTime = _.isEqual(Consts.MaterialType.Building, category) ? config.productBmtime : config.productAmtime
 	var event = {
+		id:ShortId.generate(),
 		category:category,
 		materials:materials,
 		finishTime:finishNow ? 0 : (Date.now() + (buildTime * 1000))
