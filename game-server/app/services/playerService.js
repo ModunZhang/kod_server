@@ -1181,7 +1181,7 @@ pro.getMaterials = function(playerId, category, callback){
 			return Promise.reject(new Error("同类型的材料正在制造"))
 		}
 		var playerData = {}
-		LogicUtils.removeEvents([event], playerDoc.materialEvents)
+		LogicUtils.removeItemInArray(playerDoc.materialEvents, event)
 		DataUtils.addPlayerMaterials(playerDoc, event.materials)
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onGetMaterialSuccessAsync, playerDoc, event])

@@ -304,7 +304,7 @@ pro.keep = function(uid, level, callback){
 				events.push(event)
 			}
 		}
-		LogicUtils.removeEvents(events, doc.buildingEvents)
+		LogicUtils.removeItemsInArray(doc.buildingEvents, events)
 
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){

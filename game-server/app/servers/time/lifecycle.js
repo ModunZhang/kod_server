@@ -80,7 +80,7 @@ life.afterStartAll = function(app){
 						eventFuncs.push(addTimeEventAsync(eventServerId, key, "buildingEvents", event.id, event.finishTime - now))
 					}
 				})
-				LogicUtils.removeEvents(playerDoc.buildingEvents, willRemovedBuildingEvents)
+				LogicUtils.removeItemsInArray(playerDoc.buildingEvents, willRemovedBuildingEvents)
 				var willRemovedHouseEvents = []
 				_.each(playerDoc.houseEvents, function(event){
 					if(event.finishTime > 0 && event.finishTime <= now){
@@ -104,7 +104,7 @@ life.afterStartAll = function(app){
 						eventFuncs.push(addTimeEventAsync(eventServerId, key, "houseEvents", event.id, event.finishTime - now))
 					}
 				})
-				LogicUtils.removeEvents(playerDoc.houseEvents, willRemovedHouseEvents)
+				LogicUtils.removeItemsInArray(playerDoc.houseEvents, willRemovedHouseEvents)
 				var willRemovedTowerEvents = []
 				_.each(playerDoc.towerEvents, function(event){
 					if(event.finishTime > 0 && event.finishTime <= now){
@@ -122,7 +122,7 @@ life.afterStartAll = function(app){
 						eventFuncs.push(addTimeEventAsync(eventServerId, key, "towerEvents", event.id, event.finishTime - now))
 					}
 				})
-				LogicUtils.removeEvents(playerDoc.towerEvents, willRemovedTowerEvents)
+				LogicUtils.removeItemsInArray(playerDoc.towerEvents, willRemovedTowerEvents)
 				var willRemovedWallEvents = []
 				_.each(playerDoc.wallEvents, function(event){
 					if(event.finishTime > 0 && event.finishTime <= now){
@@ -140,7 +140,7 @@ life.afterStartAll = function(app){
 						eventFuncs.push(addTimeEventAsync(eventServerId, key, "wallEvents", event.id, event.finishTime - now))
 					}
 				})
-				LogicUtils.removeEvents(playerDoc.wallEvents, willRemovedWallEvents)
+				LogicUtils.removeItemsInArray(playerDoc.wallEvents, willRemovedWallEvents)
 				_.each(playerDoc.materialEvents, function(event){
 					if(event.finishTime > 0 && event.finishTime <= now){
 						event.finishTime = 0
@@ -157,7 +157,7 @@ life.afterStartAll = function(app){
 						eventFuncs.push(addTimeEventAsync(eventServerId, key, "soldierEvents", event.id, event.finishTime - now))
 					}
 				})
-				LogicUtils.removeEvents(playerDoc.soldierEvents, willRemovedSoldierEvents)
+				LogicUtils.removeItemsInArray(playerDoc.soldierEvents, willRemovedSoldierEvents)
 				var willRemovedDragonEquipmentEvents = []
 				_.each(playerDoc.dragonEquipmentEvents, function(event){
 					if(event.finishTime > 0 && event.finishTime <= now){
@@ -167,7 +167,7 @@ life.afterStartAll = function(app){
 						eventFuncs.push(addTimeEventAsync(eventServerId, key, "dragonEquipmentEvents", event.id, event.finishTime - now))
 					}
 				})
-				LogicUtils.removeEvents(playerDoc.dragonEquipmentEvents, willRemovedDragonEquipmentEvents)
+				LogicUtils.removeItemsInArray(playerDoc.dragonEquipmentEvents, willRemovedDragonEquipmentEvents)
 				var willRemovedTreatSoldierEvents = []
 				_.each(playerDoc.treatSoldierEvents, function(event){
 					if(event.finishTime > 0 && event.finishTime <= now){
@@ -179,7 +179,7 @@ life.afterStartAll = function(app){
 						eventFuncs.push(addTimeEventAsync(eventServerId, key, "treatSoldierEvents", event.id, event.finishTime - now))
 					}
 				})
-				LogicUtils.removeEvents(playerDoc.treatSoldierEvents, willRemovedTreatSoldierEvents)
+				LogicUtils.removeItemsInArray(playerDoc.treatSoldierEvents, willRemovedTreatSoldierEvents)
 				var willRemovedCoinEvents = []
 				_.each(playerDoc.coinEvents, function(event){
 					if(event.finishTime > 0 && event.finishTime <= now){
@@ -189,7 +189,7 @@ life.afterStartAll = function(app){
 						eventFuncs.push(addTimeEventAsync(eventServerId, key, "coinEvents", event.id, event.finishTime - now))
 					}
 				})
-				LogicUtils.removeEvents(playerDoc.coinEvents, willRemovedCoinEvents)
+				LogicUtils.removeItemsInArray(playerDoc.coinEvents, willRemovedCoinEvents)
 				LogicUtils.refreshPlayerPower(playerDoc)
 			})
 		}).then(function(){
