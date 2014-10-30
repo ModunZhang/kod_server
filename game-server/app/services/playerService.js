@@ -1281,20 +1281,20 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 
 		if(finishNow){
 			playerDoc.soldiers[soldierName] += count
+			playerData.soldiers[soldierName] = playerDoc.soldiers[soldierName]
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onRecruitSoldierSuccessAsync, playerDoc, soldierName, count])
 		}else{
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
 			var event = LogicUtils.createSoldierEvent(playerDoc, soldierName, count, finishTime)
 			playerDoc.soldierEvents.push(event)
+			playerData.soldierEvents = playerDoc.soldierEvents
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime])
 		}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
-		playerData.soldierEvents = playerDoc.soldierEvents
-		playerData.soldiers = playerDoc.soldiers
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1397,20 +1397,20 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 
 		if(finishNow){
 			playerDoc.soldiers[soldierName] += count
+			playerData.soldiers[soldierName] = playerDoc.soldiers[soldierName]
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onRecruitSoldierSuccessAsync, playerDoc, soldierName, count])
 		}else{
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
 			var event = LogicUtils.createSoldierEvent(playerDoc, soldierName, count, finishTime)
 			playerDoc.soldierEvents.push(event)
+			playerData.soldierEvents = playerDoc.soldierEvents
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime])
 		}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
-		playerData.soldierEvents = playerDoc.soldierEvents
-		playerData.soldiers = playerDoc.soldiers
 		playerData.soldierMaterials = playerDoc.soldierMaterials
 		return Promise.resolve()
 	}).then(function(){
@@ -1500,19 +1500,23 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 
 		if(finishNow){
 			playerDoc.dragonEquipments[equipmentName] += 1
+			playerData.dragonEquipments[equipmentName] = playerDoc.dragonEquipments[equipmentName]
 			pushFuncs.push([self.pushService, self.pushService.onMakeDragonEquipmentSuccessAsync, playerDoc, equipmentName])
 		}else{
 			var finishTime = Date.now() + (makeRequired.makeTime * 1000)
 			var event = LogicUtils.createDragonEquipmentEvent(playerDoc, equipmentName, finishTime)
 			playerDoc.dragonEquipmentEvents.push(event)
+			playerData.dragonEquipmentEvents = playerDoc.dragonEquipmentEvents
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonEquipmentEvents", event.id, event.finishTime])
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
-		playerData.dragonMaterials = playerDoc.dragonMaterials
-		playerData.dragonEquipments = playerDoc.dragonEquipments
-		playerData.dragonEquipmentEvents = playerDoc.dragonEquipmentEvents
+		playerData.dragonMaterials = {}
+		_.each(makeRequired.materials, function(value, key){
+			playerData.dragonMaterials[key] = playerDoc.dragonMaterials[key]
+		})
+
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1606,13 +1610,16 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		if(finishNow){
 			_.each(soldiers, function(soldier){
 				playerDoc.soldiers[soldier.name] += soldier.count
+				playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
 				playerDoc.treatSoldiers[soldier.name] -= soldier.count
+				playerData.treatSoldiers[soldier.name] = playerDoc.treatSoldiers[soldier.name]
 			})
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onTreatSoldierSuccessAsync, playerDoc, soldiers])
 		}else{
 			_.each(soldiers, function(soldier){
 				playerDoc.treatSoldiers[soldier.name] -= soldier.count
+				playerData.treatSoldiers[soldier.name] = playerDoc.treatSoldiers[soldier.name]
 			})
 			var finishTime = Date.now() + (treatRequired.treatTime * 1000)
 			var event = LogicUtils.createTreatSoldierEvent(playerDoc, soldiers, finishTime)
@@ -1623,8 +1630,6 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
-		playerData.soldiers = playerDoc.soldiers
-		playerData.treatSoldiers = playerDoc.treatSoldiers
 		playerData.treatSoldierEvents = playerDoc.treatSoldierEvents
 		return Promise.resolve()
 	}).then(function(){
@@ -2849,6 +2854,12 @@ pro.deleteMail = function(playerId, mailId, callback){
 			type:Consts.DataChangedType.Remove,
 			data:mail
 		}]
+		if(!!mail.isSaved){
+			playerData.__savedMails = [{
+				type:Consts.DataChangedType.Remove,
+				data:mail
+			}]
+		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
