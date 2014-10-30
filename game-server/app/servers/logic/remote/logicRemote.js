@@ -16,6 +16,7 @@ var LogicRemote = function(app) {
 	this.app = app
 	this.callbackService = app.get("callbackService")
 	this.playerService = app.get("playerService")
+	this.allianceService = app.get("allianceService")
 	this.sessionService = app.get("sessionService")
 }
 var pro = LogicRemote.prototype
@@ -42,6 +43,8 @@ pro.onTimeEvent = function(key, eventType, eventId, callback){
 	var id = params[1]
 	if(_.isEqual(Consts.TimeEventType.Player, targetType)){
 		this.playerService.onTimeEvent(id, eventType, eventId, callback)
+	}else if(_.isEqual(Consts.TimeEventType.All, targetType)){
+		this.allianceService.onTimeEvent(id, eventType, eventId, callback)
 	}else{
 		callback(new Error("未知的事件类型"))
 	}
