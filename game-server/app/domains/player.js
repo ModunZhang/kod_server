@@ -453,6 +453,7 @@ var playerSchema = new Schema({
 	spyVillageReports:[{
 		_id:false,
 		id:{type:String, required:true},
+		reportLevel:{type:Number, required:true},
 		villageType:{type:String, required:true},
 		location:{
 			x:{type:Number, required:true},
