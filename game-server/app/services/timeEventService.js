@@ -312,3 +312,21 @@ pro.refreshPlayerEvents = function(playerDoc, allianceDoc, eventType, eventId){
 
 	return response
 }
+
+/**
+ * 刷新联盟事件
+ * @param allianceDoc
+ * @param eventType
+ * @param eventId
+ */
+pro.refreshAllianceEvents = function(allianceDoc, eventType, eventId, callback){
+	var self = this
+	var pushFuncs = []
+	var allianceData = {}
+	var event = null
+	if(_.isEqual(eventType, "spyVillageEvents")){
+		event = LogicUtils.getEventById(allianceDoc.spyVillageEvents, eventId)
+		LogicUtils.removeItemInArray(playerDoc.spyVillageEvents, event)
+
+	}
+}

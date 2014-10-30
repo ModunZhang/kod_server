@@ -21,23 +21,21 @@ var DragonsConfig = GameDatas.DragonEyrie.dragons
 var createBuildingSchema = function(location){
 	var schema = {
 		type:{type:String, required:true, default:BuildingInitData[location].type},
-		level:{type:Number, required:true, default:location <= 4 ? 1 : location > 4 && location <= 9 ? 0 : -1 },
+		level:{type:Number, required:true, default:location <= 4 ? 1 : location > 4 && location <= 9 ? 0 : -1},
 		location:{type:Number, required:true, default:location},
-		houses:[
-			{
-				_id:false,
-				type:{type:String, required:true},
-				level:{type:Number, required:true},
-				location:{type:Number, required:true}
-			}
-		]
+		houses:[{
+			_id:false,
+			type:{type:String, required:true},
+			level:{type:Number, required:true},
+			location:{type:Number, required:true}
+		}]
 	}
 	return schema
 }
 
 var createTowerSchema = function(location){
 	var schema = {
-		level:{type:Number, required:true, default:location <= 5 ? 1 : -1 },
+		level:{type:Number, required:true, default:location <= 5 ? 1 : -1},
 		location:{type:Number, required:true, default:location}
 	}
 	return schema
@@ -136,14 +134,12 @@ var playerSchema = new Schema({
 		energy:{type:Number, required:true, default:ResourceInitData.energy},
 		blood:{type:Number, required:true, default:ResourceInitData.blood}
 	},
-	coinEvents:[
-		{
-			_id:false,
-			id:{type:String, required:true},
-			coin:{type:Number, required:true},
-			finishTime:{type:Number, required:true}
-		}
-	],
+	coinEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		coin:{type:Number, required:true},
+		finishTime:{type:Number, required:true}
+	}],
 	materials:{
 		blueprints:{type:Number, required:true, default:MaterialInitData.blueprints},
 		tools:{type:Number, required:true, default:MaterialInitData.tools},
@@ -154,22 +150,18 @@ var playerSchema = new Schema({
 		saddle:{type:Number, required:true, default:MaterialInitData.saddle},
 		ironPart:{type:Number, required:true, default:MaterialInitData.ironPart}
 	},
-	materialEvents:[
-		{
+	materialEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		category:{type:String, required:true},
+		materials:[{
 			_id:false,
-			id:{type:String, required:true},
-			category:{type:String, required:true},
-			materials:[
-				{
-					_id:false,
-					type:{type:String, required:true},
-					count:{type:Number, required:true}
-				}
-			],
-			finishTime:{type:Number, required:true}
-		}
-	],
-	soldierMaterials:{
+			type:{type:String, required:true},
+			count:{type:Number, required:true}
+		}],
+		finishTime:{type:Number, required:true}
+	}],
+	oldierMaterials:{
 		deathHand:{type:Number, required:true, default:SoldierMaterialInitData.deathHand},
 		heroBones:{type:Number, required:true, default:SoldierMaterialInitData.heroBones},
 		soulStone:{type:Number, required:true, default:SoldierMaterialInitData.soulStone},
@@ -197,15 +189,13 @@ var playerSchema = new Schema({
 		paladin:{type:Number, required:true, default:0},
 		steamTank:{type:Number, required:true, default:0}
 	},
-	soldierEvents:[
-		{
-			_id:false,
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			count:{type:Number, required:true},
-			finishTime:{type:Number, required:true}
-		}
-	],
+	soldierEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		count:{type:Number, required:true},
+		finishTime:{type:Number, required:true}
+	}],
 	treatSoldiers:{
 		swordsman:{type:Number, required:true, default:0},
 		sentinel:{type:Number, required:true, default:0},
@@ -216,20 +206,16 @@ var playerSchema = new Schema({
 		catapult:{type:Number, required:true, default:0},
 		ballista:{type:Number, required:true, default:0}
 	},
-	treatSoldierEvents:[
-		{
+	treatSoldierEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		soldiers:[{
 			_id:false,
-			id:{type:String, required:true},
-			soldiers:[
-				{
-					_id:false,
-					name:{type:String, required:true},
-					count:{type:Number, required:true}
-				}
-			],
-			finishTime:{type:Number, required:true}
-		}
-	],
+			name:{type:String, required:true},
+			count:{type:Number, required:true}
+		}],
+		finishTime:{type:Number, required:true}
+	}],
 	dragonMaterials:{
 		ironIngot:{type:Number, required:true, default:DragonMaterialInitData.ironIngot},
 		steelIngot:{type:Number, required:true, default:DragonMaterialInitData.steelIngot},
@@ -337,14 +323,12 @@ var playerSchema = new Schema({
 		blizzardArmguard:{type:Number, required:true, default:0},
 		eternityArmguard:{type:Number, required:true, default:0}
 	},
-	dragonEquipmentEvents:[
-		{
-			_id:false,
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			finishTime:{type:Number, required:true}
-		}
-	],
+	dragonEquipmentEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		finishTime:{type:Number, required:true}
+	}],
 	dragons:{
 		redDragon:createDragonSchema("redDragon"),
 		blueDragon:createDragonSchema("blueDragon"),
@@ -368,23 +352,19 @@ var playerSchema = new Schema({
 		location_15:createBuildingSchema(15),
 		location_16:createBuildingSchema(16)
 	},
-	buildingEvents:[
-		{
-			_id:false,
-			id:{type:String, required:true},
-			location:{type:Number, required:true},
-			finishTime:{type:Number, required:true}
-		}
-	],
-	houseEvents:[
-		{
-			_id:false,
-			id:{type:String, required:true},
-			buildingLocation:{type:Number, required:true},
-			houseLocation:{type:Number, required:true},
-			finishTime:{type:Number, required:true}
-		}
-	],
+	buildingEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		location:{type:Number, required:true},
+		finishTime:{type:Number, required:true}
+	}],
+	houseEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		buildingLocation:{type:Number, required:true},
+		houseLocation:{type:Number, required:true},
+		finishTime:{type:Number, required:true}
+	}],
 	towers:{
 		location_1:createTowerSchema(1),
 		location_2:createTowerSchema(2),
@@ -398,56 +378,46 @@ var playerSchema = new Schema({
 		location_10:createTowerSchema(10),
 		location_11:createTowerSchema(11)
 	},
-	towerEvents:[
-		{
-			_id:false,
-			id:{type:String, required:true},
-			location:{type:Number, required:true},
-			finishTime:{type:Number, required:true}
-		}
-	],
-	wall:{
-		level:{type:Number, required:true, default:1}
-	},
-	wallEvents:[
-		{
-			_id:false,
-			id:{type:String, required:true},
-			finishTime:{type:Number, required:true}
-		}
-	],
-	requestToAllianceEvents:[
-		{
-			_id:false,
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			tag:{type:String, required:true},
-			flag:{type:String, required:true},
-			level:{type:Number, required:true},
-			members:{type:Number, required:true},
-			power:{type:Number, required:true},
-			language:{type:String, required:true},
-			kill:{type:String, required:true},
-			requestTime:{type:Number, required:true}
-		}
-	],
-	inviteToAllianceEvents:[
-		{
-			_id:false,
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			tag:{type:String, required:true},
-			flag:{type:String, required:true},
-			terrain:{type:String, required:true},
-			level:{type:Number, required:true},
-			members:{type:Number, required:true},
-			power:{type:Number, required:true},
-			language:{type:String, required:true},
-			kill:{type:String, required:true},
-			inviterId:{type:String, reuqired:true},
-			inviteTime:{type:Number, required:true}
-		}
-	],
+	towerEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		location:{type:Number, required:true},
+		finishTime:{type:Number, required:true}
+	}],
+	wall:{level:{type:Number, required:true, default:1}},
+	wallEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		finishTime:{type:Number, required:true}
+	}],
+	requestToAllianceEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		tag:{type:String, required:true},
+		flag:{type:String, required:true},
+		level:{type:Number, required:true},
+		members:{type:Number, required:true},
+		power:{type:Number, required:true},
+		language:{type:String, required:true},
+		kill:{type:String, required:true},
+		requestTime:{type:Number, required:true}
+	}],
+	inviteToAllianceEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		tag:{type:String, required:true},
+		flag:{type:String, required:true},
+		terrain:{type:String, required:true},
+		level:{type:Number, required:true},
+		members:{type:Number, required:true},
+		power:{type:Number, required:true},
+		language:{type:String, required:true},
+		kill:{type:String, required:true},
+		inviterId:{type:String, reuqired:true},
+		inviteTime:{type:Number, required:true}
+	}],
 	alliance:{
 		id:{type:String, required:false},
 		name:{type:String, required:false},
@@ -455,59 +425,29 @@ var playerSchema = new Schema({
 		title:{type:String, required:false},
 		titleName:{type:String, required:false}
 	},
-	mails:[
-		{
-			_id:false,
-			id:{type:String, required:true},
-			title:{type:String, required:true},
-			fromId:{type:String, required:true},
-			fromAllianceTag:{type:String},
-			fromName:{type:String, required:true},
-			content:{type:String, required:true},
-			sendTime:{type:Number, required:true},
-			isRead:{type:Boolean, require:true},
-			isSaved:{type:Boolean, require:true}
-		}
-	],
-	savedMails:[
-		{
-			_id:false,
-			id:{type:String, required:true},
-			title:{type:String, required:true},
-			fromId:{type:String, required:true},
-			fromAllianceTag:{type:String},
-			fromName:{type:String, required:true},
-			content:{type:String, required:true},
-			sendTime:{type:Number, required:true}
-		}
-	],
-	sendMails:[
-		{
-			_id:false,
-			id:{type:String, required:true},
-			title:{type:String, required:true},
-			fromName:{type:String, required:true},
-			fromAllianceTag:{type:String},
-			toId:{type:String, required:true},
-			toName:{type:String, required:true},
-			content:{type:String, required:true},
-			sendTime:{type:Number, required:true}
-		}
-	],
-	reports:[
-		{
-			_id:false,
-			id:{type:Number, required:true},
-			isRead:{type:Boolean, require:true},
-			isSaved:{type:Boolean, require:true}
-		}
-	],
-	savedReports:[
-		{
-			_id:false,
-			id:{type:Number, required:true}
-		}
-	]
+	mails:[{
+		_id:false,
+		id:{type:String, required:true},
+		title:{type:String, required:true},
+		fromId:{type:String, required:true},
+		fromAllianceTag:{type:String},
+		fromName:{type:String, required:true},
+		content:{type:String, required:true},
+		sendTime:{type:Number, required:true},
+		isRead:{type:Boolean, require:true},
+		isSaved:{type:Boolean, require:true}
+	}],
+	sendMails:[{
+		_id:false,
+		id:{type:String, required:true},
+		title:{type:String, required:true},
+		fromName:{type:String, required:true},
+		fromAllianceTag:{type:String},
+		toId:{type:String, required:true},
+		toName:{type:String, required:true},
+		content:{type:String, required:true},
+		sendTime:{type:Number, required:true}
+	}]
 })
 
 module.exports = mongoose.model('player', playerSchema)

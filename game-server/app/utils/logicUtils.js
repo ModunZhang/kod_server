@@ -1077,12 +1077,20 @@ Utils.sendSystemMail = function(playerDoc, playerData, titleKey, titleArgs, cont
 		isRead:false,
 		isSaved:false
 	}
+	playerData.__mails = []
 	if(playerDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
-		var willRemovedMail = playerDoc.mails.shift()
+		var willRemovedMail = this.getPlayerFirstUnSavedMail(playerDoc)
+		this.removeItemInArray(playerDoc.mails, willRemovedMail)
 		playerData.__mails.push({
 			type:Consts.DataChangedType.Remove,
 			data:willRemovedMail
 		})
+		if(!!willRemovedMail.isSaved){
+			playerData.__savedMails = [{
+				type:Consts.DataChangedType.Remove,
+				data:willRemovedMail
+			}]
+		}
 	}
 	playerDoc.mails.push(mail)
 	playerData.__mails.push({
@@ -1124,17 +1132,18 @@ Utils.getPlayerMailById = function(playerDoc, mailId){
 }
 
 /**
- * 根据邮件Id获取已保存的邮件
+ * 获取第一份未保存的邮件
  * @param playerDoc
- * @param mailId
  * @returns {*}
  */
-Utils.getPlayerSavedMailById = function(playerDoc, mailId){
-	for(var i = 0; i < playerDoc.savedMails.length; i++){
-		var mail = playerDoc.savedMails[i]
-		if(_.isEqual(mail.id, mailId)) return mail
+Utils.getPlayerFirstUnSavedMail = function(playerDoc){
+	for(var i = 0; i < playerDoc.mails.length; i ++){
+		var mail = playerDoc.mails[i]
+		if(!mail.isSaved){
+			return mail
+		}
 	}
-	return null
+	return playerDoc.mails[0]
 }
 
 /**

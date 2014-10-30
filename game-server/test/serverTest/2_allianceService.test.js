@@ -80,11 +80,12 @@ describe("AllianceService", function(){
 	var m_user
 
 	before(function(done){
-		ClearTestAccount(function(){
-			ClearAlliance(function(){
-				done()
-			})
-		})
+		//ClearTestAccount(function(){
+		//	ClearAlliance(function(){
+		//		done()
+		//	})
+		//})
+		done()
 	})
 
 

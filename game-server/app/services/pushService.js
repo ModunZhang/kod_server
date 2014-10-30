@@ -35,9 +35,7 @@ pro.pushToPlayer = function(playerDoc, eventName, data, callback){
 		callback()
 		return
 	}
-	this.channelService.pushMessageByUids(eventName, data, [
-		{uid:playerDoc._id, sid:playerDoc.logicServerId}
-	], callback)
+	this.channelService.pushMessageByUids(eventName, data, [{uid:playerDoc._id, sid:playerDoc.logicServerId}], callback)
 }
 
 /**
@@ -56,13 +54,18 @@ pro.onPlayerDataChanged = function(playerDoc, data, callback){
  * @param callback
  */
 pro.onPlayerLoginSuccess = function(playerDoc, callback){
-	var data = Utils.clone(playerDoc)
+	var self = this
+	var data = _.omit(playerDoc, "mails", "sendMails")
 	data.serverTime = Date.now()
-	data.mails.reverse()
-	data.savedMails.reverse()
-	data.sendMails.reverse()
-	data.reports.reverse()
-	data.savedReports.reverse()
+	data.mails = []
+	for(var i = playerDoc.mails.length - 1; i >= 0; i--){
+		data.mails.push(playerDoc.mails[i])
+	}
+	data.sendMails = []
+	for(var i = playerDoc.sendMails.length - 1; i >= 0; i--){
+		data.sendMails.push(playerDoc.sendMails[i])
+	}
+	data.savedMails = []
 	if(!_.isObject(data.alliance) || _.isEmpty(data.alliance.id)){
 		data.alliance = {}
 	}
@@ -72,25 +75,16 @@ pro.onPlayerLoginSuccess = function(playerDoc, callback){
 		if(!mail.isRead){
 			unreadMails++
 		}
-	})
-	data.mails = data.mails.slice(0, this.maxReturnMailSize)
-	data.savedMails = data.savedMails.slice(0, this.maxReturnMailSize)
-	data.sendMails = data.sendMails.slice(0, this.maxReturnMailSize)
-
-	var unreadReports = 0
-	_.each(data.reports, function(report){
-		if(!report.isRead){
-			unreadReports++
+		if(!!mail.isSaved && data.savedMails.length < self.maxReturnMailSize){
+			data.savedMails.push(mail)
 		}
 	})
-	data.reports = data.reports.slice(0, this.maxReturnMailSize)
-	data.savedReports = data.savedReports.slice(0, this.maxReturnMailSize)
+	data.mails = data.mails.slice(0, this.maxReturnMailSize)
+	data.sendMails = data.sendMails.slice(0, this.maxReturnMailSize)
 
 	data.mailStatus = {
-		unreadMails:unreadMails,
-		unreadReports:unreadReports
+		unreadMails:unreadMails
 	}
-
 	this.pushToPlayer(playerDoc, Events.player.onPlayerLoginSuccess, data, callback)
 }
 
@@ -113,8 +107,7 @@ pro.onGetAllianceDataSuccess = function(playerDoc, allianceDoc, callback){
 pro.onBuildingLevelUp = function(playerDoc, location, callback){
 	var building = playerDoc.buildings["location_" + location]
 	var data = {
-		buildingType:building.type,
-		level:building.level
+		buildingType:building.type, level:building.level
 	}
 	this.pushToPlayer(playerDoc, Events.player.onBuildingLevelUp, data, callback)
 }
@@ -135,9 +128,7 @@ pro.onHouseLevelUp = function(playerDoc, buildingLocation, houseLocation, callba
 		}
 	})
 	var data = {
-		buildingType:building.type,
-		houseType:house.type,
-		level:house.level
+		buildingType:building.type, houseType:house.type, level:house.level
 	}
 	this.pushToPlayer(playerDoc, Events.player.onHouseLevelUp, data, callback)
 }
@@ -204,8 +195,7 @@ pro.onGetMaterialSuccess = function(playerDoc, event, callback){
  */
 pro.onRecruitSoldierSuccess = function(playerDoc, soldierName, count, callback){
 	var data = {
-		soldierName:soldierName,
-		count:count
+		soldierName:soldierName, count:count
 	}
 	this.pushToPlayer(playerDoc, Events.player.onRecruitSoldierSuccess, data, callback)
 }
@@ -341,8 +331,11 @@ pro.onGetCanDirectJoinAlliancesSuccess = function(playerDoc, allianceDocs, callb
  * @param callback
  */
 pro.onGetMailsSuccess = function(playerDoc, fromIndex, callback){
-	var mails = Utils.clone(playerDoc.mails)
-	mails.reverse()
+	var mails = []
+	for(var i = playerDoc.mails.length - 1; i >= 0; i--){
+		var mail = playerDoc.mails[i]
+		mails.push(mail)
+	}
 	mails = mails.slice(fromIndex, fromIndex + this.maxReturnMailSize)
 	var data = {
 		mails:mails
@@ -357,8 +350,11 @@ pro.onGetMailsSuccess = function(playerDoc, fromIndex, callback){
  * @param callback
  */
 pro.onGetSendMailsSuccess = function(playerDoc, fromIndex, callback){
-	var mails = Utils.clone(playerDoc.sendMails)
-	mails.reverse()
+	var mails = []
+	for(var i = playerDoc.sendMails.length - 1; i >= 0; i--){
+		var mail = playerDoc.sendMails[i]
+		mails.push(mail)
+	}
 	mails = mails.slice(fromIndex, fromIndex + this.maxReturnMailSize)
 	var data = {
 		mails:mails
@@ -373,27 +369,17 @@ pro.onGetSendMailsSuccess = function(playerDoc, fromIndex, callback){
  * @param callback
  */
 pro.onGetSavedMailsSuccess = function(playerDoc, fromIndex, callback){
-	var mails = Utils.clone(playerDoc.savedMails)
-	mails.reverse()
+	var mails = []
+	for(var i = playerDoc.mails.length - 1; i >= 0; i--){
+		var mail = playerDoc.mails[i]
+		if(!!mail.isSaved) mails.push(mail)
+	}
 	mails = mails.slice(fromIndex, fromIndex + this.maxReturnMailSize)
 	var data = {
 		mails:mails
 	}
 	this.pushToPlayer(playerDoc, Events.player.onGetSavedMailsSuccess, data, callback)
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**

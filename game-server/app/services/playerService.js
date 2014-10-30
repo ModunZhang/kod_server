@@ -88,10 +88,8 @@ pro.playerLogin = function(playerDoc, callback){
 		pushFuncs.push([self.pushService, self.pushService.onPlayerLoginSuccessAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, playerDoc, allianceDoc])
 		var allianceData = {
-			basicInfo:allianceDoc.basicInfo,
-			__members:[{
-				type:Consts.DataChangedType.Edit,
-				data:memberDoc
+			basicInfo:allianceDoc.basicInfo, __members:[{
+				type:Consts.DataChangedType.Edit, data:memberDoc
 			}]
 		}
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
@@ -2409,16 +2407,20 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 			isSaved:false
 		}
 		if(memberDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
-			var mail = memberDoc.mails.shift()
+			var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
+			LogicUtils.removeItemInArray(memberDoc.mails, mail)
 			memberData.__mails.push({
-				type:Consts.DataChangedType.Remove,
-				data:mail
+				type:Consts.DataChangedType.Remove, data:mail
 			})
+			if(!!mail.isSaved){
+				memberData.__savedMails = [{
+					type:Consts.DataChangedType.Remove, data:mail
+				}]
+			}
 		}
 		memberDoc.mails.push(mailToMember)
 		memberData.__mails.push({
-			type:Consts.DataChangedType.Add,
-			data:mailToMember
+			type:Consts.DataChangedType.Add, data:mailToMember
 		})
 
 		var mailToPlayer = {
@@ -2434,14 +2436,12 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 		if(playerDoc.sendMails.length >= Define.PlayerMailSendboxMessageMaxSize){
 			var sendMail = playerDoc.sendMails.shift()
 			playerData.__sendMails.push({
-				type:Consts.DataChangedType.Remove,
-				data:sendMail
+				type:Consts.DataChangedType.Remove, data:sendMail
 			})
 		}
 		playerDoc.sendMails.push(mailToPlayer)
 		playerData.__sendMails.push({
-			type:Consts.DataChangedType.Add,
-			data:mailToPlayer
+			type:Consts.DataChangedType.Add, data:mailToPlayer
 		})
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
@@ -2508,8 +2508,7 @@ pro.readMail = function(playerId, mailId, callback){
 		mail.isRead = true
 		var playerData = {}
 		playerData.__mails = [{
-			type:Consts.DataChangedType.Edit,
-			data:mail
+			type:Consts.DataChangedType.Edit, data:mail
 		}]
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
@@ -2568,29 +2567,14 @@ pro.saveMail = function(playerId, mailId, callback){
 			return Promise.reject(new Error("邮件不存在"))
 		}
 		var playerData = {}
-		playerData.__savedMails = []
-
-		if(playerDoc.savedMails.length >= Define.PlayerMailFavoriteMessageMaxSize){
-			var savedMail = playerDoc.savedMails.shift()
-			playerData.__savedMails.push({
-				type:Consts.DataChangedType.Remove,
-				data:savedMail
-			})
-		}
 		mail.isSaved = true
 		playerData.__mails = [{
-			type:Consts.DataChangedType.Edit,
-			data:mail
+			type:Consts.DataChangedType.Edit, data:mail
+		}]
+		playerData.__savedMails = [{
+			type:Consts.DataChangedType.Add, data:mail
 		}]
 
-		var willSavedMail = Utils.clone(mail)
-		delete willSavedMail.isRead
-		delete willSavedMail.isSaved
-		playerDoc.savedMails.push(willSavedMail)
-		playerData.__savedMails.push({
-			type:Consts.DataChangedType.Add,
-			data:willSavedMail
-		})
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
@@ -2643,23 +2627,17 @@ pro.unSaveMail = function(playerId, mailId, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var mailInSavedMails = LogicUtils.getPlayerSavedMailById(playerDoc, mailId)
-		var mailInMails = LogicUtils.getPlayerMailById(playerDoc, mailId)
-		if(!_.isObject(mailInSavedMails)){
+		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
+		if(!_.isObject(mail)){
 			return Promise.reject(new Error("邮件不存在"))
 		}
-		LogicUtils.removeItemInArray(playerDoc.savedMails, mailInSavedMails)
 		var playerData = {}
-		if(_.isObject(mailInMails)){
-			mailInMails.isSaved = false
-			playerData.__mails = [{
-				type:Consts.DataChangedType.Edit,
-				data:mailInMails
-			}]
-		}
+		mail.isSaved = false
+		playerData.__mails = [{
+			type:Consts.DataChangedType.Edit, data:mail
+		}]
 		playerData.__savedMails = [{
-			type:Consts.DataChangedType.Remove,
-			data:mailInSavedMails
+			type:Consts.DataChangedType.Remove, data:mail
 		}]
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
@@ -2857,8 +2835,7 @@ pro.deleteMail = function(playerId, mailId, callback){
 		LogicUtils.removeItemInArray(playerDoc.mails, mail)
 		var playerData = {}
 		playerData.__mails = [{
-			type:Consts.DataChangedType.Remove,
-			data:mail
+			type:Consts.DataChangedType.Remove, data:mail
 		}]
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
@@ -2883,13 +2860,6 @@ pro.deleteMail = function(playerId, mailId, callback){
 		}
 	})
 }
-
-
-
-
-
-
-
 
 
 /**
