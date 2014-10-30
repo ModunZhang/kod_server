@@ -1940,6 +1940,7 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "handleJoinAllianceRequest")){
 			return Promise.reject(new Error("此操作权限不足"))
 		}
+		console.log("----------------------------", playerDoc.alliance)
 		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
