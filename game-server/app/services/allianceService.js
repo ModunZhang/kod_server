@@ -1986,6 +1986,7 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 				type:Consts.DataChangedType.Remove,
 				data:eventInAlliance
 			}]
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 			return Promise.resolve()
 		}
 
