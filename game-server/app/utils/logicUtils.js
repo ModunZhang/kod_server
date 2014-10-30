@@ -776,6 +776,7 @@ Utils.addAllianceRequestEvent = function(allianceDoc, playerDoc, requestTime){
 	var event = {
 		id:playerDoc._id,
 		name:playerDoc.basicInfo.name,
+		icon:playerDoc.basicInfo.icon,
 		level:playerDoc.basicInfo.level,
 		power:playerDoc.basicInfo.power,
 		requestTime:requestTime
