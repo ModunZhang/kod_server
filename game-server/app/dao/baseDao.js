@@ -369,7 +369,6 @@ pro.updateAll = function(docs, callback){
 	})
 	docStrings.unshift(this.modelName)
 	this.scripto.runAsync("updateAll", docStrings, this.indexs).then(function(docStrings){
-		console.warn(docStrings)
 		callback()
 	}).catch(function(e){
 		callback(e)

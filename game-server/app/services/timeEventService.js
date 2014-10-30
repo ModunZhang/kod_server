@@ -194,7 +194,11 @@ pro.refreshPlayerEvents = function(playerDoc, allianceDoc, eventType, eventId){
 			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
 			if(_.isObject(helpEvent)){
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-				allianceData.helpEvents = allianceDoc.helpEvents
+				if(!_.isObject(allianceData.__helpEvents)) allianceData.__helpEvents = []
+				allianceData.__helpEvents.push({
+					type:Consts.DataChangedType.Remove,
+					data:helpEvent
+				})
 			}
 		}
 	}else if(_.isEqual(eventType, "houseEvents")){
@@ -216,7 +220,11 @@ pro.refreshPlayerEvents = function(playerDoc, allianceDoc, eventType, eventId){
 			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
 			if(_.isObject(helpEvent)){
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-				allianceData.helpEvents = allianceDoc.helpEvents
+				if(!_.isObject(allianceData.__helpEvents)) allianceData.__helpEvents = []
+				allianceData.__helpEvents.push({
+					type:Consts.DataChangedType.Remove,
+					data:helpEvent
+				})
 			}
 		}
 	}else if(_.isEqual(eventType, "towerEvents")){
@@ -231,7 +239,11 @@ pro.refreshPlayerEvents = function(playerDoc, allianceDoc, eventType, eventId){
 			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
 			if(_.isObject(helpEvent)){
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-				allianceData.helpEvents = allianceDoc.helpEvents
+				if(!_.isObject(allianceData.__helpEvents)) allianceData.__helpEvents = []
+				allianceData.__helpEvents.push({
+					type:Consts.DataChangedType.Remove,
+					data:helpEvent
+				})
 			}
 		}
 	}else if(_.isEqual(eventType, "wallEvents")){
@@ -246,7 +258,11 @@ pro.refreshPlayerEvents = function(playerDoc, allianceDoc, eventType, eventId){
 			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
 			if(_.isObject(helpEvent)){
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-				allianceData.helpEvents = allianceDoc.helpEvents
+				if(!_.isObject(allianceData.__helpEvents)) allianceData.__helpEvents = []
+				allianceData.__helpEvents.push({
+					type:Consts.DataChangedType.Remove,
+					data:helpEvent
+				})
 			}
 		}
 	}else if(_.isEqual(eventType, "materialEvents")){

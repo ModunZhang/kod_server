@@ -7,7 +7,7 @@
 var _ = require("underscore")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
-
+var logicLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-logic", __filename)
 
 var Dispatcher = require('../../../utils/dispatcher')
 var Consts = require("../../../consts/consts")
@@ -115,6 +115,7 @@ var ExcuteTimeEvent = function(key, eventId){
 	var logicServers = this.app.getServersByType('logic')
 	var logicServerId = Dispatcher.dispatch(logicServers).id
 	var eventType = callbackObj.eventType
+	logicLogger.info("trigger timeEvent key:%s, eventType:%s, eventId:%s", key, eventType, eventId)
 	this.app.rpc.logic.logicRemote.onTimeEvent.toServer(logicServerId, key, eventType, eventId, function(e){
 		if(_.isObject(e)){
 			errorLogger.error("handle eventRemote:ExcuteTimeEvent Error -----------------------------")

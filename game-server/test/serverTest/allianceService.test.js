@@ -922,10 +922,10 @@ describe("AllianceService", function(){
 			var alliance = null
 			Api.loginPlayer(Config.deviceId3, function(doc){
 				doc.code.should.equal(200)
-				getMyAllianceData(function(doc){
+				Api.getMyAllianceData(function(doc){
 					doc.code.should.equal(200)
 					var event = alliance.helpEvents[0]
-					helpAllianceMemberSpeedUp(event.eventId, function(doc){
+					Api.helpAllianceMemberSpeedUp(event.eventId, function(doc){
 						doc.code.should.equal(200)
 						done()
 					})
@@ -940,10 +940,10 @@ describe("AllianceService", function(){
 
 		it("helpAllianceMemberSpeedUp 正常帮助2", function(done){
 			var alliance = null
-			getMyAllianceData(function(doc){
+			Api.getMyAllianceData(function(doc){
 				doc.code.should.equal(200)
 				var event = alliance.helpEvents[1]
-				helpAllianceMemberSpeedUp(event.eventId, function(doc){
+				Api.helpAllianceMemberSpeedUp(event.eventId, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
@@ -956,23 +956,23 @@ describe("AllianceService", function(){
 		})
 
 		it("helpAllAllianceMemberSpeedUp 正常帮助", function(done){
-			helpAllAllianceMemberSpeedUp(function(doc){
+			Api.helpAllAllianceMemberSpeedUp(function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
 		})
 
 		it("getMyAllianceData 正常获取", function(done){
-			getMyAllianceData(function(doc){
+			Api.getMyAllianceData(function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
 		})
 
 		it("donateToAlliance 资源不足", function(done){
-			sendChat("rs 500", function(doc){
+			Api.sendChat("rs 500", function(doc){
 				doc.code.should.equal(200)
-				donateToAlliance("wood", function(doc){
+				Api.donateToAlliance("wood", function(doc){
 					doc.code.should.equal(500)
 					doc.message.should.equal("资源不足")
 					done()
@@ -981,11 +981,11 @@ describe("AllianceService", function(){
 		})
 
 		it("donateToAlliance 正常捐赠1", function(done){
-			sendChat("rs 5000000", function(doc){
+			Api.sendChat("rs 5000000", function(doc){
 				doc.code.should.equal(200)
-				sendChat("donatelevel 6", function(doc){
+				Api.sendChat("donatelevel 6", function(doc){
 					doc.code.should.equal(200)
-					donateToAlliance("wood", function(doc){
+					Api.donateToAlliance("wood", function(doc){
 						doc.code.should.equal(200)
 						done()
 					})
@@ -994,16 +994,16 @@ describe("AllianceService", function(){
 		})
 
 		it("donateToAlliance 正常捐赠2", function(done){
-			donateToAlliance("wood", function(doc){
+			Api.donateToAlliance("wood", function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
 		})
 
 		it("donateToAlliance 正常捐赠3", function(done){
-			sendChat("donatelevel 1", function(doc){
+			Api.sendChat("donatelevel 1", function(doc){
 				doc.code.should.equal(200)
-				donateToAlliance("stone", function(doc){
+				Api.donateToAlliance("stone", function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
@@ -1011,7 +1011,7 @@ describe("AllianceService", function(){
 		})
 
 		it("upgradeAllianceBuilding 盟主城堡等级不足", function(done){
-			upgradeAllianceBuilding("palace", function(doc){
+			Api.upgradeAllianceBuilding("palace", function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("盟主城堡等级不足")
 				done()
@@ -1019,11 +1019,11 @@ describe("AllianceService", function(){
 		})
 
 		it("upgradeAllianceBuilding 联盟荣耀值不足", function(done){
-			sendChat("allianceHonour 10", function(doc){
+			Api.sendChat("allianceHonour 10", function(doc){
 				doc.code.should.equal(200)
-				sendChat("keep 5", function(doc){
+				Api.sendChat("keep 5", function(doc){
 					doc.code.should.equal(200)
-					upgradeAllianceBuilding("palace", function(doc){
+					Api.upgradeAllianceBuilding("palace", function(doc){
 						doc.code.should.equal(500)
 						doc.message.should.equal("联盟荣耀值不足")
 						done()
@@ -1033,9 +1033,9 @@ describe("AllianceService", function(){
 		})
 
 		it("upgradeAllianceBuilding 正常升级", function(done){
-			sendChat("allianceHonour 5000", function(doc){
+			Api.sendChat("allianceHonour 5000", function(doc){
 				doc.code.should.equal(200)
-				upgradeAllianceBuilding("palace", function(doc){
+				Api.upgradeAllianceBuilding("palace", function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
@@ -1043,7 +1043,7 @@ describe("AllianceService", function(){
 		})
 
 		it("upgradeAllianceVillage 正常升级", function(done){
-			upgradeAllianceVillage("wood", function(doc){
+			Api.upgradeAllianceVillage("woodVillage", function(doc){
 				doc.code.should.equal(200)
 				done()
 			})

@@ -42,6 +42,11 @@ module.exports = {
 		Player:"player",
 		Alliance:"alliance"
 	},
+	DataChangedType:{
+		Add:"add",
+		Edit:"edit",
+		Remove:"remove"
+	},
 	AllianceLanguage:{
 		All:"all",
 		Cn:"cn",

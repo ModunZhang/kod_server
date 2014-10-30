@@ -770,6 +770,7 @@ Utils.getPlayerRequestEventAtAlliance = function(allianceDoc, playerId){
  * @param allianceDoc
  * @param playerDoc
  * @param requestTime
+ * @return {*}
  */
 Utils.addAllianceRequestEvent = function(allianceDoc, playerDoc, requestTime){
 	var event = {
@@ -780,6 +781,7 @@ Utils.addAllianceRequestEvent = function(allianceDoc, playerDoc, requestTime){
 		requestTime:requestTime
 	}
 	allianceDoc.joinRequestEvents.push(event)
+	return event
 }
 
 /**
@@ -787,6 +789,7 @@ Utils.addAllianceRequestEvent = function(allianceDoc, playerDoc, requestTime){
  * @param playerDoc
  * @param allianceDoc
  * @param requestTime
+ * @return {*}
  */
 Utils.addPlayerJoinAllianceEvent = function(playerDoc, allianceDoc, requestTime){
 	var event = {
@@ -803,6 +806,7 @@ Utils.addPlayerJoinAllianceEvent = function(playerDoc, allianceDoc, requestTime)
 		requestTime:requestTime
 	}
 	playerDoc.requestToAllianceEvents.push(event)
+	return event
 }
 
 /**
@@ -811,6 +815,7 @@ Utils.addPlayerJoinAllianceEvent = function(playerDoc, allianceDoc, requestTime)
  * @param playerDoc
  * @param allianceDoc
  * @param inviteTime
+ * @return {*}
  */
 Utils.addPlayerInviteAllianceEvent = function(inviterId, playerDoc, allianceDoc, inviteTime){
 	var event = {
@@ -828,6 +833,7 @@ Utils.addPlayerInviteAllianceEvent = function(inviterId, playerDoc, allianceDoc,
 		inviteTime:inviteTime
 	}
 	playerDoc.inviteToAllianceEvents.push(event)
+	return event
 }
 
 /**
@@ -1035,13 +1041,14 @@ Utils.refreshPlayerPower = function(doc){
 /**
  * 发送系统邮件
  * @param playerDoc
+ * @param playerData
  * @param titleKey
  * @param titleArgs
  * @param contentKey
  * @param contentArgs
  * @returns {*}
  */
-Utils.sendSystemMail = function(playerDoc, titleKey, titleArgs, contentKey, contentArgs){
+Utils.sendSystemMail = function(playerDoc, playerData, titleKey, titleArgs, contentKey, contentArgs){
 	var language = playerDoc.basicInfo.language
 	var title = titleKey[language]
 	var content = contentKey[language]
@@ -1070,9 +1077,17 @@ Utils.sendSystemMail = function(playerDoc, titleKey, titleArgs, contentKey, cont
 		isSaved:false
 	}
 	if(playerDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
-		playerDoc.mails.shift()
+		var willRemovedMail = playerDoc.mails.shift()
+		playerData.__mails.push({
+			type:Consts.DataChangedType.Remove,
+			data:willRemovedMail
+		})
 	}
 	playerDoc.mails.push(mail)
+	playerData.__mails.push({
+		type:Consts.DataChangedType.Add,
+		data:mail
+	})
 
 	return mail
 }

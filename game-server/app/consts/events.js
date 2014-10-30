@@ -23,8 +23,6 @@ module.exports = {
 		onGetPlayerInfoSuccess:"onGetPlayerInfoSuccess",
 		onSearchAlliancesSuccess:"onSearchAlliancesSuccess",
 		onGetCanDirectJoinAlliancesSuccess:"onGetCanDirectJoinAlliancesSuccess",
-		onNewMailReceived:"onNewMailReceived",
-		onSendMailSuccess:"onSendMailSuccess",
 		onGetMailsSuccess:"onGetMailsSuccess",
 		onGetSendMailsSuccess:"onGetSendMailsSuccess",
 		onGetSavedMailsSuccess:"onGetSavedMailsSuccess"

@@ -484,6 +484,7 @@ var playerSchema = new Schema({
 	sendMails:[
 		{
 			_id:false,
+			id:{type:String, required:true},
 			title:{type:String, required:true},
 			fromName:{type:String, required:true},
 			fromAllianceTag:{type:String},

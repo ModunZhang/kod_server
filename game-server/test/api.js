@@ -282,6 +282,19 @@ Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.sendAllianceMail = function(title, content, callback){
+	var info = {
+		title:title, content:content
+	}
+	var route = "logic.allianceHandler.sendAllianceMail"
+	pomelo.request(route, info, callback)
+}
+
+Api.getMyAllianceData = function(callback){
+	var route = "logic.allianceHandler.getMyAllianceData"
+	pomelo.request(route, null, callback)
+}
+
 Api.searchAllianceByTag = function(tag, callback){
 	var info = {
 		tag:tag
@@ -365,14 +378,6 @@ Api.handOverAllianceArchon = function(memberId, callback){
 		memberId:memberId
 	}
 	var route = "logic.allianceHandler.handOverAllianceArchon"
-	pomelo.request(route, info, callback)
-}
-
-Api.sendAllianceMail = function(title, content, callback){
-	var info = {
-		title:title, content:content
-	}
-	var route = "logic.allianceHandler.sendAllianceMail"
 	pomelo.request(route, info, callback)
 }
 

@@ -87,7 +87,14 @@ pro.playerLogin = function(playerDoc, callback){
 	}).then(function(){
 		pushFuncs.push([self.pushService, self.pushService.onPlayerLoginSuccessAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, playerDoc, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceBasicInfoAndMemberDataChangedAsync, allianceDoc, memberDoc])
+		var allianceData = {
+			basicInfo:allianceDoc.basicInfo,
+			__members:[{
+				type:Consts.DataChangedType.Edit,
+				data:memberDoc
+			}]
+		}
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
@@ -216,6 +223,9 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			LogicUtils.updateBuildingsLevel(playerDoc)
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, building.location])
+			if(_.isObject(allianceDoc)){
+				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
+			}
 		}else{
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
@@ -224,8 +234,13 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 				_.extend(playerData, params.playerData)
 				pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
+					updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, params.allianceData])
+				}else if(_.isObject(allianceDoc)){
+					updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 				}
+			}else if(_.isObject(allianceDoc)){
+				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createBuildingEvent(playerDoc, building.location, finishTime)
@@ -387,6 +402,9 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			house.level += 1
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, building.location, house.location])
+			if(_.isObject(allianceDoc)){
+				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
+			}
 		}else{
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
@@ -395,8 +413,13 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 				_.extend(playerData, params.playerData)
 				pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
+					updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, params.allianceData])
+				}else if(_.isObject(allianceDoc)){
+					updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 				}
+			}else if(_.isObject(allianceDoc)){
+				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createHouseEvent(playerDoc, buildingLocation, houseLocation, finishTime)
@@ -564,6 +587,9 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			house.level += 1
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, building.location, house.location])
+			if(_.isObject(allianceDoc)){
+				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
+			}
 		}else{
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
@@ -572,8 +598,13 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 				_.extend(playerData, params.playerData)
 				pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
+					updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, params.allianceData])
+				}else if(_.isObject(allianceDoc)){
+					updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 				}
+			}else if(_.isObject(allianceDoc)){
+				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createHouseEvent(playerDoc, building.location, house.location, finishTime)
@@ -799,6 +830,9 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			tower.level = tower.level + 1
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc, tower.location])
+			if(_.isObject(allianceDoc)){
+				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
+			}
 		}else{
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
@@ -807,8 +841,13 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 				_.extend(playerData, params.playerData)
 				pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
+					updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, params.allianceData])
+				}else if(_.isObject(allianceDoc)){
+					updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 				}
+			}else if(_.isObject(allianceDoc)){
+				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createTowerEvent(playerDoc, tower.location, finishTime)
@@ -943,6 +982,9 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			wall.level = wall.level + 1
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onWallLevelUpAsync, playerDoc])
+			if(_.isObject(allianceDoc)){
+				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
+			}
 		}else{
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
@@ -951,8 +993,13 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 				_.extend(playerData, params.playerData)
 				pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
+					updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, params.allianceData])
+				}else if(_.isObject(allianceDoc)){
+					updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 				}
+			}else if(_.isObject(allianceDoc)){
+				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createWallEvent(playerDoc, finishTime)
@@ -1753,7 +1800,8 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 		playerDoc.dragonEquipments[equipmentName] -= 1
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		playerData.dragonEquipments = playerDoc.dragonEquipments
+		playerData.dragonEquipments = {}
+		playerData.dragonEquipments[equipmentName] = playerDoc.dragonEquipments[equipmentName]
 		playerData.dragons = {}
 		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		return Promise.resolve()
@@ -1828,15 +1876,14 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 			return Promise.reject(new Error("装备已到最高星级"))
 		}
 		if(!LogicUtils.isEnhanceDragonEquipmentLegal(playerDoc, equipments)){
-			return Promise.reject(new Error("被强化的装备不存在或数量不足"))
+			return Promise.reject(new Error("被牺牲的装备不存在或数量不足"))
 		}
 		var playerData = {}
-		DataUtils.enhanceDragonEquipment(playerDoc, dragonType, equipmentCategory, equipments)
+		DataUtils.enhanceDragonEquipment(playerDoc, playerData, dragonType, equipmentCategory, equipments)
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.dragons = {}
 		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
-		playerData.dragonEquipments = playerDoc.dragonEquipments
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1910,7 +1957,8 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.dragons = {}
 		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
-		playerData.dragonEquipmentEvents = playerDoc.dragonEquipmentEvents
+		playerData.dragonEquipmentEvents = {}
+		playerData.dragonEquipmentEvents[equipment.name] = playerDoc.dragonEquipments[equipment.name]
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -2343,8 +2391,12 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
-
 		memberDoc = doc
+
+		var playerData = {}
+		playerData.__sendMails = []
+		var memberData = {}
+		memberData.__mails = []
 		var mailToMember = {
 			id:ShortId.generate(),
 			title:title,
@@ -2357,11 +2409,20 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 			isSaved:false
 		}
 		if(memberDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
-			memberDoc.mails.shift()
+			var mail = memberDoc.mails.shift()
+			memberData.__mails.push({
+				type:Consts.DataChangedType.Remove,
+				data:mail
+			})
 		}
 		memberDoc.mails.push(mailToMember)
+		memberData.__mails.push({
+			type:Consts.DataChangedType.Add,
+			data:mailToMember
+		})
 
 		var mailToPlayer = {
+			id:ShortId.generate(),
 			title:title,
 			fromName:playerDoc.basicInfo.name,
 			fromAllianceTag:(!!playerDoc.alliance && !!playerDoc.alliance.id) ? playerDoc.alliance.tag : "",
@@ -2371,14 +2432,22 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 			sendTime:Date.now()
 		}
 		if(playerDoc.sendMails.length >= Define.PlayerMailSendboxMessageMaxSize){
-			playerDoc.sendMails.shift()
+			var sendMail = playerDoc.sendMails.shift()
+			playerData.__sendMails.push({
+				type:Consts.DataChangedType.Remove,
+				data:sendMail
+			})
 		}
 		playerDoc.sendMails.push(mailToPlayer)
+		playerData.__sendMails.push({
+			type:Consts.DataChangedType.Add,
+			data:mailToPlayer
+		})
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
-		pushFuncs.push([self.pushService, self.pushService.onSendMailSuccessAsync, playerDoc, mailToPlayer])
-		pushFuncs.push([self.pushService, self.pushService.onNewMailReceivedAsync, memberDoc, mailToMember])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -2425,6 +2494,8 @@ pro.readMail = function(playerId, mailId, callback){
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
@@ -2435,7 +2506,18 @@ pro.readMail = function(playerId, mailId, callback){
 			return Promise.reject(new Error("邮件不存在"))
 		}
 		mail.isRead = true
-		return self.playerDao.updateAsync(playerDoc)
+		var playerData = {}
+		playerData.__mails = [{
+			type:Consts.DataChangedType.Edit,
+			data:mail
+		}]
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -2474,6 +2556,8 @@ pro.saveMail = function(playerId, mailId, callback){
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
@@ -2483,15 +2567,37 @@ pro.saveMail = function(playerId, mailId, callback){
 		if(!_.isObject(mail)){
 			return Promise.reject(new Error("邮件不存在"))
 		}
+		var playerData = {}
+		playerData.__savedMails = []
+
 		if(playerDoc.savedMails.length >= Define.PlayerMailFavoriteMessageMaxSize){
-			playerDoc.savedMails.shift()
+			var savedMail = playerDoc.savedMails.shift()
+			playerData.__savedMails.push({
+				type:Consts.DataChangedType.Remove,
+				data:savedMail
+			})
 		}
 		mail.isSaved = true
-		var savedMail = Utils.clone(mail)
-		delete savedMail.isRead
-		delete savedMail.isSaved
-		playerDoc.savedMails.push(savedMail)
-		return self.playerDao.updateAsync(playerDoc)
+		playerData.__mails = [{
+			type:Consts.DataChangedType.Edit,
+			data:mail
+		}]
+
+		var willSavedMail = Utils.clone(mail)
+		delete willSavedMail.isRead
+		delete willSavedMail.isSaved
+		playerDoc.savedMails.push(willSavedMail)
+		playerData.__savedMails.push({
+			type:Consts.DataChangedType.Add,
+			data:willSavedMail
+		})
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -2530,6 +2636,8 @@ pro.unSaveMail = function(playerId, mailId, callback){
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
@@ -2541,10 +2649,24 @@ pro.unSaveMail = function(playerId, mailId, callback){
 			return Promise.reject(new Error("邮件不存在"))
 		}
 		LogicUtils.removeItemInArray(playerDoc.savedMails, mailInSavedMails)
+		var playerData = {}
 		if(_.isObject(mailInMails)){
 			mailInMails.isSaved = false
+			playerData.__mails = [{
+				type:Consts.DataChangedType.Edit,
+				data:mailInMails
+			}]
 		}
-		return self.playerDao.updateAsync(playerDoc)
+		playerData.__savedMails = [{
+			type:Consts.DataChangedType.Remove,
+			data:mailInSavedMails
+		}]
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -2721,6 +2843,8 @@ pro.deleteMail = function(playerId, mailId, callback){
 
 	var self = this
 	var playerDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
@@ -2731,7 +2855,18 @@ pro.deleteMail = function(playerId, mailId, callback){
 			return Promise.reject(new Error("邮件不存在"))
 		}
 		LogicUtils.removeItemInArray(playerDoc.mails, mail)
-		return self.playerDao.updateAsync(playerDoc)
+		var playerData = {}
+		playerData.__mails = [{
+			type:Consts.DataChangedType.Remove,
+			data:mail
+		}]
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){

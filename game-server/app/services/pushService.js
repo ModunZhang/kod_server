@@ -335,32 +335,6 @@ pro.onGetCanDirectJoinAlliancesSuccess = function(playerDoc, allianceDocs, callb
 }
 
 /**
- * 接受到新邮件
- * @param playerDoc
- * @param mail
- * @param callback
- */
-pro.onNewMailReceived = function(playerDoc, mail, callback){
-	var data = {
-		mail:mail
-	}
-	this.pushToPlayer(playerDoc, Events.player.onNewMailReceived, data, callback)
-}
-
-/**
- * 发送邮件成功
- * @param playerDoc
- * @param mail
- * @param callback
- */
-pro.onSendMailSuccess = function(playerDoc, mail, callback){
-	var data = {
-		mail:mail
-	}
-	this.pushToPlayer(playerDoc, Events.player.onSendMailSuccess, data, callback)
-}
-
-/**
  * 获取玩家邮件成功
  * @param playerDoc
  * @param fromIndex

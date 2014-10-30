@@ -1,5 +1,7 @@
 "use strict"
 
+//TRACE, DEBUG, INFO, WARN, ERROR, FATAL
+
 var pomelo = require("pomelo")
 var redis = require("redis")
 var mongoose = require("mongoose")

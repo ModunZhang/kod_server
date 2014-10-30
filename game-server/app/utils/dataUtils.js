@@ -1212,11 +1212,12 @@ Utils.getDragonSkillMaxLevel = function(skill){
 /**
  * 强化龙的装备
  * @param playerDoc
+ * @param playerData
  * @param dragonType
  * @param category
  * @param equipments
  */
-Utils.enhanceDragonEquipment = function(playerDoc, dragonType, category, equipments){
+Utils.enhanceDragonEquipment = function(playerDoc, playerData, dragonType, category, equipments){
 	var dragon = playerDoc.dragons[dragonType]
 	var equipmentInDragon = dragon.equipments[category]
 	var config = DragonEquipmentConfig[equipmentInDragon.name]
@@ -1240,8 +1241,10 @@ Utils.enhanceDragonEquipment = function(playerDoc, dragonType, category, equipme
 	equipmentInDragon.star = currentStar
 	equipmentInDragon.exp = currentExp
 
+	playerData.dragonEquipments = {}
 	_.each(equipments, function(equipment){
 		playerDoc.dragonEquipments[equipment.name] -= equipment.count
+		playerData.dragonEquipments[equipment.name] = playerDoc.dragonEquipments[equipment.name]
 	})
 }
 
@@ -1499,12 +1502,12 @@ Utils.getAllianceBuildingUpgradeRequired = function(buildingName, buildingLevel)
 
 /**
  * 获取升级联盟村落所需要的资源
- * @param allianceType
- * @param allianceLevel
+ * @param villageType
+ * @param villageLevel
  * @returns {{honour: (needHonour|*)}}
  */
-Utils.getAllianceVillageUpgradeRequired = function(allianceType, allianceLevel){
-	var config = AllianceVillageConfig[allianceType][allianceLevel]
+Utils.getAllianceVillageUpgradeRequired = function(villageType, villageLevel){
+	var config = AllianceVillageConfig[villageType][villageLevel]
 	var required = {
 		honour:config.needHonour
 	}
@@ -1549,12 +1552,26 @@ Utils.getEditAllianceTerrianHonour = function(){
 	return AllianceInit.resource.editAllianceTerrian.honour
 }
 
+/**
+ * 获取村落配置
+ * @returns {*}
+ */
 Utils.getAllianceVillageTypeConfigs = function(){
 	var config = AllianceInit.buildingType
 	var villages = _.filter(config, function(configObj){
 		return _.isEqual(configObj.category, "village")
 	})
 	return villages
+}
+
+/**
+ * 村落类型是否合法
+ * @param villageType
+ * @returns {*}
+ */
+Utils.isAllianceVillageTypeLegal = function(villageType){
+	var keys = _.keys(AllianceVillageConfig)
+	return _.contains(keys, villageType)
 }
 
 /**
