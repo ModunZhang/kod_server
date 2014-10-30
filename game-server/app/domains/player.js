@@ -449,6 +449,17 @@ var playerSchema = new Schema({
 		toName:{type:String, required:true},
 		content:{type:String, required:true},
 		sendTime:{type:Number, required:true}
+	}],
+	spyVillageReports:[{
+		_id:false,
+		id:{type:String, required:true},
+		villageType:{type:String, required:true},
+		location:{
+			x:{type:Number, required:true},
+			y:{type:Number, require:true}
+		},
+		spyTime:{type:Number, required:true},
+		
 	}]
 })
 
