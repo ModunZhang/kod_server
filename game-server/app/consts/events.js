@@ -28,11 +28,7 @@ module.exports = {
 		onGetSavedMailsSuccess:"onGetSavedMailsSuccess"
 	},
 	alliance:{
-		onAllianceDataChanged:"onAllianceDataChanged",
-		onAllianceMemberDataChanged:"onAllianceMemberDataChanged",
-		onAllianceBasicInfoAndMemberDataChanged:"onAllianceBasicInfoAndMemberDataChanged",
-		onAllianceNewEventReceived:"onAllianceNewEventReceived",
-		onAllianceHelpEventChanged:"onAllianceHelpEventChanged"
+		onAllianceDataChanged:"onAllianceDataChanged"
 	},
 	chat:{
 		onChat:"onChat",

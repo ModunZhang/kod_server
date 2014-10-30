@@ -10,6 +10,7 @@ var _ = require("underscore")
 var Utils = require("../../../utils/utils")
 var DataUtis = require("../../../utils/dataUtils")
 var LogicUtils = require("../../../utils/logicUtils")
+var Consts = require("../../../consts/consts")
 
 var Player = require("../../../domains/player")
 
@@ -57,7 +58,6 @@ pro.reset = function(uid, callback){
 		newPlayer._id = doc._id
 		newPlayer.__v = doc.__v
 		newPlayer.logicServerId = doc.logicServerId
-		newPlayer.eventServerId = doc.eventServerId
 		newPlayer.countInfo.deviceId = doc.countInfo.deviceId
 		newPlayer.basicInfo.name = doc.basicInfo.name
 		newPlayer.basicInfo.cityName = doc.basicInfo.cityName
@@ -894,7 +894,13 @@ pro.donatelevel = function(uid, donatelevel, callback){
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, uid])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceMemberDataChangedAsync, allianceDoc, docInAlliance])
+		var allianceData = {}
+		allianceData.__members = [{
+			type:Consts.DataChangedType.Edit,
+			data:docInAlliance
+		}]
+
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

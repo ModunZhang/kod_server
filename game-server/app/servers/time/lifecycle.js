@@ -15,6 +15,7 @@ var AllianceDao = require("../../dao/allianceDao")
 var PlayerDao = require("../../dao/playerDao")
 var DbUtils = Promise.promisifyAll(require("../../utils/dbUtils"))
 var LogicUtils = require("../../utils/logicUtils")
+var DataUtils = require("../../utils/dataUtils")
 var Consts = require("../../consts/consts")
 
 var life = module.exports
