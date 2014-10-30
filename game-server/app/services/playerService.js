@@ -1281,6 +1281,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 
 		if(finishNow){
 			playerDoc.soldiers[soldierName] += count
+			playerData.soldiers = {}
 			playerData.soldiers[soldierName] = playerDoc.soldiers[soldierName]
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onRecruitSoldierSuccessAsync, playerDoc, soldierName, count])
@@ -1397,6 +1398,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 
 		if(finishNow){
 			playerDoc.soldiers[soldierName] += count
+			playerData.soldiers = {}
 			playerData.soldiers[soldierName] = playerDoc.soldiers[soldierName]
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onRecruitSoldierSuccessAsync, playerDoc, soldierName, count])
@@ -1500,6 +1502,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 
 		if(finishNow){
 			playerDoc.dragonEquipments[equipmentName] += 1
+			playerData.dragonEquipments = {}
 			playerData.dragonEquipments[equipmentName] = playerDoc.dragonEquipments[equipmentName]
 			pushFuncs.push([self.pushService, self.pushService.onMakeDragonEquipmentSuccessAsync, playerDoc, equipmentName])
 		}else{
@@ -1610,8 +1613,10 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		if(finishNow){
 			_.each(soldiers, function(soldier){
 				playerDoc.soldiers[soldier.name] += soldier.count
+				playerData.soldiers = {}
 				playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
 				playerDoc.treatSoldiers[soldier.name] -= soldier.count
+				playerData.treatSoldiers = {}
 				playerData.treatSoldiers[soldier.name] = playerDoc.treatSoldiers[soldier.name]
 			})
 			LogicUtils.refreshPlayerPower(playerDoc)
@@ -1619,6 +1624,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		}else{
 			_.each(soldiers, function(soldier){
 				playerDoc.treatSoldiers[soldier.name] -= soldier.count
+				playerData.treatSoldiers = {}
 				playerData.treatSoldiers[soldier.name] = playerDoc.treatSoldiers[soldier.name]
 			})
 			var finishTime = Date.now() + (treatRequired.treatTime * 1000)
