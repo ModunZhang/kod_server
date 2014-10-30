@@ -455,6 +455,7 @@ var playerSchema = new Schema({
 		id:{type:String, required:true},
 		reportLevel:{type:Number, required:true},
 		villageType:{type:String, required:true},
+		villageLevel:{type:Number, required:true},
 		location:{
 			x:{type:Number, required:true},
 			y:{type:Number, require:true}

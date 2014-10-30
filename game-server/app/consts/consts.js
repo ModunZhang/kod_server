@@ -120,6 +120,11 @@ module.exports = {
 		Shop:"shop"//联盟商店
 	},
 	AllianceSpyReportLevel:{
-
+		E:1,
+		D:2,
+		C:3,
+		B:4,
+		A:5,
+		S:6
 	}
 }
