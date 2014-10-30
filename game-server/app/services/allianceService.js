@@ -1640,12 +1640,12 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		var removeRequestEvent = function(event){
 			return self.allianceDao.findByIdAsync(event.id).then(function(doc){
 				if(!_.isObject(doc)){
-					return Promise.reject(new Error("联盟不存在"))
+					return Promise.resolve()
 				}
 				requestedAllianceDocs.push(doc)
 				var joinRequestEvent = LogicUtils.getPlayerRequestEventAtAlliance(doc, playerId)
 				if(!_.isObject(joinRequestEvent)){
-					return Promise.reject(new Error("玩家请求事件不存在"))
+					return Promise.resolve()
 				}
 				LogicUtils.removeItemInArray(doc.joinRequestEvents, joinRequestEvent)
 				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, doc])
@@ -1676,6 +1676,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 				LogicUtils.sendSystemMail(doc, docData, titleKey, [], contentKey, [playerDoc.basicInfo.name])
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, docData])
+				return Promise.resolve()
 			})
 		}
 		_.each(playerDoc.inviteToAllianceEvents, function(event){
@@ -1842,18 +1843,8 @@ pro.cancelJoinAllianceRequest = function(playerId, allianceId, callback){
 		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家已加入联盟"))
 		}
-		return self.allianceDao.findByIdAsync(allianceId)
-	}).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("联盟不存在"))
-		}
-		allianceDoc = doc
 		var eventInPlayer = LogicUtils.getRequestToAllianceEvent(playerDoc, allianceId)
 		if(!_.isObject(eventInPlayer)){
-			return Promise.reject(new Error("申请事件不存在"))
-		}
-		var eventInAlliance = LogicUtils.getPlayerRequestEventAtAlliance(allianceDoc, playerId)
-		if(!_.isObject(eventInAlliance)){
 			return Promise.reject(new Error("申请事件不存在"))
 		}
 		LogicUtils.removeItemInArray(playerDoc.requestToAllianceEvents, eventInPlayer)
@@ -1862,15 +1853,25 @@ pro.cancelJoinAllianceRequest = function(playerId, allianceId, callback){
 			type:Consts.DataChangedType.Remove,
 			data:eventInPlayer
 		}]
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return self.allianceDao.findByIdAsync(allianceId)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.resolve()
+		}
+		allianceDoc = doc
+		var eventInAlliance = LogicUtils.getPlayerRequestEventAtAlliance(allianceDoc, playerId)
+		if(!_.isObject(eventInAlliance)){
+			return Promise.reject(new Error("申请事件不存在"))
+		}
 		LogicUtils.removeItemInArray(allianceDoc.joinRequestEvents, eventInAlliance)
 		var allianceData = {}
 		allianceData.__joinRequestEvents = [{
 			type:Consts.DataChangedType.Remove,
 			data:eventInAlliance
 		}]
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
@@ -2025,7 +2026,7 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		var removeRequestEvent = function(event){
 			return self.allianceDao.findByIdAsync(event.id).then(function(doc){
 				if(!_.isObject(doc)){
-					return Promise.reject(new Error("联盟不存在"))
+					return Promise.resolve()
 				}
 				requestedAllianceDocs.push(doc)
 				var joinRequestEvent = LogicUtils.getPlayerRequestEventAtAlliance(doc, memberId)
@@ -2234,6 +2235,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 	var inviterDocs = []
 	var pushFuncs = []
 	var updateFuncs = []
+	var playerData = {}
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
@@ -2247,23 +2249,29 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			return Promise.reject(new Error("邀请事件不存在"))
 		}
 		inviteEvent = event
+		LogicUtils.removeItemInArray(playerDoc.inviteToAllianceEvents, inviteEvent)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		if(!agree){
+			playerData.__inviteToAllianceEvents = [{
+				type:Consts.DataChangedType.Remove,
+				data:inviteEvent
+			}]
+		}
+
 		var funcs = []
 		funcs.push(self.allianceDao.findByIdAsync(allianceId))
 		funcs.push(self.playerDao.findByIdAsync(inviteEvent.inviterId))
 		return Promise.all(funcs)
 	}).spread(function(theAllianceDoc, theInviterDoc){
 		if(!_.isObject(theAllianceDoc)){
-			return Promise.reject(new Error("联盟不存在"))
+			return Promise.resolve()
 		}
 		allianceDoc = theAllianceDoc
 		if(!_.isObject(theInviterDoc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		inviterDoc = theInviterDoc
-		var playerData = {}
-		LogicUtils.removeItemInArray(playerDoc.inviteToAllianceEvents, inviteEvent)
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 
 		var titleKeyApproved = Localizations.Alliance.InviteApprovedTitle
 		var titleKeyRejected = Localizations.Alliance.InviteRejectedTitle
@@ -2277,10 +2285,6 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, inviterDoc, inviterData])
 
 		if(!agree){
-			playerData.__inviteToAllianceEvents = [{
-				type:Consts.DataChangedType.Remove,
-				data:inviteEvent
-			}]
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			return Promise.resolve()
 		}
@@ -2321,7 +2325,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		var removeRequestEvent = function(event){
 			return self.allianceDao.findByIdAsync(event.id).then(function(doc){
 				if(!_.isObject(doc)){
-					return Promise.reject(new Error("联盟不存在"))
+					return Promise.resolve()
 				}
 				requestedAllianceDocs.push(doc)
 				var joinRequestEvent = LogicUtils.getPlayerRequestEventAtAlliance(doc, playerId)
