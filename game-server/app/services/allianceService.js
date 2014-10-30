@@ -2911,6 +2911,7 @@ pro.donateToAlliance = function(playerId, donateType, callback){
 		var playerData = {}
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resouces
+		playerData.allianceInfo = playerDoc.allianceInfo
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
 		allianceData.__members = [{
