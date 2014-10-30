@@ -544,15 +544,15 @@ Utils.getTowerByEvent = function(playerDoc, towerEvent){
 }
 
 /**
- * 移除所有事件数组中指定的事件数组
- * @param eventsTobeRemoved
- * @param allEvents
+ * 移除数组中指定的元素
+ * @param array
+ * @param items
  */
-Utils.removeEvents = function(eventsTobeRemoved, allEvents){
-	for(var i = 0; i < eventsTobeRemoved.length; i++){
-		for(var j = 0; j < allEvents.length; j++){
-			if(_.isEqual(allEvents[j], eventsTobeRemoved[i])){
-				allEvents.splice(j, 1)
+Utils.removeItemsInArray = function(array, items){
+	for(var i = 0; i < items.length; i++){
+		for(var j = 0; j < array.length; j++){
+			if(_.isEqual(array[j], items[i])){
+				array.splice(j, 1)
 				break
 			}
 		}
