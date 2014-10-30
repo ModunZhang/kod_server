@@ -107,8 +107,13 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 
 		var alliance = {
 			basicInfo:{
-				name:name, tag:tag, language:language, terrain:terrain, flag:flag
-			}, members:[]
+				name:name,
+				tag:tag,
+				language:language,
+				terrain:terrain,
+				flag:flag
+			},
+			members:[]
 		}
 		var mapObjects = MapUtils.create()
 		alliance.mapObjects = mapObjects
@@ -245,12 +250,14 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		if(playerDoc.sendMails.length >= Define.PlayerMailSendboxMessageMaxSize){
 			var sendMail = playerDoc.sendMails.shift()
 			playerData.__sendMails.push({
-				type:Consts.DataChangedType.Remove, data:sendMail
+				type:Consts.DataChangedType.Remove,
+				data:sendMail
 			})
 		}
 		playerDoc.sendMails.push(mailToPlayer)
 		playerData.__sendMails.push({
-			type:Consts.DataChangedType.Add, data:mailToPlayer
+			type:Consts.DataChangedType.Add,
+			data:mailToPlayer
 		})
 
 		playerData.__mails = []
@@ -258,17 +265,20 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 			var mail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
 			LogicUtils.removeItemInArray(playerDoc.mails, mail)
 			playerData.__mails.push({
-				type:Consts.DataChangedType.Remove, data:mail
+				type:Consts.DataChangedType.Remove,
+				data:mail
 			})
 			if(!!mail.isSaved){
 				playerData.__savedMails = [{
-					type:Consts.DataChangedType.Remove, data:mail
+					type:Consts.DataChangedType.Remove,
+					data:mail
 				}]
 			}
 		}
 		playerDoc.mails.push(mailToMember)
 		playerData.__mails.push({
-			type:Consts.DataChangedType.Add, data:mailToMember
+			type:Consts.DataChangedType.Add,
+			data:mailToMember
 		})
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
@@ -583,25 +593,29 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		if(isNameChanged){
 			event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Name, playerDoc.basicInfo.name, [allianceDoc.basicInfo.name])
 			allianceData.__events.push({
-				type:Consts.DataChangedType.Add, data:event
+				type:Consts.DataChangedType.Add,
+				data:event
 			})
 		}
 		if(isTagChanged){
 			event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Tag, playerDoc.basicInfo.name, [allianceDoc.basicInfo.tag])
 			allianceData.__events.push({
-				type:Consts.DataChangedType.Add, data:event
+				type:Consts.DataChangedType.Add,
+				data:event
 			})
 		}
 		if(isFlagChanged){
 			event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Flag, playerDoc.basicInfo.name, [allianceDoc.basicInfo.flag])
 			allianceData.__events.push({
-				type:Consts.DataChangedType.Add, data:event
+				type:Consts.DataChangedType.Add,
+				data:event
 			})
 		}
 		if(isLanguageChanged){
 			event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Language, playerDoc.basicInfo.name, [allianceDoc.basicInfo.language])
 			allianceData.__events.push({
-				type:Consts.DataChangedType.Add, data:event
+				type:Consts.DataChangedType.Add,
+				data:event
 			})
 		}
 		var playerData = {}
@@ -725,7 +739,8 @@ pro.editAllianceTerrian = function(playerId, terrain, callback){
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
 		allianceData.__events = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
@@ -909,7 +924,8 @@ pro.editAllianceNotice = function(playerId, notice, callback){
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Notice, playerDoc.basicInfo.name, [])
 		allianceData.notice = allianceDoc.notice
 		allianceData.__events = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		var funcs = []
 		funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
@@ -981,7 +997,8 @@ pro.editAllianceDescription = function(playerId, description, callback){
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Desc, playerDoc.basicInfo.name, [])
 		allianceData.desc = allianceDoc.desc
 		allianceData.__events = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 
 		var funcs = []
@@ -1154,10 +1171,12 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 		memberData.alliance = memberDoc.alliance
 		var allianceData = {}
 		allianceData.__members = [{
-			type:Consts.DataChangedType.Edit, data:memberInAllianceDoc
+			type:Consts.DataChangedType.Edit,
+			data:memberInAllianceDoc
 		}]
 		allianceData.__events = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
@@ -1264,7 +1283,8 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		_.each(helpEvents, function(helpEvent){
 			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 			allianceData.__helpEvents.push({
-				type:Consts.DataChangedType.Remove, data:helpEvent
+				type:Consts.DataChangedType.Remove,
+				data:helpEvent
 			})
 		})
 
@@ -1273,13 +1293,15 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		memberData.alliance = {}
 		LogicUtils.removeItemInArray(allianceDoc.members, memberInAllianceDoc)
 		allianceData.__members = [{
-			type:Consts.DataChangedType.Remove, data:memberInAllianceDoc
+			type:Consts.DataChangedType.Remove,
+			data:memberInAllianceDoc
 		}]
 		LogicUtils.refreshAlliance(allianceDoc)
 		allianceData.basicInfo = allianceDoc.basicInfo
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Kick, memberInAllianceDoc.name, [])
 		allianceData.__events = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.leaveAsync, Consts.AllianceChannelPrefix + allianceDoc._id, memberDoc._id, memberDoc.logicServerId])
@@ -1374,7 +1396,8 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 		var playerInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		playerInAllianceDoc.title = Consts.AllianceTitle.Member
 		allianceData.__members.push({
-			type:Consts.DataChangedType.Edit, data:playerInAllianceDoc
+			type:Consts.DataChangedType.Edit,
+			data:playerInAllianceDoc
 		})
 		playerDoc.alliance.title = Consts.AllianceTitle.Member
 		playerDoc.alliance.titleName = allianceDoc.titles.member
@@ -1382,7 +1405,8 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 		playerData.alliance = playerDoc.alliance
 		memberInAllianceDoc.title = Consts.AllianceTitle.Archon
 		allianceData.__members.push({
-			type:Consts.DataChangedType.Edit, data:memberInAllianceDoc
+			type:Consts.DataChangedType.Edit,
+			data:memberInAllianceDoc
 		})
 		memberDoc.alliance.title = Consts.AllianceTitle.Archon
 		memberDoc.alliance.titleName = allianceDoc.titles.archon
@@ -1390,7 +1414,8 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 		memberData.alliance = memberDoc.alliance
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.HandOver, memberDoc.basicInfo.name, [])
 		allianceData.__events = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
@@ -1473,19 +1498,22 @@ pro.quitAlliance = function(playerId, callback){
 		_.each(helpEvents, function(helpEvent){
 			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 			allianceData.__helpEvents.push({
-				type:Consts.DataChangedType.Remove, data:helpEvent
+				type:Consts.DataChangedType.Remove,
+				data:helpEvent
 			})
 		})
 		playerInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		LogicUtils.removeItemInArray(allianceDoc.members, playerInAlliance)
 		allianceData.__members = [{
-			type:Consts.DataChangedType.Remove, data:playerInAlliance
+			type:Consts.DataChangedType.Remove,
+			data:playerInAlliance
 		}]
 		LogicUtils.refreshAlliance(allianceDoc)
 		allianceData.basicInfo = allianceDoc.basicInfo
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Quit, playerInAlliance.name, [])
 		allianceData.__events = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		playerDoc.alliance = null
 		var playerData = {}
@@ -1581,13 +1609,15 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		var memberInAlliance = LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member, memberRect)
 		var allianceData = {}
 		allianceData.__members = [{
-			type:Consts.DataChangedType.Add, data:memberInAlliance
+			type:Consts.DataChangedType.Add,
+			data:memberInAlliance
 		}]
 		LogicUtils.refreshAlliance(allianceDoc)
 		allianceData.basicInfo = allianceDoc.basicInfo
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 		allianceData.__events = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 
@@ -1621,7 +1651,8 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, doc])
 				var docData = {}
 				docData.__joinRequestEvents = [{
-					type:Consts.DataChangedType.Remove, data:joinRequestEvent
+					type:Consts.DataChangedType.Remove,
+					data:joinRequestEvent
 				}]
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, doc, docData])
 				return Promise.resolve()
@@ -1737,15 +1768,18 @@ pro.requestToJoinAlliance = function(playerId, allianceId, callback){
 		var requestTime = Date.now()
 		var joinRequestEvent = LogicUtils.addAllianceRequestEvent(allianceDoc, playerDoc, requestTime)
 		allianceData.__joinRequestEvents = [{
-			type:Consts.DataChangedType.Add, data:joinRequestEvent
+			type:Consts.DataChangedType.Add,
+			data:joinRequestEvent
 		}]
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Request, playerDoc.basicInfo.name, [])
 		allianceData.__events = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		var requestToAllianceEvent = LogicUtils.addPlayerJoinAllianceEvent(playerDoc, allianceDoc, requestTime)
 		playerData.__requestToAllianceEvents = [{
-			type:Consts.DataChangedType.Add, data:requestToAllianceEvent
+			type:Consts.DataChangedType.Add,
+			data:requestToAllianceEvent
 		}]
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
@@ -1825,12 +1859,14 @@ pro.cancelJoinAllianceRequest = function(playerId, allianceId, callback){
 		LogicUtils.removeItemInArray(playerDoc.requestToAllianceEvents, eventInPlayer)
 		var playerData = {}
 		playerData.__requestToAllianceEvents = [{
-			type:Consts.DataChangedType.Remove, data:eventInPlayer
+			type:Consts.DataChangedType.Remove,
+			data:eventInPlayer
 		}]
 		LogicUtils.removeItemInArray(allianceDoc.joinRequestEvents, eventInAlliance)
 		var allianceData = {}
 		allianceData.__joinRequestEvents = [{
-			type:Consts.DataChangedType.Remove, data:eventInAlliance
+			type:Consts.DataChangedType.Remove,
+			data:eventInAlliance
 		}]
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
@@ -1943,10 +1979,12 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		if(!agree){
 			memberData.__requestToAllianceEvents = [{
-				type:Consts.DataChangedType.Remove, data:eventInMember
+				type:Consts.DataChangedType.Remove,
+				data:eventInMember
 			}]
 			allianceData.__joinRequestEvents = [{
-				type:Consts.DataChangedType.Remove, data:eventInAlliance
+				type:Consts.DataChangedType.Remove,
+				data:eventInAlliance
 			}]
 			return Promise.resolve()
 		}
@@ -1958,13 +1996,15 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		mapObjects.push(memberObjInMap)
 		var memberInAlliance = LogicUtils.addAllianceMember(allianceDoc, memberDoc, Consts.AllianceTitle.Member, memberRect)
 		allianceData.__members = [{
-			type:Consts.DataChangedType.Add, data:memberInAlliance
+			type:Consts.DataChangedType.Add,
+			data:memberInAlliance
 		}]
 		LogicUtils.refreshAlliance(allianceDoc)
 		allianceData.basicInfo = allianceDoc.basicInfo
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, memberDoc.basicInfo.name, [])
 		allianceData.__events = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		if(!_.isEmpty(memberDoc.logicServerId)){
 			updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, memberDoc._id, memberDoc.logicServerId])
@@ -1994,7 +2034,8 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 				LogicUtils.removeItemInArray(doc.joinRequestEvents, joinRequestEvent)
 				var docData = {}
 				docData.__joinRequestEvents = [{
-					type:Consts.DataChangedType.Remove, data:joinRequestEvent
+					type:Consts.DataChangedType.Remove,
+					data:joinRequestEvent
 				}]
 				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, doc])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, doc, docData])
@@ -2125,7 +2166,8 @@ pro.inviteToJoinAlliance = function(playerId, memberId, callback){
 		var memberData = {}
 		var inviteToAllianceEvent = LogicUtils.addPlayerInviteAllianceEvent(playerDoc._id, memberDoc, allianceDoc, inviteTime)
 		memberData.__inviteToAllianceEvents = [{
-			type:Consts.DataChangedType.Add, data:inviteToAllianceEvent
+			type:Consts.DataChangedType.Add,
+			data:inviteToAllianceEvent
 		}]
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
@@ -2235,7 +2277,8 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 
 		if(!agree){
 			playerData.__inviteToAllianceEvents = [{
-				type:Consts.DataChangedType.Remove, data:inviteEvent
+				type:Consts.DataChangedType.Remove,
+				data:inviteEvent
 			}]
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			return Promise.resolve()
@@ -2249,13 +2292,15 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		mapObjects.push(memberObjInMap)
 		var memberInAlliance = LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member, memberRect)
 		allianceData.__members = [{
-			type:Consts.DataChangedType.Add, data:memberInAlliance
+			type:Consts.DataChangedType.Add,
+			data:memberInAlliance
 		}]
 		LogicUtils.refreshAlliance(allianceDoc)
 		allianceData.basicInfo = allianceDoc.basicInfo
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 		allianceData.__events = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
@@ -2285,7 +2330,8 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 				LogicUtils.removeItemInArray(doc.joinRequestEvents, joinRequestEvent)
 				var docData = {}
 				docData.__joinRequestEvents = [{
-					type:Consts.DataChangedType.Remove, data:joinRequestEvent
+					type:Consts.DataChangedType.Remove,
+					data:joinRequestEvent
 				}]
 				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, doc])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, doc, docData])
@@ -2410,7 +2456,8 @@ pro.buyAllianceArchon = function(playerId, callback){
 		var playerInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		playerInAllianceDoc.title = Consts.AllianceTitle.Archon
 		allianceData.__members.push({
-			type:Consts.DataChangedType.Edit, data:playerInAllianceDoc
+			type:Consts.DataChangedType.Edit,
+			data:playerInAllianceDoc
 		})
 		playerDoc.alliance.title = Consts.AllianceTitle.Archon
 		playerDoc.alliance.titleName = allianceDoc.titles.archon
@@ -2419,7 +2466,8 @@ pro.buyAllianceArchon = function(playerId, callback){
 		playerData.resources = playerDoc.resources
 		archonDocInAlliance.title = Consts.AllianceTitle.Member
 		allianceData.__members.push({
-			type:Consts.DataChangedType.Edit, data:archonDocInAlliance
+			type:Consts.DataChangedType.Edit,
+			data:archonDocInAlliance
 		})
 		archonDoc.alliance.title = Consts.AllianceTitle.Member
 		archonDoc.alliance.titleName = allianceDoc.titles.member
@@ -2427,7 +2475,8 @@ pro.buyAllianceArchon = function(playerId, callback){
 		archonData.alliance = archonDoc.alliance
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.HandOver, playerDoc.basicInfo.name, [])
 		allianceData.__events = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, archonDoc])
@@ -2518,7 +2567,8 @@ pro.requestAllianceToSpeedUp = function(playerId, eventType, eventId, callback){
 		var event = LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, building.level + 1, eventType, buildingName, buildEvent.id)
 		var allianceData = {}
 		allianceData.__helpEvents = [{
-			type:Consts.DataChangedType.Add, data:event
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
@@ -2621,7 +2671,8 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 			_.extend(memberData, params.playerData)
 			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 			allianceData.__helpEvents = [{
-				type:Consts.DataChangedType.Remove, data:helpEvent
+				type:Consts.DataChangedType.Remove,
+				data:helpEvent
 			}]
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
@@ -2634,11 +2685,13 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 			if(helpEvent.helpedMembers.length >= helpEvent.maxHelpCount){
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 				allianceData.__helpEvents = [{
-					type:Consts.DataChangedType.Remove, data:helpEvent
+					type:Consts.DataChangedType.Remove,
+					data:helpEvent
 				}]
 			}else{
 				allianceData.__helpEvents = [{
-					type:Consts.DataChangedType.Edit, data:helpEvent
+					type:Consts.DataChangedType.Edit,
+					data:helpEvent
 				}]
 			}
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
@@ -2743,7 +2796,8 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 						_.extend(memberData, params.playerData)
 						LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 						allianceData.__helpEvents.push({
-							type:Consts.DataChangedType.Remove, data:helpEvent
+							type:Consts.DataChangedType.Remove,
+							data:helpEvent
 						})
 					}else{
 						eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, buildEvent.id, newFinishTime])
@@ -2753,11 +2807,13 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 						if(helpEvent.helpedMembers.length >= helpEvent.maxHelpCount){
 							LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 							allianceData.__helpEvents.push({
-								type:Consts.DataChangedType.Remove, data:helpEvent
+								type:Consts.DataChangedType.Remove,
+								data:helpEvent
 							})
 						}else{
 							allianceData.__helpEvents.push({
-								type:Consts.DataChangedType.Edit, data:helpEvent
+								type:Consts.DataChangedType.Edit,
+								data:helpEvent
 							})
 						}
 					}
@@ -2870,7 +2926,8 @@ pro.donateToAlliance = function(playerId, donateType, callback){
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
 		allianceData.__members = [{
-			type:Consts.DataChangedType.Edit, data:memberDocInAlliance
+			type:Consts.DataChangedType.Edit,
+			data:memberDocInAlliance
 		}]
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])

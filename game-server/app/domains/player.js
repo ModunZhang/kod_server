@@ -161,7 +161,7 @@ var playerSchema = new Schema({
 		}],
 		finishTime:{type:Number, required:true}
 	}],
-	oldierMaterials:{
+	soldierMaterials:{
 		deathHand:{type:Number, required:true, default:SoldierMaterialInitData.deathHand},
 		heroBones:{type:Number, required:true, default:SoldierMaterialInitData.heroBones},
 		soulStone:{type:Number, required:true, default:SoldierMaterialInitData.soulStone},
@@ -384,7 +384,9 @@ var playerSchema = new Schema({
 		location:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
-	wall:{level:{type:Number, required:true, default:1}},
+	wall:{
+		level:{type:Number, required:true, default:1}
+	},
 	wallEvents:[{
 		_id:false,
 		id:{type:String, required:true},
