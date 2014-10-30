@@ -2265,7 +2265,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		return Promise.all(funcs)
 	}).spread(function(theAllianceDoc, theInviterDoc){
 		if(!_.isObject(theAllianceDoc)){
-			return Promise.resolve()
+			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = theAllianceDoc
 		if(!_.isObject(theInviterDoc)){
