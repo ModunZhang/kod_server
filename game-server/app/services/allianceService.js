@@ -1296,6 +1296,15 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 			type:Consts.DataChangedType.Remove,
 			data:memberInAllianceDoc
 		}]
+		var memberObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, memberInAllianceDoc.location)
+		if(!_.isObject(memberObjectInMap)){
+			return Promise.reject(new Error("玩家不在联盟地图中"))
+		}
+		LogicUtils.removeItemInArray(allianceDoc.mapObjects, memberObjectInMap)
+		allianceData.__mapObjects = [{
+			type:Consts.DataChangedType.Remove,
+			data:memberObjectInMap
+		}]
 		LogicUtils.refreshAlliance(allianceDoc)
 		allianceData.basicInfo = allianceDoc.basicInfo
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Kick, memberInAllianceDoc.name, [])
@@ -1468,7 +1477,7 @@ pro.quitAlliance = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
-	var playerInAlliance = null
+	var playerDocInAlliance = null
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
@@ -1502,15 +1511,24 @@ pro.quitAlliance = function(playerId, callback){
 				data:helpEvent
 			})
 		})
-		playerInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
-		LogicUtils.removeItemInArray(allianceDoc.members, playerInAlliance)
+		playerDocInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		LogicUtils.removeItemInArray(allianceDoc.members, playerDocInAlliance)
 		allianceData.__members = [{
 			type:Consts.DataChangedType.Remove,
-			data:playerInAlliance
+			data:playerDocInAlliance
+		}]
+		var playerObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, playerDocInAlliance.location)
+		if(!_.isObject(playerObjectInMap)){
+			return Promise.reject(new Error("玩家不在联盟地图中"))
+		}
+		LogicUtils.removeItemInArray(allianceDoc.mapObjects, playerObjectInMap)
+		allianceData.__mapObjects = [{
+			type:Consts.DataChangedType.Remove,
+			data:playerObjectInMap
 		}]
 		LogicUtils.refreshAlliance(allianceDoc)
 		allianceData.basicInfo = allianceDoc.basicInfo
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Quit, playerInAlliance.name, [])
+		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Quit, playerDocInAlliance.name, [])
 		allianceData.__events = [{
 			type:Consts.DataChangedType.Add,
 			data:event

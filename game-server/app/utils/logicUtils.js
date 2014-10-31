@@ -1271,6 +1271,20 @@ Utils.getFreePointInAllianceMap = function(mapObjects, width, height){
 }
 
 /**
+ * 根据坐标获取联盟地图中的对象
+ * @param allianceDoc
+ * @param location
+ * @returns {*}
+ */
+Utils.getAllianceMapObjectByLocation = function(allianceDoc, location){
+	for(var i = 0; i < allianceDoc.mapObjects.length; i ++){
+		var mapObject = allianceDoc.mapObjects[i]
+		if(_.isEqual(mapObject.location, location)) return mapObject
+	}
+	return null
+}
+
+/**
  * 创建联盟建筑对象
  * @param buildingType
  * @param rect
