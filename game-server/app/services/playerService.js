@@ -1794,6 +1794,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		var energyNeed = 100 - dragon.vitality
 		if(playerDoc.resources.energy >= energyNeed){
 			dragon.star = 1
+			dragon.level = 1
 			dragon.vitality = DataUtils.getDragonMaxVitality(playerDoc, dragon)
 			dragon.strength = DataUtils.getDragonStrength(playerDoc, dragon)
 			playerDoc.resources.energy -= energyNeed
