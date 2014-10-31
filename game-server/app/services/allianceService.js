@@ -2672,6 +2672,9 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 		if(!!_.contains(helpEvent.helpedMembers, playerId)){
 			return Promise.reject("玩家已经帮助过此事件了")
 		}
+		if(helpEvent.helpedMembers.length >= helpEvent.maxHelpCount){
+			return Promise.reject("帮助事件已达到最大帮助次数")
+		}
 		return self.playerDao.findByIdAsync(helpEvent.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
@@ -2706,18 +2709,10 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 			var eventsInfo = LogicUtils.getPlayerBuildEvents(memberDoc, helpEvent.helpEventType)
 			_.extend(memberData, eventsInfo)
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
-			if(helpEvent.helpedMembers.length >= helpEvent.maxHelpCount){
-				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-				allianceData.__helpEvents = [{
-					type:Consts.DataChangedType.Remove,
-					data:helpEvent
-				}]
-			}else{
-				allianceData.__helpEvents = [{
-					type:Consts.DataChangedType.Edit,
-					data:helpEvent
-				}]
-			}
+			allianceData.__helpEvents = [{
+				type:Consts.DataChangedType.Edit,
+				data:helpEvent
+			}]
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
@@ -2793,7 +2788,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 		allianceData.__helpEvents = []
 		var speedUp = function(memberId, helpEvents){
 			var needHelpedEvents = _.filter(helpEvents, function(helpEvent){
-				return !_.contains(helpEvent.helpedMembers, playerId)
+				return !_.contains(helpEvent.helpedMembers, playerId) && helpEvent.helpedMembers.length < helpEvent.maxHelpCount
 			})
 			if(needHelpedEvents.length <= 0) return Promise.resolve()
 			return self.playerDao.findByIdAsync(memberId).then(function(doc){
@@ -2828,18 +2823,10 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 						buildEvent.finishTime = newFinishTime
 						var eventsInfo = LogicUtils.getPlayerBuildEvents(memberDoc, helpEvent.helpEventType)
 						_.extend(memberData, eventsInfo)
-						if(helpEvent.helpedMembers.length >= helpEvent.maxHelpCount){
-							LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-							allianceData.__helpEvents.push({
-								type:Consts.DataChangedType.Remove,
-								data:helpEvent
-							})
-						}else{
-							allianceData.__helpEvents.push({
-								type:Consts.DataChangedType.Edit,
-								data:helpEvent
-							})
-						}
+						allianceData.__helpEvents.push({
+							type:Consts.DataChangedType.Edit,
+							data:helpEvent
+						})
 					}
 				}
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
