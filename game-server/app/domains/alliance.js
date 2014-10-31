@@ -103,6 +103,7 @@ var allianceSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		type:{type:String, required:true},
+		level:{type:Number, required:true},
 		soldiers:[
 			{
 				_id:false,
@@ -156,16 +157,24 @@ var allianceSchema = new Schema({
 		},
 		dragion:{
 			type:{type:String, required:true},
+			level:{type:Number, required:true},
 			strength:{type:Number, required:true},
 			vitality:{type:Number, required:true}
 		},
 		targetType:{type:String, required:true},
 		targetId:{type:String, required:true},
+		targetLevel:{type:String, required:true},
 		targetLocation:{
 			x:{type:Number, required:true},
 			y:{type:Number, required:true}
 		},
 		finishTime:{type:Number, required:true}
+	}],
+	collectEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		villageId:{type:Number, required:true},
+		startTime:{type:Number, required:true}
 	}]
 })
 

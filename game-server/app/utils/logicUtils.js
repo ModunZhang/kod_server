@@ -1302,39 +1302,15 @@ Utils.createAllianceMapObject = function(buildingType, rect){
 }
 
 /**
- * 获取玩家行军时间
- * @param playerDoc
- * @param fromLocation
- * @param toLocation
- * @returns {number}
+ * 联盟某个村落是否真正被采集
+ * @param allianceDoc
+ * @param villageId
+ * @returns {boolean}
  */
-Utils.getPlayerSpyTime = function(playerDoc, fromLocation, toLocation){
-	return 30
-}
-
-/**
- * 创建侦查村落事件
- * @param playerDoc
- * @param playerInAlliance
- * @param playerDragon
- * @param villageInAlliance
- * @returns {*}
- */
-Utils.createAllianceSpyVillageEvent = function(playerDoc, playerInAlliance, playerDragon, villageInAlliance){
-	var event = {
-		id:ShortId.generate(),
-		fromId:playerDoc._id,
-		fromName:playerDoc.basicInfo.name,
-		fromLocation:playerInAlliance.location,
-		dragion:{
-			type:playerDragon.type,
-			strength:playerDragon.strength,
-			vitality:playerDragon.vitality
-		},
-		targetType:villageInAlliance.type,
-		targetId:villageInAlliance.id,
-		targetLocation:villageInAlliance.location,
-		finishTime:this.getPlayerSpyTime(playerDoc, playerInAlliance.location, villageInAlliance.location)
+Utils.isAllianceVillageBeingCollect = function(allianceDoc, villageId){
+	for(var i = 0; i < allianceDoc.collectEvents.length; i ++){
+		var collectEvent = allianceDoc.collectEvents[i]
+		if(_.isEqual(collectEvent.villageId, villageId)) return true
 	}
-	return event
+	return false
 }

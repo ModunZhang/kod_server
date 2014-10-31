@@ -1589,7 +1589,7 @@ Utils.isAllianceVillageTypeLegal = function(villageType){
  * @param villageLevel
  * @returns {Array}
  */
-Utils.getVillageConfigedSoldiers = function(villageType, villageLevel){
+Utils.getAllianceVillageConfigedSoldiers = function(villageType, villageLevel){
 	var soldiers = []
 	var config = AllianceVillageConfig[villageType][villageLevel]
 	_.each(Consts.NormalSoldierType, function(soldierType){
@@ -1612,6 +1612,16 @@ Utils.getVillageConfigedSoldiers = function(villageType, villageLevel){
 }
 
 /**
+ * 获取联盟村落建筑等级
+ * @param allianceDoc
+ * @param villageType
+ * @returns {*}
+ */
+Utils.getAllianceVillageLevelByType = function(allianceDoc, villageType){
+	return allianceDoc.villageLevels[villageType]
+}
+
+/**
  * 创建联盟村落
  * @param mapObjects
  * @returns {Array}
@@ -1628,7 +1638,8 @@ Utils.createMapVillages = function(mapObjects){
 		var village = {
 			id:ShortId.generate(),
 			type:villageObject.type,
-			soldiers:self.getVillageConfigedSoldiers(villageObject.type, 1),
+			level:1,
+			soldiers:self.getAllianceVillageConfigedSoldiers(villageObject.type, 1),
 			location:villageObject.location
 		}
 		villages.push(village)
@@ -1644,4 +1655,15 @@ Utils.createMapVillages = function(mapObjects){
 Utils.getSizeInAllianceMap = function(buildingType){
 	var config = AllianceInit.buildingType[buildingType]
 	return {width:config.width, height:config.height}
+}
+
+/**
+ * 获取玩家行军时间
+ * @param playerDoc
+ * @param fromLocation
+ * @param toLocation
+ * @returns {number}
+ */
+Utils.getPlayerSpyTime = function(playerDoc, fromLocation, toLocation){
+	return 30
 }

@@ -12,6 +12,7 @@ var crypto = require("crypto")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var MarchUtils = require("../utils/marchUtils")
 var MapUtils = require("../utils/mapUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
@@ -3194,7 +3195,7 @@ pro.spyVillage = function(playerId, villageId, dragonType, callback){
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		var playerInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		var villageInAlliance = LogicUtils.getAllianceVillageById(allianceDoc, villageId)
-		var spyEvent = LogicUtils.createAllianceSpyVillageEvent(playerDoc, playerInAlliance, dragon, villageInAlliance)
+		var spyEvent = MarchUtils.createSpyVillageEvent(playerDoc, playerInAlliance, dragon, villageInAlliance)
 		allianceDoc.spyVillageEvents.push(spyEvent)
 		var allianceData = {}
 		allianceData.__spyVillageEvents = [{

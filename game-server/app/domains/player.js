@@ -114,14 +114,6 @@ var playerSchema = new Schema({
 		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn},
 		buildQueue:{type:Number, required:true, default:5}
 	},
-	allianceInfo:{
-		loyalty:{type:Number, reuqired:true, default:0},
-		woodExp:{type:Number, required:true, default:0},
-		stoneExp:{type:Number, required:true, default:0},
-		ironExp:{type:Number, required:true, default:0},
-		foodExp:{type:Number, required:true, default:0},
-		coinExp:{type:Number, required:true, default:0}
-	},
 	resources:{
 		wood:{type:Number, required:true, default:ResourceInitData.wood},
 		stone:{type:Number, required:true, default:ResourceInitData.stone},
@@ -133,6 +125,24 @@ var playerSchema = new Schema({
 		cart:{type:Number, required:true, default:ResourceInitData.cart},
 		energy:{type:Number, required:true, default:ResourceInitData.energy},
 		blood:{type:Number, required:true, default:ResourceInitData.blood}
+	},
+	alliance:{
+		type:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			tag:{type:String, required:true},
+			title:{type:String, required:true},
+			titleName:{type:String, required:true}
+		},
+		required:false
+	},
+	allianceInfo:{
+		loyalty:{type:Number, reuqired:true, default:0},
+		woodExp:{type:Number, required:true, default:0},
+		stoneExp:{type:Number, required:true, default:0},
+		ironExp:{type:Number, required:true, default:0},
+		foodExp:{type:Number, required:true, default:0},
+		coinExp:{type:Number, required:true, default:0}
 	},
 	coinEvents:[{
 		_id:false,
@@ -420,13 +430,6 @@ var playerSchema = new Schema({
 		inviterId:{type:String, reuqired:true},
 		inviteTime:{type:Number, required:true}
 	}],
-	alliance:{
-		id:{type:String, required:false},
-		name:{type:String, required:false},
-		tag:{type:String, required:false},
-		title:{type:String, required:false},
-		titleName:{type:String, required:false}
-	},
 	mails:[{
 		_id:false,
 		id:{type:String, required:true},
@@ -461,7 +464,37 @@ var playerSchema = new Schema({
 			y:{type:Number, require:true}
 		},
 		spyTime:{type:Number, required:true},
-		
+		dragonFrom:{
+			required:true,
+			type:{
+				type:{type:String, required:true},
+				expAdd:{type:Number, required:true},
+				vitality:{type:Number, required:true},
+				vitalitySub:{type:Number, required:true}
+			}
+		},
+		dragonTo:{
+			required:false,
+			type:{
+				type:{type:String, required:true},
+				expAdd:{type:Number, required:true},
+				vitality:{type:Number, required:true},
+				vitalitySub:{type:Number, required:true}
+			},
+			equipments:[{
+				name:{type:String, required:true},
+				star:{type:Number, required:true}
+			}],
+			skills:[{
+				name:{type:String, required:true, default:skillName},
+				level:{type:Number, required:true, default:0}
+			}]
+		},
+		resource:{type:Number, required:true},
+		soldiers:[{
+			type:{type:String, required:true},
+			count:{type:Number, required:true}
+		}]
 	}]
 })
 
