@@ -1103,6 +1103,8 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 		}
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
