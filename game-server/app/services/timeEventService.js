@@ -321,12 +321,14 @@ pro.refreshPlayerEvents = function(playerDoc, allianceDoc, eventType, eventId){
  */
 pro.refreshAllianceEvents = function(allianceDoc, eventType, eventId, callback){
 	var self = this
+	var updateFuncs = []
 	var pushFuncs = []
+	var eventFuncs = []
 	var allianceData = {}
 	var event = null
 	if(_.isEqual(eventType, "spyVillageEvents")){
 		event = LogicUtils.getEventById(allianceDoc.spyVillageEvents, eventId)
-		LogicUtils.removeItemInArray(playerDoc.spyVillageEvents, event)
+		LogicUtils.removeItemInArray(allianceDoc.spyVillageEvents, event)
 
 	}
 }

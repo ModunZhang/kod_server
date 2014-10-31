@@ -1611,6 +1611,11 @@ Utils.getAllianceVillageConfigedSoldiers = function(villageType, villageLevel){
 	return soldiers
 }
 
+Utils.getAllianceVillageProduction = function(villageType, villageLevel){
+	var config = AllianceVillageConfig[villageType][villageLevel]
+	return config.production
+}
+
 /**
  * 获取联盟村落建筑等级
  * @param allianceDoc
@@ -1639,6 +1644,7 @@ Utils.createMapVillages = function(mapObjects){
 			id:ShortId.generate(),
 			type:villageObject.type,
 			level:1,
+			resource:self.getAllianceVillageProduction(villageObject.type, 1),
 			soldiers:self.getAllianceVillageConfigedSoldiers(villageObject.type, 1),
 			location:villageObject.location
 		}

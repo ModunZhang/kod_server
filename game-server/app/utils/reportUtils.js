@@ -19,63 +19,27 @@ var Utils = module.exports
  * 创建侦查村落的战报
  * @param allianceDoc
  * @param spyEvent
+ * @return {*}
  */
 Utils.createSpyVillageReport = function(allianceDoc, spyEvent){
+	var village = LogicUtils.getAllianceVillageById(allianceDoc, spyEvent.targetId)
 	var report = {
 		id:ShortId.generate()
 	}
 	if(!LogicUtils.isAllianceVillageBeingCollect(allianceDoc, spyEvent.targetId)){
 		report.reportLevel = Consts.AllianceSpyReportLevel.S
-		report.villageType = spyEvent.targetType
-		report.villageLevel = spyEvent.targetLevel
-		report.location = spyEvent.targetLocation
+		report.villageType = village.type
+		report.villageLevel = village.level
+		report.location = village.location
 		report.spyTime = Date.now()
 		report.dragonFrom = {
 			type:spyEvent.dragon.type,
 			expAdd:0,
 			vitality:spyEvent.dragon.vitality
 		}
+		report.resource = village.resource
+		report.soldiers = village.soldiers
 	}
-}
 
-//_id:false,
-//	id:{type:String, required:true},
-//reportLevel:{type:Number, required:true},
-//villageType:{type:String, required:true},
-//villageLevel:{type:Number, required:true},
-//location:{
-//	x:{type:Number, required:true},
-//	y:{type:Number, require:true}
-//},
-//spyTime:{type:Number, required:true},
-//dragonFrom:{
-//	required:true,
-//		type:{
-//		type:{type:String, required:true},
-//		expAdd:{type:Number, required:true},
-//		vitality:{type:Number, required:true},
-//		vitalitySub:{type:Number, required:true}
-//	}
-//},
-//dragonTo:{
-//	required:false,
-//		type:{
-//		type:{type:String, required:true},
-//		expAdd:{type:Number, required:true},
-//		vitality:{type:Number, required:true},
-//		vitalitySub:{type:Number, required:true}
-//	},
-//	equipments:[{
-//		name:{type:String, required:true},
-//		star:{type:Number, required:true}
-//	}],
-//		skills:[{
-//		name:{type:String, required:true, default:skillName},
-//		level:{type:Number, required:true, default:0}
-//	}]
-//},
-//resource:{type:Number, required:true},
-//soldiers:[{
-//	type:{type:String, required:true},
-//	count:{type:Number, required:true}
-//}]
+	return report
+}

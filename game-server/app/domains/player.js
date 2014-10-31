@@ -464,6 +464,7 @@ var playerSchema = new Schema({
 			y:{type:Number, require:true}
 		},
 		spyTime:{type:Number, required:true},
+		getCoin:{type:Number, required:true},
 		dragonFrom:{
 			required:true,
 			type:{

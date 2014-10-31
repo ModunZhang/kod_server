@@ -104,6 +104,7 @@ var allianceSchema = new Schema({
 		id:{type:String, required:true},
 		type:{type:String, required:true},
 		level:{type:Number, required:true},
+		resource:{type:Number, required:true},
 		soldiers:[
 			{
 				_id:false,
