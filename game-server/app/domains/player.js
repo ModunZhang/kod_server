@@ -62,7 +62,7 @@ var createDragonSkillSchema = function(skillName){
 var createDragonSchema = function(dragonType){
 	var schema = {
 		type:{type:String, required:true, default:dragonType},
-		level:{type:Number, required:true, default:1},
+		level:{type:Number, required:true, default:0},
 		exp:{type:Number, required:true, default:0},
 		star:{type:Number, required:true, default:0},
 		strength:{type:Number, required:true, default:0},

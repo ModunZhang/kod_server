@@ -93,6 +93,15 @@ Api.upgradeWall = function(finishNow, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.freeSpeedUp = function(eventType, eventId, callback){
+	var info = {
+		eventType:eventType,
+		eventId:eventId
+	}
+	var route = "logic.playerHandler.freeSpeedUp"
+	pomelo.request(route, info, callback)
+}
+
 Api.makeMaterial = function(category, finishNow, callback){
 	var info = {
 		category:category, finishNow:finishNow

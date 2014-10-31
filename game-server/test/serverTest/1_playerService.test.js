@@ -203,6 +203,18 @@ describe("PlayerService", function(){
 					doc.code.should.equal(200)
 					done()
 				})
+				var onPlayerDataChanged = function(doc){
+					m_user.buildingEvents = doc.buildingEvents
+					pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+				}
+				pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+			})
+		})
+
+		it("freeSpeedUp 正常免费加速", function(done){
+			Api.freeSpeedUp("buildingEvents", m_user.buildingEvents[0].id, function(doc){
+				doc.code.should.equal(200)
+				done()
 			})
 		})
 

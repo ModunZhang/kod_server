@@ -47,6 +47,12 @@ module.exports = {
 		Edit:"edit",
 		Remove:"remove"
 	},
+	FreeSpeedUpAbleEventTypes:{
+		BuildingEvents:"buildingEvents",
+		HouseEvents:"houseEvents",
+		TowerEvents:"towerEvents",
+		WallEvents:"wallEvents"
+	},
 	AllianceLanguage:{
 		All:"all",
 		Cn:"cn",

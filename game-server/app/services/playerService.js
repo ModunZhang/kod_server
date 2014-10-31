@@ -1035,6 +1035,94 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 }
 
 /**
+ * 免费加速
+ * @param playerId
+ * @param eventType
+ * @param eventId
+ * @param callback
+ */
+pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.contains(Consts.FreeSpeedUpAbleEventTypes, eventType)){
+		callback(new Error("eventType 不合法"))
+		return
+	}
+	if(!_.isString(eventId)){
+		callback(new Error("eventId 不合法"))
+		return
+	}
+
+	var self = this
+	var pushFuncs = []
+	var updateFuncs = []
+	var playerDoc = null
+	var allianceDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
+		if(!_.isObject(event)){
+			return Promise.reject(new Error("玩家事件不存在"))
+		}
+		if(event.finishTime - DataUtils.getPlayerFreeSpeedUpEffect(playerDoc) > Date.now()){
+			return Promise.reject(new Error("还不能进行免费加速"))
+		}
+		event.finishTime = Date.now()
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
+			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+				if(!_.isObject(doc)){
+					return Promise.reject(new Error("联盟不存在"))
+				}
+				allianceDoc = doc
+				return Promise.resolve()
+			})
+		}else{
+			return Promise.resolve()
+		}
+	}).then(function(){
+		var playerData = {}
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		var params = self.timeEventService.refreshPlayerEvents(playerDoc, allianceDoc, eventType, eventId)
+		pushFuncs = pushFuncs.concat(params.pushFuncs)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		_.extend(playerData, params.playerData)
+		var allianceData = params.allianceData
+		if(!_.isEmpty(allianceData)){
+			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		}
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
  * 制造材料
  * @param playerId
  * @param category
@@ -1706,6 +1794,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		var energyNeed = 100 - dragon.vitality
 		if(playerDoc.resources.energy >= energyNeed){
 			dragon.star = 1
+			dragon.level = 1
 			dragon.vitality = DataUtils.getDragonMaxVitality(playerDoc, dragon)
 			dragon.strength = DataUtils.getDragonStrength(playerDoc, dragon)
 			playerDoc.resources.energy -= energyNeed
@@ -2925,16 +3014,17 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 			return Promise.resolve()
 		}
 	}).then(function(){
+		var playerData = {}
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		var params = self.timeEventService.refreshPlayerEvents(playerDoc, allianceDoc, eventType, eventId)
 		pushFuncs = pushFuncs.concat(params.pushFuncs)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		var playerData = params.playerData
+		_.extend(playerData, params.playerData)
 		var allianceData = params.allianceData
 		if(!_.isEmpty(allianceData)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-			pushFuncs.unshift([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		}
-		pushFuncs.unshift([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
