@@ -1060,6 +1060,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 
 	var self = this
 	var pushFuncs = []
+	var eventFuncs = []
 	var updateFuncs = []
 	var playerDoc = null
 	var allianceDoc = null
@@ -1075,6 +1076,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 		if(event.finishTime - DataUtils.getPlayerFreeSpeedUpEffect(playerDoc) > Date.now()){
 			return Promise.reject(new Error("还不能进行免费加速"))
 		}
+		eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, event.id])
 		event.finishTime = Date.now()
 		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
 			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
@@ -1100,6 +1102,8 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		}
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
