@@ -40,10 +40,11 @@ pro.upgradeBuilding = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.speedupBuildingBuild = function(msg, session, next){
-	var location = msg.location
+pro.freeSpeedUp = function(msg, session, next){
+	var eventType = msg.eventType
+	var eventId = msg.eventId
 
-	this.playerService.speedupBuildingBuildAsync(session.uid, location).then(function(){
+	this.playerService.freeSpeedUpAsync(session.uid, eventType, eventId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

@@ -1435,6 +1435,15 @@ Utils.getPlayerHelpAllianceMemberSpeedUpEffect = function(playerDoc){
 }
 
 /**
+ * 获取免费加速效果
+ * @param playerDoc
+ * @returns {number}
+ */
+Utils.getPlayerFreeSpeedUpEffect = function(playerDoc){
+	return 5 * 60 * 1000
+}
+
+/**
  * 联盟捐赠是否含有此捐赠类型
  * @param donateType
  * @returns {boolean}
