@@ -28,11 +28,36 @@ Utils.create = function(){
 	var map = []
 	var mapObjects = []
 	this.initMap(map)
-	this.markMap(map, mapObjects, {x:10, y:7, width:3, height:3}, "building")
-	this.markMap(map, mapObjects, {x:7, y:10, width:3, height:3}, "building")
-	this.markMap(map, mapObjects, {x:10, y:10, width:3, height:3}, "building")
-	this.markMap(map, mapObjects, {x:13, y:10, width:3, height:3}, "building")
-	this.markMap(map, mapObjects, {x:10, y:13, width:3, height:3}, "building")
+	this.markMap(map, mapObjects, {
+		x:11,
+		y:8,
+		width:3,
+		height:3
+	}, "building")
+	this.markMap(map, mapObjects, {
+		x:8,
+		y:11,
+		width:3,
+		height:3
+	}, "building")
+	this.markMap(map, mapObjects, {
+		x:11,
+		y:11,
+		width:3,
+		height:3
+	}, "building")
+	this.markMap(map, mapObjects, {
+		x:14,
+		y:11,
+		width:3,
+		height:3
+	}, "building")
+	this.markMap(map, mapObjects, {
+		x:11,
+		y:14,
+		width:3,
+		height:3
+	}, "building")
 
 	var orderHallConfig = AllianceBuildingConfig.orderHall[1]
 	//生成装饰物
@@ -93,6 +118,18 @@ Utils.outputMap = function(map){
 }
 
 /**
+ * 根据Rect信息标记地图
+ * @param map
+ * @param rect
+ */
+var markMapWithRect = function(map, rect){
+	for(var i = rect.x; i > rect.x - rect.width; i--){
+		for(var j = rect.y; j > rect.y - rect.height; j--){
+			map[i][j] = true
+		}
+	}
+}
+/**
  * 标记已使用的地图
  * @param map
  * @param mapObjects
@@ -100,11 +137,7 @@ Utils.outputMap = function(map){
  * @param buildingType
  */
 Utils.markMap = function(map, mapObjects, rect, buildingType){
-	for(var i = rect.x; i < rect.x + rect.width; i++){
-		for(var j = rect.y; j < rect.y + rect.height; j++){
-			map[i][j] = true
-		}
-	}
+	markMapWithRect(map, rect)
 	var object = {
 		type:buildingType,
 		location:{
@@ -125,7 +158,10 @@ Utils.getFreePoints = function(map){
 	for(var i = 0; i < MapSize.width; i++){
 		for(var j = 0; j < MapSize.height; j++){
 			if(!map[i][j]){
-				points.push({x:i, y:j})
+				points.push({
+					x:i,
+					y:j
+				})
 			}
 		}
 	}
@@ -147,13 +183,13 @@ Utils.getRect = function(map, width, height){
 			location = Math.round(Math.random() * 1000000000000 % (freePoints.length - 1))
 		}
 		var point = freePoints[location]
-		if(point.x + width > MapSize.width || point.y + height > MapSize.height){
+		if(point.x - width < 0 || point.y - height < 0){
 			freePoints.splice(location, 1)
 			continue
 		}
 		var hasFound = true
-		for(var i = point.x; i < point.x + width; i++){
-			for(var j = point.y; j < point.y + height; j++){
+		for(var i = point.x; i > point.x - width; i--){
+			for(var j = point.y; j > point.y - height; j--){
 				if(!!map[i][j]){
 					freePoints.splice(location, 1)
 					hasFound = false
@@ -163,7 +199,12 @@ Utils.getRect = function(map, width, height){
 			if(!hasFound) break
 		}
 		if(hasFound){
-			return {x:point.x, y:point.y, width:width, height:height}
+			return {
+				x:point.x,
+				y:point.y,
+				width:width,
+				height:height
+			}
 		}
 	}
 }
@@ -178,12 +219,13 @@ Utils.buildMap = function(mapObjects){
 	this.initMap(map)
 	_.each(mapObjects, function(mapObject){
 		var config = AllianceInit.buildingType[mapObject.type]
-		var rect = {x:mapObject.location.x, y:mapObject.location.y, width:config.width, height:config.height}
-		for(var i = rect.x; i < rect.x + rect.width; i++){
-			for(var j = rect.y; j < rect.y + rect.height; j++){
-				map[i][j] = true
-			}
+		var rect = {
+			x:mapObject.location.x,
+			y:mapObject.location.y,
+			width:config.width,
+			height:config.height
 		}
+		markMapWithRect(map, rect)
 	})
 	return map
 }
