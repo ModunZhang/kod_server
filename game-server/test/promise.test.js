@@ -201,10 +201,6 @@ var DataUtils = require("../app/utils/dataUtils")
 //	console.log(key)
 //})
 //
-//var mapObjects = MapUtils.create()
-//var map = MapUtils.buildMap(mapObjects)
-//MapUtils.outputMap(map)
-//
-//var random = Math.random()
-//var res = Math.round(80 + ((120 - 80) * random))
-//console.log(res)
+var mapObjects = MapUtils.create()
+var map = MapUtils.buildMap(mapObjects)
+MapUtils.outputMap(map)
