@@ -67,6 +67,7 @@ var createDragonSchema = function(dragonType){
 		star:{type:Number, required:true, default:0},
 		strength:{type:Number, required:true, default:0},
 		hp:{type:Number, required:true, default:0},
+		hpRefreshTime:{type:Number, required:true, default:Date.now()},
 		vitality:{type:Number, required:true, default:0},//在龙蛋时期,此属性表示龙蛋孵化的进度,达到100时,龙蛋孵化出来,龙蛋孵化出来后,此属性会被清零
 		status:{type:String, required:true, default:Consts.DragonStatus.Free},
 		equipments:{

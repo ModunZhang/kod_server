@@ -1802,6 +1802,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 			dragon.level = 1
 			dragon.vitality = DataUtils.getDragonMaxVitality(playerDoc, dragon)
 			dragon.hp = dragon.vitality * 2
+			dragon.hpRefreshTime = Date.now()
 			dragon.strength = DataUtils.getDragonStrength(playerDoc, dragon)
 		}
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
