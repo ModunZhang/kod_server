@@ -9,6 +9,8 @@ var Promise = require("bluebird")
 
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var ReportUtils = require("../utils/reportUtils")
+var MarchUtils = require("../utils/marchUtils")
 var Consts = require("../consts/consts")
 
 
@@ -172,7 +174,7 @@ pro.clearAllianceTimeEvents = function(allianceDoc, callback){
  * @param eventId
  * @returns {{pushFuncs: Array, playerData: {}, allianceData: {}}}
  */
-pro.refreshPlayerEvents = function(playerDoc, allianceDoc, eventType, eventId){
+pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 	var self = this
 	var pushFuncs = []
 	var playerData = {}
@@ -314,21 +316,30 @@ pro.refreshPlayerEvents = function(playerDoc, allianceDoc, eventType, eventId){
 }
 
 /**
- * 刷新联盟事件
+ * 联盟村落侦查事件触发
+ * @param playerDoc
  * @param allianceDoc
- * @param eventType
- * @param eventId
+ * @param spyEvent
  */
-pro.refreshAllianceEvents = function(allianceDoc, eventType, eventId, callback){
-	var self = this
-	var updateFuncs = []
-	var pushFuncs = []
-	var eventFuncs = []
+pro.onAllianceSpyVillageEvent = function(playerDoc, allianceDoc, spyEvent){
 	var allianceData = {}
-	var event = null
-	if(_.isEqual(eventType, "spyVillageEvents")){
-		event = LogicUtils.getEventById(allianceDoc.spyVillageEvents, eventId)
-		LogicUtils.removeItemInArray(allianceDoc.spyVillageEvents, event)
+	var playerData = {}
+	LogicUtils.removeItemInArray(allianceDoc.spyVillageEvents, spyEvent)
+	allianceData.__spyVillageEvents = [{
+		type:Consts.DataChangedType.Remove,
+		data:event
+	}]
+	var report = ReportUtils.createSpyVillageReport(allianceDoc, spyEvent)
+	playerDoc.spyVillageReports.push(report)
+	playerData.__spyVillageReports = [{
+		type:Consts.DataChangedType.Add,
+		data:report
+	}]
+	var playerDragon = playerDoc.dragons[report.dragonFrom.type]
 
-	}
+	var spyReturnEvent = MarchUtils.createSpyVillageReturnEvent(playerDoc, spyEvent, report)
+	allianceData.__spyVillageReturnEvents = [{
+		type:Consts.DataChangedType.Add,
+		data:spyReturnEvent
+	}]
 }

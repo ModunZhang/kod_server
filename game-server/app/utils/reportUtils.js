@@ -23,23 +23,22 @@ var Utils = module.exports
  */
 Utils.createSpyVillageReport = function(allianceDoc, spyEvent){
 	var village = LogicUtils.getAllianceVillageById(allianceDoc, spyEvent.targetId)
-	var report = {
-		id:ShortId.generate()
+	var report = {}
+	report.id = ShortId.generate()
+	report.reportLevel = Consts.AllianceSpyReportLevel.S
+	report.villageType = village.type
+	report.villageLevel = village.level
+	report.location = village.location
+	report.spyTime = Date.now()
+	report.getCoin = 0
+	report.dragonFrom = {
+		type:spyEvent.dragon.type,
+		expAdd:0,
+		vitality:spyEvent.dragon.vitality,
+		vitalitySub:0
 	}
-	if(!LogicUtils.isAllianceVillageBeingCollect(allianceDoc, spyEvent.targetId)){
-		report.reportLevel = Consts.AllianceSpyReportLevel.S
-		report.villageType = village.type
-		report.villageLevel = village.level
-		report.location = village.location
-		report.spyTime = Date.now()
-		report.dragonFrom = {
-			type:spyEvent.dragon.type,
-			expAdd:0,
-			vitality:spyEvent.dragon.vitality
-		}
-		report.resource = village.resource
-		report.soldiers = village.soldiers
-	}
+	report.resource = village.resource
+	report.soldiers = village.soldiers
 
 	return report
 }

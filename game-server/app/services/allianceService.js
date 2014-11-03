@@ -3184,6 +3184,9 @@ pro.spyVillage = function(playerId, villageId, dragonType, callback){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
+		if(LogicUtils.isAllianceVillageBeingCollect(allianceDoc, villageId)){
+			return Promise.reject(new Error("村落正在被本联盟玩家采集,不能侦查"))
+		}
 		var dragon = playerDoc.dragons[dragonType]
 		if(!_.isEqual(dragon.status, Consts.DragonStatus.Free)){
 			return Promise.reject(new Error("龙必须是空闲状态才能派出"))
@@ -3246,30 +3249,25 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 	var pushFuncs = []
 	var updateFuncs = []
 	var allianceDoc = null
+	var event = null
+
 	this.allianceDao.findByIdAsync(allianceId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
-		var event = LogicUtils.getEventById(allianceDoc[eventType], eventId)
+		event = LogicUtils.getEventById(allianceDoc[eventType], eventId)
 		if(!_.isObject(event)){
 			return Promise.reject(new Error("联盟事件不存在"))
 		}
-		return Promise.resolve()
 	}).then(function(){
-		var params = self.timeEventService.refreshPlayerEvents(playerDoc, allianceDoc, eventType, eventId)
-		pushFuncs = pushFuncs.concat(params.pushFuncs)
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		var playerData = params.playerData
-		var allianceData = params.allianceData
-		if(!_.isEmpty(allianceData)){
-			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-			pushFuncs.unshift([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		if(_.isEqual("spyVillageEvents", eventType)){
+			return self.playerDoc.findByIdAsync(event.fromId).then(function(doc){
+				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+				var playerDoc = doc
+				self.timeEventService.onAllianceSpyVillageEvent(playerDoc, allianceDoc, event)
+			})
 		}
-		pushFuncs.unshift([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){

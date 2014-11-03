@@ -171,6 +171,25 @@ var allianceSchema = new Schema({
 		},
 		finishTime:{type:Number, required:true}
 	}],
+	spyVillageReturnEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		fromId:{type:String, required:true},
+		fromLocation:{
+			x:{type:Number, required:true},
+			y:{type:Number, required:true}
+		},
+		dragon:{
+			type:{type:Number, required:true}
+		},
+		toId:{type:String, required:true},
+		toLocation:{
+			x:{type:Number, required:true},
+			y:{type:Number, required:true}
+		},
+		getCoin:{type:Number, required:true},
+		finishTime:{type:Number, required:true}
+	}],
 	collectEvents:[{
 		_id:false,
 		id:{type:String, required:true},

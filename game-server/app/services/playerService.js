@@ -227,7 +227,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
 				preBuildEvent.event.finishTime = Date.now()
-				var params = self.timeEventService.refreshPlayerEvents(playerDoc, allianceDoc, preBuildEvent.eventType, preBuildEvent.event.id)
+				var params = self.timeEventService.onPlayerEvent(playerDoc, allianceDoc, preBuildEvent.eventType, preBuildEvent.event.id)
 				_.extend(playerData, params.playerData)
 				pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
@@ -408,7 +408,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
 				preBuildEvent.event.finishTime = Date.now()
-				var params = self.timeEventService.refreshPlayerEvents(playerDoc, allianceDoc, preBuildEvent.eventType, preBuildEvent.event.id)
+				var params = self.timeEventService.onPlayerEvent(playerDoc, allianceDoc, preBuildEvent.eventType, preBuildEvent.event.id)
 				_.extend(playerData, params.playerData)
 				pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
@@ -593,7 +593,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
 				preBuildEvent.event.finishTime = Date.now()
-				var params = self.timeEventService.refreshPlayerEvents(playerDoc, allianceDoc, preBuildEvent.eventType, preBuildEvent.event.id)
+				var params = self.timeEventService.onPlayerEvent(playerDoc, allianceDoc, preBuildEvent.eventType, preBuildEvent.event.id)
 				_.extend(playerData, params.playerData)
 				pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
@@ -836,7 +836,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
 				preBuildEvent.event.finishTime = Date.now()
-				var params = self.timeEventService.refreshPlayerEvents(playerDoc, allianceDoc, preBuildEvent.eventType, preBuildEvent.event.id)
+				var params = self.timeEventService.onPlayerEvent(playerDoc, allianceDoc, preBuildEvent.eventType, preBuildEvent.event.id)
 				_.extend(playerData, params.playerData)
 				pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
@@ -988,7 +988,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			if(_.isObject(preBuildEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
 				preBuildEvent.event.finishTime = Date.now()
-				var params = self.timeEventService.refreshPlayerEvents(playerDoc, allianceDoc, preBuildEvent.eventType, preBuildEvent.event.id)
+				var params = self.timeEventService.onPlayerEvent(playerDoc, allianceDoc, preBuildEvent.eventType, preBuildEvent.event.id)
 				_.extend(playerData, params.playerData)
 				pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
@@ -1092,7 +1092,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 	}).then(function(){
 		var playerData = {}
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		var params = self.timeEventService.refreshPlayerEvents(playerDoc, allianceDoc, eventType, eventId)
+		var params = self.timeEventService.onPlayerEvent(playerDoc, allianceDoc, eventType, eventId)
 		pushFuncs = pushFuncs.concat(params.pushFuncs)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		_.extend(playerData, params.playerData)
@@ -3020,7 +3020,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	}).then(function(){
 		var playerData = {}
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		var params = self.timeEventService.refreshPlayerEvents(playerDoc, allianceDoc, eventType, eventId)
+		var params = self.timeEventService.onPlayerEvent(playerDoc, allianceDoc, eventType, eventId)
 		pushFuncs = pushFuncs.concat(params.pushFuncs)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		_.extend(playerData, params.playerData)

@@ -16,7 +16,7 @@ var Define = require("../consts/define")
 var Utils = module.exports
 
 /**
- *
+ * 创建侦查联盟村落事件
  * @param playerDoc
  * @param playerInAlliance
  * @param playerDragon
@@ -44,6 +44,25 @@ Utils.createSpyVillageEvent = function(playerDoc, playerInAlliance, playerDragon
 	return event
 }
 
-Utils.createSpyVillageReturnEvent = function(spyEvent){
-
+/**
+ * 创建侦查联盟村落返回事件
+ * @param playerDoc
+ * @param spyEvent
+ * @param spyReport
+ * @returns {*}
+ */
+Utils.createSpyVillageReturnEvent = function(playerDoc, spyEvent, spyReport){
+	var event = {
+		id:ShortId.generate(),
+		fromId:spyEvent.targetId,
+		fromLocation:spyEvent.targetLocation,
+		dragon:{
+			type:spyEvent.dragon.type
+		},
+		toId:spyEvent.fromId,
+		toLocation:spyEvent.fromLocation,
+		getCoin:spyReport.getCoin,
+		finishTime:DataUtils.getPlayerSpyTime(playerDoc, event.fromLocation, event.toLocation)
+	}
+	return event
 }
