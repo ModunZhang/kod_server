@@ -1,6 +1,6 @@
 /**
- * Created by modun on 14-7-25.
- */
+* Created by modun on 14-7-25.
+*/
 
 var pomelo = require("../pomelo-client")
 var redis = require("redis")

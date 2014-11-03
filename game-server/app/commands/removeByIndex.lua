@@ -13,7 +13,7 @@ local objectId = redis.call("get", fullIndex)
 if not objectId then return end
 local fullKey = modelName .. ":" .. objectId
 local lockKey = "lock." .. fullKey
-assert(not redis.call("get", lockKey), "removeByIndex:" .. modelName .. "[" .. objectId .. "]" ..  " object is locked")
+assert(redis.call("get", lockKey), "removeByIndex:" .. modelName .. "[" .. objectId .. "]" ..  "can not remove a object directly")
 local objectString = redis.call("get", fullKey)
 assert(objectString, "removeByIndex:" .. modelName .. "[" .. objectId .. "]" ..  " object not exist")
 local object = cjson.decode(objectString)
@@ -26,4 +26,6 @@ for _, index in ipairs(indexs) do
     local key = modelName .. "." .. index .. ":" .. value
     redis.call("del", key)
 end
-return redis.call("del", fullKey)
+
+redis.call("del", fullKey)
+redis.call("del", lockKey)

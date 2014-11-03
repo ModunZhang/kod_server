@@ -12,7 +12,7 @@ var Schema = mongoose.Schema
 
 var Config = require("../config")
 var BaseDao = require("../../app/dao/baseDao")
-var CommandDir = path.resolve("game-server/app/commands")
+var CommandDir = path.resolve(__dirname + "../../../app/commands")
 
 describe("BaseDao", function(){
 	var baseDao
@@ -107,7 +107,9 @@ describe("BaseDao", function(){
 	})
 
 	it("deleteById 正常删除", function(done){
-		baseDao.deleteByIdAsync(demoDoc._id).then(function(){
+		baseDao.findByIdAsync(demoDoc._id).then(function(){
+			return baseDao.deleteByIdAsync(demoDoc._id)
+		}).then(function(){
 			done()
 		})
 	})
@@ -115,9 +117,7 @@ describe("BaseDao", function(){
 	it("deleteByIndex", function(done){
 		baseDao.createAsync(player2).then(function(doc){
 			should.exist(doc)
-			return baseDao.removeLockByIdAsync(doc._id)
-		}).then(function(){
-			baseDao.deleteByIndexAsync("basicInfo.name", "modun2")
+			return baseDao.deleteByIndexAsync("basicInfo.name", "modun2")
 		}).then(function(){
 			done()
 		})

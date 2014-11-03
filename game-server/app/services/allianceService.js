@@ -1540,7 +1540,6 @@ pro.quitAlliance = function(playerId, callback){
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		if(allianceDoc.members.length <= 0){
-			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			updateFuncs.push([self.allianceDao, self.allianceDao.deleteByIdAsync, allianceDoc._id])
 			updateFuncs.push([self.globalChannelService, self.globalChannelService.destroyChannelAsync, Consts.AllianceChannelPrefix + allianceDoc._id])
 			eventFuncs.push([self.timeEventService, self.timeEventService.clearAllianceTimeEventsAsync, allianceDoc])
@@ -2694,7 +2693,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 		if(newFinishTime <= Date.now()){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, memberDoc, buildEvent.id])
 			buildEvent.finishTime = newFinishTime
-			var params = self.timeEventService.refreshPlayerEvents(memberDoc, null, helpEvent.helpEventType, helpEvent.eventId)
+			var params = self.timeEventService.onPlayerEvent(memberDoc, null, helpEvent.helpEventType, helpEvent.eventId)
 			pushFuncs.concat(params.pushFuncs)
 			_.extend(memberData, params.playerData)
 			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
@@ -2811,7 +2810,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 					if(newFinishTime <= Date.now()){
 						eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, memberDoc, buildEvent.id])
 						buildEvent.finishTime = newFinishTime
-						var params = self.timeEventService.refreshPlayerEvents(memberDoc, null, helpEvent.helpEventType, helpEvent.eventId)
+						var params = self.timeEventService.onPlayerEvent(memberDoc, null, helpEvent.helpEventType, helpEvent.eventId)
 						pushFuncs.concat(params.pushFuncs)
 						_.extend(memberData, params.playerData)
 						LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)

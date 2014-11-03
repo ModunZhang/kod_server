@@ -466,30 +466,27 @@ var playerSchema = new Schema({
 		spyTime:{type:Number, required:true},
 		getCoin:{type:Number, required:true},
 		dragonFrom:{
-			required:true,
-			type:{
 				type:{type:String, required:true},
 				expAdd:{type:Number, required:true},
 				vitality:{type:Number, required:true},
 				vitalitySub:{type:Number, required:true}
-			}
 		},
 		dragonTo:{
-			required:false,
 			type:{
 				type:{type:String, required:true},
 				expAdd:{type:Number, required:true},
 				vitality:{type:Number, required:true},
-				vitalitySub:{type:Number, required:true}
+				vitalitySub:{type:Number, required:true},
+				equipments:[{
+					name:{type:String, required:true},
+					star:{type:Number, required:true}
+				}],
+				skills:[{
+					name:{type:String, required:true},
+					level:{type:Number, required:true}
+				}]
 			},
-			equipments:[{
-				name:{type:String, required:true},
-				star:{type:Number, required:true}
-			}],
-			skills:[{
-				name:{type:String, required:true, default:skillName},
-				level:{type:Number, required:true, default:0}
-			}]
+			required:false
 		},
 		resource:{type:Number, required:true},
 		soldiers:[{

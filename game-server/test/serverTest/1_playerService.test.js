@@ -22,68 +22,14 @@ var allianceDao = Promise.promisifyAll(new AllianceDao(redisClient, scripto, "pr
 var playerDao = Promise.promisifyAll(new PlayerDao(redisClient, scripto, "production"))
 
 
-var ClearTestAccount = function(callback){
-	var funcs = []
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId2))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId2))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId3))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId3))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId4))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId4))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId5))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId5))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId6))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId6))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId7))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId7))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId8))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId8))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId9))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId9))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId10))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId10))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId11))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId11))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId12))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId12))
-
-	Promise.all(funcs).then(function(){
-		callback()
-	})
-}
-
-var ClearAlliance = function(callback){
-	var funcs = []
-	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName))
-	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName))
-	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName2))
-	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName2))
-	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName3))
-	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName3))
-	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName4))
-	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName4))
-	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName5))
-	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName5))
-	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName6))
-	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName6))
-
-	Promise.all(funcs).then(function(){
-		callback()
-	})
-}
-
-
-
 describe("PlayerService", function(){
 	var m_user
 
 	before(function(done){
-		ClearTestAccount(function(){
-			ClearAlliance(function(){
-				done()
-			})
+		playerDao.deleteAllAsync().then(function(){
+			return allianceDao.deleteAllAsync()
+		}).then(function(){
+			done()
 		})
 	})
 

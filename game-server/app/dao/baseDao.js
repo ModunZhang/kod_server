@@ -8,7 +8,8 @@ var Promise = require("bluebird")
 var _ = require("underscore")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
-
+var NONE = "__NONE__"
+var LOCKED = "__LOCKED__"
 /**
  * @param redis
  * @param scripto
@@ -26,6 +27,7 @@ var BaseDao = function(redis, scripto, modelName, model, indexs, env){
 	this.indexs = indexs
 	this.maxChangedCount = 1
 	this.env = env
+	this.tryTimes = 10 * 5
 }
 
 module.exports = BaseDao
@@ -88,17 +90,38 @@ pro.findByIndex = function(index, value, callback){
 		return
 	}
 	var self = this
-	this.scripto.runAsync("findByIndex", [this.modelName, index, value, Date.now()]).then(function(docString){
-		callback(null, JSON.parse(docString))
-	}).catch(function(e){
-		errorLogger.error("handle baseDao:findByIndex Error -----------------------------")
-		errorLogger.error(e.stack)
-		if(_.isEqual("production", self.env)){
-			errorMailLogger.error("handle baseDao:findByIndex Error -----------------------------")
-			errorMailLogger.error(e.stack)
-		}
-		callback()
-	})
+	var tryTimes = 0
+	var func = function(index, value){
+		self.scripto.runAsync("findByIndex", [self.modelName, index, value, Date.now()]).then(function(docString){
+			if(_.isEqual(docString, LOCKED)){
+				tryTimes++
+				if(tryTimes <= self.tryTimes){
+					setTimeout(func, 100, index, value)
+				}else{
+					errorLogger.error("handle baseDao:findByIndex Error -----------------------------")
+					errorLogger.error("errorInfo->modelName:%s, index:%s, value:%s", self.modelName, index, value)
+					if(_.isEqual("production", self.env)){
+						errorMailLogger.error("handle baseDao:findByIndex Error -----------------------------")
+						errorMailLogger.error("errorInfo->modelName:%s, index:%s, value:%s", self.modelName, index, value)
+					}
+					callback()
+				}
+			}else if(_.isEqual(docString, NONE)){
+				callback()
+			}else{
+				callback(null, JSON.parse(docString))
+			}
+		}).catch(function(e){
+			errorLogger.error("handle baseDao:findByIndex Error -----------------------------")
+			errorLogger.error(e.message)
+			if(_.isEqual("production", self.env)){
+				errorMailLogger.error("handle baseDao:findByIndex Error -----------------------------")
+				errorMailLogger.error(e.message)
+			}
+			callback()
+		})
+	}
+	func(index, value)
 }
 
 /**
@@ -115,17 +138,38 @@ pro.findById = function(id, callback){
 		return
 	}
 	var self = this
-	this.scripto.runAsync("findById", [this.modelName, id, Date.now()]).then(function(docString){
-		callback(null, JSON.parse(docString))
-	}).catch(function(e){
-		errorLogger.error("handle baseDao:findById Error -----------------------------")
-		errorLogger.error(e.stack)
-		if(_.isEqual("production", self.env)){
-			errorMailLogger.error("handle baseDao:findById Error -----------------------------")
-			errorMailLogger.error(e.stack)
-		}
-		callback()
-	})
+	var tryTimes = 0
+	var func = function(id){
+		self.scripto.runAsync("findById", [self.modelName, id, Date.now()]).then(function(docString){
+			if(_.isEqual(docString, LOCKED)){
+				tryTimes++
+				if(tryTimes <= self.tryTimes){
+					setTimeout(func, 100, id)
+				}else{
+					errorLogger.error("handle baseDao:findById Error -----------------------------")
+					errorLogger.error("errorInfo->modelName:%s, id:%s", self.modelName, id)
+					if(_.isEqual("production", self.env)){
+						errorMailLogger.error("handle baseDao:findById Error -----------------------------")
+						errorMailLogger.error("errorInfo->modelName:%s, index:%s, value:%s", self.modelName, index, value)
+					}
+					callback()
+				}
+			}else if(_.isEqual(docString, NONE)){
+				callback()
+			}else{
+				callback(null, JSON.parse(docString))
+			}
+		}).catch(function(e){
+			errorLogger.error("handle baseDao:findById Error -----------------------------")
+			errorLogger.error(e.message)
+			if(_.isEqual("production", self.env)){
+				errorMailLogger.error("handle baseDao:findById Error -----------------------------")
+				errorMailLogger.error(e.message)
+			}
+			callback()
+		})
+	}
+	func(id)
 }
 
 /**
@@ -180,8 +224,8 @@ pro.deleteById = function(id, callback){
 		return
 	}
 	var self = this
-	this.model.findByIdAndRemoveAsync(id).then(function(){
-		return self.scripto.runAsync("removeById", [self.modelName, id], self.indexs)
+	this.scripto.runAsync("removeById", [self.modelName, id], self.indexs).then(function(){
+		return self.model.findByIdAndRemoveAsync(id)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -210,8 +254,27 @@ pro.deleteByIndex = function(index, value, callback){
 	var self = this
 	var condition = {}
 	condition[index] = value
-	this.model.findOneAndRemoveAsync(condition).then(function(){
-		return self.scripto.runAsync("removeByIndex", [self.modelName, index, value], self.indexs)
+
+	this.scripto.runAsync("removeByIndex", [self.modelName, index, value], self.indexs).then(function(){
+		return self.model.findOneAndRemoveAsync(condition)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 删除所有数据
+ * @param callback
+ */
+pro.deleteAll = function(callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback must be a function")
+	}
+	var self = this
+	this.scripto.runAsync("removeAll", [this.modelName], this.indexs).then(function(doc){
+		return self.model.removeAsync({})
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -272,7 +335,7 @@ pro.unloadAll = function(callback){
 pro.searchByIndex = function(index, value, callback){
 	var docs = []
 	this.scripto.runAsync("searchByIndex", [this.modelName, index, value]).then(function(docStrings){
-		for(var i = 0; i < docStrings.length; i ++){
+		for(var i = 0; i < docStrings.length; i++){
 			var doc = JSON.parse(docStrings[i])
 			docs.push(doc)
 		}
@@ -338,7 +401,7 @@ pro.findAll = function(callback){
 	}
 	var docs = []
 	this.scripto.runAsync("findAll", [this.modelName]).then(function(docStrings){
-		for(var i = 0; i < docStrings.length; i ++){
+		for(var i = 0; i < docStrings.length; i++){
 			var doc = JSON.parse(docStrings[i])
 			docs.push(doc)
 		}

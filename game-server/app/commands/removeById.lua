@@ -9,7 +9,7 @@ local objectId = KEYS[2]
 local indexs = ARGV
 local fullKey = modelName .. ":" .. objectId
 local lockKey = "lock." .. fullKey
-assert(not redis.call("get", lockKey), "removeById:" .. modelName .. "[" .. objectId .. "]" ..  " object is locked")
+assert(redis.call("get", lockKey), "removeById:" .. modelName .. "[" .. objectId .. "]" ..  "can not remove a object directly")
 local objectString = redis.call("get", fullKey)
 if not objectString then return end
 local object = cjson.decode(objectString)
@@ -22,5 +22,6 @@ for _, index in ipairs(indexs) do
     local key = modelName .. "." .. index .. ":" .. value
     redis.call("del", key)
 end
-return redis.call("del", fullKey)
+redis.call("del", fullKey)
+redis.call("del", lockKey)
 
