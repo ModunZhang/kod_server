@@ -1787,7 +1787,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 			return Promise.reject(new Error("龙巢还未建造"))
 		}
 		LogicUtils.refreshPlayerResources(playerDoc)
-		if(playerDoc.resources.energy <= 0){
+		if(playerDoc.resources.energy < 20){
 			return Promise.reject(new Error("能量不足"))
 		}
 		var dragon = playerDoc.dragons[dragonType]
@@ -1795,16 +1795,14 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 			return Promise.reject(new Error("龙蛋早已成功孵化"))
 		}
 		var playerData = {}
-		var energyNeed = 100 - dragon.vitality
-		if(playerDoc.resources.energy >= energyNeed){
+		dragon.vitality += 20
+		playerDoc.resources.energy -= 20
+		if(dragon.vitality >= 100){
 			dragon.star = 1
 			dragon.level = 1
 			dragon.vitality = DataUtils.getDragonMaxVitality(playerDoc, dragon)
+			dragon.hp = dragon.vitality * 2
 			dragon.strength = DataUtils.getDragonStrength(playerDoc, dragon)
-			playerDoc.resources.energy -= energyNeed
-		}else{
-			dragon.vitality += playerDoc.resources.energy
-			playerDoc.resources.energy = 0
 		}
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
