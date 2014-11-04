@@ -478,3 +478,18 @@ pro.moveAllianceMember = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 拆除装饰物
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.distroyAllianceDecorate = function(msg, session, next){
+	var decorateId = msg.decorateId
+	this.allianceService.distroyAllianceDecorateAsync(session.uid, decorateId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

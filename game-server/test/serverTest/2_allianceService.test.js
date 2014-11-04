@@ -1027,6 +1027,28 @@ describe("AllianceService", function(){
 			}
 			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		})
+
+		it("distroyAllianceDecorate 正常拆除", function(done){
+			var m_allianceData = null
+			Api.getMyAllianceData(function(doc){
+				doc.code.should.equal(200)
+				for(var i = 0; i < m_allianceData.mapObjects.length; i ++){
+					var mapObject = m_allianceData.mapObjects[i]
+					if(mapObject.type.indexOf("decorate") >= 0){
+						Api.distroyAllianceDecorate(mapObject.id, function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
+						break
+					}
+				}
+			})
+			var onGetAllianceDataSuccess = function(doc){
+				m_allianceData = doc
+				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+			}
+			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		})
 	})
 
 

@@ -511,3 +511,11 @@ Api.moveAllianceMember = function(locationX, locationY, callback){
 	var route = "logic.allianceHandler.moveAllianceMember"
 	pomelo.request(route, info, callback)
 }
+
+Api.distroyAllianceDecorate = function(decorateId, callback){
+	var info = {
+		decorateId:decorateId
+	}
+	var route = "logic.allianceHandler.distroyAllianceDecorate"
+	pomelo.request(route, info, callback)
+}

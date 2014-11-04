@@ -1538,6 +1538,19 @@ Utils.getAllianceMoveBuildingRequired = function(buildingName, buildingLevel){
 }
 
 /**
+ *
+ * @param decorateType
+ * @returns {*}
+ */
+Utils.getAllianceDistroyDecorateRequired = function(decorateType){
+	var config = AllianceInit.buildingType[decorateType]
+	var required = {
+		honour:config.distroyNeedHonour
+	}
+	return required
+}
+
+/**
  * 指定联盟建筑是否到达最高等级
  * @param buildingName
  * @param buildingLevel
@@ -1686,4 +1699,14 @@ Utils.getSizeInAllianceMap = function(buildingType){
  */
 Utils.getPlayerSpyTime = function(playerDoc, fromLocation, toLocation){
 	return 30
+}
+
+/**
+ * 联盟地图对象是否为装饰对象
+ * @param objectType
+ * @returns {*}
+ */
+Utils.isAllianceMapObjectTypeADecorateObject = function(objectType){
+	var config = AllianceInit.buildingType[objectType]
+	return _.isEqual(config.category, "decorate")
 }
