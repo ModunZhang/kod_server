@@ -1,0 +1,45 @@
+"use strict"
+
+var dragonMaterials = []
+module.exports = dragonMaterials
+
+dragonMaterials[1] = {
+	level:1,
+	ironIngot:1000,
+	steelIngot:1000,
+	mithrilIngot:1000,
+	blackIronIngot:1000,
+	arcaniteIngot:1000,
+	wispOfFire:1000,
+	wispOfCold:1000,
+	wispOfWind:1000,
+	lavaSoul:1000,
+	iceSoul:1000,
+	forestSoul:1000,
+	infernoSoul:1000,
+	blizzardSoul:1000,
+	fairySoul:1000,
+	moltenShard:1000,
+	glacierShard:1000,
+	chargedShard:1000,
+	moltenShiver:1000,
+	glacierShiver:1000,
+	chargedShiver:1000,
+	moltenCore:1000,
+	glacierCore:1000,
+	chargedCore:1000,
+	moltenMagnet:1000,
+	glacierMagnet:1000,
+	chargedMagnet:1000,
+	challengeRune:1000,
+	suppressRune:1000,
+	rageRune:1000,
+	guardRune:1000,
+	poisonRune:1000,
+	giantRune:1000,
+	dolanRune:1000,
+	warsongRune:1000,
+	infernoRune:1000,
+	arcanaRune:1000,
+	eternityRune:1000
+}
