@@ -34,6 +34,7 @@ var allianceSchema = new Schema({
 		kill:{type:Number, required:true, default:0},
 		joinType:{type:String, required:true, index:true, default:Consts.AllianceJoinType.All},
 		honour:{type:Number, required:true, default:0},
+		perception:{type:Number, required:true, default:0},
 		createTime:{type:Number, required:true, default:Date.now()}
 	},
 	notice:{type:String, required:false},
@@ -196,7 +197,8 @@ var allianceSchema = new Schema({
 		id:{type:String, required:true},
 		villageId:{type:Number, required:true},
 		startTime:{type:Number, required:true}
-	}]
+	}],
+	
 })
 
 module.exports = mongoose.model('alliance', allianceSchema)
