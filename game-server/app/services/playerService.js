@@ -2059,8 +2059,8 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.dragons = {}
 		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
-		playerData.dragonEquipmentEvents = {}
-		playerData.dragonEquipmentEvents[equipment.name] = playerDoc.dragonEquipments[equipment.name]
+		playerData.dragonEquipments = {}
+		playerData.dragonEquipments[equipment.name] = playerDoc.dragonEquipments[equipment.name]
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

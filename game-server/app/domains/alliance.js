@@ -198,7 +198,41 @@ var allianceSchema = new Schema({
 		villageId:{type:Number, required:true},
 		startTime:{type:Number, required:true}
 	}],
-	
+	shrineEvents:[{
+		_id:false,
+		id:{type:String, require:true},
+		stageName:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		troops:[{
+			_id:false,
+			playerId:{type:Number, required:true},
+			dragon:{
+				type:{
+					type:{type:String, required:true},
+					level:{type:Number, required:true},
+					strength:{type:Number, required:true},
+					vitality:{type:Number, required:true}
+				},
+				required:false
+			},
+			soldiers:[
+				{
+					_id:false,
+					type:{type:String, required:true},
+					level:{type:Number, required:true},
+					count:{type:String, required:true},
+					properties:{
+						atkInfs:{type:Number, required:true},
+						atkHunter:{type:Number, required:true},
+						atkCavalry:{type:Number, required:true},
+						atkSiege:{type:Number, required:true},
+						atkWall:{type:Number, required:true},
+						hp:{type:Number, required:true}
+					}
+				}
+			]
+		}]
+	}]
 })
 
 module.exports = mongoose.model('alliance', allianceSchema)
