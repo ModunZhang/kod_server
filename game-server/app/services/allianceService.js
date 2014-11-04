@@ -3235,6 +3235,208 @@ pro.spyVillage = function(playerId, villageId, dragonType, callback){
 	})
 }
 
+/**
+ * 移动联盟建筑到新的位置
+ * @param playerId
+ * @param buildingName
+ * @param locationX
+ * @param locationY
+ * @param callback
+ */
+pro.moveAllianceBuilding = function(playerId, buildingName, locationX, locationY, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.contains(Consts.AllianceBuildingNames, buildingName)){
+		callback(new Error("buildingName 不合法"))
+		return
+	}
+	if(!_.isNumber(locationX) || locationX % 1 !== 0){
+		callback(new Error("locationX 不合法"))
+	}
+	if(!_.isNumber(locationY) || locationY % 1 !== 0){
+		callback(new Error("locationY 不合法"))
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var pushFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "moveAllianceBuilding")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var building = allianceDoc.buildings[buildingName]
+		var buildingObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, building.location)
+		var moveBuildingRequired = DataUtils.getAllianceMoveBuildingRequired(buildingName, building.level)
+		if(allianceDoc.basicInfo.honour < moveBuildingRequired.honour) return Promise.reject(new Error("联盟荣耀值不足"))
+		var mapObjects = allianceDoc.mapObjects
+		var buildingSizeInMap = DataUtils.getSizeInAllianceMap("building")
+		var oldRect = {x:building.location.x, y:building.location.y, width:buildingSizeInMap.width, height:buildingSizeInMap.height}
+		var newRect = {x:locationX, y:locationY, width:buildingSizeInMap.width, height:buildingSizeInMap.height}
+		var map = MapUtils.buildMap(mapObjects)
+		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(new Error("不能移动到目标点位"))
+		building.location = {x:newRect.x, y:newRect.y}
+		buildingObjectInMap.location = {x:newRect.x, y:newRect.y}
+		allianceDoc.basicInfo.honour -= moveBuildingRequired.honour
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		var allianceData = {}
+		allianceData.basicInfo = allianceDoc.basicInfo
+		allianceData.__mapObjects = {
+			type:Consts.DataChangedType.Edit,
+			data:buildingObjectInMap
+		}
+		allianceData.buildings = {}
+		allianceData.buildings[buildingName] = allianceDoc.buildings[buildingName]
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 移动玩家城市到新的位置
+ * @param playerId
+ * @param locationX
+ * @param locationY
+ * @param callback
+ */
+pro.moveAllianceMember = function(playerId, locationX, locationY, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(locationX) || locationX % 1 !== 0){
+		callback(new Error("locationX 不合法"))
+	}
+	if(!_.isNumber(locationY) || locationY % 1 !== 0){
+		callback(new Error("locationY 不合法"))
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var pushFuncs = []
+	var updateFuncs = []
+	var moveBuildingRequired = {gem:50}
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		if(playerDoc.resources.gem < moveBuildingRequired.gem) return Promise.reject(new Error("宝石不足"))
+		playerDoc.resources.gem -= moveBuildingRequired.gem
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		var playerData = {}
+		playerData.resources = playerDoc.resources
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var playerDocInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
+		var playerObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, playerDocInAlliance.location)
+		var mapObjects = allianceDoc.mapObjects
+		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
+		var oldRect = {x:playerDocInAlliance.location.x, y:playerDocInAlliance.location.y, width:memberSizeInMap.width, height:memberSizeInMap.height}
+		var newRect = {x:locationX, y:locationY, width:memberSizeInMap.width, height:memberSizeInMap.height}
+		var map = MapUtils.buildMap(mapObjects)
+		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(new Error("不能移动到目标点位"))
+		playerDocInAlliance.location = {x:newRect.x, y:newRect.y}
+		playerObjectInMap.location = {x:newRect.x, y:newRect.y}
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		var allianceData = {}
+		allianceData.__mapObjects = {
+			type:Consts.DataChangedType.Edit,
+			data:playerObjectInMap
+		}
+		allianceData.__members = {
+			type:Consts.DataChangedType.Edit,
+			data:playerDocInAlliance
+		}
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+
+
+
+
+
+
+
+
+
+
 
 /**
  * 到达指定时间时,触发的消息

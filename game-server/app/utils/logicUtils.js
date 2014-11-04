@@ -1292,6 +1292,7 @@ Utils.getAllianceMapObjectByLocation = function(allianceDoc, location){
  */
 Utils.createAllianceMapObject = function(buildingType, rect){
 	var object = {
+		id:ShortId.generate(),
 		type:buildingType,
 		location:{
 			x:rect.x,

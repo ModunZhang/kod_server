@@ -5,6 +5,7 @@
  */
 
 var _ = require("underscore")
+var ShortId = require("shortid")
 
 var Consts = require("../consts/consts")
 var GameDatas = require("../datas/GameDatas")
@@ -28,35 +29,39 @@ Utils.create = function(){
 	var map = []
 	var mapObjects = []
 	this.initMap(map)
+	var buildingConfig = AllianceInit.buildingType["building"]
+	var buildingWidth = buildingConfig.width
+	var buildingHeight = buildingConfig.height
+	var locationConfig = Consts.AllianceBuildingLocation
 	this.markMap(map, mapObjects, {
-		x:11,
-		y:8,
-		width:3,
-		height:3
+		x:locationConfig.Palace.x,
+		y:locationConfig.Palace.y,
+		width:buildingWidth,
+		height:buildingHeight
 	}, "building")
 	this.markMap(map, mapObjects, {
-		x:8,
-		y:11,
-		width:3,
-		height:3
+		x:locationConfig.Gate.x,
+		y:locationConfig.Gate.y,
+		width:buildingWidth,
+		height:buildingHeight
 	}, "building")
 	this.markMap(map, mapObjects, {
-		x:11,
-		y:11,
-		width:3,
-		height:3
+		x:locationConfig.Hall.x,
+		y:locationConfig.Hall.y,
+		width:buildingWidth,
+		height:buildingHeight
 	}, "building")
 	this.markMap(map, mapObjects, {
-		x:14,
-		y:11,
-		width:3,
-		height:3
+		x:locationConfig.Shrine.x,
+		y:locationConfig.Shrine.y,
+		width:buildingWidth,
+		height:buildingHeight
 	}, "building")
 	this.markMap(map, mapObjects, {
-		x:11,
-		y:14,
-		width:3,
-		height:3
+		x:locationConfig.Shop.x,
+		y:locationConfig.Shop.y,
+		width:buildingWidth,
+		height:buildingHeight
 	}, "building")
 
 	var orderHallConfig = AllianceBuildingConfig.orderHall[1]
@@ -129,6 +134,20 @@ var markMapWithRect = function(map, rect){
 		}
 	}
 }
+
+/**
+ * 取消对地图的标记
+ * @param map
+ * @param rect
+ */
+var unMarkMapWithRect = function(map, rect) {
+	for (var i = rect.x; i > rect.x - rect.width; i--) {
+		for (var j = rect.y; j > rect.y - rect.height; j--) {
+			map[i][j] = false
+		}
+	}
+}
+
 /**
  * 标记已使用的地图
  * @param map
@@ -139,6 +158,7 @@ var markMapWithRect = function(map, rect){
 Utils.markMap = function(map, mapObjects, rect, buildingType){
 	markMapWithRect(map, rect)
 	var object = {
+		id:ShortId.generate(),
 		type:buildingType,
 		location:{
 			x:rect.x,
@@ -207,6 +227,36 @@ Utils.getRect = function(map, width, height){
 			}
 		}
 	}
+}
+
+/**
+ *
+ * @param map
+ * @param targetRect
+ * @param exceptRect
+ * @returns {boolean}
+ */
+Utils.isRectLegal = function(map, targetRect, exceptRect){
+	var start_x = targetRect.x
+	var start_y = targetRect.y
+	var end_x = targetRect.x - targetRect.width + 1
+	var end_y = targetRect.y - targetRect.height + 1
+	var is_in_map = start_x > -1 && start_x < MapSize.width &&
+		start_y > -1 && start_y < MapSize.height &&
+		end_x > -1 && end_x < MapSize.width &&
+		end_y > -1 && end_y < MapSize.height
+	if (!is_in_map) {
+		return false
+	}
+	if(_.isObject(exceptRect)) unMarkMapWithRect(map, exceptRect)
+	for (var i = targetRect.x; i > targetRect.x - targetRect.width; i--) {
+		for (var j = targetRect.y; j > targetRect.y - targetRect.height; j--) {
+			if (map[i][j]) {
+				return false
+			}
+		}
+	}
+	return true
 }
 
 /**

@@ -445,3 +445,36 @@ pro.upgradeAllianceVillage = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 移动联盟建筑到新的位置
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.moveAllianceBuilding = function(msg, session, next){
+	var buildingName = msg.buildingName
+	var locationX = msg.locationX
+	var locationY = msg.locationY
+	this.allianceService.moveAllianceBuildingAsync(session.uid, buildingName, locationX, locationY).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 移动玩家城市到新的位置
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.moveAllianceMember = function(msg, session, next){
+	var locationX = msg.locationX
+	var locationY = msg.locationY
+	this.allianceService.moveAllianceMemberAsync(session.uid, locationX, locationY).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

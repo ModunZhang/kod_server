@@ -9,7 +9,8 @@ Shrine[1] = {
 	needKeep:3,
 	power:200,
 	perceptivity:50,
-	pRecovery:5
+	pRecovery:5,
+	moveNeedHonour:100
 }
 Shrine[2] = {
 	level:2,
@@ -17,7 +18,8 @@ Shrine[2] = {
 	needKeep:5,
 	power:400,
 	perceptivity:100,
-	pRecovery:10
+	pRecovery:10,
+	moveNeedHonour:100
 }
 Shrine[3] = {
 	level:3,
@@ -25,7 +27,8 @@ Shrine[3] = {
 	needKeep:8,
 	power:800,
 	perceptivity:150,
-	pRecovery:15
+	pRecovery:15,
+	moveNeedHonour:100
 }
 Shrine[4] = {
 	level:4,
@@ -33,7 +36,8 @@ Shrine[4] = {
 	needKeep:9,
 	power:1600,
 	perceptivity:200,
-	pRecovery:20
+	pRecovery:20,
+	moveNeedHonour:100
 }
 Shrine[5] = {
 	level:5,
@@ -41,7 +45,8 @@ Shrine[5] = {
 	needKeep:10,
 	power:3200,
 	perceptivity:250,
-	pRecovery:25
+	pRecovery:25,
+	moveNeedHonour:100
 }
 Shrine[6] = {
 	level:6,
@@ -49,7 +54,8 @@ Shrine[6] = {
 	needKeep:12,
 	power:6400,
 	perceptivity:300,
-	pRecovery:30
+	pRecovery:30,
+	moveNeedHonour:100
 }
 Shrine[7] = {
 	level:7,
@@ -57,7 +63,8 @@ Shrine[7] = {
 	needKeep:14,
 	power:12800,
 	perceptivity:350,
-	pRecovery:35
+	pRecovery:35,
+	moveNeedHonour:100
 }
 Shrine[8] = {
 	level:8,
@@ -65,7 +72,8 @@ Shrine[8] = {
 	needKeep:16,
 	power:25600,
 	perceptivity:400,
-	pRecovery:40
+	pRecovery:40,
+	moveNeedHonour:100
 }
 Shrine[9] = {
 	level:9,
@@ -73,7 +81,8 @@ Shrine[9] = {
 	needKeep:18,
 	power:51200,
 	perceptivity:450,
-	pRecovery:45
+	pRecovery:45,
+	moveNeedHonour:100
 }
 Shrine[10] = {
 	level:10,
@@ -81,5 +90,6 @@ Shrine[10] = {
 	needKeep:20,
 	power:102400,
 	perceptivity:500,
-	pRecovery:50
+	pRecovery:50,
+	moveNeedHonour:100
 }

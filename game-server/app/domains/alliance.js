@@ -10,13 +10,13 @@ var Schema = mongoose.Schema
 
 var Consts = require("../consts/consts")
 
-var createBuildingSchema = function(name, x, y){
+var createBuildingSchema = function(name, location){
 	var schema = {
 		name:{type:String, required:true, default:name},
 		level:{type:Number, required:true, default:1},
 		location:{
-			x:{type:Number, required:true, default:x},
-			y:{type:Number, required:true, default:y}
+			x:{type:Number, required:true, default:location.x},
+			y:{type:Number, required:true, default:location.y}
 		}
 	}
 	return schema
@@ -86,11 +86,11 @@ var allianceSchema = new Schema({
 		}
 	}],
 	buildings:{
-		palace:createBuildingSchema("palace", 10, 10),
-		gate:createBuildingSchema("gate", 10, 13),
-		hall:createBuildingSchema("hall", 7, 10),
-		shrine:createBuildingSchema("shrine", 10, 7),
-		shop:createBuildingSchema("shop", 13, 10)
+		palace:createBuildingSchema("palace", Consts.AllianceBuildingLocation.Palace),
+		gate:createBuildingSchema("gate", Consts.AllianceBuildingLocation.Gate),
+		hall:createBuildingSchema("hall", Consts.AllianceBuildingLocation.Hall),
+		shrine:createBuildingSchema("shrine", Consts.AllianceBuildingLocation.Shrine),
+		shop:createBuildingSchema("shop", Consts.AllianceBuildingLocation.Shop)
 	},
 	villageLevels:{
 		woodVillage:{type:Number, required:true, default:1},
@@ -120,6 +120,7 @@ var allianceSchema = new Schema({
 	}],
 	mapObjects:[{
 		_id:false,
+		id:{type:String, require:true},
 		type:{type:String, required:true},
 		location:{
 			x:{type:Number, required:true},

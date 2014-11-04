@@ -13,6 +13,7 @@ var Config = require("../config")
 var AllianceDao = require("../../app/dao/allianceDao")
 var PlayerDao = require("../../app/dao/playerDao")
 var Api = require("../api")
+var MapUtils = require("../../app/utils/mapUtils")
 
 var commandDir = path.resolve(__dirname + "/../../app/commands")
 var redisClient = redis.createClient(Config.redisPort, Config.redisAddr)
@@ -22,69 +23,10 @@ var allianceDao = Promise.promisifyAll(new AllianceDao(redisClient, scripto, "pr
 var playerDao = Promise.promisifyAll(new PlayerDao(redisClient, scripto, "production"))
 
 
-var ClearTestAccount = function(callback){
-	var funcs = []
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId2))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId2))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId3))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId3))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId4))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId4))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId5))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId5))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId6))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId6))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId7))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId7))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId8))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId8))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId9))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId9))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId10))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId10))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId11))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId11))
-	funcs.push(playerDao.removeLockByIndexAsync("countInfo.deviceId", Config.deviceId12))
-	funcs.push(playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId12))
-
-	Promise.all(funcs).then(function(){
-		callback()
-	})
-}
-
-var ClearAlliance = function(callback){
-	var funcs = []
-	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName))
-	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName))
-	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName2))
-	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName2))
-	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName3))
-	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName3))
-	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName4))
-	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName4))
-	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName5))
-	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName5))
-	funcs.push(allianceDao.removeLockByIndexAsync("basicInfo.name", Config.allianceName6))
-	funcs.push(allianceDao.deleteByIndexAsync("basicInfo.name", Config.allianceName6))
-
-	Promise.all(funcs).then(function(){
-		callback()
-	})
-}
-
-
-
 describe("AllianceService", function(){
 	var m_user
 
 	before(function(done){
-		//ClearTestAccount(function(){
-		//	ClearAlliance(function(){
-		//		done()
-		//	})
-		//})
 		done()
 	})
 
@@ -1048,6 +990,42 @@ describe("AllianceService", function(){
 				doc.code.should.equal(200)
 				done()
 			})
+		})
+
+		it("moveAllianceBuilding 正常移动", function(done){
+			var m_allianceData = null
+			Api.getMyAllianceData(function(doc){
+				doc.code.should.equal(200)
+				var map = MapUtils.buildMap(m_allianceData.mapObjects)
+				var rect = MapUtils.getRect(map, 3, 3)
+				Api.moveAllianceBuilding("palace", rect.x, rect.y, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+			var onGetAllianceDataSuccess = function(doc){
+				m_allianceData = doc
+				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+			}
+			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		})
+
+		it("moveAllianceMember 正常移动", function(done){
+			var m_allianceData = null
+			Api.getMyAllianceData(function(doc){
+				doc.code.should.equal(200)
+				var map = MapUtils.buildMap(m_allianceData.mapObjects)
+				var rect = MapUtils.getRect(map, 1, 1)
+				Api.moveAllianceMember(rect.x, rect.y, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+			var onGetAllianceDataSuccess = function(doc){
+				m_allianceData = doc
+				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+			}
+			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		})
 	})
 

@@ -1524,6 +1524,20 @@ Utils.getAllianceVillageUpgradeRequired = function(villageType, villageLevel){
 }
 
 /**
+ * 获取移动联盟建筑需要的资源
+ * @param buildingName
+ * @param buildingLevel
+ * @returns {{honour: (moveNeedHonour|*)}}
+ */
+Utils.getAllianceMoveBuildingRequired = function(buildingName, buildingLevel){
+	var config = AllianceBuildingConfig[buildingName][buildingLevel]
+	var required = {
+		honour:config.moveNeedHonour
+	}
+	return required
+}
+
+/**
  * 指定联盟建筑是否到达最高等级
  * @param buildingName
  * @param buildingLevel

@@ -492,3 +492,22 @@ Api.upgradeAllianceVillage = function(villageType, callback){
 	var route = "logic.allianceHandler.upgradeAllianceVillage"
 	pomelo.request(route, info, callback)
 }
+
+Api.moveAllianceBuilding = function(buildingName, locationX, locationY, callback){
+	var info = {
+		buildingName:buildingName,
+		locationX:locationX,
+		locationY:locationY
+	}
+	var route = "logic.allianceHandler.moveAllianceBuilding"
+	pomelo.request(route, info, callback)
+}
+
+Api.moveAllianceMember = function(locationX, locationY, callback){
+	var info = {
+		locationX:locationX,
+		locationY:locationY
+	}
+	var route = "logic.allianceHandler.moveAllianceMember"
+	pomelo.request(route, info, callback)
+}
