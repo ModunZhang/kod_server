@@ -3313,10 +3313,10 @@ pro.moveAllianceBuilding = function(playerId, buildingName, locationX, locationY
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
-		allianceData.__mapObjects = {
+		allianceData.__mapObjects = [{
 			type:Consts.DataChangedType.Edit,
 			data:buildingObjectInMap
-		}
+		}]
 		allianceData.buildings = {}
 		allianceData.buildings[buildingName] = allianceDoc.buildings[buildingName]
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
@@ -3405,14 +3405,14 @@ pro.moveAllianceMember = function(playerId, locationX, locationY, callback){
 		playerObjectInMap.location = {x:newRect.x, y:newRect.y}
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		var allianceData = {}
-		allianceData.__mapObjects = {
+		allianceData.__mapObjects = [{
 			type:Consts.DataChangedType.Edit,
 			data:playerObjectInMap
-		}
-		allianceData.__members = {
+		}]
+		allianceData.__members = [{
 			type:Consts.DataChangedType.Edit,
 			data:playerDocInAlliance
-		}
+		}]
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
@@ -3490,10 +3490,10 @@ pro.distroyAllianceDecorate = function(playerId, decorateId, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
-		allianceData.__mapObjects = {
+		allianceData.__mapObjects = [{
 			type:Consts.DataChangedType.Remove,
 			data:decorateObject
-		}
+		}]
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
@@ -3573,10 +3573,10 @@ pro.activateAllianceShrineStage = function(playerId, stageName, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
-		allianceData.__mapObjects = {
+		allianceData.__mapObjects = [{
 			type:Consts.DataChangedType.Remove,
 			data:decorateObject
-		}
+		}]
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){

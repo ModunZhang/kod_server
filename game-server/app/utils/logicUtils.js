@@ -1354,5 +1354,8 @@ Utils.isAllianceShrineStageActivated = function(allianceDoc, stageName){
 }
 
 Utils.createAllianceShrineStageEvent = function(stageName){
+	var event = {
+		id:ShortId.generate(),
 
+	}
 }

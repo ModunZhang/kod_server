@@ -1380,7 +1380,7 @@ Utils.getImposedCoin = function(playerDoc){
  * @returns {gem|*|playerSchema.resources.gem|.resources.gem}
  */
 Utils.getGemByCreateAlliance = function(){
-	return AllianceInit.resource.createAlliance.gem
+	return AllianceInit.intInit.createAlliance.value
 }
 
 /**
@@ -1388,7 +1388,7 @@ Utils.getGemByCreateAlliance = function(){
  * @returns {resources.buyArchon.gem|*}
  */
 Utils.getGemByBuyAllianceArchon = function(){
-	return AllianceInit.resource.buyArchon.gem
+	return AllianceInit.intInit.buyArchon.value
 }
 
 /**
@@ -1578,7 +1578,7 @@ Utils.isAllianceVillageReachMaxLevel = function(allianceType, allianceLevel){
  * @returns {resource.editAllianceBasicInfo.gem|*}
  */
 Utils.getEditAllianceBasicInfoGem = function(){
-	return AllianceInit.resource.editAllianceBasicInfo.gem
+	return AllianceInit.intInit.editAllianceBasicInfo.value
 }
 
 /**
@@ -1586,7 +1586,7 @@ Utils.getEditAllianceBasicInfoGem = function(){
  * @returns {resource.editAllianceTerrian.honour|*}
  */
 Utils.getEditAllianceTerrianHonour = function(){
-	return AllianceInit.resource.editAllianceTerrian.honour
+	return AllianceInit.intInit.editAllianceTerrian.value
 }
 
 /**
