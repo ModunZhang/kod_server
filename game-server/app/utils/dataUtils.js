@@ -30,6 +30,7 @@ var AllianceInit = GameDatas.AllianceInitData
 var AllianceRight = AllianceInit.right
 var AllianceBuildingConfig = GameDatas.AllianceBuilding
 var AllianceVillageConfig = GameDatas.AllianceVillage
+var AllianceShrineConfig = GameDatas.AllianceShrine.shrineStage
 var Vip = GameDatas.Vip
 
 
@@ -1709,4 +1710,29 @@ Utils.getPlayerSpyTime = function(playerDoc, fromLocation, toLocation){
 Utils.isAllianceMapObjectTypeADecorateObject = function(objectType){
 	var config = AllianceInit.buildingType[objectType]
 	return _.isEqual(config.category, "decorate")
+}
+
+/**
+ * 刷新联盟感知力
+ * @param allianceDoc
+ * @returns {perception|*|allianceSchema.basicInfo.perception}
+ */
+Utils.getAlliancePerception = function(allianceDoc){
+	var shrine = allianceDoc.buildings.shrine
+	var config = AllianceBuildingConfig.shrine[shrine.level]
+	var perception = allianceDoc.basicInfo.perception
+	var addPerSecond = config.pRecovery / 60 / 60
+	var totalSeconds = Date.now() - allianceDoc.basicInfo.perceptionRefreshTime
+	var perceptionAdd = Math.floor(addPerSecond * totalSeconds)
+	return perception + perceptionAdd > config.perception ? config.perception : perception + perceptionAdd
+}
+
+/**
+ * 联盟圣地事件名称是否合法
+ * @param stageName
+ * @returns {*}
+ */
+Utils.isAllianceShrineStageNameLegal = function(stageName){
+	var config = AllianceShrineConfig
+	return _.contains(_.keys(config), stageName)
 }

@@ -645,7 +645,7 @@ Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
  * 刷新联盟属性
  * @param allianceDoc
  */
-Utils.refreshAlliance = function(allianceDoc){
+Utils.refreshAllianceBasicInfo = function(allianceDoc){
 	var totalPower = 0
 	var totalKill = 0
 	_.each(allianceDoc.members, function(member){
@@ -654,6 +654,15 @@ Utils.refreshAlliance = function(allianceDoc){
 	})
 	allianceDoc.basicInfo.power = totalPower
 	allianceDoc.basicInfo.kill = totalKill
+}
+
+/**
+ * 刷新联盟感知力
+ * @param allianceDoc
+ */
+Utils.refreshAlliancePerception = function(allianceDoc){
+	allianceDoc.basicInfo.perception = DataUtils.getAlliancePerception(allianceDoc)
+	allianceDoc.basicInfo.perceptionRefreshTime = Date.now()
 }
 
 /**
@@ -1328,4 +1337,22 @@ Utils.isAllianceVillageBeingCollect = function(allianceDoc, villageId){
 		if(_.isEqual(collectEvent.villageId, villageId)) return true
 	}
 	return false
+}
+
+/**
+ * 联盟某个圣地事件是否已经激活
+ * @param allianceDoc
+ * @param stageName
+ * @returns {boolean}
+ */
+Utils.isAllianceShrineStageActivated = function(allianceDoc, stageName){
+	for(var i = 0; i < allianceDoc.shrineEvents.length; i ++){
+		var event = allianceDoc.shrineEvents[i]
+		if(_.isEqual(event.stageName, stageName)) return true
+	}
+	return false
+}
+
+Utils.createAllianceShrineStageEvent = function(stageName){
+
 }

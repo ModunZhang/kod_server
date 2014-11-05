@@ -9,6 +9,8 @@ var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
 var Consts = require("../consts/consts")
+var GameDatas = require("../datas/GameDatas")
+var AllianceBuildingConfig = GameDatas.AllianceBuilding
 
 var createBuildingSchema = function(name, location){
 	var schema = {
@@ -34,7 +36,8 @@ var allianceSchema = new Schema({
 		kill:{type:Number, required:true, default:0},
 		joinType:{type:String, required:true, index:true, default:Consts.AllianceJoinType.All},
 		honour:{type:Number, required:true, default:0},
-		perception:{type:Number, required:true, default:0},
+		perception:{type:Number, required:true, default:AllianceBuildingConfig.shrine[1].perception},
+		perceptionRefreshTime:{type:Number, required:true, default:Date.now()},
 		createTime:{type:Number, required:true, default:Date.now()}
 	},
 	notice:{type:String, required:false},
@@ -206,6 +209,10 @@ var allianceSchema = new Schema({
 		troops:[{
 			_id:false,
 			playerId:{type:Number, required:true},
+			playerName:{type:String, required:true},
+			playerIcon:{type:String, required:true},
+			playerLevel:{type:String, required:true},
+			arriveTime:{type:Number, required:true},
 			dragon:{
 				type:{
 					type:{type:String, required:true},

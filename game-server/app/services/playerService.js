@@ -79,7 +79,7 @@ pro.playerLogin = function(playerDoc, callback){
 		}
 		allianceDoc = doc
 		memberDoc = LogicUtils.updateMyPropertyInAlliance(playerDoc, allianceDoc)
-		LogicUtils.refreshAlliance(allianceDoc)
+		LogicUtils.refreshAllianceBasicInfo(allianceDoc)
 		return self.allianceDao.updateAsync(allianceDoc)
 	}).then(function(){
 		pushFuncs.push([self.pushService, self.pushService.onPlayerLoginSuccessAsync, playerDoc])
