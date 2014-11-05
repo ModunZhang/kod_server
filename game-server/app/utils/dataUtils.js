@@ -1736,3 +1736,31 @@ Utils.isAllianceShrineStageNameLegal = function(stageName){
 	var config = AllianceShrineConfig
 	return _.contains(_.keys(config), stageName)
 }
+
+/**
+ * 创建联盟圣地事件
+ * @param stageName
+ * @returns {{id: *, stageName: *, startTime: number, troops: Array}}
+ */
+Utils.createAllianceShrineStageEvent = function(stageName){
+	var event = {
+		id:ShortId.generate(),
+		stageName:stageName,
+		startTime:Date.now() + (AllianceInit.intInit.activeShrineStageEvent.value * 1000),
+		troops:[]
+	}
+	return event
+}
+
+/**
+ * 获取激活圣地事件需要的感知力
+ * @param stageName
+ * @returns {{perception: *}}
+ */
+Utils.getAllianceActiveShrineStageRequired = function(stageName){
+	var config = AllianceShrineConfig[stageName]
+	var required = {
+		perception:config.needPerception
+	}
+	return required
+}

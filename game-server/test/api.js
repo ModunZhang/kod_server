@@ -519,3 +519,11 @@ Api.distroyAllianceDecorate = function(decorateId, callback){
 	var route = "logic.allianceHandler.distroyAllianceDecorate"
 	pomelo.request(route, info, callback)
 }
+
+Api.activateAllianceShrineStage = function(stageName, callback){
+	var info = {
+		stageName:stageName
+	}
+	var route = "logic.allianceHandler.activateAllianceShrineStage"
+	pomelo.request(route, info, callback)
+}

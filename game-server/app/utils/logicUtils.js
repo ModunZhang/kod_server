@@ -1352,10 +1352,3 @@ Utils.isAllianceShrineStageActivated = function(allianceDoc, stageName){
 	}
 	return false
 }
-
-Utils.createAllianceShrineStageEvent = function(stageName){
-	var event = {
-		id:ShortId.generate(),
-
-	}
-}

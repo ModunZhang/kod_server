@@ -493,3 +493,18 @@ pro.distroyAllianceDecorate = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 激活联盟圣地事件
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.activateAllianceShrineStage = function(msg, session, next){
+	var stageName = msg.stageName
+	this.allianceService.activateAllianceShrineStageAsync(session.uid, stageName).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

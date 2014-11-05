@@ -1049,6 +1049,29 @@ describe("AllianceService", function(){
 			}
 			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		})
+
+		it("activateAllianceShrineStage 正常激活", function(done){
+			Api.activateAllianceShrineStage("1_1", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("activateAllianceShrineStage 此联盟事件已经激活", function(done){
+			Api.activateAllianceShrineStage("1_1", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("此联盟事件已经激活")
+				done()
+			})
+		})
+
+		it("activateAllianceShrineStage 联盟荣耀值不足", function(done){
+			Api.activateAllianceShrineStage("1_2", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("联盟荣耀值不足")
+				done()
+			})
+		})
 	})
 
 

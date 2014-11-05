@@ -3035,6 +3035,7 @@ pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
 			return Promise.reject(new Error("建筑已达到最高等级"))
 		}
 		allianceDoc.basicInfo.honour -= upgradeRequired.honour
+		if(_.isEqual("shrine", buildingName)) LogicUtils.refreshAlliancePerception(allianceDoc)
 		building.level += 1
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
@@ -3543,6 +3544,7 @@ pro.activateAllianceShrineStage = function(playerId, stageName, callback){
 	var playerDoc = null
 	var allianceDoc = null
 	var pushFuncs = []
+	var eventFuncs = []
 	var updateFuncs = []
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
@@ -3562,25 +3564,27 @@ pro.activateAllianceShrineStage = function(playerId, stageName, callback){
 		}
 		allianceDoc = doc
 		if(LogicUtils.isAllianceShrineStageActivated(allianceDoc, stageName)) return Promise.reject(new Error("此联盟事件已经激活"))
-
-		var decorateObject = LogicUtils.getAllianceMapObjectById(allianceDoc, decorateId)
-		if(!DataUtils.isAllianceMapObjectTypeADecorateObject(decorateObject.type)) return Promise.reject(new Error("只能拆除装饰物"))
-		var distroyRequired = DataUtils.getAllianceDistroyDecorateRequired(decorateObject.type)
-		if(allianceDoc.basicInfo.honour < distroyRequired.honour) return Promise.reject(new Error("联盟荣耀值不足"))
-		LogicUtils.removeItemInArray(allianceDoc.mapObjects, decorateObject)
-		allianceDoc.basicInfo.honour -= distroyRequired.honour
+		var activeStageRequired = DataUtils.getAllianceActiveShrineStageRequired(stageName)
+		LogicUtils.refreshAlliancePerception(allianceDoc)
+		if(allianceDoc.basicInfo.perception < activeStageRequired.perception) return Promise.reject(new Error("联盟荣耀值不足"))
+		allianceDoc.basicInfo.perception -= activeStageRequired.perception
+		var event = DataUtils.createAllianceShrineStageEvent(stageName)
+		allianceDoc.shrineEvents.push(event)
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "shrineEvents", event.id, event.startTime])
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
-		allianceData.__mapObjects = [{
-			type:Consts.DataChangedType.Remove,
-			data:decorateObject
+		allianceDoc.__shrineEvents = [{
+			type:Consts.DataChangedType.Add,
+			data:event
 		}]
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
