@@ -1620,8 +1620,8 @@ Utils.isAllianceVillageTypeLegal = function(villageType){
 Utils.getAllianceVillageConfigedSoldiers = function(villageType, villageLevel){
 	var soldiers = []
 	var config = AllianceVillageConfig[villageType][villageLevel]
-	_.each(Consts.NormalSoldierType, function(soldierType){
-		var params = config[soldierType].split(":")
+	_.each(Consts.NormalSoldierType, function(soldierName){
+		var params = config[soldierName].split(":")
 		var soldierLevel = parseInt(params[0])
 		var soldierCount = parseInt(params[1])
 		var soldierCountMax = Math.round(soldierCount * 1.2)
@@ -1629,7 +1629,7 @@ Utils.getAllianceVillageConfigedSoldiers = function(villageType, villageLevel){
 		soldierCount = Math.round(soldierCountMin + (Math.random() * (soldierCountMax - soldierCountMin)))
 		if(soldierCount > 0){
 			var soldier = {
-				type:soldierType,
+				name:soldierName,
 				level:soldierLevel,
 				count:soldierCount
 			}
@@ -1698,7 +1698,7 @@ Utils.getSizeInAllianceMap = function(buildingType){
  * @param toLocation
  * @returns {number}
  */
-Utils.getPlayerSpyTime = function(playerDoc, fromLocation, toLocation){
+Utils.getPlayerMarchTime = function(playerDoc, fromLocation, toLocation){
 	return 30
 }
 

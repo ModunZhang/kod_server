@@ -182,9 +182,9 @@ Api.resetDragonEquipment = function(dragonType, equipmentCategory, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.upgradeDragonDragonSkill = function(dragonType, skillLocation, callback){
+Api.upgradeDragonDragonSkill = function(dragonType, skillKey, callback){
 	var info = {
-		dragonType:dragonType, skillLocation:skillLocation
+		dragonType:dragonType, skillKey:skillKey
 	}
 	var route = "logic.playerHandler.upgradeDragonSkill"
 	pomelo.request(route, info, callback)
@@ -525,5 +525,15 @@ Api.activateAllianceShrineStage = function(stageName, callback){
 		stageName:stageName
 	}
 	var route = "logic.allianceHandler.activateAllianceShrineStage"
+	pomelo.request(route, info, callback)
+}
+
+Api.marchToShrine = function(shrineEventId, dragonType, soldiers, callback){
+	var info = {
+		shrineEventId:shrineEventId,
+		dragonType:dragonType,
+		soldiers:soldiers
+	}
+	var route = "logic.allianceHandler.marchToShrine"
 	pomelo.request(route, info, callback)
 }

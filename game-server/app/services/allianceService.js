@@ -3153,102 +3153,6 @@ pro.upgradeAllianceVillage = function(playerId, villageType, callback){
 }
 
 /**
- * 侦查村落
- * @param playerId
- * @param villageId
- * @param dragonType
- * @param callback
- */
-pro.spyVillage = function(playerId, villageId, dragonType, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isString(villageId)){
-		callback(new Error("villageId 不合法"))
-		return
-	}
-	if(!DataUtils.isDragonTypeExist(dragonType)){
-		callback(new Error("dragonType 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var allianceDoc = null
-	var pushFuncs = []
-	var eventFuncs = []
-	var updateFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		playerDoc = doc
-		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
-			return Promise.reject(new Error("玩家未加入联盟"))
-		}
-		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
-	}).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("联盟不存在"))
-		}
-		allianceDoc = doc
-		if(LogicUtils.isAllianceVillageBeingCollect(allianceDoc, villageId)){
-			return Promise.reject(new Error("村落正在被本联盟玩家采集,不能侦查"))
-		}
-		var dragon = playerDoc.dragons[dragonType]
-		if(!_.isEqual(dragon.status, Consts.DragonStatus.Free)){
-			return Promise.reject(new Error("龙必须是空闲状态才能派出"))
-		}
-		dragon.status = Consts.DragonStatus.March
-		var playerData = {}
-		playerData.dragons = {}
-		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		var playerInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
-		var villageInAlliance = LogicUtils.getAllianceVillageById(allianceDoc, villageId)
-		var spyEvent = MarchUtils.createSpyVillageEvent(playerDoc, playerInAlliance, dragon, villageInAlliance)
-		allianceDoc.spyVillageEvents.push(spyEvent)
-		var allianceData = {}
-		allianceData.__spyVillageEvents = [{
-			type:Consts.DataChangedType.Add,
-			data:spyEvent
-		}]
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "spyVillageEvents", spyEvent.id, spyEvent.finishTime])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
  * 移动联盟建筑到新的位置
  * @param playerId
  * @param buildingName
@@ -3303,7 +3207,12 @@ pro.moveAllianceBuilding = function(playerId, buildingName, locationX, locationY
 		if(allianceDoc.basicInfo.honour < moveBuildingRequired.honour) return Promise.reject(new Error("联盟荣耀值不足"))
 		var mapObjects = allianceDoc.mapObjects
 		var buildingSizeInMap = DataUtils.getSizeInAllianceMap("building")
-		var oldRect = {x:building.location.x, y:building.location.y, width:buildingSizeInMap.width, height:buildingSizeInMap.height}
+		var oldRect = {
+			x:building.location.x,
+			y:building.location.y,
+			width:buildingSizeInMap.width,
+			height:buildingSizeInMap.height
+		}
 		var newRect = {x:locationX, y:locationY, width:buildingSizeInMap.width, height:buildingSizeInMap.height}
 		var map = MapUtils.buildMap(mapObjects)
 		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(new Error("不能移动到目标点位"))
@@ -3398,7 +3307,12 @@ pro.moveAllianceMember = function(playerId, locationX, locationY, callback){
 		var playerObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, playerDocInAlliance.location)
 		var mapObjects = allianceDoc.mapObjects
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
-		var oldRect = {x:playerDocInAlliance.location.x, y:playerDocInAlliance.location.y, width:memberSizeInMap.width, height:memberSizeInMap.height}
+		var oldRect = {
+			x:playerDocInAlliance.location.x,
+			y:playerDocInAlliance.location.y,
+			width:memberSizeInMap.width,
+			height:memberSizeInMap.height
+		}
 		var newRect = {x:locationX, y:locationY, width:memberSizeInMap.width, height:memberSizeInMap.height}
 		var map = MapUtils.buildMap(mapObjects)
 		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(new Error("不能移动到目标点位"))
@@ -3575,7 +3489,110 @@ pro.activateAllianceShrineStage = function(playerId, stageName, callback){
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "shrineEvents", event.id, event.startTime])
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
-		allianceDoc.__shrineEvents = [{
+		allianceData.__shrineEvents = [{
+			type:Consts.DataChangedType.Add,
+			data:event
+		}]
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 行军到圣地
+ * @param playerId
+ * @param shrineEventId
+ * @param dragonType
+ * @param soldiers
+ * @param callback
+ */
+pro.marchToShrine = function(playerId, shrineEventId, dragonType, soldiers, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(shrineEventId)){
+		callback(new Error("shrineEventId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		callback(new Error("dragonType 不合法"))
+		return
+	}
+	if(!_.isArray(soldiers)){
+		callback(new Error("soldiers 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	var playerData = {}
+	var allianceData = {}
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		var dragon = playerDoc.dragons[dragonType]
+		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
+		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
+		dragon.status = Consts.DragonStatus.March
+		playerData.dragons = {}
+		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+		if(!LogicUtils.isMarchSoldierLegal(playerDoc, soldiers)) return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
+		_.each(soldiers, function(soldier){
+			playerDoc.soldiers[soldier.name] -= soldier.count
+			playerData.soldiers = {}
+			playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
+		})
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		var shrineEvent = LogicUtils.getEventById(allianceDoc.shrineEvents, shrineEventId)
+		if(!_.isObject(shrineEvent)) return Promise.reject(new Error("圣地事件不存在"))
+		var event = LogicUtils.createAllianceShrineMarchEvent(playerDoc, allianceDoc, shrineEventId, dragonType, soldiers)
+		allianceDoc.shrineMarchEvents.push(event)
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "shrineMarchEvents", event.id, event.arriveTime])
+		allianceData.__shrineMarchEvents = [{
 			type:Consts.DataChangedType.Add,
 			data:event
 		}]
@@ -3608,18 +3625,6 @@ pro.activateAllianceShrineStage = function(playerId, stageName, callback){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * 到达指定时间时,触发的消息
  * @param allianceId
@@ -3629,11 +3634,11 @@ pro.activateAllianceShrineStage = function(playerId, stageName, callback){
  */
 pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 	var self = this
-	var pushFuncs = []
-	var updateFuncs = []
 	var allianceDoc = null
 	var event = null
-
+	var pushFuncs = []
+	var updateFuncs = []
+	var eventFuncs = []
 	this.allianceDao.findByIdAsync(allianceId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -3644,20 +3649,24 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 			return Promise.reject(new Error("联盟事件不存在"))
 		}
 	}).then(function(){
-		if(_.isEqual("spyVillageEvents", eventType)){
-			return self.playerDoc.findByIdAsync(event.fromId).then(function(doc){
-				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-				var playerDoc = doc
-				self.timeEventService.onAllianceSpyVillageEvent(playerDoc, allianceDoc, event)
-			})
+		if(_.isEqual(eventType, "shrineMarchEvents")){
+			var params = self.timeEventService.onShrineMarchEvents(allianceDoc, event)
+			var allianceData = params.allianceData
+			eventFuncs.concat(params.eventFuncs)
+			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		}
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		}
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
 		}

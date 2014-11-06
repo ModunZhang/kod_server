@@ -1072,6 +1072,37 @@ describe("AllianceService", function(){
 				done()
 			})
 		})
+
+		it("marchToShrine 正常行军", function(done){
+			var m_allianceData = null
+			Api.sendChat("dragonstar redDragon 1", function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("soldiers 10", function(doc){
+					doc.code.should.equal(200)
+					Api.getMyAllianceData(function(doc){
+						doc.code.should.equal(200)
+						Api.marchToShrine(m_allianceData.shrineEvents[0].id, "redDragon", [
+							{
+								name:"swordsman",
+								count:5
+							},
+							{
+								name:"sentinel",
+								count:6
+							}
+						], function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
+					})
+					var onGetAllianceDataSuccess = function(doc){
+						m_allianceData = doc
+						pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+					}
+					pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+				})
+			})
+		})
 	})
 
 

@@ -1,10 +1,8 @@
 ///**
-//* Created by modun on 14-7-29.
-//*/
+// * Created by modun on 14-7-29.
+// */
 //
-//var should = require('should')
 //var pomelo = require("../pomelo-client")
-////var mongoose = require("mongoose")
 //var redis = require("redis")
 //var _ = require("underscore")
 //var path = require("path")
@@ -14,23 +12,14 @@
 //var Config = require("../config")
 //var AllianceDao = require("../../app/dao/allianceDao")
 //var PlayerDao = require("../../app/dao/playerDao")
+//var Api = require("../api")
 //
 //var commandDir = path.resolve(__dirname + "/../../app/commands")
 //var redisClient = redis.createClient(Config.redisPort, Config.redisAddr)
-////mongoose.connect(Config.mongoAddr)
 //var scripto = new Scripto(redisClient)
 //scripto.loadFromDir(commandDir)
 //var allianceDao = Promise.promisifyAll(new AllianceDao(redisClient, scripto))
 //var playerDao = Promise.promisifyAll(new PlayerDao(redisClient, scripto))
-//
-//var ClearTestAccount = function(callback){
-//	playerDao.deleteByIndexAsync("countInfo.deviceId", Config.deviceId).then(function(){
-//		callback()
-//	}).catch(function(e){
-//		console.log(e)
-//		callback()
-//	})
-//}
 //
 //var sendChat = function(text, callback){
 //	var info = {
@@ -47,43 +36,22 @@
 //	var m_user
 //
 //	before(function(done){
-//		ClearTestAccount(function(){
-//			pomelo.init({
-//				host:Config.gateHost,
-//				port:Config.gatePort,
-//				log:true
-//			}, function(){
-//				var loginInfo = {
-//					deviceId:Config.deviceId
-//				}
-//				var route = "gate.gateHandler.queryEntry"
-//				pomelo.request(route, loginInfo, function(doc){
-//					pomelo.disconnect()
-//					pomelo.init({
-//						host:doc.data.host,
-//						port:doc.data.port,
-//						log:true
-//					}, function(){
-//						done()
-//					})
-//				})
-//			})
+//		playerDao.deleteAllAsync().then(function(){
+//			return allianceDao.deleteAllAsync()
+//		}).then(function(){
+//			done()
 //		})
 //	})
 //
 //
 //	describe("chatHandler", function(){
 //		it("login", function(done){
-//			var loginInfo = {
-//				deviceId:Config.deviceId
-//			}
-//			var route = "logic.entryHandler.login"
-//			pomelo.request(route, loginInfo, function(doc){
+//			Api.loginPlayer(Config.deviceId, function(doc){
 //				doc.code.should.equal(200)
+//				done()
 //			})
 //			var onPlayerLoginSuccess = function(doc){
 //				m_user = doc
-//				done()
 //				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
 //			}
 //			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
@@ -467,6 +435,13 @@
 //
 //		it("send dragonstar", function(done){
 //			sendChat("dragonstar redDragon 10", function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("send soldiers", function(done){
+//			sendChat("soldiers 10", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})

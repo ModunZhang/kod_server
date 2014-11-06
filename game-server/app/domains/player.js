@@ -454,47 +454,6 @@ var playerSchema = new Schema({
 		toName:{type:String, required:true},
 		content:{type:String, required:true},
 		sendTime:{type:Number, required:true}
-	}],
-	spyVillageReports:[{
-		_id:false,
-		id:{type:String, required:true},
-		reportLevel:{type:Number, required:true},
-		villageType:{type:String, required:true},
-		villageLevel:{type:Number, required:true},
-		location:{
-			x:{type:Number, required:true},
-			y:{type:Number, require:true}
-		},
-		spyTime:{type:Number, required:true},
-		getCoin:{type:Number, required:true},
-		dragonFrom:{
-				type:{type:String, required:true},
-				expAdd:{type:Number, required:true},
-				vitality:{type:Number, required:true},
-				vitalitySub:{type:Number, required:true}
-		},
-		dragonTo:{
-			type:{
-				type:{type:String, required:true},
-				expAdd:{type:Number, required:true},
-				vitality:{type:Number, required:true},
-				vitalitySub:{type:Number, required:true},
-				equipments:[{
-					name:{type:String, required:true},
-					star:{type:Number, required:true}
-				}],
-				skills:[{
-					name:{type:String, required:true},
-					level:{type:Number, required:true}
-				}]
-			},
-			required:false
-		},
-		resource:{type:Number, required:true},
-		soldiers:[{
-			type:{type:String, required:true},
-			count:{type:Number, required:true}
-		}]
 	}]
 })
 

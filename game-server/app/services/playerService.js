@@ -2089,10 +2089,10 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
  * 升级龙的技能
  * @param playerId
  * @param dragonType
- * @param skillLocation
+ * @param skillKey
  * @param callback
  */
-pro.upgradeDragonSkill = function(playerId, dragonType, skillLocation, callback){
+pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -2104,8 +2104,9 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillLocation, callback)
 		callback(new Error("dragonType 不合法"))
 		return
 	}
-	if(!_.isNumber(skillLocation) || skillLocation % 1 !== 0 || skillLocation < 1 || skillLocation > 9){
-		callback(new Error("skillLocation 不合法"))
+	if(!_.isString(skillKey)){
+		callback(new Error("skillKey 不合法"))
+		return
 	}
 
 	var self = this
@@ -2122,7 +2123,8 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillLocation, callback)
 		if(dragon.star <= 0){
 			return Promise.reject(new Error("龙还未孵化"))
 		}
-		var skill = dragon.skills["skill_" + skillLocation]
+		var skill = dragon.skills[skillKey]
+		if(!_.isObject(skill)) return Promise.reject(new Error("技能不存在"))
 		if(!DataUtils.isDragonSkillUnlocked(dragon, skill.name)){
 			return Promise.reject(new Error("此技能还未解锁"))
 		}

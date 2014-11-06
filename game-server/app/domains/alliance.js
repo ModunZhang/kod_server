@@ -112,7 +112,7 @@ var allianceSchema = new Schema({
 		soldiers:[
 			{
 				_id:false,
-				type:{type:String, required:true},
+				name:{type:String, required:true},
 				level:{type:Number, required:true},
 				count:{type:String, required:true}
 			}
@@ -152,54 +152,60 @@ var allianceSchema = new Schema({
 		maxHelpCount:{type:Number, required:true},
 		helpedMembers:[String]
 	}],
-	spyVillageEvents:[{
+	shrineMarchEvents:[{
 		_id:false,
 		id:{type:String, required:true},
-		fromId:{type:String, required:true},
-		fromName:{type:String, required:true},
-		fromLocation:{
+		shrineEventId:{type:String, required:true},
+		playerId:{type:String, required:true},
+		playerName:{type:String, required:true},
+		playerCityName:{type:String, required:true},
+		playerLocation:{
 			x:{type:Number, required:true},
 			y:{type:Number, required:true}
 		},
-		dragion:{
+		playerDragon:{
+			type:{type:String, required:true}
+		},
+		playerSoldiers:[
+			{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}
+		],
+		arriveTime:{type:Number, required:true}
+	}],
+	shrineMarchReturnEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		playerId:{type:String, required:true},
+		playerCityName:{type:String, required:true},
+		playerLocation:{
+			x:{type:Number, required:true},
+			y:{type:Number, required:true}
+		},
+		playerDragon:{
+			type:{type:String, required:true}
+		},
+		playerSoldiers:[
+			{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}
+		],
+		playerNeedTreatedSoldiers:[{
+			_id:false,
+			name:{type:String, required:true},
+			count:{type:Number, required:true}
+		}],
+		rewards:[{
+			_id:false,
 			type:{type:String, required:true},
-			level:{type:Number, required:true},
-			strength:{type:Number, required:true},
-			vitality:{type:Number, required:true}
-		},
-		targetType:{type:String, required:true},
-		targetId:{type:String, required:true},
-		targetLevel:{type:String, required:true},
-		targetLocation:{
-			x:{type:Number, required:true},
-			y:{type:Number, required:true}
-		},
-		finishTime:{type:Number, required:true}
-	}],
-	spyVillageReturnEvents:[{
-		_id:false,
-		id:{type:String, required:true},
-		fromId:{type:String, required:true},
-		fromLocation:{
-			x:{type:Number, required:true},
-			y:{type:Number, required:true}
-		},
-		dragon:{
-			type:{type:Number, required:true}
-		},
-		toId:{type:String, required:true},
-		toLocation:{
-			x:{type:Number, required:true},
-			y:{type:Number, required:true}
-		},
-		getCoin:{type:Number, required:true},
-		finishTime:{type:Number, required:true}
-	}],
-	collectEvents:[{
-		_id:false,
-		id:{type:String, required:true},
-		villageId:{type:Number, required:true},
-		startTime:{type:Number, required:true}
+			name:{type:String, required:false},
+			count:{type:Number, required:true}
+		}],
+		arriveTime:{type:Number, required:true}
 	}],
 	shrineEvents:[{
 		_id:false,
@@ -208,34 +214,21 @@ var allianceSchema = new Schema({
 		startTime:{type:Number, required:true},
 		troops:[{
 			_id:false,
-			playerId:{type:Number, required:true},
+			playerId:{type:String, required:true},
 			playerName:{type:String, required:true},
-			playerIcon:{type:String, required:true},
-			playerLevel:{type:String, required:true},
-			arriveTime:{type:Number, required:true},
-			dragon:{
-				type:{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					strength:{type:Number, required:true},
-					vitality:{type:Number, required:true}
-				},
-				required:false
+			playerCityName:{type:String, required:true},
+			playerLocation:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
 			},
-			soldiers:[
+			playerDragon:{
+				type:{type:String, required:true}
+			},
+			playerSoldiers:[
 				{
 					_id:false,
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					count:{type:String, required:true},
-					properties:{
-						atkInfs:{type:Number, required:true},
-						atkHunter:{type:Number, required:true},
-						atkCavalry:{type:Number, required:true},
-						atkSiege:{type:Number, required:true},
-						atkWall:{type:Number, required:true},
-						hp:{type:Number, required:true}
-					}
+					name:{type:String, required:true},
+					count:{type:Number, required:true}
 				}
 			]
 		}]

@@ -853,7 +853,7 @@ Utils.addPlayerInviteAllianceEvent = function(inviterId, playerDoc, allianceDoc,
  * @returns {boolean}
  */
 Utils.hasInviteEventToAlliance = function(playerDoc, allianceDoc){
-	for(var i = 0; i < playerDoc.inviteToAllianceEvents.length; i ++){
+	for(var i = 0; i < playerDoc.inviteToAllianceEvents.length; i++){
 		var event = playerDoc.inviteToAllianceEvents[i]
 		if(_.isEqual(event.id, allianceDoc._id)) return true
 	}
@@ -1146,7 +1146,7 @@ Utils.getPlayerMailById = function(playerDoc, mailId){
  * @returns {*}
  */
 Utils.getPlayerFirstUnSavedMail = function(playerDoc){
-	for(var i = 0; i < playerDoc.mails.length; i ++){
+	for(var i = 0; i < playerDoc.mails.length; i++){
 		var mail = playerDoc.mails[i]
 		if(!mail.isSaved){
 			return mail
@@ -1286,7 +1286,7 @@ Utils.getFreePointInAllianceMap = function(mapObjects, width, height){
  * @returns {*}
  */
 Utils.getAllianceMapObjectByLocation = function(allianceDoc, location){
-	for(var i = 0; i < allianceDoc.mapObjects.length; i ++){
+	for(var i = 0; i < allianceDoc.mapObjects.length; i++){
 		var mapObject = allianceDoc.mapObjects[i]
 		if(_.isEqual(mapObject.location, location)) return mapObject
 	}
@@ -1300,7 +1300,7 @@ Utils.getAllianceMapObjectByLocation = function(allianceDoc, location){
  * @returns {*}
  */
 Utils.getAllianceMapObjectById = function(allianceDoc, objectId){
-	for(var i = 0; i < allianceDoc.mapObjects.length; i ++){
+	for(var i = 0; i < allianceDoc.mapObjects.length; i++){
 		var mapObject = allianceDoc.mapObjects[i]
 		if(_.isEqual(mapObject.id, objectId)) return mapObject
 	}
@@ -1332,7 +1332,7 @@ Utils.createAllianceMapObject = function(buildingType, rect){
  * @returns {boolean}
  */
 Utils.isAllianceVillageBeingCollect = function(allianceDoc, villageId){
-	for(var i = 0; i < allianceDoc.collectEvents.length; i ++){
+	for(var i = 0; i < allianceDoc.collectEvents.length; i++){
 		var collectEvent = allianceDoc.collectEvents[i]
 		if(_.isEqual(collectEvent.villageId, villageId)) return true
 	}
@@ -1346,9 +1346,99 @@ Utils.isAllianceVillageBeingCollect = function(allianceDoc, villageId){
  * @returns {boolean}
  */
 Utils.isAllianceShrineStageActivated = function(allianceDoc, stageName){
-	for(var i = 0; i < allianceDoc.shrineEvents.length; i ++){
+	for(var i = 0; i < allianceDoc.shrineEvents.length; i++){
 		var event = allianceDoc.shrineEvents[i]
 		if(_.isEqual(event.stageName, stageName)) return true
 	}
 	return false
+}
+
+/**
+ * 获取联盟指定类型的建筑的数量类型
+ * @param allianceDoc
+ * @param decorateType
+ * @returns {number}
+ */
+Utils.getAllianceDecorateObjectCountByType = function(allianceDoc, decorateType){
+	var count = 0
+	_.each(allianceDoc.mapObjects, function(mapObject){
+		if(_.isEqual(mapObject.type, decorateType)) count++
+	})
+
+	return count
+}
+
+/**
+ * 行军派出的士兵数量是否合法
+ * @param playerDoc
+ * @param soldiers
+ * @returns {boolean}
+ */
+Utils.isMarchSoldierLegal = function(playerDoc, soldiers){
+	if(soldiers.length == 0) return false
+	for(var i = 0; i < soldiers.length; i++){
+		var soldier = soldiers[i]
+		var soldierName = soldier.name
+		var count = soldier.count
+		if(!_.isString(soldierName) || !_.isNumber(count)) return false
+		count = Math.floor(count)
+		if(count <= 0) return false
+		if(!playerDoc.soldiers[soldierName] || playerDoc.soldiers[soldierName] < count) return false
+	}
+	return true
+}
+
+/**
+ * 创建联盟圣地行军事件
+ * @param playerDoc
+ * @param allianceDoc
+ * @param shrineEventId
+ * @param dragonType
+ * @param soldiers
+ * @returns {*}
+ */
+Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEventId, dragonType, soldiers){
+	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var shrineLocation = allianceDoc.buildings["shrine"].location
+	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, playerLocation, shrineLocation)
+	var event = {
+		id:ShortId.generate(),
+		shrineEventId:shrineEventId,
+		playerId:playerDoc._id,
+		playerName:playerDoc.basicInfo.name,
+		playerCityName:playerDoc.basicInfo.cityName,
+		playerLocation:playerLocation,
+		playerDragon:{
+			type:dragonType
+		},
+		playerSoldiers:soldiers,
+		arriveTime:Date.now() + (marchSeconds * 1000)
+	}
+	return event
+}
+
+/**
+ * 玩家从圣地回城事件
+ * @param allianceDoc
+ * @param marchEvent
+ * @param soldiers
+ * @param needTreatedSoldiers
+ * @param rewards
+ * @returns {*}
+ */
+Utils.createAllianceShrineMarchReturnEvent = function(allianceDoc, marchEvent, soldiers, needTreatedSoldiers, rewards){
+	var shrineLocation = allianceDoc.buildings["shrine"].location
+	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, shrineLocation, marchEvent.playerLocation)
+	var event = {
+		id:ShortId.generate(),
+		playerId:marchEvent.playerId,
+		playerCityName:marchEvent.playerCityName,
+		playerLocation:marchEvent.playerLocation,
+		playerDragon:marchEvent.playerDragon,
+		playerSoldiers:soldiers,
+		playerNeedTreatedSoldiers:needTreatedSoldiers,
+		rewards:rewards,
+		arriveTime:Date.now() + (marchSeconds * 1000)
+	}
+	return event
 }

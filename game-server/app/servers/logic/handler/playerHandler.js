@@ -355,8 +355,8 @@ pro.resetDragonEquipment = function(msg, session, next){
  */
 pro.upgradeDragonSkill = function(msg, session, next){
 	var dragonType = msg.dragonType
-	var skillLocation = msg.skillLocation
-	this.playerService.upgradeDragonSkillAsync(session.uid, dragonType, skillLocation).then(function(){
+	var skillKey = msg.skillKey
+	this.playerService.upgradeDragonSkillAsync(session.uid, dragonType, skillKey).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

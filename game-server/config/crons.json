@@ -1,12 +1,12 @@
 {
 	"development":{
 		"time":[
-			{"id":1, "serverId":"time-server-1", "time": "00 00 03 * * *", "action": "allianceCron.resetDonateStatus"}
+			{"id":1, "serverId":"time-server-1", "time": "00 00 03 * * *", "action": "allianceCron.resetAllianceStatus"}
 		]
 	},
 	"production":{
 		"time":[
-			{"id":1, "serverId":"time-server-1", "time": "00 00 03 * * *", "action": "allianceCron.resetDonateStatus"}
+			{"id":1, "serverId":"time-server-1", "time": "00 00 03 * * *", "action": "allianceCron.resetAllianceStatus"}
 		]
 	}
 }

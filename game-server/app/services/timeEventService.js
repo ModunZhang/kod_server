@@ -308,38 +308,48 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 	playerData.basicInfo = playerDoc.basicInfo
 	playerData.resources = playerDoc.resources
 
-	var response = {
-		pushFuncs:pushFuncs, playerData:playerData, allianceData:allianceData
-	}
-
+	var response = {pushFuncs:pushFuncs, playerData:playerData, allianceData:allianceData}
 	return response
 }
 
 /**
- * 联盟村落侦查事件触发
- * @param playerDoc
+ * 联盟圣地事件回调
  * @param allianceDoc
- * @param spyEvent
+ * @param event
+ * @return {*}
  */
-pro.onAllianceSpyVillageEvent = function(playerDoc, allianceDoc, spyEvent){
+pro.onShrineMarchEvents = function(allianceDoc, event){
 	var allianceData = {}
-	var playerData = {}
-	LogicUtils.removeItemInArray(allianceDoc.spyVillageEvents, spyEvent)
-	allianceData.__spyVillageEvents = [{
+	var eventFuncs = []
+	LogicUtils.removeItemInArray(allianceDoc.shrineMarchEvents, event)
+	allianceData.__shrineMarchEvents = [{
 		type:Consts.DataChangedType.Remove,
 		data:event
 	}]
-	var report = ReportUtils.createSpyVillageReport(allianceDoc, spyEvent)
-	playerDoc.spyVillageReports.push(report)
-	playerData.__spyVillageReports = [{
-		type:Consts.DataChangedType.Add,
-		data:report
-	}]
-	var playerDragon = playerDoc.dragons[report.dragonFrom.type]
-
-	var spyReturnEvent = MarchUtils.createSpyVillageReturnEvent(playerDoc, spyEvent, report)
-	allianceData.__spyVillageReturnEvents = [{
-		type:Consts.DataChangedType.Add,
-		data:spyReturnEvent
-	}]
+	var shrineEvent = LogicUtils.getEventById(allianceDoc.shrineEvents, event.shrineEventId)
+	if(!_.isObject(shrineEvent)){
+		var marchReturnEvent = LogicUtils.createAllianceShrineMarchReturnEvent(allianceDoc, event, event.playerSoldiers, [], [])
+		allianceDoc.shrineMarchReturnEvents.push(marchReturnEvent)
+		allianceData.__shrineMarchReturnEvents = [{
+			type:Consts.DataChangedType.Add,
+			data:marchReturnEvent
+		}]
+		eventFuncs.push([this, this.addAllianceTimeEventAsync, allianceDoc, "shrineMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+	}else{
+		var troop = {
+			playerId:event.playerId,
+			playerName:event.playerName,
+			playerCityName:event.playerCityName,
+			playerLocation:event.playerLocation,
+			playerDragon:event.playerDragon,
+			playerSoldiers:event.playerSoldiers
+		}
+		shrineEvent.troops.push(troop)
+		allianceData.__shrineEvents = [{
+			type:Consts.DataChangedType.Edit,
+			data:shrineEvent
+		}]
+	}
+	var response = {allianceData:allianceData, eventFuncs:eventFuncs}
+	return response
 }

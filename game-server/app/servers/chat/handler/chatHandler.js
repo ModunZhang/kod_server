@@ -363,6 +363,20 @@ var ChatHandler = function(app){
 					})
 				}
 			}
+		},
+		{
+			command:"soldiers",
+			desc:"设置士兵数量:soldiers 5",
+			func:function(session, uid, text, callback){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					self.app.rpc.logic.commandRemote.soldiers(session, uid, count, function(e){
+						callback(e)
+					})
+				}
+			}
 		}
 	]
 }

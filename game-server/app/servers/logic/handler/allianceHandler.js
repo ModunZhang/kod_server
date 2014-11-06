@@ -508,3 +508,20 @@ pro.activateAllianceShrineStage = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 行军到圣地
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.marchToShrine = function(msg, session, next){
+	var shrineEventId = msg.shrineEventId
+	var dragonType = msg.dragonType
+	var soldiers = msg.soldiers
+	this.allianceService.marchToShrineAsync(session.uid, shrineEventId, dragonType, soldiers).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

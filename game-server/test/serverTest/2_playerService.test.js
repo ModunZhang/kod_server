@@ -47,8 +47,8 @@ describe("PlayerService", function(){
 			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
 		})
 	})
-	//
-	//
+
+
 	//describe("playerHandler", function(){
 	//	it("upgradeBuilding buildingLocation 不合法", function(done){
 	//		Api.upgradeBuilding(26, false, function(doc){
@@ -1186,24 +1186,9 @@ describe("PlayerService", function(){
 	//		})
 	//	})
 	//
-	//	it("upgradeDragonSkill skillLocation 不合法1", function(done){
-	//		Api.upgradeDragonDragonSkill("redDragon", 0, function(doc){
-	//			doc.code.should.equal(500)
-	//			doc.message.should.equal("skillLocation 不合法")
-	//			done()
-	//		})
-	//	})
-	//
-	//	it("upgradeDragonSkill skillLocation 不合法2", function(done){
-	//		Api.upgradeDragonDragonSkill("redDragon", 1.5, function(doc){
-	//			doc.code.should.equal(500)
-	//			doc.message.should.equal("skillLocation 不合法")
-	//			done()
-	//		})
-	//	})
 	//
 	//	it("upgradeDragonSkill 龙还未孵化", function(done){
-	//		Api.upgradeDragonDragonSkill("blueDragon", 1, function(doc){
+	//		Api.upgradeDragonDragonSkill("blueDragon", "skill_1", function(doc){
 	//			doc.code.should.equal(500)
 	//			doc.message.should.equal("龙还未孵化")
 	//			done()
@@ -1211,7 +1196,7 @@ describe("PlayerService", function(){
 	//	})
 	//
 	//	it("upgradeDragonSkill 此技能还未解锁", function(done){
-	//		Api.upgradeDragonDragonSkill("redDragon", 2, function(doc){
+	//		Api.upgradeDragonDragonSkill("redDragon", "skill_2", function(doc){
 	//			doc.code.should.equal(500)
 	//			doc.message.should.equal("此技能还未解锁")
 	//			done()
@@ -1221,7 +1206,7 @@ describe("PlayerService", function(){
 	//	it("upgradeDragonSkill 技能已达最高等级", function(done){
 	//		Api.sendChat("dragonskill redDragon 60", function(doc){
 	//			doc.code.should.equal(200)
-	//			Api.upgradeDragonDragonSkill("redDragon", 1, function(doc){
+	//			Api.upgradeDragonDragonSkill("redDragon", "skill_1", function(doc){
 	//				doc.code.should.equal(500)
 	//				doc.message.should.equal("技能已达最高等级")
 	//				done()
@@ -1234,7 +1219,7 @@ describe("PlayerService", function(){
 	//			doc.code.should.equal(200)
 	//			Api.sendChat("energy 0", function(doc){
 	//				doc.code.should.equal(200)
-	//				Api.upgradeDragonDragonSkill("redDragon", 1, function(doc){
+	//				Api.upgradeDragonDragonSkill("redDragon", "skill_1", function(doc){
 	//					doc.code.should.equal(500)
 	//					doc.message.should.equal("能量不足")
 	//					Api.sendChat("energy 100", function(doc){
@@ -1249,7 +1234,7 @@ describe("PlayerService", function(){
 	//	it("upgradeDragonSkill 英雄之血不足", function(done){
 	//		Api.sendChat("blood 0", function(doc){
 	//			doc.code.should.equal(200)
-	//			Api.upgradeDragonDragonSkill("redDragon", 1, function(doc){
+	//			Api.upgradeDragonDragonSkill("redDragon", "skill_1", function(doc){
 	//				doc.code.should.equal(500)
 	//				doc.message.should.equal("英雄之血不足")
 	//				Api.sendChat("blood 1000", function(doc){
@@ -1261,7 +1246,7 @@ describe("PlayerService", function(){
 	//	})
 	//
 	//	it("upgradeDragonSkill 正常升级", function(done){
-	//		Api.upgradeDragonDragonSkill("redDragon", 1, function(doc){
+	//		Api.upgradeDragonDragonSkill("redDragon", "skill_1", function(doc){
 	//			doc.code.should.equal(200)
 	//			done()
 	//		})
