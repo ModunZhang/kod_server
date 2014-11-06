@@ -1620,9 +1620,12 @@ Utils.isAllianceVillageTypeLegal = function(villageType){
 Utils.getAllianceVillageConfigedSoldiers = function(villageType, villageLevel){
 	var soldiers = []
 	var config = AllianceVillageConfig[villageType][villageLevel]
-	_.each(Consts.NormalSoldierType, function(soldierName){
-		var params = config[soldierName].split(":")
-		var soldierLevel = parseInt(params[0])
+	var soldierConfigs = config.soldiers.split(",")
+	_.each(soldierConfigs, function(soldierConfig){
+		var params = soldierConfig.split(":")
+		var params2 = params[0].split("_")
+		var soldierName = params2[0]
+		var soldierLevel = parseInt(params2[1])
 		var soldierCount = parseInt(params[1])
 		var soldierCountMax = Math.round(soldierCount * 1.2)
 		var soldierCountMin = Math.round(soldierCount * 0.8)
@@ -1699,7 +1702,7 @@ Utils.getSizeInAllianceMap = function(buildingType){
  * @returns {number}
  */
 Utils.getPlayerMarchTime = function(playerDoc, fromLocation, toLocation){
-	return 30
+	return 10
 }
 
 /**
@@ -1746,7 +1749,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
 	var event = {
 		id:ShortId.generate(),
 		stageName:stageName,
-		startTime:Date.now() + (AllianceInit.intInit.activeShrineStageEvent.value * 1000),
+		startTime:Date.now() + (20 * 1000),//(AllianceInit.intInit.activeShrineStageEvent.value * 1000),
 		troops:[]
 	}
 	return event

@@ -18,6 +18,8 @@ var TimeEventService = function(app){
 	this.app = app
 	this.eventServerId = "event-server-1"
 	this.pushService = app.get("pushService")
+	this.allianceDao = app.get("allianceDao")
+	this.playerDao = app.get("playerDao")
 }
 module.exports = TimeEventService
 var pro = TimeEventService.prototype
@@ -313,14 +315,17 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 }
 
 /**
- * 联盟圣地事件回调
+ * 联盟圣地行军事件回调
  * @param allianceDoc
  * @param event
- * @return {*}
+ * @param callback
  */
-pro.onShrineMarchEvents = function(allianceDoc, event){
+pro.onShrineMarchEvents = function(allianceDoc, event, callback){
+	var self = this
 	var allianceData = {}
 	var eventFuncs = []
+	var pushFuncs = []
+	var updateFuncs = []
 	LogicUtils.removeItemInArray(allianceDoc.shrineMarchEvents, event)
 	allianceData.__shrineMarchEvents = [{
 		type:Consts.DataChangedType.Remove,
@@ -328,13 +333,35 @@ pro.onShrineMarchEvents = function(allianceDoc, event){
 	}]
 	var shrineEvent = LogicUtils.getEventById(allianceDoc.shrineEvents, event.shrineEventId)
 	if(!_.isObject(shrineEvent)){
-		var marchReturnEvent = LogicUtils.createAllianceShrineMarchReturnEvent(allianceDoc, event, event.playerSoldiers, [], [])
-		allianceDoc.shrineMarchReturnEvents.push(marchReturnEvent)
-		allianceData.__shrineMarchReturnEvents = [{
-			type:Consts.DataChangedType.Add,
-			data:marchReturnEvent
-		}]
-		eventFuncs.push([this, this.addAllianceTimeEventAsync, allianceDoc, "shrineMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+		var playerDoc = null
+		this.playerDao.findByIdAsync(event.playerId).then(function(doc){
+			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+			playerDoc = doc
+			var marchReturnEvent = LogicUtils.createAllianceShrineMarchReturnEvent(playerDoc, allianceDoc, event, event.playerSoldiers, [], [])
+			allianceDoc.shrineMarchReturnEvents.push(marchReturnEvent)
+			allianceData.__shrineMarchReturnEvents = [{
+				type:Consts.DataChangedType.Add,
+				data:marchReturnEvent
+			}]
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+			eventFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "shrineMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+			return Promise.resolve()
+		}).then(function(){
+			callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+		}).catch(function(e){
+			var funcs = []
+			if(_.isObject(playerDoc)){
+				funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			}
+			if(funcs.length > 0){
+				Promise.all(funcs).then(function(){
+					callback(e)
+				})
+			}else{
+				callback(e)
+			}
+		})
 	}else{
 		var troop = {
 			playerId:event.playerId,
@@ -349,7 +376,91 @@ pro.onShrineMarchEvents = function(allianceDoc, event){
 			type:Consts.DataChangedType.Edit,
 			data:shrineEvent
 		}]
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 	}
-	var response = {allianceData:allianceData, eventFuncs:eventFuncs}
+}
+
+/**
+ * 联盟圣地事件回调
+ * @param allianceDoc
+ * @param event
+ * @param callback
+ */
+pro.onShrineEvents = function(allianceDoc, event, callback){
+	var self = this
+	var allianceData = {}
+	var eventFuncs = []
+	var pushFuncs = []
+	var updateFuncs = []
+	LogicUtils.removeItemInArray(allianceDoc.shrineEvents, event)
+	allianceData.__shrineEvents = [{
+		type:Consts.DataChangedType.Remove,
+		data:event
+	}]
+	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+}
+
+pro.onShrineMarchReturnEvents = function(allianceDoc, event, callback){
+	var self = this
+	var allianceData = {}
+	var eventFuncs = []
+	var pushFuncs = []
+	var updateFuncs = []
+	LogicUtils.removeItemInArray(allianceDoc.shrineMarchReturnEvents, event)
+	allianceData.__shrineMarchReturnEvents = [{
+		type:Consts.DataChangedType.Remove,
+		data:event
+	}]
+
+	var playerDoc = null
+	this.playerDao.findByIdAsync(event.playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+
+		var playerData = {}
+		playerDoc.dragons[event.playerDragon.type].status = Consts.DragonStatus.Free
+		playerData.dragons = {}
+		playerData.dragons[event.playerDragon.type] = playerDoc.dragons[event.playerDragon.type]
+		_.each(event.playerSoldiers, function(soldier){
+			playerDoc.soldiers[soldier.name] += soldier.count
+			playerData.soldiers = {}
+			playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
+		})
+		_.each(event.playerNeedTreatedSoldiers, function(soldier){
+			playerDoc.treatSoldiers[soldier.name] += soldier.count
+			playerData.treatSoldiers = {}
+			playerData.treatSoldiers[soldier.name] = playerDoc.treatSoldiers[soldier.name]
+		})
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+
+
+var CreateResponse = function(updateFuncs, eventFuncs, pushFuncs){
+	var response = {
+		updateFuncs:updateFuncs,
+		eventFuncs:eventFuncs,
+		pushFuncs:pushFuncs
+	}
 	return response
 }

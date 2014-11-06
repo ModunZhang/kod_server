@@ -91,8 +91,8 @@ var allianceSchema = new Schema({
 	}],
 	buildings:{
 		palace:createBuildingSchema("palace", Consts.AllianceBuildingLocation.Palace),
-		gate:createBuildingSchema("gate", Consts.AllianceBuildingLocation.Gate),
-		hall:createBuildingSchema("hall", Consts.AllianceBuildingLocation.Hall),
+		moonGate:createBuildingSchema("moonGate", Consts.AllianceBuildingLocation.MoonGate),
+		orderHall:createBuildingSchema("orderHall", Consts.AllianceBuildingLocation.OrderHall),
 		shrine:createBuildingSchema("shrine", Consts.AllianceBuildingLocation.Shrine),
 		shop:createBuildingSchema("shop", Consts.AllianceBuildingLocation.Shop)
 	},

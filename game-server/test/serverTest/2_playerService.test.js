@@ -943,7 +943,7 @@ describe("PlayerService", function(){
 	//	})
 	//
 	//	it("treatSoldier 已有士兵正在治疗", function(done){
-	//		Api.treatSoldier([{name:"sentinel", count:5}, {name:"archer", count:5}], false, function(doc){
+	//		Api.treatSoldier([{name:"sentinel", count:5}, {name:"ranger", count:5}], false, function(doc){
 	//			doc.code.should.equal(200)
 	//			Api.treatSoldier([{name:"crossbowman", count:5}], false, function(doc){
 	//				doc.code.should.equal(500)
@@ -972,7 +972,7 @@ describe("PlayerService", function(){
 	//			doc.code.should.equal(200)
 	//			Api.sendChat("rmtreatsoldierevents", function(doc){
 	//				doc.code.should.equal(200)
-	//				Api.treatSoldier([{name:"sentinel", count:5}, {name:"archer", count:5}], false, function(doc){
+	//				Api.treatSoldier([{name:"sentinel", count:5}, {name:"ranger", count:5}], false, function(doc){
 	//					doc.code.should.equal(200)
 	//					done()
 	//				})

@@ -8,7 +8,7 @@ GameDatas.AllianceBuilding.palace = require("./AllianceBuilding_palace.js")
 GameDatas.AllianceBuilding.moonGate = require("./AllianceBuilding_moonGate.js")
 GameDatas.AllianceBuilding.orderHall = require("./AllianceBuilding_orderHall.js")
 GameDatas.AllianceBuilding.shrine = require("./AllianceBuilding_shrine.js")
-GameDatas.AllianceBuilding.allianceShop = require("./AllianceBuilding_allianceShop.js")
+GameDatas.AllianceBuilding.shop = require("./AllianceBuilding_shop.js")
 
 GameDatas.AllianceInitData = {}
 GameDatas.AllianceInitData.intInit = require("./AllianceInitData_intInit.js")

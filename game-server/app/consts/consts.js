@@ -19,7 +19,7 @@ module.exports = {
 	NormalSoldierType:{
 		swordsman:"swordsman",
 		sentinel:"sentinel",
-		archer:"archer",
+		ranger:"ranger",
 		crossbowman:"crossbowman",
 		lancer:"lancer",
 		horseArcher:"horseArcher",
@@ -120,15 +120,15 @@ module.exports = {
 	},
 	AllianceBuildingNames:{
 		Palace:"palace",//联盟宫殿
-		Gate:"gate",//月门
-		Hall:"hall",//秩序大厅
+		MoonGate:"moonGate",//月门
+		OrderHall:"orderHall",//秩序大厅
 		Shrine:"shrine",//圣地
 		Shop:"shop"//联盟商店
 	},
 	AllianceBuildingLocation:{
 		Palace:{x:11, y:11},
-		Gate:{x:11, y:14},
-		Hall:{x:8, y:11},
+		MoonGate:{x:11, y:14},
+		OrderHall:{x:8, y:11},
 		Shrine:{x:11, y:8},
 		Shop:{x:14, y:11}
 	},

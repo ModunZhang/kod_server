@@ -2706,7 +2706,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, memberDoc, buildEvent.id])
 			buildEvent.finishTime = newFinishTime
 			var params = self.timeEventService.onPlayerEvent(memberDoc, null, helpEvent.helpEventType, helpEvent.eventId)
-			pushFuncs.concat(params.pushFuncs)
+			pushFuncs = pushFuncs.concat(params.pushFuncs)
 			_.extend(memberData, params.playerData)
 			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 			allianceData.__helpEvents = [{
@@ -2823,7 +2823,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 						eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, memberDoc, buildEvent.id])
 						buildEvent.finishTime = newFinishTime
 						var params = self.timeEventService.onPlayerEvent(memberDoc, null, helpEvent.helpEventType, helpEvent.eventId)
-						pushFuncs.concat(params.pushFuncs)
+						pushFuncs = pushFuncs.concat(params.pushFuncs)
 						_.extend(memberData, params.playerData)
 						LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 						allianceData.__helpEvents.push({
@@ -3648,15 +3648,16 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 		if(!_.isObject(event)){
 			return Promise.reject(new Error("联盟事件不存在"))
 		}
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 	}).then(function(){
-		if(_.isEqual(eventType, "shrineMarchEvents")){
-			var params = self.timeEventService.onShrineMarchEvents(allianceDoc, event)
-			var allianceData = params.allianceData
-			eventFuncs.concat(params.eventFuncs)
-			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-		}
-		return Promise.resolve()
+		var timeEventFuncName = "on" + eventType.charAt(0).toUpperCase() + eventType.slice(1) + "Async"
+		if(!_.isObject(self.timeEventService[timeEventFuncName])) return Promise.reject(new Error("未知的事件类型"))
+		return self.timeEventService[timeEventFuncName](allianceDoc, event).then(function(params){
+			updateFuncs = updateFuncs.concat(params.updateFuncs)
+			eventFuncs =  eventFuncs.concat(params.eventFuncs)
+			pushFuncs = pushFuncs.concat(params.pushFuncs)
+			return Promise.resolve()
+		})
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){

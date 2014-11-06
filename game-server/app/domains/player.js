@@ -186,7 +186,7 @@ var playerSchema = new Schema({
 	soldiers:{
 		swordsman:{type:Number, required:true, default:0},
 		sentinel:{type:Number, required:true, default:0},
-		archer:{type:Number, required:true, default:0},
+		ranger:{type:Number, required:true, default:0},
 		crossbowman:{type:Number, required:true, default:0},
 		lancer:{type:Number, required:true, default:0},
 		horseArcher:{type:Number, required:true, default:0},
@@ -211,7 +211,7 @@ var playerSchema = new Schema({
 	treatSoldiers:{
 		swordsman:{type:Number, required:true, default:0},
 		sentinel:{type:Number, required:true, default:0},
-		archer:{type:Number, required:true, default:0},
+		ranger:{type:Number, required:true, default:0},
 		crossbowman:{type:Number, required:true, default:0},
 		lancer:{type:Number, required:true, default:0},
 		horseArcher:{type:Number, required:true, default:0},

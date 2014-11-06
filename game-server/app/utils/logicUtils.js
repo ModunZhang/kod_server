@@ -1419,6 +1419,7 @@ Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEv
 
 /**
  * 玩家从圣地回城事件
+ * @param playerDoc
  * @param allianceDoc
  * @param marchEvent
  * @param soldiers
@@ -1426,7 +1427,7 @@ Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEv
  * @param rewards
  * @returns {*}
  */
-Utils.createAllianceShrineMarchReturnEvent = function(allianceDoc, marchEvent, soldiers, needTreatedSoldiers, rewards){
+Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, marchEvent, soldiers, needTreatedSoldiers, rewards){
 	var shrineLocation = allianceDoc.buildings["shrine"].location
 	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, shrineLocation, marchEvent.playerLocation)
 	var event = {

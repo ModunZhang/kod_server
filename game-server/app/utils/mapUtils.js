@@ -40,14 +40,14 @@ Utils.create = function(){
 		height:buildingHeight
 	}, "building")
 	this.markMap(map, mapObjects, {
-		x:locationConfig.Gate.x,
-		y:locationConfig.Gate.y,
+		x:locationConfig.MoonGate.x,
+		y:locationConfig.MoonGate.y,
 		width:buildingWidth,
 		height:buildingHeight
 	}, "building")
 	this.markMap(map, mapObjects, {
-		x:locationConfig.Hall.x,
-		y:locationConfig.Hall.y,
+		x:locationConfig.OrderHall.x,
+		y:locationConfig.OrderHall.y,
 		width:buildingWidth,
 		height:buildingHeight
 	}, "building")
