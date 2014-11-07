@@ -40,7 +40,7 @@ palace[5] = {
 	needHonour:6400,
 	needKeep:10,
 	power:3200,
-	memberCount:26,
+	memberCount:36,
 	moveNeedHonour:100
 }
 palace[6] = {
@@ -48,7 +48,7 @@ palace[6] = {
 	needHonour:12800,
 	needKeep:12,
 	power:6400,
-	memberCount:30,
+	memberCount:40,
 	moveNeedHonour:100
 }
 palace[7] = {
@@ -56,7 +56,7 @@ palace[7] = {
 	needHonour:25600,
 	needKeep:14,
 	power:12800,
-	memberCount:34,
+	memberCount:44,
 	moveNeedHonour:100
 }
 palace[8] = {
@@ -64,7 +64,7 @@ palace[8] = {
 	needHonour:51200,
 	needKeep:16,
 	power:25600,
-	memberCount:38,
+	memberCount:48,
 	moveNeedHonour:100
 }
 palace[9] = {
@@ -72,7 +72,7 @@ palace[9] = {
 	needHonour:102400,
 	needKeep:18,
 	power:51200,
-	memberCount:42,
+	memberCount:52,
 	moveNeedHonour:100
 }
 palace[10] = {
@@ -80,6 +80,6 @@ palace[10] = {
 	needHonour:204800,
 	needKeep:20,
 	power:102400,
-	memberCount:46,
+	memberCount:56,
 	moveNeedHonour:100
 }

@@ -16,12 +16,12 @@ shrineStage["1_1"] = {
 	star1Honour:100,
 	star2Honour:150,
 	star3Honour:200,
-	star1Kill:100,
-	star2Kill:150,
-	star3Kill:200,
-	star1Rewords:"a:1,b:1,c:1",
-	star2Rewords:"a:2,b:2,c:2",
-	star3Rewords:"a:3,b:3,c:3"
+	bronzeKill:100,
+	silverKill:150,
+	goldKill:200,
+	star1Rewards:"a:1,b:1,c:1",
+	star2Rewards:"a:2,b:2,c:2",
+	star3Rewards:"a:3,b:3,c:3"
 }
 shrineStage["1_2"] = {
 	stageName:"1_2",
@@ -36,12 +36,12 @@ shrineStage["1_2"] = {
 	star1Honour:150,
 	star2Honour:200,
 	star3Honour:250,
-	star1Kill:200,
-	star2Kill:250,
-	star3Kill:300,
-	star1Rewords:"a:2,b:2,c:2",
-	star2Rewords:"a:3,b:3,c:3",
-	star3Rewords:"a:4,b:4,c:4"
+	bronzeKill:200,
+	silverKill:250,
+	goldKill:300,
+	star1Rewards:"a:2,b:2,c:2",
+	star2Rewards:"a:3,b:3,c:3",
+	star3Rewards:"a:4,b:4,c:4"
 }
 shrineStage["1_3"] = {
 	stageName:"1_3",
@@ -56,12 +56,12 @@ shrineStage["1_3"] = {
 	star1Honour:200,
 	star2Honour:250,
 	star3Honour:300,
-	star1Kill:300,
-	star2Kill:350,
-	star3Kill:400,
-	star1Rewords:"a:3,b:3,c:3",
-	star2Rewords:"a:2,b:2,c:3",
-	star3Rewords:"a:3,b:3,c:4"
+	bronzeKill:300,
+	silverKill:350,
+	goldKill:400,
+	star1Rewards:"a:3,b:3,c:3",
+	star2Rewards:"a:2,b:2,c:3",
+	star3Rewards:"a:3,b:3,c:4"
 }
 shrineStage["1_4"] = {
 	stageName:"1_4",
@@ -76,12 +76,12 @@ shrineStage["1_4"] = {
 	star1Honour:250,
 	star2Honour:300,
 	star3Honour:350,
-	star1Kill:400,
-	star2Kill:450,
-	star3Kill:500,
-	star1Rewords:"a:4,b:4,c:4",
-	star2Rewords:"a:3,b:3,c:4",
-	star3Rewords:"a:4,b:4,c:5"
+	bronzeKill:400,
+	silverKill:450,
+	goldKill:500,
+	star1Rewards:"a:4,b:4,c:4",
+	star2Rewards:"a:3,b:3,c:4",
+	star3Rewards:"a:4,b:4,c:5"
 }
 shrineStage["1_5"] = {
 	stageName:"1_5",
@@ -96,12 +96,12 @@ shrineStage["1_5"] = {
 	star1Honour:300,
 	star2Honour:350,
 	star3Honour:400,
-	star1Kill:500,
-	star2Kill:550,
-	star3Kill:600,
-	star1Rewords:"a:1,b:1,c:2",
-	star2Rewords:"a:2,b:2,c:4",
-	star3Rewords:"a:3,b:3,c:5"
+	bronzeKill:500,
+	silverKill:550,
+	goldKill:600,
+	star1Rewards:"a:1,b:1,c:2",
+	star2Rewards:"a:2,b:2,c:4",
+	star3Rewards:"a:3,b:3,c:5"
 }
 shrineStage["2_1"] = {
 	stageName:"2_1",
@@ -116,12 +116,12 @@ shrineStage["2_1"] = {
 	star1Honour:350,
 	star2Honour:400,
 	star3Honour:450,
-	star1Kill:600,
-	star2Kill:650,
-	star3Kill:700,
-	star1Rewords:"a:2,b:2,c:3",
-	star2Rewords:"a:3,b:3,c:5",
-	star3Rewords:"a:4,b:4,c:6"
+	bronzeKill:600,
+	silverKill:650,
+	goldKill:700,
+	star1Rewards:"a:2,b:2,c:3",
+	star2Rewards:"a:3,b:3,c:5",
+	star3Rewards:"a:4,b:4,c:6"
 }
 shrineStage["2_2"] = {
 	stageName:"2_2",
@@ -136,12 +136,12 @@ shrineStage["2_2"] = {
 	star1Honour:400,
 	star2Honour:450,
 	star3Honour:500,
-	star1Kill:700,
-	star2Kill:750,
-	star3Kill:800,
-	star1Rewords:"a:3,b:3,c:4",
-	star2Rewords:"a:2,b:2,c:5",
-	star3Rewords:"a:3,b:3,c:6"
+	bronzeKill:700,
+	silverKill:750,
+	goldKill:800,
+	star1Rewards:"a:3,b:3,c:4",
+	star2Rewards:"a:2,b:2,c:5",
+	star3Rewards:"a:3,b:3,c:6"
 }
 shrineStage["2_3"] = {
 	stageName:"2_3",
@@ -156,12 +156,12 @@ shrineStage["2_3"] = {
 	star1Honour:450,
 	star2Honour:500,
 	star3Honour:550,
-	star1Kill:800,
-	star2Kill:850,
-	star3Kill:900,
-	star1Rewords:"a:4,b:4,c:5",
-	star2Rewords:"a:3,b:3,c:6",
-	star3Rewords:"a:4,b:4,c:7"
+	bronzeKill:800,
+	silverKill:850,
+	goldKill:900,
+	star1Rewards:"a:4,b:4,c:5",
+	star2Rewards:"a:3,b:3,c:6",
+	star3Rewards:"a:4,b:4,c:7"
 }
 shrineStage["2_4"] = {
 	stageName:"2_4",
@@ -176,12 +176,12 @@ shrineStage["2_4"] = {
 	star1Honour:500,
 	star2Honour:550,
 	star3Honour:600,
-	star1Kill:900,
-	star2Kill:950,
-	star3Kill:1000,
-	star1Rewords:"a:1,b:1,c:3",
-	star2Rewords:"a:2,b:2,c:6",
-	star3Rewords:"a:3,b:3,c:7"
+	bronzeKill:900,
+	silverKill:950,
+	goldKill:1000,
+	star1Rewards:"a:1,b:1,c:3",
+	star2Rewards:"a:2,b:2,c:6",
+	star3Rewards:"a:3,b:3,c:7"
 }
 shrineStage["2_5"] = {
 	stageName:"2_5",
@@ -196,12 +196,12 @@ shrineStage["2_5"] = {
 	star1Honour:550,
 	star2Honour:600,
 	star3Honour:650,
-	star1Kill:1000,
-	star2Kill:1050,
-	star3Kill:1100,
-	star1Rewords:"a:2,b:2,c:4",
-	star2Rewords:"a:3,b:3,c:7",
-	star3Rewords:"a:4,b:4,c:8"
+	bronzeKill:1000,
+	silverKill:1050,
+	goldKill:1100,
+	star1Rewards:"a:2,b:2,c:4",
+	star2Rewards:"a:3,b:3,c:7",
+	star3Rewards:"a:4,b:4,c:8"
 }
 shrineStage["3_1"] = {
 	stageName:"3_1",
@@ -216,12 +216,12 @@ shrineStage["3_1"] = {
 	star1Honour:600,
 	star2Honour:650,
 	star3Honour:700,
-	star1Kill:1100,
-	star2Kill:1150,
-	star3Kill:1200,
-	star1Rewords:"a:3,b:3,c:5",
-	star2Rewords:"a:2,b:2,c:7",
-	star3Rewords:"a:3,b:3,c:8"
+	bronzeKill:1100,
+	silverKill:1150,
+	goldKill:1200,
+	star1Rewards:"a:3,b:3,c:5",
+	star2Rewards:"a:2,b:2,c:7",
+	star3Rewards:"a:3,b:3,c:8"
 }
 shrineStage["3_2"] = {
 	stageName:"3_2",
@@ -236,12 +236,12 @@ shrineStage["3_2"] = {
 	star1Honour:650,
 	star2Honour:700,
 	star3Honour:750,
-	star1Kill:1200,
-	star2Kill:1250,
-	star3Kill:1300,
-	star1Rewords:"a:4,b:4,c:6",
-	star2Rewords:"a:3,b:3,c:8",
-	star3Rewords:"a:4,b:4,c:9"
+	bronzeKill:1200,
+	silverKill:1250,
+	goldKill:1300,
+	star1Rewards:"a:4,b:4,c:6",
+	star2Rewards:"a:3,b:3,c:8",
+	star3Rewards:"a:4,b:4,c:9"
 }
 shrineStage["3_3"] = {
 	stageName:"3_3",
@@ -256,12 +256,12 @@ shrineStage["3_3"] = {
 	star1Honour:700,
 	star2Honour:750,
 	star3Honour:800,
-	star1Kill:1300,
-	star2Kill:1350,
-	star3Kill:1400,
-	star1Rewords:"a:1,b:1,c:4",
-	star2Rewords:"a:2,b:2,c:8",
-	star3Rewords:"a:3,b:3,c:9"
+	bronzeKill:1300,
+	silverKill:1350,
+	goldKill:1400,
+	star1Rewards:"a:1,b:1,c:4",
+	star2Rewards:"a:2,b:2,c:8",
+	star3Rewards:"a:3,b:3,c:9"
 }
 shrineStage["3_4"] = {
 	stageName:"3_4",
@@ -276,12 +276,12 @@ shrineStage["3_4"] = {
 	star1Honour:750,
 	star2Honour:800,
 	star3Honour:850,
-	star1Kill:1400,
-	star2Kill:1450,
-	star3Kill:1500,
-	star1Rewords:"a:2,b:2,c:5",
-	star2Rewords:"a:3,b:3,c:9",
-	star3Rewords:"a:4,b:4,c:10"
+	bronzeKill:1400,
+	silverKill:1450,
+	goldKill:1500,
+	star1Rewards:"a:2,b:2,c:5",
+	star2Rewards:"a:3,b:3,c:9",
+	star3Rewards:"a:4,b:4,c:10"
 }
 shrineStage["3_5"] = {
 	stageName:"3_5",
@@ -296,12 +296,12 @@ shrineStage["3_5"] = {
 	star1Honour:800,
 	star2Honour:850,
 	star3Honour:900,
-	star1Kill:1500,
-	star2Kill:1550,
-	star3Kill:1600,
-	star1Rewords:"a:3,b:3,c:6",
-	star2Rewords:"a:2,b:2,c:9",
-	star3Rewords:"a:3,b:3,c:10"
+	bronzeKill:1500,
+	silverKill:1550,
+	goldKill:1600,
+	star1Rewards:"a:3,b:3,c:6",
+	star2Rewards:"a:2,b:2,c:9",
+	star3Rewards:"a:3,b:3,c:10"
 }
 shrineStage["4_1"] = {
 	stageName:"4_1",
@@ -316,12 +316,12 @@ shrineStage["4_1"] = {
 	star1Honour:850,
 	star2Honour:900,
 	star3Honour:950,
-	star1Kill:1600,
-	star2Kill:1650,
-	star3Kill:1700,
-	star1Rewords:"a:4,b:4,c:7",
-	star2Rewords:"a:3,b:3,c:10",
-	star3Rewords:"a:4,b:4,c:11"
+	bronzeKill:1600,
+	silverKill:1650,
+	goldKill:1700,
+	star1Rewards:"a:4,b:4,c:7",
+	star2Rewards:"a:3,b:3,c:10",
+	star3Rewards:"a:4,b:4,c:11"
 }
 shrineStage["4_2"] = {
 	stageName:"4_2",
@@ -336,12 +336,12 @@ shrineStage["4_2"] = {
 	star1Honour:900,
 	star2Honour:950,
 	star3Honour:1000,
-	star1Kill:1700,
-	star2Kill:1750,
-	star3Kill:1800,
-	star1Rewords:"a:1,b:1,c:5",
-	star2Rewords:"a:2,b:2,c:10",
-	star3Rewords:"a:3,b:3,c:11"
+	bronzeKill:1700,
+	silverKill:1750,
+	goldKill:1800,
+	star1Rewards:"a:1,b:1,c:5",
+	star2Rewards:"a:2,b:2,c:10",
+	star3Rewards:"a:3,b:3,c:11"
 }
 shrineStage["4_3"] = {
 	stageName:"4_3",
@@ -356,12 +356,12 @@ shrineStage["4_3"] = {
 	star1Honour:950,
 	star2Honour:1000,
 	star3Honour:1050,
-	star1Kill:1800,
-	star2Kill:1850,
-	star3Kill:1900,
-	star1Rewords:"a:2,b:2,c:6",
-	star2Rewords:"a:3,b:3,c:11",
-	star3Rewords:"a:4,b:4,c:12"
+	bronzeKill:1800,
+	silverKill:1850,
+	goldKill:1900,
+	star1Rewards:"a:2,b:2,c:6",
+	star2Rewards:"a:3,b:3,c:11",
+	star3Rewards:"a:4,b:4,c:12"
 }
 shrineStage["4_4"] = {
 	stageName:"4_4",
@@ -376,12 +376,12 @@ shrineStage["4_4"] = {
 	star1Honour:1000,
 	star2Honour:1050,
 	star3Honour:1100,
-	star1Kill:1900,
-	star2Kill:1950,
-	star3Kill:2000,
-	star1Rewords:"a:3,b:3,c:7",
-	star2Rewords:"a:2,b:2,c:11",
-	star3Rewords:"a:3,b:3,c:12"
+	bronzeKill:1900,
+	silverKill:1950,
+	goldKill:2000,
+	star1Rewards:"a:3,b:3,c:7",
+	star2Rewards:"a:2,b:2,c:11",
+	star3Rewards:"a:3,b:3,c:12"
 }
 shrineStage["4_5"] = {
 	stageName:"4_5",
@@ -396,12 +396,12 @@ shrineStage["4_5"] = {
 	star1Honour:1050,
 	star2Honour:1100,
 	star3Honour:1150,
-	star1Kill:2000,
-	star2Kill:2050,
-	star3Kill:2100,
-	star1Rewords:"a:4,b:4,c:8",
-	star2Rewords:"a:3,b:3,c:12",
-	star3Rewords:"a:4,b:4,c:13"
+	bronzeKill:2000,
+	silverKill:2050,
+	goldKill:2100,
+	star1Rewards:"a:4,b:4,c:8",
+	star2Rewards:"a:3,b:3,c:12",
+	star3Rewards:"a:4,b:4,c:13"
 }
 shrineStage["5_1"] = {
 	stageName:"5_1",
@@ -416,12 +416,12 @@ shrineStage["5_1"] = {
 	star1Honour:1100,
 	star2Honour:1150,
 	star3Honour:1200,
-	star1Kill:2100,
-	star2Kill:2150,
-	star3Kill:2200,
-	star1Rewords:"a:1,b:1,c:6",
-	star2Rewords:"a:2,b:2,c:12",
-	star3Rewords:"a:3,b:3,c:13"
+	bronzeKill:2100,
+	silverKill:2150,
+	goldKill:2200,
+	star1Rewards:"a:1,b:1,c:6",
+	star2Rewards:"a:2,b:2,c:12",
+	star3Rewards:"a:3,b:3,c:13"
 }
 shrineStage["5_2"] = {
 	stageName:"5_2",
@@ -436,12 +436,12 @@ shrineStage["5_2"] = {
 	star1Honour:1150,
 	star2Honour:1200,
 	star3Honour:1250,
-	star1Kill:2200,
-	star2Kill:2250,
-	star3Kill:2300,
-	star1Rewords:"a:2,b:2,c:7",
-	star2Rewords:"a:3,b:3,c:13",
-	star3Rewords:"a:4,b:4,c:14"
+	bronzeKill:2200,
+	silverKill:2250,
+	goldKill:2300,
+	star1Rewards:"a:2,b:2,c:7",
+	star2Rewards:"a:3,b:3,c:13",
+	star3Rewards:"a:4,b:4,c:14"
 }
 shrineStage["5_3"] = {
 	stageName:"5_3",
@@ -456,12 +456,12 @@ shrineStage["5_3"] = {
 	star1Honour:1200,
 	star2Honour:1250,
 	star3Honour:1300,
-	star1Kill:2300,
-	star2Kill:2350,
-	star3Kill:2400,
-	star1Rewords:"a:3,b:3,c:8",
-	star2Rewords:"a:2,b:2,c:13",
-	star3Rewords:"a:3,b:3,c:14"
+	bronzeKill:2300,
+	silverKill:2350,
+	goldKill:2400,
+	star1Rewards:"a:3,b:3,c:8",
+	star2Rewards:"a:2,b:2,c:13",
+	star3Rewards:"a:3,b:3,c:14"
 }
 shrineStage["5_4"] = {
 	stageName:"5_4",
@@ -476,12 +476,12 @@ shrineStage["5_4"] = {
 	star1Honour:1250,
 	star2Honour:1300,
 	star3Honour:1350,
-	star1Kill:2400,
-	star2Kill:2450,
-	star3Kill:2500,
-	star1Rewords:"a:4,b:4,c:9",
-	star2Rewords:"a:3,b:3,c:14",
-	star3Rewords:"a:4,b:4,c:15"
+	bronzeKill:2400,
+	silverKill:2450,
+	goldKill:2500,
+	star1Rewards:"a:4,b:4,c:9",
+	star2Rewards:"a:3,b:3,c:14",
+	star3Rewards:"a:4,b:4,c:15"
 }
 shrineStage["5_5"] = {
 	stageName:"5_5",
@@ -496,12 +496,12 @@ shrineStage["5_5"] = {
 	star1Honour:1300,
 	star2Honour:1350,
 	star3Honour:1400,
-	star1Kill:2500,
-	star2Kill:2550,
-	star3Kill:2600,
-	star1Rewords:"a:1,b:1,c:7",
-	star2Rewords:"a:2,b:2,c:14",
-	star3Rewords:"a:3,b:3,c:15"
+	bronzeKill:2500,
+	silverKill:2550,
+	goldKill:2600,
+	star1Rewards:"a:1,b:1,c:7",
+	star2Rewards:"a:2,b:2,c:14",
+	star3Rewards:"a:3,b:3,c:15"
 }
 shrineStage["6_1"] = {
 	stageName:"6_1",
@@ -516,12 +516,12 @@ shrineStage["6_1"] = {
 	star1Honour:1350,
 	star2Honour:1400,
 	star3Honour:1450,
-	star1Kill:2600,
-	star2Kill:2650,
-	star3Kill:2700,
-	star1Rewords:"a:2,b:2,c:8",
-	star2Rewords:"a:3,b:3,c:15",
-	star3Rewords:"a:4,b:4,c:16"
+	bronzeKill:2600,
+	silverKill:2650,
+	goldKill:2700,
+	star1Rewards:"a:2,b:2,c:8",
+	star2Rewards:"a:3,b:3,c:15",
+	star3Rewards:"a:4,b:4,c:16"
 }
 shrineStage["6_2"] = {
 	stageName:"6_2",
@@ -536,12 +536,12 @@ shrineStage["6_2"] = {
 	star1Honour:1400,
 	star2Honour:1450,
 	star3Honour:1500,
-	star1Kill:2700,
-	star2Kill:2750,
-	star3Kill:2800,
-	star1Rewords:"a:3,b:3,c:9",
-	star2Rewords:"a:2,b:2,c:15",
-	star3Rewords:"a:3,b:3,c:16"
+	bronzeKill:2700,
+	silverKill:2750,
+	goldKill:2800,
+	star1Rewards:"a:3,b:3,c:9",
+	star2Rewards:"a:2,b:2,c:15",
+	star3Rewards:"a:3,b:3,c:16"
 }
 shrineStage["6_3"] = {
 	stageName:"6_3",
@@ -556,12 +556,12 @@ shrineStage["6_3"] = {
 	star1Honour:1450,
 	star2Honour:1500,
 	star3Honour:1550,
-	star1Kill:2800,
-	star2Kill:2850,
-	star3Kill:2900,
-	star1Rewords:"a:4,b:4,c:10",
-	star2Rewords:"a:3,b:3,c:16",
-	star3Rewords:"a:4,b:4,c:17"
+	bronzeKill:2800,
+	silverKill:2850,
+	goldKill:2900,
+	star1Rewards:"a:4,b:4,c:10",
+	star2Rewards:"a:3,b:3,c:16",
+	star3Rewards:"a:4,b:4,c:17"
 }
 shrineStage["6_4"] = {
 	stageName:"6_4",
@@ -576,12 +576,12 @@ shrineStage["6_4"] = {
 	star1Honour:1500,
 	star2Honour:1550,
 	star3Honour:1600,
-	star1Kill:2900,
-	star2Kill:2950,
-	star3Kill:3000,
-	star1Rewords:"a:1,b:1,c:8",
-	star2Rewords:"a:2,b:2,c:16",
-	star3Rewords:"a:3,b:3,c:17"
+	bronzeKill:2900,
+	silverKill:2950,
+	goldKill:3000,
+	star1Rewards:"a:1,b:1,c:8",
+	star2Rewards:"a:2,b:2,c:16",
+	star3Rewards:"a:3,b:3,c:17"
 }
 shrineStage["6_5"] = {
 	stageName:"6_5",
@@ -596,10 +596,10 @@ shrineStage["6_5"] = {
 	star1Honour:1550,
 	star2Honour:1600,
 	star3Honour:1650,
-	star1Kill:3000,
-	star2Kill:3050,
-	star3Kill:3100,
-	star1Rewords:"a:2,b:2,c:9",
-	star2Rewords:"a:3,b:3,c:17",
-	star3Rewords:"a:4,b:4,c:18"
+	bronzeKill:3000,
+	silverKill:3050,
+	goldKill:3100,
+	star1Rewards:"a:2,b:2,c:9",
+	star2Rewards:"a:3,b:3,c:17",
+	star3Rewards:"a:4,b:4,c:18"
 }

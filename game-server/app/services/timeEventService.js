@@ -398,6 +398,8 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 		type:Consts.DataChangedType.Remove,
 		data:event
 	}]
+
+
 	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 }

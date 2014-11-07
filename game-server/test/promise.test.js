@@ -5,6 +5,7 @@ var Promise = require("bluebird")
 var _ = require("underscore")
 var MapUtils = require("../app/utils/mapUtils")
 var DataUtils = require("../app/utils/dataUtils")
+var FightUtils = require("../app/utils/fightUtils")
 //var should = require('should')
 //var Utils = require("../app/utils/utils")
 //var redis = require("redis")
@@ -204,3 +205,83 @@ var DataUtils = require("../app/utils/dataUtils")
 //var mapObjects = MapUtils.create()
 //var map = MapUtils.buildMap(mapObjects)
 //MapUtils.outputMap(map)
+//
+//var attackSolders = [
+//	{
+//		name:"swordsman",
+//		type:"infantry",
+//		level:1,
+//		currentCount:50,
+//		totalCount:50,
+//		power:6,
+//		hp:40,
+//		morale:100,
+//		round:0,
+//		attackPower:{
+//			infantry:30,
+//			archer:24,
+//			cavalry:15,
+//			siege:45,
+//			wall:36
+//		}
+//	},{
+//		name:"ranger",
+//		type:"archer",
+//		level:1,
+//		currentCount:50,
+//		totalCount:50,
+//		power:7,
+//		hp:40,
+//		morale:100,
+//		round:0,
+//		attackPower:{
+//			infantry:79,
+//			archer:53,
+//			cavalry:63,
+//			siege:27,
+//			wall:42
+//		}
+//	},
+//]
+//
+//var defenceSoldiers = [
+//	{
+//		name:"ranger",
+//		type:"archer",
+//		level:1,
+//		currentCount:50,
+//		totalCount:50,
+//		power:7,
+//		hp:40,
+//		morale:100,
+//		round:0,
+//		attackPower:{
+//			infantry:79,
+//			archer:53,
+//			cavalry:63,
+//			siege:27,
+//			wall:42
+//		}
+//	},
+//	{
+//		name:"swordsman",
+//		type:"infantry",
+//		level:1,
+//		currentCount:50,
+//		totalCount:50,
+//		power:6,
+//		hp:40,
+//		morale:100,
+//		round:0,
+//		attackPower:{
+//			infantry:30,
+//			archer:24,
+//			cavalry:15,
+//			siege:45,
+//			wall:36
+//		}
+//	}
+//]
+//
+//var response = FightUtils.soldierToSoldierFight(attackSolders, 0.4, defenceSoldiers, 0.4)
+//console.log(response)

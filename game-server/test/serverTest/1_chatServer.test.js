@@ -384,8 +384,8 @@
 //			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 //		})
 //
-//		it("send addtreatsoldiers", function(done){
-//			sendChat("addtreatsoldiers 5", function(doc){
+//		it("send treatsoldiers", function(done){
+//			sendChat("treatsoldiers 5", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})

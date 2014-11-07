@@ -4,8 +4,8 @@ var normal = {}
 module.exports = normal
 
 normal["swordsman_1"] = {
-	type:"swordsman_1",
-	category:"infantry",
+	name:"swordsman_1",
+	type:"infantry",
 	star:1,
 	power:6,
 	infantry:30,
@@ -16,7 +16,7 @@ normal["swordsman_1"] = {
 	hp:40,
 	load:20,
 	march:60,
-	consume:10,
+	consumeFood:10,
 	citizen:1,
 	wood:0,
 	stone:500,
@@ -30,8 +30,8 @@ normal["swordsman_1"] = {
 	treatTime:10
 }
 normal["swordsman_2"] = {
-	type:"swordsman_2",
-	category:"infantry",
+	name:"swordsman_2",
+	type:"infantry",
 	star:2,
 	power:9,
 	infantry:36,
@@ -42,7 +42,7 @@ normal["swordsman_2"] = {
 	hp:48,
 	load:34,
 	march:60,
-	consume:17,
+	consumeFood:17,
 	citizen:1,
 	wood:0,
 	stone:850,
@@ -56,8 +56,8 @@ normal["swordsman_2"] = {
 	treatTime:10
 }
 normal["swordsman_3"] = {
-	type:"swordsman_3",
-	category:"infantry",
+	name:"swordsman_3",
+	type:"infantry",
 	star:3,
 	power:12,
 	infantry:42,
@@ -68,7 +68,7 @@ normal["swordsman_3"] = {
 	hp:56,
 	load:48,
 	march:60,
-	consume:24,
+	consumeFood:24,
 	citizen:1,
 	wood:0,
 	stone:1200,
@@ -82,8 +82,8 @@ normal["swordsman_3"] = {
 	treatTime:10
 }
 normal["sentinel_1"] = {
-	type:"sentinel_1",
-	category:"infantry",
+	name:"sentinel_1",
+	type:"infantry",
 	star:1,
 	power:8,
 	infantry:27,
@@ -94,7 +94,7 @@ normal["sentinel_1"] = {
 	hp:55,
 	load:22,
 	march:55,
-	consume:11,
+	consumeFood:11,
 	citizen:1,
 	wood:0,
 	stone:440,
@@ -108,8 +108,8 @@ normal["sentinel_1"] = {
 	treatTime:12
 }
 normal["sentinel_2"] = {
-	type:"sentinel_2",
-	category:"infantry",
+	name:"sentinel_2",
+	type:"infantry",
 	star:2,
 	power:11,
 	infantry:32,
@@ -120,7 +120,7 @@ normal["sentinel_2"] = {
 	hp:66,
 	load:38,
 	march:55,
-	consume:19,
+	consumeFood:19,
 	citizen:1,
 	wood:0,
 	stone:748,
@@ -134,8 +134,8 @@ normal["sentinel_2"] = {
 	treatTime:12
 }
 normal["sentinel_3"] = {
-	type:"sentinel_3",
-	category:"infantry",
+	name:"sentinel_3",
+	type:"infantry",
 	star:3,
 	power:15,
 	infantry:37,
@@ -146,7 +146,7 @@ normal["sentinel_3"] = {
 	hp:77,
 	load:53,
 	march:55,
-	consume:27,
+	consumeFood:27,
 	citizen:1,
 	wood:0,
 	stone:1056,
@@ -160,8 +160,8 @@ normal["sentinel_3"] = {
 	treatTime:12
 }
 normal["ranger_1"] = {
-	type:"ranger_1",
-	category:"archer",
+	name:"ranger_1",
+	type:"archer",
 	star:1,
 	power:7,
 	infantry:79,
@@ -172,7 +172,7 @@ normal["ranger_1"] = {
 	hp:26,
 	load:11,
 	march:64,
-	consume:11,
+	consumeFood:11,
 	citizen:1,
 	wood:525,
 	stone:315,
@@ -186,8 +186,8 @@ normal["ranger_1"] = {
 	treatTime:17
 }
 normal["ranger_2"] = {
-	type:"ranger_2",
-	category:"archer",
+	name:"ranger_2",
+	type:"archer",
 	star:2,
 	power:10,
 	infantry:95,
@@ -198,7 +198,7 @@ normal["ranger_2"] = {
 	hp:31,
 	load:18,
 	march:64,
-	consume:18,
+	consumeFood:18,
 	citizen:1,
 	wood:893,
 	stone:536,
@@ -212,8 +212,8 @@ normal["ranger_2"] = {
 	treatTime:17
 }
 normal["ranger_3"] = {
-	type:"ranger_3",
-	category:"archer",
+	name:"ranger_3",
+	type:"archer",
 	star:3,
 	power:13,
 	infantry:111,
@@ -224,7 +224,7 @@ normal["ranger_3"] = {
 	hp:36,
 	load:26,
 	march:64,
-	consume:26,
+	consumeFood:26,
 	citizen:1,
 	wood:1260,
 	stone:756,
@@ -238,8 +238,8 @@ normal["ranger_3"] = {
 	treatTime:17
 }
 normal["crossbowman_1"] = {
-	type:"crossbowman_1",
-	category:"archer",
+	name:"crossbowman_1",
+	type:"archer",
 	star:1,
 	power:7,
 	infantry:79,
@@ -250,7 +250,7 @@ normal["crossbowman_1"] = {
 	hp:26,
 	load:11,
 	march:64,
-	consume:11,
+	consumeFood:11,
 	citizen:1,
 	wood:525,
 	stone:315,
@@ -264,8 +264,8 @@ normal["crossbowman_1"] = {
 	treatTime:19
 }
 normal["crossbowman_2"] = {
-	type:"crossbowman_2",
-	category:"archer",
+	name:"crossbowman_2",
+	type:"archer",
 	star:2,
 	power:10,
 	infantry:95,
@@ -276,7 +276,7 @@ normal["crossbowman_2"] = {
 	hp:31,
 	load:18,
 	march:64,
-	consume:18,
+	consumeFood:18,
 	citizen:1,
 	wood:893,
 	stone:536,
@@ -290,8 +290,8 @@ normal["crossbowman_2"] = {
 	treatTime:19
 }
 normal["crossbowman_3"] = {
-	type:"crossbowman_3",
-	category:"archer",
+	name:"crossbowman_3",
+	type:"archer",
 	star:3,
 	power:13,
 	infantry:111,
@@ -302,7 +302,7 @@ normal["crossbowman_3"] = {
 	hp:36,
 	load:26,
 	march:64,
-	consume:26,
+	consumeFood:26,
 	citizen:1,
 	wood:1260,
 	stone:756,
@@ -316,8 +316,8 @@ normal["crossbowman_3"] = {
 	treatTime:19
 }
 normal["lancer_1"] = {
-	type:"lancer_1",
-	category:"cavalry",
+	name:"lancer_1",
+	type:"cavalry",
 	star:1,
 	power:12,
 	infantry:90,
@@ -328,7 +328,7 @@ normal["lancer_1"] = {
 	hp:80,
 	load:20,
 	march:92,
-	consume:20,
+	consumeFood:20,
 	citizen:2,
 	wood:600,
 	stone:0,
@@ -342,8 +342,8 @@ normal["lancer_1"] = {
 	treatTime:37
 }
 normal["lancer_2"] = {
-	type:"lancer_2",
-	category:"cavalry",
+	name:"lancer_2",
+	type:"cavalry",
 	star:2,
 	power:18,
 	infantry:108,
@@ -354,7 +354,7 @@ normal["lancer_2"] = {
 	hp:96,
 	load:34,
 	march:92,
-	consume:34,
+	consumeFood:34,
 	citizen:2,
 	wood:1020,
 	stone:0,
@@ -368,8 +368,8 @@ normal["lancer_2"] = {
 	treatTime:37
 }
 normal["lancer_3"] = {
-	type:"lancer_3",
-	category:"cavalry",
+	name:"lancer_3",
+	type:"cavalry",
 	star:3,
 	power:24,
 	infantry:126,
@@ -380,7 +380,7 @@ normal["lancer_3"] = {
 	hp:112,
 	load:48,
 	march:92,
-	consume:48,
+	consumeFood:48,
 	citizen:2,
 	wood:1440,
 	stone:0,
@@ -394,8 +394,8 @@ normal["lancer_3"] = {
 	treatTime:37
 }
 normal["horseArcher_1"] = {
-	type:"horseArcher_1",
-	category:"cavalry",
+	name:"horseArcher_1",
+	type:"cavalry",
 	star:1,
 	power:15,
 	infantry:106,
@@ -406,7 +406,7 @@ normal["horseArcher_1"] = {
 	hp:66,
 	load:22,
 	march:86,
-	consume:22,
+	consumeFood:22,
 	citizen:2,
 	wood:880,
 	stone:0,
@@ -420,8 +420,8 @@ normal["horseArcher_1"] = {
 	treatTime:40
 }
 normal["horseArcher_2"] = {
-	type:"horseArcher_2",
-	category:"cavalry",
+	name:"horseArcher_2",
+	type:"cavalry",
 	star:2,
 	power:21,
 	infantry:127,
@@ -432,7 +432,7 @@ normal["horseArcher_2"] = {
 	hp:80,
 	load:38,
 	march:86,
-	consume:38,
+	consumeFood:38,
 	citizen:2,
 	wood:1496,
 	stone:0,
@@ -446,8 +446,8 @@ normal["horseArcher_2"] = {
 	treatTime:40
 }
 normal["horseArcher_3"] = {
-	type:"horseArcher_3",
-	category:"cavalry",
+	name:"horseArcher_3",
+	type:"cavalry",
 	star:3,
 	power:29,
 	infantry:148,
@@ -458,7 +458,7 @@ normal["horseArcher_3"] = {
 	hp:93,
 	load:53,
 	march:86,
-	consume:53,
+	consumeFood:53,
 	citizen:2,
 	wood:2112,
 	stone:0,
@@ -472,8 +472,8 @@ normal["horseArcher_3"] = {
 	treatTime:40
 }
 normal["catapult_1"] = {
-	type:"catapult_1",
-	category:"siege",
+	name:"catapult_1",
+	type:"siege",
 	star:1,
 	power:24,
 	infantry:160,
@@ -484,7 +484,7 @@ normal["catapult_1"] = {
 	hp:96,
 	load:40,
 	march:58,
-	consume:40,
+	consumeFood:40,
 	citizen:4,
 	wood:1200,
 	stone:1200,
@@ -498,8 +498,8 @@ normal["catapult_1"] = {
 	treatTime:60
 }
 normal["catapult_2"] = {
-	type:"catapult_2",
-	category:"siege",
+	name:"catapult_2",
+	type:"siege",
 	star:2,
 	power:35,
 	infantry:192,
@@ -510,7 +510,7 @@ normal["catapult_2"] = {
 	hp:116,
 	load:68,
 	march:58,
-	consume:68,
+	consumeFood:68,
 	citizen:4,
 	wood:2040,
 	stone:2040,
@@ -524,8 +524,8 @@ normal["catapult_2"] = {
 	treatTime:60
 }
 normal["catapult_3"] = {
-	type:"catapult_3",
-	category:"siege",
+	name:"catapult_3",
+	type:"siege",
 	star:3,
 	power:48,
 	infantry:224,
@@ -536,7 +536,7 @@ normal["catapult_3"] = {
 	hp:135,
 	load:96,
 	march:58,
-	consume:96,
+	consumeFood:96,
 	citizen:4,
 	wood:2880,
 	stone:2880,
@@ -550,8 +550,8 @@ normal["catapult_3"] = {
 	treatTime:60
 }
 normal["ballista_1"] = {
-	type:"ballista_1",
-	category:"siege",
+	name:"ballista_1",
+	type:"siege",
 	star:1,
 	power:30,
 	infantry:88,
@@ -562,7 +562,7 @@ normal["ballista_1"] = {
 	hp:132,
 	load:44,
 	march:55,
-	consume:44,
+	consumeFood:44,
 	citizen:4,
 	wood:1100,
 	stone:1100,
@@ -576,8 +576,8 @@ normal["ballista_1"] = {
 	treatTime:64
 }
 normal["ballista_2"] = {
-	type:"ballista_2",
-	category:"siege",
+	name:"ballista_2",
+	type:"siege",
 	star:2,
 	power:42,
 	infantry:106,
@@ -588,7 +588,7 @@ normal["ballista_2"] = {
 	hp:159,
 	load:75,
 	march:55,
-	consume:75,
+	consumeFood:75,
 	citizen:4,
 	wood:1870,
 	stone:1870,
@@ -602,8 +602,8 @@ normal["ballista_2"] = {
 	treatTime:64
 }
 normal["ballista_3"] = {
-	type:"ballista_3",
-	category:"siege",
+	name:"ballista_3",
+	type:"siege",
 	star:3,
 	power:57,
 	infantry:124,
@@ -614,7 +614,7 @@ normal["ballista_3"] = {
 	hp:185,
 	load:106,
 	march:55,
-	consume:106,
+	consumeFood:106,
 	citizen:4,
 	wood:2640,
 	stone:2640,

@@ -253,14 +253,28 @@ var ChatHandler = function(app){
 			}
 		},
 		{
-			command:"addtreatsoldiers",
-			desc:"设置伤兵数量:addtreatsoldiers 5",
+			command:"soldiers",
+			desc:"设置士兵数量:soldiers 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.addtreatsoldiers(session, uid, count, function(e){
+					self.app.rpc.logic.commandRemote.soldiers(session, uid, count, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
+			command:"treatsoldiers",
+			desc:"设置伤兵数量:treatsoldiers 5",
+			func:function(session, uid, text, callback){
+				var self = this
+				var count = text.split(" ")[1]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					self.app.rpc.logic.commandRemote.treatsoldiers(session, uid, count, function(e){
 						callback(e)
 					})
 				}
@@ -359,20 +373,6 @@ var ChatHandler = function(app){
 				alliancehonour = parseInt(alliancehonour)
 				if(_.isNumber(alliancehonour)){
 					self.app.rpc.logic.commandRemote.alliancehonour(session, uid, alliancehonour, function(e){
-						callback(e)
-					})
-				}
-			}
-		},
-		{
-			command:"soldiers",
-			desc:"设置士兵数量:soldiers 5",
-			func:function(session, uid, text, callback){
-				var self = this
-				var count = text.split(" ")[1]
-				count = parseInt(count)
-				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.soldiers(session, uid, count, function(e){
 						callback(e)
 					})
 				}

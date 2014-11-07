@@ -666,12 +666,37 @@ pro.rmdragonequipmentevents = function(uid, callback){
 }
 
 /**
+ * 设置士兵数量
+ * @param uid
+ * @param count
+ * @param callback
+ */
+pro.soldiers = function(uid, count, callback){
+	var self = this
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		_.each(doc.soldiers, function(value, key){
+			doc.soldiers[key] = count
+		})
+		return self.playerDao.updateAsync(doc)
+	}).then(function(doc){
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * 设置伤兵数量
  * @param uid
  * @param count
  * @param callback
  */
-pro.addtreatsoldiers = function(uid, count, callback){
+pro.treatsoldiers = function(uid, count, callback){
 	var self = this
 	this.playerDao.findByIdAsync(uid).then(function(doc){
 		if(!_.isObject(doc)){
@@ -950,31 +975,6 @@ pro.alliancehonour = function(uid, allianceHonour, callback){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 设置士兵数量
- * @param uid
- * @param count
- * @param callback
- */
-pro.soldiers = function(uid, count, callback){
-	var self = this
-	this.playerDao.findByIdAsync(uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		_.each(doc.soldiers, function(value, key){
-			doc.soldiers[key] = count
-		})
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, doc)
 	}).then(function(){
 		callback()
 	}).catch(function(e){

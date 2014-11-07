@@ -921,7 +921,7 @@ describe("PlayerService", function(){
 	//	})
 	//
 	//	it("treatSoldier 士兵不存在或士兵数量不合法4", function(done){
-	//		Api.sendChat("addtreatsoldiers 5", function(doc){
+	//		Api.sendChat("treatsoldiers 5", function(doc){
 	//			doc.code.should.equal(200)
 	//			Api.treatSoldier([{name:"swordsman", count:6}], true, function(doc){
 	//				doc.code.should.equal(500)
@@ -968,7 +968,7 @@ describe("PlayerService", function(){
 	//	})
 	//
 	//	it("treatSoldier 正常普通治疗", function(done){
-	//		Api.sendChat("addtreatsoldiers 5", function(doc){
+	//		Api.sendChat("treatsoldiers 5", function(doc){
 	//			doc.code.should.equal(200)
 	//			Api.sendChat("rmtreatsoldierevents", function(doc){
 	//				doc.code.should.equal(200)

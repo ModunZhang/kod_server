@@ -1767,3 +1767,19 @@ Utils.getAllianceActiveShrineStageRequired = function(stageName){
 	}
 	return required
 }
+
+/**
+ * 军队战斗力修复效果
+ * @param multiple
+ * @returns {*}
+ */
+Utils.getSoldierFightFixEffect = function(multiple){
+	var configs = UnitConfig.fightFix
+	for(var i = 0; i < configs.length; i ++){
+		var config = configs[i]
+		if(config.multipleMax > multiple){
+			return config.effect
+		}
+	}
+	return configs[configs.length - 1].effect
+}

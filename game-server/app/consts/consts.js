@@ -53,6 +53,10 @@ module.exports = {
 		TowerEvents:"towerEvents",
 		WallEvents:"wallEvents"
 	},
+	FightStatus:{
+		AttackWin:"attackWin",
+		DefenceWin:"defenceWin"
+	},
 	AllianceLanguage:{
 		All:"all",
 		Cn:"cn",
