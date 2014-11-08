@@ -113,7 +113,7 @@ var allianceSchema = new Schema({
 			{
 				_id:false,
 				name:{type:String, required:true},
-				level:{type:Number, required:true},
+				star:{type:Number, required:true},
 				count:{type:String, required:true}
 			}
 		],

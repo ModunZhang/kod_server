@@ -5,7 +5,7 @@ module.exports = decorateCount
 
 decorateCount["decorate_lake_1"] = {
 	type:"decorate_lake_1",
-	count:5
+	count:2
 }
 decorateCount["decorate_lake_2"] = {
 	type:"decorate_lake_2",
@@ -13,7 +13,7 @@ decorateCount["decorate_lake_2"] = {
 }
 decorateCount["decorate_mountain_1"] = {
 	type:"decorate_mountain_1",
-	count:5
+	count:2
 }
 decorateCount["decorate_mountain_2"] = {
 	type:"decorate_mountain_2",

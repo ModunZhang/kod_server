@@ -4,8 +4,8 @@ var special = {}
 module.exports = special
 
 special["skeletonWarrior"] = {
-	type:"skeletonWarrior",
-	description:"骷髅勇士",
+	name:"skeletonWarrior",
+	type:"infantry",
 	specialMaterials:"deathHand,heroBones,soulStone",
 	star:2,
 	power:10,
@@ -22,8 +22,8 @@ special["skeletonWarrior"] = {
 	recruitTime:40
 }
 special["skeletonArcher"] = {
-	type:"skeletonArcher",
-	description:"骷髅射手",
+	name:"skeletonArcher",
+	type:"archer",
 	specialMaterials:"deathHand,heroBones,magicBox",
 	star:2,
 	power:10,
@@ -40,8 +40,8 @@ special["skeletonArcher"] = {
 	recruitTime:60
 }
 special["deathKnight"] = {
-	type:"deathKnight",
-	description:"死亡骑士",
+	name:"deathKnight",
+	type:"cavalry",
 	specialMaterials:"deathHand,heroBones,magicBox",
 	star:3,
 	power:26,
@@ -58,8 +58,8 @@ special["deathKnight"] = {
 	recruitTime:80
 }
 special["meatWagon"] = {
-	type:"meatWagon",
-	description:"绞肉机",
+	name:"meatWagon",
+	type:"siege",
 	specialMaterials:"heroBones,soulStone,magicBox",
 	star:3,
 	power:48,
@@ -76,8 +76,8 @@ special["meatWagon"] = {
 	recruitTime:95
 }
 special["priest"] = {
-	type:"priest",
-	description:"牧师",
+	name:"priest",
+	type:"infantry",
 	specialMaterials:"confessionHood,brightRing,holyBook",
 	star:3,
 	power:16,
@@ -94,8 +94,8 @@ special["priest"] = {
 	recruitTime:140
 }
 special["demonHunter"] = {
-	type:"demonHunter",
-	description:"猎魔人",
+	name:"demonHunter",
+	type:"archer",
 	specialMaterials:"confessionHood,brightRing,brightAlloy",
 	star:3,
 	power:16,
@@ -112,8 +112,8 @@ special["demonHunter"] = {
 	recruitTime:180
 }
 special["paladin"] = {
-	type:"paladin",
-	description:"圣骑士",
+	name:"paladin",
+	type:"cavalry",
 	specialMaterials:"confessionHood,holyBook,brightAlloy",
 	star:3,
 	power:27,
@@ -130,8 +130,8 @@ special["paladin"] = {
 	recruitTime:240
 }
 special["steamTank"] = {
-	type:"steamTank",
-	description:"蒸汽坦克",
+	name:"steamTank",
+	type:"siege",
 	specialMaterials:"brightRing,holyBook,brightAlloy",
 	star:3,
 	power:58,

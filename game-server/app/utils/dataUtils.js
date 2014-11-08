@@ -1625,19 +1625,17 @@ Utils.getAllianceVillageConfigedSoldiers = function(villageType, villageLevel){
 		var params = soldierConfig.split(":")
 		var params2 = params[0].split("_")
 		var soldierName = params2[0]
-		var soldierLevel = parseInt(params2[1])
+		var soldierStar = parseInt(params2[1])
 		var soldierCount = parseInt(params[1])
 		var soldierCountMax = Math.round(soldierCount * 1.2)
 		var soldierCountMin = Math.round(soldierCount * 0.8)
 		soldierCount = Math.round(soldierCountMin + (Math.random() * (soldierCountMax - soldierCountMin)))
-		if(soldierCount > 0){
-			var soldier = {
-				name:soldierName,
-				level:soldierLevel,
-				count:soldierCount
-			}
-			soldiers.push(soldier)
+		var soldier = {
+			name:soldierName,
+			star:soldierStar,
+			count:soldierCount
 		}
+		soldiers.push(soldier)
 	})
 	return soldiers
 }
@@ -1775,11 +1773,123 @@ Utils.getAllianceActiveShrineStageRequired = function(stageName){
  */
 Utils.getSoldierFightFixEffect = function(multiple){
 	var configs = UnitConfig.fightFix
-	for(var i = 0; i < configs.length; i ++){
+	for(var i = 0; i < configs.length; i++){
 		var config = configs[i]
 		if(config.multipleMax > multiple){
 			return config.effect
 		}
 	}
 	return configs[configs.length - 1].effect
+}
+
+/**
+ * 创建战斗用普通军队信息
+ * @param soldierName
+ * @param soldierStar
+ * @param soldierCount
+ * @returns {*}
+ */
+Utils.createNormalSoldierForFight = function(soldierName, soldierStar, soldierCount){
+	var soldierFullKey = soldierName + "_" + soldierStar
+	var config = UnitConfig.normal[soldierFullKey]
+	var soldier = {
+		name:soldierName,
+		star:soldierStar,
+		type:config.type,
+		currentCount:soldierCount,
+		totalCount:soldierCount,
+		power:config.power,
+		hp:config.hp,
+		morale:100,
+		round:0,
+		attackPower:{
+			infantry:config.infantry,
+			archer:config.archer,
+			cavalry:config.cavalry,
+			siege:config.siege,
+			wall:config.wall
+		}
+	}
+	return soldier
+}
+
+/**
+ * 创建战斗用特殊军队信息
+ * @param soldierName
+ * @param soldierCount
+ * @returns {*}
+ */
+Utils.createSpecialSoldierForFight = function(soldierName, soldierCount){
+	var config = UnitConfig.special[soldierName]
+	var soldier = {
+		name:soldierName,
+		star:config.star,
+		type:config.type,
+		currentCount:soldierCount,
+		totalCount:soldierCount,
+		power:config.power,
+		hp:config.hp,
+		morale:100,
+		round:0,
+		attackPower:{
+			infantry:config.infantry,
+			archer:config.archer,
+			cavalry:config.cavalry,
+			siege:config.siege,
+			wall:config.wall
+		}
+	}
+	return soldier
+}
+
+Utils.getAllianceShrineStageTroops = function(stageName){
+	var troops = []
+	var troopStrings = AllianceShrineConfigp[stageName].troops.split("&")
+	for(var i = 0; i < troopStrings.length; i ++){
+		var troopString = troopStrings[i]
+		var soldiers = []
+		var soldierConfigStrings = troopString.split(",")
+		_.each(soldierConfigStrings, function(soldierConfigString){
+			var params = soldierConfigString.split(":")
+			var params2 = params[0].split("_")
+			var soldierName = params2[0]
+			var soldierStar = parseInt(params2[1])
+			var soldierCount = parseInt(params[1])
+			var unitConfig = UnitConfig.normal[soldierName + "_" + soldierStar]
+			var soldier = {
+				name:soldierName,
+				star:unitConfig.star,
+				type:unitConfig.type,
+				currentCount:soldierCount,
+				totalCount:soldierCount,
+				power:unitConfig.power,
+				hp:unitConfig.hp,
+				morale:100,
+				round:0,
+				attackPower:{
+					infantry:unitConfig.infantry,
+					archer:unitConfig.archer,
+					cavalry:unitConfig.cavalry,
+					siege:unitConfig.siege,
+					wall:unitConfig.wall
+				}
+			}
+			soldiers.push(soldier)
+		})
+		troops.push({
+			troopNumber:i,
+			soldiers:soldiers
+		})
+	}
+
+	return troops
+}
+
+/**
+ * 获取玩家战损兵力去医院的数量
+ * @param playerDoc
+ * @returns {number}
+ */
+Utils.getPlayerDamagedSoldierToTreatSoldierPercent = function(playerDoc){
+	return 0.4
 }

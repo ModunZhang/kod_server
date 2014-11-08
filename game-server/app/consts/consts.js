@@ -53,7 +53,7 @@ module.exports = {
 		TowerEvents:"towerEvents",
 		WallEvents:"wallEvents"
 	},
-	FightStatus:{
+	FightResult:{
 		AttackWin:"attackWin",
 		DefenceWin:"defenceWin"
 	},

@@ -32,11 +32,12 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 		var defenceTotalPower = defenceSoldier.attackPower[attackSoldierType] * defenceSoldier.currentCount
 		if(round == 1){
 			var multiple = defenceTotalPower /  attackTotalPower
+			var effect = null
 			if(multiple > 1){
-				var effect = DataUtils.getSoldierFightFixEffect(multiple)
+				effect = DataUtils.getSoldierFightFixEffect(multiple)
 				attackTotalPower = Math.floor(attackTotalPower * (1 - effect))
 			}else{
-				var effect = DataUtils.getSoldierFightFixEffect(1 / multiple)
+				effect = DataUtils.getSoldierFightFixEffect(1 / multiple)
 				defenceTotalPower = Math.floor(defenceTotalPower * (1 - effect))
 			}
 		}
@@ -53,7 +54,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 		var defenceTreatedSoldierCount = Math.ceil(defenceDamagedSoldierCount * defenceTreatSoldierPercent)
 		attackResults.push({
 			soldierName:attackSoldier.name,
-			soldierLevel:attackSoldier.level,
+			soldierStar:attackSoldier.star,
 			soldierCount:attackSoldier.currentCount,
 			solderDamagedCount:attackDamagedSoldierCount,
 			solderTreatedCount:attackTreatedSoldierCount,
@@ -61,7 +62,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 		})
 		defenceResults.push({
 			soldierName:defenceSoldier.name,
-			soldierLevel:defenceSoldier.level,
+			soldierStar:defenceSoldier.star,
 			soldierCount:defenceSoldier.currentCount,
 			solderDamagedCount:defenceDamagedSoldierCount,
 			solderTreatedCount:defenceTreatedSoldierCount,
@@ -77,17 +78,17 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 		if(attackTotalPower >= defenceTotalPower || defenceSoldier.morale <= 20) LogicUtils.removeItemInArray(defenceSoldiers, defenceSoldier)
 	}
 
-	var result = null
+	var fightResult = null
 	if(attackSoldiers.length > 0 || (attackSoldiers.length == 0 && defenceSoldiers.length == 0)){
-		result = Consts.FightStatus.AttackWin
+		fightResult = Consts.FightResult.AttackWin
 	}else{
-		result = Consts.FightStatus.DefenceWin
+		fightResult = Consts.FightResult.DefenceWin
 	}
 
 	var response = {
 		attackRoundInfo:attackResults,
 		defenceRoundInfo:defenceResults,
-		result:result
+		fightResult:fightResult
 	}
 	return response
 }

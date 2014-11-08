@@ -11,6 +11,7 @@ var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var ReportUtils = require("../utils/reportUtils")
 var MarchUtils = require("../utils/marchUtils")
+var FightUtils = require("../utils/fightUtils")
 var Consts = require("../consts/consts")
 
 
@@ -398,6 +399,48 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 		type:Consts.DataChangedType.Remove,
 		data:event
 	}]
+	var playerTroops = []
+	_.each(event.troops, function(troop){
+		var soldiers = troop.playerSoldiers
+		var soldiersForFight = []
+		_.each(soldiers, function(soldier){
+			if(DataUtils.hasNormalSoldier(soldier.name)){
+				soldiersForFight.push(DataUtils.createNormalSoldierForFight(soldier.name, 1, soldier.count))
+			}else{
+				soldiersForFight.push(DataUtils.createSpecialSoldierForFight(soldier.name, soldier.count))
+			}
+		})
+		var playerTroop = {
+			playerId:troop.playerId,
+			playerName:troop.playerName,
+			soldiers:soldiersForFight
+		}
+		playerTroops.push(playerTroop)
+	})
+	var stageTroops = DataUtils.getAllianceShrineStageTroops(event.stageName)
+
+	var round = 0
+	var playerSuccessedTroops = []
+	var stageSuccessedTroops = []
+	while(playerTroops.length > 0 && stageTroops.length > 0){
+		var playerTroop = playerTroops[round]
+		var stageTroop = stageTroop[round]
+		var treatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(null)
+		var fightData = FightUtils.soldierToSoldierFight(playerTroop.soldiers, treatSoldierPercent, stageTroop.soldiers, 0)
+		if(_.isEqual(fightData.fightResult, Consts.FightResult.AttackWin)){
+			playerSuccessedTroops.push(playerTroop)
+		}else{
+			stageSuccessedTroops.push(stageTroop)
+		}
+		LogicUtils.removeItemInArray(playerTroops, playerTroop)
+		LogicUtils.removeItemInArray(stageTroops, stageTroop)
+		if(playerTroops.length == 0 && playerSuccessedTroops.length > 0){
+
+		}
+		if(stageTroops.length == 0 && stageSuccessedTroops.length > 0){
+
+		}
+	}
 
 
 	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
