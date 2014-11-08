@@ -435,7 +435,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 		LogicUtils.removeItemInArray(playerTroops, playerTroop)
 		LogicUtils.removeItemInArray(stageTroops, stageTroop)
 		if(playerTroops.length == 0 && playerSuccessedTroops.length > 0){
-
+			
 		}
 		if(stageTroops.length == 0 && stageSuccessedTroops.length > 0){
 
