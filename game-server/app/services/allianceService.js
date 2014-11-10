@@ -1118,6 +1118,10 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 		callback(new Error("title 不合法"))
 		return
 	}
+	if(_.isEqual(playerId, memberId)){
+		callback(new Error("不能修改玩家自己的职位"))
+		return
+	}
 
 	var self = this
 	var playerDoc = null
@@ -1362,6 +1366,10 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 	}
 	if(!_.isString(memberId)){
 		callback(new Error("memberId 不合法"))
+		return
+	}
+	if(_.isEqual(playerId, memberId)){
+		callback(new Error("不能将盟主职位移交给自己"))
 		return
 	}
 
@@ -1942,6 +1950,10 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		callback(new Error("agree 不合法"))
 		return
 	}
+	if(_.isEqual(playerId, memberId)){
+		callback(new Error("不能处理自己加入联盟的申请"))
+		return
+	}
 
 	var self = this
 	var playerDoc = null
@@ -2148,6 +2160,10 @@ pro.inviteToJoinAlliance = function(playerId, memberId, callback){
 	}
 	if(!_.isString(memberId)){
 		callback(new Error("memberId 不合法"))
+		return
+	}
+	if(_.isEqual(playerId, memberId)){
+		callback(new Error("不能邀请自己加入联盟"))
 		return
 	}
 
