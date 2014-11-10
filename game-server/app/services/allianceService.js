@@ -1999,14 +1999,15 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
+
+		allianceData.__joinRequestEvents = [{
+			type:Consts.DataChangedType.Remove,
+			data:eventInAlliance
+		}]
 		if(!agree){
 			memberData.__requestToAllianceEvents = [{
 				type:Consts.DataChangedType.Remove,
 				data:eventInMember
-			}]
-			allianceData.__joinRequestEvents = [{
-				type:Consts.DataChangedType.Remove,
-				data:eventInAlliance
 			}]
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 			return Promise.resolve()
@@ -3586,8 +3587,9 @@ pro.marchToShrine = function(playerId, shrineEventId, dragonType, soldiers, call
 		}
 		allianceDoc = doc
 		var shrineEvent = LogicUtils.getEventById(allianceDoc.shrineEvents, shrineEventId)
-		if(!_.isObject(shrineEvent)) return Promise.reject(new Error("圣地事件不存在"))
-		if(LogicUtils.isAllianceShrineStageEventTroopsContainsPlayer(playerId, shrineEvent)) return Promise.reject(new Error("玩家已经对此事件派出了部队"))
+		if(!_.isObject(shrineEvent)) return Promise.reject(new Error("此关卡还未激活"))
+		if(DataUtils.isAllianceShrineStageLocked(allianceDoc, shrineEvent.stageName)) return Promise.reject(new Error("此关卡还未解锁"))
+		if(LogicUtils.isAllianceShrineStageEventTroopsContainsPlayer(playerId, shrineEvent)) return Promise.reject(new Error("玩家已经对此关卡派出了部队"))
 		var event = LogicUtils.createAllianceShrineMarchEvent(playerDoc, allianceDoc, shrineEventId, dragonType, soldiers)
 		allianceDoc.shrineMarchEvents.push(event)
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])

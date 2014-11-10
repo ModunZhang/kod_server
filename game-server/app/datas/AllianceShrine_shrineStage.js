@@ -5,6 +5,7 @@ module.exports = shrineStage
 
 shrineStage["1_1"] = {
 	stageName:"1_1",
+	index:1,
 	stage:1,
 	subStage:1,
 	enemyPower:1000,
@@ -25,6 +26,7 @@ shrineStage["1_1"] = {
 }
 shrineStage["1_2"] = {
 	stageName:"1_2",
+	index:2,
 	stage:1,
 	subStage:2,
 	enemyPower:2000,
@@ -45,6 +47,7 @@ shrineStage["1_2"] = {
 }
 shrineStage["1_3"] = {
 	stageName:"1_3",
+	index:3,
 	stage:1,
 	subStage:3,
 	enemyPower:3000,
@@ -65,6 +68,7 @@ shrineStage["1_3"] = {
 }
 shrineStage["1_4"] = {
 	stageName:"1_4",
+	index:4,
 	stage:1,
 	subStage:4,
 	enemyPower:4000,
@@ -85,6 +89,7 @@ shrineStage["1_4"] = {
 }
 shrineStage["1_5"] = {
 	stageName:"1_5",
+	index:5,
 	stage:1,
 	subStage:5,
 	enemyPower:5000,
@@ -105,6 +110,7 @@ shrineStage["1_5"] = {
 }
 shrineStage["2_1"] = {
 	stageName:"2_1",
+	index:6,
 	stage:2,
 	subStage:1,
 	enemyPower:6000,
@@ -125,6 +131,7 @@ shrineStage["2_1"] = {
 }
 shrineStage["2_2"] = {
 	stageName:"2_2",
+	index:7,
 	stage:2,
 	subStage:2,
 	enemyPower:7000,
@@ -145,6 +152,7 @@ shrineStage["2_2"] = {
 }
 shrineStage["2_3"] = {
 	stageName:"2_3",
+	index:8,
 	stage:2,
 	subStage:3,
 	enemyPower:8000,
@@ -165,6 +173,7 @@ shrineStage["2_3"] = {
 }
 shrineStage["2_4"] = {
 	stageName:"2_4",
+	index:9,
 	stage:2,
 	subStage:4,
 	enemyPower:9000,
@@ -185,6 +194,7 @@ shrineStage["2_4"] = {
 }
 shrineStage["2_5"] = {
 	stageName:"2_5",
+	index:10,
 	stage:2,
 	subStage:5,
 	enemyPower:10000,
@@ -205,6 +215,7 @@ shrineStage["2_5"] = {
 }
 shrineStage["3_1"] = {
 	stageName:"3_1",
+	index:11,
 	stage:3,
 	subStage:1,
 	enemyPower:11000,
@@ -225,6 +236,7 @@ shrineStage["3_1"] = {
 }
 shrineStage["3_2"] = {
 	stageName:"3_2",
+	index:12,
 	stage:3,
 	subStage:2,
 	enemyPower:12000,
@@ -245,6 +257,7 @@ shrineStage["3_2"] = {
 }
 shrineStage["3_3"] = {
 	stageName:"3_3",
+	index:13,
 	stage:3,
 	subStage:3,
 	enemyPower:13000,
@@ -265,6 +278,7 @@ shrineStage["3_3"] = {
 }
 shrineStage["3_4"] = {
 	stageName:"3_4",
+	index:14,
 	stage:3,
 	subStage:4,
 	enemyPower:14000,
@@ -285,6 +299,7 @@ shrineStage["3_4"] = {
 }
 shrineStage["3_5"] = {
 	stageName:"3_5",
+	index:15,
 	stage:3,
 	subStage:5,
 	enemyPower:15000,
@@ -305,6 +320,7 @@ shrineStage["3_5"] = {
 }
 shrineStage["4_1"] = {
 	stageName:"4_1",
+	index:16,
 	stage:4,
 	subStage:1,
 	enemyPower:16000,
@@ -325,6 +341,7 @@ shrineStage["4_1"] = {
 }
 shrineStage["4_2"] = {
 	stageName:"4_2",
+	index:17,
 	stage:4,
 	subStage:2,
 	enemyPower:17000,
@@ -345,6 +362,7 @@ shrineStage["4_2"] = {
 }
 shrineStage["4_3"] = {
 	stageName:"4_3",
+	index:18,
 	stage:4,
 	subStage:3,
 	enemyPower:18000,
@@ -365,6 +383,7 @@ shrineStage["4_3"] = {
 }
 shrineStage["4_4"] = {
 	stageName:"4_4",
+	index:19,
 	stage:4,
 	subStage:4,
 	enemyPower:19000,
@@ -385,6 +404,7 @@ shrineStage["4_4"] = {
 }
 shrineStage["4_5"] = {
 	stageName:"4_5",
+	index:20,
 	stage:4,
 	subStage:5,
 	enemyPower:20000,
@@ -405,6 +425,7 @@ shrineStage["4_5"] = {
 }
 shrineStage["5_1"] = {
 	stageName:"5_1",
+	index:21,
 	stage:5,
 	subStage:1,
 	enemyPower:21000,
@@ -425,6 +446,7 @@ shrineStage["5_1"] = {
 }
 shrineStage["5_2"] = {
 	stageName:"5_2",
+	index:22,
 	stage:5,
 	subStage:2,
 	enemyPower:22000,
@@ -445,6 +467,7 @@ shrineStage["5_2"] = {
 }
 shrineStage["5_3"] = {
 	stageName:"5_3",
+	index:23,
 	stage:5,
 	subStage:3,
 	enemyPower:23000,
@@ -465,6 +488,7 @@ shrineStage["5_3"] = {
 }
 shrineStage["5_4"] = {
 	stageName:"5_4",
+	index:24,
 	stage:5,
 	subStage:4,
 	enemyPower:24000,
@@ -485,6 +509,7 @@ shrineStage["5_4"] = {
 }
 shrineStage["5_5"] = {
 	stageName:"5_5",
+	index:25,
 	stage:5,
 	subStage:5,
 	enemyPower:25000,
@@ -505,6 +530,7 @@ shrineStage["5_5"] = {
 }
 shrineStage["6_1"] = {
 	stageName:"6_1",
+	index:26,
 	stage:6,
 	subStage:1,
 	enemyPower:26000,
@@ -525,6 +551,7 @@ shrineStage["6_1"] = {
 }
 shrineStage["6_2"] = {
 	stageName:"6_2",
+	index:27,
 	stage:6,
 	subStage:2,
 	enemyPower:27000,
@@ -545,6 +572,7 @@ shrineStage["6_2"] = {
 }
 shrineStage["6_3"] = {
 	stageName:"6_3",
+	index:28,
 	stage:6,
 	subStage:3,
 	enemyPower:28000,
@@ -565,6 +593,7 @@ shrineStage["6_3"] = {
 }
 shrineStage["6_4"] = {
 	stageName:"6_4",
+	index:29,
 	stage:6,
 	subStage:4,
 	enemyPower:29000,
@@ -585,6 +614,7 @@ shrineStage["6_4"] = {
 }
 shrineStage["6_5"] = {
 	stageName:"6_5",
+	index:30,
 	stage:6,
 	subStage:5,
 	enemyPower:30000,

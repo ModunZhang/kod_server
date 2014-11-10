@@ -1458,7 +1458,7 @@ Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, dr
  */
 Utils.resetFightSoldiersByFightResult = function(soldiers, fightRoundData){
 	_.each(fightRoundData, function(fightResult){
-		for(var i = 0; i < soldiers.length; i ++){
+		for(var i = 0; i < soldiers.length; i++){
 			var soldier = soldiers[i]
 			if(_.isEqual(soldier.name, fightResult.soldierName)){
 				soldier.totalCount -= fightResult.solderDamagedCount
@@ -1476,7 +1476,7 @@ Utils.resetFightSoldiersByFightResult = function(soldiers, fightRoundData){
  * @returns {*}
  */
 Utils.getPlayerDragonDataFromAllianceShrineStageEvent = function(playerId, event){
-	for(var i = 0; i < event.playerTroops.length; i ++){
+	for(var i = 0; i < event.playerTroops.length; i++){
 		var playerTroop = event.playerTroops[i]
 		if(_.isEqual(playerTroop.id, playerId)) return playerTroop.dragon
 	}
@@ -1490,9 +1490,26 @@ Utils.getPlayerDragonDataFromAllianceShrineStageEvent = function(playerId, event
  * @returns {boolean}
  */
 Utils.isAllianceShrineStageEventTroopsContainsPlayer = function(playerId, event){
-	for(var i = 0; i < event.playerTroops.length; i ++){
+	for(var i = 0; i < event.playerTroops.length; i++){
 		var playerTroop = event.playerTroops[i]
 		if(_.isEqual(playerTroop.id, playerId)) return true
 	}
 	return false
+}
+
+
+/**
+ * 获取联盟某关卡的历史星级数据
+ * @param allianceDoc
+ * @param stageName
+ * @returns {*}
+ */
+Utils.getAllianceShrineStageData = function(allianceDoc, stageName){
+	for(var i = 0; i < allianceDoc.shrineDatas.length; i++){
+		var stageData = allianceDoc.shrineDatas[i]
+		if(_.isEqual(stageData.stageName, stageName)){
+			return stageData
+		}
+	}
+	return null
 }

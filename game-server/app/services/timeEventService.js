@@ -6,7 +6,6 @@
 
 var _ = require("underscore")
 var Promise = require("bluebird")
-var NodeUtils = require("util")
 var ShortId = require("shortid")
 
 var DataUtils = require("../utils/dataUtils")
@@ -14,6 +13,7 @@ var LogicUtils = require("../utils/logicUtils")
 var ReportUtils = require("../utils/reportUtils")
 var FightUtils = require("../utils/fightUtils")
 var Consts = require("../consts/consts")
+var Define = require("../consts/define")
 
 
 var TimeEventService = function(app){
@@ -500,11 +500,39 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 		playerDatas:playerDatas,
 		fightDatas:fightDatas
 	}
+
+	allianceData.__shrineReports = []
+	if(allianceDoc.shrineReports.length > Define.AllianceShrineReportsMaxSize){
+		var willRemovedshrineReport = allianceDoc.shrineReports.shift()
+		allianceData.__shrineReports.push({
+			type:Consts.DataChangedType.Remove,
+			data:willRemovedshrineReport
+		})
+	}
 	allianceDoc.shrineReports.push(shrineReport)
-	allianceData.__shrineReports = [{
+	allianceData.__shrineReports.push({
 		type:Consts.DataChangedType.Add,
 		data:shrineReport
-	}]
+	})
+
+	var stageData = LogicUtils.getAllianceShrineStageData(allianceDoc, event.stageName)
+	if(!_.isObject(stageData)){
+		stageData = {
+			stageName:event.stageName,
+			maxStar:fightStar
+		}
+		allianceDoc.shrineDatas.push(stageData)
+		allianceData.__shrineDatas = [{
+			type:Consts.DataChangedType.Add,
+			data:stageData
+		}]
+	}else if(stageData.maxStar < fightStar){
+		stageData.maxStar = fightData
+		allianceData.__shrineDatas = [{
+			type:Consts.DataChangedType.Edit,
+			data:stageData
+		}]
+	}
 
 	var playerDocs = []
 	var createReturnEvent = function(playerId){

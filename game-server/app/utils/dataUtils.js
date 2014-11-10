@@ -2024,3 +2024,20 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 	}
 	return params
 }
+
+/**
+ * 联盟圣地关卡是否解锁
+ * @param allianceDoc
+ * @param stageName
+ */
+Utils.isAllianceShrineStageLocked = function(allianceDoc, stageName){
+	var config = AllianceShrineConfig[stageName]
+	if(config.index == 1) return false
+	var previousStageName = null
+	_.each(AllianceShrineConfig, function(theConfig){
+		if(theConfig.index == config.index - 1) previousStageName = theConfig.stageName
+	})
+
+	var stageData = LogicUtils.getAllianceShrineStageData(allianceDoc, stageName)
+	return !_.isObject(stageData)
+}

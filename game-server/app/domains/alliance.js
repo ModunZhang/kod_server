@@ -152,6 +152,11 @@ var allianceSchema = new Schema({
 		maxHelpCount:{type:Number, required:true},
 		helpedMembers:[String]
 	}],
+	shrineDatas:[{
+		_id:false,
+		stageName:{type:String, required:true},
+		maxStar:{type:Number, required:true}
+	}],
 	shrineMarchEvents:[{
 		_id:false,
 		id:{type:String, required:true},
