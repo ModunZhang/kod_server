@@ -1404,14 +1404,16 @@ Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEv
 	var event = {
 		id:ShortId.generate(),
 		shrineEventId:shrineEventId,
-		playerId:playerDoc._id,
-		playerName:playerDoc.basicInfo.name,
-		playerCityName:playerDoc.basicInfo.cityName,
-		playerLocation:playerLocation,
-		playerDragon:{
-			type:dragonType
+		playerData:{
+			id:playerDoc._id,
+			name:playerDoc.basicInfo.name,
+			cityName:playerDoc.basicInfo.cityName,
+			location:playerLocation,
+			dragon:{
+				type:dragonType
+			},
+			soldiers:soldiers
 		},
-		playerSoldiers:soldiers,
 		arriveTime:Date.now() + (marchSeconds * 1000)
 	}
 	return event
@@ -1421,25 +1423,76 @@ Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEv
  * 玩家从圣地回城事件
  * @param playerDoc
  * @param allianceDoc
- * @param marchEvent
- * @param soldiers
- * @param needTreatedSoldiers
+ * @param dragonType
+ * @param leftsoldiers
+ * @param treatSoldiers
  * @param rewards
  * @returns {*}
  */
-Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, marchEvent, soldiers, needTreatedSoldiers, rewards){
+Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, dragonType, leftsoldiers, treatSoldiers, rewards){
 	var shrineLocation = allianceDoc.buildings["shrine"].location
-	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, shrineLocation, marchEvent.playerLocation)
+	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, shrineLocation, playerLocation)
 	var event = {
 		id:ShortId.generate(),
-		playerId:marchEvent.playerId,
-		playerCityName:marchEvent.playerCityName,
-		playerLocation:marchEvent.playerLocation,
-		playerDragon:marchEvent.playerDragon,
-		playerSoldiers:soldiers,
-		playerNeedTreatedSoldiers:needTreatedSoldiers,
-		rewards:rewards,
+		playerData:{
+			id:playerDoc._id,
+			cityName:playerDoc.basicInfo.cityName,
+			location:playerLocation,
+			dragon:{
+				type:dragonType
+			},
+			leftSoldiers:leftsoldiers,
+			treatSoldiers:treatSoldiers,
+			rewards:rewards
+		},
 		arriveTime:Date.now() + (marchSeconds * 1000)
 	}
 	return event
+}
+
+/**
+ * 重置玩家部队战斗数据
+ * @param soldiers
+ * @param fightRoundData
+ */
+Utils.resetFightSoldiersByFightResult = function(soldiers, fightRoundData){
+	_.each(fightRoundData, function(fightResult){
+		for(var i = 0; i < soldiers.length; i ++){
+			var soldier = soldiers[i]
+			if(_.isEqual(soldier.name, fightResult.soldierName)){
+				soldier.totalCount -= fightResult.solderDamagedCount
+				soldier.currentCount = soldier.totalCount
+				soldier.morale = 100
+			}
+		}
+	})
+}
+
+/**
+ * 从联盟圣地时间中获取玩家龙的信息
+ * @param playerId
+ * @param event
+ * @returns {*}
+ */
+Utils.getPlayerDragonDataFromAllianceShrineStageEvent = function(playerId, event){
+	for(var i = 0; i < event.playerTroops.length; i ++){
+		var playerTroop = event.playerTroops[i]
+		if(_.isEqual(playerTroop.id, playerId)) return playerTroop.dragon
+	}
+	return null
+}
+
+/**
+ * 某联盟圣地事件中是否包含某个玩家的军队
+ * @param playerId
+ * @param event
+ * @returns {boolean}
+ */
+Utils.isAllianceShrineStageEventTroopsContainsPlayer = function(playerId, event){
+	for(var i = 0; i < event.playerTroops.length; i ++){
+		var playerTroop = event.playerTroops[i]
+		if(_.isEqual(playerTroop.id, playerId)) return true
+	}
+	return false
 }

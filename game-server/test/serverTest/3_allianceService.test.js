@@ -1073,22 +1073,26 @@ describe("AllianceService", function(){
 			})
 		})
 
-		it("marchToShrine 正常行军", function(done){
+		it("marchToShrine 正常行军1", function(done){
 			var m_allianceData = null
 			Api.sendChat("dragonstar redDragon 1", function(doc){
 				doc.code.should.equal(200)
-				Api.sendChat("soldiers 10", function(doc){
+				Api.sendChat("soldiers 50", function(doc){
 					doc.code.should.equal(200)
 					Api.getMyAllianceData(function(doc){
 						doc.code.should.equal(200)
 						Api.marchToShrine(m_allianceData.shrineEvents[0].id, "redDragon", [
 							{
 								name:"swordsman",
-								count:5
+								count:20
 							},
 							{
 								name:"sentinel",
-								count:6
+								count:20
+							},
+							{
+								name:"ranger",
+								count:20
 							}
 						], function(doc){
 							doc.code.should.equal(200)
@@ -1100,6 +1104,44 @@ describe("AllianceService", function(){
 						pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 					}
 					pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+				})
+			})
+		})
+
+		it("marchToShrine 正常行军2", function(done){
+			var m_allianceData = null
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("dragonstar redDragon 1", function(doc){
+					doc.code.should.equal(200)
+					Api.sendChat("soldiers 50", function(doc){
+						doc.code.should.equal(200)
+						Api.getMyAllianceData(function(doc){
+							doc.code.should.equal(200)
+							Api.marchToShrine(m_allianceData.shrineEvents[0].id, "redDragon", [
+								{
+									name:"swordsman",
+									count:20
+								},
+								{
+									name:"sentinel",
+									count:20
+								},
+								{
+									name:"ranger",
+									count:20
+								}
+							], function(doc){
+								doc.code.should.equal(200)
+								done()
+							})
+						})
+						var onGetAllianceDataSuccess = function(doc){
+							m_allianceData = doc
+							pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+						}
+						pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+					})
 				})
 			})
 		})

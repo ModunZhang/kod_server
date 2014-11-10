@@ -12,7 +12,6 @@ var crypto = require("crypto")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
-var MarchUtils = require("../utils/marchUtils")
 var MapUtils = require("../utils/mapUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
@@ -2944,7 +2943,7 @@ pro.donateToAlliance = function(playerId, donateType, callback){
 		DataUtils.updateAllianceMemberDonateLevel(memberDocInAlliance, donateType)
 		var playerData = {}
 		playerData.basicInfo = playerDoc.basicInfo
-		playerData.resources = playerDoc.resouces
+		playerData.resources = playerDoc.resources
 		playerData.allianceInfo = playerDoc.allianceInfo
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
@@ -3588,6 +3587,7 @@ pro.marchToShrine = function(playerId, shrineEventId, dragonType, soldiers, call
 		allianceDoc = doc
 		var shrineEvent = LogicUtils.getEventById(allianceDoc.shrineEvents, shrineEventId)
 		if(!_.isObject(shrineEvent)) return Promise.reject(new Error("圣地事件不存在"))
+		if(LogicUtils.isAllianceShrineStageEventTroopsContainsPlayer(playerId, shrineEvent)) return Promise.reject(new Error("玩家已经对此事件派出了部队"))
 		var event = LogicUtils.createAllianceShrineMarchEvent(playerDoc, allianceDoc, shrineEventId, dragonType, soldiers)
 		allianceDoc.shrineMarchEvents.push(event)
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])

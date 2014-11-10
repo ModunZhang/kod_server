@@ -12,16 +12,16 @@ shrineStage["1_1"] = {
 	suggestPlayer:3,
 	suggestPower:350,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:50,
+	star2DeathCitizen:50,
 	star1Honour:100,
 	star2Honour:150,
 	star3Honour:200,
-	bronzeKill:100,
-	silverKill:150,
-	goldKill:200,
-	bronzeRewards:"a:1,b:1,c:1",
-	silverRewards:"a:2,b:2,c:2",
-	goldRewards:"a:3,b:3,c:3"
+	bronzeKill:5,
+	silverKill:10,
+	goldKill:20,
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["1_2"] = {
 	stageName:"1_2",
@@ -32,16 +32,16 @@ shrineStage["1_2"] = {
 	suggestPlayer:5,
 	suggestPower:400,
 	troops:"swordsman_1:12,sentinel_1:12,ranger_1:12&swordsman_1:12,sentinel_1:12,ranger_1:12",
-	star2DeathPopulation:100,
+	star2DeathCitizen:100,
 	star1Honour:150,
 	star2Honour:200,
 	star3Honour:250,
 	bronzeKill:200,
 	silverKill:250,
 	goldKill:300,
-	bronzeRewards:"a:2,b:2,c:2",
-	silverRewards:"a:3,b:3,c:3",
-	goldRewards:"a:4,b:4,c:4"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["1_3"] = {
 	stageName:"1_3",
@@ -52,16 +52,16 @@ shrineStage["1_3"] = {
 	suggestPlayer:8,
 	suggestPower:450,
 	troops:"swordsman_1:14,sentinel_1:14,ranger_1:14&swordsman_1:14,sentinel_1:14,ranger_1:14",
-	star2DeathPopulation:150,
+	star2DeathCitizen:150,
 	star1Honour:200,
 	star2Honour:250,
 	star3Honour:300,
 	bronzeKill:300,
 	silverKill:350,
 	goldKill:400,
-	bronzeRewards:"a:3,b:3,c:3",
-	silverRewards:"a:2,b:2,c:3",
-	goldRewards:"a:3,b:3,c:4"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["1_4"] = {
 	stageName:"1_4",
@@ -72,16 +72,16 @@ shrineStage["1_4"] = {
 	suggestPlayer:10,
 	suggestPower:500,
 	troops:"swordsman_1:16,sentinel_1:16,ranger_1:16&swordsman_1:16,sentinel_1:10,ranger_1:16",
-	star2DeathPopulation:200,
+	star2DeathCitizen:200,
 	star1Honour:250,
 	star2Honour:300,
 	star3Honour:350,
 	bronzeKill:400,
 	silverKill:450,
 	goldKill:500,
-	bronzeRewards:"a:4,b:4,c:4",
-	silverRewards:"a:3,b:3,c:4",
-	goldRewards:"a:4,b:4,c:5"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["1_5"] = {
 	stageName:"1_5",
@@ -92,16 +92,16 @@ shrineStage["1_5"] = {
 	suggestPlayer:11,
 	suggestPower:1000,
 	troops:"swordsman_1:18,sentinel_1:18,ranger_1:18&swordsman_1:18,sentinel_1:18,ranger_1:18",
-	star2DeathPopulation:250,
+	star2DeathCitizen:250,
 	star1Honour:300,
 	star2Honour:350,
 	star3Honour:400,
 	bronzeKill:500,
 	silverKill:550,
 	goldKill:600,
-	bronzeRewards:"a:1,b:1,c:2",
-	silverRewards:"a:2,b:2,c:4",
-	goldRewards:"a:3,b:3,c:5"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["2_1"] = {
 	stageName:"2_1",
@@ -112,16 +112,16 @@ shrineStage["2_1"] = {
 	suggestPlayer:12,
 	suggestPower:2000,
 	troops:"swordsman_1:22,sentinel_1:22,ranger_1:22&swordsman_1:22,sentinel_1:22,ranger_1:22",
-	star2DeathPopulation:300,
+	star2DeathCitizen:300,
 	star1Honour:350,
 	star2Honour:400,
 	star3Honour:450,
 	bronzeKill:600,
 	silverKill:650,
 	goldKill:700,
-	bronzeRewards:"a:2,b:2,c:3",
-	silverRewards:"a:3,b:3,c:5",
-	goldRewards:"a:4,b:4,c:6"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["2_2"] = {
 	stageName:"2_2",
@@ -132,16 +132,16 @@ shrineStage["2_2"] = {
 	suggestPlayer:13,
 	suggestPower:2500,
 	troops:"swordsman_1:24,sentinel_1:24,ranger_1:24&swordsman_1:24,sentinel_1:24,ranger_1:24",
-	star2DeathPopulation:350,
+	star2DeathCitizen:350,
 	star1Honour:400,
 	star2Honour:450,
 	star3Honour:500,
 	bronzeKill:700,
 	silverKill:750,
 	goldKill:800,
-	bronzeRewards:"a:3,b:3,c:4",
-	silverRewards:"a:2,b:2,c:5",
-	goldRewards:"a:3,b:3,c:6"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["2_3"] = {
 	stageName:"2_3",
@@ -152,16 +152,16 @@ shrineStage["2_3"] = {
 	suggestPlayer:14,
 	suggestPower:3000,
 	troops:"swordsman_1:20,sentinel_1:20,ranger_1:20&swordsman_1:20,sentinel_1:20,ranger_1:20",
-	star2DeathPopulation:400,
+	star2DeathCitizen:400,
 	star1Honour:450,
 	star2Honour:500,
 	star3Honour:550,
 	bronzeKill:800,
 	silverKill:850,
 	goldKill:900,
-	bronzeRewards:"a:4,b:4,c:5",
-	silverRewards:"a:3,b:3,c:6",
-	goldRewards:"a:4,b:4,c:7"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["2_4"] = {
 	stageName:"2_4",
@@ -172,16 +172,16 @@ shrineStage["2_4"] = {
 	suggestPlayer:15,
 	suggestPower:3500,
 	troops:"swordsman_1:20,sentinel_1:20,ranger_1:20&swordsman_1:20,sentinel_1:20,ranger_1:20",
-	star2DeathPopulation:450,
+	star2DeathCitizen:450,
 	star1Honour:500,
 	star2Honour:550,
 	star3Honour:600,
 	bronzeKill:900,
 	silverKill:950,
 	goldKill:1000,
-	bronzeRewards:"a:1,b:1,c:3",
-	silverRewards:"a:2,b:2,c:6",
-	goldRewards:"a:3,b:3,c:7"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["2_5"] = {
 	stageName:"2_5",
@@ -192,16 +192,16 @@ shrineStage["2_5"] = {
 	suggestPlayer:16,
 	suggestPower:4000,
 	troops:"swordsman_1:20,sentinel_1:20,ranger_1:20&swordsman_1:20,sentinel_1:20,ranger_1:20",
-	star2DeathPopulation:500,
+	star2DeathCitizen:500,
 	star1Honour:550,
 	star2Honour:600,
 	star3Honour:650,
 	bronzeKill:1000,
 	silverKill:1050,
 	goldKill:1100,
-	bronzeRewards:"a:2,b:2,c:4",
-	silverRewards:"a:3,b:3,c:7",
-	goldRewards:"a:4,b:4,c:8"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["3_1"] = {
 	stageName:"3_1",
@@ -212,16 +212,16 @@ shrineStage["3_1"] = {
 	suggestPlayer:17,
 	suggestPower:5000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:550,
+	star2DeathCitizen:550,
 	star1Honour:600,
 	star2Honour:650,
 	star3Honour:700,
 	bronzeKill:1100,
 	silverKill:1150,
 	goldKill:1200,
-	bronzeRewards:"a:3,b:3,c:5",
-	silverRewards:"a:2,b:2,c:7",
-	goldRewards:"a:3,b:3,c:8"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["3_2"] = {
 	stageName:"3_2",
@@ -232,16 +232,16 @@ shrineStage["3_2"] = {
 	suggestPlayer:18,
 	suggestPower:6000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:600,
+	star2DeathCitizen:600,
 	star1Honour:650,
 	star2Honour:700,
 	star3Honour:750,
 	bronzeKill:1200,
 	silverKill:1250,
 	goldKill:1300,
-	bronzeRewards:"a:4,b:4,c:6",
-	silverRewards:"a:3,b:3,c:8",
-	goldRewards:"a:4,b:4,c:9"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["3_3"] = {
 	stageName:"3_3",
@@ -252,16 +252,16 @@ shrineStage["3_3"] = {
 	suggestPlayer:19,
 	suggestPower:7000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:650,
+	star2DeathCitizen:650,
 	star1Honour:700,
 	star2Honour:750,
 	star3Honour:800,
 	bronzeKill:1300,
 	silverKill:1350,
 	goldKill:1400,
-	bronzeRewards:"a:1,b:1,c:4",
-	silverRewards:"a:2,b:2,c:8",
-	goldRewards:"a:3,b:3,c:9"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["3_4"] = {
 	stageName:"3_4",
@@ -272,16 +272,16 @@ shrineStage["3_4"] = {
 	suggestPlayer:20,
 	suggestPower:8000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:700,
+	star2DeathCitizen:700,
 	star1Honour:750,
 	star2Honour:800,
 	star3Honour:850,
 	bronzeKill:1400,
 	silverKill:1450,
 	goldKill:1500,
-	bronzeRewards:"a:2,b:2,c:5",
-	silverRewards:"a:3,b:3,c:9",
-	goldRewards:"a:4,b:4,c:10"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["3_5"] = {
 	stageName:"3_5",
@@ -292,16 +292,16 @@ shrineStage["3_5"] = {
 	suggestPlayer:21,
 	suggestPower:10000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:750,
+	star2DeathCitizen:750,
 	star1Honour:800,
 	star2Honour:850,
 	star3Honour:900,
 	bronzeKill:1500,
 	silverKill:1550,
 	goldKill:1600,
-	bronzeRewards:"a:3,b:3,c:6",
-	silverRewards:"a:2,b:2,c:9",
-	goldRewards:"a:3,b:3,c:10"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["4_1"] = {
 	stageName:"4_1",
@@ -312,16 +312,16 @@ shrineStage["4_1"] = {
 	suggestPlayer:22,
 	suggestPower:15000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:800,
+	star2DeathCitizen:800,
 	star1Honour:850,
 	star2Honour:900,
 	star3Honour:950,
 	bronzeKill:1600,
 	silverKill:1650,
 	goldKill:1700,
-	bronzeRewards:"a:4,b:4,c:7",
-	silverRewards:"a:3,b:3,c:10",
-	goldRewards:"a:4,b:4,c:11"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["4_2"] = {
 	stageName:"4_2",
@@ -332,16 +332,16 @@ shrineStage["4_2"] = {
 	suggestPlayer:23,
 	suggestPower:20000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:850,
+	star2DeathCitizen:850,
 	star1Honour:900,
 	star2Honour:950,
 	star3Honour:1000,
 	bronzeKill:1700,
 	silverKill:1750,
 	goldKill:1800,
-	bronzeRewards:"a:1,b:1,c:5",
-	silverRewards:"a:2,b:2,c:10",
-	goldRewards:"a:3,b:3,c:11"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["4_3"] = {
 	stageName:"4_3",
@@ -352,16 +352,16 @@ shrineStage["4_3"] = {
 	suggestPlayer:24,
 	suggestPower:25000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:900,
+	star2DeathCitizen:900,
 	star1Honour:950,
 	star2Honour:1000,
 	star3Honour:1050,
 	bronzeKill:1800,
 	silverKill:1850,
 	goldKill:1900,
-	bronzeRewards:"a:2,b:2,c:6",
-	silverRewards:"a:3,b:3,c:11",
-	goldRewards:"a:4,b:4,c:12"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["4_4"] = {
 	stageName:"4_4",
@@ -372,16 +372,16 @@ shrineStage["4_4"] = {
 	suggestPlayer:25,
 	suggestPower:30000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:950,
+	star2DeathCitizen:950,
 	star1Honour:1000,
 	star2Honour:1050,
 	star3Honour:1100,
 	bronzeKill:1900,
 	silverKill:1950,
 	goldKill:2000,
-	bronzeRewards:"a:3,b:3,c:7",
-	silverRewards:"a:2,b:2,c:11",
-	goldRewards:"a:3,b:3,c:12"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["4_5"] = {
 	stageName:"4_5",
@@ -392,16 +392,16 @@ shrineStage["4_5"] = {
 	suggestPlayer:26,
 	suggestPower:35000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:1000,
+	star2DeathCitizen:1000,
 	star1Honour:1050,
 	star2Honour:1100,
 	star3Honour:1150,
 	bronzeKill:2000,
 	silverKill:2050,
 	goldKill:2100,
-	bronzeRewards:"a:4,b:4,c:8",
-	silverRewards:"a:3,b:3,c:12",
-	goldRewards:"a:4,b:4,c:13"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["5_1"] = {
 	stageName:"5_1",
@@ -412,16 +412,16 @@ shrineStage["5_1"] = {
 	suggestPlayer:27,
 	suggestPower:50000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:1050,
+	star2DeathCitizen:1050,
 	star1Honour:1100,
 	star2Honour:1150,
 	star3Honour:1200,
 	bronzeKill:2100,
 	silverKill:2150,
 	goldKill:2200,
-	bronzeRewards:"a:1,b:1,c:6",
-	silverRewards:"a:2,b:2,c:12",
-	goldRewards:"a:3,b:3,c:13"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["5_2"] = {
 	stageName:"5_2",
@@ -432,16 +432,16 @@ shrineStage["5_2"] = {
 	suggestPlayer:28,
 	suggestPower:55000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:1100,
+	star2DeathCitizen:1100,
 	star1Honour:1150,
 	star2Honour:1200,
 	star3Honour:1250,
 	bronzeKill:2200,
 	silverKill:2250,
 	goldKill:2300,
-	bronzeRewards:"a:2,b:2,c:7",
-	silverRewards:"a:3,b:3,c:13",
-	goldRewards:"a:4,b:4,c:14"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["5_3"] = {
 	stageName:"5_3",
@@ -452,16 +452,16 @@ shrineStage["5_3"] = {
 	suggestPlayer:29,
 	suggestPower:60000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:1150,
+	star2DeathCitizen:1150,
 	star1Honour:1200,
 	star2Honour:1250,
 	star3Honour:1300,
 	bronzeKill:2300,
 	silverKill:2350,
 	goldKill:2400,
-	bronzeRewards:"a:3,b:3,c:8",
-	silverRewards:"a:2,b:2,c:13",
-	goldRewards:"a:3,b:3,c:14"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["5_4"] = {
 	stageName:"5_4",
@@ -472,16 +472,16 @@ shrineStage["5_4"] = {
 	suggestPlayer:30,
 	suggestPower:65000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:1200,
+	star2DeathCitizen:1200,
 	star1Honour:1250,
 	star2Honour:1300,
 	star3Honour:1350,
 	bronzeKill:2400,
 	silverKill:2450,
 	goldKill:2500,
-	bronzeRewards:"a:4,b:4,c:9",
-	silverRewards:"a:3,b:3,c:14",
-	goldRewards:"a:4,b:4,c:15"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["5_5"] = {
 	stageName:"5_5",
@@ -492,16 +492,16 @@ shrineStage["5_5"] = {
 	suggestPlayer:31,
 	suggestPower:70000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:1250,
+	star2DeathCitizen:1250,
 	star1Honour:1300,
 	star2Honour:1350,
 	star3Honour:1400,
 	bronzeKill:2500,
 	silverKill:2550,
 	goldKill:2600,
-	bronzeRewards:"a:1,b:1,c:7",
-	silverRewards:"a:2,b:2,c:14",
-	goldRewards:"a:3,b:3,c:15"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["6_1"] = {
 	stageName:"6_1",
@@ -512,16 +512,16 @@ shrineStage["6_1"] = {
 	suggestPlayer:32,
 	suggestPower:100000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:1300,
+	star2DeathCitizen:1300,
 	star1Honour:1350,
 	star2Honour:1400,
 	star3Honour:1450,
 	bronzeKill:2600,
 	silverKill:2650,
 	goldKill:2700,
-	bronzeRewards:"a:2,b:2,c:8",
-	silverRewards:"a:3,b:3,c:15",
-	goldRewards:"a:4,b:4,c:16"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["6_2"] = {
 	stageName:"6_2",
@@ -532,16 +532,16 @@ shrineStage["6_2"] = {
 	suggestPlayer:33,
 	suggestPower:150000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:1350,
+	star2DeathCitizen:1350,
 	star1Honour:1400,
 	star2Honour:1450,
 	star3Honour:1500,
 	bronzeKill:2700,
 	silverKill:2750,
 	goldKill:2800,
-	bronzeRewards:"a:3,b:3,c:9",
-	silverRewards:"a:2,b:2,c:15",
-	goldRewards:"a:3,b:3,c:16"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["6_3"] = {
 	stageName:"6_3",
@@ -552,16 +552,16 @@ shrineStage["6_3"] = {
 	suggestPlayer:34,
 	suggestPower:200000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:1400,
+	star2DeathCitizen:1400,
 	star1Honour:1450,
 	star2Honour:1500,
 	star3Honour:1550,
 	bronzeKill:2800,
 	silverKill:2850,
 	goldKill:2900,
-	bronzeRewards:"a:4,b:4,c:10",
-	silverRewards:"a:3,b:3,c:16",
-	goldRewards:"a:4,b:4,c:17"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["6_4"] = {
 	stageName:"6_4",
@@ -572,16 +572,16 @@ shrineStage["6_4"] = {
 	suggestPlayer:35,
 	suggestPower:250000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:1450,
+	star2DeathCitizen:1450,
 	star1Honour:1500,
 	star2Honour:1550,
 	star3Honour:1600,
 	bronzeKill:2900,
 	silverKill:2950,
 	goldKill:3000,
-	bronzeRewards:"a:1,b:1,c:8",
-	silverRewards:"a:2,b:2,c:16",
-	goldRewards:"a:3,b:3,c:17"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }
 shrineStage["6_5"] = {
 	stageName:"6_5",
@@ -592,14 +592,14 @@ shrineStage["6_5"] = {
 	suggestPlayer:36,
 	suggestPower:300000,
 	troops:"swordsman_1:10,sentinel_1:10,ranger_1:10&swordsman_1:10,sentinel_1:10,ranger_1:10",
-	star2DeathPopulation:1500,
+	star2DeathCitizen:1500,
 	star1Honour:1550,
 	star2Honour:1600,
 	star3Honour:1650,
 	bronzeKill:3000,
 	silverKill:3050,
 	goldKill:3100,
-	bronzeRewards:"a:2,b:2,c:9",
-	silverRewards:"a:3,b:3,c:17",
-	goldRewards:"a:4,b:4,c:18"
+	bronzeRewards:"a:b:1,b:c:1,c:d:1",
+	silverRewards:"a:b:1,b:c:1,c:d:1",
+	goldRewards:"a:b:1,b:c:1,c:d:1"
 }

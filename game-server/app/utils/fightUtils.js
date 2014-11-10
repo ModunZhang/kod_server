@@ -50,30 +50,40 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 			attackDamagedSoldierCount = Math.round(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.5 / attackSoldier.hp)
 			defenceDamagedSoldierCount = Math.round(attackTotalPower * 0.5 / defenceSoldier.hp)
 		}
+		if(attackDamagedSoldierCount > attackSoldier.currentCount) attackDamagedSoldierCount = attackSoldier.currentCount
+		if(defenceDamagedSoldierCount > defenceSoldier.currentCount) defenceDamagedSoldierCount = defenceSoldier.currentCount
+
 		var attackTreatedSoldierCount = Math.ceil(attackDamagedSoldierCount * attackTreatSoldierPercent)
 		var defenceTreatedSoldierCount = Math.ceil(defenceDamagedSoldierCount * defenceTreatSoldierPercent)
+		var attackMoraleDecreased = Math.ceil(attackDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / attackSoldier.totalCount * 100)
+		var dfenceMoraleDecreased = Math.ceil(defenceDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / defenceSoldier.totalCount * 100)
 		attackResults.push({
 			soldierName:attackSoldier.name,
 			soldierStar:attackSoldier.star,
 			soldierCount:attackSoldier.currentCount,
-			solderDamagedCount:attackDamagedSoldierCount,
-			solderTreatedCount:attackTreatedSoldierCount,
+			soldierDamagedCount:attackDamagedSoldierCount,
+			soldierTreatedCount:attackTreatedSoldierCount,
+			morale:attackSoldier.morale,
+			moraleDecreased:attackMoraleDecreased,
 			isWin:attackTotalPower >= defenceTotalPower
 		})
 		defenceResults.push({
 			soldierName:defenceSoldier.name,
 			soldierStar:defenceSoldier.star,
 			soldierCount:defenceSoldier.currentCount,
-			solderDamagedCount:defenceDamagedSoldierCount,
-			solderTreatedCount:defenceTreatedSoldierCount,
+			soldierDamagedCount:defenceDamagedSoldierCount,
+			soldierTreatedCount:defenceTreatedSoldierCount,
+			morale:defenceSoldier.morale,
+			moraleDecreased:dfenceMoraleDecreased,
 			isWin:attackTotalPower < defenceTotalPower
 		})
 		attackSoldier.round += 1
 		attackSoldier.currentCount -= attackDamagedSoldierCount
-		attackSoldier.morale -= Math.ceil(attackDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / attackSoldier.totalCount * 100)
+		attackSoldier.morale -= attackMoraleDecreased
 		defenceSoldier.round += 1
 		defenceSoldier.currentCount -= defenceDamagedSoldierCount
-		defenceSoldier.morale -= Math.ceil(defenceDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / defenceSoldier.totalCount * 100)
+		defenceSoldier.morale -= dfenceMoraleDecreased
+
 		if(attackTotalPower < defenceTotalPower || attackSoldier.morale <= 20) LogicUtils.removeItemInArray(attackSoldiers, attackSoldier)
 		if(attackTotalPower >= defenceTotalPower || defenceSoldier.morale <= 20) LogicUtils.removeItemInArray(defenceSoldiers, defenceSoldier)
 	}
@@ -86,8 +96,8 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 	}
 
 	var response = {
-		attackRoundInfo:attackResults,
-		defenceRoundInfo:defenceResults,
+		attackRoundDatas:attackResults,
+		defenceRoundDatas:defenceResults,
 		fightResult:fightResult
 	}
 	return response

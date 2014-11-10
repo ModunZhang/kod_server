@@ -156,55 +156,56 @@ var allianceSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		shrineEventId:{type:String, required:true},
-		playerId:{type:String, required:true},
-		playerName:{type:String, required:true},
-		playerCityName:{type:String, required:true},
-		playerLocation:{
-			x:{type:Number, required:true},
-			y:{type:Number, required:true}
-		},
-		playerDragon:{
-			type:{type:String, required:true}
-		},
-		playerSoldiers:[
-			{
+		playerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			soldiers:[{
 				_id:false,
 				name:{type:String, required:true},
 				count:{type:Number, required:true}
-			}
-		],
+			}]
+
+		},
 		arriveTime:{type:Number, required:true}
 	}],
 	shrineMarchReturnEvents:[{
 		_id:false,
 		id:{type:String, required:true},
-		playerId:{type:String, required:true},
-		playerCityName:{type:String, required:true},
-		playerLocation:{
-			x:{type:Number, required:true},
-			y:{type:Number, required:true}
-		},
-		playerDragon:{
-			type:{type:String, required:true}
-		},
-		playerSoldiers:[
-			{
+		playerData:{
+			id:{type:String, required:true},
+			cityName:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			leftSoldiers:[{
 				_id:false,
 				name:{type:String, required:true},
 				count:{type:Number, required:true}
-			}
-		],
-		playerNeedTreatedSoldiers:[{
-			_id:false,
-			name:{type:String, required:true},
-			count:{type:Number, required:true}
-		}],
-		rewards:[{
-			_id:false,
-			type:{type:String, required:true},
-			name:{type:String, required:false},
-			count:{type:Number, required:true}
-		}],
+			}],
+			treatSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			rewards:[{
+				_id:false,
+				type:{type:String, required:true},
+				name:{type:String, required:false},
+				count:{type:Number, required:true}
+			}]
+		},
 		arriveTime:{type:Number, required:true}
 	}],
 	shrineEvents:[{
@@ -212,25 +213,76 @@ var allianceSchema = new Schema({
 		id:{type:String, require:true},
 		stageName:{type:String, required:true},
 		startTime:{type:Number, required:true},
-		troops:[{
+		playerTroops:[{
 			_id:false,
-			playerId:{type:String, required:true},
-			playerName:{type:String, required:true},
-			playerCityName:{type:String, required:true},
-			playerLocation:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true},
+			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
 			},
-			playerDragon:{
+			dragon:{
 				type:{type:String, required:true}
 			},
-			playerSoldiers:[
+			soldiers:[
 				{
 					_id:false,
 					name:{type:String, required:true},
 					count:{type:Number, required:true}
 				}
 			]
+		}]
+	}],
+	shrineReports:[{
+		_id:false,
+		id:{type:String, required:true},
+		stageName:{type:String, required:true},
+		star:{type:Number, required:true},
+		playerDatas:[{
+			_id:false,
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			kill:{type:Number, required:true},
+			rewards:[{
+				_id:false,
+				type:{type:String, required:true},
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}]
+		}],
+		fightDatas:[{
+			_id:false,
+			round:{type:Number, required:true},
+			roundDatas:[{
+				_id:false,
+				playerId:{type:String, required:true},
+				playerName:{type:String, required:true},
+				stageTroopNumber:{type:String, required:true},
+				fightResult:{type:String, required:true},
+				attackRoundDatas:[{
+					_id:false,
+					soldierName:{type:String, required:true},
+					soldierStar:{type:Number, required:true},
+					soldierCount:{type:Number, required:true},
+					soldierDamagedCount:{type:Number, required:true},
+					soldierTreatedCount:{type:Number, required:true},
+					morale:{type:Number, required:true},
+					moraleDecreased:{type:Number, required:true},
+					isWin:{type:Boolean, required:true}
+				}],
+				defenceRoundDatas:[{
+					_id:false,
+					soldierName:{type:String, required:true},
+					soldierStar:{type:Number, required:true},
+					soldierCount:{type:Number, required:true},
+					soldierDamagedCount:{type:Number, required:true},
+					soldierTreatedCount:{type:Number, required:true},
+					morale:{type:Number, required:true},
+					moraleDecreased:{type:Number, required:true},
+					isWin:{type:Boolean, required:true}
+				}]
+			}]
 		}]
 	}]
 })

@@ -1741,14 +1741,14 @@ Utils.isAllianceShrineStageNameLegal = function(stageName){
 /**
  * 创建联盟圣地事件
  * @param stageName
- * @returns {{id: *, stageName: *, startTime: number, troops: Array}}
+ * @returns {*}
  */
 Utils.createAllianceShrineStageEvent = function(stageName){
 	var event = {
 		id:ShortId.generate(),
 		stageName:stageName,
-		startTime:Date.now() + (20 * 1000),//(AllianceInit.intInit.activeShrineStageEvent.value * 1000),
-		troops:[]
+		startTime:Date.now() + (30 * 1000),//(AllianceInit.intInit.activeShrineStageEvent.value * 1000),
+		playerTroops:[]
 	}
 	return event
 }
@@ -1844,8 +1844,8 @@ Utils.createSpecialSoldierForFight = function(soldierName, soldierCount){
 
 Utils.getAllianceShrineStageTroops = function(stageName){
 	var troops = []
-	var troopStrings = AllianceShrineConfigp[stageName].troops.split("&")
-	for(var i = 0; i < troopStrings.length; i ++){
+	var troopStrings = AllianceShrineConfig[stageName].troops.split("&")
+	for(var i = 0; i < troopStrings.length; i++){
 		var troopString = troopStrings[i]
 		var soldiers = []
 		var soldierConfigStrings = troopString.split(",")
@@ -1877,7 +1877,8 @@ Utils.getAllianceShrineStageTroops = function(stageName){
 			soldiers.push(soldier)
 		})
 		troops.push({
-			troopNumber:i,
+			stageName:stageName,
+			troopNumber:i + 1,
 			soldiers:soldiers
 		})
 	}
@@ -1892,4 +1893,134 @@ Utils.getAllianceShrineStageTroops = function(stageName){
  */
 Utils.getPlayerDamagedSoldierToTreatSoldierPercent = function(playerDoc){
 	return 0.4
+}
+
+/**
+ * 联盟战斗结束后,获取需要的结果
+ * @param stageName
+ * @param isWin
+ * @param fightDatas
+ * @returns {*}
+ */
+Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas){
+	var playerDatas = {}
+	var treatSoldiers = {}
+	var leftSoldiers = {}
+	var playerRewards = {}
+	var fightStar = 0
+	var totalDeath = 0
+	_.each(fightDatas, function(fightData){
+		_.each(fightData.roundDatas, function(roundData){
+			if(!_.isObject(playerDatas[roundData.playerId])){
+				playerDatas[roundData.playerId] = {
+					id:roundData.playerId,
+					name:roundData.playerName,
+					kill:0,
+					rewards:[]
+				}
+				treatSoldiers[roundData.playerId] = {}
+				leftSoldiers[roundData.playerId] = {}
+			}
+			var playerData = playerDatas[roundData.playerId]
+			_.each(roundData.defenceRoundDatas, function(defenceRoundData){
+				var soldierConfig = UnitConfig.normal[defenceRoundData.soldierName + "_" + defenceRoundData.soldierStar]
+				var kill = defenceRoundData.soldierDamagedCount * soldierConfig.citizen
+				playerData.kill += kill
+			})
+			_.each(roundData.attackRoundDatas, function(attackRoundData){
+				var soldierConfig = UnitConfig.normal[attackRoundData.soldierName + "_" + attackRoundData.soldierStar]
+				totalDeath += attackRoundData.soldierDamagedCount * soldierConfig.citizen
+				if(!_.isObject(treatSoldiers[roundData.playerId][attackRoundData.soldierName])){
+					treatSoldiers[roundData.playerId][attackRoundData.soldierName] = {
+						name:attackRoundData.soldierName,
+						count:0
+					}
+					leftSoldiers[roundData.playerId][attackRoundData.soldierName] = {
+						name:attackRoundData.soldierName,
+						count:attackRoundData.soldierCount
+					}
+				}
+				var treatSoldier = treatSoldiers[roundData.playerId][attackRoundData.soldierName]
+				treatSoldier.count += attackRoundData.soldierTreatedCount
+				var leftSoldier = leftSoldiers[roundData.playerId][attackRoundData.soldierName]
+				leftSoldier.count -= attackRoundData.soldierDamagedCount
+			})
+		})
+	})
+
+	if(isWin){
+		fightStar += 1
+		if(fightDatas.length <= 1){
+			fightStar += 1
+			if(totalDeath <= AllianceShrineConfig[stageName].star2DeathCitizen){
+				fightStar += 1
+			}
+		}
+	}
+
+	var stageConfig = AllianceShrineConfig[stageName]
+	_.each(playerDatas, function(playerData, playerId){
+		var rewardStrings = null
+		if(playerData.kill >= stageConfig.goldKill){
+			rewardStrings = stageConfig.goldRewards.split(",")
+			_.each(rewardStrings, function(rewardString){
+				var param = rewardString.split(":")
+				var type = param[0]
+				var name = param[1]
+				var count = parseInt(param[2])
+				playerData.rewards.push({
+					type:type,
+					name:name,
+					count:count
+				})
+			})
+		}else if(playerData.kill >= stageConfig.silverKill){
+			rewardStrings = stageConfig.silverRewards.split(",")
+			_.each(rewardStrings, function(rewardString){
+				var param = rewardString.split(":")
+				var type = param[0]
+				var name = param[1]
+				var count = parseInt(param[2])
+				playerData.rewards.push({
+					type:type,
+					name:name,
+					count:count
+				})
+			})
+		}else if(playerData.kill >= stageConfig.bronzeKill){
+			rewardStrings = stageConfig.bronzeRewards.split(",")
+			_.each(rewardStrings, function(rewardString){
+				var param = rewardString.split(":")
+				var type = param[0]
+				var name = param[1]
+				var count = parseInt(param[2])
+				playerData.rewards.push({
+					type:type,
+					name:name,
+					count:count
+				})
+			})
+		}
+		playerRewards[playerId] = playerData.rewards
+	})
+
+	playerDatas = _.values(playerDatas)
+	playerDatas.sort(function(a, b){
+		return b.kill - a.kill
+	})
+	_.each(leftSoldiers, function(leftSoldier, playerId){
+		leftSoldiers[playerId] = _.values(leftSoldier)
+	})
+	_.each(treatSoldiers, function(treatSoldier, playerId){
+		treatSoldiers[playerId] = _.values(treatSoldier)
+	})
+
+	var params = {
+		playerDatas:playerDatas,
+		fightStar:fightStar,
+		leftSoldiers:leftSoldiers,
+		treatSoldiers:treatSoldiers,
+		playerRewards:playerRewards
+	}
+	return params
 }
