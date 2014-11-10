@@ -91,7 +91,7 @@ pro.playerLogin = function(playerDoc, callback){
 				data:memberDoc
 			}]
 		}
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc, allianceData, playerDoc._id])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)

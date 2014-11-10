@@ -39,6 +39,26 @@ pro.pushToPlayer = function(playerDoc, eventName, data, callback){
 }
 
 /**
+ * 推送信息给某部分玩家
+ * @param playerDocs
+ * @param eventName
+ * @param data
+ * @param callback
+ */
+pro.pushToPlayers = function(playerDocs, eventName, data, callback){
+	var ids = []
+	_.each(playerDocs, function(playerDoc){
+		if(!_.isEmpty(playerDoc.logicServerId)){
+			ids.push({
+				uid:playerDoc._id,
+				sid:playerDoc.logicServerId
+			})
+		}
+	})
+	this.channelService.pushMessageByUids(eventName, data, ids, callback)
+}
+
+/**
  * 推送玩家数据给玩家
  * @param playerDoc
  * @param data
@@ -392,4 +412,42 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 	var eventName = Events.alliance.onAllianceDataChanged
 	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
 	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
+}
+
+/**
+ * 推送给联盟除指定玩家之外的其他玩家
+ * @param allianceDoc
+ * @param data
+ * @param memberId
+ * @param callback
+ */
+pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, callback){
+	var self = this
+	var eventName = Events.alliance.onAllianceDataChanged
+	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
+	var servers = this.app.getServersByType(this.serverType)
+	var uids = []
+	var getMembersFunc = function(serverId){
+		return self.globalChannelService.getMembersBySidAsync(channelName, serverId).then(function(members){
+			_.each(members, function(playerId){
+				if(!_.isEqual(playerId, memberId)) uids.push({uid:playerId, sid:serverId})
+			})
+			return Promise.resolve()
+		}).catch(function(e){
+			return Promise.reject(e)
+		})
+	}
+	var funcs = []
+	_.each(servers, function(server){
+		funcs.push(getMembersFunc(server.id))
+	})
+	Promise.all(funcs).then(function(){
+		if(uids.length > 0){
+			self.channelService.pushMessageByUids(eventName, data, uids, callback)
+		}else{
+			callback()
+		}
+	}).catch(function(e){
+		callback(e)
+	})
 }

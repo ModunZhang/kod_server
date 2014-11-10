@@ -1655,7 +1655,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, playerDoc, allianceDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc, allianceData, playerDoc._id])
 
 		var funcs = []
 		var removeRequestEvent = function(event){
@@ -2047,7 +2047,7 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		}
 		memberData.alliance = memberDoc.alliance
 		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, memberDoc, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc, allianceData, memberDoc._id])
 		var funcs = []
 		var removeRequestEvent = function(event){
 			return self.allianceDao.findByIdAsync(event.id).then(function(doc){
@@ -2341,7 +2341,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, playerDoc, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc, allianceData, playerDoc._id])
 
 		playerDoc.alliance = {
 			id:allianceDoc._id,
