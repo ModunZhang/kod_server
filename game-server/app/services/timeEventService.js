@@ -500,7 +500,6 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 		playerDatas:playerDatas,
 		fightDatas:fightDatas
 	}
-
 	allianceData.__shrineReports = []
 	if(allianceDoc.shrineReports.length > Define.AllianceShrineReportsMaxSize){
 		var willRemovedshrineReport = allianceDoc.shrineReports.shift()
@@ -514,6 +513,11 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 		type:Consts.DataChangedType.Add,
 		data:shrineReport
 	})
+	if(fightStar > 0){
+		var honour = DataUtils.getAllianceShrineStageFightHoner(event.stageName, fightStar)
+		allianceDoc.basicInfo.honour += honour
+		allianceData.basicInfo = allianceDoc.basicInfo
+	}
 
 	var stageData = LogicUtils.getAllianceShrineStageData(allianceDoc, event.stageName)
 	if(!_.isObject(stageData)){

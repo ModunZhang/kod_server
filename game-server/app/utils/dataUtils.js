@@ -2041,3 +2041,15 @@ Utils.isAllianceShrineStageLocked = function(allianceDoc, stageName){
 	var stageData = LogicUtils.getAllianceShrineStageData(allianceDoc, stageName)
 	return !_.isObject(stageData)
 }
+
+/**
+ * 获取联盟圣地战争联盟获得的荣耀
+ * @param stageName
+ * @param fightStar
+ * @returns {*}
+ */
+Utils.getAllianceShrineStageFightHoner = function(stageName, fightStar){
+	var config = AllianceShrineConfig[stageName]
+	var honerName = "star" + fightStar + "Honour"
+	return config[honerName]
+}
