@@ -289,7 +289,19 @@ var allianceSchema = new Schema({
 				}]
 			}]
 		}]
-	}]
+	}],
+	preFightAlliances:[{
+		id:{type:String, required:true}
+	}],
+	allianceFight:{
+		status:{type:String, required:true},
+		fightAlliances:[{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			power:{type:Number, required:true},
+			kill:{type:Number, required:true}
+		}]
+	}
 })
 
 module.exports = mongoose.model('alliance', allianceSchema)
