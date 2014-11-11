@@ -351,6 +351,28 @@ var ChatHandler = function(app){
 			}
 		},
 		{
+			command:"editplayername",
+			desc:"修改玩家名字:editplayername modun",
+			func:function(session, uid, text, callback){
+				var self = this
+				var name = text.split(" ")[1]
+				self.app.rpc.logic.commandRemote.editplayername(session, uid, name, function(e){
+					callback(e)
+				})
+			}
+		},
+		{
+			command:"editplayercityname",
+			desc:"修改玩家城市名字:editplayercityname myCity",
+			func:function(session, uid, text, callback){
+				var self = this
+				var cityName = text.split(" ")[1]
+				self.app.rpc.logic.commandRemote.editplayercityname(session, uid, cityName, function(e){
+					callback(e)
+				})
+			}
+		},
+		{
 			command:"donatelevel",
 			desc:"设置捐赠级别:donatelevel 1  (1 - 6)",
 			func:function(session, uid, text, callback){

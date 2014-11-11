@@ -883,6 +883,92 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 }
 
 /**
+ * 修改玩家名字
+ * @param playerId
+ * @param name
+ * @param callback
+ */
+pro.editplayername = function(playerId, name, callback){
+	var self = this
+	var playerDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		playerDoc.basicInfo.name = name
+		var playerData = {}
+		playerData.basicInfo = playerDoc.basicInfo
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 修改玩家城市名字
+ * @param playerId
+ * @param cityName
+ * @param callback
+ */
+pro.editplayercityname = function(playerId, cityName, callback){
+	var self = this
+	var playerDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		playerDoc.basicInfo.cityName = cityName
+		var playerData = {}
+		playerData.basicInfo = playerDoc.basicInfo
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
  * 设置捐赠级别
  * @param uid
  * @param donatelevel

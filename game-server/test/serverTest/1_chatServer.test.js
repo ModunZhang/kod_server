@@ -1,6 +1,6 @@
 ///**
-// * Created by modun on 14-7-29.
-// */
+//* Created by modun on 14-7-29.
+//*/
 //
 //var pomelo = require("../pomelo-client")
 //var redis = require("redis")
@@ -442,6 +442,20 @@
 //
 //		it("send soldiers", function(done){
 //			sendChat("soldiers 10", function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("send editplayername", function(done){
+//			sendChat("editplayername modun", function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("send editplayercityname", function(done){
+//			sendChat("editplayercityname myCity", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
