@@ -209,7 +209,8 @@ var allianceSchema = new Schema({
 				type:{type:String, required:true},
 				name:{type:String, required:false},
 				count:{type:Number, required:true}
-			}]
+			}],
+			kill:{type:Number, required:true}
 		},
 		arriveTime:{type:Number, required:true}
 	}],

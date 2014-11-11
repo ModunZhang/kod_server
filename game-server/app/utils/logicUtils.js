@@ -1427,9 +1427,10 @@ Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEv
  * @param leftsoldiers
  * @param treatSoldiers
  * @param rewards
+ * @param kill
  * @returns {*}
  */
-Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, dragonType, leftsoldiers, treatSoldiers, rewards){
+Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, dragonType, leftsoldiers, treatSoldiers, rewards, kill){
 	var shrineLocation = allianceDoc.buildings["shrine"].location
 	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, shrineLocation, playerLocation)
@@ -1444,7 +1445,8 @@ Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, dr
 			},
 			leftSoldiers:leftsoldiers,
 			treatSoldiers:treatSoldiers,
-			rewards:rewards
+			rewards:rewards,
+			kill:kill
 		},
 		arriveTime:Date.now() + (marchSeconds * 1000)
 	}

@@ -355,7 +355,7 @@ pro.onShrineMarchEvents = function(allianceDoc, event, callback){
 		this.playerDao.findByIdAsync(event.playerId).then(function(doc){
 			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 			playerDoc = doc
-			var marchReturnEvent = LogicUtils.createAllianceShrineMarchReturnEvent(playerDoc, allianceDoc, event.playerData.dragon.type, event.playerSoldiers, [], [])
+			var marchReturnEvent = LogicUtils.createAllianceShrineMarchReturnEvent(playerDoc, allianceDoc, event.playerData.dragon.type, event.playerSoldiers, [], [], 0)
 			allianceDoc.shrineMarchReturnEvents.push(marchReturnEvent)
 			allianceData.__shrineMarchReturnEvents = [{
 				type:Consts.DataChangedType.Add,
@@ -547,8 +547,9 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			var treatSoldiers = params.treatSoldiers[playerId]
 			var leftSoldiers = params.leftSoldiers[playerId]
 			var rewards = params.playerRewards[playerId]
+			var kill = params.playerKills[playerId]
 			var dragon = LogicUtils.getPlayerDragonDataFromAllianceShrineStageEvent(playerId, event)
-			var marchReturnEvent = LogicUtils.createAllianceShrineMarchReturnEvent(playerDoc, allianceDoc, dragon.type, leftSoldiers, treatSoldiers, rewards)
+			var marchReturnEvent = LogicUtils.createAllianceShrineMarchReturnEvent(playerDoc, allianceDoc, dragon.type, leftSoldiers, treatSoldiers, rewards, kill)
 			allianceDoc.shrineMarchReturnEvents.push(marchReturnEvent)
 			allianceData.__shrineMarchReturnEvents = [{
 				type:Consts.DataChangedType.Add,
@@ -581,6 +582,12 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 	})
 }
 
+/**
+ * 圣地返回玩家城市事件回调
+ * @param allianceDoc
+ * @param event
+ * @param callback
+ */
 pro.onShrineMarchReturnEvents = function(allianceDoc, event, callback){
 	var self = this
 	var allianceData = {}
@@ -612,6 +619,8 @@ pro.onShrineMarchReturnEvents = function(allianceDoc, event, callback){
 			playerData.treatSoldiers = {}
 			playerData.treatSoldiers[soldier.name] = playerDoc.treatSoldiers[soldier.name]
 		})
+		playerDoc.basicInfo.kill += event.playerData.kill
+		playerData.basicInfo = playerDoc.basicInfo
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
