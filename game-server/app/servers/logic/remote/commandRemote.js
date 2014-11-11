@@ -898,12 +898,18 @@ pro.editplayername = function(playerId, name, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		playerDoc.basicInfo.name = name
-		var playerData = {}
-		playerData.basicInfo = playerDoc.basicInfo
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		return Promise.resolve()
+		if(_.isEqual(playerDoc.basicInfo.name, name)){
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerId])
+			return Promise.resolve()
+		}else{
+			return self.playerDao.findByIndexAsync("basicInfo.name", name).then(function(doc){
+				if(_.isObject(doc)) return Promise.reject(new Error("名称已被其他玩家占用"))
+				playerDoc.basicInfo.name = name
+				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+				return Promise.resolve()
+			})
+		}
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -942,10 +948,8 @@ pro.editplayercityname = function(playerId, cityName, callback){
 		}
 		playerDoc = doc
 		playerDoc.basicInfo.cityName = cityName
-		var playerData = {}
-		playerData.basicInfo = playerDoc.basicInfo
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
