@@ -1907,6 +1907,7 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 	var treatSoldiers = {}
 	var leftSoldiers = {}
 	var playerRewards = {}
+	var playerKills = {}
 	var fightStar = 0
 	var totalDeath = 0
 	_.each(fightDatas, function(fightData){
@@ -1920,12 +1921,14 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 				}
 				treatSoldiers[roundData.playerId] = {}
 				leftSoldiers[roundData.playerId] = {}
+				playerKills[roundData.playerId] = 0
 			}
 			var playerData = playerDatas[roundData.playerId]
 			_.each(roundData.defenceRoundDatas, function(defenceRoundData){
 				var soldierConfig = UnitConfig.normal[defenceRoundData.soldierName + "_" + defenceRoundData.soldierStar]
 				var kill = defenceRoundData.soldierDamagedCount * soldierConfig.citizen
 				playerData.kill += kill
+				playerKills[roundData.playerId] += kill
 			})
 			_.each(roundData.attackRoundDatas, function(attackRoundData){
 				var soldierConfig = UnitConfig.normal[attackRoundData.soldierName + "_" + attackRoundData.soldierStar]
@@ -2014,13 +2017,13 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 	_.each(treatSoldiers, function(treatSoldier, playerId){
 		treatSoldiers[playerId] = _.values(treatSoldier)
 	})
-
 	var params = {
 		playerDatas:playerDatas,
 		fightStar:fightStar,
 		leftSoldiers:leftSoldiers,
 		treatSoldiers:treatSoldiers,
-		playerRewards:playerRewards
+		playerRewards:playerRewards,
+		playerKills:playerKills
 	}
 	return params
 }
