@@ -544,3 +544,33 @@ pro.setPlayerLanguage = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 修改玩家名字
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.editPlayerName = function(msg, session, next){
+	var name = msg.name
+	this.playerService.editPlayerNameAsync(session.uid, name).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 修改玩家城市名字
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.editPlayerCityName = function(msg, session, next){
+	var cityName = msg.cityName
+	this.playerService.editPlayerCityNameAsync(session.uid, cityName).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

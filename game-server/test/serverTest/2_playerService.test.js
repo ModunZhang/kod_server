@@ -1459,6 +1459,20 @@ describe("PlayerService", function(){
 	//			done()
 	//		})
 	//	})
+	//
+	//	it("editPlayerName 正常修改", function(done){
+	//		Api.editPlayerName("modun", function(doc){
+	//			doc.code.should.equal(200)
+	//			done()
+	//		})
+	//	})
+	//
+	//	it("editPlayerCityName 正常修改", function(done){
+	//		Api.editPlayerCityName("modun's city", function(doc){
+	//			doc.code.should.equal(200)
+	//			done()
+	//		})
+	//	})
 	//})
 
 

@@ -283,6 +283,22 @@ Api.getSavedMails = function(fromIndex, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.editPlayerName = function(name, callback){
+	var info = {
+		name:name
+	}
+	var route = "logic.playerHandler.editPlayerName"
+	pomelo.request(route, info, callback)
+}
+
+Api.editPlayerCityName = function(cityName, callback){
+	var info = {
+		cityName:cityName
+	}
+	var route = "logic.playerHandler.editPlayerCityName"
+	pomelo.request(route, info, callback)
+}
+
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {
 		name:name, tag:tag, language:language, terrain:terrain, flag:flag
