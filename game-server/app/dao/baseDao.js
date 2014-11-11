@@ -95,6 +95,14 @@ pro.findByIndex = function(index, value, callback){
 		self.scripto.runAsync("findByIndex", [self.modelName, index, value, Date.now()]).then(function(docString){
 			if(_.isEqual(docString, LOCKED)){
 				tryTimes++
+				if(tryTimes == 1){
+					errorLogger.error("handle baseDao:findByIndex Error -----------------------------")
+					errorLogger.error("errorInfo->modelName:%s, index:%s, value:%s is locked", self.modelName, index, value)
+					if(_.isEqual("production", self.env)){
+						errorMailLogger.error("handle baseDao:findByIndex Error -----------------------------")
+						errorMailLogger.error("errorInfo->modelName:%s, index:%s, value:%s is locked", self.modelName, index, value)
+					}
+				}
 				if(tryTimes <= self.tryTimes){
 					setTimeout(func, 100, index, value)
 				}else{
@@ -143,6 +151,14 @@ pro.findById = function(id, callback){
 		self.scripto.runAsync("findById", [self.modelName, id, Date.now()]).then(function(docString){
 			if(_.isEqual(docString, LOCKED)){
 				tryTimes++
+				if(tryTimes == 1){
+					errorLogger.error("handle baseDao:findById Error -----------------------------")
+					errorLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
+					if(_.isEqual("production", self.env)){
+						errorMailLogger.error("handle baseDao:findById Error -----------------------------")
+						errorLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
+					}
+				}
 				if(tryTimes <= self.tryTimes){
 					setTimeout(func, 100, id)
 				}else{

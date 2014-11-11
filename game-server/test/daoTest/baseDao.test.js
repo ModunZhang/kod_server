@@ -70,13 +70,21 @@ describe("BaseDao", function(){
 		})
 	})
 
-	it("findByIndex", function(done){
+	it("findByIndex1", function(done){
 		baseDao.findByIndexAsync("basicInfo.name", "modun1").then(function(doc){
 			should.exist(doc)
 			demoDoc = doc
 			done()
 		})
 	})
+
+	//it("findByIndex2", function(done){
+	//	baseDao.findByIndexAsync("basicInfo.name", "modun1").then(function(doc){
+	//		should.exist(doc)
+	//		demoDoc = doc
+	//		done()
+	//	})
+	//})
 
 	it("update 更新1", function(done){
 		demoDoc.basicInfo.name = "zhang"
@@ -88,13 +96,21 @@ describe("BaseDao", function(){
 		})
 	})
 
-	it("findById 正常查找", function(done){
+	it("findById 正常查找1", function(done){
 		baseDao.findByIdAsync(demoDoc._id).then(function(doc){
 			should.exist(doc)
 			demoDoc = doc
 			done()
 		})
 	})
+
+	//it("findById 正常查找2", function(done){
+	//	baseDao.findByIdAsync(demoDoc._id).then(function(doc){
+	//		should.exist(doc)
+	//		demoDoc = doc
+	//		done()
+	//	})
+	//})
 
 	it("update 更新2", function(done){
 		demoDoc.basicInfo.name = "zhang"
