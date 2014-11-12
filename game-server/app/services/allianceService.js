@@ -3642,6 +3642,101 @@ pro.marchToShrine = function(playerId, shrineEventId, dragonType, soldiers, call
 	})
 }
 
+/**
+ * 查找合适的联盟进行战斗
+ * @param playerId
+ * @param callback
+ */
+pro.findAllianceToFight = function(playerId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var fightAllianceDoc = null
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "findAllianceToFight")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		return self.allianceDao.getModel().find({
+			"_id":{$ne:allianceDoc._id},
+			"basicInfo.status":Consts.AllianceStatus.Peace,
+			//"basicInfo.power":{$gte:allianceDoc.basicInfo.power * 0.8, $lt:allianceDoc.basicInfo.power * 1.2}
+		}).limit(1).exec()
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("未能找到战力相匹配的联盟"))
+		return self.allianceDao.findByIdAsync(doc._id)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		fightAllianceDoc = doc
+		var now = Date.now()
+		var finishTime = now + (DataUtils.getAllianceFightPrepareTime() * 1000)
+		allianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
+		allianceDoc.basicInfo.statusStartTime = now
+		allianceDoc.basicInfo.statusFinishTime = finishTime
+		fightAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
+		fightAllianceDoc.basicInfo.statusStartTime = now
+		fightAllianceDoc.basicInfo.statusFinishTime = finishTime
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, true])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, fightAllianceDoc, true])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, allianceDoc, fightAllianceDoc, finishTime])
+		var allianceData = {}
+		allianceData.basicInfo = allianceDoc.basicInfo
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		var fightAllianceData = {}
+		fightAllianceData.basicInfo = fightAllianceDoc.basicInfo
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, fightAllianceDoc, fightAllianceData])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(_.isObject(fightAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(fightAllianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
 
 /**
  * 到达指定时间时,触发的消息
@@ -3672,7 +3767,7 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 		if(!_.isObject(self.timeEventService[timeEventFuncName])) return Promise.reject(new Error("未知的事件类型"))
 		return self.timeEventService[timeEventFuncName](allianceDoc, event).then(function(params){
 			updateFuncs = updateFuncs.concat(params.updateFuncs)
-			eventFuncs =  eventFuncs.concat(params.eventFuncs)
+			eventFuncs = eventFuncs.concat(params.eventFuncs)
 			pushFuncs = pushFuncs.concat(params.pushFuncs)
 			return Promise.resolve()
 		})
@@ -3697,4 +3792,15 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 			callback(e)
 		}
 	})
+}
+
+/**
+ * 到达指定时间时,联盟战斗触发的消息
+ * @param allianceId_1
+ * @param allianceId_2
+ * @param callback
+ */
+pro.onFightTimeEvent = function(allianceId_1, allianceId_2, callback){
+	console.log(allianceId_1, allianceId_2, "---------------------")
+	callback()
 }

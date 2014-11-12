@@ -2056,3 +2056,11 @@ Utils.getAllianceShrineStageFightHoner = function(stageName, fightStar){
 	var honerName = "star" + fightStar + "Honour"
 	return config[honerName]
 }
+
+/**
+ * 获取联盟战准备时间
+ * @returns {number}
+ */
+Utils.getAllianceFightPrepareTime = function(){
+	return 30
+}

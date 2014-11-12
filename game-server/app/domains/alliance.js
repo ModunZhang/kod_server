@@ -38,7 +38,10 @@ var allianceSchema = new Schema({
 		honour:{type:Number, required:true, default:0},
 		perception:{type:Number, required:true, default:AllianceBuildingConfig.shrine[1].perception},
 		perceptionRefreshTime:{type:Number, required:true, default:Date.now()},
-		createTime:{type:Number, required:true, default:Date.now()}
+		createTime:{type:Number, required:true, default:Date.now()},
+		status:{type:String, required:true, default:Consts.AllianceStatus.Peace},
+		statusStartTime:{type:Number, required:true, default:Date.now()},
+		statusFinishTime:{type:Number, required:true, default:Date.now()}
 	},
 	notice:{type:String, required:false},
 	desc:{type:String, required:false},
@@ -291,9 +294,6 @@ var allianceSchema = new Schema({
 			}]
 		}]
 	}],
-	preFightAlliances:[{
-		id:{type:String, required:true}
-	}],
 	allianceFight:{
 		status:{type:String, required:true},
 		fightAlliances:[{
@@ -302,7 +302,10 @@ var allianceSchema = new Schema({
 			power:{type:Number, required:true},
 			kill:{type:Number, required:true}
 		}]
-	}
+	},
+	allianceFightReports:[{
+		_id:false
+	}]
 })
 
 module.exports = mongoose.model('alliance', allianceSchema)

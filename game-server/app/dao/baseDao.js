@@ -191,9 +191,14 @@ pro.findById = function(id, callback){
 /**
  * update a object
  * @param doc json object
+ * @param forceSave
  * @param callback
  */
-pro.update = function(doc, callback){
+pro.update = function(doc, forceSave, callback){
+	if(_.isFunction(faceSave)){
+		forceSave = null
+		callback = forceSave
+	}
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
@@ -208,7 +213,7 @@ pro.update = function(doc, callback){
 
 	doc.__v++
 	var shouldSaveToMongo = false
-	if(doc.__v >= this.maxChangedCount){
+	if(doc.__v >= this.maxChangedCount || !!forceSave){
 		shouldSaveToMongo = true
 		doc.__v = 0
 	}

@@ -40,7 +40,8 @@ module.exports = {
 	},
 	TimeEventType:{
 		Player:"player",
-		Alliance:"alliance"
+		Alliance:"alliance",
+		AllianceFight:"allianceFight"
 	},
 	DataChangedType:{
 		Add:"add",
@@ -143,5 +144,11 @@ module.exports = {
 		B:4,
 		A:5,
 		S:6
+	},
+	AllianceStatus:{
+		Peace:"peace",
+		Prepare:"prepare",
+		Fight:"fight",
+		Protect:"protect"
 	}
 }

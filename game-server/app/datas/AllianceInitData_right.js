@@ -21,7 +21,8 @@ right["archon"] = {
 	upgradeAllianceVillage:true,
 	moveAllianceBuilding:true,
 	distroyAllianceDecorate:true,
-	activateAllianceShrineStage:true
+	activateAllianceShrineStage:true,
+	findAllianceToFight:true
 }
 right["general"] = {
 	title:"general",
@@ -41,7 +42,8 @@ right["general"] = {
 	upgradeAllianceVillage:false,
 	moveAllianceBuilding:false,
 	distroyAllianceDecorate:false,
-	activateAllianceShrineStage:false
+	activateAllianceShrineStage:false,
+	findAllianceToFight:false
 }
 right["quartermaster"] = {
 	title:"quartermaster",
@@ -61,7 +63,8 @@ right["quartermaster"] = {
 	upgradeAllianceVillage:false,
 	moveAllianceBuilding:false,
 	distroyAllianceDecorate:false,
-	activateAllianceShrineStage:false
+	activateAllianceShrineStage:false,
+	findAllianceToFight:false
 }
 right["supervisor"] = {
 	title:"supervisor",
@@ -81,7 +84,8 @@ right["supervisor"] = {
 	upgradeAllianceVillage:false,
 	moveAllianceBuilding:false,
 	distroyAllianceDecorate:false,
-	activateAllianceShrineStage:false
+	activateAllianceShrineStage:false,
+	findAllianceToFight:false
 }
 right["elite"] = {
 	title:"elite",
@@ -101,7 +105,8 @@ right["elite"] = {
 	upgradeAllianceVillage:false,
 	moveAllianceBuilding:false,
 	distroyAllianceDecorate:false,
-	activateAllianceShrineStage:false
+	activateAllianceShrineStage:false,
+	findAllianceToFight:false
 }
 right["member"] = {
 	title:"member",
@@ -121,5 +126,6 @@ right["member"] = {
 	upgradeAllianceVillage:false,
 	moveAllianceBuilding:false,
 	distroyAllianceDecorate:false,
-	activateAllianceShrineStage:false
+	activateAllianceShrineStage:false,
+	findAllianceToFight:false
 }

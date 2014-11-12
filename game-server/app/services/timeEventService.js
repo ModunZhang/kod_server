@@ -171,6 +171,62 @@ pro.clearAllianceTimeEvents = function(allianceDoc, callback){
 }
 
 /**
+ * 添加联盟战斗时间回调
+ * @param allianceDoc_1
+ * @param allianceDoc_2
+ * @param finishTime
+ * @param callback
+ */
+pro.addAllianceFightTimeEvent = function(allianceDoc_1, allianceDoc_2, finishTime, callback){
+	var key = Consts.TimeEventType.AllianceFight
+	var eventType = Consts.TimeEventType.AllianceFight
+	var eventId = allianceDoc_1._id + ":" + allianceDoc_2._id
+	this.addTimeEvent(key, eventType, eventId, finishTime, callback)
+}
+
+/**
+ * 更新联盟战斗时间回调
+ * @param allianceDoc_1
+ * @param allianceDoc_2
+ * @param newFinishTime
+ * @param callback
+ */
+pro.updateAllianceFightTimeEvent = function(allianceDoc_1, allianceDoc_2, newFinishTime, callback){
+	var key = Consts.TimeEventType.AllianceFight
+	var eventId = allianceDoc_1._id + ":" + allianceDoc_2._id
+	this.updateTimeEvent(key, eventId, newFinishTime, callback)
+}
+
+/**
+ * 移除联盟战斗时间回调
+ * @param allianceDoc_1
+ * @param allianceDoc_2
+ * @param callback
+ */
+pro.removeAllianceFightTimeEvent = function(allianceDoc_1, allianceDoc_2, callback){
+	var key = Consts.TimeEventType.AllianceFight
+	var eventId = allianceDoc_1._id + ":" + allianceDoc_2._id
+	this.removeTimeEvent(key, eventId, callback)
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/**
  * 刷新玩家时间数据
  * @param playerDoc
  * @param allianceDoc

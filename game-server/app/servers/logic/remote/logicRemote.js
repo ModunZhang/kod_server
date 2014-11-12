@@ -45,6 +45,9 @@ pro.onTimeEvent = function(key, eventType, eventId, callback){
 		this.playerService.onTimeEvent(id, eventType, eventId, callback)
 	}else if(_.isEqual(Consts.TimeEventType.Alliance, targetType)){
 		this.allianceService.onTimeEvent(id, eventType, eventId, callback)
+	}else if(_.isEqual(Consts.TimeEventType.AllianceFight, targetType)){
+		var ids = eventId.split(":")
+		this.allianceService.onFightTimeEvent(ids[0], ids[1], callback)
 	}else{
 		callback(new Error("未知的事件类型"))
 	}
