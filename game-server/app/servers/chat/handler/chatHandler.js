@@ -391,10 +391,24 @@ var ChatHandler = function(app){
 			desc:"设置联盟荣耀:alliancehonour 500",
 			func:function(session, uid, text, callback){
 				var self = this
-				var alliancehonour = text.split(" ")[1]
-				alliancehonour = parseInt(alliancehonour)
-				if(_.isNumber(alliancehonour)){
-					self.app.rpc.logic.commandRemote.alliancehonour(session, uid, alliancehonour, function(e){
+				var honour = text.split(" ")[1]
+				honour = parseInt(honour)
+				if(_.isNumber(honour)){
+					self.app.rpc.logic.commandRemote.alliancehonour(session, uid, honour, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
+			command:"allianceperception",
+			desc:"设置联盟感知力:allianceperception 500",
+			func:function(session, uid, text, callback){
+				var self = this
+				var perception = text.split(" ")[1]
+				perception = parseInt(perception)
+				if(_.isNumber(perception)){
+					self.app.rpc.logic.commandRemote.allianceperception(session, uid, perception, function(e){
 						callback(e)
 					})
 				}
