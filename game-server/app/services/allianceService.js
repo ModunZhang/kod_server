@@ -3496,7 +3496,7 @@ pro.activateAllianceShrineStage = function(playerId, stageName, callback){
 		if(LogicUtils.isAllianceShrineStageActivated(allianceDoc, stageName)) return Promise.reject(new Error("此联盟事件已经激活"))
 		var activeStageRequired = DataUtils.getAllianceActiveShrineStageRequired(stageName)
 		LogicUtils.refreshAlliancePerception(allianceDoc)
-		if(allianceDoc.basicInfo.perception < activeStageRequired.perception) return Promise.reject(new Error("联盟荣耀值不足"))
+		if(allianceDoc.basicInfo.perception < activeStageRequired.perception) return Promise.reject(new Error("联盟感知力不足"))
 		allianceDoc.basicInfo.perception -= activeStageRequired.perception
 		var event = DataUtils.createAllianceShrineStageEvent(stageName)
 		allianceDoc.shrineEvents.push(event)

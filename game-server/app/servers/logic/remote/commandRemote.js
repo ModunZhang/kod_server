@@ -1031,10 +1031,10 @@ pro.donatelevel = function(uid, donatelevel, callback){
 /**
  * 设置联盟荣耀
  * @param uid
- * @param allianceHonour
+ * @param honnour
  * @param callback
  */
-pro.alliancehonour = function(uid, allianceHonour, callback){
+pro.alliancehonour = function(uid, honnour, callback){
 	var self = this
 	var updateFuncs = []
 	var pushFuncs = []
@@ -1054,7 +1054,51 @@ pro.alliancehonour = function(uid, allianceHonour, callback){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
-		allianceDoc.basicInfo.honour = allianceHonour
+		allianceDoc.basicInfo.honour = honnour
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, uid])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		var allianceData = {}
+		allianceData.basicInfo = allianceDoc.basicInfo
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 设置联盟感知力
+ * @param uid
+ * @param perception
+ * @param callback
+ */
+pro.allianceperception = function(uid, perception, callback){
+	var self = this
+	var updateFuncs = []
+	var pushFuncs = []
+	var playerDoc = null
+	var allianceDoc = null
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		playerDoc = doc
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		allianceDoc.basicInfo.perception = perception
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, uid])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		var allianceData = {}

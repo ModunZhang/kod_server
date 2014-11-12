@@ -1065,11 +1065,14 @@ describe("AllianceService", function(){
 			})
 		})
 
-		it("activateAllianceShrineStage 联盟荣耀值不足", function(done){
-			Api.activateAllianceShrineStage("1_2", function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("联盟荣耀值不足")
-				done()
+		it("activateAllianceShrineStage 联盟感知力不足", function(done){
+			Api.sendChat("allianceperception 0", function(doc){
+				doc.code.should.equal(200)
+				Api.activateAllianceShrineStage("1_2", function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("联盟感知力不足")
+					done()
+				})
 			})
 		})
 
