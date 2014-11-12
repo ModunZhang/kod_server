@@ -195,9 +195,9 @@ pro.findById = function(id, callback){
  * @param callback
  */
 pro.update = function(doc, forceSave, callback){
-	if(_.isFunction(faceSave)){
-		forceSave = null
+	if(arguments.length <=2){
 		callback = forceSave
+		forceSave = null
 	}
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")

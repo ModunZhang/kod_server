@@ -525,3 +525,17 @@ pro.marchToShrine = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 查找合适的联盟进行战斗
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.findAllianceToFight = function(msg, session, next){
+	this.allianceService.findAllianceToFightAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

@@ -41,7 +41,7 @@ var allianceSchema = new Schema({
 		createTime:{type:Number, required:true, default:Date.now()},
 		status:{type:String, required:true, default:Consts.AllianceStatus.Peace},
 		statusStartTime:{type:Number, required:true, default:Date.now()},
-		statusFinishTime:{type:Number, required:true, default:Date.now()}
+		statusFinishTime:{type:Number, required:true, default:0}
 	},
 	notice:{type:String, required:false},
 	desc:{type:String, required:false},
@@ -296,18 +296,14 @@ var allianceSchema = new Schema({
 			}]
 		}]
 	}],
-	allianceFight:{
-		status:{type:String, required:true},
-		fightAlliances:[{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			power:{type:Number, required:true},
-			kill:{type:Number, required:true}
+	moonGate:{
+		troops:[{
+			_id:false
+		}],
+		enemyTroops:[{
+			_id:false
 		}]
-	},
-	allianceFightReports:[{
-		_id:false
-	}]
+	}
 })
 
 module.exports = mongoose.model('alliance', allianceSchema)

@@ -553,3 +553,9 @@ Api.marchToShrine = function(shrineEventId, dragonType, soldiers, callback){
 	var route = "logic.allianceHandler.marchToShrine"
 	pomelo.request(route, info, callback)
 }
+
+Api.findAllianceToFight = function(callback){
+	var route = "logic.allianceHandler.findAllianceToFight"
+	pomelo.request(route, null, callback)
+}
+

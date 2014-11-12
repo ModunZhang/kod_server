@@ -3681,14 +3681,17 @@ pro.findAllianceToFight = function(playerId, callback){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
+		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+			return Promose.reject(new Error("联盟正在战争准备期或战争期"))
+		}
 		return self.allianceDao.getModel().find({
 			"_id":{$ne:allianceDoc._id},
 			"basicInfo.status":Consts.AllianceStatus.Peace,
 			//"basicInfo.power":{$gte:allianceDoc.basicInfo.power * 0.8, $lt:allianceDoc.basicInfo.power * 1.2}
 		}).limit(1).exec()
-	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("未能找到战力相匹配的联盟"))
-		return self.allianceDao.findByIdAsync(doc._id)
+	}).then(function(docs){
+		if(docs.length == 0) return Promise.reject(new Error("未能找到战力相匹配的联盟"))
+		return self.allianceDao.findByIdAsync(docs[0]._id)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		fightAllianceDoc = doc
