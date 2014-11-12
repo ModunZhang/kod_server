@@ -1408,7 +1408,6 @@ Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEv
 			id:playerDoc._id,
 			name:playerDoc.basicInfo.name,
 			cityName:playerDoc.basicInfo.cityName,
-			location:playerLocation,
 			dragon:{
 				type:dragonType
 			},
@@ -1440,7 +1439,6 @@ Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, dr
 		playerData:{
 			id:playerDoc._id,
 			cityName:playerDoc.basicInfo.cityName,
-			location:playerLocation,
 			dragon:{
 				type:dragonType
 			},

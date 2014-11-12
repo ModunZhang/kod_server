@@ -168,10 +168,6 @@ var allianceSchema = new Schema({
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			cityName:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
 			dragon:{
 				type:{type:String, required:true}
 			},
@@ -191,10 +187,6 @@ var allianceSchema = new Schema({
 		playerData:{
 			id:{type:String, required:true},
 			cityName:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
 			dragon:{
 				type:{type:String, required:true}
 			},
@@ -229,10 +221,6 @@ var allianceSchema = new Schema({
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			cityName:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
 			dragon:{
 				type:{type:String, required:true}
 			},
