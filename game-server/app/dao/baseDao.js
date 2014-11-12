@@ -156,7 +156,7 @@ pro.findById = function(id, callback){
 					errorLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
 					if(_.isEqual("production", self.env)){
 						errorMailLogger.error("handle baseDao:findById Error -----------------------------")
-						errorLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
+						errorMailLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
 					}
 				}
 				if(tryTimes <= self.tryTimes){
