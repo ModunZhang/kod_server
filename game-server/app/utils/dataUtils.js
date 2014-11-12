@@ -1700,7 +1700,7 @@ Utils.getSizeInAllianceMap = function(buildingType){
  * @returns {number}
  */
 Utils.getPlayerMarchTime = function(playerDoc, fromLocation, toLocation){
-	return 10
+	return 60
 }
 
 /**
@@ -1747,7 +1747,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
 	var event = {
 		id:ShortId.generate(),
 		stageName:stageName,
-		startTime:Date.now() + (30 * 1000),//(AllianceInit.intInit.activeShrineStageEvent.value * 1000),
+		startTime:Date.now() + (5 * 60 * 1000),//(AllianceInit.intInit.activeShrineStageEvent.value * 1000),
 		playerTroops:[]
 	}
 	return event
