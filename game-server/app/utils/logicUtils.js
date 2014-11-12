@@ -1414,6 +1414,7 @@ Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEv
 			},
 			soldiers:soldiers
 		},
+		startTime:Date.now(),
 		arriveTime:Date.now() + (marchSeconds * 1000)
 	}
 	return event
@@ -1448,6 +1449,7 @@ Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, dr
 			rewards:rewards,
 			kill:kill
 		},
+		startTime:Date.now(),
 		arriveTime:Date.now() + (marchSeconds * 1000)
 	}
 	return event

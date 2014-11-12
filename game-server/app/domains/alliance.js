@@ -179,6 +179,7 @@ var allianceSchema = new Schema({
 			}]
 
 		},
+		startTime:{type:Number, required:true},
 		arriveTime:{type:Number, required:true}
 	}],
 	shrineMarchReturnEvents:[{
@@ -212,6 +213,7 @@ var allianceSchema = new Schema({
 			}],
 			kill:{type:Number, required:true}
 		},
+		startTime:{type:Number, required:true},
 		arriveTime:{type:Number, required:true}
 	}],
 	shrineEvents:[{
