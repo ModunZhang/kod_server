@@ -3700,9 +3700,12 @@ pro.findAllianceToFight = function(playerId, callback){
 		allianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
 		allianceDoc.basicInfo.statusStartTime = now
 		allianceDoc.basicInfo.statusFinishTime = finishTime
+		allianceDoc.moonGateData.enemyAllianceId = fightAllianceDoc._id
 		fightAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
 		fightAllianceDoc.basicInfo.statusStartTime = now
 		fightAllianceDoc.basicInfo.statusFinishTime = finishTime
+		fightAllianceDoc.moonGateData.enemyAllianceId = allianceDoc._id
+
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, true])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, fightAllianceDoc, true])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, allianceDoc, fightAllianceDoc, finishTime])
@@ -3730,6 +3733,98 @@ pro.findAllianceToFight = function(playerId, callback){
 		}
 		if(_.isObject(fightAllianceDoc)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(fightAllianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 行军到月门
+ * @param playerId
+ * @param dragonType
+ * @param soldiers
+ * @param callback
+ */
+pro.marchToMoonGate = function(playerId, dragonType, soldiers, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		callback(new Error("dragonType 不合法"))
+		return
+	}
+	if(!_.isArray(soldiers)){
+		callback(new Error("soldiers 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	var playerData = {}
+	var allianceData = {}
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		var dragon = playerDoc.dragons[dragonType]
+		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
+		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
+		dragon.status = Consts.DragonStatus.March
+		playerData.dragons = {}
+		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+		if(!LogicUtils.isMarchSoldierLegal(playerDoc, soldiers)) return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
+		_.each(soldiers, function(soldier){
+			playerDoc.soldiers[soldier.name] -= soldier.count
+			playerData.soldiers = {}
+			playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
+		})
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		allianceDoc = doc
+		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Peace) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
+			return Promose.reject(new Error("联盟正在和平期或保护期"))
+		}
+
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){

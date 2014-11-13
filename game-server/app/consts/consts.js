@@ -10,6 +10,7 @@ module.exports = {
 	AllianceChannelPrefix:"allianceChannel_",
 	PushServiceName:"pushService",
 	CallbackService:"callbackService",
+	None:"__NONE__",
 	BuildingType:{
 		Building:"building",
 		House:"house",
