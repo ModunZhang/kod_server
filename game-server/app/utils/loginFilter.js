@@ -21,7 +21,6 @@ pro.before = function(msg, session, next){
 	}else if(!!session.uid){
 		next()
 	}else{
-		next(new Error("Illegal request!"))
-
+		next(new Error("Illegal request! info:" + msg.__route__))
 	}
 }

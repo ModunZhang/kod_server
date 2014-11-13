@@ -3115,7 +3115,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	var updateFuncs = []
 	var playerDoc = null
 	var allianceDoc = null
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findByIdAsync(playerId, true).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -3125,7 +3125,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 			return Promise.reject(new Error("玩家事件不存在"))
 		}
 		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
-			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+			return self.allianceDao.findByIdAsync(playerDoc.alliance.id, true).then(function(doc){
 				if(!_.isObject(doc)){
 					return Promise.reject(new Error("联盟不存在"))
 				}

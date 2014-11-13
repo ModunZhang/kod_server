@@ -82,7 +82,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!!playerDoc.alliance && !_.isEmpty(playerDoc.alliance.id)){
+		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家已加入了联盟"))
 		}
 		var gemUsed = DataUtils.getGemByCreateAlliance()
@@ -372,7 +372,7 @@ pro.getMyAllianceData = function(playerId, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(!_.isObject(playerDoc.alliance) && _.isEmpty(playerDoc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
 		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
@@ -3605,7 +3605,7 @@ pro.marchToShrine = function(playerId, shrineEventId, dragonType, soldiers, call
 		var shrineEvent = LogicUtils.getEventById(allianceDoc.shrineEvents, shrineEventId)
 		if(!_.isObject(shrineEvent)) return Promise.reject(new Error("此关卡还未激活"))
 		if(DataUtils.isAllianceShrineStageLocked(allianceDoc, shrineEvent.stageName)) return Promise.reject(new Error("此关卡还未解锁"))
-		if(LogicUtils.isAllianceShrineStageEventTroopsContainsPlayer(playerId, shrineEvent)) return Promise.reject(new Error("玩家已经对此关卡派出了部队"))
+		if(LogicUtils.isPlayerHasTroopMarchToAllianceShrineStage(allianceDoc, shrineEvent, playerId)) return Promise.reject(new Error("玩家已经对此关卡派出了部队"))
 		var event = LogicUtils.createAllianceShrineMarchEvent(playerDoc, allianceDoc, shrineEventId, dragonType, soldiers)
 		allianceDoc.shrineMarchEvents.push(event)
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
@@ -3686,7 +3686,7 @@ pro.findAllianceToFight = function(playerId, callback){
 		}
 		return self.allianceDao.getModel().find({
 			"_id":{$ne:allianceDoc._id},
-			"basicInfo.status":Consts.AllianceStatus.Peace,
+			"basicInfo.status":Consts.AllianceStatus.Peace
 			//"basicInfo.power":{$gte:allianceDoc.basicInfo.power * 0.8, $lt:allianceDoc.basicInfo.power * 1.2}
 		}).limit(1).exec()
 	}).then(function(docs){
@@ -3696,7 +3696,7 @@ pro.findAllianceToFight = function(playerId, callback){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		fightAllianceDoc = doc
 		var now = Date.now()
-		var finishTime = now + (DataUtils.getAllianceFightPrepareTime() * 1000)
+		var finishTime = now + DataUtils.getAllianceFightPrepareTime()
 		allianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
 		allianceDoc.basicInfo.statusStartTime = now
 		allianceDoc.basicInfo.statusFinishTime = finishTime
@@ -3807,8 +3807,16 @@ pro.marchToMoonGate = function(playerId, dragonType, soldiers, callback){
 		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Peace) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
 			return Promose.reject(new Error("联盟正在和平期或保护期"))
 		}
-
-
+		if(LogicUtils.isPlayerHasTroopMarchToMoonGate(allianceDoc, playerId)) return Promise.reject(new Error("玩家已经对月门派出了部队"))
+		var event = LogicUtils.createAllianceMoonGateMarchEvent(playerDoc, allianceDoc, dragonType, soldiers)
+		allianceDoc.moonGateMarchEvents.push(event)
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "moonGateMarchEvents", event.id, event.arriveTime])
+		allianceData.__moonGateMarchEvents = [{
+			type:Consts.DataChangedType.Add,
+			data:event
+		}]
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -3850,7 +3858,7 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 	var pushFuncs = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.allianceDao.findByIdAsync(allianceId).then(function(doc){
+	this.allianceDao.findByIdAsync(allianceId, true).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
 		}
@@ -3894,11 +3902,59 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 
 /**
  * 到达指定时间时,联盟战斗触发的消息
- * @param allianceId_1
- * @param allianceId_2
+ * @param ourAllianceId
+ * @param enemyAllianceId
  * @param callback
  */
-pro.onFightTimeEvent = function(allianceId_1, allianceId_2, callback){
-	console.log(allianceId_1, allianceId_2, "---------------------")
-	callback()
+pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
+	var self = this
+	var ourAllianceDoc = null
+	var enemyAllianceDoc = null
+	var pushFuncs = []
+	var updateFuncs = []
+	var eventFuncs = []
+	var funcs = []
+	funcs.push(this.allianceDao.findByIdAsync(ourAllianceId, true))
+	funcs.push(this.allianceDao.findByIdAsync(enemyAllianceId, true))
+	Promise.all(funcs).spread(function(doc_1, doc_2){
+		if(!_.isObject(doc_1)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		ourAllianceDoc = doc_1
+		if(!_.isObject(doc_2)){
+			return Promise.reject(new Error("联盟不存在"))
+		}
+		enemyAllianceDoc = doc_2
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, ourAllianceDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, enemyAllianceDoc])
+		return self.timeEventService.onAllianceFightStatusChangedAsync(ourAllianceDoc, enemyAllianceDoc).then(function(params){
+			updateFuncs = updateFuncs.concat(params.updateFuncs)
+			eventFuncs = eventFuncs.concat(params.eventFuncs)
+			pushFuncs = pushFuncs.concat(params.pushFuncs)
+			return Promise.resolve()
+		})
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(ourAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(_.isObject(enemyAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
 }

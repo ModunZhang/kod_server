@@ -3,23 +3,35 @@
 var intInit = {}
 module.exports = intInit
 
-intInit["createAlliance"] = {
-	type:"createAlliance",
+intInit["createAllianceGem"] = {
+	type:"createAllianceGem",
 	value:50
 }
-intInit["buyArchon"] = {
-	type:"buyArchon",
+intInit["buyArchonGem"] = {
+	type:"buyArchonGem",
 	value:100
 }
-intInit["editAllianceBasicInfo"] = {
-	type:"editAllianceBasicInfo",
+intInit["editAllianceBasicInfoGem"] = {
+	type:"editAllianceBasicInfoGem",
 	value:50
 }
-intInit["editAllianceTerrian"] = {
-	type:"editAllianceTerrian",
+intInit["editAllianceTerrianHonour"] = {
+	type:"editAllianceTerrianHonour",
 	value:50
 }
-intInit["activeShrineStageEvent"] = {
-	type:"activeShrineStageEvent",
-	value:3600
+intInit["activeShrineStageEventTime"] = {
+	type:"activeShrineStageEventTime",
+	value:15
+}
+intInit["allianceFightPrepareTime"] = {
+	type:"allianceFightPrepareTime",
+	value:30
+}
+intInit["allianceFightTotalFightTime"] = {
+	type:"allianceFightTotalFightTime",
+	value:60
+}
+intInit["allianceFightTimePerFight"] = {
+	type:"allianceFightTimePerFight",
+	value:5
 }

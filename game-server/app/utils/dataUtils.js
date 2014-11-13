@@ -1377,18 +1377,18 @@ Utils.getImposedCoin = function(playerDoc){
 
 /**
  * 获取建造联盟所消耗的宝石
- * @returns {gem|*|playerSchema.resources.gem|.resources.gem}
+ * @returns {*}
  */
 Utils.getGemByCreateAlliance = function(){
-	return AllianceInit.intInit.createAlliance.value
+	return AllianceInit.intInit.createAllianceGem.value
 }
 
 /**
  * 获取购买盟主职位所需要的宝石
- * @returns {resources.buyArchon.gem|*}
+ * @returns {*}
  */
 Utils.getGemByBuyAllianceArchon = function(){
-	return AllianceInit.intInit.buyArchon.value
+	return AllianceInit.intInit.buyArchonGem.value
 }
 
 /**
@@ -1575,18 +1575,18 @@ Utils.isAllianceVillageReachMaxLevel = function(allianceType, allianceLevel){
 
 /**
  * 获取编辑联盟基础信息消耗的宝石
- * @returns {resource.editAllianceBasicInfo.gem|*}
+ * @returns {*}
  */
 Utils.getEditAllianceBasicInfoGem = function(){
-	return AllianceInit.intInit.editAllianceBasicInfo.value
+	return AllianceInit.intInit.editAllianceBasicInfoGem.value
 }
 
 /**
  * 获取改变联盟地形所消耗的荣耀值
- * @returns {resource.editAllianceTerrian.honour|*}
+ * @returns {*}
  */
 Utils.getEditAllianceTerrianHonour = function(){
-	return AllianceInit.intInit.editAllianceTerrian.value
+	return AllianceInit.intInit.editAllianceTerrianHonour.value
 }
 
 /**
@@ -1700,7 +1700,7 @@ Utils.getSizeInAllianceMap = function(buildingType){
  * @returns {number}
  */
 Utils.getPlayerMarchTime = function(playerDoc, fromLocation, toLocation){
-	return 60
+	return 10
 }
 
 /**
@@ -1747,7 +1747,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
 	var event = {
 		id:ShortId.generate(),
 		stageName:stageName,
-		startTime:Date.now() + (AllianceInit.intInit.activeShrineStageEvent.value * 1000),
+		startTime:Date.now() + (AllianceInit.intInit.activeShrineStageEventTime.value * 1000),
 		playerTroops:[]
 	}
 	return event
@@ -2058,9 +2058,25 @@ Utils.getAllianceShrineStageFightHoner = function(stageName, fightStar){
 }
 
 /**
- * 获取联盟战准备时间
+ * 获取联盟战准备期总时间
  * @returns {number}
  */
 Utils.getAllianceFightPrepareTime = function(){
-	return 30
+	return AllianceInit.intInit.allianceFightPrepareTime.value * 1000
+}
+
+/**
+ * 获取联盟战战争期总时间
+ * @returns {number}
+ */
+Utils.getAllianceFightTotalFightTime = function(){
+	return AllianceInit.allianceFightTimePerFight.value * 1000
+}
+
+/**
+ * 获取联盟战单场战斗所需的时间
+ * @returns {number}
+ */
+Utils.getAllianceFightSecondsPerFight = function(){
+	return AllianceInit.intInit.allianceFightTimePerFight.value * 1000
 }

@@ -187,6 +187,8 @@ var allianceSchema = new Schema({
 		id:{type:String, required:true},
 		stageName:{type:String, required:true},
 		star:{type:Number, required:true},
+		playerCount:{type:Number, required:true},
+		playerAvgPower:{type:Number, required:true},
 		playerDatas:[{
 			_id:false,
 			id:{type:String, required:true},
@@ -249,7 +251,6 @@ var allianceSchema = new Schema({
 				name:{type:String, required:true},
 				count:{type:Number, required:true}
 			}]
-
 		},
 		startTime:{type:Number, required:true},
 		arriveTime:{type:Number, required:true}
@@ -344,7 +345,8 @@ var allianceSchema = new Schema({
 			}],
 			kill:{type:Number, required:true}
 		}],
-		currentFightTroops:{
+		currentFightTroops:[{
+			_id:false,
 			our:{
 				id:{type:String, required:true},
 				name:{type:String, required:true},
@@ -401,7 +403,7 @@ var allianceSchema = new Schema({
 				}],
 				kill:{type:Number, required:true}
 			}
-		},
+		}],
 		fightReports:[{
 			_id:false,
 			ourPlayerId:{type:String, required:true},
@@ -455,6 +457,55 @@ var allianceSchema = new Schema({
 			tag:{type:String, required:true},
 			kill:{type:Number, required:true}
 		}
+	}],
+	moonGateMarchEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		playerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			soldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}]
+		},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true}
+	}],
+	moonGateMarchReturnEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		playerData:{
+			id:{type:String, required:true},
+			cityName:{type:String, required:true},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			leftSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			treatSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			rewards:[{
+				_id:false,
+				type:{type:String, required:true},
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			kill:{type:Number, required:true}
+		},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true}
 	}]
 })
 

@@ -559,3 +559,11 @@ Api.findAllianceToFight = function(callback){
 	pomelo.request(route, null, callback)
 }
 
+Api.marchToMoonGate = function(dragonType, soldiers, callback){
+	var info = {
+		dragonType:dragonType,
+		soldiers:soldiers
+	}
+	var route = "logic.allianceHandler.marchToMoonGate"
+	pomelo.request(route, info, callback)
+}
