@@ -291,7 +291,7 @@ var allianceSchema = new Schema({
 			_id:false,
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			level:{type:String, required:true},
+			level:{type:Number, required:true},
 			cityName:{type:String, required:true},
 			dragon:{
 				type:{type:String, required:true}
@@ -320,7 +320,7 @@ var allianceSchema = new Schema({
 			_id:false,
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			level:{type:String, required:true},
+			level:{type:Number, required:true},
 			cityName:{type:String, required:true},
 			dragon:{
 				type:{type:String, required:true}
@@ -445,25 +445,13 @@ var allianceSchema = new Schema({
 			}]
 		}]
 	},
-	allianceFightReports:[{
-		_id:false,
-		fightResult:{type:String, required:true},
-		ourAlliance:{
-			kill:{type:Number, required:true}
-		},
-		enemyAlliance:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			tag:{type:String, required:true},
-			kill:{type:Number, required:true}
-		}
-	}],
 	moonGateMarchEvents:[{
 		_id:false,
 		id:{type:String, required:true},
 		playerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
+			level:{type:Number, rquired:true},
 			cityName:{type:String, required:true},
 			dragon:{
 				type:{type:String, required:true}
@@ -506,6 +494,19 @@ var allianceSchema = new Schema({
 		},
 		startTime:{type:Number, required:true},
 		arriveTime:{type:Number, required:true}
+	}],
+	allianceFightReports:[{
+		_id:false,
+		fightResult:{type:String, required:true},
+		ourAlliance:{
+			kill:{type:Number, required:true}
+		},
+		enemyAlliance:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			tag:{type:String, required:true},
+			kill:{type:Number, required:true}
+		}
 	}]
 })
 

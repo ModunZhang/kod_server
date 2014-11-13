@@ -1436,6 +1436,7 @@ Utils.createAllianceMoonGateMarchEvent = function(playerDoc, allianceDoc, dragon
 		playerData:{
 			id:playerDoc._id,
 			name:playerDoc.basicInfo.name,
+			level:playerDoc.basicInfo.level,
 			cityName:playerDoc.basicInfo.cityName,
 			dragon:{
 				type:dragonType

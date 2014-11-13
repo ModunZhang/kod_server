@@ -2070,7 +2070,7 @@ Utils.getAllianceFightPrepareTime = function(){
  * @returns {number}
  */
 Utils.getAllianceFightTotalFightTime = function(){
-	return AllianceInit.allianceFightTimePerFight.value * 1000
+	return AllianceInit.intInit.allianceFightTotalFightTime.value * 1000
 }
 
 /**

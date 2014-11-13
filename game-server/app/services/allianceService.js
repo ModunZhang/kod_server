@@ -3925,8 +3925,6 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		enemyAllianceDoc = doc_2
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, ourAllianceDoc])
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, enemyAllianceDoc])
 		return self.timeEventService.onAllianceFightStatusChangedAsync(ourAllianceDoc, enemyAllianceDoc).then(function(params){
 			updateFuncs = updateFuncs.concat(params.updateFuncs)
 			eventFuncs = eventFuncs.concat(params.eventFuncs)
@@ -3944,10 +3942,10 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(ourAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+			funcs.push(self.allianceDao.removeLockByIdAsync(ourAllianceDoc._id))
 		}
 		if(_.isObject(enemyAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+			funcs.push(self.allianceDao.removeLockByIdAsync(enemyAllianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
