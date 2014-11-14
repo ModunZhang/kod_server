@@ -210,22 +210,6 @@ pro.removeAllianceFightTimeEvent = function(ourAllianceDoc, enemyAllianceDoc, ca
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * 刷新玩家时间数据
  * @param playerDoc
@@ -373,21 +357,6 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /**
  * 联盟圣地行军事件回调
  * @param allianceDoc
@@ -456,192 +425,6 @@ pro.onShrineMarchEvents = function(allianceDoc, event, callback){
 }
 
 /**
- * 联盟圣地事件回调
- * @param allianceDoc
- * @param event
- * @param callback
- */
-pro.onShrineEvents = function(allianceDoc, event, callback){
-	var self = this
-	var allianceData = {}
-	var eventFuncs = []
-	var pushFuncs = []
-	var updateFuncs = []
-	LogicUtils.removeItemInArray(allianceDoc.shrineEvents, event)
-	allianceData.__shrineEvents = [{
-		type:Consts.DataChangedType.Remove,
-		data:event
-	}]
-	var playerTroopsForFight = []
-	_.each(event.playerTroops, function(playerTroop){
-		var soldiersForFight = []
-		_.each(playerTroop.soldiers, function(soldier){
-			if(DataUtils.hasNormalSoldier(soldier.name)){
-				soldiersForFight.push(DataUtils.createNormalSoldierForFight(soldier.name, 1, soldier.count))
-			}else{
-				soldiersForFight.push(DataUtils.createSpecialSoldierForFight(soldier.name, soldier.count))
-			}
-		})
-		var playerTroopForFight = {
-			id:playerTroop.id,
-			name:playerTroop.name,
-			soldiers:soldiersForFight
-		}
-		playerTroopsForFight.push(playerTroopForFight)
-	})
-	var playerAvgPower = LogicUtils.getPlayerTroopsAvgPower(playerTroopsForFight)
-	var stageTroops = DataUtils.getAllianceShrineStageTroops(event.stageName)
-	var currentRound = 1
-	var playerSuccessedTroops = []
-	var stageSuccessedTroops = []
-	var fightDatas = []
-	while(playerTroopsForFight.length > 0 && stageTroops.length > 0){
-		var playerTroopForFight = playerTroopsForFight[0]
-		var stageTroop = stageTroops[0]
-		var treatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(null)
-		var fightData = FightUtils.soldierToSoldierFight(playerTroopForFight.soldiers, treatSoldierPercent, stageTroop.soldiers, 0)
-		if(_.isEqual(fightData.fightResult, Consts.FightResult.AttackWin)){
-			playerSuccessedTroops.push(playerTroopForFight)
-		}else{
-			stageSuccessedTroops.push(stageTroop)
-		}
-		LogicUtils.removeItemInArray(playerTroopsForFight, playerTroopForFight)
-		LogicUtils.removeItemInArray(stageTroops, stageTroop)
-		LogicUtils.resetFightSoldiersByFightResult(playerTroopForFight.soldiers, fightData.attackRoundDatas)
-		LogicUtils.resetFightSoldiersByFightResult(stageTroop.soldiers, fightData.defenceRoundDatas)
-
-		var currentFightData = null
-		if(fightDatas.length < currentRound){
-			currentFightData = {
-				round:currentRound,
-				roundDatas:[]
-			}
-			fightDatas.push(currentFightData)
-		}else{
-			currentFightData = fightDatas[currentRound - 1]
-		}
-		var currentRoundDatas = currentFightData.roundDatas
-		currentRoundDatas.push({
-			playerId:playerTroopForFight.id,
-			playerName:playerTroopForFight.name,
-			stageTroopNumber:stageTroop.troopNumber,
-			fightResult:fightData.fightResult,
-			attackRoundDatas:fightData.attackRoundDatas,
-			defenceRoundDatas:fightData.defenceRoundDatas
-		})
-
-		if((playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0) || (stageTroops.length == 0 && stageSuccessedTroops.length > 0)){
-			if(playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0){
-				_.each(playerSuccessedTroops, function(troop){
-					playerTroopsForFight.push(troop)
-				})
-				LogicUtils.clearArray(playerSuccessedTroops)
-			}
-			if(stageTroops.length == 0 && stageSuccessedTroops.length > 0){
-				_.each(stageSuccessedTroops, function(troop){
-					stageTroops.push(troop)
-				})
-				LogicUtils.clearArray(stageSuccessedTroops)
-			}
-			currentRound += 1
-		}
-	}
-
-	var params = DataUtils.getAllianceShrineStageResultDatas(event.stageName, playerTroopsForFight.length > 0, fightDatas)
-	var playerDatas = LogicUtils.fixAllianceShrineStagePlayerData(event.playerTroops, params.playerDatas)
-	var fightStar = params.fightStar
-	var shrineReport = {
-		id:ShortId.generate(),
-		stageName:event.stageName,
-		star:fightStar,
-		playerCount:event.playerTroops.length,
-		playerAvgPower:playerAvgPower,
-		playerDatas:playerDatas,
-		fightDatas:fightDatas
-	}
-	allianceData.__shrineReports = []
-	if(allianceDoc.shrineReports.length > Define.AllianceShrineReportsMaxSize){
-		var willRemovedshrineReport = allianceDoc.shrineReports.shift()
-		allianceData.__shrineReports.push({
-			type:Consts.DataChangedType.Remove,
-			data:willRemovedshrineReport
-		})
-	}
-	allianceDoc.shrineReports.push(shrineReport)
-	allianceData.__shrineReports.push({
-		type:Consts.DataChangedType.Add,
-		data:shrineReport
-	})
-	if(fightStar > 0){
-		var honour = DataUtils.getAllianceShrineStageFightHoner(event.stageName, fightStar)
-		allianceDoc.basicInfo.honour += honour
-		allianceData.basicInfo = allianceDoc.basicInfo
-	}
-
-	var stageData = LogicUtils.getAllianceShrineStageData(allianceDoc, event.stageName)
-	if(!_.isObject(stageData)){
-		stageData = {
-			stageName:event.stageName,
-			maxStar:fightStar
-		}
-		allianceDoc.shrineDatas.push(stageData)
-		allianceData.__shrineDatas = [{
-			type:Consts.DataChangedType.Add,
-			data:stageData
-		}]
-	}else if(stageData.maxStar < fightStar){
-		stageData.maxStar = fightData
-		allianceData.__shrineDatas = [{
-			type:Consts.DataChangedType.Edit,
-			data:stageData
-		}]
-	}
-
-	var playerDocs = []
-	var createReturnEvent = function(playerId){
-		return self.playerDao.findByIdAsync(playerId, true).then(function(doc){
-			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-			var playerDoc = doc
-			playerDocs.push(playerDoc)
-			var treatSoldiers = _.isObject(params.treatSoldiers[playerId]) ? params.treatSoldiers[playerId] : []
-			var leftSoldiers = _.isObject(params.leftSoldiers[playerId]) ? params.leftSoldiers[playerId] :[]
-			var rewards = _.isObject(params.playerRewards[playerId]) ? params.playerRewards[playerId] : []
-			var kill = _.isNumber(params.playerKills[playerId]) ? params.playerKills[playerId] : 0
-			var dragon = LogicUtils.getPlayerDragonDataFromAllianceShrineStageEvent(playerId, event)
-			var marchReturnEvent = LogicUtils.createAllianceShrineMarchReturnEvent(playerDoc, allianceDoc, dragon.type, leftSoldiers, treatSoldiers, rewards, kill)
-			allianceDoc.shrineMarchReturnEvents.push(marchReturnEvent)
-			allianceData.__shrineMarchReturnEvents = [{
-				type:Consts.DataChangedType.Add,
-				data:marchReturnEvent
-			}]
-			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
-			eventFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "shrineMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
-			return Promise.resolve()
-		})
-	}
-	var funcs = []
-	_.each(event.playerTroops, function(playerTroop){
-		funcs.push(createReturnEvent(playerTroop.id))
-	})
-	Promise.all(funcs).then(function(){
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
-	}).catch(function(e){
-		var funcs = []
-		_.each(playerDocs, function(playerDoc){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		})
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
  * 圣地返回玩家城市事件回调
  * @param allianceDoc
  * @param event
@@ -690,6 +473,196 @@ pro.onShrineMarchReturnEvents = function(allianceDoc, event, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
 		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 联盟圣地事件回调
+ * @param allianceDoc
+ * @param event
+ * @param callback
+ */
+pro.onShrineEvents = function(allianceDoc, event, callback){
+	var self = this
+	var allianceData = {}
+	var eventFuncs = []
+	var pushFuncs = []
+	var updateFuncs = []
+	LogicUtils.removeItemInArray(allianceDoc.shrineEvents, event)
+	allianceData.__shrineEvents = [{
+		type:Consts.DataChangedType.Remove,
+		data:event
+	}]
+
+	var playerDocs = {}
+	var playerTroopsForFight = []
+	var funcs = []
+	var findPlayerDocFunc = function(playerId){
+		return self.playerDao.findByIdAsync(playerId, true).then(function(doc){
+			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+			playerDocs[doc._id] = doc
+			return Promise.resolve()
+		})
+	}
+	_.each(event.playerTroops, function(playerTroop){
+		funcs.push(findPlayerDocFunc(playerTroop.id))
+	})
+	Promise.all(funcs).then(function(){
+		_.each(event.playerTroops, function(playerTroop){
+			var playerDoc = playerDocs[playerTroop.id]
+			var soldiersForFight = []
+			_.each(playerTroop.soldiers, function(soldier){
+				if(DataUtils.hasNormalSoldier(soldier.name)){
+					soldiersForFight.push(DataUtils.createNormalSoldierForFight(playerDoc, soldier.name, 1, soldier.count))
+				}else{
+					soldiersForFight.push(DataUtils.createSpecialSoldierForFight(playerDoc, soldier.name, soldier.count))
+				}
+			})
+			var playerTroopForFight = {
+				id:playerTroop.id,
+				name:playerTroop.name,
+				soldiers:soldiersForFight
+			}
+			playerTroopsForFight.push(playerTroopForFight)
+		})
+		var playerAvgPower = LogicUtils.getPlayerTroopsAvgPower(playerTroopsForFight)
+		var stageTroops = DataUtils.getAllianceShrineStageTroops(event.stageName)
+		var currentRound = 1
+		var playerSuccessedTroops = []
+		var stageSuccessedTroops = []
+		var fightDatas = []
+		while(playerTroopsForFight.length > 0 && stageTroops.length > 0){
+			var playerTroopForFight = playerTroopsForFight[0]
+			var stageTroop = stageTroops[0]
+			var treatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(null)
+			var fightData = FightUtils.soldierToSoldierFight(playerTroopForFight.soldiers, treatSoldierPercent, stageTroop.soldiers, 0)
+			if(_.isEqual(fightData.fightResult, Consts.FightResult.AttackWin)){
+				playerSuccessedTroops.push(playerTroopForFight)
+			}else{
+				stageSuccessedTroops.push(stageTroop)
+			}
+			LogicUtils.removeItemInArray(playerTroopsForFight, playerTroopForFight)
+			LogicUtils.removeItemInArray(stageTroops, stageTroop)
+			LogicUtils.resetFightSoldiersByFightResult(playerTroopForFight.soldiers, fightData.attackRoundDatas)
+			LogicUtils.resetFightSoldiersByFightResult(stageTroop.soldiers, fightData.defenceRoundDatas)
+
+			var currentFightData = null
+			if(fightDatas.length < currentRound){
+				currentFightData = {
+					round:currentRound,
+					roundDatas:[]
+				}
+				fightDatas.push(currentFightData)
+			}else{
+				currentFightData = fightDatas[currentRound - 1]
+			}
+			var currentRoundDatas = currentFightData.roundDatas
+			currentRoundDatas.push({
+				playerId:playerTroopForFight.id,
+				playerName:playerTroopForFight.name,
+				stageTroopNumber:stageTroop.troopNumber,
+				fightResult:fightData.fightResult,
+				attackRoundDatas:fightData.attackRoundDatas,
+				defenceRoundDatas:fightData.defenceRoundDatas
+			})
+
+			if((playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0) || (stageTroops.length == 0 && stageSuccessedTroops.length > 0)){
+				if(playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0){
+					_.each(playerSuccessedTroops, function(troop){
+						playerTroopsForFight.push(troop)
+					})
+					LogicUtils.clearArray(playerSuccessedTroops)
+				}
+				if(stageTroops.length == 0 && stageSuccessedTroops.length > 0){
+					_.each(stageSuccessedTroops, function(troop){
+						stageTroops.push(troop)
+					})
+					LogicUtils.clearArray(stageSuccessedTroops)
+				}
+				currentRound += 1
+			}
+		}
+
+		var params = DataUtils.getAllianceShrineStageResultDatas(event.stageName, playerTroopsForFight.length > 0, fightDatas)
+		var playerDatas = LogicUtils.fixAllianceShrineStagePlayerData(event.playerTroops, params.playerDatas)
+		var fightStar = params.fightStar
+		var shrineReport = {
+			id:ShortId.generate(),
+			stageName:event.stageName,
+			star:fightStar,
+			playerCount:event.playerTroops.length,
+			playerAvgPower:playerAvgPower,
+			playerDatas:playerDatas,
+			fightDatas:fightDatas
+		}
+		allianceData.__shrineReports = []
+		if(allianceDoc.shrineReports.length > Define.AllianceShrineReportsMaxSize){
+			var willRemovedshrineReport = allianceDoc.shrineReports.shift()
+			allianceData.__shrineReports.push({
+				type:Consts.DataChangedType.Remove,
+				data:willRemovedshrineReport
+			})
+		}
+		allianceDoc.shrineReports.push(shrineReport)
+		allianceData.__shrineReports.push({
+			type:Consts.DataChangedType.Add,
+			data:shrineReport
+		})
+		if(fightStar > 0){
+			var honour = DataUtils.getAllianceShrineStageFightHoner(event.stageName, fightStar)
+			allianceDoc.basicInfo.honour += honour
+			allianceData.basicInfo = allianceDoc.basicInfo
+		}
+
+		var stageData = LogicUtils.getAllianceShrineStageData(allianceDoc, event.stageName)
+		if(!_.isObject(stageData)){
+			stageData = {
+				stageName:event.stageName,
+				maxStar:fightStar
+			}
+			allianceDoc.shrineDatas.push(stageData)
+			allianceData.__shrineDatas = [{
+				type:Consts.DataChangedType.Add,
+				data:stageData
+			}]
+		}else if(stageData.maxStar < fightStar){
+			stageData.maxStar = fightData
+			allianceData.__shrineDatas = [{
+				type:Consts.DataChangedType.Edit,
+				data:stageData
+			}]
+		}
+		_.each(event.playerTroops, function(playerTroop){
+			var playerId = playerTroop.id
+			var playerDoc = playerDocs[playerId]
+			var treatSoldiers = _.isObject(params.treatSoldiers[playerId]) ? params.treatSoldiers[playerId] : []
+			var leftSoldiers = _.isObject(params.leftSoldiers[playerId]) ? params.leftSoldiers[playerId] : []
+			var rewards = _.isObject(params.playerRewards[playerId]) ? params.playerRewards[playerId] : []
+			var kill = _.isNumber(params.playerKills[playerId]) ? params.playerKills[playerId] : 0
+			var dragon = LogicUtils.getPlayerDragonDataFromAllianceShrineStageEvent(playerId, event)
+			var marchReturnEvent = LogicUtils.createAllianceShrineMarchReturnEvent(playerDoc, allianceDoc, dragon.type, leftSoldiers, treatSoldiers, rewards, kill)
+			allianceDoc.shrineMarchReturnEvents.push(marchReturnEvent)
+			allianceData.__shrineMarchReturnEvents = [{
+				type:Consts.DataChangedType.Add,
+				data:marchReturnEvent
+			}]
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+			eventFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "shrineMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+		})
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+	}).catch(function(e){
+		var funcs = []
+		_.each(_.values(playerDocs), function(playerDoc){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		})
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
 				callback(e)
@@ -766,12 +739,14 @@ pro.onMoonGateMarchEvents = function(ourAllianceDoc, event, callback){
 				rewards:[],
 				kill:0
 			}
+			if(!_.isArray(ourAllianceDoc.moonGateData.ourTroops)) ourAllianceDoc.moonGateData.ourTroops = []
 			ourAllianceDoc.moonGateData.ourTroops.push(ourTroop)
 			ourAllianceData.moonGateData = {}
 			ourAllianceData.moonGateData.__ourTroops = [{
 				type:Consts.DataChangedType.Add,
 				data:ourTroop
 			}]
+			if(!_.isArray(enemyAllianceDoc.moonGateData.enemyTroops)) enemyAllianceDoc.moonGateData.enemyTroops = []
 			enemyAllianceDoc.moonGateData.enemyTroops.push(ourTroop)
 			enemyAllianceData.moonGateData = {}
 			enemyAllianceData.moonGateData.__enemyTroops = [{
@@ -886,53 +861,191 @@ pro.onAllianceFightStatusChanged = function(ourAllianceDoc, enemyAllianceDoc, ca
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, ourAllianceDoc, ourAllianceData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc, enemyAllianceData])
 		eventFuncs.push([self, self.addAllianceFightTimeEventAsync, ourAllianceDoc, enemyAllianceDoc, Date.now() + (5 * 1000)])
-	}else if(_.isEqual(ourAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
-		if(ourAllianceDoc.basicInfo.statusFinishTime > Date.now()){
-			var nextFightTime = Date.now() + DataUtils.getAllianceFightSecondsPerFight()
-			eventFuncs.push([self, self.addAllianceFightTimeEventAsync, ourAllianceDoc, enemyAllianceDoc, nextFightTime])
-		}else{
+		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+	}else if(_.isEqual(ourAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight) && ourAllianceDoc.basicInfo.statusFinishTime > Date.now()){
+		var nextFightTime = Date.now() + DataUtils.getAllianceFightSecondsPerFight()
+		eventFuncs.push([self, self.addAllianceFightTimeEventAsync, ourAllianceDoc, enemyAllianceDoc, nextFightTime])
+
+		ourAllianceData.moonGateData = {}
+		ourAllianceData.moonGateData.__ourTroops = []
+		ourAllianceData.moonGateData.__enemyTroops = []
+		enemyAllianceData.moonGateData = {}
+		enemyAllianceData.moonGateData.__ourTroops = []
+		enemyAllianceData.moonGateData.__enemyTroops = []
+
+		if(!_.isObject(ourAllianceDoc.moonGateData.currentFightTroops)){
+			ourAllianceDoc.moonGateData.currentFightTroops = {}
+			enemyAllianceDoc.moonGateData.currentFightTroops = {}
+			if(_.isArray(ourAllianceDoc.moonGateData.ourTroops) && ourAllianceDoc.moonGateData.ourTroops.length > 0){
+				var ourTroop = ourAllianceDoc.moonGateData.ourTroops[0]
+				var ourCurrentFightTroop = {
+					id:ourTroop.id,
+					name:ourTroop.name,
+					winCount:0,
+					dragon:ourTroop.dragon,
+					soldiers:ourTroop.soldiers,
+					treatSoldiers:ourTroop.treatSoldiers,
+					rewards:ourTroop.rewards,
+					kill:ourTroop.kill
+				}
+				ourAllianceDoc.moonGateData.currentFightTroops.our = ourCurrentFightTroop
+				ourAllianceDoc.moonGateData.ourTroops.splice(0, 1)
+				enemyAllianceDoc.moonGateData.currentFightTroops.enemy = ourCurrentFightTroop
+				enemyAllianceDoc.moonGateData.enemyTroops.splice(0, 1)
+				ourAllianceData.moonGateData.__ourTroops.push({
+					type:Consts.DataChangedType.Remove,
+					data:ourTroop
+				})
+				ourAllianceData.moonGateData.currentFightTroops = ourAllianceDoc.moonGateData.currentFightTroops
+				enemyAllianceData.moonGateData.__enemyTroops.push({
+					type:Consts.DataChangedType.Remove,
+					data:ourTroop
+				})
+				enemyAllianceData.moonGateData.currentFightTroops = enemyAllianceDoc.moonGateData.currentFightTroops
+			}
+			if(_.isArray(ourAllianceDoc.moonGateData.enemyTroops) && ourAllianceDoc.moonGateData.enemyTroops.length > 0){
+				var enemyTroop = ourAllianceDoc.moonGateData.enemyTroops[0]
+				var enemyCurrentFightTroop = {
+					id:enemyTroop.id,
+					name:enemyTroop.name,
+					winCount:0,
+					dragon:enemyTroop.dragon,
+					soldiers:enemyTroop.soldiers,
+					treatSoldiers:enemyTroop.treatSoldiers,
+					rewards:enemyTroop.rewards,
+					kill:enemyTroop.kill
+				}
+				ourAllianceDoc.moonGateData.currentFightTroops.enemy = enemyCurrentFightTroop
+				ourAllianceDoc.moonGateData.enemyTroops.splice(0, 1)
+				enemyAllianceDoc.moonGateData.currentFightTroops.our = enemyCurrentFightTroop
+				enemyAllianceDoc.moonGateData.ourTroops.splice(0, 1)
+				ourAllianceData.moonGateData.__enemyTroops.push({
+					type:Consts.DataChangedType.Remove,
+					data:enemyTroop
+				})
+				ourAllianceData.moonGateData.currentFightTroops = ourAllianceDoc.moonGateData.currentFightTroops
+				enemyAllianceData.moonGateData.__ourTroops.push({
+					type:Consts.DataChangedType.Remove,
+					data:enemyTroop
+				})
+				enemyAllianceData.moonGateData.currentFightTroops = enemyAllianceDoc.moonGateData.currentFightTroops
+			}
+		}else if(_.isObject(ourAllianceDoc.moonGateData.currentFightTroops.our) && _.isObject(ourAllianceDoc.moonGateData.currentFightTroops.enemy)){
+			var funcs = []
+			var ourTroop = ourAllianceDoc.moonGateData.currentFightTroops.our
+			var enemyTroop = ourAllianceDoc.moonGateData.currentFightTroops.enemy
+			funcs.push(self.playerDao.findByIdAsync(ourTroop.id, true))
+			funcs.push(self.playerDao.findByIdAsync(enemyTroop.id, true))
+			Promise.all(funcs).spread(function(ourPlayerDoc, enemyPlayerDoc){
+				if(!_.isObject(ourPlayerDoc)) return Promise.reject(new Error("玩家不存在"))
+				if(!_.isObject(enemyPlayerDoc)) return Promise.reject(new Error("玩家不存在"))
+
+
+
+				var ourPlayerSoldiersForFight = []
+				_.each(ourTroop.soldiers, function(soldier){
+					if(DataUtils.hasNormalSoldier(soldier.name)){
+						ourPlayerSoldiersForFight.push(DataUtils.createNormalSoldierForFight(ourPlayerDoc, soldier.name, 1, soldier.count))
+					}else{
+						ourPlayerSoldiersForFight.push(DataUtils.createSpecialSoldierForFight(ourPlayerDoc, soldier.name, soldier.count))
+					}
+				})
+				var ourPlayerTroopForFight = {
+					id:playerTroop.id,
+					name:playerTroop.name,
+					soldiers:ourPlayerSoldiersForFight
+				}
+				var enemyPlayerSoldiersForFight = []
+				_.each(enemyTroop.soldiers, function(soldier){
+					if(DataUtils.hasNormalSoldier(soldier.name)){
+						enemyPlayerSoldiersForFight.push(DataUtils.createNormalSoldierForFight(enemyPlayerDoc, soldier.name, 1, soldier.count))
+					}else{
+						enemyPlayerSoldiersForFight.push(DataUtils.createSpecialSoldierForFight(enemyPlayerDoc, soldier.name, soldier.count))
+					}
+				})
+				var enemyPlayerTroopForFight = {
+					id:playerTroop.id,
+					name:playerTroop.name,
+					soldiers:enemyPlayerSoldiersForFight
+				}
+
+
+			})
+		}
+
+
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, ourAllianceDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, enemyAllianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, ourAllianceDoc, ourAllianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc, enemyAllianceData])
+		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+	}else if(_.isEqual(ourAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight) && ourAllianceDoc.basicInfo.statusFinishTime <= Date.now()){
+		var playerDocs = []
+		var createReturnEvent = function(playerTroop, allianceDoc, allianceData){
+			return self.playerDao.findByIdAsync(playerTroop.id, true).then(function(doc){
+				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+				var playerDoc = doc
+				playerDocs.push(playerDoc)
+				var treatSoldiers = playerTroop.treatSoldiers
+				var leftSoldiers = playerTroop.soldiers
+				var rewards = playerTroop.rewards
+				var kill = playerTroop.kill
+				var dragon = playerTroop.dragon
+				var marchReturnEvent = LogicUtils.createAllianceMoonGateMarchReturnEvent(playerDoc, allianceDoc, dragon.type, leftSoldiers, treatSoldiers, rewards, kill)
+				allianceDoc.moonGateMarchReturnEvents.push(marchReturnEvent)
+				allianceData.__moonGateMarchReturnEvents = [{
+					type:Consts.DataChangedType.Add,
+					data:marchReturnEvent
+				}]
+				updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+				eventFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+				return Promise.resolve()
+			})
+		}
+		var funcs = []
+		_.each(ourAllianceDoc.moonGateData.ourTroops, function(playerTroop){
+			funcs.push(createReturnEvent(playerTroop, ourAllianceDoc, ourAllianceData))
+		})
+		_.each(ourAllianceDoc.moonGateData.enemyTroops, function(playerTroop){
+			funcs.push(createReturnEvent(playerTroop, enemyAllianceDoc, enemyAllianceData))
+		})
+		Promise.all(funcs).then(function(){
 			ourAllianceDoc.basicInfo.status = Consts.AllianceStatus.Peace
 			ourAllianceDoc.basicInfo.statusStartTime = Date.now()
 			ourAllianceDoc.basicInfo.statusFinishTime = 0
-			ourAllianceDoc.moonGateData.enemyAllianceId = Consts.None
-			ourAllianceDoc.moonGateData.ourTroops = []
-			ourAllianceDoc.moonGateData.enemyTroops = []
-			ourAllianceDoc.moonGateData.currentFightTroops = []
-			ourAllianceDoc.moonGateData.fightReports = []
+			ourAllianceDoc.moonGateData = null
 			ourAllianceData.basicInfo = ourAllianceDoc.basicInfo
-			ourAllianceData.moonGateData = ourAllianceDoc.moonGateData
+			ourAllianceData.moonGateData = null
 			enemyAllianceDoc.basicInfo.status = Consts.AllianceStatus.Peace
 			enemyAllianceDoc.basicInfo.statusStartTime = Date.now()
 			enemyAllianceDoc.basicInfo.statusFinishTime = 0
-			enemyAllianceDoc.moonGateData.enemyAllianceId = Consts.None
-			enemyAllianceDoc.moonGateData.ourTroops = []
-			enemyAllianceDoc.moonGateData.enemyTroops = []
-			enemyAllianceDoc.moonGateData.currentFightTroops = []
-			enemyAllianceDoc.moonGateData.fightReports = []
+			enemyAllianceDoc.moonGateData = {}
 			enemyAllianceData.basicInfo = enemyAllianceDoc.basicInfo
-			enemyAllianceData.moonGateData = enemyAllianceDoc.moonGateData
+			enemyAllianceData.moonGateData = {}
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, ourAllianceDoc, ourAllianceData])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc, enemyAllianceData])
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, ourAllianceDoc, true])
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, enemyAllianceDoc, true])
-		}
+			return Promise.resolve()
+		}).then(function(){
+			callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+		}).catch(function(e){
+			var funcs = []
+			_.each(playerDocs, function(playerDoc){
+				funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			})
+			if(funcs.length > 0){
+				Promise.all(funcs).then(function(){
+					callback(e)
+				})
+			}else{
+				callback(e)
+			}
+		})
+	}else{
+		callback(new Error("联盟状态不合法"))
 	}
-	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 var CreateResponse = function(updateFuncs, eventFuncs, pushFuncs){

@@ -109,5 +109,13 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
  * @param defenceDragon
  */
 Utils.dragonToDragonFight = function(attackDragon, defenceDragon){
+	var attackDragonPower = attackDragon.strength * attackDragon.vitality
+	var defenceDragonPower = defenceDragon.strength * defenceDragon.vitality
+	var attackDragonHpDecreased = null
+	var defenceDragonHpDecreased = null
+	if(attackDragonPower >= defenceDragonPower){
 
+	}else{
+
+	}
 }

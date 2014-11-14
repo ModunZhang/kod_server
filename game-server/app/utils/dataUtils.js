@@ -1062,7 +1062,7 @@ Utils.getTreatSoldierRequired = function(playerDoc, soldiers){
  * @param dragon
  * @returns {*}
  */
-Utils.getDragonMaxVitality = function(playerDoc, dragon){
+Utils.getDragonVitality = function(playerDoc, dragon){
 	var config = DragonEyrie.dragonAttribute[dragon.star]
 	var vitality = config.initVitality + config.perLevelVitality * dragon.level
 	return vitality
@@ -1784,12 +1784,13 @@ Utils.getSoldierFightFixEffect = function(multiple){
 
 /**
  * 创建战斗用普通军队信息
+ * @param playerDoc
  * @param soldierName
  * @param soldierStar
  * @param soldierCount
  * @returns {*}
  */
-Utils.createNormalSoldierForFight = function(soldierName, soldierStar, soldierCount){
+Utils.createNormalSoldierForFight = function(playerDoc, soldierName, soldierStar, soldierCount){
 	var soldierFullKey = soldierName + "_" + soldierStar
 	var config = UnitConfig.normal[soldierFullKey]
 	var soldier = {
@@ -1815,11 +1816,12 @@ Utils.createNormalSoldierForFight = function(soldierName, soldierStar, soldierCo
 
 /**
  * 创建战斗用特殊军队信息
+ * @param playerDoc
  * @param soldierName
  * @param soldierCount
  * @returns {*}
  */
-Utils.createSpecialSoldierForFight = function(soldierName, soldierCount){
+Utils.createSpecialSoldierForFight = function(playerDoc, soldierName, soldierCount){
 	var config = UnitConfig.special[soldierName]
 	var soldier = {
 		name:soldierName,

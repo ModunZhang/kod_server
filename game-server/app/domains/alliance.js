@@ -286,72 +286,14 @@ var allianceSchema = new Schema({
 		arriveTime:{type:Number, required:true}
 	}],
 	moonGateData:{
-		enemyAllianceId:{type:String, required:true, default:Consts.None},
-		ourTroops:[{
-			_id:false,
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			level:{type:Number, required:true},
-			cityName:{type:String, required:true},
-			dragon:{
-				type:{type:String, required:true}
-			},
-			soldiers:[
-				{
-					_id:false,
-					name:{type:String, required:true},
-					count:{type:Number, required:true}
-				}
-			],
-			treatSoldiers:[{
+		type:{
+			enemyAllianceId:{type:String, required:true},
+			ourTroops:[{
 				_id:false,
-				name:{type:String, required:true},
-				count:{type:Number, required:true}
-			}],
-			rewards:[{
-				_id:false,
-				type:{type:String, required:true},
-				name:{type:String, required:true},
-				count:{type:Number, required:true}
-			}],
-			kill:{type:Number, required:true}
-		}],
-		enemyTroops:[{
-			_id:false,
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			level:{type:Number, required:true},
-			cityName:{type:String, required:true},
-			dragon:{
-				type:{type:String, required:true}
-			},
-			soldiers:[
-				{
-					_id:false,
-					name:{type:String, required:true},
-					count:{type:Number, required:true}
-				}
-			],
-			treatSoldiers:[{
-				_id:false,
-				name:{type:String, required:true},
-				count:{type:Number, required:true}
-			}],
-			rewards:[{
-				_id:false,
-				type:{type:String, required:true},
-				name:{type:String, required:true},
-				count:{type:Number, required:true}
-			}],
-			kill:{type:Number, required:true}
-		}],
-		currentFightTroops:[{
-			_id:false,
-			our:{
 				id:{type:String, required:true},
 				name:{type:String, required:true},
-				winCount:{type:Number, required:true},
-				power:{type:Number, required:true},
+				level:{type:Number, required:true},
+				cityName:{type:String, required:true},
 				dragon:{
 					type:{type:String, required:true}
 				},
@@ -374,12 +316,13 @@ var allianceSchema = new Schema({
 					count:{type:Number, required:true}
 				}],
 				kill:{type:Number, required:true}
-			},
-			enemy:{
+			}],
+			enemyTroops:[{
+				_id:false,
 				id:{type:String, required:true},
 				name:{type:String, required:true},
-				winCount:{type:Number, required:true},
-				power:{type:Number, required:true},
+				level:{type:Number, required:true},
+				cityName:{type:String, required:true},
 				dragon:{
 					type:{type:String, required:true}
 				},
@@ -402,48 +345,106 @@ var allianceSchema = new Schema({
 					count:{type:Number, required:true}
 				}],
 				kill:{type:Number, required:true}
-			}
-		}],
-		fightReports:[{
-			_id:false,
-			ourPlayerId:{type:String, required:true},
-			ourPlayerName:{type:String, required:true},
-			enemyPlayerId:{type:String, required:true},
-			enemyPlayerName:{type:String, required:true},
-			fightResult:{type:String, required:true},
-			ourDragonFightData:{
-				type:{type:String, required:true},
-				hp:{type:Number, required:true},
-				hpDecreased:{type:Number, required:true}
-			},
-			enemyDragonFightData:{
-				type:{type:String, required:true},
-				hp:{type:Number, required:true},
-				hpDecreased:{type:Number, required:true}
-			},
-			ourSoldierRoundDatas:[{
-				_id:false,
-				soldierName:{type:String, required:true},
-				soldierStar:{type:Number, required:true},
-				soldierCount:{type:Number, required:true},
-				soldierDamagedCount:{type:Number, required:true},
-				soldierTreatedCount:{type:Number, required:true},
-				morale:{type:Number, required:true},
-				moraleDecreased:{type:Number, required:true},
-				isWin:{type:Boolean, required:true}
 			}],
-			enemySoldierRoundDatas:[{
+			currentFightTroops:{
+				our:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					winCount:{type:Number, required:true},
+					dragon:{
+						type:{type:String, required:true}
+					},
+					soldiers:[
+						{
+							_id:false,
+							name:{type:String, required:true},
+							count:{type:Number, required:true}
+						}
+					],
+					treatSoldiers:[{
+						_id:false,
+						name:{type:String, required:true},
+						count:{type:Number, required:true}
+					}],
+					rewards:[{
+						_id:false,
+						type:{type:String, required:true},
+						name:{type:String, required:true},
+						count:{type:Number, required:true}
+					}],
+					kill:{type:Number, required:true}
+				},
+				enemy:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					winCount:{type:Number, required:true},
+					power:{type:Number, required:true},
+					dragon:{
+						type:{type:String, required:true}
+					},
+					soldiers:[
+						{
+							_id:false,
+							name:{type:String, required:true},
+							count:{type:Number, required:true}
+						}
+					],
+					treatSoldiers:[{
+						_id:false,
+						name:{type:String, required:true},
+						count:{type:Number, required:true}
+					}],
+					rewards:[{
+						_id:false,
+						type:{type:String, required:true},
+						name:{type:String, required:true},
+						count:{type:Number, required:true}
+					}],
+					kill:{type:Number, required:true}
+				}
+			},
+			fightReports:[{
 				_id:false,
-				soldierName:{type:String, required:true},
-				soldierStar:{type:Number, required:true},
-				soldierCount:{type:Number, required:true},
-				soldierDamagedCount:{type:Number, required:true},
-				soldierTreatedCount:{type:Number, required:true},
-				morale:{type:Number, required:true},
-				moraleDecreased:{type:Number, required:true},
-				isWin:{type:Boolean, required:true}
+				ourPlayerId:{type:String, required:true},
+				ourPlayerName:{type:String, required:true},
+				enemyPlayerId:{type:String, required:true},
+				enemyPlayerName:{type:String, required:true},
+				fightResult:{type:String, required:true},
+				ourDragonFightData:{
+					type:{type:String, required:true},
+					hp:{type:Number, required:true},
+					hpDecreased:{type:Number, required:true}
+				},
+				enemyDragonFightData:{
+					type:{type:String, required:true},
+					hp:{type:Number, required:true},
+					hpDecreased:{type:Number, required:true}
+				},
+				ourSoldierRoundDatas:[{
+					_id:false,
+					soldierName:{type:String, required:true},
+					soldierStar:{type:Number, required:true},
+					soldierCount:{type:Number, required:true},
+					soldierDamagedCount:{type:Number, required:true},
+					soldierTreatedCount:{type:Number, required:true},
+					morale:{type:Number, required:true},
+					moraleDecreased:{type:Number, required:true},
+					isWin:{type:Boolean, required:true}
+				}],
+				enemySoldierRoundDatas:[{
+					_id:false,
+					soldierName:{type:String, required:true},
+					soldierStar:{type:Number, required:true},
+					soldierCount:{type:Number, required:true},
+					soldierDamagedCount:{type:Number, required:true},
+					soldierTreatedCount:{type:Number, required:true},
+					morale:{type:Number, required:true},
+					moraleDecreased:{type:Number, required:true},
+					isWin:{type:Boolean, required:true}
+				}]
 			}]
-		}]
+		},
+		required:false
 	},
 	moonGateMarchEvents:[{
 		_id:false,

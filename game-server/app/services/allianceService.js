@@ -3658,8 +3658,8 @@ pro.findAllianceToFight = function(playerId, callback){
 
 	var self = this
 	var playerDoc = null
-	var allianceDoc = null
-	var fightAllianceDoc = null
+	var ourAllianceDoc = null
+	var enemyAllianceDoc = null
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -3680,41 +3680,45 @@ pro.findAllianceToFight = function(playerId, callback){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
 		}
-		allianceDoc = doc
-		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+		ourAllianceDoc = doc
+		if(_.isEqual(ourAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(ourAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 			return Promose.reject(new Error("联盟正在战争准备期或战争期"))
 		}
 		return self.allianceDao.getModel().find({
-			"_id":{$ne:allianceDoc._id},
+			"_id":{$ne:ourAllianceDoc._id},
 			"basicInfo.status":Consts.AllianceStatus.Peace
-			//"basicInfo.power":{$gte:allianceDoc.basicInfo.power * 0.8, $lt:allianceDoc.basicInfo.power * 1.2}
+			//"basicInfo.power":{$gte:ourAllianceDoc.basicInfo.power * 0.8, $lt:ourAllianceDoc.basicInfo.power * 1.2}
 		}).limit(1).exec()
 	}).then(function(docs){
 		if(docs.length == 0) return Promise.reject(new Error("未能找到战力相匹配的联盟"))
 		return self.allianceDao.findByIdAsync(docs[0]._id)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
-		fightAllianceDoc = doc
+		enemyAllianceDoc = doc
 		var now = Date.now()
 		var finishTime = now + DataUtils.getAllianceFightPrepareTime()
-		allianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
-		allianceDoc.basicInfo.statusStartTime = now
-		allianceDoc.basicInfo.statusFinishTime = finishTime
-		allianceDoc.moonGateData.enemyAllianceId = fightAllianceDoc._id
-		fightAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
-		fightAllianceDoc.basicInfo.statusStartTime = now
-		fightAllianceDoc.basicInfo.statusFinishTime = finishTime
-		fightAllianceDoc.moonGateData.enemyAllianceId = allianceDoc._id
+		ourAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
+		ourAllianceDoc.basicInfo.statusStartTime = now
+		ourAllianceDoc.basicInfo.statusFinishTime = finishTime
+		ourAllianceDoc.moonGateData = {}
+		ourAllianceDoc.moonGateData.enemyAllianceId = enemyAllianceDoc._id
+		enemyAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
+		enemyAllianceDoc.basicInfo.statusStartTime = now
+		enemyAllianceDoc.basicInfo.statusFinishTime = finishTime
+		enemyAllianceDoc.moonGateData = {}
+		enemyAllianceDoc.moonGateData.enemyAllianceId = ourAllianceDoc._id
 
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, true])
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, fightAllianceDoc, true])
-		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, allianceDoc, fightAllianceDoc, finishTime])
-		var allianceData = {}
-		allianceData.basicInfo = allianceDoc.basicInfo
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-		var fightAllianceData = {}
-		fightAllianceData.basicInfo = fightAllianceDoc.basicInfo
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, fightAllianceDoc, fightAllianceData])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, ourAllianceDoc, true])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, enemyAllianceDoc, true])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, ourAllianceDoc, enemyAllianceDoc, finishTime])
+		var ourAllianceData = {}
+		ourAllianceData.basicInfo = ourAllianceDoc.basicInfo
+		ourAllianceData.moonGateData = ourAllianceDoc.moonGateData
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, ourAllianceDoc, ourAllianceData])
+		var enemyAllianceData = {}
+		enemyAllianceData.basicInfo = enemyAllianceDoc.basicInfo
+		enemyAllianceData.moonGateData = enemyAllianceDoc.moonGateData
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc, enemyAllianceData])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -3728,8 +3732,8 @@ pro.findAllianceToFight = function(playerId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
 		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		if(_.isObject(ourAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(ourAllianceDoc._id))
 		}
 		if(_.isObject(fightAllianceDoc)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(fightAllianceDoc._id))

@@ -1800,7 +1800,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		if(dragon.vitality >= 100){
 			dragon.star = 1
 			dragon.level = 1
-			dragon.vitality = DataUtils.getDragonMaxVitality(playerDoc, dragon)
+			dragon.vitality = DataUtils.getDragonVitality(playerDoc, dragon)
 			dragon.hp = dragon.vitality * 2
 			dragon.hpRefreshTime = Date.now()
 			dragon.strength = DataUtils.getDragonStrength(playerDoc, dragon)
@@ -2217,7 +2217,7 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 		}
 		var playerData = {}
 		dragon.star += 1
-		dragon.vitality = DataUtils.getDragonMaxVitality(playerDoc, dragon)
+		dragon.vitality = DataUtils.getDragonVitality(playerDoc, dragon)
 		dragon.strength = DataUtils.getDragonStrength(playerDoc, dragon)
 		_.each(dragon.equipments, function(equipment){
 			equipment.name = ""
