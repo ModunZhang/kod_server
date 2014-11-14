@@ -1700,7 +1700,7 @@ Utils.getSizeInAllianceMap = function(buildingType){
  * @returns {number}
  */
 Utils.getPlayerMarchTime = function(playerDoc, fromLocation, toLocation){
-	return 60 * 20
+	return 60 * 2
 }
 
 /**
