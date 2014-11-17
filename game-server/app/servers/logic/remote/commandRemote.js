@@ -8,7 +8,7 @@ var Promise = require("bluebird")
 var _ = require("underscore")
 
 var Utils = require("../../../utils/utils")
-var DataUtis = require("../../../utils/dataUtils")
+var DataUtils = require("../../../utils/dataUtils")
 var LogicUtils = require("../../../utils/logicUtils")
 var Consts = require("../../../consts/consts")
 
@@ -188,7 +188,7 @@ pro.energy = function(uid, count, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 
-		var maxEnergy = DataUtis.getPlayerEnergyUpLimit(doc)
+		var maxEnergy = DataUtils.getPlayerEnergyUpLimit(doc)
 		doc.resources.energy = maxEnergy > count ? count : maxEnergy
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
@@ -242,21 +242,21 @@ pro.building = function(uid, level, callback){
 		LogicUtils.refreshPlayerResources(doc)
 		_.each(doc.buildings, function(building){
 			if(building.level > 0){
-				var buildingMaxLevel = DataUtis.getBuildingMaxLevel(building.type)
+				var buildingMaxLevel = DataUtils.getBuildingMaxLevel(building.type)
 				building.level = level > buildingMaxLevel ? buildingMaxLevel : level
 			}
 			_.each(building.houses, function(house){
-				var houseMaxLevel = DataUtis.getHouseMaxLevel(house.type)
+				var houseMaxLevel = DataUtils.getHouseMaxLevel(house.type)
 				house.level = level > houseMaxLevel ? houseMaxLevel : level
 			})
 		})
 		_.each(doc.towers, function(tower){
 			if(tower.level > 0){
-				var towerMaxLevel = DataUtis.getBuildingMaxLevel("tower")
+				var towerMaxLevel = DataUtils.getBuildingMaxLevel("tower")
 				tower.level = level > towerMaxLevel ? towerMaxLevel : level
 			}
 		})
-		var wallMaxLevel = DataUtis.getBuildingMaxLevel("wall")
+		var wallMaxLevel = DataUtils.getBuildingMaxLevel("wall")
 		doc.wall.level = level > wallMaxLevel ? wallMaxLevel : level
 		while(doc.buildingEvents.length > 0){
 			doc.buildingEvents.pop()
@@ -294,7 +294,7 @@ pro.keep = function(uid, level, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 
-		var keepMaxLevel = DataUtis.getBuildingMaxLevel("keep")
+		var keepMaxLevel = DataUtils.getBuildingMaxLevel("keep")
 		doc.buildings["location_1"].level = level > keepMaxLevel ? keepMaxLevel : level
 
 		var events = []
@@ -790,8 +790,8 @@ pro.dragonskill = function(uid, dragonType, level, callback){
 		})
 		if(dragon && level >= 0){
 			_.each(dragon.skills, function(skill){
-				if(DataUtis.isDragonSkillUnlocked(dragon, skill.name)){
-					var maxLevel = DataUtis.getDragonSkillMaxLevel(skill)
+				if(DataUtils.isDragonSkillUnlocked(dragon, skill.name)){
+					var maxLevel = DataUtils.getDragonSkillMaxLevel(skill)
 					skill.level = maxLevel > level ? level : maxLevel
 				}
 			})
@@ -826,7 +826,7 @@ pro.dragonequipmentstar = function(uid, dragonType, star, callback){
 		if(dragon && star >= 0){
 			_.each(dragon.equipments, function(equipment){
 				if(!_.isEmpty(equipment.name)){
-					var maxStar = DataUtis.getDragonEquipmentMaxStar(equipment.name)
+					var maxStar = DataUtils.getDragonEquipmentMaxStar(equipment.name)
 					equipment.star = maxStar > star ? star : maxStar
 				}
 			})
@@ -859,10 +859,10 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 			if(_.isEqual(dragon.type.toLowerCase(), dragonType)) return true
 		})
 		if(dragon && star >= 0){
-			var maxStar = DataUtis.getDragonMaxStar()
+			var maxStar = DataUtils.getDragonMaxStar()
 			dragon.star = maxStar > star ? star : maxStar
-			var lowestLevel = DataUtis.getDragonLowestLevelOnStar(dragon)
-			var highestLevel = DataUtis.getDragonHighestLevelOnStar(dragon)
+			var lowestLevel = DataUtils.getDragonLowestLevelOnStar(dragon)
+			var highestLevel = DataUtils.getDragonHighestLevelOnStar(dragon)
 			if(dragon.level < lowestLevel) dragon.level = lowestLevel
 			if(dragon.level > highestLevel) dragon.level = highestLevel
 			_.each(dragon.equipments, function(equipment){
@@ -871,6 +871,10 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 				equipment.exp = 0
 				equipment.buffs = []
 			})
+			dragon.vitality = DataUtils.getDragonVitality(doc, dragon)
+			dragon.hp = dragon.vitality * 2
+			dragon.hpRefreshTime = Date.now()
+			dragon.strength = DataUtils.getDragonStrength(doc, dragon)
 		}
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){

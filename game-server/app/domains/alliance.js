@@ -287,6 +287,7 @@ var allianceSchema = new Schema({
 	}],
 	moonGateData:{
 		type:{
+			moonGateOwner:{type:String, required:true},
 			enemyAllianceId:{type:String, required:true},
 			ourTroops:[{
 				_id:false,

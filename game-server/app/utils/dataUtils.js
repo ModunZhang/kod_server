@@ -1057,7 +1057,7 @@ Utils.getTreatSoldierRequired = function(playerDoc, soldiers){
 }
 
 /**
- * 获取龙的最大活力值
+ * 获取龙的活力值
  * @param playerDoc
  * @param dragon
  * @returns {*}

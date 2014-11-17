@@ -114,16 +114,16 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon){
 	var attackDragonHpDecreased = null
 	var defenceDragonHpDecreased = null
 	if(attackDragonPower >= defenceDragonPower){
-		attackDragonHpDecreased = defenceDragonPower * 0.5 / attackDragon.strength
+		attackDragonHpDecreased = Math.round(defenceDragonPower * 0.5 / attackDragon.strength)
 		defenceDragonHpDecreased = Math.round(Math.sqrt(attackDragonPower * defenceDragonPower * 0.5 / defenceDragon.strength))
 	}else{
 		attackDragonHpDecreased = Math.round(Math.sqrt(attackDragonPower * defenceDragonPower * 0.5 / attackDragon.strength))
-		defenceDragonHpDecreased = attackDragonPower * 0.5 / defenceDragon.strength
+		defenceDragonHpDecreased = Math.round(attackDragonPower * 0.5 / defenceDragon.strength)
 	}
 	var response = {
-		attackDragonHpDecreased:attackDragonHpDecreased,
-		defenceDragonHpDecreased:defenceDragonHpDecreased,
-		fightResult:fightResult
+		attackDragonHpDecreased:attackDragonHpDecreased > attackDragon.hp ? attackDragon.hp : attackDragonHpDecreased,
+		defenceDragonHpDecreased:defenceDragonHpDecreased > defenceDragon.hp ? defenceDragon.hp : defenceDragonHpDecreased,
+		fightResult:attackDragonPower >= defenceDragonPower ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin
 	}
 	return response
 }
