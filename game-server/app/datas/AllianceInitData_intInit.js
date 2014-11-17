@@ -21,5 +21,5 @@ intInit["editAllianceTerrian"] = {
 }
 intInit["activeShrineStageEvent"] = {
 	type:"activeShrineStageEvent",
-	value:1800
+	value:180
 }
