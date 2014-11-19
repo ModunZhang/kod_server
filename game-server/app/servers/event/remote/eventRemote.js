@@ -120,7 +120,7 @@ var ExcuteTimeEvent = function(key, eventId){
 		if(_.isObject(e)){
 			errorLogger.error("handle eventRemote:ExcuteTimeEvent Error -----------------------------")
 			errorLogger.error(e.stack)
-			if(_.isEqual("production", self.app.get("env"))){
+			if("production" == self.app.get("env")){
 				errorMailLogger.error("handle eventRemote:ExcuteTimeEvent Error -----------------------------")
 				errorMailLogger.error(e.stack)
 			}

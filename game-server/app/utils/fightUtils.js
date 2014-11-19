@@ -64,7 +64,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 			soldierDamagedCount:attackDamagedSoldierCount,
 			soldierTreatedCount:attackTreatedSoldierCount,
 			morale:attackSoldier.morale,
-			moraleDecreased:attackMoraleDecreased,
+			moraleDecreased:attackMoraleDecreased > attackSoldier.morale ? attackSoldier.morale : attackMoraleDecreased,
 			isWin:attackTotalPower >= defenceTotalPower
 		})
 		defenceResults.push({
@@ -74,7 +74,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 			soldierDamagedCount:defenceDamagedSoldierCount,
 			soldierTreatedCount:defenceTreatedSoldierCount,
 			morale:defenceSoldier.morale,
-			moraleDecreased:dfenceMoraleDecreased,
+			moraleDecreased:dfenceMoraleDecreased > defenceSoldier.morale ? defenceSoldier.morale : dfenceMoraleDecreased,
 			isWin:attackTotalPower < defenceTotalPower
 		})
 		attackSoldier.round += 1
@@ -109,5 +109,36 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
  * @param defenceDragon
  */
 Utils.dragonToDragonFight = function(attackDragon, defenceDragon){
+	if(attackDragon.hp == 0){
+		return {
+			attackDragonHpDecreased:0,
+			defenceDragonHpDecreased:0,
+			fightResult:Consts.FightResult.DefenceWin
+		}
+	}
+	if(defenceDragon.hp == 0){
+		return {
+			attackDragonHpDecreased:0,
+			defenceDragonHpDecreased:0,
+			fightResult:Consts.FightResult.AttackWin
+		}
+	}
 
+	var attackDragonPower = attackDragon.strength * attackDragon.vitality
+	var defenceDragonPower = defenceDragon.strength * defenceDragon.vitality
+	var attackDragonHpDecreased = null
+	var defenceDragonHpDecreased = null
+	if(attackDragonPower >= defenceDragonPower){
+		attackDragonHpDecreased = Math.round(defenceDragonPower * 0.5 / attackDragon.strength)
+		defenceDragonHpDecreased = Math.round(Math.sqrt(attackDragonPower * defenceDragonPower * 0.5 / defenceDragon.strength))
+	}else{
+		attackDragonHpDecreased = Math.round(Math.sqrt(attackDragonPower * defenceDragonPower * 0.5 / attackDragon.strength))
+		defenceDragonHpDecreased = Math.round(attackDragonPower * 0.5 / defenceDragon.strength)
+	}
+	var response = {
+		attackDragonHpDecreased:attackDragonHpDecreased > attackDragon.hp ? attackDragon.hp : attackDragonHpDecreased,
+		defenceDragonHpDecreased:defenceDragonHpDecreased > defenceDragon.hp ? defenceDragon.hp : defenceDragonHpDecreased,
+		fightResult:attackDragonPower >= defenceDragonPower ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin
+	}
+	return response
 }

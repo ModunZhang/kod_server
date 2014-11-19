@@ -285,3 +285,8 @@ var FightUtils = require("../app/utils/fightUtils")
 //
 //var response = FightUtils.soldierToSoldierFight(attackSolders, 0.4, defenceSoldiers, 0.4)
 //console.log(response)
+//
+//var a = [1,3,2,4,6, 5]
+//console.log(_.sortBy(a, function(number){
+//	return -number
+//}))

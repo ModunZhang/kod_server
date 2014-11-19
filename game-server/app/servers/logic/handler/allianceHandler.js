@@ -539,3 +539,19 @@ pro.findAllianceToFight = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 行军到月门
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.marchToMoonGate = function(msg, session, next){
+	var dragonType = msg.dragonType
+	var soldiers = msg.soldiers
+	this.allianceService.marchToMoonGateAsync(session.uid, dragonType, soldiers).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

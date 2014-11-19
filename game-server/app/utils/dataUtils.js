@@ -1057,12 +1057,12 @@ Utils.getTreatSoldierRequired = function(playerDoc, soldiers){
 }
 
 /**
- * 获取龙的最大活力值
+ * 获取龙的活力值
  * @param playerDoc
  * @param dragon
  * @returns {*}
  */
-Utils.getDragonMaxVitality = function(playerDoc, dragon){
+Utils.getDragonVitality = function(playerDoc, dragon){
 	var config = DragonEyrie.dragonAttribute[dragon.star]
 	var vitality = config.initVitality + config.perLevelVitality * dragon.level
 	return vitality
@@ -1377,18 +1377,18 @@ Utils.getImposedCoin = function(playerDoc){
 
 /**
  * 获取建造联盟所消耗的宝石
- * @returns {gem|*|playerSchema.resources.gem|.resources.gem}
+ * @returns {*}
  */
 Utils.getGemByCreateAlliance = function(){
-	return AllianceInit.intInit.createAlliance.value
+	return AllianceInit.intInit.createAllianceGem.value
 }
 
 /**
  * 获取购买盟主职位所需要的宝石
- * @returns {resources.buyArchon.gem|*}
+ * @returns {*}
  */
 Utils.getGemByBuyAllianceArchon = function(){
-	return AllianceInit.intInit.buyArchon.value
+	return AllianceInit.intInit.buyArchonGem.value
 }
 
 /**
@@ -1575,18 +1575,18 @@ Utils.isAllianceVillageReachMaxLevel = function(allianceType, allianceLevel){
 
 /**
  * 获取编辑联盟基础信息消耗的宝石
- * @returns {resource.editAllianceBasicInfo.gem|*}
+ * @returns {*}
  */
 Utils.getEditAllianceBasicInfoGem = function(){
-	return AllianceInit.intInit.editAllianceBasicInfo.value
+	return AllianceInit.intInit.editAllianceBasicInfoGem.value
 }
 
 /**
  * 获取改变联盟地形所消耗的荣耀值
- * @returns {resource.editAllianceTerrian.honour|*}
+ * @returns {*}
  */
 Utils.getEditAllianceTerrianHonour = function(){
-	return AllianceInit.intInit.editAllianceTerrian.value
+	return AllianceInit.intInit.editAllianceTerrianHonour.value
 }
 
 /**
@@ -1700,7 +1700,7 @@ Utils.getSizeInAllianceMap = function(buildingType){
  * @returns {number}
  */
 Utils.getPlayerMarchTime = function(playerDoc, fromLocation, toLocation){
-	return 60 * 2
+	return 10
 }
 
 /**
@@ -1747,7 +1747,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
 	var event = {
 		id:ShortId.generate(),
 		stageName:stageName,
-		startTime:Date.now() + (AllianceInit.intInit.activeShrineStageEvent.value * 1000),
+		startTime:Date.now() + (AllianceInit.intInit.activeShrineStageEventTime.value * 1000),
 		playerTroops:[]
 	}
 	return event
@@ -1784,12 +1784,13 @@ Utils.getSoldierFightFixEffect = function(multiple){
 
 /**
  * 创建战斗用普通军队信息
+ * @param playerDoc
  * @param soldierName
  * @param soldierStar
  * @param soldierCount
  * @returns {*}
  */
-Utils.createNormalSoldierForFight = function(soldierName, soldierStar, soldierCount){
+Utils.createNormalSoldierForFight = function(playerDoc, soldierName, soldierStar, soldierCount){
 	var soldierFullKey = soldierName + "_" + soldierStar
 	var config = UnitConfig.normal[soldierFullKey]
 	var soldier = {
@@ -1815,11 +1816,12 @@ Utils.createNormalSoldierForFight = function(soldierName, soldierStar, soldierCo
 
 /**
  * 创建战斗用特殊军队信息
+ * @param playerDoc
  * @param soldierName
  * @param soldierCount
  * @returns {*}
  */
-Utils.createSpecialSoldierForFight = function(soldierName, soldierCount){
+Utils.createSpecialSoldierForFight = function(playerDoc, soldierName, soldierCount){
 	var config = UnitConfig.special[soldierName]
 	var soldier = {
 		name:soldierName,
@@ -2058,9 +2060,124 @@ Utils.getAllianceShrineStageFightHoner = function(stageName, fightStar){
 }
 
 /**
- * 获取联盟战准备时间
+ * 获取联盟战准备期总时间
  * @returns {number}
  */
 Utils.getAllianceFightPrepareTime = function(){
-	return 30
+	return AllianceInit.intInit.allianceFightPrepareTime.value * 1000
+}
+
+/**
+ * 获取联盟战战争期总时间
+ * @returns {number}
+ */
+Utils.getAllianceFightTotalFightTime = function(){
+	return AllianceInit.intInit.allianceFightTotalFightTime.value * 1000
+}
+
+/**
+ * 获取联盟战单场战斗所需的时间
+ * @returns {number}
+ */
+Utils.getAllianceFightSecondsPerFight = function(){
+	return AllianceInit.intInit.allianceFightTimePerFight.value * 1000
+}
+
+/**
+ * 更新当前战斗的玩家的部队兵力信息
+ * @param attackTroop
+ * @param defenceTroop
+ * @param soldierFightResult
+ */
+Utils.updateAllianceFightCurrentTroops = function(attackTroop, defenceTroop, soldierFightResult){
+	var self = this
+	var attackSoldierDatas = {}
+	var defenceSoldierDatas = {}
+	var attackKill = 0
+	var defenceKill = 0
+	var soldierConfig = null
+	var kill = null
+	_.each(soldierFightResult.attackRoundDatas, function(attackRoundData){
+		var soldierName = attackRoundData.soldierName
+		if(!_.isObject(attackSoldierDatas[soldierName])){
+			attackSoldierDatas[soldierName] = {
+				soldierDamagedCount:0,
+				soldierTreatedCount:0
+			}
+		}
+		var soldierData = attackSoldierDatas[soldierName]
+		soldierData.soldierDamagedCount += attackRoundData.soldierDamagedCount
+		soldierData.soldierTreatedCount += attackRoundData.soldierTreatedCount
+
+		if(self.hasNormalSoldier(soldierName)){
+			soldierConfig = UnitConfig.normal[soldierName + "_" + attackRoundData.soldierStar]
+			kill = attackRoundData.soldierDamagedCount * soldierConfig.citizen
+			defenceKill += kill
+		}else{
+			soldierConfig = UnitConfig.special[soldierName]
+			kill = attackRoundData.soldierDamagedCount * soldierConfig.citizen
+			defenceKill += kill
+		}
+	})
+	defenceTroop.kill += defenceKill
+	_.each(attackTroop.soldiers, function(soldier){
+		var soldierData = attackSoldierDatas[soldier.name]
+		if(_.isObject(soldierData)){
+			soldier.count -= soldierData.soldierDamagedCount
+			var treatSoldier = _.find(attackTroop.treatSoldiers, function(theTreatSoldier){
+				return _.isEqual(theTreatSoldier.name, soldier.name)
+			})
+			if(_.isObject(treatSoldier)){
+				treatSoldier.count += soldierData.soldierTreatedCount
+			}else{
+				treatSoldier = {
+					name:soldier.name,
+					count:soldierData.soldierTreatedCount
+				}
+				attackTroop.treatSoldiers.push(treatSoldier)
+			}
+		}
+	})
+
+	_.each(soldierFightResult.defenceRoundDatas, function(defenceRoundData){
+		var soldierName = defenceRoundData.soldierName
+		if(!_.isObject(defenceSoldierDatas[soldierName])){
+			defenceSoldierDatas[soldierName] = {
+				soldierDamagedCount:0,
+				soldierTreatedCount:0
+			}
+		}
+		var soldierData = defenceSoldierDatas[soldierName]
+		soldierData.soldierDamagedCount += defenceRoundData.soldierDamagedCount
+		soldierData.soldierTreatedCount += defenceRoundData.soldierTreatedCount
+
+		if(self.hasNormalSoldier(soldierName)){
+			soldierConfig = UnitConfig.normal[soldierName + "_" + defenceRoundData.soldierStar]
+			kill = defenceRoundData.soldierDamagedCount * soldierConfig.citizen
+			attackKill += kill
+		}else{
+			soldierConfig = UnitConfig.special[soldierName]
+			kill = defenceRoundData.soldierDamagedCount * soldierConfig.citizen
+			attackKill += kill
+		}
+	})
+	attackTroop.kill += attackKill
+	_.each(defenceTroop.soldiers, function(soldier){
+		var soldierData = defenceSoldierDatas[soldier.name]
+		if(_.isObject(soldierData)){
+			soldier.count -= soldierData.soldierDamagedCount
+			var treatSoldier = _.find(defenceTroop.treatSoldiers, function(theTreatSoldier){
+				return _.isEqual(theTreatSoldier.name, soldier.name)
+			})
+			if(_.isObject(treatSoldier)){
+				treatSoldier.count += soldierData.soldierTreatedCount
+			}else{
+				treatSoldier = {
+					name:soldier.name,
+					count:soldierData.soldierTreatedCount
+				}
+				defenceTroop.treatSoldiers.push(treatSoldier)
+			}
+		}
+	})
 }

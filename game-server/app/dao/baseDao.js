@@ -27,7 +27,7 @@ var BaseDao = function(redis, scripto, modelName, model, indexs, env){
 	this.indexs = indexs
 	this.maxChangedCount = 1
 	this.env = env
-	this.tryTimes = 10 * 5
+	this.tryTimes = 10
 }
 
 module.exports = BaseDao
@@ -75,9 +75,14 @@ pro.create = function(doc, callback){
  * find obj from redis
  * @param index
  * @param value
+ * @param forceFind
  * @param callback
  */
-pro.findByIndex = function(index, value, callback){
+pro.findByIndex = function(index, value, forceFind, callback){
+	if(arguments.length <=3){
+		callback = forceFind
+		forceFind = false
+	}
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
@@ -91,6 +96,7 @@ pro.findByIndex = function(index, value, callback){
 	}
 	var self = this
 	var tryTimes = 0
+	var totalTryTimes = forceFind ? self.tryTimes * 10 : self.tryTimes
 	var func = function(index, value){
 		self.scripto.runAsync("findByIndex", [self.modelName, index, value, Date.now()]).then(function(docString){
 			if(_.isEqual(docString, LOCKED)){
@@ -103,7 +109,7 @@ pro.findByIndex = function(index, value, callback){
 						errorMailLogger.error("errorInfo->modelName:%s, index:%s, value:%s is locked", self.modelName, index, value)
 					}
 				}
-				if(tryTimes <= self.tryTimes){
+				if(tryTimes <= totalTryTimes){
 					setTimeout(func, 100, index, value)
 				}else{
 					errorLogger.error("handle baseDao:findByIndex Error -----------------------------")
@@ -135,9 +141,14 @@ pro.findByIndex = function(index, value, callback){
 /**
  * find obj by id
  * @param id
+ * @param forceFind
  * @param callback
  */
-pro.findById = function(id, callback){
+pro.findById = function(id, forceFind, callback){
+	if(arguments.length <=2){
+		callback = forceFind
+		forceFind = false
+	}
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
@@ -147,6 +158,7 @@ pro.findById = function(id, callback){
 	}
 	var self = this
 	var tryTimes = 0
+	var totalTryTimes = forceFind ? self.tryTimes * 10 : self.tryTimes
 	var func = function(id){
 		self.scripto.runAsync("findById", [self.modelName, id, Date.now()]).then(function(docString){
 			if(_.isEqual(docString, LOCKED)){
@@ -159,7 +171,7 @@ pro.findById = function(id, callback){
 						errorMailLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
 					}
 				}
-				if(tryTimes <= self.tryTimes){
+				if(tryTimes <= totalTryTimes){
 					setTimeout(func, 100, id)
 				}else{
 					errorLogger.error("handle baseDao:findById Error -----------------------------")
@@ -312,7 +324,7 @@ pro.loadAll = function(callback){
 	var docs = null
 	this.model.findAsync({}).then(function(theDocs){
 		docs = theDocs
-		if(docs.length === 0) return Promise.resolve()
+		if(docs.length == 0) return Promise.resolve()
 		var docStrings = []
 		_.each(docs, function(doc){
 			var docString = JSON.stringify(doc)

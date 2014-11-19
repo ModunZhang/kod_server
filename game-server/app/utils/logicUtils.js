@@ -1420,6 +1420,36 @@ Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEv
 }
 
 /**
+ * 创建联盟月门行军事件
+ * @param playerDoc
+ * @param allianceDoc
+ * @param dragonType
+ * @param soldiers
+ * @returns {*}
+ */
+Utils.createAllianceMoonGateMarchEvent = function(playerDoc, allianceDoc, dragonType, soldiers){
+	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var moonGateLocation = allianceDoc.buildings["moonGate"].location
+	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, playerLocation, moonGateLocation)
+	var event = {
+		id:ShortId.generate(),
+		playerData:{
+			id:playerDoc._id,
+			name:playerDoc.basicInfo.name,
+			level:playerDoc.basicInfo.level,
+			cityName:playerDoc.basicInfo.cityName,
+			dragon:{
+				type:dragonType
+			},
+			soldiers:soldiers
+		},
+		startTime:Date.now(),
+		arriveTime:Date.now() + (marchSeconds * 1000)
+	}
+	return event
+}
+
+/**
  * 玩家从圣地回城事件
  * @param playerDoc
  * @param allianceDoc
@@ -1434,6 +1464,40 @@ Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, dr
 	var shrineLocation = allianceDoc.buildings["shrine"].location
 	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, shrineLocation, playerLocation)
+	var event = {
+		id:ShortId.generate(),
+		playerData:{
+			id:playerDoc._id,
+			cityName:playerDoc.basicInfo.cityName,
+			dragon:{
+				type:dragonType
+			},
+			leftSoldiers:leftsoldiers,
+			treatSoldiers:treatSoldiers,
+			rewards:rewards,
+			kill:kill
+		},
+		startTime:Date.now(),
+		arriveTime:Date.now() + (marchSeconds * 1000)
+	}
+	return event
+}
+
+/**
+ * 玩家从月门回城事件
+ * @param playerDoc
+ * @param allianceDoc
+ * @param dragonType
+ * @param leftsoldiers
+ * @param treatSoldiers
+ * @param rewards
+ * @param kill
+ * @returns {*}
+ */
+Utils.createAllianceMoonGateMarchReturnEvent = function(playerDoc, allianceDoc, dragonType, leftsoldiers, treatSoldiers, rewards, kill){
+	var moonGateLocation = allianceDoc.buildings["moonGate"].location
+	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, moonGateLocation, playerLocation)
 	var event = {
 		id:ShortId.generate(),
 		playerData:{
@@ -1486,19 +1550,46 @@ Utils.getPlayerDragonDataFromAllianceShrineStageEvent = function(playerId, event
 }
 
 /**
- * 某联盟圣地事件中是否包含某个玩家的军队
+ * 圣地指定关卡是否已经有玩家部队存在
+ * @param allianceDoc
+ * @param shrineEvent
  * @param playerId
- * @param event
  * @returns {boolean}
  */
-Utils.isAllianceShrineStageEventTroopsContainsPlayer = function(playerId, event){
-	for(var i = 0; i < event.playerTroops.length; i++){
-		var playerTroop = event.playerTroops[i]
+Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineEvent, playerId){
+	for(var i = 0; i < allianceDoc.shrineMarchEvents.length; i ++){
+		var marchEvent = allianceDoc.shrineMarchEvents[i]
+		if(_.isEqual(marchEvent.shrineEventId, shrineEvent.id) && _.isEqual(marchEvent.playerData.id, playerId)) return true
+	}
+	for(i = 0; i < shrineEvent.playerTroops.length; i++){
+		var playerTroop = shrineEvent.playerTroops[i]
 		if(_.isEqual(playerTroop.id, playerId)) return true
 	}
 	return false
 }
 
+/**
+ * 月门是否已经有玩家的部队存在
+ * @param allianceDoc
+ * @param playerId
+ * @returns {boolean}
+ */
+Utils.isPlayerHasTroopMarchToMoonGate = function(allianceDoc, playerId){
+	for(var i = 0; i < allianceDoc.moonGateMarchEvents.length; i ++){
+		var marchEvent = allianceDoc.moonGateMarchEvents[i]
+		if(_.isEqual(marchEvent.playerData.id, playerId)) return true
+	}
+	var playerTroop = null
+	for(i = 0; i < allianceDoc.moonGateData.ourTroops; i++){
+		playerTroop = allianceDoc.moonGateData.ourTroops[i]
+		if(_.isEqual(playerTroop.id, playerId)) return true
+	}
+	for(var i = 0; i < allianceDoc.moonGateData.currentFightTroops; i ++){
+		playerTroop = allianceDoc.moonGateData.currentFightTroops[i].our
+		if(_.isEqual(playerTroop.id, playerId)) return true
+	}
+	return false
+}
 
 /**
  * 获取联盟某关卡的历史星级数据
@@ -1514,4 +1605,46 @@ Utils.getAllianceShrineStageData = function(allianceDoc, stageName){
 		}
 	}
 	return null
+}
+
+/**
+ * 获取所有部队平均战斗力
+ * @param playerTroops
+ * @returns {number}
+ */
+Utils.getPlayerTroopsAvgPower = function(playerTroops){
+	var totalPower = 0
+	_.each(playerTroops, function(playerTroop){
+		_.each(playerTroop.soldiers, function(soldier){
+			totalPower += soldier.power * soldier.totalCount
+		})
+	})
+	var avgPower = playerTroops.length > 0 ? Math.floor(totalPower/playerTroops.length) : 0
+	return avgPower
+}
+
+/**
+ * 修复联盟圣地战战报中的未参战的玩家的数据
+ * @param playerTroops
+ * @param playerDatas
+ * @return {*}
+ */
+Utils.fixAllianceShrineStagePlayerData = function(playerTroops, playerDatas){
+	var playerIds = {}
+	_.each(playerTroops, function(playerTroop){
+		playerIds[playerTroop.id] = playerTroop.name
+	})
+	_.each(playerDatas, function(playerData){
+		delete playerIds[playerData.id]
+	})
+	_.each(playerIds, function(playerName, playerId){
+		var playerData = {
+			id:playerId,
+			name:playerName,
+			kill:0,
+			rewards:[]
+		}
+		playerDatas.push(playerData)
+	})
+	return playerDatas
 }
