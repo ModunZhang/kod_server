@@ -203,7 +203,6 @@ var allianceSchema = new Schema({
 		}],
 		fightDatas:[{
 			_id:false,
-			round:{type:Number, required:true},
 			roundDatas:[{
 				_id:false,
 				playerId:{type:String, required:true},
@@ -348,6 +347,7 @@ var allianceSchema = new Schema({
 				kill:{type:Number, required:true}
 			}],
 			currentFightTroops:{
+				nextFightTime:{type:Number, required:true},
 				our:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
@@ -447,6 +447,19 @@ var allianceSchema = new Schema({
 		},
 		required:false
 	},
+	allianceFightReports:[{
+		_id:false,
+		fightResult:{type:String, required:true},
+		ourAlliance:{
+			kill:{type:Number, required:true}
+		},
+		enemyAlliance:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			tag:{type:String, required:true},
+			kill:{type:Number, required:true}
+		}
+	}],
 	moonGateMarchEvents:[{
 		_id:false,
 		id:{type:String, required:true},
@@ -496,19 +509,6 @@ var allianceSchema = new Schema({
 		},
 		startTime:{type:Number, required:true},
 		arriveTime:{type:Number, required:true}
-	}],
-	allianceFightReports:[{
-		_id:false,
-		fightResult:{type:String, required:true},
-		ourAlliance:{
-			kill:{type:Number, required:true}
-		},
-		enemyAlliance:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			tag:{type:String, required:true},
-			kill:{type:Number, required:true}
-		}
 	}]
 })
 

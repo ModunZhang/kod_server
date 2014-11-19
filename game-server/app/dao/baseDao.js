@@ -324,7 +324,7 @@ pro.loadAll = function(callback){
 	var docs = null
 	this.model.findAsync({}).then(function(theDocs){
 		docs = theDocs
-		if(docs.length === 0) return Promise.resolve()
+		if(docs.length == 0) return Promise.resolve()
 		var docStrings = []
 		_.each(docs, function(doc){
 			var docString = JSON.stringify(doc)

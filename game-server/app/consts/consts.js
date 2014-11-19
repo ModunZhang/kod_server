@@ -30,7 +30,6 @@ module.exports = {
 	DragonStatus:{
 		Free:"free",
 		March:"march",
-		Fight:"fight",
 		Defenc:"defence"
 	},
 	DragonEquipmentCategory:["crown", "armguardLeft", "armguardRight", "chest", "sting", "orb"],
@@ -58,6 +57,14 @@ module.exports = {
 	FightResult:{
 		AttackWin:"attackWin",
 		DefenceWin:"defenceWin"
+	},
+	AllianceFightResult:{
+		OurWin:"ourWin",
+		EnemyWin:"enemyWin"
+	},
+	AllianceMoonGateOwner:{
+		Our:"our",
+		Enemy:"enemy"
 	},
 	AllianceLanguage:{
 		All:"all",

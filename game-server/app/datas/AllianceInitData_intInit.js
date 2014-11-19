@@ -21,7 +21,7 @@ intInit["editAllianceTerrianHonour"] = {
 }
 intInit["activeShrineStageEventTime"] = {
 	type:"activeShrineStageEventTime",
-	value:15
+	value:60
 }
 intInit["allianceFightPrepareTime"] = {
 	type:"allianceFightPrepareTime",
@@ -29,7 +29,7 @@ intInit["allianceFightPrepareTime"] = {
 }
 intInit["allianceFightTotalFightTime"] = {
 	type:"allianceFightTotalFightTime",
-	value:120
+	value:30
 }
 intInit["allianceFightTimePerFight"] = {
 	type:"allianceFightTimePerFight",

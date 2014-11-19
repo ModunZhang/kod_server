@@ -2082,3 +2082,102 @@ Utils.getAllianceFightTotalFightTime = function(){
 Utils.getAllianceFightSecondsPerFight = function(){
 	return AllianceInit.intInit.allianceFightTimePerFight.value * 1000
 }
+
+/**
+ * 更新当前战斗的玩家的部队兵力信息
+ * @param attackTroop
+ * @param defenceTroop
+ * @param soldierFightResult
+ */
+Utils.updateAllianceFightCurrentTroops = function(attackTroop, defenceTroop, soldierFightResult){
+	var self = this
+	var attackSoldierDatas = {}
+	var defenceSoldierDatas = {}
+	var attackKill = 0
+	var defenceKill = 0
+	var soldierConfig = null
+	var kill = null
+	_.each(soldierFightResult.attackRoundDatas, function(attackRoundData){
+		var soldierName = attackRoundData.soldierName
+		if(!_.isObject(attackSoldierDatas[soldierName])){
+			attackSoldierDatas[soldierName] = {
+				soldierDamagedCount:0,
+				soldierTreatedCount:0
+			}
+		}
+		var soldierData = attackSoldierDatas[soldierName]
+		soldierData.soldierDamagedCount += attackRoundData.soldierDamagedCount
+		soldierData.soldierTreatedCount += attackRoundData.soldierTreatedCount
+
+		if(self.hasNormalSoldier(soldierName)){
+			soldierConfig = UnitConfig.normal[soldierName + "_" + attackRoundData.soldierStar]
+			kill = attackRoundData.soldierDamagedCount * soldierConfig.citizen
+			defenceKill += kill
+		}else{
+			soldierConfig = UnitConfig.special[soldierName]
+			kill = attackRoundData.soldierDamagedCount * soldierConfig.citizen
+			defenceKill += kill
+		}
+	})
+	defenceTroop.kill += defenceKill
+	_.each(attackTroop.soldiers, function(soldier){
+		var soldierData = attackSoldierDatas[soldier.name]
+		if(_.isObject(soldierData)){
+			soldier.count -= soldierData.soldierDamagedCount
+			var treatSoldier = _.find(attackTroop.treatSoldiers, function(theTreatSoldier){
+				return _.isEqual(theTreatSoldier.name, soldier.name)
+			})
+			if(_.isObject(treatSoldier)){
+				treatSoldier.count += soldierData.soldierTreatedCount
+			}else{
+				treatSoldier = {
+					name:soldier.name,
+					count:soldierData.soldierTreatedCount
+				}
+				attackTroop.treatSoldiers.push(treatSoldier)
+			}
+		}
+	})
+
+	_.each(soldierFightResult.defenceRoundDatas, function(defenceRoundData){
+		var soldierName = defenceRoundData.soldierName
+		if(!_.isObject(defenceSoldierDatas[soldierName])){
+			defenceSoldierDatas[soldierName] = {
+				soldierDamagedCount:0,
+				soldierTreatedCount:0
+			}
+		}
+		var soldierData = defenceSoldierDatas[soldierName]
+		soldierData.soldierDamagedCount += defenceRoundData.soldierDamagedCount
+		soldierData.soldierTreatedCount += defenceRoundData.soldierTreatedCount
+
+		if(self.hasNormalSoldier(soldierName)){
+			soldierConfig = UnitConfig.normal[soldierName + "_" + defenceRoundData.soldierStar]
+			kill = defenceRoundData.soldierDamagedCount * soldierConfig.citizen
+			attackKill += kill
+		}else{
+			soldierConfig = UnitConfig.special[soldierName]
+			kill = defenceRoundData.soldierDamagedCount * soldierConfig.citizen
+			attackKill += kill
+		}
+	})
+	attackTroop.kill += attackKill
+	_.each(defenceTroop.soldiers, function(soldier){
+		var soldierData = defenceSoldierDatas[soldier.name]
+		if(_.isObject(soldierData)){
+			soldier.count -= soldierData.soldierDamagedCount
+			var treatSoldier = _.find(defenceTroop.treatSoldiers, function(theTreatSoldier){
+				return _.isEqual(theTreatSoldier.name, soldier.name)
+			})
+			if(_.isObject(treatSoldier)){
+				treatSoldier.count += soldierData.soldierTreatedCount
+			}else{
+				treatSoldier = {
+					name:soldier.name,
+					count:soldierData.soldierTreatedCount
+				}
+				defenceTroop.treatSoldiers.push(treatSoldier)
+			}
+		}
+	})
+}

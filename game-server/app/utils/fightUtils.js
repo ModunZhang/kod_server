@@ -64,7 +64,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 			soldierDamagedCount:attackDamagedSoldierCount,
 			soldierTreatedCount:attackTreatedSoldierCount,
 			morale:attackSoldier.morale,
-			moraleDecreased:attackMoraleDecreased,
+			moraleDecreased:attackMoraleDecreased > attackSoldier.morale ? attackSoldier.morale : attackMoraleDecreased,
 			isWin:attackTotalPower >= defenceTotalPower
 		})
 		defenceResults.push({
@@ -74,7 +74,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 			soldierDamagedCount:defenceDamagedSoldierCount,
 			soldierTreatedCount:defenceTreatedSoldierCount,
 			morale:defenceSoldier.morale,
-			moraleDecreased:dfenceMoraleDecreased,
+			moraleDecreased:dfenceMoraleDecreased > defenceSoldier.morale ? defenceSoldier.morale : dfenceMoraleDecreased,
 			isWin:attackTotalPower < defenceTotalPower
 		})
 		attackSoldier.round += 1
@@ -109,6 +109,21 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
  * @param defenceDragon
  */
 Utils.dragonToDragonFight = function(attackDragon, defenceDragon){
+	if(attackDragon.hp == 0){
+		return {
+			attackDragonHpDecreased:0,
+			defenceDragonHpDecreased:0,
+			fightResult:Consts.FightResult.DefenceWin
+		}
+	}
+	if(defenceDragon.hp == 0){
+		return {
+			attackDragonHpDecreased:0,
+			defenceDragonHpDecreased:0,
+			fightResult:Consts.FightResult.AttackWin
+		}
+	}
+
 	var attackDragonPower = attackDragon.strength * attackDragon.vitality
 	var defenceDragonPower = defenceDragon.strength * defenceDragon.vitality
 	var attackDragonHpDecreased = null

@@ -176,7 +176,7 @@ app.configure("production|development", "time", function(){
 app.set('errorHandler', function(err, msg, resp, session, opts, cb){
 	errorLogger.error("handle app:Error-----------------------------")
 	errorLogger.error(err.stack)
-	if(_.isEqual("production", app.get("env"))){
+	if("production" == app.get("env")){
 		errorMailLogger.error("handle app:Error-----------------------------")
 		errorMailLogger.error(err.stack)
 	}
@@ -189,7 +189,7 @@ app.set('errorHandler', function(err, msg, resp, session, opts, cb){
 app.set('globalErrorHandler', function(err, msg, resp, session, opts, cb){
 	errorLogger.error("handle app:globalError-----------------------------")
 	errorLogger.error(err.stack)
-	if(_.isEqual("production", app.get("env"))){
+	if("production" == app.get("env")){
 		errorMailLogger.error("handle app:globalError-----------------------------")
 		errorMailLogger.error(err.stack)
 	}
@@ -201,7 +201,7 @@ app.start()
 process.on("uncaughtException", function(err){
 	errorLogger.error("handle app:uncaughtError-----------------------------")
 	errorLogger.error(err.stack)
-	if(_.isEqual("production", app.get("env"))){
+	if("production" == app.get("env")){
 		errorMailLogger.error("handle app:uncaughtError-----------------------------")
 		errorMailLogger.error(err.stack)
 	}

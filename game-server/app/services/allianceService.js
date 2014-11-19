@@ -3713,14 +3713,14 @@ pro.findAllianceToFight = function(playerId, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc, true])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, defenceAllianceDoc, true])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime])
-		var ourAllianceData = {}
-		ourAllianceData.basicInfo = attackAllianceDoc.basicInfo
-		ourAllianceData.moonGateData = attackAllianceDoc.moonGateData
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, ourAllianceData])
-		var enemyAllianceData = {}
-		enemyAllianceData.basicInfo = defenceAllianceDoc.basicInfo
-		enemyAllianceData.moonGateData = defenceAllianceDoc.moonGateData
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, enemyAllianceData])
+		var attackAllianceData = {}
+		attackAllianceData.basicInfo = attackAllianceDoc.basicInfo
+		attackAllianceData.moonGateData = attackAllianceDoc.moonGateData
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
+		var defenceAllianceData = {}
+		defenceAllianceData.basicInfo = defenceAllianceDoc.basicInfo
+		defenceAllianceData.moonGateData = defenceAllianceDoc.moonGateData
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -3931,12 +3931,20 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		defenceAllianceDoc = doc_2
-		return self.timeEventService.onAllianceFightStatusChangedAsync(attackAllianceDoc, defenceAllianceDoc).then(function(params){
-			updateFuncs = updateFuncs.concat(params.updateFuncs)
-			eventFuncs = eventFuncs.concat(params.eventFuncs)
-			pushFuncs = pushFuncs.concat(params.pushFuncs)
-			return Promise.resolve()
-		})
+		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare)){
+			return self.timeEventService.onAllianceFightPrepareAsync(attackAllianceDoc, defenceAllianceDoc)
+		}else if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight) && attackAllianceDoc.basicInfo.statusFinishTime > Date.now()){
+			return self.timeEventService.onAllianceFightFightingAsync(attackAllianceDoc, defenceAllianceDoc)
+		}else if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight) && attackAllianceDoc.basicInfo.statusFinishTime <= Date.now()){
+			return self.timeEventService.onAllianceFightFightFinishedAsync(attackAllianceDoc, defenceAllianceDoc)
+		}else{
+			return Promise.reject(new Error("非法的联盟状态"))
+		}
+	}).then(function(params){
+		updateFuncs = updateFuncs.concat(params.updateFuncs)
+		eventFuncs = eventFuncs.concat(params.eventFuncs)
+		pushFuncs = pushFuncs.concat(params.pushFuncs)
+		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
