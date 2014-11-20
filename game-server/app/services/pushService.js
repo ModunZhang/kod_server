@@ -401,6 +401,12 @@ pro.onGetSavedMailsSuccess = function(playerDoc, fromIndex, callback){
 	this.pushToPlayer(playerDoc, Events.player.onGetSavedMailsSuccess, data, callback)
 }
 
+/**
+ * 获取联盟简单数据成功
+ * @param playerDoc
+ * @param allianceDoc
+ * @param callback
+ */
 pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, callback){
 	var allianceData = {}
 	var members = []
@@ -408,12 +414,30 @@ pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, callback){
 		members.push({
 			id:member.id,
 			name:member.name,
+			level:member.level,
+			keepLevel:member.keepLevel,
+			wallLevel:member.wallLevel,
+			wallHp:member.wallHp,
+			status:member.status,
+			helpTroopsCount:member.helpTroopsCount,
 			location:member.location
 		})
 	})
+	allianceData._id = allianceDoc._id
+	allianceData.basicInfo = {
+		name:allianceDoc.basicInfo.name,
+		tag:allianceDoc.basicInfo.tag,
+		terrain:allianceDoc.basicInfo.terrain,
+		flag:allianceDoc.basicInfo.flag
+	}
 	allianceData.members = members
 	allianceData.buildings = allianceDoc.members
-
+	allianceData.villages = allianceDoc.villages
+	allianceData.mapObjects = allianceDoc.mapObjects
+	allianceData.shrineMarchEvents = allianceDoc.shrineMarchEvents
+	allianceData.shrineMarchReturnEvents = allianceDoc.shrineMarchReturnEvents
+	allianceData.moonGateMarchEvents = allianceDoc.moonGateMarchEvents
+	allianceData.moonGateMarchReturnEvents = allianceDoc.moonGateMarchReturnEvents
 
 	this.pushToPlayer(playerDoc, Events.player.onGetAllianceViewDataSuccess, allianceData, callback)
 }

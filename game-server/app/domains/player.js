@@ -12,6 +12,7 @@ var Consts = require("../consts/consts")
 var GameDatas = require("../datas/GameDatas")
 
 var BuildingInitData = GameDatas.Buildings.buildings
+var BuildingFunction = GameDatas.BuildingFunction
 var ResourceInitData = GameDatas.PlayerInitData.resources[1]
 var MaterialInitData = GameDatas.PlayerInitData.materials[1]
 var SoldierMaterialInitData = GameDatas.PlayerInitData.soldierMaterials[1]
@@ -126,7 +127,8 @@ var playerSchema = new Schema({
 		coin:{type:Number, required:true, default:ResourceInitData.coin},
 		cart:{type:Number, required:true, default:ResourceInitData.cart},
 		energy:{type:Number, required:true, default:ResourceInitData.energy},
-		blood:{type:Number, required:true, default:ResourceInitData.blood}
+		blood:{type:Number, required:true, default:ResourceInitData.blood},
+		wallHp:{type:Number, required:true, default:BuildingFunction.wall[1].wallHp}
 	},
 	alliance:{
 		type:{

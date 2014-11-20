@@ -4252,7 +4252,12 @@ pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
+	if(!_.isString(targetAllianceId)){
+		callback(new Error("targetAllianceId 不合法"))
+		return
+	}
 
+	var self = this
 	var playerDoc = null
 	var allianceDoc = null
 	var pushFuncs = []
@@ -4267,7 +4272,9 @@ pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
 		allianceDoc = doc
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-
+		pushFuncs.push([self.pushService, self.pushService.onGetAllianceViewDataSuccessAsync, playerDoc, allianceDoc])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
@@ -4276,6 +4283,9 @@ pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
 		callback()
 	}).catch(function(e){
 		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
 		}

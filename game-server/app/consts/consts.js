@@ -17,6 +17,10 @@ module.exports = {
 		Tower:"tower",
 		Wall:"wall"
 	},
+	PlayerStatus:{
+		Normal:"normal",
+		Rout:"rout"
+	},
 	NormalSoldierType:{
 		swordsman:"swordsman",
 		sentinel:"sentinel",

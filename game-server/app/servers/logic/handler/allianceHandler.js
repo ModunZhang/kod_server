@@ -583,3 +583,18 @@ pro.challengeMoonGateEnemyTroop = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 获取联盟简单数据
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getAllianceViewData = function(msg, session, next){
+	var targetAllianceId = msg.targetAllianceId
+	this.allianceService.getAllianceViewDataAsync(session.uid, targetAllianceId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

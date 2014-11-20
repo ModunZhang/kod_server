@@ -283,6 +283,8 @@ Utils.getPlayerResources = function(playerDoc){
 			resources[key] = self.getPlayerCitizen(playerDoc)
 		}else if(_.isEqual("energy", key)){
 			resources[key] = self.getPlayerEnergy(playerDoc)
+		}else if(_.isEqual("wallHp", key)){
+			resources[key] = self.getPlayerWallHp(playerDoc)
 		}else{
 			resources[key] = playerDoc.resources[key]
 		}
@@ -427,6 +429,27 @@ Utils.getPlayerEnergy = function(playerDoc){
 	var output = Math.floor(totalSecond * totalPerSecond)
 	var totalEnergy = playerDoc.resources["energy"] + output
 	return totalEnergy > energyLimit ? energyLimit : totalEnergy
+}
+
+/**
+ * 获取玩家城墙血量
+ * @param playerDoc
+ */
+Utils.getPlayerWallHp = function(playerDoc){
+	var building = playerDoc.wall
+	if(building.level < 1) return playerDoc.resources["wallHp"]
+
+	var config = BuildingFunction.wall[building.level]
+	var hpLimit = config.wallHp
+	if(hpLimit <= playerDoc.resources["wallHp"]){
+		return hpLimit
+	}
+
+	var totalPerSecond = config.wallRecovery / 60 / 60
+	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
+	var output = Math.floor(totalSecond * totalPerSecond)
+	var totalHp = playerDoc.resources["wallHp"] + output
+	return totalHp > hpLimit ? hpLimit : totalHp
 }
 
 /**
