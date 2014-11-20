@@ -401,6 +401,22 @@ pro.onGetSavedMailsSuccess = function(playerDoc, fromIndex, callback){
 	this.pushToPlayer(playerDoc, Events.player.onGetSavedMailsSuccess, data, callback)
 }
 
+pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, callback){
+	var allianceData = {}
+	var members = []
+	_.each(allianceDoc.members, function(member){
+		members.push({
+			id:member.id,
+			name:member.name,
+			location:member.location
+		})
+	})
+	allianceData.members = members
+	allianceData.buildings = allianceDoc.members
+
+
+	this.pushToPlayer(playerDoc, Events.player.onGetAllianceViewDataSuccess, allianceData, callback)
+}
 
 /**
  * 推送联盟数据给玩家

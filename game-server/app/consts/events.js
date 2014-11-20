@@ -25,7 +25,9 @@ module.exports = {
 		onGetCanDirectJoinAlliancesSuccess:"onGetCanDirectJoinAlliancesSuccess",
 		onGetMailsSuccess:"onGetMailsSuccess",
 		onGetSendMailsSuccess:"onGetSendMailsSuccess",
-		onGetSavedMailsSuccess:"onGetSavedMailsSuccess"
+		onGetSavedMailsSuccess:"onGetSavedMailsSuccess",
+		onGetAllianceViewDataSuccess:"onGetAllianceViewDataSuccess",
+		onGetPlayerViewDataSuccess:"onGetPlayerViewDataSuccess"
 	},
 	alliance:{
 		onAllianceDataChanged:"onAllianceDataChanged"

@@ -4239,6 +4239,67 @@ pro.challengeMoonGateEnemyTroop = function(playerId, callback){
 }
 
 /**
+ * 获取联盟简单数据
+ * @param playerId
+ * @param targetAllianceId
+ * @param callback
+ */
+pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+
+	var playerDoc = null
+	var allianceDoc = null
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+		return self.allianceDao.findByIdAsync(targetAllianceId)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		allianceDoc = doc
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
+
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 获取玩家简单数据
+ * @param playerId
+ * @param targetPlayerId
+ * @param callback
+ */
+pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
+
+}
+
+/**
  * 到达指定时间时,触发的消息
  * @param allianceId
  * @param eventType
