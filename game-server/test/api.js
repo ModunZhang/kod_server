@@ -567,3 +567,13 @@ Api.marchToMoonGate = function(dragonType, soldiers, callback){
 	var route = "logic.allianceHandler.marchToMoonGate"
 	pomelo.request(route, info, callback)
 }
+
+Api.retreatFromMoonGate = function(callback){
+	var route = "logic.allianceHandler.retreatFromMoonGate"
+	pomelo.request(route, null, callback)
+}
+
+Api.challengeMoonGateEnemyTroop = function(callback){
+	var route = "logic.allianceHandler.challengeMoonGateEnemyTroop"
+	pomelo.request(route, null, callback)
+}

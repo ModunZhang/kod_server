@@ -3,6 +3,6 @@
 var crc = require('crc')
 
 module.exports.dispatch = function(servers) {
-	var index = Math.floor(Math.random() * servers.length)
+	var index = (Math.random() * servers.length) << 0
 	return servers[index]
 }

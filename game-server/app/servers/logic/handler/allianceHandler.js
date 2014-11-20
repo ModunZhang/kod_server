@@ -555,3 +555,31 @@ pro.marchToMoonGate = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 从月门撤兵
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.retreatFromMoonGate = function(msg, session, next){
+	this.allianceService.retreatFromMoonGateAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 联盟战月门挑战
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.challengeMoonGateEnemyTroop = function(msg, session, next){
+	this.allianceService.challengeMoonGateEnemyTroopAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

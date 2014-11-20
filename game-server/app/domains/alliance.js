@@ -288,6 +288,7 @@ var allianceSchema = new Schema({
 		type:{
 			moonGateOwner:{type:String, required:true},
 			enemyAllianceId:{type:String, required:true},
+			activeBy:{type:String, required:true},
 			ourTroops:[{
 				_id:false,
 				id:{type:String, required:true},

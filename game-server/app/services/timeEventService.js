@@ -1386,8 +1386,7 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 
 		attackAllianceDoc.moonGateData.currentFightTroops.enemy = null
 		defenceAllianceDoc.moonGateData.currentFightTroops.our = null
-	}
-	if(_.isEqual(Consts.FightResult.DefenceWin, soldierFightResult.fightResult)){
+	}else{
 		treatSoldiers = attackTroop.treatSoldiers
 		leftSoldiers = attackTroop.soldiers
 		rewards = attackTroop.rewards

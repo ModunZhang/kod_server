@@ -1580,15 +1580,49 @@ Utils.isPlayerHasTroopMarchToMoonGate = function(allianceDoc, playerId){
 		if(_.isEqual(marchEvent.playerData.id, playerId)) return true
 	}
 	var playerTroop = null
-	for(i = 0; i < allianceDoc.moonGateData.ourTroops; i++){
-		playerTroop = allianceDoc.moonGateData.ourTroops[i]
-		if(_.isEqual(playerTroop.id, playerId)) return true
+	if(_.isObject(allianceDoc.moonGateData.ourTroops)){
+		for(i = 0; i < allianceDoc.moonGateData.ourTroops.length; i++){
+			playerTroop = allianceDoc.moonGateData.ourTroops[i]
+			if(_.isEqual(playerTroop.id, playerId)) return true
+		}
 	}
-	for(var i = 0; i < allianceDoc.moonGateData.currentFightTroops; i ++){
-		playerTroop = allianceDoc.moonGateData.currentFightTroops[i].our
-		if(_.isEqual(playerTroop.id, playerId)) return true
+	if(_.isObject(allianceDoc.moonGateData.currentFightTroops)){
+		for(var i = 0; i < allianceDoc.moonGateData.currentFightTroops.length; i ++){
+			playerTroop = allianceDoc.moonGateData.currentFightTroops[i].our
+			if(_.isEqual(playerTroop.id, playerId)) return true
+		}
 	}
 	return false
+}
+
+/**
+ * 获取玩家在我方月门的部队
+ * @param allianceDoc
+ * @param playerId
+ * @returns {*}
+ */
+Utils.getPlayerTroopInOurMoonGate = function(allianceDoc, playerId){
+	if(_.isObject(allianceDoc.moonGateData.ourTroops)){
+		for(var i = 0; i < allianceDoc.moonGateData.ourTroops.length; i++){
+			var playerTroop = allianceDoc.moonGateData.ourTroops[i]
+			if(_.isEqual(playerTroop.id, playerId)) return playerTroop
+		}
+	}
+	return null
+}
+
+/**
+ * 获取玩家在地方月门的部队
+ * @param allianceDoc
+ * @param playerId
+ * @returns {*}
+ */
+Utils.getPlayerTroopInEnemyMoonGate = function(allianceDoc, playerId){
+	for(var i = 0; i < allianceDoc.moonGateData.enemyTroops.length; i++){
+		var playerTroop = allianceDoc.moonGateData.enemyTroops[i]
+		if(_.isEqual(playerTroop.id, playerId)) return playerTroop
+	}
+	return null
 }
 
 /**

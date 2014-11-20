@@ -200,7 +200,7 @@ Utils.getRect = function(map, width, height){
 	while(freePoints.length > 0){
 		var location = 0
 		if(freePoints.length > 1){
-			location = Math.round(Math.random() * 1000000000000 % (freePoints.length - 1))
+			location = (Math.random() * freePoints.length) << 0
 		}
 		var point = freePoints[location]
 		if(point.x - width < 0 || point.y - height < 0){

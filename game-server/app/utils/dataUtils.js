@@ -1076,7 +1076,7 @@ Utils.getDragonVitality = function(playerDoc, dragon){
  */
 Utils.getDragonStrength = function(playerDoc, dragon){
 	var config = DragonEyrie.dragonAttribute[dragon.star]
-	var vitality = config.initStrength + config.perLevelStrength * dragon.star
+	var vitality = config.initStrength + (config.perLevelStrength * dragon.level)
 	return vitality
 }
 
@@ -1629,7 +1629,7 @@ Utils.getAllianceVillageConfigedSoldiers = function(villageType, villageLevel){
 		var soldierCount = parseInt(params[1])
 		var soldierCountMax = Math.round(soldierCount * 1.2)
 		var soldierCountMin = Math.round(soldierCount * 0.8)
-		soldierCount = Math.round(soldierCountMin + (Math.random() * (soldierCountMax - soldierCountMin)))
+		soldierCount = soldierCountMin + ((Math.random() * (soldierCountMax - soldierCountMin)) << 0)
 		var soldier = {
 			name:soldierName,
 			star:soldierStar,
@@ -2120,10 +2120,12 @@ Utils.updateAllianceFightCurrentTroops = function(attackTroop, defenceTroop, sol
 		}
 	})
 	defenceTroop.kill += defenceKill
+	var willRemovedSoldiers = []
 	_.each(attackTroop.soldiers, function(soldier){
 		var soldierData = attackSoldierDatas[soldier.name]
 		if(_.isObject(soldierData)){
 			soldier.count -= soldierData.soldierDamagedCount
+			if(soldier.count <= 0) willRemovedSoldiers.push(soldier)
 			var treatSoldier = _.find(attackTroop.treatSoldiers, function(theTreatSoldier){
 				return _.isEqual(theTreatSoldier.name, soldier.name)
 			})
@@ -2138,6 +2140,7 @@ Utils.updateAllianceFightCurrentTroops = function(attackTroop, defenceTroop, sol
 			}
 		}
 	})
+	LogicUtils.removeItemsInArray(attackTroop.soldiers, willRemovedSoldiers)
 
 	_.each(soldierFightResult.defenceRoundDatas, function(defenceRoundData){
 		var soldierName = defenceRoundData.soldierName
@@ -2162,10 +2165,12 @@ Utils.updateAllianceFightCurrentTroops = function(attackTroop, defenceTroop, sol
 		}
 	})
 	attackTroop.kill += attackKill
+	willRemovedSoldiers = []
 	_.each(defenceTroop.soldiers, function(soldier){
 		var soldierData = defenceSoldierDatas[soldier.name]
 		if(_.isObject(soldierData)){
 			soldier.count -= soldierData.soldierDamagedCount
+			if(soldier.count <= 0) willRemovedSoldiers.push(soldier)
 			var treatSoldier = _.find(defenceTroop.treatSoldiers, function(theTreatSoldier){
 				return _.isEqual(theTreatSoldier.name, soldier.name)
 			})
@@ -2180,4 +2185,5 @@ Utils.updateAllianceFightCurrentTroops = function(attackTroop, defenceTroop, sol
 			}
 		}
 	})
+	LogicUtils.removeItemsInArray(defenceTroop.soldiers, willRemovedSoldiers)
 }
