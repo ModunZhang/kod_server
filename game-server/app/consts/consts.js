@@ -162,5 +162,6 @@ module.exports = {
 		Prepare:"prepare",
 		Fight:"fight",
 		Protect:"protect"
-	}
+	},
+	AllianceStatusEvent:"allianceStatusEvent"
 }

@@ -25,7 +25,7 @@ intInit["activeShrineStageEventTime"] = {
 }
 intInit["allianceFightPrepareTime"] = {
 	type:"allianceFightPrepareTime",
-	value:120
+	value:30
 }
 intInit["allianceFightTotalFightTime"] = {
 	type:"allianceFightTotalFightTime",

@@ -3698,21 +3698,7 @@ pro.findAllianceToFight = function(playerId, callback){
 		defenceAllianceDoc = doc
 		var now = Date.now()
 		var finishTime = now + DataUtils.getAllianceFightPrepareTime()
-		attackAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
-		attackAllianceDoc.basicInfo.statusStartTime = now
-		attackAllianceDoc.basicInfo.statusFinishTime = finishTime
-		attackAllianceDoc.moonGateData = {}
-		attackAllianceDoc.moonGateData.enemyAllianceId = defenceAllianceDoc._id
-		attackAllianceDoc.moonGateData.activeBy = attackAllianceDoc._id
-		attackAllianceDoc.moonGateData.moonGateOwner = Consts.None
-		defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
-		defenceAllianceDoc.basicInfo.statusStartTime = now
-		defenceAllianceDoc.basicInfo.statusFinishTime = finishTime
-		defenceAllianceDoc.moonGateData = {}
-		defenceAllianceDoc.moonGateData.enemyAllianceId = attackAllianceDoc._id
-		defenceAllianceDoc.moonGateData.activeBy = attackAllianceDoc._id
-		defenceAllianceDoc.moonGateData.moonGateOwner = Consts.None
-
+		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc, true])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, defenceAllianceDoc, true])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime])
@@ -3903,7 +3889,7 @@ pro.retreatFromMoonGate = function(playerId, callback){
 			type:Consts.DataChangedType.Remove,
 			data:playerTroopInOurAlliance
 		}]
-		return self.allianceDao.findByIdAsync(ourAllianceDoc.moonGateData.enemyAllianceId)
+		return self.allianceDao.findByIdAsync(ourAllianceDoc.moonGateData.enemyAlliance.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		enemyAllianceDoc = doc
@@ -4017,7 +4003,7 @@ pro.challengeMoonGateEnemyTroop = function(playerId, callback){
 		enemyTroop = enemyTroops[(Math.random() * enemyTroops.length) << 0]
 		var funcs = []
 		funcs.push(self.playerDao.findByIdAsync(enemyTroop.id))
-		funcs.push(self.allianceDao.findByIdAsync(ourAllianceDoc.moonGateData.enemyAllianceId))
+		funcs.push(self.allianceDao.findByIdAsync(ourAllianceDoc.moonGateData.enemyAlliance.id))
 		return Promise.all(funcs)
 	}).spread(function(doc1, doc2){
 		if(!_.isObject(doc1)) return Promise.reject(new Error("玩家不存在"))
@@ -4328,20 +4314,31 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
-		event = LogicUtils.getEventById(allianceDoc[eventType], eventId)
-		if(!_.isObject(event)){
-			return Promise.reject(new Error("联盟事件不存在"))
-		}
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-	}).then(function(){
-		var timeEventFuncName = "on" + eventType.charAt(0).toUpperCase() + eventType.slice(1) + "Async"
-		if(!_.isObject(self.timeEventService[timeEventFuncName])) return Promise.reject(new Error("未知的事件类型"))
-		return self.timeEventService[timeEventFuncName](allianceDoc, event).then(function(params){
-			updateFuncs = updateFuncs.concat(params.updateFuncs)
-			eventFuncs = eventFuncs.concat(params.eventFuncs)
-			pushFuncs = pushFuncs.concat(params.pushFuncs)
+		if(_.isEqual(eventType, Consts.AllianceStatusEvent)){
+			allianceDoc.basicInfo.status = Consts.AllianceStatus.Peace
+			allianceDoc.basicInfo.statusStartTime = Date.now()
+			allianceDoc.basicInfo.statusFinishTime = 0
+			allianceDoc.moonGateData = null
+			var allianceData = {}
+			allianceData.basicInfo = allianceDoc.basicInfo
+			allianceData.moonGateData = {}
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 			return Promise.resolve()
-		})
+		}else{
+			event = LogicUtils.getEventById(allianceDoc[eventType], eventId)
+			if(!_.isObject(event)){
+				return Promise.reject(new Error("联盟事件不存在"))
+			}
+			var timeEventFuncName = "on" + eventType.charAt(0).toUpperCase() + eventType.slice(1) + "Async"
+			if(!_.isObject(self.timeEventService[timeEventFuncName])) return Promise.reject(new Error("未知的事件类型"))
+			return self.timeEventService[timeEventFuncName](allianceDoc, event).then(function(params){
+				updateFuncs = updateFuncs.concat(params.updateFuncs)
+				eventFuncs = eventFuncs.concat(params.eventFuncs)
+				pushFuncs = pushFuncs.concat(params.pushFuncs)
+				return Promise.resolve()
+			})
+		}
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){

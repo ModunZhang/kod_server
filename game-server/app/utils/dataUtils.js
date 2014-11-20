@@ -1723,7 +1723,7 @@ Utils.getSizeInAllianceMap = function(buildingType){
  * @returns {number}
  */
 Utils.getPlayerMarchTime = function(playerDoc, fromLocation, toLocation){
-	return 10
+	return 10 * 1000
 }
 
 /**
@@ -2209,4 +2209,13 @@ Utils.updateAllianceFightCurrentTroops = function(attackTroop, defenceTroop, sol
 		}
 	})
 	LogicUtils.removeItemsInArray(defenceTroop.soldiers, willRemovedSoldiers)
+}
+
+/**
+ * 获取联盟战后联盟获得的保护时间
+ * @param allianceDoc
+ * @returns {number}
+ */
+Utils.getAllianceProtectTimeAfterAllianceFight = function(allianceDoc){
+	return 10 * 1000
 }

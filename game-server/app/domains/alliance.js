@@ -291,9 +291,13 @@ var allianceSchema = new Schema({
 	}],
 	moonGateData:{
 		type:{
-			moonGateOwner:{type:String, required:true},
-			enemyAllianceId:{type:String, required:true},
 			activeBy:{type:String, required:true},
+			moonGateOwner:{type:String, required:true},
+			enemyAlliance:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				power:{type:Number, required:true}
+			},
 			ourTroops:[{
 				_id:false,
 				id:{type:String, required:true},
@@ -449,7 +453,39 @@ var allianceSchema = new Schema({
 					moraleDecreased:{type:Number, required:true},
 					isWin:{type:Boolean, required:true}
 				}]
-			}]
+			}],
+			countData:{
+				our:{
+					kill:{type:Number, required:true},
+					moonGateTime:{type:Number, required:true},
+					routCount:{type:Number, required:true},
+					challengeCount:{type:Number, required:true},
+					attackSuccessCount:{type:Number, required:true},
+					attackFailCount:{type:Number, required:true},
+					defenceSuccessCount:{type:Number, required:true},
+					defenceFailCount:{type:Number, required:true},
+					playerKills:[{
+						id:{type:Number, required:true},
+						name:{type:Number, required:true},
+						kill:{type:Number, required:true}
+					}]
+				},
+				enemy:{
+					kill:{type:Number, required:true},
+					moonGateTime:{type:Number, required:true},
+					routCount:{type:Number, required:true},
+					challengeCount:{type:Number, required:true},
+					attackSuccessCount:{type:Number, required:true},
+					attackFailCount:{type:Number, required:true},
+					defenceSuccessCount:{type:Number, required:true},
+					defenceFailCount:{type:Number, required:true},
+					playerKills:[{
+						id:{type:Number, required:true},
+						name:{type:Number, required:true},
+						kill:{type:Number, required:true}
+					}]
+				}
+			}
 		},
 		required:false
 	},

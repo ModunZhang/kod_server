@@ -1405,7 +1405,7 @@ Utils.isMarchSoldierLegal = function(playerDoc, soldiers){
 Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEventId, dragonType, soldiers){
 	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var shrineLocation = allianceDoc.buildings["shrine"].location
-	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, playerLocation, shrineLocation)
+	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, playerLocation, shrineLocation)
 	var event = {
 		id:ShortId.generate(),
 		shrineEventId:shrineEventId,
@@ -1419,7 +1419,7 @@ Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEv
 			soldiers:soldiers
 		},
 		startTime:Date.now(),
-		arriveTime:Date.now() + (marchSeconds * 1000)
+		arriveTime:Date.now() + marchTime
 	}
 	return event
 }
@@ -1435,7 +1435,7 @@ Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEv
 Utils.createAllianceMoonGateMarchEvent = function(playerDoc, allianceDoc, dragonType, soldiers){
 	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var moonGateLocation = allianceDoc.buildings["moonGate"].location
-	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, playerLocation, moonGateLocation)
+	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, playerLocation, moonGateLocation)
 	var event = {
 		id:ShortId.generate(),
 		playerData:{
@@ -1449,7 +1449,7 @@ Utils.createAllianceMoonGateMarchEvent = function(playerDoc, allianceDoc, dragon
 			soldiers:soldiers
 		},
 		startTime:Date.now(),
-		arriveTime:Date.now() + (marchSeconds * 1000)
+		arriveTime:Date.now() + marchTime
 	}
 	return event
 }
@@ -1468,7 +1468,7 @@ Utils.createAllianceMoonGateMarchEvent = function(playerDoc, allianceDoc, dragon
 Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, dragonType, leftsoldiers, treatSoldiers, rewards, kill){
 	var shrineLocation = allianceDoc.buildings["shrine"].location
 	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, shrineLocation, playerLocation)
+	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, shrineLocation, playerLocation)
 	var event = {
 		id:ShortId.generate(),
 		playerData:{
@@ -1483,7 +1483,7 @@ Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, dr
 			kill:kill
 		},
 		startTime:Date.now(),
-		arriveTime:Date.now() + (marchSeconds * 1000)
+		arriveTime:Date.now() + marchTime
 	}
 	return event
 }
@@ -1502,7 +1502,7 @@ Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, dr
 Utils.createAllianceMoonGateMarchReturnEvent = function(playerDoc, allianceDoc, dragonType, leftsoldiers, treatSoldiers, rewards, kill){
 	var moonGateLocation = allianceDoc.buildings["moonGate"].location
 	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var marchSeconds = DataUtils.getPlayerMarchTime(playerDoc, moonGateLocation, playerLocation)
+	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, moonGateLocation, playerLocation)
 	var event = {
 		id:ShortId.generate(),
 		playerData:{
@@ -1517,7 +1517,7 @@ Utils.createAllianceMoonGateMarchReturnEvent = function(playerDoc, allianceDoc, 
 			kill:kill
 		},
 		startTime:Date.now(),
-		arriveTime:Date.now() + (marchSeconds * 1000)
+		arriveTime:Date.now() + marchTime
 	}
 	return event
 }
@@ -1686,4 +1686,93 @@ Utils.fixAllianceShrineStagePlayerData = function(playerTroops, playerDatas){
 		playerDatas.push(playerData)
 	})
 	return playerDatas
+}
+
+/**
+ * 联盟战匹配成功后,创建初始数据结构
+ * @param attackAllianceDoc
+ * @param defenceAllianceDoc
+ * @param prepareTime
+ */
+Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, prepareTime){
+	var now = Date.now()
+	attackAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
+	attackAllianceDoc.basicInfo.statusStartTime = now
+	attackAllianceDoc.basicInfo.statusFinishTime = prepareTime
+	attackAllianceDoc.moonGateData = {}
+	attackAllianceDoc.moonGateData.activeBy = attackAllianceDoc._id
+	attackAllianceDoc.moonGateData.moonGateOwner = Consts.None
+	attackAllianceDoc.moonGateData.enemyAlliance = {
+		id:defenceAllianceDoc._id,
+		name:defenceAllianceDoc.basicInfo.name,
+		power:defenceAllianceDoc.basicInfo.power
+	}
+	attackAllianceDoc.moonGateData.ourTroops = []
+	attackAllianceDoc.moonGateData.enemyTroops = []
+	attackAllianceDoc.moonGateData.currentFightTroops = {}
+	attackAllianceDoc.moonGateData.fightReports = []
+	attackAllianceDoc.moonGateData.countData = {
+		our:{
+			kill:0,
+			moonGateTime:0,
+			routCount:0,
+			challengeCount:0,
+			attackSuccessCount:0,
+			attackFailCount:0,
+			defenceSuccessCount:0,
+			defenceFailCount:0,
+			playerKills:[]
+		},
+		enemy:{
+			kill:0,
+			moonGateTime:0,
+			routCount:0,
+			challengeCount:0,
+			attackSuccessCount:0,
+			attackFailCount:0,
+			defenceSuccessCount:0,
+			defenceFailCount:0,
+			playerKills:[]
+		}
+	}
+
+	defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
+	defenceAllianceDoc.basicInfo.statusStartTime = now
+	defenceAllianceDoc.basicInfo.statusFinishTime = prepareTime
+	defenceAllianceDoc.moonGateData = {}
+	defenceAllianceDoc.moonGateData.activeBy = attackAllianceDoc._id
+	defenceAllianceDoc.moonGateData.moonGateOwner = Consts.None
+	defenceAllianceDoc.moonGateData.enemyAlliance = {
+		id:attackAllianceDoc._id,
+		name:attackAllianceDoc.basicInfo.name,
+		power:attackAllianceDoc.basicInfo.power
+	}
+	defenceAllianceDoc.moonGateData.ourTroops = []
+	defenceAllianceDoc.moonGateData.enemyTroops = []
+	defenceAllianceDoc.moonGateData.currentFightTroops = {}
+	defenceAllianceDoc.moonGateData.fightReports = []
+	defenceAllianceDoc.moonGateData.countData = {
+		our:{
+			kill:0,
+			moonGateTime:0,
+			routCount:0,
+			challengeCount:0,
+			attackSuccessCount:0,
+			attackFailCount:0,
+			defenceSuccessCount:0,
+			defenceFailCount:0,
+			playerKills:[]
+		},
+		enemy:{
+			kill:0,
+			moonGateTime:0,
+			routCount:0,
+			challengeCount:0,
+			attackSuccessCount:0,
+			attackFailCount:0,
+			defenceSuccessCount:0,
+			defenceFailCount:0,
+			playerKills:[]
+		}
+	}
 }
