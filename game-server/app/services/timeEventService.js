@@ -1248,11 +1248,11 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 	}
 	attackAllianceDoc.moonGateData.fightReports.push(attackFightReport)
 	defenceAllianceDoc.moonGateData.fightReports.push(defenceFightReport)
-	attackAllianceData.__fightReports = [{
+	attackAllianceData.moonGateData.__fightReports = [{
 		type:Consts.DataChangedType.Add,
 		data:attackFightReport
 	}]
-	defenceAllianceData.__fightReports = [{
+	defenceAllianceData.moonGateData.__fightReports = [{
 		type:Consts.DataChangedType.Add,
 		data:defenceFightReport
 	}]
