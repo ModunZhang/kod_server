@@ -1120,6 +1120,12 @@ pro.allianceperception = function(uid, perception, callback){
 	})
 }
 
+/**
+ * 激活联盟对战
+ * @param uid
+ * @param targetAllianceTag
+ * @param callback
+ */
 pro.alliancefight = function(uid, targetAllianceTag, callback){
 	var self = this
 	var playerDoc = null
@@ -1128,7 +1134,7 @@ pro.alliancefight = function(uid, targetAllianceTag, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findByIdAsync(uid).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
