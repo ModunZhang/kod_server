@@ -2108,11 +2108,13 @@ Utils.getAllianceFightSecondsPerFight = function(){
 
 /**
  * 更新当前战斗的玩家的部队兵力信息
+ * @param attackMoonGateData
  * @param attackTroop
+ * @param defenceMoonGateData
  * @param defenceTroop
  * @param soldierFightResult
  */
-Utils.updateAllianceFightCurrentTroops = function(attackTroop, defenceTroop, soldierFightResult){
+Utils.updateAllianceMoonGateData = function(attackMoonGateData, attackTroop, defenceMoonGateData, defenceTroop, soldierFightResult){
 	var self = this
 	var attackSoldierDatas = {}
 	var defenceSoldierDatas = {}

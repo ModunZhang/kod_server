@@ -1111,6 +1111,11 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 		var defenceAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight(defenceAllianceDoc)
 		defenceAllianceDoc.basicInfo.statusFinishTime = now + defenceAllianceProtectTime
 		defenceAllianceData.basicInfo = attackAllianceDoc.basicInfo
+		if(_.size(attackAllianceData.moonGateData) == 0){
+			delete attackAllianceData.moonGateData
+			delete defenceAllianceData.moonGateData
+		}
+
 		eventFuncs.push([self, self.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime])
 		eventFuncs.push([self, self.addAllianceTimeEventAsync, defenceAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, defenceAllianceDoc.basicInfo.statusFinishTime])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
@@ -1323,7 +1328,7 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 	var defenceTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(defencePlayerDoc)
 	var soldierFightResult = FightUtils.soldierToSoldierFight(attackPlayerSoldiersForFight, attackTreatSoldierPercent, defencePlayerSoldiersForFight, defenceTreatSoldierPercent)
 
-	DataUtils.updateAllianceFightCurrentTroops(attackTroop, defenceTroop, soldierFightResult)
+	DataUtils.updateAllianceMoonGateData(attackAllianceDoc.moonGateData, attackTroop, defenceAllianceDoc.moonGateData, defenceTroop, soldierFightResult)
 
 	attackFightReport.ourSoldierRoundDatas = soldierFightResult.attackRoundDatas
 	attackFightReport.enemySoldierRoundDatas = soldierFightResult.defenceRoundDatas
