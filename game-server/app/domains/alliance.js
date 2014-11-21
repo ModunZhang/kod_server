@@ -296,7 +296,10 @@ var allianceSchema = new Schema({
 			enemyAlliance:{
 				id:{type:String, required:true},
 				name:{type:String, required:true},
-				power:{type:Number, required:true}
+				tag:{type:String, required:true},
+				power:{type:Number, required:true},
+				flag:{type:String, required:true},
+				terrain:{type:String, required:true}
 			},
 			ourTroops:[{
 				_id:false,

@@ -1705,7 +1705,10 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 	attackAllianceDoc.moonGateData.enemyAlliance = {
 		id:defenceAllianceDoc._id,
 		name:defenceAllianceDoc.basicInfo.name,
-		power:defenceAllianceDoc.basicInfo.power
+		tag:defenceAllianceDoc.basicInfo.tag,
+		power:defenceAllianceDoc.basicInfo.power,
+		flag:defenceAllianceDoc.basicInfo.flag,
+		terrain:defenceAllianceDoc.basicInfo.terrain
 	}
 	attackAllianceDoc.moonGateData.ourTroops = []
 	attackAllianceDoc.moonGateData.enemyTroops = []
@@ -1745,7 +1748,10 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 	defenceAllianceDoc.moonGateData.enemyAlliance = {
 		id:attackAllianceDoc._id,
 		name:attackAllianceDoc.basicInfo.name,
-		power:attackAllianceDoc.basicInfo.power
+		tag:attackAllianceDoc.basicInfo.tag,
+		power:attackAllianceDoc.basicInfo.power,
+		flag:attackAllianceDoc.basicInfo.flag,
+		terrain:attackAllianceDoc.basicInfo.terrain
 	}
 	defenceAllianceDoc.moonGateData.ourTroops = []
 	defenceAllianceDoc.moonGateData.enemyTroops = []
