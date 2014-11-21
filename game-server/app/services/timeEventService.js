@@ -1328,7 +1328,8 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 	var defenceTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(defencePlayerDoc)
 	var soldierFightResult = FightUtils.soldierToSoldierFight(attackPlayerSoldiersForFight, attackTreatSoldierPercent, defencePlayerSoldiersForFight, defenceTreatSoldierPercent)
 
-	DataUtils.updateAllianceMoonGateData(attackAllianceDoc.moonGateData, attackTroop, defenceAllianceDoc.moonGateData, defenceTroop, soldierFightResult)
+	DataUtils.updateAllianceMoonGateData(attackTroop, defenceTroop, soldierFightResult)
+
 
 	attackFightReport.ourSoldierRoundDatas = soldierFightResult.attackRoundDatas
 	attackFightReport.enemySoldierRoundDatas = soldierFightResult.defenceRoundDatas
