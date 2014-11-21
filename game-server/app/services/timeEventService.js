@@ -1293,7 +1293,7 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 		hpMax:DataUtils.getPlayerDragonHpMax(defencePlayerDoc, defencePlayerDoc.dragons[defenceDragonType]),
 		hp:defenceDragonHp,
 		hpDecreased:defenceDragonHpDecreased,
-		isWin:_.isEqual(dragonFightResult.fightResult, Consts.FightResult.AttackWin) ? true : false
+		isWin:_.isEqual(dragonFightResult.fightResult, Consts.FightResult.AttackWin) ? false : true
 	}
 	defenceFightReport.ourDragonFightData = attackFightReport.enemyDragonFightData
 	defenceFightReport.enemyDragonFightData = attackFightReport.ourDragonFightData
