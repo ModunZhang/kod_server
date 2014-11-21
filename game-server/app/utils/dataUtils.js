@@ -2108,11 +2108,13 @@ Utils.getAllianceFightSecondsPerFight = function(){
 
 /**
  * 更新当前战斗的玩家的部队兵力信息
+ * @param attackCountData
  * @param attackTroop
+ * @param defenceCountData
  * @param defenceTroop
  * @param soldierFightResult
  */
-Utils.updateAllianceMoonGateData = function(attackTroop, defenceTroop, soldierFightResult){
+Utils.updateAllianceMoonGateData = function(attackCountData, attackTroop, defenceCountData, defenceTroop, soldierFightResult){
 	var self = this
 	var attackSoldierDatas = {}
 	var defenceSoldierDatas = {}
@@ -2120,6 +2122,29 @@ Utils.updateAllianceMoonGateData = function(attackTroop, defenceTroop, soldierFi
 	var defenceKill = 0
 	var soldierConfig = null
 	var kill = null
+	var attackPlayerKill = _.find(attackCountData.our.playerKills, function(playerKill){
+		return _.isEqual(playerKill.id, attackTroop.id)
+	})
+	if(!_.isObject(attackPlayerKill)){
+		attackPlayerKill = {
+			id:attackTroop.id,
+			name:attackTroop.name,
+			kill:0
+		}
+		attackCountData.our.playerKills.push(attackPlayerKill)
+	}
+	var defencePlayerKill = _.find(attackCountData.enemy.playerKills, function(playerKill){
+			return _.isEqual(playerKill.id, defenceTroop.id)
+	})
+	if(!_.isObject(defencePlayerKill)){
+		defencePlayerKill = {
+			id:defenceTroop.id,
+			name:defenceTroop.name,
+			kill:0
+		}
+		attackCountData.enemy.playerKills.push(defencePlayerKill)
+	}
+
 	_.each(soldierFightResult.attackRoundDatas, function(attackRoundData){
 		var soldierName = attackRoundData.soldierName
 		if(!_.isObject(attackSoldierDatas[soldierName])){
@@ -2143,6 +2168,7 @@ Utils.updateAllianceMoonGateData = function(attackTroop, defenceTroop, soldierFi
 		}
 	})
 	defenceTroop.kill += defenceKill
+	defencePlayerKill.kill += defenceKill
 	var willRemovedSoldiers = []
 	_.each(attackTroop.soldiers, function(soldier){
 		var soldierData = attackSoldierDatas[soldier.name]
@@ -2188,6 +2214,7 @@ Utils.updateAllianceMoonGateData = function(attackTroop, defenceTroop, soldierFi
 		}
 	})
 	attackTroop.kill += attackKill
+	attackPlayerKill.kill += attackKill
 	willRemovedSoldiers = []
 	_.each(defenceTroop.soldiers, function(soldier){
 		var soldierData = defenceSoldierDatas[soldier.name]
@@ -2209,6 +2236,25 @@ Utils.updateAllianceMoonGateData = function(attackTroop, defenceTroop, soldierFi
 		}
 	})
 	LogicUtils.removeItemsInArray(defenceTroop.soldiers, willRemovedSoldiers)
+	attackCountData.our.playerKills = _.sortBy(attackCountData.our.playerKills, function(playerKill){
+		return - playerKill.kill
+	})
+	attackCountData.enemy.playerKills = _.sortBy(attackCountData.enemy.playerKills, function(playerKill){
+		return - playerKill.kill
+	})
+	var attackTotalKill = 0
+	var defenceTotalKill = 0
+	_.each(attackCountData.our.playerKills, function(playerKill){
+		attackTotalKill += playerKill.kill
+	})
+	_.each(attackCountData.enemy.playerKills, function(playerKill){
+		defenceTotalKill += playerKill.kill
+	})
+	attackCountData.our.kill = attackTotalKill
+	attackCountData.enemy.kill = defenceTotalKill
+
+	defenceCountData.our = attackCountData.enemy
+	defenceCountData.enemy = attackCountData.our
 }
 
 /**
@@ -2220,6 +2266,12 @@ Utils.getAllianceProtectTimeAfterAllianceFight = function(allianceDoc){
 	return 10 * 1000
 }
 
-Utils.updateAllianceMoonGateDataCountInfo = function(attackAlliance, defenceAlliance, attackPlayerId, defencePlayerId, soldierFightResult){
-
+/**
+ * 获取玩家龙的血量的最大值
+ * @param playerDoc
+ * @param dragon
+ * @returns {number}
+ */
+Utils.getPlayerDragonHpMax = function(playerDoc, dragon){
+	return dragon.vitality * 2
 }

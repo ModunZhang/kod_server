@@ -1283,13 +1283,17 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 	var defenceDragonHp = defencePlayerDoc.dragons[defenceDragonType].hp
 	attackFightReport.ourDragonFightData = {
 		type:attackDragonType,
+		hpMax:DataUtils.getPlayerDragonHpMax(attackPlayerDoc, attackPlayerDoc.dragons[attackDragonType]),
 		hp:attackDragonHp,
-		hpDecreased:attackDragonHpDecreased
+		hpDecreased:attackDragonHpDecreased,
+		isWin:_.isEqual(dragonFightResult.fightResult, Consts.FightResult.AttackWin) ? true : false
 	}
 	attackFightReport.enemyDragonFightData = {
 		type:defenceDragonType,
+		hpMax:DataUtils.getPlayerDragonHpMax(defencePlayerDoc, defencePlayerDoc.dragons[defenceDragonType]),
 		hp:defenceDragonHp,
-		hpDecreased:defenceDragonHpDecreased
+		hpDecreased:defenceDragonHpDecreased,
+		isWin:_.isEqual(dragonFightResult.fightResult, Consts.FightResult.AttackWin) ? true : false
 	}
 	defenceFightReport.ourDragonFightData = attackFightReport.enemyDragonFightData
 	defenceFightReport.enemyDragonFightData = attackFightReport.ourDragonFightData
@@ -1328,8 +1332,7 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 	var defenceTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(defencePlayerDoc)
 	var soldierFightResult = FightUtils.soldierToSoldierFight(attackPlayerSoldiersForFight, attackTreatSoldierPercent, defencePlayerSoldiersForFight, defenceTreatSoldierPercent)
 
-	DataUtils.updateAllianceMoonGateData(attackTroop, defenceTroop, soldierFightResult)
-
+	DataUtils.updateAllianceMoonGateData(attackAllianceDoc.moonGateData.countData, attackTroop, defenceAllianceDoc.moonGateData.countData, defenceTroop, soldierFightResult)
 
 	attackFightReport.ourSoldierRoundDatas = soldierFightResult.attackRoundDatas
 	attackFightReport.enemySoldierRoundDatas = soldierFightResult.defenceRoundDatas

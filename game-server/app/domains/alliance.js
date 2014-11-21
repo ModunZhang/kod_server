@@ -432,13 +432,17 @@ var allianceSchema = new Schema({
 				fightResult:{type:String, required:true},
 				ourDragonFightData:{
 					type:{type:String, required:true},
+					hpMax:{type:Number, required:true},
 					hp:{type:Number, required:true},
-					hpDecreased:{type:Number, required:true}
+					hpDecreased:{type:Number, required:true},
+					isWin:{type:Boolean, required:true}
 				},
 				enemyDragonFightData:{
 					type:{type:String, required:true},
+					hpMax:{type:Number, required:true},
 					hp:{type:Number, required:true},
-					hpDecreased:{type:Number, required:true}
+					hpDecreased:{type:Number, required:true},
+					isWin:{type:Boolean, required:true}
 				},
 				ourSoldierRoundDatas:[{
 					_id:false,

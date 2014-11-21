@@ -4113,14 +4113,14 @@ pro.challengeMoonGateEnemyTroop = function(playerId, callback){
 		var soldierFightResult = null
 		if(_.isEqual(ourAllianceDoc.moonGateData.activeBy, ourAllianceDoc._id)){
 			soldierFightResult = FightUtils.soldierToSoldierFight(ourSoldiersForFight, ourTreatSoldierPercent, enemySoldiersForFight, enemyTreatSoldierPercent)
-			DataUtils.updateAllianceMoonGateData(ourTroop, enemyTroop, soldierFightResult)
+			DataUtils.updateAllianceMoonGateData(ourAllianceDoc.moonGateData.countData, ourTroop, enemyAllianceDoc.moonGateData.countData, enemyTroop, soldierFightResult)
 			ourFightReport.ourSoldierRoundDatas = soldierFightResult.attackRoundDatas
 			ourFightReport.enemySoldierRoundDatas = soldierFightResult.defenceRoundDatas
 			enemyFightReport.ourSoldierRoundDatas = soldierFightResult.defenceRoundDatas
 			enemyFightReport.enemySoldierRoundDatas = soldierFightResult.attackRoundDatas
 		}else{
 			soldierFightResult = FightUtils.soldierToSoldierFight(enemySoldiersForFight, enemyTreatSoldierPercent, ourSoldiersForFight, ourTreatSoldierPercent)
-			DataUtils.updateAllianceMoonGateData(enemyTroop, ourTroop, soldierFightResult)
+			DataUtils.updateAllianceMoonGateData(enemyAllianceDoc.moonGateData.countData, enemyTroop, ourAllianceDoc.moonGateData.countData, ourTroop, soldierFightResult)
 			ourFightReport.ourSoldierRoundDatas = soldierFightResult.defenceRoundDatas
 			ourFightReport.enemySoldierRoundDatas = soldierFightResult.attackRoundDatas
 			enemyFightReport.ourSoldierRoundDatas = soldierFightResult.attackRoundDatas
