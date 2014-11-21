@@ -1187,6 +1187,25 @@ describe("AllianceService", function(){
 			})
 		})
 
+		//it("alliancefight 正常激活", function(done){
+		//	var m_allianceDoc = null
+		//	Api.getMyAllianceData(function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.loginPlayer(Config.deviceId4, function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.sendChat("alliancefight " + m_allianceDoc.basicInfo.tag, function(doc){
+		//				doc.code.should.equal(200)
+		//				done()
+		//			})
+		//		})
+		//	})
+		//	var onGetAllianceDataSuccess = function(doc){
+		//		m_allianceDoc = doc
+		//		pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//	}
+		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//})
+
 		it("findAllianceToFight 正常查找", function(done){
 			Api.loginPlayer(Config.deviceId3, function(doc){
 				doc.code.should.equal(200)

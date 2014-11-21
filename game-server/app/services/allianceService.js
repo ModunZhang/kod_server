@@ -3685,14 +3685,14 @@ pro.findAllianceToFight = function(playerId, callback){
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 			return Promose.reject(new Error("联盟正在战争准备期或战争期"))
 		}
-		return self.allianceDao.getModel().find({
+		return self.allianceDao.getModel().findOne({
 			"_id":{$ne:attackAllianceDoc._id},
 			"basicInfo.status":Consts.AllianceStatus.Peace
 			//"basicInfo.power":{$gte:attackAllianceDoc.basicInfo.power * 0.8, $lt:attackAllianceDoc.basicInfo.power * 1.2}
-		}).limit(1).exec()
-	}).then(function(docs){
-		if(docs.length == 0) return Promise.reject(new Error("未能找到战力相匹配的联盟"))
-		return self.allianceDao.findByIdAsync(docs[0]._id)
+		}).exec()
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("未能找到战力相匹配的联盟"))
+		return self.allianceDao.findByIdAsync(doc._id)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		defenceAllianceDoc = doc
@@ -3726,8 +3726,8 @@ pro.findAllianceToFight = function(playerId, callback){
 		if(_.isObject(attackAllianceDoc)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(attackAllianceDoc._id))
 		}
-		if(_.isObject(fightAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(fightAllianceDoc._id))
+		if(_.isObject(defenceAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(defenceAllianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){

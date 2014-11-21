@@ -495,7 +495,6 @@ pro.getAll = function(msg, session, next){
 }
 
 var FilterCommand = function(playerDoc, chatText, session, callback){
-	chatText = chatText.toLowerCase()
 	if(_.isEqual("help", chatText)){
 		PushHelpMessageToPlayer.call(this, session)
 		callback(null, playerDoc)
@@ -535,6 +534,7 @@ var GetPlayerCommand = function(text){
 	if(command.length > 0){
 		command = command[0]
 	}
+	command = command.toLowerCase()
 	for(var i = 0; i < this.commands.length; i++){
 		var value = this.commands[i]
 		if(_.isEqual(value.command, command)){
