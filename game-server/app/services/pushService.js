@@ -431,7 +431,7 @@ pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, callback){
 		flag:allianceDoc.basicInfo.flag
 	}
 	allianceData.members = members
-	allianceData.buildings = allianceDoc.members
+	allianceData.buildings = allianceDoc.buildings
 	allianceData.villages = allianceDoc.villages
 	allianceData.mapObjects = allianceDoc.mapObjects
 	allianceData.shrineMarchEvents = allianceDoc.shrineMarchEvents
