@@ -3787,6 +3787,7 @@ pro.marchToMoonGate = function(playerId, dragonType, soldiers, callback){
 		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		if(!LogicUtils.isMarchSoldierLegal(playerDoc, soldiers)) return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
 		_.each(soldiers, function(soldier){
+			soldier.star = 1
 			playerDoc.soldiers[soldier.name] -= soldier.count
 			playerData.soldiers = {}
 			playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]

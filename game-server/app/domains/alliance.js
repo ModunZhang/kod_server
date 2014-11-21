@@ -253,7 +253,8 @@ var allianceSchema = new Schema({
 			soldiers:[{
 				_id:false,
 				name:{type:String, required:true},
-				count:{type:Number, required:true}
+				count:{type:Number, required:true},
+				star:{type:Number, required:true}
 			}]
 		},
 		startTime:{type:Number, required:true},
@@ -314,7 +315,8 @@ var allianceSchema = new Schema({
 					{
 						_id:false,
 						name:{type:String, required:true},
-						count:{type:Number, required:true}
+						count:{type:Number, required:true},
+						star:{type:Number, required:true}
 					}
 				],
 				treatSoldiers:[{
@@ -343,7 +345,8 @@ var allianceSchema = new Schema({
 					{
 						_id:false,
 						name:{type:String, required:true},
-						count:{type:Number, required:true}
+						count:{type:Number, required:true},
+						star:{type:Number, required:true}
 					}
 				],
 				treatSoldiers:[{
@@ -364,6 +367,7 @@ var allianceSchema = new Schema({
 				our:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
+					power:{type:Number, required:true},
 					winCount:{type:Number, required:true},
 					dragon:{
 						type:{type:String, required:true}
@@ -372,7 +376,8 @@ var allianceSchema = new Schema({
 						{
 							_id:false,
 							name:{type:String, required:true},
-							count:{type:Number, required:true}
+							count:{type:Number, required:true},
+							star:{type:Number, required:true}
 						}
 					],
 					treatSoldiers:[{
@@ -391,8 +396,8 @@ var allianceSchema = new Schema({
 				enemy:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					winCount:{type:Number, required:true},
 					power:{type:Number, required:true},
+					winCount:{type:Number, required:true},
 					dragon:{
 						type:{type:String, required:true}
 					},
@@ -400,7 +405,8 @@ var allianceSchema = new Schema({
 						{
 							_id:false,
 							name:{type:String, required:true},
-							count:{type:Number, required:true}
+							count:{type:Number, required:true},
+							star:{type:Number, required:true}
 						}
 					],
 					treatSoldiers:[{
