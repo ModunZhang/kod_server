@@ -1192,6 +1192,43 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 			delete defenceAllianceData.moonGateData
 		}
 
+		var attackAllianceKill = attackAllianceDoc.moonGateData.countData.our.kill
+		var defenceAllianceKill = attackAllianceDoc.moonGateData.countData.enemy.kill
+		var attackAllianceFightReport = {
+			fightResult:attackAllianceKill > defenceAllianceKill ? Consts.AllianceFightResult.OurWin : Consts.AllianceFightResult.EnemyWin,
+			ourAlliance:{
+				kill:attackAllianceKill
+			},
+			enemyAlliance:{
+				id:defenceAllianceDoc._id,
+				name:defenceAllianceDoc.basicInfo.name,
+				tag:defenceAllianceDoc.basicInfo.tag,
+				kill:defenceAllianceKill
+			}
+		}
+		var defenceAllianceFightReport = {
+			fightResult:attackAllianceKill > defenceAllianceKill ? Consts.AllianceFightResult.EnemyWin : Consts.AllianceFightResult.OurWin,
+			ourAlliance:{
+				kill:defenceAllianceKill
+			},
+			enemyAlliance:{
+				id:attackAllianceDoc._id,
+				name:attackAllianceDoc.basicInfo.name,
+				tag:attackAllianceDoc.basicInfo.tag,
+				kill:attackAllianceKill
+			}
+		}
+		attackAllianceDoc.allianceFightReports.push(attackAllianceFightReport)
+		defenceAllianceDoc.allianceFightReports.push(defenceAllianceFightReport)
+		attackAllianceData.__allianceFightReports = [{
+			type:Consts.DataChangedType.Add,
+			data:attackAllianceFightReport
+		}]
+		defenceAllianceData.__allianceFightReports = [{
+			type:Consts.DataChangedType.Add,
+			data:defenceAllianceFightReport
+		}]
+
 		eventFuncs.push([self, self.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime])
 		eventFuncs.push([self, self.addAllianceTimeEventAsync, defenceAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, defenceAllianceDoc.basicInfo.statusFinishTime])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
