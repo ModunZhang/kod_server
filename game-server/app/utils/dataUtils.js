@@ -2236,25 +2236,13 @@ Utils.updateAllianceMoonGateData = function(attackCountData, attackTroop, defenc
 		}
 	})
 	LogicUtils.removeItemsInArray(defenceTroop.soldiers, willRemovedSoldiers)
+
 	attackCountData.our.playerKills = _.sortBy(attackCountData.our.playerKills, function(playerKill){
 		return - playerKill.kill
 	})
 	attackCountData.enemy.playerKills = _.sortBy(attackCountData.enemy.playerKills, function(playerKill){
 		return - playerKill.kill
 	})
-	var attackTotalKill = 0
-	var defenceTotalKill = 0
-	_.each(attackCountData.our.playerKills, function(playerKill){
-		attackTotalKill += playerKill.kill
-	})
-	_.each(attackCountData.enemy.playerKills, function(playerKill){
-		defenceTotalKill += playerKill.kill
-	})
-	attackCountData.our.kill = attackTotalKill
-	attackCountData.enemy.kill = defenceTotalKill
-
-	defenceCountData.our = attackCountData.enemy
-	defenceCountData.enemy = attackCountData.our
 }
 
 /**

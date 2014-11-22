@@ -3786,10 +3786,10 @@ pro.marchToMoonGate = function(playerId, dragonType, soldiers, callback){
 		playerData.dragons = {}
 		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		if(!LogicUtils.isMarchSoldierLegal(playerDoc, soldiers)) return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
+		playerData.soldiers = {}
 		_.each(soldiers, function(soldier){
 			soldier.star = 1
 			playerDoc.soldiers[soldier.name] -= soldier.count
-			playerData.soldiers = {}
 			playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
 		})
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
@@ -4114,6 +4114,7 @@ pro.challengeMoonGateEnemyTroop = function(playerId, callback){
 		if(_.isEqual(ourAllianceDoc.moonGateData.activeBy, ourAllianceDoc._id)){
 			soldierFightResult = FightUtils.soldierToSoldierFight(ourSoldiersForFight, ourTreatSoldierPercent, enemySoldiersForFight, enemyTreatSoldierPercent)
 			DataUtils.updateAllianceMoonGateData(ourAllianceDoc.moonGateData.countData, ourTroop, enemyAllianceDoc.moonGateData.countData, enemyTroop, soldierFightResult)
+			LogicUtils.refreshAllianceMoonGateDataCountData(ourAllianceDoc.moonGateData.countData, enemyAllianceDoc.moonGateData.countData)
 			ourFightReport.ourSoldierRoundDatas = soldierFightResult.attackRoundDatas
 			ourFightReport.enemySoldierRoundDatas = soldierFightResult.defenceRoundDatas
 			enemyFightReport.ourSoldierRoundDatas = soldierFightResult.defenceRoundDatas
@@ -4121,6 +4122,7 @@ pro.challengeMoonGateEnemyTroop = function(playerId, callback){
 		}else{
 			soldierFightResult = FightUtils.soldierToSoldierFight(enemySoldiersForFight, enemyTreatSoldierPercent, ourSoldiersForFight, ourTreatSoldierPercent)
 			DataUtils.updateAllianceMoonGateData(enemyAllianceDoc.moonGateData.countData, enemyTroop, ourAllianceDoc.moonGateData.countData, ourTroop, soldierFightResult)
+			LogicUtils.refreshAllianceMoonGateDataCountData(enemyAllianceDoc.moonGateData.countData, ourAllianceDoc.moonGateData.countData)
 			ourFightReport.ourSoldierRoundDatas = soldierFightResult.defenceRoundDatas
 			ourFightReport.enemySoldierRoundDatas = soldierFightResult.attackRoundDatas
 			enemyFightReport.ourSoldierRoundDatas = soldierFightResult.attackRoundDatas
@@ -4134,6 +4136,8 @@ pro.challengeMoonGateEnemyTroop = function(playerId, callback){
 			ourFightReport.fightResult = _.isEqual(Consts.FightResult.AttackWin, soldierFightResult.fightResult) ? Consts.AllianceFightResult.EnemyWin : Consts.AllianceFightResult.OurWin
 			enemyFightReport.fightResult = _.isEqual(Consts.FightResult.AttackWin, soldierFightResult.fightResult) ? Consts.AllianceFightResult.OurWin : Consts.AllianceFightResult.EnemyWin
 		}
+		ourAllianceData.moonGateData.countData = ourAllianceDoc.moonGateData.countData
+		enemyAllianceData.moonGateData.countData = enemyAllianceDoc.moonGateData.countData
 
 		var treatSoldiers = null
 		var leftSoldiers = null

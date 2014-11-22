@@ -1717,7 +1717,7 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 	attackAllianceDoc.moonGateData.countData = {
 		our:{
 			kill:0,
-			moonGateTime:0,
+			moonGateOwnCount:0,
 			routCount:0,
 			challengeCount:0,
 			attackSuccessCount:0,
@@ -1728,7 +1728,7 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 		},
 		enemy:{
 			kill:0,
-			moonGateTime:0,
+			moonGateOwnCount:0,
 			routCount:0,
 			challengeCount:0,
 			attackSuccessCount:0,
@@ -1760,7 +1760,7 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 	defenceAllianceDoc.moonGateData.countData = {
 		our:{
 			kill:0,
-			moonGateTime:0,
+			moonGateOwnCount:0,
 			routCount:0,
 			challengeCount:0,
 			attackSuccessCount:0,
@@ -1771,7 +1771,7 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 		},
 		enemy:{
 			kill:0,
-			moonGateTime:0,
+			moonGateOwnCount:0,
 			routCount:0,
 			challengeCount:0,
 			attackSuccessCount:0,
@@ -1781,4 +1781,25 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 			playerKills:[]
 		}
 	}
+}
+
+/**
+ * 刷新联盟战斗数据统计信息
+ * @param attackCountData
+ * @param defenceCountData
+ */
+Utils.refreshAllianceMoonGateDataCountData = function(attackCountData, defenceCountData){
+	var attackTotalKill = 0
+	var defenceTotalKill = 0
+	_.each(attackCountData.our.playerKills, function(playerKill){
+		attackTotalKill += playerKill.kill
+	})
+	_.each(attackCountData.enemy.playerKills, function(playerKill){
+		defenceTotalKill += playerKill.kill
+	})
+
+	attackCountData.our.kill = Math.round(attackTotalKill * (1 + ((attackCountData.our.moonGateOwnCount * 30 / 60) * 0.1) + (attackCountData.our.routCount * 0.1)))
+	attackCountData.enemy.kill = Math.round(defenceTotalKill * (1 + ((attackCountData.enemy.moonGateOwnCount * 30 / 60) * 0.1) + (attackCountData.enemy.routCount * 0.1)))
+	defenceCountData.our = attackCountData.enemy
+	defenceCountData.enemy = attackCountData.our
 }

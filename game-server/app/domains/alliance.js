@@ -425,6 +425,7 @@ var allianceSchema = new Schema({
 			},
 			fightReports:[{
 				_id:false,
+				fightTime:{type:Number, required:true},
 				ourPlayerId:{type:String, required:true},
 				ourPlayerName:{type:String, required:true},
 				enemyPlayerId:{type:String, required:true},
@@ -470,7 +471,7 @@ var allianceSchema = new Schema({
 			countData:{
 				our:{
 					kill:{type:Number, required:true},
-					moonGateTime:{type:Number, required:true},
+					moonGateOwnCount:{type:Number, required:true},
 					routCount:{type:Number, required:true},
 					challengeCount:{type:Number, required:true},
 					attackSuccessCount:{type:Number, required:true},
@@ -485,7 +486,7 @@ var allianceSchema = new Schema({
 				},
 				enemy:{
 					kill:{type:Number, required:true},
-					moonGateTime:{type:Number, required:true},
+					moonGateOwnCount:{type:Number, required:true},
 					routCount:{type:Number, required:true},
 					challengeCount:{type:Number, required:true},
 					attackSuccessCount:{type:Number, required:true},

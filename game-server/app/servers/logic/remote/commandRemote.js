@@ -1152,7 +1152,7 @@ pro.alliancefight = function(uid, targetAllianceTag, callback){
 		}
 		attackAllianceDoc = doc
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
-			return Promose.reject(new Error("联盟正在战争准备期或战争期"))
+			return Promise.reject(new Error("联盟正在战争准备期或战争期"))
 		}
 		return self.allianceDao.getModel().findOne({
 			"_id":{$ne:attackAllianceDoc._id},

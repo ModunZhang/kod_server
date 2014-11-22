@@ -951,6 +951,20 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 				attackAllianceData.moonGateData.moonGateOwner = attackAllianceDoc.moonGateData.moonGateOwner
 				defenceAllianceData.moonGateData.moonGateOwner = defenceAllianceDoc.moonGateData.moonGateOwner
 			}
+
+			if(_.isEqual(attackAllianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Our)){
+				attackAllianceDoc.moonGateData.countData.our.moonGateOwnCount += 1
+				defenceAllianceDoc.moonGateData.countData.enemy = attackAllianceDoc.moonGateData.countData.our
+				LogicUtils.refreshAllianceMoonGateDataCountData(attackAllianceDoc.moonGateData.countData, defenceAllianceDoc.moonGateData.countData)
+				attackAllianceData.moonGateData.countData = {}
+				attackAllianceData.moonGateData.countData.our = {}
+				attackAllianceData.moonGateData.countData.our.moonGateOwnCount = attackAllianceDoc.moonGateData.countData.our.moonGateOwnCount
+				attackAllianceData.moonGateData.countData.our.kill = attackAllianceDoc.moonGateData.countData.our.kill
+				defenceAllianceData.moonGateData.countData = {}
+				defenceAllianceData.moonGateData.countData.enemy = {}
+				defenceAllianceData.moonGateData.countData.enemy.moonGateOwnCount = defenceAllianceDoc.moonGateData.countData.enemy.moonGateOwnCount
+				defenceAllianceData.moonGateData.countData.enemy.kill = defenceAllianceDoc.moonGateData.countData.enemy.kill
+			}
 		}else if(_.isObject(attackAllianceDoc.moonGateData.currentFightTroops.enemy)){
 			attackAllianceDoc.moonGateData.currentFightTroops.enemy.winCount += 1
 			defenceAllianceDoc.moonGateData.currentFightTroops.our.winCount += 1
@@ -959,6 +973,20 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 				defenceAllianceDoc.moonGateData.moonGateOwner = Consts.AllianceMoonGateOwner.Our
 				attackAllianceData.moonGateData.moonGateOwner = attackAllianceDoc.moonGateData.moonGateOwner
 				defenceAllianceData.moonGateData.moonGateOwner = defenceAllianceDoc.moonGateData.moonGateOwner
+			}
+
+			if(_.isEqual(attackAllianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Enemy)){
+				attackAllianceDoc.moonGateData.countData.enemy.moonGateOwnCount += 1
+				defenceAllianceDoc.moonGateData.countData.our = attackAllianceDoc.moonGateData.countData.enemy
+				LogicUtils.refreshAllianceMoonGateDataCountData(attackAllianceDoc.moonGateData.countData, defenceAllianceDoc.moonGateData.countData)
+				attackAllianceData.moonGateData.countData = {}
+				attackAllianceData.moonGateData.countData.enemy = {}
+				attackAllianceData.moonGateData.countData.enemy.moonGateOwnCount = attackAllianceDoc.moonGateData.countData.enemy.moonGateOwnCount
+				attackAllianceData.moonGateData.countData.enemy.kill = attackAllianceDoc.moonGateData.countData.enemy.kill
+				defenceAllianceData.moonGateData.countData = {}
+				defenceAllianceData.moonGateData.countData.our = {}
+				defenceAllianceData.moonGateData.countData.our.moonGateOwnCount = defenceAllianceDoc.moonGateData.countData.our.moonGateOwnCount
+				defenceAllianceData.moonGateData.countData.our.kill = defenceAllianceDoc.moonGateData.countData.our.kill
 			}
 		}
 
@@ -1022,6 +1050,29 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 			})
 		}else{
 			if(_.isObject(attackAllianceDoc.moonGateData.currentFightTroops.our)){
+				attackAllianceDoc.moonGateData.currentFightTroops.our.winCount += 1
+				defenceAllianceDoc.moonGateData.currentFightTroops.enemy.winCount += 1
+				if(attackAllianceDoc.moonGateData.currentFightTroops.our.winCount == 3 && !_.isEqual(attackAllianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Our)){
+					attackAllianceDoc.moonGateData.moonGateOwner = Consts.AllianceMoonGateOwner.Our
+					defenceAllianceDoc.moonGateData.moonGateOwner = Consts.AllianceMoonGateOwner.Enemy
+					attackAllianceData.moonGateData.moonGateOwner = attackAllianceDoc.moonGateData.moonGateOwner
+					defenceAllianceData.moonGateData.moonGateOwner = defenceAllianceDoc.moonGateData.moonGateOwner
+				}
+				if(_.isEqual(attackAllianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Our)){
+					attackAllianceDoc.moonGateData.countData.our.moonGateOwnCount += 1
+					defenceAllianceDoc.moonGateData.countData.enemy = attackAllianceDoc.moonGateData.countData.our
+					LogicUtils.refreshAllianceMoonGateDataCountData(attackAllianceDoc.moonGateData.countData, defenceAllianceDoc.moonGateData.countData)
+
+					attackAllianceData.moonGateData.countData = {}
+					attackAllianceData.moonGateData.countData.our = {}
+					attackAllianceData.moonGateData.countData.our.moonGateOwnCount = attackAllianceDoc.moonGateData.countData.our.moonGateOwnCount
+					attackAllianceData.moonGateData.countData.our.kill = attackAllianceDoc.moonGateData.countData.our.kill
+					defenceAllianceData.moonGateData.countData = {}
+					defenceAllianceData.moonGateData.countData.enemy = {}
+					defenceAllianceData.moonGateData.countData.enemy.moonGateOwnCount = defenceAllianceDoc.moonGateData.countData.enemy.moonGateOwnCount
+					defenceAllianceData.moonGateData.countData.enemy.kill = defenceAllianceDoc.moonGateData.countData.enemy.kill
+				}
+
 				return self.playerDao.findByIdAsync(attackAllianceDoc.moonGateData.currentFightTroops.our.id, true).then(function(doc){
 					if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 					attackPlayerDoc = doc
@@ -1044,6 +1095,29 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 					return Promise.resolve()
 				})
 			}else if(_.isObject(attackAllianceDoc.moonGateData.currentFightTroops.enemy)){
+				attackAllianceDoc.moonGateData.currentFightTroops.enemy.winCount += 1
+				defenceAllianceDoc.moonGateData.currentFightTroops.our.winCount += 1
+				if(attackAllianceDoc.moonGateData.currentFightTroops.enemy.winCount == 3 && !_.isEqual(attackAllianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Enemy)){
+					attackAllianceDoc.moonGateData.moonGateOwner = Consts.AllianceMoonGateOwner.Enemy
+					defenceAllianceDoc.moonGateData.moonGateOwner = Consts.AllianceMoonGateOwner.Our
+					attackAllianceData.moonGateData.moonGateOwner = attackAllianceDoc.moonGateData.moonGateOwner
+					defenceAllianceData.moonGateData.moonGateOwner = defenceAllianceDoc.moonGateData.moonGateOwner
+				}
+				if(_.isEqual(attackAllianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Enemy)){
+					attackAllianceDoc.moonGateData.countData.enemy.moonGateOwnCount += 1
+					defenceAllianceDoc.moonGateData.countData.our = attackAllianceDoc.moonGateData.countData.enemy
+					LogicUtils.refreshAllianceMoonGateDataCountData(attackAllianceDoc.moonGateData.countData, defenceAllianceDoc.moonGateData.countData)
+
+					attackAllianceData.moonGateData.countData = {}
+					attackAllianceData.moonGateData.countData.enemy = {}
+					attackAllianceData.moonGateData.countData.enemy.moonGateOwnCount = attackAllianceDoc.moonGateData.countData.enemy.moonGateOwnCount
+					attackAllianceData.moonGateData.countData.enemy.kill = attackAllianceDoc.moonGateData.countData.enemy.kill
+					defenceAllianceData.moonGateData.countData = {}
+					defenceAllianceData.moonGateData.countData.our = {}
+					defenceAllianceData.moonGateData.countData.our.moonGateOwnCount = defenceAllianceDoc.moonGateData.countData.our.moonGateOwnCount
+					defenceAllianceData.moonGateData.countData.our.kill = defenceAllianceDoc.moonGateData.countData.our.kill
+				}
+
 				return self.playerDao.findByIdAsync(attackAllianceDoc.moonGateData.currentFightTroops.enemy.id, true).then(function(doc){
 					if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 					defencePlayerDoc = doc
@@ -1239,13 +1313,16 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 	var self = this
 	var attackTroop = attackAllianceDoc.moonGateData.currentFightTroops.our
 	var defenceTroop = attackAllianceDoc.moonGateData.currentFightTroops.enemy
+	var now = Date.now()
 	var attackFightReport = {
+		fightTime:now,
 		ourPlayerId:attackTroop.id,
 		ourPlayerName:attackTroop.name,
 		enemyPlayerId:defenceTroop.id,
 		enemyPlayerName:defenceTroop.name
 	}
 	var defenceFightReport = {
+		fightTime:now,
 		ourPlayerId:defenceTroop.id,
 		ourPlayerName:defenceTroop.name,
 		enemyPlayerId:attackTroop.id,
@@ -1332,8 +1409,6 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 	var defenceTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(defencePlayerDoc)
 	var soldierFightResult = FightUtils.soldierToSoldierFight(attackPlayerSoldiersForFight, attackTreatSoldierPercent, defencePlayerSoldiersForFight, defenceTreatSoldierPercent)
 
-	DataUtils.updateAllianceMoonGateData(attackAllianceDoc.moonGateData.countData, attackTroop, defenceAllianceDoc.moonGateData.countData, defenceTroop, soldierFightResult)
-
 	attackFightReport.ourSoldierRoundDatas = soldierFightResult.attackRoundDatas
 	attackFightReport.enemySoldierRoundDatas = soldierFightResult.defenceRoundDatas
 	defenceFightReport.ourSoldierRoundDatas = soldierFightResult.defenceRoundDatas
@@ -1356,6 +1431,10 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 			attackAllianceData.moonGateData.moonGateOwner = attackAllianceDoc.moonGateData.moonGateOwner
 			defenceAllianceData.moonGateData.moonGateOwner = defenceAllianceDoc.moonGateData.moonGateOwner
 		}
+		if(_.isEqual(attackAllianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Our)){
+			attackAllianceDoc.moonGateData.countData.our.moonGateOwnCount += 1
+			defenceAllianceDoc.moonGateData.countData.enemy = attackAllianceDoc.moonGateData.countData.our
+		}
 	}else{
 		attackAllianceDoc.moonGateData.currentFightTroops.enemy.winCount += 1
 		attackFightReport.fightResult = Consts.AllianceFightResult.EnemyWin
@@ -1366,7 +1445,16 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 			attackAllianceData.moonGateData.moonGateOwner = attackAllianceDoc.moonGateData.moonGateOwner
 			defenceAllianceData.moonGateData.moonGateOwner = defenceAllianceDoc.moonGateData.moonGateOwner
 		}
+		if(_.isEqual(attackAllianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Enemy)){
+			attackAllianceDoc.moonGateData.countData.enemy.moonGateOwnCount += 1
+			defenceAllianceDoc.moonGateData.countData.our = attackAllianceDoc.moonGateData.countData.enemy
+		}
 	}
+	DataUtils.updateAllianceMoonGateData(attackAllianceDoc.moonGateData.countData, attackTroop, defenceAllianceDoc.moonGateData.countData, defenceTroop, soldierFightResult)
+	LogicUtils.refreshAllianceMoonGateDataCountData(attackAllianceDoc.moonGateData.countData, defenceAllianceDoc.moonGateData.countData)
+
+	attackAllianceData.moonGateData.countData = attackAllianceDoc.moonGateData.countData
+	defenceAllianceData.moonGateData.countData = defenceAllianceData.moonGateData.countData
 
 	defenceAllianceDoc.moonGateData.currentFightTroops.our = defenceTroop
 	defenceAllianceDoc.moonGateData.currentFightTroops.enemy = attackTroop
