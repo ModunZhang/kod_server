@@ -914,6 +914,8 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 			var defencePlayerData = {}
 			AllianceTroopFight.call(self, attackAllianceDoc, attackAllianceData, attackPlayerDoc, attackPlayerData, defenceAllianceDoc, defenceAllianceData, defencePlayerDoc, defencePlayerData, eventFuncs)
 			MoveAllianceTroopToCurrentFightTroops.call(self, attackAllianceDoc, attackAllianceData, defenceAllianceDoc, defenceAllianceData)
+			attackAllianceData.moonGateData.currentFightTroops = attackAllianceDoc.moonGateData.currentFightTroops
+			defenceAllianceData.moonGateData.currentFightTroops = defenceAllianceDoc.moonGateData.currentFightTroops
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
@@ -1260,12 +1262,10 @@ var MoveAllianceTroopToCurrentFightTroops = function(attackAllianceDoc, attackAl
 			type:Consts.DataChangedType.Remove,
 			data:attackTroop
 		}]
-		attackAllianceData.moonGateData.currentFightTroops = attackAllianceDoc.moonGateData.currentFightTroops
 		defenceAllianceData.moonGateData.__enemyTroops = [{
 			type:Consts.DataChangedType.Remove,
 			data:attackTroop
 		}]
-		defenceAllianceData.moonGateData.currentFightTroops = defenceAllianceDoc.moonGateData.currentFightTroops
 	}
 	if(_.isArray(attackAllianceDoc.moonGateData.enemyTroops) && attackAllianceDoc.moonGateData.enemyTroops.length > 0 && !_.isObject(attackAllianceDoc.moonGateData.currentFightTroops.enemy)){
 		var defenceTroop = attackAllianceDoc.moonGateData.enemyTroops[0]
@@ -1287,12 +1287,10 @@ var MoveAllianceTroopToCurrentFightTroops = function(attackAllianceDoc, attackAl
 			type:Consts.DataChangedType.Remove,
 			data:defenceTroop
 		}]
-		attackAllianceData.moonGateData.currentFightTroops = attackAllianceDoc.moonGateData.currentFightTroops
 		defenceAllianceData.moonGateData.__ourTroops = [{
 			type:Consts.DataChangedType.Remove,
 			data:defenceTroop
 		}]
-		defenceAllianceData.moonGateData.currentFightTroops = defenceAllianceDoc.moonGateData.currentFightTroops
 	}
 }
 
