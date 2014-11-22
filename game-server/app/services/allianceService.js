@@ -3683,7 +3683,7 @@ pro.findAllianceToFight = function(playerId, callback){
 		}
 		attackAllianceDoc = doc
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
-			return Promose.reject(new Error("联盟正在战争准备期或战争期"))
+			return Promise.reject(new Error("联盟正在战争准备期或战争期"))
 		}
 		return self.allianceDao.getModel().findOne({
 			"_id":{$ne:attackAllianceDoc._id},
@@ -3801,7 +3801,7 @@ pro.marchToMoonGate = function(playerId, dragonType, soldiers, callback){
 		}
 		allianceDoc = doc
 		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Peace) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
-			return Promose.reject(new Error("联盟正在和平期或保护期"))
+			return Promise.reject(new Error("联盟正在和平期或保护期"))
 		}
 		if(LogicUtils.isPlayerHasTroopMarchToMoonGate(allianceDoc, playerId)) return Promise.reject(new Error("玩家已经对月门派出了部队"))
 		var event = LogicUtils.createAllianceMoonGateMarchEvent(playerDoc, allianceDoc, dragonType, soldiers)
@@ -3880,7 +3880,7 @@ pro.retreatFromMoonGate = function(playerId, callback){
 		}
 		ourAllianceDoc = doc
 		if(_.isEqual(ourAllianceDoc.basicInfo.status, Consts.AllianceStatus.Peace) || _.isEqual(ourAllianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
-			return Promose.reject(new Error("联盟正在和平期或保护期"))
+			return Promise.reject(new Error("联盟正在和平期或保护期"))
 		}
 		playerTroopInOurAlliance = LogicUtils.getPlayerTroopInOurMoonGate(ourAllianceDoc, playerId)
 		if(!_.isObject(playerTroopInOurAlliance)) return Promise.reject(new Error("玩家没有部队驻扎在月门"))
