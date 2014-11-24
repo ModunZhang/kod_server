@@ -864,11 +864,13 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc, cal
 
 	attackAllianceData.moonGateData = {}
 	defenceAllianceData.moonGateData = {}
-	MoveAllianceTroopToCurrentFightTroops.call(this, attackAllianceDoc, attackAllianceData, defenceAllianceDoc, defenceAllianceData)
 	var nextFightTime = Date.now() + DataUtils.getAllianceFightSecondsPerFight()
 	eventFuncs.push([self, self.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, nextFightTime])
 	attackAllianceDoc.moonGateData.currentFightTroops.nextFightTime = nextFightTime
 	defenceAllianceDoc.moonGateData.currentFightTroops.nextFightTime = nextFightTime
+	MoveAllianceTroopToCurrentFightTroops.call(this, attackAllianceDoc, attackAllianceData, defenceAllianceDoc, defenceAllianceData)
+	attackAllianceData.moonGateData.currentFightTroops = attackAllianceDoc.moonGateData.currentFightTroops
+	defenceAllianceData.moonGateData.currentFightTroops = defenceAllianceDoc.moonGateData.currentFightTroops
 
 	updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc, true])
 	updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, defenceAllianceDoc, true])
