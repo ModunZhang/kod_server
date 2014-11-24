@@ -1635,7 +1635,7 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 	LogicUtils.refreshAllianceMoonGateDataCountData(attackAllianceDoc.moonGateData.countData, defenceAllianceDoc.moonGateData.countData)
 
 	attackAllianceData.moonGateData.countData = attackAllianceDoc.moonGateData.countData
-	defenceAllianceData.moonGateData.countData = defenceAllianceData.moonGateData.countData
+	defenceAllianceData.moonGateData.countData = defenceAllianceDoc.moonGateData.countData
 
 	defenceAllianceDoc.moonGateData.currentFightTroops.our = defenceTroop
 	defenceAllianceDoc.moonGateData.currentFightTroops.enemy = attackTroop
