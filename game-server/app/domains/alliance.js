@@ -583,7 +583,7 @@ var allianceSchema = new Schema({
 				star:{type:Number, required:true}
 			}]
 		},
-		toPlayerData:{
+		targetPlayerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			cityName:{type:String, required:true}
