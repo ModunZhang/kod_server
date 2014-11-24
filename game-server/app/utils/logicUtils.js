@@ -1559,6 +1559,41 @@ Utils.createAllianceMoonGateMarchReturnEvent = function(playerDoc, allianceDoc, 
 }
 
 /**
+ * 创建玩家协助防御回城事件
+ * @param playerDoc
+ * @param helpedPlayerDoc
+ * @param allianceDoc
+ * @param dragonType
+ * @param leftsoldiers
+ * @param treatSoldiers
+ * @param rewards
+ * @param kill
+ * @returns {*}
+ */
+Utils.createAllianceHelpFightMarchReturnEvent = function(playerDoc, helpedPlayerDoc, allianceDoc, dragonType, leftsoldiers, treatSoldiers, rewards, kill){
+	var helpedPlayerLocation = this.getAllianceMemberById(allianceDoc, helpedPlayerDoc._id).location
+	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, helpedPlayerLocation, playerLocation)
+	var event = {
+		id:ShortId.generate(),
+		playerData:{
+			id:playerDoc._id,
+			cityName:playerDoc.basicInfo.cityName,
+			dragon:{
+				type:dragonType
+			},
+			leftSoldiers:leftsoldiers,
+			treatSoldiers:treatSoldiers,
+			rewards:rewards,
+			kill:kill
+		},
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime
+	}
+	return event
+}
+
+/**
  * 重置玩家部队战斗数据
  * @param soldiers
  * @param fightRoundData

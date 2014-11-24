@@ -4014,14 +4014,16 @@ pro.challengeMoonGateEnemyTroop = function(playerId, callback){
 		if(!_.isObject(doc2)) return Promise.reject(new Error("联盟不存在"))
 		enemyPlayerDoc = doc1
 		enemyAllianceDoc = doc2
-
+		var now = Date.now()
 		var ourFightReport = {
+			fightTime:now,
 			ourPlayerId:ourTroop.id,
 			ourPlayerName:ourTroop.name,
 			enemyPlayerId:enemyTroop.id,
 			enemyPlayerName:enemyTroop.name
 		}
 		var enemyFightReport = {
+			fightTime:now,
 			ourPlayerId:enemyTroop.id,
 			ourPlayerName:enemyTroop.name,
 			enemyPlayerId:ourTroop.id,

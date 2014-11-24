@@ -35,3 +35,7 @@ intInit["allianceFightTimePerFight"] = {
 	type:"allianceFightTimePerFight",
 	value:120
 }
+intInit["allianceHelpDefenceTroopsMaxCount"] = {
+	type:"allianceHelpDefenceTroopsMaxCount",
+	value:2
+}
