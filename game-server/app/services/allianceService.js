@@ -4373,14 +4373,12 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
-		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Peace) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
-			return Promise.reject(new Error("联盟正在和平期或保护期"))
-		}
 		if(LogicUtils.isPlayerHasTroopHelpedPlayer(allianceDoc, playerDoc, targetPlayerId)) return Promise.reject(new Error("玩家已经对目标玩家派出了协防部队"))
 		return self.playerDao.findByIdAsync(targetPlayerId)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		targetPlayerDoc = doc
+		if(DataUtils.isAlliancePlayerBeHelpedTroopsReachMax(allianceDoc, targetPlayerDoc)) return Promise.reject(new Error("目标玩家协防部队数量已达最大"))
 		var event = LogicUtils.createAllianceHelpFightMarchEvent(playerDoc, allianceDoc, dragonType, soldiers, targetPlayerDoc)
 		allianceDoc.helpFightMarchEvents.push(event)
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, targetPlayerDoc._id])
@@ -4392,6 +4390,116 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 		}]
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(targetPlayerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(targetPlayerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 从被协防的联盟成员城市撤兵
+ * @param playerId
+ * @param targetPlayerId
+ * @param callback
+ */
+pro.retreatFromHelpedAllianceMember = function(playerId, targetPlayerId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var targetPlayerDoc = null
+	var allianceDoc = null
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	var playerData = {}
+	var targetPlayerData = {}
+	var allianceData = {}
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		if(!LogicUtils.isPlayerHasHelpedTroopInAllianceMember(playerDoc, targetPlayerId)) return Promise.reject(new Error("玩家没有协防部队驻扎在目标玩家城市"))
+		var funcs = []
+		funcs.push(self.allianceDao.findByIdAsync(playerDoc.alliance.id))
+		funcs.push(self.playerDao.findByIdAsync(targetPlayerId))
+		return Promise.all(funcs)
+	}).spread(function(doc_1, doc_2){
+		if(!_.isObject(doc_1)) return Promise.reject(new Error("联盟不存在"))
+		if(!_.isObject(doc_2)) return Promise.reject(new Error("玩家不存在"))
+		allianceDoc = doc_1
+		targetPlayerDoc = doc_2
+		var helpTroop = _.find(targetPlayerDoc.helpedByTroops, function(troop){
+			return _.isEqual(troop.id, playerId)
+		})
+		LogicUtils.removeItemInArray(targetPlayerDoc.helpedByTroops, helpTroop)
+		targetPlayerData.__helpedByTroops = {
+			type:Consts.DataChangedType.Remove,
+			data:helpTroop
+		}
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, targetPlayerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, targetPlayerDoc, targetPlayerData])
+
+		var helpToTroop = _.find(playerDoc.helpToTroops, function(troop){
+			return _.isEqual(troop.targetPlayerData.id, targetPlayerDoc._id)
+		})
+		LogicUtils.removeItemInArray(playerDoc.helpToTroops, helpToTroop)
+		playerData.__helpToTroops = [{
+			type:Consts.DataChangedType.Remove,
+			data:helpToTroop
+		}]
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+
+		var targetMemberInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, targetPlayerDoc._id)
+		targetMemberInAlliance.helpTroopsCount -= 1
+		allianceData.__members = [{
+			type:Consts.DataChangedType.Edit,
+			data:targetMemberInAlliance
+		}]
+
+		var marchReturnEvent = LogicUtils.createAllianceHelpFightMarchReturnEvent(playerDoc, targetPlayerDoc, allianceDoc, helpTroop.dragon.type, helpTroop.soldiers, [], [], 0)
+		allianceDoc.helpFightMarchReturnEvents.push(marchReturnEvent)
+		allianceData.__helpFightMarchReturnEvents = [{
+			type:Consts.DataChangedType.Add,
+			data:marchReturnEvent
+		}]
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, allianceData])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "helpFightMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){

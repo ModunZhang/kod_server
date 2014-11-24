@@ -1458,6 +1458,41 @@ describe("AllianceService", function(){
 			}
 			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		})
+
+		it("retreatFromHelpedAllianceMember 玩家没有协防部队驻扎在目标玩家城市", function(done){
+			var m_allianceData = null
+			Api.getMyAllianceData(function(doc){
+				doc.code.should.equal(200)
+				Api.retreatFromHelpedAllianceMember(m_allianceData.members[0]._id, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("玩家没有协防部队驻扎在目标玩家城市")
+					done()
+				})
+			})
+			var onGetAllianceDataSuccess = function(doc){
+				m_allianceData = doc
+				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+			}
+			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		})
+
+		//it("retreatFromHelpedAllianceMember 正常撤回", function(done){
+		//	var m_allianceData = null
+		//	Api.getMyAllianceData(function(doc){
+		//		doc.code.should.equal(200)
+		//		setTimeout(function(){
+		//			Api.retreatFromHelpedAllianceMember(m_allianceData.members[0].id, function(doc){
+		//				doc.code.should.equal(200)
+		//				done()
+		//			})
+		//		}, 12 * 1000)
+		//	})
+		//	var onGetAllianceDataSuccess = function(doc){
+		//		m_allianceData = doc
+		//		pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//	}
+		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//})
 	})
 
 

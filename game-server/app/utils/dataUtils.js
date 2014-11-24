@@ -2263,3 +2263,14 @@ Utils.getAllianceProtectTimeAfterAllianceFight = function(allianceDoc){
 Utils.getPlayerDragonHpMax = function(playerDoc, dragon){
 	return dragon.vitality * 2
 }
+
+/**
+ * 联盟协防部队是否已达最大数量
+ * @param allianceDoc
+ * @param playerDoc
+ * @returns {boolean}
+ */
+Utils.isAlliancePlayerBeHelpedTroopsReachMax = function(allianceDoc, playerDoc){
+	var currentCount = LogicUtils.getAlliancePlayerBeHelpedTroopsCount(allianceDoc, playerDoc)
+	return currentCount >= AllianceInit.intInit.allianceHelpDefenceTroopsMaxCount.value
+}

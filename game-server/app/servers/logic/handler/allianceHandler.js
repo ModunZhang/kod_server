@@ -615,3 +615,18 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * retreatFromHelpedAllianceMember
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.retreatFromHelpedAllianceMember = function(msg, session, next){
+	var targetPlayerId = msg.targetPlayerId
+	this.allianceService.retreatFromHelpedAllianceMemberAsync(session.uid, targetPlayerId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

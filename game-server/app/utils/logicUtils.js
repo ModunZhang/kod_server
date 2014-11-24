@@ -1587,6 +1587,11 @@ Utils.createAllianceHelpFightMarchReturnEvent = function(playerDoc, helpedPlayer
 			rewards:rewards,
 			kill:kill
 		},
+		fromPlayerData:{
+			id:helpedPlayerDoc._id,
+			name:helpedPlayerDoc.basicInfo.name,
+			cityName:helpedPlayerDoc.basicInfo.cityName
+		},
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime
 	}
@@ -1633,7 +1638,7 @@ Utils.getPlayerDragonDataFromAllianceShrineStageEvent = function(playerId, event
  * @returns {boolean}
  */
 Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineEvent, playerId){
-	for(var i = 0; i < allianceDoc.shrineMarchEvents.length; i ++){
+	for(var i = 0; i < allianceDoc.shrineMarchEvents.length; i++){
 		var marchEvent = allianceDoc.shrineMarchEvents[i]
 		if(_.isEqual(marchEvent.shrineEventId, shrineEvent.id) && _.isEqual(marchEvent.playerData.id, playerId)) return true
 	}
@@ -1651,15 +1656,15 @@ Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineE
  * @returns {boolean}
  */
 Utils.isPlayerHasTroopMarchToMoonGate = function(allianceDoc, playerId){
-	for(var i = 0; i < allianceDoc.moonGateMarchEvents.length; i ++){
+	for(var i = 0; i < allianceDoc.moonGateMarchEvents.length; i++){
 		var marchEvent = allianceDoc.moonGateMarchEvents[i]
 		if(_.isEqual(marchEvent.playerData.id, playerId)) return true
 	}
 	var playerTroop = null
-		for(i = 0; i < allianceDoc.moonGateData.ourTroops.length; i++){
-			playerTroop = allianceDoc.moonGateData.ourTroops[i]
-			if(_.isEqual(playerTroop.id, playerId)) return true
-		}
+	for(i = 0; i < allianceDoc.moonGateData.ourTroops.length; i++){
+		playerTroop = allianceDoc.moonGateData.ourTroops[i]
+		if(_.isEqual(playerTroop.id, playerId)) return true
+	}
 	if(_.isObject(allianceDoc.moonGateData.currentFightTroops.our)){
 		playerTroop = allianceDoc.moonGateData.currentFightTroops.our
 		if(_.isEqual(playerTroop.id, playerId)) return true
@@ -1675,7 +1680,7 @@ Utils.isPlayerHasTroopMarchToMoonGate = function(allianceDoc, playerId){
  * @returns {boolean}
  */
 Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlayerId){
-	for(var i = 0; i < allianceDoc.helpFightMarchEvents.length; i ++){
+	for(var i = 0; i < allianceDoc.helpFightMarchEvents.length; i++){
 		var marchEvent = allianceDoc.helpFightMarchEvents[i]
 		if(_.isEqual(marchEvent.playerData.id, playerDoc._id) && _.isEqual(marchEvent.targetPlayerData.id, targetPlayerId)) return true
 	}
@@ -1685,6 +1690,22 @@ Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlay
 		if(_.isEqual(playerTroop.targetPlayerData.id, targetPlayerId)) return true
 	}
 	return false
+}
+
+/**
+ * 协助某指定玩家的部队的数量
+ * @param allianceDoc
+ * @param playerDoc
+ * @returns {number}
+ */
+Utils.getAlliancePlayerBeHelpedTroopsCount = function(allianceDoc, playerDoc){
+	var count = 0
+	for(var i = 0; i < allianceDoc.helpFightMarchEvents.length; i++){
+		var marchEvent = allianceDoc.helpFightMarchEvents[i]
+		if(_.isEqual(marchEvent.targetPlayerData.id, playerDoc._id)) count += 1
+	}
+	count += playerDoc.helpedByTroops.length
+	return count
 }
 
 /**
@@ -1701,6 +1722,20 @@ Utils.getPlayerTroopInOurMoonGate = function(allianceDoc, playerId){
 		}
 	}
 	return null
+}
+
+/**
+ * 玩家是否有协防部队驻扎在某玩家城市中
+ * @param playerDoc
+ * @param targetPlayerId
+ * @returns {boolean}
+ */
+Utils.isPlayerHasHelpedTroopInAllianceMember = function(playerDoc, targetPlayerId){
+	for(var i = 0; i < playerDoc.helpToTroops.length; i++){
+		var troop = playerDoc.helpToTroops[i]
+		if(_.isEqual(troop.targetPlayerData.id, targetPlayerId)) return true
+	}
+	return false
 }
 
 /**
@@ -1745,7 +1780,7 @@ Utils.getPlayerTroopsAvgPower = function(playerTroops){
 			totalPower += soldier.power * soldier.totalCount
 		})
 	})
-	var avgPower = playerTroops.length > 0 ? Math.floor(totalPower/playerTroops.length) : 0
+	var avgPower = playerTroops.length > 0 ? Math.floor(totalPower / playerTroops.length) : 0
 	return avgPower
 }
 
