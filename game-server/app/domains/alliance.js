@@ -565,6 +565,66 @@ var allianceSchema = new Schema({
 		},
 		startTime:{type:Number, required:true},
 		arriveTime:{type:Number, required:true}
+	}],
+	helpFightMarchEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		playerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			soldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true},
+				star:{type:Number, required:true}
+			}]
+		},
+		targetPlayerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true}
+		},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true}
+	}],
+	helpFightMarchReturnEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		playerData:{
+			id:{type:String, required:true},
+			cityName:{type:String, required:true},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			leftSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			treatSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			rewards:[{
+				_id:false,
+				type:{type:String, required:true},
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			kill:{type:Number, required:true}
+		},
+		fromPlayerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true}
+		},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true}
 	}]
 })
 

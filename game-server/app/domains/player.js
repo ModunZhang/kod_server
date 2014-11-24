@@ -456,6 +456,33 @@ var playerSchema = new Schema({
 		toName:{type:String, required:true},
 		content:{type:String, required:true},
 		sendTime:{type:Number, required:true}
+	}],
+	helpToTroops:[{
+		_id:false,
+		playerDragon:{type:String, required:true},
+		targetPlayerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true}
+		}
+	}],
+	helpedByTroops:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		level:{type:Number, required:true},
+		cityName:{type:String, required:true},
+		dragon:{
+			type:{type:String, required:true}
+		},
+		soldiers:[
+			{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true},
+				star:{type:Number, required:true}
+			}
+		]
 	}]
 })
 

@@ -1455,6 +1455,42 @@ Utils.createAllianceMoonGateMarchEvent = function(playerDoc, allianceDoc, dragon
 }
 
 /**
+ * 创建联盟协防事件
+ * @param playerDoc
+ * @param allianceDoc
+ * @param dragonType
+ * @param soldiers
+ * @param targetPlayerDoc
+ * @returns {*}
+ */
+Utils.createAllianceHelpFightMarchEvent = function(playerDoc, allianceDoc, dragonType, soldiers, targetPlayerDoc){
+	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var targetPlayerLocation = self.getAllianceMemberById(allianceDoc, targetPlayerDoc._id).location
+	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, playerLocation, targetPlayerLocation)
+	var event = {
+		id:ShortId.generate(),
+		playerData:{
+			id:playerDoc._id,
+			name:playerDoc.basicInfo.name,
+			level:playerDoc.basicInfo.level,
+			cityName:playerDoc.basicInfo.cityName,
+			dragon:{
+				type:dragonType
+			},
+			soldiers:soldiers
+		},
+		targetPlayerData:{
+			id:targetPlayerDoc._id,
+			name:targetPlayerDoc.basicInfo.name,
+			cityName:targetPlayerDoc.basicInfo.cityName
+		},
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime
+	}
+	return event
+}
+
+/**
  * 玩家从圣地回城事件
  * @param playerDoc
  * @param allianceDoc
@@ -1585,17 +1621,33 @@ Utils.isPlayerHasTroopMarchToMoonGate = function(allianceDoc, playerId){
 		if(_.isEqual(marchEvent.playerData.id, playerId)) return true
 	}
 	var playerTroop = null
-	if(_.isObject(allianceDoc.moonGateData.ourTroops)){
 		for(i = 0; i < allianceDoc.moonGateData.ourTroops.length; i++){
 			playerTroop = allianceDoc.moonGateData.ourTroops[i]
 			if(_.isEqual(playerTroop.id, playerId)) return true
 		}
+	if(_.isObject(allianceDoc.moonGateData.currentFightTroops.our)){
+		playerTroop = allianceDoc.moonGateData.currentFightTroops.our
+		if(_.isEqual(playerTroop.id, playerId)) return true
 	}
-	if(_.isObject(allianceDoc.moonGateData.currentFightTroops)){
-		for(var i = 0; i < allianceDoc.moonGateData.currentFightTroops.length; i ++){
-			playerTroop = allianceDoc.moonGateData.currentFightTroops[i].our
-			if(_.isEqual(playerTroop.id, playerId)) return true
-		}
+	return false
+}
+
+/**
+ * 查看玩家是否已经对联盟某玩家协防
+ * @param allianceDoc
+ * @param playerDoc
+ * @param targetPlayerId
+ * @returns {boolean}
+ */
+Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlayerId){
+	for(var i = 0; i < allianceDoc.helpFightMarchEvents.length; i ++){
+		var marchEvent = allianceDoc.helpFightMarchEvents[i]
+		if(_.isEqual(marchEvent.playerData.id, playerDoc._id) && _.isEqual(marchEvent.targetPlayerData.id, targetPlayerId)) return true
+	}
+	var playerTroop = null
+	for(i = 0; i < playerDoc.helpToTroops.length; i++){
+		playerTroop = playerDoc.helpToTroops[i]
+		if(_.isEqual(playerTroop.targetPlayerData.id, targetPlayerId)) return true
 	}
 	return false
 }
