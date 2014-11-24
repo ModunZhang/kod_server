@@ -442,6 +442,10 @@ pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, callback){
 	this.pushToPlayer(playerDoc, Events.player.onGetAllianceViewDataSuccess, allianceData, callback)
 }
 
+pro.onGetPlayerViewDataSuccess = function(playerDoc, targetPlayerDoc, callback){
+
+}
+
 /**
  * 推送联盟数据给玩家
  * @param allianceDoc

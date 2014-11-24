@@ -4296,16 +4296,6 @@ pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
 }
 
 /**
- * 获取玩家简单数据
- * @param playerId
- * @param targetPlayerId
- * @param callback
- */
-pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
-
-}
-
-/**
  * 协助联盟其他玩家防御
  * @param playerId
  * @param dragonType
