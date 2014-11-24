@@ -1465,7 +1465,7 @@ Utils.createAllianceMoonGateMarchEvent = function(playerDoc, allianceDoc, dragon
  */
 Utils.createAllianceHelpFightMarchEvent = function(playerDoc, allianceDoc, dragonType, soldiers, targetPlayerDoc){
 	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var targetPlayerLocation = self.getAllianceMemberById(allianceDoc, targetPlayerDoc._id).location
+	var targetPlayerLocation = this.getAllianceMemberById(allianceDoc, targetPlayerDoc._id).location
 	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, playerLocation, targetPlayerLocation)
 	var event = {
 		id:ShortId.generate(),

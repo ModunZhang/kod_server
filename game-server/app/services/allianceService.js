@@ -4033,11 +4033,11 @@ pro.challengeMoonGateEnemyTroop = function(playerId, callback){
 		}
 		ourAllianceDoc.moonGateData.fightReports.push(ourFightReport)
 		enemyAllianceDoc.moonGateData.fightReports.push(enemyFightReport)
-		ourAllianceData.__fightReports = [{
+		ourAllianceData.moonGateData.__fightReports = [{
 			type:Consts.DataChangedType.Add,
 			data:ourFightReport
 		}]
-		enemyAllianceData.__fightReports = [{
+		enemyAllianceData.moonGateData.__fightReports = [{
 			type:Consts.DataChangedType.Add,
 			data:enemyFightReport
 		}]

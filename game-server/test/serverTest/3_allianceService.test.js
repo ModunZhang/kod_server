@@ -1419,6 +1419,45 @@ describe("AllianceService", function(){
 			}
 			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		})
+
+		it("helpAllianceMemberDefence 正常行军5", function(done){
+			var m_allianceData = null
+			Api.getMyAllianceData(function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("dragonstar blueDragon 1", function(doc){
+					doc.code.should.equal(200)
+					Api.sendChat("soldiers 1000", function(doc){
+						doc.code.should.equal(200)
+						Api.helpAllianceMemberDefence(
+							"blueDragon",
+							[
+								{
+									name:"swordsman",
+									count:21
+								},
+								{
+									name:"sentinel",
+									count:21
+								},
+								{
+									name:"ranger",
+									count:21
+								}
+							],
+							m_allianceData.members[0].id,
+							function(doc){
+								doc.code.should.equal(200)
+								done()
+							})
+					})
+				})
+			})
+			var onGetAllianceDataSuccess = function(doc){
+				m_allianceData = doc
+				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+			}
+			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		})
 	})
 
 

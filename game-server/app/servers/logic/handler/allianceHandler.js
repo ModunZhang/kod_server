@@ -598,3 +598,20 @@ pro.getAllianceViewData = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 协助联盟其他玩家防御
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.helpAllianceMemberDefence = function(msg, session, next){
+	var dragonType = msg.dragonType
+	var soldiers = msg.soldiers
+	var targetPlayerId = msg.targetPlayerId
+	this.allianceService.helpAllianceMemberDefenceAsync(session.uid, dragonType, soldiers, targetPlayerId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
