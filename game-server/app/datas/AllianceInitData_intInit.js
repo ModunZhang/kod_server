@@ -33,5 +33,5 @@ intInit["allianceFightTotalFightTime"] = {
 }
 intInit["allianceFightTimePerFight"] = {
 	type:"allianceFightTimePerFight",
-	value:10
+	value:120
 }
