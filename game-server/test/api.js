@@ -299,6 +299,14 @@ Api.editPlayerCityName = function(cityName, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.getPlayerViewData = function(targetPlayerId, callback){
+	var info = {
+		targetPlayerId:targetPlayerId
+	}
+	var route = "logic.playerHandler.getPlayerViewData"
+	pomelo.request(route, info, callback)
+}
+
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {
 		name:name, tag:tag, language:language, terrain:terrain, flag:flag

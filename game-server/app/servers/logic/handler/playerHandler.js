@@ -574,3 +574,18 @@ pro.editPlayerCityName = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 获取玩家可视化数据数据
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getPlayerViewData = function(msg, session, next){
+	var targetPlayerId = msg.targetPlayerId
+	this.playerService.getPlayerViewDataAsync(session.uid, targetPlayerId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

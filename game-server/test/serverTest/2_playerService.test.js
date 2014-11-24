@@ -1,6 +1,6 @@
 /**
-* Created by modun on 14-7-25.
-*/
+ * Created by modun on 14-7-25.
+ */
 
 var pomelo = require("../pomelo-client")
 var redis = require("redis")
@@ -1472,6 +1472,25 @@ describe("PlayerService", function(){
 	//			doc.code.should.equal(200)
 	//			done()
 	//		})
+	//	})
+	//
+	//	it("getPlayerViewData 正常查看", function(done){
+	//		var m_userData = null
+	//		Api.loginPlayer(Config.deviceId2, function(doc){
+	//			doc.code.should.equal(200)
+	//			Api.loginPlayer(Config.deviceId, function(doc){
+	//				doc.code.should.equal(200)
+	//				Api.getPlayerViewData(m_userData._id, function(doc){
+	//					doc.code.should.equal(200)
+	//					done()
+	//				})
+	//			})
+	//		})
+	//		var onPlayerLoginSuccess = function(doc){
+	//			m_userData = doc
+	//			pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+	//		}
+	//		pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
 	//	})
 	//})
 

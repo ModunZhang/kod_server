@@ -402,13 +402,20 @@ pro.onGetSavedMailsSuccess = function(playerDoc, fromIndex, callback){
 }
 
 /**
- * 获取联盟简单数据成功
+ * 获取联盟可视化数据成功
  * @param playerDoc
  * @param allianceDoc
  * @param callback
  */
 pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, callback){
 	var allianceData = {}
+	allianceData._id = allianceDoc._id
+	allianceData.basicInfo = {
+		name:allianceDoc.basicInfo.name,
+		tag:allianceDoc.basicInfo.tag,
+		terrain:allianceDoc.basicInfo.terrain,
+		flag:allianceDoc.basicInfo.flag
+	}
 	var members = []
 	_.each(allianceDoc.members, function(member){
 		members.push({
@@ -423,13 +430,6 @@ pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, callback){
 			location:member.location
 		})
 	})
-	allianceData._id = allianceDoc._id
-	allianceData.basicInfo = {
-		name:allianceDoc.basicInfo.name,
-		tag:allianceDoc.basicInfo.tag,
-		terrain:allianceDoc.basicInfo.terrain,
-		flag:allianceDoc.basicInfo.flag
-	}
 	allianceData.members = members
 	allianceData.buildings = allianceDoc.buildings
 	allianceData.villages = allianceDoc.villages
@@ -442,8 +442,20 @@ pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, callback){
 	this.pushToPlayer(playerDoc, Events.player.onGetAllianceViewDataSuccess, allianceData, callback)
 }
 
+/**
+ * 获取玩家可视化数据成功
+ * @param playerDoc
+ * @param targetPlayerDoc
+ * @param callback
+ */
 pro.onGetPlayerViewDataSuccess = function(playerDoc, targetPlayerDoc, callback){
-
+	var playerData = {}
+	playerData._id = targetPlayerDoc._id
+	playerData.basicInfo = targetPlayerDoc.basicInfo
+	playerData.buildings = targetPlayerDoc.buildings
+	playerData.towers = targetPlayerDoc.towers
+	playerData.wall = targetPlayerDoc.wall
+	this.pushToPlayer(playerDoc, Events.player.onGetPlayerViewDataSuccess, playerData, callback)
 }
 
 /**

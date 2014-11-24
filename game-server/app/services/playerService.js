@@ -3103,7 +3103,7 @@ pro.editPlayerCityName = function(playerId, cityName, callback){
 }
 
 /**
- * 获取玩家简单数据
+ * 获取玩家可视化数据数据
  * @param playerId
  * @param targetPlayerId
  * @param callback
@@ -3118,6 +3118,10 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 	}
 	if(!_.isString(targetPlayerId)){
 		callback(new Error("targetPlayerId 不合法"))
+		return
+	}
+	if(_.isEqual(playerId, targetPlayerId)){
+		callback(new Error("不能查看自己的玩家数据"))
 		return
 	}
 
@@ -3136,7 +3140,7 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		targetPlayerDoc = doc
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, targetPlayerDoc._id])
-		pushFuncs.push([self.pushService, self.pushService.onGetAllianceViewDataSuccessAsync, playerDoc, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onGetPlayerViewDataSuccessAsync, playerDoc, targetPlayerDoc])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -3150,8 +3154,8 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
 		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		if(_.isObject(targetPlayerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(targetPlayerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -3230,4 +3234,3 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 		}
 	})
 }
-

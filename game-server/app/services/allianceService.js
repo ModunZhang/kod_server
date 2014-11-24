@@ -4235,7 +4235,7 @@ pro.challengeMoonGateEnemyTroop = function(playerId, callback){
 }
 
 /**
- * 获取联盟简单数据
+ * 获取联盟可视化数据
  * @param playerId
  * @param targetAllianceId
  * @param callback
