@@ -625,7 +625,8 @@ var allianceSchema = new Schema({
 		},
 		startTime:{type:Number, required:true},
 		arriveTime:{type:Number, required:true}
-	}]
+	}],
+	fightRequests:[String]
 })
 
 module.exports = mongoose.model('alliance', allianceSchema)

@@ -630,3 +630,17 @@ pro.retreatFromHelpedAllianceMember = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 请求联盟进行联盟战
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.requestAllianceToFight = function(msg, session, next){
+	this.allianceService.requestAllianceToFightAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

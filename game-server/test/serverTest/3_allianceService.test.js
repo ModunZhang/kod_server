@@ -1187,6 +1187,24 @@ describe("AllianceService", function(){
 			})
 		})
 
+		it("requestAllianceToFight 正常请求", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.requestAllianceToFight(function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("requestAllianceToFight 已经发送过开战请求", function(done){
+			Api.requestAllianceToFight(function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("已经发送过开战请求")
+				done()
+			})
+		})
+
 		//it("alliancefight 正常激活", function(done){
 		//	var m_allianceDoc = null
 		//	Api.getMyAllianceData(function(doc){
@@ -1207,12 +1225,9 @@ describe("AllianceService", function(){
 		//})
 
 		it("findAllianceToFight 正常查找", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
+			Api.findAllianceToFight(function(doc){
 				doc.code.should.equal(200)
-				Api.findAllianceToFight(function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
+				done()
 			})
 		})
 
