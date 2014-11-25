@@ -641,7 +641,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 				data:stageData
 			}]
 		}else if(stageData.maxStar < fightStar){
-			stageData.maxStar = fightData
+			stageData.maxStar = fightStar
 			allianceData.__shrineDatas = [{
 				type:Consts.DataChangedType.Edit,
 				data:stageData
