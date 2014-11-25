@@ -1186,7 +1186,6 @@ describe("PlayerService", function(){
 	//		})
 	//	})
 	//
-	//
 	//	it("upgradeDragonSkill 龙还未孵化", function(done){
 	//		Api.upgradeDragonDragonSkill("blueDragon", "skill_1", function(doc){
 	//			doc.code.should.equal(500)
@@ -1491,6 +1490,16 @@ describe("PlayerService", function(){
 	//			pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
 	//		}
 	//		pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+	//	})
+	//
+	//	it("setDefenceDragon 正常设置", function(done){
+	//		Api.sendChat("dragonstar greenDragon 1", function(doc){
+	//			doc.code.should.equal(200)
+	//			Api.setDefenceDragon("greenDragon", function(doc){
+	//				doc.code.should.equal(200)
+	//				done()
+	//			})
+	//		})
 	//	})
 	//})
 

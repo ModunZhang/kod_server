@@ -589,3 +589,18 @@ pro.getPlayerViewData = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 设置驻防使用的龙
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.setDefenceDragon = function(msg, session, next){
+	var dragonType = msg.dragonType
+	this.playerService.setDefenceDragonAsync(session.uid, dragonType).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

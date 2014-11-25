@@ -4597,6 +4597,16 @@ pro.retreatFromHelpedAllianceMember = function(playerId, targetPlayerId, callbac
 }
 
 /**
+ * 突袭玩家城市
+ * @param playerId
+ * @param targetPlayerId
+ * @param callback
+ */
+pro.strikePlayerCity = function(playerId, targetPlayerId, callback){
+
+}
+
+/**
  * 到达指定时间时,触发的消息
  * @param allianceId
  * @param eventType

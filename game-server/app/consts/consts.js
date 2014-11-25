@@ -34,7 +34,7 @@ module.exports = {
 	DragonStatus:{
 		Free:"free",
 		March:"march",
-		Defenc:"defence"
+		Defence:"defence"
 	},
 	DragonEquipmentCategory:["crown", "armguardLeft", "armguardRight", "chest", "sting", "orb"],
 	BasicResource:["wood", "stone", "iron", "food"],
