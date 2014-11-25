@@ -1220,16 +1220,33 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 				kill:attackAllianceKill
 			}
 		}
+		var willRemovedReport = null
+		attackAllianceData.__allianceFightReports = []
+		if(attackAllianceDoc.allianceFightReports.length >= Define.AllianceFightReportsMaxSize){
+			willRemovedReport = attackAllianceDoc.allianceFightReports.shift()
+			attackAllianceData.__allianceFightReports.push({
+				type:Consts.DataChangedType.Remove,
+				data:willRemovedReport
+			})
+		}
 		attackAllianceDoc.allianceFightReports.push(attackAllianceFightReport)
-		defenceAllianceDoc.allianceFightReports.push(defenceAllianceFightReport)
-		attackAllianceData.__allianceFightReports = [{
+		attackAllianceData.__allianceFightReports.push({
 			type:Consts.DataChangedType.Add,
 			data:attackAllianceFightReport
-		}]
-		defenceAllianceData.__allianceFightReports = [{
+		})
+		defenceAllianceDoc.__allianceFightReports = []
+		if(defenceAllianceDoc.allianceFightReports.length >= Define.AllianceFightReportsMaxSize){
+			willRemovedReport = defenceAllianceDoc.allianceFightReports.shift()
+			defenceAllianceData.__allianceFightReports.push({
+				type:Consts.DataChangedType.Remove,
+				data:willRemovedReport
+			})
+		}
+		defenceAllianceDoc.allianceFightReports.push(defenceAllianceFightReport)
+		defenceAllianceData.__allianceFightReports.push({
 			type:Consts.DataChangedType.Add,
 			data:defenceAllianceFightReport
-		}]
+		})
 
 		eventFuncs.push([self, self.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime])
 		eventFuncs.push([self, self.addAllianceTimeEventAsync, defenceAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, defenceAllianceDoc.basicInfo.statusFinishTime])

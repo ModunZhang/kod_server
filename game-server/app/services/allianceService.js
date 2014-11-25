@@ -4637,6 +4637,23 @@ pro.strikePlayerCity = function(playerId, targetPlayerId, dragonType, callback){
 		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
 		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		allianceDoc = doc
+		if(!_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+			return Promise.reject(new Error("联盟未处于战争期"))
+		}
+		if(!_.isEqual(allianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Our)){
+			return Promise.reject(new Error("占领月门后才能突袭玩家城市"))
+		}
+		return self.playerDao.findByIdAsync(targetPlayerId)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		targetPlayerDoc = doc
 
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

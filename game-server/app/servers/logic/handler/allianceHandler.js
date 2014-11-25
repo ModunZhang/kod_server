@@ -617,7 +617,7 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
 }
 
 /**
- * retreatFromHelpedAllianceMember
+ * 从被协防的联盟成员城市撤兵
  * @param msg
  * @param session
  * @param next

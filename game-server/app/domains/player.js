@@ -457,6 +457,9 @@ var playerSchema = new Schema({
 		content:{type:String, required:true},
 		sendTime:{type:Number, required:true}
 	}],
+	strikeReports:[{
+
+	}],
 	helpToTroops:[{
 		_id:false,
 		playerDragon:{type:String, required:true},

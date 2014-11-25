@@ -11,5 +11,6 @@ module.exports = {
 	PlayerMailSendboxMessageMaxSize:20,//玩家发件箱最大邮件数量,
 	AllianceEventsMaxSize:20,//联盟事件最大数量
 	AllianceRequestMessageMaxSize:50,//联盟中的入盟申请信息最大数量,
-	AllianceShrineReportsMaxSize:10//圣地事件报告最大数量
+	AllianceShrineReportsMaxSize:10,//圣地事件报告最大数量
+	AllianceFightReportsMaxSize:20
 }

@@ -39,3 +39,7 @@ intInit["allianceHelpDefenceTroopsMaxCount"] = {
 	type:"allianceHelpDefenceTroopsMaxCount",
 	value:2
 }
+intInit["strikeDragonHpDecreasedHpPercent"] = {
+	type:"strikeDragonHpDecreasedHpPercent",
+	value:5
+}
