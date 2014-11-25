@@ -4447,11 +4447,11 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 		targetPlayerDoc = doc
 		if(DataUtils.isAlliancePlayerBeHelpedTroopsReachMax(allianceDoc, targetPlayerDoc)) return Promise.reject(new Error("目标玩家协防部队数量已达最大"))
 		var event = LogicUtils.createAllianceHelpFightMarchEvent(playerDoc, allianceDoc, dragonType, soldiers, targetPlayerDoc)
-		allianceDoc.helpFightMarchEvents.push(event)
+		allianceDoc.helpDefenceMarchEvents.push(event)
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, targetPlayerDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "helpFightMarchEvents", event.id, event.arriveTime])
-		allianceData.__helpFightMarchEvents = [{
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "helpDefenceMarchEvents", event.id, event.arriveTime])
+		allianceData.__helpDefenceMarchEvents = [{
 			type:Consts.DataChangedType.Add,
 			data:event
 		}]
@@ -4559,13 +4559,13 @@ pro.retreatFromHelpedAllianceMember = function(playerId, targetPlayerId, callbac
 		}]
 
 		var marchReturnEvent = LogicUtils.createAllianceHelpFightMarchReturnEvent(playerDoc, targetPlayerDoc, allianceDoc, helpTroop.dragon.type, helpTroop.soldiers, [], [], 0)
-		allianceDoc.helpFightMarchReturnEvents.push(marchReturnEvent)
-		allianceData.__helpFightMarchReturnEvents = [{
+		allianceDoc.helpDefenceMarchReturnEvents.push(marchReturnEvent)
+		allianceData.__helpDefenceMarchReturnEvents = [{
 			type:Consts.DataChangedType.Add,
 			data:marchReturnEvent
 		}]
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, allianceData])
-		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "helpFightMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "helpDefenceMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -4600,10 +4600,65 @@ pro.retreatFromHelpedAllianceMember = function(playerId, targetPlayerId, callbac
  * 突袭玩家城市
  * @param playerId
  * @param targetPlayerId
+ * @param dragonType
  * @param callback
  */
-pro.strikePlayerCity = function(playerId, targetPlayerId, callback){
+pro.strikePlayerCity = function(playerId, targetPlayerId, dragonType, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(targetPlayerId)){
+		callback(new Error("targetPlayerId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		callback(new Error("dragonType 不合法"))
+		return
+	}
 
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var targetPlayerDoc = null
+	var targetPlayerData = {}
+	var allianceDoc = null
+	var allianceData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+		var dragon = playerDoc.dragons[dragonType]
+		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
+		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
+		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
+
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
 }
 
 /**

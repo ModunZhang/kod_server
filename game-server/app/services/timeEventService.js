@@ -1261,7 +1261,7 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
  * @param event
  * @param callback
  */
-pro.onHelpFightMarchEvents = function(allianceDoc, event, callback){
+pro.onHelpDefenceMarchEvents = function(allianceDoc, event, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = {}
@@ -1271,8 +1271,8 @@ pro.onHelpFightMarchEvents = function(allianceDoc, event, callback){
 	var eventFuncs = []
 	var pushFuncs = []
 	var updateFuncs = []
-	LogicUtils.removeItemInArray(allianceDoc.helpFightMarchEvents, event)
-	allianceData.__helpFightMarchEvents = [{
+	LogicUtils.removeItemInArray(allianceDoc.helpDefenceMarchEvents, event)
+	allianceData.__helpDefenceMarchEvents = [{
 		type:Consts.DataChangedType.Remove,
 		data:event
 	}]
@@ -1348,14 +1348,14 @@ pro.onHelpFightMarchEvents = function(allianceDoc, event, callback){
  * @param event
  * @param callback
  */
-pro.onHelpFightMarchReturnEvents = function(allianceDoc, event, callback){
+pro.onHelpDefenceMarchReturnEvents = function(allianceDoc, event, callback){
 	var self = this
 	var allianceData = {}
 	var eventFuncs = []
 	var pushFuncs = []
 	var updateFuncs = []
-	LogicUtils.removeItemInArray(allianceDoc.helpFightMarchReturnEvents, event)
-	allianceData.__helpFightMarchReturnEvents = [{
+	LogicUtils.removeItemInArray(allianceDoc.helpDefenceMarchReturnEvents, event)
+	allianceData.__helpDefenceMarchReturnEvents = [{
 		type:Consts.DataChangedType.Remove,
 		data:event
 	}]

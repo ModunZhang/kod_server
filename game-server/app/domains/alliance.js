@@ -566,7 +566,7 @@ var allianceSchema = new Schema({
 		startTime:{type:Number, required:true},
 		arriveTime:{type:Number, required:true}
 	}],
-	helpFightMarchEvents:[{
+	helpDefenceMarchEvents:[{
 		_id:false,
 		id:{type:String, required:true},
 		playerData:{
@@ -591,7 +591,7 @@ var allianceSchema = new Schema({
 		startTime:{type:Number, required:true},
 		arriveTime:{type:Number, required:true}
 	}],
-	helpFightMarchReturnEvents:[{
+	helpDefenceMarchReturnEvents:[{
 		_id:false,
 		id:{type:String, required:true},
 		playerData:{

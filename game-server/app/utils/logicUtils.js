@@ -1680,8 +1680,8 @@ Utils.isPlayerHasTroopMarchToMoonGate = function(allianceDoc, playerId){
  * @returns {boolean}
  */
 Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlayerId){
-	for(var i = 0; i < allianceDoc.helpFightMarchEvents.length; i++){
-		var marchEvent = allianceDoc.helpFightMarchEvents[i]
+	for(var i = 0; i < allianceDoc.helpDefenceMarchEvents.length; i++){
+		var marchEvent = allianceDoc.helpDefenceMarchEvents[i]
 		if(_.isEqual(marchEvent.playerData.id, playerDoc._id) && _.isEqual(marchEvent.targetPlayerData.id, targetPlayerId)) return true
 	}
 	var playerTroop = null
@@ -1700,8 +1700,8 @@ Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlay
  */
 Utils.getAlliancePlayerBeHelpedTroopsCount = function(allianceDoc, playerDoc){
 	var count = 0
-	for(var i = 0; i < allianceDoc.helpFightMarchEvents.length; i++){
-		var marchEvent = allianceDoc.helpFightMarchEvents[i]
+	for(var i = 0; i < allianceDoc.helpDefenceMarchEvents.length; i++){
+		var marchEvent = allianceDoc.helpDefenceMarchEvents[i]
 		if(_.isEqual(marchEvent.targetPlayerData.id, playerDoc._id)) count += 1
 	}
 	count += playerDoc.helpedByTroops.length

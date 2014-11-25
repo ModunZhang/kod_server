@@ -1435,7 +1435,7 @@ describe("AllianceService", function(){
 			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		})
 
-		it("helpAllianceMemberDefence 正常行军5", function(done){
+		it("helpAllianceMemberDefence 正常协助", function(done){
 			var m_allianceData = null
 			Api.getMyAllianceData(function(doc){
 				doc.code.should.equal(200)
