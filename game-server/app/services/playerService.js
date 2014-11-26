@@ -2512,7 +2512,7 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 			isRead:false,
 			isSaved:false
 		}
-		if(memberDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
+		if(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
 			var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
 			LogicUtils.removeItemInArray(memberDoc.mails, mail)
 			memberData.__mails.push({
@@ -2542,7 +2542,7 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 			content:content,
 			sendTime:Date.now()
 		}
-		if(playerDoc.sendMails.length >= Define.PlayerMailSendboxMessageMaxSize){
+		if(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
 			var sendMail = playerDoc.sendMails.shift()
 			playerData.__sendMails.push({
 				type:Consts.DataChangedType.Remove,

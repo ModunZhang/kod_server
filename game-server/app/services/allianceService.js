@@ -248,7 +248,7 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		}
 		var playerData = {}
 		playerData.__sendMails = []
-		if(playerDoc.sendMails.length >= Define.PlayerMailSendboxMessageMaxSize){
+		if(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
 			var sendMail = playerDoc.sendMails.shift()
 			playerData.__sendMails.push({
 				type:Consts.DataChangedType.Remove,
@@ -262,7 +262,7 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		})
 
 		playerData.__mails = []
-		if(playerDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
+		if(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 			var mail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
 			LogicUtils.removeItemInArray(playerDoc.mails, mail)
 			playerData.__mails.push({
@@ -292,7 +292,7 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 				memberDocs.push(doc)
 				var docData = {}
 				docData.__mails = []
-				if(doc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
+				if(doc.mails.length >= Define.PlayerMailsMaxSize){
 					var mail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
 					LogicUtils.removeItemInArray(playerDoc.mails, mail)
 					docData.__mails.push({

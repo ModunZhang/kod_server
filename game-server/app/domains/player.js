@@ -457,8 +457,114 @@ var playerSchema = new Schema({
 		content:{type:String, required:true},
 		sendTime:{type:Number, required:true}
 	}],
-	strikeReports:[{
-
+	reports:[{
+		_id:false,
+		id:{type:String, required:true},
+		type:{type:String, required:true},
+		createTime:{type:String, required:true},
+		strikeCity:{
+			playerData:{
+				name:{type:String, required:true},
+				icon:{type:String, required:true},
+				allianceName:{type:String, requird:true},
+				coinGet:{type:Number, required:true},
+				dragon:{
+					type:{type:String, required:true},
+					level:{type:Number, required:true},
+					xpAdd:{type:Number, required:true},
+					hp:{type:Number, required:true},
+					hpDecreased:{type:Number, required:true}
+				}
+			},
+			targetPlayerData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				icon:{type:String, required:true},
+				allianceName:{type:String, required:true},
+				dragon:{
+					type:{type:String, required:true},
+					level:{type:Number, required:true},
+					xpAdd:{type:Number, required:true},
+					hp:{type:Number, required:true},
+					hpDecreased:{type:Number, required:true},
+					equipments:{
+						crown:{
+							name:{type:String, required:true},
+							star:{type:String, required:true}
+						},
+						armguardLeft:{
+							name:{type:String, required:true},
+							star:{type:String, required:true}
+						},
+						armguardRight:{
+							name:{type:String, required:true},
+							star:{type:String, required:true}
+						},
+						chest:{
+							name:{type:String, required:true},
+							star:{type:String, required:true}
+						},
+						sting:{
+							name:{type:String, required:true},
+							star:{type:String, required:true}
+						},
+						orb:{
+							name:{type:String, required:true},
+							star:{type:String, required:true}
+						}
+					},
+					skills:{
+						skill_1:{
+							name:{type:String, required:true},
+							level:{type:String, required:true}
+						},
+						skill_2:{
+							name:{type:String, required:true},
+							level:{type:String, required:true}
+						},
+						skill_3:{
+							name:{type:String, required:true},
+							level:{type:String, required:true}
+						},
+						skill_4:{
+							name:{type:String, required:true},
+							level:{type:String, required:true}
+						},
+						skill_5:{
+							name:{type:String, required:true},
+							level:{type:String, required:true}
+						},
+						skill_6:{
+							name:{type:String, required:true},
+							level:{type:String, required:true}
+						},
+						skill_7:{
+							name:{type:String, required:true},
+							level:{type:String, required:true}
+						},
+						skill_8:{
+							name:{type:String, required:true},
+							level:{type:String, required:true}
+						},
+						skill_9:{
+							name:{type:String, required:true},
+							level:{type:String, required:true}
+						}
+					}
+				},
+				soldiers:[{
+					name:{type:String, required:true},
+					star:{type:Number, required:true},
+					count:{type:Number, required:true}
+				}],
+				resources:{
+					wood:{type:Number, required:true},
+					stone:{type:Number, required:true},
+					iron:{type:Number, required:true},
+					food:{type:Number, required:true}
+				}
+			}
+		}
 	}],
 	helpToTroops:[{
 		_id:false,
