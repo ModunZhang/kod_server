@@ -629,6 +629,21 @@ pro.getNearedAllianceInfos = function(msg, session, next){
 }
 
 /**
+ * 根据Tag搜索联盟战斗数据
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.searchAllianceInfoByTag = function(msg, session, next){
+	var tag = msg.tag
+	this.allianceService.searchAllianceInfoByTagAsync(session.uid, tag).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
  * 协助联盟其他玩家防御
  * @param msg
  * @param session

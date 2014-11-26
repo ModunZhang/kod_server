@@ -1442,6 +1442,13 @@ describe("AllianceService", function(){
 			})
 		})
 
+		it("searchAllianceInfoByTag 正常搜索", function(done){
+			Api.searchAllianceInfoByTag("test", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
 		it("helpAllianceMemberDefence 正常协助", function(done){
 			var m_allianceData = null
 			Api.getMyAllianceData(function(doc){

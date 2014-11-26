@@ -4513,14 +4513,14 @@ pro.getNearedAllianceInfos = function(playerId, callback){
 		allianceDoc = doc
 		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 		var funcs = []
-		funcs.push(self.allianceDao.getModel().findOne({"basicInfo.power":{$lt:allianceDoc.basicInfo.power}}).sort({"basicInfo.power": -1}).exec())
-		funcs.push(self.allianceDao.getModel().findOne({"basicInfo.power":{$gt:allianceDoc.basicInfo.power}}).sort({"basicInfo.power": 1}).exec())
+		funcs.push(self.allianceDao.getModel().find({"basicInfo.power":{$lt:allianceDoc.basicInfo.power}}).sort({"basicInfo.power": -1}).limit(3).exec())
+		funcs.push(self.allianceDao.getModel().find({"basicInfo.power":{$gt:allianceDoc.basicInfo.power}}).sort({"basicInfo.power": 1}).limit(3).exec())
 		return Promise.all(funcs)
-	}).spread(function(docBig, docSmall){
+	}).spread(function(docsSmall, docsBig){
 		var allianceDocs = []
-		if(_.isObject(docSmall)) allianceDocs.push(docSmall)
 		allianceDocs.push(allianceDoc)
-		if(_.isObject(docBig)) allianceDocs.push(docBig)
+		allianceDocs.concat(docsSmall)
+		allianceDocs.concat(docsBig)
 		pushFuncs.push([self.pushService, self.pushService.onGetNearedAllianceInfosSuccessAsync, playerDoc, allianceDocs])
 		return Promise.resolve()
 	}).then(function(){
@@ -4538,6 +4538,51 @@ pro.getNearedAllianceInfos = function(playerId, callback){
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 根据Tag搜索联盟战斗数据
+ * @param playerId
+ * @param tag
+ * @param callback
+ */
+pro.searchAllianceInfoByTag = function(playerId, tag, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(tag)){
+		callback(new Error("tag 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var funcs = []
+		funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		funcs.push(self.allianceDao.searchByIndexAsync("basicInfo.tag", tag))
+		return Promise.all(funcs)
+	}).spread(function(tmp, docs){
+		return self.pushService.onSearchAllianceInfoByTagSuccessAsync(playerDoc, docs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		if(_.isObject(playerDoc)){
+			self.playerDao.removeLockByIdAsync(playerDoc._id).then(function(){
 				callback(e)
 			})
 		}else{
