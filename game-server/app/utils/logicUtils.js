@@ -1942,7 +1942,7 @@ Utils.updateAllianceCountInfo = function(allianceDoc){
 	countInfo.moonGateOwner += countData.our.moonGateOwnCount
 	countInfo.kill += countData.our.kill
 	countInfo.beKilled += countData.enemy.kill
-	countInfo.routCount += countData.routCount
+	countInfo.routCount += countData.our.routCount
 	if(_.isEqual(allianceDoc._id, allianceDoc.moonGateData.activeBy)){
 		countInfo.winCount += countData.our.kill >= countData.enemy.kill ? 1 : 0
 		countInfo.failedCount += countData.our.kill < countData.enemy.kill ? 1 : 0
