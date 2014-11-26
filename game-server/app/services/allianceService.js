@@ -4493,7 +4493,7 @@ pro.getNearedAllianceInfos = function(playerId, callback){
 
 	var self = this
 	var playerDoc = null
-	var nearedAllianceDocs = []
+	var allianceDoc = null
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -4504,14 +4504,25 @@ pro.getNearedAllianceInfos = function(playerId, callback){
 		}
 		playerDoc = doc
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
-		if(!_.isObject(ourPlayerDoc.alliance) || _.isEmpty(ourPlayerDoc.alliance.id)){
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		return self.allianceDao.getModel().find({
-
-		}).exec()
-	}).then(function(docs){
-
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		allianceDoc = doc
+		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
+		var funcs = []
+		funcs.push(self.allianceDao.getModel().findOne({"basicInfo.power":{$lt:allianceDoc.basicInfo.power}}).sort({"basicInfo.power": -1}).exec())
+		funcs.push(self.allianceDao.getModel().findOne({"basicInfo.power":{$gt:allianceDoc.basicInfo.power}}).sort({"basicInfo.power": 1}).exec())
+		return Promise.all(funcs)
+	}).spread(function(docBig, docSmall){
+		var allianceDocs = []
+		if(_.isObject(docSmall)) allianceDocs.push(docSmall)
+		allianceDocs.push(allianceDoc)
+		if(_.isObject(docBig)) allianceDocs.push(docBig)
+		pushFuncs.push([self.pushService, self.pushService.onGetNearedAllianceInfosSuccessAsync, playerDoc, allianceDocs])
+		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){

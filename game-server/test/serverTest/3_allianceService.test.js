@@ -1435,6 +1435,13 @@ describe("AllianceService", function(){
 			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		})
 
+		it("getNearedAllianceInfos 正常获取", function(done){
+			Api.getNearedAllianceInfos(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
 		it("helpAllianceMemberDefence 正常协助", function(done){
 			var m_allianceData = null
 			Api.getMyAllianceData(function(doc){

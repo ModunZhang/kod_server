@@ -615,6 +615,20 @@ pro.getAllianceViewData = function(msg, session, next){
 }
 
 /**
+ * 查看战力相近的3个联盟的数据
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getNearedAllianceInfos = function(msg, session, next){
+	this.allianceService.getNearedAllianceInfosAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
  * 协助联盟其他玩家防御
  * @param msg
  * @param session

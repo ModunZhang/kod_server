@@ -615,6 +615,11 @@ Api.getAllianceViewData = function(targetAllianceId, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.getNearedAllianceInfos = function(callback){
+	var route = "logic.allianceHandler.getNearedAllianceInfos"
+	pomelo.request(route, null, callback)
+}
+
 Api.helpAllianceMemberDefence = function(dragonType, soldiers, targetPlayerId, callback){
 	var info = {
 		dragonType:dragonType,
