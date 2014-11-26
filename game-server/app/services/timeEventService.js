@@ -1238,7 +1238,7 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 			type:Consts.DataChangedType.Add,
 			data:attackAllianceFightReport
 		})
-		defenceAllianceDoc.__allianceFightReports = []
+		defenceAllianceData.__allianceFightReports = []
 		if(defenceAllianceDoc.allianceFightReports.length >= Define.AllianceFightReportsMaxSize){
 			willRemovedReport = defenceAllianceDoc.allianceFightReports.shift()
 			defenceAllianceData.__allianceFightReports.push({
