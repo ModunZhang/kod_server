@@ -248,7 +248,7 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		}
 		var playerData = {}
 		playerData.__sendMails = []
-		if(playerDoc.sendMails.length >= Define.PlayerMailSendboxMessageMaxSize){
+		if(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
 			var sendMail = playerDoc.sendMails.shift()
 			playerData.__sendMails.push({
 				type:Consts.DataChangedType.Remove,
@@ -262,7 +262,7 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		})
 
 		playerData.__mails = []
-		if(playerDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
+		if(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 			var mail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
 			LogicUtils.removeItemInArray(playerDoc.mails, mail)
 			playerData.__mails.push({
@@ -292,7 +292,7 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 				memberDocs.push(doc)
 				var docData = {}
 				docData.__mails = []
-				if(doc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
+				if(doc.mails.length >= Define.PlayerMailsMaxSize){
 					var mail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
 					LogicUtils.removeItemInArray(playerDoc.mails, mail)
 					docData.__mails.push({
@@ -4742,6 +4742,23 @@ pro.strikePlayerCity = function(playerId, targetPlayerId, dragonType, callback){
 		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
 		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		allianceDoc = doc
+		if(!_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+			return Promise.reject(new Error("联盟未处于战争期"))
+		}
+		if(!_.isEqual(allianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Our)){
+			return Promise.reject(new Error("占领月门后才能突袭玩家城市"))
+		}
+		return self.playerDao.findByIdAsync(targetPlayerId)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		targetPlayerDoc = doc
 
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

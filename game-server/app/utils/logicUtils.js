@@ -1087,7 +1087,7 @@ Utils.sendSystemMail = function(playerDoc, playerData, titleKey, titleArgs, cont
 		isSaved:false
 	}
 	playerData.__mails = []
-	if(playerDoc.mails.length >= Define.PlayerMailInboxMessageMaxSize){
+	if(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 		var willRemovedMail = this.getPlayerFirstUnSavedMail(playerDoc)
 		this.removeItemInArray(playerDoc.mails, willRemovedMail)
 		playerData.__mails.push({
