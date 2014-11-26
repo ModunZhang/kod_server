@@ -1197,6 +1197,7 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 		var attackAllianceKill = attackAllianceDoc.moonGateData.countData.our.kill
 		var defenceAllianceKill = attackAllianceDoc.moonGateData.countData.enemy.kill
 		var attackAllianceFightReport = {
+			id:ShortId.generate(),
 			fightResult:attackAllianceKill > defenceAllianceKill ? Consts.AllianceFightResult.OurWin : Consts.AllianceFightResult.EnemyWin,
 			ourAlliance:{
 				kill:attackAllianceKill
@@ -1209,6 +1210,7 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 			}
 		}
 		var defenceAllianceFightReport = {
+			id:ShortId.generate(),
 			fightResult:attackAllianceKill > defenceAllianceKill ? Consts.AllianceFightResult.EnemyWin : Consts.AllianceFightResult.OurWin,
 			ourAlliance:{
 				kill:defenceAllianceKill

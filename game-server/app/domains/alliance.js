@@ -505,6 +505,7 @@ var allianceSchema = new Schema({
 	},
 	allianceFightReports:[{
 		_id:false,
+		id:{type:String, required:true},
 		fightResult:{type:String, required:true},
 		ourAlliance:{
 			kill:{type:Number, required:true}
