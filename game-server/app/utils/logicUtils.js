@@ -1931,3 +1931,23 @@ Utils.refreshAllianceMoonGateDataCountData = function(attackCountData, defenceCo
 	defenceCountData.our = attackCountData.enemy
 	defenceCountData.enemy = attackCountData.our
 }
+
+/**
+ * 更新联盟统计数据
+ * @param allianceDoc
+ */
+Utils.updateAllianceCountInfo = function(allianceDoc){
+	var countInfo = allianceDoc.countInfo
+	var countData = allianceDoc.moonGateData.countData
+	countInfo.moonGateOwner += countData.our.moonGateOwnCount
+	countInfo.kill += countData.our.kill
+	countInfo.beKilled += countData.enemy.kill
+	countInfo.routCount += countData.routCount
+	if(_.isEqual(allianceDoc._id, allianceDoc.moonGateData.activeBy)){
+		countInfo.winCount += countData.our.kill >= countData.enemy.kill ? 1 : 0
+		countInfo.failedCount += countData.our.kill < countData.enemy.kill ? 1 : 0
+	}else{
+		countInfo.winCount += countData.our.kill > countData.enemy.kill ? 1 : 0
+		countInfo.failedCount += countData.our.kill <= countData.enemy.kill ? 1 : 0
+	}
+}

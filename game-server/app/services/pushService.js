@@ -283,6 +283,24 @@ pro.onGetPlayerInfoSuccess = function(playerDoc, memberDoc, callback){
 }
 
 /**
+ * 查看战力相近的3个联盟的数据
+ * @param playerDoc
+ * @param nearedAllianceDocs
+ * @param callback
+ */
+pro.onGetNearedAllianceInfosSuccess = function(playerDoc, nearedAllianceDocs, callback){
+	var datas = []
+	_.each(nearedAllianceDocs, function(doc){
+		var data = {}
+		data._id = doc._id
+		data.basicInfo = doc.basicInfo
+		data.countInfo = doc.countInfo
+		datas.push(data)
+	})
+	this.pushToPlayer(playerDoc, Events.player.onGetNearedAllianceInfosSuccess, datas, callback)
+}
+
+/**
  * 联盟搜索数据返回
  * @param playerDoc
  * @param allianceDocs
