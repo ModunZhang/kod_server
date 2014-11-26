@@ -2274,3 +2274,12 @@ Utils.isAlliancePlayerBeHelpedTroopsReachMax = function(allianceDoc, playerDoc){
 	var currentCount = LogicUtils.getAlliancePlayerBeHelpedTroopsCount(allianceDoc, playerDoc)
 	return currentCount >= AllianceInit.intInit.allianceHelpDefenceTroopsMaxCount.value
 }
+
+/**
+ * 联盟复仇时间是否过期
+ * @param allianceFightReport
+ * @returns {boolean}
+ */
+Utils.isAllianceRevengeTimeExpired = function(allianceFightReport){
+	return Date.now() > allianceFightReport.fightTime + (AllianceInit.intInit.allianceRevengeMaxTime.value * 1000)
+}

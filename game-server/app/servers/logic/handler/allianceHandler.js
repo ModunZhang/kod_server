@@ -541,6 +541,21 @@ pro.findAllianceToFight = function(msg, session, next){
 }
 
 /**
+ * 复仇其他联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.revengeAlliance = function(msg, session, next){
+	var reportId = msg.reportId
+	this.allianceService.revengeAllianceAsync(session.uid, reportId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
  * 行军到月门
  * @param msg
  * @param session

@@ -749,7 +749,7 @@ pro.rmtreatsoldierevents = function(uid, callback){
  * @param count
  * @param callback
  */
-pro.dragonvitality = function(uid, dragonType, count, callback){
+pro.dragonhp = function(uid, dragonType, count, callback){
 	var self = this
 	this.playerDao.findByIdAsync(uid).then(function(doc){
 		if(!_.isObject(doc)){
@@ -760,7 +760,7 @@ pro.dragonvitality = function(uid, dragonType, count, callback){
 			if(_.isEqual(dragon.type, dragonType)) return true
 		})
 		if(dragon && count >= 0){
-			dragon.vitality = count
+			dragon.hp = count
 		}
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){

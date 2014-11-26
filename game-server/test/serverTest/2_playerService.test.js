@@ -1002,7 +1002,7 @@ describe("PlayerService", function(){
 	//	})
 	//
 	//	it("hatchDragon 龙蛋早已成功孵化", function(done){
-	//		Api.sendChat("dragonvitality redDragon 90", function(doc){
+	//		Api.sendChat("dragonhp redDragon 90", function(doc){
 	//			doc.code.should.equal(200)
 	//			Api.hatchDragon("redDragon", function(doc){
 	//				doc.code.should.equal(200)

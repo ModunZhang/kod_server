@@ -1508,6 +1508,27 @@ describe("AllianceService", function(){
 		//	}
 		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//})
+
+		//it("revengeAlliance 正常复仇", function(done){
+		//	setTimeout(function(){
+		//		var m_allianceData = null
+		//		Api.loginPlayer(Config.deviceId3, function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.getMyAllianceData(function(doc){
+		//				doc.code.should.equal(200)
+		//				Api.revengeAlliance(m_allianceData.allianceFightReports[0].id, function(doc){
+		//					doc.code.should.equal(200)
+		//					done()
+		//				})
+		//			})
+		//			var onGetAllianceDataSuccess = function(doc){
+		//				m_allianceData = doc
+		//				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//			}
+		//			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//		})
+		//	}, 37 * 1000)
+		//})
 	})
 
 

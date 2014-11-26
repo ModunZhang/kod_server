@@ -291,15 +291,15 @@ var ChatHandler = function(app){
 			}
 		},
 		{
-			command:"dragonvitality",
-			desc:"修改指定龙的活力:dragonvitality redDragon 5",
+			command:"dragonhp",
+			desc:"修改指定龙的Hp:dragonhp redDragon 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var dragonType = text.split(" ")[1]
 				var count = text.split(" ")[2]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.dragonvitality(session, uid, dragonType, count, function(e){
+					self.app.rpc.logic.commandRemote.dragonhp(session, uid, dragonType, count, function(e){
 						callback(e)
 					})
 				}

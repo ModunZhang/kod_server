@@ -473,7 +473,7 @@ var allianceSchema = new Schema({
 					kill:{type:Number, required:true},
 					moonGateOwnCount:{type:Number, required:true},
 					routCount:{type:Number, required:true},
-					challengeCount:{type:Number, required:true},
+					strikeCount:{type:Number, required:true},
 					attackSuccessCount:{type:Number, required:true},
 					attackFailCount:{type:Number, required:true},
 					defenceSuccessCount:{type:Number, required:true},
@@ -488,7 +488,7 @@ var allianceSchema = new Schema({
 					kill:{type:Number, required:true},
 					moonGateOwnCount:{type:Number, required:true},
 					routCount:{type:Number, required:true},
-					challengeCount:{type:Number, required:true},
+					strikeCount:{type:Number, required:true},
 					attackSuccessCount:{type:Number, required:true},
 					attackFailCount:{type:Number, required:true},
 					defenceSuccessCount:{type:Number, required:true},
@@ -507,14 +507,26 @@ var allianceSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		fightResult:{type:String, required:true},
+		fightTime:{type:Number, required:true},
 		ourAlliance:{
-			kill:{type:Number, required:true}
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			tag:{type:String, required:true},
+			kill:{type:Number, required:true},
+			palaceLevel:{type:Number, required:true},
+			memberCount:{type:Number, required:true},
+			power:{type:Number, required:true},
+			language:{type:Number, required:true}
 		},
 		enemyAlliance:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			tag:{type:String, required:true},
-			kill:{type:Number, required:true}
+			kill:{type:Number, required:true},
+			palaceLevel:{type:Number, required:true},
+			memberCount:{type:Number, required:true},
+			power:{type:Number, required:true},
+			language:{type:Number, required:true}
 		}
 	}],
 	moonGateMarchEvents:[{

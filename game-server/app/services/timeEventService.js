@@ -1199,27 +1199,51 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 		var attackAllianceFightReport = {
 			id:ShortId.generate(),
 			fightResult:attackAllianceKill > defenceAllianceKill ? Consts.AllianceFightResult.OurWin : Consts.AllianceFightResult.EnemyWin,
+			fightTime:now,
 			ourAlliance:{
-				kill:attackAllianceKill
+				id:attackAllianceDoc._id,
+				name:attackAllianceDoc.basicInfo.name,
+				tag:attackAllianceDoc.basicInfo.tag,
+				kill:attackAllianceKill,
+				palaceLevel:attackAllianceDoc.buildings.palace.level,
+				memberCount:attackAllianceDoc.members.length,
+				power:attackAllianceDoc.basicInfo.power,
+				language:attackAllianceDoc.basicInfo.language
 			},
 			enemyAlliance:{
 				id:defenceAllianceDoc._id,
 				name:defenceAllianceDoc.basicInfo.name,
 				tag:defenceAllianceDoc.basicInfo.tag,
-				kill:defenceAllianceKill
+				kill:defenceAllianceKill,
+				palaceLevel:defenceAllianceDoc.buildings.palace.level,
+				memberCount:defenceAllianceDoc.members.length,
+				power:defenceAllianceDoc.basicInfo.power,
+				language:defenceAllianceDoc.basicInfo.language
 			}
 		}
 		var defenceAllianceFightReport = {
 			id:ShortId.generate(),
 			fightResult:attackAllianceKill > defenceAllianceKill ? Consts.AllianceFightResult.EnemyWin : Consts.AllianceFightResult.OurWin,
+			fightTime:now,
 			ourAlliance:{
-				kill:defenceAllianceKill
+				id:defenceAllianceDoc._id,
+				name:defenceAllianceDoc.basicInfo.name,
+				tag:defenceAllianceDoc.basicInfo.tag,
+				kill:defenceAllianceKill,
+				palaceLevel:defenceAllianceDoc.buildings.palace.level,
+				memberCount:defenceAllianceDoc.members.length,
+				power:defenceAllianceDoc.basicInfo.power,
+				language:defenceAllianceDoc.basicInfo.language
 			},
 			enemyAlliance:{
 				id:attackAllianceDoc._id,
 				name:attackAllianceDoc.basicInfo.name,
 				tag:attackAllianceDoc.basicInfo.tag,
-				kill:attackAllianceKill
+				kill:attackAllianceKill,
+				palaceLevel:attackAllianceDoc.buildings.palace.level,
+				memberCount:attackAllianceDoc.members.length,
+				power:attackAllianceDoc.basicInfo.power,
+				language:attackAllianceDoc.basicInfo.language
 			}
 		}
 		attackAllianceDoc.allianceFightReports.push(attackAllianceFightReport)

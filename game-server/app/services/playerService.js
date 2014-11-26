@@ -1795,9 +1795,9 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 			return Promise.reject(new Error("龙蛋早已成功孵化"))
 		}
 		var playerData = {}
-		dragon.vitality += 20
+		dragon.hp += 20
 		playerDoc.resources.energy -= 20
-		if(dragon.vitality >= 100){
+		if(dragon.hp >= 100){
 			dragon.star = 1
 			dragon.level = 1
 			dragon.vitality = DataUtils.getDragonVitality(playerDoc, dragon)

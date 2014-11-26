@@ -412,8 +412,8 @@
 //			})
 //		})
 //
-//		it("send dragonvitality", function(done){
-//			sendChat("dragonvitality redDragon 80", function(doc){
+//		it("send dragonhp", function(done){
+//			sendChat("dragonhp redDragon 80", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
