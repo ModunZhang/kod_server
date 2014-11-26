@@ -1204,47 +1204,25 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 				id:attackAllianceDoc._id,
 				name:attackAllianceDoc.basicInfo.name,
 				tag:attackAllianceDoc.basicInfo.tag,
+				flag:attackAllianceDoc.basicInfo.flag,
 				kill:attackAllianceKill,
-				palaceLevel:attackAllianceDoc.buildings.palace.level,
-				memberCount:attackAllianceDoc.members.length,
-				power:attackAllianceDoc.basicInfo.power,
-				language:attackAllianceDoc.basicInfo.language
+				routCount:attackAllianceDoc.moonGateData.countData.our.routCount
 			},
 			enemyAlliance:{
 				id:defenceAllianceDoc._id,
 				name:defenceAllianceDoc.basicInfo.name,
 				tag:defenceAllianceDoc.basicInfo.tag,
+				flag:defenceAllianceDoc.basicInfo.flag,
 				kill:defenceAllianceKill,
-				palaceLevel:defenceAllianceDoc.buildings.palace.level,
-				memberCount:defenceAllianceDoc.members.length,
-				power:defenceAllianceDoc.basicInfo.power,
-				language:defenceAllianceDoc.basicInfo.language
+				routCount:attackAllianceDoc.moonGateData.countData.enemy.routCount
 			}
 		}
 		var defenceAllianceFightReport = {
 			id:ShortId.generate(),
 			fightResult:attackAllianceKill > defenceAllianceKill ? Consts.AllianceFightResult.EnemyWin : Consts.AllianceFightResult.OurWin,
 			fightTime:now,
-			ourAlliance:{
-				id:defenceAllianceDoc._id,
-				name:defenceAllianceDoc.basicInfo.name,
-				tag:defenceAllianceDoc.basicInfo.tag,
-				kill:defenceAllianceKill,
-				palaceLevel:defenceAllianceDoc.buildings.palace.level,
-				memberCount:defenceAllianceDoc.members.length,
-				power:defenceAllianceDoc.basicInfo.power,
-				language:defenceAllianceDoc.basicInfo.language
-			},
-			enemyAlliance:{
-				id:attackAllianceDoc._id,
-				name:attackAllianceDoc.basicInfo.name,
-				tag:attackAllianceDoc.basicInfo.tag,
-				kill:attackAllianceKill,
-				palaceLevel:attackAllianceDoc.buildings.palace.level,
-				memberCount:attackAllianceDoc.members.length,
-				power:attackAllianceDoc.basicInfo.power,
-				language:attackAllianceDoc.basicInfo.language
-			}
+			ourAlliance:attackAllianceFightReport.enemyAlliance,
+			enemyAlliance:attackAllianceFightReport.ourAlliance
 		}
 		attackAllianceDoc.allianceFightReports.push(attackAllianceFightReport)
 		defenceAllianceDoc.allianceFightReports.push(defenceAllianceFightReport)
