@@ -452,14 +452,14 @@ pro.onShrineMarchReturnEvents = function(allianceDoc, event, callback){
 		playerDoc.dragons[event.playerData.dragon.type].status = Consts.DragonStatus.Free
 		playerData.dragons = {}
 		playerData.dragons[event.playerData.dragon.type] = playerDoc.dragons[event.playerData.dragon.type]
+		playerData.soldiers = {}
 		_.each(event.playerData.leftSoldiers, function(soldier){
 			playerDoc.soldiers[soldier.name] += soldier.count
-			playerData.soldiers = {}
 			playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
 		})
+		playerData.treatSoldiers = {}
 		_.each(event.playerData.treatSoldiers, function(soldier){
 			playerDoc.treatSoldiers[soldier.name] += soldier.count
-			playerData.treatSoldiers = {}
 			playerData.treatSoldiers[soldier.name] = playerDoc.treatSoldiers[soldier.name]
 		})
 		playerDoc.basicInfo.kill += event.playerData.kill
@@ -806,14 +806,14 @@ pro.onMoonGateMarchReturnEvents = function(allianceDoc, event, callback){
 		playerDoc.dragons[event.playerData.dragon.type].status = Consts.DragonStatus.Free
 		playerData.dragons = {}
 		playerData.dragons[event.playerData.dragon.type] = playerDoc.dragons[event.playerData.dragon.type]
+		playerData.soldiers = {}
 		_.each(event.playerData.leftSoldiers, function(soldier){
 			playerDoc.soldiers[soldier.name] += soldier.count
-			playerData.soldiers = {}
 			playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
 		})
+		playerData.treatSoldiers = {}
 		_.each(event.playerData.treatSoldiers, function(soldier){
 			playerDoc.treatSoldiers[soldier.name] += soldier.count
-			playerData.treatSoldiers = {}
 			playerData.treatSoldiers[soldier.name] = playerDoc.treatSoldiers[soldier.name]
 		})
 		playerDoc.basicInfo.kill += event.playerData.kill
@@ -1198,7 +1198,7 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 		var defenceAllianceKill = attackAllianceDoc.moonGateData.countData.enemy.kill
 		var attackAllianceFightReport = {
 			id:ShortId.generate(),
-			fightResult:attackAllianceKill > defenceAllianceKill ? Consts.AllianceFightResult.OurWin : Consts.AllianceFightResult.EnemyWin,
+			fightResult:attackAllianceKill >= defenceAllianceKill ? Consts.AllianceFightResult.OurWin : Consts.AllianceFightResult.EnemyWin,
 			fightTime:now,
 			ourAlliance:{
 				id:attackAllianceDoc._id,
@@ -1219,7 +1219,7 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 		}
 		var defenceAllianceFightReport = {
 			id:ShortId.generate(),
-			fightResult:attackAllianceKill > defenceAllianceKill ? Consts.AllianceFightResult.EnemyWin : Consts.AllianceFightResult.OurWin,
+			fightResult:attackAllianceKill >= defenceAllianceKill ? Consts.AllianceFightResult.EnemyWin : Consts.AllianceFightResult.OurWin,
 			fightTime:now,
 			ourAlliance:attackAllianceFightReport.enemyAlliance,
 			enemyAlliance:attackAllianceFightReport.ourAlliance
@@ -1251,6 +1251,11 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 			type:Consts.DataChangedType.Add,
 			data:defenceAllianceFightReport
 		})
+
+		LogicUtils.updateAllianceCountInfo(attackAllianceDoc)
+		LogicUtils.updateAllianceCountInfo(defenceAllianceDoc)
+		attackAllianceData.countInfo = attackAllianceDoc.countInfo
+		defenceAllianceData.countInfo = defenceAllianceDoc.countInfo
 
 		eventFuncs.push([self, self.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime])
 		eventFuncs.push([self, self.addAllianceTimeEventAsync, defenceAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, defenceAllianceDoc.basicInfo.statusFinishTime])
@@ -1334,7 +1339,7 @@ pro.onHelpDefenceMarchEvents = function(allianceDoc, event, callback){
 		}]
 		var helpedMemberInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, targetPlayerDoc._id)
 		helpedMemberInAlliance.helpTroopsCount += 1
-		allianceDoc.__members = [{
+		allianceData.__members = [{
 			type:Consts.DataChangedType.Edit,
 			data:helpedMemberInAlliance
 		}]
@@ -1389,14 +1394,14 @@ pro.onHelpDefenceMarchReturnEvents = function(allianceDoc, event, callback){
 		playerDoc.dragons[event.playerData.dragon.type].status = Consts.DragonStatus.Free
 		playerData.dragons = {}
 		playerData.dragons[event.playerData.dragon.type] = playerDoc.dragons[event.playerData.dragon.type]
+		playerData.soldiers = {}
 		_.each(event.playerData.leftSoldiers, function(soldier){
 			playerDoc.soldiers[soldier.name] += soldier.count
-			playerData.soldiers = {}
 			playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
 		})
+		playerData.treatSoldiers = {}
 		_.each(event.playerData.treatSoldiers, function(soldier){
 			playerDoc.treatSoldiers[soldier.name] += soldier.count
-			playerData.treatSoldiers = {}
 			playerData.treatSoldiers[soldier.name] = playerDoc.treatSoldiers[soldier.name]
 		})
 		playerDoc.basicInfo.kill += event.playerData.kill

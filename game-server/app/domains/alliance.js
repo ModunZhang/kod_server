@@ -43,6 +43,14 @@ var allianceSchema = new Schema({
 		statusStartTime:{type:Number, required:true, default:Date.now()},
 		statusFinishTime:{type:Number, required:true, default:0}
 	},
+	countInfo:{
+		moonGateOwnCount:{type:Number, required:true, default:0},
+		kill:{type:Number, required:true, default:0},
+		beKilled:{type:Number, required:true, default:0},
+		routCount:{type:Number, required:true, default:0},
+		winCount:{type:Number, required:true, default:0},
+		failedCount:{type:Number, required:true, default:0}
+	},
 	notice:{type:String, required:false},
 	desc:{type:String, required:false},
 	titles:{
@@ -496,9 +504,6 @@ var allianceSchema = new Schema({
 					attackFailCount:{type:Number, required:true},
 					defenceSuccessCount:{type:Number, required:true},
 					defenceFailCount:{type:Number, required:true},
-					palaceLevel:{type:Number, required:true},
-					memberCount:{type:Number, required:true},
-					language:{type:Number, required:true},
 					playerKills:[{
 						id:{type:Number, required:true},
 						name:{type:Number, required:true},

@@ -4478,6 +4478,64 @@ pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
 }
 
 /**
+ * 查看战力相近的3个联盟的数据
+ * @param playerId
+ * @param callback
+ */
+pro.getNearedAllianceInfos = function(playerId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var nearedAllianceDocs = []
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		if(!_.isObject(ourPlayerDoc.alliance) || _.isEmpty(ourPlayerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		return self.allianceDao.getModel().find({
+
+		}).exec()
+	}).then(function(docs){
+
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
  * 协助联盟其他玩家防御
  * @param playerId
  * @param dragonType
@@ -4503,6 +4561,10 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 	}
 	if(!_.isString(targetPlayerId)){
 		callback(new Error("targetPlayerId 不合法"))
+		return
+	}
+	if(_.isEqual(playerId, targetPlayerId)){
+		callback(new Error("不能对自己协防"))
 		return
 	}
 
