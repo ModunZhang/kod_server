@@ -447,8 +447,8 @@ pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, includeMoonG
 		terrain:allianceDoc.basicInfo.terrain,
 		flag:allianceDoc.basicInfo.flag,
 		status:allianceDoc.basicInfo.status,
-		statusStartTime:allianceDoc.statusStartTime,
-		statusFinishTime:allianceDoc.statusFinishTime
+		statusStartTime:allianceDoc.basicInfo.statusStartTime,
+		statusFinishTime:allianceDoc.basicInfo.statusFinishTime
 	}
 	var members = []
 	_.each(allianceDoc.members, function(member){
