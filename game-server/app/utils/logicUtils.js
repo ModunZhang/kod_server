@@ -1837,7 +1837,10 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 	}
 	attackAllianceDoc.moonGateData.ourTroops = []
 	attackAllianceDoc.moonGateData.enemyTroops = []
-	attackAllianceDoc.moonGateData.currentFightTroops = {}
+	attackAllianceDoc.moonGateData.currentFightTroops = {
+		our:null,
+		enemy:null
+	}
 	attackAllianceDoc.moonGateData.fightReports = []
 	attackAllianceDoc.moonGateData.countData = {
 		our:{
@@ -1883,7 +1886,10 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 	}
 	defenceAllianceDoc.moonGateData.ourTroops = []
 	defenceAllianceDoc.moonGateData.enemyTroops = []
-	defenceAllianceDoc.moonGateData.currentFightTroops = {}
+	defenceAllianceDoc.moonGateData.currentFightTroops = {
+		our:null,
+		enemy:null
+	}
 	defenceAllianceDoc.moonGateData.fightReports = []
 	defenceAllianceDoc.moonGateData.countData = {
 		our:{

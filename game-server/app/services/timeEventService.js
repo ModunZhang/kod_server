@@ -1033,6 +1033,7 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 
 	attackAllianceData.moonGateData = {}
 	defenceAllianceData.moonGateData = {}
+
 	Promise.resolve(function(){
 		if(_.isObject(attackAllianceDoc.moonGateData.currentFightTroops.our) && _.isObject(attackAllianceDoc.moonGateData.currentFightTroops.enemy)){
 			funcs = []
@@ -1046,6 +1047,36 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 				var attackPlayerData = {}
 				var defencePlayerData = {}
 				AllianceTroopFight.call(self, attackAllianceDoc, attackAllianceData, attackPlayerDoc, attackPlayerData, defenceAllianceDoc, defenceAllianceData, defencePlayerDoc, defencePlayerData, eventFuncs)
+				if(_.isObject(attackAllianceDoc.moonGateData.currentFightTroops.our)){
+					attackTroop = attackAllianceDoc.moonGateData.currentFightTroops.our
+					treatSoldiers = attackTroop.treatSoldiers
+					leftSoldiers = attackTroop.soldiers
+					rewards = attackTroop.rewards
+					kill = attackTroop.kill
+					dragon = attackTroop.dragon
+					marchReturnEvent = LogicUtils.createAllianceMoonGateMarchReturnEvent(attackPlayerDoc, attackAllianceDoc, dragon.type, leftSoldiers, treatSoldiers, rewards, kill)
+					attackAllianceDoc.moonGateMarchReturnEvents.push(marchReturnEvent)
+					attackAllianceData.__moonGateMarchReturnEvents = [{
+						type:Consts.DataChangedType.Add,
+						data:marchReturnEvent
+					}]
+					eventFuncs.push([self, self.addAllianceTimeEventAsync, attackAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+				}else{
+					defenceTroop = attackAllianceDoc.moonGateData.currentFightTroops.enemy
+					treatSoldiers = defenceTroop.treatSoldiers
+					leftSoldiers = defenceTroop.soldiers
+					rewards = defenceTroop.rewards
+					kill = defenceTroop.kill
+					dragon = defenceTroop.dragon
+					marchReturnEvent = LogicUtils.createAllianceMoonGateMarchReturnEvent(defencePlayerDoc, defenceAllianceDoc, dragon.type, leftSoldiers, treatSoldiers, rewards, kill)
+					defenceAllianceDoc.moonGateMarchReturnEvents.push(marchReturnEvent)
+					defenceAllianceData.__moonGateMarchReturnEvents = [{
+						type:Consts.DataChangedType.Add,
+						data:marchReturnEvent
+					}]
+					eventFuncs.push([self, self.addAllianceTimeEventAsync, defenceAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+				}
+
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
@@ -1093,9 +1124,6 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 						data:marchReturnEvent
 					}]
 					eventFuncs.push([self, self.addAllianceTimeEventAsync, attackAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
-
-					attackAllianceDoc.moonGateData.currentFightTroops.our = null
-					defenceAllianceDoc.moonGateData.currentFightTroops.enemy = null
 					return Promise.resolve()
 				})
 			}else if(_.isObject(attackAllianceDoc.moonGateData.currentFightTroops.enemy)){
@@ -1138,16 +1166,13 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 						data:marchReturnEvent
 					}]
 					eventFuncs.push([self, self.addAllianceTimeEventAsync, defenceAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
-
-					attackAllianceDoc.moonGateData.currentFightTroops.enemy = null
-					defenceAllianceDoc.moonGateData.currentFightTroops.our = null
 					return Promise.resolve()
 				})
 			}else{
 				return Promise.resolve()
 			}
 		}
-	}).then(function(){
+	}()).then(function(){
 		var createReturnEvent = function(playerTroop, allianceDoc, allianceData){
 			return self.playerDao.findByIdAsync(playerTroop.id, true).then(function(doc){
 				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
@@ -1178,6 +1203,13 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 		})
 		return Promise.all(funcs)
 	}).then(function(){
+		attackAllianceDoc.moonGateData.currentFightTroops.our = null
+		attackAllianceDoc.moonGateData.currentFightTroops.enemy = null
+		attackAllianceDoc.moonGateData.currentFightTroops.nextFightTime = 0
+		defenceAllianceDoc.moonGateData.currentFightTroops.our = null
+		defenceAllianceDoc.moonGateData.currentFightTroops.enemy = null
+		defenceAllianceDoc.moonGateData.currentFightTroops.nextFightTime = 0
+
 		var now = Date.now()
 		attackAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
 		attackAllianceDoc.basicInfo.statusStartTime = now
