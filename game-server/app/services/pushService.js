@@ -435,16 +435,20 @@ pro.onGetSavedMailsSuccess = function(playerDoc, fromIndex, callback){
  * 获取联盟可视化数据成功
  * @param playerDoc
  * @param allianceDoc
+ * @param includeMoonGateData
  * @param callback
  */
-pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, callback){
+pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, includeMoonGateData, callback){
 	var allianceData = {}
 	allianceData._id = allianceDoc._id
 	allianceData.basicInfo = {
 		name:allianceDoc.basicInfo.name,
 		tag:allianceDoc.basicInfo.tag,
 		terrain:allianceDoc.basicInfo.terrain,
-		flag:allianceDoc.basicInfo.flag
+		flag:allianceDoc.basicInfo.flag,
+		status:allianceDoc.basicInfo.status,
+		statusStartTime:allianceDoc.statusStartTime,
+		statusFinishTime:allianceDoc.statusFinishTime
 	}
 	var members = []
 	_.each(allianceDoc.members, function(member){
@@ -468,6 +472,9 @@ pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, callback){
 	allianceData.shrineMarchReturnEvents = allianceDoc.shrineMarchReturnEvents
 	allianceData.moonGateMarchEvents = allianceDoc.moonGateMarchEvents
 	allianceData.moonGateMarchReturnEvents = allianceDoc.moonGateMarchReturnEvents
+	if(includeMoonGateData){
+		allianceData.moonGateData = allianceDoc.moonGateData
+	}
 
 	this.pushToPlayer(playerDoc, Events.player.onGetAllianceViewDataSuccess, allianceData, callback)
 }

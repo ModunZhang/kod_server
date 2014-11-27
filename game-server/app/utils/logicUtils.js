@@ -1957,3 +1957,16 @@ Utils.updateAllianceCountInfo = function(allianceDoc){
 		countInfo.failedCount += countData.our.kill <= countData.enemy.kill ? 1 : 0
 	}
 }
+
+/**
+ * 获取玩家正在进行防守的龙
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getPlayerDefenceDragon = function(playerDoc){
+	var dragon = null
+	_.each(playerDoc.dragons, function(theDragon){
+		if(_.isEqual(theDragon.status, Consts.DragonStatus.Defence)) dragon = theDragon
+	})
+	return dragon
+}

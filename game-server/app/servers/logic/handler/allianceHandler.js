@@ -607,7 +607,8 @@ pro.challengeMoonGateEnemyTroop = function(msg, session, next){
  */
 pro.getAllianceViewData = function(msg, session, next){
 	var targetAllianceId = msg.targetAllianceId
-	this.allianceService.getAllianceViewDataAsync(session.uid, targetAllianceId).then(function(){
+	var includeMoonGateData = msg.includeMoonGateData
+	this.allianceService.getAllianceViewDataAsync(session.uid, targetAllianceId, includeMoonGateData).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

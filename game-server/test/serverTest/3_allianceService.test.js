@@ -1423,7 +1423,7 @@ describe("AllianceService", function(){
 			var m_allianceData = null
 			Api.getMyAllianceData(function(doc){
 				doc.code.should.equal(200)
-				Api.getAllianceViewData(m_allianceData._id, function(doc){
+				Api.getAllianceViewData(m_allianceData._id, true, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})

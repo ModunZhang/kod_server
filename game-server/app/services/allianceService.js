@@ -4420,9 +4420,10 @@ pro.challengeMoonGateEnemyTroop = function(playerId, callback){
  * 获取联盟可视化数据
  * @param playerId
  * @param targetAllianceId
+ * @param includeMoonGateData
  * @param callback
  */
-pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
+pro.getAllianceViewData = function(playerId, targetAllianceId, includeMoonGateData, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -4432,6 +4433,10 @@ pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
 	}
 	if(!_.isString(targetAllianceId)){
 		callback(new Error("targetAllianceId 不合法"))
+		return
+	}
+	if(!_.isBoolean(includeMoonGateData)){
+		callback(new Error("includeMoonGateData 不合法"))
 		return
 	}
 
@@ -4450,7 +4455,7 @@ pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
 		allianceDoc = doc
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-		pushFuncs.push([self.pushService, self.pushService.onGetAllianceViewDataSuccessAsync, playerDoc, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onGetAllianceViewDataSuccessAsync, playerDoc, allianceDoc, includeMoonGateData])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -4850,6 +4855,8 @@ pro.strikePlayerCity = function(playerId, targetPlayerId, dragonType, callback){
 	var targetPlayerData = {}
 	var allianceDoc = null
 	var allianceData = {}
+	var targetAllianceDoc = null
+	var targetAllianceData = {}
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -4873,11 +4880,23 @@ pro.strikePlayerCity = function(playerId, targetPlayerId, dragonType, callback){
 		if(!_.isEqual(allianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Our)){
 			return Promise.reject(new Error("占领月门后才能突袭玩家城市"))
 		}
-		return self.playerDao.findByIdAsync(targetPlayerId)
-	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		targetPlayerDoc = doc
+		var funcs = []
+		funcs.push(self.allianceDao.findByIdAsync(allianceDoc.moonGateData.enemyAlliance.id))
+		funcs.push(self.playerDao.findByIdAsync(targetPlayerId))
+		return Promise.all(funcs)
+	}).spread(function(doc_1, doc_2){
+		if(!_.isObject(doc_1)) return Promise.reject(new Error("联盟不存在"))
+		targetAllianceDoc = doc_1
+		if(!_.isObject(doc_2)) return Promise.reject(new Error("玩家不存在"))
+		targetPlayerDoc = doc_2
+		if(!_.isObject(LogicUtils.getAllianceMemberById(targetAllianceDoc, targetPlayerId))) return Promise.reject(new Error("玩家不在敌对联盟中"))
 
+		var defenceDragon = LogicUtils.getPlayerDefenceDragon(targetPlayerDoc)
+		if(!_.isObject(defenceDragon)){
+
+		}else{
+
+		}
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -4890,6 +4909,15 @@ pro.strikePlayerCity = function(playerId, targetPlayerId, dragonType, callback){
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(targetPlayerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(targetPlayerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(_.isObject(targetAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(targetAllianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){

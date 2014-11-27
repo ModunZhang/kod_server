@@ -463,6 +463,7 @@ var playerSchema = new Schema({
 		type:{type:String, required:true},
 		createTime:{type:String, required:true},
 		strikeCity:{
+			level:{type:Number, required:true},
 			playerData:{
 				name:{type:String, required:true},
 				icon:{type:String, required:true},
@@ -513,46 +514,14 @@ var playerSchema = new Schema({
 							star:{type:String, required:true}
 						}
 					},
-					skills:{
-						skill_1:{
-							name:{type:String, required:true},
-							level:{type:String, required:true}
-						},
-						skill_2:{
-							name:{type:String, required:true},
-							level:{type:String, required:true}
-						},
-						skill_3:{
-							name:{type:String, required:true},
-							level:{type:String, required:true}
-						},
-						skill_4:{
-							name:{type:String, required:true},
-							level:{type:String, required:true}
-						},
-						skill_5:{
-							name:{type:String, required:true},
-							level:{type:String, required:true}
-						},
-						skill_6:{
-							name:{type:String, required:true},
-							level:{type:String, required:true}
-						},
-						skill_7:{
-							name:{type:String, required:true},
-							level:{type:String, required:true}
-						},
-						skill_8:{
-							name:{type:String, required:true},
-							level:{type:String, required:true}
-						},
-						skill_9:{
-							name:{type:String, required:true},
-							level:{type:String, required:true}
-						}
-					}
+					skills:[{
+						_id:false,
+						name:{type:String, required:true},
+						level:{type:String, required:true}
+					}]
 				},
 				soldiers:[{
+					_id:false,
 					name:{type:String, required:true},
 					star:{type:Number, required:true},
 					count:{type:Number, required:true}

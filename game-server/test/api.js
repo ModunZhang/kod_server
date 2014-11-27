@@ -607,9 +607,10 @@ Api.challengeMoonGateEnemyTroop = function(callback){
 	pomelo.request(route, null, callback)
 }
 
-Api.getAllianceViewData = function(targetAllianceId, callback){
+Api.getAllianceViewData = function(targetAllianceId, includeMoonGateData, callback){
 	var info = {
-		targetAllianceId:targetAllianceId
+		targetAllianceId:targetAllianceId,
+		includeMoonGateData:includeMoonGateData
 	}
 	var route = "logic.allianceHandler.getAllianceViewData"
 	pomelo.request(route, info, callback)
