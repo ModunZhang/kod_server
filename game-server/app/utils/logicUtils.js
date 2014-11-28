@@ -1142,6 +1142,20 @@ Utils.getPlayerMailById = function(playerDoc, mailId){
 }
 
 /**
+ * 根据战报Id获取战报
+ * @param playerDoc
+ * @param reportId
+ * @returns {*}
+ */
+Utils.getPlayerReportById = function(playerDoc, reportId){
+	for(var i = 0; i < playerDoc.mails.length; i++){
+		var mail = playerDoc.mails[i]
+		if(_.isEqual(mail.id, mailId)) return mail
+	}
+	return null
+}
+
+/**
  * 获取第一份未保存的邮件
  * @param playerDoc
  * @returns {*}

@@ -1410,8 +1410,8 @@ describe("PlayerService", function(){
 	//		})
 	//	})
 	//
-	//	it("readMail 正常阅读", function(done){
-	//		Api.readMail([m_user.mails[0].id], function(doc){
+	//	it("readMails 正常阅读", function(done){
+	//		Api.readMails([m_user.mails[0].id], function(doc){
 	//			doc.code.should.equal(200)
 	//			done()
 	//		})
@@ -1452,8 +1452,8 @@ describe("PlayerService", function(){
 	//		})
 	//	})
 	//
-	//	it("deleteMail 正常删除收藏", function(done){
-	//		Api.deleteMail([m_user.mails[0].id], function(doc){
+	//	it("deleteMails 正常删除收藏", function(done){
+	//		Api.deleteMails([m_user.mails[0].id], function(doc){
 	//			doc.code.should.equal(200)
 	//			done()
 	//		})

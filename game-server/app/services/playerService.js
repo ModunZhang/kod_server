@@ -2590,7 +2590,7 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
  * @param mailIds
  * @param callback
  */
-pro.readMail = function(playerId, mailIds, callback){
+pro.readMails = function(playerId, mailIds, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -2925,7 +2925,367 @@ pro.getSavedMails = function(playerId, fromIndex, callback){
  * @param mailIds
  * @param callback
  */
-pro.deleteMail = function(playerId, mailIds, callback){
+pro.deleteMails = function(playerId, mailIds, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isArray(mailIds) || mailIds.length == 0){
+		callback(new Error("mailIds 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		for(var i = 0; i < mailIds.length; i ++){
+			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
+			if(!_.isObject(mail)){
+				return Promise.reject(new Error("邮件不存在"))
+			}
+			LogicUtils.removeItemInArray(playerDoc.mails, mail)
+			var playerData = {}
+			playerData.__mails = [{
+				type:Consts.DataChangedType.Remove,
+				data:mail
+			}]
+			if(!!mail.isSaved){
+				playerData.__savedMails = [{
+					type:Consts.DataChangedType.Remove,
+					data:mail
+				}]
+			}
+		}
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 阅读战报
+ * @param playerId
+ * @param reportIds
+ * @param callback
+ */
+pro.readReport = function(playerId, reportIds, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isArray(reportIds) || reportIds.length == 0){
+		callback(new Error("reportIds 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		for(var i = 0; i < reportIds.length; i ++){
+			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
+			if(!_.isObject(mail)){
+				return Promise.reject(new Error("邮件不存在"))
+			}
+			mail.isRead = true
+			var playerData = {}
+			playerData.__mails = [{
+				type:Consts.DataChangedType.Edit,
+				data:mail
+			}]
+		}
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 收藏战报
+ * @param playerId
+ * @param mailId
+ * @param callback
+ */
+pro.saveReport = function(playerId, mailId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(mailId)){
+		callback(new Error("mailId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
+		if(!_.isObject(mail)){
+			return Promise.reject(new Error("邮件不存在"))
+		}
+		var playerData = {}
+		mail.isSaved = true
+		playerData.__mails = [{
+			type:Consts.DataChangedType.Edit,
+			data:mail
+		}]
+		playerData.__savedMails = [{
+			type:Consts.DataChangedType.Add,
+			data:mail
+		}]
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 取消收藏战报
+ * @param playerId
+ * @param mailId
+ * @param callback
+ */
+pro.unSaveReport = function(playerId, mailId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(mailId)){
+		callback(new Error("mailId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
+		if(!_.isObject(mail)){
+			return Promise.reject(new Error("邮件不存在"))
+		}
+		var playerData = {}
+		mail.isSaved = false
+		playerData.__mails = [{
+			type:Consts.DataChangedType.Edit,
+			data:mail
+		}]
+		playerData.__savedMails = [{
+			type:Consts.DataChangedType.Remove,
+			data:mail
+		}]
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 获取玩家战报
+ * @param playerId
+ * @param fromIndex
+ * @param callback
+ */
+pro.getReports = function(playerId, fromIndex, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
+		callback(new Error("fromIndex 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		return self.playerDao.removeLockByIdAsync(playerDoc._id)
+	}).then(function(){
+		return self.pushService.onGetMailsSuccessAsync(playerDoc, fromIndex)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 获取玩家已存战报
+ * @param playerId
+ * @param fromIndex
+ * @param callback
+ */
+pro.getSavedReports = function(playerId, fromIndex, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
+		callback(new Error("fromIndex 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		return self.playerDao.removeLockByIdAsync(playerDoc._id)
+	}).then(function(){
+		return self.pushService.onGetSavedMailsSuccessAsync(playerDoc, fromIndex)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 删除战报
+ * @param playerId
+ * @param mailIds
+ * @param callback
+ */
+pro.deleteReports = function(playerId, mailIds, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}

@@ -430,15 +430,14 @@ pro.sendMail = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.readMail = function(msg, session, next){
+pro.readMails = function(msg, session, next){
 	var mailIds = msg.mailIds
-	this.playerService.readMailAsync(session.uid, mailIds).then(function(){
+	this.playerService.readMailsAsync(session.uid, mailIds).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
 	})
 }
-
 
 /**
  * 收藏邮件
@@ -521,9 +520,9 @@ pro.getSavedMails = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.deleteMail = function(msg, session, next){
+pro.deleteMails = function(msg, session, next){
 	var mailIds = msg.mailIds
-	this.playerService.deleteMailAsync(session.uid, mailIds).then(function(){
+	this.playerService.deleteMailsAsync(session.uid, mailIds).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
