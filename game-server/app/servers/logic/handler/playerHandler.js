@@ -431,8 +431,8 @@ pro.sendMail = function(msg, session, next){
  * @param next
  */
 pro.readMail = function(msg, session, next){
-	var mailId = msg.mailId
-	this.playerService.readMailAsync(session.uid, mailId).then(function(){
+	var mailIds = msg.mailIds
+	this.playerService.readMailAsync(session.uid, mailIds).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -522,8 +522,8 @@ pro.getSavedMails = function(msg, session, next){
  * @param next
  */
 pro.deleteMail = function(msg, session, next){
-	var mailId = msg.mailId
-	this.playerService.deleteMailAsync(session.uid, mailId).then(function(){
+	var mailIds = msg.mailIds
+	this.playerService.deleteMailAsync(session.uid, mailIds).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

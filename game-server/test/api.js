@@ -227,9 +227,9 @@ Api.sendMail = function(memberName, title, content, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.readMail = function(mailId, callback){
+Api.readMail = function(mailIds, callback){
 	var info = {
-		mailId:mailId
+		mailIds:mailIds
 	}
 	var route = "logic.playerHandler.readMail"
 	pomelo.request(route, info, callback)
@@ -251,9 +251,9 @@ Api.unSaveMail = function(mailId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.deleteMail = function(mailId, callback){
+Api.deleteMail = function(mailIds, callback){
 	var info = {
-		mailId:mailId
+		mailIds:mailIds
 	}
 	var route = "logic.playerHandler.deleteMail"
 	pomelo.request(route, info, callback)

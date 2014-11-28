@@ -2587,10 +2587,10 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 /**
  * 阅读邮件
  * @param playerId
- * @param mailId
+ * @param mailIds
  * @param callback
  */
-pro.readMail = function(playerId, mailId, callback){
+pro.readMail = function(playerId, mailIds, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -2598,8 +2598,8 @@ pro.readMail = function(playerId, mailId, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isString(mailId)){
-		callback(new Error("mailId 不合法"))
+	if(!_.isArray(mailIds) || mailIds.length == 0){
+		callback(new Error("mailIds 不合法"))
 		return
 	}
 
@@ -2612,16 +2612,19 @@ pro.readMail = function(playerId, mailId, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
-		if(!_.isObject(mail)){
-			return Promise.reject(new Error("邮件不存在"))
+		for(var i = 0; i < mailIds.length; i ++){
+			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
+			if(!_.isObject(mail)){
+				return Promise.reject(new Error("邮件不存在"))
+			}
+			mail.isRead = true
+			var playerData = {}
+			playerData.__mails = [{
+				type:Consts.DataChangedType.Edit,
+				data:mail
+			}]
 		}
-		mail.isRead = true
-		var playerData = {}
-		playerData.__mails = [{
-			type:Consts.DataChangedType.Edit,
-			data:mail
-		}]
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
@@ -2919,10 +2922,10 @@ pro.getSavedMails = function(playerId, fromIndex, callback){
 /**
  * 删除邮件
  * @param playerId
- * @param mailId
+ * @param mailIds
  * @param callback
  */
-pro.deleteMail = function(playerId, mailId, callback){
+pro.deleteMail = function(playerId, mailIds, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -2930,8 +2933,8 @@ pro.deleteMail = function(playerId, mailId, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isString(mailId)){
-		callback(new Error("mailId 不合法"))
+	if(!_.isArray(mailIds) || mailIds.length == 0){
+		callback(new Error("mailIds 不合法"))
 		return
 	}
 
@@ -2944,22 +2947,25 @@ pro.deleteMail = function(playerId, mailId, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
-		if(!_.isObject(mail)){
-			return Promise.reject(new Error("邮件不存在"))
-		}
-		LogicUtils.removeItemInArray(playerDoc.mails, mail)
-		var playerData = {}
-		playerData.__mails = [{
-			type:Consts.DataChangedType.Remove,
-			data:mail
-		}]
-		if(!!mail.isSaved){
-			playerData.__savedMails = [{
+		for(var i = 0; i < mailIds.length; i ++){
+			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
+			if(!_.isObject(mail)){
+				return Promise.reject(new Error("邮件不存在"))
+			}
+			LogicUtils.removeItemInArray(playerDoc.mails, mail)
+			var playerData = {}
+			playerData.__mails = [{
 				type:Consts.DataChangedType.Remove,
 				data:mail
 			}]
+			if(!!mail.isSaved){
+				playerData.__savedMails = [{
+					type:Consts.DataChangedType.Remove,
+					data:mail
+				}]
+			}
 		}
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
