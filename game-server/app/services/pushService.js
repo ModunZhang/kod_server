@@ -19,6 +19,7 @@ var PushService = function(app){
 	this.serverId = app.getServerId()
 	this.serverType = app.getServerType()
 	this.maxReturnMailSize = 10
+	this.maxReturnReportSize = 10
 }
 module.exports = PushService
 var pro = PushService.prototype
@@ -75,22 +76,28 @@ pro.onPlayerDataChanged = function(playerDoc, data, callback){
  */
 pro.onPlayerLoginSuccess = function(playerDoc, callback){
 	var self = this
-	var data = _.omit(playerDoc, "mails", "sendMails")
+	var data = _.omit(playerDoc, "mails", "sendMails", "reports")
 	data.serverTime = Date.now()
-	data.mails = []
-	for(var i = playerDoc.mails.length - 1; i >= 0; i--){
-		data.mails.push(playerDoc.mails[i])
-	}
-	data.sendMails = []
-	for(var i = playerDoc.sendMails.length - 1; i >= 0; i--){
-		data.sendMails.push(playerDoc.sendMails[i])
-	}
-	data.savedMails = []
 	if(!_.isObject(data.alliance) || _.isEmpty(data.alliance.id)){
 		data.alliance = {}
 	}
 
+	data.mails = []
+	data.reports = []
+	for(var i = playerDoc.mails.length - 1; i >= 0; i--){
+		data.mails.push(playerDoc.mails[i])
+	}
+	for(i = playerDoc.reports.length - 1; i >= 0; i--){
+		data.reports.push(playerDoc.reports[i])
+	}
+	data.sendMails = []
+	for(i = playerDoc.sendMails.length - 1; i >= 0; i--){
+		data.sendMails.push(playerDoc.sendMails[i])
+	}
+	data.savedMails = []
+	data.savedReports = []
 	var unreadMails = 0
+	var unreadReports = 0
 	_.each(data.mails, function(mail){
 		if(!mail.isRead){
 			unreadMails++
@@ -99,11 +106,21 @@ pro.onPlayerLoginSuccess = function(playerDoc, callback){
 			data.savedMails.push(mail)
 		}
 	})
+	_.each(data.reports, function(report){
+		if(!report.isRead){
+			unreadReports++
+		}
+		if(!!report.isSaved && data.savedReports.length < self.maxReturnReportSize){
+			data.savedReports.push(report)
+		}
+	})
 	data.mails = data.mails.slice(0, this.maxReturnMailSize)
+	data.reports = data.reports.slice(0, this.maxReturnReportSize)
 	data.sendMails = data.sendMails.slice(0, this.maxReturnMailSize)
 
 	data.mailStatus = {
-		unreadMails:unreadMails
+		unreadMails:unreadMails,
+		unreadReports:unreadReports
 	}
 	this.pushToPlayer(playerDoc, Events.player.onPlayerLoginSuccess, data, callback)
 }
@@ -429,6 +446,44 @@ pro.onGetSavedMailsSuccess = function(playerDoc, fromIndex, callback){
 		mails:mails
 	}
 	this.pushToPlayer(playerDoc, Events.player.onGetSavedMailsSuccess, data, callback)
+}
+
+/**
+ * 获取玩家战报成功
+ * @param playerDoc
+ * @param fromIndex
+ * @param callback
+ */
+pro.onGetReportsSuccess = function(playerDoc, fromIndex, callback){
+	var reports = []
+	for(var i = playerDoc.reports.length - 1; i >= 0; i--){
+		var report = playerDoc.reports[i]
+		reports.push(report)
+	}
+	reports = reports.slice(fromIndex, fromIndex + this.maxReturnReportSize)
+	var data = {
+		reports:reports
+	}
+	this.pushToPlayer(playerDoc, Events.player.onGetReportsSuccess, data, callback)
+}
+
+/**
+ * 获取玩家已存邮件成功
+ * @param playerDoc
+ * @param fromIndex
+ * @param callback
+ */
+pro.onGetSavedReportsSuccess = function(playerDoc, fromIndex, callback){
+	var reports = []
+	for(var i = playerDoc.reports.length - 1; i >= 0; i--){
+		var report = playerDoc.reports[i]
+		if(!!report.isSaved) reports.push(report)
+	}
+	reports = reports.slice(fromIndex, fromIndex + this.maxReturnReportSize)
+	var data = {
+		reports:reports
+	}
+	this.pushToPlayer(playerDoc, Events.player.onGetSavedReportsSuccess, data, callback)
 }
 
 /**

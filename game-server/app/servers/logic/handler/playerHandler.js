@@ -530,6 +530,104 @@ pro.deleteMails = function(msg, session, next){
 }
 
 /**
+ * 阅读战报
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.readReports = function(msg, session, next){
+	var reportIds = msg.reportIds
+	this.playerService.readReportsAsync(session.uid, reportIds).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 收藏战报
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.saveReport = function(msg, session, next){
+	var reportId = msg.reportId
+	this.playerService.saveReportAsync(session.uid, reportId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 取消收藏战报
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.unSaveReport = function(msg, session, next){
+	var reportId = msg.reportId
+	this.playerService.unSaveReportAsync(session.uid, reportId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 获取玩家战报
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getReports = function(msg, session, next){
+	var fromIndex = msg.fromIndex
+	this.playerService.getReportsAsync(session.uid, fromIndex).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 获取玩家已存战报
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getSavedReports = function(msg, session, next){
+	var fromIndex = msg.fromIndex
+	this.playerService.getSavedReportsAsync(session.uid, fromIndex).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 删除战报
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.deleteReports = function(msg, session, next){
+	var reportIds = msg.reportIds
+	this.playerService.deleteReportsAsync(session.uid, reportIds).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+
+
+
+
+
+
+
+
+/**
  * 设置玩家语言
  * @param msg
  * @param session

@@ -1148,9 +1148,9 @@ Utils.getPlayerMailById = function(playerDoc, mailId){
  * @returns {*}
  */
 Utils.getPlayerReportById = function(playerDoc, reportId){
-	for(var i = 0; i < playerDoc.mails.length; i++){
-		var mail = playerDoc.mails[i]
-		if(_.isEqual(mail.id, mailId)) return mail
+	for(var i = 0; i < playerDoc.reports.length; i++){
+		var report = playerDoc.reports[i]
+		if(_.isEqual(report.id, reportId)) return report
 	}
 	return null
 }

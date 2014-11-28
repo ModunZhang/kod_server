@@ -283,6 +283,54 @@ Api.getSavedMails = function(fromIndex, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.readReports = function(reportIds, callback){
+	var info = {
+		reportIds:reportIds
+	}
+	var route = "logic.playerHandler.readReports"
+	pomelo.request(route, info, callback)
+}
+
+Api.saveReport = function(reportId, callback){
+	var info = {
+		reportId:reportId
+	}
+	var route = "logic.playerHandler.saveReport"
+	pomelo.request(route, info, callback)
+}
+
+Api.unSaveReport = function(reportId, callback){
+	var info = {
+		reportId:reportId
+	}
+	var route = "logic.playerHandler.unSaveReport"
+	pomelo.request(route, info, callback)
+}
+
+Api.deleteReports = function(reportIds, callback){
+	var info = {
+		reportIds:reportIds
+	}
+	var route = "logic.playerHandler.deleteReports"
+	pomelo.request(route, info, callback)
+}
+
+Api.getReports = function(fromIndex, callback){
+	var info = {
+		fromIndex:fromIndex
+	}
+	var route = "logic.playerHandler.getReports"
+	pomelo.request(route, info, callback)
+}
+
+Api.getSavedReports = function(fromIndex, callback){
+	var info = {
+		fromIndex:fromIndex
+	}
+	var route = "logic.playerHandler.getSavedReports"
+	pomelo.request(route, info, callback)
+}
+
 Api.editPlayerName = function(name, callback){
 	var info = {
 		name:name

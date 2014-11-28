@@ -2612,17 +2612,18 @@ pro.readMails = function(playerId, mailIds, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
+		var playerData = {}
+		playerData.__mails = []
 		for(var i = 0; i < mailIds.length; i ++){
 			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
 			if(!_.isObject(mail)){
 				return Promise.reject(new Error("邮件不存在"))
 			}
 			mail.isRead = true
-			var playerData = {}
-			playerData.__mails = [{
+			playerData.__mails.push({
 				type:Consts.DataChangedType.Edit,
 				data:mail
-			}]
+			})
 		}
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
@@ -2947,24 +2948,27 @@ pro.deleteMails = function(playerId, mailIds, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
+		var playerData = {}
+		playerData.__mails = []
+		playerData.__savedMails = []
 		for(var i = 0; i < mailIds.length; i ++){
 			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
 			if(!_.isObject(mail)){
 				return Promise.reject(new Error("邮件不存在"))
 			}
 			LogicUtils.removeItemInArray(playerDoc.mails, mail)
-			var playerData = {}
-			playerData.__mails = [{
+			playerData.__mails.push({
 				type:Consts.DataChangedType.Remove,
 				data:mail
-			}]
+			})
 			if(!!mail.isSaved){
-				playerData.__savedMails = [{
+				playerData.__savedMails.push({
 					type:Consts.DataChangedType.Remove,
 					data:mail
-				}]
+				})
 			}
 		}
+		if(playerData.__savedMails.length == 0) delete playerData.__savedMails
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
@@ -2996,7 +3000,7 @@ pro.deleteMails = function(playerId, mailIds, callback){
  * @param reportIds
  * @param callback
  */
-pro.readReport = function(playerId, reportIds, callback){
+pro.readReports = function(playerId, reportIds, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -3018,17 +3022,18 @@ pro.readReport = function(playerId, reportIds, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
+		var playerData = {}
+		playerData.__reports = []
 		for(var i = 0; i < reportIds.length; i ++){
-			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-			if(!_.isObject(mail)){
-				return Promise.reject(new Error("邮件不存在"))
+			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
+			if(!_.isObject(report)){
+				return Promise.reject(new Error("战报不存在"))
 			}
-			mail.isRead = true
-			var playerData = {}
-			playerData.__mails = [{
+			report.isRead = true
+			playerData.__reports.push({
 				type:Consts.DataChangedType.Edit,
-				data:mail
-			}]
+				data:report
+			})
 		}
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
@@ -3058,10 +3063,10 @@ pro.readReport = function(playerId, reportIds, callback){
 /**
  * 收藏战报
  * @param playerId
- * @param mailId
+ * @param reportId
  * @param callback
  */
-pro.saveReport = function(playerId, mailId, callback){
+pro.saveReport = function(playerId, reportId, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -3069,8 +3074,8 @@ pro.saveReport = function(playerId, mailId, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isString(mailId)){
-		callback(new Error("mailId 不合法"))
+	if(!_.isString(reportId)){
+		callback(new Error("reportId 不合法"))
 		return
 	}
 
@@ -3083,19 +3088,19 @@ pro.saveReport = function(playerId, mailId, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
-		if(!_.isObject(mail)){
-			return Promise.reject(new Error("邮件不存在"))
+		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
+		if(!_.isObject(report)){
+			return Promise.reject(new Error("战报不存在"))
 		}
 		var playerData = {}
-		mail.isSaved = true
-		playerData.__mails = [{
+		report.isSaved = true
+		playerData.__reports = [{
 			type:Consts.DataChangedType.Edit,
-			data:mail
+			data:report
 		}]
-		playerData.__savedMails = [{
+		playerData.__savedReports = [{
 			type:Consts.DataChangedType.Add,
-			data:mail
+			data:report
 		}]
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
@@ -3125,10 +3130,10 @@ pro.saveReport = function(playerId, mailId, callback){
 /**
  * 取消收藏战报
  * @param playerId
- * @param mailId
+ * @param reportId
  * @param callback
  */
-pro.unSaveReport = function(playerId, mailId, callback){
+pro.unSaveReport = function(playerId, reportId, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -3136,8 +3141,8 @@ pro.unSaveReport = function(playerId, mailId, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isString(mailId)){
-		callback(new Error("mailId 不合法"))
+	if(!_.isString(reportId)){
+		callback(new Error("reportId 不合法"))
 		return
 	}
 
@@ -3150,19 +3155,19 @@ pro.unSaveReport = function(playerId, mailId, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
-		if(!_.isObject(mail)){
-			return Promise.reject(new Error("邮件不存在"))
+		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
+		if(!_.isObject(report)){
+			return Promise.reject(new Error("战报不存在"))
 		}
 		var playerData = {}
-		mail.isSaved = false
-		playerData.__mails = [{
+		report.isSaved = false
+		playerData.__reports = [{
 			type:Consts.DataChangedType.Edit,
-			data:mail
+			data:report
 		}]
-		playerData.__savedMails = [{
+		playerData.__savedReports = [{
 			type:Consts.DataChangedType.Remove,
-			data:mail
+			data:report
 		}]
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
@@ -3282,10 +3287,10 @@ pro.getSavedReports = function(playerId, fromIndex, callback){
 /**
  * 删除战报
  * @param playerId
- * @param mailIds
+ * @param reportIds
  * @param callback
  */
-pro.deleteReports = function(playerId, mailIds, callback){
+pro.deleteReports = function(playerId, reportIds, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -3293,8 +3298,8 @@ pro.deleteReports = function(playerId, mailIds, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isArray(mailIds) || mailIds.length == 0){
-		callback(new Error("mailIds 不合法"))
+	if(!_.isArray(reportIds) || reportIds.length == 0){
+		callback(new Error("reportIds 不合法"))
 		return
 	}
 
@@ -3307,24 +3312,27 @@ pro.deleteReports = function(playerId, mailIds, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		for(var i = 0; i < mailIds.length; i ++){
-			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-			if(!_.isObject(mail)){
-				return Promise.reject(new Error("邮件不存在"))
+		var playerData = {}
+		playerData.__reports = []
+		playerData.__savedReports = []
+		for(var i = 0; i < reportIds.length; i ++){
+			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
+			if(!_.isObject(report)){
+				return Promise.reject(new Error("战报不存在"))
 			}
-			LogicUtils.removeItemInArray(playerDoc.mails, mail)
-			var playerData = {}
-			playerData.__mails = [{
+			LogicUtils.removeItemInArray(playerDoc.reports, report)
+			playerData.__reports.push({
 				type:Consts.DataChangedType.Remove,
-				data:mail
-			}]
-			if(!!mail.isSaved){
-				playerData.__savedMails = [{
+				data:report
+			})
+			if(!!report.isSaved){
+				playerData.__savedReports.push({
 					type:Consts.DataChangedType.Remove,
-					data:mail
-				}]
+					data:report
+				})
 			}
 		}
+		if(playerData.__savedReports.length == 0) delete playerData.__savedReports
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])

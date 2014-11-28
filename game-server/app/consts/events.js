@@ -28,6 +28,8 @@ module.exports = {
 		onGetMailsSuccess:"onGetMailsSuccess",
 		onGetSendMailsSuccess:"onGetSendMailsSuccess",
 		onGetSavedMailsSuccess:"onGetSavedMailsSuccess",
+		onGetReportsSuccess:"onGetReportsSuccess",
+		onGetSavedReportsSuccess:"onGetSavedReportsSuccess",
 		onGetAllianceViewDataSuccess:"onGetAllianceViewDataSuccess",
 		onGetPlayerViewDataSuccess:"onGetPlayerViewDataSuccess"
 	},
