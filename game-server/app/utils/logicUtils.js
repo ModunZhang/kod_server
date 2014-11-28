@@ -2039,6 +2039,7 @@ Utils.createDragonStrikeCityReport = function(playerDoc, playerDragon, enemyPlay
 	var enemyPlayerData = {
 		id:enemyPlayerDoc._id,
 		name:enemyPlayerDoc.basicInfo.name,
+		cityName:enemyPlayerDoc.basicInfo.cityName,
 		icon:enemyPlayerDoc.basicInfo.icon,
 		allianceName:enemyPlayerDoc.alliance.name,
 		resources:{
@@ -2123,6 +2124,7 @@ Utils.createDragonStrikeCityReport = function(playerDoc, playerDragon, enemyPlay
 		level:reportForPlayer.strikeCity.level,
 		playerData:{
 			name:enemyPlayerDoc.basicInfo.name,
+			cityName:enemyPlayerDoc.basicInfo.cityName,
 			icon:enemyPlayerDoc.basicInfo.icon,
 			allianceName:enemyPlayerDoc.alliance.name
 		},

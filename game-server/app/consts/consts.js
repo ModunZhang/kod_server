@@ -166,6 +166,10 @@ module.exports = {
 	AllianceStatusEvent:"allianceStatusEvent",
 	PlayerReportType:{
 		StrikeCity:"strikeCity",
-		CityBeStriked:"cityBeStriked"
+		CityBeStriked:"cityBeStriked",
+		AttackHelpTroop:"attackHelpTroop",
+		HelpTroopBeAttacked:"helpTroopBeAttacked",
+		AttackCity:"attackCity",
+		CityBeAttacked:"cityBeAttacked"
 	}
 }

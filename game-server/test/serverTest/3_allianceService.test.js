@@ -1554,85 +1554,85 @@ describe("AllianceService", function(){
 		////	}, 37 * 1000)
 		////})
 
-		it("strikePlayerCity", function(done){
-			setTimeout(function(){
-				var m_myAllianceData = null
-				var m_enemyAllianceData = null
-				Api.getMyAllianceData(function(doc){
-					doc.code.should.equal(200)
-					Api.getAllianceViewData(m_myAllianceData.moonGateData.enemyAlliance.id, false, function(doc){
-						doc.code.should.equal(200)
-						Api.sendChat("dragonstar greenDragon 1", function(doc){
-							doc.code.should.equal(200)
-							Api.strikePlayerCity("greenDragon", m_enemyAllianceData.members[0].id, function(doc){
-								doc.code.should.equal(200)
-								done()
-							})
-						})
-					})
-					var onGetAllianceViewDataSuccess = function(doc){
-						m_enemyAllianceData = doc
-						pomelo.removeListener("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
-					}
-					pomelo.on("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
-				})
-				var onGetAllianceDataSuccess = function(doc){
-					m_myAllianceData = doc
-					pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-				}
-				pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-			}, 15 * 1000)
-		})
-
-		it("readReports 正常阅读", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.readReports([m_user.reports[0].id], function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-			var onPlayerLoginSuccess = function(doc){
-				m_user = doc
-				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-			}
-			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		})
-
-		it("saveReport 正常收藏", function(done){
-			Api.saveReport(m_user.reports[0].id, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("unSaveReport 正常取消收藏", function(done){
-			Api.unSaveReport(m_user.reports[0].id, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("getReports 获取邮件", function(done){
-			Api.getReports(0, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("getSavedReports 获取已存邮件", function(done){
-			Api.getSavedReports(0, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("deleteReports 正常删除收藏", function(done){
-			Api.deleteReports([m_user.reports[0].id], function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
+		//it("strikePlayerCity", function(done){
+		//	setTimeout(function(){
+		//		var m_myAllianceData = null
+		//		var m_enemyAllianceData = null
+		//		Api.getMyAllianceData(function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.getAllianceViewData(m_myAllianceData.moonGateData.enemyAlliance.id, false, function(doc){
+		//				doc.code.should.equal(200)
+		//				Api.sendChat("dragonstar greenDragon 1", function(doc){
+		//					doc.code.should.equal(200)
+		//					Api.strikePlayerCity("greenDragon", m_enemyAllianceData.members[0].id, function(doc){
+		//						doc.code.should.equal(200)
+		//						done()
+		//					})
+		//				})
+		//			})
+		//			var onGetAllianceViewDataSuccess = function(doc){
+		//				m_enemyAllianceData = doc
+		//				pomelo.removeListener("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
+		//			}
+		//			pomelo.on("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
+		//		})
+		//		var onGetAllianceDataSuccess = function(doc){
+		//			m_myAllianceData = doc
+		//			pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//		}
+		//		pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//	}, 15 * 1000)
+		//})
+		//
+		//it("readReports 正常阅读", function(done){
+		//	Api.loginPlayer(Config.deviceId3, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.readReports([m_user.reports[0].id], function(doc){
+		//			doc.code.should.equal(200)
+		//			done()
+		//		})
+		//	})
+		//	var onPlayerLoginSuccess = function(doc){
+		//		m_user = doc
+		//		pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+		//	}
+		//	pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+		//})
+		//
+		//it("saveReport 正常收藏", function(done){
+		//	Api.saveReport(m_user.reports[0].id, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("unSaveReport 正常取消收藏", function(done){
+		//	Api.unSaveReport(m_user.reports[0].id, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("getReports 获取邮件", function(done){
+		//	Api.getReports(0, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("getSavedReports 获取已存邮件", function(done){
+		//	Api.getSavedReports(0, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("deleteReports 正常删除收藏", function(done){
+		//	Api.deleteReports([m_user.reports[0].id], function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
 	})
 
 
