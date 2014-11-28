@@ -149,7 +149,7 @@ module.exports = {
 		Shrine:{x:11, y:8},
 		Shop:{x:14, y:11}
 	},
-	AllianceSpyReportLevel:{
+	DragonStrikeReportLevel:{
 		E:1,
 		D:2,
 		C:3,
@@ -163,5 +163,9 @@ module.exports = {
 		Fight:"fight",
 		Protect:"protect"
 	},
-	AllianceStatusEvent:"allianceStatusEvent"
+	AllianceStatusEvent:"allianceStatusEvent",
+	PlayerReportType:{
+		StrikeCity:"strikeCity",
+		CityBeStriked:"cityBeStriked"
+	}
 }

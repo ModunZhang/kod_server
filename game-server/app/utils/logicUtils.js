@@ -9,6 +9,7 @@ var _ = require("underscore")
 var sprintf = require("sprintf")
 var Promise = require("bluebird")
 
+var FightUtils = require("./fightUtils")
 var DataUtils = require("./dataUtils")
 var MapUtils = require("./mapUtils")
 var Consts = require("../consts/consts")
@@ -1156,6 +1157,21 @@ Utils.getPlayerFirstUnSavedMail = function(playerDoc){
 }
 
 /**
+ * 获取第一份未保存的战报
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getPlayerFirstUnSavedReport = function(playerDoc){
+	for(var i = 0; i < playerDoc.reports.length; i++){
+		var report = playerDoc.reports[i]
+		if(!report.isSaved){
+			return report
+		}
+	}
+	return playerDoc.reports[0]
+}
+
+/**
  * 获取升级建筑后,获取玩家被修改的数据
  * @param playerDoc
  * @param playerData
@@ -1969,4 +1985,146 @@ Utils.getPlayerDefenceDragon = function(playerDoc){
 		if(_.isEqual(theDragon.status, Consts.DragonStatus.Defence)) dragon = theDragon
 	})
 	return dragon
+}
+
+/**
+ * 创建龙侦查玩家城市战报
+ * @param playerDoc
+ * @param playerDragon
+ * @param enemyPlayerDoc
+ * @param enemyPlayerDragon
+ * @returns {*}
+ */
+Utils.createDragonStrikeCityReport = function(playerDoc, playerDragon, enemyPlayerDoc, enemyPlayerDragon){
+	var now = Date.now()
+	var reportForPlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.StrikeCity,
+		createTime:now,
+		isRead:false,
+		isSaved:false
+	}
+	var reportForEnemyPlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.CityBeStriked,
+		createTime:now,
+		isRead:false,
+		isSaved:false
+	}
+	var playerData = {
+		name:playerDoc.basicInfo.name,
+		icon:playerDoc.basicInfo.icon,
+		allianceName:playerDoc.alliance.name,
+		dragon:{
+			type:playerDragon.type,
+			level:playerDragon.level,
+			xpAdd:0,
+			hp:playerDragon.hp
+		}
+	}
+	var enemyPlayerData = {
+		id:enemyPlayerDoc._id,
+		name:enemyPlayerDoc.basicInfo.name,
+		icon:enemyPlayerDoc.basicInfo.icon,
+		allianceName:enemyPlayerDoc.alliance.name,
+		resources:{
+			wood:enemyPlayerDoc.resources.wood,
+			stone:enemyPlayerDoc.resources.stone,
+			iron:enemyPlayerDoc.resources.iron,
+			food:enemyPlayerDoc.resources.food,
+			wallHp:enemyPlayerDoc.resources.wallHp
+		}
+	}
+
+	var soldiers = []
+	_.each(enemyPlayerDoc.soldiers, function(count, name){
+		if(count > 0){
+			var soldier = {
+				name:name,
+				star:1,
+				count:count
+			}
+			soldiers.push(soldier)
+		}
+	})
+	enemyPlayerData.soldiers = soldiers
+
+	reportForPlayer.strikeCity = {
+		playerData:playerData,
+		enemyPlayerData:enemyPlayerData
+	}
+
+	if(!_.isObject(enemyPlayerDragon)){
+		reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.S
+		var hpDecreased = DataUtils.getPlayerDragonStrikeHpDecreased(playerDoc, playerDragon)
+		var coinGet = enemyPlayerDoc.resources.coin >= hpDecreased ? hpDecreased : enemyPlayerDoc.resources.coin
+		playerData.coinGet = coinGet
+		playerData.dragon.hpDecreased = playerDragon.hp >= hpDecreased ? hpDecreased : playerDragon.hp
+		enemyPlayerData.dragon = null
+	}else{
+		var playerDragonHpDecreased = DataUtils.getPlayerDragonStrikeHpDecreased(playerDoc, playerDragon)
+		var dragonFightData = FightUtils.dragonToDragonFight(playerDragon, enemyPlayerDragon)
+		playerDragonHpDecreased += dragonFightData.attackDragonHpDecreased
+		var enemyPlayerDragonHpDecreased = dragonFightData.defenceDragonHpDecreased
+		var playerCoinGet = enemyPlayerDoc.resources.coin >= playerDragonHpDecreased ? playerDragonHpDecreased : enemyPlayerDoc.resources.coin
+		playerData.coinGet = _.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin) ? playerCoinGet : 0
+		playerData.dragon.hpDecreased = playerDragon.hp >= playerDragonHpDecreased ? playerDragonHpDecreased : playerDragon.hp
+		var powerCompare = dragonFightData.powerCompare
+		if(powerCompare < 1) reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.E
+		else if(powerCompare >= 1 && powerCompare < 1.5) reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.D
+		else if(powerCompare >= 1.5 && powerCompare < 2) reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.C
+		else if(powerCompare >= 2 && powerCompare < 4) reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.B
+		else if(powerCompare >= 4 && powerCompare < 6) reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.A
+		else reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.S
+
+		enemyPlayerData.dragon = {
+			type:enemyPlayerDragon.type,
+			level:enemyPlayerDragon.level,
+			xpAdd:0,
+			hp:enemyPlayerDragon.hp,
+			hpDecreased:enemyPlayerDragon.hp >= enemyPlayerDragonHpDecreased ? enemyPlayerDragonHpDecreased : enemyPlayerDragon.hp
+		}
+		var equipments = []
+		_.each(enemyPlayerDragon.equipments, function(theEquipment, type){
+			if(!_.isEmpty(theEquipment.name)){
+				var equipment = {
+					type:type,
+					name:theEquipment.name,
+					star:theEquipment.star
+				}
+				equipments.push(equipment)
+			}
+		})
+		enemyPlayerData.dragon.equipments = equipments
+		var skills = []
+		_.each(enemyPlayerDragon.skills, function(skill){
+			if(skill.level > 0){
+				skills.push(skill)
+			}
+		})
+		enemyPlayerData.dragon.skills = skills
+	}
+
+	reportForEnemyPlayer.cityBeStriked = {
+		level:reportForPlayer.strikeCity.level,
+		playerData:{
+			name:enemyPlayerDoc.basicInfo.name,
+			icon:enemyPlayerDoc.basicInfo.icon,
+			allianceName:enemyPlayerDoc.alliance.name
+		},
+		enemyPlayerData:reportForPlayer.strikeCity.playerData
+	}
+	if(_.isObject(enemyPlayerDragon)){
+		reportForEnemyPlayer.cityBeStriked.playerData.dragon = {
+			type:enemyPlayerDragon.type,
+			level:enemyPlayerDragon.level,
+			xpAdd:0,
+			hp:enemyPlayerDragon.hp,
+			hpDecreased:reportForPlayer.strikeCity.enemyPlayerData.dragon.hpDecreased
+		}
+	}else{
+		reportForEnemyPlayer.cityBeStriked.playerData.dragon = null
+	}
+
+	return {reportForPlayer:reportForPlayer, reportForEnemyPlayer:reportForEnemyPlayer}
 }

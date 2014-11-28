@@ -2283,3 +2283,13 @@ Utils.isAlliancePlayerBeHelpedTroopsReachMax = function(allianceDoc, playerDoc){
 Utils.isAllianceRevengeTimeExpired = function(allianceFightReport){
 	return Date.now() > allianceFightReport.fightTime + (AllianceInit.intInit.allianceRevengeMaxTime.value * 1000)
 }
+
+/**
+ * 获取龙突袭损失的Hp百分比
+ * @returns {intInit.dragonStrikeHpDecreasedPercent.value|*}
+ */
+Utils.getPlayerDragonStrikeHpDecreased = function(playerDoc, dragon){
+	var decreasedPercent = AllianceInit.intInit.dragonStrikeHpDecreasedPercent.value
+	var hpMax = this.getPlayerDragonHpMax(playerDoc, dragon)
+	return Math.floor(hpMax * (decreasedPercent / 100))
+}

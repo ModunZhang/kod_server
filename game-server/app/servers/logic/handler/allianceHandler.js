@@ -689,3 +689,19 @@ pro.requestAllianceToFight = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 突袭玩家城市
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.strikePlayerCity = function(msg, session, next){
+	var dragonType = msg.dragonType
+	var enemyPlayerId = msg.enemyPlayerId
+	this.allianceService.strikePlayerCityAsync(session.uid, dragonType, enemyPlayerId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

@@ -462,77 +462,93 @@ var playerSchema = new Schema({
 		id:{type:String, required:true},
 		type:{type:String, required:true},
 		createTime:{type:String, required:true},
+		isRead:{type:Boolean, require:true},
+		isSaved:{type:Boolean, require:true},
 		strikeCity:{
-			level:{type:Number, required:true},
-			playerData:{
-				name:{type:String, required:true},
-				icon:{type:String, required:true},
-				allianceName:{type:String, requird:true},
-				coinGet:{type:Number, required:true},
-				dragon:{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					xpAdd:{type:Number, required:true},
-					hp:{type:Number, required:true},
-					hpDecreased:{type:Number, required:true}
-				}
-			},
-			targetPlayerData:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				icon:{type:String, required:true},
-				allianceName:{type:String, required:true},
-				dragon:{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					xpAdd:{type:Number, required:true},
-					hp:{type:Number, required:true},
-					hpDecreased:{type:Number, required:true},
-					equipments:{
-						crown:{
+			type:{
+				level:{type:Number, required:true},
+				playerData:{
+					name:{type:String, required:true},
+					icon:{type:String, required:true},
+					allianceName:{type:String, requird:true},
+					coinGet:{type:Number, required:true},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						xpAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
+					}
+				},
+				enemyPlayerData:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					icon:{type:String, required:true},
+					allianceName:{type:String, required:true},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						xpAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true},
+						equipments:[{
+							type:{type:String, required:true},
 							name:{type:String, required:true},
 							star:{type:String, required:true}
-						},
-						armguardLeft:{
+						}],
+						skills:[{
+							_id:false,
 							name:{type:String, required:true},
-							star:{type:String, required:true}
-						},
-						armguardRight:{
-							name:{type:String, required:true},
-							star:{type:String, required:true}
-						},
-						chest:{
-							name:{type:String, required:true},
-							star:{type:String, required:true}
-						},
-						sting:{
-							name:{type:String, required:true},
-							star:{type:String, required:true}
-						},
-						orb:{
-							name:{type:String, required:true},
-							star:{type:String, required:true}
-						}
+							level:{type:String, required:true}
+						}]
 					},
-					skills:[{
+					soldiers:[{
 						_id:false,
 						name:{type:String, required:true},
-						level:{type:String, required:true}
-					}]
-				},
-				soldiers:[{
-					_id:false,
-					name:{type:String, required:true},
-					star:{type:Number, required:true},
-					count:{type:Number, required:true}
-				}],
-				resources:{
-					wood:{type:Number, required:true},
-					stone:{type:Number, required:true},
-					iron:{type:Number, required:true},
-					food:{type:Number, required:true}
+						star:{type:Number, required:true},
+						count:{type:Number, required:true}
+					}],
+					resources:{
+						wood:{type:Number, required:true},
+						stone:{type:Number, required:true},
+						iron:{type:Number, required:true},
+						food:{type:Number, required:true},
+						wallHp:{type:Number, requird:true}
+					}
 				}
-			}
+			},
+			required:false
+		},
+		cityBeStriked:{
+			type:{
+				level:{type:Number, required:true},
+				playerData:{
+					name:{type:String, required:true},
+					icon:{type:String, required:true},
+					allianceName:{type:String, requird:true},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						xpAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
+					}
+				},
+				enemyPlayerData:{
+					name:{type:String, required:true},
+					icon:{type:String, required:true},
+					allianceName:{type:String, requird:true},
+					coinGet:{type:Number, required:true},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						xpAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
+					}
+				}
+			},
+			required:false
 		}
 	}],
 	helpToTroops:[{

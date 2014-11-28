@@ -647,3 +647,12 @@ Api.retreatFromHelpedAllianceMember = function(targetPlayerId, callback){
 	var route = "logic.allianceHandler.retreatFromHelpedAllianceMember"
 	pomelo.request(route, info, callback)
 }
+
+Api.strikePlayerCity = function(dragonType, enemyPlayerId, callback){
+	var info = {
+		dragonType:dragonType,
+		enemyPlayerId:enemyPlayerId
+	}
+	var route = "logic.allianceHandler.strikePlayerCity"
+	pomelo.request(route, info, callback)
+}

@@ -136,6 +136,7 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon){
 		defenceDragonHpDecreased = Math.round(attackDragonPower * 0.5 / defenceDragon.strength)
 	}
 	var response = {
+		powerCompare:attackDragonPower / defenceDragonPower,
 		attackDragonHpDecreased:attackDragonHpDecreased > attackDragon.hp ? attackDragon.hp : attackDragonHpDecreased,
 		defenceDragonHpDecreased:defenceDragonHpDecreased > defenceDragon.hp ? defenceDragon.hp : defenceDragonHpDecreased,
 		fightResult:attackDragonPower >= defenceDragonPower ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin

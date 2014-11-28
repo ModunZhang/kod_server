@@ -43,3 +43,7 @@ intInit["allianceRevengeMaxTime"] = {
 	type:"allianceRevengeMaxTime",
 	value:300
 }
+intInit["dragonStrikeHpDecreasedPercent"] = {
+	type:"dragonStrikeHpDecreasedPercent",
+	value:5
+}
