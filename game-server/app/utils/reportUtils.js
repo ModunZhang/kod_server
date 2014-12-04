@@ -103,6 +103,7 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 
 	var starParam = getStar()
 	var now = Date.now()
+	var attackRewards = []
 	var report = {
 		fightTime:now,
 		attackStar:starParam.attackStar,
@@ -131,7 +132,7 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 			},
 			soldiers:createSoldiersDataAfterFight(attackPlayerData.soldiers)
 		},
-		rewards:[]
+		rewards:attackRewards
 	}
 
 	if(_.isObject(fightData.helpDefenceDragonFightResult)){
@@ -169,8 +170,7 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 			id:defencePlayerData.playerDoc._id,
 			name:defencePlayerData.playerDoc.name,
 			allianceName:defencePlayerData.playerDoc.alliance.name,
-			rewards:[],
-			resourceLost:[]
+			rewards:[]
 		}
 		if(_.isObject(fightData.defenceDragonFightResult)){
 			report.defencePlayerData.troopData = {
@@ -187,7 +187,38 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 				},
 				soldiers:createSoldiersDataAfterFight(defencePlayerData.soldiers)
 			}
+			if(_.isEqual(fightData.defenceDragonFightResult.fightResult, Consts.FightResult.AttackWin)){
+				var attackDragonHpDecreased = fightData.defenceDragonFightResult.attackDragonAfterFight.attackDragonHpDecreased
+				var coinGet = enemyPlayerDoc.resources.coin >= attackDragonHpDecreased ? attackDragonHpDecreased : enemyPlayerDoc.resources.coin
+				attackRewards.push({
+					type:"resources",
+					name:"coin",
+					count:coinGet
+				})
+			}
+			if(_.isEqual(fightData.defenceSoldierFightResult.fightResult, Consts.FightResult.AttackWin)){
+				var defencePlayerResources = defencePlayerData.playerDoc.resources
+				var defencePlayerResourceTotal = defencePlayerResources.wood + defencePlayerResources.stone + defencePlayerResources.iron + defencePlayerResources.food
+				var getLoadTotal = function(soldiersAfterFight){
+					var loadTotal = 0
+					_.each(soldiersAfterFight, function(soldierAfterFight){
+						loadTotal += soldierAfterFight.currentCount * soldierAfterFight.load
+					})
+				}
+				var attackPlayerLoadTotal = getLoadTotal(fightData.defenceSoldierFightResult.attackSoldiersAfterFight)
+				var loadPercent = attackPlayerLoadTotal / defencePlayerResourceTotal
+				loadPercent = loadPercent > 1 ? 1 : loadPercent
+				var resourceKeys = ["wood", "stone", "iron", "food"]
+				_.each(resourceKeys, function(key){
+					attackRewards.push({
+						type:"resources",
+						name:key,
+						count:Math.floor(defencePlayerResources[key] * loadPercent)
+					})
+				})
+			}
 		}
+
 		if(_.isObject(fightData.defenceWallFightResult)){
 			report.defencePlayerData.wall = {
 				hp:fightData.defenceWallFightResult.defenceWallAfterFight.totalHp,

@@ -1790,22 +1790,6 @@ Utils.getAllianceActiveShrineStageRequired = function(stageName){
 }
 
 /**
- * 军队战斗力修复效果
- * @param multiple
- * @returns {*}
- */
-Utils.getSoldierFightFixEffect = function(multiple){
-	var configs = UnitConfig.fightFix
-	for(var i = 0; i < configs.length; i++){
-		var config = configs[i]
-		if(config.multipleMax > multiple){
-			return config.effect
-		}
-	}
-	return configs[configs.length - 1].effect
-}
-
-/**
  * 创建战斗用普通军队信息
  * @param playerDoc
  * @param soldierName
@@ -2530,12 +2514,12 @@ Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, beHel
 }
 
 /**
- * 获取龙的力量修正
+ * 获取龙的力量修正  结果大于0,防御方力量降低返回值的百分比, 结果小于0,攻击方防御降低返回值绝对值的百分比
  * @param attackSoldiersForFight
  * @param defenceSoldiersForFight
  * @returns {number}
  */
-Utils.getDragonFightStrengthFixedPercent = function(attackSoldiersForFight, defenceSoldiersForFight){
+Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldiersForFight){
 	var getSumPower = function(soldiersForFight){
 		var power = 0
 		_.each(soldiersForFight, function(soldierForFight){
@@ -2543,10 +2527,21 @@ Utils.getDragonFightStrengthFixedPercent = function(attackSoldiersForFight, defe
 		})
 		return power
 	}
+	var getEffectPercent = function(multiple){
+		var configs = DragonEyrie.fightFix
+		for(var i = 0; i < configs.length; i++){
+			var config = configs[i]
+			if(config.multipleMax > multiple){
+				return config.effect
+			}
+		}
+		return configs[configs.length - 1].effect
+	}
+
 	var attackSumPower = getSumPower(attackSoldiersForFight)
 	var defenceSumPower = getSumPower(defenceSoldiersForFight)
-
-	var config = DragonEyrie.fightFix
+	var effect = attackSumPower >= defenceSumPower ? getEffectPercent(attackSumPower / defenceSumPower) : -getEffectPercent(defenceSumPower / attackSumPower)
+	return effect
 }
 
 

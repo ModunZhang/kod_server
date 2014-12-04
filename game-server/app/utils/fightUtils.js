@@ -126,22 +126,22 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
  * 龙战斗
  * @param attackDragon
  * @param defenceDragon
+ * @param effect
  * @returns {*}
  */
-Utils.dragonToDragonFight = function(attackDragon, defenceDragon){
+Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
 	attackDragon = CommonUtils.clone(attackDragon)
 	defenceDragon = CommonUtils.clone(defenceDragon)
 	var attackDragonPower = attackDragon.strength * attackDragon.vitality
 	var defenceDragonPower = defenceDragon.strength * defenceDragon.vitality
-	var attackDragonHpDecreased = null
-	var defenceDragonHpDecreased = null
-	if(attackDragonPower >= defenceDragonPower){
-		attackDragonHpDecreased = Math.round(defenceDragonPower * 0.5 / attackDragon.strength)
-		defenceDragonHpDecreased = Math.round(Math.sqrt(attackDragonPower * defenceDragonPower * 0.5 / defenceDragon.strength))
+	if(effect >= 0){
+		defenceDragonPower -= defenceDragonPower * effect
 	}else{
-		attackDragonHpDecreased = Math.round(Math.sqrt(attackDragonPower * defenceDragonPower * 0.5 / attackDragon.strength))
-		defenceDragonHpDecreased = Math.round(attackDragonPower * 0.5 / defenceDragon.strength)
+		attackDragonPower -= attackDragonPower * (-effect)
 	}
+
+	var attackDragonHpDecreased = Math.round(defenceDragonPower * 0.3)
+	var defenceDragonHpDecreased = Math.round(attackDragonPower * 0.3)
 	attackDragon.currentHp = attackDragonHpDecreased > attackDragon.currentHp ? 0 : attackDragon.currentHp - attackDragonHpDecreased
 	defenceDragon.currentHp = defenceDragonHpDecreased > defenceDragon.currentHp ? 0 : defenceDragon.currentHp - defenceDragonHpDecreased
 	attackDragon.isWin = attackDragonPower >= defenceDragonPower

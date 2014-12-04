@@ -661,10 +661,6 @@ var playerSchema = new Schema({
 						type:{type:String, required:true},
 						name:{type:String, required:true},
 						count:{type:Number, required:true}
-					}],
-					resourceLost:[{
-						name:{type:String, required:true},
-						count:{type:Number, required:true}
 					}]
 				},
 				fightWithHelpDefencePlayerReports:{

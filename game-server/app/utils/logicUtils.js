@@ -2184,3 +2184,31 @@ Utils.createAttackPlayerCityMarchEvent = function(playerDoc, attackTroop, enemyA
 	}
 	return event
 }
+
+/**
+ * 为玩家添加战报
+ * @param playerDoc
+ * @param playerData
+ * @param report
+ */
+Utils.addPlayerReport = function(playerDoc, playerData, report){
+	if(playerDoc.reports.length >= Define.PlayerReportsMaxSize){
+		var willRemovedReport = this.getPlayerFirstUnSavedReport(playerDoc)
+		this.removeItemInArray(playerDoc.reports, willRemovedReport)
+		playerData.__reports.push({
+			type:Consts.DataChangedType.Remove,
+			data:willRemovedReport
+		})
+		if(!!willRemovedReport.isSaved){
+			playerData.__savedReports = [{
+				type:Consts.DataChangedType.Remove,
+				data:willRemovedMail
+			}]
+		}
+	}
+	playerDoc.reports.push(report)
+	playerData.__reports.push({
+		type:Consts.DataChangedType.Add,
+		data:report
+	})
+}
