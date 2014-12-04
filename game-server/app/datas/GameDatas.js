@@ -95,6 +95,7 @@ GameDatas.DragonEyrie.equipmentBuff = require("./DragonEyrie_equipmentBuff.js")
 GameDatas.DragonEyrie.dragonAttribute = require("./DragonEyrie_dragonAttribute.js")
 GameDatas.DragonEyrie.dragons = require("./DragonEyrie_dragons.js")
 GameDatas.DragonEyrie.dragonSkill = require("./DragonEyrie_dragonSkill.js")
+GameDatas.DragonEyrie.fightFix = require("./DragonEyrie_fightFix.js")
 
 GameDatas.GemsPayment = {}
 GameDatas.GemsPayment.time = require("./GemsPayment_time.js")
@@ -153,4 +154,3 @@ GameDatas.SmithConfig.equipments = require("./SmithConfig_equipments.js")
 GameDatas.UnitsConfig = {}
 GameDatas.UnitsConfig.normal = require("./UnitsConfig_normal.js")
 GameDatas.UnitsConfig.special = require("./UnitsConfig_special.js")
-GameDatas.UnitsConfig.fightFix = require("./UnitsConfig_fightFix.js")

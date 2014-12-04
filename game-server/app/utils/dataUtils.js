@@ -2545,5 +2545,8 @@ Utils.getDragonFightStrengthFixedPercent = function(attackSoldiersForFight, defe
 	}
 	var attackSumPower = getSumPower(attackSoldiersForFight)
 	var defenceSumPower = getSumPower(defenceSoldiersForFight)
-	return attackSumPower / defenceSumPower
+
+	var config = DragonEyrie.fightFix
 }
+
+
