@@ -9,10 +9,11 @@ var Promise = require("bluebird")
 var ShortId = require("shortid")
 var NodeUtils = require("util")
 
+var Localizations = require("../consts/localizations")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
-var ReportUtils = require("../utils/reportUtils")
 var FightUtils = require("../utils/fightUtils")
+var ReportUtils = require("../utils/reportUtils")
 var CommonUtils = require("../utils/utils")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -840,6 +841,171 @@ pro.onMoonGateMarchReturnEvents = function(allianceDoc, event, callback){
 }
 
 /**
+ * 玩家进攻部队到达敌对联盟玩家城市时回调
+ * @param allianceDoc
+ * @param event
+ * @param callback
+ */
+pro.onAttackCityMarchEvents = function(allianceDoc, event, callback){
+	var self = this
+	var allianceData = {}
+	var playerDoc = null
+	var playerData = {}
+	var defencePlayerDoc = null
+	var defencePlayerData = {}
+	var helpDefencePlayerDoc = null
+	var helpDefencePlayerData = {}
+	var defenceAllianceDoc = null
+	var defenceAllianceData = {}
+	var eventFuncs = []
+	var pushFuncs = []
+	var updateFuncs = []
+	LogicUtils.removeItemInArray(allianceDoc.attackCityMarchEvents, event)
+	allianceData.__attackCityMarchEvents = [{
+		type:Consts.DataChangedType.Remove,
+		data:event
+	}]
+	var funcs = []
+	funcs.push(self.allianceDao.findByIdAsync(event.defencePlayerData.allianceId, true))
+	funcs.push(self.playerDao.findByIdAsync(event.defencePlayerData.id, true))
+	funcs.push(self.playerDao.findByIdAsync(event.attackPlayerData.id, true))
+	Promise.all(funcs).spread(function(doc_1, doc_2, doc_3){
+		if(!_.isObject(doc_1)) return Promise.reject(new Error("联盟不存在"))
+		if(!_.isObject(doc_2)) return Promise.reject(new Error("玩家不存在"))
+		if(!_.isObject(doc_3)) return Promise.reject(new Error("玩家不存在"))
+		defenceAllianceDoc = doc_1
+		var marchEventInEnemyAlliance = _.find(defenceAllianceDoc.cityBeAttackedMarchEvents, function(theEvent){
+			return _.isEqual(theEvent.id, event.id)
+		})
+		LogicUtils.removeItemInArray(defenceAllianceDoc.cityBeAttackedMarchEvents, marchEventInEnemyAlliance)
+		defenceAllianceData.__cityBeAttackedMarchEvents = [{
+			type:Consts.DataChangedType.Remove,
+			data:event
+		}]
+		defencePlayerDoc = doc_2
+		playerDoc = doc_3
+		if(defencePlayerDoc.helpedByTroops.length > 0){
+			return self.playerDao.findByIdAsync(defencePlayerDoc.helpedByTroops[0].id, true).then(function(doc){
+				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+				helpDefencePlayerDoc = doc
+				return Promise.resolve()
+			})
+		}
+		return Promise.resolve()
+	}).then(function(){
+		var attackDragonType = event.attackPlayerData.dragon.type
+		var attackDragonForFight = DataUtils.createDragonForFight(playerDoc, attackDragonType)
+		var attackSoldiersForFight = DataUtils.createSoldiersForFight(playerDoc, event.attackPlayerData.soldiers)
+		var attackTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(playerDoc)
+
+		var updateDragonForFight = function(dragonForFight, dragonAfterFight){
+			dragonForFight.currentHp -=dragonAfterFight.totalHp - dragonAfterFight.currentHp
+		}
+		var updateSoldiersForFight = function(soldiersForFight, soldiersAfterFight){
+			_.each(soldiersAfterFight, function(soldierAfterFight){
+				var soldierForFight = _.find(soldiersForFight, function(soldierForFight){
+					return _.isEqual(soldierForFight.name, soldierAfterFight.name)
+				})
+				soldierForFight.currentCount = soldierAfterFight.currentCount
+				soldierForFight.damagedCount += soldierAfterFight.damagedCount
+				soldierForFight.treatCount += soldierAfterFight.treatCount
+				soldierForFight.killedSoldiers.concat(soldierAfterFight.killedSoldiers)
+			})
+		}
+		var createNewDragonForFight = function(dragonForFight){
+			var newDragonForFight = CommonUtils.clone(dragonForFight)
+			newDragonForFight.totalHp = dragonForFight.currentHp
+		}
+		var createNewSoldiersForFight = function(soldiersForFight){
+			var newSoldiersForFight = []
+			_.each(soldiersForFight, function(soldierForFight){
+				if(soldierForFight.currentCount >= 0){
+					var newSoldierForFight = CommonUtils.clone(soldierForFight)
+					newSoldierForFight.totalCount = soldierForFight.currentCount
+					newSoldierForFight.damagedCount = 0
+					newSoldierForFight.treatCount = 0
+					newSoldierForFight.morale = 100
+					newSoldierForFight.round = 0
+					newSoldierForFight.killedSoldiers = []
+					newSoldiersForFight.push(newSoldierForFight)
+				}
+			})
+			return newSoldiersForFight
+		}
+
+		if(_.isObject(helpDefencePlayerDoc)){
+			var helpDefenceTroop = defencePlayerDoc.helpedByTroops[0]
+			var helpDefenceDragonForFight = DataUtils.createDragonForFight(helpDefencePlayerDoc, helpDefenceTroop.dragon.type)
+			var helpDefenceSoldiersForFight = DataUtils.createSoldiersForFight(helpDefencePlayerDoc, helpDefenceTroop.soldiers)
+			var helpDefenceTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(helpDefencePlayerDoc)
+
+			var helpDefenceDragonFightResult = FightUtils.dragonToDragonFight(attackDragonForFight, helpDefenceDragonForFight)
+			var helpDefenceSoldierFightResult = FightUtils.soldierToSoldierFight(attackSoldiersForFight, attackTreatSoldierPercent, helpDefenceSoldiersForFight, helpDefenceTreatSoldierPercent)
+
+			updateDragonForFight(attackDragonForFight, helpDefenceDragonFightResult.attackDragonAfterFight)
+			updateSoldiersForFight(attackSoldiersForFight, helpDefenceSoldierFightResult.attackSoldiersAfterFight)
+			updateDragonForFight(helpDefenceDragonForFight, helpDefenceDragonFightResult.defenceDragonAfterFight)
+			updateSoldiersForFight(helpDefenceSoldiersForFight, helpDefenceSoldierFightResult.defenceSoldiersAfterFight)
+
+			if(_.isEqual(helpDefenceSoldierFightResult.fightResult, Consts.FightResult.DefenceWin)){
+				var attackPlayerData = {
+					playerDoc:playerDoc,
+					dragon:attackDragonForFight,
+					soldiers:attackSoldiersForFight
+				}
+				var helpDefencePlayerData = {
+					playerDoc:helpDefencePlayerDoc,
+					dragon:helpDefenceDragonForFight,
+					soldiers:helpDefenceSoldiersForFight
+				}
+				var fightData = {
+					helpDefenceDragonFightResult:helpDefenceDragonFightResult,
+					helpDefenceSoldierFightResult:helpDefenceSoldierFightResult
+				}
+
+
+
+				var playerMarchReturnEvent = DataUtils.createAttackPlayerCityMarchReturnEvent(allianceDoc, playerDoc, defenceAllianceDoc, defencePlayerDoc, helpDefenceDragonFightResult, helpDefenceSoldierFightResult)
+				var helpDefencePlayerMarchReturnEvent = DataUtils.createHelpDefenceMarchReturnEvent(defenceAllianceDoc, helpDefencePlayerDoc, defencePlayerDoc, helpDefenceDragonFightResult, helpDefenceSoldierFightResult)
+			}
+		}
+
+		var enenmyDragon = LogicUtils.getPlayerDefenceDragon(defencePlayerDoc)
+		if(_.isObject(enenmyDragon)){
+			var enemyDragonForFight = DataUtils.createDragonForFight(defencePlayerDoc, enenmyDragon)
+			var soldiers = []
+			_.each(defencePlayerDoc.soldiers, function(count, name){
+				if(count > 0){
+					var soldier = {
+						name:name,
+						count:count
+					}
+					soldiers.push(soldier)
+				}
+			})
+			var enemySoldiersForFight = DataUtils.createSoldiersForFight(defencePlayerDoc, soldiers)
+			var enemyTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(defencePlayerDoc)
+			var enemyDragonFightResult = FightUtils.dragonToDragonFight(attackDragonForFight, enemyDragonForFight)
+			attackDragonForFight = enemyDragonFightResult.attackDragonAfterFight
+			enemyDragonForFight = enemyDragonFightResult.defenceDragonAfterFight
+			var enemySoldierFightResult = FightUtils.soldierToSoldierFight(attackSoldiersForFight, attackTreatSoldierPercent, enemySoldiersForFight, enemyTreatSoldierPercent)
+			attackSoldiersForFight = enemySoldierFightResult.attackSoldiersAfterFight
+			enemySoldiersForFight = enemySoldierFightResult.defenceSoldiersAfterFight
+		}
+
+		LogicUtils.refreshPlayerResources(defencePlayerDoc)
+		if(defencePlayerDoc.resources.wallHp > 0){
+			var enemyWallForFight = DataUtils.createWallForFight(defencePlayerDoc)
+			var enemyWallFightResult = FightUtils.soldierToWallFight(attackSoldiersForFight, attackTreatSoldierPercent, enemyWallForFight)
+			attackSoldiersForFight = enemyWallFightResult.attackSoldiersAfterFight
+			enemyWallForFight = enemyWallFightResult.defenceWallAfterFight
+		}
+
+
+	})
+}
+
+/**
  * 联盟战斗准备状态事件回调
  * @param attackAllianceDoc
  * @param defenceAllianceDoc
@@ -980,6 +1146,32 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 			}
 
 			if(_.isEqual(attackAllianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Enemy)){
+				attackAllianceDoc.moonGateData.countData.enemy.moonGateOwnCount += 1
+				defenceAllianceDoc.moonGateData.countData.our = attackAllianceDoc.moonGateData.countData.enemy
+				LogicUtils.refreshAllianceMoonGateDataCountData(attackAllianceDoc.moonGateData.countData, defenceAllianceDoc.moonGateData.countData)
+				attackAllianceData.moonGateData.countData = {}
+				attackAllianceData.moonGateData.countData.enemy = {}
+				attackAllianceData.moonGateData.countData.enemy.moonGateOwnCount = attackAllianceDoc.moonGateData.countData.enemy.moonGateOwnCount
+				attackAllianceData.moonGateData.countData.enemy.kill = attackAllianceDoc.moonGateData.countData.enemy.kill
+				defenceAllianceData.moonGateData.countData = {}
+				defenceAllianceData.moonGateData.countData.our = {}
+				defenceAllianceData.moonGateData.countData.our.moonGateOwnCount = defenceAllianceDoc.moonGateData.countData.our.moonGateOwnCount
+				defenceAllianceData.moonGateData.countData.our.kill = defenceAllianceDoc.moonGateData.countData.our.kill
+			}
+		}else{
+			if(_.isEqual(attackAllianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Our)){
+				attackAllianceDoc.moonGateData.countData.our.moonGateOwnCount += 1
+				defenceAllianceDoc.moonGateData.countData.enemy = attackAllianceDoc.moonGateData.countData.our
+				LogicUtils.refreshAllianceMoonGateDataCountData(attackAllianceDoc.moonGateData.countData, defenceAllianceDoc.moonGateData.countData)
+				attackAllianceData.moonGateData.countData = {}
+				attackAllianceData.moonGateData.countData.our = {}
+				attackAllianceData.moonGateData.countData.our.moonGateOwnCount = attackAllianceDoc.moonGateData.countData.our.moonGateOwnCount
+				attackAllianceData.moonGateData.countData.our.kill = attackAllianceDoc.moonGateData.countData.our.kill
+				defenceAllianceData.moonGateData.countData = {}
+				defenceAllianceData.moonGateData.countData.enemy = {}
+				defenceAllianceData.moonGateData.countData.enemy.moonGateOwnCount = defenceAllianceDoc.moonGateData.countData.enemy.moonGateOwnCount
+				defenceAllianceData.moonGateData.countData.enemy.kill = defenceAllianceDoc.moonGateData.countData.enemy.kill
+			}else if(_.isEqual(attackAllianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Enemy)){
 				attackAllianceDoc.moonGateData.countData.enemy.moonGateOwnCount += 1
 				defenceAllianceDoc.moonGateData.countData.our = attackAllianceDoc.moonGateData.countData.enemy
 				LogicUtils.refreshAllianceMoonGateDataCountData(attackAllianceDoc.moonGateData.countData, defenceAllianceDoc.moonGateData.countData)
@@ -1582,14 +1774,14 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 
 	var attackDragonType = attackTroop.dragon.type
 	var attackDragonForFight = {
-		type:attackTroop.dragon.type,
+		type:attackDragonType,
 		strength:attackPlayerDoc.dragons[attackDragonType].strength,
 		vitality:attackPlayerDoc.dragons[attackDragonType].vitality,
 		hp:attackPlayerDoc.dragons[attackDragonType].hp
 	}
 	var defenceDragonType = defenceTroop.dragon.type
 	var defenceDragonForFight = {
-		type:defenceTroop.dragon.type,
+		type:defenceDragonType,
 		strength:defencePlayerDoc.dragons[defenceDragonType].strength,
 		vitality:defencePlayerDoc.dragons[defenceDragonType].vitality,
 		hp:defencePlayerDoc.dragons[defenceDragonType].hp
@@ -1700,7 +1892,7 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 	defenceAllianceDoc.moonGateData.currentFightTroops.our = defenceTroop
 	defenceAllianceDoc.moonGateData.currentFightTroops.enemy = attackTroop
 
-	if(_.isEqual(Consts.FightResult.AttackWin, soldierFightResult.fightResult)){
+	if(_.isEqual(Consts.FightResult.AttackWin, soldierFightResult.fightResult) || defencePlayerDoc.dragons[defenceDragonType].hp <= 0){
 		treatSoldiers = defenceTroop.treatSoldiers
 		leftSoldiers = defenceTroop.soldiers
 		rewards = defenceTroop.rewards
@@ -1716,7 +1908,8 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 
 		attackAllianceDoc.moonGateData.currentFightTroops.enemy = null
 		defenceAllianceDoc.moonGateData.currentFightTroops.our = null
-	}else{
+	}
+	if(_.isEqual(Consts.FightResult.DefenceWin, soldierFightResult.fightResult) || attackPlayerDoc.dragons[attackDragonType].hp <= 0){
 		treatSoldiers = attackTroop.treatSoldiers
 		leftSoldiers = attackTroop.soldiers
 		rewards = attackTroop.rewards

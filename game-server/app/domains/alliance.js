@@ -251,6 +251,8 @@ var allianceSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		shrineEventId:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true},
 		playerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
@@ -264,13 +266,13 @@ var allianceSchema = new Schema({
 				count:{type:Number, required:true},
 				star:{type:Number, required:true}
 			}]
-		},
-		startTime:{type:Number, required:true},
-		arriveTime:{type:Number, required:true}
+		}
 	}],
 	shrineMarchReturnEvents:[{
 		_id:false,
 		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true},
 		playerData:{
 			id:{type:String, required:true},
 			cityName:{type:String, required:true},
@@ -294,9 +296,7 @@ var allianceSchema = new Schema({
 				count:{type:Number, required:true}
 			}],
 			kill:{type:Number, required:true}
-		},
-		startTime:{type:Number, required:true},
-		arriveTime:{type:Number, required:true}
+		}
 	}],
 	moonGateData:{
 		type:{
@@ -539,6 +539,8 @@ var allianceSchema = new Schema({
 	moonGateMarchEvents:[{
 		_id:false,
 		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true},
 		playerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
@@ -552,13 +554,13 @@ var allianceSchema = new Schema({
 				name:{type:String, required:true},
 				count:{type:Number, required:true}
 			}]
-		},
-		startTime:{type:Number, required:true},
-		arriveTime:{type:Number, required:true}
+		}
 	}],
 	moonGateMarchReturnEvents:[{
 		_id:false,
 		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true},
 		playerData:{
 			id:{type:String, required:true},
 			cityName:{type:String, required:true},
@@ -582,13 +584,13 @@ var allianceSchema = new Schema({
 				count:{type:Number, required:true}
 			}],
 			kill:{type:Number, required:true}
-		},
-		startTime:{type:Number, required:true},
-		arriveTime:{type:Number, required:true}
+		}
 	}],
 	helpDefenceMarchEvents:[{
 		_id:false,
 		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true},
 		playerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
@@ -607,15 +609,16 @@ var allianceSchema = new Schema({
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			cityName:{type:String, required:true}
-		},
-		startTime:{type:Number, required:true},
-		arriveTime:{type:Number, required:true}
+		}
 	}],
 	helpDefenceMarchReturnEvents:[{
 		_id:false,
 		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true},
 		playerData:{
 			id:{type:String, required:true},
+			name:{type:String, required:true},
 			cityName:{type:String, required:true},
 			dragon:{
 				type:{type:String, required:true}
@@ -642,11 +645,181 @@ var allianceSchema = new Schema({
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			cityName:{type:String, required:true}
-		},
-		startTime:{type:Number, required:true},
-		arriveTime:{type:Number, required:true}
+		}
 	}],
-	fightRequests:[String]
+	fightRequests:[String],
+	attackCityMarchEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true},
+		attackPlayerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			soldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			treatSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			rewards:[{
+				_id:false,
+				type:{type:String, required:true},
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			kill:{type:Number, required:true}
+		},
+		defencePlayerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			cityName:{type:String, required:true},
+			allianceId:{type:String, required:true},
+			allianceName:{type:String, required:true},
+			allianceTag:{type:String, required:true}
+		}
+	}],
+	attackCityMarchReturnEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true},
+		attackPlayerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			leftSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			treatSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			rewards:[{
+				_id:false,
+				type:{type:String, required:true},
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			kill:{type:Number, required:true}
+		},
+		defencePlayerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			cityName:{type:String, required:true},
+			allianceId:{type:String, required:true},
+			allianceName:{type:String, required:true},
+			allianceTag:{type:String, required:true}
+		}
+	}],
+	cityBeAttackedMarchEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true},
+		attackPlayerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			soldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			treatSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			rewards:[{
+				_id:false,
+				type:{type:String, required:true},
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			kill:{type:Number, required:true}
+		},
+		defencePlayerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			cityName:{type:String, required:true},
+			allianceId:{type:String, required:true},
+			allianceName:{type:String, required:true},
+			allianceTag:{type:String, required:true}
+		}
+	}],
+	cityBeAttackedMarchReturnEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true},
+		attackPlayerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			leftSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			treatSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			rewards:[{
+				_id:false,
+				type:{type:String, required:true},
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			kill:{type:Number, required:true}
+		},
+		defencePlayerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			cityName:{type:String, required:true},
+			allianceId:{type:String, required:true},
+			allianceName:{type:String, required:true},
+			allianceTag:{type:String, required:true}
+		}
+	}]
 })
 
 module.exports = mongoose.model('alliance', allianceSchema)

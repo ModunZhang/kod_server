@@ -464,6 +464,7 @@ var playerSchema = new Schema({
 		createTime:{type:String, required:true},
 		isRead:{type:Boolean, require:true},
 		isSaved:{type:Boolean, require:true},
+		isRenamed:{type:Boolean, required:true},
 		strikeCity:{
 			type:{
 				level:{type:Number, required:true},
@@ -552,215 +553,105 @@ var playerSchema = new Schema({
 			},
 			required:false
 		},
-		attackHelpTroop:{
-			type:{
-				fightResult:{type:String, required:true},
-				beHelpedPlayerData:{
-					id:{type:String, required:true},
-					name:{type:String, required:true},
-					cityName:{type:String, required:true}
-				},
-				playerData:{
-					name:{type:String, required:true},
-					allianceName:{type:String, required:true},
-					troopTotal:{type:Number, required:true},
-					troopSurvived:{type:Number, required:true},
-					troopWounded:{type:Number, required:true},
-					kill:{type:Number, required:true},
-					dragon:{
-						type:{type:String, required:true},
-						level:{type:Number, required:true},
-						xpAdd:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
-					},
-					soldiers:[{
-						_id:false,
-						name:{type:String, required:true},
-						star:{type:Number, required:true},
-						count:{type:Number, required:true},
-						countDecreased:{type:Number, required:true}
-					}],
-					rewards:[{
-						_id:false,
-						type:{type:String, required:true},
-						name:{type:String, required:true},
-						count:{type:Number, required:true}
-					}]
-				},
-				enemyPlayerData:{
-					id:{type:String, required:true},
-					name:{type:String, required:true},
-					allianceName:{type:String, required:true},
-					troopTotal:{type:Number, required:true},
-					troopSurvived:{type:Number, required:true},
-					troopWounded:{type:Number, required:true},
-					kill:{type:Number, required:true},
-					dragon:{
-						type:{type:String, required:true},
-						level:{type:Number, required:true},
-						xpAdd:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
-					},
-					soldiers:[{
-						_id:false,
-						name:{type:String, required:true},
-						star:{type:Number, required:true},
-						count:{type:Number, required:true},
-						countDecreased:{type:Number, required:true}
-					}]
-				}
-			},
-			required:false
-		},
-		helpTroopBeAttacked:{
-			type:{
-				fightResult:{type:String, required:true},
-				beHelpedPlayerData:{
-					id:{type:String, required:true},
-					name:{type:String, required:true},
-					cityName:{type:String, required:true}
-				},
-				playerData:{
-					name:{type:String, required:true},
-					allianceName:{type:String, required:true},
-					troopTotal:{type:Number, required:true},
-					troopSurvived:{type:Number, required:true},
-					troopWounded:{type:Number, required:true},
-					kill:{type:Number, required:true},
-					dragon:{
-						type:{type:String, required:true},
-						level:{type:Number, required:true},
-						xpAdd:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
-					},
-					soldiers:[{
-						_id:false,
-						name:{type:String, required:true},
-						star:{type:Number, required:true},
-						count:{type:Number, required:true},
-						countDecreased:{type:Number, required:true}
-					}],
-					rewards:[{
-						_id:false,
-						type:{type:String, required:true},
-						name:{type:String, required:true},
-						count:{type:Number, required:true}
-					}]
-				},
-				enemyPlayerData:{
-					id:{type:String, required:true},
-					name:{type:String, required:true},
-					allianceName:{type:String, required:true},
-					troopTotal:{type:Number, required:true},
-					troopSurvived:{type:Number, required:true},
-					troopWounded:{type:Number, required:true},
-					kill:{type:Number, required:true},
-					dragon:{
-						type:{type:String, required:true},
-						level:{type:Number, required:true},
-						xpAdd:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
-					},
-					soldiers:[{
-						_id:false,
-						name:{type:String, required:true},
-						star:{type:Number, required:true},
-						count:{type:Number, required:true},
-						countDecreased:{type:Number, required:true}
-					}]
-				}
-			},
-			required:false
-		},
 		attackCity:{
 			type:{
-				star:{type:Number, required:true},
-				playerData:{
+				fightTime:{type:Number, required:true},
+				attackStar:{type:Number, required:true},
+				defenceStar:{type:Number, required:true},
+				attackTarget:{
 					name:{type:String, required:true},
-					allianceName:{type:String, required:true},
-					troopTotal:{type:Number, required:true},
-					troopSurvived:{type:Number, required:true},
-					troopWounded:{type:Number, required:true},
-					kill:{type:Number, required:true},
-					dragon:{
-						type:{type:String, required:true},
-						level:{type:Number, required:true},
-						xpAdd:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
-					},
-					soldiers:[{
-						_id:false,
-						name:{type:String, required:true},
-						star:{type:Number, required:true},
-						count:{type:Number, required:true},
-						countDecreased:{type:Number, required:true}
-					}],
-					rewards:[{
-						_id:false,
-						type:{type:String, required:true},
-						name:{type:String, required:true},
-						count:{type:Number, required:true}
-					}]
-				},
-				enemyPlayerData:{
-					id:{type:String, required:true},
-					name:{type:String, required:true},
-					allianceName:{type:String, required:true},
-					troopTotal:{type:Number, required:true},
-					troopSurvived:{type:Number, required:true},
-					troopWounded:{type:Number, required:true},
-					kill:{type:Number, required:true},
-					dragon:{
-						type:{type:String, required:true},
-						level:{type:Number, required:true},
-						xpAdd:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
-					},
-					soldiers:[{
-						_id:false,
-						name:{type:String, required:true},
-						star:{type:Number, required:true},
-						count:{type:Number, required:true},
-						countDecreased:{type:Number, required:true}
-					}],
-					wall:{
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
+					cityName:{type:String, required:true},
+					location:{
+						x:{type:Number, required:true},
+						y:{type:Number, required:true}
 					}
-				}
-			},
-			required:false
-		},
-		cityBeAttacked:{
-			type:{
-				star:{type:Number, required:true},
-				playerData:{
+				},
+				attackPlayerData:{
+					id:{type:String, required:true},
 					name:{type:String, required:true},
 					allianceName:{type:String, required:true},
-					troopTotal:{type:Number, required:true},
-					troopSurvived:{type:Number, required:true},
-					troopWounded:{type:Number, required:true},
-					kill:{type:Number, required:true},
-					dragon:{
-						type:{type:String, required:true},
-						level:{type:Number, required:true},
-						xpAdd:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
+					troopData:{
+						troopTotal:{type:Number, required:true},
+						troopSurvived:{type:Number, required:true},
+						troopWounded:{type:Number, required:true},
+						kill:{type:Number, required:true},
+						dragon:{
+							type:{type:String, required:true},
+							level:{type:Number, required:true},
+							xpAdd:{type:Number, required:true},
+							hp:{type:Number, required:true},
+							hpDecreased:{type:Number, required:true}
+						},
+						soldiers:[{
+							_id:false,
+							name:{type:String, required:true},
+							star:{type:Number, required:true},
+							count:{type:Number, required:true},
+							countDecreased:{type:Number, required:true}
+						}]
 					},
-					soldiers:[{
+					rewards:[{
 						_id:false,
+						type:{type:String, required:true},
 						name:{type:String, required:true},
-						star:{type:Number, required:true},
-						count:{type:Number, required:true},
-						countDecreased:{type:Number, required:true}
-					}],
+						count:{type:Number, required:true}
+					}]
+				},
+				helpDefencePlayerData:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					allianceName:{type:String, required:true},
+					troopData:{
+						troopTotal:{type:Number, required:true},
+						troopSurvived:{type:Number, required:true},
+						troopWounded:{type:Number, required:true},
+						kill:{type:Number, required:true},
+						dragon:{
+							type:{type:String, required:true},
+							level:{type:Number, required:true},
+							xpAdd:{type:Number, required:true},
+							hp:{type:Number, required:true},
+							hpDecreased:{type:Number, required:true}
+						},
+						soldiers:[{
+							_id:false,
+							name:{type:String, required:true},
+							star:{type:Number, required:true},
+							count:{type:Number, required:true},
+							countDecreased:{type:Number, required:true}
+						}]
+					},
+					rewards:[{
+						_id:false,
+						type:{type:String, required:true},
+						name:{type:String, required:true},
+						count:{type:Number, required:true}
+					}]
+				},
+				defencePlayerData:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					allianceName:{type:String, required:true},
+					troopData:{
+						troopTotal:{type:Number, required:true},
+						troopSurvived:{type:Number, required:true},
+						troopWounded:{type:Number, required:true},
+						kill:{type:Number, required:true},
+						dragon:{
+							type:{type:String, required:true},
+							level:{type:Number, required:true},
+							xpAdd:{type:Number, required:true},
+							hp:{type:Number, required:true},
+							hpDecreased:{type:Number, required:true}
+						},
+						soldiers:[{
+							_id:false,
+							name:{type:String, required:true},
+							star:{type:Number, required:true},
+							count:{type:Number, required:true},
+							countDecreased:{type:Number, required:true}
+						}]
+					},
 					wall:{
 						hp:{type:Number, required:true},
 						hpDecreased:{type:Number, required:true}
@@ -770,29 +661,104 @@ var playerSchema = new Schema({
 						type:{type:String, required:true},
 						name:{type:String, required:true},
 						count:{type:Number, required:true}
+					}],
+					resourceLost:[{
+						name:{type:String, required:true},
+						count:{type:Number, required:true}
 					}]
 				},
-				enemyPlayerData:{
-					id:{type:String, required:true},
-					name:{type:String, required:true},
-					allianceName:{type:String, required:true},
-					troopTotal:{type:Number, required:true},
-					troopSurvived:{type:Number, required:true},
-					troopWounded:{type:Number, required:true},
-					kill:{type:Number, required:true},
-					dragon:{
+				fightWithHelpDefencePlayerReports:{
+					fightResult:{type:String, required:true},
+					attackPlayerDragonFightData:{
 						type:{type:String, required:true},
-						level:{type:Number, required:true},
-						xpAdd:{type:Number, required:true},
+						hpMax:{type:Number, required:true},
 						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
+						hpDecreased:{type:Number, required:true},
+						isWin:{type:Boolean, required:true}
 					},
-					soldiers:[{
+					defencePlayerDragonFightData:{
+						type:{type:String, required:true},
+						hpMax:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true},
+						isWin:{type:Boolean, required:true}
+					},
+					attackPlayerSoldierRoundDatas:[{
 						_id:false,
-						name:{type:String, required:true},
-						star:{type:Number, required:true},
-						count:{type:Number, required:true},
-						countDecreased:{type:Number, required:true}
+						soldierName:{type:String, required:true},
+						soldierStar:{type:Number, required:true},
+						soldierCount:{type:Number, required:true},
+						soldierDamagedCount:{type:Number, required:true},
+						soldierTreatedCount:{type:Number, required:true},
+						morale:{type:Number, required:true},
+						moraleDecreased:{type:Number, required:true},
+						isWin:{type:Boolean, required:true}
+					}],
+					defencePlayerSoldierRoundDatas:[{
+						_id:false,
+						soldierName:{type:String, required:true},
+						soldierStar:{type:Number, required:true},
+						soldierCount:{type:Number, required:true},
+						soldierDamagedCount:{type:Number, required:true},
+						soldierTreatedCount:{type:Number, required:true},
+						morale:{type:Number, required:true},
+						moraleDecreased:{type:Number, required:true},
+						isWin:{type:Boolean, required:true}
+					}]
+				},
+				fightWithDefencePlayerReports:{
+					fightResult:{type:String, required:true},
+					attackPlayerDragonFightData:{
+						type:{type:String, required:true},
+						hpMax:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true},
+						isWin:{type:Boolean, required:true}
+					},
+					defencePlayerDragonFightData:{
+						type:{type:String, required:true},
+						hpMax:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true},
+						isWin:{type:Boolean, required:true}
+					},
+					attackPlayerSoldierRoundDatas:[{
+						_id:false,
+						soldierName:{type:String, required:true},
+						soldierStar:{type:Number, required:true},
+						soldierCount:{type:Number, required:true},
+						soldierDamagedCount:{type:Number, required:true},
+						soldierTreatedCount:{type:Number, required:true},
+						morale:{type:Number, required:true},
+						moraleDecreased:{type:Number, required:true},
+						isWin:{type:Boolean, required:true}
+					}],
+					defencePlayerSoldierRoundDatas:[{
+						_id:false,
+						soldierName:{type:String, required:true},
+						soldierStar:{type:Number, required:true},
+						soldierCount:{type:Number, required:true},
+						soldierDamagedCount:{type:Number, required:true},
+						soldierTreatedCount:{type:Number, required:true},
+						morale:{type:Number, required:true},
+						moraleDecreased:{type:Number, required:true},
+						isWin:{type:Boolean, required:true}
+					}],
+					attackPlayerWallRoundDatas:[{
+						_id:false,
+						soldierName:{type:String, required:true},
+						soldierStar:{type:Number, required:true},
+						soldierCount:{type:Number, required:true},
+						soldierDamagedCount:{type:Number, required:true},
+						soldierTreatedCount:{type:Number, required:true},
+						isWin:{type:Boolean, required:true}
+					}],
+					defencePlayerWallRoundDatas:[{
+						_id:false,
+						wallMaxHp:{type:Number, required:true},
+						wallHp:{type:Number, required:true},
+						wallDamagedHp:{type:Number, required:true},
+						isWin:{type:Boolean, required:true}
 					}]
 				}
 			},

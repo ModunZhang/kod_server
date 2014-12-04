@@ -25,6 +25,7 @@ app.configure("production|development", "gate", function(){
 		heartbeat:60,
 		useDict:false,
 		useProtobuf:false,
+		setNoDelay:false,
 		disconnectOnTimeout:true,
 		"max-connections":1000
 	})

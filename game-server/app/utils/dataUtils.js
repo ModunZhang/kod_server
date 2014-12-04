@@ -1822,8 +1822,12 @@ Utils.createNormalSoldierForFight = function(playerDoc, soldierName, soldierStar
 		type:config.type,
 		currentCount:soldierCount,
 		totalCount:soldierCount,
+		damagedCount:0,
+		treatCount:0,
 		power:config.power,
 		hp:config.hp,
+		load:config.load,
+		citizen:config.citizen,
 		morale:100,
 		round:0,
 		attackPower:{
@@ -1832,7 +1836,8 @@ Utils.createNormalSoldierForFight = function(playerDoc, soldierName, soldierStar
 			cavalry:config.cavalry,
 			siege:config.siege,
 			wall:config.wall
-		}
+		},
+		killedSoldiers:[]
 	}
 	return soldier
 }
@@ -1852,8 +1857,12 @@ Utils.createSpecialSoldierForFight = function(playerDoc, soldierName, soldierCou
 		type:config.type,
 		currentCount:soldierCount,
 		totalCount:soldierCount,
+		damagedCount:0,
+		treatCount:0,
 		power:config.power,
 		hp:config.hp,
+		load:config.load,
+		citizen:config.citizen,
 		morale:100,
 		round:0,
 		attackPower:{
@@ -1862,9 +1871,88 @@ Utils.createSpecialSoldierForFight = function(playerDoc, soldierName, soldierCou
 			cavalry:config.cavalry,
 			siege:config.siege,
 			wall:config.wall
-		}
+		},
+		killedSoldiers:[]
 	}
 	return soldier
+}
+
+/**
+ * 创建战斗用军队
+ * @param playerDoc
+ * @param soldiers
+ * @returns {Array}
+ */
+Utils.createSoldiersForFight = function(playerDoc, soldiers){
+	var self = this
+	var soldiersForFight = []
+	_.each(soldiers, function(soldier){
+		if(self.hasNormalSoldier(soldier.name)){
+			soldiersForFight.push(self.createNormalSoldierForFight(playerDoc, soldier.name, 1, soldier.count))
+		}else{
+			soldiersForFight.push(self.createSpecialSoldierForFight(playerDoc, soldier.name, soldier.count))
+		}
+	})
+	soldiersForFight = _.sortBy(soldiersForFight, function(soldier){
+		return -(soldier.power * soldier.totalCount)
+	})
+	return soldiersForFight
+}
+
+/**
+ * 创建战斗用龙
+ * @param playerDoc
+ * @param dragonType
+ * @returns {*}
+ */
+Utils.createDragonForFight = function(playerDoc, dragonType){
+	var dragon = {
+		type:dragonType,
+		strength:playerDoc.dragons[dragonType].strength,
+		vitality:playerDoc.dragons[dragonType].vitality,
+		maxHp:this.getPlayerDragonHpMax(playerDoc, playerDoc.dragons[dragonType]),
+		totalHp:playerDoc.dragons[dragonType].hp,
+		currentHp:playerDoc.dragons[dragonType].hp,
+		level:playerDoc.dragons[dragonType].level,
+		isWin:false
+	}
+	return dragon
+}
+
+/**
+ * 创建战斗用的城墙
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.createWallForFight = function(playerDoc){
+	var getProperty = function(type, level, key){
+		return BuildingFunction[type][level][key]
+	}
+	var getPowersByType = function(type){
+		var power = 0
+		_.each(playerDoc.towers, function(tower){
+			if(tower.level > 0){
+				power += getProperty("tower", tower.level, type)
+			}
+		})
+		return power
+	}
+
+	var wall = {
+		maxHp:getProperty("wall", playerDoc.wall.level, "wallHp"),
+		currentHp:playerDoc.resources.wallHp,
+		damagedHp:0,
+		round:0,
+		attackPower:{
+			infantry:getPowersByType("infantry"),
+			archer:getPowersByType("archer"),
+			cavalry:getPowersByType("cavalry"),
+			siege:getPowersByType("siege")
+		},
+		defencePower:getPowersByType("defencePower"),
+		killedSoldiers:[]
+	}
+	return wall
 }
 
 Utils.getAllianceShrineStageTroops = function(stageName){
@@ -2134,7 +2222,7 @@ Utils.updateAllianceMoonGateData = function(attackCountData, attackTroop, defenc
 		attackCountData.our.playerKills.push(attackPlayerKill)
 	}
 	var defencePlayerKill = _.find(attackCountData.enemy.playerKills, function(playerKill){
-			return _.isEqual(playerKill.id, defenceTroop.id)
+		return _.isEqual(playerKill.id, defenceTroop.id)
 	})
 	if(!_.isObject(defencePlayerKill)){
 		defencePlayerKill = {
@@ -2238,10 +2326,10 @@ Utils.updateAllianceMoonGateData = function(attackCountData, attackTroop, defenc
 	LogicUtils.removeItemsInArray(defenceTroop.soldiers, willRemovedSoldiers)
 
 	attackCountData.our.playerKills = _.sortBy(attackCountData.our.playerKills, function(playerKill){
-		return - playerKill.kill
+		return -playerKill.kill
 	})
 	attackCountData.enemy.playerKills = _.sortBy(attackCountData.enemy.playerKills, function(playerKill){
-		return - playerKill.kill
+		return -playerKill.kill
 	})
 }
 
@@ -2292,4 +2380,170 @@ Utils.getPlayerDragonStrikeHpDecreased = function(playerDoc, dragon){
 	var decreasedPercent = AllianceInit.intInit.dragonStrikeHpDecreasedPercent.value
 	var hpMax = this.getPlayerDragonHpMax(playerDoc, dragon)
 	return Math.floor(hpMax * (decreasedPercent / 100))
+}
+
+/**
+ * 攻打玩家城市回城
+ * @param allianceDoc
+ * @param playerDoc
+ * @param enemyAllianceDoc
+ * @param enemyPlayerDoc
+ * @param dragonForFight
+ * @param soldiersForFight
+ * @returns {*}
+ */
+Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, enemyAllianceDoc, enemyPlayerDoc, dragonForFight, soldiersForFight){
+	var self = this
+	var enemyPlayerLocation = this.getAllianceMemberById(enemyAllianceDoc, enemyPlayerDoc._id).location
+	var enemyMoonGateLocation = enemyAllianceDoc.buildings.moonGate.location
+	var marchTime = this.getPlayerMarchTime(playerDoc, enemyPlayerLocation, enemyMoonGateLocation)
+
+	var getSoldiers = function(soldiersForFight, key){
+		var soldiers = []
+		_.each(soldiersForFight, function(theSoldier){
+			if(theSoldier[key] > 0){
+				var soldier = {
+					name:theSoldier.name,
+					count:theSoldier[key]
+				}
+				soldiers.push(soldier)
+			}
+		})
+		return soldiers
+	}
+	var getKilledCitizen = function(soldiersForFight){
+		var killed = 0
+		var config = null
+		_.each(soldiersForFight, function(soldierForFight){
+			_.each(soldierForFight.killedSoldiers, function(soldier){
+				if(self.hasNormalSoldier(soldier.name)){
+					var soldierFullKey = soldier.name + "_" + soldier.star
+					config = UnitConfig.normal[soldierFullKey]
+					killed += soldier.count * config.citizen
+				}else{
+					config = UnitConfig.special[soldier.name]
+					killed += soldier.count * config.citizen
+				}
+			})
+		})
+		return killed
+	}
+
+	var event = {
+		id:ShortId.generate(),
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime,
+		attackPlayerData:{
+			id:playerDoc._id,
+			name:playerDoc.basicInfo.name,
+			cityName:playerDoc.basicInfo.cityName,
+			dragon:{
+				type:dragonForFight.type
+			},
+			leftSoldiers:getSoldiers(soldiersForFight, "currentCount"),
+			treatSoldiers:getSoldiers(soldiersForFight, "treatCount"),
+			rewards:[],
+			kill:getKilledCitizen(soldiersForFight)
+		},
+		defencePlayerData:{
+			id:enemyPlayerDoc._id,
+			name:enemyPlayerDoc.basicInfo.name,
+			location:enemyPlayerLocation,
+			cityName:enemyPlayerDoc.basicInfo.cityName,
+			allianceId:enemyAllianceDoc._id,
+			allianceName:enemyAllianceDoc.basicInfo.name,
+			allianceTag:enemyAllianceDoc.basicInfo.tag
+		}
+	}
+	return event
+}
+
+/**
+ * 创建玩家协防部队回归玩家领地
+ * @param allianceDoc
+ * @param playerDoc
+ * @param beHelpedPlayerDoc
+ * @param dragonForFight
+ * @param soldiersForFight
+ * @returns {*}
+ */
+Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, beHelpedPlayerDoc, dragonForFight, soldiersForFight){
+	var self = this
+	var beHelpedPlayerLocation = this.getAllianceMemberById(allianceDoc, beHelpedPlayerDoc._id).location
+	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, beHelpedPlayerLocation, playerLocation)
+
+	var getSoldiers = function(soldiersForFight, key){
+		var soldiers = []
+		_.each(soldiersForFight, function(theSoldier){
+			if(theSoldier[key] > 0){
+				var soldier = {
+					name:theSoldier.name,
+					count:theSoldier[key]
+				}
+				soldiers.push(soldier)
+			}
+		})
+		return soldiers
+	}
+	var getKilledCitizen = function(soldiersForFight){
+		var killed = 0
+		var config = null
+		_.each(soldiersForFight, function(soldierForFight){
+			_.each(soldierForFight.killedSoldiers, function(soldier){
+				if(self.hasNormalSoldier(soldier.name)){
+					var soldierFullKey = soldier.name + "_" + soldier.star
+					config = UnitConfig.normal[soldierFullKey]
+					killed += soldier.count * config.citizen
+				}else{
+					config = UnitConfig.special[soldier.name]
+					killed += soldier.count * config.citizen
+				}
+			})
+		})
+		return killed
+	}
+
+	var event = {
+		id:ShortId.generate(),
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime,
+		playerData:{
+			id:playerDoc._id,
+			name:playerDoc.basicInfo.name,
+			cityName:playerDoc.basicInfo.cityName,
+			dragon:{
+				type:dragonForFight.type
+			},
+			leftSoldiers:getSoldiers(soldiersForFight, "currentCount"),
+			treatSoldiers:getSoldiers(soldiersForFight, "treatCount"),
+			rewards:[],
+			kill:getKilledCitizen(soldiersForFight)
+		},
+		fromPlayerData:{
+			id:beHelpedPlayerDoc._id,
+			name:beHelpedPlayerDoc.basicInfo.name,
+			cityName:beHelpedPlayerDoc.basicInfo.cityName
+		}
+	}
+	return event
+}
+
+/**
+ * 获取龙的力量修正
+ * @param attackSoldiersForFight
+ * @param defenceSoldiersForFight
+ * @returns {number}
+ */
+Utils.getDragonFightStrengthFixedPercent = function(attackSoldiersForFight, defenceSoldiersForFight){
+	var getSumPower = function(soldiersForFight){
+		var power = 0
+		_.each(soldiersForFight, function(soldierForFight){
+			power += soldierForFight.power * soldierForFight.count
+		})
+		return power
+	}
+	var attackSumPower = getSumPower(attackSoldiersForFight)
+	var defenceSumPower = getSumPower(defenceSoldiersForFight)
+	return attackSumPower / defenceSumPower
 }

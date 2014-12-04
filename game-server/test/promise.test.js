@@ -288,3 +288,21 @@ var FightUtils = require("../app/utils/fightUtils")
 //
 //var a = [1,3,2,4]
 //console.log(Math.random() * a.length << 0)
+//
+//var rs = {
+//	a:100,
+//	b:20,
+//	c:30,
+//	d:10
+//}
+//
+//var need = 80
+//var total = rs.a + rs.b + rs.c + rs.d
+//var needPercent = need / total
+//
+//console.log(rs.a * needPercent)
+//console.log(rs.b * needPercent)
+//console.log(rs.c * needPercent)
+//console.log(rs.d * needPercent)
+//
+
