@@ -3220,7 +3220,7 @@ pro.getReports = function(playerId, fromIndex, callback){
 		playerDoc = doc
 		return self.playerDao.removeLockByIdAsync(playerDoc._id)
 	}).then(function(){
-		return self.pushService.onGetMailsSuccessAsync(playerDoc, fromIndex)
+		return self.pushService.onGetReportsSuccessAsync(playerDoc, fromIndex)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
