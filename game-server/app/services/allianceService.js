@@ -4874,7 +4874,7 @@ pro.strikePlayerCity = function(playerId, dragonType, enemyPlayerId, callback){
 		LogicUtils.refreshPlayerResources(enemyPlayerDoc)
 		var playerDragon = playerDoc.dragons[dragonType]
 		var enemyPlayerDragon = LogicUtils.getPlayerDefenceDragon(enemyPlayerDoc)
-		var params = ReportUtils.createDragonStrikeCityReport(playerDoc, playerDragon, enemyPlayerDoc, enemyPlayerDragon)
+		var params = ReportUtils.createDragonStrikeCityReport(playerDoc, playerDragon, enemyAllianceDoc, enemyPlayerDoc, enemyPlayerDragon)
 		var reportForPlayer = params.reportForPlayer
 		var reportForEnemyPlayer = params.reportForEnemyPlayer
 		var strikeReport = reportForPlayer.strikeCity

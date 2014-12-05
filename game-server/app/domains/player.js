@@ -471,6 +471,7 @@ var playerSchema = new Schema({
 					name:{type:String, required:true},
 					icon:{type:String, required:true},
 					allianceName:{type:String, requird:true},
+					allianceTag:{type:String, required:true},
 					coinGet:{type:Number, required:true},
 					dragon:{
 						type:{type:String, required:true},
@@ -484,8 +485,13 @@ var playerSchema = new Schema({
 					id:{type:String, required:true},
 					name:{type:String, required:true},
 					cityName:{type:String, required:true},
+					location:{
+						x:{type:Number, required:true},
+						y:{type:Number, required:true}
+					},
 					icon:{type:String, required:true},
 					allianceName:{type:String, required:true},
+					allianceTag:{type:String, required:true},
 					dragon:{
 						type:{type:String, required:true},
 						level:{type:Number, required:true},
@@ -528,6 +534,7 @@ var playerSchema = new Schema({
 					cityName:{type:String, required:true},
 					icon:{type:String, required:true},
 					allianceName:{type:String, requird:true},
+					allianceTag:{type:String, required:true},
 					dragon:{
 						type:{type:String, required:true},
 						level:{type:Number, required:true},
@@ -540,6 +547,7 @@ var playerSchema = new Schema({
 					name:{type:String, required:true},
 					icon:{type:String, required:true},
 					allianceName:{type:String, requird:true},
+					allianceTag:{type:String, required:true},
 					coinGet:{type:Number, required:true},
 					dragon:{
 						type:{type:String, required:true},

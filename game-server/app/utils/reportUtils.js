@@ -275,11 +275,12 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
  * 创建龙侦查玩家城市战报
  * @param playerDoc
  * @param playerDragon
+ * @param enemyAllianceDoc
  * @param enemyPlayerDoc
  * @param enemyPlayerDragon
  * @returns {*}
  */
-Utils.createDragonStrikeCityReport = function(playerDoc, playerDragon, enemyPlayerDoc, enemyPlayerDragon){
+Utils.createDragonStrikeCityReport = function(playerDoc, playerDragon, enemyAllianceDoc, enemyPlayerDoc, enemyPlayerDragon){
 	var now = Date.now()
 	var reportForPlayer = {
 		id:ShortId.generate(),
@@ -299,6 +300,7 @@ Utils.createDragonStrikeCityReport = function(playerDoc, playerDragon, enemyPlay
 		name:playerDoc.basicInfo.name,
 		icon:playerDoc.basicInfo.icon,
 		allianceName:playerDoc.alliance.name,
+		allianceTag:playerDoc.alliance.tag,
 		dragon:{
 			type:playerDragon.type,
 			level:playerDragon.level,
@@ -310,8 +312,10 @@ Utils.createDragonStrikeCityReport = function(playerDoc, playerDragon, enemyPlay
 		id:enemyPlayerDoc._id,
 		name:enemyPlayerDoc.basicInfo.name,
 		cityName:enemyPlayerDoc.basicInfo.cityName,
+		location:LogicUtils.getAllianceMemberById(enemyAllianceDoc, enemyPlayerDoc._id).location,
 		icon:enemyPlayerDoc.basicInfo.icon,
 		allianceName:enemyPlayerDoc.alliance.name,
+		allianceTag:enemyPlayerDoc.alliance.tag,
 		resources:{
 			wood:enemyPlayerDoc.resources.wood,
 			stone:enemyPlayerDoc.resources.stone,
