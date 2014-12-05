@@ -532,6 +532,10 @@ var playerSchema = new Schema({
 				playerData:{
 					name:{type:String, required:true},
 					cityName:{type:String, required:true},
+					location:{
+						x:{type:Number, required:true},
+						y:{type:Number, required:true}
+					},
 					icon:{type:String, required:true},
 					allianceName:{type:String, requird:true},
 					allianceTag:{type:String, required:true},

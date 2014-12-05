@@ -399,8 +399,10 @@ Utils.createDragonStrikeCityReport = function(playerDoc, playerDragon, enemyAlli
 		playerData:{
 			name:enemyPlayerDoc.basicInfo.name,
 			cityName:enemyPlayerDoc.basicInfo.cityName,
+			location:LogicUtils.getAllianceMemberById(enemyAllianceDoc, enemyPlayerDoc._id).location,
 			icon:enemyPlayerDoc.basicInfo.icon,
-			allianceName:enemyPlayerDoc.alliance.name
+			allianceName:enemyPlayerDoc.alliance.name,
+			allianceTag:enemyPlayerDoc.alliance.tag
 		},
 		enemyPlayerData:reportForPlayer.strikeCity.playerData
 	}
