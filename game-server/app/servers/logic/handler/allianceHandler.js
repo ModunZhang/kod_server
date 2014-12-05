@@ -705,3 +705,18 @@ pro.strikePlayerCity = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 进攻玩家城市
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.attackPlayerCity = function(msg, session, next){
+	var enemyPlayerId = msg.enemyPlayerId
+	this.allianceService.attackPlayerCityAsync(session.uid, enemyPlayerId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

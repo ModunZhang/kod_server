@@ -704,3 +704,11 @@ Api.strikePlayerCity = function(dragonType, enemyPlayerId, callback){
 	var route = "logic.allianceHandler.strikePlayerCity"
 	pomelo.request(route, info, callback)
 }
+
+Api.attackPlayerCity = function(enemyPlayerId, callback){
+	var info = {
+		enemyPlayerId:enemyPlayerId
+	}
+	var route = "logic.allianceHandler.attackPlayerCity"
+	pomelo.request(route, info, callback)
+}

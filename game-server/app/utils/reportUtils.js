@@ -13,6 +13,9 @@ var LogicUtils = require("./logicUtils")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
 
+var GameDatas = require("../datas/GameDatas")
+var UnitConfig = GameDatas.UnitsConfig
+
 var Utils = module.exports
 
 /**
@@ -37,7 +40,7 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 		var config = null
 		_.each(soldiersForFight, function(soldierForFight){
 			_.each(soldierForFight.killedSoldiers, function(soldier){
-				if(self.hasNormalSoldier(soldier.name)){
+				if(DataUtils.hasNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
 					config = UnitConfig.normal[soldierFullKey]
 					killed += soldier.count * config.citizen
@@ -56,7 +59,7 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 				name:soldierForFight.name,
 				star:soldierForFight.star,
 				count:soldierForFight.totalCount,
-				countDecreased:soldierForFight.damagedCount
+				countDecreased:soldierForFight.totalCount - soldierForFight.currentCount
 			}
 			soldiers.push(soldier)
 		})
@@ -101,20 +104,19 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 		return data
 	}
 
-	var starParam = getStar()
-	var now = Date.now()
+	var starParam = getStar(fightData)
 	var attackRewards = []
-	var report = {
-		fightTime:now,
+	var attackCityReport = {
 		attackStar:starParam.attackStar,
 		defenceStar:starParam.defenceStar,
+		isRenamed:false,
 		attackTarget:{
 			name:defencePlayerData.playerDoc.basicInfo.name,
 			cityName:defencePlayerData.playerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerData.playerDoc._id).location
 		}
 	}
-	report.attackPlayerData = {
+	attackCityReport.attackPlayerData = {
 		id:attackPlayerData.playerDoc._id,
 		name:attackPlayerData.playerDoc.basicInfo.name,
 		allianceName:attackPlayerData.playerDoc.alliance.name,
@@ -128,7 +130,7 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 				level:attackPlayerData.dragon.level,
 				xpAdd:0,
 				hp:attackPlayerData.dragon.totalHp,
-				hpDecreased:attackPlayerData.dragon.damagedHp
+				hpDecreased:attackPlayerData.dragon.totalHp - attackPlayerData.dragon.currentHp
 			},
 			soldiers:createSoldiersDataAfterFight(attackPlayerData.soldiers)
 		},
@@ -136,9 +138,9 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 	}
 
 	if(_.isObject(fightData.helpDefenceDragonFightResult)){
-		report.helpDefencePlayerData = {
+		attackCityReport.helpDefencePlayerData = {
 			id:helpDefencePlayerData.playerDoc._id,
-			name:helpDefencePlayerData.playerDoc.name,
+			name:helpDefencePlayerData.playerDoc.basicInfo.name,
 			allianceName:helpDefencePlayerData.playerDoc.alliance.name,
 			troopData:{
 				troopTotal:getSoldierCitizen(helpDefencePlayerData.soldiers, "totalCount"),
@@ -150,13 +152,13 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 					level:helpDefencePlayerData.dragon.level,
 					xpAdd:0,
 					hp:helpDefencePlayerData.dragon.totalHp,
-					hpDecreased:helpDefencePlayerData.dragon.damagedHp
+					hpDecreased:helpDefencePlayerData.dragon.totalHp - helpDefencePlayerData.dragon.currentHp
 				},
 				soldiers:createSoldiersDataAfterFight(helpDefencePlayerData.soldiers)
 			},
 			rewards:[]
 		}
-		report.fightWithHelpDefencePlayerReports = {
+		attackCityReport.fightWithHelpDefencePlayerReports = {
 			fightResult:fightData.helpDefenceSoldierFightResult.fightResult,
 			attackPlayerDragonFightData:createDragonFightData(fightData.helpDefenceDragonFightResult.attackDragonAfterFight),
 			defencePlayerDragonFightData:createDragonFightData(fightData.helpDefenceDragonFightResult.defenceDragonAfterFight),
@@ -166,14 +168,14 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 	}
 
 	if(_.isObject(fightData.defenceDragonFightResult) || _.isObject(fightData.defenceWallFightResult)){
-		report.defencePlayerData = {
+		attackCityReport.defencePlayerData = {
 			id:defencePlayerData.playerDoc._id,
-			name:defencePlayerData.playerDoc.name,
+			name:defencePlayerData.playerDoc.basicInfo.name,
 			allianceName:defencePlayerData.playerDoc.alliance.name,
 			rewards:[]
 		}
 		if(_.isObject(fightData.defenceDragonFightResult)){
-			report.defencePlayerData.troopData = {
+			attackCityReport.defencePlayerData.troopData = {
 				troopTotal:getSoldierCitizen(defencePlayerData.soldiers, "totalCount"),
 				troopSurvived:getSoldierCitizen(defencePlayerData.soldiers, "currentCount"),
 				troopWounded:getSoldierCitizen(defencePlayerData.soldiers, "treatCount"),
@@ -183,51 +185,30 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 					level:defencePlayerData.dragon.level,
 					xpAdd:0,
 					hp:defencePlayerData.dragon.totalHp,
-					hpDecreased:defencePlayerData.dragon.damagedHp
+					hpDecreased:defencePlayerData.dragon.totalHp - defencePlayerData.dragon.currentHp
 				},
 				soldiers:createSoldiersDataAfterFight(defencePlayerData.soldiers)
 			}
 			if(_.isEqual(fightData.defenceDragonFightResult.fightResult, Consts.FightResult.AttackWin)){
-				var attackDragonHpDecreased = fightData.defenceDragonFightResult.attackDragonAfterFight.attackDragonHpDecreased
-				var coinGet = enemyPlayerDoc.resources.coin >= attackDragonHpDecreased ? attackDragonHpDecreased : enemyPlayerDoc.resources.coin
+				var attackDragonHpDecreased = fightData.defenceDragonFightResult.attackDragonHpDecreased
+				var coinGet = defencePlayerData.playerDoc.resources.coin >= attackDragonHpDecreased ? attackDragonHpDecreased : defencePlayerData.playerDoc.resources.coin
 				attackRewards.push({
 					type:"resources",
 					name:"coin",
 					count:coinGet
 				})
 			}
-			if(_.isEqual(fightData.defenceSoldierFightResult.fightResult, Consts.FightResult.AttackWin)){
-				var defencePlayerResources = defencePlayerData.playerDoc.resources
-				var defencePlayerResourceTotal = defencePlayerResources.wood + defencePlayerResources.stone + defencePlayerResources.iron + defencePlayerResources.food
-				var getLoadTotal = function(soldiersAfterFight){
-					var loadTotal = 0
-					_.each(soldiersAfterFight, function(soldierAfterFight){
-						loadTotal += soldierAfterFight.currentCount * soldierAfterFight.load
-					})
-				}
-				var attackPlayerLoadTotal = getLoadTotal(fightData.defenceSoldierFightResult.attackSoldiersAfterFight)
-				var loadPercent = attackPlayerLoadTotal / defencePlayerResourceTotal
-				loadPercent = loadPercent > 1 ? 1 : loadPercent
-				var resourceKeys = ["wood", "stone", "iron", "food"]
-				_.each(resourceKeys, function(key){
-					attackRewards.push({
-						type:"resources",
-						name:key,
-						count:Math.floor(defencePlayerResources[key] * loadPercent)
-					})
-				})
-			}
 		}
 
 		if(_.isObject(fightData.defenceWallFightResult)){
-			report.defencePlayerData.wall = {
+			attackCityReport.defencePlayerData.wall = {
 				hp:fightData.defenceWallFightResult.defenceWallAfterFight.totalHp,
-				hpDecreased:fightData.defenceWallFightResult.defenceWallAfterFight.damagedHp
+				hpDecreased:defencePlayerData.wall.totalHp - defencePlayerData.wall.currentHp
 			}
 		}
 
 		if(_.isObject(fightData.defenceDragonFightResult) && !_.isObject(fightData.defenceWallFightResult)){
-			report.fightWithDefencePlayerReports = {
+			attackCityReport.fightWithDefencePlayerReports = {
 				fightResult:fightData.defenceSoldierFightResult.fightResult,
 				attackPlayerDragonFightData:createDragonFightData(fightData.defenceDragonFightResult.attackDragonAfterFight),
 				defencePlayerDragonFightData:createDragonFightData(fightData.defenceDragonFightResult.defenceDragonAfterFight),
@@ -236,14 +217,14 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 			}
 		}
 		if(!_.isObject(fightData.defenceDragonFightResult) && _.isObject(fightData.defenceWallFightResult)){
-			report.fightWithDefencePlayerReports = {
+			attackCityReport.fightWithDefencePlayerReports = {
 				fightResult:fightData.defenceWallFightResult.fightResult,
 				attackPlayerWallRoundDatas:fightData.defenceWallFightResult.attackRoundDatas,
 				defencePlayerWallRoundDatas:fightData.defenceWallFightResult.defenceRoundDatas
 			}
 		}
 		if(_.isObject(fightData.defenceDragonFightResult) && _.isObject(fightData.defenceWallFightResult)){
-			report.fightWithDefencePlayerReports = {
+			attackCityReport.fightWithDefencePlayerReports = {
 				fightResult:fightData.defenceWallFightResult.fightResult,
 				attackPlayerDragonFightData:createDragonFightData(fightData.defenceDragonFightResult.attackDragonAfterFight),
 				defencePlayerDragonFightData:createDragonFightData(fightData.defenceDragonFightResult.defenceDragonAfterFight),
@@ -255,5 +236,180 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 		}
 	}
 
-	return report
+	if(attackCityReport.attackStar >= 2){
+		var defencePlayerResources = defencePlayerData.playerDoc.resources
+		var defencePlayerResourceTotal = defencePlayerResources.wood + defencePlayerResources.stone + defencePlayerResources.iron + defencePlayerResources.food
+		var getLoadTotal = function(soldiersForFight){
+			var loadTotal = 0
+			_.each(soldiersForFight, function(soldierForFight){
+				loadTotal += soldierForFight.currentCount * soldierForFight.load
+			})
+			return loadTotal
+		}
+		var attackPlayerLoadTotal = getLoadTotal(attackPlayerData.soldiers)
+		var loadPercent = attackPlayerLoadTotal / defencePlayerResourceTotal
+		loadPercent = loadPercent > 1 ? 1 : loadPercent
+		var resourceKeys = ["wood", "stone", "iron", "food"]
+		_.each(resourceKeys, function(key){
+			attackRewards.push({
+				type:"resources",
+				name:key,
+				count:Math.floor(defencePlayerResources[key] * loadPercent)
+			})
+		})
+	}
+
+	var fullReport = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.AttackCity,
+		createTime:Date.now(),
+		isRead:false,
+		isSaved:false,
+		attackCity:attackCityReport
+	}
+	return fullReport
+}
+
+/**
+ * 创建龙侦查玩家城市战报
+ * @param playerDoc
+ * @param playerDragon
+ * @param enemyPlayerDoc
+ * @param enemyPlayerDragon
+ * @returns {*}
+ */
+Utils.createDragonStrikeCityReport = function(playerDoc, playerDragon, enemyPlayerDoc, enemyPlayerDragon){
+	var now = Date.now()
+	var reportForPlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.StrikeCity,
+		createTime:now,
+		isRead:false,
+		isSaved:false
+	}
+	var reportForEnemyPlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.CityBeStriked,
+		createTime:now,
+		isRead:false,
+		isSaved:false
+	}
+	var playerData = {
+		name:playerDoc.basicInfo.name,
+		icon:playerDoc.basicInfo.icon,
+		allianceName:playerDoc.alliance.name,
+		dragon:{
+			type:playerDragon.type,
+			level:playerDragon.level,
+			xpAdd:0,
+			hp:playerDragon.hp
+		}
+	}
+	var enemyPlayerData = {
+		id:enemyPlayerDoc._id,
+		name:enemyPlayerDoc.basicInfo.name,
+		cityName:enemyPlayerDoc.basicInfo.cityName,
+		icon:enemyPlayerDoc.basicInfo.icon,
+		allianceName:enemyPlayerDoc.alliance.name,
+		resources:{
+			wood:enemyPlayerDoc.resources.wood,
+			stone:enemyPlayerDoc.resources.stone,
+			iron:enemyPlayerDoc.resources.iron,
+			food:enemyPlayerDoc.resources.food,
+			wallHp:enemyPlayerDoc.resources.wallHp
+		}
+	}
+
+	var soldiers = []
+	_.each(enemyPlayerDoc.soldiers, function(count, name){
+		if(count > 0){
+			var soldier = {
+				name:name,
+				star:1,
+				count:count
+			}
+			soldiers.push(soldier)
+		}
+	})
+	enemyPlayerData.soldiers = soldiers
+
+	reportForPlayer.strikeCity = {
+		playerData:playerData,
+		enemyPlayerData:enemyPlayerData
+	}
+
+	if(!_.isObject(enemyPlayerDragon)){
+		reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.S
+		var hpDecreased = DataUtils.getPlayerDragonStrikeHpDecreased(playerDoc, playerDragon)
+		var coinGet = enemyPlayerDoc.resources.coin >= hpDecreased ? hpDecreased : enemyPlayerDoc.resources.coin
+		playerData.coinGet = coinGet
+		playerData.dragon.hpDecreased = playerDragon.hp >= hpDecreased ? hpDecreased : playerDragon.hp
+		enemyPlayerData.dragon = null
+	}else{
+		var playerDragonHpDecreased = DataUtils.getPlayerDragonStrikeHpDecreased(playerDoc, playerDragon)
+		var dragonFightData = FightUtils.dragonToDragonFight(playerDragon, enemyPlayerDragon, 1)
+		playerDragonHpDecreased += dragonFightData.attackDragonHpDecreased
+		var enemyPlayerDragonHpDecreased = dragonFightData.defenceDragonHpDecreased
+		var playerCoinGet = enemyPlayerDoc.resources.coin >= playerDragonHpDecreased ? playerDragonHpDecreased : enemyPlayerDoc.resources.coin
+		playerData.coinGet = _.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin) ? playerCoinGet : 0
+		playerData.dragon.hpDecreased = playerDragon.hp >= playerDragonHpDecreased ? playerDragonHpDecreased : playerDragon.hp
+		var powerCompare = dragonFightData.powerCompare
+		if(powerCompare < 1) reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.E
+		else if(powerCompare >= 1 && powerCompare < 1.5) reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.D
+		else if(powerCompare >= 1.5 && powerCompare < 2) reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.C
+		else if(powerCompare >= 2 && powerCompare < 4) reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.B
+		else if(powerCompare >= 4 && powerCompare < 6) reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.A
+		else reportForPlayer.strikeCity.level = Consts.DragonStrikeReportLevel.S
+
+		enemyPlayerData.dragon = {
+			type:enemyPlayerDragon.type,
+			level:enemyPlayerDragon.level,
+			xpAdd:0,
+			hp:enemyPlayerDragon.hp,
+			hpDecreased:enemyPlayerDragon.hp >= enemyPlayerDragonHpDecreased ? enemyPlayerDragonHpDecreased : enemyPlayerDragon.hp
+		}
+		var equipments = []
+		_.each(enemyPlayerDragon.equipments, function(theEquipment, type){
+			if(!_.isEmpty(theEquipment.name)){
+				var equipment = {
+					type:type,
+					name:theEquipment.name,
+					star:theEquipment.star
+				}
+				equipments.push(equipment)
+			}
+		})
+		enemyPlayerData.dragon.equipments = equipments
+		var skills = []
+		_.each(enemyPlayerDragon.skills, function(skill){
+			if(skill.level > 0){
+				skills.push(skill)
+			}
+		})
+		enemyPlayerData.dragon.skills = skills
+	}
+
+	reportForEnemyPlayer.cityBeStriked = {
+		level:reportForPlayer.strikeCity.level,
+		playerData:{
+			name:enemyPlayerDoc.basicInfo.name,
+			cityName:enemyPlayerDoc.basicInfo.cityName,
+			icon:enemyPlayerDoc.basicInfo.icon,
+			allianceName:enemyPlayerDoc.alliance.name
+		},
+		enemyPlayerData:reportForPlayer.strikeCity.playerData
+	}
+	if(_.isObject(enemyPlayerDragon)){
+		reportForEnemyPlayer.cityBeStriked.playerData.dragon = {
+			type:enemyPlayerDragon.type,
+			level:enemyPlayerDragon.level,
+			xpAdd:0,
+			hp:enemyPlayerDragon.hp,
+			hpDecreased:reportForPlayer.strikeCity.enemyPlayerData.dragon.hpDecreased
+		}
+	}else{
+		reportForEnemyPlayer.cityBeStriked.playerData.dragon = null
+	}
+
+	return {reportForPlayer:reportForPlayer, reportForEnemyPlayer:reportForEnemyPlayer}
 }

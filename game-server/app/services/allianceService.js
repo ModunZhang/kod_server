@@ -14,6 +14,7 @@ var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var MapUtils = require("../utils/mapUtils")
 var FightUtils = require("../utils/fightUtils")
+var ReportUtils = require("../utils/reportUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -4227,20 +4228,20 @@ pro.challengeMoonGateEnemyTroop = function(playerId, callback){
 		}]
 
 		var ourDragonType = ourTroop.dragon.type
-		var ourDragonForFight = {
-			type:ourTroop.dragon.type,
-			strength:ourPlayerDoc.dragons[ourDragonType].strength,
-			vitality:ourPlayerDoc.dragons[ourDragonType].vitality,
-			hp:ourPlayerDoc.dragons[ourDragonType].hp
-		}
+		var ourDragonForFight = DataUtils.createDragonForFight(ourPlayerDoc, ourDragonType)
 		var enemyDragonType = enemyTroop.dragon.type
-		var enemyDragonForFight = {
-			type:enemyTroop.dragon.type,
-			strength:enemyPlayerDoc.dragons[enemyDragonType].strength,
-			vitality:enemyPlayerDoc.dragons[enemyDragonType].vitality,
-			hp:enemyPlayerDoc.dragons[enemyDragonType].hp
+		var enemyDragonForFight = DataUtils.createDragonForFight(enemyPlayerDoc, enemyDragonType)
+		var ourSoldiersForFight = DataUtils.createSoldiersForFight(ourPlayerDoc, ourTroop.soldiers)
+		var enemySoldiersForFight = DataUtils.createSoldiersForFight(enemyPlayerDoc, enemyTroop.soldiers)
+		var dragonFightFixedEffect = null
+		var dragonFightResult = null
+		if(_.isEqual(ourAllianceDoc.moonGateData.activeBy, ourAllianceDoc._id)){
+			dragonFightFixedEffect = DataUtils.getDragonFightFixedEffect(ourSoldiersForFight, enemySoldiersForFight)
+			dragonFightResult = FightUtils.dragonToDragonFight(ourDragonForFight, enemyDragonForFight, dragonFightFixedEffect)
+		}else{
+			dragonFightFixedEffect = DataUtils.getDragonFightFixedEffect(enemySoldiersForFight, ourSoldiersForFight)
+			dragonFightResult = FightUtils.dragonToDragonFight(enemyDragonForFight, ourDragonForFight, dragonFightFixedEffect)
 		}
-		var dragonFightResult = FightUtils.dragonToDragonFight(ourDragonForFight, enemyDragonForFight)
 		var ourDragonHpDecreased = null
 		var enemyDragonHpDecreased = null
 		if(_.isEqual(ourAllianceDoc._id, ourAllianceDoc.moonGateData.activeBy)){
@@ -4271,29 +4272,6 @@ pro.challengeMoonGateEnemyTroop = function(playerId, callback){
 		ourPlayerData.dragons[ourDragonType] = ourPlayerDoc.dragons[ourDragonType]
 		enemyPlayerData.dragons = {}
 		enemyPlayerData.dragons[enemyDragonType] = enemyPlayerDoc.dragons[enemyDragonType]
-
-		var ourSoldiersForFight = []
-		_.each(ourTroop.soldiers, function(soldier){
-			if(DataUtils.hasNormalSoldier(soldier.name)){
-				ourSoldiersForFight.push(DataUtils.createNormalSoldierForFight(ourPlayerDoc, soldier.name, 1, soldier.count))
-			}else{
-				ourSoldiersForFight.push(DataUtils.createSpecialSoldierForFight(ourPlayerDoc, soldier.name, soldier.count))
-			}
-		})
-		ourSoldiersForFight = _.sortBy(ourSoldiersForFight, function(soldier){
-			return -(soldier.power * soldier.totalCount)
-		})
-		var enemySoldiersForFight = []
-		_.each(enemyTroop.soldiers, function(soldier){
-			if(DataUtils.hasNormalSoldier(soldier.name)){
-				enemySoldiersForFight.push(DataUtils.createNormalSoldierForFight(enemyPlayerDoc, soldier.name, 1, soldier.count))
-			}else{
-				enemySoldiersForFight.push(DataUtils.createSpecialSoldierForFight(enemyPlayerDoc, soldier.name, soldier.count))
-			}
-		})
-		enemySoldiersForFight = _.sortBy(enemySoldiersForFight, function(soldier){
-			return -(soldier.power * soldier.totalCount)
-		})
 
 		var ourTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(ourPlayerDoc)
 		var enemyTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(enemyPlayerDoc)
@@ -4896,7 +4874,7 @@ pro.strikePlayerCity = function(playerId, dragonType, enemyPlayerId, callback){
 		LogicUtils.refreshPlayerResources(enemyPlayerDoc)
 		var playerDragon = playerDoc.dragons[dragonType]
 		var enemyPlayerDragon = LogicUtils.getPlayerDefenceDragon(enemyPlayerDoc)
-		var params = LogicUtils.createDragonStrikeCityReport(playerDoc, playerDragon, enemyPlayerDoc, enemyPlayerDragon)
+		var params = ReportUtils.createDragonStrikeCityReport(playerDoc, playerDragon, enemyPlayerDoc, enemyPlayerDragon)
 		var reportForPlayer = params.reportForPlayer
 		var reportForEnemyPlayer = params.reportForEnemyPlayer
 		var strikeReport = reportForPlayer.strikeCity

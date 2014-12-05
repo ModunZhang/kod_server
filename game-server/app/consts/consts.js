@@ -167,9 +167,6 @@ module.exports = {
 	PlayerReportType:{
 		StrikeCity:"strikeCity",
 		CityBeStriked:"cityBeStriked",
-		AttackHelpTroop:"attackHelpTroop",
-		HelpTroopBeAttacked:"helpTroopBeAttacked",
-		AttackCity:"attackCity",
-		CityBeAttacked:"cityBeAttacked"
+		AttackCity:"attackCity"
 	}
 }

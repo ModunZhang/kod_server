@@ -464,7 +464,6 @@ var playerSchema = new Schema({
 		createTime:{type:String, required:true},
 		isRead:{type:Boolean, require:true},
 		isSaved:{type:Boolean, require:true},
-		isRenamed:{type:Boolean, required:true},
 		strikeCity:{
 			type:{
 				level:{type:Number, required:true},
@@ -555,9 +554,9 @@ var playerSchema = new Schema({
 		},
 		attackCity:{
 			type:{
-				fightTime:{type:Number, required:true},
 				attackStar:{type:Number, required:true},
 				defenceStar:{type:Number, required:true},
+				isRenamed:{type:Boolean, required:true},
 				attackTarget:{
 					name:{type:String, required:true},
 					cityName:{type:String, required:true},

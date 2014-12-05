@@ -25,7 +25,7 @@ intInit["activeShrineStageEventTime"] = {
 }
 intInit["allianceFightPrepareTime"] = {
 	type:"allianceFightPrepareTime",
-	value:12
+	value:60
 }
 intInit["allianceFightTotalFightTime"] = {
 	type:"allianceFightTotalFightTime",
@@ -33,7 +33,7 @@ intInit["allianceFightTotalFightTime"] = {
 }
 intInit["allianceFightTimePerFight"] = {
 	type:"allianceFightTimePerFight",
-	value:1
+	value:10
 }
 intInit["allianceHelpDefenceTroopsMaxCount"] = {
 	type:"allianceHelpDefenceTroopsMaxCount",

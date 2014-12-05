@@ -74,7 +74,6 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 		})
 		attackSoldier.round += 1
 		attackSoldier.currentCount -= attackDamagedSoldierCount
-		attackSoldier.damagedCount += attackDamagedSoldierCount
 		attackSoldier.treatCount += attackTreatedSoldierCount
 		attackSoldier.morale -= attackMoraleDecreased
 		attackSoldier.killedSoldiers.push({
@@ -84,7 +83,6 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 		})
 		defenceSoldier.round += 1
 		defenceSoldier.currentCount -= defenceDamagedSoldierCount
-		defenceSoldier.damagedCount += defenceDamagedSoldierCount
 		defenceSoldier.treatCount += defenceTreatedSoldierCount
 		defenceSoldier.morale -= dfenceMoraleDecreased
 		defenceSoldier.killedSoldiers.push({
@@ -139,9 +137,8 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
 	}else{
 		attackDragonPower -= attackDragonPower * (-effect)
 	}
-
-	var attackDragonHpDecreased = Math.round(defenceDragonPower * 0.3)
-	var defenceDragonHpDecreased = Math.round(attackDragonPower * 0.3)
+	var attackDragonHpDecreased = Math.round(defenceDragonPower * 0.02)
+	var defenceDragonHpDecreased = Math.round(attackDragonPower * 0.02)
 	attackDragon.currentHp = attackDragonHpDecreased > attackDragon.currentHp ? 0 : attackDragon.currentHp - attackDragonHpDecreased
 	defenceDragon.currentHp = defenceDragonHpDecreased > defenceDragon.currentHp ? 0 : defenceDragon.currentHp - defenceDragonHpDecreased
 	attackDragon.isWin = attackDragonPower >= defenceDragonPower
@@ -183,10 +180,10 @@ Utils.soldierToWallFight = function(attackSoldiers, attackTreatSoldierPercent, d
 		var defenceDamagedHp = null
 		if(attackTotalPower >= defenceTotalPower){
 			attackDamagedSoldierCount = Math.round(defenceTotalPower * 0.5 / attackSoldier.hp)
-			defenceDamagedHp = Math.round(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.5 / attackSoldier.attackPower[defenceSoldierType])
+			defenceDamagedHp = Math.round(Math.sqrt(attackTotalPower * defenceTotalPower) * 10 / attackSoldier.attackPower[defenceSoldierType])
 		}else{
 			attackDamagedSoldierCount = Math.round(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.5 / defenceWall.defencePower)
-			defenceDamagedHp = Math.round(attackTotalPower * 0.5 / defenceWall.defencePower)
+			defenceDamagedHp = Math.round(attackTotalPower * 10 / defenceWall.defencePower)
 		}
 		if(attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.floor(attackSoldier.currentCount * 0.7)
 		if(defenceDamagedHp > defenceWall.currentHp) defenceDamagedHp = defenceWall.currentHp
@@ -212,8 +209,11 @@ Utils.soldierToWallFight = function(attackSoldiers, attackTreatSoldierPercent, d
 		attackSoldier.treatCount += attackTreatedSoldierCount
 		defenceWall.round += 1
 		defenceWall.currentHp -= defenceDamagedHp
-		defenceWall.damagedHp += defenceDamagedHp
-		defenceWall.killedSoldiers.push({name:attackSoldier.name, star:attackSoldier.star, count:attackDamagedSoldierCount})
+		defenceWall.killedSoldiers.push({
+			name:attackSoldier.name,
+			star:attackSoldier.star,
+			count:attackDamagedSoldierCount
+		})
 
 		LogicUtils.removeItemInArray(attackSoldiers, attackSoldier)
 		attackSoldiersAfterFight.push(attackSoldier)

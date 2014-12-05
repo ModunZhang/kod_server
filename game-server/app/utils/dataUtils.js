@@ -1806,7 +1806,6 @@ Utils.createNormalSoldierForFight = function(playerDoc, soldierName, soldierStar
 		type:config.type,
 		currentCount:soldierCount,
 		totalCount:soldierCount,
-		damagedCount:0,
 		treatCount:0,
 		power:config.power,
 		hp:config.hp,
@@ -1841,7 +1840,6 @@ Utils.createSpecialSoldierForFight = function(playerDoc, soldierName, soldierCou
 		type:config.type,
 		currentCount:soldierCount,
 		totalCount:soldierCount,
-		damagedCount:0,
 		treatCount:0,
 		power:config.power,
 		hp:config.hp,
@@ -1924,8 +1922,8 @@ Utils.createWallForFight = function(playerDoc){
 
 	var wall = {
 		maxHp:getProperty("wall", playerDoc.wall.level, "wallHp"),
+		totalHp:playerDoc.resources.wallHp,
 		currentHp:playerDoc.resources.wallHp,
-		damagedHp:0,
 		round:0,
 		attackPower:{
 			infantry:getPowersByType("infantry"),
@@ -1959,8 +1957,11 @@ Utils.getAllianceShrineStageTroops = function(stageName){
 				type:unitConfig.type,
 				currentCount:soldierCount,
 				totalCount:soldierCount,
+				treatCount:0,
 				power:unitConfig.power,
 				hp:unitConfig.hp,
+				load:config.load,
+				citizen:config.citizen,
 				morale:100,
 				round:0,
 				attackPower:{
@@ -1969,7 +1970,8 @@ Utils.getAllianceShrineStageTroops = function(stageName){
 					cavalry:unitConfig.cavalry,
 					siege:unitConfig.siege,
 					wall:unitConfig.wall
-				}
+				},
+				killedSoldiers:[]
 			}
 			soldiers.push(soldier)
 		})
@@ -2376,9 +2378,9 @@ Utils.getPlayerDragonStrikeHpDecreased = function(playerDoc, dragon){
  * @param soldiersForFight
  * @returns {*}
  */
-Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, enemyAllianceDoc, enemyPlayerDoc, dragonForFight, soldiersForFight){
+Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, enemyAllianceDoc, enemyPlayerDoc, dragonForFight, soldiersForFight, rewards){
 	var self = this
-	var enemyPlayerLocation = this.getAllianceMemberById(enemyAllianceDoc, enemyPlayerDoc._id).location
+	var enemyPlayerLocation = LogicUtils.getAllianceMemberById(enemyAllianceDoc, enemyPlayerDoc._id).location
 	var enemyMoonGateLocation = enemyAllianceDoc.buildings.moonGate.location
 	var marchTime = this.getPlayerMarchTime(playerDoc, enemyPlayerLocation, enemyMoonGateLocation)
 
@@ -2426,7 +2428,7 @@ Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
 			},
 			leftSoldiers:getSoldiers(soldiersForFight, "currentCount"),
 			treatSoldiers:getSoldiers(soldiersForFight, "treatCount"),
-			rewards:[],
+			rewards:rewards,
 			kill:getKilledCitizen(soldiersForFight)
 		},
 		defencePlayerData:{
@@ -2453,9 +2455,9 @@ Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
  */
 Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, beHelpedPlayerDoc, dragonForFight, soldiersForFight){
 	var self = this
-	var beHelpedPlayerLocation = this.getAllianceMemberById(allianceDoc, beHelpedPlayerDoc._id).location
-	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, beHelpedPlayerLocation, playerLocation)
+	var beHelpedPlayerLocation = LogicUtils.getAllianceMemberById(allianceDoc, beHelpedPlayerDoc._id).location
+	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var marchTime = this.getPlayerMarchTime(playerDoc, beHelpedPlayerLocation, playerLocation)
 
 	var getSoldiers = function(soldiersForFight, key){
 		var soldiers = []
@@ -2523,7 +2525,7 @@ Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldie
 	var getSumPower = function(soldiersForFight){
 		var power = 0
 		_.each(soldiersForFight, function(soldierForFight){
-			power += soldierForFight.power * soldierForFight.count
+			power += soldierForFight.power * soldierForFight.totalCount
 		})
 		return power
 	}
