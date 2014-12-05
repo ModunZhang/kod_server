@@ -8,6 +8,7 @@ var _ = require("underscore")
 var ShortId = require("shortid")
 var Promise = require("bluebird")
 
+var FightUtils = require("./fightUtils")
 var DataUtils = require("./dataUtils")
 var LogicUtils = require("./logicUtils")
 var Consts = require("../consts/consts")
