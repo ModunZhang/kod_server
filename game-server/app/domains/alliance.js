@@ -133,6 +133,9 @@ var allianceSchema = new Schema({
 				count:{type:String, required:true}
 			}
 		],
+		dragon:{
+
+		},
 		location:{
 			x:{type:Number, required:true},
 			y:{type:Number, required:true}

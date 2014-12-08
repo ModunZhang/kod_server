@@ -1960,8 +1960,8 @@ Utils.getAllianceShrineStageTroops = function(stageName){
 				treatCount:0,
 				power:unitConfig.power,
 				hp:unitConfig.hp,
-				load:config.load,
-				citizen:config.citizen,
+				load:unitConfig.load,
+				citizen:unitConfig.citizen,
 				morale:100,
 				round:0,
 				attackPower:{

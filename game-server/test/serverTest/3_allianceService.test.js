@@ -1187,23 +1187,23 @@ describe("AllianceService", function(){
 		//	})
 		//})
 
-		it("requestAllianceToFight 正常请求", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.requestAllianceToFight(function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("requestAllianceToFight 已经发送过开战请求", function(done){
-			Api.requestAllianceToFight(function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("已经发送过开战请求")
-				done()
-			})
-		})
+		//it("requestAllianceToFight 正常请求", function(done){
+		//	Api.loginPlayer(Config.deviceId3, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.requestAllianceToFight(function(doc){
+		//			doc.code.should.equal(200)
+		//			done()
+		//		})
+		//	})
+		//})
+		//
+		//it("requestAllianceToFight 已经发送过开战请求", function(done){
+		//	Api.requestAllianceToFight(function(doc){
+		//		doc.code.should.equal(500)
+		//		doc.message.should.equal("已经发送过开战请求")
+		//		done()
+		//	})
+		//})
 
 		//it("alliancefight 正常激活", function(done){
 		//	var m_allianceDoc = null
@@ -1224,67 +1224,67 @@ describe("AllianceService", function(){
 		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//})
 
-		it("findAllianceToFight 正常查找", function(done){
-			Api.findAllianceToFight(function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
+		//it("findAllianceToFight 正常查找", function(done){
+		//	Api.findAllianceToFight(function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("marchToMoonGate 正常行军1", function(done){
+		//	Api.sendChat("dragonstar blueDragon 1", function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.sendChat("soldiers 1000", function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.marchToMoonGate("blueDragon", [
+		//				{
+		//					name:"swordsman",
+		//					count:18
+		//				},
+		//				{
+		//					name:"sentinel",
+		//					count:18
+		//				},
+		//				{
+		//					name:"ranger",
+		//					count:18
+		//				}
+		//			], function(doc){
+		//				doc.code.should.equal(200)
+		//				done()
+		//			})
+		//		})
+		//	})
+		//})
 
-		it("marchToMoonGate 正常行军1", function(done){
-			Api.sendChat("dragonstar blueDragon 1", function(doc){
-				doc.code.should.equal(200)
-				Api.sendChat("soldiers 1000", function(doc){
-					doc.code.should.equal(200)
-					Api.marchToMoonGate("blueDragon", [
-						{
-							name:"swordsman",
-							count:18
-						},
-						{
-							name:"sentinel",
-							count:18
-						},
-						{
-							name:"ranger",
-							count:18
-						}
-					], function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-			})
-		})
-
-		it("marchToMoonGate 正常行军2", function(done){
-			Api.loginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				Api.sendChat("dragonstar blueDragon 1", function(doc){
-					doc.code.should.equal(200)
-					Api.sendChat("soldiers 1000", function(doc){
-						doc.code.should.equal(200)
-						Api.marchToMoonGate("blueDragon", [
-							{
-								name:"swordsman",
-								count:900
-							},
-							{
-								name:"sentinel",
-								count:900
-							},
-							{
-								name:"ranger",
-								count:900
-							}
-						], function(doc){
-							doc.code.should.equal(200)
-							done()
-						})
-					})
-				})
-			})
-		})
+		//it("marchToMoonGate 正常行军2", function(done){
+		//	Api.loginPlayer(Config.deviceId, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.sendChat("dragonstar blueDragon 1", function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.sendChat("soldiers 1000", function(doc){
+		//				doc.code.should.equal(200)
+		//				Api.marchToMoonGate("blueDragon", [
+		//					{
+		//						name:"swordsman",
+		//						count:900
+		//					},
+		//					{
+		//						name:"sentinel",
+		//						count:900
+		//					},
+		//					{
+		//						name:"ranger",
+		//						count:900
+		//					}
+		//				], function(doc){
+		//					doc.code.should.equal(200)
+		//					done()
+		//				})
+		//			})
+		//		})
+		//	})
+		//})
 
 		//it("marchToMoonGate 正常行军3", function(done){
 		//	Api.loginPlayer(Config.deviceId5, function(doc){
@@ -1315,75 +1315,75 @@ describe("AllianceService", function(){
 		//	})
 		//})
 		//
-		var m_allianceData = null
-		it("marchToMoonGate 正常行军4", function(done){
-			Api.loginPlayer(Config.deviceId4, function(doc){
-				doc.code.should.equal(200)
-				Api.getMyAllianceData(function(doc){
-					doc.code.should.equal(200)
-					Api.sendChat("dragonstar redDragon 1", function(doc){
-						doc.code.should.equal(200)
-						Api.sendChat("soldiers 1000", function(doc){
-							doc.code.should.equal(200)
-							Api.marchToMoonGate("redDragon", [
-								{
-									name:"swordsman",
-									count:5
-								},
-								{
-									name:"sentinel",
-									count:5
-								},
-								{
-									name:"ranger",
-									count:5
-								}
-							], function(doc){
-								doc.code.should.equal(200)
-								done()
-							})
-						})
-					})
-				})
-				var onGetAllianceDataSuccess = function(doc){
-					m_allianceData = doc
-					pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-				}
-				pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-			})
-		})
+		//var m_allianceData = null
+		//it("marchToMoonGate 正常行军4", function(done){
+		//	Api.loginPlayer(Config.deviceId4, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.getMyAllianceData(function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.sendChat("dragonstar redDragon 1", function(doc){
+		//				doc.code.should.equal(200)
+		//				Api.sendChat("soldiers 1000", function(doc){
+		//					doc.code.should.equal(200)
+		//					Api.marchToMoonGate("redDragon", [
+		//						{
+		//							name:"swordsman",
+		//							count:5
+		//						},
+		//						{
+		//							name:"sentinel",
+		//							count:5
+		//						},
+		//						{
+		//							name:"ranger",
+		//							count:5
+		//						}
+		//					], function(doc){
+		//						doc.code.should.equal(200)
+		//						done()
+		//					})
+		//				})
+		//			})
+		//		})
+		//		var onGetAllianceDataSuccess = function(doc){
+		//			m_allianceData = doc
+		//			pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//		}
+		//		pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//	})
+		//})
 
-		it("marchToMoonGate 正常行军5", function(done){
-			Api.loginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				Api.joinAllianceDirectly(m_allianceData._id, function(doc){
-					doc.code.should.equal(200)
-					Api.sendChat("dragonstar redDragon 1", function(doc){
-						doc.code.should.equal(200)
-						Api.sendChat("soldiers 1000", function(doc){
-							doc.code.should.equal(200)
-							Api.marchToMoonGate("redDragon", [
-								{
-									name:"swordsman",
-									count:2
-								},
-								{
-									name:"sentinel",
-									count:2
-								},
-								{
-									name:"ranger",
-									count:2
-								}
-							], function(doc){
-								doc.code.should.equal(200)
-								done()
-							})
-						})
-					})
-				})
-			})
-		})
+		//it("marchToMoonGate 正常行军5", function(done){
+		//	Api.loginPlayer(Config.deviceId2, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.joinAllianceDirectly(m_allianceData._id, function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.sendChat("dragonstar redDragon 1", function(doc){
+		//				doc.code.should.equal(200)
+		//				Api.sendChat("soldiers 1000", function(doc){
+		//					doc.code.should.equal(200)
+		//					Api.marchToMoonGate("redDragon", [
+		//						{
+		//							name:"swordsman",
+		//							count:2
+		//						},
+		//						{
+		//							name:"sentinel",
+		//							count:2
+		//						},
+		//						{
+		//							name:"ranger",
+		//							count:2
+		//						}
+		//					], function(doc){
+		//						doc.code.should.equal(200)
+		//						done()
+		//					})
+		//				})
+		//			})
+		//		})
+		//	})
+		//})
 
 		//it("retreatFromMoonGate 玩家没有部队驻扎在月门", function(done){
 		//	Api.retreatFromMoonGate(function(doc){
@@ -1624,51 +1624,51 @@ describe("AllianceService", function(){
 		//	})
 		//})
 
-		it("setDefenceDragon 正常设置", function(done){
-			Api.loginPlayer(Config.deviceId4, function(doc){
-				doc.code.should.equal(200)
-				Api.sendChat("dragonstar greenDragon 1", function(doc){
-					doc.code.should.equal(200)
-					Api.sendChat("soldiers 1", function(doc){
-						doc.code.should.equal(200)
-						Api.setDefenceDragon("greenDragon", function(doc){
-							doc.code.should.equal(200)
-							done()
-						})
-					})
-				})
-			})
-		})
-
-		it("attackPlayerCity", function(done){
-			setTimeout(function(){
-				var m_myAllianceData = null
-				var m_enemyAllianceData = null
-				Api.loginPlayer(Config.deviceId, function(doc){
-					doc.code.should.equal(200)
-					Api.getMyAllianceData(function(doc){
-						doc.code.should.equal(200)
-						Api.getAllianceViewData(m_myAllianceData.moonGateData.enemyAlliance.id, false, function(doc){
-							doc.code.should.equal(200)
-							Api.attackPlayerCity(m_enemyAllianceData.members[0].id, function(doc){
-								doc.code.should.equal(200)
-								done()
-							})
-						})
-						var onGetAllianceViewDataSuccess = function(doc){
-							m_enemyAllianceData = doc
-							pomelo.removeListener("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
-						}
-						pomelo.on("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
-					})
-					var onGetAllianceDataSuccess = function(doc){
-						m_myAllianceData = doc
-						pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-					}
-					pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-				})
-			}, 15 * 1000)
-		})
+		//it("setDefenceDragon 正常设置", function(done){
+		//	Api.loginPlayer(Config.deviceId4, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.sendChat("dragonstar greenDragon 1", function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.sendChat("soldiers 1", function(doc){
+		//				doc.code.should.equal(200)
+		//				Api.setDefenceDragon("greenDragon", function(doc){
+		//					doc.code.should.equal(200)
+		//					done()
+		//				})
+		//			})
+		//		})
+		//	})
+		//})
+		//
+		//it("attackPlayerCity", function(done){
+		//	setTimeout(function(){
+		//		var m_myAllianceData = null
+		//		var m_enemyAllianceData = null
+		//		Api.loginPlayer(Config.deviceId, function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.getMyAllianceData(function(doc){
+		//				doc.code.should.equal(200)
+		//				Api.getAllianceViewData(m_myAllianceData.moonGateData.enemyAlliance.id, false, function(doc){
+		//					doc.code.should.equal(200)
+		//					Api.attackPlayerCity(m_enemyAllianceData.members[0].id, function(doc){
+		//						doc.code.should.equal(200)
+		//						done()
+		//					})
+		//				})
+		//				var onGetAllianceViewDataSuccess = function(doc){
+		//					m_enemyAllianceData = doc
+		//					pomelo.removeListener("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
+		//				}
+		//				pomelo.on("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
+		//			})
+		//			var onGetAllianceDataSuccess = function(doc){
+		//				m_myAllianceData = doc
+		//				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//			}
+		//			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//		})
+		//	}, 15 * 1000)
+		//})
 	})
 
 
