@@ -305,4 +305,12 @@ var FightUtils = require("../app/utils/fightUtils")
 //console.log(rs.c * needPercent)
 //console.log(rs.d * needPercent)
 //
-
+//
+//require('shelljs/global')
+//
+//var getGitVersion = function(){
+//	var commitCount = exec("git rev-list HEAD | wc -l | tr -d ' \\n'", {silent:true}).output
+//	var logVersion = exec("git rev-parse --short HEAD | tr -d ' \\n'", {silent:true}).output
+//	return commitCount + "." + logVersion
+//}
+//console.log(getGitVersion())

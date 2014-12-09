@@ -11,6 +11,7 @@ var Consts = require("../consts/consts")
 var Events = require("../consts/events")
 var Utils = require("../utils/utils")
 var LogicUtils = require("../utils/logicUtils")
+var VersionUtils = require("../utils/versionUtils")
 
 var PushService = function(app){
 	this.app = app
@@ -20,6 +21,7 @@ var PushService = function(app){
 	this.serverType = app.getServerType()
 	this.maxReturnMailSize = 10
 	this.maxReturnReportSize = 10
+	this.serverVersion = VersionUtils.getServerVersion()
 }
 module.exports = PushService
 var pro = PushService.prototype
@@ -122,6 +124,7 @@ pro.onPlayerLoginSuccess = function(playerDoc, callback){
 		unreadMails:unreadMails,
 		unreadReports:unreadReports
 	}
+	data.countInfo.serverVersion = this.serverVersion
 	this.pushToPlayer(playerDoc, Events.player.onPlayerLoginSuccess, data, callback)
 }
 

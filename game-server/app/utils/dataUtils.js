@@ -1638,18 +1638,25 @@ Utils.isAllianceVillageTypeLegal = function(villageType){
  * 获取村落士兵信息
  * @param villageType
  * @param villageLevel
- * @returns {Array}
+ * @returns {*}
  */
-Utils.getAllianceVillageConfigedSoldiers = function(villageType, villageLevel){
+Utils.getAllianceVillageConfigedDragonAndSoldiers = function(villageType, villageLevel){
 	var soldiers = []
 	var config = AllianceVillageConfig[villageType][villageLevel]
 	var soldierConfigs = config.soldiers.split(",")
+	var dragonConfig = soldierConfigs.shift()
+	var dragonParams = dragonConfig.split("_")
+	console.log(dragonParams)
+	var dragon = {
+		type:dragonParams[0],
+		star:parseInt(dragonParams[1]),
+		level:parseInt(dragonParams[2])
+	}
 	_.each(soldierConfigs, function(soldierConfig){
-		var params = soldierConfig.split(":")
-		var params2 = params[0].split("_")
-		var soldierName = params2[0]
-		var soldierStar = parseInt(params2[1])
-		var soldierCount = parseInt(params[1])
+		var params = soldierConfig.split("_")
+		var soldierName = params[0]
+		var soldierStar = parseInt(params[1])
+		var soldierCount = parseInt(params[2])
 		var soldierCountMax = Math.round(soldierCount * 1.2)
 		var soldierCountMin = Math.round(soldierCount * 0.8)
 		soldierCount = soldierCountMin + ((Math.random() * (soldierCountMax - soldierCountMin)) << 0)
@@ -1660,7 +1667,7 @@ Utils.getAllianceVillageConfigedSoldiers = function(villageType, villageLevel){
 		}
 		soldiers.push(soldier)
 	})
-	return soldiers
+	return {dragon:dragon, soldiers:soldiers}
 }
 
 Utils.getAllianceVillageProduction = function(villageType, villageLevel){
@@ -1692,12 +1699,14 @@ Utils.createMapVillages = function(mapObjects){
 		return _.isEqual(config.category, "village")
 	})
 	_.each(villageObjects, function(villageObject){
+		var dragonAndSoldiers = self.getAllianceVillageConfigedDragonAndSoldiers(villageObject.type, 1)
 		var village = {
 			id:ShortId.generate(),
 			type:villageObject.type,
 			level:1,
 			resource:self.getAllianceVillageProduction(villageObject.type, 1),
-			soldiers:self.getAllianceVillageConfigedSoldiers(villageObject.type, 1),
+			dragon:dragonAndSoldiers.dragon,
+			soldiers:dragonAndSoldiers.soldiers,
 			location:villageObject.location
 		}
 		villages.push(village)

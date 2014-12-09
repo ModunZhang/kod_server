@@ -14,10 +14,8 @@ var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-er
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 var loginFilter = require("./app/utils/loginFilter")
 var commandDir = path.resolve("./app/commands")
-
 var app = pomelo.createApp()
 app.set("name", "KODServer")
-
 
 app.configure("production|development", "gate", function(){
 	app.set("connectorConfig", {

@@ -1,25 +1,25 @@
 {
-	"name":"KOD",
-	"version":"0.0.1",
-	"private":true,
-	"dependencies":{
-		"pomelo":"1.1.3",
-		"mongoose":"3.8.19",
-		"bluebird":"2.3.11",
-		"underscore":"1.7.0",
-		"redis":"0.12.1",
-		"pomelo-globalchannel-plugin":"0.0.7",
-		"crc":"3.2.1",
-		"nodemailer":"0.7",
-		"redis-scripto":"0.1.3",
-		"sprintf":"0.1.4",
-		"shortid":"2.1.3"
-	},
-	"devDependencies":{
-		"should":">=0.0.1",
-		"mocha":">=0.0.1",
-		"ws":">=0.0.1",
-		"pomelo-protocol":">=0.0.1",
-		"pomelo-protobuf":">=0.0.1"
-	}
+  "name": "KOD",
+  "private": true,
+  "dependencies": {
+    "pomelo": "1.1.3",
+    "mongoose": "3.8.19",
+    "bluebird": "2.3.11",
+    "underscore": "1.7.0",
+    "redis": "0.12.1",
+    "pomelo-globalchannel-plugin": "0.0.7",
+    "crc": "3.2.1",
+    "nodemailer": "0.7",
+    "redis-scripto": "0.1.3",
+    "sprintf": "0.1.4",
+    "shortid": "2.1.3",
+    "shelljs": "0.3.0"
+  },
+  "devDependencies": {
+    "should": ">=0.0.1",
+    "mocha": ">=0.0.1",
+    "ws": ">=0.0.1",
+    "pomelo-protocol": ">=0.0.1",
+    "pomelo-protobuf": ">=0.0.1"
+  }
 }
