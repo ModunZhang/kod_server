@@ -5052,7 +5052,7 @@ pro.attackPlayerCity = function(playerId, enemyPlayerId, callback){
 			type:Consts.DataChangedType.Add,
 			data:event
 		}]
-		enemyAllianceData.cityBeAttackedMarchEvents = [{
+		enemyAllianceData.__cityBeAttackedMarchEvents = [{
 			type:Consts.DataChangedType.Add,
 			data:event
 		}]
