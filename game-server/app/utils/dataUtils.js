@@ -1895,7 +1895,6 @@ Utils.createDragonForFight = function(playerDoc, dragonType){
 		maxHp:this.getPlayerDragonHpMax(playerDoc, playerDoc.dragons[dragonType]),
 		totalHp:playerDoc.dragons[dragonType].hp,
 		currentHp:playerDoc.dragons[dragonType].hp,
-		level:playerDoc.dragons[dragonType].level,
 		isWin:false
 	}
 	return dragon
@@ -1937,21 +1936,42 @@ Utils.createWallForFight = function(playerDoc){
 	return wall
 }
 
+/**
+ * 获取圣地部队信息
+ * @param stageName
+ * @returns {Array}
+ */
 Utils.getAllianceShrineStageTroops = function(stageName){
 	var troops = []
 	var troopStrings = AllianceShrineConfig[stageName].troops.split("&")
 	for(var i = 0; i < troopStrings.length; i++){
 		var troopString = troopStrings[i]
-		var soldiers = []
 		var soldierConfigStrings = troopString.split(",")
+		var dragonConfig = soldierConfigStrings.shift()
+		var dragonParams = dragonConfig.split("_")
+		var dragon = {
+			type:dragonParams[0],
+			star:parseInt(dragonParams[1]),
+			level:parseInt(dragonParams[2])
+		}
+		var dragonHp = this.getPlayerDragonHpMax(null, dragon)
+		var dragonForFight = {
+			type:dragonParams[0],
+			strength:this.getDragonStrength(null, dragon),
+			vitality:this.getDragonVitality(null, dragon),
+			maxHp:dragonHp,
+			totalHp:dragonHp,
+			currentHp:dragonHp,
+			isWin:false
+		}
+		var soldiersForFight = []
 		_.each(soldierConfigStrings, function(soldierConfigString){
-			var params = soldierConfigString.split(":")
-			var params2 = params[0].split("_")
-			var soldierName = params2[0]
-			var soldierStar = parseInt(params2[1])
-			var soldierCount = parseInt(params[1])
+			var params = soldierConfigString.split("_")
+			var soldierName = params[0]
+			var soldierStar = parseInt(params[1])
+			var soldierCount = parseInt(params[2])
 			var unitConfig = UnitConfig.normal[soldierName + "_" + soldierStar]
-			var soldier = {
+			var soldierForFight = {
 				name:soldierName,
 				star:unitConfig.star,
 				type:unitConfig.type,
@@ -1973,15 +1993,30 @@ Utils.getAllianceShrineStageTroops = function(stageName){
 				},
 				killedSoldiers:[]
 			}
-			soldiers.push(soldier)
+			soldiersForFight.push(soldierForFight)
 		})
 		troops.push({
 			stageName:stageName,
 			troopNumber:i + 1,
-			soldiers:soldiers
+			dragonForFight:dragonForFight,
+			soldiersForFight:soldiersForFight
 		})
 	}
+	_.each(troops, function(troop){
+		_.sortBy(troop.soldiersForFight, function(soldier){
+			return - soldier.power * soldier.count
+		})
+	})
 
+	var getSoldiersTotalPower = function(soldiers){
+		var totalPower = 0
+		_.each(soldiers, function(soldier){
+			totalPower += soldier.power * soldier.count
+		})
+	}
+	troops = _.sortBy(troops, function(troop){
+		return - getSoldiersTotalPower(troop.soldiersForFight)
+	})
 	return troops
 }
 

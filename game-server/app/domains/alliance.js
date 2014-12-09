@@ -134,7 +134,9 @@ var allianceSchema = new Schema({
 			}
 		],
 		dragon:{
-
+			type:{type:String, required:true},
+			star:{type:Number, required:true},
+			level:{type:Number, require:true}
 		},
 		location:{
 			x:{type:Number, required:true},

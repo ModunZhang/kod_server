@@ -538,11 +538,8 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 		playerTroopsForFight = _.sortBy(playerTroopsForFight, function(playerTroopForFight){
 			return - getTotalPower(playerTroopForFight.soldiers)
 		})
-		var stageTroops = DataUtils.getAllianceShrineStageTroops(event.stageName)
-		stageTroops = _.sortBy(stageTroops, function(soldier){
-			return -(soldier.power * soldier.totalCount)
-		})
 
+		var stageTroops = DataUtils.getAllianceShrineStageTroops(event.stageName)
 		var playerAvgPower = LogicUtils.getPlayerTroopsAvgPower(playerTroopsForFight)
 		var currentRound = 1
 		var playerSuccessedTroops = []
