@@ -824,6 +824,87 @@ var allianceSchema = new Schema({
 			allianceName:{type:String, required:true},
 			allianceTag:{type:String, required:true}
 		}
+	}],
+	villageMarchEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true},
+		playerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			soldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}]
+		}
+	}],
+	villageMarchReturnEvents:[{
+		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		arriveTime:{type:Number, required:true},
+		playerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			leftSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			treatSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			rewards:[{
+				_id:false,
+				type:{type:String, required:true},
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			kill:{type:Number, required:true}
+		}
+	}],
+	villageEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		villageId:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		finishTime:{type:Number, required:true},
+		playerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true},
+			dragon:{
+				type:{type:String, required:true}
+			},
+			soldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			treatSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			rewards:[{
+				_id:false,
+				type:{type:String, required:true},
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			kill:{type:Number, required:true}
+		}
 	}]
 })
 
