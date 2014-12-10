@@ -5102,8 +5102,6 @@ pro.attackPlayerCity = function(playerId, enemyPlayerId, callback){
 	})
 }
 
-
-
 /**
  * 到达指定时间时,触发的消息
  * @param allianceId
