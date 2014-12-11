@@ -227,7 +227,21 @@ var allianceSchema = new Schema({
 				playerName:{type:String, required:true},
 				stageTroopNumber:{type:String, required:true},
 				fightResult:{type:String, required:true},
-				attackRoundDatas:[{
+				attackDragonFightData:{
+					type:{type:String, required:true},
+					hpMax:{type:Number, required:true},
+					hp:{type:Number, required:true},
+					hpDecreased:{type:Number, required:true},
+					isWin:{type:Boolean, required:true}
+				},
+				defenceDragonFightData:{
+					type:{type:String, required:true},
+					hpMax:{type:Number, required:true},
+					hp:{type:Number, required:true},
+					hpDecreased:{type:Number, required:true},
+					isWin:{type:Boolean, required:true}
+				},
+				attackSoldierRoundDatas:[{
 					_id:false,
 					soldierName:{type:String, required:true},
 					soldierStar:{type:Number, required:true},
@@ -238,7 +252,7 @@ var allianceSchema = new Schema({
 					moraleDecreased:{type:Number, required:true},
 					isWin:{type:Boolean, required:true}
 				}],
-				defenceRoundDatas:[{
+				defenceSoldierRoundDatas:[{
 					_id:false,
 					soldierName:{type:String, required:true},
 					soldierStar:{type:Number, required:true},

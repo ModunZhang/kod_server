@@ -1501,6 +1501,13 @@ describe("PlayerService", function(){
 				})
 			})
 		})
+
+		it("cancelDefenceDragon 正常取消", function(done){
+			Api.cancelDefenceDragon(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
 	})
 
 

@@ -27,6 +27,7 @@ var AllianceTimeEventService = function(app){
 	this.env = app.get("env")
 	this.pushService = app.get("pushService")
 	this.globalChannelService = app.get("globalChannelService")
+	this.timeEventService = app.get("timeEventService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
 }
@@ -166,7 +167,6 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 }
 
 
-
 /**
  * 联盟圣地行军事件回调
  * @param allianceDoc
@@ -197,7 +197,7 @@ pro.onShrineMarchEvents = function(allianceDoc, event, callback){
 				data:marchReturnEvent
 			}]
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
-			eventFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "shrineMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "shrineMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 			return Promise.resolve()
 		}).then(function(){
@@ -314,7 +314,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 	var playerDocs = {}
 	var playerTroopsForFight = []
 	var funcs = []
-	var findPlayerDocFunc = function(playerId){
+	var findPlayerDoc = function(playerId){
 		return self.playerDao.findByIdAsync(playerId, true).then(function(doc){
 			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 			playerDocs[doc._id] = doc
@@ -328,44 +328,62 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 		})
 		return power
 	}
+	var createDragonFightData = function(dragonAfterFight){
+		var data = {
+			type:dragonAfterFight.type,
+			hpMax:dragonAfterFight.maxHp,
+			hp:dragonAfterFight.totalHp,
+			hpDecreased:dragonAfterFight.totalHp - dragonAfterFight.currentHp,
+			isWin:dragonAfterFight.isWin
+		}
+		return data
+	}
 	_.each(event.playerTroops, function(playerTroop){
-		funcs.push(findPlayerDocFunc(playerTroop.id))
+		funcs.push(findPlayerDoc(playerTroop.id))
 	})
 	Promise.all(funcs).then(function(){
 		_.each(event.playerTroops, function(playerTroop){
 			var playerDoc = playerDocs[playerTroop.id]
+			var dragonForFight = DataUtils.createDragonForFight(playerDoc, playerTroop.dragon.type)
 			var soldiersForFight = DataUtils.createSoldiersForFight(playerDoc, playerTroop.soldiers)
 			var playerTroopForFight = {
 				id:playerTroop.id,
 				name:playerTroop.name,
-				soldiers:soldiersForFight
+				dragonForFight:dragonForFight,
+				soldiersForFight:soldiersForFight,
+				treatSoldierPercent:DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(playerDocs[playerTroop.id])
 			}
 			playerTroopsForFight.push(playerTroopForFight)
 		})
 		playerTroopsForFight = _.sortBy(playerTroopsForFight, function(playerTroopForFight){
-			return - getTotalPower(playerTroopForFight.soldiers)
+			return -getTotalPower(playerTroopForFight.soldiersForFight)
 		})
 
-		var stageTroops = DataUtils.getAllianceShrineStageTroops(event.stageName)
+		var stageTroopsForFight = DataUtils.getAllianceShrineStageTroops(event.stageName)
 		var playerAvgPower = LogicUtils.getPlayerTroopsAvgPower(playerTroopsForFight)
 		var currentRound = 1
 		var playerSuccessedTroops = []
 		var stageSuccessedTroops = []
 		var fightDatas = []
-		while(playerTroopsForFight.length > 0 && stageTroops.length > 0){
+		while(playerTroopsForFight.length > 0 && stageTroopsForFight.length > 0){
 			var playerTroopForFight = playerTroopsForFight[0]
-			var stageTroop = stageTroops[0]
-			var treatSoldierPercent = DataUtils.getPlayerDamagedSoldierToTreatSoldierPercent(playerDocs[playerTroopForFight.id])
-			var fightData = FightUtils.soldierToSoldierFight(playerTroopForFight.soldiers, treatSoldierPercent, stageTroop.soldiers, 0)
-			if(_.isEqual(fightData.fightResult, Consts.FightResult.AttackWin)){
+			var stageTroopForFight = stageTroopsForFight[0]
+			var dragonFightFixedEffect = DataUtils.getDragonFightFixedEffect(playerTroopForFight.soldiersForFight, stageTroopForFight.soldiersForFight)
+			var dragonFightData = FightUtils.dragonToDragonFight(playerTroopForFight.dragonForFight, stageTroopForFight.dragonForFight, dragonFightFixedEffect)
+			var soldierFightData = FightUtils.soldierToSoldierFight(playerTroopForFight.soldiersForFight, playerTroopForFight.treatSoldierPercent, stageTroopForFight.soldiersForFight, 0)
+			if(_.isEqual(soldierFightData.fightResult, Consts.FightResult.AttackWin)){
 				playerSuccessedTroops.push(playerTroopForFight)
 			}else{
-				stageSuccessedTroops.push(stageTroop)
+				stageSuccessedTroops.push(stageTroopForFight)
 			}
 			LogicUtils.removeItemInArray(playerTroopsForFight, playerTroopForFight)
-			LogicUtils.removeItemInArray(stageTroops, stageTroop)
-			LogicUtils.resetFightSoldiersByFightResult(playerTroopForFight.soldiers, fightData.attackRoundDatas)
-			LogicUtils.resetFightSoldiersByFightResult(stageTroop.soldiers, fightData.defenceRoundDatas)
+			LogicUtils.removeItemInArray(stageTroopsForFight, stageTroopForFight)
+			LogicUtils.resetFightSoldiersByFightResult(playerTroopForFight.soldiersForFight, soldierFightData.attackRoundDatas)
+			LogicUtils.resetFightSoldiersByFightResult(stageTroopForFight.soldiersForFight, soldierFightData.defenceRoundDatas)
+			playerTroopForFight.dragonForFight.totalHp = dragonFightData.attackDragonAfterFight.currentHp
+			playerTroopForFight.dragonForFight.currentHp = dragonFightData.attackDragonAfterFight.currentHp
+			stageTroopForFight.dragonForFight.totalHp = dragonFightData.defenceDragonAfterFight.currentHp
+			stageTroopForFight.dragonForFight.currentHp = dragonFightData.defenceDragonAfterFight.currentHp
 
 			var currentFightData = null
 			if(fightDatas.length < currentRound){
@@ -380,22 +398,24 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			currentRoundDatas.push({
 				playerId:playerTroopForFight.id,
 				playerName:playerTroopForFight.name,
-				stageTroopNumber:stageTroop.troopNumber,
-				fightResult:fightData.fightResult,
-				attackRoundDatas:fightData.attackRoundDatas,
-				defenceRoundDatas:fightData.defenceRoundDatas
+				stageTroopNumber:stageTroopForFight.troopNumber,
+				fightResult:soldierFightData.fightResult,
+				attackDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
+				defenceDragonFightData:createDragonFightData(dragonFightData.defenceDragonAfterFight),
+				attackSoldierRoundDatas:soldierFightData.attackRoundDatas,
+				defenceSoldierRoundDatas:soldierFightData.defenceRoundDatas
 			})
 
-			if((playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0) || (stageTroops.length == 0 && stageSuccessedTroops.length > 0)){
+			if((playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0) || (stageTroopsForFight.length == 0 && stageSuccessedTroops.length > 0)){
 				if(playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0){
 					_.each(playerSuccessedTroops, function(troop){
-						playerTroopsForFight.push(troop)
+						if(troop.dragonForFight.maxHp > 0) playerTroopsForFight.push(troop)
 					})
 					LogicUtils.clearArray(playerSuccessedTroops)
 				}
-				if(stageTroops.length == 0 && stageSuccessedTroops.length > 0){
+				if(stageTroopsForFight.length == 0 && stageSuccessedTroops.length > 0){
 					_.each(stageSuccessedTroops, function(troop){
-						stageTroops.push(troop)
+						if(troop.dragonForFight.maxHp > 0) stageTroopsForFight.push(troop)
 					})
 					LogicUtils.clearArray(stageSuccessedTroops)
 				}
@@ -452,11 +472,22 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 				data:stageData
 			}]
 		}
+		var getLeftSoldiers = function(soldiers, damagedSoldiers){
+			var leftSoldiers = []
+			_.each(soldiers, function(soldier){
+				var damagedSoldier = _.find(damagedSoldiers, function(damagedSoldier){
+					return _.isEqual(soldier.name, damagedSoldier.name)
+				})
+				if(_.isObject(damagedSoldier)) soldier.count -= damagedSoldier.count
+				if(soldier.count > 0) leftSoldiers.push(soldier)
+			})
+			return leftSoldiers
+		}
 		_.each(event.playerTroops, function(playerTroop){
 			var playerId = playerTroop.id
 			var playerDoc = playerDocs[playerId]
 			var treatSoldiers = _.isObject(params.treatSoldiers[playerId]) ? params.treatSoldiers[playerId] : []
-			var leftSoldiers = _.isObject(params.leftSoldiers[playerId]) ? params.leftSoldiers[playerId] : []
+			var leftSoldiers = _.isObject(params.damagedSoldiers[playerId]) ? getLeftSoldiers(playerTroop.soldiers, params.damagedSoldiers[playerId]) : playerTroop.soldiers
 			var rewards = _.isObject(params.playerRewards[playerId]) ? params.playerRewards[playerId] : []
 			var kill = _.isNumber(params.playerKills[playerId]) ? params.playerKills[playerId] : 0
 			var dragon = LogicUtils.getPlayerDragonDataFromAllianceShrineStageEvent(playerId, event)
@@ -467,7 +498,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 				data:marchReturnEvent
 			}]
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
-			eventFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "shrineMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "shrineMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
 		})
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
@@ -517,7 +548,7 @@ pro.onMoonGateMarchEvents = function(ourAllianceDoc, event, callback){
 				data:marchReturnEvent
 			}]
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
-			eventFuncs.push([self, self.addAllianceTimeEventAsync, ourAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, ourAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, ourAllianceDoc, ourAllianceData])
 			return Promise.resolve()
 		}).then(function(){
@@ -912,7 +943,7 @@ pro.onAttackCityMarchEvents = function(allianceDoc, event, callback){
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
 
 		attackCityMarchReturnEvent = DataUtils.createAttackPlayerCityMarchReturnEvent(allianceDoc, playerDoc, defenceAllianceDoc, defencePlayerDoc, attackDragonForFight, attackSoldiersForFight, attackCityReport.attackPlayerData.rewards)
-		eventFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "attackCityMarchReturnEvents", attackCityMarchReturnEvent.id, attackCityMarchReturnEvent.arriveTime])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackCityMarchReturnEvents", attackCityMarchReturnEvent.id, attackCityMarchReturnEvent.arriveTime])
 		allianceDoc.attackCityMarchReturnEvents.push(attackCityMarchReturnEvent)
 		allianceData.__attackCityMarchReturnEvents = [{
 			type:Consts.DataChangedType.Add,
@@ -925,7 +956,7 @@ pro.onAttackCityMarchEvents = function(allianceDoc, event, callback){
 		}]
 		if(_.isObject(helpDefencePlayerDoc)){
 			helpDefenceMarchReturnEvent = DataUtils.createHelpDefenceMarchReturnEvent(defenceAllianceDoc, helpDefencePlayerDoc, defencePlayerDoc, helpDefenceDragonForFight, helpDefenceSoldiersForFight)
-			eventFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "helpDefenceMarchReturnEvents", helpDefenceMarchReturnEvent.id, helpDefenceMarchReturnEvent.arriveTime])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "helpDefenceMarchReturnEvents", helpDefenceMarchReturnEvent.id, helpDefenceMarchReturnEvent.arriveTime])
 			defenceAllianceDoc.helpDefenceMarchReturnEvents.push(helpDefenceMarchReturnEvent)
 			defenceAllianceData.__helpDefenceMarchReturnEvents = [{
 				type:Consts.DataChangedType.Add,
@@ -1075,7 +1106,7 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc, cal
 	attackAllianceData.moonGateData = {}
 	defenceAllianceData.moonGateData = {}
 	var nextFightTime = Date.now() + DataUtils.getAllianceFightSecondsPerFight()
-	eventFuncs.push([self, self.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, nextFightTime])
+	eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, nextFightTime])
 	attackAllianceDoc.moonGateData.currentFightTroops.nextFightTime = nextFightTime
 	defenceAllianceDoc.moonGateData.currentFightTroops.nextFightTime = nextFightTime
 	MoveAllianceTroopToCurrentFightTroops.call(this, attackAllianceDoc, attackAllianceData, defenceAllianceDoc, defenceAllianceData)
@@ -1106,7 +1137,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 	defenceAllianceData.moonGateData = {}
 
 	var nextFightTime = Date.now() + DataUtils.getAllianceFightSecondsPerFight()
-	eventFuncs.push([self, self.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, nextFightTime])
+	eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, nextFightTime])
 	attackAllianceDoc.moonGateData.currentFightTroops.nextFightTime = nextFightTime
 	defenceAllianceDoc.moonGateData.currentFightTroops.nextFightTime = nextFightTime
 
@@ -1296,7 +1327,7 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 						type:Consts.DataChangedType.Add,
 						data:marchReturnEvent
 					}]
-					eventFuncs.push([self, self.addAllianceTimeEventAsync, attackAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+					eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
 				}else{
 					defenceTroop = attackAllianceDoc.moonGateData.currentFightTroops.enemy
 					treatSoldiers = defenceTroop.treatSoldiers
@@ -1310,7 +1341,7 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 						type:Consts.DataChangedType.Add,
 						data:marchReturnEvent
 					}]
-					eventFuncs.push([self, self.addAllianceTimeEventAsync, defenceAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+					eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
 				}
 
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
@@ -1359,7 +1390,7 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 						type:Consts.DataChangedType.Add,
 						data:marchReturnEvent
 					}]
-					eventFuncs.push([self, self.addAllianceTimeEventAsync, attackAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+					eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
 					return Promise.resolve()
 				})
 			}else if(_.isObject(attackAllianceDoc.moonGateData.currentFightTroops.enemy)){
@@ -1401,7 +1432,7 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 						type:Consts.DataChangedType.Add,
 						data:marchReturnEvent
 					}]
-					eventFuncs.push([self, self.addAllianceTimeEventAsync, defenceAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+					eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
 					return Promise.resolve()
 				})
 			}else{
@@ -1426,7 +1457,7 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 					data:marchReturnEvent
 				}]
 				updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
-				eventFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
 				return Promise.resolve()
 			})
 		}
@@ -1525,8 +1556,8 @@ pro.onAllianceFightFightFinished = function(attackAllianceDoc, defenceAllianceDo
 		attackAllianceData.countInfo = attackAllianceDoc.countInfo
 		defenceAllianceData.countInfo = defenceAllianceDoc.countInfo
 
-		eventFuncs.push([self, self.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime])
-		eventFuncs.push([self, self.addAllianceTimeEventAsync, defenceAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, defenceAllianceDoc.basicInfo.statusFinishTime])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, defenceAllianceDoc.basicInfo.statusFinishTime])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc, true])
@@ -1918,7 +1949,7 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 			type:Consts.DataChangedType.Add,
 			data:marchReturnEvent
 		}]
-		eventFuncs.push([self, self.addAllianceTimeEventAsync, defenceAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
 
 		attackAllianceDoc.moonGateData.currentFightTroops.enemy = null
 		defenceAllianceDoc.moonGateData.currentFightTroops.our = null
@@ -1935,7 +1966,7 @@ var AllianceTroopFight = function(attackAllianceDoc, attackAllianceData, attackP
 			type:Consts.DataChangedType.Add,
 			data:marchReturnEvent
 		}]
-		eventFuncs.push([self, self.addAllianceTimeEventAsync, attackAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "moonGateMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
 
 		attackAllianceDoc.moonGateData.currentFightTroops.our = null
 		defenceAllianceDoc.moonGateData.currentFightTroops.enemy = null

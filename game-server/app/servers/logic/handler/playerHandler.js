@@ -649,3 +649,17 @@ pro.setDefenceDragon = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 取消驻防
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.cancelDefenceDragon = function(msg, session, next){
+	this.playerApiService3.cancelDefenceDragonAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

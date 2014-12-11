@@ -363,6 +363,11 @@ Api.setDefenceDragon = function(dragonType, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.cancelDefenceDragon = function(callback){
+	var route = "logic.playerHandler.cancelDefenceDragon"
+	pomelo.request(route, null, callback)
+}
+
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {
 		name:name, tag:tag, language:language, terrain:terrain, flag:flag

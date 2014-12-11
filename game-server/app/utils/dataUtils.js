@@ -1963,11 +1963,13 @@ Utils.getAllianceShrineStageTroops = function(stageName){
 			star:parseInt(dragonParams[1]),
 			level:parseInt(dragonParams[2])
 		}
+		var dragonVitality = this.getDragonVitality(null, dragon)
+		dragon.vitality = dragonVitality
 		var dragonHp = this.getPlayerDragonHpMax(null, dragon)
 		var dragonForFight = {
 			type:dragonParams[0],
 			strength:this.getDragonStrength(null, dragon),
-			vitality:this.getDragonVitality(null, dragon),
+			vitality:dragonVitality,
 			maxHp:dragonHp,
 			totalHp:dragonHp,
 			currentHp:dragonHp,
@@ -2046,9 +2048,10 @@ Utils.getPlayerDamagedSoldierToTreatSoldierPercent = function(playerDoc){
  * @returns {*}
  */
 Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas){
+	var self = this
 	var playerDatas = {}
 	var treatSoldiers = {}
-	var leftSoldiers = {}
+	var damagedSoldiers = {}
 	var playerRewards = {}
 	var playerKills = {}
 	var fightStar = 0
@@ -2063,33 +2066,40 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 					rewards:[]
 				}
 				treatSoldiers[roundData.playerId] = {}
-				leftSoldiers[roundData.playerId] = {}
+				damagedSoldiers[roundData.playerId] = {}
 				playerKills[roundData.playerId] = 0
 			}
 			var playerData = playerDatas[roundData.playerId]
-			_.each(roundData.defenceRoundDatas, function(defenceRoundData){
-				var soldierConfig = UnitConfig.normal[defenceRoundData.soldierName + "_" + defenceRoundData.soldierStar]
-				var kill = defenceRoundData.soldierDamagedCount * soldierConfig.citizen
+			_.each(roundData.defenceSoldierRoundDatas, function(defenceSoldierRoundData){
+				var soldierConfig = UnitConfig.normal[defenceSoldierRoundData.soldierName + "_" + defenceSoldierRoundData.soldierStar]
+				var kill = defenceSoldierRoundData.soldierDamagedCount * soldierConfig.citizen
 				playerData.kill += kill
 				playerKills[roundData.playerId] += kill
 			})
-			_.each(roundData.attackRoundDatas, function(attackRoundData){
-				var soldierConfig = UnitConfig.normal[attackRoundData.soldierName + "_" + attackRoundData.soldierStar]
-				totalDeath += attackRoundData.soldierDamagedCount * soldierConfig.citizen
-				if(!_.isObject(treatSoldiers[roundData.playerId][attackRoundData.soldierName])){
-					treatSoldiers[roundData.playerId][attackRoundData.soldierName] = {
-						name:attackRoundData.soldierName,
+			_.each(roundData.attackSoldierRoundDatas, function(attackSoldierRoundData){
+				var soldierConfig = function(){
+					if(self.hasNormalSoldier(attackSoldierRoundData.soldierName)){
+						soldierConfig = UnitConfig.normal[attackSoldierRoundData.soldierName + "_" + attackSoldierRoundData.soldierStar]
+					}else{
+						soldierConfig = UnitConfig.special[attackSoldierRoundData.soldierName]
+					}
+					return soldierConfig
+				}()
+				totalDeath += attackSoldierRoundData.soldierDamagedCount * soldierConfig.citizen
+				if(!_.isObject(treatSoldiers[roundData.playerId][attackSoldierRoundData.soldierName])){
+					treatSoldiers[roundData.playerId][attackSoldierRoundData.soldierName] = {
+						name:attackSoldierRoundData.soldierName,
 						count:0
 					}
-					leftSoldiers[roundData.playerId][attackRoundData.soldierName] = {
-						name:attackRoundData.soldierName,
-						count:attackRoundData.soldierCount
+					damagedSoldiers[roundData.playerId][attackSoldierRoundData.soldierName] = {
+						name:attackSoldierRoundData.soldierName,
+						count:0
 					}
 				}
-				var treatSoldier = treatSoldiers[roundData.playerId][attackRoundData.soldierName]
-				treatSoldier.count += attackRoundData.soldierTreatedCount
-				var leftSoldier = leftSoldiers[roundData.playerId][attackRoundData.soldierName]
-				leftSoldier.count -= attackRoundData.soldierDamagedCount
+				var treatSoldier = treatSoldiers[roundData.playerId][attackSoldierRoundData.soldierName]
+				treatSoldier.count += attackSoldierRoundData.soldierTreatedCount
+				var damagedSoldier = damagedSoldiers[roundData.playerId][attackSoldierRoundData.soldierName]
+				damagedSoldier.count += attackSoldierRoundData.soldierDamagedCount
 			})
 		})
 	})
@@ -2154,8 +2164,9 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 	playerDatas.sort(function(a, b){
 		return b.kill - a.kill
 	})
-	_.each(leftSoldiers, function(leftSoldier, playerId){
-		leftSoldiers[playerId] = _.values(leftSoldier)
+
+	_.each(damagedSoldiers, function(damagedSoldier, playerId){
+		damagedSoldiers[playerId] = _.values(damagedSoldier)
 	})
 	_.each(treatSoldiers, function(treatSoldier, playerId){
 		treatSoldiers[playerId] = _.values(treatSoldier)
@@ -2163,7 +2174,7 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 	var params = {
 		playerDatas:playerDatas,
 		fightStar:fightStar,
-		leftSoldiers:leftSoldiers,
+		damagedSoldiers:damagedSoldiers,
 		treatSoldiers:treatSoldiers,
 		playerRewards:playerRewards,
 		playerKills:playerKills

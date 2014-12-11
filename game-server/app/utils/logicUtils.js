@@ -1630,19 +1630,18 @@ Utils.createAllianceHelpFightMarchReturnEvent = function(playerDoc, helpedPlayer
 
 /**
  * 重置玩家部队战斗数据
- * @param soldiers
+ * @param soldiersForFight
  * @param fightRoundData
  */
-Utils.resetFightSoldiersByFightResult = function(soldiers, fightRoundData){
+Utils.resetFightSoldiersByFightResult = function(soldiersForFight, fightRoundData){
+	var soldiersWillRemoved = []
 	_.each(fightRoundData, function(fightResult){
-		for(var i = 0; i < soldiers.length; i++){
-			var soldier = soldiers[i]
-			if(_.isEqual(soldier.name, fightResult.soldierName)){
-				soldier.totalCount -= fightResult.solderDamagedCount
-				soldier.currentCount = soldier.totalCount
-				soldier.morale = 100
-			}
-		}
+		var soldierForFight = _.find(soldiersForFight, function(soldierForFight){
+			return _.isEqual(soldierForFight.name, fightResult.soldierName)
+		})
+		soldierForFight.totalCount -= fightResult.solderDamagedCount
+		soldierForFight.currentCount = soldierForFight.totalCount
+		soldierForFight.morale = 100
 	})
 }
 
@@ -1800,17 +1799,17 @@ Utils.getAllianceShrineStageData = function(allianceDoc, stageName){
 
 /**
  * 获取所有部队平均战斗力
- * @param playerTroops
+ * @param playerTroopsForFight
  * @returns {number}
  */
-Utils.getPlayerTroopsAvgPower = function(playerTroops){
+Utils.getPlayerTroopsAvgPower = function(playerTroopsForFight){
 	var totalPower = 0
-	_.each(playerTroops, function(playerTroop){
-		_.each(playerTroop.soldiers, function(soldier){
-			totalPower += soldier.power * soldier.totalCount
+	_.each(playerTroopsForFight, function(playerTroopForFight){
+		_.each(playerTroopForFight.soldiersForFight, function(soldierForFight){
+			totalPower += soldierForFight.power * soldierForFight.totalCount
 		})
 	})
-	var avgPower = playerTroops.length > 0 ? Math.floor(totalPower / playerTroops.length) : 0
+	var avgPower = playerTroopsForFight.length > 0 ? Math.floor(totalPower / playerTroopsForFight.length) : 0
 	return avgPower
 }
 
