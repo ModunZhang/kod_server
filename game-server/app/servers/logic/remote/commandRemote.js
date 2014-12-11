@@ -25,7 +25,6 @@ var CommandRemote = function(app){
 	this.scripto = app.get("scripto")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
-	this.playerService = app.get("playerService")
 	this.pushService = app.get("pushService")
 	this.sessionService = app.get("backendSessionService")
 	this.timeEventService = app.get("timeEventService")

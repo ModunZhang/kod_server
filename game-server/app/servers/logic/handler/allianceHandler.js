@@ -13,7 +13,10 @@ module.exports = function(app){
 
 var Handler = function(app){
 	this.app = app
-	this.allianceService = app.get("allianceService")
+	this.allianceApiService = app.get("allianceApiService")
+	this.allianceApiService2 = app.get("allianceApiService2")
+	this.allianceApiService3 = app.get("allianceApiService3")
+	this.allianceApiService4 = app.get("allianceApiService4")
 }
 var pro = Handler.prototype
 
@@ -29,7 +32,7 @@ pro.createAlliance = function(msg, session, next){
 	var language = msg.language
 	var terrain = msg.terrain
 	var flag = msg.flag
-	this.allianceService.createAllianceAsync(session.uid, name, tag, language, terrain, flag).then(function(){
+	this.allianceApiService.createAllianceAsync(session.uid, name, tag, language, terrain, flag).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -45,13 +48,12 @@ pro.createAlliance = function(msg, session, next){
 pro.sendAllianceMail = function(msg, session, next){
 	var title = msg.title
 	var content = msg.content
-	this.allianceService.sendAllianceMailAsync(session.uid, title, content).then(function(){
+	this.allianceApiService.sendAllianceMailAsync(session.uid, title, content).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
 	})
 }
-
 
 /**
  * 主动获取玩家联盟的信息
@@ -60,7 +62,7 @@ pro.sendAllianceMail = function(msg, session, next){
  * @param next
  */
 pro.getMyAllianceData = function(msg, session, next){
-	this.allianceService.getMyAllianceDataAsync(session.uid).then(function(){
+	this.allianceApiService.getMyAllianceDataAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -74,7 +76,7 @@ pro.getMyAllianceData = function(msg, session, next){
  * @param next
  */
 pro.getCanDirectJoinAlliances = function(msg, session, next){
-	this.allianceService.getCanDirectJoinAlliancesAsync(session.uid).then(function(){
+	this.allianceApiService.getCanDirectJoinAlliancesAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -89,7 +91,7 @@ pro.getCanDirectJoinAlliances = function(msg, session, next){
  */
 pro.searchAllianceByTag = function(msg, session, next){
 	var tag = msg.tag
-	this.allianceService.searchAllianceByTagAsync(session.uid, tag).then(function(){
+	this.allianceApiService.searchAllianceByTagAsync(session.uid, tag).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -107,7 +109,7 @@ pro.editAllianceBasicInfo = function(msg, session, next){
 	var tag = msg.tag
 	var language = msg.language
 	var flag = msg.flag
-	this.allianceService.editAllianceBasicInfoAsync(session.uid, name, tag, language, flag).then(function(){
+	this.allianceApiService.editAllianceBasicInfoAsync(session.uid, name, tag, language, flag).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -122,7 +124,7 @@ pro.editAllianceBasicInfo = function(msg, session, next){
  */
 pro.editAllianceTerrian = function(msg, session, next){
 	var terrain = msg.terrain
-	this.allianceService.editAllianceTerrianAsync(session.uid, terrain).then(function(){
+	this.allianceApiService.editAllianceTerrianAsync(session.uid, terrain).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -138,7 +140,7 @@ pro.editAllianceTerrian = function(msg, session, next){
 pro.editAllianceTitleName = function(msg, session, next){
 	var title = msg.title
 	var titleName = msg.titleName
-	this.allianceService.editAllianceTitleNameAsync(session.uid, title, titleName).then(function(){
+	this.allianceApiService.editAllianceTitleNameAsync(session.uid, title, titleName).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -153,7 +155,7 @@ pro.editAllianceTitleName = function(msg, session, next){
  */
 pro.editAllianceNotice = function(msg, session, next){
 	var notice = msg.notice
-	this.allianceService.editAllianceNoticeAsync(session.uid, notice).then(function(){
+	this.allianceApiService.editAllianceNoticeAsync(session.uid, notice).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -168,7 +170,7 @@ pro.editAllianceNotice = function(msg, session, next){
  */
 pro.editAllianceDescription = function(msg, session, next){
 	var description = msg.description
-	this.allianceService.editAllianceDescriptionAsync(session.uid, description).then(function(){
+	this.allianceApiService.editAllianceDescriptionAsync(session.uid, description).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -183,7 +185,7 @@ pro.editAllianceDescription = function(msg, session, next){
  */
 pro.editAllianceJoinType = function(msg, session, next){
 	var joinType = msg.joinType
-	this.allianceService.editAllianceJoinTypeAsync(session.uid, joinType).then(function(){
+	this.allianceApiService.editAllianceJoinTypeAsync(session.uid, joinType).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -199,7 +201,7 @@ pro.editAllianceJoinType = function(msg, session, next){
 pro.editAllianceMemberTitle = function(msg, session, next){
 	var memberId = msg.memberId
 	var title = msg.title
-	this.allianceService.editAllianceMemberTitleAsync(session.uid, memberId, title).then(function(){
+	this.allianceApiService.editAllianceMemberTitleAsync(session.uid, memberId, title).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -214,7 +216,7 @@ pro.editAllianceMemberTitle = function(msg, session, next){
  */
 pro.kickAllianceMemberOff = function(msg, session, next){
 	var memberId = msg.memberId
-	this.allianceService.kickAllianceMemberOffAsync(session.uid, memberId).then(function(){
+	this.allianceApiService.kickAllianceMemberOffAsync(session.uid, memberId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -229,7 +231,7 @@ pro.kickAllianceMemberOff = function(msg, session, next){
  */
 pro.handOverAllianceArchon = function(msg, session, next){
 	var memberId = msg.memberId
-	this.allianceService.handOverAllianceArchonAsync(session.uid, memberId).then(function(){
+	this.allianceApiService.handOverAllianceArchonAsync(session.uid, memberId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -243,7 +245,7 @@ pro.handOverAllianceArchon = function(msg, session, next){
  * @param next
  */
 pro.quitAlliance = function(msg, session, next){
-	this.allianceService.quitAllianceAsync(session.uid).then(function(){
+	this.allianceApiService2.quitAllianceAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -258,7 +260,7 @@ pro.quitAlliance = function(msg, session, next){
  */
 pro.joinAllianceDirectly = function(msg, session, next){
 	var allianceId = msg.allianceId
-	this.allianceService.joinAllianceDirectlyAsync(session.uid, allianceId).then(function(){
+	this.allianceApiService2.joinAllianceDirectlyAsync(session.uid, allianceId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -273,7 +275,7 @@ pro.joinAllianceDirectly = function(msg, session, next){
  */
 pro.requestToJoinAlliance = function(msg, session, next){
 	var allianceId = msg.allianceId
-	this.allianceService.requestToJoinAllianceAsync(session.uid, allianceId).then(function(){
+	this.allianceApiService2.requestToJoinAllianceAsync(session.uid, allianceId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -288,7 +290,7 @@ pro.requestToJoinAlliance = function(msg, session, next){
  */
 pro.cancelJoinAllianceRequest = function(msg, session, next){
 	var allianceId = msg.allianceId
-	this.allianceService.cancelJoinAllianceRequestAsync(session.uid, allianceId).then(function(){
+	this.allianceApiService2.cancelJoinAllianceRequestAsync(session.uid, allianceId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -304,7 +306,7 @@ pro.cancelJoinAllianceRequest = function(msg, session, next){
 pro.handleJoinAllianceRequest = function(msg, session, next){
 	var memberId = msg.memberId
 	var agree = msg.agree
-	this.allianceService.handleJoinAllianceRequestAsync(session.uid, memberId, agree).then(function(){
+	this.allianceApiService2.handleJoinAllianceRequestAsync(session.uid, memberId, agree).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -319,7 +321,7 @@ pro.handleJoinAllianceRequest = function(msg, session, next){
  */
 pro.inviteToJoinAlliance = function(msg, session, next){
 	var memberId = msg.memberId
-	this.allianceService.inviteToJoinAllianceAsync(session.uid, memberId).then(function(){
+	this.allianceApiService2.inviteToJoinAllianceAsync(session.uid, memberId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -335,7 +337,7 @@ pro.inviteToJoinAlliance = function(msg, session, next){
 pro.handleJoinAllianceInvite = function(msg, session, next){
 	var allianceId = msg.allianceId
 	var agree = msg.agree
-	this.allianceService.handleJoinAllianceInviteAsync(session.uid, allianceId, agree).then(function(){
+	this.allianceApiService2.handleJoinAllianceInviteAsync(session.uid, allianceId, agree).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -349,7 +351,7 @@ pro.handleJoinAllianceInvite = function(msg, session, next){
  * @param next
  */
 pro.buyAllianceArchon = function(msg, session, next){
-	this.allianceService.buyAllianceArchonAsync(session.uid).then(function(){
+	this.allianceApiService2.buyAllianceArchonAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -365,7 +367,7 @@ pro.buyAllianceArchon = function(msg, session, next){
 pro.requestAllianceToSpeedUp = function(msg, session, next){
 	var eventType = msg.eventType
 	var eventId = msg.eventId
-	this.allianceService.requestAllianceToSpeedUpAsync(session.uid, eventType, eventId).then(function(){
+	this.allianceApiService2.requestAllianceToSpeedUpAsync(session.uid, eventType, eventId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -380,7 +382,7 @@ pro.requestAllianceToSpeedUp = function(msg, session, next){
  */
 pro.helpAllianceMemberSpeedUp = function(msg, session, next){
 	var eventId = msg.eventId
-	this.allianceService.helpAllianceMemberSpeedUpAsync(session.uid, eventId).then(function(){
+	this.allianceApiService2.helpAllianceMemberSpeedUpAsync(session.uid, eventId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -394,7 +396,7 @@ pro.helpAllianceMemberSpeedUp = function(msg, session, next){
  * @param next
  */
 pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
-	this.allianceService.helpAllAllianceMemberSpeedUpAsync(session.uid).then(function(){
+	this.allianceApiService2.helpAllAllianceMemberSpeedUpAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -409,7 +411,7 @@ pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
  */
 pro.donateToAlliance = function(msg, session, next){
 	var donateType = msg.donateType
-	this.allianceService.donateToAllianceAsync(session.uid, donateType).then(function(){
+	this.allianceApiService3.donateToAllianceAsync(session.uid, donateType).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -424,7 +426,7 @@ pro.donateToAlliance = function(msg, session, next){
  */
 pro.upgradeAllianceBuilding = function(msg, session, next){
 	var buildingName = msg.buildingName
-	this.allianceService.upgradeAllianceBuildingAsync(session.uid, buildingName).then(function(){
+	this.allianceApiService3.upgradeAllianceBuildingAsync(session.uid, buildingName).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -439,7 +441,7 @@ pro.upgradeAllianceBuilding = function(msg, session, next){
  */
 pro.upgradeAllianceVillage = function(msg, session, next){
 	var villageType = msg.villageType
-	this.allianceService.upgradeAllianceVillageAsync(session.uid, villageType).then(function(){
+	this.allianceApiService3.upgradeAllianceVillageAsync(session.uid, villageType).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -456,7 +458,7 @@ pro.moveAllianceBuilding = function(msg, session, next){
 	var buildingName = msg.buildingName
 	var locationX = msg.locationX
 	var locationY = msg.locationY
-	this.allianceService.moveAllianceBuildingAsync(session.uid, buildingName, locationX, locationY).then(function(){
+	this.allianceApiService3.moveAllianceBuildingAsync(session.uid, buildingName, locationX, locationY).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -472,7 +474,7 @@ pro.moveAllianceBuilding = function(msg, session, next){
 pro.moveAllianceMember = function(msg, session, next){
 	var locationX = msg.locationX
 	var locationY = msg.locationY
-	this.allianceService.moveAllianceMemberAsync(session.uid, locationX, locationY).then(function(){
+	this.allianceApiService3.moveAllianceMemberAsync(session.uid, locationX, locationY).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -487,7 +489,7 @@ pro.moveAllianceMember = function(msg, session, next){
  */
 pro.distroyAllianceDecorate = function(msg, session, next){
 	var decorateId = msg.decorateId
-	this.allianceService.distroyAllianceDecorateAsync(session.uid, decorateId).then(function(){
+	this.allianceApiService3.distroyAllianceDecorateAsync(session.uid, decorateId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -502,7 +504,7 @@ pro.distroyAllianceDecorate = function(msg, session, next){
  */
 pro.activateAllianceShrineStage = function(msg, session, next){
 	var stageName = msg.stageName
-	this.allianceService.activateAllianceShrineStageAsync(session.uid, stageName).then(function(){
+	this.allianceApiService3.activateAllianceShrineStageAsync(session.uid, stageName).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -519,7 +521,21 @@ pro.marchToShrine = function(msg, session, next){
 	var shrineEventId = msg.shrineEventId
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
-	this.allianceService.marchToShrineAsync(session.uid, shrineEventId, dragonType, soldiers).then(function(){
+	this.allianceApiService3.marchToShrineAsync(session.uid, shrineEventId, dragonType, soldiers).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 请求联盟进行联盟战
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.requestAllianceToFight = function(msg, session, next){
+	this.allianceApiService3.requestAllianceToFightAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -533,7 +549,7 @@ pro.marchToShrine = function(msg, session, next){
  * @param next
  */
 pro.findAllianceToFight = function(msg, session, next){
-	this.allianceService.findAllianceToFightAsync(session.uid).then(function(){
+	this.allianceApiService3.findAllianceToFightAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -548,7 +564,7 @@ pro.findAllianceToFight = function(msg, session, next){
  */
 pro.revengeAlliance = function(msg, session, next){
 	var reportId = msg.reportId
-	this.allianceService.revengeAllianceAsync(session.uid, reportId).then(function(){
+	this.allianceApiService3.revengeAllianceAsync(session.uid, reportId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -564,7 +580,7 @@ pro.revengeAlliance = function(msg, session, next){
 pro.marchToMoonGate = function(msg, session, next){
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
-	this.allianceService.marchToMoonGateAsync(session.uid, dragonType, soldiers).then(function(){
+	this.allianceApiService3.marchToMoonGateAsync(session.uid, dragonType, soldiers).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -578,7 +594,7 @@ pro.marchToMoonGate = function(msg, session, next){
  * @param next
  */
 pro.retreatFromMoonGate = function(msg, session, next){
-	this.allianceService.retreatFromMoonGateAsync(session.uid).then(function(){
+	this.allianceApiService3.retreatFromMoonGateAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -592,7 +608,7 @@ pro.retreatFromMoonGate = function(msg, session, next){
  * @param next
  */
 pro.challengeMoonGateEnemyTroop = function(msg, session, next){
-	this.allianceService.challengeMoonGateEnemyTroopAsync(session.uid).then(function(){
+	this.allianceApiService3.challengeMoonGateEnemyTroopAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -608,7 +624,7 @@ pro.challengeMoonGateEnemyTroop = function(msg, session, next){
 pro.getAllianceViewData = function(msg, session, next){
 	var targetAllianceId = msg.targetAllianceId
 	var includeMoonGateData = msg.includeMoonGateData
-	this.allianceService.getAllianceViewDataAsync(session.uid, targetAllianceId, includeMoonGateData).then(function(){
+	this.allianceApiService3.getAllianceViewDataAsync(session.uid, targetAllianceId, includeMoonGateData).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -622,7 +638,7 @@ pro.getAllianceViewData = function(msg, session, next){
  * @param next
  */
 pro.getNearedAllianceInfos = function(msg, session, next){
-	this.allianceService.getNearedAllianceInfosAsync(session.uid).then(function(){
+	this.allianceApiService3.getNearedAllianceInfosAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -637,7 +653,7 @@ pro.getNearedAllianceInfos = function(msg, session, next){
  */
 pro.searchAllianceInfoByTag = function(msg, session, next){
 	var tag = msg.tag
-	this.allianceService.searchAllianceInfoByTagAsync(session.uid, tag).then(function(){
+	this.allianceApiService3.searchAllianceInfoByTagAsync(session.uid, tag).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -654,7 +670,7 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
 	var targetPlayerId = msg.targetPlayerId
-	this.allianceService.helpAllianceMemberDefenceAsync(session.uid, dragonType, soldiers, targetPlayerId).then(function(){
+	this.allianceApiService3.helpAllianceMemberDefenceAsync(session.uid, dragonType, soldiers, targetPlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -669,21 +685,7 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
  */
 pro.retreatFromHelpedAllianceMember = function(msg, session, next){
 	var targetPlayerId = msg.targetPlayerId
-	this.allianceService.retreatFromHelpedAllianceMemberAsync(session.uid, targetPlayerId).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(e, {code:500, message:e.message})
-	})
-}
-
-/**
- * 请求联盟进行联盟战
- * @param msg
- * @param session
- * @param next
- */
-pro.requestAllianceToFight = function(msg, session, next){
-	this.allianceService.requestAllianceToFightAsync(session.uid).then(function(){
+	this.allianceApiService3.retreatFromHelpedAllianceMemberAsync(session.uid, targetPlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -699,7 +701,7 @@ pro.requestAllianceToFight = function(msg, session, next){
 pro.strikePlayerCity = function(msg, session, next){
 	var dragonType = msg.dragonType
 	var enemyPlayerId = msg.enemyPlayerId
-	this.allianceService.strikePlayerCityAsync(session.uid, dragonType, enemyPlayerId).then(function(){
+	this.allianceApiService3.strikePlayerCityAsync(session.uid, dragonType, enemyPlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -714,7 +716,7 @@ pro.strikePlayerCity = function(msg, session, next){
  */
 pro.attackPlayerCity = function(msg, session, next){
 	var enemyPlayerId = msg.enemyPlayerId
-	this.allianceService.attackPlayerCityAsync(session.uid, enemyPlayerId).then(function(){
+	this.allianceApiService3.attackPlayerCityAsync(session.uid, enemyPlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

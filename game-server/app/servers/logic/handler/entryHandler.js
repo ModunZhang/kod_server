@@ -25,7 +25,7 @@ var Handler = function(app){
 	this.scripto = app.get("scripto")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
-	this.playerService = app.get("playerService")
+	this.playerApiService = app.get("playerApiService")
 	this.globalChannelService = app.get("globalChannelService")
 	this.sessionService = app.get("sessionService")
 }
@@ -60,7 +60,7 @@ pro.login = function(msg, session, next){
 	var playerDoc = null
 	this.playerDao.findByIndexAsync("countInfo.deviceId", deviceId).then(function(doc){
 		if(!_.isObject(doc)){
-			return self.playerService.createPlayerAsync(deviceId).then(function(doc){
+			return self.playerApiService.createPlayerAsync(deviceId).then(function(doc){
 				playerDoc = doc
 				return Promise.resolve()
 			}).catch(function(e){
@@ -93,7 +93,7 @@ pro.login = function(msg, session, next){
 		return Promise.all(funcs)
 	}).then(function(){
 		playerDoc.logicServerId = self.serverId
-		return  self.playerService.playerLoginAsync(playerDoc)
+		return  self.playerApiService.playerLoginAsync(playerDoc)
 	}).then(function(){
 		return self.playerDao.updateAsync(playerDoc)
 	}).then(function(){
