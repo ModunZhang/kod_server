@@ -4,17 +4,12 @@
  * Created by modun on 14/12/10.
  */
 
-var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
-var crypto = require("crypto")
 
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
-var MapUtils = require("../utils/mapUtils")
-var FightUtils = require("../utils/fightUtils")
-var ReportUtils = require("../utils/reportUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -121,7 +116,8 @@ pro.quitAlliance = function(playerId, callback){
 		}else{
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 			updateFuncs.push([self.globalChannelService, self.globalChannelService.leaveAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+			LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs)
 		}
 		return Promise.resolve()
 	}).then(function(){
@@ -231,7 +227,8 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, playerDoc, allianceDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc, allianceData, playerDoc._id])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs)
 
 		var funcs = []
 		var removeRequestEvent = function(event){
@@ -251,7 +248,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 					type:Consts.DataChangedType.Remove,
 					data:joinRequestEvent
 				}]
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, doc, docData])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, doc._id, docData])
 				return Promise.resolve()
 			})
 		}
@@ -382,7 +379,7 @@ pro.requestToJoinAlliance = function(playerId, allianceId, callback){
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -469,7 +466,7 @@ pro.cancelJoinAllianceRequest = function(playerId, allianceId, callback){
 			data:eventInAlliance
 		}]
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -589,7 +586,7 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 				type:Consts.DataChangedType.Remove,
 				data:eventInMember
 			}]
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 			return Promise.resolve()
 		}
 
@@ -627,7 +624,8 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 		}
 		memberData.alliance = memberDoc.alliance
 		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, memberDoc, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc, allianceData, memberDoc._id])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, memberDoc._id])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs)
 		var funcs = []
 		var removeRequestEvent = function(event){
 			return self.allianceDao.findByIdAsync(event.id).then(function(doc){
@@ -646,7 +644,7 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 					data:joinRequestEvent
 				}]
 				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, doc])
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, doc, docData])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, doc._id, docData])
 				return Promise.resolve()
 			})
 		}
@@ -925,7 +923,8 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, playerDoc, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc, allianceData, playerDoc._id])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs)
 
 		playerDoc.alliance = {
 			id:allianceDoc._id,
@@ -954,7 +953,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 					data:joinRequestEvent
 				}]
 				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, doc])
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, doc, docData])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, doc._id, docData])
 				return Promise.resolve()
 			})
 		}
@@ -1103,7 +1102,8 @@ pro.buyAllianceArchon = function(playerId, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, archonDoc, archonData])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1191,7 +1191,7 @@ pro.requestAllianceToSpeedUp = function(playerId, eventType, eventId, callback){
 			data:event
 		}]
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1298,7 +1298,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 				data:helpEvent
 			}]
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		}else{
 			eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, buildEvent.id, newFinishTime])
 			buildEvent.finishTime = newFinishTime
@@ -1309,7 +1309,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 				type:Consts.DataChangedType.Edit,
 				data:helpEvent
 			}]
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
@@ -1445,7 +1445,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		return Promise.all(funcs)
 	}).then(function(){
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)

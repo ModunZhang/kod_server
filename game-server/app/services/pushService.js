@@ -493,48 +493,11 @@ pro.onGetSavedReportsSuccess = function(playerDoc, fromIndex, callback){
  * 获取联盟可视化数据成功
  * @param playerDoc
  * @param allianceDoc
- * @param includeMoonGateData
  * @param callback
  */
-pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, includeMoonGateData, callback){
-	var allianceData = {}
-	allianceData._id = allianceDoc._id
-	allianceData.basicInfo = {
-		name:allianceDoc.basicInfo.name,
-		tag:allianceDoc.basicInfo.tag,
-		terrain:allianceDoc.basicInfo.terrain,
-		flag:allianceDoc.basicInfo.flag,
-		status:allianceDoc.basicInfo.status,
-		statusStartTime:allianceDoc.basicInfo.statusStartTime,
-		statusFinishTime:allianceDoc.basicInfo.statusFinishTime
-	}
-	var members = []
-	_.each(allianceDoc.members, function(member){
-		members.push({
-			id:member.id,
-			name:member.name,
-			level:member.level,
-			keepLevel:member.keepLevel,
-			wallLevel:member.wallLevel,
-			wallHp:member.wallHp,
-			status:member.status,
-			helpTroopsCount:member.helpTroopsCount,
-			location:member.location
-		})
-	})
-	allianceData.members = members
-	allianceData.buildings = allianceDoc.buildings
-	allianceData.villages = allianceDoc.villages
-	allianceData.mapObjects = allianceDoc.mapObjects
-	allianceData.shrineMarchEvents = allianceDoc.shrineMarchEvents
-	allianceData.shrineMarchReturnEvents = allianceDoc.shrineMarchReturnEvents
-	allianceData.moonGateMarchEvents = allianceDoc.moonGateMarchEvents
-	allianceData.moonGateMarchReturnEvents = allianceDoc.moonGateMarchReturnEvents
-	if(includeMoonGateData){
-		allianceData.moonGateData = allianceDoc.moonGateData
-	}
-
-	this.pushToPlayer(playerDoc, Events.player.onGetAllianceViewDataSuccess, allianceData, callback)
+pro.onGetAllianceViewDataSuccess = function(playerDoc, allianceDoc, callback){
+	var viewData = LogicUtils.getAllianceViewData(allianceDoc)
+	this.pushToPlayer(playerDoc, Events.player.onGetAllianceViewDataSuccess, viewData, callback)
 }
 
 /**
@@ -555,27 +518,27 @@ pro.onGetPlayerViewDataSuccess = function(playerDoc, targetPlayerDoc, callback){
 
 /**
  * 推送联盟数据给玩家
- * @param allianceDoc
+ * @param allianceId
  * @param data
  * @param callback
  */
-pro.onAllianceDataChanged = function(allianceDoc, data, callback){
+pro.onAllianceDataChanged = function(allianceId, data, callback){
 	var eventName = Events.alliance.onAllianceDataChanged
-	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
+	var channelName = Consts.AllianceChannelPrefix + allianceId
 	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
 }
 
 /**
  * 推送给联盟除指定玩家之外的其他玩家
- * @param allianceDoc
+ * @param allianceId
  * @param data
  * @param memberId
  * @param callback
  */
-pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, callback){
+pro.onAllianceDataChangedExceptMemberId = function(allianceId, data, memberId, callback){
 	var self = this
 	var eventName = Events.alliance.onAllianceDataChanged
-	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
+	var channelName = Consts.AllianceChannelPrefix + allianceId
 	var servers = this.app.getServersByType(this.serverType)
 	var uids = []
 	var getMembersFunc = function(serverId){

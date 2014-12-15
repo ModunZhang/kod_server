@@ -210,7 +210,7 @@ var playerSchema = new Schema({
 		count:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
-	treatSoldiers:{
+	woundedSoldiers:{
 		swordsman:{type:Number, required:true, default:0},
 		sentinel:{type:Number, required:true, default:0},
 		ranger:{type:Number, required:true, default:0},
@@ -1083,16 +1083,26 @@ var playerSchema = new Schema({
 		level:{type:Number, required:true},
 		cityName:{type:String, required:true},
 		dragon:{
-			type:{type:String, required:true}
+			type:{type:String, required:true},
+			expAdd:{type:String, required:true}
 		},
-		soldiers:[
-			{
-				_id:false,
-				name:{type:String, required:true},
-				count:{type:Number, required:true},
-				star:{type:Number, required:true}
-			}
-		]
+		soldiers:[{
+			_id:false,
+			name:{type:String, required:true},
+			count:{type:Number, required:true}
+		}],
+		woundedSoldiers:[{
+			_id:false,
+			name:{type:String, required:true},
+			count:{type:Number, required:true}
+		}],
+		rewards:[{
+			_id:false,
+			type:{type:String, required:true},
+			name:{type:String, required:true},
+			count:{type:Number, required:true}
+		}],
+		kill:{type:Number, required:true}
 	}]
 })
 

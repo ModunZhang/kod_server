@@ -58,7 +58,7 @@ pro.createPlayer = function(deviceId, callback){
 pro.playerLogin = function(playerDoc, callback){
 	var self = this
 	var allianceDoc = null
-
+	var enemyAllianceDoc = null
 	playerDoc.countInfo.lastLoginTime = Date.now()
 	playerDoc.countInfo.loginCount += 1
 	LogicUtils.refreshPlayerResources(playerDoc)
@@ -73,15 +73,31 @@ pro.playerLogin = function(playerDoc, callback){
 	}
 
 	var pushFuncs = []
+	var updateFuncs = []
 	var memberDoc = null
 	this.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
+		if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(allianceDoc.allianceFight)){
+			if(_.isEqual(allianceDoc.allianceFight.attackAllianceId, allianceDoc._id)){
+				return self.allianceDao.findByIdAsync(allianceDoc.allianceFight.defenceAllianceId)
+			}
+			return self.allianceDao.findByIdAsync(allianceDoc.allianceFight.attackAllianceId)
+		}
+		return Promise.resolve()
+	}).then(function(doc){
+		if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(allianceDoc.allianceFight)){
+			if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+			enemyAllianceDoc = doc
+			allianceDoc.enemyAllianceDoc = LogicUtils.getAllianceViewData(enemyAllianceDoc)
+			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync(enemyAllianceDoc._id)])
+		}
 		memberDoc = LogicUtils.updateMyPropertyInAlliance(playerDoc, allianceDoc)
 		LogicUtils.refreshAllianceBasicInfo(allianceDoc)
-		return self.allianceDao.updateAsync(allianceDoc)
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		return Promise.resolve()
 	}).then(function(){
 		pushFuncs.push([self.pushService, self.pushService.onPlayerLoginSuccessAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, playerDoc, allianceDoc])
@@ -92,15 +108,25 @@ pro.playerLogin = function(playerDoc, callback){
 				data:memberDoc
 			}]
 		}
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc, allianceData, playerDoc._id])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs)
 		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(allianceDoc)){
-			self.allianceDao.removeLockByIdAsync(allianceDoc._id).then(function(){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(_.isObject(enemyAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(enemyAllianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -233,7 +259,8 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 				pushFuncs = pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
 					updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, params.allianceData])
+					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, params.allianceData])
+					LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, params.allianceData, pushFuncs)
 				}else if(_.isObject(allianceDoc)){
 					updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 				}
@@ -414,7 +441,8 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 				pushFuncs = pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
 					updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, params.allianceData])
+					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, params.allianceData])
+					LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, params.allianceData, pushFuncs)
 				}else if(_.isObject(allianceDoc)){
 					updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 				}
@@ -598,7 +626,8 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 				pushFuncs = pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
 					updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, params.allianceData])
+					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, params.allianceData])
+					LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, params.allianceData, pushFuncs)
 				}else if(_.isObject(allianceDoc)){
 					updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 				}
@@ -841,7 +870,8 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 				pushFuncs = pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
 					updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, params.allianceData])
+					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, params.allianceData])
+					LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, params.allianceData, pushFuncs)
 				}else if(_.isObject(allianceDoc)){
 					updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 				}
@@ -993,7 +1023,8 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 				pushFuncs = pushFuncs.concat(params.pushFuncs)
 				if(!_.isEmpty(params.allianceData)){
 					updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, params.allianceData])
+					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, params.allianceData])
+					LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, params.allianceData, pushFuncs)
 				}else if(_.isObject(allianceDoc)){
 					updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 				}
@@ -1096,10 +1127,10 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 		pushFuncs = pushFuncs.concat(params.pushFuncs)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		_.extend(playerData, params.playerData)
-		var allianceData = params.allianceData
-		if(!_.isEmpty(allianceData)){
+		if(!_.isEmpty(params.allianceData)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, params.allianceData])
+			LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, params.allianceData, pushFuncs)
 		}
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){

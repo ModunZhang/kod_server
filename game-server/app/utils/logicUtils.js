@@ -589,7 +589,7 @@ Utils.isTreatSoldierLegal = function(playerDoc, soldiers){
 		if(!_.isString(soldierName) || !_.isNumber(count)) return false
 		count = Math.floor(count)
 		if(count <= 0) return false
-		if(!playerDoc.treatSoldiers[soldierName] || playerDoc.treatSoldiers[soldierName] < count) return false
+		if(!playerDoc.woundedSoldiers[soldierName] || playerDoc.woundedSoldiers[soldierName] < count) return false
 	}
 	return true
 }
@@ -1424,211 +1424,6 @@ Utils.isMarchSoldierLegal = function(playerDoc, soldiers){
 }
 
 /**
- * 创建联盟圣地行军事件
- * @param playerDoc
- * @param allianceDoc
- * @param shrineEventId
- * @param dragonType
- * @param soldiers
- * @returns {*}
- */
-Utils.createAllianceShrineMarchEvent = function(playerDoc, allianceDoc, shrineEventId, dragonType, soldiers){
-	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var shrineLocation = allianceDoc.buildings["shrine"].location
-	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, playerLocation, shrineLocation)
-	var event = {
-		id:ShortId.generate(),
-		shrineEventId:shrineEventId,
-		playerData:{
-			id:playerDoc._id,
-			name:playerDoc.basicInfo.name,
-			cityName:playerDoc.basicInfo.cityName,
-			dragon:{
-				type:dragonType
-			},
-			soldiers:soldiers
-		},
-		startTime:Date.now(),
-		arriveTime:Date.now() + marchTime
-	}
-	return event
-}
-
-/**
- * 创建联盟月门行军事件
- * @param playerDoc
- * @param allianceDoc
- * @param dragonType
- * @param soldiers
- * @returns {*}
- */
-Utils.createAllianceMoonGateMarchEvent = function(playerDoc, allianceDoc, dragonType, soldiers){
-	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var moonGateLocation = allianceDoc.buildings["moonGate"].location
-	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, playerLocation, moonGateLocation)
-	var event = {
-		id:ShortId.generate(),
-		playerData:{
-			id:playerDoc._id,
-			name:playerDoc.basicInfo.name,
-			level:playerDoc.basicInfo.level,
-			cityName:playerDoc.basicInfo.cityName,
-			dragon:{
-				type:dragonType
-			},
-			soldiers:soldiers
-		},
-		startTime:Date.now(),
-		arriveTime:Date.now() + marchTime
-	}
-	return event
-}
-
-/**
- * 创建联盟协防事件
- * @param playerDoc
- * @param allianceDoc
- * @param dragonType
- * @param soldiers
- * @param targetPlayerDoc
- * @returns {*}
- */
-Utils.createHelpDefenceMarchEvent = function(playerDoc, allianceDoc, dragonType, soldiers, targetPlayerDoc){
-	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var targetPlayerLocation = this.getAllianceMemberById(allianceDoc, targetPlayerDoc._id).location
-	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, playerLocation, targetPlayerLocation)
-	var event = {
-		id:ShortId.generate(),
-		playerData:{
-			id:playerDoc._id,
-			name:playerDoc.basicInfo.name,
-			level:playerDoc.basicInfo.level,
-			cityName:playerDoc.basicInfo.cityName,
-			dragon:{
-				type:dragonType
-			},
-			soldiers:soldiers
-		},
-		targetPlayerData:{
-			id:targetPlayerDoc._id,
-			name:targetPlayerDoc.basicInfo.name,
-			cityName:targetPlayerDoc.basicInfo.cityName
-		},
-		startTime:Date.now(),
-		arriveTime:Date.now() + marchTime
-	}
-	return event
-}
-
-/**
- * 玩家从圣地回城事件
- * @param playerDoc
- * @param allianceDoc
- * @param dragonType
- * @param leftsoldiers
- * @param treatSoldiers
- * @param rewards
- * @param kill
- * @returns {*}
- */
-Utils.createAllianceShrineMarchReturnEvent = function(playerDoc, allianceDoc, dragonType, leftsoldiers, treatSoldiers, rewards, kill){
-	var shrineLocation = allianceDoc.buildings["shrine"].location
-	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, shrineLocation, playerLocation)
-	var event = {
-		id:ShortId.generate(),
-		playerData:{
-			id:playerDoc._id,
-			cityName:playerDoc.basicInfo.cityName,
-			dragon:{
-				type:dragonType
-			},
-			leftSoldiers:leftsoldiers,
-			treatSoldiers:treatSoldiers,
-			rewards:rewards,
-			kill:kill
-		},
-		startTime:Date.now(),
-		arriveTime:Date.now() + marchTime
-	}
-	return event
-}
-
-/**
- * 玩家从月门回城事件
- * @param playerDoc
- * @param allianceDoc
- * @param dragonType
- * @param leftsoldiers
- * @param treatSoldiers
- * @param rewards
- * @param kill
- * @returns {*}
- */
-Utils.createAllianceMoonGateMarchReturnEvent = function(playerDoc, allianceDoc, dragonType, leftsoldiers, treatSoldiers, rewards, kill){
-	var moonGateLocation = allianceDoc.buildings["moonGate"].location
-	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, moonGateLocation, playerLocation)
-	var event = {
-		id:ShortId.generate(),
-		playerData:{
-			id:playerDoc._id,
-			cityName:playerDoc.basicInfo.cityName,
-			dragon:{
-				type:dragonType
-			},
-			leftSoldiers:leftsoldiers,
-			treatSoldiers:treatSoldiers,
-			rewards:rewards,
-			kill:kill
-		},
-		startTime:Date.now(),
-		arriveTime:Date.now() + marchTime
-	}
-	return event
-}
-
-/**
- * 创建玩家协助防御回城事件
- * @param playerDoc
- * @param helpedPlayerDoc
- * @param allianceDoc
- * @param dragonType
- * @param leftsoldiers
- * @param treatSoldiers
- * @param rewards
- * @param kill
- * @returns {*}
- */
-Utils.createAllianceHelpFightMarchReturnEvent = function(playerDoc, helpedPlayerDoc, allianceDoc, dragonType, leftsoldiers, treatSoldiers, rewards, kill){
-	var helpedPlayerLocation = this.getAllianceMemberById(allianceDoc, helpedPlayerDoc._id).location
-	var playerLocation = this.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, helpedPlayerLocation, playerLocation)
-	var event = {
-		id:ShortId.generate(),
-		playerData:{
-			id:playerDoc._id,
-			cityName:playerDoc.basicInfo.cityName,
-			dragon:{
-				type:dragonType
-			},
-			leftSoldiers:leftsoldiers,
-			treatSoldiers:treatSoldiers,
-			rewards:rewards,
-			kill:kill
-		},
-		fromPlayerData:{
-			id:helpedPlayerDoc._id,
-			name:helpedPlayerDoc.basicInfo.name,
-			cityName:helpedPlayerDoc.basicInfo.cityName
-		},
-		startTime:Date.now(),
-		arriveTime:Date.now() + marchTime
-	}
-	return event
-}
-
-/**
  * 重置玩家部队战斗数据
  * @param soldiersForFight
  * @param fightRoundData
@@ -1642,11 +1437,13 @@ Utils.resetFightSoldiersByFightResult = function(soldiersForFight, fightRoundDat
 		soldierForFight.totalCount -= fightResult.solderDamagedCount
 		soldierForFight.currentCount = soldierForFight.totalCount
 		soldierForFight.morale = 100
+		if(soldierForFight.totalCount <= 0) soldiersWillRemoved.push(soldierForFight)
 	})
+	this.removeItemsInArray(soldiersForFight, soldiersWillRemoved)
 }
 
 /**
- * 从联盟圣地时间中获取玩家龙的信息
+ * 从联盟圣地事件中获取玩家龙的信息
  * @param playerId
  * @param event
  * @returns {*}
@@ -1667,35 +1464,12 @@ Utils.getPlayerDragonDataFromAllianceShrineStageEvent = function(playerId, event
  * @returns {boolean}
  */
 Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineEvent, playerId){
-	for(var i = 0; i < allianceDoc.shrineMarchEvents.length; i++){
-		var marchEvent = allianceDoc.shrineMarchEvents[i]
-		if(_.isEqual(marchEvent.shrineEventId, shrineEvent.id) && _.isEqual(marchEvent.playerData.id, playerId)) return true
+	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
+		var marchEvent = allianceDoc.attackMarchEvents[i]
+		if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.Shrine) && _.isEqual(marchEvent.defenceShrineData.shrineEventId, shrineEvent.id) && _.isEqual(marchEvent.attackPlayerData.id, playerId)) return true
 	}
 	for(i = 0; i < shrineEvent.playerTroops.length; i++){
 		var playerTroop = shrineEvent.playerTroops[i]
-		if(_.isEqual(playerTroop.id, playerId)) return true
-	}
-	return false
-}
-
-/**
- * 月门是否已经有玩家的部队存在
- * @param allianceDoc
- * @param playerId
- * @returns {boolean}
- */
-Utils.isPlayerHasTroopMarchToMoonGate = function(allianceDoc, playerId){
-	for(var i = 0; i < allianceDoc.moonGateMarchEvents.length; i++){
-		var marchEvent = allianceDoc.moonGateMarchEvents[i]
-		if(_.isEqual(marchEvent.playerData.id, playerId)) return true
-	}
-	var playerTroop = null
-	for(i = 0; i < allianceDoc.moonGateData.ourTroops.length; i++){
-		playerTroop = allianceDoc.moonGateData.ourTroops[i]
-		if(_.isEqual(playerTroop.id, playerId)) return true
-	}
-	if(_.isObject(allianceDoc.moonGateData.currentFightTroops.our)){
-		playerTroop = allianceDoc.moonGateData.currentFightTroops.our
 		if(_.isEqual(playerTroop.id, playerId)) return true
 	}
 	return false
@@ -1738,22 +1512,6 @@ Utils.getAlliancePlayerBeHelpedTroopsCount = function(allianceDoc, playerDoc){
 }
 
 /**
- * 获取玩家在我方月门的部队
- * @param allianceDoc
- * @param playerId
- * @returns {*}
- */
-Utils.getPlayerTroopInOurMoonGate = function(allianceDoc, playerId){
-	if(_.isObject(allianceDoc.moonGateData.ourTroops)){
-		for(var i = 0; i < allianceDoc.moonGateData.ourTroops.length; i++){
-			var playerTroop = allianceDoc.moonGateData.ourTroops[i]
-			if(_.isEqual(playerTroop.id, playerId)) return playerTroop
-		}
-	}
-	return null
-}
-
-/**
  * 玩家是否有协防部队驻扎在某玩家城市中
  * @param playerDoc
  * @param targetPlayerId
@@ -1765,20 +1523,6 @@ Utils.isPlayerHasHelpedTroopInAllianceMember = function(playerDoc, targetPlayerI
 		if(_.isEqual(troop.targetPlayerData.id, targetPlayerId)) return true
 	}
 	return false
-}
-
-/**
- * 获取玩家在地方月门的部队
- * @param allianceDoc
- * @param playerId
- * @returns {*}
- */
-Utils.getPlayerTroopInEnemyMoonGate = function(allianceDoc, playerId){
-	for(var i = 0; i < allianceDoc.moonGateData.enemyTroops.length; i++){
-		var playerTroop = allianceDoc.moonGateData.enemyTroops[i]
-		if(_.isEqual(playerTroop.id, playerId)) return playerTroop
-	}
-	return null
 }
 
 /**
@@ -1850,141 +1594,59 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 	attackAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
 	attackAllianceDoc.basicInfo.statusStartTime = now
 	attackAllianceDoc.basicInfo.statusFinishTime = prepareTime
-	attackAllianceDoc.moonGateData = {}
-	attackAllianceDoc.moonGateData.activeBy = attackAllianceDoc._id
-	attackAllianceDoc.moonGateData.moonGateOwner = Consts.None
-	attackAllianceDoc.moonGateData.enemyAlliance = {
-		id:defenceAllianceDoc._id,
-		name:defenceAllianceDoc.basicInfo.name,
-		tag:defenceAllianceDoc.basicInfo.tag,
-		power:defenceAllianceDoc.basicInfo.power,
-		flag:defenceAllianceDoc.basicInfo.flag,
-		terrain:defenceAllianceDoc.basicInfo.terrain,
-		palaceLevel:defenceAllianceDoc.buildings.palace.level,
-		memberCount:defenceAllianceDoc.members.length,
-		language:defenceAllianceDoc.basicInfo.language
-	}
-	attackAllianceDoc.moonGateData.ourTroops = []
-	attackAllianceDoc.moonGateData.enemyTroops = []
-	attackAllianceDoc.moonGateData.currentFightTroops = {
-		our:null,
-		enemy:null
-	}
-	attackAllianceDoc.moonGateData.fightReports = []
-	attackAllianceDoc.moonGateData.countData = {
-		our:{
-			kill:0,
-			moonGateOwnCount:0,
-			routCount:0,
-			strikeCount:0,
-			attackSuccessCount:0,
-			attackFailCount:0,
-			defenceSuccessCount:0,
-			defenceFailCount:0,
-			playerKills:[]
-		},
-		enemy:{
-			kill:0,
-			moonGateOwnCount:0,
-			routCount:0,
-			strikeCount:0,
-			attackSuccessCount:0,
-			attackFailCount:0,
-			defenceSuccessCount:0,
-			defenceFailCount:0,
-			playerKills:[]
+	attackAllianceDoc.allianceFight = {
+		activeBy:attackAllianceDoc._id,
+		mergeStyle:Consts.AllianceMergePosition[(Math.random() * 4) << 0],
+		attackAllianceId:attackAllianceDoc._id,
+		defenceAllianceId:defenceAllianceDoc._id,
+		countData:{
+			attackAlliance:{
+				kill:0,
+				routCount:0,
+				strikeCount:0,
+				attackSuccessCount:0,
+				attackFailCount:0,
+				defenceSuccessCount:0,
+				defenceFailCount:0,
+				playerKills:[]
+			},
+			defenceAlliance:{
+				kill:0,
+				routCount:0,
+				strikeCount:0,
+				attackSuccessCount:0,
+				attackFailCount:0,
+				defenceSuccessCount:0,
+				defenceFailCount:0,
+				playerKills:[]
+			}
 		}
 	}
-
 	defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
 	defenceAllianceDoc.basicInfo.statusStartTime = now
 	defenceAllianceDoc.basicInfo.statusFinishTime = prepareTime
-	defenceAllianceDoc.moonGateData = {}
-	defenceAllianceDoc.moonGateData.activeBy = attackAllianceDoc._id
-	defenceAllianceDoc.moonGateData.moonGateOwner = Consts.None
-	defenceAllianceDoc.moonGateData.enemyAlliance = {
-		id:attackAllianceDoc._id,
-		name:attackAllianceDoc.basicInfo.name,
-		tag:attackAllianceDoc.basicInfo.tag,
-		power:attackAllianceDoc.basicInfo.power,
-		flag:attackAllianceDoc.basicInfo.flag,
-		terrain:attackAllianceDoc.basicInfo.terrain,
-		palaceLevel:attackAllianceDoc.buildings.palace.level,
-		memberCount:attackAllianceDoc.members.length,
-		language:attackAllianceDoc.basicInfo.language
-	}
-	defenceAllianceDoc.moonGateData.ourTroops = []
-	defenceAllianceDoc.moonGateData.enemyTroops = []
-	defenceAllianceDoc.moonGateData.currentFightTroops = {
-		our:null,
-		enemy:null
-	}
-	defenceAllianceDoc.moonGateData.fightReports = []
-	defenceAllianceDoc.moonGateData.countData = {
-		our:{
-			kill:0,
-			moonGateOwnCount:0,
-			routCount:0,
-			strikeCount:0,
-			attackSuccessCount:0,
-			attackFailCount:0,
-			defenceSuccessCount:0,
-			defenceFailCount:0,
-			playerKills:[]
-		},
-		enemy:{
-			kill:0,
-			moonGateOwnCount:0,
-			routCount:0,
-			strikeCount:0,
-			attackSuccessCount:0,
-			attackFailCount:0,
-			defenceSuccessCount:0,
-			defenceFailCount:0,
-			playerKills:[]
-		}
-	}
-}
-
-/**
- * 刷新联盟战斗数据统计信息
- * @param attackCountData
- * @param defenceCountData
- */
-Utils.refreshAllianceMoonGateDataCountData = function(attackCountData, defenceCountData){
-	var attackTotalKill = 0
-	var defenceTotalKill = 0
-	_.each(attackCountData.our.playerKills, function(playerKill){
-		attackTotalKill += playerKill.kill
-	})
-	_.each(attackCountData.enemy.playerKills, function(playerKill){
-		defenceTotalKill += playerKill.kill
-	})
-
-	attackCountData.our.kill = Math.round(attackTotalKill * (1 + ((attackCountData.our.moonGateOwnCount * 30 / 60) * 0.1) + (attackCountData.our.routCount * 0.1)))
-	attackCountData.enemy.kill = Math.round(defenceTotalKill * (1 + ((attackCountData.enemy.moonGateOwnCount * 30 / 60) * 0.1) + (attackCountData.enemy.routCount * 0.1)))
-	defenceCountData.our = attackCountData.enemy
-	defenceCountData.enemy = attackCountData.our
+	defenceAllianceDoc.allianceFight = attackAllianceDoc.allianceFight
 }
 
 /**
  * 更新联盟统计数据
- * @param allianceDoc
+ * @param attackAllianceDoc
+ * @param defenceAllianceDoc
  */
-Utils.updateAllianceCountInfo = function(allianceDoc){
-	var countInfo = allianceDoc.countInfo
-	var countData = allianceDoc.moonGateData.countData
-	countInfo.moonGateOwner += countData.our.moonGateOwnCount
-	countInfo.kill += countData.our.kill
-	countInfo.beKilled += countData.enemy.kill
-	countInfo.routCount += countData.our.routCount
-	if(_.isEqual(allianceDoc._id, allianceDoc.moonGateData.activeBy)){
-		countInfo.winCount += countData.our.kill >= countData.enemy.kill ? 1 : 0
-		countInfo.failedCount += countData.our.kill < countData.enemy.kill ? 1 : 0
-	}else{
-		countInfo.winCount += countData.our.kill > countData.enemy.kill ? 1 : 0
-		countInfo.failedCount += countData.our.kill <= countData.enemy.kill ? 1 : 0
-	}
+Utils.updateAllianceCountInfo = function(attackAllianceDoc, defenceAllianceDoc){
+	var attackAllianceCountInfo = attackAllianceDoc.countInfo
+	var defenceAllianceCountInfo = defenceAllianceDoc.countInfo
+	var allianceFight = attackAllianceDoc.allianceFight
+	attackAllianceCountInfo.kill += allianceFight.attackAllianceCountData.kill
+	attackAllianceCountInfo.beKilled += allianceFight.defenceAllianceCountData.kill
+	attackAllianceCountInfo.routCount += allianceFight.attackAllianceCountData.routCount
+	attackAllianceCountInfo.winCount += allianceFight.attackAllianceCountData.kill >= allianceFight.defenceAllianceCountData.kill ? 1 : 0
+	attackAllianceCountInfo.failedCount += allianceFight.attackAllianceCountData.kill >= allianceFight.defenceAllianceCountData.kill ? 0 : 1
+	defenceAllianceCountInfo.kill += allianceFight.defenceAllianceCountData.kill
+	defenceAllianceCountInfo.beKilled += allianceFight.attackAllianceCountData.kill
+	defenceAllianceCountInfo.routCount += allianceFight.defenceAllianceCountData.routCount
+	defenceAllianceCountInfo.winCount += allianceFight.defenceAllianceCountData.kill >= allianceFight.attackAllianceCountData.kill ? 1 : 0
+	defenceAllianceCountInfo.failedCount += allianceFight.defenceAllianceCountData.kill >= allianceFight.attackAllianceCountData.kill ? 0 : 1
 }
 
 /**
@@ -2066,4 +1728,39 @@ Utils.addPlayerReport = function(playerDoc, playerData, report){
 		type:Consts.DataChangedType.Add,
 		data:report
 	})
+}
+
+/**
+ * 获取联盟
+ * @param allianceDoc
+ * @return {*}
+ */
+Utils.getAllianceViewData = function(allianceDoc){
+	var viewData = {}
+	_.each(Consts.AllianceViewDataKeys, function(key){
+		viewData[key] = allianceDoc[key]
+	})
+	return viewData
+}
+
+/**
+ * 如果联盟正在战斗,推送我方联盟相关数据变化到敌对联盟
+ * @param allianceDoc
+ * @param allianceData
+ * @param pushFuncs
+ */
+Utils.pushAllianceDataToEnemyAllianceIfNeeded = function(allianceDoc, allianceData, pushFuncs){
+	if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(allianceDoc.allianceFight)){
+		var targetAllianceData = {}
+		targetAllianceData.enemyAllianceDoc = {}
+		_.forEach(Consts.AllianceViewDataKeys, function(key){
+			if(_.isObject(allianceData[key])) targetAllianceData.enemyAllianceDoc[key] = allianceData[key]
+			var arrayKey = "__" + key
+			if(_.isObject(allianceData[arrayKey])) targetAllianceData.enemyAllianceDoc[arrayKey] = allianceData[arrayKey]
+		})
+		if(!_.isEmpty(targetAllianceData.enemyAllianceDoc)){
+			var targetAllianceId = _.isEqual(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId) ? allianceDoc.allianceFight.defenceAllianceId : allianceDoc.allianceFight.attackAllianceId
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, targetAllianceId, targetAllianceData])
+		}
+	}
 }

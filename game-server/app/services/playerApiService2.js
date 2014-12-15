@@ -319,20 +319,20 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 
 		if(finishNow){
 			playerData.soldiers = {}
-			playerData.treatSoldiers = {}
+			playerData.woundedSoldiers = {}
 			_.each(soldiers, function(soldier){
 				playerDoc.soldiers[soldier.name] += soldier.count
 				playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
-				playerDoc.treatSoldiers[soldier.name] -= soldier.count
-				playerData.treatSoldiers[soldier.name] = playerDoc.treatSoldiers[soldier.name]
+				playerDoc.woundedSoldiers[soldier.name] -= soldier.count
+				playerData.woundedSoldiers[soldier.name] = playerDoc.woundedSoldiers[soldier.name]
 			})
 			LogicUtils.refreshPlayerPower(playerDoc)
 			pushFuncs.push([self.pushService, self.pushService.onTreatSoldierSuccessAsync, playerDoc, soldiers])
 		}else{
-			playerData.treatSoldiers = {}
+			playerData.woundedSoldiers = {}
 			_.each(soldiers, function(soldier){
-				playerDoc.treatSoldiers[soldier.name] -= soldier.count
-				playerData.treatSoldiers[soldier.name] = playerDoc.treatSoldiers[soldier.name]
+				playerDoc.woundedSoldiers[soldier.name] -= soldier.count
+				playerData.woundedSoldiers[soldier.name] = playerDoc.woundedSoldiers[soldier.name]
 			})
 			var finishTime = Date.now() + (treatRequired.treatTime * 1000)
 			var event = LogicUtils.createTreatSoldierEvent(playerDoc, soldiers, finishTime)

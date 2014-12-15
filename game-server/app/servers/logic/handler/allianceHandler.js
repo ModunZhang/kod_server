@@ -512,16 +512,16 @@ pro.activateAllianceShrineStage = function(msg, session, next){
 }
 
 /**
- * 行军到圣地
+ * 进攻联盟圣地
  * @param msg
  * @param session
  * @param next
  */
-pro.marchToShrine = function(msg, session, next){
+pro.attackAllianceShrine = function(msg, session, next){
 	var shrineEventId = msg.shrineEventId
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
-	this.allianceApiService3.marchToShrineAsync(session.uid, shrineEventId, dragonType, soldiers).then(function(){
+	this.allianceApiService3.attackAllianceShrineAsync(session.uid, shrineEventId, dragonType, soldiers).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -572,50 +572,6 @@ pro.revengeAlliance = function(msg, session, next){
 }
 
 /**
- * 行军到月门
- * @param msg
- * @param session
- * @param next
- */
-pro.marchToMoonGate = function(msg, session, next){
-	var dragonType = msg.dragonType
-	var soldiers = msg.soldiers
-	this.allianceApiService3.marchToMoonGateAsync(session.uid, dragonType, soldiers).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(e, {code:500, message:e.message})
-	})
-}
-
-/**
- * 从月门撤兵
- * @param msg
- * @param session
- * @param next
- */
-pro.retreatFromMoonGate = function(msg, session, next){
-	this.allianceApiService3.retreatFromMoonGateAsync(session.uid).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(e, {code:500, message:e.message})
-	})
-}
-
-/**
- * 联盟战月门挑战
- * @param msg
- * @param session
- * @param next
- */
-pro.challengeMoonGateEnemyTroop = function(msg, session, next){
-	this.allianceApiService3.challengeMoonGateEnemyTroopAsync(session.uid).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(e, {code:500, message:e.message})
-	})
-}
-
-/**
  * 获取联盟简单数据
  * @param msg
  * @param session
@@ -624,21 +580,7 @@ pro.challengeMoonGateEnemyTroop = function(msg, session, next){
 pro.getAllianceViewData = function(msg, session, next){
 	var targetAllianceId = msg.targetAllianceId
 	var includeMoonGateData = msg.includeMoonGateData
-	this.allianceApiService3.getAllianceViewDataAsync(session.uid, targetAllianceId, includeMoonGateData).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(e, {code:500, message:e.message})
-	})
-}
-
-/**
- * 查看战力相近的3个联盟的数据
- * @param msg
- * @param session
- * @param next
- */
-pro.getNearedAllianceInfos = function(msg, session, next){
-	this.allianceApiService3.getNearedAllianceInfosAsync(session.uid).then(function(){
+	this.allianceApiService4.getAllianceViewDataAsync(session.uid, targetAllianceId, includeMoonGateData).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -653,7 +595,21 @@ pro.getNearedAllianceInfos = function(msg, session, next){
  */
 pro.searchAllianceInfoByTag = function(msg, session, next){
 	var tag = msg.tag
-	this.allianceApiService3.searchAllianceInfoByTagAsync(session.uid, tag).then(function(){
+	this.allianceApiService4.searchAllianceInfoByTagAsync(session.uid, tag).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 查看战力相近的3个联盟的数据
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getNearedAllianceInfos = function(msg, session, next){
+	this.allianceApiService4.getNearedAllianceInfosAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -670,7 +626,7 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
 	var targetPlayerId = msg.targetPlayerId
-	this.allianceApiService3.helpAllianceMemberDefenceAsync(session.uid, dragonType, soldiers, targetPlayerId).then(function(){
+	this.allianceApiService4.helpAllianceMemberDefenceAsync(session.uid, dragonType, soldiers, targetPlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -685,7 +641,7 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
  */
 pro.retreatFromHelpedAllianceMember = function(msg, session, next){
 	var targetPlayerId = msg.targetPlayerId
-	this.allianceApiService3.retreatFromHelpedAllianceMemberAsync(session.uid, targetPlayerId).then(function(){
+	this.allianceApiService4.retreatFromHelpedAllianceMemberAsync(session.uid, targetPlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -701,7 +657,7 @@ pro.retreatFromHelpedAllianceMember = function(msg, session, next){
 pro.strikePlayerCity = function(msg, session, next){
 	var dragonType = msg.dragonType
 	var enemyPlayerId = msg.enemyPlayerId
-	this.allianceApiService3.strikePlayerCityAsync(session.uid, dragonType, enemyPlayerId).then(function(){
+	this.allianceApiService4.strikePlayerCityAsync(session.uid, dragonType, enemyPlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -716,7 +672,7 @@ pro.strikePlayerCity = function(msg, session, next){
  */
 pro.attackPlayerCity = function(msg, session, next){
 	var enemyPlayerId = msg.enemyPlayerId
-	this.allianceApiService3.attackPlayerCityAsync(session.uid, enemyPlayerId).then(function(){
+	this.allianceApiService4.attackPlayerCityAsync(session.uid, enemyPlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

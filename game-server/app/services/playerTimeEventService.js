@@ -71,7 +71,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 		var allianceData = params.allianceData
 		if(!_.isEmpty(allianceData)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		}
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){

@@ -17,6 +17,7 @@ var LogicRemote = function(app) {
 	this.callbackService = app.get("callbackService")
 	this.playerTimeEventService = app.get("playerTimeEventService")
 	this.allianceTimeEventService = app.get("allianceTimeEventService")
+	this.sessionService = app.get("sessionService")
 }
 var pro = LogicRemote.prototype
 

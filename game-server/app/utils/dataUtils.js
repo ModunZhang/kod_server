@@ -1725,17 +1725,6 @@ Utils.getSizeInAllianceMap = function(buildingType){
 }
 
 /**
- * 获取玩家行军时间
- * @param playerDoc
- * @param fromLocation
- * @param toLocation
- * @returns {number}
- */
-Utils.getPlayerMarchTime = function(playerDoc, fromLocation, toLocation){
-	return 10 * 1000
-}
-
-/**
  * 联盟地图对象是否为装饰对象
  * @param objectType
  * @returns {*}
@@ -1815,7 +1804,7 @@ Utils.createNormalSoldierForFight = function(playerDoc, soldierName, soldierStar
 		type:config.type,
 		currentCount:soldierCount,
 		totalCount:soldierCount,
-		treatCount:0,
+		woundedCount:0,
 		power:config.power,
 		hp:config.hp,
 		load:config.load,
@@ -1849,7 +1838,7 @@ Utils.createSpecialSoldierForFight = function(playerDoc, soldierName, soldierCou
 		type:config.type,
 		currentCount:soldierCount,
 		totalCount:soldierCount,
-		treatCount:0,
+		woundedCount:0,
 		power:config.power,
 		hp:config.hp,
 		load:config.load,
@@ -1893,20 +1882,20 @@ Utils.createSoldiersForFight = function(playerDoc, soldiers){
 /**
  * 创建战斗用龙
  * @param playerDoc
- * @param dragonType
+ * @param dragon
  * @returns {*}
  */
-Utils.createDragonForFight = function(playerDoc, dragonType){
-	var dragon = {
-		type:dragonType,
-		strength:playerDoc.dragons[dragonType].strength,
-		vitality:playerDoc.dragons[dragonType].vitality,
-		maxHp:this.getPlayerDragonHpMax(playerDoc, playerDoc.dragons[dragonType]),
-		totalHp:playerDoc.dragons[dragonType].hp,
-		currentHp:playerDoc.dragons[dragonType].hp,
+Utils.createDragonForFight = function(playerDoc, dragon){
+	var dragonForFight = {
+		type:dragon.type,
+		strength:dragon.strength,
+		vitality:dragon.vitality,
+		maxHp:this.getPlayerDragonHpMax(playerDoc, dragon),
+		totalHp:dragon.hp,
+		currentHp:dragon.hp,
 		isWin:false
 	}
-	return dragon
+	return dragonForFight
 }
 
 /**
@@ -1988,7 +1977,7 @@ Utils.getAllianceShrineStageTroops = function(stageName){
 				type:unitConfig.type,
 				currentCount:soldierCount,
 				totalCount:soldierCount,
-				treatCount:0,
+				woundedCount:0,
 				power:unitConfig.power,
 				hp:unitConfig.hp,
 				load:unitConfig.load,
@@ -2036,12 +2025,12 @@ Utils.getAllianceShrineStageTroops = function(stageName){
  * @param playerDoc
  * @returns {number}
  */
-Utils.getPlayerDamagedSoldierToTreatSoldierPercent = function(playerDoc){
+Utils.getPlayerDamagedSoldierToWoundedSoldierPercent = function(playerDoc){
 	return 0.4
 }
 
 /**
- * 联盟战斗结束后,获取需要的结果
+ * 月门战斗结束后,获取需要的结果
  * @param stageName
  * @param isWin
  * @param fightDatas
@@ -2050,7 +2039,7 @@ Utils.getPlayerDamagedSoldierToTreatSoldierPercent = function(playerDoc){
 Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas){
 	var self = this
 	var playerDatas = {}
-	var treatSoldiers = {}
+	var woundedSoldiers = {}
 	var damagedSoldiers = {}
 	var playerRewards = {}
 	var playerKills = {}
@@ -2065,7 +2054,7 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 					kill:0,
 					rewards:[]
 				}
-				treatSoldiers[roundData.playerId] = {}
+				woundedSoldiers[roundData.playerId] = {}
 				damagedSoldiers[roundData.playerId] = {}
 				playerKills[roundData.playerId] = 0
 			}
@@ -2086,8 +2075,8 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 					return soldierConfig
 				}()
 				totalDeath += attackSoldierRoundData.soldierDamagedCount * soldierConfig.citizen
-				if(!_.isObject(treatSoldiers[roundData.playerId][attackSoldierRoundData.soldierName])){
-					treatSoldiers[roundData.playerId][attackSoldierRoundData.soldierName] = {
+				if(!_.isObject(woundedSoldiers[roundData.playerId][attackSoldierRoundData.soldierName])){
+					woundedSoldiers[roundData.playerId][attackSoldierRoundData.soldierName] = {
 						name:attackSoldierRoundData.soldierName,
 						count:0
 					}
@@ -2096,8 +2085,8 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 						count:0
 					}
 				}
-				var treatSoldier = treatSoldiers[roundData.playerId][attackSoldierRoundData.soldierName]
-				treatSoldier.count += attackSoldierRoundData.soldierTreatedCount
+				var woundedSoldier = woundedSoldiers[roundData.playerId][attackSoldierRoundData.soldierName]
+				woundedSoldier.count += attackSoldierRoundData.soldierWoundedCount
 				var damagedSoldier = damagedSoldiers[roundData.playerId][attackSoldierRoundData.soldierName]
 				damagedSoldier.count += attackSoldierRoundData.soldierDamagedCount
 			})
@@ -2168,14 +2157,14 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 	_.each(damagedSoldiers, function(damagedSoldier, playerId){
 		damagedSoldiers[playerId] = _.values(damagedSoldier)
 	})
-	_.each(treatSoldiers, function(treatSoldier, playerId){
-		treatSoldiers[playerId] = _.values(treatSoldier)
+	_.each(woundedSoldiers, function(woundedSoldier, playerId){
+		woundedSoldiers[playerId] = _.values(woundedSoldier)
 	})
 	var params = {
 		playerDatas:playerDatas,
 		fightStar:fightStar,
 		damagedSoldiers:damagedSoldiers,
-		treatSoldiers:treatSoldiers,
+		woundedSoldiers:woundedSoldiers,
 		playerRewards:playerRewards,
 		playerKills:playerKills
 	}
@@ -2235,144 +2224,6 @@ Utils.getAllianceFightSecondsPerFight = function(){
 	return AllianceInit.intInit.allianceFightTimePerFight.value * 1000
 }
 
-/**
- * 更新当前战斗的玩家的部队兵力信息
- * @param attackCountData
- * @param attackTroop
- * @param defenceCountData
- * @param defenceTroop
- * @param soldierFightResult
- */
-Utils.updateAllianceMoonGateData = function(attackCountData, attackTroop, defenceCountData, defenceTroop, soldierFightResult){
-	var self = this
-	var attackSoldierDatas = {}
-	var defenceSoldierDatas = {}
-	var attackKill = 0
-	var defenceKill = 0
-	var soldierConfig = null
-	var kill = null
-	var attackPlayerKill = _.find(attackCountData.our.playerKills, function(playerKill){
-		return _.isEqual(playerKill.id, attackTroop.id)
-	})
-	if(!_.isObject(attackPlayerKill)){
-		attackPlayerKill = {
-			id:attackTroop.id,
-			name:attackTroop.name,
-			kill:0
-		}
-		attackCountData.our.playerKills.push(attackPlayerKill)
-	}
-	var defencePlayerKill = _.find(attackCountData.enemy.playerKills, function(playerKill){
-		return _.isEqual(playerKill.id, defenceTroop.id)
-	})
-	if(!_.isObject(defencePlayerKill)){
-		defencePlayerKill = {
-			id:defenceTroop.id,
-			name:defenceTroop.name,
-			kill:0
-		}
-		attackCountData.enemy.playerKills.push(defencePlayerKill)
-	}
-
-	_.each(soldierFightResult.attackRoundDatas, function(attackRoundData){
-		var soldierName = attackRoundData.soldierName
-		if(!_.isObject(attackSoldierDatas[soldierName])){
-			attackSoldierDatas[soldierName] = {
-				soldierDamagedCount:0,
-				soldierTreatedCount:0
-			}
-		}
-		var soldierData = attackSoldierDatas[soldierName]
-		soldierData.soldierDamagedCount += attackRoundData.soldierDamagedCount
-		soldierData.soldierTreatedCount += attackRoundData.soldierTreatedCount
-
-		if(self.hasNormalSoldier(soldierName)){
-			soldierConfig = UnitConfig.normal[soldierName + "_" + attackRoundData.soldierStar]
-			kill = attackRoundData.soldierDamagedCount * soldierConfig.citizen
-			defenceKill += kill
-		}else{
-			soldierConfig = UnitConfig.special[soldierName]
-			kill = attackRoundData.soldierDamagedCount * soldierConfig.citizen
-			defenceKill += kill
-		}
-	})
-	defenceTroop.kill += defenceKill
-	defencePlayerKill.kill += defenceKill
-	var willRemovedSoldiers = []
-	_.each(attackTroop.soldiers, function(soldier){
-		var soldierData = attackSoldierDatas[soldier.name]
-		if(_.isObject(soldierData)){
-			soldier.count -= soldierData.soldierDamagedCount
-			if(soldier.count <= 0) willRemovedSoldiers.push(soldier)
-			var treatSoldier = _.find(attackTroop.treatSoldiers, function(theTreatSoldier){
-				return _.isEqual(theTreatSoldier.name, soldier.name)
-			})
-			if(_.isObject(treatSoldier)){
-				treatSoldier.count += soldierData.soldierTreatedCount
-			}else{
-				treatSoldier = {
-					name:soldier.name,
-					count:soldierData.soldierTreatedCount
-				}
-				attackTroop.treatSoldiers.push(treatSoldier)
-			}
-		}
-	})
-	LogicUtils.removeItemsInArray(attackTroop.soldiers, willRemovedSoldiers)
-
-	_.each(soldierFightResult.defenceRoundDatas, function(defenceRoundData){
-		var soldierName = defenceRoundData.soldierName
-		if(!_.isObject(defenceSoldierDatas[soldierName])){
-			defenceSoldierDatas[soldierName] = {
-				soldierDamagedCount:0,
-				soldierTreatedCount:0
-			}
-		}
-		var soldierData = defenceSoldierDatas[soldierName]
-		soldierData.soldierDamagedCount += defenceRoundData.soldierDamagedCount
-		soldierData.soldierTreatedCount += defenceRoundData.soldierTreatedCount
-
-		if(self.hasNormalSoldier(soldierName)){
-			soldierConfig = UnitConfig.normal[soldierName + "_" + defenceRoundData.soldierStar]
-			kill = defenceRoundData.soldierDamagedCount * soldierConfig.citizen
-			attackKill += kill
-		}else{
-			soldierConfig = UnitConfig.special[soldierName]
-			kill = defenceRoundData.soldierDamagedCount * soldierConfig.citizen
-			attackKill += kill
-		}
-	})
-	attackTroop.kill += attackKill
-	attackPlayerKill.kill += attackKill
-	willRemovedSoldiers = []
-	_.each(defenceTroop.soldiers, function(soldier){
-		var soldierData = defenceSoldierDatas[soldier.name]
-		if(_.isObject(soldierData)){
-			soldier.count -= soldierData.soldierDamagedCount
-			if(soldier.count <= 0) willRemovedSoldiers.push(soldier)
-			var treatSoldier = _.find(defenceTroop.treatSoldiers, function(theTreatSoldier){
-				return _.isEqual(theTreatSoldier.name, soldier.name)
-			})
-			if(_.isObject(treatSoldier)){
-				treatSoldier.count += soldierData.soldierTreatedCount
-			}else{
-				treatSoldier = {
-					name:soldier.name,
-					count:soldierData.soldierTreatedCount
-				}
-				defenceTroop.treatSoldiers.push(treatSoldier)
-			}
-		}
-	})
-	LogicUtils.removeItemsInArray(defenceTroop.soldiers, willRemovedSoldiers)
-
-	attackCountData.our.playerKills = _.sortBy(attackCountData.our.playerKills, function(playerKill){
-		return -playerKill.kill
-	})
-	attackCountData.enemy.playerKills = _.sortBy(attackCountData.enemy.playerKills, function(playerKill){
-		return -playerKill.kill
-	})
-}
 
 /**
  * 获取联盟战后联盟获得的保护时间

@@ -62,14 +62,6 @@ module.exports = {
 		AttackWin:"attackWin",
 		DefenceWin:"defenceWin"
 	},
-	AllianceFightResult:{
-		OurWin:"ourWin",
-		EnemyWin:"enemyWin"
-	},
-	AllianceMoonGateOwner:{
-		Our:"our",
-		Enemy:"enemy"
-	},
 	AllianceLanguage:{
 		All:"all",
 		Cn:"cn",
@@ -168,5 +160,29 @@ module.exports = {
 		StrikeCity:"strikeCity",
 		CityBeStriked:"cityBeStriked",
 		AttackCity:"attackCity"
-	}
+	},
+	AllianceMergePosition:[
+		"left",
+		"right",
+		"top",
+		"bottom"
+	],
+	AllianceMarchType:{
+		Village:"village",
+		City:"city",
+		Shrine:"shrine",
+		HelpDefence:"helpDefence"
+	},
+	AllianceViewDataKeys:[
+		"basicInfo",
+		"members",
+		"buildings",
+		"villages",
+		"mapObjects",
+		"villageEvents",
+		"strikeMarchEvents",
+		"strikeMarchReturnEvents",
+		"attackMarchEvents",
+		"attackMarchReturnEvents"
+	]
 }

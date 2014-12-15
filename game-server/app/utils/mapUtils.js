@@ -16,8 +16,8 @@ var AllianceBuildingConfig = GameDatas.AllianceBuilding
 var Utils = module.exports
 
 var MapSize = {
-	width:21,
-	height:21
+	width:AllianceInit.intInit.allianceRegionMapWidth.value,
+	height:AllianceInit.intInit.allianceRegionMapHeight.value
 }
 
 /**

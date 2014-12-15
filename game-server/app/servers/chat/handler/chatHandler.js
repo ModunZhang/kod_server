@@ -267,14 +267,14 @@ var ChatHandler = function(app){
 			}
 		},
 		{
-			command:"treatsoldiers",
-			desc:"设置伤兵数量:treatsoldiers 5",
+			command:"woundedsoldiers",
+			desc:"设置伤兵数量:woundedsoldiers 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.treatsoldiers(session, uid, count, function(e){
+					self.app.rpc.logic.commandRemote.woundedsoldiers(session, uid, count, function(e){
 						callback(e)
 					})
 				}

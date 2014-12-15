@@ -696,15 +696,15 @@ pro.soldiers = function(uid, count, callback){
  * @param count
  * @param callback
  */
-pro.treatsoldiers = function(uid, count, callback){
+pro.woundedsoldiers = function(uid, count, callback){
 	var self = this
 	this.playerDao.findByIdAsync(uid).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 
-		_.each(doc.treatSoldiers, function(value, key){
-			doc.treatSoldiers[key] = count
+		_.each(doc.woundedSoldiers, function(value, key){
+			doc.woundedSoldiers[key] = count
 		})
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
@@ -1017,7 +1017,7 @@ pro.donatelevel = function(uid, donatelevel, callback){
 			data:docInAlliance
 		}]
 
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1061,7 +1061,7 @@ pro.alliancehonour = function(uid, honnour, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1105,7 +1105,7 @@ pro.allianceperception = function(uid, perception, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1173,11 +1173,11 @@ pro.alliancefight = function(uid, targetAllianceTag, callback){
 		var attackAllianceData = {}
 		attackAllianceData.basicInfo = attackAllianceDoc.basicInfo
 		attackAllianceData.moonGateData = attackAllianceDoc.moonGateData
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
 		var defenceAllianceData = {}
 		defenceAllianceData.basicInfo = defenceAllianceDoc.basicInfo
 		defenceAllianceData.moonGateData = defenceAllianceDoc.moonGateData
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc._id, defenceAllianceData])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){

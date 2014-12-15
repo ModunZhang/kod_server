@@ -613,13 +613,13 @@ Api.activateAllianceShrineStage = function(stageName, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.marchToShrine = function(shrineEventId, dragonType, soldiers, callback){
+Api.attackAllianceShrine = function(shrineEventId, dragonType, soldiers, callback){
 	var info = {
 		shrineEventId:shrineEventId,
 		dragonType:dragonType,
 		soldiers:soldiers
 	}
-	var route = "logic.allianceHandler.marchToShrine"
+	var route = "logic.allianceHandler.attackAllianceShrine"
 	pomelo.request(route, info, callback)
 }
 
@@ -639,25 +639,6 @@ Api.revengeAlliance = function(reportId, callback){
 	}
 	var route = "logic.allianceHandler.revengeAlliance"
 	pomelo.request(route, info, callback)
-}
-
-Api.marchToMoonGate = function(dragonType, soldiers, callback){
-	var info = {
-		dragonType:dragonType,
-		soldiers:soldiers
-	}
-	var route = "logic.allianceHandler.marchToMoonGate"
-	pomelo.request(route, info, callback)
-}
-
-Api.retreatFromMoonGate = function(callback){
-	var route = "logic.allianceHandler.retreatFromMoonGate"
-	pomelo.request(route, null, callback)
-}
-
-Api.challengeMoonGateEnemyTroop = function(callback){
-	var route = "logic.allianceHandler.challengeMoonGateEnemyTroop"
-	pomelo.request(route, null, callback)
 }
 
 Api.getAllianceViewData = function(targetAllianceId, includeMoonGateData, callback){
@@ -681,7 +662,6 @@ Api.searchAllianceInfoByTag = function(tag, callback){
 	var route = "logic.allianceHandler.searchAllianceInfoByTag"
 	pomelo.request(route, info, callback)
 }
-
 
 Api.helpAllianceMemberDefence = function(dragonType, soldiers, targetPlayerId, callback){
 	var info = {

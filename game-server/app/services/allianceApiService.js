@@ -656,7 +656,8 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		}
 		return Promise.resolve()
 	}).then(function(){
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs)
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
@@ -743,7 +744,8 @@ pro.editAllianceTerrian = function(playerId, terrain, callback){
 			type:Consts.DataChangedType.Add,
 			data:event
 		}]
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -854,7 +856,7 @@ pro.editAllianceTitleName = function(playerId, title, titleName, callback){
 	}).then(function(){
 		var allianceData = {}
 		allianceData.titles = allianceDoc.titles
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
@@ -933,7 +935,7 @@ pro.editAllianceNotice = function(playerId, notice, callback){
 		funcs.push(self.allianceDao.updateAsync(allianceDoc))
 		return Promise.all(funcs)
 	}).then(function(){
-		return self.pushService.onAllianceDataChangedAsync(allianceDoc, allianceData)
+		return self.pushService.onAllianceDataChangedAsync(allianceDoc._id, allianceData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -1007,7 +1009,7 @@ pro.editAllianceDescription = function(playerId, description, callback){
 		funcs.push(self.allianceDao.updateAsync(allianceDoc))
 		return Promise.all(funcs)
 	}).then(function(){
-		return self.pushService.onAllianceDataChangedAsync(allianceDoc, allianceData)
+		return self.pushService.onAllianceDataChangedAsync(allianceDoc._id, allianceData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -1075,7 +1077,7 @@ pro.editAllianceJoinType = function(playerId, joinType, callback){
 	}).then(function(){
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
-		return self.pushService.onAllianceDataChangedAsync(allianceDoc, allianceData)
+		return self.pushService.onAllianceDataChangedAsync(allianceDoc._id, allianceData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -1187,7 +1189,8 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1322,7 +1325,8 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1440,7 +1444,8 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

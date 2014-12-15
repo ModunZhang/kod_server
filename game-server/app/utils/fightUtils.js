@@ -15,12 +15,12 @@ var Utils = module.exports
 /**
  * 军队战斗
  * @param attackSoldiers
- * @param attackTreatSoldierPercent
+ * @param attackWoundedSoldierPercent
  * @param defenceSoldiers
- * @param defenceTreatSoldierPercent
+ * @param defenceWoundedSoldierPercent
  * @returns {*}
  */
-Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent, defenceSoldiers, defenceTreatSoldierPercent){
+Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPercent, defenceSoldiers, defenceWoundedSoldierPercent){
 	attackSoldiers = CommonUtils.clone(attackSoldiers)
 	defenceSoldiers = CommonUtils.clone(defenceSoldiers)
 	var attackSoldiersAfterFight = []
@@ -48,8 +48,8 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 		if(attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.floor(attackSoldier.currentCount * 0.7)
 		if(defenceDamagedSoldierCount > defenceSoldier.currentCount * 0.7) defenceDamagedSoldierCount = Math.floor(defenceSoldier.currentCount * 0.7)
 
-		var attackTreatedSoldierCount = Math.ceil(attackDamagedSoldierCount * attackTreatSoldierPercent)
-		var defenceTreatedSoldierCount = Math.ceil(defenceDamagedSoldierCount * defenceTreatSoldierPercent)
+		var attackWoundedSoldierCount = Math.ceil(attackDamagedSoldierCount * attackWoundedSoldierPercent)
+		var defenceWoundedSoldierCount = Math.ceil(defenceDamagedSoldierCount * defenceWoundedSoldierPercent)
 		var attackMoraleDecreased = Math.ceil(attackDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / attackSoldier.totalCount * 100)
 		var dfenceMoraleDecreased = Math.ceil(defenceDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / defenceSoldier.totalCount * 100)
 		attackResults.push({
@@ -57,7 +57,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 			soldierStar:attackSoldier.star,
 			soldierCount:attackSoldier.currentCount,
 			soldierDamagedCount:attackDamagedSoldierCount,
-			soldierTreatedCount:attackTreatedSoldierCount,
+			soldierWoundedCount:attackWoundedSoldierCount,
 			morale:attackSoldier.morale,
 			moraleDecreased:attackMoraleDecreased > attackSoldier.morale ? attackSoldier.morale : attackMoraleDecreased,
 			isWin:attackTotalPower >= defenceTotalPower
@@ -67,14 +67,14 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 			soldierStar:defenceSoldier.star,
 			soldierCount:defenceSoldier.currentCount,
 			soldierDamagedCount:defenceDamagedSoldierCount,
-			soldierTreatedCount:defenceTreatedSoldierCount,
+			soldierWoundedCount:defenceWoundedSoldierCount,
 			morale:defenceSoldier.morale,
 			moraleDecreased:dfenceMoraleDecreased > defenceSoldier.morale ? defenceSoldier.morale : dfenceMoraleDecreased,
 			isWin:attackTotalPower < defenceTotalPower
 		})
 		attackSoldier.round += 1
 		attackSoldier.currentCount -= attackDamagedSoldierCount
-		attackSoldier.treatCount += attackTreatedSoldierCount
+		attackSoldier.woundedCount += attackWoundedSoldierCount
 		attackSoldier.morale -= attackMoraleDecreased
 		attackSoldier.killedSoldiers.push({
 			name:defenceSoldier.name,
@@ -83,7 +83,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackTreatSoldierPercent
 		})
 		defenceSoldier.round += 1
 		defenceSoldier.currentCount -= defenceDamagedSoldierCount
-		defenceSoldier.treatCount += defenceTreatedSoldierCount
+		defenceSoldier.woundedCount += defenceWoundedSoldierCount
 		defenceSoldier.morale -= dfenceMoraleDecreased
 		defenceSoldier.killedSoldiers.push({
 			name:attackSoldier.name,
@@ -158,11 +158,11 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
 /**
  *
  * @param attackSoldiers
- * @param attackTreatSoldierPercent
+ * @param attackWoundedSoldierPercent
  * @param defenceWall
  * @returns {*}
  */
-Utils.soldierToWallFight = function(attackSoldiers, attackTreatSoldierPercent, defenceWall){
+Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent, defenceWall){
 	attackSoldiers = CommonUtils.clone(attackSoldiers)
 	defenceWall = CommonUtils.clone(defenceWall)
 	var attackSoldiersAfterFight = []
@@ -188,13 +188,13 @@ Utils.soldierToWallFight = function(attackSoldiers, attackTreatSoldierPercent, d
 		if(attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.floor(attackSoldier.currentCount * 0.7)
 		if(defenceDamagedHp > defenceWall.currentHp) defenceDamagedHp = defenceWall.currentHp
 
-		var attackTreatedSoldierCount = Math.ceil(attackDamagedSoldierCount * attackTreatSoldierPercent)
+		var attackWoundedSoldierCount = Math.ceil(attackDamagedSoldierCount * attackWoundedSoldierPercent)
 		attackResults.push({
 			soldierName:attackSoldier.name,
 			soldierStar:attackSoldier.star,
 			soldierCount:attackSoldier.currentCount,
 			soldierDamagedCount:attackDamagedSoldierCount,
-			soldierTreatedCount:attackTreatedSoldierCount,
+			soldierWoundedCount:attackWoundedSoldierCount,
 			isWin:attackTotalPower >= defenceTotalPower
 		})
 		defenceResults.push({
@@ -206,7 +206,7 @@ Utils.soldierToWallFight = function(attackSoldiers, attackTreatSoldierPercent, d
 		attackSoldier.round += 1
 		attackSoldier.currentCount -= attackDamagedSoldierCount
 		attackSoldier.damagedCount += attackDamagedSoldierCount
-		attackSoldier.treatCount += attackTreatedSoldierCount
+		attackSoldier.woundedCount += attackWoundedSoldierCount
 		defenceWall.round += 1
 		defenceWall.currentHp -= defenceDamagedHp
 		defenceWall.killedSoldiers.push({
