@@ -1261,7 +1261,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, rect){
 		wallLevel:playerDoc.wall.level,
 		wallHp:playerDoc.resources.wallHp,
 		status:Consts.PlayerStatus.Normal,
-		helpTroopsCount:0,
+		helpedByTroopsCount:0,
 		power:playerDoc.basicInfo.power,
 		kill:playerDoc.basicInfo.kill,
 		loyalty:playerDoc.allianceInfo.loyalty,
@@ -1483,9 +1483,9 @@ Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineE
  * @returns {boolean}
  */
 Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlayerId){
-	for(var i = 0; i < allianceDoc.helpDefenceMarchEvents.length; i++){
+	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
 		var marchEvent = allianceDoc.helpDefenceMarchEvents[i]
-		if(_.isEqual(marchEvent.playerData.id, playerDoc._id) && _.isEqual(marchEvent.targetPlayerData.id, targetPlayerId)) return true
+		if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id) && _.isEqual(marchEvent.beHelpedPlayerData.id, targetPlayerId)) return true
 	}
 	var playerTroop = null
 	for(i = 0; i < playerDoc.helpToTroops.length; i++){
@@ -1503,9 +1503,9 @@ Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlay
  */
 Utils.getAlliancePlayerBeHelpedTroopsCount = function(allianceDoc, playerDoc){
 	var count = 0
-	for(var i = 0; i < allianceDoc.helpDefenceMarchEvents.length; i++){
-		var marchEvent = allianceDoc.helpDefenceMarchEvents[i]
-		if(_.isEqual(marchEvent.targetPlayerData.id, playerDoc._id)) count += 1
+	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
+		var marchEvent = allianceDoc.attackMarchEvents[i]
+		if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.beHelpedPlayerData.id, playerDoc._id)) count += 1
 	}
 	count += playerDoc.helpedByTroops.length
 	return count
@@ -1520,7 +1520,7 @@ Utils.getAlliancePlayerBeHelpedTroopsCount = function(allianceDoc, playerDoc){
 Utils.isPlayerHasHelpedTroopInAllianceMember = function(playerDoc, targetPlayerId){
 	for(var i = 0; i < playerDoc.helpToTroops.length; i++){
 		var troop = playerDoc.helpToTroops[i]
-		if(_.isEqual(troop.targetPlayerData.id, targetPlayerId)) return true
+		if(_.isEqual(troop.beHelpedPlayerData.id, targetPlayerId)) return true
 	}
 	return false
 }
@@ -1599,27 +1599,26 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 		mergeStyle:Consts.AllianceMergePosition[(Math.random() * 4) << 0],
 		attackAllianceId:attackAllianceDoc._id,
 		defenceAllianceId:defenceAllianceDoc._id,
-		countData:{
-			attackAlliance:{
-				kill:0,
-				routCount:0,
-				strikeCount:0,
-				attackSuccessCount:0,
-				attackFailCount:0,
-				defenceSuccessCount:0,
-				defenceFailCount:0,
-				playerKills:[]
-			},
-			defenceAlliance:{
-				kill:0,
-				routCount:0,
-				strikeCount:0,
-				attackSuccessCount:0,
-				attackFailCount:0,
-				defenceSuccessCount:0,
-				defenceFailCount:0,
-				playerKills:[]
-			}
+		attackPlayerKills:[],
+		attackAllianceCountData:{
+			kill:0,
+			routCount:0,
+			strikeCount:0,
+			attackSuccessCount:0,
+			attackFailCount:0,
+			defenceSuccessCount:0,
+			defenceFailCount:0
+		},
+		defencePlayerKills:[],
+		defenceAllianceCountData:{
+			kill:0,
+			routCount:0,
+			strikeCount:0,
+			attackSuccessCount:0,
+			attackFailCount:0,
+			defenceSuccessCount:0,
+			defenceFailCount:0,
+			playerKills:[]
 		}
 	}
 	defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
@@ -1709,6 +1708,7 @@ Utils.createAttackPlayerCityMarchEvent = function(playerDoc, attackTroop, enemyA
  * @param report
  */
 Utils.addPlayerReport = function(playerDoc, playerData, report){
+	if(!_.isArray(playerData.__reports)) playerData.__reports = []
 	if(playerDoc.reports.length >= Define.PlayerReportsMaxSize){
 		var willRemovedReport = this.getPlayerFirstUnSavedReport(playerDoc)
 		this.removeItemInArray(playerDoc.reports, willRemovedReport)
@@ -1744,23 +1744,33 @@ Utils.getAllianceViewData = function(allianceDoc){
 }
 
 /**
+ * 创建敌对联盟修改后的必要数据
+ * @param allianceData
+ * @param enemyAllianceData
+ */
+Utils.putAllianceDataToEnemyAllianceData = function(allianceData, enemyAllianceData){
+	enemyAllianceData.enemyAllianceDoc = {}
+	_.forEach(Consts.AllianceViewDataKeys, function(key){
+		if(_.isObject(allianceData[key])) enemyAllianceData.enemyAllianceDoc[key] = allianceData[key]
+		var arrayKey = "__" + key
+		if(_.isObject(allianceData[arrayKey])) enemyAllianceData.enemyAllianceDoc[arrayKey] = allianceData[arrayKey]
+	})
+}
+
+/**
  * 如果联盟正在战斗,推送我方联盟相关数据变化到敌对联盟
  * @param allianceDoc
  * @param allianceData
  * @param pushFuncs
+ * @param pushService
  */
-Utils.pushAllianceDataToEnemyAllianceIfNeeded = function(allianceDoc, allianceData, pushFuncs){
+Utils.pushAllianceDataToEnemyAllianceIfNeeded = function(allianceDoc, allianceData, pushFuncs, pushService){
 	if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(allianceDoc.allianceFight)){
-		var targetAllianceData = {}
-		targetAllianceData.enemyAllianceDoc = {}
-		_.forEach(Consts.AllianceViewDataKeys, function(key){
-			if(_.isObject(allianceData[key])) targetAllianceData.enemyAllianceDoc[key] = allianceData[key]
-			var arrayKey = "__" + key
-			if(_.isObject(allianceData[arrayKey])) targetAllianceData.enemyAllianceDoc[arrayKey] = allianceData[arrayKey]
-		})
-		if(!_.isEmpty(targetAllianceData.enemyAllianceDoc)){
-			var targetAllianceId = _.isEqual(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId) ? allianceDoc.allianceFight.defenceAllianceId : allianceDoc.allianceFight.attackAllianceId
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, targetAllianceId, targetAllianceData])
+		var enemyAllianceData = {}
+		this.putAllianceDataToEnemyAllianceData(allianceData, enemyAllianceData)
+		if(!_.isEmpty(enemyAllianceData.enemyAllianceDoc)){
+			var enemyAllianceId = _.isEqual(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId) ? allianceDoc.allianceFight.defenceAllianceId : allianceDoc.allianceFight.attackAllianceId
+			pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, enemyAllianceId, enemyAllianceData])
 		}
 	}
 }

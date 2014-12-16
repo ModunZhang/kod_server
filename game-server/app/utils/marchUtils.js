@@ -81,6 +81,15 @@ var createAllianceData = function(allianceDoc){
 	return allianceData
 }
 
+/**
+ * 创建进攻行军事件中进攻玩家信息
+ * @param allianceDoc
+ * @param playerDoc
+ * @param playerLocation
+ * @param dragon
+ * @param soldiers
+ * @returns {*}
+ */
 var createAttackPlayerData = function(allianceDoc, playerDoc, playerLocation, dragon, soldiers){
 	var playerData = {
 		id:playerDoc._id,
@@ -96,6 +105,19 @@ var createAttackPlayerData = function(allianceDoc, playerDoc, playerLocation, dr
 	return playerData
 }
 
+/**
+ * 创建进攻回城行军事件中进攻玩家信息
+ * @param allianceDoc
+ * @param playerDoc
+ * @param playerLocation
+ * @param dragon
+ * @param dragonExpAdd
+ * @param soldiers
+ * @param woundedSoldiers
+ * @param rewards
+ * @param kill
+ * @returns {*}
+ */
 var createAttackPlayerReturnData = function(allianceDoc, playerDoc, playerLocation, dragon, dragonExpAdd, soldiers, woundedSoldiers, rewards, kill){
 	var playerData = {
 		id:playerDoc._id,
@@ -115,9 +137,52 @@ var createAttackPlayerReturnData = function(allianceDoc, playerDoc, playerLocati
 	return playerData
 }
 
-var createStrikePlayerData = function(){
-
+/**
+ * 创建突袭行军事件中进攻玩家个人信息
+ * @param allianceDoc
+ * @param playerDoc
+ * @param playerLocation
+ * @param dragon
+ * @returns {*}
+ */
+var createStrikePlayerData = function(allianceDoc, playerDoc, playerLocation, dragon){
+	var playerData = {
+		id:playerDoc._id,
+		name:playerDoc.basicInfo.name,
+		cityName:playerDoc.basicInfo.cityName,
+		location:playerLocation,
+		dragon:{
+			type:dragon.type
+		},
+		alliance:createAllianceData(allianceDoc)
+	}
+	return playerData
 }
+
+/**
+ * 创建突袭回城行军事件中进攻玩家信息
+ * @param allianceDoc
+ * @param playerDoc
+ * @param playerLocation
+ * @param dragon
+ * @param rewards
+ * @returns {*}
+ */
+var createStrikePlayerReturnData = function(allianceDoc, playerDoc, playerLocation, dragon, rewards){
+	var playerData = {
+		id:playerDoc._id,
+		name:playerDoc.basicInfo.name,
+		cityName:playerDoc.basicInfo.cityName,
+		location:playerLocation,
+		dragon:{
+			type:dragon.type
+		},
+		alliance:createAllianceData(allianceDoc),
+		rewards:rewards
+	}
+	return playerData
+}
+
 
 /**
  * 获取玩家行军时间
@@ -288,10 +353,10 @@ Utils.createHelpDefenceMarchEvent = function(playerDoc, allianceDoc, dragon, sol
  * @param kill
  * @returns {*}
  */
-Utils.createAllianceHelpFightMarchReturnEvent = function(playerDoc, beHelpedPlayerDoc, allianceDoc, dragon, dragonExpAdd, soldiers, woundedSoldiers, rewards, kill){
+Utils.createHelpDefenceMarchReturnEvent = function(playerDoc, beHelpedPlayerDoc, allianceDoc, dragon, dragonExpAdd, soldiers, woundedSoldiers, rewards, kill){
 	var beHelpedPlayerLocation = LogicUtils.getAllianceMemberById(allianceDoc, beHelpedPlayerDoc._id).location
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, allianceDoc, beHelpedPlayerLocation, allianceDoc, playerLocation)
+	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, beHelpedPlayerLocation, allianceDoc, playerLocation)
 	var event = {
 		id:ShortId.generate(),
 		marchType:Consts.AllianceMarchType.HelpDefence,
@@ -304,6 +369,69 @@ Utils.createAllianceHelpFightMarchReturnEvent = function(playerDoc, beHelpedPlay
 			cityName:beHelpedPlayerDoc.basicInfo.cityName,
 			location:beHelpedPlayerLocation,
 			alliance:createAllianceData(allianceDoc)
+		}
+	}
+	return event
+}
+
+/**
+ * 创建突袭玩家城市行军事件
+ * @param playerDoc
+ * @param allianceDoc
+ * @param dragon
+ * @param defencePlayerDoc
+ * @param defenceAllianceDoc
+ * @returns {*}
+ */
+Utils.createStrikePlayerCityMarchEvent = function(playerDoc, allianceDoc, dragon, defencePlayerDoc, defenceAllianceDoc){
+	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var defencePlayerLocation = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location
+	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defencePlayerLocation)
+
+	var event = {
+		id:ShortId.generate(),
+		marchType:Consts.AllianceMarchType.City,
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime,
+		attackPlayerData:createStrikePlayerData(allianceDoc, playerDoc, playerLocation, dragon),
+		defencePlayerData:{
+			id:defencePlayerDoc._id,
+			name:defencePlayerDoc.basicInfo.name,
+			cityName:defencePlayerDoc.basicInfo.cityName,
+			location:defencePlayerLocation,
+			alliance:createAllianceData(defenceAllianceDoc)
+		}
+	}
+	return event
+}
+
+/**
+ * 创建突袭玩家城市回城行军事件
+ * @param playerDoc
+ * @param allianceDoc
+ * @param dragon
+ * @param defencePlayerDoc
+ * @param defenceAllianceDoc
+ * @param rewards
+ * @returns {*}
+ */
+Utils.createStrikePlayerCityMarchReturnEvent = function(playerDoc, allianceDoc, dragon, defencePlayerDoc, defenceAllianceDoc, rewards){
+	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var defencePlayerLocation = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location
+	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defencePlayerLocation)
+
+	var event = {
+		id:ShortId.generate(),
+		marchType:Consts.AllianceMarchType.City,
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime,
+		attackPlayerData:createStrikePlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, rewards),
+		defencePlayerData:{
+			id:defencePlayerDoc._id,
+			name:defencePlayerDoc.basicInfo.name,
+			cityName:defencePlayerDoc.basicInfo.cityName,
+			location:defencePlayerLocation,
+			alliance:createAllianceData(defenceAllianceDoc)
 		}
 	}
 	return event

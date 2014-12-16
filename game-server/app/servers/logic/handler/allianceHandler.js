@@ -579,8 +579,7 @@ pro.revengeAlliance = function(msg, session, next){
  */
 pro.getAllianceViewData = function(msg, session, next){
 	var targetAllianceId = msg.targetAllianceId
-	var includeMoonGateData = msg.includeMoonGateData
-	this.allianceApiService4.getAllianceViewDataAsync(session.uid, targetAllianceId, includeMoonGateData).then(function(){
+	this.allianceApiService4.getAllianceViewDataAsync(session.uid, targetAllianceId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -639,9 +638,9 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.retreatFromHelpedAllianceMember = function(msg, session, next){
-	var targetPlayerId = msg.targetPlayerId
-	this.allianceApiService4.retreatFromHelpedAllianceMemberAsync(session.uid, targetPlayerId).then(function(){
+pro.retreatFromBeHelpedAllianceMember = function(msg, session, next){
+	var beHelpedPlayerId = msg.beHelpedPlayerId
+	this.allianceApiService4.retreatFromBeHelpedAllianceMemberAsync(session.uid, beHelpedPlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -656,8 +655,8 @@ pro.retreatFromHelpedAllianceMember = function(msg, session, next){
  */
 pro.strikePlayerCity = function(msg, session, next){
 	var dragonType = msg.dragonType
-	var enemyPlayerId = msg.enemyPlayerId
-	this.allianceApiService4.strikePlayerCityAsync(session.uid, dragonType, enemyPlayerId).then(function(){
+	var defencePlayerId = msg.defencePlayerId
+	this.allianceApiService4.strikePlayerCityAsync(session.uid, dragonType, defencePlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -671,8 +670,8 @@ pro.strikePlayerCity = function(msg, session, next){
  * @param next
  */
 pro.attackPlayerCity = function(msg, session, next){
-	var enemyPlayerId = msg.enemyPlayerId
-	this.allianceApiService4.attackPlayerCityAsync(session.uid, enemyPlayerId).then(function(){
+	var defencePlayerId = msg.defencePlayerId
+	this.allianceApiService4.attackPlayerCityAsync(session.uid, defencePlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

@@ -641,10 +641,9 @@ Api.revengeAlliance = function(reportId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.getAllianceViewData = function(targetAllianceId, includeMoonGateData, callback){
+Api.getAllianceViewData = function(targetAllianceId, callback){
 	var info = {
-		targetAllianceId:targetAllianceId,
-		includeMoonGateData:includeMoonGateData
+		targetAllianceId:targetAllianceId
 	}
 	var route = "logic.allianceHandler.getAllianceViewData"
 	pomelo.request(route, info, callback)
@@ -673,18 +672,18 @@ Api.helpAllianceMemberDefence = function(dragonType, soldiers, targetPlayerId, c
 	pomelo.request(route, info, callback)
 }
 
-Api.retreatFromHelpedAllianceMember = function(targetPlayerId, callback){
+Api.retreatFromBeHelpedAllianceMember = function(beHelpedPlayerId, callback){
 	var info = {
-		targetPlayerId:targetPlayerId
+		beHelpedPlayerId:beHelpedPlayerId
 	}
-	var route = "logic.allianceHandler.retreatFromHelpedAllianceMember"
+	var route = "logic.allianceHandler.retreatFromBeHelpedAllianceMember"
 	pomelo.request(route, info, callback)
 }
 
-Api.strikePlayerCity = function(dragonType, enemyPlayerId, callback){
+Api.strikePlayerCity = function(dragonType, defencePlayerId, callback){
 	var info = {
 		dragonType:dragonType,
-		enemyPlayerId:enemyPlayerId
+		defencePlayerId:defencePlayerId
 	}
 	var route = "logic.allianceHandler.strikePlayerCity"
 	pomelo.request(route, info, callback)

@@ -1888,6 +1888,7 @@ Utils.createSoldiersForFight = function(playerDoc, soldiers){
 Utils.createDragonForFight = function(playerDoc, dragon){
 	var dragonForFight = {
 		type:dragon.type,
+		level:dragon.level,
 		strength:dragon.strength,
 		vitality:dragon.vitality,
 		maxHp:this.getPlayerDragonHpMax(playerDoc, dragon),

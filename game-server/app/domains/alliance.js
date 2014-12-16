@@ -78,7 +78,7 @@ var allianceSchema = new Schema({
 		wallLevel:{type:Number, required:true},
 		wallHp:{type:Number, required:true},
 		status:{type:String, required:true},
-		helpTroopsCount:{type:Number, required:true},
+		helpedByTroopsCount:{type:Number, required:true},
 		power:{type:Number, required:true},
 		kill:{type:Number, required:true},
 		loyalty:{type:Number, reuqired:true},
@@ -426,8 +426,7 @@ var allianceSchema = new Schema({
 				y:{type:Number, required:true}
 			},
 			dragon:{
-				type:{type:String, required:true},
-				expAdd:{type:String, required:true}
+				type:{type:String, required:true}
 			},
 			alliance:{
 				id:{type:String, required:true},
