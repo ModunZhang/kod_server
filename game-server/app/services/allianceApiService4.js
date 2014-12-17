@@ -282,7 +282,7 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		targetPlayerDoc = doc
 		if(DataUtils.isAlliancePlayerBeHelpedTroopsReachMax(allianceDoc, targetPlayerDoc)) return Promise.reject(new Error("目标玩家协防部队数量已达最大"))
-		var event = MarchUtils.createHelpDefenceMarchEvent(playerDoc, allianceDoc, playerDoc.dragons[dragonType], soldiers, targetPlayerDoc)
+		var event = MarchUtils.createHelpDefenceMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, targetPlayerDoc)
 		allianceDoc.attackMarchEvents.push(event)
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, targetPlayerDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
@@ -403,7 +403,7 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 			data:targetMemberInAlliance
 		}]
 
-		var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(playerDoc, beHelpedPlayerDoc, allianceDoc, helpTroop.dragon, helpTroop.dragon.expAdd, helpTroop.soldiers, helpTroop.woundedSoldiers, helpTroop.rewards, helpTroop.kill)
+		var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(allianceDoc, playerDoc, beHelpedPlayerDoc, helpTroop.dragon, helpTroop.dragon.expAdd, helpTroop.soldiers, helpTroop.woundedSoldiers, helpTroop.rewards, helpTroop.kill)
 		allianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 		allianceData.__attackMarchReturnEvents = [{
 			type:Consts.DataChangedType.Add,
@@ -469,9 +469,9 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 	var self = this
 	var attackPlayerDoc = null
 	var attackPlayerData = {}
-	var defencePlayerDoc = null
 	var attackAllianceDoc = null
 	var attackAllianceData = {}
+	var defencePlayerDoc = null
 	var defenceAllianceDoc = null
 	var pushFuncs = []
 	var eventFuncs = []
@@ -480,17 +480,141 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		attackPlayerDoc = doc
+		if(!_.isObject(attackPlayerDoc.alliance) || _.isEmpty(attackPlayerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
 		var dragon = attackPlayerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
 		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
+		dragon.status = Consts.DragonStatus.March
+		attackPlayerData.dragons = {}
+		attackPlayerData.dragons[dragonType] = attackPlayerDoc.dragons[dragonType]
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
+		return self.allianceDao.findByIdAsync(attackPlayerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		attackAllianceDoc = doc
+		if(!_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+			return Promise.reject(new Error("联盟未处于战争期"))
+		}
+		var allianceFightData = attackAllianceDoc.allianceFight
+		var defenceAllianceId = _.isEqual(attackAllianceDoc._id, allianceFightData.attackAllianceId) ? allianceFightData.defenceAllianceId : allianceFightData.attackAllianceId
+		var funcs = []
+		funcs.push(self.allianceDao.findByIdAsync(defenceAllianceId))
+		funcs.push(self.playerDao.findByIdAsync(defencePlayerId))
+		return Promise.all(funcs)
+	}).spread(function(doc_1, doc_2){
+		if(!_.isObject(doc_1)) return Promise.reject(new Error("联盟不存在"))
+		defenceAllianceDoc = doc_1
+		if(!_.isObject(doc_2)) return Promise.reject(new Error("玩家不存在"))
+		defencePlayerDoc = doc_2
+		if(!_.isObject(LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerId))) return Promise.reject(new Error("玩家不在敌对联盟中"))
+		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, defenceAllianceDoc._id])
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, defencePlayerDoc._id])
+		var event = MarchUtils.createStrikePlayerCityMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], defenceAllianceDoc, defencePlayerDoc)
+		attackAllianceDoc.strikeMarchEvents.push(event)
+		attackAllianceData.__strikeMarchEvents = [{
+			type:Consts.DataChangedType.Add,
+			data:event
+		}]
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchEvents", event.id, event.arriveTime])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(attackPlayerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
+		}
+		if(_.isObject(attackAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(attackAllianceDoc._id))
+		}
+		if(_.isObject(defencePlayerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(defencePlayerDoc._id))
+		}
+		if(_.isObject(defenceAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(defenceAllianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 进攻玩家城市
+ * @param playerId
+ * @param dragonType
+ * @param soldiers
+ * @param defencePlayerId
+ * @param callback
+ */
+pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		callback(new Error("dragonType 不合法"))
+		return
+	}
+	if(!_.isArray(soldiers)){
+		callback(new Error("soldiers 不合法"))
+		return
+	}
+	if(!_.isString(defencePlayerId)){
+		callback(new Error("defencePlayerId 不合法"))
+		return
+	}
+
+	var self = this
+	var attackPlayerDoc = null
+	var attackPlayerData = {}
+	var attackAllianceDoc = null
+	var attackAllianceData = {}
+	var defencePlayerDoc = null
+	var defenceAllianceDoc = null
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		attackPlayerDoc = doc
 		if(!_.isObject(attackPlayerDoc.alliance) || _.isEmpty(attackPlayerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
+		var dragon = attackPlayerDoc.dragons[dragonType]
+		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
+		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
+		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
 		dragon.status = Consts.DragonStatus.March
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 		attackPlayerData.dragons = {}
 		attackPlayerData.dragons[dragonType] = attackPlayerDoc.dragons[dragonType]
+		if(!LogicUtils.isMarchSoldierLegal(playerDoc, soldiers)) return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
+		playerData.soldiers = {}
+		_.each(soldiers, function(soldier){
+			playerDoc.soldiers[soldier.name] -= soldier.count
+			playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
+		})
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 		return self.allianceDao.findByIdAsync(attackPlayerDoc.alliance.id)
 	}).then(function(doc){
@@ -544,125 +668,6 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 		}
 		if(_.isObject(defenceAllianceDoc)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(defenceAllianceDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
- * 进攻玩家城市
- * @param playerId
- * @param enemyPlayerId
- * @param callback
- */
-pro.attackPlayerCity = function(playerId, enemyPlayerId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isString(enemyPlayerId)){
-		callback(new Error("enemyPlayerId 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var enemyPlayerDoc = null
-	var allianceDoc = null
-	var allianceData = {}
-	var enemyAllianceDoc = null
-	var enemyAllianceData = {}
-	var playerTroop = null
-	var pushFuncs = []
-	var eventFuncs = []
-	var updateFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		playerDoc = doc
-		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
-			return Promise.reject(new Error("玩家未加入联盟"))
-		}
-		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
-	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
-		allianceDoc = doc
-		if(!_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
-			return Promise.reject(new Error("联盟未处于战争期"))
-		}
-		if(!_.isEqual(allianceDoc.moonGateData.moonGateOwner, Consts.AllianceMoonGateOwner.Our)){
-			return Promise.reject(new Error("占领月门后才能进攻玩家城市"))
-		}
-		playerTroop = _.find(allianceDoc.moonGateData.ourTroops, function(troop){
-			return _.isEqual(troop.id, playerId)
-		})
-		if(!_.isObject(playerTroop)) return Promise.reject(new Error("玩家没有部队驻扎在月门"))
-		var funcs = []
-		funcs.push(self.allianceDao.findByIdAsync(allianceDoc.moonGateData.enemyAlliance.id))
-		funcs.push(self.playerDao.findByIdAsync(enemyPlayerId))
-		return Promise.all(funcs)
-	}).spread(function(doc_1, doc_2){
-		if(!_.isObject(doc_1)) return Promise.reject(new Error("联盟不存在"))
-		enemyAllianceDoc = doc_1
-		if(!_.isObject(doc_2)) return Promise.reject(new Error("玩家不存在"))
-		enemyPlayerDoc = doc_2
-		if(!_.isObject(LogicUtils.getAllianceMemberById(enemyAllianceDoc, enemyPlayerId))) return Promise.reject(new Error("玩家不在敌对联盟中"))
-
-		var event = LogicUtils.createAttackPlayerCityMarchEvent(playerDoc, playerTroop, enemyAllianceDoc, enemyPlayerDoc)
-		allianceDoc.attackCityMarchEvents.push(event)
-		enemyAllianceDoc.cityBeAttackedMarchEvents.push(event)
-		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackCityMarchEvents", event.id, event.arriveTime])
-		allianceData.__attackCityMarchEvents = [{
-			type:Consts.DataChangedType.Add,
-			data:event
-		}]
-		enemyAllianceData.__cityBeAttackedMarchEvents = [{
-			type:Consts.DataChangedType.Add,
-			data:event
-		}]
-		LogicUtils.removeItemInArray(allianceDoc.moonGateData.ourTroops, playerTroop)
-		allianceData.moonGateData = {}
-		allianceData.moonGateData.__ourTroops = [{
-			type:Consts.DataChangedType.Remove,
-			data:playerTroop
-		}]
-
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, enemyPlayerDoc._id])
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, enemyAllianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc._id, enemyAllianceData])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		}
-		if(_.isObject(enemyPlayerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(enemyPlayerDoc._id))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
-		}
-		if(_.isObject(enemyAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(enemyAllianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
