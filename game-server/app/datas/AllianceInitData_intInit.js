@@ -25,11 +25,11 @@ intInit["activeShrineStageEventTime"] = {
 }
 intInit["allianceFightPrepareTime"] = {
 	type:"allianceFightPrepareTime",
-	value:5
+	value:60
 }
 intInit["allianceFightTotalFightTime"] = {
 	type:"allianceFightTotalFightTime",
-	value:15
+	value:120
 }
 intInit["allianceHelpDefenceTroopsMaxCount"] = {
 	type:"allianceHelpDefenceTroopsMaxCount",
@@ -38,10 +38,6 @@ intInit["allianceHelpDefenceTroopsMaxCount"] = {
 intInit["allianceRevengeMaxTime"] = {
 	type:"allianceRevengeMaxTime",
 	value:300
-}
-intInit["dragonStrikeHpDecreasedPercent"] = {
-	type:"dragonStrikeHpDecreasedPercent",
-	value:5
 }
 intInit["allianceRegionMapBaseTimePerGrid"] = {
 	type:"allianceRegionMapBaseTimePerGrid",

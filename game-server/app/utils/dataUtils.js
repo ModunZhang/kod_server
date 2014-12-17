@@ -2225,7 +2225,6 @@ Utils.getAllianceFightSecondsPerFight = function(){
 	return AllianceInit.intInit.allianceFightTimePerFight.value * 1000
 }
 
-
 /**
  * 获取联盟战后联盟获得的保护时间
  * @param allianceDoc
@@ -2263,16 +2262,6 @@ Utils.isAlliancePlayerBeHelpedTroopsReachMax = function(allianceDoc, playerDoc){
  */
 Utils.isAllianceRevengeTimeExpired = function(allianceFightReport){
 	return Date.now() > allianceFightReport.fightTime + (AllianceInit.intInit.allianceRevengeMaxTime.value * 1000)
-}
-
-/**
- * 获取龙突袭损失的Hp百分比
- * @returns {intInit.dragonStrikeHpDecreasedPercent.value|*}
- */
-Utils.getPlayerDragonStrikeHpDecreased = function(playerDoc, dragon){
-	var decreasedPercent = AllianceInit.intInit.dragonStrikeHpDecreasedPercent.value
-	var hpMax = this.getPlayerDragonHpMax(playerDoc, dragon)
-	return Math.floor(hpMax * (decreasedPercent / 100))
 }
 
 /**

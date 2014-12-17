@@ -342,15 +342,13 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 	}
 	var getSoldiers = function(playerDoc, soldiersInTroop){
 		var soldiers = []
-		_.each(soldiersInTroop, function(count, name){
-			if(count > 0){
-				var soldier = {
-					name:name,
-					star:1,
-					count:count
-				}
-				soldiers.push(soldier)
+		_.each(soldiersInTroop, function(soldierInTroop){
+			var soldier = {
+				name:soldierInTroop.name,
+				star:1,
+				count:soldierInTroop.count
 			}
+			soldiers.push(soldier)
 		})
 		return soldiers
 	}
@@ -563,6 +561,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 				stone:defencePlayerDoc.resources.stone,
 				iron:defencePlayerDoc.resources.iron,
 				food:defencePlayerDoc.resources.food,
+				coin:defencePlayerDoc.resources.coin,
 				wallHp:defencePlayerDoc.resources.wallHp
 			}
 		}
@@ -607,7 +606,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		createTime:Date.now(),
 		isRead:false,
 		isSaved:false,
-		strikeCity:cityBeStrikedReport
+		cityBeStriked:cityBeStrikedReport
 	}
 
 	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer}
@@ -648,7 +647,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		return equipments
 	}
 
-	var attackPlayerCoinGet = attackDragonForFight.currentHp
+	var attackPlayerCoinGet = defencePlayerDoc.resources.coin >= attackDragonForFight.currentHp ? attackDragonForFight.currentHp : enemyPlayerDoc.resources.coin
 
 	var strikeCityReport = {
 		level:reportLevel,
@@ -682,6 +681,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 				stone:defencePlayerDoc.resources.stone,
 				iron:defencePlayerDoc.resources.iron,
 				food:defencePlayerDoc.resources.food,
+				coin:defencePlayerDoc.resources.coin,
 				wallHp:defencePlayerDoc.resources.wallHp
 			}
 		}
@@ -726,7 +726,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		createTime:Date.now(),
 		isRead:false,
 		isSaved:false,
-		strikeCity:cityBeStrikedReport
+		cityBeStriked:cityBeStrikedReport
 	}
 
 	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer}

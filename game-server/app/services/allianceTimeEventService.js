@@ -529,7 +529,10 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					LogicUtils.addPlayerReport(playerDoc, playerData, reports.reportForAttackPlayer)
 					LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, reports.reportForDefencePlayer)
 
-					attackPlayerCoinGet = reports.reportForAttackPlayer.attackPlayerData.coinGet
+					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+
+					attackPlayerCoinGet = reports.reportForAttackPlayer.strikeCity.attackPlayerData.coinGet
 					defencePlayerDoc.resources.coin -= attackPlayerCoinGet
 					defencePlayerData.resources = defencePlayerDoc.resources
 					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
@@ -574,7 +577,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
 					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
 
-					attackPlayerCoinGet = reports.reportForAttackPlayer.attackPlayerData.coinGet
+					attackPlayerCoinGet = reports.reportForAttackPlayer.strikeCity.attackPlayerData.coinGet
 					rewards = []
 					if(attackPlayerCoinGet > 0){
 						defencePlayerDoc.resources.coin -= attackPlayerCoinGet
