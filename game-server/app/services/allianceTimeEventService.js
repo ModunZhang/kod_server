@@ -864,7 +864,8 @@ pro.onAttackMarchReturnEvents = function(allianceDoc, event, callback){
 		playerDoc = doc
 		var playerData = {}
 		playerDoc.dragons[event.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-		playerDoc.dragons[event.attackPlayerData.dragon.type].exp = event.attackPlayerData.dragon.expAdd
+		playerDoc.dragons[event.attackPlayerData.dragon.type].exp += event.attackPlayerData.dragon.expAdd
+		DataUtils.updatePlayerDragonProperty(playerDoc, playerDoc.dragons[event.attackPlayerData.dragon.type])
 		playerData.dragons = {}
 		playerData.dragons[event.attackPlayerData.dragon.type] = playerDoc.dragons[event.attackPlayerData.dragon.type]
 		playerData.soldiers = {}
