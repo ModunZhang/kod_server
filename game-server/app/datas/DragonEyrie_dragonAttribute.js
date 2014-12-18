@@ -16,7 +16,7 @@ dragonAttribute[0] = {
 dragonAttribute[1] = {
 	star:1,
 	levelMax:10,
-	promotionLevel:0,
+	promotionLevel:1,
 	perLevelExp:128,
 	perLevelStrength:2,
 	perLevelVitality:6,

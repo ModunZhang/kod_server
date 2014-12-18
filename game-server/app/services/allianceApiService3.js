@@ -736,7 +736,7 @@ pro.attackAllianceShrine = function(playerId, shrineEventId, dragonType, soldier
 		if(!_.isObject(shrineEvent)) return Promise.reject(new Error("此关卡还未激活"))
 		if(DataUtils.isAllianceShrineStageLocked(allianceDoc, shrineEvent.stageName)) return Promise.reject(new Error("此关卡还未解锁"))
 		if(LogicUtils.isPlayerHasTroopMarchToAllianceShrineStage(allianceDoc, shrineEvent, playerId)) return Promise.reject(new Error("玩家已经对此关卡派出了部队"))
-		var event = MarchUtils.createAllianceShrineMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, shrineEventId)
+		var event = MarchUtils.createAttackAllianceShrineMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, shrineEventId)
 		allianceDoc.attackMarchEvents.push(event)
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", event.id, event.arriveTime])

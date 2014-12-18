@@ -35,14 +35,6 @@ module.exports = {
 		InviteApprovedContent:{
 			cn:"恭喜,%s 接受了您对他加入联盟的邀请",
 			en:"honey,%s approved your invite to alliance"
-		},
-		HelpDefenceStrikeTitle:{
-			cn:"玩家 %s 帮您成功抵御了一次突袭",
-			en:"player %s successfuly defence a strike for you"
-		},
-		HelpDefenceStrikeContent:{
-			cn:"玩家 %s 帮您成功抵御了一次突袭",
-			en:"player %s successfuly defence a strike for you"
 		}
 	}
 }

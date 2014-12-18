@@ -2265,153 +2265,6 @@ Utils.isAllianceRevengeTimeExpired = function(allianceFightReport){
 }
 
 /**
- * 攻打玩家城市回城
- * @param allianceDoc
- * @param playerDoc
- * @param enemyAllianceDoc
- * @param enemyPlayerDoc
- * @param dragonForFight
- * @param soldiersForFight
- * @returns {*}
- */
-Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, enemyAllianceDoc, enemyPlayerDoc, dragonForFight, soldiersForFight, rewards){
-	var self = this
-	var enemyPlayerLocation = LogicUtils.getAllianceMemberById(enemyAllianceDoc, enemyPlayerDoc._id).location
-	var enemyMoonGateLocation = enemyAllianceDoc.buildings.moonGate.location
-	var marchTime = this.getPlayerMarchTime(playerDoc, enemyPlayerLocation, enemyMoonGateLocation)
-
-	var getSoldiers = function(soldiersForFight, key){
-		var soldiers = []
-		_.each(soldiersForFight, function(theSoldier){
-			if(theSoldier[key] > 0){
-				var soldier = {
-					name:theSoldier.name,
-					count:theSoldier[key]
-				}
-				soldiers.push(soldier)
-			}
-		})
-		return soldiers
-	}
-	var getKilledCitizen = function(soldiersForFight){
-		var killed = 0
-		var config = null
-		_.each(soldiersForFight, function(soldierForFight){
-			_.each(soldierForFight.killedSoldiers, function(soldier){
-				if(self.hasNormalSoldier(soldier.name)){
-					var soldierFullKey = soldier.name + "_" + soldier.star
-					config = UnitConfig.normal[soldierFullKey]
-					killed += soldier.count * config.citizen
-				}else{
-					config = UnitConfig.special[soldier.name]
-					killed += soldier.count * config.citizen
-				}
-			})
-		})
-		return killed
-	}
-
-	var event = {
-		id:ShortId.generate(),
-		startTime:Date.now(),
-		arriveTime:Date.now() + marchTime,
-		attackPlayerData:{
-			id:playerDoc._id,
-			name:playerDoc.basicInfo.name,
-			cityName:playerDoc.basicInfo.cityName,
-			dragon:{
-				type:dragonForFight.type
-			},
-			leftSoldiers:getSoldiers(soldiersForFight, "currentCount"),
-			treatSoldiers:getSoldiers(soldiersForFight, "treatCount"),
-			rewards:rewards,
-			kill:getKilledCitizen(soldiersForFight)
-		},
-		defencePlayerData:{
-			id:enemyPlayerDoc._id,
-			name:enemyPlayerDoc.basicInfo.name,
-			location:enemyPlayerLocation,
-			cityName:enemyPlayerDoc.basicInfo.cityName,
-			allianceId:enemyAllianceDoc._id,
-			allianceName:enemyAllianceDoc.basicInfo.name,
-			allianceTag:enemyAllianceDoc.basicInfo.tag
-		}
-	}
-	return event
-}
-
-/**
- * 创建玩家协防部队回归玩家领地
- * @param allianceDoc
- * @param playerDoc
- * @param beHelpedPlayerDoc
- * @param dragonForFight
- * @param soldiersForFight
- * @returns {*}
- */
-Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, beHelpedPlayerDoc, dragonForFight, soldiersForFight){
-	var self = this
-	var beHelpedPlayerLocation = LogicUtils.getAllianceMemberById(allianceDoc, beHelpedPlayerDoc._id).location
-	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var marchTime = this.getPlayerMarchTime(playerDoc, beHelpedPlayerLocation, playerLocation)
-
-	var getSoldiers = function(soldiersForFight, key){
-		var soldiers = []
-		_.each(soldiersForFight, function(theSoldier){
-			if(theSoldier[key] > 0){
-				var soldier = {
-					name:theSoldier.name,
-					count:theSoldier[key]
-				}
-				soldiers.push(soldier)
-			}
-		})
-		return soldiers
-	}
-	var getKilledCitizen = function(soldiersForFight){
-		var killed = 0
-		var config = null
-		_.each(soldiersForFight, function(soldierForFight){
-			_.each(soldierForFight.killedSoldiers, function(soldier){
-				if(self.hasNormalSoldier(soldier.name)){
-					var soldierFullKey = soldier.name + "_" + soldier.star
-					config = UnitConfig.normal[soldierFullKey]
-					killed += soldier.count * config.citizen
-				}else{
-					config = UnitConfig.special[soldier.name]
-					killed += soldier.count * config.citizen
-				}
-			})
-		})
-		return killed
-	}
-
-	var event = {
-		id:ShortId.generate(),
-		startTime:Date.now(),
-		arriveTime:Date.now() + marchTime,
-		playerData:{
-			id:playerDoc._id,
-			name:playerDoc.basicInfo.name,
-			cityName:playerDoc.basicInfo.cityName,
-			dragon:{
-				type:dragonForFight.type
-			},
-			leftSoldiers:getSoldiers(soldiersForFight, "currentCount"),
-			treatSoldiers:getSoldiers(soldiersForFight, "treatCount"),
-			rewards:[],
-			kill:getKilledCitizen(soldiersForFight)
-		},
-		fromPlayerData:{
-			id:beHelpedPlayerDoc._id,
-			name:beHelpedPlayerDoc.basicInfo.name,
-			cityName:beHelpedPlayerDoc.basicInfo.cityName
-		}
-	}
-	return event
-}
-
-/**
  * 获取龙的力量修正  结果大于0,防御方力量降低返回值的百分比, 结果小于0,攻击方防御降低返回值绝对值的百分比
  * @param attackSoldiersForFight
  * @param defenceSoldiersForFight
@@ -2440,6 +2293,25 @@ Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldie
 	var defenceSumPower = getSumPower(defenceSoldiersForFight)
 	var effect = attackSumPower >= defenceSumPower ? getEffectPercent(attackSumPower / defenceSumPower) : -getEffectPercent(defenceSumPower / attackSumPower)
 	return effect
+}
+
+/**
+ * 更新龙的属性
+ * @param playerDoc
+ * @param dragon
+ */
+Utils.updatePlayerDragonProperty = function(playerDoc, dragon){
+	var currentStarMaxLevel = DragonEyrie.dragonAttribute[dragon.star].levelMax
+	var nextLevelExpNeed = DragonEyrie.dragonAttribute[dragon.star].perLevelExp * Math.pow(dragon.level, 2)
+	if(dragon.exp >= nextLevelExpNeed){
+		if(dragon.level >= currentStarMaxLevel) dragon.exp = nextLevelExpNeed
+		else{
+			dragon.level += 1
+			dragon.exp -= nextLevelExpNeed
+			dragon.vitality = this.getDragonVitality(playerDoc, dragon)
+			dragon.strength = this.getDragonStrength(playerDoc, dragon)
+		}
+	}
 }
 
 

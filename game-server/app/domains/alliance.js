@@ -536,20 +536,6 @@ var allianceSchema = new Schema({
 				name:{type:String, required:true},
 				tag:{type:String, required:true}
 			}
-		},
-		beHelpedPlayerData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			cityName:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
 		}
 	}],
 	attackMarchReturnEvents:[{
@@ -622,20 +608,6 @@ var allianceSchema = new Schema({
 			}
 		},
 		defenceShrineData:{
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
-		},
-		beHelpedPlayerData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			cityName:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}

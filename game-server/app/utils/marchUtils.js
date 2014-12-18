@@ -258,7 +258,7 @@ Utils.getPlayerMarchTime = function(playerDoc, fromAllianceDoc, fromLocation, to
  * @param shrineEventId
  * @returns {*}
  */
-Utils.createAllianceShrineMarchEvent = function(allianceDoc, playerDoc, dragon, soldiers, shrineEventId){
+Utils.createAttackAllianceShrineMarchEvent = function(allianceDoc, playerDoc, dragon, soldiers, shrineEventId){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var shrineLocation = allianceDoc.buildings["shrine"].location
 	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, allianceDoc, shrineLocation)
@@ -290,7 +290,7 @@ Utils.createAllianceShrineMarchEvent = function(allianceDoc, playerDoc, dragon, 
  * @param kill
  * @returns {*}
  */
-Utils.createAllianceShrineMarchReturnEvent = function(allianceDoc, playerDoc, dragon, dragonExpAdd, soldiers, woundedSoldiers, rewards, kill){
+Utils.createAttackAllianceShrineMarchReturnEvent = function(allianceDoc, playerDoc, dragon, dragonExpAdd, soldiers, woundedSoldiers, rewards, kill){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var shrineLocation = allianceDoc.buildings["shrine"].location
 	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, shrineLocation, allianceDoc, playerLocation)
@@ -329,7 +329,7 @@ Utils.createHelpDefenceMarchEvent = function(allianceDoc, playerDoc, dragon, sol
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createAttackPlayerData(allianceDoc, playerDoc, playerLocation, dragon, soldiers),
-		beHelpedPlayerData:{
+		defencePlayerData:{
 			id:beHelpedPlayerDoc._id,
 			name:beHelpedPlayerDoc.basicInfo.name,
 			cityName:beHelpedPlayerDoc.basicInfo.cityName,
@@ -363,7 +363,7 @@ Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, beHel
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createAttackPlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, dragonExpAdd, soldiers, woundedSoldiers, rewards, kill),
-		beHelpedPlayerData:{
+		defencePlayerData:{
 			id:beHelpedPlayerDoc._id,
 			name:beHelpedPlayerDoc.basicInfo.name,
 			cityName:beHelpedPlayerDoc.basicInfo.cityName,
@@ -426,6 +426,74 @@ Utils.createStrikePlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createStrikePlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, rewards),
+		defencePlayerData:{
+			id:defencePlayerDoc._id,
+			name:defencePlayerDoc.basicInfo.name,
+			cityName:defencePlayerDoc.basicInfo.cityName,
+			location:defencePlayerLocation,
+			alliance:createAllianceData(defenceAllianceDoc)
+		}
+	}
+	return event
+}
+
+/**
+ * 创建进攻玩家城市行军事件
+ * @param allianceDoc
+ * @param playerDoc
+ * @param dragon
+ * @param soldiers
+ * @param defenceAllianceDoc
+ * @param defencePlayerDoc
+ * @returns {*}
+ */
+Utils.createAttackPlayerCityMarchEvent = function(allianceDoc, playerDoc, dragon, soldiers, defenceAllianceDoc, defencePlayerDoc){
+	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var defencePlayerLocation = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location
+	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defencePlayerLocation)
+
+	var event = {
+		id:ShortId.generate(),
+		marchType:Consts.AllianceMarchType.City,
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime,
+		attackPlayerData:createAttackPlayerData(allianceDoc, playerDoc, playerLocation, dragon, soldiers),
+		defencePlayerData:{
+			id:defencePlayerDoc._id,
+			name:defencePlayerDoc.basicInfo.name,
+			cityName:defencePlayerDoc.basicInfo.cityName,
+			location:defencePlayerLocation,
+			alliance:createAllianceData(defenceAllianceDoc)
+		}
+	}
+	return event
+}
+
+/**
+ * 创建进攻玩家城市行军回城事件
+ * @param allianceDoc
+ * @param playerDoc
+ * @param dragon
+ * @param dragonExpAdd
+ * @param soldiers
+ * @param woundedSoldiers
+ * @param defenceAllianceDoc
+ * @param defencePlayerDoc
+ * @param rewards
+ * @param kill
+ * @returns {*}
+ */
+Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, dragon, dragonExpAdd, soldiers, woundedSoldiers, defenceAllianceDoc, defencePlayerDoc, rewards, kill){
+	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var defencePlayerLocation = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location
+	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defencePlayerLocation)
+
+	var event = {
+		id:ShortId.generate(),
+		marchType:Consts.AllianceMarchType.City,
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime,
+		attackPlayerData:createAttackPlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, dragonExpAdd, soldiers, woundedSoldiers, rewards, kill),
 		defencePlayerData:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,

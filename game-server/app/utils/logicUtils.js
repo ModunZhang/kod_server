@@ -1774,3 +1774,27 @@ Utils.pushAllianceDataToEnemyAllianceIfNeeded = function(allianceDoc, allianceDa
 		}
 	}
 }
+
+/**
+ * 合并奖励
+ * @param rewards
+ * @param rewardsNew
+ * @returns {*}
+ */
+Utils.mergeRewards = function(rewards, rewardsNew){
+	_.each(rewardsNew, function(rewardNew){
+		var reward = _.find(rewards, function(reward){
+			return _.isEqual(reward.type, rewardNew.type) && _.isEqual(reward.name, rewardNew.name)
+		})
+		if(!_.isObject(reward)){
+			reward = {
+				type:rewardNew.type,
+				name:rewardNew.name,
+				count:0
+			}
+			rewards.push(reward)
+		}
+		reward.count += rewardNew.count
+	})
+	return rewards
+}

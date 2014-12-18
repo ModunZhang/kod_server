@@ -12,6 +12,7 @@ GameDatas.AllianceBuilding.shop = require("./AllianceBuilding_shop.js")
 
 GameDatas.AllianceInitData = {}
 GameDatas.AllianceInitData.intInit = require("./AllianceInitData_intInit.js")
+GameDatas.AllianceInitData.floatInit = require("./AllianceInitData_floatInit.js")
 GameDatas.AllianceInitData.stringInit = require("./AllianceInitData_stringInit.js")
 GameDatas.AllianceInitData.right = require("./AllianceInitData_right.js")
 GameDatas.AllianceInitData.buildingType = require("./AllianceInitData_buildingType.js")
