@@ -21,6 +21,7 @@ var Utils = module.exports
 
 /**
  * 创建攻打玩家城市战报
+ * @param attackAllianceDoc
  * @param defenceAllianceDoc
  * @param attackPlayerData
  * @param helpDefencePlayerData
@@ -28,7 +29,7 @@ var Utils = module.exports
  * @param fightData
  * @returns {*}
  */
-Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, helpDefencePlayerData, defencePlayerData, fightData){
+Utils.createAttackCityReport = function(attackAllianceDoc, attackPlayerData, defenceAllianceDoc, helpDefencePlayerData, defencePlayerData, fightData){
 	var getKilledCitizen = function(soldiersForFight){
 		var killed = 0
 		var config = null
@@ -123,7 +124,7 @@ Utils.createAttackCityReport = function(defenceAllianceDoc, attackPlayerData, he
 		return dragonData
 	}
 	var pushBloodToRewards = function(bloodCount, rewards){
-		if(blood > 0){
+		if(bloodCount > 0){
 			var reward = {
 				type:"resources",
 				name:"blood",

@@ -567,7 +567,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			}
 
 			var theAttackPlayerData = {
-				playerDoc:playerDoc,
+				playerDoc:attackPlayerDoc,
 				dragon:attackDragonForFight,
 				soldiers:attackSoldiersForFight
 			}
@@ -584,7 +584,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			}
 			var fightData = {
 				helpDefenceDragonFightData:helpDefenceDragonFightData,
-				helpDefenceSoldierFightData:helpDefenceSoldierFightResult,
+				helpDefenceSoldierFightData:helpDefenceSoldierFightData,
 				defenceDragonFightData:defenceDragonFightData,
 				defenceSoldierFightData:defenceSoldierFightData,
 				defenceWallFightData:defenceWallFightData
@@ -815,8 +815,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 		}).catch(function(e){
 			var funcs = []
-			if(_.isObject(playerDoc)){
-				funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			if(_.isObject(attackPlayerDoc)){
+				funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
 			}
 			if(_.isObject(helpDefencePlayerDoc)){
 				funcs.push(self.playerDao.removeLockByIdAsync(helpDefencePlayerDoc._id))

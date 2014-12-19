@@ -608,11 +608,11 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 		dragon.status = Consts.DragonStatus.March
 		attackPlayerData.dragons = {}
 		attackPlayerData.dragons[dragonType] = attackPlayerDoc.dragons[dragonType]
-		if(!LogicUtils.isMarchSoldierLegal(playerDoc, soldiers)) return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
-		playerData.soldiers = {}
+		if(!LogicUtils.isMarchSoldierLegal(attackPlayerDoc, soldiers)) return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
+		attackPlayerData.soldiers = {}
 		_.each(soldiers, function(soldier){
-			playerDoc.soldiers[soldier.name] -= soldier.count
-			playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
+			attackPlayerDoc.soldiers[soldier.name] -= soldier.count
+			attackPlayerData.soldiers[soldier.name] = attackPlayerDoc.soldiers[soldier.name]
 		})
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])

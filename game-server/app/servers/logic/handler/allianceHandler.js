@@ -670,8 +670,10 @@ pro.strikePlayerCity = function(msg, session, next){
  * @param next
  */
 pro.attackPlayerCity = function(msg, session, next){
+	var dragonType = msg.dragonType
+	var soldiers = msg.soldiers
 	var defencePlayerId = msg.defencePlayerId
-	this.allianceApiService4.attackPlayerCityAsync(session.uid, defencePlayerId).then(function(){
+	this.allianceApiService4.attackPlayerCityAsync(session.uid, dragonType, soldiers, defencePlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
