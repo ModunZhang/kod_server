@@ -22,8 +22,8 @@ var Utils = module.exports
 /**
  * 创建攻打玩家城市战报
  * @param attackAllianceDoc
- * @param defenceAllianceDoc
  * @param attackPlayerData
+ * @param defenceAllianceDoc
  * @param helpDefencePlayerData
  * @param defencePlayerData
  * @param fightData
@@ -119,7 +119,7 @@ Utils.createAttackCityReport = function(attackAllianceDoc, attackPlayerData, def
 			level:dragonAfterFight.level,
 			expAdd:expAdd,
 			hp:dragonAfterFight.totalHp,
-			hpDecreased:dragonForFight.totalHp - dragonForFight.currentHp
+			hpDecreased:dragonAfterFight.totalHp - dragonAfterFight.currentHp
 		}
 		return dragonData
 	}
@@ -146,7 +146,7 @@ Utils.createAttackCityReport = function(attackAllianceDoc, attackPlayerData, def
 	var attackPlayerKilledCitizenWithHelpDefenceSoldiers = _.isObject(fightData.helpDefenceSoldierFightData) ? getKilledCitizen(fightData.helpDefenceSoldierFightData.attackSoldiersAfterFight) : 0
 	var attackPlayerKilledCitizenWithDefenceSoldiers = _.isObject(fightData.defenceSoldierFightData) ? getKilledCitizen(fightData.defenceSoldierFightData.attackSoldiersAfterFight) : 0
 	var defenceWallHpDecreased = _.isObject(fightData.defenceWallFightData) ? fightData.defenceWallFightData.defenceWallAfterFight.totalHp - fightData.defenceWallFightData.defenceWallAfterFight.currentHp : 0
-	var attackPlayerKilledCitizenWithDefenceWall = Math.floor(defenceWallHpDecreased * AllianceInit.floatInit.citizenCountPerWallHp)
+	var attackPlayerKilledCitizenWithDefenceWall = Math.floor(defenceWallHpDecreased * AllianceInit.floatInit.citizenCountPerWallHp.value)
 	var helpDefencePlayerKilledCitizen = _.isObject(fightData.helpDefenceSoldierFightData) ? getKilledCitizen(fightData.helpDefenceSoldierFightData.defenceSoldiersAfterFight) : 0
 	var defencePlayerKilledCitizenBySoldiers = _.isObject(fightData.defenceSoldierFightData) ? getKilledCitizen(fightData.defenceSoldierFightData.defenceSoldiersAfterFight) : 0
 	var defencePlayerKilledCitizenByWall = _.isObject(fightData.defenceWallFightData) ? getKilledCitizen(fightData.defenceWallFightData.defenceWallAfterFight) : 0
@@ -172,8 +172,8 @@ Utils.createAttackCityReport = function(attackAllianceDoc, attackPlayerData, def
 	pushBloodToRewards(defencePlayerGetBloodBySoldiers + defencePlayerGetBloodByWall, defencePlayerRewards)
 
 	if(starParam.attackStar >= 2){
-		var attackDragonHpDecreased = fightData.defenceDragonFightData.attackDragonHpDecreased
-		var coinGet = defencePlayerData.playerDoc.resources.coin >= attackDragonHpDecreased ? attackDragonHpDecreased : defencePlayerData.playerDoc.resources.coin
+		var attackDragonCurrentHp = fightData.defenceDragonFightData.attackDragonAfterFight.currentHp
+		var coinGet = defencePlayerData.playerDoc.resources.coin >= attackDragonCurrentHp ? attackDragonCurrentHp : defencePlayerData.playerDoc.resources.coin
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"coin",
@@ -245,7 +245,7 @@ Utils.createAttackCityReport = function(attackAllianceDoc, attackPlayerData, def
 			soldiers:createSoldiersDataAfterFight(fightData.helpDefenceSoldierFightData.defenceSoldiersAfterFight),
 			rewards:helpDefencePlayerRewards
 		},
-		defencePlayerData:{
+		defencePlayerData:_.isObject(fightData.helpDefenceDragonFightData) && _.isEqual(Consts.FightResult.DefenceWin, fightData.helpDefenceSoldierFightData.fightResult) ? null : {
 			id:defencePlayerData.playerDoc._id,
 			name:defencePlayerData.playerDoc.basicInfo.name,
 			icon:defencePlayerData.playerDoc.basicInfo.icon,

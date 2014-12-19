@@ -1617,8 +1617,7 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 			attackSuccessCount:0,
 			attackFailCount:0,
 			defenceSuccessCount:0,
-			defenceFailCount:0,
-			playerKills:[]
+			defenceFailCount:0
 		}
 	}
 	defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare

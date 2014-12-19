@@ -130,6 +130,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
 	attackDragon = CommonUtils.clone(attackDragon)
 	defenceDragon = CommonUtils.clone(defenceDragon)
+
 	var attackDragonPower = attackDragon.strength * attackDragon.vitality
 	var defenceDragonPower = defenceDragon.strength * defenceDragon.vitality
 	if(effect >= 0){
