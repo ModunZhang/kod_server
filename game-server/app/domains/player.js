@@ -1198,7 +1198,7 @@ var playerSchema = new Schema({
 		cityName:{type:String, required:true},
 		dragon:{
 			type:{type:String, required:true},
-			expAdd:{type:String, required:true}
+			expAdd:{type:Number, required:true}
 		},
 		soldiers:[{
 			_id:false,
