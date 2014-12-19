@@ -4,7 +4,8 @@ var normal = {}
 module.exports = normal
 
 normal["swordsman_1"] = {
-	name:"swordsman_1",
+	key:"swordsman_1",
+	name:"swordsman",
 	type:"infantry",
 	star:1,
 	power:6,
@@ -30,7 +31,8 @@ normal["swordsman_1"] = {
 	treatTime:10
 }
 normal["swordsman_2"] = {
-	name:"swordsman_2",
+	key:"swordsman_2",
+	name:"swordsman",
 	type:"infantry",
 	star:2,
 	power:9,
@@ -56,7 +58,8 @@ normal["swordsman_2"] = {
 	treatTime:10
 }
 normal["swordsman_3"] = {
-	name:"swordsman_3",
+	key:"swordsman_3",
+	name:"swordsman",
 	type:"infantry",
 	star:3,
 	power:12,
@@ -82,7 +85,8 @@ normal["swordsman_3"] = {
 	treatTime:10
 }
 normal["sentinel_1"] = {
-	name:"sentinel_1",
+	key:"sentinel_1",
+	name:"sentinel",
 	type:"infantry",
 	star:1,
 	power:8,
@@ -108,7 +112,8 @@ normal["sentinel_1"] = {
 	treatTime:12
 }
 normal["sentinel_2"] = {
-	name:"sentinel_2",
+	key:"sentinel_2",
+	name:"sentinel",
 	type:"infantry",
 	star:2,
 	power:11,
@@ -134,7 +139,8 @@ normal["sentinel_2"] = {
 	treatTime:12
 }
 normal["sentinel_3"] = {
-	name:"sentinel_3",
+	key:"sentinel_3",
+	name:"sentinel",
 	type:"infantry",
 	star:3,
 	power:15,
@@ -160,7 +166,8 @@ normal["sentinel_3"] = {
 	treatTime:12
 }
 normal["ranger_1"] = {
-	name:"ranger_1",
+	key:"ranger_1",
+	name:"ranger",
 	type:"archer",
 	star:1,
 	power:7,
@@ -186,7 +193,8 @@ normal["ranger_1"] = {
 	treatTime:17
 }
 normal["ranger_2"] = {
-	name:"ranger_2",
+	key:"ranger_2",
+	name:"ranger",
 	type:"archer",
 	star:2,
 	power:10,
@@ -212,7 +220,8 @@ normal["ranger_2"] = {
 	treatTime:17
 }
 normal["ranger_3"] = {
-	name:"ranger_3",
+	key:"ranger_3",
+	name:"ranger",
 	type:"archer",
 	star:3,
 	power:13,
@@ -238,7 +247,8 @@ normal["ranger_3"] = {
 	treatTime:17
 }
 normal["crossbowman_1"] = {
-	name:"crossbowman_1",
+	key:"crossbowman_1",
+	name:"crossbowman",
 	type:"archer",
 	star:1,
 	power:7,
@@ -264,7 +274,8 @@ normal["crossbowman_1"] = {
 	treatTime:19
 }
 normal["crossbowman_2"] = {
-	name:"crossbowman_2",
+	key:"crossbowman_2",
+	name:"crossbowman",
 	type:"archer",
 	star:2,
 	power:10,
@@ -290,7 +301,8 @@ normal["crossbowman_2"] = {
 	treatTime:19
 }
 normal["crossbowman_3"] = {
-	name:"crossbowman_3",
+	key:"crossbowman_3",
+	name:"crossbowman",
 	type:"archer",
 	star:3,
 	power:13,
@@ -316,7 +328,8 @@ normal["crossbowman_3"] = {
 	treatTime:19
 }
 normal["lancer_1"] = {
-	name:"lancer_1",
+	key:"lancer_1",
+	name:"lancer",
 	type:"cavalry",
 	star:1,
 	power:12,
@@ -342,7 +355,8 @@ normal["lancer_1"] = {
 	treatTime:37
 }
 normal["lancer_2"] = {
-	name:"lancer_2",
+	key:"lancer_2",
+	name:"lancer",
 	type:"cavalry",
 	star:2,
 	power:18,
@@ -368,7 +382,8 @@ normal["lancer_2"] = {
 	treatTime:37
 }
 normal["lancer_3"] = {
-	name:"lancer_3",
+	key:"lancer_3",
+	name:"lancer",
 	type:"cavalry",
 	star:3,
 	power:24,
@@ -394,7 +409,8 @@ normal["lancer_3"] = {
 	treatTime:37
 }
 normal["horseArcher_1"] = {
-	name:"horseArcher_1",
+	key:"horseArcher_1",
+	name:"horseArcher",
 	type:"cavalry",
 	star:1,
 	power:15,
@@ -420,7 +436,8 @@ normal["horseArcher_1"] = {
 	treatTime:40
 }
 normal["horseArcher_2"] = {
-	name:"horseArcher_2",
+	key:"horseArcher_2",
+	name:"horseArcher",
 	type:"cavalry",
 	star:2,
 	power:21,
@@ -446,7 +463,8 @@ normal["horseArcher_2"] = {
 	treatTime:40
 }
 normal["horseArcher_3"] = {
-	name:"horseArcher_3",
+	key:"horseArcher_3",
+	name:"horseArcher",
 	type:"cavalry",
 	star:3,
 	power:29,
@@ -472,7 +490,8 @@ normal["horseArcher_3"] = {
 	treatTime:40
 }
 normal["catapult_1"] = {
-	name:"catapult_1",
+	key:"catapult_1",
+	name:"catapult",
 	type:"siege",
 	star:1,
 	power:24,
@@ -498,7 +517,8 @@ normal["catapult_1"] = {
 	treatTime:60
 }
 normal["catapult_2"] = {
-	name:"catapult_2",
+	key:"catapult_2",
+	name:"catapult",
 	type:"siege",
 	star:2,
 	power:35,
@@ -524,7 +544,8 @@ normal["catapult_2"] = {
 	treatTime:60
 }
 normal["catapult_3"] = {
-	name:"catapult_3",
+	key:"catapult_3",
+	name:"catapult",
 	type:"siege",
 	star:3,
 	power:48,
@@ -550,7 +571,8 @@ normal["catapult_3"] = {
 	treatTime:60
 }
 normal["ballista_1"] = {
-	name:"ballista_1",
+	key:"ballista_1",
+	name:"ballista",
 	type:"siege",
 	star:1,
 	power:30,
@@ -576,7 +598,8 @@ normal["ballista_1"] = {
 	treatTime:64
 }
 normal["ballista_2"] = {
-	name:"ballista_2",
+	key:"ballista_2",
+	name:"ballista",
 	type:"siege",
 	star:2,
 	power:42,
@@ -602,7 +625,8 @@ normal["ballista_2"] = {
 	treatTime:64
 }
 normal["ballista_3"] = {
-	name:"ballista_3",
+	key:"ballista_3",
+	name:"ballista",
 	type:"siege",
 	star:3,
 	power:57,

@@ -483,14 +483,14 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			}
 
 			attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
-			attackDragonForFight = DataUtils.createDragonForFight(attackPlayerDoc, attackDragon)
-			attackSoldiersForFight = DataUtils.createSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers)
+			attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon)
+			attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers)
 			attackTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToWoundedSoldierPercent(attackPlayerDoc)
 			if(_.isObject(helpDefencePlayerDoc)){
 				helpedByTroop = defencePlayerDoc.helpedByTroops[0]
 				helpDefenceDragon = helpDefencePlayerDoc.dragons[helpedByTroop.dragon.type]
-				helpDefenceDragonForFight = DataUtils.createDragonForFight(helpDefencePlayerDoc, helpDefenceDragon)
-				helpDefenceSoldiersForFight = DataUtils.createSoldiersForFight(helpDefencePlayerDoc, helpedByTroop.soldiers)
+				helpDefenceDragonForFight = DataUtils.createPlayerDragonForFight(helpDefencePlayerDoc, helpDefenceDragon)
+				helpDefenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(helpDefencePlayerDoc, helpedByTroop.soldiers)
 				helpDefenceTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToWoundedSoldierPercent(helpDefencePlayerDoc)
 				helpDefenceDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, helpDefenceSoldiersForFight)
 			}
@@ -506,13 +506,13 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				}
 			})
 			if(_.isObject(defenceDragon) && defenceSoldiers.length > 0){
-				defenceDragonForFight = DataUtils.createDragonForFight(defencePlayerDoc, defenceDragon)
-				defenceSoldiersForFight = DataUtils.createSoldiersForFight(defencePlayerDoc, defenceSoldiers)
+				defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon)
+				defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, defenceSoldiers)
 				defenceTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToWoundedSoldierPercent(defencePlayerDoc)
 				defenceDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, defenceSoldiersForFight)
 			}
 			if(defencePlayerDoc.resources.wallHp > 0){
-				defenceWallForFight = DataUtils.createWallForFight(defencePlayerDoc)
+				defenceWallForFight = DataUtils.createPlayerWallForFight(defencePlayerDoc)
 			}
 			return Promise.resolve()
 		}).then(function(){
@@ -960,7 +960,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 			}
 
 			var attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
-			var attackDragonForFight = DataUtils.createDragonForFight(attackPlayerDoc, attackDragon)
+			var attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon)
 			var dragonFightData = null
 			var report = null
 			var strikeMarchReturnEvent = null
@@ -968,7 +968,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 			var rewardsForDefencePlayer = null
 			if(_.isObject(helpDefencePlayerDoc)){
 				var helpDefenceDragon = helpDefencePlayerDoc.dragons[defencePlayerDoc.helpedByTroops[0].dragon.type]
-				var helpDefenceDragonForFight = DataUtils.createDragonForFight(helpDefencePlayerDoc, helpDefenceDragon)
+				var helpDefenceDragonForFight = DataUtils.createPlayerDragonForFight(helpDefencePlayerDoc, helpDefenceDragon)
 				dragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, helpDefenceDragonForFight, 0)
 				report = ReportUtils.createStrikeCityFightWithHelpDefenceDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defencePlayerDoc, helpDefencePlayerDoc, helpDefenceDragonForFight, dragonFightData)
 				LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
@@ -1108,7 +1108,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc._id, defenceAllianceData])
 				}else{
-					var defenceDragonForFight = DataUtils.createDragonForFight(defencePlayerDoc, defenceDragon)
+					var defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon)
 					dragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, defenceDragonForFight, 0)
 					report = ReportUtils.createStrikeCityFightWithDefenceDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defencePlayerDoc, defenceDragonForFight, dragonFightData)
 					LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
@@ -1304,8 +1304,8 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 	Promise.all(funcs).then(function(){
 		_.each(event.playerTroops, function(playerTroop){
 			var playerDoc = playerDocs[playerTroop.id]
-			var dragonForFight = DataUtils.createDragonForFight(playerDoc, playerDoc.dragons[playerTroop.dragon.type])
-			var soldiersForFight = DataUtils.createSoldiersForFight(playerDoc, playerTroop.soldiers)
+			var dragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDoc.dragons[playerTroop.dragon.type])
+			var soldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, playerTroop.soldiers)
 			var playerTroopForFight = {
 				id:playerTroop.id,
 				name:playerTroop.name,

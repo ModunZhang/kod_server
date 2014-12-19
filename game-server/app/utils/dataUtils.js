@@ -22,8 +22,6 @@ var Houses = GameDatas.Houses.houses
 var Buildings = GameDatas.Buildings.buildings
 var HouseInit = GameDatas.PlayerInitData.houses[1]
 var UnitConfig = GameDatas.UnitsConfig
-var SoldierConfig = UnitConfig.normal
-var SpecialSoldierConfig = UnitConfig.special
 var DragonEquipmentConfig = GameDatas.SmithConfig.equipments
 var DragonEyrie = GameDatas.DragonEyrie
 var AllianceInit = GameDatas.AllianceInitData
@@ -156,7 +154,7 @@ Utils.getBuildingUpgradeRequired = function(buildingType, buildingLevel){
  * @returns {{resources: {wood: *, stone: *, iron: *, citizen: *}, materials: {blueprints: *, tools: *, tiles: *, pulley: *}, buildTime: *}}
  */
 Utils.getHouseUpgradeRequired = function(houseType, houseLevel){
-	var houseUsed = this.getPlayerHouseUsedCitizen(houseType, houseLevel - 1)
+	var houseUsed = this.getHouseUsedCitizen(houseType, houseLevel - 1)
 	var config = HouseLevelUp[houseType][houseLevel]
 	var required = {
 		resources:{
@@ -405,7 +403,7 @@ Utils.getPlayerUsedCitizen = function(playerDoc){
  * @param houseLevel
  * @returns {number}
  */
-Utils.getPlayerHouseUsedCitizen = function(houseType, houseLevel){
+Utils.getHouseUsedCitizen = function(houseType, houseLevel){
 	return HouseLevelUp[houseType][houseLevel].citizen
 }
 
@@ -692,9 +690,9 @@ Utils.createMaterialEvent = function(toolShop, category, finishNow){
  * @returns {*}
  */
 Utils.getPlayerPower = function(playerDoc){
-	var buildingPower = this.getBuildingPower(playerDoc)
-	var housePower = this.getHousePower(playerDoc)
-	var soldierPower = this.getSoldierPower(playerDoc)
+	var buildingPower = this.getPlayerBuildingsPower(playerDoc)
+	var housePower = this.getPlayerHousesPower(playerDoc)
+	var soldierPower = this.getPlayerSoldiersPower(playerDoc)
 
 	return buildingPower + housePower + soldierPower
 }
@@ -704,7 +702,7 @@ Utils.getPlayerPower = function(playerDoc){
  * @param playerDoc
  * @returns {number}
  */
-Utils.getBuildingPower = function(playerDoc){
+Utils.getPlayerBuildingsPower = function(playerDoc){
 	var totalPower = 0
 	_.each(playerDoc.buildings, function(building){
 		if(building.level > 0){
@@ -721,7 +719,7 @@ Utils.getBuildingPower = function(playerDoc){
  * @param playerDoc
  * @returns {number}
  */
-Utils.getHousePower = function(playerDoc){
+Utils.getPlayerHousesPower = function(playerDoc){
 	var totalPower = 0
 	_.each(playerDoc.buildings, function(building){
 		_.each(building.houses, function(house){
@@ -738,15 +736,15 @@ Utils.getHousePower = function(playerDoc){
  * @param playerDoc
  * @returns {number}
  */
-Utils.getSoldierPower = function(playerDoc){
+Utils.getPlayerSoldiersPower = function(playerDoc){
 	var totalPower = 0
 	var config = null
 	_.each(playerDoc.soldiers, function(soldierCount, soldierName){
-		if(Utils.isSpecialSoldier(soldierName)){
-			config = SpecialSoldierConfig[soldierName]
+		if(Utils.hasSpecialSoldier(soldierName)){
+			config = UnitConfig.special[soldierName]
 		}else{
-			var fullName = soldierName + "_" + Utils.getSoldierStar(soldierName)
-			config = SoldierConfig[fullName]
+			var fullName = soldierName + "_" + 1
+			config = UnitConfig.normal[fullName]
 		}
 		totalPower += config.power * soldierCount
 	})
@@ -768,7 +766,7 @@ Utils.getPlayerKeepLevel = function(playerDoc){
  * @param playerDoc
  * @returns {*}
  */
-Utils.getBuildingLevelLimit = function(playerDoc){
+Utils.getPlayerBuildingLevelLimit = function(playerDoc){
 	return this.getPlayerKeepLevel(playerDoc)
 }
 
@@ -838,15 +836,11 @@ Utils.getPlayerFreeHousesCount = function(playerDoc, houseType){
  * @param soldierName
  */
 Utils.hasNormalSoldier = function(soldierName){
-	var hasSoldier = false
-	var fullSoldierName = soldierName + "_" + this.getSoldierStar(soldierName)
-	_.each(SoldierConfig, function(value, key){
-		if(_.isEqual(fullSoldierName, key)){
-			hasSoldier = true
-		}
-	})
-
-	return hasSoldier
+	for(var i = 0; i < _.size(UnitConfig.normal); i ++){
+		var config = UnitConfig.normal[i]
+		if(_.isEqual(config.name, soldierName)) return true
+	}
+	return false
 }
 
 /**
@@ -855,40 +849,8 @@ Utils.hasNormalSoldier = function(soldierName){
  * @returns {boolean}
  */
 Utils.hasSpecialSoldier = function(soldierName){
-	var hasSoldier = false
-	_.each(SpecialSoldierConfig, function(value, key){
-		if(_.isEqual(soldierName, key)){
-			hasSoldier = true
-		}
-	})
-
-	return hasSoldier
-}
-
-/**
- * 获取英雄星级
- * @param soldierName
- * @returns {number}
- */
-Utils.getSoldierStar = function(soldierName){
-	if(this.isSpecialSoldier(soldierName)) return 3
-	return 1
-}
-
-/**
- * 是否特殊兵种
- * @param soldierName
- * @returns {boolean}
- */
-Utils.isSpecialSoldier = function(soldierName){
-	var isSpecial = false
-	_.each(SpecialSoldierConfig, function(value, key){
-		if(_.isEqual(soldierName, key)){
-			isSpecial = true
-		}
-	})
-
-	return isSpecial
+	var keys = _.keys(UnitConfig.special)
+	return _.contains(keys, soldierName)
 }
 
 /**
@@ -898,9 +860,9 @@ Utils.isSpecialSoldier = function(soldierName){
  * @returns {{resources: {wood: number, stone: number, iron: number, food: number}, recruitTime: (*|Array)}}
  */
 Utils.getRecruitNormalSoldierRequired = function(soldierName, count){
-	var star = this.getSoldierStar(soldierName)
+	var star = 1
 	var fullSoldierName = soldierName + "_" + star
-	var config = SoldierConfig[fullSoldierName]
+	var config = UnitConfig.normal[fullSoldierName]
 	var resources = {
 		wood:config.wood * count,
 		stone:config.stone * count,
@@ -922,7 +884,7 @@ Utils.getRecruitNormalSoldierRequired = function(soldierName, count){
  * @returns {{materials: (*|Array), recruitTime: *}}
  */
 Utils.getRecruitSpecialSoldierRequired = function(soldierName, count){
-	var config = SpecialSoldierConfig[soldierName]
+	var config = UnitConfig.special[soldierName]
 	var materialNames = config.specialMaterials.split(",")
 	var materials = {}
 	_.each(materialNames, function(value){
@@ -944,12 +906,12 @@ Utils.getRecruitSpecialSoldierRequired = function(soldierName, count){
  */
 Utils.getRecruitSoldierTime = function(soldierName, count){
 	var config = null
-	if(this.isSpecialSoldier(soldierName)){
-		config = SpecialSoldierConfig[soldierName]
+	if(this.hasSpecialSoldier(soldierName)){
+		config = UnitConfig.special[soldierName]
 	}else{
-		var star = this.getSoldierStar(soldierName)
+		var star = 1
 		var fullSoldierName = soldierName + "_" + star
-		config = SoldierConfig[fullSoldierName]
+		config = UnitConfig.normal[fullSoldierName]
 	}
 	return config.recruitTime * count
 }
@@ -960,16 +922,16 @@ Utils.getRecruitSoldierTime = function(soldierName, count){
  * @param soldierName
  * @returns {number}
  */
-Utils.getSoldierMaxRecruitCount = function(playerDoc, soldierName){
+Utils.getPlayerSoldierMaxRecruitCount = function(playerDoc, soldierName){
 	var building = playerDoc.buildings["location_8"]
 	var config = BuildingFunction[building.type][building.level]
 	var maxRecruit = config.maxRecruit
 	var soldierConfig = null
-	if(this.isSpecialSoldier(soldierName)){
-		soldierConfig = SpecialSoldierConfig[soldierName]
+	if(this.hasSpecialSoldier(soldierName)){
+		soldierConfig = UnitConfig.special[soldierName]
 	}else{
-		var fullSoldierName = soldierName + "_" + this.getSoldierStar(soldierName)
-		soldierConfig = SoldierConfig[fullSoldierName]
+		var fullSoldierName = soldierName + "_" + 1
+		soldierConfig = UnitConfig.normal[fullSoldierName]
 	}
 	var maxCount = Math.floor(maxRecruit / soldierConfig.citizen)
 	return maxCount
@@ -996,7 +958,7 @@ Utils.isDragonEquipment = function(equipmentName){
  * @param equipmentName
  * @returns {{}}
  */
-Utils.getMakeDragonEquipmentRequired = function(playerDoc, equipmentName){
+Utils.getPlayerMakeDragonEquipmentRequired = function(playerDoc, equipmentName){
 	var required = {}
 	var config = DragonEquipmentConfig[equipmentName]
 	var materialNameArray = config.materials.split(",")
@@ -1007,7 +969,7 @@ Utils.getMakeDragonEquipmentRequired = function(playerDoc, equipmentName){
 	})
 	required.materials = materials
 	required.coin = config.coin
-	required.makeTime = this.getMakeDragonEquipmentTime(playerDoc, equipmentName)
+	required.makeTime = this.getPlayerMakeDragonEquipmentTime(playerDoc, equipmentName)
 	return required
 }
 
@@ -1017,7 +979,7 @@ Utils.getMakeDragonEquipmentRequired = function(playerDoc, equipmentName){
  * @param equipmentName
  * @returns {*}
  */
-Utils.getMakeDragonEquipmentTime = function(playerDoc, equipmentName){
+Utils.getPlayerMakeDragonEquipmentTime = function(playerDoc, equipmentName){
 	var building = playerDoc.buildings["location_9"]
 	var smithConfig = BuildingFunction[building.type][building.level]
 	var dragonEquipmentConfig = DragonEquipmentConfig[equipmentName]
@@ -1029,7 +991,7 @@ Utils.getMakeDragonEquipmentTime = function(playerDoc, equipmentName){
  * 是否还有可用的建筑建造队列
  * @param playerDoc
  */
-Utils.hasFreeBuildQueue = function(playerDoc){
+Utils.playerHasFreeBuildQueue = function(playerDoc){
 	return playerDoc.basicInfo.buildQueue - LogicUtils.getUsedBuildQueue(playerDoc) > 0
 }
 
@@ -1040,9 +1002,9 @@ Utils.hasFreeBuildQueue = function(playerDoc){
  * @returns {number}
  */
 Utils.getTreatSoldierTime = function(soldierName, count){
-	var star = this.getSoldierStar(soldierName)
+	var star = 1
 	var fullSoldierName = soldierName + "_" + star
-	var config = SoldierConfig[fullSoldierName]
+	var config = UnitConfig.normal[fullSoldierName]
 	return config.treatTime * count
 }
 
@@ -1052,7 +1014,7 @@ Utils.getTreatSoldierTime = function(soldierName, count){
  * @param soldiers
  * @returns {{resources: {wood: number, stone: number, iron: number, food: number}, recruitTime: (*|Array)}}
  */
-Utils.getTreatSoldierRequired = function(playerDoc, soldiers){
+Utils.getPlayerTreatSoldierRequired = function(playerDoc, soldiers){
 	var totalNeed = {
 		resources:{
 			wood:0,
@@ -1066,9 +1028,9 @@ Utils.getTreatSoldierRequired = function(playerDoc, soldiers){
 		var soldier = soldiers[i]
 		var soldierName = soldier.name
 		var count = soldier.count
-		var star = this.getSoldierStar(soldierName)
+		var star = 1
 		var fullSoldierName = soldierName + "_" + star
-		var config = SoldierConfig[fullSoldierName]
+		var config = UnitConfig.normal[fullSoldierName]
 		totalNeed.resources.wood += config.treatWood * count
 		totalNeed.resources.stone += config.treatStone * count
 		totalNeed.resources.iron += config.treatIron * count
@@ -1085,9 +1047,9 @@ Utils.getTreatSoldierRequired = function(playerDoc, soldiers){
  * @param dragon
  * @returns {*}
  */
-Utils.getDragonVitality = function(playerDoc, dragon){
+Utils.getPlayerDragonVitality = function(playerDoc, dragon){
 	var config = DragonEyrie.dragonAttribute[dragon.star]
-	var vitality = config.initVitality + config.perLevelVitality * dragon.level
+	var vitality = config.initVitality + (config.perLevelVitality * dragon.level)
 	return vitality
 }
 
@@ -1097,7 +1059,7 @@ Utils.getDragonVitality = function(playerDoc, dragon){
  * @param dragon
  * @returns {*}
  */
-Utils.getDragonStrength = function(playerDoc, dragon){
+Utils.getPlayerDragonStrength = function(playerDoc, dragon){
 	var config = DragonEyrie.dragonAttribute[dragon.star]
 	var vitality = config.initStrength + (config.perLevelStrength * dragon.level)
 	return vitality
@@ -1200,12 +1162,11 @@ Utils.isDragonTypeExist = function(dragonType){
 
 /**
  * 获取升级龙的技能所需的资源
- * @param playerDoc
  * @param dragon
  * @param skill
  * @returns {{}}
  */
-Utils.getDragonSkillUpgradeRequired = function(playerDoc, dragon, skill){
+Utils.getDragonSkillUpgradeRequired = function(dragon, skill){
 	var config = DragonEyrie.dragonSkill[skill.name]
 	var totalNeed = {}
 	totalNeed.energy = config.energyCostPerLevel
@@ -1241,7 +1202,7 @@ Utils.getDragonSkillMaxLevel = function(skill){
  * @param category
  * @param equipments
  */
-Utils.enhanceDragonEquipment = function(playerDoc, playerData, dragonType, category, equipments){
+Utils.enhancePlayerDragonEquipment = function(playerDoc, playerData, dragonType, category, equipments){
 	var dragon = playerDoc.dragons[dragonType]
 	var equipmentInDragon = dragon.equipments[category]
 	var config = DragonEquipmentConfig[equipmentInDragon.name]
@@ -1377,7 +1338,7 @@ Utils.isDragonReachMaxStar = function(dragon){
  * @param playerDoc
  * @returns {{citizen: (taxCitizen|*), imposeTime: (taxTime|*)}}
  */
-Utils.getImposeRequired = function(playerDoc){
+Utils.getPlayerImposeRequired = function(playerDoc){
 	var building = playerDoc.buildings["location_15"]
 	var config = BuildingFunction.townHall[building.level]
 	var required = {
@@ -1392,7 +1353,7 @@ Utils.getImposeRequired = function(playerDoc){
  * @param playerDoc
  * @returns {totalTax|*}
  */
-Utils.getImposedCoin = function(playerDoc){
+Utils.getPlayerImposedCoin = function(playerDoc){
 	var building = playerDoc.buildings["location_15"]
 	var config = BuildingFunction.townHall[building.level]
 	return config.totalTax
@@ -1439,7 +1400,7 @@ Utils.getAllianceTitleLevel = function(title){
  * @param playerDoc
  * @returns {*}
  */
-Utils.getVipLevel = function(playerDoc){
+Utils.getPlayerVipLevel = function(playerDoc){
 	var vipExpConfig = Vip.exp
 	var vipExp = playerDoc.basicInfo.vipExp
 	for(var i = vipExpConfig.length; i >= 1; i++){
@@ -1795,7 +1756,7 @@ Utils.getAllianceActiveShrineStageRequired = function(stageName){
  * @param soldierCount
  * @returns {*}
  */
-Utils.createNormalSoldierForFight = function(playerDoc, soldierName, soldierStar, soldierCount){
+Utils.createPlayerNormalSoldierForFight = function(playerDoc, soldierName, soldierStar, soldierCount){
 	var soldierFullKey = soldierName + "_" + soldierStar
 	var config = UnitConfig.normal[soldierFullKey]
 	var soldier = {
@@ -1830,7 +1791,7 @@ Utils.createNormalSoldierForFight = function(playerDoc, soldierName, soldierStar
  * @param soldierCount
  * @returns {*}
  */
-Utils.createSpecialSoldierForFight = function(playerDoc, soldierName, soldierCount){
+Utils.createPlayerSpecialSoldierForFight = function(playerDoc, soldierName, soldierCount){
 	var config = UnitConfig.special[soldierName]
 	var soldier = {
 		name:soldierName,
@@ -1863,14 +1824,14 @@ Utils.createSpecialSoldierForFight = function(playerDoc, soldierName, soldierCou
  * @param soldiers
  * @returns {Array}
  */
-Utils.createSoldiersForFight = function(playerDoc, soldiers){
+Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers){
 	var self = this
 	var soldiersForFight = []
 	_.each(soldiers, function(soldier){
 		if(self.hasNormalSoldier(soldier.name)){
-			soldiersForFight.push(self.createNormalSoldierForFight(playerDoc, soldier.name, 1, soldier.count))
+			soldiersForFight.push(self.createPlayerNormalSoldierForFight(playerDoc, soldier.name, 1, soldier.count))
 		}else{
-			soldiersForFight.push(self.createSpecialSoldierForFight(playerDoc, soldier.name, soldier.count))
+			soldiersForFight.push(self.createPlayerSpecialSoldierForFight(playerDoc, soldier.name, soldier.count))
 		}
 	})
 	soldiersForFight = _.sortBy(soldiersForFight, function(soldier){
@@ -1885,7 +1846,7 @@ Utils.createSoldiersForFight = function(playerDoc, soldiers){
  * @param dragon
  * @returns {*}
  */
-Utils.createDragonForFight = function(playerDoc, dragon){
+Utils.createPlayerDragonForFight = function(playerDoc, dragon){
 	var dragonForFight = {
 		type:dragon.type,
 		level:dragon.level,
@@ -1904,7 +1865,7 @@ Utils.createDragonForFight = function(playerDoc, dragon){
  * @param playerDoc
  * @returns {*}
  */
-Utils.createWallForFight = function(playerDoc){
+Utils.createPlayerWallForFight = function(playerDoc){
 	var getProperty = function(type, level, key){
 		return BuildingFunction[type][level][key]
 	}
@@ -1953,12 +1914,12 @@ Utils.getAllianceShrineStageTroops = function(stageName){
 			star:parseInt(dragonParams[1]),
 			level:parseInt(dragonParams[2])
 		}
-		var dragonVitality = this.getDragonVitality(null, dragon)
+		var dragonVitality = this.getPlayerDragonVitality(null, dragon)
 		dragon.vitality = dragonVitality
 		var dragonHp = this.getPlayerDragonHpMax(null, dragon)
 		var dragonForFight = {
 			type:dragonParams[0],
-			strength:this.getDragonStrength(null, dragon),
+			strength:this.getPlayerDragonStrength(null, dragon),
 			vitality:dragonVitality,
 			maxHp:dragonHp,
 			totalHp:dragonHp,
@@ -2308,10 +2269,40 @@ Utils.updatePlayerDragonProperty = function(playerDoc, dragon){
 		else{
 			dragon.level += 1
 			dragon.exp -= nextLevelExpNeed
-			dragon.vitality = this.getDragonVitality(playerDoc, dragon)
-			dragon.strength = this.getDragonStrength(playerDoc, dragon)
+			dragon.vitality = this.getPlayerDragonVitality(playerDoc, dragon)
+			dragon.strength = this.getPlayerDragonStrength(playerDoc, dragon)
 		}
 	}
 }
 
+/**
+ * 获取士兵占用人口
+ * @param playerDoc
+ * @param soldiers
+ */
+Utils.getPlayerSoldiersCitizen = function(playerDoc, soldiers){
+	var self = this
+	var config = null
+	var totalCitizen = 0
+	_.each(soldiers, function(count, name){
+		if(self.hasSpecialSoldier(name)){
+			config = UnitConfig.special[name]
+		}else{
+			var fullSoldierName = name + "_" + 1
+			config = UnitConfig.normal[fullSoldierName]
+		}
+		totalCitizen += config.citizen * count
+	})
+	return totalCitizen
+}
 
+/**
+ * 获取龙的最大带兵量
+ * @param playerDoc
+ * @param dragon
+ */
+Utils.getPlayerDragonMaxCitizen = function(playerDoc, dragon){
+	var config = DragonEyrie.dragonAttribute[dragon.star]
+	var leaderShip = config.initLeadership + (config.perLevelLeadership * dragon.level)
+	return leaderShip * AllianceInit.citizenPerLeadership
+}

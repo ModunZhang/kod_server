@@ -187,7 +187,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(building.level == 0 && DataUtils.getPlayerFreeBuildingsCount(playerDoc) <= 0){
 			return Promise.reject(new Error("建造数量已达建造上限"))
 		}
-		if(!_.isEqual(building.type, "keep") && building.level > 0 && building.level + 1 > DataUtils.getBuildingLevelLimit(playerDoc)){
+		if(!_.isEqual(building.type, "keep") && building.level > 0 && building.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc)){
 			return Promise.reject(new Error("建筑升级时,建筑等级不合法"))
 		}
 		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.type, building.level)){
@@ -226,7 +226,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
-			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
+			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
@@ -366,7 +366,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			return Promise.reject(new Error("创建小屋时,小屋坑位不合法"))
 		}
 		if(!_.isEqual("dwelling", houseType)){
-			var willUse = DataUtils.getPlayerHouseUsedCitizen(houseType, 1)
+			var willUse = DataUtils.getHouseUsedCitizen(houseType, 1)
 			if(DataUtils.getPlayerCitizen(playerDoc) - willUse < 0){
 				return Promise.reject(new Error("建造小屋会造成可用城民小于0"))
 			}
@@ -404,7 +404,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
-			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
+			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
@@ -548,15 +548,15 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		if(LogicUtils.hasHouseEvents(playerDoc, building.location, house.location)){
 			return Promise.reject(new Error("小屋正在升级"))
 		}
-		if(house.level + 1 > DataUtils.getBuildingLevelLimit(playerDoc)){
+		if(house.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc)){
 			return Promise.reject(new Error("小屋升级时,小屋等级不合法"))
 		}
 		if(DataUtils.isHouseReachMaxLevel(house.type, house.level)){
 			return Promise.reject(new Error("小屋已达到最高等级"))
 		}
 		if(!_.isEqual("dwelling", house.type)){
-			var currentLevelUsed = DataUtils.getPlayerHouseUsedCitizen(house.type, house.level)
-			var nextLevelUsed = DataUtils.getPlayerHouseUsedCitizen(house.type, house.level + 1)
+			var currentLevelUsed = DataUtils.getHouseUsedCitizen(house.type, house.level)
+			var nextLevelUsed = DataUtils.getHouseUsedCitizen(house.type, house.level + 1)
 			var willUse = nextLevelUsed - currentLevelUsed
 			if(DataUtils.getPlayerCitizen(playerDoc) - willUse < 0){
 				return Promise.reject(new Error("升级小屋会造成可用城民小于0"))
@@ -595,7 +595,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
-			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
+			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
@@ -803,7 +803,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		if(DataUtils.isBuildingReachMaxLevel("tower", tower.level)){
 			return Promise.reject(new Error("箭塔已达到最高等级"))
 		}
-		if(tower.level + 1 > DataUtils.getBuildingLevelLimit(playerDoc)){
+		if(tower.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc)){
 			return Promise.reject(new Error("箭塔升级时,建筑等级不合法"))
 		}
 		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
@@ -839,7 +839,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
-			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
+			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
@@ -956,7 +956,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		if(DataUtils.isBuildingReachMaxLevel("wall", wall.level)){
 			return Promise.reject(new Error("城墙已达到最高等级"))
 		}
-		if(wall.level + 1 > DataUtils.getBuildingLevelLimit(playerDoc)){
+		if(wall.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc)){
 			return Promise.reject(new Error("城墙升级时,城墙等级不合法"))
 		}
 		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
@@ -992,7 +992,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
-			if(!DataUtils.hasFreeBuildQueue(playerDoc)){
+			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
@@ -1376,7 +1376,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		if(!finishNow && playerDoc.soldierEvents.length > 0){
 			return Promise.reject(new Error("已有士兵正在被招募"))
 		}
-		if(count > DataUtils.getSoldierMaxRecruitCount(playerDoc, soldierName)){
+		if(count > DataUtils.getPlayerSoldierMaxRecruitCount(playerDoc, soldierName)){
 			return Promise.reject(new Error("招募数量超过单次招募上限"))
 		}
 

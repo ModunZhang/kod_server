@@ -21,15 +21,15 @@ intInit["editAllianceTerrianHonour"] = {
 }
 intInit["activeShrineStageEventTime"] = {
 	type:"activeShrineStageEventTime",
-	value:60
+	value:7
 }
 intInit["allianceFightPrepareTime"] = {
 	type:"allianceFightPrepareTime",
-	value:30
+	value:5
 }
 intInit["allianceFightTotalFightTime"] = {
 	type:"allianceFightTotalFightTime",
-	value:120
+	value:30
 }
 intInit["allianceHelpDefenceTroopsMaxCount"] = {
 	type:"allianceHelpDefenceTroopsMaxCount",
@@ -50,4 +50,8 @@ intInit["allianceRegionMapWidth"] = {
 intInit["allianceRegionMapHeight"] = {
 	type:"allianceRegionMapHeight",
 	value:51
+}
+intInit["citizenPerLeadership"] = {
+	type:"citizenPerLeadership",
+	value:100
 }

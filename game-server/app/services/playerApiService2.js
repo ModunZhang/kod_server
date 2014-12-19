@@ -73,7 +73,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		if(!finishNow && playerDoc.soldierEvents.length > 0){
 			return Promise.reject(new Error("已有士兵正在被招募"))
 		}
-		if(count > DataUtils.getSoldierMaxRecruitCount(playerDoc, soldierName)){
+		if(count > DataUtils.getPlayerSoldierMaxRecruitCount(playerDoc, soldierName)){
 			return Promise.reject(new Error("招募数量超过单次招募上限"))
 		}
 
@@ -183,7 +183,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			return Promise.reject(new Error("已有装备正在制作"))
 		}
 		var gemUsed = 0
-		var makeRequired = DataUtils.getMakeDragonEquipmentRequired(playerDoc, equipmentName)
+		var makeRequired = DataUtils.getPlayerMakeDragonEquipmentRequired(playerDoc, equipmentName)
 		var buyedResources = null
 		var playerData = {}
 		if(!LogicUtils.isEnough(makeRequired.materials, playerDoc.dragonMaterials)){
@@ -297,7 +297,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		}
 
 		var gemUsed = 0
-		var treatRequired = DataUtils.getTreatSoldierRequired(playerDoc, soldiers)
+		var treatRequired = DataUtils.getPlayerTreatSoldierRequired(playerDoc, soldiers)
 		var buyedResources = null
 		var playerData = {}
 		if(finishNow){
@@ -415,10 +415,10 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		if(dragon.hp >= 100){
 			dragon.star = 1
 			dragon.level = 1
-			dragon.vitality = DataUtils.getDragonVitality(playerDoc, dragon)
+			dragon.vitality = DataUtils.getPlayerDragonVitality(playerDoc, dragon)
 			dragon.hp = dragon.vitality * 2
 			dragon.hpRefreshTime = Date.now()
-			dragon.strength = DataUtils.getDragonStrength(playerDoc, dragon)
+			dragon.strength = DataUtils.getPlayerDragonStrength(playerDoc, dragon)
 		}
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
@@ -596,7 +596,7 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 			return Promise.reject(new Error("被牺牲的装备不存在或数量不足"))
 		}
 		var playerData = {}
-		DataUtils.enhanceDragonEquipment(playerDoc, playerData, dragonType, equipmentCategory, equipments)
+		DataUtils.enhancePlayerDragonEquipment(playerDoc, playerData, dragonType, equipmentCategory, equipments)
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.dragons = {}
@@ -746,7 +746,7 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 		if(DataUtils.isDragonSkillReachMaxLevel(skill)){
 			return Promise.reject(new Error("技能已达最高等级"))
 		}
-		var upgradeRequired = DataUtils.getDragonSkillUpgradeRequired(playerDoc, dragon, skill)
+		var upgradeRequired = DataUtils.getDragonSkillUpgradeRequired(dragon, skill)
 		var playerData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(playerDoc.resources.energy < upgradeRequired.energy){
@@ -832,8 +832,8 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 		}
 		var playerData = {}
 		dragon.star += 1
-		dragon.vitality = DataUtils.getDragonVitality(playerDoc, dragon)
-		dragon.strength = DataUtils.getDragonStrength(playerDoc, dragon)
+		dragon.vitality = DataUtils.getPlayerDragonVitality(playerDoc, dragon)
+		dragon.strength = DataUtils.getPlayerDragonStrength(playerDoc, dragon)
 		_.each(dragon.equipments, function(equipment){
 			equipment.name = ""
 			equipment.star = 0
@@ -900,8 +900,8 @@ pro.impose = function(playerId, callback){
 			return Promise.reject(new Error("正在收税中"))
 		}
 		LogicUtils.refreshPlayerResources(playerDoc)
-		var required = DataUtils.getImposeRequired(playerDoc)
-		var imposedCoin = DataUtils.getImposedCoin(playerDoc)
+		var required = DataUtils.getPlayerImposeRequired(playerDoc)
+		var imposedCoin = DataUtils.getPlayerImposedCoin(playerDoc)
 		if(required.citizen > playerDoc.resources.citizen){
 			return Promise.reject(new Error("空闲城民不足"))
 		}
