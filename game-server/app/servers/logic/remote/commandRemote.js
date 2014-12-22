@@ -1166,17 +1166,22 @@ pro.alliancefight = function(uid, targetAllianceTag, callback){
 		defenceAllianceDoc = doc
 		var now = Date.now()
 		var finishTime = now + DataUtils.getAllianceFightPrepareTime()
-		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
+		attackAllianceDoc.fightRequests = []
+		defenceAllianceDoc.fightRequests = []
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc, true])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, defenceAllianceDoc, true])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime])
 		var attackAllianceData = {}
+		attackAllianceData.fightRequests = []
 		attackAllianceData.basicInfo = attackAllianceDoc.basicInfo
-		attackAllianceData.moonGateData = attackAllianceDoc.moonGateData
+		attackAllianceData.allianceFight = attackAllianceDoc.allianceFight
+		attackAllianceData.enemyAllianceDoc = LogicUtils.getAllianceViewData(defenceAllianceDoc)
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
 		var defenceAllianceData = {}
+		defenceAllianceData.fightRequests = []
 		defenceAllianceData.basicInfo = defenceAllianceDoc.basicInfo
-		defenceAllianceData.moonGateData = defenceAllianceDoc.moonGateData
+		defenceAllianceData.allianceFight = defenceAllianceDoc.allianceFight
+		defenceAllianceData.enemyAllianceDoc = LogicUtils.getAllianceViewData(attackAllianceDoc)
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc._id, defenceAllianceData])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

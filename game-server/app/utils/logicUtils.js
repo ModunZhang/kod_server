@@ -9,7 +9,6 @@ var _ = require("underscore")
 var sprintf = require("sprintf")
 var Promise = require("bluebird")
 
-var FightUtils = require("./fightUtils")
 var DataUtils = require("./dataUtils")
 var MapUtils = require("./mapUtils")
 var Consts = require("../consts/consts")
@@ -37,14 +36,9 @@ Utils.getEfficiency = function(origin, effect){
  * @param has
  */
 Utils.isEnough = function(need, has){
-	for(var key in need){
-		if(need.hasOwnProperty(key)){
-			if(!_.isNumber(has[key]) || has[key] < need[key]) return false
-		}else{
-			return false
-		}
-	}
-	return true
+	return _.every(need, function(value, key){
+		return _.isNumber(has[key]) && has[key] > need[key]
+	})
 }
 
 /**
@@ -74,11 +68,9 @@ Utils.clearArray = function(array){
  * @param object
  */
 Utils.clearObject = function(object){
-	for(var property in object){
-		if(object.hasOwnProperty(property)){
-			delete object[property]
-		}
-	}
+	_.each(object, function(value, key){
+		delete object[key]
+	})
 }
 
 /**
@@ -223,14 +215,13 @@ Utils.isHouseCanCreateAtLocation = function(playerDoc, buildingLocation, houseTy
 	}
 
 	var alreadyUsed = []
-	for(var i = 0; i < houses.length; i++){
-		var house = houses[i]
+	_.each(houses, function(house){
 		var houseSize = DataUtils.getHouseSize(house.type)
 		alreadyUsed.push(house.location)
 		if(houseSize.width > 1 || houseSize.height > 1){
 			wantUse.push(house.location + 1)
 		}
-	}
+	})
 
 	return _.intersection(wantUse, alreadyUsed).length == 0
 }
@@ -332,11 +323,9 @@ Utils.getBuildingRoundMiddleLocation = function(currentRound){
  * @returns {boolean}
  */
 Utils.hasBuildingEvents = function(playerDoc, buildingLocation){
-	for(var i = 0; i < playerDoc.buildingEvents.length; i++){
-		var event = playerDoc.buildingEvents[i]
-		if(_.isEqual(buildingLocation, event.location)) return true
-	}
-	return false
+	return _.some(playerDoc.buildingEvents, function(event){
+		return _.isEqual(buildingLocation, event.location)
+	})
 }
 
 /**
@@ -347,11 +336,9 @@ Utils.hasBuildingEvents = function(playerDoc, buildingLocation){
  * @returns {boolean}
  */
 Utils.hasHouseEvents = function(playerDoc, buildingLocation, houseLocation){
-	for(var i = 0; i < playerDoc.houseEvents.length; i++){
-		var event = playerDoc.houseEvents[i]
-		if(_.isEqual(event.buildingLocation, buildingLocation) && _.isEqual(event.houseLocation, houseLocation)) return true
-	}
-	return false
+	return _.some(playerDoc.houseEvents, function(event){
+		return _.isEqual(event.buildingLocation, buildingLocation) && _.isEqual(event.houseLocation, houseLocation)
+	})
 }
 
 /**
@@ -361,11 +348,9 @@ Utils.hasHouseEvents = function(playerDoc, buildingLocation, houseLocation){
  * @returns {boolean}
  */
 Utils.hasTowerEvents = function(playerDoc, towerLocation){
-	for(var i = 0; i < playerDoc.towerEvents.length; i++){
-		var event = playerDoc.towerEvents[i]
-		if(_.isEqual(towerLocation, event.location)) return true
-	}
-	return false
+	return _.some(playerDoc.towerEvents, function(event){
+		return _.isEqual(towerLocation, event.location)
+	})
 }
 
 /**
@@ -525,13 +510,14 @@ Utils.getBuildingByEvent = function(playerDoc, buildingEvent){
  */
 Utils.getHouseByEvent = function(playerDoc, houseEvent){
 	var building = playerDoc.buildings["location_" + houseEvent.buildingLocation]
-	for(var i = 0; i < building.houses.length; i++){
-		var house = building.houses[i]
+	var theHouse = null
+	_.some(building.houses, function(house){
 		if(_.isEqual(house.location, houseEvent.houseLocation)){
-			return house
+			theHouse = house
+			return true
 		}
-	}
-	return null
+	})
+	return theHouse
 }
 
 /**
@@ -567,11 +553,14 @@ Utils.removeItemsInArray = function(array, items){
  * @returns {*}
  */
 Utils.getMaterialEventByCategory = function(playerDoc, category){
-	for(var i = 0; i < playerDoc.materialEvents.length; i++){
-		var event = playerDoc.materialEvents[i]
-		if(_.isEqual(event.category, category)) return event
-	}
-	return null
+	var theEvent = null
+	_.some(playerDoc.materialEvents, function(event){
+		if(_.isEqual(event.category, category)){
+			theEvent = event
+			return true
+		}
+	})
+	return theEvent
 }
 
 /**
@@ -582,16 +571,14 @@ Utils.getMaterialEventByCategory = function(playerDoc, category){
  */
 Utils.isTreatSoldierLegal = function(playerDoc, soldiers){
 	if(soldiers.length == 0) return false
-	for(var i = 0; i < soldiers.length; i++){
-		var soldier = soldiers[i]
-		var soldierName = soldier.name
+	return _.every(soldiers, function(soldier){
+		var name = soldier.name
 		var count = soldier.count
-		if(!_.isString(soldierName) || !_.isNumber(count)) return false
+		if(!_.isString(name) || !_.isNumber(count)) return false
 		count = Math.floor(count)
 		if(count <= 0) return false
-		if(!playerDoc.woundedSoldiers[soldierName] || playerDoc.woundedSoldiers[soldierName] < count) return false
-	}
-	return true
+		return _.isNumber(playerDoc.woundedSoldiers[name]) && playerDoc.woundedSoldiers[name] >= count
+	})
 }
 
 /**
@@ -602,16 +589,14 @@ Utils.isTreatSoldierLegal = function(playerDoc, soldiers){
  */
 Utils.isEnhanceDragonEquipmentLegal = function(playerDoc, equipments){
 	if(equipments.length == 0) return false
-	for(var i = 0; i < equipments.length; i++){
-		var equipment = equipments[i]
+	return _.every(equipments, function(equipment){
 		var equipmentName = equipment.name
 		var count = equipment.count
 		if(!_.isString(equipmentName) || !_.isNumber(count)) return false
 		count = Math.floor(count)
 		if(count <= 0) return false
-		if(!playerDoc.dragonEquipments[equipmentName] || playerDoc.dragonEquipments[equipmentName] < count) return false
-	}
-	return true
+		return _.isNumber(playerDoc.dragonEquipments[equipmentName]) && playerDoc.dragonEquipments[equipmentName] >= count
+	})
 }
 
 /**
@@ -621,8 +606,8 @@ Utils.isEnhanceDragonEquipmentLegal = function(playerDoc, equipments){
  * @returns {*}
  */
 Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
-	for(var i = 0; i < allianceDoc.members.length; i++){
-		var member = allianceDoc.members[i]
+	var theMember = null
+	_.some(allianceDoc.members, function(member){
 		if(_.isEqual(member.id, playerDoc._id)){
 			member.name = playerDoc.basicInfo.name
 			member.icon = playerDoc.basicInfo.icon
@@ -636,10 +621,10 @@ Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
 			member.allianceExp.ironExp = playerDoc.allianceInfo.ironExp
 			member.allianceExp.foodExp = playerDoc.allianceInfo.foodExp
 			member.allianceExp.coinExp = playerDoc.allianceInfo.coinExp
-			return member
+			theMember = member
 		}
-	}
-	return null
+	})
+	return theMember
 }
 
 /**
@@ -673,11 +658,9 @@ Utils.refreshAlliancePerception = function(allianceDoc){
  * @returns {boolean}
  */
 Utils.isAllianceHasMember = function(allianceDoc, playerId){
-	for(var i = 0; i < allianceDoc.members.length; i++){
-		var member = allianceDoc.members[i]
-		if(_.isEqual(member.id, playerId)) return true
-	}
-	return false
+	return _.some(allianceDoc.members, function(member){
+		return _.isEqual(member.id, playerId)
+	})
 }
 
 /**
@@ -854,11 +837,9 @@ Utils.addPlayerInviteAllianceEvent = function(inviterId, playerDoc, allianceDoc,
  * @returns {boolean}
  */
 Utils.hasInviteEventToAlliance = function(playerDoc, allianceDoc){
-	for(var i = 0; i < playerDoc.inviteToAllianceEvents.length; i++){
-		var event = playerDoc.inviteToAllianceEvents[i]
-		if(_.isEqual(event.id, allianceDoc._id)) return true
-	}
-	return false
+	return _.some(playerDoc.inviteToAllianceEvents, function(event){
+		return _.isEqual(event.id, allianceDoc._id)
+	})
 }
 
 /**
@@ -1409,7 +1390,7 @@ Utils.getAllianceDecorateObjectCountByType = function(allianceDoc, decorateType)
  * @param soldiers
  * @returns {boolean}
  */
-Utils.isMarchSoldierLegal = function(playerDoc, soldiers){
+Utils.isPlayerMarchSoldiersLegal = function(playerDoc, soldiers){
 	if(soldiers.length == 0) return false
 	for(var i = 0; i < soldiers.length; i++){
 		var soldier = soldiers[i]
@@ -1736,6 +1717,7 @@ Utils.addPlayerReport = function(playerDoc, playerData, report){
  */
 Utils.getAllianceViewData = function(allianceDoc){
 	var viewData = {}
+	viewData._id = allianceDoc._id
 	_.each(Consts.AllianceViewDataKeys, function(key){
 		viewData[key] = allianceDoc[key]
 	})
@@ -1796,4 +1778,17 @@ Utils.mergeRewards = function(rewards, rewardsNew){
 		reward.count += rewardNew.count
 	})
 	return rewards
+}
+
+/**
+ * 玩家龙领导力是否足以派出指定的士兵
+ * @param playerDoc
+ * @param dragon
+ * @param soldiers
+ * @returns {boolean}
+ */
+Utils.isPlayerDragonLeadershipEnough = function(playerDoc, dragon, soldiers){
+	var dragonMaxCitizen = DataUtils.getPlayerDragonMaxCitizen(playerDoc, dragon)
+	var soldiersCitizen = DataUtils.getPlayerSoldiersCitizen(playerDoc, soldiers)
+	return dragonMaxCitizen >= soldiersCitizen
 }

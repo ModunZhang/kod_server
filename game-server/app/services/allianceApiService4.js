@@ -261,7 +261,8 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 		dragon.status = Consts.DragonStatus.March
 		playerData.dragons = {}
 		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
-		if(!LogicUtils.isMarchSoldierLegal(playerDoc, soldiers)) return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
+		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
+		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, dragon, soldiers)) return Promise.reject(new Error("所选择的龙领导力不足"))
 		playerData.soldiers = {}
 		_.each(soldiers, function(soldier){
 			soldier.star = 1
@@ -608,7 +609,8 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 		dragon.status = Consts.DragonStatus.March
 		attackPlayerData.dragons = {}
 		attackPlayerData.dragons[dragonType] = attackPlayerDoc.dragons[dragonType]
-		if(!LogicUtils.isMarchSoldierLegal(attackPlayerDoc, soldiers)) return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
+		if(!LogicUtils.isPlayerMarchSoldiersLegal(attackPlayerDoc, soldiers)) return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
+		if(!LogicUtils.isPlayerDragonLeadershipEnough(attackPlayerDoc, dragon, soldiers)) return Promise.reject(new Error("所选择的龙领导力不足"))
 		attackPlayerData.soldiers = {}
 		_.each(soldiers, function(soldier){
 			attackPlayerDoc.soldiers[soldier.name] -= soldier.count

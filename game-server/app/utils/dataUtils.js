@@ -836,11 +836,9 @@ Utils.getPlayerFreeHousesCount = function(playerDoc, houseType){
  * @param soldierName
  */
 Utils.hasNormalSoldier = function(soldierName){
-	for(var i = 0; i < _.size(UnitConfig.normal); i ++){
-		var config = UnitConfig.normal[i]
+	return _.some(UnitConfig.normal, function(config){
 		if(_.isEqual(config.name, soldierName)) return true
-	}
-	return false
+	})
 }
 
 /**
@@ -1015,6 +1013,7 @@ Utils.getTreatSoldierTime = function(soldierName, count){
  * @returns {{resources: {wood: number, stone: number, iron: number, food: number}, recruitTime: (*|Array)}}
  */
 Utils.getPlayerTreatSoldierRequired = function(playerDoc, soldiers){
+	var self = this
 	var totalNeed = {
 		resources:{
 			wood:0,
@@ -1024,8 +1023,7 @@ Utils.getPlayerTreatSoldierRequired = function(playerDoc, soldiers){
 		},
 		treatTime:0
 	}
-	for(var i = 0; i < soldiers.length; i++){
-		var soldier = soldiers[i]
+	_.each(soldiers, function(soldier){
 		var soldierName = soldier.name
 		var count = soldier.count
 		var star = 1
@@ -1035,9 +1033,8 @@ Utils.getPlayerTreatSoldierRequired = function(playerDoc, soldiers){
 		totalNeed.resources.stone += config.treatStone * count
 		totalNeed.resources.iron += config.treatIron * count
 		totalNeed.resources.food += config.treatFood * count
-		totalNeed.treatTime += this.getTreatSoldierTime(soldierName, count)
-	}
-
+		totalNeed.treatTime += self.getTreatSoldierTime(soldierName, count)
+	})
 	return totalNeed
 }
 
@@ -1306,14 +1303,12 @@ Utils.getDragonHighestLevelOnStar = function(dragon){
  */
 Utils.isDragonEquipmentsReachUpgradeLevel = function(dragon){
 	var allCategory = DragonEyrie.dragonAttribute[dragon.star + 1].allCategory.split(",")
-	for(var i = 0; i < allCategory.length; i++){
-		var category = allCategory[i]
+	return _.every(allCategory, function(category){
 		var equipment = dragon.equipments[category]
 		if(_.isEmpty(equipment.name)) return false
 		var maxStar = DragonEquipmentConfig[equipment.name].maxStar
-		if(equipment.star < maxStar) return false
-	}
-	return true
+		return equipment.star >= maxStar
+	})
 }
 
 /**
@@ -1966,7 +1961,7 @@ Utils.getAllianceShrineStageTroops = function(stageName){
 	}
 	_.each(troops, function(troop){
 		_.sortBy(troop.soldiersForFight, function(soldier){
-			return - soldier.power * soldier.count
+			return -soldier.power * soldier.count
 		})
 	})
 
@@ -1977,7 +1972,7 @@ Utils.getAllianceShrineStageTroops = function(stageName){
 		})
 	}
 	troops = _.sortBy(troops, function(troop){
-		return - getSoldiersTotalPower(troop.soldiersForFight)
+		return -getSoldiersTotalPower(troop.soldiersForFight)
 	})
 	return troops
 }
@@ -2284,14 +2279,18 @@ Utils.getPlayerSoldiersCitizen = function(playerDoc, soldiers){
 	var self = this
 	var config = null
 	var totalCitizen = 0
-	_.each(soldiers, function(count, name){
-		if(self.hasSpecialSoldier(name)){
-			config = UnitConfig.special[name]
-		}else{
-			var fullSoldierName = name + "_" + 1
-			config = UnitConfig.normal[fullSoldierName]
+	_.each(soldiers, function(soldier){
+		var name = soldier.name
+		var count = soldier.count
+		if(count > 0){
+			if(self.hasSpecialSoldier(name)){
+				config = UnitConfig.special[name]
+			}else{
+				var fullSoldierName = name + "_" + 1
+				config = UnitConfig.normal[fullSoldierName]
+			}
+			totalCitizen += config.citizen * count
 		}
-		totalCitizen += config.citizen * count
 	})
 	return totalCitizen
 }

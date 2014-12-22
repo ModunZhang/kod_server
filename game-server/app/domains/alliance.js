@@ -301,7 +301,7 @@ var allianceSchema = new Schema({
 	allianceFight:{
 		type:{
 			activeBy:{type:String, required:true},
-			mergeStyle:{type:Number, required:true},
+			mergeStyle:{type:String, required:true},
 			attackAllianceId:{type:String, required:true},
 			defenceAllianceId:{type:String, required:true},
 			attackPlayerKills:[{

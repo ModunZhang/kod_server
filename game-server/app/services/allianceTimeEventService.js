@@ -1533,11 +1533,14 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 	var attackAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight(attackAllianceDoc)
 	attackAllianceDoc.basicInfo.statusFinishTime = now + attackAllianceProtectTime
 	attackAllianceData.basicInfo = attackAllianceDoc.basicInfo
+	attackAllianceData.enemyAllianceDoc = {}
+
 	defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
 	defenceAllianceDoc.basicInfo.statusStartTime = now
 	var defenceAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight(defenceAllianceDoc)
 	defenceAllianceDoc.basicInfo.statusFinishTime = now + defenceAllianceProtectTime
 	defenceAllianceData.basicInfo = attackAllianceDoc.basicInfo
+	defenceAllianceData.enemyAllianceDoc = {}
 
 	var attackAllianceKill = attackAllianceDoc.allianceFight.attackAllianceCountData.kill
 	var defenceAllianceKill = attackAllianceDoc.allianceFight.defenceAllianceCountData.kill
