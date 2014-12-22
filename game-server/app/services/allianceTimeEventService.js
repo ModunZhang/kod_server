@@ -495,16 +495,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				helpDefenceDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, helpDefenceSoldiersForFight)
 			}
 			defenceDragon = LogicUtils.getPlayerDefenceDragon(defencePlayerDoc)
-			var defenceSoldiers = []
-			_.each(defencePlayerDoc.soldiers, function(count, name){
-				if(count > 0){
-					var soldier = {
-						name:name,
-						count:count
-					}
-					defenceSoldiers.push(soldier)
-				}
-			})
+			var defenceSoldiers = DataUtils.getPlayerDefenceSoldiers(defencePlayerDoc)
 			if(_.isObject(defenceDragon) && defenceSoldiers.length > 0){
 				defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon)
 				defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, defenceSoldiers)
@@ -662,7 +653,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					updatePlayerKillData(defenceAllianceDoc.allianceFight.defencePlayerKills, defencePlayerDoc._id, defencePlayerDoc.basicInfo.name, countData.defencePlayerKill)
 					if(!_.isObject(attackAllianceData.allianceFight.__defencePlayerKills)){
 						attackAllianceData.allianceFight.__defencePlayerKills = []
-						defenceAllianceDoc.allianceFight.__defencePlayerKills = []
+						defenceAllianceData.allianceFight.__defencePlayerKills = []
 					}
 					attackAllianceData.allianceFight.__defencePlayerKills.push({
 						type:playerKillData.isNew ? Consts.DataChangedType.Add : Consts.DataChangedType.Edit,

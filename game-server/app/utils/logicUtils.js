@@ -669,13 +669,14 @@ Utils.isAllianceHasMember = function(allianceDoc, playerId){
  * @param memberId
  */
 Utils.getAllianceMemberById = function(allianceDoc, memberId){
-	for(var i = 0; i < allianceDoc.members.length; i++){
-		var member = allianceDoc.members[i]
+	var theMember = null
+	_.some(allianceDoc.members, function(member){
 		if(_.isEqual(member.id, memberId)){
-			return member
+			theMember = member
+			return true
 		}
-	}
-	return null
+	})
+	return theMember
 }
 
 /**
@@ -685,13 +686,14 @@ Utils.getAllianceMemberById = function(allianceDoc, memberId){
  * @returns {*}
  */
 Utils.getAllianceVillageById = function(allianceDoc, villageId){
-	for(var i = 0; i < allianceDoc.villages.length; i++){
-		var village = allianceDoc.villages[i]
+	var theVillage = null
+	_.some(allianceDoc.villages, function(village){
 		if(_.isEqual(village.id, villageId)){
-			return village
+			theVillage = village
+			return true
 		}
-	}
-	return null
+	})
+	return theVillage
 }
 
 /**
@@ -927,13 +929,14 @@ Utils.getPlayerBuildEvent = function(playerDoc, eventType, eventId){
  * @returns {*}
  */
 Utils.getEventById = function(events, id){
-	for(var i = 0; i < events.length; i++){
-		var event = events[i]
+	var theEvent = null
+	_.some(events, function(event){
 		if(_.isEqual(event.id, id)){
-			return event
+			theEvent = event
+			return true
 		}
-	}
-	return null
+	})
+	return theEvent
 }
 
 /**
@@ -948,13 +951,14 @@ Utils.getBuildingByEventTypeAndBuildEvent = function(playerDoc, eventType, build
 		return playerDoc.buildings["location_" + buildEvent.location]
 	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.House)){
 		var building = playerDoc.buildings["location_" + buildEvent.buildingLocation]
-		for(var i = 0; i < building.houses.length; i++){
-			var house = building.houses[i]
+		var theHouse = null
+		_.some(building.houses, function(house){
 			if(_.isEqual(house.location, buildEvent.houseLocation)){
-				return house
+				theHouse = house
+				return true
 			}
-		}
-		return null
+		})
+		return theHouse
 	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Tower)){
 		return playerDoc.towers["location_" + buildEvent.location]
 	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Wall)){
@@ -1099,13 +1103,14 @@ Utils.sendSystemMail = function(playerDoc, playerData, titleKey, titleArgs, cont
  * @returns {*}
  */
 Utils.getAllianceHelpEvent = function(allianceDoc, eventId){
-	for(var i = 0; i < allianceDoc.helpEvents.length; i++){
-		var event = allianceDoc.helpEvents[i]
+	var theEvent = null
+	_.some(allianceDoc.helpEvents, function(event){
 		if(_.isEqual(event.eventId, eventId)){
-			return event
+			theEvent = event
+			return true
 		}
-	}
-	return null
+	})
+	return theEvent
 }
 
 /**
@@ -1115,11 +1120,14 @@ Utils.getAllianceHelpEvent = function(allianceDoc, eventId){
  * @returns {*}
  */
 Utils.getPlayerMailById = function(playerDoc, mailId){
-	for(var i = 0; i < playerDoc.mails.length; i++){
-		var mail = playerDoc.mails[i]
-		if(_.isEqual(mail.id, mailId)) return mail
-	}
-	return null
+	var theMail = null
+	_.some(playerDoc.mails, function(mail){
+		if(_.isEqual(mail.id, mailId)){
+			theMail = mail
+			return true
+		}
+	})
+	return theMail
 }
 
 /**
@@ -1348,7 +1356,7 @@ Utils.createAllianceMapObject = function(buildingType, rect){
  * @returns {boolean}
  */
 Utils.isAllianceVillageBeingCollect = function(allianceDoc, villageId){
-	for(var i = 0; i < allianceDoc.collectEvents.length; i++){
+	for(var i = 0; i < allianceDoc.villageEvents.length; i++){
 		var collectEvent = allianceDoc.collectEvents[i]
 		if(_.isEqual(collectEvent.villageId, villageId)) return true
 	}

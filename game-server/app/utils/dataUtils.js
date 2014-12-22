@@ -1602,7 +1602,6 @@ Utils.getAllianceVillageConfigedDragonAndSoldiers = function(villageType, villag
 	var soldierConfigs = config.soldiers.split(",")
 	var dragonConfig = soldierConfigs.shift()
 	var dragonParams = dragonConfig.split("_")
-	console.log(dragonParams)
 	var dragon = {
 		type:dragonParams[0],
 		star:parseInt(dragonParams[1]),
@@ -2303,5 +2302,54 @@ Utils.getPlayerSoldiersCitizen = function(playerDoc, soldiers){
 Utils.getPlayerDragonMaxCitizen = function(playerDoc, dragon){
 	var config = DragonEyrie.dragonAttribute[dragon.star]
 	var leaderShip = config.initLeadership + (config.perLevelLeadership * dragon.level)
-	return leaderShip * AllianceInit.citizenPerLeadership
+	return leaderShip * AllianceInit.intInit.citizenPerLeadership.value
+}
+
+/**
+ * 获取防守部队类型和数量
+ * @param playerDoc
+ * @returns {Array}
+ */
+Utils.getPlayerDefenceSoldiers = function(playerDoc){
+	var self = this
+	var defenceSoldiers = []
+	var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
+	if(!_.isObject(defenceDragon)) return defenceSoldiers
+
+	var getSoldiers = function(soldiers){
+		var theSoldiers = []
+		_.each(soldiers, function(count, name){
+			if(count > 0){
+				var theSoldier = {
+					name:name,
+					count:count
+				}
+				theSoldiers.push(theSoldier)
+			}
+		})
+		return theSoldiers
+	}
+
+	var defenceDragonMaxCitizen = this.getPlayerDragonMaxCitizen(playerDoc, defenceDragon)
+	var playerSoldiersTotalCitizen = this.getPlayerSoldiersCitizen(playerDoc, getSoldiers(playerDoc.soldiers))
+	var citizenPercent = playerSoldiersTotalCitizen > 0 ? defenceDragonMaxCitizen / playerSoldiersTotalCitizen : 0
+	citizenPercent = citizenPercent > 1 ? 1 : citizenPercent
+	_.each(playerDoc.soldiers, function(count, name){
+		if(count > 0){
+			var config = null
+			if(self.hasSpecialSoldier(name)){
+				config = UnitConfig.special[name]
+			}else{
+				var fullSoldierName = name + "_" + 1
+				config = UnitConfig.normal[fullSoldierName]
+			}
+			var totalCitizen = config.citizen * count
+			var defenceSoldier = {
+				name:name,
+				count:Math.floor(totalCitizen * citizenPercent / config.citizen)
+			}
+			defenceSoldiers.push(defenceSoldier)
+		}
+	})
+	return defenceSoldiers
 }

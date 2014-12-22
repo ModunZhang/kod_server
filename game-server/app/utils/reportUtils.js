@@ -188,7 +188,7 @@ Utils.createAttackCityReport = function(attackAllianceDoc, attackPlayerData, def
 		var defencePlayerResources = defencePlayerData.playerDoc.resources
 		var defencePlayerResourceTotal = defencePlayerResources.wood + defencePlayerResources.stone + defencePlayerResources.iron + defencePlayerResources.food
 		var attackPlayerLoadTotal = getSoldiersLoadTotal(attackPlayerData.soldiers)
-		var loadPercent = attackPlayerLoadTotal / defencePlayerResourceTotal
+		var loadPercent = defencePlayerResourceTotal > 0 ? attackPlayerLoadTotal / defencePlayerResourceTotal : 0
 		loadPercent = loadPercent > 1 ? 1 : loadPercent
 		var resourceKeys = ["wood", "stone", "iron", "food"]
 		var resourceGet = null
@@ -511,21 +511,6 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		})
 		return equipments
 	}
-	var getSoldiers = function(playerDoc){
-		var soldiers = []
-		_.each(playerDoc.soldiers, function(count, name){
-			if(count > 0){
-				var soldier = {
-					name:name,
-					star:1,
-					count:count
-				}
-				soldiers.push(soldier)
-			}
-		})
-		return soldiers
-	}
-
 
 	var attackDragonData = createDragonData(dragonFightData.attackDragonAfterFight)
 	var defenceDragonData = createDragonData(dragonFightData.defenceDragonAfterFight)
@@ -568,7 +553,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 				},
 				defenceDragonData
 			),
-			soldiers:getSoldiers(defencePlayerDoc),
+			soldiers:DataUtils.getPlayerDefenceSoldiers(defencePlayerDoc),
 			resources:{
 				wood:defencePlayerDoc.resources.wood,
 				stone:defencePlayerDoc.resources.stone,

@@ -1188,42 +1188,42 @@ describe("AllianceService", function(){
 		//	})
 		//})
 
-		it("requestAllianceToFight 正常请求", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.requestAllianceToFight(function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("requestAllianceToFight 已经发送过开战请求", function(done){
-			Api.requestAllianceToFight(function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("已经发送过开战请求")
-				done()
-			})
-		})
-
-		it("alliancefight 正常激活", function(done){
-			var m_allianceDoc = null
-			Api.getMyAllianceData(function(doc){
-				doc.code.should.equal(200)
-				Api.loginPlayer(Config.deviceId4, function(doc){
-					doc.code.should.equal(200)
-					Api.sendChat("alliancefight " + m_allianceDoc.basicInfo.tag, function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-			})
-			var onGetAllianceDataSuccess = function(doc){
-				m_allianceDoc = doc
-				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-			}
-			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		})
+		//it("requestAllianceToFight 正常请求", function(done){
+		//	Api.loginPlayer(Config.deviceId3, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.requestAllianceToFight(function(doc){
+		//			doc.code.should.equal(200)
+		//			done()
+		//		})
+		//	})
+		//})
+		//
+		//it("requestAllianceToFight 已经发送过开战请求", function(done){
+		//	Api.requestAllianceToFight(function(doc){
+		//		doc.code.should.equal(500)
+		//		doc.message.should.equal("已经发送过开战请求")
+		//		done()
+		//	})
+		//})
+		//
+		//it("alliancefight 正常激活", function(done){
+		//	var m_allianceDoc = null
+		//	Api.getMyAllianceData(function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.loginPlayer(Config.deviceId4, function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.sendChat("alliancefight " + m_allianceDoc.basicInfo.tag, function(doc){
+		//				doc.code.should.equal(200)
+		//				done()
+		//			})
+		//		})
+		//	})
+		//	var onGetAllianceDataSuccess = function(doc){
+		//		m_allianceDoc = doc
+		//		pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//	}
+		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//})
 
 		//it("findAllianceToFight 正常查找", function(done){
 		//	Api.findAllianceToFight(function(doc){
@@ -1339,26 +1339,26 @@ describe("AllianceService", function(){
 		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//})
 
-		// it("revengeAlliance 正常复仇", function(done){
-		////	setTimeout(function(){
-		////		var m_allianceData = null
-		////		Api.loginPlayer(Config.deviceId3, function(doc){
-		////			doc.code.should.equal(200)
-		////			Api.getMyAllianceData(function(doc){
-		////				doc.code.should.equal(200)
-		////				Api.revengeAlliance(m_allianceData.allianceFightReports[0].id, function(doc){
-		////					doc.code.should.equal(200)
-		////					done()
-		////				})
-		////			})
-		////			var onGetAllianceDataSuccess = function(doc){
-		////				m_allianceData = doc
-		////				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		////			}
-		////			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		////		})
-		////	}, 37 * 1000)
-		////})
+		//it("revengeAlliance 正常复仇", function(done){
+		//	setTimeout(function(){
+		//		var m_allianceData = null
+		//		Api.loginPlayer(Config.deviceId3, function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.getMyAllianceData(function(doc){
+		//				doc.code.should.equal(200)
+		//				Api.revengeAlliance(m_allianceData.allianceFightReports[0].id, function(doc){
+		//					doc.code.should.equal(200)
+		//					done()
+		//				})
+		//			})
+		//			var onGetAllianceDataSuccess = function(doc){
+		//				m_allianceData = doc
+		//				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//			}
+		//			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//		})
+		//	}, 37 * 1000)
+		//})
 
 		//it("setDefenceDragon 正常设置", function(done){
 		//	Api.loginPlayer(Config.deviceId, function(doc){
@@ -1925,6 +1925,70 @@ describe("AllianceService", function(){
 		//								{
 		//									name:"ranger",
 		//									count:30
+		//								}
+		//							], m_enemyAllianceData.members[1].id, function(doc){
+		//								doc.code.should.equal(200)
+		//								done()
+		//							})
+		//						})
+		//					})
+		//				})
+		//				var onGetAllianceViewDataSuccess = function(doc){
+		//					m_enemyAllianceData = doc
+		//					pomelo.removeListener("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
+		//				}
+		//				pomelo.on("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
+		//			})
+		//			var onGetAllianceDataSuccess = function(doc){
+		//				m_myAllianceData = doc
+		//				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//			}
+		//			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//		})
+		//	}, 6 * 1000)
+		//})
+
+		//it("attackPlayerCity 无协防玩家,有防守玩家", function(done){
+		//	Api.loginPlayer(Config.deviceId, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.sendChat("dragonstar greenDragon 1", function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.sendChat("soldiers 1000", function(doc){
+		//				doc.code.should.equal(200)
+		//				Api.setDefenceDragon("greenDragon", function(doc){
+		//					doc.code.should.equal(200)
+		//				})
+		//			})
+		//		})
+		//	})
+		//
+		//	setTimeout(function(){
+		//		var m_myAllianceData = null
+		//		var m_enemyAllianceData = null
+		//		Api.loginPlayer(Config.deviceId4, function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.getMyAllianceData(function(doc){
+		//				doc.code.should.equal(200)
+		//				var allianceFight = m_myAllianceData.allianceFight
+		//				var enemyAllianceId = _.isEqual(allianceFight.attackAllianceId, m_myAllianceData._id) ? allianceFight.defenceAllianceId : allianceFight.attackAllianceId
+		//				Api.getAllianceViewData(enemyAllianceId, function(doc){
+		//					doc.code.should.equal(200)
+		//					Api.sendChat("dragonstar greenDragon 2", function(doc){
+		//						doc.code.should.equal(200)
+		//						Api.sendChat("soldiers 2000", function(doc){
+		//							doc.code.should.equal(200)
+		//							Api.attackPlayerCity("greenDragon", [
+		//								{
+		//									name:"swordsman",
+		//									count:2000
+		//								},
+		//								{
+		//									name:"sentinel",
+		//									count:2000
+		//								},
+		//								{
+		//									name:"ranger",
+		//									count:2000
 		//								}
 		//							], m_enemyAllianceData.members[1].id, function(doc){
 		//								doc.code.should.equal(200)

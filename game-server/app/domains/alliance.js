@@ -339,7 +339,7 @@ var allianceSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		activeBy:{type:String, required:true},
-		mergeStyle:{type:Number, required:true},
+		mergeStyle:{type:String, required:true},
 		attackAllianceId:{type:String, required:true},
 		defenceAllianceId:{type:String, required:true},
 		fightResult:{type:String, required:true},

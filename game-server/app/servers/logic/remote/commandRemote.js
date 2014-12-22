@@ -1166,8 +1166,7 @@ pro.alliancefight = function(uid, targetAllianceTag, callback){
 		defenceAllianceDoc = doc
 		var now = Date.now()
 		var finishTime = now + DataUtils.getAllianceFightPrepareTime()
-		attackAllianceDoc.fightRequests = []
-		defenceAllianceDoc.fightRequests = []
+		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc, true])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, defenceAllianceDoc, true])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime])
