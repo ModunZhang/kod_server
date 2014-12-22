@@ -504,3 +504,4 @@ Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
 	}
 	return event
 }
+

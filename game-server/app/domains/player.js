@@ -1009,6 +1009,7 @@ var playerSchema = new Schema({
 					allianceTag:{type:String, required:true},
 					villageType:{type:String, required:true},
 					villageLevel:{type:Number, required:true},
+					villageResource:{type:Number, required:true},
 					location:{
 						x:{type:Number, required:true},
 						y:{type:Number, required:true}
@@ -1017,28 +1018,26 @@ var playerSchema = new Schema({
 				attackPlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					allianceId:{type:String, required:true},
-					allianceName:{type:String, required:true},
-					troopData:{
-						troopTotal:{type:Number, required:true},
-						troopSurvived:{type:Number, required:true},
-						troopWounded:{type:Number, required:true},
-						kill:{type:Number, required:true},
-						dragon:{
-							type:{type:String, required:true},
-							level:{type:Number, required:true},
-							expAdd:{type:Number, required:true},
-							hp:{type:Number, required:true},
-							hpDecreased:{type:Number, required:true}
-						},
-						soldiers:[{
-							_id:false,
-							name:{type:String, required:true},
-							star:{type:Number, required:true},
-							count:{type:Number, required:true},
-							countDecreased:{type:Number, required:true}
-						}]
+					icon:{type:String, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
 					},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						expAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
+					},
+					soldiers:[{
+						_id:false,
+						name:{type:String, required:true},
+						star:{type:Number, required:true},
+						count:{type:Number, required:true},
+						countDecreased:{type:Number, required:true}
+					}],
 					rewards:[{
 						_id:false,
 						type:{type:String, required:true},
@@ -1049,26 +1048,26 @@ var playerSchema = new Schema({
 				defencePlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					troopData:{
-						troopTotal:{type:Number, required:true},
-						troopSurvived:{type:Number, required:true},
-						troopWounded:{type:Number, required:true},
-						kill:{type:Number, required:true},
-						dragon:{
-							type:{type:String, required:true},
-							level:{type:Number, required:true},
-							expAdd:{type:Number, required:true},
-							hp:{type:Number, required:true},
-							hpDecreased:{type:Number, required:true}
-						},
-						soldiers:[{
-							_id:false,
-							name:{type:String, required:true},
-							star:{type:Number, required:true},
-							count:{type:Number, required:true},
-							countDecreased:{type:Number, required:true}
-						}]
+					icon:{type:String, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
 					},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						expAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
+					},
+					soldiers:[{
+						_id:false,
+						name:{type:String, required:true},
+						star:{type:Number, required:true},
+						count:{type:Number, required:true},
+						countDecreased:{type:Number, required:true}
+					}],
 					rewards:[{
 						_id:false,
 						type:{type:String, required:true},
@@ -1078,26 +1077,27 @@ var playerSchema = new Schema({
 				},
 				defenceVillageData:{
 					id:{type:String, required:true},
-					troopData:{
-						troopTotal:{type:Number, required:true},
-						troopSurvived:{type:Number, required:true},
-						troopWounded:{type:Number, required:true},
-						kill:{type:Number, required:true},
-						dragon:{
-							type:{type:String, required:true},
-							level:{type:Number, required:true},
-							expAdd:{type:Number, required:true},
-							hp:{type:Number, required:true},
-							hpDecreased:{type:Number, required:true}
-						},
-						soldiers:[{
-							_id:false,
-							name:{type:String, required:true},
-							star:{type:Number, required:true},
-							count:{type:Number, required:true},
-							countDecreased:{type:Number, required:true}
-						}]
-					}
+					type:{type:String, required:true},
+					level:{type:Number, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						expAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
+					},
+					soldiers:[{
+						_id:false,
+						name:{type:String, required:true},
+						star:{type:Number, required:true},
+						count:{type:Number, required:true},
+						countDecreased:{type:Number, required:true}
+					}]
 				},
 				fightWithDefencePlayerReports:{
 					fightResult:{type:String, required:true},

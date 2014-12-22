@@ -680,3 +680,100 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 		}
 	})
 }
+
+/**
+ * 进攻村落
+ * @param playerId
+ * @param dragonType
+ * @param soldiers
+ * @param defenceAllianceId
+ * @param defenceVillageId
+ * @param callback
+ */
+pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, defenceVillageId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		callback(new Error("dragonType 不合法"))
+		return
+	}
+	if(!_.isArray(soldiers)){
+		callback(new Error("soldiers 不合法"))
+		return
+	}
+	if(!_.isString(defenceAllianceId)){
+		callback(new Error("defenceAllianceId 不合法"))
+		return
+	}
+	if(!_.isString(defenceVillageId)){
+		callback(new Error("defenceVillageId 不合法"))
+		return
+	}
+
+	var self = this
+	var attackPlayerDoc = null
+	var attackPlayerData = {}
+	var attackAllianceDoc = null
+	var attackAllianceData = {}
+	var defencePlayerDoc = null
+	var defenceAllianceDoc = null
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		attackPlayerDoc = doc
+		if(!_.isObject(attackPlayerDoc.alliance) || _.isEmpty(attackPlayerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		var dragon = attackPlayerDoc.dragons[dragonType]
+		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
+		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
+		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
+		dragon.status = Consts.DragonStatus.March
+		attackPlayerData.dragons = {}
+		attackPlayerData.dragons[dragonType] = attackPlayerDoc.dragons[dragonType]
+		if(!LogicUtils.isPlayerMarchSoldiersLegal(attackPlayerDoc, soldiers)) return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
+		if(!LogicUtils.isPlayerDragonLeadershipEnough(attackPlayerDoc, dragon, soldiers)) return Promise.reject(new Error("所选择的龙领导力不足"))
+		attackPlayerData.soldiers = {}
+		_.each(soldiers, function(soldier){
+			attackPlayerDoc.soldiers[soldier.name] -= soldier.count
+			attackPlayerData.soldiers[soldier.name] = attackPlayerDoc.soldiers[soldier.name]
+		})
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
+		return self.allianceDao.findByIdAsync(attackPlayerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		attackAllianceDoc = doc
+		if(!_.isEqual(attackPlayerDoc.alliance.id, defenceAllianceId)){
+			if(!_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+				return Promise.reject(new Error("联盟未处于战争期"))
+			}
+			var allianceFight = attackAllianceDoc.allianceFight
+			var enemyAllianceId = _.isEqual(attackAllianceDoc._id, allianceFight.attackAllianceId) ? allianceFight.defenceAllianceId : allianceFight.attackAllianceId
+			if(!_.isEqual(enemyAllianceId, defenceAllianceId)) return Promise.reject(new Error("目标联盟非当前匹配的敌对联盟"))
+		}
+		if(!_.isEqual(attackAllianceDoc._id, defenceAllianceId)){
+			return self.allianceDao.findByIdAsync(defenceAllianceId)
+		}
+		return Promise.resolve()
+	}).then(function(doc){
+		if(!_.isEqual(attackAllianceDoc._id, defenceAllianceId)){
+			if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+			defenceAllianceDoc = doc
+		}else{
+			defenceAllianceDoc = attackAllianceDoc
+		}
+
+		var defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
+		if(!_.isObject(defenceVillage)) return Promise.reject(new Error("村落不存在"))
+
+	})
+}

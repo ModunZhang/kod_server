@@ -134,7 +134,7 @@ var allianceSchema = new Schema({
 				_id:false,
 				name:{type:String, required:true},
 				star:{type:Number, required:true},
-				count:{type:String, required:true}
+				count:{type:Number, required:true}
 			}
 		],
 		location:{
@@ -268,15 +268,24 @@ var allianceSchema = new Schema({
 	villageEvents:[{
 		_id:false,
 		id:{type:String, required:true},
-		villageId:{type:String, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true},
 		playerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			cityName:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			alliance:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				tag:{type:String, required:true}
+			},
 			dragon:{
-				type:{type:String, required:true}
+				type:{type:String, required:true},
+				expAdd:{type:Number, required:true}
 			},
 			soldiers:[{
 				_id:false,
@@ -295,6 +304,21 @@ var allianceSchema = new Schema({
 				count:{type:Number, required:true}
 			}],
 			kill:{type:Number, required:true}
+		},
+		villageData:{
+			id:{type:String, required:true},
+			type:{type:String, required:true},
+			level:{type:Number, required:true},
+			resource:{type:Number, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			alliance:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				tag:{type:String, required:true}
+			}
 		}
 	}],
 	fightRequests:[String],
@@ -514,7 +538,8 @@ var allianceSchema = new Schema({
 		defenceVillageData:{
 			id:{type:String, required:true},
 			type:{type:String, required:true},
-			level:{type:String, required:true},
+			level:{type:Number, required:true},
+			resource:{type:Number, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
