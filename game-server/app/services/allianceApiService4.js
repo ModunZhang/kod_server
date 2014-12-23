@@ -374,19 +374,20 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 		if(!_.isObject(doc_2)) return Promise.reject(new Error("玩家不存在"))
 		allianceDoc = doc_1
 		beHelpedPlayerDoc = doc_2
-		var helpTroop = _.find(beHelpedPlayerDoc.helpedByTroops, function(troop){
-			return _.isEqual(troop.id, playerId)
+		var helpedByTroop = _.find(beHelpedPlayerDoc.helpedByTroops, function(helpedByTroop){
+			return _.isEqual(helpedByTroop.id, playerId)
 		})
-		LogicUtils.removeItemInArray(beHelpedPlayerDoc.helpedByTroops, helpTroop)
+		LogicUtils.removeItemInArray(beHelpedPlayerDoc.helpedByTroops, helpedByTroop)
 		beHelpedPlayerData.__helpedByTroops = {
 			type:Consts.DataChangedType.Remove,
-			data:helpTroop
+			data:helpedByTroop
 		}
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, beHelpedPlayerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, beHelpedPlayerDoc, beHelpedPlayerData])
 
-		var helpToTroop = _.find(playerDoc.helpToTroops, function(troop){
-			return _.isEqual(troop.beHelpedPlayerData.id, beHelpedPlayerDoc._id)
+		var helpToTroop = _.find(playerDoc.helpToTroops, function(helpToTroop){
+			return _.isEqual(helpToTroop.beHelpedPlayerData.id, beHelpedPlayerId)
 		})
 		LogicUtils.removeItemInArray(playerDoc.helpToTroops, helpToTroop)
 		playerData.__helpToTroops = [{
@@ -396,7 +397,11 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 
-		var targetMemberInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, beHelpedPlayerDoc._id)
+		console.log(helpedByTroop)
+		console.log(helpToTroop)
+		console.log("------------------------")
+
+		var targetMemberInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, beHelpedPlayerId)
 		targetMemberInAlliance.helpedByTroopsCount -= 1
 		allianceData.__members = [{
 			type:Consts.DataChangedType.Edit,
