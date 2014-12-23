@@ -830,6 +830,9 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		})
 		return
 	}
+	if(_.isEqual(event.marchType, Consts.AllianceMarchType.Village)){
+
+	}
 }
 
 /**

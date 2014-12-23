@@ -10,7 +10,6 @@ var _ = require("underscore")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
-var ReportUtils = require("../utils/reportUtils")
 var MarchUtils = require("../utils/marchUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
@@ -720,7 +719,6 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 	var attackPlayerData = {}
 	var attackAllianceDoc = null
 	var attackAllianceData = {}
-	var defencePlayerDoc = null
 	var defenceAllianceDoc = null
 	var pushFuncs = []
 	var eventFuncs = []
@@ -771,9 +769,49 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 		}else{
 			defenceAllianceDoc = attackAllianceDoc
 		}
-
 		var defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
 		if(!_.isObject(defenceVillage)) return Promise.reject(new Error("村落不存在"))
 
+		if(attackAllianceDoc != defenceAllianceDoc){
+			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, defenceAllianceDoc._id])
+		}
+		var event = MarchUtils.createAttackVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defenceVillage)
+		attackAllianceDoc.attackMarchEvents.push(event)
+		attackAllianceData.__attackMarchEvents = [{
+			type:Consts.DataChangedType.Add,
+			data:event
+		}]
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
+		if(attackAllianceDoc != defenceAllianceDoc){
+			LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
+		}
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(attackPlayerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
+		}
+		if(_.isObject(attackAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(attackAllianceDoc._id))
+		}
+		if(_.isObject(defenceAllianceDoc) && attackAllianceDoc != defenceAllianceDoc){
+			funcs.push(self.allianceDao.removeLockByIdAsync(defenceAllianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }

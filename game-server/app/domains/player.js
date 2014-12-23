@@ -1100,7 +1100,6 @@ var playerSchema = new Schema({
 					}]
 				},
 				fightWithDefencePlayerReports:{
-					fightResult:{type:String, required:true},
 					attackPlayerDragonFightData:{
 						type:{type:String, required:true},
 						hpMax:{type:Number, required:true},
@@ -1139,7 +1138,6 @@ var playerSchema = new Schema({
 					}]
 				},
 				fightWithDefenceVillageReports:{
-					fightResult:{type:String, required:true},
 					attackPlayerDragonFightData:{
 						type:{type:String, required:true},
 						hpMax:{type:Number, required:true},

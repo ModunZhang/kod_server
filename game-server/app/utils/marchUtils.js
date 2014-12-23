@@ -43,7 +43,7 @@ var getDistance = function(width, height){
 var getMarchTime = function(playerDoc, width, height){
 	var distance = getDistance(width, height)
 	var time = AllianceInit.intInit.allianceRegionMapBaseTimePerGrid.value * distance * 1000
-	return 5 * 1000
+	return 30 * 1000
 }
 
 /**
@@ -505,3 +505,70 @@ Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
 	return event
 }
 
+/**
+ * 创建进攻联盟村落行军事件
+ * @param allianceDoc
+ * @param playerDoc
+ * @param dragon
+ * @param soldiers
+ * @param defenceAllianceDoc
+ * @param defenceVillage
+ * @returns {*}
+ */
+Utils.createAttackVillageMarchEvent = function(allianceDoc, playerDoc, dragon, soldiers, defenceAllianceDoc, defenceVillage){
+	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var defenceVillageLocation = defenceVillage.location
+	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defenceVillageLocation)
+
+	var event = {
+		id:ShortId.generate(),
+		marchType:Consts.AllianceMarchType.Village,
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime,
+		attackPlayerData:createAttackPlayerData(allianceDoc, playerDoc, playerLocation, dragon, soldiers),
+		defenceVillageData:{
+			id:defenceVillage.id,
+			type:defenceVillage.type,
+			level:defenceVillage.level,
+			location:defenceVillageLocation,
+			alliance:createAllianceData(defenceAllianceDoc)
+		}
+	}
+	return event
+}
+
+/**
+ * 创建进攻联盟村落回城事件
+ * @param allianceDoc
+ * @param playerDoc
+ * @param dragon
+ * @param dragonExpAdd
+ * @param soldiers
+ * @param woundedSoldiers
+ * @param defenceAllianceDoc
+ * @param defenceVillage
+ * @param rewards
+ * @param kill
+ * @returns {*}
+ */
+Utils.createAttackVillageMarchReturnEvent = function(allianceDoc, playerDoc, dragon, dragonExpAdd, soldiers, woundedSoldiers, defenceAllianceDoc, defenceVillage, rewards, kill){
+	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
+	var defenceVillageLocation = defenceVillage.location
+	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defenceVillageLocation)
+
+	var event = {
+		id:ShortId.generate(),
+		marchType:Consts.AllianceMarchType.Village,
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime,
+		attackPlayerData:createAttackPlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, dragonExpAdd, soldiers, woundedSoldiers, rewards, kill),
+		defenceVillageData:{
+			id:defenceVillage.id,
+			type:defenceVillage.type,
+			level:defenceVillage.level,
+			location:defenceVillageLocation,
+			alliance:createAllianceData(defenceAllianceDoc)
+		}
+	}
+	return event
+}
