@@ -2353,3 +2353,13 @@ Utils.getPlayerDefenceSoldiers = function(playerDoc){
 	})
 	return defenceSoldiers
 }
+
+Utils.getPlayerSoldiersTotalLoad = function(playerDoc, soldiers){
+	var self = this
+	var totalLoad = 0
+	_.each(soldiers, function(soldier){
+		if(self.hasSpecialSoldier(soldier.name)){
+
+		}
+	})
+}

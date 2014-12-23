@@ -572,3 +572,63 @@ Utils.createAttackVillageMarchReturnEvent = function(allianceDoc, playerDoc, dra
 	}
 	return event
 }
+
+Utils.createAllianceVillageEvent = function(allianceDoc, playerDoc, dragon, dragonExpAdd, soldiers, woundedSoldiers, defenceAllianceDoc, defenceVillage, rewards, kill){
+	var soldiersTotalLoad =
+
+	var event = {
+		id:ShortId.generate(),
+		startTime:{type:Number, required:true},
+		finishTime:{type:Number, required:true},
+		playerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			cityName:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			alliance:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				tag:{type:String, required:true}
+			},
+			dragon:{
+				type:{type:String, required:true},
+				expAdd:{type:Number, required:true}
+			},
+			soldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			woundedSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			rewards:[{
+				_id:false,
+				type:{type:String, required:true},
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			kill:{type:Number, required:true}
+		},
+		villageData:{
+			id:{type:String, required:true},
+			type:{type:String, required:true},
+			level:{type:Number, required:true},
+			resource:{type:Number, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			alliance:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				tag:{type:String, required:true}
+			}
+		}
+	}
+}

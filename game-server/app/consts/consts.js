@@ -159,7 +159,8 @@ module.exports = {
 	PlayerReportType:{
 		StrikeCity:"strikeCity",
 		CityBeStriked:"cityBeStriked",
-		AttackCity:"attackCity"
+		AttackCity:"attackCity",
+		AttackVillage:"attackVillage"
 	},
 	AllianceMergePosition:[
 		"left",

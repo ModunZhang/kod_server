@@ -901,6 +901,16 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				var villageDragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, villageDragonForFight, villageDragonFightFixEffect)
 				var villageSoldierFightData = FightUtils.soldierToSoldierFight(attackSoldiersForFight, attackTreatSoldierPercent, villageSoldiersForFight, 0)
 
+				attackPlayerDoc.dragons[attackDragon.type].hp -= attackDragonForFight.totalHp - attackDragonForFight.currentHp
+				attackPlayerData.dragons = {}
+				attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
+
+				var report = ReportUtils.createAttackVillageFightWithVillageTroop(attackAllianceDoc, attackPlayerDoc, defenceAllianceDoc, village, villageDragonFightData, villageSoldierFightData)
+				LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report)
+				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
+
+
 
 				return Promise.resolve()
 			}

@@ -1650,46 +1650,6 @@ Utils.getPlayerDefenceDragon = function(playerDoc){
 }
 
 /**
- * 创建进攻玩家城市事件
- * @param playerDoc
- * @param attackTroop
- * @param enemyAllianceDoc
- * @param enemyPlayerDoc
- * @returns {*}
- */
-Utils.createAttackPlayerCityMarchEvent = function(playerDoc, attackTroop, enemyAllianceDoc, enemyPlayerDoc){
-	var enemyPlayerLocation = this.getAllianceMemberById(enemyAllianceDoc, enemyPlayerDoc._id).location
-	var enemyMoonGateLocation = enemyAllianceDoc.buildings.moonGate.location
-	var marchTime = DataUtils.getPlayerMarchTime(playerDoc, enemyPlayerLocation, enemyMoonGateLocation)
-
-	var event = {
-		id:ShortId.generate(),
-		startTime:Date.now(),
-		arriveTime:Date.now() + marchTime,
-		attackPlayerData:{
-			id:attackTroop.id,
-			name:attackTroop.name,
-			cityName:attackTroop.cityName,
-			dragon:attackTroop.dragon,
-			soldiers:attackTroop.soldiers,
-			treatSoldiers:attackTroop.treatSoldiers,
-			rewards:attackTroop.rewards,
-			kill:attackTroop.kill
-		},
-		defencePlayerData:{
-			id:enemyPlayerDoc._id,
-			name:enemyPlayerDoc.basicInfo.name,
-			location:enemyPlayerLocation,
-			cityName:enemyPlayerDoc.basicInfo.cityName,
-			allianceId:enemyAllianceDoc._id,
-			allianceName:enemyAllianceDoc.basicInfo.name,
-			allianceTag:enemyAllianceDoc.basicInfo.tag
-		}
-	}
-	return event
-}
-
-/**
  * 为玩家添加战报
  * @param playerDoc
  * @param playerData

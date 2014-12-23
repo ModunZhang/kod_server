@@ -1004,15 +1004,16 @@ var playerSchema = new Schema({
 		attackVillage:{
 			type:{
 				attackTarget:{
-					allianceId:{type:String, required:true},
-					allianceName:{type:String, required:true},
-					allianceTag:{type:String, required:true},
-					villageType:{type:String, required:true},
-					villageLevel:{type:Number, required:true},
-					villageResource:{type:Number, required:true},
+					type:{type:String, required:true},
+					level:{type:Number, required:true},
 					location:{
 						x:{type:Number, required:true},
 						y:{type:Number, required:true}
+					},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
 					}
 				},
 				attackPlayerData:{
