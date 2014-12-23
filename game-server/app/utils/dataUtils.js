@@ -2357,9 +2357,13 @@ Utils.getPlayerDefenceSoldiers = function(playerDoc){
 Utils.getPlayerSoldiersTotalLoad = function(playerDoc, soldiers){
 	var self = this
 	var totalLoad = 0
+	var config = null
 	_.each(soldiers, function(soldier){
 		if(self.hasSpecialSoldier(soldier.name)){
-			
+			config = UnitConfig.special[soldier.name]
+			totalLoad += config
+		}else{
+
 		}
 	})
 }
