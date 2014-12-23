@@ -521,7 +521,7 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 		}]
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchEvents", event.id, event.arriveTime])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
 		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -646,7 +646,7 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 		}]
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
 		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -783,7 +783,7 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 		}]
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
 		if(attackAllianceDoc != defenceAllianceDoc){
 			LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
 		}
