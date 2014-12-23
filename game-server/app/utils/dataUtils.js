@@ -2359,7 +2359,7 @@ Utils.getPlayerSoldiersTotalLoad = function(playerDoc, soldiers){
 	var totalLoad = 0
 	_.each(soldiers, function(soldier){
 		if(self.hasSpecialSoldier(soldier.name)){
-
+			
 		}
 	})
 }
