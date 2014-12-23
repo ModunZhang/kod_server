@@ -310,6 +310,7 @@ var allianceSchema = new Schema({
 			type:{type:String, required:true},
 			level:{type:Number, required:true},
 			resource:{type:Number, required:true},
+			collectTotal:{type:Number, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}

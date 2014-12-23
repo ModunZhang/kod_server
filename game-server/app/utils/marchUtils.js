@@ -573,62 +573,52 @@ Utils.createAttackVillageMarchReturnEvent = function(allianceDoc, playerDoc, dra
 	return event
 }
 
+/**
+ * 创建采集联盟村落事件
+ * @param allianceDoc
+ * @param playerDoc
+ * @param dragon
+ * @param dragonExpAdd
+ * @param soldiers
+ * @param woundedSoldiers
+ * @param defenceAllianceDoc
+ * @param defenceVillage
+ * @param rewards
+ * @param kill
+ * @returns {*}
+ */
 Utils.createAllianceVillageEvent = function(allianceDoc, playerDoc, dragon, dragonExpAdd, soldiers, woundedSoldiers, defenceAllianceDoc, defenceVillage, rewards, kill){
-	var soldiersTotalLoad =
+	var soldiersTotalLoad = DataUtils.getPlayerSoldiersTotalLoad(playerDoc, soldiers)
+	var collectInfo = DataUtils.getPlayerCollectResourceInfo(playerDoc, soldiersTotalLoad, defenceVillage)
 
 	var event = {
 		id:ShortId.generate(),
-		startTime:{type:Number, required:true},
-		finishTime:{type:Number, required:true},
+		startTime:Date.now(),
+		finishTime:Date.now() + collectInfo.collectTime,
 		playerData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			cityName:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			},
+			id:playerDoc._id,
+			name:playerDoc.basicInfo.name,
+			cityName:playerDoc.basicInfo.cityName,
+			location:LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location,
+			alliance:createAllianceData(allianceDoc),
 			dragon:{
-				type:{type:String, required:true},
-				expAdd:{type:Number, required:true}
+				type:dragon.type,
+				expAdd:dragonExpAdd
 			},
-			soldiers:[{
-				_id:false,
-				name:{type:String, required:true},
-				count:{type:Number, required:true}
-			}],
-			woundedSoldiers:[{
-				_id:false,
-				name:{type:String, required:true},
-				count:{type:Number, required:true}
-			}],
-			rewards:[{
-				_id:false,
-				type:{type:String, required:true},
-				name:{type:String, required:true},
-				count:{type:Number, required:true}
-			}],
-			kill:{type:Number, required:true}
+			soldiers:soldiers,
+			woundedSoldiers:woundedSoldiers,
+			rewards:rewards,
+			kill:kill
 		},
 		villageData:{
-			id:{type:String, required:true},
-			type:{type:String, required:true},
-			level:{type:Number, required:true},
-			resource:{type:Number, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
+			id:defenceVillage.id,
+			type:defenceVillage.type,
+			level:defenceVillage.level,
+			resource:defenceVillage.resource,
+			collectTotal:collectInfo.collectTotal,
+			location:defenceVillage.location,
+			alliance:createAllianceData(defenceAllianceDoc)
 		}
 	}
+	return event
 }

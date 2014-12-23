@@ -20,7 +20,8 @@ var HouseFunction = GameDatas.HouseFunction
 var GemsPayment = GameDatas.GemsPayment
 var Houses = GameDatas.Houses.houses
 var Buildings = GameDatas.Buildings.buildings
-var HouseInit = GameDatas.PlayerInitData.houses[1]
+var PlayerInitData = GameDatas.PlayerInitData
+var HouseInit = PlayerInitData.houses[1]
 var UnitConfig = GameDatas.UnitsConfig
 var DragonEquipmentConfig = GameDatas.SmithConfig.equipments
 var DragonEyrie = GameDatas.DragonEyrie
@@ -1396,10 +1397,10 @@ Utils.getAllianceTitleLevel = function(title){
  * @returns {*}
  */
 Utils.getPlayerVipLevel = function(playerDoc){
-	var vipExpConfig = Vip.exp
+	var vipExpConfig = PlayerInitData.vipLevel
 	var vipExp = playerDoc.basicInfo.vipExp
 	for(var i = vipExpConfig.length; i >= 1; i++){
-		var minExp = vipExpConfig[i].exp
+		var minExp = vipExpConfig[i].expFrom
 		if(vipExp >= minExp) return i
 	}
 	return 1
@@ -2354,6 +2355,12 @@ Utils.getPlayerDefenceSoldiers = function(playerDoc){
 	return defenceSoldiers
 }
 
+/**
+ * 获取玩家部队负重
+ * @param playerDoc
+ * @param soldiers
+ * @returns {number}
+ */
 Utils.getPlayerSoldiersTotalLoad = function(playerDoc, soldiers){
 	var self = this
 	var totalLoad = 0
@@ -2361,9 +2368,55 @@ Utils.getPlayerSoldiersTotalLoad = function(playerDoc, soldiers){
 	_.each(soldiers, function(soldier){
 		if(self.hasSpecialSoldier(soldier.name)){
 			config = UnitConfig.special[soldier.name]
-			totalLoad += config
 		}else{
-
+			var soldierFullName = soldier.name + "_" + 1
+			config = UnitConfig.normal[soldierFullName]
 		}
+		totalLoad += config.load * soldier.count
 	})
+	return totalLoad
+}
+
+/**
+ * 获取玩家对某资源的采集熟练度等级
+ * @param playerDoc
+ * @param resourceType
+ * @returns {*}
+ */
+Utils.getPlayerCollectLevel = function(playerDoc, resourceType){
+	var collectExp = playerDoc.allianceInfo[resourceType + "Exp"]
+	var collectExpConfig = PlayerInitData.collectLevel
+	for(var i = collectExpConfig.length - 1; i >= 1; i--){
+		var expFrom = collectExpConfig[i].expFrom
+		if(collectExp >= expFrom) return i
+	}
+	return 1
+}
+
+/**
+ * 获取采集资源需要消耗的时间
+ * @param playerDoc
+ * @param soldierLoadTotal
+ * @param allianceVillage
+ * @returns {*}
+ */
+Utils.getPlayerCollectResourceInfo = function(playerDoc, soldierLoadTotal, allianceVillage){
+	var villageResourceMax = this.getAllianceVillageResourceMax(allianceVillage.type, allianceVillage.level)
+	var villageResourceCurrent = allianceVillage.resource
+	var collectTotal = soldierLoadTotal > villageResourceCurrent ? villageResourceCurrent : soldierLoadTotal
+	var resourceType = allianceVillage.type.slice(0, -7)
+	var playerCollectLevel = this.getPlayerCollectLevel(playerDoc, resourceType)
+	var collectPerHour = PlayerInitData.collectLevel[playerCollectLevel].collectPercentPerHour * villageResourceMax
+	var totalHour = collectTotal / collectPerHour
+	return {collectTime:Math.ceil(totalHour * 60 * 60 * 1000), collectTotal:collectTotal}
+}
+
+/**
+ * 获取联盟村落最大产量
+ * @param villageType
+ * @param villageLevel
+ * @returns {production|*}
+ */
+Utils.getAllianceVillageResourceMax = function(villageType, villageLevel){
+	return AllianceVillageConfig[villageType][villageLevel].production
 }

@@ -51,5 +51,5 @@ vipLevel[9] = {
 vipLevel[10] = {
 	level:10,
 	expFrom:4500,
-	expTo:100000000
+	expTo:10000
 }

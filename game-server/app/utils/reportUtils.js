@@ -875,5 +875,10 @@ Utils.createAttackVillageFightWithVillageTroop = function(attackAllianceDoc, att
 		isSaved:false,
 		attackVillage:attackVillageReport
 	}
-	return report
+
+	var countData = {
+		attackPlayerKill:attackPlayerKilledCitizen,
+		attackDragonExpAdd:attackDragonExpAdd
+	}
+	return {report:report, countData:countData}
 }
