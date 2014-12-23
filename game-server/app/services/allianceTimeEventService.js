@@ -202,6 +202,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 	var eventFuncs = []
 	var pushFuncs = []
 	var updateFuncs = []
+	var funcs = []
 
 	LogicUtils.removeItemInArray(attackAllianceDoc.attackMarchEvents, event)
 	attackAllianceData.__attackMarchEvents = [{
@@ -229,7 +230,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			}).then(function(){
 				callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 			}).catch(function(e){
-				var funcs = []
+				funcs = []
 				if(_.isObject(attackPlayerDoc)){
 					funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
 				}
@@ -262,7 +263,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		return
 	}
 	if(_.isEqual(event.marchType, Consts.AllianceMarchType.HelpDefence)){
-		var funcs = []
+		funcs = []
 		funcs.push(this.playerDao.findByIdAsync(event.attackPlayerData.id, true))
 		funcs.push(this.playerDao.findByIdAsync(event.defencePlayerData.id, true))
 		Promise.all(funcs).spread(function(doc_1, doc_2){
@@ -319,7 +320,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		}).then(function(){
 			callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 		}).catch(function(e){
-			var funcs = []
+			funcs = []
 			if(_.isObject(attackPlayerDoc)){
 				funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
 			}
@@ -806,7 +807,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		}).then(function(){
 			callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 		}).catch(function(e){
-			var funcs = []
+			funcs = []
 			if(_.isObject(attackPlayerDoc)){
 				funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
 			}
@@ -831,7 +832,21 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		return
 	}
 	if(_.isEqual(event.marchType, Consts.AllianceMarchType.Village)){
-
+		funcs = []
+		funcs.push(self.playerDao.findByIdAsync(event.attackPlayerData.id, true))
+		if(!_.isEqual(event.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+			funcs.push(self.allianceDao.findByIdAsync(event.defenceVillageData.alliance.id, true))
+		}
+		Promise.all(funcs).spread(function(doc_1, doc_2){
+			if(!_.isObject(doc_1)) return Promise.reject(new Error("玩家不存在"))
+			attackPlayerDoc = doc_1
+			if(!_.isEqual(event.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+				if(!_.isObject(doc_2)) return Promise.reject(new Error("联盟不存在"))
+				defenceAllianceDoc = doc_2
+			}else{
+				defenceAllianceDoc = attackAllianceDoc
+			}
+		})
 	}
 }
 
