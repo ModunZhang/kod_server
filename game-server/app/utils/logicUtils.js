@@ -1474,7 +1474,7 @@ Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineE
 Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlayerId){
 	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
 		var marchEvent = allianceDoc.helpDefenceMarchEvents[i]
-		if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id) && _.isEqual(marchEvent.beHelpedPlayerData.id, targetPlayerId)) return true
+		if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id) && _.isEqual(marchEvent.defencePlayerData.id, targetPlayerId)) return true
 	}
 	var playerTroop = null
 	for(i = 0; i < playerDoc.helpToTroops.length; i++){
@@ -1494,7 +1494,7 @@ Utils.getAlliancePlayerBeHelpedTroopsCount = function(allianceDoc, playerDoc){
 	var count = 0
 	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
 		var marchEvent = allianceDoc.attackMarchEvents[i]
-		if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.beHelpedPlayerData.id, playerDoc._id)) count += 1
+		if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id)) count += 1
 	}
 	count += playerDoc.helpedByTroops.length
 	return count
