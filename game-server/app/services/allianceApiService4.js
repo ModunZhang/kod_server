@@ -397,10 +397,6 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 
-		console.log(helpedByTroop)
-		console.log(helpToTroop)
-		console.log("------------------------")
-
 		var targetMemberInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, beHelpedPlayerId)
 		targetMemberInAlliance.helpedByTroopsCount -= 1
 		allianceData.__members = [{
