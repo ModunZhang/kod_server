@@ -408,7 +408,7 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 			data:targetMemberInAlliance
 		}]
 
-		var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(allianceDoc, playerDoc, beHelpedPlayerDoc, helpTroop.dragon, helpTroop.dragon.expAdd, helpTroop.soldiers, helpTroop.woundedSoldiers, helpTroop.rewards, helpTroop.kill)
+		var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(allianceDoc, playerDoc, beHelpedPlayerDoc, helpedByTroop.dragon, helpedByTroop.dragon.expAdd, helpedByTroop.soldiers, helpedByTroop.woundedSoldiers, helpedByTroop.rewards, helpedByTroop.kill)
 		allianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 		allianceData.__attackMarchReturnEvents = [{
 			type:Consts.DataChangedType.Add,
