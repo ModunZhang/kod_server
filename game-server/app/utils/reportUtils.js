@@ -172,7 +172,7 @@ Utils.createAttackCityReport = function(attackAllianceDoc, attackPlayerData, def
 	pushBloodToRewards(defencePlayerGetBloodBySoldiers + defencePlayerGetBloodByWall, defencePlayerRewards)
 
 	if(starParam.attackStar >= 2){
-		var attackDragonCurrentHp = fightData.defenceDragonFightData.attackDragonAfterFight.currentHp
+		var attackDragonCurrentHp = attackPlayerData.dragon.currentHp
 		var coinGet = defencePlayerData.playerDoc.resources.coin >= attackDragonCurrentHp ? attackDragonCurrentHp : defencePlayerData.playerDoc.resources.coin
 		attackPlayerRewards.push({
 			type:"resources",
