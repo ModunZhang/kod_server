@@ -1018,6 +1018,9 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				}
 				return Promise.resolve()
 			}else{
+				if(_.isEqual(attackPlayerDoc.alliance.id, defencePlayerDoc.alliance.id)){
+
+				}
 				return Promise.resolve()
 			}
 		}).then(function(){
