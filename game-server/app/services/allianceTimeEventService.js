@@ -932,11 +932,11 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				var villageDragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, villageDragonForFight, villageDragonFightFixEffect)
 				var villageSoldierFightData = FightUtils.soldierToSoldierFight(attackSoldiersForFight, attackTreatSoldierPercent, villageSoldiersForFight, 0)
 
-				attackPlayerDoc.dragons[attackDragon.type].hp -= attackDragonForFight.totalHp - attackDragonForFight.currentHp
+				attackPlayerDoc.dragons[attackDragon.type].hp -= villageDragonFightData.attackDragonHpDecreased
 				attackPlayerData.dragons = {}
 				attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
 
-				var report = ReportUtils.createAttackVillageFightWithVillageTroop(attackAllianceDoc, attackPlayerDoc, defenceAllianceDoc, village, villageDragonFightData, villageSoldierFightData)
+				var report = ReportUtils.createAttackVillageFightWithVillageTroopReport(attackAllianceDoc, attackPlayerDoc, defenceAllianceDoc, village, villageDragonFightData, villageSoldierFightData)
 				var countData = report.countData
 				LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.report)
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
@@ -945,9 +945,10 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				var attackDragonExpAdd = countData.attackDragonExpAdd
 				var attackPlayerKill = countData.attackPlayerKill
 				var attackSoldiers = createSoldiers(villageSoldierFightData.attackSoldiersAfterFight)
-				var woundedSoldiers = createWoundedSoldiers(villageSoldierFightData.attackSoldiersAfterFight)
+				var attackWoundedSoldiers = createWoundedSoldiers(villageSoldierFightData.attackSoldiersAfterFight)
 				var attackRewards = report.report.attackVillage.attackPlayerData.rewards
-				var theVillageEvent = MarchUtils.createAllianceVillageEvent(attackAllianceDoc, attackPlayerDoc, attackDragon, attackDragonExpAdd, attackSoldiers, woundedSoldiers, defenceAllianceDoc, village, attackRewards, attackPlayerKill)
+				var eventData = MarchUtils.createAllianceVillageEvent(attackAllianceDoc, attackPlayerDoc, attackDragon, attackDragonExpAdd, attackSoldiers, attackWoundedSoldiers, defenceAllianceDoc, village, attackRewards, attackPlayerKill)
+				var theVillageEvent = eventData.event
 				if(theVillageEvent.villageData.resource <= theVillageEvent.villageData.collectTotal){
 					eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "villageEvents", theVillageEvent.id, theVillageEvent.finishTime])
 				}
@@ -1003,7 +1004,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						data:marchReturnEvent
 					}]
 
-					var collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, originalRewards)
+					var collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, newRewards)
 					LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, collectReport)
 					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
 					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
@@ -1033,7 +1034,46 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					}
 				}
 				return Promise.resolve()
-			}else{
+			}
+			if(!_.isEqual(attackPlayerDoc.alliance.id, defencePlayerDoc.alliance.id)){
+				var defenceDragon = defencePlayerDoc.dragons[villageEvent.defencePlayerData.dragon.type]
+				var defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon)
+				var defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, villageEvent.defencePlayerData.soldiers)
+				var defenceTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToWoundedSoldierPercent(defencePlayerDoc)
+				var defenceDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, defenceSoldiersForFight)
+				var defenceDragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, defenceDragonForFight, defenceDragonFightFixEffect)
+				var defenceSoldierFightData = FightUtils.soldierToSoldierFight(attackSoldiersForFight, attackTreatSoldierPercent, defenceSoldiersForFight, defenceTreatSoldierPercent)
+
+				attackDragon.hp -= defenceDragonFightData.attackDragonHpDecreased
+				attackPlayerData.dragons = {}
+				attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
+				defenceDragon.hp -= defenceDragonFightData.defenceDragonHpDecreased
+				defencePlayerData.dragons = {}
+				defencePlayerData.dragons[defenceDragon.type] = defencePlayerDoc.dragons[defenceDragon.type]
+
+				var report = ReportUtils.createAttackVillageFightWithDefenceTroopReport(attackAllianceDoc, attackPlayerDoc, defenceAllianceDoc, village, defencePlayerDoc, defenceDragonFightData, defenceSoldierFightData)
+				var countData = report.countData
+				LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.report)
+				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
+				LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.report)
+				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
+
+				var attackDragonExpAdd = countData.attackDragonExpAdd
+				var attackPlayerKill = countData.attackPlayerKill
+				var attackSoldiers = createSoldiers(villageSoldierFightData.attackSoldiersAfterFight)
+				var attackWoundedSoldiers = createWoundedSoldiers(villageSoldierFightData.attackSoldiersAfterFight)
+				var attackRewards = report.report.attackVillage.attackPlayerData.rewards
+				var defenceDragonExpAdd = countData.attackDragonExpAdd
+				var defencePlayerKill = countData.attackPlayerKill
+				var defenceSoldiers = createSoldiers(villageSoldierFightData.attackSoldiersAfterFight)
+				var defenceWoundedSoldiers = createWoundedSoldiers(villageSoldierFightData.attackSoldiersAfterFight)
+				var defenceRewards = report.report.attackVillage.attackPlayerData.rewards
+
+				if(_.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
+
+				}
 				return Promise.resolve()
 			}
 		}).then(function(){
@@ -1764,7 +1804,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 			data:marchReturnEvent
 		}]
 
-		var collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, originalRewards)
+		var collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, newRewards)
 		LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, collectReport)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])

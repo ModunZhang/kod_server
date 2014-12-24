@@ -620,5 +620,12 @@ Utils.createAllianceVillageEvent = function(allianceDoc, playerDoc, dragon, drag
 			alliance:createAllianceData(defenceAllianceDoc)
 		}
 	}
-	return event
+
+	var data = {
+		event:event,
+		soldiersTotalLoad:soldiersTotalLoad,
+		collectTime:collectInfo.collectTime,
+		collectTotal:collectInfo.collectTotal
+	}
+	return data
 }

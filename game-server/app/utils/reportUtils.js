@@ -752,7 +752,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
  * @param soldierFightData
  * @returns {*}
  */
-Utils.createAttackVillageFightWithVillageTroop = function(attackAllianceDoc, attackPlayerDoc, defenceAllianceDoc, defenceVillage, dragonFightData, soldierFightData){
+Utils.createAttackVillageFightWithVillageTroopReport = function(attackAllianceDoc, attackPlayerDoc, defenceAllianceDoc, defenceVillage, dragonFightData, soldierFightData){
 	var getKilledCitizen = function(soldiersForFight){
 		var killed = 0
 		var config = null
@@ -861,6 +861,154 @@ Utils.createAttackVillageFightWithVillageTroop = function(attackAllianceDoc, att
 		},
 		fightWithDefenceVillageReports:{
 			attackPlayerDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
+			defenceVillageDragonFightData:createDragonFightData(dragonFightData.defenceDragonAfterFight),
+			attackPlayerSoldierRoundDatas:soldierFightData.attackRoundDatas,
+			defenceVillageSoldierRoundDatas:soldierFightData.defenceRoundDatas
+		}
+	}
+
+	var report = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.AttackVillage,
+		createTime:Date.now(),
+		isRead:false,
+		isSaved:false,
+		attackVillage:attackVillageReport
+	}
+
+	var countData = {
+		attackPlayerKill:attackPlayerKilledCitizen,
+		attackDragonExpAdd:attackDragonExpAdd
+	}
+	return {report:report, countData:countData}
+}
+
+/**
+ * 创建进攻联盟村落并和正在采集村落的部队战斗的战报
+ * @param attackAllianceDoc
+ * @param attackPlayerDoc
+ * @param defenceAllianceDoc
+ * @param defenceVillage
+ * @param defencePlayerDoc
+ * @param dragonFightData
+ * @param soldierFightData
+ * @returns {*}
+ */
+Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDoc, attackPlayerDoc, defenceAllianceDoc, defenceVillage, defencePlayerDoc, dragonFightData, soldierFightData){
+	var getKilledCitizen = function(soldiersForFight){
+		var killed = 0
+		var config = null
+		_.each(soldiersForFight, function(soldierForFight){
+			_.each(soldierForFight.killedSoldiers, function(soldier){
+				if(DataUtils.hasNormalSoldier(soldier.name)){
+					var soldierFullKey = soldier.name + "_" + soldier.star
+					config = UnitConfig.normal[soldierFullKey]
+					killed += soldier.count * config.citizen
+				}else{
+					config = UnitConfig.special[soldier.name]
+					killed += soldier.count * config.citizen
+				}
+			})
+		})
+		return killed
+	}
+	var createSoldiersDataAfterFight = function(soldiersForFight){
+		var soldiers = []
+		_.each(soldiersForFight, function(soldierForFight){
+			var soldier = {
+				name:soldierForFight.name,
+				star:soldierForFight.star,
+				count:soldierForFight.totalCount,
+				countDecreased:soldierForFight.totalCount - soldierForFight.currentCount
+			}
+			soldiers.push(soldier)
+		})
+		return soldiers
+	}
+	var createDragonFightData = function(dragonForFight){
+		var data = {
+			type:dragonForFight.type,
+			hpMax:dragonForFight.maxHp,
+			hp:dragonForFight.totalHp,
+			hpDecreased:dragonForFight.totalHp - dragonForFight.currentHp,
+			isWin:dragonForFight.isWin
+		}
+		return data
+	}
+	var getDragonExpAdd = function(kill){
+		return Math.floor(kill * AllianceInit.floatInit.dragonExpByKilledCitizen.value)
+	}
+	var getBlood = function(totalKill, isWinner){
+		var blood = totalKill * AllianceInit.floatInit.bloodByKilledCitizen.value
+		return Math.floor(blood * (isWinner ? 0.7 : 0.3))
+	}
+	var createAllianceData = function(allianceDoc){
+		var data = {
+			id:allianceDoc._id,
+			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag
+		}
+		return data
+	}
+	var createDragonData = function(dragonAfterFight, expAdd){
+		var dragonData = {
+			type:dragonAfterFight.type,
+			level:dragonAfterFight.level,
+			expAdd:expAdd,
+			hp:dragonAfterFight.totalHp,
+			hpDecreased:dragonAfterFight.totalHp - dragonAfterFight.currentHp
+		}
+		return dragonData
+	}
+	var pushBloodToRewards = function(bloodCount, rewards){
+		if(bloodCount > 0){
+			var reward = {
+				type:"resources",
+				name:"blood",
+				count:bloodCount
+			}
+			rewards.push(reward)
+		}
+	}
+
+	var attackPlayerKilledCitizen = getKilledCitizen(soldierFightData.attackSoldiersAfterFight)
+	var attackDragonExpAdd = getDragonExpAdd(attackPlayerKilledCitizen)
+	var attackPlayerGetBlood = getBlood(attackPlayerKilledCitizen)
+	var attackPlayerRewards = []
+	pushBloodToRewards(attackPlayerGetBlood, attackPlayerRewards)
+	var defencePlayerKilledCitizen = getKilledCitizen(soldierFightData.defenceSoldiersAfterFight)
+	var defenceDragonExpAdd = getDragonExpAdd(defencePlayerKilledCitizen)
+	var defencePlayerGetBlood = getBlood(defencePlayerKilledCitizen)
+	var defencePlayerRewards = []
+	pushBloodToRewards(defencePlayerGetBlood, defencePlayerRewards)
+
+	var attackVillageReport = {
+		attackTarget:{
+			type:defenceVillage.type,
+			level:defenceVillage.level,
+			location:defenceVillage.location,
+			alliance:createAllianceData(defenceAllianceDoc)
+		},
+		attackPlayerData:{
+			id:attackPlayerDoc._id,
+			name:attackPlayerDoc.basicInfo.name,
+			icon:attackPlayerDoc.basicInfo.icon,
+			alliance:createAllianceData(attackAllianceDoc),
+			dragon:createDragonData(dragonFightData.attackDragonAfterFight, attackDragonExpAdd),
+			soldiers:createSoldiersDataAfterFight(soldierFightData.attackSoldiersAfterFight),
+			rewards:attackPlayerRewards
+		},
+		defencePlayerData:{
+			id:defencePlayerDoc._id,
+			name:defencePlayerDoc.basicInfo.name,
+			icon:defencePlayerDoc.basicInfo.icon,
+			alliance:createAllianceData(defenceAllianceDoc),
+			dragon:createDragonData(dragonFightData.defenceDragonAfterFight, defenceDragonExpAdd),
+			soldiers:createSoldiersDataAfterFight(soldierFightData.defenceSoldiersAfterFight),
+			rewards:defencePlayerRewards
+		},
+		fightWithDefenceVillageReports:{
+			attackPlayerDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
 			defencePlayerDragonFightData:createDragonFightData(dragonFightData.defenceDragonAfterFight),
 			attackPlayerSoldierRoundDatas:soldierFightData.attackRoundDatas,
 			defencePlayerSoldierRoundDatas:soldierFightData.defenceRoundDatas
@@ -878,7 +1026,9 @@ Utils.createAttackVillageFightWithVillageTroop = function(attackAllianceDoc, att
 
 	var countData = {
 		attackPlayerKill:attackPlayerKilledCitizen,
-		attackDragonExpAdd:attackDragonExpAdd
+		attackDragonExpAdd:attackDragonExpAdd,
+		defencePlayerKill:defencePlayerKilledCitizen,
+		defenceDragonExpAdd:defenceDragonExpAdd
 	}
 	return {report:report, countData:countData}
 }
