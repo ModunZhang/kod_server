@@ -440,7 +440,7 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 	}
 	var reportForDefencePlayer = {
 		id:ShortId.generate(),
-		type:Consts.PlayerReportType.StrikeCity,
+		type:Consts.PlayerReportType.CityBeStriked,
 		createTime:Date.now(),
 		isRead:false,
 		isSaved:false,
@@ -604,7 +604,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 	}
 	var reportForDefencePlayer = {
 		id:ShortId.generate(),
-		type:Consts.PlayerReportType.StrikeCity,
+		type:Consts.PlayerReportType.CityBeStriked,
 		createTime:Date.now(),
 		isRead:false,
 		isSaved:false,
