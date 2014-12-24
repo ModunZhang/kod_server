@@ -882,3 +882,36 @@ Utils.createAttackVillageFightWithVillageTroop = function(attackAllianceDoc, att
 	}
 	return {report:report, countData:countData}
 }
+
+/**
+ * 创建采集村落回城战报
+ * @param defenceAllianceDoc
+ * @param defenceVillage
+ * @param rewards
+ * @returns {*}
+ */
+Utils.createCollectVillageReport = function(defenceAllianceDoc, defenceVillage, rewards){
+	var collectResource = {
+		collectTarget:{
+			type:defenceVillage.type,
+			level:defenceVillage.level,
+			location:defenceVillage.location,
+			alliance:{
+				id:defenceAllianceDoc._id,
+				name:defenceAllianceDoc.basicInfo.name,
+				tag:defenceAllianceDoc.basicInfo.tag
+			}
+		},
+		rewards:rewards
+	}
+
+	var report = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.CollectResource,
+		createTime:Date.now(),
+		isRead:false,
+		isSaved:false,
+		collectResource:collectResource
+	}
+	return report
+}

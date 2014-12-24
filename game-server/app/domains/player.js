@@ -1178,6 +1178,30 @@ var playerSchema = new Schema({
 				}
 			},
 			required:false
+		},
+		collectResource:{
+			type:{
+				collectTarget:{
+					type:{type:String, required:true},
+					level:{type:Number, required:true},
+					location:{
+						x:{type:Number, required:true},
+						y:{type:Number, required:true}
+					},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					}
+				},
+				rewards:[{
+					_id:false,
+					type:{type:String, required:true},
+					name:{type:String, required:true},
+					count:{type:Number, required:true}
+				}]
+			},
+			required:false
 		}
 	}],
 	helpToTroops:[{

@@ -2012,51 +2012,49 @@ describe("AllianceService", function(){
 		//	}, 6 * 1000)
 		//})
 
-		//it("attackVillage 进攻本联盟村落 采集完成自动回家", function(done){
-		//	var m_myAllianceData = null
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.getMyAllianceData(function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.sendChat("dragonstar greenDragon 1", function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.sendChat("soldiers 1000", function(doc){
-		//					doc.code.should.equal(200)
-		//					Api.attackVillage(
-		//						"greenDragon",
-		//						[
-		//							{
-		//								name:"swordsman",
-		//								count:100
-		//							},
-		//							{
-		//								name:"sentinel",
-		//								count:100
-		//							},
-		//							{
-		//								name:"ranger",
-		//								count:100
-		//							}
-		//						],
-		//						m_myAllianceData._id,
-		//						m_myAllianceData.villages[0].id,
-		//						function(doc){
-		//							doc.code.should.equal(200)
-		//							setTimeout(function(){
-		//								done()
-		//							}, 15000)
-		//						}
-		//					)
-		//				})
-		//			})
-		//		})
-		//	})
-		//	var onGetAllianceDataSuccess = function(doc){
-		//		m_myAllianceData = doc
-		//		pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//	}
-		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//})
+		it("attackVillage 进攻本联盟村落 采集完成自动回家", function(done){
+			var m_myAllianceData = null
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.getMyAllianceData(function(doc){
+					doc.code.should.equal(200)
+					Api.sendChat("dragonstar greenDragon 1", function(doc){
+						doc.code.should.equal(200)
+						Api.sendChat("soldiers 1000", function(doc){
+							doc.code.should.equal(200)
+							Api.attackVillage(
+								"greenDragon",
+								[
+									{
+										name:"swordsman",
+										count:100
+									},
+									{
+										name:"sentinel",
+										count:100
+									},
+									{
+										name:"ranger",
+										count:100
+									}
+								],
+								m_myAllianceData._id,
+								m_myAllianceData.villages[0].id,
+								function(doc){
+									doc.code.should.equal(200)
+									done()
+								}
+							)
+						})
+					})
+				})
+			})
+			var onGetAllianceDataSuccess = function(doc){
+				m_myAllianceData = doc
+				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+			}
+			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		})
 
 		//it("attackVillage 进攻本联盟村落 直接回家", function(done){
 		//	var m_myAllianceData = null
@@ -2232,11 +2230,11 @@ describe("AllianceService", function(){
 		//	}, 10000)
 		//})
 
-		//it("attackVillage 进攻敌对玩家村落", function(done){
+		//it("attackVillage 进攻敌对玩家村落 采集完成自动回家", function(done){
 		//	setTimeout(function(){
 		//		var m_myAllianceData = null
 		//		var m_enemyAllianceData = null
-		//		Api.loginPlayer(Config.deviceId4, function(doc){
+		//		Api.loginPlayer(Config.deviceId3, function(doc){
 		//			doc.code.should.equal(200)
 		//			Api.getMyAllianceData(function(doc){
 		//				doc.code.should.equal(200)

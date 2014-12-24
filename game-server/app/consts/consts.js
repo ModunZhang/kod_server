@@ -160,7 +160,8 @@ module.exports = {
 		StrikeCity:"strikeCity",
 		CityBeStriked:"cityBeStriked",
 		AttackCity:"attackCity",
-		AttackVillage:"attackVillage"
+		AttackVillage:"attackVillage",
+		CollectResource:"collectResource"
 	},
 	AllianceMergePosition:[
 		"left",
