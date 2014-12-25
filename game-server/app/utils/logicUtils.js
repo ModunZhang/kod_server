@@ -1749,6 +1749,29 @@ Utils.mergeRewards = function(rewards, rewardsNew){
 }
 
 /**
+ * 合并兵力数据
+ * @param soldiers
+ * @param soldiersNew
+ * @returns {*}
+ */
+Utils.mergeSoldiers = function(soldiers, soldiersNew){
+	_.each(soldiersNew, function(soldierNew){
+		var soldier = _.find(soldiers, function(soldier){
+			return _.isEqual(soldier.name, soldierNew.name)
+		})
+		if(!_.isObject(soldier)){
+			soldier = {
+				name:soldierNew.name,
+				count:0
+			}
+			soldiers.push(soldier)
+		}
+		soldier.count += soldierNew.count
+	})
+	return soldiers
+}
+
+/**
  * 玩家龙领导力是否足以派出指定的士兵
  * @param playerDoc
  * @param dragon

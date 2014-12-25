@@ -590,7 +590,6 @@ Utils.createAttackVillageMarchReturnEvent = function(allianceDoc, playerDoc, dra
 Utils.createAllianceVillageEvent = function(allianceDoc, playerDoc, dragon, dragonExpAdd, soldiers, woundedSoldiers, defenceAllianceDoc, defenceVillage, rewards, kill){
 	var soldiersTotalLoad = DataUtils.getPlayerSoldiersTotalLoad(playerDoc, soldiers)
 	var collectInfo = DataUtils.getPlayerCollectResourceInfo(playerDoc, soldiersTotalLoad, defenceVillage)
-
 	var event = {
 		id:ShortId.generate(),
 		startTime:Date.now(),

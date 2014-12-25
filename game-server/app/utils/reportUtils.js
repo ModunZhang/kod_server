@@ -888,13 +888,14 @@ Utils.createAttackVillageFightWithVillageTroopReport = function(attackAllianceDo
  * @param attackAllianceDoc
  * @param attackPlayerDoc
  * @param defenceAllianceDoc
+ * @param targetAllianceDoc
  * @param defenceVillage
  * @param defencePlayerDoc
  * @param dragonFightData
  * @param soldierFightData
  * @returns {*}
  */
-Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDoc, attackPlayerDoc, defenceAllianceDoc, defenceVillage, defencePlayerDoc, dragonFightData, soldierFightData){
+Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDoc, attackPlayerDoc, targetAllianceDoc, defenceVillage, defenceAllianceDoc, defencePlayerDoc, dragonFightData, soldierFightData){
 	var getKilledCitizen = function(soldiersForFight){
 		var killed = 0
 		var config = null
@@ -987,7 +988,7 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 			type:defenceVillage.type,
 			level:defenceVillage.level,
 			location:defenceVillage.location,
-			alliance:createAllianceData(defenceAllianceDoc)
+			alliance:createAllianceData(targetAllianceDoc)
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,
@@ -1007,7 +1008,7 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 			soldiers:createSoldiersDataAfterFight(soldierFightData.defenceSoldiersAfterFight),
 			rewards:defencePlayerRewards
 		},
-		fightWithDefenceVillageReports:{
+		fightWithDefencePlayerReports:{
 			attackPlayerDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
 			defencePlayerDragonFightData:createDragonFightData(dragonFightData.defenceDragonAfterFight),
 			attackPlayerSoldierRoundDatas:soldierFightData.attackRoundDatas,
