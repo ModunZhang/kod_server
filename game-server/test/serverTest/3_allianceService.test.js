@@ -2802,6 +2802,133 @@ describe("AllianceService", function(){
 		//		})
 		//	}, 6 * 1000)
 		//})
+
+		//it("retreatFromVillage 从我方村落中撤兵", function(done){
+		//		var m_myAllianceData = null
+		//		Api.loginPlayer(Config.deviceId3, function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.getMyAllianceData(function(doc){
+		//				doc.code.should.equal(200)
+		//				Api.sendChat("dragonstar greenDragon 1", function(doc){
+		//					doc.code.should.equal(200)
+		//					Api.sendChat("soldiers 1000", function(doc){
+		//						doc.code.should.equal(200)
+		//						Api.attackVillage(
+		//							"greenDragon",
+		//							[
+		//								{
+		//									name:"swordsman",
+		//									count:100
+		//								},
+		//								{
+		//									name:"sentinel",
+		//									count:100
+		//								},
+		//								{
+		//									name:"ranger",
+		//									count:100
+		//								}
+		//							],
+		//							m_myAllianceData._id,
+		//							m_myAllianceData.villages[0].id,
+		//							function(doc){
+		//								doc.code.should.equal(200)
+		//								setTimeout(function(){
+		//									Api.getMyAllianceData(function(doc){
+		//										doc.code.should.equal(200)
+		//										Api.retreatFromVillage(m_myAllianceData._id, m_myAllianceData.villageEvents[0].id, function(doc){
+		//											doc.code.should.equal(200)
+		//											done()
+		//										})
+		//									})
+		//									var onGetAllianceDataSuccess = function(doc){
+		//										m_myAllianceData = doc
+		//										pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//									}
+		//									pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//								}, 7000)
+		//							}
+		//						)
+		//					})
+		//				})
+		//			})
+		//		})
+		//		var onGetAllianceDataSuccess = function(doc){
+		//			m_myAllianceData = doc
+		//			pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//		}
+		//		pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//})
+
+		//it("retreatFromVillage 从敌方村落中撤兵", function(done){
+		//	var m_myAllianceData = null
+		//	var m_enemyAllianceData = null
+		//	setTimeout(function(){
+		//		Api.loginPlayer(Config.deviceId3, function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.getMyAllianceData(function(doc){
+		//				doc.code.should.equal(200)
+		//				var allianceFight = m_myAllianceData.allianceFight
+		//				var enemyAllianceId = _.isEqual(allianceFight.attackAllianceId, m_myAllianceData._id) ? allianceFight.defenceAllianceId : allianceFight.attackAllianceId
+		//				Api.getAllianceViewData(enemyAllianceId, function(doc){
+		//					doc.code.should.equal(200)
+		//					Api.sendChat("dragonstar greenDragon 1", function(doc){
+		//						doc.code.should.equal(200)
+		//						Api.sendChat("soldiers 1000", function(doc){
+		//							doc.code.should.equal(200)
+		//							Api.attackVillage(
+		//								"greenDragon",
+		//								[
+		//									{
+		//										name:"swordsman",
+		//										count:100
+		//									},
+		//									{
+		//										name:"sentinel",
+		//										count:100
+		//									},
+		//									{
+		//										name:"ranger",
+		//										count:100
+		//									}
+		//								],
+		//								m_enemyAllianceData._id,
+		//								m_enemyAllianceData.villages[0].id,
+		//								function(doc){
+		//									doc.code.should.equal(200)
+		//									setTimeout(function(){
+		//										Api.getMyAllianceData(function(doc){
+		//											doc.code.should.equal(200)
+		//											Api.retreatFromVillage(enemyAllianceId, m_myAllianceData.villageEvents[0].id, function(doc){
+		//												doc.code.should.equal(200)
+		//												done()
+		//											})
+		//										})
+		//										var onGetAllianceDataSuccess = function(doc){
+		//											m_myAllianceData = doc
+		//											pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//										}
+		//										pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//									}, 7000)
+		//								}
+		//							)
+		//						})
+		//					})
+		//				})
+		//				var onGetAllianceViewDataSuccess = function(doc){
+		//					m_enemyAllianceData = doc
+		//					pomelo.removeListener("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
+		//				}
+		//				pomelo.on("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
+		//			})
+		//		})
+		//		var onGetAllianceDataSuccess = function(doc){
+		//			m_myAllianceData = doc
+		//			pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//		}
+		//		pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//	}, 5000)
+		//})
 	})
 
 

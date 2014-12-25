@@ -11,6 +11,7 @@ var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var MarchUtils = require("../utils/marchUtils")
+var ReportUtils = require("../utils/reportUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -758,8 +759,6 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 			var allianceFight = attackAllianceDoc.allianceFight
 			var enemyAllianceId = _.isEqual(attackAllianceDoc._id, allianceFight.attackAllianceId) ? allianceFight.defenceAllianceId : allianceFight.attackAllianceId
 			if(!_.isEqual(enemyAllianceId, defenceAllianceId)) return Promise.reject(new Error("目标联盟非当前匹配的敌对联盟"))
-		}
-		if(!_.isEqual(attackAllianceDoc._id, defenceAllianceId)){
 			return self.allianceDao.findByIdAsync(defenceAllianceId)
 		}
 		return Promise.resolve()
@@ -788,6 +787,167 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 		if(attackAllianceDoc != defenceAllianceDoc){
 			LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
 		}
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(attackPlayerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
+		}
+		if(_.isObject(attackAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(attackAllianceDoc._id))
+		}
+		if(_.isObject(defenceAllianceDoc) && attackAllianceDoc != defenceAllianceDoc){
+			funcs.push(self.allianceDao.removeLockByIdAsync(defenceAllianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 从村落撤兵
+ * @param playerId
+ * @param allianceId
+ * @param eventId
+ * @param callback
+ */
+pro.retreatFromVillage = function(playerId, allianceId, eventId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(allianceId)){
+		callback(new Error("allianceId 不合法"))
+		return
+	}
+	if(!_.isString(eventId)){
+		callback(new Error("eventId 不合法"))
+		return
+	}
+
+	var self = this
+	var attackPlayerDoc = null
+	var attackPlayerData = {}
+	var attackAllianceDoc = null
+	var attackAllianceData = {}
+	var defenceAllianceDoc = null
+	var defenceAllianceData = null
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		attackPlayerDoc = doc
+		if(!_.isObject(attackPlayerDoc.alliance) || _.isEmpty(attackPlayerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		return self.allianceDao.findByIdAsync(attackPlayerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		attackAllianceDoc = doc
+		if(!_.isEqual(attackAllianceDoc._id, allianceId)){
+			if(!_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+				return Promise.reject(new Error("联盟未处于战争期"))
+			}
+			var allianceFight = attackAllianceDoc.allianceFight
+			var enemyAllianceId = _.isEqual(attackAllianceDoc._id, allianceFight.attackAllianceId) ? allianceFight.defenceAllianceId : allianceFight.attackAllianceId
+			if(!_.isEqual(enemyAllianceId, allianceId)) return Promise.reject(new Error("目标联盟非当前匹配的敌对联盟"))
+			return self.allianceDao.findByIdAsync(allianceId)
+		}
+		return Promise.resolve()
+	}).then(function(doc){
+		if(!_.isEqual(attackAllianceDoc._id, allianceId)){
+			if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+			defenceAllianceDoc = doc
+			defenceAllianceData = {}
+		}else{
+			defenceAllianceDoc = attackAllianceDoc
+			defenceAllianceData = attackAllianceData
+		}
+		var villageEvent = LogicUtils.getEventById(attackAllianceDoc.villageEvents, eventId)
+		if(!_.isObject(villageEvent)) return Promise.reject(new Error("村落采集事件不存在"))
+
+		if(villageEvent.villageData.resource <= villageEvent.villageData.collectTotal){
+			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, villageEvent.id])
+		}
+		LogicUtils.removeItemInArray(defenceAllianceDoc.villageEvents, villageEvent)
+		defenceAllianceData.__villageEvents = [{
+			type:Consts.DataChangedType.Remove,
+			data:villageEvent
+		}]
+
+		var resourceCollected = Math.floor(villageEvent.villageData.collectTotal * ((Date.now() - villageEvent.startTime) / (villageEvent.finishTime - villageEvent.startTime)))
+		resourceCollected = resourceCollected > villageEvent.villageData.collectTotal ? villageEvent.villageData.collectTotal : resourceCollected
+
+		var village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, villageEvent.villageData.id)
+		var originalRewards = villageEvent.playerData.rewards
+		var resourceType = village.type.slice(0, -7)
+		var newRewards = [{
+			type:"resources",
+			name:resourceType,
+			count:resourceCollected
+		}]
+		LogicUtils.mergeRewards(originalRewards, newRewards)
+
+		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.dragon.expAdd, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, defenceAllianceDoc, village, originalRewards, villageEvent.playerData.kill)
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
+		attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
+		attackAllianceData.__attackMarchReturnEvents = [{
+			type:Consts.DataChangedType.Add,
+			data:marchReturnEvent
+		}]
+
+		var collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, newRewards)
+		LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, collectReport)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
+
+		if(village.level > 1){
+			village.level -= 1
+			var dragonAndSoldiers = DataUtils.getAllianceVillageConfigedDragonAndSoldiers(village.type, village.level)
+			village.dragon = dragonAndSoldiers.dragon
+			village.soldiers = dragonAndSoldiers.soldiers
+			village.resource = DataUtils.getAllianceVillageProduction(village.type, village.level)
+			defenceAllianceData.__villages = [{
+				type:Consts.DataChangedType.Edit,
+				data:village
+			}]
+		}else{
+			LogicUtils.removeItemInArray(defenceAllianceDoc.villages, village)
+			defenceAllianceData.__villages = [{
+				type:Consts.DataChangedType.Remove,
+				data:village
+			}]
+		}
+
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
+		if(attackAllianceDoc != defenceAllianceDoc){
+			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, defenceAllianceDoc])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc._id, defenceAllianceData])
+			LogicUtils.putAllianceDataToEnemyAllianceData(defenceAllianceData, attackAllianceData)
+			LogicUtils.putAllianceDataToEnemyAllianceData(attackAllianceDoc, defenceAllianceData)
+		}else{
+			LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
+		}
+
+		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){

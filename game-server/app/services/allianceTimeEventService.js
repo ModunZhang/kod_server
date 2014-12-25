@@ -1925,6 +1925,8 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc._id, defenceAllianceData])
 			LogicUtils.putAllianceDataToEnemyAllianceData(defenceAllianceData, attackAllianceData)
 			LogicUtils.putAllianceDataToEnemyAllianceData(attackAllianceDoc, defenceAllianceData)
+		}else{
+			LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
 		}
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
 		return Promise.resolve()
@@ -1935,7 +1937,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 		if(_.isObject(attackPlayerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
 		}
-		if(allianceDoc != defenceAllianceDoc && _.isObject(defenceAllianceDoc)){
+		if(attackPlayerDoc != defenceAllianceDoc && _.isObject(defenceAllianceDoc)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(defenceAllianceDoc._id))
 		}
 		if(funcs.length > 0){

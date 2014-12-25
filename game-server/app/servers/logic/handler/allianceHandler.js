@@ -697,3 +697,19 @@ pro.attackVillage = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 从村落撤兵
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.retreatFromVillage = function(msg, session, next){
+	var allianceId = msg.allianceId
+	var eventId = msg.eventId
+	this.allianceApiService4.retreatFromVillageAsync(session.uid, allianceId, eventId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
