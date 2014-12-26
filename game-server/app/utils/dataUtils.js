@@ -2000,6 +2000,7 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 	var damagedSoldiers = {}
 	var playerRewards = {}
 	var playerKills = {}
+	var playerDragonHps = {}
 	var fightStar = 0
 	var totalDeath = 0
 	_.each(fightDatas, function(fightData){
@@ -2014,8 +2015,10 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 				woundedSoldiers[roundData.playerId] = {}
 				damagedSoldiers[roundData.playerId] = {}
 				playerKills[roundData.playerId] = 0
+				playerDragonHps[roundData.playerId] = 0
 			}
 			var playerData = playerDatas[roundData.playerId]
+			playerDragonHps[roundData.playerId] += roundData.attackDragonFightData.hpDecreased
 			_.each(roundData.defenceSoldierRoundDatas, function(defenceSoldierRoundData){
 				var soldierConfig = UnitConfig.normal[defenceSoldierRoundData.soldierName + "_" + defenceSoldierRoundData.soldierStar]
 				var kill = defenceSoldierRoundData.soldierDamagedCount * soldierConfig.citizen
@@ -2123,7 +2126,8 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 		damagedSoldiers:damagedSoldiers,
 		woundedSoldiers:woundedSoldiers,
 		playerRewards:playerRewards,
-		playerKills:playerKills
+		playerKills:playerKills,
+		playerDragonHps:playerDragonHps
 	}
 	return params
 }
@@ -2255,8 +2259,12 @@ Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldie
  * 更新龙的属性
  * @param playerDoc
  * @param dragon
+ * @param hpDecreased
+ * @param expAdd
  */
-Utils.updatePlayerDragonProperty = function(playerDoc, dragon){
+Utils.updatePlayerDragonProperty = function(playerDoc, dragon, hpDecreased, expAdd){
+	dragon.hp -= hpDecreased
+	dragon.exp += expAdd
 	var currentStarMaxLevel = DragonEyrie.dragonAttribute[dragon.star].levelMax
 	var nextLevelExpNeed = DragonEyrie.dragonAttribute[dragon.star].perLevelExp * Math.pow(dragon.level, 2)
 	if(dragon.exp >= nextLevelExpNeed){
@@ -2419,4 +2427,13 @@ Utils.getPlayerCollectResourceInfo = function(playerDoc, soldierLoadTotal, allia
  */
 Utils.getAllianceVillageResourceMax = function(villageType, villageLevel){
 	return AllianceVillageConfig[villageType][villageLevel].production
+}
+
+/**
+ * 龙经验获取数量
+ * @param kill
+ * @returns {number}
+ */
+Utils.getDragonExpAdd = function(kill){
+	return Math.floor(kill * AllianceInit.floatInit.dragonExpByKilledCitizen.value)
 }

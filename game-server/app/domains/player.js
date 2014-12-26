@@ -1220,8 +1220,7 @@ var playerSchema = new Schema({
 		level:{type:Number, required:true},
 		cityName:{type:String, required:true},
 		dragon:{
-			type:{type:String, required:true},
-			expAdd:{type:Number, required:true}
+			type:{type:String, required:true}
 		},
 		soldiers:[{
 			_id:false,

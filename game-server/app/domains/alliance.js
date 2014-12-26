@@ -284,8 +284,7 @@ var allianceSchema = new Schema({
 				tag:{type:String, required:true}
 			},
 			dragon:{
-				type:{type:String, required:true},
-				expAdd:{type:Number, required:true}
+				type:{type:String, required:true}
 			},
 			soldiers:[{
 				_id:false,
@@ -302,8 +301,7 @@ var allianceSchema = new Schema({
 				type:{type:String, required:true},
 				name:{type:String, required:true},
 				count:{type:Number, required:true}
-			}],
-			kill:{type:Number, required:true}
+			}]
 		},
 		villageData:{
 			id:{type:String, required:true},
@@ -578,8 +576,7 @@ var allianceSchema = new Schema({
 				y:{type:Number, required:true}
 			},
 			dragon:{
-				type:{type:String, required:true},
-				expAdd:{type:Number, required:true}
+				type:{type:String, required:true}
 			},
 			soldiers:[{
 				_id:false,
@@ -601,8 +598,7 @@ var allianceSchema = new Schema({
 				type:{type:String, required:true},
 				name:{type:String, required:true},
 				count:{type:Number, required:true}
-			}],
-			kill:{type:Number, required:true}
+			}]
 		},
 		defencePlayerData:{
 			id:{type:String, required:true},
