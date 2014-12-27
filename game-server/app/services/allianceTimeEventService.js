@@ -20,6 +20,7 @@ var ReportUtils = require("../utils/reportUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
+var Localizations = require("../consts/localizations")
 
 var AllianceTimeEventService = function(app){
 	this.app = app
@@ -1328,7 +1329,10 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				report = ReportUtils.createStrikeCityFightWithHelpDefenceDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defencePlayerDoc, helpDefencePlayerDoc, helpDefenceDragonForFight, dragonFightData)
 				LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
 				LogicUtils.addPlayerReport(helpDefencePlayerDoc, helpDefencePlayerData, report.reportForDefencePlayer)
-				LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.reportForDefencePlayer)
+				var helpDefenceTitle = Localizations.Alliance.HelpDefenceStrikeTitle
+				var helpDefenceContent = Localizations.Alliance.HelpDefenceStrikeContent
+				var helpDefenceParams = [helpDefencePlayerDoc.basicInfo.name, defenceAllianceDoc.basicInfo.tag]
+				LogicUtils.sendSystemMail(defencePlayerDoc, defencePlayerData, helpDefenceTitle, helpDefenceParams, helpDefenceContent, helpDefenceParams)
 
 				attackDragon.hp -= dragonFightData.attackDragonHpDecreased
 				attackPlayerData.dragons = {}
