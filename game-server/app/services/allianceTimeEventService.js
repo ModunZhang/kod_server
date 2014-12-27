@@ -291,13 +291,11 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				level:attackPlayerDoc.basicInfo.level,
 				cityName:attackPlayerDoc.basicInfo.cityName,
 				dragon:{
-					type:event.attackPlayerData.dragon.type,
-					expAdd:0
+					type:event.attackPlayerData.dragon.type
 				},
 				soldiers:event.attackPlayerData.soldiers,
 				woundedSoldiers:[],
-				rewards:[],
-				kill:0
+				rewards:[]
 			}
 			defencePlayerDoc.helpedByTroops.push(helpedByTroop)
 			defencePlayerData.__helpedByTroops = [{
@@ -374,22 +372,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					}
 					soldiers.push(soldier)
 				}
-			})
-			return soldiers
-		}
-		var mergeSoldiers = function(soldiers, soldiersNewlyAdd){
-			_.each(soldiersNewlyAdd, function(soldierNewlyAdd){
-				var soldier = _.find(soldiers, function(soldier){
-					return _.isEqual(soldier.name, soldierNewlyAdd.name)
-				})
-				if(!_.isObject(soldier)){
-					soldier = {
-						name:soldierNewlyAdd.name,
-						count:0
-					}
-					soldiers.push(soldier)
-				}
-				soldier.count += soldierNewlyAdd.count
 			})
 			return soldiers
 		}
@@ -568,14 +550,14 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			//console.log(NodeUtils.inspect(report, false, null))
 
 			attackPlayerDoc.basicInfo.kill += countData.attackPlayerKill
-			DataUtils.updatePlayerDragonProperty(attackPlayerDoc, attackPlayerDoc.dragons[attackDragon.type],  attackDragonForFight.totalHp - attackDragonForFight.currentHp, countData.attackDragonExpAdd)
+			DataUtils.updatePlayerDragonProperty(attackPlayerDoc, attackPlayerDoc.dragons[attackDragon.type], attackDragonForFight.totalHp - attackDragonForFight.currentHp, countData.attackDragonExpAdd)
 			attackPlayerData.basicInfo = attackPlayerDoc.basicInfo
 			attackPlayerData.dragons = {}
 			attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
 
 			if(_.isObject(helpDefenceSoldierFightData)){
 				helpDefencePlayerDoc.basicInfo.kill += countData.helpDefencePlayerKill
-				DataUtils.updatePlayerDragonProperty(helpDefencePlayerDoc, helpDefencePlayerDoc.dragons[helpDefenceDragon.type],  helpDefenceDragonForFight.totalHp - helpDefenceDragonForFight.currentHp, countData.helpDefenceDragonExpAdd)
+				DataUtils.updatePlayerDragonProperty(helpDefencePlayerDoc, helpDefencePlayerDoc.dragons[helpDefenceDragon.type], helpDefenceDragonForFight.totalHp - helpDefenceDragonForFight.currentHp, countData.helpDefenceDragonExpAdd)
 				helpDefencePlayerData.basicInfo = helpDefencePlayerDoc.basicInfo
 				helpDefencePlayerData.dragons = {}
 				helpDefencePlayerData.dragons[helpDefenceDragon.type] = helpDefencePlayerDoc.dragons[helpDefenceDragon.type]
@@ -762,10 +744,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			}]
 			LogicUtils.putAllianceDataToEnemyAllianceData(attackAllianceData, defenceAllianceData)
 			if(_.isObject(helpDefencePlayerDoc)){
-				helpedByTroop.dragon.expAdd += countData.helpDefenceDragonExpAdd
 				helpedByTroop.soldiers = getSoldiersFromSoldiersForFight(helpDefenceSoldiersForFight)
-				helpedByTroop.kill += countData.helpDefencePlayerKill
-				mergeSoldiers(helpedByTroop.woundedSoldiers, getWoundedSoldiersFromSoldiersForFight(helpDefenceSoldiersForFight))
+				LogicUtils.mergeSoldiers(helpedByTroop.woundedSoldiers, getWoundedSoldiersFromSoldiersForFight(helpDefenceSoldiersForFight))
 				LogicUtils.mergeRewards(helpedByTroop.rewards, attackCityReport.helpDefencePlayerData.rewards)
 				if(_.isEqual(Consts.FightResult.DefenceWin, helpDefenceSoldierFightData.fightResult)){
 					defencePlayerData.__helpedByTroops = [{
@@ -874,11 +854,11 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var attackRewards = null
 		var eventData = null
 		var newVillageEvent = null
-		var defenceDragonExpAdd =  null
+		var defenceDragonExpAdd = null
 		var defencePlayerKill = null
-		var defenceSoldiers =  null
-		var defenceWoundedSoldiers =  null
-		var defenceRewards =  null
+		var defenceSoldiers = null
+		var defenceWoundedSoldiers = null
+		var defenceRewards = null
 
 		funcs = []
 		funcs.push(self.playerDao.findByIdAsync(event.attackPlayerData.id, true))

@@ -356,7 +356,7 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 		})
 		return equipments
 	}
-	var getSoldiers = function(playerDoc, soldiersInTroop){
+	var getSoldiersInTroop = function(playerDoc, soldiersInTroop){
 		var soldiers = []
 		_.each(soldiersInTroop, function(soldierInTroop){
 			var soldier = {
@@ -401,7 +401,7 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 				},
 				defenceDragonData
 			),
-			soldiers:getSoldiers(helpDefencePlayerDoc, defencePlayerDoc.helpedByTroops[0].soldiers)
+			soldiers:getSoldiersInTroop(helpDefencePlayerDoc, defencePlayerDoc.helpedByTroops[0].soldiers)
 		}
 	}
 
@@ -615,7 +615,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 }
 
 /**
- * 创建突袭玩家城市和防守玩家的龙发生战斗的战报
+ * 创建突袭玩家城市无协防无防守龙的战报
  * @param attackAllianceDoc
  * @param attackPlayerDoc
  * @param attackDragonForFight
@@ -732,7 +732,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 	}
 	var reportForDefencePlayer = {
 		id:ShortId.generate(),
-		type:Consts.PlayerReportType.StrikeCity,
+		type:Consts.PlayerReportType.CityBeStriked,
 		createTime:Date.now(),
 		isRead:false,
 		isSaved:false,
