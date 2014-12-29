@@ -475,6 +475,11 @@ var playerSchema = new Schema({
 						x:{type:Number, required:true},
 						y:{type:Number, required:true}
 					},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
 					terrain:{type:String, required:true}
 				},
 				attackPlayerData:{
@@ -584,6 +589,11 @@ var playerSchema = new Schema({
 						x:{type:Number, required:true},
 						y:{type:Number, required:true}
 					},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
 					terrain:{type:String, required:true}
 				},
 				attackPlayerData:{
@@ -658,41 +668,53 @@ var playerSchema = new Schema({
 			type:{
 				level:{type:Number, required:true},
 				strikeTarget:{
-					id:{type:String, required:true},
 					type:{type:String, required:true},
-					level:{type:String, rquired:true},
+					level:{type:Number, required:true},
 					location:{
 						x:{type:Number, required:true},
 						y:{type:Number, required:true}
 					},
-					resource:{type:Number, required:true},
-					allianceId:{type:String, required:true},
-					allianceName:{type:String, required:true},
-					allianceTag:{type:String, required:true}
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
+					terrain:{type:String, required:true}
 				},
-				playerData:{
-					name:{type:String, required:true},
-					icon:{type:String, required:true},
-					allianceName:{type:String, requird:true},
-					allianceTag:{type:String, required:true},
-					coinGet:{type:Number, required:true},
-					dragon:{
-						type:{type:String, required:true},
-						level:{type:Number, required:true},
-						expAdd:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
-					}
-				},
-				enemyPlayerData:{
+				attackPlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					cityName:{type:String, required:true},
 					icon:{type:String, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
 					dragon:{
 						type:{type:String, required:true},
 						level:{type:Number, required:true},
-						expAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
+					},
+					rewards:[{
+						_id:false,
+						type:{type:String, required:true},
+						name:{type:String, required:true},
+						count:{type:Number, required:true}
+					}]
+				},
+				defencePlayerData:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					icon:{type:String, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
 						hp:{type:Number, required:true},
 						hpDecreased:{type:Number, required:true},
 						equipments:[{
@@ -713,13 +735,29 @@ var playerSchema = new Schema({
 						count:{type:Number, required:true}
 					}]
 				},
-				villageData:{
+				defenceVillageData:{
+					type:{type:String, required:true},
+					level:{type:Number, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
 					dragon:{
 						type:{type:String, required:true},
 						level:{type:Number, required:true},
-						expAdd:{type:Number, required:true},
 						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
+						hpDecreased:{type:Number, required:true},
+						equipments:[{
+							type:{type:String, required:true},
+							name:{type:String, required:true},
+							star:{type:String, required:true}
+						}],
+						skills:[{
+							_id:false,
+							name:{type:String, required:true},
+							level:{type:String, required:true}
+						}]
 					},
 					soldiers:[{
 						_id:false,
@@ -728,44 +766,68 @@ var playerSchema = new Schema({
 						count:{type:Number, required:true}
 					}]
 				}
-
 			},
 			required:false
 		},
 		villageBeStriked:{
 			type:{
 				level:{type:Number, required:true},
-				playerData:{
-					name:{type:String, required:true},
-					cityName:{type:String, required:true},
+				strikeTarget:{
+					type:{type:String, required:true},
+					level:{type:Number, required:true},
 					location:{
 						x:{type:Number, required:true},
 						y:{type:Number, required:true}
 					},
-					icon:{type:String, required:true},
-					allianceName:{type:String, requird:true},
-					allianceTag:{type:String, required:true},
-					dragon:{
-						type:{type:String, required:true},
-						level:{type:Number, required:true},
-						expAdd:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
-					}
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
+					terrain:{type:String, required:true}
 				},
-				enemyPlayerData:{
+				attackPlayerData:{
+					id:{type:String, required:true},
 					name:{type:String, required:true},
 					icon:{type:String, required:true},
-					allianceName:{type:String, requird:true},
-					allianceTag:{type:String, required:true},
-					coinGet:{type:Number, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
 					dragon:{
 						type:{type:String, required:true},
 						level:{type:Number, required:true},
-						expAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true},
+						equipments:[{
+							type:{type:String, required:true},
+							name:{type:String, required:true},
+							star:{type:String, required:true}
+						}]
+					}
+				},
+				defencePlayerData:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					icon:{type:String, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
 						hp:{type:Number, required:true},
 						hpDecreased:{type:Number, required:true}
-					}
+					},
+					rewards:[{
+						_id:false,
+						type:{type:String, required:true},
+						name:{type:String, required:true},
+						count:{type:Number, required:true}
+					}]
 				}
 			},
 			required:false
@@ -782,6 +844,11 @@ var playerSchema = new Schema({
 					location:{
 						x:{type:Number, required:true},
 						y:{type:Number, required:true}
+					},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
 					},
 					terrain:{type:String, required:true}
 				},
@@ -1014,7 +1081,8 @@ var playerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true}
-					}
+					},
+					terrain:{type:String, required:true}
 				},
 				attackPlayerData:{
 					id:{type:String, required:true},

@@ -1783,3 +1783,16 @@ Utils.isPlayerDragonLeadershipEnough = function(playerDoc, dragon, soldiers){
 	var soldiersCitizen = DataUtils.getPlayerSoldiersCitizen(playerDoc, soldiers)
 	return dragonMaxCitizen >= soldiersCitizen
 }
+
+/**
+ * 根据坐标查询地图对象
+ * @param allianceDoc
+ * @param location
+ * @returns {*}
+ */
+Utils.findAllianceMapObjectByLocation = function(allianceDoc, location){
+	var object = _.find(allianceDoc.mapObjects, function(mapObject){
+		return mapObject.location.x == location.x && mapObject.location.y == location.y
+	})
+	return object
+}

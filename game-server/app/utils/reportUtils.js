@@ -216,6 +216,7 @@ Utils.createAttackCityReport = function(attackAllianceDoc, attackPlayerData, def
 			name:defencePlayerData.playerDoc.basicInfo.name,
 			cityName:defencePlayerData.playerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerData.playerDoc._id).location,
+			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defenceAllianceDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
@@ -307,15 +308,16 @@ Utils.createAttackCityReport = function(attackAllianceDoc, attackPlayerData, def
  * @returns {*}
  */
 Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defencePlayerDoc, helpDefencePlayerDoc, helpDefenceDragonForFight, dragonFightData){
-	var reportLevel = null
-	var powerCompare = dragonFightData.powerCompare
-	if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.E
-	else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.D
-	else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.C
-	else if(powerCompare >= 2 && powerCompare < 4) reportLevel = Consts.DragonStrikeReportLevel.B
-	else if(powerCompare >= 4 && powerCompare < 6) reportLevel = Consts.DragonStrikeReportLevel.A
-	else reportLevel = Consts.DragonStrikeReportLevel.S
-
+	var getReportLevel = function(powerCompare){
+		var reportLevel = null
+		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.E
+		else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.D
+		else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.C
+		else if(powerCompare >= 2 && powerCompare < 4) reportLevel = Consts.DragonStrikeReportLevel.B
+		else if(powerCompare >= 4 && powerCompare < 6) reportLevel = Consts.DragonStrikeReportLevel.A
+		else reportLevel = Consts.DragonStrikeReportLevel.S
+		return reportLevel
+	}
 	var createAllianceData = function(allianceDoc){
 		var data = {
 			id:allianceDoc._id,
@@ -373,12 +375,13 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 	var defenceDragonData = createDragonData(dragonFightData.defenceDragonAfterFight)
 
 	var strikeCityReport = {
-		level:reportLevel,
+		level:getReportLevel(dragonFightData.powerCompare),
 		strikeTarget:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
+			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defenceAllianceDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
@@ -462,15 +465,16 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
  * @returns {*}
  */
 Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defencePlayerDoc, defenceDragonForFight, dragonFightData){
-	var reportLevel = null
-	var powerCompare = dragonFightData.powerCompare
-	if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.E
-	else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.D
-	else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.C
-	else if(powerCompare >= 2 && powerCompare < 4) reportLevel = Consts.DragonStrikeReportLevel.B
-	else if(powerCompare >= 4 && powerCompare < 6) reportLevel = Consts.DragonStrikeReportLevel.A
-	else reportLevel = Consts.DragonStrikeReportLevel.S
-
+	var getReportLevel = function(powerCompare){
+		var reportLevel = null
+		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.E
+		else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.D
+		else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.C
+		else if(powerCompare >= 2 && powerCompare < 4) reportLevel = Consts.DragonStrikeReportLevel.B
+		else if(powerCompare >= 4 && powerCompare < 6) reportLevel = Consts.DragonStrikeReportLevel.A
+		else reportLevel = Consts.DragonStrikeReportLevel.S
+		return reportLevel
+	}
 	var createAllianceData = function(allianceDoc){
 		var data = {
 			id:allianceDoc._id,
@@ -521,12 +525,13 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 	}
 
 	var strikeCityReport = {
-		level:reportLevel,
+		level:getReportLevel(dragonFightData.powerCompare),
 		strikeTarget:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
+			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defenceAllianceDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
@@ -840,7 +845,8 @@ Utils.createAttackVillageFightWithVillageTroopReport = function(attackAllianceDo
 			type:defenceVillage.type,
 			level:defenceVillage.level,
 			location:defenceVillage.location,
-			alliance:createAllianceData(defenceAllianceDoc)
+			alliance:createAllianceData(defenceAllianceDoc),
+			terrain:defenceAllianceDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,
@@ -988,7 +994,8 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 			type:defenceVillage.type,
 			level:defenceVillage.level,
 			location:defenceVillage.location,
-			alliance:createAllianceData(targetAllianceDoc)
+			alliance:createAllianceData(targetAllianceDoc),
+			terrain:defenceAllianceDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,
@@ -1032,6 +1039,250 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 		defenceDragonExpAdd:defenceDragonExpAdd
 	}
 	return {report:report, countData:countData}
+}
+
+/**
+ * 创建突袭村落和村落的采集者的龙发生战斗
+ * @param attackAllianceDoc
+ * @param attackPlayerDoc
+ * @param attackDragonForFight
+ * @param targetAllianceDoc
+ * @param defenceAllianceDoc
+ * @param defenceVillage
+ * @param defenceVillageEvent
+ * @param defencePlayerDoc
+ * @param defenceDragonForFight
+ * @param dragonFightData
+ * @returns {*}
+ */
+Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, targetAllianceDoc, defenceVillage, defenceAllianceDoc, defenceVillageEvent, defencePlayerDoc, defenceDragonForFight, dragonFightData){
+	var getReportLevel = function(powerCompare){
+		var reportLevel = null
+		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.E
+		else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.D
+		else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.C
+		else if(powerCompare >= 2 && powerCompare < 4) reportLevel = Consts.DragonStrikeReportLevel.B
+		else if(powerCompare >= 4 && powerCompare < 6) reportLevel = Consts.DragonStrikeReportLevel.A
+		else reportLevel = Consts.DragonStrikeReportLevel.S
+		return reportLevel
+	}
+	var createAllianceData = function(allianceDoc){
+		var data = {
+			id:allianceDoc._id,
+			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag
+		}
+		return data
+	}
+	var createDragonData = function(dragonAfterFight){
+		var dragonData = {
+			type:dragonAfterFight.type,
+			level:dragonAfterFight.level,
+			hp:dragonAfterFight.totalHp,
+			hpDecreased:dragonAfterFight.totalHp - dragonAfterFight.currentHp
+		}
+		return dragonData
+	}
+	var getDragonSkills = function(dragon){
+		var skills = []
+		_.each(dragon.skills, function(skill){
+			if(skill.level > 0){
+				skills.push(skill)
+			}
+		})
+		return skills
+	}
+	var getDragonEquipments = function(dragon){
+		var equipments = []
+		_.each(dragon.equipments, function(theEquipment, type){
+			if(!_.isEmpty(theEquipment.name)){
+				var equipment = {
+					type:type,
+					name:theEquipment.name,
+					star:theEquipment.star
+				}
+				equipments.push(equipment)
+			}
+		})
+		return equipments
+	}
+	var getSoldiersInTroop = function(playerDoc, soldiersInTroop){
+		var soldiers = []
+		_.each(soldiersInTroop, function(soldierInTroop){
+			var soldier = {
+				name:soldierInTroop.name,
+				star:1,
+				count:soldierInTroop.count
+			}
+			soldiers.push(soldier)
+		})
+		return soldiers
+	}
+
+	var attackDragonData = createDragonData(dragonFightData.attackDragonAfterFight)
+	var defenceDragonData = createDragonData(dragonFightData.defenceDragonAfterFight)
+	var strikeVillageReport = {
+		level:getReportLevel(dragonFightData.powerCompare),
+		strikeTarget:{
+			type:defenceVillage.type,
+			level:defenceVillage.level,
+			location:defenceVillage.location,
+			alliance:createAllianceData(targetAllianceDoc),
+			terrain:defenceAllianceDoc.basicInfo.terrain
+		},
+		attackPlayerData:{
+			id:attackPlayerDoc._id,
+			name:attackPlayerDoc.basicInfo.name,
+			icon:attackPlayerDoc.basicInfo.icon,
+			alliance:createAllianceData(attackAllianceDoc),
+			dragon:attackDragonData,
+			rewards:[]
+		},
+		defencePlayerData:{
+			id:defencePlayerDoc._id,
+			name:defencePlayerDoc.basicInfo.name,
+			icon:defencePlayerDoc.basicInfo.icon,
+			alliance:createAllianceData(defenceAllianceDoc),
+			dragon:_.extend(
+				{
+					equipments:getDragonEquipments(defencePlayerDoc.dragons[defenceDragonForFight.type]),
+					skills:getDragonSkills(defencePlayerDoc.dragons[defenceDragonForFight.type])
+				},
+				defenceDragonData
+			),
+			soldiers:getSoldiersInTroop(defencePlayerDoc, defenceVillageEvent.playerData.soldiers)
+		}
+	}
+
+	var villageBeStrikedReport = {
+		level:strikeVillageReport.level,
+		strikeTarget:strikeVillageReport.strikeTarget,
+		attackPlayerData:{
+			id:attackPlayerDoc._id,
+			name:attackPlayerDoc.basicInfo.name,
+			icon:attackPlayerDoc.basicInfo.icon,
+			alliance:createAllianceData(attackAllianceDoc),
+			dragon:_.extend(
+				{
+					equipments:getDragonEquipments(attackPlayerDoc.dragons[attackDragonForFight.type])
+				},
+				attackDragonData
+			)
+		},
+		defencePlayerData:{
+			id:defencePlayerDoc._id,
+			name:defencePlayerDoc.basicInfo.name,
+			icon:defencePlayerDoc.basicInfo.icon,
+			alliance:createAllianceData(defenceAllianceDoc),
+			dragon:defenceDragonData,
+			rewards:[]
+		}
+	}
+
+	var reportForAttackPlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.StrikeVillage,
+		createTime:Date.now(),
+		isRead:false,
+		isSaved:false,
+		strikeVillage:strikeVillageReport
+	}
+	var reportForDefencePlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.VillageBeStriked,
+		createTime:Date.now(),
+		isRead:false,
+		isSaved:false,
+		villageBeStriked:villageBeStrikedReport
+	}
+
+	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer}
+}
+
+/**
+ * 创建突袭村落和村落的龙发生战斗
+ * @param attackAllianceDoc
+ * @param attackPlayerDoc
+ * @param attackDragonForFight
+ * @param defenceAllianceDoc
+ * @param defenceVillage
+ * @param villageDragonForFight
+ * @param dragonFightData
+ * @returns {*}
+ */
+Utils.createStrikeVillageFightWithVillageDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defenceVillage, villageDragonForFight, dragonFightData){
+	var getReportLevel = function(powerCompare){
+		var reportLevel = null
+		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.E
+		else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.D
+		else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.C
+		else if(powerCompare >= 2 && powerCompare < 4) reportLevel = Consts.DragonStrikeReportLevel.B
+		else if(powerCompare >= 4 && powerCompare < 6) reportLevel = Consts.DragonStrikeReportLevel.A
+		else reportLevel = Consts.DragonStrikeReportLevel.S
+		return reportLevel
+	}
+	var createAllianceData = function(allianceDoc){
+		var data = {
+			id:allianceDoc._id,
+			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag
+		}
+		return data
+	}
+	var createDragonData = function(dragonAfterFight){
+		var dragonData = {
+			type:dragonAfterFight.type,
+			level:dragonAfterFight.level,
+			hp:dragonAfterFight.totalHp,
+			hpDecreased:dragonAfterFight.totalHp - dragonAfterFight.currentHp
+		}
+		return dragonData
+	}
+
+	var attackDragonData = createDragonData(dragonFightData.attackDragonAfterFight)
+	var defenceDragonData = createDragonData(dragonFightData.defenceDragonAfterFight)
+	var strikeVillageReport = {
+		level:getReportLevel(dragonFightData.powerCompare),
+		strikeTarget:{
+			type:defenceVillage.type,
+			level:defenceVillage.level,
+			location:defenceVillage.location,
+			alliance:createAllianceData(defenceAllianceDoc),
+			terrain:defenceAllianceDoc.basicInfo.terrain
+		},
+		attackPlayerData:{
+			id:attackPlayerDoc._id,
+			name:attackPlayerDoc.basicInfo.name,
+			icon:attackPlayerDoc.basicInfo.icon,
+			alliance:createAllianceData(attackAllianceDoc),
+			dragon:attackDragonData,
+			rewards:[]
+		},
+		defenceVillageData:{
+			type:defenceVillage.type,
+			level:defenceVillage.level,
+			alliance:createAllianceData(defenceAllianceDoc),
+			dragon:_.extend(
+				{
+					equipments:[],
+					skills:[]
+				},
+				defenceDragonData
+			),
+			soldiers:defenceVillage.soldiers
+		}
+	}
+
+	var reportForAttackPlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.StrikeVillage,
+		createTime:Date.now(),
+		isRead:false,
+		isSaved:false,
+		strikeVillage:strikeVillageReport
+	}
+
+	return reportForAttackPlayer
 }
 
 /**
