@@ -55,3 +55,7 @@ intInit["citizenPerLeadership"] = {
 	type:"citizenPerLeadership",
 	value:100
 }
+intInit["collectedResourceCountPerExp"] = {
+	type:"collectedResourceCountPerExp",
+	value:50
+}
