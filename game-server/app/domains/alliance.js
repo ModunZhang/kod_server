@@ -102,7 +102,8 @@ var allianceSchema = new Schema({
 		location:{
 			x:{type:Number, required:true},
 			y:{type:Number, required:true}
-		}
+		},
+		isProtected:{type:Boolean, required:true}
 	}],
 	buildings:{
 		palace:createBuildingSchema("palace", Consts.AllianceBuildingLocation.Palace),
