@@ -189,7 +189,7 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
  * @param wallFightData
  * @returns {*}
  */
-Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defencePlayerDoc, dragonFightData, soldierFightData, wallFightData){
+Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiersForFight, defenceAllianceDoc, defencePlayerDoc, dragonFightData, soldierFightData, wallFightData){
 	var getKilledCitizen = function(soldiersForFight){
 		var killed = 0
 		var config = null
@@ -293,7 +293,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 	pushBloodToRewards(defencePlayerGetBloodBySoldiers + defencePlayerGetBloodByWall, defencePlayerRewards)
 
 	if(!_.isObject(soldierFightData) || _.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult)){
-		var attackDragonCurrentHp = !_.isObject(soldierFightData) ? attackDragonForFight.currentHp : dragonFightData.attackDragonAfterFight.currentHp
+		var attackDragonCurrentHp = attackDragonForFight.currentHp
 		var coinGet = defencePlayerDoc.resources.coin >= attackDragonCurrentHp ? attackDragonCurrentHp : defencePlayerDoc.resources.coin
 		attackPlayerRewards.push({
 			type:"resources",
@@ -308,7 +308,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 
 		var defencePlayerResources = defencePlayerDoc.resources
 		var defencePlayerResourceTotal = defencePlayerResources.wood + defencePlayerResources.stone + defencePlayerResources.iron + defencePlayerResources.food
-		var attackPlayerLoadTotal = getSoldiersLoadTotal(soldierFightData.attackSoldiersAfterFight)
+		var attackPlayerLoadTotal = getSoldiersLoadTotal(attackSoldiersForFight)
 		var loadPercent = defencePlayerResourceTotal > 0 ? attackPlayerLoadTotal / defencePlayerResourceTotal : 0
 		loadPercent = loadPercent > 1 ? 1 : loadPercent
 		var resourceKeys = ["wood", "stone", "iron", "food"]
