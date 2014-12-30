@@ -2242,49 +2242,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 	var eventFuncs = []
 	var pushFuncs = []
 	var updateFuncs = []
-
 	var now = Date.now()
-	attackAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
-	attackAllianceDoc.basicInfo.statusStartTime = now
-	var attackAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight(attackAllianceDoc)
-	attackAllianceDoc.basicInfo.statusFinishTime = now + attackAllianceProtectTime
-	attackAllianceData.basicInfo = attackAllianceDoc.basicInfo
-	attackAllianceDoc.allianceFight = null
-	attackAllianceData.allianceFight = {}
-	attackAllianceData.enemyAllianceDoc = {}
-	attackAllianceData.__members = []
-	_.each(attackAllianceDoc.members, function(member){
-		if(member.isProtected){
-			member.isProtected = false
-			attackAllianceData.__members.push({
-				type:Consts.DataChangedType.Edit,
-				data:member
-			})
-		}
-	})
-	if(_.isEmpty(attackAllianceData.__members)) delete attackAllianceData.__members
-
-
-
-	defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
-	defenceAllianceDoc.basicInfo.statusStartTime = now
-	var defenceAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight(defenceAllianceDoc)
-	defenceAllianceDoc.basicInfo.statusFinishTime = now + defenceAllianceProtectTime
-	defenceAllianceData.basicInfo = attackAllianceDoc.basicInfo
-	defenceAllianceDoc.allianceFight = null
-	defenceAllianceData.enemyAllianceDoc = {}
-	defenceAllianceData.allianceFight = {}
-	defenceAllianceData.__members = []
-	_.each(defenceAllianceDoc.members, function(member){
-		if(member.isProtected){
-			member.isProtected = false
-			defenceAllianceData.__members.push({
-				type:Consts.DataChangedType.Edit,
-				data:member
-			})
-		}
-	})
-	if(_.isEmpty(defenceAllianceData.__members)) delete defenceAllianceData.__members
 
 	var attackAllianceKill = attackAllianceDoc.allianceFight.attackAllianceCountData.kill
 	var defenceAllianceKill = attackAllianceDoc.allianceFight.defenceAllianceCountData.kill
@@ -2318,37 +2276,52 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		}
 	}
 
-	var willRemovedReport = null
-	attackAllianceData.__allianceFightReports = []
-	if(attackAllianceDoc.allianceFightReports.length >= Define.AllianceFightReportsMaxSize){
-		willRemovedReport = attackAllianceDoc.allianceFightReports.shift()
-		attackAllianceData.__allianceFightReports.push({
-			type:Consts.DataChangedType.Remove,
-			data:willRemovedReport
-		})
-	}
-	attackAllianceDoc.allianceFightReports.push(allianceFightReport)
-	attackAllianceData.__allianceFightReports.push({
-		type:Consts.DataChangedType.Add,
-		data:allianceFightReport
-	})
-	defenceAllianceData.__allianceFightReports = []
-	if(defenceAllianceDoc.allianceFightReports.length >= Define.AllianceFightReportsMaxSize){
-		willRemovedReport = defenceAllianceDoc.allianceFightReports.shift()
-		defenceAllianceData.__allianceFightReports.push({
-			type:Consts.DataChangedType.Remove,
-			data:willRemovedReport
-		})
-	}
-	defenceAllianceDoc.allianceFightReports.push(allianceFightReport)
-	defenceAllianceData.__allianceFightReports.push({
-		type:Consts.DataChangedType.Add,
-		data:allianceFightReport
-	})
+	LogicUtils.addAllianceFightReport(attackAllianceDoc, attackAllianceData, allianceFightReport)
+	LogicUtils.addAllianceFightReport(defenceAllianceDoc, defenceAllianceData, allianceFightReport)
 
 	LogicUtils.updateAllianceCountInfo(attackAllianceDoc, defenceAllianceDoc)
 	attackAllianceData.countInfo = attackAllianceDoc.countInfo
 	defenceAllianceData.countInfo = defenceAllianceDoc.countInfo
+
+	attackAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
+	attackAllianceDoc.basicInfo.statusStartTime = now
+	var attackAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight(attackAllianceDoc)
+	attackAllianceDoc.basicInfo.statusFinishTime = now + attackAllianceProtectTime
+	attackAllianceData.basicInfo = attackAllianceDoc.basicInfo
+	attackAllianceDoc.allianceFight = null
+	attackAllianceData.allianceFight = {}
+	attackAllianceData.enemyAllianceDoc = {}
+	attackAllianceData.__members = []
+	_.each(attackAllianceDoc.members, function(member){
+		if(member.isProtected){
+			member.isProtected = false
+			attackAllianceData.__members.push({
+				type:Consts.DataChangedType.Edit,
+				data:member
+			})
+		}
+	})
+	if(_.isEmpty(attackAllianceData.__members)) delete attackAllianceData.__members
+
+	defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
+	defenceAllianceDoc.basicInfo.statusStartTime = now
+	var defenceAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight(defenceAllianceDoc)
+	defenceAllianceDoc.basicInfo.statusFinishTime = now + defenceAllianceProtectTime
+	defenceAllianceData.basicInfo = attackAllianceDoc.basicInfo
+	defenceAllianceDoc.allianceFight = null
+	defenceAllianceData.enemyAllianceDoc = {}
+	defenceAllianceData.allianceFight = {}
+	defenceAllianceData.__members = []
+	_.each(defenceAllianceDoc.members, function(member){
+		if(member.isProtected){
+			member.isProtected = false
+			defenceAllianceData.__members.push({
+				type:Consts.DataChangedType.Edit,
+				data:member
+			})
+		}
+	})
+	if(_.isEmpty(defenceAllianceData.__members)) delete defenceAllianceData.__members
 
 	eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime])
 	eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, defenceAllianceDoc.basicInfo.statusFinishTime])
