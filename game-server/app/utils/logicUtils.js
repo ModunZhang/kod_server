@@ -1274,7 +1274,8 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, rect){
 		location:{
 			x:rect.x,
 			y:rect.y
-		}
+		},
+		isProtected:false
 	}
 	allianceDoc.members.push(member)
 	return member

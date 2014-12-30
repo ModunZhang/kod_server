@@ -74,10 +74,8 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 			allianceDoc.basicInfo.status = Consts.AllianceStatus.Peace
 			allianceDoc.basicInfo.statusStartTime = Date.now()
 			allianceDoc.basicInfo.statusFinishTime = 0
-			allianceDoc.allianceFight = null
 			var allianceData = {}
 			allianceData.basicInfo = allianceDoc.basicInfo
-			allianceData.allianceFight = {}
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, true])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 			return Promise.resolve()
@@ -1629,6 +1627,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 
 				marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackDragon, targetAllianceDoc, village, [])
+				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime])
 				attackAllianceDoc.strikeMarchReturnEvents.push(marchReturnEvent)
 				attackAllianceData.__strikeMarchReturnEvents = [{
 					type:Consts.DataChangedType.Add,
@@ -2228,14 +2227,42 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 	var attackAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight(attackAllianceDoc)
 	attackAllianceDoc.basicInfo.statusFinishTime = now + attackAllianceProtectTime
 	attackAllianceData.basicInfo = attackAllianceDoc.basicInfo
+	attackAllianceDoc.allianceFight = null
+	attackAllianceData.allianceFight = {}
 	attackAllianceData.enemyAllianceDoc = {}
+	attackAllianceData.__members = []
+	_.each(attackAllianceDoc.members, function(member){
+		if(member.isProtected){
+			member.isProtected = false
+			attackAllianceData.__members.push({
+				type:Consts.DataChangedType.Edit,
+				data:member
+			})
+		}
+	})
+	if(_.isEmpty(attackAllianceData.__members)) delete attackAllianceData.__members
+
+
 
 	defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
 	defenceAllianceDoc.basicInfo.statusStartTime = now
 	var defenceAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight(defenceAllianceDoc)
 	defenceAllianceDoc.basicInfo.statusFinishTime = now + defenceAllianceProtectTime
 	defenceAllianceData.basicInfo = attackAllianceDoc.basicInfo
+	defenceAllianceDoc.allianceFight = null
 	defenceAllianceData.enemyAllianceDoc = {}
+	defenceAllianceData.allianceFight = {}
+	defenceAllianceData.__members = []
+	_.each(defenceAllianceDoc.members, function(member){
+		if(member.isProtected){
+			member.isProtected = false
+			defenceAllianceData.__members.push({
+				type:Consts.DataChangedType.Edit,
+				data:member
+			})
+		}
+	})
+	if(_.isEmpty(defenceAllianceData.__members)) delete defenceAllianceData.__members
 
 	var attackAllianceKill = attackAllianceDoc.allianceFight.attackAllianceCountData.kill
 	var defenceAllianceKill = attackAllianceDoc.allianceFight.defenceAllianceCountData.kill

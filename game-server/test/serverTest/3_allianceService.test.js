@@ -1606,8 +1606,7 @@ describe("AllianceService", function(){
 		//		})
 		//	}, 6 * 1000)
 		//})
-
-
+		
 		//it("readReports 正常阅读", function(done){
 		//	setTimeout(function(){
 		//		Api.loginPlayer(Config.deviceId4, function(doc){
