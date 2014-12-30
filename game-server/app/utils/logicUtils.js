@@ -1678,6 +1678,29 @@ Utils.addPlayerReport = function(playerDoc, playerData, report){
 }
 
 /**
+ * 添加联盟战历史记录战报
+ * @param allianceDoc
+ * @param allianceData
+ * @param report
+ */
+Utils.addAllianceFightReport = function(allianceDoc, allianceData, report){
+	var willRemovedReport = null
+	if(!_.isArray(allianceData.__allianceFightReports))allianceData.__allianceFightReports = []
+	if(allianceDoc.allianceFightReports.length >= Define.AllianceFightReportsMaxSize){
+		willRemovedReport = allianceDoc.allianceFightReports.shift()
+		allianceData.__allianceFightReports.push({
+			type:Consts.DataChangedType.Remove,
+			data:willRemovedReport
+		})
+	}
+	allianceDoc.allianceFightReports.push(report)
+	allianceData.__allianceFightReports.push({
+		type:Consts.DataChangedType.Add,
+		data:report
+	})
+}
+
+/**
  * 获取联盟
  * @param allianceDoc
  * @return {*}
