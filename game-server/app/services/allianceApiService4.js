@@ -512,9 +512,19 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 		defenceAllianceDoc = doc_1
 		if(!_.isObject(doc_2)) return Promise.reject(new Error("玩家不存在"))
 		defencePlayerDoc = doc_2
-		if(!_.isObject(LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerId))) return Promise.reject(new Error("玩家不在敌对联盟中"))
+		var memberInDefenceAlliance = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerId)
+		if(!_.isObject(memberInDefenceAlliance)) return Promise.reject(new Error("玩家不在敌对联盟中"))
+		if(memberInDefenceAlliance.isProtected) return Promise.reject(new Error("玩家处于保护状态,不能突袭"))
 		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, defenceAllianceDoc._id])
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, defencePlayerDoc._id])
+		var memberInAlliance = LogicUtils.getAllianceMemberById(attackAllianceDoc, attackPlayerDoc._id)
+		if(memberInAlliance.isProtected){
+			memberInAlliance.isProtected = false
+			attackAllianceData.__members = [{
+				type:Consts.DataChangedType.Edit,
+				data:memberInAlliance
+			}]
+		}
 		var event = MarchUtils.createStrikePlayerCityMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], defenceAllianceDoc, defencePlayerDoc)
 		attackAllianceDoc.strikeMarchEvents.push(event)
 		attackAllianceData.__strikeMarchEvents = [{
@@ -637,9 +647,19 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 		defenceAllianceDoc = doc_1
 		if(!_.isObject(doc_2)) return Promise.reject(new Error("玩家不存在"))
 		defencePlayerDoc = doc_2
-		if(!_.isObject(LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerId))) return Promise.reject(new Error("玩家不在敌对联盟中"))
+		var memberInDefenceAlliance = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerId)
+		if(!_.isObject(memberInDefenceAlliance)) return Promise.reject(new Error("玩家不在敌对联盟中"))
+		if(memberInDefenceAlliance.isProtected) return Promise.reject(new Error("玩家处于保护状态,不能进攻"))
 		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, defenceAllianceDoc._id])
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, defencePlayerDoc._id])
+		var memberInAlliance = LogicUtils.getAllianceMemberById(attackAllianceDoc, attackPlayerDoc._id)
+		if(memberInAlliance.isProtected){
+			memberInAlliance.isProtected = false
+			attackAllianceData.__members = [{
+				type:Consts.DataChangedType.Edit,
+				data:memberInAlliance
+			}]
+		}
 		var event = MarchUtils.createAttackPlayerCityMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defencePlayerDoc)
 		attackAllianceDoc.attackMarchEvents.push(event)
 		attackAllianceData.__attackMarchEvents = [{
@@ -774,6 +794,14 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 
 		if(attackAllianceDoc != defenceAllianceDoc){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, defenceAllianceDoc._id])
+		}
+		var memberInAlliance = LogicUtils.getAllianceMemberById(attackAllianceDoc, attackPlayerDoc._id)
+		if(memberInAlliance.isProtected){
+			memberInAlliance.isProtected = false
+			attackAllianceData.__members = [{
+				type:Consts.DataChangedType.Edit,
+				data:memberInAlliance
+			}]
 		}
 		var event = MarchUtils.createAttackVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defenceVillage)
 		attackAllianceDoc.attackMarchEvents.push(event)
@@ -1063,6 +1091,14 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 
 		if(attackAllianceDoc != defenceAllianceDoc){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, defenceAllianceDoc._id])
+		}
+		var memberInAlliance = LogicUtils.getAllianceMemberById(attackAllianceDoc, attackPlayerDoc._id)
+		if(memberInAlliance.isProtected){
+			memberInAlliance.isProtected = false
+			attackAllianceData.__members = [{
+				type:Consts.DataChangedType.Edit,
+				data:memberInAlliance
+			}]
 		}
 		var event = MarchUtils.createStrikeVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], defenceAllianceDoc, defenceVillage)
 		attackAllianceDoc.strikeMarchEvents.push(event)
