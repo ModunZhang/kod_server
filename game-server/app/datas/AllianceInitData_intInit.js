@@ -29,7 +29,7 @@ intInit["allianceFightPrepareTime"] = {
 }
 intInit["allianceFightTotalFightTime"] = {
 	type:"allianceFightTotalFightTime",
-	value:120
+	value:300
 }
 intInit["allianceHelpDefenceTroopsMaxCount"] = {
 	type:"allianceHelpDefenceTroopsMaxCount",
@@ -54,8 +54,4 @@ intInit["allianceRegionMapHeight"] = {
 intInit["citizenPerLeadership"] = {
 	type:"citizenPerLeadership",
 	value:100
-}
-intInit["collectedResourceCountPerExp"] = {
-	type:"collectedResourceCountPerExp",
-	value:50
 }
