@@ -972,10 +972,10 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					})
 
 					var originalRewards = villageEvent.playerData.rewards
-					var resourceType = village.type.slice(0, -7)
+					var resourceName = village.type.slice(0, -7)
 					var newRewards = [{
 						type:"resources",
-						name:resourceType,
+						name:resourceName,
 						count:villageEvent.villageData.collectTotal
 					}]
 					LogicUtils.mergeRewards(originalRewards, newRewards)
@@ -988,6 +988,9 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						data:marchReturnEvent
 					}]
 
+					var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
+					defencePlayerDoc.allianceInfo[resourceName + "Exp"] += collectExp
+					defencePlayerData.allianceInfo = defencePlayerDoc.allianceInfo
 					var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
 					LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, collectReport)
 					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
@@ -1710,10 +1713,10 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					var resourceCollected = Math.floor(villageEvent.villageData.collectTotal * ((Date.now() - villageEvent.startTime) / (villageEvent.finishTime - villageEvent.startTime)))
 					resourceCollected = resourceCollected > villageEvent.villageData.collectTotal ? villageEvent.villageData.collectTotal : resourceCollected
 					var originalRewards = villageEvent.playerData.rewards
-					var resourceType = village.type.slice(0, -7)
+					var resourceName = village.type.slice(0, -7)
 					var newRewards = [{
 						type:"resources",
-						name:resourceType,
+						name:resourceName,
 						count:resourceCollected
 					}]
 					LogicUtils.mergeRewards(originalRewards, newRewards)
@@ -1726,6 +1729,9 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 						data:marchReturnEvent
 					}]
 
+					var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
+					defencePlayerDoc.allianceInfo[resourceName + "Exp"] += collectExp
+					defencePlayerData.allianceInfo = defencePlayerDoc.allianceInfo
 					var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
 					LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, collectReport)
 
@@ -2112,10 +2118,10 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 
 		var village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.villageData.id)
 		var originalRewards = event.playerData.rewards
-		var resourceType = village.type.slice(0, -7)
+		var resourceName = village.type.slice(0, -7)
 		var newRewards = [{
 			type:"resources",
-			name:resourceType,
+			name:resourceName,
 			count:event.villageData.collectTotal
 		}]
 		LogicUtils.mergeRewards(originalRewards, newRewards)
@@ -2128,6 +2134,9 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 			data:marchReturnEvent
 		}]
 
+		var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
+		attackPlayerDoc.allianceInfo[resourceName + "Exp"] += collectExp
+		attackPlayerData.allianceInfo = attackPlayerDoc.allianceInfo
 		var collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, newRewards)
 		LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, collectReport)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])

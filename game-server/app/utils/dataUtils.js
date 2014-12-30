@@ -2437,3 +2437,16 @@ Utils.getAllianceVillageResourceMax = function(villageType, villageLevel){
 Utils.getDragonExpAdd = function(kill){
 	return Math.floor(kill * AllianceInit.floatInit.dragonExpByKilledCitizen.value)
 }
+
+/**
+ * 获取采集的资源增值的经验
+ * @param name
+ * @param count
+ * @returns {number}
+ */
+Utils.getCollectResourceExpAdd = function(name, count){
+	name = name.charAt(0).toUpperCase() + name.slice(1)
+	var resourceCountPerExp = AllianceInit.intInit["collected" + name +"CountPerExp"].value
+	var exp = Math.floor(count / resourceCountPerExp)
+	return exp
+}

@@ -55,7 +55,23 @@ intInit["citizenPerLeadership"] = {
 	type:"citizenPerLeadership",
 	value:100
 }
-intInit["collectedResourceCountPerExp"] = {
-	type:"collectedResourceCountPerExp",
+intInit["collectedWoodCountPerExp"] = {
+	type:"collectedWoodCountPerExp",
+	value:50
+}
+intInit["collectedStoneCountPerExp"] = {
+	type:"collectedStoneCountPerExp",
+	value:50
+}
+intInit["collectedIronCountPerExp"] = {
+	type:"collectedIronCountPerExp",
+	value:50
+}
+intInit["collectedFoodCountPerExp"] = {
+	type:"collectedFoodCountPerExp",
+	value:50
+}
+intInit["collectedCoinCountPerExp"] = {
+	type:"collectedCoinCountPerExp",
 	value:50
 }
