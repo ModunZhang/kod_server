@@ -2247,15 +2247,63 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 	var playerDocs = []
 	var funcs = []
 
-
-	_.each(attackAllianceDoc.villageEvents, function(villageEvent){
-		if(!_.isEqual(villageEvent.villageData.alliance.id, attackAllianceDoc._id)){
-			playerIds.push(villageEvent.playerData.id)
+	var pushPlayerIds = function(allianceDoc, playerIds){
+		_.each(allianceDoc.villageEvents, function(villageEvent){
+			if(!_.isEqual(villageEvent.villageData.alliance.id, allianceDoc._id)){
+				playerIds.push(villageEvent.playerData.id)
+			}
+		})
+		_.each(allianceDoc.attackMarchEvents, function(marchEvent){
+			if(_.isEqual(Consts.AllianceMarchType.City, marchEvent.marchType)){
+				playerIds.push(marchEvent.attackPlayerData.id)
+			}else if(_.isEqual(Consts.AllianceMarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, allianceDoc._id)){
+				playerIds.push(marchEvent.attackPlayerData.id)
+			}
+		})
+		_.each(allianceDoc.attackMarchReturnEvents, function(marchEvent){
+			if(_.isEqual(Consts.AllianceMarchType.City, marchEvent.marchType)){
+				playerIds.push(marchEvent.attackPlayerData.id)
+			}else if(_.isEqual(Consts.AllianceMarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, allianceDoc._id)){
+				playerIds.push(marchEvent.attackPlayerData.id)
+			}
+		})
+		_.each(allianceDoc.strikeMarchEvents, function(marchEvent){
+			if(_.isEqual(Consts.AllianceMarchType.City, marchEvent.marchType)){
+				playerIds.push(marchEvent.attackPlayerData.id)
+			}else if(_.isEqual(Consts.AllianceMarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, allianceDoc._id)){
+				playerIds.push(marchEvent.attackPlayerData.id)
+			}
+		})
+		_.each(allianceDoc.strikeMarchReturnEvents, function(marchEvent){
+			if(_.isEqual(Consts.AllianceMarchType.City, marchEvent.marchType)){
+				playerIds.push(marchEvent.attackPlayerData.id)
+			}else if(_.isEqual(Consts.AllianceMarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, allianceDoc._id)){
+				playerIds.push(marchEvent.attackPlayerData.id)
+			}
+		})
+	}
+	pushPlayerIds(attackAllianceDoc, playerIds)
+	pushPlayerIds(defenceAllianceDoc, playerIds)
+	playerIds = _.uniq(playerIds)
+	_.each(playerIds, function(playerId){
+		funcs.push(self.playerDao.findByIdAsync(playerId, true))
+	})
+	Promise.all(funcs).then(function(docs){
+		for(var i = 0; i < docs.length; i ++){
+			var doc = docs[i]
+			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+			playerDocs.push(doc)
 		}
+		var event = null
+		_.each(playerDocs, function(playerDoc){
+			event = _.find(attackAllianceDoc)
+		})
+
+		return Promise.resolve()
+	}).then(function(){
+
 	})
-	_.each(attackAllianceDoc.attackMarchEvents, function(marchEvent){
-		
-	})
+
 
 	var attackAllianceKill = attackAllianceDoc.allianceFight.attackAllianceCountData.kill
 	var defenceAllianceKill = attackAllianceDoc.allianceFight.defenceAllianceCountData.kill
