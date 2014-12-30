@@ -2243,6 +2243,19 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 	var pushFuncs = []
 	var updateFuncs = []
 	var now = Date.now()
+	var playerIds = []
+	var playerDocs = []
+	var funcs = []
+
+
+	_.each(attackAllianceDoc.villageEvents, function(villageEvent){
+		if(!_.isEqual(villageEvent.villageData.alliance.id, attackAllianceDoc._id)){
+			playerIds.push(villageEvent.playerData.id)
+		}
+	})
+	_.each(attackAllianceDoc.attackMarchEvents, function(marchEvent){
+		
+	})
 
 	var attackAllianceKill = attackAllianceDoc.allianceFight.attackAllianceCountData.kill
 	var defenceAllianceKill = attackAllianceDoc.allianceFight.defenceAllianceCountData.kill
