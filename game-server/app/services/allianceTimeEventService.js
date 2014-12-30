@@ -452,6 +452,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var attackCityReport = null
 		var helpedByTroop = null
 		var theDefencePlayerDoc = null
+		var memberInAlliance
 
 		funcs = []
 		funcs.push(self.playerDao.findByIdAsync(event.attackPlayerData.id, true))
@@ -682,6 +683,12 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						if(!_.isObject(defenceWallFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceWallFightData.fightResult)){
 							attackAllianceDoc.allianceFight.attackAllianceCountData.routCount += 1
 							defenceAllianceDoc.allianceFight.attackAllianceCountData.routCount += 1
+							memberInAlliance = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
+							memberInAlliance.isProtected = true
+							defenceAllianceData.__members = [{
+								type:Consts.DataChangedType.Edit,
+								data:memberInAlliance
+							}]
 						}
 					}
 				}
@@ -729,6 +736,12 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						if(!_.isObject(defenceWallFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceWallFightData.fightResult)){
 							attackAllianceDoc.allianceFight.defenceAllianceCountData.routCount += 1
 							defenceAllianceDoc.allianceFight.defenceAllianceCountData.routCount += 1
+							memberInAlliance = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
+							memberInAlliance.isProtected = true
+							defenceAllianceData.__members = [{
+								type:Consts.DataChangedType.Edit,
+								data:memberInAlliance
+							}]
 						}
 					}
 				}
