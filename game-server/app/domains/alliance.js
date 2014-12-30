@@ -336,10 +336,9 @@ var allianceSchema = new Schema({
 				kill:{type:Number, required:true},
 				routCount:{type:Number, required:true},
 				strikeCount:{type:Number, required:true},
-				attackSuccessCount:{type:Number, required:true},
-				attackFailCount:{type:Number, required:true},
-				defenceSuccessCount:{type:Number, required:true},
-				defenceFailCount:{type:Number, required:true}
+				strikeSuccessCount:{type:Number, required:true},
+				attackCount:{type:Number, required:true},
+				attackSuccessCount:{type:Number, required:true}
 			},
 			defencePlayerKills:[{
 				id:{type:Number, required:true},
@@ -350,10 +349,9 @@ var allianceSchema = new Schema({
 				kill:{type:Number, required:true},
 				routCount:{type:Number, required:true},
 				strikeCount:{type:Number, required:true},
-				attackSuccessCount:{type:Number, required:true},
-				attackFailCount:{type:Number, required:true},
-				defenceSuccessCount:{type:Number, required:true},
-				defenceFailCount:{type:Number, required:true}
+				strikeSuccessCount:{type:Number, required:true},
+				attackCount:{type:Number, required:true},
+				attackSuccessCount:{type:Number, required:true}
 			}
 		},
 		required:false
@@ -372,14 +370,22 @@ var allianceSchema = new Schema({
 			tag:{type:String, required:true},
 			flag:{type:String, required:true},
 			kill:{type:Number, required:true},
-			routCount:{type:Number, required:true}
+			routCount:{type:Number, required:true},
+			strikeCount:{type:Number, required:true},
+			strikeSuccessCount:{type:Number, required:true},
+			attackCount:{type:Number, required:true},
+			attackSuccessCount:{type:Number, required:true}
 		},
 		defenceAlliance:{
 			name:{type:String, required:true},
 			tag:{type:String, required:true},
 			flag:{type:String, required:true},
 			kill:{type:Number, required:true},
-			routCount:{type:Number, required:true}
+			routCount:{type:Number, required:true},
+			strikeCount:{type:Number, required:true},
+			strikeSuccessCount:{type:Number, required:true},
+			attackCount:{type:Number, required:true},
+			attackSuccessCount:{type:Number, required:true}
 		}
 	}],
 	strikeMarchEvents:[{

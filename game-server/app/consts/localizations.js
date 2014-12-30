@@ -43,6 +43,14 @@ module.exports = {
 		HelpDefenceStrikeContent:{
 			cn:"%s<%s>帮您抵御了一次突袭",
 			en:"%s<%s> help you defence a strike successfully"
+		},
+		HelpDefenceAttackTitle:{
+			cn:"%s<%s>帮您抵御了一次进攻",
+			en:"%s<%s> help you defence a attack successfully"
+		},
+		HelpDefenceAttackContent:{
+			cn:"%s<%s>帮您抵御了一次进攻",
+			en:"%s<%s> help you defence a attack successfully"
 		}
 	}
 }

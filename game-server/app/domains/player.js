@@ -834,8 +834,6 @@ var playerSchema = new Schema({
 		},
 		attackCity:{
 			type:{
-				attackStar:{type:Number, required:true},
-				defenceStar:{type:Number, required:true},
 				isRenamed:{type:Boolean, required:true},
 				attackTarget:{
 					id:{type:String, required:true},
