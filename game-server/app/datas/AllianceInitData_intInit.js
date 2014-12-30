@@ -21,7 +21,7 @@ intInit["editAllianceTerrianHonour"] = {
 }
 intInit["activeShrineStageEventTime"] = {
 	type:"activeShrineStageEventTime",
-	value:120
+	value:7
 }
 intInit["allianceFightPrepareTime"] = {
 	type:"allianceFightPrepareTime",
@@ -55,8 +55,6 @@ intInit["citizenPerLeadership"] = {
 	type:"citizenPerLeadership",
 	value:100
 }
-<<<<<<< HEAD
-=======
 intInit["collectedWoodCountPerExp"] = {
 	type:"collectedWoodCountPerExp",
 	value:50
@@ -77,4 +75,3 @@ intInit["collectedCoinCountPerExp"] = {
 	type:"collectedCoinCountPerExp",
 	value:50
 }
->>>>>>> develop

@@ -28,7 +28,7 @@ toolShop[1] = {
 	productAmWood:2000,
 	productAmStone:2000,
 	productAmIron:2000,
-	productAmtime:10,
+	productAmtime:30,
 	power:10
 }
 toolShop[2] = {
@@ -42,7 +42,7 @@ toolShop[2] = {
 	productAmWood:4000,
 	productAmStone:4000,
 	productAmIron:4000,
-	productAmtime:20,
+	productAmtime:40,
 	power:20
 }
 toolShop[3] = {
@@ -56,7 +56,7 @@ toolShop[3] = {
 	productAmWood:6000,
 	productAmStone:6000,
 	productAmIron:6000,
-	productAmtime:30,
+	productAmtime:50,
 	power:60
 }
 toolShop[4] = {
@@ -70,7 +70,7 @@ toolShop[4] = {
 	productAmWood:8000,
 	productAmStone:8000,
 	productAmIron:8000,
-	productAmtime:40,
+	productAmtime:60,
 	power:120
 }
 toolShop[5] = {
@@ -84,7 +84,7 @@ toolShop[5] = {
 	productAmWood:10000,
 	productAmStone:10000,
 	productAmIron:10000,
-	productAmtime:50,
+	productAmtime:70,
 	power:360
 }
 toolShop[6] = {
@@ -98,7 +98,7 @@ toolShop[6] = {
 	productAmWood:12000,
 	productAmStone:12000,
 	productAmIron:12000,
-	productAmtime:60,
+	productAmtime:80,
 	power:600
 }
 toolShop[7] = {
@@ -112,7 +112,7 @@ toolShop[7] = {
 	productAmWood:14000,
 	productAmStone:14000,
 	productAmIron:14000,
-	productAmtime:70,
+	productAmtime:90,
 	power:840
 }
 toolShop[8] = {
@@ -126,7 +126,7 @@ toolShop[8] = {
 	productAmWood:16000,
 	productAmStone:16000,
 	productAmIron:16000,
-	productAmtime:80,
+	productAmtime:100,
 	power:1080
 }
 toolShop[9] = {
@@ -140,7 +140,7 @@ toolShop[9] = {
 	productAmWood:18000,
 	productAmStone:18000,
 	productAmIron:18000,
-	productAmtime:90,
+	productAmtime:110,
 	power:1320
 }
 toolShop[10] = {
@@ -154,7 +154,7 @@ toolShop[10] = {
 	productAmWood:20000,
 	productAmStone:20000,
 	productAmIron:20000,
-	productAmtime:100,
+	productAmtime:120,
 	power:1560
 }
 toolShop[11] = {
@@ -168,7 +168,7 @@ toolShop[11] = {
 	productAmWood:22000,
 	productAmStone:22000,
 	productAmIron:22000,
-	productAmtime:110,
+	productAmtime:130,
 	power:1800
 }
 toolShop[12] = {
@@ -182,7 +182,7 @@ toolShop[12] = {
 	productAmWood:24000,
 	productAmStone:24000,
 	productAmIron:24000,
-	productAmtime:120,
+	productAmtime:140,
 	power:2040
 }
 toolShop[13] = {
@@ -196,7 +196,7 @@ toolShop[13] = {
 	productAmWood:26000,
 	productAmStone:26000,
 	productAmIron:26000,
-	productAmtime:130,
+	productAmtime:150,
 	power:2280
 }
 toolShop[14] = {
@@ -210,7 +210,7 @@ toolShop[14] = {
 	productAmWood:28000,
 	productAmStone:28000,
 	productAmIron:28000,
-	productAmtime:140,
+	productAmtime:160,
 	power:2520
 }
 toolShop[15] = {
@@ -224,7 +224,7 @@ toolShop[15] = {
 	productAmWood:30000,
 	productAmStone:30000,
 	productAmIron:30000,
-	productAmtime:150,
+	productAmtime:170,
 	power:2760
 }
 toolShop[16] = {
@@ -238,7 +238,7 @@ toolShop[16] = {
 	productAmWood:32000,
 	productAmStone:32000,
 	productAmIron:32000,
-	productAmtime:160,
+	productAmtime:180,
 	power:3000
 }
 toolShop[17] = {
@@ -252,7 +252,7 @@ toolShop[17] = {
 	productAmWood:34000,
 	productAmStone:34000,
 	productAmIron:34000,
-	productAmtime:170,
+	productAmtime:190,
 	power:3240
 }
 toolShop[18] = {
@@ -266,7 +266,7 @@ toolShop[18] = {
 	productAmWood:36000,
 	productAmStone:36000,
 	productAmIron:36000,
-	productAmtime:180,
+	productAmtime:200,
 	power:3480
 }
 toolShop[19] = {
@@ -280,7 +280,7 @@ toolShop[19] = {
 	productAmWood:38000,
 	productAmStone:38000,
 	productAmIron:38000,
-	productAmtime:190,
+	productAmtime:210,
 	power:3720
 }
 toolShop[20] = {
@@ -294,6 +294,6 @@ toolShop[20] = {
 	productAmWood:40000,
 	productAmStone:40000,
 	productAmIron:40000,
-	productAmtime:200,
+	productAmtime:220,
 	power:3960
 }
