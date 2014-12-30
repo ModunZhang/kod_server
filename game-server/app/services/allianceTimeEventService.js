@@ -2249,7 +2249,11 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 			tag:attackAllianceDoc.basicInfo.tag,
 			flag:attackAllianceDoc.basicInfo.flag,
 			kill:attackAllianceKill,
-			routCount:attackAllianceDoc.allianceFight.attackAllianceCountData.routCount
+			routCount:attackAllianceDoc.allianceFight.attackAllianceCountData.routCount,
+			strikeCount:attackAllianceDoc.allianceFight.attackAllianceCountData.strikeCount,
+			strikeSuccessCount:attackAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount,
+			attackCount:attackAllianceDoc.allianceFight.attackAllianceCountData.attackCount,
+			attackSuccessCount:attackAllianceDoc.allianceFight.attackAllianceCountData.attackSuccessCount
 		},
 		defenceAlliance:{
 			id:defenceAllianceDoc._id,
@@ -2257,7 +2261,11 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 			tag:defenceAllianceDoc.basicInfo.tag,
 			flag:defenceAllianceDoc.basicInfo.flag,
 			kill:defenceAllianceKill,
-			routCount:attackAllianceDoc.allianceFight.defenceAllianceCountData.routCount
+			routCount:attackAllianceDoc.allianceFight.defenceAllianceCountData.routCount,
+			strikeCount:attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount,
+			strikeSuccessCount:attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount,
+			attackCount:attackAllianceDoc.allianceFight.defenceAllianceCountData.attackCount,
+			attackSuccessCount:attackAllianceDoc.allianceFight.defenceAllianceCountData.attackSuccessCount
 		}
 	}
 
