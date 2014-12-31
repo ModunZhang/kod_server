@@ -761,6 +761,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			name:defencePlayerDoc.basicInfo.name,
 			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
+			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defenceAllianceDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
