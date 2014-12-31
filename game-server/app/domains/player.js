@@ -1187,7 +1187,7 @@ var playerSchema = new Schema({
 						soldierStar:{type:Number, required:true},
 						soldierCount:{type:Number, required:true},
 						soldierDamagedCount:{type:Number, required:true},
-						soldierTreatedCount:{type:Number, required:true},
+						soldierWoundedCount:{type:Number, required:true},
 						morale:{type:Number, required:true},
 						moraleDecreased:{type:Number, required:true},
 						isWin:{type:Boolean, required:true}
@@ -1198,7 +1198,7 @@ var playerSchema = new Schema({
 						soldierStar:{type:Number, required:true},
 						soldierCount:{type:Number, required:true},
 						soldierDamagedCount:{type:Number, required:true},
-						soldierTreatedCount:{type:Number, required:true},
+						soldierWoundedCount:{type:Number, required:true},
 						morale:{type:Number, required:true},
 						moraleDecreased:{type:Number, required:true},
 						isWin:{type:Boolean, required:true}
@@ -1225,7 +1225,7 @@ var playerSchema = new Schema({
 						soldierStar:{type:Number, required:true},
 						soldierCount:{type:Number, required:true},
 						soldierDamagedCount:{type:Number, required:true},
-						soldierTreatedCount:{type:Number, required:true},
+						soldierWoundedCount:{type:Number, required:true},
 						morale:{type:Number, required:true},
 						moraleDecreased:{type:Number, required:true},
 						isWin:{type:Boolean, required:true}
@@ -1236,7 +1236,7 @@ var playerSchema = new Schema({
 						soldierStar:{type:Number, required:true},
 						soldierCount:{type:Number, required:true},
 						soldierDamagedCount:{type:Number, required:true},
-						soldierTreatedCount:{type:Number, required:true},
+						soldierWoundedCount:{type:Number, required:true},
 						morale:{type:Number, required:true},
 						moraleDecreased:{type:Number, required:true},
 						isWin:{type:Boolean, required:true}
