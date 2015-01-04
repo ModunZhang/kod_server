@@ -10,7 +10,12 @@ var _ = require("underscore")
 var Utils = require("../../../utils/utils")
 var DataUtils = require("../../../utils/dataUtils")
 var LogicUtils = require("../../../utils/logicUtils")
+var MapUtils = require("../../../utils/mapUtils")
 var Consts = require("../../../consts/consts")
+
+var GameDatas = require("../../../datas/GameDatas")
+var AllianceInit = GameDatas.AllianceInitData
+var AllianceBuildingConfig = GameDatas.AllianceBuilding
 
 var Player = require("../../../domains/player")
 
@@ -1200,6 +1205,200 @@ pro.alliancefight = function(uid, targetAllianceTag, callback){
 		}
 		if(_.isObject(defenceAllianceDoc)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(defenceAllianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 重置联盟状态
+ * @param uid
+ * @param callback
+ */
+pro.resetAllianceStatus = function(uid, callback){
+	var ResetDonateStatus = function(allianceDoc, allianceData){
+		if(!_.isArray(allianceData.__members)) allianceData.__members = []
+		_.each(allianceDoc.members, function(member){
+			var donateStatus = {
+				wood:1,
+				stone:1,
+				iron:1,
+				food:1,
+				coin:1,
+				gem:1
+			}
+			member.donateStatus = donateStatus
+			allianceData.__members.push({
+				type:Consts.DataChangedType.Edit,
+				data:member
+			})
+		})
+	}
+	var ResetMapDecorates = function(allianceDoc, allianceData){
+		var mapObjects = allianceDoc.mapObjects
+		var map = MapUtils.buildMap(mapObjects)
+		if(!_.isArray(allianceData.__mapObjects)) allianceData.__mapObjects = []
+		_.each(AllianceInit.decorateCount, function(countConfig, key){
+			var countHas = LogicUtils.getAllianceDecorateObjectCountByType(allianceDoc, key)
+			var config = AllianceInit.buildingType[key]
+			var width = config.width
+			var height = config.height
+			var count = countConfig.count - countHas
+			for(var i = 0; i < count; i++){
+				var rect = MapUtils.getRect(map, width, height)
+				if(_.isObject(rect)){
+					var mapObject = MapUtils.addMapObject(map, mapObjects, {
+						x:rect.x,
+						y:rect.y,
+						width:rect.width,
+						height:rect.height
+					}, key)
+					allianceData.__mapObjects.push({
+						type:Consts.DataChangedType.Add,
+						data:mapObject
+					})
+				}
+			}
+		})
+
+		if(_.isEmpty(allianceData.__mapObjects)) delete allianceData.__mapObjects
+	}
+	var ResetVillages = function(allianceDoc, allianceData, enemyAllianceDoc){
+		var getVillageCountByType = function(villageType){
+			var count = 0
+			_.each(allianceDoc.villages, function(village){
+				if(_.isEqual(village.type, villageType)) count += 1
+			})
+			return count
+		}
+
+		if(!_.isArray(allianceData.__villages)) allianceData.__villages = []
+		if(!_.isArray(allianceData.__mapObjects)) allianceData.__mapObjects = []
+
+		var villageTobeRemoved = []
+		_.each(allianceDoc.villages, function(village){
+			var villageEvent = _.find(allianceDoc.villageEvents, function(villageEvent){
+				return _.isEqual(villageEvent.villageData.id, village.id)
+			})
+			if(!_.isObject(villageEvent) && _.isObject(enemyAllianceDoc)){
+				villageEvent = _.find(enemyAllianceDoc.villageEvents, function(villageEvent){
+					return _.isEqual(villageEvent.villageData.id, village.id)
+				})
+			}
+			if(!_.isObject(villageEvent)) villageTobeRemoved.push(village)
+		})
+		_.each(villageTobeRemoved, function(village){
+			LogicUtils.removeItemInArray(allianceDoc.villages, village)
+			var mapObject = LogicUtils.removeAllianceMapObjectByLocation(allianceDoc, village.location)
+			allianceData.__villages.push({
+				type:Consts.DataChangedType.Remove,
+				data:village
+			})
+			allianceData.__mapObjects.push({
+				type:Consts.DataChangedType.Remove,
+				data:mapObject
+			})
+		})
+
+		var orderHallLevel = allianceDoc.buildings.orderHall.level
+		var orderHallConfig = AllianceBuildingConfig.orderHall[orderHallLevel]
+		var villageTypeConfigs = DataUtils.getAllianceVillageTypeConfigs()
+		var map = MapUtils.buildMap(allianceDoc.mapObjects)
+		var mapObjects = allianceDoc.mapObjects
+		_.each(villageTypeConfigs, function(config){
+			var villageWidth = config.width
+			var villageHeight = config.height
+			var villageTotalCount = orderHallConfig[config.type + "Count"]
+			var villageCurrentCount = getVillageCountByType(config.type)
+			var villageNeedTobeCreated = villageTotalCount - villageCurrentCount
+			for(var i = 0; i < villageNeedTobeCreated; i++){
+				var rect = MapUtils.getRect(map, villageWidth, villageHeight)
+				var mapObject = MapUtils.addMapObject(map, mapObjects, {
+					x:rect.x,
+					y:rect.y,
+					width:rect.width,
+					height:rect.height
+				}, config.type)
+				allianceData.__mapObjects.push({
+					type:Consts.DataChangedType.Add,
+					data:mapObject
+				})
+				var villageObject = DataUtils.addAllianceVillageObject(allianceDoc, mapObject)
+				allianceData.__villages.push({
+					type:Consts.DataChangedType.Add,
+					data:villageObject
+				})
+			}
+		})
+
+		if(!_.isArray(allianceData.__villages)) delete allianceData.__villages
+		if(!_.isArray(allianceData.__mapObjects)) delete allianceData.__mapObjects
+	}
+	var ResolveOneAlliance = function(allianceId){
+		var self = this
+		var allianceDoc = null
+		var enemyAllianceDoc = null
+		var allianceData = {}
+		var enemyAllianceData = {}
+		var updateFuncs = []
+		var pushFuncs = []
+		return this.allianceDao.findByIdAsync(allianceId, true).then(function(doc){
+			if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+			allianceDoc = doc
+			if(_.isObject(allianceDoc.allianceFight)){
+				var allianceFight = allianceDoc.allianceFight
+				var enemyAllianceId = _.isEqual(allianceDoc._id, allianceFight.attackAllianceId) ? allianceFight.defenceAllianceId : allianceFight.attackAllianceId
+				return self.allianceDao.findByIdAsync(enemyAllianceId, true)
+			}
+			return Promise.resolve()
+		}).then(function(doc){
+			if(_.isObject(allianceDoc.allianceFight)){
+				if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+				enemyAllianceDoc = doc
+			}
+			ResetDonateStatus(allianceDoc, allianceData)
+			ResetMapDecorates(allianceDoc, allianceData)
+			ResetVillages(allianceDoc, allianceData, enemyAllianceDoc)
+			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+			if(_.isObject(enemyAllianceDoc)){
+				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, enemyAllianceDoc._id])
+				LogicUtils.putAllianceDataToEnemyAllianceData(allianceData, enemyAllianceData)
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc._id, enemyAllianceData])
+			}
+
+			return Promise.resolve()
+		}).then(function(){
+			return LogicUtils.excuteAll(updateFuncs)
+		}).then(function(){
+			return LogicUtils.excuteAll(pushFuncs)
+		})
+	}
+	var self = this
+	var playerDoc = null
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		return ResolveOneAlliance.call(self, playerDoc.alliance.id)
+	}).then(function(){
+		self.playerDao.removeLockByIdAsync(playerDoc._id)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){

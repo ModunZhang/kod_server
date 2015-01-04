@@ -424,6 +424,16 @@ var ChatHandler = function(app){
 					callback(e)
 				})
 			}
+		},
+		{
+			command:"resetalliancestatus",
+			desc:"重置联盟状态",
+			func:function(session, uid, text, callback){
+				var self = this
+				self.app.rpc.logic.commandRemote.resetAllianceStatus(session, uid, function(e){
+					callback(e)
+				})
+			}
 		}
 	]
 }
