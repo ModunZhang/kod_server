@@ -43,7 +43,7 @@ var getDistance = function(width, height){
 var getMarchTime = function(playerDoc, width, height){
 	var distance = getDistance(width, height)
 	var time = AllianceInit.intInit.allianceRegionMapBaseTimePerGrid.value * distance * 1000
-	return 5 * 1000
+	return 30 * 1000
 }
 
 /**
@@ -60,7 +60,7 @@ var getSortedSoldiers = function(playerDoc, soldiers){
 			config = UnitConfig.normal[soldierFullKey]
 			return - config.power * soldier.count
 		}else{
-			config = UnitConfig.special[soldierName]
+			config = UnitConfig.special[soldier.name]
 			return - config.power * soldier.count
 		}
 	})
