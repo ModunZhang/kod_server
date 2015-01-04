@@ -60,7 +60,7 @@ var getSortedSoldiers = function(playerDoc, soldiers){
 			config = UnitConfig.normal[soldierFullKey]
 			return - config.power * soldier.count
 		}else{
-			config = UnitConfig.special[soldierName]
+			config = UnitConfig.special[soldier.name]
 			return - config.power * soldier.count
 		}
 	})
