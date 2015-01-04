@@ -31,6 +31,7 @@ var pro = EventRemote.prototype
  * @param callback
  */
 pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
+	logicLogger.info("addTimeEvent key:%s, eventType:%s, eventId:%s", key, eventType, eventId)
 	var id = setTimeout(ExcuteTimeEvent.bind(this), timeInterval, key, eventId)
 	var callbacks = this.callbacks[key]
 	if(_.isEmpty(callbacks)){
@@ -52,6 +53,7 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  * @param callback
  */
 pro.removeTimeEvent = function(key, eventId, callback){
+	logicLogger.info("removeTimeEvent key:%s, eventId:%s", key, eventId)
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	if(_.isObject(callbackObj)){
@@ -72,6 +74,7 @@ pro.removeTimeEvent = function(key, eventId, callback){
  * @param callback
  */
 pro.updateTimeEvent = function(key, eventId, timeInterval, callback){
+	logicLogger.info("updateTimeEvent key:%s, eventId:%s", key, eventId)
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	if(_.isObject(callbackObj)){
@@ -91,6 +94,7 @@ pro.updateTimeEvent = function(key, eventId, timeInterval, callback){
  * @param callback
  */
 pro.clearTimeEventsByKey = function(key, callback){
+	logicLogger.info("clearTimeEventsByKey key:%s", key)
 	var callbacks = this.callbacks[key]
 	_.each(callbacks, function(callbackObj){
 		clearTimeout(callbackObj.id)
@@ -115,7 +119,7 @@ var ExcuteTimeEvent = function(key, eventId){
 	var logicServers = this.app.getServersByType('logic')
 	var logicServerId = Dispatcher.dispatch(logicServers).id
 	var eventType = callbackObj.eventType
-	logicLogger.info("trigger timeEvent key:%s, eventType:%s, eventId:%s", key, eventType, eventId)
+	logicLogger.info("ExcuteTimeEvent key:%s, eventType:%s, eventId:%s", key, eventType, eventId)
 	this.app.rpc.logic.logicRemote.onTimeEvent.toServer(logicServerId, key, eventType, eventId, function(e){
 		if(_.isObject(e)){
 			errorLogger.error("handle eventRemote:ExcuteTimeEvent Error -----------------------------")
