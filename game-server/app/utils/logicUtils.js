@@ -1818,3 +1818,15 @@ Utils.findAllianceMapObjectByLocation = function(allianceDoc, location){
 	})
 	return object
 }
+
+/**
+ * 根据坐标移除联盟地图对象
+ * @param allianceDoc
+ * @param location
+ * @returns {*}
+ */
+Utils.removeAllianceMapObjectByLocation = function(allianceDoc, location){
+	var mapObject = this.findAllianceMapObjectByLocation(allianceDoc, location)
+	if(_.isObject(mapObject)) this.removeItemInArray(allianceDoc.mapObjects, mapObject)
+	return mapObject
+}

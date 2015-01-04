@@ -33,31 +33,31 @@ Utils.create = function(){
 	var buildingWidth = buildingConfig.width
 	var buildingHeight = buildingConfig.height
 	var locationConfig = Consts.AllianceBuildingLocation
-	this.markMap(map, mapObjects, {
+	this.addMapObject(map, mapObjects, {
 		x:locationConfig.Palace.x,
 		y:locationConfig.Palace.y,
 		width:buildingWidth,
 		height:buildingHeight
 	}, "building")
-	this.markMap(map, mapObjects, {
+	this.addMapObject(map, mapObjects, {
 		x:locationConfig.MoonGate.x,
 		y:locationConfig.MoonGate.y,
 		width:buildingWidth,
 		height:buildingHeight
 	}, "building")
-	this.markMap(map, mapObjects, {
+	this.addMapObject(map, mapObjects, {
 		x:locationConfig.OrderHall.x,
 		y:locationConfig.OrderHall.y,
 		width:buildingWidth,
 		height:buildingHeight
 	}, "building")
-	this.markMap(map, mapObjects, {
+	this.addMapObject(map, mapObjects, {
 		x:locationConfig.Shrine.x,
 		y:locationConfig.Shrine.y,
 		width:buildingWidth,
 		height:buildingHeight
 	}, "building")
-	this.markMap(map, mapObjects, {
+	this.addMapObject(map, mapObjects, {
 		x:locationConfig.Shop.x,
 		y:locationConfig.Shop.y,
 		width:buildingWidth,
@@ -73,7 +73,7 @@ Utils.create = function(){
 		for(var i = 0; i < countConfig.count; i++){
 			var rect = self.getRect(map, width, height)
 			if(_.isObject(rect)){
-				self.markMap(map, mapObjects, {x:rect.x, y:rect.y, width:rect.width, height:rect.height}, key)
+				self.addMapObject(map, mapObjects, {x:rect.x, y:rect.y, width:rect.width, height:rect.height}, key)
 			}
 		}
 	})
@@ -85,7 +85,7 @@ Utils.create = function(){
 		var villageCount = orderHallConfig[config.type + "Count"]
 		for(var i = 0; i < villageCount; i++){
 			var rect = self.getRect(map, villageWidth, villageHeight)
-			self.markMap(map, mapObjects, {x:rect.x, y:rect.y, width:rect.width, height:rect.height}, config.type)
+			self.addMapObject(map, mapObjects, {x:rect.x, y:rect.y, width:rect.width, height:rect.height}, config.type)
 		}
 	})
 	return mapObjects
@@ -149,13 +149,13 @@ var unMarkMapWithRect = function(map, rect) {
 }
 
 /**
- * 标记已使用的地图
+ * 创建地图对象
  * @param map
  * @param mapObjects
  * @param rect
  * @param buildingType
  */
-Utils.markMap = function(map, mapObjects, rect, buildingType){
+Utils.addMapObject = function(map, mapObjects, rect, buildingType){
 	markMapWithRect(map, rect)
 	var object = {
 		id:ShortId.generate(),
@@ -166,6 +166,7 @@ Utils.markMap = function(map, mapObjects, rect, buildingType){
 		}
 	}
 	mapObjects.push(object)
+	return object
 }
 
 /**

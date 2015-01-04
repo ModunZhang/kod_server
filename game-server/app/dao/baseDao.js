@@ -470,3 +470,22 @@ pro.updateAll = function(docs, callback){
 		callback(e)
 	})
 }
+
+/**
+ * 查询所有Key
+ * @param callback
+ */
+pro.findAllKeys = function(callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback must be a function")
+	}
+	var theKeys = []
+	this.scripto.runAsync("findAllKeys", [this.modelName]).then(function(keys){
+		_.each(keys, function(key){
+			theKeys.push(key.split(":")[1])
+		})
+		callback(null, theKeys)
+	}).catch(function(e){
+		callback(e)
+	})
+}

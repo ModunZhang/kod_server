@@ -962,8 +962,7 @@ pro.retreatFromVillage = function(playerId, allianceId, eventId, callback){
 				type:Consts.DataChangedType.Remove,
 				data:village
 			}]
-			var villageInMap = LogicUtils.findAllianceMapObjectByLocation(defenceAllianceDoc, village.location)
-			LogicUtils.removeItemInArray(defenceAllianceDoc.mapObjects, villageInMap)
+			var villageInMap = LogicUtils.removeAllianceMapObjectByLocation(defenceAllianceDoc, village.location)
 			defenceAllianceData.__mapObjects = [{
 				type:Consts.DataChangedType.Remove,
 				data:villageInMap

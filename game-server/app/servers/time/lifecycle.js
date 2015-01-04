@@ -7,6 +7,7 @@
 var Promise = require("bluebird")
 var _ = require("underscore")
 
+var PushService = require("../../services/pushService")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 var logicLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-logic", __filename)
@@ -20,8 +21,12 @@ var Consts = require("../../consts/consts")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
-	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("allianceDao", Promise.promisifyAll(new AllianceDao(app.get("redis"), app.get("scripto"), app.get("env"))))
+	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
+	app.set("pushService", Promise.promisifyAll(new PushService(app)))
+	app.set("channelService", Promise.promisifyAll(app.get("channelService")))
+	app.set("globalChannelService", Promise.promisifyAll(app.get("globalChannelService")))
+
 	DbUtils.loadAllDataAsync(app.get("redis"), app.get("playerDao"), app.get("allianceDao")).then(function(){
 		callback()
 	}).catch(function(e){

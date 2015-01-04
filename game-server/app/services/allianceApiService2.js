@@ -810,6 +810,7 @@ pro.inviteToJoinAlliance = function(playerId, memberId, callback){
 		}
 	})
 }
+
 /**
  * 处理加入联盟邀请
  * @param playerId

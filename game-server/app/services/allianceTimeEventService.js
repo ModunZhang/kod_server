@@ -2161,8 +2161,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 				type:Consts.DataChangedType.Remove,
 				data:village
 			}]
-			var villageInMap = LogicUtils.findAllianceMapObjectByLocation(defenceAllianceDoc, village.location)
-			LogicUtils.removeItemInArray(defenceAllianceDoc.mapObjects, villageInMap)
+			var villageInMap = LogicUtils.removeAllianceMapObjectByLocation(defenceAllianceDoc, village.location)
 			defenceAllianceData.__mapObjects = [{
 				type:Consts.DataChangedType.Remove,
 				data:villageInMap
@@ -2364,8 +2363,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 				type:Consts.DataChangedType.Remove,
 				data:village
 			})
-			var villageInMap = LogicUtils.findAllianceMapObjectByLocation(defenceAllianceDoc, village.location)
-			LogicUtils.removeItemInArray(defenceAllianceDoc.mapObjects, villageInMap)
+			var villageInMap = LogicUtils.removeAllianceMapObjectByLocation(defenceAllianceDoc, village.location)
 			if(!_.isArray(defenceAllianceData.__mapObjects)) defenceAllianceData.__mapObjects = []
 			defenceAllianceData.__mapObjects.push({
 				type:Consts.DataChangedType.Remove,

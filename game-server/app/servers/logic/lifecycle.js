@@ -37,6 +37,7 @@ life.beforeStartup = function(app, callback){
 	app.set("allianceApiService2", Promise.promisifyAll(new AllianceApiService2(app)))
 	app.set("allianceApiService3", Promise.promisifyAll(new AllianceApiService3(app)))
 	app.set("allianceApiService4", Promise.promisifyAll(new AllianceApiService4(app)))
+	app.set("channelService", Promise.promisifyAll(app.get("channelService")))
 	app.set("globalChannelService", Promise.promisifyAll(app.get("globalChannelService")))
 	callback()
 }
