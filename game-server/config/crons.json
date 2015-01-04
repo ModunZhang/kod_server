@@ -1,7 +1,7 @@
 {
 	"development":{
 		"time":[
-			{"id":1, "serverId":"time-server-1", "time": "0 0/10 * * * *", "action": "allianceCron.resetAllianceStatus"}
+			{"id":1, "serverId":"time-server-1", "time": "0 * * * * *", "action": "allianceCron.resetAllianceStatus"}
 		]
 	},
 	"production":{
