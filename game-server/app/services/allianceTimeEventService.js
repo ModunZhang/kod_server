@@ -2307,6 +2307,10 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		resourceCollected = resourceCollected > villageEvent.villageData.collectTotal ? villageEvent.villageData.collectTotal : resourceCollected
 		var village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, villageEvent.villageData.id)
 		var originalRewards = villageEvent.playerData.rewards
+		if(!_.isObject(village)){
+			console.error(villageEvent)
+			console.error(defenceAllianceDoc.villages)
+		}
 		var resourceName = village.type.slice(0, -7)
 		var newRewards = [{
 			type:"resources",
