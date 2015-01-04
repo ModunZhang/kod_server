@@ -163,6 +163,12 @@ app.configure("production|development", "time", function(){
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
 
+	app.use(globalChannel, {globalChannel:{
+		host:app.get("redisConfig").host,
+		port:app.get("redisConfig").port,
+		db:"1"
+	}})
+
 	var redisClient = redis.createClient(app.get("redisConfig").port, app.get("redisConfig").host)
 	app.set("redis", redisClient)
 	var scripto = new Scripto(redisClient)

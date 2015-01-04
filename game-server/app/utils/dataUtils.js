@@ -1671,6 +1671,29 @@ Utils.createMapVillages = function(mapObjects){
 }
 
 /**
+ * 为联盟添加村落
+ * @param allianceDoc
+ * @param mapObject
+ * @returns {{id: *, type: *, level: *, resource: *, dragon: *, soldiers: *, location: *}}
+ */
+Utils.addAllianceVillageObject = function(allianceDoc, mapObject){
+	var villageType = mapObject.type
+	var villageLevel = allianceDoc.villageLevels[villageType]
+	var dragonAndSoldiers = this.getAllianceVillageConfigedDragonAndSoldiers(villageType, villageLevel)
+	var village = {
+		id:ShortId.generate(),
+		type:mapObject.type,
+		level:villageLevel,
+		resource:this.getAllianceVillageProduction(villageType, villageLevel),
+		dragon:dragonAndSoldiers.dragon,
+		soldiers:dragonAndSoldiers.soldiers,
+		location:mapObject.location
+	}
+	allianceDoc.villages.push(village)
+	return village
+}
+
+/**
  * 获取建筑类型在联盟的宽高
  * @param buildingType
  * @returns {{width: *, height: *}}
