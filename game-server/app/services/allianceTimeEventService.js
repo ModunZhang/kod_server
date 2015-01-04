@@ -2485,7 +2485,14 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 				}else{
 					throw new Error("未知的事件类型")
 				}
-				eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, event.attackAllianceDoc, event.eventData.id])
+				if(_.isEqual(event.eventType, "villageEvents")){
+					var eventData = event.eventData
+					if(eventData.villageData.resource == eventData.villageData.collectTotal){
+						eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, event.attackAllianceDoc, event.eventData.id])
+					}
+				}else{
+					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, event.attackAllianceDoc, event.eventData.id])
+				}
 			})
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
