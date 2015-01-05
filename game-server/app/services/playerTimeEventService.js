@@ -235,6 +235,10 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 	}else if(_.isEqual(eventType, "dragonEvents")){
 		event = LogicUtils.getEventById(playerDoc.dragonEvents, eventId)
 		LogicUtils.removeItemInArray(playerDoc.dragonEvents, event)
+		playerData.__dragonEvents = [{
+			type:Consts.DataChangedType.Remove,
+			data:event
+		}]
 		var dragon = playerDoc.dragons[event.dragonType]
 		dragon.star = 1
 		dragon.level = 1
