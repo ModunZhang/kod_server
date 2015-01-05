@@ -1728,12 +1728,13 @@ Utils.getAllianceViewData = function(allianceDoc){
  * @param enemyAllianceData
  */
 Utils.putAllianceDataToEnemyAllianceData = function(allianceData, enemyAllianceData){
-	enemyAllianceData.enemyAllianceDoc = {}
+	if(!_.isObject(enemyAllianceData.enemyAllianceDoc)) enemyAllianceData.enemyAllianceDoc = {}
 	_.forEach(Consts.AllianceViewDataKeys, function(key){
 		if(_.isObject(allianceData[key])) enemyAllianceData.enemyAllianceDoc[key] = allianceData[key]
 		var arrayKey = "__" + key
 		if(_.isObject(allianceData[arrayKey])) enemyAllianceData.enemyAllianceDoc[arrayKey] = allianceData[arrayKey]
 	})
+	if(_.isEmpty(enemyAllianceData.enemyAllianceDoc)) delete enemyAllianceData.enemyAllianceDoc
 }
 
 /**
@@ -1747,7 +1748,7 @@ Utils.pushAllianceDataToEnemyAllianceIfNeeded = function(allianceDoc, allianceDa
 	if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(allianceDoc.allianceFight)){
 		var enemyAllianceData = {}
 		this.putAllianceDataToEnemyAllianceData(allianceData, enemyAllianceData)
-		if(!_.isEmpty(enemyAllianceData.enemyAllianceDoc)){
+		if(_.isObject(enemyAllianceData.enemyAllianceDoc)){
 			var enemyAllianceId = _.isEqual(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId) ? allianceDoc.allianceFight.defenceAllianceId : allianceDoc.allianceFight.attackAllianceId
 			pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, enemyAllianceId, enemyAllianceData])
 		}
