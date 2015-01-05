@@ -1283,6 +1283,41 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		}
 		memberDoc = doc
 
+		var shrineData = _.find(allianceDoc.shrineEvents, function(shrineEvent){
+			var data = _.find(shrineEvent.playerTroops, function(playerTroop){
+				return _.isEqual(playerTroop.id, memberDoc._id)
+			})
+			return _.isObject(data)
+		})
+		if(_.isObject(shrineData)) return Promise.reject(new Error("玩家有部队在进行圣地战,不能退出联盟"))
+		var strikeMarchData = _.find(allianceDoc.strikeMarchEvents, function(marchEvent){
+			return _.isEqual(marchEvent.attackPlayerData.id, memberDoc._id)
+		})
+		if(_.isObject(strikeMarchData)) return Promise.reject(new Error("玩家有部队正在行军,不能退出联盟"))
+		var strikeMarchReturnData = _.find(allianceDoc.strikeMarchReturnEvents, function(marchEvent){
+			return _.isEqual(marchEvent.attackPlayerData.id, memberDoc._id)
+		})
+		if(_.isObject(strikeMarchReturnData)) return Promise.reject(new Error("玩家有部队正在行军,不能退出联盟"))
+		var attackMarchData = _.find(allianceDoc.attackMarchEvents, function(marchEvent){
+			return _.isEqual(marchEvent.attackPlayerData.id, memberDoc._id)
+		})
+		if(_.isObject(attackMarchData)) return Promise.reject(new Error("玩家有部队正在行军,不能退出联盟"))
+		var attackMarchReturnData = _.find(allianceDoc.attackMarchReturnEvents, function(marchEvent){
+			return _.isEqual(marchEvent.attackPlayerData.id, memberDoc._id)
+		})
+		if(_.isObject(attackMarchReturnData)) return Promise.reject(new Error("玩家有部队正在行军,不能退出联盟"))
+		if(memberDoc.helpedByTroops.length > 0) return Promise.reject(new Error("有联盟其他玩家正在协助此玩家,不能退出联盟"))
+		if(memberDoc.helpToTroops.length > 0) return Promise.reject(new Error("玩家有部队正在协助联盟其他玩家,不能退出联盟"))
+		var helpByMarchData = _.find(allianceDoc.attackMarchEvents, function(marchEvent){
+			return _.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, memberDoc._id)
+		})
+		if(_.isObject(helpByMarchData)) return Promise.reject(new Error("有联盟其他玩家正在派兵协助此玩家的路上,不能退出联盟"))
+		var villageEvent = _.find(allianceDoc.villageEvents, function(villageEvent){
+			return _.isEqual(villageEvent.playerData.id, memberDoc._id)
+		})
+		if(_.isObject(villageEvent)) return Promise.reject(new Error("玩家有部队正在采集村落,不能退出联盟"))
+		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(new Error("联盟正在战争准备期或战争期,不能退出联盟"))
+
 		var allianceData = {}
 		var helpEvents = _.filter(allianceDoc.helpEvents, function(event){
 			return _.isEqual(memberId, event.id)
@@ -1305,9 +1340,6 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 			data:memberInAllianceDoc
 		}]
 		var memberObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, memberInAllianceDoc.location)
-		if(!_.isObject(memberObjectInMap)){
-			return Promise.reject(new Error("玩家不在联盟地图中"))
-		}
 		LogicUtils.removeItemInArray(allianceDoc.mapObjects, memberObjectInMap)
 		allianceData.__mapObjects = [{
 			type:Consts.DataChangedType.Remove,
