@@ -196,13 +196,13 @@ Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent,
 			soldierCount:attackSoldier.currentCount,
 			soldierDamagedCount:attackDamagedSoldierCount,
 			soldierWoundedCount:attackWoundedSoldierCount,
-			isWin:attackTotalPower >= defenceTotalPower
+			isWin:defenceWall.currentHp - defenceDamagedHp <= 0
 		})
 		defenceResults.push({
 			wallMaxHp:defenceWall.maxHp,
 			wallHp:defenceWall.currentHp,
 			wallDamagedHp:defenceDamagedHp,
-			isWin:attackTotalPower < defenceTotalPower
+			isWin:defenceWall.currentHp - defenceDamagedHp > 0
 		})
 		attackSoldier.round += 1
 		attackSoldier.currentCount -= attackDamagedSoldierCount
