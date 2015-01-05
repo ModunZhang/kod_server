@@ -243,7 +243,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		dragon.hpRefreshTime = Date.now()
 		dragon.strength = DataUtils.getPlayerDragonStrength(playerDoc, dragon)
 		playerData.dragons = {}
-		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+		playerData.dragons[event.dragonType] = playerDoc.dragons[event.dragonType]
 	}
 
 	LogicUtils.refreshPlayerPower(playerDoc)
