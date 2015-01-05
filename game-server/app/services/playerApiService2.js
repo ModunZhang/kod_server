@@ -419,11 +419,12 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 			playerData.dragons = {}
 			playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		}else{
-			var hatchEvent = DataUtils.createPlayerHatchDragonEvent(playerDoc, dragonType)
-			playerDoc.dragonEvents.push(hatchEvent)
+			var event = DataUtils.createPlayerHatchDragonEvent(playerDoc, dragonType)
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonEvents", event.id, event.finishTime])
+			playerDoc.dragonEvents.push(event)
 			playerData.__dragonEvents = [{
 				type:Consts.DataChangedType.Add,
-				data:hatchEvent
+				data:event
 			}]
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
