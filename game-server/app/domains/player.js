@@ -152,6 +152,7 @@ var playerSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		coin:{type:Number, required:true},
+		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
 	materials:{
@@ -173,6 +174,7 @@ var playerSchema = new Schema({
 			type:{type:String, required:true},
 			count:{type:Number, required:true}
 		}],
+		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
 	soldierMaterials:{
@@ -208,6 +210,7 @@ var playerSchema = new Schema({
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		count:{type:Number, required:true},
+		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
 	woundedSoldiers:{
@@ -228,6 +231,7 @@ var playerSchema = new Schema({
 			name:{type:String, required:true},
 			count:{type:Number, required:true}
 		}],
+		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
 	dragonMaterials:{
@@ -341,6 +345,7 @@ var playerSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		name:{type:String, required:true},
+		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
 	dragons:{
@@ -352,6 +357,7 @@ var playerSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		dragonType:{type:String, required:true},
+		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
 	buildings:{
@@ -376,6 +382,7 @@ var playerSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		location:{type:Number, required:true},
+		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
 	houseEvents:[{
@@ -383,6 +390,7 @@ var playerSchema = new Schema({
 		id:{type:String, required:true},
 		buildingLocation:{type:Number, required:true},
 		houseLocation:{type:Number, required:true},
+		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
 	towers:{
@@ -402,6 +410,7 @@ var playerSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		location:{type:Number, required:true},
+		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
 	wall:{
@@ -410,6 +419,7 @@ var playerSchema = new Schema({
 	wallEvents:[{
 		_id:false,
 		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
 	requestToAllianceEvents:[{

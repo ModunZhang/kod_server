@@ -680,6 +680,7 @@ Utils.createMaterialEvent = function(toolShop, category, finishNow){
 		id:ShortId.generate(),
 		category:category,
 		materials:materials,
+		startTime:Date.now(),
 		finishTime:finishNow ? 0 : (Date.now() + (buildTime * 1000))
 	}
 	return event
@@ -2486,6 +2487,7 @@ Utils.createPlayerHatchDragonEvent = function(playerDoc, dragonType){
 	var event = {
 		id:ShortId.generate(),
 		dragonType:dragonType,
+		startTime:Date.now(),
 		finishTime:Date.now() + needTime
 	}
 	return event

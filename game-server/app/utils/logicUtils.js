@@ -373,6 +373,7 @@ Utils.createBuildingEvent = function(playerDoc, location, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		location:location,
+		startTime:Date.now(),
 		finishTime:finishTime
 	}
 	return event
@@ -391,6 +392,7 @@ Utils.createHouseEvent = function(playerDoc, buildingLocation, houseLocation, fi
 		id:ShortId.generate(),
 		buildingLocation:buildingLocation,
 		houseLocation:houseLocation,
+		startTime:Date.now(),
 		finishTime:finishTime
 	}
 	return event
@@ -407,6 +409,7 @@ Utils.createTowerEvent = function(playerDoc, location, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		location:location,
+		startTime:Date.now(),
 		finishTime:finishTime
 	}
 	return event
@@ -421,6 +424,7 @@ Utils.createTowerEvent = function(playerDoc, location, finishTime){
 Utils.createWallEvent = function(playerDoc, finishTime){
 	var event = {
 		id:ShortId.generate(),
+		startTime:Date.now(),
 		finishTime:finishTime
 	}
 	return event
@@ -439,6 +443,7 @@ Utils.createSoldierEvent = function(playerDoc, soldierName, count, finishTime){
 		id:ShortId.generate(),
 		name:soldierName,
 		count:count,
+		startTime:Date.now(),
 		finishTime:finishTime
 	}
 	return event
@@ -455,6 +460,7 @@ Utils.createDragonEquipmentEvent = function(playerDoc, equipmentName, finishTime
 	var event = {
 		id:ShortId.generate(),
 		name:equipmentName,
+		startTime:Date.now(),
 		finishTime:finishTime
 	}
 	return event
@@ -471,6 +477,7 @@ Utils.createTreatSoldierEvent = function(playerDoc, soldiers, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		soldiers:soldiers,
+		startTime:Date.now(),
 		finishTime:finishTime
 	}
 	return event
@@ -487,6 +494,7 @@ Utils.createCoinEvent = function(playerDoc, coin, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		coin:coin,
+		startTime:Date.now(),
 		finishTime:finishTime
 	}
 	return event
