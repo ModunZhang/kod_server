@@ -143,6 +143,7 @@ GameDatas.PlayerInitData.vipLevel = require("./PlayerInitData_vipLevel.js")
 GameDatas.PlayerInitData.collectLevel = require("./PlayerInitData_collectLevel.js")
 GameDatas.PlayerInitData.dailyQuests = require("./PlayerInitData_dailyQuests.js")
 GameDatas.PlayerInitData.dailyQuestStar = require("./PlayerInitData_dailyQuestStar.js")
+GameDatas.PlayerInitData.dailyQuestStyle = require("./PlayerInitData_dailyQuestStyle.js")
 
 GameDatas.PlayerVillageExp = {}
 GameDatas.PlayerVillageExp.exp = require("./PlayerVillageExp_exp.js")

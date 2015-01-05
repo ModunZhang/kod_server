@@ -28,7 +28,6 @@ var PlayerApiService = function(app){
 module.exports = PlayerApiService
 var pro = PlayerApiService.prototype
 
-
 /**
  * 创建新玩家
  * @param deviceId

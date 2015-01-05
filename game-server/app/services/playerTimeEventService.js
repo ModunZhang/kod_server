@@ -27,6 +27,11 @@ var PlayerTimeEventService = function(app){
 module.exports = PlayerTimeEventService
 var pro = PlayerTimeEventService.prototype
 
+pro.filterBuildingUpgrade = function(playerDoc, playerData, building){
+	if(_.isEqual(building.location, "location_15") && building.level == 1){
+
+	}
+}
 
 /**
  * 到达指定时间时,触发的消息

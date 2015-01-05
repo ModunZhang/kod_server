@@ -1331,7 +1331,8 @@ var playerSchema = new Schema({
 	dailyQuestEvents:[{
 		_id:false,
 		id:{type:String, required:true},
-		questId:{type:String, required:true},
+		key:{type:String, required:true},
+		star:{type:Number, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}]

@@ -1616,7 +1616,7 @@ Utils.getAllianceVillageConfigedDragonAndSoldiers = function(villageType, villag
 		var soldierCount = parseInt(params[2])
 		var soldierCountMax = Math.round(soldierCount * 1.2)
 		var soldierCountMin = Math.round(soldierCount * 0.8)
-		soldierCount = soldierCountMin + ((Math.random() * (soldierCountMax - soldierCountMin)) << 0)
+		soldierCount = soldierCountMin + ((Math.random() * (soldierCountMax - soldierCountMin + 1)) << 0)
 		var soldier = {
 			name:soldierName,
 			star:soldierStar,
@@ -2491,4 +2491,20 @@ Utils.createPlayerHatchDragonEvent = function(playerDoc, dragonType){
 		finishTime:Date.now() + needTime
 	}
 	return event
+}
+
+Utils.createPlayerDailyQuests = function(playerDoc){
+	var style =1 + (Math.random() * 3) << 0
+	var styleConfig = PlayerInitData.dailyQuestStyle[style]
+	var questsConfig = PlayerInitData.dailyQuests
+	var questsKeys = _.keys(questsConfig)
+	var quests = []
+	var star1Count = styleConfig.star_1
+	var star2Count = styleConfig.star_2
+	var star3Count = styleConfig.star_3
+	var star4Count = styleConfig.star_4
+	var star5Count = styleConfig.star_5
+	for(var i = 0;i < star1Count; i ++){
+
+	}
 }
