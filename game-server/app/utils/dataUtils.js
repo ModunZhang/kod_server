@@ -2216,7 +2216,7 @@ Utils.getAllianceFightSecondsPerFight = function(){
  * @returns {number}
  */
 Utils.getAllianceProtectTimeAfterAllianceFight = function(allianceDoc){
-	return 10 * 1000
+	return 60 * 1000
 }
 
 /**
