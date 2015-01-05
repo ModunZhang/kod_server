@@ -2483,8 +2483,7 @@ Utils.getCollectResourceExpAdd = function(name, count){
  * @returns {{id: *, dragonType: *, finishTime: number}}
  */
 Utils.createPlayerHatchDragonEvent = function(playerDoc, dragonType){
-	var needTime = AllianceInit.intInit.playerHatchDragonNeedHours.value * 60 * 60 * 1000
-	console.log(dragonType)
+	var needTime = AllianceInit.floatInit.playerHatchDragonNeedHours.value * 60 * 60 * 1000
 	var event = {
 		id:ShortId.generate(),
 		dragonType:dragonType,

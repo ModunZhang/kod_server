@@ -232,6 +232,18 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		playerData.resources = playerDoc.resources
 		playerData.coinEvents = playerDoc.coinEvents
 		pushFuncs.push([self.pushService, self.pushService.onImposeSuccessAsync, playerDoc, event.coin])
+	}else if(_.isEqual(eventType, "dragonEvents")){
+		event = LogicUtils.getEventById(playerDoc.dragonEvents, eventId)
+		LogicUtils.removeItemInArray(playerDoc.dragonEvents, event)
+		var dragon = playerDoc.dragons[event.dragonType]
+		dragon.star = 1
+		dragon.level = 1
+		dragon.vitality = DataUtils.getPlayerDragonVitality(playerDoc, dragon)
+		dragon.hp = dragon.vitality * 2
+		dragon.hpRefreshTime = Date.now()
+		dragon.strength = DataUtils.getPlayerDragonStrength(playerDoc, dragon)
+		playerData.dragons = {}
+		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 	}
 
 	LogicUtils.refreshPlayerPower(playerDoc)

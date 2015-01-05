@@ -15,3 +15,7 @@ floatInit["citizenCountPerWallHp"] = {
 	type:"citizenCountPerWallHp",
 	value:1.000000
 }
+floatInit["playerHatchDragonNeedHours"] = {
+	type:"playerHatchDragonNeedHours",
+	value:0.100000
+}
