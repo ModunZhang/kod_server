@@ -1325,13 +1325,13 @@ var playerSchema = new Schema({
 	dailyQuests:[{
 		_id:false,
 		id:{type:String, required:true},
-		key:{type:String, required:true},
+		index:{type:Number, required:true},
 		star:{type:Number, required:true}
 	}],
 	dailyQuestEvents:[{
 		_id:false,
 		id:{type:String, required:true},
-		key:{type:String, required:true},
+		index:{type:Number, required:true},
 		star:{type:Number, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}

@@ -2493,18 +2493,31 @@ Utils.createPlayerHatchDragonEvent = function(playerDoc, dragonType){
 	return event
 }
 
-Utils.createPlayerDailyQuests = function(playerDoc){
+/**
+ * 创建每日任务
+ * @returns {Array}
+ */
+Utils.createDailyQuests = function(){
 	var style =1 + (Math.random() * 3) << 0
 	var styleConfig = PlayerInitData.dailyQuestStyle[style]
 	var questsConfig = PlayerInitData.dailyQuests
-	var questsKeys = _.keys(questsConfig)
 	var quests = []
 	var star1Count = styleConfig.star_1
 	var star2Count = styleConfig.star_2
 	var star3Count = styleConfig.star_3
 	var star4Count = styleConfig.star_4
 	var star5Count = styleConfig.star_5
-	for(var i = 0;i < star1Count; i ++){
-
+	var starCounts = [star1Count, star2Count, star3Count, star4Count, star5Count]
+	for(var i = 0;i < starCounts;i ++){
+		for(var j = 0;j < starCounts[i]; j ++){
+			var questIndex = (Math.random() * questsConfig.length) >> 0
+			var quest = {
+				id:ShortId.generate(),
+				index:questIndex,
+				star:i + 1
+			}
+			quests.push(quest)
+		}
 	}
+	return quests
 }

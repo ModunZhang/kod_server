@@ -29,7 +29,9 @@ var pro = PlayerTimeEventService.prototype
 
 pro.filterBuildingUpgrade = function(playerDoc, playerData, building){
 	if(_.isEqual(building.location, "location_15") && building.level == 1){
-
+		var dailyQuests = DataUtils.createDailyQuests()
+		playerDoc.dailyQuests = dailyQuests
+		playerData.dailyQuests = playerDoc.dailyQuests
 	}
 }
 
@@ -123,6 +125,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		var building = LogicUtils.getBuildingByEvent(playerDoc, event)
 		building.level += 1
 		LogicUtils.updateBuildingsLevel(playerDoc)
+		self.filterBuildingUpgrade(playerDoc, playerData, building)
 		playerData.buildings = playerDoc.buildings
 		playerData.towers = playerDoc.towers
 		playerData.buildingEvents = playerDoc.buildingEvents
