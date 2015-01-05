@@ -9,6 +9,7 @@ var MapUtils = require("../../../utils/mapUtils")
 var LogicUtils = require("../../../utils/logicUtils")
 var DataUtils = require("../../../utils/dataUtils")
 var Consts = require("../../../consts/consts")
+var Events = require("../../../consts/events")
 
 var GameDatas = require("../../../datas/GameDatas")
 var AllianceInit = GameDatas.AllianceInitData
@@ -26,7 +27,7 @@ var Cron = function(app){
 	this.playerDao = app.get("playerDao")
 	this.allianceDao = app.get("allianceDao")
 	this.channelService = app.get("channelService")
-	this.pushService = app.get("pushService")
+	this.globalChannelService = app.get("globalChannelService")
 }
 var pro = Cron.prototype
 
@@ -198,11 +199,14 @@ var ResolveOneAlliance = function(allianceId){
 		ResetMapDecorates(allianceDoc, allianceData)
 		ResetVillages(allianceDoc, allianceData, enemyAllianceDoc)
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		var eventName = Events.alliance.onAllianceDataChanged
+		var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
+		pushFuncs.push([self.globalChannelService, self.globalChannelService.pushMessageAsync, "logic", eventName, allianceData, channelName])
 		if(_.isObject(enemyAllianceDoc)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, enemyAllianceDoc._id])
 			LogicUtils.putAllianceDataToEnemyAllianceData(allianceData, enemyAllianceData)
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc._id, enemyAllianceData])
+			channelName = Consts.AllianceChannelPrefix + enemyAllianceDoc._id
+			pushFuncs.push([self.globalChannelService, self.globalChannelService.pushMessageAsync, "logic", eventName, enemyAllianceData, channelName])
 		}
 
 		return Promise.resolve()

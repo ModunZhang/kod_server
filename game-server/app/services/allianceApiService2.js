@@ -69,6 +69,14 @@ pro.quitAlliance = function(playerId, callback){
 		if(_.isEqual(playerDoc.alliance.title, Consts.AllianceTitle.Archon) && allianceDoc.members.length > 1){
 			return Promise.reject(new Error("别逗了,仅当联盟成员为空时,盟主才能退出联盟"))
 		}
+		var shrineData = _.find(allianceDoc.shrineEvents, function(shrineEvent){
+			var data = _.find(shrineEvent.playerTroops, function(playerTroop){
+				return _.isEqual(playerTroop.id, playerDoc._id)
+			})
+			return _.isObject(data)
+		})
+		if(_.isObject(shrineData)) return Promise.reject(new Error("您有部队在进行圣地战,不能退出联盟"))
+		
 
 		var allianceData = {}
 		var helpEvents = _.filter(allianceDoc.helpEvents, function(event){
