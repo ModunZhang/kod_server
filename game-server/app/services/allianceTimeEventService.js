@@ -386,30 +386,16 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var updateWallForFight = function(wallForFight, wallAfterFight){
 			wallForFight.currentHp = wallAfterFight.currentHp
 		}
-		var createNewSoldiersForFight = function(soldiersForFight){
-			var newSoldiersForFight = []
-			_.each(soldiersForFight, function(soldierForFight){
-				if(soldierForFight.currentCount >= 0){
-					var newSoldierForFight = CommonUtils.clone(soldierForFight)
-					newSoldierForFight.totalCount = soldierForFight.currentCount
-					newSoldierForFight.woundedCount = 0
-					newSoldierForFight.morale = 100
-					newSoldierForFight.round = 0
-					newSoldierForFight.killedSoldiers = []
-					newSoldiersForFight.push(newSoldierForFight)
-				}
-			})
-			return newSoldiersForFight
-		}
-		var updatePlayerKillData = function(playerKillDatas, playerId, playerName, newlyKill){
+		var updatePlayerKillData = function(playerKillDatas, playerDoc, newlyKill){
 			var isNew = false
 			var playerKillData = _.find(playerKillDatas, function(playerKillData){
-				return _.isEqual(playerKillData.id, playerId)
+				return _.isEqual(playerKillData.id, playerDoc._id)
 			})
 			if(!_.isObject(playerKillData)){
 				playerKillData = {
-					id:playerId,
-					name:playerName,
+					id:playerDoc._id,
+					name:playerDoc.basicInfo.name,
+					level:playerDoc.basicInfo.level,
 					kill:0
 				}
 				playerKillDatas.push(playerKillData)
@@ -660,8 +646,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 				attackAllianceDoc.allianceFight.attackAllianceCountData.kill += countData.attackPlayerKill
 				defenceAllianceDoc.allianceFight.attackAllianceCountData.kill += countData.attackPlayerKill
-				playerKillData = updatePlayerKillData(attackAllianceDoc.allianceFight.attackPlayerKills, attackPlayerDoc._id, attackPlayerDoc.basicInfo.name, countData.attackPlayerKill)
-				updatePlayerKillData(defenceAllianceDoc.allianceFight.attackPlayerKills, attackPlayerDoc._id, attackPlayerDoc.basicInfo.name, countData.attackPlayerKill)
+				playerKillData = updatePlayerKillData(attackAllianceDoc.allianceFight.attackPlayerKills, attackPlayerDoc, countData.attackPlayerKill)
+				updatePlayerKillData(defenceAllianceDoc.allianceFight.attackPlayerKills, attackPlayerDoc, countData.attackPlayerKill)
 				attackAllianceData.allianceFight.__attackPlayerKills = [{
 					type:playerKillData.isNew ? Consts.DataChangedType.Add : Consts.DataChangedType.Edit,
 					data:playerKillData.data
@@ -673,8 +659,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 				attackAllianceDoc.allianceFight.defenceAllianceCountData.kill += countData.defencePlayerKill
 				defenceAllianceDoc.allianceFight.defenceAllianceCountData.kill += countData.defencePlayerKill
-				playerKillData = updatePlayerKillData(attackAllianceDoc.allianceFight.defencePlayerKills, theDefencePlayerDoc._id, theDefencePlayerDoc.basicInfo.name, countData.defencePlayerKill)
-				updatePlayerKillData(defenceAllianceDoc.allianceFight.defencePlayerKills, theDefencePlayerDoc._id, theDefencePlayerDoc.basicInfo.name, countData.defencePlayerKill)
+				playerKillData = updatePlayerKillData(attackAllianceDoc.allianceFight.defencePlayerKills, theDefencePlayerDoc, countData.defencePlayerKill)
+				updatePlayerKillData(defenceAllianceDoc.allianceFight.defencePlayerKills, theDefencePlayerDoc, countData.defencePlayerKill)
 				attackAllianceData.allianceFight.__defencePlayerKills = [{
 					type:playerKillData.isNew ? Consts.DataChangedType.Add : Consts.DataChangedType.Edit,
 					data:playerKillData.data
@@ -713,8 +699,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 				attackAllianceDoc.allianceFight.defenceAllianceCountData.kill += countData.attackPlayerKill
 				defenceAllianceDoc.allianceFight.defenceAllianceCountData.kill += countData.attackPlayerKill
-				playerKillData = updatePlayerKillData(attackAllianceDoc.allianceFight.defencePlayerKills, attackPlayerDoc._id, attackPlayerDoc.basicInfo.name, countData.attackPlayerKill)
-				updatePlayerKillData(defenceAllianceDoc.allianceFight.defencePlayerKills, attackPlayerDoc._id, attackPlayerDoc.basicInfo.name, countData.attackPlayerKill)
+				playerKillData = updatePlayerKillData(attackAllianceDoc.allianceFight.defencePlayerKills, attackPlayerDoc, countData.attackPlayerKill)
+				updatePlayerKillData(defenceAllianceDoc.allianceFight.defencePlayerKills, attackPlayerDoc, countData.attackPlayerKill)
 				attackAllianceData.allianceFight.__defencePlayerKills = [{
 					type:playerKillData.isNew ? Consts.DataChangedType.Add : Consts.DataChangedType.Edit,
 					data:playerKillData.data
@@ -726,8 +712,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 				attackAllianceDoc.allianceFight.attackAllianceCountData.kill += countData.defencePlayerKill
 				defenceAllianceDoc.allianceFight.attackAllianceCountData.kill += countData.defencePlayerKill
-				playerKillData = updatePlayerKillData(attackAllianceDoc.allianceFight.attackPlayerKills, theDefencePlayerDoc._id, theDefencePlayerDoc.basicInfo.name, countData.defencePlayerKill)
-				updatePlayerKillData(defenceAllianceDoc.allianceFight.attackPlayerKills, theDefencePlayerDoc._id, theDefencePlayerDoc.basicInfo.name, countData.defencePlayerKill)
+				playerKillData = updatePlayerKillData(attackAllianceDoc.allianceFight.attackPlayerKills, theDefencePlayerDoc, countData.defencePlayerKill)
+				updatePlayerKillData(defenceAllianceDoc.allianceFight.attackPlayerKills, theDefencePlayerDoc, countData.defencePlayerKill)
 				attackAllianceData.allianceFight.__attackPlayerKills = [{
 					type:playerKillData.isNew ? Consts.DataChangedType.Add : Consts.DataChangedType.Edit,
 					data:playerKillData.data
