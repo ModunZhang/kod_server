@@ -452,7 +452,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var attackCityReport = null
 		var helpedByTroop = null
 		var theDefencePlayerDoc = null
-		var memberInAlliance
+		var memberInAlliance = null
+		var attackSoldiersLeftForFight = []
 
 		funcs = []
 		funcs.push(self.playerDao.findByIdAsync(event.attackPlayerData.id, true))
@@ -521,11 +522,25 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				updateSoldiersForFight(defenceSoldiersForFight, defenceSoldierFightData.defenceSoldiersAfterFight)
 				if(_.isEqual(Consts.FightResult.DefenceWin, defenceSoldierFightData.fightResult)){
 					return Promise.resolve()
+				}else{
+					for(var i = defenceSoldierFightData.attackSoldiersAfterFight.length - 1; i >= 0; i --){
+						var attackSoldiers = CommonUtils.clone(defenceSoldierFightData.attackSoldiersAfterFight[i])
+						attackSoldiersLeftForFight.unshift(attackSoldiers)
+						if(attackSoldiers.round > 0){
+							attackSoldiers.totalCount = attackSoldiers.currentCount
+							attackSoldiers.woundedCount = 0
+							attackSoldiers.morale = 100
+							attackSoldiers.round = 0
+							attackSoldiers.killedSoldiers = []
+							break
+						}
+					}
 				}
+			}else{
+				attackSoldiersLeftForFight = attackSoldiersForFight
 			}
 			if(_.isObject(defenceWallForFight)){
-				var attackSoldiersForFight_1 = _.isObject(defenceDragonForFight) ? createNewSoldiersForFight(attackSoldiersForFight) : attackSoldiersForFight
-				defenceWallFightData = FightUtils.soldierToWallFight(attackSoldiersForFight_1, attackTreatSoldierPercent, defenceWallForFight)
+				defenceWallFightData = FightUtils.soldierToWallFight(attackSoldiersLeftForFight, attackTreatSoldierPercent, defenceWallForFight)
 				updateSoldiersForFight(attackSoldiersForFight, defenceWallFightData.attackSoldiersAfterFight)
 				updateWallForFight(defenceWallForFight, defenceWallFightData.defenceWallAfterFight)
 				return Promise.resolve()

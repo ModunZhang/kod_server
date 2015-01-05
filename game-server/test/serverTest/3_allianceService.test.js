@@ -1974,7 +1974,7 @@ describe("AllianceService", function(){
 		//			}
 		//			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//		})
-		//	}, 6 * 1000)
+		//	}, 2 * 1000)
 		//})
 
 		//it("attackVillage 进攻本联盟村落 采集完成自动回家", function(done){
