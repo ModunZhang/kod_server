@@ -389,6 +389,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 
 	var self = this
 	var playerDoc = null
+	var playerData = {}
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
@@ -401,31 +402,32 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		if(hospital.level < 1){
 			return Promise.reject(new Error("龙巢还未建造"))
 		}
-		LogicUtils.refreshPlayerResources(playerDoc)
-		if(playerDoc.resources.energy < 20){
-			return Promise.reject(new Error("能量不足"))
-		}
-		var dragon = playerDoc.dragons[dragonType]
+		var dragons = playerDoc.dragons
+		var dragon = dragons[dragonType]
 		if(dragon.star > 0){
 			return Promise.reject(new Error("龙蛋早已成功孵化"))
 		}
-		var playerData = {}
-		dragon.hp += 20
-		playerDoc.resources.energy -= 20
-		if(dragon.hp >= 100){
+		if(playerDoc.dragonEvents.length > 0) return Promise.reject(new Error("已有龙蛋正在孵化"))
+		var hasDragonHatched = dragons.redDragon.star > 0 || dragons.blueDragon.star > 0 || dragons.greenDragon.star > 0
+		if(!hasDragonHatched){
 			dragon.star = 1
 			dragon.level = 1
 			dragon.vitality = DataUtils.getPlayerDragonVitality(playerDoc, dragon)
 			dragon.hp = dragon.vitality * 2
 			dragon.hpRefreshTime = Date.now()
 			dragon.strength = DataUtils.getPlayerDragonStrength(playerDoc, dragon)
+			playerData.dragons = {}
+			playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+		}else{
+			var hatchEvent = DataUtils.createPlayerHatchDragonEvent(playerDoc, dragonType)
+			playerDoc.dragonEvents.push(hatchEvent)
+			playerData.__dragonEvents = [{
+				type:Consts.DataChangedType.Add,
+				data:hatchEvent
+			}]
 		}
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		playerData.resources = playerDoc.resources
-		playerData.basicInfo = playerDoc.basicInfo
-		playerData.dragons = {}
-		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1229,7 +1231,7 @@ pro.readMails = function(playerId, mailIds, callback){
 		playerDoc = doc
 		var playerData = {}
 		playerData.__mails = []
-		for(var i = 0; i < mailIds.length; i ++){
+		for(var i = 0; i < mailIds.length; i++){
 			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
 			if(!_.isObject(mail)){
 				return Promise.reject(new Error("邮件不存在"))

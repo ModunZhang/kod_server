@@ -987,31 +987,29 @@ describe("PlayerService", function(){
 	//		})
 	//	})
 	//
-	//	it("hatchDragon 能量不足", function(done){
-	//		Api.sendChat("energy 0", function(doc){
+	//	it("hatchDragon 龙蛋早已成功孵化", function(done){
+	//		Api.hatchDragon("redDragon", function(doc){
 	//			doc.code.should.equal(200)
 	//			Api.hatchDragon("redDragon", function(doc){
 	//				doc.code.should.equal(500)
-	//				doc.message.should.equal("能量不足")
-	//				Api.sendChat("energy 100", function(doc){
-	//					doc.code.should.equal(200)
-	//					done()
-	//				})
+	//				doc.message.should.equal("龙蛋早已成功孵化")
+	//				done()
 	//			})
 	//		})
 	//	})
 	//
-	//	it("hatchDragon 龙蛋早已成功孵化", function(done){
-	//		Api.sendChat("dragonhp redDragon 90", function(doc){
+	//	it("hatchDragon 正常孵化", function(done){
+	//		Api.hatchDragon("blueDragon", function(doc){
 	//			doc.code.should.equal(200)
-	//			Api.hatchDragon("redDragon", function(doc){
-	//				doc.code.should.equal(200)
-	//				Api.hatchDragon("redDragon", function(doc){
-	//					doc.code.should.equal(500)
-	//					doc.message.should.equal("龙蛋早已成功孵化")
-	//					done()
-	//				})
-	//			})
+	//			done()
+	//		})
+	//	})
+	//
+	//	it("hatchDragon 已有龙蛋正在孵化", function(done){
+	//		Api.hatchDragon("blueDragon", function(doc){
+	//			doc.code.should.equal(500)
+	//			doc.message.should.equal("已有龙蛋正在孵化")
+	//			done()
 	//		})
 	//	})
 	//

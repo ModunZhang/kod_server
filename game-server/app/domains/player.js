@@ -348,6 +348,12 @@ var playerSchema = new Schema({
 		blueDragon:createDragonSchema("blueDragon"),
 		greenDragon:createDragonSchema("greenDragon")
 	},
+	dragonEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		dragonType:{type:String, required:true},
+		finishTime:{type:Number, required:true}
+	}],
 	buildings:{
 		location_1:createBuildingSchema(1),
 		location_2:createBuildingSchema(2),

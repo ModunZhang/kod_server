@@ -2473,3 +2473,20 @@ Utils.getCollectResourceExpAdd = function(name, count){
 	var exp = Math.floor(count / resourceCountPerExp)
 	return exp
 }
+
+/**
+ * 创建龙孵化事件
+ * @param playerDoc
+ * @param dragonType
+ * @returns {{id: *, dragonType: *, finishTime: number}}
+ */
+Utils.createPlayerHatchDragonEvent = function(playerDoc, dragonType){
+	var needTime = AllianceInit.intInit.playerHatchDragonNeedHours.value * 60 * 60 * 1000
+	console.log(dragonType)
+	var event = {
+		id:ShortId.generate(),
+		dragonType:dragonType,
+		finishTime:Date.now() + needTime
+	}
+	return event
+}
