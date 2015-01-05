@@ -182,6 +182,7 @@ var allianceSchema = new Schema({
 		_id:false,
 		id:{type:String, require:true},
 		stageName:{type:String, required:true},
+		createTime:{type:Number, required:true},
 		startTime:{type:Number, required:true},
 		playerTroops:[{
 			_id:false,

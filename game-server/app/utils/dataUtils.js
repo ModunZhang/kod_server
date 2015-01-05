@@ -1748,6 +1748,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
 	var event = {
 		id:ShortId.generate(),
 		stageName:stageName,
+		createTime:Date.now(),
 		startTime:Date.now() + (AllianceInit.intInit.activeShrineStageEventTime.value * 1000),
 		playerTroops:[]
 	}

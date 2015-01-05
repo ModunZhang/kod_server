@@ -64,6 +64,7 @@ life.afterStartAll = function(app){
 			allianceDocs = docs
 		}).then(function(){
 			_.each(playerDocs, function(playerDoc){
+				var key = Consts.TimeEventType.Player + ":" + playerDoc._id
 				_.each(playerDoc.buildingEvents, function(event){
 					event.finishTime = now + (event.finishTime - event.startTime)
 					event.startTime = now
@@ -113,6 +114,15 @@ life.afterStartAll = function(app){
 				})
 				LogicUtils.refreshPlayerPower(playerDoc)
 			})
+			_.each(allianceDocs, function(allianceDoc){
+				var key = Consts.TimeEventType.Alliance + ":" + allianceDoc._id
+				_.each(allianceDoc.shrineEvents, function(event){
+					event.finishTime = now + (event.finishTime - event.startTime)
+					event.startTime = now
+					eventFuncs.push(addTimeEventAsync(eventServerId, key, "buildingEvents", event.id, event.finishTime - event.startTime))
+				})
+				this.addTimeEvent(key, eventType, eventId, finishTime, callback)
+			})
 		}).then(function(){
 			return app.get("playerDao").updateAllAsync(playerDocs)
 		}).then(function(){
@@ -144,12 +154,4 @@ life.afterStartAll = function(app){
 			}
 		})
 	}, 1000)
-}
-
-var GetAllianceDoc = function(allianceDocs, allianceId){
-	for(var i = 0; i < allianceDocs.length; i++){
-		var allianceDoc = allianceDocs[i]
-		if(_.isEqual(allianceDoc._id, allianceId)) return allianceDoc
-	}
-	return null
 }
