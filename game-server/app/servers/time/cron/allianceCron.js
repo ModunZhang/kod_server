@@ -201,14 +201,13 @@ var ResolveOneAlliance = function(allianceId){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		var eventName = Events.alliance.onAllianceDataChanged
 		var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
-		pushFuncs.push([self.globalChannelService, self.globalChannelService.pushMessageAsync, "logic", eventName, allianceData, channelName])
+		pushFuncs.push([self.globalChannelService, self.globalChannelService.pushMessageAsync, "logic", eventName, allianceData, channelName, null])
 		if(_.isObject(enemyAllianceDoc)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, enemyAllianceDoc._id])
 			LogicUtils.putAllianceDataToEnemyAllianceData(allianceData, enemyAllianceData)
 			channelName = Consts.AllianceChannelPrefix + enemyAllianceDoc._id
-			pushFuncs.push([self.globalChannelService, self.globalChannelService.pushMessageAsync, "logic", eventName, enemyAllianceData, channelName])
+			pushFuncs.push([self.globalChannelService, self.globalChannelService.pushMessageAsync, "logic", eventName, enemyAllianceData, channelName, null])
 		}
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
