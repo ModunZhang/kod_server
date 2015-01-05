@@ -89,9 +89,6 @@ pro.quitAlliance = function(playerId, callback){
 			data:playerDocInAlliance
 		}]
 		var playerObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, playerDocInAlliance.location)
-		if(!_.isObject(playerObjectInMap)){
-			return Promise.reject(new Error("玩家不在联盟地图中"))
-		}
 		LogicUtils.removeItemInArray(allianceDoc.mapObjects, playerObjectInMap)
 		allianceData.__mapObjects = [{
 			type:Consts.DataChangedType.Remove,
