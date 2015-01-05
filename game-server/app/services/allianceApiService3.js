@@ -1000,7 +1000,9 @@ pro.revengeAlliance = function(playerId, reportId, callback){
 			return _.isEqual(report.id, reportId)
 		})
 		if(!_.isObject(report)) return Promise.reject(new Error("联盟战报不存在"))
-		if(_.isEqual(report.fightResult, Consts.AllianceFightResult.OurWin)) return Promise.reject(new Error("胜利方不能发起复仇"))
+		var isWin = _.isEqual(attackAllianceDoc._id, report.attackAllianceId) && _.isEqual(report.fightResult, Consts.AllianceFightResult.AttackWin)
+		isWin = isWin ? isWin : _.isEqual(attackAllianceDoc._id, report.defenceAllianceId) && _.isEqual(report.fightResult, Consts.AllianceFightResult.DefenceWin)
+		if(isWin) return Promise.reject(new Error("胜利方不能发起复仇"))
 		if(DataUtils.isAllianceRevengeTimeExpired(report)) return Promise.reject(new Error("超过最长复仇期限"))
 		return self.allianceDao.findByIdAsync(report.enemyAlliance.id)
 	}).then(function(doc){
