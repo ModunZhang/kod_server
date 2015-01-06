@@ -1471,7 +1471,7 @@ Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlay
 	var playerTroop = null
 	for(i = 0; i < playerDoc.helpToTroops.length; i++){
 		playerTroop = playerDoc.helpToTroops[i]
-		if(_.isEqual(playerTroop.targetPlayerData.id, targetPlayerId)) return true
+		if(_.isEqual(playerTroop.beHelpedPlayerData.id, targetPlayerId)) return true
 	}
 	return false
 }
