@@ -1465,7 +1465,7 @@ Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineE
  */
 Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlayerId){
 	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
-		var marchEvent = allianceDoc.helpDefenceMarchEvents[i]
+		var marchEvent = allianceDoc.attackMarchEvents[i]
 		if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id) && _.isEqual(marchEvent.defencePlayerData.id, targetPlayerId)) return true
 	}
 	var playerTroop = null
