@@ -484,23 +484,6 @@ Utils.createTreatSoldierEvent = function(playerDoc, soldiers, finishTime){
 }
 
 /**
- * 创建收税事件
- * @param playerDoc
- * @param coin
- * @param finishTime
- * @returns {{coin: *, finishTime: *}}
- */
-Utils.createCoinEvent = function(playerDoc, coin, finishTime){
-	var event = {
-		id:ShortId.generate(),
-		coin:coin,
-		startTime:Date.now(),
-		finishTime:finishTime
-	}
-	return event
-}
-
-/**
  * 根据建筑建造事件查找建筑
  * @param playerDoc
  * @param buildingEvent

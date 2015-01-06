@@ -5,7 +5,7 @@ module.exports = dailyQuestStyle
 
 dailyQuestStyle[1] = {
 	style:1,
-	star_1:2,
+	star_1:3,
 	star_2:1,
 	star_3:1,
 	star_4:0,

@@ -135,6 +135,15 @@ pro.playerLogin = function(playerDoc, callback){
 }
 
 /**
+ * 玩家登出逻辑服务器
+ * @param playerDoc
+ * @param callback
+ */
+pro.playerLogout = function(playerDoc, callback){
+
+}
+
+/**
  * 升级大型建筑
  * @param playerId
  * @param buildingLocation
@@ -245,7 +254,6 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			building.level = building.level + 1
 			LogicUtils.updateBuildingsLevel(playerDoc)
 			LogicUtils.refreshPlayerPower(playerDoc)
-			self.playerTimeEventService.filterBuildingUpgrade(playerDoc, playerData, building)
 			pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, building.location])
 			if(_.isObject(allianceDoc)){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])

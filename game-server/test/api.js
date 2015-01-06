@@ -198,9 +198,17 @@ Api.upgradeDragonStar = function(dragonType, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.impose = function(callback){
-	var route = "logic.playerHandler.impose"
+Api.getDailyQuests = function(callback){
+	var route = "logic.playerHandler.getDailyQuests"
 	pomelo.request(route, null, callback)
+}
+
+Api.addDailyQuestStar = function(questId, callback){
+	var info = {
+		questId:questId
+	}
+	var route = "logic.playerHandler.addDailyQuestStar"
+	pomelo.request(route, info, callback)
 }
 
 Api.getPlayerInfo = function(memberId, callback){

@@ -267,19 +267,6 @@ pro.onTreatSoldierSuccess = function(playerDoc, soldiers, callback){
 }
 
 /**
- * 收税完成通知
- * @param playerDoc
- * @param coinCount
- * @param callback
- */
-pro.onImposeSuccess = function(playerDoc, coinCount, callback){
-	var data = {
-		coinCount:coinCount
-	}
-	this.pushToPlayer(playerDoc, Events.player.onImposeSuccess, data, callback)
-}
-
-/**
  * 查看玩家个人信息通知
  * @param playerDoc
  * @param memberDoc

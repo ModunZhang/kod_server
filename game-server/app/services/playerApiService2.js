@@ -872,11 +872,11 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 }
 
 /**
- * 向城民收取银币
+ * 获取每日任务列表
  * @param playerId
  * @param callback
  */
-pro.impose = function(playerId, callback){
+pro.getDailyQuests = function(playerId, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -884,9 +884,9 @@ pro.impose = function(playerId, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-
 	var self = this
 	var playerDoc = null
+	var playerData = {}
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
@@ -895,31 +895,93 @@ pro.impose = function(playerId, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var building = playerDoc.buildings["location_15"]
-		if(building.level <= 0){
-			return Promise.reject(new Error("市政厅还未建造"))
+		var building = playerDoc.buildings.location_15
+		if(building.level <= 0) return Promise.reject(new Error("市政厅还未建造"))
+		var refreshTime = DataUtils.getDailyQuestsRefreshTime()
+		var now = Date.now()
+		if(playerDoc.basicInfo.dailyQuestsRefreshTime + refreshTime <= now){
+			var dailyQuests = DataUtils.createDailyQuests()
+			playerDoc.dailyQuests = dailyQuests
+			playerDoc.basicInfo.dailyQuestsRefreshTime = now
+			playerData.basicInfo = playerDoc.basicInfo
+			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		}else{
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		}
-		if(playerDoc.coinEvents.length > 0){
-			return Promise.reject(new Error("正在收税中"))
-		}
-		LogicUtils.refreshPlayerResources(playerDoc)
-		var required = DataUtils.getPlayerImposeRequired(playerDoc)
-		var imposedCoin = DataUtils.getPlayerImposedCoin(playerDoc)
-		if(required.citizen > playerDoc.resources.citizen){
-			return Promise.reject(new Error("空闲城民不足"))
-		}
-		var playerData = {}
-		playerDoc.resources.citizen -= required.citizen
-		var finishTime = Date.now() + (required.imposeTime * 1000)
-		var event = LogicUtils.createCoinEvent(playerDoc, imposedCoin, finishTime)
-		playerDoc.coinEvents.push(event)
-		eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "coinEvents", event.id, event.finishTime])
+		playerData.dailyQuests = playerDoc.dailyQuests
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		LogicUtils.refreshPlayerResources(playerDoc)
-		playerData.basicInfo = playerDoc.basicInfo
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 为每日任务中某个任务增加星级
+ * @param playerId
+ * @param questId
+ * @param callback
+ */
+pro.addDailyQuestStar = function(playerId, questId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(questId)){
+		callback(new Error("questId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var quest = _.find(playerDoc.dailyQuests, function(quest){
+			return _.isEqual(quest.id, questId)
+		})
+		if(!_.isObject(quest)) return Promise.reject(new Error("任务不存在"))
+		if(quest.star >= 5) return Promise.reject(new Error("任务已达最高星级"))
+		var gemUsed = DataUtils.getDailyQuestAddStarNeedGemCount()
+
+		if(gemUsed > playerDoc.resources.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		playerDoc.resources.gem -= gemUsed
+		quest.star += 1
 		playerData.resources = playerDoc.resources
-		playerData.coinEvents = playerDoc.coinEvents
+		playerData.__dailyQuests = [{
+			type:Consts.DataChangedType.Edit,
+			data:quest
+		}]
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

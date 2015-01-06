@@ -335,13 +335,28 @@ pro.upgradeDragonStar = function(msg, session, next){
 }
 
 /**
- * 向城民收取税收
+ * 获取每日任务列表
  * @param msg
  * @param session
  * @param next
  */
-pro.impose = function(msg, session, next){
-	this.playerApiService2.imposeAsync(session.uid).then(function(){
+pro.getDailyQuests = function(msg, session, next){
+	this.playerApiService2.getDailyQuestsAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 为每日任务中某个任务增加星级
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.addDailyQuestStar = function(msg, session, next){
+	var questId = msg.questId
+	this.playerApiService2.addDailyQuestStarAsync(session.uid, questId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

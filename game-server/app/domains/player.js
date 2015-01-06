@@ -114,6 +114,7 @@ var playerSchema = new Schema({
 		vipExp:{type:Number, required:true, default:0},
 		vipFinishTime:{type:Number, required:true, default:0},
 		resourceRefreshTime:{type:Number, required:true, default:Date.now()},
+		dailyQuestsRefreshTime:{type:Number, required:true, default:0},
 		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn},
 		buildQueue:{type:Number, required:true, default:5}
 	},
@@ -148,13 +149,6 @@ var playerSchema = new Schema({
 		foodExp:{type:Number, required:true, default:0},
 		coinExp:{type:Number, required:true, default:0}
 	},
-	coinEvents:[{
-		_id:false,
-		id:{type:String, required:true},
-		coin:{type:Number, required:true},
-		startTime:{type:Number, required:true},
-		finishTime:{type:Number, required:true}
-	}],
 	materials:{
 		blueprints:{type:Number, required:true, default:MaterialInitData.blueprints},
 		tools:{type:Number, required:true, default:MaterialInitData.tools},

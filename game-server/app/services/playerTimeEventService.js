@@ -20,20 +20,13 @@ var PlayerTimeEventService = function(app){
 	this.app = app
 	this.env = app.get("env")
 	this.pushService = app.get("pushService")
+	this.timeEventService = app.get("timeEventService")
 	this.globalChannelService = app.get("globalChannelService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
 }
 module.exports = PlayerTimeEventService
 var pro = PlayerTimeEventService.prototype
-
-pro.filterBuildingUpgrade = function(playerDoc, playerData, building){
-	if(_.isEqual(building.location, "location_15") && building.level == 1){
-		var dailyQuests = DataUtils.createDailyQuests()
-		playerDoc.dailyQuests = dailyQuests
-		playerData.dailyQuests = playerDoc.dailyQuests
-	}
-}
 
 /**
  * 到达指定时间时,触发的消息
@@ -125,7 +118,6 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		var building = LogicUtils.getBuildingByEvent(playerDoc, event)
 		building.level += 1
 		LogicUtils.updateBuildingsLevel(playerDoc)
-		self.filterBuildingUpgrade(playerDoc, playerData, building)
 		playerData.buildings = playerDoc.buildings
 		playerData.towers = playerDoc.towers
 		playerData.buildingEvents = playerDoc.buildingEvents
@@ -233,13 +225,6 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		playerData.soldiers = playerDoc.soldiers
 		playerData.treatSoldierEvents = playerDoc.treatSoldierEvents
 		pushFuncs.push([self.pushService, self.pushService.onTreatSoldierSuccessAsync, playerDoc, event.soldiers])
-	}else if(_.isEqual(eventType, "coinEvents")){
-		event = LogicUtils.getEventById(playerDoc.coinEvents, eventId)
-		LogicUtils.removeItemInArray(playerDoc.coinEvents, event)
-		playerDoc.resources.coin += event.coin
-		playerData.resources = playerDoc.resources
-		playerData.coinEvents = playerDoc.coinEvents
-		pushFuncs.push([self.pushService, self.pushService.onImposeSuccessAsync, playerDoc, event.coin])
 	}else if(_.isEqual(eventType, "dragonEvents")){
 		event = LogicUtils.getEventById(playerDoc.dragonEvents, eventId)
 		LogicUtils.removeItemInArray(playerDoc.dragonEvents, event)

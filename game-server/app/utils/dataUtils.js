@@ -31,6 +31,7 @@ var AllianceBuildingConfig = GameDatas.AllianceBuilding
 var AllianceVillageConfig = GameDatas.AllianceVillage
 var AllianceShrineConfig = GameDatas.AllianceShrine.shrineStage
 var Vip = GameDatas.Vip
+var DailyQuests = GameDatas.DailyQuests
 
 
 var Utils = module.exports
@@ -1331,32 +1332,6 @@ Utils.isDragonReachMaxStar = function(dragon){
 }
 
 /**
- * 获取收税所需的城民
- * @param playerDoc
- * @returns {{citizen: (taxCitizen|*), imposeTime: (taxTime|*)}}
- */
-Utils.getPlayerImposeRequired = function(playerDoc){
-	var building = playerDoc.buildings["location_15"]
-	var config = BuildingFunction.townHall[building.level]
-	var required = {
-		citizen:config.taxCitizen,
-		imposeTime:config.taxTime
-	}
-	return required
-}
-
-/**
- * 获取收税将要获得的银币
- * @param playerDoc
- * @returns {totalTax|*}
- */
-Utils.getPlayerImposedCoin = function(playerDoc){
-	var building = playerDoc.buildings["location_15"]
-	var config = BuildingFunction.townHall[building.level]
-	return config.totalTax
-}
-
-/**
  * 获取建造联盟所消耗的宝石
  * @returns {*}
  */
@@ -2499,8 +2474,8 @@ Utils.createPlayerHatchDragonEvent = function(playerDoc, dragonType){
  */
 Utils.createDailyQuests = function(){
 	var style =1 + (Math.random() * 3) << 0
-	var styleConfig = PlayerInitData.dailyQuestStyle[style]
-	var questsConfig = PlayerInitData.dailyQuests
+	var styleConfig = DailyQuests.dailyQuestStyle[style]
+	var questsConfig = DailyQuests.dailyQuests
 	var quests = []
 	var star1Count = styleConfig.star_1
 	var star2Count = styleConfig.star_2
@@ -2508,7 +2483,7 @@ Utils.createDailyQuests = function(){
 	var star4Count = styleConfig.star_4
 	var star5Count = styleConfig.star_5
 	var starCounts = [star1Count, star2Count, star3Count, star4Count, star5Count]
-	for(var i = 0;i < starCounts;i ++){
+	for(var i = 0;i < starCounts.length;i ++){
 		for(var j = 0;j < starCounts[i]; j ++){
 			var questIndex = (Math.random() * questsConfig.length) >> 0
 			var quest = {
@@ -2520,4 +2495,20 @@ Utils.createDailyQuests = function(){
 		}
 	}
 	return quests
+}
+
+/**
+ * 获取每日任务刷新时间
+ * @returns {number}
+ */
+Utils.getDailyQuestsRefreshTime = function(){
+	return PlayerInitData.floatInit.dailyQuestsRefreshHours.value * 60 * 60 * 1000
+}
+
+/**
+ * 获取为任务添加星级说需宝石
+ * @returns {intInit.dailyQuestAddStarNeedGemCount.value|*}
+ */
+Utils.getDailyQuestAddStarNeedGemCount = function(){
+	return PlayerInitData.intInit.dailyQuestAddStarNeedGemCount.value
 }

@@ -108,11 +108,6 @@ life.afterStartAll = function(app){
 					event.startTime = now
 					eventFuncs.push(addTimeEventAsync(eventServerId, key, "treatSoldierEvents", event.id, event.finishTime - event.startTime))
 				})
-				_.each(playerDoc.coinEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "coinEvents", event.id, event.finishTime - event.startTime))
-				})
 				_.each(playerDoc.dragonEvents, function(event){
 					event.finishTime = now + (event.finishTime - event.startTime)
 					event.startTime = now

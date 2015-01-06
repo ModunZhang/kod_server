@@ -1312,15 +1312,15 @@ describe("PlayerService", function(){
 	//		})
 	//	})
 	//
-	//	it("impose 市政厅还未建造", function(done){
-	//		Api.impose(function(doc){
+	//	it("getDailyQuests 市政厅还未建造", function(done){
+	//		Api.getDailyQuests(function(doc){
 	//			doc.code.should.equal(500)
 	//			doc.message.should.equal("市政厅还未建造")
 	//			done()
 	//		})
 	//	})
 	//
-	//	it("impose 空闲城民不足", function(done){
+	//	it("getDailyQuests 成功获取", function(done){
 	//		Api.sendChat("gem 500000", function(doc){
 	//			doc.code.should.equal(200)
 	//			Api.upgradeBuilding(1, true, function(doc){
@@ -1331,13 +1331,17 @@ describe("PlayerService", function(){
 	//						doc.code.should.equal(200)
 	//						Api.upgradeBuilding(15, true, function(doc){
 	//							doc.code.should.equal(200)
-	//							Api.sendChat("citizen 0", function(doc){
+	//							Api.getDailyQuests(function(doc){
 	//								doc.code.should.equal(200)
-	//								Api.impose(function(doc){
-	//									doc.code.should.equal(500)
-	//									doc.message.should.equal("空闲城民不足")
+	//								Api.getDailyQuests(function(doc){
+	//									doc.code.should.equal(200)
 	//									done()
 	//								})
+	//								var onPlayerDataChanged = function(doc){
+	//									m_user.dailyQuests = doc.dailyQuests
+	//									pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+	//								}
+	//								pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 	//							})
 	//						})
 	//					})
@@ -1346,17 +1350,10 @@ describe("PlayerService", function(){
 	//		})
 	//	})
 	//
-	//	it("impose 正在收税中", function(done){
-	//		Api.sendChat("citizen 1600", function(doc){
+	//	it("addDailyQuestStar 成功升星", function(done){
+	//		Api.addDailyQuestStar(m_user.dailyQuests[0].id, function(doc){
 	//			doc.code.should.equal(200)
-	//			Api.impose(function(doc){
-	//				doc.code.should.equal(200)
-	//				Api.impose(function(doc){
-	//					doc.code.should.equal(500)
-	//					doc.message.should.equal("正在收税中")
-	//					done()
-	//				})
-	//			})
+	//			done()
 	//		})
 	//	})
 	//

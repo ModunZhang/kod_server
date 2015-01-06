@@ -85,6 +85,11 @@ GameDatas.BuildingLevelUp.workshop = require("./BuildingLevelUp_workshop.js")
 GameDatas.Buildings = {}
 GameDatas.Buildings.buildings = require("./Buildings_buildings.js")
 
+GameDatas.DailyQuests = {}
+GameDatas.DailyQuests.dailyQuests = require("./DailyQuests_dailyQuests.js")
+GameDatas.DailyQuests.dailyQuestStar = require("./DailyQuests_dailyQuestStar.js")
+GameDatas.DailyQuests.dailyQuestStyle = require("./DailyQuests_dailyQuestStyle.js")
+
 GameDatas.DragonEyrie = {}
 GameDatas.DragonEyrie.crown = require("./DragonEyrie_crown.js")
 GameDatas.DragonEyrie.armguardLeft = require("./DragonEyrie_armguardLeft.js")
@@ -133,6 +138,8 @@ GameDatas.Houses = {}
 GameDatas.Houses.houses = require("./Houses_houses.js")
 
 GameDatas.PlayerInitData = {}
+GameDatas.PlayerInitData.intInit = require("./PlayerInitData_intInit.js")
+GameDatas.PlayerInitData.floatInit = require("./PlayerInitData_floatInit.js")
 GameDatas.PlayerInitData.resources = require("./PlayerInitData_resources.js")
 GameDatas.PlayerInitData.materials = require("./PlayerInitData_materials.js")
 GameDatas.PlayerInitData.soldierMaterials = require("./PlayerInitData_soldierMaterials.js")
@@ -141,9 +148,6 @@ GameDatas.PlayerInitData.houses = require("./PlayerInitData_houses.js")
 GameDatas.PlayerInitData.playerLevel = require("./PlayerInitData_playerLevel.js")
 GameDatas.PlayerInitData.vipLevel = require("./PlayerInitData_vipLevel.js")
 GameDatas.PlayerInitData.collectLevel = require("./PlayerInitData_collectLevel.js")
-GameDatas.PlayerInitData.dailyQuests = require("./PlayerInitData_dailyQuests.js")
-GameDatas.PlayerInitData.dailyQuestStar = require("./PlayerInitData_dailyQuestStar.js")
-GameDatas.PlayerInitData.dailyQuestStyle = require("./PlayerInitData_dailyQuestStyle.js")
 
 GameDatas.PlayerVillageExp = {}
 GameDatas.PlayerVillageExp.exp = require("./PlayerVillageExp_exp.js")
