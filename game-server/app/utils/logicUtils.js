@@ -1576,7 +1576,6 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 	attackAllianceDoc.basicInfo.statusStartTime = now
 	attackAllianceDoc.basicInfo.statusFinishTime = prepareTime
 	attackAllianceDoc.allianceFight = {
-		activeBy:attackAllianceDoc._id,
 		mergeStyle:Consts.AllianceMergePosition[(Math.random() * 4) << 0],
 		attackAllianceId:attackAllianceDoc._id,
 		defenceAllianceId:defenceAllianceDoc._id,

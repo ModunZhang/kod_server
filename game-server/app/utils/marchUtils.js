@@ -198,7 +198,7 @@ Utils.getPlayerMarchTime = function(playerDoc, fromAllianceDoc, fromLocation, to
 		return getMarchTime(playerDoc, width, height)
 	}
 
-	if(_.isEqual(fromAllianceDoc._id, fromAllianceDoc.allianceFight.activeBy)){
+	if(_.isEqual(fromAllianceDoc._id, fromAllianceDoc.allianceFight.attackAllianceId)){
 		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergePosition[0])){
 			width = AllianceMapSize.width - fromLocation.x + toLocation.x
 			height = Math.abs(fromLocation.y - toLocation.y)

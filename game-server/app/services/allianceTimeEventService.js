@@ -2520,10 +2520,12 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		var defenceAllianceKill = attackAllianceDoc.allianceFight.defenceAllianceCountData.kill
 		var allianceFightReport = {
 			id:ShortId.generate(),
+			mergeStyle:attackAllianceDoc.allianceFight.mergeStyle,
+			attackAllianceId:attackAllianceDoc.allianceFight.attackAllianceId,
+			defenceAllianceId:attackAllianceDoc.allianceFight.defenceAllianceId,
 			fightResult:attackAllianceKill >= defenceAllianceKill ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin,
 			fightTime:now,
 			attackAlliance:{
-				id:attackAllianceDoc._id,
 				name:attackAllianceDoc.basicInfo.name,
 				tag:attackAllianceDoc.basicInfo.tag,
 				flag:attackAllianceDoc.basicInfo.flag,
@@ -2535,7 +2537,6 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 				attackSuccessCount:attackAllianceDoc.allianceFight.attackAllianceCountData.attackSuccessCount
 			},
 			defenceAlliance:{
-				id:defenceAllianceDoc._id,
 				name:defenceAllianceDoc.basicInfo.name,
 				tag:defenceAllianceDoc.basicInfo.tag,
 				flag:defenceAllianceDoc.basicInfo.flag,

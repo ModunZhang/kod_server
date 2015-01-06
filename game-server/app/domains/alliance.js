@@ -325,7 +325,6 @@ var allianceSchema = new Schema({
 	fightRequests:[String],
 	allianceFight:{
 		type:{
-			activeBy:{type:String, required:true},
 			mergeStyle:{type:String, required:true},
 			attackAllianceId:{type:String, required:true},
 			defenceAllianceId:{type:String, required:true},
@@ -361,7 +360,6 @@ var allianceSchema = new Schema({
 	allianceFightReports:[{
 		_id:false,
 		id:{type:String, required:true},
-		activeBy:{type:String, required:true},
 		mergeStyle:{type:String, required:true},
 		attackAllianceId:{type:String, required:true},
 		defenceAllianceId:{type:String, required:true},
