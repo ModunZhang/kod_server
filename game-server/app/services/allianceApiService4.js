@@ -379,10 +379,10 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 			return _.isEqual(helpedByTroop.id, playerId)
 		})
 		LogicUtils.removeItemInArray(beHelpedPlayerDoc.helpedByTroops, helpedByTroop)
-		beHelpedPlayerData.__helpedByTroops = {
+		beHelpedPlayerData.__helpedByTroops = [{
 			type:Consts.DataChangedType.Remove,
 			data:helpedByTroop
-		}
+		}]
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, beHelpedPlayerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, beHelpedPlayerDoc, beHelpedPlayerData])
