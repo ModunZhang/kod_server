@@ -24,16 +24,16 @@ var ChatHandler = function(app){
 	this.chats = []
 	this.maxChatCount = 50
 	this.commands = [
-		{
-			command:"reset",
-			desc:"重置玩家数据",
-			func:function(session, uid, text, callback){
-				var self = this
-				self.app.rpc.logic.commandRemote.reset(session, uid, function(e){
-					callback(e)
-				})
-			}
-		},
+		//{
+		//	command:"reset",
+		//	desc:"重置玩家数据",
+		//	func:function(session, uid, text, callback){
+		//		var self = this
+		//		self.app.rpc.logic.commandRemote.reset(session, uid, function(e){
+		//			callback(e)
+		//		})
+		//	}
+		//},
 		{
 			command:"gem",
 			desc:"修改玩家宝石数量:gem 5",
