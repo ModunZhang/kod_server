@@ -705,9 +705,8 @@ pro.attackVillage = function(msg, session, next){
  * @param next
  */
 pro.retreatFromVillage = function(msg, session, next){
-	var allianceId = msg.allianceId
-	var eventId = msg.eventId
-	this.allianceApiService4.retreatFromVillageAsync(session.uid, allianceId, eventId).then(function(){
+	var villageEventId = msg.villageEventId
+	this.allianceApiService4.retreatFromVillageAsync(session.uid, villageEventId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

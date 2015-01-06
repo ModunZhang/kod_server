@@ -2801,7 +2801,7 @@ describe("AllianceService", function(){
 		//								setTimeout(function(){
 		//									Api.getMyAllianceData(function(doc){
 		//										doc.code.should.equal(200)
-		//										Api.retreatFromVillage(m_myAllianceData._id, m_myAllianceData.villageEvents[0].id, function(doc){
+		//										Api.retreatFromVillage(m_myAllianceData.villageEvents[0].id, function(doc){
 		//											doc.code.should.equal(200)
 		//											done()
 		//										})
@@ -2864,7 +2864,7 @@ describe("AllianceService", function(){
 		//									setTimeout(function(){
 		//										Api.getMyAllianceData(function(doc){
 		//											doc.code.should.equal(200)
-		//											Api.retreatFromVillage(enemyAllianceId, m_myAllianceData.villageEvents[0].id, function(doc){
+		//											Api.retreatFromVillage(m_myAllianceData.villageEvents[0].id, function(doc){
 		//												doc.code.should.equal(200)
 		//												done()
 		//											})

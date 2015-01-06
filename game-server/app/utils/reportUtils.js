@@ -182,6 +182,7 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
  * @param attackAllianceDoc
  * @param attackPlayerDoc
  * @param attackDragonForFight
+ * @param attackSoldiersForFight
  * @param defenceAllianceDoc
  * @param defencePlayerDoc
  * @param dragonFightData
@@ -934,8 +935,10 @@ Utils.createAttackVillageFightWithVillageTroopReport = function(attackAllianceDo
 	}
 
 	var attackPlayerKilledCitizen = getKilledCitizen(soldierFightData.attackSoldiersAfterFight)
+	var defenceVillageKilledCitizen = getKilledCitizen(soldierFightData.defenceSoldiersAfterFight)
+	var totalKilledCitizen = attackPlayerKilledCitizen + defenceVillageKilledCitizen
 	var attackDragonExpAdd = getDragonExpAdd(attackPlayerKilledCitizen)
-	var attackPlayerGetBlood = getBlood(attackPlayerKilledCitizen)
+	var attackPlayerGetBlood = getBlood(totalKilledCitizen, _.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult))
 	var attackPlayerRewards = []
 	pushBloodToRewards(attackPlayerGetBlood, attackPlayerRewards)
 
@@ -1078,13 +1081,15 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 	}
 
 	var attackPlayerKilledCitizen = getKilledCitizen(soldierFightData.attackSoldiersAfterFight)
+	var defencePlayerKilledCitizen = getKilledCitizen(soldierFightData.defenceSoldiersAfterFight)
+	var totalKilledCitizen = attackPlayerKilledCitizen + defencePlayerKilledCitizen
 	var attackDragonExpAdd = getDragonExpAdd(attackPlayerKilledCitizen)
-	var attackPlayerGetBlood = getBlood(attackPlayerKilledCitizen)
+	var attackPlayerGetBlood = getBlood(totalKilledCitizen, _.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult))
+	var defenceDragonExpAdd = getDragonExpAdd(defencePlayerKilledCitizen)
+	var defencePlayerGetBlood = getBlood(totalKilledCitizen, _.isEqual(Consts.FightResult.DefenceWin, soldierFightData.fightResult))
+
 	var attackPlayerRewards = []
 	pushBloodToRewards(attackPlayerGetBlood, attackPlayerRewards)
-	var defencePlayerKilledCitizen = getKilledCitizen(soldierFightData.defenceSoldiersAfterFight)
-	var defenceDragonExpAdd = getDragonExpAdd(defencePlayerKilledCitizen)
-	var defencePlayerGetBlood = getBlood(defencePlayerKilledCitizen)
 	var defencePlayerRewards = []
 	pushBloodToRewards(defencePlayerGetBlood, defencePlayerRewards)
 
