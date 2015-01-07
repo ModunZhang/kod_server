@@ -806,8 +806,8 @@ pro.requestAllianceToFight = function(playerId, callback){
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
-		if(!_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Peace)){
-			return Promise.reject(new Error("联盟未处于和平期"))
+		if(_.isObject(allianceDoc.allianceFight)){
+			return Promise.reject(new Error("联盟正处于战争准备期或战争期"))
 		}
 		var findedPlayerId = _.find(allianceDoc.fightRequests, function(thePlayerId){
 			return _.isEqual(thePlayerId, playerId)

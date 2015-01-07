@@ -113,10 +113,10 @@ pro.findByIndex = function(index, value, forceFind, callback){
 					setTimeout(func, 100, index, value)
 				}else{
 					errorLogger.error("handle baseDao:findByIndex Error -----------------------------")
-					errorLogger.error("errorInfo->modelName:%s, index:%s, value:%s", self.modelName, index, value)
+					errorLogger.error("errorInfo->modelName:%s, index:%s, value:%s is locked", self.modelName, index, value)
 					if(_.isEqual("production", self.env)){
 						errorMailLogger.error("handle baseDao:findByIndex Error -----------------------------")
-						errorMailLogger.error("errorInfo->modelName:%s, index:%s, value:%s", self.modelName, index, value)
+						errorMailLogger.error("errorInfo->modelName:%s, index:%s, value:%s is locked", self.modelName, index, value)
 					}
 					callback()
 				}
@@ -175,10 +175,10 @@ pro.findById = function(id, forceFind, callback){
 					setTimeout(func, 100, id)
 				}else{
 					errorLogger.error("handle baseDao:findById Error -----------------------------")
-					errorLogger.error("errorInfo->modelName:%s, id:%s", self.modelName, id)
+					errorLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
 					if(_.isEqual("production", self.env)){
 						errorMailLogger.error("handle baseDao:findById Error -----------------------------")
-						errorMailLogger.error("errorInfo->modelName:%s, index:%s, value:%s", self.modelName, index, value)
+						errorMailLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
 					}
 					callback()
 				}

@@ -72,6 +72,8 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 		if(!_.isEmpty(allianceData)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		}else if(_.isObject(allianceDoc)){
+			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 		}
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
