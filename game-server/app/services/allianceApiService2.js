@@ -47,8 +47,11 @@ pro.quitAlliance = function(playerId, callback){
 
 	var self = this
 	var playerDoc = null
+	var playerData = {}
 	var allianceDoc = null
+	var allianceData = {}
 	var playerDocInAlliance = null
+	var otherPlayerDocs = []
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
@@ -69,42 +72,61 @@ pro.quitAlliance = function(playerId, callback){
 		if(_.isEqual(playerDoc.alliance.title, Consts.AllianceTitle.Archon) && allianceDoc.members.length > 1){
 			return Promise.reject(new Error("别逗了,仅当联盟成员为空时,盟主才能退出联盟"))
 		}
-		var shrineData = _.find(allianceDoc.shrineEvents, function(shrineEvent){
-			var data = _.find(shrineEvent.playerTroops, function(playerTroop){
-				return _.isEqual(playerTroop.id, playerDoc._id)
-			})
-			return _.isObject(data)
-		})
-		if(_.isObject(shrineData)) return Promise.reject(new Error("您有部队在进行圣地战,不能退出联盟"))
-		var strikeMarchData = _.find(allianceDoc.strikeMarchEvents, function(marchEvent){
-			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
-		})
-		if(_.isObject(strikeMarchData)) return Promise.reject(new Error("您有部队正在行军,不能退出联盟"))
-		var strikeMarchReturnData = _.find(allianceDoc.strikeMarchReturnEvents, function(marchEvent){
-			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
-		})
-		if(_.isObject(strikeMarchReturnData)) return Promise.reject(new Error("您有部队正在行军,不能退出联盟"))
-		var attackMarchData = _.find(allianceDoc.attackMarchEvents, function(marchEvent){
-			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
-		})
-		if(_.isObject(attackMarchData)) return Promise.reject(new Error("您有部队正在行军,不能退出联盟"))
-		var attackMarchReturnData = _.find(allianceDoc.attackMarchReturnEvents, function(marchEvent){
-			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
-		})
-		if(_.isObject(attackMarchReturnData)) return Promise.reject(new Error("您有部队正在行军,不能退出联盟"))
-		if(playerDoc.helpedByTroops.length > 0) return Promise.reject(new Error("有联盟其他玩家正在协助您,不能退出联盟"))
-		if(playerDoc.helpToTroops.length > 0) return Promise.reject(new Error("您有部队正在协助联盟其他玩家,不能退出联盟"))
-		var helpByMarchData = _.find(allianceDoc.attackMarchEvents, function(marchEvent){
-			return _.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id)
-		})
-		if(_.isObject(helpByMarchData)) return Promise.reject(new Error("有联盟其他玩家正在派兵协助您的路上,不能退出联盟"))
-		var villageEvent = _.find(allianceDoc.villageEvents, function(villageEvent){
-			return _.isEqual(villageEvent.playerData.id, playerDoc._id)
-		})
-		if(_.isObject(villageEvent)) return Promise.reject(new Error("您有部队正在采集村落,不能退出联盟"))
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(new Error("联盟正在战争准备期或战争期,不能退出联盟"))
 
-		var allianceData = {}
+		LogicUtils.returnPlayerShrineTroops(playerDoc, playerData, allianceDoc, allianceData)
+		LogicUtils.returnPlayerMarchTroops(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
+		LogicUtils.returnPlayerMarchReturnTroops(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
+		LogicUtils.returnPlayerVillageTroop(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
+
+		var funcs = []
+		var returnHelpedByTroop = function(helpedByTroop){
+			return self.playerDao.findByIdAsync(helpedByTroop.id).then(function(doc){
+				if(_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+				otherPlayerDocs.push(doc)
+				var data = {}
+				LogicUtils.returnPlayerHelpedByTroop(playerDoc, playerData, helpedByTroop, doc, data)
+				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+				return Promise.resolve()
+			})
+		}
+		var returnHelpToTroop = function(helpToTroop){
+			return self.playerDao.findByIdAsync(helpToTroop.beHelpedPlayerData.id).then(function(doc){
+				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+				otherPlayerDocs.push(doc)
+				var data = {}
+				LogicUtils.returnPlayerHelpToTroop(playerDoc, playerData, helpToTroop, doc, data)
+				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+				return Promise.resolve()
+			})
+		}
+		var returnHelpedByMarchTroop = function(marchEvent){
+			return self.playerDao.findByIdAsync(marchEvent.attackPlayerData.id).then(function(doc){
+				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+				otherPlayerDocs.push(doc)
+				var data = {}
+				LogicUtils.returnPlayerHelpedByMarchTroop(doc, data, marchEvent, allianceDoc, allianceData, eventFuncs, self.timeEventService)
+				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+				return Promise.resolve()
+			})
+		}
+		_.each(playerDoc.helpedByTroops, function(helpedByTroop){
+			funcs.push(returnHelpedByTroop(helpedByTroop))
+		})
+		_.each(playerDoc.helpToTroops, function(helpToTroop){
+			funcs.push(returnHelpToTroop(helpToTroop))
+		})
+		_.each(allianceDoc.attackMarchEvents, function(marchEvent){
+			if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id)){
+				funcs.push(returnHelpedByMarchTroop(marchEvent))
+			}
+		})
+
+		return Promise.all(funcs)
+	}).then(function(){
 		var helpEvents = _.filter(allianceDoc.helpEvents, function(event){
 			return _.isEqual(playerId, event.id)
 		})
@@ -136,7 +158,6 @@ pro.quitAlliance = function(playerId, callback){
 			data:event
 		}]
 		playerDoc.alliance = null
-		var playerData = {}
 		playerData.alliance = {}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
@@ -167,6 +188,9 @@ pro.quitAlliance = function(playerId, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
 		}
+		_.each(otherPlayerDocs, function(thePlayerDoc){
+			funcs.push(self.playerDao.removeLockByIdAsync(thePlayerDoc._id))
+		})
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
 				callback(e)

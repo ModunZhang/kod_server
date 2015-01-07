@@ -577,7 +577,7 @@ pro.getSavedReports = function(playerId, fromIndex, callback){
 		playerDoc = doc
 		return self.playerDao.removeLockByIdAsync(playerDoc._id)
 	}).then(function(){
-		return self.pushService.onGetSavedMailsSuccessAsync(playerDoc, fromIndex)
+		return self.pushService.onGetSavedReportsSuccessAsync(playerDoc, fromIndex)
 	}).then(function(){
 		callback()
 	}).catch(function(e){

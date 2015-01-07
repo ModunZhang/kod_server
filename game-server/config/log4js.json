@@ -106,7 +106,7 @@
 		},
 		{
 			"type":"smtp",
-			"recipients":"zhangxuemin@batcatstudio.com, hejia@batcatstudio.com, daiguoqiang@batcatstudio.com, gaozhou@batcatstudio.com",
+			"recipients":"zhangxuemin@batcatstudio.com, hejia@batcatstudio.com, daiguoqiang@batcatstudio.com, gaozhou@batcatstudio.com, shicihang@batcatstudio.com",
 			"sendInterval":5,
 			"transport":"SMTP",
 			"SMTP":{

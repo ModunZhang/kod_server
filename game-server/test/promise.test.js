@@ -5,6 +5,7 @@ var Promise = require("bluebird")
 var _ = require("underscore")
 var MapUtils = require("../app/utils/mapUtils")
 var DataUtils = require("../app/utils/dataUtils")
+var LogicUtils = require("../app/utils/logicUtils")
 var FightUtils = require("../app/utils/fightUtils")
 //var should = require('should')
 //var Utils = require("../app/utils/utils")
@@ -320,3 +321,13 @@ var FightUtils = require("../app/utils/fightUtils")
 //var y = 4
 //var z = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2))
 //console.log(z)
+//
+//var a= [1,2,3,4,5]
+//var i = a.length
+//while(i--){
+//	var d = a[i]
+//	if(d == 3){
+//		LogicUtils.removeItemInArray(a, d)
+//	}
+//}
+//console.log(a)

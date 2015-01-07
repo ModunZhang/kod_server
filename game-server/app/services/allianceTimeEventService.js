@@ -302,7 +302,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					type:event.attackPlayerData.dragon.type
 				},
 				soldiers:event.attackPlayerData.soldiers,
-				woundedSoldiers:[],
 				rewards:[]
 			}
 			defencePlayerDoc.helpedByTroops.push(helpedByTroop)
@@ -576,9 +575,9 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				var helpDefenceMailParams = [helpDefencePlayerDoc.basicInfo.name, defenceAllianceDoc.basicInfo.tag]
 				LogicUtils.sendSystemMail(defencePlayerDoc, defencePlayerData, helpDefenceMailTitle, helpDefenceMailParams, helpDefenceMailContent, helpDefenceMailParams)
 
-				helpedByTroop.soldiers = getSoldiersFromSoldiersForFight(helpDefenceSoldierFightData.defenceSoldiersAfterFight)
-				LogicUtils.mergeSoldiers(helpedByTroop.woundedSoldiers, getWoundedSoldiersFromSoldiersForFight(helpDefenceSoldiersForFight))
-				LogicUtils.mergeRewards(helpedByTroop.rewards, attackCityReport.helpDefencePlayerData.rewards)
+				var soldiers = getSoldiersFromSoldiersForFight(helpDefenceSoldierFightData.defenceSoldiersAfterFight)
+				var woundedSoldiers = getWoundedSoldiersFromSoldiersForFight(helpDefenceSoldiersForFight)
+				var rewards = LogicUtils.mergeRewards(helpedByTroop.rewards, attackCityReport.helpDefencePlayerData.rewards)
 				LogicUtils.removeItemInArray(defencePlayerDoc.helpedByTroops, helpedByTroop)
 				defencePlayerData.__helpedByTroops = [{
 					type:Consts.DataChangedType.Remove,
@@ -598,7 +597,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					type:Consts.DataChangedType.Edit,
 					data:defencePlayerInAlliance
 				}]
-				var helpDefenceMarchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(defenceAllianceDoc, helpDefencePlayerDoc, defencePlayerDoc, helpedByTroop.dragon, helpedByTroop.soldiers, helpedByTroop.woundedSoldiers, helpedByTroop.rewards)
+				var helpDefenceMarchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(defenceAllianceDoc, helpDefencePlayerDoc, defencePlayerDoc, helpDefenceDragon, soldiers, woundedSoldiers, rewards)
 				defenceAllianceDoc.attackMarchReturnEvents.push(helpDefenceMarchReturnEvent)
 				defenceAllianceData.__attackMarchReturnEvents = [{
 					type:Consts.DataChangedType.Add,

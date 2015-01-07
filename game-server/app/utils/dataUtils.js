@@ -1987,7 +1987,7 @@ Utils.getPlayerDamagedSoldierToWoundedSoldierPercent = function(playerDoc){
 }
 
 /**
- * 月门战斗结束后,获取需要的结果
+ * 圣地战斗结束后,获取需要的结果
  * @param stageName
  * @param isWin
  * @param fightDatas
