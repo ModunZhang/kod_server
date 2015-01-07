@@ -1139,6 +1139,8 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, params.allianceData])
 			LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, params.allianceData, pushFuncs, self.pushService)
+		}else if(_.isObject(allianceDoc)){
+			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 		}
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
