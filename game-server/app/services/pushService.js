@@ -302,6 +302,7 @@ pro.onGetNearedAllianceInfosSuccess = function(playerDoc, nearedAllianceDocs, ca
 		data._id = doc._id
 		data.basicInfo = doc.basicInfo
 		data.countInfo = doc.countInfo
+		data.archon = LogicUtils.getAllianceArchon(doc).name
 		datas.push(data)
 	})
 	this.pushToPlayer(playerDoc, Events.player.onGetNearedAllianceInfosSuccess, datas, callback)
