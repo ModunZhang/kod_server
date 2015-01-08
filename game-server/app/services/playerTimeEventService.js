@@ -243,6 +243,13 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		dragon.strength = DataUtils.getPlayerDragonStrength(playerDoc, dragon)
 		playerData.dragons = {}
 		playerData.dragons[event.dragonType] = playerDoc.dragons[event.dragonType]
+	}else if(_.isEqual(eventType, "dailyQuestEvents")){
+		event = LogicUtils.getEventById(playerDoc.dailyQuestEvents, eventId)
+		event.finishTime = 0
+		playerData.__dailyQuestEvents = [{
+			type:Consts.DataChangedType.Edit,
+			data:event
+		}]
 	}
 
 	LogicUtils.refreshPlayerPower(playerDoc)

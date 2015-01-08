@@ -1357,6 +1357,44 @@ describe("PlayerService", function(){
 	//		})
 	//	})
 	//
+	//	it("startDailyQuest 成功开始", function(done){
+	//		Api.startDailyQuest(m_user.dailyQuests[0].id, function(doc){
+	//			doc.code.should.equal(200)
+	//			done()
+	//		})
+	//		var onPlayerDataChanged = function(doc){
+	//			m_user.dailyQuestEvents.push(doc.__dailyQuestEvents[0].data)
+	//			pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
+	//		}
+	//		pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
+	//	})
+	//
+	//	it("startDailyQuest 任务不存在", function(done){
+	//		Api.startDailyQuest(m_user.dailyQuests[0].id, function(doc){
+	//			doc.code.should.equal(500)
+	//			doc.message.should.equal("任务不存在")
+	//			done()
+	//		})
+	//	})
+	//
+	//	it("startDailyQuest 已经有任务正在进行中", function(done){
+	//		Api.startDailyQuest(m_user.dailyQuests[1].id, function(doc){
+	//			doc.code.should.equal(500)
+	//			doc.message.should.equal("已经有任务正在进行中")
+	//			done()
+	//		})
+	//
+	//	})
+	//
+	//	//it("getDailyQeustReward 正常领取", function(done){
+	//	//	setTimeout(function(){
+	//	//		Api.getDailyQeustReward(m_user.dailyQuestEvents[0].id, function(doc){
+	//	//			doc.code.should.equal(200)
+	//	//			done()
+	//	//		})
+	//	//	}, 2000)
+	//	//})
+	//
 	//	it("setPlayerLanguage", function(done){
 	//		Api.setPlayerLanguage("cn", function(doc){
 	//			doc.code.should.equal(200)

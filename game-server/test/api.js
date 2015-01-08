@@ -211,6 +211,22 @@ Api.addDailyQuestStar = function(questId, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.startDailyQuest = function(questId, callback){
+	var info = {
+		questId:questId
+	}
+	var route = "logic.playerHandler.startDailyQuest"
+	pomelo.request(route, info, callback)
+}
+
+Api.getDailyQeustReward = function(questEventId, callback){
+	var info = {
+		questEventId:questEventId
+	}
+	var route = "logic.playerHandler.getDailyQeustReward"
+	pomelo.request(route, info, callback)
+}
+
 Api.getPlayerInfo = function(memberId, callback){
 	var info = {
 		memberId:memberId

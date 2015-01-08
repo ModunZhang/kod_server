@@ -364,6 +364,36 @@ pro.addDailyQuestStar = function(msg, session, next){
 }
 
 /**
+ * 开始一个每日任务
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.startDailyQuest = function(msg, session, next){
+	var questId = msg.questId
+	this.playerApiService2.startDailyQuestAsync(session.uid, questId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 领取每日任务奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getDailyQeustReward = function(msg, session, next){
+	var questEventId = msg.questEventId
+	this.playerApiService2.getDailyQeustRewardAsync(session.uid, questEventId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
  * 设置玩家语言
  * @param msg
  * @param session

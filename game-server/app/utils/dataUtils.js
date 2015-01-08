@@ -2512,3 +2512,50 @@ Utils.getDailyQuestsRefreshTime = function(){
 Utils.getDailyQuestAddStarNeedGemCount = function(){
 	return PlayerInitData.intInit.dailyQuestAddStarNeedGemCount.value
 }
+
+/**
+ * 创建每日任务事件
+ * @param playerDoc
+ * @param quest
+ * @returns {{id: *, index: *, star: *, startTime: number, finishTime: number}}
+ */
+Utils.createPlayerDailyQuestEvent = function(playerDoc, quest){
+	var config = DailyQuests.dailyQuestStar[quest.star]
+	var now = Date.now()
+	var finishTime = now + (config.needMinutes * 60 * 1000)
+	var event = {
+		id:ShortId.generate(),
+		index:quest.index,
+		star:quest.star,
+		startTime:now,
+		finishTime:finishTime
+	}
+
+	return event
+}
+
+/**
+ * 获取玩家每日任务事件奖励
+ * @param playerDoc
+ * @param questEvent
+ * @returns {Array}
+ */
+Utils.getPlayerDailyQuestEventRewards = function(playerDoc, questEvent){
+	var config = DailyQuests.dailyQuests[questEvent.index]
+	var townhallLevel = playerDoc.buildings.location_15.level
+	var effect = questEvent.star * (1 + (0.02 * townhallLevel))
+	var rewards = []
+	var rewardStrings = config.rewards.split(",")
+	_.each(rewardStrings, function(rewardString){
+		var param = rewardString.split(":")
+		var type = param[0]
+		var name = param[1]
+		var count = Math.floor(parseInt(param[2]) * effect)
+		rewards.push({
+			type:type,
+			name:name,
+			count:count
+		})
+	})
+	return rewards
+}

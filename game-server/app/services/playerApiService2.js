@@ -1007,6 +1007,158 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 }
 
 /**
+ * 开始一个每日任务
+ * @param playerId
+ * @param questId
+ * @param callback
+ */
+pro.startDailyQuest = function(playerId, questId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(questId)){
+		callback(new Error("questId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var quest = _.find(playerDoc.dailyQuests, function(quest){
+			return _.isEqual(quest.id, questId)
+		})
+		if(!_.isObject(quest)) return Promise.reject(new Error("任务不存在"))
+		if(playerDoc.dailyQuestEvents.length > 0) return Promise.reject(new Error("已经有任务正在进行中"))
+		LogicUtils.removeItemInArray(playerDoc.dailyQuests, quest)
+		playerData.__dailyQuests = [{
+			type:Consts.DataChangedType.Remove,
+			data:quest
+		}]
+
+		var event = DataUtils.createPlayerDailyQuestEvent(playerDoc, quest)
+		eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dailyQuestEvents", event.id, event.finishTime])
+		playerDoc.dailyQuestEvents.push(event)
+		playerData.__dailyQuestEvents = [{
+			type:Consts.DataChangedType.Add,
+			data:event
+		}]
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 领取每日任务奖励
+ * @param playerId
+ * @param questEventId
+ * @param callback
+ */
+pro.getDailyQeustReward = function(playerId, questEventId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(questEventId)){
+		callback(new Error("questEventId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var questEvent = _.find(playerDoc.dailyQuestEvents, function(event){
+			return _.isEqual(event.id, questEventId)
+		})
+		if(!_.isObject(questEvent)) return Promise.reject(new Error("任务事件不存在"))
+		if(questEvent.finishTime > 0) return Promise.reject(new Error("任务还在进行中"))
+		LogicUtils.removeItemInArray(playerDoc.dailyQuestEvents, questEvent)
+		playerData.__dailyQuestEvents = [{
+			type:Consts.DataChangedType.Remove,
+			data:questEvent
+		}]
+
+		var rewards = DataUtils.getPlayerDailyQuestEventRewards(playerDoc, questEvent)
+		LogicUtils.refreshPlayerResources(playerDoc)
+		_.each(rewards, function(reward){
+			playerDoc[reward.type][reward.name] += reward.count
+			if(!_.isObject(playerData[reward.type])) playerData[reward.type] = playerDoc[reward.type]
+		})
+		LogicUtils.refreshPlayerResources(playerDoc)
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.resources = playerDoc.resources
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
  * 设置玩家语言
  * @param playerId
  * @param language

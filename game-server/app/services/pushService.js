@@ -308,6 +308,12 @@ pro.onGetNearedAllianceInfosSuccess = function(playerDoc, nearedAllianceDocs, ca
 	this.pushToPlayer(playerDoc, Events.player.onGetNearedAllianceInfosSuccess, datas, callback)
 }
 
+/**
+ * 根据Tag搜索联盟战斗数据
+ * @param playerDoc
+ * @param nearedAllianceDocs
+ * @param callback
+ */
 pro.onSearchAllianceInfoByTagSuccess = function(playerDoc, nearedAllianceDocs, callback){
 	var datas = []
 	_.each(nearedAllianceDocs, function(doc){
