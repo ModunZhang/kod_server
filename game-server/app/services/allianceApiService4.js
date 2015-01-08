@@ -791,6 +791,18 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 		}
 		var defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
 		if(!_.isObject(defenceVillage)) return Promise.reject(new Error("村落不存在"))
+		var event = _.find(attackAllianceDoc.attackMarchEvents, function(event){
+			return _.isEqual(event.marchType, Consts.AllianceMarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
+		})
+		if(_.isObject(event)) return Promise.reject(new Error("您已有部队正在进攻此村落"))
+		event = _.find(attackAllianceDoc.strikeMarchEvents, function(event){
+			return _.isEqual(event.marchType, Consts.AllianceMarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
+		})
+		if(_.isObject(event)) return Promise.reject(new Error("您已有部队正在突袭此村落"))
+		var villageEvent = _.find(attackAllianceDoc.villageEvents, function(event){
+			return _.isEqual(event.villageData.id, defenceVillageId) && _.isEqual(event.playerData.id, attackPlayerDoc._id)
+		})
+		if(_.isObject(villageEvent)) return Promise.reject(new Error("您有部队正在采集此村落"))
 
 		if(attackAllianceDoc != defenceAllianceDoc){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, defenceAllianceDoc._id])
@@ -803,7 +815,7 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 				data:memberInAlliance
 			}]
 		}
-		var event = MarchUtils.createAttackVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defenceVillage)
+		event = MarchUtils.createAttackVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defenceVillage)
 		attackAllianceDoc.attackMarchEvents.push(event)
 		attackAllianceData.__attackMarchEvents = [{
 			type:Consts.DataChangedType.Add,
@@ -1080,6 +1092,19 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 		var defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
 		if(!_.isObject(defenceVillage)) return Promise.reject(new Error("村落不存在"))
 
+		var event = _.find(attackAllianceDoc.attackMarchEvents, function(event){
+			return _.isEqual(event.marchType, Consts.AllianceMarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
+		})
+		if(_.isObject(event)) return Promise.reject(new Error("您已有部队正在进攻此村落"))
+		event = _.find(attackAllianceDoc.strikeMarchEvents, function(event){
+			return _.isEqual(event.marchType, Consts.AllianceMarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
+		})
+		if(_.isObject(event)) return Promise.reject(new Error("您已有部队正在突袭此村落"))
+		var villageEvent = _.find(attackAllianceDoc.villageEvents, function(event){
+			return _.isEqual(event.villageData.id, defenceVillageId) && _.isEqual(event.playerData.id, attackPlayerDoc._id)
+		})
+		if(_.isObject(villageEvent)) return Promise.reject(new Error("您有部队正在采集此村落"))
+
 		if(attackAllianceDoc != defenceAllianceDoc){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, defenceAllianceDoc._id])
 		}
@@ -1091,7 +1116,7 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 				data:memberInAlliance
 			}]
 		}
-		var event = MarchUtils.createStrikeVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], defenceAllianceDoc, defenceVillage)
+		event = MarchUtils.createStrikeVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], defenceAllianceDoc, defenceVillage)
 		attackAllianceDoc.strikeMarchEvents.push(event)
 		attackAllianceData.__strikeMarchEvents = [{
 			type:Consts.DataChangedType.Add,

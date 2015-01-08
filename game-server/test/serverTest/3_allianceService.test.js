@@ -2895,7 +2895,7 @@ describe("AllianceService", function(){
 		//	}, 5000)
 		//})
 
-		//it("strikeVillage 突袭本联盟村落 无玩家采集", function(done){
+		//it("strikeVillage 突袭本联盟村落,无玩家采集", function(done){
 		//	var m_myAllianceData = null
 		//	Api.loginPlayer(Config.deviceId3, function(doc){
 		//		doc.code.should.equal(200)
