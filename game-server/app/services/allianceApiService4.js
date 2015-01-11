@@ -792,11 +792,11 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 		var defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
 		if(!_.isObject(defenceVillage)) return Promise.reject(new Error("村落不存在"))
 		var event = _.find(attackAllianceDoc.attackMarchEvents, function(event){
-			return _.isEqual(event.marchType, Consts.AllianceMarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
+			return _.isEqual(event.marchType, Consts.MarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
 		})
 		if(_.isObject(event)) return Promise.reject(new Error("您已有部队正在进攻此村落"))
 		event = _.find(attackAllianceDoc.strikeMarchEvents, function(event){
-			return _.isEqual(event.marchType, Consts.AllianceMarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
+			return _.isEqual(event.marchType, Consts.MarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
 		})
 		if(_.isObject(event)) return Promise.reject(new Error("您已有部队正在突袭此村落"))
 		var villageEvent = _.find(attackAllianceDoc.villageEvents, function(event){
@@ -1093,11 +1093,11 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 		if(!_.isObject(defenceVillage)) return Promise.reject(new Error("村落不存在"))
 
 		var event = _.find(attackAllianceDoc.attackMarchEvents, function(event){
-			return _.isEqual(event.marchType, Consts.AllianceMarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
+			return _.isEqual(event.marchType, Consts.MarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
 		})
 		if(_.isObject(event)) return Promise.reject(new Error("您已有部队正在进攻此村落"))
 		event = _.find(attackAllianceDoc.strikeMarchEvents, function(event){
-			return _.isEqual(event.marchType, Consts.AllianceMarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
+			return _.isEqual(event.marchType, Consts.MarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
 		})
 		if(_.isObject(event)) return Promise.reject(new Error("您已有部队正在突袭此村落"))
 		var villageEvent = _.find(attackAllianceDoc.villageEvents, function(event){

@@ -1173,7 +1173,8 @@ Utils.getPlayerFirstUnSavedReport = function(playerDoc){
  */
 Utils.refreshBuildingEventsData = function(playerDoc, playerData){
 	playerData.resources = playerDoc.resources
-	playerData.materials = playerDoc.materials
+	playerData.buildingMaterials = playerDoc.buildingMaterials
+	playerData.technologyMaterials = playerDoc.technologyMaterials
 	playerData.basicInfo = playerDoc.basicInfo
 	playerData.buildings = playerDoc.buildings
 	playerData.towers = playerDoc.towers
@@ -1448,7 +1449,7 @@ Utils.getPlayerDragonDataFromAllianceShrineStageEvent = function(playerId, event
 Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineEvent, playerId){
 	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
 		var marchEvent = allianceDoc.attackMarchEvents[i]
-		if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.Shrine) && _.isEqual(marchEvent.defenceShrineData.shrineEventId, shrineEvent.id) && _.isEqual(marchEvent.attackPlayerData.id, playerId)) return true
+		if(_.isEqual(marchEvent.marchType, Consts.MarchType.Shrine) && _.isEqual(marchEvent.defenceShrineData.shrineEventId, shrineEvent.id) && _.isEqual(marchEvent.attackPlayerData.id, playerId)) return true
 	}
 	for(i = 0; i < shrineEvent.playerTroops.length; i++){
 		var playerTroop = shrineEvent.playerTroops[i]
@@ -1467,7 +1468,7 @@ Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineE
 Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlayerId){
 	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
 		var marchEvent = allianceDoc.attackMarchEvents[i]
-		if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id) && _.isEqual(marchEvent.defencePlayerData.id, targetPlayerId)) return true
+		if(_.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence) && _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id) && _.isEqual(marchEvent.defencePlayerData.id, targetPlayerId)) return true
 	}
 	var playerTroop = null
 	for(i = 0; i < playerDoc.helpToTroops.length; i++){
@@ -1487,7 +1488,7 @@ Utils.getAlliancePlayerBeHelpedTroopsCount = function(allianceDoc, playerDoc){
 	var count = 0
 	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
 		var marchEvent = allianceDoc.attackMarchEvents[i]
-		if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id)) count += 1
+		if(_.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id)) count += 1
 	}
 	count += playerDoc.helpedByTroops.length
 	return count
@@ -2228,4 +2229,39 @@ Utils.returnPlayerHelpedByMarchTroop = function(playerDoc, playerData, marchEven
 		playerDoc.soldiers[soldier.name] += soldier.count
 		playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
 	})
+}
+
+/**
+ * 创建一笔交易
+ * @param playerId
+ * @param type
+ * @param name
+ * @param count
+ * @param price
+ * @returns {*}
+ */
+Utils.createDeal = function(playerId, type, name, count, price){
+	var id = ShortId.generate()
+	var dealForPlayer = {
+		id:id,
+		isSold:false,
+		itemData:{
+			type:type,
+			name:name,
+			count:count,
+			price:price
+		}
+	}
+	var dealForAll = {
+		_id:id,
+		playerId:playerId,
+		itemData:{
+			type:type,
+			name:name,
+			count:count,
+			price:price
+		}
+	}
+
+	return {dealForPlayer:dealForPlayer, dealForAll:dealForAll}
 }

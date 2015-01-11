@@ -9,6 +9,7 @@ var path = require("path")
 var _ = require("underscore")
 var globalChannel = require("pomelo-globalchannel-plugin")
 var Scripto = require('redis-scripto')
+var NodeUtils = require("util")
 
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
@@ -176,6 +177,16 @@ app.configure("production|development", "time", function(){
 	app.set("scripto", scripto)
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
+
+	//redisClient.monitor(function (err, res) {
+	//	console.log("Entering monitoring mode.")
+	//})
+	//
+	//redisClient.on("monitor", function (time, args) {
+	//	console.log(time + ": " + NodeUtils.inspect(args))
+	//})
+
+	redisClient.debug_mode = true
 })
 
 app.set('errorHandler', function(err, msg, resp, session, opts, cb){

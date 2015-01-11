@@ -261,7 +261,7 @@ Utils.createAttackAllianceShrineMarchEvent = function(allianceDoc, playerDoc, dr
 
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.AllianceMarchType.Shrine,
+		marchType:Consts.MarchType.Shrine,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createAttackPlayerData(allianceDoc, playerDoc, playerLocation, dragon, soldiers),
@@ -291,7 +291,7 @@ Utils.createAttackAllianceShrineMarchReturnEvent = function(allianceDoc, playerD
 
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.AllianceMarchType.Shrine,
+		marchType:Consts.MarchType.Shrine,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createAttackPlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, soldiers, woundedSoldiers, rewards),
@@ -319,7 +319,7 @@ Utils.createHelpDefenceMarchEvent = function(allianceDoc, playerDoc, dragon, sol
 
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.AllianceMarchType.HelpDefence,
+		marchType:Consts.MarchType.HelpDefence,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createAttackPlayerData(allianceDoc, playerDoc, playerLocation, dragon, soldiers),
@@ -351,7 +351,7 @@ Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, beHel
 	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, beHelpedPlayerLocation, allianceDoc, playerLocation)
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.AllianceMarchType.HelpDefence,
+		marchType:Consts.MarchType.HelpDefence,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createAttackPlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, soldiers, woundedSoldiers, rewards),
@@ -382,7 +382,7 @@ Utils.createStrikePlayerCityMarchEvent = function(allianceDoc, playerDoc, dragon
 
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.AllianceMarchType.City,
+		marchType:Consts.MarchType.City,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createStrikePlayerData(allianceDoc, playerDoc, playerLocation, dragon),
@@ -414,7 +414,7 @@ Utils.createStrikePlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
 
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.AllianceMarchType.City,
+		marchType:Consts.MarchType.City,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createStrikePlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, rewards),
@@ -446,7 +446,7 @@ Utils.createAttackPlayerCityMarchEvent = function(allianceDoc, playerDoc, dragon
 
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.AllianceMarchType.City,
+		marchType:Consts.MarchType.City,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createAttackPlayerData(allianceDoc, playerDoc, playerLocation, dragon, soldiers),
@@ -480,7 +480,7 @@ Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
 
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.AllianceMarchType.City,
+		marchType:Consts.MarchType.City,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createAttackPlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, soldiers, woundedSoldiers, rewards),
@@ -512,7 +512,7 @@ Utils.createAttackVillageMarchEvent = function(allianceDoc, playerDoc, dragon, s
 
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.AllianceMarchType.Village,
+		marchType:Consts.MarchType.Village,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createAttackPlayerData(allianceDoc, playerDoc, playerLocation, dragon, soldiers),
@@ -546,7 +546,7 @@ Utils.createAttackVillageMarchReturnEvent = function(allianceDoc, playerDoc, dra
 
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.AllianceMarchType.Village,
+		marchType:Consts.MarchType.Village,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createAttackPlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, soldiers, woundedSoldiers, rewards),
@@ -577,7 +577,7 @@ Utils.createStrikeVillageMarchEvent = function(allianceDoc, playerDoc, dragon, d
 
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.AllianceMarchType.Village,
+		marchType:Consts.MarchType.Village,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createStrikePlayerData(allianceDoc, playerDoc, playerLocation, dragon),
@@ -609,7 +609,7 @@ Utils.createStrikeVillageMarchReturnEvent = function(allianceDoc, playerDoc, dra
 
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.AllianceMarchType.Village,
+		marchType:Consts.MarchType.Village,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createStrikePlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, rewards),

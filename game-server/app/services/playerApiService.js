@@ -41,6 +41,7 @@ pro.createPlayer = function(deviceId, callback){
 			countInfo:{deviceId:deviceId},
 			basicInfo:{name:"player_" + token, cityName:"city_" + token}
 		}
+		console.log(doc)
 		return self.playerDao.createAsync(doc)
 	}).then(function(doc){
 		callback(null, doc)
@@ -226,14 +227,14 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		}else{
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.buildingMaterials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
@@ -246,7 +247,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		}
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
+		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 
@@ -404,14 +405,14 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		}else{
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.buildingMaterials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
@@ -423,7 +424,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		}
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
+		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		var house = {
 			type:houseType,
 			level:0,
@@ -595,14 +596,14 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		}else{
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.buildingMaterials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
@@ -614,7 +615,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		}
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
+		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 
@@ -839,14 +840,14 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		}else{
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.buildingMaterials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
@@ -858,7 +859,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		}
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
+		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 
@@ -992,14 +993,14 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		}else{
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.materials)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.buildingMaterials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.materials)
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
@@ -1011,7 +1012,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		}
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, playerDoc.materials)
+		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 
@@ -1315,11 +1316,12 @@ pro.getMaterials = function(playerId, category, callback){
 		}
 		var playerData = {}
 		LogicUtils.removeItemInArray(playerDoc.materialEvents, event)
-		DataUtils.addPlayerMaterials(playerDoc, event.materials)
+		DataUtils.addPlayerMaterials(playerDoc, event)
+		playerData.materialEvents = playerDoc.materialEvents
+		playerData[event.category] = playerDoc[event.category]
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onGetMaterialSuccessAsync, playerDoc, event])
-		playerData.materialEvents = playerDoc.materialEvents
-		playerData.materials = playerDoc.materials
+
 		return self.playerDao.updateAsync(playerDoc)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)

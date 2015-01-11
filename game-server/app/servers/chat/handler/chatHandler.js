@@ -63,6 +63,22 @@ var ChatHandler = function(app){
 			}
 		},
 		{
+			command:"resource",
+			desc:"修改玩家资源数量:resource wood 5",
+			func:function(session, uid, text, callback){
+				var self = this
+				var params = text.split(" ")
+				var name = params[1]
+				var count = params[2]
+				count = parseInt(count)
+				if(_.isNumber(count)){
+					self.app.rpc.logic.commandRemote.resource(session, uid, name, count, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
 			command:"citizen",
 			desc:"修改玩家空闲居民数量:citizen 5",
 			func:function(session, uid, text, callback){
@@ -85,20 +101,6 @@ var ChatHandler = function(app){
 				count = parseInt(count)
 				if(_.isNumber(count)){
 					self.app.rpc.logic.commandRemote.coin(session, uid, count, function(e){
-						callback(e)
-					})
-				}
-			}
-		},
-		{
-			command:"energy",
-			desc:"修改玩家能量数据:energy 5",
-			func:function(session, uid, text, callback){
-				var self = this
-				var count = text.split(" ")[1]
-				count = parseInt(count)
-				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.energy(session, uid, count, function(e){
 						callback(e)
 					})
 				}

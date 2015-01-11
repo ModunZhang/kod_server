@@ -16,6 +16,7 @@ var Handler = function(app){
 	this.playerApiService = app.get("playerApiService")
 	this.playerApiService2 = app.get("playerApiService2")
 	this.playerApiService3 = app.get("playerApiService3")
+	this.playerApiService4 = app.get("playerApiService4")
 }
 var pro = Handler.prototype
 
@@ -703,6 +704,85 @@ pro.setDefenceDragon = function(msg, session, next){
  */
 pro.cancelDefenceDragon = function(msg, session, next){
 	this.playerApiService3.cancelDefenceDragonAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 出售商品
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.sellItem = function(msg, session, next){
+	var type = msg.type
+	var name = msg.name
+	var count = msg.count
+	var price = msg.price
+	this.playerApiService4.sellItemAsync(session.uid, type, name, count, price).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 获取商品列表
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getSellItems = function(msg, session, next){
+	var type = msg.type
+	var name = msg.name
+	this.playerApiService4.getSellItemsAsync(session.uid, type, name).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 购买出售的商品
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.buySellItem = function(msg, session, next){
+	var itemId = msg.itemId
+	this.playerApiService4.buySellItemAsync(session.uid, itemId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 获取出售后赚取的银币
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getMyItemSoldMoney = function(msg, session, next){
+	var itemId = msg.itemId
+	this.playerApiService4.getMyItemSoldMoneyAsync(session.uid, itemId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 下架商品
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.removeMySellItem = function(msg, session, next){
+	var itemId = msg.itemId
+	this.playerApiService4.removeMySellItemAsync(session.uid, itemId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

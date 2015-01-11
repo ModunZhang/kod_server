@@ -1330,7 +1330,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 			funcs.push(returnHelpToTroop(helpToTroop))
 		})
 		_.each(allianceDoc.attackMarchEvents, function(marchEvent){
-			if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, memberDoc._id)){
+			if(_.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, memberDoc._id)){
 				funcs.push(returnHelpedByMarchTroop(marchEvent))
 			}
 		})

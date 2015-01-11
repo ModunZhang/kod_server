@@ -31,7 +31,8 @@ module.exports = {
 		onGetReportsSuccess:"onGetReportsSuccess",
 		onGetSavedReportsSuccess:"onGetSavedReportsSuccess",
 		onGetAllianceViewDataSuccess:"onGetAllianceViewDataSuccess",
-		onGetPlayerViewDataSuccess:"onGetPlayerViewDataSuccess"
+		onGetPlayerViewDataSuccess:"onGetPlayerViewDataSuccess",
+		onGetSellItemsSuccess:"onGetSellItemsSuccess"
 	},
 	alliance:{
 		onAllianceDataChanged:"onAllianceDataChanged"

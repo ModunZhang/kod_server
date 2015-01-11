@@ -752,14 +752,10 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 		var upgradeRequired = DataUtils.getDragonSkillUpgradeRequired(dragon, skill)
 		var playerData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
-		if(playerDoc.resources.energy < upgradeRequired.energy){
-			return Promise.reject(new Error("能量不足"))
-		}
 		if(playerDoc.resources.blood < upgradeRequired.blood){
 			return Promise.reject(new Error("英雄之血不足"))
 		}
 		skill.level += 1
-		playerDoc.resources.energy -= upgradeRequired.energy
 		playerDoc.resources.blood -= upgradeRequired.blood
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])

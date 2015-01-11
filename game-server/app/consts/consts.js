@@ -39,8 +39,13 @@ module.exports = {
 	DragonEquipmentCategory:["crown", "armguardLeft", "armguardRight", "chest", "sting", "orb"],
 	BasicResource:["wood", "stone", "iron", "food"],
 	MaterialType:{
-		Building:"building",
-		Technology:"technology"
+		BuildingMaterials:"buildingMaterials",
+		TechnologyMaterials:"technologyMaterials"
+	},
+	ResourceTypesCanDeal:{
+		Resources:"resources",
+		BuildingMaterials:"buildingMaterials",
+		TechnologyMaterials:"technologyMaterials"
 	},
 	TimeEventType:{
 		Player:"player",
@@ -62,6 +67,13 @@ module.exports = {
 		AttackWin:"attackWin",
 		DefenceWin:"defenceWin"
 	},
+	MarchType:{
+		Village:"village",
+		City:"city",
+		Shrine:"shrine",
+		HelpDefence:"helpDefence"
+	},
+
 	AllianceLanguage:{
 		All:"all",
 		Cn:"cn",
@@ -171,12 +183,6 @@ module.exports = {
 		"top",
 		"bottom"
 	],
-	AllianceMarchType:{
-		Village:"village",
-		City:"city",
-		Shrine:"shrine",
-		HelpDefence:"helpDefence"
-	},
 	AllianceViewDataKeys:[
 		"basicInfo",
 		"members",

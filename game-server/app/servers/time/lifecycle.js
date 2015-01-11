@@ -115,6 +115,8 @@ life.afterStartAll = function(app){
 				})
 				LogicUtils.refreshPlayerPower(playerDoc)
 			})
+			return Promise.resolve()
+		}).then(function(){
 			_.each(allianceDocs, function(allianceDoc){
 				var key = Consts.TimeEventType.Alliance + ":" + allianceDoc._id
 				if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
@@ -163,6 +165,7 @@ life.afterStartAll = function(app){
 					eventFuncs.push(addTimeEventAsync(eventServerId, key, "attackMarchReturnEvents", event.id, event.arriveTime - event.startTime))
 				})
 			})
+			return Promise.resolve()
 		}).then(function(){
 			return app.get("playerDao").updateAllAsync(playerDocs)
 		}).then(function(){

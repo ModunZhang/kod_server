@@ -199,10 +199,15 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 				})
 			}
 		}
-	}else if(_.isEqual(eventType, "materialEvents")){
-		event = LogicUtils.getEventById(playerDoc.materialEvents, eventId)
+	}else if(_.isEqual(eventType, "buildingMaterialEvents")){
+		event = LogicUtils.getEventById(playerDoc.buildingMaterialEvents, eventId)
 		event.finishTime = 0
-		playerData.materialEvents = playerDoc.materialEvents
+		playerData.buildingMaterialEvents = playerDoc.buildingMaterialEvents
+		pushFuncs.push([self.pushService, self.pushService.onMakeMaterialFinishedAsync, playerDoc, event])
+	}else if(_.isEqual(eventType, "technologyMaterialEvents")){
+		event = LogicUtils.getEventById(playerDoc.technologyMaterialEvents, eventId)
+		event.finishTime = 0
+		playerData.technologyMaterialEvents = playerDoc.technologyMaterialEvents
 		pushFuncs.push([self.pushService, self.pushService.onMakeMaterialFinishedAsync, playerDoc, event])
 	}else if(_.isEqual(eventType, "soldierEvents")){
 		event = LogicUtils.getEventById(playerDoc.soldierEvents, eventId)

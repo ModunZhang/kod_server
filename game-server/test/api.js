@@ -104,7 +104,8 @@ Api.freeSpeedUp = function(eventType, eventId, callback){
 
 Api.makeMaterial = function(category, finishNow, callback){
 	var info = {
-		category:category, finishNow:finishNow
+		category:category,
+		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.makeMaterial"
 	pomelo.request(route, info, callback)
@@ -390,6 +391,50 @@ Api.setDefenceDragon = function(dragonType, callback){
 Api.cancelDefenceDragon = function(callback){
 	var route = "logic.playerHandler.cancelDefenceDragon"
 	pomelo.request(route, null, callback)
+}
+
+Api.sellItem = function(type, name, count, price, callback){
+	var info = {
+		type:type,
+		name:name,
+		count:count,
+		price:price
+	}
+	var route = "logic.playerHandler.sellItem"
+	pomelo.request(route, info, callback)
+}
+
+Api.getSellItems = function(type, name, callback){
+	var info = {
+		type:type,
+		name:name
+	}
+	var route = "logic.playerHandler.getSellItems"
+	pomelo.request(route, info, callback)
+}
+
+Api.buySellItem = function(itemId, callback){
+	var info = {
+		itemId:itemId
+	}
+	var route = "logic.playerHandler.buySellItem"
+	pomelo.request(route, info, callback)
+}
+
+Api.getMyItemSoldMoney = function(itemId, callback){
+	var info = {
+		itemId:itemId
+	}
+	var route = "logic.playerHandler.getMyItemSoldMoney"
+	pomelo.request(route, info, callback)
+}
+
+Api.removeMySellItem = function(itemId, callback){
+	var info = {
+		itemId:itemId
+	}
+	var route = "logic.playerHandler.removeMySellItem"
+	pomelo.request(route, info, callback)
 }
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){

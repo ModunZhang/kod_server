@@ -131,6 +131,34 @@ pro.rs = function(uid, count, callback){
 }
 
 /**
+ * 修改指定资源数量
+ * @param uid
+ * @param name
+ * @param count
+ * @param callback
+ */
+pro.resource = function(uid, name, count, callback){
+	var self = this
+	var playerData = {}
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		if(_.isUndefined(doc.resources[name])) return Promise.reject(new Error("资源不存在"))
+		doc.resources[name] = count
+		playerData.resources = doc.resources
+		LogicUtils.refreshPlayerResources(doc)
+		return self.playerDao.updateAsync(doc)
+	}).then(function(doc){
+		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * 修改玩家城民数据
  * @param uid
  * @param count
@@ -169,32 +197,6 @@ pro.coin = function(uid, count, callback){
 		}
 
 		doc.resources.coin = count
-		LogicUtils.refreshPlayerResources(doc)
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, doc)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 修改玩家能量数据
- * @param uid
- * @param count
- * @param callback
- */
-pro.energy = function(uid, count, callback){
-	var self = this
-	this.playerDao.findByIdAsync(uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-
-		var maxEnergy = DataUtils.getPlayerEnergyUpLimit(doc)
-		doc.resources.energy = maxEnergy > count ? count : maxEnergy
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){

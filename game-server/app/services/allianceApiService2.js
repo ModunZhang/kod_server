@@ -120,7 +120,7 @@ pro.quitAlliance = function(playerId, callback){
 			funcs.push(returnHelpToTroop(helpToTroop))
 		})
 		_.each(allianceDoc.attackMarchEvents, function(marchEvent){
-			if(_.isEqual(marchEvent.marchType, Consts.AllianceMarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id)){
+			if(_.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id)){
 				funcs.push(returnHelpedByMarchTroop(marchEvent))
 			}
 		})

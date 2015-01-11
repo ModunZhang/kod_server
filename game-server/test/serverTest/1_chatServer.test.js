@@ -398,13 +398,6 @@
 //			})
 //		})
 //
-//		it("send energy", function(done){
-//			sendChat("energy 500", function(doc){
-//				doc.code.should.equal(200)
-//				done()
-//			})
-//		})
-//
 //		it("send blood", function(done){
 //			sendChat("blood 500", function(doc){
 //				doc.code.should.equal(200)

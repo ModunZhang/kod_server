@@ -95,7 +95,7 @@ var createDragonSchema = function(dragonType){
 }
 
 var playerSchema = new Schema({
-	_id:{type:String, required:true, unique:true, default:ShortId.generate},
+	_id:{type:String, required:true, unique:true, index:true, default:ShortId.generate},
 	countInfo:{
 		deviceId:{type:String, required:true, index:true, unique:true},
 		registerTime:{type:Number, required:true, default:Date.now()},
@@ -127,9 +127,8 @@ var playerSchema = new Schema({
 		gem:{type:Number, required:true, default:ResourceInitData.gem},
 		coin:{type:Number, required:true, default:ResourceInitData.coin},
 		cart:{type:Number, required:true, default:ResourceInitData.cart},
-		energy:{type:Number, required:true, default:ResourceInitData.energy},
 		blood:{type:Number, required:true, default:ResourceInitData.blood},
-		wallHp:{type:Number, required:true, default:BuildingFunction.wall[1].wallHp}
+		wallHp:{type:Number, required:true, default:BuildingFunction.wall[1].wallHp},
 	},
 	alliance:{
 		type:{
@@ -149,11 +148,13 @@ var playerSchema = new Schema({
 		foodExp:{type:Number, required:true, default:0},
 		coinExp:{type:Number, required:true, default:0}
 	},
-	materials:{
+	buildingMaterials:{
 		blueprints:{type:Number, required:true, default:MaterialInitData.blueprints},
 		tools:{type:Number, required:true, default:MaterialInitData.tools},
 		tiles:{type:Number, required:true, default:MaterialInitData.tiles},
-		pulley:{type:Number, required:true, default:MaterialInitData.pulley},
+		pulley:{type:Number, required:true, default:MaterialInitData.pulley}
+	},
+	technologyMaterials:{
 		trainingFigure:{type:Number, required:true, default:MaterialInitData.trainingFigure},
 		bowTarget:{type:Number, required:true, default:MaterialInitData.bowTarget},
 		saddle:{type:Number, required:true, default:MaterialInitData.saddle},
@@ -1286,7 +1287,11 @@ var playerSchema = new Schema({
 		beHelpedPlayerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			cityName:{type:String, required:true}
+			cityName:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			}
 		}
 	}],
 	helpedByTroops:[{
@@ -1323,6 +1328,17 @@ var playerSchema = new Schema({
 		star:{type:Number, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
+	}],
+	deals:[{
+		_id:false,
+		id:{type:String, required:true},
+		isSold:{type:Boolean, required:true},
+		itemData:{
+			type:{type:String, required:true},
+			name:{type:String, required:true},
+			count:{type:String, required:true},
+			price:{type:Number, required:true}
+		}
 	}]
 })
 

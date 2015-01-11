@@ -218,7 +218,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		data:event
 	}]
 
-	if(_.isEqual(event.marchType, Consts.AllianceMarchType.Shrine)){
+	if(_.isEqual(event.marchType, Consts.MarchType.Shrine)){
 		var shrineEvent = LogicUtils.getEventById(attackAllianceDoc.shrineEvents, event.defenceShrineData.shrineEventId)
 		if(!_.isObject(shrineEvent)){
 			this.playerDao.findByIdAsync(event.attackPlayerData.id, true).then(function(doc){
@@ -270,7 +270,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		}
 		return
 	}
-	if(_.isEqual(event.marchType, Consts.AllianceMarchType.HelpDefence)){
+	if(_.isEqual(event.marchType, Consts.MarchType.HelpDefence)){
 		funcs = []
 		funcs.push(this.playerDao.findByIdAsync(event.attackPlayerData.id, true))
 		funcs.push(this.playerDao.findByIdAsync(event.defencePlayerData.id, true))
@@ -285,7 +285,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				beHelpedPlayerData:{
 					id:defencePlayerDoc._id,
 					name:defencePlayerDoc.basicInfo.name,
-					cityName:defencePlayerDoc.basicInfo.cityName
+					cityName:defencePlayerDoc.basicInfo.cityName,
+					location:LogicUtils.getAllianceMemberById(attackAllianceDoc, defencePlayerDoc._id).location
 				}
 			}
 			attackPlayerDoc.helpToTroops.push(helpToTroop)
@@ -342,7 +343,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		})
 		return
 	}
-	if(_.isEqual(event.marchType, Consts.AllianceMarchType.City)){
+	if(_.isEqual(event.marchType, Consts.MarchType.City)){
 		var updateDragonForFight = function(dragonForFight, dragonAfterFight){
 			dragonForFight.currentHp = dragonAfterFight.currentHp
 		}
@@ -785,7 +786,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		})
 		return
 	}
-	if(_.isEqual(event.marchType, Consts.AllianceMarchType.Village)){
+	if(_.isEqual(event.marchType, Consts.MarchType.Village)){
 		var createSoldiers = function(soldiersAfterFight){
 			var soldiers = []
 			_.each(soldiersAfterFight, function(soldierAfterFight){
@@ -1286,7 +1287,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 		type:Consts.DataChangedType.Remove,
 		data:event
 	}]
-	if(_.isEqual(event.marchType, Consts.AllianceMarchType.City)){
+	if(_.isEqual(event.marchType, Consts.MarchType.City)){
 		funcs = []
 		funcs.push(self.playerDao.findByIdAsync(event.attackPlayerData.id, true))
 		funcs.push(self.allianceDao.findByIdAsync(event.defencePlayerData.alliance.id, true))
@@ -1570,7 +1571,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 		})
 		return
 	}
-	if(_.isEqual(event.marchType, Consts.AllianceMarchType.Village)){
+	if(_.isEqual(event.marchType, Consts.MarchType.Village)){
 		var attackDragon = null
 		var attackDragonForFight = null
 		var villageEvent = null
@@ -2283,30 +2284,30 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 			}
 		})
 		_.each(attackAllianceDoc.attackMarchEvents, function(marchEvent){
-			if(_.isEqual(Consts.AllianceMarchType.City, marchEvent.marchType)){
+			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
 				pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
-			}else if(_.isEqual(Consts.AllianceMarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
 				pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
 			}
 		})
 		_.each(attackAllianceDoc.attackMarchReturnEvents, function(marchEvent){
-			if(_.isEqual(Consts.AllianceMarchType.City, marchEvent.marchType)){
+			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
 				pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
-			}else if(_.isEqual(Consts.AllianceMarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
 				pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
 			}
 		})
 		_.each(attackAllianceDoc.strikeMarchEvents, function(marchEvent){
-			if(_.isEqual(Consts.AllianceMarchType.City, marchEvent.marchType)){
+			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
 				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
-			}else if(_.isEqual(Consts.AllianceMarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
 				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
 			}
 		})
 		_.each(attackAllianceDoc.strikeMarchReturnEvents, function(marchEvent){
-			if(_.isEqual(Consts.AllianceMarchType.City, marchEvent.marchType)){
+			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
 				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
-			}else if(_.isEqual(Consts.AllianceMarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
 				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
 			}
 		})

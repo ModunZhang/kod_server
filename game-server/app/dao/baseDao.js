@@ -22,7 +22,7 @@ var LOCKED = "__LOCKED__"
 var BaseDao = function(redis, scripto, modelName, model, indexs, env){
 	this.redis = Promise.promisifyAll(redis)
 	this.modelName = modelName
-	this.model = Promise.promisifyAll(model)
+	this.model = model
 	this.scripto = Promise.promisifyAll(scripto)
 	this.indexs = indexs
 	this.maxChangedCount = 1
@@ -52,10 +52,6 @@ pro.create = function(doc, callback){
 	}
 	if(!_.isObject(doc)){
 		callback(new Error("obj must be a json object"))
-		return
-	}
-	if(!_.isUndefined(doc._id) && !_.isNull(doc._id)){
-		callback(new Error("obj's _id must be empty"))
 		return
 	}
 

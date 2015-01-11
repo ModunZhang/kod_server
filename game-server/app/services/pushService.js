@@ -511,6 +511,16 @@ pro.onGetPlayerViewDataSuccess = function(playerDoc, targetPlayerDoc, callback){
 }
 
 /**
+ * 获取商品列表成功
+ * @param playerDoc
+ * @param itemDocs
+ * @param callback
+ */
+pro.onGetSellItemsSuccess = function(playerDoc, itemDocs, callback){
+	this.pushToPlayer(playerDoc, Events.player.onGetSellItemsSuccess, itemDocs, callback)
+}
+
+/**
  * 推送联盟数据给玩家
  * @param allianceId
  * @param data

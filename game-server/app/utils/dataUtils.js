@@ -281,10 +281,10 @@ Utils.getPlayerResources = function(playerDoc){
 			resources[key] = self.getPlayerResource(playerDoc, key)
 		}else if(_.isEqual("citizen", key)){
 			resources[key] = self.getPlayerCitizen(playerDoc)
-		}else if(_.isEqual("energy", key)){
-			resources[key] = self.getPlayerEnergy(playerDoc)
 		}else if(_.isEqual("wallHp", key)){
 			resources[key] = self.getPlayerWallHp(playerDoc)
+		}else if(_.isEqual("cart", key)){
+			resources[key] = self.getPlayerCart(playerDoc)
 		}else{
 			resources[key] = playerDoc.resources[key]
 		}
@@ -349,6 +349,28 @@ Utils.getPlayerCitizen = function(playerDoc){
 }
 
 /**
+ * 获取玩家运输小车数量
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getPlayerCart = function(playerDoc){
+	var building = playerDoc.buildings.location_16
+	if(building.level < 1) return playerDoc.resources["cart"]
+
+	var config = BuildingFunction.tradeGuild[building.level]
+	var cartLimit = config.maxCart
+	if(cartLimit <= playerDoc.resources["cart"]){
+		return playerDoc.resources["cart"]
+	}
+
+	var totalPerSecond = config.cartRecovery / 60 / 60
+	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
+	var output = Math.floor(totalSecond * totalPerSecond)
+	var totalCart = playerDoc.resources["cart"] + output
+	return totalCart > cartLimit ? cartLimit : totalCart
+}
+
+/**
  * 获取玩家资源上限信息
  * @param playerDoc
  * @param resourceName
@@ -410,28 +432,6 @@ Utils.getHouseUsedCitizen = function(houseType, houseLevel){
 }
 
 /**
- * 获取玩家能量值
- * @param playerDoc
- * @returns {energyMax|*}
- */
-Utils.getPlayerEnergy = function(playerDoc){
-	var building = playerDoc.buildings["location_4"]
-	if(building.level < 1) return playerDoc.resources["energy"]
-
-	var config = BuildingFunction.dragonEyrie[building.level]
-	var energyLimit = config.energyMax
-	if(energyLimit <= playerDoc.resources["energy"]){
-		return energyLimit
-	}
-
-	var totalPerSecond = 1 / config.perEnergyTime
-	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
-	var output = Math.floor(totalSecond * totalPerSecond)
-	var totalEnergy = playerDoc.resources["energy"] + output
-	return totalEnergy > energyLimit ? energyLimit : totalEnergy
-}
-
-/**
  * 获取玩家城墙血量
  * @param playerDoc
  */
@@ -450,18 +450,6 @@ Utils.getPlayerWallHp = function(playerDoc){
 	var output = Math.floor(totalSecond * totalPerSecond)
 	var totalHp = playerDoc.resources["wallHp"] + output
 	return totalHp > hpLimit ? hpLimit : totalHp
-}
-
-/**
- * 获取玩家能量值上限
- * @param playerDoc
- * @returns {energyMax|*}
- */
-Utils.getPlayerEnergyUpLimit = function(playerDoc){
-	var building = playerDoc.buildings["location_4"]
-	var config = BuildingFunction.dragonEyrie[building.level]
-	var energyLimit = config.energyMax
-	return energyLimit
 }
 
 /**
@@ -589,16 +577,18 @@ Utils.getMaterialUpLimit = function(playerDoc){
 /**
  * 将材料添加到材料仓库中,超过仓库上限后直接丢弃
  * @param playerDoc
- * @param materials
+ * @param materialEvent
  */
-Utils.addPlayerMaterials = function(playerDoc, materials){
+Utils.addPlayerMaterials = function(playerDoc, materialEvent){
 	var materialUpLimit = this.getMaterialUpLimit(playerDoc)
+	var materials = materialEvent.materials
+	var playerMaterilas = playerDoc[materialEvent.category]
 	_.each(materials, function(material){
-		var currentMaterial = playerDoc.materials[material.type]
+		var currentMaterial = playerMaterilas[material.type]
 		if(currentMaterial < materialUpLimit){
 			currentMaterial += material.count
 			currentMaterial = currentMaterial > materialUpLimit ? materialUpLimit : currentMaterial
-			playerDoc.materials[material.type] = currentMaterial
+			playerMaterilas[material.type] = currentMaterial
 		}
 	})
 }
@@ -612,14 +602,14 @@ Utils.addPlayerMaterials = function(playerDoc, materials){
 Utils.getMakeMaterialRequired = function(category, toolShopLevel){
 	var required = {}
 	var config = BuildingFunction["toolShop"][toolShopLevel]
-	if(_.isEqual(Consts.MaterialType.Building, category)){
+	if(_.isEqual(Consts.MaterialType.BuildingMaterials, category)){
 		required.resources = {
 			wood:config.productBmWood,
 			stone:config.productBmStone,
 			iron:config.productBmIron
 		}
 		required.buildTime = config.productBmtime
-	}else if(_.isEqual(Consts.MaterialType.Technology, category)){
+	}else if(_.isEqual(Consts.MaterialType.TechnologyMaterials, category)){
 		required.resources = {
 			wood:config.productAmWood,
 			stone:config.productAmStone,
@@ -638,10 +628,10 @@ Utils.getMakeMaterialRequired = function(category, toolShopLevel){
  */
 Utils.createMaterialEvent = function(toolShop, category, finishNow){
 	var categoryConfig = {}
-	categoryConfig[Consts.MaterialType.Building] = [
+	categoryConfig[Consts.MaterialType.BuildingMaterials] = [
 		"blueprints", "tools", "tiles", "pulley"
 	]
-	categoryConfig[Consts.MaterialType.Technology] = [
+	categoryConfig[Consts.MaterialType.TechnologyMaterials] = [
 		"trainingFigure", "bowTarget", "saddle", "ironPart"
 	]
 
@@ -676,7 +666,7 @@ Utils.createMaterialEvent = function(toolShop, category, finishNow){
 		}
 	}
 
-	var buildTime = _.isEqual(Consts.MaterialType.Building, category) ? config.productBmtime : config.productAmtime
+	var buildTime = _.isEqual(Consts.MaterialType.BuildingMaterials, category) ? config.productBmtime : config.productAmtime
 	var event = {
 		id:ShortId.generate(),
 		category:category,
@@ -1169,7 +1159,6 @@ Utils.isDragonTypeExist = function(dragonType){
 Utils.getDragonSkillUpgradeRequired = function(dragon, skill){
 	var config = DragonEyrie.dragonSkill[skill.name]
 	var totalNeed = {}
-	totalNeed.energy = config.energyCostPerLevel
 	totalNeed.blood = config.heroBloodCostPerLevel * (skill.level + 1) * (skill.level + 1)
 	return totalNeed
 }
@@ -2558,4 +2547,44 @@ Utils.getPlayerDailyQuestEventRewards = function(playerDoc, questEvent){
 		})
 	})
 	return rewards
+}
+
+/**
+ * 玩家资源是否足够
+ * @param playerDoc
+ * @param type
+ * @param name
+ * @param count
+ */
+Utils.isPlayerResourceEnough = function(playerDoc, type, name, count){
+	if(_.isUndefined(playerDoc[type][name])) return false
+	return playerDoc[type][name] >= count
+}
+
+/**
+ * 获取出售资源所需的小车
+ * @param playerDoc
+ * @param resourceType
+ * @param resourceName
+ * @param resourceCount
+ */
+Utils.getPlayerCartUsedForSale = function(playerDoc, resourceType, resourceName, resourceCount){
+	var resourceCountPerCart = null
+	if(_.isEqual(resourceType, Consts.ResourceTypesCanDeal.Resources)){
+		resourceCountPerCart = PlayerInitData.intInit.resourcesPerCart.value
+	}else{
+		resourceCountPerCart = PlayerInitData.intInit.materialsPerCart.value
+	}
+
+	return Math.ceil(resourceCount / resourceCountPerCart)
+}
+
+/**
+ * 玩家商品出售队列是否足够
+ * @param playerDoc
+ * @returns {boolean}
+ */
+Utils.isPlayerSellQueueEnough = function(playerDoc){
+	var maxSellQueue = BuildingFunction.tradeGuild[playerDoc.buildings.location_16.level].maxSellQueue
+	return playerDoc.deals.length < maxSellQueue
 }
