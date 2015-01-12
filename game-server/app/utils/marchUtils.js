@@ -43,6 +43,8 @@ var getDistance = function(width, height){
 var getMarchTime = function(playerDoc, width, height){
 	var distance = getDistance(width, height)
 	var time = AllianceInit.intInit.allianceRegionMapBaseTimePerGrid.value * distance * 1000
+	console.log(distance)
+	console.log(time)
 	return time//5 * 1000
 }
 
