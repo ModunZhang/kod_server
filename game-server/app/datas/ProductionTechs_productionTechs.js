@@ -1,130 +1,130 @@
 "use strict"
 
-var technologies = []
-module.exports = technologies
+var productionTechs = {}
+module.exports = productionTechs
 
-technologies[1] = {
-	index:1,
+productionTechs["crane"] = {
 	name:"crane",
+	index:1,
 	unlockBy:1,
 	unlockLevel:0,
 	effectPerLevel:0.050000
 }
-technologies[2] = {
-	index:2,
+productionTechs["fastFix"] = {
 	name:"fastFix",
+	index:2,
 	unlockBy:1,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[3] = {
-	index:3,
+productionTechs["reinforcing"] = {
 	name:"reinforcing",
+	index:3,
 	unlockBy:2,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[4] = {
-	index:4,
+productionTechs["rescueTent"] = {
 	name:"rescueTent",
+	index:4,
 	unlockBy:3,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[5] = {
-	index:5,
+productionTechs["colonization"] = {
 	name:"colonization",
+	index:5,
 	unlockBy:4,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[6] = {
-	index:6,
+productionTechs["negotiation"] = {
 	name:"negotiation",
+	index:6,
 	unlockBy:5,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[7] = {
-	index:7,
+productionTechs["stoneCarving"] = {
 	name:"stoneCarving",
+	index:7,
 	unlockBy:13,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[8] = {
-	index:8,
+productionTechs["ironSmelting"] = {
 	name:"ironSmelting",
+	index:8,
 	unlockBy:7,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[9] = {
-	index:9,
+productionTechs["seniorTower"] = {
 	name:"seniorTower",
+	index:9,
 	unlockBy:3,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[10] = {
-	index:10,
+productionTechs["trap"] = {
 	name:"trap",
+	index:10,
 	unlockBy:9,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[11] = {
-	index:11,
+productionTechs["hideout"] = {
 	name:"hideout",
+	index:11,
 	unlockBy:17,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[12] = {
-	index:12,
+productionTechs["logistics"] = {
 	name:"logistics",
+	index:12,
 	unlockBy:11,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[13] = {
-	index:13,
+productionTechs["forestation"] = {
 	name:"forestation",
+	index:13,
 	unlockBy:1,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[14] = {
-	index:14,
+productionTechs["cropResearch"] = {
 	name:"cropResearch",
+	index:14,
 	unlockBy:8,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[15] = {
-	index:15,
+productionTechs["beerSupply"] = {
 	name:"beerSupply",
+	index:15,
 	unlockBy:14,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[16] = {
-	index:16,
+productionTechs["healingAgent"] = {
 	name:"healingAgent",
+	index:16,
 	unlockBy:15,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[17] = {
-	index:17,
+productionTechs["sketching"] = {
 	name:"sketching",
+	index:17,
 	unlockBy:16,
 	unlockLevel:1,
 	effectPerLevel:0.050000
 }
-technologies[18] = {
-	index:18,
+productionTechs["mintedCoin"] = {
 	name:"mintedCoin",
+	index:18,
 	unlockBy:12,
 	unlockLevel:1,
 	effectPerLevel:0.050000

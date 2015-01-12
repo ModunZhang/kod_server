@@ -1544,52 +1544,52 @@ describe("AllianceService", function(){
 		//	}, 6 * 1000)
 		//})
 
-		//it("strikePlayerCity 无协防玩家,防守玩家有龙", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendChat("dragonstar greenDragon 1", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.sendChat("soldiers 10", function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.setDefenceDragon("greenDragon", function(doc){
-		//					doc.code.should.equal(200)
-		//				})
-		//			})
-		//		})
-		//	})
-		//	setTimeout(function(){
-		//		var m_myAllianceData = null
-		//		var m_enemyAllianceData = null
-		//		Api.loginPlayer(Config.deviceId4, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.getMyAllianceData(function(doc){
-		//				doc.code.should.equal(200)
-		//				var allianceFight = m_myAllianceData.allianceFight
-		//				var enemyAllianceId = _.isEqual(allianceFight.attackAllianceId, m_myAllianceData._id) ? allianceFight.defenceAllianceId : allianceFight.attackAllianceId
-		//				Api.getAllianceViewData(enemyAllianceId, function(doc){
-		//					doc.code.should.equal(200)
-		//					Api.sendChat("dragonstar greenDragon 2", function(doc){
-		//						doc.code.should.equal(200)
-		//						Api.strikePlayerCity("greenDragon", m_enemyAllianceData.members[1].id, function(doc){
-		//							doc.code.should.equal(200)
-		//							done()
-		//						})
-		//					})
-		//				})
-		//				var onGetAllianceViewDataSuccess = function(doc){
-		//					m_enemyAllianceData = doc
-		//					pomelo.removeListener("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
-		//				}
-		//				pomelo.on("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
-		//			})
-		//			var onGetAllianceDataSuccess = function(doc){
-		//				m_myAllianceData = doc
-		//				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//			}
-		//			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//		})
-		//	}, 2 * 1000)
-		//})
+		it("strikePlayerCity 无协防玩家,防守玩家有龙", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("dragonstar greenDragon 1", function(doc){
+					doc.code.should.equal(200)
+					Api.sendChat("soldiers 10", function(doc){
+						doc.code.should.equal(200)
+						Api.setDefenceDragon("greenDragon", function(doc){
+							doc.code.should.equal(200)
+						})
+					})
+				})
+			})
+			setTimeout(function(){
+				var m_myAllianceData = null
+				var m_enemyAllianceData = null
+				Api.loginPlayer(Config.deviceId4, function(doc){
+					doc.code.should.equal(200)
+					Api.getMyAllianceData(function(doc){
+						doc.code.should.equal(200)
+						var allianceFight = m_myAllianceData.allianceFight
+						var enemyAllianceId = _.isEqual(allianceFight.attackAllianceId, m_myAllianceData._id) ? allianceFight.defenceAllianceId : allianceFight.attackAllianceId
+						Api.getAllianceViewData(enemyAllianceId, function(doc){
+							doc.code.should.equal(200)
+							Api.sendChat("dragonstar greenDragon 2", function(doc){
+								doc.code.should.equal(200)
+								Api.strikePlayerCity("greenDragon", m_enemyAllianceData.members[1].id, function(doc){
+									doc.code.should.equal(200)
+									done()
+								})
+							})
+						})
+						var onGetAllianceViewDataSuccess = function(doc){
+							m_enemyAllianceData = doc
+							pomelo.removeListener("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
+						}
+						pomelo.on("onGetAllianceViewDataSuccess", onGetAllianceViewDataSuccess)
+					})
+					var onGetAllianceDataSuccess = function(doc){
+						m_myAllianceData = doc
+						pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+					}
+					pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+				})
+			}, 2 * 1000)
+		})
 
 		//it("getStrikeMarchEventDetail 正常获取", function(done){
 		//	var m_enemyAllianceData = null

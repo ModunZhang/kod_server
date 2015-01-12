@@ -41,7 +41,6 @@ pro.createPlayer = function(deviceId, callback){
 			countInfo:{deviceId:deviceId},
 			basicInfo:{name:"player_" + token, cityName:"city_" + token}
 		}
-		console.log(doc)
 		return self.playerDao.createAsync(doc)
 	}).then(function(doc){
 		callback(null, doc)

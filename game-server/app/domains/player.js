@@ -17,7 +17,7 @@ var ResourceInitData = GameDatas.PlayerInitData.resources[1]
 var MaterialInitData = GameDatas.PlayerInitData.materials[1]
 var SoldierMaterialInitData = GameDatas.PlayerInitData.soldierMaterials[1]
 var DragonMaterialInitData = GameDatas.PlayerInitData.dragonMaterials[1]
-var TechnologyConfig = GameDatas.Technologies.technologies
+var ProductionTechs = GameDatas.ProductionTechs.productionTechs
 var DragonsConfig = GameDatas.DragonEyrie.dragons
 
 
@@ -373,7 +373,11 @@ var playerSchema = new Schema({
 		location_13:createBuildingSchema(13),
 		location_14:createBuildingSchema(14),
 		location_15:createBuildingSchema(15),
-		location_16:createBuildingSchema(16)
+		location_16:createBuildingSchema(16),
+		location_17:createBuildingSchema(17),
+		location_18:createBuildingSchema(18),
+		location_19:createBuildingSchema(19),
+		location_20:createBuildingSchema(20)
 	},
 	buildingEvents:[{
 		_id:false,
@@ -421,39 +425,39 @@ var playerSchema = new Schema({
 	}],
 	technologies:{
 		crane:{
-			index:{type:Number, required:true, default:TechnologyConfig.crane.index},
+			index:{type:Number, required:true, default:ProductionTechs.crane.index},
 			level:{type:Number, required:true, default:0}
 		},
 		fastFix:{
-			index:{type:Number, required:true, default:TechnologyConfig.fastFix.index},
+			index:{type:Number, required:true, default:ProductionTechs.fastFix.index},
 			level:{type:Number, required:true, default:0}
 		},
 		reinforcing:{
-			index:{type:Number, required:true, default:TechnologyConfig.reinforcing.index},
+			index:{type:Number, required:true, default:ProductionTechs.reinforcing.index},
 			level:{type:Number, required:true, default:0}
 		},
 		stoneCarving:{
-			index:{type:Number, required:true, default:TechnologyConfig.stoneCarving.index},
+			index:{type:Number, required:true, default:ProductionTechs.stoneCarving.index},
 			level:{type:Number, required:true, default:0}
 		},
 		ironSmelting:{
-			index:{type:Number, required:true, default:TechnologyConfig.ironSmelting.index},
+			index:{type:Number, required:true, default:ProductionTechs.ironSmelting.index},
 			level:{type:Number, required:true, default:0}
 		},
 		seniorTower:{
-			index:{type:Number, required:true, default:TechnologyConfig.seniorTower.index},
+			index:{type:Number, required:true, default:ProductionTechs.seniorTower.index},
 			level:{type:Number, required:true, default:0}
 		},
 		forestation:{
-			index:{type:Number, required:true, default:TechnologyConfig.forestation.index},
+			index:{type:Number, required:true, default:ProductionTechs.forestation.index},
 			level:{type:Number, required:true, default:0}
 		},
 		cropResearch:{
-			index:{type:Number, required:true, default:TechnologyConfig.cropResearch.index},
+			index:{type:Number, required:true, default:ProductionTechs.cropResearch.index},
 			level:{type:Number, required:true, default:0}
 		},
 		beerSupply:{
-			index:{type:Number, required:true, default:TechnologyConfig.beerSupply.index},
+			index:{type:Number, required:true, default:ProductionTechs.beerSupply.index},
 			level:{type:Number, required:true, default:0}
 		}
 	},

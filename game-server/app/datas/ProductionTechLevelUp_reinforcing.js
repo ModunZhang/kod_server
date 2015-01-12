@@ -9,11 +9,7 @@ reinforcing[1] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[2] = {
 	level:2,
@@ -21,11 +17,7 @@ reinforcing[2] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[3] = {
 	level:3,
@@ -33,11 +25,7 @@ reinforcing[3] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[4] = {
 	level:4,
@@ -45,11 +33,7 @@ reinforcing[4] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[5] = {
 	level:5,
@@ -57,11 +41,7 @@ reinforcing[5] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[6] = {
 	level:6,
@@ -69,11 +49,7 @@ reinforcing[6] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[7] = {
 	level:7,
@@ -81,11 +57,7 @@ reinforcing[7] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[8] = {
 	level:8,
@@ -93,11 +65,7 @@ reinforcing[8] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[9] = {
 	level:9,
@@ -105,11 +73,7 @@ reinforcing[9] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[10] = {
 	level:10,
@@ -117,11 +81,7 @@ reinforcing[10] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[11] = {
 	level:11,
@@ -129,11 +89,7 @@ reinforcing[11] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[12] = {
 	level:12,
@@ -141,11 +97,7 @@ reinforcing[12] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[13] = {
 	level:13,
@@ -153,11 +105,7 @@ reinforcing[13] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[14] = {
 	level:14,
@@ -165,11 +113,7 @@ reinforcing[14] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }
 reinforcing[15] = {
 	level:15,
@@ -177,9 +121,5 @@ reinforcing[15] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1,
-	trainingFigure:0,
-	bowTarget:0,
-	saddle:0,
-	ironPart:0
+	pulley:1
 }

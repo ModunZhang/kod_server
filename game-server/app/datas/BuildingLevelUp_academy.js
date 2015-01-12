@@ -1,9 +1,9 @@
 "use strict"
 
-var acdemy = []
-module.exports = acdemy
+var academy = []
+module.exports = academy
 
-acdemy[0] = {
+academy[0] = {
 	level:0,
 	wood:0,
 	stone:0,
@@ -15,7 +15,7 @@ acdemy[0] = {
 	buildTime:0,
 	citizen:0
 }
-acdemy[1] = {
+academy[1] = {
 	level:1,
 	wood:32400,
 	stone:32400,
@@ -27,7 +27,7 @@ acdemy[1] = {
 	buildTime:2430,
 	citizen:0
 }
-acdemy[2] = {
+academy[2] = {
 	level:2,
 	wood:64800,
 	stone:64800,
@@ -39,7 +39,7 @@ acdemy[2] = {
 	buildTime:3240,
 	citizen:0
 }
-acdemy[3] = {
+academy[3] = {
 	level:3,
 	wood:97200,
 	stone:97200,
@@ -51,7 +51,7 @@ acdemy[3] = {
 	buildTime:4860,
 	citizen:0
 }
-acdemy[4] = {
+academy[4] = {
 	level:4,
 	wood:129600,
 	stone:129600,
@@ -63,7 +63,7 @@ acdemy[4] = {
 	buildTime:6480,
 	citizen:0
 }
-acdemy[5] = {
+academy[5] = {
 	level:5,
 	wood:162000,
 	stone:162000,
@@ -75,7 +75,7 @@ acdemy[5] = {
 	buildTime:12960,
 	citizen:0
 }
-acdemy[6] = {
+academy[6] = {
 	level:6,
 	wood:194400,
 	stone:194400,
@@ -87,7 +87,7 @@ acdemy[6] = {
 	buildTime:19440,
 	citizen:0
 }
-acdemy[7] = {
+academy[7] = {
 	level:7,
 	wood:226800,
 	stone:226800,
@@ -99,7 +99,7 @@ acdemy[7] = {
 	buildTime:25920,
 	citizen:0
 }
-acdemy[8] = {
+academy[8] = {
 	level:8,
 	wood:259200,
 	stone:259200,
@@ -111,7 +111,7 @@ acdemy[8] = {
 	buildTime:38880,
 	citizen:0
 }
-acdemy[9] = {
+academy[9] = {
 	level:9,
 	wood:291600,
 	stone:291600,
@@ -123,7 +123,7 @@ acdemy[9] = {
 	buildTime:51840,
 	citizen:0
 }
-acdemy[10] = {
+academy[10] = {
 	level:10,
 	wood:324000,
 	stone:324000,
@@ -135,7 +135,7 @@ acdemy[10] = {
 	buildTime:64800,
 	citizen:0
 }
-acdemy[11] = {
+academy[11] = {
 	level:11,
 	wood:432000,
 	stone:432000,
@@ -147,7 +147,7 @@ acdemy[11] = {
 	buildTime:77760,
 	citizen:0
 }
-acdemy[12] = {
+academy[12] = {
 	level:12,
 	wood:540000,
 	stone:540000,
@@ -159,7 +159,7 @@ acdemy[12] = {
 	buildTime:103680,
 	citizen:0
 }
-acdemy[13] = {
+academy[13] = {
 	level:13,
 	wood:648000,
 	stone:648000,
@@ -171,7 +171,7 @@ acdemy[13] = {
 	buildTime:129600,
 	citizen:0
 }
-acdemy[14] = {
+academy[14] = {
 	level:14,
 	wood:756000,
 	stone:756000,
@@ -183,7 +183,7 @@ acdemy[14] = {
 	buildTime:155520,
 	citizen:0
 }
-acdemy[15] = {
+academy[15] = {
 	level:15,
 	wood:864000,
 	stone:864000,
@@ -195,7 +195,7 @@ acdemy[15] = {
 	buildTime:181440,
 	citizen:0
 }
-acdemy[16] = {
+academy[16] = {
 	level:16,
 	wood:1620000,
 	stone:1620000,

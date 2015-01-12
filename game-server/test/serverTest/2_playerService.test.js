@@ -1,6 +1,6 @@
 /**
- * Created by modun on 14-7-25.
- */
+* Created by modun on 14-7-25.
+*/
 
 var pomelo = require("../pomelo-client")
 var redis = require("redis")
@@ -62,14 +62,6 @@ describe("PlayerService", function(){
 			Api.upgradeBuilding(26, false, function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("buildingLocation 不合法")
-				done()
-			})
-		})
-
-		it("upgradeBuilding 建筑不存在", function(done){
-			Api.upgradeBuilding(25, false, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("建筑不存在")
 				done()
 			})
 		})
