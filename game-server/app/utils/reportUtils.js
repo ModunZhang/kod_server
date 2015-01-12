@@ -1421,3 +1421,66 @@ Utils.createCollectVillageReport = function(defenceAllianceDoc, defenceVillage, 
 	}
 	return report
 }
+
+/**
+ * 获取部队详细信息
+ * @param playerDoc
+ * @param marchEventId
+ * @param dragon
+ * @param soldiers
+ * @return {*}
+ */
+Utils.getPlayerMarchTroopDetail = function(playerDoc, marchEventId, dragon, soldiers){
+	var getDragonSkills = function(dragon){
+		var skills = []
+		_.each(dragon.skills, function(skill){
+			if(skill.level > 0){
+				skills.push(skill)
+			}
+		})
+		return skills
+	}
+	var getDragonEquipments = function(dragon){
+		var equipments = []
+		_.each(dragon.equipments, function(theEquipment, type){
+			if(!_.isEmpty(theEquipment.name)){
+				var equipment = {
+					type:type,
+					name:theEquipment.name,
+					star:theEquipment.star
+				}
+				equipments.push(equipment)
+			}
+		})
+		return equipments
+	}
+	var getSoldiersInTroop = function(playerDoc, soldiersInTroop){
+		var soldiers = []
+		_.each(soldiersInTroop, function(soldierInTroop){
+			var soldier = {
+				name:soldierInTroop.name,
+				star:1,
+				count:soldierInTroop.count
+			}
+			soldiers.push(soldier)
+		})
+		return soldiers
+	}
+
+	dragon = playerDoc.dragons[dragon.type]
+	var detail = {
+		marchEventId:marchEventId,
+		dragon:{
+			type:dragon.type,
+			level:dragon.level,
+			hp:dragon.hp,
+			equipments:getDragonEquipments(dragon),
+			skills:getDragonSkills(dragon)
+		},
+		soldiers:_.isArray(soldiers) ? getSoldiersInTroop(playerDoc, soldiers) : null
+	}
+
+	if(!_.isArray(soldiers)) delete detail.soldiers
+
+	return detail
+}

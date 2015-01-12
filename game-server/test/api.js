@@ -796,3 +796,27 @@ Api.strikeVillage = function(dragonType, defenceAllianceId, defenceVillageId, ca
 	var route = "logic.allianceHandler.strikeVillage"
 	pomelo.request(route, info, callback)
 }
+
+Api.getAttackMarchEventDetail = function(eventId, callback){
+	var info = {
+		eventId:eventId
+	}
+	var route = "logic.allianceHandler.getAttackMarchEventDetail"
+	pomelo.request(route, info, callback)
+}
+
+Api.getStrikeMarchEventDetail = function(eventId, callback){
+	var info = {
+		eventId:eventId
+	}
+	var route = "logic.allianceHandler.getStrikeMarchEventDetail"
+	pomelo.request(route, info, callback)
+}
+
+Api.getHelpDefenceMarchEventDetail = function(eventId, callback){
+	var info = {
+		eventId:eventId
+	}
+	var route = "logic.allianceHandler.getHelpDefenceMarchEventDetail"
+	pomelo.request(route, info, callback)
+}

@@ -41,9 +41,9 @@ buildings[6] = {
 }
 buildings[7] = {
 	location:7,
-	type:"armyCamp",
+	type:"academy",
 	hasHouse:true,
-	desc:"军用帐篷"
+	desc:"学院"
 }
 buildings[8] = {
 	location:8,
@@ -101,55 +101,25 @@ buildings[16] = {
 }
 buildings[17] = {
 	location:17,
-	type:"materialDepot",
+	type:"workshop",
 	hasHouse:true,
-	desc:"材料库房"
+	desc:"车间"
 }
 buildings[18] = {
 	location:18,
-	type:"warehouse",
+	type:"trainingGround",
 	hasHouse:true,
-	desc:"资源仓库"
+	desc:"猎手大厅"
 }
 buildings[19] = {
 	location:19,
-	type:"academy",
+	type:"hunterHall",
 	hasHouse:true,
 	desc:"学院"
 }
 buildings[20] = {
 	location:20,
-	type:"armyCamp",
-	hasHouse:true,
-	desc:"军用帐篷"
-}
-buildings[21] = {
-	location:21,
-	type:"prison",
-	hasHouse:true,
-	desc:"监狱"
-}
-buildings[22] = {
-	location:22,
-	type:"hunterHall",
-	hasHouse:true,
-	desc:"猎手大厅"
-}
-buildings[23] = {
-	location:23,
-	type:"trainingGround",
-	hasHouse:true,
-	desc:"训练营地"
-}
-buildings[24] = {
-	location:24,
 	type:"stable",
 	hasHouse:true,
 	desc:"马厩"
-}
-buildings[25] = {
-	location:25,
-	type:"workshop",
-	hasHouse:true,
-	desc:"车间"
 }

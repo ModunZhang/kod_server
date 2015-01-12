@@ -521,6 +521,36 @@ pro.onGetSellItemsSuccess = function(playerDoc, itemDocs, callback){
 }
 
 /**
+ * 查看地方进攻行军事件详细信息
+ * @param playerDoc
+ * @param detail
+ * @param callback
+ */
+pro.onGetAttackMarchEventDetail = function(playerDoc, detail, callback){
+	this.pushToPlayer(playerDoc, Events.player.onGetAttackMarchEventDetail, detail, callback)
+}
+
+/**
+ * 查看地方进攻行军事件详细信息
+ * @param playerDoc
+ * @param detail
+ * @param callback
+ */
+pro.onGetStrikeMarchEventDetail = function(playerDoc, detail, callback){
+	this.pushToPlayer(playerDoc, Events.player.onGetStrikeMarchEventDetail, detail, callback)
+}
+
+/**
+ * 查看协助部队行军事件详细信息
+ * @param playerDoc
+ * @param detail
+ * @param callback
+ */
+pro.onGetHelpDefenceMarchEventDetail = function(playerDoc, detail, callback){
+	this.pushToPlayer(playerDoc, Events.player.onGetHelpDefenceMarchEventDetail, detail, callback)
+}
+
+/**
  * 推送联盟数据给玩家
  * @param allianceId
  * @param data

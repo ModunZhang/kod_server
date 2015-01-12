@@ -15,3 +15,7 @@ intInit["materialsPerCart"] = {
 	type:"materialsPerCart",
 	value:1
 }
+intInit["technologyMaxLevel"] = {
+	type:"technologyMaxLevel",
+	value:15
+}

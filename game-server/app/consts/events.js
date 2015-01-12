@@ -32,7 +32,10 @@ module.exports = {
 		onGetSavedReportsSuccess:"onGetSavedReportsSuccess",
 		onGetAllianceViewDataSuccess:"onGetAllianceViewDataSuccess",
 		onGetPlayerViewDataSuccess:"onGetPlayerViewDataSuccess",
-		onGetSellItemsSuccess:"onGetSellItemsSuccess"
+		onGetSellItemsSuccess:"onGetSellItemsSuccess",
+		onGetAttackMarchEventDetail:"onGetAttackMarchEventDetail",
+		onGetStrikeMarchEventDetail:"onGetStrikeMarchEventDetail",
+		onGetHelpDefenceMarchEventDetail:"onGetHelpDefenceMarchEventDetail"
 	},
 	alliance:{
 		onAllianceDataChanged:"onAllianceDataChanged"

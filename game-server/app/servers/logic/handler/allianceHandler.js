@@ -17,6 +17,7 @@ var Handler = function(app){
 	this.allianceApiService2 = app.get("allianceApiService2")
 	this.allianceApiService3 = app.get("allianceApiService3")
 	this.allianceApiService4 = app.get("allianceApiService4")
+	this.allianceApiService5 = app.get("allianceApiService5")
 }
 var pro = Handler.prototype
 
@@ -724,6 +725,51 @@ pro.strikeVillage = function(msg, session, next){
 	var defenceAllianceId = msg.defenceAllianceId
 	var defenceVillageId = msg.defenceVillageId
 	this.allianceApiService4.strikeVillageAsync(session.uid, dragonType, defenceAllianceId, defenceVillageId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 查看敌方进攻行军事件详细信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getAttackMarchEventDetail = function(msg, session, next){
+	var eventId = msg.eventId
+	this.allianceApiService5.getAttackMarchEventDetailAsync(session.uid, eventId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 查看敌方突袭行军事件详细信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getStrikeMarchEventDetail = function(msg, session, next){
+	var eventId = msg.eventId
+	this.allianceApiService5.getStrikeMarchEventDetailAsync(session.uid, eventId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 查看协助部队行军事件详细信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getHelpDefenceMarchEventDetail = function(msg, session, next){
+	var eventId = msg.eventId
+	this.allianceApiService5.getHelpDefenceMarchEventDetailAsync(session.uid, eventId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

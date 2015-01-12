@@ -160,6 +160,20 @@ GameDatas.PlayerVillageExp.coin = require("./PlayerVillageExp_coin.js")
 GameDatas.SmithConfig = {}
 GameDatas.SmithConfig.equipments = require("./SmithConfig_equipments.js")
 
+GameDatas.Technologies = {}
+GameDatas.Technologies.technologies = require("./Technologies_technologies.js")
+
+GameDatas.TechnologyLevelUp = {}
+GameDatas.TechnologyLevelUp.crane = require("./TechnologyLevelUp_crane.js")
+GameDatas.TechnologyLevelUp.fastFix = require("./TechnologyLevelUp_fastFix.js")
+GameDatas.TechnologyLevelUp.reinforcing = require("./TechnologyLevelUp_reinforcing.js")
+GameDatas.TechnologyLevelUp.stoneCarving = require("./TechnologyLevelUp_stoneCarving.js")
+GameDatas.TechnologyLevelUp.ironSmelting = require("./TechnologyLevelUp_ironSmelting.js")
+GameDatas.TechnologyLevelUp.seniorTower = require("./TechnologyLevelUp_seniorTower.js")
+GameDatas.TechnologyLevelUp.forestation = require("./TechnologyLevelUp_forestation.js")
+GameDatas.TechnologyLevelUp.cropResearch = require("./TechnologyLevelUp_cropResearch.js")
+GameDatas.TechnologyLevelUp.beerSupply = require("./TechnologyLevelUp_beerSupply.js")
+
 GameDatas.UnitsConfig = {}
 GameDatas.UnitsConfig.normal = require("./UnitsConfig_normal.js")
 GameDatas.UnitsConfig.special = require("./UnitsConfig_special.js")

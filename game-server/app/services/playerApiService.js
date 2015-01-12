@@ -159,7 +159,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1 || buildingLocation > 25){
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1 || buildingLocation > 20){
 		callback(new Error("buildingLocation 不合法"))
 		return
 	}

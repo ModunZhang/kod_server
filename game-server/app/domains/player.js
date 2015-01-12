@@ -17,7 +17,9 @@ var ResourceInitData = GameDatas.PlayerInitData.resources[1]
 var MaterialInitData = GameDatas.PlayerInitData.materials[1]
 var SoldierMaterialInitData = GameDatas.PlayerInitData.soldierMaterials[1]
 var DragonMaterialInitData = GameDatas.PlayerInitData.dragonMaterials[1]
+var TechnologyConfig = GameDatas.Technologies.technologies
 var DragonsConfig = GameDatas.DragonEyrie.dragons
+
 
 var createBuildingSchema = function(location){
 	var schema = {
@@ -414,6 +416,51 @@ var playerSchema = new Schema({
 	wallEvents:[{
 		_id:false,
 		id:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		finishTime:{type:Number, required:true}
+	}],
+	technologies:{
+		crane:{
+			index:{type:Number, required:true, default:TechnologyConfig.crane.index},
+			level:{type:Number, required:true, default:0}
+		},
+		fastFix:{
+			index:{type:Number, required:true, default:TechnologyConfig.fastFix.index},
+			level:{type:Number, required:true, default:0}
+		},
+		reinforcing:{
+			index:{type:Number, required:true, default:TechnologyConfig.reinforcing.index},
+			level:{type:Number, required:true, default:0}
+		},
+		stoneCarving:{
+			index:{type:Number, required:true, default:TechnologyConfig.stoneCarving.index},
+			level:{type:Number, required:true, default:0}
+		},
+		ironSmelting:{
+			index:{type:Number, required:true, default:TechnologyConfig.ironSmelting.index},
+			level:{type:Number, required:true, default:0}
+		},
+		seniorTower:{
+			index:{type:Number, required:true, default:TechnologyConfig.seniorTower.index},
+			level:{type:Number, required:true, default:0}
+		},
+		forestation:{
+			index:{type:Number, required:true, default:TechnologyConfig.forestation.index},
+			level:{type:Number, required:true, default:0}
+		},
+		cropResearch:{
+			index:{type:Number, required:true, default:TechnologyConfig.cropResearch.index},
+			level:{type:Number, required:true, default:0}
+		},
+		beerSupply:{
+			index:{type:Number, required:true, default:TechnologyConfig.beerSupply.index},
+			level:{type:Number, required:true, default:0}
+		}
+	},
+	technologyEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
