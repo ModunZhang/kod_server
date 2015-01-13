@@ -11,7 +11,7 @@ var Schema = mongoose.Schema
 var Consts = require("../consts/consts")
 var GameDatas = require("../datas/GameDatas")
 
-var BuildingInitData = GameDatas.Buildings.buildings
+var BuildingsConfig = GameDatas.Buildings.buildings
 var BuildingFunction = GameDatas.BuildingFunction
 var ResourceInitData = GameDatas.PlayerInitData.resources[1]
 var MaterialInitData = GameDatas.PlayerInitData.materials[1]
@@ -23,7 +23,7 @@ var DragonsConfig = GameDatas.DragonEyrie.dragons
 
 var createBuildingSchema = function(location){
 	var schema = {
-		type:{type:String, required:true, default:BuildingInitData[location].type},
+		type:{type:String, required:true, default:BuildingsConfig[location].name},
 		level:{type:Number, required:true, default:location <= 4 ? 1 : location > 4 && location <= 9 ? 0 : -1},
 		location:{type:Number, required:true, default:location},
 		houses:[{
@@ -462,6 +462,79 @@ var playerSchema = new Schema({
 		}
 	},
 	productionTechEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		finishTime:{type:Number, required:true}
+	}],
+	militaryTechs:{
+		infantry_infantry:{
+			building:{type:String, required:true, default:"trainingGround"},
+			level:{type:Number, required:true, default:0}
+		},
+		infantry_archer:{
+			building:{type:String, required:true, default:"trainingGround"},
+			level:{type:Number, required:true, default:0}
+		},
+		infantry_cavalry:{
+			building:{type:String, required:true, default:"trainingGround"},
+			level:{type:Number, required:true, default:0}
+		},
+		infantry_siege:{
+			building:{type:String, required:true, default:"trainingGround"},
+			level:{type:Number, required:true, default:0}
+		},
+		archer_infantry:{
+			building:{type:String, required:true, default:"hunterHall"},
+			level:{type:Number, required:true, default:0}
+		},
+		archer_archer:{
+			building:{type:String, required:true, default:"hunterHall"},
+			level:{type:Number, required:true, default:0}
+		},
+		archer_cavalry:{
+			building:{type:String, required:true, default:"hunterHall"},
+			level:{type:Number, required:true, default:0}
+		},
+		archer_siege:{
+			building:{type:String, required:true, default:"hunterHall"},
+			level:{type:Number, required:true, default:0}
+		},
+		cavalry_infantry:{
+			building:{type:String, required:true, default:"stable"},
+			level:{type:Number, required:true, default:0}
+		},
+		cavalry_archer:{
+			building:{type:String, required:true, default:"stable"},
+			level:{type:Number, required:true, default:0}
+		},
+		cavalry_cavalry:{
+			building:{type:String, required:true, default:"stable"},
+			level:{type:Number, required:true, default:0}
+		},
+		cavalry_siege:{
+			building:{type:String, required:true, default:"stable"},
+			level:{type:Number, required:true, default:0}
+		},
+		siege_infantry:{
+			building:{type:String, required:true, default:"workshop"},
+			level:{type:Number, required:true, default:0}
+		},
+		siege_archer:{
+			building:{type:String, required:true, default:"workshop"},
+			level:{type:Number, required:true, default:0}
+		},
+		siege_cavalry:{
+			building:{type:String, required:true, default:"workshop"},
+			level:{type:Number, required:true, default:0}
+		},
+		siege_siege:{
+			building:{type:String, required:true, default:"workshop"},
+			level:{type:Number, required:true, default:0}
+		}
+	},
+	militaryTechEvents:[{
 		_id:false,
 		id:{type:String, required:true},
 		name:{type:String, required:true},

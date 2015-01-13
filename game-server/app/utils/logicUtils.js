@@ -400,6 +400,23 @@ Utils.createProductionTechEvent = function(playerDoc, techName, finishTime){
 }
 
 /**
+ * 创建军事科技升级事件
+ * @param playerDoc
+ * @param techName
+ * @param finishTime
+ * @returns {{id: *, name: *, startTime: number, finishTime: *}}
+ */
+Utils.createMilitaryTechEvent = function(playerDoc, techName, finishTime){
+	var event = {
+		id:ShortId.generate(),
+		name:techName,
+		startTime:Date.now(),
+		finishTime:finishTime
+	}
+	return event
+}
+
+/**
  * 创建小屋建造事件
  * @param playerDoc
  * @param buildingLocation

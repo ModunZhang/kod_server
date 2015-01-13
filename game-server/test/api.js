@@ -446,6 +446,15 @@ Api.upgradeProductionTech = function(techName, finishNow, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.upgradeMilitaryTech = function(techName, finishNow, callback){
+	var info = {
+		techName:techName,
+		finishNow:finishNow
+	}
+	var route = "logic.playerHandler.upgradeMilitaryTech"
+	pomelo.request(route, info, callback)
+}
+
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {

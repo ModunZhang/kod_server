@@ -1,6 +1,6 @@
 /**
-* Created by modun on 14-7-25.
-*/
+ * Created by modun on 14-7-25.
+ */
 
 var pomelo = require("../pomelo-client")
 var redis = require("redis")
@@ -1636,12 +1636,49 @@ describe("PlayerService", function(){
 		})
 
 		it("upgradeProductionTech 正常升级", function(done){
-			Api.upgradeBuilding(7, false, function(doc){
+			Api.upgradeProductionTech("crane", false, function(doc){
 				doc.code.should.equal(200)
-				Api.upgradeProductionTech("crane", false, function(doc){
+				done()
+			})
+		})
+
+		it("upgradeMilitaryTech 建筑还未建造", function(done){
+			Api.upgradeMilitaryTech("infantry_infantry", false, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("建筑还未建造")
+				done()
+			})
+		})
+
+		it("upgradeMilitaryTech 正常升级", function(done){
+			Api.sendChat("keep 15", function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeBuilding(10, true, function(doc){
 					doc.code.should.equal(200)
-					done()
+					Api.upgradeBuilding(11, true, function(doc){
+						doc.code.should.equal(200)
+						Api.upgradeBuilding(12, true, function(doc){
+							doc.code.should.equal(200)
+							Api.upgradeBuilding(13, true, function(doc){
+								doc.code.should.equal(200)
+								Api.upgradeBuilding(18, true, function(doc){
+									doc.code.should.equal(200)
+									Api.upgradeMilitaryTech("infantry_infantry", true, function(doc){
+										doc.code.should.equal(200)
+										done()
+									})
+								})
+							})
+						})
+					})
 				})
+			})
+		})
+
+		it("upgradeMilitaryTech 正常升级", function(done){
+			Api.upgradeMilitaryTech("infantry_infantry", false, function(doc){
+				doc.code.should.equal(200)
+				done()
 			})
 		})
 	})

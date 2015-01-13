@@ -21,16 +21,6 @@ module.exports = {
 		Normal:"normal",
 		Rout:"rout"
 	},
-	NormalSoldierType:{
-		swordsman:"swordsman",
-		sentinel:"sentinel",
-		ranger:"ranger",
-		crossbowman:"crossbowman",
-		lancer:"lancer",
-		horseArcher:"horseArcher",
-		catapult:"catapult",
-		ballista:"ballista"
-	},
 	DragonStatus:{
 		Free:"free",
 		March:"march",
@@ -62,7 +52,8 @@ module.exports = {
 		HouseEvents:"houseEvents",
 		TowerEvents:"towerEvents",
 		WallEvents:"wallEvents",
-		ProductionTechEvents:"productionTechEvents"
+		ProductionTechEvents:"productionTechEvents",
+		MilitaryTechEvents:"militaryTechEvents"
 	},
 	FightResult:{
 		AttackWin:"attackWin",

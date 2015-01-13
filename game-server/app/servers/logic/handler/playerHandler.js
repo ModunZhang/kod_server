@@ -804,3 +804,19 @@ pro.upgradeProductionTech = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 升级军事科技
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.upgradeMilitaryTech = function(msg, session, next){
+	var techName = msg.techName
+	var finishNow = msg.finishNow
+	this.playerApiService4.upgradeMilitaryTechAsync(session.uid, techName, finishNow).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

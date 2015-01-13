@@ -19,7 +19,7 @@ var HouseReturn = GameDatas.HouseReturn
 var HouseFunction = GameDatas.HouseFunction
 var GemsPayment = GameDatas.GemsPayment
 var Houses = GameDatas.Houses.houses
-var Buildings = GameDatas.Buildings.buildings
+var BuildingsConfig = GameDatas.Buildings.buildings
 var PlayerInitData = GameDatas.PlayerInitData
 var HouseInit = PlayerInitData.houses[1]
 var UnitConfig = GameDatas.UnitsConfig
@@ -34,6 +34,8 @@ var Vip = GameDatas.Vip
 var DailyQuests = GameDatas.DailyQuests
 var ProductionTechConfig = GameDatas.ProductionTechs
 var ProductionTechLevelUp = GameDatas.ProductionTechLevelUp
+var MilitaryTechConfig = GameDatas.MilitaryTechs
+var MilitaryTechLevelUp = GameDatas.MilitaryTechLevelUp
 
 
 var Utils = module.exports
@@ -176,6 +178,30 @@ Utils.getProductionTechUpgradeRequired = function(techName, techLevel){
 }
 
 /**
+ * 获取军事科技升级时,需要的资源和道具
+ * @param techName
+ * @param techLevel
+ * @returns {{resources: {coin: *}, materials: {trainingFigure: *, bowTarget: *, saddle: *, ironPart: *}, buildTime: *}}
+ */
+Utils.getMilitaryTechUpgradeRequired = function(techName, techLevel){
+	var config = MilitaryTechLevelUp[techName][techLevel]
+	var required = {
+		resources:{
+			coin:config.coin
+		},
+		materials:{
+			trainingFigure:config.trainingFigure,
+			bowTarget:config.bowTarget,
+			saddle:config.saddle,
+			ironPart:config.ironPart
+		},
+		buildTime:config.buildTime
+	}
+
+	return required
+}
+
+/**
  * 获取小屋升级时,需要的资源和道具
  * @param houseType
  * @param houseLevel
@@ -290,7 +316,7 @@ Utils.isHouseTypeExist = function(houseType){
  * @returns {hasHouse|*}
  */
 Utils.isBuildingHasHouse = function(buildingLocation){
-	var config = Buildings[buildingLocation]
+	var config = BuildingsConfig[buildingLocation]
 	return config.hasHouse
 }
 
@@ -2646,4 +2672,37 @@ Utils.isPlayerUnlockProductionTechLegal = function(playerDoc, techName){
  */
 Utils.isProductionTechReachMaxLevel = function(techLevel){
 	return PlayerInitData.intInit.productionTechnologyMaxLevel <= techLevel
+}
+
+/**
+ * 军事科技名称是否合法
+ * @param techName
+ * @returns {*}
+ */
+Utils.isMilitaryTechNameLegal = function(techName){
+	return _.contains(_.keys(MilitaryTechConfig.militaryTechs), techName)
+}
+
+/**
+ * 玩家军事科技建筑是否建造
+ * @param playerDoc
+ * @param techName
+ */
+Utils.isPlayerMilitaryTechBuildingCreated = function(playerDoc, techName){
+	var tech = playerDoc.militaryTechs[techName]
+	var buildingName = tech.building
+	var buildingConfig = _.find(BuildingsConfig, function(building){
+		return _.isObject(building) && _.isEqual(buildingName, building.name)
+	})
+	var building = playerDoc.buildings["location_" + buildingConfig.location]
+	return building.level > 0
+}
+
+/**
+ * 军事科技是否已达最高等级
+ * @param techLevel
+ * @returns {boolean}
+ */
+Utils.isMilitaryTechReachMaxLevel = function(techLevel){
+	return PlayerInitData.intInit.militaryTechnologyMaxLevel <= techLevel
 }
