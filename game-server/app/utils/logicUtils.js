@@ -1977,7 +1977,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 				playerDoc[reward.type][reward.name] += reward.count
 				if(!_.isObject(playerData[reward.type])) playerData[reward.type] = playerDoc[reward.type]
 			})
-			LogicUtils.refreshPlayerResources(playerDoc)
+			self.refreshPlayerResources(playerDoc)
 			playerData.basicInfo = playerDoc.basicInfo
 			playerData.resources = playerDoc.resources
 		}
@@ -2010,7 +2010,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 				playerDoc[reward.type][reward.name] += reward.count
 				if(!_.isObject(playerData[reward.type])) playerData[reward.type] = playerDoc[reward.type]
 			})
-			LogicUtils.refreshPlayerResources(playerDoc)
+			self.refreshPlayerResources(playerDoc)
 			playerData.basicInfo = playerDoc.basicInfo
 			playerData.resources = playerDoc.resources
 		}
@@ -2069,7 +2069,7 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 
 			var resourceCollected = Math.floor(villageEvent.villageData.collectTotal * ((Date.now() - villageEvent.startTime) / (villageEvent.finishTime - villageEvent.startTime)))
 			resourceCollected = resourceCollected > villageEvent.villageData.collectTotal ? villageEvent.villageData.collectTotal : resourceCollected
-			var village = LogicUtils.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
+			var village = self.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
 			var originalRewards = villageEvent.playerData.rewards
 			var resourceName = village.type.slice(0, -7)
 			var newRewards = [{
@@ -2077,13 +2077,13 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 				name:resourceName,
 				count:resourceCollected
 			}]
-			LogicUtils.mergeRewards(originalRewards, newRewards)
-			LogicUtils.refreshPlayerResources(playerDoc)
+			self.mergeRewards(originalRewards, newRewards)
+			self.refreshPlayerResources(playerDoc)
 			_.each(originalRewards, function(reward){
 				playerDoc[reward.type][reward.name] += reward.count
 				if(!_.isObject(playerData[reward.type])) playerData[reward.type] = playerDoc[reward.type]
 			})
-			LogicUtils.refreshPlayerResources(playerDoc)
+			self.refreshPlayerResources(playerDoc)
 			playerData.basicInfo = playerDoc.basicInfo
 			playerData.resources = playerDoc.resources
 
@@ -2091,7 +2091,7 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 			playerDoc.allianceInfo[resourceName + "Exp"] += collectExp
 			playerData.allianceInfo = playerDoc.allianceInfo
 			var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
-			LogicUtils.addPlayerReport(playerDoc, playerData, collectReport)
+			self.addPlayerReport(playerDoc, playerData, collectReport)
 
 
 			if(village.level > 1){
@@ -2161,12 +2161,12 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByTroop,
 		helpedByPlayerData.soldiers[soldier.name] = helpedByPlayerDoc.soldiers[soldier.name]
 	})
 
-	LogicUtils.refreshPlayerResources(helpedByPlayerDoc)
+	this.refreshPlayerResources(helpedByPlayerDoc)
 	_.each(event.attackPlayerData.rewards, function(reward){
 		helpedByPlayerDoc[reward.type][reward.name] += reward.count
 		if(!_.isObject(helpedByPlayerData[reward.type])) helpedByPlayerData[reward.type] = helpedByPlayerDoc[reward.type]
 	})
-	LogicUtils.refreshPlayerResources(helpedByPlayerDoc)
+	this.refreshPlayerResources(helpedByPlayerDoc)
 	helpedByPlayerData.basicInfo = helpedByPlayerDoc.basicInfo
 	helpedByPlayerData.resources = helpedByPlayerDoc.resources
 }
@@ -2206,12 +2206,12 @@ Utils.returnPlayerHelpToTroop = function(playerDoc, playerData, helpToTroop, hel
 		playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
 	})
 
-	LogicUtils.refreshPlayerResources(playerDoc)
+	self.refreshPlayerResources(playerDoc)
 	_.each(helpedByTroop.rewards, function(reward){
 		playerDoc[reward.type][reward.name] += reward.count
 		if(!_.isObject(playerData[reward.type])) playerData[reward.type] = playerDoc[reward.type]
 	})
-	LogicUtils.refreshPlayerResources(playerDoc)
+	self.refreshPlayerResources(playerDoc)
 	playerData.basicInfo = playerDoc.basicInfo
 	playerData.resources = playerDoc.resources
 
