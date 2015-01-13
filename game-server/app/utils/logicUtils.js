@@ -2182,7 +2182,7 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByTroop,
 Utils.returnPlayerHelpToTroop = function(playerDoc, playerData, helpToTroop, helpToPlayerDoc, helpToPlayerData){
 	if(!_.isObject(playerData.dragons)) playerData.dragons = {}
 	if(!_.isObject(playerData.soldiers)) playerData.soldiers = {}
-	if(_.isArray(playerData.__helpToTroops)) playerData.__helpToTroops = []
+	if(!_.isArray(playerData.__helpToTroops)) playerData.__helpToTroops = []
 
 	this.removeItemInArray(playerDoc.helpToTroops, helpToTroop)
 	playerData.__helpToTroops.push({

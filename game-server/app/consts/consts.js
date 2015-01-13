@@ -61,7 +61,8 @@ module.exports = {
 		BuildingEvents:"buildingEvents",
 		HouseEvents:"houseEvents",
 		TowerEvents:"towerEvents",
-		WallEvents:"wallEvents"
+		WallEvents:"wallEvents",
+		ProductionTechEvents:"productionTechEvents"
 	},
 	FightResult:{
 		AttackWin:"attackWin",

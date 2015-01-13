@@ -10,7 +10,7 @@ ironSmelting[1] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:34128
+	buildTime:95
 }
 ironSmelting[2] = {
 	level:2,
@@ -19,7 +19,7 @@ ironSmelting[2] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:34128
+	buildTime:155
 }
 ironSmelting[3] = {
 	level:3,
@@ -28,7 +28,7 @@ ironSmelting[3] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:45504
+	buildTime:258
 }
 ironSmelting[4] = {
 	level:4,
@@ -37,7 +37,7 @@ ironSmelting[4] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:56880
+	buildTime:413
 }
 ironSmelting[5] = {
 	level:5,
@@ -46,7 +46,7 @@ ironSmelting[5] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:68256
+	buildTime:774
 }
 ironSmelting[6] = {
 	level:6,
@@ -55,7 +55,7 @@ ironSmelting[6] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:91008
+	buildTime:1548
 }
 ironSmelting[7] = {
 	level:7,
@@ -64,7 +64,7 @@ ironSmelting[7] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:113760
+	buildTime:2322
 }
 ironSmelting[8] = {
 	level:8,
@@ -73,7 +73,7 @@ ironSmelting[8] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:136512
+	buildTime:3096
 }
 ironSmelting[9] = {
 	level:9,
@@ -82,7 +82,7 @@ ironSmelting[9] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:159264
+	buildTime:4644
 }
 ironSmelting[10] = {
 	level:10,
@@ -91,7 +91,7 @@ ironSmelting[10] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:182016
+	buildTime:6192
 }
 ironSmelting[11] = {
 	level:11,
@@ -100,7 +100,7 @@ ironSmelting[11] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:12384
 }
 ironSmelting[12] = {
 	level:12,
@@ -109,7 +109,7 @@ ironSmelting[12] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:18576
 }
 ironSmelting[13] = {
 	level:13,
@@ -118,7 +118,7 @@ ironSmelting[13] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:24768
 }
 ironSmelting[14] = {
 	level:14,
@@ -127,7 +127,7 @@ ironSmelting[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:37152
 }
 ironSmelting[15] = {
 	level:15,
@@ -136,5 +136,5 @@ ironSmelting[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:49536
 }

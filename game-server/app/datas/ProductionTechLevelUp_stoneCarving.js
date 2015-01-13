@@ -10,7 +10,7 @@ stoneCarving[1] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:34128
+	buildTime:95
 }
 stoneCarving[2] = {
 	level:2,
@@ -19,7 +19,7 @@ stoneCarving[2] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:34128
+	buildTime:155
 }
 stoneCarving[3] = {
 	level:3,
@@ -28,7 +28,7 @@ stoneCarving[3] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:45504
+	buildTime:258
 }
 stoneCarving[4] = {
 	level:4,
@@ -37,7 +37,7 @@ stoneCarving[4] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:56880
+	buildTime:413
 }
 stoneCarving[5] = {
 	level:5,
@@ -46,7 +46,7 @@ stoneCarving[5] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:68256
+	buildTime:774
 }
 stoneCarving[6] = {
 	level:6,
@@ -55,7 +55,7 @@ stoneCarving[6] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:91008
+	buildTime:1548
 }
 stoneCarving[7] = {
 	level:7,
@@ -64,7 +64,7 @@ stoneCarving[7] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:113760
+	buildTime:2322
 }
 stoneCarving[8] = {
 	level:8,
@@ -73,7 +73,7 @@ stoneCarving[8] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:136512
+	buildTime:3096
 }
 stoneCarving[9] = {
 	level:9,
@@ -82,7 +82,7 @@ stoneCarving[9] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:159264
+	buildTime:4644
 }
 stoneCarving[10] = {
 	level:10,
@@ -91,7 +91,7 @@ stoneCarving[10] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:182016
+	buildTime:6192
 }
 stoneCarving[11] = {
 	level:11,
@@ -100,7 +100,7 @@ stoneCarving[11] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:12384
 }
 stoneCarving[12] = {
 	level:12,
@@ -109,7 +109,7 @@ stoneCarving[12] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:18576
 }
 stoneCarving[13] = {
 	level:13,
@@ -118,7 +118,7 @@ stoneCarving[13] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:24768
 }
 stoneCarving[14] = {
 	level:14,
@@ -127,7 +127,7 @@ stoneCarving[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:37152
 }
 stoneCarving[15] = {
 	level:15,
@@ -136,5 +136,5 @@ stoneCarving[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:49536
 }

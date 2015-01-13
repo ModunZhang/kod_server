@@ -10,7 +10,7 @@ cavalry_archer[1] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:34128
+	buildTime:95
 }
 cavalry_archer[2] = {
 	level:2,
@@ -19,7 +19,7 @@ cavalry_archer[2] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:34128
+	buildTime:155
 }
 cavalry_archer[3] = {
 	level:3,
@@ -28,7 +28,7 @@ cavalry_archer[3] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:45504
+	buildTime:258
 }
 cavalry_archer[4] = {
 	level:4,
@@ -37,7 +37,7 @@ cavalry_archer[4] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:56880
+	buildTime:413
 }
 cavalry_archer[5] = {
 	level:5,
@@ -46,7 +46,7 @@ cavalry_archer[5] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:68256
+	buildTime:774
 }
 cavalry_archer[6] = {
 	level:6,
@@ -55,7 +55,7 @@ cavalry_archer[6] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:91008
+	buildTime:1548
 }
 cavalry_archer[7] = {
 	level:7,
@@ -64,7 +64,7 @@ cavalry_archer[7] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:113760
+	buildTime:2322
 }
 cavalry_archer[8] = {
 	level:8,
@@ -73,7 +73,7 @@ cavalry_archer[8] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:136512
+	buildTime:3096
 }
 cavalry_archer[9] = {
 	level:9,
@@ -82,7 +82,7 @@ cavalry_archer[9] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:159264
+	buildTime:4644
 }
 cavalry_archer[10] = {
 	level:10,
@@ -91,7 +91,7 @@ cavalry_archer[10] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:182016
+	buildTime:6192
 }
 cavalry_archer[11] = {
 	level:11,
@@ -100,7 +100,7 @@ cavalry_archer[11] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:204768
+	buildTime:12384
 }
 cavalry_archer[12] = {
 	level:12,
@@ -109,7 +109,7 @@ cavalry_archer[12] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:204768
+	buildTime:18576
 }
 cavalry_archer[13] = {
 	level:13,
@@ -118,7 +118,7 @@ cavalry_archer[13] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:204768
+	buildTime:24768
 }
 cavalry_archer[14] = {
 	level:14,
@@ -127,7 +127,7 @@ cavalry_archer[14] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:204768
+	buildTime:37152
 }
 cavalry_archer[15] = {
 	level:15,
@@ -136,5 +136,5 @@ cavalry_archer[15] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:204768
+	buildTime:49536
 }

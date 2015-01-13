@@ -10,7 +10,7 @@ infantry_cavalry[1] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:34128
+	buildTime:95
 }
 infantry_cavalry[2] = {
 	level:2,
@@ -19,7 +19,7 @@ infantry_cavalry[2] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:34128
+	buildTime:155
 }
 infantry_cavalry[3] = {
 	level:3,
@@ -28,7 +28,7 @@ infantry_cavalry[3] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:45504
+	buildTime:258
 }
 infantry_cavalry[4] = {
 	level:4,
@@ -37,7 +37,7 @@ infantry_cavalry[4] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:56880
+	buildTime:413
 }
 infantry_cavalry[5] = {
 	level:5,
@@ -46,7 +46,7 @@ infantry_cavalry[5] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:68256
+	buildTime:774
 }
 infantry_cavalry[6] = {
 	level:6,
@@ -55,7 +55,7 @@ infantry_cavalry[6] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:91008
+	buildTime:1548
 }
 infantry_cavalry[7] = {
 	level:7,
@@ -64,7 +64,7 @@ infantry_cavalry[7] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:113760
+	buildTime:2322
 }
 infantry_cavalry[8] = {
 	level:8,
@@ -73,7 +73,7 @@ infantry_cavalry[8] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:136512
+	buildTime:3096
 }
 infantry_cavalry[9] = {
 	level:9,
@@ -82,7 +82,7 @@ infantry_cavalry[9] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:159264
+	buildTime:4644
 }
 infantry_cavalry[10] = {
 	level:10,
@@ -91,7 +91,7 @@ infantry_cavalry[10] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:182016
+	buildTime:6192
 }
 infantry_cavalry[11] = {
 	level:11,
@@ -100,7 +100,7 @@ infantry_cavalry[11] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:204768
+	buildTime:12384
 }
 infantry_cavalry[12] = {
 	level:12,
@@ -109,7 +109,7 @@ infantry_cavalry[12] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:204768
+	buildTime:18576
 }
 infantry_cavalry[13] = {
 	level:13,
@@ -118,7 +118,7 @@ infantry_cavalry[13] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:204768
+	buildTime:24768
 }
 infantry_cavalry[14] = {
 	level:14,
@@ -127,7 +127,7 @@ infantry_cavalry[14] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:204768
+	buildTime:37152
 }
 infantry_cavalry[15] = {
 	level:15,
@@ -136,5 +136,5 @@ infantry_cavalry[15] = {
 	bowTarget:1,
 	saddle:1,
 	ironPart:1,
-	buildTime:204768
+	buildTime:49536
 }

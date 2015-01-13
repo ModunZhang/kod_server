@@ -1634,6 +1634,16 @@ describe("PlayerService", function(){
 				})
 			})
 		})
+
+		it("upgradeProductionTech 正常升级", function(done){
+			Api.upgradeBuilding(7, false, function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeProductionTech("crane", false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
 	})
 
 

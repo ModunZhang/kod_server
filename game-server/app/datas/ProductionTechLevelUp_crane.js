@@ -10,7 +10,7 @@ crane[1] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:34128
+	buildTime:95
 }
 crane[2] = {
 	level:2,
@@ -19,7 +19,7 @@ crane[2] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:34128
+	buildTime:155
 }
 crane[3] = {
 	level:3,
@@ -28,7 +28,7 @@ crane[3] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:45504
+	buildTime:258
 }
 crane[4] = {
 	level:4,
@@ -37,7 +37,7 @@ crane[4] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:56880
+	buildTime:413
 }
 crane[5] = {
 	level:5,
@@ -46,7 +46,7 @@ crane[5] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:68256
+	buildTime:774
 }
 crane[6] = {
 	level:6,
@@ -55,7 +55,7 @@ crane[6] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:91008
+	buildTime:1548
 }
 crane[7] = {
 	level:7,
@@ -64,7 +64,7 @@ crane[7] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:113760
+	buildTime:2322
 }
 crane[8] = {
 	level:8,
@@ -73,7 +73,7 @@ crane[8] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:136512
+	buildTime:3096
 }
 crane[9] = {
 	level:9,
@@ -82,7 +82,7 @@ crane[9] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:159264
+	buildTime:4644
 }
 crane[10] = {
 	level:10,
@@ -91,7 +91,7 @@ crane[10] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:182016
+	buildTime:6192
 }
 crane[11] = {
 	level:11,
@@ -100,7 +100,7 @@ crane[11] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:12384
 }
 crane[12] = {
 	level:12,
@@ -109,7 +109,7 @@ crane[12] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:18576
 }
 crane[13] = {
 	level:13,
@@ -118,7 +118,7 @@ crane[13] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:24768
 }
 crane[14] = {
 	level:14,
@@ -127,7 +127,7 @@ crane[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:37152
 }
 crane[15] = {
 	level:15,
@@ -136,5 +136,5 @@ crane[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:204768
+	buildTime:49536
 }
