@@ -1593,11 +1593,12 @@ Utils.fixAllianceShrineStagePlayerData = function(playerTroops, playerDatas){
  */
 Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, prepareTime){
 	var now = Date.now()
+	var mergeStyle = Consts.AllianceMergeStyle[_.keys(Consts.AllianceMergeStyle)[(Math.random() * 4) << 0]]
 	attackAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
 	attackAllianceDoc.basicInfo.statusStartTime = now
 	attackAllianceDoc.basicInfo.statusFinishTime = prepareTime
 	attackAllianceDoc.allianceFight = {
-		mergeStyle:Consts.AllianceMergePosition[(Math.random() * 4) << 0],
+		mergeStyle:mergeStyle,
 		attackAllianceId:attackAllianceDoc._id,
 		defenceAllianceId:defenceAllianceDoc._id,
 		attackPlayerKills:[],
@@ -2180,6 +2181,7 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByTroop,
  * @param helpToPlayerData
  */
 Utils.returnPlayerHelpToTroop = function(playerDoc, playerData, helpToTroop, helpToPlayerDoc, helpToPlayerData){
+	var self = this
 	if(!_.isObject(playerData.dragons)) playerData.dragons = {}
 	if(!_.isObject(playerData.soldiers)) playerData.soldiers = {}
 	if(!_.isArray(playerData.__helpToTroops)) playerData.__helpToTroops = []

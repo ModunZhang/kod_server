@@ -200,43 +200,43 @@ Utils.getPlayerMarchTime = function(playerDoc, fromAllianceDoc, fromLocation, to
 	}
 
 	if(_.isEqual(fromAllianceDoc._id, fromAllianceDoc.allianceFight.attackAllianceId)){
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergePosition[0])){
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle[0])){
 			width = AllianceMapSize.width - fromLocation.x + toLocation.x
 			height = Math.abs(fromLocation.y - toLocation.y)
 			return getMarchTime(playerDoc, width, height)
 		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergePosition[1])){
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle[1])){
 			width = AllianceMapSize.width - toLocation.x + fromLocation.x
 			height = Math.abs(fromLocation.y - toLocation.y)
 			return getMarchTime(playerDoc, width, height)
 		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergePosition[2])){
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle[2])){
 			width = Math.abs(fromLocation.x - toLocation.x)
 			height = AllianceMapSize.height - fromLocation.y + toLocation.y
 			return getMarchTime(playerDoc, width, height)
 		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergePosition[3])){
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle[3])){
 			width = Math.abs(fromLocation.x - toLocation.x)
 			height = AllianceMapSize.height - toLocation.y + fromLocation.y
 			return getMarchTime(playerDoc, width, height)
 		}
 	}else{
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergePosition[0])){
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle[0])){
 			width = AllianceMapSize.width - toLocation.x + fromLocation.x
 			height = Math.abs(fromLocation.y - toLocation.y)
 			return getMarchTime(playerDoc, width, height)
 		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergePosition[1])){
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle[1])){
 			width = AllianceMapSize.width - fromLocation.x + toLocation.x
 			height = Math.abs(fromLocation.y - toLocation.y)
 			return getMarchTime(playerDoc, width, height)
 		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergePosition[2])){
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle[2])){
 			width = Math.abs(fromLocation.x - toLocation.x)
 			height = AllianceMapSize.height - toLocation.y + fromLocation.y
 			return getMarchTime(playerDoc, width, height)
 		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergePosition[3])){
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle[3])){
 			width = Math.abs(fromLocation.x - toLocation.x)
 			height = AllianceMapSize.height - fromLocation.y + toLocation.y
 			return getMarchTime(playerDoc, width, height)

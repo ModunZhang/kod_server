@@ -178,12 +178,12 @@ module.exports = {
 		VillageBeStriked:"villageBeStriked",
 		CollectResource:"collectResource"
 	},
-	AllianceMergePosition:[
-		"left",
-		"right",
-		"top",
-		"bottom"
-	],
+	AllianceMergeStyle:{
+		Left:"left",
+		Right:"right",
+		Top:"top",
+		Bottom:"bottom"
+	},
 	AllianceViewDataKeys:[
 		"basicInfo",
 		"members",
