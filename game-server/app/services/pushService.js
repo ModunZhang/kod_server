@@ -507,6 +507,7 @@ pro.onGetPlayerViewDataSuccess = function(playerDoc, targetPlayerDoc, callback){
 	playerData.buildings = targetPlayerDoc.buildings
 	playerData.towers = targetPlayerDoc.towers
 	playerData.wall = targetPlayerDoc.wall
+	playerData.helpedByTroops = targetPlayerDoc.helpedByTroops
 	this.pushToPlayer(playerDoc, Events.player.onGetPlayerViewDataSuccess, playerData, callback)
 }
 
