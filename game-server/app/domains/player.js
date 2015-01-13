@@ -130,7 +130,7 @@ var playerSchema = new Schema({
 		coin:{type:Number, required:true, default:ResourceInitData.coin},
 		cart:{type:Number, required:true, default:ResourceInitData.cart},
 		blood:{type:Number, required:true, default:ResourceInitData.blood},
-		wallHp:{type:Number, required:true, default:BuildingFunction.wall[1].wallHp},
+		wallHp:{type:Number, required:true, default:BuildingFunction.wall[1].wallHp}
 	},
 	alliance:{
 		type:{
@@ -423,7 +423,7 @@ var playerSchema = new Schema({
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
-	technologies:{
+	productionTechs:{
 		crane:{
 			index:{type:Number, required:true, default:ProductionTechs.crane.index},
 			level:{type:Number, required:true, default:0}
@@ -461,7 +461,7 @@ var playerSchema = new Schema({
 			level:{type:Number, required:true, default:0}
 		}
 	},
-	technologyEvents:[{
+	productionTechEvents:[{
 		_id:false,
 		id:{type:String, required:true},
 		name:{type:String, required:true},

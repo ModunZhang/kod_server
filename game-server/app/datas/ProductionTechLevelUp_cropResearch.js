@@ -9,7 +9,8 @@ cropResearch[1] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:34128
 }
 cropResearch[2] = {
 	level:2,
@@ -17,7 +18,8 @@ cropResearch[2] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:34128
 }
 cropResearch[3] = {
 	level:3,
@@ -25,7 +27,8 @@ cropResearch[3] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:45504
 }
 cropResearch[4] = {
 	level:4,
@@ -33,7 +36,8 @@ cropResearch[4] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:56880
 }
 cropResearch[5] = {
 	level:5,
@@ -41,7 +45,8 @@ cropResearch[5] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:68256
 }
 cropResearch[6] = {
 	level:6,
@@ -49,7 +54,8 @@ cropResearch[6] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:91008
 }
 cropResearch[7] = {
 	level:7,
@@ -57,7 +63,8 @@ cropResearch[7] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:113760
 }
 cropResearch[8] = {
 	level:8,
@@ -65,7 +72,8 @@ cropResearch[8] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:136512
 }
 cropResearch[9] = {
 	level:9,
@@ -73,7 +81,8 @@ cropResearch[9] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:159264
 }
 cropResearch[10] = {
 	level:10,
@@ -81,7 +90,8 @@ cropResearch[10] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:182016
 }
 cropResearch[11] = {
 	level:11,
@@ -89,7 +99,8 @@ cropResearch[11] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:204768
 }
 cropResearch[12] = {
 	level:12,
@@ -97,7 +108,8 @@ cropResearch[12] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:204768
 }
 cropResearch[13] = {
 	level:13,
@@ -105,7 +117,8 @@ cropResearch[13] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:204768
 }
 cropResearch[14] = {
 	level:14,
@@ -113,7 +126,8 @@ cropResearch[14] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:204768
 }
 cropResearch[15] = {
 	level:15,
@@ -121,5 +135,6 @@ cropResearch[15] = {
 	blueprints:1,
 	tools:1,
 	tiles:1,
-	pulley:1
+	pulley:1,
+	buildTime:204768
 }

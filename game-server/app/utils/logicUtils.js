@@ -139,7 +139,9 @@ Utils.updateBuildingsLevel = function(playerDoc){
 			var round = this.getBuildingCurrentRound(i)
 			var fromToEnd = this.getBuildingRoundFromAndEnd(round)
 			for(var k = fromToEnd.from; k < fromToEnd.to; k++){
-				buildings["location_" + k].level = 0
+				if(_.isObject(buildings["location_" + k])){
+					buildings["location_" + k].level = 0
+				}
 			}
 
 			fromToEnd = this.getBuildingRoundFromAndEnd(round - 1)
@@ -374,6 +376,23 @@ Utils.createBuildingEvent = function(playerDoc, location, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		location:location,
+		startTime:Date.now(),
+		finishTime:finishTime
+	}
+	return event
+}
+
+/**
+ * 创建生产科技升级事件
+ * @param playerDoc
+ * @param techName
+ * @param finishTime
+ * @returns {{id: *, name: *, startTime: number, finishTime: *}}
+ */
+Utils.createProductionTechEvent = function(playerDoc, techName, finishTime){
+	var event = {
+		id:ShortId.generate(),
+		name:techName,
 		startTime:Date.now(),
 		finishTime:finishTime
 	}

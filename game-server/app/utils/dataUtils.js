@@ -32,6 +32,8 @@ var AllianceVillageConfig = GameDatas.AllianceVillage
 var AllianceShrineConfig = GameDatas.AllianceShrine.shrineStage
 var Vip = GameDatas.Vip
 var DailyQuests = GameDatas.DailyQuests
+var ProductionTechConfig = GameDatas.ProductionTechs
+var ProductionTechLevelUp = GameDatas.ProductionTechLevelUp
 
 
 var Utils = module.exports
@@ -136,6 +138,30 @@ Utils.getBuildingUpgradeRequired = function(buildingType, buildingLevel){
 			stone:config.stone,
 			iron:config.iron,
 			citizen:config.citizen
+		},
+		materials:{
+			blueprints:config.blueprints,
+			tools:config.tools,
+			tiles:config.tiles,
+			pulley:config.pulley
+		},
+		buildTime:config.buildTime
+	}
+
+	return required
+}
+
+/**
+ * 获取生产科技升级时,需要的资源和道具
+ * @param techName
+ * @param techLevel
+ * @returns {{resources: {coin: *}, materials: {blueprints: *, tools: *, tiles: *, pulley: *}, buildTime: *}}
+ */
+Utils.getProductionTechUpgradeRequired = function(techName, techLevel){
+	var config = ProductionTechLevelUp[techName][techLevel]
+	var required = {
+		resources:{
+			coin:config.coin
 		},
 		materials:{
 			blueprints:config.blueprints,
@@ -2587,4 +2613,37 @@ Utils.getPlayerCartUsedForSale = function(playerDoc, resourceType, resourceName,
 Utils.isPlayerSellQueueEnough = function(playerDoc){
 	var maxSellQueue = BuildingFunction.tradeGuild[playerDoc.buildings.location_16.level].maxSellQueue
 	return playerDoc.deals.length < maxSellQueue
+}
+
+/**
+ * 生产科技名称是否合法
+ * @param techName
+ * @returns {*}
+ */
+Utils.isProductionTechNameLegal = function(techName){
+	return _.contains(_.keys(ProductionTechConfig.productionTechs), techName)
+}
+
+/**
+ * 解锁科技是否合法
+ * @param playerDoc
+ * @param techName
+ * @returns {boolean}
+ */
+Utils.isPlayerUnlockProductionTechLegal = function(playerDoc, techName){
+	var techConfig = ProductionTechConfig.productionTechs[techName]
+	var preTechConfig = _.find(ProductionTechConfig.productionTechs, function(theTech){
+		return theTech.index == techConfig.unlockBy
+	})
+	var preTech = playerDoc.productionTechs[preTechConfig.name]
+	return preTech.level >= techConfig.unlockLevel
+}
+
+/**
+ * 生产科技是否已达最高等级
+ * @param techLevel
+ * @returns {boolean}
+ */
+Utils.isProductionTechReachMaxLevel = function(techLevel){
+	return PlayerInitData.intInit.productionTechnologyMaxLevel <= techLevel
 }

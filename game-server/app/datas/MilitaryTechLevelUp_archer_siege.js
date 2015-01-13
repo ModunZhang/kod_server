@@ -9,7 +9,8 @@ archer_siege[1] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:34128
 }
 archer_siege[2] = {
 	level:2,
@@ -17,7 +18,8 @@ archer_siege[2] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:34128
 }
 archer_siege[3] = {
 	level:3,
@@ -25,7 +27,8 @@ archer_siege[3] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:45504
 }
 archer_siege[4] = {
 	level:4,
@@ -33,7 +36,8 @@ archer_siege[4] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:56880
 }
 archer_siege[5] = {
 	level:5,
@@ -41,7 +45,8 @@ archer_siege[5] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:68256
 }
 archer_siege[6] = {
 	level:6,
@@ -49,7 +54,8 @@ archer_siege[6] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:91008
 }
 archer_siege[7] = {
 	level:7,
@@ -57,7 +63,8 @@ archer_siege[7] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:113760
 }
 archer_siege[8] = {
 	level:8,
@@ -65,7 +72,8 @@ archer_siege[8] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:136512
 }
 archer_siege[9] = {
 	level:9,
@@ -73,7 +81,8 @@ archer_siege[9] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:159264
 }
 archer_siege[10] = {
 	level:10,
@@ -81,7 +90,8 @@ archer_siege[10] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:182016
 }
 archer_siege[11] = {
 	level:11,
@@ -89,7 +99,8 @@ archer_siege[11] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }
 archer_siege[12] = {
 	level:12,
@@ -97,7 +108,8 @@ archer_siege[12] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }
 archer_siege[13] = {
 	level:13,
@@ -105,7 +117,8 @@ archer_siege[13] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }
 archer_siege[14] = {
 	level:14,
@@ -113,7 +126,8 @@ archer_siege[14] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }
 archer_siege[15] = {
 	level:15,
@@ -121,5 +135,6 @@ archer_siege[15] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }

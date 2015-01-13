@@ -9,7 +9,8 @@ siege_infantry[1] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:34128
 }
 siege_infantry[2] = {
 	level:2,
@@ -17,7 +18,8 @@ siege_infantry[2] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:34128
 }
 siege_infantry[3] = {
 	level:3,
@@ -25,7 +27,8 @@ siege_infantry[3] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:45504
 }
 siege_infantry[4] = {
 	level:4,
@@ -33,7 +36,8 @@ siege_infantry[4] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:56880
 }
 siege_infantry[5] = {
 	level:5,
@@ -41,7 +45,8 @@ siege_infantry[5] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:68256
 }
 siege_infantry[6] = {
 	level:6,
@@ -49,7 +54,8 @@ siege_infantry[6] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:91008
 }
 siege_infantry[7] = {
 	level:7,
@@ -57,7 +63,8 @@ siege_infantry[7] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:113760
 }
 siege_infantry[8] = {
 	level:8,
@@ -65,7 +72,8 @@ siege_infantry[8] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:136512
 }
 siege_infantry[9] = {
 	level:9,
@@ -73,7 +81,8 @@ siege_infantry[9] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:159264
 }
 siege_infantry[10] = {
 	level:10,
@@ -81,7 +90,8 @@ siege_infantry[10] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:182016
 }
 siege_infantry[11] = {
 	level:11,
@@ -89,7 +99,8 @@ siege_infantry[11] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }
 siege_infantry[12] = {
 	level:12,
@@ -97,7 +108,8 @@ siege_infantry[12] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }
 siege_infantry[13] = {
 	level:13,
@@ -105,7 +117,8 @@ siege_infantry[13] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }
 siege_infantry[14] = {
 	level:14,
@@ -113,7 +126,8 @@ siege_infantry[14] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }
 siege_infantry[15] = {
 	level:15,
@@ -121,5 +135,6 @@ siege_infantry[15] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }

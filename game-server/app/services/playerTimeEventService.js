@@ -255,6 +255,23 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 			type:Consts.DataChangedType.Edit,
 			data:event
 		}]
+	}else if(_.isEqual(eventType, "productionTechEvents")){
+		event = LogicUtils.getEventById(playerDoc.productionTechEvents, eventId)
+		LogicUtils.removeItemInArray(playerDoc.productionTechEvents, event)
+		var tech = playerDoc.productionTechs[event.name]
+		tech.level += 1
+		playerData.techs = {}
+		playerData.techs[event.name] = tech
+		if(_.isObject(allianceDoc)){
+			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
+			if(_.isObject(helpEvent)){
+				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+				allianceData.__helpEvents = [{
+					type:Consts.DataChangedType.Remove,
+					data:helpEvent
+				}]
+			}
+		}
 	}
 
 	LogicUtils.refreshPlayerPower(playerDoc)

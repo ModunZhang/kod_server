@@ -1616,6 +1616,24 @@ describe("PlayerService", function(){
 			}
 			pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		})
+
+		it("upgradeProductionTech 前置科技条件不满足", function(done){
+			Api.upgradeProductionTech("fastFix", true, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("前置科技条件不满足")
+				done()
+			})
+		})
+
+		it("upgradeProductionTech 正常升级", function(done){
+			Api.upgradeBuilding(7, true, function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeProductionTech("crane", false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
 	})
 
 

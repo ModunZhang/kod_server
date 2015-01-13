@@ -9,7 +9,8 @@ infantry_archer[1] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:34128
 }
 infantry_archer[2] = {
 	level:2,
@@ -17,7 +18,8 @@ infantry_archer[2] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:34128
 }
 infantry_archer[3] = {
 	level:3,
@@ -25,7 +27,8 @@ infantry_archer[3] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:45504
 }
 infantry_archer[4] = {
 	level:4,
@@ -33,7 +36,8 @@ infantry_archer[4] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:56880
 }
 infantry_archer[5] = {
 	level:5,
@@ -41,7 +45,8 @@ infantry_archer[5] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:68256
 }
 infantry_archer[6] = {
 	level:6,
@@ -49,7 +54,8 @@ infantry_archer[6] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:91008
 }
 infantry_archer[7] = {
 	level:7,
@@ -57,7 +63,8 @@ infantry_archer[7] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:113760
 }
 infantry_archer[8] = {
 	level:8,
@@ -65,7 +72,8 @@ infantry_archer[8] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:136512
 }
 infantry_archer[9] = {
 	level:9,
@@ -73,7 +81,8 @@ infantry_archer[9] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:159264
 }
 infantry_archer[10] = {
 	level:10,
@@ -81,7 +90,8 @@ infantry_archer[10] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:182016
 }
 infantry_archer[11] = {
 	level:11,
@@ -89,7 +99,8 @@ infantry_archer[11] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }
 infantry_archer[12] = {
 	level:12,
@@ -97,7 +108,8 @@ infantry_archer[12] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }
 infantry_archer[13] = {
 	level:13,
@@ -105,7 +117,8 @@ infantry_archer[13] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }
 infantry_archer[14] = {
 	level:14,
@@ -113,7 +126,8 @@ infantry_archer[14] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }
 infantry_archer[15] = {
 	level:15,
@@ -121,5 +135,6 @@ infantry_archer[15] = {
 	trainingFigure:1,
 	bowTarget:1,
 	saddle:1,
-	ironPart:1
+	ironPart:1,
+	buildTime:204768
 }

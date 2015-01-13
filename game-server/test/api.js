@@ -437,6 +437,16 @@ Api.removeMySellItem = function(itemId, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.upgradeProductionTech = function(techName, finishNow, callback){
+	var info = {
+		techName:techName,
+		finishNow:finishNow
+	}
+	var route = "logic.playerHandler.upgradeProductionTech"
+	pomelo.request(route, info, callback)
+}
+
+
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {
 		name:name, tag:tag, language:language, terrain:terrain, flag:flag
