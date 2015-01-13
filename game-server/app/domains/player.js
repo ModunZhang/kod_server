@@ -210,6 +210,16 @@ var playerSchema = new Schema({
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
+	soldierStars:{
+		swordsman:{type:Number, required:true, default:1},
+		sentinel:{type:Number, required:true, default:1},
+		ranger:{type:Number, required:true, default:1},
+		crossbowman:{type:Number, required:true, default:1},
+		lancer:{type:Number, required:true, default:1},
+		horseArcher:{type:Number, required:true, default:1},
+		catapult:{type:Number, required:true, default:1},
+		ballista:{type:Number, required:true, default:1}
+	},
 	woundedSoldiers:{
 		swordsman:{type:Number, required:true, default:0},
 		sentinel:{type:Number, required:true, default:0},

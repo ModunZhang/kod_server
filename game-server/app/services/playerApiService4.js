@@ -447,6 +447,10 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		callback(new Error("techName 不合法"))
 		return
 	}
+	if(!_.isBoolean(finishNow)){
+		callback(new Error("finishNow 不合法"))
+		return
+	}
 
 	var self = this
 	var playerDoc = null
@@ -571,6 +575,10 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		callback(new Error("techName 不合法"))
 		return
 	}
+	if(!_.isBoolean(finishNow)){
+		callback(new Error("finishNow 不合法"))
+		return
+	}
 
 	var self = this
 	var playerDoc = null
@@ -584,6 +592,133 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		}
 		playerDoc = doc
 		tech = playerDoc.militaryTechs[techName]
+		if(!_.isObject(tech)){
+			return Promise.reject(new Error("科技不存在"))
+		}
+		if(!DataUtils.isPlayerMilitaryTechBuildingCreated(playerDoc, techName)) return Promise.reject(new Error("建筑还未建造"))
+		if(DataUtils.isMilitaryTechReachMaxLevel(tech.level)) return Promise.reject(new Error("科技已达最高等级"))
+		return Promise.resolve()
+	}).then(function(){
+		var gemUsed = 0
+		var upgradeRequired = DataUtils.getMilitaryTechUpgradeRequired(techName, tech.level + 1)
+		var buyedResources = null
+		var buyedMaterials = null
+		var preTechEvent = null
+		var playerData = {}
+		LogicUtils.refreshPlayerResources(playerDoc)
+		if(finishNow){
+			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
+			gemUsed += buyedMaterials.gemUsed
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
+		}else{
+			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.technologyMaterials)
+			gemUsed += buyedMaterials.gemUsed
+			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
+			if(playerDoc.militaryTechEvents.length > 0){
+				preTechEvent = playerDoc.militaryTechEvents[0]
+				var timeRemain = (preTechEvent.finishTime - Date.now()) / 1000
+				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
+			}
+		}
+
+		if(gemUsed > playerDoc.resources.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		playerDoc.resources.gem -= gemUsed
+		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
+		LogicUtils.reduce(upgradeRequired.materials, playerDoc.technologyMaterials)
+
+		if(finishNow){
+			tech.level += 1
+			playerData.militaryTechEvents = {}
+			playerData.militaryTechEvents[techName] = playerDoc.militaryTechEvents[techName]
+		}else{
+			if(_.isObject(preTechEvent)){
+				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, Date.now()])
+			}
+			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
+			var event = LogicUtils.createMilitaryTechEvent(playerDoc, techName, finishTime)
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "militaryTechEvents", event.id, finishTime])
+			playerDoc.militaryTechEvents.push(event)
+			playerData.__militaryTechEvents = [{
+				type:Consts.DataChangedType.Add,
+				data:event
+			}]
+		}
+		LogicUtils.refreshPlayerResources(playerDoc)
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.resources = playerDoc.resources
+		playerData.technologyMaterials = playerDoc.technologyMaterials
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 升级士兵星级
+ * @param playerId
+ * @param soldierName
+ * @param finishNow
+ * @param callback
+ */
+pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.hasNormalSoldier(soldierName)){
+		callback(new Error("soldierName 不合法"))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		callback(new Error("finishNow 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(playerDoc.soldierStars[soldierName] >= 3) return Promise.reject(new Error("士兵已达最高星级"))
+
 		if(!_.isObject(tech)){
 			return Promise.reject(new Error("科技不存在"))
 		}

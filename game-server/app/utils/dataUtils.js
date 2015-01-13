@@ -2706,3 +2706,27 @@ Utils.isPlayerMilitaryTechBuildingCreated = function(playerDoc, techName){
 Utils.isMilitaryTechReachMaxLevel = function(techLevel){
 	return PlayerInitData.intInit.militaryTechnologyMaxLevel <= techLevel
 }
+
+/**
+ * 获取升级科技所需的科技点
+ * @param playerDoc
+ * @param soldierName
+ * @returns {Boolean}
+ */
+Utils.isPlayerUpgradeSoldierStarTechPointEnough = function(playerDoc, soldierName){
+	var soldierStar = playerDoc.soldierStars[soldierName]
+	var config = UnitConfig.normal[soldierName + "_" + soldierStar]
+	var soldierType = config.type
+	var techPointNeed = config.upgradeTechPointNeed
+	var techNames = _.filter(_.keys(playerDoc.militaryTechs), function(name){
+		return name.indexOf(soldierType + "_") == 0
+	})
+	var techPointTotal = 0
+	_.each(techNames, function(name){
+		var techPointPerLevel = MilitaryTechConfig.militaryTechs[name].techPointPerLevel
+		var tech = playerDoc.militaryTechs[name]
+		techPointTotal += techPointPerLevel * tech.level
+	})
+
+	return techPointTotal >= techPointNeed
+}

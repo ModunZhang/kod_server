@@ -1472,6 +1472,7 @@ Utils.getPlayerMarchTroopDetail = function(playerDoc, marchEventId, dragon, sold
 		marchEventId:marchEventId,
 		dragon:{
 			type:dragon.type,
+			star:dragon.star,
 			level:dragon.level,
 			hp:dragon.hp,
 			equipments:getDragonEquipments(dragon),
