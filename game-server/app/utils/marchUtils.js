@@ -21,7 +21,7 @@ var Utils = module.exports
 
 var AllianceMapSize = {
 	width:AllianceInit.intInit.allianceRegionMapWidth.value,
-	height:AllianceInit.intInit.allianceRegionMapHeight
+	height:AllianceInit.intInit.allianceRegionMapHeight.value
 }
 
 /**
@@ -42,7 +42,6 @@ var getDistance = function(width, height){
  */
 var getMarchTime = function(playerDoc, width, height){
 	var distance = getDistance(width, height)
-	console.log(width, height, "---------------------------------------------")
 	var time = AllianceInit.intInit.allianceRegionMapBaseTimePerGrid.value * distance * 1000
 	return time//5 * 1000
 }
@@ -199,8 +198,6 @@ Utils.getPlayerMarchTime = function(playerDoc, fromAllianceDoc, fromLocation, to
 		return getMarchTime(playerDoc, width, height)
 	}
 
-	console.log(fromLocation, toLocation)
-	console.log(fromAllianceDoc.allianceFight.mergeStyle)
 	if(_.isEqual(fromAllianceDoc._id, fromAllianceDoc.allianceFight.attackAllianceId)){
 		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Left)){
 			width = AllianceMapSize.width - fromLocation.x + toLocation.x
