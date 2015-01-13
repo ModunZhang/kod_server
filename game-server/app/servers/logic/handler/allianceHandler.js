@@ -775,3 +775,18 @@ pro.getHelpDefenceMarchEventDetail = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 查看协防部队详细信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getHelpDefenceTroopDetail = function(msg, session, next){
+	var helpedByPlayerId = msg.helpedByPlayerId
+	this.allianceApiService5.getHelpDefenceTroopDetailAsync(session.uid, helpedByPlayerId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

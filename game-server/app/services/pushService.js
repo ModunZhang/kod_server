@@ -551,6 +551,10 @@ pro.onGetHelpDefenceMarchEventDetail = function(playerDoc, detail, callback){
 	this.pushToPlayer(playerDoc, Events.player.onGetHelpDefenceMarchEventDetail, detail, callback)
 }
 
+pro.onGetHelpDefenceTroopDetail = function(playerDoc, detail, callback){
+	this.pushToPlayer(playerDoc, Events.player.onGetHelpDefenceTroopDetail, detail, callback)
+}
+
 /**
  * 推送联盟数据给玩家
  * @param allianceId

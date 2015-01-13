@@ -298,3 +298,77 @@ pro.getHelpDefenceMarchEventDetail = function(playerId, eventId, callback){
 		}
 	})
 }
+
+/**
+ * 查看协防部队详细信息
+ * @param playerId
+ * @param helpedByPlayerId
+ * @param callback
+ */
+pro.getHelpDefenceTroopDetail = function(playerId, helpedByPlayerId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(helpedByPlayerId)){
+		callback(new Error("helpedByPlayerId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var attackPlayerDoc = null
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+
+	var helpedByPlayerTroop = null
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
+			return Promise.reject(new Error("玩家未加入联盟"))
+		}
+		helpedByPlayerTroop = _.find(playerDoc.helpedByTroops, function(troop){
+			return _.isEqual(troop.id, helpedByPlayerId)
+		})
+		if(!_.isObject(helpedByPlayerTroop)) return Promise.reject(new Error("没有此玩家的协防部队"))
+
+		return self.playerDao.findByIdAsync(helpedByPlayerId)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		attackPlayerDoc = doc
+		var detail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, helpedByPlayerId, helpedByPlayerTroop.dragon, helpedByPlayerTroop.soldiers)
+		delete detail.marchEventId
+		detail.helpedByPlayerId = helpedByPlayerId
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, attackPlayerDoc._id])
+		pushFuncs.push([self.pushService, self.pushService.onGetHelpDefenceTroopDetailAsync, playerDoc, detail])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(_.isObject(attackPlayerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}

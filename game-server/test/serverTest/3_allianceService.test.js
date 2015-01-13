@@ -1,6 +1,6 @@
 ///**
-//* Created by modun on 14-7-25.
-//*/
+// * Created by modun on 14-7-25.
+// */
 //
 //var pomelo = require("../pomelo-client")
 //var redis = require("redis")
@@ -1314,6 +1314,23 @@
 //		//			pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 //		//		}
 //		//		pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//		//})
+//
+//		//it("getHelpDefenceTroopDetail 正常获取", function(done){
+//		//	setTimeout(function(){
+//		//		Api.loginPlayer(Config.deviceId, function(doc){
+//		//			doc.code.should.equal(200)
+//		//			Api.getHelpDefenceTroopDetail(m_user.helpedByTroops[0].id, function(doc){
+//		//				doc.code.should.equal(200)
+//		//				done()
+//		//			})
+//		//		})
+//		//		var onPlayerLoginSuccess = function(doc){
+//		//			m_user = doc
+//		//			pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//		//		}
+//		//		pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+//		//	}, 5000)
 //		//})
 //
 //		//it("retreatFromBeHelpedAllianceMember 玩家没有协防部队驻扎在目标玩家城市", function(done){
