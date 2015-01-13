@@ -80,7 +80,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 		playerDoc[type][name] -= count
 		playerData[type] = playerDoc[type]
 		playerDoc.resources.cart -= cartNeed
-		playerData.resoruces = playerDoc.resources
+		playerData.resources = playerDoc.resources
 		playerData.basicInfo = playerDoc.basicInfo
 		LogicUtils.refreshPlayerResources(playerDoc)
 
