@@ -374,6 +374,13 @@ var playerSchema = new Schema({
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
+	dragonDeathEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		type:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		finishTime:{type:Number, required:true}
+	}],
 	buildings:{
 		location_1:createBuildingSchema(1),
 		location_2:createBuildingSchema(2),

@@ -464,7 +464,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 				helpDefencePlayerDoc = doc
 			}
-
 			attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
 			attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon)
 			attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers)
@@ -894,7 +893,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
 				return Promise.resolve()
 			}
-
 			attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
 			attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon)
 			attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers)
@@ -1308,7 +1306,6 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 				helpDefencePlayerDoc = doc
 			}
-
 			var attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
 			var attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon)
 			var dragonFightData = null

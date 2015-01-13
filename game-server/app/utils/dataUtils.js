@@ -2748,3 +2748,26 @@ Utils.isPlayerUpgradeSoldierStarTechPointEnough = function(playerDoc, soldierNam
 
 	return techPointTotal >= techPointNeed
 }
+
+/**
+ * 刷新玩家龙的Hp信息
+ * @param playerDoc
+ * @param dragonType
+ */
+Utils.refreshPlayerDragonsHp = function(playerDoc, dragonType){
+	var self = this
+	var config = BuildingFunction.dragonEyrie[playerDoc.buildings.location_4.level]
+	var dragons = arguments.length > 1 ? [playerDoc.dragons[dragonType]] : playerDoc.dragons
+	_.each(dragons, function(dragon){
+		if(dragon.level > 0){
+			var dragonMaxHp = self.getPlayerDragonHpMax(playerDoc, dragon)
+			if(dragon.hp < dragonMaxHp){
+				var totalMilSeconds = Date.now() - dragon.hpRefreshTime
+				var recoveryPerMilSecond = config.hpRecoveryPerHour / 60 / 60 / 1000
+				var hpRecovered = Math.floor(totalMilSeconds * recoveryPerMilSecond)
+				dragon.hp += hpRecovered
+				dragon.hp = dragon.hp > dragonMaxHp ? dragonMaxHp : dragon.hp
+			}
+		}
+	})
+}

@@ -62,6 +62,7 @@ pro.playerLogin = function(playerDoc, callback){
 	playerDoc.countInfo.loginCount += 1
 	LogicUtils.refreshPlayerResources(playerDoc)
 	LogicUtils.refreshPlayerPower(playerDoc)
+	DataUtils.refreshPlayerDragonsHp(playerDoc)
 	if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 		self.pushService.onPlayerLoginSuccessAsync(playerDoc).then(function(){
 			callback()

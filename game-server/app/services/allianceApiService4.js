@@ -257,6 +257,7 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
+		DataUtils.refreshPlayerDragonsHp(playerDoc, dragonType)
 		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
 		dragon.status = Consts.DragonStatus.March
 		playerData.dragons = {}
@@ -488,6 +489,7 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 		var dragon = attackPlayerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, dragonType)
 		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
 		dragon.status = Consts.DragonStatus.March
 		attackPlayerData.dragons = {}
@@ -616,6 +618,7 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 		var dragon = attackPlayerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, dragonType)
 		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
 		dragon.status = Consts.DragonStatus.March
 		attackPlayerData.dragons = {}
@@ -755,6 +758,7 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 		var dragon = attackPlayerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, dragonType)
 		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
 		dragon.status = Consts.DragonStatus.March
 		attackPlayerData.dragons = {}
@@ -1062,6 +1066,7 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 		var dragon = attackPlayerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, dragonType)
 		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
 		dragon.status = Consts.DragonStatus.March
 		attackPlayerData.dragons = {}
