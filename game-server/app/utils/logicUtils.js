@@ -417,6 +417,23 @@ Utils.createMilitaryTechEvent = function(playerDoc, techName, finishTime){
 }
 
 /**
+ * 创建士兵升级事件
+ * @param playerDoc
+ * @param soldierName
+ * @param finishTime
+ * @returns {{id: *, name: *, startTime: number, finishTime: *}}
+ */
+Utils.createSoldierStarEvent = function(playerDoc, soldierName, finishTime){
+	var event = {
+		id:ShortId.generate(),
+		name:soldierName,
+		startTime:Date.now(),
+		finishTime:finishTime
+	}
+	return event
+}
+
+/**
  * 创建小屋建造事件
  * @param playerDoc
  * @param buildingLocation

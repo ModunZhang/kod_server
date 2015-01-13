@@ -820,3 +820,19 @@ pro.upgradeMilitaryTech = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 升级士兵星级
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.upgradeSoldierStar = function(msg, session, next){
+	var soldierName = msg.soldierName
+	var finishNow = msg.finishNow
+	this.playerApiService4.upgradeSoldierStarAsync(session.uid, soldierName, finishNow).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

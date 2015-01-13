@@ -253,10 +253,55 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 	}else if(_.isEqual(eventType, "productionTechEvents")){
 		event = LogicUtils.getEventById(playerDoc.productionTechEvents, eventId)
 		LogicUtils.removeItemInArray(playerDoc.productionTechEvents, event)
-		var tech = playerDoc.productionTechs[event.name]
-		tech.level += 1
-		playerData.techs = {}
-		playerData.techs[event.name] = tech
+		var productionTech = playerDoc.productionTechs[event.name]
+		productionTech.level += 1
+		playerData.productionTechs = {}
+		playerData.productionTechs[event.name] = productionTech
+		playerData.__productionTechEvents = [{
+			type:Consts.DataChangedType.Remove,
+			data:event
+		}]
+		if(_.isObject(allianceDoc)){
+			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
+			if(_.isObject(helpEvent)){
+				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+				allianceData.__helpEvents = [{
+					type:Consts.DataChangedType.Remove,
+					data:helpEvent
+				}]
+			}
+		}
+	}else if(_.isEqual(eventType, "militaryTechEvents")){
+		event = LogicUtils.getEventById(playerDoc.militaryTechEvents, eventId)
+		LogicUtils.removeItemInArray(playerDoc.militaryTechEvents, event)
+		var militaryTech = playerDoc.militaryTechs[event.name]
+		militaryTech.level += 1
+		playerData.militaryTechs = {}
+		playerData.militaryTechs[event.name] = militaryTech
+		playerData.__militaryTechEvents = [{
+			type:Consts.DataChangedType.Remove,
+			data:event
+		}]
+		if(_.isObject(allianceDoc)){
+			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
+			if(_.isObject(helpEvent)){
+				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+				allianceData.__helpEvents = [{
+					type:Consts.DataChangedType.Remove,
+					data:helpEvent
+				}]
+			}
+		}
+	}else if(_.isEqual(eventType, "soldierStarEvents")){
+		event = LogicUtils.getEventById(playerDoc.soldierStarEvents, eventId)
+		LogicUtils.removeItemInArray(playerDoc.soldierStarEvents, event)
+		playerDoc.soldierStars[event.name]+= 1
+		playerData.soldierStars = {}
+		playerData.soldierStars[event.name] = playerDoc.soldierStars[event.name]
+		playerData.__soldierStarEvents = [{
+			type:Consts.DataChangedType.Remove,
+			data:event
+		}]
 		if(_.isObject(allianceDoc)){
 			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
 			if(_.isObject(helpEvent)){

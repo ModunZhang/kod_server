@@ -51,7 +51,7 @@ GameDatas.BuildingFunction.townHall = require("./BuildingFunction_townHall.js")
 GameDatas.BuildingFunction.tradeGuild = require("./BuildingFunction_tradeGuild.js")
 GameDatas.BuildingFunction.workshop = require("./BuildingFunction_workshop.js")
 GameDatas.BuildingFunction.trainingGround = require("./BuildingFunction_trainingGround.js")
-GameDatas.BuildingFunction.hunterhall = require("./BuildingFunction_hunterhall.js")
+GameDatas.BuildingFunction.hunterHall = require("./BuildingFunction_hunterHall.js")
 GameDatas.BuildingFunction.stable = require("./BuildingFunction_stable.js")
 
 GameDatas.BuildingLevelUp = {}
@@ -75,7 +75,7 @@ GameDatas.BuildingLevelUp.townHall = require("./BuildingLevelUp_townHall.js")
 GameDatas.BuildingLevelUp.tradeGuild = require("./BuildingLevelUp_tradeGuild.js")
 GameDatas.BuildingLevelUp.workshop = require("./BuildingLevelUp_workshop.js")
 GameDatas.BuildingLevelUp.trainingGround = require("./BuildingLevelUp_trainingGround.js")
-GameDatas.BuildingLevelUp.hunterhall = require("./BuildingLevelUp_hunterhall.js")
+GameDatas.BuildingLevelUp.hunterHall = require("./BuildingLevelUp_hunterHall.js")
 GameDatas.BuildingLevelUp.stable = require("./BuildingLevelUp_stable.js")
 
 GameDatas.Buildings = {}

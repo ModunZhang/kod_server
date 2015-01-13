@@ -202,6 +202,24 @@ Utils.getMilitaryTechUpgradeRequired = function(techName, techLevel){
 }
 
 /**
+ * 获取士兵升级所需资源
+ * @param soldierName
+ * @param star
+ * @returns {{resources: {coin: *}, buildTime: *}}
+ */
+Utils.getSoldierStarUpgradeRequired = function(soldierName, star){
+	var config = UnitConfig.normal[soldierName + "_" + star]
+	var required = {
+		resources:{
+			coin:config.upgradeCoinNeed
+		},
+		upgradeTime:config.upgradeTimeSecondsNeed
+	}
+
+	return required
+}
+
+/**
  * 获取小屋升级时,需要的资源和道具
  * @param houseType
  * @param houseLevel

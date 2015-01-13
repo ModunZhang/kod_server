@@ -1,9 +1,9 @@
 "use strict"
 
-var hunterhall = []
-module.exports = hunterhall
+var hunterHall = []
+module.exports = hunterHall
 
-hunterhall[0] = {
+hunterHall[0] = {
 	level:0,
 	wood:0,
 	stone:0,
@@ -15,7 +15,7 @@ hunterhall[0] = {
 	buildTime:0,
 	citizen:0
 }
-hunterhall[1] = {
+hunterHall[1] = {
 	level:1,
 	wood:230400,
 	stone:230400,
@@ -27,7 +27,7 @@ hunterhall[1] = {
 	buildTime:34128,
 	citizen:0
 }
-hunterhall[2] = {
+hunterHall[2] = {
 	level:2,
 	wood:259200,
 	stone:259200,
@@ -39,7 +39,7 @@ hunterhall[2] = {
 	buildTime:45504,
 	citizen:0
 }
-hunterhall[3] = {
+hunterHall[3] = {
 	level:3,
 	wood:288000,
 	stone:288000,
@@ -51,7 +51,7 @@ hunterhall[3] = {
 	buildTime:56880,
 	citizen:0
 }
-hunterhall[4] = {
+hunterHall[4] = {
 	level:4,
 	wood:384000,
 	stone:384000,
@@ -63,7 +63,7 @@ hunterhall[4] = {
 	buildTime:68256,
 	citizen:0
 }
-hunterhall[5] = {
+hunterHall[5] = {
 	level:5,
 	wood:480000,
 	stone:480000,
@@ -75,7 +75,7 @@ hunterhall[5] = {
 	buildTime:91008,
 	citizen:0
 }
-hunterhall[6] = {
+hunterHall[6] = {
 	level:6,
 	wood:576000,
 	stone:576000,
@@ -87,7 +87,7 @@ hunterhall[6] = {
 	buildTime:113760,
 	citizen:0
 }
-hunterhall[7] = {
+hunterHall[7] = {
 	level:7,
 	wood:672000,
 	stone:672000,
@@ -99,7 +99,7 @@ hunterhall[7] = {
 	buildTime:136512,
 	citizen:0
 }
-hunterhall[8] = {
+hunterHall[8] = {
 	level:8,
 	wood:768000,
 	stone:768000,
@@ -111,7 +111,7 @@ hunterhall[8] = {
 	buildTime:159264,
 	citizen:0
 }
-hunterhall[9] = {
+hunterHall[9] = {
 	level:9,
 	wood:1440000,
 	stone:1440000,
@@ -123,7 +123,7 @@ hunterhall[9] = {
 	buildTime:182016,
 	citizen:0
 }
-hunterhall[10] = {
+hunterHall[10] = {
 	level:10,
 	wood:2880000,
 	stone:2880000,

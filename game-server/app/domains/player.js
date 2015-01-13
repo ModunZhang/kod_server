@@ -220,6 +220,13 @@ var playerSchema = new Schema({
 		catapult:{type:Number, required:true, default:1},
 		ballista:{type:Number, required:true, default:1}
 	},
+	soldierStarEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		finishTime:{type:Number, required:true}
+	}],
 	woundedSoldiers:{
 		swordsman:{type:Number, required:true, default:0},
 		sentinel:{type:Number, required:true, default:0},

@@ -118,6 +118,16 @@ life.afterStartAll = function(app){
 					event.startTime = now
 					eventFuncs.push(addTimeEventAsync(eventServerId, key, "productionTechEvents", event.id, event.finishTime - event.startTime))
 				})
+				_.each(playerDoc.militaryTechEvents, function(event){
+					event.finishTime = now + (event.finishTime - event.startTime)
+					event.startTime = now
+					eventFuncs.push(addTimeEventAsync(eventServerId, key, "militaryTechEvents", event.id, event.finishTime - event.startTime))
+				})
+				_.each(playerDoc.soldierStarEvents, function(event){
+					event.finishTime = now + (event.finishTime - event.startTime)
+					event.startTime = now
+					eventFuncs.push(addTimeEventAsync(eventServerId, key, "soldierStarEvents", event.id, event.finishTime - event.startTime))
+				})
 				LogicUtils.refreshPlayerPower(playerDoc)
 			})
 			return Promise.resolve()

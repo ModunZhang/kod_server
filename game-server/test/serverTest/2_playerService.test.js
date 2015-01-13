@@ -1681,6 +1681,37 @@ describe("PlayerService", function(){
 				done()
 			})
 		})
+
+		it("upgradeSoldierStar 科技点不足", function(done){
+			Api.upgradeSoldierStar("ranger", true, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("科技点不足")
+				done()
+			})
+		})
+
+		it("upgradeSoldierStar 正常升级", function(done){
+			Api.upgradeBuilding(19, true, function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeMilitaryTech("archer_infantry", true, function(doc){
+					doc.code.should.equal(200)
+					Api.upgradeSoldierStar("ranger", true, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("upgradeSoldierStar 正常升级", function(done){
+			Api.upgradeMilitaryTech("archer_infantry", true, function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeSoldierStar("ranger", false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
 	})
 
 

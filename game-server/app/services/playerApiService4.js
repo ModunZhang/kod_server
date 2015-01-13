@@ -621,8 +621,8 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.technologyMaterials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
-			if(playerDoc.militaryTechEvents.length > 0){
-				preTechEvent = playerDoc.militaryTechEvents[0]
+			if(playerDoc.militaryTechEvents.length > 0 || playerDoc.soldierStarEvents.length > 0){
+				preTechEvent = playerDoc.militaryTechEvents.length > 0 ? playerDoc.militaryTechEvents[0] : playerDoc.soldierStarEvents[0]
 				var timeRemain = (preTechEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
@@ -718,38 +718,26 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		}
 		playerDoc = doc
 		if(playerDoc.soldierStars[soldierName] >= 3) return Promise.reject(new Error("士兵已达最高星级"))
-
-		if(!_.isObject(tech)){
-			return Promise.reject(new Error("科技不存在"))
-		}
-		if(!DataUtils.isPlayerMilitaryTechBuildingCreated(playerDoc, techName)) return Promise.reject(new Error("建筑还未建造"))
-		if(DataUtils.isMilitaryTechReachMaxLevel(tech.level)) return Promise.reject(new Error("科技已达最高等级"))
+		if(!DataUtils.isPlayerUpgradeSoldierStarTechPointEnough(playerDoc, soldierName)) return Promise.reject(new Error("科技点不足"))
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
-		var upgradeRequired = DataUtils.getMilitaryTechUpgradeRequired(techName, tech.level + 1)
+		var upgradeRequired = DataUtils.getSoldierStarUpgradeRequired(soldierName, playerDoc.soldierStars[soldierName])
 		var buyedResources = null
-		var buyedMaterials = null
 		var preTechEvent = null
 		var playerData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
-			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
+			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.upgradeTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
-			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
 		}else{
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.technologyMaterials)
-			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
-			if(playerDoc.militaryTechEvents.length > 0){
-				preTechEvent = playerDoc.militaryTechEvents[0]
+			if(playerDoc.militaryTechEvents.length > 0 || playerDoc.soldierStarEvents.length > 0){
+				preTechEvent = playerDoc.militaryTechEvents.length > 0 ? playerDoc.militaryTechEvents[0] : playerDoc.soldierStarEvents[0]
 				var timeRemain = (preTechEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
@@ -760,21 +748,20 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		}
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, playerDoc.technologyMaterials)
 
 		if(finishNow){
-			tech.level += 1
-			playerData.militaryTechEvents = {}
-			playerData.militaryTechEvents[techName] = playerDoc.militaryTechEvents[techName]
+			playerDoc.soldierStars[soldierName] += 1
+			playerData.soldierStars = {}
+			playerData.soldierStars[soldierName] = playerDoc.soldierStars[soldierName]
 		}else{
 			if(_.isObject(preTechEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, Date.now()])
 			}
-			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			var event = LogicUtils.createMilitaryTechEvent(playerDoc, techName, finishTime)
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "militaryTechEvents", event.id, finishTime])
-			playerDoc.militaryTechEvents.push(event)
-			playerData.__militaryTechEvents = [{
+			var finishTime = Date.now() + (upgradeRequired.upgradeTime * 1000)
+			var event = LogicUtils.createSoldierStarEvent(playerDoc, soldierName, finishTime)
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierStarEvents", event.id, finishTime])
+			playerDoc.soldierStarEvents.push(event)
+			playerData.__soldierStarEvents = [{
 				type:Consts.DataChangedType.Add,
 				data:event
 			}]
@@ -782,7 +769,6 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		LogicUtils.refreshPlayerResources(playerDoc)
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
-		playerData.technologyMaterials = playerDoc.technologyMaterials
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 
