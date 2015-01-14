@@ -3,255 +3,483 @@
 var materialDepot = []
 module.exports = materialDepot
 
-materialDepot[0] = {
-	level:0,
-	wood:0,
-	stone:0,
-	iron:0,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:0,
-	citizen:0
-}
 materialDepot[1] = {
 	level:1,
-	wood:570,
-	stone:570,
-	iron:570,
+	wood:860,
+	stone:860,
+	iron:860,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:40,
+	buildTime:95,
 	citizen:0
 }
 materialDepot[2] = {
 	level:2,
-	wood:1140,
-	stone:1140,
-	iron:1140,
+	wood:1720,
+	stone:1720,
+	iron:1720,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:103,
+	buildTime:155,
 	citizen:0
 }
 materialDepot[3] = {
 	level:3,
-	wood:3419,
-	stone:3419,
-	iron:3419,
+	wood:5160,
+	stone:5160,
+	iron:5160,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:171,
+	buildTime:258,
 	citizen:0
 }
 materialDepot[4] = {
 	level:4,
-	wood:6839,
-	stone:6839,
-	iron:6839,
+	wood:10320,
+	stone:10320,
+	iron:10320,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:274,
+	buildTime:413,
 	citizen:0
 }
 materialDepot[5] = {
 	level:5,
-	wood:20520,
-	stone:20520,
-	iron:20520,
+	wood:30960,
+	stone:30960,
+	iron:30960,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:513,
+	buildTime:774,
 	citizen:0
 }
 materialDepot[6] = {
 	level:6,
-	wood:41040,
-	stone:41040,
-	iron:41040,
+	wood:61920,
+	stone:61920,
+	iron:61920,
 	blueprints:2,
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:1026,
+	buildTime:1548,
 	citizen:0
 }
 materialDepot[7] = {
 	level:7,
-	wood:61559,
-	stone:61559,
-	iron:61559,
+	wood:92880,
+	stone:92880,
+	iron:92880,
 	blueprints:10,
 	tools:10,
 	tiles:10,
 	pulley:10,
-	buildTime:1539,
+	buildTime:2322,
 	citizen:0
 }
 materialDepot[8] = {
 	level:8,
-	wood:82080,
-	stone:82080,
-	iron:82080,
+	wood:123840,
+	stone:123840,
+	iron:123840,
 	blueprints:40,
 	tools:40,
 	tiles:40,
 	pulley:40,
-	buildTime:2052,
+	buildTime:3096,
 	citizen:0
 }
 materialDepot[9] = {
 	level:9,
-	wood:102599,
-	stone:102599,
-	iron:102599,
+	wood:154800,
+	stone:154800,
+	iron:154800,
 	blueprints:120,
 	tools:120,
 	tiles:120,
 	pulley:120,
-	buildTime:3078,
+	buildTime:4644,
 	citizen:0
 }
 materialDepot[10] = {
 	level:10,
-	wood:123119,
-	stone:123119,
-	iron:123119,
+	wood:185760,
+	stone:185760,
+	iron:185760,
 	blueprints:360,
 	tools:360,
 	tiles:360,
 	pulley:360,
-	buildTime:4104,
+	buildTime:6192,
 	citizen:0
 }
 materialDepot[11] = {
 	level:11,
-	wood:143640,
-	stone:143640,
-	iron:143640,
+	wood:216720,
+	stone:216720,
+	iron:216720,
 	blueprints:600,
 	tools:600,
 	tiles:600,
 	pulley:600,
-	buildTime:8208,
+	buildTime:12384,
 	citizen:0
 }
 materialDepot[12] = {
 	level:12,
-	wood:164160,
-	stone:164160,
-	iron:164160,
+	wood:247680,
+	stone:247680,
+	iron:247680,
 	blueprints:1200,
 	tools:1200,
 	tiles:1200,
 	pulley:1200,
-	buildTime:12312,
+	buildTime:18576,
 	citizen:0
 }
 materialDepot[13] = {
 	level:13,
-	wood:184679,
-	stone:184679,
-	iron:184679,
+	wood:278640,
+	stone:278640,
+	iron:278640,
 	blueprints:1800,
 	tools:1800,
 	tiles:1800,
 	pulley:1800,
-	buildTime:16416,
+	buildTime:24768,
 	citizen:0
 }
 materialDepot[14] = {
 	level:14,
-	wood:205199,
-	stone:205199,
-	iron:205199,
+	wood:309600,
+	stone:309600,
+	iron:309600,
 	blueprints:2400,
 	tools:2400,
 	tiles:2400,
 	pulley:2400,
-	buildTime:24624,
+	buildTime:37152,
 	citizen:0
 }
 materialDepot[15] = {
 	level:15,
-	wood:273600,
-	stone:273600,
-	iron:273600,
+	wood:412800,
+	stone:412800,
+	iron:412800,
 	blueprints:3000,
 	tools:3000,
 	tiles:3000,
 	pulley:3000,
-	buildTime:32832,
+	buildTime:49536,
 	citizen:0
 }
 materialDepot[16] = {
 	level:16,
-	wood:341999,
-	stone:341999,
-	iron:341999,
+	wood:516000,
+	stone:516000,
+	iron:516000,
 	blueprints:3600,
 	tools:3600,
 	tiles:3600,
 	pulley:3600,
-	buildTime:41040,
+	buildTime:61920,
 	citizen:0
 }
 materialDepot[17] = {
 	level:17,
-	wood:410399,
-	stone:410399,
-	iron:410399,
+	wood:619200,
+	stone:619200,
+	iron:619200,
 	blueprints:4200,
 	tools:4200,
 	tiles:4200,
 	pulley:4200,
-	buildTime:49248,
+	buildTime:74304,
 	citizen:0
 }
 materialDepot[18] = {
 	level:18,
-	wood:478799,
-	stone:478799,
-	iron:478799,
+	wood:722400,
+	stone:722400,
+	iron:722400,
 	blueprints:4800,
 	tools:4800,
 	tiles:4800,
 	pulley:4800,
-	buildTime:65664,
+	buildTime:99072,
 	citizen:0
 }
 materialDepot[19] = {
 	level:19,
-	wood:547200,
-	stone:547200,
-	iron:547200,
+	wood:825600,
+	stone:825600,
+	iron:825600,
 	blueprints:5400,
 	tools:5400,
 	tiles:5400,
 	pulley:5400,
-	buildTime:82080,
+	buildTime:123840,
 	citizen:0
 }
 materialDepot[20] = {
 	level:20,
-	wood:1025999,
-	stone:1025999,
-	iron:1025999,
+	wood:1548000,
+	stone:1548000,
+	iron:1548000,
 	blueprints:6000,
 	tools:6000,
 	tiles:6000,
 	pulley:6000,
-	buildTime:98496,
+	buildTime:148608,
+	citizen:0
+}
+materialDepot[21] = {
+	level:21,
+	wood:3096000,
+	stone:3096000,
+	iron:3096000,
+	blueprints:6600,
+	tools:6600,
+	tiles:6600,
+	pulley:6600,
+	buildTime:173376,
+	citizen:0
+}
+materialDepot[22] = {
+	level:22,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[23] = {
+	level:23,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[24] = {
+	level:24,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[25] = {
+	level:25,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[26] = {
+	level:26,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[27] = {
+	level:27,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[28] = {
+	level:28,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[29] = {
+	level:29,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[30] = {
+	level:30,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[31] = {
+	level:31,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[32] = {
+	level:32,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[33] = {
+	level:33,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[34] = {
+	level:34,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[35] = {
+	level:35,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[36] = {
+	level:36,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[37] = {
+	level:37,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[38] = {
+	level:38,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[39] = {
+	level:39,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+materialDepot[40] = {
+	level:40,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
 	citizen:0
 }

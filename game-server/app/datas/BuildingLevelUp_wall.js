@@ -3,18 +3,6 @@
 var wall = []
 module.exports = wall
 
-wall[0] = {
-	level:0,
-	wood:0,
-	stone:0,
-	iron:0,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:0,
-	citizen:0
-}
 wall[1] = {
 	level:1,
 	wood:860,
@@ -269,6 +257,222 @@ wall[21] = {
 }
 wall[22] = {
 	level:22,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[23] = {
+	level:23,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[24] = {
+	level:24,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[25] = {
+	level:25,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[26] = {
+	level:26,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[27] = {
+	level:27,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[28] = {
+	level:28,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[29] = {
+	level:29,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[30] = {
+	level:30,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[31] = {
+	level:31,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[32] = {
+	level:32,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[33] = {
+	level:33,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[34] = {
+	level:34,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[35] = {
+	level:35,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[36] = {
+	level:36,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[37] = {
+	level:37,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[38] = {
+	level:38,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[39] = {
+	level:39,
+	wood:5504000,
+	stone:5504000,
+	iron:5504000,
+	blueprints:7200,
+	tools:7200,
+	tiles:7200,
+	pulley:7200,
+	buildTime:198144,
+	citizen:0
+}
+wall[40] = {
+	level:40,
 	wood:5504000,
 	stone:5504000,
 	iron:5504000,

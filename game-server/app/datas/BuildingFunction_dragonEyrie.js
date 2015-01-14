@@ -3,11 +3,6 @@
 var dragonEyrie = []
 module.exports = dragonEyrie
 
-dragonEyrie[0] = {
-	level:0,
-	hpRecoveryPerHour:0,
-	power:0
-}
 dragonEyrie[1] = {
 	level:1,
 	hpRecoveryPerHour:1000,
@@ -107,4 +102,104 @@ dragonEyrie[20] = {
 	level:20,
 	hpRecoveryPerHour:1800000,
 	power:3960
+}
+dragonEyrie[21] = {
+	level:21,
+	hpRecoveryPerHour:1920000,
+	power:4200
+}
+dragonEyrie[22] = {
+	level:22,
+	hpRecoveryPerHour:2256000,
+	power:4440
+}
+dragonEyrie[23] = {
+	level:23,
+	hpRecoveryPerHour:2592000,
+	power:4680
+}
+dragonEyrie[24] = {
+	level:24,
+	hpRecoveryPerHour:2928000,
+	power:4920
+}
+dragonEyrie[25] = {
+	level:25,
+	hpRecoveryPerHour:3264000,
+	power:5160
+}
+dragonEyrie[26] = {
+	level:26,
+	hpRecoveryPerHour:3600000,
+	power:5400
+}
+dragonEyrie[27] = {
+	level:27,
+	hpRecoveryPerHour:3936000,
+	power:5640
+}
+dragonEyrie[28] = {
+	level:28,
+	hpRecoveryPerHour:4272000,
+	power:5880
+}
+dragonEyrie[29] = {
+	level:29,
+	hpRecoveryPerHour:4608000,
+	power:6120
+}
+dragonEyrie[30] = {
+	level:30,
+	hpRecoveryPerHour:4944000,
+	power:6360
+}
+dragonEyrie[31] = {
+	level:31,
+	hpRecoveryPerHour:5280000,
+	power:6600
+}
+dragonEyrie[32] = {
+	level:32,
+	hpRecoveryPerHour:5616000,
+	power:6840
+}
+dragonEyrie[33] = {
+	level:33,
+	hpRecoveryPerHour:5952000,
+	power:7080
+}
+dragonEyrie[34] = {
+	level:34,
+	hpRecoveryPerHour:6288000,
+	power:7320
+}
+dragonEyrie[35] = {
+	level:35,
+	hpRecoveryPerHour:6624000,
+	power:7560
+}
+dragonEyrie[36] = {
+	level:36,
+	hpRecoveryPerHour:6960000,
+	power:7800
+}
+dragonEyrie[37] = {
+	level:37,
+	hpRecoveryPerHour:7296000,
+	power:8040
+}
+dragonEyrie[38] = {
+	level:38,
+	hpRecoveryPerHour:7632000,
+	power:8280
+}
+dragonEyrie[39] = {
+	level:39,
+	hpRecoveryPerHour:7968000,
+	power:8520
+}
+dragonEyrie[40] = {
+	level:40,
+	hpRecoveryPerHour:8304000,
+	power:8760
 }

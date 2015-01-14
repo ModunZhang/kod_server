@@ -3,11 +3,6 @@
 var barracks = []
 module.exports = barracks
 
-barracks[0] = {
-	level:0,
-	maxRecruit:0,
-	power:0
-}
 barracks[1] = {
 	level:1,
 	maxRecruit:20,
@@ -107,4 +102,104 @@ barracks[20] = {
 	level:20,
 	maxRecruit:500,
 	power:3960
+}
+barracks[21] = {
+	level:21,
+	maxRecruit:540,
+	power:4200
+}
+barracks[22] = {
+	level:22,
+	maxRecruit:580,
+	power:4440
+}
+barracks[23] = {
+	level:23,
+	maxRecruit:620,
+	power:4680
+}
+barracks[24] = {
+	level:24,
+	maxRecruit:660,
+	power:4920
+}
+barracks[25] = {
+	level:25,
+	maxRecruit:700,
+	power:5160
+}
+barracks[26] = {
+	level:26,
+	maxRecruit:740,
+	power:5400
+}
+barracks[27] = {
+	level:27,
+	maxRecruit:780,
+	power:5640
+}
+barracks[28] = {
+	level:28,
+	maxRecruit:820,
+	power:5880
+}
+barracks[29] = {
+	level:29,
+	maxRecruit:860,
+	power:6120
+}
+barracks[30] = {
+	level:30,
+	maxRecruit:900,
+	power:6360
+}
+barracks[31] = {
+	level:31,
+	maxRecruit:940,
+	power:6600
+}
+barracks[32] = {
+	level:32,
+	maxRecruit:980,
+	power:6840
+}
+barracks[33] = {
+	level:33,
+	maxRecruit:1020,
+	power:7080
+}
+barracks[34] = {
+	level:34,
+	maxRecruit:1060,
+	power:7320
+}
+barracks[35] = {
+	level:35,
+	maxRecruit:1100,
+	power:7560
+}
+barracks[36] = {
+	level:36,
+	maxRecruit:1140,
+	power:7800
+}
+barracks[37] = {
+	level:37,
+	maxRecruit:1180,
+	power:8040
+}
+barracks[38] = {
+	level:38,
+	maxRecruit:1220,
+	power:8280
+}
+barracks[39] = {
+	level:39,
+	maxRecruit:1260,
+	power:8520
+}
+barracks[40] = {
+	level:40,
+	maxRecruit:1300,
+	power:8760
 }

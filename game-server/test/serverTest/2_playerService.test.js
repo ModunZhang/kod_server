@@ -122,7 +122,7 @@ describe("PlayerService", function(){
 				})
 			}
 
-			Api.sendChat("keep 22", function(doc){
+			Api.sendChat("keep 40", function(doc){
 				doc.code.should.equal(200)
 				func()
 			})
@@ -553,9 +553,9 @@ describe("PlayerService", function(){
 				})
 			}
 
-			Api.sendChat("gem 5000000", function(doc){
+			Api.sendChat("gem 500000000", function(doc){
 				doc.code.should.equal(200)
-				Api.sendChat("keep 22", function(doc){
+				Api.sendChat("keep 40", function(doc){
 					doc.code.should.equal(200)
 					func()
 				})

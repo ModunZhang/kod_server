@@ -3,15 +3,6 @@
 var tower = []
 module.exports = tower
 
-tower[0] = {
-	level:0,
-	power:0,
-	infantry:0,
-	archer:0,
-	cavalry:0,
-	siege:0,
-	defencePower:0
-}
 tower[1] = {
 	level:1,
 	power:10,
@@ -191,4 +182,184 @@ tower[20] = {
 	cavalry:61200,
 	siege:61200,
 	defencePower:61200
+}
+tower[21] = {
+	level:21,
+	power:4200,
+	infantry:65280,
+	archer:65280,
+	cavalry:65280,
+	siege:73440,
+	defencePower:73440
+}
+tower[22] = {
+	level:22,
+	power:4440,
+	infantry:76704,
+	archer:76704,
+	cavalry:76704,
+	siege:89760,
+	defencePower:89760
+}
+tower[23] = {
+	level:23,
+	power:4680,
+	infantry:88128,
+	archer:88128,
+	cavalry:88128,
+	siege:106080,
+	defencePower:106080
+}
+tower[24] = {
+	level:24,
+	power:4920,
+	infantry:99552,
+	archer:99552,
+	cavalry:99552,
+	siege:122400,
+	defencePower:122400
+}
+tower[25] = {
+	level:25,
+	power:5160,
+	infantry:110976,
+	archer:110976,
+	cavalry:110976,
+	siege:138720,
+	defencePower:138720
+}
+tower[26] = {
+	level:26,
+	power:5400,
+	infantry:122400,
+	archer:122400,
+	cavalry:122400,
+	siege:155040,
+	defencePower:155040
+}
+tower[27] = {
+	level:27,
+	power:5640,
+	infantry:133824,
+	archer:133824,
+	cavalry:133824,
+	siege:171360,
+	defencePower:171360
+}
+tower[28] = {
+	level:28,
+	power:5880,
+	infantry:145248,
+	archer:145248,
+	cavalry:145248,
+	siege:187680,
+	defencePower:187680
+}
+tower[29] = {
+	level:29,
+	power:6120,
+	infantry:156672,
+	archer:156672,
+	cavalry:156672,
+	siege:204000,
+	defencePower:204000
+}
+tower[30] = {
+	level:30,
+	power:6360,
+	infantry:168096,
+	archer:168096,
+	cavalry:168096,
+	siege:220320,
+	defencePower:220320
+}
+tower[31] = {
+	level:31,
+	power:6600,
+	infantry:179520,
+	archer:179520,
+	cavalry:179520,
+	siege:236640,
+	defencePower:236640
+}
+tower[32] = {
+	level:32,
+	power:6840,
+	infantry:190944,
+	archer:190944,
+	cavalry:190944,
+	siege:252960,
+	defencePower:252960
+}
+tower[33] = {
+	level:33,
+	power:7080,
+	infantry:202368,
+	archer:202368,
+	cavalry:202368,
+	siege:269280,
+	defencePower:269280
+}
+tower[34] = {
+	level:34,
+	power:7320,
+	infantry:213792,
+	archer:213792,
+	cavalry:213792,
+	siege:285600,
+	defencePower:285600
+}
+tower[35] = {
+	level:35,
+	power:7560,
+	infantry:225216,
+	archer:225216,
+	cavalry:225216,
+	siege:301920,
+	defencePower:301920
+}
+tower[36] = {
+	level:36,
+	power:7800,
+	infantry:236640,
+	archer:236640,
+	cavalry:236640,
+	siege:318240,
+	defencePower:318240
+}
+tower[37] = {
+	level:37,
+	power:8040,
+	infantry:248064,
+	archer:248064,
+	cavalry:248064,
+	siege:334560,
+	defencePower:334560
+}
+tower[38] = {
+	level:38,
+	power:8280,
+	infantry:259488,
+	archer:259488,
+	cavalry:259488,
+	siege:350880,
+	defencePower:350880
+}
+tower[39] = {
+	level:39,
+	power:8520,
+	infantry:270912,
+	archer:270912,
+	cavalry:270912,
+	siege:367200,
+	defencePower:367200
+}
+tower[40] = {
+	level:40,
+	power:8760,
+	infantry:282336,
+	archer:282336,
+	cavalry:282336,
+	siege:383520,
+	defencePower:383520
 }

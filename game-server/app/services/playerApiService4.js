@@ -150,7 +150,13 @@ pro.getSellItems = function(playerId, type, name, callback){
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
-		return self.Deal.find({"itemData.type":type, "itemData.name":name}).sort({"itemData.price":1}).limit(Define.SellItemsMaxSize).exec()
+		return self.Deal.find({
+			"playerId":{$ne:playerDoc._id},
+			"itemData.type":type, "itemData.name":name
+		}).sort({
+			"itemData.price":1,
+			"addedTime":1
+		}).limit(Define.SellItemsMaxSize).exec()
 	}).then(function(docs){
 		pushFuncs.push([self.pushService, self.pushService.onGetSellItemsSuccessAsync, playerDoc, docs])
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])

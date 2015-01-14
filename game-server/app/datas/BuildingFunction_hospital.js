@@ -3,12 +3,6 @@
 var hospital = []
 module.exports = hospital
 
-hospital[0] = {
-	level:0,
-	maxCasualty:0,
-	casualtyRate:0.000000,
-	power:0
-}
 hospital[1] = {
 	level:1,
 	maxCasualty:3600,
@@ -104,4 +98,148 @@ hospital[16] = {
 	maxCasualty:90000,
 	casualtyRate:0.400000,
 	power:3720
+}
+hospital[17] = {
+	level:17,
+	maxCasualty:96000,
+	casualtyRate:0.400000,
+	power:3960
+}
+hospital[18] = {
+	level:18,
+	maxCasualty:102000,
+	casualtyRate:0.400000,
+	power:4200
+}
+hospital[19] = {
+	level:19,
+	maxCasualty:108000,
+	casualtyRate:0.400000,
+	power:4440
+}
+hospital[20] = {
+	level:20,
+	maxCasualty:114000,
+	casualtyRate:0.400000,
+	power:4680
+}
+hospital[21] = {
+	level:21,
+	maxCasualty:120000,
+	casualtyRate:0.400000,
+	power:4920
+}
+hospital[22] = {
+	level:22,
+	maxCasualty:126000,
+	casualtyRate:0.400000,
+	power:5160
+}
+hospital[23] = {
+	level:23,
+	maxCasualty:132000,
+	casualtyRate:0.400000,
+	power:5400
+}
+hospital[24] = {
+	level:24,
+	maxCasualty:138000,
+	casualtyRate:0.400000,
+	power:5640
+}
+hospital[25] = {
+	level:25,
+	maxCasualty:144000,
+	casualtyRate:0.400000,
+	power:5880
+}
+hospital[26] = {
+	level:26,
+	maxCasualty:150000,
+	casualtyRate:0.400000,
+	power:6120
+}
+hospital[27] = {
+	level:27,
+	maxCasualty:156000,
+	casualtyRate:0.400000,
+	power:6360
+}
+hospital[28] = {
+	level:28,
+	maxCasualty:162000,
+	casualtyRate:0.400000,
+	power:6600
+}
+hospital[29] = {
+	level:29,
+	maxCasualty:168000,
+	casualtyRate:0.400000,
+	power:6840
+}
+hospital[30] = {
+	level:30,
+	maxCasualty:174000,
+	casualtyRate:0.400000,
+	power:7080
+}
+hospital[31] = {
+	level:31,
+	maxCasualty:180000,
+	casualtyRate:0.400000,
+	power:7320
+}
+hospital[32] = {
+	level:32,
+	maxCasualty:186000,
+	casualtyRate:0.400000,
+	power:7560
+}
+hospital[33] = {
+	level:33,
+	maxCasualty:192000,
+	casualtyRate:0.400000,
+	power:7800
+}
+hospital[34] = {
+	level:34,
+	maxCasualty:198000,
+	casualtyRate:0.400000,
+	power:8040
+}
+hospital[35] = {
+	level:35,
+	maxCasualty:204000,
+	casualtyRate:0.400000,
+	power:8280
+}
+hospital[36] = {
+	level:36,
+	maxCasualty:210000,
+	casualtyRate:0.400000,
+	power:8520
+}
+hospital[37] = {
+	level:37,
+	maxCasualty:216000,
+	casualtyRate:0.400000,
+	power:8760
+}
+hospital[38] = {
+	level:38,
+	maxCasualty:222000,
+	casualtyRate:0.400000,
+	power:9000
+}
+hospital[39] = {
+	level:39,
+	maxCasualty:228000,
+	casualtyRate:0.400000,
+	power:9240
+}
+hospital[40] = {
+	level:40,
+	maxCasualty:234000,
+	casualtyRate:0.400000,
+	power:9480
 }

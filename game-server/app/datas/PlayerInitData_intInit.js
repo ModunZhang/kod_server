@@ -23,3 +23,7 @@ intInit["militaryTechnologyMaxLevel"] = {
 	type:"militaryTechnologyMaxLevel",
 	value:15
 }
+intInit["buildingMaxLevel"] = {
+	type:"buildingMaxLevel",
+	value:40
+}

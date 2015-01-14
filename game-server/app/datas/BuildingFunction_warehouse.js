@@ -3,14 +3,6 @@
 var warehouse = []
 module.exports = warehouse
 
-warehouse[0] = {
-	level:0,
-	maxWood:0,
-	maxStone:0,
-	maxIron:0,
-	maxFood:0,
-	power:0
-}
 warehouse[1] = {
 	level:1,
 	maxWood:60000,
@@ -170,4 +162,164 @@ warehouse[20] = {
 	maxIron:7040000,
 	maxFood:7040000,
 	power:3960
+}
+warehouse[21] = {
+	level:21,
+	maxWood:7440000,
+	maxStone:7440000,
+	maxIron:7440000,
+	maxFood:7440000,
+	power:4200
+}
+warehouse[22] = {
+	level:22,
+	maxWood:7840000,
+	maxStone:7840000,
+	maxIron:7840000,
+	maxFood:7840000,
+	power:4440
+}
+warehouse[23] = {
+	level:23,
+	maxWood:8240000,
+	maxStone:8240000,
+	maxIron:8240000,
+	maxFood:8240000,
+	power:4680
+}
+warehouse[24] = {
+	level:24,
+	maxWood:8640000,
+	maxStone:8640000,
+	maxIron:8640000,
+	maxFood:8640000,
+	power:4920
+}
+warehouse[25] = {
+	level:25,
+	maxWood:9040000,
+	maxStone:9040000,
+	maxIron:9040000,
+	maxFood:9040000,
+	power:5160
+}
+warehouse[26] = {
+	level:26,
+	maxWood:9440000,
+	maxStone:9440000,
+	maxIron:9440000,
+	maxFood:9440000,
+	power:5400
+}
+warehouse[27] = {
+	level:27,
+	maxWood:9840000,
+	maxStone:9840000,
+	maxIron:9840000,
+	maxFood:9840000,
+	power:5640
+}
+warehouse[28] = {
+	level:28,
+	maxWood:10240000,
+	maxStone:10240000,
+	maxIron:10240000,
+	maxFood:10240000,
+	power:5880
+}
+warehouse[29] = {
+	level:29,
+	maxWood:10640000,
+	maxStone:10640000,
+	maxIron:10640000,
+	maxFood:10640000,
+	power:6120
+}
+warehouse[30] = {
+	level:30,
+	maxWood:11040000,
+	maxStone:11040000,
+	maxIron:11040000,
+	maxFood:11040000,
+	power:6360
+}
+warehouse[31] = {
+	level:31,
+	maxWood:11440000,
+	maxStone:11440000,
+	maxIron:11440000,
+	maxFood:11440000,
+	power:6600
+}
+warehouse[32] = {
+	level:32,
+	maxWood:11840000,
+	maxStone:11840000,
+	maxIron:11840000,
+	maxFood:11840000,
+	power:6840
+}
+warehouse[33] = {
+	level:33,
+	maxWood:12240000,
+	maxStone:12240000,
+	maxIron:12240000,
+	maxFood:12240000,
+	power:7080
+}
+warehouse[34] = {
+	level:34,
+	maxWood:12640000,
+	maxStone:12640000,
+	maxIron:12640000,
+	maxFood:12640000,
+	power:7320
+}
+warehouse[35] = {
+	level:35,
+	maxWood:13040000,
+	maxStone:13040000,
+	maxIron:13040000,
+	maxFood:13040000,
+	power:7560
+}
+warehouse[36] = {
+	level:36,
+	maxWood:13440000,
+	maxStone:13440000,
+	maxIron:13440000,
+	maxFood:13440000,
+	power:7800
+}
+warehouse[37] = {
+	level:37,
+	maxWood:13840000,
+	maxStone:13840000,
+	maxIron:13840000,
+	maxFood:13840000,
+	power:8040
+}
+warehouse[38] = {
+	level:38,
+	maxWood:14240000,
+	maxStone:14240000,
+	maxIron:14240000,
+	maxFood:14240000,
+	power:8280
+}
+warehouse[39] = {
+	level:39,
+	maxWood:14640000,
+	maxStone:14640000,
+	maxIron:14640000,
+	maxFood:14640000,
+	power:8520
+}
+warehouse[40] = {
+	level:40,
+	maxWood:15040000,
+	maxStone:15040000,
+	maxIron:15040000,
+	maxFood:15040000,
+	power:8760
 }

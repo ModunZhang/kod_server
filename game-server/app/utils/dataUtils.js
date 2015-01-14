@@ -271,9 +271,8 @@ Utils.getHouseDestroyReturned = function(houseType, houseLevel){
  * @param buildingLevel
  * @returns {boolean}
  */
-Utils.isBuildingReachMaxLevel = function(buildingType, buildingLevel){
-	var config = BuildingLevelUp[buildingType][buildingLevel + 1]
-	return !_.isObject(config)
+Utils.isBuildingReachMaxLevel = function(buildingLevel){
+	return buildingLevel >= PlayerInitData.intInit.buildingMaxLevel.value
 }
 
 /**
@@ -2655,7 +2654,9 @@ Utils.getPlayerCartUsedForSale = function(playerDoc, resourceType, resourceName,
  * @returns {boolean}
  */
 Utils.isPlayerSellQueueEnough = function(playerDoc){
-	var maxSellQueue = BuildingFunction.tradeGuild[playerDoc.buildings.location_16.level].maxSellQueue
+	var buildingLevel = playerDoc.buildings.location_16.level
+	if(buildingLevel == 0) return false
+	var maxSellQueue = BuildingFunction.tradeGuild[buildingLevel].maxSellQueue
 	return playerDoc.deals.length < maxSellQueue
 }
 

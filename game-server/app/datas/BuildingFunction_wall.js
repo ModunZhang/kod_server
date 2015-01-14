@@ -3,12 +3,6 @@
 var wall = []
 module.exports = wall
 
-wall[0] = {
-	level:0,
-	wallHp:0,
-	wallRecovery:0,
-	power:0
-}
 wall[1] = {
 	level:1,
 	wallHp:1000,
@@ -140,4 +134,112 @@ wall[22] = {
 	wallHp:30000,
 	wallRecovery:7500,
 	power:4440
+}
+wall[23] = {
+	level:23,
+	wallHp:32000,
+	wallRecovery:8000,
+	power:4680
+}
+wall[24] = {
+	level:24,
+	wallHp:34000,
+	wallRecovery:8500,
+	power:4920
+}
+wall[25] = {
+	level:25,
+	wallHp:36000,
+	wallRecovery:9000,
+	power:5160
+}
+wall[26] = {
+	level:26,
+	wallHp:38000,
+	wallRecovery:9500,
+	power:5400
+}
+wall[27] = {
+	level:27,
+	wallHp:40000,
+	wallRecovery:10000,
+	power:5640
+}
+wall[28] = {
+	level:28,
+	wallHp:42000,
+	wallRecovery:10500,
+	power:5880
+}
+wall[29] = {
+	level:29,
+	wallHp:44000,
+	wallRecovery:11000,
+	power:6120
+}
+wall[30] = {
+	level:30,
+	wallHp:46000,
+	wallRecovery:11500,
+	power:6360
+}
+wall[31] = {
+	level:31,
+	wallHp:48000,
+	wallRecovery:12000,
+	power:6600
+}
+wall[32] = {
+	level:32,
+	wallHp:50000,
+	wallRecovery:12500,
+	power:6840
+}
+wall[33] = {
+	level:33,
+	wallHp:52000,
+	wallRecovery:13000,
+	power:7080
+}
+wall[34] = {
+	level:34,
+	wallHp:54000,
+	wallRecovery:13500,
+	power:7320
+}
+wall[35] = {
+	level:35,
+	wallHp:56000,
+	wallRecovery:14000,
+	power:7560
+}
+wall[36] = {
+	level:36,
+	wallHp:58000,
+	wallRecovery:14500,
+	power:7800
+}
+wall[37] = {
+	level:37,
+	wallHp:60000,
+	wallRecovery:15000,
+	power:8040
+}
+wall[38] = {
+	level:38,
+	wallHp:62000,
+	wallRecovery:15500,
+	power:8280
+}
+wall[39] = {
+	level:39,
+	wallHp:64000,
+	wallRecovery:16000,
+	power:8520
+}
+wall[40] = {
+	level:40,
+	wallHp:66000,
+	wallRecovery:16500,
+	power:8760
 }

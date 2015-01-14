@@ -3,14 +3,6 @@
 var materialDepot = []
 module.exports = materialDepot
 
-materialDepot[0] = {
-	level:0,
-	maxMaterial:0,
-	maxSoldierMaterial:0,
-	maxDragonMaterial:0,
-	maxDragonEquipment:0,
-	power:0
-}
 materialDepot[1] = {
 	level:1,
 	maxMaterial:20,
@@ -170,4 +162,164 @@ materialDepot[20] = {
 	maxDragonMaterial:9999,
 	maxDragonEquipment:9999,
 	power:3960
+}
+materialDepot[21] = {
+	level:21,
+	maxMaterial:11998,
+	maxSoldierMaterial:11998,
+	maxDragonMaterial:11998,
+	maxDragonEquipment:11998,
+	power:4200
+}
+materialDepot[22] = {
+	level:22,
+	maxMaterial:13997,
+	maxSoldierMaterial:13997,
+	maxDragonMaterial:13997,
+	maxDragonEquipment:13997,
+	power:4440
+}
+materialDepot[23] = {
+	level:23,
+	maxMaterial:15996,
+	maxSoldierMaterial:15996,
+	maxDragonMaterial:15996,
+	maxDragonEquipment:15996,
+	power:4680
+}
+materialDepot[24] = {
+	level:24,
+	maxMaterial:17995,
+	maxSoldierMaterial:17995,
+	maxDragonMaterial:17995,
+	maxDragonEquipment:17995,
+	power:4920
+}
+materialDepot[25] = {
+	level:25,
+	maxMaterial:19994,
+	maxSoldierMaterial:19994,
+	maxDragonMaterial:19994,
+	maxDragonEquipment:19994,
+	power:5160
+}
+materialDepot[26] = {
+	level:26,
+	maxMaterial:21993,
+	maxSoldierMaterial:21993,
+	maxDragonMaterial:21993,
+	maxDragonEquipment:21993,
+	power:5400
+}
+materialDepot[27] = {
+	level:27,
+	maxMaterial:23992,
+	maxSoldierMaterial:23992,
+	maxDragonMaterial:23992,
+	maxDragonEquipment:23992,
+	power:5640
+}
+materialDepot[28] = {
+	level:28,
+	maxMaterial:25991,
+	maxSoldierMaterial:25991,
+	maxDragonMaterial:25991,
+	maxDragonEquipment:25991,
+	power:5880
+}
+materialDepot[29] = {
+	level:29,
+	maxMaterial:27990,
+	maxSoldierMaterial:27990,
+	maxDragonMaterial:27990,
+	maxDragonEquipment:27990,
+	power:6120
+}
+materialDepot[30] = {
+	level:30,
+	maxMaterial:29989,
+	maxSoldierMaterial:29989,
+	maxDragonMaterial:29989,
+	maxDragonEquipment:29989,
+	power:6360
+}
+materialDepot[31] = {
+	level:31,
+	maxMaterial:31988,
+	maxSoldierMaterial:31988,
+	maxDragonMaterial:31988,
+	maxDragonEquipment:31988,
+	power:6600
+}
+materialDepot[32] = {
+	level:32,
+	maxMaterial:33987,
+	maxSoldierMaterial:33987,
+	maxDragonMaterial:33987,
+	maxDragonEquipment:33987,
+	power:6840
+}
+materialDepot[33] = {
+	level:33,
+	maxMaterial:35986,
+	maxSoldierMaterial:35986,
+	maxDragonMaterial:35986,
+	maxDragonEquipment:35986,
+	power:7080
+}
+materialDepot[34] = {
+	level:34,
+	maxMaterial:37985,
+	maxSoldierMaterial:37985,
+	maxDragonMaterial:37985,
+	maxDragonEquipment:37985,
+	power:7320
+}
+materialDepot[35] = {
+	level:35,
+	maxMaterial:39984,
+	maxSoldierMaterial:39984,
+	maxDragonMaterial:39984,
+	maxDragonEquipment:39984,
+	power:7560
+}
+materialDepot[36] = {
+	level:36,
+	maxMaterial:41983,
+	maxSoldierMaterial:41983,
+	maxDragonMaterial:41983,
+	maxDragonEquipment:41983,
+	power:7800
+}
+materialDepot[37] = {
+	level:37,
+	maxMaterial:43982,
+	maxSoldierMaterial:43982,
+	maxDragonMaterial:43982,
+	maxDragonEquipment:43982,
+	power:8040
+}
+materialDepot[38] = {
+	level:38,
+	maxMaterial:45981,
+	maxSoldierMaterial:45981,
+	maxDragonMaterial:45981,
+	maxDragonEquipment:45981,
+	power:8280
+}
+materialDepot[39] = {
+	level:39,
+	maxMaterial:47980,
+	maxSoldierMaterial:47980,
+	maxDragonMaterial:47980,
+	maxDragonEquipment:47980,
+	power:8520
+}
+materialDepot[40] = {
+	level:40,
+	maxMaterial:49979,
+	maxSoldierMaterial:49979,
+	maxDragonMaterial:49979,
+	maxDragonEquipment:49979,
+	power:8760
 }

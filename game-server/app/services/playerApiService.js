@@ -199,7 +199,7 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		if(!_.isEqual(building.type, "keep") && building.level > 0 && building.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc)){
 			return Promise.reject(new Error("建筑升级时,建筑等级不合法"))
 		}
-		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.type, building.level)){
+		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.level)){
 			return Promise.reject(new Error("建筑已达到最高等级"))
 		}
 		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
@@ -809,7 +809,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		if(tower.level < 1){
 			return Promise.reject(new Error("箭塔还未建造"))
 		}
-		if(DataUtils.isBuildingReachMaxLevel("tower", tower.level)){
+		if(DataUtils.isBuildingReachMaxLevel(tower.level)){
 			return Promise.reject(new Error("箭塔已达到最高等级"))
 		}
 		if(tower.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc)){
@@ -962,7 +962,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		if(wall.level < 1){
 			return Promise.reject(new Error("城墙还未建造"))
 		}
-		if(DataUtils.isBuildingReachMaxLevel("wall", wall.level)){
+		if(DataUtils.isBuildingReachMaxLevel(wall.level)){
 			return Promise.reject(new Error("城墙已达到最高等级"))
 		}
 		if(wall.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc)){

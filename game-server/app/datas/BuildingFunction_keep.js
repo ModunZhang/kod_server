@@ -3,12 +3,6 @@
 var keep = []
 module.exports = keep
 
-keep[0] = {
-	level:0,
-	unlock:0,
-	troopPopulation:0,
-	power:0
-}
 keep[1] = {
 	level:1,
 	unlock:4,
@@ -140,4 +134,112 @@ keep[22] = {
 	unlock:25,
 	troopPopulation:24000,
 	power:4440
+}
+keep[23] = {
+	level:23,
+	unlock:26,
+	troopPopulation:26000,
+	power:4680
+}
+keep[24] = {
+	level:24,
+	unlock:27,
+	troopPopulation:28000,
+	power:4920
+}
+keep[25] = {
+	level:25,
+	unlock:28,
+	troopPopulation:30000,
+	power:5160
+}
+keep[26] = {
+	level:26,
+	unlock:29,
+	troopPopulation:32000,
+	power:5400
+}
+keep[27] = {
+	level:27,
+	unlock:30,
+	troopPopulation:34000,
+	power:5640
+}
+keep[28] = {
+	level:28,
+	unlock:31,
+	troopPopulation:36000,
+	power:5880
+}
+keep[29] = {
+	level:29,
+	unlock:32,
+	troopPopulation:38000,
+	power:6120
+}
+keep[30] = {
+	level:30,
+	unlock:33,
+	troopPopulation:40000,
+	power:6360
+}
+keep[31] = {
+	level:31,
+	unlock:34,
+	troopPopulation:42000,
+	power:6600
+}
+keep[32] = {
+	level:32,
+	unlock:35,
+	troopPopulation:44000,
+	power:6840
+}
+keep[33] = {
+	level:33,
+	unlock:36,
+	troopPopulation:46000,
+	power:7080
+}
+keep[34] = {
+	level:34,
+	unlock:37,
+	troopPopulation:48000,
+	power:7320
+}
+keep[35] = {
+	level:35,
+	unlock:38,
+	troopPopulation:50000,
+	power:7560
+}
+keep[36] = {
+	level:36,
+	unlock:39,
+	troopPopulation:52000,
+	power:7800
+}
+keep[37] = {
+	level:37,
+	unlock:40,
+	troopPopulation:54000,
+	power:8040
+}
+keep[38] = {
+	level:38,
+	unlock:41,
+	troopPopulation:56000,
+	power:8280
+}
+keep[39] = {
+	level:39,
+	unlock:42,
+	troopPopulation:58000,
+	power:8520
+}
+keep[40] = {
+	level:40,
+	unlock:43,
+	troopPopulation:60000,
+	power:8760
 }
