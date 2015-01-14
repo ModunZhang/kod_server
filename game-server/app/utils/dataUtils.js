@@ -2759,7 +2759,7 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragonType){
 	var config = BuildingFunction.dragonEyrie[playerDoc.buildings.location_4.level]
 	var dragons = arguments.length > 1 ? [playerDoc.dragons[dragonType]] : playerDoc.dragons
 	_.each(dragons, function(dragon){
-		if(dragon.level > 0){
+		if(dragon.level > 0 && _.isEqual(dragon.status, Consts.DragonStatus.Free)){
 			var dragonMaxHp = self.getPlayerDragonHpMax(playerDoc, dragon)
 			if(dragon.hp < dragonMaxHp){
 				var totalMilSeconds = Date.now() - dragon.hpRefreshTime
@@ -2769,5 +2769,6 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragonType){
 				dragon.hp = dragon.hp > dragonMaxHp ? dragonMaxHp : dragon.hp
 			}
 		}
+		dragon.hpRefreshTime = Date.now()
 	})
 }

@@ -938,6 +938,7 @@ pro.cancelDefenceDragon = function(playerId, callback){
 		playerDoc = doc
 		var dragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
 		if(!_.isObject(dragon)) return Promise.reject(new Error("没有龙驻防在城墙"))
+		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon.type)
 		dragon.status = Consts.DragonStatus.Free
 		playerData.dragons = {}
 		playerData.dragons[dragon.type] = playerDoc.dragons[dragon.type]

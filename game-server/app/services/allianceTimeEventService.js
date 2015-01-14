@@ -1211,6 +1211,7 @@ pro.onAttackMarchReturnEvents = function(allianceDoc, event, callback){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		var playerData = {}
+		DataUtils.refreshPlayerDragonsHp(playerDoc, event.attackPlayerData.dragon.type)
 		playerDoc.dragons[event.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 		playerData.dragons = {}
 		playerData.dragons[event.attackPlayerData.dragon.type] = playerDoc.dragons[event.attackPlayerData.dragon.type]
@@ -1488,6 +1489,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					defencePlayerData.dragons = {}
 					defencePlayerData.dragons[defenceDragon.type] = defenceDragon
 					if(defenceDragon.hp <= 0){
+						DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon.type)
 						defenceDragon.status = Consts.DragonStatus.Free
 					}
 					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
@@ -1820,6 +1822,7 @@ pro.onStrikeMarchReturnEvents = function(allianceDoc, event, callback){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		var playerData = {}
+		DataUtils.refreshPlayerDragonsHp(playerDoc, event.attackPlayerData.dragon.type)
 		playerDoc.dragons[event.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 		playerData.dragons = {}
 		playerData.dragons[event.attackPlayerData.dragon.type] = playerDoc.dragons[event.attackPlayerData.dragon.type]
@@ -2344,6 +2347,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, collectReport)
 
 		if(!_.isObject(attackPlayerData.dragons)) attackPlayerData.dragons = {}
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, villageEvent.playerData.dragon.type)
 		attackPlayerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.dragons[villageEvent.playerData.dragon.type] = attackPlayerDoc.dragons[villageEvent.playerData.dragon.type]
 
@@ -2394,6 +2398,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		})
 
 		if(!_.isObject(attackPlayerData.dragons)) attackPlayerData.dragons = {}
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, marchEvent.attackPlayerData.dragon.type)
 		attackPlayerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.dragons[marchEvent.attackPlayerData.dragon.type] = attackPlayerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
 
@@ -2412,6 +2417,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		})
 
 		if(!_.isObject(attackPlayerData.dragons)) attackPlayerData.dragons = {}
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, marchReturnEvent.attackPlayerData.dragon.type)
 		attackPlayerDoc.dragons[marchReturnEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.dragons[marchReturnEvent.attackPlayerData.dragon.type] = attackPlayerDoc.dragons[marchReturnEvent.attackPlayerData.dragon.type]
 
@@ -2446,6 +2452,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		})
 
 		if(!_.isObject(attackPlayerData.dragons)) attackPlayerData.dragons = {}
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, marchEvent.attackPlayerData.dragon.type)
 		attackPlayerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.dragons[marchEvent.attackPlayerData.dragon.type] = attackPlayerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
 	}
@@ -2457,6 +2464,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 			data:marchReturnEvent
 		})
 		if(!_.isObject(attackPlayerData.dragons)) attackPlayerData.dragons = {}
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, marchReturnEvent.attackPlayerData.dragon.type)
 		attackPlayerDoc.dragons[marchReturnEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.dragons[marchReturnEvent.attackPlayerData.dragon.type] = attackPlayerDoc.dragons[marchReturnEvent.attackPlayerData.dragon.type]
 
