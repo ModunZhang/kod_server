@@ -133,6 +133,9 @@ GameDatas.HouseReturn.farmer = require("./HouseReturn_farmer.js")
 GameDatas.Houses = {}
 GameDatas.Houses.houses = require("./Houses_houses.js")
 
+GameDatas.Items = {}
+GameDatas.Items.items = require("./Items_items.js")
+
 GameDatas.MilitaryTechLevelUp = {}
 GameDatas.MilitaryTechLevelUp.infantry_infantry = require("./MilitaryTechLevelUp_infantry_infantry.js")
 GameDatas.MilitaryTechLevelUp.infantry_archer = require("./MilitaryTechLevelUp_infantry_archer.js")
