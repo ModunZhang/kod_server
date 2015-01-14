@@ -32,10 +32,10 @@ module.exports = {
 		BuildingMaterials:"buildingMaterials",
 		TechnologyMaterials:"technologyMaterials"
 	},
-	ResourceTypesCanDeal:{
-		Resources:"resources",
-		BuildingMaterials:"buildingMaterials",
-		TechnologyMaterials:"technologyMaterials"
+	ResourcesCanDeal:{
+		resources:["wood", "stone", "iron", "food"],
+		buildingMaterials:["blueprints", "tools", "tiles", "pulley"],
+		technologyMaterials:["trainingFigure", "bowTarget", "saddle", "ironPart"]
 	},
 	TimeEventType:{
 		Player:"player",

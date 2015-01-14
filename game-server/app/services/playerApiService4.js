@@ -45,8 +45,13 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.contains(_.values(Consts.ResourceTypesCanDeal), type)){
+	var resourceTypesCanDeal = _.keys(Consts.ResourcesCanDeal)
+	if(!_.contains(_.values(resourceTypesCanDeal), type)){
 		callback(new Error("type 不合法"))
+		return
+	}
+	if(!_.contains(Consts.ResourcesCanDeal[type], name)){
+		callback(new Error("name 不合法"))
 		return
 	}
 	if(!_.isString(name)){
@@ -68,16 +73,18 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
+
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		LogicUtils.refreshPlayerResources(playerDoc)
 		if(!DataUtils.isPlayerSellQueueEnough(playerDoc)) return Promise.reject(new Error("没有足够的出售队列"))
-		if(!DataUtils.isPlayerResourceEnough(playerDoc, type, name, count)) return Promise.reject(new Error("玩家资源不足"))
-		var cartNeed = DataUtils.getPlayerCartUsedForSale(playerDoc, type, name, count)
+		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
+		if(!DataUtils.isPlayerResourceEnough(playerDoc, type, name, realCount)) return Promise.reject(new Error("玩家资源不足"))
+		var cartNeed = DataUtils.getPlayerCartUsedForSale(playerDoc, type, name, realCount)
 		if(cartNeed > playerDoc.resources.cart) return Promise.reject(new Error("马车数量不足"))
 
-		playerDoc[type][name] -= count
+		playerDoc[type][name] -= realCount
 		playerData[type] = playerDoc[type]
 		playerDoc.resources.cart -= cartNeed
 		playerData.resources = playerDoc.resources
@@ -132,8 +139,13 @@ pro.getSellItems = function(playerId, type, name, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.contains(_.values(Consts.ResourceTypesCanDeal), type)){
+	var resourceTypesCanDeal = _.keys(Consts.ResourcesCanDeal)
+	if(!_.contains(_.values(resourceTypesCanDeal), type)){
 		callback(new Error("type 不合法"))
+		return
+	}
+	if(!_.contains(Consts.ResourcesCanDeal[type], name)){
+		callback(new Error("name 不合法"))
 		return
 	}
 	if(!_.isString(name)){
@@ -223,21 +235,22 @@ pro.buySellItem = function(playerId, itemId, callback){
 		itemDoc = doc_2
 
 		LogicUtils.refreshPlayerResources(playerDoc)
-
-		var totalPrice = itemDoc.itemData.price * itemDoc.itemData.count
+		var type = itemDoc.itemData.type
+		var count = itemDoc.itemData.count
+		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
+		var totalPrice = itemDoc.itemData.price * count
 		if(playerDoc.resources.coin < totalPrice) return Promise.reject(new Error("银币不足"))
 		playerDoc.resources.coin -= totalPrice
-		playerDoc[itemDoc.itemData.type][itemDoc.itemData.name] += itemDoc.itemData.count
+		playerDoc[type][itemDoc.itemData.name] += realCount
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.resources = playerDoc.resources
+		playerData[type] = playerDoc[type]
+		LogicUtils.refreshPlayerResources(playerDoc)
 
 		return self.playerDao.findByIdAsync(itemDoc.playerId)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		sellerDoc = doc
-
-		playerData.basicInfo = playerDoc.basicInfo
-		playerData.resources = playerDoc.resources
-		playerData[itemDoc.itemData.type] = playerDoc[itemDoc.itemData.type]
-		LogicUtils.refreshPlayerResources(playerDoc)
 
 		var sellItem = _.find(sellerDoc.deals, function(deal){
 			return _.isEqual(deal.id, itemId)
@@ -314,6 +327,7 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 		if(!sellItem.isSold) return Promise.reject(new Error("商品还未卖出"))
 
 		LogicUtils.refreshPlayerResources(playerDoc)
+
 		var totalPrice = sellItem.itemData.count * sellItem.itemData.price
 		playerDoc.resources.coin += totalPrice
 		LogicUtils.removeItemInArray(playerDoc.deals, sellItem)
@@ -391,7 +405,10 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 		if(!_.isEqual(itemDoc.playerId, playerDoc._id)) return Promise.reject(new Error("您未出售此商品"))
 
 		LogicUtils.refreshPlayerResources(playerDoc)
-		playerDoc[itemDoc.itemData.type][itemDoc.itemData.name] += itemDoc.itemData.count
+		var type = itemDoc.itemData.type
+		var count = itemDoc.itemData.count
+		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
+		playerDoc[type][itemDoc.itemData.name] += realCount
 		var sellItem = _.find(playerDoc.deals, function(deal){
 			return _.isEqual(deal.id, itemId)
 		})

@@ -1487,6 +1487,12 @@ var playerSchema = new Schema({
 			count:{type:String, required:true},
 			price:{type:Number, required:true}
 		}
+	}],
+	items:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		count:{type:Number, required:true}
 	}]
 })
 

@@ -1561,7 +1561,7 @@ describe("PlayerService", function(){
 		it("sellItem 正常出售", function(done){
 			Api.sendChat("resource cart 100", function(doc){
 				doc.code.should.equal(200)
-				Api.sellItem("resources", "wood", 1000, 1, function(doc){
+				Api.sellItem("resources", "wood", 2, 1, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
@@ -1603,7 +1603,7 @@ describe("PlayerService", function(){
 
 		it("removeMySellItem 正常下架", function(done){
 			var deal = null
-			Api.sellItem("resources", "wood", 1000, 1, function(doc){
+			Api.sellItem("resources", "wood", 1, 1, function(doc){
 				doc.code.should.equal(200)
 				Api.removeMySellItem(deal.id, function(doc){
 					doc.code.should.equal(200)

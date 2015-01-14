@@ -2639,7 +2639,7 @@ Utils.isPlayerResourceEnough = function(playerDoc, type, name, count){
  */
 Utils.getPlayerCartUsedForSale = function(playerDoc, resourceType, resourceName, resourceCount){
 	var resourceCountPerCart = null
-	if(_.isEqual(resourceType, Consts.ResourceTypesCanDeal.Resources)){
+	if(_.isEqual(resourceType, "resources")){
 		resourceCountPerCart = PlayerInitData.intInit.resourcesPerCart.value
 	}else{
 		resourceCountPerCart = PlayerInitData.intInit.materialsPerCart.value
