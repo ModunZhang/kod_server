@@ -276,8 +276,10 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 			title:Consts.AllianceTitle.Member,
 			titleName:allianceDoc.titles.member
 		}
+		playerDoc.basicInfo.terrain = allianceDoc.basicInfo.terrain
 		var playerData = {}
 		playerData.alliance = playerDoc.alliance
+		playerData.basicInfo = playerDoc.basicInfo
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, playerDoc, allianceDoc])
@@ -677,7 +679,9 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 			title:Consts.AllianceTitle.Member,
 			titleName:allianceDoc.titles.member
 		}
+		memberDoc.basicInfo.terrain = allianceDoc.basicInfo.terrain
 		memberData.alliance = memberDoc.alliance
+		memberData.basicInfo = memberDoc.basicInfo
 		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, memberDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, memberDoc._id])
 		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
@@ -989,7 +993,9 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			title:Consts.AllianceTitle.Member,
 			titleName:allianceDoc.titles.member
 		}
+		playerDoc.basicInfo.terrain = allianceDoc.basicInfo.terrain
 		playerData.alliance = playerDoc.alliance
+		playerData.basicInfo = playerDoc.basicInfo
 
 		var funcs = []
 		var removeRequestEvent = function(event){

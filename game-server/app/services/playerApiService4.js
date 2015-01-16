@@ -819,3 +819,60 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		}
 	})
 }
+
+/**
+ * 设置玩家地形
+ * @param playerId
+ * @param terrain
+ * @param callback
+ */
+pro.setTerrain = function(playerId, terrain, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.contains(_.values(Consts.AllianceTerrain), terrain)){
+		callback(new Error("terrain 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家已加入联盟,不能修改地形"))
+		playerDoc.basicInfo.terrain = terrain
+		playerData.basicInfo = playerDoc.basicInfo
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}

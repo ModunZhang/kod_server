@@ -118,7 +118,8 @@ var playerSchema = new Schema({
 		resourceRefreshTime:{type:Number, required:true, default:Date.now()},
 		dailyQuestsRefreshTime:{type:Number, required:true, default:0},
 		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn},
-		buildQueue:{type:Number, required:true, default:5}
+		buildQueue:{type:Number, required:true, default:5},
+		terrain:{type:String, required:true, default:Consts.AllianceTerrain.GrassLand}
 	},
 	resources:{
 		wood:{type:Number, required:true, default:ResourceInitData.wood},
@@ -345,7 +346,7 @@ var playerSchema = new Schema({
 		greenArmguard_s4:{type:Number, required:true, default:0},
 		redArmguard_s5:{type:Number, required:true, default:0},
 		blueArmguard_s5:{type:Number, required:true, default:0},
-		greenArmguard_s5:{type:Number, required:true, default:0},
+		greenArmguard_s5:{type:Number, required:true, default:0}
 	},
 	dragonEquipmentEvents:[{
 		_id:false,
