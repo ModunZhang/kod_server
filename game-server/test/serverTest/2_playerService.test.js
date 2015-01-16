@@ -1704,6 +1704,13 @@ describe("PlayerService", function(){
 				})
 			})
 		})
+
+		it("setTerrain 正常设置", function(done){
+			Api.setTerrain(Consts.AllianceTerrain.IceField, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
 	})
 
 

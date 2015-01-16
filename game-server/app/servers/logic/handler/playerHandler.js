@@ -836,3 +836,18 @@ pro.upgradeSoldierStar = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 设置玩家地形
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.setTerrain = function(msg, session, next){
+	var terrain = msg.terrain
+	this.playerApiService4.setTerrainAsync(session.uid, terrain).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

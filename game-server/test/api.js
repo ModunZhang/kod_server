@@ -464,6 +464,14 @@ Api.upgradeSoldierStar = function(soldierName, finishNow, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.setTerrain = function(terrain, callback){
+	var info = {
+		terrain:terrain
+	}
+	var route = "logic.playerHandler.setTerrain"
+	pomelo.request(route, info, callback)
+}
+
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {
@@ -554,7 +562,6 @@ Api.editAllianceMemberTitle = function(memberId, title, callback){
 	var route = "logic.allianceHandler.editAllianceMemberTitle"
 	pomelo.request(route, info, callback)
 }
-
 
 Api.kickAllianceMemberOff = function(memberId, callback){
 	var info = {
