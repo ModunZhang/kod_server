@@ -853,6 +853,8 @@ pro.setTerrain = function(playerId, terrain, callback){
 		if(_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家已加入联盟,不能修改地形"))
 		playerDoc.basicInfo.terrain = terrain
 		playerData.basicInfo = playerDoc.basicInfo
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
