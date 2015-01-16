@@ -194,6 +194,7 @@ special["restoreWall_3"] = {
 }
 special["dragonChest_1"] = {
 	name:"dragonChest_1",
+	effect:"dragonMaterials:ingo_1:5:14,dragonMaterials:redCrystal_1:5:14,dragonMaterials:blueCrystal_1:5:14,dragonMaterials:greenCrystal_1:5:14,dragonMaterials:runes_1:5:14,dragonMaterials:ingo_2:5:3,dragonMaterials:redSoul_2:2:4,dragonMaterials:blueSoul_2:2:4,dragonMaterials:greenSoul_2:2:4,dragonMaterials:redCrystal_2:2:4,dragonMaterials:blueCrystal_2:2:4,dragonMaterials:greenCrystal_2:2:4,dragonMaterials:runes_2:2:3",
 	order:22,
 	isSell:true,
 	price:10,
@@ -202,6 +203,7 @@ special["dragonChest_1"] = {
 }
 special["dragonChest_2"] = {
 	name:"dragonChest_2",
+	effect:"dragonMaterials:ingo_2:5:12,dragonMaterials:redSoul_2:5:10,dragonMaterials:blueSoul_2:5:10,dragonMaterials:greenSoul_2:5:10,dragonMaterials:redCrystal_2:5:11,dragonMaterials:blueCrystal_2:5:11,dragonMaterials:greenCrystal_2:5:11,dragonMaterials:runes_2:5:11,dragonMaterials:ingo_3:2:1,dragonMaterials:redSoul_3:2:2,dragonMaterials:blueSoul_3:2:2,dragonMaterials:greenSoul_3:2:2,dragonMaterials:redCrystal_3:2:2,dragonMaterials:blueCrystal_3:2:2,dragonMaterials:greenCrystal_3:2:2,dragonMaterials:runes_3:2:1",
 	order:23,
 	isSell:true,
 	price:10,
@@ -210,6 +212,7 @@ special["dragonChest_2"] = {
 }
 special["dragonChest_3"] = {
 	name:"dragonChest_3",
+	effect:"dragonMaterials:ingo_3:5:12,dragonMaterials:redSoul_3:5:10,dragonMaterials:blueSoul_3:5:10,dragonMaterials:greenSoul_3:5:10,dragonMaterials:redCrystal_3:5:11,dragonMaterials:blueCrystal_3:5:11,dragonMaterials:greenCrystal_3:5:11,dragonMaterials:runes_3:5:11,dragonMaterials:ingo_4:2:1,dragonMaterials:redSoul_4:2:2,dragonMaterials:blueSoul_4:2:2,dragonMaterials:greenSoul_4:2:2,dragonMaterials:redCrystal_4:2:2,dragonMaterials:blueCrystal_4:2:2,dragonMaterials:greenCrystal_4:2:2,dragonMaterials:runes_4:2:1",
 	order:24,
 	isSell:true,
 	price:10,
@@ -218,7 +221,7 @@ special["dragonChest_3"] = {
 }
 special["chest_1"] = {
 	name:"chest_1",
-	effect:"resource:woodClass_2:1:15,resource:stoneClass_2:1:15,resource:ironClass_2:1:15,resource:foodClass_2:1:15,resource:coinClass_1:1:15,speedup:speedup_1:3:15,speedup:speedup_2:1:15",
+	effect:"resource:woodClass_2:1:15,resource:stoneClass_2:1:15,resource:ironClass_2:1:15,resource:foodClass_2:1:15,resource:coinClass_1:1:15,speedup:speedup_1:3:15,speedup:speedup_2:1:10",
 	order:25,
 	isSell:true,
 	price:10,
