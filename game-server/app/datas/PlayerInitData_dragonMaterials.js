@@ -5,10 +5,10 @@ module.exports = dragonMaterials
 
 dragonMaterials[1] = {
 	level:1,
-	iron_1:1000,
-	iron_2:1000,
-	iron_3:1000,
-	iron_4:1000,
+	ingo_1:1000,
+	ingo_2:1000,
+	ingo_3:1000,
+	ingo_4:1000,
 	redSoul_2:1000,
 	redSoul_3:1000,
 	redSoul_4:1000,

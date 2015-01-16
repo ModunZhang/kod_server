@@ -250,10 +250,10 @@ var playerSchema = new Schema({
 		finishTime:{type:Number, required:true}
 	}],
 	dragonMaterials:{
-		iron_1:{type:Number, required:true, default:DragonMaterialInitData.iron_1},
-		iron_2:{type:Number, required:true, default:DragonMaterialInitData.iron_2},
-		iron_3:{type:Number, required:true, default:DragonMaterialInitData.iron_3},
-		iron_4:{type:Number, required:true, default:DragonMaterialInitData.iron_4},
+		ingo_1:{type:Number, required:true, default:DragonMaterialInitData.ingo_1},
+		ingo_2:{type:Number, required:true, default:DragonMaterialInitData.ingo_2},
+		ingo_3:{type:Number, required:true, default:DragonMaterialInitData.ingo_3},
+		ingo_4:{type:Number, required:true, default:DragonMaterialInitData.ingo_4},
 		redSoul_2:{type:Number, required:true, default:DragonMaterialInitData.redSoul_2},
 		redSoul_3:{type:Number, required:true, default:DragonMaterialInitData.redSoul_3},
 		redSoul_4:{type:Number, required:true, default:DragonMaterialInitData.redSoul_4},

@@ -11,7 +11,7 @@ equipments["redCrown_s1"] = {
 	resolveLExp:15,
 	resolveMExp:10,
 	resolveSExp:5,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:320,
 	makeTime:1600
 }
@@ -23,7 +23,7 @@ equipments["blueCrown_s1"] = {
 	resolveLExp:15,
 	resolveMExp:10,
 	resolveSExp:5,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:320,
 	makeTime:1600
 }
@@ -35,7 +35,7 @@ equipments["greenCrown_s1"] = {
 	resolveLExp:15,
 	resolveMExp:10,
 	resolveSExp:5,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:320,
 	makeTime:1600
 }
@@ -47,7 +47,7 @@ equipments["redCrown_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -59,7 +59,7 @@ equipments["blueCrown_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -71,7 +71,7 @@ equipments["greenCrown_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -83,7 +83,7 @@ equipments["redCrown_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -95,7 +95,7 @@ equipments["blueCrown_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -107,7 +107,7 @@ equipments["greenCrown_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -119,7 +119,7 @@ equipments["redCrown_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -131,7 +131,7 @@ equipments["blueCrown_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -143,7 +143,7 @@ equipments["greenCrown_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -155,7 +155,7 @@ equipments["redCrown_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -167,7 +167,7 @@ equipments["blueCrown_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -179,7 +179,7 @@ equipments["greenCrown_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -191,7 +191,7 @@ equipments["redChest_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -203,7 +203,7 @@ equipments["blueChest_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -215,7 +215,7 @@ equipments["greenChest_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -227,7 +227,7 @@ equipments["redChest_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -239,7 +239,7 @@ equipments["blueChest_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -251,7 +251,7 @@ equipments["greenChest_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -263,7 +263,7 @@ equipments["redChest_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -275,7 +275,7 @@ equipments["blueChest_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -287,7 +287,7 @@ equipments["greenChest_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -299,7 +299,7 @@ equipments["redChest_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -311,7 +311,7 @@ equipments["blueChest_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -323,7 +323,7 @@ equipments["greenChest_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -335,7 +335,7 @@ equipments["redSting_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -347,7 +347,7 @@ equipments["blueSting_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -359,7 +359,7 @@ equipments["greenSting_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -371,7 +371,7 @@ equipments["redSting_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -383,7 +383,7 @@ equipments["blueSting_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -395,7 +395,7 @@ equipments["greenSting_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -407,7 +407,7 @@ equipments["redSting_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -419,7 +419,7 @@ equipments["blueSting_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -431,7 +431,7 @@ equipments["greenSting_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -443,7 +443,7 @@ equipments["redSting_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -455,7 +455,7 @@ equipments["blueSting_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -467,7 +467,7 @@ equipments["greenSting_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -479,7 +479,7 @@ equipments["redOrd_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -491,7 +491,7 @@ equipments["blueOrd_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -503,7 +503,7 @@ equipments["greenOrd_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -515,7 +515,7 @@ equipments["redOrd_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -527,7 +527,7 @@ equipments["blueOrd_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -539,7 +539,7 @@ equipments["greenOrd_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -551,7 +551,7 @@ equipments["redOrd_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -563,7 +563,7 @@ equipments["blueOrd_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -575,7 +575,7 @@ equipments["greenOrd_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -587,7 +587,7 @@ equipments["redOrd_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -599,7 +599,7 @@ equipments["blueOrd_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -611,7 +611,7 @@ equipments["greenOrd_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -623,7 +623,7 @@ equipments["redArmguard_s1"] = {
 	resolveLExp:15,
 	resolveMExp:10,
 	resolveSExp:5,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:320,
 	makeTime:1600
 }
@@ -635,7 +635,7 @@ equipments["blueArmguard_s1"] = {
 	resolveLExp:15,
 	resolveMExp:10,
 	resolveSExp:5,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:320,
 	makeTime:1600
 }
@@ -647,7 +647,7 @@ equipments["greenArmguard_s1"] = {
 	resolveLExp:15,
 	resolveMExp:10,
 	resolveSExp:5,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:320,
 	makeTime:1600
 }
@@ -659,7 +659,7 @@ equipments["redArmguard_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -671,7 +671,7 @@ equipments["blueArmguard_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -683,7 +683,7 @@ equipments["greenArmguard_s2"] = {
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
@@ -695,7 +695,7 @@ equipments["redArmguard_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -707,7 +707,7 @@ equipments["blueArmguard_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -719,7 +719,7 @@ equipments["greenArmguard_s3"] = {
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
@@ -731,7 +731,7 @@ equipments["redArmguard_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -743,7 +743,7 @@ equipments["blueArmguard_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -755,7 +755,7 @@ equipments["greenArmguard_s4"] = {
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
@@ -767,7 +767,7 @@ equipments["redArmguard_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -779,7 +779,7 @@ equipments["blueArmguard_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
@@ -791,7 +791,7 @@ equipments["greenArmguard_s5"] = {
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"iron_1:1,redCrystal_1:1",
+	materials:"ingo_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
