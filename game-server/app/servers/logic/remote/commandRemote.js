@@ -508,44 +508,9 @@ pro.dragonmaterial = function(uid, count, callback){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
-
-		doc.dragonMaterials.ironIngot = count
-		doc.dragonMaterials.steelIngot = count
-		doc.dragonMaterials.mithrilIngot = count
-		doc.dragonMaterials.blackIronIngot = count
-		doc.dragonMaterials.arcaniteIngot = count
-		doc.dragonMaterials.wispOfFire = count
-		doc.dragonMaterials.wispOfCold = count
-		doc.dragonMaterials.wispOfWind = count
-		doc.dragonMaterials.lavaSoul = count
-		doc.dragonMaterials.iceSoul = count
-		doc.dragonMaterials.forestSoul = count
-		doc.dragonMaterials.infernoSoul = count
-		doc.dragonMaterials.blizzardSoul = count
-		doc.dragonMaterials.fairySoul = count
-		doc.dragonMaterials.moltenShard = count
-		doc.dragonMaterials.glacierShard = count
-		doc.dragonMaterials.chargedShard = count
-		doc.dragonMaterials.moltenShiver = count
-		doc.dragonMaterials.glacierShiver = count
-		doc.dragonMaterials.chargedShiver = count
-		doc.dragonMaterials.moltenCore = count
-		doc.dragonMaterials.glacierCore = count
-		doc.dragonMaterials.chargedCore = count
-		doc.dragonMaterials.moltenMagnet = count
-		doc.dragonMaterials.glacierMagnet = count
-		doc.dragonMaterials.chargedMagnet = count
-		doc.dragonMaterials.challengeRune = count
-		doc.dragonMaterials.suppressRune = count
-		doc.dragonMaterials.rageRune = count
-		doc.dragonMaterials.guardRune = count
-		doc.dragonMaterials.poisonRune = count
-		doc.dragonMaterials.giantRune = count
-		doc.dragonMaterials.dolanRune = count
-		doc.dragonMaterials.warsongRune = count
-		doc.dragonMaterials.infernoRune = count
-		doc.dragonMaterials.arcanaRune = count
-		doc.dragonMaterials.eternityRune = count
+		_.each(doc.dragonMaterials, function(theCount, key){
+			doc.dragonMaterials[key] = count
+		})
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
@@ -569,73 +534,9 @@ pro.dragonequipment = function(uid, count, callback){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
-
-		doc.dragonEquipments.moltenCrown = count
-		doc.dragonEquipments.glacierCrown = count
-		doc.dragonEquipments.chargedCrown = count
-		doc.dragonEquipments.fireSuppressCrown = count
-		doc.dragonEquipments.coldSuppressCrown = count
-		doc.dragonEquipments.windSuppressCrown = count
-		doc.dragonEquipments.rageCrown = count
-		doc.dragonEquipments.frostCrown = count
-		doc.dragonEquipments.poisonCrown = count
-		doc.dragonEquipments.giantCrown = count
-		doc.dragonEquipments.dolanCrown = count
-		doc.dragonEquipments.warsongCrown = count
-		doc.dragonEquipments.infernoCrown = count
-		doc.dragonEquipments.blizzardCrown = count
-		doc.dragonEquipments.eternityCrown = count
-		doc.dragonEquipments.fireSuppressChest = count
-		doc.dragonEquipments.coldSuppressChest = count
-		doc.dragonEquipments.windSuppressChest = count
-		doc.dragonEquipments.rageChest = count
-		doc.dragonEquipments.frostChest = count
-		doc.dragonEquipments.poisonChest = count
-		doc.dragonEquipments.giantChest = count
-		doc.dragonEquipments.dolanChest = count
-		doc.dragonEquipments.warsongChest = count
-		doc.dragonEquipments.infernoChest = count
-		doc.dragonEquipments.blizzardChest = count
-		doc.dragonEquipments.eternityChest = count
-		doc.dragonEquipments.fireSuppressSting = count
-		doc.dragonEquipments.coldSuppressSting = count
-		doc.dragonEquipments.windSuppressSting = count
-		doc.dragonEquipments.rageSting = count
-		doc.dragonEquipments.frostSting = count
-		doc.dragonEquipments.poisonSting = count
-		doc.dragonEquipments.giantSting = count
-		doc.dragonEquipments.dolanSting = count
-		doc.dragonEquipments.warsongSting = count
-		doc.dragonEquipments.infernoSting = count
-		doc.dragonEquipments.blizzardSting = count
-		doc.dragonEquipments.eternitySting = count
-		doc.dragonEquipments.fireSuppressOrb = count
-		doc.dragonEquipments.coldSuppressOrb = count
-		doc.dragonEquipments.windSuppressOrb = count
-		doc.dragonEquipments.rageOrb = count
-		doc.dragonEquipments.frostOrb = count
-		doc.dragonEquipments.poisonOrb = count
-		doc.dragonEquipments.giantOrb = count
-		doc.dragonEquipments.dolanOrb = count
-		doc.dragonEquipments.warsongOrb = count
-		doc.dragonEquipments.infernoOrb = count
-		doc.dragonEquipments.blizzardOrb = count
-		doc.dragonEquipments.eternityOrb = count
-		doc.dragonEquipments.moltenArmguard = count
-		doc.dragonEquipments.glacierArmguard = count
-		doc.dragonEquipments.chargedArmguard = count
-		doc.dragonEquipments.fireSuppressArmguard = count
-		doc.dragonEquipments.coldSuppressArmguard = count
-		doc.dragonEquipments.windSuppressArmguard = count
-		doc.dragonEquipments.rageArmguard = count
-		doc.dragonEquipments.frostArmguard = count
-		doc.dragonEquipments.poisonArmguard = count
-		doc.dragonEquipments.giantArmguard = count
-		doc.dragonEquipments.dolanArmguard = count
-		doc.dragonEquipments.warsongArmguard = count
-		doc.dragonEquipments.infernoArmguard = count
-		doc.dragonEquipments.blizzardArmguard = count
-		doc.dragonEquipments.eternityArmguard = count
+		_.each(doc.dragonEquipments, function(theCount, key){
+			doc.dragonEquipments[key] = count
+		})
 		LogicUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){

@@ -3,795 +3,795 @@
 var equipments = {}
 module.exports = equipments
 
-equipments["moltenCrown"] = {
-	name:"moltenCrown",
+equipments["redCrown_s1"] = {
+	name:"redCrown_s1",
 	usedFor:"redDragon",
 	maxStar:1,
 	category:"crown",
 	resolveLExp:15,
 	resolveMExp:10,
 	resolveSExp:5,
-	materials:"moltenShard:9,challengeRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:320,
 	makeTime:1600
 }
-equipments["glacierCrown"] = {
-	name:"glacierCrown",
+equipments["blueCrown_s1"] = {
+	name:"blueCrown_s1",
 	usedFor:"blueDragon",
 	maxStar:1,
 	category:"crown",
 	resolveLExp:15,
 	resolveMExp:10,
 	resolveSExp:5,
-	materials:"glacierShard:9,challengeRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:320,
 	makeTime:1600
 }
-equipments["chargedCrown"] = {
-	name:"chargedCrown",
+equipments["greenCrown_s1"] = {
+	name:"greenCrown_s1",
 	usedFor:"greenDragon",
 	maxStar:1,
 	category:"crown",
 	resolveLExp:15,
 	resolveMExp:10,
 	resolveSExp:5,
-	materials:"chargedShard:9,challengeRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:320,
 	makeTime:1600
 }
-equipments["fireSuppressCrown"] = {
-	name:"fireSuppressCrown",
+equipments["redCrown_s2"] = {
+	name:"redCrown_s2",
 	usedFor:"redDragon",
 	maxStar:2,
 	category:"crown",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"moltenShard:9,suppressRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["coldSuppressCrown"] = {
-	name:"coldSuppressCrown",
+equipments["blueCrown_s2"] = {
+	name:"blueCrown_s2",
 	usedFor:"blueDragon",
 	maxStar:2,
 	category:"crown",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"glacierShard:9,suppressRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["windSuppressCrown"] = {
-	name:"windSuppressCrown",
+equipments["greenCrown_s2"] = {
+	name:"greenCrown_s2",
 	usedFor:"greenDragon",
 	maxStar:2,
 	category:"crown",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"chargedShard:9,suppressRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["rageCrown"] = {
-	name:"rageCrown",
+equipments["redCrown_s3"] = {
+	name:"redCrown_s3",
 	usedFor:"redDragon",
 	maxStar:3,
 	category:"crown",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"moltenShiver:9,rageRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["frostCrown"] = {
-	name:"frostCrown",
+equipments["blueCrown_s3"] = {
+	name:"blueCrown_s3",
 	usedFor:"blueDragon",
 	maxStar:3,
 	category:"crown",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"glacierShiver:9,guardRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["poisonCrown"] = {
-	name:"poisonCrown",
+equipments["greenCrown_s3"] = {
+	name:"greenCrown_s3",
 	usedFor:"greenDragon",
 	maxStar:3,
 	category:"crown",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"chargedShiver:9,poisonRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["giantCrown"] = {
-	name:"giantCrown",
+equipments["redCrown_s4"] = {
+	name:"redCrown_s4",
 	usedFor:"redDragon",
 	maxStar:4,
 	category:"crown",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"moltenCore:9,giantRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["dolanCrown"] = {
-	name:"dolanCrown",
+equipments["blueCrown_s4"] = {
+	name:"blueCrown_s4",
 	usedFor:"blueDragon",
 	maxStar:4,
 	category:"crown",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"glacierCore:9,dolanRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["warsongCrown"] = {
-	name:"warsongCrown",
+equipments["greenCrown_s4"] = {
+	name:"greenCrown_s4",
 	usedFor:"greenDragon",
 	maxStar:4,
 	category:"crown",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"chargedCore:9,warsongRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["infernoCrown"] = {
-	name:"infernoCrown",
+equipments["redCrown_s5"] = {
+	name:"redCrown_s5",
 	usedFor:"redDragon",
 	maxStar:5,
 	category:"crown",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"moltenMagnet:9,infernoRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["blizzardCrown"] = {
-	name:"blizzardCrown",
+equipments["blueCrown_s5"] = {
+	name:"blueCrown_s5",
 	usedFor:"blueDragon",
 	maxStar:5,
 	category:"crown",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"glacierMagnet:9,arcanaRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["eternityCrown"] = {
-	name:"eternityCrown",
+equipments["greenCrown_s5"] = {
+	name:"greenCrown_s5",
 	usedFor:"greenDragon",
 	maxStar:5,
 	category:"crown",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"chargedMagnet:9,eternityRune:9",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["fireSuppressChest"] = {
-	name:"fireSuppressChest",
+equipments["redChest_s2"] = {
+	name:"redChest_s2",
 	usedFor:"redDragon",
 	maxStar:2,
 	category:"chest",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"steelIngot:8,wispOfFire:8,suppressRune:8",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["coldSuppressChest"] = {
-	name:"coldSuppressChest",
+equipments["blueChest_s2"] = {
+	name:"blueChest_s2",
 	usedFor:"blueDragon",
 	maxStar:2,
 	category:"chest",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"steelIngot:8,wispOfCold:8,suppressRune:8",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["windSuppressChest"] = {
-	name:"windSuppressChest",
+equipments["greenChest_s2"] = {
+	name:"greenChest_s2",
 	usedFor:"greenDragon",
 	maxStar:2,
 	category:"chest",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"steelIngot:8,wispOfWind:8,suppressRune:8",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["rageChest"] = {
-	name:"rageChest",
+equipments["redChest_s3"] = {
+	name:"redChest_s3",
 	usedFor:"redDragon",
 	maxStar:3,
 	category:"chest",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"mithrilIngot:8,wispOfFire:8,rageRune:8",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["frostChest"] = {
-	name:"frostChest",
+equipments["blueChest_s3"] = {
+	name:"blueChest_s3",
 	usedFor:"blueDragon",
 	maxStar:3,
 	category:"chest",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"mithrilIngot:8,wispOfCold:8,guardRune:8",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["poisonChest"] = {
-	name:"poisonChest",
+equipments["greenChest_s3"] = {
+	name:"greenChest_s3",
 	usedFor:"greenDragon",
 	maxStar:3,
 	category:"chest",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"mithrilIngot:8,wispOfWind:8,poisonRune:8",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["giantChest"] = {
-	name:"giantChest",
+equipments["redChest_s4"] = {
+	name:"redChest_s4",
 	usedFor:"redDragon",
 	maxStar:4,
 	category:"chest",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"blackIronIngot:8,lavaSoul:8,giantRune:8",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["dolanChest"] = {
-	name:"dolanChest",
+equipments["blueChest_s4"] = {
+	name:"blueChest_s4",
 	usedFor:"blueDragon",
 	maxStar:4,
 	category:"chest",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"blackIronIngot:8,iceSoul:8,dolanRune:8",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["warsongChest"] = {
-	name:"warsongChest",
+equipments["greenChest_s4"] = {
+	name:"greenChest_s4",
 	usedFor:"greenDragon",
 	maxStar:4,
 	category:"chest",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"blackIronIngot:8,forestSoul:8,warsongRune:8",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["infernoChest"] = {
-	name:"infernoChest",
+equipments["redChest_s5"] = {
+	name:"redChest_s5",
 	usedFor:"redDragon",
 	maxStar:5,
 	category:"chest",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"arcaniteIngot:8,infernoSoul:8,infernoRune:8",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["blizzardChest"] = {
-	name:"blizzardChest",
+equipments["blueChest_s5"] = {
+	name:"blueChest_s5",
 	usedFor:"blueDragon",
 	maxStar:5,
 	category:"chest",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"arcaniteIngot:8,blizzardSoul:8,arcanaRune:8",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["eternityChest"] = {
-	name:"eternityChest",
+equipments["greenChest_s5"] = {
+	name:"greenChest_s5",
 	usedFor:"greenDragon",
 	maxStar:5,
 	category:"chest",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"arcaniteIngot:8,fairySoul:8,eternityRune:8",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["fireSuppressSting"] = {
-	name:"fireSuppressSting",
+equipments["redSting_s2"] = {
+	name:"redSting_s2",
 	usedFor:"redDragon",
 	maxStar:2,
 	category:"sting",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"steelIngot:7,moltenShard:7,suppressRune:7",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["coldSuppressSting"] = {
-	name:"coldSuppressSting",
+equipments["blueSting_s2"] = {
+	name:"blueSting_s2",
 	usedFor:"blueDragon",
 	maxStar:2,
 	category:"sting",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"steelIngot:7,glacierShard:7,suppressRune:7",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["windSuppressSting"] = {
-	name:"windSuppressSting",
+equipments["greenSting_s2"] = {
+	name:"greenSting_s2",
 	usedFor:"greenDragon",
 	maxStar:2,
 	category:"sting",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"steelIngot:7,chargedShard:7,suppressRune:7",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["rageSting"] = {
-	name:"rageSting",
+equipments["redSting_s3"] = {
+	name:"redSting_s3",
 	usedFor:"redDragon",
 	maxStar:3,
 	category:"sting",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"mithrilIngot:7,moltenShiver:7,rageRune:7",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["frostSting"] = {
-	name:"frostSting",
+equipments["blueSting_s3"] = {
+	name:"blueSting_s3",
 	usedFor:"blueDragon",
 	maxStar:3,
 	category:"sting",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"mithrilIngot:7,glacierShiver:7,guardRune:7",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["poisonSting"] = {
-	name:"poisonSting",
+equipments["greenSting_s3"] = {
+	name:"greenSting_s3",
 	usedFor:"greenDragon",
 	maxStar:3,
 	category:"sting",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"mithrilIngot:7,chargedShiver:7,poisonRune:7",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["giantSting"] = {
-	name:"giantSting",
+equipments["redSting_s4"] = {
+	name:"redSting_s4",
 	usedFor:"redDragon",
 	maxStar:4,
 	category:"sting",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"blackIronIngot:7,moltenCore:7,giantRune:7",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["dolanSting"] = {
-	name:"dolanSting",
+equipments["blueSting_s4"] = {
+	name:"blueSting_s4",
 	usedFor:"blueDragon",
 	maxStar:4,
 	category:"sting",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"blackIronIngot:7,glacierCore:7,dolanRune:7",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["warsongSting"] = {
-	name:"warsongSting",
+equipments["greenSting_s4"] = {
+	name:"greenSting_s4",
 	usedFor:"greenDragon",
 	maxStar:4,
 	category:"sting",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"blackIronIngot:7,chargedCore:7,warsongRune:7",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["infernoSting"] = {
-	name:"infernoSting",
+equipments["redSting_s5"] = {
+	name:"redSting_s5",
 	usedFor:"redDragon",
 	maxStar:5,
 	category:"sting",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"arcaniteIngot:7,moltenMagnet:7,infernoRune:7",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["blizzardSting"] = {
-	name:"blizzardSting",
+equipments["blueSting_s5"] = {
+	name:"blueSting_s5",
 	usedFor:"blueDragon",
 	maxStar:5,
 	category:"sting",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"arcaniteIngot:7,glacierMagnet:7,arcanaRune:7",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["eternitySting"] = {
-	name:"eternitySting",
+equipments["greenSting_s5"] = {
+	name:"greenSting_s5",
 	usedFor:"greenDragon",
 	maxStar:5,
 	category:"sting",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"arcaniteIngot:7,chargedMagnet:7,eternityRune:7",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["fireSuppressOrb"] = {
-	name:"fireSuppressOrb",
+equipments["redOrd_s2"] = {
+	name:"redOrd_s2",
 	usedFor:"redDragon",
 	maxStar:2,
 	category:"orb",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"steelIngot:6,wispOfFire:6,moltenShard:6",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["coldSuppressOrb"] = {
-	name:"coldSuppressOrb",
+equipments["blueOrd_s2"] = {
+	name:"blueOrd_s2",
 	usedFor:"blueDragon",
 	maxStar:2,
 	category:"orb",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"steelIngot:6,wispOfCold:6,glacierShard:6",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["windSuppressOrb"] = {
-	name:"windSuppressOrb",
+equipments["greenOrd_s2"] = {
+	name:"greenOrd_s2",
 	usedFor:"greenDragon",
 	maxStar:2,
 	category:"orb",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"steelIngot:6,wispOfWind:6,chargedShard:6",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["rageOrb"] = {
-	name:"rageOrb",
+equipments["redOrd_s3"] = {
+	name:"redOrd_s3",
 	usedFor:"redDragon",
 	maxStar:3,
 	category:"orb",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"mithrilIngot:6,wispOfFire:6,moltenShiver:6",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["frostOrb"] = {
-	name:"frostOrb",
+equipments["blueOrd_s3"] = {
+	name:"blueOrd_s3",
 	usedFor:"blueDragon",
 	maxStar:3,
 	category:"orb",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"mithrilIngot:6,wispOfCold:6,glacierShiver:6",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["poisonOrb"] = {
-	name:"poisonOrb",
+equipments["greenOrd_s3"] = {
+	name:"greenOrd_s3",
 	usedFor:"greenDragon",
 	maxStar:3,
 	category:"orb",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"mithrilIngot:6,wispOfWind:6,chargedShiver:6",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["giantOrb"] = {
-	name:"giantOrb",
+equipments["redOrd_s4"] = {
+	name:"redOrd_s4",
 	usedFor:"redDragon",
 	maxStar:4,
 	category:"orb",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"blackIronIngot:6,lavaSoul:6,moltenCore:6",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["dolanOrb"] = {
-	name:"dolanOrb",
+equipments["blueOrd_s4"] = {
+	name:"blueOrd_s4",
 	usedFor:"blueDragon",
 	maxStar:4,
 	category:"orb",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"blackIronIngot:6,iceSoul:6,glacierCore:6",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["warsongOrb"] = {
-	name:"warsongOrb",
+equipments["greenOrd_s4"] = {
+	name:"greenOrd_s4",
 	usedFor:"greenDragon",
 	maxStar:4,
 	category:"orb",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"blackIronIngot:6,forestSoul:6,chargedCore:6",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["infernoOrb"] = {
-	name:"infernoOrb",
+equipments["redOrd_s5"] = {
+	name:"redOrd_s5",
 	usedFor:"redDragon",
 	maxStar:5,
 	category:"orb",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"arcaniteIngot:6,infernoSoul:6,moltenMagnet:6",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["blizzardOrb"] = {
-	name:"blizzardOrb",
+equipments["blueOrd_s5"] = {
+	name:"blueOrd_s5",
 	usedFor:"blueDragon",
 	maxStar:5,
 	category:"orb",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"arcaniteIngot:6,blizzardSoul:6,glacierMagnet:6",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["eternityOrb"] = {
-	name:"eternityOrb",
+equipments["greenOrd_s5"] = {
+	name:"greenOrd_s5",
 	usedFor:"greenDragon",
 	maxStar:5,
 	category:"orb",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"arcaniteIngot:6,fairySoul:6,chargedMagnet:6",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["moltenArmguard"] = {
-	name:"moltenArmguard",
+equipments["redArmguard_s1"] = {
+	name:"redArmguard_s1",
 	usedFor:"redDragon",
 	maxStar:1,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:15,
 	resolveMExp:10,
 	resolveSExp:5,
-	materials:"ironIngot:10,moltenShard:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:320,
 	makeTime:1600
 }
-equipments["glacierArmguard"] = {
-	name:"glacierArmguard",
+equipments["blueArmguard_s1"] = {
+	name:"blueArmguard_s1",
 	usedFor:"blueDragon",
 	maxStar:1,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:15,
 	resolveMExp:10,
 	resolveSExp:5,
-	materials:"ironIngot:10,glacierShard:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:320,
 	makeTime:1600
 }
-equipments["chargedArmguard"] = {
-	name:"chargedArmguard",
+equipments["greenArmguard_s1"] = {
+	name:"greenArmguard_s1",
 	usedFor:"greenDragon",
 	maxStar:1,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:15,
 	resolveMExp:10,
 	resolveSExp:5,
-	materials:"ironIngot:10,chargedShard:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:320,
 	makeTime:1600
 }
-equipments["fireSuppressArmguard"] = {
-	name:"fireSuppressArmguard",
+equipments["redArmguard_s2"] = {
+	name:"redArmguard_s2",
 	usedFor:"redDragon",
 	maxStar:2,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"steelIngot:10,moltenShard:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["coldSuppressArmguard"] = {
-	name:"coldSuppressArmguard",
+equipments["blueArmguard_s2"] = {
+	name:"blueArmguard_s2",
 	usedFor:"blueDragon",
 	maxStar:2,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"steelIngot:10,glacierShard:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["windSuppressArmguard"] = {
-	name:"windSuppressArmguard",
+equipments["greenArmguard_s2"] = {
+	name:"greenArmguard_s2",
 	usedFor:"greenDragon",
 	maxStar:2,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:30,
 	resolveMExp:20,
 	resolveSExp:10,
-	materials:"steelIngot:10,chargedShard:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:1280,
 	makeTime:3600
 }
-equipments["rageArmguard"] = {
-	name:"rageArmguard",
+equipments["redArmguard_s3"] = {
+	name:"redArmguard_s3",
 	usedFor:"redDragon",
 	maxStar:3,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"mithrilIngot:10,moltenShiver:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["frostArmguard"] = {
-	name:"frostArmguard",
+equipments["blueArmguard_s3"] = {
+	name:"blueArmguard_s3",
 	usedFor:"blueDragon",
 	maxStar:3,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"mithrilIngot:10,glacierShiver:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["poisonArmguard"] = {
-	name:"poisonArmguard",
+equipments["greenArmguard_s3"] = {
+	name:"greenArmguard_s3",
 	usedFor:"greenDragon",
 	maxStar:3,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:75,
 	resolveMExp:50,
 	resolveSExp:25,
-	materials:"mithrilIngot:10,chargedShiver:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:5120,
 	makeTime:7200
 }
-equipments["giantArmguard"] = {
-	name:"giantArmguard",
+equipments["redArmguard_s4"] = {
+	name:"redArmguard_s4",
 	usedFor:"redDragon",
 	maxStar:4,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"blackIronIngot:10,moltenCore:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["dolanArmguard"] = {
-	name:"dolanArmguard",
+equipments["blueArmguard_s4"] = {
+	name:"blueArmguard_s4",
 	usedFor:"blueDragon",
 	maxStar:4,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"blackIronIngot:10,glacierCore:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["warsongArmguard"] = {
-	name:"warsongArmguard",
+equipments["greenArmguard_s4"] = {
+	name:"greenArmguard_s4",
 	usedFor:"greenDragon",
 	maxStar:4,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:150,
 	resolveMExp:100,
 	resolveSExp:50,
-	materials:"blackIronIngot:10,chargedCore:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:20480,
 	makeTime:12000
 }
-equipments["infernoArmguard"] = {
-	name:"infernoArmguard",
+equipments["redArmguard_s5"] = {
+	name:"redArmguard_s5",
 	usedFor:"redDragon",
 	maxStar:5,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"arcaniteIngot:10,moltenMagnet:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["blizzardArmguard"] = {
-	name:"blizzardArmguard",
+equipments["blueArmguard_s5"] = {
+	name:"blueArmguard_s5",
 	usedFor:"blueDragon",
 	maxStar:5,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"arcaniteIngot:10,glacierMagnet:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }
-equipments["eternityArmguard"] = {
-	name:"eternityArmguard",
+equipments["greenArmguard_s5"] = {
+	name:"greenArmguard_s5",
 	usedFor:"greenDragon",
 	maxStar:5,
 	category:"armguardLeft,armguardRight",
 	resolveLExp:300,
 	resolveMExp:200,
 	resolveSExp:100,
-	materials:"arcaniteIngot:10,chargedMagnet:10",
+	materials:"iron_1:1,redCrystal_1:1",
 	coin:81920,
 	makeTime:16000
 }

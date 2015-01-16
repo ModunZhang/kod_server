@@ -3,18 +3,6 @@
 var dragonAttributes = []
 module.exports = dragonAttributes
 
-dragonAttributes[0] = {
-	star:0,
-	levelMax:0,
-	promotionLevel:0,
-	perLevelExp:0,
-	perLevelLeadership:0,
-	perLevelStrength:0,
-	perLevelVitality:0,
-	initLeadership:0,
-	initStrength:0,
-	initVitality:0
-}
 dragonAttributes[1] = {
 	star:1,
 	levelMax:10,
@@ -64,18 +52,5 @@ dragonAttributes[4] = {
 	initLeadership:200,
 	initStrength:200,
 	initVitality:580,
-	allCategory:"crown,armguardLeft,armguardRight,chest,sting,orb"
-}
-dragonAttributes[5] = {
-	star:5,
-	levelMax:100,
-	promotionLevel:66,
-	perLevelExp:5120,
-	perLevelLeadership:160,
-	perLevelStrength:10,
-	perLevelVitality:30,
-	initLeadership:300,
-	initStrength:300,
-	initVitality:880,
 	allCategory:"crown,armguardLeft,armguardRight,chest,sting,orb"
 }

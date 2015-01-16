@@ -87,14 +87,14 @@ GameDatas.DailyQuests.dailyQuestStar = require("./DailyQuests_dailyQuestStar.js"
 GameDatas.DailyQuests.dailyQuestStyle = require("./DailyQuests_dailyQuestStyle.js")
 
 GameDatas.DragonEquipments = {}
+GameDatas.DragonEquipments.equipments = require("./DragonEquipments_equipments.js")
+GameDatas.DragonEquipments.equipmentBuff = require("./DragonEquipments_equipmentBuff.js")
 GameDatas.DragonEquipments.crown = require("./DragonEquipments_crown.js")
 GameDatas.DragonEquipments.armguardLeft = require("./DragonEquipments_armguardLeft.js")
 GameDatas.DragonEquipments.armguardRight = require("./DragonEquipments_armguardRight.js")
 GameDatas.DragonEquipments.chest = require("./DragonEquipments_chest.js")
 GameDatas.DragonEquipments.sting = require("./DragonEquipments_sting.js")
 GameDatas.DragonEquipments.orb = require("./DragonEquipments_orb.js")
-GameDatas.DragonEquipments.equipments = require("./DragonEquipments_equipments.js")
-GameDatas.DragonEquipments.equipmentBuff = require("./DragonEquipments_equipmentBuff.js")
 
 GameDatas.Dragons = {}
 GameDatas.Dragons.dragons = require("./Dragons_dragons.js")

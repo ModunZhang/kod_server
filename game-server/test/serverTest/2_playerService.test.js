@@ -819,7 +819,7 @@ describe("PlayerService", function(){
 		})
 
 		it("makeDragonEquipment 铁匠铺还未建造", function(done){
-			Api.makeDragonEquipment("moltenCrown", true, function(doc){
+			Api.makeDragonEquipment("redCrown_s1", true, function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("铁匠铺还未建造")
 				done()
@@ -831,7 +831,7 @@ describe("PlayerService", function(){
 				doc.code.should.equal(200)
 				Api.upgradeBuilding(9, true, function(doc){
 					doc.code.should.equal(200)
-					Api.makeDragonEquipment("moltenCrown", true, function(doc){
+					Api.makeDragonEquipment("redCrown_s1", true, function(doc){
 						doc.code.should.equal(500)
 						doc.message.should.equal("材料不足")
 						Api.sendChat("dragonmaterial 1000", function(doc){
@@ -844,9 +844,9 @@ describe("PlayerService", function(){
 		})
 
 		it("makeDragonEquipment 已有装备正在制作", function(done){
-			Api.makeDragonEquipment("moltenCrown", false, function(doc){
+			Api.makeDragonEquipment("redCrown_s1", false, function(doc){
 				doc.code.should.equal(200)
-				Api.makeDragonEquipment("moltenCrown", false, function(doc){
+				Api.makeDragonEquipment("redCrown_s1", false, function(doc){
 					doc.code.should.equal(500)
 					doc.message.should.equal("已有装备正在制作")
 					done()
@@ -857,7 +857,7 @@ describe("PlayerService", function(){
 		it("makeDragonEquipment 正常普通制造", function(done){
 			Api.sendChat("rmdragonequipmentevents", function(doc){
 				doc.code.should.equal(200)
-				Api.makeDragonEquipment("moltenCrown", false, function(doc){
+				Api.makeDragonEquipment("redCrown_s1", false, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
@@ -865,7 +865,7 @@ describe("PlayerService", function(){
 		})
 
 		it("makeDragonEquipment 正常立即制造", function(done){
-			Api.makeDragonEquipment("moltenCrown", true, function(doc){
+			Api.makeDragonEquipment("redCrown_s1", true, function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
@@ -1038,7 +1038,7 @@ describe("PlayerService", function(){
 		})
 
 		it("setDragonEquipment equipmentName 不能装备到equipmentCategory", function(done){
-			Api.setDragonEquipment("redDragon", "crown", "fireSuppressChest", function(doc){
+			Api.setDragonEquipment("redDragon", "crown", "blueChest_s2", function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("equipmentName 不能装备到equipmentCategory")
 				done()
@@ -1046,7 +1046,7 @@ describe("PlayerService", function(){
 		})
 
 		it("setDragonEquipment equipmentName 不能装备到dragonType", function(done){
-			Api.setDragonEquipment("redDragon", "crown", "glacierCrown", function(doc){
+			Api.setDragonEquipment("redDragon", "crown", "blueCrown_s1", function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("equipmentName 不能装备到dragonType")
 				done()
@@ -1054,7 +1054,7 @@ describe("PlayerService", function(){
 		})
 
 		it("setDragonEquipment 龙还未孵化", function(done){
-			Api.setDragonEquipment("blueDragon", "crown", "glacierCrown", function(doc){
+			Api.setDragonEquipment("blueDragon", "crown", "blueCrown_s1", function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("龙还未孵化")
 				done()
@@ -1062,7 +1062,7 @@ describe("PlayerService", function(){
 		})
 
 		it("setDragonEquipment 装备与龙的星级不匹配", function(done){
-			Api.setDragonEquipment("redDragon", "crown", "fireSuppressCrown", function(doc){
+			Api.setDragonEquipment("redDragon", "crown", "redCrown_s2", function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("装备与龙的星级不匹配")
 				done()
@@ -1072,7 +1072,7 @@ describe("PlayerService", function(){
 		it("setDragonEquipment 仓库中没有此装备", function(done){
 			Api.sendChat("dragonequipment 0", function(doc){
 				doc.code.should.equal(200)
-				Api.setDragonEquipment("redDragon", "crown", "moltenCrown", function(doc){
+				Api.setDragonEquipment("redDragon", "crown", "redCrown_s1", function(doc){
 					doc.code.should.equal(500)
 					doc.message.should.equal("仓库中没有此装备")
 					done()
@@ -1083,9 +1083,9 @@ describe("PlayerService", function(){
 		it("setDragonEquipment 龙身上已经存在相同类型的装备", function(done){
 			Api.sendChat("dragonequipment 10", function(doc){
 				doc.code.should.equal(200)
-				Api.setDragonEquipment("redDragon", "crown", "moltenCrown", function(doc){
+				Api.setDragonEquipment("redDragon", "crown", "redCrown_s1", function(doc){
 					doc.code.should.equal(200)
-					Api.setDragonEquipment("redDragon", "crown", "moltenCrown", function(doc){
+					Api.setDragonEquipment("redDragon", "crown", "redCrown_s1", function(doc){
 						doc.code.should.equal(500)
 						doc.message.should.equal("龙身上已经存在相同类型的装备")
 						done()
@@ -1105,7 +1105,7 @@ describe("PlayerService", function(){
 		it("enhanceDragonEquipment 装备已到最高星级", function(done){
 			Api.sendChat("dragonequipmentstar redDragon 10", function(doc){
 				doc.code.should.equal(200)
-				Api.enhanceDragonEquipment("redDragon", "crown", [{name:"moltenCrown", count:5}], function(doc){
+				Api.enhanceDragonEquipment("redDragon", "crown", [{name:"redCrown_s1", count:5}], function(doc){
 					doc.code.should.equal(500)
 					doc.message.should.equal("装备已到最高星级")
 					done()
@@ -1114,7 +1114,7 @@ describe("PlayerService", function(){
 		})
 
 		it("enhanceDragonEquipment 被牺牲的装备不存在或数量不足1", function(done){
-			Api.setDragonEquipment("redDragon", "armguardLeft", "moltenArmguard", function(doc){
+			Api.setDragonEquipment("redDragon", "armguardLeft", "redArmguard_s1", function(doc){
 				doc.code.should.equal(200)
 				Api.enhanceDragonEquipment("redDragon", "armguardLeft", [], function(doc){
 					doc.code.should.equal(500)
@@ -1125,7 +1125,7 @@ describe("PlayerService", function(){
 		})
 
 		it("enhanceDragonEquipment 被牺牲的装备不存在或数量不足2", function(done){
-			Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"moltenArmguard", count:30}], function(doc){
+			Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"redCrown_s2", count:30}], function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("被牺牲的装备不存在或数量不足")
 				done()
@@ -1133,15 +1133,7 @@ describe("PlayerService", function(){
 		})
 
 		it("enhanceDragonEquipment 被牺牲的装备不存在或数量不足3", function(done){
-			Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"moltenArmguarda", count:5}], function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("被牺牲的装备不存在或数量不足")
-				done()
-			})
-		})
-
-		it("enhanceDragonEquipment 被牺牲的装备不存在或数量不足4", function(done){
-			Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"moltenArmguard", count:-1}], function(doc){
+			Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"redCrown_s6", count:5}], function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("被牺牲的装备不存在或数量不足")
 				done()
@@ -1149,7 +1141,7 @@ describe("PlayerService", function(){
 		})
 
 		it("enhanceDragonEquipment 正常强化", function(done){
-			Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"moltenArmguard", count:5}], function(doc){
+			Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"redArmguard_s1", count:5}], function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
@@ -1193,7 +1185,7 @@ describe("PlayerService", function(){
 		})
 
 		it("upgradeDragonSkill 此技能还未解锁", function(done){
-			Api.upgradeDragonDragonSkill("redDragon", "skill_2", function(doc){
+			Api.upgradeDragonDragonSkill("redDragon", "skill_4", function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("此技能还未解锁")
 				done()
@@ -1280,11 +1272,11 @@ describe("PlayerService", function(){
 		})
 
 		it("upgradeDragonStar 正常晋级", function(done){
-			Api.setDragonEquipment("redDragon", "crown", "moltenCrown", function(doc){
+			Api.setDragonEquipment("redDragon", "crown", "redCrown_s1", function(doc){
 				doc.code.should.equal(200)
-				Api.setDragonEquipment("redDragon", "armguardLeft", "moltenArmguard", function(doc){
+				Api.setDragonEquipment("redDragon", "armguardLeft", "redArmguard_s1", function(doc){
 					doc.code.should.equal(200)
-					Api.setDragonEquipment("redDragon", "armguardRight", "moltenArmguard", function(doc){
+					Api.setDragonEquipment("redDragon", "armguardRight", "redArmguard_s1", function(doc){
 						doc.code.should.equal(200)
 						Api.sendChat("dragonequipmentstar redDragon 5", function(doc){
 							doc.code.should.equal(200)
