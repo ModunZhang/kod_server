@@ -301,13 +301,18 @@ pro.getHelpDefenceMarchEventDetail = function(playerId, eventId, callback){
 
 /**
  * 查看协防部队详细信息
+ * @param callerId
  * @param playerId
  * @param helpedByPlayerId
  * @param callback
  */
-pro.getHelpDefenceTroopDetail = function(playerId, helpedByPlayerId, callback){
+pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
+	}
+	if(!_.isString(callerId)){
+		callback(new Error("callerId 不合法"))
+		return
 	}
 	if(!_.isString(playerId)){
 		callback(new Error("playerId 不合法"))

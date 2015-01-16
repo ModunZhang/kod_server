@@ -783,8 +783,9 @@ pro.getHelpDefenceMarchEventDetail = function(msg, session, next){
  * @param next
  */
 pro.getHelpDefenceTroopDetail = function(msg, session, next){
+	var playerId = msg.playerId
 	var helpedByPlayerId = msg.helpedByPlayerId
-	this.allianceApiService5.getHelpDefenceTroopDetailAsync(session.uid, helpedByPlayerId).then(function(){
+	this.allianceApiService5.getHelpDefenceTroopDetailAsync(session.uid, playerId, helpedByPlayerId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

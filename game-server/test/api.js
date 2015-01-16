@@ -849,8 +849,9 @@ Api.getHelpDefenceMarchEventDetail = function(eventId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.getHelpDefenceTroopDetail = function(helpedByPlayerId, callback){
+Api.getHelpDefenceTroopDetail = function(playerId, helpedByPlayerId, callback){
 	var info = {
+		playerId:playerId,
 		helpedByPlayerId:helpedByPlayerId
 	}
 	var route = "logic.allianceHandler.getHelpDefenceTroopDetail"

@@ -1320,7 +1320,7 @@ describe("AllianceService", function(){
 		//	setTimeout(function(){
 		//		Api.loginPlayer(Config.deviceId, function(doc){
 		//			doc.code.should.equal(200)
-		//			Api.getHelpDefenceTroopDetail(m_user.helpedByTroops[0].id, function(doc){
+		//			Api.getHelpDefenceTroopDetail(m_user._id, m_user.helpedByTroops[0].id, function(doc){
 		//				doc.code.should.equal(200)
 		//				done()
 		//			})
