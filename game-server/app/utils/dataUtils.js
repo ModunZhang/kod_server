@@ -19,22 +19,21 @@ var HouseReturn = GameDatas.HouseReturn
 var HouseFunction = GameDatas.HouseFunction
 var GemsPayment = GameDatas.GemsPayment
 var Houses = GameDatas.Houses.houses
-var BuildingsConfig = GameDatas.Buildings.buildings
+var Buildings = GameDatas.Buildings.buildings
 var PlayerInitData = GameDatas.PlayerInitData
 var HouseInit = PlayerInitData.houses[1]
-var UnitConfig = GameDatas.UnitsConfig
-var DragonEquipmentConfig = GameDatas.SmithConfig.equipments
-var DragonEyrie = GameDatas.DragonEyrie
+var Soldiers = GameDatas.Soldiers
+var DragonEquipments = GameDatas.DragonEquipments
+var Dragons = GameDatas.Dragons
 var AllianceInit = GameDatas.AllianceInitData
 var AllianceRight = AllianceInit.right
-var AllianceBuildingConfig = GameDatas.AllianceBuilding
-var AllianceVillageConfig = GameDatas.AllianceVillage
-var AllianceShrineConfig = GameDatas.AllianceShrine.shrineStage
-var Vip = GameDatas.Vip
+var AllianceBuilding = GameDatas.AllianceBuilding
+var AllianceVillage = GameDatas.AllianceVillage
+var AllianceShrine = GameDatas.AllianceShrine.shrineStage
 var DailyQuests = GameDatas.DailyQuests
-var ProductionTechConfig = GameDatas.ProductionTechs
+var ProductionTechs = GameDatas.ProductionTechs
 var ProductionTechLevelUp = GameDatas.ProductionTechLevelUp
-var MilitaryTechConfig = GameDatas.MilitaryTechs
+var MilitaryTechs = GameDatas.MilitaryTechs
 var MilitaryTechLevelUp = GameDatas.MilitaryTechLevelUp
 
 
@@ -208,7 +207,7 @@ Utils.getMilitaryTechUpgradeRequired = function(techName, techLevel){
  * @returns {{resources: {coin: *}, buildTime: *}}
  */
 Utils.getSoldierStarUpgradeRequired = function(soldierName, star){
-	var config = UnitConfig.normal[soldierName + "_" + star]
+	var config = Soldiers.normal[soldierName + "_" + star]
 	var required = {
 		resources:{
 			coin:config.upgradeCoinNeed
@@ -333,7 +332,7 @@ Utils.isHouseTypeExist = function(houseType){
  * @returns {hasHouse|*}
  */
 Utils.isBuildingHasHouse = function(buildingLocation){
-	var config = BuildingsConfig[buildingLocation]
+	var config = Buildings[buildingLocation]
 	return config.hasHouse
 }
 
@@ -803,10 +802,10 @@ Utils.getPlayerSoldiersPower = function(playerDoc){
 	var config = null
 	_.each(playerDoc.soldiers, function(soldierCount, soldierName){
 		if(Utils.hasSpecialSoldier(soldierName)){
-			config = UnitConfig.special[soldierName]
+			config = Soldiers.special[soldierName]
 		}else{
 			var fullName = soldierName + "_" + 1
-			config = UnitConfig.normal[fullName]
+			config = Soldiers.normal[fullName]
 		}
 		totalPower += config.power * soldierCount
 	})
@@ -898,7 +897,7 @@ Utils.getPlayerFreeHousesCount = function(playerDoc, houseType){
  * @param soldierName
  */
 Utils.hasNormalSoldier = function(soldierName){
-	return _.some(UnitConfig.normal, function(config){
+	return _.some(Soldiers.normal, function(config){
 		if(_.isEqual(config.name, soldierName)) return true
 	})
 }
@@ -909,7 +908,7 @@ Utils.hasNormalSoldier = function(soldierName){
  * @returns {boolean}
  */
 Utils.hasSpecialSoldier = function(soldierName){
-	var keys = _.keys(UnitConfig.special)
+	var keys = _.keys(Soldiers.special)
 	return _.contains(keys, soldierName)
 }
 
@@ -922,7 +921,7 @@ Utils.hasSpecialSoldier = function(soldierName){
 Utils.getRecruitNormalSoldierRequired = function(soldierName, count){
 	var star = 1
 	var fullSoldierName = soldierName + "_" + star
-	var config = UnitConfig.normal[fullSoldierName]
+	var config = Soldiers.normal[fullSoldierName]
 	var resources = {
 		wood:config.wood * count,
 		stone:config.stone * count,
@@ -944,7 +943,7 @@ Utils.getRecruitNormalSoldierRequired = function(soldierName, count){
  * @returns {{materials: (*|Array), recruitTime: *}}
  */
 Utils.getRecruitSpecialSoldierRequired = function(soldierName, count){
-	var config = UnitConfig.special[soldierName]
+	var config = Soldiers.special[soldierName]
 	var materialNames = config.specialMaterials.split(",")
 	var materials = {}
 	_.each(materialNames, function(value){
@@ -967,11 +966,11 @@ Utils.getRecruitSpecialSoldierRequired = function(soldierName, count){
 Utils.getRecruitSoldierTime = function(soldierName, count){
 	var config = null
 	if(this.hasSpecialSoldier(soldierName)){
-		config = UnitConfig.special[soldierName]
+		config = Soldiers.special[soldierName]
 	}else{
 		var star = 1
 		var fullSoldierName = soldierName + "_" + star
-		config = UnitConfig.normal[fullSoldierName]
+		config = Soldiers.normal[fullSoldierName]
 	}
 	return config.recruitTime * count
 }
@@ -988,10 +987,10 @@ Utils.getPlayerSoldierMaxRecruitCount = function(playerDoc, soldierName){
 	var maxRecruit = config.maxRecruit
 	var soldierConfig = null
 	if(this.hasSpecialSoldier(soldierName)){
-		soldierConfig = UnitConfig.special[soldierName]
+		soldierConfig = Soldiers.special[soldierName]
 	}else{
 		var fullSoldierName = soldierName + "_" + 1
-		soldierConfig = UnitConfig.normal[fullSoldierName]
+		soldierConfig = Soldiers.normal[fullSoldierName]
 	}
 	var maxCount = Math.floor(maxRecruit / soldierConfig.citizen)
 	return maxCount
@@ -1004,7 +1003,7 @@ Utils.getPlayerSoldierMaxRecruitCount = function(playerDoc, soldierName){
  */
 Utils.isDragonEquipment = function(equipmentName){
 	var has = false
-	_.each(DragonEquipmentConfig, function(value, key){
+	_.each(DragonEquipments.equipments, function(value, key){
 		if(_.isEqual(equipmentName, key)){
 			has = true
 		}
@@ -1020,7 +1019,7 @@ Utils.isDragonEquipment = function(equipmentName){
  */
 Utils.getPlayerMakeDragonEquipmentRequired = function(playerDoc, equipmentName){
 	var required = {}
-	var config = DragonEquipmentConfig[equipmentName]
+	var config = DragonEquipments.equipments[equipmentName]
 	var materialNameArray = config.materials.split(",")
 	var materials = {}
 	_.each(materialNameArray, function(materialName){
@@ -1042,7 +1041,7 @@ Utils.getPlayerMakeDragonEquipmentRequired = function(playerDoc, equipmentName){
 Utils.getPlayerMakeDragonEquipmentTime = function(playerDoc, equipmentName){
 	var building = playerDoc.buildings["location_9"]
 	var smithConfig = BuildingFunction[building.type][building.level]
-	var dragonEquipmentConfig = DragonEquipmentConfig[equipmentName]
+	var dragonEquipmentConfig = DragonEquipments.equipments[equipmentName]
 	var makeTime = dragonEquipmentConfig.makeTime
 	return LogicUtils.getEfficiency(makeTime, smithConfig.efficiency)
 }
@@ -1064,7 +1063,7 @@ Utils.playerHasFreeBuildQueue = function(playerDoc){
 Utils.getTreatSoldierTime = function(soldierName, count){
 	var star = 1
 	var fullSoldierName = soldierName + "_" + star
-	var config = UnitConfig.normal[fullSoldierName]
+	var config = Soldiers.normal[fullSoldierName]
 	return config.treatTime * count
 }
 
@@ -1090,7 +1089,7 @@ Utils.getPlayerTreatSoldierRequired = function(playerDoc, soldiers){
 		var count = soldier.count
 		var star = 1
 		var fullSoldierName = soldierName + "_" + star
-		var config = UnitConfig.normal[fullSoldierName]
+		var config = Soldiers.normal[fullSoldierName]
 		totalNeed.resources.wood += config.treatWood * count
 		totalNeed.resources.stone += config.treatStone * count
 		totalNeed.resources.iron += config.treatIron * count
@@ -1107,7 +1106,7 @@ Utils.getPlayerTreatSoldierRequired = function(playerDoc, soldiers){
  * @returns {*}
  */
 Utils.getPlayerDragonVitality = function(playerDoc, dragon){
-	var config = DragonEyrie.dragonAttribute[dragon.star]
+	var config = Dragons.dragonAttributes[dragon.star]
 	var vitality = config.initVitality + (config.perLevelVitality * dragon.level)
 	return vitality
 }
@@ -1119,7 +1118,7 @@ Utils.getPlayerDragonVitality = function(playerDoc, dragon){
  * @returns {*}
  */
 Utils.getPlayerDragonStrength = function(playerDoc, dragon){
-	var config = DragonEyrie.dragonAttribute[dragon.star]
+	var config = Dragons.dragonAttributes[dragon.star]
 	var vitality = config.initStrength + (config.perLevelStrength * dragon.level)
 	return vitality
 }
@@ -1131,8 +1130,8 @@ Utils.getPlayerDragonStrength = function(playerDoc, dragon){
  */
 Utils.generateDragonEquipmentBuffs = function(equipmentName){
 	var generatedBuffs = []
-	var star = DragonEquipmentConfig[equipmentName].maxStar
-	var buffs = DragonEyrie.equipmentBuff
+	var star = DragonEquipments.equipments[equipmentName].maxStar
+	var buffs = DragonEquipments.equipmentBuff
 	var buffKeys = Object.keys(buffs)
 	for(var i = 0; i < star; i++){
 		buffKeys = CommonUtils.shuffle(buffKeys)
@@ -1150,7 +1149,7 @@ Utils.generateDragonEquipmentBuffs = function(equipmentName){
  * @returns {boolean}
  */
 Utils.isDragonEquipmentLegalAtCategory = function(equipmentName, equipmentCategory){
-	var config = DragonEquipmentConfig[equipmentName]
+	var config = DragonEquipments.equipments[equipmentName]
 	var categories = config.category.split(",")
 	return _.contains(categories, equipmentCategory)
 
@@ -1163,7 +1162,7 @@ Utils.isDragonEquipmentLegalAtCategory = function(equipmentName, equipmentCatego
  * @returns {*}
  */
 Utils.isDragonEquipmentLegalOnDragon = function(equipmentName, dragonType){
-	var config = DragonEquipmentConfig[equipmentName]
+	var config = DragonEquipments.equipments[equipmentName]
 	return _.isEqual(dragonType, config.usedFor)
 }
 
@@ -1174,7 +1173,7 @@ Utils.isDragonEquipmentLegalOnDragon = function(equipmentName, dragonType){
  * @returns {*}
  */
 Utils.isDragonEquipmentStarEqualWithDragonStar = function(equipmentName, dragon){
-	var config = DragonEquipmentConfig[equipmentName]
+	var config = DragonEquipments.equipments[equipmentName]
 	return _.isEqual(config.maxStar, dragon.star)
 }
 
@@ -1184,7 +1183,7 @@ Utils.isDragonEquipmentStarEqualWithDragonStar = function(equipmentName, dragon)
  * @returns {boolean}
  */
 Utils.isDragonEquipmentReachMaxStar = function(equipment){
-	var config = DragonEquipmentConfig[equipment.name]
+	var config = DragonEquipments.equipments[equipment.name]
 	return config.maxStar <= equipment.star
 }
 
@@ -1194,7 +1193,7 @@ Utils.isDragonEquipmentReachMaxStar = function(equipment){
  * @returns {*}
  */
 Utils.getDragonEquipmentMaxStar = function(equipmentName){
-	var config = DragonEquipmentConfig[equipmentName]
+	var config = DragonEquipments.equipments[equipmentName]
 	return config.maxStar
 }
 
@@ -1205,7 +1204,7 @@ Utils.getDragonEquipmentMaxStar = function(equipmentName){
  * @returns {boolean}
  */
 Utils.isDragonSkillUnlocked = function(dragon, skillName){
-	var config = DragonEyrie.dragonSkill[skillName]
+	var config = Dragons.dragonSkills[skillName]
 	return config.unlockStar <= dragon.star
 }
 
@@ -1215,7 +1214,7 @@ Utils.isDragonSkillUnlocked = function(dragon, skillName){
  * @returns {*}
  */
 Utils.isDragonTypeExist = function(dragonType){
-	var config = DragonEyrie.dragons
+	var config = Dragons.dragons
 	return _.contains(Object.keys(config), dragonType)
 }
 
@@ -1226,7 +1225,7 @@ Utils.isDragonTypeExist = function(dragonType){
  * @returns {{}}
  */
 Utils.getDragonSkillUpgradeRequired = function(dragon, skill){
-	var config = DragonEyrie.dragonSkill[skill.name]
+	var config = Dragons.dragonSkills[skill.name]
 	var totalNeed = {}
 	totalNeed.blood = config.heroBloodCostPerLevel * (skill.level + 1) * (skill.level + 1)
 	return totalNeed
@@ -1238,7 +1237,7 @@ Utils.getDragonSkillUpgradeRequired = function(dragon, skill){
  * @returns {boolean}
  */
 Utils.isDragonSkillReachMaxLevel = function(skill){
-	var config = DragonEyrie.dragonSkill[skill.name]
+	var config = Dragons.dragonSkills[skill.name]
 	return skill.level >= config.maxLevel
 }
 
@@ -1248,7 +1247,7 @@ Utils.isDragonSkillReachMaxLevel = function(skill){
  * @returns {dragonSkill.dragonBlood.maxLevel|*|dragonSkill.infantryEnhance.maxLevel|dragonSkill.dragonBreath.maxLevel|dragonSkill.siegeEnhance.maxLevel|dragonSkill.cavalryEnhance.maxLevel}
  */
 Utils.getDragonSkillMaxLevel = function(skill){
-	var config = DragonEyrie.dragonSkill[skill.name]
+	var config = Dragons.dragonSkills[skill.name]
 	return config.maxLevel
 }
 
@@ -1263,14 +1262,14 @@ Utils.getDragonSkillMaxLevel = function(skill){
 Utils.enhancePlayerDragonEquipment = function(playerDoc, playerData, dragonType, category, equipments){
 	var dragon = playerDoc.dragons[dragonType]
 	var equipmentInDragon = dragon.equipments[category]
-	var config = DragonEquipmentConfig[equipmentInDragon.name]
+	var config = DragonEquipments.equipments[equipmentInDragon.name]
 	var maxStar = config.maxStar
 	var currentStar = equipmentInDragon.star
 	var currentExp = Number(equipmentInDragon.exp)
 	var totalExp = this.getDragonEquipmentsExp(dragonType, equipmentInDragon, equipments)
 	while(totalExp > 0 && currentStar < maxStar){
 		var nextStar = currentStar + 1
-		var categoryConfig = DragonEyrie[category][maxStar + "_" + nextStar]
+		var categoryConfig = DragonEquipments[category][maxStar + "_" + nextStar]
 		var expNeeded = categoryConfig.enhanceExp - currentExp
 		if(expNeeded <= totalExp){
 			currentStar += 1
@@ -1317,7 +1316,7 @@ Utils.getDragonEquipmentsExp = function(dragonType, equipmentInDragon, equipment
  * @returns {number}
  */
 Utils.getDragonEquipmentExp = function(dragonType, equipmentInDragon, equipmentName, count){
-	var config = DragonEquipmentConfig[equipmentName]
+	var config = DragonEquipments.equipments[equipmentName]
 	var usedFor = config.usedFor
 	if(_.isEqual(equipmentInDragon.name, equipmentName)){
 		return config.resolveLExp * count
@@ -1334,7 +1333,7 @@ Utils.getDragonEquipmentExp = function(dragonType, equipmentInDragon, equipmentN
  * @returns {boolean}
  */
 Utils.isDragonReachUpgradeLevel = function(dragon){
-	var config = DragonEyrie.dragonAttribute[dragon.star + 1]
+	var config = Dragons.dragonAttributes[dragon.star + 1]
 	return dragon.level >= config.promotionLevel
 }
 
@@ -1344,7 +1343,7 @@ Utils.isDragonReachUpgradeLevel = function(dragon){
  * @returns {promotionLevel|*}
  */
 Utils.getDragonLowestLevelOnStar = function(dragon){
-	var config = DragonEyrie.dragonAttribute[dragon.star]
+	var config = Dragons.dragonAttributes[dragon.star]
 	return config.promotionLevel
 }
 
@@ -1354,7 +1353,7 @@ Utils.getDragonLowestLevelOnStar = function(dragon){
  * @returns {levelMax|*}
  */
 Utils.getDragonHighestLevelOnStar = function(dragon){
-	var config = DragonEyrie.dragonAttribute[dragon.star]
+	var config = Dragons.dragonAttributes[dragon.star]
 	return config.levelMax
 }
 
@@ -1363,11 +1362,11 @@ Utils.getDragonHighestLevelOnStar = function(dragon){
  * @param dragon
  */
 Utils.isDragonEquipmentsReachUpgradeLevel = function(dragon){
-	var allCategory = DragonEyrie.dragonAttribute[dragon.star + 1].allCategory.split(",")
+	var allCategory = Dragons.dragonAttributes[dragon.star + 1].allCategory.split(",")
 	return _.every(allCategory, function(category){
 		var equipment = dragon.equipments[category]
 		if(_.isEmpty(equipment.name)) return false
-		var maxStar = DragonEquipmentConfig[equipment.name].maxStar
+		var maxStar = DragonEquipments.equipments[equipment.name].maxStar
 		return equipment.star >= maxStar
 	})
 }
@@ -1516,7 +1515,7 @@ Utils.updateAllianceMemberDonateLevel = function(memberInAllianceDoc, donateType
  * @returns {{keepLevel: (needKeep|*), honour: (needHonour|*)}}
  */
 Utils.getAllianceBuildingUpgradeRequired = function(buildingName, buildingLevel){
-	var config = AllianceBuildingConfig[buildingName][buildingLevel]
+	var config = AllianceBuilding[buildingName][buildingLevel]
 	var required = {
 		keepLevel:config.needKeep,
 		honour:config.needHonour
@@ -1531,7 +1530,7 @@ Utils.getAllianceBuildingUpgradeRequired = function(buildingName, buildingLevel)
  * @returns {{honour: (needHonour|*)}}
  */
 Utils.getAllianceVillageUpgradeRequired = function(villageType, villageLevel){
-	var config = AllianceVillageConfig[villageType][villageLevel]
+	var config = AllianceVillage[villageType][villageLevel]
 	var required = {
 		honour:config.needHonour
 	}
@@ -1545,7 +1544,7 @@ Utils.getAllianceVillageUpgradeRequired = function(villageType, villageLevel){
  * @returns {{honour: (moveNeedHonour|*)}}
  */
 Utils.getAllianceMoveBuildingRequired = function(buildingName, buildingLevel){
-	var config = AllianceBuildingConfig[buildingName][buildingLevel]
+	var config = AllianceBuilding[buildingName][buildingLevel]
 	var required = {
 		honour:config.moveNeedHonour
 	}
@@ -1572,7 +1571,7 @@ Utils.getAllianceDistroyDecorateRequired = function(decorateType){
  * @returns {boolean}
  */
 Utils.isAllianceBuildingReachMaxLevel = function(buildingName, buildingLevel){
-	var config = AllianceBuildingConfig[buildingName][buildingLevel + 1]
+	var config = AllianceBuilding[buildingName][buildingLevel + 1]
 	return !_.isObject(config)
 }
 
@@ -1583,7 +1582,7 @@ Utils.isAllianceBuildingReachMaxLevel = function(buildingName, buildingLevel){
  * @returns {boolean}
  */
 Utils.isAllianceVillageReachMaxLevel = function(allianceType, allianceLevel){
-	var config = AllianceVillageConfig[allianceType][allianceLevel + 1]
+	var config = AllianceVillage[allianceType][allianceLevel + 1]
 	return !_.isObject(config)
 }
 
@@ -1621,7 +1620,7 @@ Utils.getAllianceVillageTypeConfigs = function(){
  * @returns {*}
  */
 Utils.isAllianceVillageTypeLegal = function(villageType){
-	var keys = _.keys(AllianceVillageConfig)
+	var keys = _.keys(AllianceVillage)
 	return _.contains(keys, villageType)
 }
 
@@ -1633,7 +1632,7 @@ Utils.isAllianceVillageTypeLegal = function(villageType){
  */
 Utils.getAllianceVillageConfigedDragonAndSoldiers = function(villageType, villageLevel){
 	var soldiers = []
-	var config = AllianceVillageConfig[villageType][villageLevel]
+	var config = AllianceVillage[villageType][villageLevel]
 	var soldierConfigs = config.soldiers.split(",")
 	var dragonConfig = soldierConfigs.shift()
 	var dragonParams = dragonConfig.split("_")
@@ -1661,7 +1660,7 @@ Utils.getAllianceVillageConfigedDragonAndSoldiers = function(villageType, villag
 }
 
 Utils.getAllianceVillageProduction = function(villageType, villageLevel){
-	var config = AllianceVillageConfig[villageType][villageLevel]
+	var config = AllianceVillage[villageType][villageLevel]
 	return config.production
 }
 
@@ -1754,7 +1753,7 @@ Utils.isAllianceMapObjectTypeADecorateObject = function(objectType){
  */
 Utils.getAlliancePerception = function(allianceDoc){
 	var shrine = allianceDoc.buildings.shrine
-	var config = AllianceBuildingConfig.shrine[shrine.level]
+	var config = AllianceBuilding.shrine[shrine.level]
 	var perception = allianceDoc.basicInfo.perception
 	var addPerSecond = config.pRecovery / 60 / 60
 	var totalSeconds = Date.now() - allianceDoc.basicInfo.perceptionRefreshTime
@@ -1768,7 +1767,7 @@ Utils.getAlliancePerception = function(allianceDoc){
  * @returns {*}
  */
 Utils.isAllianceShrineStageNameLegal = function(stageName){
-	var config = AllianceShrineConfig
+	var config = AllianceShrine
 	return _.contains(_.keys(config), stageName)
 }
 
@@ -1794,7 +1793,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
  * @returns {{perception: *}}
  */
 Utils.getAllianceActiveShrineStageRequired = function(stageName){
-	var config = AllianceShrineConfig[stageName]
+	var config = AllianceShrine[stageName]
 	var required = {
 		perception:config.needPerception
 	}
@@ -1811,7 +1810,7 @@ Utils.getAllianceActiveShrineStageRequired = function(stageName){
  */
 Utils.createPlayerNormalSoldierForFight = function(playerDoc, soldierName, soldierStar, soldierCount){
 	var soldierFullKey = soldierName + "_" + soldierStar
-	var config = UnitConfig.normal[soldierFullKey]
+	var config = Soldiers.normal[soldierFullKey]
 	var soldier = {
 		name:soldierName,
 		star:soldierStar,
@@ -1845,7 +1844,7 @@ Utils.createPlayerNormalSoldierForFight = function(playerDoc, soldierName, soldi
  * @returns {*}
  */
 Utils.createPlayerSpecialSoldierForFight = function(playerDoc, soldierName, soldierCount){
-	var config = UnitConfig.special[soldierName]
+	var config = Soldiers.special[soldierName]
 	var soldier = {
 		name:soldierName,
 		star:config.star,
@@ -1956,7 +1955,7 @@ Utils.createPlayerWallForFight = function(playerDoc){
  */
 Utils.getAllianceShrineStageTroops = function(stageName){
 	var troops = []
-	var troopStrings = AllianceShrineConfig[stageName].troops.split("&")
+	var troopStrings = AllianceShrine[stageName].troops.split("&")
 	for(var i = 0; i < troopStrings.length; i++){
 		var troopString = troopStrings[i]
 		var soldierConfigStrings = troopString.split(",")
@@ -1985,26 +1984,26 @@ Utils.getAllianceShrineStageTroops = function(stageName){
 			var soldierName = params[0]
 			var soldierStar = parseInt(params[1])
 			var soldierCount = parseInt(params[2])
-			var unitConfig = UnitConfig.normal[soldierName + "_" + soldierStar]
+			var soldierConfig = Soldiers.normal[soldierName + "_" + soldierStar]
 			var soldierForFight = {
 				name:soldierName,
-				star:unitConfig.star,
-				type:unitConfig.type,
+				star:soldierConfig.star,
+				type:soldierConfig.type,
 				currentCount:soldierCount,
 				totalCount:soldierCount,
 				woundedCount:0,
-				power:unitConfig.power,
-				hp:unitConfig.hp,
-				load:unitConfig.load,
-				citizen:unitConfig.citizen,
+				power:soldierConfig.power,
+				hp:soldierConfig.hp,
+				load:soldierConfig.load,
+				citizen:soldierConfig.citizen,
 				morale:100,
 				round:0,
 				attackPower:{
-					infantry:unitConfig.infantry,
-					archer:unitConfig.archer,
-					cavalry:unitConfig.cavalry,
-					siege:unitConfig.siege,
-					wall:unitConfig.wall
+					infantry:soldierConfig.infantry,
+					archer:soldierConfig.archer,
+					cavalry:soldierConfig.cavalry,
+					siege:soldierConfig.siege,
+					wall:soldierConfig.wall
 				},
 				killedSoldiers:[]
 			}
@@ -2078,7 +2077,7 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 			var playerData = playerDatas[roundData.playerId]
 			playerDragonHps[roundData.playerId] += roundData.attackDragonFightData.hpDecreased
 			_.each(roundData.defenceSoldierRoundDatas, function(defenceSoldierRoundData){
-				var soldierConfig = UnitConfig.normal[defenceSoldierRoundData.soldierName + "_" + defenceSoldierRoundData.soldierStar]
+				var soldierConfig = Soldiers.normal[defenceSoldierRoundData.soldierName + "_" + defenceSoldierRoundData.soldierStar]
 				var kill = defenceSoldierRoundData.soldierDamagedCount * soldierConfig.citizen
 				playerData.kill += kill
 				playerKills[roundData.playerId] += kill
@@ -2086,9 +2085,9 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 			_.each(roundData.attackSoldierRoundDatas, function(attackSoldierRoundData){
 				var soldierConfig = function(){
 					if(self.hasNormalSoldier(attackSoldierRoundData.soldierName)){
-						soldierConfig = UnitConfig.normal[attackSoldierRoundData.soldierName + "_" + attackSoldierRoundData.soldierStar]
+						soldierConfig = Soldiers.normal[attackSoldierRoundData.soldierName + "_" + attackSoldierRoundData.soldierStar]
 					}else{
-						soldierConfig = UnitConfig.special[attackSoldierRoundData.soldierName]
+						soldierConfig = Soldiers.special[attackSoldierRoundData.soldierName]
 					}
 					return soldierConfig
 				}()
@@ -2115,13 +2114,13 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 		fightStar += 1
 		if(fightDatas.length <= 1){
 			fightStar += 1
-			if(totalDeath <= AllianceShrineConfig[stageName].star2DeathCitizen){
+			if(totalDeath <= AllianceShrine[stageName].star2DeathCitizen){
 				fightStar += 1
 			}
 		}
 	}
 
-	var stageConfig = AllianceShrineConfig[stageName]
+	var stageConfig = AllianceShrine[stageName]
 	_.each(playerDatas, function(playerData, playerId){
 		var rewardStrings = null
 		if(playerData.kill >= stageConfig.goldKill){
@@ -2196,10 +2195,10 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
  * @param stageName
  */
 Utils.isAllianceShrineStageLocked = function(allianceDoc, stageName){
-	var config = AllianceShrineConfig[stageName]
+	var config = AllianceShrine[stageName]
 	if(config.index == 1) return false
 	var previousStageName = null
-	_.each(AllianceShrineConfig, function(theConfig){
+	_.each(AllianceShrine, function(theConfig){
 		if(theConfig.index == config.index - 1) previousStageName = theConfig.stageName
 	})
 
@@ -2214,7 +2213,7 @@ Utils.isAllianceShrineStageLocked = function(allianceDoc, stageName){
  * @returns {*}
  */
 Utils.getAllianceShrineStageFightHoner = function(stageName, fightStar){
-	var config = AllianceShrineConfig[stageName]
+	var config = AllianceShrine[stageName]
 	var honerName = "star" + fightStar + "Honour"
 	return config[honerName]
 }
@@ -2297,7 +2296,7 @@ Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldie
 		return power
 	}
 	var getEffectPercent = function(multiple){
-		var configs = DragonEyrie.fightFix
+		var configs = Dragons.fightFix
 		for(var i = 0; i < configs.length; i++){
 			var config = configs[i]
 			if(config.multipleMax > multiple){
@@ -2323,8 +2322,8 @@ Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldie
 Utils.updatePlayerDragonProperty = function(playerDoc, dragon, hpDecreased, expAdd){
 	dragon.hp -= hpDecreased
 	dragon.exp += expAdd
-	var currentStarMaxLevel = DragonEyrie.dragonAttribute[dragon.star].levelMax
-	var nextLevelExpNeed = DragonEyrie.dragonAttribute[dragon.star].perLevelExp * Math.pow(dragon.level, 2)
+	var currentStarMaxLevel = Dragons.dragonAttributes[dragon.star].levelMax
+	var nextLevelExpNeed = Dragons.dragonAttributes[dragon.star].perLevelExp * Math.pow(dragon.level, 2)
 	if(dragon.exp >= nextLevelExpNeed){
 		if(dragon.level >= currentStarMaxLevel) dragon.exp = nextLevelExpNeed
 		else{
@@ -2350,10 +2349,10 @@ Utils.getPlayerSoldiersCitizen = function(playerDoc, soldiers){
 		var count = soldier.count
 		if(count > 0){
 			if(self.hasSpecialSoldier(name)){
-				config = UnitConfig.special[name]
+				config = Soldiers.special[name]
 			}else{
 				var fullSoldierName = name + "_" + 1
-				config = UnitConfig.normal[fullSoldierName]
+				config = Soldiers.normal[fullSoldierName]
 			}
 			totalCitizen += config.citizen * count
 		}
@@ -2367,7 +2366,7 @@ Utils.getPlayerSoldiersCitizen = function(playerDoc, soldiers){
  * @param dragon
  */
 Utils.getPlayerDragonMaxCitizen = function(playerDoc, dragon){
-	var config = DragonEyrie.dragonAttribute[dragon.star]
+	var config = Dragons.dragonAttributes[dragon.star]
 	var leaderShip = config.initLeadership + (config.perLevelLeadership * dragon.level)
 	return leaderShip * AllianceInit.intInit.citizenPerLeadership.value
 }
@@ -2405,10 +2404,10 @@ Utils.getPlayerDefenceSoldiers = function(playerDoc){
 		if(count > 0){
 			var config = null
 			if(self.hasSpecialSoldier(name)){
-				config = UnitConfig.special[name]
+				config = Soldiers.special[name]
 			}else{
 				var fullSoldierName = name + "_" + 1
-				config = UnitConfig.normal[fullSoldierName]
+				config = Soldiers.normal[fullSoldierName]
 			}
 			var totalCitizen = config.citizen * count
 			var defenceSoldier = {
@@ -2433,10 +2432,10 @@ Utils.getPlayerSoldiersTotalLoad = function(playerDoc, soldiers){
 	var config = null
 	_.each(soldiers, function(soldier){
 		if(self.hasSpecialSoldier(soldier.name)){
-			config = UnitConfig.special[soldier.name]
+			config = Soldiers.special[soldier.name]
 		}else{
 			var soldierFullName = soldier.name + "_" + 1
-			config = UnitConfig.normal[soldierFullName]
+			config = Soldiers.normal[soldierFullName]
 		}
 		totalLoad += config.load * soldier.count
 	})
@@ -2484,7 +2483,7 @@ Utils.getPlayerCollectResourceInfo = function(playerDoc, soldierLoadTotal, allia
  * @returns {production|*}
  */
 Utils.getAllianceVillageResourceMax = function(villageType, villageLevel){
-	return AllianceVillageConfig[villageType][villageLevel].production
+	return AllianceVillage[villageType][villageLevel].production
 }
 
 /**
@@ -2666,7 +2665,7 @@ Utils.isPlayerSellQueueEnough = function(playerDoc){
  * @returns {*}
  */
 Utils.isProductionTechNameLegal = function(techName){
-	return _.contains(_.keys(ProductionTechConfig.productionTechs), techName)
+	return _.contains(_.keys(ProductionTechs.productionTechs), techName)
 }
 
 /**
@@ -2676,8 +2675,8 @@ Utils.isProductionTechNameLegal = function(techName){
  * @returns {boolean}
  */
 Utils.isPlayerUnlockProductionTechLegal = function(playerDoc, techName){
-	var techConfig = ProductionTechConfig.productionTechs[techName]
-	var preTechConfig = _.find(ProductionTechConfig.productionTechs, function(theTech){
+	var techConfig = ProductionTechs.productionTechs[techName]
+	var preTechConfig = _.find(ProductionTechs.productionTechs, function(theTech){
 		return theTech.index == techConfig.unlockBy
 	})
 	var preTech = playerDoc.productionTechs[preTechConfig.name]
@@ -2699,7 +2698,7 @@ Utils.isProductionTechReachMaxLevel = function(techLevel){
  * @returns {*}
  */
 Utils.isMilitaryTechNameLegal = function(techName){
-	return _.contains(_.keys(MilitaryTechConfig.militaryTechs), techName)
+	return _.contains(_.keys(MilitaryTechs.militaryTechs), techName)
 }
 
 /**
@@ -2710,7 +2709,7 @@ Utils.isMilitaryTechNameLegal = function(techName){
 Utils.isPlayerMilitaryTechBuildingCreated = function(playerDoc, techName){
 	var tech = playerDoc.militaryTechs[techName]
 	var buildingName = tech.building
-	var buildingConfig = _.find(BuildingsConfig, function(building){
+	var buildingConfig = _.find(Buildings, function(building){
 		return _.isObject(building) && _.isEqual(buildingName, building.name)
 	})
 	var building = playerDoc.buildings["location_" + buildingConfig.location]
@@ -2734,7 +2733,7 @@ Utils.isMilitaryTechReachMaxLevel = function(techLevel){
  */
 Utils.isPlayerUpgradeSoldierStarTechPointEnough = function(playerDoc, soldierName){
 	var soldierStar = playerDoc.soldierStars[soldierName]
-	var config = UnitConfig.normal[soldierName + "_" + soldierStar]
+	var config = Soldiers.normal[soldierName + "_" + soldierStar]
 	var soldierType = config.type
 	var techPointNeed = config.upgradeTechPointNeed
 	var techNames = _.filter(_.keys(playerDoc.militaryTechs), function(name){
@@ -2742,7 +2741,7 @@ Utils.isPlayerUpgradeSoldierStarTechPointEnough = function(playerDoc, soldierNam
 	})
 	var techPointTotal = 0
 	_.each(techNames, function(name){
-		var techPointPerLevel = MilitaryTechConfig.militaryTechs[name].techPointPerLevel
+		var techPointPerLevel = MilitaryTechs.militaryTechs[name].techPointPerLevel
 		var tech = playerDoc.militaryTechs[name]
 		techPointTotal += techPointPerLevel * tech.level
 	})

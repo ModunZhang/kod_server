@@ -490,6 +490,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		if(!_.isObject(tech)){
 			return Promise.reject(new Error("科技不存在"))
 		}
+		if(tech.index > 9) return Promise.reject(new Error("此科技还未开放"))
 		if(playerDoc.buildings.location_7.level <= 0) return Promise.reject(new Error("学院还未建造"))
 		if(DataUtils.isProductionTechReachMaxLevel(tech.level)) return Promise.reject(new Error("科技已达最高等级"))
 		if(tech.level == 0 && !DataUtils.isPlayerUnlockProductionTechLegal(playerDoc, techName)) return Promise.reject(new Error("前置科技条件不满足"))

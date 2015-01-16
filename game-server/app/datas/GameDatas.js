@@ -86,18 +86,21 @@ GameDatas.DailyQuests.dailyQuests = require("./DailyQuests_dailyQuests.js")
 GameDatas.DailyQuests.dailyQuestStar = require("./DailyQuests_dailyQuestStar.js")
 GameDatas.DailyQuests.dailyQuestStyle = require("./DailyQuests_dailyQuestStyle.js")
 
-GameDatas.DragonEyrie = {}
-GameDatas.DragonEyrie.crown = require("./DragonEyrie_crown.js")
-GameDatas.DragonEyrie.armguardLeft = require("./DragonEyrie_armguardLeft.js")
-GameDatas.DragonEyrie.armguardRight = require("./DragonEyrie_armguardRight.js")
-GameDatas.DragonEyrie.chest = require("./DragonEyrie_chest.js")
-GameDatas.DragonEyrie.sting = require("./DragonEyrie_sting.js")
-GameDatas.DragonEyrie.orb = require("./DragonEyrie_orb.js")
-GameDatas.DragonEyrie.equipmentBuff = require("./DragonEyrie_equipmentBuff.js")
-GameDatas.DragonEyrie.dragonAttribute = require("./DragonEyrie_dragonAttribute.js")
-GameDatas.DragonEyrie.dragons = require("./DragonEyrie_dragons.js")
-GameDatas.DragonEyrie.dragonSkill = require("./DragonEyrie_dragonSkill.js")
-GameDatas.DragonEyrie.fightFix = require("./DragonEyrie_fightFix.js")
+GameDatas.DragonEquipments = {}
+GameDatas.DragonEquipments.crown = require("./DragonEquipments_crown.js")
+GameDatas.DragonEquipments.armguardLeft = require("./DragonEquipments_armguardLeft.js")
+GameDatas.DragonEquipments.armguardRight = require("./DragonEquipments_armguardRight.js")
+GameDatas.DragonEquipments.chest = require("./DragonEquipments_chest.js")
+GameDatas.DragonEquipments.sting = require("./DragonEquipments_sting.js")
+GameDatas.DragonEquipments.orb = require("./DragonEquipments_orb.js")
+GameDatas.DragonEquipments.equipments = require("./DragonEquipments_equipments.js")
+GameDatas.DragonEquipments.equipmentBuff = require("./DragonEquipments_equipmentBuff.js")
+
+GameDatas.Dragons = {}
+GameDatas.Dragons.dragons = require("./Dragons_dragons.js")
+GameDatas.Dragons.dragonAttributes = require("./Dragons_dragonAttributes.js")
+GameDatas.Dragons.dragonSkills = require("./Dragons_dragonSkills.js")
+GameDatas.Dragons.fightFix = require("./Dragons_fightFix.js")
 
 GameDatas.GemsPayment = {}
 GameDatas.GemsPayment.time = require("./GemsPayment_time.js")
@@ -134,7 +137,10 @@ GameDatas.Houses = {}
 GameDatas.Houses.houses = require("./Houses_houses.js")
 
 GameDatas.Items = {}
-GameDatas.Items.items = require("./Items_items.js")
+GameDatas.Items.special = require("./Items_special.js")
+GameDatas.Items.buff = require("./Items_buff.js")
+GameDatas.Items.resource = require("./Items_resource.js")
+GameDatas.Items.speedUp = require("./Items_speedUp.js")
 
 GameDatas.MilitaryTechLevelUp = {}
 GameDatas.MilitaryTechLevelUp.infantry_infantry = require("./MilitaryTechLevelUp_infantry_infantry.js")
@@ -191,9 +197,6 @@ GameDatas.ProductionTechLevelUp.beerSupply = require("./ProductionTechLevelUp_be
 GameDatas.ProductionTechs = {}
 GameDatas.ProductionTechs.productionTechs = require("./ProductionTechs_productionTechs.js")
 
-GameDatas.SmithConfig = {}
-GameDatas.SmithConfig.equipments = require("./SmithConfig_equipments.js")
-
-GameDatas.UnitsConfig = {}
-GameDatas.UnitsConfig.normal = require("./UnitsConfig_normal.js")
-GameDatas.UnitsConfig.special = require("./UnitsConfig_special.js")
+GameDatas.Soldiers = {}
+GameDatas.Soldiers.normal = require("./Soldiers_normal.js")
+GameDatas.Soldiers.special = require("./Soldiers_special.js")

@@ -1,9 +1,9 @@
 "use strict"
 
-var dragonAttribute = []
-module.exports = dragonAttribute
+var dragonAttributes = []
+module.exports = dragonAttributes
 
-dragonAttribute[0] = {
+dragonAttributes[0] = {
 	star:0,
 	levelMax:0,
 	promotionLevel:0,
@@ -15,7 +15,7 @@ dragonAttribute[0] = {
 	initStrength:0,
 	initVitality:0
 }
-dragonAttribute[1] = {
+dragonAttributes[1] = {
 	star:1,
 	levelMax:10,
 	promotionLevel:1,
@@ -27,7 +27,7 @@ dragonAttribute[1] = {
 	initStrength:20,
 	initVitality:60
 }
-dragonAttribute[2] = {
+dragonAttributes[2] = {
 	star:2,
 	levelMax:25,
 	promotionLevel:6,
@@ -40,7 +40,7 @@ dragonAttribute[2] = {
 	initVitality:180,
 	allCategory:"crown,armguardLeft,armguardRight"
 }
-dragonAttribute[3] = {
+dragonAttributes[3] = {
 	star:3,
 	levelMax:45,
 	promotionLevel:21,
@@ -53,7 +53,7 @@ dragonAttribute[3] = {
 	initVitality:360,
 	allCategory:"crown,armguardLeft,armguardRight,chest,sting,orb"
 }
-dragonAttribute[4] = {
+dragonAttributes[4] = {
 	star:4,
 	levelMax:70,
 	promotionLevel:41,
@@ -66,7 +66,7 @@ dragonAttribute[4] = {
 	initVitality:580,
 	allCategory:"crown,armguardLeft,armguardRight,chest,sting,orb"
 }
-dragonAttribute[5] = {
+dragonAttributes[5] = {
 	star:5,
 	levelMax:100,
 	promotionLevel:66,

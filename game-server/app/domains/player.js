@@ -11,19 +11,19 @@ var Schema = mongoose.Schema
 var Consts = require("../consts/consts")
 var GameDatas = require("../datas/GameDatas")
 
-var BuildingsConfig = GameDatas.Buildings.buildings
+var Buildings = GameDatas.Buildings.buildings
 var BuildingFunction = GameDatas.BuildingFunction
 var ResourceInitData = GameDatas.PlayerInitData.resources[1]
 var MaterialInitData = GameDatas.PlayerInitData.materials[1]
 var SoldierMaterialInitData = GameDatas.PlayerInitData.soldierMaterials[1]
 var DragonMaterialInitData = GameDatas.PlayerInitData.dragonMaterials[1]
 var ProductionTechs = GameDatas.ProductionTechs.productionTechs
-var DragonsConfig = GameDatas.DragonEyrie.dragons
+var Dragons = GameDatas.Dragons.dragons
 
 
 var createBuildingSchema = function(location){
 	var schema = {
-		type:{type:String, required:true, default:BuildingsConfig[location].name},
+		type:{type:String, required:true, default:Buildings[location].name},
 		level:{type:Number, required:true, default:location <= 4 ? 1 : location > 4 && location <= 9 ? 0 : -1},
 		location:{type:Number, required:true, default:location},
 		houses:[{
@@ -82,15 +82,15 @@ var createDragonSchema = function(dragonType){
 			orb:createDragonEquipmentSchema()
 		},
 		skills:{
-			skill_1:createDragonSkillSchema(DragonsConfig[dragonType].skill_1),
-			skill_2:createDragonSkillSchema(DragonsConfig[dragonType].skill_2),
-			skill_3:createDragonSkillSchema(DragonsConfig[dragonType].skill_3),
-			skill_4:createDragonSkillSchema(DragonsConfig[dragonType].skill_4),
-			skill_5:createDragonSkillSchema(DragonsConfig[dragonType].skill_5),
-			skill_6:createDragonSkillSchema(DragonsConfig[dragonType].skill_6),
-			skill_7:createDragonSkillSchema(DragonsConfig[dragonType].skill_7),
-			skill_8:createDragonSkillSchema(DragonsConfig[dragonType].skill_8),
-			skill_9:createDragonSkillSchema(DragonsConfig[dragonType].skill_9)
+			skill_1:createDragonSkillSchema(Dragons[dragonType].skill_1),
+			skill_2:createDragonSkillSchema(Dragons[dragonType].skill_2),
+			skill_3:createDragonSkillSchema(Dragons[dragonType].skill_3),
+			skill_4:createDragonSkillSchema(Dragons[dragonType].skill_4),
+			skill_5:createDragonSkillSchema(Dragons[dragonType].skill_5),
+			skill_6:createDragonSkillSchema(Dragons[dragonType].skill_6),
+			skill_7:createDragonSkillSchema(Dragons[dragonType].skill_7),
+			skill_8:createDragonSkillSchema(Dragons[dragonType].skill_8),
+			skill_9:createDragonSkillSchema(Dragons[dragonType].skill_9)
 		}
 	}
 	return schema
@@ -452,36 +452,72 @@ var playerSchema = new Schema({
 			index:{type:Number, required:true, default:ProductionTechs.crane.index},
 			level:{type:Number, required:true, default:0}
 		},
-		fastFix:{
-			index:{type:Number, required:true, default:ProductionTechs.fastFix.index},
-			level:{type:Number, required:true, default:0}
-		},
-		reinforcing:{
-			index:{type:Number, required:true, default:ProductionTechs.reinforcing.index},
-			level:{type:Number, required:true, default:0}
-		},
 		stoneCarving:{
 			index:{type:Number, required:true, default:ProductionTechs.stoneCarving.index},
-			level:{type:Number, required:true, default:0}
-		},
-		ironSmelting:{
-			index:{type:Number, required:true, default:ProductionTechs.ironSmelting.index},
-			level:{type:Number, required:true, default:0}
-		},
-		seniorTower:{
-			index:{type:Number, required:true, default:ProductionTechs.seniorTower.index},
 			level:{type:Number, required:true, default:0}
 		},
 		forestation:{
 			index:{type:Number, required:true, default:ProductionTechs.forestation.index},
 			level:{type:Number, required:true, default:0}
 		},
+		fastFix:{
+			index:{type:Number, required:true, default:ProductionTechs.fastFix.index},
+			level:{type:Number, required:true, default:0}
+		},
+		ironSmelting:{
+			index:{type:Number, required:true, default:ProductionTechs.ironSmelting.index},
+			level:{type:Number, required:true, default:0}
+		},
 		cropResearch:{
 			index:{type:Number, required:true, default:ProductionTechs.cropResearch.index},
 			level:{type:Number, required:true, default:0}
 		},
+		reinforcing:{
+			index:{type:Number, required:true, default:ProductionTechs.reinforcing.index},
+			level:{type:Number, required:true, default:0}
+		},
+		seniorTower:{
+			index:{type:Number, required:true, default:ProductionTechs.seniorTower.index},
+			level:{type:Number, required:true, default:0}
+		},
 		beerSupply:{
 			index:{type:Number, required:true, default:ProductionTechs.beerSupply.index},
+			level:{type:Number, required:true, default:0}
+		},
+		rescueTent:{
+			index:{type:Number, required:true, default:ProductionTechs.rescueTent.index},
+			level:{type:Number, required:true, default:0}
+		},
+		colonization:{
+			index:{type:Number, required:true, default:ProductionTechs.colonization.index},
+			level:{type:Number, required:true, default:0}
+		},
+		negotiation:{
+			index:{type:Number, required:true, default:ProductionTechs.negotiation.index},
+			level:{type:Number, required:true, default:0}
+		},
+		trap:{
+			index:{type:Number, required:true, default:ProductionTechs.trap.index},
+			level:{type:Number, required:true, default:0}
+		},
+		hideout:{
+			index:{type:Number, required:true, default:ProductionTechs.hideout.index},
+			level:{type:Number, required:true, default:0}
+		},
+		logistics:{
+			index:{type:Number, required:true, default:ProductionTechs.logistics.index},
+			level:{type:Number, required:true, default:0}
+		},
+		healingAgent:{
+			index:{type:Number, required:true, default:ProductionTechs.healingAgent.index},
+			level:{type:Number, required:true, default:0}
+		},
+		sketching:{
+			index:{type:Number, required:true, default:ProductionTechs.sketching.index},
+			level:{type:Number, required:true, default:0}
+		},
+		mintedCoin:{
+			index:{type:Number, required:true, default:ProductionTechs.mintedCoin.index},
 			level:{type:Number, required:true, default:0}
 		}
 	},

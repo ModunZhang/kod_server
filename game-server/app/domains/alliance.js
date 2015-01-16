@@ -10,7 +10,7 @@ var Schema = mongoose.Schema
 
 var Consts = require("../consts/consts")
 var GameDatas = require("../datas/GameDatas")
-var AllianceBuildingConfig = GameDatas.AllianceBuilding
+var AllianceBuilding = GameDatas.AllianceBuilding
 
 var createBuildingSchema = function(name, location){
 	var schema = {
@@ -36,7 +36,7 @@ var allianceSchema = new Schema({
 		kill:{type:Number, required:true, default:0},
 		joinType:{type:String, required:true, index:true, default:Consts.AllianceJoinType.All},
 		honour:{type:Number, required:true, default:0},
-		perception:{type:Number, required:true, default:AllianceBuildingConfig.shrine[1].perception},
+		perception:{type:Number, required:true, default:AllianceBuilding.shrine[1].perception},
 		perceptionRefreshTime:{type:Number, required:true, default:Date.now()},
 		createTime:{type:Number, required:true, default:Date.now()},
 		status:{type:String, required:true, default:Consts.AllianceStatus.Peace},

@@ -15,7 +15,7 @@ var LogicUtils = require("./logicUtils")
 
 var GameDatas = require("../datas/GameDatas")
 var AllianceInit = GameDatas.AllianceInitData
-var UnitConfig = GameDatas.UnitsConfig
+var Soldiers = GameDatas.Soldiers
 
 var Utils = module.exports
 
@@ -57,10 +57,10 @@ var getSortedSoldiers = function(playerDoc, soldiers){
 	var sortedSoldiers = _.sortBy(soldiers, function(soldier){
 		if(DataUtils.hasNormalSoldier(soldier.name)){
 			var soldierFullKey = soldier.name + "_" + 1
-			config = UnitConfig.normal[soldierFullKey]
+			config = Soldiers.normal[soldierFullKey]
 			return - config.power * soldier.count
 		}else{
-			config = UnitConfig.special[soldier.name]
+			config = Soldiers.special[soldier.name]
 			return - config.power * soldier.count
 		}
 	})

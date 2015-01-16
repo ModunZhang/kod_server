@@ -331,3 +331,45 @@ var FightUtils = require("../app/utils/fightUtils")
 //	}
 //}
 //console.log(a)
+
+//var sortFunc = function(objects){
+//	var totalWeight = 0
+//	var weightedObjects = []
+//	_.each(objects, function(object){
+//		totalWeight += object.weight + 1
+//	})
+//
+//	_.each(objects, function(object){
+//		var weight = object.weight + 1 + (Math.random() * totalWeight << 0)
+//		weightedObjects.push({
+//			object:object,
+//			weight:weight
+//		})
+//	})
+//
+//	return _.sortBy(weightedObjects, function(weightedObject){
+//		return -weightedObject.weight
+//	})
+//}
+//
+//var objects = [
+//	{obj:"a", weight:10},
+//	{obj:"b", weight:15},
+//	{obj:"c", weight:20},
+//	{obj:"d", weight:50},
+//	{obj:"e", weight:70},
+//	{obj:"f", weight:2},
+//	{obj:"g", weight:80},
+//]
+//
+//var times = {a:0, b:0, c:0, d:0, e:0, f:0, g:0}
+//
+//for(var i = 0; i < 10000; i ++){
+//	var res = sortFunc(objects)
+//	times[res[0].object.obj] += 1
+//}
+//
+//console.log("obj appear percent")
+//_.each(times, function(count, key){
+//	console.log(key + "   " + count + "    " + Math.round(count / 10000 * 100) + "%")
+//})

@@ -14,7 +14,7 @@ var Consts = require("../consts/consts")
 var Define = require("../consts/define")
 
 var GameDatas = require("../datas/GameDatas")
-var UnitConfig = GameDatas.UnitsConfig
+var Soldiers = GameDatas.Soldiers
 var AllianceInit = GameDatas.AllianceInitData
 
 var Utils = module.exports
@@ -38,10 +38,10 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 			_.each(soldierForFight.killedSoldiers, function(soldier){
 				if(DataUtils.hasNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
-					config = UnitConfig.normal[soldierFullKey]
+					config = Soldiers.normal[soldierFullKey]
 					killed += soldier.count * config.citizen
 				}else{
-					config = UnitConfig.special[soldier.name]
+					config = Soldiers.special[soldier.name]
 					killed += soldier.count * config.citizen
 				}
 			})
@@ -198,10 +198,10 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 			_.each(soldierForFight.killedSoldiers, function(soldier){
 				if(DataUtils.hasNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
-					config = UnitConfig.normal[soldierFullKey]
+					config = Soldiers.normal[soldierFullKey]
 					killed += soldier.count * config.citizen
 				}else{
-					config = UnitConfig.special[soldier.name]
+					config = Soldiers.special[soldier.name]
 					killed += soldier.count * config.citizen
 				}
 			})
@@ -865,10 +865,10 @@ Utils.createAttackVillageFightWithVillageTroopReport = function(attackAllianceDo
 			_.each(soldierForFight.killedSoldiers, function(soldier){
 				if(DataUtils.hasNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
-					config = UnitConfig.normal[soldierFullKey]
+					config = Soldiers.normal[soldierFullKey]
 					killed += soldier.count * config.citizen
 				}else{
-					config = UnitConfig.special[soldier.name]
+					config = Soldiers.special[soldier.name]
 					killed += soldier.count * config.citizen
 				}
 			})
@@ -1011,10 +1011,10 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 			_.each(soldierForFight.killedSoldiers, function(soldier){
 				if(DataUtils.hasNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
-					config = UnitConfig.normal[soldierFullKey]
+					config = Soldiers.normal[soldierFullKey]
 					killed += soldier.count * config.citizen
 				}else{
-					config = UnitConfig.special[soldier.name]
+					config = Soldiers.special[soldier.name]
 					killed += soldier.count * config.citizen
 				}
 			})
