@@ -959,3 +959,75 @@ pro.buyItem = function(playerId, itemName, count, callback){
 	})
 }
 
+pro.useItem = function(playerId, itemName, params, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isItemNameExist(itemName)){
+		callback(new Error("itemName 不合法"))
+		return
+	}
+	if(!_.isObject(params)){
+		callback(new Error("params 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var itemConfig = DataUtils.getItemConfig(itemName)
+		if(!itemConfig.isSell) return Promise.reject(new Error("此道具未出售"))
+		var gemNeed = itemConfig.price * count
+		if(playerDoc.resources.gem < gemNeed) return Promise.reject(new Error("宝石不足"))
+		playerDoc.resources.gem -= gemNeed
+		playerData.resources = playerDoc.resources
+		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)
+		if(resp.newlyCreated){
+			playerData.__items = [{
+				type:Consts.DataChangedType.Add,
+				data:resp.item
+			}]
+		}else{
+			playerData.__items = [{
+				type:Consts.DataChangedType.Edit,
+				data:resp.item
+			}]
+		}
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
