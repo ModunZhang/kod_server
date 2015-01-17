@@ -1711,6 +1711,13 @@ describe("PlayerService", function(){
 				done()
 			})
 		})
+
+		it("buyItem 正常购买", function(done){
+			Api.buyItem("changePlayerName", 1, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
 	})
 
 

@@ -954,15 +954,9 @@ Utils.getSmallestBuildEvent = function(playerDoc){
  * @param eventId
  * @returns {*}
  */
-Utils.getPlayerBuildEvent = function(playerDoc, eventType, eventId){
-	if(_.isEqual(eventType, Consts.AllianceHelpEventType.Building)){
-		return this.getEventById(playerDoc.buildingEvents, eventId)
-	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.House)){
-		return this.getEventById(playerDoc.houseEvents, eventId)
-	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Tower)){
-		return this.getEventById(playerDoc.towerEvents, eventId)
-	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Wall)){
-		return this.getEventById(playerDoc.wallEvents, eventId)
+Utils.getPlayerEventByTypeAndId = function(playerDoc, eventType, eventId){
+	if(_.isArray(playerDoc[eventType])){
+		return this.getEventById(playerDoc[eventType], eventId)
 	}
 	return null
 }
@@ -988,27 +982,38 @@ Utils.getEventById = function(events, id){
  * 根据协助加速类型和建造事件获取建筑
  * @param playerDoc
  * @param eventType
- * @param buildEvent
+ * @param eventId
  * @returns {*}
  */
-Utils.getBuildingByEventTypeAndBuildEvent = function(playerDoc, eventType, buildEvent){
-	if(_.isEqual(eventType, Consts.AllianceHelpEventType.Building)){
-		return playerDoc.buildings["location_" + buildEvent.location]
-	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.House)){
-		var building = playerDoc.buildings["location_" + buildEvent.buildingLocation]
-		var theHouse = null
-		_.some(building.houses, function(house){
-			if(_.isEqual(house.location, buildEvent.houseLocation)){
-				theHouse = house
-				return true
-			}
+Utils.getPlayerObjectByEvent = function(playerDoc, eventType, eventId){
+	var event = _.find(playerDoc[eventType], function(event){
+		return _.isEqual(event.id, eventId)
+	})
+
+	if(_.isEqual(eventType, Consts.AllianceHelpEventType.BuildingEvents)){
+		var building =  playerDoc.buildings["location_" + event.location]
+		return {name:building.type, level:building.level}
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.HouseEvents)){
+		var theBuilding = playerDoc.buildings["location_" + event.buildingLocation]
+		var theHouse = _.find(theBuilding.houses, function(house){
+			return _.isEqual(house.location, event.houseLocation)
 		})
-		return theHouse
-	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Tower)){
-		return playerDoc.towers["location_" + buildEvent.location]
-	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Wall)){
-		return playerDoc.wall
+		return {name:theHouse.type, level:theHouse.level}
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.TowerEvents)){
+		var tower = playerDoc.towers["location_" + event.location]
+		return {name:"tower", level:tower.level}
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.WallEvents)){
+		return {name:"wall", level:playerDoc.wall.level}
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.ProductionTechEvents)){
+		var productionTech = playerDoc.productionTechs[event.name]
+		return {name:event.name, level:productionTech.level}
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.MilitaryTechEvents)){
+		var militaryTech = playerDoc.militaryTechs[event.name]
+		return {name:event.name, level:militaryTech.level}
+	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.SoldierStarEvents)){
+		return {name:event.name, level:playerDoc.soldierStars[event.name]}
 	}
+
 	return null
 }
 
@@ -1035,24 +1040,29 @@ Utils.getPlayerBuildEvents = function(playerDoc, eventType){
  * 为联盟添加帮助事件
  * @param allianceDoc
  * @param playerDoc
- * @param buildingLevel
- * @param helpEventType
- * @param buildingName
+ * @param eventType
  * @param eventId
+ * @param objectName
+ * @param objectLevel
  * @returns {*}
  */
-Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, buildingLevel, helpEventType, buildingName, eventId){
+Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, eventType, eventId, objectName, objectLevel){
 	var keep = playerDoc.buildings["location_1"]
 	var event = {
-		id:playerDoc._id,
-		name:playerDoc.basicInfo.name,
-		vipExp:playerDoc.basicInfo.vipExp,
-		helpEventType:helpEventType,
-		buildingName:buildingName,
-		buildingLevel:buildingLevel,
-		eventId:eventId,
-		maxHelpCount:keep.level,
-		helpedMembers:[]
+		id:ShortId.generate(),
+		playerData:{
+			id:playerDoc._id,
+			name:playerDoc.basicInfo.name,
+			vipExp:playerDoc.basicInfo.vipExp
+		},
+		eventData:{
+			type:eventType,
+			id:eventId,
+			name:objectName,
+			level:objectLevel,
+			maxHelpCount:keep.level,
+			helpedMembers:[]
+		}
 	}
 	allianceDoc.helpEvents.push(event)
 	return event
@@ -1139,23 +1149,6 @@ Utils.sendSystemMail = function(playerDoc, playerData, titleKey, titleArgs, cont
 	})
 
 	return mail
-}
-
-/**
- * 根据事件类型和Index获取联盟帮助事件
- * @param allianceDoc
- * @param eventId
- * @returns {*}
- */
-Utils.getAllianceHelpEvent = function(allianceDoc, eventId){
-	var theEvent = null
-	_.some(allianceDoc.helpEvents, function(event){
-		if(_.isEqual(event.eventId, eventId)){
-			theEvent = event
-			return true
-		}
-	})
-	return theEvent
 }
 
 /**
@@ -2328,4 +2321,28 @@ Utils.createDeal = function(playerId, type, name, count, price){
 	}
 
 	return {dealForPlayer:dealForPlayer, dealForAll:dealForAll}
+}
+
+/**
+ * 为玩家添加道具
+ * @param playerDoc
+ * @param name
+ * @param count
+ * @returns {{item: *, newlyCreated: boolean}}
+ */
+Utils.addPlayerItem = function(playerDoc, name, count){
+	var newlyCreated = false
+	var item = _.find(playerDoc.items, function(item){
+		return _.isEqual(item.name, name)
+	})
+	if(!_.isObject(item)){
+		item = {
+			name:name,
+			count:0
+		}
+		newlyCreated = true
+	}
+	item.count += count
+
+	return {item:item, newlyCreated:newlyCreated}
 }

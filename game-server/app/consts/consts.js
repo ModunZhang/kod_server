@@ -53,7 +53,8 @@ module.exports = {
 		TowerEvents:"towerEvents",
 		WallEvents:"wallEvents",
 		ProductionTechEvents:"productionTechEvents",
-		MilitaryTechEvents:"militaryTechEvents"
+		MilitaryTechEvents:"militaryTechEvents",
+		SoldierStarEvents:"soldierStarEvents"
 	},
 	FightResult:{
 		AttackWin:"attackWin",
@@ -101,10 +102,13 @@ module.exports = {
 		Reject:"reject"
 	},
 	AllianceHelpEventType:{
-		Building:"building",
-		House:"house",
-		Tower:"tower",
-		Wall:"wall"
+		BuildingEvents:"buildingEvents",
+		HouseEvents:"houseEvents",
+		TowerEvents:"towerEvents",
+		WallEvents:"wallEvents",
+		ProductionTechEvents:"productionTechEvents",
+		MilitaryTechEvents:"militaryTechEvents",
+		SoldierStarEvents:"soldierStarEvents"
 	},
 	AllianceEventCategory:{
 		Normal:"normal",

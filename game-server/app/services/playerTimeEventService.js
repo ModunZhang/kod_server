@@ -113,6 +113,11 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 	var allianceData = {}
 	var event = null
 	var helpEvent = null
+	var getAllianceHelpEvent = function(eventId){
+		return _.find(allianceDoc.helpEvents, function(helpEvent){
+			return _.isEqual(helpEvent.eventData.id, eventId)
+		})
+	}
 	LogicUtils.refreshPlayerResources(playerDoc)
 	if(_.isEqual(eventType, "buildingEvents")){
 		event = LogicUtils.getEventById(playerDoc.buildingEvents, eventId)
@@ -125,7 +130,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		playerData.buildingEvents = playerDoc.buildingEvents
 		pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, event.location])
 		if(_.isObject(allianceDoc)){
-			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
+			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 				if(!_.isObject(allianceData.__helpEvents)) allianceData.__helpEvents = []
@@ -151,7 +156,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 
 		}
 		if(_.isObject(allianceDoc)){
-			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
+			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 				if(!_.isObject(allianceData.__helpEvents)) allianceData.__helpEvents = []
@@ -170,7 +175,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		playerData.towerEvents = playerDoc.towerEvents
 		pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc, event.location])
 		if(_.isObject(allianceDoc)){
-			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
+			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 				if(!_.isObject(allianceData.__helpEvents)) allianceData.__helpEvents = []
@@ -189,7 +194,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		playerData.wallEvents = playerDoc.wallEvents
 		pushFuncs.push([self.pushService, self.pushService.onWallLevelUpAsync, playerDoc])
 		if(_.isObject(allianceDoc)){
-			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
+			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 				if(!_.isObject(allianceData.__helpEvents)) allianceData.__helpEvents = []
@@ -262,7 +267,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 			data:event
 		}]
 		if(_.isObject(allianceDoc)){
-			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
+			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 				allianceData.__helpEvents = [{
@@ -283,7 +288,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 			data:event
 		}]
 		if(_.isObject(allianceDoc)){
-			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
+			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 				allianceData.__helpEvents = [{
@@ -303,7 +308,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 			data:event
 		}]
 		if(_.isObject(allianceDoc)){
-			helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, event.id)
+			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 				allianceData.__helpEvents = [{

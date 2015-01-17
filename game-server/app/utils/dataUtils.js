@@ -35,6 +35,7 @@ var ProductionTechs = GameDatas.ProductionTechs
 var ProductionTechLevelUp = GameDatas.ProductionTechLevelUp
 var MilitaryTechs = GameDatas.MilitaryTechs
 var MilitaryTechLevelUp = GameDatas.MilitaryTechLevelUp
+var Items = GameDatas.Items
 
 
 var Utils = module.exports
@@ -266,7 +267,6 @@ Utils.getHouseDestroyReturned = function(houseType, houseLevel){
 
 /**
  * 建筑是否达到最高等级
- * @param buildingType
  * @param buildingLevel
  * @returns {boolean}
  */
@@ -2771,4 +2771,31 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragonType){
 		}
 		dragon.hpRefreshTime = Date.now()
 	})
+}
+
+/**
+ * 道具名称是否存在
+ * @param itemName
+ * @returns {*}
+ */
+Utils.isItemNameExist = function(itemName){
+	var keys = []
+	keys = keys.concat(_.keys(Items.special))
+	keys = keys.concat(_.keys(Items.buff))
+	keys = keys.concat(_.keys(Items.resource))
+	keys = keys.concat(_.keys(Items.speedUp))
+
+	return _.contains(keys, itemName)
+}
+
+/**
+ * 获取某个商品的配置信息
+ * @param itemName
+ * @returns {*}
+ */
+Utils.getItemConfig = function(itemName){
+	return _.contains(_.keys(Items.special), itemName) ? Items.special[itemName]
+		:  _.contains(_.keys(Items.buff), itemName) ? Items.buff[itemName]
+		:  _.contains(_.keys(Items.resource), itemName) ? Items.resource[itemName]
+		: Items.speedUp[itemName]
 }

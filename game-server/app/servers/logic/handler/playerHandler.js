@@ -851,3 +851,19 @@ pro.setTerrain = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 购买道具
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.buyItem = function(msg, session, next){
+	var itemName = msg.itemName
+	var count = msg.count
+	this.playerApiService4.buyItemAsync(session.uid, itemName, count).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

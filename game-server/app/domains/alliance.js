@@ -164,14 +164,19 @@ var allianceSchema = new Schema({
 	helpEvents:[{
 		_id:false,
 		id:{type:String, required:true},
-		name:{type:String, required:true},
-		vipExp:{type:Number, required:true},
-		helpEventType:{type:String, required:true},
-		buildingName:{type:String, required:true},
-		buildingLevel:{type:Number, required:true},
-		eventId:{type:String, required:true},
-		maxHelpCount:{type:Number, required:true},
-		helpedMembers:[String]
+		playerData:{
+			id:{type:String, require:true},
+			name:{type:String, required:true},
+			vipExp:{type:Number, required:true}
+		},
+		eventData:{
+			type:{type:String, required:true},
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			level:{type:Number, required:true},
+			maxHelpCount:{type:Number, required:true},
+			helpedMembers:[String]
+		}
 	}],
 	shrineDatas:[{
 		_id:false,

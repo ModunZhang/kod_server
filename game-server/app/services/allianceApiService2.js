@@ -1220,7 +1220,6 @@ pro.requestAllianceToSpeedUp = function(playerId, eventType, eventId, callback){
 	var allianceDoc = null
 	var pushFuncs = []
 	var updateFuncs = []
-	var buildEvent = null
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
@@ -1229,9 +1228,9 @@ pro.requestAllianceToSpeedUp = function(playerId, eventType, eventId, callback){
 		if(!_.isObject(doc.alliance) || _.isEmpty(doc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
-		buildEvent = LogicUtils.getPlayerBuildEvent(playerDoc, eventType, eventId)
-		if(!_.isObject(buildEvent)){
-			return Promise.reject(new Error("玩家建造事件不存在"))
+		var playerEvent = LogicUtils.getPlayerEventByTypeAndId(playerDoc, eventType, eventId)
+		if(!_.isObject(playerEvent)){
+			return Promise.reject(new Error("玩家事件不存在"))
 		}
 		return self.allianceDao.findByIdAsync(doc.alliance.id)
 	}).then(function(doc){
@@ -1239,18 +1238,17 @@ pro.requestAllianceToSpeedUp = function(playerId, eventType, eventId, callback){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
-		var helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, eventId)
+		var helpEvent = LogicUtils.getEventById(allianceDoc.helpEvents, eventId)
 		if(_.isObject(helpEvent)){
 			return Promise.reject("此建筑已经发送了加速请求")
 		}
 
-		var building = LogicUtils.getBuildingByEventTypeAndBuildEvent(playerDoc, eventType, buildEvent)
-		var buildingName = _.isEqual(eventType, Consts.AllianceHelpEventType.Wall) ? "wall" : _.isEqual(eventType, Consts.AllianceHelpEventType.Tower) ? "tower" : building.type
-		var event = LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, building.level + 1, eventType, buildingName, buildEvent.id)
+		var object = LogicUtils.getPlayerObjectByEvent(playerDoc, eventType, eventId)
+		helpEvent = LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, eventType, eventId, object.name, object.level + 1)
 		var allianceData = {}
 		allianceData.__helpEvents = [{
 			type:Consts.DataChangedType.Add,
-			data:event
+			data:helpEvent
 		}]
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
@@ -1301,7 +1299,9 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
+	var allianceData = {}
 	var memberDoc = null
+	var memberData = {}
 	var helpEvent = null
 	var eventFuncs = []
 	var pushFuncs = []
@@ -1320,62 +1320,55 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
-		helpEvent = LogicUtils.getAllianceHelpEvent(allianceDoc, eventId)
+		helpEvent = LogicUtils.getEventById(allianceDoc.helpEvents, eventId)
 		if(!_.isObject(helpEvent)){
 			return Promise.reject("帮助事件不存在")
 		}
-		if(_.isEqual(playerDoc._id, helpEvent.id)){
+		if(_.isEqual(playerDoc._id, helpEvent.playerData.id)){
 			return Promise.reject(new Error("不能帮助自己加速建造"))
 		}
-		if(!!_.contains(helpEvent.helpedMembers, playerId)){
-			return Promise.reject("玩家已经帮助过此事件了")
+		if(_.contains(helpEvent.eventData.helpedMembers, playerId)){
+			return Promise.reject("您已经帮助过此事件了")
 		}
-		if(helpEvent.helpedMembers.length >= helpEvent.maxHelpCount){
-			return Promise.reject("帮助事件已达到最大帮助次数")
-		}
-		return self.playerDao.findByIdAsync(helpEvent.id)
+		return self.playerDao.findByIdAsync(helpEvent.playerData.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		memberDoc = doc
-		var buildEvent = LogicUtils.getPlayerBuildEvent(memberDoc, helpEvent.helpEventType, helpEvent.eventId)
-		if(!_.isObject(buildEvent)){
-			return Promise.reject(new Error("玩家建造事件不存在"))
+		var playerEvent = LogicUtils.getPlayerEventByTypeAndId(memberDoc, helpEvent.eventData.type, helpEvent.eventData.id)
+		if(!_.isObject(playerEvent)){
+			return Promise.reject(new Error("玩家事件不存在"))
 		}
-		helpEvent.helpedMembers.push(playerDoc._id)
+		helpEvent.eventData.helpedMembers.push(playerDoc._id)
 		var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc)
-		var newFinishTime = buildEvent.finishTime - effect
-		var memberData = {}
-		var allianceData = {}
-		if(newFinishTime <= Date.now()){
-			eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, memberDoc, buildEvent.id])
-			buildEvent.finishTime = newFinishTime
-			var params = self.playerTimeEventService.onPlayerEvent(memberDoc, null, helpEvent.helpEventType, helpEvent.eventId)
-			pushFuncs = pushFuncs.concat(params.pushFuncs)
-			_.extend(memberData, params.playerData)
+		var newFinishTime = playerEvent.finishTime - effect
+		if(helpEvent.eventData.helpedMembers.length >= helpEvent.eventData.maxHelpCount || newFinishTime <= Date.now()){
 			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 			allianceData.__helpEvents = [{
 				type:Consts.DataChangedType.Remove,
 				data:helpEvent
 			}]
-			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		}else{
-			eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, buildEvent.id, newFinishTime])
-			buildEvent.finishTime = newFinishTime
-			var eventsInfo = LogicUtils.getPlayerBuildEvents(memberDoc, helpEvent.helpEventType)
-			_.extend(memberData, eventsInfo)
-			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 			allianceData.__helpEvents = [{
 				type:Consts.DataChangedType.Edit,
 				data:helpEvent
 			}]
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		}
+
+		eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, playerEvent.id, newFinishTime])
+		playerEvent.finishTime = newFinishTime
+		memberData["__" + helpEvent.eventData.type] = [{
+			type:Consts.DataChangedType.Edit,
+			data:playerEvent
+		}]
+
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1446,7 +1439,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 		allianceData.__helpEvents = []
 		var speedUp = function(memberId, helpEvents){
 			var needHelpedEvents = _.filter(helpEvents, function(helpEvent){
-				return !_.contains(helpEvent.helpedMembers, playerId) && helpEvent.helpedMembers.length < helpEvent.maxHelpCount
+				return !_.contains(helpEvent.eventData.helpedMembers, playerId)
 			})
 			if(needHelpedEvents.length <= 0) return Promise.resolve()
 			return self.playerDao.findByIdAsync(memberId).then(function(doc){
@@ -1458,34 +1451,32 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 				memberDocs.push(memberDoc)
 				for(var i = 0; i < needHelpedEvents.length; i++){
 					var helpEvent = needHelpedEvents[i]
-					var buildEvent = LogicUtils.getPlayerBuildEvent(memberDoc, helpEvent.helpEventType, helpEvent.eventId)
-					if(!_.isObject(buildEvent)){
+					var memberEvent = LogicUtils.getPlayerEventByTypeAndId(memberDoc, helpEvent.helpEventType, helpEvent.eventId)
+					if(!_.isObject(memberEvent)){
 						return Promise.reject(new Error("玩家建造事件不存在"))
 					}
 					helpEvent.helpedMembers.push(playerDoc._id)
 					var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc)
-					var newFinishTime = buildEvent.finishTime - effect
-					if(newFinishTime <= Date.now()){
-						eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, memberDoc, buildEvent.id])
-						buildEvent.finishTime = newFinishTime
-						var params = self.playerTimeEventService.onPlayerEvent(memberDoc, null, helpEvent.helpEventType, helpEvent.eventId)
-						pushFuncs = pushFuncs.concat(params.pushFuncs)
-						_.extend(memberData, params.playerData)
+					var newFinishTime = memberEvent.finishTime - effect
+					if(helpEvent.eventData.helpedMembers.length >= helpEvent.eventData.maxHelpCount || newFinishTime <= Date.now()){
 						LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-						allianceData.__helpEvents.push({
+						allianceData.__helpEvents = [{
 							type:Consts.DataChangedType.Remove,
 							data:helpEvent
-						})
+						}]
 					}else{
-						eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, buildEvent.id, newFinishTime])
-						buildEvent.finishTime = newFinishTime
-						var eventsInfo = LogicUtils.getPlayerBuildEvents(memberDoc, helpEvent.helpEventType)
-						_.extend(memberData, eventsInfo)
-						allianceData.__helpEvents.push({
+						allianceData.__helpEvents = [{
 							type:Consts.DataChangedType.Edit,
 							data:helpEvent
-						})
+						}]
 					}
+
+					eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, memberEvent.id, newFinishTime])
+					memberEvent.finishTime = newFinishTime
+					memberData["__" + helpEvent.eventData.type] = [{
+						type:Consts.DataChangedType.Edit,
+						data:memberEvent
+					}]
 				}
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
@@ -1493,20 +1484,22 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 			})
 		}
 		var funcs = []
-		var memberIds = _.pluck(allianceDoc.helpEvents, "id")
-		memberIds = _.uniq(memberIds)
-		_.each(memberIds, function(memberId){
-			var events = _.filter(allianceDoc.helpEvents, function(event){
-				return _.isEqual(event.id, memberId)
-			})
-			if(!_.isEqual(playerDoc._id, memberId)){
-				funcs.push(speedUp(memberId, events))
+		var memberEvents = []
+		_.each(allianceDoc.helpEvents, function(event){
+			var memberId = event.playerData.id
+			if(!_.isEqual(memberId, playerId)){
+				if(!_.isObject(memberEvents[memberId])) memberEvents[memberId] = []
+				memberEvents[memberId].push(event)
 			}
 		})
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		_.each(memberEvents, function(memberEvents, memberId){
+			funcs.push(speedUp(memberId, memberEvents))
+		})
+
 		return Promise.all(funcs)
 	}).then(function(){
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){

@@ -768,7 +768,7 @@
 //		//		Api.upgradeBuilding(1, false, function(doc){
 //		//			doc.code.should.equal(200)
 //		//			var buildEvent = playerDoc.buildingEvents[0]
-//		//			Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.Building, buildEvent.id, function(doc){
+//		//			Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.BuildingEvents, buildEvent.id, function(doc){
 //		//				doc.code.should.equal(200)
 //		//				done()
 //		//			})
@@ -786,7 +786,7 @@
 //		//	Api.createHouse("dwelling", 3, 3, false, function(doc){
 //		//		doc.code.should.equal(200)
 //		//		var buildEvent = playerDoc.houseEvents[0]
-//		//		Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.House, buildEvent.id, function(doc){
+//		//		Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.HouseEvents, buildEvent.id, function(doc){
 //		//			doc.code.should.equal(200)
 //		//			done()
 //		//		})
@@ -805,7 +805,7 @@
 //		//		Api.upgradeHouse(3, 1, false, function(doc){
 //		//			doc.code.should.equal(200)
 //		//			var buildEvent = playerDoc.houseEvents[1]
-//		//			Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.House, buildEvent.id, function(doc){
+//		//			Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.HouseEvents, buildEvent.id, function(doc){
 //		//				doc.code.should.equal(200)
 //		//				done()
 //		//			})
@@ -823,7 +823,7 @@
 //		//	Api.upgradeTower(1, false, function(doc){
 //		//		doc.code.should.equal(200)
 //		//		var buildEvent = playerDoc.towerEvents[0]
-//		//		Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.Tower, buildEvent.id, function(doc){
+//		//		Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.TowerEvents, buildEvent.id, function(doc){
 //		//			doc.code.should.equal(200)
 //		//			done()
 //		//		})
@@ -840,7 +840,7 @@
 //		//	Api.upgradeWall(false, function(doc){
 //		//		doc.code.should.equal(200)
 //		//		var buildEvent = playerDoc.wallEvents[0]
-//		//		Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.Wall, buildEvent.id, function(doc){
+//		//		Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.WallEvents, buildEvent.id, function(doc){
 //		//			doc.code.should.equal(200)
 //		//			done()
 //		//		})
@@ -859,7 +859,7 @@
 //		//		Api.getMyAllianceData(function(doc){
 //		//			doc.code.should.equal(200)
 //		//			var event = alliance.helpEvents[0]
-//		//			Api.helpAllianceMemberSpeedUp(event.eventId, function(doc){
+//		//			Api.helpAllianceMemberSpeedUp(event.id, function(doc){
 //		//				doc.code.should.equal(200)
 //		//				done()
 //		//			})
@@ -877,7 +877,7 @@
 //		//	Api.getMyAllianceData(function(doc){
 //		//		doc.code.should.equal(200)
 //		//		var event = alliance.helpEvents[1]
-//		//		Api.helpAllianceMemberSpeedUp(event.eventId, function(doc){
+//		//		Api.helpAllianceMemberSpeedUp(event.id, function(doc){
 //		//			doc.code.should.equal(200)
 //		//			done()
 //		//		})

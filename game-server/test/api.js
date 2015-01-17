@@ -472,6 +472,15 @@ Api.setTerrain = function(terrain, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.buyItem = function(itemName, count, callback){
+	var info = {
+		itemName:itemName,
+		count:count
+	}
+	var route = "logic.playerHandler.buyItem"
+	pomelo.request(route, info, callback)
+}
+
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {
