@@ -1017,10 +1017,11 @@ pro.useItem = function(playerId, itemName, params, callback){
 		return Promise.resolve()
 	}).then(function(){
 		var itemNameFunction = ItemUtils.getItemNameFunction(itemName)
+		var itemData = params[itemName]
 		if(_.isEqual("changePlayerName", itemName)){
-			return itemNameFunction(params, playerDoc, playerData, self.playerDao)
+			return itemNameFunction(itemData, playerDoc, playerData, self.playerDao)
 		}else{
-			return itemNameFunction(params, playerDoc, playerData)
+			return itemNameFunction(itemData, playerDoc, playerData)
 		}
 	}).then(function(){
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])

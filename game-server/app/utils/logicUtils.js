@@ -2197,7 +2197,7 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByTroop,
 	})
 
 	this.refreshPlayerResources(helpedByPlayerDoc)
-	_.each(event.attackPlayerData.rewards, function(reward){
+	_.each(helpedByTroop.rewards, function(reward){
 		helpedByPlayerDoc[reward.type][reward.name] += reward.count
 		if(!_.isObject(helpedByPlayerData[reward.type])) helpedByPlayerData[reward.type] = helpedByPlayerDoc[reward.type]
 	})

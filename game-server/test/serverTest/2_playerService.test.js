@@ -1751,6 +1751,18 @@ describe("PlayerService", function(){
 				})
 			})
 		})
+
+		it("useItem 正常使用", function(done){
+			Api.buyItem("changeCityName", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("changeCityName", {changeCityName:{
+					newCityName:"modunzhang"
+				}}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
 	})
 
 

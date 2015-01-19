@@ -97,26 +97,42 @@ var ChangePlayerName = function(playerDoc, playerData, newPlayerName, playerDao)
 }
 
 /**
+ * 修改城市名称
+ * @param playerDoc
+ * @param playerData
+ * @param newCityName
+ * @returns {*}
+ */
+var ChangeCityName = function(playerDoc, playerData, newCityName){
+	if(_.isEqual(newCityName, playerDoc.basicInfo.cityName)) return Promise.reject(new Error("不能修改为相同的城市名称"))
+	playerDoc.basicInfo.cityName = newCityName
+	playerData.basicInfo = playerDoc.basicInfo
+	return Promise.resolve()
+}
+
+/**
  * 道具和方法的映射
  */
 var ItemNameFunctionMap = {
-	movingConstruction:function(params, playerDoc, playerData){
-		var itemParams = params.movingConstruction
-		var fromBuildingLocation = itemParams.fromBuildingLocation
-		var fromHouseLocation = itemParams.fromHouseLocation
-		var toBuildingLocation = itemParams.toBuildingLocation
-		var toHouseLocation = itemParams.toHouseLocation
+	movingConstruction:function(itemData, playerDoc, playerData){
+		var fromBuildingLocation = itemData.fromBuildingLocation
+		var fromHouseLocation = itemData.fromHouseLocation
+		var toBuildingLocation = itemData.toBuildingLocation
+		var toHouseLocation = itemData.toHouseLocation
 		return MovingConstruction(playerDoc, playerData, fromBuildingLocation, fromHouseLocation, toBuildingLocation, toHouseLocation)
 	},
-	torch:function(params, playerDoc, playerData){
-		var itemParams = params.torch
-		var buildingLocation = itemParams.buildingLocation
-		var houseLocation = itemParams.houseLocation
+	torch:function(itemData, playerDoc, playerData){
+		var buildingLocation = itemData.buildingLocation
+		var houseLocation = itemData.houseLocation
 		return Torch(playerDoc, playerData, buildingLocation, houseLocation)
 	},
-	changePlayerName:function(params, playerDoc, playerData, playerDao){
-		var newPlayerName = params.changePlayerName.newPlayerName
+	changePlayerName:function(itemData, playerDoc, playerData, playerDao){
+		var newPlayerName = itemData.newPlayerName
 		return ChangePlayerName(playerDoc, playerData, newPlayerName, playerDao)
+	},
+	changeCityName:function(itemData, playerDoc, playerData){
+		var newCityName = itemData.newCityName
+		return ChangeCityName(playerDoc, playerData, newCityName)
 	}
 }
 
@@ -153,6 +169,11 @@ Utils.isParamsLegal = function(itemName, params){
 		if(!_.isObject(itemData)) return false
 		var newPlayerName = itemData.newPlayerName
 		return !(!_.isString(newPlayerName) || _.isEmpty(newPlayerName))
+	}
+	if(_.isEqual(itemName, "changeCityName")){
+		if(!_.isObject(itemData)) return false
+		var newCityName = itemData.newCityName
+		return !(!_.isString(newCityName) || _.isEmpty(newCityName))
 	}
 	return false
 }

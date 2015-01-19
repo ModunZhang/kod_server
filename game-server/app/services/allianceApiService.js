@@ -1308,7 +1308,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 					return Promise.resolve()
 				}else{
 					return self.playerDao.findByIdAsync(helpedByTroop.id).then(function(doc){
-						if(_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+						if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 						otherPlayerDocs.push(doc)
 						var data = {}
 						LogicUtils.returnPlayerHelpedByTroop(memberDoc, memberData, helpedByTroop, doc, data)
