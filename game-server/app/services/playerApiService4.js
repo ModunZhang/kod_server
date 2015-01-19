@@ -1020,6 +1020,10 @@ pro.useItem = function(playerId, itemName, params, callback){
 		var itemData = params[itemName]
 		if(_.isEqual("changePlayerName", itemName)){
 			return itemNameFunction(itemData, playerDoc, playerData, self.playerDao)
+		}else if(_.isEqual("retreatTroop", itemName)){
+			return itemNameFunction(itemData, playerDoc, playerData, self.allianceDao, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService)
+		}else if(_.isEqual("moveTheCity", itemName)){
+			return itemNameFunction(itemData, playerDoc, playerData, self.allianceDao, updateFuncs, pushFuncs, self.pushService)
 		}else{
 			return itemNameFunction(itemData, playerDoc, playerData)
 		}

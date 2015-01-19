@@ -12,6 +12,7 @@ var DataUtils = require("./dataUtils")
 var GameDatas = require("../datas/GameDatas")
 var Items = GameDatas.Items
 var Buildings = GameDatas.Buildings
+var AllianceInitData = GameDatas.AllianceInitData
 
 var Utils = module.exports
 
@@ -110,6 +111,142 @@ var ChangeCityName = function(playerDoc, playerData, newCityName){
 	return Promise.resolve()
 }
 
+
+/**
+ * 撤销行军事件
+ * @param playerDoc
+ * @param playerData
+ * @param eventType
+ * @param eventId
+ * @param allianceDao
+ * @param updateFuncs
+ * @param eventFuncs
+ * @param pushFuncs
+ * @param pushService
+ * @param timeEventService
+ * @returns {*}
+ */
+var RetreatTroop = function(playerDoc, playerData, eventType, eventId, allianceDao, updateFuncs, eventFuncs, pushFuncs, pushService, timeEventService){
+	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
+	var allianceDoc = null
+	return allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		allianceDoc = doc
+		var allianceData = {}
+		var marchEvent = _.find(allianceDoc[eventType], function(marchEvent){
+			return _.isEqual(marchEvent.id, eventId)
+		})
+		if(!_.isObject(marchEvent)) return Promise.reject(new Error("行军事件不存在"))
+
+		if(_.isEqual(eventType, "strikeMarchEvents")){
+			LogicUtils.removeItemInArray(allianceDoc.strikeMarchEvents, marchEvent)
+			allianceData.__strikeMarchEvents = [{
+				type:Consts.DataChangedType.Remove,
+				data:marchEvent
+			}]
+			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
+
+			DataUtils.refreshPlayerDragonsHp(playerDoc, marchEvent.attackPlayerData.dragon.type)
+			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+			playerData.dragons = {}
+			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
+		}else{
+			LogicUtils.removeItemInArray(allianceDoc.attackMarchEvents, marchEvent)
+			allianceData.__attackMarchEvents = [{
+				type:Consts.DataChangedType.Remove,
+				data:marchEvent
+			}]
+			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
+
+			DataUtils.refreshPlayerDragonsHp(playerDoc, marchEvent.attackPlayerData.dragon.type)
+			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+			playerData.dragons = {}
+			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
+			playerData.soldiers = {}
+			_.each(marchEvent.attackPlayerData.soldiers, function(soldier){
+				playerDoc.soldiers[soldier.name] += soldier.count
+				playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
+			})
+		}
+
+		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, pushService)
+
+		return Promise.resolve()
+	}).catch(function(e){
+		if(_.isObject(allianceDoc)){
+			return allianceDao.removeLockByIdAsync(allianceDoc._id).then(function(){
+				return Promise.reject(e)
+			})
+		}
+		return Promise.reject(e)
+	})
+}
+
+/**
+ * 移城
+ * @param playerDoc
+ * @param playerData
+ * @param locationX
+ * @param locationY
+ * @param allianceDao
+ * @param updateFuncs
+ * @param pushFuncs
+ * @param pushService
+ * @constructor
+ */
+var MoveTheCity = function(playerDoc, playerData, locationX, locationY, allianceDao, updateFuncs, pushFuncs, pushService){
+	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
+	var allianceDoc = null
+	return allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		allianceDoc = doc
+		var allianceData = {}
+		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) return Promise.reject(new Error("联盟正处于战争期"))
+		var marchEvents = []
+		marchEvents.concat(allianceDoc.attackMarchEvents)
+		marchEvents.concat(allianceDoc.attackMarchReturnEvents)
+		marchEvents.concat(allianceDoc.strikeMarchEvents)
+		marchEvents.concat(allianceDoc.strikeMarchReturnEvents)
+		var hasMarchEvent = _.some(marchEvents, function(marchEvent){
+			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
+		})
+		if(hasMarchEvent) return Promise.reject(new Error("玩家有部队正在行军中"))
+		var mapObject = LogicUtils.findAllianceMapObjectByLocation(allianceDoc, {x:locationX, y:locationY})
+		if(_.isObject(mapObject)) return Promise.reject(new Error("目标坐标不是空地"))
+
+		var memberDoc = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
+		mapObject = LogicUtils.findAllianceMapObjectByLocation(allianceDoc, memberDoc.location)
+		memberDoc.location = {
+			x:locationX,
+			y:locationY
+		}
+		allianceData.__members = [{
+			type:Consts.DataChangedType.Edit,
+			data:memberDoc
+		}]
+		mapObject.location = memberDoc.location
+		allianceData.__mapObjects = [{
+			type:Consts.DataChangedType.Edit,
+			data:mapObject
+		}]
+
+		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, pushService)
+
+		return Promise.resolve()
+	}).catch(function(e){
+		if(_.isObject(allianceDoc)){
+			return allianceDao.removeLockByIdAsync(allianceDoc._id).then(function(){
+				return Promise.reject(e)
+			})
+		}
+		return Promise.reject(e)
+	})
+}
+
 /**
  * 道具和方法的映射
  */
@@ -127,12 +264,22 @@ var ItemNameFunctionMap = {
 		return Torch(playerDoc, playerData, buildingLocation, houseLocation)
 	},
 	changePlayerName:function(itemData, playerDoc, playerData, playerDao){
-		var newPlayerName = itemData.newPlayerName
-		return ChangePlayerName(playerDoc, playerData, newPlayerName, playerDao)
+		var playerName = itemData.playerName
+		return ChangePlayerName(playerDoc, playerData, playerName, playerDao)
 	},
 	changeCityName:function(itemData, playerDoc, playerData){
-		var newCityName = itemData.newCityName
-		return ChangeCityName(playerDoc, playerData, newCityName)
+		var cityName = itemData.cityName
+		return ChangeCityName(playerDoc, playerData, cityName)
+	},
+	retreatTroop:function(itemData, playerDoc, playerData, allianceDao, updateFuncs, eventFuncs, pushFuncs, pushService, timeEventService){
+		var eventType = itemData.eventType
+		var eventId = itemData.eventId
+		return RetreatTroop(playerDoc, playerData, eventType, eventId, allianceDao, updateFuncs, eventFuncs, pushFuncs, pushService, timeEventService)
+	},
+	moveTheCity:function(itemData, playerDoc, playerData, allianceDao, updateFuncs, pushFuncs, pushService){
+		var locationX = itemData.locationX
+		var locationY = itemData.locationY
+		return MoveTheCity(playerDoc, playerData, locationX, locationY, allianceDao, updateFuncs, pushFuncs, pushService)
 	}
 }
 
@@ -167,13 +314,31 @@ Utils.isParamsLegal = function(itemName, params){
 	}
 	if(_.isEqual(itemName, "changePlayerName")){
 		if(!_.isObject(itemData)) return false
-		var newPlayerName = itemData.newPlayerName
-		return !(!_.isString(newPlayerName) || _.isEmpty(newPlayerName))
+		var playerName = itemData.playerName
+		return !(!_.isString(playerName) || _.isEmpty(playerName))
 	}
 	if(_.isEqual(itemName, "changeCityName")){
 		if(!_.isObject(itemData)) return false
-		var newCityName = itemData.newCityName
-		return !(!_.isString(newCityName) || _.isEmpty(newCityName))
+		var cityName = itemData.cityName
+		return !(!_.isString(cityName) || _.isEmpty(cityName))
+	}
+	if(_.isEqual(itemName, "retreatTroop")){
+		if(!_.isObject(itemData)) return false
+		var eventType = itemData.eventType
+		var eventId = itemData.eventId
+		if(!_.isString(eventType)) return false
+		if(!_.isEqual(eventType, "strikeMarchEvents") && !_.isEqual(eventType, "attackMarchEvents")) return false
+		return _.isString(eventId)
+	}
+	if(_.isEqual(itemName, "moveTheCity")){
+		if(!_.isObject(itemData)) return false
+		var locationX = itemData.locationX
+		var locationY = itemData.locationY
+		var locationXMax = AllianceInitData.intInit.allianceRegionMapWidth.value - 1
+		var locationYMax = AllianceInitData.intInit.allianceRegionMapHeight.value - 1
+
+		if(!_.isNumber(locationX) || locationX % 1 !== 0 || locationX < 0 || locationX > locationXMax) return false
+		return !(!_.isNumber(locationY) || locationY % 1 !== 0 || locationY < 0 || locationY > locationYMax)
 	}
 	return false
 }

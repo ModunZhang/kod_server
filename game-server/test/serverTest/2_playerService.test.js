@@ -1712,7 +1712,7 @@ describe("PlayerService", function(){
 			})
 		})
 
-		it("useItem 正常使用", function(done){
+		it("useItem movingConstruction", function(done){
 			Api.buyItem("movingConstruction", 1, function(doc){
 				doc.code.should.equal(200)
 				Api.useItem("movingConstruction", {movingConstruction:{
@@ -1727,7 +1727,7 @@ describe("PlayerService", function(){
 			})
 		})
 
-		it("useItem 正常使用", function(done){
+		it("useItem torch", function(done){
 			Api.buyItem("torch", 1, function(doc){
 				doc.code.should.equal(200)
 				Api.useItem("torch", {torch:{
@@ -1740,11 +1740,11 @@ describe("PlayerService", function(){
 			})
 		})
 
-		it("useItem 正常使用", function(done){
+		it("useItem changePlayerName", function(done){
 			Api.buyItem("changePlayerName", 1, function(doc){
 				doc.code.should.equal(200)
 				Api.useItem("changePlayerName", {changePlayerName:{
-					newPlayerName:"modunzhang"
+					playerName:"modunzhang"
 				}}, function(doc){
 					doc.code.should.equal(200)
 					done()
@@ -1752,11 +1752,11 @@ describe("PlayerService", function(){
 			})
 		})
 
-		it("useItem 正常使用", function(done){
+		it("useItem changeCityName", function(done){
 			Api.buyItem("changeCityName", 1, function(doc){
 				doc.code.should.equal(200)
 				Api.useItem("changeCityName", {changeCityName:{
-					newCityName:"modunzhang"
+					cityName:"modunzhang"
 				}}, function(doc){
 					doc.code.should.equal(200)
 					done()

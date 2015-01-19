@@ -1,6 +1,6 @@
 ///**
-//* Created by modun on 14-7-25.
-//*/
+// * Created by modun on 14-7-25.
+// */
 //
 //var pomelo = require("../pomelo-client")
 //var redis = require("redis")
@@ -1314,6 +1314,60 @@
 //		//			pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 //		//		}
 //		//		pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//		//})
+//
+//		//it("useItem retreatTroop", function(done){
+//		//	var m_myAllianceData = null
+//		//	Api.loginPlayer(Config.deviceId, function(doc){
+//		//		doc.code.should.equal(200)
+//		//		Api.getMyAllianceData(function(doc){
+//		//			doc.code.should.equal(200)
+//		//			Api.buyItem("retreatTroop", 1, function(doc){
+//		//				doc.code.should.equal(200)
+//		//				Api.useItem("retreatTroop", {
+//		//					retreatTroop:{
+//		//						eventType:"attackMarchEvents",
+//		//						eventId:m_myAllianceData.attackMarchEvents[0].id
+//		//					}
+//		//				}, function(doc){
+//		//					doc.code.should.equal(200)
+//		//					done()
+//		//				})
+//		//			})
+//		//		})
+//		//		var onGetAllianceDataSuccess = function(doc){
+//		//			m_myAllianceData = doc
+//		//			pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//		//		}
+//		//		pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//		//	})
+//		//})
+//
+//		//it("useItem moveTheCity", function(done){
+//		//	var m_myAllianceData = null
+//		//	Api.loginPlayer(Config.deviceId, function(doc){
+//		//		doc.code.should.equal(200)
+//		//		Api.getMyAllianceData(function(doc){
+//		//			doc.code.should.equal(200)
+//		//			Api.buyItem("moveTheCity", 1, function(doc){
+//		//				doc.code.should.equal(200)
+//		//				Api.useItem("moveTheCity", {
+//		//					moveTheCity:{
+//		//						locationX:0,
+//		//						locationY:0
+//		//					}
+//		//				}, function(doc){
+//		//					doc.code.should.equal(200)
+//		//					done()
+//		//				})
+//		//			})
+//		//		})
+//		//		var onGetAllianceDataSuccess = function(doc){
+//		//			m_myAllianceData = doc
+//		//			pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//		//		}
+//		//		pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+//		//	})
 //		//})
 //
 //		//it("getHelpDefenceTroopDetail 正常获取", function(done){
