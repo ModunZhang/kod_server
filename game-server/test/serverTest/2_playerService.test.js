@@ -1763,6 +1763,30 @@ describe("PlayerService", function(){
 				})
 			})
 		})
+
+		it("useItem dragonExp_2", function(done){
+			Api.buyItem("dragonExp_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("dragonExp_2", {dragonExp_2:{
+					dragonType:"redDragon"
+				}}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem dragonHp_2", function(done){
+			Api.buyItem("dragonHp_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("dragonHp_2", {dragonHp_2:{
+					dragonType:"redDragon"
+				}}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
 	})
 
 

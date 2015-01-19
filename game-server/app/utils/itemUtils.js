@@ -194,7 +194,6 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, allianceD
  * @param updateFuncs
  * @param pushFuncs
  * @param pushService
- * @constructor
  */
 var MoveTheCity = function(playerDoc, playerData, locationX, locationY, allianceDao, updateFuncs, pushFuncs, pushService){
 	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
@@ -248,6 +247,43 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 }
 
 /**
+ * 为指定的龙增加经验
+ * @param playerDoc
+ * @param playerData
+ * @param dragonType
+ * @param itemConfig
+ * @returns {*}
+ */
+var DragonExp = function(playerDoc, playerData, dragonType, itemConfig){
+	var dragon = playerDoc.dragons[dragonType]
+	if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
+	DataUtils.updatePlayerDragonProperty(playerDoc, dragon, 0, parseInt(itemConfig.effect))
+	playerData.dragons = {}
+	playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+	return Promise.resolve()
+}
+
+/**
+ * 为指定的龙增加Hp
+ * @param playerDoc
+ * @param playerData
+ * @param dragonType
+ * @param itemConfig
+ * @returns {*}
+ */
+var DragonHp = function(playerDoc, playerData, dragonType, itemConfig){
+	var dragon = playerDoc.dragons[dragonType]
+	if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
+	DataUtils.refreshPlayerDragonsHp(playerDoc, dragonType)
+	var dragonHpMax = DataUtils.getPlayerDragonHpMax(playerDoc, dragon)
+	dragon.hp += parseInt(itemConfig.effect)
+	dragon.hp = dragon.hp <= dragonHpMax ? dragon.hp : dragonHpMax
+	playerData.dragons = {}
+	playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+	return Promise.resolve()
+}
+
+/**
  * 道具和方法的映射
  */
 var ItemNameFunctionMap = {
@@ -280,6 +316,36 @@ var ItemNameFunctionMap = {
 		var locationX = itemData.locationX
 		var locationY = itemData.locationY
 		return MoveTheCity(playerDoc, playerData, locationX, locationY, allianceDao, updateFuncs, pushFuncs, pushService)
+	},
+	dragonExp_1:function(itemData, playerDoc, playerData){
+		var dragonType = itemData.dragonType
+		var itemConfig = Items.special.dragonExp_1
+		return DragonExp(playerDoc, playerData, dragonType, itemConfig)
+	},
+	dragonExp_2:function(itemData, playerDoc, playerData){
+		var dragonType = itemData.dragonType
+		var itemConfig = Items.special.dragonExp_2
+		return DragonExp(playerDoc, playerData, dragonType, itemConfig)
+	},
+	dragonExp_3:function(itemData, playerDoc, playerData){
+		var dragonType = itemData.dragonType
+		var itemConfig = Items.special.dragonExp_3
+		return DragonExp(playerDoc, playerData, dragonType, itemConfig)
+	},
+	dragonHp_1:function(itemData, playerDoc, playerData){
+		var dragonType = itemData.dragonType
+		var itemConfig = Items.special.dragonHp_1
+		return DragonExp(playerDoc, playerData, dragonType, itemConfig)
+	},
+	dragonHp_2:function(itemData, playerDoc, playerData){
+		var dragonType = itemData.dragonType
+		var itemConfig = Items.special.dragonHp_2
+		return DragonHp(playerDoc, playerData, dragonType, itemConfig)
+	},
+	dragonHp_3:function(itemData, playerDoc, playerData){
+		var dragonType = itemData.dragonType
+		var itemConfig = Items.special.dragonHp_3
+		return DragonHp(playerDoc, playerData, dragonType, itemConfig)
 	}
 }
 
@@ -340,7 +406,18 @@ Utils.isParamsLegal = function(itemName, params){
 		if(!_.isNumber(locationX) || locationX % 1 !== 0 || locationX < 0 || locationX > locationXMax) return false
 		return !(!_.isNumber(locationY) || locationY % 1 !== 0 || locationY < 0 || locationY > locationYMax)
 	}
-	return false
+	var dragonType = null
+	if(_.isEqual(itemName, "dragonExp_1") || _.isEqual(itemName, "dragonExp_2") || _.isEqual(itemName, "dragonExp_3")){
+		if(!_.isObject(itemData)) return false
+		dragonType = itemData.dragonType
+		return DataUtils.isDragonTypeExist(dragonType)
+	}
+	if(_.isEqual(itemName, "dragonHp_1") || _.isEqual(itemName, "dragonHp_2") || _.isEqual(itemName, "dragonHp_3")){
+		if(!_.isObject(itemData)) return false
+		dragonType = itemData.dragonType
+		return DataUtils.isDragonTypeExist(dragonType)
+	}
+	return true
 }
 
 /**
