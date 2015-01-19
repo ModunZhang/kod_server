@@ -880,13 +880,21 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
+		playerData.dragons = {}
+
+		var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
+		if(_.isObject(defenceDragon)){
+			DataUtils.refreshPlayerDragonsHp(playerDoc, defenceDragon.type)
+			defenceDragon.status = Consts.DragonStatus.Free
+			playerData.dragons[defenceDragon.type] = playerDoc.dragons[defenceDragon.type]
+		}
+
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
 		DataUtils.refreshPlayerDragonsHp(playerDoc, dragonType)
 		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
 		dragon.status = Consts.DragonStatus.Defence
-		playerData.dragons = {}
 		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
