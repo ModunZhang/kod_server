@@ -11,6 +11,7 @@ var crypto = require("crypto")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var ItemUtils = require("../utils/itemUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -959,6 +960,13 @@ pro.buyItem = function(playerId, itemName, count, callback){
 	})
 }
 
+/**
+ * 使用道具
+ * @param playerId
+ * @param itemName
+ * @param params
+ * @param callback
+ */
 pro.useItem = function(playerId, itemName, params, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
@@ -971,7 +979,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 		callback(new Error("itemName 不合法"))
 		return
 	}
-	if(!_.isObject(params)){
+	if(!_.isObject(params) || !ItemUtils.isParamsLegal(itemName, params)){
 		callback(new Error("params 不合法"))
 		return
 	}
@@ -987,25 +995,34 @@ pro.useItem = function(playerId, itemName, params, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var itemConfig = DataUtils.getItemConfig(itemName)
-		if(!itemConfig.isSell) return Promise.reject(new Error("此道具未出售"))
-		var gemNeed = itemConfig.price * count
-		if(playerDoc.resources.gem < gemNeed) return Promise.reject(new Error("宝石不足"))
-		playerDoc.resources.gem -= gemNeed
-		playerData.resources = playerDoc.resources
-		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)
-		if(resp.newlyCreated){
+
+		var item = _.find(playerDoc.items, function(item){
+			return _.isEqual(item.name, itemName)
+		})
+		if(!_.isObject(item))  return Promise.reject(new Error("道具不存在"))
+		if(item.count <= 0) return Promise.reject(new Error("道具数量不足"))
+		item.count -= 1
+		if(item.count <= 0){
+			LogicUtils.removeItemInArray(playerDoc.items, item)
 			playerData.__items = [{
-				type:Consts.DataChangedType.Add,
-				data:resp.item
+				type:Consts.DataChangedType.Remove,
+				data:item
 			}]
 		}else{
 			playerData.__items = [{
 				type:Consts.DataChangedType.Edit,
-				data:resp.item
+				data:item
 			}]
 		}
-
+		return Promise.resolve()
+	}).then(function(){
+		var itemNameFunction = ItemUtils.getItemNameFunction(itemName)
+		if(_.isEqual("changePlayerName", itemName)){
+			return itemNameFunction(params, playerDoc, playerData, self.playerDao)
+		}else{
+			return itemNameFunction(params, playerDoc, playerData)
+		}
+	}).then(function(){
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()

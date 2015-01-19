@@ -2340,6 +2340,7 @@ Utils.addPlayerItem = function(playerDoc, name, count){
 			name:name,
 			count:0
 		}
+		playerDoc.items.push(item)
 		newlyCreated = true
 	}
 	item.count += count

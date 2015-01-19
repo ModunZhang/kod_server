@@ -3,8 +3,8 @@
 var special = {}
 module.exports = special
 
-special["movingConstruction "] = {
-	name:"movingConstruction ",
+special["movingConstruction"] = {
+	name:"movingConstruction",
 	effect:"NONE",
 	order:1,
 	isSell:true,

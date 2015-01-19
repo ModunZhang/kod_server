@@ -481,6 +481,16 @@ Api.buyItem = function(itemName, count, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.useItem = function(itemName, params, callback){
+	var info = {
+		itemName:itemName,
+		params:params
+	}
+	var route = "logic.playerHandler.useItem"
+	pomelo.request(route, info, callback)
+}
+
+
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {

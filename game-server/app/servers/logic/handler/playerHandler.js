@@ -867,3 +867,19 @@ pro.buyItem = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 使用道具
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.useItem = function(msg, session, next){
+	var itemName = msg.itemName
+	var params = msg.params
+	this.playerApiService4.useItemAsync(session.uid, itemName, params).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

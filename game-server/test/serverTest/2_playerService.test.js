@@ -1712,10 +1712,43 @@ describe("PlayerService", function(){
 			})
 		})
 
-		it("buyItem 正常购买", function(done){
+		it("useItem 正常使用", function(done){
+			Api.buyItem("movingConstruction", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("movingConstruction", {movingConstruction:{
+					fromBuildingLocation:3,
+					fromHouseLocation:1,
+					toBuildingLocation:5,
+					toHouseLocation:2
+				}}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem 正常使用", function(done){
+			Api.buyItem("torch", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("torch", {torch:{
+					buildingLocation:5,
+					houseLocation:2
+				}}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem 正常使用", function(done){
 			Api.buyItem("changePlayerName", 1, function(doc){
 				doc.code.should.equal(200)
-				done()
+				Api.useItem("changePlayerName", {changePlayerName:{
+					newPlayerName:"modunzhang"
+				}}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
 			})
 		})
 	})

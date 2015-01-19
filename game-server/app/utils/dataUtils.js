@@ -2784,7 +2784,6 @@ Utils.isItemNameExist = function(itemName){
 	keys = keys.concat(_.keys(Items.buff))
 	keys = keys.concat(_.keys(Items.resource))
 	keys = keys.concat(_.keys(Items.speedUp))
-
 	return _.contains(keys, itemName)
 }
 
