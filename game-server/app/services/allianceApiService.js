@@ -1243,6 +1243,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 
 	var self = this
 	var playerDoc = null
+	var playerData = {}
 	var allianceDoc = null
 	var allianceData = {}
 	var memberDoc = null
@@ -1293,37 +1294,82 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 
 		var funcs = []
 		var returnHelpedByTroop = function(helpedByTroop){
-			return self.playerDao.findByIdAsync(helpedByTroop.id).then(function(doc){
-				if(_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-				otherPlayerDocs.push(doc)
-				var data = {}
-				LogicUtils.returnPlayerHelpedByTroop(memberDoc, memberData, helpedByTroop, doc, data)
-				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+			if(_.isEqual(helpedByTroop.id, playerDoc._id)){
+				LogicUtils.returnPlayerHelpedByTroop(memberDoc, memberData, helpedByTroop, playerDoc, playerData)
 				return Promise.resolve()
-			})
+			}else{
+				doc = _.find(otherPlayerDocs, function(doc){
+					return _.isEqual(helpedByTroop.id, doc._id)
+				})
+				if(_.isObject(doc)){
+					var data = {}
+					LogicUtils.returnPlayerHelpedByTroop(memberDoc, memberData, helpedByTroop, doc, data)
+					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+					return Promise.resolve()
+				}else{
+					return self.playerDao.findByIdAsync(helpedByTroop.id).then(function(doc){
+						if(_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+						otherPlayerDocs.push(doc)
+						var data = {}
+						LogicUtils.returnPlayerHelpedByTroop(memberDoc, memberData, helpedByTroop, doc, data)
+						updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+						pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+						return Promise.resolve()
+					})
+				}
+			}
 		}
 		var returnHelpToTroop = function(helpToTroop){
-			return self.playerDao.findByIdAsync(helpToTroop.beHelpedPlayerData.id).then(function(doc){
-				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-				otherPlayerDocs.push(doc)
-				var data = {}
-				LogicUtils.returnPlayerHelpToTroop(memberDoc, memberData, helpToTroop, doc, data)
-				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+			if(_.isEqual(helpToTroop.beHelpedPlayerData.id, playerDoc._id)){
+				LogicUtils.returnPlayerHelpToTroop(memberDoc, memberData, helpToTroop, playerDoc, playerData)
 				return Promise.resolve()
-			})
+			}else{
+				doc = _.find(otherPlayerDocs, function(doc){
+					return _.isEqual(helpToTroop.beHelpedPlayerData.id, doc._id)
+				})
+				if(_.isObject(doc)){
+					var data = {}
+					LogicUtils.returnPlayerHelpToTroop(memberDoc, memberData, helpToTroop, doc, data)
+					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+					return Promise.resolve()
+				}else{
+					return self.playerDao.findByIdAsync(helpToTroop.beHelpedPlayerData.id).then(function(doc){
+						if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+						otherPlayerDocs.push(doc)
+						var data = {}
+						LogicUtils.returnPlayerHelpToTroop(memberDoc, memberData, helpToTroop, doc, data)
+						updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+						pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+						return Promise.resolve()
+					})
+				}
+			}
 		}
 		var returnHelpedByMarchTroop = function(marchEvent){
-			return self.playerDao.findByIdAsync(marchEvent.attackPlayerData.id).then(function(doc){
-				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-				otherPlayerDocs.push(doc)
-				var data = {}
-				LogicUtils.returnPlayerHelpedByMarchTroop(doc, data, marchEvent, allianceDoc, allianceData, eventFuncs, self.timeEventService)
-				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+			if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
+				LogicUtils.returnPlayerHelpedByMarchTroop(playerDoc, playerData, marchEvent, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 				return Promise.resolve()
-			})
+			}else{
+				doc = _.find(otherPlayerDocs, function(doc){
+					return _.isEqual(marchEvent.attackPlayerData.id, doc._id)
+				})
+				if(_.isObject(doc)){
+					var data = {}
+					LogicUtils.returnPlayerHelpedByMarchTroop(doc, data, marchEvent, allianceDoc, allianceData, eventFuncs, self.timeEventService)
+					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+					return Promise.resolve()
+				}else{
+					return self.playerDao.findByIdAsync(marchEvent.attackPlayerData.id).then(function(doc){
+						if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+						otherPlayerDocs.push(doc)
+						var data = {}
+						LogicUtils.returnPlayerHelpedByMarchTroop(doc, data, marchEvent, allianceDoc, allianceData, eventFuncs, self.timeEventService)
+						updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+						pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+						return Promise.resolve()
+					})
+				}
+			}
 		}
 		_.each(memberDoc.helpedByTroops, function(helpedByTroop){
 			funcs.push(returnHelpedByTroop(helpedByTroop))
@@ -1371,7 +1417,12 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 			type:Consts.DataChangedType.Add,
 			data:event
 		}]
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		if(!_.isEmpty(playerData)){
+			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		}else{
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		}
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.leaveAsync, Consts.AllianceChannelPrefix + allianceDoc._id, memberDoc._id, memberDoc.logicServerId])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])

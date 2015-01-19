@@ -81,37 +81,67 @@ pro.quitAlliance = function(playerId, callback){
 
 		var funcs = []
 		var returnHelpedByTroop = function(helpedByTroop){
-			return self.playerDao.findByIdAsync(helpedByTroop.id).then(function(doc){
-				if(_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-				otherPlayerDocs.push(doc)
+			doc = _.find(otherPlayerDocs, function(doc){
+				return _.isEqual(helpedByTroop.id, doc._id)
+			})
+			if(_.isObject(doc)){
 				var data = {}
 				LogicUtils.returnPlayerHelpedByTroop(playerDoc, playerData, helpedByTroop, doc, data)
-				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return Promise.resolve()
-			})
+			}else{
+				return self.playerDao.findByIdAsync(helpedByTroop.id).then(function(doc){
+					if(_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+					otherPlayerDocs.push(doc)
+					var data = {}
+					LogicUtils.returnPlayerHelpedByTroop(playerDoc, playerData, helpedByTroop, doc, data)
+					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+					return Promise.resolve()
+				})
+			}
 		}
 		var returnHelpToTroop = function(helpToTroop){
-			return self.playerDao.findByIdAsync(helpToTroop.beHelpedPlayerData.id).then(function(doc){
-				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-				otherPlayerDocs.push(doc)
+			doc = _.find(otherPlayerDocs, function(doc){
+				return _.isEqual(helpToTroop.beHelpedPlayerData.id, doc._id)
+			})
+			if(_.isObject(doc)){
 				var data = {}
 				LogicUtils.returnPlayerHelpToTroop(playerDoc, playerData, helpToTroop, doc, data)
-				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return Promise.resolve()
-			})
+			}else{
+				return self.playerDao.findByIdAsync(helpToTroop.beHelpedPlayerData.id).then(function(doc){
+					if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+					otherPlayerDocs.push(doc)
+					var data = {}
+					LogicUtils.returnPlayerHelpToTroop(playerDoc, playerData, helpToTroop, doc, data)
+					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+					return Promise.resolve()
+				})
+			}
 		}
 		var returnHelpedByMarchTroop = function(marchEvent){
-			return self.playerDao.findByIdAsync(marchEvent.attackPlayerData.id).then(function(doc){
-				if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-				otherPlayerDocs.push(doc)
+			doc = _.find(otherPlayerDocs, function(doc){
+				return _.isEqual(marchEvent.attackPlayerData.id, doc._id)
+			})
+			if(_.isObject(doc)){
 				var data = {}
 				LogicUtils.returnPlayerHelpedByMarchTroop(doc, data, marchEvent, allianceDoc, allianceData, eventFuncs, self.timeEventService)
-				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return Promise.resolve()
-			})
+			}else{
+				return self.playerDao.findByIdAsync(marchEvent.attackPlayerData.id).then(function(doc){
+					if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+					otherPlayerDocs.push(doc)
+					var data = {}
+					LogicUtils.returnPlayerHelpedByMarchTroop(doc, data, marchEvent, allianceDoc, allianceData, eventFuncs, self.timeEventService)
+					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, doc])
+					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
+					return Promise.resolve()
+				})
+			}
 		}
 		_.each(playerDoc.helpedByTroops, function(helpedByTroop){
 			funcs.push(returnHelpedByTroop(helpedByTroop))
