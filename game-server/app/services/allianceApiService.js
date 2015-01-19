@@ -1270,6 +1270,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
+		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(new Error("联盟正在战争准备期或战争期,不能将玩家踢出联盟"))
 		var playerInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		memberInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
 		if(!_.isObject(memberInAllianceDoc)){
