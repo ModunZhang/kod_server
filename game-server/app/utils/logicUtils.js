@@ -172,7 +172,7 @@ Utils.isBuildingCanCreateAtLocation = function(playerDoc, location){
 	}
 	if(nextLocation){
 		var nextBuilding = playerDoc.buildings["location_" + nextLocation]
-		if(nextBuilding.level > 0) return true
+		if(!_.isObject(nextBuilding) || nextBuilding.level > 0) return true
 	}
 	if(frontLocation){
 		var frontBuilding = playerDoc.buildings["location_" + frontLocation]

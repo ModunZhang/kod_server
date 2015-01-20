@@ -147,11 +147,11 @@ pro.playerLogout = function(playerDoc, callback){
 /**
  * 升级大型建筑
  * @param playerId
- * @param buildingLocation
+ * @param location
  * @param finishNow
  * @param callback
  */
-pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
+pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -159,8 +159,8 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1 || buildingLocation > 20){
-		callback(new Error("buildingLocation 不合法"))
+	if(!_.isNumber(location) || location % 1 !== 0 || location < 1 || location > 20){
+		callback(new Error("location 不合法"))
 		return
 	}
 	if(!_.isBoolean(finishNow)){
@@ -180,17 +180,17 @@ pro.upgradeBuilding = function(playerId, buildingLocation, finishNow, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		building = playerDoc.buildings["location_" + buildingLocation]
+		building = playerDoc.buildings["location_" + location]
 		if(!_.isObject(building)){
 			return Promise.reject(new Error("建筑不存在"))
 		}
-		if(LogicUtils.hasBuildingEvents(playerDoc, buildingLocation)){
+		if(LogicUtils.hasBuildingEvents(playerDoc, location)){
 			return Promise.reject(new Error("建筑正在升级"))
 		}
 		if(building.level < 0){
 			return Promise.reject(new Error("建筑还未建造"))
 		}
-		if(building.level == 0 && !LogicUtils.isBuildingCanCreateAtLocation(playerDoc, buildingLocation)){
+		if(building.level == 0 && !LogicUtils.isBuildingCanCreateAtLocation(playerDoc, location)){
 			return Promise.reject(new Error("建筑建造时,建筑坑位不合法"))
 		}
 		if(building.level == 0 && DataUtils.getPlayerFreeBuildingsCount(playerDoc) <= 0){

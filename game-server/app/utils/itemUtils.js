@@ -417,6 +417,13 @@ Utils.isParamsLegal = function(itemName, params){
 		dragonType = itemData.dragonType
 		return DataUtils.isDragonTypeExist(dragonType)
 	}
+	if(_.isEqual(itemName, "heroBlood_1") || _.isEqual(itemName, "heroBlood_2") || _.isEqual(itemName, "heroBlood_3")){
+		if(!_.isObject(itemData)) return false
+		dragonType = itemData.dragonType
+		var skillKey = itemData.skillKey
+		if(!DataUtils.isDragonTypeExist(dragonType)) return false
+		return _.isString(skillKey)
+	}
 	return true
 }
 
