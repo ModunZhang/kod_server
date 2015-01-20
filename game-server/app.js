@@ -21,7 +21,7 @@ app.set("name", "KODServer")
 app.configure("production|development", "gate", function(){
 	app.set("connectorConfig", {
 		connector:pomelo.connectors.hybridconnector,
-		heartbeat:60,
+		heartbeat:10,
 		useDict:false,
 		useProtobuf:false,
 		setNoDelay:false,
@@ -64,7 +64,7 @@ app.configure("production|development", "gate", function(){
 app.configure("production|development", "logic", function(){
 	app.set("connectorConfig", {
 		connector:pomelo.connectors.hybridconnector,
-		heartbeat:30,
+		heartbeat:60,
 		useDict:true,
 		useProtobuf:true,
 		disconnectOnTimeout:true,

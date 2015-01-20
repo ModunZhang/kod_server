@@ -13,6 +13,7 @@ var GameDatas = require("../datas/GameDatas")
 var Items = GameDatas.Items
 var Buildings = GameDatas.Buildings
 var AllianceInitData = GameDatas.AllianceInitData
+var PlayerInitData = GameDatas.PlayerInitData
 
 var Utils = module.exports
 
@@ -33,13 +34,13 @@ var MovingConstruction = function(playerDoc, playerData, fromBuildingLocation, f
 	})
 	if(!_.isObject(house)) return Promise.reject(new Error("小屋或装饰物不存在"))
 	var toBuilding = playerDoc.buildings["location_" + toBuildingLocation]
-	if(toBuilding.level < 1) return Promise.reject( new Error("目标建筑未建造"))
-	if(!Buildings.buildings[toBuildingLocation].hasHouse) return Promise.reject( new Error("目标建筑周围不允许建造小屋或装饰物"))
+	if(toBuilding.level < 1) return Promise.reject(new Error("目标建筑未建造"))
+	if(!Buildings.buildings[toBuildingLocation].hasHouse) return Promise.reject(new Error("目标建筑周围不允许建造小屋或装饰物"))
 	var toHouse = _.find(toBuilding.houses, function(house){
 		return house.location == toHouseLocation
 	})
-	if(_.isObject(toHouse)) return Promise.reject( new Error("目的地非空地"))
-	if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, toBuildingLocation, house.type, toHouseLocation)) return Promise.reject( new Error("移动小屋时,小屋坑位不合法"))
+	if(_.isObject(toHouse)) return Promise.reject(new Error("目的地非空地"))
+	if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, toBuildingLocation, house.type, toHouseLocation)) return Promise.reject(new Error("移动小屋时,小屋坑位不合法"))
 
 	LogicUtils.removeItemInArray(fromBuilding.houses, house)
 	playerData.buildings = {}
@@ -65,7 +66,7 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
 	var house = _.find(building.houses, function(house){
 		return _.isEqual(house.location, houseLocation)
 	})
-	if(!_.isObject(house)) return Promise.reject( new Error("小屋或装饰物不存在"))
+	if(!_.isObject(house)) return Promise.reject(new Error("小屋或装饰物不存在"))
 
 	LogicUtils.removeItemInArray(building.houses, house)
 	playerData.buildings = {}
@@ -284,6 +285,101 @@ var DragonHp = function(playerDoc, playerData, dragonType, itemConfig){
 }
 
 /**
+ * 增加英雄之血
+ * @param playerDoc
+ * @param playerData
+ * @param itemConfig
+ * @returns {*}
+ */
+var HeroBlood = function(playerDoc, playerData, itemConfig){
+	playerDoc.resources.blood += parseInt(itemConfig.effect)
+	playerData.resources = playerDoc.resources
+	return Promise.resolve()
+}
+
+/**
+ * 增加精力
+ * @param playerDoc
+ * @param playerData
+ * @param itemConfig
+ * @returns {*}
+ */
+var Stamina = function(playerDoc, playerData, itemConfig){
+	LogicUtils.refreshPlayerResources(playerDoc)
+	playerDoc.resources.stamina += parseInt(itemConfig.effect)
+	LogicUtils.refreshPlayerResources(playerDoc)
+	playerData.resources = playerDoc.resources
+	return Promise.resolve()
+}
+
+/**
+ * 恢复城墙血量
+ * @param playerDoc
+ * @param playerData
+ * @param itemConfig
+ * @returns {*}
+ */
+var RestoreWallHp = function(playerDoc, playerData, itemConfig){
+	LogicUtils.refreshPlayerResources(playerDoc)
+	playerDoc.resources.wallHp += parseInt(itemConfig.effect)
+	LogicUtils.refreshPlayerResources(playerDoc)
+	playerData.resources = playerDoc.resources
+	return Promise.resolve()
+}
+
+/**
+ * 开巨龙宝箱
+ * @param playerDoc
+ * @param playerData
+ * @param itemConfig
+ * @returns {*}
+ */
+var DragonChest = function(playerDoc, playerData, itemConfig){
+	var ParseConfig = function(config){
+		var objects = []
+		var configArray_1 = config.split(",")
+		_.each(configArray_1, function(config_1){
+			var configArray_2 = config_1.split(":")
+			var object = {
+				type:configArray_2[0],
+				name:configArray_2[1],
+				count:configArray_2[2],
+				weight:parseInt(configArray_2[3])
+			}
+			objects.push(object)
+		})
+		return objects
+	}
+	var SortFunc = function(objects){
+		var totalWeight = 0
+		_.each(objects, function(object){
+			totalWeight += object.weight + 1
+		})
+
+		_.each(objects, function(object){
+			var weight = object.weight + 1 + (Math.random() * totalWeight << 0)
+			object.weight = weight
+		})
+
+		return _.sortBy(objects, function(object){
+			return -object.weight
+		})
+	}
+
+	var items = ParseConfig(itemConfig.effect)
+	items = SortFunc(items)
+	var selectCount = PlayerInitData.intInit.dragonChestSelectCountPerItem.value
+	for(var i = 0; i < selectCount; i ++){
+		var item = items[i]
+		playerDoc[item.type][item.name] += item.count
+		if(!_.isObject(playerData[item.type])) playerData[item.type] = {}
+		playerData[item.type][item.name] = playerDoc[item.type][item.name]
+	}
+
+	return Promise.resolve()
+}
+
+/**
  * 道具和方法的映射
  */
 var ItemNameFunctionMap = {
@@ -346,6 +442,54 @@ var ItemNameFunctionMap = {
 		var dragonType = itemData.dragonType
 		var itemConfig = Items.special.dragonHp_3
 		return DragonHp(playerDoc, playerData, dragonType, itemConfig)
+	},
+	heroBlood_1:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.special.heroBlood_1
+		return HeroBlood(playerDoc, playerData, itemConfig)
+	},
+	heroBlood_2:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.special.heroBlood_2
+		return HeroBlood(playerDoc, playerData, itemConfig)
+	},
+	heroBlood_3:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.special.heroBlood_3
+		return HeroBlood(playerDoc, playerData, itemConfig)
+	},
+	stamina_1:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.special.stamina_1
+		return Stamina(playerDoc, playerData, itemConfig)
+	},
+	stamina_2:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.special.stamina_2
+		return Stamina(playerDoc, playerData, itemConfig)
+	},
+	stamina_3:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.special.stamina_3
+		return Stamina(playerDoc, playerData, itemConfig)
+	},
+	restoreWall_1:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.special.restoreWall_1
+		return RestoreWallHp(playerDoc, playerData, itemConfig)
+	},
+	restoreWall_2:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.special.restoreWall_2
+		return RestoreWallHp(playerDoc, playerData, itemConfig)
+	},
+	restoreWall_3:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.special.restoreWall_3
+		return RestoreWallHp(playerDoc, playerData, itemConfig)
+	},
+	dragonChest_1:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.special.dragonChest_1
+		return DragonChest(playerDoc, playerData, itemConfig)
+	},
+	dragonChest_2:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.special.dragonChest_2
+		return DragonChest(playerDoc, playerData, itemConfig)
+	},
+	dragonChest_3:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.special.dragonChest_3
+		return DragonChest(playerDoc, playerData, itemConfig)
 	}
 }
 
@@ -416,13 +560,6 @@ Utils.isParamsLegal = function(itemName, params){
 		if(!_.isObject(itemData)) return false
 		dragonType = itemData.dragonType
 		return DataUtils.isDragonTypeExist(dragonType)
-	}
-	if(_.isEqual(itemName, "heroBlood_1") || _.isEqual(itemName, "heroBlood_2") || _.isEqual(itemName, "heroBlood_3")){
-		if(!_.isObject(itemData)) return false
-		dragonType = itemData.dragonType
-		var skillKey = itemData.skillKey
-		if(!DataUtils.isDragonTypeExist(dragonType)) return false
-		return _.isString(skillKey)
 	}
 	return true
 }

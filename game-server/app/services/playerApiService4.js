@@ -662,8 +662,8 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 
 		if(finishNow){
 			tech.level += 1
-			playerData.militaryTechEvents = {}
-			playerData.militaryTechEvents[techName] = playerDoc.militaryTechEvents[techName]
+			playerData.militaryTechs = {}
+			playerData.militaryTechs[techName] = playerDoc.militaryTechs[techName]
 		}else{
 			if(_.isObject(preTechEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, Date.now()])

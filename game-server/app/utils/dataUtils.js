@@ -353,6 +353,8 @@ Utils.getPlayerResources = function(playerDoc){
 			resources[key] = self.getPlayerWallHp(playerDoc)
 		}else if(_.isEqual("cart", key)){
 			resources[key] = self.getPlayerCart(playerDoc)
+		}else if(_.isEqual("stamina", key)){
+			resources[key] = self.getPlayerStamina(playerDoc)
 		}else{
 			resources[key] = playerDoc.resources[key]
 		}
@@ -436,6 +438,25 @@ Utils.getPlayerCart = function(playerDoc){
 	var output = Math.floor(totalSecond * totalPerSecond)
 	var totalCart = playerDoc.resources["cart"] + output
 	return totalCart > cartLimit ? cartLimit : totalCart
+}
+
+/**
+ * 获取玩家精力数据
+ * @param playerDoc
+ * @returns {intInit.staminaMax|*}
+ */
+Utils.getPlayerStamina = function(playerDoc){
+	var staminaRecoverPerHour = PlayerInitData.intInit.staminaRecoverPerHour.value
+	var staminaMax = PlayerInitData.intInit.staminaMax.value
+	if(staminaMax <= playerDoc.resources["stamina"]){
+		return staminaMax
+	}
+
+	var totalPerSecond = staminaRecoverPerHour / 60 / 60
+	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
+	var output = Math.floor(totalSecond * totalPerSecond)
+	var totalStamina = playerDoc.resources["stamina"] + output
+	return totalStamina > staminaMax ? staminaMax : totalStamina
 }
 
 /**

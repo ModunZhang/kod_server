@@ -1783,7 +1783,47 @@ describe("PlayerService", function(){
 					dragonType:"redDragon"
 				}}, function(doc){
 					doc.code.should.equal(200)
-					//done()
+					done()
+				})
+			})
+		})
+
+		it("useItem heroBlood_2", function(done){
+			Api.buyItem("heroBlood_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("heroBlood_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem stamina_2", function(done){
+			Api.buyItem("stamina_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("stamina_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem restoreWall_2", function(done){
+			Api.buyItem("restoreWall_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("restoreWall_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem dragonChest_2", function(done){
+			Api.buyItem("dragonChest_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("dragonChest_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
 				})
 			})
 		})
