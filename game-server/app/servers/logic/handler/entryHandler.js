@@ -49,7 +49,7 @@ pro.login = function(msg, session, next){
 	var self = this
 	var deviceId = msg.deviceId
 	if(!_.isString(deviceId)){
-		next(new Error("deviceId 不能为空"))
+		next(new Error("deviceId 不合法"))
 		return
 	}
 
@@ -170,7 +170,7 @@ var RemovePlayerFromChatChannel = function(session, callback){
 
 var KickPlayerFromLogicServer = function(playerDoc, callback){
 	var self = this
-	this.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, function(err){
+	this.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "其他设备正使用此账号登录", function(err){
 		if(_.isObject(err)){
 			callback(err)
 			return

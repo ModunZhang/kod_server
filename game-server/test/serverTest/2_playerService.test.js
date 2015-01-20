@@ -58,10 +58,10 @@ describe("PlayerService", function(){
 
 
 	describe("playerHandler", function(){
-		it("upgradeBuilding buildingLocation 不合法", function(done){
+		it("upgradeBuilding location 不合法", function(done){
 			Api.upgradeBuilding(26, false, function(doc){
 				doc.code.should.equal(500)
-				doc.message.should.equal("buildingLocation 不合法")
+				doc.message.should.equal("location 不合法")
 				done()
 			})
 		})
@@ -1783,7 +1783,7 @@ describe("PlayerService", function(){
 					dragonType:"redDragon"
 				}}, function(doc){
 					doc.code.should.equal(200)
-					done()
+					//done()
 				})
 			})
 		})

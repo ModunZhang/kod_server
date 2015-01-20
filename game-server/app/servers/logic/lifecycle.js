@@ -1,8 +1,8 @@
 "use strict"
 
 /**
-* Created by modun on 14-8-9.
-*/
+ * Created by modun on 14-8-9.
+ */
 
 var Promise = require("bluebird")
 var _ = require("underscore")
@@ -53,7 +53,22 @@ life.afterStartup = function(app, callback){
 }
 
 life.beforeShutdown = function(app, callback){
-	callback()
+	var sessionService = app.get("sessionService")
+	var kickAsync = Promise.promisify(sessionService.kick, sessionService)
+	var uids = _.keys(sessionService.service.uidMap)
+	var funcs = []
+	_.each(uids, function(uid){
+		funcs.push(kickAsync(uid, "服务器关闭"))
+	})
+	Promise.all(funcs).then(function(){
+		callback()
+	}).catch(function(e){
+		errorLogger.error("handle logicServer.lifecycle: beforeShutdown Error -----------------------------")
+		errorLogger.error(e.stack)
+		errorMailLogger.error("handle logicServer.lifecycle: beforeShutdown Error -----------------------------")
+		errorMailLogger.error(e.stack)
+		callback()
+	})
 }
 
 life.afterStartAll = function(app){

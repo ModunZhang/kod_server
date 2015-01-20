@@ -26,8 +26,8 @@ var pro = LogicRemote.prototype
  * @param uid
  * @param callback
  */
-pro.kickPlayer = function(uid, callback){
-	this.sessionService.kick(uid, callback)
+pro.kickPlayer = function(uid, reason, callback){
+	this.sessionService.kick(uid, reason, callback)
 }
 
 /**
