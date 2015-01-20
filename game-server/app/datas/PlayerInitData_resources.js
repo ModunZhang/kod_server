@@ -14,5 +14,6 @@ resources[1] = {
 	coin:50000,
 	cart:0,
 	blood:1000,
-	stamina:100
+	stamina:100,
+	casinoToken:5000
 }

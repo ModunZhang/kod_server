@@ -533,6 +533,24 @@ var Buff = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventServ
 }
 
 /**
+ * 使用资源道具
+ * @param playerDoc
+ * @param playerData
+ * @param itemConfig
+ * @param resourceName
+ * @return {*}
+ */
+var Resource = function(playerDoc, playerData, itemConfig, resourceName){
+	var count = Math.round(itemConfig.effect * 1000)
+	LogicUtils.refreshPlayerResources(playerDoc)
+	playerDoc.resources[resourceName] += count
+	LogicUtils.refreshPlayerResources(playerDoc)
+	playerData.resources = playerDoc.resources
+
+	return Promise.resolve()
+}
+
+/**
  * 道具和方法的映射
  */
 var ItemNameFunctionMap = {
@@ -762,7 +780,7 @@ var ItemNameFunctionMap = {
 	},
 	ironBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
 		var itemConfig = Items.buff.ironBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService, eventFuncs, timeEventService)
+		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 	},
 	ironBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
 		var itemConfig = Items.buff.ironBonus_3
@@ -911,6 +929,158 @@ var ItemNameFunctionMap = {
 	siegeAtkBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
 		var itemConfig = Items.buff.siegeAtkBonus_3
 		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+	},
+	woodClass_1:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.woodClass_1
+		return Resource(playerDoc, playerData, itemConfig, "wood")
+	},
+	woodClass_2:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.woodClass_2
+		return Resource(playerDoc, playerData, itemConfig, "wood")
+	},
+	woodClass_3:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.woodClass_3
+		return Resource(playerDoc, playerData, itemConfig, "wood")
+	},
+	woodClass_4:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.woodClass_4
+		return Resource(playerDoc, playerData, itemConfig, "wood")
+	},
+	woodClass_5:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.woodClass_5
+		return Resource(playerDoc, playerData, itemConfig, "wood")
+	},
+	woodClass_6:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.woodClass_6
+		return Resource(playerDoc, playerData, itemConfig, "wood")
+	},
+	woodClass_7:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.woodClass_7
+		return Resource(playerDoc, playerData, itemConfig, "wood")
+	},
+	stoneClass_1:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.stoneClass_1
+		return Resource(playerDoc, playerData, itemConfig, "stone")
+	},
+	stoneClass_2:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.stoneClass_2
+		return Resource(playerDoc, playerData, itemConfig, "stone")
+	},
+	stoneClass_3:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.stoneClass_3
+		return Resource(playerDoc, playerData, itemConfig, "stone")
+	},
+	stoneClass_4:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.stoneClass_4
+		return Resource(playerDoc, playerData, itemConfig, "stone")
+	},
+	stoneClass_5:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.stoneClass_5
+		return Resource(playerDoc, playerData, itemConfig, "stone")
+	},
+	stoneClass_6:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.stoneClass_6
+		return Resource(playerDoc, playerData, itemConfig, "stone")
+	},
+	stoneClass_7:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.stoneClass_7
+		return Resource(playerDoc, playerData, itemConfig, "stone")
+	},
+	ironClass_1:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.ironClass_1
+		return Resource(playerDoc, playerData, itemConfig, "iron")
+	},
+	ironClass_2:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.ironClass_2
+		return Resource(playerDoc, playerData, itemConfig, "iron")
+	},
+	ironClass_3:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.ironClass_3
+		return Resource(playerDoc, playerData, itemConfig, "iron")
+	},
+	ironClass_4:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.ironClass_4
+		return Resource(playerDoc, playerData, itemConfig, "iron")
+	},
+	ironClass_5:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.ironClass_5
+		return Resource(playerDoc, playerData, itemConfig, "iron")
+	},
+	ironClass_6:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.ironClass_6
+		return Resource(playerDoc, playerData, itemConfig, "iron")
+	},
+	ironClass_7:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.ironClass_7
+		return Resource(playerDoc, playerData, itemConfig, "iron")
+	},
+	foodClass_1:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.foodClass_1
+		return Resource(playerDoc, playerData, itemConfig, "food")
+	},
+	foodClass_2:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.foodClass_2
+		return Resource(playerDoc, playerData, itemConfig, "food")
+	},
+	foodClass_3:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.foodClass_3
+		return Resource(playerDoc, playerData, itemConfig, "food")
+	},
+	foodClass_4:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.foodClass_4
+		return Resource(playerDoc, playerData, itemConfig, "food")
+	},
+	foodClass_5:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.foodClass_5
+		return Resource(playerDoc, playerData, itemConfig, "food")
+	},
+	foodClass_6:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.foodClass_6
+		return Resource(playerDoc, playerData, itemConfig, "food")
+	},
+	foodClass_7:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.foodClass_7
+		return Resource(playerDoc, playerData, itemConfig, "food")
+	},
+	coinClass_1:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.coinClass_1
+		return Resource(playerDoc, playerData, itemConfig, "coin")
+	},
+	coinClass_2:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.coinClass_2
+		return Resource(playerDoc, playerData, itemConfig, "coin")
+	},
+	coinClass_3:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.coinClass_3
+		return Resource(playerDoc, playerData, itemConfig, "coin")
+	},
+	coinClass_4:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.coinClass_4
+		return Resource(playerDoc, playerData, itemConfig, "coin")
+	},
+	coinClass_5:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.coinClass_5
+		return Resource(playerDoc, playerData, itemConfig, "coin")
+	},
+	coinClass_6:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.coinClass_6
+		return Resource(playerDoc, playerData, itemConfig, "coin")
+	},
+	casinoTokenClass_1:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.casinoTokenClass_1
+		return Resource(playerDoc, playerData, itemConfig, "casinoToken")
+	},
+	casinoTokenClass_2:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.casinoTokenClass_2
+		return Resource(playerDoc, playerData, itemConfig, "casinoToken")
+	},
+	casinoTokenClass_3:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.casinoTokenClass_3
+		return Resource(playerDoc, playerData, itemConfig, "casinoToken")
+	},
+	casinoTokenClass_4:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.casinoTokenClass_4
+		return Resource(playerDoc, playerData, itemConfig, "casinoToken")
 	}
 }
 

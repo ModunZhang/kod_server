@@ -1901,6 +1901,26 @@ describe("PlayerService", function(){
 				})
 			})
 		})
+
+		it("useItem woodClass_3", function(done){
+			Api.buyItem("woodClass_3", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("woodClass_3", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem casinoTokenClass_2", function(done){
+			Api.buyItem("casinoTokenClass_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("casinoTokenClass_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
 	})
 
 

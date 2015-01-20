@@ -131,7 +131,8 @@ var playerSchema = new Schema({
 		cart:{type:Number, required:true, default:ResourceInitData.cart},
 		blood:{type:Number, required:true, default:ResourceInitData.blood},
 		wallHp:{type:Number, required:true, default:BuildingFunction.wall[1].wallHp},
-		stamina:{type:Number, required:true, default:ResourceInitData.stamina}
+		stamina:{type:Number, required:true, default:ResourceInitData.stamina},
+		casinoToken:{type:Number, required:true, default:ResourceInitData.casinoToken}
 	},
 	alliance:{
 		type:{
