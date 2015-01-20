@@ -324,6 +324,7 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 	}
 
 	var self = this
+	var callerDoc = null
 	var playerDoc = null
 	var attackPlayerDoc = null
 	var pushFuncs = []
@@ -331,9 +332,20 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 	var updateFuncs = []
 
 	var helpedByPlayerTroop = null
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findByIdAsync(callerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		playerDoc = doc
+		callerDoc = doc
+		if(!_.isEqual(callerId, playerId)){
+			return self.playerDao.findByIdAsync(playerId)
+		}
+		return Promise.resolve()
+	}).then(function(doc){
+		if(!_.isEqual(callerId, playerId)){
+			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+			playerDoc = doc
+		}else{
+			playerDoc = callerDoc
+		}
 		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
@@ -349,9 +361,13 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 		var detail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, helpedByPlayerId, helpedByPlayerTroop.dragon, helpedByPlayerTroop.soldiers)
 		delete detail.marchEventId
 		detail.helpedByPlayerId = helpedByPlayerId
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, callerDoc._id])
+		if(!_.isEqual(callerDoc, playerDoc)){
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		}
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, attackPlayerDoc._id])
-		pushFuncs.push([self.pushService, self.pushService.onGetHelpDefenceTroopDetailAsync, playerDoc, detail])
+		pushFuncs.push([self.pushService, self.pushService.onGetHelpDefenceTroopDetailAsync, callerDoc, detail])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -362,7 +378,10 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 		callback()
 	}).catch(function(e){
 		var funcs = []
-		if(_.isObject(playerDoc)){
+		if(_.isObject(callerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(callerDoc._id))
+		}
+		if(_.isObject(playerDoc) && !_.isEqual(callerDoc, playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
 		}
 		if(_.isObject(attackPlayerDoc)){
