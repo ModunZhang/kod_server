@@ -128,6 +128,16 @@ life.afterStartAll = function(app){
 					event.startTime = now
 					eventFuncs.push(addTimeEventAsync(eventServerId, key, "soldierStarEvents", event.id, event.finishTime - event.startTime))
 				})
+				_.each(playerDoc.vipEvents, function(event){
+					event.finishTime = now + (event.finishTime - event.startTime)
+					event.startTime = now
+					eventFuncs.push(addTimeEventAsync(eventServerId, key, "vipEvents", event.id, event.finishTime - event.startTime))
+				})
+				_.each(playerDoc.itemEvents, function(event){
+					event.finishTime = now + (event.finishTime - event.startTime)
+					event.startTime = now
+					eventFuncs.push(addTimeEventAsync(eventServerId, key, "itemEvents", event.id, event.finishTime - event.startTime))
+				})
 				LogicUtils.refreshPlayerPower(playerDoc)
 			})
 			return Promise.resolve()

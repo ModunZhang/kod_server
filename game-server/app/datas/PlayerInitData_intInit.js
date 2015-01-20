@@ -48,3 +48,8 @@ intInit["dragonChestSelectCountPerItem"] = {
 	value:3,
 	desc:"开巨龙宝箱每次选取的材料个数"
 }
+intInit["chestSelectCountPerItem"] = {
+	type:"chestSelectCountPerItem",
+	value:1,
+	desc:"开宝箱每次选取的材料个数"
+}

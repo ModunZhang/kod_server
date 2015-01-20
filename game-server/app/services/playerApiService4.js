@@ -1024,8 +1024,30 @@ pro.useItem = function(playerId, itemName, params, callback){
 			return itemNameFunction(itemData, playerDoc, playerData, self.allianceDao, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService)
 		}else if(_.isEqual("moveTheCity", itemName)){
 			return itemNameFunction(itemData, playerDoc, playerData, self.allianceDao, updateFuncs, pushFuncs, self.pushService)
-		}else{
+		}else if(_.isEqual("chest_2", itemName) || _.isEqual("chest_3", itemName) || _.isEqual("chest_4", itemName)){
+			var key = "chestKey_" + itemName.slice(-1)
+			var item = _.find(playerDoc.items, function(item){
+				return _.isEqual(item.name, key)
+			})
+			if(!_.isObject(item) || item.count <= 0)  return Promise.reject(new Error("道具不存在或数量不足"))
+			item.count -= 1
+			if(item.count <= 0){
+				LogicUtils.removeItemInArray(playerDoc.items, item)
+				playerData.__items.push({
+					type:Consts.DataChangedType.Remove,
+					data:item
+				})
+			}else{
+				playerData.__items.push({
+					type:Consts.DataChangedType.Edit,
+					data:item
+				})
+			}
 			return itemNameFunction(itemData, playerDoc, playerData)
+		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
+			return Promise.reject(new Error("此道具不允许直接使用"))
+		}else{
+			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService)
 		}
 	}).then(function(){
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])

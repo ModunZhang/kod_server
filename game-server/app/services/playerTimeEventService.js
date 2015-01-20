@@ -317,6 +317,20 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 				}]
 			}
 		}
+	}else if(_.isEqual(eventType, "vipEvents")){
+		event = LogicUtils.getEventById(playerDoc.vipEvents, eventId)
+		LogicUtils.removeItemInArray(playerDoc.vipEvents, event)
+		playerData.__vipEvents = [{
+			type:Consts.DataChangedType.Remove,
+			data:event
+		}]
+	}else if(_.isEqual(eventType, "itemEvents")){
+		event = LogicUtils.getEventById(playerDoc.itemEvents, eventId)
+		LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
+		playerData.__itemEvents = [{
+			type:Consts.DataChangedType.Remove,
+			data:event
+		}]
 	}
 
 	LogicUtils.refreshPlayerPower(playerDoc)

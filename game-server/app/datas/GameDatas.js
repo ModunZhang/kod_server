@@ -141,6 +141,7 @@ GameDatas.Items.special = require("./Items_special.js")
 GameDatas.Items.buff = require("./Items_buff.js")
 GameDatas.Items.resource = require("./Items_resource.js")
 GameDatas.Items.speedUp = require("./Items_speedUp.js")
+GameDatas.Items.buffTypes = require("./Items_buffTypes.js")
 
 GameDatas.MilitaryTechLevelUp = {}
 GameDatas.MilitaryTechLevelUp.infantry_infantry = require("./MilitaryTechLevelUp_infantry_infantry.js")

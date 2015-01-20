@@ -1827,6 +1827,80 @@ describe("PlayerService", function(){
 				})
 			})
 		})
+
+		it("useItem chest_4 道具不存在或数量不足", function(done){
+			Api.buyItem("chest_4", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("chest_4", {}, function(doc){
+					doc.code.should.equal(500)
+					doc.message.should.equal("道具不存在或数量不足")
+					done()
+				})
+			})
+		})
+
+		it("useItem chest_4", function(done){
+			Api.buyItem("chest_4", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.buyItem("chestKey_4", 1, function(doc){
+					doc.code.should.equal(200)
+					Api.useItem("chest_4", {}, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("useItem vipActive_3", function(done){
+			Api.buyItem("vipActive_3", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("vipActive_3", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem vipPoint_3", function(done){
+			Api.buyItem("vipPoint_3", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("vipPoint_3", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem masterOfDefender_2", function(done){
+			Api.buyItem("masterOfDefender_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("masterOfDefender_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem stoneBonus_1", function(done){
+			Api.buyItem("stoneBonus_1", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("stoneBonus_1", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem stoneBonus_2", function(done){
+			Api.buyItem("stoneBonus_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("stoneBonus_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
 	})
 
 
