@@ -557,6 +557,8 @@ var Resource = function(playerDoc, playerData, itemConfig, resourceName){
  * @param eventType
  * @param eventId
  * @param speedupTime
+ * @param eventFuncs
+ * @param timeEventService
  * @returns {*}
  */
 var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService){
@@ -566,10 +568,12 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
 	if(!_.isObject(event)) return Promise.reject(new Error("所要加速的事件不存在"))
 	event.startTime -= speedupTime
 	event.finishTime -= speedupTime
-	playerData[eventType] = [{
-		type:Consts.DataChangedType.Edit,
-		data:event
-	}]
+	if(event.finishTime > Date.now()){
+		playerData[eventType] = [{
+			type:Consts.DataChangedType.Edit,
+			data:event
+		}]
+	}
 	eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
 	return Promise.resolve()
 }
