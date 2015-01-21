@@ -10,6 +10,7 @@ var _ = require("underscore")
 var Consts = require("../consts/consts")
 var LogicUtils = require("./logicUtils")
 var DataUtils = require("./dataUtils")
+var MapUtils = require("../utils/mapUtils")
 var GameDatas = require("../datas/GameDatas")
 var Items = GameDatas.Items
 var Buildings = GameDatas.Buildings
@@ -214,23 +215,29 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
 		})
 		if(hasMarchEvent) return Promise.reject(new Error("玩家有部队正在行军中"))
-		var mapObject = LogicUtils.findAllianceMapObjectByLocation(allianceDoc, {x:locationX, y:locationY})
-		if(_.isObject(mapObject)) return Promise.reject(new Error("目标坐标不是空地"))
-
-		var memberDoc = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
-		mapObject = LogicUtils.findAllianceMapObjectByLocation(allianceDoc, memberDoc.location)
-		memberDoc.location = {
-			x:locationX,
-			y:locationY
+		var playerDocInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
+		var playerObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, playerDocInAlliance.location)
+		var mapObjects = allianceDoc.mapObjects
+		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
+		var oldRect = {
+			x:playerDocInAlliance.location.x,
+			y:playerDocInAlliance.location.y,
+			width:memberSizeInMap.width,
+			height:memberSizeInMap.height
 		}
-		allianceData.__members = [{
-			type:Consts.DataChangedType.Edit,
-			data:memberDoc
-		}]
-		mapObject.location = memberDoc.location
+
+		var newRect = {x:locationX, y:locationY, width:memberSizeInMap.width, height:memberSizeInMap.height}
+		var map = MapUtils.buildMap(mapObjects)
+		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(new Error("不能移动到目标点位"))
+		playerDocInAlliance.location = {x:newRect.x, y:newRect.y}
+		playerObjectInMap.location = {x:newRect.x, y:newRect.y}
 		allianceData.__mapObjects = [{
 			type:Consts.DataChangedType.Edit,
-			data:mapObject
+			data:playerObjectInMap
+		}]
+		allianceData.__members = [{
+			type:Consts.DataChangedType.Edit,
+			data:playerDocInAlliance
 		}]
 
 		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])

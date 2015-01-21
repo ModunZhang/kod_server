@@ -1470,20 +1470,6 @@ describe("PlayerService", function(){
 			})
 		})
 
-		it("editPlayerName 正常修改", function(done){
-			Api.editPlayerName("modun", function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("editPlayerCityName 正常修改", function(done){
-			Api.editPlayerCityName("modun's city", function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
 		it("getPlayerViewData 正常查看", function(done){
 			var m_userData = null
 			Api.loginPlayer(Config.deviceId2, function(doc){
@@ -1922,7 +1908,7 @@ describe("PlayerService", function(){
 			})
 		})
 
-		it("useItem ", function(done){
+		it("useItem speedup_3", function(done){
 			Api.loginPlayer(Config.deviceId, function(doc){
 				doc.code.should.equal(200)
 				Api.buyItem("speedup_3", 1, function(doc){
