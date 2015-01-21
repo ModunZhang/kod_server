@@ -1021,7 +1021,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 		if(_.isEqual("changePlayerName", itemName)){
 			return itemNameFunction(itemData, playerDoc, playerData, self.playerDao)
 		}else if(_.isEqual("retreatTroop", itemName)){
-			return itemNameFunction(itemData, playerDoc, playerData, self.allianceDao, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService)
+			return itemNameFunction(itemData, playerDoc, playerData, updateFuncs, self.allianceDao, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
 		}else if(_.isEqual("moveTheCity", itemName)){
 			return itemNameFunction(itemData, playerDoc, playerData, self.allianceDao, updateFuncs, pushFuncs, self.pushService)
 		}else if(_.isEqual("chest_2", itemName) || _.isEqual("chest_3", itemName) || _.isEqual("chest_4", itemName)){
@@ -1046,6 +1046,8 @@ pro.useItem = function(playerId, itemName, params, callback){
 			return itemNameFunction(itemData, playerDoc, playerData)
 		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
 			return Promise.reject(new Error("此道具不允许直接使用"))
+		}else if(_.isEqual("warSpeedupClass_1", itemName) || _.isEqual("warSpeedupClass_2", itemName)){
+			return itemNameFunction(itemData, playerDoc, playerData, updateFuncs, self.allianceDao, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
 		}else{
 			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService)
 		}

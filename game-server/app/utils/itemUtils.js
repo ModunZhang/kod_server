@@ -120,15 +120,15 @@ var ChangeCityName = function(playerDoc, playerData, newCityName){
  * @param playerData
  * @param eventType
  * @param eventId
- * @param allianceDao
  * @param updateFuncs
+ * @param allianceDao
  * @param eventFuncs
+ * @param timeEventService
  * @param pushFuncs
  * @param pushService
- * @param timeEventService
  * @returns {*}
  */
-var RetreatTroop = function(playerDoc, playerData, eventType, eventId, allianceDao, updateFuncs, eventFuncs, pushFuncs, pushService, timeEventService){
+var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
 	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
 	var allianceDoc = null
 	return allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
@@ -569,13 +569,65 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
 	event.startTime -= speedupTime
 	event.finishTime -= speedupTime
 	if(event.finishTime > Date.now()){
-		playerData[eventType] = [{
+		playerData["__" + eventType] = [{
 			type:Consts.DataChangedType.Edit,
 			data:event
 		}]
 	}
 	eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
 	return Promise.resolve()
+}
+
+/**
+ * 行军事件加速
+ * @param playerDoc
+ * @param playerData
+ * @param eventType
+ * @param eventId
+ * @param speedupPercent
+ * @param updateFuncs
+ * @param allianceDao
+ * @param eventFuncs
+ * @param timeEventService
+ * @param pushFuncs
+ * @param pushService
+ * @returns {*}
+ */
+var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
+	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
+	var allianceDoc = null
+	return allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		allianceDoc = doc
+		var allianceData = {}
+		var marchEvent = _.find(allianceDoc[eventType], function(marchEvent){
+			return _.isEqual(marchEvent.id, eventId)
+		})
+		if(!_.isObject(marchEvent)) return Promise.reject(new Error("行军事件不存在"))
+
+		var marchTimeLeft = marchEvent.arriveTime - Date.now()
+		var marchTimeSpeedup = Math.round(marchTimeLeft * speedupPercent)
+		marchEvent.startTime -= marchTimeSpeedup
+		marchEvent.arriveTime -= marchTimeSpeedup
+		allianceData["__" + eventType] = [{
+			type:Consts.DataChangedType.Edit,
+			data:marchEvent
+		}]
+		eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, marchEvent.id, marchEvent.arriveTime])
+
+		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, pushService)
+
+		return Promise.resolve()
+	}).catch(function(e){
+		if(_.isObject(allianceDoc)){
+			return allianceDao.removeLockByIdAsync(allianceDoc._id).then(function(){
+				return Promise.reject(e)
+			})
+		}
+		return Promise.reject(e)
+	})
 }
 
 /**
@@ -602,10 +654,10 @@ var ItemNameFunctionMap = {
 		var cityName = itemData.cityName
 		return ChangeCityName(playerDoc, playerData, cityName)
 	},
-	retreatTroop:function(itemData, playerDoc, playerData, allianceDao, updateFuncs, eventFuncs, pushFuncs, pushService, timeEventService){
+	retreatTroop:function(itemData, playerDoc, playerData, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
 		var eventType = itemData.eventType
 		var eventId = itemData.eventId
-		return RetreatTroop(playerDoc, playerData, eventType, eventId, allianceDao, updateFuncs, eventFuncs, pushFuncs, pushService, timeEventService)
+		return RetreatTroop(playerDoc, playerData, eventType, eventId, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService)
 	},
 	moveTheCity:function(itemData, playerDoc, playerData, allianceDao, updateFuncs, pushFuncs, pushService){
 		var locationX = itemData.locationX
@@ -1165,6 +1217,20 @@ var ItemNameFunctionMap = {
 		var eventType = itemData.eventType
 		var eventId = itemData.eventId
 		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+	},
+	warSpeedupClass_1:function(itemData, playerDoc, playerData, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
+		var itemConfig = Items.speedup.warSpeedupClass_1
+		var speedupPercent = itemConfig.effect
+		var eventType = itemData.eventType
+		var eventId = itemData.eventId
+		return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService)
+	},
+	warSpeedupClass_2:function(itemData, playerDoc, playerData, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
+		var itemConfig = Items.speedup.warSpeedupClass_2
+		var speedupPercent = itemConfig.effect
+		var eventType = itemData.eventType
+		var eventId = itemData.eventId
+		return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService)
 	}
 }
 
@@ -1245,6 +1311,13 @@ Utils.isParamsLegal = function(itemName, params){
 		eventType = itemData.eventType
 		eventId = itemData.eventId
 		if(!_.contains(_.values(Consts.SpeedUpEventTypes), eventType)) return false
+		return _.isString(eventId)
+	}
+	if(_.isEqual(itemName, "warSpeedupClass_1") || _.isEqual(itemName, "warSpeedupClass_2")){
+		if(!_.isObject(itemData)) return false
+		eventType = itemData.eventType
+		eventId = itemData.eventId
+		if(!_.contains(_.values(Consts.WarSpeedupEventTypes), eventType)) return false
 		return _.isString(eventId)
 	}
 	return true

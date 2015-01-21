@@ -1925,7 +1925,6 @@ describe("PlayerService", function(){
 		it("useItem ", function(done){
 			Api.loginPlayer(Config.deviceId, function(doc){
 				doc.code.should.equal(200)
-				console.log(m_user.productionTechEvents[0], "----------------------")
 				Api.buyItem("speedup_3", 1, function(doc){
 					doc.code.should.equal(200)
 					Api.useItem("speedup_3", {speedup_3:{

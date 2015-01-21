@@ -71,6 +71,12 @@ module.exports = {
 		productionTechEvents:"productionTechEvents",
 		militaryTechEvents:"militaryTechEvents"
 	},
+	WarSpeedupEventTypes:{
+		AttackMarchEvents:"attackMarchEvents",
+		AttackMarchReturnEvents:"attackMarchReturnEvents",
+		StrikeMarchEvents:"strikeMarchEvents",
+		StrikeMarchReturnEvents:"strikeMarchReturnEvents"
+	},
 	FightResult:{
 		AttackWin:"attackWin",
 		DefenceWin:"defenceWin"
