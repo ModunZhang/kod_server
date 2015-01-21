@@ -107,6 +107,9 @@ pro.login = function(msg, session, next){
 var BindPlayerSession = function(session, playerDoc, callback){
 	session.bind(playerDoc._id)
 	session.set("logicServerId", this.serverId)
+	session.set("name", playerDoc.basicInfo.name)
+	session.set("icon", playerDoc.basicInfo.icon)
+	session.set("vipExp", playerDoc.basicInfo.vipExp)
 	session.on("closed", PlayerLeave.bind(this))
 	session.pushAll(function(err){
 		process.nextTick(function(){

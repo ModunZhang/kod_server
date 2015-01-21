@@ -450,37 +450,33 @@ var pro = ChatHandler.prototype
  */
 pro.send = function(msg, session, next){
 	var self = this
+	var name = session.get("name")
+	var icon = session.get("icon")
+	var vipExp = session.get("vipExp")
 	var text = msg.text
-	var type = msg.type
+	var channel = msg.channel
+	var error = null
 	if(_.isEmpty(text) || _.isEmpty(text.trim())){
-		var e = new Error("聊天内容不能为空")
-		next(e, {code:500, message:e.message})
+		error = new Error("聊天内容不能为空")
+		next(error, {code:500, message:error.message})
+		return
 	}
-	if(_.isEmpty(type) || _.isEmpty(type.trim())){
-		var e = new Error("type 不能为空")
-		next(e, {code:500, message:e.message})
+	if(_.isEmpty(channel) || _.isEmpty(channel.trim())){
+		error = new Error("channel 不能为空")
+		next(error, {code:500, message:error.message})
+		return
 	}
 
 	var filterCommand = Promise.promisify(FilterCommand, this)
-	var playerDoc = null
-	this.playerDao.findByIdAsync(session.uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		playerDoc = doc
-		return self.playerDao.removeLockByIdAsync(playerDoc._id)
-	}).then(function(){
-		return filterCommand(playerDoc, text, session)
-	}).then(function(doc){
-		var time = Date.now()
+	filterCommand(text, session).then(function(){
 		var response = {
-			fromId:doc._id,
-			fromIcon:doc.basicInfo.icon,
-			fromName:doc.basicInfo.name,
-			fromVip:1,
-			fromType:type,
+			fromId:session.uid,
+			fromIcon:icon,
+			fromName:name,
+			fromVip:vipExp,
+			fromChannel:channel,
 			text:text,
-			time:time
+			time:Date.now()
 		}
 
 		if(self.chats.length > self.maxChatCount){
@@ -488,6 +484,7 @@ pro.send = function(msg, session, next){
 		}
 		self.chats.push(response)
 		self.globalChatChannel.pushMessage(Events.chat.onChat, response)
+		return Promise.resolve()
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
@@ -506,15 +503,21 @@ pro.getAll = function(msg, session, next){
 	next(null, {code:200})
 }
 
-var FilterCommand = function(playerDoc, chatText, session, callback){
+/**
+ * 过滤秘技
+ * @param chatText
+ * @param session
+ * @param callback
+ */
+var FilterCommand = function(chatText, session, callback){
 	if(_.isEqual("help", chatText)){
 		PushHelpMessageToPlayer.call(this, session)
-		callback(null, playerDoc)
+		callback(null)
 	}else{
 		var func = GetPlayerCommand.call(this, chatText)
 		if(_.isFunction(func)){
 			func.call(this, session, session.uid, chatText, function(e){
-				callback(e, playerDoc)
+				callback(e)
 			})
 		}else{
 			callback(null, playerDoc)
@@ -532,7 +535,7 @@ var PushHelpMessageToPlayer = function(session){
 		fromId:"system",
 		fromIcon:"playerIcon_default.png",
 		fromName:"系统",
-		fromVip:1,
+		fromVip:0,
 		fromType:"system",
 		text:commands,
 		time:Date.now()

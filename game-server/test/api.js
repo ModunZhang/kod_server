@@ -39,7 +39,7 @@ Api.loginPlayer = function(deviceId, callback){
 
 Api.sendChat = function(text, callback){
 	var info = {
-		text:text, type:"global"
+		text:text, channel:"global"
 	}
 	var route = "chat.chatHandler.send"
 	pomelo.request(route, info, callback)
