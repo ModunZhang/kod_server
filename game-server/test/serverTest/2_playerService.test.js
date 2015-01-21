@@ -1921,6 +1921,28 @@ describe("PlayerService", function(){
 				})
 			})
 		})
+
+		it("useItem ", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				console.log(m_user.productionTechEvents[0], "----------------------")
+				Api.buyItem("speedup_3", 1, function(doc){
+					doc.code.should.equal(200)
+					Api.useItem("speedup_3", {speedup_3:{
+						eventType:"productionTechEvents",
+						eventId:m_user.productionTechEvents[0].id
+					}}, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+			var onPlayerLoginSuccess = function(doc){
+				m_user = doc
+				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
+			}
+			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+		})
 	})
 
 

@@ -551,6 +551,12 @@ pro.onGetHelpDefenceMarchEventDetail = function(playerDoc, detail, callback){
 	this.pushToPlayer(playerDoc, Events.player.onGetHelpDefenceMarchEventDetail, detail, callback)
 }
 
+/**
+ * 查看协防部队详细信息
+ * @param playerDoc
+ * @param detail
+ * @param callback
+ */
 pro.onGetHelpDefenceTroopDetail = function(playerDoc, detail, callback){
 	this.pushToPlayer(playerDoc, Events.player.onGetHelpDefenceTroopDetail, detail, callback)
 }

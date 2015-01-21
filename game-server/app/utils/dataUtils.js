@@ -2804,7 +2804,7 @@ Utils.isItemNameExist = function(itemName){
 	keys = keys.concat(_.keys(Items.special))
 	keys = keys.concat(_.keys(Items.buff))
 	keys = keys.concat(_.keys(Items.resource))
-	keys = keys.concat(_.keys(Items.speedUp))
+	keys = keys.concat(_.keys(Items.speedup))
 	return _.contains(keys, itemName)
 }
 
@@ -2817,5 +2817,5 @@ Utils.getItemConfig = function(itemName){
 	return _.contains(_.keys(Items.special), itemName) ? Items.special[itemName]
 		:  _.contains(_.keys(Items.buff), itemName) ? Items.buff[itemName]
 		:  _.contains(_.keys(Items.resource), itemName) ? Items.resource[itemName]
-		: Items.speedUp[itemName]
+		: Items.speedup[itemName]
 }

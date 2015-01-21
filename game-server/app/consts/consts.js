@@ -56,6 +56,21 @@ module.exports = {
 		MilitaryTechEvents:"militaryTechEvents",
 		SoldierStarEvents:"soldierStarEvents"
 	},
+	SpeedUpEventTypes:{
+		aterialEvents:"materialEvents",
+		soldierEvents:"soldierEvents",
+		soldierStarEvents:"soldierStarEvents",
+		treatSoldierEvents:"treatSoldierEvents",
+		dragonEquipmentEvents:"dragonEquipmentEvents",
+		dragonEvents:"dragonEvents",
+		dragonDeathEvents:"dragonDeathEvents",
+		buildingEvents:"buildingEvents",
+		houseEvents:"houseEvents",
+		towerEvents:"towerEvents",
+		wallEvents:"wallEvents",
+		productionTechEvents:"productionTechEvents",
+		militaryTechEvents:"militaryTechEvents"
+	},
 	FightResult:{
 		AttackWin:"attackWin",
 		DefenceWin:"defenceWin"

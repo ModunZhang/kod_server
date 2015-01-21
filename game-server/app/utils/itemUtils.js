@@ -551,6 +551,30 @@ var Resource = function(playerDoc, playerData, itemConfig, resourceName){
 }
 
 /**
+ * 事件加速
+ * @param playerDoc
+ * @param playerData
+ * @param eventType
+ * @param eventId
+ * @param speedupTime
+ * @returns {*}
+ */
+var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService){
+	var event = _.find(playerDoc[eventType], function(event){
+		return _.isEqual(event.id, eventId)
+	})
+	if(!_.isObject(event)) return Promise.reject(new Error("所要加速的事件不存在"))
+	event.startTime -= speedupTime
+	event.finishTime -= speedupTime
+	playerData[eventType] = [{
+		type:Consts.DataChangedType.Edit,
+		data:event
+	}]
+	eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
+	return Promise.resolve()
+}
+
+/**
  * 道具和方法的映射
  */
 var ItemNameFunctionMap = {
@@ -1081,6 +1105,62 @@ var ItemNameFunctionMap = {
 	casinoTokenClass_4:function(itemData, playerDoc, playerData){
 		var itemConfig = Items.resource.casinoTokenClass_4
 		return Resource(playerDoc, playerData, itemConfig, "casinoToken")
+	},
+	speedup_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.speedup.speedup_1
+		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+		var eventType = itemData.eventType
+		var eventId = itemData.eventId
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+	},
+	speedup_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.speedup.speedup_2
+		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+		var eventType = itemData.eventType
+		var eventId = itemData.eventId
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+	},
+	speedup_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.speedup.speedup_3
+		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+		var eventType = itemData.eventType
+		var eventId = itemData.eventId
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+	},
+	speedup_4:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.speedup.speedup_4
+		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+		var eventType = itemData.eventType
+		var eventId = itemData.eventId
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+	},
+	speedup_5:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.speedup.speedup_5
+		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+		var eventType = itemData.eventType
+		var eventId = itemData.eventId
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+	},
+	speedup_6:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.speedup.speedup_6
+		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+		var eventType = itemData.eventType
+		var eventId = itemData.eventId
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+	},
+	speedup_7:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.speedup.speedup_7
+		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+		var eventType = itemData.eventType
+		var eventId = itemData.eventId
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+	},
+	speedup_8:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.speedup.speedup_8
+		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+		var eventType = itemData.eventType
+		var eventId = itemData.eventId
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
 	}
 }
 
@@ -1151,6 +1231,17 @@ Utils.isParamsLegal = function(itemName, params){
 		if(!_.isObject(itemData)) return false
 		dragonType = itemData.dragonType
 		return DataUtils.isDragonTypeExist(dragonType)
+	}
+	if(_.isEqual(itemName, "speedup_1") || _.isEqual(itemName, "speedup_2") || _.isEqual(itemName, "speedup_3")
+		|| _.isEqual(itemName, "speedup_4") || _.isEqual(itemName, "speedup_5") || _.isEqual(itemName, "speedup_6")
+		|| _.isEqual(itemName, "speedup_7") || _.isEqual(itemName, "speedup_8")
+	)
+	{
+		if(!_.isObject(itemData)) return false
+		eventType = itemData.eventType
+		eventId = itemData.eventId
+		if(!_.contains(_.values(Consts.SpeedUpEventTypes), eventType)) return false
+		return _.isString(eventId)
 	}
 	return true
 }
