@@ -490,6 +490,16 @@ Api.useItem = function(itemName, params, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.setPveData = function(pveData, fightData, rewards, callback){
+	var info = {
+		pveData:pveData,
+		fightData:fightData,
+		rewards:rewards
+	}
+	var route = "logic.playerHandler.setPveData"
+	pomelo.request(route, info, callback)
+}
+
 
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){

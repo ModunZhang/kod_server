@@ -17,6 +17,7 @@ var Handler = function(app){
 	this.playerApiService2 = app.get("playerApiService2")
 	this.playerApiService3 = app.get("playerApiService3")
 	this.playerApiService4 = app.get("playerApiService4")
+	this.playerApiService5 = app.get("playerApiService5")
 }
 var pro = Handler.prototype
 
@@ -878,6 +879,23 @@ pro.useItem = function(msg, session, next){
 	var itemName = msg.itemName
 	var params = msg.params
 	this.playerApiService4.useItemAsync(session.uid, itemName, params).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 上传玩家PVE数据
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.setPveData = function(msg, session, next){
+	var pveData = msg.pveData
+	var fightData = msg.fightData
+	var rewards = msg.rewards
+	this.playerApiService5.setPveDataAsync(session.uid, pveData, fightData, rewards).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

@@ -539,6 +539,8 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			playerData.productionTechs[techName] = playerDoc.productionTechs[techName]
 		}else{
 			if(_.isObject(preTechEvent)){
+				preTechEvent.startTime -= preTechEvent.finishTime - Date.now()
+				preTechEvent.finishTime = Date.now()
 				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, Date.now()])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
@@ -666,6 +668,8 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			playerData.militaryTechs[techName] = playerDoc.militaryTechs[techName]
 		}else{
 			if(_.isObject(preTechEvent)){
+				preTechEvent.startTime -= preTechEvent.finishTime - Date.now()
+				preTechEvent.finishTime = Date.now()
 				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, Date.now()])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)

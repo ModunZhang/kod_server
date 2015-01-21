@@ -1701,12 +1701,14 @@ describe("PlayerService", function(){
 		it("useItem movingConstruction", function(done){
 			Api.buyItem("movingConstruction", 1, function(doc){
 				doc.code.should.equal(200)
-				Api.useItem("movingConstruction", {movingConstruction:{
-					fromBuildingLocation:3,
-					fromHouseLocation:1,
-					toBuildingLocation:5,
-					toHouseLocation:2
-				}}, function(doc){
+				Api.useItem("movingConstruction", {
+					movingConstruction:{
+						fromBuildingLocation:3,
+						fromHouseLocation:1,
+						toBuildingLocation:5,
+						toHouseLocation:2
+					}
+				}, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
@@ -1716,10 +1718,12 @@ describe("PlayerService", function(){
 		it("useItem torch", function(done){
 			Api.buyItem("torch", 1, function(doc){
 				doc.code.should.equal(200)
-				Api.useItem("torch", {torch:{
-					buildingLocation:5,
-					houseLocation:2
-				}}, function(doc){
+				Api.useItem("torch", {
+					torch:{
+						buildingLocation:5,
+						houseLocation:2
+					}
+				}, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
@@ -1729,9 +1733,11 @@ describe("PlayerService", function(){
 		it("useItem changePlayerName", function(done){
 			Api.buyItem("changePlayerName", 1, function(doc){
 				doc.code.should.equal(200)
-				Api.useItem("changePlayerName", {changePlayerName:{
-					playerName:"modunzhang"
-				}}, function(doc){
+				Api.useItem("changePlayerName", {
+					changePlayerName:{
+						playerName:"modunzhang"
+					}
+				}, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
@@ -1741,9 +1747,11 @@ describe("PlayerService", function(){
 		it("useItem changeCityName", function(done){
 			Api.buyItem("changeCityName", 1, function(doc){
 				doc.code.should.equal(200)
-				Api.useItem("changeCityName", {changeCityName:{
-					cityName:"modunzhang"
-				}}, function(doc){
+				Api.useItem("changeCityName", {
+					changeCityName:{
+						cityName:"modunzhang"
+					}
+				}, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
@@ -1753,9 +1761,11 @@ describe("PlayerService", function(){
 		it("useItem dragonExp_2", function(done){
 			Api.buyItem("dragonExp_2", 1, function(doc){
 				doc.code.should.equal(200)
-				Api.useItem("dragonExp_2", {dragonExp_2:{
-					dragonType:"redDragon"
-				}}, function(doc){
+				Api.useItem("dragonExp_2", {
+					dragonExp_2:{
+						dragonType:"redDragon"
+					}
+				}, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
@@ -1765,9 +1775,11 @@ describe("PlayerService", function(){
 		it("useItem dragonHp_2", function(done){
 			Api.buyItem("dragonHp_2", 1, function(doc){
 				doc.code.should.equal(200)
-				Api.useItem("dragonHp_2", {dragonHp_2:{
-					dragonType:"redDragon"
-				}}, function(doc){
+				Api.useItem("dragonHp_2", {
+					dragonHp_2:{
+						dragonType:"redDragon"
+					}
+				}, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
@@ -1913,10 +1925,12 @@ describe("PlayerService", function(){
 				doc.code.should.equal(200)
 				Api.buyItem("speedup_3", 1, function(doc){
 					doc.code.should.equal(200)
-					Api.useItem("speedup_3", {speedup_3:{
-						eventType:"productionTechEvents",
-						eventId:m_user.productionTechEvents[0].id
-					}}, function(doc){
+					Api.useItem("speedup_3", {
+						speedup_3:{
+							eventType:"productionTechEvents",
+							eventId:m_user.productionTechEvents[0].id
+						}
+					}, function(doc){
 						doc.code.should.equal(200)
 						done()
 					})
@@ -1927,6 +1941,44 @@ describe("PlayerService", function(){
 				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
 			}
 			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
+		})
+
+		it("setPveData 正常设置", function(done){
+			Api.setPveData(
+				{
+					staminaUsed:5,
+					location:{
+						x:1,
+						y:1,
+						z:1
+					},
+					floor:{
+						level:1,
+						fogs:"asdfasdfasf",
+						objects:"asdfasdfasfd"
+					}
+				},
+				{
+					dragon:{
+						type:"redDragon",
+						hpDecreased:12,
+						expAdd:12
+					},
+					soldiers:[{
+						name:"swordsman",
+						damagedCount:10,
+						woundedCount:5
+					}]
+				},
+				[{
+					type:"resources",
+					name:"wood",
+					count:12
+				}],
+				function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
 		})
 	})
 

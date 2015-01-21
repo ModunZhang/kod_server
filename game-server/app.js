@@ -13,7 +13,8 @@ var NodeUtils = require("util")
 
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
-var loginFilter = require("./app/utils/loginFilter")
+var LoginFilter = require("./app/utils/loginFilter")
+var ReplayFilter = require("./app/utils/replayFilter")
 var commandDir = path.resolve("./app/commands")
 var app = pomelo.createApp()
 app.set("name", "KODServer")
@@ -80,8 +81,9 @@ app.configure("production|development", "logic", function(){
 		failMode:"failfast"
 	})
 
+	app.before(ReplayFilter())
+	app.before(LoginFilter())
 	app.filter(pomelo.filters.serial())
-	app.before(loginFilter())
 
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
@@ -112,8 +114,9 @@ app.configure("production|development", "chat", function(){
 		failMode:"failfast"
 	})
 
+	app.before(ReplayFilter())
+	app.before(LoginFilter())
 	app.filter(pomelo.filters.serial())
-	app.before(loginFilter())
 
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
@@ -136,8 +139,6 @@ app.configure("production|development", "event", function(){
 		bufferMsg:false,
 		failMode:"failfast"
 	})
-
-	app.filter(pomelo.filters.serial())
 
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
