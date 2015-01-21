@@ -137,10 +137,8 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 			title:Consts.AllianceTitle.Archon,
 			titleName:allianceDoc.titles.archon
 		}
-		playerDoc.basicInfo.terrain = allianceDoc.basicInfo.terrain
 		var playerData = {}
 		playerData.alliance = playerDoc.alliance
-		playerData.basicInfo = playerDoc.basicInfo
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
