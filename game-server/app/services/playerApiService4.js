@@ -751,7 +751,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
-		var upgradeRequired = DataUtils.getSoldierStarUpgradeRequired(soldierName, playerDoc.soldierStars[soldierName])
+		var upgradeRequired = DataUtils.getSoldierStarUpgradeRequired(soldierName, playerDoc.soldierStars[soldierName] + 1)
 		var buyedResources = null
 		var preTechEvent = null
 		var playerData = {}
