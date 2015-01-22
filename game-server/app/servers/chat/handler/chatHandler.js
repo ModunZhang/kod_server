@@ -512,7 +512,7 @@ pro.getAll = function(msg, session, next){
 var FilterCommand = function(chatText, session, callback){
 	if(_.isEqual("help", chatText)){
 		PushHelpMessageToPlayer.call(this, session)
-		callback(null)
+		callback()
 	}else{
 		var func = GetPlayerCommand.call(this, chatText)
 		if(_.isFunction(func)){
@@ -520,7 +520,7 @@ var FilterCommand = function(chatText, session, callback){
 				callback(e)
 			})
 		}else{
-			callback(null, playerDoc)
+			callback()
 		}
 	}
 }
