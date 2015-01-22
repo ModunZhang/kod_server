@@ -10,7 +10,9 @@ special["movingConstruction"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["torch"] = {
 	name:"torch",
@@ -19,7 +21,9 @@ special["torch"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:true
 }
 special["changePlayerName"] = {
 	name:"changePlayerName",
@@ -28,7 +32,9 @@ special["changePlayerName"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["changeCityName"] = {
 	name:"changeCityName",
@@ -37,7 +43,9 @@ special["changeCityName"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["retreatTroop"] = {
 	name:"retreatTroop",
@@ -46,7 +54,9 @@ special["retreatTroop"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["moveTheCity"] = {
 	name:"moveTheCity",
@@ -55,7 +65,9 @@ special["moveTheCity"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:true
 }
 special["dragonExp_1"] = {
 	name:"dragonExp_1",
@@ -64,7 +76,9 @@ special["dragonExp_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["dragonExp_2"] = {
 	name:"dragonExp_2",
@@ -73,7 +87,9 @@ special["dragonExp_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["dragonExp_3"] = {
 	name:"dragonExp_3",
@@ -82,7 +98,9 @@ special["dragonExp_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["dragonHp_1"] = {
 	name:"dragonHp_1",
@@ -91,7 +109,9 @@ special["dragonHp_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["dragonHp_2"] = {
 	name:"dragonHp_2",
@@ -100,7 +120,9 @@ special["dragonHp_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["dragonHp_3"] = {
 	name:"dragonHp_3",
@@ -109,7 +131,9 @@ special["dragonHp_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["heroBlood_1"] = {
 	name:"heroBlood_1",
@@ -118,7 +142,9 @@ special["heroBlood_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["heroBlood_2"] = {
 	name:"heroBlood_2",
@@ -127,7 +153,9 @@ special["heroBlood_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["heroBlood_3"] = {
 	name:"heroBlood_3",
@@ -136,7 +164,9 @@ special["heroBlood_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["stamina_1"] = {
 	name:"stamina_1",
@@ -145,7 +175,9 @@ special["stamina_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["stamina_2"] = {
 	name:"stamina_2",
@@ -154,7 +186,9 @@ special["stamina_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["stamina_3"] = {
 	name:"stamina_3",
@@ -163,7 +197,9 @@ special["stamina_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["restoreWall_1"] = {
 	name:"restoreWall_1",
@@ -172,7 +208,9 @@ special["restoreWall_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["restoreWall_2"] = {
 	name:"restoreWall_2",
@@ -181,7 +219,9 @@ special["restoreWall_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["restoreWall_3"] = {
 	name:"restoreWall_3",
@@ -190,7 +230,9 @@ special["restoreWall_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["dragonChest_1"] = {
 	name:"dragonChest_1",
@@ -199,7 +241,9 @@ special["dragonChest_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["dragonChest_2"] = {
 	name:"dragonChest_2",
@@ -208,7 +252,9 @@ special["dragonChest_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["dragonChest_3"] = {
 	name:"dragonChest_3",
@@ -217,7 +263,9 @@ special["dragonChest_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:true
 }
 special["chest_1"] = {
 	name:"chest_1",
@@ -226,7 +274,9 @@ special["chest_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["chest_2"] = {
 	name:"chest_2",
@@ -235,7 +285,9 @@ special["chest_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["chest_3"] = {
 	name:"chest_3",
@@ -244,7 +296,9 @@ special["chest_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["chest_4"] = {
 	name:"chest_4",
@@ -253,7 +307,9 @@ special["chest_4"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["chestKey_2"] = {
 	name:"chestKey_2",
@@ -262,7 +318,9 @@ special["chestKey_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["chestKey_3"] = {
 	name:"chestKey_3",
@@ -271,7 +329,9 @@ special["chestKey_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["chestKey_4"] = {
 	name:"chestKey_4",
@@ -280,7 +340,9 @@ special["chestKey_4"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["vipActive_1"] = {
 	name:"vipActive_1",
@@ -289,7 +351,9 @@ special["vipActive_1"] = {
 	isSell:false,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["vipActive_2"] = {
 	name:"vipActive_2",
@@ -298,7 +362,9 @@ special["vipActive_2"] = {
 	isSell:false,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["vipActive_3"] = {
 	name:"vipActive_3",
@@ -307,7 +373,9 @@ special["vipActive_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:true
 }
 special["vipActive_4"] = {
 	name:"vipActive_4",
@@ -316,7 +384,9 @@ special["vipActive_4"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["vipActive_5"] = {
 	name:"vipActive_5",
@@ -325,7 +395,9 @@ special["vipActive_5"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["vipPoint_1"] = {
 	name:"vipPoint_1",
@@ -334,7 +406,9 @@ special["vipPoint_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["vipPoint_2"] = {
 	name:"vipPoint_2",
@@ -343,7 +417,9 @@ special["vipPoint_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:true
 }
 special["vipPoint_3"] = {
 	name:"vipPoint_3",
@@ -352,7 +428,9 @@ special["vipPoint_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 special["vipPoint_4"] = {
 	name:"vipPoint_4",
@@ -361,5 +439,7 @@ special["vipPoint_4"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }

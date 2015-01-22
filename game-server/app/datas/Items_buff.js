@@ -11,7 +11,9 @@ buff["masterOfDefender_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["masterOfDefender_2"] = {
 	name:"masterOfDefender_2",
@@ -21,7 +23,9 @@ buff["masterOfDefender_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["masterOfDefender_3"] = {
 	name:"masterOfDefender_3",
@@ -31,7 +35,9 @@ buff["masterOfDefender_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["quarterMaster_1"] = {
 	name:"quarterMaster_1",
@@ -41,7 +47,9 @@ buff["quarterMaster_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["quarterMaster_2"] = {
 	name:"quarterMaster_2",
@@ -51,7 +59,9 @@ buff["quarterMaster_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["quarterMaster_3"] = {
 	name:"quarterMaster_3",
@@ -61,7 +71,9 @@ buff["quarterMaster_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["fogOfTrick_1"] = {
 	name:"fogOfTrick_1",
@@ -71,7 +83,9 @@ buff["fogOfTrick_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["fogOfTrick_2"] = {
 	name:"fogOfTrick_2",
@@ -81,7 +95,9 @@ buff["fogOfTrick_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["fogOfTrick_3"] = {
 	name:"fogOfTrick_3",
@@ -91,7 +107,9 @@ buff["fogOfTrick_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["woodBonus_1"] = {
 	name:"woodBonus_1",
@@ -101,7 +119,9 @@ buff["woodBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["woodBonus_2"] = {
 	name:"woodBonus_2",
@@ -111,7 +131,9 @@ buff["woodBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["woodBonus_3"] = {
 	name:"woodBonus_3",
@@ -121,7 +143,9 @@ buff["woodBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["stoneBonus_1"] = {
 	name:"stoneBonus_1",
@@ -131,7 +155,9 @@ buff["stoneBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["stoneBonus_2"] = {
 	name:"stoneBonus_2",
@@ -141,7 +167,9 @@ buff["stoneBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["stoneBonus_3"] = {
 	name:"stoneBonus_3",
@@ -151,7 +179,9 @@ buff["stoneBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["ironBonus_1"] = {
 	name:"ironBonus_1",
@@ -161,7 +191,9 @@ buff["ironBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["ironBonus_2"] = {
 	name:"ironBonus_2",
@@ -171,7 +203,9 @@ buff["ironBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["ironBonus_3"] = {
 	name:"ironBonus_3",
@@ -181,7 +215,9 @@ buff["ironBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["foodBonus_1"] = {
 	name:"foodBonus_1",
@@ -191,7 +227,9 @@ buff["foodBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["foodBonus_2"] = {
 	name:"foodBonus_2",
@@ -201,7 +239,9 @@ buff["foodBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["foodBonus_3"] = {
 	name:"foodBonus_3",
@@ -211,7 +251,9 @@ buff["foodBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["taxesBonus_1"] = {
 	name:"taxesBonus_1",
@@ -221,7 +263,9 @@ buff["taxesBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["taxesBonus_2"] = {
 	name:"taxesBonus_2",
@@ -231,7 +275,9 @@ buff["taxesBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["taxesBonus_3"] = {
 	name:"taxesBonus_3",
@@ -241,7 +287,9 @@ buff["taxesBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["citizenBonus_1"] = {
 	name:"citizenBonus_1",
@@ -251,7 +299,9 @@ buff["citizenBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["citizenBonus_2"] = {
 	name:"citizenBonus_2",
@@ -261,7 +311,9 @@ buff["citizenBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["citizenBonus_3"] = {
 	name:"citizenBonus_3",
@@ -271,7 +323,9 @@ buff["citizenBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["dragonExpBonus_1"] = {
 	name:"dragonExpBonus_1",
@@ -281,7 +335,9 @@ buff["dragonExpBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["dragonExpBonus_2"] = {
 	name:"dragonExpBonus_2",
@@ -291,7 +347,9 @@ buff["dragonExpBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["dragonExpBonus_3"] = {
 	name:"dragonExpBonus_3",
@@ -301,7 +359,9 @@ buff["dragonExpBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["troopSizeBonus_1"] = {
 	name:"troopSizeBonus_1",
@@ -311,7 +371,9 @@ buff["troopSizeBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["troopSizeBonus_2"] = {
 	name:"troopSizeBonus_2",
@@ -321,7 +383,9 @@ buff["troopSizeBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["troopSizeBonus_3"] = {
 	name:"troopSizeBonus_3",
@@ -331,7 +395,9 @@ buff["troopSizeBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["dragonHpBonus_1"] = {
 	name:"dragonHpBonus_1",
@@ -341,7 +407,9 @@ buff["dragonHpBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["dragonHpBonus_2"] = {
 	name:"dragonHpBonus_2",
@@ -351,7 +419,9 @@ buff["dragonHpBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["dragonHpBonus_3"] = {
 	name:"dragonHpBonus_3",
@@ -361,7 +431,9 @@ buff["dragonHpBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["marchSpeedBonus_1"] = {
 	name:"marchSpeedBonus_1",
@@ -371,7 +443,9 @@ buff["marchSpeedBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["marchSpeedBonus_2"] = {
 	name:"marchSpeedBonus_2",
@@ -381,7 +455,9 @@ buff["marchSpeedBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["marchSpeedBonus_3"] = {
 	name:"marchSpeedBonus_3",
@@ -391,7 +467,9 @@ buff["marchSpeedBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["unitHpBonus_1"] = {
 	name:"unitHpBonus_1",
@@ -401,7 +479,9 @@ buff["unitHpBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["unitHpBonus_2"] = {
 	name:"unitHpBonus_2",
@@ -411,7 +491,9 @@ buff["unitHpBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["unitHpBonus_3"] = {
 	name:"unitHpBonus_3",
@@ -421,7 +503,9 @@ buff["unitHpBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["infantryAtkBonus_1"] = {
 	name:"infantryAtkBonus_1",
@@ -431,7 +515,9 @@ buff["infantryAtkBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["infantryAtkBonus_2"] = {
 	name:"infantryAtkBonus_2",
@@ -441,7 +527,9 @@ buff["infantryAtkBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["infantryAtkBonus_3"] = {
 	name:"infantryAtkBonus_3",
@@ -451,7 +539,9 @@ buff["infantryAtkBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["archerAtkBonus_1"] = {
 	name:"archerAtkBonus_1",
@@ -461,7 +551,9 @@ buff["archerAtkBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["archerAtkBonus_2"] = {
 	name:"archerAtkBonus_2",
@@ -471,7 +563,9 @@ buff["archerAtkBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["archerAtkBonus_3"] = {
 	name:"archerAtkBonus_3",
@@ -481,7 +575,9 @@ buff["archerAtkBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["cavalryAtkBonus_1"] = {
 	name:"cavalryAtkBonus_1",
@@ -491,7 +587,9 @@ buff["cavalryAtkBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["cavalryAtkBonus_2"] = {
 	name:"cavalryAtkBonus_2",
@@ -501,7 +599,9 @@ buff["cavalryAtkBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["cavalryAtkBonus_3"] = {
 	name:"cavalryAtkBonus_3",
@@ -511,7 +611,9 @@ buff["cavalryAtkBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["siegeAtkBonus_1"] = {
 	name:"siegeAtkBonus_1",
@@ -521,7 +623,9 @@ buff["siegeAtkBonus_1"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:true,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["siegeAtkBonus_2"] = {
 	name:"siegeAtkBonus_2",
@@ -531,7 +635,9 @@ buff["siegeAtkBonus_2"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }
 buff["siegeAtkBonus_3"] = {
 	name:"siegeAtkBonus_3",
@@ -541,5 +647,7 @@ buff["siegeAtkBonus_3"] = {
 	isSell:true,
 	price:10,
 	isSellInAlliance:false,
-	priceInAlliance:200
+	sellPriceInAlliance:200,
+	buyPriceInAlliance:200,
+	isAdvancedItem:false
 }

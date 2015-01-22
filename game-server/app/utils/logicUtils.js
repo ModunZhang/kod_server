@@ -2347,3 +2347,28 @@ Utils.addPlayerItem = function(playerDoc, name, count){
 
 	return {item:item, newlyCreated:newlyCreated}
 }
+
+/**
+ * 为联盟添加道具
+ * @param allianceDoc
+ * @param name
+ * @param count
+ * @returns {{item: *, newlyCreated: boolean}}
+ */
+Utils.addAllianceItem = function(allianceDoc, name, count){
+	var newlyCreated = false
+	var item = _.find(allianceDoc.items, function(item){
+		return _.isEqual(item.name, name)
+	})
+	if(!_.isObject(item)){
+		item = {
+			name:name,
+			count:0
+		}
+		allianceDoc.items.push(item)
+		newlyCreated = true
+	}
+	item.count += count
+
+	return {item:item, newlyCreated:newlyCreated}
+}

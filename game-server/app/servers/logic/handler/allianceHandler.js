@@ -791,3 +791,35 @@ pro.getHelpDefenceTroopDetail = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 联盟商店补充道具
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.addItem = function(msg, session, next){
+	var itemName = msg.itemName
+	var count = msg.count
+	this.allianceApiService5.addItemAsync(session.uid, itemName, count).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 购买联盟商店的道具
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.buyItem = function(msg, session, next){
+	var itemName = msg.itemName
+	var count = msg.count
+	this.allianceApiService5.buyItemAsync(session.uid, itemName, count).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
