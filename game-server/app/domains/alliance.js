@@ -654,6 +654,11 @@ var allianceSchema = new Schema({
 				tag:{type:String, required:true}
 			}
 		}
+	}],
+	items:[{
+		_id:false,
+		name:{type:String, required:true},
+		count:{type:Number, required:true}
 	}]
 })
 

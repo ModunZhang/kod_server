@@ -536,7 +536,7 @@ var PushHelpMessageToPlayer = function(session){
 		fromIcon:"playerIcon_default.png",
 		fromName:"系统",
 		fromVip:0,
-		fromType:"system",
+		fromChannel:"system",
 		text:commands,
 		time:Date.now()
 	}

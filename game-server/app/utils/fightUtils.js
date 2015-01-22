@@ -131,15 +131,22 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
 	attackDragon = CommonUtils.clone(attackDragon)
 	defenceDragon = CommonUtils.clone(defenceDragon)
 
-	var attackDragonPower = attackDragon.strength * attackDragon.vitality
-	var defenceDragonPower = defenceDragon.strength * defenceDragon.vitality
+	var attackDragonPower = attackDragon.strength
+	var defenceDragonPower = defenceDragon.strength
 	if(effect >= 0){
 		defenceDragonPower -= defenceDragonPower * effect
 	}else{
 		attackDragonPower -= attackDragonPower * (-effect)
 	}
-	var attackDragonHpDecreased = Math.round(defenceDragonPower * 0.02)
-	var defenceDragonHpDecreased = Math.round(attackDragonPower * 0.02)
+	var attackDragonHpDecreased = null
+	var defenceDragonHpDecreased = null
+	if(attackDragonPower >= defenceDragonPower){
+		attackDragonHpDecreased = Math.floor(defenceDragonPower * 0.5)
+		defenceDragonHpDecreased = Math.floor(Math.pow(attackDragonPower * defenceDragonPower, 2) * 0.5)
+	}else{
+		attackDragonHpDecreased = Math.floor(Math.pow(attackDragonPower * defenceDragonPower, 2) * 0.5)
+		defenceDragonHpDecreased = Math.floor(attackDragonPower * 0.5)
+	}
 	attackDragon.currentHp = attackDragonHpDecreased > attackDragon.currentHp ? 0 : attackDragon.currentHp - attackDragonHpDecreased
 	defenceDragon.currentHp = defenceDragonHpDecreased > defenceDragon.currentHp ? 0 : defenceDragon.currentHp - defenceDragonHpDecreased
 	attackDragon.isWin = attackDragonPower >= defenceDragonPower
