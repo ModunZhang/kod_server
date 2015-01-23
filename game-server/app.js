@@ -179,14 +179,6 @@ app.configure("production|development", "time", function(){
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
 
-	//redisClient.monitor(function (err, res) {
-	//	console.log("Entering monitoring mode.")
-	//})
-	//
-	//redisClient.on("monitor", function (time, args) {
-	//	console.log(time + ": " + NodeUtils.inspect(args))
-	//})
-
 	redisClient.debug_mode = true
 })
 

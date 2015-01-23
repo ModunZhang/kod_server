@@ -114,7 +114,6 @@ var ChangeCityName = function(playerDoc, playerData, newCityName){
 	return Promise.resolve()
 }
 
-
 /**
  * 撤销行军事件
  * @param playerDoc

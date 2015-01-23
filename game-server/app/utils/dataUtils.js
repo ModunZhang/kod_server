@@ -36,6 +36,7 @@ var ProductionTechLevelUp = GameDatas.ProductionTechLevelUp
 var MilitaryTechs = GameDatas.MilitaryTechs
 var MilitaryTechLevelUp = GameDatas.MilitaryTechLevelUp
 var Items = GameDatas.Items
+var KillDropItems = GameDatas.KillDropItems
 
 
 var Utils = module.exports
@@ -2344,7 +2345,7 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
 	var config = BuildingFunction.dragonEyrie[playerDoc.buildings.location_4.level]
 	var dragons = arguments.length > 1 ? [dragon] : playerDoc.dragons
 	_.each(dragons, function(dragon){
-		if(dragon.hp >0 && dragon.level > 0 && _.isEqual(dragon.status, Consts.DragonStatus.Free)){
+		if(dragon.hp > 0 && dragon.level > 0 && _.isEqual(dragon.status, Consts.DragonStatus.Free)){
 			var dragonMaxHp = self.getPlayerDragonHpMax(playerDoc, dragon)
 			if(dragon.hp < dragonMaxHp){
 				var totalMilSeconds = Date.now() - dragon.hpRefreshTime
@@ -2547,7 +2548,7 @@ Utils.getDragonExpAdd = function(kill){
  */
 Utils.getCollectResourceExpAdd = function(name, count){
 	name = name.charAt(0).toUpperCase() + name.slice(1)
-	var resourceCountPerExp = AllianceInit.intInit["collected" + name +"CountPerExp"].value
+	var resourceCountPerExp = AllianceInit.intInit["collected" + name + "CountPerExp"].value
 	var exp = Math.floor(count / resourceCountPerExp)
 	return exp
 }
@@ -2574,7 +2575,7 @@ Utils.createPlayerHatchDragonEvent = function(playerDoc, dragon){
  * @returns {Array}
  */
 Utils.createDailyQuests = function(){
-	var style =1 + (Math.random() * 3) << 0
+	var style = 1 + (Math.random() * 3) << 0
 	var styleConfig = DailyQuests.dailyQuestStyle[style]
 	var questsConfig = DailyQuests.dailyQuests
 	var quests = []
@@ -2584,8 +2585,8 @@ Utils.createDailyQuests = function(){
 	var star4Count = styleConfig.star_4
 	var star5Count = styleConfig.star_5
 	var starCounts = [star1Count, star2Count, star3Count, star4Count, star5Count]
-	for(var i = 0;i < starCounts.length;i ++){
-		for(var j = 0;j < starCounts[i]; j ++){
+	for(var i = 0; i < starCounts.length; i++){
+		for(var j = 0; j < starCounts[i]; j++){
 			var questIndex = (Math.random() * questsConfig.length) >> 0
 			var quest = {
 				id:ShortId.generate(),
@@ -2814,8 +2815,8 @@ Utils.isItemNameExist = function(itemName){
  */
 Utils.getItemConfig = function(itemName){
 	return _.contains(_.keys(Items.special), itemName) ? Items.special[itemName]
-		:  _.contains(_.keys(Items.buff), itemName) ? Items.buff[itemName]
-		:  _.contains(_.keys(Items.resource), itemName) ? Items.resource[itemName]
+		: _.contains(_.keys(Items.buff), itemName) ? Items.buff[itemName]
+		: _.contains(_.keys(Items.resource), itemName) ? Items.resource[itemName]
 		: Items.speedup[itemName]
 }
 
@@ -2834,4 +2835,66 @@ Utils.createPlayerDragonDeathEvent = function(playerDoc, dragon){
 		finishTime:Date.now() + reviveTime
 	}
 	return event
+}
+
+/**
+ * 根据击杀和地形获取奖励
+ * @param killScore
+ * @param terrain
+ * @returns {Array}
+ */
+Utils.getRewardsByKillScoreAndTerrain = function(killScore, terrain){
+	var ParseConfig = function(config){
+		var objects = []
+		var configArray_1 = config.split(",")
+		_.each(configArray_1, function(config_1){
+			var configArray_2 = config_1.split(":")
+			var object = {
+				type:configArray_2[0],
+				name:configArray_2[1],
+				count:parseInt(configArray_2[2]),
+				weight:parseInt(configArray_2[3])
+			}
+			objects.push(object)
+		})
+		return objects
+	}
+	var SortFunc = function(objects){
+		var totalWeight = 0
+		_.each(objects, function(object){
+			totalWeight += object.weight + 1
+		})
+
+		_.each(objects, function(object){
+			var weight = object.weight + 1 + (Math.random() * totalWeight << 0)
+			object.weight = weight
+		})
+
+		return _.sortBy(objects, function(object){
+			return -object.weight
+		})
+	}
+
+	var config = null
+	for(var i = KillDropItems[terrain].length - 1; i >= 1; i--){
+		var theConfig = KillDropItems[terrain][i]
+		if(killScore >= theConfig.killScoreMin){
+			config = theConfig
+			break
+		}
+	}
+
+	if(!_.isObject(config)) return []
+
+	var rewards = []
+	var items = ParseConfig(config.rewards)
+	items = SortFunc(items)
+	var item = items[0]
+	rewards.push({
+		type:item.type,
+		name:item.name,
+		count:item.count
+	})
+
+	return rewards
 }
