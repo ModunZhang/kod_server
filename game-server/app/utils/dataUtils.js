@@ -1281,13 +1281,12 @@ Utils.getDragonSkillMaxLevel = function(skill){
  * @param equipments
  */
 Utils.enhancePlayerDragonEquipment = function(playerDoc, playerData, dragon, category, equipments){
-	var dragon = playerDoc.dragons[dragonType]
 	var equipmentInDragon = dragon.equipments[category]
 	var config = DragonEquipments.equipments[equipmentInDragon.name]
 	var maxStar = config.maxStar
 	var currentStar = equipmentInDragon.star
 	var currentExp = Number(equipmentInDragon.exp)
-	var totalExp = this.getDragonEquipmentsExp(dragonType, equipmentInDragon, equipments)
+	var totalExp = this.getDragonEquipmentsExp(dragon.type, equipmentInDragon, equipments)
 	while(totalExp > 0 && currentStar < maxStar){
 		var nextStar = currentStar + 1
 		var categoryConfig = DragonEquipments[category][maxStar + "_" + nextStar]
