@@ -53,3 +53,8 @@ intInit["chestSelectCountPerItem"] = {
 	value:1,
 	desc:"开宝箱每次选取的材料个数"
 }
+intInit["dragonReviveNeedMinutes"] = {
+	type:"dragonReviveNeedMinutes",
+	value:5,
+	desc:"龙复活需要的时间"
+}

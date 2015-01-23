@@ -149,7 +149,7 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 			}]
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, marchEvent.attackPlayerData.dragon.type)
+			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.dragons = {}
 			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
@@ -161,7 +161,7 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 			}]
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, marchEvent.attackPlayerData.dragon.type)
+			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.dragons = {}
 			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
@@ -266,7 +266,7 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 var DragonExp = function(playerDoc, playerData, dragonType, itemConfig){
 	var dragon = playerDoc.dragons[dragonType]
 	if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
-	DataUtils.updatePlayerDragonProperty(playerDoc, dragon, 0, parseInt(itemConfig.effect))
+	DataUtils.addPlayerDragonExp(playerDoc, dragon, parseInt(itemConfig.effect))
 	playerData.dragons = {}
 	playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 	return Promise.resolve()
@@ -283,7 +283,8 @@ var DragonExp = function(playerDoc, playerData, dragonType, itemConfig){
 var DragonHp = function(playerDoc, playerData, dragonType, itemConfig){
 	var dragon = playerDoc.dragons[dragonType]
 	if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
-	DataUtils.refreshPlayerDragonsHp(playerDoc, dragonType)
+	if(dragon.hp <= 0) return Promise.reject(new Error("龙还未复活"))
+	DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
 	var dragonHpMax = DataUtils.getPlayerDragonHpMax(playerDoc, dragon)
 	dragon.hp += parseInt(itemConfig.effect)
 	dragon.hp = dragon.hp <= dragonHpMax ? dragon.hp : dragonHpMax

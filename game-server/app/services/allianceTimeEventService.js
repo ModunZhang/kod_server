@@ -439,6 +439,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var helpedByTroop = null
 		var theDefencePlayerDoc = null
 		var memberInAlliance = null
+		var deathEvent = null
 		var attackSoldiersLeftForFight = []
 
 		funcs = []
@@ -543,7 +544,17 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			//console.log(NodeUtils.inspect(report, false, null))
 
 			attackPlayerDoc.basicInfo.kill += countData.attackPlayerKill
-			DataUtils.updatePlayerDragonProperty(attackPlayerDoc, attackPlayerDoc.dragons[attackDragon.type], attackDragonForFight.totalHp - attackDragonForFight.currentHp, countData.attackDragonExpAdd)
+			attackDragon.hp -= attackDragonForFight.totalHp - attackDragonForFight.currentHp
+			if(attackDragon.hp <= 0){
+				deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+				attackPlayerDoc.dragonDeathEvents.push(deathEvent)
+				attackPlayerData.__dragonDeathEvents = [{
+					type:Consts.DataChangedType.Add,
+					data:deathEvent
+				}]
+				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+			}
+			DataUtils.addPlayerDragonExp(attackPlayerDoc, attackDragon, countData.attackDragonExpAdd)
 			attackPlayerData.basicInfo = attackPlayerDoc.basicInfo
 			attackPlayerData.dragons = {}
 			attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
@@ -564,7 +575,17 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				theDefencePlayerDoc = helpDefencePlayerDoc
 
 				helpDefencePlayerDoc.basicInfo.kill += countData.defencePlayerKill
-				DataUtils.updatePlayerDragonProperty(helpDefencePlayerDoc, helpDefencePlayerDoc.dragons[helpDefenceDragon.type], helpDefenceDragonForFight.totalHp - helpDefenceDragonForFight.currentHp, countData.defenceDragonExpAdd)
+				helpDefenceDragon.hp -= helpDefenceDragonForFight.totalHp - helpDefenceDragonForFight.currentHp
+				if(helpDefenceDragon.hp <= 0){
+					deathEvent = DataUtils.createPlayerDragonDeathEvent(helpDefencePlayerDoc, helpDefenceDragon)
+					helpDefencePlayerDoc.dragonDeathEvents.push(deathEvent)
+					helpDefencePlayerData.__dragonDeathEvents = [{
+						type:Consts.DataChangedType.Add,
+						data:deathEvent
+					}]
+					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, helpDefencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+				}
+				DataUtils.addPlayerDragonExp(helpDefencePlayerDoc, helpDefenceDragon, countData.defenceDragonExpAdd)
 				helpDefencePlayerData.basicInfo = helpDefencePlayerDoc.basicInfo
 				helpDefencePlayerData.dragons = {}
 				helpDefencePlayerData.dragons[helpDefenceDragon.type] = helpDefencePlayerDoc.dragons[helpDefenceDragon.type]
@@ -612,7 +633,17 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 				defencePlayerDoc.basicInfo.kill += countData.defencePlayerKill
 				if(_.isObject(defenceDragonFightData)){
-					DataUtils.updatePlayerDragonProperty(defencePlayerDoc, defencePlayerDoc.dragons[defenceDragon.type], defenceDragonForFight.totalHp - defenceDragonForFight.currentHp, countData.defenceDragonExpAdd)
+					defenceDragon.hp -= defenceDragonForFight.totalHp - defenceDragonForFight.currentHp
+					if(defenceDragon.hp <= 0){
+						deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
+						defencePlayerDoc.dragonDeathEvents.push(deathEvent)
+						defencePlayerData.__dragonDeathEvents = [{
+							type:Consts.DataChangedType.Add,
+							data:deathEvent
+						}]
+						eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+					}
+					DataUtils.addPlayerDragonExp(defencePlayerDoc, defenceDragon, countData.defenceDragonExpAdd)
 					defencePlayerData.basicInfo = defencePlayerDoc.basicInfo
 					defencePlayerData.dragons = {}
 					defencePlayerData.dragons[defenceDragon.type] = defencePlayerDoc.dragons[defenceDragon.type]
@@ -905,6 +936,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					vitality:DataUtils.getPlayerDragonVitality(null, village.dragon)
 				}
 				villageDragon.hp = DataUtils.getPlayerDragonHpMax(null, villageDragon)
+
 				var villageDragonForFight = DataUtils.createPlayerDragonForFight(null, villageDragon)
 				var villageSoldiersForFight = DataUtils.createPlayerSoldiersForFight(null, village.soldiers)
 				var villageDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, villageSoldiersForFight)
@@ -922,7 +954,18 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackRewards = report.report.attackVillage.attackPlayerData.rewards
 
 				attackPlayerDoc.basicInfo.kill += attackPlayerKill
-				DataUtils.updatePlayerDragonProperty(attackPlayerDoc, attackPlayerDoc.dragons[attackDragon.type], villageDragonFightData.attackDragonHpDecreased, attackDragonExpAdd)
+				attackDragon.hp -= villageDragonFightData.attackDragonHpDecreased
+				if(attackDragon.hp <= 0){
+					deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+					attackPlayerDoc.dragonDeathEvents.push(deathEvent)
+					attackPlayerData.__dragonDeathEvents = [{
+						type:Consts.DataChangedType.Add,
+						data:deathEvent
+					}]
+					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+				}
+				DataUtils.addPlayerDragonExp(attackPlayerDoc, attackDragon, attackDragonExpAdd)
+
 				attackPlayerData.basicInfo = attackPlayerDoc.basicInfo
 				attackPlayerData.dragons = {}
 				attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
@@ -1073,12 +1116,36 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				LogicUtils.mergeSoldiers(villageEvent.playerData.woundedSoldiers, defenceWoundedSoldiers)
 
 				attackPlayerDoc.basicInfo.kill += attackPlayerKill
-				DataUtils.updatePlayerDragonProperty(attackPlayerDoc, attackDragon, defenceDragonFightData.attackDragonHpDecreased, attackDragonExpAdd)
+
+				attackDragon.hp -= defenceDragonFightData.attackDragonHpDecreased
+				if(attackDragon.hp <= 0){
+					deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+					attackPlayerDoc.dragonDeathEvents.push(deathEvent)
+					attackPlayerData.__dragonDeathEvents = [{
+						type:Consts.DataChangedType.Add,
+						data:deathEvent
+					}]
+					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+				}
+				DataUtils.addPlayerDragonExp(attackPlayerDoc, attackDragon, attackDragonExpAdd)
+
 				attackPlayerData.basicInfo = attackPlayerDoc.basicInfo
 				attackPlayerData.dragons = {}
 				attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
 				defencePlayerDoc.basicInfo.kill += defencePlayerKill
-				DataUtils.updatePlayerDragonProperty(defencePlayerDoc, defenceDragon, defenceDragonFightData.defenceDragonHpDecreased, defenceDragonExpAdd)
+
+				defenceDragon.hp -= defenceDragonFightData.defenceDragonHpDecreased
+				if(defenceDragon.hp <= 0){
+					deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
+					defencePlayerDoc.dragonDeathEvents.push(deathEvent)
+					defencePlayerData.__dragonDeathEvents = [{
+						type:Consts.DataChangedType.Add,
+						data:deathEvent
+					}]
+					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+				}
+				DataUtils.addPlayerDragonExp(defencePlayerDoc, defenceDragon, defenceDragonExpAdd)
+
 				defencePlayerData.basicInfo = defencePlayerDoc.basicInfo
 				defencePlayerData.dragons = {}
 				defencePlayerData.dragons[defenceDragon.type] = defencePlayerDoc.dragons[defenceDragon.type]
@@ -1211,10 +1278,12 @@ pro.onAttackMarchReturnEvents = function(allianceDoc, event, callback){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		var playerData = {}
-		DataUtils.refreshPlayerDragonsHp(playerDoc, event.attackPlayerData.dragon.type)
-		playerDoc.dragons[event.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+		var dragonType = event.attackPlayerData.dragon.type
+		var dragon = playerDoc.dragons[dragonType]
+		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
+		dragon.status = Consts.DragonStatus.Free
 		playerData.dragons = {}
-		playerData.dragons[event.attackPlayerData.dragon.type] = playerDoc.dragons[event.attackPlayerData.dragon.type]
+		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		playerData.soldiers = {}
 		_.each(event.attackPlayerData.soldiers, function(soldier){
 			playerDoc.soldiers[soldier.name] += soldier.count
@@ -1281,6 +1350,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 	var pushFuncs = []
 	var updateFuncs = []
 	var funcs = null
+	var deathEvent = null
 	LogicUtils.removeItemInArray(attackAllianceDoc.strikeMarchEvents, event)
 	attackAllianceData.__strikeMarchEvents = [{
 		type:Consts.DataChangedType.Remove,
@@ -1327,12 +1397,31 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				LogicUtils.sendSystemMail(defencePlayerDoc, defencePlayerData, helpDefenceTitle, helpDefenceParams, helpDefenceContent, helpDefenceParams)
 
 				attackDragon.hp -= dragonFightData.attackDragonHpDecreased
+				if(attackDragon.hp <= 0){
+					deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+					attackPlayerDoc.dragonDeathEvents.push(deathEvent)
+					attackPlayerData.__dragonDeathEvents = [{
+						type:Consts.DataChangedType.Add,
+						data:deathEvent
+					}]
+					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+				}
+
 				attackPlayerData.dragons = {}
 				attackPlayerData.dragons[attackDragon.type] = attackDragon
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 
 				helpDefenceDragon.hp -= dragonFightData.defenceDragonHpDecreased
+				if(helpDefenceDragon.hp <= 0){
+					deathEvent = DataUtils.createPlayerDragonDeathEvent(helpDefencePlayerDoc, helpDefenceDragon)
+					helpDefencePlayerDoc.dragonDeathEvents.push(deathEvent)
+					helpDefencePlayerData.__dragonDeathEvents = [{
+						type:Consts.DataChangedType.Add,
+						data:deathEvent
+					}]
+					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, helpDefencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+				}
 				helpDefencePlayerData.dragons = {}
 				helpDefencePlayerData.dragons[helpDefenceDragon.type] = helpDefenceDragon
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, helpDefencePlayerDoc])
@@ -1480,16 +1569,34 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.reportForDefencePlayer)
 
 					attackDragon.hp -= dragonFightData.attackDragonHpDecreased
+					if(attackDragon.hp <= 0){
+						deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+						attackPlayerDoc.dragonDeathEvents.push(deathEvent)
+						attackPlayerData.__dragonDeathEvents = [{
+							type:Consts.DataChangedType.Add,
+							data:deathEvent
+						}]
+						eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+					}
 					attackPlayerData.dragons = {}
 					attackPlayerData.dragons[attackDragon.type] = attackDragon
 					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 
 					defenceDragon.hp -= dragonFightData.defenceDragonHpDecreased
+					if(defenceDragon.hp <= 0){
+						deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
+						defencePlayerDoc.dragonDeathEvents.push(deathEvent)
+						defencePlayerData.__dragonDeathEvents = [{
+							type:Consts.DataChangedType.Add,
+							data:deathEvent
+						}]
+						eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+					}
 					defencePlayerData.dragons = {}
 					defencePlayerData.dragons[defenceDragon.type] = defenceDragon
 					if(defenceDragon.hp <= 0){
-						DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon.type)
+						DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon)
 						defenceDragon.status = Consts.DragonStatus.Free
 					}
 					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
@@ -1655,7 +1762,16 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 
 				report = ReportUtils.createStrikeVillageFightWithVillageDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, targetAllianceDoc, village, villageDragonForFight, villageDragonFightData)
 				LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report)
-				attackPlayerDoc.dragons[attackDragon.type].hp -= villageDragonFightData.attackDragonHpDecreased
+				attackDragon.hp -= villageDragonFightData.attackDragonHpDecreased
+				if(attackDragon.hp <= 0){
+					deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+					attackPlayerDoc.dragonDeathEvents.push(deathEvent)
+					attackPlayerData.__dragonDeathEvents = [{
+						type:Consts.DataChangedType.Add,
+						data:deathEvent
+					}]
+					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+				}
 				attackPlayerData.dragons = {}
 				attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
@@ -1701,10 +1817,29 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
 				LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.reportForDefencePlayer)
 
-				attackPlayerDoc.dragons[attackDragon.type].hp -= defenceDragonFightData.attackDragonHpDecreased
+				attackDragon.hp -= defenceDragonFightData.attackDragonHpDecreased
+				if(attackDragon.hp <= 0){
+					deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+					attackPlayerDoc.dragonDeathEvents.push(deathEvent)
+					attackPlayerData.__dragonDeathEvents = [{
+						type:Consts.DataChangedType.Add,
+						data:deathEvent
+					}]
+					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+				}
 				attackPlayerData.dragons = {}
 				attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
-				defencePlayerDoc.dragons[defenceDragon.type].hp -= defenceDragonFightData.defenceDragonHpDecreased
+
+				defenceDragon.hp -= defenceDragonFightData.defenceDragonHpDecreased
+				if(defenceDragon.hp <= 0){
+					deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
+					defencePlayerDoc.dragonDeathEvents.push(deathEvent)
+					defencePlayerData.__dragonDeathEvents = [{
+						type:Consts.DataChangedType.Add,
+						data:deathEvent
+					}]
+					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+				}
 				defencePlayerData.dragons = {}
 				defencePlayerData.dragons[defenceDragon.type] = defencePlayerDoc.dragons[defenceDragon.type]
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
@@ -1822,10 +1957,12 @@ pro.onStrikeMarchReturnEvents = function(allianceDoc, event, callback){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		var playerData = {}
-		DataUtils.refreshPlayerDragonsHp(playerDoc, event.attackPlayerData.dragon.type)
-		playerDoc.dragons[event.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+		var dragonType = event.attackPlayerData.dragon.type
+		var dragon = playerDoc.dragons[dragonType]
+		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
+		dragon.status = Consts.DragonStatus.Free
 		playerData.dragons = {}
-		playerData.dragons[event.attackPlayerData.dragon.type] = playerDoc.dragons[event.attackPlayerData.dragon.type]
+		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		LogicUtils.refreshPlayerResources(playerDoc)
 		_.each(event.attackPlayerData.rewards, function(reward){
 			playerDoc[reward.type][reward.name] += reward.count
@@ -1907,7 +2044,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 	Promise.all(funcs).then(function(){
 		_.each(event.playerTroops, function(playerTroop){
 			var playerDoc = playerDocs[playerTroop.id]
-			var dragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDoc.dragons[playerTroop.dragon.type])
+			var dragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDoc.dragons[playerTroop.dragon])
 			var soldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, playerTroop.soldiers)
 			var playerTroopForFight = {
 				id:playerTroop.id,
@@ -2057,9 +2194,20 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			var dragon = playerDoc.dragons[playerTroop.dragon.type]
 			var dragonHpDecreased = _.isNumber(params.playerDragonHps[playerId]) ? params.playerDragonHps[playerId] : 0
 			var dragonExpAdd = DataUtils.getDragonExpAdd(kill)
-			DataUtils.updatePlayerDragonProperty(playerDoc, dragon, dragonHpDecreased, dragonExpAdd)
-
 			var playerData = {}
+
+			dragon.hp -= dragonHpDecreased
+			if(dragon.hp <= 0){
+				var deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, dragon)
+				playerDoc.dragonDeathEvents.push(deathEvent)
+				playerData.__dragonDeathEvents = [{
+					type:Consts.DataChangedType.Add,
+					data:deathEvent
+				}]
+				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+			}
+			DataUtils.addPlayerDragonExp(playerDoc, dragon, dragonExpAdd)
+
 			playerData.dragons = {}
 			playerData.dragons[dragon.type] = playerDoc.dragons[dragon.type]
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
@@ -2347,7 +2495,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, collectReport)
 
 		if(!_.isObject(attackPlayerData.dragons)) attackPlayerData.dragons = {}
-		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, villageEvent.playerData.dragon.type)
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackPlayerDoc.dragons[villageEvent.playerData.dragon.type])
 		attackPlayerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.dragons[villageEvent.playerData.dragon.type] = attackPlayerDoc.dragons[villageEvent.playerData.dragon.type]
 
@@ -2398,7 +2546,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		})
 
 		if(!_.isObject(attackPlayerData.dragons)) attackPlayerData.dragons = {}
-		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, marchEvent.attackPlayerData.dragon.type)
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackPlayerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 		attackPlayerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.dragons[marchEvent.attackPlayerData.dragon.type] = attackPlayerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
 
@@ -2417,7 +2565,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		})
 
 		if(!_.isObject(attackPlayerData.dragons)) attackPlayerData.dragons = {}
-		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, marchReturnEvent.attackPlayerData.dragon.type)
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackPlayerDoc.dragons[marchReturnEvent.attackPlayerData.dragon.type])
 		attackPlayerDoc.dragons[marchReturnEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.dragons[marchReturnEvent.attackPlayerData.dragon.type] = attackPlayerDoc.dragons[marchReturnEvent.attackPlayerData.dragon.type]
 
@@ -2452,7 +2600,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		})
 
 		if(!_.isObject(attackPlayerData.dragons)) attackPlayerData.dragons = {}
-		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, marchEvent.attackPlayerData.dragon.type)
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackPlayerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 		attackPlayerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.dragons[marchEvent.attackPlayerData.dragon.type] = attackPlayerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
 	}
@@ -2464,7 +2612,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 			data:marchReturnEvent
 		})
 		if(!_.isObject(attackPlayerData.dragons)) attackPlayerData.dragons = {}
-		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, marchReturnEvent.attackPlayerData.dragon.type)
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackPlayerDoc.dragons[marchReturnEvent.attackPlayerData.dragon.type])
 		attackPlayerDoc.dragons[marchReturnEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.dragons[marchReturnEvent.attackPlayerData.dragon.type] = attackPlayerDoc.dragons[marchReturnEvent.attackPlayerData.dragon.type]
 

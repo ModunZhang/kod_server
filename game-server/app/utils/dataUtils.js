@@ -1276,11 +1276,11 @@ Utils.getDragonSkillMaxLevel = function(skill){
  * 强化龙的装备
  * @param playerDoc
  * @param playerData
- * @param dragonType
+ * @param dragon
  * @param category
  * @param equipments
  */
-Utils.enhancePlayerDragonEquipment = function(playerDoc, playerData, dragonType, category, equipments){
+Utils.enhancePlayerDragonEquipment = function(playerDoc, playerData, dragon, category, equipments){
 	var dragon = playerDoc.dragons[dragonType]
 	var equipmentInDragon = dragon.equipments[category]
 	var config = DragonEquipments.equipments[equipmentInDragon.name]
@@ -1920,6 +1920,7 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers){
  * @returns {*}
  */
 Utils.createPlayerDragonForFight = function(playerDoc, dragon){
+	this.refreshPlayerDragonsHp(playerDoc, dragon)
 	var dragonForFight = {
 		type:dragon.type,
 		level:dragon.level,
@@ -2334,14 +2335,37 @@ Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldie
 }
 
 /**
+ * 刷新玩家龙的Hp信息
+ * @param playerDoc
+ * @param dragon
+ */
+Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
+	if(!_.isObject(playerDoc)) return
+	var self = this
+	var config = BuildingFunction.dragonEyrie[playerDoc.buildings.location_4.level]
+	var dragons = arguments.length > 1 ? [dragon] : playerDoc.dragons
+	_.each(dragons, function(dragon){
+		if(dragon.hp >0 && dragon.level > 0 && _.isEqual(dragon.status, Consts.DragonStatus.Free)){
+			var dragonMaxHp = self.getPlayerDragonHpMax(playerDoc, dragon)
+			if(dragon.hp < dragonMaxHp){
+				var totalMilSeconds = Date.now() - dragon.hpRefreshTime
+				var recoveryPerMilSecond = config.hpRecoveryPerHour / 60 / 60 / 1000
+				var hpRecovered = Math.floor(totalMilSeconds * recoveryPerMilSecond)
+				dragon.hp += hpRecovered
+				dragon.hp = dragon.hp > dragonMaxHp ? dragonMaxHp : dragon.hp
+			}
+		}
+		dragon.hpRefreshTime = Date.now()
+	})
+}
+
+/**
  * 更新龙的属性
  * @param playerDoc
  * @param dragon
- * @param hpDecreased
  * @param expAdd
  */
-Utils.updatePlayerDragonProperty = function(playerDoc, dragon, hpDecreased, expAdd){
-	dragon.hp -= hpDecreased
+Utils.addPlayerDragonExp = function(playerDoc, dragon, expAdd){
 	dragon.exp += expAdd
 	var currentStarMaxLevel = Dragons.dragonAttributes[dragon.star].levelMax
 	var nextLevelExpNeed = Dragons.dragonAttributes[dragon.star].perLevelExp * Math.pow(dragon.level, 2)
@@ -2532,14 +2556,14 @@ Utils.getCollectResourceExpAdd = function(name, count){
 /**
  * 创建龙孵化事件
  * @param playerDoc
- * @param dragonType
+ * @param dragon
  * @returns {{id: *, dragonType: *, finishTime: number}}
  */
-Utils.createPlayerHatchDragonEvent = function(playerDoc, dragonType){
+Utils.createPlayerHatchDragonEvent = function(playerDoc, dragon){
 	var needTime = AllianceInit.floatInit.playerHatchDragonNeedHours.value * 60 * 60 * 1000
 	var event = {
 		id:ShortId.generate(),
-		dragonType:dragonType,
+		dragonType:dragon.type,
 		startTime:Date.now(),
 		finishTime:Date.now() + needTime
 	}
@@ -2771,30 +2795,6 @@ Utils.isPlayerUpgradeSoldierStarTechPointEnough = function(playerDoc, soldierNam
 }
 
 /**
- * 刷新玩家龙的Hp信息
- * @param playerDoc
- * @param dragonType
- */
-Utils.refreshPlayerDragonsHp = function(playerDoc, dragonType){
-	var self = this
-	var config = BuildingFunction.dragonEyrie[playerDoc.buildings.location_4.level]
-	var dragons = arguments.length > 1 ? [playerDoc.dragons[dragonType]] : playerDoc.dragons
-	_.each(dragons, function(dragon){
-		if(dragon.level > 0 && _.isEqual(dragon.status, Consts.DragonStatus.Free)){
-			var dragonMaxHp = self.getPlayerDragonHpMax(playerDoc, dragon)
-			if(dragon.hp < dragonMaxHp){
-				var totalMilSeconds = Date.now() - dragon.hpRefreshTime
-				var recoveryPerMilSecond = config.hpRecoveryPerHour / 60 / 60 / 1000
-				var hpRecovered = Math.floor(totalMilSeconds * recoveryPerMilSecond)
-				dragon.hp += hpRecovered
-				dragon.hp = dragon.hp > dragonMaxHp ? dragonMaxHp : dragon.hp
-			}
-		}
-		dragon.hpRefreshTime = Date.now()
-	})
-}
-
-/**
  * 道具名称是否存在
  * @param itemName
  * @returns {*}
@@ -2818,4 +2818,21 @@ Utils.getItemConfig = function(itemName){
 		:  _.contains(_.keys(Items.buff), itemName) ? Items.buff[itemName]
 		:  _.contains(_.keys(Items.resource), itemName) ? Items.resource[itemName]
 		: Items.speedup[itemName]
+}
+
+/**
+ * 创建龙死亡事件
+ * @param playerDoc
+ * @param dragon
+ * @returns {{id: *, dragonType: *, startTime: number, finishTime: number}}
+ */
+Utils.createPlayerDragonDeathEvent = function(playerDoc, dragon){
+	var reviveTime = PlayerInitData.intInit.dragonReviveNeedMinutes.value * 60 * 1000
+	var event = {
+		id:ShortId.generate(),
+		dragonType:dragon.type,
+		startTime:Date.now(),
+		finishTime:Date.now() + reviveTime
+	}
+	return event
 }

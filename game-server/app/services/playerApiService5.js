@@ -123,7 +123,19 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			if(!_.isNumber(expAdd)) return Promise.reject(new Error("pveData 不合法"))
 			var theDragon = playerDoc.dragons[dragonType]
 			if(theDragon.star <= 0) return Promise.reject(new Error("pveData 不合法"))
-			DataUtils.updatePlayerDragonProperty(playerDoc, theDragon, hpDecreased, expAdd)
+
+			theDragon.hp -= hpDecreased
+			if(theDragon.hp <= 0){
+				var deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, theDragon)
+				playerDoc.dragonDeathEvents.push(deathEvent)
+				playerData.__dragonDeathEvents = [{
+					type:Consts.DataChangedType.Add,
+					data:deathEvent
+				}]
+				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+			}
+			DataUtils.addPlayerDragonExp(playerDoc, theDragon, expAdd)
+
 			playerData.dragons = {}
 			playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 
@@ -131,6 +143,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			if(!_.isArray(soldiers)) return Promise.reject(new Error("fightData 不合法"))
 
 			var name = null
+			playerData.soldiers = {}
 			for(var i = 0; i < soldiers.length; i++){
 				var soldier = soldiers[i]
 				name = soldier.name
@@ -142,7 +155,6 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				if(playerDoc.soldiers[name] - damagedCount < 0) return Promise.reject(new Error("fightData 不合法"))
 				playerDoc.soldiers[name] -= damagedCount
 				playerDoc.woundedSoldiers[name] += wounedCount
-				playerData.soldiers = {}
 				playerData.soldiers[name] = playerDoc.soldiers[name]
 				playerData.woundedSoldiers = {}
 				playerData.woundedSoldiers[name] = playerDoc.woundedSoldiers[name]

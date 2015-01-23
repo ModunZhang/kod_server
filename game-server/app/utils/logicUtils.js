@@ -1897,7 +1897,7 @@ Utils.returnPlayerShrineTroops = function(playerDoc, playerData, allianceDoc, al
 			data:playerTroop.event
 		})
 
-		DataUtils.refreshPlayerDragonsHp(playerDoc, playerTroop.dragon.type)
+		DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[playerTroop.dragon.type])
 		playerDoc.dragons[playerTroop.dragon.type].status = Consts.DragonStatus.Free
 		playerData.dragons[playerTroop.dragon.type] = playerDoc.dragons[playerTroop.dragon.type]
 
@@ -1938,7 +1938,7 @@ Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, all
 			})
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, marchEvent.attackPlayerData.dragon.type)
+			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
 		}
@@ -1954,7 +1954,7 @@ Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, all
 			})
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, marchEvent.attackPlayerData.dragon.type)
+			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
 
@@ -2000,7 +2000,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 			})
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, marchEvent.attackPlayerData.dragon.type)
+			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
 
@@ -2025,7 +2025,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 			})
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, marchEvent.attackPlayerData.dragon.type)
+			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
 
@@ -2088,7 +2088,7 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 				eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, villageEvent.id])
 			}
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, villageEvent.playerData.dragon.type)
+			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[villageEvent.playerData.dragon.type])
 			playerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.dragons[villageEvent.playerData.dragon.type] = playerDoc.dragons[villageEvent.playerData.dragon.type]
 
@@ -2186,7 +2186,7 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByTroop,
 	}]
 
 	helpedByPlayerData.dragons = {}
-	DataUtils.refreshPlayerDragonsHp(helpedByPlayerDoc, helpedByTroop.dragon.type)
+	DataUtils.refreshPlayerDragonsHp(helpedByPlayerDoc, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type])
 	helpedByPlayerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free
 	helpedByPlayerData.dragons[helpedByTroop.dragon.type] = helpedByPlayerDoc.dragons[helpedByTroop.dragon.type]
 
@@ -2234,7 +2234,7 @@ Utils.returnPlayerHelpToTroop = function(playerDoc, playerData, helpToTroop, hel
 		data:helpedByTroop
 	}]
 
-	DataUtils.refreshPlayerDragonsHp(playerDoc, helpedByTroop.dragon.type)
+	DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[helpedByTroop.dragon.type])
 	playerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free
 	playerData.dragons[helpedByTroop.dragon.type] = playerDoc.dragons[helpedByTroop.dragon.type]
 
@@ -2277,7 +2277,7 @@ Utils.returnPlayerHelpedByMarchTroop = function(playerDoc, playerData, marchEven
 	eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
 	playerData.dragons = {}
-	DataUtils.refreshPlayerDragonsHp(playerDoc, marchEvent.attackPlayerData.dragon.type)
+	DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 	playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 	playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
 

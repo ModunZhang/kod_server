@@ -407,7 +407,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		if(dragon.star > 0){
 			return Promise.reject(new Error("龙蛋早已成功孵化"))
 		}
-		if(playerDoc.dragonEvents.length > 0) return Promise.reject(new Error("已有龙蛋正在孵化"))
+		if(playerDoc.dragonHatchEvents.length > 0) return Promise.reject(new Error("已有龙蛋正在孵化"))
 		var hasDragonHatched = dragons.redDragon.star > 0 || dragons.blueDragon.star > 0 || dragons.greenDragon.star > 0
 		if(!hasDragonHatched){
 			dragon.star = 1
@@ -419,10 +419,10 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 			playerData.dragons = {}
 			playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		}else{
-			var event = DataUtils.createPlayerHatchDragonEvent(playerDoc, dragonType)
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonEvents", event.id, event.finishTime])
-			playerDoc.dragonEvents.push(event)
-			playerData.__dragonEvents = [{
+			var event = DataUtils.createPlayerHatchDragonEvent(playerDoc, dragon)
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonHatchEvents", event.id, event.finishTime])
+			playerDoc.dragonHatchEvents.push(event)
+			playerData.__dragonHatchEvents = [{
 				type:Consts.DataChangedType.Add,
 				data:event
 			}]
@@ -599,7 +599,7 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 			return Promise.reject(new Error("被牺牲的装备不存在或数量不足"))
 		}
 		var playerData = {}
-		DataUtils.enhancePlayerDragonEquipment(playerDoc, playerData, dragonType, equipmentCategory, equipments)
+		DataUtils.enhancePlayerDragonEquipment(playerDoc, playerData, playerDoc.dragons[dragonType], equipmentCategory, equipments)
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.dragons = {}

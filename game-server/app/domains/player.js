@@ -367,7 +367,7 @@ var playerSchema = new Schema({
 		blueDragon:createDragonSchema("blueDragon"),
 		greenDragon:createDragonSchema("greenDragon")
 	},
-	dragonEvents:[{
+	dragonHatchEvents:[{
 		_id:false,
 		id:{type:String, required:true},
 		dragonType:{type:String, required:true},
@@ -377,7 +377,7 @@ var playerSchema = new Schema({
 	dragonDeathEvents:[{
 		_id:false,
 		id:{type:String, required:true},
-		type:{type:String, required:true},
+		dragonType:{type:String, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],

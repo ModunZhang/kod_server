@@ -614,7 +614,7 @@ pro.attackAllianceShrine = function(playerId, shrineEventId, dragonType, soldier
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(new Error("龙未处于空闲状态"))
-		DataUtils.refreshPlayerDragonsHp(playerDoc, dragonType)
+		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
 		if(dragon.hp == 0) return Promise.reject(new Error("所选择的龙已经阵亡"))
 		dragon.status = Consts.DragonStatus.March
 		playerData.dragons = {}

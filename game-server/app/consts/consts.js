@@ -62,7 +62,7 @@ module.exports = {
 		soldierStarEvents:"soldierStarEvents",
 		treatSoldierEvents:"treatSoldierEvents",
 		dragonEquipmentEvents:"dragonEquipmentEvents",
-		dragonEvents:"dragonEvents",
+		dragonHatchEvents:"dragonHatchEvents",
 		dragonDeathEvents:"dragonDeathEvents",
 		buildingEvents:"buildingEvents",
 		houseEvents:"houseEvents",

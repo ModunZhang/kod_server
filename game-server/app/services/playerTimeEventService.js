@@ -113,6 +113,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 	var allianceData = {}
 	var event = null
 	var helpEvent = null
+	var dragon = null
 	var getAllianceHelpEvent = function(eventId){
 		return _.find(allianceDoc.helpEvents, function(helpEvent){
 			return _.isEqual(helpEvent.eventData.id, eventId)
@@ -232,20 +233,32 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		playerData.soldiers = playerDoc.soldiers
 		playerData.treatSoldierEvents = playerDoc.treatSoldierEvents
 		pushFuncs.push([self.pushService, self.pushService.onTreatSoldierSuccessAsync, playerDoc, event.soldiers])
-	}else if(_.isEqual(eventType, "dragonEvents")){
-		event = LogicUtils.getEventById(playerDoc.dragonEvents, eventId)
-		LogicUtils.removeItemInArray(playerDoc.dragonEvents, event)
-		playerData.__dragonEvents = [{
+	}else if(_.isEqual(eventType, "dragonHatchEvents")){
+		event = LogicUtils.getEventById(playerDoc.dragonHatchEvents, eventId)
+		LogicUtils.removeItemInArray(playerDoc.dragonHatchEvents, event)
+		playerData.__dragonHatchEvents = [{
 			type:Consts.DataChangedType.Remove,
 			data:event
 		}]
-		var dragon = playerDoc.dragons[event.dragonType]
+		dragon = playerDoc.dragons[event.dragonType]
 		dragon.star = 1
 		dragon.level = 1
 		dragon.vitality = DataUtils.getPlayerDragonVitality(playerDoc, dragon)
 		dragon.hp = dragon.vitality * 2
 		dragon.hpRefreshTime = Date.now()
 		dragon.strength = DataUtils.getPlayerDragonStrength(playerDoc, dragon)
+		playerData.dragons = {}
+		playerData.dragons[event.dragonType] = playerDoc.dragons[event.dragonType]
+	}else if(_.isEqual(eventType, "dragonDeathEvents")){
+		event = LogicUtils.getEventById(playerDoc.dragonDeathEvents, eventId)
+		LogicUtils.removeItemInArray(playerDoc.dragonDeathEvents, event)
+		playerData.__dragonDeathEvents = [{
+			type:Consts.DataChangedType.Remove,
+			data:event
+		}]
+		dragon = playerDoc.dragons[event.dragonType]
+		dragon.hp = 1
+		dragon.hpRefreshTime = Date.now()
 		playerData.dragons = {}
 		playerData.dragons[event.dragonType] = playerDoc.dragons[event.dragonType]
 	}else if(_.isEqual(eventType, "dailyQuestEvents")){
