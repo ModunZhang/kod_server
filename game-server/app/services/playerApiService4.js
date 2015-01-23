@@ -855,7 +855,6 @@ pro.setTerrain = function(playerId, terrain, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家已加入联盟,不能修改地形"))
 		playerDoc.basicInfo.terrain = terrain
 		playerData.basicInfo = playerDoc.basicInfo
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
