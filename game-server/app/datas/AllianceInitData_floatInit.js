@@ -11,8 +11,8 @@ floatInit["bloodByKilledCitizen"] = {
 	type:"bloodByKilledCitizen",
 	value:0.500000
 }
-floatInit["citizenCountPerWallHp"] = {
-	type:"citizenCountPerWallHp",
+floatInit["killScorePerWallHp"] = {
+	type:"killScorePerWallHp",
 	value:1.000000
 }
 floatInit["playerHatchDragonNeedHours"] = {

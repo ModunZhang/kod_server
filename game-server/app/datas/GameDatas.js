@@ -143,6 +143,11 @@ GameDatas.Items.resource = require("./Items_resource.js")
 GameDatas.Items.speedup = require("./Items_speedup.js")
 GameDatas.Items.buffTypes = require("./Items_buffTypes.js")
 
+GameDatas.KillDropItems = {}
+GameDatas.KillDropItems.grassLand = require("./KillDropItems_grassLand.js")
+GameDatas.KillDropItems.desert = require("./KillDropItems_desert.js")
+GameDatas.KillDropItems.iceField = require("./KillDropItems_iceField.js")
+
 GameDatas.MilitaryTechLevelUp = {}
 GameDatas.MilitaryTechLevelUp.infantry_infantry = require("./MilitaryTechLevelUp_infantry_infantry.js")
 GameDatas.MilitaryTechLevelUp.infantry_archer = require("./MilitaryTechLevelUp_infantry_archer.js")

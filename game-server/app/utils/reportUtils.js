@@ -39,10 +39,10 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 				if(DataUtils.hasNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
 					config = Soldiers.normal[soldierFullKey]
-					killed += soldier.count * config.citizen
+					killed += soldier.count * config.killScore
 				}else{
 					config = Soldiers.special[soldier.name]
-					killed += soldier.count * config.citizen
+					killed += soldier.count * config.killScore
 				}
 			})
 		})
@@ -199,10 +199,10 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 				if(DataUtils.hasNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
 					config = Soldiers.normal[soldierFullKey]
-					killed += soldier.count * config.citizen
+					killed += soldier.count * config.killScore
 				}else{
 					config = Soldiers.special[soldier.name]
-					killed += soldier.count * config.citizen
+					killed += soldier.count * config.killScore
 				}
 			})
 		})
@@ -277,7 +277,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 
 	var attackPlayerKilledCitizenWithDefenceSoldiers = _.isObject(soldierFightData) ? getKilledCitizen(soldierFightData.attackSoldiersAfterFight) : 0
 	var defenceWallHpDecreased = _.isObject(wallFightData) ? wallFightData.defenceWallAfterFight.totalHp - wallFightData.defenceWallAfterFight.currentHp : 0
-	var attackPlayerKilledCitizenWithDefenceWall = Math.floor(defenceWallHpDecreased * AllianceInit.floatInit.citizenCountPerWallHp.value)
+	var attackPlayerKilledCitizenWithDefenceWall = Math.floor(defenceWallHpDecreased * AllianceInit.floatInit.killScorePerWallHp.value)
 	var defencePlayerKilledCitizenBySoldiers = _.isObject(soldierFightData) ? getKilledCitizen(soldierFightData.defenceSoldiersAfterFight) : 0
 	var defencePlayerKilledCitizenByWall = _.isObject(wallFightData) ? getKilledCitizen(wallFightData.defenceWallAfterFight) : 0
 	var attackDragonExpAdd = getDragonExpAdd(attackPlayerKilledCitizenWithDefenceSoldiers)
@@ -866,10 +866,10 @@ Utils.createAttackVillageFightWithVillageTroopReport = function(attackAllianceDo
 				if(DataUtils.hasNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
 					config = Soldiers.normal[soldierFullKey]
-					killed += soldier.count * config.citizen
+					killed += soldier.count * config.killScore
 				}else{
 					config = Soldiers.special[soldier.name]
-					killed += soldier.count * config.citizen
+					killed += soldier.count * config.killScore
 				}
 			})
 		})
@@ -1012,10 +1012,10 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 				if(DataUtils.hasNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
 					config = Soldiers.normal[soldierFullKey]
-					killed += soldier.count * config.citizen
+					killed += soldier.count * config.killScore
 				}else{
 					config = Soldiers.special[soldier.name]
-					killed += soldier.count * config.citizen
+					killed += soldier.count * config.killScore
 				}
 			})
 		})

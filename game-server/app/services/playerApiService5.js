@@ -144,6 +144,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 
 			var name = null
 			playerData.soldiers = {}
+			playerData.woundedSoldiers = {}
 			for(var i = 0; i < soldiers.length; i++){
 				var soldier = soldiers[i]
 				name = soldier.name
@@ -156,7 +157,6 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				playerDoc.soldiers[name] -= damagedCount
 				playerDoc.woundedSoldiers[name] += wounedCount
 				playerData.soldiers[name] = playerDoc.soldiers[name]
-				playerData.woundedSoldiers = {}
 				playerData.woundedSoldiers[name] = playerDoc.woundedSoldiers[name]
 			}
 		}
