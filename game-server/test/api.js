@@ -911,3 +911,12 @@ Api.buyAllianceItem = function(itemName, count, callback){
 	var route = "logic.allianceHandler.buyItem"
 	pomelo.request(route, info, callback)
 }
+
+Api.giveLoyaltyToAllianceMember = function(memberId, count, callback){
+	var info = {
+		memberId:memberId,
+		count:count
+	}
+	var route = "logic.allianceHandler.giveLoyaltyToAllianceMember"
+	pomelo.request(route, info, callback)
+}

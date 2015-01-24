@@ -609,3 +609,117 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		}
 	})
 }
+
+/**
+ * 为联盟成员添加荣耀值
+ * @param playerId
+ * @param memberId
+ * @param count
+ * @param callback
+ */
+pro.giveLoyaltyToAllianceMember = function(playerId, memberId, count, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isString(memberId)){
+		callback(new Error("memberId 不合法"))
+		return
+	}
+	if(!_.isNumber(count) || count % 1 !== 0 || count <= 0){
+		callback(new Error("count 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var memberDoc = null
+	var memberData = {}
+	var memberObject = null
+	var allianceDoc = null
+	var allianceData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "giveLoyaltyToAllianceMember")){
+			return Promise.reject(new Error("此操作权限不足"))
+		}
+		return self.allianceDao.findByIdAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		allianceDoc = doc
+		if(allianceDoc.basicInfo.honour - count < 0) return Promise.reject(new Error("联盟荣耀值不足"))
+		memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
+		if(!_.isObject(memberObject)) return Promise.reject(new Error("联盟成员不存在"))
+		if(!_.isEqual(playerId, memberId)){
+			return self.playerDao.findByIdAsync(memberId)
+		}
+		return Promise.resolve()
+	}).then(function(doc){
+		if(!_.isEqual(playerId, memberId)){
+			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+			memberDoc = doc
+		}else{
+			memberDoc = playerDoc
+		}
+		memberDoc.allianceInfo.loyalty += count
+		memberData.allianceInfo = memberDoc.allianceInfo
+
+		allianceDoc.basicInfo.honour -= count
+		allianceData.basicInfo = allianceDoc.basicInfo
+		memberObject.loyalty = memberDoc.allianceInfo.loyalty
+		memberObject.lastRewardData = {
+			count:count,
+			time:Date.now()
+		}
+		allianceData.__members = [{
+			type:Consts.DataChangedType.Edit,
+			data:memberObject
+		}]
+
+		if(!_.isEqual(playerId, memberId)){
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		}
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(!_.isEqual(playerId, memberId) && _.isObject(memberDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(memberDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}

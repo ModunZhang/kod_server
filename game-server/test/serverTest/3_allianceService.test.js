@@ -1,6 +1,6 @@
 /**
-* Created by modun on 14-7-25.
-*/
+ * Created by modun on 14-7-25.
+ */
 
 var pomelo = require("../pomelo-client")
 var redis = require("redis")
@@ -3293,6 +3293,44 @@ describe("AllianceService", function(){
 		//		doc.code.should.equal(200)
 		//		done()
 		//	})
+		//})
+
+		//it("giveLoyaltyToAllianceMember 正常给予1", function(done){
+		//	var m_myAllianceData = null
+		//	Api.loginPlayer(Config.deviceId3, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.getMyAllianceData(function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.giveLoyaltyToAllianceMember(m_myAllianceData.members[0].id, 10, function(doc){
+		//				doc.code.should.equal(200)
+		//				done()
+		//			})
+		//		})
+		//	})
+		//	var onGetAllianceDataSuccess = function(doc){
+		//		m_myAllianceData = doc
+		//		pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//	}
+		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//})
+
+		//it("giveLoyaltyToAllianceMember 正常给予2", function(done){
+		//	var m_myAllianceData = null
+		//	Api.loginPlayer(Config.deviceId3, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.getMyAllianceData(function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.giveLoyaltyToAllianceMember(m_myAllianceData.members[1].id, 10, function(doc){
+		//				doc.code.should.equal(200)
+		//				done()
+		//			})
+		//		})
+		//	})
+		//	var onGetAllianceDataSuccess = function(doc){
+		//		m_myAllianceData = doc
+		//		pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
+		//	}
+		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//})
 	})
 

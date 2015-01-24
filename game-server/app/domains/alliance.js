@@ -103,7 +103,18 @@ var allianceSchema = new Schema({
 			x:{type:Number, required:true},
 			y:{type:Number, required:true}
 		},
-		isProtected:{type:Boolean, required:true}
+		isProtected:{type:Boolean, required:true},
+		lastThreeDayskillData:[{
+			kill:{type:Number, rquired:true},
+			time:{type:Number, required:true}
+		}],
+		lastRewardData:{
+			type:{
+				count:{type:Number, reuqired:true},
+				time:{type:Number, required:true}
+			},
+			required:false
+		}
 	}],
 	buildings:{
 		palace:createBuildingSchema("palace", Consts.AllianceBuildingLocation.Palace),

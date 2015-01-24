@@ -823,3 +823,19 @@ pro.buyItem = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 为联盟成员添加荣耀值
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.giveLoyaltyToAllianceMember = function(msg, session, next){
+	var memberId = msg.memberId
+	var count = msg.count
+	this.allianceApiService5.giveLoyaltyToAllianceMemberAsync(session.uid, memberId, count).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

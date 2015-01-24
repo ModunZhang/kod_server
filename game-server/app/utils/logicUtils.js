@@ -1314,7 +1314,9 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, rect){
 			x:rect.x,
 			y:rect.y
 		},
-		isProtected:false
+		isProtected:false,
+		lastThreeDayskillData:[],
+		lastRewardData:null
 	}
 	allianceDoc.members.push(member)
 	return member
@@ -2371,4 +2373,40 @@ Utils.addAllianceItem = function(allianceDoc, name, count){
 	item.count += count
 
 	return {item:item, newlyCreated:newlyCreated}
+}
+
+/**
+ * 获取今日的毫秒值
+ * @returns {number}
+ */
+Utils.getTodayTime = function(){
+	var date = new Date()
+	var dateString = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDay() + " 00:00:00"
+	var newDate = new Date(dateString)
+	return newDate.getTime()
+}
+
+/**
+ * 添加联盟成员最近3天的击杀数据
+ * @param allianceDoc
+ * @param memberId
+ * @param kill
+ */
+Utils.addAlliancePlayerLastThreeDaysKillData = function(allianceDoc, memberId, kill){
+	var todayTime = this.getTodayTime()
+	var killData = _.find(allianceDoc.lastThreeDayskillData, function(killData){
+		return _.isEqual(killData.time, todayTime)
+	})
+	if(_.isObject(killData)){
+		killData.kill += kill
+	}else{
+		if(allianceDoc.lastThreeDayskillData.length >= 3){
+			killData = {
+				time:todayTime,
+				kill:kill
+			}
+			allianceDoc.lastThreeDayskillData.pop()
+			allianceDoc.lastThreeDayskillData.push(killData)
+		}
+	}
 }
