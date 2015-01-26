@@ -104,7 +104,7 @@ var allianceSchema = new Schema({
 			y:{type:Number, required:true}
 		},
 		isProtected:{type:Boolean, required:true},
-		lastThreeDayskillData:[{
+		lastThreeDaysKillData:[{
 			kill:{type:Number, rquired:true},
 			date:{type:String, required:true}
 		}],
