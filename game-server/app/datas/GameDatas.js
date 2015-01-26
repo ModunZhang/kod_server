@@ -4,7 +4,9 @@ var GameDatas = {}
 module.exports = GameDatas
 
 GameDatas.Activities = {}
-GameDatas.Activities.signIn = require("./Activities_signIn.js")
+GameDatas.Activities.day60 = require("./Activities_day60.js")
+GameDatas.Activities.online = require("./Activities_online.js")
+GameDatas.Activities.day14 = require("./Activities_day14.js")
 
 GameDatas.AllianceBuilding = {}
 GameDatas.AllianceBuilding.palace = require("./AllianceBuilding_palace.js")

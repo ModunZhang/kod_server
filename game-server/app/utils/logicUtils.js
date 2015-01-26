@@ -2407,6 +2407,15 @@ Utils.getTheDayBeforYesterdayString = function(){
 }
 
 /**
+ * 根据毫秒值获取日期
+ * @param milliseconds
+ */
+Utils.getDateString = function(milliseconds){
+	var date = new Date(milliseconds)
+	return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+}
+
+/**
  * 添加联盟成员最近3天的击杀数据
  * @param allianceDoc
  * @param memberId

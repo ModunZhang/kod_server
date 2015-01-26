@@ -58,6 +58,25 @@ pro.playerLogin = function(playerDoc, callback){
 	var self = this
 	var allianceDoc = null
 	var enemyAllianceDoc = null
+
+	var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
+	var todayDateString = LogicUtils.getTodayString()
+	if(!_.isEqual(todayDateString, previousLoginDateString)){
+		playerDoc.countInfo.todayOnLineTime = 0
+		playerDoc.countInfo.todayOnLineTimeRewards = []
+		if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)){
+			if(playerDoc.countInfo.day60 == 60){
+				playerDoc.countInfo.day60 = 1
+				playerDoc.countInfo.day60RewardsCount = 0
+			}else{
+				playerDoc.countInfo.day60 += 1
+			}
+		}
+		if(_.isEqual(playerDoc.countInfo.day14, playerDoc.countInfo.day14RewardsCount) && playerDoc.countInfo.day14 < 14){
+			playerDoc.countInfo.day14 += 1
+		}
+	}
+
 	playerDoc.countInfo.lastLoginTime = Date.now()
 	playerDoc.countInfo.loginCount += 1
 	LogicUtils.refreshPlayerResources(playerDoc)

@@ -139,6 +139,7 @@ var PlayerLeave = function(session, reason){
 			return Promise.all(funcs)
 		}).then(function(){
 			playerDoc.logicServerId = null
+			playerDoc.countInfo.todayOnLineTime += Date.now() - playerDoc.countInfo.lastLoginTime
 			return self.playerDao.updateAsync(playerDoc)
 		}).catch(function(e){
 			errorLogger.error("handle entryHandler:playerLogout Error -----------------------------")

@@ -103,6 +103,12 @@ var playerSchema = new Schema({
 		registerTime:{type:Number, required:true, default:Date.now()},
 		lastLoginTime:{type:Number, required:true, default:Date.now()},
 		loginCount:{type:Number, required:true, default:0},
+		day60:{type:Number, required:true, default:1},
+		day60RewardsCount:{type:Number, required:true, default:0},
+		todayOnLineTime:{type:Number, required:true, default:0},
+		todayOnLineTimeRewards:[Number],
+		day14:{type:Number, required:true, default:1},
+		day14RewardsCount:{type:Number, rquired:true, default:0},
 		gemUsed:{type:Number, required:true, default:0}
 	},
 	basicInfo:{
@@ -117,7 +123,7 @@ var playerSchema = new Schema({
 		resourceRefreshTime:{type:Number, required:true, default:Date.now()},
 		dailyQuestsRefreshTime:{type:Number, required:true, default:0},
 		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn},
-		buildQueue:{type:Number, required:true, default:5},
+		buildQueue:{type:Number, required:true, default:1},
 		terrain:{type:String, required:true, default:Consts.AllianceTerrain.GrassLand}
 	},
 	resources:{

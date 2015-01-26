@@ -278,3 +278,160 @@ pro.gacha = function(playerId, type, callback){
 		}
 	})
 }
+
+/**
+ * 获取每日登陆奖励
+ * @param playerId
+ * @param callback
+ */
+pro.getDay60Reward = function(playerId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+
+		if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)) return Promise.reject(new Error("今日登陆奖励已领取"))
+		playerDoc.countInfo.day60RewardsCount = playerDoc.countInfo.day60
+		playerData.countInfo = playerDoc.countInfo
+
+		var item = DataUtils.getDay60RewardItem(playerDoc.countInfo.day60)
+		var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
+		if(resp.newlyCreated){
+			playerData.__items = [{
+				type:Consts.DataChangedType.Add,
+				data:resp.item
+			}]
+		}else{
+			playerData.__items = [{
+				type:Consts.DataChangedType.Edit,
+				data:resp.item
+			}]
+		}
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 获取每日在线奖励
+ * @param playerId
+ * @param timePoint
+ * @param callback
+ */
+pro.getOnlineReward = function(playerId, timePoint, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.contains(_.values(Consts.OnlineTimePoint), timePoint)){
+		callback(new Error("timePoint 不合法"))
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+
+		if(!DataUtils.isPlayerReachOnlineTimePoint(playerDoc, timePoint)) return Promise.reject(new Error("在线时间不足,不能领取"))
+		var theTimePoint = _.find(playerDoc.countInfo.todayOnLineTimeRewards, function(reward){
+			return _.isEqual(reward, timePoint)
+		})
+		if(_.isNumber(theTimePoint)) return Promise.reject(new Error("此时间节点的在线奖励已经领取"))
+		playerDoc.countInfo.todayOnLineTimeRewards.push(timePoint)
+		playerData.countInfo = playerDoc.countInfo
+
+		var item = DataUtils.getOnlineRewardItem(timePoint)
+		var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
+		if(resp.newlyCreated){
+			playerData.__items = [{
+				type:Consts.DataChangedType.Add,
+				data:resp.item
+			}]
+		}else{
+			playerData.__items = [{
+				type:Consts.DataChangedType.Edit,
+				data:resp.item
+			}]
+		}
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 获取14日登陆奖励
+ * @param playerId
+ * @param callback
+ */
+pro.getDay14Reward = function(playerId, callback){
+
+}

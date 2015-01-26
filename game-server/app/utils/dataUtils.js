@@ -38,6 +38,7 @@ var MilitaryTechLevelUp = GameDatas.MilitaryTechLevelUp
 var Items = GameDatas.Items
 var KillDropItems = GameDatas.KillDropItems
 var Gacha = GameDatas.Gacha
+var Activities = GameDatas.Activities
 
 
 var Utils = module.exports
@@ -2949,4 +2950,45 @@ Utils.getGachaItemByType = function(gachaType){
 
 	items = SortFunc(items)
 	return items[0]
+}
+
+/**
+ * 获取每日登陆奖励中当日的奖励道具
+ * @param day
+ * @returns {{name: (itemName|*|info.itemName), count: (itemCount|*)}}
+ */
+Utils.getDay60RewardItem = function(day){
+	var config = Activities.day60[day]
+	var item = {
+		name:config.itemName,
+		count:config.itemCount
+	}
+	return item
+}
+
+/**
+ * 玩家是否达到在线奖励所需的时间
+ * @param playerDoc
+ * @param timePoint
+ * @returns {boolean}
+ */
+Utils.isPlayerReachOnlineTimePoint = function(playerDoc, timePoint){
+	var onlineTime = playerDoc.countInfo.todayOnLineTime + (Date.now() - playerDoc.countInfo.lastLoginTime)
+	var onlineMinutes = Math.floor(onlineTime / 1000 / 60 * 60)
+	var needMinutes = Activities.online[timePoint].onLineMinutes
+	return onlineMinutes >= needMinutes
+}
+
+/**
+ * 获取在线时间奖励
+ * @param timePoint
+ * @returns {{name: (itemName|*|info.itemName), count: (itemCount|*)}}
+ */
+Utils.getOnlineRewardItem = function(timePoint){
+	var config = Activities.online[timePoint]
+	var item = {
+		name:config.itemName,
+		count:config.itemCount
+	}
+	return item
 }

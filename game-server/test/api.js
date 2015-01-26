@@ -508,6 +508,18 @@ Api.gacha = function(type, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.getDay60Reward = function(callback){
+	var route = "logic.playerHandler.getDay60Reward"
+	pomelo.request(route, null, callback)
+}
+
+Api.getOnlineReward = function(timePoint, callback){
+	var info = {
+		timePoint:timePoint
+	}
+	var route = "logic.playerHandler.getOnlineReward"
+	pomelo.request(route, info, callback)
+}
 
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
