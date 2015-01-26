@@ -441,6 +441,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var memberInAlliance = null
 		var deathEvent = null
 		var attackSoldiersLeftForFight = []
+		var memberObject
 
 		funcs = []
 		funcs.push(self.playerDao.findByIdAsync(event.attackPlayerData.id, true))
@@ -544,7 +545,11 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			//console.log(NodeUtils.inspect(report, false, null))
 
 			attackPlayerDoc.basicInfo.kill += countData.attackPlayerKill
-			LogicUtils.addAlliancePlayerLastThreeDaysKillData(attackAllianceDoc, attackPlayerDoc._id, countData.attackPlayerKill)
+			memberObject = LogicUtils.addAlliancePlayerLastThreeDaysKillData(attackAllianceDoc, attackPlayerDoc._id, countData.attackPlayerKill)
+			attackAllianceData.__members = [{
+				type:Consts.DataChangedType.Edit,
+				data:memberObject
+			}]
 
 			var attackPlayerRewards = attackCityReport.attackPlayerData.rewards
 			var attackPlayerKillRewards = DataUtils.getRewardsByKillScoreAndTerrain(countData.attackPlayerKill, defenceAllianceDoc.basicInfo.terrain)
@@ -580,7 +585,11 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				theDefencePlayerDoc = helpDefencePlayerDoc
 
 				helpDefencePlayerDoc.basicInfo.kill += countData.defencePlayerKill
-				LogicUtils.addAlliancePlayerLastThreeDaysKillData(defenceAllianceDoc, helpDefencePlayerDoc._id, countData.defencePlayerKill)
+				memberObject = LogicUtils.addAlliancePlayerLastThreeDaysKillData(defenceAllianceDoc, helpDefencePlayerDoc._id, countData.defencePlayerKill)
+				defenceAllianceData.__members = [{
+					type:Consts.DataChangedType.Edit,
+					data:memberObject
+				}]
 				helpDefenceDragon.hp -= helpDefenceDragonForFight.totalHp - helpDefenceDragonForFight.currentHp
 				if(helpDefenceDragon.hp <= 0){
 					deathEvent = DataUtils.createPlayerDragonDeathEvent(helpDefencePlayerDoc, helpDefenceDragon)
@@ -640,7 +649,11 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				theDefencePlayerDoc = defencePlayerDoc
 
 				defencePlayerDoc.basicInfo.kill += countData.defencePlayerKill
-				LogicUtils.addAlliancePlayerLastThreeDaysKillData(defenceAllianceDoc, defencePlayerDoc._id, countData.defencePlayerKill)
+				memberObject = LogicUtils.addAlliancePlayerLastThreeDaysKillData(defenceAllianceDoc, defencePlayerDoc._id, countData.defencePlayerKill)
+				defenceAllianceData.__members = [{
+					type:Consts.DataChangedType.Edit,
+					data:memberObject
+				}]
 				var defencePlayerRewards = attackCityReport.defencePlayerData.rewards
 				var defencePlayerKillRewards = DataUtils.getRewardsByKillScoreAndTerrain(countData.defencePlayerKill, defenceAllianceDoc.basicInfo.terrain)
 				defencePlayerRewards = defencePlayerRewards.concat(defencePlayerKillRewards)

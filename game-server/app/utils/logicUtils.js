@@ -2430,4 +2430,6 @@ Utils.addAlliancePlayerLastThreeDaysKillData = function(allianceDoc, memberId, k
 			allianceDoc.lastThreeDayskillData.push(killData)
 		}
 	}
+
+	return memberObject
 }
