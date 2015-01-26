@@ -7,6 +7,7 @@ GameDatas.Activities = {}
 GameDatas.Activities.day60 = require("./Activities_day60.js")
 GameDatas.Activities.online = require("./Activities_online.js")
 GameDatas.Activities.day14 = require("./Activities_day14.js")
+GameDatas.Activities.levelup = require("./Activities_levelup.js")
 
 GameDatas.AllianceBuilding = {}
 GameDatas.AllianceBuilding.palace = require("./AllianceBuilding_palace.js")

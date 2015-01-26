@@ -308,19 +308,23 @@ pro.getDay60Reward = function(playerId, callback){
 		playerDoc.countInfo.day60RewardsCount = playerDoc.countInfo.day60
 		playerData.countInfo = playerDoc.countInfo
 
-		var item = DataUtils.getDay60RewardItem(playerDoc.countInfo.day60)
-		var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-		if(resp.newlyCreated){
-			playerData.__items = [{
-				type:Consts.DataChangedType.Add,
-				data:resp.item
-			}]
-		}else{
-			playerData.__items = [{
-				type:Consts.DataChangedType.Edit,
-				data:resp.item
-			}]
-		}
+		var items = DataUtils.getDay60RewardItem(playerDoc.countInfo.day60)
+		playerData.__items = []
+		_.each(items, function(item){
+			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
+			if(resp.newlyCreated){
+				playerData.__items.push({
+					type:Consts.DataChangedType.Add,
+					data:resp.item
+				})
+			}else{
+				playerData.__items.push({
+					type:Consts.DataChangedType.Edit,
+					data:resp.item
+				})
+			}
+		})
+
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
@@ -386,19 +390,22 @@ pro.getOnlineReward = function(playerId, timePoint, callback){
 		playerDoc.countInfo.todayOnLineTimeRewards.push(timePoint)
 		playerData.countInfo = playerDoc.countInfo
 
-		var item = DataUtils.getOnlineRewardItem(timePoint)
-		var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-		if(resp.newlyCreated){
-			playerData.__items = [{
-				type:Consts.DataChangedType.Add,
-				data:resp.item
-			}]
-		}else{
-			playerData.__items = [{
-				type:Consts.DataChangedType.Edit,
-				data:resp.item
-			}]
-		}
+		var items = DataUtils.getOnlineRewardItem(timePoint)
+		playerData.__items = []
+		_.each(items, function(item){
+			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
+			if(resp.newlyCreated){
+				playerData.__items.push({
+					type:Consts.DataChangedType.Add,
+					data:resp.item
+				})
+			}else{
+				playerData.__items.push({
+					type:Consts.DataChangedType.Edit,
+					data:resp.item
+				})
+			}
+		})
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
@@ -461,6 +468,88 @@ pro.getDay14Reward = function(playerId, callback){
 			playerDoc[reward.type][reward.name] += reward.count
 			if(!_.isObject(playerData[reward.type])) playerData[reward.type] = {}
 			playerData[reward.type][reward.name] = playerDoc[reward.type][reward.name]
+		})
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 获取新玩家冲级奖励
+ * @param playerId
+ * @param levelupIndex
+ * @param callback
+ */
+pro.getLevelupReward = function(playerId, levelupIndex, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isLevelupIndexExist(levelupIndex)){
+		callback(new Error("levelupIndex 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+
+		var theLevelupIndex = _.find(playerDoc.countInfo.levelupRewards, function(reward){
+			return reward == levelupIndex
+		})
+		if(_.isNumber(theLevelupIndex)) return Promise.reject(new Error("当前等级的冲级奖励已经领取"))
+		if(!DataUtils.isPlayerLevelLegalForLevelupIndex(playerDoc, levelupIndex)) return Promise.reject(new Error("玩家等级不足以领取当前冲级奖励"))
+		playerDoc.countInfo.levelupRewards.push(levelupIndex)
+		playerData.countInfo = playerDoc.countInfo
+
+		var items = DataUtils.getLevelupRewards(levelupIndex)
+		playerData.__items = []
+		_.each(items, function(item){
+			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
+			if(resp.newlyCreated){
+				playerData.__items.push({
+					type:Consts.DataChangedType.Add,
+					data:resp.item
+				})
+			}else{
+				playerData.__items.push({
+					type:Consts.DataChangedType.Edit,
+					data:resp.item
+				})
+			}
 		})
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])

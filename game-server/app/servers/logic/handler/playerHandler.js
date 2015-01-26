@@ -959,3 +959,18 @@ pro.getDay14Reward = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 获取新玩家冲级奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getLevelupReward = function(msg, session, next){
+	var levelupIndex = msg.levelupIndex
+	this.playerApiService5.getLevelupRewardAsync(session.uid, levelupIndex).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

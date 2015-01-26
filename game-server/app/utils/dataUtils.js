@@ -2958,12 +2958,20 @@ Utils.getGachaItemByType = function(gachaType){
  * @returns {{name: (itemName|*|info.itemName), count: (itemCount|*)}}
  */
 Utils.getDay60RewardItem = function(day){
-	var config = Activities.day60[day]
-	var item = {
-		name:config.itemName,
-		count:config.itemCount
-	}
-	return item
+	var configString = Activities.day60[day].rewards
+	var configStrings = configString.split(",")
+	var rewards = []
+	_.each(configStrings, function(configString){
+		var params = configString.split(":")
+		var reward = {
+			type:params[0],
+			name:params[1],
+			count:parseInt(params[2])
+		}
+		rewards.push(reward)
+	})
+
+	return rewards
 }
 
 /**
@@ -2982,15 +2990,23 @@ Utils.isPlayerReachOnlineTimePoint = function(playerDoc, timePoint){
 /**
  * 获取在线时间奖励
  * @param timePoint
- * @returns {{name: (itemName|*|info.itemName), count: (itemCount|*)}}
+ * @returns {Array}
  */
 Utils.getOnlineRewardItem = function(timePoint){
-	var config = Activities.online[timePoint]
-	var item = {
-		name:config.itemName,
-		count:config.itemCount
-	}
-	return item
+	var configString = Activities.online[timePoint].rewards
+	var configStrings = configString.split(",")
+	var rewards = []
+	_.each(configStrings, function(configString){
+		var params = configString.split(":")
+		var reward = {
+			type:params[0],
+			name:params[1],
+			count:parseInt(params[2])
+		}
+		rewards.push(reward)
+	})
+
+	return rewards
 }
 
 /**
@@ -3000,6 +3016,64 @@ Utils.getOnlineRewardItem = function(timePoint){
  */
 Utils.getDay14Rewards = function(day){
 	var configString = Activities.day14[day].rewards
+	var configStrings = configString.split(",")
+	var rewards = []
+	_.each(configStrings, function(configString){
+		var params = configString.split(":")
+		var reward = {
+			type:params[0],
+			name:params[1],
+			count:parseInt(params[2])
+		}
+		rewards.push(reward)
+	})
+
+	return rewards
+}
+
+/**
+ * 获取玩家等级
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getPlayerLevel = function(playerDoc){
+	var levelConfigs = PlayerInitData.playerLevel
+	for(var i = levelConfigs.length - 1; i >= 1; i --){
+		var levelConfig = levelConfigs[i]
+		if(playerDoc.basicInfo.levelExp >= levelConfig.expFrom) return levelConfig.level
+	}
+
+	return 1
+}
+
+/**
+ * 新手冲击奖励是否存在
+ * @param levelupIndex
+ * @returns {*}
+ */
+Utils.isLevelupIndexExist = function(levelupIndex){
+	return _.isObject(Activities.levelup[levelupIndex])
+}
+
+/**
+ * 玩家等级是否足够以领取冲级奖励
+ * @param playerDoc
+ * @param levelupIndex
+ * @returns {boolean}
+ */
+Utils.isPlayerLevelLegalForLevelupIndex = function(playerDoc, levelupIndex){
+	var playerLevel = this.getPlayerLevel(playerDoc)
+	var needLevel = Activities.levelup[levelupIndex].level
+	return playerLevel >= needLevel
+}
+
+/**
+ * 获取冲级奖励
+ * @param levelupIndex
+ * @returns {Array}
+ */
+Utils.getLevelupRewards = function(levelupIndex){
+	var configString = Activities.levelup[levelupIndex].rewards
 	var configStrings = configString.split(",")
 	var rewards = []
 	_.each(configStrings, function(configString){

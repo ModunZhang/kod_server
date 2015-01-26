@@ -436,6 +436,20 @@ var ChatHandler = function(app){
 					callback(e)
 				})
 			}
+		},
+		{
+			command:"playerlevel",
+			desc:"设置玩家等级:playerlevel 5",
+			func:function(session, uid, text, callback){
+				var self = this
+				var level = text.split(" ")[1]
+				level = parseInt(level)
+				if(_.isNumber(level)){
+					self.app.rpc.logic.commandRemote.playerlevel(session, uid, level, function(e){
+						callback(e)
+					})
+				}
+			}
 		}
 	]
 }

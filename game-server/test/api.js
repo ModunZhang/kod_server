@@ -526,6 +526,14 @@ Api.getDay14Reward = function(callback){
 	pomelo.request(route, null, callback)
 }
 
+Api.getLevelupReward = function(levelupIndex, callback){
+	var info = {
+		levelupIndex:levelupIndex
+	}
+	var route = "logic.playerHandler.getLevelupReward"
+	pomelo.request(route, info, callback)
+}
+
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {

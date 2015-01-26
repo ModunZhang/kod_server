@@ -109,13 +109,13 @@ var playerSchema = new Schema({
 		todayOnLineTimeRewards:[Number],
 		day14:{type:Number, required:true, default:1},
 		day14RewardsCount:{type:Number, rquired:true, default:0},
+		levelupRewards:[Number],
 		gemUsed:{type:Number, required:true, default:0}
 	},
 	basicInfo:{
 		name:{type:String, required:true, unique:true},
 		cityName:{type:String, required:true},
 		icon:{type:String, required:true, default:"playerIcon_default.png"},
-		level:{type:Number, required:true, default:1},
 		levelExp:{type:Number, required:true, default:0},
 		power:{type:Number, required:true, default:0},
 		kill:{type:Number, required:true, default:0},

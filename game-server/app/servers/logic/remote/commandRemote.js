@@ -16,6 +16,7 @@ var Consts = require("../../../consts/consts")
 var GameDatas = require("../../../datas/GameDatas")
 var AllianceInit = GameDatas.AllianceInitData
 var AllianceBuildingConfig = GameDatas.AllianceBuilding
+var PlayerInitData = GameDatas.PlayerInitData
 
 var Player = require("../../../domains/player")
 
@@ -1296,6 +1297,49 @@ pro.resetAllianceStatus = function(uid, callback){
 		return ResolveOneAlliance.call(self, playerDoc.alliance.id)
 	}).then(function(){
 		self.playerDao.removeLockByIdAsync(playerDoc._id)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 设置玩家等级
+ * @param uid
+ * @param level
+ * @param callback
+ */
+pro.playerlevel = function(uid, level, callback){
+	var self = this
+	var playerDoc = null
+	var updateFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(uid).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+
+		playerDoc.basicInfo.levelExp = PlayerInitData.playerLevel[level].expFrom
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){

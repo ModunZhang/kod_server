@@ -2009,7 +2009,7 @@ describe("PlayerService", function(){
 		//		done()
 		//	})
 		//})
-
+		//
 		//it("getOnlineReward 在线时间不足,不能领取", function(done){
 		//	Api.getOnlineReward(Consts.OnlineTimePoint.M15, function(doc){
 		//		doc.code.should.equal(500)
@@ -2034,7 +2034,7 @@ describe("PlayerService", function(){
 		//		done()
 		//	})
 		//})
-
+		//
 		//it("getDay14Reward 正常领取", function(done){
 		//	Api.getDay14Reward(function(doc){
 		//		doc.code.should.equal(200)
@@ -2046,6 +2046,32 @@ describe("PlayerService", function(){
 		//	Api.getDay14Reward(function(doc){
 		//		doc.code.should.equal(500)
 		//		doc.message.should.equal("今日王城援军奖励已领取")
+		//		done()
+		//	})
+		//})
+
+		//it("getLevelupReward 玩家等级不足以领取当前冲级奖励", function(done){
+		//	Api.getLevelupReward(1, function(doc){
+		//		doc.code.should.equal(500)
+		//		doc.message.should.equal("玩家等级不足以领取当前冲级奖励")
+		//		done()
+		//	})
+		//})
+		//
+		//it("getLevelupReward 正常领取", function(done){
+		//	Api.sendChat("playerlevel 5", function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.getLevelupReward(1, function(doc){
+		//			doc.code.should.equal(200)
+		//			done()
+		//		})
+		//	})
+		//})
+		//
+		//it("getLevelupReward 当前等级的冲级奖励已经领取", function(done){
+		//	Api.getLevelupReward(1, function(doc){
+		//		doc.code.should.equal(500)
+		//		doc.message.should.equal("当前等级的冲级奖励已经领取")
 		//		done()
 		//	})
 		//})
