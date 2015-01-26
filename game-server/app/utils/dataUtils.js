@@ -2992,3 +2992,25 @@ Utils.getOnlineRewardItem = function(timePoint){
 	}
 	return item
 }
+
+/**
+ * 获取14日登陆奖励
+ * @param day
+ * @returns {Array}
+ */
+Utils.getDay14Rewards = function(day){
+	var configString = Activities.day14[day].rewards
+	var configStrings = configString.split(",")
+	var rewards = []
+	_.each(configStrings, function(configString){
+		var params = configString.split(":")
+		var reward = {
+			type:params[0],
+			name:params[1],
+			count:parseInt(params[2])
+		}
+		rewards.push(reward)
+	})
+
+	return rewards
+}

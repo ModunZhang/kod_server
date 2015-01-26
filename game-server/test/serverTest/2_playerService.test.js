@@ -2034,6 +2034,21 @@ describe("PlayerService", function(){
 		//		done()
 		//	})
 		//})
+
+		//it("getDay14Reward 正常领取", function(done){
+		//	Api.getDay14Reward(function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("getDay14Reward 今日王城援军奖励已领取", function(done){
+		//	Api.getDay14Reward(function(doc){
+		//		doc.code.should.equal(500)
+		//		doc.message.should.equal("今日王城援军奖励已领取")
+		//		done()
+		//	})
+		//})
 	})
 
 

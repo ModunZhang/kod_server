@@ -945,3 +945,17 @@ pro.getOnlineReward = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 获取14日登陆奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getDay14Reward = function(msg, session, next){
+	this.playerApiService5.getDay14RewardAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

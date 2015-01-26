@@ -521,6 +521,11 @@ Api.getOnlineReward = function(timePoint, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.getDay14Reward = function(callback){
+	var route = "logic.playerHandler.getDay14Reward"
+	pomelo.request(route, null, callback)
+}
+
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {
