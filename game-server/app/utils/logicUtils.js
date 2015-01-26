@@ -2426,8 +2426,8 @@ Utils.addAlliancePlayerLastThreeDaysKillData = function(allianceDoc, memberId, k
 				kill:kill,
 				date:todayString
 			}
-			allianceDoc.lastThreeDaysKillData.pop()
-			allianceDoc.lastThreeDaysKillData.push(killData)
+			memberObject.lastThreeDaysKillData.pop()
+			memberObject.lastThreeDaysKillData.push(killData)
 		}
 	}
 
