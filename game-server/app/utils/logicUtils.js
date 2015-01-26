@@ -2376,14 +2376,34 @@ Utils.addAllianceItem = function(allianceDoc, name, count){
 }
 
 /**
- * 获取今日的毫秒值
- * @returns {number}
+ * 获取今日的日期
+ * @returns {String}
  */
-Utils.getTodayTime = function(){
+Utils.getTodayString = function(){
 	var date = new Date()
-	var dateString = date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDay() + " 00:00:00"
-	var newDate = new Date(dateString)
-	return newDate.getTime()
+	return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+}
+
+/**
+ * 获取昨天的日期
+ * @returns {string}
+ */
+Utils.getYesterdayString = function(){
+	var date = new Date()
+	var theDate = date.getDate()
+	date.setDate(theDate - 1)
+	return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+}
+
+/**
+ * 获取前天的日期
+ * @returns {string}
+ */
+Utils.getTheDayBeforYesterdayString = function(){
+	var date = new Date()
+	var theDate = date.getDate()
+	date.setDate(theDate - 2)
+	return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
 }
 
 /**
@@ -2393,17 +2413,18 @@ Utils.getTodayTime = function(){
  * @param kill
  */
 Utils.addAlliancePlayerLastThreeDaysKillData = function(allianceDoc, memberId, kill){
-	var todayTime = this.getTodayTime()
-	var killData = _.find(allianceDoc.lastThreeDayskillData, function(killData){
+	var todayString = this.getTodayString()
+	var memberObject = this.getAllianceMemberById(allianceDoc, memberId)
+	var killData = _.find(memberObject.lastThreeDayskillData, function(killData){
 		return _.isEqual(killData.time, todayTime)
 	})
 	if(_.isObject(killData)){
 		killData.kill += kill
 	}else{
-		if(allianceDoc.lastThreeDayskillData.length >= 3){
+		if(memberObject.lastThreeDayskillData.length >= 3){
 			killData = {
-				time:todayTime,
-				kill:kill
+				kill:kill,
+				date:todayString
 			}
 			allianceDoc.lastThreeDayskillData.pop()
 			allianceDoc.lastThreeDayskillData.push(killData)

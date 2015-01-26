@@ -544,6 +544,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			//console.log(NodeUtils.inspect(report, false, null))
 
 			attackPlayerDoc.basicInfo.kill += countData.attackPlayerKill
+			LogicUtils.addAlliancePlayerLastThreeDaysKillData(attackAllianceDoc, attackPlayerDoc._id, countData.attackPlayerKill)
+
 			var attackPlayerRewards = attackCityReport.attackPlayerData.rewards
 			var attackPlayerKillRewards = DataUtils.getRewardsByKillScoreAndTerrain(countData.attackPlayerKill, defenceAllianceDoc.basicInfo.terrain)
 			attackPlayerRewards = attackPlayerRewards.concat(attackPlayerKillRewards)
@@ -578,6 +580,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				theDefencePlayerDoc = helpDefencePlayerDoc
 
 				helpDefencePlayerDoc.basicInfo.kill += countData.defencePlayerKill
+				LogicUtils.addAlliancePlayerLastThreeDaysKillData(defenceAllianceDoc, helpDefencePlayerDoc._id, countData.defencePlayerKill)
 				helpDefenceDragon.hp -= helpDefenceDragonForFight.totalHp - helpDefenceDragonForFight.currentHp
 				if(helpDefenceDragon.hp <= 0){
 					deathEvent = DataUtils.createPlayerDragonDeathEvent(helpDefencePlayerDoc, helpDefenceDragon)
@@ -637,6 +640,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				theDefencePlayerDoc = defencePlayerDoc
 
 				defencePlayerDoc.basicInfo.kill += countData.defencePlayerKill
+				LogicUtils.addAlliancePlayerLastThreeDaysKillData(defenceAllianceDoc, defencePlayerDoc._id, countData.defencePlayerKill)
 				var defencePlayerRewards = attackCityReport.defencePlayerData.rewards
 				var defencePlayerKillRewards = DataUtils.getRewardsByKillScoreAndTerrain(countData.defencePlayerKill, defenceAllianceDoc.basicInfo.terrain)
 				defencePlayerRewards = defencePlayerRewards.concat(defencePlayerKillRewards)

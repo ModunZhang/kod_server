@@ -106,7 +106,7 @@ var allianceSchema = new Schema({
 		isProtected:{type:Boolean, required:true},
 		lastThreeDayskillData:[{
 			kill:{type:Number, rquired:true},
-			time:{type:Number, required:true}
+			date:{type:String, required:true}
 		}],
 		lastRewardData:{
 			type:{
