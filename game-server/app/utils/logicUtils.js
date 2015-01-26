@@ -2422,14 +2422,13 @@ Utils.addAlliancePlayerLastThreeDaysKillData = function(allianceDoc, memberId, k
 		killData.kill += kill
 	}else{
 		if(memberObject.lastThreeDaysKillData.length >= 3){
-			killData = {
-				kill:kill,
-				date:todayString
-			}
 			memberObject.lastThreeDaysKillData.pop()
-			memberObject.lastThreeDaysKillData.push(killData)
 		}
+		killData = {
+			kill:kill,
+			date:todayString
+		}
+		memberObject.lastThreeDaysKillData.push(killData)
 	}
-
 	return memberObject
 }

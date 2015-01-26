@@ -1980,20 +1980,20 @@ describe("PlayerService", function(){
 		//			done()
 		//		})
 		//})
-
-		it("gacha 正常Gacha1", function(done){
-			Api.gacha(Consts.GachaType.Normal, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("gacha 正常Gacha2", function(done){
-			Api.gacha(Consts.GachaType.Advanced, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
+		//
+		//it("gacha 正常Gacha1", function(done){
+		//	Api.gacha(Consts.GachaType.Normal, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("gacha 正常Gacha2", function(done){
+		//	Api.gacha(Consts.GachaType.Advanced, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
 	})
 
 
