@@ -1315,7 +1315,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, rect){
 			y:rect.y
 		},
 		isProtected:false,
-		lastThreeDayskillData:[],
+		lastThreeDaysKillData:[],
 		lastRewardData:null
 	}
 	allianceDoc.members.push(member)
@@ -2415,19 +2415,19 @@ Utils.getTheDayBeforYesterdayString = function(){
 Utils.addAlliancePlayerLastThreeDaysKillData = function(allianceDoc, memberId, kill){
 	var todayString = this.getTodayString()
 	var memberObject = this.getAllianceMemberById(allianceDoc, memberId)
-	var killData = _.find(memberObject.lastThreeDayskillData, function(killData){
+	var killData = _.find(memberObject.lastThreeDaysKillData, function(killData){
 		return _.isEqual(killData.time, todayTime)
 	})
 	if(_.isObject(killData)){
 		killData.kill += kill
 	}else{
-		if(memberObject.lastThreeDayskillData.length >= 3){
+		if(memberObject.lastThreeDaysKillData.length >= 3){
 			killData = {
 				kill:kill,
 				date:todayString
 			}
-			allianceDoc.lastThreeDayskillData.pop()
-			allianceDoc.lastThreeDayskillData.push(killData)
+			allianceDoc.lastThreeDaysKillData.pop()
+			allianceDoc.lastThreeDaysKillData.push(killData)
 		}
 	}
 

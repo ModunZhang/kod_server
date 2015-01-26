@@ -102,6 +102,10 @@ GameDatas.Dragons.dragonAttributes = require("./Dragons_dragonAttributes.js")
 GameDatas.Dragons.dragonSkills = require("./Dragons_dragonSkills.js")
 GameDatas.Dragons.fightFix = require("./Dragons_fightFix.js")
 
+GameDatas.Gacha = {}
+GameDatas.Gacha.normal = require("./Gacha_normal.js")
+GameDatas.Gacha.advanced = require("./Gacha_advanced.js")
+
 GameDatas.GemsPayment = {}
 GameDatas.GemsPayment.time = require("./GemsPayment_time.js")
 GameDatas.GemsPayment.wood = require("./GemsPayment_wood.js")

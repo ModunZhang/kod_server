@@ -500,6 +500,14 @@ Api.setPveData = function(pveData, fightData, rewards, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.gacha = function(type, callback){
+	var info = {
+		type:type
+	}
+	var route = "logic.playerHandler.gacha"
+	pomelo.request(route, info, callback)
+}
+
 
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){

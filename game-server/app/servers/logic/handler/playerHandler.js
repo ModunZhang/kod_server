@@ -901,3 +901,18 @@ pro.setPveData = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * gacha
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.gacha = function(msg, session, next){
+	var type = msg.type
+	this.playerApiService5.gachaAsync(session.uid, type).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

@@ -58,3 +58,13 @@ intInit["dragonReviveNeedMinutes"] = {
 	value:5,
 	desc:"龙复活需要的时间"
 }
+intInit["casinoTokenNeededPerNormalGacha"] = {
+	type:"casinoTokenNeededPerNormalGacha",
+	value:100,
+	desc:"普通gacha一次需要多少赌币"
+}
+intInit["casinoTokenNeededPerAdvancedGacha"] = {
+	type:"casinoTokenNeededPerAdvancedGacha",
+	value:1000,
+	desc:"高级gacha一次需要多少赌币"
+}

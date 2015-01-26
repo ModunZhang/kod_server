@@ -37,6 +37,7 @@ var MilitaryTechs = GameDatas.MilitaryTechs
 var MilitaryTechLevelUp = GameDatas.MilitaryTechLevelUp
 var Items = GameDatas.Items
 var KillDropItems = GameDatas.KillDropItems
+var Gacha = GameDatas.Gacha
 
 
 var Utils = module.exports
@@ -2897,4 +2898,55 @@ Utils.getRewardsByKillScoreAndTerrain = function(killScore, terrain){
 	})
 
 	return rewards
+}
+
+/**
+ * 获取所需的赌币
+ * @param gachaType
+ * @returns {*}
+ */
+Utils.getCasinoTokeNeededInGachaType = function(gachaType){
+	if(_.isEqual(gachaType, Consts.GachaType.Normal)){
+		return PlayerInitData.intInit.casinoTokenNeededPerNormalGacha.value
+	}
+	return PlayerInitData.intInit.casinoTokenNeededPerAdvancedGacha.value
+}
+
+/**
+ * 获取Gacha出的道具
+ * @param gachaType
+ * @returns {*}
+ */
+Utils.getGachaItemByType = function(gachaType){
+	var SortFunc = function(objects){
+		var totalWeight = 0
+		_.each(objects, function(object){
+			totalWeight += object.weight + 1
+		})
+
+		_.each(objects, function(object){
+			var weight = object.weight + 1 + (Math.random() * totalWeight << 0)
+			object.weight = weight
+		})
+
+		return _.sortBy(objects, function(object){
+			return -object.weight
+		})
+	}
+
+	var items = []
+	var itemConfigs = Gacha[gachaType]
+	_.each(itemConfigs, function(itemConfig){
+		if(_.isObject(itemConfig)){
+			var item = {
+				name:itemConfig.itemName,
+				count:itemConfig.itemCount,
+				weight:itemConfig.weight
+			}
+			items.push(item)
+		}
+	})
+
+	items = SortFunc(items)
+	return items[0]
 }

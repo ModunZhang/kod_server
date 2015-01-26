@@ -87,6 +87,10 @@ module.exports = {
 		Shrine:"shrine",
 		HelpDefence:"helpDefence"
 	},
+	GachaType:{
+		Normal:"normal",
+		Advanced:"advanced"
+	},
 
 	AllianceLanguage:{
 		All:"all",

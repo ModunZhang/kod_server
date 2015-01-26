@@ -200,3 +200,81 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 		}
 	})
 }
+
+/**
+ * gacha
+ * @param playerId
+ * @param type
+ * @param callback
+ */
+pro.gacha = function(playerId, type, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.contains(_.values(Consts.GachaType), type)){
+		callback(new Error("type 不合法"))
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+		var casinoTokenNeeded = DataUtils.getCasinoTokeNeededInGachaType(type)
+		if(playerDoc.resources.casinoToken - casinoTokenNeeded < 0) return Promise.reject("赌币不足")
+		playerDoc.resources.casinoToken -= casinoTokenNeeded
+		playerData.resources = playerDoc.resources
+
+		playerData.__items = []
+		var count = _.isEqual(type, Consts.GachaType.Normal) ? 1 : 3
+		for(var i = 0; i < count; i ++){
+			var item = DataUtils.getGachaItemByType(type)
+			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
+			if(resp.newlyCreated){
+				playerData.__items.push({
+					type:Consts.DataChangedType.Add,
+					data:resp.item
+				})
+			}else{
+				playerData.__items.push({
+					type:Consts.DataChangedType.Edit,
+					data:resp.item
+				})
+			}
+		}
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
