@@ -1124,27 +1124,123 @@ Utils.getPlayerTreatSoldierRequired = function(playerDoc, soldiers){
 }
 
 /**
- * 获取龙的活力值
- * @param playerDoc
+ * 获取龙力量Buff
  * @param dragon
- * @returns {*}
+ * @param terrain
+ * @returns {number}
  */
-Utils.getPlayerDragonVitality = function(playerDoc, dragon){
-	var config = Dragons.dragonAttributes[dragon.star]
-	var vitality = config.initVitality + (config.perLevelVitality * dragon.level)
-	return vitality
+Utils.getDragonStrengthBuff = function(dragon, terrain){
+	var terrainBuff = _.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain) ? 0.1 : 0
+	var dragonBreathSkill = _.find(dragon.skills, function(skill){
+		return _.isEqual(skill.name, "dragonBreath")
+	})
+	var skillBuff = 0
+	if(_.isObject(dragonBreathSkill)){
+		var config = Dragons.dragonSkills["dragonBreath"]
+		skillBuff = dragonBreathSkill.level * config.effection
+	}
+	return terrainBuff + skillBuff
 }
 
 /**
  * 获取龙的力量
- * @param playerDoc
+ * @param dragon
+ * @param terrain
+ * @returns {*}
+ */
+Utils.getDragonStrength = function(dragon, terrain){
+	var config = Dragons.dragonAttributes[dragon.star]
+	var strength = config.initStrength + (config.perLevelStrength * dragon.level)
+	var buff = this.getDragonStrengthBuff(dragon, terrain)
+	strength += Math.floor(strength * buff)
+	_.each(dragon.equipments, function(equipment, category){
+		if(!_.isEmpty(equipment.name)){
+			var maxStar = DragonEquipments.equipments[equipment.name].maxStar
+			var equipmentConfig = DragonEquipments[category][maxStar + "_" + equipment.star]
+			var strengthAdd = equipmentConfig.strength
+			strength += strengthAdd
+		}
+	})
+
+	return strength
+}
+
+/**
+ * 获取龙活力Buff
+ * @param dragon
+ * @returns {number}
+ */
+Utils.getDragonVitalityBuff = function(dragon){
+	var dragonBloodSkill = _.find(dragon.skills, function(skill){
+		return _.isEqual(skill.name, "dragonBlood")
+	})
+	if(_.isObject(dragonBloodSkill)){
+		var config = Dragons.dragonSkills["dragonBlood"]
+		var skillBuff = dragonBloodSkill.level * config.effection
+		return skillBuff
+	}
+	return 0
+}
+
+/**
+ * 获取龙的活力值
  * @param dragon
  * @returns {*}
  */
-Utils.getPlayerDragonStrength = function(playerDoc, dragon){
+Utils.getDragonVitality = function(dragon){
 	var config = Dragons.dragonAttributes[dragon.star]
-	var vitality = config.initStrength + (config.perLevelStrength * dragon.level)
+	var vitality = config.initVitality + (config.perLevelVitality * dragon.level)
+	var buff = this.getDragonVitalityBuff(dragon)
+	vitality += Math.floor(vitality * buff)
+	_.each(dragon.equipments, function(equipment, category){
+		if(!_.isEmpty(equipment.name)){
+			var maxStar = DragonEquipments.equipments[equipment.name].maxStar
+			var equipmentConfig = DragonEquipments[category][maxStar + "_" + equipment.star]
+			var strengthAdd = equipmentConfig.vitality
+			vitality += strengthAdd
+		}
+	})
+
 	return vitality
+}
+
+/**
+ * 获取龙领导力Buff
+ * @param dragon
+ * @returns {number}
+ */
+Utils.getDragonLeadershipBuff = function(dragon){
+	var leadershipSkill = _.find(dragon.skills, function(skill){
+		return _.isEqual(skill.name, "leadership")
+	})
+	if(_.isObject(leadershipSkill)){
+		var config = Dragons.dragonSkills["leadership"]
+		var skillBuff = leadershipSkill.level * config.effection
+		return skillBuff
+	}
+	return 0
+}
+
+/**
+ * 获取龙的领导力
+ * @param dragon
+ * @returns {*}
+ */
+Utils.getDragonLeadership = function(dragon){
+	var config = Dragons.dragonAttributes[dragon.star]
+	var leadership = config.initLeadership + (config.perLevelLeadership * dragon.level)
+	var buff = this.getDragonLeadershipBuff(dragon)
+	leadership += Math.floor(leadership * buff)
+	_.each(dragon.equipments, function(equipment, category){
+		if(!_.isEmpty(equipment.name)){
+			var maxStar = DragonEquipments.equipments[equipment.name].maxStar
+			var equipmentConfig = DragonEquipments[category][maxStar + "_" + equipment.star]
+			var leadershipAdd = equipmentConfig.leadership
+			leadership += leadershipAdd
+		}
+	})
+
+	return leadership
 }
 
 /**
@@ -1919,22 +2015,25 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers){
  * 创建战斗用龙
  * @param playerDoc
  * @param dragon
+ * @param terrain
  * @returns {*}
  */
-Utils.createPlayerDragonForFight = function(playerDoc, dragon){
+Utils.createPlayerDragonForFight = function(playerDoc, dragon, terrain){
 	this.refreshPlayerDragonsHp(playerDoc, dragon)
 	var dragonForFight = {
 		type:dragon.type,
 		level:dragon.level,
-		strength:dragon.strength,
-		vitality:dragon.vitality,
-		maxHp:this.getPlayerDragonHpMax(playerDoc, dragon),
+		strength:this.getDragonStrength(dragon, terrain),
+		vitality:this.getDragonVitality(dragon),
+		maxHp:this.getDragonHpMax(dragon),
 		totalHp:dragon.hp,
 		currentHp:dragon.hp,
 		isWin:false
 	}
 	return dragonForFight
 }
+
+Utils.createDragonForFight(dragon)
 
 /**
  * 创建战斗用的城墙
@@ -1974,10 +2073,11 @@ Utils.createPlayerWallForFight = function(playerDoc){
 
 /**
  * 获取圣地部队信息
+ * @param allianceDoc
  * @param stageName
  * @returns {Array}
  */
-Utils.getAllianceShrineStageTroops = function(stageName){
+Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 	var troops = []
 	var troopStrings = AllianceShrine[stageName].troops.split("&")
 	for(var i = 0; i < troopStrings.length; i++){
@@ -1990,16 +2090,14 @@ Utils.getAllianceShrineStageTroops = function(stageName){
 			star:parseInt(dragonParams[1]),
 			level:parseInt(dragonParams[2])
 		}
-		var dragonVitality = this.getPlayerDragonVitality(null, dragon)
-		dragon.vitality = dragonVitality
-		var dragonHp = this.getPlayerDragonHpMax(null, dragon)
 		var dragonForFight = {
-			type:dragonParams[0],
-			strength:this.getPlayerDragonStrength(null, dragon),
-			vitality:dragonVitality,
-			maxHp:dragonHp,
-			totalHp:dragonHp,
-			currentHp:dragonHp,
+			type:dragon.type,
+			level:dragon.level,
+			strength:this.getDragonStrength(dragon, allianceDoc.basicInfo.terrain),
+			vitality:this.getDragonVitality(dragon),
+			maxHp:this.getDragonHpMax(dragon),
+			totalHp:this.getDragonHpMax(dragon),
+			currentHp:this.getDragonHpMax(dragon),
 			isWin:false
 		}
 		var soldiersForFight = []
@@ -2276,13 +2374,13 @@ Utils.getAllianceProtectTimeAfterAllianceFight = function(allianceDoc){
 }
 
 /**
- * 获取玩家龙的血量的最大值
- * @param playerDoc
+ * 获取龙的血量的最大值
  * @param dragon
  * @returns {number}
  */
-Utils.getPlayerDragonHpMax = function(playerDoc, dragon){
-	return dragon.vitality * 2
+Utils.getDragonHpMax = function(dragon){
+	var vitality = this.getDragonVitality(dragon)
+	return vitality * 2
 }
 
 /**
@@ -2376,8 +2474,6 @@ Utils.addPlayerDragonExp = function(playerDoc, dragon, expAdd){
 		else{
 			dragon.level += 1
 			dragon.exp -= nextLevelExpNeed
-			dragon.vitality = this.getPlayerDragonVitality(playerDoc, dragon)
-			dragon.strength = this.getPlayerDragonStrength(playerDoc, dragon)
 		}
 	}
 }
@@ -3038,7 +3134,7 @@ Utils.getDay14Rewards = function(day){
  */
 Utils.getPlayerLevel = function(playerDoc){
 	var levelConfigs = PlayerInitData.playerLevel
-	for(var i = levelConfigs.length - 1; i >= 1; i --){
+	for(var i = levelConfigs.length - 1; i >= 1; i--){
 		var levelConfig = levelConfigs[i]
 		if(playerDoc.basicInfo.levelExp >= levelConfig.expFrom) return levelConfig.level
 	}

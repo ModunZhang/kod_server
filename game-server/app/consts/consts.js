@@ -97,6 +97,11 @@ module.exports = {
 		M60:3,
 		M120:4
 	},
+	DragonFightBuffTerrain:{
+		redDragon:"grassLand",
+		blueDragon:"desert",
+		greenDragon:"iceField"
+	},
 
 	AllianceLanguage:{
 		All:"all",

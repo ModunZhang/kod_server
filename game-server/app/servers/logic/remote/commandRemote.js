@@ -778,10 +778,8 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 				equipment.exp = 0
 				equipment.buffs = []
 			})
-			dragon.vitality = DataUtils.getPlayerDragonVitality(doc, dragon)
-			dragon.hp = dragon.vitality * 2
+			dragon.hp = DataUtils.getDragonHpMax(dragon)
 			dragon.hpRefreshTime = Date.now()
-			dragon.strength = DataUtils.getPlayerDragonStrength(doc, dragon)
 		}
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){

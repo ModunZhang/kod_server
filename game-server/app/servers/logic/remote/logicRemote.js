@@ -24,6 +24,7 @@ var pro = LogicRemote.prototype
 /**
  * 将玩家踢下线
  * @param uid
+ * @param reason
  * @param callback
  */
 pro.kickPlayer = function(uid, reason, callback){

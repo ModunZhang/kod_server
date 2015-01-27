@@ -1474,8 +1474,6 @@ Utils.getPlayerMarchTroopDetail = function(playerDoc, marchEventId, dragon, sold
 			type:dragon.type,
 			star:dragon.star,
 			level:dragon.level,
-			strength:dragon.strength,
-			vitality:dragon.vitality,
 			hp:dragon.hp,
 			equipments:getDragonEquipments(dragon),
 			skills:getDragonSkills(dragon)
