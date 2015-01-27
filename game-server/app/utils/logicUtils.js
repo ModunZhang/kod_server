@@ -2425,7 +2425,7 @@ Utils.addAlliancePlayerLastThreeDaysKillData = function(allianceDoc, memberId, k
 	var todayString = this.getTodayString()
 	var memberObject = this.getAllianceMemberById(allianceDoc, memberId)
 	var killData = _.find(memberObject.lastThreeDaysKillData, function(killData){
-		return _.isEqual(killData.time, todayTime)
+		return _.isEqual(killData.date, todayString)
 	})
 	if(_.isObject(killData)){
 		killData.kill += kill
