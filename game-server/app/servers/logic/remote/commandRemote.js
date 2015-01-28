@@ -692,7 +692,7 @@ pro.dragonhp = function(uid, dragonType, count, callback){
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
 		}
-		return self.playerDao.updateAsync(playerDoc)
+		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
