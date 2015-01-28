@@ -955,7 +955,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers)
 			attackTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToWoundedSoldierPercent(attackPlayerDoc)
 			if(!_.isObject(villageEvent)){
-				var villageDragonForFight = DataUtils.createDragonForFight(villageDragon, targetAllianceDoc.basicInfo.terrain)
+				var villageDragonForFight = DataUtils.createDragonForFight(village.dragon, targetAllianceDoc.basicInfo.terrain)
 				var villageSoldiersForFight = DataUtils.createPlayerSoldiersForFight(null, village.soldiers)
 				var villageDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, villageSoldiersForFight)
 				var villageDragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, villageDragonForFight, villageDragonFightFixEffect)
