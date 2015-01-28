@@ -1992,10 +1992,11 @@ Utils.createPlayerSpecialSoldierForFight = function(playerDoc, soldierName, sold
 /**
  * 创建战斗用军队
  * @param playerDoc
+ * @param dragon
  * @param soldiers
  * @returns {Array}
  */
-Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers){
+Utils.createPlayerSoldiersForFight = function(playerDoc, dragon, soldiers){
 	var self = this
 	var soldiersForFight = []
 	_.each(soldiers, function(soldier){
