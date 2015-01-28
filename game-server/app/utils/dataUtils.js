@@ -2564,7 +2564,7 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
 	var config = BuildingFunction.dragonEyrie[playerDoc.buildings.location_4.level]
 	var dragons = arguments.length > 1 ? [dragon] : playerDoc.dragons
 	_.each(dragons, function(dragon){
-		if(dragon.hp > 0 && dragon.level > 0 && _.isEqual(dragon.status, Consts.DragonStatus.Free)){
+		if(dragon.hp > 0 && dragon.level > 0 && !_.isEqual(dragon.status, Consts.DragonStatus.March)){
 			var dragonMaxHp = self.getDragonHpMax(dragon)
 			if(dragon.hp < dragonMaxHp){
 				var totalMilSeconds = Date.now() - dragon.hpRefreshTime
@@ -3150,7 +3150,7 @@ Utils.getGachaItemByType = function(gachaType){
 /**
  * 获取每日登陆奖励中当日的奖励道具
  * @param day
- * @returns {{name: (itemName|*|info.itemName), count: (itemCount|*)}}
+ * @returns {*}
  */
 Utils.getDay60RewardItem = function(day){
 	var configString = Activities.day60[day].rewards
