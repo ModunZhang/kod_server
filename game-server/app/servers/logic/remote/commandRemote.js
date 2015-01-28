@@ -660,6 +660,7 @@ pro.rmtreatsoldierevents = function(uid, callback){
 pro.dragonhp = function(uid, dragonType, count, callback){
 	var self = this
 	var playerDoc = null
+	var dragon = null
 	var deathEvent = null
 	this.playerDao.findByIdAsync(uid).then(function(doc){
 		if(!_.isObject(doc)){
@@ -667,7 +668,7 @@ pro.dragonhp = function(uid, dragonType, count, callback){
 		}
 		playerDoc = doc
 
-		var dragon = _.find(playerDoc.dragons, function(dragon){
+		dragon = _.find(playerDoc.dragons, function(dragon){
 			if(_.isEqual(dragon.type, dragonType)) return true
 		})
 		if(dragon && count >= 0){
@@ -679,9 +680,12 @@ pro.dragonhp = function(uid, dragonType, count, callback){
 			}
 		}
 		return self.playerDao.updateAsync(playerDoc)
-	}).then(function(playerDoc){
-		return self.timeEventService.addPlayerTimeEventAsync(playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime)
-	}).then(function(playerDoc){
+	}).then(function(){
+		if(dragon.hp <= 0){
+			return self.timeEventService.addPlayerTimeEventAsync(playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime)
+		}
+		return Promise.resolve()
+	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerDoc)
 	}).then(function(){
 		callback()
