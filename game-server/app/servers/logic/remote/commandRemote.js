@@ -660,37 +660,59 @@ pro.rmtreatsoldierevents = function(uid, callback){
 pro.dragonhp = function(uid, dragonType, count, callback){
 	var self = this
 	var playerDoc = null
-	var dragon = null
-	var deathEvent = null
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
 	this.playerDao.findByIdAsync(uid).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
 
-		dragon = _.find(playerDoc.dragons, function(dragon){
+		var dragon = _.find(playerDoc.dragons, function(dragon){
 			if(_.isEqual(dragon.type, dragonType)) return true
 		})
 		if(dragon && count >= 0){
 			dragon.hp = count
 			dragon.hpRefreshTime = Date.now()
+			var deathEvent = null
 			if(dragon.hp <= 0){
 				deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, dragon)
 				playerDoc.dragonDeathEvents.push(deathEvent)
+				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+			}else{
+				deathEvent = _.find(playerDoc.dragonDeathEvents, function(deathEvent){
+					return _.isEqual(deathEvent.dragonType, dragon.type)
+				})
+				if(_.isObject(deathEvent)){
+					LogicUtils.removeItemInArray(playerDoc.dragonDeathEvents, deathEvent)
+					eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, deathEvent.id])
+				}
 			}
+			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
 		}
 		return self.playerDao.updateAsync(playerDoc)
 	}).then(function(){
-		if(dragon.hp <= 0){
-			return self.timeEventService.addPlayerTimeEventAsync(playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime)
-		}
-		return Promise.resolve()
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerDoc)
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
