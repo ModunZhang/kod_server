@@ -2033,7 +2033,25 @@ Utils.createPlayerDragonForFight = function(playerDoc, dragon, terrain){
 	return dragonForFight
 }
 
-Utils.createDragonForFight(dragon)
+/**
+ * 创建圣地,村落中的战斗用龙
+ * @param dragon
+ * @param terrain
+ * @returns {{type: *, level: *, strength: *, vitality: *, maxHp: number, totalHp: number, currentHp: number, isWin: boolean}}
+ */
+Utils.createDragonForFight = function(dragon, terrain){
+	var dragonForFight = {
+		type:dragon.type,
+		level:dragon.level,
+		strength:this.getDragonStrength(dragon, terrain),
+		vitality:this.getDragonVitality(dragon),
+		maxHp:this.getDragonHpMax(dragon),
+		totalHp:this.getDragonHpMax(dragon),
+		currentHp:this.getDragonHpMax(dragon),
+		isWin:false
+	}
+	return dragonForFight
+}
 
 /**
  * 创建战斗用的城墙
@@ -2090,16 +2108,7 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 			star:parseInt(dragonParams[1]),
 			level:parseInt(dragonParams[2])
 		}
-		var dragonForFight = {
-			type:dragon.type,
-			level:dragon.level,
-			strength:this.getDragonStrength(dragon, allianceDoc.basicInfo.terrain),
-			vitality:this.getDragonVitality(dragon),
-			maxHp:this.getDragonHpMax(dragon),
-			totalHp:this.getDragonHpMax(dragon),
-			currentHp:this.getDragonHpMax(dragon),
-			isWin:false
-		}
+		var dragonForFight = this.createDragonForFight(dragon, allianceDoc.basicInfo.terrain)
 		var soldiersForFight = []
 		_.each(soldierConfigStrings, function(soldierConfigString){
 			var params = soldierConfigString.split("_")
@@ -2446,7 +2455,7 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
 	var dragons = arguments.length > 1 ? [dragon] : playerDoc.dragons
 	_.each(dragons, function(dragon){
 		if(dragon.hp > 0 && dragon.level > 0 && _.isEqual(dragon.status, Consts.DragonStatus.Free)){
-			var dragonMaxHp = self.getPlayerDragonHpMax(playerDoc, dragon)
+			var dragonMaxHp = self.getDragonHpMax(dragon)
 			if(dragon.hp < dragonMaxHp){
 				var totalMilSeconds = Date.now() - dragon.hpRefreshTime
 				var recoveryPerMilSecond = config.hpRecoveryPerHour / 60 / 60 / 1000

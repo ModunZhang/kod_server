@@ -467,13 +467,13 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				helpDefencePlayerDoc = doc
 			}
 			attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
-			attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon)
+			attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon, defencePlayerDoc.basicInfo.terrain)
 			attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers)
 			attackTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToWoundedSoldierPercent(attackPlayerDoc)
 			if(_.isObject(helpDefencePlayerDoc)){
 				helpedByTroop = defencePlayerDoc.helpedByTroops[0]
 				helpDefenceDragon = helpDefencePlayerDoc.dragons[helpedByTroop.dragon.type]
-				helpDefenceDragonForFight = DataUtils.createPlayerDragonForFight(helpDefencePlayerDoc, helpDefenceDragon)
+				helpDefenceDragonForFight = DataUtils.createPlayerDragonForFight(helpDefencePlayerDoc, helpDefenceDragon, defencePlayerDoc.basicInfo.terrain)
 				helpDefenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(helpDefencePlayerDoc, helpedByTroop.soldiers)
 				helpDefenceTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToWoundedSoldierPercent(helpDefencePlayerDoc)
 				helpDefenceDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, helpDefenceSoldiersForFight)
@@ -481,7 +481,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			defenceDragon = LogicUtils.getPlayerDefenceDragon(defencePlayerDoc)
 			var defenceSoldiers = DataUtils.getPlayerDefenceSoldiers(defencePlayerDoc)
 			if(_.isObject(defenceDragon) && defenceSoldiers.length > 0){
-				defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon)
+				defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon, defencePlayerDoc.basicInfo.terrain)
 				defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, defenceSoldiers)
 				defenceTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToWoundedSoldierPercent(defencePlayerDoc)
 				defenceDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, defenceSoldiersForFight)
@@ -951,19 +951,11 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				return Promise.resolve()
 			}
 			attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
-			attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon)
+			attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon, targetAllianceDoc.basicInfo.terrain)
 			attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers)
 			attackTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToWoundedSoldierPercent(attackPlayerDoc)
 			if(!_.isObject(villageEvent)){
-				var villageDragon = {
-					type:village.dragon.type,
-					level:village.dragon.level,
-					strength:DataUtils.getPlayerDragonStrength(null, village.dragon),
-					vitality:DataUtils.getPlayerDragonVitality(null, village.dragon)
-				}
-				villageDragon.hp = DataUtils.getPlayerDragonHpMax(null, villageDragon)
-
-				var villageDragonForFight = DataUtils.createPlayerDragonForFight(null, villageDragon)
+				var villageDragonForFight = DataUtils.createDragonForFight(villageDragon, targetAllianceDoc.basicInfo.terrain)
 				var villageSoldiersForFight = DataUtils.createPlayerSoldiersForFight(null, village.soldiers)
 				var villageDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, villageSoldiersForFight)
 				var villageDragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, villageDragonForFight, villageDragonFightFixEffect)
@@ -1115,7 +1107,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			}
 			if(!_.isEqual(attackPlayerDoc.alliance.id, defencePlayerDoc.alliance.id)){
 				defenceDragon = defencePlayerDoc.dragons[villageEvent.playerData.dragon.type]
-				defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon)
+				defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon, targetAllianceDoc.basicInfo.terrain)
 				defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, villageEvent.playerData.soldiers)
 				var defenceTreatSoldierPercent = DataUtils.getPlayerDamagedSoldierToWoundedSoldierPercent(defencePlayerDoc)
 				var defenceDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, defenceSoldiersForFight)
@@ -1409,7 +1401,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				helpDefencePlayerDoc = doc
 			}
 			var attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
-			var attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon)
+			var attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon, defencePlayerDoc.basicInfo.terrain)
 			var dragonFightData = null
 			var report = null
 			var strikeMarchReturnEvent = null
@@ -1417,7 +1409,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 			var rewardsForDefencePlayer = null
 			if(_.isObject(helpDefencePlayerDoc)){
 				var helpDefenceDragon = helpDefencePlayerDoc.dragons[defencePlayerDoc.helpedByTroops[0].dragon.type]
-				var helpDefenceDragonForFight = DataUtils.createPlayerDragonForFight(helpDefencePlayerDoc, helpDefenceDragon)
+				var helpDefenceDragonForFight = DataUtils.createPlayerDragonForFight(helpDefencePlayerDoc, helpDefenceDragon, defencePlayerDoc.basicInfo.terrain)
 				dragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, helpDefenceDragonForFight, 0)
 				report = ReportUtils.createStrikeCityFightWithHelpDefenceDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defencePlayerDoc, helpDefencePlayerDoc, helpDefenceDragonForFight, dragonFightData)
 				LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
@@ -1593,7 +1585,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc._id, defenceAllianceData])
 				}else{
-					var defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon)
+					var defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon, defencePlayerDoc.basicInfo.terrain)
 					dragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, defenceDragonForFight, 0)
 					report = ReportUtils.createStrikeCityFightWithDefenceDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defencePlayerDoc, defenceDragonForFight, dragonFightData)
 					LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
@@ -1756,7 +1748,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				defencePlayerDoc = doc
 			}
 			attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
-			attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon)
+			attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon, targetAllianceDoc.basicInfo.terrain)
 			village = LogicUtils.getAllianceVillageById(targetAllianceDoc, event.defenceVillageData.id)
 			if(!_.isObject(village)){
 				var deletedVillage = {
@@ -1781,14 +1773,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				return Promise.resolve()
 			}
 			if(!_.isObject(villageEvent)){
-				var villageDragon = {
-					type:village.dragon.type,
-					level:village.dragon.level,
-					strength:DataUtils.getPlayerDragonStrength(null, village.dragon),
-					vitality:DataUtils.getPlayerDragonVitality(null, village.dragon)
-				}
-				villageDragon.hp = DataUtils.getPlayerDragonHpMax(null, villageDragon)
-				var villageDragonForFight = DataUtils.createPlayerDragonForFight(null, villageDragon)
+				var villageDragonForFight = DataUtils.createDragonForFight(village.dragon, targetAllianceDoc.basicInfo.terrain)
 				var villageDragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, villageDragonForFight, 0)
 
 				report = ReportUtils.createStrikeVillageFightWithVillageDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, targetAllianceDoc, village, villageDragonForFight, villageDragonFightData)
@@ -1841,7 +1826,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 			}
 			if(!_.isEqual(attackPlayerDoc.alliance.id, defencePlayerDoc.alliance.id)){
 				var defenceDragon = defencePlayerDoc.dragons[villageEvent.playerData.dragon.type]
-				var defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon)
+				var defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon, targetAllianceDoc.basicInfo.terrain)
 				var defenceDragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, defenceDragonForFight, 0)
 
 				report = ReportUtils.createStrikeVillageFightWithDefencePlayerDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, targetAllianceDoc, village, defenceAllianceDoc, villageEvent, defencePlayerDoc, defenceDragonForFight, defenceDragonFightData)
@@ -2075,7 +2060,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 	Promise.all(funcs).then(function(){
 		_.each(event.playerTroops, function(playerTroop){
 			var playerDoc = playerDocs[playerTroop.id]
-			var dragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDoc.dragons[playerTroop.dragon.type])
+			var dragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDoc.dragons[playerTroop.dragon.type], allianceDoc.basicInfo.terrain)
 			var soldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, playerTroop.soldiers)
 			var playerTroopForFight = {
 				id:playerTroop.id,
@@ -2090,7 +2075,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			return -getTotalPower(playerTroopForFight.soldiersForFight)
 		})
 
-		var stageTroopsForFight = DataUtils.getAllianceShrineStageTroops(event.stageName)
+		var stageTroopsForFight = DataUtils.getAllianceShrineStageTroops(allianceDoc, event.stageName)
 		var playerAvgPower = LogicUtils.getPlayerTroopsAvgPower(playerTroopsForFight)
 		var currentRound = 1
 		var playerSuccessedTroops = []

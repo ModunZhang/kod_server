@@ -284,7 +284,7 @@ var DragonHp = function(playerDoc, playerData, dragonType, itemConfig){
 	if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
 	if(dragon.hp <= 0) return Promise.reject(new Error("龙还未复活"))
 	DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
-	var dragonHpMax = DataUtils.getPlayerDragonHpMax(playerDoc, dragon)
+	var dragonHpMax = DataUtils.getDragonHpMax(dragon)
 	dragon.hp += parseInt(itemConfig.effect)
 	dragon.hp = dragon.hp <= dragonHpMax ? dragon.hp : dragonHpMax
 	playerData.dragons = {}
