@@ -11,8 +11,8 @@ dragonSkills["infantryEnhance"] = {
 	heroBloodCostPerLevel:360,
 	effection:0.010000
 }
-dragonSkills["hunterEnhance"] = {
-	dragonSkill:"hunterEnhance",
+dragonSkills["archerEnhance"] = {
+	dragonSkill:"archerEnhance",
 	unlockStar:1,
 	IntiLevel:0,
 	maxLevel:30,

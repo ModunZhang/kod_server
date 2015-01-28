@@ -3,75 +3,75 @@
 var equipmentBuff = {}
 module.exports = equipmentBuff
 
-equipmentBuff["addInfantryAtk"] = {
-	buff:"addInfantryAtk",
+equipmentBuff["infantryAtkAdd"] = {
+	buff:"infantryAtkAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addInfantryHp"] = {
-	buff:"addInfantryHp",
+equipmentBuff["infantryHpAdd"] = {
+	buff:"infantryHpAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addInfantryLoad"] = {
-	buff:"addInfantryLoad",
+equipmentBuff["infantryLoadAdd"] = {
+	buff:"infantryLoadAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addInfantryMarch"] = {
-	buff:"addInfantryMarch",
+equipmentBuff["infantryMarchAdd"] = {
+	buff:"infantryMarchAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addHunterAtk"] = {
-	buff:"addHunterAtk",
+equipmentBuff["hHunterAtkAdd"] = {
+	buff:"hHunterAtkAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addHunterHp"] = {
-	buff:"addHunterHp",
+equipmentBuff["hunterHpAdd"] = {
+	buff:"hunterHpAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addHunterLoad"] = {
-	buff:"addHunterLoad",
+equipmentBuff["hunterLoadAdd"] = {
+	buff:"hunterLoadAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addHunterMarch"] = {
-	buff:"addHunterMarch",
+equipmentBuff["hunterMarchAdd"] = {
+	buff:"hunterMarchAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addCavalryAtk"] = {
-	buff:"addCavalryAtk",
+equipmentBuff["cavalryAtkAdd"] = {
+	buff:"cavalryAtkAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addCavalryHp"] = {
-	buff:"addCavalryHp",
+equipmentBuff["cavalryHpAdd"] = {
+	buff:"cavalryHpAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addCavalryLoad"] = {
-	buff:"addCavalryLoad",
+equipmentBuff["cavalryLoadAdd"] = {
+	buff:"cavalryLoadAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addCavalryMarch"] = {
-	buff:"addCavalryMarch",
+equipmentBuff["cavalryMarchAdd"] = {
+	buff:"cavalryMarchAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addSiegeAtk"] = {
-	buff:"addSiegeAtk",
+equipmentBuff["siegeAtkAdd"] = {
+	buff:"siegeAtkAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addSiegeHp"] = {
-	buff:"addSiegeHp",
+equipmentBuff["siegeHpAdd"] = {
+	buff:"siegeHpAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addSiegeLoad"] = {
-	buff:"addSiegeLoad",
+equipmentBuff["siegeLoadAdd"] = {
+	buff:"siegeLoadAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addSiegeMarch"] = {
-	buff:"addSiegeMarch",
+equipmentBuff["siegeMarchAdd"] = {
+	buff:"siegeMarchAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addMarchSize"] = {
-	buff:"addMarchSize",
+equipmentBuff["marchSizeAdd"] = {
+	buff:"marchSizeAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["addCasualtyRate"] = {
-	buff:"addCasualtyRate",
+equipmentBuff["casualtyRateAdd"] = {
+	buff:"casualtyRateAdd",
 	buffEffect:0.020000
 }

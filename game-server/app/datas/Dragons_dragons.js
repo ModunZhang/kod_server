@@ -6,7 +6,7 @@ module.exports = dragons
 dragons["redDragon"] = {
 	dragonType:"redDragon",
 	skill_1:"infantryEnhance",
-	skill_2:"hunterEnhance",
+	skill_2:"archerEnhance",
 	skill_3:"dragonBlood",
 	skill_4:"cavalryEnhance",
 	skill_5:"siegeEnhance",
@@ -18,7 +18,7 @@ dragons["redDragon"] = {
 dragons["blueDragon"] = {
 	dragonType:"blueDragon",
 	skill_1:"infantryEnhance",
-	skill_2:"hunterEnhance",
+	skill_2:"archerEnhance",
 	skill_3:"dragonBlood",
 	skill_4:"cavalryEnhance",
 	skill_5:"siegeEnhance",
@@ -30,7 +30,7 @@ dragons["blueDragon"] = {
 dragons["greenDragon"] = {
 	dragonType:"greenDragon",
 	skill_1:"infantryEnhance",
-	skill_2:"hunterEnhance",
+	skill_2:"archerEnhance",
 	skill_3:"dragonBlood",
 	skill_4:"cavalryEnhance",
 	skill_5:"siegeEnhance",

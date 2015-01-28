@@ -659,20 +659,30 @@ pro.rmtreatsoldierevents = function(uid, callback){
  */
 pro.dragonhp = function(uid, dragonType, count, callback){
 	var self = this
+	var playerDoc = null
+	var deathEvent = null
 	this.playerDao.findByIdAsync(uid).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
+		playerDoc = doc
 
-		var dragon = _.find(doc.dragons, function(dragon){
+		var dragon = _.find(playerDoc.dragons, function(dragon){
 			if(_.isEqual(dragon.type, dragonType)) return true
 		})
 		if(dragon && count >= 0){
 			dragon.hp = count
+			dragon.hpRefreshTime = Date.now()
+			if(dragon.hp <= 0){
+				deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, dragon)
+				playerDoc.dragonDeathEvents.push(deathEvent)
+			}
 		}
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, doc)
+		return self.playerDao.updateAsync(playerDoc)
+	}).then(function(playerDoc){
+		return self.timeEventService.addPlayerTimeEventAsync(playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime)
+	}).then(function(playerDoc){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerDoc)
 	}).then(function(){
 		callback()
 	}).catch(function(e){

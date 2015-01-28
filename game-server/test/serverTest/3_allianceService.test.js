@@ -1035,7 +1035,7 @@ describe("AllianceService", function(){
 		//		})
 		//	})
 		//})
-
+		//
 		//it("activateAllianceShrineStage 此联盟事件已经激活", function(done){
 		//	Api.activateAllianceShrineStage("1_1", function(doc){
 		//		doc.code.should.equal(500)
@@ -1043,7 +1043,7 @@ describe("AllianceService", function(){
 		//		done()
 		//	})
 		//})
-
+		//
 		//it("activateAllianceShrineStage 联盟感知力不足", function(done){
 		//	Api.sendChat("allianceperception 0", function(doc){
 		//		doc.code.should.equal(200)
@@ -1054,7 +1054,7 @@ describe("AllianceService", function(){
 		//		})
 		//	})
 		//})
-
+		//
 		//it("attackAllianceShrine 正常行军1", function(done){
 		//	var m_allianceData = null
 		//	Api.sendChat("dragonstar redDragon 1", function(doc){
@@ -1089,7 +1089,7 @@ describe("AllianceService", function(){
 		//		})
 		//	})
 		//})
-
+		//
 		//it("attackAllianceShrine 正常行军2", function(done){
 		//	var m_allianceData = null
 		//	Api.loginPlayer(Config.deviceId, function(doc){
@@ -1127,7 +1127,7 @@ describe("AllianceService", function(){
 		//		})
 		//	})
 		//})
-
+		//
 		//it("attackAllianceShrine 正常行军3", function(done){
 		//	var m_allianceData = null
 		//	Api.loginPlayer(Config.deviceId5, function(doc){

@@ -1412,7 +1412,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		}
 
 		var gemUsed = 0
-		var recruitRequired = DataUtils.getRecruitNormalSoldierRequired(soldierName, count)
+		var recruitRequired = DataUtils.getPlayerRecruitNormalSoldierRequired(playerDoc, soldierName, count)
 		var buyedResources = null
 		var playerData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)

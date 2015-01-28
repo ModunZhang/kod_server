@@ -822,15 +822,10 @@ Utils.getPlayerHousesPower = function(playerDoc){
  * @returns {number}
  */
 Utils.getPlayerSoldiersPower = function(playerDoc){
+	var self = this
 	var totalPower = 0
-	var config = null
 	_.each(playerDoc.soldiers, function(soldierCount, soldierName){
-		if(Utils.hasSpecialSoldier(soldierName)){
-			config = Soldiers.special[soldierName]
-		}else{
-			var fullName = soldierName + "_" + 1
-			config = Soldiers.normal[fullName]
-		}
+		var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
 		totalPower += config.power * soldierCount
 	})
 
@@ -938,14 +933,13 @@ Utils.hasSpecialSoldier = function(soldierName){
 
 /**
  * 获取招募普通兵种所需的资源
+ * @param playerDoc
  * @param soldierName
  * @param count
  * @returns {{resources: {wood: number, stone: number, iron: number, food: number}, recruitTime: (*|Array)}}
  */
-Utils.getRecruitNormalSoldierRequired = function(soldierName, count){
-	var star = 1
-	var fullSoldierName = soldierName + "_" + star
-	var config = Soldiers.normal[fullSoldierName]
+Utils.getPlayerRecruitNormalSoldierRequired = function(playerDoc, soldierName, count){
+	var config = this.getPlayerSoldierConfig(playerDoc, soldierName)
 	var resources = {
 		wood:config.wood * count,
 		stone:config.stone * count,
@@ -955,18 +949,19 @@ Utils.getRecruitNormalSoldierRequired = function(soldierName, count){
 	}
 	var totalNeed = {
 		resources:resources,
-		recruitTime:this.getRecruitSoldierTime(soldierName, count)
+		recruitTime:this.getPlayerRecruitSoldierTime(playerDoc, soldierName, count)
 	}
 	return totalNeed
 }
 
 /**
  * 获取招募特殊兵种所需的材料
+ * @param playerDoc
  * @param soldierName
  * @param count
  * @returns {{materials: (*|Array), recruitTime: *}}
  */
-Utils.getRecruitSpecialSoldierRequired = function(soldierName, count){
+Utils.getPlayerRecruitSpecialSoldierRequired = function(playerDoc, soldierName, count){
 	var config = Soldiers.special[soldierName]
 	var materialNames = config.specialMaterials.split(",")
 	var materials = {}
@@ -975,7 +970,7 @@ Utils.getRecruitSpecialSoldierRequired = function(soldierName, count){
 	})
 	var totalNeed = {
 		materials:materials,
-		recruitTime:this.getRecruitSoldierTime(soldierName, count),
+		recruitTime:this.getPlayerRecruitSoldierTime(playerDoc, soldierName, count),
 		citizen:config.citizen * count
 	}
 	return totalNeed
@@ -983,19 +978,13 @@ Utils.getRecruitSpecialSoldierRequired = function(soldierName, count){
 
 /**
  * 获取招募士兵时需要的时间
+ * @param playerDoc
  * @param soldierName
  * @param count
  * @returns {number}
  */
-Utils.getRecruitSoldierTime = function(soldierName, count){
-	var config = null
-	if(this.hasSpecialSoldier(soldierName)){
-		config = Soldiers.special[soldierName]
-	}else{
-		var star = 1
-		var fullSoldierName = soldierName + "_" + star
-		config = Soldiers.normal[fullSoldierName]
-	}
+Utils.getPlayerRecruitSoldierTime = function(playerDoc, soldierName, count){
+	var config = this.getPlayerSoldierConfig(playerDoc, soldierName)
 	return config.recruitTime * count
 }
 
@@ -1009,13 +998,7 @@ Utils.getPlayerSoldierMaxRecruitCount = function(playerDoc, soldierName){
 	var building = playerDoc.buildings["location_8"]
 	var config = BuildingFunction[building.type][building.level]
 	var maxRecruit = config.maxRecruit
-	var soldierConfig = null
-	if(this.hasSpecialSoldier(soldierName)){
-		soldierConfig = Soldiers.special[soldierName]
-	}else{
-		var fullSoldierName = soldierName + "_" + 1
-		soldierConfig = Soldiers.normal[fullSoldierName]
-	}
+	var soldierConfig = this.getPlayerSoldierConfig(playerDoc, soldierName)
 	var maxCount = Math.floor(maxRecruit / soldierConfig.citizen)
 	return maxCount
 }
@@ -1080,19 +1063,18 @@ Utils.playerHasFreeBuildQueue = function(playerDoc){
 
 /**
  * 获取治疗指定伤兵所需时间
+ * @param playerDoc
  * @param soldierName
  * @param count
  * @returns {number}
  */
-Utils.getTreatSoldierTime = function(soldierName, count){
-	var star = 1
-	var fullSoldierName = soldierName + "_" + star
-	var config = Soldiers.normal[fullSoldierName]
+Utils.getPlayerTreatSoldierTime = function(playerDoc, soldierName, count){
+	var config = this.getPlayerSoldierConfig(playerDoc, soldierName)
 	return config.treatTime * count
 }
 
 /**
- * 获取招募普通兵种所需的资源
+ * 获取资料普通兵种所需的资源
  * @param playerDoc
  * @param soldiers
  * @returns {{resources: {wood: number, stone: number, iron: number, food: number}, recruitTime: (*|Array)}}
@@ -1111,14 +1093,13 @@ Utils.getPlayerTreatSoldierRequired = function(playerDoc, soldiers){
 	_.each(soldiers, function(soldier){
 		var soldierName = soldier.name
 		var count = soldier.count
-		var star = 1
-		var fullSoldierName = soldierName + "_" + star
-		var config = Soldiers.normal[fullSoldierName]
+		var soldierKey = soldierName + "_" + playerDoc.soldierStars[soldierName]
+		var config = Soldiers.normal[soldierKey]
 		totalNeed.resources.wood += config.treatWood * count
 		totalNeed.resources.stone += config.treatStone * count
 		totalNeed.resources.iron += config.treatIron * count
 		totalNeed.resources.food += config.treatFood * count
-		totalNeed.treatTime += self.getTreatSoldierTime(soldierName, count)
+		totalNeed.treatTime += self.getPlayerTreatSoldierTime(playerDoc, soldierName, count)
 	})
 	return totalNeed
 }
@@ -1920,92 +1901,237 @@ Utils.getAllianceActiveShrineStageRequired = function(stageName){
 }
 
 /**
- * 创建战斗用普通军队信息
+ * 获取士兵配置
  * @param playerDoc
  * @param soldierName
- * @param soldierStar
- * @param soldierCount
  * @returns {*}
  */
-Utils.createPlayerNormalSoldierForFight = function(playerDoc, soldierName, soldierStar, soldierCount){
-	var soldierFullKey = soldierName + "_" + soldierStar
-	var config = Soldiers.normal[soldierFullKey]
-	var soldier = {
-		name:soldierName,
-		star:soldierStar,
-		type:config.type,
-		currentCount:soldierCount,
-		totalCount:soldierCount,
-		woundedCount:0,
-		power:config.power,
-		hp:config.hp,
-		load:config.load,
-		citizen:config.citizen,
-		morale:100,
-		round:0,
-		attackPower:{
-			infantry:config.infantry,
-			archer:config.archer,
-			cavalry:config.cavalry,
-			siege:config.siege,
-			wall:config.wall
-		},
-		killedSoldiers:[]
+Utils.getPlayerSoldierConfig = function(playerDoc, soldierName){
+	if(this.hasNormalSoldier(soldierName)){
+		return Soldiers.normal[soldierName + "_" + playerDoc.soldierStars[soldierName]]
+	}else{
+		return Soldiers.special[soldierName]
 	}
-	return soldier
 }
 
 /**
- * 创建战斗用特殊军队信息
+ * 获取玩家士兵星级
  * @param playerDoc
  * @param soldierName
- * @param soldierCount
  * @returns {*}
  */
-Utils.createPlayerSpecialSoldierForFight = function(playerDoc, soldierName, soldierCount){
-	var config = Soldiers.special[soldierName]
-	var soldier = {
-		name:soldierName,
-		star:config.star,
-		type:config.type,
-		currentCount:soldierCount,
-		totalCount:soldierCount,
-		woundedCount:0,
-		power:config.power,
-		hp:config.hp,
-		load:config.load,
-		citizen:config.citizen,
-		morale:100,
-		round:0,
-		attackPower:{
-			infantry:config.infantry,
-			archer:config.archer,
-			cavalry:config.cavalry,
-			siege:config.siege,
-			wall:config.wall
-		},
-		killedSoldiers:[]
+Utils.getPlayerSoldierStar = function(playerDoc, soldierName){
+	if(this.hasNormalSoldier(soldierName)){
+		return playerDoc.soldierStars[soldierName]
+	}else{
+		return Soldiers.special[soldierName].star
 	}
-	return soldier
+}
+
+/**
+ * 获取玩家兵种的攻击力加成Buff
+ * @param playerDoc
+ * @param soldierName
+ * @param dragon
+ * @param terrain
+ * @returns {number}
+ */
+Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain){
+	var itemBuff = 0
+	var skillBuff = 0
+	var equipmentBuff = 0
+
+	var soldierConfig = this.getPlayerSoldierConfig(playerDoc, soldierName)
+	var soldierType = soldierConfig.type
+
+	var eventType = soldierType + "AtkBonus"
+	var itemEvent= _.find(playerDoc.itemEvents, function(event){
+		return _.isEqual(event.type, eventType)
+	})
+	if(_.isObject(itemEvent)) itemBuff = 0.3
+
+	if(_.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain)){
+		var dragonSkillName = soldierType + "Enhance"
+		var skill = _.find(dragon.skills, function(skill){
+			return _.isEqual(skill.name, dragonSkillName)
+		})
+		var skillConfig = Dragons.dragonSkills[dragonSkillName]
+		skillBuff = skill.level * skillConfig.effection
+	}
+
+	var equipmentBuffKey = soldierType + "AtkAdd"
+	_.each(dragon.equipments, function(equipment){
+		_.each(equipment.buffs, function(key){
+			if(_.isEqual(key, equipmentBuffKey)){
+				equipmentBuff += DragonEquipments.equipmentBuff[equipmentBuffKey].buffEffect
+			}
+		})
+	})
+
+	return itemBuff + skillBuff + equipmentBuff
+}
+
+/**
+ * 获取玩家兵种的Hp加成Buff
+ * @param playerDoc
+ * @param soldierName
+ * @param dragon
+ * @param terrain
+ * @returns {number}
+ */
+Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain){
+	var itemBuff = 0
+	var skillBuff = 0
+	var equipmentBuff = 0
+
+	var soldierConfig = this.getPlayerSoldierConfig(playerDoc, soldierName)
+	var soldierType = soldierConfig.type
+
+	var eventType = "unitHpBonus"
+	var itemEvent= _.find(playerDoc.itemEvents, function(event){
+		return _.isEqual(event.type, eventType)
+	})
+	if(_.isObject(itemEvent)) itemBuff = 0.3
+
+	if(_.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain)){
+		var dragonSkillName = soldierType + "Enhance"
+		var skill = _.find(dragon.skills, function(skill){
+			return _.isEqual(skill.name, dragonSkillName)
+		})
+		var skillConfig = Dragons.dragonSkills[dragonSkillName]
+		skillBuff = skill.level * skillConfig.effection
+	}
+
+	var equipmentBuffKey = soldierType + "HpAdd"
+	_.each(dragon.equipments, function(equipment){
+		_.each(equipment.buffs, function(key){
+			if(_.isEqual(key, equipmentBuffKey)){
+				equipmentBuff += DragonEquipments.equipmentBuff[equipmentBuffKey].buffEffect
+			}
+		})
+	})
+
+	return itemBuff + skillBuff + equipmentBuff
+}
+
+/**
+ * 获取玩家士兵负重Buff加成
+ * @param playerDoc
+ * @param soldierName
+ * @param dragon
+ * @returns {number}
+ */
+Utils.getPlayerSoldierLoadBuff = function(playerDoc, soldierName, dragon){
+	var equipmentBuff = 0
+
+	var soldierConfig = this.getPlayerSoldierConfig(playerDoc, soldierName)
+	var soldierType = soldierConfig.type
+
+	var equipmentBuffKey = soldierType + "LoadAdd"
+	_.each(dragon.equipments, function(equipment){
+		_.each(equipment.buffs, function(key){
+			if(_.isEqual(key, equipmentBuffKey)){
+				equipmentBuff += DragonEquipments.equipmentBuff[equipmentBuffKey].buffEffect
+			}
+		})
+	})
+
+	return equipmentBuff
+}
+
+/**
+ * 创建玩家战斗用军队
+ * @param playerDoc
+ * @param soldiers
+ * @param dragon
+ * @param terrain
+ * @returns {Array}
+ */
+Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terrain){
+	var self = this
+	var soldiersForFight = []
+	_.each(soldiers, function(soldier){
+		var soldierName = soldier.name
+		var soldierStar = self.getPlayerSoldierStar(playerDoc, soldierName)
+		var soldierCount = soldier.count
+		var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
+		var atkBuff = self.getPlayerSoldierAtkBuff(playerDoc, soldierName, dragon, terrain)
+		var hpBuff = self.getPlayerSoldierHpBuff(playerDoc, soldierName, dragon, terrain)
+		var loadBuff = self.getPlayerSoldierLoadBuff(playerDoc, soldierName, dragon)
+		var soldierForFight = {
+			name:soldierName,
+			star:soldierStar,
+			type:config.type,
+			currentCount:soldierCount,
+			totalCount:soldierCount,
+			woundedCount:0,
+			power:config.power,
+			hp:Math.floor(config.hp * (1 + hpBuff)),
+			load:Math.floor(config.load * (1 + loadBuff)),
+			citizen:config.citizen,
+			morale:100,
+			round:0,
+			attackPower:{
+				infantry:Math.floor(config.infantry * (1 + atkBuff)),
+				archer:Math.floor(config.archer * (1 + atkBuff)),
+				cavalry:Math.floor(config.cavalry * (1 + atkBuff)),
+				siege:Math.floor(config.siege * (1 + atkBuff)),
+				wall:Math.floor(config.wall * (1 + atkBuff))
+			},
+			killedSoldiers:[]
+		}
+		soldiersForFight.push(soldierForFight)
+	})
+	soldiersForFight = _.sortBy(soldiersForFight, function(soldier){
+		return -(soldier.power * soldier.totalCount)
+	})
+	return soldiersForFight
 }
 
 /**
  * 创建战斗用军队
- * @param playerDoc
- * @param dragon
  * @param soldiers
  * @returns {Array}
  */
-Utils.createPlayerSoldiersForFight = function(playerDoc, dragon, soldiers){
+Utils.createSoldiersForFight = function(soldiers){
 	var self = this
 	var soldiersForFight = []
 	_.each(soldiers, function(soldier){
-		if(self.hasNormalSoldier(soldier.name)){
-			soldiersForFight.push(self.createPlayerNormalSoldierForFight(playerDoc, soldier.name, 1, soldier.count))
+		var soldierName = soldier.name
+		var soldierCount = soldier.count
+		var soldierStar = soldier.star
+		var config = null
+		if(self.hasNormalSoldier(soldierName)){
+			config = Soldiers.normal[soldierName + "_" + soldierStar]
 		}else{
-			soldiersForFight.push(self.createPlayerSpecialSoldierForFight(playerDoc, soldier.name, soldier.count))
+			config = Soldiers.special[soldierName]
 		}
+
+		var soldierForFight = {
+			name:soldierName,
+			star:soldierStar,
+			type:config.type,
+			currentCount:soldierCount,
+			totalCount:soldierCount,
+			woundedCount:0,
+			power:config.power,
+			hp:config.hp,
+			load:config.load,
+			citizen:config.citizen,
+			morale:100,
+			round:0,
+			attackPower:{
+				infantry:config.infantry,
+				archer:config.archer,
+				cavalry:config.cavalry,
+				siege:config.siege,
+				wall:config.wall
+			},
+			killedSoldiers:[]
+		}
+		soldiersForFight.push(soldierForFight)
 	})
+
 	soldiersForFight = _.sortBy(soldiersForFight, function(soldier){
 		return -(soldier.power * soldier.totalCount)
 	})
@@ -2110,37 +2236,20 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 			level:parseInt(dragonParams[2])
 		}
 		var dragonForFight = this.createDragonForFight(dragon, allianceDoc.basicInfo.terrain)
-		var soldiersForFight = []
+		var soldiers = []
 		_.each(soldierConfigStrings, function(soldierConfigString){
 			var params = soldierConfigString.split("_")
 			var soldierName = params[0]
 			var soldierStar = parseInt(params[1])
 			var soldierCount = parseInt(params[2])
-			var soldierConfig = Soldiers.normal[soldierName + "_" + soldierStar]
-			var soldierForFight = {
+			var soldier = {
 				name:soldierName,
-				star:soldierConfig.star,
-				type:soldierConfig.type,
-				currentCount:soldierCount,
-				totalCount:soldierCount,
-				woundedCount:0,
-				power:soldierConfig.power,
-				hp:soldierConfig.hp,
-				load:soldierConfig.load,
-				citizen:soldierConfig.citizen,
-				morale:100,
-				round:0,
-				attackPower:{
-					infantry:soldierConfig.infantry,
-					archer:soldierConfig.archer,
-					cavalry:soldierConfig.cavalry,
-					siege:soldierConfig.siege,
-					wall:soldierConfig.wall
-				},
-				killedSoldiers:[]
+				star:soldierStar,
+				count:soldierCount
 			}
-			soldiersForFight.push(soldierForFight)
+			soldiers.push(soldier)
 		})
+		var soldiersForFight = this.createSoldiersForFight(soldiers)
 		troops.push({
 			stageName:stageName,
 			troopNumber:i + 1,
@@ -2495,19 +2604,11 @@ Utils.addPlayerDragonExp = function(playerDoc, dragon, expAdd){
  */
 Utils.getPlayerSoldiersCitizen = function(playerDoc, soldiers){
 	var self = this
-	var config = null
 	var totalCitizen = 0
 	_.each(soldiers, function(soldier){
-		var name = soldier.name
-		var count = soldier.count
-		if(count > 0){
-			if(self.hasSpecialSoldier(name)){
-				config = Soldiers.special[name]
-			}else{
-				var fullSoldierName = name + "_" + 1
-				config = Soldiers.normal[fullSoldierName]
-			}
-			totalCitizen += config.citizen * count
+		if(soldier.count > 0){
+			var config = self.getPlayerSoldierConfig(playerDoc, soldier.name)
+			totalCitizen += config.citizen * soldier.count
 		}
 	})
 	return totalCitizen
@@ -2555,13 +2656,7 @@ Utils.getPlayerDefenceSoldiers = function(playerDoc){
 	citizenPercent = citizenPercent > 1 ? 1 : citizenPercent
 	_.each(playerDoc.soldiers, function(count, name){
 		if(count > 0){
-			var config = null
-			if(self.hasSpecialSoldier(name)){
-				config = Soldiers.special[name]
-			}else{
-				var fullSoldierName = name + "_" + 1
-				config = Soldiers.normal[fullSoldierName]
-			}
+			var config = self.getPlayerSoldierConfig(playerDoc, name)
 			var totalCitizen = config.citizen * count
 			var defenceSoldier = {
 				name:name,
@@ -2582,14 +2677,8 @@ Utils.getPlayerDefenceSoldiers = function(playerDoc){
 Utils.getPlayerSoldiersTotalLoad = function(playerDoc, soldiers){
 	var self = this
 	var totalLoad = 0
-	var config = null
 	_.each(soldiers, function(soldier){
-		if(self.hasSpecialSoldier(soldier.name)){
-			config = Soldiers.special[soldier.name]
-		}else{
-			var soldierFullName = soldier.name + "_" + 1
-			config = Soldiers.normal[soldierFullName]
-		}
+		var config = self.getPlayerSoldierConfig(playerDoc, soldier.name)
 		totalLoad += config.load * soldier.count
 	})
 	return totalLoad

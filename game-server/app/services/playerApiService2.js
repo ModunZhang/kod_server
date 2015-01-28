@@ -78,7 +78,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		}
 
 		var gemUsed = 0
-		var recruitRequired = DataUtils.getRecruitSpecialSoldierRequired(soldierName, count)
+		var recruitRequired = DataUtils.getPlayerRecruitSpecialSoldierRequired(playerDoc, soldierName, count)
 		var buyedResources = null
 		var playerData = {}
 		LogicUtils.refreshPlayerResources(playerDoc)
