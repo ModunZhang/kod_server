@@ -1118,7 +1118,7 @@ Utils.getDragonStrengthBuff = function(dragon, terrain){
 	var skillBuff = 0
 	if(_.isObject(dragonBreathSkill)){
 		var config = Dragons.dragonSkills["dragonBreath"]
-		skillBuff = dragonBreathSkill.level * config.effectionPerLevel
+		skillBuff = dragonBreathSkill.level * config.effectPerLevel
 	}
 	return terrainBuff + skillBuff
 }
@@ -1157,7 +1157,7 @@ Utils.getDragonVitalityBuff = function(dragon){
 	})
 	if(_.isObject(dragonBloodSkill)){
 		var config = Dragons.dragonSkills["dragonBlood"]
-		var skillBuff = dragonBloodSkill.level * config.effectionPerLevel
+		var skillBuff = dragonBloodSkill.level * config.effectPerLevel
 		return skillBuff
 	}
 	return 0
@@ -1207,7 +1207,7 @@ Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
 	})
 	if(_.isObject(leadershipSkill)){
 		var config = Dragons.dragonSkills["leadership"]
-		skillBuff = leadershipSkill.level * config.effectionPerLevel
+		skillBuff = leadershipSkill.level * config.effectPerLevel
 	}
 
 	var equipmentBuffKey = "troopSizeAdd"
@@ -1977,7 +1977,7 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
 			return _.isEqual(skill.name, dragonSkillName)
 		})
 		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effectionPerLevel
+		skillBuff = skill.level * skillConfig.effectPerLevel
 	}
 
 	var equipmentBuffKey = soldierType + "AtkAdd"
@@ -2020,7 +2020,7 @@ Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain)
 			return _.isEqual(skill.name, dragonSkillName)
 		})
 		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effectionPerLevel
+		skillBuff = skill.level * skillConfig.effectPerLevel
 	}
 
 	var equipmentBuffKey = soldierType + "HpAdd"
@@ -2313,7 +2313,7 @@ Utils.getPlayerTreatSoldierPercent = function(playerDoc, dragon){
 	})
 	if(_.isObject(skill)){
 		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effectionPerLevel
+		skillBuff = skill.level * skillConfig.effectPerLevel
 	}
 
 	var equipmentBuffKey = "recoverAdd"
@@ -2343,7 +2343,7 @@ Utils.getPlayerSoldierMoraleDecreasedPercent = function(playerDoc, dragon){
 	})
 	if(_.isObject(skill)){
 		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effectionPerLevel
+		skillBuff = skill.level * skillConfig.effectPerLevel
 	}
 
 	return basePercent - skillBuff
@@ -2363,7 +2363,7 @@ Utils.getEnemySoldierMoraleAddedPercent = function(playerDoc, dragon){
 	})
 	if(_.isObject(skill)){
 		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effectionPerLevel
+		skillBuff = skill.level * skillConfig.effectPerLevel
 	}
 
 	return skillBuff
