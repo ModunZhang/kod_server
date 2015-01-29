@@ -1118,7 +1118,7 @@ Utils.getDragonStrengthBuff = function(dragon, terrain){
 	var skillBuff = 0
 	if(_.isObject(dragonBreathSkill)){
 		var config = Dragons.dragonSkills["dragonBreath"]
-		skillBuff = dragonBreathSkill.level * config.effection
+		skillBuff = dragonBreathSkill.level * config.effectionPerLevel
 	}
 	return terrainBuff + skillBuff
 }
@@ -1157,7 +1157,7 @@ Utils.getDragonVitalityBuff = function(dragon){
 	})
 	if(_.isObject(dragonBloodSkill)){
 		var config = Dragons.dragonSkills["dragonBlood"]
-		var skillBuff = dragonBloodSkill.level * config.effection
+		var skillBuff = dragonBloodSkill.level * config.effectionPerLevel
 		return skillBuff
 	}
 	return 0
@@ -1197,7 +1197,7 @@ Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
 	var equipmentBuff = 0
 
 	var eventType = "troopSizeBonus"
-	var itemEvent= _.find(playerDoc.itemEvents, function(event){
+	var itemEvent = _.find(playerDoc.itemEvents, function(event){
 		return _.isEqual(event.type, eventType)
 	})
 	if(_.isObject(itemEvent)) itemBuff = 0.3
@@ -1207,7 +1207,7 @@ Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
 	})
 	if(_.isObject(leadershipSkill)){
 		var config = Dragons.dragonSkills["leadership"]
-		skillBuff = leadershipSkill.level * config.effection
+		skillBuff = leadershipSkill.level * config.effectionPerLevel
 	}
 
 	var equipmentBuffKey = "troopSizeAdd"
@@ -1966,7 +1966,7 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
 	var soldierType = soldierConfig.type
 
 	var eventType = soldierType + "AtkBonus"
-	var itemEvent= _.find(playerDoc.itemEvents, function(event){
+	var itemEvent = _.find(playerDoc.itemEvents, function(event){
 		return _.isEqual(event.type, eventType)
 	})
 	if(_.isObject(itemEvent)) itemBuff = 0.3
@@ -1977,7 +1977,7 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
 			return _.isEqual(skill.name, dragonSkillName)
 		})
 		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effection
+		skillBuff = skill.level * skillConfig.effectionPerLevel
 	}
 
 	var equipmentBuffKey = soldierType + "AtkAdd"
@@ -2009,7 +2009,7 @@ Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain)
 	var soldierType = soldierConfig.type
 
 	var eventType = "unitHpBonus"
-	var itemEvent= _.find(playerDoc.itemEvents, function(event){
+	var itemEvent = _.find(playerDoc.itemEvents, function(event){
 		return _.isEqual(event.type, eventType)
 	})
 	if(_.isObject(itemEvent)) itemBuff = 0.3
@@ -2020,7 +2020,7 @@ Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain)
 			return _.isEqual(skill.name, dragonSkillName)
 		})
 		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effection
+		skillBuff = skill.level * skillConfig.effectionPerLevel
 	}
 
 	var equipmentBuffKey = soldierType + "HpAdd"
@@ -2299,10 +2299,74 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 /**
  * 获取玩家战损兵力去医院的数量
  * @param playerDoc
+ * @param dragon
  * @returns {number}
  */
-Utils.getPlayerDamagedSoldierToWoundedSoldierPercent = function(playerDoc){
-	return 0.4
+Utils.getPlayerTreatSoldierPercent = function(playerDoc, dragon){
+	var basePercent = 0.3
+	var skillBuff = 0
+	var equipmentBuff = 0
+
+	var dragonSkillName = "recover"
+	var skill = _.find(dragon.skills, function(skill){
+		return _.isEqual(skill.name, dragonSkillName)
+	})
+	if(_.isObject(skill)){
+		var skillConfig = Dragons.dragonSkills[dragonSkillName]
+		skillBuff = skill.level * skillConfig.effectionPerLevel
+	}
+
+	var equipmentBuffKey = "recoverAdd"
+	_.each(dragon.equipments, function(equipment){
+		_.each(equipment.buffs, function(key){
+			if(_.isEqual(key, equipmentBuffKey)){
+				equipmentBuff += DragonEquipments.equipmentBuff[equipmentBuffKey].buffEffect
+			}
+		})
+	})
+
+	return basePercent + skillBuff + equipmentBuff
+}
+
+/**
+ * 获取士兵士气减少百分比
+ * @param playerDoc
+ * @param dragon
+ * @returns {number}
+ */
+Utils.getPlayerSoldierMoraleDecreasedPercent = function(playerDoc, dragon){
+	var basePercent = 1
+	var skillBuff = 0
+	var dragonSkillName = "insensitive"
+	var skill = _.find(dragon.skills, function(skill){
+		return _.isEqual(skill.name, dragonSkillName)
+	})
+	if(_.isObject(skill)){
+		var skillConfig = Dragons.dragonSkills[dragonSkillName]
+		skillBuff = skill.level * skillConfig.effectionPerLevel
+	}
+
+	return basePercent - skillBuff
+}
+
+/**
+ * 获取敌方士兵士气减少百分比
+ * @param playerDoc
+ * @param dragon
+ * @returns {number}
+ */
+Utils.getEnemySoldierMoraleAddedPercent = function(playerDoc, dragon){
+	var skillBuff = 0
+	var dragonSkillName = "frenzied"
+	var skill = _.find(dragon.skills, function(skill){
+		return _.isEqual(skill.name, dragonSkillName)
+	})
+	if(_.isObject(skill)){
+		var skillConfig = Dragons.dragonSkills[dragonSkillName]
+		skillBuff = skill.level * skillConfig.effectionPerLevel
+	}
+
+	return skillBuff
 }
 
 /**

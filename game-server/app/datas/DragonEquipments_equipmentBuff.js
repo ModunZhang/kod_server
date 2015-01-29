@@ -71,7 +71,7 @@ equipmentBuff["troopSizeAdd"] = {
 	buff:"troopSizeAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["casualtyRateAdd"] = {
-	buff:"casualtyRateAdd",
+equipmentBuff["recoverAdd"] = {
+	buff:"recoverAdd",
 	buffEffect:0.020000
 }

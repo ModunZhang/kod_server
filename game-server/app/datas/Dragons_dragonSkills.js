@@ -9,7 +9,7 @@ dragonSkills["infantryEnhance"] = {
 	IntiLevel:0,
 	maxLevel:30,
 	heroBloodCostPerLevel:360,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }
 dragonSkills["archerEnhance"] = {
 	dragonSkill:"archerEnhance",
@@ -17,7 +17,7 @@ dragonSkills["archerEnhance"] = {
 	IntiLevel:0,
 	maxLevel:30,
 	heroBloodCostPerLevel:360,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }
 dragonSkills["dragonBlood"] = {
 	dragonSkill:"dragonBlood",
@@ -25,7 +25,7 @@ dragonSkills["dragonBlood"] = {
 	IntiLevel:0,
 	maxLevel:50,
 	heroBloodCostPerLevel:360,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }
 dragonSkills["cavalryEnhance"] = {
 	dragonSkill:"cavalryEnhance",
@@ -33,7 +33,7 @@ dragonSkills["cavalryEnhance"] = {
 	IntiLevel:0,
 	maxLevel:30,
 	heroBloodCostPerLevel:1000,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }
 dragonSkills["siegeEnhance"] = {
 	dragonSkill:"siegeEnhance",
@@ -41,7 +41,7 @@ dragonSkills["siegeEnhance"] = {
 	IntiLevel:0,
 	maxLevel:30,
 	heroBloodCostPerLevel:1000,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }
 dragonSkills["dragonBreath"] = {
 	dragonSkill:"dragonBreath",
@@ -49,7 +49,7 @@ dragonSkills["dragonBreath"] = {
 	IntiLevel:0,
 	maxLevel:50,
 	heroBloodCostPerLevel:3600,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }
 dragonSkills["leadership"] = {
 	dragonSkill:"leadership",
@@ -57,7 +57,7 @@ dragonSkills["leadership"] = {
 	IntiLevel:0,
 	maxLevel:20,
 	heroBloodCostPerLevel:3600,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }
 dragonSkills["greedy"] = {
 	dragonSkill:"greedy",
@@ -65,7 +65,7 @@ dragonSkills["greedy"] = {
 	IntiLevel:0,
 	maxLevel:20,
 	heroBloodCostPerLevel:7200,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }
 dragonSkills["frenzied"] = {
 	dragonSkill:"frenzied",
@@ -73,7 +73,7 @@ dragonSkills["frenzied"] = {
 	IntiLevel:0,
 	maxLevel:30,
 	heroBloodCostPerLevel:7200,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }
 dragonSkills["recover"] = {
 	dragonSkill:"recover",
@@ -81,7 +81,7 @@ dragonSkills["recover"] = {
 	IntiLevel:0,
 	maxLevel:20,
 	heroBloodCostPerLevel:7200,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }
 dragonSkills["insensitive"] = {
 	dragonSkill:"insensitive",
@@ -89,7 +89,7 @@ dragonSkills["insensitive"] = {
 	IntiLevel:0,
 	maxLevel:30,
 	heroBloodCostPerLevel:7200,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }
 dragonSkills["earthquake"] = {
 	dragonSkill:"earthquake",
@@ -97,7 +97,7 @@ dragonSkills["earthquake"] = {
 	IntiLevel:0,
 	maxLevel:20,
 	heroBloodCostPerLevel:7200,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }
 dragonSkills["battleHunger"] = {
 	dragonSkill:"battleHunger",
@@ -105,5 +105,5 @@ dragonSkills["battleHunger"] = {
 	IntiLevel:0,
 	maxLevel:30,
 	heroBloodCostPerLevel:7200,
-	effection:0.010000
+	effectionPerLevel:0.010000
 }

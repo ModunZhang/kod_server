@@ -16,11 +16,13 @@ var Utils = module.exports
  * 军队战斗
  * @param attackSoldiers
  * @param attackWoundedSoldierPercent
+ * @param attackSoldierMoraleDecreasedPercent
  * @param defenceSoldiers
  * @param defenceWoundedSoldierPercent
+ * @param defenceSoldierMoraleDecreasedPercent
  * @returns {*}
  */
-Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPercent, defenceSoldiers, defenceWoundedSoldierPercent){
+Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPercent, attackSoldierMoraleDecreasedPercent, defenceSoldiers, defenceWoundedSoldierPercent, defenceSoldierMoraleDecreasedPercent){
 	attackSoldiers = CommonUtils.clone(attackSoldiers)
 	defenceSoldiers = CommonUtils.clone(defenceSoldiers)
 	var attackSoldiersAfterFight = []
@@ -50,8 +52,8 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 
 		var attackWoundedSoldierCount = Math.ceil(attackDamagedSoldierCount * attackWoundedSoldierPercent)
 		var defenceWoundedSoldierCount = Math.ceil(defenceDamagedSoldierCount * defenceWoundedSoldierPercent)
-		var attackMoraleDecreased = Math.ceil(attackDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / attackSoldier.totalCount * 100)
-		var dfenceMoraleDecreased = Math.ceil(defenceDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / defenceSoldier.totalCount * 100)
+		var attackMoraleDecreased = Math.ceil(attackDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / attackSoldier.totalCount * 100 * attackSoldierMoraleDecreasedPercent)
+		var dfenceMoraleDecreased = Math.ceil(defenceDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / defenceSoldier.totalCount * 100 * defenceSoldierMoraleDecreasedPercent)
 		attackResults.push({
 			soldierName:attackSoldier.name,
 			soldierStar:attackSoldier.star,

@@ -36,6 +36,7 @@ app.configure("production|development", "gate", function(){
 	})
 	app.set("remoteConfig", {
 		bufferMsg:false,
+		interval:30,
 		failMode:"failfast"
 	})
 	app.set('sessionConfig', {
@@ -107,10 +108,12 @@ app.configure("production|development", "logic", function(){
 app.configure("production|development", "chat", function(){
 	app.set("proxyConfig", {
 		bufferMsg:false,
+		interval:30,
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
 		bufferMsg:false,
+		interval:30,
 		failMode:"failfast"
 	})
 
@@ -133,10 +136,12 @@ app.configure("production|development", "chat", function(){
 app.configure("production|development", "event", function(){
 	app.set("proxyConfig", {
 		bufferMsg:false,
+		interval:30,
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
 		bufferMsg:false,
+		interval:30,
 		failMode:"failfast"
 	})
 
@@ -155,10 +160,12 @@ app.configure("production|development", "event", function(){
 app.configure("production|development", "time", function(){
 	app.set("proxyConfig", {
 		bufferMsg:false,
+		interval:30,
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
 		bufferMsg:false,
+		interval:30,
 		failMode:"failfast"
 	})
 
