@@ -67,8 +67,8 @@ equipmentBuff["siegeMarchAdd"] = {
 	buff:"siegeMarchAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["marchSizeAdd"] = {
-	buff:"marchSizeAdd",
+equipmentBuff["troopSizeAdd"] = {
+	buff:"troopSizeAdd",
 	buffEffect:0.020000
 }
 equipmentBuff["casualtyRateAdd"] = {

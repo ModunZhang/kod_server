@@ -1187,30 +1187,51 @@ Utils.getDragonVitality = function(dragon){
 
 /**
  * 获取龙领导力Buff
+ * @param playerDoc
  * @param dragon
  * @returns {number}
  */
-Utils.getDragonLeadershipBuff = function(dragon){
+Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
+	var itemBuff = 0
+	var skillBuff = 0
+	var equipmentBuff = 0
+
+	var eventType = "troopSizeBonus"
+	var itemEvent= _.find(playerDoc.itemEvents, function(event){
+		return _.isEqual(event.type, eventType)
+	})
+	if(_.isObject(itemEvent)) itemBuff = 0.3
+
 	var leadershipSkill = _.find(dragon.skills, function(skill){
 		return _.isEqual(skill.name, "leadership")
 	})
 	if(_.isObject(leadershipSkill)){
 		var config = Dragons.dragonSkills["leadership"]
-		var skillBuff = leadershipSkill.level * config.effection
-		return skillBuff
+		skillBuff = leadershipSkill.level * config.effection
 	}
-	return 0
+
+	var equipmentBuffKey = "troopSizeAdd"
+	_.each(dragon.equipments, function(equipment){
+		_.each(equipment.buffs, function(key){
+			if(_.isEqual(key, equipmentBuffKey)){
+				equipmentBuff += DragonEquipments.equipmentBuff[equipmentBuffKey].buffEffect
+			}
+		})
+	})
+
+	return itemBuff + skillBuff + equipmentBuff
 }
 
 /**
  * 获取龙的领导力
+ * @param playerDoc
  * @param dragon
  * @returns {*}
  */
-Utils.getDragonLeadership = function(dragon){
+Utils.getPlayerDragonLeadership = function(playerDoc, dragon){
 	var config = Dragons.dragonAttributes[dragon.star]
 	var leadership = config.initLeadership + (config.perLevelLeadership * dragon.level)
-	var buff = this.getDragonLeadershipBuff(dragon)
+	var buff = this.getPlayerDragonLeadershipBuff(playerDoc, dragon)
 	leadership += Math.floor(leadership * buff)
 	_.each(dragon.equipments, function(equipment, category){
 		if(!_.isEmpty(equipment.name)){
@@ -2620,8 +2641,7 @@ Utils.getPlayerSoldiersCitizen = function(playerDoc, soldiers){
  * @param dragon
  */
 Utils.getPlayerDragonMaxCitizen = function(playerDoc, dragon){
-	var config = Dragons.dragonAttributes[dragon.star]
-	var leaderShip = config.initLeadership + (config.perLevelLeadership * dragon.level)
+	var leaderShip = this.getPlayerDragonLeadership(playerDoc, dragon)
 	return leaderShip * AllianceInit.intInit.citizenPerLeadership.value
 }
 
