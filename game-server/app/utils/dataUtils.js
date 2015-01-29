@@ -1197,7 +1197,7 @@ Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
 	var equipmentBuff = 0
 
 	var eventType = "troopSizeBonus"
-	var itemEvent= _.find(playerDoc.itemEvents, function(event){
+	var itemEvent = _.find(playerDoc.itemEvents, function(event){
 		return _.isEqual(event.type, eventType)
 	})
 	if(_.isObject(itemEvent)) itemBuff = 0.3
@@ -1966,7 +1966,7 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
 	var soldierType = soldierConfig.type
 
 	var eventType = soldierType + "AtkBonus"
-	var itemEvent= _.find(playerDoc.itemEvents, function(event){
+	var itemEvent = _.find(playerDoc.itemEvents, function(event){
 		return _.isEqual(event.type, eventType)
 	})
 	if(_.isObject(itemEvent)) itemBuff = 0.3
@@ -2009,7 +2009,7 @@ Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain)
 	var soldierType = soldierConfig.type
 
 	var eventType = "unitHpBonus"
-	var itemEvent= _.find(playerDoc.itemEvents, function(event){
+	var itemEvent = _.find(playerDoc.itemEvents, function(event){
 		return _.isEqual(event.type, eventType)
 	})
 	if(_.isObject(itemEvent)) itemBuff = 0.3
