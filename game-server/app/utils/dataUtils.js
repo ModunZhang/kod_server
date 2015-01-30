@@ -1152,15 +1152,15 @@ Utils.getDragonStrength = function(dragon, terrain){
  * @returns {number}
  */
 Utils.getDragonVitalityBuff = function(dragon){
+	var skillBuff = 0
 	var dragonBloodSkill = _.find(dragon.skills, function(skill){
 		return _.isEqual(skill.name, "dragonBlood")
 	})
 	if(_.isObject(dragonBloodSkill)){
 		var config = Dragons.dragonSkills["dragonBlood"]
-		var skillBuff = dragonBloodSkill.level * config.effectPerLevel
-		return skillBuff
+		skillBuff = dragonBloodSkill.level * config.effectPerLevel
 	}
-	return 0
+	return skillBuff
 }
 
 /**

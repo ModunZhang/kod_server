@@ -59,8 +59,8 @@ dragonSkills["leadership"] = {
 	heroBloodCostPerLevel:3600,
 	effectPerLevel:0.010000
 }
-dragonSkills["."] = {
-	dragonSkill:".",
+dragonSkills["greedy"] = {
+	dragonSkill:"greedy",
 	unlockStar:4,
 	IntiLevel:0,
 	maxLevel:20,

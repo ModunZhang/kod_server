@@ -15,8 +15,7 @@ var Define = require("../consts/define")
 
 var GameDatas = require("../datas/GameDatas")
 var Soldiers = GameDatas.Soldiers
-var AllianceInitData = GameDatas.AllianceInitDataData
-var PlayerInitData = GameDatas.PlayerInitData
+var AllianceInitData = GameDatas.AllianceInitData
 var Dragons = GameDatas.Dragons
 
 var Utils = module.exports
