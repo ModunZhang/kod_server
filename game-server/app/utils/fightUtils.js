@@ -170,9 +170,10 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
  * @param attackSoldiers
  * @param attackWoundedSoldierPercent
  * @param defenceWall
+ * @param defenceWallDamageDecreasedPercent
  * @returns {*}
  */
-Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent, defenceWall){
+Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent, defenceWall, defenceWallDamageDecreasedPercent){
 	attackSoldiers = CommonUtils.clone(attackSoldiers)
 	defenceWall = CommonUtils.clone(defenceWall)
 	var attackSoldiersAfterFight = []
@@ -190,10 +191,10 @@ Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent,
 		var defenceDamagedHp = null
 		if(attackTotalPower >= defenceTotalPower){
 			attackDamagedSoldierCount = Math.round(defenceTotalPower * 0.5 / attackSoldier.hp)
-			defenceDamagedHp = Math.round(Math.sqrt(attackTotalPower * defenceTotalPower) * 10 / attackSoldier.attackPower[defenceSoldierType])
+			defenceDamagedHp = Math.round(Math.sqrt(attackTotalPower * defenceTotalPower) * 10 / attackSoldier.attackPower[defenceSoldierType] * (1 - defenceWallDamageDecreasedPercent))
 		}else{
 			attackDamagedSoldierCount = Math.round(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.5 / defenceWall.defencePower)
-			defenceDamagedHp = Math.round(attackTotalPower * 10 / defenceWall.defencePower)
+			defenceDamagedHp = Math.round(attackTotalPower * 10 / defenceWall.defencePower * (1 - defenceWallDamageDecreasedPercent))
 		}
 		if(attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.floor(attackSoldier.currentCount * 0.7)
 		if(defenceDamagedHp > defenceWall.currentHp) defenceDamagedHp = defenceWall.currentHp

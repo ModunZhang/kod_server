@@ -540,7 +540,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackSoldiersLeftForFight = attackSoldiersForFight
 			}
 			if(_.isObject(defenceWallForFight)){
-				defenceWallFightData = FightUtils.soldierToWallFight(attackSoldiersLeftForFight, attackTreatSoldierPercent, defenceWallForFight)
+				var defencePlayerMasterOfDefenderBuffAboutDefenceWall = DataUtils.getPlayerMasterOfDefenderBuffAboutDefenceWall(defencePlayerDoc)
+				defenceWallFightData = FightUtils.soldierToWallFight(attackSoldiersLeftForFight, attackTreatSoldierPercent, defenceWallForFight, defencePlayerMasterOfDefenderBuffAboutDefenceWall)
 				updateSoldiersForFight(attackSoldiersForFight, defenceWallFightData.attackSoldiersAfterFight)
 				updateWallForFight(defenceWallForFight, defenceWallFightData.defenceWallAfterFight)
 				return Promise.resolve()

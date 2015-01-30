@@ -1993,6 +1993,25 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
 }
 
 /**
+ * 龙技能对进攻城墙的加成Buff
+ * @param dragon
+ * @returns {number}
+ */
+Utils.getDragonAtkWallBuff = function(dragon){
+	var skillBuff = 0
+	var dragonSkillName = "earthquake"
+	var skill = _.find(dragon.skills, function(skill){
+		return _.isEqual(skill.name, dragonSkillName)
+	})
+	if(_.isObject(skill)){
+		var skillConfig = Dragons.dragonSkills[dragonSkillName]
+		skillBuff = skill.level * skillConfig.effectPerLevel
+	}
+
+	return skillBuff
+}
+
+/**
  * 获取玩家兵种的Hp加成Buff
  * @param playerDoc
  * @param soldierName
@@ -2077,6 +2096,7 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 		var soldierCount = soldier.count
 		var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
 		var atkBuff = self.getPlayerSoldierAtkBuff(playerDoc, soldierName, dragon, terrain)
+		var atkWallBuff = self.getDragonAtkWallBuff(dragon)
 		var hpBuff = self.getPlayerSoldierHpBuff(playerDoc, soldierName, dragon, terrain)
 		var loadBuff = self.getPlayerSoldierLoadBuff(playerDoc, soldierName, dragon)
 		var soldierForFight = {
@@ -2097,7 +2117,7 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 				archer:Math.floor(config.archer * (1 + atkBuff)),
 				cavalry:Math.floor(config.cavalry * (1 + atkBuff)),
 				siege:Math.floor(config.siege * (1 + atkBuff)),
-				wall:Math.floor(config.wall * (1 + atkBuff))
+				wall:Math.floor(config.wall * (1 + atkBuff + atkWallBuff))
 			},
 			killedSoldiers:[]
 		}
@@ -3366,4 +3386,17 @@ Utils.getLevelupRewards = function(levelupIndex){
 	})
 
 	return rewards
+}
+
+/**
+ * 获取玩家城防大师Buff
+ * @param playerDoc
+ */
+Utils.getPlayerMasterOfDefenderBuffAboutDefenceWall = function(playerDoc){
+	var buff = 0
+	var itemEvent = _.find(playerDoc.itemEvents, function(event){
+		return _.isEqual(event.type, "masterOfDefender")
+	})
+	if(_.isObject(itemEvent)) buff = 0.2
+	return buff
 }
