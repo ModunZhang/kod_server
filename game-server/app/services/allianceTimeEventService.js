@@ -578,7 +578,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				}]
 				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 			}
-			DataUtils.addPlayerDragonExp(attackPlayerDoc, attackDragon, countData.attackDragonExpAdd)
+			var attackPlayerItemBuff = DataUtils.isPlayerHasItemEvent(attackPlayerDoc, "dragonExpBonus") ? 0.3 : 0
+			DataUtils.addPlayerDragonExp(attackPlayerDoc, attackDragon, countData.attackDragonExpAdd * (1 + attackPlayerItemBuff))
 			attackPlayerData.basicInfo = attackPlayerDoc.basicInfo
 			attackPlayerData.dragons = {}
 			attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
@@ -614,7 +615,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					}]
 					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, helpDefencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 				}
-				DataUtils.addPlayerDragonExp(helpDefencePlayerDoc, helpDefenceDragon, countData.defenceDragonExpAdd)
+				var helpDefencePlayerItemBuff = DataUtils.isPlayerHasItemEvent(helpDefencePlayerDoc, "dragonExpBonus") ? 0.3 : 0
+				DataUtils.addPlayerDragonExp(helpDefencePlayerDoc, helpDefenceDragon, countData.defenceDragonExpAdd * (1 + helpDefencePlayerItemBuff))
 				helpDefencePlayerData.basicInfo = helpDefencePlayerDoc.basicInfo
 				helpDefencePlayerData.dragons = {}
 				helpDefencePlayerData.dragons[helpDefenceDragon.type] = helpDefencePlayerDoc.dragons[helpDefenceDragon.type]
@@ -682,7 +684,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						}]
 						eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 					}
-					DataUtils.addPlayerDragonExp(defencePlayerDoc, defenceDragon, countData.defenceDragonExpAdd)
+					var defencePlayerItemBuff = DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "dragonExpBonus") ? 0.3 : 0
+					DataUtils.addPlayerDragonExp(defencePlayerDoc, defenceDragon, countData.defenceDragonExpAdd * (1 + defencePlayerItemBuff))
 					defencePlayerData.basicInfo = defencePlayerDoc.basicInfo
 					defencePlayerData.dragons = {}
 					defencePlayerData.dragons[defenceDragon.type] = defencePlayerDoc.dragons[defenceDragon.type]
@@ -903,6 +906,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var defenceWoundedSoldiers = null
 		var defenceRewards = null
 		var marchReturnEvent = null
+		var attackPlayerItemBuff
 
 		funcs = []
 		funcs.push(self.playerDao.findByIdAsync(event.attackPlayerData.id, true))
@@ -999,7 +1003,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					}]
 					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 				}
-				DataUtils.addPlayerDragonExp(attackPlayerDoc, attackDragon, attackDragonExpAdd)
+				attackPlayerItemBuff = DataUtils.isPlayerHasItemEvent(attackPlayerDoc, "dragonExpBonus") ? 0.3 : 0
+				DataUtils.addPlayerDragonExp(attackPlayerDoc, attackDragon, attackDragonExpAdd * (1 + attackPlayerItemBuff))
 
 				attackPlayerData.basicInfo = attackPlayerDoc.basicInfo
 				attackPlayerData.dragons = {}
@@ -1168,7 +1173,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					}]
 					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 				}
-				DataUtils.addPlayerDragonExp(attackPlayerDoc, attackDragon, attackDragonExpAdd)
+				attackPlayerItemBuff = DataUtils.isPlayerHasItemEvent(attackPlayerDoc, "dragonExpBonus") ? 0.3 : 0
+				DataUtils.addPlayerDragonExp(attackPlayerDoc, attackDragon, attackDragonExpAdd * (1 + attackPlayerItemBuff))
 
 				attackPlayerData.basicInfo = attackPlayerDoc.basicInfo
 				attackPlayerData.dragons = {}
@@ -1185,7 +1191,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					}]
 					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 				}
-				DataUtils.addPlayerDragonExp(defencePlayerDoc, defenceDragon, defenceDragonExpAdd)
+				var defencePlayerItemBuff = DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "dragonExpBonus") ? 0.3 : 0
+				DataUtils.addPlayerDragonExp(defencePlayerDoc, defenceDragon, defenceDragonExpAdd * (1 + defencePlayerItemBuff))
 
 				defencePlayerData.basicInfo = defencePlayerDoc.basicInfo
 				defencePlayerData.dragons = {}
@@ -2246,7 +2253,8 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 				}]
 				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 			}
-			DataUtils.addPlayerDragonExp(playerDoc, dragon, dragonExpAdd)
+			var playerItemBuff = DataUtils.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? 0.3 : 0
+			DataUtils.addPlayerDragonExp(playerDoc, dragon, dragonExpAdd * (1 + playerItemBuff))
 
 			playerData.dragons = {}
 			playerData.dragons[dragon.type] = playerDoc.dragons[dragon.type]

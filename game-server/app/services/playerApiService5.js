@@ -134,7 +134,8 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				}]
 				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 			}
-			DataUtils.addPlayerDragonExp(playerDoc, theDragon, expAdd)
+			var playerItemBuff = DataUtils.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? 0.3 : 0
+			DataUtils.addPlayerDragonExp(playerDoc, theDragon, expAdd * (1 + playerItemBuff))
 
 			playerData.dragons = {}
 			playerData.dragons[dragonType] = playerDoc.dragons[dragonType]

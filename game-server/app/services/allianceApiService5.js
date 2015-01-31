@@ -444,6 +444,7 @@ pro.addItem = function(playerId, itemName, count, callback){
 
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSellInAlliance) return Promise.reject(new Error("此道具未在联盟商店出售"))
+		if(!itemConfig.isAdvancedItem) return Promise.reject(new Error("普通道具不需要进货补充"))
 		var honourNeed = itemConfig.buyPriceInAlliance * count
 		if(allianceDoc.basicInfo.honour < honourNeed) return Promise.reject(new Error("联盟荣誉值不足"))
 		allianceDoc.basicInfo.honour -= honourNeed
@@ -538,32 +539,40 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		var isAdvancedItem = itemConfig.isAdvancedItem
 		var eliteLevel = DataUtils.getAllianceTitleLevel("elite")
 		var myLevel = DataUtils.getAllianceTitleLevel(playerDoc.alliance.title)
-		if(isAdvancedItem && myLevel > eliteLevel) return Promise.reject(new Error("玩家级别不足以购买高级道具"))
-		var item = _.find(allianceDoc.items, function(item){
-			return _.isEqual(item.name, itemName)
-		})
-		if(!_.isObject(item) || item.count < count) return Promise.reject(new Error("道具数量不足"))
+		if(isAdvancedItem){
+			if(myLevel > eliteLevel) return Promise.reject(new Error("玩家级别不足,不能购买高级道具"))
+			var item = _.find(allianceDoc.items, function(item){
+				return _.isEqual(item.name, itemName)
+			})
+			if(!_.isObject(item) || item.count < count) return Promise.reject(new Error("道具数量不足"))
+		}
 
 		var loyaltyNeed = itemConfig.buyPriceInAlliance * count
+		if(playerDoc.allianceInfo.loyalty < loyaltyNeed) return Promise.reject(new Error("玩家忠诚值不足"))
+		playerDoc.allianceInfo.loyalty -= loyaltyNeed
+		playerData.allianceInfo = playerDoc.basicInfo
+
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
-		if(memberObject.loyalty < loyaltyNeed) return Promise.reject(new Error("玩家忠诚值不足"))
 		memberObject.loyalty -= loyaltyNeed
 		allianceData.__members = [{
 			type:Consts.DataChangedType.Edit,
 			data:memberObject
 		}]
-		item.count -= count
-		if(item.count <= 0){
-			LogicUtils.removeItemInArray(allianceDoc.items, item)
-			allianceData.__items = [{
-				type:Consts.DataChangedType.Remove,
-				data:item
-			}]
-		}else{
-			allianceData.__items = [{
-				type:Consts.DataChangedType.Edit,
-				data:item
-			}]
+
+		if(isAdvancedItem){
+			item.count -= count
+			if(item.count <= 0){
+				LogicUtils.removeItemInArray(allianceDoc.items, item)
+				allianceData.__items = [{
+					type:Consts.DataChangedType.Remove,
+					data:item
+				}]
+			}else{
+				allianceData.__items = [{
+					type:Consts.DataChangedType.Edit,
+					data:item
+				}]
+			}
 		}
 
 		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)

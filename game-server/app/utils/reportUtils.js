@@ -531,7 +531,8 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defenceAllianceDoc.basicInfo.terrain
+			terrain:defenceAllianceDoc.basicInfo.terrain,
+			fogOfTrick:DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,
@@ -668,7 +669,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 	var attackDragonData = createDragonData(dragonFightData.attackDragonAfterFight)
 	var defenceDragonData = createDragonData(dragonFightData.defenceDragonAfterFight)
 	var attackPlayerCoinGet = 0
-	if(_.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin)){
+	if(_.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin) && !DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")){
 		var attackDragonCurrentHp = dragonFightData.attackDragonAfterFight.currentHp
 		attackPlayerCoinGet = defencePlayerDoc.resources.coin >= attackDragonCurrentHp ? attackDragonCurrentHp : enemyPlayerDoc.resources.coin
 	}
@@ -681,7 +682,8 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defenceAllianceDoc.basicInfo.terrain
+			terrain:defenceAllianceDoc.basicInfo.terrain,
+			fogOfTrick:DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,
@@ -803,7 +805,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		return equipments
 	}
 
-	var attackPlayerCoinGet = defencePlayerDoc.resources.coin >= attackDragonForFight.currentHp ? attackDragonForFight.currentHp : enemyPlayerDoc.resources.coin
+	var attackPlayerCoinGet = DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick") ? 0 : defencePlayerDoc.resources.coin >= attackDragonForFight.currentHp ? attackDragonForFight.currentHp : enemyPlayerDoc.resources.coin
 
 	var strikeCityReport = {
 		level:reportLevel,
@@ -813,7 +815,8 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defenceAllianceDoc.basicInfo.terrain
+			terrain:defenceAllianceDoc.basicInfo.terrain,
+			fogOfTrick:DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,

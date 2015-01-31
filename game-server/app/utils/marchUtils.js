@@ -14,36 +14,83 @@ var Define = require("../consts/define")
 var LogicUtils = require("./logicUtils")
 
 var GameDatas = require("../datas/GameDatas")
-var AllianceInit = GameDatas.AllianceInitData
-var Soldiers = GameDatas.Soldiers
+var AllianceInitData = GameDatas.AllianceInitData
+var PlayerInitData = GameDatas.PlayerInitData
 
 var Utils = module.exports
 
 var AllianceMapSize = {
-	width:AllianceInit.intInit.allianceRegionMapWidth.value,
-	height:AllianceInit.intInit.allianceRegionMapHeight.value
+	width:AllianceInitData.intInit.allianceRegionMapWidth.value,
+	height:AllianceInitData.intInit.allianceRegionMapHeight.value
 }
 
 /**
  * 获取距离
- * @param width
- * @param height
+ * @param fromAllianceDoc
+ * @param fromLocation
+ * @param toAllianceDoc
+ * @param toLocation
  * @returns {number}
  */
-var getDistance = function(width, height){
-	return Math.ceil(Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)))
-}
-/**
- * 获取行军时间
- * @param playerDoc
- * @param width
- * @param height
- * @returns {number}
- */
-var getMarchTime = function(playerDoc, width, height){
-	var distance = getDistance(width, height)
-	var time = AllianceInit.intInit.allianceRegionMapBaseTimePerGrid.value * distance * 1000
-	return 5 * 1000
+var getAllianceLocationDistance = function(fromAllianceDoc, fromLocation, toAllianceDoc, toLocation){
+	var width = 0
+	var height = 0
+
+	var getDistance = function(width, height){
+		return Math.ceil(Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)))
+	}
+
+	if(fromAllianceDoc == toAllianceDoc){
+		width = Math.abs(fromLocation.x - toLocation.x)
+		height = Math.abs(fromLocation.y - toLocation.y)
+		return getDistance(width, height)
+	}
+
+	if(_.isEqual(fromAllianceDoc._id, fromAllianceDoc.allianceFight.attackAllianceId)){
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Left)){
+			width = AllianceMapSize.width - fromLocation.x + toLocation.x
+			height = Math.abs(fromLocation.y - toLocation.y)
+			return getDistance(width, height)
+		}
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Right)){
+			width = AllianceMapSize.width - toLocation.x + fromLocation.x
+			height = Math.abs(fromLocation.y - toLocation.y)
+			return getDistance(width, height)
+		}
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Top)){
+			width = Math.abs(fromLocation.x - toLocation.x)
+			height = AllianceMapSize.height - fromLocation.y + toLocation.y
+			return getDistance(width, height)
+		}
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Bottom)){
+			width = Math.abs(fromLocation.x - toLocation.x)
+			height = AllianceMapSize.height - toLocation.y + fromLocation.y
+			return getDistance(width, height)
+		}
+		return 0
+	}else{
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Left)){
+			width = AllianceMapSize.width - toLocation.x + fromLocation.x
+			height = Math.abs(fromLocation.y - toLocation.y)
+			return getDistance(width, height)
+		}
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Right)){
+			width = AllianceMapSize.width - fromLocation.x + toLocation.x
+			height = Math.abs(fromLocation.y - toLocation.y)
+			return getDistance(width, height)
+		}
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Top)){
+			width = Math.abs(fromLocation.x - toLocation.x)
+			height = AllianceMapSize.height - toLocation.y + fromLocation.y
+			return getDistance(width, height)
+		}
+		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Bottom)){
+			width = Math.abs(fromLocation.x - toLocation.x)
+			height = AllianceMapSize.height - fromLocation.y + toLocation.y
+			return getDistance(width, height)
+		}
+		return 0
+	}
 }
 
 /**
@@ -53,16 +100,9 @@ var getMarchTime = function(playerDoc, width, height){
  * @returns {*}
  */
 var getSortedSoldiers = function(playerDoc, soldiers){
-	var config = null
 	var sortedSoldiers = _.sortBy(soldiers, function(soldier){
-		if(DataUtils.hasNormalSoldier(soldier.name)){
-			var soldierFullKey = soldier.name + "_" + 1
-			config = Soldiers.normal[soldierFullKey]
-			return - config.power * soldier.count
-		}else{
-			config = Soldiers.special[soldier.name]
-			return - config.power * soldier.count
-		}
+		var config = DataUtils.getPlayerSoldierConfig(playerDoc, soldier.name)
+		return -config.power * soldier.count
 	})
 	return sortedSoldiers
 }
@@ -179,71 +219,48 @@ var createStrikePlayerReturnData = function(allianceDoc, playerDoc, playerLocati
 	return playerData
 }
 
-
 /**
- * 获取玩家行军时间
+ * 获取玩家士兵行军时间
  * @param playerDoc
+ * @param soldiers
  * @param fromAllianceDoc
  * @param fromLocation
  * @param toAllianceDoc
  * @param toLocation
  */
-Utils.getPlayerMarchTime = function(playerDoc, fromAllianceDoc, fromLocation, toAllianceDoc, toLocation){
-	var width = 0
-	var height = 0
-
-	if(fromAllianceDoc == toAllianceDoc){
-		width = Math.abs(fromLocation.x - toLocation.x)
-		height = Math.abs(fromLocation.y - toLocation.y)
-		return getMarchTime(playerDoc, width, height)
-	}
-
-	if(_.isEqual(fromAllianceDoc._id, fromAllianceDoc.allianceFight.attackAllianceId)){
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Left)){
-			width = AllianceMapSize.width - fromLocation.x + toLocation.x
-			height = Math.abs(fromLocation.y - toLocation.y)
-			return getMarchTime(playerDoc, width, height)
-		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Right)){
-			width = AllianceMapSize.width - toLocation.x + fromLocation.x
-			height = Math.abs(fromLocation.y - toLocation.y)
-			return getMarchTime(playerDoc, width, height)
-		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Top)){
-			width = Math.abs(fromLocation.x - toLocation.x)
-			height = AllianceMapSize.height - fromLocation.y + toLocation.y
-			return getMarchTime(playerDoc, width, height)
-		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Bottom)){
-			width = Math.abs(fromLocation.x - toLocation.x)
-			height = AllianceMapSize.height - toLocation.y + fromLocation.y
-			return getMarchTime(playerDoc, width, height)
-		}
-	}else{
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Left)){
-			width = AllianceMapSize.width - toLocation.x + fromLocation.x
-			height = Math.abs(fromLocation.y - toLocation.y)
-			return getMarchTime(playerDoc, width, height)
-		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Right)){
-			width = AllianceMapSize.width - fromLocation.x + toLocation.x
-			height = Math.abs(fromLocation.y - toLocation.y)
-			return getMarchTime(playerDoc, width, height)
-		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Top)){
-			width = Math.abs(fromLocation.x - toLocation.x)
-			height = AllianceMapSize.height - toLocation.y + fromLocation.y
-			return getMarchTime(playerDoc, width, height)
-		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Bottom)){
-			width = Math.abs(fromLocation.x - toLocation.x)
-			height = AllianceMapSize.height - fromLocation.y + toLocation.y
-			return getMarchTime(playerDoc, width, height)
-		}
-	}
-
-	return 0
+var getPlayerSoldiersMarchTime = function(playerDoc, soldiers, fromAllianceDoc, fromLocation, toAllianceDoc, toLocation){
+	var distance = getAllianceLocationDistance(fromAllianceDoc, fromLocation, toAllianceDoc, toLocation)
+	var baseSpeed = 2400
+	var totalSpeed = 0
+	var totalCitizen = 0
+	_.each(soldiers, function(soldier){
+		var config = DataUtils.getPlayerSoldierConfig(playerDoc, soldier.name)
+		totalCitizen += soldier.count * config.citizen
+		totalSpeed += baseSpeed / config.march * totalCitizen
+	})
+	var itemBuff = DataUtils.isPlayerHasItemEvent(playerDoc, "marchSpeedBonus") ? 0.3 : 0
+	var time = Math.ceil(totalSpeed / totalCitizen * distance * 1000 * (1 - itemBuff))
+	return time//5 * 1000
 }
+
+/**
+ * 获取玩家龙的行军时间
+ * @param playerDoc
+ * @param dragon
+ * @param fromAllianceDoc
+ * @param fromLocation
+ * @param toAllianceDoc
+ * @param toLocation
+ * @returns {number}
+ */
+var getPlayerDragonMarchTime = function(playerDoc, dragon, fromAllianceDoc, fromLocation, toAllianceDoc, toLocation){
+	var distance = getAllianceLocationDistance(fromAllianceDoc, fromLocation, toAllianceDoc, toLocation)
+	var baseSpeed = 2400
+	var marchSpeed = PlayerInitData.intInit.dragonMarchSpeed.value
+	var time = Math.ceil(baseSpeed / marchSpeed * distance * 1000)
+	return time//5 * 1000
+}
+
 
 /**
  * 创建联盟圣地行军事件
@@ -257,7 +274,7 @@ Utils.getPlayerMarchTime = function(playerDoc, fromAllianceDoc, fromLocation, to
 Utils.createAttackAllianceShrineMarchEvent = function(allianceDoc, playerDoc, dragon, soldiers, shrineEventId){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var shrineLocation = allianceDoc.buildings["shrine"].location
-	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, allianceDoc, shrineLocation)
+	var marchTime = getPlayerSoldiersMarchTime(playerDoc, soldiers, allianceDoc, playerLocation, allianceDoc, shrineLocation)
 
 	var event = {
 		id:ShortId.generate(),
@@ -287,7 +304,7 @@ Utils.createAttackAllianceShrineMarchEvent = function(allianceDoc, playerDoc, dr
 Utils.createAttackAllianceShrineMarchReturnEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, rewards){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var shrineLocation = allianceDoc.buildings["shrine"].location
-	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, shrineLocation, allianceDoc, playerLocation)
+	var marchTime = getPlayerSoldiersMarchTime(playerDoc, soldiers, allianceDoc, shrineLocation, allianceDoc, playerLocation)
 
 	var event = {
 		id:ShortId.generate(),
@@ -315,7 +332,7 @@ Utils.createAttackAllianceShrineMarchReturnEvent = function(allianceDoc, playerD
 Utils.createHelpDefenceMarchEvent = function(allianceDoc, playerDoc, dragon, soldiers, beHelpedPlayerDoc){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var beHelpedPlayerLocation = LogicUtils.getAllianceMemberById(allianceDoc, beHelpedPlayerDoc._id).location
-	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, allianceDoc, beHelpedPlayerLocation)
+	var marchTime = getPlayerSoldiersMarchTime(playerDoc, soldiers, allianceDoc, playerLocation, allianceDoc, beHelpedPlayerLocation)
 
 	var event = {
 		id:ShortId.generate(),
@@ -348,7 +365,7 @@ Utils.createHelpDefenceMarchEvent = function(allianceDoc, playerDoc, dragon, sol
 Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, beHelpedPlayerDoc, dragon, soldiers, woundedSoldiers, rewards){
 	var beHelpedPlayerLocation = LogicUtils.getAllianceMemberById(allianceDoc, beHelpedPlayerDoc._id).location
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, beHelpedPlayerLocation, allianceDoc, playerLocation)
+	var marchTime = getPlayerSoldiersMarchTime(playerDoc, soldiers, allianceDoc, beHelpedPlayerLocation, allianceDoc, playerLocation)
 	var event = {
 		id:ShortId.generate(),
 		marchType:Consts.MarchType.HelpDefence,
@@ -378,7 +395,7 @@ Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, beHel
 Utils.createStrikePlayerCityMarchEvent = function(allianceDoc, playerDoc, dragon, defenceAllianceDoc, defencePlayerDoc){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var defencePlayerLocation = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location
-	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defencePlayerLocation)
+	var marchTime = getPlayerDragonMarchTime(playerDoc, dragon, allianceDoc, playerLocation, defenceAllianceDoc, defencePlayerLocation)
 
 	var event = {
 		id:ShortId.generate(),
@@ -410,7 +427,7 @@ Utils.createStrikePlayerCityMarchEvent = function(allianceDoc, playerDoc, dragon
 Utils.createStrikePlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, dragon, defenceAllianceDoc, defencePlayerDoc, rewards){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var defencePlayerLocation = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location
-	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defencePlayerLocation)
+	var marchTime = getPlayerDragonMarchTime(playerDoc, dragon, allianceDoc, playerLocation, defenceAllianceDoc, defencePlayerLocation)
 
 	var event = {
 		id:ShortId.generate(),
@@ -442,7 +459,7 @@ Utils.createStrikePlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
 Utils.createAttackPlayerCityMarchEvent = function(allianceDoc, playerDoc, dragon, soldiers, defenceAllianceDoc, defencePlayerDoc){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var defencePlayerLocation = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location
-	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defencePlayerLocation)
+	var marchTime = getPlayerSoldiersMarchTime(playerDoc, soldiers, allianceDoc, playerLocation, defenceAllianceDoc, defencePlayerLocation)
 
 	var event = {
 		id:ShortId.generate(),
@@ -476,7 +493,7 @@ Utils.createAttackPlayerCityMarchEvent = function(allianceDoc, playerDoc, dragon
 Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, defenceAllianceDoc, defencePlayerDoc, rewards){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var defencePlayerLocation = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location
-	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defencePlayerLocation)
+	var marchTime = getPlayerSoldiersMarchTime(playerDoc, soldiers, allianceDoc, playerLocation, defenceAllianceDoc, defencePlayerLocation)
 
 	var event = {
 		id:ShortId.generate(),
@@ -508,7 +525,7 @@ Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
 Utils.createAttackVillageMarchEvent = function(allianceDoc, playerDoc, dragon, soldiers, defenceAllianceDoc, defenceVillage){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var defenceVillageLocation = defenceVillage.location
-	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defenceVillageLocation)
+	var marchTime = getPlayerSoldiersMarchTime(playerDoc, soldiers, allianceDoc, playerLocation, defenceAllianceDoc, defenceVillageLocation)
 
 	var event = {
 		id:ShortId.generate(),
@@ -542,7 +559,7 @@ Utils.createAttackVillageMarchEvent = function(allianceDoc, playerDoc, dragon, s
 Utils.createAttackVillageMarchReturnEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, defenceAllianceDoc, defenceVillage, rewards){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var defenceVillageLocation = defenceVillage.location
-	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defenceVillageLocation)
+	var marchTime = getPlayerSoldiersMarchTime(playerDoc, soldiers, allianceDoc, playerLocation, defenceAllianceDoc, defenceVillageLocation)
 
 	var event = {
 		id:ShortId.generate(),
@@ -573,7 +590,7 @@ Utils.createAttackVillageMarchReturnEvent = function(allianceDoc, playerDoc, dra
 Utils.createStrikeVillageMarchEvent = function(allianceDoc, playerDoc, dragon, defenceAllianceDoc, defenceVillage){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var defenceVillageLocation = defenceVillage.location
-	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defenceVillageLocation)
+	var marchTime = getPlayerDragonMarchTime(playerDoc, dragon, allianceDoc, playerLocation, defenceAllianceDoc, defenceVillageLocation)
 
 	var event = {
 		id:ShortId.generate(),
@@ -605,7 +622,7 @@ Utils.createStrikeVillageMarchEvent = function(allianceDoc, playerDoc, dragon, d
 Utils.createStrikeVillageMarchReturnEvent = function(allianceDoc, playerDoc, dragon, defenceAllianceDoc, defenceVillage, rewards){
 	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
 	var defenceVillageLocation = defenceVillage.location
-	var marchTime = this.getPlayerMarchTime(playerDoc, allianceDoc, playerLocation, defenceAllianceDoc, defenceVillageLocation)
+	var marchTime = getPlayerDragonMarchTime(playerDoc, dragon, allianceDoc, playerLocation, defenceAllianceDoc, defenceVillageLocation)
 
 	var event = {
 		id:ShortId.generate(),

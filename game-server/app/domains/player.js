@@ -679,7 +679,8 @@ var playerSchema = new Schema({
 						name:{type:String, required:true},
 						tag:{type:String, required:true}
 					},
-					terrain:{type:String, required:true}
+					terrain:{type:String, required:true},
+					fogOfTrick:{type:Boolean, required:true}
 				},
 				attackPlayerData:{
 					id:{type:String, required:true},

@@ -131,11 +131,13 @@ Utils.getGemByTimeInterval = function(interval){
 
 /**
  * 获取建筑升级时,需要的资源和道具
+ * @param playerDoc
  * @param buildingType
  * @param buildingLevel
  * @returns {{resources: {wood: *, stone: *, iron: *, citizen: *}, materials: {blueprints: *, tools: *, tiles: *, pulley: *}, buildTime: *}}
  */
-Utils.getBuildingUpgradeRequired = function(buildingType, buildingLevel){
+Utils.getPlayerBuildingUpgradeRequired = function(playerDoc, buildingType, buildingLevel){
+	var buildingTimeBuff = this.getPlayerProductionTechBuff(playerDoc, "crane")
 	var config = BuildingLevelUp[buildingType][buildingLevel]
 	var required = {
 		resources:{
@@ -150,7 +152,7 @@ Utils.getBuildingUpgradeRequired = function(buildingType, buildingLevel){
 			tiles:config.tiles,
 			pulley:config.pulley
 		},
-		buildTime:config.buildTime
+		buildTime:Math.ceil(config.buildTime * (1 - buildingTimeBuff))
 	}
 
 	return required
@@ -224,11 +226,13 @@ Utils.getSoldierStarUpgradeRequired = function(soldierName, star){
 
 /**
  * 获取小屋升级时,需要的资源和道具
+ * @param playerDoc
  * @param houseType
  * @param houseLevel
  * @returns {{resources: {wood: *, stone: *, iron: *, citizen: *}, materials: {blueprints: *, tools: *, tiles: *, pulley: *}, buildTime: *}}
  */
-Utils.getHouseUpgradeRequired = function(houseType, houseLevel){
+Utils.getPlayerHouseUpgradeRequired = function(playerDoc, houseType, houseLevel){
+	var buildingTimeBuff = this.getPlayerProductionTechBuff(playerDoc, "crane")
 	var houseUsed = this.getHouseUsedCitizen(houseType, houseLevel - 1)
 	var config = HouseLevelUp[houseType][houseLevel]
 	var required = {
@@ -244,7 +248,7 @@ Utils.getHouseUpgradeRequired = function(houseType, houseLevel){
 			tiles:config.tiles,
 			pulley:config.pulley
 		},
-		buildTime:config.buildTime
+		buildTime:Math.ceil(config.buildTime * (1 - buildingTimeBuff))
 	}
 
 	return required
@@ -349,7 +353,11 @@ Utils.getPlayerResources = function(playerDoc){
 	var resources = {}
 	_.each(playerDoc.resources, function(value, key){
 		if(_.contains(Consts.BasicResource, key)){
-			resources[key] = self.getPlayerResource(playerDoc, key)
+			if(_.isEqual(key, "food")){
+				resources[key] = self.getPlayerFood(playerDoc)
+			}else{
+				resources[key] = self.getPlayerResource(playerDoc, key)
+			}
 		}else if(_.isEqual("citizen", key)){
 			resources[key] = self.getPlayerCitizen(playerDoc)
 		}else if(_.isEqual("wallHp", key)){
@@ -388,10 +396,56 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 
 	var totalPerSecond = totalPerHour / 60 / 60
 	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
-	var output = Math.floor(totalSecond * totalPerSecond)
+	var itemKey = resourceName + "Bonus"
+	var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? 0.5 : 0
+	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff))
 	var totalResource = playerDoc.resources[resourceName] + output
 	if(totalResource > resourceLimit) totalResource = resourceLimit
 	return totalResource
+}
+
+/**
+ * 获取玩家士兵的消耗
+ * @param playerDoc
+ * @param time
+ * @returns {number}
+ */
+Utils.getPlayerSoldiersFoodConsumed = function(playerDoc, time){
+	var self = this
+	var consumed = 0
+	_.each(playerDoc.soldiers, function(count, soldierName){
+		var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
+		consumed += config.consumeFoodPerHour * count
+	})
+
+	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "quarterMaster") ? 0.25 : 0
+	return Math.ceil(consumed * time / 1000 / 60 / 60 * (1 - itemBuff))
+}
+
+Utils.getPlayerFood = function(playerDoc){
+	var resourceName = "food"
+	var resourceLimit = this.getPlayerResourceUpLimit(playerDoc, resourceName)
+	var houseType = this.getHouseTypeByResourceName(resourceName)
+	var houses = this.getPlayerHousesByType(playerDoc, houseType)
+	var totalPerHour = 0
+	_.each(houses, function(house){
+		var config = HouseFunction[house.type][house.level]
+		totalPerHour += config.poduction
+	})
+
+	var totalPerSecond = totalPerHour / 60 / 60
+	var totalTime = Date.now() - playerDoc.basicInfo.resourceRefreshTime
+	var soldierConsumed = this.getPlayerSoldiersFoodConsumed(playerDoc, totalTime)
+	if(playerDoc.resources[resourceName] - soldierConsumed >= resourceLimit){
+		return playerDoc.resources[resourceName] - soldierConsumed
+	}else{
+		var totalSecond = totalTime / 1000
+		var itemBuff = this.isPlayerHasItemEvent(playerDoc, "foodBonus") ? 0.5 : 0
+		var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff))
+		var totalResource = playerDoc.resources[resourceName] + output - soldierConsumed
+		if(totalResource > resourceLimit) totalResource = resourceLimit
+		return totalResource
+	}
 }
 
 /**
@@ -415,7 +469,8 @@ Utils.getPlayerCitizen = function(playerDoc){
 
 	var totalPerSecond = totalPerHour / 60 / 60
 	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
-	var output = Math.floor(totalSecond * totalPerSecond)
+	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "citizenBonus") ? 0.5 : 0
+	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff))
 	var totalCitizen = playerDoc.resources["citizen"] + output
 	if(totalCitizen - usedCitizen > citizenLimit) totalCitizen = citizenLimit - usedCitizen
 	return totalCitizen
@@ -2664,8 +2719,8 @@ Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldie
  * @param dragon
  */
 Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
-	if(!_.isObject(playerDoc)) return
 	var self = this
+	if(!_.isObject(playerDoc)) return
 	var config = BuildingFunction.dragonEyrie[playerDoc.buildings.location_4.level]
 	var dragons = arguments.length > 1 ? [dragon] : playerDoc.dragons
 	_.each(dragons, function(dragon){
@@ -2674,7 +2729,8 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
 			if(dragon.hp < dragonMaxHp){
 				var totalMilSeconds = Date.now() - dragon.hpRefreshTime
 				var recoveryPerMilSecond = config.hpRecoveryPerHour / 60 / 60 / 1000
-				var hpRecovered = Math.floor(totalMilSeconds * recoveryPerMilSecond)
+				var itemBuff = self.isPlayerHasItemEvent(playerDoc, "dragonHpBonus") ? 0.3 : 0
+				var hpRecovered = Math.floor(totalMilSeconds * recoveryPerMilSecond * (1 + itemBuff))
 				dragon.hp += hpRecovered
 				dragon.hp = dragon.hp > dragonMaxHp ? dragonMaxHp : dragon.hp
 			}
@@ -2944,6 +3000,7 @@ Utils.createPlayerDailyQuestEvent = function(playerDoc, quest){
  * @returns {Array}
  */
 Utils.getPlayerDailyQuestEventRewards = function(playerDoc, questEvent){
+	var self = this
 	var config = DailyQuests.dailyQuests[questEvent.index]
 	var townhallLevel = playerDoc.buildings.location_15.level
 	var effect = questEvent.star * (1 + (0.02 * townhallLevel))
@@ -2953,7 +3010,8 @@ Utils.getPlayerDailyQuestEventRewards = function(playerDoc, questEvent){
 		var param = rewardString.split(":")
 		var type = param[0]
 		var name = param[1]
-		var count = Math.floor(parseInt(param[2]) * effect)
+		var itemBuff = self.isPlayerHasItemEvent(playerDoc, "taxesBonus") ? 0.5 : 0
+		var count = Math.floor(parseInt(param[2]) * effect * (1 + itemBuff))
 		rewards.push({
 			type:type,
 			name:name,
@@ -3399,4 +3457,40 @@ Utils.getPlayerMasterOfDefenderBuffAboutDefenceWall = function(playerDoc){
 	})
 	if(_.isObject(itemEvent)) buff = 0.2
 	return buff
+}
+
+/**
+ * 玩家是否有相关道具Buff
+ * @param playerDoc
+ * @param eventType
+ * @returns {*}
+ */
+Utils.isPlayerHasItemEvent = function(playerDoc, eventType){
+	return _.some(playerDoc.itemEvents, function(event){
+		return _.isEqual(event.type, eventType)
+	})
+}
+
+/**
+ * 获取玩家生产科技的Buff效果
+ * @param playerDoc
+ * @param techName
+ * @returns {number}
+ */
+Utils.getPlayerProductionTechBuff = function(playerDoc, techName){
+	var techConfig = ProductionTechs[techName]
+	var tech = playerDoc.productionTechs[techName]
+	return tech.level * techConfig.effectPerLevel
+}
+
+/**
+ * 获取玩家军事科技的Buff效果
+ * @param playerDoc
+ * @param techName
+ * @returns {number}
+ */
+Utils.getPlayerMilitaryTechBuff = function(playerDoc, techName){
+	var techConfig = MilitaryTechs[techName]
+	var tech = playerDoc.militaryTechs[techName]
+	return tech.level * techConfig.effectPerLevel
 }

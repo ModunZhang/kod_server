@@ -68,3 +68,8 @@ intInit["casinoTokenNeededPerAdvancedGacha"] = {
 	value:1000,
 	desc:"高级gacha一次需要多少赌币"
 }
+intInit["dragonMarchSpeed"] = {
+	type:"dragonMarchSpeed",
+	value:240,
+	desc:"龙的行军速度"
+}

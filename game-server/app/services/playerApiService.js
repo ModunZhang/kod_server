@@ -233,7 +233,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
-		var upgradeRequired = DataUtils.getBuildingUpgradeRequired(building.type, building.level + 1)
+		var upgradeRequired = DataUtils.getPlayerBuildingUpgradeRequired(playerDoc, building.type, building.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
 		var preBuildEvent = null
@@ -411,7 +411,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
-		var upgradeRequired = DataUtils.getHouseUpgradeRequired(houseType, 1)
+		var upgradeRequired = DataUtils.getPlayerHouseUpgradeRequired(playerDoc, houseType, 1)
 		var buyedResources = null
 		var buyedMaterials = null
 		var preBuildEvent = null
@@ -602,7 +602,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
-		var upgradeRequired = DataUtils.getHouseUpgradeRequired(house.type, house.level + 1)
+		var upgradeRequired = DataUtils.getPlayerHouseUpgradeRequired(playerDoc, house.type, house.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
 		var preBuildEvent = null
@@ -846,7 +846,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
-		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("tower", tower.level + 1)
+		var upgradeRequired = DataUtils.getPlayerBuildingUpgradeRequired(playerDoc, "tower", tower.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
 		var preBuildEvent = null
@@ -999,7 +999,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
-		var upgradeRequired = DataUtils.getBuildingUpgradeRequired("wall", wall.level + 1)
+		var upgradeRequired = DataUtils.getPlayerBuildingUpgradeRequired(playerDoc, "wall", wall.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
 		var preBuildEvent = null

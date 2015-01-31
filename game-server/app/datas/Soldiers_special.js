@@ -17,7 +17,7 @@ special["skeletonWarrior"] = {
 	hp:50,
 	load:17,
 	march:50,
-	consumeFood:5,
+	consumeFoodPerHour:5,
 	killScore:1,
 	citizen:1,
 	recruitTime:40
@@ -36,7 +36,7 @@ special["skeletonArcher"] = {
 	hp:31,
 	load:18,
 	march:64,
-	consumeFood:18,
+	consumeFoodPerHour:18,
 	killScore:1,
 	citizen:1,
 	recruitTime:60
@@ -55,7 +55,7 @@ special["deathKnight"] = {
 	hp:87,
 	load:48,
 	march:80,
-	consumeFood:48,
+	consumeFoodPerHour:48,
 	killScore:2,
 	citizen:2,
 	recruitTime:80
@@ -74,7 +74,7 @@ special["meatWagon"] = {
 	hp:135,
 	load:96,
 	march:52,
-	consumeFood:96,
+	consumeFoodPerHour:96,
 	killScore:4,
 	citizen:4,
 	recruitTime:95
@@ -93,7 +93,7 @@ special["priest"] = {
 	hp:80,
 	load:27,
 	march:52,
-	consumeFood:27,
+	consumeFoodPerHour:27,
 	killScore:1,
 	citizen:1,
 	recruitTime:140
@@ -112,7 +112,7 @@ special["demonHunter"] = {
 	hp:49,
 	load:28,
 	march:72,
-	consumeFood:28,
+	consumeFoodPerHour:28,
 	killScore:1,
 	citizen:1,
 	recruitTime:180
@@ -131,7 +131,7 @@ special["paladin"] = {
 	hp:150,
 	load:53,
 	march:75,
-	consumeFood:53,
+	consumeFoodPerHour:53,
 	killScore:2,
 	citizen:2,
 	recruitTime:240
@@ -150,7 +150,7 @@ special["steamTank"] = {
 	hp:186,
 	load:106,
 	march:48,
-	consumeFood:106,
+	consumeFoodPerHour:106,
 	killScore:4,
 	citizen:4,
 	recruitTime:280

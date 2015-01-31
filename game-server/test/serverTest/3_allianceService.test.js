@@ -913,7 +913,7 @@ describe("AllianceService", function(){
 		//		})
 		//	})
 		//})
-
+		//
 		//it("donateToAlliance 正常捐赠1", function(done){
 		//	Api.loginPlayer(Config.deviceId3, function(doc){
 		//		doc.code.should.equal(200)
@@ -929,14 +929,14 @@ describe("AllianceService", function(){
 		//		})
 		//	})
 		//})
-
+		//
 		//it("donateToAlliance 正常捐赠2", function(done){
 		//	Api.donateToAlliance("wood", function(doc){
 		//		doc.code.should.equal(200)
 		//		done()
 		//	})
 		//})
-
+		//
 		//it("donateToAlliance 正常捐赠3", function(done){
 		//	Api.sendChat("donatelevel 1", function(doc){
 		//		doc.code.should.equal(200)
@@ -946,7 +946,7 @@ describe("AllianceService", function(){
 		//		})
 		//	})
 		//})
-
+		//
 		//it("upgradeAllianceBuilding 盟主城堡等级不足", function(done){
 		//	Api.upgradeAllianceBuilding("palace", function(doc){
 		//		doc.code.should.equal(500)
@@ -3278,18 +3278,36 @@ describe("AllianceService", function(){
 		//	}, 2 * 1000)
 		//})
 
-		//it("addAllianceItem 正常添加", function(done){
+		//it("addAllianceItem 普通道具不需要进货补充", function(done){
 		//	Api.loginPlayer(Config.deviceId3, function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.addAllianceItem("movingConstruction", 1, function(doc){
+		//			doc.code.should.equal(500)
+		//			doc.message.should.equal("普通道具不需要进货补充")
+		//			done()
+		//		})
+		//	})
+		//})
+		//
+		//it("addAllianceItem 正常添加", function(done){
+		//	Api.loginPlayer(Config.deviceId3, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.addAllianceItem("torch", 1, function(doc){
 		//			doc.code.should.equal(200)
 		//			done()
 		//		})
 		//	})
 		//})
-
-		//it("buyAllianceItem 正常购买", function(done){
+		//
+		//it("buyAllianceItem 正常购买1", function(done){
 		//	Api.buyAllianceItem("movingConstruction", 1, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("buyAllianceItem 正常购买2", function(done){
+		//	Api.buyAllianceItem("torch", 1, function(doc){
 		//		doc.code.should.equal(200)
 		//		done()
 		//	})

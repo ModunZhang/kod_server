@@ -21,7 +21,7 @@ intInit["editAllianceTerrianHonour"] = {
 }
 intInit["activeShrineStageEventTime"] = {
 	type:"activeShrineStageEventTime",
-	value:7
+	value:120
 }
 intInit["allianceFightPrepareTime"] = {
 	type:"allianceFightPrepareTime",
@@ -38,10 +38,6 @@ intInit["allianceHelpDefenceTroopsMaxCount"] = {
 intInit["allianceRevengeMaxTime"] = {
 	type:"allianceRevengeMaxTime",
 	value:300
-}
-intInit["allianceRegionMapBaseTimePerGrid"] = {
-	type:"allianceRegionMapBaseTimePerGrid",
-	value:1
 }
 intInit["allianceRegionMapWidth"] = {
 	type:"allianceRegionMapWidth",
