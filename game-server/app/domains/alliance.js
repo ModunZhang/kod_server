@@ -81,7 +81,7 @@ var allianceSchema = new Schema({
 		helpedByTroopsCount:{type:Number, required:true},
 		power:{type:Number, required:true},
 		kill:{type:Number, required:true},
-		loyalty:{type:Number, reuqired:true},
+		loyalty:{type:Number, required:true},
 		lastLoginTime:{type:Number, required:true},
 		title:{type:String, required:true},
 		donateStatus:{
@@ -110,7 +110,7 @@ var allianceSchema = new Schema({
 		}],
 		lastRewardData:{
 			type:{
-				count:{type:Number, reuqired:true},
+				count:{type:Number, required:true},
 				time:{type:Number, required:true}
 			},
 			required:false
@@ -670,6 +670,14 @@ var allianceSchema = new Schema({
 		_id:false,
 		name:{type:String, required:true},
 		count:{type:Number, required:true}
+	}],
+	itemLogs:[{
+		_id:false,
+		type:{type:String, required:true},
+		playerName:{type:String, required:true},
+		itemName:{type:String, required:true},
+		itemCount:{type:Number, required:true},
+		time:{type:Number, required:true}
 	}]
 })
 

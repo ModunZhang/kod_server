@@ -2441,3 +2441,45 @@ Utils.addAlliancePlayerLastThreeDaysKillData = function(allianceDoc, memberId, k
 	}
 	return memberObject
 }
+
+/**
+ * 创建联盟道具商城日志
+ * @param logType
+ * @param playerName
+ * @param itemName
+ * @param itemCount
+ * @returns {{type: *, playerName: *, itemName: *, itemCount: *, time: number}}
+ */
+Utils.createAllianceItemLog = function(logType, playerName, itemName, itemCount){
+	var log = {
+		type:logType,
+		playerName:playerName,
+		itemName:itemName,
+		itemCount:itemCount,
+		time:Date.now()
+	}
+	return log
+}
+
+/**
+ * 添加联盟商店日志
+ * @param allianceDoc
+ * @param allianceData
+ * @param log
+ */
+Utils.addAllianceItemLog = function(allianceDoc, allianceData, log){
+	var willRemovedLog = null
+	if(!_.isArray(allianceData.__itemLogs))allianceData.__itemLogs = []
+	if(allianceDoc.itemLogs.length >= Define.AllianceItemLogsMaxSize){
+		willRemovedLog = allianceDoc.itemLogs.shift()
+		allianceData.__itemLogs.push({
+			type:Consts.DataChangedType.Remove,
+			data:willRemovedLog
+		})
+	}
+	allianceDoc.itemLogs.push(log)
+	allianceData.__itemLogs.push({
+		type:Consts.DataChangedType.Add,
+		data:log
+	})
+}

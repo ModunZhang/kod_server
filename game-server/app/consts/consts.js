@@ -226,5 +226,9 @@ module.exports = {
 		"strikeMarchReturnEvents",
 		"attackMarchEvents",
 		"attackMarchReturnEvents"
-	]
+	],
+	AllianceItemLogType:{
+		AddItem:"addItem",
+		BuyItem:"buyItem"
+	}
 }

@@ -462,6 +462,9 @@ pro.addItem = function(playerId, itemName, count, callback){
 			}]
 		}
 
+		var itemLog = LogicUtils.createAllianceItemLog(Consts.AllianceItemLogType.AddItem, playerDoc.basicInfo.name, itemName, count)
+		LogicUtils.addAllianceItemLog(allianceDoc, allianceData, itemLog)
+
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
@@ -573,6 +576,9 @@ pro.buyItem = function(playerId, itemName, count, callback){
 					data:item
 				}]
 			}
+
+			var itemLog = LogicUtils.createAllianceItemLog(Consts.AllianceItemLogType.BuyItem, playerDoc.basicInfo.name, itemName, count)
+			LogicUtils.addAllianceItemLog(allianceDoc, allianceData, itemLog)
 		}
 
 		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)
