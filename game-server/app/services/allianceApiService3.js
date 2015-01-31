@@ -70,12 +70,12 @@ pro.donateToAlliance = function(playerId, donateType, callback){
 		var memberDocInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		var donateLevel = LogicUtils.getAllianceMemberDonateLevelByType(memberDocInAlliance, donateType)
 		var donateConfig = DataUtils.getAllianceDonateConfigByTypeAndLevel(donateType, donateLevel)
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(playerDoc.resources[donateType] < donateConfig.count){
 			return Promise.reject(new Error("资源不足"))
 		}
 		playerDoc.resources[donateType] -= donateConfig.count
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 
 		playerDoc.allianceInfo.loyalty += donateConfig.loyalty * (1 + donateConfig.extra)
 		allianceDoc.basicInfo.honour += donateConfig.honour * (1 + donateConfig.extra)

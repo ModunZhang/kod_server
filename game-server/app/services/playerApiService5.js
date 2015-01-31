@@ -144,8 +144,8 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			if(!_.isArray(soldiers)) return Promise.reject(new Error("fightData 不合法"))
 
 			var name = null
+			var woundedSoldiers = []
 			playerData.soldiers = {}
-			playerData.woundedSoldiers = {}
 			for(var i = 0; i < soldiers.length; i++){
 				var soldier = soldiers[i]
 				name = soldier.name
@@ -156,10 +156,14 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				if(!_.isNumber(wounedCount)) return Promise.reject(new Error("fightData 不合法"))
 				if(playerDoc.soldiers[name] - damagedCount < 0) return Promise.reject(new Error("fightData 不合法"))
 				playerDoc.soldiers[name] -= damagedCount
-				playerDoc.woundedSoldiers[name] += wounedCount
+				var soldierTreatPercent = DataUtils.getPlayerTreatSoldierPercent(playerDoc, theDragon)
+				woundedSoldiers.push({
+					name:name,
+					count:Math.floor(damagedCount * soldierTreatPercent)
+				})
 				playerData.soldiers[name] = playerDoc.soldiers[name]
-				playerData.woundedSoldiers[name] = playerDoc.woundedSoldiers[name]
 			}
+			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, woundedSoldiers)
 		}
 
 		if(_.isObject(rewards)){

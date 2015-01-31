@@ -119,7 +119,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 			return _.isEqual(helpEvent.eventData.id, eventId)
 		})
 	}
-	LogicUtils.refreshPlayerResources(playerDoc)
+	DataUtils.refreshPlayerResources(playerDoc)
 	if(_.isEqual(eventType, "buildingEvents")){
 		event = LogicUtils.getEventById(playerDoc.buildingEvents, eventId)
 		LogicUtils.removeItemInArray(playerDoc.buildingEvents, event)
@@ -153,7 +153,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
-			LogicUtils.refreshPlayerResources(playerDoc)
+			DataUtils.refreshPlayerResources(playerDoc)
 
 		}
 		if(_.isObject(allianceDoc)){

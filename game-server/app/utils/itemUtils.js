@@ -313,9 +313,9 @@ var HeroBlood = function(playerDoc, playerData, itemConfig){
  * @returns {*}
  */
 var Stamina = function(playerDoc, playerData, itemConfig){
-	LogicUtils.refreshPlayerResources(playerDoc)
+	DataUtils.refreshPlayerResources(playerDoc)
 	playerDoc.resources.stamina += parseInt(itemConfig.effect)
-	LogicUtils.refreshPlayerResources(playerDoc)
+	DataUtils.refreshPlayerResources(playerDoc)
 	playerData.resources = playerDoc.resources
 	return Promise.resolve()
 }
@@ -328,9 +328,9 @@ var Stamina = function(playerDoc, playerData, itemConfig){
  * @returns {*}
  */
 var RestoreWallHp = function(playerDoc, playerData, itemConfig){
-	LogicUtils.refreshPlayerResources(playerDoc)
+	DataUtils.refreshPlayerResources(playerDoc)
 	playerDoc.resources.wallHp += parseInt(itemConfig.effect)
-	LogicUtils.refreshPlayerResources(playerDoc)
+	DataUtils.refreshPlayerResources(playerDoc)
 	playerData.resources = playerDoc.resources
 	return Promise.resolve()
 }
@@ -549,9 +549,9 @@ var Buff = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventServ
  */
 var Resource = function(playerDoc, playerData, itemConfig, resourceName){
 	var count = Math.round(itemConfig.effect * 1000)
-	LogicUtils.refreshPlayerResources(playerDoc)
+	DataUtils.refreshPlayerResources(playerDoc)
 	playerDoc.resources[resourceName] += count
-	LogicUtils.refreshPlayerResources(playerDoc)
+	DataUtils.refreshPlayerResources(playerDoc)
 	playerData.resources = playerDoc.resources
 
 	return Promise.resolve()

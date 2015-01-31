@@ -102,6 +102,12 @@ module.exports = {
 		blueDragon:"desert",
 		greenDragon:"iceField"
 	},
+	ResourceNameForProductionTechNameMap:{
+		stone:"stoneCarving",
+		wood:"forestation",
+		iron:"ironSmelting",
+		food:"cropResearch"
+	},
 
 	AllianceLanguage:{
 		All:"all",

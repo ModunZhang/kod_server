@@ -37,7 +37,7 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 		var config = null
 		_.each(soldiersForFight, function(soldierForFight){
 			_.each(soldierForFight.killedSoldiers, function(soldier){
-				if(DataUtils.hasNormalSoldier(soldier.name)){
+				if(DataUtils.isNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
 					config = Soldiers.normal[soldierFullKey]
 					killed += soldier.count * config.killScore
@@ -208,7 +208,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		var config = null
 		_.each(soldiersForFight, function(soldierForFight){
 			_.each(soldierForFight.killedSoldiers, function(soldier){
-				if(DataUtils.hasNormalSoldier(soldier.name)){
+				if(DataUtils.isNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
 					config = Soldiers.normal[soldierFullKey]
 					killed += soldier.count * config.killScore
@@ -916,7 +916,7 @@ Utils.createAttackVillageFightWithVillageTroopReport = function(attackAllianceDo
 		var config = null
 		_.each(soldiersForFight, function(soldierForFight){
 			_.each(soldierForFight.killedSoldiers, function(soldier){
-				if(DataUtils.hasNormalSoldier(soldier.name)){
+				if(DataUtils.isNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
 					config = Soldiers.normal[soldierFullKey]
 					killed += soldier.count * config.killScore
@@ -1072,7 +1072,7 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 		var config = null
 		_.each(soldiersForFight, function(soldierForFight){
 			_.each(soldierForFight.killedSoldiers, function(soldier){
-				if(DataUtils.hasNormalSoldier(soldier.name)){
+				if(DataUtils.isNormalSoldier(soldier.name)){
 					var soldierFullKey = soldier.name + "_" + soldier.star
 					config = Soldiers.normal[soldierFullKey]
 					killed += soldier.count * config.killScore

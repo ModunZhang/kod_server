@@ -81,7 +81,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		var recruitRequired = DataUtils.getPlayerRecruitSpecialSoldierRequired(playerDoc, soldierName, count)
 		var buyedResources = null
 		var playerData = {}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(!LogicUtils.isEnough(recruitRequired.materials, playerDoc.soldierMaterials)){
 			return Promise.reject(new Error("材料不足"))
 		}
@@ -116,7 +116,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			playerData.soldierEvents = playerDoc.soldierEvents
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime])
 		}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
@@ -339,7 +339,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			playerDoc.treatSoldierEvents.push(event)
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "treatSoldierEvents", event.id, event.finishTime])
 		}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
@@ -749,7 +749,7 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 		}
 		var upgradeRequired = DataUtils.getDragonSkillUpgradeRequired(dragon, skill)
 		var playerData = {}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(playerDoc.resources.blood < upgradeRequired.blood){
 			return Promise.reject(new Error("英雄之血不足"))
 		}
@@ -1115,12 +1115,12 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 		}]
 
 		var rewards = DataUtils.getPlayerDailyQuestEventRewards(playerDoc, questEvent)
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		_.each(rewards, function(reward){
 			playerDoc[reward.type][reward.name] += reward.count
 			if(!_.isObject(playerData[reward.type])) playerData[reward.type] = playerDoc[reward.type]
 		})
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
 

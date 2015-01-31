@@ -79,7 +79,7 @@ pro.playerLogin = function(playerDoc, callback){
 
 	playerDoc.countInfo.lastLoginTime = Date.now()
 	playerDoc.countInfo.loginCount += 1
-	LogicUtils.refreshPlayerResources(playerDoc)
+	DataUtils.refreshPlayerResources(playerDoc)
 	LogicUtils.refreshPlayerPower(playerDoc)
 	DataUtils.refreshPlayerDragonsHp(playerDoc)
 	if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
@@ -238,7 +238,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var playerData = {}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -301,7 +301,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "buildingEvents", event.id, finishTime])
 		}
 		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -416,7 +416,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var playerData = {}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -488,7 +488,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			playerDoc.resources.citizen += next - previous
 		}
 		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -607,7 +607,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var playerData = {}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -673,7 +673,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			playerDoc.resources.citizen += next - previous
 		}
 		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -748,10 +748,10 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		if(LogicUtils.hasHouseEvents(playerDoc, building.location, house.location)){
 			return Promise.reject(new Error("小屋正在升级"))
 		}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		var index = building.houses.indexOf(house)
 		building.houses.splice(index, 1)
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(_.isEqual("dwelling", house.type) && DataUtils.getPlayerCitizen(playerDoc) < 0){
 			return Promise.reject(new Error("拆除此建筑后会造成可用城民数量小于0"))
 		}
@@ -762,7 +762,7 @@ pro.destroyHouse = function(playerId, buildingLocation, houseLocation, callback)
 		playerDoc.resources.gem -= gem
 		var returnedResources = DataUtils.getHouseDestroyReturned(house.type, house.level)
 		LogicUtils.increace(returnedResources, playerDoc.resources)
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		LogicUtils.refreshPlayerPower(playerDoc)
 		return self.playerDao.updateAsync(playerDoc)
 	}).then(function(playerDoc){
@@ -851,7 +851,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var playerData = {}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -912,7 +912,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "towerEvents", event.id, finishTime])
 		}
 		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1004,7 +1004,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		var buyedMaterials = null
 		var preBuildEvent = null
 		var playerData = {}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -1065,7 +1065,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "wallEvents", event.id, finishTime])
 		}
 		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1245,7 +1245,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		var makeRequired = DataUtils.getMakeMaterialRequired(category, toolShop.level)
 		var buyedResources = null
 		var playerData = {}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(makeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(makeRequired.resources, {})
@@ -1270,7 +1270,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		}else{
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "materialEvents", event.id, event.finishTime])
 		}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
@@ -1377,7 +1377,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!DataUtils.hasNormalSoldier(soldierName)){
+	if(!DataUtils.isNormalSoldier(soldierName)){
 		callback(new Error("soldierName 普通兵种不存在"))
 		return
 	}
@@ -1415,7 +1415,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		var recruitRequired = DataUtils.getPlayerRecruitNormalSoldierRequired(playerDoc, soldierName, count)
 		var buyedResources = null
 		var playerData = {}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
 			buyedResources = DataUtils.buyResources(recruitRequired.resources, {})
@@ -1446,7 +1446,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			playerData.soldierEvents = playerDoc.soldierEvents
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime])
 		}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources

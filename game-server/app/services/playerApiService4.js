@@ -78,7 +78,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(!DataUtils.isPlayerSellQueueEnough(playerDoc)) return Promise.reject(new Error("没有足够的出售队列"))
 		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
 		if(!DataUtils.isPlayerResourceEnough(playerDoc, type, name, realCount)) return Promise.reject(new Error("玩家资源不足"))
@@ -90,7 +90,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 		playerDoc.resources.cart -= cartNeed
 		playerData.resources = playerDoc.resources
 		playerData.basicInfo = playerDoc.basicInfo
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 
 		var deal = LogicUtils.createDeal(playerDoc._id, type, name, count, price)
 		playerDoc.deals.push(deal.dealForPlayer)
@@ -235,7 +235,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 		if(!_.isObject(doc_2)) return Promise.reject(new Error("商品不存在"))
 		itemDoc = doc_2
 
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		var type = itemDoc.itemData.type
 		var count = itemDoc.itemData.count
 		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
@@ -246,7 +246,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
 		playerData[type] = playerDoc[type]
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 
 		return self.playerDao.findByIdAsync(itemDoc.playerId)
 	}).then(function(doc){
@@ -327,12 +327,12 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 		if(!_.isObject(sellItem)) return Promise.reject(new Error("商品不存在"))
 		if(!sellItem.isSold) return Promise.reject(new Error("商品还未卖出"))
 
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 
 		var totalPrice = sellItem.itemData.count * sellItem.itemData.price
 		playerDoc.resources.coin += totalPrice
 		LogicUtils.removeItemInArray(playerDoc.deals, sellItem)
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
@@ -405,7 +405,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 		itemDoc = doc_2
 		if(!_.isEqual(itemDoc.playerId, playerDoc._id)) return Promise.reject(new Error("您未出售此商品"))
 
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		var type = itemDoc.itemData.type
 		var count = itemDoc.itemData.count
 		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
@@ -415,7 +415,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 		})
 		LogicUtils.removeItemInArray(playerDoc.deals, sellItem)
 
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
 		playerData[itemDoc.itemData.type] = playerDoc[itemDoc.itemData.type]
@@ -503,7 +503,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		var buyedMaterials = null
 		var preTechEvent = null
 		var playerData = {}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -552,7 +552,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 				data:event
 			}]
 		}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
 		playerData.buildingMaterials = playerDoc.buildingMaterials
@@ -632,7 +632,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		var buyedMaterials = null
 		var preTechEvent = null
 		var playerData = {}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -681,7 +681,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 				data:event
 			}]
 		}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
 		playerData.technologyMaterials = playerDoc.technologyMaterials
@@ -727,7 +727,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!DataUtils.hasNormalSoldier(soldierName)){
+	if(!DataUtils.isNormalSoldier(soldierName)){
 		callback(new Error("soldierName 不合法"))
 		return
 	}
@@ -755,7 +755,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		var buyedResources = null
 		var preTechEvent = null
 		var playerData = {}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.upgradeTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -795,7 +795,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 				data:event
 			}]
 		}
-		LogicUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])

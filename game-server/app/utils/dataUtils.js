@@ -348,30 +348,24 @@ Utils.isBuildingHasHouse = function(buildingLocation){
  * @param playerDoc
  * @returns {{}}
  */
-Utils.getPlayerResources = function(playerDoc){
+Utils.refreshPlayerResources = function(playerDoc){
 	var self = this
-	var resources = {}
 	_.each(playerDoc.resources, function(value, key){
-		if(_.contains(Consts.BasicResource, key)){
-			if(_.isEqual(key, "food")){
-				resources[key] = self.getPlayerFood(playerDoc)
-			}else{
-				resources[key] = self.getPlayerResource(playerDoc, key)
-			}
+		if(_.isEqual(key, "food")){
+			playerDoc.resources[key] = self.getPlayerFood(playerDoc)
+		}else if(_.contains(Consts.BasicResource, key)){
+			playerDoc.resources[key] = self.getPlayerResource(playerDoc, key)
 		}else if(_.isEqual("citizen", key)){
-			resources[key] = self.getPlayerCitizen(playerDoc)
+			playerDoc.resources[key] = self.getPlayerCitizen(playerDoc)
 		}else if(_.isEqual("wallHp", key)){
-			resources[key] = self.getPlayerWallHp(playerDoc)
+			playerDoc.resources[key] = self.getPlayerWallHp(playerDoc)
 		}else if(_.isEqual("cart", key)){
-			resources[key] = self.getPlayerCart(playerDoc)
+			playerDoc.resources[key] = self.getPlayerCart(playerDoc)
 		}else if(_.isEqual("stamina", key)){
-			resources[key] = self.getPlayerStamina(playerDoc)
-		}else{
-			resources[key] = playerDoc.resources[key]
+			playerDoc.resources[key] = self.getPlayerStamina(playerDoc)
 		}
 	})
-
-	return resources
+	playerDoc.basicInfo.resourceRefreshTime = Date.now()
 }
 
 /**
@@ -398,7 +392,8 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
 	var itemKey = resourceName + "Bonus"
 	var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? 0.5 : 0
-	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff))
+	var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceNameForProductionTechNameMap[resourceName])
+	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff))
 	var totalResource = playerDoc.resources[resourceName] + output
 	if(totalResource > resourceLimit) totalResource = resourceLimit
 	return totalResource
@@ -441,7 +436,8 @@ Utils.getPlayerFood = function(playerDoc){
 	}else{
 		var totalSecond = totalTime / 1000
 		var itemBuff = this.isPlayerHasItemEvent(playerDoc, "foodBonus") ? 0.5 : 0
-		var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff))
+		var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceNameForProductionTechNameMap["food"])
+		var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff))
 		var totalResource = playerDoc.resources[resourceName] + output - soldierConsumed
 		if(totalResource > resourceLimit) totalResource = resourceLimit
 		return totalResource
@@ -454,7 +450,8 @@ Utils.getPlayerFood = function(playerDoc){
  * @returns {*}
  */
 Utils.getPlayerCitizen = function(playerDoc){
-	var citizenLimit = this.getPlayerCitizenUpLimit(playerDoc)
+	var itemCityzenMaxCountBuff = this.getPlayerProductionTechBuff(playerDoc, "beerSupply")
+	var citizenLimit = Math.floor(this.getPlayerCitizenUpLimit(playerDoc) * (1 + itemCityzenMaxCountBuff))
 	var usedCitizen = this.getPlayerUsedCitizen(playerDoc)
 	if(citizenLimit <= playerDoc.resources["citizen"] + usedCitizen){
 		return citizenLimit - usedCitizen
@@ -469,8 +466,8 @@ Utils.getPlayerCitizen = function(playerDoc){
 
 	var totalPerSecond = totalPerHour / 60 / 60
 	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
-	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "citizenBonus") ? 0.5 : 0
-	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff))
+	var itemCitizenRecoverBuff = this.isPlayerHasItemEvent(playerDoc, "citizenBonus") ? 0.5 : 0
+	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemCitizenRecoverBuff))
 	var totalCitizen = playerDoc.resources["citizen"] + output
 	if(totalCitizen - usedCitizen > citizenLimit) totalCitizen = citizenLimit - usedCitizen
 	return totalCitizen
@@ -594,7 +591,8 @@ Utils.getPlayerWallHp = function(playerDoc){
 
 	var totalPerSecond = config.wallRecovery / 60 / 60
 	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
-	var output = Math.floor(totalSecond * totalPerSecond)
+	var techBuff = this.getPlayerProductionTechBuff(playerDoc, "fastFix")
+	var output = Math.floor(totalSecond * totalPerSecond * (1 + techBuff))
 	var totalHp = playerDoc.resources["wallHp"] + output
 	return totalHp > hpLimit ? hpLimit : totalHp
 }
@@ -970,7 +968,7 @@ Utils.getPlayerFreeHousesCount = function(playerDoc, houseType){
  * 是否有普通兵种
  * @param soldierName
  */
-Utils.hasNormalSoldier = function(soldierName){
+Utils.isNormalSoldier = function(soldierName){
 	return _.some(Soldiers.normal, function(config){
 		if(_.isEqual(config.name, soldierName)) return true
 	})
@@ -1983,7 +1981,7 @@ Utils.getAllianceActiveShrineStageRequired = function(stageName){
  * @returns {*}
  */
 Utils.getPlayerSoldierConfig = function(playerDoc, soldierName){
-	if(this.hasNormalSoldier(soldierName)){
+	if(this.isNormalSoldier(soldierName)){
 		return Soldiers.normal[soldierName + "_" + playerDoc.soldierStars[soldierName]]
 	}else{
 		return Soldiers.special[soldierName]
@@ -1997,7 +1995,7 @@ Utils.getPlayerSoldierConfig = function(playerDoc, soldierName){
  * @returns {*}
  */
 Utils.getPlayerSoldierStar = function(playerDoc, soldierName){
-	if(this.hasNormalSoldier(soldierName)){
+	if(this.isNormalSoldier(soldierName)){
 		return playerDoc.soldierStars[soldierName]
 	}else{
 		return Soldiers.special[soldierName].star
@@ -2197,7 +2195,7 @@ Utils.createSoldiersForFight = function(soldiers){
 		var soldierCount = soldier.count
 		var soldierStar = soldier.star
 		var config = null
-		if(self.hasNormalSoldier(soldierName)){
+		if(self.isNormalSoldier(soldierName)){
 			config = Soldiers.normal[soldierName + "_" + soldierStar]
 		}else{
 			config = Soldiers.special[soldierName]
@@ -2294,19 +2292,20 @@ Utils.createPlayerWallForFight = function(playerDoc){
 		})
 		return power
 	}
-
+	var itemDefencePowerBuff = this.getPlayerProductionTechBuff(playerDoc, "reinforcing")
+	var itemAttackPowerBuff = this.getPlayerProductionTechBuff(playerDoc, "seniorTower")
 	var wall = {
 		maxHp:getProperty("wall", playerDoc.wall.level, "wallHp"),
 		totalHp:playerDoc.resources.wallHp,
 		currentHp:playerDoc.resources.wallHp,
 		round:0,
 		attackPower:{
-			infantry:getPowersByType("infantry"),
-			archer:getPowersByType("archer"),
-			cavalry:getPowersByType("cavalry"),
-			siege:getPowersByType("siege")
+			infantry:Math.floor(getPowersByType("infantry") * (1 + itemAttackPowerBuff)),
+			archer:Math.floor(getPowersByType("archer") * (1 + itemAttackPowerBuff)),
+			cavalry:Math.floor(getPowersByType("cavalry") * (1 + itemAttackPowerBuff)),
+			siege:Math.floor(getPowersByType("siege") * (1 + itemAttackPowerBuff))
 		},
-		defencePower:getPowersByType("defencePower"),
+		defencePower:Math.floor(getPowersByType("defencePower") * (1 + itemDefencePowerBuff)),
 		killedSoldiers:[]
 	}
 	return wall
@@ -2485,7 +2484,7 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 			})
 			_.each(roundData.attackSoldierRoundDatas, function(attackSoldierRoundData){
 				var soldierConfig = function(){
-					if(self.hasNormalSoldier(attackSoldierRoundData.soldierName)){
+					if(self.isNormalSoldier(attackSoldierRoundData.soldierName)){
 						soldierConfig = Soldiers.normal[attackSoldierRoundData.soldierName + "_" + attackSoldierRoundData.soldierStar]
 					}else{
 						soldierConfig = Soldiers.special[attackSoldierRoundData.soldierName]
@@ -2759,7 +2758,7 @@ Utils.addPlayerDragonExp = function(playerDoc, dragon, expAdd){
 }
 
 /**
- * 获取士兵占用人口
+ * 获取玩家士兵占用人口
  * @param playerDoc
  * @param soldiers
  */
@@ -3493,4 +3492,36 @@ Utils.getPlayerMilitaryTechBuff = function(playerDoc, techName){
 	var techConfig = MilitaryTechs.militaryTechs[techName]
 	var tech = playerDoc.militaryTechs[techName]
 	return tech.level * techConfig.effectPerLevel
+}
+
+/**
+ * 获取医院最大容量
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getPlayerHospitalMaxCitizen = function(playerDoc){
+	var itemBuff = this.getPlayerProductionTechBuff(playerDoc, "rescueTent")
+	var building = playerDoc.buildings.location_14
+	if(building.level <= 0) return 0
+	var config = BuildingFunction.hospital[building.level]
+	return Math.floor(config.maxCitizen * (1 + itemBuff))
+}
+
+/**
+ * 为玩家添加伤兵
+ * @param playerDoc
+ * @param playerData
+ * @param woundedSoldiers
+ */
+Utils.addPlayerWoundedSoldiers = function(playerDoc, playerData, woundedSoldiers){
+	var maxCitizen = this.getPlayerHospitalMaxCitizen(playerDoc)
+	var usedCitizen = this.getPlayerSoldiersCitizen(playerDoc, LogicUtils.getFormatedSoldiers(playerDoc.woundedSoldiers))
+	if(maxCitizen > usedCitizen){
+		if(!_.isObject(playerData.woundedSoldiers)) playerData.woundedSoldiers = {}
+		_.each(woundedSoldiers, function(woundedSoldier){
+			playerDoc.woundedSoldiers[woundedSoldier.name] += woundedSoldier.count
+			playerData.woundedSoldiers[woundedSoldier.name] = playerDoc.woundedSoldiers[woundedSoldier.name]
+		})
+	}
+	if(_.isEmpty(playerData.woundedSoldiers)) delete playerData.woundedSoldiers
 }

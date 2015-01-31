@@ -92,7 +92,7 @@ pro.gem = function(uid, gem, callback){
 		}
 
 		doc.resources.gem = gem
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
@@ -120,7 +120,7 @@ pro.rs = function(uid, count, callback){
 		doc.resources.stone = count
 		doc.resources.iron = count
 		doc.resources.food = count
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
@@ -148,7 +148,7 @@ pro.resource = function(uid, name, count, callback){
 		if(_.isUndefined(doc.resources[name])) return Promise.reject(new Error("资源不存在"))
 		doc.resources[name] = count
 		playerData.resources = doc.resources
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
@@ -172,8 +172,9 @@ pro.citizen = function(uid, count, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 
+		DataUtils.refreshPlayerResources(doc)
 		doc.resources.citizen = count
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
@@ -198,7 +199,7 @@ pro.coin = function(uid, count, callback){
 		}
 
 		doc.resources.coin = count
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
@@ -223,7 +224,7 @@ pro.blood = function(uid, count, callback){
 		}
 
 		doc.resources.blood = count
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
@@ -247,7 +248,7 @@ pro.building = function(uid, level, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		_.each(doc.buildings, function(building){
 			if(building.level > 0){
 				var buildingMaxLevel = DataUtils.getBuildingMaxLevel(building.type)
@@ -278,7 +279,7 @@ pro.building = function(uid, level, callback){
 		while(doc.wallEvents.length > 0){
 			doc.wallEvents.pop()
 		}
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
@@ -348,7 +349,7 @@ pro.rmbuildingevents = function(uid, callback){
 		while(doc.wallEvents.length > 0){
 			doc.wallEvents.pop()
 		}
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
@@ -429,7 +430,7 @@ pro.material = function(uid, count, callback){
 		doc.materials.bowTarget = count
 		doc.materials.saddle = count
 		doc.materials.ironPart = count
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
@@ -461,7 +462,7 @@ pro.soldiermaterial = function(uid, count, callback){
 		doc.soldierMaterials.brightRing = count
 		doc.soldierMaterials.holyBook = count
 		doc.soldierMaterials.brightAlloy = count
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
@@ -512,7 +513,7 @@ pro.dragonmaterial = function(uid, count, callback){
 		_.each(doc.dragonMaterials, function(theCount, key){
 			doc.dragonMaterials[key] = count
 		})
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
@@ -538,7 +539,7 @@ pro.dragonequipment = function(uid, count, callback){
 		_.each(doc.dragonEquipments, function(theCount, key){
 			doc.dragonEquipments[key] = count
 		})
-		LogicUtils.refreshPlayerResources(doc)
+		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
