@@ -3478,7 +3478,7 @@ Utils.isPlayerHasItemEvent = function(playerDoc, eventType){
  * @returns {number}
  */
 Utils.getPlayerProductionTechBuff = function(playerDoc, techName){
-	var techConfig = ProductionTechs[techName]
+	var techConfig = ProductionTechs.productionTechs[techName]
 	var tech = playerDoc.productionTechs[techName]
 	return tech.level * techConfig.effectPerLevel
 }
@@ -3490,7 +3490,7 @@ Utils.getPlayerProductionTechBuff = function(playerDoc, techName){
  * @returns {number}
  */
 Utils.getPlayerMilitaryTechBuff = function(playerDoc, techName){
-	var techConfig = MilitaryTechs[techName]
+	var techConfig = MilitaryTechs.militaryTechs[techName]
 	var tech = playerDoc.militaryTechs[techName]
 	return tech.level * techConfig.effectPerLevel
 }

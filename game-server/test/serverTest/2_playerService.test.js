@@ -147,7 +147,7 @@ describe("PlayerService", function(){
 		//		doc.code.should.equal(200)
 		//		Api.upgradeBuilding(2, false, function(doc){
 		//			doc.code.should.equal(200)
-		//			done()
+		//			//done()
 		//		})
 		//		var onPlayerDataChanged = function(doc){
 		//			m_user.buildingEvents = doc.buildingEvents
