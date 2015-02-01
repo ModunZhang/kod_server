@@ -2152,6 +2152,10 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 		var atkWallBuff = self.getDragonAtkWallBuff(dragon)
 		var hpBuff = self.getPlayerSoldierHpBuff(playerDoc, soldierName, dragon, terrain)
 		var loadBuff = self.getPlayerSoldierLoadBuff(playerDoc, soldierName, dragon)
+		var techBuffToInfantry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_" + "infantry")
+		var techBuffToArcher = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_" + "archer")
+		var techBuffToCavalry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_" + "cavalry")
+		var techBuffToSiege = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_" + "siege")
 		var soldierForFight = {
 			name:soldierName,
 			star:soldierStar,
@@ -2166,10 +2170,10 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 			morale:100,
 			round:0,
 			attackPower:{
-				infantry:Math.floor(config.infantry * (1 + atkBuff)),
-				archer:Math.floor(config.archer * (1 + atkBuff)),
-				cavalry:Math.floor(config.cavalry * (1 + atkBuff)),
-				siege:Math.floor(config.siege * (1 + atkBuff)),
+				infantry:Math.floor(config.infantry * (1 + atkBuff + techBuffToInfantry)),
+				archer:Math.floor(config.archer * (1 + atkBuff + techBuffToArcher)),
+				cavalry:Math.floor(config.cavalry * (1 + atkBuff + techBuffToCavalry)),
+				siege:Math.floor(config.siege * (1 + atkBuff + techBuffToSiege)),
 				wall:Math.floor(config.wall * (1 + atkBuff + atkWallBuff))
 			},
 			killedSoldiers:[]

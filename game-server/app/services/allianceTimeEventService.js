@@ -416,14 +416,19 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 			return {data:playerKillData, isNew:isNew}
 		}
-		var updatePlayerSoldiers = function(playerDoc, soldiersForFight, playerData){
+		var updatePlayerSoldiers = function(playerDoc, playerData, soldiersForFight){
+			var soldiers = []
 			if(!_.isObject(playerData.soldiers)) playerData.soldiers = {}
 			_.each(soldiersForFight, function(soldierForFight){
 				if(soldierForFight.totalCount > soldierForFight.currentCount){
-					playerDoc.soldiers[soldierForFight.name] -= soldierForFight.totalCount - soldierForFight.currentCount
-					playerData.soldiers[soldierForFight.name] = playerDoc.soldiers[soldierForFight.name]
+					var soldier = {
+						name:soldierForFight.name,
+						count:-(soldierForFight.totalCount - soldierForFight.currentCount)
+					}
+					soldiers.push(soldier)
 				}
 			})
+			LogicUtils.addPlayerSoldiers(playerDoc, playerData, soldiers)
 		}
 		var updatePlayerWoundedSoldiers = function(playerDoc, playerData, soldiersForFight){
 			var woundedSoldiers = []
@@ -436,9 +441,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					woundedSoldiers.push(woundedSoldier)
 				}
 			})
-			if(woundedSoldiers.length > 0){
-				DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, woundedSoldiers)
-			}
+			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, woundedSoldiers)
 		}
 
 		var defenceWallForFight = null
@@ -529,7 +532,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				if(_.isEqual(Consts.FightResult.DefenceWin, defenceSoldierFightData.fightResult)){
 					return Promise.resolve()
 				}else{
-					for(var i = defenceSoldierFightData.attackSoldiersAfterFight.length - 1; i >= 0; i --){
+					for(var i = defenceSoldierFightData.attackSoldiersAfterFight.length - 1; i >= 0; i--){
 						var attackSoldiers = CommonUtils.clone(defenceSoldierFightData.attackSoldiersAfterFight[i])
 						attackSoldiersLeftForFight.unshift(attackSoldiers)
 						if(attackSoldiers.round > 0){
@@ -696,7 +699,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					defencePlayerData.dragons = {}
 					defencePlayerData.dragons[defenceDragon.type] = defencePlayerDoc.dragons[defenceDragon.type]
 
-					updatePlayerSoldiers(defencePlayerDoc, defenceSoldiersForFight, defencePlayerData)
+					updatePlayerSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight)
 					updatePlayerWoundedSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight)
 				}
 				if(_.isObject(defenceWallFightData)){
@@ -807,7 +810,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						defenceAllianceDoc.allianceFight.defenceAllianceCountData.attackSuccessCount += 1
 					}
 				}else{
-					if(!_.isObject(defenceSoldierFightData)|| _.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
+					if(!_.isObject(defenceSoldierFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
 						attackAllianceDoc.allianceFight.defenceAllianceCountData.attackSuccessCount += 1
 						defenceAllianceDoc.allianceFight.defenceAllianceCountData.attackSuccessCount += 1
 					}
@@ -2111,7 +2114,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			var stageTroopForFight = stageTroopsForFight[0]
 			var dragonFightFixedEffect = DataUtils.getDragonFightFixedEffect(playerTroopForFight.soldiersForFight, stageTroopForFight.soldiersForFight)
 			var dragonFightData = FightUtils.dragonToDragonFight(playerTroopForFight.dragonForFight, stageTroopForFight.dragonForFight, dragonFightFixedEffect)
-			var soldierFightData = FightUtils.soldierToSoldierFight(playerTroopForFight.soldiersForFight, playerTroopForFight.woundedSoldierPercent,playerTroopForFight.soldierMoraleDecreasedPercent, stageTroopForFight.soldiersForFight, 0, 1 + playerTroopForFight.soldierToEnemyMoraleDecreasedAddPercent)
+			var soldierFightData = FightUtils.soldierToSoldierFight(playerTroopForFight.soldiersForFight, playerTroopForFight.woundedSoldierPercent, playerTroopForFight.soldierMoraleDecreasedPercent, stageTroopForFight.soldiersForFight, 0, 1 + playerTroopForFight.soldierToEnemyMoraleDecreasedAddPercent)
 			if(_.isEqual(soldierFightData.fightResult, Consts.FightResult.AttackWin)){
 				playerSuccessedTroops.push(playerTroopForFight)
 			}else{
@@ -2658,7 +2661,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		funcs.push(self.playerDao.findByIdAsync(playerId, true))
 	})
 	Promise.all(funcs).then(function(docs){
-		for(var i = 0; i < docs.length; i ++){
+		for(var i = 0; i < docs.length; i++){
 			var doc = docs[i]
 			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 			playerDocs.push(doc)
