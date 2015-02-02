@@ -37,6 +37,7 @@ module.exports = {
 		onGetStrikeMarchEventDetail:"onGetStrikeMarchEventDetail",
 		onGetHelpDefenceMarchEventDetail:"onGetHelpDefenceMarchEventDetail",
 		onGetHelpDefenceTroopDetail:"onGetHelpDefenceTroopDetail",
+		onAddPlayerBillingDataSuccess:"onAddPlayerBillingDataSuccess"
 	},
 	alliance:{
 		onAllianceDataChanged:"onAllianceDataChanged"

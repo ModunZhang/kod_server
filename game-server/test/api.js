@@ -36,7 +36,6 @@ Api.loginPlayer = function(deviceId, callback){
 	})
 }
 
-
 Api.sendChat = function(text, callback){
 	var info = {
 		text:text, channel:"global"
@@ -531,6 +530,15 @@ Api.getLevelupReward = function(levelupIndex, callback){
 		levelupIndex:levelupIndex
 	}
 	var route = "logic.playerHandler.getLevelupReward"
+	pomelo.request(route, info, callback)
+}
+
+Api.addPlayerBillingData = function(transactionId, receiptData, callback){
+	var info = {
+		transactionId:transactionId,
+		receiptData:receiptData
+	}
+	var route = "logic.playerHandler.addPlayerBillingData"
 	pomelo.request(route, info, callback)
 }
 

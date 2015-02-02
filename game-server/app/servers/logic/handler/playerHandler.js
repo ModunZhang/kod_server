@@ -975,3 +975,19 @@ pro.getLevelupReward = function(msg, session, next){
 		next(e, {code:500, message:e.message})
 	})
 }
+
+/**
+ * 上传IAP信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.addPlayerBillingData = function(msg, session, next){
+	var transactionId = msg.transactionId
+	var receiptData = msg.receiptData
+	this.playerIAPService.addPlayerBillingDataAsync(session.uid, transactionId, receiptData).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}

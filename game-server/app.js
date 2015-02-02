@@ -15,6 +15,7 @@ var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-er
 var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 var LoginFilter = require("./app/utils/loginFilter")
 var ReplayFilter = require("./app/utils/replayFilter")
+var SerialFilter = require("./app/utils/serialFilter")
 var commandDir = path.resolve("./app/commands")
 var app = pomelo.createApp()
 app.set("name", "KODServer")
@@ -43,7 +44,7 @@ app.configure("production|development", "gate", function(){
 		singleSession:true
 	})
 
-	app.filter(pomelo.filters.serial())
+	app.filter(SerialFilter(5000))
 
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
@@ -84,7 +85,7 @@ app.configure("production|development", "logic", function(){
 
 	app.before(ReplayFilter())
 	app.before(LoginFilter())
-	app.filter(pomelo.filters.serial())
+	app.filter(SerialFilter(5000))
 
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
@@ -119,7 +120,7 @@ app.configure("production|development", "chat", function(){
 
 	app.before(ReplayFilter())
 	app.before(LoginFilter())
-	app.filter(pomelo.filters.serial())
+	app.filter(SerialFilter(5000))
 
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))

@@ -95,9 +95,9 @@ var createDragonSchema = function(dragonType){
 }
 
 var playerSchema = new Schema({
-	_id:{type:String, required:true, unique:true, index:true, default:ShortId.generate},
+	_id:{type:String, required:true, default:ShortId.generate},
 	countInfo:{
-		deviceId:{type:String, required:true, index:true, unique:true},
+		deviceId:{type:String, required:true, unique:true, index:true},
 		registerTime:{type:Number, required:true, default:Date.now()},
 		lastLoginTime:{type:Number, required:true, default:Date.now()},
 		loginCount:{type:Number, required:true, default:0},
@@ -111,7 +111,7 @@ var playerSchema = new Schema({
 		gemUsed:{type:Number, required:true, default:0}
 	},
 	basicInfo:{
-		name:{type:String, required:true, unique:true},
+		name:{type:String, required:true, unique:true, index:true},
 		cityName:{type:String, required:true},
 		icon:{type:String, required:true, default:"playerIcon_default.png"},
 		levelExp:{type:Number, required:true, default:0},

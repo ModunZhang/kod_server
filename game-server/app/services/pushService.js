@@ -289,6 +289,19 @@ pro.onGetPlayerInfoSuccess = function(playerDoc, memberDoc, callback){
 	this.pushToPlayer(playerDoc, Events.player.onGetPlayerInfoSuccess, data, callback)
 }
 
+/**
+ * 服务器处理玩家IAP购买订单成功
+ * @param playerDoc
+ * @param transactionId
+ * @param callback
+ */
+pro.onAddPlayerBillingDataSuccess = function(playerDoc, transactionId, callback){
+	var data = {
+		transactionId:transactionId
+	}
+	this.pushToPlayer(playerDoc, Events.player.onAddPlayerBillingDataSuccess, data, callback)
+}
+
 
 /**
  * 查看战力相近的3个联盟的数据
