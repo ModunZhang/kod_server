@@ -553,6 +553,7 @@ var Resource = function(playerDoc, playerData, itemConfig, resourceName){
 	playerDoc.resources[resourceName] += count
 	DataUtils.refreshPlayerResources(playerDoc)
 	playerData.resources = playerDoc.resources
+	playerData.basicInfo = playerDoc.basicInfo
 
 	return Promise.resolve()
 }
