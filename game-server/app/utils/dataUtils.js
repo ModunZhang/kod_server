@@ -39,6 +39,7 @@ var Items = GameDatas.Items
 var KillDropItems = GameDatas.KillDropItems
 var Gacha = GameDatas.Gacha
 var Activities = GameDatas.Activities
+var StoreItems = GameDatas.StoreItems
 
 
 var Utils = module.exports
@@ -3528,4 +3529,12 @@ Utils.addPlayerWoundedSoldiers = function(playerDoc, playerData, woundedSoldiers
 		})
 	}
 	if(_.isEmpty(playerData.woundedSoldiers)) delete playerData.woundedSoldiers
+}
+
+/**
+ * 获取商城商品的配置信息
+ * @returns {GameDatas.StoreItems.items|*}
+ */
+Utils.getStoreItemConfigs = function(){
+	return StoreItems.items
 }

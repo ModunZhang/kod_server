@@ -3,10 +3,8 @@
 /**
  * Created by modun on 14-7-23.
  */
-var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
-var crypto = require("crypto")
 
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")

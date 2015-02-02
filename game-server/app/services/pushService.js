@@ -289,6 +289,7 @@ pro.onGetPlayerInfoSuccess = function(playerDoc, memberDoc, callback){
 	this.pushToPlayer(playerDoc, Events.player.onGetPlayerInfoSuccess, data, callback)
 }
 
+
 /**
  * 查看战力相近的3个联盟的数据
  * @param playerDoc

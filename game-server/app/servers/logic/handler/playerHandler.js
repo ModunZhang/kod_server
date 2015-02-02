@@ -18,6 +18,7 @@ var Handler = function(app){
 	this.playerApiService3 = app.get("playerApiService3")
 	this.playerApiService4 = app.get("playerApiService4")
 	this.playerApiService5 = app.get("playerApiService5")
+	this.playerIAPService = app.get("playerIAPService")
 }
 var pro = Handler.prototype
 

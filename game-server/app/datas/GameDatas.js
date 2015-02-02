@@ -225,3 +225,6 @@ GameDatas.ProductionTechs.productionTechs = require("./ProductionTechs_productio
 GameDatas.Soldiers = {}
 GameDatas.Soldiers.normal = require("./Soldiers_normal.js")
 GameDatas.Soldiers.special = require("./Soldiers_special.js")
+
+GameDatas.StoreItems = {}
+GameDatas.StoreItems.items = require("./StoreItems_items.js")

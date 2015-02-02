@@ -228,13 +228,31 @@ describe("PlayerService", function(){
 	//							doc.message.should.equal("小屋数量超过限制")
 	//							Api.sendChat("rmbuildingevents", function(doc){
 	//								doc.code.should.equal(200)
-	//								Api.destroyHouse(3, 1, function(doc){
+	//								Api.buyItem("torch", 3, function(doc){
 	//									doc.code.should.equal(200)
-	//									Api.destroyHouse(3, 2, function(doc){
+	//									Api.useItem("torch", {
+	//										torch:{
+	//											buildingLocation:3,
+	//											houseLocation:1
+	//										}
+	//									}, function(doc){
 	//										doc.code.should.equal(200)
-	//										Api.destroyHouse(3, 3, function(doc){
+	//										Api.useItem("torch", {
+	//											torch:{
+	//												buildingLocation:3,
+	//												houseLocation:2
+	//											}
+	//										}, function(doc){
 	//											doc.code.should.equal(200)
-	//											done()
+	//											Api.useItem("torch", {
+	//												torch:{
+	//													buildingLocation:3,
+	//													houseLocation:3
+	//												}
+	//											}, function(doc){
+	//												doc.code.should.equal(200)
+	//												done()
+	//											})
 	//										})
 	//									})
 	//								})
@@ -386,51 +404,6 @@ describe("PlayerService", function(){
 	//
 	//	it("upgradeHouse 正常升级", function(done){
 	//		Api.upgradeHouse(3, 3, true, function(doc){
-	//			doc.code.should.equal(200)
-	//			done()
-	//		})
-	//	})
-	//
-	//	it("destroyHouse 主体建筑不存在", function(done){
-	//		Api.destroyHouse(25, 1, function(doc){
-	//			doc.code.should.equal(500)
-	//			doc.message.should.equal("主体建筑不存在")
-	//			done()
-	//		})
-	//	})
-	//
-	//	it("destroyHouse 小屋不存在", function(done){
-	//		Api.destroyHouse(4, 1, function(doc){
-	//			doc.code.should.equal(500)
-	//			doc.message.should.equal("小屋不存在")
-	//			done()
-	//		})
-	//	})
-	//
-	//	it("destroyHouse 拆除此建筑后会造成可用城民数量小于0", function(done){
-	//		Api.destroyHouse(3, 2, function(doc){
-	//			doc.code.should.equal(500)
-	//			doc.message.should.equal("拆除此建筑后会造成可用城民数量小于0")
-	//			done()
-	//		})
-	//	})
-	//
-	//	it("destroyHouse 宝石不足", function(done){
-	//		Api.sendChat("gem 0", function(doc){
-	//			doc.code.should.equal(200)
-	//			Api.destroyHouse(3, 3, function(doc){
-	//				doc.code.should.equal(500)
-	//				doc.message.should.equal("宝石不足")
-	//				Api.sendChat("gem 5000", function(doc){
-	//					doc.code.should.equal(200)
-	//					done()
-	//				})
-	//			})
-	//		})
-	//	})
-	//
-	//	it("destroyHouse 正常拆除", function(done){
-	//		Api.destroyHouse(3, 3, function(doc){
 	//			doc.code.should.equal(200)
 	//			done()
 	//		})

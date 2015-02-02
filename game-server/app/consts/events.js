@@ -36,7 +36,7 @@ module.exports = {
 		onGetAttackMarchEventDetail:"onGetAttackMarchEventDetail",
 		onGetStrikeMarchEventDetail:"onGetStrikeMarchEventDetail",
 		onGetHelpDefenceMarchEventDetail:"onGetHelpDefenceMarchEventDetail",
-		onGetHelpDefenceTroopDetail:"onGetHelpDefenceTroopDetail"
+		onGetHelpDefenceTroopDetail:"onGetHelpDefenceTroopDetail",
 	},
 	alliance:{
 		onAllianceDataChanged:"onAllianceDataChanged"
