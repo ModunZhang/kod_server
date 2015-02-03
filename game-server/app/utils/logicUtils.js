@@ -1047,7 +1047,7 @@ Utils.getPlayerBuildEvents = function(playerDoc, eventType){
  * @returns {*}
  */
 Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, eventType, eventId, objectName, objectLevel){
-	var keep = playerDoc.buildings["location_1"]
+	var keep = playerDoc.buildings.location_1
 	var event = {
 		id:ShortId.generate(),
 		playerData:{
@@ -1273,7 +1273,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, rect){
 		name:playerDoc.basicInfo.name,
 		icon:playerDoc.basicInfo.icon,
 		level:playerDoc.basicInfo.level,
-		keepLevel:playerDoc.buildings["location_1"].level,
+		keepLevel:playerDoc.buildings.location_1.level,
 		wallLevel:playerDoc.wall.level,
 		wallHp:playerDoc.resources.wallHp,
 		status:Consts.PlayerStatus.Normal,

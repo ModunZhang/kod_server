@@ -1140,7 +1140,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var toolShop = playerDoc.buildings["location_5"]
+		var toolShop = playerDoc.buildings.location_15
 		if(toolShop.level < 1){
 			return Promise.reject(new Error("工具作坊还未建造"))
 		}
@@ -1319,7 +1319,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var barracks = playerDoc.buildings["location_8"]
+		var barracks = playerDoc.buildings.location_5
 		if(barracks.level < 1){
 			return Promise.reject(new Error("兵营还未建造"))
 		}

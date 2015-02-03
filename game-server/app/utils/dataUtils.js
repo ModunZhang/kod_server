@@ -525,11 +525,12 @@ Utils.getPlayerResourceUpLimit = function(playerDoc, resourceName){
 	var buildings = this.getPlayerBuildingsByType(playerDoc, "warehouse")
 	var totalUpLimit = 0
 	_.each(buildings, function(building){
-		var config = BuildingFunction["warehouse"][building.level]
-		resourceName = resourceName.charAt(0).toUpperCase() + resourceName.slice(1)
-		resourceName = "max" + resourceName
-		totalUpLimit += config[resourceName]
-
+		if(building.level >= 1){
+			var config = BuildingFunction["warehouse"][building.level]
+			resourceName = resourceName.charAt(0).toUpperCase() + resourceName.slice(1)
+			resourceName = "max" + resourceName
+			totalUpLimit += config[resourceName]
+		}
 	})
 
 	return totalUpLimit
@@ -690,7 +691,7 @@ Utils.getPlayerBuildingsCount = function(playerDoc){
  * @returns {unlock|*}
  */
 Utils.getPlayerMaxBuildingsCount = function(playerDoc){
-	var building = playerDoc.buildings["location_1"]
+	var building = playerDoc.buildings.location_1
 	var config = BuildingFunction[building.type][building.level]
 	return config.unlock
 }
@@ -713,8 +714,10 @@ Utils.getMaterialUpLimit = function(playerDoc){
 	var buildings = this.getPlayerBuildingsByType(playerDoc, "materialDepot")
 	var totalUpLimit = 0
 	_.each(buildings, function(building){
-		var config = BuildingFunction["materialDepot"][building.level]
-		totalUpLimit += config.maxMaterial
+		if(building.level >= 1){
+			var config = BuildingFunction["materialDepot"][building.level]
+			totalUpLimit += config.maxMaterial
+		}
 	})
 
 	return totalUpLimit
@@ -844,7 +847,7 @@ Utils.getPlayerPower = function(playerDoc){
 Utils.getPlayerBuildingsPower = function(playerDoc){
 	var totalPower = 0
 	_.each(playerDoc.buildings, function(building){
-		if(building.level > 0){
+		if(building.level >= 1){
 			var config = BuildingFunction[building.type][building.level]
 			totalPower += config.power
 		}
@@ -892,7 +895,7 @@ Utils.getPlayerSoldiersPower = function(playerDoc){
  * @returns {*}
  */
 Utils.getPlayerKeepLevel = function(playerDoc){
-	return playerDoc.buildings["location_1"].level
+	return playerDoc.buildings.location_1.level
 }
 
 /**
@@ -927,7 +930,7 @@ Utils.getPlayerHouseMaxCountByType = function(playerDoc, houseType){
 	var totalCount = HouseInit[houseType]
 	var building = this.getPlayerBuildingByType(playerDoc, limitBy)
 
-	if(building.level > 0){
+	if(building.level >= 1){
 		var buildingFunction = BuildingFunction[limitBy][building.level]
 		totalCount += buildingFunction[houseType]
 	}
@@ -1049,7 +1052,8 @@ Utils.getPlayerRecruitSoldierTime = function(playerDoc, soldierName, count){
  * @returns {number}
  */
 Utils.getPlayerSoldierMaxRecruitCount = function(playerDoc, soldierName){
-	var building = playerDoc.buildings["location_8"]
+	var building = playerDoc.buildings.location_5
+	if(building.level < 1) return 0
 	var config = BuildingFunction[building.type][building.level]
 	var maxRecruit = config.maxRecruit
 	var soldierConfig = this.getPlayerSoldierConfig(playerDoc, soldierName)
@@ -1100,7 +1104,7 @@ Utils.getPlayerMakeDragonEquipmentRequired = function(playerDoc, equipmentName){
  * @returns {*}
  */
 Utils.getPlayerMakeDragonEquipmentTime = function(playerDoc, equipmentName){
-	var building = playerDoc.buildings["location_9"]
+	var building = playerDoc.buildings.location_9
 	var smithConfig = BuildingFunction[building.type][building.level]
 	var dragonEquipmentConfig = DragonEquipments.equipments[equipmentName]
 	var makeTime = dragonEquipmentConfig.makeTime
@@ -3006,7 +3010,7 @@ Utils.createPlayerDailyQuestEvent = function(playerDoc, quest){
 Utils.getPlayerDailyQuestEventRewards = function(playerDoc, questEvent){
 	var self = this
 	var config = DailyQuests.dailyQuests[questEvent.index]
-	var townhallLevel = playerDoc.buildings.location_15.level
+	var townhallLevel = playerDoc.buildings.location_14.level
 	var effect = questEvent.star * (1 + (0.02 * townhallLevel))
 	var rewards = []
 	var rewardStrings = config.rewards.split(",")
@@ -3062,7 +3066,7 @@ Utils.getPlayerCartUsedForSale = function(playerDoc, resourceType, resourceName,
  */
 Utils.isPlayerSellQueueEnough = function(playerDoc){
 	var buildingLevel = playerDoc.buildings.location_16.level
-	if(buildingLevel == 0) return false
+	if(buildingLevel < 1) return false
 	var maxSellQueue = BuildingFunction.tradeGuild[buildingLevel].maxSellQueue
 	return playerDoc.deals.length < maxSellQueue
 }
@@ -3506,8 +3510,8 @@ Utils.getPlayerMilitaryTechBuff = function(playerDoc, techName){
  */
 Utils.getPlayerHospitalMaxCitizen = function(playerDoc){
 	var itemBuff = this.getPlayerProductionTechBuff(playerDoc, "rescueTent")
-	var building = playerDoc.buildings.location_14
-	if(building.level <= 0) return 0
+	var building = playerDoc.buildings.location_6
+	if(building.level < 1) return 0
 	var config = BuildingFunction.hospital[building.level]
 	return Math.floor(config.maxCitizen * (1 + itemBuff))
 }

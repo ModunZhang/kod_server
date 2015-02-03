@@ -66,7 +66,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var barracks = playerDoc.buildings["location_8"]
+		var barracks = playerDoc.buildings.location_5
 		if(barracks.level < 1){
 			return Promise.reject(new Error("兵营还未建造"))
 		}
@@ -175,7 +175,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var toolShop = playerDoc.buildings["location_9"]
+		var toolShop = playerDoc.buildings.location_9
 		if(toolShop.level < 1){
 			return Promise.reject(new Error("铁匠铺还未建造"))
 		}
@@ -285,7 +285,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var hospital = playerDoc.buildings["location_14"]
+		var hospital = playerDoc.buildings.location_6
 		if(hospital.level < 1){
 			return Promise.reject(new Error("医院还未建造"))
 		}
@@ -398,10 +398,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var hospital = playerDoc.buildings["location_4"]
-		if(hospital.level < 1){
-			return Promise.reject(new Error("龙巢还未建造"))
-		}
+
 		var dragons = playerDoc.dragons
 		var dragon = dragons[dragonType]
 		if(dragon.star > 0){
@@ -887,7 +884,7 @@ pro.getDailyQuests = function(playerId, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var building = playerDoc.buildings.location_15
+		var building = playerDoc.buildings.location_14
 		if(building.level <= 0) return Promise.reject(new Error("市政厅还未建造"))
 		var refreshTime = DataUtils.getDailyQuestsRefreshTime()
 		var now = Date.now()

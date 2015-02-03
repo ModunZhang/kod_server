@@ -29,15 +29,15 @@ buildings[4] = {
 }
 buildings[5] = {
 	location:5,
-	name:"toolShop",
+	name:"barracks",
 	hasHouse:true,
-	desc:"工具作坊"
+	desc:"兵营"
 }
 buildings[6] = {
 	location:6,
-	name:"materialDepot",
+	name:"hospital",
 	hasHouse:true,
-	desc:"材料库房"
+	desc:"医院"
 }
 buildings[7] = {
 	location:7,
@@ -47,9 +47,9 @@ buildings[7] = {
 }
 buildings[8] = {
 	location:8,
-	name:"barracks",
+	name:"materialDepot",
 	hasHouse:true,
-	desc:"兵营"
+	desc:"材料库房"
 }
 buildings[9] = {
 	location:9,
@@ -83,15 +83,15 @@ buildings[13] = {
 }
 buildings[14] = {
 	location:14,
-	name:"hospital",
-	hasHouse:true,
-	desc:"医院"
-}
-buildings[15] = {
-	location:15,
 	name:"townHall",
 	hasHouse:true,
 	desc:"市政厅"
+}
+buildings[15] = {
+	location:15,
+	name:"toolShop",
+	hasHouse:true,
+	desc:"工具作坊"
 }
 buildings[16] = {
 	location:16,

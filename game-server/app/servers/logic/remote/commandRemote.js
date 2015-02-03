@@ -304,7 +304,7 @@ pro.keep = function(uid, level, callback){
 		}
 
 		var keepMaxLevel = DataUtils.getBuildingMaxLevel("keep")
-		doc.buildings["location_1"].level = level > keepMaxLevel ? keepMaxLevel : level
+		doc.buildings.location_1.level = level > keepMaxLevel ? keepMaxLevel : level
 
 		var events = []
 		for(var i = 0; i < doc.buildingEvents.length; i++){
