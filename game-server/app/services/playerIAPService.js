@@ -15,6 +15,9 @@ var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
 
+var GameDatas = require("../datas/GameDatas")
+var StoreItems = GameDatas.StoreItems
+
 var PlayerIAPService = function(app){
 	this.app = app
 	this.env = app.get("env")
@@ -81,6 +84,26 @@ var CreateBillingItem = function(playerId, receiptObject){
 }
 
 /**
+ * 获取商品道具奖励
+ * @param config
+ * @returns {Array}
+ */
+var GetStoreItemRewardsFromConfig = function(config){
+	var objects = []
+	var configArray_1 = config.rewards.split(",")
+	_.each(configArray_1, function(config_1){
+		var configArray_2 = config_1.split(":")
+		var object = {
+			type:configArray_2[0],
+			name:configArray_2[1],
+			count:parseInt(configArray_2[2])
+		}
+		objects.push(object)
+	})
+	return objects
+}
+
+/**
  * 上传IAP信息
  * @param playerId
  * @param transactionId
@@ -119,8 +142,32 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 		return billingValidateAsync(receiptData)
 	}).then(function(doc){
 		var billing = CreateBillingItem(playerId, doc)
-		playerDoc.resources.gem += 500
+		var quantity = billing.quantity
+		var itemConfig = _.find(StoreItems.items, function(item){
+			if(_.isObject(item)){
+				return _.isEqual(item.productId, billing.productId)
+			}
+		})
+		if(!_.isObject(itemConfig)) return Promise.reject(new Error("订单商品不存在"))
+		playerDoc.resources.gem += itemConfig.gem * quantity
 		playerData.resources = playerDoc.resources
+		var rewards = GetStoreItemRewardsFromConfig(itemConfig)
+		playerData.__items = []
+		_.each(rewards, function(reward){
+			var resp = LogicUtils.addPlayerItem(playerDoc, reward.name, reward.count * quantity)
+			if(resp.newlyCreated){
+				playerData.__items.push({
+					type:Consts.DataChangedType.Add,
+					data:resp.item
+				})
+			}else{
+				playerData.__items.push({
+					type:Consts.DataChangedType.Edit,
+					data:resp.item
+				})
+			}
+		})
+
 		updateFuncs.push([self.Billing, self.Billing.createAsync, billing])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAddPlayerBillingDataSuccessAsync, playerDoc, billing.transactionId])
