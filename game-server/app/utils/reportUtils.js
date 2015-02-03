@@ -1540,7 +1540,16 @@ Utils.getPlayerMarchTroopDetail = function(playerDoc, marchEventId, dragon, sold
 		})
 		return soldiers
 	}
-
+	var getMiliraryTechs = function(playerDoc){
+		return _.filter(playerDoc.militaryTechs, function(tech){
+			return tech.level > 0
+		})
+	}
+	var getMilitaryBuffs = function(playerDoc){
+		return _.filter(playerDoc.itemEvents, function(event){
+			return _.contains(Consts.MilitaryItemEventTypes, event.type)
+		})
+	}
 	dragon = playerDoc.dragons[dragon.type]
 	var detail = {
 		marchEventId:marchEventId,
@@ -1552,7 +1561,9 @@ Utils.getPlayerMarchTroopDetail = function(playerDoc, marchEventId, dragon, sold
 			equipments:getDragonEquipments(dragon),
 			skills:getDragonSkills(dragon)
 		},
-		soldiers:_.isArray(soldiers) ? getSoldiersInTroop(playerDoc, soldiers) : null
+		soldiers:_.isArray(soldiers) ? getSoldiersInTroop(playerDoc, soldiers) : null,
+		militaryTechs:getMiliraryTechs(playerDoc),
+		militaryBuffs:getMilitaryBuffs(playerDoc)
 	}
 
 	if(!_.isArray(soldiers)) delete detail.soldiers
