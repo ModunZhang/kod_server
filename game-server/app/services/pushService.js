@@ -176,11 +176,10 @@ pro.onHouseLevelUp = function(playerDoc, buildingLocation, houseLocation, callba
 /**
  * 箭塔升级成功事件推送
  * @param playerDoc
- * @param location
  * @param callback
  */
-pro.onTowerLevelUp = function(playerDoc, location, callback){
-	var tower = playerDoc.towers["location_" + location]
+pro.onTowerLevelUp = function(playerDoc, callback){
+	var tower = playerDoc.tower
 	var data = {
 		level:tower.level
 	}
@@ -519,7 +518,7 @@ pro.onGetPlayerViewDataSuccess = function(playerDoc, targetPlayerDoc, callback){
 	playerData._id = targetPlayerDoc._id
 	playerData.basicInfo = targetPlayerDoc.basicInfo
 	playerData.buildings = targetPlayerDoc.buildings
-	playerData.towers = targetPlayerDoc.towers
+	playerData.tower = targetPlayerDoc.tower
 	playerData.wall = targetPlayerDoc.wall
 	playerData.helpedByTroops = targetPlayerDoc.helpedByTroops
 	this.pushToPlayer(playerDoc, Events.player.onGetPlayerViewDataSuccess, playerData, callback)

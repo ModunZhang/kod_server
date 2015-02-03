@@ -125,7 +125,6 @@ Utils.excuteAll = function(functionObjects){
  */
 Utils.updateBuildingsLevel = function(playerDoc){
 	var buildings = playerDoc.buildings
-	var towers = playerDoc.towers
 	for(var i = 1; i <= _.size(buildings); i++){
 		var building = buildings["location_" + i]
 		if(building.level == -1){
@@ -142,13 +141,6 @@ Utils.updateBuildingsLevel = function(playerDoc){
 				if(_.isObject(buildings["location_" + k])){
 					buildings["location_" + k].level = 0
 				}
-			}
-
-			fromToEnd = this.getBuildingRoundFromAndEnd(round - 1)
-			var totalActiveTowerCount = fromToEnd.to - fromToEnd.from + 2
-			for(var l = totalActiveTowerCount - 2 + 1; l <= totalActiveTowerCount; l++){
-				var tower = towers["location_" + l]
-				tower.level = 1
 			}
 			return true
 		}
@@ -345,18 +337,6 @@ Utils.hasHouseEvents = function(playerDoc, buildingLocation, houseLocation){
 }
 
 /**
- * 是否有指定坑位的防御塔建造事件
- * @param playerDoc
- * @param towerLocation
- * @returns {boolean}
- */
-Utils.hasTowerEvents = function(playerDoc, towerLocation){
-	return _.some(playerDoc.towerEvents, function(event){
-		return _.isEqual(towerLocation, event.location)
-	})
-}
-
-/**
  * 是否有城墙建造事件
  * @param playerDoc
  * @returns {boolean}
@@ -455,14 +435,12 @@ Utils.createHouseEvent = function(playerDoc, buildingLocation, houseLocation, fi
 /**
  * 创建防御塔建造事件
  * @param playerDoc
- * @param location
  * @param finishTime
- * @returns {{location: *, finishTime: *}}
+ * @returns {{id: *, startTime: number, finishTime: *}}
  */
-Utils.createTowerEvent = function(playerDoc, location, finishTime){
+Utils.createTowerEvent = function(playerDoc, finishTime){
 	var event = {
 		id:ShortId.generate(),
-		location:location,
 		startTime:Date.now(),
 		finishTime:finishTime
 	}
@@ -563,16 +541,6 @@ Utils.getHouseByEvent = function(playerDoc, houseEvent){
 		}
 	})
 	return theHouse
-}
-
-/**
- * 根据防御塔建造事件查找防御塔
- * @param playerDoc
- * @param towerEvent
- * @returns {*}
- */
-Utils.getTowerByEvent = function(playerDoc, towerEvent){
-	return playerDoc.towers["location_" + towerEvent.location]
 }
 
 /**
@@ -1000,8 +968,7 @@ Utils.getPlayerObjectByEvent = function(playerDoc, eventType, eventId){
 		})
 		return {name:theHouse.type, level:theHouse.level}
 	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.TowerEvents)){
-		var tower = playerDoc.towers["location_" + event.location]
-		return {name:"tower", level:tower.level}
+		return {name:"tower", level:playerDoc.tower.level}
 	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.WallEvents)){
 		return {name:"wall", level:playerDoc.wall.level}
 	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.ProductionTechEvents)){
@@ -1211,7 +1178,7 @@ Utils.refreshBuildingEventsData = function(playerDoc, playerData){
 	playerData.technologyMaterials = playerDoc.technologyMaterials
 	playerData.basicInfo = playerDoc.basicInfo
 	playerData.buildings = playerDoc.buildings
-	playerData.towers = playerDoc.towers
+	playerData.tower = playerDoc.tower
 	playerData.wall = playerDoc.wall
 	playerData.buildingEvents = playerDoc.buildingEvents
 	playerData.houseEvents = playerDoc.houseEvents

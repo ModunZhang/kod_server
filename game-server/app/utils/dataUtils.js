@@ -1691,12 +1691,11 @@ Utils.updateAllianceMemberDonateLevel = function(memberInAllianceDoc, donateType
  * 获取升级联盟建筑所需的资源
  * @param buildingName
  * @param buildingLevel
- * @returns {{keepLevel: (needKeep|*), honour: (needHonour|*)}}
+ * @returns {{honour: (needHonour|*)}}
  */
 Utils.getAllianceBuildingUpgradeRequired = function(buildingName, buildingLevel){
 	var config = AllianceBuilding[buildingName][buildingLevel]
 	var required = {
-		keepLevel:config.needKeep,
 		honour:config.needHonour
 	}
 	return required
@@ -2293,12 +2292,7 @@ Utils.createPlayerWallForFight = function(playerDoc){
 		return BuildingFunction[type][level][key]
 	}
 	var getPowersByType = function(type){
-		var power = 0
-		_.each(playerDoc.towers, function(tower){
-			if(tower.level > 0){
-				power += getProperty("tower", tower.level, type)
-			}
-		})
+		var power = getProperty("tower", playerDoc.tower.level, type)
 		return power
 	}
 	var itemDefencePowerBuff = this.getPlayerProductionTechBuff(playerDoc, "reinforcing")

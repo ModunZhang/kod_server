@@ -704,20 +704,15 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 /**
  * 升级箭塔
  * @param playerId
- * @param towerLocation
  * @param finishNow
  * @param callback
  */
-pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
+pro.upgradeTower = function(playerId, finishNow, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
 	if(!_.isString(playerId)){
 		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isNumber(towerLocation) || towerLocation % 1 !== 0 || towerLocation < 1 || towerLocation > 11){
-		callback(new Error("towerLocation 不合法"))
 		return
 	}
 	if(!_.isBoolean(finishNow)){
@@ -737,15 +732,9 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		tower = playerDoc.towers["location_" + towerLocation]
-		if(!_.isObject(tower)){
-			return Promise.reject(new Error("箭塔不存在"))
-		}
-		if(LogicUtils.hasTowerEvents(playerDoc, tower.location)){
+		tower = playerDoc.tower
+		if(playerDoc.towerEvents.length > 0){
 			return Promise.reject(new Error("箭塔正在升级"))
-		}
-		if(tower.level < 1){
-			return Promise.reject(new Error("箭塔还未建造"))
 		}
 		if(DataUtils.isBuildingReachMaxLevel(tower.level)){
 			return Promise.reject(new Error("箭塔已达到最高等级"))
@@ -804,7 +793,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 		if(finishNow){
 			tower.level = tower.level + 1
 			LogicUtils.refreshPlayerPower(playerDoc)
-			pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc, tower.location])
+			pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc])
 			if(_.isObject(allianceDoc)){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			}
@@ -826,7 +815,7 @@ pro.upgradeTower = function(playerId, towerLocation, finishNow, callback){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			var event = LogicUtils.createTowerEvent(playerDoc, tower.location, finishTime)
+			var event = LogicUtils.createTowerEvent(playerDoc, finishTime)
 			playerDoc.towerEvents.push(event)
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "towerEvents", event.id, finishTime])
 		}

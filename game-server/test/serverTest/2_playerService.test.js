@@ -412,20 +412,12 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("upgradeTower towerLocation 不合法", function(done){
-		//	Api.upgradeTower(20, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("towerLocation 不合法")
-		//		done()
-		//	})
-		//})
-		//
 		//it("upgradeTower 箭塔正在升级", function(done){
 		//	Api.sendChat("rmbuildingevents", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.upgradeTower(1, false, function(doc){
+		//		Api.upgradeTower(false, function(doc){
 		//			doc.code.should.equal(200)
-		//			Api.upgradeTower(1, false, function(doc){
+		//			Api.upgradeTower(false, function(doc){
 		//				doc.code.should.equal(500)
 		//				doc.message.should.equal("箭塔正在升级")
 		//				done()
@@ -434,17 +426,10 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("upgradeTower 箭塔还未建造", function(done){
-		//	Api.upgradeTower(9, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("箭塔还未建造")
-		//		done()
-		//	})
-		//})
 		//
 		//it("upgradeTower 箭塔已达到最高等级", function(done){
 		//	var func = function(){
-		//		Api.upgradeTower(2, true, function(doc){
+		//		Api.upgradeTower(true, function(doc){
 		//			if(doc.code == 200){
 		//				func()
 		//			}else{
@@ -460,14 +445,17 @@ describe("PlayerService", function(){
 		//
 		//	Api.sendChat("gem 5000000", function(doc){
 		//		doc.code.should.equal(200)
-		//		func()
+		//		Api.sendChat("rmbuildingevents", function(doc){
+		//			doc.code.should.equal(200)
+		//			func()
+		//		})
 		//	})
 		//})
 		//
 		//it("upgradeTower 箭塔升级时,建筑等级不合法", function(done){
 		//	Api.sendChat("building 5", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.upgradeTower(1, true, function(doc){
+		//		Api.upgradeTower(true, function(doc){
 		//			doc.code.should.equal(500)
 		//			doc.message.should.equal("箭塔升级时,建筑等级不合法")
 		//			Api.sendChat("keep 6", function(doc){
@@ -481,7 +469,7 @@ describe("PlayerService", function(){
 		//it("upgradeTower 宝石不足", function(done){
 		//	Api.sendChat("gem 0", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.upgradeTower(1, true, function(doc){
+		//		Api.upgradeTower(true, function(doc){
 		//			doc.code.should.equal(500)
 		//			doc.message.should.equal("宝石不足")
 		//			Api.sendChat("gem 5000", function(doc){
@@ -493,7 +481,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("upgradeTower 正常升级", function(done){
-		//	Api.upgradeTower(1, true, function(doc){
+		//	Api.upgradeTower(true, function(doc){
 		//		doc.code.should.equal(200)
 		//		done()
 		//	})

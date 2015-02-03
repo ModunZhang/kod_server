@@ -259,12 +259,10 @@ pro.building = function(uid, level, callback){
 				house.level = level > houseMaxLevel ? houseMaxLevel : level
 			})
 		})
-		_.each(doc.towers, function(tower){
-			if(tower.level > 0){
-				var towerMaxLevel = DataUtils.getBuildingMaxLevel("tower")
-				tower.level = level > towerMaxLevel ? towerMaxLevel : level
-			}
-		})
+
+		var towerMaxLevel = DataUtils.getBuildingMaxLevel("tower")
+		doc.tower.level = level > towerMaxLevel ? towerMaxLevel : level
+
 		var wallMaxLevel = DataUtils.getBuildingMaxLevel("wall")
 		doc.wall.level = level > wallMaxLevel ? wallMaxLevel : level
 		while(doc.buildingEvents.length > 0){

@@ -127,7 +127,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		building.level += 1
 		LogicUtils.updateBuildingsLevel(playerDoc)
 		playerData.buildings = playerDoc.buildings
-		playerData.towers = playerDoc.towers
+		playerData.tower = playerDoc.tower
 		playerData.buildingEvents = playerDoc.buildingEvents
 		pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, event.location])
 		if(_.isObject(allianceDoc)){
@@ -170,11 +170,11 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 	}else if(_.isEqual(eventType, "towerEvents")){
 		event = LogicUtils.getEventById(playerDoc.towerEvents, eventId)
 		LogicUtils.removeItemInArray(playerDoc.towerEvents, event)
-		var tower = LogicUtils.getTowerByEvent(playerDoc, event)
+		var tower = playerDoc.tower
 		tower.level += 1
-		playerData.towers = playerDoc.towers
+		playerData.tower = playerDoc.tower
 		playerData.towerEvents = playerDoc.towerEvents
-		pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc, event.location])
+		pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc])
 		if(_.isObject(allianceDoc)){
 			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){

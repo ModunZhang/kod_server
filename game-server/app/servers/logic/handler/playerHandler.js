@@ -99,10 +99,9 @@ pro.destroyHouse = function(msg, session, next){
  * @param next
  */
 pro.upgradeTower = function(msg, session, next){
-	var location = msg.location
 	var finishNow = msg.finishNow
 
-	this.playerApiService.upgradeTowerAsync(session.uid, location, finishNow).then(function(){
+	this.playerApiService.upgradeTowerAsync(session.uid, finishNow).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

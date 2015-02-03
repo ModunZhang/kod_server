@@ -820,7 +820,7 @@
 //
 //		//it("upgradeTower 加入联盟后", function(done){
 //		//	var playerDoc = null
-//		//	Api.upgradeTower(1, false, function(doc){
+//		//	Api.upgradeTower(false, function(doc){
 //		//		doc.code.should.equal(200)
 //		//		var buildEvent = playerDoc.towerEvents[0]
 //		//		Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.TowerEvents, buildEvent.id, function(doc){

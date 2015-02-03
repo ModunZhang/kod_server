@@ -56,21 +56,21 @@ module.exports = {
 		MilitaryTechEvents:"militaryTechEvents",
 		SoldierStarEvents:"soldierStarEvents"
 	},
-	SpeedUpEventTypes:{
-		aterialEvents:"materialEvents",
-		soldierEvents:"soldierEvents",
-		soldierStarEvents:"soldierStarEvents",
-		treatSoldierEvents:"treatSoldierEvents",
-		dragonEquipmentEvents:"dragonEquipmentEvents",
-		dragonHatchEvents:"dragonHatchEvents",
-		dragonDeathEvents:"dragonDeathEvents",
-		buildingEvents:"buildingEvents",
-		houseEvents:"houseEvents",
-		towerEvents:"towerEvents",
-		wallEvents:"wallEvents",
-		productionTechEvents:"productionTechEvents",
-		militaryTechEvents:"militaryTechEvents"
-	},
+	SpeedUpEventTypes:[
+		"materialEvents",
+		"soldierEvents",
+		"soldierStarEvents",
+		"treatSoldierEvents",
+		"dragonEquipmentEvents",
+		"dragonHatchEvents",
+		"dragonDeathEvents",
+		"buildingEvents",
+		"houseEvents",
+		"towerEvents",
+		"wallEvents",
+		"productionTechEvents",
+		"militaryTechEvents"
+	],
 	WarSpeedupEventTypes:{
 		AttackMarchEvents:"attackMarchEvents",
 		AttackMarchReturnEvents:"attackMarchReturnEvents",
@@ -108,7 +108,18 @@ module.exports = {
 		iron:"ironSmelting",
 		food:"cropResearch"
 	},
-
+	MilitaryItemEventTypes:[
+		"masterOfDefender",
+		"fogOfTrick",
+		"dragonExpBonus",
+		"troopSizeBonus",
+		"dragonHpBonus",
+		"marchSpeedBonus",
+		"unitHpBonus",
+		"infantryAtkBonus",
+		"cavalryAtkBonus",
+		"siegeAtkBonus"
+	],
 	AllianceLanguage:{
 		All:"all",
 		Cn:"cn",

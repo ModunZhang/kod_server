@@ -76,9 +76,9 @@ Api.destroyHouse = function(buildingLocation, houseLocation, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.upgradeTower = function(location, finishNow, callback){
+Api.upgradeTower = function(finishNow, callback){
 	var info = {
-		location:location, finishNow:finishNow
+		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.upgradeTower"
 	pomelo.request(route, info, callback)

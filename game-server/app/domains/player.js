@@ -36,14 +36,6 @@ var createBuildingSchema = function(location){
 	return schema
 }
 
-var createTowerSchema = function(location){
-	var schema = {
-		level:{type:Number, required:true, default:location <= 5 ? 1 : -1},
-		location:{type:Number, required:true, default:location}
-	}
-	return schema
-}
-
 var createDragonEquipmentSchema = function(){
 	var schema = {
 		name:{type:String, required:false, default:""},
@@ -424,23 +416,12 @@ var playerSchema = new Schema({
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
-	towers:{
-		location_1:createTowerSchema(1),
-		location_2:createTowerSchema(2),
-		location_3:createTowerSchema(3),
-		location_4:createTowerSchema(4),
-		location_5:createTowerSchema(5),
-		location_6:createTowerSchema(6),
-		location_7:createTowerSchema(7),
-		location_8:createTowerSchema(8),
-		location_9:createTowerSchema(9),
-		location_10:createTowerSchema(10),
-		location_11:createTowerSchema(11)
+	tower:{
+		level:{type:Number, required:true, default:1}
 	},
 	towerEvents:[{
 		_id:false,
 		id:{type:String, required:true},
-		location:{type:Number, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],

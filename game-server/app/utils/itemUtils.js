@@ -1318,7 +1318,7 @@ Utils.isParamsLegal = function(itemName, params){
 		if(!_.isObject(itemData)) return false
 		eventType = itemData.eventType
 		eventId = itemData.eventId
-		if(!_.contains(_.values(Consts.SpeedUpEventTypes), eventType)) return false
+		if(!_.contains(Consts.SpeedUpEventTypes, eventType)) return false
 		return _.isString(eventId)
 	}
 	if(_.isEqual(itemName, "warSpeedupClass_1") || _.isEqual(itemName, "warSpeedupClass_2")){

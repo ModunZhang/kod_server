@@ -164,9 +164,6 @@ pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
 		var building = allianceDoc.buildings[buildingName]
 		var keepLevel = playerDoc.buildings.location_1.level
 		var upgradeRequired = DataUtils.getAllianceBuildingUpgradeRequired(buildingName, building.level + 1)
-		if(upgradeRequired.keepLevel > keepLevel){
-			return Promise.reject(new Error("盟主城堡等级不足"))
-		}
 		if(upgradeRequired.honour > allianceDoc.basicInfo.honour){
 			return Promise.reject(new Error("联盟荣耀值不足"))
 		}
