@@ -977,6 +977,20 @@ pro.getLevelupReward = function(msg, session, next){
 }
 
 /**
+ * 获取新玩家冲级奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getFirstIAPRewards = function(msg, session, next){
+	this.playerApiService5.getFirstIAPRewardsAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
  * 上传IAP信息
  * @param msg
  * @param session

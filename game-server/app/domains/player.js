@@ -108,7 +108,9 @@ var playerSchema = new Schema({
 		day14:{type:Number, required:true, default:1},
 		day14RewardsCount:{type:Number, rquired:true, default:0},
 		levelupRewards:[Number],
-		gemUsed:{type:Number, required:true, default:0}
+		gemUsed:{type:Number, required:true, default:0},
+		iapCount:{type:Number, required:true, default:0},
+		isFirstIAPRewardsGeted:{type:Boolean, required:true, default:false}
 	},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},

@@ -581,3 +581,79 @@ pro.getLevelupReward = function(playerId, levelupIndex, callback){
 		}
 	})
 }
+
+/**
+ * 获取首冲奖励
+ * @param playerId
+ * @param callback
+ */
+pro.getFirstIAPRewards = function(playerId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+
+		if(playerDoc.countInfo.iapCount <= 0) return Promise.reject(new Error("玩家还未进行首次充值"))
+		if(playerDoc.countInfo.isFirstIAPRewardsGeted) return Promise.reject(new Error("奖励已经领取"))
+		playerDoc.countInfo.isFirstIAPRewardsGeted = true
+		playerDoc.basicInfo.buildQueue = 2
+		playerData.countInfo = playerDoc.countInfo
+		playerData.basicInfo = playerDoc.basicInfo
+
+		var items = DataUtils.getFirstIAPRewards()
+		playerData.__items = []
+		_.each(items, function(item){
+			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
+			if(resp.newlyCreated){
+				playerData.__items.push({
+					type:Consts.DataChangedType.Add,
+					data:resp.item
+				})
+			}else{
+				playerData.__items.push({
+					type:Consts.DataChangedType.Edit,
+					data:resp.item
+				})
+			}
+		})
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}

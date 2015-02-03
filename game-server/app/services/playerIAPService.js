@@ -150,7 +150,9 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 		})
 		if(!_.isObject(itemConfig)) return Promise.reject(new Error("订单商品不存在"))
 		playerDoc.resources.gem += itemConfig.gem * quantity
+		playerDoc.countInfo.iapCount += 1
 		playerData.resources = playerDoc.resources
+		playerData.countInfo = playerDoc.countInfo
 		var rewards = GetStoreItemRewardsFromConfig(itemConfig)
 		playerData.__items = []
 		_.each(rewards, function(reward){

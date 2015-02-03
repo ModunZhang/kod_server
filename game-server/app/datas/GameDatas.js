@@ -182,6 +182,7 @@ GameDatas.MilitaryTechs.militaryTechs = require("./MilitaryTechs_militaryTechs.j
 GameDatas.PlayerInitData = {}
 GameDatas.PlayerInitData.intInit = require("./PlayerInitData_intInit.js")
 GameDatas.PlayerInitData.floatInit = require("./PlayerInitData_floatInit.js")
+GameDatas.PlayerInitData.stringInit = require("./PlayerInitData_stringInit.js")
 GameDatas.PlayerInitData.resources = require("./PlayerInitData_resources.js")
 GameDatas.PlayerInitData.materials = require("./PlayerInitData_materials.js")
 GameDatas.PlayerInitData.soldierMaterials = require("./PlayerInitData_soldierMaterials.js")

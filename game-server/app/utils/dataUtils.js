@@ -3397,6 +3397,27 @@ Utils.getDay14Rewards = function(day){
 }
 
 /**
+ * 获取首冲奖励
+ * @returns {Array}
+ */
+Utils.getFirstIAPRewards = function(){
+	var configString = PlayerInitData.stringInit.firstIAPRewards.value
+	var configStrings = configString.split(",")
+	var rewards = []
+	_.each(configStrings, function(configString){
+		var params = configString.split(":")
+		var reward = {
+			type:params[0],
+			name:params[1],
+			count:parseInt(params[2])
+		}
+		rewards.push(reward)
+	})
+
+	return rewards
+}
+
+/**
  * 获取玩家等级
  * @param playerDoc
  * @returns {*}
