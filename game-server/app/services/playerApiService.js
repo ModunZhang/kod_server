@@ -62,6 +62,10 @@ pro.playerLogin = function(playerDoc, callback){
 	var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
 	var todayDateString = LogicUtils.getTodayString()
 	if(!_.isEqual(todayDateString, previousLoginDateString)){
+		_.each(playerDoc.dailyTasks, function(value, key){
+			playerDoc.dailyTasks[key] = []
+		})
+
 		playerDoc.countInfo.todayOnLineTime = 0
 		playerDoc.countInfo.todayOnLineTimeRewards = []
 		if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)){
@@ -274,6 +278,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			building.level = building.level + 1
 			LogicUtils.updateBuildingsLevel(playerDoc)
 			LogicUtils.refreshPlayerPower(playerDoc)
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskNameIndexMap.UpgradeBuilding)
 			pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, building.location])
 			if(_.isObject(allianceDoc)){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])

@@ -120,12 +120,12 @@ module.exports = {
 		"cavalryAtkBonus",
 		"siegeAtkBonus"
 	],
-	DailyTaskTypes:[
-		"empireRise",
-		"conqueror",
-		"brotherClub",
-		"growUp"
-	],
+	DailyTaskTypes:{
+		EmpireRise:"empireRise",
+		Conqueror:"conqueror",
+		BrotherClub:"brotherClub",
+		GrowUp:"growUp"
+	},
 	DailyTaskNameIndexMap:{
 		UpgradeBuilding:1,
 		RecruitSoldiers:2,

@@ -2452,3 +2452,19 @@ Utils.addPlayerSoldiers = function(playerDoc, playerData, soldiers){
 
 	if(_.isEmpty(playerData.soldiers)) delete playerData.soldiers
 }
+
+/**
+ * 完成日常任务
+ * @param playerDoc
+ * @param playerData
+ * @param taskType
+ * @param taskIndex
+ */
+Utils.finishPlayerDailyTaskIfNeeded = function(playerDoc, playerData, taskType, taskIndex){
+	var isFinished = _.contains(playerDoc.dailyTasks[taskType], taskIndex)
+	if(!isFinished){
+		playerDoc.dailyTasks[taskType].push(taskIndex)
+		if(!_.isObject(playerData.dailyTasks)) playerData.dailyTasks = {}
+		playerData.dailyTasks[taskType] = playerDoc.dailyTasks[taskType]
+	}
+}
