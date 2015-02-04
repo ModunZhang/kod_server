@@ -1535,6 +1535,12 @@ var playerSchema = new Schema({
 			fogs:{type:String, required:true},
 			objects:{type:String, required:true}
 		}]
+	},
+	dailyTasks:{
+		empireRise:[],
+		conqueror:[],
+		brotherClub:[],
+		growUp:[]
 	}
 })
 
