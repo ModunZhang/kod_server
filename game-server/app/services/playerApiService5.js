@@ -138,6 +138,8 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			playerData.dragons = {}
 			playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve)
+
 			var soldiers = fightData.soldiers
 			if(!_.isArray(soldiers)) return Promise.reject(new Error("fightData 不合法"))
 

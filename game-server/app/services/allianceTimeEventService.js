@@ -327,6 +327,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				type:Consts.DataChangedType.Edit,
 				data:beHelpedMemberInAlliance
 			}]
+			LogicUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberDefence)
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
@@ -602,6 +603,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				type:Consts.DataChangedType.Add,
 				data:attackCityMarchReturnEvent
 			}]
+			LogicUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.AttackEnemyPlayersCity)
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 
@@ -1018,6 +1020,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackPlayerData.basicInfo = attackPlayerDoc.basicInfo
 				attackPlayerData.dragons = {}
 				attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
+				LogicUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.OccupyVillage)
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 
@@ -1102,7 +1105,14 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, collectReport)
 					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
 					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
-					updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, attackPlayerDoc._id])
+					LogicUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.SwitchVillageOccupant)
+					if(_.isEmpty(attackPlayerData)){
+						updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, attackPlayerDoc._id])
+					}else{
+						updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
+						pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
+					}
+
 
 					village.resource -= villageEvent.villageData.collectTotal
 					targetAllianceData.__villages = [{
@@ -1458,6 +1468,8 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 
 				attackPlayerData.dragons = {}
 				attackPlayerData.dragons[attackDragon.type] = attackDragon
+
+				LogicUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StrikeEnemyPlayersCity)
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 
@@ -1562,7 +1574,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					report = ReportUtils.createStrikeCityNoDefenceDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defencePlayerDoc)
 					LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
 					LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.reportForDefencePlayer)
-
+					LogicUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StrikeEnemyPlayersCity)
 					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
@@ -1629,6 +1641,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					}
 					attackPlayerData.dragons = {}
 					attackPlayerData.dragons[attackDragon.type] = attackDragon
+					LogicUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StrikeEnemyPlayersCity)
 					updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 
@@ -2259,6 +2272,9 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 
 			playerData.dragons = {}
 			playerData.dragons[dragon.type] = playerDoc.dragons[dragon.type]
+
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.JoinAllianceShrineEvent)
+
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 

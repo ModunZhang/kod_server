@@ -1322,6 +1322,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 
 	var self = this
 	var playerDoc = null
+	var playerData = {}
 	var allianceDoc = null
 	var allianceData = {}
 	var memberDoc = null
@@ -1386,8 +1387,13 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 			type:Consts.DataChangedType.Edit,
 			data:playerEvent
 		}]
-
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
+		if(_.isEmpty(playerData)){
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		}else{
+			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
@@ -1439,6 +1445,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 
 	var self = this
 	var playerDoc = null
+	var playerData = {}
 	var allianceDoc = null
 	var allianceData = {}
 	var memberDocs = []
@@ -1522,7 +1529,13 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 
 		return Promise.all(funcs)
 	}).then(function(){
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
+		if(_.isEmpty(playerData)){
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		}else{
+			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		}
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return LogicUtils.excuteAll(updateFuncs)

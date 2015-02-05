@@ -554,7 +554,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		if(playerDoc.allianceInfo.loyalty < loyaltyNeed) return Promise.reject(new Error("玩家忠诚值不足"))
 		playerDoc.allianceInfo.loyalty -= loyaltyNeed
 		playerData.allianceInfo = playerDoc.basicInfo
-
+		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.BuyItemInAllianceShop)
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
 		memberObject.loyalty -= loyaltyNeed
 		allianceData.__members = [{

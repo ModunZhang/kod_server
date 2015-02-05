@@ -1541,9 +1541,17 @@ Utils.getPlayerMarchTroopDetail = function(playerDoc, marchEventId, dragon, sold
 		return soldiers
 	}
 	var getMiliraryTechs = function(playerDoc){
-		return _.filter(playerDoc.militaryTechs, function(tech){
-			return tech.level > 0
+		var techs = []
+		_.each(playerDoc.militaryTechs, function(tech, name){
+			if(tech.level > 0){
+				var tech = {
+					name:name,
+					level:tech.level
+				}
+				techs.push(tech)
+			}
 		})
+		return techs
 	}
 	var getMilitaryBuffs = function(playerDoc){
 		return _.filter(playerDoc.itemEvents, function(event){

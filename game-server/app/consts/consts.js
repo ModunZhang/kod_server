@@ -135,7 +135,7 @@ module.exports = {
 			MakeBuildingMaterials:5
 		},
 		Conqueror:{
-			JoinAllianceFight:1,
+			JoinAllianceShrineEvent:1,
 			StrikeEnemyPlayersCity:2,
 			AttackEnemyPlayersCity:3,
 			OccupyVillage:4,

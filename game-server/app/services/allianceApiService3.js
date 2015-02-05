@@ -85,6 +85,7 @@ pro.donateToAlliance = function(playerId, donateType, callback){
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
 		playerData.allianceInfo = playerDoc.allianceInfo
+		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.DonateToAlliance)
 		var allianceData = {}
 		allianceData.basicInfo = allianceDoc.basicInfo
 		allianceData.__members = [{
