@@ -608,6 +608,7 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
 		var allianceData = {}
+		console.log(eventType, allianceDoc[eventType], eventId, "------------------------------")
 		var marchEvent = _.find(allianceDoc[eventType], function(marchEvent){
 			return _.isEqual(marchEvent.id, eventId)
 		})
