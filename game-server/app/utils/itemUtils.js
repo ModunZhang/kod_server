@@ -583,6 +583,11 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
 		}]
 	}
 	eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
+	if(_.contains(Consts.BuildingSpeedupEventTypes, eventType)){
+		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.SpeedupBuildingBuild)
+	}else if(eventType, "soldierEvents"){
+		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.SpeedupSoldiersRecruit)
+	}
 	return Promise.resolve()
 }
 

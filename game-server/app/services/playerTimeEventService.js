@@ -231,6 +231,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		playerDoc.dragonEquipments[event.name] += 1
 		playerData.dragonEquipments = playerDoc.dragonEquipments
 		playerData.dragonEquipmentEvents = playerDoc.dragonEquipmentEvents
+		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.MakeDragonEquipment)
 		pushFuncs.push([self.pushService, self.pushService.onMakeDragonEquipmentSuccessAsync, playerDoc, event.name])
 	}else if(_.isEqual(eventType, "treatSoldierEvents")){
 		event = LogicUtils.getEventById(playerDoc.treatSoldierEvents, eventId)

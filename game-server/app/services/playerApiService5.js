@@ -257,6 +257,10 @@ pro.gacha = function(playerId, type, callback){
 			}
 		}
 
+		if(_.isEqual(type, Consts.GachaType.Advanced)){
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.AdvancedGachaOnce)
+		}
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 

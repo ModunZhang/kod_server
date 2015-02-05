@@ -212,6 +212,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			playerDoc.dragonEquipments[equipmentName] += 1
 			playerData.dragonEquipments = {}
 			playerData.dragonEquipments[equipmentName] = playerDoc.dragonEquipments[equipmentName]
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.MakeDragonEquipment)
 			pushFuncs.push([self.pushService, self.pushService.onMakeDragonEquipmentSuccessAsync, playerDoc, equipmentName])
 		}else{
 			var finishTime = Date.now() + (makeRequired.makeTime * 1000)

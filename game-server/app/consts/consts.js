@@ -71,6 +71,11 @@ module.exports = {
 		"productionTechEvents",
 		"militaryTechEvents"
 	],
+	BuildingSpeedupEventTypes:[
+		"buildingEvents",
+		"houseEvents",
+		"wallEvents"
+	],
 	WarSpeedupEventTypes:{
 		AttackMarchEvents:"attackMarchEvents",
 		AttackMarchReturnEvents:"attackMarchReturnEvents",
