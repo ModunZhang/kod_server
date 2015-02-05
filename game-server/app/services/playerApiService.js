@@ -278,7 +278,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			building.level = building.level + 1
 			LogicUtils.updateBuildingsLevel(playerDoc)
 			LogicUtils.refreshPlayerPower(playerDoc)
-			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskNameIndexMap.UpgradeBuilding)
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 			pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, building.location])
 			if(_.isObject(allianceDoc)){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
@@ -461,6 +461,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		if(finishNow){
 			house.level += 1
 			LogicUtils.refreshPlayerPower(playerDoc)
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, building.location, house.location])
 			if(_.isObject(allianceDoc)){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
@@ -646,6 +647,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		if(finishNow){
 			house.level += 1
 			LogicUtils.refreshPlayerPower(playerDoc)
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, building.location, house.location])
 			if(_.isObject(allianceDoc)){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
@@ -798,6 +800,7 @@ pro.upgradeTower = function(playerId, finishNow, callback){
 		if(finishNow){
 			tower.level = tower.level + 1
 			LogicUtils.refreshPlayerPower(playerDoc)
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 			pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc])
 			if(_.isObject(allianceDoc)){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
@@ -951,6 +954,7 @@ pro.upgradeWall = function(playerId, finishNow, callback){
 		if(finishNow){
 			wall.level = wall.level + 1
 			LogicUtils.refreshPlayerPower(playerDoc)
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 			pushFuncs.push([self.pushService, self.pushService.onWallLevelUpAsync, playerDoc])
 			if(_.isObject(allianceDoc)){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
@@ -1179,6 +1183,9 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		event = DataUtils.createMaterialEvent(toolShop, category, finishNow)
 		playerDoc.materialEvents.push(event)
 		if(finishNow){
+			if(_.isEqual(category, Consts.MaterialType.BuildingMaterials)){
+				LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.MakeBuildingMaterials)
+			}
 			pushFuncs.push([self.pushService, self.pushService.onMakeMaterialFinishedAsync, playerDoc, event])
 		}else{
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "materialEvents", event.id, event.finishTime])
@@ -1351,6 +1358,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			playerData.soldiers = {}
 			playerData.soldiers[soldierName] = playerDoc.soldiers[soldierName]
 			LogicUtils.refreshPlayerPower(playerDoc)
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
 			pushFuncs.push([self.pushService, self.pushService.onRecruitSoldierSuccessAsync, playerDoc, soldierName, count])
 		}else{
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)

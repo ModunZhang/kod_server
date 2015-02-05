@@ -1537,6 +1537,7 @@ var playerSchema = new Schema({
 		}]
 	},
 	dailyTasks:{
+		rewardsGetedTaskTypes:[],
 		empireRise:[],
 		conqueror:[],
 		brotherClub:[],

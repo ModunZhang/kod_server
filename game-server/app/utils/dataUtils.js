@@ -2241,7 +2241,7 @@ Utils.createSoldiersForFight = function(soldiers){
 }
 
 /**
- * 创建战斗用龙
+ * 创建玩家战斗用龙
  * @param playerDoc
  * @param dragon
  * @param terrain
@@ -3396,6 +3396,29 @@ Utils.getDay14Rewards = function(day){
  */
 Utils.getFirstIAPRewards = function(){
 	var configString = PlayerInitData.stringInit.firstIAPRewards.value
+	var configStrings = configString.split(",")
+	var rewards = []
+	_.each(configStrings, function(configString){
+		var params = configString.split(":")
+		var reward = {
+			type:params[0],
+			name:params[1],
+			count:parseInt(params[2])
+		}
+		rewards.push(reward)
+	})
+
+	return rewards
+}
+
+/**
+ * 获取日常任务奖励
+ * @param taskType
+ * @returns {Array}
+ */
+Utils.getDailyTaskRewardsByType = function(taskType){
+	var configKey = taskType + "DailyTaskRewards"
+	var configString = PlayerInitData.stringInit[configKey].value
 	var configStrings = configString.split(",")
 	var rewards = []
 	_.each(configStrings, function(configString){

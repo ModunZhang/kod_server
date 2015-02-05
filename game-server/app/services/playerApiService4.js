@@ -536,6 +536,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			tech.level += 1
 			playerData.productionTechs = {}
 			playerData.productionTechs[techName] = playerDoc.productionTechs[techName]
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 		}else{
 			if(_.isObject(preTechEvent)){
 				preTechEvent.startTime -= preTechEvent.finishTime - Date.now()
@@ -665,6 +666,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			tech.level += 1
 			playerData.militaryTechs = {}
 			playerData.militaryTechs[techName] = playerDoc.militaryTechs[techName]
+			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 		}else{
 			if(_.isObject(preTechEvent)){
 				preTechEvent.startTime -= preTechEvent.finishTime - Date.now()

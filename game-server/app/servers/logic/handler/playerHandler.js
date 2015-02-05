@@ -976,6 +976,22 @@ pro.getLevelupReward = function(msg, session, next){
 }
 
 /**
+ * 上传IAP信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.addPlayerBillingData = function(msg, session, next){
+	var transactionId = msg.transactionId
+	var receiptData = msg.receiptData
+	this.playerIAPService.addPlayerBillingDataAsync(session.uid, transactionId, receiptData).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
  * 获取新玩家冲级奖励
  * @param msg
  * @param session
@@ -990,15 +1006,28 @@ pro.getFirstIAPRewards = function(msg, session, next){
 }
 
 /**
- * 上传IAP信息
+ * 通过Selina的考验
  * @param msg
  * @param session
  * @param next
  */
-pro.addPlayerBillingData = function(msg, session, next){
-	var transactionId = msg.transactionId
-	var receiptData = msg.receiptData
-	this.playerIAPService.addPlayerBillingDataAsync(session.uid, transactionId, receiptData).then(function(){
+pro.passSelinasTest = function(msg, session, next){
+	this.playerApiService5.passSelinasTestAsync(session.uid).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 领取日常任务奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getDailyTaskRewards = function(msg, session, next){
+	var taskType = msg.taskType
+	this.playerApiService5.getDailyTaskRewardsAsync(session.uid, taskType).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

@@ -533,11 +533,6 @@ Api.getLevelupReward = function(levelupIndex, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.getFirstIAPRewards = function(callback){
-	var route = "logic.playerHandler.getFirstIAPRewards"
-	pomelo.request(route, null, callback)
-}
-
 Api.addPlayerBillingData = function(transactionId, receiptData, callback){
 	var info = {
 		transactionId:transactionId,
@@ -546,6 +541,25 @@ Api.addPlayerBillingData = function(transactionId, receiptData, callback){
 	var route = "logic.playerHandler.addPlayerBillingData"
 	pomelo.request(route, info, callback)
 }
+
+Api.getFirstIAPRewards = function(callback){
+	var route = "logic.playerHandler.getFirstIAPRewards"
+	pomelo.request(route, null, callback)
+}
+
+Api.passSelinasTest = function(callback){
+	var route = "logic.playerHandler.passSelinasTest"
+	pomelo.request(route, null, callback)
+}
+
+Api.getDailyTaskRewards =  function(taskType, callback){
+	var info = {
+		taskType:taskType
+	}
+	var route = "logic.playerHandler.getDailyTaskRewards"
+	pomelo.request(route, info, callback)
+}
+
 
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
