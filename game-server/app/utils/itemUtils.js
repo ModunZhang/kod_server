@@ -535,6 +535,8 @@ var Buff = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventServ
 		}]
 		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime])
 	}
+	playerData.basicInfo = playerDoc.basicInfo
+	playerData.resources = playerDoc.resources
 
 	return Promise.resolve()
 }
