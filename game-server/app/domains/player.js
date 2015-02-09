@@ -1543,7 +1543,8 @@ var playerSchema = new Schema({
 		conqueror:[],
 		brotherClub:[],
 		growUp:[]
-	}
+	},
+	achievementTasks:[int]
 })
 
 module.exports = mongoose.model('player', playerSchema)
