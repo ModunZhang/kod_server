@@ -1519,6 +1519,7 @@ var playerSchema = new Schema({
 	}],
 	itemEvents:[{
 		_id:false,
+		id:{type:String, required:true},
 		type:{type:String, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
