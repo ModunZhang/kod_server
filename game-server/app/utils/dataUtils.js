@@ -3580,3 +3580,31 @@ Utils.addPlayerWoundedSoldiers = function(playerDoc, playerData, woundedSoldiers
 Utils.getStoreItemConfigs = function(){
 	return StoreItems.items
 }
+
+/**
+ * 根据军事科技名称查找士兵升星事件
+ * @param playerDoc
+ * @param militaryTechName
+ * @returns {*}
+ */
+Utils.getPlayerSoldierStarUpgradeEvent = function(playerDoc, militaryTechName){
+	var buildingName = MilitaryTechs.militaryTechs[militaryTechName].building
+	return _.find(playerDoc.soldierStarEvents, function(event){
+		var soldierConfig = Soldiers.normal[event.name + "_1"]
+		return _.isEqual(soldierConfig.techBuildingName, buildingName)
+	})
+}
+
+/**
+ * 根据士兵名字查找正在升级的军事科技
+ * @param playerDoc
+ * @param soldierName
+ * @returns {*}
+ */
+Utils.getPlayerMilitaryTechUpgradeEvent = function(playerDoc, soldierName){
+	var buildingName = Soldiers.normal[soldierName + "_1"].techBuildingName
+	return _.find(playerDoc.militaryTechEvents, function(event){
+		var techConfig = MilitaryTechs.militaryTechs[event.name]
+		return _.isEqual(techConfig.building, buildingName)
+	})
+}

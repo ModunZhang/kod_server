@@ -181,8 +181,8 @@ var allianceSchema = new Schema({
 			vipExp:{type:Number, required:true}
 		},
 		eventData:{
-			type:{type:String, required:true},
 			id:{type:String, required:true},
+			type:{type:String, required:true},
 			name:{type:String, required:true},
 			level:{type:Number, required:true},
 			maxHelpCount:{type:Number, required:true},

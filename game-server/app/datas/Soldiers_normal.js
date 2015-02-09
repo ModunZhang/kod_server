@@ -32,7 +32,8 @@ normal["swordsman_1"] = {
 	treatTime:10,
 	upgradeCoinNeed:50,
 	upgradeTechPointNeed:50,
-	upgradeTimeSecondsNeed:50
+	upgradeTimeSecondsNeed:50,
+	techBuildingName:"trainingGround"
 }
 normal["swordsman_2"] = {
 	key:"swordsman_2",
@@ -63,7 +64,8 @@ normal["swordsman_2"] = {
 	treatTime:10,
 	upgradeCoinNeed:100,
 	upgradeTechPointNeed:100,
-	upgradeTimeSecondsNeed:100
+	upgradeTimeSecondsNeed:100,
+	techBuildingName:"trainingGround"
 }
 normal["swordsman_3"] = {
 	key:"swordsman_3",
@@ -94,7 +96,8 @@ normal["swordsman_3"] = {
 	treatTime:10,
 	upgradeCoinNeed:200,
 	upgradeTechPointNeed:200,
-	upgradeTimeSecondsNeed:200
+	upgradeTimeSecondsNeed:200,
+	techBuildingName:"trainingGround"
 }
 normal["sentinel_1"] = {
 	key:"sentinel_1",
@@ -125,7 +128,8 @@ normal["sentinel_1"] = {
 	treatTime:12,
 	upgradeCoinNeed:50,
 	upgradeTechPointNeed:50,
-	upgradeTimeSecondsNeed:50
+	upgradeTimeSecondsNeed:50,
+	techBuildingName:"trainingGround"
 }
 normal["sentinel_2"] = {
 	key:"sentinel_2",
@@ -156,7 +160,8 @@ normal["sentinel_2"] = {
 	treatTime:12,
 	upgradeCoinNeed:100,
 	upgradeTechPointNeed:100,
-	upgradeTimeSecondsNeed:100
+	upgradeTimeSecondsNeed:100,
+	techBuildingName:"trainingGround"
 }
 normal["sentinel_3"] = {
 	key:"sentinel_3",
@@ -187,7 +192,8 @@ normal["sentinel_3"] = {
 	treatTime:12,
 	upgradeCoinNeed:200,
 	upgradeTechPointNeed:200,
-	upgradeTimeSecondsNeed:200
+	upgradeTimeSecondsNeed:200,
+	techBuildingName:"trainingGround"
 }
 normal["ranger_1"] = {
 	key:"ranger_1",
@@ -218,7 +224,8 @@ normal["ranger_1"] = {
 	treatTime:17,
 	upgradeCoinNeed:50,
 	upgradeTechPointNeed:50,
-	upgradeTimeSecondsNeed:50
+	upgradeTimeSecondsNeed:50,
+	techBuildingName:"hunterHall"
 }
 normal["ranger_2"] = {
 	key:"ranger_2",
@@ -249,7 +256,8 @@ normal["ranger_2"] = {
 	treatTime:17,
 	upgradeCoinNeed:100,
 	upgradeTechPointNeed:100,
-	upgradeTimeSecondsNeed:100
+	upgradeTimeSecondsNeed:100,
+	techBuildingName:"hunterHall"
 }
 normal["ranger_3"] = {
 	key:"ranger_3",
@@ -280,7 +288,8 @@ normal["ranger_3"] = {
 	treatTime:17,
 	upgradeCoinNeed:200,
 	upgradeTechPointNeed:200,
-	upgradeTimeSecondsNeed:200
+	upgradeTimeSecondsNeed:200,
+	techBuildingName:"hunterHall"
 }
 normal["crossbowman_1"] = {
 	key:"crossbowman_1",
@@ -311,7 +320,8 @@ normal["crossbowman_1"] = {
 	treatTime:19,
 	upgradeCoinNeed:50,
 	upgradeTechPointNeed:50,
-	upgradeTimeSecondsNeed:50
+	upgradeTimeSecondsNeed:50,
+	techBuildingName:"hunterHall"
 }
 normal["crossbowman_2"] = {
 	key:"crossbowman_2",
@@ -342,7 +352,8 @@ normal["crossbowman_2"] = {
 	treatTime:19,
 	upgradeCoinNeed:100,
 	upgradeTechPointNeed:100,
-	upgradeTimeSecondsNeed:100
+	upgradeTimeSecondsNeed:100,
+	techBuildingName:"hunterHall"
 }
 normal["crossbowman_3"] = {
 	key:"crossbowman_3",
@@ -373,7 +384,8 @@ normal["crossbowman_3"] = {
 	treatTime:19,
 	upgradeCoinNeed:200,
 	upgradeTechPointNeed:200,
-	upgradeTimeSecondsNeed:200
+	upgradeTimeSecondsNeed:200,
+	techBuildingName:"hunterHall"
 }
 normal["lancer_1"] = {
 	key:"lancer_1",
@@ -404,7 +416,8 @@ normal["lancer_1"] = {
 	treatTime:37,
 	upgradeCoinNeed:50,
 	upgradeTechPointNeed:50,
-	upgradeTimeSecondsNeed:50
+	upgradeTimeSecondsNeed:50,
+	techBuildingName:"stable"
 }
 normal["lancer_2"] = {
 	key:"lancer_2",
@@ -435,7 +448,8 @@ normal["lancer_2"] = {
 	treatTime:37,
 	upgradeCoinNeed:100,
 	upgradeTechPointNeed:100,
-	upgradeTimeSecondsNeed:100
+	upgradeTimeSecondsNeed:100,
+	techBuildingName:"stable"
 }
 normal["lancer_3"] = {
 	key:"lancer_3",
@@ -466,7 +480,8 @@ normal["lancer_3"] = {
 	treatTime:37,
 	upgradeCoinNeed:200,
 	upgradeTechPointNeed:200,
-	upgradeTimeSecondsNeed:200
+	upgradeTimeSecondsNeed:200,
+	techBuildingName:"stable"
 }
 normal["horseArcher_1"] = {
 	key:"horseArcher_1",
@@ -497,7 +512,8 @@ normal["horseArcher_1"] = {
 	treatTime:40,
 	upgradeCoinNeed:50,
 	upgradeTechPointNeed:50,
-	upgradeTimeSecondsNeed:50
+	upgradeTimeSecondsNeed:50,
+	techBuildingName:"stable"
 }
 normal["horseArcher_2"] = {
 	key:"horseArcher_2",
@@ -528,7 +544,8 @@ normal["horseArcher_2"] = {
 	treatTime:40,
 	upgradeCoinNeed:100,
 	upgradeTechPointNeed:100,
-	upgradeTimeSecondsNeed:100
+	upgradeTimeSecondsNeed:100,
+	techBuildingName:"stable"
 }
 normal["horseArcher_3"] = {
 	key:"horseArcher_3",
@@ -559,7 +576,8 @@ normal["horseArcher_3"] = {
 	treatTime:40,
 	upgradeCoinNeed:200,
 	upgradeTechPointNeed:200,
-	upgradeTimeSecondsNeed:200
+	upgradeTimeSecondsNeed:200,
+	techBuildingName:"stable"
 }
 normal["catapult_1"] = {
 	key:"catapult_1",
@@ -590,7 +608,8 @@ normal["catapult_1"] = {
 	treatTime:60,
 	upgradeCoinNeed:50,
 	upgradeTechPointNeed:50,
-	upgradeTimeSecondsNeed:50
+	upgradeTimeSecondsNeed:50,
+	techBuildingName:"workshop"
 }
 normal["catapult_2"] = {
 	key:"catapult_2",
@@ -621,7 +640,8 @@ normal["catapult_2"] = {
 	treatTime:60,
 	upgradeCoinNeed:100,
 	upgradeTechPointNeed:100,
-	upgradeTimeSecondsNeed:100
+	upgradeTimeSecondsNeed:100,
+	techBuildingName:"workshop"
 }
 normal["catapult_3"] = {
 	key:"catapult_3",
@@ -652,7 +672,8 @@ normal["catapult_3"] = {
 	treatTime:60,
 	upgradeCoinNeed:200,
 	upgradeTechPointNeed:200,
-	upgradeTimeSecondsNeed:200
+	upgradeTimeSecondsNeed:200,
+	techBuildingName:"workshop"
 }
 normal["ballista_1"] = {
 	key:"ballista_1",
@@ -683,7 +704,8 @@ normal["ballista_1"] = {
 	treatTime:64,
 	upgradeCoinNeed:50,
 	upgradeTechPointNeed:50,
-	upgradeTimeSecondsNeed:50
+	upgradeTimeSecondsNeed:50,
+	techBuildingName:"workshop"
 }
 normal["ballista_2"] = {
 	key:"ballista_2",
@@ -714,7 +736,8 @@ normal["ballista_2"] = {
 	treatTime:64,
 	upgradeCoinNeed:100,
 	upgradeTechPointNeed:100,
-	upgradeTimeSecondsNeed:100
+	upgradeTimeSecondsNeed:100,
+	techBuildingName:"workshop"
 }
 normal["ballista_3"] = {
 	key:"ballista_3",
@@ -745,5 +768,6 @@ normal["ballista_3"] = {
 	treatTime:64,
 	upgradeCoinNeed:200,
 	upgradeTechPointNeed:200,
-	upgradeTimeSecondsNeed:200
+	upgradeTimeSecondsNeed:200,
+	techBuildingName:"workshop"
 }

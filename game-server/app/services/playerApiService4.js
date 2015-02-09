@@ -624,6 +624,10 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		}
 		if(!DataUtils.isPlayerMilitaryTechBuildingCreated(playerDoc, techName)) return Promise.reject(new Error("建筑还未建造"))
 		if(DataUtils.isMilitaryTechReachMaxLevel(tech.level)) return Promise.reject(new Error("科技已达最高等级"))
+		var isUpgrading = _.some(playerDoc.militaryTechEvents, function(event){
+			return _.isEqual(event.name, techName)
+		})
+		if(isUpgrading) return Promise.reject(new Error("此科技正在升级"))
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
@@ -648,8 +652,8 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.technologyMaterials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
-			if(playerDoc.militaryTechEvents.length > 0 || playerDoc.soldierStarEvents.length > 0){
-				preTechEvent = playerDoc.militaryTechEvents.length > 0 ? playerDoc.militaryTechEvents[0] : playerDoc.soldierStarEvents[0]
+			preTechEvent = DataUtils.getPlayerSoldierStarUpgradeEvent(playerDoc, techName)
+			if(_.isObject(preTechEvent)){
 				var timeRemain = (preTechEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
@@ -749,6 +753,10 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		playerDoc = doc
 		if(playerDoc.soldierStars[soldierName] >= 3) return Promise.reject(new Error("士兵已达最高星级"))
 		if(!DataUtils.isPlayerUpgradeSoldierStarTechPointEnough(playerDoc, soldierName)) return Promise.reject(new Error("科技点不足"))
+		var isUpgrading = _.some(playerDoc.soldierStarEvents, function(event){
+			return _.isEqual(event.name, soldierName)
+		})
+		if(isUpgrading) return Promise.reject(new Error("此兵种正在升级中"))
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
@@ -766,8 +774,8 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			if(playerDoc.militaryTechEvents.length > 0 || playerDoc.soldierStarEvents.length > 0){
-				preTechEvent = playerDoc.militaryTechEvents.length > 0 ? playerDoc.militaryTechEvents[0] : playerDoc.soldierStarEvents[0]
+			preTechEvent = DataUtils.getPlayerMilitaryTechUpgradeEvent(playerDoc, soldierName)
+			if(_.isObject(preTechEvent)){
 				var timeRemain = (preTechEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
