@@ -161,12 +161,22 @@ Utils.getPlayerBuildingUpgradeRequired = function(playerDoc, buildingType, build
 
 /**
  * 获取生产科技升级时,需要的资源和道具
+ * @param playerDoc
  * @param techName
  * @param techLevel
  * @returns {{resources: {coin: *}, materials: {blueprints: *, tools: *, tiles: *, pulley: *}, buildTime: *}}
  */
-Utils.getProductionTechUpgradeRequired = function(techName, techLevel){
+Utils.getPlayerProductionTechUpgradeRequired = function(playerDoc, techName, techLevel){
 	var config = ProductionTechLevelUp[techName][techLevel]
+	var building = playerDoc.buildings.location_7
+	var buildTime = null
+	if(building.level > 0){
+		var buildingConfig = BuildingFunction[building.type][building.level]
+		buildTime = LogicUtils.getTimeEfffect(config.buildTime, buildingConfig.efficiency)
+	}else{
+		buildTime = config.buildTime
+	}
+
 	var required = {
 		resources:{
 			coin:config.coin
@@ -177,7 +187,7 @@ Utils.getProductionTechUpgradeRequired = function(techName, techLevel){
 			tiles:config.tiles,
 			pulley:config.pulley
 		},
-		buildTime:config.buildTime
+		buildTime:buildTime
 	}
 
 	return required
@@ -185,12 +195,22 @@ Utils.getProductionTechUpgradeRequired = function(techName, techLevel){
 
 /**
  * 获取军事科技升级时,需要的资源和道具
+ * @param playerDoc
  * @param techName
  * @param techLevel
  * @returns {{resources: {coin: *}, materials: {trainingFigure: *, bowTarget: *, saddle: *, ironPart: *}, buildTime: *}}
  */
-Utils.getMilitaryTechUpgradeRequired = function(techName, techLevel){
+Utils.getPlayerMilitaryTechUpgradeRequired = function(playerDoc, techName, techLevel){
 	var config = MilitaryTechLevelUp[techName][techLevel]
+	var building = playerDoc.buildings.location_7
+	var buildTime = null
+	if(building.level > 0){
+		var buildingConfig = BuildingFunction[building.type][building.level]
+		buildTime = LogicUtils.getTimeEfffect(config.buildTime, buildingConfig.efficiency)
+	}else{
+		buildTime = config.buildTime
+	}
+
 	var required = {
 		resources:{
 			coin:config.coin
@@ -201,7 +221,7 @@ Utils.getMilitaryTechUpgradeRequired = function(techName, techLevel){
 			saddle:config.saddle,
 			ironPart:config.ironPart
 		},
-		buildTime:config.buildTime
+		buildTime:buildTime
 	}
 
 	return required
@@ -1042,7 +1062,18 @@ Utils.getPlayerRecruitSpecialSoldierRequired = function(playerDoc, soldierName, 
  */
 Utils.getPlayerRecruitSoldierTime = function(playerDoc, soldierName, count){
 	var config = this.getPlayerSoldierConfig(playerDoc, soldierName)
-	return config.recruitTime * count
+	var buildingName = this.isNormalSoldier(soldierName) ? Soldiers.normal[soldierName + "_1"].techBuildingName : Soldiers.special[soldierName].techBuildingName
+	var building = _.find(playerDoc.buildings, function(building){
+		return _.isEqual(building.type, buildingName)
+	})
+	if(building.level > 0){
+		var buildingConfig = BuildingFunction[building.type][building.level]
+		var recruitTime = LogicUtils.getTimeEfffect(config.recruitTime * count, buildingConfig.efficiency)
+		return recruitTime
+	}else{
+		return config.recruitTime * count
+	}
+
 }
 
 /**
@@ -1108,7 +1139,7 @@ Utils.getPlayerMakeDragonEquipmentTime = function(playerDoc, equipmentName){
 	var smithConfig = BuildingFunction[building.type][building.level]
 	var dragonEquipmentConfig = DragonEquipments.equipments[equipmentName]
 	var makeTime = dragonEquipmentConfig.makeTime
-	return LogicUtils.getEfficiency(makeTime, smithConfig.efficiency)
+	return LogicUtils.getTimeEfffect(makeTime, smithConfig.efficiency)
 }
 
 /**

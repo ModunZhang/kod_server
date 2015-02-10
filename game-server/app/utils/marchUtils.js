@@ -240,7 +240,8 @@ var getPlayerSoldiersMarchTime = function(playerDoc, soldiers, fromAllianceDoc, 
 		totalSpeed += baseSpeed / config.march * citizen
 	})
 	var itemBuff = DataUtils.isPlayerHasItemEvent(playerDoc, "marchSpeedBonus") ? 0.3 : 0
-	var time = Math.ceil(totalSpeed / totalCitizen * distance * 1000 * (1 - itemBuff))
+	var time = Math.ceil(totalSpeed / totalCitizen * distance * 1000)
+	time = LogicUtils.getTimeEfffect(time, itemBuff)
 	return time//5 * 1000
 }
 

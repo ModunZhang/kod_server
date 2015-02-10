@@ -497,7 +497,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
-		var upgradeRequired = DataUtils.getProductionTechUpgradeRequired(techName, tech.level + 1)
+		var upgradeRequired = DataUtils.getPlayerProductionTechUpgradeRequired(playerDoc, techName, tech.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
 		var preTechEvent = null
@@ -631,7 +631,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
-		var upgradeRequired = DataUtils.getMilitaryTechUpgradeRequired(techName, tech.level + 1)
+		var upgradeRequired = DataUtils.getPlayerMilitaryTechUpgradeRequired(playerDoc, techName, tech.level + 1)
 		var buyedResources = null
 		var buyedMaterials = null
 		var preTechEvent = null

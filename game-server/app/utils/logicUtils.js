@@ -20,15 +20,12 @@ var Utils = module.exports
 
 /**
  * 获取Buff加成效果
- * @param origin
- * @param effect
+ * @param time
+ * @param decreasePercent
  * @returns {number}
  */
-Utils.getEfficiency = function(origin, effect){
-	var res = 1 / (1 + effect)
-	res = Math.floor(res * 1000000) / 1000000
-	res = Math.floor(origin * res)
-	return res
+Utils.getTimeEfffect = function(time, decreasePercent){
+	return Math.floor(time / (1 + decreasePercent))
 }
 
 /**
