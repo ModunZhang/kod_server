@@ -153,7 +153,7 @@ Utils.getPlayerBuildingUpgradeRequired = function(playerDoc, buildingType, build
 			tiles:config.tiles,
 			pulley:config.pulley
 		},
-		buildTime:Math.ceil(config.buildTime * (1 - buildingTimeBuff))
+		buildTime:LogicUtils.getTimeEfffect(config.buildTime, buildingTimeBuff)
 	}
 
 	return required
@@ -269,7 +269,7 @@ Utils.getPlayerHouseUpgradeRequired = function(playerDoc, houseType, houseLevel)
 			tiles:config.tiles,
 			pulley:config.pulley
 		},
-		buildTime:Math.ceil(config.buildTime * (1 - buildingTimeBuff))
+		buildTime:LogicUtils.getTimeEfffect(config.buildTime, buildingTimeBuff)
 	}
 
 	return required
