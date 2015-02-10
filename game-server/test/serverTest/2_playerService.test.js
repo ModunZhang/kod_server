@@ -1915,6 +1915,14 @@ describe("PlayerService", function(){
 		//			type:"resources",
 		//			name:"wood",
 		//			count:12
+		//		},{
+		//			type:"resources",
+		//			name:"gem",
+		//			count:-2
+		//		},{
+		//			type:"items",
+		//			name:"torch",
+		//			count:2
 		//		}],
 		//		function(doc){
 		//			doc.code.should.equal(200)

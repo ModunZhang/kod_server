@@ -172,11 +172,32 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				var type = reward.type
 				if(_.isUndefined(playerDoc[type])) return Promise.reject(new Error("rewards 不合法"))
 				name = reward.name
-				if(_.isUndefined(playerDoc[type][name])) return Promise.reject(new Error("rewards 不合法"))
 				var count = reward.count
-				playerDoc[type][name] += count
-				if(!_.isObject(playerData[type]))playerData[type] = {}
-				playerData[type][name] = playerDoc[type][name]
+				if(_.isEqual("items", type)){
+					if(!DataUtils.isItemNameExist(name)){
+						return Promise.reject(new Error("rewards 不合法"))
+					}
+					var resp = LogicUtils.addPlayerItem(playerDoc, name, count)
+					if(resp.newlyCreated){
+						playerData.__items = [{
+							type:Consts.DataChangedType.Add,
+							data:resp.item
+						}]
+					}else{
+						playerData.__items = [{
+							type:Consts.DataChangedType.Edit,
+							data:resp.item
+						}]
+					}
+				}else{
+					if(_.isUndefined(playerDoc[type][name])) return Promise.reject(new Error("rewards 不合法"))
+					if(count < 0 && playerDoc[type][name] + count < 0){
+						return Promise.reject(new Error("rewards 不合法"))
+					}
+					playerDoc[type][name] += count
+					if(!_.isObject(playerData[type]))playerData[type] = {}
+					playerData[type][name] = playerDoc[type][name]
+				}
 			}
 		}
 
@@ -241,7 +262,7 @@ pro.gacha = function(playerId, type, callback){
 
 		playerData.__items = []
 		var count = _.isEqual(type, Consts.GachaType.Normal) ? 1 : 3
-		for(var i = 0; i < count; i ++){
+		for(var i = 0; i < count; i++){
 			var item = DataUtils.getGachaItemByType(type)
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
 			if(resp.newlyCreated){
