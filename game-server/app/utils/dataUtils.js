@@ -3476,10 +3476,10 @@ Utils.isLevelupIndexExist = function(levelupIndex){
  * @param levelupIndex
  * @returns {boolean}
  */
-Utils.isPlayerLevelLegalForLevelupIndex = function(playerDoc, levelupIndex){
-	var playerLevel = this.getPlayerLevel(playerDoc)
+Utils.isPlayerKeepLevelLegalForLevelupIndex = function(playerDoc, levelupIndex){
+	var keepLevel = playerDoc.buildings.location_1.level
 	var needLevel = Activities.levelup[levelupIndex].level
-	return playerLevel >= needLevel
+	return keepLevel >= needLevel
 }
 
 /**

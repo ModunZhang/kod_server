@@ -1697,16 +1697,19 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("getLevelupReward 玩家等级不足以领取当前冲级奖励", function(done){
-		//	Api.getLevelupReward(1, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("玩家等级不足以领取当前冲级奖励")
-		//		done()
+		//it("getLevelupReward 玩家城堡等级不足以领取当前冲级奖励", function(done){
+		//	Api.sendChat("buildinglevel keep 1", function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.getLevelupReward(1, function(doc){
+		//			doc.code.should.equal(500)
+		//			doc.message.should.equal("玩家城堡等级不足以领取当前冲级奖励")
+		//			done()
+		//		})
 		//	})
 		//})
 		//
 		//it("getLevelupReward 正常领取", function(done){
-		//	Api.sendChat("playerlevel 5", function(doc){
+		//	Api.sendChat("buildinglevel keep 5", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.getLevelupReward(1, function(doc){
 		//			doc.code.should.equal(200)
