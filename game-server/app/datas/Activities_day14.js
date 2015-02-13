@@ -57,5 +57,5 @@ day14[13] = {
 }
 day14[14] = {
 	day:14,
-	rewards:"basicInfo:buildQueue:1"
+	rewards:"basicInfo:marchQueue:1"
 }

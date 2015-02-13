@@ -278,6 +278,7 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(playerDoc, allianceDoc)) return Promise.reject(new Error("没有空闲的行军队列"))
 		if(LogicUtils.isPlayerHasTroopHelpedPlayer(allianceDoc, playerDoc, targetPlayerId)) return Promise.reject(new Error("玩家已经对目标玩家派出了协防部队"))
 		return self.playerDao.findByIdAsync(targetPlayerId)
 	}).then(function(doc){
@@ -500,6 +501,7 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		attackAllianceDoc = doc
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc, attackAllianceDoc)) return Promise.reject(new Error("没有空闲的行军队列"))
 		if(!_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 			return Promise.reject(new Error("联盟未处于战争期"))
 		}
@@ -636,6 +638,7 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		attackAllianceDoc = doc
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc, attackAllianceDoc)) return Promise.reject(new Error("没有空闲的行军队列"))
 		if(!_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 			return Promise.reject(new Error("联盟未处于战争期"))
 		}
@@ -776,6 +779,7 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		attackAllianceDoc = doc
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc, attackAllianceDoc)) return Promise.reject(new Error("没有空闲的行军队列"))
 		if(!_.isEqual(attackPlayerDoc.alliance.id, defenceAllianceId)){
 			if(!_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 				return Promise.reject(new Error("联盟未处于战争期"))
@@ -1077,6 +1081,7 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		attackAllianceDoc = doc
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc, attackAllianceDoc)) return Promise.reject(new Error("没有空闲的行军队列"))
 		if(!_.isEqual(attackPlayerDoc.alliance.id, defenceAllianceId)){
 			if(!_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 				return Promise.reject(new Error("联盟未处于战争期"))

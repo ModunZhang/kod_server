@@ -632,6 +632,7 @@ pro.attackAllianceShrine = function(playerId, shrineEventId, dragonType, soldier
 			return Promise.reject(new Error("联盟不存在"))
 		}
 		allianceDoc = doc
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(playerDoc, allianceDoc)) return Promise.reject(new Error("没有空闲的行军队列"))
 		var shrineEvent = LogicUtils.getEventById(allianceDoc.shrineEvents, shrineEventId)
 		if(!_.isObject(shrineEvent)) return Promise.reject(new Error("此关卡还未激活"))
 		if(DataUtils.isAllianceShrineStageLocked(allianceDoc, shrineEvent.stageName)) return Promise.reject(new Error("此关卡还未解锁"))

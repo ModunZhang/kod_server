@@ -1390,7 +1390,10 @@ Utils.getPlayerDragonDataFromAllianceShrineStageEvent = function(playerId, event
 Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineEvent, playerId){
 	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
 		var marchEvent = allianceDoc.attackMarchEvents[i]
-		if(_.isEqual(marchEvent.marchType, Consts.MarchType.Shrine) && _.isEqual(marchEvent.defenceShrineData.shrineEventId, shrineEvent.id) && _.isEqual(marchEvent.attackPlayerData.id, playerId)) return true
+		if(_.isEqual(marchEvent.marchType, Consts.MarchType.Shrine)
+			&& _.isEqual(marchEvent.defenceShrineData.shrineEventId, shrineEvent.id)
+			&& _.isEqual(marchEvent.attackPlayerData.id, playerId)
+		) return true
 	}
 	for(i = 0; i < shrineEvent.playerTroops.length; i++){
 		var playerTroop = shrineEvent.playerTroops[i]
@@ -1409,7 +1412,10 @@ Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineE
 Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlayerId){
 	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
 		var marchEvent = allianceDoc.attackMarchEvents[i]
-		if(_.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence) && _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id) && _.isEqual(marchEvent.defencePlayerData.id, targetPlayerId)) return true
+		if(_.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence)
+			&& _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
+			&& _.isEqual(marchEvent.defencePlayerData.id, targetPlayerId)
+		) return true
 	}
 	var playerTroop = null
 	for(i = 0; i < playerDoc.helpToTroops.length; i++){
@@ -1429,7 +1435,9 @@ Utils.getAlliancePlayerBeHelpedTroopsCount = function(allianceDoc, playerDoc){
 	var count = 0
 	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
 		var marchEvent = allianceDoc.attackMarchEvents[i]
-		if(_.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id)) count += 1
+		if(_.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence)
+			&& _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id)
+		) count += 1
 	}
 	count += playerDoc.helpedByTroops.length
 	return count
@@ -1675,7 +1683,8 @@ Utils.pushAllianceDataToEnemyAllianceIfNeeded = function(allianceDoc, allianceDa
 		var enemyAllianceData = {}
 		this.putAllianceDataToEnemyAllianceData(allianceData, enemyAllianceData)
 		if(_.isObject(enemyAllianceData.enemyAllianceDoc)){
-			var enemyAllianceId = _.isEqual(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId) ? allianceDoc.allianceFight.defenceAllianceId : allianceDoc.allianceFight.attackAllianceId
+			var enemyAllianceId = _.isEqual(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId)
+				? allianceDoc.allianceFight.defenceAllianceId : allianceDoc.allianceFight.attackAllianceId
 			pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, enemyAllianceId, enemyAllianceData])
 		}
 	}
@@ -1978,7 +1987,10 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 			self.addPlayerSoldiers(playerDoc, playerData, villageEvent.playerData.soldiers)
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, villageEvent.playerData.woundedSoldiers)
 
-			var resourceCollected = Math.floor(villageEvent.villageData.collectTotal * ((Date.now() - villageEvent.startTime) / (villageEvent.finishTime - villageEvent.startTime)))
+			var resourceCollected = Math.floor(villageEvent.villageData.collectTotal
+				* ((Date.now() - villageEvent.startTime)
+				/  (villageEvent.finishTime - villageEvent.startTime))
+			)
 			resourceCollected = resourceCollected > villageEvent.villageData.collectTotal ? villageEvent.villageData.collectTotal : resourceCollected
 			var village = self.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
 			var originalRewards = villageEvent.playerData.rewards
@@ -2405,4 +2417,36 @@ Utils.finishPlayerDailyTaskIfNeeded = function(playerDoc, playerData, taskType, 
 		if(!_.isObject(playerData.dailyTasks)) playerData.dailyTasks = {}
 		playerData.dailyTasks[taskType] = playerDoc.dailyTasks[taskType]
 	}
+}
+
+/**
+ * 玩家是否有空闲的行军队列
+ * @param playerDoc
+ * @param allianceDoc
+ * @returns {boolean}
+ */
+Utils.isPlayerHasFreeMarchQueue = function(playerDoc, allianceDoc){
+	var strikeMarchEvents = _.filter(allianceDoc.strikeMarchEvents, function(event){
+		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
+	})
+	var strikeMarchReturnEvents = _.filter(allianceDoc.strikeMarchReturnEvents, function(event){
+		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
+	})
+	var attackMarchEvents = _.filter(allianceDoc.attackMarchEvents, function(event){
+		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
+	})
+	var attackMarchReturnEvents = _.filter(allianceDoc.attackMarchReturnEvents, function(event){
+		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
+	})
+	var helpEventsLength = playerDoc.helpToTroops.length
+	var shrineEventsLength = 0
+	_.each(allianceDoc.shrineEvents, function(shrineEvent){
+		_.each(shrineEvent.playerTroops, function(playerTroop){
+			if(_.isEqual(playerTroop.id, playerDoc._id)) shrineEventsLength += 1
+		})
+	})
+	var usedMarchQueue = strikeMarchEvents.length + strikeMarchReturnEvents.length
+		+ attackMarchEvents.length + attackMarchReturnEvents.length
+		+ helpEventsLength + shrineEventsLength
+	return usedMarchQueue < playerDoc.basicInfo.marchQueue
 }

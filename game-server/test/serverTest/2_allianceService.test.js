@@ -55,12 +55,12 @@
 //		})
 //
 //		it("createAlliance 宝石不足", function(done){
-//			Api.sendChat("gem 0", function(doc){
+//			Api.sendChat("resources gem 0", function(doc){
 //				doc.code.should.equal(200)
 //				Api.createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
 //					doc.code.should.equal(500)
 //					doc.message.should.equal("宝石不足")
-//					Api.sendChat("gem 5000", function(doc){
+//					Api.sendChat("resources gem 5000", function(doc){
 //						doc.code.should.equal(200)
 //						done()
 //					})
