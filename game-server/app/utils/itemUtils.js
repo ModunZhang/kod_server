@@ -48,6 +48,10 @@ var MovingConstruction = function(playerDoc, playerData, fromBuildingLocation, f
 	if(_.isObject(toHouse)) return Promise.reject(new Error("目的地非空地"))
 	if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, toBuildingLocation, house.type, toHouseLocation)) return Promise.reject(new Error("移动小屋时,小屋坑位不合法"))
 
+	DataUtils.refreshPlayerResources(playerDoc)
+	playerData.resources = playerDoc.resources
+	playerData.basicInfo = playerDoc.basicInfo
+
 	LogicUtils.removeItemInArray(fromBuilding.houses, house)
 	playerData.buildings = {}
 	playerData.buildings["location_" + fromBuildingLocation] = playerDoc.buildings["location_" + fromBuildingLocation]
@@ -77,6 +81,10 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
 		return _.isEqual(event.buildingLocation, buildingLocation) && _.isEqual(event.houseLocation, houseLocation)
 	})
 	if(_.isObject(houseEvent)) return Promise.reject(new Error("小屋当前不能被移动"))
+
+	DataUtils.refreshPlayerResources(playerDoc)
+	playerData.resources = playerDoc.resources
+	playerData.basicInfo = playerDoc.basicInfo
 
 	LogicUtils.removeItemInArray(building.houses, house)
 	playerData.buildings = {}

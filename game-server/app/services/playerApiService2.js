@@ -890,11 +890,10 @@ pro.getDailyQuests = function(playerId, callback){
 		if(building.level <= 0) return Promise.reject(new Error("市政厅还未建造"))
 		var refreshTime = DataUtils.getDailyQuestsRefreshTime()
 		var now = Date.now()
-		if(playerDoc.basicInfo.dailyQuestsRefreshTime + refreshTime <= now){
+		if(playerDoc.dailyQuests.refreshTime + refreshTime <= now){
 			var dailyQuests = DataUtils.createDailyQuests()
-			playerDoc.dailyQuests = dailyQuests
-			playerDoc.basicInfo.dailyQuestsRefreshTime = now
-			playerData.basicInfo = playerDoc.basicInfo
+			playerDoc.dailyQuests.quests = dailyQuests
+			playerDoc.dailyQuests.refreshTime = now
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		}else{
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
@@ -954,23 +953,17 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var quest = _.find(playerDoc.dailyQuests, function(quest){
+		var quest = _.find(playerDoc.dailyQuests.quests, function(quest){
 			return _.isEqual(quest.id, questId)
 		})
 		if(!_.isObject(quest)) return Promise.reject(new Error("任务不存在"))
 		if(quest.star >= 5) return Promise.reject(new Error("任务已达最高星级"))
 		var gemUsed = DataUtils.getDailyQuestAddStarNeedGemCount()
-
-		if(gemUsed > playerDoc.resources.gem){
-			return Promise.reject(new Error("宝石不足"))
-		}
+		if(gemUsed > playerDoc.resources.gem)return Promise.reject(new Error("宝石不足"))
 		playerDoc.resources.gem -= gemUsed
 		quest.star += 1
 		playerData.resources = playerDoc.resources
-		playerData.__dailyQuests = [{
-			type:Consts.DataChangedType.Edit,
-			data:quest
-		}]
+		playerData.dailyQuests = playerDoc.dailyQuests
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
@@ -1027,16 +1020,13 @@ pro.startDailyQuest = function(playerId, questId, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		var quest = _.find(playerDoc.dailyQuests, function(quest){
+		var quest = _.find(playerDoc.dailyQuests.quests, function(quest){
 			return _.isEqual(quest.id, questId)
 		})
 		if(!_.isObject(quest)) return Promise.reject(new Error("任务不存在"))
 		if(playerDoc.dailyQuestEvents.length > 0) return Promise.reject(new Error("已经有任务正在进行中"))
-		LogicUtils.removeItemInArray(playerDoc.dailyQuests, quest)
-		playerData.__dailyQuests = [{
-			type:Consts.DataChangedType.Remove,
-			data:quest
-		}]
+		LogicUtils.removeItemInArray(playerDoc.dailyQuests.quests, quest)
+		playerData.dailyQuests = playerDoc.dailyQuests
 
 		var event = DataUtils.createPlayerDailyQuestEvent(playerDoc, quest)
 		eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dailyQuestEvents", event.id, event.finishTime])

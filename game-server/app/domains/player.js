@@ -112,13 +112,12 @@ var playerSchema = new Schema({
 		power:{type:Number, required:true, default:0},
 		kill:{type:Number, required:true, default:0},
 		vipExp:{type:Number, required:true, default:0},
-		resourceRefreshTime:{type:Number, required:true, default:Date.now()},
-		dailyQuestsRefreshTime:{type:Number, required:true, default:0},
 		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn},
 		buildQueue:{type:Number, required:true, default:1},
 		terrain:{type:String, required:true, default:Consts.AllianceTerrain.GrassLand}
 	},
 	resources:{
+		refreshTime:{type:Number, required:true, default:Date.now()},
 		wood:{type:Number, required:true, default:ResourceInitData.wood},
 		stone:{type:Number, required:true, default:ResourceInitData.stone},
 		iron:{type:Number, required:true, default:ResourceInitData.iron},
@@ -1471,12 +1470,15 @@ var playerSchema = new Schema({
 			count:{type:Number, required:true}
 		}]
 	}],
-	dailyQuests:[{
-		_id:false,
-		id:{type:String, required:true},
-		index:{type:Number, required:true},
-		star:{type:Number, required:true}
-	}],
+	dailyQuests:{
+		refreshTime:{type:Number, required:true, default:0},
+		quests:[{
+			_id:false,
+			id:{type:String, required:true},
+			index:{type:Number, required:true},
+			star:{type:Number, required:true}
+		}]
+	},
 	dailyQuestEvents:[{
 		_id:false,
 		id:{type:String, required:true},

@@ -981,14 +981,14 @@ describe("PlayerService", function(){
 		})
 
 		it("addDailyQuestStar 成功升星", function(done){
-			Api.addDailyQuestStar(m_user.dailyQuests[0].id, function(doc){
+			Api.addDailyQuestStar(m_user.dailyQuests.quests[0].id, function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
 		})
 
 		it("startDailyQuest 成功开始", function(done){
-			Api.startDailyQuest(m_user.dailyQuests[0].id, function(doc){
+			Api.startDailyQuest(m_user.dailyQuests.quests[0].id, function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
@@ -1000,7 +1000,7 @@ describe("PlayerService", function(){
 		})
 
 		it("startDailyQuest 任务不存在", function(done){
-			Api.startDailyQuest(m_user.dailyQuests[0].id, function(doc){
+			Api.startDailyQuest(m_user.dailyQuests.quests[0].id, function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("任务不存在")
 				done()
@@ -1008,12 +1008,11 @@ describe("PlayerService", function(){
 		})
 
 		it("startDailyQuest 已经有任务正在进行中", function(done){
-			Api.startDailyQuest(m_user.dailyQuests[1].id, function(doc){
+			Api.startDailyQuest(m_user.dailyQuests.quests[1].id, function(doc){
 				doc.code.should.equal(500)
 				doc.message.should.equal("已经有任务正在进行中")
 				done()
 			})
-
 		})
 
 		//it("getDailyQeustReward 正常领取", function(done){

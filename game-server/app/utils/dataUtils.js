@@ -386,7 +386,7 @@ Utils.refreshPlayerResources = function(playerDoc){
 			playerDoc.resources[key] = self.getPlayerStamina(playerDoc)
 		}
 	})
-	playerDoc.basicInfo.resourceRefreshTime = Date.now()
+	playerDoc.resources.refreshTime = Date.now()
 }
 
 /**
@@ -410,7 +410,7 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 	})
 
 	var totalPerSecond = totalPerHour / 60 / 60
-	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
+	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
 	var itemKey = resourceName + "Bonus"
 	var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? 0.5 : 0
 	var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceNameForProductionTechNameMap[resourceName])
@@ -450,7 +450,7 @@ Utils.getPlayerFood = function(playerDoc){
 	})
 
 	var totalPerSecond = totalPerHour / 60 / 60
-	var totalTime = Date.now() - playerDoc.basicInfo.resourceRefreshTime
+	var totalTime = Date.now() - playerDoc.resources.refreshTime
 	var soldierConsumed = this.getPlayerSoldiersFoodConsumed(playerDoc, totalTime)
 	if(playerDoc.resources[resourceName] - soldierConsumed >= resourceLimit){
 		return playerDoc.resources[resourceName] - soldierConsumed
@@ -487,7 +487,7 @@ Utils.getPlayerCitizen = function(playerDoc){
 	})
 
 	var totalPerSecond = totalPerHour / 60 / 60
-	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
+	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
 	var itemCitizenRecoverBuff = this.isPlayerHasItemEvent(playerDoc, "citizenBonus") ? 0.5 : 0
 	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemCitizenRecoverBuff))
 	var totalCitizen = playerDoc.resources["citizen"] + output
@@ -511,7 +511,7 @@ Utils.getPlayerCart = function(playerDoc){
 	}
 
 	var totalPerSecond = config.cartRecovery / 60 / 60
-	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
+	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
 	var output = Math.floor(totalSecond * totalPerSecond)
 	var totalCart = playerDoc.resources["cart"] + output
 	return totalCart > cartLimit ? cartLimit : totalCart
@@ -530,7 +530,7 @@ Utils.getPlayerStamina = function(playerDoc){
 	}
 
 	var totalPerSecond = staminaRecoverPerHour / 60 / 60
-	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
+	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
 	var output = Math.floor(totalSecond * totalPerSecond)
 	var totalStamina = playerDoc.resources["stamina"] + output
 	return totalStamina > staminaMax ? staminaMax : totalStamina
@@ -611,7 +611,7 @@ Utils.getPlayerWallHp = function(playerDoc){
 	}
 
 	var totalPerSecond = config.wallRecovery / 60 / 60
-	var totalSecond = (Date.now() - playerDoc.basicInfo.resourceRefreshTime) / 1000
+	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
 	var techBuff = this.getPlayerProductionTechBuff(playerDoc, "fastFix")
 	var output = Math.floor(totalSecond * totalPerSecond * (1 + techBuff))
 	var totalHp = playerDoc.resources["wallHp"] + output
