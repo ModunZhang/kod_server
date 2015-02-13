@@ -73,3 +73,8 @@ intInit["dragonMarchSpeed"] = {
 	value:240,
 	desc:"龙的行军速度"
 }
+intInit["playerLevelupRewardsHours"] = {
+	type:"playerLevelupRewardsHours",
+	value:48,
+	desc:"新手冲级奖励时间"
+}

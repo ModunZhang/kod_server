@@ -76,16 +76,6 @@ life.afterStartAll = function(app){
 					event.startTime = now
 					eventFuncs.push(addTimeEventAsync(eventServerId, key, "houseEvents", event.id, event.finishTime - event.startTime))
 				})
-				_.each(playerDoc.towerEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "towerEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(playerDoc.wallEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "wallEvents", event.id, event.finishTime - event.startTime))
-				})
 				_.each(playerDoc.materialEvents, function(event){
 					if(event.finishTime > 0){
 						event.finishTime = now + (event.finishTime - event.startTime)

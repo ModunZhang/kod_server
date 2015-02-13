@@ -24,7 +24,7 @@ var Dragons = GameDatas.Dragons.dragons
 var createBuildingSchema = function(location){
 	var schema = {
 		type:{type:String, required:true, default:Buildings[location].name},
-		level:{type:Number, required:true, default:location <= 4 ? 1 : location > 4 && location <= 9 ? 0 : -1},
+		level:{type:Number, required:true, default:location <= 4 || location > 20 ? 1 : location > 4 && location <= 9 ? 0 : -1},
 		location:{type:Number, required:true, default:location},
 		houses:[{
 			_id:false,
@@ -399,7 +399,9 @@ var playerSchema = new Schema({
 		location_17:createBuildingSchema(17),
 		location_18:createBuildingSchema(18),
 		location_19:createBuildingSchema(19),
-		location_20:createBuildingSchema(20)
+		location_20:createBuildingSchema(20),
+		location_21:createBuildingSchema(21),
+		location_22:createBuildingSchema(22)
 	},
 	buildingEvents:[{
 		_id:false,
@@ -413,24 +415,6 @@ var playerSchema = new Schema({
 		id:{type:String, required:true},
 		buildingLocation:{type:Number, required:true},
 		houseLocation:{type:Number, required:true},
-		startTime:{type:Number, required:true},
-		finishTime:{type:Number, required:true}
-	}],
-	tower:{
-		level:{type:Number, required:true, default:1}
-	},
-	towerEvents:[{
-		_id:false,
-		id:{type:String, required:true},
-		startTime:{type:Number, required:true},
-		finishTime:{type:Number, required:true}
-	}],
-	wall:{
-		level:{type:Number, required:true, default:1}
-	},
-	wallEvents:[{
-		_id:false,
-		id:{type:String, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],

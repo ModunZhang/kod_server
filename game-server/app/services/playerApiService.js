@@ -182,7 +182,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isNumber(location) || location % 1 !== 0 || location < 1 || location > 20){
+	if(!_.isNumber(location) || location % 1 !== 0 || location < 1 || location > 22){
 		callback(new Error("location 不合法"))
 		return
 	}
@@ -204,32 +204,16 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		}
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + location]
-		if(!_.isObject(building)){
-			return Promise.reject(new Error("建筑不存在"))
-		}
-		if(LogicUtils.hasBuildingEvents(playerDoc, location)){
-			return Promise.reject(new Error("建筑正在升级"))
-		}
-		if(building.level < 0){
-			return Promise.reject(new Error("建筑还未建造"))
-		}
-		if(building.level == 0 && !LogicUtils.isBuildingCanCreateAtLocation(playerDoc, location)){
-			return Promise.reject(new Error("建筑建造时,建筑坑位不合法"))
-		}
-		if(building.level == 0 && DataUtils.getPlayerFreeBuildingsCount(playerDoc) <= 0){
-			return Promise.reject(new Error("建造数量已达建造上限"))
-		}
-		if(!_.isEqual(building.type, "keep") && building.level > 0 && building.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc)){
-			return Promise.reject(new Error("建筑升级时,建筑等级不合法"))
-		}
-		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.level)){
-			return Promise.reject(new Error("建筑已达到最高等级"))
-		}
+		if(!_.isObject(building))return Promise.reject(new Error("建筑不存在"))
+		if(LogicUtils.hasBuildingEvents(playerDoc, location))return Promise.reject(new Error("建筑正在升级"))
+		if(building.level < 0)return Promise.reject(new Error("建筑还未建造"))
+		if(building.level == 0 && !LogicUtils.isBuildingCanCreateAtLocation(playerDoc, location))return Promise.reject(new Error("建筑建造时,建筑坑位不合法"))
+		if(building.level == 0 && DataUtils.getPlayerFreeBuildingsCount(playerDoc) <= 0)return Promise.reject(new Error("建造数量已达建造上限"))
+		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.level))return Promise.reject(new Error("建筑已达到最高等级"))
+		if(!DataUtils.isPlayerBuildingUpgradeLegal(playerDoc, location)) return Promise.reject(new Error("升级前置条件未满足"))
 		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
 			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
-				if(!_.isObject(doc)){
-					return Promise.reject(new Error("联盟不存在"))
-				}
+				if(!_.isObject(doc))return Promise.reject(new Error("联盟不存在"))
 				allianceDoc = doc
 				return Promise.resolve()
 			})
@@ -380,21 +364,11 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		}
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + buildingLocation]
-		if(!_.isObject(building)){
-			return Promise.reject(new Error("主体建筑不存在"))
-		}
-		if(building.level <= 0){
-			return Promise.reject(new Error("主体建筑必须大于等于1级"))
-		}
-		if(!DataUtils.isHouseTypeExist(houseType)){
-			return Promise.reject(new Error("小屋类型不存在"))
-		}
-		if(DataUtils.getPlayerFreeHousesCount(playerDoc, houseType) <= 0){
-			return Promise.reject(new Error("小屋数量超过限制"))
-		}
-		if(!DataUtils.isBuildingHasHouse(buildingLocation)){
-			return Promise.reject(new Error("建筑周围不允许建造小屋"))
-		}
+		if(!_.isObject(building))return Promise.reject(new Error("主体建筑不存在"))
+		if(building.level <= 0)return Promise.reject(new Error("主体建筑必须大于等于1级"))
+		if(!DataUtils.isHouseTypeExist(houseType))return Promise.reject(new Error("小屋类型不存在"))
+		if(DataUtils.getPlayerFreeHousesCount(playerDoc, houseType) <= 0)return Promise.reject(new Error("小屋数量超过限制"))
+		if(!DataUtils.isBuildingHasHouse(buildingLocation))return Promise.reject(new Error("建筑周围不允许建造小屋"))
 		if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, buildingLocation, houseType, houseLocation)){
 			return Promise.reject(new Error("创建小屋时,小屋坑位不合法"))
 		}
@@ -404,6 +378,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 				return Promise.reject(new Error("建造小屋会造成可用城民小于0"))
 			}
 		}
+		if(!DataUtils.isPlayerHouseUpgradeLegal(playerDoc, buildingLocation, houseType, houseLocation)) return Promise.reject(new Error("升级前置条件不满足"))
 		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
 			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
 				if(!_.isObject(doc)){
@@ -576,18 +551,11 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 				house = value
 			}
 		})
-		if(!_.isObject(house)){
-			return Promise.reject(new Error("小屋不存在"))
-		}
-		if(LogicUtils.hasHouseEvents(playerDoc, building.location, house.location)){
-			return Promise.reject(new Error("小屋正在升级"))
-		}
-		if(house.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc)){
-			return Promise.reject(new Error("小屋升级时,小屋等级不合法"))
-		}
-		if(DataUtils.isHouseReachMaxLevel(house.type, house.level)){
-			return Promise.reject(new Error("小屋已达到最高等级"))
-		}
+		if(!_.isObject(house))return Promise.reject(new Error("小屋不存在"))
+		if(LogicUtils.hasHouseEvents(playerDoc, building.location, house.location))return Promise.reject(new Error("小屋正在升级"))
+		if(house.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc))return Promise.reject(new Error("小屋升级时,小屋等级不合法"))
+		if(DataUtils.isHouseReachMaxLevel(house.type, house.level))return Promise.reject(new Error("小屋已达到最高等级"))
+		if(!DataUtils.isPlayerHouseUpgradeLegal(playerDoc, buildingLocation, house.type, houseLocation)) return Promise.reject(new Error("升级前置条件不满足"))
 		if(!_.isEqual("dwelling", house.type)){
 			var currentLevelUsed = DataUtils.getHouseUsedCitizen(house.type, house.level)
 			var nextLevelUsed = DataUtils.getHouseUsedCitizen(house.type, house.level + 1)
@@ -678,308 +646,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
-		}
-		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
-		DataUtils.refreshPlayerResources(playerDoc)
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
- * 升级箭塔
- * @param playerId
- * @param finishNow
- * @param callback
- */
-pro.upgradeTower = function(playerId, finishNow, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isBoolean(finishNow)){
-		callback(new Error("finishNow 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var allianceDoc = null
-	var updateFuncs = []
-	var eventFuncs = []
-	var pushFuncs = []
-	var tower = null
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		playerDoc = doc
-		tower = playerDoc.tower
-		if(playerDoc.towerEvents.length > 0){
-			return Promise.reject(new Error("箭塔正在升级"))
-		}
-		if(DataUtils.isBuildingReachMaxLevel(tower.level)){
-			return Promise.reject(new Error("箭塔已达到最高等级"))
-		}
-		if(tower.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc)){
-			return Promise.reject(new Error("箭塔升级时,建筑等级不合法"))
-		}
-		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
-			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
-				if(!_.isObject(doc)){
-					return Promise.reject(new Error("联盟不存在"))
-				}
-				allianceDoc = doc
-				return Promise.resolve()
-			})
-		}
-		return Promise.resolve()
-	}).then(function(){
-		var gemUsed = 0
-		var upgradeRequired = DataUtils.getPlayerBuildingUpgradeRequired(playerDoc, "tower", tower.level + 1)
-		var buyedResources = null
-		var buyedMaterials = null
-		var preBuildEvent = null
-		var playerData = {}
-		DataUtils.refreshPlayerResources(playerDoc)
-		if(finishNow){
-			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
-			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
-			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
-		}else{
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
-			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.buildingMaterials)
-			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
-			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
-				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
-				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
-				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
-			}
-		}
-		if(gemUsed > playerDoc.resources.gem){
-			return Promise.reject(new Error("宝石不足"))
-		}
-		playerDoc.resources.gem -= gemUsed
-		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-
-		if(finishNow){
-			tower.level = tower.level + 1
-			LogicUtils.refreshPlayerPower(playerDoc)
-			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
-			pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc])
-			if(_.isObject(allianceDoc)){
-				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-			}
-		}else{
-			if(_.isObject(preBuildEvent)){
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
-				preBuildEvent.event.finishTime = Date.now()
-				var params = self.playerTimeEventService.onPlayerEvent(playerDoc, allianceDoc, preBuildEvent.eventType, preBuildEvent.event.id)
-				_.extend(playerData, params.playerData)
-				pushFuncs = pushFuncs.concat(params.pushFuncs)
-				if(!_.isEmpty(params.allianceData)){
-					updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, params.allianceData])
-					LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, params.allianceData, pushFuncs, self.pushService)
-				}else if(_.isObject(allianceDoc)){
-					updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-				}
-			}else if(_.isObject(allianceDoc)){
-				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-			}
-			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			var event = LogicUtils.createTowerEvent(playerDoc, finishTime)
-			playerDoc.towerEvents.push(event)
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "towerEvents", event.id, finishTime])
-		}
-		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
-		DataUtils.refreshPlayerResources(playerDoc)
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
- * 升级城墙
- * @param playerId
- * @param finishNow
- * @param callback
- */
-pro.upgradeWall = function(playerId, finishNow, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isBoolean(finishNow)){
-		callback(new Error("finishNow 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var allianceDoc = null
-	var updateFuncs = []
-	var eventFuncs = []
-	var pushFuncs = []
-	var wall = null
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		playerDoc = doc
-		wall = playerDoc.wall
-		if(!_.isObject(wall)){
-			return Promise.reject(new Error("城墙不存在"))
-		}
-		if(LogicUtils.hasWallEvents(playerDoc)){
-			return Promise.reject(new Error("城墙正在升级"))
-		}
-		if(wall.level < 1){
-			return Promise.reject(new Error("城墙还未建造"))
-		}
-		if(DataUtils.isBuildingReachMaxLevel(wall.level)){
-			return Promise.reject(new Error("城墙已达到最高等级"))
-		}
-		if(wall.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc)){
-			return Promise.reject(new Error("城墙升级时,城墙等级不合法"))
-		}
-		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
-			return self.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
-				if(!_.isObject(doc)){
-					return Promise.reject(new Error("联盟不存在"))
-				}
-				allianceDoc = doc
-				return Promise.resolve()
-			})
-		}
-		return Promise.resolve()
-	}).then(function(){
-		var gemUsed = 0
-		var upgradeRequired = DataUtils.getPlayerBuildingUpgradeRequired(playerDoc, "wall", wall.level + 1)
-		var buyedResources = null
-		var buyedMaterials = null
-		var preBuildEvent = null
-		var playerData = {}
-		DataUtils.refreshPlayerResources(playerDoc)
-		if(finishNow){
-			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
-			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
-			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
-		}else{
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
-			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.buildingMaterials)
-			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
-			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
-				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
-				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
-				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
-			}
-		}
-		if(gemUsed > playerDoc.resources.gem){
-			return Promise.reject(new Error("宝石不足"))
-		}
-		playerDoc.resources.gem -= gemUsed
-		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
-		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-
-		if(finishNow){
-			wall.level = wall.level + 1
-			LogicUtils.refreshPlayerPower(playerDoc)
-			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
-			pushFuncs.push([self.pushService, self.pushService.onWallLevelUpAsync, playerDoc])
-			if(_.isObject(allianceDoc)){
-				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-			}
-		}else{
-			if(_.isObject(preBuildEvent)){
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
-				preBuildEvent.event.finishTime = Date.now()
-				var params = self.playerTimeEventService.onPlayerEvent(playerDoc, allianceDoc, preBuildEvent.eventType, preBuildEvent.event.id)
-				_.extend(playerData, params.playerData)
-				pushFuncs = pushFuncs.concat(params.pushFuncs)
-				if(!_.isEmpty(params.allianceData)){
-					updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, params.allianceData])
-					LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, params.allianceData, pushFuncs, self.pushService)
-				}else if(_.isObject(allianceDoc)){
-					updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-				}
-			}else if(_.isObject(allianceDoc)){
-				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
-			}
-			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
-			var event = LogicUtils.createWallEvent(playerDoc, finishTime)
-			playerDoc.wallEvents.push(event)
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "wallEvents", event.id, finishTime])
 		}
 		LogicUtils.refreshBuildingEventsData(playerDoc, playerData)
 		DataUtils.refreshPlayerResources(playerDoc)

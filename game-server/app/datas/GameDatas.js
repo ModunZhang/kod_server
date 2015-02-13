@@ -37,8 +37,6 @@ GameDatas.AllianceVillage.coinVillage = require("./AllianceVillage_coinVillage.j
 GameDatas.AllianceVillage.gemVillage = require("./AllianceVillage_gemVillage.js")
 
 GameDatas.BuildingFunction = {}
-GameDatas.BuildingFunction.wall = require("./BuildingFunction_wall.js")
-GameDatas.BuildingFunction.tower = require("./BuildingFunction_tower.js")
 GameDatas.BuildingFunction.keep = require("./BuildingFunction_keep.js")
 GameDatas.BuildingFunction.watchTower = require("./BuildingFunction_watchTower.js")
 GameDatas.BuildingFunction.warehouse = require("./BuildingFunction_warehouse.js")
@@ -59,10 +57,10 @@ GameDatas.BuildingFunction.workshop = require("./BuildingFunction_workshop.js")
 GameDatas.BuildingFunction.trainingGround = require("./BuildingFunction_trainingGround.js")
 GameDatas.BuildingFunction.hunterHall = require("./BuildingFunction_hunterHall.js")
 GameDatas.BuildingFunction.stable = require("./BuildingFunction_stable.js")
+GameDatas.BuildingFunction.wall = require("./BuildingFunction_wall.js")
+GameDatas.BuildingFunction.tower = require("./BuildingFunction_tower.js")
 
 GameDatas.BuildingLevelUp = {}
-GameDatas.BuildingLevelUp.wall = require("./BuildingLevelUp_wall.js")
-GameDatas.BuildingLevelUp.tower = require("./BuildingLevelUp_tower.js")
 GameDatas.BuildingLevelUp.keep = require("./BuildingLevelUp_keep.js")
 GameDatas.BuildingLevelUp.watchTower = require("./BuildingLevelUp_watchTower.js")
 GameDatas.BuildingLevelUp.warehouse = require("./BuildingLevelUp_warehouse.js")
@@ -83,6 +81,8 @@ GameDatas.BuildingLevelUp.workshop = require("./BuildingLevelUp_workshop.js")
 GameDatas.BuildingLevelUp.trainingGround = require("./BuildingLevelUp_trainingGround.js")
 GameDatas.BuildingLevelUp.hunterHall = require("./BuildingLevelUp_hunterHall.js")
 GameDatas.BuildingLevelUp.stable = require("./BuildingLevelUp_stable.js")
+GameDatas.BuildingLevelUp.wall = require("./BuildingLevelUp_wall.js")
+GameDatas.BuildingLevelUp.tower = require("./BuildingLevelUp_tower.js")
 
 GameDatas.Buildings = {}
 GameDatas.Buildings.buildings = require("./Buildings_buildings.js")
@@ -121,6 +121,9 @@ GameDatas.GemsPayment.food = require("./GemsPayment_food.js")
 GameDatas.GemsPayment.coin = require("./GemsPayment_coin.js")
 GameDatas.GemsPayment.citizen = require("./GemsPayment_citizen.js")
 GameDatas.GemsPayment.material = require("./GemsPayment_material.js")
+
+GameDatas.GrowUpTasks = {}
+GameDatas.GrowUpTasks.tasks = require("./GrowUpTasks_tasks.js")
 
 GameDatas.HouseFunction = {}
 GameDatas.HouseFunction.dwelling = require("./HouseFunction_dwelling.js")

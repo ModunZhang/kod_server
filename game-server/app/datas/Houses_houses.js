@@ -9,6 +9,7 @@ houses["dwelling"] = {
 	height:1,
 	output:"citizen",
 	limitBy:"townHall",
+	preCondition:"building_keep_1",
 	desc:"住宅"
 }
 houses["woodcutter"] = {
@@ -17,6 +18,7 @@ houses["woodcutter"] = {
 	height:1,
 	output:"wood",
 	limitBy:"lumbermill",
+	preCondition:"house_dwelling_1",
 	desc:"木工小屋"
 }
 houses["farmer"] = {
@@ -25,6 +27,7 @@ houses["farmer"] = {
 	height:1,
 	output:"food",
 	limitBy:"mill",
+	preCondition:"house_dwelling_1",
 	desc:"农夫小屋"
 }
 houses["quarrier"] = {
@@ -33,6 +36,7 @@ houses["quarrier"] = {
 	height:1,
 	output:"stone",
 	limitBy:"stoneMason",
+	preCondition:"house_dwelling_1",
 	desc:"石匠小屋"
 }
 houses["miner"] = {
@@ -41,5 +45,6 @@ houses["miner"] = {
 	height:1,
 	output:"iron",
 	limitBy:"foundry",
+	preCondition:"house_dwelling_1",
 	desc:"矿工小屋"
 }

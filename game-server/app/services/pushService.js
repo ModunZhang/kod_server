@@ -174,32 +174,6 @@ pro.onHouseLevelUp = function(playerDoc, buildingLocation, houseLocation, callba
 }
 
 /**
- * 箭塔升级成功事件推送
- * @param playerDoc
- * @param callback
- */
-pro.onTowerLevelUp = function(playerDoc, callback){
-	var tower = playerDoc.tower
-	var data = {
-		level:tower.level
-	}
-	this.pushToPlayer(playerDoc, Events.player.onTowerLevelUp, data, callback)
-}
-
-/**
- * 城墙成绩成功事件推送
- * @param playerDoc
- * @param callback
- */
-pro.onWallLevelUp = function(playerDoc, callback){
-	var wall = playerDoc.wall
-	var data = {
-		level:wall.level
-	}
-	this.pushToPlayer(playerDoc, Events.player.onWallLevelUp, data, callback)
-}
-
-/**
  * 材料制作完成事件推送
  * @param playerDoc
  * @param event
@@ -518,8 +492,6 @@ pro.onGetPlayerViewDataSuccess = function(playerDoc, targetPlayerDoc, callback){
 	playerData._id = targetPlayerDoc._id
 	playerData.basicInfo = targetPlayerDoc.basicInfo
 	playerData.buildings = targetPlayerDoc.buildings
-	playerData.tower = targetPlayerDoc.tower
-	playerData.wall = targetPlayerDoc.wall
 	playerData.helpedByTroops = targetPlayerDoc.helpedByTroops
 	this.pushToPlayer(playerDoc, Events.player.onGetPlayerViewDataSuccess, playerData, callback)
 }

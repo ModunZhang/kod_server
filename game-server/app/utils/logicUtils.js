@@ -334,15 +334,6 @@ Utils.hasHouseEvents = function(playerDoc, buildingLocation, houseLocation){
 }
 
 /**
- * 是否有城墙建造事件
- * @param playerDoc
- * @returns {boolean}
- */
-Utils.hasWallEvents = function(playerDoc){
-	return playerDoc.wallEvents.length > 0
-}
-
-/**
  * 创建建筑建造事件
  * @param playerDoc
  * @param location
@@ -530,14 +521,9 @@ Utils.getBuildingByEvent = function(playerDoc, buildingEvent){
  */
 Utils.getHouseByEvent = function(playerDoc, houseEvent){
 	var building = playerDoc.buildings["location_" + houseEvent.buildingLocation]
-	var theHouse = null
-	_.some(building.houses, function(house){
-		if(_.isEqual(house.location, houseEvent.houseLocation)){
-			theHouse = house
-			return true
-		}
+	return _.find(building.houses, function(house){
+		return _.isEqual(house.location, houseEvent.houseLocation)
 	})
-	return theHouse
 }
 
 /**
@@ -863,8 +849,6 @@ Utils.getUsedBuildQueue = function(playerDoc){
 	var usedBuildQueue = 0
 	usedBuildQueue += playerDoc.buildingEvents.length
 	usedBuildQueue += playerDoc.houseEvents.length
-	usedBuildQueue += playerDoc.towerEvents.length
-	usedBuildQueue += playerDoc.wallEvents.length
 
 	return usedBuildQueue
 }
@@ -888,22 +872,6 @@ Utils.getSmallestBuildEvent = function(playerDoc){
 		if(eventObj == null || eventObj.event.finishTime > theEvent){
 			eventObj = {
 				eventType:"houseEvents",
-				event:theEvent
-			}
-		}
-	})
-	_.each(playerDoc.towerEvents, function(theEvent){
-		if(eventObj == null || eventObj.event.finishTime > theEvent){
-			eventObj = {
-				eventType:"towerEvents",
-				event:theEvent
-			}
-		}
-	})
-	_.each(playerDoc.wallEvents, function(theEvent){
-		if(eventObj == null || eventObj.event.finishTime > theEvent){
-			eventObj = {
-				eventType:"wallEvents",
 				event:theEvent
 			}
 		}
@@ -964,10 +932,6 @@ Utils.getPlayerObjectByEvent = function(playerDoc, eventType, eventId){
 			return _.isEqual(house.location, event.houseLocation)
 		})
 		return {name:theHouse.type, level:theHouse.level}
-	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.TowerEvents)){
-		return {name:"tower", level:playerDoc.tower.level}
-	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.WallEvents)){
-		return {name:"wall", level:playerDoc.wall.level}
 	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.ProductionTechEvents)){
 		var productionTech = playerDoc.productionTechs[event.name]
 		return {name:event.name, level:productionTech.level}
@@ -978,25 +942,6 @@ Utils.getPlayerObjectByEvent = function(playerDoc, eventType, eventId){
 		return {name:event.name, level:playerDoc.soldierStars[event.name]}
 	}
 
-	return null
-}
-
-/**
- * 根据帮助时间类型获取玩家时间队列
- * @param playerDoc
- * @param eventType
- * @returns {*}
- */
-Utils.getPlayerBuildEvents = function(playerDoc, eventType){
-	if(_.isEqual(eventType, Consts.AllianceHelpEventType.Building)){
-		return {buildingEvents:playerDoc.buildingEvents}
-	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.House)){
-		return {houseEvents:playerDoc.houseEvents}
-	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Tower)){
-		return {towerEvents:towerEventsplayerDoc.towerEvents}
-	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.Wall)){
-		return {wallEvents:playerDoc.wallEvents}
-	}
 	return null
 }
 
@@ -1175,12 +1120,8 @@ Utils.refreshBuildingEventsData = function(playerDoc, playerData){
 	playerData.technologyMaterials = playerDoc.technologyMaterials
 	playerData.basicInfo = playerDoc.basicInfo
 	playerData.buildings = playerDoc.buildings
-	playerData.tower = playerDoc.tower
-	playerData.wall = playerDoc.wall
 	playerData.buildingEvents = playerDoc.buildingEvents
 	playerData.houseEvents = playerDoc.houseEvents
-	playerData.towerEvents = playerDoc.towerEvents
-	playerData.wallEvents = playerDoc.wallEvents
 }
 
 /**
@@ -1238,7 +1179,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, rect){
 		icon:playerDoc.basicInfo.icon,
 		level:playerDoc.basicInfo.level,
 		keepLevel:playerDoc.buildings.location_1.level,
-		wallLevel:playerDoc.wall.level,
+		wallLevel:playerDoc.buildings.location_21.level,
 		wallHp:playerDoc.resources.wallHp,
 		status:Consts.PlayerStatus.Normal,
 		helpedByTroopsCount:0,

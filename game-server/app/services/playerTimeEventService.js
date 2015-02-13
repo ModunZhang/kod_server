@@ -128,7 +128,6 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		LogicUtils.updateBuildingsLevel(playerDoc)
 		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 		playerData.buildings = playerDoc.buildings
-		playerData.tower = playerDoc.tower
 		playerData.buildingEvents = playerDoc.buildingEvents
 		pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, event.location])
 		if(_.isObject(allianceDoc)){
@@ -158,46 +157,6 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 			DataUtils.refreshPlayerResources(playerDoc)
 
 		}
-		if(_.isObject(allianceDoc)){
-			helpEvent = getAllianceHelpEvent(event.id)
-			if(_.isObject(helpEvent)){
-				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-				if(!_.isObject(allianceData.__helpEvents)) allianceData.__helpEvents = []
-				allianceData.__helpEvents.push({
-					type:Consts.DataChangedType.Remove,
-					data:helpEvent
-				})
-			}
-		}
-	}else if(_.isEqual(eventType, "towerEvents")){
-		event = LogicUtils.getEventById(playerDoc.towerEvents, eventId)
-		LogicUtils.removeItemInArray(playerDoc.towerEvents, event)
-		var tower = playerDoc.tower
-		tower.level += 1
-		playerData.tower = playerDoc.tower
-		playerData.towerEvents = playerDoc.towerEvents
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
-		pushFuncs.push([self.pushService, self.pushService.onTowerLevelUpAsync, playerDoc])
-		if(_.isObject(allianceDoc)){
-			helpEvent = getAllianceHelpEvent(event.id)
-			if(_.isObject(helpEvent)){
-				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-				if(!_.isObject(allianceData.__helpEvents)) allianceData.__helpEvents = []
-				allianceData.__helpEvents.push({
-					type:Consts.DataChangedType.Remove,
-					data:helpEvent
-				})
-			}
-		}
-	}else if(_.isEqual(eventType, "wallEvents")){
-		event = LogicUtils.getEventById(playerDoc.wallEvents, eventId)
-		LogicUtils.removeItemInArray(playerDoc.wallEvents, event)
-		var wall = playerDoc.wall
-		wall.level += 1
-		playerData.wall = playerDoc.wall
-		playerData.wallEvents = playerDoc.wallEvents
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
-		pushFuncs.push([self.pushService, self.pushService.onWallLevelUpAsync, playerDoc])
 		if(_.isObject(allianceDoc)){
 			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){

@@ -24,125 +24,31 @@ var ChatHandler = function(app){
 	this.chats = []
 	this.maxChatCount = 50
 	this.commands = [
-		//{
-		//	command:"reset",
-		//	desc:"重置玩家数据",
-		//	func:function(session, uid, text, callback){
-		//		var self = this
-		//		self.app.rpc.logic.commandRemote.reset(session, uid, function(e){
-		//			callback(e)
-		//		})
-		//	}
-		//},
 		{
-			command:"gem",
-			desc:"修改玩家宝石数量:gem 5",
-			func:function(session, uid, text, callback){
-				var self = this
-				var count = text.split(" ")[1]
-				count = parseInt(count)
-				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.gem(session, uid, count, function(e){
-						callback(e)
-					})
-				}
-			}
-		},
-		{
-			command:"rs",
-			desc:"修改玩家资源数量:rs 5",
-			func:function(session, uid, text, callback){
-				var self = this
-				var count = text.split(" ")[1]
-				count = parseInt(count)
-				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.rs(session, uid, count, function(e){
-						callback(e)
-					})
-				}
-			}
-		},
-		{
-			command:"resource",
-			desc:"修改玩家资源数量:resource wood 5",
+			command:"resources",
+			desc:"修改玩家资源数量:resources wood 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var params = text.split(" ")
 				var name = params[1]
-				var count = params[2]
-				count = parseInt(count)
+				var count = parseInt(params[2])
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.resource(session, uid, name, count, function(e){
+					self.app.rpc.logic.commandRemote.resources(session, uid, name, count, function(e){
 						callback(e)
 					})
 				}
 			}
 		},
 		{
-			command:"citizen",
-			desc:"修改玩家空闲居民数量:citizen 5",
+			command:"buildinglevel",
+			desc:"修改建筑等级:buildinglevel keep 5",
 			func:function(session, uid, text, callback){
 				var self = this
-				var count = text.split(" ")[1]
-				count = parseInt(count)
-				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.citizen(session, uid, count, function(e){
-						callback(e)
-					})
-				}
-			}
-		},
-		{
-			command:"coin",
-			desc:"修改玩家银币数量:coin 5",
-			func:function(session, uid, text, callback){
-				var self = this
-				var count = text.split(" ")[1]
-				count = parseInt(count)
-				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.coin(session, uid, count, function(e){
-						callback(e)
-					})
-				}
-			}
-		},
-		{
-			command:"blood",
-			desc:"修改玩家英雄之血的数量:blood 5",
-			func:function(session, uid, text, callback){
-				var self = this
-				var count = text.split(" ")[1]
-				count = parseInt(count)
-				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.blood(session, uid, count, function(e){
-						callback(e)
-					})
-				}
-			}
-		},
-		{
-			command:"building",
-			desc:"修改已经建造建筑等级:building 5",
-			func:function(session, uid, text, callback){
-				var self = this
-				var level = text.split(" ")[1]
-				level = parseInt(level)
+				var params = text.split(" ")
+				var name = params[1]
+				var level = parseInt(params[2])
 				if(_.isNumber(level)){
-					self.app.rpc.logic.commandRemote.building(session, uid, level, function(e){
-						callback(e)
-					})
-				}
-			}
-		},
-		{
-			command:"keep",
-			desc:"修改玩家城堡等级:keep 5",
-			func:function(session, uid, text, callback){
-				var self = this
-				var level = text.split(" ")[1]
-				level = parseInt(level)
-				if(_.isNumber(level)){
-					self.app.rpc.logic.commandRemote.keep(session, uid, level, function(e){
+					self.app.rpc.logic.commandRemote.buildinglevel(session, uid, name, level, function(e){
 						callback(e)
 					})
 				}
@@ -350,28 +256,6 @@ var ChatHandler = function(app){
 						callback(e)
 					})
 				}
-			}
-		},
-		{
-			command:"editplayername",
-			desc:"修改玩家名字:editplayername modun",
-			func:function(session, uid, text, callback){
-				var self = this
-				var name = text.split(" ")[1]
-				self.app.rpc.logic.commandRemote.editplayername(session, uid, name, function(e){
-					callback(e)
-				})
-			}
-		},
-		{
-			command:"editplayercityname",
-			desc:"修改玩家城市名字:editplayercityname myCity",
-			func:function(session, uid, text, callback){
-				var self = this
-				var cityName = text.split(" ")[1]
-				self.app.rpc.logic.commandRemote.editplayercityname(session, uid, cityName, function(e){
-					callback(e)
-				})
 			}
 		},
 		{

@@ -11,12 +11,6 @@ module.exports = {
 	PushServiceName:"pushService",
 	CallbackService:"callbackService",
 	None:"__NONE__",
-	BuildingType:{
-		Building:"building",
-		House:"house",
-		Tower:"tower",
-		Wall:"wall"
-	},
 	PlayerStatus:{
 		Normal:"normal",
 		Rout:"rout"
@@ -50,8 +44,6 @@ module.exports = {
 	FreeSpeedUpAbleEventTypes:{
 		BuildingEvents:"buildingEvents",
 		HouseEvents:"houseEvents",
-		TowerEvents:"towerEvents",
-		WallEvents:"wallEvents",
 		ProductionTechEvents:"productionTechEvents",
 		MilitaryTechEvents:"militaryTechEvents",
 		SoldierStarEvents:"soldierStarEvents"
@@ -66,15 +58,12 @@ module.exports = {
 		"dragonDeathEvents",
 		"buildingEvents",
 		"houseEvents",
-		"towerEvents",
-		"wallEvents",
 		"productionTechEvents",
 		"militaryTechEvents"
 	],
 	BuildingSpeedupEventTypes:[
 		"buildingEvents",
-		"houseEvents",
-		"wallEvents"
+		"houseEvents"
 	],
 	WarSpeedupEventTypes:{
 		AttackMarchEvents:"attackMarchEvents",
@@ -199,8 +188,6 @@ module.exports = {
 	AllianceHelpEventType:{
 		BuildingEvents:"buildingEvents",
 		HouseEvents:"houseEvents",
-		TowerEvents:"towerEvents",
-		WallEvents:"wallEvents",
 		ProductionTechEvents:"productionTechEvents",
 		MilitaryTechEvents:"militaryTechEvents",
 		SoldierStarEvents:"soldierStarEvents"

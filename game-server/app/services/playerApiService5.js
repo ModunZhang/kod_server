@@ -560,6 +560,7 @@ pro.getLevelupReward = function(playerId, levelupIndex, callback){
 		var theLevelupIndex = _.find(playerDoc.countInfo.levelupRewards, function(reward){
 			return reward == levelupIndex
 		})
+		if(Date.now() > DataUtils.getPlayerLevelupExpireTime(playerDoc)) return Promise.reject(new Error("冲级奖励时间已过"))
 		if(_.isNumber(theLevelupIndex)) return Promise.reject(new Error("当前等级的冲级奖励已经领取"))
 		if(!DataUtils.isPlayerLevelLegalForLevelupIndex(playerDoc, levelupIndex)) return Promise.reject(new Error("玩家等级不足以领取当前冲级奖励"))
 		playerDoc.countInfo.levelupRewards.push(levelupIndex)

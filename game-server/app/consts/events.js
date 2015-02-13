@@ -11,8 +11,6 @@ module.exports = {
 		onGetAllianceDataSuccess:"onGetAllianceDataSuccess",
 		onBuildingLevelUp:"onBuildingLevelUp",
 		onHouseLevelUp:"onHouseLevelUp",
-		onTowerLevelUp:"onTowerLevelUp",
-		onWallLevelUp:"onWallLevelUp",
 		onMakeMaterialFinished:"onMakeMaterialFinished",
 		onGetMaterialSuccess:"onGetMaterialSuccess",
 		onRecruitSoldierSuccess:"onRecruitSoldierSuccess",

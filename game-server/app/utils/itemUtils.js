@@ -35,6 +35,10 @@ var MovingConstruction = function(playerDoc, playerData, fromBuildingLocation, f
 		return house.location == fromHouseLocation
 	})
 	if(!_.isObject(house)) return Promise.reject(new Error("小屋或装饰物不存在"))
+	var houseEvent = _.find(playerDoc.houseEvents, function(event){
+		return _.isEqual(event.buildingLocation, fromBuildingLocation) && _.isEqual(event.houseLocation, fromHouseLocation)
+	})
+	if(_.isObject(houseEvent)) return Promise.reject(new Error("小屋当前不能被移动"))
 	var toBuilding = playerDoc.buildings["location_" + toBuildingLocation]
 	if(toBuilding.level < 1) return Promise.reject(new Error("目标建筑未建造"))
 	if(!Buildings.buildings[toBuildingLocation].hasHouse) return Promise.reject(new Error("目标建筑周围不允许建造小屋或装饰物"))
@@ -69,6 +73,10 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
 		return _.isEqual(house.location, houseLocation)
 	})
 	if(!_.isObject(house)) return Promise.reject(new Error("小屋或装饰物不存在"))
+	var houseEvent = _.find(playerDoc.houseEvents, function(event){
+		return _.isEqual(event.buildingLocation, buildingLocation) && _.isEqual(event.houseLocation, houseLocation)
+	})
+	if(_.isObject(houseEvent)) return Promise.reject(new Error("小屋当前不能被移动"))
 
 	LogicUtils.removeItemInArray(building.houses, house)
 	playerData.buildings = {}

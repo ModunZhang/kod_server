@@ -39,106 +39,13 @@ var CommandRemote = function(app){
 var pro = CommandRemote.prototype
 
 /**
- * 重置玩家数据
- * @param uid
- * @param callback
- */
-pro.reset = function(uid, callback){
-	var self = this
-	this.playerDao.findByIdAsync(uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-
-		var requiredInfo = {
-			countInfo:{
-				deviceId:"__testDeviceId2"
-			},
-			basicInfo:{
-				name:"player_111111",
-				cityName:"city_111111"
-			}
-		}
-		var newPlayer = new Player(requiredInfo)
-		newPlayer = Utils.clone(newPlayer)
-		newPlayer._id = doc._id
-		newPlayer.__v = doc.__v
-		newPlayer.logicServerId = doc.logicServerId
-		newPlayer.countInfo.deviceId = doc.countInfo.deviceId
-		newPlayer.basicInfo.name = doc.basicInfo.name
-		newPlayer.basicInfo.cityName = doc.basicInfo.cityName
-		newPlayer.alliance = doc.alliance
-		return self.playerDao.updateAsync(newPlayer)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, doc)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 修改玩家宝石数据
- * @param uid
- * @param gem
- * @param callback
- */
-pro.gem = function(uid, gem, callback){
-	var self = this
-	this.playerDao.findByIdAsync(uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-
-		doc.resources.gem = gem
-		DataUtils.refreshPlayerResources(doc)
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, doc)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 修改玩家资源数据
- * @param uid
- * @param count
- * @param callback
- */
-pro.rs = function(uid, count, callback){
-	var self = this
-	this.playerDao.findByIdAsync(uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-
-		doc.resources.wood = count
-		doc.resources.stone = count
-		doc.resources.iron = count
-		doc.resources.food = count
-		DataUtils.refreshPlayerResources(doc)
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, doc)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
  * 修改指定资源数量
  * @param uid
  * @param name
  * @param count
  * @param callback
  */
-pro.resource = function(uid, name, count, callback){
+pro.resources = function(uid, name, count, callback){
 	var self = this
 	var playerData = {}
 	this.playerDao.findByIdAsync(uid).then(function(doc){
@@ -160,159 +67,23 @@ pro.resource = function(uid, name, count, callback){
 }
 
 /**
- * 修改玩家城民数据
+ * 设置建筑等级
  * @param uid
- * @param count
- * @param callback
- */
-pro.citizen = function(uid, count, callback){
-	var self = this
-	this.playerDao.findByIdAsync(uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-
-		DataUtils.refreshPlayerResources(doc)
-		doc.resources.citizen = count
-		DataUtils.refreshPlayerResources(doc)
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, doc)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 修改玩家银币数据
- * @param uid
- * @param count
- * @param callback
- */
-pro.coin = function(uid, count, callback){
-	var self = this
-	this.playerDao.findByIdAsync(uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-
-		doc.resources.coin = count
-		DataUtils.refreshPlayerResources(doc)
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, doc)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 修改玩家英雄之血的数量
- * @param uid
- * @param count
- * @param callback
- */
-pro.blood = function(uid, count, callback){
-	var self = this
-	this.playerDao.findByIdAsync(uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-
-		doc.resources.blood = count
-		DataUtils.refreshPlayerResources(doc)
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, doc)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 修改所有建筑的等级
- * @param uid
+ * @param name
  * @param level
  * @param callback
  */
-pro.building = function(uid, level, callback){
+pro.buildinglevel = function(uid, name, level, callback){
 	var self = this
 	this.playerDao.findByIdAsync(uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-
-		DataUtils.refreshPlayerResources(doc)
-		_.each(doc.buildings, function(building){
-			if(building.level > 0){
-				var buildingMaxLevel = DataUtils.getBuildingMaxLevel(building.type)
-				building.level = level > buildingMaxLevel ? buildingMaxLevel : level
-			}
-			_.each(building.houses, function(house){
-				var houseMaxLevel = DataUtils.getHouseMaxLevel(house.type)
-				house.level = level > houseMaxLevel ? houseMaxLevel : level
-			})
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		var building = DataUtils.getPlayerBuildingByType(doc, name)
+		if(!_.isObject(building)) return Promise.reject(new Error("建筑不存在"))
+		building.level = level
+		var events = _.each(doc.buildingEvents, function(event){
+			return _.isEqual(event.type, building.type)
 		})
-
-		var towerMaxLevel = DataUtils.getBuildingMaxLevel("tower")
-		doc.tower.level = level > towerMaxLevel ? towerMaxLevel : level
-
-		var wallMaxLevel = DataUtils.getBuildingMaxLevel("wall")
-		doc.wall.level = level > wallMaxLevel ? wallMaxLevel : level
-		while(doc.buildingEvents.length > 0){
-			doc.buildingEvents.pop()
-		}
-		while(doc.houseEvents.length > 0){
-			doc.houseEvents.pop()
-		}
-		while(doc.towerEvents.length > 0){
-			doc.towerEvents.pop()
-		}
-		while(doc.wallEvents.length > 0){
-			doc.wallEvents.pop()
-		}
-		DataUtils.refreshPlayerResources(doc)
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, doc)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 设置城堡等级
- * @param uid
- * @param level
- * @param callback
- */
-pro.keep = function(uid, level, callback){
-	var self = this
-	this.playerDao.findByIdAsync(uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-
-		var keepMaxLevel = DataUtils.getBuildingMaxLevel("keep")
-		doc.buildings.location_1.level = level > keepMaxLevel ? keepMaxLevel : level
-
-		var events = []
-		for(var i = 0; i < doc.buildingEvents.length; i++){
-			var event = doc.buildingEvents[i]
-			if(_.isEqual(event.location, 1)){
-				events.push(event)
-			}
-		}
 		LogicUtils.removeItemsInArray(doc.buildingEvents, events)
-
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, doc)
@@ -341,12 +112,7 @@ pro.rmbuildingevents = function(uid, callback){
 		while(doc.houseEvents.length > 0){
 			doc.houseEvents.pop()
 		}
-		while(doc.towerEvents.length > 0){
-			doc.towerEvents.pop()
-		}
-		while(doc.wallEvents.length > 0){
-			doc.wallEvents.pop()
-		}
+
 		DataUtils.refreshPlayerResources(doc)
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
@@ -823,96 +589,6 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 		callback()
 	}).catch(function(e){
 		callback(e)
-	})
-}
-
-/**
- * 修改玩家名字
- * @param uid
- * @param name
- * @param callback
- */
-pro.editplayername = function(uid, name, callback){
-	var self = this
-	var playerDoc = null
-	var updateFuncs = []
-	var pushFuncs = []
-	this.playerDao.findByIdAsync(uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		playerDoc = doc
-		if(_.isEqual(playerDoc.basicInfo.name, name)){
-			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, uid])
-			return Promise.resolve()
-		}else{
-			return self.playerDao.findByIndexAsync("basicInfo.name", name).then(function(doc){
-				if(_.isObject(doc)) return Promise.reject(new Error("名称已被其他玩家占用"))
-				playerDoc.basicInfo.name = name
-				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
-				return Promise.resolve()
-			})
-		}
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
- * 修改玩家城市名字
- * @param uid
- * @param cityName
- * @param callback
- */
-pro.editplayercityname = function(uid, cityName, callback){
-	var self = this
-	var playerDoc = null
-	var updateFuncs = []
-	var pushFuncs = []
-	this.playerDao.findByIdAsync(uid).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
-		playerDoc = doc
-		playerDoc.basicInfo.cityName = cityName
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
 	})
 }
 

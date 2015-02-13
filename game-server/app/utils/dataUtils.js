@@ -18,8 +18,8 @@ var HouseLevelUp = GameDatas.HouseLevelUp
 var HouseReturn = GameDatas.HouseReturn
 var HouseFunction = GameDatas.HouseFunction
 var GemsPayment = GameDatas.GemsPayment
-var Houses = GameDatas.Houses.houses
-var Buildings = GameDatas.Buildings.buildings
+var Houses = GameDatas.Houses
+var Buildings = GameDatas.Buildings
 var PlayerInitData = GameDatas.PlayerInitData
 var HouseInit = PlayerInitData.houses[1]
 var Soldiers = GameDatas.Soldiers
@@ -29,7 +29,7 @@ var AllianceInit = GameDatas.AllianceInitData
 var AllianceRight = AllianceInit.right
 var AllianceBuilding = GameDatas.AllianceBuilding
 var AllianceVillage = GameDatas.AllianceVillage
-var AllianceShrine = GameDatas.AllianceShrine.shrineStage
+var AllianceShrine = GameDatas.AllianceShrine
 var DailyQuests = GameDatas.DailyQuests
 var ProductionTechs = GameDatas.ProductionTechs
 var ProductionTechLevelUp = GameDatas.ProductionTechLevelUp
@@ -341,7 +341,7 @@ Utils.getHouseMaxLevel = function(houseType){
  * @returns {{width: *, height: *}}
  */
 Utils.getHouseSize = function(houseType){
-	var config = Houses[houseType]
+	var config = Houses.houses[houseType]
 	return {width:config.width, height:config.height}
 }
 
@@ -351,7 +351,7 @@ Utils.getHouseSize = function(houseType){
  * @returns {*}
  */
 Utils.isHouseTypeExist = function(houseType){
-	return _.isObject(Houses[houseType])
+	return _.isObject(Houses.houses[houseType])
 }
 
 /**
@@ -360,7 +360,7 @@ Utils.isHouseTypeExist = function(houseType){
  * @returns {hasHouse|*}
  */
 Utils.isBuildingHasHouse = function(buildingLocation){
-	var config = Buildings[buildingLocation]
+	var config = Buildings.buildings[buildingLocation]
 	return config.hasHouse
 }
 
@@ -461,6 +461,7 @@ Utils.getPlayerFood = function(playerDoc){
 		var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff))
 		var totalResource = playerDoc.resources[resourceName] + output - soldierConsumed
 		if(totalResource > resourceLimit) totalResource = resourceLimit
+		else if(totalResource < 0) totalResource = 0
 		return totalResource
 	}
 }
@@ -542,16 +543,14 @@ Utils.getPlayerStamina = function(playerDoc){
  * @returns {number}
  */
 Utils.getPlayerResourceUpLimit = function(playerDoc, resourceName){
-	var buildings = this.getPlayerBuildingsByType(playerDoc, "warehouse")
+	var building = this.getPlayerBuildingByType(playerDoc, "warehouse")
 	var totalUpLimit = 0
-	_.each(buildings, function(building){
-		if(building.level >= 1){
-			var config = BuildingFunction["warehouse"][building.level]
-			resourceName = resourceName.charAt(0).toUpperCase() + resourceName.slice(1)
-			resourceName = "max" + resourceName
-			totalUpLimit += config[resourceName]
-		}
-	})
+	if(building.level >= 1){
+		var config = BuildingFunction["warehouse"][building.level]
+		resourceName = resourceName.charAt(0).toUpperCase() + resourceName.slice(1)
+		resourceName = "max" + resourceName
+		totalUpLimit += config[resourceName]
+	}
 
 	return totalUpLimit
 }
@@ -602,7 +601,7 @@ Utils.getHouseUsedCitizen = function(houseType, houseLevel){
  * @param playerDoc
  */
 Utils.getPlayerWallHp = function(playerDoc){
-	var building = playerDoc.wall
+	var building = playerDoc.buildings.location_21
 	if(building.level < 1) return playerDoc.resources["wallHp"]
 
 	var config = BuildingFunction.wall[building.level]
@@ -625,15 +624,10 @@ Utils.getPlayerWallHp = function(playerDoc){
  * @param buildingType
  * @returns {Array}
  */
-Utils.getPlayerBuildingsByType = function(playerDoc, buildingType){
-	var buildings = []
-	_.each(playerDoc.buildings, function(building){
-		if(_.isEqual(buildingType, building.type)){
-			buildings.push(building)
-		}
+Utils.getPlayerBuildingByType = function(playerDoc, buildingType){
+	return _.find(playerDoc.buildings, function(building){
+		return _.isEqual(buildingType, building.type)
 	})
-
-	return buildings
 }
 
 /**
@@ -662,7 +656,7 @@ Utils.getPlayerHousesByType = function(playerDoc, houseType){
  */
 Utils.getHouseTypeByResourceName = function(resourceName){
 	var houseType = null
-	_.each(Houses, function(house){
+	_.each(Houses.houses, function(house){
 		if(_.isEqual(resourceName, house.output)){
 			houseType = house.type
 		}
@@ -677,7 +671,7 @@ Utils.getHouseTypeByResourceName = function(resourceName){
  * @returns {houses.dwelling.output|*|houses.woodcutter.output|houses.farmer.output|houses.quarrier.output|houses.miner.output}
  */
 Utils.getResourceNameByHouseType = function(houseType){
-	return Houses[houseType].output
+	return Houses.houses[houseType].output
 }
 
 /**
@@ -731,14 +725,12 @@ Utils.getPlayerFreeBuildingsCount = function(playerDoc){
  * @returns {number}
  */
 Utils.getMaterialUpLimit = function(playerDoc){
-	var buildings = this.getPlayerBuildingsByType(playerDoc, "materialDepot")
+	var building = this.getPlayerBuildingByType(playerDoc, "materialDepot")
 	var totalUpLimit = 0
-	_.each(buildings, function(building){
-		if(building.level >= 1){
-			var config = BuildingFunction["materialDepot"][building.level]
-			totalUpLimit += config.maxMaterial
-		}
-	})
+	if(building.level >= 1){
+		var config = BuildingFunction["materialDepot"][building.level]
+		totalUpLimit += config.maxMaterial
+	}
 
 	return totalUpLimit
 }
@@ -928,24 +920,13 @@ Utils.getPlayerBuildingLevelLimit = function(playerDoc){
 }
 
 /**
- * 根据建筑类型获取建筑
- * @param playerDoc
- * @param buildingType
- * @returns {*}
- */
-Utils.getPlayerBuildingByType = function(playerDoc, buildingType){
-	var buildings = this.getPlayerBuildingsByType(playerDoc, buildingType)
-	return buildings.length > 0 ? buildings[0] : null
-}
-
-/**
  * 获取指定小屋最大建造数量
  * @param playerDoc
  * @param houseType
  * @returns {*}
  */
 Utils.getPlayerHouseMaxCountByType = function(playerDoc, houseType){
-	var config = Houses[houseType]
+	var config = Houses.houses[houseType]
 	var limitBy = config.limitBy
 	var totalCount = HouseInit[houseType]
 	var building = this.getPlayerBuildingByType(playerDoc, limitBy)
@@ -1976,7 +1957,7 @@ Utils.getAlliancePerception = function(allianceDoc){
  * @returns {*}
  */
 Utils.isAllianceShrineStageNameLegal = function(stageName){
-	var config = AllianceShrine
+	var config = AllianceShrine.shrineStage
 	return _.contains(_.keys(config), stageName)
 }
 
@@ -2002,7 +1983,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
  * @returns {{perception: *}}
  */
 Utils.getAllianceActiveShrineStageRequired = function(stageName){
-	var config = AllianceShrine[stageName]
+	var config = AllianceShrine.shrineStage[stageName]
 	var required = {
 		perception:config.needPerception
 	}
@@ -2323,13 +2304,13 @@ Utils.createPlayerWallForFight = function(playerDoc){
 		return BuildingFunction[type][level][key]
 	}
 	var getPowersByType = function(type){
-		var power = getProperty("tower", playerDoc.tower.level, type)
+		var power = getProperty("tower", playerDoc.buildings.location_22.level, type)
 		return power
 	}
 	var itemDefencePowerBuff = this.getPlayerProductionTechBuff(playerDoc, "reinforcing")
 	var itemAttackPowerBuff = this.getPlayerProductionTechBuff(playerDoc, "seniorTower")
 	var wall = {
-		maxHp:getProperty("wall", playerDoc.wall.level, "wallHp"),
+		maxHp:getProperty("wall", playerDoc.buildings.location_21.level, "wallHp"),
 		totalHp:playerDoc.resources.wallHp,
 		currentHp:playerDoc.resources.wallHp,
 		round:0,
@@ -2353,7 +2334,7 @@ Utils.createPlayerWallForFight = function(playerDoc){
  */
 Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 	var troops = []
-	var troopStrings = AllianceShrine[stageName].troops.split("&")
+	var troopStrings = AllianceShrine.shrineStage[stageName].troops.split("&")
 	for(var i = 0; i < troopStrings.length; i++){
 		var troopString = troopStrings[i]
 		var soldierConfigStrings = troopString.split(",")
@@ -2548,13 +2529,13 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 		fightStar += 1
 		if(fightDatas.length <= 1){
 			fightStar += 1
-			if(totalDeath <= AllianceShrine[stageName].star2DeathCitizen){
+			if(totalDeath <= AllianceShrine.shrineStage[stageName].star2DeathCitizen){
 				fightStar += 1
 			}
 		}
 	}
 
-	var stageConfig = AllianceShrine[stageName]
+	var stageConfig = AllianceShrine.shrineStage[stageName]
 	_.each(playerDatas, function(playerData, playerId){
 		var rewardStrings = null
 		if(playerData.kill >= stageConfig.goldKill){
@@ -2629,10 +2610,10 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
  * @param stageName
  */
 Utils.isAllianceShrineStageLocked = function(allianceDoc, stageName){
-	var config = AllianceShrine[stageName]
+	var config = AllianceShrine.shrineStage[stageName]
 	if(config.index == 1) return false
 	var previousStageName = null
-	_.each(AllianceShrine, function(theConfig){
+	_.each(AllianceShrine.shrineStage, function(theConfig){
 		if(theConfig.index == config.index - 1) previousStageName = theConfig.stageName
 	})
 
@@ -2647,7 +2628,7 @@ Utils.isAllianceShrineStageLocked = function(allianceDoc, stageName){
  * @returns {*}
  */
 Utils.getAllianceShrineStageFightHoner = function(stageName, fightStar){
-	var config = AllianceShrine[stageName]
+	var config = AllianceShrine.shrineStage[stageName]
 	var honerName = "star" + fightStar + "Honour"
 	return config[honerName]
 }
@@ -3146,7 +3127,7 @@ Utils.isMilitaryTechNameLegal = function(techName){
 Utils.isPlayerMilitaryTechBuildingCreated = function(playerDoc, techName){
 	var tech = playerDoc.militaryTechs[techName]
 	var buildingName = tech.building
-	var buildingConfig = _.find(Buildings, function(building){
+	var buildingConfig = _.find(Buildings.buildings, function(building){
 		return _.isObject(building) && _.isEqual(buildingName, building.name)
 	})
 	var building = playerDoc.buildings["location_" + buildingConfig.location]
@@ -3372,7 +3353,7 @@ Utils.getDay60RewardItem = function(day){
  */
 Utils.isPlayerReachOnlineTimePoint = function(playerDoc, timePoint){
 	var onlineTime = playerDoc.countInfo.todayOnLineTime + (Date.now() - playerDoc.countInfo.lastLoginTime)
-	var onlineMinutes = Math.floor(onlineTime / 1000 / 60 * 60)
+	var onlineMinutes = Math.floor(onlineTime / 1000 / 60)
 	var needMinutes = Activities.online[timePoint].onLineMinutes
 	return onlineMinutes >= needMinutes
 }
@@ -3638,4 +3619,70 @@ Utils.getPlayerMilitaryTechUpgradeEvent = function(playerDoc, soldierName){
 		var techConfig = MilitaryTechs.militaryTechs[event.name]
 		return _.isEqual(techConfig.building, buildingName)
 	})
+}
+
+/**
+ * 检查玩家建筑升级是否合法
+ * @param playerDoc
+ * @param location
+ * @returns {boolean}
+ */
+Utils.isPlayerBuildingUpgradeLegal = function(playerDoc, location){
+	var building = playerDoc.buildings["location_" + location]
+	var config = Buildings.buildings[location]
+	var configParams = config.preCondition.split("_")
+	var preType = configParams[0]
+	var preName = configParams[1]
+	var preLevel = parseInt(configParams[2])
+	if(_.isEqual("building", preType)){
+		var preBuilding = this.getPlayerBuildingByType(playerDoc, preName)
+		return preBuilding.level >= building.level + preLevel
+	}else{
+		var houses = this.getPlayerHousesByType(playerDoc, preName)
+		houses = _.sortBy(houses, function(house){
+			return -house.level
+		})
+		return houses.length == 0 ? false : houses[0].level >= building.level + preLevel
+	}
+}
+
+/**
+ * 检查玩家小屋升级是否合法
+ * @param playerDoc
+ * @param buildingLocation
+ * @param houseType
+ * @param houseLocation
+ * @returns {boolean}
+ */
+Utils.isPlayerHouseUpgradeLegal = function(playerDoc, buildingLocation, houseType, houseLocation){
+	var theHouses = playerDoc.buildings["location_" + buildingLocation].houses
+	var theHouse = _.find(theHouses, function(house){
+		return house.location == houseLocation
+	})
+	if(!_.isObject(theHouse)) theHouse = {level:0}
+
+	var config = Houses.houses[houseType]
+	var configParams = config.preCondition.split("_")
+	var preType = configParams[0]
+	var preName = configParams[1]
+	var preLevel = parseInt(configParams[2])
+	if(_.isEqual("building", preType)){
+		var preBuilding = this.getPlayerBuildingByType(playerDoc, preName)
+		return preBuilding.level >= theHouse.level + preLevel
+	}else{
+		var houses = this.getPlayerHousesByType(playerDoc, preName)
+		houses = _.sortBy(houses, function(house){
+			return -house.level
+		})
+		return houses.length == 0 ? false : houses[0].level >= theHouse.level + preLevel
+	}
+}
+
+/**
+ * 获取玩家冲级奖励过期时间
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getPlayerLevelupExpireTime = function(playerDoc){
+	return playerDoc.countInfo.registerTime + (PlayerInitData.intInit.playerLevelupRewardsHours.value * 60 * 60 * 1000)
 }
