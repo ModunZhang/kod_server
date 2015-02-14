@@ -122,7 +122,7 @@ Utils.excuteAll = function(functionObjects){
  */
 Utils.updateBuildingsLevel = function(playerDoc){
 	var buildings = playerDoc.buildings
-	for(var i = 1; i <= _.size(buildings) - 2; i++){
+	for(var i = 1; i <= _.size(buildings); i++){
 		var building = buildings["location_" + i]
 		if(building.level == -1){
 			for(var j = i - 1; j >= 1; j--){
@@ -135,7 +135,8 @@ Utils.updateBuildingsLevel = function(playerDoc){
 			var round = this.getBuildingCurrentRound(i)
 			var fromToEnd = this.getBuildingRoundFromAndEnd(round)
 			for(var k = fromToEnd.from; k < fromToEnd.to; k++){
-				if(_.isObject(buildings["location_" + k])){
+				var theBuilding = buildings["location_" + k]
+				if(_.isObject(theBuilding) && theBuilding.level < 0){
 					buildings["location_" + k].level = 0
 				}
 			}
