@@ -1532,6 +1532,7 @@ Utils.isDragonReachUpgradeLevel = function(dragon){
  * @returns {promotionLevel|*}
  */
 Utils.getDragonLowestLevelOnStar = function(dragon){
+	if(dragon.star == 0) return 0
 	var config = Dragons.dragonAttributes[dragon.star]
 	return config.promotionLevel
 }
