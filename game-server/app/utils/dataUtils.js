@@ -690,13 +690,11 @@ Utils.getDwellingPopulationByLevel = function(houseLevel){
  * @returns {number}
  */
 Utils.getPlayerBuildingsCount = function(playerDoc){
-	var count = 0
-	_.each(playerDoc.buildings, function(building){
-		if(building.level > 0 || (building.level == 0 && LogicUtils.hasBuildingEvents(playerDoc, building.location))){
-			count += 1
-		}
+	var buildings = _.filter(playerDoc.buildings, function(building){
+		return building.location <= 20 &&
+			(building.level > 0 || (building.level == 0 && LogicUtils.hasBuildingEvents(playerDoc, building.location)))
 	})
-	return count
+	return buildings.length
 }
 
 /**
