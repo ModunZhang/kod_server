@@ -925,7 +925,7 @@ Utils.getPlayerObjectByEvent = function(playerDoc, eventType, eventId){
 	})
 
 	if(_.isEqual(eventType, Consts.AllianceHelpEventType.BuildingEvents)){
-		var building =  playerDoc.buildings["location_" + event.location]
+		var building = playerDoc.buildings["location_" + event.location]
 		return {name:building.type, level:building.level}
 	}else if(_.isEqual(eventType, Consts.AllianceHelpEventType.HouseEvents)){
 		var theBuilding = playerDoc.buildings["location_" + event.buildingLocation]
@@ -1990,7 +1990,7 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 
 			var resourceCollected = Math.floor(villageEvent.villageData.collectTotal
 				* ((Date.now() - villageEvent.startTime)
-				/  (villageEvent.finishTime - villageEvent.startTime))
+				/ (villageEvent.finishTime - villageEvent.startTime))
 			)
 			resourceCollected = resourceCollected > villageEvent.villageData.collectTotal ? villageEvent.villageData.collectTotal : resourceCollected
 			var village = self.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
@@ -2450,4 +2450,30 @@ Utils.isPlayerHasFreeMarchQueue = function(playerDoc, allianceDoc){
 		+ attackMarchEvents.length + attackMarchReturnEvents.length
 		+ helpEventsLength + shrineEventsLength
 	return usedMarchQueue < playerDoc.basicInfo.marchQueue
+}
+
+/**
+ * 获取玩家建筑对资源的加成Buff
+ * @param playerDoc
+ * @param resourceType
+ * @returns {number}
+ */
+Utils.getPlayerResourceBuildingBuff = function(playerDoc, resourceType){
+	var buildingName = Consts.ResourceBuildingMap[resourceType]
+	var buildings = _.filter(playerDoc.buildings, function(building){
+		return _.isEqual(building.type, buildingName)
+	})
+	var buff = 0
+	_.each(buildings, function(building){
+		var nextLocation = building.location + 7
+		var nextBuilding = playerDoc.buildings["location_" + nextLocation]
+		var houseCount = 0
+		var houses = building.houses.concat(nextBuilding.houses)
+		_.each(houses, function(house){
+			if(_.isEqual(house.type, Consts.ResourceHouseMap[resourceType])) houseCount += 1
+		})
+		if(houseCount >= 6) buff += 0.1
+		else if(houseCount >= 3) buff += 0.05
+	})
+	return buff
 }

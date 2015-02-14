@@ -21,15 +21,6 @@ houses["woodcutter"] = {
 	preCondition:"house_dwelling_1",
 	desc:"木工小屋"
 }
-houses["farmer"] = {
-	type:"farmer",
-	width:1,
-	height:1,
-	output:"food",
-	limitBy:"mill",
-	preCondition:"house_dwelling_1",
-	desc:"农夫小屋"
-}
 houses["quarrier"] = {
 	type:"quarrier",
 	width:1,
@@ -47,4 +38,13 @@ houses["miner"] = {
 	limitBy:"foundry",
 	preCondition:"house_dwelling_1",
 	desc:"矿工小屋"
+}
+houses["farmer"] = {
+	type:"farmer",
+	width:1,
+	height:1,
+	output:"food",
+	limitBy:"mill",
+	preCondition:"house_dwelling_1",
+	desc:"农夫小屋"
 }

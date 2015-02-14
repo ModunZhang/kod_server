@@ -96,11 +96,23 @@ module.exports = {
 		blueDragon:"desert",
 		greenDragon:"iceField"
 	},
-	ResourceNameForProductionTechNameMap:{
-		stone:"stoneCarving",
+	ResourceTechNameMap:{
 		wood:"forestation",
+		stone:"stoneCarving",
 		iron:"ironSmelting",
 		food:"cropResearch"
+	},
+	ResourceBuildingMap:{
+		wood:"lumbermill",
+		stone:"stoneMason",
+		iron:"foundry",
+		food:"mill"
+	},
+	ResourceHouseMap:{
+		wood:"woodcutter",
+		stone:"quarrier",
+		iron:"miner",
+		food:"farmer"
 	},
 	MilitaryItemEventTypes:[
 		"masterOfDefender",

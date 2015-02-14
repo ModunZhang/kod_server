@@ -1385,7 +1385,7 @@ describe("PlayerService", function(){
 		//		doc.code.should.equal(200)
 		//		Api.useItem("changePlayerName", {
 		//			changePlayerName:{
-		//				playerName:"modunzhang"
+		//				playerName:"modunzhang1"
 		//			}
 		//		}, function(doc){
 		//			doc.code.should.equal(200)

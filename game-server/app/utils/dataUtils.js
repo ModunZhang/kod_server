@@ -413,8 +413,9 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
 	var itemKey = resourceName + "Bonus"
 	var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? 0.5 : 0
-	var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceNameForProductionTechNameMap[resourceName])
-	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff))
+	var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceTechNameMap[resourceName])
+	var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, resourceName)
+	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff + buildingBuff))
 	var totalResource = playerDoc.resources[resourceName] + output
 	if(totalResource > resourceLimit) totalResource = resourceLimit
 	return totalResource
@@ -457,8 +458,9 @@ Utils.getPlayerFood = function(playerDoc){
 	}else{
 		var totalSecond = totalTime / 1000
 		var itemBuff = this.isPlayerHasItemEvent(playerDoc, "foodBonus") ? 0.5 : 0
-		var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceNameForProductionTechNameMap["food"])
-		var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff))
+		var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceTechNameMap["food"])
+		var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, "food")
+		var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff + buildingBuff))
 		var totalResource = playerDoc.resources[resourceName] + output - soldierConsumed
 		if(totalResource > resourceLimit) totalResource = resourceLimit
 		else if(totalResource < 0) totalResource = 0
