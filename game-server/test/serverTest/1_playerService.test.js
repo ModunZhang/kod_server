@@ -1337,6 +1337,17 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
+		//it("buyAndUseItem changePlayerName", function(done){
+		//	Api.buyAndUseItem("changePlayerName", {
+		//		changePlayerName:{
+		//			playerName:"modunzhang"
+		//		}
+		//	}, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
 		//it("useItem movingConstruction", function(done){
 		//	Api.buyItem("movingConstruction", 1, function(doc){
 		//		doc.code.should.equal(200)

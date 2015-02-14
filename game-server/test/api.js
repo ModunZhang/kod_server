@@ -489,6 +489,15 @@ Api.useItem = function(itemName, params, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.buyAndUseItem = function(itemName, params, callback){
+	var info = {
+		itemName:itemName,
+		params:params
+	}
+	var route = "logic.playerHandler.buyAndUseItem"
+	pomelo.request(route, info, callback)
+}
+
 Api.setPveData = function(pveData, fightData, rewards, callback){
 	var info = {
 		pveData:pveData,

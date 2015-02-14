@@ -1089,3 +1089,109 @@ pro.useItem = function(playerId, itemName, params, callback){
 		}
 	})
 }
+
+/**
+ * 购买并使用道具
+ * @param playerId
+ * @param itemName
+ * @param params
+ * @param callback
+ */
+pro.buyAndUseItem = function(playerId, itemName, params, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.isItemNameExist(itemName)){
+		callback(new Error("itemName 不合法"))
+		return
+	}
+	if(!_.isObject(params) || !ItemUtils.isParamsLegal(itemName, params)){
+		callback(new Error("params 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var itemConfig = DataUtils.getItemConfig(itemName)
+		if(!itemConfig.isSell) return Promise.reject(new Error("此道具未出售"))
+		var gemNeed = itemConfig.price * 1
+		if(playerDoc.resources.gem < gemNeed) return Promise.reject(new Error("宝石不足"))
+		playerDoc.resources.gem -= gemNeed
+		playerData.resources = playerDoc.resources
+		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
+		return Promise.resolve()
+	}).then(function(){
+		var itemNameFunction = ItemUtils.getItemNameFunction(itemName)
+		var itemData = params[itemName]
+		if(_.isEqual("changePlayerName", itemName)){
+			return itemNameFunction(itemData, playerDoc, playerData, self.playerDao)
+		}else if(_.isEqual("retreatTroop", itemName)){
+			return itemNameFunction(itemData, playerDoc, playerData, updateFuncs, self.allianceDao, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
+		}else if(_.isEqual("moveTheCity", itemName)){
+			return itemNameFunction(itemData, playerDoc, playerData, self.allianceDao, updateFuncs, pushFuncs, self.pushService)
+		}else if(_.isEqual("chest_2", itemName) || _.isEqual("chest_3", itemName) || _.isEqual("chest_4", itemName)){
+			var key = "chestKey_" + itemName.slice(-1)
+			var item = _.find(playerDoc.items, function(item){
+				return _.isEqual(item.name, key)
+			})
+			if(!_.isObject(item) || item.count <= 0)  return Promise.reject(new Error("道具不存在或数量不足"))
+			item.count -= 1
+			if(item.count <= 0){
+				LogicUtils.removeItemInArray(playerDoc.items, item)
+				playerData.__items = [{
+					type:Consts.DataChangedType.Remove,
+					data:item
+				}]
+			}else{
+				playerData.__items = [{
+					type:Consts.DataChangedType.Edit,
+					data:item
+				}]
+			}
+			return itemNameFunction(itemData, playerDoc, playerData)
+		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
+			return Promise.reject(new Error("此道具不允许直接使用"))
+		}else if(_.isEqual("warSpeedupClass_1", itemName) || _.isEqual("warSpeedupClass_2", itemName)){
+			return itemNameFunction(itemData, playerDoc, playerData, updateFuncs, self.allianceDao, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
+		}else{
+			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService)
+		}
+	}).then(function(){
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
