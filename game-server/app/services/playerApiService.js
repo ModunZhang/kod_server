@@ -319,6 +319,84 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 }
 
 /**
+ * 转换生产建筑类型
+ * @param playerId
+ * @param buildingLocation
+ * @param newBuildingName
+ * @param callback
+ */
+pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1){
+		callback(new Error("buildingLocation 不合法"))
+		return
+	}
+	if(!_.contains(_.values(Consts.ResourceBuildingMap), newBuildingName) || _.isEqual("townHall", newBuildingName)){
+		callback(new Error("newBuildingName 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+
+		var building = playerDoc.buildings["location_" + buildingLocation]
+		if(!_.isObject(building) || building.level < 1) return Promise.reject(new Error("建筑不存在或还未建造"))
+		if(!_.contains(_.values(Consts.HouseBuildingMap), building.type)){
+			return Promise.reject(new Error("只有生产建筑才能转换"))
+		}
+		var gemNeed = DataUtils.getPlayerIntInit("switchProductionBuilding")
+		if(playerDoc.resources.gem < gemNeed) return Promise.reject(new Error("宝石不足"))
+		var houseType = Consts.BuildingHouseMap[building.type]
+		var maxHouseCount = DataUtils.getPlayerHouseMaxCountByType(playerDoc, houseType)
+		var currentCount = DataUtils.getPlayerHouseCountByType(playerDoc, houseType)
+		var buildingAddedHouseCount = DataUtils.getPlayerBuildingAddedHouseCount(playerDoc, buildingLocation)
+		if(maxHouseCount - buildingAddedHouseCount < currentCount) return Promise.reject(new Error("小屋数量过多"))
+		building.type = newBuildingName
+		building.level -= 1
+		if(!DataUtils.isPlayerBuildingUpgradeLegal(playerDoc, buildingLocation)) return Promise.reject(new Error("前置条件未满足"))
+		building.level += 1
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		var playerData = {}
+		playerData.buildings = {}
+		playerData.buildings["location_" + buildingLocation] = playerDoc.buildings["location_" + buildingLocation]
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
  * 创建小屋
  * @param playerId
  * @param buildingLocation

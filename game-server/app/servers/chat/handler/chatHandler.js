@@ -41,14 +41,14 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"buildinglevel",
-			desc:"修改建筑等级:buildinglevel keep 5",
+			desc:"修改建筑等级:buildinglevel 1 5",
 			func:function(session, uid, text, callback){
 				var self = this
 				var params = text.split(" ")
-				var name = params[1]
+				var location = parseInt(params[1])
 				var level = parseInt(params[2])
 				if(_.isNumber(level)){
-					self.app.rpc.logic.commandRemote.buildinglevel(session, uid, name, level, function(e){
+					self.app.rpc.logic.commandRemote.buildinglevel(session, uid, location, level, function(e){
 						callback(e)
 					})
 				}

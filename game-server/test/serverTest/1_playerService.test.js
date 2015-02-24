@@ -125,9 +125,9 @@ describe("PlayerService", function(){
 		//		})
 		//	}
 		//
-		//	Api.sendChat("buildinglevel keep 40", function(doc){
+		//	Api.sendChat("buildinglevel 1 40", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.sendChat("buildinglevel warehouse 39")
+		//		Api.sendChat("buildinglevel 3 39")
 		//		Api.sendChat("resources gem 5000000", function(doc){
 		//			doc.code.should.equal(200)
 		//			func()
@@ -318,6 +318,33 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
+		//it("switchBuilding 前置条件未满足", function(done){
+		//	Api.sendChat("buildinglevel 10 1", function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.switchBuilding(10, "stoneMason", function(doc){
+		//			doc.code.should.equal(500)
+		//			doc.message.should.equal("前置条件未满足")
+		//			done()
+		//		})
+		//	})
+		//})
+		//
+		//it("switchBuilding 正常转换", function(done){
+		//	Api.sendChat("buildinglevel 5 1", function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.createHouse("quarrier", 5, 1, true, function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.upgradeHouse(5, 1, true, function(doc){
+		//				doc.code.should.equal(200)
+		//				Api.switchBuilding(10, "stoneMason", function(doc){
+		//					doc.code.should.equal(200)
+		//					done()
+		//				})
+		//			})
+		//		})
+		//	})
+		//})
+		//
 		//it("makeMaterial 工具作坊还未建造", function(done){
 		//	Api.makeMaterial(Consts.MaterialType.BuildingMaterials, true, function(doc){
 		//		doc.code.should.equal(500)
@@ -327,7 +354,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("makeMaterial 同类型的材料正在制造", function(done){
-		//	Api.sendChat("buildinglevel toolShop 2", function(doc){
+		//	Api.sendChat("buildinglevel 15 2", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.makeMaterial(Consts.MaterialType.BuildingMaterials, true, function(doc){
 		//			doc.code.should.equal(200)
@@ -413,7 +440,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("recruitNormalSoldier 招募数量超过单次招募上限", function(done){
-		//	Api.sendChat("buildinglevel barracks 1", function(doc){
+		//	Api.sendChat("buildinglevel 5 1", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.recruitNormalSoldier("swordsman", 500, true, function(doc){
 		//			doc.code.should.equal(500)
@@ -526,7 +553,7 @@ describe("PlayerService", function(){
 		//it("makeDragonEquipment 材料不足", function(done){
 		//	Api.sendChat("dragonmaterial 0", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.sendChat("buildinglevel blackSmith 1", function(doc){
+		//		Api.sendChat("buildinglevel 9 1", function(doc){
 		//			doc.code.should.equal(200)
 		//			Api.makeDragonEquipment("redCrown_s1", true, function(doc){
 		//				doc.code.should.equal(500)
@@ -577,7 +604,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("treatSoldier 士兵不存在或士兵数量不合法1", function(done){
-		//	Api.sendChat("buildinglevel hospital 1", function(doc){
+		//	Api.sendChat("buildinglevel 6 1", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.treatSoldier([], true, function(doc){
 		//			doc.code.should.equal(500)
@@ -962,7 +989,7 @@ describe("PlayerService", function(){
 		//it("getDailyQuests 成功获取", function(done){
 		//	Api.sendChat("gem 500000", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.sendChat("buildinglevel townHall 1", function(doc){
+		//		Api.sendChat("buildinglevel 14 1", function(doc){
 		//			doc.code.should.equal(200)
 		//			Api.getDailyQuests(function(doc){
 		//				doc.code.should.equal(200)
@@ -1166,7 +1193,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("sellItem 玩家资源不足", function(done){
-		//	Api.sendChat("buildinglevel tradeGuild 1", function(doc){
+		//	Api.sendChat("buildinglevel 16 1", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.sellItem("resources", "wood", 10000000, 1000, function(doc){
 		//			doc.code.should.equal(500)
@@ -1244,7 +1271,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("upgradeProductionTech 前置科技条件不满足", function(done){
-		//	Api.sendChat("buildinglevel academy 1", function(doc){
+		//	Api.sendChat("buildinglevel 7 1", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.upgradeProductionTech("fastFix", true, function(doc){
 		//			doc.code.should.equal(500)
@@ -1282,7 +1309,7 @@ describe("PlayerService", function(){
 		//it("upgradeMilitaryTech 正常升级", function(done){
 		//	Api.sendChat("keep 15", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.sendChat("buildinglevel trainingGround 1", function(doc){
+		//		Api.sendChat("buildinglevel 18 1", function(doc){
 		//			doc.code.should.equal(200)
 		//			Api.upgradeMilitaryTech("infantry_infantry", true, function(doc){
 		//				doc.code.should.equal(200)
@@ -1308,7 +1335,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("upgradeSoldierStar 正常升级", function(done){
-		//	Api.sendChat("buildinglevel hunterHall 1", function(doc){
+		//	Api.sendChat("buildinglevel 19 1", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.upgradeMilitaryTech("archer_infantry", true, function(doc){
 		//			doc.code.should.equal(200)
@@ -1709,7 +1736,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("getLevelupReward 玩家城堡等级不足以领取当前冲级奖励", function(done){
-		//	Api.sendChat("buildinglevel keep 1", function(doc){
+		//	Api.sendChat("buildinglevel 1 1", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.getLevelupReward(1, function(doc){
 		//			doc.code.should.equal(500)
@@ -1720,7 +1747,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("getLevelupReward 正常领取", function(done){
-		//	Api.sendChat("buildinglevel keep 5", function(doc){
+		//	Api.sendChat("buildinglevel 1 5", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.getLevelupReward(1, function(doc){
 		//			doc.code.should.equal(200)

@@ -114,6 +114,20 @@ module.exports = {
 		iron:"miner",
 		food:"farmer"
 	},
+	BuildingHouseMap:{
+		lumbermill:"woodcutter",
+		stoneMason:"quarrier",
+		foundry:"miner",
+		mill:"farmer",
+		dwelling:"townHall"
+	},
+	HouseBuildingMap:{
+		woodcutter:"lumbermill",
+		quarrier:"stoneMason",
+		miner:"foundry",
+		farmer:"mill",
+		dwelling:"townHall"
+	},
 	MilitaryItemEventTypes:[
 		"masterOfDefender",
 		"fogOfTrick",

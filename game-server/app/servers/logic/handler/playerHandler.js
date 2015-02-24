@@ -40,6 +40,22 @@ pro.upgradeBuilding = function(msg, session, next){
 }
 
 /**
+ * 转换生产建筑类型
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.switchBuilding = function(msg, session, next){
+	var buildingLocation = msg.buildingLocation
+	var newBuildingName = msg.newBuildingName
+	this.playerApiService.switchBuildingAsync(session.uid, buildingLocation, newBuildingName).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
  * 创建小建筑
  * @param msg
  * @param session

@@ -633,6 +633,18 @@ Utils.getPlayerBuildingByType = function(playerDoc, buildingType){
 }
 
 /**
+ * 根据建筑类型获取所有相关建筑
+ * @param playerDoc
+ * @param buildingType
+ * @returns {*}
+ */
+Utils.getPlayerBuildingsByType = function(playerDoc, buildingType){
+	return _.filter(playerDoc.buildings, function(building){
+		return _.isEqual(buildingType, building.type)
+	})
+}
+
+/**
  * 根据小屋类型获取所有相关小屋
  * @param playerDoc
  * @param houseType
@@ -926,16 +938,29 @@ Utils.getPlayerBuildingLevelLimit = function(playerDoc){
  * @returns {*}
  */
 Utils.getPlayerHouseMaxCountByType = function(playerDoc, houseType){
-	var config = Houses.houses[houseType]
-	var limitBy = config.limitBy
+	var limitBy = Consts.HouseBuildingMap[houseType]
 	var totalCount = HouseInit[houseType]
-	var building = this.getPlayerBuildingByType(playerDoc, limitBy)
+	var buildings = this.getPlayerBuildingsByType(playerDoc, limitBy)
+	_.each(buildings, function(building){
+		if(building.level >= 1){
+			var buildingFunction = BuildingFunction[building.type][building.level]
+			totalCount += buildingFunction.houseAdd
+		}
+	})
 
-	if(building.level >= 1){
-		var buildingFunction = BuildingFunction[limitBy][building.level]
-		totalCount += buildingFunction[houseType]
-	}
 	return totalCount
+}
+
+/**
+ * 获取生产建筑增加的额外资源小屋
+ * @param playerDoc
+ * @param buildingLocation
+ * @returns {*}
+ */
+Utils.getPlayerBuildingAddedHouseCount = function(playerDoc, buildingLocation){
+	var building = playerDoc.buildings["location_" + buildingLocation]
+	if(building.level >= 1) return BuildingFunction[building.type][building.level].houseAdd
+	return 0
 }
 
 /**
@@ -3128,8 +3153,8 @@ Utils.isMilitaryTechNameLegal = function(techName){
 Utils.isPlayerMilitaryTechBuildingCreated = function(playerDoc, techName){
 	var tech = playerDoc.militaryTechs[techName]
 	var buildingName = tech.building
-	var buildingConfig = _.find(Buildings.buildings, function(building){
-		return _.isObject(building) && _.isEqual(buildingName, building.name)
+	var buildingConfig = _.find(Buildings.buildings, function(config){
+		return _.isObject(config) && _.isEqual(buildingName, config.name)
 	})
 	var building = playerDoc.buildings["location_" + buildingConfig.location]
 	return building.level > 0
@@ -3630,7 +3655,9 @@ Utils.getPlayerMilitaryTechUpgradeEvent = function(playerDoc, soldierName){
  */
 Utils.isPlayerBuildingUpgradeLegal = function(playerDoc, location){
 	var building = playerDoc.buildings["location_" + location]
-	var config = Buildings.buildings[location]
+	var config = _.find(Buildings.buildings, function(config){
+		return _.isObject(config) && _.isEqual(config.name, building.type)
+	})
 	var configParams = config.preCondition.split("_")
 	var preType = configParams[0]
 	var preName = configParams[1]
@@ -3686,4 +3713,13 @@ Utils.isPlayerHouseUpgradeLegal = function(playerDoc, buildingLocation, houseTyp
  */
 Utils.getPlayerLevelupExpireTime = function(playerDoc){
 	return playerDoc.countInfo.registerTime + (PlayerInitData.intInit.playerLevelupRewardsHours.value * 60 * 60 * 1000)
+}
+
+/**
+ * 获取玩家Int配置表
+ * @param type
+ * @returns {*}
+ */
+Utils.getPlayerIntInit = function(type){
+	return PlayerInitData.intInit[type].value
 }

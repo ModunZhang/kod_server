@@ -69,15 +69,15 @@ pro.resources = function(uid, name, count, callback){
 /**
  * 设置建筑等级
  * @param uid
- * @param name
+ * @param location
  * @param level
  * @param callback
  */
-pro.buildinglevel = function(uid, name, level, callback){
+pro.buildinglevel = function(uid, location, level, callback){
 	var self = this
 	this.playerDao.findByIdAsync(uid).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		var building = DataUtils.getPlayerBuildingByType(doc, name)
+		var building = doc.buildings["location_" + location]
 		if(!_.isObject(building)) return Promise.reject(new Error("建筑不存在"))
 		building.level = level
 		var events = _.each(doc.buildingEvents, function(event){

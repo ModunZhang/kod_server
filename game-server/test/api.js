@@ -52,6 +52,15 @@ Api.upgradeBuilding = function(location, finishNow, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.switchBuilding = function(buildingLocation, newBuildingName, callback){
+	var info = {
+		buildingLocation:buildingLocation,
+		newBuildingName:newBuildingName
+	}
+	var route = "logic.playerHandler.switchBuilding"
+	pomelo.request(route, info, callback)
+}
+
 Api.createHouse = function(houseType, buildingLocation, houseLocation, finishNow, callback){
 	var info = {
 		buildingLocation:buildingLocation, houseType:houseType, houseLocation:houseLocation, finishNow:finishNow
