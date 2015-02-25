@@ -176,6 +176,22 @@ module.exports = {
 			BuyItemInShop:5
 		}
 	},
+	GrowUpTaskTypes:{
+		CityBuild:"cityBuild",
+		DragonLevel:"dragonLevel",
+		DragonStar:"dragonStar",
+		DragonSkill:"dragonSkill",
+		ProductionTech:"productionTech",
+		MilitaryTech:"militaryTech",
+		SoldierStar:"soldierStar",
+		SoldierCount:"soldierCount",
+		PveCount:"pveCount",
+		AttackWin:"attackWin",
+		StrikeWin:"strikeWin",
+		PlayerKill:"playerKill",
+		PlayerPower:"playerPower"
+	},
+
 
 	AllianceLanguage:{
 		All:"all",

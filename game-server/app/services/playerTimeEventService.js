@@ -11,6 +11,7 @@ var crypto = require("crypto")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var TaskUtils = require("../utils/taskUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -126,7 +127,8 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		var building = LogicUtils.getBuildingByEvent(playerDoc, event)
 		building.level += 1
 		LogicUtils.updateBuildingsLevel(playerDoc)
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
+		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, building.level)
 		playerData.buildings = playerDoc.buildings
 		playerData.buildingEvents = playerDoc.buildingEvents
 		pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, event.location])
@@ -148,7 +150,8 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		house.level += 1
 		playerData.buildings = playerDoc.buildings
 		playerData.houseEvents = playerDoc.houseEvents
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
+		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, house.level)
 		pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, event.buildingLocation, event.houseLocation])
 		if(_.isEqual("dwelling", house.type)){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
@@ -173,7 +176,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		event.finishTime = 0
 		playerData.materialEvents = playerDoc.materialEvents
 		if(_.isEqual(event.category, Consts.MaterialType.BuildingMaterials)){
-			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.MakeBuildingMaterials)
+			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.MakeBuildingMaterials)
 		}
 		pushFuncs.push([self.pushService, self.pushService.onMakeMaterialFinishedAsync, playerDoc, event])
 	}else if(_.isEqual(eventType, "soldierEvents")){
@@ -182,7 +185,8 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		playerDoc.soldiers[event.name] += event.count
 		playerData.soldiers = playerDoc.soldiers
 		playerData.soldierEvents = playerDoc.soldierEvents
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
+		TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, event.name)
 		pushFuncs.push([self.pushService, self.pushService.onRecruitSoldierSuccessAsync, playerDoc, event.name, event.count])
 	}else if(_.isEqual(eventType, "dragonEquipmentEvents")){
 		event = LogicUtils.getEventById(playerDoc.dragonEquipmentEvents, eventId)
@@ -190,7 +194,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		playerDoc.dragonEquipments[event.name] += 1
 		playerData.dragonEquipments = playerDoc.dragonEquipments
 		playerData.dragonEquipmentEvents = playerDoc.dragonEquipmentEvents
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.MakeDragonEquipment)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.MakeDragonEquipment)
 		pushFuncs.push([self.pushService, self.pushService.onMakeDragonEquipmentSuccessAsync, playerDoc, event.name])
 	}else if(_.isEqual(eventType, "treatSoldierEvents")){
 		event = LogicUtils.getEventById(playerDoc.treatSoldierEvents, eventId)
@@ -245,7 +249,8 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 			type:Consts.DataChangedType.Remove,
 			data:event
 		}]
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
+		TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, event.name, productionTech.level)
 		if(_.isObject(allianceDoc)){
 			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
@@ -267,7 +272,8 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 			type:Consts.DataChangedType.Remove,
 			data:event
 		}]
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
+		TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, event.name, militaryTech.level)
 		if(_.isObject(allianceDoc)){
 			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
@@ -288,6 +294,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 			type:Consts.DataChangedType.Remove,
 			data:event
 		}]
+		TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, event.name, playerDoc.soldierStars[event.name])
 		if(_.isObject(allianceDoc)){
 			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){

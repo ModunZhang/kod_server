@@ -3,8 +3,8 @@
 var playerKill = []
 module.exports = playerKill
 
-playerKill[1] = {
-	id:1,
+playerKill[0] = {
+	id:0,
 	index:1,
 	kill:100,
 	wood:5000,
@@ -15,8 +15,8 @@ playerKill[1] = {
 	gem:0,
 	exp:100
 }
-playerKill[2] = {
-	id:2,
+playerKill[1] = {
+	id:1,
 	index:2,
 	kill:200,
 	wood:10000,
@@ -27,8 +27,8 @@ playerKill[2] = {
 	gem:0,
 	exp:200
 }
-playerKill[3] = {
-	id:3,
+playerKill[2] = {
+	id:2,
 	index:3,
 	kill:500,
 	wood:20000,
@@ -39,8 +39,8 @@ playerKill[3] = {
 	gem:0,
 	exp:400
 }
-playerKill[4] = {
-	id:4,
+playerKill[3] = {
+	id:3,
 	index:4,
 	kill:1000,
 	wood:50000,
@@ -51,8 +51,8 @@ playerKill[4] = {
 	gem:0,
 	exp:800
 }
-playerKill[5] = {
-	id:5,
+playerKill[4] = {
+	id:4,
 	index:5,
 	kill:2000,
 	wood:100000,
@@ -63,8 +63,8 @@ playerKill[5] = {
 	gem:0,
 	exp:1200
 }
-playerKill[6] = {
-	id:6,
+playerKill[5] = {
+	id:5,
 	index:6,
 	kill:5000,
 	wood:200000,
@@ -75,8 +75,8 @@ playerKill[6] = {
 	gem:0,
 	exp:1600
 }
-playerKill[7] = {
-	id:7,
+playerKill[6] = {
+	id:6,
 	index:7,
 	kill:10000,
 	wood:500000,
@@ -87,8 +87,8 @@ playerKill[7] = {
 	gem:0,
 	exp:2000
 }
-playerKill[8] = {
-	id:8,
+playerKill[7] = {
+	id:7,
 	index:8,
 	kill:20000,
 	wood:1000000,
@@ -99,8 +99,8 @@ playerKill[8] = {
 	gem:20,
 	exp:2400
 }
-playerKill[9] = {
-	id:9,
+playerKill[8] = {
+	id:8,
 	index:9,
 	kill:50000,
 	wood:2000000,
@@ -111,8 +111,8 @@ playerKill[9] = {
 	gem:50,
 	exp:2800
 }
-playerKill[10] = {
-	id:10,
+playerKill[9] = {
+	id:9,
 	index:10,
 	kill:100000,
 	wood:5000000,

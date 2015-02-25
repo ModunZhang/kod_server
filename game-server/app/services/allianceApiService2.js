@@ -10,6 +10,7 @@ var _ = require("underscore")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var TaskUtils = require("../utils/taskUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -1387,7 +1388,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 			type:Consts.DataChangedType.Edit,
 			data:playerEvent
 		}]
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
 		if(_.isEmpty(playerData)){
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		}else{
@@ -1529,7 +1530,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 
 		return Promise.all(funcs)
 	}).then(function(){
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
 		if(_.isEmpty(playerData)){
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		}else{

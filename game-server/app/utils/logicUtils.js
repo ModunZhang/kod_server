@@ -2405,22 +2405,6 @@ Utils.addPlayerSoldiers = function(playerDoc, playerData, soldiers){
 }
 
 /**
- * 完成日常任务
- * @param playerDoc
- * @param playerData
- * @param taskType
- * @param taskIndex
- */
-Utils.finishPlayerDailyTaskIfNeeded = function(playerDoc, playerData, taskType, taskIndex){
-	var isFinished = _.contains(playerDoc.dailyTasks[taskType], taskIndex)
-	if(!isFinished){
-		playerDoc.dailyTasks[taskType].push(taskIndex)
-		if(!_.isObject(playerData.dailyTasks)) playerData.dailyTasks = {}
-		playerData.dailyTasks[taskType] = playerDoc.dailyTasks[taskType]
-	}
-}
-
-/**
  * 玩家是否有空闲的行军队列
  * @param playerDoc
  * @param allianceDoc
@@ -2476,4 +2460,15 @@ Utils.getPlayerResourceBuildingBuff = function(playerDoc, resourceType){
 		else if(houseCount >= 3) buff += 0.05
 	})
 	return buff
+}
+
+/**
+ * 为玩家添加资源
+ * @param playerDoc
+ * @param resources
+ */
+Utils.addPlayerResources = function(playerDoc, resources){
+	_.each(playerDoc.resources, function(value, key){
+		if(_.isNumber(resources[key])) playerDoc.resources[key] += resources[key]
+	})
 }

@@ -3,8 +3,8 @@
 var playerPower = []
 module.exports = playerPower
 
-playerPower[1] = {
-	id:1,
+playerPower[0] = {
+	id:0,
 	index:1,
 	power:1000,
 	wood:0,
@@ -15,8 +15,8 @@ playerPower[1] = {
 	gem:0,
 	exp:100
 }
-playerPower[2] = {
-	id:2,
+playerPower[1] = {
+	id:1,
 	index:2,
 	power:2000,
 	wood:0,
@@ -27,8 +27,8 @@ playerPower[2] = {
 	gem:0,
 	exp:200
 }
-playerPower[3] = {
-	id:3,
+playerPower[2] = {
+	id:2,
 	index:3,
 	power:5000,
 	wood:0,
@@ -39,8 +39,8 @@ playerPower[3] = {
 	gem:0,
 	exp:400
 }
-playerPower[4] = {
-	id:4,
+playerPower[3] = {
+	id:3,
 	index:4,
 	power:10000,
 	wood:0,
@@ -51,8 +51,8 @@ playerPower[4] = {
 	gem:0,
 	exp:800
 }
-playerPower[5] = {
-	id:5,
+playerPower[4] = {
+	id:4,
 	index:5,
 	power:20000,
 	wood:0,
@@ -63,8 +63,8 @@ playerPower[5] = {
 	gem:0,
 	exp:1200
 }
-playerPower[6] = {
-	id:6,
+playerPower[5] = {
+	id:5,
 	index:6,
 	power:50000,
 	wood:0,
@@ -75,8 +75,8 @@ playerPower[6] = {
 	gem:0,
 	exp:1600
 }
-playerPower[7] = {
-	id:7,
+playerPower[6] = {
+	id:6,
 	index:7,
 	power:100000,
 	wood:0,
@@ -87,8 +87,8 @@ playerPower[7] = {
 	gem:0,
 	exp:2000
 }
-playerPower[8] = {
-	id:8,
+playerPower[7] = {
+	id:7,
 	index:8,
 	power:200000,
 	wood:0,
@@ -99,8 +99,8 @@ playerPower[8] = {
 	gem:0,
 	exp:2400
 }
-playerPower[9] = {
-	id:9,
+playerPower[8] = {
+	id:8,
 	index:9,
 	power:500000,
 	wood:0,
@@ -111,8 +111,8 @@ playerPower[9] = {
 	gem:0,
 	exp:2800
 }
-playerPower[10] = {
-	id:10,
+playerPower[9] = {
+	id:9,
 	index:10,
 	power:1000000,
 	wood:0,
@@ -123,8 +123,8 @@ playerPower[10] = {
 	gem:0,
 	exp:3200
 }
-playerPower[11] = {
-	id:11,
+playerPower[10] = {
+	id:10,
 	index:11,
 	power:2000000,
 	wood:0,
@@ -135,8 +135,8 @@ playerPower[11] = {
 	gem:100,
 	exp:6400
 }
-playerPower[12] = {
-	id:12,
+playerPower[11] = {
+	id:11,
 	index:12,
 	power:5000000,
 	wood:0,
@@ -147,8 +147,8 @@ playerPower[12] = {
 	gem:200,
 	exp:9600
 }
-playerPower[13] = {
-	id:13,
+playerPower[12] = {
+	id:12,
 	index:13,
 	power:10000000,
 	wood:0,

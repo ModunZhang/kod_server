@@ -7,6 +7,8 @@ var MapUtils = require("../app/utils/mapUtils")
 var DataUtils = require("../app/utils/dataUtils")
 var LogicUtils = require("../app/utils/logicUtils")
 var FightUtils = require("../app/utils/fightUtils")
+var GameDatas = require("../app/datas/GameDatas")
+
 //var should = require('should')
 //var Utils = require("../app/utils/utils")
 //var redis = require("redis")

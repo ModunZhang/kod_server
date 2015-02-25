@@ -3,10 +3,9 @@
 var cityBuild = []
 module.exports = cityBuild
 
-cityBuild[1] = {
-	id:1,
+cityBuild[0] = {
+	id:0,
 	index:1,
-	type:"building",
 	name:"keep",
 	level:2,
 	wood:400,
@@ -16,13661 +15,12685 @@ cityBuild[1] = {
 	coin:0,
 	gem:0,
 	exp:200
+}
+cityBuild[1] = {
+	id:1,
+	index:2,
+	name:"keep",
+	level:3,
+	wood:900,
+	stone:900,
+	iron:860,
+	food:0,
+	coin:0,
+	gem:0,
+	exp:450
 }
 cityBuild[2] = {
 	id:2,
-	index:2,
-	type:"building",
+	index:3,
 	name:"keep",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[3] = {
 	id:3,
-	index:3,
-	type:"building",
+	index:4,
 	name:"keep",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[4] = {
 	id:4,
-	index:4,
-	type:"building",
+	index:5,
 	name:"keep",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[5] = {
 	id:5,
-	index:5,
-	type:"building",
+	index:6,
 	name:"keep",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[6] = {
 	id:6,
-	index:6,
-	type:"building",
+	index:7,
 	name:"keep",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[7] = {
 	id:7,
-	index:7,
-	type:"building",
+	index:8,
 	name:"keep",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[8] = {
 	id:8,
-	index:8,
-	type:"building",
+	index:9,
 	name:"keep",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[9] = {
 	id:9,
-	index:9,
-	type:"building",
+	index:10,
 	name:"keep",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[10] = {
 	id:10,
-	index:10,
-	type:"building",
+	index:11,
 	name:"keep",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[11] = {
 	id:11,
-	index:11,
-	type:"building",
+	index:12,
 	name:"keep",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[12] = {
 	id:12,
-	index:12,
-	type:"building",
+	index:13,
 	name:"keep",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[13] = {
 	id:13,
-	index:13,
-	type:"building",
+	index:14,
 	name:"keep",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[14] = {
 	id:14,
-	index:14,
-	type:"building",
+	index:15,
 	name:"keep",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[15] = {
 	id:15,
-	index:15,
-	type:"building",
+	index:16,
 	name:"keep",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[16] = {
 	id:16,
-	index:16,
-	type:"building",
+	index:17,
 	name:"keep",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[17] = {
 	id:17,
-	index:17,
-	type:"building",
+	index:18,
 	name:"keep",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[18] = {
 	id:18,
-	index:18,
-	type:"building",
+	index:19,
 	name:"keep",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[19] = {
 	id:19,
-	index:19,
-	type:"building",
+	index:20,
 	name:"keep",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[20] = {
 	id:20,
-	index:20,
-	type:"building",
+	index:21,
 	name:"keep",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[21] = {
 	id:21,
-	index:21,
-	type:"building",
+	index:22,
 	name:"keep",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[22] = {
 	id:22,
-	index:22,
-	type:"building",
+	index:23,
 	name:"keep",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[23] = {
 	id:23,
-	index:23,
-	type:"building",
+	index:24,
 	name:"keep",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[24] = {
 	id:24,
-	index:24,
-	type:"building",
+	index:25,
 	name:"keep",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[25] = {
 	id:25,
-	index:25,
-	type:"building",
+	index:26,
 	name:"keep",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[26] = {
 	id:26,
-	index:26,
-	type:"building",
+	index:27,
 	name:"keep",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[27] = {
 	id:27,
-	index:27,
-	type:"building",
+	index:28,
 	name:"keep",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[28] = {
 	id:28,
-	index:28,
-	type:"building",
+	index:29,
 	name:"keep",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[29] = {
 	id:29,
-	index:29,
-	type:"building",
+	index:30,
 	name:"keep",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[30] = {
 	id:30,
-	index:30,
-	type:"building",
+	index:31,
 	name:"keep",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[31] = {
 	id:31,
-	index:31,
-	type:"building",
+	index:32,
 	name:"keep",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[32] = {
 	id:32,
-	index:32,
-	type:"building",
+	index:33,
 	name:"keep",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[33] = {
 	id:33,
-	index:33,
-	type:"building",
+	index:34,
 	name:"keep",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[34] = {
 	id:34,
-	index:34,
-	type:"building",
+	index:35,
 	name:"keep",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[35] = {
 	id:35,
-	index:35,
-	type:"building",
+	index:36,
 	name:"keep",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[36] = {
 	id:36,
-	index:36,
-	type:"building",
+	index:37,
 	name:"keep",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[37] = {
 	id:37,
-	index:37,
-	type:"building",
+	index:38,
 	name:"keep",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[38] = {
 	id:38,
-	index:38,
-	type:"building",
+	index:39,
 	name:"keep",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[39] = {
 	id:39,
-	index:39,
-	type:"building",
-	name:"keep",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"watchTower",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[40] = {
 	id:40,
-	index:1,
-	type:"building",
+	index:2,
 	name:"watchTower",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[41] = {
 	id:41,
-	index:2,
-	type:"building",
+	index:3,
 	name:"watchTower",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[42] = {
 	id:42,
-	index:3,
-	type:"building",
+	index:4,
 	name:"watchTower",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[43] = {
 	id:43,
-	index:4,
-	type:"building",
+	index:5,
 	name:"watchTower",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[44] = {
 	id:44,
-	index:5,
-	type:"building",
+	index:6,
 	name:"watchTower",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[45] = {
 	id:45,
-	index:6,
-	type:"building",
+	index:7,
 	name:"watchTower",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[46] = {
 	id:46,
-	index:7,
-	type:"building",
+	index:8,
 	name:"watchTower",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[47] = {
 	id:47,
-	index:8,
-	type:"building",
+	index:9,
 	name:"watchTower",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[48] = {
 	id:48,
-	index:9,
-	type:"building",
+	index:10,
 	name:"watchTower",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[49] = {
 	id:49,
-	index:10,
-	type:"building",
+	index:11,
 	name:"watchTower",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[50] = {
 	id:50,
-	index:11,
-	type:"building",
+	index:12,
 	name:"watchTower",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[51] = {
 	id:51,
-	index:12,
-	type:"building",
+	index:13,
 	name:"watchTower",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[52] = {
 	id:52,
-	index:13,
-	type:"building",
+	index:14,
 	name:"watchTower",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[53] = {
 	id:53,
-	index:14,
-	type:"building",
+	index:15,
 	name:"watchTower",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[54] = {
 	id:54,
-	index:15,
-	type:"building",
+	index:16,
 	name:"watchTower",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[55] = {
 	id:55,
-	index:16,
-	type:"building",
+	index:17,
 	name:"watchTower",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[56] = {
 	id:56,
-	index:17,
-	type:"building",
+	index:18,
 	name:"watchTower",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[57] = {
 	id:57,
-	index:18,
-	type:"building",
+	index:19,
 	name:"watchTower",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[58] = {
 	id:58,
-	index:19,
-	type:"building",
+	index:20,
 	name:"watchTower",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[59] = {
 	id:59,
-	index:20,
-	type:"building",
+	index:21,
 	name:"watchTower",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[60] = {
 	id:60,
-	index:21,
-	type:"building",
+	index:22,
 	name:"watchTower",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[61] = {
 	id:61,
-	index:22,
-	type:"building",
+	index:23,
 	name:"watchTower",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[62] = {
 	id:62,
-	index:23,
-	type:"building",
+	index:24,
 	name:"watchTower",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[63] = {
 	id:63,
-	index:24,
-	type:"building",
+	index:25,
 	name:"watchTower",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[64] = {
 	id:64,
-	index:25,
-	type:"building",
+	index:26,
 	name:"watchTower",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[65] = {
 	id:65,
-	index:26,
-	type:"building",
+	index:27,
 	name:"watchTower",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[66] = {
 	id:66,
-	index:27,
-	type:"building",
+	index:28,
 	name:"watchTower",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[67] = {
 	id:67,
-	index:28,
-	type:"building",
+	index:29,
 	name:"watchTower",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[68] = {
 	id:68,
-	index:29,
-	type:"building",
+	index:30,
 	name:"watchTower",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[69] = {
 	id:69,
-	index:30,
-	type:"building",
+	index:31,
 	name:"watchTower",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[70] = {
 	id:70,
-	index:31,
-	type:"building",
+	index:32,
 	name:"watchTower",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[71] = {
 	id:71,
-	index:32,
-	type:"building",
+	index:33,
 	name:"watchTower",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[72] = {
 	id:72,
-	index:33,
-	type:"building",
+	index:34,
 	name:"watchTower",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[73] = {
 	id:73,
-	index:34,
-	type:"building",
+	index:35,
 	name:"watchTower",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[74] = {
 	id:74,
-	index:35,
-	type:"building",
+	index:36,
 	name:"watchTower",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[75] = {
 	id:75,
-	index:36,
-	type:"building",
+	index:37,
 	name:"watchTower",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[76] = {
 	id:76,
-	index:37,
-	type:"building",
+	index:38,
 	name:"watchTower",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[77] = {
 	id:77,
-	index:38,
-	type:"building",
+	index:39,
 	name:"watchTower",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[78] = {
 	id:78,
-	index:39,
-	type:"building",
-	name:"watchTower",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"warehouse",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[79] = {
 	id:79,
-	index:1,
-	type:"building",
+	index:2,
 	name:"warehouse",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[80] = {
 	id:80,
-	index:2,
-	type:"building",
+	index:3,
 	name:"warehouse",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[81] = {
 	id:81,
-	index:3,
-	type:"building",
+	index:4,
 	name:"warehouse",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[82] = {
 	id:82,
-	index:4,
-	type:"building",
+	index:5,
 	name:"warehouse",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[83] = {
 	id:83,
-	index:5,
-	type:"building",
+	index:6,
 	name:"warehouse",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[84] = {
 	id:84,
-	index:6,
-	type:"building",
+	index:7,
 	name:"warehouse",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[85] = {
 	id:85,
-	index:7,
-	type:"building",
+	index:8,
 	name:"warehouse",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[86] = {
 	id:86,
-	index:8,
-	type:"building",
+	index:9,
 	name:"warehouse",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[87] = {
 	id:87,
-	index:9,
-	type:"building",
+	index:10,
 	name:"warehouse",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[88] = {
 	id:88,
-	index:10,
-	type:"building",
+	index:11,
 	name:"warehouse",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[89] = {
 	id:89,
-	index:11,
-	type:"building",
+	index:12,
 	name:"warehouse",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[90] = {
 	id:90,
-	index:12,
-	type:"building",
+	index:13,
 	name:"warehouse",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[91] = {
 	id:91,
-	index:13,
-	type:"building",
+	index:14,
 	name:"warehouse",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[92] = {
 	id:92,
-	index:14,
-	type:"building",
+	index:15,
 	name:"warehouse",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[93] = {
 	id:93,
-	index:15,
-	type:"building",
+	index:16,
 	name:"warehouse",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[94] = {
 	id:94,
-	index:16,
-	type:"building",
+	index:17,
 	name:"warehouse",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[95] = {
 	id:95,
-	index:17,
-	type:"building",
+	index:18,
 	name:"warehouse",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[96] = {
 	id:96,
-	index:18,
-	type:"building",
+	index:19,
 	name:"warehouse",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[97] = {
 	id:97,
-	index:19,
-	type:"building",
+	index:20,
 	name:"warehouse",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[98] = {
 	id:98,
-	index:20,
-	type:"building",
+	index:21,
 	name:"warehouse",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[99] = {
 	id:99,
-	index:21,
-	type:"building",
+	index:22,
 	name:"warehouse",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[100] = {
 	id:100,
-	index:22,
-	type:"building",
+	index:23,
 	name:"warehouse",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[101] = {
 	id:101,
-	index:23,
-	type:"building",
+	index:24,
 	name:"warehouse",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[102] = {
 	id:102,
-	index:24,
-	type:"building",
+	index:25,
 	name:"warehouse",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[103] = {
 	id:103,
-	index:25,
-	type:"building",
+	index:26,
 	name:"warehouse",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[104] = {
 	id:104,
-	index:26,
-	type:"building",
+	index:27,
 	name:"warehouse",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[105] = {
 	id:105,
-	index:27,
-	type:"building",
+	index:28,
 	name:"warehouse",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[106] = {
 	id:106,
-	index:28,
-	type:"building",
+	index:29,
 	name:"warehouse",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[107] = {
 	id:107,
-	index:29,
-	type:"building",
+	index:30,
 	name:"warehouse",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[108] = {
 	id:108,
-	index:30,
-	type:"building",
+	index:31,
 	name:"warehouse",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[109] = {
 	id:109,
-	index:31,
-	type:"building",
+	index:32,
 	name:"warehouse",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[110] = {
 	id:110,
-	index:32,
-	type:"building",
+	index:33,
 	name:"warehouse",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[111] = {
 	id:111,
-	index:33,
-	type:"building",
+	index:34,
 	name:"warehouse",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[112] = {
 	id:112,
-	index:34,
-	type:"building",
+	index:35,
 	name:"warehouse",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[113] = {
 	id:113,
-	index:35,
-	type:"building",
+	index:36,
 	name:"warehouse",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[114] = {
 	id:114,
-	index:36,
-	type:"building",
+	index:37,
 	name:"warehouse",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[115] = {
 	id:115,
-	index:37,
-	type:"building",
+	index:38,
 	name:"warehouse",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[116] = {
 	id:116,
-	index:38,
-	type:"building",
+	index:39,
 	name:"warehouse",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[117] = {
 	id:117,
-	index:39,
-	type:"building",
-	name:"warehouse",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"dragonEyrie",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[118] = {
 	id:118,
-	index:1,
-	type:"building",
+	index:2,
 	name:"dragonEyrie",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[119] = {
 	id:119,
-	index:2,
-	type:"building",
+	index:3,
 	name:"dragonEyrie",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[120] = {
 	id:120,
-	index:3,
-	type:"building",
+	index:4,
 	name:"dragonEyrie",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[121] = {
 	id:121,
-	index:4,
-	type:"building",
+	index:5,
 	name:"dragonEyrie",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[122] = {
 	id:122,
-	index:5,
-	type:"building",
+	index:6,
 	name:"dragonEyrie",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[123] = {
 	id:123,
-	index:6,
-	type:"building",
+	index:7,
 	name:"dragonEyrie",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[124] = {
 	id:124,
-	index:7,
-	type:"building",
+	index:8,
 	name:"dragonEyrie",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[125] = {
 	id:125,
-	index:8,
-	type:"building",
+	index:9,
 	name:"dragonEyrie",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[126] = {
 	id:126,
-	index:9,
-	type:"building",
+	index:10,
 	name:"dragonEyrie",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[127] = {
 	id:127,
-	index:10,
-	type:"building",
+	index:11,
 	name:"dragonEyrie",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[128] = {
 	id:128,
-	index:11,
-	type:"building",
+	index:12,
 	name:"dragonEyrie",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[129] = {
 	id:129,
-	index:12,
-	type:"building",
+	index:13,
 	name:"dragonEyrie",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[130] = {
 	id:130,
-	index:13,
-	type:"building",
+	index:14,
 	name:"dragonEyrie",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[131] = {
 	id:131,
-	index:14,
-	type:"building",
+	index:15,
 	name:"dragonEyrie",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[132] = {
 	id:132,
-	index:15,
-	type:"building",
+	index:16,
 	name:"dragonEyrie",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[133] = {
 	id:133,
-	index:16,
-	type:"building",
+	index:17,
 	name:"dragonEyrie",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[134] = {
 	id:134,
-	index:17,
-	type:"building",
+	index:18,
 	name:"dragonEyrie",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[135] = {
 	id:135,
-	index:18,
-	type:"building",
+	index:19,
 	name:"dragonEyrie",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[136] = {
 	id:136,
-	index:19,
-	type:"building",
+	index:20,
 	name:"dragonEyrie",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[137] = {
 	id:137,
-	index:20,
-	type:"building",
+	index:21,
 	name:"dragonEyrie",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[138] = {
 	id:138,
-	index:21,
-	type:"building",
+	index:22,
 	name:"dragonEyrie",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[139] = {
 	id:139,
-	index:22,
-	type:"building",
+	index:23,
 	name:"dragonEyrie",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[140] = {
 	id:140,
-	index:23,
-	type:"building",
+	index:24,
 	name:"dragonEyrie",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[141] = {
 	id:141,
-	index:24,
-	type:"building",
+	index:25,
 	name:"dragonEyrie",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[142] = {
 	id:142,
-	index:25,
-	type:"building",
+	index:26,
 	name:"dragonEyrie",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[143] = {
 	id:143,
-	index:26,
-	type:"building",
+	index:27,
 	name:"dragonEyrie",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[144] = {
 	id:144,
-	index:27,
-	type:"building",
+	index:28,
 	name:"dragonEyrie",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[145] = {
 	id:145,
-	index:28,
-	type:"building",
+	index:29,
 	name:"dragonEyrie",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[146] = {
 	id:146,
-	index:29,
-	type:"building",
+	index:30,
 	name:"dragonEyrie",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[147] = {
 	id:147,
-	index:30,
-	type:"building",
+	index:31,
 	name:"dragonEyrie",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[148] = {
 	id:148,
-	index:31,
-	type:"building",
+	index:32,
 	name:"dragonEyrie",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[149] = {
 	id:149,
-	index:32,
-	type:"building",
+	index:33,
 	name:"dragonEyrie",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[150] = {
 	id:150,
-	index:33,
-	type:"building",
+	index:34,
 	name:"dragonEyrie",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[151] = {
 	id:151,
-	index:34,
-	type:"building",
+	index:35,
 	name:"dragonEyrie",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[152] = {
 	id:152,
-	index:35,
-	type:"building",
+	index:36,
 	name:"dragonEyrie",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[153] = {
 	id:153,
-	index:36,
-	type:"building",
+	index:37,
 	name:"dragonEyrie",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[154] = {
 	id:154,
-	index:37,
-	type:"building",
+	index:38,
 	name:"dragonEyrie",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[155] = {
 	id:155,
-	index:38,
-	type:"building",
+	index:39,
 	name:"dragonEyrie",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[156] = {
 	id:156,
-	index:39,
-	type:"building",
-	name:"dragonEyrie",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"barracks",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[157] = {
 	id:157,
-	index:1,
-	type:"building",
+	index:2,
 	name:"barracks",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[158] = {
 	id:158,
-	index:2,
-	type:"building",
+	index:3,
 	name:"barracks",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[159] = {
 	id:159,
-	index:3,
-	type:"building",
+	index:4,
 	name:"barracks",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[160] = {
 	id:160,
-	index:4,
-	type:"building",
+	index:5,
 	name:"barracks",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[161] = {
 	id:161,
-	index:5,
-	type:"building",
+	index:6,
 	name:"barracks",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[162] = {
 	id:162,
-	index:6,
-	type:"building",
+	index:7,
 	name:"barracks",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[163] = {
 	id:163,
-	index:7,
-	type:"building",
+	index:8,
 	name:"barracks",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[164] = {
 	id:164,
-	index:8,
-	type:"building",
+	index:9,
 	name:"barracks",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[165] = {
 	id:165,
-	index:9,
-	type:"building",
+	index:10,
 	name:"barracks",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[166] = {
 	id:166,
-	index:10,
-	type:"building",
+	index:11,
 	name:"barracks",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[167] = {
 	id:167,
-	index:11,
-	type:"building",
+	index:12,
 	name:"barracks",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[168] = {
 	id:168,
-	index:12,
-	type:"building",
+	index:13,
 	name:"barracks",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[169] = {
 	id:169,
-	index:13,
-	type:"building",
+	index:14,
 	name:"barracks",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[170] = {
 	id:170,
-	index:14,
-	type:"building",
+	index:15,
 	name:"barracks",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[171] = {
 	id:171,
-	index:15,
-	type:"building",
+	index:16,
 	name:"barracks",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[172] = {
 	id:172,
-	index:16,
-	type:"building",
+	index:17,
 	name:"barracks",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[173] = {
 	id:173,
-	index:17,
-	type:"building",
+	index:18,
 	name:"barracks",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[174] = {
 	id:174,
-	index:18,
-	type:"building",
+	index:19,
 	name:"barracks",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[175] = {
 	id:175,
-	index:19,
-	type:"building",
+	index:20,
 	name:"barracks",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[176] = {
 	id:176,
-	index:20,
-	type:"building",
+	index:21,
 	name:"barracks",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[177] = {
 	id:177,
-	index:21,
-	type:"building",
+	index:22,
 	name:"barracks",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[178] = {
 	id:178,
-	index:22,
-	type:"building",
+	index:23,
 	name:"barracks",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[179] = {
 	id:179,
-	index:23,
-	type:"building",
+	index:24,
 	name:"barracks",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[180] = {
 	id:180,
-	index:24,
-	type:"building",
+	index:25,
 	name:"barracks",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[181] = {
 	id:181,
-	index:25,
-	type:"building",
+	index:26,
 	name:"barracks",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[182] = {
 	id:182,
-	index:26,
-	type:"building",
+	index:27,
 	name:"barracks",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[183] = {
 	id:183,
-	index:27,
-	type:"building",
+	index:28,
 	name:"barracks",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[184] = {
 	id:184,
-	index:28,
-	type:"building",
+	index:29,
 	name:"barracks",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[185] = {
 	id:185,
-	index:29,
-	type:"building",
+	index:30,
 	name:"barracks",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[186] = {
 	id:186,
-	index:30,
-	type:"building",
+	index:31,
 	name:"barracks",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[187] = {
 	id:187,
-	index:31,
-	type:"building",
+	index:32,
 	name:"barracks",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[188] = {
 	id:188,
-	index:32,
-	type:"building",
+	index:33,
 	name:"barracks",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[189] = {
 	id:189,
-	index:33,
-	type:"building",
+	index:34,
 	name:"barracks",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[190] = {
 	id:190,
-	index:34,
-	type:"building",
+	index:35,
 	name:"barracks",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[191] = {
 	id:191,
-	index:35,
-	type:"building",
+	index:36,
 	name:"barracks",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[192] = {
 	id:192,
-	index:36,
-	type:"building",
+	index:37,
 	name:"barracks",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[193] = {
 	id:193,
-	index:37,
-	type:"building",
+	index:38,
 	name:"barracks",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[194] = {
 	id:194,
-	index:38,
-	type:"building",
+	index:39,
 	name:"barracks",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[195] = {
 	id:195,
-	index:39,
-	type:"building",
-	name:"barracks",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"hospital",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[196] = {
 	id:196,
-	index:1,
-	type:"building",
+	index:2,
 	name:"hospital",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[197] = {
 	id:197,
-	index:2,
-	type:"building",
+	index:3,
 	name:"hospital",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[198] = {
 	id:198,
-	index:3,
-	type:"building",
+	index:4,
 	name:"hospital",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[199] = {
 	id:199,
-	index:4,
-	type:"building",
+	index:5,
 	name:"hospital",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[200] = {
 	id:200,
-	index:5,
-	type:"building",
+	index:6,
 	name:"hospital",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[201] = {
 	id:201,
-	index:6,
-	type:"building",
+	index:7,
 	name:"hospital",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[202] = {
 	id:202,
-	index:7,
-	type:"building",
+	index:8,
 	name:"hospital",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[203] = {
 	id:203,
-	index:8,
-	type:"building",
+	index:9,
 	name:"hospital",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[204] = {
 	id:204,
-	index:9,
-	type:"building",
+	index:10,
 	name:"hospital",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[205] = {
 	id:205,
-	index:10,
-	type:"building",
+	index:11,
 	name:"hospital",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[206] = {
 	id:206,
-	index:11,
-	type:"building",
+	index:12,
 	name:"hospital",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[207] = {
 	id:207,
-	index:12,
-	type:"building",
+	index:13,
 	name:"hospital",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[208] = {
 	id:208,
-	index:13,
-	type:"building",
+	index:14,
 	name:"hospital",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[209] = {
 	id:209,
-	index:14,
-	type:"building",
+	index:15,
 	name:"hospital",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[210] = {
 	id:210,
-	index:15,
-	type:"building",
+	index:16,
 	name:"hospital",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[211] = {
 	id:211,
-	index:16,
-	type:"building",
+	index:17,
 	name:"hospital",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[212] = {
 	id:212,
-	index:17,
-	type:"building",
+	index:18,
 	name:"hospital",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[213] = {
 	id:213,
-	index:18,
-	type:"building",
+	index:19,
 	name:"hospital",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[214] = {
 	id:214,
-	index:19,
-	type:"building",
+	index:20,
 	name:"hospital",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[215] = {
 	id:215,
-	index:20,
-	type:"building",
+	index:21,
 	name:"hospital",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[216] = {
 	id:216,
-	index:21,
-	type:"building",
+	index:22,
 	name:"hospital",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[217] = {
 	id:217,
-	index:22,
-	type:"building",
+	index:23,
 	name:"hospital",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[218] = {
 	id:218,
-	index:23,
-	type:"building",
+	index:24,
 	name:"hospital",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[219] = {
 	id:219,
-	index:24,
-	type:"building",
+	index:25,
 	name:"hospital",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[220] = {
 	id:220,
-	index:25,
-	type:"building",
+	index:26,
 	name:"hospital",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[221] = {
 	id:221,
-	index:26,
-	type:"building",
+	index:27,
 	name:"hospital",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[222] = {
 	id:222,
-	index:27,
-	type:"building",
+	index:28,
 	name:"hospital",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[223] = {
 	id:223,
-	index:28,
-	type:"building",
+	index:29,
 	name:"hospital",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[224] = {
 	id:224,
-	index:29,
-	type:"building",
+	index:30,
 	name:"hospital",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[225] = {
 	id:225,
-	index:30,
-	type:"building",
+	index:31,
 	name:"hospital",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[226] = {
 	id:226,
-	index:31,
-	type:"building",
+	index:32,
 	name:"hospital",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[227] = {
 	id:227,
-	index:32,
-	type:"building",
+	index:33,
 	name:"hospital",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[228] = {
 	id:228,
-	index:33,
-	type:"building",
+	index:34,
 	name:"hospital",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[229] = {
 	id:229,
-	index:34,
-	type:"building",
+	index:35,
 	name:"hospital",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[230] = {
 	id:230,
-	index:35,
-	type:"building",
+	index:36,
 	name:"hospital",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[231] = {
 	id:231,
-	index:36,
-	type:"building",
+	index:37,
 	name:"hospital",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[232] = {
 	id:232,
-	index:37,
-	type:"building",
+	index:38,
 	name:"hospital",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[233] = {
 	id:233,
-	index:38,
-	type:"building",
+	index:39,
 	name:"hospital",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[234] = {
 	id:234,
-	index:39,
-	type:"building",
-	name:"hospital",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"academy",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[235] = {
 	id:235,
-	index:1,
-	type:"building",
+	index:2,
 	name:"academy",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[236] = {
 	id:236,
-	index:2,
-	type:"building",
+	index:3,
 	name:"academy",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[237] = {
 	id:237,
-	index:3,
-	type:"building",
+	index:4,
 	name:"academy",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[238] = {
 	id:238,
-	index:4,
-	type:"building",
+	index:5,
 	name:"academy",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[239] = {
 	id:239,
-	index:5,
-	type:"building",
+	index:6,
 	name:"academy",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[240] = {
 	id:240,
-	index:6,
-	type:"building",
+	index:7,
 	name:"academy",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[241] = {
 	id:241,
-	index:7,
-	type:"building",
+	index:8,
 	name:"academy",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[242] = {
 	id:242,
-	index:8,
-	type:"building",
+	index:9,
 	name:"academy",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[243] = {
 	id:243,
-	index:9,
-	type:"building",
+	index:10,
 	name:"academy",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[244] = {
 	id:244,
-	index:10,
-	type:"building",
+	index:11,
 	name:"academy",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[245] = {
 	id:245,
-	index:11,
-	type:"building",
+	index:12,
 	name:"academy",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[246] = {
 	id:246,
-	index:12,
-	type:"building",
+	index:13,
 	name:"academy",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[247] = {
 	id:247,
-	index:13,
-	type:"building",
+	index:14,
 	name:"academy",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[248] = {
 	id:248,
-	index:14,
-	type:"building",
+	index:15,
 	name:"academy",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[249] = {
 	id:249,
-	index:15,
-	type:"building",
+	index:16,
 	name:"academy",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[250] = {
 	id:250,
-	index:16,
-	type:"building",
+	index:17,
 	name:"academy",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[251] = {
 	id:251,
-	index:17,
-	type:"building",
+	index:18,
 	name:"academy",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[252] = {
 	id:252,
-	index:18,
-	type:"building",
+	index:19,
 	name:"academy",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[253] = {
 	id:253,
-	index:19,
-	type:"building",
+	index:20,
 	name:"academy",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[254] = {
 	id:254,
-	index:20,
-	type:"building",
+	index:21,
 	name:"academy",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[255] = {
 	id:255,
-	index:21,
-	type:"building",
+	index:22,
 	name:"academy",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[256] = {
 	id:256,
-	index:22,
-	type:"building",
+	index:23,
 	name:"academy",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[257] = {
 	id:257,
-	index:23,
-	type:"building",
+	index:24,
 	name:"academy",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[258] = {
 	id:258,
-	index:24,
-	type:"building",
+	index:25,
 	name:"academy",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[259] = {
 	id:259,
-	index:25,
-	type:"building",
+	index:26,
 	name:"academy",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[260] = {
 	id:260,
-	index:26,
-	type:"building",
+	index:27,
 	name:"academy",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[261] = {
 	id:261,
-	index:27,
-	type:"building",
+	index:28,
 	name:"academy",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[262] = {
 	id:262,
-	index:28,
-	type:"building",
+	index:29,
 	name:"academy",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[263] = {
 	id:263,
-	index:29,
-	type:"building",
+	index:30,
 	name:"academy",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[264] = {
 	id:264,
-	index:30,
-	type:"building",
+	index:31,
 	name:"academy",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[265] = {
 	id:265,
-	index:31,
-	type:"building",
+	index:32,
 	name:"academy",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[266] = {
 	id:266,
-	index:32,
-	type:"building",
+	index:33,
 	name:"academy",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[267] = {
 	id:267,
-	index:33,
-	type:"building",
+	index:34,
 	name:"academy",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[268] = {
 	id:268,
-	index:34,
-	type:"building",
+	index:35,
 	name:"academy",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[269] = {
 	id:269,
-	index:35,
-	type:"building",
+	index:36,
 	name:"academy",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[270] = {
 	id:270,
-	index:36,
-	type:"building",
+	index:37,
 	name:"academy",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[271] = {
 	id:271,
-	index:37,
-	type:"building",
+	index:38,
 	name:"academy",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[272] = {
 	id:272,
-	index:38,
-	type:"building",
+	index:39,
 	name:"academy",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[273] = {
 	id:273,
-	index:39,
-	type:"building",
-	name:"academy",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"materialDepot",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[274] = {
 	id:274,
-	index:1,
-	type:"building",
+	index:2,
 	name:"materialDepot",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[275] = {
 	id:275,
-	index:2,
-	type:"building",
+	index:3,
 	name:"materialDepot",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[276] = {
 	id:276,
-	index:3,
-	type:"building",
+	index:4,
 	name:"materialDepot",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[277] = {
 	id:277,
-	index:4,
-	type:"building",
+	index:5,
 	name:"materialDepot",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[278] = {
 	id:278,
-	index:5,
-	type:"building",
+	index:6,
 	name:"materialDepot",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[279] = {
 	id:279,
-	index:6,
-	type:"building",
+	index:7,
 	name:"materialDepot",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[280] = {
 	id:280,
-	index:7,
-	type:"building",
+	index:8,
 	name:"materialDepot",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[281] = {
 	id:281,
-	index:8,
-	type:"building",
+	index:9,
 	name:"materialDepot",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[282] = {
 	id:282,
-	index:9,
-	type:"building",
+	index:10,
 	name:"materialDepot",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[283] = {
 	id:283,
-	index:10,
-	type:"building",
+	index:11,
 	name:"materialDepot",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[284] = {
 	id:284,
-	index:11,
-	type:"building",
+	index:12,
 	name:"materialDepot",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[285] = {
 	id:285,
-	index:12,
-	type:"building",
+	index:13,
 	name:"materialDepot",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[286] = {
 	id:286,
-	index:13,
-	type:"building",
+	index:14,
 	name:"materialDepot",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[287] = {
 	id:287,
-	index:14,
-	type:"building",
+	index:15,
 	name:"materialDepot",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[288] = {
 	id:288,
-	index:15,
-	type:"building",
+	index:16,
 	name:"materialDepot",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[289] = {
 	id:289,
-	index:16,
-	type:"building",
+	index:17,
 	name:"materialDepot",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[290] = {
 	id:290,
-	index:17,
-	type:"building",
+	index:18,
 	name:"materialDepot",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[291] = {
 	id:291,
-	index:18,
-	type:"building",
+	index:19,
 	name:"materialDepot",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[292] = {
 	id:292,
-	index:19,
-	type:"building",
+	index:20,
 	name:"materialDepot",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[293] = {
 	id:293,
-	index:20,
-	type:"building",
+	index:21,
 	name:"materialDepot",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[294] = {
 	id:294,
-	index:21,
-	type:"building",
+	index:22,
 	name:"materialDepot",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[295] = {
 	id:295,
-	index:22,
-	type:"building",
+	index:23,
 	name:"materialDepot",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[296] = {
 	id:296,
-	index:23,
-	type:"building",
+	index:24,
 	name:"materialDepot",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[297] = {
 	id:297,
-	index:24,
-	type:"building",
+	index:25,
 	name:"materialDepot",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[298] = {
 	id:298,
-	index:25,
-	type:"building",
+	index:26,
 	name:"materialDepot",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[299] = {
 	id:299,
-	index:26,
-	type:"building",
+	index:27,
 	name:"materialDepot",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[300] = {
 	id:300,
-	index:27,
-	type:"building",
+	index:28,
 	name:"materialDepot",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[301] = {
 	id:301,
-	index:28,
-	type:"building",
+	index:29,
 	name:"materialDepot",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[302] = {
 	id:302,
-	index:29,
-	type:"building",
+	index:30,
 	name:"materialDepot",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[303] = {
 	id:303,
-	index:30,
-	type:"building",
+	index:31,
 	name:"materialDepot",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[304] = {
 	id:304,
-	index:31,
-	type:"building",
+	index:32,
 	name:"materialDepot",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[305] = {
 	id:305,
-	index:32,
-	type:"building",
+	index:33,
 	name:"materialDepot",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[306] = {
 	id:306,
-	index:33,
-	type:"building",
+	index:34,
 	name:"materialDepot",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[307] = {
 	id:307,
-	index:34,
-	type:"building",
+	index:35,
 	name:"materialDepot",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[308] = {
 	id:308,
-	index:35,
-	type:"building",
+	index:36,
 	name:"materialDepot",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[309] = {
 	id:309,
-	index:36,
-	type:"building",
+	index:37,
 	name:"materialDepot",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[310] = {
 	id:310,
-	index:37,
-	type:"building",
+	index:38,
 	name:"materialDepot",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[311] = {
 	id:311,
-	index:38,
-	type:"building",
+	index:39,
 	name:"materialDepot",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[312] = {
 	id:312,
-	index:39,
-	type:"building",
-	name:"materialDepot",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"blackSmith",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[313] = {
 	id:313,
-	index:1,
-	type:"building",
+	index:2,
 	name:"blackSmith",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[314] = {
 	id:314,
-	index:2,
-	type:"building",
+	index:3,
 	name:"blackSmith",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[315] = {
 	id:315,
-	index:3,
-	type:"building",
+	index:4,
 	name:"blackSmith",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[316] = {
 	id:316,
-	index:4,
-	type:"building",
+	index:5,
 	name:"blackSmith",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[317] = {
 	id:317,
-	index:5,
-	type:"building",
+	index:6,
 	name:"blackSmith",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[318] = {
 	id:318,
-	index:6,
-	type:"building",
+	index:7,
 	name:"blackSmith",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[319] = {
 	id:319,
-	index:7,
-	type:"building",
+	index:8,
 	name:"blackSmith",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[320] = {
 	id:320,
-	index:8,
-	type:"building",
+	index:9,
 	name:"blackSmith",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[321] = {
 	id:321,
-	index:9,
-	type:"building",
+	index:10,
 	name:"blackSmith",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[322] = {
 	id:322,
-	index:10,
-	type:"building",
+	index:11,
 	name:"blackSmith",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[323] = {
 	id:323,
-	index:11,
-	type:"building",
+	index:12,
 	name:"blackSmith",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[324] = {
 	id:324,
-	index:12,
-	type:"building",
+	index:13,
 	name:"blackSmith",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[325] = {
 	id:325,
-	index:13,
-	type:"building",
+	index:14,
 	name:"blackSmith",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[326] = {
 	id:326,
-	index:14,
-	type:"building",
+	index:15,
 	name:"blackSmith",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[327] = {
 	id:327,
-	index:15,
-	type:"building",
+	index:16,
 	name:"blackSmith",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[328] = {
 	id:328,
-	index:16,
-	type:"building",
+	index:17,
 	name:"blackSmith",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[329] = {
 	id:329,
-	index:17,
-	type:"building",
+	index:18,
 	name:"blackSmith",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[330] = {
 	id:330,
-	index:18,
-	type:"building",
+	index:19,
 	name:"blackSmith",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[331] = {
 	id:331,
-	index:19,
-	type:"building",
+	index:20,
 	name:"blackSmith",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[332] = {
 	id:332,
-	index:20,
-	type:"building",
+	index:21,
 	name:"blackSmith",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[333] = {
 	id:333,
-	index:21,
-	type:"building",
+	index:22,
 	name:"blackSmith",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[334] = {
 	id:334,
-	index:22,
-	type:"building",
+	index:23,
 	name:"blackSmith",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[335] = {
 	id:335,
-	index:23,
-	type:"building",
+	index:24,
 	name:"blackSmith",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[336] = {
 	id:336,
-	index:24,
-	type:"building",
+	index:25,
 	name:"blackSmith",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[337] = {
 	id:337,
-	index:25,
-	type:"building",
+	index:26,
 	name:"blackSmith",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[338] = {
 	id:338,
-	index:26,
-	type:"building",
+	index:27,
 	name:"blackSmith",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[339] = {
 	id:339,
-	index:27,
-	type:"building",
+	index:28,
 	name:"blackSmith",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[340] = {
 	id:340,
-	index:28,
-	type:"building",
+	index:29,
 	name:"blackSmith",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[341] = {
 	id:341,
-	index:29,
-	type:"building",
+	index:30,
 	name:"blackSmith",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[342] = {
 	id:342,
-	index:30,
-	type:"building",
+	index:31,
 	name:"blackSmith",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[343] = {
 	id:343,
-	index:31,
-	type:"building",
+	index:32,
 	name:"blackSmith",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[344] = {
 	id:344,
-	index:32,
-	type:"building",
+	index:33,
 	name:"blackSmith",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[345] = {
 	id:345,
-	index:33,
-	type:"building",
+	index:34,
 	name:"blackSmith",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[346] = {
 	id:346,
-	index:34,
-	type:"building",
+	index:35,
 	name:"blackSmith",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[347] = {
 	id:347,
-	index:35,
-	type:"building",
+	index:36,
 	name:"blackSmith",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[348] = {
 	id:348,
-	index:36,
-	type:"building",
+	index:37,
 	name:"blackSmith",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[349] = {
 	id:349,
-	index:37,
-	type:"building",
+	index:38,
 	name:"blackSmith",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[350] = {
 	id:350,
-	index:38,
-	type:"building",
+	index:39,
 	name:"blackSmith",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[351] = {
 	id:351,
-	index:39,
-	type:"building",
-	name:"blackSmith",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"foundry",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[352] = {
 	id:352,
-	index:1,
-	type:"building",
+	index:2,
 	name:"foundry",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[353] = {
 	id:353,
-	index:2,
-	type:"building",
+	index:3,
 	name:"foundry",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[354] = {
 	id:354,
-	index:3,
-	type:"building",
+	index:4,
 	name:"foundry",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[355] = {
 	id:355,
-	index:4,
-	type:"building",
+	index:5,
 	name:"foundry",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[356] = {
 	id:356,
-	index:5,
-	type:"building",
+	index:6,
 	name:"foundry",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[357] = {
 	id:357,
-	index:6,
-	type:"building",
+	index:7,
 	name:"foundry",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[358] = {
 	id:358,
-	index:7,
-	type:"building",
+	index:8,
 	name:"foundry",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[359] = {
 	id:359,
-	index:8,
-	type:"building",
+	index:9,
 	name:"foundry",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[360] = {
 	id:360,
-	index:9,
-	type:"building",
+	index:10,
 	name:"foundry",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[361] = {
 	id:361,
-	index:10,
-	type:"building",
+	index:11,
 	name:"foundry",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[362] = {
 	id:362,
-	index:11,
-	type:"building",
+	index:12,
 	name:"foundry",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[363] = {
 	id:363,
-	index:12,
-	type:"building",
+	index:13,
 	name:"foundry",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[364] = {
 	id:364,
-	index:13,
-	type:"building",
+	index:14,
 	name:"foundry",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[365] = {
 	id:365,
-	index:14,
-	type:"building",
+	index:15,
 	name:"foundry",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[366] = {
 	id:366,
-	index:15,
-	type:"building",
+	index:16,
 	name:"foundry",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[367] = {
 	id:367,
-	index:16,
-	type:"building",
+	index:17,
 	name:"foundry",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[368] = {
 	id:368,
-	index:17,
-	type:"building",
+	index:18,
 	name:"foundry",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[369] = {
 	id:369,
-	index:18,
-	type:"building",
+	index:19,
 	name:"foundry",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[370] = {
 	id:370,
-	index:19,
-	type:"building",
+	index:20,
 	name:"foundry",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[371] = {
 	id:371,
-	index:20,
-	type:"building",
+	index:21,
 	name:"foundry",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[372] = {
 	id:372,
-	index:21,
-	type:"building",
+	index:22,
 	name:"foundry",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[373] = {
 	id:373,
-	index:22,
-	type:"building",
+	index:23,
 	name:"foundry",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[374] = {
 	id:374,
-	index:23,
-	type:"building",
+	index:24,
 	name:"foundry",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[375] = {
 	id:375,
-	index:24,
-	type:"building",
+	index:25,
 	name:"foundry",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[376] = {
 	id:376,
-	index:25,
-	type:"building",
+	index:26,
 	name:"foundry",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[377] = {
 	id:377,
-	index:26,
-	type:"building",
+	index:27,
 	name:"foundry",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[378] = {
 	id:378,
-	index:27,
-	type:"building",
+	index:28,
 	name:"foundry",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[379] = {
 	id:379,
-	index:28,
-	type:"building",
+	index:29,
 	name:"foundry",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[380] = {
 	id:380,
-	index:29,
-	type:"building",
+	index:30,
 	name:"foundry",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[381] = {
 	id:381,
-	index:30,
-	type:"building",
+	index:31,
 	name:"foundry",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[382] = {
 	id:382,
-	index:31,
-	type:"building",
+	index:32,
 	name:"foundry",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[383] = {
 	id:383,
-	index:32,
-	type:"building",
+	index:33,
 	name:"foundry",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[384] = {
 	id:384,
-	index:33,
-	type:"building",
+	index:34,
 	name:"foundry",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[385] = {
 	id:385,
-	index:34,
-	type:"building",
+	index:35,
 	name:"foundry",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[386] = {
 	id:386,
-	index:35,
-	type:"building",
+	index:36,
 	name:"foundry",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[387] = {
 	id:387,
-	index:36,
-	type:"building",
+	index:37,
 	name:"foundry",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[388] = {
 	id:388,
-	index:37,
-	type:"building",
+	index:38,
 	name:"foundry",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[389] = {
 	id:389,
-	index:38,
-	type:"building",
+	index:39,
 	name:"foundry",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[390] = {
 	id:390,
-	index:39,
-	type:"building",
-	name:"foundry",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"stoneMason",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[391] = {
 	id:391,
-	index:1,
-	type:"building",
+	index:2,
 	name:"stoneMason",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[392] = {
 	id:392,
-	index:2,
-	type:"building",
+	index:3,
 	name:"stoneMason",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[393] = {
 	id:393,
-	index:3,
-	type:"building",
+	index:4,
 	name:"stoneMason",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[394] = {
 	id:394,
-	index:4,
-	type:"building",
+	index:5,
 	name:"stoneMason",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[395] = {
 	id:395,
-	index:5,
-	type:"building",
+	index:6,
 	name:"stoneMason",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[396] = {
 	id:396,
-	index:6,
-	type:"building",
+	index:7,
 	name:"stoneMason",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[397] = {
 	id:397,
-	index:7,
-	type:"building",
+	index:8,
 	name:"stoneMason",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[398] = {
 	id:398,
-	index:8,
-	type:"building",
+	index:9,
 	name:"stoneMason",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[399] = {
 	id:399,
-	index:9,
-	type:"building",
+	index:10,
 	name:"stoneMason",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[400] = {
 	id:400,
-	index:10,
-	type:"building",
+	index:11,
 	name:"stoneMason",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[401] = {
 	id:401,
-	index:11,
-	type:"building",
+	index:12,
 	name:"stoneMason",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[402] = {
 	id:402,
-	index:12,
-	type:"building",
+	index:13,
 	name:"stoneMason",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[403] = {
 	id:403,
-	index:13,
-	type:"building",
+	index:14,
 	name:"stoneMason",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[404] = {
 	id:404,
-	index:14,
-	type:"building",
+	index:15,
 	name:"stoneMason",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[405] = {
 	id:405,
-	index:15,
-	type:"building",
+	index:16,
 	name:"stoneMason",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[406] = {
 	id:406,
-	index:16,
-	type:"building",
+	index:17,
 	name:"stoneMason",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[407] = {
 	id:407,
-	index:17,
-	type:"building",
+	index:18,
 	name:"stoneMason",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[408] = {
 	id:408,
-	index:18,
-	type:"building",
+	index:19,
 	name:"stoneMason",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[409] = {
 	id:409,
-	index:19,
-	type:"building",
+	index:20,
 	name:"stoneMason",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[410] = {
 	id:410,
-	index:20,
-	type:"building",
+	index:21,
 	name:"stoneMason",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[411] = {
 	id:411,
-	index:21,
-	type:"building",
+	index:22,
 	name:"stoneMason",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[412] = {
 	id:412,
-	index:22,
-	type:"building",
+	index:23,
 	name:"stoneMason",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[413] = {
 	id:413,
-	index:23,
-	type:"building",
+	index:24,
 	name:"stoneMason",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[414] = {
 	id:414,
-	index:24,
-	type:"building",
+	index:25,
 	name:"stoneMason",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[415] = {
 	id:415,
-	index:25,
-	type:"building",
+	index:26,
 	name:"stoneMason",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[416] = {
 	id:416,
-	index:26,
-	type:"building",
+	index:27,
 	name:"stoneMason",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[417] = {
 	id:417,
-	index:27,
-	type:"building",
+	index:28,
 	name:"stoneMason",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[418] = {
 	id:418,
-	index:28,
-	type:"building",
+	index:29,
 	name:"stoneMason",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[419] = {
 	id:419,
-	index:29,
-	type:"building",
+	index:30,
 	name:"stoneMason",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[420] = {
 	id:420,
-	index:30,
-	type:"building",
+	index:31,
 	name:"stoneMason",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[421] = {
 	id:421,
-	index:31,
-	type:"building",
+	index:32,
 	name:"stoneMason",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[422] = {
 	id:422,
-	index:32,
-	type:"building",
+	index:33,
 	name:"stoneMason",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[423] = {
 	id:423,
-	index:33,
-	type:"building",
+	index:34,
 	name:"stoneMason",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[424] = {
 	id:424,
-	index:34,
-	type:"building",
+	index:35,
 	name:"stoneMason",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[425] = {
 	id:425,
-	index:35,
-	type:"building",
+	index:36,
 	name:"stoneMason",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[426] = {
 	id:426,
-	index:36,
-	type:"building",
+	index:37,
 	name:"stoneMason",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[427] = {
 	id:427,
-	index:37,
-	type:"building",
+	index:38,
 	name:"stoneMason",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[428] = {
 	id:428,
-	index:38,
-	type:"building",
+	index:39,
 	name:"stoneMason",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[429] = {
 	id:429,
-	index:39,
-	type:"building",
-	name:"stoneMason",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"lumbermill",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[430] = {
 	id:430,
-	index:1,
-	type:"building",
+	index:2,
 	name:"lumbermill",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[431] = {
 	id:431,
-	index:2,
-	type:"building",
+	index:3,
 	name:"lumbermill",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[432] = {
 	id:432,
-	index:3,
-	type:"building",
+	index:4,
 	name:"lumbermill",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[433] = {
 	id:433,
-	index:4,
-	type:"building",
+	index:5,
 	name:"lumbermill",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[434] = {
 	id:434,
-	index:5,
-	type:"building",
+	index:6,
 	name:"lumbermill",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[435] = {
 	id:435,
-	index:6,
-	type:"building",
+	index:7,
 	name:"lumbermill",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[436] = {
 	id:436,
-	index:7,
-	type:"building",
+	index:8,
 	name:"lumbermill",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[437] = {
 	id:437,
-	index:8,
-	type:"building",
+	index:9,
 	name:"lumbermill",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[438] = {
 	id:438,
-	index:9,
-	type:"building",
+	index:10,
 	name:"lumbermill",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[439] = {
 	id:439,
-	index:10,
-	type:"building",
+	index:11,
 	name:"lumbermill",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[440] = {
 	id:440,
-	index:11,
-	type:"building",
+	index:12,
 	name:"lumbermill",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[441] = {
 	id:441,
-	index:12,
-	type:"building",
+	index:13,
 	name:"lumbermill",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[442] = {
 	id:442,
-	index:13,
-	type:"building",
+	index:14,
 	name:"lumbermill",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[443] = {
 	id:443,
-	index:14,
-	type:"building",
+	index:15,
 	name:"lumbermill",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[444] = {
 	id:444,
-	index:15,
-	type:"building",
+	index:16,
 	name:"lumbermill",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[445] = {
 	id:445,
-	index:16,
-	type:"building",
+	index:17,
 	name:"lumbermill",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[446] = {
 	id:446,
-	index:17,
-	type:"building",
+	index:18,
 	name:"lumbermill",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[447] = {
 	id:447,
-	index:18,
-	type:"building",
+	index:19,
 	name:"lumbermill",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[448] = {
 	id:448,
-	index:19,
-	type:"building",
+	index:20,
 	name:"lumbermill",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[449] = {
 	id:449,
-	index:20,
-	type:"building",
+	index:21,
 	name:"lumbermill",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[450] = {
 	id:450,
-	index:21,
-	type:"building",
+	index:22,
 	name:"lumbermill",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[451] = {
 	id:451,
-	index:22,
-	type:"building",
+	index:23,
 	name:"lumbermill",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[452] = {
 	id:452,
-	index:23,
-	type:"building",
+	index:24,
 	name:"lumbermill",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[453] = {
 	id:453,
-	index:24,
-	type:"building",
+	index:25,
 	name:"lumbermill",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[454] = {
 	id:454,
-	index:25,
-	type:"building",
+	index:26,
 	name:"lumbermill",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[455] = {
 	id:455,
-	index:26,
-	type:"building",
+	index:27,
 	name:"lumbermill",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[456] = {
 	id:456,
-	index:27,
-	type:"building",
+	index:28,
 	name:"lumbermill",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[457] = {
 	id:457,
-	index:28,
-	type:"building",
+	index:29,
 	name:"lumbermill",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[458] = {
 	id:458,
-	index:29,
-	type:"building",
+	index:30,
 	name:"lumbermill",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[459] = {
 	id:459,
-	index:30,
-	type:"building",
+	index:31,
 	name:"lumbermill",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[460] = {
 	id:460,
-	index:31,
-	type:"building",
+	index:32,
 	name:"lumbermill",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[461] = {
 	id:461,
-	index:32,
-	type:"building",
+	index:33,
 	name:"lumbermill",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[462] = {
 	id:462,
-	index:33,
-	type:"building",
+	index:34,
 	name:"lumbermill",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[463] = {
 	id:463,
-	index:34,
-	type:"building",
+	index:35,
 	name:"lumbermill",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[464] = {
 	id:464,
-	index:35,
-	type:"building",
+	index:36,
 	name:"lumbermill",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[465] = {
 	id:465,
-	index:36,
-	type:"building",
+	index:37,
 	name:"lumbermill",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[466] = {
 	id:466,
-	index:37,
-	type:"building",
+	index:38,
 	name:"lumbermill",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[467] = {
 	id:467,
-	index:38,
-	type:"building",
+	index:39,
 	name:"lumbermill",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[468] = {
 	id:468,
-	index:39,
-	type:"building",
-	name:"lumbermill",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"mill",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[469] = {
 	id:469,
-	index:1,
-	type:"building",
+	index:2,
 	name:"mill",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[470] = {
 	id:470,
-	index:2,
-	type:"building",
+	index:3,
 	name:"mill",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[471] = {
 	id:471,
-	index:3,
-	type:"building",
+	index:4,
 	name:"mill",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[472] = {
 	id:472,
-	index:4,
-	type:"building",
+	index:5,
 	name:"mill",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[473] = {
 	id:473,
-	index:5,
-	type:"building",
+	index:6,
 	name:"mill",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[474] = {
 	id:474,
-	index:6,
-	type:"building",
+	index:7,
 	name:"mill",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[475] = {
 	id:475,
-	index:7,
-	type:"building",
+	index:8,
 	name:"mill",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[476] = {
 	id:476,
-	index:8,
-	type:"building",
+	index:9,
 	name:"mill",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[477] = {
 	id:477,
-	index:9,
-	type:"building",
+	index:10,
 	name:"mill",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[478] = {
 	id:478,
-	index:10,
-	type:"building",
+	index:11,
 	name:"mill",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[479] = {
 	id:479,
-	index:11,
-	type:"building",
+	index:12,
 	name:"mill",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[480] = {
 	id:480,
-	index:12,
-	type:"building",
+	index:13,
 	name:"mill",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[481] = {
 	id:481,
-	index:13,
-	type:"building",
+	index:14,
 	name:"mill",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[482] = {
 	id:482,
-	index:14,
-	type:"building",
+	index:15,
 	name:"mill",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[483] = {
 	id:483,
-	index:15,
-	type:"building",
+	index:16,
 	name:"mill",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[484] = {
 	id:484,
-	index:16,
-	type:"building",
+	index:17,
 	name:"mill",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[485] = {
 	id:485,
-	index:17,
-	type:"building",
+	index:18,
 	name:"mill",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[486] = {
 	id:486,
-	index:18,
-	type:"building",
+	index:19,
 	name:"mill",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[487] = {
 	id:487,
-	index:19,
-	type:"building",
+	index:20,
 	name:"mill",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[488] = {
 	id:488,
-	index:20,
-	type:"building",
+	index:21,
 	name:"mill",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[489] = {
 	id:489,
-	index:21,
-	type:"building",
+	index:22,
 	name:"mill",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[490] = {
 	id:490,
-	index:22,
-	type:"building",
+	index:23,
 	name:"mill",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[491] = {
 	id:491,
-	index:23,
-	type:"building",
+	index:24,
 	name:"mill",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[492] = {
 	id:492,
-	index:24,
-	type:"building",
+	index:25,
 	name:"mill",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[493] = {
 	id:493,
-	index:25,
-	type:"building",
+	index:26,
 	name:"mill",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[494] = {
 	id:494,
-	index:26,
-	type:"building",
+	index:27,
 	name:"mill",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[495] = {
 	id:495,
-	index:27,
-	type:"building",
+	index:28,
 	name:"mill",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[496] = {
 	id:496,
-	index:28,
-	type:"building",
+	index:29,
 	name:"mill",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[497] = {
 	id:497,
-	index:29,
-	type:"building",
+	index:30,
 	name:"mill",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[498] = {
 	id:498,
-	index:30,
-	type:"building",
+	index:31,
 	name:"mill",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[499] = {
 	id:499,
-	index:31,
-	type:"building",
+	index:32,
 	name:"mill",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[500] = {
 	id:500,
-	index:32,
-	type:"building",
+	index:33,
 	name:"mill",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[501] = {
 	id:501,
-	index:33,
-	type:"building",
+	index:34,
 	name:"mill",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[502] = {
 	id:502,
-	index:34,
-	type:"building",
+	index:35,
 	name:"mill",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[503] = {
 	id:503,
-	index:35,
-	type:"building",
+	index:36,
 	name:"mill",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[504] = {
 	id:504,
-	index:36,
-	type:"building",
+	index:37,
 	name:"mill",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[505] = {
 	id:505,
-	index:37,
-	type:"building",
+	index:38,
 	name:"mill",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[506] = {
 	id:506,
-	index:38,
-	type:"building",
+	index:39,
 	name:"mill",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[507] = {
 	id:507,
-	index:39,
-	type:"building",
-	name:"mill",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"townHall",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[508] = {
 	id:508,
-	index:1,
-	type:"building",
+	index:2,
 	name:"townHall",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[509] = {
 	id:509,
-	index:2,
-	type:"building",
+	index:3,
 	name:"townHall",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[510] = {
 	id:510,
-	index:3,
-	type:"building",
+	index:4,
 	name:"townHall",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[511] = {
 	id:511,
-	index:4,
-	type:"building",
+	index:5,
 	name:"townHall",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[512] = {
 	id:512,
-	index:5,
-	type:"building",
+	index:6,
 	name:"townHall",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[513] = {
 	id:513,
-	index:6,
-	type:"building",
+	index:7,
 	name:"townHall",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[514] = {
 	id:514,
-	index:7,
-	type:"building",
+	index:8,
 	name:"townHall",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[515] = {
 	id:515,
-	index:8,
-	type:"building",
+	index:9,
 	name:"townHall",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[516] = {
 	id:516,
-	index:9,
-	type:"building",
+	index:10,
 	name:"townHall",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[517] = {
 	id:517,
-	index:10,
-	type:"building",
+	index:11,
 	name:"townHall",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[518] = {
 	id:518,
-	index:11,
-	type:"building",
+	index:12,
 	name:"townHall",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[519] = {
 	id:519,
-	index:12,
-	type:"building",
+	index:13,
 	name:"townHall",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[520] = {
 	id:520,
-	index:13,
-	type:"building",
+	index:14,
 	name:"townHall",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[521] = {
 	id:521,
-	index:14,
-	type:"building",
+	index:15,
 	name:"townHall",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[522] = {
 	id:522,
-	index:15,
-	type:"building",
+	index:16,
 	name:"townHall",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[523] = {
 	id:523,
-	index:16,
-	type:"building",
+	index:17,
 	name:"townHall",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[524] = {
 	id:524,
-	index:17,
-	type:"building",
+	index:18,
 	name:"townHall",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[525] = {
 	id:525,
-	index:18,
-	type:"building",
+	index:19,
 	name:"townHall",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[526] = {
 	id:526,
-	index:19,
-	type:"building",
+	index:20,
 	name:"townHall",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[527] = {
 	id:527,
-	index:20,
-	type:"building",
+	index:21,
 	name:"townHall",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[528] = {
 	id:528,
-	index:21,
-	type:"building",
+	index:22,
 	name:"townHall",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[529] = {
 	id:529,
-	index:22,
-	type:"building",
+	index:23,
 	name:"townHall",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[530] = {
 	id:530,
-	index:23,
-	type:"building",
+	index:24,
 	name:"townHall",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[531] = {
 	id:531,
-	index:24,
-	type:"building",
+	index:25,
 	name:"townHall",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[532] = {
 	id:532,
-	index:25,
-	type:"building",
+	index:26,
 	name:"townHall",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[533] = {
 	id:533,
-	index:26,
-	type:"building",
+	index:27,
 	name:"townHall",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[534] = {
 	id:534,
-	index:27,
-	type:"building",
+	index:28,
 	name:"townHall",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[535] = {
 	id:535,
-	index:28,
-	type:"building",
+	index:29,
 	name:"townHall",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[536] = {
 	id:536,
-	index:29,
-	type:"building",
+	index:30,
 	name:"townHall",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[537] = {
 	id:537,
-	index:30,
-	type:"building",
+	index:31,
 	name:"townHall",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[538] = {
 	id:538,
-	index:31,
-	type:"building",
+	index:32,
 	name:"townHall",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[539] = {
 	id:539,
-	index:32,
-	type:"building",
+	index:33,
 	name:"townHall",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[540] = {
 	id:540,
-	index:33,
-	type:"building",
+	index:34,
 	name:"townHall",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[541] = {
 	id:541,
-	index:34,
-	type:"building",
+	index:35,
 	name:"townHall",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[542] = {
 	id:542,
-	index:35,
-	type:"building",
+	index:36,
 	name:"townHall",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[543] = {
 	id:543,
-	index:36,
-	type:"building",
+	index:37,
 	name:"townHall",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[544] = {
 	id:544,
-	index:37,
-	type:"building",
+	index:38,
 	name:"townHall",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[545] = {
 	id:545,
-	index:38,
-	type:"building",
+	index:39,
 	name:"townHall",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[546] = {
 	id:546,
-	index:39,
-	type:"building",
-	name:"townHall",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"toolShop",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[547] = {
 	id:547,
-	index:1,
-	type:"building",
+	index:2,
 	name:"toolShop",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[548] = {
 	id:548,
-	index:2,
-	type:"building",
+	index:3,
 	name:"toolShop",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[549] = {
 	id:549,
-	index:3,
-	type:"building",
+	index:4,
 	name:"toolShop",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[550] = {
 	id:550,
-	index:4,
-	type:"building",
+	index:5,
 	name:"toolShop",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[551] = {
 	id:551,
-	index:5,
-	type:"building",
+	index:6,
 	name:"toolShop",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[552] = {
 	id:552,
-	index:6,
-	type:"building",
+	index:7,
 	name:"toolShop",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[553] = {
 	id:553,
-	index:7,
-	type:"building",
+	index:8,
 	name:"toolShop",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[554] = {
 	id:554,
-	index:8,
-	type:"building",
+	index:9,
 	name:"toolShop",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[555] = {
 	id:555,
-	index:9,
-	type:"building",
+	index:10,
 	name:"toolShop",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[556] = {
 	id:556,
-	index:10,
-	type:"building",
+	index:11,
 	name:"toolShop",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[557] = {
 	id:557,
-	index:11,
-	type:"building",
+	index:12,
 	name:"toolShop",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[558] = {
 	id:558,
-	index:12,
-	type:"building",
+	index:13,
 	name:"toolShop",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[559] = {
 	id:559,
-	index:13,
-	type:"building",
+	index:14,
 	name:"toolShop",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[560] = {
 	id:560,
-	index:14,
-	type:"building",
+	index:15,
 	name:"toolShop",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[561] = {
 	id:561,
-	index:15,
-	type:"building",
+	index:16,
 	name:"toolShop",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[562] = {
 	id:562,
-	index:16,
-	type:"building",
+	index:17,
 	name:"toolShop",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[563] = {
 	id:563,
-	index:17,
-	type:"building",
+	index:18,
 	name:"toolShop",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[564] = {
 	id:564,
-	index:18,
-	type:"building",
+	index:19,
 	name:"toolShop",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[565] = {
 	id:565,
-	index:19,
-	type:"building",
+	index:20,
 	name:"toolShop",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[566] = {
 	id:566,
-	index:20,
-	type:"building",
+	index:21,
 	name:"toolShop",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[567] = {
 	id:567,
-	index:21,
-	type:"building",
+	index:22,
 	name:"toolShop",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[568] = {
 	id:568,
-	index:22,
-	type:"building",
+	index:23,
 	name:"toolShop",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[569] = {
 	id:569,
-	index:23,
-	type:"building",
+	index:24,
 	name:"toolShop",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[570] = {
 	id:570,
-	index:24,
-	type:"building",
+	index:25,
 	name:"toolShop",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[571] = {
 	id:571,
-	index:25,
-	type:"building",
+	index:26,
 	name:"toolShop",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[572] = {
 	id:572,
-	index:26,
-	type:"building",
+	index:27,
 	name:"toolShop",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[573] = {
 	id:573,
-	index:27,
-	type:"building",
+	index:28,
 	name:"toolShop",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[574] = {
 	id:574,
-	index:28,
-	type:"building",
+	index:29,
 	name:"toolShop",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[575] = {
 	id:575,
-	index:29,
-	type:"building",
+	index:30,
 	name:"toolShop",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[576] = {
 	id:576,
-	index:30,
-	type:"building",
+	index:31,
 	name:"toolShop",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[577] = {
 	id:577,
-	index:31,
-	type:"building",
+	index:32,
 	name:"toolShop",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[578] = {
 	id:578,
-	index:32,
-	type:"building",
+	index:33,
 	name:"toolShop",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[579] = {
 	id:579,
-	index:33,
-	type:"building",
+	index:34,
 	name:"toolShop",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[580] = {
 	id:580,
-	index:34,
-	type:"building",
+	index:35,
 	name:"toolShop",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[581] = {
 	id:581,
-	index:35,
-	type:"building",
+	index:36,
 	name:"toolShop",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[582] = {
 	id:582,
-	index:36,
-	type:"building",
+	index:37,
 	name:"toolShop",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[583] = {
 	id:583,
-	index:37,
-	type:"building",
+	index:38,
 	name:"toolShop",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[584] = {
 	id:584,
-	index:38,
-	type:"building",
+	index:39,
 	name:"toolShop",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[585] = {
 	id:585,
-	index:39,
-	type:"building",
-	name:"toolShop",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"tradeGuild",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[586] = {
 	id:586,
-	index:1,
-	type:"building",
+	index:2,
 	name:"tradeGuild",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[587] = {
 	id:587,
-	index:2,
-	type:"building",
+	index:3,
 	name:"tradeGuild",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[588] = {
 	id:588,
-	index:3,
-	type:"building",
+	index:4,
 	name:"tradeGuild",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[589] = {
 	id:589,
-	index:4,
-	type:"building",
+	index:5,
 	name:"tradeGuild",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[590] = {
 	id:590,
-	index:5,
-	type:"building",
+	index:6,
 	name:"tradeGuild",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[591] = {
 	id:591,
-	index:6,
-	type:"building",
+	index:7,
 	name:"tradeGuild",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[592] = {
 	id:592,
-	index:7,
-	type:"building",
+	index:8,
 	name:"tradeGuild",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[593] = {
 	id:593,
-	index:8,
-	type:"building",
+	index:9,
 	name:"tradeGuild",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[594] = {
 	id:594,
-	index:9,
-	type:"building",
+	index:10,
 	name:"tradeGuild",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[595] = {
 	id:595,
-	index:10,
-	type:"building",
+	index:11,
 	name:"tradeGuild",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[596] = {
 	id:596,
-	index:11,
-	type:"building",
+	index:12,
 	name:"tradeGuild",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[597] = {
 	id:597,
-	index:12,
-	type:"building",
+	index:13,
 	name:"tradeGuild",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[598] = {
 	id:598,
-	index:13,
-	type:"building",
+	index:14,
 	name:"tradeGuild",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[599] = {
 	id:599,
-	index:14,
-	type:"building",
+	index:15,
 	name:"tradeGuild",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[600] = {
 	id:600,
-	index:15,
-	type:"building",
+	index:16,
 	name:"tradeGuild",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[601] = {
 	id:601,
-	index:16,
-	type:"building",
+	index:17,
 	name:"tradeGuild",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[602] = {
 	id:602,
-	index:17,
-	type:"building",
+	index:18,
 	name:"tradeGuild",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[603] = {
 	id:603,
-	index:18,
-	type:"building",
+	index:19,
 	name:"tradeGuild",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[604] = {
 	id:604,
-	index:19,
-	type:"building",
+	index:20,
 	name:"tradeGuild",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[605] = {
 	id:605,
-	index:20,
-	type:"building",
+	index:21,
 	name:"tradeGuild",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[606] = {
 	id:606,
-	index:21,
-	type:"building",
+	index:22,
 	name:"tradeGuild",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[607] = {
 	id:607,
-	index:22,
-	type:"building",
+	index:23,
 	name:"tradeGuild",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[608] = {
 	id:608,
-	index:23,
-	type:"building",
+	index:24,
 	name:"tradeGuild",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[609] = {
 	id:609,
-	index:24,
-	type:"building",
+	index:25,
 	name:"tradeGuild",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[610] = {
 	id:610,
-	index:25,
-	type:"building",
+	index:26,
 	name:"tradeGuild",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[611] = {
 	id:611,
-	index:26,
-	type:"building",
+	index:27,
 	name:"tradeGuild",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[612] = {
 	id:612,
-	index:27,
-	type:"building",
+	index:28,
 	name:"tradeGuild",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[613] = {
 	id:613,
-	index:28,
-	type:"building",
+	index:29,
 	name:"tradeGuild",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[614] = {
 	id:614,
-	index:29,
-	type:"building",
+	index:30,
 	name:"tradeGuild",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[615] = {
 	id:615,
-	index:30,
-	type:"building",
+	index:31,
 	name:"tradeGuild",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[616] = {
 	id:616,
-	index:31,
-	type:"building",
+	index:32,
 	name:"tradeGuild",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[617] = {
 	id:617,
-	index:32,
-	type:"building",
+	index:33,
 	name:"tradeGuild",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[618] = {
 	id:618,
-	index:33,
-	type:"building",
+	index:34,
 	name:"tradeGuild",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[619] = {
 	id:619,
-	index:34,
-	type:"building",
+	index:35,
 	name:"tradeGuild",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[620] = {
 	id:620,
-	index:35,
-	type:"building",
+	index:36,
 	name:"tradeGuild",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[621] = {
 	id:621,
-	index:36,
-	type:"building",
+	index:37,
 	name:"tradeGuild",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[622] = {
 	id:622,
-	index:37,
-	type:"building",
+	index:38,
 	name:"tradeGuild",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[623] = {
 	id:623,
-	index:38,
-	type:"building",
+	index:39,
 	name:"tradeGuild",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[624] = {
 	id:624,
-	index:39,
-	type:"building",
-	name:"tradeGuild",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"workshop",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[625] = {
 	id:625,
-	index:1,
-	type:"building",
+	index:2,
 	name:"workshop",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[626] = {
 	id:626,
-	index:2,
-	type:"building",
+	index:3,
 	name:"workshop",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[627] = {
 	id:627,
-	index:3,
-	type:"building",
+	index:4,
 	name:"workshop",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[628] = {
 	id:628,
-	index:4,
-	type:"building",
+	index:5,
 	name:"workshop",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[629] = {
 	id:629,
-	index:5,
-	type:"building",
+	index:6,
 	name:"workshop",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[630] = {
 	id:630,
-	index:6,
-	type:"building",
+	index:7,
 	name:"workshop",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[631] = {
 	id:631,
-	index:7,
-	type:"building",
+	index:8,
 	name:"workshop",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[632] = {
 	id:632,
-	index:8,
-	type:"building",
+	index:9,
 	name:"workshop",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[633] = {
 	id:633,
-	index:9,
-	type:"building",
+	index:10,
 	name:"workshop",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[634] = {
 	id:634,
-	index:10,
-	type:"building",
+	index:11,
 	name:"workshop",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[635] = {
 	id:635,
-	index:11,
-	type:"building",
+	index:12,
 	name:"workshop",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[636] = {
 	id:636,
-	index:12,
-	type:"building",
+	index:13,
 	name:"workshop",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[637] = {
 	id:637,
-	index:13,
-	type:"building",
+	index:14,
 	name:"workshop",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[638] = {
 	id:638,
-	index:14,
-	type:"building",
+	index:15,
 	name:"workshop",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[639] = {
 	id:639,
-	index:15,
-	type:"building",
+	index:16,
 	name:"workshop",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[640] = {
 	id:640,
-	index:16,
-	type:"building",
+	index:17,
 	name:"workshop",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[641] = {
 	id:641,
-	index:17,
-	type:"building",
+	index:18,
 	name:"workshop",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[642] = {
 	id:642,
-	index:18,
-	type:"building",
+	index:19,
 	name:"workshop",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[643] = {
 	id:643,
-	index:19,
-	type:"building",
+	index:20,
 	name:"workshop",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[644] = {
 	id:644,
-	index:20,
-	type:"building",
+	index:21,
 	name:"workshop",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[645] = {
 	id:645,
-	index:21,
-	type:"building",
+	index:22,
 	name:"workshop",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[646] = {
 	id:646,
-	index:22,
-	type:"building",
+	index:23,
 	name:"workshop",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[647] = {
 	id:647,
-	index:23,
-	type:"building",
+	index:24,
 	name:"workshop",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[648] = {
 	id:648,
-	index:24,
-	type:"building",
+	index:25,
 	name:"workshop",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[649] = {
 	id:649,
-	index:25,
-	type:"building",
+	index:26,
 	name:"workshop",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[650] = {
 	id:650,
-	index:26,
-	type:"building",
+	index:27,
 	name:"workshop",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[651] = {
 	id:651,
-	index:27,
-	type:"building",
+	index:28,
 	name:"workshop",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[652] = {
 	id:652,
-	index:28,
-	type:"building",
+	index:29,
 	name:"workshop",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[653] = {
 	id:653,
-	index:29,
-	type:"building",
+	index:30,
 	name:"workshop",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[654] = {
 	id:654,
-	index:30,
-	type:"building",
+	index:31,
 	name:"workshop",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[655] = {
 	id:655,
-	index:31,
-	type:"building",
+	index:32,
 	name:"workshop",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[656] = {
 	id:656,
-	index:32,
-	type:"building",
+	index:33,
 	name:"workshop",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[657] = {
 	id:657,
-	index:33,
-	type:"building",
+	index:34,
 	name:"workshop",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[658] = {
 	id:658,
-	index:34,
-	type:"building",
+	index:35,
 	name:"workshop",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[659] = {
 	id:659,
-	index:35,
-	type:"building",
+	index:36,
 	name:"workshop",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[660] = {
 	id:660,
-	index:36,
-	type:"building",
+	index:37,
 	name:"workshop",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[661] = {
 	id:661,
-	index:37,
-	type:"building",
+	index:38,
 	name:"workshop",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[662] = {
 	id:662,
-	index:38,
-	type:"building",
+	index:39,
 	name:"workshop",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[663] = {
 	id:663,
-	index:39,
-	type:"building",
-	name:"workshop",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"trainingGround",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[664] = {
 	id:664,
-	index:1,
-	type:"building",
+	index:2,
 	name:"trainingGround",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[665] = {
 	id:665,
-	index:2,
-	type:"building",
+	index:3,
 	name:"trainingGround",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[666] = {
 	id:666,
-	index:3,
-	type:"building",
+	index:4,
 	name:"trainingGround",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[667] = {
 	id:667,
-	index:4,
-	type:"building",
+	index:5,
 	name:"trainingGround",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[668] = {
 	id:668,
-	index:5,
-	type:"building",
+	index:6,
 	name:"trainingGround",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[669] = {
 	id:669,
-	index:6,
-	type:"building",
+	index:7,
 	name:"trainingGround",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[670] = {
 	id:670,
-	index:7,
-	type:"building",
+	index:8,
 	name:"trainingGround",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[671] = {
 	id:671,
-	index:8,
-	type:"building",
+	index:9,
 	name:"trainingGround",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[672] = {
 	id:672,
-	index:9,
-	type:"building",
+	index:10,
 	name:"trainingGround",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[673] = {
 	id:673,
-	index:10,
-	type:"building",
+	index:11,
 	name:"trainingGround",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[674] = {
 	id:674,
-	index:11,
-	type:"building",
+	index:12,
 	name:"trainingGround",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[675] = {
 	id:675,
-	index:12,
-	type:"building",
+	index:13,
 	name:"trainingGround",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[676] = {
 	id:676,
-	index:13,
-	type:"building",
+	index:14,
 	name:"trainingGround",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[677] = {
 	id:677,
-	index:14,
-	type:"building",
+	index:15,
 	name:"trainingGround",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[678] = {
 	id:678,
-	index:15,
-	type:"building",
+	index:16,
 	name:"trainingGround",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[679] = {
 	id:679,
-	index:16,
-	type:"building",
+	index:17,
 	name:"trainingGround",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[680] = {
 	id:680,
-	index:17,
-	type:"building",
+	index:18,
 	name:"trainingGround",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[681] = {
 	id:681,
-	index:18,
-	type:"building",
+	index:19,
 	name:"trainingGround",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[682] = {
 	id:682,
-	index:19,
-	type:"building",
+	index:20,
 	name:"trainingGround",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[683] = {
 	id:683,
-	index:20,
-	type:"building",
+	index:21,
 	name:"trainingGround",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[684] = {
 	id:684,
-	index:21,
-	type:"building",
+	index:22,
 	name:"trainingGround",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[685] = {
 	id:685,
-	index:22,
-	type:"building",
+	index:23,
 	name:"trainingGround",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[686] = {
 	id:686,
-	index:23,
-	type:"building",
+	index:24,
 	name:"trainingGround",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[687] = {
 	id:687,
-	index:24,
-	type:"building",
+	index:25,
 	name:"trainingGround",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[688] = {
 	id:688,
-	index:25,
-	type:"building",
+	index:26,
 	name:"trainingGround",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[689] = {
 	id:689,
-	index:26,
-	type:"building",
+	index:27,
 	name:"trainingGround",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[690] = {
 	id:690,
-	index:27,
-	type:"building",
+	index:28,
 	name:"trainingGround",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[691] = {
 	id:691,
-	index:28,
-	type:"building",
+	index:29,
 	name:"trainingGround",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[692] = {
 	id:692,
-	index:29,
-	type:"building",
+	index:30,
 	name:"trainingGround",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[693] = {
 	id:693,
-	index:30,
-	type:"building",
+	index:31,
 	name:"trainingGround",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[694] = {
 	id:694,
-	index:31,
-	type:"building",
+	index:32,
 	name:"trainingGround",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[695] = {
 	id:695,
-	index:32,
-	type:"building",
+	index:33,
 	name:"trainingGround",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[696] = {
 	id:696,
-	index:33,
-	type:"building",
+	index:34,
 	name:"trainingGround",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[697] = {
 	id:697,
-	index:34,
-	type:"building",
+	index:35,
 	name:"trainingGround",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[698] = {
 	id:698,
-	index:35,
-	type:"building",
+	index:36,
 	name:"trainingGround",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[699] = {
 	id:699,
-	index:36,
-	type:"building",
+	index:37,
 	name:"trainingGround",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[700] = {
 	id:700,
-	index:37,
-	type:"building",
+	index:38,
 	name:"trainingGround",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[701] = {
 	id:701,
-	index:38,
-	type:"building",
+	index:39,
 	name:"trainingGround",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[702] = {
 	id:702,
-	index:39,
-	type:"building",
-	name:"trainingGround",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"hunterHall",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[703] = {
 	id:703,
-	index:1,
-	type:"building",
+	index:2,
 	name:"hunterHall",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[704] = {
 	id:704,
-	index:2,
-	type:"building",
+	index:3,
 	name:"hunterHall",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[705] = {
 	id:705,
-	index:3,
-	type:"building",
+	index:4,
 	name:"hunterHall",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[706] = {
 	id:706,
-	index:4,
-	type:"building",
+	index:5,
 	name:"hunterHall",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[707] = {
 	id:707,
-	index:5,
-	type:"building",
+	index:6,
 	name:"hunterHall",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[708] = {
 	id:708,
-	index:6,
-	type:"building",
+	index:7,
 	name:"hunterHall",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[709] = {
 	id:709,
-	index:7,
-	type:"building",
+	index:8,
 	name:"hunterHall",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[710] = {
 	id:710,
-	index:8,
-	type:"building",
+	index:9,
 	name:"hunterHall",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[711] = {
 	id:711,
-	index:9,
-	type:"building",
+	index:10,
 	name:"hunterHall",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[712] = {
 	id:712,
-	index:10,
-	type:"building",
+	index:11,
 	name:"hunterHall",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[713] = {
 	id:713,
-	index:11,
-	type:"building",
+	index:12,
 	name:"hunterHall",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[714] = {
 	id:714,
-	index:12,
-	type:"building",
+	index:13,
 	name:"hunterHall",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[715] = {
 	id:715,
-	index:13,
-	type:"building",
+	index:14,
 	name:"hunterHall",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[716] = {
 	id:716,
-	index:14,
-	type:"building",
+	index:15,
 	name:"hunterHall",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[717] = {
 	id:717,
-	index:15,
-	type:"building",
+	index:16,
 	name:"hunterHall",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[718] = {
 	id:718,
-	index:16,
-	type:"building",
+	index:17,
 	name:"hunterHall",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[719] = {
 	id:719,
-	index:17,
-	type:"building",
+	index:18,
 	name:"hunterHall",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[720] = {
 	id:720,
-	index:18,
-	type:"building",
+	index:19,
 	name:"hunterHall",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[721] = {
 	id:721,
-	index:19,
-	type:"building",
+	index:20,
 	name:"hunterHall",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[722] = {
 	id:722,
-	index:20,
-	type:"building",
+	index:21,
 	name:"hunterHall",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[723] = {
 	id:723,
-	index:21,
-	type:"building",
+	index:22,
 	name:"hunterHall",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[724] = {
 	id:724,
-	index:22,
-	type:"building",
+	index:23,
 	name:"hunterHall",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[725] = {
 	id:725,
-	index:23,
-	type:"building",
+	index:24,
 	name:"hunterHall",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[726] = {
 	id:726,
-	index:24,
-	type:"building",
+	index:25,
 	name:"hunterHall",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[727] = {
 	id:727,
-	index:25,
-	type:"building",
+	index:26,
 	name:"hunterHall",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[728] = {
 	id:728,
-	index:26,
-	type:"building",
+	index:27,
 	name:"hunterHall",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[729] = {
 	id:729,
-	index:27,
-	type:"building",
+	index:28,
 	name:"hunterHall",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[730] = {
 	id:730,
-	index:28,
-	type:"building",
+	index:29,
 	name:"hunterHall",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[731] = {
 	id:731,
-	index:29,
-	type:"building",
+	index:30,
 	name:"hunterHall",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[732] = {
 	id:732,
-	index:30,
-	type:"building",
+	index:31,
 	name:"hunterHall",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[733] = {
 	id:733,
-	index:31,
-	type:"building",
+	index:32,
 	name:"hunterHall",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[734] = {
 	id:734,
-	index:32,
-	type:"building",
+	index:33,
 	name:"hunterHall",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[735] = {
 	id:735,
-	index:33,
-	type:"building",
+	index:34,
 	name:"hunterHall",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[736] = {
 	id:736,
-	index:34,
-	type:"building",
+	index:35,
 	name:"hunterHall",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[737] = {
 	id:737,
-	index:35,
-	type:"building",
+	index:36,
 	name:"hunterHall",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[738] = {
 	id:738,
-	index:36,
-	type:"building",
+	index:37,
 	name:"hunterHall",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[739] = {
 	id:739,
-	index:37,
-	type:"building",
+	index:38,
 	name:"hunterHall",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[740] = {
 	id:740,
-	index:38,
-	type:"building",
+	index:39,
 	name:"hunterHall",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[741] = {
 	id:741,
-	index:39,
-	type:"building",
-	name:"hunterHall",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"stable",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[742] = {
 	id:742,
-	index:1,
-	type:"building",
+	index:2,
 	name:"stable",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[743] = {
 	id:743,
-	index:2,
-	type:"building",
+	index:3,
 	name:"stable",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[744] = {
 	id:744,
-	index:3,
-	type:"building",
+	index:4,
 	name:"stable",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[745] = {
 	id:745,
-	index:4,
-	type:"building",
+	index:5,
 	name:"stable",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[746] = {
 	id:746,
-	index:5,
-	type:"building",
+	index:6,
 	name:"stable",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[747] = {
 	id:747,
-	index:6,
-	type:"building",
+	index:7,
 	name:"stable",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[748] = {
 	id:748,
-	index:7,
-	type:"building",
+	index:8,
 	name:"stable",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[749] = {
 	id:749,
-	index:8,
-	type:"building",
+	index:9,
 	name:"stable",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[750] = {
 	id:750,
-	index:9,
-	type:"building",
+	index:10,
 	name:"stable",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[751] = {
 	id:751,
-	index:10,
-	type:"building",
+	index:11,
 	name:"stable",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[752] = {
 	id:752,
-	index:11,
-	type:"building",
+	index:12,
 	name:"stable",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[753] = {
 	id:753,
-	index:12,
-	type:"building",
+	index:13,
 	name:"stable",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[754] = {
 	id:754,
-	index:13,
-	type:"building",
+	index:14,
 	name:"stable",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[755] = {
 	id:755,
-	index:14,
-	type:"building",
+	index:15,
 	name:"stable",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[756] = {
 	id:756,
-	index:15,
-	type:"building",
+	index:16,
 	name:"stable",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[757] = {
 	id:757,
-	index:16,
-	type:"building",
+	index:17,
 	name:"stable",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[758] = {
 	id:758,
-	index:17,
-	type:"building",
+	index:18,
 	name:"stable",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[759] = {
 	id:759,
-	index:18,
-	type:"building",
+	index:19,
 	name:"stable",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[760] = {
 	id:760,
-	index:19,
-	type:"building",
+	index:20,
 	name:"stable",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[761] = {
 	id:761,
-	index:20,
-	type:"building",
+	index:21,
 	name:"stable",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[762] = {
 	id:762,
-	index:21,
-	type:"building",
+	index:22,
 	name:"stable",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[763] = {
 	id:763,
-	index:22,
-	type:"building",
+	index:23,
 	name:"stable",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[764] = {
 	id:764,
-	index:23,
-	type:"building",
+	index:24,
 	name:"stable",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[765] = {
 	id:765,
-	index:24,
-	type:"building",
+	index:25,
 	name:"stable",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[766] = {
 	id:766,
-	index:25,
-	type:"building",
+	index:26,
 	name:"stable",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[767] = {
 	id:767,
-	index:26,
-	type:"building",
+	index:27,
 	name:"stable",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[768] = {
 	id:768,
-	index:27,
-	type:"building",
+	index:28,
 	name:"stable",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[769] = {
 	id:769,
-	index:28,
-	type:"building",
+	index:29,
 	name:"stable",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[770] = {
 	id:770,
-	index:29,
-	type:"building",
+	index:30,
 	name:"stable",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[771] = {
 	id:771,
-	index:30,
-	type:"building",
+	index:31,
 	name:"stable",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[772] = {
 	id:772,
-	index:31,
-	type:"building",
+	index:32,
 	name:"stable",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[773] = {
 	id:773,
-	index:32,
-	type:"building",
+	index:33,
 	name:"stable",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[774] = {
 	id:774,
-	index:33,
-	type:"building",
+	index:34,
 	name:"stable",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[775] = {
 	id:775,
-	index:34,
-	type:"building",
+	index:35,
 	name:"stable",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[776] = {
 	id:776,
-	index:35,
-	type:"building",
+	index:36,
 	name:"stable",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[777] = {
 	id:777,
-	index:36,
-	type:"building",
+	index:37,
 	name:"stable",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[778] = {
 	id:778,
-	index:37,
-	type:"building",
+	index:38,
 	name:"stable",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[779] = {
 	id:779,
-	index:38,
-	type:"building",
+	index:39,
 	name:"stable",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[780] = {
 	id:780,
-	index:39,
-	type:"building",
-	name:"stable",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"wall",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[781] = {
 	id:781,
-	index:1,
-	type:"building",
+	index:2,
 	name:"wall",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[782] = {
 	id:782,
-	index:2,
-	type:"building",
+	index:3,
 	name:"wall",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[783] = {
 	id:783,
-	index:3,
-	type:"building",
+	index:4,
 	name:"wall",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[784] = {
 	id:784,
-	index:4,
-	type:"building",
+	index:5,
 	name:"wall",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[785] = {
 	id:785,
-	index:5,
-	type:"building",
+	index:6,
 	name:"wall",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[786] = {
 	id:786,
-	index:6,
-	type:"building",
+	index:7,
 	name:"wall",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[787] = {
 	id:787,
-	index:7,
-	type:"building",
+	index:8,
 	name:"wall",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[788] = {
 	id:788,
-	index:8,
-	type:"building",
+	index:9,
 	name:"wall",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[789] = {
 	id:789,
-	index:9,
-	type:"building",
+	index:10,
 	name:"wall",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[790] = {
 	id:790,
-	index:10,
-	type:"building",
+	index:11,
 	name:"wall",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[791] = {
 	id:791,
-	index:11,
-	type:"building",
+	index:12,
 	name:"wall",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[792] = {
 	id:792,
-	index:12,
-	type:"building",
+	index:13,
 	name:"wall",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[793] = {
 	id:793,
-	index:13,
-	type:"building",
+	index:14,
 	name:"wall",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[794] = {
 	id:794,
-	index:14,
-	type:"building",
+	index:15,
 	name:"wall",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[795] = {
 	id:795,
-	index:15,
-	type:"building",
+	index:16,
 	name:"wall",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[796] = {
 	id:796,
-	index:16,
-	type:"building",
+	index:17,
 	name:"wall",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[797] = {
 	id:797,
-	index:17,
-	type:"building",
+	index:18,
 	name:"wall",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[798] = {
 	id:798,
-	index:18,
-	type:"building",
+	index:19,
 	name:"wall",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[799] = {
 	id:799,
-	index:19,
-	type:"building",
+	index:20,
 	name:"wall",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[800] = {
 	id:800,
-	index:20,
-	type:"building",
+	index:21,
 	name:"wall",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[801] = {
 	id:801,
-	index:21,
-	type:"building",
+	index:22,
 	name:"wall",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[802] = {
 	id:802,
-	index:22,
-	type:"building",
+	index:23,
 	name:"wall",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[803] = {
 	id:803,
-	index:23,
-	type:"building",
+	index:24,
 	name:"wall",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[804] = {
 	id:804,
-	index:24,
-	type:"building",
+	index:25,
 	name:"wall",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[805] = {
 	id:805,
-	index:25,
-	type:"building",
+	index:26,
 	name:"wall",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[806] = {
 	id:806,
-	index:26,
-	type:"building",
+	index:27,
 	name:"wall",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[807] = {
 	id:807,
-	index:27,
-	type:"building",
+	index:28,
 	name:"wall",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[808] = {
 	id:808,
-	index:28,
-	type:"building",
+	index:29,
 	name:"wall",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[809] = {
 	id:809,
-	index:29,
-	type:"building",
+	index:30,
 	name:"wall",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[810] = {
 	id:810,
-	index:30,
-	type:"building",
+	index:31,
 	name:"wall",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[811] = {
 	id:811,
-	index:31,
-	type:"building",
+	index:32,
 	name:"wall",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[812] = {
 	id:812,
-	index:32,
-	type:"building",
+	index:33,
 	name:"wall",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[813] = {
 	id:813,
-	index:33,
-	type:"building",
+	index:34,
 	name:"wall",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[814] = {
 	id:814,
-	index:34,
-	type:"building",
+	index:35,
 	name:"wall",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[815] = {
 	id:815,
-	index:35,
-	type:"building",
+	index:36,
 	name:"wall",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[816] = {
 	id:816,
-	index:36,
-	type:"building",
+	index:37,
 	name:"wall",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[817] = {
 	id:817,
-	index:37,
-	type:"building",
+	index:38,
 	name:"wall",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[818] = {
 	id:818,
-	index:38,
-	type:"building",
+	index:39,
 	name:"wall",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[819] = {
 	id:819,
-	index:39,
-	type:"building",
-	name:"wall",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"tower",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[820] = {
 	id:820,
-	index:1,
-	type:"building",
+	index:2,
 	name:"tower",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[821] = {
 	id:821,
-	index:2,
-	type:"building",
+	index:3,
 	name:"tower",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[822] = {
 	id:822,
-	index:3,
-	type:"building",
+	index:4,
 	name:"tower",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[823] = {
 	id:823,
-	index:4,
-	type:"building",
+	index:5,
 	name:"tower",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[824] = {
 	id:824,
-	index:5,
-	type:"building",
+	index:6,
 	name:"tower",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[825] = {
 	id:825,
-	index:6,
-	type:"building",
+	index:7,
 	name:"tower",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[826] = {
 	id:826,
-	index:7,
-	type:"building",
+	index:8,
 	name:"tower",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[827] = {
 	id:827,
-	index:8,
-	type:"building",
+	index:9,
 	name:"tower",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[828] = {
 	id:828,
-	index:9,
-	type:"building",
+	index:10,
 	name:"tower",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[829] = {
 	id:829,
-	index:10,
-	type:"building",
+	index:11,
 	name:"tower",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[830] = {
 	id:830,
-	index:11,
-	type:"building",
+	index:12,
 	name:"tower",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[831] = {
 	id:831,
-	index:12,
-	type:"building",
+	index:13,
 	name:"tower",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[832] = {
 	id:832,
-	index:13,
-	type:"building",
+	index:14,
 	name:"tower",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[833] = {
 	id:833,
-	index:14,
-	type:"building",
+	index:15,
 	name:"tower",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[834] = {
 	id:834,
-	index:15,
-	type:"building",
+	index:16,
 	name:"tower",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[835] = {
 	id:835,
-	index:16,
-	type:"building",
+	index:17,
 	name:"tower",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[836] = {
 	id:836,
-	index:17,
-	type:"building",
+	index:18,
 	name:"tower",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[837] = {
 	id:837,
-	index:18,
-	type:"building",
+	index:19,
 	name:"tower",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[838] = {
 	id:838,
-	index:19,
-	type:"building",
+	index:20,
 	name:"tower",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[839] = {
 	id:839,
-	index:20,
-	type:"building",
+	index:21,
 	name:"tower",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[840] = {
 	id:840,
-	index:21,
-	type:"building",
+	index:22,
 	name:"tower",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[841] = {
 	id:841,
-	index:22,
-	type:"building",
+	index:23,
 	name:"tower",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[842] = {
 	id:842,
-	index:23,
-	type:"building",
+	index:24,
 	name:"tower",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[843] = {
 	id:843,
-	index:24,
-	type:"building",
+	index:25,
 	name:"tower",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[844] = {
 	id:844,
-	index:25,
-	type:"building",
+	index:26,
 	name:"tower",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[845] = {
 	id:845,
-	index:26,
-	type:"building",
+	index:27,
 	name:"tower",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[846] = {
 	id:846,
-	index:27,
-	type:"building",
+	index:28,
 	name:"tower",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[847] = {
 	id:847,
-	index:28,
-	type:"building",
+	index:29,
 	name:"tower",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[848] = {
 	id:848,
-	index:29,
-	type:"building",
+	index:30,
 	name:"tower",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[849] = {
 	id:849,
-	index:30,
-	type:"building",
+	index:31,
 	name:"tower",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[850] = {
 	id:850,
-	index:31,
-	type:"building",
+	index:32,
 	name:"tower",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[851] = {
 	id:851,
-	index:32,
-	type:"building",
+	index:33,
 	name:"tower",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[852] = {
 	id:852,
-	index:33,
-	type:"building",
+	index:34,
 	name:"tower",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[853] = {
 	id:853,
-	index:34,
-	type:"building",
+	index:35,
 	name:"tower",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[854] = {
 	id:854,
-	index:35,
-	type:"building",
+	index:36,
 	name:"tower",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[855] = {
 	id:855,
-	index:36,
-	type:"building",
+	index:37,
 	name:"tower",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[856] = {
 	id:856,
-	index:37,
-	type:"building",
+	index:38,
 	name:"tower",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[857] = {
 	id:857,
-	index:38,
-	type:"building",
+	index:39,
 	name:"tower",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[858] = {
 	id:858,
-	index:39,
-	type:"building",
-	name:"tower",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"dwelling",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[859] = {
 	id:859,
-	index:1,
-	type:"house",
+	index:2,
 	name:"dwelling",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[860] = {
 	id:860,
-	index:2,
-	type:"house",
+	index:3,
 	name:"dwelling",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[861] = {
 	id:861,
-	index:3,
-	type:"house",
+	index:4,
 	name:"dwelling",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[862] = {
 	id:862,
-	index:4,
-	type:"house",
+	index:5,
 	name:"dwelling",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[863] = {
 	id:863,
-	index:5,
-	type:"house",
+	index:6,
 	name:"dwelling",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[864] = {
 	id:864,
-	index:6,
-	type:"house",
+	index:7,
 	name:"dwelling",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[865] = {
 	id:865,
-	index:7,
-	type:"house",
+	index:8,
 	name:"dwelling",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[866] = {
 	id:866,
-	index:8,
-	type:"house",
+	index:9,
 	name:"dwelling",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[867] = {
 	id:867,
-	index:9,
-	type:"house",
+	index:10,
 	name:"dwelling",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[868] = {
 	id:868,
-	index:10,
-	type:"house",
+	index:11,
 	name:"dwelling",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[869] = {
 	id:869,
-	index:11,
-	type:"house",
+	index:12,
 	name:"dwelling",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[870] = {
 	id:870,
-	index:12,
-	type:"house",
+	index:13,
 	name:"dwelling",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[871] = {
 	id:871,
-	index:13,
-	type:"house",
+	index:14,
 	name:"dwelling",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[872] = {
 	id:872,
-	index:14,
-	type:"house",
+	index:15,
 	name:"dwelling",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[873] = {
 	id:873,
-	index:15,
-	type:"house",
+	index:16,
 	name:"dwelling",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[874] = {
 	id:874,
-	index:16,
-	type:"house",
+	index:17,
 	name:"dwelling",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[875] = {
 	id:875,
-	index:17,
-	type:"house",
+	index:18,
 	name:"dwelling",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[876] = {
 	id:876,
-	index:18,
-	type:"house",
+	index:19,
 	name:"dwelling",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[877] = {
 	id:877,
-	index:19,
-	type:"house",
+	index:20,
 	name:"dwelling",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[878] = {
 	id:878,
-	index:20,
-	type:"house",
+	index:21,
 	name:"dwelling",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[879] = {
 	id:879,
-	index:21,
-	type:"house",
+	index:22,
 	name:"dwelling",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[880] = {
 	id:880,
-	index:22,
-	type:"house",
+	index:23,
 	name:"dwelling",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[881] = {
 	id:881,
-	index:23,
-	type:"house",
+	index:24,
 	name:"dwelling",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[882] = {
 	id:882,
-	index:24,
-	type:"house",
+	index:25,
 	name:"dwelling",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[883] = {
 	id:883,
-	index:25,
-	type:"house",
+	index:26,
 	name:"dwelling",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[884] = {
 	id:884,
-	index:26,
-	type:"house",
+	index:27,
 	name:"dwelling",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[885] = {
 	id:885,
-	index:27,
-	type:"house",
+	index:28,
 	name:"dwelling",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[886] = {
 	id:886,
-	index:28,
-	type:"house",
+	index:29,
 	name:"dwelling",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[887] = {
 	id:887,
-	index:29,
-	type:"house",
+	index:30,
 	name:"dwelling",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[888] = {
 	id:888,
-	index:30,
-	type:"house",
+	index:31,
 	name:"dwelling",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[889] = {
 	id:889,
-	index:31,
-	type:"house",
+	index:32,
 	name:"dwelling",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[890] = {
 	id:890,
-	index:32,
-	type:"house",
+	index:33,
 	name:"dwelling",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[891] = {
 	id:891,
-	index:33,
-	type:"house",
+	index:34,
 	name:"dwelling",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[892] = {
 	id:892,
-	index:34,
-	type:"house",
+	index:35,
 	name:"dwelling",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[893] = {
 	id:893,
-	index:35,
-	type:"house",
+	index:36,
 	name:"dwelling",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[894] = {
 	id:894,
-	index:36,
-	type:"house",
+	index:37,
 	name:"dwelling",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[895] = {
 	id:895,
-	index:37,
-	type:"house",
+	index:38,
 	name:"dwelling",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[896] = {
 	id:896,
-	index:38,
-	type:"house",
+	index:39,
 	name:"dwelling",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[897] = {
 	id:897,
-	index:39,
-	type:"house",
-	name:"dwelling",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"woodcutter",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[898] = {
 	id:898,
-	index:1,
-	type:"house",
+	index:2,
 	name:"woodcutter",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[899] = {
 	id:899,
-	index:2,
-	type:"house",
+	index:3,
 	name:"woodcutter",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[900] = {
 	id:900,
-	index:3,
-	type:"house",
+	index:4,
 	name:"woodcutter",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[901] = {
 	id:901,
-	index:4,
-	type:"house",
+	index:5,
 	name:"woodcutter",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[902] = {
 	id:902,
-	index:5,
-	type:"house",
+	index:6,
 	name:"woodcutter",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[903] = {
 	id:903,
-	index:6,
-	type:"house",
+	index:7,
 	name:"woodcutter",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[904] = {
 	id:904,
-	index:7,
-	type:"house",
+	index:8,
 	name:"woodcutter",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[905] = {
 	id:905,
-	index:8,
-	type:"house",
+	index:9,
 	name:"woodcutter",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[906] = {
 	id:906,
-	index:9,
-	type:"house",
+	index:10,
 	name:"woodcutter",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[907] = {
 	id:907,
-	index:10,
-	type:"house",
+	index:11,
 	name:"woodcutter",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[908] = {
 	id:908,
-	index:11,
-	type:"house",
+	index:12,
 	name:"woodcutter",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[909] = {
 	id:909,
-	index:12,
-	type:"house",
+	index:13,
 	name:"woodcutter",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[910] = {
 	id:910,
-	index:13,
-	type:"house",
+	index:14,
 	name:"woodcutter",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[911] = {
 	id:911,
-	index:14,
-	type:"house",
+	index:15,
 	name:"woodcutter",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[912] = {
 	id:912,
-	index:15,
-	type:"house",
+	index:16,
 	name:"woodcutter",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[913] = {
 	id:913,
-	index:16,
-	type:"house",
+	index:17,
 	name:"woodcutter",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[914] = {
 	id:914,
-	index:17,
-	type:"house",
+	index:18,
 	name:"woodcutter",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[915] = {
 	id:915,
-	index:18,
-	type:"house",
+	index:19,
 	name:"woodcutter",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[916] = {
 	id:916,
-	index:19,
-	type:"house",
+	index:20,
 	name:"woodcutter",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[917] = {
 	id:917,
-	index:20,
-	type:"house",
+	index:21,
 	name:"woodcutter",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[918] = {
 	id:918,
-	index:21,
-	type:"house",
+	index:22,
 	name:"woodcutter",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[919] = {
 	id:919,
-	index:22,
-	type:"house",
+	index:23,
 	name:"woodcutter",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[920] = {
 	id:920,
-	index:23,
-	type:"house",
+	index:24,
 	name:"woodcutter",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[921] = {
 	id:921,
-	index:24,
-	type:"house",
+	index:25,
 	name:"woodcutter",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[922] = {
 	id:922,
-	index:25,
-	type:"house",
+	index:26,
 	name:"woodcutter",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[923] = {
 	id:923,
-	index:26,
-	type:"house",
+	index:27,
 	name:"woodcutter",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[924] = {
 	id:924,
-	index:27,
-	type:"house",
+	index:28,
 	name:"woodcutter",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[925] = {
 	id:925,
-	index:28,
-	type:"house",
+	index:29,
 	name:"woodcutter",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[926] = {
 	id:926,
-	index:29,
-	type:"house",
+	index:30,
 	name:"woodcutter",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[927] = {
 	id:927,
-	index:30,
-	type:"house",
+	index:31,
 	name:"woodcutter",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[928] = {
 	id:928,
-	index:31,
-	type:"house",
+	index:32,
 	name:"woodcutter",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[929] = {
 	id:929,
-	index:32,
-	type:"house",
+	index:33,
 	name:"woodcutter",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[930] = {
 	id:930,
-	index:33,
-	type:"house",
+	index:34,
 	name:"woodcutter",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[931] = {
 	id:931,
-	index:34,
-	type:"house",
+	index:35,
 	name:"woodcutter",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[932] = {
 	id:932,
-	index:35,
-	type:"house",
+	index:36,
 	name:"woodcutter",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[933] = {
 	id:933,
-	index:36,
-	type:"house",
+	index:37,
 	name:"woodcutter",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[934] = {
 	id:934,
-	index:37,
-	type:"house",
+	index:38,
 	name:"woodcutter",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[935] = {
 	id:935,
-	index:38,
-	type:"house",
+	index:39,
 	name:"woodcutter",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[936] = {
 	id:936,
-	index:39,
-	type:"house",
-	name:"woodcutter",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"quarrier",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[937] = {
 	id:937,
-	index:1,
-	type:"house",
+	index:2,
 	name:"quarrier",
-	level:2,
-	wood:400,
-	stone:400,
+	level:3,
+	wood:900,
+	stone:900,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:200
+	exp:450
 }
 cityBuild[938] = {
 	id:938,
-	index:2,
-	type:"house",
+	index:3,
 	name:"quarrier",
-	level:3,
-	wood:900,
-	stone:900,
+	level:4,
+	wood:1600,
+	stone:1600,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:450
+	exp:800
 }
 cityBuild[939] = {
 	id:939,
-	index:3,
-	type:"house",
+	index:4,
 	name:"quarrier",
-	level:4,
-	wood:1600,
-	stone:1600,
+	level:5,
+	wood:2500,
+	stone:2500,
 	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:800
+	exp:1250
 }
 cityBuild[940] = {
 	id:940,
-	index:4,
-	type:"house",
+	index:5,
 	name:"quarrier",
-	level:5,
-	wood:2500,
-	stone:2500,
-	iron:860,
+	level:6,
+	wood:3600,
+	stone:3600,
+	iron:30960,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1250
+	exp:1800
 }
 cityBuild[941] = {
 	id:941,
-	index:5,
-	type:"house",
+	index:6,
 	name:"quarrier",
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:30960,
+	level:7,
+	wood:4900,
+	stone:4900,
+	iron:61920,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:1800
+	exp:2450
 }
 cityBuild[942] = {
 	id:942,
-	index:6,
-	type:"house",
+	index:7,
 	name:"quarrier",
-	level:7,
-	wood:4900,
-	stone:4900,
-	iron:61920,
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:92880,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:2450
+	exp:3200
 }
 cityBuild[943] = {
 	id:943,
-	index:7,
-	type:"house",
+	index:8,
 	name:"quarrier",
-	level:8,
-	wood:6400,
-	stone:6400,
-	iron:92880,
+	level:9,
+	wood:8100,
+	stone:8100,
+	iron:123840,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:3200
+	exp:4050
 }
 cityBuild[944] = {
 	id:944,
-	index:8,
-	type:"house",
+	index:9,
 	name:"quarrier",
-	level:9,
-	wood:8100,
-	stone:8100,
-	iron:123840,
+	level:10,
+	wood:10000,
+	stone:10000,
+	iron:154800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:4050
+	exp:5000
 }
 cityBuild[945] = {
 	id:945,
-	index:9,
-	type:"house",
+	index:10,
 	name:"quarrier",
-	level:10,
-	wood:10000,
-	stone:10000,
-	iron:154800,
+	level:11,
+	wood:12100,
+	stone:12100,
+	iron:185760,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:5000
+	exp:6050
 }
 cityBuild[946] = {
 	id:946,
-	index:10,
-	type:"house",
+	index:11,
 	name:"quarrier",
-	level:11,
-	wood:12100,
-	stone:12100,
-	iron:185760,
+	level:12,
+	wood:14400,
+	stone:14400,
+	iron:216720,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:6050
+	exp:7200
 }
 cityBuild[947] = {
 	id:947,
-	index:11,
-	type:"house",
+	index:12,
 	name:"quarrier",
-	level:12,
-	wood:14400,
-	stone:14400,
-	iron:216720,
+	level:13,
+	wood:16900,
+	stone:16900,
+	iron:247680,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:7200
+	exp:8450
 }
 cityBuild[948] = {
 	id:948,
-	index:12,
-	type:"house",
+	index:13,
 	name:"quarrier",
-	level:13,
-	wood:16900,
-	stone:16900,
-	iron:247680,
+	level:14,
+	wood:19600,
+	stone:19600,
+	iron:278640,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:8450
+	exp:9800
 }
 cityBuild[949] = {
 	id:949,
-	index:13,
-	type:"house",
+	index:14,
 	name:"quarrier",
-	level:14,
-	wood:19600,
-	stone:19600,
-	iron:278640,
+	level:15,
+	wood:22500,
+	stone:22500,
+	iron:309600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:9800
+	exp:11250
 }
 cityBuild[950] = {
 	id:950,
-	index:14,
-	type:"house",
+	index:15,
 	name:"quarrier",
-	level:15,
-	wood:22500,
-	stone:22500,
-	iron:309600,
+	level:16,
+	wood:25600,
+	stone:25600,
+	iron:412800,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:11250
+	exp:12800
 }
 cityBuild[951] = {
 	id:951,
-	index:15,
-	type:"house",
+	index:16,
 	name:"quarrier",
-	level:16,
-	wood:25600,
-	stone:25600,
-	iron:412800,
+	level:17,
+	wood:28900,
+	stone:28900,
+	iron:516000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:12800
+	exp:14450
 }
 cityBuild[952] = {
 	id:952,
-	index:16,
-	type:"house",
+	index:17,
 	name:"quarrier",
-	level:17,
-	wood:28900,
-	stone:28900,
-	iron:516000,
+	level:18,
+	wood:32400,
+	stone:32400,
+	iron:619200,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:14450
+	exp:16200
 }
 cityBuild[953] = {
 	id:953,
-	index:17,
-	type:"house",
+	index:18,
 	name:"quarrier",
-	level:18,
-	wood:32400,
-	stone:32400,
-	iron:619200,
+	level:19,
+	wood:36100,
+	stone:36100,
+	iron:722400,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:16200
+	exp:18050
 }
 cityBuild[954] = {
 	id:954,
-	index:18,
-	type:"house",
+	index:19,
 	name:"quarrier",
-	level:19,
-	wood:36100,
-	stone:36100,
-	iron:722400,
+	level:20,
+	wood:40000,
+	stone:40000,
+	iron:825600,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:18050
+	exp:20000
 }
 cityBuild[955] = {
 	id:955,
-	index:19,
-	type:"house",
+	index:20,
 	name:"quarrier",
-	level:20,
-	wood:40000,
-	stone:40000,
-	iron:825600,
+	level:21,
+	wood:44100,
+	stone:44100,
+	iron:1548000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:20000
+	exp:22050
 }
 cityBuild[956] = {
 	id:956,
-	index:20,
-	type:"house",
+	index:21,
 	name:"quarrier",
-	level:21,
-	wood:44100,
-	stone:44100,
-	iron:1548000,
+	level:22,
+	wood:48400,
+	stone:48400,
+	iron:3096000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:22050
+	exp:24200
 }
 cityBuild[957] = {
 	id:957,
-	index:21,
-	type:"house",
+	index:22,
 	name:"quarrier",
-	level:22,
-	wood:48400,
-	stone:48400,
-	iron:3096000,
+	level:23,
+	wood:52900,
+	stone:52900,
+	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:24200
+	exp:26450
 }
 cityBuild[958] = {
 	id:958,
-	index:22,
-	type:"house",
+	index:23,
 	name:"quarrier",
-	level:23,
-	wood:52900,
-	stone:52900,
+	level:24,
+	wood:57600,
+	stone:57600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:26450
+	exp:28800
 }
 cityBuild[959] = {
 	id:959,
-	index:23,
-	type:"house",
+	index:24,
 	name:"quarrier",
-	level:24,
-	wood:57600,
-	stone:57600,
+	level:25,
+	wood:62500,
+	stone:62500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:28800
+	exp:31250
 }
 cityBuild[960] = {
 	id:960,
-	index:24,
-	type:"house",
+	index:25,
 	name:"quarrier",
-	level:25,
-	wood:62500,
-	stone:62500,
+	level:26,
+	wood:67600,
+	stone:67600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:31250
+	exp:33800
 }
 cityBuild[961] = {
 	id:961,
-	index:25,
-	type:"house",
+	index:26,
 	name:"quarrier",
-	level:26,
-	wood:67600,
-	stone:67600,
+	level:27,
+	wood:72900,
+	stone:72900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:33800
+	exp:36450
 }
 cityBuild[962] = {
 	id:962,
-	index:26,
-	type:"house",
+	index:27,
 	name:"quarrier",
-	level:27,
-	wood:72900,
-	stone:72900,
+	level:28,
+	wood:78400,
+	stone:78400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:36450
+	exp:39200
 }
 cityBuild[963] = {
 	id:963,
-	index:27,
-	type:"house",
+	index:28,
 	name:"quarrier",
-	level:28,
-	wood:78400,
-	stone:78400,
+	level:29,
+	wood:84100,
+	stone:84100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:39200
+	exp:42050
 }
 cityBuild[964] = {
 	id:964,
-	index:28,
-	type:"house",
+	index:29,
 	name:"quarrier",
-	level:29,
-	wood:84100,
-	stone:84100,
+	level:30,
+	wood:90000,
+	stone:90000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:42050
+	exp:45000
 }
 cityBuild[965] = {
 	id:965,
-	index:29,
-	type:"house",
+	index:30,
 	name:"quarrier",
-	level:30,
-	wood:90000,
-	stone:90000,
+	level:31,
+	wood:96100,
+	stone:96100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:45000
+	exp:48050
 }
 cityBuild[966] = {
 	id:966,
-	index:30,
-	type:"house",
+	index:31,
 	name:"quarrier",
-	level:31,
-	wood:96100,
-	stone:96100,
+	level:32,
+	wood:102400,
+	stone:102400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:48050
+	exp:51200
 }
 cityBuild[967] = {
 	id:967,
-	index:31,
-	type:"house",
+	index:32,
 	name:"quarrier",
-	level:32,
-	wood:102400,
-	stone:102400,
+	level:33,
+	wood:108900,
+	stone:108900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:51200
+	exp:54450
 }
 cityBuild[968] = {
 	id:968,
-	index:32,
-	type:"house",
+	index:33,
 	name:"quarrier",
-	level:33,
-	wood:108900,
-	stone:108900,
+	level:34,
+	wood:115600,
+	stone:115600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:54450
+	exp:57800
 }
 cityBuild[969] = {
 	id:969,
-	index:33,
-	type:"house",
+	index:34,
 	name:"quarrier",
-	level:34,
-	wood:115600,
-	stone:115600,
+	level:35,
+	wood:122500,
+	stone:122500,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:57800
+	exp:61250
 }
 cityBuild[970] = {
 	id:970,
-	index:34,
-	type:"house",
+	index:35,
 	name:"quarrier",
-	level:35,
-	wood:122500,
-	stone:122500,
+	level:36,
+	wood:129600,
+	stone:129600,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:61250
+	exp:64800
 }
 cityBuild[971] = {
 	id:971,
-	index:35,
-	type:"house",
+	index:36,
 	name:"quarrier",
-	level:36,
-	wood:129600,
-	stone:129600,
+	level:37,
+	wood:136900,
+	stone:136900,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:64800
+	exp:68450
 }
 cityBuild[972] = {
 	id:972,
-	index:36,
-	type:"house",
+	index:37,
 	name:"quarrier",
-	level:37,
-	wood:136900,
-	stone:136900,
+	level:38,
+	wood:144400,
+	stone:144400,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:68450
+	exp:72200
 }
 cityBuild[973] = {
 	id:973,
-	index:37,
-	type:"house",
+	index:38,
 	name:"quarrier",
-	level:38,
-	wood:144400,
-	stone:144400,
+	level:39,
+	wood:152100,
+	stone:152100,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:72200
+	exp:76050
 }
 cityBuild[974] = {
 	id:974,
-	index:38,
-	type:"house",
+	index:39,
 	name:"quarrier",
-	level:39,
-	wood:152100,
-	stone:152100,
+	level:40,
+	wood:160000,
+	stone:160000,
 	iron:5504000,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:76050
+	exp:80000
 }
 cityBuild[975] = {
 	id:975,
-	index:39,
-	type:"house",
-	name:"quarrier",
-	level:40,
-	wood:160000,
-	stone:160000,
-	iron:5504000,
+	index:1,
+	name:"miner",
+	level:2,
+	wood:400,
+	stone:400,
+	iron:860,
 	food:0,
 	coin:0,
 	gem:0,
-	exp:80000
+	exp:200
 }
 cityBuild[976] = {
 	id:976,
-	index:1,
-	type:"house",
-	name:"miner",
-	level:2,
-	wood:400,
-	stone:400,
-	iron:860,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:200
-}
-cityBuild[977] = {
-	id:977,
 	index:2,
-	type:"house",
 	name:"miner",
 	level:3,
 	wood:900,
@@ -13681,10 +12704,9 @@ cityBuild[977] = {
 	gem:0,
 	exp:450
 }
-cityBuild[978] = {
-	id:978,
+cityBuild[977] = {
+	id:977,
 	index:3,
-	type:"house",
 	name:"miner",
 	level:4,
 	wood:1600,
@@ -13695,10 +12717,9 @@ cityBuild[978] = {
 	gem:0,
 	exp:800
 }
-cityBuild[979] = {
-	id:979,
+cityBuild[978] = {
+	id:978,
 	index:4,
-	type:"house",
 	name:"miner",
 	level:5,
 	wood:2500,
@@ -13709,10 +12730,9 @@ cityBuild[979] = {
 	gem:0,
 	exp:1250
 }
-cityBuild[980] = {
-	id:980,
+cityBuild[979] = {
+	id:979,
 	index:5,
-	type:"house",
 	name:"miner",
 	level:6,
 	wood:3600,
@@ -13723,10 +12743,9 @@ cityBuild[980] = {
 	gem:0,
 	exp:1800
 }
-cityBuild[981] = {
-	id:981,
+cityBuild[980] = {
+	id:980,
 	index:6,
-	type:"house",
 	name:"miner",
 	level:7,
 	wood:4900,
@@ -13737,10 +12756,9 @@ cityBuild[981] = {
 	gem:0,
 	exp:2450
 }
-cityBuild[982] = {
-	id:982,
+cityBuild[981] = {
+	id:981,
 	index:7,
-	type:"house",
 	name:"miner",
 	level:8,
 	wood:6400,
@@ -13751,10 +12769,9 @@ cityBuild[982] = {
 	gem:0,
 	exp:3200
 }
-cityBuild[983] = {
-	id:983,
+cityBuild[982] = {
+	id:982,
 	index:8,
-	type:"house",
 	name:"miner",
 	level:9,
 	wood:8100,
@@ -13765,10 +12782,9 @@ cityBuild[983] = {
 	gem:0,
 	exp:4050
 }
-cityBuild[984] = {
-	id:984,
+cityBuild[983] = {
+	id:983,
 	index:9,
-	type:"house",
 	name:"miner",
 	level:10,
 	wood:10000,
@@ -13779,10 +12795,9 @@ cityBuild[984] = {
 	gem:0,
 	exp:5000
 }
-cityBuild[985] = {
-	id:985,
+cityBuild[984] = {
+	id:984,
 	index:10,
-	type:"house",
 	name:"miner",
 	level:11,
 	wood:12100,
@@ -13793,10 +12808,9 @@ cityBuild[985] = {
 	gem:0,
 	exp:6050
 }
-cityBuild[986] = {
-	id:986,
+cityBuild[985] = {
+	id:985,
 	index:11,
-	type:"house",
 	name:"miner",
 	level:12,
 	wood:14400,
@@ -13807,10 +12821,9 @@ cityBuild[986] = {
 	gem:0,
 	exp:7200
 }
-cityBuild[987] = {
-	id:987,
+cityBuild[986] = {
+	id:986,
 	index:12,
-	type:"house",
 	name:"miner",
 	level:13,
 	wood:16900,
@@ -13821,10 +12834,9 @@ cityBuild[987] = {
 	gem:0,
 	exp:8450
 }
-cityBuild[988] = {
-	id:988,
+cityBuild[987] = {
+	id:987,
 	index:13,
-	type:"house",
 	name:"miner",
 	level:14,
 	wood:19600,
@@ -13835,10 +12847,9 @@ cityBuild[988] = {
 	gem:0,
 	exp:9800
 }
-cityBuild[989] = {
-	id:989,
+cityBuild[988] = {
+	id:988,
 	index:14,
-	type:"house",
 	name:"miner",
 	level:15,
 	wood:22500,
@@ -13849,10 +12860,9 @@ cityBuild[989] = {
 	gem:0,
 	exp:11250
 }
-cityBuild[990] = {
-	id:990,
+cityBuild[989] = {
+	id:989,
 	index:15,
-	type:"house",
 	name:"miner",
 	level:16,
 	wood:25600,
@@ -13863,10 +12873,9 @@ cityBuild[990] = {
 	gem:0,
 	exp:12800
 }
-cityBuild[991] = {
-	id:991,
+cityBuild[990] = {
+	id:990,
 	index:16,
-	type:"house",
 	name:"miner",
 	level:17,
 	wood:28900,
@@ -13877,10 +12886,9 @@ cityBuild[991] = {
 	gem:0,
 	exp:14450
 }
-cityBuild[992] = {
-	id:992,
+cityBuild[991] = {
+	id:991,
 	index:17,
-	type:"house",
 	name:"miner",
 	level:18,
 	wood:32400,
@@ -13891,10 +12899,9 @@ cityBuild[992] = {
 	gem:0,
 	exp:16200
 }
-cityBuild[993] = {
-	id:993,
+cityBuild[992] = {
+	id:992,
 	index:18,
-	type:"house",
 	name:"miner",
 	level:19,
 	wood:36100,
@@ -13905,10 +12912,9 @@ cityBuild[993] = {
 	gem:0,
 	exp:18050
 }
-cityBuild[994] = {
-	id:994,
+cityBuild[993] = {
+	id:993,
 	index:19,
-	type:"house",
 	name:"miner",
 	level:20,
 	wood:40000,
@@ -13919,10 +12925,9 @@ cityBuild[994] = {
 	gem:0,
 	exp:20000
 }
-cityBuild[995] = {
-	id:995,
+cityBuild[994] = {
+	id:994,
 	index:20,
-	type:"house",
 	name:"miner",
 	level:21,
 	wood:44100,
@@ -13933,10 +12938,9 @@ cityBuild[995] = {
 	gem:0,
 	exp:22050
 }
-cityBuild[996] = {
-	id:996,
+cityBuild[995] = {
+	id:995,
 	index:21,
-	type:"house",
 	name:"miner",
 	level:22,
 	wood:48400,
@@ -13947,10 +12951,9 @@ cityBuild[996] = {
 	gem:0,
 	exp:24200
 }
-cityBuild[997] = {
-	id:997,
+cityBuild[996] = {
+	id:996,
 	index:22,
-	type:"house",
 	name:"miner",
 	level:23,
 	wood:52900,
@@ -13961,10 +12964,9 @@ cityBuild[997] = {
 	gem:0,
 	exp:26450
 }
-cityBuild[998] = {
-	id:998,
+cityBuild[997] = {
+	id:997,
 	index:23,
-	type:"house",
 	name:"miner",
 	level:24,
 	wood:57600,
@@ -13975,10 +12977,9 @@ cityBuild[998] = {
 	gem:0,
 	exp:28800
 }
-cityBuild[999] = {
-	id:999,
+cityBuild[998] = {
+	id:998,
 	index:24,
-	type:"house",
 	name:"miner",
 	level:25,
 	wood:62500,
@@ -13989,10 +12990,9 @@ cityBuild[999] = {
 	gem:0,
 	exp:31250
 }
-cityBuild[1000] = {
-	id:1000,
+cityBuild[999] = {
+	id:999,
 	index:25,
-	type:"house",
 	name:"miner",
 	level:26,
 	wood:67600,
@@ -14003,10 +13003,9 @@ cityBuild[1000] = {
 	gem:0,
 	exp:33800
 }
-cityBuild[1001] = {
-	id:1001,
+cityBuild[1000] = {
+	id:1000,
 	index:26,
-	type:"house",
 	name:"miner",
 	level:27,
 	wood:72900,
@@ -14017,10 +13016,9 @@ cityBuild[1001] = {
 	gem:0,
 	exp:36450
 }
-cityBuild[1002] = {
-	id:1002,
+cityBuild[1001] = {
+	id:1001,
 	index:27,
-	type:"house",
 	name:"miner",
 	level:28,
 	wood:78400,
@@ -14031,10 +13029,9 @@ cityBuild[1002] = {
 	gem:0,
 	exp:39200
 }
-cityBuild[1003] = {
-	id:1003,
+cityBuild[1002] = {
+	id:1002,
 	index:28,
-	type:"house",
 	name:"miner",
 	level:29,
 	wood:84100,
@@ -14045,10 +13042,9 @@ cityBuild[1003] = {
 	gem:0,
 	exp:42050
 }
-cityBuild[1004] = {
-	id:1004,
+cityBuild[1003] = {
+	id:1003,
 	index:29,
-	type:"house",
 	name:"miner",
 	level:30,
 	wood:90000,
@@ -14059,10 +13055,9 @@ cityBuild[1004] = {
 	gem:0,
 	exp:45000
 }
-cityBuild[1005] = {
-	id:1005,
+cityBuild[1004] = {
+	id:1004,
 	index:30,
-	type:"house",
 	name:"miner",
 	level:31,
 	wood:96100,
@@ -14073,10 +13068,9 @@ cityBuild[1005] = {
 	gem:0,
 	exp:48050
 }
-cityBuild[1006] = {
-	id:1006,
+cityBuild[1005] = {
+	id:1005,
 	index:31,
-	type:"house",
 	name:"miner",
 	level:32,
 	wood:102400,
@@ -14087,10 +13081,9 @@ cityBuild[1006] = {
 	gem:0,
 	exp:51200
 }
-cityBuild[1007] = {
-	id:1007,
+cityBuild[1006] = {
+	id:1006,
 	index:32,
-	type:"house",
 	name:"miner",
 	level:33,
 	wood:108900,
@@ -14101,10 +13094,9 @@ cityBuild[1007] = {
 	gem:0,
 	exp:54450
 }
-cityBuild[1008] = {
-	id:1008,
+cityBuild[1007] = {
+	id:1007,
 	index:33,
-	type:"house",
 	name:"miner",
 	level:34,
 	wood:115600,
@@ -14115,10 +13107,9 @@ cityBuild[1008] = {
 	gem:0,
 	exp:57800
 }
-cityBuild[1009] = {
-	id:1009,
+cityBuild[1008] = {
+	id:1008,
 	index:34,
-	type:"house",
 	name:"miner",
 	level:35,
 	wood:122500,
@@ -14129,10 +13120,9 @@ cityBuild[1009] = {
 	gem:0,
 	exp:61250
 }
-cityBuild[1010] = {
-	id:1010,
+cityBuild[1009] = {
+	id:1009,
 	index:35,
-	type:"house",
 	name:"miner",
 	level:36,
 	wood:129600,
@@ -14143,10 +13133,9 @@ cityBuild[1010] = {
 	gem:0,
 	exp:64800
 }
-cityBuild[1011] = {
-	id:1011,
+cityBuild[1010] = {
+	id:1010,
 	index:36,
-	type:"house",
 	name:"miner",
 	level:37,
 	wood:136900,
@@ -14157,10 +13146,9 @@ cityBuild[1011] = {
 	gem:0,
 	exp:68450
 }
-cityBuild[1012] = {
-	id:1012,
+cityBuild[1011] = {
+	id:1011,
 	index:37,
-	type:"house",
 	name:"miner",
 	level:38,
 	wood:144400,
@@ -14171,10 +13159,9 @@ cityBuild[1012] = {
 	gem:0,
 	exp:72200
 }
-cityBuild[1013] = {
-	id:1013,
+cityBuild[1012] = {
+	id:1012,
 	index:38,
-	type:"house",
 	name:"miner",
 	level:39,
 	wood:152100,
@@ -14185,10 +13172,9 @@ cityBuild[1013] = {
 	gem:0,
 	exp:76050
 }
-cityBuild[1014] = {
-	id:1014,
+cityBuild[1013] = {
+	id:1013,
 	index:39,
-	type:"house",
 	name:"miner",
 	level:40,
 	wood:160000,
@@ -14199,10 +13185,9 @@ cityBuild[1014] = {
 	gem:0,
 	exp:80000
 }
-cityBuild[1015] = {
-	id:1015,
+cityBuild[1014] = {
+	id:1014,
 	index:1,
-	type:"house",
 	name:"farmer",
 	level:2,
 	wood:400,
@@ -14213,10 +13198,9 @@ cityBuild[1015] = {
 	gem:0,
 	exp:200
 }
-cityBuild[1016] = {
-	id:1016,
+cityBuild[1015] = {
+	id:1015,
 	index:2,
-	type:"house",
 	name:"farmer",
 	level:3,
 	wood:900,
@@ -14227,10 +13211,9 @@ cityBuild[1016] = {
 	gem:0,
 	exp:450
 }
-cityBuild[1017] = {
-	id:1017,
+cityBuild[1016] = {
+	id:1016,
 	index:3,
-	type:"house",
 	name:"farmer",
 	level:4,
 	wood:1600,
@@ -14241,10 +13224,9 @@ cityBuild[1017] = {
 	gem:0,
 	exp:800
 }
-cityBuild[1018] = {
-	id:1018,
+cityBuild[1017] = {
+	id:1017,
 	index:4,
-	type:"house",
 	name:"farmer",
 	level:5,
 	wood:2500,
@@ -14255,10 +13237,9 @@ cityBuild[1018] = {
 	gem:0,
 	exp:1250
 }
-cityBuild[1019] = {
-	id:1019,
+cityBuild[1018] = {
+	id:1018,
 	index:5,
-	type:"house",
 	name:"farmer",
 	level:6,
 	wood:3600,
@@ -14269,10 +13250,9 @@ cityBuild[1019] = {
 	gem:0,
 	exp:1800
 }
-cityBuild[1020] = {
-	id:1020,
+cityBuild[1019] = {
+	id:1019,
 	index:6,
-	type:"house",
 	name:"farmer",
 	level:7,
 	wood:4900,
@@ -14283,10 +13263,9 @@ cityBuild[1020] = {
 	gem:0,
 	exp:2450
 }
-cityBuild[1021] = {
-	id:1021,
+cityBuild[1020] = {
+	id:1020,
 	index:7,
-	type:"house",
 	name:"farmer",
 	level:8,
 	wood:6400,
@@ -14297,10 +13276,9 @@ cityBuild[1021] = {
 	gem:0,
 	exp:3200
 }
-cityBuild[1022] = {
-	id:1022,
+cityBuild[1021] = {
+	id:1021,
 	index:8,
-	type:"house",
 	name:"farmer",
 	level:9,
 	wood:8100,
@@ -14311,10 +13289,9 @@ cityBuild[1022] = {
 	gem:0,
 	exp:4050
 }
-cityBuild[1023] = {
-	id:1023,
+cityBuild[1022] = {
+	id:1022,
 	index:9,
-	type:"house",
 	name:"farmer",
 	level:10,
 	wood:10000,
@@ -14325,10 +13302,9 @@ cityBuild[1023] = {
 	gem:0,
 	exp:5000
 }
-cityBuild[1024] = {
-	id:1024,
+cityBuild[1023] = {
+	id:1023,
 	index:10,
-	type:"house",
 	name:"farmer",
 	level:11,
 	wood:12100,
@@ -14339,10 +13315,9 @@ cityBuild[1024] = {
 	gem:0,
 	exp:6050
 }
-cityBuild[1025] = {
-	id:1025,
+cityBuild[1024] = {
+	id:1024,
 	index:11,
-	type:"house",
 	name:"farmer",
 	level:12,
 	wood:14400,
@@ -14353,10 +13328,9 @@ cityBuild[1025] = {
 	gem:0,
 	exp:7200
 }
-cityBuild[1026] = {
-	id:1026,
+cityBuild[1025] = {
+	id:1025,
 	index:12,
-	type:"house",
 	name:"farmer",
 	level:13,
 	wood:16900,
@@ -14367,10 +13341,9 @@ cityBuild[1026] = {
 	gem:0,
 	exp:8450
 }
-cityBuild[1027] = {
-	id:1027,
+cityBuild[1026] = {
+	id:1026,
 	index:13,
-	type:"house",
 	name:"farmer",
 	level:14,
 	wood:19600,
@@ -14381,10 +13354,9 @@ cityBuild[1027] = {
 	gem:0,
 	exp:9800
 }
-cityBuild[1028] = {
-	id:1028,
+cityBuild[1027] = {
+	id:1027,
 	index:14,
-	type:"house",
 	name:"farmer",
 	level:15,
 	wood:22500,
@@ -14395,10 +13367,9 @@ cityBuild[1028] = {
 	gem:0,
 	exp:11250
 }
-cityBuild[1029] = {
-	id:1029,
+cityBuild[1028] = {
+	id:1028,
 	index:15,
-	type:"house",
 	name:"farmer",
 	level:16,
 	wood:25600,
@@ -14409,10 +13380,9 @@ cityBuild[1029] = {
 	gem:0,
 	exp:12800
 }
-cityBuild[1030] = {
-	id:1030,
+cityBuild[1029] = {
+	id:1029,
 	index:16,
-	type:"house",
 	name:"farmer",
 	level:17,
 	wood:28900,
@@ -14423,10 +13393,9 @@ cityBuild[1030] = {
 	gem:0,
 	exp:14450
 }
-cityBuild[1031] = {
-	id:1031,
+cityBuild[1030] = {
+	id:1030,
 	index:17,
-	type:"house",
 	name:"farmer",
 	level:18,
 	wood:32400,
@@ -14437,10 +13406,9 @@ cityBuild[1031] = {
 	gem:0,
 	exp:16200
 }
-cityBuild[1032] = {
-	id:1032,
+cityBuild[1031] = {
+	id:1031,
 	index:18,
-	type:"house",
 	name:"farmer",
 	level:19,
 	wood:36100,
@@ -14451,10 +13419,9 @@ cityBuild[1032] = {
 	gem:0,
 	exp:18050
 }
-cityBuild[1033] = {
-	id:1033,
+cityBuild[1032] = {
+	id:1032,
 	index:19,
-	type:"house",
 	name:"farmer",
 	level:20,
 	wood:40000,
@@ -14465,10 +13432,9 @@ cityBuild[1033] = {
 	gem:0,
 	exp:20000
 }
-cityBuild[1034] = {
-	id:1034,
+cityBuild[1033] = {
+	id:1033,
 	index:20,
-	type:"house",
 	name:"farmer",
 	level:21,
 	wood:44100,
@@ -14479,10 +13445,9 @@ cityBuild[1034] = {
 	gem:0,
 	exp:22050
 }
-cityBuild[1035] = {
-	id:1035,
+cityBuild[1034] = {
+	id:1034,
 	index:21,
-	type:"house",
 	name:"farmer",
 	level:22,
 	wood:48400,
@@ -14493,10 +13458,9 @@ cityBuild[1035] = {
 	gem:0,
 	exp:24200
 }
-cityBuild[1036] = {
-	id:1036,
+cityBuild[1035] = {
+	id:1035,
 	index:22,
-	type:"house",
 	name:"farmer",
 	level:23,
 	wood:52900,
@@ -14507,10 +13471,9 @@ cityBuild[1036] = {
 	gem:0,
 	exp:26450
 }
-cityBuild[1037] = {
-	id:1037,
+cityBuild[1036] = {
+	id:1036,
 	index:23,
-	type:"house",
 	name:"farmer",
 	level:24,
 	wood:57600,
@@ -14521,10 +13484,9 @@ cityBuild[1037] = {
 	gem:0,
 	exp:28800
 }
-cityBuild[1038] = {
-	id:1038,
+cityBuild[1037] = {
+	id:1037,
 	index:24,
-	type:"house",
 	name:"farmer",
 	level:25,
 	wood:62500,
@@ -14535,10 +13497,9 @@ cityBuild[1038] = {
 	gem:0,
 	exp:31250
 }
-cityBuild[1039] = {
-	id:1039,
+cityBuild[1038] = {
+	id:1038,
 	index:25,
-	type:"house",
 	name:"farmer",
 	level:26,
 	wood:67600,
@@ -14549,10 +13510,9 @@ cityBuild[1039] = {
 	gem:0,
 	exp:33800
 }
-cityBuild[1040] = {
-	id:1040,
+cityBuild[1039] = {
+	id:1039,
 	index:26,
-	type:"house",
 	name:"farmer",
 	level:27,
 	wood:72900,
@@ -14563,10 +13523,9 @@ cityBuild[1040] = {
 	gem:0,
 	exp:36450
 }
-cityBuild[1041] = {
-	id:1041,
+cityBuild[1040] = {
+	id:1040,
 	index:27,
-	type:"house",
 	name:"farmer",
 	level:28,
 	wood:78400,
@@ -14577,10 +13536,9 @@ cityBuild[1041] = {
 	gem:0,
 	exp:39200
 }
-cityBuild[1042] = {
-	id:1042,
+cityBuild[1041] = {
+	id:1041,
 	index:28,
-	type:"house",
 	name:"farmer",
 	level:29,
 	wood:84100,
@@ -14591,10 +13549,9 @@ cityBuild[1042] = {
 	gem:0,
 	exp:42050
 }
-cityBuild[1043] = {
-	id:1043,
+cityBuild[1042] = {
+	id:1042,
 	index:29,
-	type:"house",
 	name:"farmer",
 	level:30,
 	wood:90000,
@@ -14605,10 +13562,9 @@ cityBuild[1043] = {
 	gem:0,
 	exp:45000
 }
-cityBuild[1044] = {
-	id:1044,
+cityBuild[1043] = {
+	id:1043,
 	index:30,
-	type:"house",
 	name:"farmer",
 	level:31,
 	wood:96100,
@@ -14619,10 +13575,9 @@ cityBuild[1044] = {
 	gem:0,
 	exp:48050
 }
-cityBuild[1045] = {
-	id:1045,
+cityBuild[1044] = {
+	id:1044,
 	index:31,
-	type:"house",
 	name:"farmer",
 	level:32,
 	wood:102400,
@@ -14633,10 +13588,9 @@ cityBuild[1045] = {
 	gem:0,
 	exp:51200
 }
-cityBuild[1046] = {
-	id:1046,
+cityBuild[1045] = {
+	id:1045,
 	index:32,
-	type:"house",
 	name:"farmer",
 	level:33,
 	wood:108900,
@@ -14647,10 +13601,9 @@ cityBuild[1046] = {
 	gem:0,
 	exp:54450
 }
-cityBuild[1047] = {
-	id:1047,
+cityBuild[1046] = {
+	id:1046,
 	index:33,
-	type:"house",
 	name:"farmer",
 	level:34,
 	wood:115600,
@@ -14661,10 +13614,9 @@ cityBuild[1047] = {
 	gem:0,
 	exp:57800
 }
-cityBuild[1048] = {
-	id:1048,
+cityBuild[1047] = {
+	id:1047,
 	index:34,
-	type:"house",
 	name:"farmer",
 	level:35,
 	wood:122500,
@@ -14675,10 +13627,9 @@ cityBuild[1048] = {
 	gem:0,
 	exp:61250
 }
-cityBuild[1049] = {
-	id:1049,
+cityBuild[1048] = {
+	id:1048,
 	index:35,
-	type:"house",
 	name:"farmer",
 	level:36,
 	wood:129600,
@@ -14689,10 +13640,9 @@ cityBuild[1049] = {
 	gem:0,
 	exp:64800
 }
-cityBuild[1050] = {
-	id:1050,
+cityBuild[1049] = {
+	id:1049,
 	index:36,
-	type:"house",
 	name:"farmer",
 	level:37,
 	wood:136900,
@@ -14703,10 +13653,9 @@ cityBuild[1050] = {
 	gem:0,
 	exp:68450
 }
-cityBuild[1051] = {
-	id:1051,
+cityBuild[1050] = {
+	id:1050,
 	index:37,
-	type:"house",
 	name:"farmer",
 	level:38,
 	wood:144400,
@@ -14717,10 +13666,9 @@ cityBuild[1051] = {
 	gem:0,
 	exp:72200
 }
-cityBuild[1052] = {
-	id:1052,
+cityBuild[1051] = {
+	id:1051,
 	index:38,
-	type:"house",
 	name:"farmer",
 	level:39,
 	wood:152100,
@@ -14731,10 +13679,9 @@ cityBuild[1052] = {
 	gem:0,
 	exp:76050
 }
-cityBuild[1053] = {
-	id:1053,
+cityBuild[1052] = {
+	id:1052,
 	index:39,
-	type:"house",
 	name:"farmer",
 	level:40,
 	wood:160000,

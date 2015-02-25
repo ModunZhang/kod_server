@@ -217,7 +217,7 @@ pro.recruitSpecialSoldier = function(msg, session, next){
 	var count = msg.count
 	var finishNow = msg.finishNow
 
-	this.playerApiService2.recruitSpecialSoldierAsync(session.uid, soldierName, count, finishNow).then(function(){
+	this.playerApiService.recruitSpecialSoldierAsync(session.uid, soldierName, count, finishNow).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})
@@ -1060,6 +1060,22 @@ pro.passSelinasTest = function(msg, session, next){
 pro.getDailyTaskRewards = function(msg, session, next){
 	var taskType = msg.taskType
 	this.playerApiService5.getDailyTaskRewardsAsync(session.uid, taskType).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, {code:500, message:e.message})
+	})
+}
+
+/**
+ * 领取成就任务奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getGrowUpTaskRewards = function(msg, session, next){
+	var taskType = msg.taskType
+	var taskId = msg.taskId
+	this.playerApiService5.getGrowUpTaskRewardsAsync(session.uid, taskType, taskId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, {code:500, message:e.message})

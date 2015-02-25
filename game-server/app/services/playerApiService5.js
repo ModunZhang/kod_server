@@ -9,6 +9,7 @@ var _ = require("underscore")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var TaskUtils = require("../utils/taskUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -83,6 +84,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 		playerDoc.resources.stamina -= staminaUsed
 		playerData.resources = playerDoc.resources
 		playerData.pve = {}
+		playerDoc.pve.totalStep += staminaUsed
 		playerDoc.pve.location = location
 		playerData.pve.location = playerDoc.pve.location
 
@@ -133,12 +135,12 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 			}
 			var playerItemBuff = DataUtils.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? 0.3 : 0
-			DataUtils.addPlayerDragonExp(playerDoc, theDragon, expAdd * (1 + playerItemBuff))
+			DataUtils.addPlayerDragonExp(playerDoc, playerData, theDragon, expAdd * (1 + playerItemBuff))
 
 			playerData.dragons = {}
 			playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 
-			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve)
+			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve)
 
 			var soldiers = fightData.soldiers
 			if(!_.isArray(soldiers)) return Promise.reject(new Error("fightData 不合法"))
@@ -200,6 +202,8 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				}
 			}
 		}
+
+		TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData)
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
@@ -279,7 +283,7 @@ pro.gacha = function(playerId, type, callback){
 		}
 
 		if(_.isEqual(type, Consts.GachaType.Advanced)){
-			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.AdvancedGachaOnce)
+			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.AdvancedGachaOnce)
 		}
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
@@ -710,7 +714,7 @@ pro.passSelinasTest = function(playerId, callback){
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.PassSelinasTest)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.PassSelinasTest)
 		if(_.isEmpty(playerData)){
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		}else{
@@ -771,13 +775,13 @@ pro.getDailyTaskRewards = function(playerId, taskType, callback){
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
-		var isFinished = _.contains(playerDoc.dailyTasks.rewardsGetedTaskTypes, taskType)
-		if(isFinished) return Promise.reject(new Error("奖励已经领取"))
+		var isRewarded = _.contains(playerDoc.dailyTasks.rewarded, taskType)
+		if(isRewarded) return Promise.reject(new Error("奖励已经领取"))
 		if(playerDoc.dailyTasks[taskType].length < 5) return Promise.reject(new Error("任务未完成"))
 
-		playerDoc.dailyTasks.rewardsGetedTaskTypes.push(taskType)
+		playerDoc.dailyTasks.rewarded.push(taskType)
 		playerData.dailyTasks = {}
-		playerData.dailyTasks.rewardsGetedTaskTypes = playerDoc.dailyTasks.rewardsGetedTaskTypes
+		playerData.dailyTasks.rewarded = playerDoc.dailyTasks.rewarded
 
 		var items = DataUtils.getDailyTaskRewardsByType(taskType)
 		playerData.__items = []
@@ -795,6 +799,83 @@ pro.getDailyTaskRewards = function(playerId, taskType, callback){
 				})
 			}
 		})
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 领取成就任务奖励
+ * @param playerId
+ * @param taskType
+ * @param taskId
+ * @param callback
+ */
+pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.contains(Consts.GrowUpTaskTypes, taskType)){
+		callback(new Error("taskType 不合法"))
+		return
+	}
+	if(!_.isNumber(taskId) || taskId % 1 !== 0 || taskId < 0){
+		callback(new Error("taskId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+
+		var task = _.find(playerDoc.growUpTasks[taskType], function(task){
+			return _.isEqual(task.id, taskId)
+		})
+		if(!_.isObject(task)) return Promise.reject(new Error("任务未完成或奖励已领取"))
+		if(TaskUtils.hasPreGrowUpTask(playerDoc, taskType, task)) return Promise.reject(new Error("还有前置任务奖励未领取"))
+		var rewards = DataUtils.getGrowUpTaskRewards(taskType, taskId)
+		playerDoc.basicInfo.levelExp += rewards.exp
+		playerData.basicInfo = playerDoc.basicInfo
+		DataUtils.refreshPlayerResources(playerDoc)
+		LogicUtils.addPlayerResources(playerDoc, rewards)
+		playerData.resources = playerDoc.resources
+
+		task.rewarded = true
+		TaskUtils.updateGrowUpTaskData(playerDoc, playerData, taskType, task)
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])

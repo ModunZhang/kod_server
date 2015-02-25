@@ -10,6 +10,7 @@ var _ = require("underscore")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var TaskUtils = require("../utils/taskUtils")
 var MarchUtils = require("../utils/marchUtils")
 var ReportUtils = require("../utils/reportUtils")
 var Events = require("../consts/events")
@@ -554,7 +555,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		if(playerDoc.allianceInfo.loyalty < loyaltyNeed) return Promise.reject(new Error("玩家忠诚值不足"))
 		playerDoc.allianceInfo.loyalty -= loyaltyNeed
 		playerData.allianceInfo = playerDoc.basicInfo
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.BuyItemInAllianceShop)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.BuyItemInAllianceShop)
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
 		memberObject.loyalty -= loyaltyNeed
 		allianceData.__members = [{

@@ -3,8 +3,8 @@
 var attackWin = []
 module.exports = attackWin
 
-attackWin[1] = {
-	id:1,
+attackWin[0] = {
+	id:0,
 	index:1,
 	count:2,
 	wood:2000,
@@ -15,8 +15,8 @@ attackWin[1] = {
 	gem:0,
 	exp:100
 }
-attackWin[2] = {
-	id:2,
+attackWin[1] = {
+	id:1,
 	index:2,
 	count:5,
 	wood:5000,
@@ -27,8 +27,8 @@ attackWin[2] = {
 	gem:0,
 	exp:200
 }
-attackWin[3] = {
-	id:3,
+attackWin[2] = {
+	id:2,
 	index:3,
 	count:10,
 	wood:10000,
@@ -39,8 +39,8 @@ attackWin[3] = {
 	gem:0,
 	exp:400
 }
-attackWin[4] = {
-	id:4,
+attackWin[3] = {
+	id:3,
 	index:4,
 	count:20,
 	wood:20000,
@@ -51,8 +51,8 @@ attackWin[4] = {
 	gem:0,
 	exp:800
 }
-attackWin[5] = {
-	id:5,
+attackWin[4] = {
+	id:4,
 	index:5,
 	count:50,
 	wood:50000,
@@ -63,8 +63,8 @@ attackWin[5] = {
 	gem:0,
 	exp:1200
 }
-attackWin[6] = {
-	id:6,
+attackWin[5] = {
+	id:5,
 	index:6,
 	count:100,
 	wood:100000,
@@ -75,8 +75,8 @@ attackWin[6] = {
 	gem:0,
 	exp:1600
 }
-attackWin[7] = {
-	id:7,
+attackWin[6] = {
+	id:6,
 	index:7,
 	count:200,
 	wood:200000,
@@ -87,8 +87,8 @@ attackWin[7] = {
 	gem:0,
 	exp:2000
 }
-attackWin[8] = {
-	id:8,
+attackWin[7] = {
+	id:7,
 	index:8,
 	count:500,
 	wood:500000,
@@ -99,8 +99,8 @@ attackWin[8] = {
 	gem:0,
 	exp:2400
 }
-attackWin[9] = {
-	id:9,
+attackWin[8] = {
+	id:8,
 	index:9,
 	count:1000,
 	wood:1000000,
@@ -111,8 +111,8 @@ attackWin[9] = {
 	gem:0,
 	exp:2800
 }
-attackWin[10] = {
-	id:10,
+attackWin[9] = {
+	id:9,
 	index:10,
 	count:2000,
 	wood:0,
@@ -123,8 +123,8 @@ attackWin[10] = {
 	gem:100,
 	exp:3200
 }
-attackWin[11] = {
-	id:11,
+attackWin[10] = {
+	id:10,
 	index:11,
 	count:5000,
 	wood:0,
@@ -135,8 +135,8 @@ attackWin[11] = {
 	gem:200,
 	exp:6400
 }
-attackWin[12] = {
-	id:12,
+attackWin[11] = {
+	id:11,
 	index:12,
 	count:10000,
 	wood:0,

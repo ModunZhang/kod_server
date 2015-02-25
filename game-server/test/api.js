@@ -578,6 +578,15 @@ Api.getDailyTaskRewards =  function(taskType, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.getGrowUpTaskRewards =  function(taskType, taskId, callback){
+	var info = {
+		taskType:taskType,
+		taskId:taskId
+	}
+	var route = "logic.playerHandler.getGrowUpTaskRewards"
+	pomelo.request(route, info, callback)
+}
+
 
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){

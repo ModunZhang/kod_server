@@ -11,6 +11,7 @@ var crypto = require("crypto")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var TaskUtils = require("../utils/taskUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -262,7 +263,8 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			building.level = building.level + 1
 			LogicUtils.updateBuildingsLevel(playerDoc)
 			LogicUtils.refreshPlayerPower(playerDoc)
-			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
+			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
+			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, building.level)
 			pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, building.location])
 			if(_.isObject(allianceDoc)){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
@@ -514,7 +516,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		if(finishNow){
 			house.level += 1
 			LogicUtils.refreshPlayerPower(playerDoc)
-			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
+			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, building.location, house.location])
 			if(_.isObject(allianceDoc)){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
@@ -693,7 +695,8 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		if(finishNow){
 			house.level += 1
 			LogicUtils.refreshPlayerPower(playerDoc)
-			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
+			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
+			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, house.level)
 			pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, building.location, house.location])
 			if(_.isObject(allianceDoc)){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
@@ -928,7 +931,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		playerDoc.materialEvents.push(event)
 		if(finishNow){
 			if(_.isEqual(category, Consts.MaterialType.BuildingMaterials)){
-				LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.MakeBuildingMaterials)
+				TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.MakeBuildingMaterials)
 			}
 			pushFuncs.push([self.pushService, self.pushService.onMakeMaterialFinishedAsync, playerDoc, event])
 		}else{
@@ -1102,7 +1105,8 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			playerData.soldiers = {}
 			playerData.soldiers[soldierName] = playerDoc.soldiers[soldierName]
 			LogicUtils.refreshPlayerPower(playerDoc)
-			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
+			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
+			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 			pushFuncs.push([self.pushService, self.pushService.onRecruitSoldierSuccessAsync, playerDoc, soldierName, count])
 		}else{
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
@@ -1115,6 +1119,126 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		playerData.basicInfo = playerDoc.basicInfo
 		playerData.resources = playerDoc.resources
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 招募特殊士兵
+ * @param playerId
+ * @param soldierName
+ * @param count
+ * @param finishNow
+ * @param callback
+ */
+pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!DataUtils.hasSpecialSoldier(soldierName)){
+		callback(new Error("soldierName 特殊兵种不存在"))
+		return
+	}
+	if(!_.isNumber(count) || count % 1 !== 0 || count < 1){
+		callback(new Error("count 不合法"))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		callback(new Error("finishNow 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
+	this.playerDao.findByIdAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var barracks = playerDoc.buildings.location_5
+		if(barracks.level < 1){
+			return Promise.reject(new Error("兵营还未建造"))
+		}
+		if(!finishNow && playerDoc.soldierEvents.length > 0){
+			return Promise.reject(new Error("已有士兵正在被招募"))
+		}
+		if(count > DataUtils.getPlayerSoldierMaxRecruitCount(playerDoc, soldierName)){
+			return Promise.reject(new Error("招募数量超过单次招募上限"))
+		}
+
+		var gemUsed = 0
+		var recruitRequired = DataUtils.getPlayerRecruitSpecialSoldierRequired(playerDoc, soldierName, count)
+		var buyedResources = null
+		var playerData = {}
+		DataUtils.refreshPlayerResources(playerDoc)
+		if(!LogicUtils.isEnough(recruitRequired.materials, playerDoc.soldierMaterials)){
+			return Promise.reject(new Error("材料不足"))
+		}
+		if(finishNow){
+			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
+			buyedResources = DataUtils.buyResources({citizen:recruitRequired.citizen}, {})
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+		}else{
+			buyedResources = DataUtils.buyResources({citizen:recruitRequired.citizen}, playerDoc.resources)
+			gemUsed += buyedResources.gemUsed
+			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+		}
+		if(gemUsed > playerDoc.resources.gem){
+			return Promise.reject(new Error("宝石不足"))
+		}
+		playerDoc.resources.gem -= gemUsed
+		LogicUtils.reduce(recruitRequired.materials, playerDoc.soldierMaterials)
+		LogicUtils.reduce({citizen:recruitRequired.citizen}, playerDoc.resources)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+
+		if(finishNow){
+			playerDoc.soldiers[soldierName] += count
+			playerData.soldiers = {}
+			playerData.soldiers[soldierName] = playerDoc.soldiers[soldierName]
+			LogicUtils.refreshPlayerPower(playerDoc)
+			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
+			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
+			pushFuncs.push([self.pushService, self.pushService.onRecruitSoldierSuccessAsync, playerDoc, soldierName, count])
+		}else{
+			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
+			var event = LogicUtils.createSoldierEvent(playerDoc, soldierName, count, finishTime)
+			playerDoc.soldierEvents.push(event)
+			playerData.soldierEvents = playerDoc.soldierEvents
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime])
+		}
+		DataUtils.refreshPlayerResources(playerDoc)
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.basicInfo = playerDoc.basicInfo
+		playerData.resources = playerDoc.resources
+		playerData.soldierMaterials = playerDoc.soldierMaterials
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

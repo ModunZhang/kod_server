@@ -10,6 +10,7 @@ var _ = require("underscore")
 var Consts = require("../consts/consts")
 var LogicUtils = require("./logicUtils")
 var DataUtils = require("./dataUtils")
+var TaskUtils = require("../utils/taskUtils")
 var MapUtils = require("../utils/mapUtils")
 var GameDatas = require("../datas/GameDatas")
 var Items = GameDatas.Items
@@ -281,7 +282,7 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 var DragonExp = function(playerDoc, playerData, dragonType, itemConfig){
 	var dragon = playerDoc.dragons[dragonType]
 	if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
-	DataUtils.addPlayerDragonExp(playerDoc, dragon, parseInt(itemConfig.effect))
+	DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, parseInt(itemConfig.effect))
 	playerData.dragons = {}
 	playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 	return Promise.resolve()
@@ -602,9 +603,9 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
 	}
 	eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
 	if(_.contains(Consts.BuildingSpeedupEventTypes, eventType)){
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.SpeedupBuildingBuild)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.SpeedupBuildingBuild)
 	}else if(eventType, "soldierEvents"){
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.SpeedupSoldiersRecruit)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.SpeedupSoldiersRecruit)
 	}
 	return Promise.resolve()
 }

@@ -38,6 +38,7 @@ pro.pushToPlayer = function(playerDoc, eventName, data, callback){
 		callback()
 		return
 	}
+	data.serverTime = Date.now()
 	this.channelService.pushMessageByUids(eventName, data, [{uid:playerDoc._id, sid:playerDoc.logicServerId}], callback)
 }
 
@@ -58,6 +59,7 @@ pro.pushToPlayers = function(playerDocs, eventName, data, callback){
 			})
 		}
 	})
+	data.serverTime = Date.now()
 	this.channelService.pushMessageByUids(eventName, data, ids, callback)
 }
 
@@ -79,7 +81,6 @@ pro.onPlayerDataChanged = function(playerDoc, data, callback){
 pro.onPlayerLoginSuccess = function(playerDoc, callback){
 	var self = this
 	var data = _.omit(playerDoc, "mails", "sendMails", "reports")
-	data.serverTime = Date.now()
 	if(!_.isObject(data.alliance) || _.isEmpty(data.alliance.id)){
 		data.alliance = {}
 	}

@@ -11,6 +11,7 @@ var ShortId = require("shortid")
 var Consts = require("../consts/consts")
 var CommonUtils = require("./utils")
 var LogicUtils = require("./logicUtils")
+var TaskUtils = require("./taskUtils")
 var GameDatas = require("../datas/GameDatas")
 var BuildingLevelUp = GameDatas.BuildingLevelUp
 var BuildingFunction = GameDatas.BuildingFunction
@@ -40,6 +41,7 @@ var KillDropItems = GameDatas.KillDropItems
 var Gacha = GameDatas.Gacha
 var Activities = GameDatas.Activities
 var StoreItems = GameDatas.StoreItems
+var GrowUpTasks = GameDatas.GrowUpTasks
 
 
 var Utils = module.exports
@@ -365,9 +367,8 @@ Utils.isBuildingHasHouse = function(buildingLocation){
 }
 
 /**
- * 获取玩家资源数据
+ * 刷新玩家资源数据
  * @param playerDoc
- * @returns {{}}
  */
 Utils.refreshPlayerResources = function(playerDoc){
 	var self = this
@@ -2782,10 +2783,11 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
 /**
  * 更新龙的属性
  * @param playerDoc
+ * @param playerData
  * @param dragon
  * @param expAdd
  */
-Utils.addPlayerDragonExp = function(playerDoc, dragon, expAdd){
+Utils.addPlayerDragonExp = function(playerDoc, playerData, dragon, expAdd){
 	dragon.exp += expAdd
 	var currentStarMaxLevel = Dragons.dragonAttributes[dragon.star].levelMax
 	var nextLevelExpNeed = Dragons.dragonAttributes[dragon.star].perLevelExp * Math.pow(dragon.level, 2)
@@ -2794,6 +2796,7 @@ Utils.addPlayerDragonExp = function(playerDoc, dragon, expAdd){
 		else{
 			dragon.level += 1
 			dragon.exp -= nextLevelExpNeed
+			TaskUtils.finishDragonLevelTaskIfNeed(playerDoc, playerData, dragon.type, dragon.level)
 		}
 	}
 }
@@ -3483,7 +3486,6 @@ Utils.getPlayerLevel = function(playerDoc){
 		var levelConfig = levelConfigs[i]
 		if(playerDoc.basicInfo.levelExp >= levelConfig.expFrom) return levelConfig.level
 	}
-
 	return 1
 }
 
@@ -3722,4 +3724,24 @@ Utils.getPlayerLevelupExpireTime = function(playerDoc){
  */
 Utils.getPlayerIntInit = function(type){
 	return PlayerInitData.intInit[type].value
+}
+
+/**
+ * 获取日常任务奖励
+ * @param type
+ * @param id
+ * @returns {*}
+ */
+Utils.getGrowUpTaskRewards = function(type, id){
+	var config = GrowUpTasks[type][id]
+	var rewards = {
+		wood:config.wood,
+		stone:config.stone,
+		iron:config.iron,
+		food:config.food,
+		coin:config.coin,
+		gem:config.gem,
+		exp:config.exp
+	}
+	return rewards
 }

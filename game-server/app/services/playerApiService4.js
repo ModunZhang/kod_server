@@ -10,6 +10,7 @@ var _ = require("underscore")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var TaskUtils = require("../utils/taskUtils")
 var ItemUtils = require("../utils/itemUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
@@ -536,7 +537,8 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			tech.level += 1
 			playerData.productionTechs = {}
 			playerData.productionTechs[techName] = playerDoc.productionTechs[techName]
-			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
+			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
+			TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
 				preTechEvent.startTime -= preTechEvent.finishTime - Date.now()
@@ -670,7 +672,8 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			tech.level += 1
 			playerData.militaryTechs = {}
 			playerData.militaryTechs[techName] = playerDoc.militaryTechs[techName]
-			LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
+			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
+			TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
 				preTechEvent.startTime -= preTechEvent.finishTime - Date.now()
@@ -792,6 +795,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			playerDoc.soldierStars[soldierName] += 1
 			playerData.soldierStars = {}
 			playerData.soldierStars[soldierName] = playerDoc.soldierStars[soldierName]
+			TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, soldierName, playerDoc.soldierStars[soldierName])
 		}else{
 			if(_.isObject(preTechEvent)){
 				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, Date.now()])
@@ -946,7 +950,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 				data:resp.item
 			}]
 		}
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
@@ -1132,7 +1136,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		if(playerDoc.resources.gem < gemNeed) return Promise.reject(new Error("宝石不足"))
 		playerDoc.resources.gem -= gemNeed
 		playerData.resources = playerDoc.resources
-		LogicUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
 		return Promise.resolve()
 	}).then(function(){
 		var itemNameFunction = ItemUtils.getItemNameFunction(itemName)

@@ -113,8 +113,10 @@ var playerSchema = new Schema({
 		cityName:{type:String, required:true},
 		icon:{type:String, required:true, default:"playerIcon_default.png"},
 		levelExp:{type:Number, required:true, default:0},
-		power:{type:Number, required:true, default:0},
+		attackWin:{type:Number, required:true, default:0},
+		strikeWin:{type:Number, required:true, default:0},
 		kill:{type:Number, required:true, default:0},
+		power:{type:Number, required:true, default:0},
 		vipExp:{type:Number, required:true, default:0},
 		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn},
 		buildQueue:{type:Number, required:true, default:1},
@@ -1530,104 +1532,100 @@ var playerSchema = new Schema({
 		}]
 	},
 	dailyTasks:{
-		rewardsGetedTaskTypes:[],
+		rewarded:[],
 		empireRise:[],
 		conqueror:[],
 		brotherClub:[],
 		growUp:[]
 	},
 	growUpTasks:{
-		cityBuild:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		},
-		dragonLevel:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		},
-		dragonStar:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		},
-		dragonSkill:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		},
-		productionTech:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		},
-		militaryTech:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		},
-		soldierStar:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		},
-		soldierCount:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		},
-		pveCount:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		},
-		attackWin:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		},
-		strikeWin:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		},
-		playerKill:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		},
-		playerPower:{
-			finished:[Number],
-			rewarded:[{
-				id:{type:Number},
-				index:{type:Number}
-			}]
-		}
+		cityBuild:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			name:{type:String, required:true},
+			rewarded:{type:Boolean, required:true}
+		}],
+		dragonLevel:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			type:{type:String, required:true},
+			rewarded:{type:Boolean, required:true}
+		}],
+		dragonStar:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			type:{type:String, required:true},
+			rewarded:{type:Boolean, required:true}
+		}],
+		dragonSkill:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			type:{type:String, required:true},
+			name:{type:String, required:true},
+			rewarded:{type:Boolean, required:true}
+		}],
+		productionTech:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			name:{type:String, required:true},
+			rewarded:{type:Boolean, required:true}
+		}],
+		militaryTech:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			name:{type:String, required:true},
+			rewarded:{type:Boolean, required:true}
+		}],
+		soldierStar:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			name:{type:String, required:true},
+			rewarded:{type:Boolean, required:true}
+		}],
+		soldierCount:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			name:{type:String, required:true},
+			rewarded:{type:Boolean, required:true}
+		}],
+		pveCount:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			rewarded:{type:Boolean, required:true}
+		}],
+		attackWin:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			rewarded:{type:Boolean, required:true}
+		}],
+		strikeWin:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			rewarded:{type:Boolean, required:true}
+		}],
+		playerKill:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			rewarded:{type:Boolean, required:true}
+		}],
+		playerPower:[{
+			_id:false,
+			id:{type:Number, required:true},
+			index:{type:Number, required:true},
+			rewarded:{type:Boolean, required:true}
+		}]
 	}
 })
 
