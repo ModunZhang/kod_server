@@ -83,3 +83,8 @@ intInit["switchProductionBuilding"] = {
 	value:200,
 	desc:"转换生产建筑所需宝石"
 }
+intInit["soldierMaxStar"] = {
+	type:"soldierMaxStar",
+	value:3,
+	desc:"士兵最大星级"
+}

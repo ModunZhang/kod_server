@@ -123,7 +123,19 @@ GameDatas.GemsPayment.citizen = require("./GemsPayment_citizen.js")
 GameDatas.GemsPayment.material = require("./GemsPayment_material.js")
 
 GameDatas.GrowUpTasks = {}
-GameDatas.GrowUpTasks.tasks = require("./GrowUpTasks_tasks.js")
+GameDatas.GrowUpTasks.cityBuild = require("./GrowUpTasks_cityBuild.js")
+GameDatas.GrowUpTasks.dragonLevel = require("./GrowUpTasks_dragonLevel.js")
+GameDatas.GrowUpTasks.dragonStar = require("./GrowUpTasks_dragonStar.js")
+GameDatas.GrowUpTasks.dragonSkill = require("./GrowUpTasks_dragonSkill.js")
+GameDatas.GrowUpTasks.productionTech = require("./GrowUpTasks_productionTech.js")
+GameDatas.GrowUpTasks.militaryTech = require("./GrowUpTasks_militaryTech.js")
+GameDatas.GrowUpTasks.soldierStar = require("./GrowUpTasks_soldierStar.js")
+GameDatas.GrowUpTasks.soldierCount = require("./GrowUpTasks_soldierCount.js")
+GameDatas.GrowUpTasks.pveCount = require("./GrowUpTasks_pveCount.js")
+GameDatas.GrowUpTasks.attackWin = require("./GrowUpTasks_attackWin.js")
+GameDatas.GrowUpTasks.strikeWin = require("./GrowUpTasks_strikeWin.js")
+GameDatas.GrowUpTasks.playerKill = require("./GrowUpTasks_playerKill.js")
+GameDatas.GrowUpTasks.playerPower = require("./GrowUpTasks_playerPower.js")
 
 GameDatas.HouseFunction = {}
 GameDatas.HouseFunction.dwelling = require("./HouseFunction_dwelling.js")

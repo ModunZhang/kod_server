@@ -751,7 +751,8 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		if(playerDoc.soldierStars[soldierName] >= 3) return Promise.reject(new Error("士兵已达最高星级"))
+		var soldierMaxStar = DataUtils.getPlayerIntInit("soldierMaxStar")
+		if(playerDoc.soldierStars[soldierName] >= soldierMaxStar) return Promise.reject(new Error("士兵已达最高星级"))
 		if(!DataUtils.isPlayerUpgradeSoldierStarTechPointEnough(playerDoc, soldierName)) return Promise.reject(new Error("科技点不足"))
 		var isUpgrading = _.some(playerDoc.soldierStarEvents, function(event){
 			return _.isEqual(event.name, soldierName)

@@ -24,7 +24,11 @@ var Dragons = GameDatas.Dragons.dragons
 var createBuildingSchema = function(location){
 	var schema = {
 		type:{type:String, required:true, default:Buildings[location].name},
-		level:{type:Number, required:true, default:location <= 4 || location > 20 ? 1 : location > 4 && location <= 9 ? 0 : -1},
+		level:{
+			type:Number,
+			required:true,
+			default:location <= 4 || location > 20 ? 1 : location > 4 && location <= 9 ? 0 : -1
+		},
 		location:{type:Number, required:true, default:location},
 		houses:[{
 			_id:false,
@@ -1512,6 +1516,7 @@ var playerSchema = new Schema({
 		finishTime:{type:Number, required:true}
 	}],
 	pve:{
+		totalStep:{type:Number, default:0},
 		location:{
 			x:{type:Number, required:true, default:12},
 			y:{type:Number, required:true, default:12},
@@ -1531,7 +1536,99 @@ var playerSchema = new Schema({
 		brotherClub:[],
 		growUp:[]
 	},
-	achievementTasks:[Number]
+	growUpTasks:{
+		cityBuild:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		},
+		dragonLevel:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		},
+		dragonStar:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		},
+		dragonSkill:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		},
+		productionTech:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		},
+		militaryTech:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		},
+		soldierStar:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		},
+		soldierCount:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		},
+		pveCount:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		},
+		attackWin:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		},
+		strikeWin:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		},
+		playerKill:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		},
+		playerPower:{
+			finished:[Number],
+			rewarded:[{
+				id:{type:Number},
+				index:{type:Number}
+			}]
+		}
+	}
 })
 
 module.exports = mongoose.model('player', playerSchema)
