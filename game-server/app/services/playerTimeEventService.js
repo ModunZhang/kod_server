@@ -321,7 +321,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		}]
 	}
 
-	LogicUtils.refreshPlayerPower(playerDoc)
+	DataUtils.refreshPlayerPower(playerDoc, playerData)
 	playerData.basicInfo = playerDoc.basicInfo
 	playerData.resources = playerDoc.resources
 

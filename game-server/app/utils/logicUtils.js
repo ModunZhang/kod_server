@@ -979,15 +979,6 @@ Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, eventType, eventId
 }
 
 /**
- * 刷新玩家兵力信息
- * @param doc
- */
-Utils.refreshPlayerPower = function(doc){
-	var power = DataUtils.getPlayerPower(doc)
-	doc.basicInfo.power = power
-}
-
-/**
  * 发送系统邮件
  * @param playerDoc
  * @param playerData

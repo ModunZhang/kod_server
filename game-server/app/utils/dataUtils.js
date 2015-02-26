@@ -852,16 +852,17 @@ Utils.createMaterialEvent = function(toolShop, category, finishNow){
 }
 
 /**
- * 获取玩家战斗力
+ * 刷新玩家兵力信息
  * @param playerDoc
- * @returns {*}
+ * @param playerData
  */
-Utils.getPlayerPower = function(playerDoc){
+Utils.refreshPlayerPower = function(playerDoc, playerData){
 	var buildingPower = this.getPlayerBuildingsPower(playerDoc)
 	var housePower = this.getPlayerHousesPower(playerDoc)
 	var soldierPower = this.getPlayerSoldiersPower(playerDoc)
-
-	return buildingPower + housePower + soldierPower
+	var totalPower = buildingPower + housePower + soldierPower
+	playerDoc.basicInfo.power = totalPower
+	TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 }
 
 /**

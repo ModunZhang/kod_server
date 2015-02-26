@@ -133,7 +133,7 @@ life.afterStartAll = function(app){
 					event.startTime = now
 					eventFuncs.push(addTimeEventAsync(eventServerId, key, "itemEvents", event.id, event.finishTime - event.startTime))
 				})
-				LogicUtils.refreshPlayerPower(playerDoc)
+				DataUtils.refreshPlayerPower(playerDoc, {})
 			})
 			return Promise.resolve()
 		}).then(function(){

@@ -570,6 +570,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			//console.log(NodeUtils.inspect(report, false, null))
 
 			attackPlayerDoc.basicInfo.kill += countData.attackPlayerKill
+			TaskUtils.finishPlayerKillTaskIfNeed(attackPlayerDoc, attackPlayerData)
 			memberObject = LogicUtils.addAlliancePlayerLastThreeDaysKillData(attackAllianceDoc, attackPlayerDoc._id, countData.attackPlayerKill)
 			attackAllianceData.__members = [{
 				type:Consts.DataChangedType.Edit,
@@ -612,6 +613,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				theDefencePlayerDoc = helpDefencePlayerDoc
 
 				helpDefencePlayerDoc.basicInfo.kill += countData.defencePlayerKill
+				TaskUtils.finishPlayerKillTaskIfNeed(helpDefencePlayerDoc, helpDefencePlayerData)
 				memberObject = LogicUtils.addAlliancePlayerLastThreeDaysKillData(defenceAllianceDoc, helpDefencePlayerDoc._id, countData.defencePlayerKill)
 				defenceAllianceData.__members = [{
 					type:Consts.DataChangedType.Edit,
@@ -677,6 +679,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				theDefencePlayerDoc = defencePlayerDoc
 
 				defencePlayerDoc.basicInfo.kill += countData.defencePlayerKill
+				TaskUtils.finishPlayerKillTaskIfNeed(defencePlayerDoc, defencePlayerData)
 				memberObject = LogicUtils.addAlliancePlayerLastThreeDaysKillData(defenceAllianceDoc, defencePlayerDoc._id, countData.defencePlayerKill)
 				defenceAllianceData.__members = [{
 					type:Consts.DataChangedType.Edit,
@@ -758,11 +761,15 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					if(_.isEqual(Consts.FightResult.AttackWin, helpDefenceSoldierFightData.fightResult)){
 						attackAllianceDoc.allianceFight.attackAllianceCountData.attackSuccessCount += 1
 						defenceAllianceDoc.allianceFight.attackAllianceCountData.attackSuccessCount += 1
+						attackPlayerDoc.basicInfo.attackWin += 1
+						TaskUtils.finishAttackWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 					}
 				}else{
 					if(!_.isObject(defenceSoldierFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
 						attackAllianceDoc.allianceFight.attackAllianceCountData.attackSuccessCount += 1
 						defenceAllianceDoc.allianceFight.attackAllianceCountData.attackSuccessCount += 1
+						attackPlayerDoc.basicInfo.attackWin += 1
+						TaskUtils.finishAttackWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 					}
 					if(!_.isObject(defenceSoldierFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
 						if(!_.isObject(defenceWallFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceWallFightData.fightResult)){
@@ -1005,6 +1012,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackKillRewards = DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKill, targetAllianceDoc.basicInfo.terrain)
 				attackRewards = attackRewards.concat(attackKillRewards)
 				attackPlayerDoc.basicInfo.kill += attackPlayerKill
+				TaskUtils.finishPlayerKillTaskIfNeed(attackPlayerDoc, attackPlayerData)
 				attackDragon.hp -= villageDragonFightData.attackDragonHpDecreased
 				if(attackDragon.hp <= 0){
 					deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
@@ -1182,6 +1190,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				LogicUtils.mergeSoldiers(villageEvent.playerData.woundedSoldiers, defenceWoundedSoldiers)
 
 				attackPlayerDoc.basicInfo.kill += attackPlayerKill
+				TaskUtils.finishPlayerKillTaskIfNeed(attackPlayerDoc, attackPlayerData)
 
 				attackDragon.hp -= defenceDragonFightData.attackDragonHpDecreased
 				if(attackDragon.hp <= 0){
@@ -1200,6 +1209,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackPlayerData.dragons = {}
 				attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
 				defencePlayerDoc.basicInfo.kill += defencePlayerKill
+				TaskUtils.finishPlayerKillTaskIfNeed(defencePlayerDoc, defencePlayerData)
 
 				defenceDragon.hp -= defenceDragonFightData.defenceDragonHpDecreased
 				if(defenceDragon.hp <= 0){
@@ -1498,6 +1508,8 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					if(_.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin)){
 						attackAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
 						defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
+						attackPlayerDoc.basicInfo.strikeWin += 1
+						TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 					}
 					attackAllianceData.allianceFight = {}
 					attackAllianceData.allianceFight.attackAllianceCountData = attackAllianceDoc.allianceFight.attackAllianceCountData
@@ -1509,6 +1521,8 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					if(_.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin)){
 						attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
 						defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
+						attackPlayerDoc.basicInfo.strikeWin += 1
+						TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 					}
 					attackAllianceData.allianceFight = {}
 					attackAllianceData.allianceFight.defenceAllianceCountData = attackAllianceDoc.allianceFight.defenceAllianceCountData
@@ -1586,6 +1600,8 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 						defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeCount += 1
 						attackAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
 						defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
+						attackPlayerDoc.basicInfo.strikeWin += 1
+						TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 						attackAllianceData.allianceFight = {}
 						attackAllianceData.allianceFight.attackAllianceCountData = attackAllianceDoc.allianceFight.attackAllianceCountData
 						defenceAllianceData.allianceFight = {}
@@ -1595,6 +1611,8 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 						defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount += 1
 						attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
 						defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
+						attackPlayerDoc.basicInfo.strikeWin += 1
+						TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 						attackAllianceData.allianceFight = {}
 						attackAllianceData.allianceFight.defenceAllianceCountData = attackAllianceDoc.allianceFight.defenceAllianceCountData
 						defenceAllianceData.allianceFight = {}
@@ -1671,6 +1689,8 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 						if(_.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin)){
 							attackAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
 							defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
+							attackPlayerDoc.basicInfo.strikeWin += 1
+							TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 						}
 						attackAllianceData.allianceFight = {}
 						attackAllianceData.allianceFight.attackAllianceCountData = attackAllianceDoc.allianceFight.attackAllianceCountData
@@ -1682,6 +1702,8 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 						if(_.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin)){
 							attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
 							defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
+							attackPlayerDoc.basicInfo.strikeWin += 1
+							TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 						}
 						attackAllianceData.allianceFight = {}
 						attackAllianceData.allianceFight.defenceAllianceCountData = attackAllianceDoc.allianceFight.defenceAllianceCountData
@@ -2257,6 +2279,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			var playerData = {}
 
 			playerDoc.basicInfo.kill += kill
+			TaskUtils.finishPlayerKillTaskIfNeed(playerDoc, playerData)
 			playerData.basicInfo = playerDoc.basicInfo
 			dragon.hp -= dragonHpDecreased
 			if(dragon.hp <= 0){

@@ -210,7 +210,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 				playerDoc.woundedSoldiers[soldier.name] -= soldier.count
 				playerData.woundedSoldiers[soldier.name] = playerDoc.woundedSoldiers[soldier.name]
 			})
-			LogicUtils.refreshPlayerPower(playerDoc)
+			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			pushFuncs.push([self.pushService, self.pushService.onTreatSoldierSuccessAsync, playerDoc, soldiers])
 		}else{
 			playerData.woundedSoldiers = {}
