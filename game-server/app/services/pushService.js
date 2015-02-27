@@ -38,7 +38,6 @@ pro.pushToPlayer = function(playerDoc, eventName, data, callback){
 		callback()
 		return
 	}
-	data.serverTime = Date.now()
 	this.channelService.pushMessageByUids(eventName, data, [{uid:playerDoc._id, sid:playerDoc.logicServerId}], callback)
 }
 
@@ -59,7 +58,6 @@ pro.pushToPlayers = function(playerDocs, eventName, data, callback){
 			})
 		}
 	})
-	data.serverTime = Date.now()
 	this.channelService.pushMessageByUids(eventName, data, ids, callback)
 }
 
@@ -84,7 +82,6 @@ pro.onPlayerLoginSuccess = function(playerDoc, callback){
 	if(!_.isObject(data.alliance) || _.isEmpty(data.alliance.id)){
 		data.alliance = {}
 	}
-
 	data.mails = []
 	data.reports = []
 	for(var i = playerDoc.mails.length - 1; i >= 0; i--){
@@ -125,7 +122,9 @@ pro.onPlayerLoginSuccess = function(playerDoc, callback){
 		unreadMails:unreadMails,
 		unreadReports:unreadReports
 	}
+
 	data.countInfo.serverVersion = this.serverVersion
+	data.serverTime = Date.now()
 	this.pushToPlayer(playerDoc, Events.player.onPlayerLoginSuccess, data, callback)
 }
 

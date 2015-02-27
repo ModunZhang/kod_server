@@ -715,23 +715,6 @@ pro.retreatFromVillage = function(msg, session, next){
 }
 
 /**
- * 突袭村落
- * @param msg
- * @param session
- * @param next
- */
-pro.strikeVillage = function(msg, session, next){
-	var dragonType = msg.dragonType
-	var defenceAllianceId = msg.defenceAllianceId
-	var defenceVillageId = msg.defenceVillageId
-	this.allianceApiService4.strikeVillageAsync(session.uid, dragonType, defenceAllianceId, defenceVillageId).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(e, {code:500, message:e.message})
-	})
-}
-
-/**
  * 查看敌方进攻行军事件详细信息
  * @param msg
  * @param session

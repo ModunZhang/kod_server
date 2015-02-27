@@ -136,19 +136,6 @@ var allianceSchema = new Schema({
 		type:{type:String, required:true},
 		level:{type:Number, required:true},
 		resource:{type:Number, required:true},
-		dragon:{
-			type:{type:String, required:true},
-			star:{type:Number, required:true},
-			level:{type:Number, require:true}
-		},
-		soldiers:[
-			{
-				_id:false,
-				name:{type:String, required:true},
-				star:{type:Number, required:true},
-				count:{type:Number, required:true}
-			}
-		],
 		location:{
 			x:{type:Number, required:true},
 			y:{type:Number, required:true}
@@ -329,7 +316,6 @@ var allianceSchema = new Schema({
 			id:{type:String, required:true},
 			type:{type:String, required:true},
 			level:{type:Number, required:true},
-			resource:{type:Number, required:true},
 			collectTotal:{type:Number, required:true},
 			location:{
 				x:{type:Number, required:true},

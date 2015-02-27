@@ -581,69 +581,6 @@ Utils.createAttackVillageMarchReturnEvent = function(allianceDoc, playerDoc, dra
 }
 
 /**
- * 创建突袭联盟村落行军事件
- * @param allianceDoc
- * @param playerDoc
- * @param dragon
- * @param defenceAllianceDoc
- * @param defenceVillage
- * @returns {*}
- */
-Utils.createStrikeVillageMarchEvent = function(allianceDoc, playerDoc, dragon, defenceAllianceDoc, defenceVillage){
-	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var defenceVillageLocation = defenceVillage.location
-	var marchTime = getPlayerDragonMarchTime(playerDoc, dragon, allianceDoc, playerLocation, defenceAllianceDoc, defenceVillageLocation)
-
-	var event = {
-		id:ShortId.generate(),
-		marchType:Consts.MarchType.Village,
-		startTime:Date.now(),
-		arriveTime:Date.now() + marchTime,
-		attackPlayerData:createStrikePlayerData(allianceDoc, playerDoc, playerLocation, dragon),
-		defenceVillageData:{
-			id:defenceVillage.id,
-			type:defenceVillage.type,
-			level:defenceVillage.level,
-			location:defenceVillageLocation,
-			alliance:createAllianceData(defenceAllianceDoc)
-		}
-	}
-	return event
-}
-
-/**
- * 创建突袭联盟村落回城事件
- * @param allianceDoc
- * @param playerDoc
- * @param dragon
- * @param defenceAllianceDoc
- * @param defenceVillage
- * @param rewards
- * @returns {*}
- */
-Utils.createStrikeVillageMarchReturnEvent = function(allianceDoc, playerDoc, dragon, defenceAllianceDoc, defenceVillage, rewards){
-	var playerLocation = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).location
-	var defenceVillageLocation = defenceVillage.location
-	var marchTime = getPlayerDragonMarchTime(playerDoc, dragon, allianceDoc, playerLocation, defenceAllianceDoc, defenceVillageLocation)
-
-	var event = {
-		id:ShortId.generate(),
-		marchType:Consts.MarchType.Village,
-		startTime:Date.now(),
-		arriveTime:Date.now() + marchTime,
-		attackPlayerData:createStrikePlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, rewards),
-		defenceVillageData:{
-			id:defenceVillage.id,
-			type:defenceVillage.type,
-			level:defenceVillage.level,
-			location:defenceVillageLocation,
-			alliance:createAllianceData(defenceAllianceDoc)
-		}
-	}
-	return event
-}
-
-/**
  * 创建采集联盟村落事件
  * @param allianceDoc
  * @param playerDoc
