@@ -133,32 +133,32 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
 	attackDragon = CommonUtils.clone(attackDragon)
 	defenceDragon = CommonUtils.clone(defenceDragon)
 
-	var attackDragonPower = attackDragon.strength
-	var defenceDragonPower = defenceDragon.strength
+	var attackDragonStrength = attackDragon.strength
+	var defenceDragonStrength = defenceDragon.strength
 	if(effect >= 0){
-		defenceDragonPower -= defenceDragonPower * effect
+		defenceDragonStrength -= defenceDragonStrength * effect
 	}else{
-		attackDragonPower -= attackDragonPower * (-effect)
+		attackDragonStrength -= attackDragonStrength * (-effect)
 	}
 	var attackDragonHpDecreased = null
 	var defenceDragonHpDecreased = null
-	if(attackDragonPower >= defenceDragonPower){
-		attackDragonHpDecreased = Math.floor(defenceDragonPower * 0.5)
-		defenceDragonHpDecreased = Math.floor(Math.sqrt(attackDragonPower * defenceDragonPower) * 0.5)
+	if(attackDragonStrength >= defenceDragonStrength){
+		attackDragonHpDecreased = Math.floor(defenceDragonStrength * 0.5)
+		defenceDragonHpDecreased = Math.floor(Math.sqrt(attackDragonStrength * defenceDragonStrength) * 0.5)
 	}else{
-		attackDragonHpDecreased = Math.floor(Math.sqrt(attackDragonPower * defenceDragonPower) * 0.5)
-		defenceDragonHpDecreased = Math.floor(attackDragonPower * 0.5)
+		attackDragonHpDecreased = Math.floor(Math.sqrt(attackDragonStrength * defenceDragonStrength) * 0.5)
+		defenceDragonHpDecreased = Math.floor(attackDragonStrength * 0.5)
 	}
 	attackDragon.currentHp = attackDragonHpDecreased > attackDragon.currentHp ? 0 : attackDragon.currentHp - attackDragonHpDecreased
 	defenceDragon.currentHp = defenceDragonHpDecreased > defenceDragon.currentHp ? 0 : defenceDragon.currentHp - defenceDragonHpDecreased
-	attackDragon.isWin = attackDragonPower >= defenceDragonPower
-	defenceDragon.isWin = attackDragonPower < defenceDragonPower
+	attackDragon.isWin = attackDragonStrength >= defenceDragonStrength
+	defenceDragon.isWin = attackDragonStrength < defenceDragonStrength
 
 	var response = {
-		powerCompare:attackDragonPower / defenceDragonPower,
+		powerCompare:attackDragonStrength / defenceDragonStrength,
 		attackDragonHpDecreased:attackDragon.totalHp - attackDragon.currentHp,
 		defenceDragonHpDecreased:defenceDragon.totalHp - defenceDragon.currentHp,
-		fightResult:attackDragonPower >= defenceDragonPower ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin,
+		fightResult:attackDragonStrength >= defenceDragonStrength ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin,
 		attackDragonAfterFight:attackDragon,
 		defenceDragonAfterFight:defenceDragon
 	}

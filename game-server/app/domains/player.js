@@ -669,13 +669,7 @@ var playerSchema = new Schema({
 						level:{type:Number, required:true},
 						hp:{type:Number, required:true},
 						hpDecreased:{type:Number, required:true}
-					},
-					rewards:[{
-						_id:false,
-						type:{type:String, required:true},
-						name:{type:String, required:true},
-						count:{type:Number, required:true}
-					}]
+					}
 				},
 				helpDefencePlayerData:{
 					id:{type:String, required:true},
@@ -804,13 +798,7 @@ var playerSchema = new Schema({
 						level:{type:Number, required:true},
 						hp:{type:Number, required:true},
 						hpDecreased:{type:Number, required:true}
-					},
-					rewards:[{
-						_id:false,
-						type:{type:String, required:true},
-						name:{type:String, required:true},
-						count:{type:Number, required:true}
-					}]
+					}
 				},
 				defencePlayerData:{
 					id:{type:String, required:true},
@@ -826,13 +814,7 @@ var playerSchema = new Schema({
 						level:{type:Number, required:true},
 						hp:{type:Number, required:true},
 						hpDecreased:{type:Number, required:true}
-					},
-					rewards:[{
-						_id:false,
-						type:{type:String, required:true},
-						name:{type:String, required:true},
-						count:{type:Number, required:true}
-					}]
+					}
 				}
 			},
 			required:false

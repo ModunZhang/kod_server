@@ -3626,6 +3626,7 @@ Utils.isPlayerBuildingUpgradeLegal = function(playerDoc, location){
 	var config = _.find(Buildings.buildings, function(config){
 		return _.isObject(config) && _.isEqual(config.name, building.type)
 	})
+	if(building.level <= 5) return true
 	var configParams = config.preCondition.split("_")
 	var preType = configParams[0]
 	var preName = configParams[1]
@@ -3656,7 +3657,7 @@ Utils.isPlayerHouseUpgradeLegal = function(playerDoc, buildingLocation, houseTyp
 		return house.location == houseLocation
 	})
 	if(!_.isObject(theHouse)) theHouse = {level:0}
-
+	if(theHouse.level <= 5) return true
 	var config = Houses.houses[houseType]
 	var configParams = config.preCondition.split("_")
 	var preType = configParams[0]
