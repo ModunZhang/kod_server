@@ -525,7 +525,7 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 	DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
 	DataUtils.refreshPlayerDragonsHp(helpDefencePlayerDoc, helpDefenceDragon)
 	var attackDragonMaxHp = DataUtils.getDragonHpMax(attackDragon)
-	var attackDragonHpDecreasedPercent = AllianceInitData.dragonStrikeHpDecreasedPercent.value / 100
+	var attackDragonHpDecreasedPercent = AllianceInitData.intInit.dragonStrikeHpDecreasedPercent.value / 100
 	var attackDragonHpDecreased = Math.ceil(attackDragonMaxHp * attackDragonHpDecreasedPercent)
 	attackDragonHpDecreased = attackDragonHpDecreased > attackDragon.hp ? attackDragon.hp : attackDragonHpDecreased
 	var attackDragonData = createDragonData(attackDragon, attackDragonHpDecreased)
@@ -606,7 +606,7 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 		cityBeStriked:cityBeStrikedReport
 	}
 
-	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer}
+	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, powerCompare:powerCompare}
 }
 
 /**
@@ -677,7 +677,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 	DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
 	DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon)
 	var attackDragonMaxHp = DataUtils.getDragonHpMax(attackDragon)
-	var attackDragonHpDecreasedPercent = AllianceInitData.dragonStrikeHpDecreasedPercent.value / 100
+	var attackDragonHpDecreasedPercent = AllianceInitData.intInit.dragonStrikeHpDecreasedPercent.value / 100
 	var attackDragonHpDecreased = Math.ceil(attackDragonMaxHp * attackDragonHpDecreasedPercent)
 	attackDragonHpDecreased = attackDragonHpDecreased > attackDragon.hp ? attackDragon.hp : attackDragonHpDecreased
 	var attackDragonData = createDragonData(attackDragon, attackDragonHpDecreased)
@@ -766,7 +766,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		cityBeStriked:cityBeStrikedReport
 	}
 
-	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer}
+	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, powerCompare:powerCompare}
 }
 
 /**
@@ -813,7 +813,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 	}
 
 	DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
-
+	var attackDragonData = createDragonData(attackDragon, 0)
 	var strikeCityReport = {
 		level:reportLevel,
 		strikeTarget:{
@@ -1138,7 +1138,7 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 	DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
 	DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon)
 	var attackDragonMaxHp = DataUtils.getDragonHpMax(attackDragon)
-	var attackDragonHpDecreasedPercent = AllianceInitData.dragonStrikeHpDecreasedPercent.value / 100
+	var attackDragonHpDecreasedPercent = AllianceInitData.intInit.dragonStrikeHpDecreasedPercent.value / 100
 	var attackDragonHpDecreased = Math.ceil(attackDragonMaxHp * attackDragonHpDecreasedPercent)
 	attackDragonHpDecreased = attackDragonHpDecreased > attackDragon.hp ? attackDragon.hp : attackDragonHpDecreased
 	var attackDragonData = createDragonData(attackDragon, attackDragonHpDecreased)
@@ -1217,7 +1217,7 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 		villageBeStriked:villageBeStrikedReport
 	}
 
-	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer}
+	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, powerCompare:powerCompare}
 }
 
 /**

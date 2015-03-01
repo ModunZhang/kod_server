@@ -1373,7 +1373,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				var helpDefenceParams = [helpDefencePlayerDoc.basicInfo.name, defenceAllianceDoc.basicInfo.tag]
 				LogicUtils.sendSystemMail(defencePlayerDoc, defencePlayerData, helpDefenceTitle, helpDefenceParams, helpDefenceContent, helpDefenceParams)
 
-				attackDragon.hp -= report.reportForAttackPlayer.attackPlayerData.dragon.hpDecreased
+				attackDragon.hp -= report.reportForAttackPlayer.strikeCity.attackPlayerData.dragon.hpDecreased
 				if(attackDragon.hp <= 0){
 					deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
 					attackPlayerDoc.dragonDeathEvents.push(deathEvent)
@@ -1397,7 +1397,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				if(_.isEqual(attackAllianceDoc._id, attackAllianceDoc.allianceFight.attackAllianceId)){
 					attackAllianceDoc.allianceFight.attackAllianceCountData.strikeCount += 1
 					defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeCount += 1
-					if(_.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin)){
+					if(_.isEqual(report.powerCompare >= 1)){
 						attackAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
 						defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
 						attackPlayerDoc.basicInfo.strikeWin += 1
@@ -1410,7 +1410,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				}else{
 					attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount += 1
 					defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount += 1
-					if(_.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin)){
+					if(_.isEqual(report.powerCompare >= 1)){
 						attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
 						defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
 						attackPlayerDoc.basicInfo.strikeWin += 1
@@ -1490,7 +1490,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
 					LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.reportForDefencePlayer)
 
-					attackDragon.hp -= report.reportForAttackPlayer.attackPlayerData.dragon.hpDecreased
+					attackDragon.hp -= report.reportForAttackPlayer.strikeCity.attackPlayerData.dragon.hpDecreased
 					if(attackDragon.hp <= 0){
 						deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
 						attackPlayerDoc.dragonDeathEvents.push(deathEvent)
@@ -1511,7 +1511,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					if(_.isEqual(attackAllianceDoc._id, attackAllianceDoc.allianceFight.attackAllianceId)){
 						attackAllianceDoc.allianceFight.attackAllianceCountData.strikeCount += 1
 						defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeCount += 1
-						if(_.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin)){
+						if(_.isEqual(report.powerCompare >= 1)){
 							attackAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
 							defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
 							attackPlayerDoc.basicInfo.strikeWin += 1
@@ -1524,7 +1524,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					}else{
 						attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount += 1
 						defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount += 1
-						if(_.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin)){
+						if(_.isEqual(report.powerCompare >= 1)){
 							attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
 							defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
 							attackPlayerDoc.basicInfo.strikeWin += 1
@@ -1680,7 +1680,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				report = ReportUtils.createStrikeVillageFightWithDefencePlayerDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragon, targetAllianceDoc, village, defenceAllianceDoc, villageEvent, defencePlayerDoc, defenceDragon)
 				LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
 				LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.reportForDefencePlayer)
-				attackDragon.hp -= report.reportForAttackPlayer.attackPlayerData.dragon.hpDecreased
+				attackDragon.hp -= report.reportForAttackPlayer.strikeVillage.attackPlayerData.dragon.hpDecreased
 				if(attackDragon.hp <= 0){
 					deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
 					attackPlayerDoc.dragonDeathEvents.push(deathEvent)
