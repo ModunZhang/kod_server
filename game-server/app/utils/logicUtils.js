@@ -1968,10 +1968,7 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 				type:Consts.DataChangedType.Remove,
 				data:villageEvent
 			})
-			if(villageEvent.villageData.resource <= villageEvent.villageData.collectTotal){
-				eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, villageEvent.id])
-			}
-
+			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, villageEvent.id])
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[villageEvent.playerData.dragon.type])
 			playerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.dragons[villageEvent.playerData.dragon.type] = playerDoc.dragons[villageEvent.playerData.dragon.type]
@@ -1983,7 +1980,6 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 				* ((Date.now() - villageEvent.startTime)
 				/ (villageEvent.finishTime - villageEvent.startTime))
 			)
-			resourceCollected = resourceCollected > villageEvent.villageData.collectTotal ? villageEvent.villageData.collectTotal : resourceCollected
 			var village = self.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
 			var originalRewards = villageEvent.playerData.rewards
 			var resourceName = village.type.slice(0, -7)
@@ -2007,30 +2003,11 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 			playerData.allianceInfo = playerDoc.allianceInfo
 			var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
 			self.addPlayerReport(playerDoc, playerData, collectReport)
-
-
-			if(village.level > 1){
-				village.level -= 1
-				var dragonAndSoldiers = DataUtils.getAllianceVillageConfigedDragonAndSoldiers(village.type, village.level)
-				village.dragon = dragonAndSoldiers.dragon
-				village.soldiers = dragonAndSoldiers.soldiers
-				village.resource = DataUtils.getAllianceVillageProduction(village.type, village.level)
-				allianceData.__villages.push({
-					type:Consts.DataChangedType.Edit,
-					data:village
-				})
-			}else{
-				self.removeItemInArray(allianceDoc.villages, village)
-				allianceData.__villages.push({
-					type:Consts.DataChangedType.Remove,
-					data:village
-				})
-				var villageInMap = self.removeAllianceMapObjectByLocation(allianceDoc, village.location)
-				allianceData.__mapObjects.push({
-					type:Consts.DataChangedType.Remove,
-					data:villageInMap
-				})
-			}
+			village.resource -= resourceCollected
+			allianceData.__villages.push({
+				type:Consts.DataChangedType.Edit,
+				data:village
+			})
 		}
 	}
 

@@ -1282,9 +1282,9 @@ Utils.isParamsLegal = function(itemName, params){
 		var toHouseLocation = itemData.toHouseLocation
 
 		if(!_.isNumber(fromBuildingLocation) || fromBuildingLocation % 1 !== 0 || fromBuildingLocation < 1 || fromBuildingLocation > 20) return false
-		if(!_.isNumber(fromHouseLocation) || fromBuildingLocation % 1 !== 0 || fromBuildingLocation < 1 || fromBuildingLocation > 3) return false
-		if(!_.isNumber(toBuildingLocation) || fromBuildingLocation % 1 !== 0 || fromBuildingLocation < 1 || fromBuildingLocation > 20) return false
-		if(!_.isNumber(toHouseLocation) || fromBuildingLocation % 1 !== 0 || fromBuildingLocation < 1 || fromBuildingLocation > 3) return false
+		if(!_.isNumber(fromHouseLocation) || fromHouseLocation % 1 !== 0 || fromHouseLocation < 1 || fromHouseLocation > 3) return false
+		if(!_.isNumber(toBuildingLocation) || toBuildingLocation % 1 !== 0 || toBuildingLocation < 1 || toBuildingLocation > 20) return false
+		if(!_.isNumber(toHouseLocation) || toHouseLocation % 1 !== 0 || toHouseLocation < 1 || toHouseLocation > 3) return false
 		return !(fromBuildingLocation == toBuildingLocation && fromHouseLocation == toHouseLocation)
 	}
 	if(_.isEqual(itemName, "torch")){

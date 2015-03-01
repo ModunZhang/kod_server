@@ -799,18 +799,6 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 		}
 		var defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
 		if(!_.isObject(defenceVillage)) return Promise.reject(new Error("村落不存在"))
-		var event = _.find(attackAllianceDoc.attackMarchEvents, function(event){
-			return _.isEqual(event.marchType, Consts.MarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
-		})
-		if(_.isObject(event)) return Promise.reject(new Error("您已有部队正在进攻此村落"))
-		event = _.find(attackAllianceDoc.strikeMarchEvents, function(event){
-			return _.isEqual(event.marchType, Consts.MarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
-		})
-		if(_.isObject(event)) return Promise.reject(new Error("您已有部队正在突袭此村落"))
-		var villageEvent = _.find(attackAllianceDoc.villageEvents, function(event){
-			return _.isEqual(event.villageData.id, defenceVillageId) && _.isEqual(event.playerData.id, attackPlayerDoc._id)
-		})
-		if(_.isObject(villageEvent)) return Promise.reject(new Error("您有部队正在采集此村落"))
 
 		if(attackAllianceDoc != defenceAllianceDoc){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, defenceAllianceDoc._id])
@@ -823,7 +811,7 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 				data:memberInAlliance
 			}]
 		}
-		event = MarchUtils.createAttackVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defenceVillage)
+		var event = MarchUtils.createAttackVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defenceVillage)
 		attackAllianceDoc.attackMarchEvents.push(event)
 		attackAllianceData.__attackMarchEvents = [{
 			type:Consts.DataChangedType.Add,
@@ -923,10 +911,8 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 			targetAllianceDoc = attackAllianceDoc
 			targetAllianceData = attackAllianceData
 		}
-
-		if(villageEvent.villageData.resource <= villageEvent.villageData.collectTotal){
-			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, villageEvent.id])
-		}
+		var village = LogicUtils.getAllianceVillageById(targetAllianceDoc, villageEvent.villageData.id)
+		eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, villageEvent.id])
 		LogicUtils.removeItemInArray(attackAllianceDoc.villageEvents, villageEvent)
 		attackAllianceData.__villageEvents = [{
 			type:Consts.DataChangedType.Remove,
@@ -934,9 +920,11 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 		}]
 
 		var resourceCollected = Math.floor(villageEvent.villageData.collectTotal * ((Date.now() - villageEvent.startTime) / (villageEvent.finishTime - villageEvent.startTime)))
-		resourceCollected = resourceCollected > villageEvent.villageData.collectTotal ? villageEvent.villageData.collectTotal : resourceCollected
-
-		var village = LogicUtils.getAllianceVillageById(targetAllianceDoc, villageEvent.villageData.id)
+		village.resource -= resourceCollected
+		targetAllianceData.__villages = [{
+			type:Consts.DataChangedType.Edit,
+			data:village
+		}]
 		var originalRewards = villageEvent.playerData.rewards
 		var resourceType = village.type.slice(0, -7)
 		var newRewards = [{
@@ -958,29 +946,6 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 		LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, collectReport)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
-
-		if(village.level > 1){
-			village.level -= 1
-			var dragonAndSoldiers = DataUtils.getAllianceVillageConfigedDragonAndSoldiers(village.type, village.level)
-			village.dragon = dragonAndSoldiers.dragon
-			village.soldiers = dragonAndSoldiers.soldiers
-			village.resource = DataUtils.getAllianceVillageProduction(village.type, village.level)
-			targetAllianceData.__villages = [{
-				type:Consts.DataChangedType.Edit,
-				data:village
-			}]
-		}else{
-			LogicUtils.removeItemInArray(targetAllianceDoc.villages, village)
-			targetAllianceData.__villages = [{
-				type:Consts.DataChangedType.Remove,
-				data:village
-			}]
-			var villageInMap = LogicUtils.removeAllianceMapObjectByLocation(targetAllianceDoc, village.location)
-			targetAllianceData.__mapObjects = [{
-				type:Consts.DataChangedType.Remove,
-				data:villageInMap
-			}]
-		}
 
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
@@ -1102,19 +1067,6 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 		var defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
 		if(!_.isObject(defenceVillage)) return Promise.reject(new Error("村落不存在"))
 
-		var event = _.find(attackAllianceDoc.attackMarchEvents, function(event){
-			return _.isEqual(event.marchType, Consts.MarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
-		})
-		if(_.isObject(event)) return Promise.reject(new Error("您已有部队正在进攻此村落"))
-		event = _.find(attackAllianceDoc.strikeMarchEvents, function(event){
-			return _.isEqual(event.marchType, Consts.MarchType.Village) && _.isEqual(event.defenceVillageData.id, defenceVillageId)
-		})
-		if(_.isObject(event)) return Promise.reject(new Error("您已有部队正在突袭此村落"))
-		var villageEvent = _.find(attackAllianceDoc.villageEvents, function(event){
-			return _.isEqual(event.villageData.id, defenceVillageId) && _.isEqual(event.playerData.id, attackPlayerDoc._id)
-		})
-		if(_.isObject(villageEvent)) return Promise.reject(new Error("您有部队正在采集此村落"))
-
 		if(attackAllianceDoc != defenceAllianceDoc){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, defenceAllianceDoc._id])
 		}
@@ -1126,7 +1078,7 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 				data:memberInAlliance
 			}]
 		}
-		event = MarchUtils.createStrikeVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], defenceAllianceDoc, defenceVillage)
+		var event = MarchUtils.createStrikeVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], defenceAllianceDoc, defenceVillage)
 		attackAllianceDoc.strikeMarchEvents.push(event)
 		attackAllianceData.__strikeMarchEvents = [{
 			type:Consts.DataChangedType.Add,

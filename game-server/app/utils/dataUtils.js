@@ -1843,40 +1843,11 @@ Utils.isAllianceVillageTypeLegal = function(villageType){
 }
 
 /**
- * 获取村落士兵信息
+ * 获取村落产出
  * @param villageType
  * @param villageLevel
- * @returns {*}
+ * @returns {production|*}
  */
-Utils.getAllianceVillageConfigedDragonAndSoldiers = function(villageType, villageLevel){
-	var soldiers = []
-	var config = AllianceVillage[villageType][villageLevel]
-	var soldierConfigs = config.soldiers.split(",")
-	var dragonConfig = soldierConfigs.shift()
-	var dragonParams = dragonConfig.split("_")
-	var dragon = {
-		type:dragonParams[0],
-		star:parseInt(dragonParams[1]),
-		level:parseInt(dragonParams[2])
-	}
-	_.each(soldierConfigs, function(soldierConfig){
-		var params = soldierConfig.split("_")
-		var soldierName = params[0]
-		var soldierStar = parseInt(params[1])
-		var soldierCount = parseInt(params[2])
-		var soldierCountMax = Math.round(soldierCount * 1.2)
-		var soldierCountMin = Math.round(soldierCount * 0.8)
-		soldierCount = soldierCountMin + ((Math.random() * (soldierCountMax - soldierCountMin + 1)) << 0)
-		var soldier = {
-			name:soldierName,
-			star:soldierStar,
-			count:soldierCount
-		}
-		soldiers.push(soldier)
-	})
-	return {dragon:dragon, soldiers:soldiers}
-}
-
 Utils.getAllianceVillageProduction = function(villageType, villageLevel){
 	var config = AllianceVillage[villageType][villageLevel]
 	return config.production
@@ -1906,14 +1877,11 @@ Utils.createMapVillages = function(mapObjects){
 		return _.isEqual(config.category, "village")
 	})
 	_.each(villageObjects, function(villageObject){
-		var dragonAndSoldiers = self.getAllianceVillageConfigedDragonAndSoldiers(villageObject.type, 1)
 		var village = {
 			id:ShortId.generate(),
 			type:villageObject.type,
 			level:1,
 			resource:self.getAllianceVillageProduction(villageObject.type, 1),
-			dragon:dragonAndSoldiers.dragon,
-			soldiers:dragonAndSoldiers.soldiers,
 			location:villageObject.location
 		}
 		villages.push(village)
@@ -1930,14 +1898,11 @@ Utils.createMapVillages = function(mapObjects){
 Utils.addAllianceVillageObject = function(allianceDoc, mapObject){
 	var villageType = mapObject.type
 	var villageLevel = allianceDoc.villageLevels[villageType]
-	var dragonAndSoldiers = this.getAllianceVillageConfigedDragonAndSoldiers(villageType, villageLevel)
 	var village = {
 		id:ShortId.generate(),
 		type:mapObject.type,
 		level:villageLevel,
 		resource:this.getAllianceVillageProduction(villageType, villageLevel),
-		dragon:dragonAndSoldiers.dragon,
-		soldiers:dragonAndSoldiers.soldiers,
 		location:mapObject.location
 	}
 	allianceDoc.villages.push(village)
@@ -3661,6 +3626,7 @@ Utils.isPlayerBuildingUpgradeLegal = function(playerDoc, location){
 	var config = _.find(Buildings.buildings, function(config){
 		return _.isObject(config) && _.isEqual(config.name, building.type)
 	})
+	if(building.level <= 5) return true
 	var configParams = config.preCondition.split("_")
 	var preType = configParams[0]
 	var preName = configParams[1]
@@ -3691,7 +3657,7 @@ Utils.isPlayerHouseUpgradeLegal = function(playerDoc, buildingLocation, houseTyp
 		return house.location == houseLocation
 	})
 	if(!_.isObject(theHouse)) theHouse = {level:0}
-
+	if(theHouse.level <= 5) return true
 	var config = Houses.houses[houseType]
 	var configParams = config.preCondition.split("_")
 	var preType = configParams[0]

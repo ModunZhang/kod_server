@@ -669,13 +669,7 @@ var playerSchema = new Schema({
 						level:{type:Number, required:true},
 						hp:{type:Number, required:true},
 						hpDecreased:{type:Number, required:true}
-					},
-					rewards:[{
-						_id:false,
-						type:{type:String, required:true},
-						name:{type:String, required:true},
-						count:{type:Number, required:true}
-					}]
+					}
 				},
 				helpDefencePlayerData:{
 					id:{type:String, required:true},
@@ -804,13 +798,7 @@ var playerSchema = new Schema({
 						level:{type:Number, required:true},
 						hp:{type:Number, required:true},
 						hpDecreased:{type:Number, required:true}
-					},
-					rewards:[{
-						_id:false,
-						type:{type:String, required:true},
-						name:{type:String, required:true},
-						count:{type:Number, required:true}
-					}]
+					}
 				},
 				defencePlayerData:{
 					id:{type:String, required:true},
@@ -826,13 +814,7 @@ var playerSchema = new Schema({
 						level:{type:Number, required:true},
 						hp:{type:Number, required:true},
 						hpDecreased:{type:Number, required:true}
-					},
-					rewards:[{
-						_id:false,
-						type:{type:String, required:true},
-						name:{type:String, required:true},
-						count:{type:Number, required:true}
-					}]
+					}
 				}
 			},
 			required:false
@@ -868,49 +850,12 @@ var playerSchema = new Schema({
 						level:{type:Number, required:true},
 						hp:{type:Number, required:true},
 						hpDecreased:{type:Number, required:true}
-					},
-					rewards:[{
-						_id:false,
-						type:{type:String, required:true},
-						name:{type:String, required:true},
-						count:{type:Number, required:true}
-					}]
+					}
 				},
 				defencePlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
 					icon:{type:String, required:true},
-					alliance:{
-						id:{type:String, required:true},
-						name:{type:String, required:true},
-						tag:{type:String, required:true}
-					},
-					dragon:{
-						type:{type:String, required:true},
-						level:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true},
-						equipments:[{
-							type:{type:String, required:true},
-							name:{type:String, required:true},
-							star:{type:String, required:true}
-						}],
-						skills:[{
-							_id:false,
-							name:{type:String, required:true},
-							level:{type:String, required:true}
-						}]
-					},
-					soldiers:[{
-						_id:false,
-						name:{type:String, required:true},
-						star:{type:Number, required:true},
-						count:{type:Number, required:true}
-					}]
-				},
-				defenceVillageData:{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -994,13 +939,7 @@ var playerSchema = new Schema({
 						level:{type:Number, required:true},
 						hp:{type:Number, required:true},
 						hpDecreased:{type:Number, required:true}
-					},
-					rewards:[{
-						_id:false,
-						type:{type:String, required:true},
-						name:{type:String, required:true},
-						count:{type:Number, required:true}
-					}]
+					}
 				}
 			},
 			required:false
@@ -1315,30 +1254,6 @@ var playerSchema = new Schema({
 						count:{type:Number, required:true}
 					}]
 				},
-				defenceVillageData:{
-					id:{type:String, required:true},
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					alliance:{
-						id:{type:String, required:true},
-						name:{type:String, required:true},
-						tag:{type:String, required:true}
-					},
-					dragon:{
-						type:{type:String, required:true},
-						level:{type:Number, required:true},
-						expAdd:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true}
-					},
-					soldiers:[{
-						_id:false,
-						name:{type:String, required:true},
-						star:{type:Number, required:true},
-						count:{type:Number, required:true},
-						countDecreased:{type:Number, required:true}
-					}]
-				},
 				fightWithDefencePlayerReports:{
 					attackPlayerDragonFightData:{
 						type:{type:String, required:true},
@@ -1366,44 +1281,6 @@ var playerSchema = new Schema({
 						isWin:{type:Boolean, required:true}
 					}],
 					defencePlayerSoldierRoundDatas:[{
-						_id:false,
-						soldierName:{type:String, required:true},
-						soldierStar:{type:Number, required:true},
-						soldierCount:{type:Number, required:true},
-						soldierDamagedCount:{type:Number, required:true},
-						soldierWoundedCount:{type:Number, required:true},
-						morale:{type:Number, required:true},
-						moraleDecreased:{type:Number, required:true},
-						isWin:{type:Boolean, required:true}
-					}]
-				},
-				fightWithDefenceVillageReports:{
-					attackPlayerDragonFightData:{
-						type:{type:String, required:true},
-						hpMax:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true},
-						isWin:{type:Boolean, required:true}
-					},
-					defenceVillageDragonFightData:{
-						type:{type:String, required:true},
-						hpMax:{type:Number, required:true},
-						hp:{type:Number, required:true},
-						hpDecreased:{type:Number, required:true},
-						isWin:{type:Boolean, required:true}
-					},
-					attackPlayerSoldierRoundDatas:[{
-						_id:false,
-						soldierName:{type:String, required:true},
-						soldierStar:{type:Number, required:true},
-						soldierCount:{type:Number, required:true},
-						soldierDamagedCount:{type:Number, required:true},
-						soldierWoundedCount:{type:Number, required:true},
-						morale:{type:Number, required:true},
-						moraleDecreased:{type:Number, required:true},
-						isWin:{type:Boolean, required:true}
-					}],
-					defenceVillageSoldierRoundDatas:[{
 						_id:false,
 						soldierName:{type:String, required:true},
 						soldierStar:{type:Number, required:true},
