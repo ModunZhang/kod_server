@@ -65,7 +65,7 @@
     "gate": [
       {
         "id": "gate-server-1",
-        "host": "54.178.151.193",
+        "host": "54.223.172.65",
         "port": 3151,
         "clientPort": 3011,
         "frontend": true
@@ -74,28 +74,28 @@
     "logic": [
       {
         "id": "logic-server-1",
-        "host": "54.178.151.193",
+        "host": "54.223.172.65",
         "port": 4151,
         "clientPort": 4011,
         "frontend": true
       },
       {
         "id": "logic-server-2",
-        "host": "54.178.151.193",
+        "host": "54.223.172.65",
         "port": 4152,
         "clientPort": 4012,
         "frontend": true
       },
       {
         "id": "logic-server-3",
-        "host": "54.178.151.193",
+        "host": "54.223.172.65",
         "port": 4153,
         "clientPort": 4013,
         "frontend": true
       },
       {
         "id": "logic-server-4",
-        "host": "54.178.151.193",
+        "host": "54.223.172.65",
         "port": 4154,
         "clientPort": 4014,
         "frontend": true
@@ -104,21 +104,21 @@
     "chat": [
       {
         "id": "chat-server-1",
-        "host": "54.178.151.193",
+        "host": "54.223.172.65",
         "port": 5151
       }
     ],
     "event": [
       {
         "id": "event-server-1",
-        "host": "54.178.151.193",
+        "host": "54.223.172.65",
         "port": 6151
       }
     ],
     "time": [
       {
         "id": "time-server-1",
-        "host": "54.178.151.193",
+        "host": "54.223.172.65",
         "port": 7151
       }
     ]
