@@ -819,6 +819,131 @@ var playerSchema = new Schema({
 			},
 			required:false
 		},
+		strikeVillage:{
+			type:{
+				level:{type:Number, required:true},
+				strikeTarget:{
+					type:{type:String, required:true},
+					level:{type:Number, required:true},
+					location:{
+						x:{type:Number, required:true},
+						y:{type:Number, required:true}
+					},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
+					terrain:{type:String, required:true}
+				},
+				attackPlayerData:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					icon:{type:String, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
+					}
+				},
+				defencePlayerData:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					icon:{type:String, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true},
+						equipments:[{
+							type:{type:String, required:true},
+							name:{type:String, required:true},
+							star:{type:String, required:true}
+						}],
+						skills:[{
+							_id:false,
+							name:{type:String, required:true},
+							level:{type:String, required:true}
+						}]
+					},
+					soldiers:[{
+						_id:false,
+						name:{type:String, required:true},
+						star:{type:Number, required:true},
+						count:{type:Number, required:true}
+					}]
+				}
+			},
+			required:false
+		},
+		villageBeStriked:{
+			type:{
+				level:{type:Number, required:true},
+				strikeTarget:{
+					type:{type:String, required:true},
+					level:{type:Number, required:true},
+					location:{
+						x:{type:Number, required:true},
+						y:{type:Number, required:true}
+					},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
+					terrain:{type:String, required:true}
+				},
+				attackPlayerData:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					icon:{type:String, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true},
+						equipments:[{
+							type:{type:String, required:true},
+							name:{type:String, required:true},
+							star:{type:String, required:true}
+						}]
+					}
+				},
+				defencePlayerData:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					icon:{type:String, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true}
+					},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
+					}
+				}
+			},
+			required:false
+		},
 		attackCity:{
 			type:{
 				isRenamed:{type:Boolean, required:true},

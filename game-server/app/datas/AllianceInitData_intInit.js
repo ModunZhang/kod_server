@@ -71,7 +71,7 @@ intInit["collectedCoinCountPerExp"] = {
 	type:"collectedCoinCountPerExp",
 	value:50
 }
-intInit["dragonStrikeHpDecreasePercent"] = {
-	type:"dragonStrikeHpDecreasePercent",
+intInit["dragonStrikeHpDecreasedPercent"] = {
+	type:"dragonStrikeHpDecreasedPercent",
 	value:10
 }

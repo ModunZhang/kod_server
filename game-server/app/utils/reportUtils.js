@@ -448,15 +448,14 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
  * 创建突袭玩家城市和协防玩家的龙发生战斗的战报
  * @param attackAllianceDoc
  * @param attackPlayerDoc
- * @param attackDragonForFight
+ * @param attackDragon
  * @param defenceAllianceDoc
  * @param defencePlayerDoc
  * @param helpDefencePlayerDoc
- * @param helpDefenceDragonForFight
- * @param dragonFightData
+ * @param helpDefenceDragon
  * @returns {*}
  */
-Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defencePlayerDoc, helpDefencePlayerDoc, helpDefenceDragonForFight, dragonFightData){
+Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc, helpDefencePlayerDoc, helpDefenceDragon){
 	var getReportLevel = function(powerCompare){
 		var reportLevel = null
 		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.E
@@ -475,12 +474,12 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 		}
 		return data
 	}
-	var createDragonData = function(dragonAfterFight){
+	var createDragonData = function(dragon, hpDecreased){
 		var dragonData = {
-			type:dragonAfterFight.type,
-			level:dragonAfterFight.level,
-			hp:dragonAfterFight.totalHp,
-			hpDecreased:dragonAfterFight.totalHp - dragonAfterFight.currentHp
+			type:dragon.type,
+			level:dragon.level,
+			hp:dragon.hp,
+			hpDecreased:hpDecreased
 		}
 		return dragonData
 	}
@@ -520,18 +519,27 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 		return soldiers
 	}
 
-	var attackDragonData = createDragonData(dragonFightData.attackDragonAfterFight)
-	var defenceDragonData = createDragonData(dragonFightData.defenceDragonAfterFight)
+	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, defencePlayerDoc.basicInfo.terrain)
+	var defenceDragonPower = DataUtils.getDragonStrength(helpDefenceDragon, defencePlayerDoc.basicInfo.terrain)
+	var powerCompare = attackDragonPower / defenceDragonPower
+	DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
+	DataUtils.refreshPlayerDragonsHp(helpDefencePlayerDoc, helpDefenceDragon)
+	var attackDragonMaxHp = DataUtils.getDragonHpMax(attackDragon)
+	var attackDragonHpDecreasedPercent = AllianceInitData.intInit.dragonStrikeHpDecreasedPercent.value / 100
+	var attackDragonHpDecreased = Math.ceil(attackDragonMaxHp * attackDragonHpDecreasedPercent)
+	attackDragonHpDecreased = attackDragonHpDecreased > attackDragon.hp ? attackDragon.hp : attackDragonHpDecreased
+	var attackDragonData = createDragonData(attackDragon, attackDragonHpDecreased)
+	var defenceDragonData = createDragonData(helpDefenceDragon, 0)
 
 	var strikeCityReport = {
-		level:getReportLevel(dragonFightData.powerCompare),
+		level:getReportLevel(powerCompare),
 		strikeTarget:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defenceAllianceDoc.basicInfo.terrain,
+			terrain:defencePlayerDoc.basicInfo.terrain,
 			fogOfTrick:DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")
 		},
 		attackPlayerData:{
@@ -539,8 +547,7 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 			name:attackPlayerDoc.basicInfo.name,
 			icon:attackPlayerDoc.basicInfo.icon,
 			alliance:createAllianceData(attackAllianceDoc),
-			dragon:attackDragonData,
-			rewards:[]
+			dragon:attackDragonData
 		},
 		helpDefencePlayerData:{
 			id:helpDefencePlayerDoc._id,
@@ -549,8 +556,8 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 			alliance:createAllianceData(defenceAllianceDoc),
 			dragon:_.extend(
 				{
-					equipments:getDragonEquipments(helpDefencePlayerDoc.dragons[helpDefenceDragonForFight.type]),
-					skills:getDragonSkills(helpDefencePlayerDoc.dragons[helpDefenceDragonForFight.type])
+					equipments:getDragonEquipments(helpDefenceDragon),
+					skills:getDragonSkills(helpDefenceDragon)
 				},
 				defenceDragonData
 			),
@@ -568,7 +575,7 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 			alliance:createAllianceData(attackAllianceDoc),
 			dragon:_.extend(
 				{
-					equipments:getDragonEquipments(attackPlayerDoc.dragons[attackDragonForFight.type])
+					equipments:getDragonEquipments(attackDragon)
 				},
 				attackDragonData
 			)
@@ -578,8 +585,7 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 			name:helpDefencePlayerDoc.basicInfo.name,
 			icon:helpDefencePlayerDoc.basicInfo.icon,
 			alliance:createAllianceData(defenceAllianceDoc),
-			dragon:defenceDragonData,
-			rewards:[]
+			dragon:defenceDragonData
 		}
 	}
 
@@ -600,21 +606,20 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 		cityBeStriked:cityBeStrikedReport
 	}
 
-	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer}
+	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, powerCompare:powerCompare}
 }
 
 /**
  * 创建突袭玩家城市和防守玩家的龙发生战斗的战报
  * @param attackAllianceDoc
  * @param attackPlayerDoc
- * @param attackDragonForFight
+ * @param attackDragon
  * @param defenceAllianceDoc
  * @param defencePlayerDoc
- * @param defenceDragonForFight
- * @param dragonFightData
+ * @param defenceDragon
  * @returns {*}
  */
-Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defencePlayerDoc, defenceDragonForFight, dragonFightData){
+Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc, defenceDragon){
 	var getReportLevel = function(powerCompare){
 		var reportLevel = null
 		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.E
@@ -633,12 +638,12 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		}
 		return data
 	}
-	var createDragonData = function(dragonAfterFight){
+	var createDragonData = function(dragon, hpDecreased){
 		var dragonData = {
-			type:dragonAfterFight.type,
-			level:dragonAfterFight.level,
-			hp:dragonAfterFight.totalHp,
-			hpDecreased:dragonAfterFight.totalHp - dragonAfterFight.currentHp
+			type:dragon.type,
+			level:dragon.level,
+			hp:dragon.hp,
+			hpDecreased:hpDecreased
 		}
 		return dragonData
 	}
@@ -666,23 +671,27 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		return equipments
 	}
 
-	var attackDragonData = createDragonData(dragonFightData.attackDragonAfterFight)
-	var defenceDragonData = createDragonData(dragonFightData.defenceDragonAfterFight)
-	var attackPlayerCoinGet = 0
-	if(_.isEqual(dragonFightData.fightResult, Consts.FightResult.AttackWin) && !DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")){
-		var attackDragonCurrentHp = dragonFightData.attackDragonAfterFight.currentHp
-		attackPlayerCoinGet = defencePlayerDoc.resources.coin >= attackDragonCurrentHp ? attackDragonCurrentHp : enemyPlayerDoc.resources.coin
-	}
+	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, defencePlayerDoc.basicInfo.terrain)
+	var defenceDragonPower = DataUtils.getDragonStrength(defenceDragon, defencePlayerDoc.basicInfo.terrain)
+	var powerCompare = attackDragonPower / defenceDragonPower
+	DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
+	DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon)
+	var attackDragonMaxHp = DataUtils.getDragonHpMax(attackDragon)
+	var attackDragonHpDecreasedPercent = AllianceInitData.intInit.dragonStrikeHpDecreasedPercent.value / 100
+	var attackDragonHpDecreased = Math.ceil(attackDragonMaxHp * attackDragonHpDecreasedPercent)
+	attackDragonHpDecreased = attackDragonHpDecreased > attackDragon.hp ? attackDragon.hp : attackDragonHpDecreased
+	var attackDragonData = createDragonData(attackDragon, attackDragonHpDecreased)
+	var defenceDragonData = createDragonData(defenceDragon, 0)
 
 	var strikeCityReport = {
-		level:getReportLevel(dragonFightData.powerCompare),
+		level:getReportLevel(powerCompare),
 		strikeTarget:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defenceAllianceDoc.basicInfo.terrain,
+			terrain:defencePlayerDoc.basicInfo.terrain,
 			fogOfTrick:DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")
 		},
 		attackPlayerData:{
@@ -690,12 +699,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 			name:attackPlayerDoc.basicInfo.name,
 			icon:attackPlayerDoc.basicInfo.icon,
 			alliance:createAllianceData(attackAllianceDoc),
-			dragon:attackDragonData,
-			rewards:[{
-				type:"resources",
-				name:"coin",
-				count:attackPlayerCoinGet
-			}]
+			dragon:attackDragonData
 		},
 		defencePlayerData:{
 			id:defencePlayerDoc._id,
@@ -704,8 +708,8 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 			alliance:createAllianceData(defencePlayerDoc),
 			dragon:_.extend(
 				{
-					equipments:getDragonEquipments(defencePlayerDoc.dragons[defenceDragonForFight.type]),
-					skills:getDragonSkills(defencePlayerDoc.dragons[defenceDragonForFight.type])
+					equipments:getDragonEquipments(defenceDragon),
+					skills:getDragonSkills(defenceDragon)
 				},
 				defenceDragonData
 			),
@@ -731,7 +735,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 			alliance:createAllianceData(attackAllianceDoc),
 			dragon:_.extend(
 				{
-					equipments:getDragonEquipments(attackPlayerDoc.dragons[attackDragonForFight.type])
+					equipments:getDragonEquipments(attackDragon)
 				},
 				attackDragonData
 			)
@@ -741,12 +745,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 			name:defencePlayerDoc.basicInfo.name,
 			icon:defencePlayerDoc.basicInfo.icon,
 			alliance:createAllianceData(defenceAllianceDoc),
-			dragon:defenceDragonData,
-			rewards:[{
-				type:"resources",
-				name:"coin",
-				count:-attackPlayerCoinGet
-			}]
+			dragon:defenceDragonData
 		}
 	}
 
@@ -767,21 +766,20 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		cityBeStriked:cityBeStrikedReport
 	}
 
-	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer}
+	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, powerCompare:powerCompare}
 }
 
 /**
  * 创建突袭玩家城市无协防无防守龙的战报
  * @param attackAllianceDoc
  * @param attackPlayerDoc
- * @param attackDragonForFight
+ * @param attackDragon
  * @param defenceAllianceDoc
  * @param defencePlayerDoc
  * @returns {*}
  */
-Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, defenceAllianceDoc, defencePlayerDoc){
+Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc){
 	var reportLevel = Consts.DragonStrikeReportLevel.S
-
 	var createAllianceData = function(allianceDoc){
 		var data = {
 			id:allianceDoc._id,
@@ -789,6 +787,15 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			tag:allianceDoc.basicInfo.tag
 		}
 		return data
+	}
+	var createDragonData = function(dragon, hpDecreased){
+		var dragonData = {
+			type:dragon.type,
+			level:dragon.level,
+			hp:dragon.hp,
+			hpDecreased:hpDecreased
+		}
+		return dragonData
 	}
 	var getDragonEquipments = function(dragon){
 		var equipments = []
@@ -805,8 +812,8 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		return equipments
 	}
 
-	var attackPlayerCoinGet = DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick") ? 0 : defencePlayerDoc.resources.coin >= attackDragonForFight.currentHp ? attackDragonForFight.currentHp : enemyPlayerDoc.resources.coin
-
+	DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
+	var attackDragonData = createDragonData(attackDragon, 0)
 	var strikeCityReport = {
 		level:reportLevel,
 		strikeTarget:{
@@ -815,7 +822,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defenceAllianceDoc.basicInfo.terrain,
+			terrain:defencePlayerDoc.basicInfo.terrain,
 			fogOfTrick:DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")
 		},
 		attackPlayerData:{
@@ -823,17 +830,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			name:attackPlayerDoc.basicInfo.name,
 			icon:attackPlayerDoc.basicInfo.icon,
 			alliance:createAllianceData(attackAllianceDoc),
-			dragon:{
-				type:attackDragonForFight.type,
-				level:attackDragonForFight.level,
-				hp:attackDragonForFight.currentHp,
-				hpDecreased:0
-			},
-			rewards:[{
-				type:"resources",
-				name:"coin",
-				count:attackPlayerCoinGet
-			}]
+			dragon:createDragonData(attackDragon, 0)
 		},
 		defencePlayerData:{
 			id:defencePlayerDoc._id,
@@ -859,24 +856,18 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			name:attackPlayerDoc.basicInfo.name,
 			icon:attackPlayerDoc.basicInfo.icon,
 			alliance:createAllianceData(attackAllianceDoc),
-			dragon:{
-				type:attackDragonForFight.type,
-				level:attackDragonForFight.level,
-				hp:attackDragonForFight.currentHp,
-				hpDecreased:0,
-				equipments:getDragonEquipments(attackPlayerDoc.dragons[attackDragonForFight.type])
-			}
+			dragon:_.extend(
+				{
+					equipments:getDragonEquipments(attackDragon)
+				},
+				attackDragonData
+			)
 		},
 		defencePlayerData:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			icon:defencePlayerDoc.basicInfo.icon,
-			alliance:createAllianceData(defenceAllianceDoc),
-			rewards:[{
-				type:"resources",
-				name:"coin",
-				count:-attackPlayerCoinGet
-			}]
+			alliance:createAllianceData(defenceAllianceDoc)
 		}
 	}
 
@@ -1063,6 +1054,170 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 		defenceDragonExpAdd:defenceDragonExpAdd
 	}
 	return {report:report, countData:countData}
+}
+
+/**
+ * 创建突袭村落和村落的采集者的龙发生战斗
+ * @param attackAllianceDoc
+ * @param attackPlayerDoc
+ * @param attackDragon
+ * @param targetAllianceDoc
+ * @param defenceAllianceDoc
+ * @param defenceVillage
+ * @param defenceVillageEvent
+ * @param defencePlayerDoc
+ * @param defenceDragon
+ * @returns {*}
+ */
+Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragon, targetAllianceDoc, defenceVillage, defenceAllianceDoc, defenceVillageEvent, defencePlayerDoc, defenceDragon){
+	var getReportLevel = function(powerCompare){
+		var reportLevel = null
+		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.E
+		else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.D
+		else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.C
+		else if(powerCompare >= 2 && powerCompare < 4) reportLevel = Consts.DragonStrikeReportLevel.B
+		else if(powerCompare >= 4 && powerCompare < 6) reportLevel = Consts.DragonStrikeReportLevel.A
+		else reportLevel = Consts.DragonStrikeReportLevel.S
+		return reportLevel
+	}
+	var createAllianceData = function(allianceDoc){
+		var data = {
+			id:allianceDoc._id,
+			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag
+		}
+		return data
+	}
+	var createDragonData = function(dragon, hpDecreased){
+		var dragonData = {
+			type:dragon.type,
+			level:dragon.level,
+			hp:dragon.hp,
+			hpDecreased:hpDecreased
+		}
+		return dragonData
+	}
+	var getDragonSkills = function(dragon){
+		var skills = []
+		_.each(dragon.skills, function(skill){
+			if(skill.level > 0){
+				skills.push(skill)
+			}
+		})
+		return skills
+	}
+	var getDragonEquipments = function(dragon){
+		var equipments = []
+		_.each(dragon.equipments, function(theEquipment, type){
+			if(!_.isEmpty(theEquipment.name)){
+				var equipment = {
+					type:type,
+					name:theEquipment.name,
+					star:theEquipment.star
+				}
+				equipments.push(equipment)
+			}
+		})
+		return equipments
+	}
+	var getSoldiersInTroop = function(playerDoc, soldiersInTroop){
+		var soldiers = []
+		_.each(soldiersInTroop, function(soldierInTroop){
+			var soldier = {
+				name:soldierInTroop.name,
+				star:1,
+				count:soldierInTroop.count
+			}
+			soldiers.push(soldier)
+		})
+		return soldiers
+	}
+	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, targetAllianceDoc.basicInfo.terrain)
+	var defenceDragonPower = DataUtils.getDragonStrength(defenceDragon, targetAllianceDoc.basicInfo.terrain)
+	var powerCompare = attackDragonPower / defenceDragonPower
+	DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
+	DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon)
+	var attackDragonMaxHp = DataUtils.getDragonHpMax(attackDragon)
+	var attackDragonHpDecreasedPercent = AllianceInitData.intInit.dragonStrikeHpDecreasedPercent.value / 100
+	var attackDragonHpDecreased = Math.ceil(attackDragonMaxHp * attackDragonHpDecreasedPercent)
+	attackDragonHpDecreased = attackDragonHpDecreased > attackDragon.hp ? attackDragon.hp : attackDragonHpDecreased
+	var attackDragonData = createDragonData(attackDragon, attackDragonHpDecreased)
+	var defenceDragonData = createDragonData(defenceDragon, 0)
+
+	var strikeVillageReport = {
+		level:getReportLevel(powerCompare),
+		strikeTarget:{
+			type:defenceVillage.type,
+			level:defenceVillage.level,
+			location:defenceVillage.location,
+			alliance:createAllianceData(targetAllianceDoc),
+			terrain:targetAllianceDoc.basicInfo.terrain
+		},
+		attackPlayerData:{
+			id:attackPlayerDoc._id,
+			name:attackPlayerDoc.basicInfo.name,
+			icon:attackPlayerDoc.basicInfo.icon,
+			alliance:createAllianceData(attackAllianceDoc),
+			dragon:attackDragonData
+		},
+		defencePlayerData:{
+			id:defencePlayerDoc._id,
+			name:defencePlayerDoc.basicInfo.name,
+			icon:defencePlayerDoc.basicInfo.icon,
+			alliance:createAllianceData(defenceAllianceDoc),
+			dragon:_.extend(
+				{
+					equipments:getDragonEquipments(defenceDragon),
+					skills:getDragonSkills(defenceDragon)
+				},
+				defenceDragonData
+			),
+			soldiers:getSoldiersInTroop(defencePlayerDoc, defenceVillageEvent.playerData.soldiers)
+		}
+	}
+
+	var villageBeStrikedReport = {
+		level:strikeVillageReport.level,
+		strikeTarget:strikeVillageReport.strikeTarget,
+		attackPlayerData:{
+			id:attackPlayerDoc._id,
+			name:attackPlayerDoc.basicInfo.name,
+			icon:attackPlayerDoc.basicInfo.icon,
+			alliance:createAllianceData(attackAllianceDoc),
+			dragon:_.extend(
+				{
+					equipments:getDragonEquipments(attackDragon)
+				},
+				attackDragonData
+			)
+		},
+		defencePlayerData:{
+			id:defencePlayerDoc._id,
+			name:defencePlayerDoc.basicInfo.name,
+			icon:defencePlayerDoc.basicInfo.icon,
+			alliance:createAllianceData(defenceAllianceDoc),
+			dragon:defenceDragonData
+		}
+	}
+
+	var reportForAttackPlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.StrikeVillage,
+		createTime:Date.now(),
+		isRead:false,
+		isSaved:false,
+		strikeVillage:strikeVillageReport
+	}
+	var reportForDefencePlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.VillageBeStriked,
+		createTime:Date.now(),
+		isRead:false,
+		isSaved:false,
+		villageBeStriked:villageBeStrikedReport
+	}
+
+	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, powerCompare:powerCompare}
 }
 
 /**
