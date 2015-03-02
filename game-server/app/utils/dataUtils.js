@@ -377,6 +377,8 @@ Utils.refreshPlayerResources = function(playerDoc){
 			playerDoc.resources[key] = self.getPlayerFood(playerDoc)
 		}else if(_.contains(Consts.BasicResource, key)){
 			playerDoc.resources[key] = self.getPlayerResource(playerDoc, key)
+		}else if(_.isEqual(key, "coin")){
+			playerDoc.resources[key] = self.getPlayerCoin(playerDoc)
 		}else if(_.isEqual("citizen", key)){
 			playerDoc.resources[key] = self.getPlayerCitizen(playerDoc)
 		}else if(_.isEqual("wallHp", key)){
@@ -423,6 +425,30 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 }
 
 /**
+ * 获取玩家银币
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getPlayerCoin = function(playerDoc){
+	var resourceName = "coin"
+	var houses = this.getPlayerHousesByType(playerDoc, "dwelling")
+	var totalPerHour = 0
+	_.each(houses, function(house){
+		var config = HouseFunction[house.type][house.level]
+		totalPerHour += config.poduction
+	})
+
+	var totalPerSecond = totalPerHour / 60 / 60
+	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
+	var itemKey = resourceName + "Bonus"
+	var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? 0.5 : 0
+	var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, resourceName)
+	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + buildingBuff))
+	var totalResource = playerDoc.resources[resourceName] + output
+	return totalResource
+}
+
+/**
  * 获取玩家士兵的消耗
  * @param playerDoc
  * @param time
@@ -459,8 +485,8 @@ Utils.getPlayerFood = function(playerDoc){
 	}else{
 		var totalSecond = totalTime / 1000
 		var itemBuff = this.isPlayerHasItemEvent(playerDoc, "foodBonus") ? 0.5 : 0
-		var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceTechNameMap["food"])
-		var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, "food")
+		var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceTechNameMap[resourceName])
+		var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, resourceName)
 		var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff + buildingBuff))
 		var totalResource = playerDoc.resources[resourceName] + output - soldierConsumed
 		if(totalResource > resourceLimit) totalResource = resourceLimit
@@ -3009,7 +3035,6 @@ Utils.createPlayerDailyQuestEvent = function(playerDoc, quest){
  * @returns {Array}
  */
 Utils.getPlayerDailyQuestEventRewards = function(playerDoc, questEvent){
-	var self = this
 	var config = DailyQuests.dailyQuests[questEvent.index]
 	var townhallLevel = playerDoc.buildings.location_14.level
 	var effect = questEvent.star * (1 + (0.02 * townhallLevel))
@@ -3019,8 +3044,7 @@ Utils.getPlayerDailyQuestEventRewards = function(playerDoc, questEvent){
 		var param = rewardString.split(":")
 		var type = param[0]
 		var name = param[1]
-		var itemBuff = self.isPlayerHasItemEvent(playerDoc, "taxesBonus") ? 0.5 : 0
-		var count = Math.floor(parseInt(param[2]) * effect * (1 + itemBuff))
+		var count = Math.floor(parseInt(param[2]) * effect)
 		rewards.push({
 			type:type,
 			name:name,

@@ -604,7 +604,7 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
 	eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
 	if(_.contains(Consts.BuildingSpeedupEventTypes, eventType)){
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.SpeedupBuildingBuild)
-	}else if(eventType, "soldierEvents"){
+	}else if(_.isEqual(eventType, "soldierEvents")){
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.SpeedupSoldiersRecruit)
 	}
 	return Promise.resolve()
@@ -910,16 +910,16 @@ var ItemNameFunctionMap = {
 		var itemConfig = Items.buff.foodBonus_3
 		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 	},
-	taxesBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.taxesBonus_1
+	coinBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.buff.coinBonus_1
 		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 	},
-	taxesBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.taxesBonus_2
+	coinBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.buff.coinBonus_2
 		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 	},
-	taxesBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.taxesBonus_3
+	coinBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.buff.coinBonus_3
 		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 	},
 	citizenBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){

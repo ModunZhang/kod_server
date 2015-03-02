@@ -112,7 +112,8 @@ module.exports = {
 		wood:"woodcutter",
 		stone:"quarrier",
 		iron:"miner",
-		food:"farmer"
+		food:"farmer",
+		coin:"dwelling"
 	},
 	BuildingHouseMap:{
 		lumbermill:"woodcutter",

@@ -104,14 +104,6 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("upgradeBuilding 升级前置条件未满足", function(done){
-		//	Api.upgradeBuilding(3, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("升级前置条件未满足")
-		//		done()
-		//	})
-		//})
-		//
 		//it("upgradeBuilding 建筑已达到最高等级", function(done){
 		//	var func = function(){
 		//		Api.upgradeBuilding(3, true, function(doc){
@@ -318,27 +310,19 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("switchBuilding 前置条件未满足", function(done){
+		//it("switchBuilding 正常转换", function(done){
 		//	Api.sendChat("buildinglevel 10 1", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.switchBuilding(10, "stoneMason", function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("前置条件未满足")
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("switchBuilding 正常转换", function(done){
-		//	Api.sendChat("buildinglevel 5 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.createHouse("quarrier", 5, 1, true, function(doc){
+		//		Api.sendChat("buildinglevel 5 1", function(doc){
 		//			doc.code.should.equal(200)
-		//			Api.upgradeHouse(5, 1, true, function(doc){
+		//			Api.createHouse("quarrier", 5, 1, true, function(doc){
 		//				doc.code.should.equal(200)
-		//				Api.switchBuilding(10, "stoneMason", function(doc){
+		//				Api.upgradeHouse(5, 1, true, function(doc){
 		//					doc.code.should.equal(200)
-		//					done()
+		//					Api.switchBuilding(10, "stoneMason", function(doc){
+		//						doc.code.should.equal(200)
+		//						done()
+		//					})
 		//				})
 		//			})
 		//		})

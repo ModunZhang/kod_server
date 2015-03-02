@@ -31,8 +31,8 @@ buffTypes["foodBonus"] = {
 	type:"foodBonus",
 	effect:0.500000
 }
-buffTypes["taxesBonus"] = {
-	type:"taxesBonus",
+buffTypes["coinBonus"] = {
+	type:"coinBonus",
 	effect:0.500000
 }
 buffTypes["citizenBonus"] = {
