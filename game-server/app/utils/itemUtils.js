@@ -282,7 +282,7 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 var DragonExp = function(playerDoc, playerData, dragonType, itemConfig){
 	var dragon = playerDoc.dragons[dragonType]
 	if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
-	DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, parseInt(itemConfig.effect))
+	DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, parseInt(itemConfig.effect), false)
 	playerData.dragons = {}
 	playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 	return Promise.resolve()
@@ -507,13 +507,13 @@ var VipActive = function(playerDoc, playerData, itemConfig, eventFuncs, timeEven
  * @param playerDoc
  * @param playerData
  * @param itemConfig
+ * @param eventFuncs
+ * @param timeEventService
  * @returns {*}
  */
-var VipPoint = function(playerDoc, playerData, itemConfig){
+var VipPoint = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventService){
 	var vipPoint = parseInt(itemConfig.effect)
-	playerDoc.basicInfo.vipExp += vipPoint
-	playerData.basicInfo = playerDoc.basicInfo
-
+	DataUtils.addPlayerVipExp(playerDoc, playerData, vipPoint, eventFuncs, timeEventService)
 	return Promise.resolve()
 }
 
@@ -810,21 +810,21 @@ var ItemNameFunctionMap = {
 		var itemConfig = Items.special.vipActive_5
 		return VipActive(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 	},
-	vipPoint_1:function(itemData, playerDoc, playerData){
+	vipPoint_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
 		var itemConfig = Items.special.vipPoint_1
-		return VipPoint(playerDoc, playerData, itemConfig)
+		return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 	},
-	vipPoint_2:function(itemData, playerDoc, playerData){
+	vipPoint_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
 		var itemConfig = Items.special.vipPoint_2
-		return VipPoint(playerDoc, playerData, itemConfig)
+		return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 	},
-	vipPoint_3:function(itemData, playerDoc, playerData){
+	vipPoint_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
 		var itemConfig = Items.special.vipPoint_3
-		return VipPoint(playerDoc, playerData, itemConfig)
+		return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 	},
-	vipPoint_4:function(itemData, playerDoc, playerData){
+	vipPoint_4:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
 		var itemConfig = Items.special.vipPoint_4
-		return VipPoint(playerDoc, playerData, itemConfig)
+		return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 	},
 	masterOfDefender_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
 		var itemConfig = Items.buff.masterOfDefender_1

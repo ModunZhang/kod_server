@@ -103,9 +103,11 @@ var playerSchema = new Schema({
 		todayOnLineTimeRewards:[Number],
 		day14:{type:Number, required:true, default:1},
 		day14RewardsCount:{type:Number, rquired:true, default:0},
+		vipLoginDaysCount:{type:Number, required:true, default:1},
 		levelupRewards:[Number],
 		gemUsed:{type:Number, required:true, default:0},
 		iapCount:{type:Number, required:true, default:0},
+		todayFreeNormalGachaCount:{type:Number, required:true, default:0},
 		isFirstIAPRewardsGeted:{type:Boolean, required:true, default:false}
 	},
 	basicInfo:{

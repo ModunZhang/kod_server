@@ -1367,7 +1367,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 			return Promise.reject(new Error("玩家事件不存在"))
 		}
 		helpEvent.eventData.helpedMembers.push(playerDoc._id)
-		var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc)
+		var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc, playerEvent.finishTime - playerEvent.startTime)
 		var newFinishTime = playerEvent.finishTime - effect
 		if(helpEvent.eventData.helpedMembers.length >= helpEvent.eventData.maxHelpCount || newFinishTime <= Date.now()){
 			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
@@ -1488,7 +1488,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 						return Promise.reject(new Error("玩家建造事件不存在"))
 					}
 					helpEvent.helpedMembers.push(playerDoc._id)
-					var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc)
+					var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc, memberEvent.finishTime - memberEvent.startTime)
 					var newFinishTime = memberEvent.finishTime - effect
 					if(helpEvent.eventData.helpedMembers.length >= helpEvent.eventData.maxHelpCount || newFinishTime <= Date.now()){
 						LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)

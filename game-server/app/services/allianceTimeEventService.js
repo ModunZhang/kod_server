@@ -590,8 +590,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				}]
 				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 			}
-			var attackPlayerItemBuff = DataUtils.isPlayerHasItemEvent(attackPlayerDoc, "dragonExpBonus") ? 0.3 : 0
-			DataUtils.addPlayerDragonExp(attackPlayerDoc, attackPlayerData, attackDragon, countData.attackDragonExpAdd * (1 + attackPlayerItemBuff))
+			DataUtils.addPlayerDragonExp(attackPlayerDoc, attackPlayerData, attackDragon, countData.attackDragonExpAdd, true)
 			attackPlayerData.basicInfo = attackPlayerDoc.basicInfo
 			attackPlayerData.dragons = {}
 			attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
@@ -629,8 +628,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					}]
 					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, helpDefencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 				}
-				var helpDefencePlayerItemBuff = DataUtils.isPlayerHasItemEvent(helpDefencePlayerDoc, "dragonExpBonus") ? 0.3 : 0
-				DataUtils.addPlayerDragonExp(helpDefencePlayerDoc, helpDefencePlayerData, helpDefenceDragon, countData.defenceDragonExpAdd * (1 + helpDefencePlayerItemBuff))
+				DataUtils.addPlayerDragonExp(helpDefencePlayerDoc, helpDefencePlayerData, helpDefenceDragon, countData.defenceDragonExpAdd, true)
 				helpDefencePlayerData.basicInfo = helpDefencePlayerDoc.basicInfo
 				helpDefencePlayerData.dragons = {}
 				helpDefencePlayerData.dragons[helpDefenceDragon.type] = helpDefencePlayerDoc.dragons[helpDefenceDragon.type]
@@ -699,8 +697,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						}]
 						eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 					}
-					var defencePlayerItemBuff = DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "dragonExpBonus") ? 0.3 : 0
-					DataUtils.addPlayerDragonExp(defencePlayerDoc, defencePlayerData, defenceDragon, countData.defenceDragonExpAdd * (1 + defencePlayerItemBuff))
+					DataUtils.addPlayerDragonExp(defencePlayerDoc, defencePlayerData, defenceDragon, countData.defenceDragonExpAdd, true)
 					defencePlayerData.basicInfo = defencePlayerDoc.basicInfo
 					defencePlayerData.dragons = {}
 					defencePlayerData.dragons[defenceDragon.type] = defencePlayerDoc.dragons[defenceDragon.type]
@@ -925,7 +922,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var defenceWoundedSoldiers = null
 		var defenceRewards = null
 		var marchReturnEvent = null
-		var attackPlayerItemBuff = null
 		var resourceName = null
 		var newRewards = null
 
@@ -1080,8 +1076,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					}]
 					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 				}
-				attackPlayerItemBuff = DataUtils.isPlayerHasItemEvent(attackPlayerDoc, "dragonExpBonus") ? 0.3 : 0
-				DataUtils.addPlayerDragonExp(attackPlayerDoc, attackPlayerData, attackDragon, attackDragonExpAdd * (1 + attackPlayerItemBuff))
+				DataUtils.addPlayerDragonExp(attackPlayerDoc, attackPlayerData, attackDragon, attackDragonExpAdd, true)
 				attackPlayerData.basicInfo = attackPlayerDoc.basicInfo
 				attackPlayerData.dragons = {}
 				attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
@@ -1098,8 +1093,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					}]
 					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 				}
-				var defencePlayerItemBuff = DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "dragonExpBonus") ? 0.3 : 0
-				DataUtils.addPlayerDragonExp(defencePlayerDoc, defencePlayerData, defenceDragon, defenceDragonExpAdd * (1 + defencePlayerItemBuff))
+				DataUtils.addPlayerDragonExp(defencePlayerDoc, defencePlayerData, defenceDragon, defenceDragonExpAdd, true)
 
 				defencePlayerData.basicInfo = defencePlayerDoc.basicInfo
 				defencePlayerData.dragons = {}
@@ -2017,8 +2011,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 				}]
 				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 			}
-			var playerItemBuff = DataUtils.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? 0.3 : 0
-			DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, dragonExpAdd * (1 + playerItemBuff))
+			DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, dragonExpAdd, true)
 
 			playerData.dragons = {}
 			playerData.dragons[dragon.type] = playerDoc.dragons[dragon.type]
@@ -2471,7 +2464,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 
 		attackAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
 		attackAllianceDoc.basicInfo.statusStartTime = now
-		var attackAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight(attackAllianceDoc)
+		var attackAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight()
 		attackAllianceDoc.basicInfo.statusFinishTime = now + attackAllianceProtectTime
 		attackAllianceData.basicInfo = attackAllianceDoc.basicInfo
 		attackAllianceDoc.allianceFight = null
@@ -2491,7 +2484,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 
 		defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
 		defenceAllianceDoc.basicInfo.statusStartTime = now
-		var defenceAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight(defenceAllianceDoc)
+		var defenceAllianceProtectTime = DataUtils.getAllianceProtectTimeAfterAllianceFight()
 		defenceAllianceDoc.basicInfo.statusFinishTime = now + defenceAllianceProtectTime
 		defenceAllianceData.basicInfo = defenceAllianceDoc.basicInfo
 		defenceAllianceDoc.allianceFight = null

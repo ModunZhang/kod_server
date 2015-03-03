@@ -12,6 +12,7 @@ var Consts = require("../consts/consts")
 var CommonUtils = require("./utils")
 var LogicUtils = require("./logicUtils")
 var TaskUtils = require("./taskUtils")
+var ItemUtils = require("./itemUtils")
 var GameDatas = require("../datas/GameDatas")
 var BuildingLevelUp = GameDatas.BuildingLevelUp
 var BuildingFunction = GameDatas.BuildingFunction
@@ -42,6 +43,7 @@ var Gacha = GameDatas.Gacha
 var Activities = GameDatas.Activities
 var StoreItems = GameDatas.StoreItems
 var GrowUpTasks = GameDatas.GrowUpTasks
+var Vip = GameDatas.Vip
 
 
 var Utils = module.exports
@@ -417,8 +419,9 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 	var itemKey = resourceName + "Bonus"
 	var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? 0.5 : 0
 	var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceTechNameMap[resourceName])
+	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0][resourceName + "ProductionAdd"]
 	var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, resourceName)
-	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff + buildingBuff))
+	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff + buildingBuff + vipBuff))
 	var totalResource = playerDoc.resources[resourceName] + output
 	if(totalResource > resourceLimit) totalResource = resourceLimit
 	return totalResource
@@ -463,7 +466,8 @@ Utils.getPlayerSoldiersFoodConsumed = function(playerDoc, time){
 	})
 
 	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "quarterMaster") ? 0.25 : 0
-	return Math.ceil(consumed * time / 1000 / 60 / 60 * (1 - itemBuff))
+	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].soldierConsumeSub
+	return Math.ceil(consumed * time / 1000 / 60 / 60 * (1 - itemBuff - vipBuff))
 }
 
 Utils.getPlayerFood = function(playerDoc){
@@ -484,10 +488,12 @@ Utils.getPlayerFood = function(playerDoc){
 		return playerDoc.resources[resourceName] - soldierConsumed
 	}else{
 		var totalSecond = totalTime / 1000
-		var itemBuff = this.isPlayerHasItemEvent(playerDoc, "foodBonus") ? 0.5 : 0
+		var itemKey = resourceName + "Bonus"
+		var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? 0.5 : 0
 		var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceTechNameMap[resourceName])
+		var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0][resourceName + "ProductionAdd"]
 		var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, resourceName)
-		var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff + buildingBuff))
+		var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff + buildingBuff + vipBuff))
 		var totalResource = playerDoc.resources[resourceName] + output - soldierConsumed
 		if(totalResource > resourceLimit) totalResource = resourceLimit
 		else if(totalResource < 0) totalResource = 0
@@ -508,17 +514,12 @@ Utils.getPlayerCitizen = function(playerDoc){
 		return citizenLimit - usedCitizen
 	}
 
-	var houses = this.getPlayerHousesByType(playerDoc, "dwelling")
-	var totalPerHour = 0
-	_.each(houses, function(house){
-		var config = HouseFunction[house.type][house.level]
-		totalPerHour += config.recoveryCitizen
-	})
-
+	var totalPerHour = (citizenLimit - usedCitizen) / PlayerInitData.intInit.playerCitizenRecoverFullNeedHours.value
 	var totalPerSecond = totalPerHour / 60 / 60
 	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
 	var itemCitizenRecoverBuff = this.isPlayerHasItemEvent(playerDoc, "citizenBonus") ? 0.5 : 0
-	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemCitizenRecoverBuff))
+	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].citizenRecoveryAdd
+	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemCitizenRecoverBuff + vipBuff))
 	var totalCitizen = playerDoc.resources["citizen"] + output
 	if(totalCitizen - usedCitizen > citizenLimit) totalCitizen = citizenLimit - usedCitizen
 	return totalCitizen
@@ -642,7 +643,8 @@ Utils.getPlayerWallHp = function(playerDoc){
 	var totalPerSecond = config.wallRecovery / 60 / 60
 	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
 	var techBuff = this.getPlayerProductionTechBuff(playerDoc, "fastFix")
-	var output = Math.floor(totalSecond * totalPerSecond * (1 + techBuff))
+	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].wallHpRecoveryAdd
+	var output = Math.floor(totalSecond * totalPerSecond * (1 + techBuff + vipBuff))
 	var totalHp = playerDoc.resources["wallHp"] + output
 	return totalHp > hpLimit ? hpLimit : totalHp
 }
@@ -1675,9 +1677,9 @@ Utils.getAllianceTitleLevel = function(title){
  * @returns {*}
  */
 Utils.getPlayerVipLevel = function(playerDoc){
-	var vipExpConfig = PlayerInitData.vipLevel
+	var vipExpConfig = Vip.level
 	var vipExp = playerDoc.basicInfo.vipExp
-	for(var i = vipExpConfig.length; i >= 1; i++){
+	for(var i = vipExpConfig.length - 1; i >= 1; i--){
 		var minExp = vipExpConfig[i].expFrom
 		if(vipExp >= minExp) return i
 	}
@@ -1687,10 +1689,12 @@ Utils.getPlayerVipLevel = function(playerDoc){
 /**
  * 获取玩家协助加速效果
  * @param playerDoc
+ * @param totalTime
  * @returns {number}
  */
-Utils.getPlayerHelpAllianceMemberSpeedUpEffect = function(playerDoc){
-	return 2 * 60 * 1000
+Utils.getPlayerHelpAllianceMemberSpeedUpEffect = function(playerDoc, totalTime){
+	var vipConfig = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0]
+	return 60 * 1000 + (totalTime * vipConfig.helpSpeedup / 100)
 }
 
 /**
@@ -1699,7 +1703,8 @@ Utils.getPlayerHelpAllianceMemberSpeedUpEffect = function(playerDoc){
  * @returns {number}
  */
 Utils.getPlayerFreeSpeedUpEffect = function(playerDoc){
-	return 5 * 60 * 1000
+	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].freeSpeedup
+	return vipBuff * 60 * 1000
 }
 
 /**
@@ -2191,6 +2196,8 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 		var techBuffToArcher = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_" + "archer")
 		var techBuffToCavalry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_" + "cavalry")
 		var techBuffToSiege = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_" + "siege")
+		var vipAttackBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].soldierAttackPowerAdd
+		var vipHpBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].soldierHpAdd
 		var soldierForFight = {
 			name:soldierName,
 			star:soldierStar,
@@ -2199,17 +2206,17 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 			totalCount:soldierCount,
 			woundedCount:0,
 			power:config.power,
-			hp:Math.floor(config.hp * (1 + hpBuff)),
+			hp:Math.floor(config.hp * (1 + hpBuff + vipHpBuff)),
 			load:Math.floor(config.load * (1 + loadBuff)),
 			citizen:config.citizen,
 			morale:100,
 			round:0,
 			attackPower:{
-				infantry:Math.floor(config.infantry * (1 + atkBuff + techBuffToInfantry)),
-				archer:Math.floor(config.archer * (1 + atkBuff + techBuffToArcher)),
-				cavalry:Math.floor(config.cavalry * (1 + atkBuff + techBuffToCavalry)),
-				siege:Math.floor(config.siege * (1 + atkBuff + techBuffToSiege)),
-				wall:Math.floor(config.wall * (1 + atkBuff + atkWallBuff))
+				infantry:Math.floor(config.infantry * (1 + atkBuff + techBuffToInfantry + vipAttackBuff)),
+				archer:Math.floor(config.archer * (1 + atkBuff + techBuffToArcher + vipAttackBuff)),
+				cavalry:Math.floor(config.cavalry * (1 + atkBuff + techBuffToCavalry + vipAttackBuff)),
+				siege:Math.floor(config.siege * (1 + atkBuff + techBuffToSiege + vipAttackBuff)),
+				wall:Math.floor(config.wall * (1 + atkBuff + atkWallBuff + vipAttackBuff))
 			},
 			killedSoldiers:[]
 		}
@@ -2678,11 +2685,10 @@ Utils.getAllianceFightSecondsPerFight = function(){
 
 /**
  * 获取联盟战后联盟获得的保护时间
- * @param allianceDoc
  * @returns {number}
  */
-Utils.getAllianceProtectTimeAfterAllianceFight = function(allianceDoc){
-	return 60 * 1000
+Utils.getAllianceProtectTimeAfterAllianceFight = function(){
+	return AllianceInit.intInit.allianceFightFaiedProtectMinutes.value * 60 * 1000
 }
 
 /**
@@ -2763,7 +2769,8 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
 				var totalMilSeconds = Date.now() - dragon.hpRefreshTime
 				var recoveryPerMilSecond = config.hpRecoveryPerHour / 60 / 60 / 1000
 				var itemBuff = self.isPlayerHasItemEvent(playerDoc, "dragonHpBonus") ? 0.3 : 0
-				var hpRecovered = Math.floor(totalMilSeconds * recoveryPerMilSecond * (1 + itemBuff))
+				var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].dragonHpRecoveryAdd
+				var hpRecovered = Math.floor(totalMilSeconds * recoveryPerMilSecond * (1 + itemBuff + vipBuff))
 				dragon.hp += hpRecovered
 				dragon.hp = dragon.hp > dragonMaxHp ? dragonMaxHp : dragon.hp
 			}
@@ -2778,9 +2785,12 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
  * @param playerData
  * @param dragon
  * @param expAdd
+ * @param inFight
  */
-Utils.addPlayerDragonExp = function(playerDoc, playerData, dragon, expAdd){
-	dragon.exp += expAdd
+Utils.addPlayerDragonExp = function(playerDoc, playerData, dragon, expAdd, inFight){
+	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? 0.3 : 0
+	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonExpAdd
+	dragon.exp += expAdd * (1 + inFight ? (1 + itemBuff + vipBuff) : 0)
 	var currentStarMaxLevel = Dragons.dragonAttributes[dragon.star].levelMax
 	var nextLevelExpNeed = Dragons.dragonAttributes[dragon.star].perLevelExp * Math.pow(dragon.level, 2)
 	if(dragon.exp >= nextLevelExpNeed){
@@ -2817,7 +2827,8 @@ Utils.getPlayerSoldiersCitizen = function(playerDoc, soldiers){
  */
 Utils.getPlayerDragonMaxCitizen = function(playerDoc, dragon){
 	var leaderShip = this.getPlayerDragonLeadership(playerDoc, dragon)
-	return leaderShip * AllianceInit.intInit.citizenPerLeadership.value
+	var vipHpBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonLeaderShipAdd
+	return leaderShip * AllianceInit.intInit.citizenPerLeadership.value * (1 + vipHpBuff)
 }
 
 /**
@@ -3735,4 +3746,70 @@ Utils.getGrowUpTaskRewards = function(type, id){
 		exp:config.exp
 	}
 	return rewards
+}
+
+/**
+ * 根据连续登录天数获取Vip经验值的增加量
+ * @param vipLoginDaysCount
+ * @returns {*}
+ */
+Utils.getPlayerVipExpByLoginDaysCount = function(vipLoginDaysCount){
+	var maxLoginDaysCount = Vip.loginDays.length - 1
+	if(vipLoginDaysCount > maxLoginDaysCount) vipLoginDaysCount = maxLoginDaysCount
+	var expAdd = Vip.loginDays[vipLoginDaysCount].expAdd
+	return expAdd
+}
+
+/**
+ * 为玩家增加Vip经验值
+ * @param playerDoc
+ * @param playerData
+ * @param expAdd
+ * @param eventFuncs
+ * @param timeEventService
+ */
+Utils.addPlayerVipExp = function(playerDoc, playerData, expAdd, eventFuncs, timeEventService){
+	var preLevel = this.getPlayerVipLevel(playerDoc)
+	playerDoc.basicInfo.vipExp += expAdd
+	playerData.basicInfo = playerDoc.basicInfo
+	var afterLevel = this.getPlayerVipLevel(playerDoc)
+	var itemConfig = Items.special.vipActive_3
+	var totalVipTime = 0
+	for(var i = 0; i < afterLevel - preLevel; i++){
+		totalVipTime += parseInt(itemConfig.effect) * 60 * 1000
+	}
+	if(totalVipTime > 0){
+		var event = playerDoc.vipEvents[0]
+		if(_.isObject(event)){
+			event.finishTime += totalVipTime
+			playerData.__vipEvents = [{
+				type:Consts.DataChangedType.Edit,
+				data:event
+			}]
+			eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
+		}else{
+			event = {
+				id:ShortId.generate(),
+				startTime:Date.now(),
+				finishTime:Date.now() + totalVipTime
+			}
+			playerDoc.vipEvents.push(event)
+			playerData.__vipEvents = [{
+				type:Consts.DataChangedType.Add,
+				data:event
+			}]
+			eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "vipEvents", event.id, event.finishTime])
+		}
+	}
+}
+
+/**
+ * 玩家是否还能尽享免费普通Gacha
+ * @param playerDoc
+ * @returns {boolean}
+ */
+Utils.isPlayerCanFreeNormalGacha = function(playerDoc){
+	var freeCount = PlayerInitData.intInit.freeNormalGachaCountPerDay.value
+	freeCount += Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].normalGachaAdd
+	return freeCount > playerDoc.countInfo.todayFreeNormalGachaCount
 }

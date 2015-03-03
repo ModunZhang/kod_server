@@ -16,6 +16,7 @@ var LogicUtils = require("./logicUtils")
 var GameDatas = require("../datas/GameDatas")
 var AllianceInitData = GameDatas.AllianceInitData
 var PlayerInitData = GameDatas.PlayerInitData
+var Vip = GameDatas.Vip
 
 var Utils = module.exports
 
@@ -238,8 +239,9 @@ var getPlayerSoldiersMarchTime = function(playerDoc, soldiers, fromAllianceDoc, 
 		totalSpeed += baseSpeed / config.march * citizen
 	})
 	var itemBuff = DataUtils.isPlayerHasItemEvent(playerDoc, "marchSpeedBonus") ? 0.3 : 0
+	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(playerDoc) : 0].marchSpeedAdd
 	var time = Math.ceil(totalSpeed / totalCitizen * distance * 1000)
-	time = LogicUtils.getTimeEfffect(time, itemBuff)
+	time = LogicUtils.getTimeEfffect(time, itemBuff + vipBuff)
 	return time//5 * 1000
 }
 

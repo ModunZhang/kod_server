@@ -59,9 +59,14 @@ pro.playerLogin = function(playerDoc, callback){
 	var self = this
 	var allianceDoc = null
 	var enemyAllianceDoc = null
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
+	var memberDoc = null
+	var expAdd = null
 
 	var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
-	var todayDateString = LogicUtils.getTodayString()
+	var todayDateString = LogicUtils.getTodayDateString()
 	if(!_.isEqual(todayDateString, previousLoginDateString)){
 		_.each(playerDoc.dailyTasks, function(value, key){
 			playerDoc.dailyTasks[key] = []
@@ -69,6 +74,7 @@ pro.playerLogin = function(playerDoc, callback){
 
 		playerDoc.countInfo.todayOnLineTime = 0
 		playerDoc.countInfo.todayOnLineTimeRewards = []
+		playerDoc.countInfo.todayFreeNormalGachaCount = 0
 		if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)){
 			if(playerDoc.countInfo.day60 == 60){
 				playerDoc.countInfo.day60 = 1
@@ -81,14 +87,32 @@ pro.playerLogin = function(playerDoc, callback){
 			playerDoc.countInfo.day14 += 1
 		}
 	}
-
+	var yestodayString = LogicUtils.getYesterdayDateString()
+	if(!_.isEqual(previousLoginDateString, yestodayString) && !_.isEqual(previousLoginDateString, todayDateString)){
+		playerDoc.countInfo.vipLoginDaysCount = 1
+		expAdd = DataUtils.getPlayerVipExpByLoginDaysCount(1)
+		DataUtils.addPlayerVipExp(playerDoc, {}, expAdd, eventFuncs, self.timeEventService)
+	}else if(_.isEqual(previousLoginDateString, yestodayString)){
+		playerDoc.countInfo.vipLoginDaysCount += 1
+		expAdd = DataUtils.getPlayerVipExpByLoginDaysCount(playerDoc.countInfo.vipLoginDaysCount)
+		DataUtils.addPlayerVipExp(playerDoc, {}, expAdd, eventFuncs, self.timeEventService)
+	}else if(playerDoc.countInfo.loginCount == 0){
+		expAdd = DataUtils.getPlayerVipExpByLoginDaysCount(1)
+		DataUtils.addPlayerVipExp(playerDoc, {}, expAdd, eventFuncs, self.timeEventService)
+	}
 	playerDoc.countInfo.lastLoginTime = Date.now()
 	playerDoc.countInfo.loginCount += 1
 	DataUtils.refreshPlayerResources(playerDoc)
 	DataUtils.refreshPlayerPower(playerDoc, {})
 	DataUtils.refreshPlayerDragonsHp(playerDoc)
+
 	if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
-		self.pushService.onPlayerLoginSuccessAsync(playerDoc).then(function(){
+		pushFuncs.push([self.pushService, self.pushService.onPlayerLoginSuccessAsync, playerDoc])
+		LogicUtils.excuteAll(updateFuncs).then(function(){
+			return LogicUtils.excuteAll(eventFuncs)
+		}).then(function(){
+			return LogicUtils.excuteAll(pushFuncs)
+		}).then(function(){
 			callback()
 		}).catch(function(e){
 			callback(e)
@@ -96,9 +120,6 @@ pro.playerLogin = function(playerDoc, callback){
 		return
 	}
 
-	var pushFuncs = []
-	var updateFuncs = []
-	var memberDoc = null
 	this.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟不存在"))
@@ -137,6 +158,8 @@ pro.playerLogin = function(playerDoc, callback){
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){

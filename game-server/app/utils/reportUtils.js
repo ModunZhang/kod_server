@@ -17,6 +17,7 @@ var GameDatas = require("../datas/GameDatas")
 var Soldiers = GameDatas.Soldiers
 var AllianceInitData = GameDatas.AllianceInitData
 var Dragons = GameDatas.Dragons
+var Vip = GameDatas.Vip
 
 var Utils = module.exports
 
@@ -319,7 +320,8 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		var basePercent = 0.3
 		var lootPercentAdd = getDragonSkillResourceLootPercentAdd(attackDragon)
 		var lootPercentSubtract = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
-		return 1 - basePercent + lootPercentAdd - lootPercentSubtract
+		var vipBuffSubtract = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
+		return 1 - basePercent + lootPercentAdd - lootPercentSubtract - vipBuffSubtract
 	}
 
 	var attackPlayerKilledCitizenWithDefenceSoldiers = _.isObject(soldierFightData) ? getKilledCitizen(soldierFightData.attackSoldiersAfterFight) : 0

@@ -204,7 +204,6 @@ GameDatas.PlayerInitData.soldierMaterials = require("./PlayerInitData_soldierMat
 GameDatas.PlayerInitData.dragonMaterials = require("./PlayerInitData_dragonMaterials.js")
 GameDatas.PlayerInitData.houses = require("./PlayerInitData_houses.js")
 GameDatas.PlayerInitData.playerLevel = require("./PlayerInitData_playerLevel.js")
-GameDatas.PlayerInitData.vipLevel = require("./PlayerInitData_vipLevel.js")
 GameDatas.PlayerInitData.collectLevel = require("./PlayerInitData_collectLevel.js")
 
 GameDatas.PlayerVillageExp = {}
@@ -244,3 +243,7 @@ GameDatas.Soldiers.special = require("./Soldiers_special.js")
 
 GameDatas.StoreItems = {}
 GameDatas.StoreItems.items = require("./StoreItems_items.js")
+
+GameDatas.Vip = {}
+GameDatas.Vip.level = require("./Vip_level.js")
+GameDatas.Vip.loginDays = require("./Vip_loginDays.js")

@@ -134,8 +134,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				}]
 				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 			}
-			var playerItemBuff = DataUtils.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? 0.3 : 0
-			DataUtils.addPlayerDragonExp(playerDoc, playerData, theDragon, expAdd * (1 + playerItemBuff))
+			DataUtils.addPlayerDragonExp(playerDoc, playerData, theDragon, expAdd, true)
 
 			playerData.dragons = {}
 			playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
@@ -259,10 +258,15 @@ pro.gacha = function(playerId, type, callback){
 	this.playerDao.findByIdAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
-		var casinoTokenNeeded = DataUtils.getCasinoTokeNeededInGachaType(type)
-		if(playerDoc.resources.casinoToken - casinoTokenNeeded < 0) return Promise.reject("赌币不足")
-		playerDoc.resources.casinoToken -= casinoTokenNeeded
-		playerData.resources = playerDoc.resources
+		if(_.isEqual(type, Consts.GachaType.Normal) && DataUtils.isPlayerCanFreeNormalGacha(playerDoc)){
+			playerDoc.countInfo.todayFreeNormalGachaCount += 1
+			playerData.countInfo = playerDoc.countInfo
+		}else{
+			var casinoTokenNeeded = DataUtils.getCasinoTokeNeededInGachaType(type)
+			if(playerDoc.resources.casinoToken - casinoTokenNeeded < 0) return Promise.reject("赌币不足")
+			playerDoc.resources.casinoToken -= casinoTokenNeeded
+			playerData.resources = playerDoc.resources
+		}
 
 		playerData.__items = []
 		var count = _.isEqual(type, Consts.GachaType.Normal) ? 1 : 3
@@ -285,7 +289,6 @@ pro.gacha = function(playerId, type, callback){
 		if(_.isEqual(type, Consts.GachaType.Advanced)){
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.AdvancedGachaOnce)
 		}
-
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 
