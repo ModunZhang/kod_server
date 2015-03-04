@@ -16,6 +16,8 @@ var AllianceDao = require("../../app/dao/allianceDao")
 var PlayerDao = require("../../app/dao/playerDao")
 var Deal = Promise.promisifyAll(require("../../app/domains/deal"))
 var Billing = Promise.promisifyAll(require("../../app/domains/billing"))
+var Device = Promise.promisifyAll(require("../../app/domains/device"))
+var User = Promise.promisifyAll(require("../../app/domains/user"))
 var Api = require("../api")
 var commandDir = path.resolve(__dirname + "/../../app/commands")
 var allianceDao = null
@@ -34,6 +36,10 @@ describe("PlayerService", function(){
 			playerDao = Promise.promisifyAll(new PlayerDao(redisClient, scripto, "production"))
 			playerDao.deleteAllAsync().then(function(){
 				return allianceDao.deleteAllAsync()
+			}).then(function(){
+				return Device.removeAsync()
+			}).then(function(){
+				return User.removeAsync()
 			}).then(function(){
 				return Deal.removeAsync()
 			}).then(function(){

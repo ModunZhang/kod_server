@@ -27,8 +27,8 @@ var createBuildingSchema = function(name, location){
 var allianceSchema = new Schema({
 	_id:{type:String, required:true, default:ShortId.generate},
 	basicInfo:{
-		name:{type:String, required:true, unique:true},
-		tag:{type:String, required:true, unique:true},
+		name:{type:String, required:true, unique:true, index:true},
+		tag:{type:String, required:true, unique:true, index:true},
 		language:{type:String, required:true},
 		terrain:{type:String, required:true},
 		flag:{type:String, required:true},

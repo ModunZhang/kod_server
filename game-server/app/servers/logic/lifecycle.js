@@ -26,6 +26,8 @@ var AllianceDao = require("../../dao/allianceDao")
 var PlayerDao = require("../../dao/playerDao")
 var Deal = require("../../domains/deal")
 var Billing = require("../../domains/billing")
+var Device = require("../../domains/device")
+var User = require("../../domains/user")
 
 var life = module.exports
 
@@ -34,6 +36,8 @@ life.beforeStartup = function(app, callback){
 	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("Deal", Promise.promisifyAll(Deal))
 	app.set("Billing", Promise.promisifyAll(Billing))
+	app.set("Device", Promise.promisifyAll(Device))
+	app.set("User", Promise.promisifyAll(User))
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))
 	app.set("timeEventService", Promise.promisifyAll(new TimeEventService(app)))
 	app.set("playerTimeEventService", Promise.promisifyAll(new PlayerTimeEventService(app)))

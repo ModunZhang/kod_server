@@ -25,9 +25,35 @@ var PlayerApiService = function(app){
 	this.globalChannelService = app.get("globalChannelService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
+	this.Device = app.get("Device")
+	this.User = app.get("User")
 }
 module.exports = PlayerApiService
 var pro = PlayerApiService.prototype
+
+/**
+ * 玩家是否存在
+ * @param deviceId
+ * @param callback
+ */
+pro.isAccountExist = function(deviceId, callback){
+	this.Device.findOneAsync("deviceId", deviceId).then(function(doc){
+		callback(null, _.isObject(doc))
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 创建玩家账号
+ * @param device
+ * @param callback
+ */
+pro.createAccount = function(device, callback){
+	var player = {
+
+	}
+}
 
 /**
  * 创建新玩家

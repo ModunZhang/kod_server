@@ -28,6 +28,8 @@ var Handler = function(app){
 	this.playerApiService = app.get("playerApiService")
 	this.globalChannelService = app.get("globalChannelService")
 	this.sessionService = app.get("sessionService")
+	this.Device = app.get("Device")
+	this.User = app.get("User")
 }
 var pro = Handler.prototype
 
@@ -52,6 +54,13 @@ pro.login = function(msg, session, next){
 		next(new Error("deviceId 不合法"))
 		return
 	}
+	this.Device.findOneAsync("deviceId", deviceId).then(function(doc){
+		if(!_.isObject(doc)){
+			
+		}else{
+
+		}
+	})
 
 	var bindPlayerSession = Promisify(BindPlayerSession, this)
 	var addPlayerToChatChannel = Promisify(AddPlayerToChatChannel, this)
