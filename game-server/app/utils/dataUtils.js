@@ -953,15 +953,6 @@ Utils.getPlayerKeepLevel = function(playerDoc){
 }
 
 /**
- * 获取玩家建筑等级限制
- * @param playerDoc
- * @returns {*}
- */
-Utils.getPlayerBuildingLevelLimit = function(playerDoc){
-	return this.getPlayerKeepLevel(playerDoc)
-}
-
-/**
  * 获取指定小屋最大建造数量
  * @param playerDoc
  * @param houseType

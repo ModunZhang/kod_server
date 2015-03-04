@@ -656,7 +656,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		})
 		if(!_.isObject(house))return Promise.reject(new Error("小屋不存在"))
 		if(LogicUtils.hasHouseEvents(playerDoc, building.location, house.location))return Promise.reject(new Error("小屋正在升级"))
-		if(house.level + 1 > DataUtils.getPlayerBuildingLevelLimit(playerDoc))return Promise.reject(new Error("小屋升级时,小屋等级不合法"))
 		if(DataUtils.isHouseReachMaxLevel(house.type, house.level))return Promise.reject(new Error("小屋已达到最高等级"))
 		if(!DataUtils.isPlayerHouseUpgradeLegal(playerDoc, buildingLocation, house.type, houseLocation)) return Promise.reject(new Error("升级前置条件不满足"))
 		if(!_.isEqual("dwelling", house.type)){
