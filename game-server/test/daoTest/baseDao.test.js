@@ -63,7 +63,7 @@
 //	})
 //
 //	it("create", function(done){
-//		baseDao.createAsync(player1).then(function(doc){
+//		baseDao.createAndLockAsync(player1).then(function(doc){
 //			should.exist(doc)
 //			demoDoc = doc
 //			return baseDao.removeLockByIdAsync(demoDoc._id)
@@ -133,7 +133,7 @@
 //	})
 //
 //	it("deleteByIndex", function(done){
-//		baseDao.createAsync(player2).then(function(doc){
+//		baseDao.createAndLockAsync(player2).then(function(doc){
 //			should.exist(doc)
 //			return baseDao.deleteByIndexAsync("basicInfo.name", "modun2")
 //		}).then(function(){

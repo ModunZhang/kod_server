@@ -32,13 +32,13 @@ module.exports = PlayerApiService
 var pro = PlayerApiService.prototype
 
 /**
- * 玩家是否存在
+ * 玩家账号是否存在
  * @param deviceId
  * @param callback
  */
 pro.isAccountExist = function(deviceId, callback){
-	this.Device.findOneAsync("deviceId", deviceId).then(function(doc){
-		callback(null, _.isObject(doc))
+	this.Device.findAsync({deviceId:deviceId}, {_id:true}, {limit:1}).then(function(docs){
+		callback(null, docs.length > 0)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -46,13 +46,61 @@ pro.isAccountExist = function(deviceId, callback){
 
 /**
  * 创建玩家账号
- * @param device
+ * @param deviceId
  * @param callback
  */
-pro.createAccount = function(device, callback){
+pro.createAccount = function(deviceId, callback){
+	var token = ShortId.generate()
 	var player = {
-
+		_id:ShortId.generate(),
+		serverId:"World-1",
+		basicInfo:{name:"player_" + token, cityName:"city_" + token}
 	}
+	var user = {
+		_id:ShortId.generate(),
+		players:[{id:player._id, isActive:true}]
+	}
+	var device = {
+		_id:ShortId.generate(),
+		deviceId:deviceId,
+		userId:user._id
+	}
+
+	var updateFuncs = []
+	updateFuncs.push([this.playerDao, this.playerDao.createAndLockAsync, player])
+	updateFuncs.push([this.User, this.User.createAsync, user])
+	updateFuncs.push([this.Device, this.Device.createAsync, device])
+	LogicUtils.excuteAll(updateFuncs).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+pro.isPlayerLogin = function(deviceId, callback){
+	var self = this
+	this.Device.findOneAsync({deviceId:deviceId}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("设备还未注册"))
+		return
+	})
+}
+
+pro.playerLogin = function(deviceId, callback){
+	var self = this
+	var playerDoc = null
+	this.Device.findOneAsync("deviceId", deviceId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		return self.User.findByIdAsync(doc.userId)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		var activePlayerId = _.find(doc.players, function(player){
+			return player.isActive
+		})
+		return self.playerDao.findByIdAsync(activePlayerId)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+	})
 }
 
 /**

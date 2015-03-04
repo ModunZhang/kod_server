@@ -117,7 +117,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		alliance.mapObjects = mapObjects
 		var villages = DataUtils.createMapVillages(mapObjects)
 		alliance.villages = villages
-		return self.allianceDao.createAsync(alliance)
+		return self.allianceDao.createAndLockAsync(alliance)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("联盟创建失败"))

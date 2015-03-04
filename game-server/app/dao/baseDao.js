@@ -46,7 +46,7 @@ pro.getModel = function(){
  * @param doc
  * @param callback
  */
-pro.create = function(doc, callback){
+pro.createAndLock = function(doc, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
@@ -54,7 +54,7 @@ pro.create = function(doc, callback){
 		callback(new Error("obj must be a json object"))
 		return
 	}
-
+	Object.create()
 	var self = this
 	var docString = null
 	this.model.createAsync(doc).then(function(doc){
@@ -197,6 +197,19 @@ pro.findById = function(id, forceFind, callback){
 }
 
 /**
+ * 对象是否存在于Redis
+ * @param id
+ * @param callback
+ */
+pro.isExistInRedis = function(id, callback){
+	this.redis.existsAsync(this.modelName + ":" + id, function(res){
+		callback(null, res == 1)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * update a object
  * @param doc json object
  * @param forceSave
@@ -302,7 +315,7 @@ pro.deleteAll = function(callback){
 		throw new Error("callback must be a function")
 	}
 	var self = this
-	this.scripto.runAsync("removeAll", [this.modelName], this.indexs).then(function(doc){
+	this.scripto.runAsync("removeAll", [this.modelName], this.indexs).then(function(){
 		return self.model.removeAsync({})
 	}).then(function(){
 		callback()
