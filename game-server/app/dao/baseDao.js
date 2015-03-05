@@ -27,7 +27,7 @@ var BaseDao = function(redis, scripto, modelName, model, env){
 	this.scripto = Promise.promisifyAll(scripto)
 	this.maxChangedCount = 1
 	this.env = env
-	this.tryTimes = 5
+	this.tryTimes = 4
 }
 
 module.exports = BaseDao
@@ -77,11 +77,7 @@ pro.findById = function(id, forceFind, callback){
 	var self = this
 	var tryTimes = 0
 	var totalTryTimes = forceFind ? self.tryTimes * 2 : self.tryTimes
-	var findById = function(id, callback){
-		self.scripto.runAsync("findById", [self.modelName, id, Date.now()])
-	}
-
-	var func = function(id){
+	var findById = function(id){
 		self.scripto.runAsync("findById", [self.modelName, id, Date.now()]).then(function(docString){
 			if(_.isEqual(docString, LOCKED)){
 				tryTimes++
@@ -94,14 +90,9 @@ pro.findById = function(id, forceFind, callback){
 					}
 				}
 				if(tryTimes <= totalTryTimes){
-					setTimeout(func, 400, id)
+					setTimeout(findById, 500, id)
 				}else{
-					ErrorLogger.error("handle baseDao:findById Error -----------------------------")
-					ErrorLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
-					if(_.isEqual("production", self.env)){
-						ErrorMailLogger.error("handle baseDao:findById Error -----------------------------")
-						ErrorMailLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
-					}
+
 					callback()
 				}
 			}else if(_.isEqual(docString, NONE)){
@@ -113,7 +104,7 @@ pro.findById = function(id, forceFind, callback){
 			callback(e)
 		})
 	}
-	func(id)
+	findById(id)
 }
 
 /**
