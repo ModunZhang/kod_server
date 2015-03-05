@@ -963,7 +963,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				defencePlayerDoc = doc
 			}
 			village = LogicUtils.getAllianceVillageById(targetAllianceDoc, event.defenceVillageData.id)
-			resourceName = village.type.slice(0, -7)
 			if(!_.isObject(village)){
 				var deletedVillage = {
 					id:event.defenceVillageData.id,
@@ -986,6 +985,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
 				return Promise.resolve()
 			}
+			resourceName = village.type.slice(0, -7)
 			if(!_.isObject(villageEvent)){
 				eventData = MarchUtils.createAllianceVillageEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], targetAllianceDoc, village, [])
 				newVillageEvent = eventData.event
