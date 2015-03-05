@@ -203,16 +203,6 @@ app.set('errorHandler', function(err, msg, resp, session, opts, cb){
 	}
 })
 
-app.set('globalErrorHandler', function(err, msg, resp, session, opts, cb){
-	errorLogger.error("handle app:globalError-----------------------------")
-	errorLogger.error(err.stack)
-	if("production" == app.get("env")){
-		errorMailLogger.error("handle app:globalError-----------------------------")
-		errorMailLogger.error(err.stack)
-	}
-	cb(err, resp)
-})
-
 app.start()
 
 process.on("uncaughtException", function(err){

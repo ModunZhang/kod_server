@@ -12,6 +12,7 @@ var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var TaskUtils = require("../utils/taskUtils")
+var ErrorUtils = require("../utils/errorUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -37,6 +38,11 @@ var pro = PlayerApiService.prototype
  * @param callback
  */
 pro.isAccountExist = function(deviceId, callback){
+	if(!_.isString(deviceId)){
+		callback(ErrorUtils.commonError("deviceId 不合法"))
+		return
+	}
+
 	this.Device.findAsync({deviceId:deviceId}, {_id:true}, {limit:1}).then(function(docs){
 		callback(null, docs.length > 0)
 	}).catch(function(e){
@@ -50,6 +56,11 @@ pro.isAccountExist = function(deviceId, callback){
  * @param callback
  */
 pro.createAccount = function(deviceId, callback){
+	if(!_.isString(deviceId)){
+		callback(ErrorUtils.commonError("deviceId 不合法"))
+		return
+	}
+
 	var token = ShortId.generate()
 	var player = {
 		_id:ShortId.generate(),
@@ -77,29 +88,33 @@ pro.createAccount = function(deviceId, callback){
 	})
 }
 
-pro.isPlayerLogin = function(deviceId, callback){
-	var self = this
-	this.Device.findOneAsync({deviceId:deviceId}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("设备还未注册"))
-		return
-	})
-}
-
 pro.playerLogin = function(deviceId, callback){
+	if(!_.isString(deviceId)){
+		callback(ErrorUtils.commonError("deviceId 不合法"))
+		return
+	}
+
 	var self = this
+	var deviceDoc = null
+	var userDoc = null
+	var activePlayerId = null
 	var playerDoc = null
 	this.Device.findOneAsync("deviceId", deviceId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		return self.User.findByIdAsync(doc.userId)
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.deviceIdNotExist(deviceId))
+		deviceDoc = doc
+		return self.User.findByIdAsync(deviceDoc.userId)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		var activePlayerId = _.find(doc.players, function(player){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.userNotExist(deviceDoc.userId))
+		userDoc = doc
+		activePlayerId = _.find(doc.players, function(player){
 			return player.isActive
 		})
-		return self.playerDao.findByIdAsync(activePlayerId)
+		if(!_.isString(activePlayerId)) return Promise.reject(ErrorUtils.noActivePlayerId(deviceDoc.userId))
+		return self.Player.findByIdAsync(activePlayerId)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(activePlayerId))
 		playerDoc = doc
+
 	})
 }
 

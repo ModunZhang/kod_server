@@ -24,7 +24,6 @@ var BaseDao = function(redis, scripto, modelName, model, indexs, env){
 	this.modelName = modelName
 	this.model = model
 	this.scripto = Promise.promisifyAll(scripto)
-	this.indexs = indexs
 	this.maxChangedCount = 1
 	this.env = env
 	this.tryTimes = 10
@@ -40,6 +39,38 @@ var pro = BaseDao.prototype
 pro.getModel = function(){
 	return this.model
 }
+
+pro.findByIdFromMongo = function(id, forceFind, callback){
+
+}
+
+pro.findByIdFromRedis = function(id, forceFind, callback){
+
+}
+
+pro.findById = function(id, forceFind, callback){
+
+}
+
+pro.updateToMongo = function(doc, callback){
+
+}
+
+pro.updateToRedis = function(doc, persistNow, callback){
+
+}
+
+pro.update = function(doc, persistNow, callback){
+
+}
+
+
+
+
+
+
+
+
 
 /**
  * create a object to mongo and add it to redis
