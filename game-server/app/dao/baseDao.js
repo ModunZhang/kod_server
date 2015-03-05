@@ -33,6 +33,18 @@ var BaseDao = function(redis, scripto, modelName, model, env){
 module.exports = BaseDao
 var pro = BaseDao.prototype
 
+/**
+ * 对象是否存在于Redis
+ * @param id
+ * @param callback
+ */
+pro.isExist = function(id, callback){
+	this.redis.existsAsync(this.modelName + ":" + id, function(res){
+		callback(null, res == 1)
+	}).catch(function(e){
+		callback(e)
+	})
+}
 
 /**
  * 创建对象并加载入Redis
@@ -40,11 +52,8 @@ var pro = BaseDao.prototype
  * @param callback
  */
 pro.add = function(doc, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback must be a function")
-	}
 	if(!_.isObject(doc)){
-		callback(new Error("obj must be a json object"))
+		callback(new Error("doc 不合法"))
 		return
 	}
 	var self = this
@@ -57,21 +66,38 @@ pro.add = function(doc, callback){
 }
 
 /**
+ * 加载所有对象到redis
+ * @param docs
+ * @param callback
+ */
+pro.addAll = function(docs, callback){
+	var docStrings = []
+	_.each(docs, function(doc){
+		var docString = JSON.stringify(doc)
+		docStrings.push(docString)
+	})
+	docStrings.unshift(this.modelName)
+
+	this.scripto.runAsync("addAll", docStrings).then(function(){
+		callback(null, docs)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * 根据Id查找对象
  * @param id
  * @param forceFind
  * @param callback
  */
-pro.findById = function(id, forceFind, callback){
-	if(arguments.length <=2){
+pro.find = function(id, forceFind, callback){
+	if(arguments.length <= 2){
 		callback = forceFind
 		forceFind = false
 	}
-	if(!_.isFunction(callback)){
-		throw new Error("callback must be a function")
-	}
 	if(!_.isString(id)){
-		callback(new Error("id must be a string"))
+		callback(new Error("id 不合法"))
 		return
 	}
 	var self = this
@@ -92,8 +118,7 @@ pro.findById = function(id, forceFind, callback){
 				if(tryTimes <= totalTryTimes){
 					setTimeout(findById, 500, id)
 				}else{
-
-					callback()
+					callback(ErrorUtils.objectIsLocked(self.modelName, id))
 				}
 			}else if(_.isEqual(docString, NONE)){
 				callback()
@@ -108,16 +133,17 @@ pro.findById = function(id, forceFind, callback){
 }
 
 /**
- * 对象是否存在于Redis
- * @param id
+ * 从redis查询所有
+ * @param ids
  * @param callback
  */
-pro.isExist = function(id, callback){
-	this.redis.existsAsync(this.modelName + ":" + id, function(res){
-		callback(null, res == 1)
-	}).catch(function(e){
-		callback(e)
-	})
+pro.findAll = function(ids, callback){
+	if(!_.isArray(ids) || ids.length == 0){
+		callback(new Error("ids 不合法"))
+		return
+	}
+	ids.unshift(this.modelName)
+	this.scripto.runAsync("findAll", ids)
 }
 
 /**
@@ -127,12 +153,9 @@ pro.isExist = function(id, callback){
  * @param callback
  */
 pro.update = function(doc, persistNow, callback){
-	if(arguments.length <=2){
+	if(arguments.length <= 2){
 		callback = persistNow
 		persistNow = null
-	}
-	if(!_.isFunction(callback)){
-		throw new Error("callback must be a function")
 	}
 	if(!_.isObject(doc)){
 		callback(new Error("obj must be a json object"))
@@ -150,7 +173,7 @@ pro.update = function(doc, persistNow, callback){
 		doc.__v = 0
 	}
 	var self = this
-	this.scripto.runAsync("update", [this.modelName, JSON.stringify(doc)], this.indexs).then(function(){
+	this.scripto.runAsync("update", [this.modelName, JSON.stringify(doc)]).then(function(){
 		if(shouldSaveToMongo){
 			return self.model.findByIdAndUpdateAsync(doc._id, _.omit(doc, "_id", "__v"))
 		}else{
@@ -164,11 +187,11 @@ pro.update = function(doc, persistNow, callback){
 }
 
 /**
- * 同时从redis和mongo里面删除对象
+ * 从redis移除缓存
  * @param id
  * @param callback
  */
-pro.deleteById = function(id, callback){
+pro.remove = function(id, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
@@ -178,8 +201,6 @@ pro.deleteById = function(id, callback){
 	}
 	var self = this
 	this.scripto.runAsync("removeById", [self.modelName, id], self.indexs).then(function(){
-		return self.model.findByIdAndRemoveAsync(id)
-	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -187,42 +208,15 @@ pro.deleteById = function(id, callback){
 }
 
 /**
- * 同时从redis和mongo删除所有对象
+ * 从redis移除所有数据
  * @param callback
  */
-pro.deleteAll = function(callback){
+pro.removeAll = function(callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
-	var self = this
-	this.scripto.runAsync("removeAll", [this.modelName], this.indexs).then(function(){
-		return self.model.removeAsync({})
-	}).then(function(){
+	this.scripto.runAsync("removeAll", [this.modelName]).then(function(){
 		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 从mongo加载所有对象到redis
- * @param callback
- */
-pro.loadAll = function(callback){
-	var self = this
-	var docs = null
-	this.model.findAsync({}).then(function(theDocs){
-		docs = theDocs
-		if(docs.length == 0) return Promise.resolve()
-		var docStrings = []
-		_.each(docs, function(doc){
-			var docString = JSON.stringify(doc)
-			docStrings.push(docString)
-		})
-		docStrings.unshift(self.modelName)
-		return self.scripto.runAsync("addAll", docStrings, self.indexs)
-	}).then(function(){
-		callback(null, docs)
 	}).catch(function(e){
 		callback(e)
 	})

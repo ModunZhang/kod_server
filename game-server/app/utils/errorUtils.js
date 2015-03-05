@@ -71,3 +71,13 @@ Utils.playerNotExist = function(playerId){
 	var config = Errors.playerNotExist
 	return CreateError(config, {playerId:playerId})
 }
+
+/**
+ * 对象不存在
+ * @param objectType
+ * @param objectId
+ */
+Utils.objectIsLocked = function(objectType, objectId){
+	var config = Errors.objectIsLocked
+	return CreateError(config, {objectType:objectType, objectId:objectId})
+}
