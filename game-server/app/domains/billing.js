@@ -8,7 +8,7 @@ var ShortId = require("shortid")
 var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
-var billingSchema = new Schema({
+var BillingSchema = new Schema({
 	_id:{type:String, required:true, default:ShortId.generate},
 	transactionId:{type:String, require:true, unique:true, index:true},
 	playerId:{type:String, required:true},
@@ -18,4 +18,4 @@ var billingSchema = new Schema({
 	purchaseDate:{type:String, require:true}
 })
 
-module.exports = mongoose.model('billing', billingSchema)
+module.exports = mongoose.model('Billing', BillingSchema)

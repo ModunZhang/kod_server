@@ -8,7 +8,7 @@ var ShortId = require("shortid")
 var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
-var userSchema = new Schema({
+var UserSchema = new Schema({
 	_id:{type:String, required:true, default:ShortId.generate},
 	gcId:{type:String},
 	players:[{
@@ -18,4 +18,4 @@ var userSchema = new Schema({
 	registerTime:{type:Number, required:true, default:Date.now()}
 })
 
-module.exports = mongoose.model('user', userSchema)
+module.exports = mongoose.model('User', UserSchema)

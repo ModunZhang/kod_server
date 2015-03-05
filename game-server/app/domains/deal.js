@@ -8,7 +8,7 @@ var ShortId = require("shortid")
 var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
-var dealSchema = new Schema({
+var DealSchema = new Schema({
 	_id:{type:String, required:true, default:ShortId.generate},
 	playerId:{type:String, required:true},
 	addedTime:{type:Number, required:true, default:Date.now()},
@@ -20,4 +20,4 @@ var dealSchema = new Schema({
 	}
 })
 
-module.exports = mongoose.model('deal', dealSchema)
+module.exports = mongoose.model('Deal', DealSchema)
