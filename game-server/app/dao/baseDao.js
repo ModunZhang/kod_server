@@ -6,8 +6,10 @@
 
 var Promise = require("bluebird")
 var _ = require("underscore")
-var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
-var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
+var ErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
+var ErrorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
+var ErrorUtils = require("../utils/errorUtils")
+
 var NONE = "__NONE__"
 var LOCKED = "__LOCKED__"
 /**
@@ -15,37 +17,29 @@ var LOCKED = "__LOCKED__"
  * @param scripto
  * @param modelName
  * @param model
- * @param indexs
  * @param env
  * @constructor
  */
-var BaseDao = function(redis, scripto, modelName, model, indexs, env){
+var BaseDao = function(redis, scripto, modelName, model, env){
 	this.redis = Promise.promisifyAll(redis)
 	this.modelName = modelName
 	this.model = model
 	this.scripto = Promise.promisifyAll(scripto)
 	this.maxChangedCount = 1
 	this.env = env
-	this.tryTimes = 10
+	this.tryTimes = 5
 }
 
 module.exports = BaseDao
 var pro = BaseDao.prototype
 
-/**
- * 获取mongoose model
- * @returns {*}
- */
-pro.getModel = function(){
-	return this.model
-}
 
 /**
  * 创建对象并加载入Redis
  * @param doc
  * @param callback
  */
-pro.createAndLock = function(doc, callback){
+pro.add = function(doc, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
 	}
@@ -53,14 +47,10 @@ pro.createAndLock = function(doc, callback){
 		callback(new Error("obj must be a json object"))
 		return
 	}
-	Object.create()
 	var self = this
 	var docString = null
-	this.model.createAsync(doc).then(function(doc){
-		docString = JSON.stringify(doc)
-		return self.scripto.runAsync("addAndLock", [self.modelName, docString, Date.now()], self.indexs)
-	}).then(function(){
-		callback(null, JSON.parse(docString))
+	this.scripto.runAsync("addAndLock", [self.modelName, docString, Date.now()]).then(function(){
+		callback()
 	}).catch(function(e){
 		callback(e)
 	})
@@ -86,27 +76,31 @@ pro.findById = function(id, forceFind, callback){
 	}
 	var self = this
 	var tryTimes = 0
-	var totalTryTimes = forceFind ? self.tryTimes * 10 : self.tryTimes
+	var totalTryTimes = forceFind ? self.tryTimes * 2 : self.tryTimes
+	var findById = function(id, callback){
+		self.scripto.runAsync("findById", [self.modelName, id, Date.now()])
+	}
+
 	var func = function(id){
 		self.scripto.runAsync("findById", [self.modelName, id, Date.now()]).then(function(docString){
 			if(_.isEqual(docString, LOCKED)){
 				tryTimes++
 				if(tryTimes == 1){
-					errorLogger.error("handle baseDao:findById Error -----------------------------")
-					errorLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
+					ErrorLogger.error("handle baseDao:findById Error -----------------------------")
+					ErrorLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
 					if(_.isEqual("production", self.env)){
-						errorMailLogger.error("handle baseDao:findById Error -----------------------------")
-						errorMailLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
+						ErrorMailLogger.error("handle baseDao:findById Error -----------------------------")
+						ErrorMailLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
 					}
 				}
 				if(tryTimes <= totalTryTimes){
-					setTimeout(func, 100, id)
+					setTimeout(func, 400, id)
 				}else{
-					errorLogger.error("handle baseDao:findById Error -----------------------------")
-					errorLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
+					ErrorLogger.error("handle baseDao:findById Error -----------------------------")
+					ErrorLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
 					if(_.isEqual("production", self.env)){
-						errorMailLogger.error("handle baseDao:findById Error -----------------------------")
-						errorMailLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
+						ErrorMailLogger.error("handle baseDao:findById Error -----------------------------")
+						ErrorMailLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
 					}
 					callback()
 				}
@@ -116,13 +110,7 @@ pro.findById = function(id, forceFind, callback){
 				callback(null, JSON.parse(docString))
 			}
 		}).catch(function(e){
-			errorLogger.error("handle baseDao:findById Error -----------------------------")
-			errorLogger.error(e.message)
-			if(_.isEqual("production", self.env)){
-				errorMailLogger.error("handle baseDao:findById Error -----------------------------")
-				errorMailLogger.error(e.message)
-			}
-			callback()
+			callback(e)
 		})
 	}
 	func(id)
@@ -133,7 +121,7 @@ pro.findById = function(id, forceFind, callback){
  * @param id
  * @param callback
  */
-pro.isExistInRedis = function(id, callback){
+pro.isExist = function(id, callback){
 	this.redis.existsAsync(this.modelName + ":" + id, function(res){
 		callback(null, res == 1)
 	}).catch(function(e){
@@ -185,7 +173,7 @@ pro.update = function(doc, persistNow, callback){
 }
 
 /**
- * delete obj from mongo and redis by id
+ * 同时从redis和mongo里面删除对象
  * @param id
  * @param callback
  */
@@ -208,38 +196,7 @@ pro.deleteById = function(id, callback){
 }
 
 /**
- * delete obj from mongo and redis by index
- * @param index
- * @param value
- * @param callback
- */
-pro.deleteByIndex = function(index, value, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback must be a function")
-	}
-	if(!_.contains(this.indexs, index)){
-		callback(new Error("index must be a item of indexs"))
-		return
-	}
-	if(_.isNull(value) || _.isUndefined(value)){
-		callback(new Error("value must not be empty"))
-		return
-	}
-	var self = this
-	var condition = {}
-	condition[index] = value
-
-	this.scripto.runAsync("removeByIndex", [self.modelName, index, value], self.indexs).then(function(){
-		return self.model.findOneAndRemoveAsync(condition)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 删除所有数据
+ * 同时从redis和mongo删除所有对象
  * @param callback
  */
 pro.deleteAll = function(callback){
@@ -257,7 +214,7 @@ pro.deleteAll = function(callback){
 }
 
 /**
- * load all the same model's object to redis
+ * 从mongo加载所有对象到redis
  * @param callback
  */
 pro.loadAll = function(callback){
@@ -281,7 +238,7 @@ pro.loadAll = function(callback){
 }
 
 /**
- * save all the same model's object from redis to mongo
+ * 将所有对象从redis同步到mongo
  * @param callback
  */
 pro.unloadAll = function(callback){
@@ -295,25 +252,6 @@ pro.unloadAll = function(callback){
 		return Promise.all(funcs)
 	}).then(function(){
 		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 根据Index模糊查找对象
- * @param index
- * @param value
- * @param callback
- */
-pro.searchByIndex = function(index, value, callback){
-	var docs = []
-	this.scripto.runAsync("searchByIndex", [this.modelName, index, value]).then(function(docStrings){
-		for(var i = 0; i < docStrings.length; i++){
-			var doc = JSON.parse(docStrings[i])
-			docs.push(doc)
-		}
-		callback(null, docs)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -340,33 +278,7 @@ pro.removeLockById = function(id, callback){
 }
 
 /**
- * 根据Index移除对象锁
- * @param index
- * @param value
- * @param callback
- */
-pro.removeLockByIndex = function(index, value, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback must be a function")
-	}
-	if(!_.contains(this.indexs, index)){
-		callback(new Error("index must be a item of indexs"))
-		return
-	}
-	if(_.isNull(value) || _.isUndefined(value)){
-		callback(new Error("value must not be empty"))
-		return
-	}
-
-	this.scripto.runAsync("removeLockByIndex", [this.modelName, index, value]).then(function(){
-		callback(null, true)
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 查询所有
+ * 从redis查询所有
  * @param callback
  */
 pro.findAll = function(callback){
@@ -386,7 +298,7 @@ pro.findAll = function(callback){
 }
 
 /**
- * 更新所有
+ * 更新所有对象到redis
  * @param docs
  * @param callback
  */
