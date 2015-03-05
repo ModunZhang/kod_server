@@ -39,6 +39,11 @@ var pro = BaseDao.prototype
  * @param callback
  */
 pro.isExist = function(id, callback){
+	if(!_.isString(id)){
+		callback(new Error("id 不合法"))
+		return
+	}
+
 	this.redis.existsAsync(this.modelName + ":" + id, function(res){
 		callback(null, res == 1)
 	}).catch(function(e){
@@ -71,14 +76,20 @@ pro.add = function(doc, callback){
  * @param callback
  */
 pro.addAll = function(docs, callback){
+	if(!_.isArray(docs) || docs.length == 0){
+		callback(new Error("docs 不合法"))
+		return
+	}
+
+	var self = this
 	var docStrings = []
 	_.each(docs, function(doc){
+		var key = self.modelName + ":" + doc._id
 		var docString = JSON.stringify(doc)
+		docStrings.push(key)
 		docStrings.push(docString)
 	})
-	docStrings.unshift(this.modelName)
-
-	this.scripto.runAsync("addAll", docStrings).then(function(){
+	this.redis.msetAsync(docStrings).then(function(){
 		callback(null, docs)
 	}).catch(function(e){
 		callback(e)
@@ -142,8 +153,21 @@ pro.findAll = function(ids, callback){
 		callback(new Error("ids 不合法"))
 		return
 	}
-	ids.unshift(this.modelName)
-	this.scripto.runAsync("findAll", ids)
+	var self = this
+	var fullIds = []
+	_.each(ids, function(id){
+		fullIds.push(self.modelName + ":" + id)
+	})
+	var docs = []
+	this.redis.mgetAsync(fullIds).then(function(docStrings){
+		for(var i = 0; i < docStrings.length; i++){
+			var doc = JSON.parse(docStrings[i])
+			docs.push(doc)
+		}
+		callback(null, docs)
+	}).catch(function(e){
+		callback(e)
+	})
 }
 
 /**
@@ -157,12 +181,8 @@ pro.update = function(doc, persistNow, callback){
 		callback = persistNow
 		persistNow = null
 	}
-	if(!_.isObject(doc)){
-		callback(new Error("obj must be a json object"))
-		return
-	}
-	if(!_.isString(doc._id)){
-		callback(new Error("obj's _id must be a string"))
+	if(!_.isObject(doc) || !_.isString(doc._id)){
+		callback(new Error("doc 不合法"))
 		return
 	}
 
@@ -187,112 +207,13 @@ pro.update = function(doc, persistNow, callback){
 }
 
 /**
- * 从redis移除缓存
- * @param id
- * @param callback
- */
-pro.remove = function(id, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback must be a function")
-	}
-	if(!_.isString(id)){
-		callback(new Error("id must be a string"))
-		return
-	}
-	var self = this
-	this.scripto.runAsync("removeById", [self.modelName, id], self.indexs).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 从redis移除所有数据
- * @param callback
- */
-pro.removeAll = function(callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback must be a function")
-	}
-	this.scripto.runAsync("removeAll", [this.modelName]).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 将所有对象从redis同步到mongo
- * @param callback
- */
-pro.unloadAll = function(callback){
-	var self = this
-	this.scripto.runAsync("findAll", [this.modelName]).then(function(docStrings){
-		var funcs = []
-		for(var i = 0; i < docStrings.length; i++){
-			var doc = JSON.parse(docStrings[i])
-			funcs.push(self.model.findByIdAndUpdateAsync(doc._id, _.omit(doc, "_id", "__v")))
-		}
-		return Promise.all(funcs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 根据Id移除对象锁
- * @param id
- * @param callback
- */
-pro.removeLockById = function(id, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback must be a function")
-	}
-	if(!_.isString(id)){
-		callback(new Error("id must be a string"))
-		return
-	}
-	this.scripto.runAsync("removeLockById", [this.modelName, id]).then(function(){
-		callback(null, true)
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 从redis查询所有
- * @param callback
- */
-pro.findAll = function(callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback must be a function")
-	}
-	var docs = []
-	this.scripto.runAsync("findAll", [this.modelName]).then(function(docStrings){
-		for(var i = 0; i < docStrings.length; i++){
-			var doc = JSON.parse(docStrings[i])
-			docs.push(doc)
-		}
-		callback(null, docs)
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
  * 更新所有对象到redis
  * @param docs
  * @param callback
  */
 pro.updateAll = function(docs, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback must be a function")
-	}
-	if(!_.isArray(docs)){
-		callback(new Error("docs must be an array"))
+	if(!_.isArray(docs) || docs.length == 0){
+		callback(new Error("docs 不合法"))
 		return
 	}
 
@@ -302,7 +223,43 @@ pro.updateAll = function(docs, callback){
 		docStrings.push(docString)
 	})
 	docStrings.unshift(this.modelName)
-	this.scripto.runAsync("updateAll", docStrings, this.indexs).then(function(){
+	this.scripto.runAsync("updateAll", docStrings).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 从redis移除缓存
+ * @param id
+ * @param callback
+ */
+pro.remove = function(id, callback){
+	if(!_.isString(id)){
+		callback(new Error("id 不合法"))
+		return
+	}
+	this.scripto.runAsync("removeById", [this.modelName, id]).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 从redis移除所有数据
+ * @param ids
+ * @param callback
+ */
+pro.removeAll = function(ids, callback){
+	if(!_.isArray(ids) || ids.length == 0){
+		callback(new Error("ids 不合法"))
+		return
+	}
+	ids.unshift(this.modelName)
+
+	this.scripto.runAsync("removeAll", ids).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -314,15 +271,29 @@ pro.updateAll = function(docs, callback){
  * @param callback
  */
 pro.findAllKeys = function(callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback must be a function")
-	}
 	var theKeys = []
-	this.scripto.runAsync("findAllKeys", [this.modelName]).then(function(keys){
+	this.redis.keysAsync(this.modelName + ":*").then(function(keys){
 		_.each(keys, function(key){
 			theKeys.push(key.split(":")[1])
 		})
 		callback(null, theKeys)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 根据Id移除对象锁
+ * @param id
+ * @param callback
+ */
+pro.removeLockById = function(id, callback){
+	if(!_.isString(id)){
+		callback(new Error("id 不合法"))
+		return
+	}
+	this.redis.delAsync("lock." + this.modelName + ":" + id).then(function(){
+		callback()
 	}).catch(function(e){
 		callback(e)
 	})

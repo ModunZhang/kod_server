@@ -1,13 +1,11 @@
-local function split(s, p)
-    local rt = {}
-    string.gsub(s, '[^' .. p .. ']+', function(w) table.insert(rt, w) end)
-    return rt
+local modelName = table.remove(KEYS, 1)
+local keys = KEYS
+local fullKeys = {}
+for _, key in ipairs(keys) do
+    local fullKey = modelName .. ":" .. key
+    table.insert(fullKeys, fullKey)
 end
 
-local modelName = KEYS[1]
-local keys = modelName .. ":*"
-local fullKeys = redis.call("keys", keys)
-if not fullKeys or #fullKeys == 0 then return end
 for _,v in ipairs(fullKeys) do
 	local fullKey = v
 	local lockKey = "lock." .. fullKey
