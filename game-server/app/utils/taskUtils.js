@@ -24,7 +24,7 @@ var Utils = module.exports
  */
 Utils.updateGrowUpTaskData = function(playerDoc, playerData, type, task){
 	if(!_.isObject(playerData.growUpTasks)) playerData.growUpTasks = {}
-	if(!_.isArray(playerData.growUpTasks[type])) playerData.growUpTasks[type] = []
+	if(!_.isArray(playerData.growUpTasks["__" + type])) playerData.growUpTasks["__" + type] = []
 
 	if(task.rewarded){
 		var taskIndex = playerDoc.growUpTasks[type].indexOf(task)
@@ -38,18 +38,18 @@ Utils.updateGrowUpTaskData = function(playerDoc, playerData, type, task){
 		}
 		if(_.isObject(preTask)){
 			LogicUtils.removeItemInArray(playerDoc.growUpTasks[type], preTask)
-			playerData.growUpTasks[type].push({
+			playerData.growUpTasks["__" + type].push({
 				type:Consts.DataChangedType.Remove,
 				data:preTask
 			})
 		}
-		playerData.growUpTasks[type].push({
+		playerData.growUpTasks["__" + type].push({
 			type:Consts.DataChangedType.Edit,
 			data:task
 		})
 	}else{
 		playerDoc.growUpTasks[type].push(task)
-		playerData.growUpTasks[type].push({
+		playerData.growUpTasks["__" + type].push({
 			type:Consts.DataChangedType.Add,
 			data:task
 		})
