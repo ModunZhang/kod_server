@@ -354,11 +354,18 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 			return _.isEqual(troop.id, helpedByPlayerId)
 		})
 		if(!_.isObject(helpedByPlayerTroop)) return Promise.reject(new Error("没有此玩家的协防部队"))
-
-		return self.playerDao.findByIdAsync(helpedByPlayerId)
+		if(!_.isEqual(callerId, helpedByPlayerId)){
+			return self.playerDao.findByIdAsync(helpedByPlayerId)
+		}
+		return Promise.resolve()
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		attackPlayerDoc = doc
+		if(!_.isEqual(callerId, helpedByPlayerId)){
+			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+			attackPlayerDoc = doc
+		}else{
+			attackPlayerDoc = callerDoc
+		}
+
 		var detail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, helpedByPlayerId, helpedByPlayerTroop.dragon, helpedByPlayerTroop.soldiers)
 		delete detail.marchEventId
 		detail.helpedByPlayerId = helpedByPlayerId
@@ -367,7 +374,9 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 		if(!_.isEqual(callerDoc, playerDoc)){
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		}
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, attackPlayerDoc._id])
+		if(!_.isEqual(callerDoc, attackPlayerDoc)){
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, attackPlayerDoc._id])
+		}
 		pushFuncs.push([self.pushService, self.pushService.onGetHelpDefenceTroopDetailAsync, callerDoc, detail])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -385,7 +394,7 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 		if(_.isObject(playerDoc) && !_.isEqual(callerDoc, playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
 		}
-		if(_.isObject(attackPlayerDoc)){
+		if(_.isObject(attackPlayerDoc) && !_.isEqual(callerDoc, attackPlayerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
 		}
 		if(funcs.length > 0){
