@@ -40,40 +40,8 @@ pro.getModel = function(){
 	return this.model
 }
 
-pro.findByIdFromMongo = function(id, forceFind, callback){
-
-}
-
-pro.findByIdFromRedis = function(id, forceFind, callback){
-
-}
-
-pro.findById = function(id, forceFind, callback){
-
-}
-
-pro.updateToMongo = function(doc, callback){
-
-}
-
-pro.updateToRedis = function(doc, persistNow, callback){
-
-}
-
-pro.update = function(doc, persistNow, callback){
-
-}
-
-
-
-
-
-
-
-
-
 /**
- * create a object to mongo and add it to redis
+ * 创建对象并加载入Redis
  * @param doc
  * @param callback
  */
@@ -99,74 +67,7 @@ pro.createAndLock = function(doc, callback){
 }
 
 /**
- * find obj from redis
- * @param index
- * @param value
- * @param forceFind
- * @param callback
- */
-pro.findByIndex = function(index, value, forceFind, callback){
-	if(arguments.length <=3){
-		callback = forceFind
-		forceFind = false
-	}
-	if(!_.isFunction(callback)){
-		throw new Error("callback must be a function")
-	}
-	if(!_.contains(this.indexs, index)){
-		callback(new Error("index must be a item of indexs"))
-		return
-	}
-	if(_.isNull(value) || _.isUndefined(value)){
-		callback(new Error("value must not be empty"))
-		return
-	}
-	var self = this
-	var tryTimes = 0
-	var totalTryTimes = forceFind ? self.tryTimes * 10 : self.tryTimes
-	var func = function(index, value){
-		self.scripto.runAsync("findByIndex", [self.modelName, index, value, Date.now()]).then(function(docString){
-			if(_.isEqual(docString, LOCKED)){
-				tryTimes++
-				if(tryTimes == 1){
-					errorLogger.error("handle baseDao:findByIndex Error -----------------------------")
-					errorLogger.error("errorInfo->modelName:%s, index:%s, value:%s is locked", self.modelName, index, value)
-					if(_.isEqual("production", self.env)){
-						errorMailLogger.error("handle baseDao:findByIndex Error -----------------------------")
-						errorMailLogger.error("errorInfo->modelName:%s, index:%s, value:%s is locked", self.modelName, index, value)
-					}
-				}
-				if(tryTimes <= totalTryTimes){
-					setTimeout(func, 100, index, value)
-				}else{
-					errorLogger.error("handle baseDao:findByIndex Error -----------------------------")
-					errorLogger.error("errorInfo->modelName:%s, index:%s, value:%s is locked", self.modelName, index, value)
-					if(_.isEqual("production", self.env)){
-						errorMailLogger.error("handle baseDao:findByIndex Error -----------------------------")
-						errorMailLogger.error("errorInfo->modelName:%s, index:%s, value:%s is locked", self.modelName, index, value)
-					}
-					callback()
-				}
-			}else if(_.isEqual(docString, NONE)){
-				callback()
-			}else{
-				callback(null, JSON.parse(docString))
-			}
-		}).catch(function(e){
-			errorLogger.error("handle baseDao:findByIndex Error -----------------------------")
-			errorLogger.error(e.message)
-			if(_.isEqual("production", self.env)){
-				errorMailLogger.error("handle baseDao:findByIndex Error -----------------------------")
-				errorMailLogger.error(e.message)
-			}
-			callback()
-		})
-	}
-	func(index, value)
-}
-
-/**
- * find obj by id
+ * 根据Id查找对象
  * @param id
  * @param forceFind
  * @param callback
@@ -241,15 +142,15 @@ pro.isExistInRedis = function(id, callback){
 }
 
 /**
- * update a object
+ * 更新对象
  * @param doc json object
- * @param forceSave
+ * @param persistNow
  * @param callback
  */
-pro.update = function(doc, forceSave, callback){
+pro.update = function(doc, persistNow, callback){
 	if(arguments.length <=2){
-		callback = forceSave
-		forceSave = null
+		callback = persistNow
+		persistNow = null
 	}
 	if(!_.isFunction(callback)){
 		throw new Error("callback must be a function")
@@ -265,7 +166,7 @@ pro.update = function(doc, forceSave, callback){
 
 	doc.__v++
 	var shouldSaveToMongo = false
-	if(doc.__v >= this.maxChangedCount || !!forceSave){
+	if(doc.__v >= this.maxChangedCount || !!persistNow){
 		shouldSaveToMongo = true
 		doc.__v = 0
 	}
