@@ -83,13 +83,23 @@ pro.getAttackMarchEventDetail = function(playerId, eventId, callback){
 			return _.isEqual(marchEvent.marchType, Consts.MarchType.City) && _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id) && _.isEqual(marchEvent.id, eventId)
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(new Error("行军事件不存在"))
-		return self.playerDao.findByIdAsync(marchEvent.attackPlayerData.id)
+		if(!_.isEqual(playerId, marchEvent.attackPlayerData.id)){
+			return self.playerDao.findByIdAsync(marchEvent.attackPlayerData.id)
+		}
+		return Promise.resolve()
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		attackPlayerDoc = doc
+		if(!_.isEqual(playerId, marchEvent.attackPlayerData.id)){
+			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+			attackPlayerDoc = doc
+		}else{
+			attackPlayerDoc = playerDoc
+		}
+
 		var detail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, eventId, marchEvent.attackPlayerData.dragon, marchEvent.attackPlayerData.soldiers)
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, attackPlayerDoc._id])
+		if(!_.isEqual(playerId, marchEvent.attackPlayerData.id)){
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, attackPlayerDoc._id])
+		}
 		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, attackAllianceDoc._id])
 		pushFuncs.push([self.pushService, self.pushService.onGetAttackMarchEventDetailAsync, playerDoc, detail])
@@ -106,7 +116,7 @@ pro.getAttackMarchEventDetail = function(playerId, eventId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
 		}
-		if(_.isObject(attackPlayerDoc)){
+		if(_.isObject(attackPlayerDoc) && !_.isEqual(playerId, marchEvent.attackPlayerData.id)){
 			funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
 		}
 		if(_.isObject(allianceDoc)){
@@ -178,13 +188,22 @@ pro.getStrikeMarchEventDetail = function(playerId, eventId, callback){
 			return _.isEqual(marchEvent.marchType, Consts.MarchType.City) && _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id) && _.isEqual(marchEvent.id, eventId)
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(new Error("行军事件不存在"))
-		return self.playerDao.findByIdAsync(marchEvent.attackPlayerData.id)
+		if(!_.isEqual(playerId, marchEvent.attackPlayerData.id)){
+			return self.playerDao.findByIdAsync(marchEvent.attackPlayerData.id)
+		}
+		return Promise.resolve()
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		attackPlayerDoc = doc
+		if(!_.isEqual(playerId, marchEvent.attackPlayerData.id)){
+			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+			attackPlayerDoc = doc
+		}else{
+			attackPlayerDoc = playerDoc
+		}
 		var detail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, eventId, marchEvent.attackPlayerData.dragon, null)
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, attackPlayerDoc._id])
+		if(!_.isEqual(playerId, marchEvent.attackPlayerData.id)){
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, attackPlayerDoc._id])
+		}
 		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, attackAllianceDoc._id])
 		pushFuncs.push([self.pushService, self.pushService.onGetStrikeMarchEventDetailAsync, playerDoc, detail])
@@ -201,7 +220,7 @@ pro.getStrikeMarchEventDetail = function(playerId, eventId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
 		}
-		if(_.isObject(attackPlayerDoc)){
+		if(_.isObject(attackPlayerDoc) && !_.isEqual(playerId, marchEvent.attackPlayerData.id)){
 			funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
 		}
 		if(_.isObject(allianceDoc)){
@@ -262,10 +281,17 @@ pro.getHelpDefenceMarchEventDetail = function(playerId, eventId, callback){
 			return _.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id) && _.isEqual(marchEvent.id, eventId)
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(new Error("行军事件不存在"))
-		return self.playerDao.findByIdAsync(marchEvent.attackPlayerData.id)
+		if(!_.isEqual(playerId, marchEvent.attackPlayerData.id)){
+			return self.playerDao.findByIdAsync(marchEvent.attackPlayerData.id)
+		}
+		return Promise.resolve()
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		attackPlayerDoc = doc
+		if(!_.isEqual(playerId, marchEvent.attackPlayerData.id)){
+			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+			attackPlayerDoc = doc
+		}else{
+			attackPlayerDoc = playerDoc
+		}
 		var detail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, eventId, marchEvent.attackPlayerData.dragon, marchEvent.attackPlayerData.soldiers)
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, attackPlayerDoc._id])
@@ -284,7 +310,7 @@ pro.getHelpDefenceMarchEventDetail = function(playerId, eventId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
 		}
-		if(_.isObject(attackPlayerDoc)){
+		if(_.isObject(attackPlayerDoc) && !_.isEqual(playerId, marchEvent.attackPlayerData.id)){
 			funcs.push(self.playerDao.removeLockByIdAsync(attackPlayerDoc._id))
 		}
 		if(_.isObject(allianceDoc)){
