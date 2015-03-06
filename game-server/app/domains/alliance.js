@@ -25,16 +25,16 @@ var createBuildingSchema = function(name, location){
 }
 
 var AllianceSchema = new Schema({
-	_id:{type:String, required:true, default:ShortId.generate},
+	_id:{type:String, required:true, unique:true, index:true, default:ShortId.generate},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},
 		tag:{type:String, required:true, unique:true, index:true},
 		language:{type:String, required:true},
 		terrain:{type:String, required:true},
 		flag:{type:String, required:true},
-		power:{type:Number, required:true, index:true, default:0},
+		power:{type:Number, required:true, default:0},
 		kill:{type:Number, required:true, default:0},
-		joinType:{type:String, required:true, index:true, default:Consts.AllianceJoinType.All},
+		joinType:{type:String, required:true, default:Consts.AllianceJoinType.All},
 		honour:{type:Number, required:true, default:0},
 		perception:{type:Number, required:true, default:AllianceBuilding.shrine[1].perception},
 		perceptionRefreshTime:{type:Number, required:true, default:Date.now()},
@@ -667,4 +667,4 @@ var AllianceSchema = new Schema({
 	}]
 })
 
-module.exports = mongoose.model('Alliance', AllianceSchema)
+module.exports = mongoose.model('alliance', AllianceSchema)

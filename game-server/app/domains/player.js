@@ -91,7 +91,7 @@ var createDragonSchema = function(dragonType){
 }
 
 var PlayerSchema = new Schema({
-	_id:{type:String, required:true},
+	_id:{type:String, required:true, unique:true, index:true},
 	serverId:{type:String, required:true},
 	isActive:{type:Boolean, required:true, default:true},
 	countInfo:{
@@ -1509,4 +1509,4 @@ var PlayerSchema = new Schema({
 	}
 })
 
-module.exports = mongoose.model('Player', PlayerSchema)
+module.exports = mongoose.model('player', PlayerSchema)

@@ -25,7 +25,7 @@ var TimeEventService = require("../../services/timeEventService")
 var AllianceDao = require("../../dao/allianceDao")
 var PlayerDao = require("../../dao/playerDao")
 var Alliance = require("../../domains/alliance")
-var Player = require("../../domains/Player")
+var Player = require("../../domains/player")
 var Deal = require("../../domains/deal")
 var Billing = require("../../domains/billing")
 var Device = require("../../domains/device")
@@ -34,14 +34,18 @@ var User = require("../../domains/user")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
-	app.set("allianceDao", Promise.promisifyAll(new AllianceDao(app.get("redis"), app.get("scripto"), app.get("env"))))
-	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Deal", Promise.promisifyAll(Deal))
 	app.set("Billing", Promise.promisifyAll(Billing))
 	app.set("Device", Promise.promisifyAll(Device))
 	app.set("User", Promise.promisifyAll(User))
+	app.set("allianceDao", Promise.promisifyAll(new AllianceDao(app.get("redis"), app.get("scripto"), app.get("env"))))
+	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
+
+	app.set("channelService", Promise.promisifyAll(app.get("channelService")))
+	app.set("globalChannelService", Promise.promisifyAll(app.get("globalChannelService")))
+
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))
 	app.set("timeEventService", Promise.promisifyAll(new TimeEventService(app)))
 	app.set("playerTimeEventService", Promise.promisifyAll(new PlayerTimeEventService(app)))
@@ -57,8 +61,7 @@ life.beforeStartup = function(app, callback){
 	app.set("allianceApiService3", Promise.promisifyAll(new AllianceApiService3(app)))
 	app.set("allianceApiService4", Promise.promisifyAll(new AllianceApiService4(app)))
 	app.set("allianceApiService5", Promise.promisifyAll(new AllianceApiService5(app)))
-	app.set("channelService", Promise.promisifyAll(app.get("channelService")))
-	app.set("globalChannelService", Promise.promisifyAll(app.get("globalChannelService")))
+
 	callback()
 }
 
