@@ -14,7 +14,7 @@ var AllianceDao = require("../../dao/allianceDao")
 var PlayerDao = require("../../dao/playerDao")
 var Alliance = require("../../domains/alliance")
 var Player = require("../../domains/Player")
-var DbUtils = Promise.promisifyAll(require("../../utils/dbUtils"))
+var DataService = require("../../services/dataService")
 var LogicUtils = require("../../utils/logicUtils")
 var DataUtils = require("../../utils/dataUtils")
 var Consts = require("../../consts/consts")
@@ -26,8 +26,12 @@ life.beforeStartup = function(app, callback){
 	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("channelService", Promise.promisifyAll(app.get("channelService")))
 	app.set("globalChannelService", Promise.promisifyAll(app.get("globalChannelService")))
+	app.set("dataService", Promise.promisifyAll(new DataService(app)))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 	app.set("Player", Promise.promisifyAll(Player))
+
+	var dataService
+	callback()
 }
 
 life.afterStartup = function(app, callback){
@@ -49,9 +53,7 @@ life.afterStartAll = function(app){
 		var addTimeEventAsync = Promise.promisify(app.rpc.event.eventRemote.addTimeEvent.toServer)
 		var eventFuncs = []
 		logicLogger.info("start restoring data")
-		app.get("Player").findAsync({isActive:true}, {_id:true}).then(function(ids){
 
-		})
 
 
 

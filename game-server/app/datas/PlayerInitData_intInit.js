@@ -98,3 +98,8 @@ intInit["freeNormalGachaCountPerDay"] = {
 	value:1,
 	desc:"每日免费普通Gacha次数"
 }
+intInit["playerBecomeInActiveNeedHours"] = {
+	type:"playerBecomeInActiveNeedHours",
+	value:1,
+	desc:"玩家变成非活跃用户所需的小时数"
+}
