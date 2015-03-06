@@ -457,12 +457,12 @@ Utils.finishPlayerPowerTaskIfNeed = function(playerDoc, playerData){
 		task = tasks[tasks.length - 1]
 		config = GrowUpTasks.playerPower[task.id + 1]
 		if(!_.isObject(config)) return
-		nextCount = config.count
+		nextCount = config.power
 	}else{
 		config = _.find(GrowUpTasks.playerPower, function(config){
 			return config.index == 1
 		})
-		nextCount = config.count
+		nextCount = config.power
 	}
 	if(playerDoc.basicInfo.power < nextCount) return
 
