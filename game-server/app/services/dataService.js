@@ -23,7 +23,7 @@ var pro = DataService.prototype
  * 清空redis中的数据
  * @param callback
  */
-pro.flushAll = function(callback){
+pro.flushDb = function(callback){
 	this.redis.flushallAsync().then(function(){
 		callback()
 	}).catch(function(e){
@@ -123,7 +123,7 @@ pro.loadAlliances = function(callback){
  * 将所有玩家保存到Mongo
  * @param callback
  */
-pro.unloadAllAlliance = function(callback){
+pro.unloadAlliances = function(callback){
 	var self = this
 	var ids = null
 	var doc = null

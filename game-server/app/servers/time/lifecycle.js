@@ -30,8 +30,22 @@ life.beforeStartup = function(app, callback){
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 	app.set("Player", Promise.promisifyAll(Player))
 
-	var dataService
-	callback()
+	var dataService = app.get("dataService")
+	dataService.flushDbAsync().then(function(){
+		return dataService.loadPlayersAsync()
+	}).then(function(){
+		return dataService.loadAlliancesAsync()
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		errorLogger.error("handle time.lifecycle:beforeStartup Error -----------------------------")
+		errorLogger.error(e.stack)
+		if(_.isEqual("production", app.get("env"))){
+			errorMailLogger.error("handle time.lifecycle:beforeStartup Error -----------------------------")
+			errorMailLogger.error(e.stack)
+		}
+		callback()
+	})
 }
 
 life.afterStartup = function(app, callback){
@@ -39,161 +53,177 @@ life.afterStartup = function(app, callback){
 }
 
 life.beforeShutdown = function(app, callback){
-	DbUtils.unloadAllDataAsync(app.get("playerDao"), app.get("allianceDao")).then(function(){
+	var dataService = app.get("dataService")
+	dataService.unloadPlayersAsync().then(function(){
+		return dataService.unloadAlliancesAsync()
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		errorLogger.error("handle time.lifecycle:beforeShutdown Error -----------------------------")
+		errorLogger.error(e.stack)
+		if(_.isEqual("production", app.get("env"))){
+			errorMailLogger.error("handle time.lifecycle:beforeShutdown Error -----------------------------")
+			errorMailLogger.error(e.stack)
+		}
 		callback()
 	})
 }
 
 life.afterStartAll = function(app){
-	setTimeout(function(){
-		var playerDocs = null
-		var allianceDocs = null
-		var eventServerId = "event-server-1"
-		var now = Date.now()
-		var addTimeEventAsync = Promise.promisify(app.rpc.event.eventRemote.addTimeEvent.toServer)
-		var eventFuncs = []
-		logicLogger.info("start restoring data")
+	var playerDao = app.get("playerDao")
+	var allianceDao = app.get("allianceDao")
+	var id = null
+	var eventServerId = "event-server-1"
+	var now = Date.now()
+	var addTimeEventAsync = Promise.promisify(app.rpc.event.eventRemote.addTimeEvent.toServer)
+	var eventFuncs = []
 
-
-
-
-
-
-		app.get("playerDao").findAllAsync().then(function(docs){
-			playerDocs = docs
-			return app.get("allianceDao").findAllAsync()
-		}).then(function(docs){
-			allianceDocs = docs
-			return Promise.resolve()
-		}).then(function(){
-			_.each(playerDocs, function(playerDoc){
-				var key = Consts.TimeEventType.Player + ":" + playerDoc._id
-				_.each(playerDoc.buildingEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "buildingEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(playerDoc.houseEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "houseEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(playerDoc.materialEvents, function(event){
-					if(event.finishTime > 0){
-						event.finishTime = now + (event.finishTime - event.startTime)
-						event.startTime = now
-						eventFuncs.push(addTimeEventAsync(eventServerId, key, "materialEvents", event.id, event.finishTime - event.startTime))
-					}
-				})
-				_.each(playerDoc.soldierEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "soldierEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(playerDoc.dragonEquipmentEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "dragonEquipmentEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(playerDoc.treatSoldierEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "treatSoldierEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(playerDoc.dragonHatchEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "dragonHatchEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(playerDoc.dragonDeathEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "dragonDeathEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(playerDoc.productionTechEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "productionTechEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(playerDoc.militaryTechEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "militaryTechEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(playerDoc.soldierStarEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "soldierStarEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(playerDoc.vipEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "vipEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(playerDoc.itemEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "itemEvents", event.id, event.finishTime - event.startTime))
-				})
-				DataUtils.refreshPlayerPower(playerDoc, {})
+	var activePlayersEvents = function(playerIds){
+		if(playerIds.length == 0) return Promise.resolve()
+		id = playerIds.shift()
+		return playerDao.findAsync(id).then(function(playerDoc){
+			var key = Consts.TimeEventType.Player + ":" + playerDoc._id
+			_.each(playerDoc.buildingEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "buildingEvents", event.id, event.finishTime - event.startTime))
 			})
-			return Promise.resolve()
+			_.each(playerDoc.houseEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "houseEvents", event.id, event.finishTime - event.startTime))
+			})
+			_.each(playerDoc.materialEvents, function(event){
+				if(event.finishTime > 0){
+					event.finishTime = now + (event.finishTime - event.startTime)
+					event.startTime = now
+					eventFuncs.push(addTimeEventAsync(eventServerId, key, "materialEvents", event.id, event.finishTime - event.startTime))
+				}
+			})
+			_.each(playerDoc.soldierEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "soldierEvents", event.id, event.finishTime - event.startTime))
+			})
+			_.each(playerDoc.dragonEquipmentEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "dragonEquipmentEvents", event.id, event.finishTime - event.startTime))
+			})
+			_.each(playerDoc.treatSoldierEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "treatSoldierEvents", event.id, event.finishTime - event.startTime))
+			})
+			_.each(playerDoc.dragonHatchEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "dragonHatchEvents", event.id, event.finishTime - event.startTime))
+			})
+			_.each(playerDoc.dragonDeathEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "dragonDeathEvents", event.id, event.finishTime - event.startTime))
+			})
+			_.each(playerDoc.productionTechEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "productionTechEvents", event.id, event.finishTime - event.startTime))
+			})
+			_.each(playerDoc.militaryTechEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "militaryTechEvents", event.id, event.finishTime - event.startTime))
+			})
+			_.each(playerDoc.soldierStarEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "soldierStarEvents", event.id, event.finishTime - event.startTime))
+			})
+			_.each(playerDoc.vipEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "vipEvents", event.id, event.finishTime - event.startTime))
+			})
+			_.each(playerDoc.itemEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "itemEvents", event.id, event.finishTime - event.startTime))
+			})
+			DataUtils.refreshPlayerPower(playerDoc, {})
+			return playerDao.updateAsync(playerDoc)
 		}).then(function(){
-			_.each(allianceDocs, function(allianceDoc){
-				var key = Consts.TimeEventType.Alliance + ":" + allianceDoc._id
-				if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
+			return activePlayersEvents(playerIds)
+		}).catch(function(e){
+			return Promise.reject(e)
+		})
+	}
+	var activeAllianceEvents = function(allianceIds){
+		if(allianceIds.length == 0) return Promise.resolve()
+		id = allianceIds.shift()
+		return allianceDao.findAsync(id).then(function(allianceDoc){
+			var key = Consts.TimeEventType.Alliance + ":" + allianceDoc._id
+			if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
+				allianceDoc.basicInfo.statusFinishTime = now + (allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime)
+				allianceDoc.basicInfo.statusStartTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime))
+			}else if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+				var allianceFight = allianceDoc.allianceFight
+				if(_.isEqual(allianceDoc._id, allianceFight.attackAllianceId)){
+					var theKey = Consts.TimeEventType.AllianceFight
+					var eventType = Consts.TimeEventType.AllianceFight
+					var eventId = allianceFight.attackAllianceId + ":" + allianceFight.defenceAllianceId
 					allianceDoc.basicInfo.statusFinishTime = now + (allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime)
 					allianceDoc.basicInfo.statusStartTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime))
-				}else if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
-					var allianceFight = allianceDoc.allianceFight
-					if(_.isEqual(allianceDoc._id, allianceFight.attackAllianceId)){
-						var theKey = Consts.TimeEventType.AllianceFight
-						var eventType = Consts.TimeEventType.AllianceFight
-						var eventId = allianceFight.attackAllianceId + ":" + allianceFight.defenceAllianceId
-						allianceDoc.basicInfo.statusFinishTime = now + (allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime)
-						allianceDoc.basicInfo.statusStartTime = now
-						eventFuncs.push(addTimeEventAsync(eventServerId, theKey, eventType, eventId, allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime))
-					}
+					eventFuncs.push(addTimeEventAsync(eventServerId, theKey, eventType, eventId, allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime))
 				}
-				_.each(allianceDoc.shrineEvents, function(event){
-					event.startTime = now + (event.startTime - event.createTime)
-					event.createTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "shrineEvents", event.id, event.startTime - event.finishTime))
-				})
-				_.each(allianceDoc.villageEvents, function(event){
-					event.finishTime = now + (event.finishTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "villageEvents", event.id, event.finishTime - event.startTime))
-				})
-				_.each(allianceDoc.strikeMarchEvents, function(event){
-					event.arriveTime = now + (event.arriveTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "strikeMarchEvents", event.id, event.arriveTime - event.startTime))
-				})
-				_.each(allianceDoc.strikeMarchReturnEvents, function(event){
-					event.arriveTime = now + (event.arriveTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "strikeMarchReturnEvents", event.id, event.arriveTime - event.startTime))
-				})
-				_.each(allianceDoc.attackMarchEvents, function(event){
-					event.arriveTime = now + (event.arriveTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "attackMarchEvents", event.id, event.arriveTime - event.startTime))
-				})
-				_.each(allianceDoc.attackMarchReturnEvents, function(event){
-					event.arriveTime = now + (event.arriveTime - event.startTime)
-					event.startTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, key, "attackMarchReturnEvents", event.id, event.arriveTime - event.startTime))
-				})
+			}
+			_.each(allianceDoc.shrineEvents, function(event){
+				event.startTime = now + (event.startTime - event.createTime)
+				event.createTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "shrineEvents", event.id, event.startTime - event.finishTime))
 			})
-			return Promise.resolve()
+			_.each(allianceDoc.villageEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "villageEvents", event.id, event.finishTime - event.startTime))
+			})
+			_.each(allianceDoc.strikeMarchEvents, function(event){
+				event.arriveTime = now + (event.arriveTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "strikeMarchEvents", event.id, event.arriveTime - event.startTime))
+			})
+			_.each(allianceDoc.strikeMarchReturnEvents, function(event){
+				event.arriveTime = now + (event.arriveTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "strikeMarchReturnEvents", event.id, event.arriveTime - event.startTime))
+			})
+			_.each(allianceDoc.attackMarchEvents, function(event){
+				event.arriveTime = now + (event.arriveTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "attackMarchEvents", event.id, event.arriveTime - event.startTime))
+			})
+			_.each(allianceDoc.attackMarchReturnEvents, function(event){
+				event.arriveTime = now + (event.arriveTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "attackMarchReturnEvents", event.id, event.arriveTime - event.startTime))
+			})
+			return allianceDao.updateAsync(allianceDoc)
 		}).then(function(){
-			return app.get("playerDao").updateAllAsync(playerDocs)
+			activeAllianceEvents(allianceIds)
+		}).catch(function(e){
+			return Promise.reject(e)
+		})
+	}
+
+	setTimeout(function(){
+		logicLogger.info("start restoring data")
+		playerDao.findAllKeysAsync().then(function(ids){
+			return activePlayersEvents(ids)
 		}).then(function(){
-			return app.get("allianceDao").updateAllAsync(allianceDocs)
-		}).then(function(){
-			return Promise.all(eventFuncs)
+			return allianceDao.findAllKeysAsync()
+		}).then(function(ids){
+			return activeAllianceEvents(ids)
 		}).then(function(){
 			logicLogger.info("restoring data finished")
 			logicLogger.info("start change server status")

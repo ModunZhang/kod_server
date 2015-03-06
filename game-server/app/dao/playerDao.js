@@ -12,8 +12,7 @@ var BaseDao = require("./baseDao")
 var Player = require("../domains/player")
 
 var PlayerDao = function(redis, scripto, env){
-	var indexs = ["countInfo.deviceId", "basicInfo.name"]
-	BaseDao.call(this, redis, scripto, "player", Player, indexs, env)
+	BaseDao.call(this, redis, scripto, "player", Player, env)
 }
 
 util.inherits(PlayerDao, BaseDao)
