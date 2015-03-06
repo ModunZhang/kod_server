@@ -12,6 +12,8 @@ var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("ko
 var logicLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-logic", __filename)
 var AllianceDao = require("../../dao/allianceDao")
 var PlayerDao = require("../../dao/playerDao")
+var Alliance = require("../../domains/alliance")
+var Player = require("../../domains/Player")
 var DbUtils = Promise.promisifyAll(require("../../utils/dbUtils"))
 var LogicUtils = require("../../utils/logicUtils")
 var DataUtils = require("../../utils/dataUtils")
@@ -24,18 +26,8 @@ life.beforeStartup = function(app, callback){
 	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("channelService", Promise.promisifyAll(app.get("channelService")))
 	app.set("globalChannelService", Promise.promisifyAll(app.get("globalChannelService")))
-
-	DbUtils.loadAllDataAsync(app.get("redis"), app.get("playerDao"), app.get("allianceDao")).then(function(){
-		callback()
-	}).catch(function(e){
-		errorLogger.error("handle time.lifecycle:beforeStartup Error -----------------------------")
-		errorLogger.error(e.stack)
-		if(_.isEqual("production", app.get("env"))){
-			errorMailLogger.error("handle time.lifecycle:beforeStartup Error -----------------------------")
-			errorMailLogger.error(e.stack)
-		}
-		callback()
-	})
+	app.set("Alliance", Promise.promisifyAll(Alliance))
+	app.set("Player", Promise.promisifyAll(Player))
 }
 
 life.afterStartup = function(app, callback){
@@ -57,6 +49,14 @@ life.afterStartAll = function(app){
 		var addTimeEventAsync = Promise.promisify(app.rpc.event.eventRemote.addTimeEvent.toServer)
 		var eventFuncs = []
 		logicLogger.info("start restoring data")
+		app.get("Player").findAsync({isActive:true}, {_id:true}).then(function(ids){
+
+		})
+
+
+
+
+
 		app.get("playerDao").findAllAsync().then(function(docs){
 			playerDocs = docs
 			return app.get("allianceDao").findAllAsync()
