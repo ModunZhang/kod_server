@@ -27,7 +27,7 @@ var createBuildingSchema = function(location){
 		level:{
 			type:Number,
 			required:true,
-			default:location <= 4 || location > 20 ? 1 : location > 4 && location <= 9 ? 0 : -1
+			default:location <= 4 || location > 20 ? 1 : 0
 		},
 		location:{type:Number, required:true, default:location},
 		houses:[{
@@ -93,6 +93,9 @@ var createDragonSchema = function(dragonType){
 var PlayerSchema = new Schema({
 	_id:{type:String, required:true, unique:true, index:true},
 	serverId:{type:String, required:true},
+	deviceId:{type:String, required:true},
+	userId:{type:String, required:true},
+	selected:{type:Boolean, required:true},
 	isActive:{type:Boolean, required:true, default:true},
 	countInfo:{
 		registerTime:{type:Number, required:true, default:Date.now()},

@@ -23,8 +23,33 @@ errors["playerNotExist"] = {
 	code:504,
 	message:"玩家不存在"
 }
+errors["playerNotExistInMongo"] = {
+	key:"playerNotExistInMongo",
+	code:505,
+	message:"玩家不存在于mongo数据库"
+}
 errors["objectIsLocked"] = {
 	key:"objectIsLocked",
-	code:505,
+	code:506,
 	message:"对象被锁定"
+}
+errors["reLoginNeeded"] = {
+	key:"reLoginNeeded",
+	code:507,
+	message:"需要重新登录"
+}
+errors["playerAlreadyLogin"] = {
+	key:"playerAlreadyLogin",
+	code:508,
+	message:"玩家已经登录"
+}
+errors["allianceNotExist"] = {
+	key:"allianceNotExist",
+	code:509,
+	message:"联盟不存在"
+}
+errors["serverUnderMaintain"] = {
+	key:"serverUnderMaintain",
+	code:510,
+	message:"服务器维护中"
 }

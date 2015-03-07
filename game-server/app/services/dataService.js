@@ -43,7 +43,7 @@ pro.loadPlayers = function(callback){
 		if(ids.length == 0) return Promise.resolve()
 		id = ids.shift()._id
 		return self.Player.findByIdAsync(id).then(function(doc){
-			return self.playerDao.addAsync(doc)
+			return self.playerDao.directAddAsync(doc)
 		}).then(function(){
 			return addAllToRedis(ids)
 		}).catch(function(e){
@@ -68,12 +68,14 @@ pro.loadPlayers = function(callback){
 pro.unloadPlayers = function(callback){
 	var self = this
 	var ids = null
-	var doc = null
-	var saveAllToMongo = function(docs){
-		if(docs.length == 0) return Promise.resolve()
-		doc = docs.shift()
-		return self.Player.update({_id:doc._id}, _.omit(doc, "_id", "__v")).then(function(){
-			return saveAllToMongo(docs)
+	var id = null
+	var saveAllToMongo = function(ids){
+		if(ids.length == 0) return Promise.resolve()
+		id = ids.shift()
+		return self.playerDao.directFindAsync(id).then(function(doc){
+			return self.Player.update({_id:doc._id}, _.omit(doc, "_id", "__v"))
+		}).then(function(){
+			return saveAllToMongo(ids)
 		}).catch(function(e){
 			return Promise.reject(e)
 		})
@@ -101,7 +103,7 @@ pro.loadAlliances = function(callback){
 		if(ids.length == 0) return Promise.resolve()
 		id = ids.shift()._id
 		return self.Alliance.findByIdAsync(id).then(function(doc){
-			return self.allianceDao.addAsync(doc)
+			return self.allianceDao.directAddAsync(doc)
 		}).then(function(){
 			return addAllToRedis(ids)
 		}).catch(function(e){
@@ -126,12 +128,14 @@ pro.loadAlliances = function(callback){
 pro.unloadAlliances = function(callback){
 	var self = this
 	var ids = null
-	var doc = null
-	var saveAllToMongo = function(docs){
-		if(docs.length == 0) return Promise.resolve()
-		doc = docs.shift()
-		return self.Alliance.update({_id:doc._id}, _.omit(doc, "_id", "__v")).then(function(){
-			return saveAllToMongo(docs)
+	var id = null
+	var saveAllToMongo = function(ids){
+		if(ids.length == 0) return Promise.resolve()
+		id = ids.shift()
+		return self.allianceDao.directFindAsync(id).then(function(doc){
+			return self.Alliance.update({_id:doc._id}, _.omit(doc, "_id", "__v"))
+		}).then(function(){
+			return saveAllToMongo(ids)
 		}).catch(function(e){
 			return Promise.reject(e)
 		})

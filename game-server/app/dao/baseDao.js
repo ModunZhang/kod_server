@@ -52,7 +52,25 @@ pro.isExist = function(id, callback){
 }
 
 /**
- * 创建对象并加载入Redis
+ * 将对象加载入redis
+ * @param doc
+ * @param callback
+ */
+pro.directAdd = function(doc, callback){
+	if(!_.isObject(doc)){
+		callback(new Error("doc 不合法"))
+		return
+	}
+	var docString = JSON.stringify(doc)
+	this.redis.setAsync(this.modelName + ":" + doc._id, docString).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 将对象加载入redis
  * @param doc
  * @param callback
  */
@@ -61,9 +79,8 @@ pro.add = function(doc, callback){
 		callback(new Error("doc 不合法"))
 		return
 	}
-	var self = this
-	var docString = null
-	this.scripto.runAsync("addAndLock", [self.modelName, docString, Date.now()]).then(function(){
+	var docString = JSON.stringify(doc)
+	this.scripto.runAsync("addAndLock", [this.modelName, docString, Date.now()]).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -91,6 +108,24 @@ pro.addAll = function(docs, callback){
 	})
 	this.redis.msetAsync(docStrings).then(function(){
 		callback(null, docs)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 根据Id查找对象
+ * @param id
+ * @param callback
+ */
+pro.directFind = function(id, callback){
+	if(!_.isString(id)){
+		callback(new Error("id 不合法"))
+		return
+	}
+	this.redis.getAsync(this.modelName + ":" + id).then(function(docString){
+		if(!_.isString(docString)) callback()
+		else callback(null, JSON.parse(docString))
 	}).catch(function(e){
 		callback(e)
 	})
@@ -287,7 +322,7 @@ pro.findAllKeys = function(callback){
  * @param id
  * @param callback
  */
-pro.removeLockById = function(id, callback){
+pro.removeLock = function(id, callback){
 	if(!_.isString(id)){
 		callback(new Error("id 不合法"))
 		return

@@ -12,8 +12,9 @@ var UserSchema = new Schema({
 	_id:{type:String, required:true, unique:true, index:true},
 	gcId:{type:String},
 	players:[{
+		_id:false,
 		id:{type:String, required:true},
-		isActive:{type:Boolean, required:true}
+		selected:{type:Boolean, required:true}
 	}],
 	registerTime:{type:Number, required:true, default:Date.now()}
 })

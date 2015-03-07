@@ -1671,7 +1671,7 @@ Utils.putAllianceDataToEnemyAllianceData = function(allianceData, enemyAllianceD
  * @param pushService
  */
 Utils.pushAllianceDataToEnemyAllianceIfNeeded = function(allianceDoc, allianceData, pushFuncs, pushService){
-	if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(allianceDoc.allianceFight)){
+	if(_.isObject(allianceDoc.allianceFight)){
 		var enemyAllianceData = {}
 		this.putAllianceDataToEnemyAllianceData(allianceData, enemyAllianceData)
 		if(_.isObject(enemyAllianceData.enemyAllianceDoc)){

@@ -28,20 +28,20 @@ var CreateError = function(config, params){
 	return new CustomError(code, message)
 }
 
-Utils.fixError = function(error){
-	if(!_.isNumber(error.code)) error.code = 500
-}
-
-Utils.commonError = function(message){
-	return CustomError(500, message)
+/**
+ * 修复错误信息
+ * @param e
+ */
+Utils.errorData = function(e){
+	return {code:_.isNumber(e.code) ? e.code : 500, message:e.message}
 }
 
 /**
  * 设备不存在
  * @param deviceId
  */
-Utils.deviceIdNotExist = function(deviceId){
-	var config = Errors.deviceIdNotExist
+Utils.deviceNotExist = function(deviceId){
+	var config = Errors.deviceNotExist
 	return CreateError(config, {deviceId:deviceId})
 }
 
@@ -56,11 +56,12 @@ Utils.userNotExist = function(userId){
 
 /**
  * 没有激活的玩家Id
+ * @param deviceId
  * @param userId
  */
-Utils.noActivePlayerId = function(userId){
+Utils.noActivePlayerId = function(deviceId, userId){
 	var config = Errors.noActivePlayerId
-	return CreateError(config, {userId:userId})
+	return CreateError(config, {deviceId:deviceId, userId:userId})
 }
 
 /**
@@ -73,11 +74,58 @@ Utils.playerNotExist = function(playerId){
 }
 
 /**
- * 对象不存在
+ * 玩家不存在于mongo数据库
+ * @param deviceId
+ */
+Utils.playerNotExistInMongo = function(deviceId){
+	var config = Errors.playerNotExistInMongo
+	return CreateError(config, {deviceId:deviceId})
+}
+
+/**
+ * 对象被锁定
  * @param objectType
  * @param objectId
  */
 Utils.objectIsLocked = function(objectType, objectId){
 	var config = Errors.objectIsLocked
 	return CreateError(config, {objectType:objectType, objectId:objectId})
+}
+
+/**
+ * 需要重新登录
+ * @param playerId
+ */
+Utils.reLoginNeeded = function(playerId){
+	var config = Errors.reLoginNeeded
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 玩家已经登录
+ * @param playerDoc
+ */
+Utils.playerAlreadyLogin = function(playerDoc){
+	var config = Errors.playerAlreadyLogin
+	var error = CreateError(config, {playerId:playerDoc._id})
+	error.data = playerDoc
+	return error
+}
+
+/**
+ * 联盟不存在
+ * @param allianceId
+ */
+Utils.allianceNotExist = function(allianceId){
+	var config = Errors.allianceNotExist
+	return CreateError(config, {allianceId:allianceId})
+}
+
+/**
+ * serverUnderMaintain
+ * @returns {CreateError}
+ */
+Utils.serverUnderMaintain = function(){
+	var config = Errors.serverUnderMaintain
+	return CreateError(config, {})
 }

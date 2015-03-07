@@ -2,40 +2,35 @@
  * Created by modun on 14-7-25.
  */
 
+var Promise = require("bluebird")
 var pomelo = require("../pomelo-client")
-var redis = require("redis")
+var Redis = Promise.promisifyAll(require("redis"))
 var path = require("path")
 var Scripto = require('redis-scripto')
-var Promise = require("bluebird")
 var mongoose = require("mongoose")
 var should = require('should')
 
 var Consts = require("../../app/consts/consts")
 var Config = require("../config")
-var AllianceDao = require("../../app/dao/allianceDao")
-var PlayerDao = require("../../app/dao/playerDao")
 var Deal = Promise.promisifyAll(require("../../app/domains/deal"))
 var Billing = Promise.promisifyAll(require("../../app/domains/billing"))
 var Device = Promise.promisifyAll(require("../../app/domains/device"))
 var User = Promise.promisifyAll(require("../../app/domains/user"))
+var Player = Promise.promisifyAll(require("../../app/domains/player"))
+var Alliance = Promise.promisifyAll(require("../../app/domains/alliance"))
 var Api = require("../api")
 var commandDir = path.resolve(__dirname + "/../../app/commands")
-var allianceDao = null
-var playerDao = null
 
 describe("PlayerService", function(){
 	var m_user
 
 	before(function(done){
 		mongoose.connect(Config.mongoAddr, function(){
-			var redisClient = redis.createClient(Config.redisPort, Config.redisAddr)
-			var scripto = new Scripto(redisClient)
-			scripto.loadFromDir(commandDir)
-
-			allianceDao = Promise.promisifyAll(new AllianceDao(redisClient, scripto, "production"))
-			playerDao = Promise.promisifyAll(new PlayerDao(redisClient, scripto, "production"))
-			playerDao.deleteAllAsync().then(function(){
-				return allianceDao.deleteAllAsync()
+			var redis = Redis.createClient(Config.redisPort, Config.redisAddr)
+			redis.flushallAsync().then(function(){
+				return Player.removeAsync()
+			}).then(function(){
+				return Alliance.removeAsync()
 			}).then(function(){
 				return Device.removeAsync()
 			}).then(function(){
@@ -67,14 +62,14 @@ describe("PlayerService", function(){
 
 
 	describe("playerHandler", function(){
-		//it("upgradeBuilding location 不合法", function(done){
-		//	Api.upgradeBuilding(26, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("location 不合法")
-		//		done()
-		//	})
-		//})
-		//
+		it("upgradeBuilding location 不合法", function(done){
+			Api.upgradeBuilding(26, false, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("location 不合法")
+				done()
+			})
+		})
+
 		//it("upgradeBuilding 建筑正在升级", function(done){
 		//	Api.upgradeBuilding(1, false, function(doc){
 		//		doc.code.should.equal(200)

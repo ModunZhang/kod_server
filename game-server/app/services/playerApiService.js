@@ -17,6 +17,9 @@ var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
 
+var GameDatas = require("../datas/GameDatas")
+var Errors = GameDatas.Errors.errors
+
 var PlayerApiService = function(app){
 	this.app = app
 	this.env = app.get("env")
@@ -28,6 +31,7 @@ var PlayerApiService = function(app){
 	this.playerDao = app.get("playerDao")
 	this.Device = app.get("Device")
 	this.User = app.get("User")
+	this.Player = app.get("Player")
 }
 module.exports = PlayerApiService
 var pro = PlayerApiService.prototype
@@ -39,11 +43,11 @@ var pro = PlayerApiService.prototype
  */
 pro.isAccountExist = function(deviceId, callback){
 	if(!_.isString(deviceId)){
-		callback(ErrorUtils.commonError("deviceId 不合法"))
+		callback(new Error("deviceId 不合法"))
 		return
 	}
 
-	this.Device.findAsync({deviceId:deviceId}, {_id:true}, {limit:1}).then(function(docs){
+	this.Device.findAsync({_id:deviceId}, {_id:true}, {limit:1}).then(function(docs){
 		callback(null, docs.length > 0)
 	}).catch(function(e){
 		callback(e)
@@ -57,83 +61,43 @@ pro.isAccountExist = function(deviceId, callback){
  */
 pro.createAccount = function(deviceId, callback){
 	if(!_.isString(deviceId)){
-		callback(ErrorUtils.commonError("deviceId 不合法"))
+		callback(new Error("deviceId 不合法"))
 		return
 	}
 
-	var token = ShortId.generate()
+	var self = this
+	var name = ShortId.generate()
+	var playerId = ShortId.generate()
+	var userId = ShortId.generate()
 	var player = {
-		_id:ShortId.generate(),
+		_id:playerId,
 		serverId:"World-1",
-		basicInfo:{name:"player_" + token, cityName:"city_" + token}
+		deviceId:deviceId,
+		userId:userId,
+		selected:true,
+		basicInfo:{name:"player_" + name, cityName:"city_" + name}
 	}
 	var user = {
-		_id:ShortId.generate(),
-		players:[{id:player._id, isActive:true}]
+		_id:userId,
+		players:[{id:playerId, selected:true}]
 	}
 	var device = {
-		_id:ShortId.generate(),
-		deviceId:deviceId,
+		_id:deviceId,
 		userId:user._id
 	}
 
-	var updateFuncs = []
-	updateFuncs.push([this.playerDao, this.playerDao.createAndLockAsync, player])
-	updateFuncs.push([this.User, this.User.createAsync, user])
-	updateFuncs.push([this.Device, this.Device.createAsync, device])
-	LogicUtils.excuteAll(updateFuncs).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-pro.playerLogin = function(deviceId, callback){
-	if(!_.isString(deviceId)){
-		callback(ErrorUtils.commonError("deviceId 不合法"))
-		return
-	}
-
-	var self = this
-	var deviceDoc = null
-	var userDoc = null
-	var activePlayerId = null
 	var playerDoc = null
-	this.Device.findOneAsync("deviceId", deviceId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.deviceIdNotExist(deviceId))
-		deviceDoc = doc
-		return self.User.findByIdAsync(deviceDoc.userId)
-	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.userNotExist(deviceDoc.userId))
-		userDoc = doc
-		activePlayerId = _.find(doc.players, function(player){
-			return player.isActive
-		})
-		if(!_.isString(activePlayerId)) return Promise.reject(ErrorUtils.noActivePlayerId(deviceDoc.userId))
-		return self.Player.findByIdAsync(activePlayerId)
-	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(activePlayerId))
-		playerDoc = doc
-
-	})
-}
-
-/**
- * 创建新玩家
- * @param deviceId
- * @param callback
- */
-pro.createPlayer = function(deviceId, callback){
-	var self = this
-	Promise.promisify(crypto.randomBytes)(4).then(function(buf){
-		var token = buf.toString("hex")
-		var doc = {
-			countInfo:{deviceId:deviceId},
-			basicInfo:{name:"player_" + token, cityName:"city_" + token}
-		}
-		return self.playerDao.createAsync(doc)
-	}).then(function(doc){
-		callback(null, doc)
+	var updateFuncs = []
+	updateFuncs.push([this.Device, this.Device.createAsync, device])
+	updateFuncs.push([this.User, this.User.createAsync, user])
+	updateFuncs.push([this.Player, this.Player.createAsync, player])
+	LogicUtils.excuteAll(updateFuncs).spread(function(doc_1, doc_2, doc_3){
+		playerDoc = doc_3
+		return self.playerDao.addAsync(playerDoc)
+	}).then(function(){
+		return self.playerDao.removeLockAsync(playerDoc._id)
+	}).then(function(){
+		callback()
 	}).catch(function(e){
 		callback(e)
 	})
@@ -141,12 +105,21 @@ pro.createPlayer = function(deviceId, callback){
 
 /**
  * 玩家登陆逻辑服务器
- * @param playerDoc
+ * @param deviceId
+ * @param logicServerId
  * @param callback
  */
-pro.playerLogin = function(playerDoc, callback){
+pro.playerLogin = function(deviceId, logicServerId, callback){
+	if(!_.isString(deviceId)){
+		callback(new Error("deviceId 不合法"))
+		return
+	}
+
 	var self = this
+	var activePlayerId = null
+	var playerDoc = null
 	var allianceDoc = null
+	var enemyAllianceId = null
 	var enemyAllianceDoc = null
 	var updateFuncs = []
 	var eventFuncs = []
@@ -154,96 +127,130 @@ pro.playerLogin = function(playerDoc, callback){
 	var memberDoc = null
 	var expAdd = null
 
-	var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
-	var todayDateString = LogicUtils.getTodayDateString()
-	if(!_.isEqual(todayDateString, previousLoginDateString)){
-		_.each(playerDoc.dailyTasks, function(value, key){
-			playerDoc.dailyTasks[key] = []
-		})
-
-		playerDoc.countInfo.todayOnLineTime = 0
-		playerDoc.countInfo.todayOnLineTimeRewards = []
-		playerDoc.countInfo.todayFreeNormalGachaCount = 0
-		if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)){
-			if(playerDoc.countInfo.day60 == 60){
-				playerDoc.countInfo.day60 = 1
-				playerDoc.countInfo.day60RewardsCount = 0
-			}else{
-				playerDoc.countInfo.day60 += 1
-			}
-		}
-		if(_.isEqual(playerDoc.countInfo.day14, playerDoc.countInfo.day14RewardsCount) && playerDoc.countInfo.day14 < 14){
-			playerDoc.countInfo.day14 += 1
-		}
-	}
-	var yestodayString = LogicUtils.getYesterdayDateString()
-	if(!_.isEqual(previousLoginDateString, yestodayString) && !_.isEqual(previousLoginDateString, todayDateString)){
-		playerDoc.countInfo.vipLoginDaysCount = 1
-		expAdd = DataUtils.getPlayerVipExpByLoginDaysCount(1)
-		DataUtils.addPlayerVipExp(playerDoc, {}, expAdd, eventFuncs, self.timeEventService)
-	}else if(_.isEqual(previousLoginDateString, yestodayString)){
-		playerDoc.countInfo.vipLoginDaysCount += 1
-		expAdd = DataUtils.getPlayerVipExpByLoginDaysCount(playerDoc.countInfo.vipLoginDaysCount)
-		DataUtils.addPlayerVipExp(playerDoc, {}, expAdd, eventFuncs, self.timeEventService)
-	}else if(playerDoc.countInfo.loginCount == 0){
-		expAdd = DataUtils.getPlayerVipExpByLoginDaysCount(1)
-		DataUtils.addPlayerVipExp(playerDoc, {}, expAdd, eventFuncs, self.timeEventService)
-	}
-	playerDoc.countInfo.lastLoginTime = Date.now()
-	playerDoc.countInfo.loginCount += 1
-	DataUtils.refreshPlayerResources(playerDoc)
-	DataUtils.refreshPlayerPower(playerDoc, {})
-	DataUtils.refreshPlayerDragonsHp(playerDoc)
-
-	if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
-		pushFuncs.push([self.pushService, self.pushService.onPlayerLoginSuccessAsync, playerDoc])
-		LogicUtils.excuteAll(updateFuncs).then(function(){
-			return LogicUtils.excuteAll(eventFuncs)
-		}).then(function(){
-			return LogicUtils.excuteAll(pushFuncs)
-		}).then(function(){
-			callback()
-		}).catch(function(e){
-			callback(e)
-		})
-		return
-	}
-
-	this.allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+	this.Player.findOneAsync({deviceId:deviceId, selected:true}, {_id:true}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExistInMongo(deviceId))
+		activePlayerId = doc._id
+		return self.playerDao.findAsync(activePlayerId)
+	}).then(function(doc){
 		if(!_.isObject(doc)){
-			return Promise.reject(new Error("联盟不存在"))
+			return self.Player.findByIdAsync(activePlayerId)
+		}else{
+			playerDoc = doc
+			return Promise.resolve()
 		}
-		allianceDoc = doc
-		if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(allianceDoc.allianceFight)){
-			if(_.isEqual(allianceDoc.allianceFight.attackAllianceId, allianceDoc._id)){
-				return self.allianceDao.findByIdAsync(allianceDoc.allianceFight.defenceAllianceId)
+	}).then(function(doc){
+		if(_.isObject(doc)){
+			playerDoc = doc
+			playerDoc.isActive = true
+			return self.playerDao.addAsync(doc)
+		}
+		return Promise.resolve()
+	}).then(function(){
+		if(!_.isEmpty(playerDoc.logicServerId)){
+			var funcs = []
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			var kickPlayerAsync = function(playerDoc){
+				return self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "其他设备正使用此账号登录", function(e){
+					if(_.isObject(e)) return Promise.reject(e)
+					return Promise.resolve()
+				})
 			}
-			return self.allianceDao.findByIdAsync(allianceDoc.allianceFight.attackAllianceId)
+			funcs.push(kickPlayerAsync(playerDoc))
+			return Promise.all(funcs)
+		}
+		return Promise.resolve()
+	}).then(function(){
+		if(!_.isEmpty(playerDoc.logicServerId)) return Promise.reject(ErrorUtils.reLoginNeeded(playerDoc._id))
+
+		var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
+		var todayDateString = LogicUtils.getTodayDateString()
+		if(!_.isEqual(todayDateString, previousLoginDateString)){
+			_.each(playerDoc.dailyTasks, function(value, key){
+				playerDoc.dailyTasks[key] = []
+			})
+
+			playerDoc.countInfo.todayOnLineTime = 0
+			playerDoc.countInfo.todayOnLineTimeRewards = []
+			playerDoc.countInfo.todayFreeNormalGachaCount = 0
+			if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)){
+				if(playerDoc.countInfo.day60 == 60){
+					playerDoc.countInfo.day60 = 1
+					playerDoc.countInfo.day60RewardsCount = 0
+				}else{
+					playerDoc.countInfo.day60 += 1
+				}
+			}
+			if(_.isEqual(playerDoc.countInfo.day14, playerDoc.countInfo.day14RewardsCount) && playerDoc.countInfo.day14 < 14){
+				playerDoc.countInfo.day14 += 1
+			}
+		}
+		var yestodayString = LogicUtils.getYesterdayDateString()
+		if(!_.isEqual(previousLoginDateString, yestodayString) && !_.isEqual(previousLoginDateString, todayDateString)){
+			playerDoc.countInfo.vipLoginDaysCount = 1
+			expAdd = DataUtils.getPlayerVipExpByLoginDaysCount(1)
+			DataUtils.addPlayerVipExp(playerDoc, {}, expAdd, eventFuncs, self.timeEventService)
+		}else if(_.isEqual(previousLoginDateString, yestodayString)){
+			playerDoc.countInfo.vipLoginDaysCount += 1
+			expAdd = DataUtils.getPlayerVipExpByLoginDaysCount(playerDoc.countInfo.vipLoginDaysCount)
+			DataUtils.addPlayerVipExp(playerDoc, {}, expAdd, eventFuncs, self.timeEventService)
+		}else if(playerDoc.countInfo.loginCount == 0){
+			expAdd = DataUtils.getPlayerVipExpByLoginDaysCount(1)
+			DataUtils.addPlayerVipExp(playerDoc, {}, expAdd, eventFuncs, self.timeEventService)
+		}
+		playerDoc.countInfo.lastLoginTime = Date.now()
+		playerDoc.countInfo.loginCount += 1
+		playerDoc.logicServerId = logicServerId
+		DataUtils.refreshPlayerResources(playerDoc)
+		DataUtils.refreshPlayerPower(playerDoc, {})
+		DataUtils.refreshPlayerDragonsHp(playerDoc)
+		return Promise.resolve()
+	}).then(function(){
+		if(_.isObject(playerDoc.alliance)){
+			return self.allianceDao.findAsync(playerDoc.alliance.id)
 		}
 		return Promise.resolve()
 	}).then(function(doc){
-		if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(allianceDoc.allianceFight)){
-			if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
+		if(_.isObject(playerDoc.alliance)){
+			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(playerDoc.alliance.id))
+			allianceDoc = Doc
+			if(_.isObject(allianceDoc.allianceFight)){
+				if(_.isEqual(allianceDoc.allianceFight.attackAllianceId, allianceDoc._id)){
+					enemyAllianceId = allianceDoc.allianceFight.defenceAllianceId
+				}else{
+					enemyAllianceId = allianceDoc.allianceFight.attackAllianceId
+				}
+				return self.allianceDao.findByIdAsync(enemyAllianceId)
+			}
+		}
+		return Promise.resolve()
+	}).then(function(doc){
+		if(_.isObject(allianceDoc) && _.isObject(allianceDoc.allianceFight)){
+			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(enemyAllianceId))
 			enemyAllianceDoc = doc
 			allianceDoc.enemyAllianceDoc = LogicUtils.getAllianceViewData(enemyAllianceDoc)
-			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, enemyAllianceDoc._id])
 		}
-		memberDoc = LogicUtils.updateMyPropertyInAlliance(playerDoc, allianceDoc)
-		LogicUtils.refreshAllianceBasicInfo(allianceDoc)
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		if(_.isObject(allianceDoc)){
+			memberDoc = LogicUtils.updateMyPropertyInAlliance(playerDoc, allianceDoc)
+			LogicUtils.refreshAllianceBasicInfo(allianceDoc)
+		}
 		return Promise.resolve()
 	}).then(function(){
-		pushFuncs.push([self.pushService, self.pushService.onPlayerLoginSuccessAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, playerDoc, allianceDoc])
-		var allianceData = {
-			basicInfo:allianceDoc.basicInfo,
-			__members:[{
-				type:Consts.DataChangedType.Edit,
-				data:memberDoc
-			}]
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		if(_.isObject(allianceDoc)){
+			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+			var allianceData = {
+				basicInfo:allianceDoc.basicInfo,
+				__members:[{
+					type:Consts.DataChangedType.Edit,
+					data:memberDoc
+				}]
+			}
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
+			LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
 		}
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
+		if(_.isObject(enemyAllianceDoc)){
+			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, enemyAllianceDoc._id])
+		}
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -252,14 +259,17 @@ pro.playerLogin = function(playerDoc, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback()
+		callback(null, [playerDoc, allianceDoc])
 	}).catch(function(e){
 		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+			funcs.push(self.allianceDao.removeLockAsync(allianceDoc._id))
 		}
 		if(_.isObject(enemyAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(enemyAllianceDoc._id))
+			funcs.push(self.allianceDao.removeLockAsync(enemyAllianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -273,11 +283,29 @@ pro.playerLogin = function(playerDoc, callback){
 
 /**
  * 玩家登出逻辑服务器
- * @param playerDoc
+ * @param playerId
  * @param callback
  */
-pro.playerLogout = function(playerDoc, callback){
-
+pro.playerLogout = function(playerId, callback){
+	var self = this
+	var playerDoc = null
+	this.playerDao.findAsync(playerId, true).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId))
+		playerDoc = doc
+		playerDoc.logicServerId = null
+		playerDoc.countInfo.todayOnLineTime += Date.now() - playerDoc.countInfo.lastLoginTime
+		return self.playerDao.updateAsync(playerDoc)
+	}).then(function(){
+		callback(null, playerDoc)
+	}).catch(function(e){
+		if(_.isObject(playerDoc)){
+			self.playerDao.removeLockAsync(playerDoc._id).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
 }
 
 /**
@@ -288,9 +316,6 @@ pro.playerLogout = function(playerDoc, callback){
  * @param callback
  */
 pro.upgradeBuilding = function(playerId, location, finishNow, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
 	if(!_.isString(playerId)){
 		callback(new Error("playerId 不合法"))
 		return
