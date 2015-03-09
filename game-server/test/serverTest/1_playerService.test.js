@@ -20,6 +20,8 @@ var Player = Promise.promisifyAll(require("../../app/domains/player"))
 var Alliance = Promise.promisifyAll(require("../../app/domains/alliance"))
 var Api = require("../api")
 var commandDir = path.resolve(__dirname + "/../../app/commands")
+var GameDatas = require("../../app/datas/GameDatas")
+var Errors = GameDatas.Errors.errors
 
 describe("PlayerService", function(){
 	var m_user
@@ -50,483 +52,412 @@ describe("PlayerService", function(){
 		it("login", function(done){
 			Api.loginPlayer(Config.deviceId, function(doc){
 				doc.code.should.equal(200)
+				m_user = doc.playerData
 				done()
 			})
-			var onPlayerLoginSuccess = function(doc){
-				m_user = doc
-				pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-			}
-			pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
 		})
 	})
 
 
 	describe("playerHandler", function(){
-		it("upgradeBuilding location 不合法", function(done){
-			Api.upgradeBuilding(26, false, function(doc){
-				doc.code.should.equal(500)
-				doc.message.should.equal("location 不合法")
+		it("upgradeBuilding 建筑正在升级", function(done){
+			Api.upgradeBuilding(1, false, function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeBuilding(1, false, function(doc){
+					doc.code.should.equal(Errors.buildingUpgradingNow.code)
+					done()
+				})
+			})
+		})
+
+		it("upgradeBuilding 建筑坑位不合法", function(done){
+			Api.upgradeBuilding(7, false, function(doc){
+				doc.code.should.equal(Errors.buildingLocationNotLegal.code)
 				done()
 			})
 		})
 
-		//it("upgradeBuilding 建筑正在升级", function(done){
-		//	Api.upgradeBuilding(1, false, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeBuilding(1, false, function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("建筑正在升级")
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeBuilding 建筑还未建造", function(done){
-		//	Api.upgradeBuilding(10, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("建筑还未建造")
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeBuilding 建筑建造时,建筑坑位不合法", function(done){
-		//	Api.upgradeBuilding(7, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("建筑建造时,建筑坑位不合法")
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeBuilding 建造数量已达建造上限", function(done){
-		//	Api.upgradeBuilding(6, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("建造数量已达建造上限")
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeBuilding 建筑已达到最高等级", function(done){
-		//	var func = function(){
-		//		Api.upgradeBuilding(3, true, function(doc){
-		//			if(doc.code == 200){
-		//				func()
-		//			}else{
-		//				doc.code.should.equal(500)
-		//				doc.message.should.equal("建筑已达到最高等级")
-		//				done()
-		//			}
-		//		})
-		//	}
-		//
-		//	Api.sendChat("buildinglevel 1 40", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendChat("buildinglevel 3 39")
-		//		Api.sendChat("resources gem 5000000", function(doc){
-		//			doc.code.should.equal(200)
-		//			func()
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeBuilding 正常普通升级", function(done){
-		//	Api.sendChat("rmbuildingevents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeBuilding(2, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//		var onPlayerDataChanged = function(doc){
-		//			m_user.buildingEvents = doc.buildingEvents
-		//			pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-		//		}
-		//		pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		//	})
-		//})
-		//
-		//it("freeSpeedUp 正常免费加速", function(done){
-		//	Api.freeSpeedUp("buildingEvents", m_user.buildingEvents[0].id, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeBuilding 正常升级立即完成", function(done){
-		//	Api.upgradeBuilding(2, true, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendChat("rmbuildingevents", function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("createHouse buildingLocation 不合法", function(done){
-		//	Api.createHouse("dwelling", 26, 1, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("buildingLocation 不合法")
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse houseLocation 不合法", function(done){
-		//	Api.createHouse("dwelling", 25, 4, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("houseLocation 不合法")
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse 主体建筑不存在", function(done){
-		//	Api.createHouse("dwelling", 25, 1, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("主体建筑不存在")
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse 主体建筑必须大于等于1级", function(done){
-		//	Api.createHouse("dwelling", 5, 1, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("主体建筑必须大于等于1级")
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse 小屋类型不存在", function(done){
-		//	Api.createHouse("dwellinga", 3, 1, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("小屋类型不存在")
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse 建筑周围不允许建造小屋", function(done){
-		//	Api.createHouse("dwelling", 1, 1, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("建筑周围不允许建造小屋")
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse 创建小屋时,小屋坑位不合法", function(done){
-		//	Api.createHouse("dwelling", 3, 1, false, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.createHouse("dwelling", 3, 1, false, function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("创建小屋时,小屋坑位不合法")
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("createHouse 建造小屋会造成可用城民小于0", function(done){
-		//	Api.createHouse("farmer", 3, 3, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("建造小屋会造成可用城民小于0")
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse 正常加速创建", function(done){
-		//	Api.createHouse("dwelling", 3, 2, true, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse 正常普通创建", function(done){
-		//	Api.sendChat("rmbuildingevents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.createHouse("farmer", 3, 3, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeHouse 主体建筑必须大于等于1级", function(done){
-		//	Api.upgradeHouse(5, 1, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("主体建筑必须大于等于1级")
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeHouse 小屋不存在", function(done){
-		//	Api.upgradeHouse(4, 1, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("小屋不存在")
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeHouse 小屋正在升级", function(done){
-		//	Api.sendChat("rmbuildingevents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeHouse(3, 1, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.upgradeHouse(3, 1, false, function(doc){
-		//				doc.code.should.equal(500)
-		//				doc.message.should.equal("小屋正在升级")
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeHouse 小屋已达到最高等级", function(done){
-		//	var func = function(){
-		//		Api.upgradeHouse(3, 2, true, function(doc){
-		//			if(doc.code == 200){
-		//				func()
-		//			}else{
-		//				doc.code.should.equal(500)
-		//				doc.message.should.equal("小屋已达到最高等级")
-		//				done()
-		//			}
-		//		})
-		//	}
-		//
-		//	func()
-		//})
-		//
-		//it("upgradeHouse 升级小屋会造成可用城民小于0", function(done){
-		//	Api.sendChat("resources citizen 0", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeHouse(3, 3, true, function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("升级小屋会造成可用城民小于0")
-		//			Api.sendChat("resources citizen 100", function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeHouse 正常升级1", function(done){
-		//	Api.upgradeHouse(3, 3, true, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("switchBuilding 正常转换", function(done){
-		//	Api.sendChat("buildinglevel 10 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendChat("buildinglevel 5 1", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.createHouse("quarrier", 5, 1, true, function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.upgradeHouse(5, 1, true, function(doc){
-		//					doc.code.should.equal(200)
-		//					Api.switchBuilding(10, "stoneMason", function(doc){
-		//						doc.code.should.equal(200)
-		//						done()
-		//					})
-		//				})
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("makeMaterial 工具作坊还未建造", function(done){
-		//	Api.makeMaterial(Consts.MaterialType.BuildingMaterials, true, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("工具作坊还未建造")
-		//		done()
-		//	})
-		//})
-		//
-		//it("makeMaterial 同类型的材料正在制造", function(done){
-		//	Api.sendChat("buildinglevel 15 2", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.makeMaterial(Consts.MaterialType.BuildingMaterials, true, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.getMaterials(Consts.MaterialType.BuildingMaterials, function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
-		//					doc.code.should.equal(200)
-		//					Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
-		//						doc.code.should.equal(500)
-		//						doc.message.should.equal("同类型的材料正在制造")
-		//						done()
-		//					})
-		//				})
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("makeMaterial 不同类型的材料正在制造", function(done){
-		//	Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("不同类型的材料正在制造")
-		//		done()
-		//	})
-		//})
-		//
-		//it("makeMaterial 同类型的材料制作完成后还未领取", function(done){
-		//	Api.sendChat("rmmaterialevents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
-		//				doc.code.should.equal(500)
-		//				doc.message.should.equal("同类型的材料制作完成后还未领取")
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("makeMaterials 正常制造", function(done){
-		//	Api.sendChat("rmmaterialevents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("getMaterials 没有材料建造事件存在", function(done){
-		//	Api.getMaterials(Consts.MaterialType.TechnologyMaterials, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("没有材料建造事件存在")
-		//		done()
-		//	})
-		//})
-		//
-		//it("getMaterials 同类型的材料正在制造", function(done){
-		//	Api.getMaterials(Consts.MaterialType.BuildingMaterials, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("同类型的材料正在制造")
-		//		done()
-		//	})
-		//})
-		//
-		//it("getMaterials 正常领取", function(done){
-		//	Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.getMaterials(Consts.MaterialType.TechnologyMaterials, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitNormalSoldier soldierName 普通兵种不存在", function(done){
-		//	Api.recruitNormalSoldier("adf", 12, true, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("soldierName 普通兵种不存在")
-		//		done()
-		//	})
-		//})
-		//
-		//it("recruitNormalSoldier 招募数量超过单次招募上限", function(done){
-		//	Api.sendChat("buildinglevel 5 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.recruitNormalSoldier("swordsman", 500, true, function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("招募数量超过单次招募上限")
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitNormalSoldier 已有士兵正在被招募", function(done){
-		//	Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("已有士兵正在被招募")
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitNormalSoldier 正常立即招募", function(done){
-		//	Api.recruitNormalSoldier("swordsman", 5, true, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("recruitNormalSoldier 正常普通招募", function(done){
-		//	Api.sendChat("rmsoldierevents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitSpecialSoldier soldierName 特殊兵种不存在", function(done){
-		//	Api.recruitSpecialSoldier("adf", 12, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("soldierName 特殊兵种不存在")
-		//		done()
-		//	})
-		//})
-		//
-		//it("recruitSpecialSoldier 招募数量超过单次招募上限", function(done){
-		//	Api.sendChat("rmsoldierevents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.recruitSpecialSoldier("skeletonWarrior", 100, false, function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("招募数量超过单次招募上限")
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitSpecialSoldier 已有士兵正在被招募", function(done){
-		//	Api.sendChat("rmsoldierevents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
-		//				doc.code.should.equal(500)
-		//				doc.message.should.equal("已有士兵正在被招募")
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitSpecialSoldier 材料不足", function(done){
-		//	Api.sendChat("soldiermaterial 0", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("材料不足")
-		//			Api.sendChat("soldiermaterial 1000", function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitSpecialSoldier 正常立即招募", function(done){
-		//	Api.sendChat("rmsoldierevents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitSpecialSoldier 正常普通招募", function(done){
-		//	Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
+		it("upgradeBuilding 建造数量已达建造上限", function(done){
+			Api.upgradeBuilding(6, false, function(doc){
+				doc.code.should.equal(Errors.buildingCountReachUpLimit.code)
+				done()
+			})
+		})
+
+		it("upgradeBuilding 建筑已达到最高等级", function(done){
+			var func = function(){
+				Api.upgradeBuilding(3, true, function(doc){
+					if(doc.code == 200){
+						func()
+					}else{
+						doc.code.should.equal(Errors.buildingLevelReachUpLimit.code)
+						done()
+					}
+				})
+			}
+
+			Api.sendChat("buildinglevel 1 40", function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("buildinglevel 3 39")
+				Api.sendChat("resources gem 5000000", function(doc){
+					doc.code.should.equal(200)
+					func()
+				})
+			})
+		})
+
+		it("upgradeBuilding 正常普通升级", function(done){
+			Api.sendChat("rmbuildingevents", function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeBuilding(2, false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("freeSpeedUp 正常免费加速", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				m_user = doc.playerData
+				Api.freeSpeedUp("buildingEvents", m_user.buildingEvents[0].id, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("upgradeBuilding 正常升级立即完成", function(done){
+			setTimeout(function(){
+				Api.upgradeBuilding(2, true, function(doc){
+					doc.code.should.equal(200)
+					Api.sendChat("rmbuildingevents", function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			}, 100)
+		})
+
+		it("createHouse 主体建筑不存在", function(done){
+			Api.createHouse("dwelling", 20, 1, false, function(doc){
+				doc.code.should.equal(Errors.hostBuildingLevelMustBiggerThanOne.code)
+				done()
+			})
+		})
+
+		it("createHouse 主体建筑必须大于等于1级", function(done){
+			Api.createHouse("dwelling", 5, 1, false, function(doc){
+				doc.code.should.equal(Errors.hostBuildingLevelMustBiggerThanOne.code)
+				done()
+			})
+		})
+
+		it("createHouse 小屋类型不存在", function(done){
+			Api.createHouse("dwellinga", 3, 1, false, function(doc){
+				doc.code.should.equal(Errors.houseTypeNotExist.code)
+				done()
+			})
+		})
+
+		it("createHouse 建筑周围不允许建造小屋", function(done){
+			Api.createHouse("dwelling", 1, 1, false, function(doc){
+				doc.code.should.equal(Errors.buildingNotAllowHouseCreate.code)
+				done()
+			})
+		})
+
+		it("createHouse 创建小屋时,小屋坑位不合法", function(done){
+			Api.createHouse("dwelling", 3, 1, false, function(doc){
+				doc.code.should.equal(200)
+				Api.createHouse("dwelling", 3, 1, false, function(doc){
+					doc.code.should.equal(Errors.houseLocationNotLegal.code)
+					done()
+				})
+			})
+		})
+
+		it("createHouse 建造小屋会造成可用城民小于0", function(done){
+			Api.createHouse("farmer", 3, 3, false, function(doc){
+				doc.code.should.equal(Errors.noEnoughCitizenToCreateHouse.code)
+				done()
+			})
+		})
+
+		it("createHouse 正常加速创建", function(done){
+			Api.createHouse("dwelling", 3, 2, true, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("createHouse 正常普通创建", function(done){
+			Api.sendChat("rmbuildingevents", function(doc){
+				doc.code.should.equal(200)
+				Api.createHouse("farmer", 3, 3, false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("upgradeHouse 主体建筑必须大于等于1级", function(done){
+			Api.upgradeHouse(5, 1, false, function(doc){
+				doc.code.should.equal(Errors.hostBuildingLevelMustBiggerThanOne.code)
+				done()
+			})
+		})
+
+		it("upgradeHouse 小屋不存在", function(done){
+			Api.upgradeHouse(4, 1, false, function(doc){
+				doc.code.should.equal(Errors.houseNotExist.code)
+				done()
+			})
+		})
+
+		it("upgradeHouse 小屋正在升级", function(done){
+			Api.sendChat("rmbuildingevents", function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeHouse(3, 1, false, function(doc){
+					doc.code.should.equal(200)
+					Api.upgradeHouse(3, 1, false, function(doc){
+						doc.code.should.equal(Errors.houseUpgradingNow.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("upgradeHouse 小屋已达到最高等级", function(done){
+			var func = function(){
+				Api.upgradeHouse(3, 2, true, function(doc){
+					if(doc.code == 200){
+						func()
+					}else{
+						doc.code.should.equal(Errors.houseReachMaxLevel.code)
+						done()
+					}
+				})
+			}
+			func()
+		})
+
+		it("upgradeHouse 升级小屋会造成可用城民小于0", function(done){
+			Api.sendChat("resources citizen 0", function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeHouse(3, 3, true, function(doc){
+					doc.code.should.equal(Errors.noEnoughCitizenToUpgradeHouse.code)
+					Api.sendChat("resources citizen 100", function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("upgradeHouse 正常升级1", function(done){
+			Api.upgradeHouse(3, 3, true, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("switchBuilding 正常转换", function(done){
+			Api.sendChat("buildinglevel 10 1", function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("buildinglevel 5 1", function(doc){
+					doc.code.should.equal(200)
+					Api.createHouse("quarrier", 5, 1, true, function(doc){
+						doc.code.should.equal(200)
+						Api.upgradeHouse(5, 1, true, function(doc){
+							doc.code.should.equal(200)
+							Api.switchBuilding(10, "stoneMason", function(doc){
+								doc.code.should.equal(200)
+								done()
+							})
+						})
+					})
+				})
+			})
+		})
+
+		it("makeMaterial 工具作坊还未建造", function(done){
+			Api.makeMaterial(Consts.MaterialType.BuildingMaterials, true, function(doc){
+				doc.code.should.equal(Errors.buildingNotBuild.code)
+				done()
+			})
+		})
+
+		it("makeMaterial 同类型的材料正在制造", function(done){
+			Api.sendChat("buildinglevel 15 2", function(doc){
+				doc.code.should.equal(200)
+				Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
+					doc.code.should.equal(200)
+					Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
+						doc.code.should.equal(Errors.materialAsSameTypeIsMakeNow.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("makeMaterial 不同类型的材料正在制造", function(done){
+			Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, false, function(doc){
+				doc.code.should.equal(Errors.materialAsDifferentTypeIsMakeNow.code)
+				done()
+			})
+		})
+
+		it("makeMaterial 同类型的材料制作完成后还未领取", function(done){
+			Api.sendChat("rmmaterialevents", function(doc){
+				doc.code.should.equal(200)
+				Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
+					doc.code.should.equal(200)
+					Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
+						doc.code.should.equal(Errors.materialMakeFinishedButNotTakeAway.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("makeMaterials 正常制造", function(done){
+			Api.sendChat("rmmaterialevents", function(doc){
+				doc.code.should.equal(200)
+				Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("getMaterials 没有材料建造事件存在", function(done){
+			Api.getMaterials("asdfas", function(doc){
+				doc.code.should.equal(Errors.materialEventNotExistOrIsMakeing.code)
+				done()
+			})
+		})
+
+		it("getMaterials 正常领取", function(done){
+			Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
+				doc.code.should.equal(200)
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					m_user = doc.playerData
+					Api.getMaterials(m_user.materialEvents[1].id, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("recruitNormalSoldier soldierName 普通兵种不存在", function(done){
+			Api.recruitNormalSoldier("adf", 12, true, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("soldierName 普通兵种不存在")
+				done()
+			})
+		})
+
+		it("recruitNormalSoldier 招募数量超过单次招募上限", function(done){
+			Api.sendChat("buildinglevel 5 1", function(doc){
+				doc.code.should.equal(200)
+				Api.recruitNormalSoldier("swordsman", 50, true, function(doc){
+					doc.code.should.equal(Errors.recruitTooMuchOnce.code)
+					done()
+				})
+			})
+		})
+
+		it("recruitNormalSoldier 已有士兵正在被招募", function(done){
+			Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
+				doc.code.should.equal(200)
+				Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
+					doc.code.should.equal(Errors.soldiersAreRecruitingNow.code)
+					done()
+				})
+			})
+		})
+
+		it("recruitNormalSoldier 正常立即招募", function(done){
+			Api.recruitNormalSoldier("swordsman", 5, true, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("recruitNormalSoldier 正常普通招募", function(done){
+			Api.sendChat("rmsoldierevents", function(doc){
+				doc.code.should.equal(200)
+				Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("recruitSpecialSoldier soldierName 特殊兵种不存在", function(done){
+			Api.recruitSpecialSoldier("adf", 12, false, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("soldierName 特殊兵种不存在")
+				done()
+			})
+		})
+
+		it("recruitSpecialSoldier 招募数量超过单次招募上限", function(done){
+			Api.sendChat("rmsoldierevents", function(doc){
+				doc.code.should.equal(200)
+				Api.recruitSpecialSoldier("skeletonWarrior", 100, false, function(doc){
+					doc.code.should.equal(Errors.recruitTooMuchOnce.code)
+					done()
+				})
+			})
+		})
+
+		it("recruitSpecialSoldier 已有士兵正在被招募", function(done){
+			Api.sendChat("rmsoldierevents", function(doc){
+				doc.code.should.equal(200)
+				Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
+					doc.code.should.equal(200)
+					Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
+						doc.code.should.equal(Errors.soldiersAreRecruitingNow.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("recruitSpecialSoldier 材料不足", function(done){
+			Api.sendChat("soldiermaterial 0", function(doc){
+				doc.code.should.equal(200)
+				Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
+					doc.code.should.equal(Errors.soldierRecruitMaterialsNotEnough.code)
+					Api.sendChat("soldiermaterial 1000", function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("recruitSpecialSoldier 正常立即招募", function(done){
+			Api.sendChat("rmsoldierevents", function(doc){
+				doc.code.should.equal(200)
+				Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("recruitSpecialSoldier 正常普通招募", function(done){
+			Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
 		//it("makeDragonEquipment equipmentName 装备不存在", function(done){
 		//	Api.makeDragonEquipment("adf", true, function(doc){
 		//		doc.code.should.equal(500)

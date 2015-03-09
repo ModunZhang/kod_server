@@ -132,7 +132,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		return self.Billing.findOneAsync({transactionId:transactionId})
@@ -186,7 +186,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){

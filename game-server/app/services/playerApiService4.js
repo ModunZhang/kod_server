@@ -75,7 +75,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		DataUtils.refreshPlayerResources(playerDoc)
@@ -113,7 +113,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -160,7 +160,7 @@ pro.getSellItems = function(playerId, type, name, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		return self.Deal.find({
@@ -172,7 +172,7 @@ pro.getSellItems = function(playerId, type, name, callback){
 		}).limit(Define.SellItemsMaxSize).exec()
 	}).then(function(docs){
 		pushFuncs.push([self.pushService, self.pushService.onGetSellItemsSuccessAsync, playerDoc, docs])
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -185,7 +185,7 @@ pro.getSellItems = function(playerId, type, name, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -227,7 +227,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 	var updateFuncs = []
 
 	var funcs = []
-	funcs.push(this.playerDao.findByIdAsync(playerId))
+	funcs.push(this.playerDao.findAsync(playerId))
 	funcs.push(this.Deal.findOneAsync({_id:itemId}))
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		if(!_.isObject(doc_1)) return Promise.reject(new Error("玩家不存在"))
@@ -248,7 +248,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 		playerData[type] = playerDoc[type]
 		DataUtils.refreshPlayerResources(playerDoc)
 
-		return self.playerDao.findByIdAsync(itemDoc.playerId)
+		return self.playerDao.findAsync(itemDoc.playerId)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		sellerDoc = doc
@@ -279,7 +279,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -318,7 +318,7 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 	var updateFuncs = []
 
 
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		var sellItem = _.find(playerDoc.deals, function(deal){
@@ -356,7 +356,7 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -396,7 +396,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 	var updateFuncs = []
 
 	var funcs = []
-	funcs.push(this.playerDao.findByIdAsync(playerId))
+	funcs.push(this.playerDao.findAsync(playerId))
 	funcs.push(this.Deal.findOneAsync({_id:itemId}))
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		if(!_.isObject(doc_1)) return Promise.reject(new Error("玩家不存在"))
@@ -440,7 +440,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -482,7 +482,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var tech = null
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -573,7 +573,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -615,7 +615,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var tech = null
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -708,7 +708,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -749,7 +749,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -827,7 +827,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -864,7 +864,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -885,7 +885,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -927,7 +927,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -965,7 +965,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1007,7 +1007,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -1083,7 +1083,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1125,7 +1125,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -1189,7 +1189,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){

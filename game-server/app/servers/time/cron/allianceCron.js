@@ -181,13 +181,13 @@ var ResolveOneAlliance = function(allianceId){
 	var enemyAllianceData = {}
 	var updateFuncs = []
 	var pushFuncs = []
-	return this.allianceDao.findByIdAsync(allianceId, true).then(function(doc){
+	return this.allianceDao.findAsync(allianceId, true).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
 		if(_.isObject(allianceDoc.allianceFight)){
 			var allianceFight = allianceDoc.allianceFight
 			var enemyAllianceId = _.isEqual(allianceDoc._id, allianceFight.attackAllianceId) ? allianceFight.defenceAllianceId : allianceFight.attackAllianceId
-			return self.allianceDao.findByIdAsync(enemyAllianceId, true)
+			return self.allianceDao.findAsync(enemyAllianceId, true)
 		}
 		return Promise.resolve()
 	}).then(function(doc){
@@ -203,7 +203,7 @@ var ResolveOneAlliance = function(allianceId){
 		var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
 		pushFuncs.push([self.globalChannelService, self.globalChannelService.pushMessageAsync, "logic", eventName, allianceData, channelName, null])
 		if(_.isObject(enemyAllianceDoc)){
-			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, enemyAllianceDoc._id])
+			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockAsync, enemyAllianceDoc._id])
 			LogicUtils.putAllianceDataToEnemyAllianceData(allianceData, enemyAllianceData)
 			channelName = Consts.AllianceChannelPrefix + enemyAllianceDoc._id
 			pushFuncs.push([self.globalChannelService, self.globalChannelService.pushMessageAsync, "logic", eventName, enemyAllianceData, channelName, null])

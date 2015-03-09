@@ -17,6 +17,7 @@ var LoginFilter = require("./app/utils/loginFilter")
 var ReplayFilter = require("./app/utils/replayFilter")
 var SerialFilter = require("./app/utils/serialFilter")
 var commandDir = path.resolve("./app/commands")
+
 var app = pomelo.createApp()
 app.set("name", "KODServer")
 
@@ -24,8 +25,8 @@ app.configure("production|development", "gate", function(){
 	app.set("connectorConfig", {
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
-		useDict:false,
-		useProtobuf:false,
+		useDict:true,
+		useProtobuf:true,
 		setNoDelay:false,
 		disconnectOnTimeout:true,
 		"max-connections":1000
@@ -74,12 +75,13 @@ app.configure("production|development", "logic", function(){
 		"max-connections":1000
 	})
 	app.set("proxyConfig", {
-		bufferMsg:false,
+		bufferMsg:true,
 		interval:20,
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
-		bufferMsg:false,
+		bufferMsg:true,
+		interval:20,
 		failMode:"failfast"
 	})
 
@@ -108,12 +110,12 @@ app.configure("production|development", "logic", function(){
 
 app.configure("production|development", "chat", function(){
 	app.set("proxyConfig", {
-		bufferMsg:false,
+		bufferMsg:true,
 		interval:30,
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
-		bufferMsg:false,
+		bufferMsg:true,
 		interval:30,
 		failMode:"failfast"
 	})
@@ -136,12 +138,12 @@ app.configure("production|development", "chat", function(){
 
 app.configure("production|development", "event", function(){
 	app.set("proxyConfig", {
-		bufferMsg:false,
+		bufferMsg:true,
 		interval:30,
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
-		bufferMsg:false,
+		bufferMsg:true,
 		interval:30,
 		failMode:"failfast"
 	})
@@ -160,12 +162,12 @@ app.configure("production|development", "event", function(){
 
 app.configure("production|development", "time", function(){
 	app.set("proxyConfig", {
-		bufferMsg:false,
+		bufferMsg:true,
 		interval:30,
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
-		bufferMsg:false,
+		bufferMsg:true,
 		interval:30,
 		failMode:"failfast"
 	})

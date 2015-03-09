@@ -106,7 +106,7 @@ var ChangePlayerName = function(playerDoc, playerData, newPlayerName, playerDao)
 	if(_.isEqual(newPlayerName, playerDoc.basicInfo.name)) return Promise.reject(new Error("不能修改为相同的名称"))
 	return playerDao.findByIndexAsync("basicInfo.name", newPlayerName).then(function(doc){
 		if(_.isObject(doc)){
-			return playerDao.removeLockByIdAsync(doc._id).then(function(){
+			return playerDao.removeLockAsync(doc._id).then(function(){
 				return Promise.reject(new Error("名称已被其他玩家占用"))
 			})
 		}else{
@@ -148,7 +148,7 @@ var ChangeCityName = function(playerDoc, playerData, newCityName){
 var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
 	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
 	var allianceDoc = null
-	return allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
 		var allianceData = {}
@@ -195,7 +195,7 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 		return Promise.resolve()
 	}).catch(function(e){
 		if(_.isObject(allianceDoc)){
-			return allianceDao.removeLockByIdAsync(allianceDoc._id).then(function(){
+			return allianceDao.removeLockAsync(allianceDoc._id).then(function(){
 				return Promise.reject(e)
 			})
 		}
@@ -217,7 +217,7 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 var MoveTheCity = function(playerDoc, playerData, locationX, locationY, allianceDao, updateFuncs, pushFuncs, pushService){
 	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
 	var allianceDoc = null
-	return allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
 		var allianceData = {}
@@ -263,7 +263,7 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 		return Promise.resolve()
 	}).catch(function(e){
 		if(_.isObject(allianceDoc)){
-			return allianceDao.removeLockByIdAsync(allianceDoc._id).then(function(){
+			return allianceDao.removeLockAsync(allianceDoc._id).then(function(){
 				return Promise.reject(e)
 			})
 		}
@@ -628,7 +628,7 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
 var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
 	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
 	var allianceDoc = null
-	return allianceDao.findByIdAsync(playerDoc.alliance.id).then(function(doc){
+	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
 		var allianceData = {}
@@ -654,7 +654,7 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 		return Promise.resolve()
 	}).catch(function(e){
 		if(_.isObject(allianceDoc)){
-			return allianceDao.removeLockByIdAsync(allianceDoc._id).then(function(){
+			return allianceDao.removeLockAsync(allianceDoc._id).then(function(){
 				return Promise.reject(e)
 			})
 		}

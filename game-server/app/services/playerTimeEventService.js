@@ -42,7 +42,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	var updateFuncs = []
 	var playerDoc = null
 	var allianceDoc = null
-	this.playerDao.findByIdAsync(playerId, true).then(function(doc){
+	this.playerDao.findAsync(playerId, true).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -52,7 +52,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 			return Promise.reject(new Error("玩家事件不存在"))
 		}
 		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
-			return self.allianceDao.findByIdAsync(playerDoc.alliance.id, true).then(function(doc){
+			return self.allianceDao.findAsync(playerDoc.alliance.id, true).then(function(doc){
 				if(!_.isObject(doc)){
 					return Promise.reject(new Error("联盟不存在"))
 				}
@@ -74,7 +74,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		}else if(_.isObject(allianceDoc)){
-			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockByIdAsync, allianceDoc._id])
+			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockAsync, allianceDoc._id])
 		}
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -84,10 +84,10 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockByIdAsync(allianceDoc._id))
+			funcs.push(self.allianceDao.removeLockAsync(allianceDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){

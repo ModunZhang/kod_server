@@ -66,7 +66,7 @@
 //		baseDao.createAndLockAsync(player1).then(function(doc){
 //			should.exist(doc)
 //			demoDoc = doc
-//			return baseDao.removeLockByIdAsync(demoDoc._id)
+//			return baseDao.removeLockAsync(demoDoc._id)
 //		}).then(function(){
 //			done()
 //		})
@@ -99,7 +99,7 @@
 //	})
 //
 //	it("findById 正常查找1", function(done){
-//		baseDao.findByIdAsync(demoDoc._id).then(function(doc){
+//		baseDao.findAsync(demoDoc._id).then(function(doc){
 //			should.exist(doc)
 //			demoDoc = doc
 //			done()
@@ -107,7 +107,7 @@
 //	})
 //
 //	//it("findById 正常查找2", function(done){
-//	//	baseDao.findByIdAsync(demoDoc._id).then(function(doc){
+//	//	baseDao.findAsync(demoDoc._id).then(function(doc){
 //	//		should.exist(doc)
 //	//		demoDoc = doc
 //	//		done()
@@ -125,7 +125,7 @@
 //	})
 //
 //	it("deleteById 正常删除", function(done){
-//		baseDao.findByIdAsync(demoDoc._id).then(function(){
+//		baseDao.findAsync(demoDoc._id).then(function(){
 //			return baseDao.deleteByIdAsync(demoDoc._id)
 //		}).then(function(){
 //			done()

@@ -890,6 +890,8 @@ Utils.refreshPlayerPower = function(playerDoc, playerData){
 	var soldierPower = this.getPlayerSoldiersPower(playerDoc)
 	var totalPower = buildingPower + housePower + soldierPower
 	playerDoc.basicInfo.power = totalPower
+	if(!_.isObject(playerData.basicInfo)) playerData.basicInfo = {}
+	playerData.basicInfo.power = playerDoc.basicInfo.power
 	TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 }
 

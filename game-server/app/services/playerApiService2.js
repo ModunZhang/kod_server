@@ -53,7 +53,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -123,7 +123,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -164,7 +164,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -240,7 +240,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -277,7 +277,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -320,7 +320,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -374,7 +374,7 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -415,7 +415,7 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -461,7 +461,7 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -495,7 +495,7 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -536,7 +536,7 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -570,7 +570,7 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -611,7 +611,7 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -655,7 +655,7 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -691,7 +691,7 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -734,7 +734,7 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -765,7 +765,7 @@ pro.getDailyQuests = function(playerId, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -780,7 +780,7 @@ pro.getDailyQuests = function(playerId, callback){
 			playerDoc.dailyQuests.refreshTime = now
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		}else{
-			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		}
 		playerData.dailyQuests = playerDoc.dailyQuests
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
@@ -795,7 +795,7 @@ pro.getDailyQuests = function(playerId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -832,7 +832,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -862,7 +862,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -899,7 +899,7 @@ pro.startDailyQuest = function(playerId, questId, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -934,7 +934,7 @@ pro.startDailyQuest = function(playerId, questId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -971,7 +971,7 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -1011,7 +1011,7 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1046,7 +1046,7 @@ pro.setPlayerLanguage = function(playerId, language, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -1068,7 +1068,7 @@ pro.setPlayerLanguage = function(playerId, language, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1100,7 +1100,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 	var memberDoc = null
 	var updateFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -1108,16 +1108,16 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 		if(_.isEqual(playerId, memberId)){
 			return Promise.resolve(Utils.clone(playerDoc))
 		}else{
-			return self.playerDao.findByIdAsync(memberId)
+			return self.playerDao.findAsync(memberId)
 		}
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		memberDoc = doc
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, playerDoc._id])
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		if(!_.isElement(playerId, memberId)){
-			updateFuncs.push([self.playerDao, self.playerDao.removeLockByIdAsync, memberDoc._id])
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, memberDoc._id])
 		}
 		pushFuncs.push([self.pushService, self.pushService.onGetPlayerInfoSuccessAsync, playerDoc, memberDoc])
 		return Promise.resolve()
@@ -1130,10 +1130,10 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(_.isObject(memberDoc) && !_.isEqual(playerId, memberId)){
-			funcs.push(self.playerDao.removeLockByIdAsync(memberDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(memberDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1179,7 +1179,7 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 	var memberDoc = null
 	var updateFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -1266,10 +1266,10 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(_.isObject(memberDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(memberDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(memberDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1304,7 +1304,7 @@ pro.readMails = function(playerId, mailIds, callback){
 	var playerDoc = null
 	var updateFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -1335,7 +1335,7 @@ pro.readMails = function(playerId, mailIds, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1370,7 +1370,7 @@ pro.saveMail = function(playerId, mailId, callback){
 	var playerDoc = null
 	var updateFuncs = []
 	var pushFuncs = []
-	this.playerDao.findByIdAsync(playerId).then(function(doc){
+	this.playerDao.findAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
@@ -1402,7 +1402,7 @@ pro.saveMail = function(playerId, mailId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockByIdAsync(playerDoc._id))
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){

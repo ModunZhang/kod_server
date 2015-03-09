@@ -77,14 +77,6 @@ Api.upgradeHouse = function(buildingLocation, houseLocation, finishNow, callback
 	pomelo.request(route, info, callback)
 }
 
-Api.destroyHouse = function(buildingLocation, houseLocation, callback){
-	var info = {
-		buildingLocation:buildingLocation, houseLocation:houseLocation
-	}
-	var route = "logic.playerHandler.destroyHouse"
-	pomelo.request(route, info, callback)
-}
-
 Api.upgradeTower = function(finishNow, callback){
 	var info = {
 		finishNow:finishNow
@@ -119,9 +111,9 @@ Api.makeMaterial = function(category, finishNow, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.getMaterials = function(category, callback){
+Api.getMaterials = function(eventId, callback){
 	var info = {
-		category:category
+		eventId:eventId
 	}
 	var route = "logic.playerHandler.getMaterials"
 	pomelo.request(route, info, callback)

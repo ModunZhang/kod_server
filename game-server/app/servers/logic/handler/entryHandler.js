@@ -46,7 +46,7 @@ pro.login = function(msg, session, next){
 	var e = null
 	if(!this.app.get("isReady")){
 		e = ErrorUtils.serverUnderMaintain()
-		next(e, ErrorUtils.errorData(e))
+		next(e, ErrorUtils.getError(e))
 		return
 	}
 
@@ -54,7 +54,7 @@ pro.login = function(msg, session, next){
 	var deviceId = msg.deviceId
 	if(!_.isString(deviceId)){
 		e = new Error("deviceId 不合法")
-		next(e, ErrorUtils.errorData(e))
+		next(e, ErrorUtils.getError(e))
 		return
 	}
 
@@ -81,9 +81,11 @@ pro.login = function(msg, session, next){
 		}
 		return Promise.all(funcs)
 	}).then(function(){
-		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc})
+		var data = {code:200, playerData:playerDoc}
+		if(_.isObject(allianceDoc)) data.allianceData = allianceDoc
+		next(null, data)
 	}).catch(function(e){
-		next(e, ErrorUtils.errorData(e))
+		next(e, ErrorUtils.getError(e))
 		self.sessionService.kickBySessionId(session.id)
 	})
 }

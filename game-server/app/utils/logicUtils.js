@@ -544,23 +544,6 @@ Utils.removeItemsInArray = function(array, items){
 }
 
 /**
- * 获取指定类型的建造事件
- * @param playerDoc
- * @param category
- * @returns {*}
- */
-Utils.getMaterialEventByCategory = function(playerDoc, category){
-	var theEvent = null
-	_.some(playerDoc.materialEvents, function(event){
-		if(_.isEqual(event.category, category)){
-			theEvent = event
-			return true
-		}
-	})
-	return theEvent
-}
-
-/**
  * 检查需要治疗的伤兵数据是否合法
  * @param playerDoc
  * @param soldiers
@@ -860,25 +843,19 @@ Utils.getUsedBuildQueue = function(playerDoc){
  * @returns {*}
  */
 Utils.getSmallestBuildEvent = function(playerDoc){
-	var eventObj = null
+	var event = null
 	_.each(playerDoc.buildingEvents, function(theEvent){
-		if(eventObj == null || eventObj.event.finishTime > theEvent){
-			eventObj = {
-				eventType:"buildingEvents",
-				event:theEvent
-			}
+		if(event == null || event.finishTime > theEvent){
+			event = theEvent
 		}
 	})
 	_.each(playerDoc.houseEvents, function(theEvent){
-		if(eventObj == null || eventObj.event.finishTime > theEvent){
-			eventObj = {
-				eventType:"houseEvents",
-				event:theEvent
-			}
+		if(event == null || event.finishTime > theEvent){
+			event = theEvent
 		}
 	})
 
-	return eventObj
+	return event
 }
 
 /**
