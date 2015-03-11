@@ -10,6 +10,8 @@ module.exports = {
 	PlayerMailsMaxSize:200,//玩家收件箱最大邮件数量
 	PlayerSendMailsMaxSize:20,//玩家发件箱最大邮件数量,
 	PlayerReportsMaxSize:100,//玩家战报最大数量
+	PlayerMaxReturnMailSize:10,//单次请求返回的最大邮件数量
+	PlayerMaxReturnReportSize:10,//单词请求返回的最大战报数量
 	SellItemsMaxSize:30,//
 	AllianceEventsMaxSize:20,//联盟事件最大数量
 	AllianceRequestMessageMaxSize:50,//联盟中的入盟申请信息最大数量,

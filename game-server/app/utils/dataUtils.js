@@ -3050,18 +3050,6 @@ Utils.getPlayerDailyQuestEventRewards = function(playerDoc, questEvent){
 }
 
 /**
- * 玩家资源是否足够
- * @param playerDoc
- * @param type
- * @param name
- * @param count
- */
-Utils.isPlayerResourceEnough = function(playerDoc, type, name, count){
-	if(_.isUndefined(playerDoc[type][name])) return false
-	return playerDoc[type][name] >= count
-}
-
-/**
  * 获取出售资源所需的小车
  * @param playerDoc
  * @param resourceType

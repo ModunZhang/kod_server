@@ -721,3 +721,127 @@ Utils.mailNotExist = function(playerId, mailId){
 	var config = Errors.mailNotExist
 	return CreateError(config, {playerId:playerId, mailId:mailId})
 }
+
+/**
+ * 战报不存在
+ * @param playerId
+ * @param reportId
+ */
+Utils.reportNotExist = function(playerId, reportId){
+	var config = Errors.reportNotExist
+	return CreateError(config, {playerId:playerId, reportId:reportId})
+}
+
+/**
+ * 龙未处于空闲状态
+ * @param playerId
+ * @param dragon
+ */
+Utils.dragonIsNotFree = function(playerId, dragon){
+	var config = Errors.dragonIsNotFree
+	return CreateError(config, {playerId:playerId, dragon:dragon})
+}
+
+/**
+ * 所选择的龙已经阵亡
+ * @param playerId
+ * @param dragon
+ */
+Utils.dragonSelectedIsDead = function(playerId, dragon){
+	var config = Errors.dragonSelectedIsDead
+	return CreateError(config, {playerId:playerId, dragon:dragon})
+}
+
+/**
+ * 没有龙驻防在城墙
+ * @param playerId
+ * @param dragons
+ */
+Utils.noDragonInDefenceStatus = function(playerId, dragons){
+	var config = Errors.noDragonInDefenceStatus
+	return CreateError(config, {playerId:playerId, dragons:dragons})
+}
+
+/**
+ * 没有足够的出售队列
+ * @param playerId
+ */
+Utils.sellQueueNotEnough = function(playerId){
+	var config = Errors.sellQueueNotEnough
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 玩家资源不足
+ * @param playerId
+ * @param resourceType
+ * @param resourceName
+ * @param resourceHas
+ * @param resourceNeed
+ */
+Utils.resourceNotEnough = function(playerId, resourceType, resourceName, resourceHas, resourceNeed){
+	var config = Errors.resourceNotEnough
+	return CreateError(config, {playerId:playerId, resourceType:resourceType, resourceName:resourceName, resourceHas:resourceHas, resourceNeed:resourceNeed})
+}
+
+/**
+ * 马车数量不足
+ * @param playerId
+ * @param cartHas
+ * @param cartNeed
+ */
+Utils.cartNotEnough = function(playerId, cartHas, cartNeed){
+	var config = Errors.cartNotEnough
+	return CreateError(config, {playerId:playerId, cartHas:cartHas, cartNeed:cartNeed})
+}
+
+/**
+ * 商品不存在
+ * @param playerId
+ * @param itemId
+ */
+Utils.sellItemNotExist = function(playerId, itemId){
+	var config = Errors.sellItemNotExist
+	return CreateError(config, {playerId:playerId, itemId:itemId})
+}
+
+/**
+ * 银币不足
+ * @param playerId
+ * @param coinHas
+ * @param coinNeed
+ */
+Utils.coinNotEnough = function(playerId, coinHas, coinNeed){
+	var config = Errors.coinNotEnough
+	return CreateError(config, {playerId:playerId, coinHas:coinHas, coinNeed:coinNeed})
+}
+
+/**
+ * 商品还未卖出
+ * @param playerId
+ * @param item
+ */
+Utils.sellItemNotSold = function(playerId, item){
+	var config = Errors.sellItemNotSold
+	return CreateError(config, {playerId:playerId, item:item})
+}
+
+/**
+ * 您未出售此商品
+ * @param playerId
+ * @param itemDoc
+ */
+Utils.sellItemNotBelongsToYou = function(playerId, itemDoc){
+	var config = Errors.sellItemNotBelongsToYou
+	return CreateError(config, {playerId:playerId, itemDoc:itemDoc})
+}
+
+/**
+ * 商品已经售出
+ * @param playerId
+ * @param item
+ */
+Utils.sellItemAlreadySold = function(playerId, item){
+	var config = Errors.sellItemAlreadySold
+	return CreateError(config, {playerId:playerId, item:item})
+}

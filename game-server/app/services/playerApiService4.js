@@ -24,433 +24,10 @@ var PlayerApiService4 = function(app){
 	this.globalChannelService = app.get("globalChannelService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
-	this.Deal = app.get("Deal")
 }
 module.exports = PlayerApiService4
 var pro = PlayerApiService4.prototype
 
-/**
- * 出售商品
- * @param playerId
- * @param type
- * @param name
- * @param count
- * @param price
- * @param callback
- */
-pro.sellItem = function(playerId, type, name, count, price, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	var resourceTypesCanDeal = _.keys(Consts.ResourcesCanDeal)
-	if(!_.contains(_.values(resourceTypesCanDeal), type)){
-		callback(new Error("type 不合法"))
-		return
-	}
-	if(!_.contains(Consts.ResourcesCanDeal[type], name)){
-		callback(new Error("name 不合法"))
-		return
-	}
-	if(!_.isString(name)){
-		callback(new Error("name 不合法"))
-		return
-	}
-	if(!_.isNumber(count) || count % 1 !== 0 || count <= 0){
-		callback(new Error("count 不合法"))
-		return
-	}
-	if(!_.isNumber(price) || price % 1 !== 0 || price <= 0){
-		callback(new Error("price 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
-	var updateFuncs = []
-
-	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		playerDoc = doc
-		DataUtils.refreshPlayerResources(playerDoc)
-		if(!DataUtils.isPlayerSellQueueEnough(playerDoc)) return Promise.reject(new Error("没有足够的出售队列"))
-		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
-		if(!DataUtils.isPlayerResourceEnough(playerDoc, type, name, realCount)) return Promise.reject(new Error("玩家资源不足"))
-		var cartNeed = DataUtils.getPlayerCartUsedForSale(playerDoc, type, name, realCount)
-		if(cartNeed > playerDoc.resources.cart) return Promise.reject(new Error("马车数量不足"))
-
-		playerDoc[type][name] -= realCount
-		playerData[type] = playerDoc[type]
-		playerDoc.resources.cart -= cartNeed
-		playerData.resources = playerDoc.resources
-		playerData.basicInfo = playerDoc.basicInfo
-		DataUtils.refreshPlayerResources(playerDoc)
-
-		var deal = LogicUtils.createDeal(playerDoc._id, type, name, count, price)
-		playerDoc.deals.push(deal.dealForPlayer)
-		playerData.__deals = [{
-			type:Consts.DataChangedType.Add,
-			data:deal.dealForPlayer
-		}]
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		updateFuncs.push([self.Deal, self.Deal.createAsync, deal.dealForAll])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
- * 获取商品列表
- * @param playerId
- * @param type
- * @param name
- * @param callback
- */
-pro.getSellItems = function(playerId, type, name, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	var resourceTypesCanDeal = _.keys(Consts.ResourcesCanDeal)
-	if(!_.contains(_.values(resourceTypesCanDeal), type)){
-		callback(new Error("type 不合法"))
-		return
-	}
-	if(!_.contains(Consts.ResourcesCanDeal[type], name)){
-		callback(new Error("name 不合法"))
-		return
-	}
-	if(!_.isString(name)){
-		callback(new Error("name 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var pushFuncs = []
-	var eventFuncs = []
-	var updateFuncs = []
-
-	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		playerDoc = doc
-		return self.Deal.find({
-			"playerId":{$ne:playerDoc._id},
-			"itemData.type":type, "itemData.name":name
-		}).sort({
-			"itemData.price":1,
-			"addedTime":1
-		}).limit(Define.SellItemsMaxSize).exec()
-	}).then(function(docs){
-		pushFuncs.push([self.pushService, self.pushService.onGetSellItemsSuccessAsync, playerDoc, docs])
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
- * 购买出售的商品
- * @param playerId
- * @param itemId
- * @param callback
- */
-pro.buySellItem = function(playerId, itemId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isString(itemId)){
-		callback(new Error("itemId 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var playerData = {}
-	var sellerDoc = null
-	var sellerData = {}
-	var itemDoc = null
-	var pushFuncs = []
-	var eventFuncs = []
-	var updateFuncs = []
-
-	var funcs = []
-	funcs.push(this.playerDao.findAsync(playerId))
-	funcs.push(this.Deal.findOneAsync({_id:itemId}))
-	Promise.all(funcs).spread(function(doc_1, doc_2){
-		if(!_.isObject(doc_1)) return Promise.reject(new Error("玩家不存在"))
-		playerDoc = doc_1
-		if(!_.isObject(doc_2)) return Promise.reject(new Error("商品不存在"))
-		itemDoc = doc_2
-
-		DataUtils.refreshPlayerResources(playerDoc)
-		var type = itemDoc.itemData.type
-		var count = itemDoc.itemData.count
-		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
-		var totalPrice = itemDoc.itemData.price * count
-		if(playerDoc.resources.coin < totalPrice) return Promise.reject(new Error("银币不足"))
-		playerDoc.resources.coin -= totalPrice
-		playerDoc[type][itemDoc.itemData.name] += realCount
-		playerData.basicInfo = playerDoc.basicInfo
-		playerData.resources = playerDoc.resources
-		playerData[type] = playerDoc[type]
-		DataUtils.refreshPlayerResources(playerDoc)
-
-		return self.playerDao.findAsync(itemDoc.playerId)
-	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		sellerDoc = doc
-
-		var sellItem = _.find(sellerDoc.deals, function(deal){
-			return _.isEqual(deal.id, itemId)
-		})
-		sellItem.isSold = true
-		sellerData.__deals = [{
-			type:Consts.DataChangedType.Edit,
-			data:sellItem
-		}]
-
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, sellerDoc])
-		updateFuncs.push([self.Deal, self.Deal.findOneAndRemoveAsync, {_id:itemId}])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, sellerDoc, sellerData])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
- * 获取出售后赚取的银币
- * @param playerId
- * @param itemId
- * @param callback
- */
-pro.getMyItemSoldMoney = function(playerId, itemId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isString(itemId)){
-		callback(new Error("itemId 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
-	var updateFuncs = []
-
-
-	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
-		playerDoc = doc
-		var sellItem = _.find(playerDoc.deals, function(deal){
-			return _.isEqual(deal.id, itemId)
-		})
-		if(!_.isObject(sellItem)) return Promise.reject(new Error("商品不存在"))
-		if(!sellItem.isSold) return Promise.reject(new Error("商品还未卖出"))
-
-		DataUtils.refreshPlayerResources(playerDoc)
-
-		var totalPrice = sellItem.itemData.count * sellItem.itemData.price
-		playerDoc.resources.coin += totalPrice
-		LogicUtils.removeItemInArray(playerDoc.deals, sellItem)
-		DataUtils.refreshPlayerResources(playerDoc)
-
-		playerData.basicInfo = playerDoc.basicInfo
-		playerData.resources = playerDoc.resources
-		playerData.__deals = [{
-			type:Consts.DataChangedType.Remove,
-			data:sellItem
-		}]
-
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
- * 下架商品
- * @param playerId
- * @param itemId
- * @param callback
- */
-pro.removeMySellItem = function(playerId, itemId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isString(itemId)){
-		callback(new Error("itemId 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var playerData = {}
-	var itemDoc = null
-	var pushFuncs = []
-	var eventFuncs = []
-	var updateFuncs = []
-
-	var funcs = []
-	funcs.push(this.playerDao.findAsync(playerId))
-	funcs.push(this.Deal.findOneAsync({_id:itemId}))
-	Promise.all(funcs).spread(function(doc_1, doc_2){
-		if(!_.isObject(doc_1)) return Promise.reject(new Error("玩家不存在"))
-		playerDoc = doc_1
-		if(!_.isObject(doc_2)) return Promise.reject(new Error("商品不存在"))
-		itemDoc = doc_2
-		if(!_.isEqual(itemDoc.playerId, playerDoc._id)) return Promise.reject(new Error("您未出售此商品"))
-
-		DataUtils.refreshPlayerResources(playerDoc)
-		var type = itemDoc.itemData.type
-		var count = itemDoc.itemData.count
-		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
-		playerDoc[type][itemDoc.itemData.name] += realCount
-		var sellItem = _.find(playerDoc.deals, function(deal){
-			return _.isEqual(deal.id, itemId)
-		})
-		LogicUtils.removeItemInArray(playerDoc.deals, sellItem)
-
-		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.basicInfo = playerDoc.basicInfo
-		playerData.resources = playerDoc.resources
-		playerData[itemDoc.itemData.type] = playerDoc[itemDoc.itemData.type]
-		playerData.__deals = [{
-			type:Consts.DataChangedType.Remove,
-			data:sellItem
-		}]
-
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		updateFuncs.push([self.Deal, self.Deal.findOneAndRemoveAsync, {_id:itemId}])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
 
 /**
  * 升级生产科技
@@ -1177,6 +754,295 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 	}).then(function(){
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 上传玩家PVE数据
+ * @param playerId
+ * @param pveData
+ * @param fightData
+ * @param rewards
+ * @param callback
+ */
+pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.isObject(pveData)){
+		callback(new Error("pveData 不合法"))
+		return
+	}
+	if(!_.isUndefined(fightData) && !_.isObject(fightData)){
+		callback(new Error("fightData 不合法"))
+		return
+	}
+	if(!_.isUndefined(rewards) && !_.isObject(rewards)){
+		callback(new Error("rewards 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.playerDao.findAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(new Error("玩家不存在"))
+		}
+		playerDoc = doc
+		var staminaUsed = pveData.staminaUsed
+		if(!_.isNumber(staminaUsed)) return Promise.reject(new Error("pveData 不合法"))
+		if(playerDoc.resources.stamina - staminaUsed < 0) return Promise.reject(new Error("pveData 不合法"))
+		var location = pveData.location
+		if(!_.isNumber(location.x) || !_.isNumber(location.y) || !_.isNumber(location.z)) return Promise.reject(new Error("pveData 不合法"))
+		var floor = pveData.floor
+		if(!_.isObject(floor)) return Promise.reject(new Error("pveData 不合法"))
+		var level = floor.level
+		if(!_.isNumber(level)) return Promise.reject(new Error("pveData 不合法"))
+		var fogs = floor.fogs
+		if(!_.isString(fogs)) return Promise.reject(new Error("pveData 不合法"))
+		var objects = floor.objects
+		if(!_.isString(objects)) return Promise.reject(new Error("pveData 不合法"))
+
+		playerDoc.resources.stamina -= staminaUsed
+		playerData.resources = playerDoc.resources
+		playerData.pve = {}
+		playerDoc.pve.totalStep += staminaUsed
+		playerDoc.pve.location = location
+		playerData.pve.location = playerDoc.pve.location
+
+		var theFloor = _.find(playerDoc.pve.floors, function(theFloor){
+			return _.isEqual(theFloor.level, level)
+		})
+
+		if(_.isObject(theFloor)){
+			theFloor.fogs = fogs
+			theFloor.objects = objects
+			playerData.pve.__floors = [{
+				type:Consts.DataChangedType.Edit,
+				data:theFloor
+			}]
+		}else{
+			theFloor = {
+				level:level,
+				fogs:fogs,
+				objects:objects
+			}
+			playerDoc.pve.floors.push(theFloor)
+			playerData.pve.__floors = [{
+				type:Consts.DataChangedType.Add,
+				data:theFloor
+			}]
+		}
+
+		if(_.isObject(fightData)){
+			var dragon = fightData.dragon
+			if(!_.isObject(dragon)) return Promise.reject(new Error("pveData 不合法"))
+			var dragonType = dragon.type
+			if(!DataUtils.isDragonTypeExist(dragonType)) return Promise.reject(new Error("pveData 不合法"))
+			var hpDecreased = dragon.hpDecreased
+			if(!_.isNumber(hpDecreased)) return Promise.reject(new Error("pveData 不合法"))
+			var expAdd = dragon.expAdd
+			if(!_.isNumber(expAdd)) return Promise.reject(new Error("pveData 不合法"))
+			var theDragon = playerDoc.dragons[dragonType]
+			if(theDragon.star <= 0) return Promise.reject(new Error("pveData 不合法"))
+
+			theDragon.hp -= hpDecreased
+			if(theDragon.hp <= 0){
+				var deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, theDragon)
+				playerDoc.dragonDeathEvents.push(deathEvent)
+				playerData.__dragonDeathEvents = [{
+					type:Consts.DataChangedType.Add,
+					data:deathEvent
+				}]
+				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+			}
+			DataUtils.addPlayerDragonExp(playerDoc, playerData, theDragon, expAdd, true)
+
+			playerData.dragons = {}
+			playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+
+			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve)
+
+			var soldiers = fightData.soldiers
+			if(!_.isArray(soldiers)) return Promise.reject(new Error("fightData 不合法"))
+
+			var name = null
+			var woundedSoldiers = []
+			playerData.soldiers = {}
+			for(var i = 0; i < soldiers.length; i++){
+				var soldier = soldiers[i]
+				name = soldier.name
+				if(_.isUndefined(playerDoc.soldiers[name])) return Promise.reject(new Error("fightData 不合法"))
+				var damagedCount = soldier.damagedCount
+				if(!_.isNumber(damagedCount)) return Promise.reject(new Error("fightData 不合法"))
+				var wounedCount = soldier.woundedCount
+				if(!_.isNumber(wounedCount)) return Promise.reject(new Error("fightData 不合法"))
+				if(playerDoc.soldiers[name] - damagedCount < 0) return Promise.reject(new Error("fightData 不合法"))
+				playerDoc.soldiers[name] -= damagedCount
+				var soldierTreatPercent = DataUtils.getPlayerTreatSoldierPercent(playerDoc, theDragon)
+				woundedSoldiers.push({
+					name:name,
+					count:Math.floor(damagedCount * soldierTreatPercent)
+				})
+				playerData.soldiers[name] = playerDoc.soldiers[name]
+			}
+			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, woundedSoldiers)
+		}
+
+		if(_.isObject(rewards)){
+			for(i = 0; i < rewards.length; i++){
+				var reward = rewards[i]
+				var type = reward.type
+				if(_.isUndefined(playerDoc[type])) return Promise.reject(new Error("rewards 不合法"))
+				name = reward.name
+				var count = reward.count
+				if(_.isEqual("items", type)){
+					if(!DataUtils.isItemNameExist(name)){
+						return Promise.reject(new Error("rewards 不合法"))
+					}
+					var resp = LogicUtils.addPlayerItem(playerDoc, name, count)
+					if(resp.newlyCreated){
+						playerData.__items = [{
+							type:Consts.DataChangedType.Add,
+							data:resp.item
+						}]
+					}else{
+						playerData.__items = [{
+							type:Consts.DataChangedType.Edit,
+							data:resp.item
+						}]
+					}
+				}else{
+					if(_.isUndefined(playerDoc[type][name])) return Promise.reject(new Error("rewards 不合法"))
+					if(count < 0 && playerDoc[type][name] + count < 0){
+						return Promise.reject(new Error("rewards 不合法"))
+					}
+					playerDoc[type][name] += count
+					if(!_.isObject(playerData[type]))playerData[type] = {}
+					playerData[type][name] = playerDoc[type][name]
+				}
+			}
+		}
+
+		TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData)
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * gacha
+ * @param playerId
+ * @param type
+ * @param callback
+ */
+pro.gacha = function(playerId, type, callback){
+	if(!_.isFunction(callback)){
+		throw new Error("callback 不合法")
+	}
+	if(!_.isString(playerId)){
+		callback(new Error("playerId 不合法"))
+		return
+	}
+	if(!_.contains(_.values(Consts.GachaType), type)){
+		callback(new Error("type 不合法"))
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = {}
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+
+	this.playerDao.findAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+		playerDoc = doc
+		if(_.isEqual(type, Consts.GachaType.Normal) && DataUtils.isPlayerCanFreeNormalGacha(playerDoc)){
+			playerDoc.countInfo.todayFreeNormalGachaCount += 1
+			playerData.countInfo = playerDoc.countInfo
+		}else{
+			var casinoTokenNeeded = DataUtils.getCasinoTokeNeededInGachaType(type)
+			if(playerDoc.resources.casinoToken - casinoTokenNeeded < 0) return Promise.reject("赌币不足")
+			playerDoc.resources.casinoToken -= casinoTokenNeeded
+			playerData.resources = playerDoc.resources
+		}
+
+		playerData.__items = []
+		var count = _.isEqual(type, Consts.GachaType.Normal) ? 1 : 3
+		for(var i = 0; i < count; i++){
+			var item = DataUtils.getGachaItemByType(type)
+			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
+			if(resp.newlyCreated){
+				playerData.__items.push({
+					type:Consts.DataChangedType.Add,
+					data:resp.item
+				})
+			}else{
+				playerData.__items.push({
+					type:Consts.DataChangedType.Edit,
+					data:resp.item
+				})
+			}
+		}
+
+		if(_.isEqual(type, Consts.GachaType.Advanced)){
+			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.AdvancedGachaOnce)
+		}
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

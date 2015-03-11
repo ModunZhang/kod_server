@@ -452,8 +452,8 @@ pro.saveMail = function(msg, session, next){
  */
 pro.unSaveMail = function(msg, session, next){
 	var mailId = msg.mailId
-	this.playerApiService3.unSaveMailAsync(session.uid, mailId).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.unSaveMailAsync(session.uid, mailId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -467,8 +467,8 @@ pro.unSaveMail = function(msg, session, next){
  */
 pro.getMails = function(msg, session, next){
 	var fromIndex = msg.fromIndex
-	this.playerApiService3.getMailsAsync(session.uid, fromIndex).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.getMailsAsync(session.uid, fromIndex).then(function(mails){
+		next(null, {code:200, mails:mails})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -482,8 +482,8 @@ pro.getMails = function(msg, session, next){
  */
 pro.getSendMails = function(msg, session, next){
 	var fromIndex = msg.fromIndex
-	this.playerApiService3.getSendMailsAsync(session.uid, fromIndex).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.getSendMailsAsync(session.uid, fromIndex).then(function(mails){
+		next(null, {code:200, mails:mails})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -497,8 +497,8 @@ pro.getSendMails = function(msg, session, next){
  */
 pro.getSavedMails = function(msg, session, next){
 	var fromIndex = msg.fromIndex
-	this.playerApiService3.getSavedMailsAsync(session.uid, fromIndex).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.getSavedMailsAsync(session.uid, fromIndex).then(function(mails){
+		next(null, {code:200, mails:mails})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -512,8 +512,8 @@ pro.getSavedMails = function(msg, session, next){
  */
 pro.deleteMails = function(msg, session, next){
 	var mailIds = msg.mailIds
-	this.playerApiService3.deleteMailsAsync(session.uid, mailIds).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.deleteMailsAsync(session.uid, mailIds).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -527,8 +527,8 @@ pro.deleteMails = function(msg, session, next){
  */
 pro.readReports = function(msg, session, next){
 	var reportIds = msg.reportIds
-	this.playerApiService3.readReportsAsync(session.uid, reportIds).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.readReportsAsync(session.uid, reportIds).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -542,8 +542,8 @@ pro.readReports = function(msg, session, next){
  */
 pro.saveReport = function(msg, session, next){
 	var reportId = msg.reportId
-	this.playerApiService3.saveReportAsync(session.uid, reportId).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.saveReportAsync(session.uid, reportId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -557,8 +557,8 @@ pro.saveReport = function(msg, session, next){
  */
 pro.unSaveReport = function(msg, session, next){
 	var reportId = msg.reportId
-	this.playerApiService3.unSaveReportAsync(session.uid, reportId).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.unSaveReportAsync(session.uid, reportId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -572,8 +572,8 @@ pro.unSaveReport = function(msg, session, next){
  */
 pro.getReports = function(msg, session, next){
 	var fromIndex = msg.fromIndex
-	this.playerApiService3.getReportsAsync(session.uid, fromIndex).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.getReportsAsync(session.uid, fromIndex).then(function(reports){
+		next(null, {code:200, reports:reports})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -587,8 +587,8 @@ pro.getReports = function(msg, session, next){
  */
 pro.getSavedReports = function(msg, session, next){
 	var fromIndex = msg.fromIndex
-	this.playerApiService3.getSavedReportsAsync(session.uid, fromIndex).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.getSavedReportsAsync(session.uid, fromIndex).then(function(reports){
+		next(null, {code:200, reports:reports})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -602,38 +602,8 @@ pro.getSavedReports = function(msg, session, next){
  */
 pro.deleteReports = function(msg, session, next){
 	var reportIds = msg.reportIds
-	this.playerApiService3.deleteReportsAsync(session.uid, reportIds).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
-	})
-}
-
-/**
- * 修改玩家名字
- * @param msg
- * @param session
- * @param next
- */
-pro.editPlayerName = function(msg, session, next){
-	var name = msg.name
-	this.playerApiService3.editPlayerNameAsync(session.uid, name).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
-	})
-}
-
-/**
- * 修改玩家城市名字
- * @param msg
- * @param session
- * @param next
- */
-pro.editPlayerCityName = function(msg, session, next){
-	var cityName = msg.cityName
-	this.playerApiService3.editPlayerCityNameAsync(session.uid, cityName).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.deleteReportsAsync(session.uid, reportIds).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -647,8 +617,8 @@ pro.editPlayerCityName = function(msg, session, next){
  */
 pro.getPlayerViewData = function(msg, session, next){
 	var targetPlayerId = msg.targetPlayerId
-	this.playerApiService3.getPlayerViewDataAsync(session.uid, targetPlayerId).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.getPlayerViewDataAsync(session.uid, targetPlayerId).then(function(playerViewData){
+		next(null, {code:200, playerViewData:playerViewData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -662,8 +632,8 @@ pro.getPlayerViewData = function(msg, session, next){
  */
 pro.setDefenceDragon = function(msg, session, next){
 	var dragonType = msg.dragonType
-	this.playerApiService3.setDefenceDragonAsync(session.uid, dragonType).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.setDefenceDragonAsync(session.uid, dragonType).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -676,8 +646,8 @@ pro.setDefenceDragon = function(msg, session, next){
  * @param next
  */
 pro.cancelDefenceDragon = function(msg, session, next){
-	this.playerApiService3.cancelDefenceDragonAsync(session.uid).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.cancelDefenceDragonAsync(session.uid).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -694,8 +664,8 @@ pro.sellItem = function(msg, session, next){
 	var name = msg.name
 	var count = msg.count
 	var price = msg.price
-	this.playerApiService4.sellItemAsync(session.uid, type, name, count, price).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.sellItemAsync(session.uid, type, name, count, price).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -710,8 +680,8 @@ pro.sellItem = function(msg, session, next){
 pro.getSellItems = function(msg, session, next){
 	var type = msg.type
 	var name = msg.name
-	this.playerApiService4.getSellItemsAsync(session.uid, type, name).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.getSellItemsAsync(session.uid, type, name).then(function(itemDocs){
+		next(null, {code:200, itemDocs:itemDocs})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -725,8 +695,8 @@ pro.getSellItems = function(msg, session, next){
  */
 pro.buySellItem = function(msg, session, next){
 	var itemId = msg.itemId
-	this.playerApiService4.buySellItemAsync(session.uid, itemId).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.buySellItemAsync(session.uid, itemId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -740,8 +710,8 @@ pro.buySellItem = function(msg, session, next){
  */
 pro.getMyItemSoldMoney = function(msg, session, next){
 	var itemId = msg.itemId
-	this.playerApiService4.getMyItemSoldMoneyAsync(session.uid, itemId).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.getMyItemSoldMoneyAsync(session.uid, itemId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -755,8 +725,8 @@ pro.getMyItemSoldMoney = function(msg, session, next){
  */
 pro.removeMySellItem = function(msg, session, next){
 	var itemId = msg.itemId
-	this.playerApiService4.removeMySellItemAsync(session.uid, itemId).then(function(){
-		next(null, {code:200})
+	this.playerApiService3.removeMySellItemAsync(session.uid, itemId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -883,7 +853,7 @@ pro.setPveData = function(msg, session, next){
 	var pveData = msg.pveData
 	var fightData = msg.fightData
 	var rewards = msg.rewards
-	this.playerApiService5.setPveDataAsync(session.uid, pveData, fightData, rewards).then(function(){
+	this.playerApiService4.setPveDataAsync(session.uid, pveData, fightData, rewards).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -898,7 +868,7 @@ pro.setPveData = function(msg, session, next){
  */
 pro.gacha = function(msg, session, next){
 	var type = msg.type
-	this.playerApiService5.gachaAsync(session.uid, type).then(function(){
+	this.playerApiService4.gachaAsync(session.uid, type).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

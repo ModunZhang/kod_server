@@ -333,3 +333,63 @@ errors["mailNotExist"] = {
 	code:566,
 	message:"邮件不存在"
 }
+errors["reportNotExist"] = {
+	key:"reportNotExist",
+	code:567,
+	message:"战报不存在"
+}
+errors["dragonIsNotFree"] = {
+	key:"dragonIsNotFree",
+	code:568,
+	message:"龙未处于空闲状态"
+}
+errors["dragonSelectedIsDead"] = {
+	key:"dragonSelectedIsDead",
+	code:569,
+	message:"所选择的龙已经阵亡"
+}
+errors["noDragonInDefenceStatus"] = {
+	key:"noDragonInDefenceStatus",
+	code:570,
+	message:"没有龙驻防在城墙"
+}
+errors["sellQueueNotEnough"] = {
+	key:"sellQueueNotEnough",
+	code:571,
+	message:"没有足够的出售队列"
+}
+errors["resourceNotEnough"] = {
+	key:"resourceNotEnough",
+	code:572,
+	message:"玩家资源不足"
+}
+errors["cartNotEnough"] = {
+	key:"cartNotEnough",
+	code:573,
+	message:"马车数量不足"
+}
+errors["sellItemNotExist"] = {
+	key:"sellItemNotExist",
+	code:574,
+	message:"商品不存在"
+}
+errors["coinNotEnough"] = {
+	key:"coinNotEnough",
+	code:575,
+	message:"银币不足"
+}
+errors["sellItemNotSold"] = {
+	key:"sellItemNotSold",
+	code:576,
+	message:"商品还未卖出"
+}
+errors["sellItemNotBelongsToYou"] = {
+	key:"sellItemNotBelongsToYou",
+	code:577,
+	message:"您未出售此商品"
+}
+errors["sellItemAlreadySold"] = {
+	key:"sellItemAlreadySold",
+	code:578,
+	message:"商品已经售出"
+}

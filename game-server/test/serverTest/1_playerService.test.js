@@ -987,163 +987,151 @@ describe("PlayerService", function(){
 			})
 		})
 
-		//it("unSaveMail 正常取消收藏", function(done){
-		//	Api.unSaveMail(m_user.mails[0].id, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getMails 获取邮件", function(done){
-		//	Api.getMails(0, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getSendMails 获取已发邮件", function(done){
-		//	Api.getSendMails(0, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getSavedMails 获取已存邮件", function(done){
-		//	Api.getSavedMails(0, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("deleteMails 正常删除收藏", function(done){
-		//	Api.deleteMails([m_user.mails[0].id], function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getPlayerViewData 正常查看", function(done){
-		//	var m_userData = null
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.loginPlayer(Config.deviceId, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.getPlayerViewData(m_userData._id, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//	var onPlayerLoginSuccess = function(doc){
-		//		m_userData = doc
-		//		pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		//	}
-		//	pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		//})
-		//
-		//it("setDefenceDragon 正常设置", function(done){
-		//	Api.sendChat("dragonstar greenDragon 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.setDefenceDragon("greenDragon", function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("cancelDefenceDragon 正常取消", function(done){
-		//	Api.cancelDefenceDragon(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("sellItem 没有足够的出售队列", function(done){
-		//	Api.sellItem("resources", "wood", 1000, 1, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("没有足够的出售队列")
-		//		done()
-		//	})
-		//})
-		//
-		//it("sellItem 玩家资源不足", function(done){
-		//	Api.sendChat("buildinglevel 16 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sellItem("resources", "wood", 10000000, 1000, function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("玩家资源不足")
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("sellItem 马车数量不足", function(done){
-		//	Api.sellItem("resources", "wood", 100, 1000, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("马车数量不足")
-		//		done()
-		//	})
-		//})
-		//
-		//it("sellItem 正常出售", function(done){
-		//	Api.sendChat("resources cart 100", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sellItem("resources", "wood", 2, 1, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//var sellItems = null
-		//it("getSellItems 正常获取", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.getSellItems("resources", "wood", function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//		var onGetSellItemsSuccess = function(docs){
-		//			sellItems = docs
-		//			pomelo.removeListener("onGetSellItemsSuccess", onGetSellItemsSuccess)
-		//		}
-		//		pomelo.on("onGetSellItemsSuccess", onGetSellItemsSuccess)
-		//	})
-		//})
-		//
-		//it("buySellItem 正常购买", function(done){
-		//	Api.buySellItem(sellItems[0]._id, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getMyItemSoldMoney 正常获取", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.getMyItemSoldMoney(sellItems[0]._id, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("removeMySellItem 正常下架", function(done){
-		//	var deal = null
-		//	Api.sellItem("resources", "wood", 1, 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.removeMySellItem(deal.id, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//	var onPlayerDataChanged = function(doc){
-		//		deal = doc.__deals[0].data
-		//		pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-		//	}
-		//	pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-		//})
-		//
+		it("unSaveMail 正常取消收藏", function(done){
+			Api.unSaveMail(m_user.mails[0].id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getMails 获取邮件", function(done){
+			Api.getMails(0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getSendMails 获取已发邮件", function(done){
+			Api.getSendMails(0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getSavedMails 获取已存邮件", function(done){
+			Api.getSavedMails(0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("deleteMails 正常删除收藏", function(done){
+			Api.deleteMails([m_user.mails[0].id], function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getPlayerViewData 正常查看", function(done){
+			var m_userData = null
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				m_userData = doc.playerData
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					Api.getPlayerViewData(m_userData._id, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("setDefenceDragon 正常设置", function(done){
+			Api.sendChat("dragonstar greenDragon 1", function(doc){
+				doc.code.should.equal(200)
+				Api.setDefenceDragon("greenDragon", function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("cancelDefenceDragon 正常取消", function(done){
+			Api.cancelDefenceDragon(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("sellItem 没有足够的出售队列", function(done){
+			Api.sellItem("resources", "wood", 1000, 1, function(doc){
+				doc.code.should.equal(Errors.sellQueueNotEnough.code)
+				done()
+			})
+		})
+
+		it("sellItem 玩家资源不足", function(done){
+			Api.sendChat("buildinglevel 16 1", function(doc){
+				doc.code.should.equal(200)
+				Api.sellItem("resources", "wood", 10000000, 1000, function(doc){
+					doc.code.should.equal(Errors.resourceNotEnough.code)
+					done()
+				})
+			})
+		})
+
+		it("sellItem 马车数量不足", function(done){
+			Api.sellItem("resources", "wood", 100, 1000, function(doc){
+				doc.code.should.equal(Errors.cartNotEnough.code)
+				done()
+			})
+		})
+
+		it("sellItem 正常出售", function(done){
+			Api.sendChat("resources cart 100", function(doc){
+				doc.code.should.equal(200)
+				Api.sellItem("resources", "wood", 2, 1, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		var sellItems = null
+		it("getSellItems 正常获取", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.getSellItems("resources", "wood", function(doc){
+					doc.code.should.equal(200)
+					sellItems = doc.itemDocs
+					done()
+				})
+			})
+		})
+
+		it("buySellItem 正常购买", function(done){
+			Api.buySellItem(sellItems[0]._id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getMyItemSoldMoney 正常获取", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.getMyItemSoldMoney(sellItems[0]._id, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("removeMySellItem 正常下架", function(done){
+			var deal = null
+			Api.sellItem("resources", "wood", 1, 1, function(doc){
+				doc.code.should.equal(200)
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					deal = doc.playerData.deals[0]
+					Api.removeMySellItem(deal.id, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
 		//it("upgradeProductionTech 前置科技条件不满足", function(done){
 		//	Api.sendChat("buildinglevel 7 1", function(doc){
 		//		doc.code.should.equal(200)
