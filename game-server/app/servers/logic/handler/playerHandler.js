@@ -97,38 +97,6 @@ pro.upgradeHouse = function(msg, session, next){
 }
 
 /**
- * 升级箭塔
- * @param msg
- * @param session
- * @param next
- */
-pro.upgradeTower = function(msg, session, next){
-	var finishNow = msg.finishNow
-
-	this.playerApiService.upgradeTowerAsync(session.uid, finishNow).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
-	})
-}
-
-/**
- * 升级城墙
- * @param msg
- * @param session
- * @param next
- */
-pro.upgradeWall = function(msg, session, next){
-	var finishNow = msg.finishNow
-
-	this.playerApiService.upgradeWallAsync(session.uid, finishNow).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * 建筑升级加速
  * @param msg
  * @param session
@@ -221,8 +189,8 @@ pro.recruitSpecialSoldier = function(msg, session, next){
 pro.makeDragonEquipment = function(msg, session, next){
 	var equipmentName = msg.equipmentName
 	var finishNow = msg.finishNow
-	this.playerApiService2.makeDragonEquipmentAsync(session.uid, equipmentName, finishNow).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.makeDragonEquipmentAsync(session.uid, equipmentName, finishNow).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -237,8 +205,8 @@ pro.makeDragonEquipment = function(msg, session, next){
 pro.treatSoldier = function(msg, session, next){
 	var soldiers = msg.soldiers
 	var finishNow = msg.finishNow
-	this.playerApiService2.treatSoldierAsync(session.uid, soldiers, finishNow).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.treatSoldierAsync(session.uid, soldiers, finishNow).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -252,8 +220,8 @@ pro.treatSoldier = function(msg, session, next){
  */
 pro.hatchDragon = function(msg, session, next){
 	var dragonType = msg.dragonType
-	this.playerApiService2.hatchDragonAsync(session.uid, dragonType).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.hatchDragonAsync(session.uid, dragonType).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -269,8 +237,8 @@ pro.setDragonEquipment = function(msg, session, next){
 	var dragonType = msg.dragonType
 	var equipmentCategory = msg.equipmentCategory
 	var equipmentName = msg.equipmentName
-	this.playerApiService2.setDragonEquipmentAsync(session.uid, dragonType, equipmentCategory, equipmentName).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.setDragonEquipmentAsync(session.uid, dragonType, equipmentCategory, equipmentName).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -286,8 +254,8 @@ pro.enhanceDragonEquipment = function(msg, session, next){
 	var dragonType = msg.dragonType
 	var equipmentCategory = msg.equipmentCategory
 	var equipments = msg.equipments
-	this.playerApiService2.enhanceDragonEquipmentAsync(session.uid, dragonType, equipmentCategory, equipments).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.enhanceDragonEquipmentAsync(session.uid, dragonType, equipmentCategory, equipments).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -302,8 +270,8 @@ pro.enhanceDragonEquipment = function(msg, session, next){
 pro.resetDragonEquipment = function(msg, session, next){
 	var dragonType = msg.dragonType
 	var equipmentCategory = msg.equipmentCategory
-	this.playerApiService2.resetDragonEquipmentAsync(session.uid, dragonType, equipmentCategory).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.resetDragonEquipmentAsync(session.uid, dragonType, equipmentCategory).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -318,8 +286,8 @@ pro.resetDragonEquipment = function(msg, session, next){
 pro.upgradeDragonSkill = function(msg, session, next){
 	var dragonType = msg.dragonType
 	var skillKey = msg.skillKey
-	this.playerApiService2.upgradeDragonSkillAsync(session.uid, dragonType, skillKey).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.upgradeDragonSkillAsync(session.uid, dragonType, skillKey).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -333,8 +301,8 @@ pro.upgradeDragonSkill = function(msg, session, next){
  */
 pro.upgradeDragonStar = function(msg, session, next){
 	var dragonType = msg.dragonType
-	this.playerApiService2.upgradeDragonStarAsync(session.uid, dragonType).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.upgradeDragonStarAsync(session.uid, dragonType).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -347,8 +315,8 @@ pro.upgradeDragonStar = function(msg, session, next){
  * @param next
  */
 pro.getDailyQuests = function(msg, session, next){
-	this.playerApiService2.getDailyQuestsAsync(session.uid).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.getDailyQuestsAsync(session.uid).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -362,8 +330,8 @@ pro.getDailyQuests = function(msg, session, next){
  */
 pro.addDailyQuestStar = function(msg, session, next){
 	var questId = msg.questId
-	this.playerApiService2.addDailyQuestStarAsync(session.uid, questId).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.addDailyQuestStarAsync(session.uid, questId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -377,8 +345,8 @@ pro.addDailyQuestStar = function(msg, session, next){
  */
 pro.startDailyQuest = function(msg, session, next){
 	var questId = msg.questId
-	this.playerApiService2.startDailyQuestAsync(session.uid, questId).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.startDailyQuestAsync(session.uid, questId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -392,8 +360,8 @@ pro.startDailyQuest = function(msg, session, next){
  */
 pro.getDailyQeustReward = function(msg, session, next){
 	var questEventId = msg.questEventId
-	this.playerApiService2.getDailyQeustRewardAsync(session.uid, questEventId).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.getDailyQeustRewardAsync(session.uid, questEventId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -407,8 +375,8 @@ pro.getDailyQeustReward = function(msg, session, next){
  */
 pro.setPlayerLanguage = function(msg, session, next){
 	var language = msg.language
-	this.playerApiService2.setPlayerLanguageAsync(session.uid, language).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.setPlayerLanguageAsync(session.uid, language).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -422,8 +390,8 @@ pro.setPlayerLanguage = function(msg, session, next){
  */
 pro.getPlayerInfo = function(msg, session, next){
 	var memberId = msg.memberId
-	this.playerApiService2.getPlayerInfoAsync(session.uid, memberId).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.getPlayerInfoAsync(session.uid, memberId).then(function(playerViewData){
+		next(null, {code:200, playerViewData:playerViewData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -436,11 +404,11 @@ pro.getPlayerInfo = function(msg, session, next){
  * @param next
  */
 pro.sendMail = function(msg, session, next){
-	var memberName = msg.memberName
+	var memberId = msg.memberId
 	var title = msg.title
 	var content = msg.content
-	this.playerApiService2.sendMailAsync(session.uid, memberName, title, content).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.sendMailAsync(session.uid, memberId, title, content).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -454,8 +422,8 @@ pro.sendMail = function(msg, session, next){
  */
 pro.readMails = function(msg, session, next){
 	var mailIds = msg.mailIds
-	this.playerApiService2.readMailsAsync(session.uid, mailIds).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.readMailsAsync(session.uid, mailIds).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -469,8 +437,8 @@ pro.readMails = function(msg, session, next){
  */
 pro.saveMail = function(msg, session, next){
 	var mailId = msg.mailId
-	this.playerApiService2.saveMailAsync(session.uid, mailId).then(function(){
-		next(null, {code:200})
+	this.playerApiService2.saveMailAsync(session.uid, mailId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})

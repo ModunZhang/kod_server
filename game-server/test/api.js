@@ -77,22 +77,6 @@ Api.upgradeHouse = function(buildingLocation, houseLocation, finishNow, callback
 	pomelo.request(route, info, callback)
 }
 
-Api.upgradeTower = function(finishNow, callback){
-	var info = {
-		finishNow:finishNow
-	}
-	var route = "logic.playerHandler.upgradeTower"
-	pomelo.request(route, info, callback)
-}
-
-Api.upgradeWall = function(finishNow, callback){
-	var info = {
-		finishNow:finishNow
-	}
-	var route = "logic.playerHandler.upgradeWall"
-	pomelo.request(route, info, callback)
-}
-
 Api.freeSpeedUp = function(eventType, eventId, callback){
 	var info = {
 		eventType:eventType,
@@ -244,9 +228,9 @@ Api.setPlayerLanguage = function(language, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.sendMail = function(memberName, title, content, callback){
+Api.sendMail = function(memberId, title, content, callback){
 	var info = {
-		memberName:memberName, title:title, content:content
+		memberId:memberId, title:title, content:content
 	}
 	var route = "logic.playerHandler.sendMail"
 	pomelo.request(route, info, callback)

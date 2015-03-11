@@ -12,6 +12,7 @@ var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var TaskUtils = require("../utils/taskUtils")
+var ErrorUtils = require("../utils/errorUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -36,13 +37,6 @@ var pro = PlayerApiService2.prototype
  * @param callback
  */
 pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isDragonEquipment(equipmentName)){
 		callback(new Error("equipmentName 装备不存在"))
 		return
@@ -50,28 +44,18 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 
 	var self = this
 	var playerDoc = null
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
-		var toolShop = playerDoc.buildings.location_9
-		if(toolShop.level < 1){
-			return Promise.reject(new Error("铁匠铺还未建造"))
-		}
-		if(!finishNow && playerDoc.dragonEquipmentEvents.length > 0){
-			return Promise.reject(new Error("已有装备正在制作"))
-		}
+		var building = playerDoc.buildings.location_9
+		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
+		if(!finishNow && playerDoc.dragonEquipmentEvents.length > 0) return Promise.reject(ErrorUtils.dragonEquipmentEventsExist(playerId, equipmentName))
 		var gemUsed = 0
 		var makeRequired = DataUtils.getPlayerMakeDragonEquipmentRequired(playerDoc, equipmentName)
 		var buyedResources = null
-		var playerData = {}
-		if(!LogicUtils.isEnough(makeRequired.materials, playerDoc.dragonMaterials)){
-			return Promise.reject(new Error("材料不足"))
-		}
+		if(!LogicUtils.isEnough(makeRequired.materials, playerDoc.dragonMaterials)) return Promise.reject(ErrorUtils.dragonEquipmentMaterialsNotEnough(playerId, equipmentName))
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(makeRequired.makeTime)
 			buyedResources = DataUtils.buyResources({coin:makeRequired.coin}, {})
@@ -82,44 +66,32 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
-		if(gemUsed > playerDoc.resources.gem){
-			return Promise.reject(new Error("宝石不足"))
-		}
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce({coin:makeRequired.coin}, playerDoc.resources)
 		LogicUtils.reduce(makeRequired.materials, playerDoc.dragonMaterials)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-
+		_.each(makeRequired.materials, function(value, key){
+			playerData.push(["dragonMaterials." + key, playerDoc.dragonMaterials[key]])
+		})
 		if(finishNow){
 			playerDoc.dragonEquipments[equipmentName] += 1
-			playerData.dragonEquipments = {}
-			playerData.dragonEquipments[equipmentName] = playerDoc.dragonEquipments[equipmentName]
+			playerData.push(["dragonEquipments." + equipmentName, playerDoc.dragonEquipments[equipmentName]])
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.MakeDragonEquipment)
-			pushFuncs.push([self.pushService, self.pushService.onMakeDragonEquipmentSuccessAsync, playerDoc, equipmentName])
 		}else{
 			var finishTime = Date.now() + (makeRequired.makeTime * 1000)
 			var event = LogicUtils.createDragonEquipmentEvent(playerDoc, equipmentName, finishTime)
 			playerDoc.dragonEquipmentEvents.push(event)
-			playerData.dragonEquipmentEvents = playerDoc.dragonEquipmentEvents
+			playerData.push(["dragonEquipmentEvents." + playerDoc.dragonEquipmentEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonEquipmentEvents", event.id, event.finishTime])
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		playerData.basicInfo = playerDoc.basicInfo
-		playerData.resources = playerDoc.resources
-		playerData.dragonMaterials = {}
-		_.each(makeRequired.materials, function(value, key){
-			playerData.dragonMaterials[key] = playerDoc.dragonMaterials[key]
-		})
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -143,13 +115,6 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
  * @param callback
  */
 pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isArray(soldiers)){
 		callback(new Error("soldiers 不合法"))
 		return
@@ -161,29 +126,19 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
-		var hospital = playerDoc.buildings.location_6
-		if(hospital.level < 1){
-			return Promise.reject(new Error("医院还未建造"))
-		}
-		if(!LogicUtils.isTreatSoldierLegal(playerDoc, soldiers)){
-			return Promise.reject(new Error("士兵不存在或士兵数量不合法"))
-		}
-		if(!finishNow && playerDoc.treatSoldierEvents.length > 0){
-			return Promise.reject(new Error("已有士兵正在治疗"))
-		}
+		var building = playerDoc.buildings.location_6
+		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
+		if(!LogicUtils.isTreatSoldierLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
+		if(!finishNow && playerDoc.treatSoldierEvents.length > 0) return Promise.reject(ErrorUtils.soldierTreatEventExist(playerId, soldiers))
 
 		var gemUsed = 0
 		var treatRequired = DataUtils.getPlayerTreatSoldierRequired(playerDoc, soldiers)
 		var buyedResources = null
-		var playerData = {}
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(treatRequired.treatTime)
 			buyedResources = DataUtils.buyResources(treatRequired.resources, {})
@@ -194,49 +149,38 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
-		if(gemUsed > playerDoc.resources.gem){
-			return Promise.reject(new Error("宝石不足"))
-		}
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(treatRequired.resources, playerDoc.resources)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-
+		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
-			playerData.soldiers = {}
-			playerData.woundedSoldiers = {}
 			_.each(soldiers, function(soldier){
 				playerDoc.soldiers[soldier.name] += soldier.count
-				playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
 				playerDoc.woundedSoldiers[soldier.name] -= soldier.count
-				playerData.woundedSoldiers[soldier.name] = playerDoc.woundedSoldiers[soldier.name]
+				playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
+				playerData.push(["woundedSoldiers." + soldier.name, playerDoc.woundedSoldiers[soldier.name]])
 			})
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
-			pushFuncs.push([self.pushService, self.pushService.onTreatSoldierSuccessAsync, playerDoc, soldiers])
+			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 		}else{
-			playerData.woundedSoldiers = {}
 			_.each(soldiers, function(soldier){
 				playerDoc.woundedSoldiers[soldier.name] -= soldier.count
-				playerData.woundedSoldiers[soldier.name] = playerDoc.woundedSoldiers[soldier.name]
+				playerData.push(["woundedSoldiers." + soldier.name, playerDoc.woundedSoldiers[soldier.name]])
 			})
 			var finishTime = Date.now() + (treatRequired.treatTime * 1000)
 			var event = LogicUtils.createTreatSoldierEvent(playerDoc, soldiers, finishTime)
 			playerDoc.treatSoldierEvents.push(event)
+			playerData.push(["treatSoldierEvents." + playerDoc.treatSoldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "treatSoldierEvents", event.id, event.finishTime])
 		}
-		DataUtils.refreshPlayerResources(playerDoc)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		playerData.basicInfo = playerDoc.basicInfo
-		playerData.resources = playerDoc.resources
-		playerData.treatSoldierEvents = playerDoc.treatSoldierEvents
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -259,13 +203,6 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
  * @param callback
  */
 pro.hatchDragon = function(playerId, dragonType, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isDragonTypeExist(dragonType)){
 		callback(new Error("dragonType 不合法"))
 		return
@@ -273,50 +210,36 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
-
 		var dragons = playerDoc.dragons
 		var dragon = dragons[dragonType]
-		if(dragon.star > 0){
-			return Promise.reject(new Error("龙蛋早已成功孵化"))
-		}
-		if(playerDoc.dragonHatchEvents.length > 0) return Promise.reject(new Error("已有龙蛋正在孵化"))
+		if(dragon.star > 0) return Promise.reject(ErrorUtils.dragonEggAlreadyHatched(playerId, dragonType))
+		if(playerDoc.dragonHatchEvents.length > 0) return Promise.reject(ErrorUtils.dragonEggHatchEventExist(playerId, dragonType))
 		var hasDragonHatched = dragons.redDragon.star > 0 || dragons.blueDragon.star > 0 || dragons.greenDragon.star > 0
 		if(!hasDragonHatched){
 			dragon.star = 1
 			dragon.level = 1
 			dragon.hp = DataUtils.getDragonHpMax(dragon)
 			dragon.hpRefreshTime = Date.now()
-			playerData.dragons = {}
-			playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+			playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
 		}else{
 			var event = DataUtils.createPlayerHatchDragonEvent(playerDoc, dragon)
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonHatchEvents", event.id, event.finishTime])
 			playerDoc.dragonHatchEvents.push(event)
-			playerData.__dragonHatchEvents = [{
-				type:Consts.DataChangedType.Add,
-				data:event
-			}]
+			playerData.push(["dragonHatchEvents." + playerDoc.dragonHatchEvents.indexOf(event), event])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonHatchEvents", event.id, event.finishTime])
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -341,13 +264,6 @@ pro.hatchDragon = function(playerId, dragonType, callback){
  * @param callback
  */
 pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equipmentName, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isDragonTypeExist(dragonType)){
 		callback(new Error("dragonType 不合法"))
 		return
@@ -371,47 +287,31 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 
 	var self = this
 	var playerDoc = null
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
-		if(dragon.star <= 0){
-			return Promise.reject(new Error("龙还未孵化"))
-		}
-		if(!DataUtils.isDragonEquipmentStarEqualWithDragonStar(equipmentName, dragon)){
-			return Promise.reject(new Error("装备与龙的星级不匹配"))
-		}
-		if(playerDoc.dragonEquipments[equipmentName] <= 0){
-			return Promise.reject(new Error("仓库中没有此装备"))
-		}
+		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
+		if(!DataUtils.isDragonEquipmentStarEqualWithDragonStar(equipmentName, dragon)) return Promise.reject(ErrorUtils.dragonEquipmentNotMatchForTheDragon(playerId, dragonType, equipmentCategory, equipmentName))
+		if(playerDoc.dragonEquipments[equipmentName] <= 0) return Promise.reject(ErrorUtils.dragonEquipmentNotEnough(playerId, dragonType, equipmentCategory, equipmentName))
 		var equipment = dragon.equipments[equipmentCategory]
-		if(!_.isEmpty(equipment.name)){
-			return Promise.reject(new Error("龙身上已经存在相同类型的装备"))
-		}
-		var playerData = {}
+		if(!_.isEmpty(equipment.name)) return Promise.reject(ErrorUtils.dragonAlreadyHasTheSameCategory(playerId, dragonType, equipmentCategory, equipmentName))
 		equipment.name = equipmentName
 		equipment.buffs = DataUtils.generateDragonEquipmentBuffs(equipmentName)
 		playerDoc.dragonEquipments[equipmentName] -= 1
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		playerData.push(["dragonEquipments." + equipmentName, playerDoc.dragonEquipments[equipmentName]])
+		playerData.push(["dragons." + dragonType + ".equipments." + equipmentCategory, equipment])
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		playerData.dragonEquipments = {}
-		playerData.dragonEquipments[equipmentName] = playerDoc.dragonEquipments[equipmentName]
-		playerData.dragons = {}
-		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -436,13 +336,6 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
  * @param callback
  */
 pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, equipments, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isDragonTypeExist(dragonType)){
 		callback(new Error("dragonType 不合法"))
 		return
@@ -458,40 +351,30 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 
 	var self = this
 	var playerDoc = null
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		var equipment = dragon.equipments[equipmentCategory]
-		if(_.isEmpty(equipment.name)){
-			return Promise.reject(new Error("此分类还没有配置装备"))
-		}
-		if(DataUtils.isDragonEquipmentReachMaxStar(equipment)){
-			return Promise.reject(new Error("装备已到最高星级"))
-		}
-		if(!LogicUtils.isEnhanceDragonEquipmentLegal(playerDoc, equipments)){
-			return Promise.reject(new Error("被牺牲的装备不存在或数量不足"))
-		}
-		var playerData = {}
-		DataUtils.enhancePlayerDragonEquipment(playerDoc, playerData, playerDoc.dragons[dragonType], equipmentCategory, equipments)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		if(_.isEmpty(equipment.name)) return Promise.reject(ErrorUtils.dragonDoNotHasThisEquipment(playerId, dragonType, equipmentCategory))
+		if(DataUtils.isDragonEquipmentReachMaxStar(equipment)) return Promise.reject(ErrorUtils.dragonEquipmentReachMaxStar(playerId, dragonType, equipmentCategory))
+		if(!LogicUtils.isEnhanceDragonEquipmentLegal(playerDoc, equipments)) return Promise.reject(ErrorUtils.dragonEquipmentsNotExistOrNotEnough(playerId, equipments))
+		DataUtils.enhancePlayerDragonEquipment(playerDoc, playerDoc.dragons[dragonType], equipmentCategory, equipments)
+		_.each(equipments, function(equipment){
+			playerDoc.dragonEquipments[equipment.name] -= equipment.count
+			playerData.push(["dragonEquipments." + equipment.name, playerDoc.dragonEquipments[equipment.name]])
+		})
+		playerData.push(["dragons." + dragonType + ".equipments." + equipmentCategory, equipment])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		playerData.dragons = {}
-		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -515,13 +398,6 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
  * @param callback
  */
 pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isDragonTypeExist(dragonType)){
 		callback(new Error("dragonType 不合法"))
 		return
@@ -533,40 +409,29 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 
 	var self = this
 	var playerDoc = null
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		var equipment = dragon.equipments[equipmentCategory]
-		if(_.isEmpty(equipment.name)){
-			return Promise.reject(new Error("此分类还没有配置装备"))
-		}
-		if(playerDoc.dragonEquipments[equipment.name] <= 0){
-			return Promise.reject(new Error("仓库中没有此装备"))
-		}
-		var playerData = {}
+		if(_.isEmpty(equipment.name)) return Promise.reject(ErrorUtils.dragonDoNotHasThisEquipment(playerId, dragonType, equipmentCategory))
+		if(playerDoc.dragonEquipments[equipment.name] <= 0) return Promise.reject(ErrorUtils.dragonEquipmentNotEnough(playerId, dragonType, equipmentCategory, equipment.name))
+
 		equipment.buffs = DataUtils.generateDragonEquipmentBuffs(equipment.name)
 		playerDoc.dragonEquipments[equipment.name] -= 1
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		playerData.push(["dragonEquipments." + equipment.name, playerDoc.dragonEquipments[equipment.name]])
+		playerData.push(["dragons." + dragonType + ".equipments." + equipment.name, equipment])
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		playerData.dragons = {}
-		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
-		playerData.dragonEquipments = {}
-		playerData.dragonEquipments[equipment.name] = playerDoc.dragonEquipments[equipment.name]
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -590,13 +455,6 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
  * @param callback
  */
 pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isDragonTypeExist(dragonType)){
 		callback(new Error("dragonType 不合法"))
 		return
@@ -608,50 +466,35 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 
 	var self = this
 	var playerDoc = null
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
-		if(dragon.star <= 0){
-			return Promise.reject(new Error("龙还未孵化"))
-		}
+		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
 		var skill = dragon.skills[skillKey]
-		if(!_.isObject(skill)) return Promise.reject(new Error("技能不存在"))
-		if(!DataUtils.isDragonSkillUnlocked(dragon, skill.name)){
-			return Promise.reject(new Error("此技能还未解锁"))
-		}
-		if(DataUtils.isDragonSkillReachMaxLevel(skill)){
-			return Promise.reject(new Error("技能已达最高等级"))
-		}
+		if(!_.isObject(skill)) return Promise.reject(ErrorUtils.dragonSkillNotExist(playerId, dragonType, skillKey))
+		if(!DataUtils.isDragonSkillUnlocked(dragon, skill.name)) return Promise.reject(ErrorUtils.dragonSkillIsLocked(playerId, dragonType, skillKey))
+		if(DataUtils.isDragonSkillReachMaxLevel(skill)) return Promise.reject(ErrorUtils.dragonSkillReachMaxLevel(playerId, dragonType, skillKey))
 		var upgradeRequired = DataUtils.getDragonSkillUpgradeRequired(dragon, skill)
-		var playerData = {}
+
 		DataUtils.refreshPlayerResources(playerDoc)
-		if(playerDoc.resources.blood < upgradeRequired.blood){
-			return Promise.reject(new Error("英雄之血不足"))
-		}
+		if(playerDoc.resources.blood < upgradeRequired.blood) return Promise.reject(ErrorUtils.heroBloodNotEnough(playerId, upgradeRequired.blood, playerDoc.resources.blood))
 		skill.level += 1
 		TaskUtils.finishDragonSkillTaskIfNeed(playerDoc, playerData, dragon.type, skill.name, skill.level)
 		playerDoc.resources.blood -= upgradeRequired.blood
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		playerData.push(["resources.blood", playerDoc.resources.blood])
+		playerData.push(["dragons." + dragonType + ".skills." + skillKey, skill])
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		playerData.basicInfo = playerDoc.basicInfo
-		playerData.resources = playerDoc.resources
-		playerData.dragons = {}
-		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -674,13 +517,6 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
  * @param callback
  */
 pro.upgradeDragonStar = function(playerId, dragonType, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isDragonTypeExist(dragonType)){
 		callback(new Error("dragonType 不合法"))
 		return
@@ -688,28 +524,17 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 
 	var self = this
 	var playerDoc = null
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
-		if(dragon.star < 1){
-			return Promise.reject(new Error("龙还未孵化"))
-		}
-		if(DataUtils.isDragonReachMaxStar(dragon)){
-			return Promise.reject(new Error("龙的星级已达最高"))
-		}
-		if(!DataUtils.isDragonReachUpgradeLevel(dragon)){
-			return Promise.reject(new Error("龙的等级未达到晋级要求"))
-		}
-		if(!DataUtils.isDragonEquipmentsReachUpgradeLevel(dragon)){
-			return Promise.reject(new Error("龙的装备未达到晋级要求"))
-		}
-		var playerData = {}
+		if(dragon.star < 1) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
+		if(DataUtils.isDragonReachMaxStar(dragon)) return Promise.reject(ErrorUtils.dragonReachMaxStar(playerId, dragonType, dragon.star))
+		if(!DataUtils.isDragonReachUpgradeLevel(dragon)) return Promise.reject(ErrorUtils.dragonUpgradeStarFailedForLevelNotLegal(playerId, dragon))
+		if(!DataUtils.isDragonEquipmentsReachUpgradeLevel(dragon)) return Promise.reject(ErrorUtils.dragonUpgradeStarFailedForEquipmentNotLegal(playerId, dragon))
+
 		dragon.star += 1
 		_.each(dragon.equipments, function(equipment){
 			equipment.name = ""
@@ -718,17 +543,15 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 			equipment.buffs = []
 		})
 		TaskUtils.finishDragonStarTaskIfNeed(playerDoc, playerData, dragon.type, dragon.star)
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
+		playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		playerData.dragons = {}
-		playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -752,26 +575,15 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
  * @param callback
  */
 pro.getDailyQuests = function(playerId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var building = playerDoc.buildings.location_14
-		if(building.level <= 0) return Promise.reject(new Error("市政厅还未建造"))
+		if(building.level <= 0) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
 		var refreshTime = DataUtils.getDailyQuestsRefreshTime()
 		var now = Date.now()
 		if(playerDoc.dailyQuests.refreshTime + refreshTime <= now){
@@ -782,16 +594,13 @@ pro.getDailyQuests = function(playerId, callback){
 		}else{
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		}
-		playerData.dailyQuests = playerDoc.dailyQuests
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		playerData.push(["dailyQuests", playerDoc.dailyQuests])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -814,13 +623,6 @@ pro.getDailyQuests = function(playerId, callback){
  * @param callback
  */
 pro.addDailyQuestStar = function(playerId, questId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isString(questId)){
 		callback(new Error("questId 不合法"))
 		return
@@ -828,37 +630,31 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var quest = _.find(playerDoc.dailyQuests.quests, function(quest){
 			return _.isEqual(quest.id, questId)
 		})
-		if(!_.isObject(quest)) return Promise.reject(new Error("任务不存在"))
-		if(quest.star >= 5) return Promise.reject(new Error("任务已达最高星级"))
+		if(!_.isObject(quest)) return Promise.reject(ErrorUtils.dailyQuestNotExist(playerId, questId))
+		if(quest.star >= 5) return Promise.reject(ErrorUtils.dailyQuestReachMaxStar(playerId, quest))
 		var gemUsed = DataUtils.getDailyQuestAddStarNeedGemCount()
-		if(gemUsed > playerDoc.resources.gem)return Promise.reject(new Error("宝石不足"))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
+		playerData.push(["resources.gem", playerDoc.resources.gem])
 		quest.star += 1
-		playerData.resources = playerDoc.resources
-		playerData.dailyQuests = playerDoc.dailyQuests
+		playerData.push(["dailyQuests.quests." + playerDoc.dailyQuests.quests.indexOf(quest) + ".star", quest.star])
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -881,13 +677,6 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
  * @param callback
  */
 pro.startDailyQuest = function(playerId, questId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isString(questId)){
 		callback(new Error("questId 不合法"))
 		return
@@ -895,42 +684,31 @@ pro.startDailyQuest = function(playerId, questId, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var quest = _.find(playerDoc.dailyQuests.quests, function(quest){
 			return _.isEqual(quest.id, questId)
 		})
-		if(!_.isObject(quest)) return Promise.reject(new Error("任务不存在"))
-		if(playerDoc.dailyQuestEvents.length > 0) return Promise.reject(new Error("已经有任务正在进行中"))
+		if(!_.isObject(quest)) return Promise.reject(ErrorUtils.dailyQuestNotExist(playerId, questId))
+		if(playerDoc.dailyQuestEvents.length > 0) return Promise.reject(ErrorUtils.dailyQuestEventExist(playerId, playerDoc.dailyQuestEvents))
 		LogicUtils.removeItemInArray(playerDoc.dailyQuests.quests, quest)
-		playerData.dailyQuests = playerDoc.dailyQuests
-
+		playerData.push(["dailyQuests.quests." + playerDoc.dailyQuests.quests.indexOf(quest), null])
 		var event = DataUtils.createPlayerDailyQuestEvent(playerDoc, quest)
-		eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dailyQuestEvents", event.id, event.finishTime])
 		playerDoc.dailyQuestEvents.push(event)
-		playerData.__dailyQuestEvents = [{
-			type:Consts.DataChangedType.Add,
-			data:event
-		}]
+		playerData.push(["dailyQuestEvents." + playerDoc.dailyQuestEvents.indexOf(event), event])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dailyQuestEvents", event.id, event.finishTime])
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -953,13 +731,6 @@ pro.startDailyQuest = function(playerId, questId, callback){
  * @param callback
  */
 pro.getDailyQeustReward = function(playerId, questEventId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isString(questEventId)){
 		callback(new Error("questEventId 不合法"))
 		return
@@ -967,47 +738,38 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var questEvent = _.find(playerDoc.dailyQuestEvents, function(event){
 			return _.isEqual(event.id, questEventId)
 		})
-		if(!_.isObject(questEvent)) return Promise.reject(new Error("任务事件不存在"))
-		if(questEvent.finishTime > 0) return Promise.reject(new Error("任务还在进行中"))
+		if(!_.isObject(questEvent)) return Promise.reject(ErrorUtils.dailyQuestEventNotExist(playerId, questEventId, playerDoc.dailyQuestEvents))
+		if(questEvent.finishTime > 0) return Promise.reject(ErrorUtils.dailyQuestEventNotFinished(playerId, questEvent))
 		LogicUtils.removeItemInArray(playerDoc.dailyQuestEvents, questEvent)
-		playerData.__dailyQuestEvents = [{
-			type:Consts.DataChangedType.Remove,
-			data:questEvent
-		}]
+		playerData.push(["dailyQuestEvents." + playerDoc.dailyQuestEvents.indexOf(questEvent), null])
 
 		var rewards = DataUtils.getPlayerDailyQuestEventRewards(playerDoc, questEvent)
 		DataUtils.refreshPlayerResources(playerDoc)
 		_.each(rewards, function(reward){
 			playerDoc[reward.type][reward.name] += reward.count
-			if(!_.isObject(playerData[reward.type])) playerData[reward.type] = playerDoc[reward.type]
+			if(!_.isEqual(reward.type, "resources")){
+				playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
+			}
 		})
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.basicInfo = playerDoc.basicInfo
-		playerData.resources = playerDoc.resources
+		playerData.push(["resources", playerDoc.resources])
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -1030,41 +792,28 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
  * @param callback
  */
 pro.setPlayerLanguage = function(playerId, language, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.contains(Consts.AllianceLanguage, language)){
 		callback(new Error("language 不合法"))
 		return
 	}
 	var self = this
 	var playerDoc = null
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
-		var playerData = {}
 		playerDoc.basicInfo.language = language
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		playerData.push(["basicInfo.language", language])
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		playerData.basicInfo = playerDoc.basicInfo
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -1087,9 +836,6 @@ pro.setPlayerLanguage = function(playerId, language, callback){
  * @param callback
  */
 pro.getPlayerInfo = function(playerId, memberId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
 	if(!_.isString(memberId)){
 		callback(new Error("memberId 不合法"))
 		return
@@ -1097,36 +843,49 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 
 	var self = this
 	var playerDoc = null
+	var playerViewData = null
 	var memberDoc = null
 	var updateFuncs = []
 	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
-		if(_.isEqual(playerId, memberId)){
-			return Promise.resolve(Utils.clone(playerDoc))
-		}else{
+
+		if(!_.isEqual(playerId, memberId)){
 			return self.playerDao.findAsync(memberId)
 		}
+		memberDoc = playerDoc
+		return Promise.resolve()
 	}).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
+		if(!_.isEqual(playerId, memberId)){
+			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(memberId))
+			memberDoc = doc
 		}
-		memberDoc = doc
+
+		var hasAlliance = _.isObject(memberDoc.alliance) && !_.isEmpty(memberDoc.alliance.id)
+		playerViewData = {
+			id:memberDoc._id,
+			name:memberDoc.basicInfo.name,
+			power:memberDoc.basicInfo.power,
+			kill:memberDoc.basicInfo.kill,
+			levelExp:memberDoc.basicInfo.levelExp,
+			vipExp:memberDoc.basicInfo.vipExp,
+			alliance:hasAlliance ? memberDoc.alliance.name : "",
+			title:hasAlliance ? memberDoc.alliance.title : "",
+			titleName:hasAlliance ? memberDoc.alliance.titleName : "",
+			lastLoginTime:memberDoc.countInfo.lastLoginTime
+		}
+
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		if(!_.isElement(playerId, memberId)){
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, memberDoc._id])
 		}
-		pushFuncs.push([self.pushService, self.pushService.onGetPlayerInfoSuccessAsync, playerDoc, memberDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback()
+		callback(null, playerViewData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -1148,21 +907,18 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 /**
  * 发送个人邮件
  * @param playerId
- * @param memberName
+ * @param memberId
  * @param title
  * @param content
  * @param callback
  */
-pro.sendMail = function(playerId, memberName, title, content, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
+pro.sendMail = function(playerId, memberId, title, content, callback){
+	if(!_.isString(memberId)){
+		callback(new Error("memberId 不合法"))
 		return
 	}
-	if(!_.isString(memberName)){
-		callback(new Error("memberName 不合法"))
+	if(_.isEqual(playerId, memberId)){
+		callback(new Error("playerId, memberId 不能给自己发邮件"))
 		return
 	}
 	if(!_.isString(title)){
@@ -1176,28 +932,18 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 
 	var self = this
 	var playerDoc = null
+	var playerData = []
 	var memberDoc = null
+	var memberData = []
 	var updateFuncs = []
 	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
-		if(_.isEqual(playerDoc.basicInfo.name, memberName)){
-			return Promise.reject(new Error("不能给自己发邮件"))
-		}
-		return self.playerDao.findByIndexAsync("basicInfo.name", memberName)
+		return self.playerDao.findAsync(memberId)
 	}).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(memberId))
 		memberDoc = doc
 
-		var playerData = {}
-		playerData.__sendMails = []
-		var memberData = {}
-		memberData.__mails = []
 		var mailToMember = {
 			id:ShortId.generate(),
 			title:title,
@@ -1212,22 +958,10 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 		if(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
 			var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
 			LogicUtils.removeItemInArray(memberDoc.mails, mail)
-			memberData.__mails.push({
-				type:Consts.DataChangedType.Remove,
-				data:mail
-			})
-			if(!!mail.isSaved){
-				memberData.__savedMails = [{
-					type:Consts.DataChangedType.Remove,
-					data:mail
-				}]
-			}
+			memberData.push(["mails." + memberDoc.mails.indexOf(mail), null])
 		}
 		memberDoc.mails.push(mailToMember)
-		memberData.__mails.push({
-			type:Consts.DataChangedType.Add,
-			data:mailToMember
-		})
+		memberData.push(["mails." + memberDoc.mails.indexOf(mailToMember), mailToMember])
 
 		var mailToPlayer = {
 			id:ShortId.generate(),
@@ -1240,29 +974,22 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
 			sendTime:Date.now()
 		}
 		if(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
-			var sendMail = playerDoc.sendMails.shift()
-			playerData.__sendMails.push({
-				type:Consts.DataChangedType.Remove,
-				data:sendMail
-			})
+			playerDoc.sendMails.shift()
+			playerData.push(["sendMails.0", null])
 		}
 		playerDoc.sendMails.push(mailToPlayer)
-		playerData.__sendMails.push({
-			type:Consts.DataChangedType.Add,
-			data:mailToPlayer
-		})
+		playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mailToPlayer), mailToPlayer])
 
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -1288,13 +1015,6 @@ pro.sendMail = function(playerId, memberName, title, content, callback){
  * @param callback
  */
 pro.readMails = function(playerId, mailIds, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isArray(mailIds) || mailIds.length == 0){
 		callback(new Error("mailIds 不合法"))
 		return
@@ -1302,36 +1022,23 @@ pro.readMails = function(playerId, mailIds, callback){
 
 	var self = this
 	var playerDoc = null
+	var playerData = []
 	var updateFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
-		var playerData = {}
-		playerData.__mails = []
 		for(var i = 0; i < mailIds.length; i++){
 			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-			if(!_.isObject(mail)){
-				return Promise.reject(new Error("邮件不存在"))
-			}
+			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailIds[i]))
 			mail.isRead = true
-			playerData.__mails.push({
-				type:Consts.DataChangedType.Edit,
-				data:mail
-			})
+			playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isRead", true])
 		}
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -1354,13 +1061,6 @@ pro.readMails = function(playerId, mailIds, callback){
  * @param callback
  */
 pro.saveMail = function(playerId, mailId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isString(mailId)){
 		callback(new Error("mailId 不合法"))
 		return
@@ -1368,37 +1068,21 @@ pro.saveMail = function(playerId, mailId, callback){
 
 	var self = this
 	var playerDoc = null
+	var playerData = []
 	var updateFuncs = []
-	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
-		if(!_.isObject(mail)){
-			return Promise.reject(new Error("邮件不存在"))
-		}
-		var playerData = {}
+		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
 		mail.isSaved = true
-		playerData.__mails = [{
-			type:Consts.DataChangedType.Edit,
-			data:mail
-		}]
-		playerData.__savedMails = [{
-			type:Consts.DataChangedType.Add,
-			data:mail
-		}]
+		playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isSaved", true])
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){

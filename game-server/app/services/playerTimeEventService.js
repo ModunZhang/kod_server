@@ -12,6 +12,7 @@ var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var TaskUtils = require("../utils/taskUtils")
+var ErrorUtils = require("../utils/errorUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -43,32 +44,22 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	var playerDoc = null
 	var allianceDoc = null
 	this.playerDao.findAsync(playerId, true).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
-		if(!_.isObject(event)){
-			return Promise.reject(new Error("玩家事件不存在"))
+		if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))
+		if(_.isObject(playerDoc.alliance)){
+			return self.allianceDao.findAsync(playerDoc.alliance.id, true)
 		}
-		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
-			return self.allianceDao.findAsync(playerDoc.alliance.id, true).then(function(doc){
-				if(!_.isObject(doc)){
-					return Promise.reject(new Error("联盟不存在"))
-				}
-				allianceDoc = doc
-				return Promise.resolve()
-			})
-		}else{
-			return Promise.resolve()
+		return Promise.resolve()
+	}).then(function(doc){
+		if(_.isObject(playerDoc.alliance)){
+			allianceDoc = doc
 		}
+		return Promise.resolve()
 	}).then(function(){
-		var playerData = {}
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		var params = self.onPlayerEvent(playerDoc, allianceDoc, eventType, eventId)
-		pushFuncs = pushFuncs.concat(params.pushFuncs)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		_.extend(playerData, params.playerData)
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, params.playerData])
 		var allianceData = params.allianceData
 		if(!_.isEmpty(allianceData)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
@@ -105,16 +96,15 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
  * @param allianceDoc
  * @param eventType
  * @param eventId
- * @returns {{pushFuncs: Array, playerData: {}, allianceData: {}}}
+ * @returns {{playerData: Array, allianceData: Array}}
  */
 pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
-	var self = this
-	var pushFuncs = []
-	var playerData = {}
-	var allianceData = {}
+	var playerData = []
+	var allianceData = []
 	var event = null
 	var helpEvent = null
 	var dragon = null
+	var building
 	var getAllianceHelpEvent = function(eventId){
 		return _.find(allianceDoc.helpEvents, function(helpEvent){
 			return _.isEqual(helpEvent.eventData.id, eventId)
@@ -123,208 +113,156 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 	DataUtils.refreshPlayerResources(playerDoc)
 	if(_.isEqual(eventType, "buildingEvents")){
 		event = LogicUtils.getEventById(playerDoc.buildingEvents, eventId)
+		playerData.push(["buildingEvents." + playerDoc.buildingEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.buildingEvents, event)
-		var building = LogicUtils.getBuildingByEvent(playerDoc, event)
+		building = LogicUtils.getBuildingByEvent(playerDoc, event)
 		building.level += 1
-		LogicUtils.updateBuildingsLevel(playerDoc)
+		playerData.push(["buildings.location_" + building.location + ".level", building.level])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, building.level)
-		playerData.buildings = playerDoc.buildings
-		playerData.buildingEvents = playerDoc.buildingEvents
-		pushFuncs.push([self.pushService, self.pushService.onBuildingLevelUpAsync, playerDoc, event.location])
 		if(_.isObject(allianceDoc)){
 			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
+				allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-				if(!_.isObject(allianceData.__helpEvents)) allianceData.__helpEvents = []
-				allianceData.__helpEvents.push({
-					type:Consts.DataChangedType.Remove,
-					data:helpEvent
-				})
 			}
 		}
 	}else if(_.isEqual(eventType, "houseEvents")){
 		event = LogicUtils.getEventById(playerDoc.houseEvents, eventId)
+		building = playerDoc.buildings["location_" + event.buildingLocation]
+		playerData.push(["houseEvents." + playerDoc.houseEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.houseEvents, event)
 		var house = LogicUtils.getHouseByEvent(playerDoc, event)
 		house.level += 1
-		playerData.buildings = playerDoc.buildings
-		playerData.houseEvents = playerDoc.houseEvents
+		playerData.push(["buildings.location_" + event.buildingLocation + ".houses." + building.houses.indexOf(house) + ".level", house.level])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, house.level)
-		pushFuncs.push([self.pushService, self.pushService.onHouseLevelUpAsync, playerDoc, event.buildingLocation, event.houseLocation])
 		if(_.isEqual("dwelling", house.type)){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
 			DataUtils.refreshPlayerResources(playerDoc)
-
 		}
 		if(_.isObject(allianceDoc)){
 			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
+				allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-				if(!_.isObject(allianceData.__helpEvents)) allianceData.__helpEvents = []
-				allianceData.__helpEvents.push({
-					type:Consts.DataChangedType.Remove,
-					data:helpEvent
-				})
 			}
 		}
 	}else if(_.isEqual(eventType, "materialEvents")){
 		event = LogicUtils.getEventById(playerDoc.materialEvents, eventId)
 		event.finishTime = 0
-		playerData.materialEvents = playerDoc.materialEvents
+		playerData.push(["materialEvents." + playerDoc.materialEvents.indexOf(event) + ".finishTime", 0])
 		if(_.isEqual(event.category, Consts.MaterialType.BuildingMaterials)){
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.MakeBuildingMaterials)
 		}
-		pushFuncs.push([self.pushService, self.pushService.onMakeMaterialFinishedAsync, playerDoc, event])
 	}else if(_.isEqual(eventType, "soldierEvents")){
 		event = LogicUtils.getEventById(playerDoc.soldierEvents, eventId)
+		playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.soldierEvents, event)
 		playerDoc.soldiers[event.name] += event.count
-		playerData.soldiers = playerDoc.soldiers
-		playerData.soldierEvents = playerDoc.soldierEvents
+		playerData.push(["soldiers." + event.name, playerDoc.soldiers[event.name]])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
 		TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, event.name)
-		pushFuncs.push([self.pushService, self.pushService.onRecruitSoldierSuccessAsync, playerDoc, event.name, event.count])
 	}else if(_.isEqual(eventType, "dragonEquipmentEvents")){
 		event = LogicUtils.getEventById(playerDoc.dragonEquipmentEvents, eventId)
+		playerData.push(["dragonEquipmentEvents." + playerDoc.dragonEquipmentEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.dragonEquipmentEvents, event)
 		playerDoc.dragonEquipments[event.name] += 1
-		playerData.dragonEquipments = playerDoc.dragonEquipments
-		playerData.dragonEquipmentEvents = playerDoc.dragonEquipmentEvents
+		playerData.push(["dragonEquipments." + event.name, playerDoc.dragonEquipments[event.name]])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.MakeDragonEquipment)
-		pushFuncs.push([self.pushService, self.pushService.onMakeDragonEquipmentSuccessAsync, playerDoc, event.name])
 	}else if(_.isEqual(eventType, "treatSoldierEvents")){
 		event = LogicUtils.getEventById(playerDoc.treatSoldierEvents, eventId)
+		playerData.push(["treatSoldierEvents." + playerDoc.treatSoldierEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.treatSoldierEvents, event)
 		_.each(event.soldiers, function(soldier){
 			playerDoc.soldiers[soldier.name] += soldier.count
+			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
-		playerData.soldiers = playerDoc.soldiers
-		playerData.treatSoldierEvents = playerDoc.treatSoldierEvents
-		pushFuncs.push([self.pushService, self.pushService.onTreatSoldierSuccessAsync, playerDoc, event.soldiers])
 	}else if(_.isEqual(eventType, "dragonHatchEvents")){
 		event = LogicUtils.getEventById(playerDoc.dragonHatchEvents, eventId)
+		playerData.push(["dragonHatchEvents." + playerDoc.dragonHatchEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.dragonHatchEvents, event)
-		playerData.__dragonHatchEvents = [{
-			type:Consts.DataChangedType.Remove,
-			data:event
-		}]
 		dragon = playerDoc.dragons[event.dragonType]
 		dragon.star = 1
 		dragon.level = 1
 		dragon.hp = DataUtils.getDragonHpMax(dragon)
 		dragon.hpRefreshTime = Date.now()
-		playerData.dragons = {}
-		playerData.dragons[event.dragonType] = playerDoc.dragons[event.dragonType]
+		playerData.push(["dragons." + dragon.dragonType, dragon])
 	}else if(_.isEqual(eventType, "dragonDeathEvents")){
 		event = LogicUtils.getEventById(playerDoc.dragonDeathEvents, eventId)
+		playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.dragonDeathEvents, event)
-		playerData.__dragonDeathEvents = [{
-			type:Consts.DataChangedType.Remove,
-			data:event
-		}]
 		dragon = playerDoc.dragons[event.dragonType]
 		dragon.hp = 1
 		dragon.hpRefreshTime = Date.now()
-		playerData.dragons = {}
-		playerData.dragons[event.dragonType] = playerDoc.dragons[event.dragonType]
+		playerData.push(["dragons." + dragon.dragonType] + ".hp", dragon.hp)
+		playerData.push(["dragons." + dragon.dragonType] + ".hpRefreshTime", dragon.hpRefreshTime)
 	}else if(_.isEqual(eventType, "dailyQuestEvents")){
 		event = LogicUtils.getEventById(playerDoc.dailyQuestEvents, eventId)
 		event.finishTime = 0
-		playerData.__dailyQuestEvents = [{
-			type:Consts.DataChangedType.Edit,
-			data:event
-		}]
+		playerData.push(["dailyQuestEvents." + playerDoc.dailyQuestEvents.indexOf(event) + ".finishTime", event.finishTime])
 	}else if(_.isEqual(eventType, "productionTechEvents")){
 		event = LogicUtils.getEventById(playerDoc.productionTechEvents, eventId)
+		playerData.push(["productionTechEvents." + playerDoc.productionTechEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.productionTechEvents, event)
 		var productionTech = playerDoc.productionTechs[event.name]
 		productionTech.level += 1
-		playerData.productionTechs = {}
-		playerData.productionTechs[event.name] = productionTech
-		playerData.__productionTechEvents = [{
-			type:Consts.DataChangedType.Remove,
-			data:event
-		}]
+		playerData.push(["productionTechs." + productionTech.name + ".level", productionTech.level])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 		TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, event.name, productionTech.level)
 		if(_.isObject(allianceDoc)){
 			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
+				allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-				allianceData.__helpEvents = [{
-					type:Consts.DataChangedType.Remove,
-					data:helpEvent
-				}]
 			}
 		}
 	}else if(_.isEqual(eventType, "militaryTechEvents")){
 		event = LogicUtils.getEventById(playerDoc.militaryTechEvents, eventId)
+		playerData.push(["militaryTechEvents." + playerDoc.militaryTechEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.militaryTechEvents, event)
 		var militaryTech = playerDoc.militaryTechs[event.name]
 		militaryTech.level += 1
-		playerData.militaryTechs = {}
-		playerData.militaryTechs[event.name] = militaryTech
-		playerData.__militaryTechEvents = [{
-			type:Consts.DataChangedType.Remove,
-			data:event
-		}]
+		playerData.push(["militaryTechs." + militaryTech.name + ".level", militaryTech.level])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 		TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, event.name, militaryTech.level)
 		if(_.isObject(allianceDoc)){
 			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
+				allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-				allianceData.__helpEvents = [{
-					type:Consts.DataChangedType.Remove,
-					data:helpEvent
-				}]
 			}
 		}
 	}else if(_.isEqual(eventType, "soldierStarEvents")){
 		event = LogicUtils.getEventById(playerDoc.soldierStarEvents, eventId)
+		playerData.push(["soldierStarEvents." + playerDoc.soldierStarEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.soldierStarEvents, event)
 		playerDoc.soldierStars[event.name]+= 1
-		playerData.soldierStars = {}
-		playerData.soldierStars[event.name] = playerDoc.soldierStars[event.name]
-		playerData.__soldierStarEvents = [{
-			type:Consts.DataChangedType.Remove,
-			data:event
-		}]
+		playerData.push(["soldierStarts." + event.name, playerDoc.soldierStars[event.name]])
 		TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, event.name, playerDoc.soldierStars[event.name])
 		if(_.isObject(allianceDoc)){
 			helpEvent = getAllianceHelpEvent(event.id)
 			if(_.isObject(helpEvent)){
+				allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-				allianceData.__helpEvents = [{
-					type:Consts.DataChangedType.Remove,
-					data:helpEvent
-				}]
 			}
 		}
 	}else if(_.isEqual(eventType, "vipEvents")){
 		event = LogicUtils.getEventById(playerDoc.vipEvents, eventId)
+		playerData.push(["vipEvents." + playerDoc.vipEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.vipEvents, event)
-		playerData.__vipEvents = [{
-			type:Consts.DataChangedType.Remove,
-			data:event
-		}]
 	}else if(_.isEqual(eventType, "itemEvents")){
 		event = LogicUtils.getEventById(playerDoc.itemEvents, eventId)
+		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
-		playerData.__itemEvents = [{
-			type:Consts.DataChangedType.Remove,
-			data:event
-		}]
 	}
 
 	DataUtils.refreshPlayerPower(playerDoc, playerData)
-	playerData.basicInfo = playerDoc.basicInfo
-	playerData.resources = playerDoc.resources
+	TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
+	playerData.push(["resources", playerDoc.resources])
 
-	var response = {pushFuncs:pushFuncs, playerData:playerData, allianceData:allianceData}
+	var response = {playerData:playerData, allianceData:allianceData}
 	return response
 }

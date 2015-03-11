@@ -14,7 +14,6 @@ var GrowUpTasks = GameDatas.GrowUpTasks
 
 var Utils = module.exports
 
-
 /**
  * 更新任务数据和推送信息
  * @param playerDoc
@@ -23,9 +22,6 @@ var Utils = module.exports
  * @param task
  */
 Utils.updateGrowUpTaskData = function(playerDoc, playerData, type, task){
-	if(!_.isObject(playerData.growUpTasks)) playerData.growUpTasks = {}
-	if(!_.isArray(playerData.growUpTasks["__" + type])) playerData.growUpTasks["__" + type] = []
-
 	if(task.rewarded){
 		var taskIndex = playerDoc.growUpTasks[type].indexOf(task)
 		var preTask = null
@@ -38,22 +34,12 @@ Utils.updateGrowUpTaskData = function(playerDoc, playerData, type, task){
 		}
 		if(_.isObject(preTask)){
 			LogicUtils.removeItemInArray(playerDoc.growUpTasks[type], preTask)
-			playerData.growUpTasks["__" + type].push({
-				type:Consts.DataChangedType.Remove,
-				data:preTask
-			})
+			playerData.push(["growUpTasks." + type + "." + playerDoc.growUpTasks[type].indexOf(preTask), null])
 		}
-		playerData.growUpTasks["__" + type].push({
-			type:Consts.DataChangedType.Edit,
-			data:task
-		})
 	}else{
 		playerDoc.growUpTasks[type].push(task)
-		playerData.growUpTasks["__" + type].push({
-			type:Consts.DataChangedType.Add,
-			data:task
-		})
 	}
+	playerData.push(["growUpTasks." + type + "." + playerDoc.growUpTasks[type].indexOf(task), task])
 }
 
 /**
@@ -110,8 +96,7 @@ Utils.finishPlayerDailyTaskIfNeeded = function(playerDoc, playerData, taskType, 
 	var isFinished = _.contains(playerDoc.dailyTasks[taskType], taskIndex)
 	if(!isFinished){
 		playerDoc.dailyTasks[taskType].push(taskIndex)
-		if(!_.isObject(playerData.dailyTasks)) playerData.dailyTasks = {}
-		playerData.dailyTasks[taskType] = playerDoc.dailyTasks[taskType]
+		playerData.push(["dailyTasks." + taskType], playerDoc.dailyTasks[taskType])
 	}
 }
 

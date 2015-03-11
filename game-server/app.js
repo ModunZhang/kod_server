@@ -27,22 +27,8 @@ app.configure("production|development", "gate", function(){
 		heartbeat:10,
 		useDict:true,
 		useProtobuf:true,
-		setNoDelay:false,
 		disconnectOnTimeout:true,
 		"max-connections":1000
-	})
-	app.set("proxyConfig", {
-		bufferMsg:false,
-		interval:30,
-		failMode:"failfast"
-	})
-	app.set("remoteConfig", {
-		bufferMsg:false,
-		interval:30,
-		failMode:"failfast"
-	})
-	app.set('sessionConfig', {
-		singleSession:true
 	})
 
 	app.filter(SerialFilter(5000))
@@ -75,12 +61,12 @@ app.configure("production|development", "logic", function(){
 		"max-connections":1000
 	})
 	app.set("proxyConfig", {
-		bufferMsg:true,
+		bufferMsg:false,
 		interval:20,
 		failMode:"failfast"
 	})
 	app.set("remoteConfig", {
-		bufferMsg:true,
+		bufferMsg:false,
 		interval:20,
 		failMode:"failfast"
 	})
@@ -105,21 +91,9 @@ app.configure("production|development", "logic", function(){
 	app.set("scripto", scripto)
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
-
 })
 
 app.configure("production|development", "chat", function(){
-	app.set("proxyConfig", {
-		bufferMsg:true,
-		interval:30,
-		failMode:"failfast"
-	})
-	app.set("remoteConfig", {
-		bufferMsg:true,
-		interval:30,
-		failMode:"failfast"
-	})
-
 	app.before(ReplayFilter())
 	app.before(LoginFilter())
 	app.filter(SerialFilter(5000))
@@ -137,17 +111,6 @@ app.configure("production|development", "chat", function(){
 })
 
 app.configure("production|development", "event", function(){
-	app.set("proxyConfig", {
-		bufferMsg:true,
-		interval:30,
-		failMode:"failfast"
-	})
-	app.set("remoteConfig", {
-		bufferMsg:true,
-		interval:30,
-		failMode:"failfast"
-	})
-
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
 
@@ -161,17 +124,6 @@ app.configure("production|development", "event", function(){
 })
 
 app.configure("production|development", "time", function(){
-	app.set("proxyConfig", {
-		bufferMsg:true,
-		interval:30,
-		failMode:"failfast"
-	})
-	app.set("remoteConfig", {
-		bufferMsg:true,
-		interval:30,
-		failMode:"failfast"
-	})
-
 	app.loadConfig("redisConfig", path.resolve("./config/redis.json"))
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
 

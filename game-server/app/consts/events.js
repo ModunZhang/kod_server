@@ -6,7 +6,6 @@
 
 module.exports = {
 	player:{
-		onPlayerLoginSuccess:"onPlayerLoginSuccess",
 		onPlayerDataChanged:"onPlayerDataChanged",
 		onGetAllianceDataSuccess:"onGetAllianceDataSuccess",
 		onBuildingLevelUp:"onBuildingLevelUp",

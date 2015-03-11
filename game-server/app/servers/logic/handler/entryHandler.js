@@ -33,6 +33,8 @@ var Handler = function(app){
 	this.sessionService = app.get("sessionService")
 	this.Device = app.get("Device")
 	this.User = app.get("User")
+	this.maxReturnMailSize = 10
+	this.maxReturnReportSize = 10
 }
 var pro = Handler.prototype
 
@@ -81,9 +83,7 @@ pro.login = function(msg, session, next){
 		}
 		return Promise.all(funcs)
 	}).then(function(){
-		var data = {code:200, playerData:playerDoc}
-		if(_.isObject(allianceDoc)) data.allianceData = allianceDoc
-		next(null, data)
+		next(null, {code:200, playerData:FilterPlayerDoc.call(self, playerDoc), allianceData:allianceDoc})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 		self.sessionService.kickBySessionId(session.id)
@@ -131,4 +131,56 @@ var AddPlayerToChatChannel = function(session, callback){
 
 var RemovePlayerFromChatChannel = function(session, callback){
 	this.app.rpc.chat.chatRemote.leave(session, session.uid, this.serverId, callback)
+}
+
+var FilterPlayerDoc = function(playerDoc){
+	var data = _.omit(playerDoc, "mails", "sendMails", "reports")
+	if(!_.isObject(data.alliance) || _.isEmpty(data.alliance.id)){
+		data.alliance = {}
+	}
+	data.mails = []
+	data.reports = []
+	for(var i = playerDoc.mails.length - 1; i >= 0; i--){
+		data.mails.push(playerDoc.mails[i])
+	}
+	for(i = playerDoc.reports.length - 1; i >= 0; i--){
+		data.reports.push(playerDoc.reports[i])
+	}
+	data.sendMails = []
+	for(i = playerDoc.sendMails.length - 1; i >= 0; i--){
+		data.sendMails.push(playerDoc.sendMails[i])
+	}
+	data.savedMails = []
+	data.savedReports = []
+	var unreadMails = 0
+	var unreadReports = 0
+	_.each(data.mails, function(mail){
+		if(!mail.isRead){
+			unreadMails++
+		}
+		if(!!mail.isSaved && data.savedMails.length < self.maxReturnMailSize){
+			data.savedMails.push(mail)
+		}
+	})
+	_.each(data.reports, function(report){
+		if(!report.isRead){
+			unreadReports++
+		}
+		if(!!report.isSaved && data.savedReports.length < self.maxReturnReportSize){
+			data.savedReports.push(report)
+		}
+	})
+	data.mails = data.mails.slice(0, this.maxReturnMailSize)
+	data.reports = data.reports.slice(0, this.maxReturnReportSize)
+	data.sendMails = data.sendMails.slice(0, this.maxReturnMailSize)
+
+	data.mailStatus = {
+		unreadMails:unreadMails,
+		unreadReports:unreadReports
+	}
+
+	data.countInfo.serverVersion = this.serverVersion
+	data.serverTime = Date.now()
+
+	return data
 }

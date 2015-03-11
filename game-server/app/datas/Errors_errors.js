@@ -203,3 +203,133 @@ errors["soldierRecruitMaterialsNotEnough"] = {
 	code:540,
 	message:"士兵招募材料不足"
 }
+errors["dragonEquipmentEventsExist"] = {
+	key:"dragonEquipmentEventsExist",
+	code:541,
+	message:"龙装备制造事件已存在"
+}
+errors["dragonEquipmentMaterialsNotEnough"] = {
+	key:"dragonEquipmentMaterialsNotEnough",
+	code:542,
+	message:"制作龙装备材料不足"
+}
+errors["soldierNotExistOrCountNotLegal"] = {
+	key:"soldierNotExistOrCountNotLegal",
+	code:543,
+	message:"士兵不存在或士兵数量不合法"
+}
+errors["soldierTreatEventExist"] = {
+	key:"soldierTreatEventExist",
+	code:544,
+	message:"士兵治疗事件已存在"
+}
+errors["dragonEggAlreadyHatched"] = {
+	key:"dragonEggAlreadyHatched",
+	code:545,
+	message:"龙蛋早已成功孵化"
+}
+errors["dragonEggHatchEventExist"] = {
+	key:"dragonEggHatchEventExist",
+	code:546,
+	message:"龙蛋孵化事件已存在"
+}
+errors["dragonNotHatched"] = {
+	key:"dragonNotHatched",
+	code:547,
+	message:"龙还未孵化"
+}
+errors["dragonEquipmentNotMatchForTheDragon"] = {
+	key:"dragonEquipmentNotMatchForTheDragon",
+	code:548,
+	message:"装备与龙的星级不匹配"
+}
+errors["dragonEquipmentNotEnough"] = {
+	key:"dragonEquipmentNotEnough",
+	code:549,
+	message:"龙装备数量不足"
+}
+errors["dragonAlreadyHasTheSameCategory"] = {
+	key:"dragonAlreadyHasTheSameCategory",
+	code:550,
+	message:"龙身上已经存在相同类型的装备"
+}
+errors["dragonDoNotHasThisEquipment"] = {
+	key:"dragonDoNotHasThisEquipment",
+	code:551,
+	message:"此分类还没有配置装备"
+}
+errors["dragonEquipmentReachMaxStar"] = {
+	key:"dragonEquipmentReachMaxStar",
+	code:552,
+	message:"装备已到最高星级"
+}
+errors["dragonEquipmentsNotExistOrNotEnough"] = {
+	key:"dragonEquipmentsNotExistOrNotEnough",
+	code:553,
+	message:"被牺牲的装备不存在或数量不足"
+}
+errors["dragonSkillNotExist"] = {
+	key:"dragonSkillNotExist",
+	code:554,
+	message:"龙技能不存在"
+}
+errors["dragonSkillIsLocked"] = {
+	key:"dragonSkillIsLocked",
+	code:555,
+	message:"此龙技能还未解锁"
+}
+errors["dragonSkillReachMaxLevel"] = {
+	key:"dragonSkillReachMaxLevel",
+	code:556,
+	message:"龙技能已达最高等级"
+}
+errors["heroBloodNotEnough"] = {
+	key:"heroBloodNotEnough",
+	code:557,
+	message:"英雄之血不足"
+}
+errors["dragonReachMaxStar"] = {
+	key:"dragonReachMaxStar",
+	code:558,
+	message:"龙的星级已达最高"
+}
+errors["dragonUpgradeStarFailedForLevelNotLegal"] = {
+	key:"dragonUpgradeStarFailedForLevelNotLegal",
+	code:559,
+	message:"龙的等级未达到晋级要求"
+}
+errors["dragonUpgradeStarFailedForEquipmentNotLegal"] = {
+	key:"dragonUpgradeStarFailedForEquipmentNotLegal",
+	code:560,
+	message:"龙的装备未达到晋级要求"
+}
+errors["dailyQuestNotExist"] = {
+	key:"dailyQuestNotExist",
+	code:561,
+	message:"每日任务不存在"
+}
+errors["dailyQuestReachMaxStar"] = {
+	key:"dailyQuestReachMaxStar",
+	code:562,
+	message:"每日任务已达最高星级"
+}
+errors["dailyQuestEventExist"] = {
+	key:"dailyQuestEventExist",
+	code:563,
+	message:"每日任务事件已存在"
+}
+errors["dailyQuestEventNotExist"] = {
+	key:"dailyQuestEventNotExist",
+	code:564,
+	message:"每日任务事件不存在"
+}
+errors["dailyQuestEventNotFinished"] = {
+	key:"dailyQuestEventNotFinished",
+	code:565,
+	message:"每日任务事件还未完成"
+}
+errors["mailNotExist"] = {
+	key:"mailNotExist",
+	code:566,
+	message:"邮件不存在"
+}

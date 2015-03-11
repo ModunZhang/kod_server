@@ -19,8 +19,6 @@ var PushService = function(app){
 	this.globalChannelService = app.get("globalChannelService")
 	this.serverId = app.getServerId()
 	this.serverType = app.getServerType()
-	this.maxReturnMailSize = 10
-	this.maxReturnReportSize = 10
 	this.serverVersion = VersionUtils.getServerVersion()
 }
 module.exports = PushService

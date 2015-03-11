@@ -818,40 +818,6 @@
 //		//	})
 //		//})
 //
-//		//it("upgradeTower 加入联盟后", function(done){
-//		//	var playerDoc = null
-//		//	Api.upgradeTower(false, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		var buildEvent = playerDoc.towerEvents[0]
-//		//		Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.TowerEvents, buildEvent.id, function(doc){
-//		//			doc.code.should.equal(200)
-//		//			done()
-//		//		})
-//		//	})
-//		//	var onPlayerDataChanged = function(doc){
-//		//		playerDoc = doc
-//		//		pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-//		//	}
-//		//	pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-//		//})
-//
-//		//it("upgradeWall 加入联盟后", function(done){
-//		//	var playerDoc = null
-//		//	Api.upgradeWall(false, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		var buildEvent = playerDoc.wallEvents[0]
-//		//		Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.WallEvents, buildEvent.id, function(doc){
-//		//			doc.code.should.equal(200)
-//		//			done()
-//		//		})
-//		//	})
-//		//	var onPlayerDataChanged = function(doc){
-//		//		playerDoc = doc
-//		//		pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-//		//	}
-//		//	pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
-//		//})
-//
 //		//it("helpAllianceMemberSpeedUp 正常帮助1", function(done){
 //		//	var alliance = null
 //		//	Api.loginPlayer(Config.deviceId3, function(doc){

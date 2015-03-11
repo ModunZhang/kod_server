@@ -890,9 +890,7 @@ Utils.refreshPlayerPower = function(playerDoc, playerData){
 	var soldierPower = this.getPlayerSoldiersPower(playerDoc)
 	var totalPower = buildingPower + housePower + soldierPower
 	playerDoc.basicInfo.power = totalPower
-	if(!_.isObject(playerData.basicInfo)) playerData.basicInfo = {}
-	playerData.basicInfo.power = playerDoc.basicInfo.power
-	TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
+	playerData.push(["basicInfo.power", playerDoc.basicInfo.power])
 }
 
 /**
@@ -1494,12 +1492,11 @@ Utils.getDragonSkillMaxLevel = function(skill){
 /**
  * 强化龙的装备
  * @param playerDoc
- * @param playerData
  * @param dragon
  * @param category
  * @param equipments
  */
-Utils.enhancePlayerDragonEquipment = function(playerDoc, playerData, dragon, category, equipments){
+Utils.enhancePlayerDragonEquipment = function(playerDoc, dragon, category, equipments){
 	var equipmentInDragon = dragon.equipments[category]
 	var config = DragonEquipments.equipments[equipmentInDragon.name]
 	var maxStar = config.maxStar
@@ -1521,12 +1518,6 @@ Utils.enhancePlayerDragonEquipment = function(playerDoc, playerData, dragon, cat
 	}
 	equipmentInDragon.star = currentStar
 	equipmentInDragon.exp = currentExp
-
-	playerData.dragonEquipments = {}
-	_.each(equipments, function(equipment){
-		playerDoc.dragonEquipments[equipment.name] -= equipment.count
-		playerData.dragonEquipments[equipment.name] = playerDoc.dragonEquipments[equipment.name]
-	})
 }
 
 /**

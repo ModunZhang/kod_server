@@ -14,7 +14,7 @@ var AllianceDao = require("../../dao/allianceDao")
 var PlayerDao = require("../../dao/playerDao")
 var Alliance = require("../../domains/alliance")
 var Player = require("../../domains/player")
-var DataService = require("../../services/dataService")
+var CacheService = require("../../services/cacheService")
 var LogicUtils = require("../../utils/logicUtils")
 var DataUtils = require("../../utils/dataUtils")
 var Consts = require("../../consts/consts")
@@ -29,13 +29,13 @@ life.beforeStartup = function(app, callback){
 
 	app.set("channelService", Promise.promisifyAll(app.get("channelService")))
 	app.set("globalChannelService", Promise.promisifyAll(app.get("globalChannelService")))
-	app.set("dataService", Promise.promisifyAll(new DataService(app)))
+	app.set("cacheService", Promise.promisifyAll(new CacheService(app)))
 
-	var dataService = app.get("dataService")
-	dataService.flushDbAsync().then(function(){
-		return dataService.loadPlayersAsync()
+	var cacheService = app.get("cacheService")
+	cacheService.flushDbAsync().then(function(){
+		return cacheService.loadPlayersAsync()
 	}).then(function(){
-		return dataService.loadAlliancesAsync()
+		return cacheService.loadAlliancesAsync()
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -54,9 +54,9 @@ life.afterStartup = function(app, callback){
 }
 
 life.beforeShutdown = function(app, callback){
-	var dataService = app.get("dataService")
-	dataService.unloadPlayersAsync().then(function(){
-		return dataService.unloadAlliancesAsync()
+	var cacheService = app.get("cacheService")
+	cacheService.unloadPlayersAsync().then(function(){
+		return cacheService.unloadAlliancesAsync()
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -151,7 +151,7 @@ life.afterStartAll = function(app){
 				event.startTime = now
 				eventFuncs.push(addTimeEventAsync(eventServerId, key, "itemEvents", event.id, event.finishTime - event.startTime))
 			})
-			DataUtils.refreshPlayerPower(playerDoc, {})
+			DataUtils.refreshPlayerPower(playerDoc, [])
 			return playerDao.updateAsync(playerDoc)
 		}).then(function(){
 			return activePlayersEvents(playerIds)

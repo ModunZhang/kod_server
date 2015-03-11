@@ -17,9 +17,6 @@ var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
 
-var GameDatas = require("../datas/GameDatas")
-var Errors = GameDatas.Errors.errors
-
 var PlayerApiService = function(app){
 	this.app = app
 	this.env = app.get("env")
@@ -85,7 +82,6 @@ pro.createAccount = function(deviceId, callback){
 		_id:deviceId,
 		userId:user._id
 	}
-
 	var playerDoc = null
 	var updateFuncs = []
 	updateFuncs.push([this.Device, this.Device.createAsync, device])
@@ -201,7 +197,8 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 		playerDoc.countInfo.loginCount += 1
 		playerDoc.logicServerId = logicServerId
 		DataUtils.refreshPlayerResources(playerDoc)
-		DataUtils.refreshPlayerPower(playerDoc, {})
+		DataUtils.refreshPlayerPower(playerDoc, [])
+		TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, [])
 		DataUtils.refreshPlayerDragonsHp(playerDoc)
 		return Promise.resolve()
 	}).then(function(){
@@ -316,10 +313,6 @@ pro.playerLogout = function(playerId, callback){
  * @param callback
  */
 pro.upgradeBuilding = function(playerId, location, finishNow, callback){
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isNumber(location) || location % 1 !== 0 || location < 1 || location > 22){
 		callback(new Error("location 不合法"))
 		return
@@ -331,7 +324,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var eventFuncs = []
 	var updateFuncs = []
 	var building = null
@@ -378,14 +371,14 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
-		playerData.resources = playerDoc.resources
-		playerData.buildingMaterials = playerDoc.buildingMaterials
+		playerData.push(["resources", playerDoc.resources])
+		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
 
 		if(finishNow){
 			building.level = building.level + 1
-			playerData.buildings = {}
-			playerData.buildings["location_" + building.location] = playerDoc.buildings["location_" + building.location]
+			playerData.push(["buildings.location_" + building.location + ".level", building.level])
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
+			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, building.level)
 		}else{
@@ -397,14 +390,10 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createBuildingEvent(playerDoc, building.location, finishTime)
 			playerDoc.buildingEvents.push(event)
-			playerData.__buildingEvents = [{
-				type:Consts.DataChangedType.Add,
-				data:event
-			}]
-
-			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+			playerData.push(["buildingEvents." + playerDoc.buildingEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "buildingEvents", event.id, finishTime])
 		}
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -435,10 +424,6 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
  * @param callback
  */
 pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callback){
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1){
 		callback(new Error("buildingLocation 不合法"))
 		return
@@ -450,7 +435,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -466,11 +451,10 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 		if(maxHouseCount - buildingAddedHouseCount < currentCount) return Promise.reject(ErrorUtils.houseTooMuchMore(playerId, buildingLocation))
 		building.type = newBuildingName
 		building.level -= 1
-		if(!DataUtils.isPlayerBuildingUpgradeLegal(playerDoc, buildingLocation)) return Promise.reject(ErrorUtils.upgradePrefixNotMatch(playerId, buildingLocation))
+		if(!DataUtils.isPlayerBuildingUpgradeLegal(playerDoc, buildingLocation)) return Promise.reject(ErrorUtils.buildingUpgradePrefixNotMatch(playerId, buildingLocation))
 		building.level += 1
+		playerData.push(["buildings.location_" + buildingLocation + ".type", newBuildingName])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		playerData.buildings = {}
-		playerData.buildings["location_" + buildingLocation] = playerDoc.buildings["location_" + buildingLocation]
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -501,10 +485,6 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
  * @param callback
  */
 pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation, finishNow, callback){
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1 || buildingLocation > 20){
 		callback(new Error("buildingLocation 不合法"))
 		return
@@ -524,7 +504,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
 	var building = null
@@ -549,7 +529,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		var buyedMaterials = null
 		var preBuildEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.resources = playerDoc.resources
+		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -577,21 +557,18 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
-		playerData.buildingMaterials = playerDoc.buildingMaterials
+		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
 		var house = {
 			type:houseType,
 			level:0,
 			location:houseLocation
 		}
 		building.houses.push(house)
-		playerData.buildings = {}
-		playerData.buildings["location_" + building.location] = playerDoc.buildings["location_" + building.location]
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-
+		playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house), house])
 		if(finishNow){
 			house.level += 1
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
-			playerData.basicInfo = playerDoc.basicInfo
+			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 		}else{
 			if(_.isObject(preBuildEvent)){
@@ -601,10 +578,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createHouseEvent(playerDoc, buildingLocation, houseLocation, finishTime)
 			playerDoc.houseEvents.push(event)
-			playerData.__houseEvents = [{
-				type:Consts.DataChangedType.Add,
-				data:event
-			}]
+			playerData.push(["houseEvents." + playerDoc.houseEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "houseEvents", event.id, finishTime])
 		}
 		if(_.isEqual("dwelling", house.type) && finishNow){
@@ -612,6 +586,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
 		}
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -643,9 +618,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
  * @param callback
  */
 pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
 	if(!_.isString(playerId)){
 		callback(new Error("playerId 不合法"))
 		return
@@ -665,7 +637,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
 	var building = null
@@ -697,7 +669,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		var buyedMaterials = null
 		var preBuildEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.resources = playerDoc.resources
+		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -723,12 +695,12 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
-		playerData.buildingMaterials = playerDoc.buildingMaterials
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
 		if(finishNow){
 			house.level += 1
+			playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house) + ".level", house.level])
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
-			playerData.basicInfo = playerDoc.basicInfo
+			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, house.level)
 		}else{
@@ -739,10 +711,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createHouseEvent(playerDoc, building.location, house.location, finishTime)
 			playerDoc.houseEvents.push(event)
-			playerData.__houseEvents = [{
-				type:Consts.DataChangedType.Add,
-				data:event
-			}]
+			playerData.push(["houseEvents." + playerDoc.houseEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "houseEvents", event.id, finishTime])
 		}
 		if(_.isEqual("dwelling", house.type) && finishNow){
@@ -750,6 +719,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
 		}
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -780,10 +750,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
  * @param callback
  */
 pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.contains(Consts.FreeSpeedUpAbleEventTypes, eventType)){
 		callback(new Error("eventType 不合法"))
 		return
@@ -836,10 +802,6 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
  * @param callback
  */
 pro.makeMaterial = function(playerId, category, finishNow, callback){
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.contains(Consts.MaterialType, category)){
 		callback(new Error("category 不合法"))
 		return
@@ -851,7 +813,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
@@ -871,7 +833,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		var makeRequired = DataUtils.getMakeMaterialRequired(category, building.level)
 		var buyedResources = null
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.resources = playerDoc.resources
+		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(makeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(makeRequired.resources, {})
@@ -890,10 +852,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 
 		event = DataUtils.createMaterialEvent(building, category, finishNow)
 		playerDoc.materialEvents.push(event)
-		playerData.__materialEvents = [{
-			type:Consts.DataChangedType.Add,
-			data:event
-		}]
+		playerData.push(["materialEvents." + playerDoc.materialEvents.indexOf(event), event])
 		if(finishNow){
 			if(_.isEqual(category, Consts.MaterialType.BuildingMaterials)){
 				TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.MakeBuildingMaterials)
@@ -931,10 +890,6 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
  * @param callback
  */
 pro.getMaterials = function(playerId, eventId, callback){
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isString(eventId)){
 		callback(new Error("eventId 不合法"))
 		return
@@ -942,20 +897,17 @@ pro.getMaterials = function(playerId, eventId, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var event = _.find(playerDoc.materialEvents, function(event){
 			return _.isEqual(event.id, eventId)
 		})
 		if(!_.isObject(event) || event.finishTime > 0) return Promise.reject(ErrorUtils.materialEventNotExistOrIsMakeing(playerId, eventId))
+		playerData.push(["materialEvents." + playerDoc.materialEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.materialEvents, event)
-		playerData.__materialEvents = [{
-			type:Consts.DataChangedType.Remove,
-			data:event
-		}]
 		DataUtils.addPlayerMaterials(playerDoc, event)
-		playerData[event.category] = playerDoc[event.category]
+		playerData.push([event.category, playerDoc[event.category]])
 		return self.playerDao.updateAsync(playerDoc)
 	}).then(function(){
 		callback(null, playerData)
@@ -983,10 +935,6 @@ pro.getMaterials = function(playerId, eventId, callback){
  * @param callback
  */
 pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, callback){
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isNormalSoldier(soldierName)){
 		callback(new Error("soldierName 普通兵种不存在"))
 		return
@@ -1002,7 +950,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
@@ -1015,7 +963,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		var recruitRequired = DataUtils.getPlayerRecruitNormalSoldierRequired(playerDoc, soldierName, count)
 		var buyedResources = null
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.resources = playerDoc.resources
+		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
 			buyedResources = DataUtils.buyResources(recruitRequired.resources, {})
@@ -1031,20 +979,16 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		LogicUtils.reduce(recruitRequired.resources, playerDoc.resources)
 		if(finishNow){
 			playerDoc.soldiers[soldierName] += count
-			playerData.soldiers = {}
-			playerData.soldiers[soldierName] = playerDoc.soldiers[soldierName]
+			playerData.push(["soldiers." + soldierName, playerDoc.soldiers[soldierName]])
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
-			playerData.basicInfo = playerDoc.basicInfo
+			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
 			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		}else{
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
 			var event = LogicUtils.createSoldierEvent(playerDoc, soldierName, count, finishTime)
 			playerDoc.soldierEvents.push(event)
-			playerData.__soldierEvents = [{
-				type:Consts.DataChangedType.Add,
-				data:event
-			}]
+			playerData.push(["soldierDevents." + playerDoc.soldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime])
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
@@ -1079,10 +1023,6 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
  * @param callback
  */
 pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, callback){
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.hasSpecialSoldier(soldierName)){
 		callback(new Error("soldierName 特殊兵种不存在"))
 		return
@@ -1098,7 +1038,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
@@ -1111,7 +1051,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		var recruitRequired = DataUtils.getPlayerRecruitSpecialSoldierRequired(playerDoc, soldierName, count)
 		var buyedResources = null
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.resources = playerDoc.resources
+		playerData.push(["resources", playerDoc.resources])
 		if(!LogicUtils.isEnough(recruitRequired.materials, playerDoc.soldierMaterials)) return Promise.reject(ErrorUtils.soldierRecruitMaterialsNotEnough(playerId, soldierName, count))
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
@@ -1127,23 +1067,19 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(recruitRequired.materials, playerDoc.soldierMaterials)
 		LogicUtils.reduce({citizen:recruitRequired.citizen}, playerDoc.resources)
-		playerData.soldierMaterials = playerDoc.soldierMaterials
+		playerData.push(["soldierMaterials", playerDoc.soldierMaterials])
 		if(finishNow){
 			playerDoc.soldiers[soldierName] += count
-			playerData.soldiers = {}
-			playerData.soldiers[soldierName] = playerDoc.soldiers[soldierName]
+			playerData.push(["soldiers." + soldierName, playerDoc.soldiers[soldierName]])
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
-			playerData.basicInfo = playerDoc.basicInfo
+			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
 			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		}else{
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
 			var event = LogicUtils.createSoldierEvent(playerDoc, soldierName, count, finishTime)
 			playerDoc.soldierEvents.push(event)
-			playerData.__soldierEvents = [{
-				type:Consts.DataChangedType.Add,
-				data:event
-			}]
+			playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime])
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])

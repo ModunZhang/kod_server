@@ -447,3 +447,277 @@ Utils.soldierRecruitMaterialsNotEnough = function(playerId, soldierName, count){
 	var config = Errors.soldierRecruitMaterialsNotEnough
 	return CreateError(config, {playerId:playerId, soldierName:soldierName, count:count})
 }
+
+/**
+ * 龙装备制造事件已存在
+ * @param playerId
+ * @param equipmentName
+ */
+Utils.dragonEquipmentEventsExist = function(playerId, equipmentName){
+	var config = Errors.dragonEquipmentEventsExist
+	return CreateError(config, {playerId:playerId, equipmentName:equipmentName})
+}
+
+/**
+ * 制作龙装备材料不足
+ * @param playerId
+ * @param equipmentName
+ */
+Utils.dragonEquipmentMaterialsNotEnough = function(playerId, equipmentName){
+	var config = Errors.dragonEquipmentMaterialsNotEnough
+	return CreateError(config, {playerId:playerId, equipmentName:equipmentName})
+}
+
+/**
+ * 士兵不存在或士兵数量不合法
+ * @param playerId
+ * @param soldiers
+ */
+Utils.soldierNotExistOrCountNotLegal = function(playerId, soldiers){
+	var config = Errors.soldierNotExistOrCountNotLegal
+	return CreateError(config, {playerId:playerId, soldiers:soldiers})
+}
+
+/**
+ * 士兵质量事件已存在
+ * @param playerId
+ * @param soldiers
+ */
+Utils.soldierTreatEventExist = function(playerId, soldiers){
+	var config = Errors.soldierTreatEventExist
+	return CreateError(config, {playerId:playerId, soldiers:soldiers})
+}
+
+/**
+ * 龙蛋早已成功孵化
+ * @param playerId
+ * @param dragonType
+ */
+Utils.dragonEggAlreadyHatched = function(playerId, dragonType){
+	var config = Errors.dragonEggAlreadyHatched
+	return CreateError(config, {playerId:playerId, dragonType:dragonType})
+}
+
+/**
+ * 龙蛋孵化事件已存在
+ * @param playerId
+ * @param dragonType
+ */
+Utils.dragonEggHatchEventExist = function(playerId, dragonType){
+	var config = Errors.dragonEggHatchEventExist
+	return CreateError(config, {playerId:playerId, dragonType:dragonType})
+}
+
+/**
+ * 龙还未孵化
+ * @param playerId
+ * @param dragonType
+ */
+Utils.dragonNotHatched = function(playerId, dragonType){
+	var config = Errors.dragonNotHatched
+	return CreateError(config, {playerId:playerId, dragonType:dragonType})
+}
+
+/**
+ * 装备与龙的星级不匹配
+ * @param playerId
+ * @param dragonType
+ * @param equipmentCategory
+ * @param equipmentName
+ */
+Utils.dragonEquipmentNotMatchForTheDragon = function(playerId, dragonType, equipmentCategory, equipmentName){
+	var config = Errors.dragonEquipmentNotMatchForTheDragon
+	return CreateError(config, {playerId:playerId, dragonType:dragonType, equipmentCategory:equipmentCategory, equipmentName:equipmentName})
+}
+
+/**
+ * 龙装备数量不足
+ * @param playerId
+ * @param dragonType
+ * @param equipmentCategory
+ * @param equipmentName
+ */
+Utils.dragonEquipmentNotEnough = function(playerId, dragonType, equipmentCategory, equipmentName){
+	var config = Errors.dragonEquipmentNotEnough
+	return CreateError(config, {playerId:playerId, dragonType:dragonType, equipmentCategory:equipmentCategory, equipmentName:equipmentName})
+}
+
+/**
+ * 龙身上已经存在相同类型的装备
+ * @param playerId
+ * @param dragonType
+ * @param equipmentCategory
+ * @param equipmentName
+ */
+Utils.dragonAlreadyHasTheSameCategory = function(playerId, dragonType, equipmentCategory, equipmentName){
+	var config = Errors.dragonAlreadyHasTheSameCategory
+	return CreateError(config, {playerId:playerId, dragonType:dragonType, equipmentCategory:equipmentCategory, equipmentName:equipmentName})
+}
+
+/**
+ * 此分类还没有配置装备
+ * @param playerId
+ * @param dragonType
+ * @param equipmentCategory
+ */
+Utils.dragonDoNotHasThisEquipment = function(playerId, dragonType, equipmentCategory){
+	var config = Errors.dragonDoNotHasThisEquipment
+	return CreateError(config, {playerId:playerId, dragonType:dragonType, equipmentCategory:equipmentCategory})
+}
+
+/**
+ * 装备已到最高星级
+ * @param playerId
+ * @param dragonType
+ * @param equipmentCategory
+ */
+Utils.dragonEquipmentReachMaxStar = function(playerId, dragonType, equipmentCategory){
+	var config = Errors.dragonEquipmentReachMaxStar
+	return CreateError(config, {playerId:playerId, dragonType:dragonType, equipmentCategory:equipmentCategory})
+}
+
+/**
+ * 被牺牲的装备不存在或数量不足
+ * @param playerId
+ * @param equipments
+ */
+Utils.dragonEquipmentsNotExistOrNotEnough = function(playerId, equipments){
+	var config = Errors.dragonEquipmentsNotExistOrNotEnough
+	return CreateError(config, {playerId:playerId, equipments:equipments})
+}
+
+/**
+ * 龙技能不存在
+ * @param playerId
+ * @param dragonType
+ * @param skillKey
+ */
+Utils.dragonSkillNotExist = function(playerId, dragonType, skillKey){
+	var config = Errors.dragonSkillNotExist
+	return CreateError(config, {playerId:playerId, dragonType:dragonType, skillKey:skillKey})
+}
+
+/**
+ * 此龙技能还未解锁
+ * @param playerId
+ * @param dragonType
+ * @param skillKey
+ */
+Utils.dragonSkillIsLocked = function(playerId, dragonType, skillKey){
+	var config = Errors.dragonSkillIsLocked
+	return CreateError(config, {playerId:playerId, dragonType:dragonType, skillKey:skillKey})
+}
+
+/**
+ * 龙技能已达最高等级
+ * @param playerId
+ * @param dragonType
+ * @param skillKey
+ */
+Utils.dragonSkillReachMaxLevel = function(playerId, dragonType, skillKey){
+	var config = Errors.dragonSkillReachMaxLevel
+	return CreateError(config, {playerId:playerId, dragonType:dragonType, skillKey:skillKey})
+}
+
+/**
+ * 英雄之血不足
+ * @param playerId
+ * @param bloodNeed
+ * @param bloodHas
+ */
+Utils.heroBloodNotEnough = function(playerId, bloodNeed, bloodHas){
+	var config = Errors.heroBloodNotEnough
+	return CreateError(config, {playerId:playerId, bloodNeed:bloodNeed, bloodHas:bloodHas})
+}
+
+/**
+ * 龙的星级已达最高
+ * @param playerId
+ * @param dragonType
+ * @param currentStar
+ */
+Utils.dragonReachMaxStar = function(playerId, dragonType, currentStar){
+	var config = Errors.dragonReachMaxStar
+	return CreateError(config, {playerId:playerId, dragonType:dragonType, currentStar:currentStar})
+}
+
+/**
+ * 龙的等级未达到晋级要求
+ * @param playerId
+ * @param dragon
+ */
+Utils.dragonUpgradeStarFailedForLevelNotLegal = function(playerId, dragon){
+	var config = Errors.dragonUpgradeStarFailedForLevelNotLegal
+	return CreateError(config, {playerId:playerId, dragon:dragon})
+}
+
+/**
+ * 龙的装备未达到晋级要求
+ * @param playerId
+ * @param dragon
+ */
+Utils.dragonUpgradeStarFailedForEquipmentNotLegal = function(playerId, dragon){
+	var config = Errors.dragonUpgradeStarFailedForEquipmentNotLegal
+	return CreateError(config, {playerId:playerId, dragon:dragon})
+}
+
+/**
+ * 每日任务不存在
+ * @param playerId
+ * @param questId
+ */
+Utils.dailyQuestNotExist = function(playerId, questId){
+	var config = Errors.dailyQuestNotExist
+	return CreateError(config, {playerId:playerId, questId:questId})
+}
+
+/**
+ * 每日任务已达最高星级
+ * @param playerId
+ * @param quest
+ */
+Utils.dailyQuestReachMaxStar = function(playerId, quest){
+	var config = Errors.dailyQuestReachMaxStar
+	return CreateError(config, {playerId:playerId, quest:quest})
+}
+
+/**
+ * 每日任务事件已存在
+ * @param playerId
+ * @param events
+ */
+Utils.dailyQuestEventExist = function(playerId, events){
+	var config = Errors.dailyQuestEventExist
+	return CreateError(config, {playerId:playerId, events:events})
+}
+
+/**
+ * 每日任务事件不存在
+ * @param playerId
+ * @param eventId
+ * @param events
+ */
+Utils.dailyQuestEventNotExist = function(playerId, eventId, events){
+	var config = Errors.dailyQuestEventNotExist
+	return CreateError(config, {playerId:playerId, eventId:eventId, events:events})
+}
+
+/**
+ * 每日任务事件还未完成
+ * @param playerId
+ * @param event
+ */
+Utils.dailyQuestEventNotFinished = function(playerId, event){
+	var config = Errors.dailyQuestEventNotFinished
+	return CreateError(config, {playerId:playerId, event:event})
+}
+
+/**
+ * 邮件不存在
+ * @param playerId
+ * @param mailId
+ */
+Utils.mailNotExist = function(playerId, mailId){
+	var config = Errors.mailNotExist
+	return CreateError(config, {playerId:playerId, mailId:mailId})
+}
