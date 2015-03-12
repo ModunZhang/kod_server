@@ -10,6 +10,7 @@ var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var TaskUtils = require("../utils/taskUtils")
+var ErrorUtils = require("../utils/errorUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -34,59 +35,29 @@ var pro = PlayerApiService5.prototype
  * @param callback
  */
 pro.getDay60Reward = function(playerId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var playerData = []
 	var updateFuncs = []
 
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
-
-		if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)) return Promise.reject(new Error("今日登陆奖励已领取"))
+		if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)) return Promise.reject(ErrorUtils.loginRewardAlreadyGet(playerId))
 		playerDoc.countInfo.day60RewardsCount = playerDoc.countInfo.day60
-		playerData.countInfo = playerDoc.countInfo
+		playerData.push(["countInfo.day60RewardsCount", playerDoc.countInfo.day60RewardsCount])
 
 		var items = DataUtils.getDay60RewardItem(playerDoc.countInfo.day60)
-		playerData.__items = []
 		_.each(items, function(item){
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			if(resp.newlyCreated){
-				playerData.__items.push({
-					type:Consts.DataChangedType.Add,
-					data:resp.item
-				})
-			}else{
-				playerData.__items.push({
-					type:Consts.DataChangedType.Edit,
-					data:resp.item
-				})
-			}
+			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
 
-
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -109,65 +80,37 @@ pro.getDay60Reward = function(playerId, callback){
  * @param callback
  */
 pro.getOnlineReward = function(playerId, timePoint, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.contains(_.values(Consts.OnlineTimePoint), timePoint)){
 		callback(new Error("timePoint 不合法"))
 	}
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var playerData = []
 	var updateFuncs = []
 
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
-
-		if(!DataUtils.isPlayerReachOnlineTimePoint(playerDoc, timePoint)) return Promise.reject(new Error("在线时间不足,不能领取"))
+		if(!DataUtils.isPlayerReachOnlineTimePoint(playerDoc, timePoint)) return Promise.reject(ErrorUtils.onlineTimeNotEough(playerId))
 		var theTimePoint = _.find(playerDoc.countInfo.todayOnLineTimeRewards, function(reward){
 			return _.isEqual(reward, timePoint)
 		})
-		if(_.isNumber(theTimePoint)) return Promise.reject(new Error("此时间节点的在线奖励已经领取"))
+		if(_.isNumber(theTimePoint)) return Promise.reject(ErrorUtils.onlineTimeRewardAlreadyGet(playerId))
 		playerDoc.countInfo.todayOnLineTimeRewards.push(timePoint)
-		playerData.countInfo = playerDoc.countInfo
+		playerData.push(["countInfo.todayOnLineTimeRewards." + playerDoc.countInfo.todayOnLineTimeRewards.indexOf(timePoint), timePoint])
 
 		var items = DataUtils.getOnlineRewardItem(timePoint)
-		playerData.__items = []
 		_.each(items, function(item){
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			if(resp.newlyCreated){
-				playerData.__items.push({
-					type:Consts.DataChangedType.Add,
-					data:resp.item
-				})
-			}else{
-				playerData.__items.push({
-					type:Consts.DataChangedType.Edit,
-					data:resp.item
-				})
-			}
+			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -189,48 +132,30 @@ pro.getOnlineReward = function(playerId, timePoint, callback){
  * @param callback
  */
 pro.getDay14Reward = function(playerId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var playerData = []
 	var updateFuncs = []
 
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 
-		if(_.isEqual(playerDoc.countInfo.day14, playerDoc.countInfo.day14RewardsCount)) return Promise.reject(new Error("今日王城援军奖励已领取"))
+		if(_.isEqual(playerDoc.countInfo.day14, playerDoc.countInfo.day14RewardsCount)) return Promise.reject(ErrorUtils.wonderAssistanceRewardAlreadyGet(playerId))
 		playerDoc.countInfo.day14RewardsCount = playerDoc.countInfo.day14
-		playerData.countInfo = playerDoc.countInfo
+		playerData.push(["countInfo.day14RewardsCount", playerDoc.countInfo.day14RewardsCount])
 
 		var rewards = DataUtils.getDay14Rewards(playerDoc.countInfo.day60)
 		_.each(rewards, function(reward){
 			playerDoc[reward.type][reward.name] += reward.count
-			if(!_.isObject(playerData[reward.type])) playerData[reward.type] = {}
-			playerData[reward.type][reward.name] = playerDoc[reward.type][reward.name]
+			playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
 		})
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -253,13 +178,6 @@ pro.getDay14Reward = function(playerId, callback){
  * @param callback
  */
 pro.getLevelupReward = function(playerId, levelupIndex, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isLevelupIndexExist(levelupIndex)){
 		callback(new Error("levelupIndex 不合法"))
 		return
@@ -267,53 +185,33 @@ pro.getLevelupReward = function(playerId, levelupIndex, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var playerData = []
 	var updateFuncs = []
 
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 
 		var theLevelupIndex = _.find(playerDoc.countInfo.levelupRewards, function(reward){
 			return reward == levelupIndex
 		})
-		if(Date.now() > DataUtils.getPlayerLevelupExpireTime(playerDoc)) return Promise.reject(new Error("冲级奖励时间已过"))
-		if(_.isNumber(theLevelupIndex)) return Promise.reject(new Error("当前等级的冲级奖励已经领取"))
-		if(!DataUtils.isPlayerKeepLevelLegalForLevelupIndex(playerDoc, levelupIndex)) return Promise.reject(new Error("玩家城堡等级不足以领取当前冲级奖励"))
+		if(Date.now() > DataUtils.getPlayerLevelupExpireTime(playerDoc)) return Promise.reject(ErrorUtils.levelUpRewardExpired(playerId))
+		if(_.isNumber(theLevelupIndex)) return Promise.reject(ErrorUtils.levelUpRewardAlreadyGet(playerId))
+		if(!DataUtils.isPlayerKeepLevelLegalForLevelupIndex(playerDoc, levelupIndex)) return Promise.reject(ErrorUtils.levelUpRewardCanNotBeGetForCastleLevelNotMatch(playerId))
 		playerDoc.countInfo.levelupRewards.push(levelupIndex)
-		playerData.countInfo = playerDoc.countInfo
+		playerData.push(["countInfo.levelupRewards." + playerDoc.countInfo.levelupRewards.indexOf(levelupIndex), levelupIndex])
 
 		var items = DataUtils.getLevelupRewards(levelupIndex)
-		playerData.__items = []
 		_.each(items, function(item){
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			if(resp.newlyCreated){
-				playerData.__items.push({
-					type:Consts.DataChangedType.Add,
-					data:resp.item
-				})
-			}else{
-				playerData.__items.push({
-					type:Consts.DataChangedType.Edit,
-					data:resp.item
-				})
-			}
+			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -335,61 +233,33 @@ pro.getLevelupReward = function(playerId, levelupIndex, callback){
  * @param callback
  */
 pro.getFirstIAPRewards = function(playerId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var playerData = []
 	var updateFuncs = []
 
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 
-		if(playerDoc.countInfo.iapCount <= 0) return Promise.reject(new Error("玩家还未进行首次充值"))
-		if(playerDoc.countInfo.isFirstIAPRewardsGeted) return Promise.reject(new Error("奖励已经领取"))
+		if(playerDoc.countInfo.iapCount <= 0) return Promise.reject(ErrorUtils.firstIAPNotHappen(playerId))
+		if(playerDoc.countInfo.isFirstIAPRewardsGeted) return Promise.reject(ErrorUtils.firstIAPRewardAlreadyGet(playerId))
 		playerDoc.countInfo.isFirstIAPRewardsGeted = true
 		playerDoc.basicInfo.buildQueue = 2
-		playerData.countInfo = playerDoc.countInfo
-		playerData.basicInfo = playerDoc.basicInfo
+		playerData.push(["countInfo.isFirstIAPRewardsGeted", playerDoc.countInfo.isFirstIAPRewardsGeted])
+		playerData.push(["basicInfo.buildQueue", playerDoc.basicInfo.buildQueue])
 
 		var items = DataUtils.getFirstIAPRewards()
-		playerData.__items = []
 		_.each(items, function(item){
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			if(resp.newlyCreated){
-				playerData.__items.push({
-					type:Consts.DataChangedType.Add,
-					data:resp.item
-				})
-			}else{
-				playerData.__items.push({
-					type:Consts.DataChangedType.Edit,
-					data:resp.item
-				})
-			}
+			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -411,41 +281,25 @@ pro.getFirstIAPRewards = function(playerId, callback){
  * @param callback
  */
 pro.passSelinasTest = function(playerId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var playerData = []
 	var updateFuncs = []
 
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.PassSelinasTest)
 		if(_.isEmpty(playerData)){
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		}else{
 			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		}
 
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -468,13 +322,6 @@ pro.passSelinasTest = function(playerId, callback){
  * @param callback
  */
 pro.getDailyTaskRewards = function(playerId, taskType, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.contains(_.values(Consts.DailyTaskTypes), taskType)){
 		callback(new Error("taskType 不合法"))
 		return
@@ -482,51 +329,30 @@ pro.getDailyTaskRewards = function(playerId, taskType, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var playerData = []
 	var updateFuncs = []
 
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		var isRewarded = _.contains(playerDoc.dailyTasks.rewarded, taskType)
-		if(isRewarded) return Promise.reject(new Error("奖励已经领取"))
-		if(playerDoc.dailyTasks[taskType].length < 5) return Promise.reject(new Error("任务未完成"))
+		if(isRewarded) return Promise.reject(ErrorUtils.dailyTaskRewardAlreadyGet(playerId))
+		if(playerDoc.dailyTasks[taskType].length < 5) return Promise.reject(ErrorUtils.dailyTaskNotFinished(playerId))
 
 		playerDoc.dailyTasks.rewarded.push(taskType)
-		playerData.dailyTasks = {}
-		playerData.dailyTasks.rewarded = playerDoc.dailyTasks.rewarded
+		playerData.push(["dailyTasks.rewarded." + playerDoc.dailyTasks.rewarded.indexOf(taskType), taskType])
 
 		var items = DataUtils.getDailyTaskRewardsByType(taskType)
-		playerData.__items = []
 		_.each(items, function(item){
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			if(resp.newlyCreated){
-				playerData.__items.push({
-					type:Consts.DataChangedType.Add,
-					data:resp.item
-				})
-			}else{
-				playerData.__items.push({
-					type:Consts.DataChangedType.Edit,
-					data:resp.item
-				})
-			}
+			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -550,13 +376,6 @@ pro.getDailyTaskRewards = function(playerId, taskType, callback){
  * @param callback
  */
 pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.contains(Consts.GrowUpTaskTypes, taskType)){
 		callback(new Error("taskType 不合法"))
 		return
@@ -568,42 +387,33 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var playerData = []
 	var updateFuncs = []
 
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 
 		var task = _.find(playerDoc.growUpTasks[taskType], function(task){
 			return _.isEqual(task.id, taskId)
 		})
-		if(!_.isObject(task)) return Promise.reject(new Error("任务未完成或奖励已领取"))
-		if(TaskUtils.hasPreGrowUpTask(playerDoc, taskType, task)) return Promise.reject(new Error("还有前置任务奖励未领取"))
+		if(!_.isObject(task)) return Promise.reject(ErrorUtils.growUpTaskNotExist(playerId, taskType, taskId))
+		if(TaskUtils.hasPreGrowUpTask(playerDoc, taskType, task)) return Promise.reject(ErrorUtils.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet(playerId, taskType, taskId))
 		var rewards = DataUtils.getGrowUpTaskRewards(taskType, taskId)
 		playerDoc.basicInfo.levelExp += rewards.exp
-		playerData.basicInfo = playerDoc.basicInfo
+		playerData.push(["basicInfo.levelExp", playerDoc.basicInfo.levelExp])
 		DataUtils.refreshPlayerResources(playerDoc)
 		LogicUtils.addPlayerResources(playerDoc, rewards)
-		playerData.resources = playerDoc.resources
+		playerData.push(["resources", playerDoc.resources])
 
 		task.rewarded = true
 		TaskUtils.updateGrowUpTaskData(playerDoc, playerData, taskType, task)
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){

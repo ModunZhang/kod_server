@@ -11,6 +11,7 @@ var _ = require("underscore")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var ErrorUtils = require("../utils/errorUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -36,10 +37,11 @@ var pro = PlayerIAPService.prototype
 
 /**
  * 去苹果商店验证
+ * @param playerDoc
  * @param receiptData
  * @param callback
  */
-var BillingValidate = function(receiptData, callback){
+var BillingValidate = function(playerDoc, receiptData, callback){
 	var postData = {
 		"receipt-data":new Buffer(receiptData).toString("base64")
 	}
@@ -51,7 +53,7 @@ var BillingValidate = function(receiptData, callback){
 	var request = Https.request(httpOptions, function(response){
 		response.on("data", function(data){
 			var jsonObj = JSON.parse(data.toString())
-			if(jsonObj.status !== 0) callback(new Error("订单验证失败,错误码:" + jsonObj.status))
+			if(jsonObj.status !== 0) callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj))
 			else{
 				callback(null, jsonObj.receipt)
 			}
@@ -69,7 +71,7 @@ var BillingValidate = function(receiptData, callback){
  * 创建订单记录
  * @param playerId
  * @param receiptObject
- * @returns {{playerId: *, transactionId: *, productId: *, quantity: (*|billingSchema.quantity), itemId: *, purchaseDate: *}}
+ * @returns {{playerId: *, transactionId: *, productId: *, quantity: (*|BillingSchema.quantity), itemId: *, purchaseDate: *}}
  */
 var CreateBillingItem = function(playerId, receiptObject){
 	var billing = {
@@ -128,61 +130,42 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var billing = null
+	var playerData = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){
-		if(_.isObject(doc)) return Promise.reject(new Error("重复的订单号"))
+		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId, receiptData))
 		var billingValidateAsync = Promise.promisify(BillingValidate, self)
-		return billingValidateAsync(receiptData)
-	}).then(function(doc){
-		var billing = CreateBillingItem(playerId, doc)
+		return billingValidateAsync(playerDoc, receiptData)
+	}).then(function(responseReceiptData){
+		billing = CreateBillingItem(playerId, responseReceiptData)
 		var quantity = billing.quantity
 		var itemConfig = _.find(StoreItems.items, function(item){
 			if(_.isObject(item)){
 				return _.isEqual(item.productId, billing.productId)
 			}
 		})
-		if(!_.isObject(itemConfig)) return Promise.reject(new Error("订单商品不存在"))
+		if(!_.isObject(itemConfig)) return Promise.reject(ErrorUtils.iapProductNotExist(playerId, responseReceiptData, billing))
 		playerDoc.resources.gem += itemConfig.gem * quantity
+		playerData.push(["resources.gem", playerDoc.resources.gem])
 		playerDoc.countInfo.iapCount += 1
-		playerData.resources = playerDoc.resources
-		playerData.countInfo = playerDoc.countInfo
+		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		var rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		playerData.__items = []
 		_.each(rewards, function(reward){
 			var resp = LogicUtils.addPlayerItem(playerDoc, reward.name, reward.count * quantity)
-			if(resp.newlyCreated){
-				playerData.__items.push({
-					type:Consts.DataChangedType.Add,
-					data:resp.item
-				})
-			}else{
-				playerData.__items.push({
-					type:Consts.DataChangedType.Edit,
-					data:resp.item
-				})
-			}
+			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
 
 		updateFuncs.push([self.Billing, self.Billing.createAsync, billing])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAddPlayerBillingDataSuccessAsync, playerDoc, billing.transactionId])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, [playerData, billing.transactionId])
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){

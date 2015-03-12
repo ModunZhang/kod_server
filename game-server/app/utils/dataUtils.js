@@ -556,7 +556,7 @@ Utils.getPlayerStamina = function(playerDoc){
 	var staminaRecoverPerHour = PlayerInitData.intInit.staminaRecoverPerHour.value
 	var staminaMax = PlayerInitData.intInit.staminaMax.value
 	if(staminaMax <= playerDoc.resources["stamina"]){
-		return staminaMax
+		return playerDoc.resources["stamina"]
 	}
 
 	var totalPerSecond = staminaRecoverPerHour / 60 / 60
@@ -1325,6 +1325,7 @@ Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
 		var config = Dragons.dragonSkills["leadership"]
 		skillBuff = leadershipSkill.level * config.effectPerLevel
 	}
+	var vipHpBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonLeaderShipAdd
 
 	var equipmentBuffKey = "troopSizeAdd"
 	_.each(dragon.equipments, function(equipment){
@@ -1335,7 +1336,7 @@ Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
 		})
 	})
 
-	return itemBuff + skillBuff + equipmentBuff
+	return itemBuff + skillBuff + equipmentBuff + vipHpBuff
 }
 
 /**
@@ -2785,6 +2786,8 @@ Utils.addPlayerDragonExp = function(playerDoc, playerData, dragon, expAdd, inFig
 			TaskUtils.finishDragonLevelTaskIfNeed(playerDoc, playerData, dragon.type, dragon.level)
 		}
 	}
+	playerData.push(["dragons." + dragon.type + ".level", dragon.level])
+	playerData.push(["dragons." + dragon.type + ".exp", dragon.exp])
 }
 
 /**
@@ -2811,8 +2814,7 @@ Utils.getPlayerSoldiersCitizen = function(playerDoc, soldiers){
  */
 Utils.getPlayerDragonMaxCitizen = function(playerDoc, dragon){
 	var leaderShip = this.getPlayerDragonLeadership(playerDoc, dragon)
-	var vipHpBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonLeaderShipAdd
-	return leaderShip * AllianceInit.intInit.citizenPerLeadership.value * (1 + vipHpBuff)
+	return leaderShip * AllianceInit.intInit.citizenPerLeadership.value
 }
 
 /**
@@ -3122,18 +3124,19 @@ Utils.isMilitaryTechNameLegal = function(techName){
 }
 
 /**
- * 玩家军事科技建筑是否建造
+ * 获取玩家军事科技所属建筑
  * @param playerDoc
  * @param techName
+ * @returns {*}
  */
-Utils.isPlayerMilitaryTechBuildingCreated = function(playerDoc, techName){
+Utils.getPlayerMilitaryTechBuilding = function(playerDoc, techName){
 	var tech = playerDoc.militaryTechs[techName]
 	var buildingName = tech.building
 	var buildingConfig = _.find(Buildings.buildings, function(config){
 		return _.isObject(config) && _.isEqual(buildingName, config.name)
 	})
 	var building = playerDoc.buildings["location_" + buildingConfig.location]
-	return building.level > 0
+	return building
 }
 
 /**
@@ -3577,13 +3580,11 @@ Utils.addPlayerWoundedSoldiers = function(playerDoc, playerData, woundedSoldiers
 	var maxCitizen = this.getPlayerHospitalMaxCitizen(playerDoc)
 	var usedCitizen = this.getPlayerSoldiersCitizen(playerDoc, LogicUtils.getFormatedSoldiers(playerDoc.woundedSoldiers))
 	if(maxCitizen > usedCitizen){
-		if(!_.isObject(playerData.woundedSoldiers)) playerData.woundedSoldiers = {}
 		_.each(woundedSoldiers, function(woundedSoldier){
 			playerDoc.woundedSoldiers[woundedSoldier.name] += woundedSoldier.count
-			playerData.woundedSoldiers[woundedSoldier.name] = playerDoc.woundedSoldiers[woundedSoldier.name]
+			playerData.push(["woundedSoldiers." + woundedSoldier.name, playerDoc.woundedSoldiers[woundedSoldier.name]])
 		})
 	}
-	if(_.isEmpty(playerData.woundedSoldiers)) delete playerData.woundedSoldiers
 }
 
 /**
@@ -3743,7 +3744,7 @@ Utils.getPlayerVipExpByLoginDaysCount = function(vipLoginDaysCount){
 Utils.addPlayerVipExp = function(playerDoc, playerData, expAdd, eventFuncs, timeEventService){
 	var preLevel = this.getPlayerVipLevel(playerDoc)
 	playerDoc.basicInfo.vipExp += expAdd
-	playerData.basicInfo = playerDoc.basicInfo
+	playerData.push(["basicInfo.vipExp", playerDoc.basicInfo.vipExp])
 	var afterLevel = this.getPlayerVipLevel(playerDoc)
 	var itemConfig = Items.special.vipActive_3
 	var totalVipTime = 0
@@ -3754,10 +3755,6 @@ Utils.addPlayerVipExp = function(playerDoc, playerData, expAdd, eventFuncs, time
 		var event = playerDoc.vipEvents[0]
 		if(_.isObject(event)){
 			event.finishTime += totalVipTime
-			playerData.__vipEvents = [{
-				type:Consts.DataChangedType.Edit,
-				data:event
-			}]
 			eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
 		}else{
 			event = {
@@ -3766,12 +3763,9 @@ Utils.addPlayerVipExp = function(playerDoc, playerData, expAdd, eventFuncs, time
 				finishTime:Date.now() + totalVipTime
 			}
 			playerDoc.vipEvents.push(event)
-			playerData.__vipEvents = [{
-				type:Consts.DataChangedType.Add,
-				data:event
-			}]
 			eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "vipEvents", event.id, event.finishTime])
 		}
+		playerData.push(["vipEvents." + playerDoc.vipEvents.indexOf(event), event])
 	}
 }
 

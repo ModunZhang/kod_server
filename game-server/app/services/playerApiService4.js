@@ -12,6 +12,7 @@ var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var TaskUtils = require("../utils/taskUtils")
 var ItemUtils = require("../utils/itemUtils")
+var ErrorUtils = require("../utils/errorUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -24,6 +25,7 @@ var PlayerApiService4 = function(app){
 	this.globalChannelService = app.get("globalChannelService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
+	this.Player = app.get("Player")
 }
 module.exports = PlayerApiService4
 var pro = PlayerApiService4.prototype
@@ -37,13 +39,6 @@ var pro = PlayerApiService4.prototype
  * @param callback
  */
 pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isProductionTechNameLegal(techName)){
 		callback(new Error("techName 不合法"))
 		return
@@ -55,23 +50,17 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
-	var pushFuncs = []
+	var playerData = []
 	var eventFuncs = []
 	var updateFuncs = []
 	var tech = null
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		tech = playerDoc.productionTechs[techName]
-		if(!_.isObject(tech)){
-			return Promise.reject(new Error("科技不存在"))
-		}
 		if(tech.index > 9) return Promise.reject(new Error("此科技还未开放"))
-		if(playerDoc.buildings.location_7.level <= 0) return Promise.reject(new Error("学院还未建造"))
-		if(DataUtils.isProductionTechReachMaxLevel(tech.level)) return Promise.reject(new Error("科技已达最高等级"))
-		if(tech.level == 0 && !DataUtils.isPlayerUnlockProductionTechLegal(playerDoc, techName)) return Promise.reject(new Error("前置科技条件不满足"))
+		if(playerDoc.buildings.location_7.level <= 0) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, 7))
+		if(DataUtils.isProductionTechReachMaxLevel(tech.level)) return Promise.reject(ErrorUtils.techReachMaxLevel(playerId, techName, tech))
+		if(tech.level == 0 && !DataUtils.isPlayerUnlockProductionTechLegal(playerDoc, techName)) return Promise.reject(ErrorUtils.techUpgradePreConditionNotMatch(playerId, techName, tech))
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
@@ -79,8 +68,8 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		var buyedResources = null
 		var buyedMaterials = null
 		var preTechEvent = null
-		var playerData = {}
 		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -103,50 +92,36 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			}
 		}
 
-		if(gemUsed > playerDoc.resources.gem){
-			return Promise.reject(new Error("宝石不足"))
-		}
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
-
+		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
 		if(finishNow){
 			tech.level += 1
-			playerData.productionTechs = {}
-			playerData.productionTechs[techName] = playerDoc.productionTechs[techName]
+			playerData.push(["productionTechs." + techName + ".level", tech.level])
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 			TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
-				preTechEvent.startTime -= preTechEvent.finishTime - Date.now()
 				preTechEvent.finishTime = Date.now()
-				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, Date.now()])
+				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, preTechEvent.finishTime])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createProductionTechEvent(playerDoc, techName, finishTime)
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "productionTechEvents", event.id, finishTime])
 			playerDoc.productionTechEvents.push(event)
-			playerData.__productionTechEvents = [{
-				type:Consts.DataChangedType.Add,
-				data:event
-			}]
+			playerData.push(["productionTechEvents." + playerDoc.productionTechEvents.indexOf(event), event])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "productionTechEvents", event.id, finishTime])
 		}
-		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.basicInfo = playerDoc.basicInfo
-		playerData.resources = playerDoc.resources
-		playerData.buildingMaterials = playerDoc.buildingMaterials
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -170,13 +145,6 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
  * @param callback
  */
 pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isMilitaryTechNameLegal(techName)){
 		callback(new Error("techName 不合法"))
 		return
@@ -188,25 +156,20 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
-	var pushFuncs = []
+	var playerData = []
 	var eventFuncs = []
 	var updateFuncs = []
 	var tech = null
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		tech = playerDoc.militaryTechs[techName]
-		if(!_.isObject(tech)){
-			return Promise.reject(new Error("科技不存在"))
-		}
-		if(!DataUtils.isPlayerMilitaryTechBuildingCreated(playerDoc, techName)) return Promise.reject(new Error("建筑还未建造"))
-		if(DataUtils.isMilitaryTechReachMaxLevel(tech.level)) return Promise.reject(new Error("科技已达最高等级"))
+		var building = DataUtils.getPlayerMilitaryTechBuilding(playerDoc, techName)
+		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
+		if(DataUtils.isMilitaryTechReachMaxLevel(tech.level)) return Promise.reject(ErrorUtils.techReachMaxLevel(playerId, techName, tech))
 		var isUpgrading = _.some(playerDoc.militaryTechEvents, function(event){
 			return _.isEqual(event.name, techName)
 		})
-		if(isUpgrading) return Promise.reject(new Error("此科技正在升级"))
+		if(isUpgrading) return Promise.reject(ErrorUtils.techIsUpgradingNow(playerId, techName, tech))
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
@@ -214,8 +177,8 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		var buyedResources = null
 		var buyedMaterials = null
 		var preTechEvent = null
-		var playerData = {}
 		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -238,50 +201,37 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			}
 		}
 
-		if(gemUsed > playerDoc.resources.gem){
-			return Promise.reject(new Error("宝石不足"))
-		}
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.technologyMaterials)
+		playerData.push(["technologyMaterials", playerDoc.technologyMaterials])
 
 		if(finishNow){
 			tech.level += 1
-			playerData.militaryTechs = {}
-			playerData.militaryTechs[techName] = playerDoc.militaryTechs[techName]
+			playerData.push(["militaryTechs." + techName + ".level", tech.level])
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 			TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
-				preTechEvent.startTime -= preTechEvent.finishTime - Date.now()
 				preTechEvent.finishTime = Date.now()
-				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, Date.now()])
+				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, preTechEvent.finishTime])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createMilitaryTechEvent(playerDoc, techName, finishTime)
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "militaryTechEvents", event.id, finishTime])
 			playerDoc.militaryTechEvents.push(event)
-			playerData.__militaryTechEvents = [{
-				type:Consts.DataChangedType.Add,
-				data:event
-			}]
+			playerData.push(["militaryTechEvents." + playerDoc.militaryTechEvents.indexOf(event), event])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "militaryTechEvents", event.id, finishTime])
 		}
-		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.basicInfo = playerDoc.basicInfo
-		playerData.resources = playerDoc.resources
-		playerData.technologyMaterials = playerDoc.technologyMaterials
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -305,13 +255,6 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
  * @param callback
  */
 pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isNormalSoldier(soldierName)){
 		callback(new Error("soldierName 不合法"))
 		return
@@ -323,29 +266,27 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 
 	var self = this
 	var playerDoc = null
-	var pushFuncs = []
+	var playerData = []
 	var eventFuncs = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var soldierMaxStar = DataUtils.getPlayerIntInit("soldierMaxStar")
-		if(playerDoc.soldierStars[soldierName] >= soldierMaxStar) return Promise.reject(new Error("士兵已达最高星级"))
-		if(!DataUtils.isPlayerUpgradeSoldierStarTechPointEnough(playerDoc, soldierName)) return Promise.reject(new Error("科技点不足"))
+		if(playerDoc.soldierStars[soldierName] >= soldierMaxStar) return Promise.reject(ErrorUtils.soldierReachMaxStar(playerId, soldierName))
+		if(!DataUtils.isPlayerUpgradeSoldierStarTechPointEnough(playerDoc, soldierName)) return Promise.reject(ErrorUtils.techPointNotEnough(playerId, soldierName))
 		var isUpgrading = _.some(playerDoc.soldierStarEvents, function(event){
 			return _.isEqual(event.name, soldierName)
 		})
-		if(isUpgrading) return Promise.reject(new Error("此兵种正在升级中"))
+		if(isUpgrading) return Promise.reject(ErrorUtils.soldierIsUpgradingNow(playerId, soldierName))
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getSoldierStarUpgradeRequired(soldierName, playerDoc.soldierStars[soldierName] + 1)
 		var buyedResources = null
 		var preTechEvent = null
-		var playerData = {}
+
 		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.upgradeTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -362,45 +303,34 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			}
 		}
 
-		if(gemUsed > playerDoc.resources.gem){
-			return Promise.reject(new Error("宝石不足"))
-		}
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 
 		if(finishNow){
 			playerDoc.soldierStars[soldierName] += 1
-			playerData.soldierStars = {}
-			playerData.soldierStars[soldierName] = playerDoc.soldierStars[soldierName]
+			playerData.push(["soldierStarts." + soldierName, playerDoc.soldierStars[soldierName]])
 			TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, soldierName, playerDoc.soldierStars[soldierName])
 		}else{
 			if(_.isObject(preTechEvent)){
-				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, Date.now()])
+				preTechEvent.finishTime = Date.now()
+				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, preTechEvent.finishTime])
 			}
 			var finishTime = Date.now() + (upgradeRequired.upgradeTime * 1000)
 			var event = LogicUtils.createSoldierStarEvent(playerDoc, soldierName, finishTime)
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierStarEvents", event.id, finishTime])
 			playerDoc.soldierStarEvents.push(event)
-			playerData.__soldierStarEvents = [{
-				type:Consts.DataChangedType.Add,
-				data:event
-			}]
+			playerData.push(["soldierStarEvents." + playerDoc.soldierStarEvents.indexOf(event), event])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierStarEvents", event.id, finishTime])
 		}
-		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.basicInfo = playerDoc.basicInfo
-		playerData.resources = playerDoc.resources
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -423,13 +353,6 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
  * @param callback
  */
 pro.setTerrain = function(playerId, terrain, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.contains(_.values(Consts.AllianceTerrain), terrain)){
 		callback(new Error("terrain 不合法"))
 		return
@@ -437,28 +360,19 @@ pro.setTerrain = function(playerId, terrain, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var playerData = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		playerDoc.basicInfo.terrain = terrain
-		playerData.basicInfo = playerDoc.basicInfo
+		playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -482,13 +396,6 @@ pro.setTerrain = function(playerId, terrain, callback){
  * @param callback
  */
 pro.buyItem = function(playerId, itemName, count, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isItemNameExist(itemName)){
 		callback(new Error("itemName 不合法"))
 		return
@@ -500,45 +407,26 @@ pro.buyItem = function(playerId, itemName, count, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var playerData = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
-		if(!itemConfig.isSell) return Promise.reject(new Error("此道具未出售"))
+		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
 		var gemNeed = itemConfig.price * count
-		if(playerDoc.resources.gem < gemNeed) return Promise.reject(new Error("宝石不足"))
+		if(playerDoc.resources.gem < gemNeed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemNeed
-		playerData.resources = playerDoc.resources
+		playerData.push(["resources.gem", playerDoc.resources.gem])
 		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)
-		if(resp.newlyCreated){
-			playerData.__items = [{
-				type:Consts.DataChangedType.Add,
-				data:resp.item
-			}]
-		}else{
-			playerData.__items = [{
-				type:Consts.DataChangedType.Edit,
-				data:resp.item
-			}]
-		}
+		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -562,13 +450,6 @@ pro.buyItem = function(playerId, itemName, count, callback){
  * @param callback
  */
 pro.useItem = function(playerId, itemName, params, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isItemNameExist(itemName)){
 		callback(new Error("itemName 不合法"))
 		return
@@ -580,33 +461,22 @@ pro.useItem = function(playerId, itemName, params, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var playerData = []
 	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
-
 		var item = _.find(playerDoc.items, function(item){
 			return _.isEqual(item.name, itemName)
 		})
-		if(!_.isObject(item))  return Promise.reject(new Error("道具不存在"))
-		if(item.count <= 0) return Promise.reject(new Error("道具数量不足"))
+		if(!_.isObject(item))  return Promise.reject(ErrorUtils.itemNotExist(playerId, itemName))
 		item.count -= 1
 		if(item.count <= 0){
+			playerData.push(["items." + playerDoc.items.indexOf(item), null])
 			LogicUtils.removeItemInArray(playerDoc.items, item)
-			playerData.__items = [{
-				type:Consts.DataChangedType.Remove,
-				data:item
-			}]
 		}else{
-			playerData.__items = [{
-				type:Consts.DataChangedType.Edit,
-				data:item
-			}]
+			playerData.push(["items." + playerDoc.items.indexOf(item) + ".count", item.count])
 		}
 		return Promise.resolve()
 	}).then(function(){
@@ -623,23 +493,17 @@ pro.useItem = function(playerId, itemName, params, callback){
 			var item = _.find(playerDoc.items, function(item){
 				return _.isEqual(item.name, key)
 			})
-			if(!_.isObject(item) || item.count <= 0)  return Promise.reject(new Error("道具不存在或数量不足"))
+			if(!_.isObject(item))  return Promise.reject(ErrorUtils.itemNotExist(playerId, key))
 			item.count -= 1
 			if(item.count <= 0){
+				playerData.push(["items." + playerDoc.items.indexOf(item), null])
 				LogicUtils.removeItemInArray(playerDoc.items, item)
-				playerData.__items.push({
-					type:Consts.DataChangedType.Remove,
-					data:item
-				})
 			}else{
-				playerData.__items.push({
-					type:Consts.DataChangedType.Edit,
-					data:item
-				})
+				playerData.push(["items." + playerDoc.items.indexOf(item) + ".count", item.count])
 			}
 			return itemNameFunction(itemData, playerDoc, playerData)
 		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
-			return Promise.reject(new Error("此道具不允许直接使用"))
+			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}else if(_.isEqual("warSpeedupClass_1", itemName) || _.isEqual("warSpeedupClass_2", itemName)){
 			return itemNameFunction(itemData, playerDoc, playerData, updateFuncs, self.allianceDao, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
 		}else{
@@ -647,7 +511,6 @@ pro.useItem = function(playerId, itemName, params, callback){
 		}
 	}).then(function(){
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -656,7 +519,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -680,13 +543,6 @@ pro.useItem = function(playerId, itemName, params, callback){
  * @param callback
  */
 pro.buyAndUseItem = function(playerId, itemName, params, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isItemNameExist(itemName)){
 		callback(new Error("itemName 不合法"))
 		return
@@ -698,21 +554,18 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
-		if(!itemConfig.isSell) return Promise.reject(new Error("此道具未出售"))
+		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
 		var gemNeed = itemConfig.price * 1
-		if(playerDoc.resources.gem < gemNeed) return Promise.reject(new Error("宝石不足"))
+		if(playerDoc.resources.gem < gemNeed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemNeed
-		playerData.resources = playerDoc.resources
+		playerData.push(["resources.gem", playerDoc.resources.gem])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
 		return Promise.resolve()
 	}).then(function(){
@@ -729,19 +582,13 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 			var item = _.find(playerDoc.items, function(item){
 				return _.isEqual(item.name, key)
 			})
-			if(!_.isObject(item) || item.count <= 0)  return Promise.reject(new Error("道具不存在或数量不足"))
+			if(!_.isObject(item))  return Promise.reject(ErrorUtils.itemNotExist(playerId, itemName))
 			item.count -= 1
 			if(item.count <= 0){
+				playerData.push(["items." + playerDoc.items.indexOf(item), null])
 				LogicUtils.removeItemInArray(playerDoc.items, item)
-				playerData.__items = [{
-					type:Consts.DataChangedType.Remove,
-					data:item
-				}]
 			}else{
-				playerData.__items = [{
-					type:Consts.DataChangedType.Edit,
-					data:item
-				}]
+				playerData.push(["items." + playerDoc.items.indexOf(item), item])
 			}
 			return itemNameFunction(itemData, playerDoc, playerData)
 		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
@@ -753,7 +600,6 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		}
 	}).then(function(){
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -762,7 +608,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -787,13 +633,6 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
  * @param callback
  */
 pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isObject(pveData)){
 		callback(new Error("pveData 不合法"))
 		return
@@ -809,14 +648,10 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
+	var playerData = []
 	var eventFuncs = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		var staminaUsed = pveData.staminaUsed
 		if(!_.isNumber(staminaUsed)) return Promise.reject(new Error("pveData 不合法"))
@@ -833,11 +668,11 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 		if(!_.isString(objects)) return Promise.reject(new Error("pveData 不合法"))
 
 		playerDoc.resources.stamina -= staminaUsed
-		playerData.resources = playerDoc.resources
-		playerData.pve = {}
+		playerData.push(["resources.stamina", playerDoc.resources.stamina])
 		playerDoc.pve.totalStep += staminaUsed
+		playerData.push(["pve.totalStep", playerDoc.pve.totalStep])
 		playerDoc.pve.location = location
-		playerData.pve.location = playerDoc.pve.location
+		playerData.push(["pve.location", playerDoc.pve.location])
 
 		var theFloor = _.find(playerDoc.pve.floors, function(theFloor){
 			return _.isEqual(theFloor.level, level)
@@ -846,10 +681,6 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 		if(_.isObject(theFloor)){
 			theFloor.fogs = fogs
 			theFloor.objects = objects
-			playerData.pve.__floors = [{
-				type:Consts.DataChangedType.Edit,
-				data:theFloor
-			}]
 		}else{
 			theFloor = {
 				level:level,
@@ -857,11 +688,8 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				objects:objects
 			}
 			playerDoc.pve.floors.push(theFloor)
-			playerData.pve.__floors = [{
-				type:Consts.DataChangedType.Add,
-				data:theFloor
-			}]
 		}
+		playerData.push(["pve.floors", playerDoc.pve.floors.indexOf(theFloor), theFloor])
 
 		if(_.isObject(fightData)){
 			var dragon = fightData.dragon
@@ -877,19 +705,15 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 
 			theDragon.hp -= hpDecreased
 			if(theDragon.hp <= 0){
+				theDragon.hp = 0
+				theDragon.status = Consts.DragonStatus.Free
+				playerData.push(["dragons." + theDragon.type + ".status", theDragon.status])
 				var deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, theDragon)
 				playerDoc.dragonDeathEvents.push(deathEvent)
-				playerData.__dragonDeathEvents = [{
-					type:Consts.DataChangedType.Add,
-					data:deathEvent
-				}]
+				playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
 				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
 			}
 			DataUtils.addPlayerDragonExp(playerDoc, playerData, theDragon, expAdd, true)
-
-			playerData.dragons = {}
-			playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
-
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve)
 
 			var soldiers = fightData.soldiers
@@ -897,7 +721,6 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 
 			var name = null
 			var woundedSoldiers = []
-			playerData.soldiers = {}
 			for(var i = 0; i < soldiers.length; i++){
 				var soldier = soldiers[i]
 				name = soldier.name
@@ -913,7 +736,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 					name:name,
 					count:Math.floor(damagedCount * soldierTreatPercent)
 				})
-				playerData.soldiers[name] = playerDoc.soldiers[name]
+				playerData.push(["soldiers." + name, playerDoc.soldiers[name]])
 			}
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, woundedSoldiers)
 		}
@@ -930,42 +753,27 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 						return Promise.reject(new Error("rewards 不合法"))
 					}
 					var resp = LogicUtils.addPlayerItem(playerDoc, name, count)
-					if(resp.newlyCreated){
-						playerData.__items = [{
-							type:Consts.DataChangedType.Add,
-							data:resp.item
-						}]
-					}else{
-						playerData.__items = [{
-							type:Consts.DataChangedType.Edit,
-							data:resp.item
-						}]
-					}
+					playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 				}else{
 					if(_.isUndefined(playerDoc[type][name])) return Promise.reject(new Error("rewards 不合法"))
 					if(count < 0 && playerDoc[type][name] + count < 0){
 						return Promise.reject(new Error("rewards 不合法"))
 					}
 					playerDoc[type][name] += count
-					if(!_.isObject(playerData[type]))playerData[type] = {}
-					playerData[type][name] = playerDoc[type][name]
+					playerData.push([type + "." + name, playerDoc[type][name]])
 				}
 			}
 		}
-
 		TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData)
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -988,70 +796,44 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
  * @param callback
  */
 pro.gacha = function(playerId, type, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.contains(_.values(Consts.GachaType), type)){
 		callback(new Error("type 不合法"))
 	}
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
-	var pushFuncs = []
-	var eventFuncs = []
+	var playerData = []
 	var updateFuncs = []
 
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
 		if(_.isEqual(type, Consts.GachaType.Normal) && DataUtils.isPlayerCanFreeNormalGacha(playerDoc)){
 			playerDoc.countInfo.todayFreeNormalGachaCount += 1
-			playerData.countInfo = playerDoc.countInfo
+			playerData.push(["countInfo.todayFreeNormalGachaCount", playerDoc.countInfo.todayFreeNormalGachaCount])
 		}else{
 			var casinoTokenNeeded = DataUtils.getCasinoTokeNeededInGachaType(type)
-			if(playerDoc.resources.casinoToken - casinoTokenNeeded < 0) return Promise.reject("赌币不足")
+			if(playerDoc.resources.casinoToken - casinoTokenNeeded < 0) return Promise.reject(ErrorUtils.casinoTokenNotEnough(playerId, playerDoc.resources.casinoToken, casinoTokenNeeded))
 			playerDoc.resources.casinoToken -= casinoTokenNeeded
-			playerData.resources = playerDoc.resources
+			playerData.push(["resources.casinoToken", playerDoc.resources.casinoToken])
 		}
 
-		playerData.__items = []
 		var count = _.isEqual(type, Consts.GachaType.Normal) ? 1 : 3
 		for(var i = 0; i < count; i++){
 			var item = DataUtils.getGachaItemByType(type)
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			if(resp.newlyCreated){
-				playerData.__items.push({
-					type:Consts.DataChangedType.Add,
-					data:resp.item
-				})
-			}else{
-				playerData.__items.push({
-					type:Consts.DataChangedType.Edit,
-					data:resp.item
-				})
-			}
+			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		}
 
 		if(_.isEqual(type, Consts.GachaType.Advanced)){
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.AdvancedGachaOnce)
 		}
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){

@@ -184,14 +184,14 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 		if(!_.isEqual(previousLoginDateString, yestodayString) && !_.isEqual(previousLoginDateString, todayDateString)){
 			playerDoc.countInfo.vipLoginDaysCount = 1
 			expAdd = DataUtils.getPlayerVipExpByLoginDaysCount(1)
-			DataUtils.addPlayerVipExp(playerDoc, {}, expAdd, eventFuncs, self.timeEventService)
+			DataUtils.addPlayerVipExp(playerDoc, [], expAdd, eventFuncs, self.timeEventService)
 		}else if(_.isEqual(previousLoginDateString, yestodayString)){
 			playerDoc.countInfo.vipLoginDaysCount += 1
 			expAdd = DataUtils.getPlayerVipExpByLoginDaysCount(playerDoc.countInfo.vipLoginDaysCount)
-			DataUtils.addPlayerVipExp(playerDoc, {}, expAdd, eventFuncs, self.timeEventService)
+			DataUtils.addPlayerVipExp(playerDoc, [], expAdd, eventFuncs, self.timeEventService)
 		}else if(playerDoc.countInfo.loginCount == 0){
 			expAdd = DataUtils.getPlayerVipExpByLoginDaysCount(1)
-			DataUtils.addPlayerVipExp(playerDoc, {}, expAdd, eventFuncs, self.timeEventService)
+			DataUtils.addPlayerVipExp(playerDoc, [], expAdd, eventFuncs, self.timeEventService)
 		}
 		playerDoc.countInfo.lastLoginTime = Date.now()
 		playerDoc.countInfo.loginCount += 1
@@ -336,7 +336,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		if(building.level == 0 && !LogicUtils.isBuildingCanCreateAtLocation(playerDoc, location))return Promise.reject(ErrorUtils.buildingLocationNotLegal(playerId, location))
 		if(building.level == 0 && DataUtils.getPlayerFreeBuildingsCount(playerDoc) <= 0)return Promise.reject(ErrorUtils.buildingCountReachUpLimit(playerId, location))
 		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.level))return Promise.reject(ErrorUtils.buildingLevelReachUpLimit(playerId, location))
-		if(!DataUtils.isPlayerBuildingUpgradeLegal(playerDoc, location)) return Promise.reject(ErrorUtils.buildingUpgradePrefixNotMatch(playerId, location))
+		if(!DataUtils.isPlayerBuildingUpgradeLegal(playerDoc, location)) return Promise.reject(ErrorUtils.buildingUpgradePreConditionNotMatch(playerId, location))
 		return Promise.resolve()
 	}).then(function(){
 		var gemUsed = 0
@@ -383,7 +383,6 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, building.level)
 		}else{
 			if(_.isObject(preBuildEvent)){
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.id])
 				preBuildEvent.finishTime = Date.now()
 				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preBuildEvent.id, preBuildEvent.finishTime])
 			}
@@ -451,7 +450,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 		if(maxHouseCount - buildingAddedHouseCount < currentCount) return Promise.reject(ErrorUtils.houseTooMuchMore(playerId, buildingLocation))
 		building.type = newBuildingName
 		building.level -= 1
-		if(!DataUtils.isPlayerBuildingUpgradeLegal(playerDoc, buildingLocation)) return Promise.reject(ErrorUtils.buildingUpgradePrefixNotMatch(playerId, buildingLocation))
+		if(!DataUtils.isPlayerBuildingUpgradeLegal(playerDoc, buildingLocation)) return Promise.reject(ErrorUtils.buildingUpgradePreConditionNotMatch(playerId, buildingLocation))
 		building.level += 1
 		playerData.push(["buildings.location_" + buildingLocation + ".type", newBuildingName])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])

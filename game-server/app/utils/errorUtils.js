@@ -185,8 +185,8 @@ Utils.buildingLevelReachUpLimit = function(playerId, buildingLocation){
  * @param playerId
  * @param buildingLocation
  */
-Utils.buildingUpgradePrefixNotMatch = function(playerId, buildingLocation){
-	var config = Errors.buildingUpgradePrefixNotMatch
+Utils.buildingUpgradePreConditionNotMatch = function(playerId, buildingLocation){
+	var config = Errors.buildingUpgradePreConditionNotMatch
 	return CreateError(config, {playerId:playerId, buildingLocation:buildingLocation})
 }
 
@@ -844,4 +844,355 @@ Utils.sellItemNotBelongsToYou = function(playerId, itemDoc){
 Utils.sellItemAlreadySold = function(playerId, item){
 	var config = Errors.sellItemAlreadySold
 	return CreateError(config, {playerId:playerId, item:item})
+}
+
+/**
+ * 科技已达最高等级
+ * @param playerId
+ * @param techName
+ * @param tech
+ */
+Utils.techReachMaxLevel = function(playerId, techName, tech){
+	var config = Errors.techReachMaxLevel
+	return CreateError(config, {playerId:playerId, techName:techName, tech:tech})
+}
+
+/**
+ * 前置科技条件不满足
+ * @param playerId
+ * @param techName
+ * @param tech
+ */
+Utils.techUpgradePreConditionNotMatch = function(playerId, techName, tech){
+	var config = Errors.techUpgradePreConditionNotMatch
+	return CreateError(config, {playerId:playerId, techName:techName, tech:tech})
+}
+
+/**
+ * 所选择的科技正在升级
+ * @param playerId
+ * @param techName
+ * @param tech
+ */
+Utils.techIsUpgradingNow = function(playerId, techName, tech){
+	var config = Errors.techIsUpgradingNow
+	return CreateError(config, {playerId:playerId, techName:techName, tech:tech})
+}
+
+/**
+ * 士兵已达最高星级
+ * @param playerId
+ * @param soldierName
+ */
+Utils.soldierReachMaxStar = function(playerId, soldierName){
+	var config = Errors.soldierReachMaxStar
+	return CreateError(config, {playerId:playerId, soldierName:soldierName})
+}
+
+/**
+ * 科技点不足
+ * @param playerId
+ * @param soldierName
+ */
+Utils.techPointNotEnough = function(playerId, soldierName){
+	var config = Errors.techPointNotEnough
+	return CreateError(config, {playerId:playerId, soldierName:soldierName})
+}
+
+/**
+ * 士兵正在升级
+ * @param playerId
+ * @param soldierName
+ */
+Utils.soldierIsUpgradingNow = function(playerId, soldierName){
+	var config = Errors.soldierIsUpgradingNow
+	return CreateError(config, {playerId:playerId, soldierName:soldierName})
+}
+
+/**
+ * 此道具未出售
+ * @param playerId
+ * @param itemName
+ */
+Utils.itemNotSell = function(playerId, itemName){
+	var config = Errors.itemNotSell
+	return CreateError(config, {playerId:playerId, itemName:itemName})
+}
+
+/**
+ * 道具不存在
+ * @param playerId
+ * @param itemName
+ */
+Utils.itemNotExist = function(playerId, itemName){
+	var config = Errors.itemNotExist
+	return CreateError(config, {playerId:playerId, itemName:itemName})
+}
+
+/**
+ * 小屋当前不能被移动
+ * @param playerId
+ * @param buildingLocation
+ * @param houseLocation
+ */
+Utils.houseCanNotBeMovedNow = function(playerId, buildingLocation, houseLocation){
+	var config = Errors.houseCanNotBeMovedNow
+	return CreateError(config, {playerId:playerId, buildingLocation:buildingLocation, houseLocation:houseLocation})
+}
+
+/**
+ * 不能修改为相同的玩家名称
+ * @param playerId
+ * @param playerName
+ */
+Utils.playerNameCanNotBeTheSame = function(playerId, playerName){
+	var config = Errors.playerNameCanNotBeTheSame
+	return CreateError(config, {playerId:playerId, playerName:playerName})
+}
+
+/**
+ * 玩家名称已被其他玩家占用
+ * @param playerId
+ * @param playerName
+ */
+Utils.playerNameAlreadyUsed = function(playerId, playerName){
+	var config = Errors.playerNameAlreadyUsed
+	return CreateError(config, {playerId:playerId, playerName:playerName})
+}
+
+/**
+ * 不能修改为相同的城市名称
+ * @param playerId
+ * @param cityName
+ */
+Utils.cityNameCanNotBeTheSame = function(playerId, cityName){
+	var config = Errors.cityNameCanNotBeTheSame
+	return CreateError(config, {playerId:playerId, cityName:cityName})
+}
+
+/**
+ * 玩家未加入联盟
+ * @param playerId
+ */
+Utils.playerNotJoinAlliance = function(playerId){
+	var config = Errors.playerNotJoinAlliance
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 行军事件不存在
+ * @param playerId
+ * @param allianceId
+ * @param eventType
+ * @param eventId
+ */
+Utils.marchEventNotExist = function(playerId, allianceId, eventType, eventId){
+	var config = Errors.marchEventNotExist
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, eventType:eventType, eventId:eventId})
+}
+
+/**
+ * 联盟正处于战争期
+ * @param playerId
+ * @param allianceId
+ */
+Utils.allianceInFightStatus = function(playerId, allianceId){
+	var config = Errors.allianceInFightStatus
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 玩家有部队正在行军中
+ * @param playerId
+ * @param allianceId
+ */
+Utils.playerHasMarchEvent = function(playerId, allianceId){
+	var config = Errors.playerHasMarchEvent
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 不能移动到目标点位
+ * @param playerId
+ * @param allianceId
+ * @param fromLocation
+ * @param toLocation
+ */
+Utils.canNotMoveToTargetPlace = function(playerId, allianceId, fromLocation, toLocation){
+	var config = Errors.canNotMoveToTargetPlace
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, fromLocation:fromLocation, toLocation:toLocation})
+}
+
+/**
+ * 此道具不允许直接使用
+ * @param playerId
+ * @param itemName
+ */
+Utils.itemCanNotBeUsedDirectly = function(playerId, itemName){
+	var config = Errors.itemCanNotBeUsedDirectly
+	return CreateError(config, {playerId:playerId, itemName:itemName})
+}
+
+/**
+ * 赌币不足
+ * @param playerId
+ * @param has
+ * @param need
+ */
+Utils.casinoTokenNotEnough = function(playerId, has, need){
+	var config = Errors.casinoTokenNotEnough
+	return CreateError(config, {playerId:playerId, has:has, need:need})
+}
+
+/**
+ * 今日登陆奖励已领取
+ * @param playerId
+ */
+Utils.loginRewardAlreadyGet = function(playerId){
+	var config = Errors.loginRewardAlreadyGet
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 在线时间不足,不能领取
+ * @param playerId
+ */
+Utils.onlineTimeNotEough = function(playerId){
+	var config = Errors.onlineTimeNotEough
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 此时间节点的在线奖励已经领取
+ * @param playerId
+ */
+Utils.onlineTimeRewardAlreadyGet = function(playerId){
+	var config = Errors.onlineTimeRewardAlreadyGet
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 今日王城援军奖励已领取
+ * @param playerId
+ */
+Utils.wonderAssistanceRewardAlreadyGet = function(playerId){
+	var config = Errors.wonderAssistanceRewardAlreadyGet
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 冲级奖励时间已过
+ * @param playerId
+ */
+Utils.levelUpRewardExpired = function(playerId){
+	var config = Errors.levelUpRewardExpired
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 当前等级的冲级奖励已经领取
+ * @param playerId
+ */
+Utils.levelUpRewardAlreadyGet = function(playerId){
+	var config = Errors.levelUpRewardAlreadyGet
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 玩家城堡等级不足以领取当前冲级奖励
+ * @param playerId
+ */
+Utils.levelUpRewardCanNotBeGetForCastleLevelNotMatch = function(playerId){
+	var config = Errors.levelUpRewardCanNotBeGetForCastleLevelNotMatch
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 玩家还未进行首次充值
+ * @param playerId
+ */
+Utils.firstIAPNotHappen = function(playerId){
+	var config = Errors.firstIAPNotHappen
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 首次充值奖励已经领取
+ * @param playerId
+ */
+Utils.firstIAPRewardAlreadyGet = function(playerId){
+	var config = Errors.firstIAPRewardAlreadyGet
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 日常任务奖励已经领取
+ * @param playerId
+ */
+Utils.dailyTaskRewardAlreadyGet = function(playerId){
+	var config = Errors.dailyTaskRewardAlreadyGet
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 日常任务还未完成
+ * @param playerId
+ */
+Utils.dailyTaskNotFinished = function(playerId){
+	var config = Errors.dailyTaskNotFinished
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 成长任务不存在
+ * @param playerId
+ * @param taskType
+ * @param taskId
+ */
+Utils.growUpTaskNotExist = function(playerId, taskType, taskId){
+	var config = Errors.growUpTaskNotExist
+	return CreateError(config, {playerId:playerId, taskType:taskType, taskId:taskId})
+}
+
+/**
+ * 前置任务奖励未领取
+ * @param playerId
+ * @param taskType
+ * @param taskId
+ */
+Utils.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet = function(playerId, taskType, taskId){
+	var config = Errors.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet
+	return CreateError(config, {playerId:playerId, taskType:taskType, taskId:taskId})
+}
+
+/**
+ * 重复的订单号
+ * @param playerId
+ * @param transactionId
+ * @param receiptData
+ */
+Utils.duplicateIAPTransactionId = function(playerId, transactionId, receiptData){
+	var config = Errors.duplicateIAPTransactionId
+	return CreateError(config, {playerId:playerId, transactionId:transactionId, receiptData:receiptData})
+}
+
+/**
+ * 订单商品不存在
+ * @param playerId
+ * @param receiptData
+ * @param billing
+ */
+Utils.iapProductNotExist = function(playerId, receiptData, billing){
+	var config = Errors.iapProductNotExist
+	return CreateError(config, {playerId:playerId, receiptData:receiptData, billing:billing})
+}
+
+/**
+ * 订单验证失败
+ * @param playerId
+ * @param errorData
+ */
+Utils.iapValidateFaild = function(playerId, errorData){
+	var config = Errors.iapValidateFaild
+	return CreateError(config, {playerId:playerId, errorData:errorData})
 }

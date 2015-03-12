@@ -78,8 +78,8 @@ errors["buildingLevelReachUpLimit"] = {
 	code:515,
 	message:"建筑已达到最高等级"
 }
-errors["buildingUpgradePrefixNotMatch"] = {
-	key:"buildingUpgradePrefixNotMatch",
+errors["buildingUpgradePreConditionNotMatch"] = {
+	key:"buildingUpgradePreConditionNotMatch",
 	code:516,
 	message:"建筑升级前置条件未满足"
 }
@@ -392,4 +392,179 @@ errors["sellItemAlreadySold"] = {
 	key:"sellItemAlreadySold",
 	code:578,
 	message:"商品已经售出"
+}
+errors["techReachMaxLevel"] = {
+	key:"techReachMaxLevel",
+	code:579,
+	message:"科技已达最高等级"
+}
+errors["techUpgradePreConditionNotMatch"] = {
+	key:"techUpgradePreConditionNotMatch",
+	code:580,
+	message:"前置科技条件不满足"
+}
+errors["techIsUpgradingNow"] = {
+	key:"techIsUpgradingNow",
+	code:581,
+	message:"所选择的科技正在升级"
+}
+errors["soldierReachMaxStar"] = {
+	key:"soldierReachMaxStar",
+	code:582,
+	message:"士兵已达最高星级"
+}
+errors["techPointNotEnough"] = {
+	key:"techPointNotEnough",
+	code:583,
+	message:"科技点不足"
+}
+errors["soldierIsUpgradingNow"] = {
+	key:"soldierIsUpgradingNow",
+	code:584,
+	message:"此兵种正在升级中"
+}
+errors["itemNotSell"] = {
+	key:"itemNotSell",
+	code:585,
+	message:"此道具未出售"
+}
+errors["itemNotExist"] = {
+	key:"itemNotExist",
+	code:586,
+	message:"道具不存在"
+}
+errors["houseCanNotBeMovedNow"] = {
+	key:"houseCanNotBeMovedNow",
+	code:587,
+	message:"小屋当前不能被移动"
+}
+errors["playerNameCanNotBeTheSame"] = {
+	key:"playerNameCanNotBeTheSame",
+	code:588,
+	message:"不能修改为相同的玩家名称"
+}
+errors["playerNameAlreadyUsed"] = {
+	key:"playerNameAlreadyUsed",
+	code:589,
+	message:"玩家名称已被其他玩家占用"
+}
+errors["cityNameCanNotBeTheSame"] = {
+	key:"cityNameCanNotBeTheSame",
+	code:590,
+	message:"不能修改为相同的城市名称"
+}
+errors["playerNotJoinAlliance"] = {
+	key:"playerNotJoinAlliance",
+	code:591,
+	message:"玩家未加入联盟"
+}
+errors["marchEventNotExist"] = {
+	key:"marchEventNotExist",
+	code:592,
+	message:"行军事件不存在"
+}
+errors["allianceInFightStatus"] = {
+	key:"allianceInFightStatus",
+	code:593,
+	message:"联盟正处于战争期"
+}
+errors["playerHasMarchEvent"] = {
+	key:"playerHasMarchEvent",
+	code:594,
+	message:"玩家有部队正在行军中"
+}
+errors["canNotMoveToTargetPlace"] = {
+	key:"canNotMoveToTargetPlace",
+	code:595,
+	message:"不能移动到目标点位"
+}
+errors["itemCanNotBeUsedDirectly"] = {
+	key:"itemCanNotBeUsedDirectly",
+	code:596,
+	message:"此道具不允许直接使用"
+}
+errors["casinoTokenNotEnough"] = {
+	key:"casinoTokenNotEnough",
+	code:597,
+	message:"赌币不足"
+}
+errors["loginRewardAlreadyGet"] = {
+	key:"loginRewardAlreadyGet",
+	code:598,
+	message:"今日登陆奖励已领取"
+}
+errors["onlineTimeNotEough"] = {
+	key:"onlineTimeNotEough",
+	code:599,
+	message:"在线时间不足,不能领取"
+}
+errors["onlineTimeRewardAlreadyGet"] = {
+	key:"onlineTimeRewardAlreadyGet",
+	code:600,
+	message:"此时间节点的在线奖励已经领取"
+}
+errors["wonderAssistanceRewardAlreadyGet"] = {
+	key:"wonderAssistanceRewardAlreadyGet",
+	code:601,
+	message:"今日王城援军奖励已领取"
+}
+errors["levelUpRewardExpired"] = {
+	key:"levelUpRewardExpired",
+	code:602,
+	message:"冲级奖励时间已过"
+}
+errors["levelUpRewardAlreadyGet"] = {
+	key:"levelUpRewardAlreadyGet",
+	code:603,
+	message:"当前等级的冲级奖励已经领取"
+}
+errors["levelUpRewardCanNotBeGetForCastleLevelNotMatch"] = {
+	key:"levelUpRewardCanNotBeGetForCastleLevelNotMatch",
+	code:604,
+	message:"玩家城堡等级不足以领取当前冲级奖励"
+}
+errors["firstIAPNotHappen"] = {
+	key:"firstIAPNotHappen",
+	code:605,
+	message:"玩家还未进行首次充值"
+}
+errors["firstIAPRewardAlreadyGet"] = {
+	key:"firstIAPRewardAlreadyGet",
+	code:606,
+	message:"首次充值奖励已经领取"
+}
+errors["dailyTaskRewardAlreadyGet"] = {
+	key:"dailyTaskRewardAlreadyGet",
+	code:607,
+	message:"日常任务奖励已经领取"
+}
+errors["dailyTaskNotFinished"] = {
+	key:"dailyTaskNotFinished",
+	code:608,
+	message:"日常任务还未完成"
+}
+errors["growUpTaskNotExist"] = {
+	key:"growUpTaskNotExist",
+	code:609,
+	message:"成长任务不存在"
+}
+errors["growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet"] = {
+	key:"growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet",
+	code:610,
+	message:"前置任务奖励未领取"
+}
+errors["duplicateIAPTransactionId"] = {
+	key:"duplicateIAPTransactionId",
+	code:611,
+	message:"重复的订单号"
+}
+errors["iapProductNotExist"] = {
+	key:"iapProductNotExist",
+	code:612,
+	message:"订单商品不存在"
+}
+errors["iapValidateFaild"] = {
+	key:"iapValidateFaild",
+	code:613,
+	message:"订单验证失败"
 }

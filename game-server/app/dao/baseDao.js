@@ -34,6 +34,14 @@ module.exports = BaseDao
 var pro = BaseDao.prototype
 
 /**
+ * 获取Mongo对象
+ * @returns {*}
+ */
+pro.getModel = function(){
+	return this.model
+}
+
+/**
  * 对象是否存在于Redis
  * @param id
  * @param callback

@@ -11,6 +11,7 @@ var Consts = require("../consts/consts")
 var LogicUtils = require("./logicUtils")
 var DataUtils = require("./dataUtils")
 var TaskUtils = require("../utils/taskUtils")
+var ErrorUtils = require("../utils/errorUtils")
 var MapUtils = require("../utils/mapUtils")
 var GameDatas = require("../datas/GameDatas")
 var Items = GameDatas.Items
@@ -35,31 +36,28 @@ var MovingConstruction = function(playerDoc, playerData, fromBuildingLocation, f
 	var house = _.find(fromBuilding.houses, function(house){
 		return house.location == fromHouseLocation
 	})
-	if(!_.isObject(house)) return Promise.reject(new Error("小屋或装饰物不存在"))
+	if(!_.isObject(house)) return Promise.reject(ErrorUtils.houseNotExist(playerDoc._id, fromBuildingLocation, fromHouseLocation))
 	var houseEvent = _.find(playerDoc.houseEvents, function(event){
 		return _.isEqual(event.buildingLocation, fromBuildingLocation) && _.isEqual(event.houseLocation, fromHouseLocation)
 	})
-	if(_.isObject(houseEvent)) return Promise.reject(new Error("小屋当前不能被移动"))
+	if(_.isObject(houseEvent)) return Promise.reject(ErrorUtils.houseCanNotBeMovedNow(playerDoc._id, fromBuildingLocation, fromHouseLocation))
 	var toBuilding = playerDoc.buildings["location_" + toBuildingLocation]
-	if(toBuilding.level < 1) return Promise.reject(new Error("目标建筑未建造"))
-	if(!Buildings.buildings[toBuildingLocation].hasHouse) return Promise.reject(new Error("目标建筑周围不允许建造小屋或装饰物"))
+	if(toBuilding.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerDoc._id, toBuilding.location))
+	if(!Buildings.buildings[toBuildingLocation].hasHouse) return Promise.reject(ErrorUtils.buildingNotAllowHouseCreate(playerDoc._id, toBuildingLocation, toHouseLocation, house.type))
 	var toHouse = _.find(toBuilding.houses, function(house){
 		return house.location == toHouseLocation
 	})
-	if(_.isObject(toHouse)) return Promise.reject(new Error("目的地非空地"))
-	if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, toBuildingLocation, house.type, toHouseLocation)) return Promise.reject(new Error("移动小屋时,小屋坑位不合法"))
+	if(_.isObject(toHouse)) return Promise.reject(ErrorUtils.houseLocationNotLegal(playerDoc._id, toBuildingLocation, toHouseLocation))
+	if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, toBuildingLocation, house.type, toHouseLocation)) return Promise.reject(ErrorUtils.houseLocationNotLegal(playerDoc._id, toBuildingLocation, toHouseLocation))
 
 	DataUtils.refreshPlayerResources(playerDoc)
-	playerData.resources = playerDoc.resources
-	playerData.basicInfo = playerDoc.basicInfo
+	playerData.push(["resources", playerDoc.resources])
 
+	playerData.push(["buildings.location_" + fromBuilding.location + ".houses." + fromBuilding.houses.indexOf(house), null])
 	LogicUtils.removeItemInArray(fromBuilding.houses, house)
-	playerData.buildings = {}
-	playerData.buildings["location_" + fromBuildingLocation] = playerDoc.buildings["location_" + fromBuildingLocation]
-
 	house.location = toHouseLocation
 	toBuilding.houses.push(house)
-	playerData.buildings["location_" + toBuildingLocation] = playerDoc.buildings["location_" + toBuildingLocation]
+	playerData.push(["buildings.location_" + toBuilding.location + ".houses." + toBuilding.houses.indexOf(house), house])
 
 	return Promise.resolve()
 }
@@ -77,19 +75,16 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
 	var house = _.find(building.houses, function(house){
 		return _.isEqual(house.location, houseLocation)
 	})
-	if(!_.isObject(house)) return Promise.reject(new Error("小屋或装饰物不存在"))
+	if(!_.isObject(house)) return Promise.reject(ErrorUtils.houseNotExist(playerDoc._id, buildingLocation, houseLocation))
 	var houseEvent = _.find(playerDoc.houseEvents, function(event){
 		return _.isEqual(event.buildingLocation, buildingLocation) && _.isEqual(event.houseLocation, houseLocation)
 	})
-	if(_.isObject(houseEvent)) return Promise.reject(new Error("小屋当前不能被移动"))
+	if(_.isObject(houseEvent)) return Promise.reject(ErrorUtils.houseCanNotBeMovedNow(playerDoc._id, buildingLocation, houseLocation))
 
 	DataUtils.refreshPlayerResources(playerDoc)
-	playerData.resources = playerDoc.resources
-	playerData.basicInfo = playerDoc.basicInfo
-
+	playerData.push(["resources", playerDoc.resources])
+	playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house), null])
 	LogicUtils.removeItemInArray(building.houses, house)
-	playerData.buildings = {}
-	playerData.buildings["location_" + buildingLocation] = playerDoc.buildings["location_" + buildingLocation]
 
 	return Promise.resolve()
 }
@@ -103,15 +98,15 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
  * @returns {*}
  */
 var ChangePlayerName = function(playerDoc, playerData, newPlayerName, playerDao){
-	if(_.isEqual(newPlayerName, playerDoc.basicInfo.name)) return Promise.reject(new Error("不能修改为相同的名称"))
-	return playerDao.findByIndexAsync("basicInfo.name", newPlayerName).then(function(doc){
-		if(_.isObject(doc)){
+	if(_.isEqual(newPlayerName, playerDoc.basicInfo.name)) return Promise.reject(ErrorUtils.playerNameCanNotBeTheSame(playerDoc._id, newPlayerName))
+	return playerDao.getModel().findAsync({"basicInfo.name":newPlayerName}, {_id:true}, {limit:1}).then(function(docs){
+		if(docs.length > 0){
 			return playerDao.removeLockAsync(doc._id).then(function(){
-				return Promise.reject(new Error("名称已被其他玩家占用"))
+				return Promise.reject(ErrorUtils.playerNameAlreadyUsed(playerDoc._id, newPlayerName))
 			})
 		}else{
 			playerDoc.basicInfo.name = newPlayerName
-			playerData.basicInfo = playerDoc.basicInfo
+			playerData.push(["basicInfo.name", playerDoc.basicInfo.name])
 			return Promise.resolve()
 		}
 	})
@@ -125,9 +120,9 @@ var ChangePlayerName = function(playerDoc, playerData, newPlayerName, playerDao)
  * @returns {*}
  */
 var ChangeCityName = function(playerDoc, playerData, newCityName){
-	if(_.isEqual(newCityName, playerDoc.basicInfo.cityName)) return Promise.reject(new Error("不能修改为相同的城市名称"))
+	if(_.isEqual(newCityName, playerDoc.basicInfo.cityName)) return Promise.reject(ErrorUtils.cityNameCanNotBeTheSame(playerDoc._id, newCityName))
 	playerDoc.basicInfo.cityName = newCityName
-	playerData.basicInfo = playerDoc.basicInfo
+	playerData.push(["basicInfo.cityName", playerDoc.basicInfo.cityName])
 	return Promise.resolve()
 }
 
@@ -146,45 +141,28 @@ var ChangeCityName = function(playerDoc, playerData, newCityName){
  * @returns {*}
  */
 var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
-	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
+	if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
 	var allianceDoc = null
 	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
-		var allianceData = {}
+		var allianceData = []
 		var marchEvent = _.find(allianceDoc[eventType], function(marchEvent){
 			return _.isEqual(marchEvent.id, eventId)
 		})
-		if(!_.isObject(marchEvent)) return Promise.reject(new Error("行军事件不存在"))
+		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerDoc._id, allianceDoc._id, eventType, eventId))
 
-		if(_.isEqual(eventType, "strikeMarchEvents")){
-			LogicUtils.removeItemInArray(allianceDoc.strikeMarchEvents, marchEvent)
-			allianceData.__strikeMarchEvents = [{
-				type:Consts.DataChangedType.Remove,
-				data:marchEvent
-			}]
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
+		var marchDragon = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
+		DataUtils.refreshPlayerDragonsHp(playerDoc, marchDragon)
+		playerDoc.dragons[marchDragon.type].status = Consts.DragonStatus.Free
+		playerData.push(["dragons." + marchDragon.type, marchDragon])
+		allianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), null])
+		LogicUtils.removeItemInArray(allianceDoc[eventType], marchEvent)
+		eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.dragons = {}
-			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
-		}else{
-			LogicUtils.removeItemInArray(allianceDoc.attackMarchEvents, marchEvent)
-			allianceData.__attackMarchEvents = [{
-				type:Consts.DataChangedType.Remove,
-				data:marchEvent
-			}]
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
-
-			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.dragons = {}
-			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
-			playerData.soldiers = {}
+		if(_.isEqual(eventType, "attackMarchEvents")){
 			_.each(marchEvent.attackPlayerData.soldiers, function(soldier){
 				playerDoc.soldiers[soldier.name] += soldier.count
-				playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
+				playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 			})
 		}
 
@@ -215,13 +193,12 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
  * @param pushService
  */
 var MoveTheCity = function(playerDoc, playerData, locationX, locationY, allianceDao, updateFuncs, pushFuncs, pushService){
-	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
+	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error(ErrorUtils.playerNotJoinAlliance(playerDoc._id)))
 	var allianceDoc = null
 	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
-		var allianceData = {}
-		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) return Promise.reject(new Error("联盟正处于战争期"))
+		var allianceData = []
+		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
 		var marchEvents = []
 		marchEvents.concat(allianceDoc.attackMarchEvents)
 		marchEvents.concat(allianceDoc.attackMarchReturnEvents)
@@ -230,7 +207,7 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 		var hasMarchEvent = _.some(marchEvents, function(marchEvent){
 			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
 		})
-		if(hasMarchEvent) return Promise.reject(new Error("玩家有部队正在行军中"))
+		if(hasMarchEvent) return Promise.reject(ErrorUtils.playerHasMarchEvent(playerDoc._id, allianceDoc._id))
 		var playerDocInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
 		var playerObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, playerDocInAlliance.location)
 		var mapObjects = allianceDoc.mapObjects
@@ -244,17 +221,11 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 
 		var newRect = {x:locationX, y:locationY, width:memberSizeInMap.width, height:memberSizeInMap.height}
 		var map = MapUtils.buildMap(mapObjects)
-		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(new Error("不能移动到目标点位"))
+		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(ErrorUtils.canNotMoveToTargetPlace(playerDoc._id, allianceDoc._id, oldRect, newRect))
 		playerDocInAlliance.location = {x:newRect.x, y:newRect.y}
+		allianceData.push(["members." + allianceDoc.members.indexOf(playerDocInAlliance) + ".location", playerDocInAlliance.location])
 		playerObjectInMap.location = {x:newRect.x, y:newRect.y}
-		allianceData.__mapObjects = [{
-			type:Consts.DataChangedType.Edit,
-			data:playerObjectInMap
-		}]
-		allianceData.__members = [{
-			type:Consts.DataChangedType.Edit,
-			data:playerDocInAlliance
-		}]
+		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerObjectInMap) + ".location", playerObjectInMap.location])
 
 		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
@@ -281,10 +252,9 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
  */
 var DragonExp = function(playerDoc, playerData, dragonType, itemConfig){
 	var dragon = playerDoc.dragons[dragonType]
-	if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
+	if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerDoc._id, dragonType))
 	DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, parseInt(itemConfig.effect), false)
-	playerData.dragons = {}
-	playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+
 	return Promise.resolve()
 }
 
@@ -298,14 +268,15 @@ var DragonExp = function(playerDoc, playerData, dragonType, itemConfig){
  */
 var DragonHp = function(playerDoc, playerData, dragonType, itemConfig){
 	var dragon = playerDoc.dragons[dragonType]
-	if(dragon.star <= 0) return Promise.reject(new Error("龙还未孵化"))
-	if(dragon.hp <= 0) return Promise.reject(new Error("龙还未复活"))
+	if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerDoc._id, dragonType))
+	if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerDoc._id, dragon))
 	DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
 	var dragonHpMax = DataUtils.getDragonHpMax(dragon)
 	dragon.hp += parseInt(itemConfig.effect)
 	dragon.hp = dragon.hp <= dragonHpMax ? dragon.hp : dragonHpMax
-	playerData.dragons = {}
-	playerData.dragons[dragonType] = playerDoc.dragons[dragonType]
+	playerData.push(["dragons." + dragon.type + ".hp", dragon.hp])
+	playerData.push(["dragons." + dragon.type + ".hpRefreshTime", dragon.hpRefreshTime])
+
 	return Promise.resolve()
 }
 
@@ -318,7 +289,7 @@ var DragonHp = function(playerDoc, playerData, dragonType, itemConfig){
  */
 var HeroBlood = function(playerDoc, playerData, itemConfig){
 	playerDoc.resources.blood += parseInt(itemConfig.effect)
-	playerData.resources = playerDoc.resources
+	playerData.push(["resources.blood", playerDoc.resources.blood])
 	return Promise.resolve()
 }
 
@@ -332,8 +303,7 @@ var HeroBlood = function(playerDoc, playerData, itemConfig){
 var Stamina = function(playerDoc, playerData, itemConfig){
 	DataUtils.refreshPlayerResources(playerDoc)
 	playerDoc.resources.stamina += parseInt(itemConfig.effect)
-	DataUtils.refreshPlayerResources(playerDoc)
-	playerData.resources = playerDoc.resources
+	playerData.push(["resources", playerDoc.resources])
 	return Promise.resolve()
 }
 
@@ -348,7 +318,7 @@ var RestoreWallHp = function(playerDoc, playerData, itemConfig){
 	DataUtils.refreshPlayerResources(playerDoc)
 	playerDoc.resources.wallHp += parseInt(itemConfig.effect)
 	DataUtils.refreshPlayerResources(playerDoc)
-	playerData.resources = playerDoc.resources
+	playerData.push(["resources", playerDoc.resources])
 	return Promise.resolve()
 }
 
@@ -397,8 +367,7 @@ var DragonChest = function(playerDoc, playerData, itemConfig){
 	for(var i = 0; i < selectCount; i ++){
 		var item = items[i]
 		playerDoc[item.type][item.name] += item.count
-		if(!_.isObject(playerData[item.type])) playerData[item.type] = {}
-		playerData[item.type][item.name] = playerDoc[item.type][item.name]
+		playerData.push([item.type + "." + item.name, playerDoc[item.type][item.name]])
 	}
 
 	return Promise.resolve()
@@ -450,17 +419,7 @@ var Chest = function(playerDoc, playerData, itemConfig){
 	for(var i = 0; i < selectCount; i ++){
 		var item = items[i]
 		var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-		if(resp.newlyCreated){
-			playerData.__items.push({
-				type:Consts.DataChangedType.Add,
-				data:resp.item
-			})
-		}else{
-			playerData.__items.push({
-				type:Consts.DataChangedType.Edit,
-				data:resp.item
-			})
-		}
+		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 	}
 
 	return Promise.resolve()
@@ -480,10 +439,6 @@ var VipActive = function(playerDoc, playerData, itemConfig, eventFuncs, timeEven
 	var time = parseInt(itemConfig.effect) * 60 * 1000
 	if(_.isObject(event)){
 		event.finishTime += time
-		playerData.__vipEvents = [{
-			type:Consts.DataChangedType.Edit,
-			data:event
-		}]
 		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
 	}else{
 		event = {
@@ -492,12 +447,9 @@ var VipActive = function(playerDoc, playerData, itemConfig, eventFuncs, timeEven
 			finishTime:Date.now() + time
 		}
 		playerDoc.vipEvents.push(event)
-		playerData.__vipEvents = [{
-			type:Consts.DataChangedType.Add,
-			data:event
-		}]
 		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "vipEvents", event.id, event.finishTime])
 	}
+	playerData.push(["vipEvents." + playerDoc.vipEvents.indexOf(event), event])
 
 	return Promise.resolve()
 }
@@ -527,16 +479,14 @@ var VipPoint = function(playerDoc, playerData, itemConfig, eventFuncs, timeEvent
  * @returns {*}
  */
 var Buff = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventService){
+	DataUtils.refreshPlayerResources(playerDoc)
+	playerData.push(["resources", playerDoc.resources])
 	var time = itemConfig.effect * 60 * 60 * 1000
 	var event = _.find(playerDoc.itemEvents, function(itemEvent){
 		return _.isEqual(itemEvent.type, itemConfig.type)
 	})
 	if(_.isObject(event)){
 		event.finishTime += time
-		playerData.__itemEvents = [{
-			type:Consts.DataChangedType.Edit,
-			data:event
-		}]
 		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
 	}else{
 		event = {
@@ -546,14 +496,9 @@ var Buff = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventServ
 			finishTime:Date.now() + time
 		}
 		playerDoc.itemEvents.push(event)
-		playerData.__itemEvents = [{
-			type:Consts.DataChangedType.Add,
-			data:event
-		}]
 		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime])
 	}
-	playerData.basicInfo = playerDoc.basicInfo
-	playerData.resources = playerDoc.resources
+	playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), event])
 
 	return Promise.resolve()
 }
@@ -570,9 +515,7 @@ var Resource = function(playerDoc, playerData, itemConfig, resourceName){
 	var count = Math.round(itemConfig.effect * 1000)
 	DataUtils.refreshPlayerResources(playerDoc)
 	playerDoc.resources[resourceName] += count
-	DataUtils.refreshPlayerResources(playerDoc)
-	playerData.resources = playerDoc.resources
-	playerData.basicInfo = playerDoc.basicInfo
+	playerData.push(["resources", playerDoc.resources])
 
 	return Promise.resolve()
 }
@@ -592,14 +535,11 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
 	var event = _.find(playerDoc[eventType], function(event){
 		return _.isEqual(event.id, eventId)
 	})
-	if(!_.isObject(event)) return Promise.reject(new Error("所要加速的事件不存在"))
+	if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerDoc._id, eventType, eventId))
 	event.startTime -= speedupTime
 	event.finishTime -= speedupTime
 	if(event.finishTime > Date.now()){
-		playerData["__" + eventType] = [{
-			type:Consts.DataChangedType.Edit,
-			data:event
-		}]
+		playerData.push([eventType + "." + playerDoc[eventType].indexOf(event), event])
 	}
 	eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
 	if(_.contains(Consts.BuildingSpeedupEventTypes, eventType)){
@@ -626,25 +566,21 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
  * @returns {*}
  */
 var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
-	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
+	if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
 	var allianceDoc = null
 	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
-		var allianceData = {}
+		var allianceData = []
 		var marchEvent = _.find(allianceDoc[eventType], function(marchEvent){
 			return _.isEqual(marchEvent.id, eventId)
 		})
-		if(!_.isObject(marchEvent)) return Promise.reject(new Error("行军事件不存在"))
+		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerDoc._id, allianceDoc._id, eventType, eventId))
 
 		var marchTimeLeft = marchEvent.arriveTime - Date.now()
 		var marchTimeSpeedup = Math.round(marchTimeLeft * speedupPercent)
 		marchEvent.startTime -= marchTimeSpeedup
 		marchEvent.arriveTime -= marchTimeSpeedup
-		allianceData["__" + eventType] = [{
-			type:Consts.DataChangedType.Edit,
-			data:marchEvent
-		}]
+		allianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), marchEvent])
 		eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, marchEvent.id, marchEvent.arriveTime])
 
 		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])

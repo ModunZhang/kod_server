@@ -741,8 +741,8 @@ pro.removeMySellItem = function(msg, session, next){
 pro.upgradeProductionTech = function(msg, session, next){
 	var techName = msg.techName
 	var finishNow = msg.finishNow
-	this.playerApiService4.upgradeProductionTechAsync(session.uid, techName, finishNow).then(function(){
-		next(null, {code:200})
+	this.playerApiService4.upgradeProductionTechAsync(session.uid, techName, finishNow).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -757,8 +757,8 @@ pro.upgradeProductionTech = function(msg, session, next){
 pro.upgradeMilitaryTech = function(msg, session, next){
 	var techName = msg.techName
 	var finishNow = msg.finishNow
-	this.playerApiService4.upgradeMilitaryTechAsync(session.uid, techName, finishNow).then(function(){
-		next(null, {code:200})
+	this.playerApiService4.upgradeMilitaryTechAsync(session.uid, techName, finishNow).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -773,8 +773,8 @@ pro.upgradeMilitaryTech = function(msg, session, next){
 pro.upgradeSoldierStar = function(msg, session, next){
 	var soldierName = msg.soldierName
 	var finishNow = msg.finishNow
-	this.playerApiService4.upgradeSoldierStarAsync(session.uid, soldierName, finishNow).then(function(){
-		next(null, {code:200})
+	this.playerApiService4.upgradeSoldierStarAsync(session.uid, soldierName, finishNow).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -788,8 +788,8 @@ pro.upgradeSoldierStar = function(msg, session, next){
  */
 pro.setTerrain = function(msg, session, next){
 	var terrain = msg.terrain
-	this.playerApiService4.setTerrainAsync(session.uid, terrain).then(function(){
-		next(null, {code:200})
+	this.playerApiService4.setTerrainAsync(session.uid, terrain).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -804,8 +804,8 @@ pro.setTerrain = function(msg, session, next){
 pro.buyItem = function(msg, session, next){
 	var itemName = msg.itemName
 	var count = msg.count
-	this.playerApiService4.buyItemAsync(session.uid, itemName, count).then(function(){
-		next(null, {code:200})
+	this.playerApiService4.buyItemAsync(session.uid, itemName, count).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -820,8 +820,8 @@ pro.buyItem = function(msg, session, next){
 pro.useItem = function(msg, session, next){
 	var itemName = msg.itemName
 	var params = msg.params
-	this.playerApiService4.useItemAsync(session.uid, itemName, params).then(function(){
-		next(null, {code:200})
+	this.playerApiService4.useItemAsync(session.uid, itemName, params).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -836,8 +836,8 @@ pro.useItem = function(msg, session, next){
 pro.buyAndUseItem = function(msg, session, next){
 	var itemName = msg.itemName
 	var params = msg.params
-	this.playerApiService4.buyAndUseItemAsync(session.uid, itemName, params).then(function(){
-		next(null, {code:200})
+	this.playerApiService4.buyAndUseItemAsync(session.uid, itemName, params).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -853,8 +853,8 @@ pro.setPveData = function(msg, session, next){
 	var pveData = msg.pveData
 	var fightData = msg.fightData
 	var rewards = msg.rewards
-	this.playerApiService4.setPveDataAsync(session.uid, pveData, fightData, rewards).then(function(){
-		next(null, {code:200})
+	this.playerApiService4.setPveDataAsync(session.uid, pveData, fightData, rewards).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -868,8 +868,8 @@ pro.setPveData = function(msg, session, next){
  */
 pro.gacha = function(msg, session, next){
 	var type = msg.type
-	this.playerApiService4.gachaAsync(session.uid, type).then(function(){
-		next(null, {code:200})
+	this.playerApiService4.gachaAsync(session.uid, type).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -882,8 +882,8 @@ pro.gacha = function(msg, session, next){
  * @param next
  */
 pro.getDay60Reward = function(msg, session, next){
-	this.playerApiService5.getDay60RewardAsync(session.uid).then(function(){
-		next(null, {code:200})
+	this.playerApiService5.getDay60RewardAsync(session.uid).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -897,8 +897,8 @@ pro.getDay60Reward = function(msg, session, next){
  */
 pro.getOnlineReward = function(msg, session, next){
 	var timePoint = msg.timePoint
-	this.playerApiService5.getOnlineRewardAsync(session.uid, timePoint).then(function(){
-		next(null, {code:200})
+	this.playerApiService5.getOnlineRewardAsync(session.uid, timePoint).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -911,8 +911,8 @@ pro.getOnlineReward = function(msg, session, next){
  * @param next
  */
 pro.getDay14Reward = function(msg, session, next){
-	this.playerApiService5.getDay14RewardAsync(session.uid).then(function(){
-		next(null, {code:200})
+	this.playerApiService5.getDay14RewardAsync(session.uid).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -926,8 +926,8 @@ pro.getDay14Reward = function(msg, session, next){
  */
 pro.getLevelupReward = function(msg, session, next){
 	var levelupIndex = msg.levelupIndex
-	this.playerApiService5.getLevelupRewardAsync(session.uid, levelupIndex).then(function(){
-		next(null, {code:200})
+	this.playerApiService5.getLevelupRewardAsync(session.uid, levelupIndex).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -942,8 +942,8 @@ pro.getLevelupReward = function(msg, session, next){
 pro.addPlayerBillingData = function(msg, session, next){
 	var transactionId = msg.transactionId
 	var receiptData = msg.receiptData
-	this.playerIAPService.addPlayerBillingDataAsync(session.uid, transactionId, receiptData).then(function(){
-		next(null, {code:200})
+	this.playerIAPService.addPlayerBillingDataAsync(session.uid, transactionId, receiptData).spread(function(playerData, transactionId){
+		next(null, {code:200, playerData:playerData, transactionId:transactionId})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -956,8 +956,8 @@ pro.addPlayerBillingData = function(msg, session, next){
  * @param next
  */
 pro.getFirstIAPRewards = function(msg, session, next){
-	this.playerApiService5.getFirstIAPRewardsAsync(session.uid).then(function(){
-		next(null, {code:200})
+	this.playerApiService5.getFirstIAPRewardsAsync(session.uid).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -970,8 +970,8 @@ pro.getFirstIAPRewards = function(msg, session, next){
  * @param next
  */
 pro.passSelinasTest = function(msg, session, next){
-	this.playerApiService5.passSelinasTestAsync(session.uid).then(function(){
-		next(null, {code:200})
+	this.playerApiService5.passSelinasTestAsync(session.uid).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -985,8 +985,8 @@ pro.passSelinasTest = function(msg, session, next){
  */
 pro.getDailyTaskRewards = function(msg, session, next){
 	var taskType = msg.taskType
-	this.playerApiService5.getDailyTaskRewardsAsync(session.uid, taskType).then(function(){
-		next(null, {code:200})
+	this.playerApiService5.getDailyTaskRewardsAsync(session.uid, taskType).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -1001,8 +1001,8 @@ pro.getDailyTaskRewards = function(msg, session, next){
 pro.getGrowUpTaskRewards = function(msg, session, next){
 	var taskType = msg.taskType
 	var taskId = msg.taskId
-	this.playerApiService5.getGrowUpTaskRewardsAsync(session.uid, taskType, taskId).then(function(){
-		next(null, {code:200})
+	this.playerApiService5.getGrowUpTaskRewardsAsync(session.uid, taskType, taskId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
