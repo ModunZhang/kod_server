@@ -568,3 +568,48 @@ errors["iapValidateFaild"] = {
 	code:613,
 	message:"订单验证失败"
 }
+errors["playerAlreadyJoinAlliance"] = {
+	key:"playerAlreadyJoinAlliance",
+	code:614,
+	message:"玩家已加入了联盟"
+}
+errors["allianceNameExist"] = {
+	key:"allianceNameExist",
+	code:615,
+	message:"联盟名称已经存在"
+}
+errors["allianceTagExist"] = {
+	key:"allianceTagExist",
+	code:616,
+	message:"联盟标签已经存在"
+}
+errors["allianceOperationRightsIllegal"] = {
+	key:"allianceOperationRightsIllegal",
+	code:617,
+	message:"联盟操作权限不足"
+}
+errors["allianceHonourNotEnough"] = {
+	key:"allianceHonourNotEnough",
+	code:618,
+	message:"联盟荣耀值不足"
+}
+errors["allianceDoNotHasThisMember"] = {
+	key:"allianceDoNotHasThisMember",
+	code:619,
+	message:"联盟没有此玩家"
+}
+errors["allianceInFightStatusCanNotKickMemberOff"] = {
+	key:"allianceInFightStatusCanNotKickMemberOff",
+	code:620,
+	message:"联盟正在战争准备期或战争期,不能将玩家踢出联盟"
+}
+errors["canNotKickAllianceMemberOffForTitleIsUpperThanMe"] = {
+	key:"canNotKickAllianceMemberOffForTitleIsUpperThanMe",
+	code:621,
+	message:"不能将职级高于或等于自己的玩家踢出联盟"
+}
+errors["youAreNotTheAllianceArchon"] = {
+	key:"youAreNotTheAllianceArchon",
+	code:622,
+	message:"别逗了,你是不盟主好么"
+}

@@ -1196,3 +1196,96 @@ Utils.iapValidateFaild = function(playerId, errorData){
 	var config = Errors.iapValidateFaild
 	return CreateError(config, {playerId:playerId, errorData:errorData})
 }
+
+/**
+ * 玩家已加入了联盟
+ * @param playerId
+ */
+Utils.playerAlreadyJoinAlliance = function(playerId){
+	var config = Errors.playerAlreadyJoinAlliance
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 联盟名称已经存在
+ * @param playerId
+ * @param allianceName
+ */
+Utils.allianceNameExist = function(playerId, allianceName){
+	var config = Errors.allianceNameExist
+	return CreateError(config, {playerId:playerId, allianceName:allianceName})
+}
+
+/**
+ * 联盟标签已经存在
+ * @param playerId
+ * @param allianceTag
+ */
+Utils.allianceTagExist = function(playerId, allianceTag){
+	var config = Errors.allianceTagExist
+	return CreateError(config, {playerId:playerId, allianceTag:allianceTag})
+}
+
+/**
+ * 联盟操作权限不足
+ * @param playerId
+ * @param allianceId
+ * @param operation
+ */
+Utils.allianceOperationRightsIllegal = function(playerId, allianceId, operation){
+	var config = Errors.allianceOperationRightsIllegal
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, operation:operation})
+}
+
+/**
+ * 联盟荣耀值不足
+ * @param playerId
+ * @param allianceId
+ */
+Utils.allianceHonourNotEnough = function(playerId, allianceId){
+	var config = Errors.allianceHonourNotEnough
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 联盟没有此玩家
+ * @param playerId
+ * @param allianceId
+ * @param memberId
+ */
+Utils.allianceDoNotHasThisMember = function(playerId, allianceId, memberId){
+	var config = Errors.allianceDoNotHasThisMember
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, memberId:memberId})
+}
+
+/**
+ * 联盟正在战争准备期或战争期,不能将玩家踢出联盟
+ * @param playerId
+ * @param allianceId
+ * @param memberId
+ */
+Utils.allianceInFightStatusCanNotKickMemberOff = function(playerId, allianceId, memberId){
+	var config = Errors.allianceInFightStatusCanNotKickMemberOff
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, memberId:memberId})
+}
+
+/**
+ * 不能将职级高于或等于自己的玩家踢出联盟
+ * @param playerId
+ * @param allianceId
+ * @param memberId
+ */
+Utils.canNotKickAllianceMemberOffForTitleIsUpperThanMe = function(playerId, allianceId, memberId){
+	var config = Errors.canNotKickAllianceMemberOffForTitleIsUpperThanMe
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, memberId:memberId})
+}
+
+/**
+ * 别逗了,你是不盟主好么
+ * @param playerId
+ * @param allianceId
+ */
+Utils.youAreNotTheAllianceArchon = function(playerId, allianceId){
+	var config = Errors.youAreNotTheAllianceArchon
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}

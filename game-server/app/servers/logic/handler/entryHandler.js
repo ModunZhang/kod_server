@@ -106,6 +106,7 @@ var BindPlayerSession = function(session, playerDoc, callback){
 
 var PlayerLeave = function(session, reason){
 	console.log("user [" + session.uid + "] logout with reason [" + reason + "]")
+	var self = this
 	var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, this)
 	this.playerApiService.playerLogoutAsync(session.uid).then(function(playerDoc){
 		var funcs = []

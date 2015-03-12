@@ -610,8 +610,9 @@ Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
 /**
  * 刷新联盟属性
  * @param allianceDoc
+ * @param allianceData
  */
-Utils.refreshAllianceBasicInfo = function(allianceDoc){
+Utils.refreshAllianceBasicInfo = function(allianceDoc, allianceData){
 	var totalPower = 0
 	var totalKill = 0
 	_.each(allianceDoc.members, function(member){
@@ -619,7 +620,9 @@ Utils.refreshAllianceBasicInfo = function(allianceDoc){
 		totalKill += member.kill
 	})
 	allianceDoc.basicInfo.power = totalPower
+	allianceData.push(["basicInfo.power", allianceDoc.basicInfo.power])
 	allianceDoc.basicInfo.kill = totalKill
+	allianceData.push(["basicInfo.kill", allianceDoc.basicInfo.kill])
 }
 
 /**
@@ -1566,26 +1569,13 @@ Utils.getPlayerDefenceDragon = function(playerDoc){
  * @param report
  */
 Utils.addPlayerReport = function(playerDoc, playerData, report){
-	if(!_.isArray(playerData.__reports)) playerData.__reports = []
 	if(playerDoc.reports.length >= Define.PlayerReportsMaxSize){
 		var willRemovedReport = this.getPlayerFirstUnSavedReport(playerDoc)
+		playerData.push(["reports." + playerDoc.reports.indexOf(willRemovedReport), null])
 		this.removeItemInArray(playerDoc.reports, willRemovedReport)
-		playerData.__reports.push({
-			type:Consts.DataChangedType.Remove,
-			data:willRemovedReport
-		})
-		if(!!willRemovedReport.isSaved){
-			playerData.__savedReports = [{
-				type:Consts.DataChangedType.Remove,
-				data:willRemovedMail
-			}]
-		}
 	}
 	playerDoc.reports.push(report)
-	playerData.__reports.push({
-		type:Consts.DataChangedType.Add,
-		data:report
-	})
+	playerData.push(["reports." + playerDoc.reports.indexOf(report), report])
 }
 
 /**
@@ -1760,28 +1750,19 @@ Utils.returnPlayerShrineTroops = function(playerDoc, playerData, allianceDoc, al
 		})
 		if(_.isObject(playerTroop)) playerTroops.push({event:shrineEvent, troop:playerTroop})
 	})
-	if(!_.isObject(playerData.dragons)) playerData.dragons = {}
-	if(!_.isObject(playerData.soldiers)) playerData.soldiers = {}
-	if(!_.isArray(allianceData.__shrineEvents)) allianceData.__shrineEvents = []
 	_.each(playerTroops, function(playerTroop){
+		allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(playerTroop.event) + ".playerTroops." + event.playerTroops.indexOf(playerTroop.troop), null])
 		self.removeItemInArray(playerTroop.event.playerTroops, playerTroop.troop)
-		allianceData.__shrineEvents.push({
-			type:Consts.DataChangedType.Edit,
-			data:playerTroop.event
-		})
 
 		DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[playerTroop.dragon.type])
 		playerDoc.dragons[playerTroop.dragon.type].status = Consts.DragonStatus.Free
-		playerData.dragons[playerTroop.dragon.type] = playerDoc.dragons[playerTroop.dragon.type]
+		playerData.push(["dragons." + playerTroop.dragon.type], playerDoc.dragons[playerTroop.dragon.type])
 
 		_.each(playerTroop.soldiers, function(soldier){
 			playerDoc.soldiers[soldier.name] += soldier.count
-			playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
+			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
 	})
-	if(_.isEmpty(playerData.dragons)) delete playerData.dragons
-	if(_.isEmpty(playerData.soldiers)) delete playerData.soldiers
-	if(_.isEmpty(allianceData.__shrineEvents)) delete allianceData.__shrineEvents
 }
 
 /**
@@ -1794,54 +1775,38 @@ Utils.returnPlayerShrineTroops = function(playerDoc, playerData, allianceDoc, al
  * @param timeEventService
  */
 Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, timeEventService){
-	if(!_.isObject(playerData.dragons)) playerData.dragons = {}
-	if(!_.isObject(playerData.soldiers)) playerData.soldiers = {}
-	if(!_.isArray(allianceData.__strikeMarchEvents)) allianceData.__strikeMarchEvents = []
-	if(!_.isArray(allianceData.__attackMarchEvents)) allianceData.__attackMarchEvents = []
-
 	var i = allianceDoc.strikeMarchEvents.length
 	var marchEvent = null
 	while(i--){
 		marchEvent = allianceDoc.strikeMarchEvents[i]
 		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
+			allianceData.push(["strikeMarchEvents." + allianceDoc.strikeMarchEvents.indexOf(marchEvent), null])
 			allianceDoc.strikeMarchEvents.splice(i, 1)
-			allianceData.__strikeMarchEvents.push({
-				type:Consts.DataChangedType.Remove,
-				data:marchEvent
-			})
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
+			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 		}
 	}
 	i = allianceDoc.attackMarchEvents.length
 	while(i--){
 		marchEvent = allianceDoc.attackMarchEvents[i]
 		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
+			allianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(marchEvent), null])
 			allianceDoc.attackMarchEvents.splice(i, 1)
-			allianceData.__attackMarchEvents.push({
-				type:Consts.DataChangedType.Remove,
-				data:marchEvent
-			})
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
+			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 
 			_.each(marchEvent.attackPlayerData.soldiers, function(soldier){
 				playerDoc.soldiers[soldier.name] += soldier.count
-				playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
+				playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 			})
 		}
 	}
-
-	if(_.isEmpty(playerData.dragons)) delete playerData.dragons
-	if(_.isEmpty(playerData.soldiers)) delete playerData.soldiers
-	if(_.isEmpty(allianceData.__strikeMarchEvents)) delete allianceData.__strikeMarchEvents
-	if(_.isEmpty(allianceData.__attackMarchEvents)) delete allianceData.__attackMarchEvents
 }
 
 /**
@@ -1855,68 +1820,50 @@ Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, all
  */
 Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, timeEventService){
 	var self = this
-	if(!_.isObject(playerData.dragons)) playerData.dragons = {}
-	if(!_.isArray(allianceData.__strikeMarchReturnEvents)) allianceData.__strikeMarchReturnEvents = []
-	if(!_.isArray(allianceData.__attackMarchReturnEvents)) allianceData.__attackMarchReturnEvents = []
-
 	var i = allianceDoc.strikeMarchReturnEvents.length
 	var marchEvent = null
 	while(i--){
 		marchEvent = allianceDoc.strikeMarchReturnEvents[i]
 		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
+			allianceData.push(["strikeMarchReturnEvents." + allianceDoc.strikeMarchReturnEvents.indexOf(marchEvent), null])
 			allianceDoc.strikeMarchReturnEvents.splice(i, 1)
-			allianceData.__strikeMarchReturnEvents.push({
-				type:Consts.DataChangedType.Remove,
-				data:marchEvent
-			})
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
+			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 
 			DataUtils.refreshPlayerResources(playerDoc)
+			playerData.push(["resources", playerDoc.resources])
 			_.each(marchEvent.attackPlayerData.rewards, function(reward){
 				playerDoc[reward.type][reward.name] += reward.count
-				if(!_.isObject(playerData[reward.type])) playerData[reward.type] = playerDoc[reward.type]
+				playerData.push([reward.type] + "." + reward.name, playerDoc[reward.type][reward.name])
 			})
-			DataUtils.refreshPlayerResources(playerDoc)
-			playerData.basicInfo = playerDoc.basicInfo
-			playerData.resources = playerDoc.resources
 		}
 	}
 	i = allianceDoc.attackMarchReturnEvents.length
 	while(i--){
 		marchEvent = allianceDoc.attackMarchReturnEvents[i]
 		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
+			allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchEvent), null])
 			allianceDoc.attackMarchReturnEvents.splice(i, 1)
-			allianceData.__attackMarchReturnEvents.push({
-				type:Consts.DataChangedType.Remove,
-				data:marchEvent
-			})
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
+			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 
 			self.addPlayerSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.soldiers)
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.woundedSoldiers)
 
 			DataUtils.refreshPlayerResources(playerDoc)
+			playerData.push(["resources", playerDoc.resources])
 			_.each(marchEvent.attackPlayerData.rewards, function(reward){
 				playerDoc[reward.type][reward.name] += reward.count
-				if(!_.isObject(playerData[reward.type])) playerData[reward.type] = playerDoc[reward.type]
+				playerData.push([reward.type] + "." + reward.name, playerDoc[reward.type][reward.name])
 			})
-			DataUtils.refreshPlayerResources(playerDoc)
-			playerData.basicInfo = playerDoc.basicInfo
-			playerData.resources = playerDoc.resources
 		}
 	}
-
-	if(_.isEmpty(playerData.dragons)) delete playerData.dragons
-	if(_.isEmpty(allianceData.__strikeMarchReturnEvents)) delete allianceData.__strikeMarchReturnEvents
-	if(_.isEmpty(allianceData.__attackMarchReturnEvents)) delete allianceData.__attackMarchReturnEvents
 }
 
 /**
@@ -1930,25 +1877,18 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
  */
 Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, timeEventService){
 	var self = this
-	if(!_.isObject(playerData.dragons)) playerData.dragons = {}
-	if(!_.isArray(allianceData.__villageEvents)) allianceData.__villageEvents = []
-	if(!_.isArray(allianceData.__villages)) allianceData.__villages = []
-	if(!_.isArray(allianceData.__mapObjects)) allianceData.__mapObjects = []
-
 	var i = allianceDoc.villageEvents.length
 	var villageEvent = null
 	while(i--){
 		villageEvent = allianceDoc.villageEvents[i]
 		if(_.isEqual(villageEvent.playerData.id, playerDoc._id)){
+			allianceData.push(["villageEvents." + allianceDoc.villageEvents.indexOf(villageEvent), null])
 			allianceDoc.villageEvents.splice(i, 1)
-			allianceData.__villageEvents.push({
-				type:Consts.DataChangedType.Remove,
-				data:villageEvent
-			})
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, villageEvent.id])
+
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[villageEvent.playerData.dragon.type])
 			playerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.dragons[villageEvent.playerData.dragon.type] = playerDoc.dragons[villageEvent.playerData.dragon.type]
+			playerData.push(["dragons." + villageEvent.playerData.dragon.type], playerDoc.dragons[villageEvent.playerData.dragon.type])
 
 			self.addPlayerSoldiers(playerDoc, playerData, villageEvent.playerData.soldiers)
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, villageEvent.playerData.woundedSoldiers)
@@ -1967,13 +1907,11 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 			}]
 			self.mergeRewards(originalRewards, newRewards)
 			DataUtils.refreshPlayerResources(playerDoc)
+			playerData.push(["resources", playerDoc.resources])
 			_.each(originalRewards, function(reward){
 				playerDoc[reward.type][reward.name] += reward.count
-				if(!_.isObject(playerData[reward.type])) playerData[reward.type] = playerDoc[reward.type]
+				playerData.push([reward.type] + "." + reward.name, playerDoc[reward.type][reward.name])
 			})
-			DataUtils.refreshPlayerResources(playerDoc)
-			playerData.basicInfo = playerDoc.basicInfo
-			playerData.resources = playerDoc.resources
 
 			var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
 			playerDoc.allianceInfo[resourceName + "Exp"] += collectExp
@@ -1981,17 +1919,9 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 			var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
 			self.addPlayerReport(playerDoc, playerData, collectReport)
 			village.resource -= resourceCollected
-			allianceData.__villages.push({
-				type:Consts.DataChangedType.Edit,
-				data:village
-			})
+			allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
 		}
 	}
-
-	if(_.isEmpty(playerData.dragons)) delete playerData.dragons
-	if(_.isEmpty(allianceData.__villageEvents)) delete allianceData.__villageEvents
-	if(_.isEmpty(allianceData.__villages)) delete allianceData.__villages
-	if(_.isEmpty(allianceData.__mapObjects)) delete allianceData.__mapObjects
 }
 
 /**
@@ -2003,40 +1933,30 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
  * @param helpedByPlayerData
  */
 Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByTroop, helpedByPlayerDoc, helpedByPlayerData){
-	if(!_.isArray(playerData.__helpedByTroops)) playerData.__helpedByTroops = []
+	playerData.push(["helpedByTroops." + playerDoc.helpedByTroops.indexOf(helpedByTroop), null])
 	this.removeItemInArray(playerDoc.helpedByTroops, helpedByTroop)
-	playerData.__helpedByTroops.push({
-		type:Consts.DataChangedType.Remove,
-		data:helpedByTroop
-	})
 	var helpedToTroop = _.find(helpedByPlayerDoc.helpToTroops, function(helpToTroop){
 		return _.isEqual(helpToTroop.beHelpedPlayerData.id, playerDoc._id)
 	})
+	playerData.push(["helpToTroops." + helpedByPlayerDoc.helpToTroops.indexOf(helpedToTroop), null])
 	this.removeItemInArray(helpedByPlayerDoc.helpToTroops, helpedToTroop)
-	helpedByPlayerData.__helpToTroops = [{
-		type:Consts.DataChangedType.Remove,
-		data:helpedToTroop
-	}]
 
-	helpedByPlayerData.dragons = {}
 	DataUtils.refreshPlayerDragonsHp(helpedByPlayerDoc, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type])
 	helpedByPlayerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free
-	helpedByPlayerData.dragons[helpedByTroop.dragon.type] = helpedByPlayerDoc.dragons[helpedByTroop.dragon.type]
+	helpedByPlayerData.push(["dragons." + helpedByTroop.dragon.type, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type]])
 
 	helpedByPlayerData.soldiers = {}
 	_.each(helpedByTroop.soldiers, function(soldier){
 		helpedByPlayerDoc.soldiers[soldier.name] += soldier.count
-		helpedByPlayerData.soldiers[soldier.name] = helpedByPlayerDoc.soldiers[soldier.name]
+		helpedByPlayerData.push(["soldiers." + soldier.name, helpedByPlayerDoc.soldiers[soldier.name]])
 	})
 
 	DataUtils.refreshPlayerResources(helpedByPlayerDoc)
+	helpedByPlayerData.push(["resources", helpedByPlayerDoc.resources])
 	_.each(helpedByTroop.rewards, function(reward){
 		helpedByPlayerDoc[reward.type][reward.name] += reward.count
-		if(!_.isObject(helpedByPlayerData[reward.type])) helpedByPlayerData[reward.type] = helpedByPlayerDoc[reward.type]
+		helpedByPlayerData.push([reward.type + "." + reward.name, helpedByPlayerDoc[reward.type][reward.name]])
 	})
-	DataUtils.refreshPlayerResources(helpedByPlayerDoc)
-	helpedByPlayerData.basicInfo = helpedByPlayerDoc.basicInfo
-	helpedByPlayerData.resources = helpedByPlayerDoc.resources
 }
 
 /**
@@ -2048,46 +1968,29 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByTroop,
  * @param helpToPlayerData
  */
 Utils.returnPlayerHelpToTroop = function(playerDoc, playerData, helpToTroop, helpToPlayerDoc, helpToPlayerData){
-	var self = this
-	if(!_.isObject(playerData.dragons)) playerData.dragons = {}
-	if(!_.isObject(playerData.soldiers)) playerData.soldiers = {}
-	if(!_.isArray(playerData.__helpToTroops)) playerData.__helpToTroops = []
-
+	playerData.push(["helpToTroops." + playerDoc.helpToTroops.indexOf(helpToTroop), null])
 	this.removeItemInArray(playerDoc.helpToTroops, helpToTroop)
-	playerData.__helpToTroops.push({
-		type:Consts.DataChangedType.Remove,
-		data:helpToTroop
-	})
 	var helpedByTroop = _.find(helpToPlayerDoc.helpedByTroops, function(helpedByTroop){
 		return _.isEqual(helpedByTroop.id, playerDoc._id)
 	})
+	helpToPlayerData.push(["helpedByTroops." + helpToPlayerDoc.helpedByTroops.indexOf(helpedByTroop), null])
 	this.removeItemInArray(helpToPlayerDoc.helpedByTroops, helpedByTroop)
-	helpToPlayerData.__helpedByTroops = [{
-		type:Consts.DataChangedType.Remove,
-		data:helpedByTroop
-	}]
 
 	DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[helpedByTroop.dragon.type])
 	playerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free
-	playerData.dragons[helpedByTroop.dragon.type] = playerDoc.dragons[helpedByTroop.dragon.type]
+	playerData.push(["dragons." + helpedByTroop.dragon.type, playerDoc.dragons[helpedByTroop.dragon.type]])
 
 	_.each(helpedByTroop.soldiers, function(soldier){
 		playerDoc.soldiers[soldier.name] += soldier.count
-		playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
+		playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 	})
 
 	DataUtils.refreshPlayerResources(playerDoc)
+	playerData.push(["resources", playerData.resources])
 	_.each(helpedByTroop.rewards, function(reward){
 		playerDoc[reward.type][reward.name] += reward.count
-		if(!_.isObject(playerData[reward.type])) playerData[reward.type] = playerDoc[reward.type]
+		playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
 	})
-	DataUtils.refreshPlayerResources(playerDoc)
-	playerData.basicInfo = playerDoc.basicInfo
-	playerData.resources = playerDoc.resources
-
-	if(_.isEmpty(playerData.dragons)) delete playerData.dragons
-	if(_.isEmpty(playerData.soldiers)) delete playerData.soldiers
-	if(_.isEmpty(playerData.__helpToTroops)) delete playerData.__helpToTroops
 }
 
 /**
@@ -2101,23 +2004,17 @@ Utils.returnPlayerHelpToTroop = function(playerDoc, playerData, helpToTroop, hel
  * @param timeEventService
  */
 Utils.returnPlayerHelpedByMarchTroop = function(playerDoc, playerData, marchEvent, allianceDoc, allianceData, eventFuncs, timeEventService){
-	if(!_.isArray(allianceData.__attackMarchEvents)) allianceData.__attackMarchEvents = []
+	allianceData.push(["attackMarchEvents." + allianceDoc.indexOf(marchEvent), null])
 	this.removeItemInArray(allianceDoc.attackMarchEvents, marchEvent)
-	allianceData.__attackMarchEvents.push({
-		type:Consts.DataChangedType.Remove,
-		data:marchEvent
-	})
 	eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
 
-	playerData.dragons = {}
 	DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 	playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-	playerData.dragons[marchEvent.attackPlayerData.dragon.type] = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
+	playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
 
-	playerData.soldiers = {}
 	_.each(marchEvent.attackPlayerData.soldiers, function(soldier){
 		playerDoc.soldiers[soldier.name] += soldier.count
-		playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
+		playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 	})
 }
 
@@ -2328,13 +2225,10 @@ Utils.getFormatedSoldiers = function(soldiers){
  * @param soldiers
  */
 Utils.addPlayerSoldiers = function(playerDoc, playerData, soldiers){
-	if(!_.isObject(playerData.soldiers)) playerData.soldiers = {}
 	_.each(soldiers, function(soldier){
 		playerDoc.soldiers[soldier.name] += soldier.count
-		playerData.soldiers[soldier.name] = playerDoc.soldiers[soldier.name]
+		playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 	})
-
-	if(_.isEmpty(playerData.soldiers)) delete playerData.soldiers
 }
 
 /**

@@ -115,12 +115,13 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 	var activePlayerId = null
 	var playerDoc = null
 	var allianceDoc = null
+	var allianceData = []
 	var enemyAllianceId = null
 	var enemyAllianceDoc = null
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	var memberDoc = null
+	var memberDocInAlliance = null
 	var expAdd = null
 
 	this.Player.findOneAsync({deviceId:deviceId, selected:true}, {_id:true}).then(function(doc){
@@ -208,8 +209,7 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 		return Promise.resolve()
 	}).then(function(doc){
 		if(_.isObject(playerDoc.alliance)){
-			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(playerDoc.alliance.id))
-			allianceDoc = Doc
+			allianceDoc = doc
 			if(_.isObject(allianceDoc.allianceFight)){
 				if(_.isEqual(allianceDoc.allianceFight.attackAllianceId, allianceDoc._id)){
 					enemyAllianceId = allianceDoc.allianceFight.defenceAllianceId
@@ -227,21 +227,15 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 			allianceDoc.enemyAllianceDoc = LogicUtils.getAllianceViewData(enemyAllianceDoc)
 		}
 		if(_.isObject(allianceDoc)){
-			memberDoc = LogicUtils.updateMyPropertyInAlliance(playerDoc, allianceDoc)
-			LogicUtils.refreshAllianceBasicInfo(allianceDoc)
+			memberDocInAlliance = LogicUtils.updateMyPropertyInAlliance(playerDoc, allianceDoc)
+			allianceData.push(["members." + allianceDoc.members.indexOf(memberDocInAlliance), memberDocInAlliance])
+			LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		}
 		return Promise.resolve()
 	}).then(function(){
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		if(_.isObject(allianceDoc)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-			var allianceData = {
-				basicInfo:allianceDoc.basicInfo,
-				__members:[{
-					type:Consts.DataChangedType.Edit,
-					data:memberDoc
-				}]
-			}
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
 			LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
 		}

@@ -181,7 +181,7 @@ pro.quitAlliance = function(playerId, callback){
 			type:Consts.DataChangedType.Remove,
 			data:playerObjectInMap
 		}]
-		LogicUtils.refreshAllianceBasicInfo(allianceDoc)
+		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		allianceData.basicInfo = allianceDoc.basicInfo
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Quit, playerDocInAlliance.name, [])
 		allianceData.__events = [{
@@ -291,7 +291,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 			type:Consts.DataChangedType.Add,
 			data:memberObjInMap
 		}]
-		LogicUtils.refreshAllianceBasicInfo(allianceDoc)
+		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		allianceData.basicInfo = allianceDoc.basicInfo
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 		allianceData.__events = [{
@@ -690,7 +690,7 @@ pro.handleJoinAllianceRequest = function(playerId, memberId, agree, callback){
 			type:Consts.DataChangedType.Add,
 			data:memberObjInMap
 		}]
-		LogicUtils.refreshAllianceBasicInfo(allianceDoc)
+		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		allianceData.basicInfo = allianceDoc.basicInfo
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, memberDoc.basicInfo.name, [])
 		allianceData.__events = [{
@@ -1000,13 +1000,10 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			type:Consts.DataChangedType.Add,
 			data:memberObjInMap
 		}]
-		LogicUtils.refreshAllianceBasicInfo(allianceDoc)
-		allianceData.basicInfo = allianceDoc.basicInfo
+		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
-		allianceData.__events = [{
-			type:Consts.DataChangedType.Add,
-			data:event
-		}]
+		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, playerDoc, allianceDoc])
