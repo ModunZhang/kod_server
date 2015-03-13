@@ -67,10 +67,11 @@ Utils.noActivePlayerId = function(deviceId, userId){
 /**
  * 玩家不存在
  * @param playerId
+ * @param memberId
  */
-Utils.playerNotExist = function(playerId){
+Utils.playerNotExist = function(playerId, memberId){
 	var config = Errors.playerNotExist
-	return CreateError(config, {playerId:playerId})
+	return CreateError(config, {playerId:playerId, memberId:memberId})
 }
 
 /**
@@ -1200,10 +1201,11 @@ Utils.iapValidateFaild = function(playerId, errorData){
 /**
  * 玩家已加入了联盟
  * @param playerId
+ * @param memberId
  */
-Utils.playerAlreadyJoinAlliance = function(playerId){
+Utils.playerAlreadyJoinAlliance = function(playerId, memberId){
 	var config = Errors.playerAlreadyJoinAlliance
-	return CreateError(config, {playerId:playerId})
+	return CreateError(config, {playerId:playerId, memberId:memberId})
 }
 
 /**
@@ -1288,4 +1290,177 @@ Utils.canNotKickAllianceMemberOffForTitleIsUpperThanMe = function(playerId, alli
 Utils.youAreNotTheAllianceArchon = function(playerId, allianceId){
 	var config = Errors.youAreNotTheAllianceArchon
 	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 别逗了,仅当联盟成员为空时,盟主才能退出联盟
+ * @param playerId
+ * @param allianceId
+ */
+Utils.allianceArchonCanNotQuitAlliance = function(playerId, allianceId){
+	var config = Errors.allianceArchonCanNotQuitAlliance
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 联盟正在战争准备期或战争期,不能退出联盟
+ * @param playerId
+ * @param allianceId
+ */
+Utils.allianceInFightStatusCanNotQuitAlliance = function(playerId, allianceId){
+	var config = Errors.allianceInFightStatusCanNotQuitAlliance
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 联盟不允许直接加入
+ * @param playerId
+ * @param allianceId
+ */
+Utils.allianceDoNotAllowJoinDirectly = function(playerId, allianceId){
+	var config = Errors.allianceDoNotAllowJoinDirectly
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 联盟申请已满,请撤消部分申请后再来申请
+ * @param playerId
+ */
+Utils.joinAllianceRequestIsFull = function(playerId){
+	var config = Errors.joinAllianceRequestIsFull
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 对此联盟的申请已发出,请耐心等候审核
+ * @param playerId
+ * @param allianceId
+ */
+Utils.joinTheAllianceRequestAlreadySend = function(playerId, allianceId){
+	var config = Errors.joinTheAllianceRequestAlreadySend
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 此联盟的申请信息已满,请等候其处理后再进行申请
+ * @param playerId
+ * @param allianceId
+ */
+Utils.allianceJoinRequestMessagesIsFull = function(playerId, allianceId){
+	var config = Errors.allianceJoinRequestMessagesIsFull
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 联盟申请事件不存在
+ * @param playerId
+ * @param allianceId
+ */
+Utils.joinAllianceRequestNotExist = function(playerId, allianceId){
+	var config = Errors.joinAllianceRequestNotExist
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 玩家已经取消对此联盟的申请
+ * @param playerId
+ * @param allianceId
+ */
+Utils.playerCancelTheJoinRequestToTheAlliance = function(playerId, allianceId){
+	var config = Errors.playerCancelTheJoinRequestToTheAlliance
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 此玩家已被邀请加入我方联盟,请等候其处理
+ * @param playerId
+ * @param allianceId
+ * @param memberId
+ */
+Utils.inviteRequestAlreadySend = function(playerId, allianceId, memberId){
+	var config = Errors.inviteRequestAlreadySend
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, memberId:memberId})
+}
+
+/**
+ * 此玩家的邀请信息已满,请等候其处理后再进行邀请
+ * @param playerId
+ * @param allianceId
+ * @param memberId
+ */
+Utils.inviteRequestMessageIsFullForThisPlayer = function(playerId, allianceId, memberId){
+	var config = Errors.inviteRequestMessageIsFullForThisPlayer
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, memberId:memberId})
+}
+
+/**
+ * 联盟邀请事件不存在
+ * @param playerId
+ * @param allianceId
+ */
+Utils.allianceInviteEventNotExist = function(playerId, allianceId){
+	var config = Errors.allianceInviteEventNotExist
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 玩家已经是盟主了
+ * @param playerId
+ * @param allianceId
+ */
+Utils.playerAlreadyTheAllianceArchon = function(playerId, allianceId){
+	var config = Errors.playerAlreadyTheAllianceArchon
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 盟主连续7天不登陆时才能购买盟主职位
+ * @param playerId
+ * @param allianceId
+ */
+Utils.onlyAllianceArchonMoreThanSevenDaysNotOnLinePlayerCanBuyArchonTitle = function(playerId, allianceId){
+	var config = Errors.onlyAllianceArchonMoreThanSevenDaysNotOnLinePlayerCanBuyArchonTitle
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 此事件已经发送了加速请求
+ * @param playerId
+ * @param allianceId
+ * @param eventType
+ * @param eventId
+ */
+Utils.speedupRequestAlreadySendForThisEvent = function(playerId, allianceId, eventType, eventId){
+	var config = Errors.speedupRequestAlreadySendForThisEvent
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, eventType:eventType, eventId:eventId})
+}
+
+/**
+ * 帮助事件不存在
+ * @param playerId
+ * @param eventId
+ */
+Utils.allianceHelpEventNotExist = function(playerId, eventId){
+	var config = Errors.allianceHelpEventNotExist
+	return CreateError(config, {playerId:playerId, eventId:eventId})
+}
+
+/**
+ * 不能帮助自己加速建造
+ * @param playerId
+ * @param eventId
+ */
+Utils.canNotHelpSelfSpeedup = function(playerId, eventId){
+	var config = Errors.canNotHelpSelfSpeedup
+	return CreateError(config, {playerId:playerId, eventId:eventId})
+}
+
+/**
+ * 您已经帮助过此事件了
+ * @param playerId
+ * @param eventId
+ */
+Utils.youAlreadyHelpedTheEvent = function(playerId, eventId){
+	var config = Errors.youAlreadyHelpedTheEvent
+	return CreateError(config, {playerId:playerId, eventId:eventId})
 }

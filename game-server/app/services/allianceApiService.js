@@ -78,7 +78,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
-			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId))
+			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		}
 		var gemUsed = DataUtils.getGemByCreateAlliance()
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
@@ -92,7 +92,6 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		return self.allianceDao.getModel().findAsync({"basicInfo.tag":tag}, {_id:true}, {limit:1})
 	}).then(function(docs){
 		if(docs.length > 0) return Promise.reject(ErrorUtils.allianceTagExist(playerId, tag))
-
 		var alliance = {
 			basicInfo:{
 				name:name,
@@ -109,8 +108,8 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		alliance.villages = villages
 		return self.allianceDao.getModel().createAsync(alliance)
 	}).then(function(doc){
-		allianceDoc = doc
-		return self.allianceDao.addAsync(doc)
+		allianceDoc = JSON.parse(JSON.stringify(doc))
+		return self.allianceDao.addAsync(allianceDoc)
 	}).then(function(){
 		var mapObjects = allianceDoc.mapObjects
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
@@ -127,10 +126,9 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 			titleName:allianceDoc.titles.archon
 		}
 		playerData.push(["alliance", playerDoc.alliance])
-		console.log(allianceDoc)
-		//updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		//updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
+		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -434,7 +432,7 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		var gemUsed = DataUtils.getEditAllianceBasicInfoGem()
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
-		playerData.push(["resources.gem", playerDoc.resoruces.gem])
+		playerData.push(["resources.gem", playerDoc.resources.gem])
 		return self.allianceDao.findAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -451,7 +449,7 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		}
 		return Promise.resolve()
 	}).then(function(docs){
-		if(!_.isEqual(doc._id, allianceDoc._id) && docs.length > 0){
+		if(!_.isEqual(allianceDoc.basicInfo.tag, tag) && docs.length > 0){
 			return Promise.reject(ErrorUtils.allianceTagExist(playerId, tag))
 		}
 		var isNameChanged = !_.isEqual(allianceDoc.basicInfo.name, name)
@@ -918,7 +916,7 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 		}
 		return self.playerDao.findAsync(memberId)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(memberId))
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 		memberDoc = doc
 		memberDoc.alliance.title = title
 		memberData.push(["alliance.title", memberDoc.alliance.title])
@@ -1009,7 +1007,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		if(currentMemberLevel <= myMemberLevel) return Promise.reject(ErrorUtils.canNotKickAllianceMemberOffForTitleIsUpperThanMe(playerId, allianceDoc._id, memberId))
 		return self.playerDao.findAsync(memberId)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(memberId))
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 		memberDoc = doc
 
 		LogicUtils.returnPlayerShrineTroops(memberDoc, memberData, allianceDoc, allianceData)
@@ -1206,7 +1204,7 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 		allianceDoc = doc
 		return self.playerDao.findAsync(memberId)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId))
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 		memberDoc = doc
 		var memberInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
 		if(!_.isObject(memberInAllianceDoc)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))

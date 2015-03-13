@@ -996,26 +996,13 @@ Utils.sendSystemMail = function(playerDoc, playerData, titleKey, titleArgs, cont
 		isRead:false,
 		isSaved:false
 	}
-	playerData.__mails = []
 	if(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 		var willRemovedMail = this.getPlayerFirstUnSavedMail(playerDoc)
+		playerData.push(["mails." + playerDoc.mails.indexOf(willRemovedMail), null])
 		this.removeItemInArray(playerDoc.mails, willRemovedMail)
-		playerData.__mails.push({
-			type:Consts.DataChangedType.Remove,
-			data:willRemovedMail
-		})
-		if(!!willRemovedMail.isSaved){
-			playerData.__savedMails = [{
-				type:Consts.DataChangedType.Remove,
-				data:willRemovedMail
-			}]
-		}
 	}
 	playerDoc.mails.push(mail)
-	playerData.__mails.push({
-		type:Consts.DataChangedType.Add,
-		data:mail
-	})
+	playerData.push(["mails." + playerDoc.mails.indexOf(mail), mail])
 
 	return mail
 }

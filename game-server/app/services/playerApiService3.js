@@ -548,7 +548,7 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerDoc = doc
 		return self.playerDao.findAsync(targetPlayerId)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(targetPlayerId))
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId))
 		targetPlayerDoc = doc
 		playerViewData._id = targetPlayerDoc._id
 		playerViewData.basicInfo = targetPlayerDoc.basicInfo

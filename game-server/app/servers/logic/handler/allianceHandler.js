@@ -247,8 +247,8 @@ pro.handOverAllianceArchon = function(msg, session, next){
  * @param next
  */
 pro.quitAlliance = function(msg, session, next){
-	this.allianceApiService2.quitAllianceAsync(session.uid).then(function(){
-		next(null, {code:200})
+	this.allianceApiService2.quitAllianceAsync(session.uid).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -262,8 +262,8 @@ pro.quitAlliance = function(msg, session, next){
  */
 pro.joinAllianceDirectly = function(msg, session, next){
 	var allianceId = msg.allianceId
-	this.allianceApiService2.joinAllianceDirectlyAsync(session.uid, allianceId).then(function(){
-		next(null, {code:200})
+	this.allianceApiService2.joinAllianceDirectlyAsync(session.uid, allianceId).spread(function(playerData, allianceData){
+		next(null, {code:200, playerData:playerData, allianceData:allianceData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -277,8 +277,8 @@ pro.joinAllianceDirectly = function(msg, session, next){
  */
 pro.requestToJoinAlliance = function(msg, session, next){
 	var allianceId = msg.allianceId
-	this.allianceApiService2.requestToJoinAllianceAsync(session.uid, allianceId).then(function(){
-		next(null, {code:200})
+	this.allianceApiService2.requestToJoinAllianceAsync(session.uid, allianceId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -293,6 +293,21 @@ pro.requestToJoinAlliance = function(msg, session, next){
 pro.cancelJoinAllianceRequest = function(msg, session, next){
 	var allianceId = msg.allianceId
 	this.allianceApiService2.cancelJoinAllianceRequestAsync(session.uid, allianceId).then(function(){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 同意加入联盟申请
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.approveJoinAllianceRequest = function(msg, session, next){
+	var requestEventId = msg.requestEventId
+	this.allianceApiService2.approveJoinAllianceRequestAsync(session.uid, requestEventId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -300,15 +315,14 @@ pro.cancelJoinAllianceRequest = function(msg, session, next){
 }
 
 /**
- * 处理加入联盟申请
+ * 删除加入联盟申请事件
  * @param msg
  * @param session
  * @param next
  */
-pro.handleJoinAllianceRequest = function(msg, session, next){
-	var memberId = msg.memberId
-	var agree = msg.agree
-	this.allianceApiService2.handleJoinAllianceRequestAsync(session.uid, memberId, agree).then(function(){
+pro.removeJoinAllianceReqeusts = function(msg, session, next){
+	var requestEventIds = msg.requestEventIds
+	this.allianceApiService2.approveJoinAllianceRequestAsync(session.uid, requestEventIds).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -339,8 +353,8 @@ pro.inviteToJoinAlliance = function(msg, session, next){
 pro.handleJoinAllianceInvite = function(msg, session, next){
 	var allianceId = msg.allianceId
 	var agree = msg.agree
-	this.allianceApiService2.handleJoinAllianceInviteAsync(session.uid, allianceId, agree).then(function(){
-		next(null, {code:200})
+	this.allianceApiService2.handleJoinAllianceInviteAsync(session.uid, allianceId, agree).spread(function(playerData, allianceData){
+		next(null, {code:200, playerData:playerData, allianceData:allianceData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -353,8 +367,8 @@ pro.handleJoinAllianceInvite = function(msg, session, next){
  * @param next
  */
 pro.buyAllianceArchon = function(msg, session, next){
-	this.allianceApiService2.buyAllianceArchonAsync(session.uid).then(function(){
-		next(null, {code:200})
+	this.allianceApiService2.buyAllianceArchonAsync(session.uid).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -384,8 +398,8 @@ pro.requestAllianceToSpeedUp = function(msg, session, next){
  */
 pro.helpAllianceMemberSpeedUp = function(msg, session, next){
 	var eventId = msg.eventId
-	this.allianceApiService2.helpAllianceMemberSpeedUpAsync(session.uid, eventId).then(function(){
-		next(null, {code:200})
+	this.allianceApiService2.helpAllianceMemberSpeedUpAsync(session.uid, eventId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -398,8 +412,8 @@ pro.helpAllianceMemberSpeedUp = function(msg, session, next){
  * @param next
  */
 pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
-	this.allianceApiService2.helpAllAllianceMemberSpeedUpAsync(session.uid).then(function(){
-		next(null, {code:200})
+	this.allianceApiService2.helpAllAllianceMemberSpeedUpAsync(session.uid).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -581,7 +595,7 @@ pro.revengeAlliance = function(msg, session, next){
  */
 pro.getAllianceViewData = function(msg, session, next){
 	var targetAllianceId = msg.targetAllianceId
-	this.allianceApiService4.getAllianceViewDataAsync(session.uid, targetAllianceId).then(function(){
+	this.allianceApiService3.getAllianceViewDataAsync(session.uid, targetAllianceId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -596,7 +610,7 @@ pro.getAllianceViewData = function(msg, session, next){
  */
 pro.searchAllianceInfoByTag = function(msg, session, next){
 	var tag = msg.tag
-	this.allianceApiService4.searchAllianceInfoByTagAsync(session.uid, tag).then(function(){
+	this.allianceApiService3.searchAllianceInfoByTagAsync(session.uid, tag).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -610,7 +624,7 @@ pro.searchAllianceInfoByTag = function(msg, session, next){
  * @param next
  */
 pro.getNearedAllianceInfos = function(msg, session, next){
-	this.allianceApiService4.getNearedAllianceInfosAsync(session.uid).then(function(){
+	this.allianceApiService3.getNearedAllianceInfosAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -740,7 +754,7 @@ pro.strikeVillage = function(msg, session, next){
  */
 pro.getAttackMarchEventDetail = function(msg, session, next){
 	var eventId = msg.eventId
-	this.allianceApiService5.getAttackMarchEventDetailAsync(session.uid, eventId).then(function(){
+	this.allianceApiService4.getAttackMarchEventDetailAsync(session.uid, eventId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -755,7 +769,7 @@ pro.getAttackMarchEventDetail = function(msg, session, next){
  */
 pro.getStrikeMarchEventDetail = function(msg, session, next){
 	var eventId = msg.eventId
-	this.allianceApiService5.getStrikeMarchEventDetailAsync(session.uid, eventId).then(function(){
+	this.allianceApiService4.getStrikeMarchEventDetailAsync(session.uid, eventId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

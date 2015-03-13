@@ -692,11 +692,19 @@ Api.cancelJoinAllianceRequest = function(allianceId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.handleJoinAllianceRequest = function(memberId, agree, callback){
+Api.approveJoinAllianceRequest = function(requestEventId, callback){
 	var info = {
-		memberId:memberId, agree:agree
+		requestEventId:requestEventId
 	}
-	var route = "logic.allianceHandler.handleJoinAllianceRequest"
+	var route = "logic.allianceHandler.approveJoinAllianceRequest"
+	pomelo.request(route, info, callback)
+}
+
+Api.removeJoinAllianceReqeusts = function(requestEventIds, callback){
+	var info = {
+		requestEventIds:requestEventIds
+	}
+	var route = "logic.allianceHandler.removeJoinAllianceReqeusts"
 	pomelo.request(route, info, callback)
 }
 

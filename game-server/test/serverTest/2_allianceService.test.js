@@ -74,400 +74,400 @@ describe("AllianceService", function(){
 			})
 		})
 
-		//it("createAlliance 玩家已加入了联盟", function(done){
-		//	Api.createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
-		//		doc.code.should.equal(Errors.playerAlreadyJoinAlliance.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("createAlliance 联盟名称已经存在", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
-		//			doc.code.should.equal(Errors.allianceNameExist.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("createAlliance 联盟标签已经存在", function(done){
-		//	Api.createAlliance("Hello", Config.allianceTag, "cn", "grassLand", "e", function(doc){
-		//		doc.code.should.equal(Errors.allianceTagExist.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("sendAllianceMail 玩家未加入联盟", function(done){
-		//	Api.sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
-		//		doc.code.should.equal(Errors.playerNotJoinAlliance.code)
-		//		Api.loginPlayer(Config.deviceId, function(doc){
-		//			doc.code.should.equal(200)
-		//			m_user = doc.playerData
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("sendAllianceMail 此操作权限不足", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.joinAllianceDirectly(m_user.alliance.id, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
-		//				doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("sendAllianceMail 正常发送", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceBasicInfo 玩家未加入联盟", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceBasicInfo(Config.allianceName, Config.allianceTag, "cn", "e", function(doc){
-		//			doc.code.should.equal(Errors.playerNotJoinAlliance.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceBasicInfo 此操作权限不足", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceBasicInfo(Config.allianceName, Config.allianceTag, "cn", "e", function(doc){
-		//			doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceBasicInfo 联盟名称已经存在", function(done){
-		//	Api.loginPlayer(Config.deviceId4, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.createAlliance("31231", Config.allianceTag2, "cn", "grassLand", "e", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.editAllianceBasicInfo(Config.allianceName, "adfad", "cn", "e", function(doc){
-		//				doc.code.should.equal(Errors.allianceNameExist.code)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceBasicInfo 联盟标签已经存在", function(done){
-		//	Api.editAllianceBasicInfo("adfad", Config.allianceTag, "cn", "e", function(doc){
-		//		doc.code.should.equal(Errors.allianceTagExist.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("editAllianceBasicInfo 正常修改", function(done){
-		//	Api.editAllianceBasicInfo(Config.allianceName2, Config.allianceTag2, "cn", "e", function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("editAllianceTerrian 联盟荣耀值不足", function(done){
-		//	Api.editAllianceTerrian("grassLand", function(doc){
-		//		doc.code.should.equal(Errors.allianceHonourNotEnough.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("editAllianceTerrian 正常编辑", function(done){
-		//	Api.sendChat("alliancehonour 5000", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceTerrian("grassLand", function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editTitleName 玩家未加入联盟", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceTitleName("archon", "老大", function(doc){
-		//			doc.code.should.equal(Errors.playerNotJoinAlliance.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editTitleName 此操作权限不足", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceTitleName("archon", "老大", function(doc){
-		//			doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editTitleName 正常修改", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceTitleName("archon", "老大", function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceNotice 玩家未加入联盟", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceNotice("这是第一条公告", function(doc){
-		//			doc.code.should.equal(Errors.playerNotJoinAlliance.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceNotice 此操作权限不足", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceNotice("这是第一条公告", function(doc){
-		//			doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceNotice 正常发布公告", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceNotice("这是第一条公告", function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceDescription 玩家未加入联盟", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceDescription("这是第一条描述", function(doc){
-		//			doc.code.should.equal(Errors.playerNotJoinAlliance.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceDescription 此操作权限不足", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceDescription("这是第一条描述", function(doc){
-		//			doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceDescription 正常修改联盟描述", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceDescription("这是第一条描述", function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceJoinType 玩家未加入联盟", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceJoinType("all", function(doc){
-		//			doc.code.should.equal(Errors.playerNotJoinAlliance.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceJoinType 此操作权限不足", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceJoinType("all", function(doc){
-		//			doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceJoinType 正常修改联盟描述", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceJoinType("all", function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceMemberTitle 玩家未加入联盟", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceMemberTitle("asdfasdf", "general", function(doc){
-		//			doc.code.should.equal(Errors.playerNotJoinAlliance.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceMemberTitle 此操作权限不足", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceMemberTitle("asdfasdf", "general", function(doc){
-		//			doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceMemberTitle 联盟没有此玩家", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceMemberTitle("asdfasdf", "general", function(doc){
-		//			doc.code.should.equal(Errors.allianceDoNotHasThisMember.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceMemberTitle 不能将玩家的职级调整到与自己平级或者比自己高", function(done){
-		//	var memberDoc = null
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		memberDoc = doc.playerData
-		//		Api.loginPlayer(Config.deviceId, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.editAllianceMemberTitle(memberDoc._id, "archon", function(doc){
-		//				doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("editAllianceMemberTitle 正常编辑", function(done){
-		//	var memberDoc = null
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		memberDoc = doc.playerData
-		//		Api.loginPlayer(Config.deviceId, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.editAllianceMemberTitle(memberDoc._id, "general", function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("kickAllianceMemberOff 玩家未加入联盟", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.kickAllianceMemberOff("asdfasdf", function(doc){
-		//			doc.code.should.equal(Errors.playerNotJoinAlliance.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("kickAllianceMemberOff 此操作权限不足", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.kickAllianceMemberOff("asdfasdf", function(doc){
-		//			doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("kickAllianceMemberOff 联盟没有此玩家", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.kickAllianceMemberOff("asdfasdf", function(doc){
-		//			doc.code.should.equal(Errors.allianceDoNotHasThisMember.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("kickAllianceMemberOff 正常踢出", function(done){
-		//	var memberDoc = null
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		memberDoc = doc.playerData
-		//		Api.loginPlayer(Config.deviceId, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.kickAllianceMemberOff(memberDoc._id, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("handOverArchon 玩家未加入联盟", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.handOverAllianceArchon("asdfasdf", function(doc){
-		//			doc.code.should.equal(Errors.playerNotJoinAlliance.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("handOverArchon 别逗了,你是不盟主好么", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.joinAllianceDirectly(m_user.alliance.id, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.handOverAllianceArchon("asdfasdf", function(doc){
-		//				doc.code.should.equal(Errors.youAreNotTheAllianceArchon.code)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("handOverArchon 玩家不存在", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.handOverAllianceArchon("asdfasdf", function(doc){
-		//			doc.code.should.equal(Errors.playerNotExist.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("handOverArchon 正常移交", function(done){
-		//	var memberDoc = null
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		memberDoc = doc.playerData
-		//		Api.loginPlayer(Config.deviceId, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.handOverAllianceArchon(memberDoc._id, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
+		it("createAlliance 玩家已加入了联盟", function(done){
+			Api.createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
+				doc.code.should.equal(Errors.playerAlreadyJoinAlliance.code)
+				done()
+			})
+		})
+
+		it("createAlliance 联盟名称已经存在", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
+					doc.code.should.equal(Errors.allianceNameExist.code)
+					done()
+				})
+			})
+		})
+
+		it("createAlliance 联盟标签已经存在", function(done){
+			Api.createAlliance("Hello", Config.allianceTag, "cn", "grassLand", "e", function(doc){
+				doc.code.should.equal(Errors.allianceTagExist.code)
+				done()
+			})
+		})
+
+		it("sendAllianceMail 玩家未加入联盟", function(done){
+			Api.sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
+				doc.code.should.equal(Errors.playerNotJoinAlliance.code)
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					m_user = doc.playerData
+					done()
+				})
+			})
+		})
+
+		it("sendAllianceMail 此操作权限不足", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.joinAllianceDirectly(m_user.alliance.id, function(doc){
+					doc.code.should.equal(200)
+					Api.sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
+						doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("sendAllianceMail 正常发送", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceBasicInfo 玩家未加入联盟", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceBasicInfo(Config.allianceName, Config.allianceTag, "cn", "e", function(doc){
+					doc.code.should.equal(Errors.playerNotJoinAlliance.code)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceBasicInfo 此操作权限不足", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceBasicInfo(Config.allianceName, Config.allianceTag, "cn", "e", function(doc){
+					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceBasicInfo 联盟名称已经存在", function(done){
+			Api.loginPlayer(Config.deviceId4, function(doc){
+				doc.code.should.equal(200)
+				Api.createAlliance("31231", Config.allianceTag2, "cn", "grassLand", "e", function(doc){
+					doc.code.should.equal(200)
+					Api.editAllianceBasicInfo(Config.allianceName, "adfad", "cn", "e", function(doc){
+						doc.code.should.equal(Errors.allianceNameExist.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("editAllianceBasicInfo 联盟标签已经存在", function(done){
+			Api.editAllianceBasicInfo("adfad", Config.allianceTag, "cn", "e", function(doc){
+				doc.code.should.equal(Errors.allianceTagExist.code)
+				done()
+			})
+		})
+
+		it("editAllianceBasicInfo 正常修改", function(done){
+			Api.editAllianceBasicInfo(Config.allianceName2, Config.allianceTag2, "cn", "e", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("editAllianceTerrian 联盟荣耀值不足", function(done){
+			Api.editAllianceTerrian("grassLand", function(doc){
+				doc.code.should.equal(Errors.allianceHonourNotEnough.code)
+				done()
+			})
+		})
+
+		it("editAllianceTerrian 正常编辑", function(done){
+			Api.sendChat("alliancehonour 5000", function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceTerrian("grassLand", function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("editTitleName 玩家未加入联盟", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceTitleName("archon", "老大", function(doc){
+					doc.code.should.equal(Errors.playerNotJoinAlliance.code)
+					done()
+				})
+			})
+		})
+
+		it("editTitleName 此操作权限不足", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceTitleName("archon", "老大", function(doc){
+					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
+					done()
+				})
+			})
+		})
+
+		it("editTitleName 正常修改", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceTitleName("archon", "老大", function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceNotice 玩家未加入联盟", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceNotice("这是第一条公告", function(doc){
+					doc.code.should.equal(Errors.playerNotJoinAlliance.code)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceNotice 此操作权限不足", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceNotice("这是第一条公告", function(doc){
+					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceNotice 正常发布公告", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceNotice("这是第一条公告", function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceDescription 玩家未加入联盟", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceDescription("这是第一条描述", function(doc){
+					doc.code.should.equal(Errors.playerNotJoinAlliance.code)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceDescription 此操作权限不足", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceDescription("这是第一条描述", function(doc){
+					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceDescription 正常修改联盟描述", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceDescription("这是第一条描述", function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceJoinType 玩家未加入联盟", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceJoinType("all", function(doc){
+					doc.code.should.equal(Errors.playerNotJoinAlliance.code)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceJoinType 此操作权限不足", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceJoinType("all", function(doc){
+					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceJoinType 正常修改联盟描述", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceJoinType("all", function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceMemberTitle 玩家未加入联盟", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceMemberTitle("asdfasdf", "general", function(doc){
+					doc.code.should.equal(Errors.playerNotJoinAlliance.code)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceMemberTitle 此操作权限不足", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceMemberTitle("asdfasdf", "general", function(doc){
+					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceMemberTitle 联盟没有此玩家", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceMemberTitle("asdfasdf", "general", function(doc){
+					doc.code.should.equal(Errors.allianceDoNotHasThisMember.code)
+					done()
+				})
+			})
+		})
+
+		it("editAllianceMemberTitle 不能将玩家的职级调整到与自己平级或者比自己高", function(done){
+			var memberDoc = null
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				memberDoc = doc.playerData
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					Api.editAllianceMemberTitle(memberDoc._id, "archon", function(doc){
+						doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("editAllianceMemberTitle 正常编辑", function(done){
+			var memberDoc = null
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				memberDoc = doc.playerData
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					Api.editAllianceMemberTitle(memberDoc._id, "general", function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("kickAllianceMemberOff 玩家未加入联盟", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.kickAllianceMemberOff("asdfasdf", function(doc){
+					doc.code.should.equal(Errors.playerNotJoinAlliance.code)
+					done()
+				})
+			})
+		})
+
+		it("kickAllianceMemberOff 此操作权限不足", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.kickAllianceMemberOff("asdfasdf", function(doc){
+					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
+					done()
+				})
+			})
+		})
+
+		it("kickAllianceMemberOff 联盟没有此玩家", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.kickAllianceMemberOff("asdfasdf", function(doc){
+					doc.code.should.equal(Errors.allianceDoNotHasThisMember.code)
+					done()
+				})
+			})
+		})
+
+		it("kickAllianceMemberOff 正常踢出", function(done){
+			var memberDoc = null
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				memberDoc = doc.playerData
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					Api.kickAllianceMemberOff(memberDoc._id, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("handOverArchon 玩家未加入联盟", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.handOverAllianceArchon("asdfasdf", function(doc){
+					doc.code.should.equal(Errors.playerNotJoinAlliance.code)
+					done()
+				})
+			})
+		})
+
+		it("handOverArchon 别逗了,你是不盟主好么", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.joinAllianceDirectly(m_user.alliance.id, function(doc){
+					doc.code.should.equal(200)
+					Api.handOverAllianceArchon("asdfasdf", function(doc){
+						doc.code.should.equal(Errors.youAreNotTheAllianceArchon.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("handOverArchon 玩家不存在", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.handOverAllianceArchon("asdfasdf", function(doc){
+					doc.code.should.equal(Errors.playerNotExist.code)
+					done()
+				})
+			})
+		})
+
+		it("handOverArchon 正常移交", function(done){
+			var memberDoc = null
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				memberDoc = doc.playerData
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					Api.handOverAllianceArchon(memberDoc._id, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
 
 		//it("quitAlliance 玩家未加入联盟", function(done){
 		//	Api.loginPlayer(Config.deviceId2, function(doc){

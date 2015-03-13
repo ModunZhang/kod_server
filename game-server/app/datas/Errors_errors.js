@@ -613,3 +613,88 @@ errors["youAreNotTheAllianceArchon"] = {
 	code:622,
 	message:"别逗了,你是不盟主好么"
 }
+errors["allianceArchonCanNotQuitAlliance"] = {
+	key:"allianceArchonCanNotQuitAlliance",
+	code:623,
+	message:"别逗了,仅当联盟成员为空时,盟主才能退出联盟"
+}
+errors["allianceInFightStatusCanNotQuitAlliance"] = {
+	key:"allianceInFightStatusCanNotQuitAlliance",
+	code:624,
+	message:"联盟正在战争准备期或战争期,不能退出联盟"
+}
+errors["allianceDoNotAllowJoinDirectly"] = {
+	key:"allianceDoNotAllowJoinDirectly",
+	code:625,
+	message:"联盟不允许直接加入"
+}
+errors["joinAllianceRequestIsFull"] = {
+	key:"joinAllianceRequestIsFull",
+	code:626,
+	message:"联盟申请已满,请撤消部分申请后再来申请"
+}
+errors["joinTheAllianceRequestAlreadySend"] = {
+	key:"joinTheAllianceRequestAlreadySend",
+	code:627,
+	message:"对此联盟的申请已发出,请耐心等候审核"
+}
+errors["allianceJoinRequestMessagesIsFull"] = {
+	key:"allianceJoinRequestMessagesIsFull",
+	code:628,
+	message:"此联盟的申请信息已满,请等候其处理后再进行申请"
+}
+errors["joinAllianceRequestNotExist"] = {
+	key:"joinAllianceRequestNotExist",
+	code:629,
+	message:"联盟申请事件不存在"
+}
+errors["playerCancelTheJoinRequestToTheAlliance"] = {
+	key:"playerCancelTheJoinRequestToTheAlliance",
+	code:630,
+	message:"玩家已经取消对此联盟的申请"
+}
+errors["inviteRequestAlreadySend"] = {
+	key:"inviteRequestAlreadySend",
+	code:631,
+	message:"此玩家已被邀请加入我方联盟,请等候其处理"
+}
+errors["inviteRequestMessageIsFullForThisPlayer"] = {
+	key:"inviteRequestMessageIsFullForThisPlayer",
+	code:632,
+	message:"此玩家的邀请信息已满,请等候其处理后再进行邀请"
+}
+errors["allianceInviteEventNotExist"] = {
+	key:"allianceInviteEventNotExist",
+	code:633,
+	message:"联盟邀请事件不存在"
+}
+errors["playerAlreadyTheAllianceArchon"] = {
+	key:"playerAlreadyTheAllianceArchon",
+	code:634,
+	message:"玩家已经是盟主了"
+}
+errors["onlyAllianceArchonMoreThanSevenDaysNotOnLinePlayerCanBuyArchonTitle"] = {
+	key:"onlyAllianceArchonMoreThanSevenDaysNotOnLinePlayerCanBuyArchonTitle",
+	code:635,
+	message:"盟主连续7天不登陆时才能购买盟主职位"
+}
+errors["speedupRequestAlreadySendForThisEvent"] = {
+	key:"speedupRequestAlreadySendForThisEvent",
+	code:636,
+	message:"此事件已经发送了加速请求"
+}
+errors["allianceHelpEventNotExist"] = {
+	key:"allianceHelpEventNotExist",
+	code:637,
+	message:"帮助事件不存在"
+}
+errors["canNotHelpSelfSpeedup"] = {
+	key:"canNotHelpSelfSpeedup",
+	code:638,
+	message:"不能帮助自己加速建造"
+}
+errors["youAlreadyHelpedTheEvent"] = {
+	key:"youAlreadyHelpedTheEvent",
+	code:639,
+	message:"您已经帮助过此事件了"
+}

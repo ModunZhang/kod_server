@@ -857,7 +857,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 		return Promise.resolve()
 	}).then(function(doc){
 		if(!_.isEqual(playerId, memberId)){
-			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(memberId))
+			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 			memberDoc = doc
 		}
 
@@ -941,7 +941,7 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 		playerDoc = doc
 		return self.playerDao.findAsync(memberId)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(memberId))
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 		memberDoc = doc
 
 		var mailToMember = {

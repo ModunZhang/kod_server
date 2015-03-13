@@ -88,7 +88,7 @@ pro.createAccount = function(deviceId, callback){
 	updateFuncs.push([this.User, this.User.createAsync, user])
 	updateFuncs.push([this.Player, this.Player.createAsync, player])
 	LogicUtils.excuteAll(updateFuncs).spread(function(doc_1, doc_2, doc_3){
-		playerDoc = doc_3
+		playerDoc = JSON.parse(JSON.stringify(doc_3))
 		return self.playerDao.addAsync(playerDoc)
 	}).then(function(){
 		return self.playerDao.removeLockAsync(playerDoc._id)
@@ -281,7 +281,6 @@ pro.playerLogout = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	this.playerDao.findAsync(playerId, true).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId))
 		playerDoc = doc
 		playerDoc.logicServerId = null
 		playerDoc.countInfo.todayOnLineTime += Date.now() - playerDoc.countInfo.lastLoginTime
