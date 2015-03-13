@@ -18,8 +18,6 @@ var AllianceInit = GameDatas.AllianceInitData
 var AllianceBuildingConfig = GameDatas.AllianceBuilding
 var PlayerInitData = GameDatas.PlayerInitData
 
-var Player = require("../../../domains/player")
-
 module.exports = function(app){
 	return new CommandRemote(app)
 }
@@ -27,8 +25,6 @@ module.exports = function(app){
 var CommandRemote = function(app){
 	this.app = app
 	this.serverId = app.getServerId()
-	this.redis = app.get("redis")
-	this.scripto = app.get("scripto")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
 	this.pushService = app.get("pushService")

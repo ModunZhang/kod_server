@@ -9,7 +9,7 @@ var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
 var DealSchema = new Schema({
-	_id:{type:String, required:true, unique:true, index:true, default:ShortId.generate},
+	_id:{type:String, required:true, default:ShortId.generate},
 	playerId:{type:String, required:true},
 	addedTime:{type:Number, required:true, default:Date.now()},
 	itemData:{

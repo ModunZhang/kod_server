@@ -13,8 +13,6 @@ var DataService = function(app){
 	this.redis = app.get("redis")
 	this.playerDao = app.get("playerDao")
 	this.allianceDao = app.get("allianceDao")
-	this.Player = app.get("Player")
-	this.Alliance = app.get("Alliance")
 }
 module.exports = DataService
 var pro = DataService.prototype
@@ -42,7 +40,7 @@ pro.loadPlayers = function(callback){
 	var addAllToRedis = function(ids){
 		if(ids.length == 0) return Promise.resolve()
 		id = ids.shift()._id
-		return self.Player.findByIdAsync(id).then(function(doc){
+		return self.playerDao.getModel().findByIdAsync(id).then(function(doc){
 			return self.playerDao.directAddAsync(doc)
 		}).then(function(){
 			return addAllToRedis(ids)
@@ -51,7 +49,7 @@ pro.loadPlayers = function(callback){
 		})
 	}
 
-	this.Player.findAsync({isActive:true}, {_id:true}).then(function(theIds){
+	this.playerDao.getModel().findAsync({isActive:true}, {_id:true}).then(function(theIds){
 		ids = theIds
 		return addAllToRedis(ids)
 	}).then(function(){
@@ -73,7 +71,7 @@ pro.unloadPlayers = function(callback){
 		if(ids.length == 0) return Promise.resolve()
 		id = ids.shift()
 		return self.playerDao.directFindAsync(id).then(function(doc){
-			return self.Player.update({_id:doc._id}, _.omit(doc, "_id", "__v"))
+			return self.playerDao.getModel().update({_id:doc._id}, _.omit(doc, "_id", "__v"))
 		}).then(function(){
 			return saveAllToMongo(ids)
 		}).catch(function(e){
@@ -102,7 +100,7 @@ pro.loadAlliances = function(callback){
 	var addAllToRedis = function(ids){
 		if(ids.length == 0) return Promise.resolve()
 		id = ids.shift()._id
-		return self.Alliance.findByIdAsync(id).then(function(doc){
+		return self.allianceDao.getModel().findByIdAsync(id).then(function(doc){
 			return self.allianceDao.directAddAsync(doc)
 		}).then(function(){
 			return addAllToRedis(ids)
@@ -111,7 +109,7 @@ pro.loadAlliances = function(callback){
 		})
 	}
 
-	this.Alliance.findAsync({isActive:true}, {_id:true}).then(function(theIds){
+	this.allianceDao.getModel().findAsync({isActive:true}, {_id:true}).then(function(theIds){
 		ids = theIds
 		return addAllToRedis(ids)
 	}).then(function(){
@@ -133,7 +131,7 @@ pro.unloadAlliances = function(callback){
 		if(ids.length == 0) return Promise.resolve()
 		id = ids.shift()
 		return self.allianceDao.directFindAsync(id).then(function(doc){
-			return self.Alliance.update({_id:doc._id}, _.omit(doc, "_id", "__v"))
+			return self.allianceDao.getModel().update({_id:doc._id}, _.omit(doc, "_id", "__v"))
 		}).then(function(){
 			return saveAllToMongo(ids)
 		}).catch(function(e){

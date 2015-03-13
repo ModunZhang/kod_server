@@ -225,6 +225,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		if(_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		return self.allianceDao.findAsync(allianceId)
 	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 		allianceDoc = doc
 		if(!_.isEqual(doc.basicInfo.joinType, Consts.AllianceJoinType.All)) return Promise.reject(ErrorUtils.allianceDoNotAllowJoinDirectly(playerId, allianceDoc._id))
 
@@ -409,110 +410,6 @@ pro.cancelJoinAllianceRequest = function(playerId, allianceId, callback){
 }
 
 /**
- * 同意加入联盟申请
- * @param playerId
- * @param requestEventId
- * @param callback
- */
-pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
-	if(!_.isString(requestEventId)){
-		callback(new Error("requestEventId 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var allianceDoc = null
-	var allianceData = []
-	var requestEvent = null
-	var memberDoc = null
-	var memberData = []
-	var updateFuncs = []
-	var pushFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
-		playerDoc = doc
-		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "handleJoinAllianceRequest")){
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.alliance.id, "handleJoinAllianceRequest"))
-		}
-		return self.allianceDao.findAsync(playerDoc.alliance.id)
-	}).then(function(doc){
-		allianceDoc = doc
-		requestEvent = _.find(allianceDoc.joinRequestEvents, function(event){
-			return _.isEqual(event.id, requestEventId)
-		})
-		if(!_.isObject(requestEvent)) return Promise.reject(ErrorUtils.joinAllianceRequestNotExist(requestEventId, allianceDoc._id))
-
-		return self.playerDao.findAsync(requestEventId)
-	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, requestEventId))
-		memberDoc = doc
-		if(_.isObject(memberDoc.alliance)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, memberDoc._id))
-		var hasPendingRequest = _.some(memberDoc.requestToAllianceEvents, function(event){
-			return _.isEqual(event.id, allianceDoc._id)
-		})
-		if(!hasPendingRequest) return Promise.reject(ErrorUtils.playerCancelTheJoinRequestToTheAlliance(memberDoc._id, allianceDoc._id))
-
-		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
-		var memberRect = LogicUtils.getFreePointInAllianceMap(allianceDoc.mapObjects, memberSizeInMap.width, memberSizeInMap.height)
-		var memberObjInMap = LogicUtils.createAllianceMapObject("member", memberRect)
-		allianceDoc.mapObjects.push(memberObjInMap)
-		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberObjInMap), memberObjInMap])
-		var memberInAlliance = LogicUtils.addAllianceMember(allianceDoc, memberDoc, Consts.AllianceTitle.Member, memberRect)
-		allianceData.push(["members." + allianceDoc.members.indexOf(memberInAlliance), memberInAlliance])
-		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, memberDoc.basicInfo.name, [])
-		allianceData.push(["events." + allianceDoc.events.indexOf(evet), event])
-		if(!_.isEmpty(memberDoc.logicServerId)){
-			updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, memberDoc._id, memberDoc.logicServerId])
-		}
-
-		memberDoc.alliance = {
-			id:allianceDoc._id,
-			name:allianceDoc.basicInfo.name,
-			tag:allianceDoc.basicInfo.tag,
-			title:Consts.AllianceTitle.Member,
-			titleName:allianceDoc.titles.member
-		}
-		memberData.push(["alliance", memberDoc.alliance])
-		LogicUtils.clearArray(memberDoc.requestToAllianceEvents)
-		memberData.push(["requestToAllianceEvents", memberDoc.requestToAllianceEvents])
-		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
-		memberData.push(["inviteToAllianceEvents", memberDoc.inviteToAllianceEvents])
-
-		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, memberDoc, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, memberDoc._id])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(allianceDoc._id))
-		}
-		if(_.isObject(memberDoc)){
-			funcs.push(self.playerDao.removeLockAsync(memberDoc._id))
-		}
-
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
  * 删除加入联盟申请事件
  * @param playerId
  * @param requestEventIds
@@ -533,7 +430,7 @@ pro.removeJoinAllianceReqeusts = function(playerId, requestEventIds, callback){
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "handleJoinAllianceRequest")){
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "removeJoinAllianceReqeusts")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.alliance.id, "removeJoinAllianceReqeusts"))
 		}
 		return self.allianceDao.findAsync(playerDoc.alliance.id)
@@ -565,6 +462,113 @@ pro.removeJoinAllianceReqeusts = function(playerId, requestEventIds, callback){
 		}
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.allianceDao.removeLockAsync(allianceDoc._id))
+		}
+
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 同意加入联盟申请
+ * @param playerId
+ * @param requestEventId
+ * @param callback
+ */
+pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
+	if(!_.isString(requestEventId)){
+		callback(new Error("requestEventId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var allianceData = []
+	var requestEvent = null
+	var memberDoc = null
+	var memberData = []
+	var updateFuncs = []
+	var pushFuncs = []
+	this.playerDao.findAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
+		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "approveJoinAllianceRequest")){
+			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.alliance.id, "approveJoinAllianceRequest"))
+		}
+		return self.allianceDao.findAsync(playerDoc.alliance.id)
+	}).then(function(doc){
+		allianceDoc = doc
+		requestEvent = _.find(allianceDoc.joinRequestEvents, function(event){
+			return _.isEqual(event.id, requestEventId)
+		})
+		if(!_.isObject(requestEvent)) return Promise.reject(ErrorUtils.joinAllianceRequestNotExist(requestEventId, allianceDoc._id))
+
+		return self.playerDao.findAsync(requestEventId)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, requestEventId))
+		memberDoc = doc
+		if(_.isObject(memberDoc.alliance)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, memberDoc._id))
+		var hasPendingRequest = _.some(memberDoc.requestToAllianceEvents, function(event){
+			return _.isEqual(event.id, allianceDoc._id)
+		})
+		if(!hasPendingRequest) return Promise.reject(ErrorUtils.playerCancelTheJoinRequestToTheAlliance(memberDoc._id, allianceDoc._id))
+
+		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
+		var memberRect = LogicUtils.getFreePointInAllianceMap(allianceDoc.mapObjects, memberSizeInMap.width, memberSizeInMap.height)
+		var memberObjInMap = LogicUtils.createAllianceMapObject("member", memberRect)
+		allianceDoc.mapObjects.push(memberObjInMap)
+		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberObjInMap), memberObjInMap])
+		var memberInAlliance = LogicUtils.addAllianceMember(allianceDoc, memberDoc, Consts.AllianceTitle.Member, memberRect)
+		allianceData.push(["members." + allianceDoc.members.indexOf(memberInAlliance), memberInAlliance])
+		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
+		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, memberDoc.basicInfo.name, [])
+		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+		if(!_.isEmpty(memberDoc.logicServerId)){
+			updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, memberDoc._id, memberDoc.logicServerId])
+		}
+
+		memberDoc.alliance = {
+			id:allianceDoc._id,
+			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag,
+			title:Consts.AllianceTitle.Member,
+			titleName:allianceDoc.titles.member
+		}
+		memberData.push(["alliance", memberDoc.alliance])
+		LogicUtils.clearArray(memberDoc.requestToAllianceEvents)
+		memberData.push(["requestToAllianceEvents", memberDoc.requestToAllianceEvents])
+		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
+		memberData.push(["inviteToAllianceEvents", memberDoc.inviteToAllianceEvents])
+
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
+		pushFuncs.push([self.pushService, self.pushService.onGetAllianceDataSuccessAsync, memberDoc, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, memberDoc._id])
+		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockAsync(allianceDoc._id))
+		}
+		if(_.isObject(memberDoc)){
+			funcs.push(self.playerDao.removeLockAsync(memberDoc._id))
 		}
 
 		if(funcs.length > 0){
@@ -685,7 +689,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		playerDoc = doc
 		if(_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		inviteEvent = LogicUtils.getInviteToAllianceEvent(playerDoc, allianceId)
-		if(!_.isObject(event)) return Promise.reject(ErrorUtils.allianceInviteEventNotExist(playerId, allianceId))
+		if(!_.isObject(inviteEvent)) return Promise.reject(ErrorUtils.allianceInviteEventNotExist(playerId, allianceId))
 
 		playerData.push(["inviteToAllianceEvents." + playerDoc.inviteToAllianceEvents.indexOf(inviteEvent), null])
 		LogicUtils.removeItemInArray(playerDoc.inviteToAllianceEvents, inviteEvent)

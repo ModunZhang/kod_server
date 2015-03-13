@@ -14,7 +14,6 @@ module.exports = function(app) {
 
 var LogicRemote = function(app) {
 	this.app = app
-	this.callbackService = app.get("callbackService")
 	this.playerTimeEventService = app.get("playerTimeEventService")
 	this.allianceTimeEventService = app.get("allianceTimeEventService")
 	this.sessionService = app.get("sessionService")

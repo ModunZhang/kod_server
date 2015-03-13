@@ -24,7 +24,7 @@ var Utils = module.exports
 var CreateError = function(config, params){
 	var code = config.code
 	var message = config.message
-	if(_.isObject(params)) message += " : " + JSON.stringify(params)
+	if(_.isObject(params)) message += ":" + JSON.stringify(params)
 	return new CustomError(code, message)
 }
 

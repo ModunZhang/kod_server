@@ -319,7 +319,7 @@ describe("AllianceService", function(){
 		it("editAllianceMemberTitle 玩家未加入联盟", function(done){
 			Api.loginPlayer(Config.deviceId2, function(doc){
 				doc.code.should.equal(200)
-				Api.editAllianceMemberTitle("asdfasdf", "general", function(doc){
+				Api.editAllianceMemberTitle("asdfasdf", "member", function(doc){
 					doc.code.should.equal(Errors.playerNotJoinAlliance.code)
 					done()
 				})
@@ -329,7 +329,7 @@ describe("AllianceService", function(){
 		it("editAllianceMemberTitle 此操作权限不足", function(done){
 			Api.loginPlayer(Config.deviceId3, function(doc){
 				doc.code.should.equal(200)
-				Api.editAllianceMemberTitle("asdfasdf", "general", function(doc){
+				Api.editAllianceMemberTitle("asdfasdf", "member", function(doc){
 					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
 					done()
 				})
@@ -339,7 +339,7 @@ describe("AllianceService", function(){
 		it("editAllianceMemberTitle 联盟没有此玩家", function(done){
 			Api.loginPlayer(Config.deviceId, function(doc){
 				doc.code.should.equal(200)
-				Api.editAllianceMemberTitle("asdfasdf", "general", function(doc){
+				Api.editAllianceMemberTitle("asdfasdf", "member", function(doc){
 					doc.code.should.equal(Errors.allianceDoNotHasThisMember.code)
 					done()
 				})
@@ -368,7 +368,7 @@ describe("AllianceService", function(){
 				memberDoc = doc.playerData
 				Api.loginPlayer(Config.deviceId, function(doc){
 					doc.code.should.equal(200)
-					Api.editAllianceMemberTitle(memberDoc._id, "general", function(doc){
+					Api.editAllianceMemberTitle(memberDoc._id, "member", function(doc){
 						doc.code.should.equal(200)
 						done()
 					})
@@ -469,233 +469,214 @@ describe("AllianceService", function(){
 			})
 		})
 
-		//it("quitAlliance 玩家未加入联盟", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.quitAlliance(function(doc){
-		//			doc.code.should.equal(Errors.playerNotJoinAlliance.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("quitAlliance 正常退出", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.quitAlliance(function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("joinAllianceDirectly 玩家已加入联盟", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.joinAllianceDirectly("asdfasdf", function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("玩家已加入联盟")
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("joinAllianceDirectly 联盟不存在", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.joinAllianceDirectly("asdfasdf", function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("联盟不存在")
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("joinAllianceDirectly 联盟不允许直接加入", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.editAllianceJoinType("audit", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.loginPlayer(Config.deviceId, function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.joinAllianceDirectly(m_user.alliance.id, function(doc){
-		//					doc.code.should.equal(500)
-		//					doc.message.should.equal("联盟不允许直接加入")
-		//					Api.loginPlayer(Config.deviceId3, function(doc){
-		//						doc.code.should.equal(200)
-		//						Api.editAllianceJoinType("all", function(doc){
-		//							doc.code.should.equal(200)
-		//							done()
-		//						})
-		//					})
-		//				})
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("joinAllianceDirectly 正常加入", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.joinAllianceDirectly(m_user.alliance.id, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("requestToJoinAlliance 玩家已加入联盟", function(done){
-		//	Api.requestToJoinAlliance(m_user.alliance.id, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("玩家已加入联盟")
-		//		done()
-		//	})
-		//})
-		//
-		//it("requestToJoinAlliance 对此联盟的申请已发出,请耐心等候审核", function(done){
-		//	Api.loginPlayer(Config.deviceId5, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.requestToJoinAlliance(m_user.alliance.id, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.requestToJoinAlliance(m_user.alliance.id, function(doc){
-		//				doc.code.should.equal(500)
-		//				doc.message.should.equal("对此联盟的申请已发出,请耐心等候审核")
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("cancelJoinAllianceRequest 正常取消", function(done){
-		//	Api.cancelJoinAllianceRequest(m_user.alliance.id, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("handleJoinAllianceRequest 正常处理 拒绝加入", function(done){
-		//	var memberDoc = null
-		//	Api.loginPlayer(Config.deviceId5, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.requestToJoinAlliance(m_user.alliance.id, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.loginPlayer(Config.deviceId3, function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.handleJoinAllianceRequest(memberDoc._id, false, function(doc){
-		//					doc.code.should.equal(200)
-		//					done()
-		//				})
-		//			})
-		//		})
-		//	})
-		//
-		//	var onPlayerLoginSuccess = function(doc){
-		//		memberDoc = doc
-		//		pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		//	}
-		//	pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		//})
-		//
-		//it("handleJoinAllianceRequest 正常处理 允许加入", function(done){
-		//	var memberDoc = null
-		//	Api.loginPlayer(Config.deviceId5, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.requestToJoinAlliance(m_user.alliance.id, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.loginPlayer(Config.deviceId3, function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.handleJoinAllianceRequest(memberDoc._id, true, function(doc){
-		//					doc.code.should.equal(200)
-		//					done()
-		//				})
-		//			})
-		//		})
-		//	})
-		//	var onPlayerLoginSuccess = function(doc){
-		//		memberDoc = doc
-		//		pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		//	}
-		//	pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		//})
-		//
-		//it("inviteToJoinAlliance 正常邀请", function(done){
-		//	var memberDoc = null
-		//	Api.loginPlayer(Config.deviceId5, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.quitAlliance(function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.loginPlayer(Config.deviceId3, function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.inviteToJoinAlliance(memberDoc._id, function(doc){
-		//					doc.code.should.equal(200)
-		//					done()
-		//				})
-		//			})
-		//		})
-		//	})
-		//	var onPlayerLoginSuccess = function(doc){
-		//		memberDoc = doc
-		//		pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		//	}
-		//	pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		//})
-		//
-		//it("handleJoinAllianceInvite 正常处理 拒绝邀请", function(done){
-		//	Api.loginPlayer(Config.deviceId5, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.handleJoinAllianceInvite(m_user.alliance.id, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("handleJoinAllianceInvite 正常处理 同意邀请", function(done){
-		//	var memberDoc = null
-		//	Api.loginPlayer(Config.deviceId5, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.loginPlayer(Config.deviceId3, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.inviteToJoinAlliance(memberDoc._id, function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.loginPlayer(Config.deviceId4, function(doc){
-		//					doc.code.should.equal(200)
-		//					Api.inviteToJoinAlliance(memberDoc._id, function(doc){
-		//						doc.code.should.equal(200)
-		//						Api.loginPlayer(Config.deviceId5, function(doc){
-		//							doc.code.should.equal(200)
-		//							Api.handleJoinAllianceInvite(m_user.alliance.id, true, function(doc){
-		//								doc.code.should.equal(200)
-		//								done()
-		//							})
-		//						})
-		//					})
-		//				})
-		//			})
-		//		})
-		//	})
-		//	var onPlayerLoginSuccess = function(doc){
-		//		memberDoc = doc
-		//		pomelo.removeListener("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		//	}
-		//	pomelo.on("onPlayerLoginSuccess", onPlayerLoginSuccess)
-		//})
-		//
-		//it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
-		//	Api.buyAllianceArchon(function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.loginPlayer(Config.deviceId3, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.buyAllianceArchon(function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.loginPlayer(Config.deviceId5, function(doc){
-		//					doc.code.should.equal(200)
-		//					done()
-		//				})
-		//			})
-		//		})
-		//	})
-		//})
+		it("quitAlliance 玩家未加入联盟", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.quitAlliance(function(doc){
+					doc.code.should.equal(Errors.playerNotJoinAlliance.code)
+					done()
+				})
+			})
+		})
+
+		it("quitAlliance 正常退出", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.quitAlliance(function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("joinAllianceDirectly 玩家已加入联盟", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.joinAllianceDirectly("asdfasdf", function(doc){
+					doc.code.should.equal(Errors.playerAlreadyJoinAlliance.code)
+					done()
+				})
+			})
+		})
+
+		it("joinAllianceDirectly 联盟不存在", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.joinAllianceDirectly("asdfasdf", function(doc){
+					doc.code.should.equal(Errors.allianceNotExist.code)
+					done()
+				})
+			})
+		})
+
+		it("joinAllianceDirectly 联盟不允许直接加入", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.editAllianceJoinType("audit", function(doc){
+					doc.code.should.equal(200)
+					Api.loginPlayer(Config.deviceId, function(doc){
+						doc.code.should.equal(200)
+						Api.joinAllianceDirectly(m_user.alliance.id, function(doc){
+							doc.code.should.equal(Errors.allianceDoNotAllowJoinDirectly.code)
+							Api.loginPlayer(Config.deviceId3, function(doc){
+								doc.code.should.equal(200)
+								Api.editAllianceJoinType("all", function(doc){
+									doc.code.should.equal(200)
+									done()
+								})
+							})
+						})
+					})
+				})
+			})
+		})
+
+		it("joinAllianceDirectly 正常加入", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.joinAllianceDirectly(m_user.alliance.id, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("requestToJoinAlliance 玩家已加入联盟", function(done){
+			Api.requestToJoinAlliance(m_user.alliance.id, function(doc){
+				doc.code.should.equal(Errors.playerAlreadyJoinAlliance.code)
+				done()
+			})
+		})
+
+		it("requestToJoinAlliance 对此联盟的申请已发出,请耐心等候审核", function(done){
+			Api.loginPlayer(Config.deviceId5, function(doc){
+				doc.code.should.equal(200)
+				Api.requestToJoinAlliance(m_user.alliance.id, function(doc){
+					doc.code.should.equal(200)
+					Api.requestToJoinAlliance(m_user.alliance.id, function(doc){
+						doc.code.should.equal(Errors.joinTheAllianceRequestAlreadySend.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("cancelJoinAllianceRequest 正常取消", function(done){
+			Api.cancelJoinAllianceRequest(m_user.alliance.id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("removeJoinAllianceReqeusts 正常处理", function(done){
+			var memberDoc = null
+			Api.loginPlayer(Config.deviceId5, function(doc){
+				doc.code.should.equal(200)
+				memberDoc = doc.playerData
+				Api.requestToJoinAlliance(m_user.alliance.id, function(doc){
+					doc.code.should.equal(200)
+					Api.loginPlayer(Config.deviceId3, function(doc){
+						doc.code.should.equal(200)
+						Api.removeJoinAllianceReqeusts([memberDoc._id], function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
+					})
+				})
+			})
+		})
+
+		it("approveJoinAllianceRequest 正常处理", function(done){
+			var memberDoc = null
+			Api.loginPlayer(Config.deviceId5, function(doc){
+				doc.code.should.equal(200)
+				memberDoc = doc.playerData
+				Api.cancelJoinAllianceRequest(m_user.alliance.id, function(doc){
+					doc.code.should.equal(200)
+					Api.requestToJoinAlliance(m_user.alliance.id, function(doc){
+						doc.code.should.equal(200)
+						Api.loginPlayer(Config.deviceId3, function(doc){
+							doc.code.should.equal(200)
+							Api.approveJoinAllianceRequest(memberDoc._id, function(doc){
+								doc.code.should.equal(200)
+								done()
+							})
+						})
+					})
+				})
+			})
+		})
+
+		it("inviteToJoinAlliance 正常邀请", function(done){
+			var memberDoc = null
+			Api.loginPlayer(Config.deviceId5, function(doc){
+				doc.code.should.equal(200)
+				memberDoc = doc.playerData
+				Api.quitAlliance(function(doc){
+					doc.code.should.equal(200)
+					Api.loginPlayer(Config.deviceId3, function(doc){
+						doc.code.should.equal(200)
+						Api.inviteToJoinAlliance(memberDoc._id, function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
+					})
+				})
+			})
+		})
+
+		it("handleJoinAllianceInvite 正常处理 拒绝邀请", function(done){
+			Api.loginPlayer(Config.deviceId5, function(doc){
+				doc.code.should.equal(200)
+				Api.handleJoinAllianceInvite(m_user.alliance.id, false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("handleJoinAllianceInvite 正常处理 同意邀请", function(done){
+			var memberDoc = null
+			Api.loginPlayer(Config.deviceId5, function(doc){
+				doc.code.should.equal(200)
+				memberDoc = doc.playerData
+				Api.loginPlayer(Config.deviceId3, function(doc){
+					doc.code.should.equal(200)
+					Api.inviteToJoinAlliance(memberDoc._id, function(doc){
+						doc.code.should.equal(200)
+						Api.loginPlayer(Config.deviceId4, function(doc){
+							doc.code.should.equal(200)
+							Api.inviteToJoinAlliance(memberDoc._id, function(doc){
+								doc.code.should.equal(200)
+								Api.loginPlayer(Config.deviceId5, function(doc){
+									doc.code.should.equal(200)
+									Api.handleJoinAllianceInvite(m_user.alliance.id, true, function(doc){
+										doc.code.should.equal(200)
+										done()
+									})
+								})
+							})
+						})
+					})
+				})
+			})
+		})
+
+		it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
+			Api.buyAllianceArchon(function(doc){
+				doc.code.should.equal(200)
+				Api.loginPlayer(Config.deviceId3, function(doc){
+					doc.code.should.equal(200)
+					Api.buyAllianceArchon(function(doc){
+						doc.code.should.equal(200)
+						Api.loginPlayer(Config.deviceId5, function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
+					})
+				})
+			})
+		})
 
 		//it("searchAllianceByTag 正常搜索", function(done){
 		//	Api.searchAllianceByTag("test", function(doc){

@@ -28,7 +28,6 @@ var PlayerApiService = function(app){
 	this.playerDao = app.get("playerDao")
 	this.Device = app.get("Device")
 	this.User = app.get("User")
-	this.Player = app.get("Player")
 }
 module.exports = PlayerApiService
 var pro = PlayerApiService.prototype
@@ -82,11 +81,12 @@ pro.createAccount = function(deviceId, callback){
 		_id:deviceId,
 		userId:user._id
 	}
+
 	var playerDoc = null
 	var updateFuncs = []
 	updateFuncs.push([this.Device, this.Device.createAsync, device])
 	updateFuncs.push([this.User, this.User.createAsync, user])
-	updateFuncs.push([this.Player, this.Player.createAsync, player])
+	updateFuncs.push([this.playerDao.getModel(), this.playerDao.getModel().createAsync, player])
 	LogicUtils.excuteAll(updateFuncs).spread(function(doc_1, doc_2, doc_3){
 		playerDoc = JSON.parse(JSON.stringify(doc_3))
 		return self.playerDao.addAsync(playerDoc)
@@ -124,13 +124,13 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 	var memberDocInAlliance = null
 	var expAdd = null
 
-	this.Player.findOneAsync({deviceId:deviceId, selected:true}, {_id:true}).then(function(doc){
+	this.playerDao.getModel().findOneAsync({deviceId:deviceId, selected:true}, {_id:true}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExistInMongo(deviceId))
 		activePlayerId = doc._id
 		return self.playerDao.findAsync(activePlayerId)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
-			return self.Player.findAsync(activePlayerId)
+			return self.playerDao.getModel().findAsync(activePlayerId)
 		}else{
 			playerDoc = doc
 			return Promise.resolve()

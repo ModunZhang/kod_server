@@ -9,7 +9,7 @@ var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
 var DeviceSchema = new Schema({
-	_id:{type:String, required:true, unique:true, index:true},
+	_id:{type:String, required:true},
 	userId:{type:String, required:true}
 })
 

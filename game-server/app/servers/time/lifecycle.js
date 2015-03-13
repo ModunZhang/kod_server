@@ -12,8 +12,6 @@ var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("ko
 var logicLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-logic", __filename)
 var AllianceDao = require("../../dao/allianceDao")
 var PlayerDao = require("../../dao/playerDao")
-var Alliance = require("../../domains/alliance")
-var Player = require("../../domains/player")
 var CacheService = require("../../services/cacheService")
 var LogicUtils = require("../../utils/logicUtils")
 var DataUtils = require("../../utils/dataUtils")
@@ -22,8 +20,6 @@ var Consts = require("../../consts/consts")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
-	app.set("Alliance", Promise.promisifyAll(Alliance))
-	app.set("Player", Promise.promisifyAll(Player))
 	app.set("allianceDao", Promise.promisifyAll(new AllianceDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 

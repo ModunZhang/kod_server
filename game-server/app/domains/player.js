@@ -91,7 +91,7 @@ var createDragonSchema = function(dragonType){
 }
 
 var PlayerSchema = new Schema({
-	_id:{type:String, required:true, unique:true, index:true},
+	_id:{type:String, required:true},
 	serverId:{type:String, required:true},
 	deviceId:{type:String, required:true},
 	userId:{type:String, required:true},

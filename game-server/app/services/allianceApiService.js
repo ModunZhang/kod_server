@@ -417,6 +417,7 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var forceSave = false
 	var allianceDoc = null
 	var allianceData = []
 	var allianceMemberDocs = []
@@ -437,7 +438,8 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 	}).then(function(doc){
 		allianceDoc = doc
 		if(!_.isEqual(allianceDoc.basicInfo.name, name)){
-			return self.allianceDao.getModel().find({"basicInfo.name": name}, {_id:true}, {limit:1})
+			forceSave = true
+			return self.allianceDao.getModel().findAsync({"basicInfo.name": name}, {_id:true}, {limit:1})
 		}
 		return Promise.resolve()
 	}).then(function(docs){
@@ -445,7 +447,8 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 			return Promise.reject(ErrorUtils.allianceNameExist(playerId, name))
 		}
 		if(!_.isEqual(allianceDoc.basicInfo.tag, tag)){
-			return self.allianceDao.getModel().find({"basicInfo.tag": tag}, {_id:true}, {limit:1})
+			forceSave = true
+			return self.allianceDao.getModel().findAsync({"basicInfo.tag": tag}, {_id:true}, {limit:1})
 		}
 		return Promise.resolve()
 	}).then(function(docs){
@@ -487,7 +490,7 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 			playerData.push(["alliance.name", playerDoc.alliance.name])
 			playerData.push(["alliance.tag", playerDoc.alliance.tag])
 		}
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc, forceSave])
 		if(isNameChanged || isTagChanged){
 			var funcs = []
 			var updateMember = function(member){

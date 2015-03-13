@@ -292,7 +292,7 @@ pro.requestToJoinAlliance = function(msg, session, next){
  */
 pro.cancelJoinAllianceRequest = function(msg, session, next){
 	var allianceId = msg.allianceId
-	this.allianceApiService2.cancelJoinAllianceRequestAsync(session.uid, allianceId).then(function(){
+	this.allianceApiService2.cancelJoinAllianceRequestAsync(session.uid, allianceId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -322,7 +322,7 @@ pro.approveJoinAllianceRequest = function(msg, session, next){
  */
 pro.removeJoinAllianceReqeusts = function(msg, session, next){
 	var requestEventIds = msg.requestEventIds
-	this.allianceApiService2.approveJoinAllianceRequestAsync(session.uid, requestEventIds).then(function(){
+	this.allianceApiService2.removeJoinAllianceReqeustsAsync(session.uid, requestEventIds).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

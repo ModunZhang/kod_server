@@ -9,7 +9,7 @@ var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
 var UserSchema = new Schema({
-	_id:{type:String, required:true, unique:true, index:true},
+	_id:{type:String, required:true},
 	gcId:{type:String},
 	players:[{
 		_id:false,

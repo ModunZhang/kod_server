@@ -24,15 +24,9 @@ var Handler = function(app){
 	this.app = app
 	this.env = app.get("env")
 	this.serverId = app.getServerId()
-	this.redis = app.get("redis")
-	this.scripto = app.get("scripto")
-	this.allianceDao = app.get("allianceDao")
-	this.playerDao = app.get("playerDao")
 	this.playerApiService = app.get("playerApiService")
 	this.globalChannelService = app.get("globalChannelService")
 	this.sessionService = app.get("sessionService")
-	this.Device = app.get("Device")
-	this.User = app.get("User")
 	this.maxReturnMailSize = 10
 	this.maxReturnReportSize = 10
 }

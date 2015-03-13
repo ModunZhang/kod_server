@@ -24,8 +24,6 @@ var AllianceApiService5 = require("../../services/allianceApiService5")
 var TimeEventService = require("../../services/timeEventService")
 var AllianceDao = require("../../dao/allianceDao")
 var PlayerDao = require("../../dao/playerDao")
-var Alliance = require("../../domains/alliance")
-var Player = require("../../domains/player")
 var Deal = require("../../domains/deal")
 var Billing = require("../../domains/billing")
 var Device = require("../../domains/device")
@@ -34,8 +32,6 @@ var User = require("../../domains/user")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
-	app.set("Alliance", Promise.promisifyAll(Alliance))
-	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Deal", Promise.promisifyAll(Deal))
 	app.set("Billing", Promise.promisifyAll(Billing))
 	app.set("Device", Promise.promisifyAll(Device))
