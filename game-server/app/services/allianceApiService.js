@@ -359,24 +359,10 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 		return
 	}
 
-	var self = this
-	var playerDoc = null
-	this.playerDao.findAsync(playerId).then(function(doc){
-		playerDoc = doc
-		var funcs = []
-		funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		funcs.push(self.allianceDao.getModel().findAsync({"basicInfo.tag": "/" + tag + "/i"}, null, {limit:10}))
-		return Promise.all(funcs)
-	}).spread(function(tmp, docs){
+	this.allianceDao.getModel().findAsync({"basicInfo.tag":{$regex:tag}}, null, {limit:10}).then(function(docs){
 		callback(null, docs)
 	}).catch(function(e){
-		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockAsync(playerDoc._id).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
+		callback(e)
 	})
 }
 
@@ -439,7 +425,7 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		allianceDoc = doc
 		if(!_.isEqual(allianceDoc.basicInfo.name, name)){
 			forceSave = true
-			return self.allianceDao.getModel().findAsync({"basicInfo.name": name}, {_id:true}, {limit:1})
+			return self.allianceDao.getModel().findAsync({"basicInfo.name":name}, {_id:true}, {limit:1})
 		}
 		return Promise.resolve()
 	}).then(function(docs){
@@ -448,7 +434,7 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		}
 		if(!_.isEqual(allianceDoc.basicInfo.tag, tag)){
 			forceSave = true
-			return self.allianceDao.getModel().findAsync({"basicInfo.tag": tag}, {_id:true}, {limit:1})
+			return self.allianceDao.getModel().findAsync({"basicInfo.tag":tag}, {_id:true}, {limit:1})
 		}
 		return Promise.resolve()
 	}).then(function(docs){

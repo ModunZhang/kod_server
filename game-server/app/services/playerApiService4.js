@@ -103,7 +103,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 			TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
-			if(_.isObject(preTechEvent)){
+			if(_.isObject(preTechEvent) && preTechEvent.finishTime > Date.now()){
 				preTechEvent.finishTime = Date.now()
 				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, preTechEvent.finishTime])
 			}
@@ -213,7 +213,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 			TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
-			if(_.isObject(preTechEvent)){
+			if(_.isObject(preTechEvent) && preTechEvent.finishTime > Date.now()){
 				preTechEvent.finishTime = Date.now()
 				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, preTechEvent.finishTime])
 			}
@@ -312,7 +312,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			playerData.push(["soldierStarts." + soldierName, playerDoc.soldierStars[soldierName]])
 			TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, soldierName, playerDoc.soldierStars[soldierName])
 		}else{
-			if(_.isObject(preTechEvent)){
+			if(_.isObject(preTechEvent) && preTechEvent.finishTime > Date.now()){
 				preTechEvent.finishTime = Date.now()
 				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, preTechEvent.finishTime])
 			}

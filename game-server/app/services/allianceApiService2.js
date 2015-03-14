@@ -957,7 +957,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 	}).then(function(doc){
 		memberDoc = doc
 		var playerEvent = LogicUtils.getPlayerEventByTypeAndId(memberDoc, helpEvent.eventData.type, helpEvent.eventData.id)
-		if(!_.isObject(playerEvent)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, helpEvent.eventData.type, helpEvent.eventData.id))
+		if(!_.isObject(playerEvent) || playerEvent.finishTime <= Date.now()) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, helpEvent.eventData.type, helpEvent.eventData.id))
 		helpEvent.eventData.helpedMembers.push(playerDoc._id)
 		var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc, playerEvent.finishTime - playerEvent.startTime)
 		playerEvent.finishTime = playerEvent.finishTime - effect
@@ -1047,7 +1047,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 				for(var i = 0; i < needHelpedEvents.length; i++){
 					var helpEvent = needHelpedEvents[i]
 					var memberEvent = LogicUtils.getPlayerEventByTypeAndId(memberDoc, helpEvent.helpEventType, helpEvent.eventId)
-					if(!_.isObject(memberEvent)) return Promise.reject(ErrorUtils.playerEventNotExist(memberDoc._id, helpEvent.helpEventType, helpEvent.eventId))
+					if(!_.isObject(memberEvent) || memberEvent.finishTime <= Date.now()) return Promise.reject(ErrorUtils.playerEventNotExist(memberDoc._id, helpEvent.helpEventType, helpEvent.eventId))
 					helpEvent.helpedMembers.push(playerDoc._id)
 					var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc, memberEvent.finishTime - memberEvent.startTime)
 					memberEvent.finishTime = memberEvent.finishTime - effect

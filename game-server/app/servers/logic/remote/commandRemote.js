@@ -715,6 +715,7 @@ pro.allianceperception = function(uid, perception, callback){
 		}
 		allianceDoc = doc
 		allianceDoc.basicInfo.perception = perception
+		allianceDoc.basicInfo.perceptionRefreshTime = Date.now()
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, uid])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		var allianceData = {}

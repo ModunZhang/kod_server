@@ -427,8 +427,8 @@ pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
  */
 pro.donateToAlliance = function(msg, session, next){
 	var donateType = msg.donateType
-	this.allianceApiService3.donateToAllianceAsync(session.uid, donateType).then(function(){
-		next(null, {code:200})
+	this.allianceApiService3.donateToAllianceAsync(session.uid, donateType).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -537,8 +537,8 @@ pro.attackAllianceShrine = function(msg, session, next){
 	var shrineEventId = msg.shrineEventId
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
-	this.allianceApiService3.attackAllianceShrineAsync(session.uid, shrineEventId, dragonType, soldiers).then(function(){
-		next(null, {code:200})
+	this.allianceApiService3.attackAllianceShrineAsync(session.uid, shrineEventId, dragonType, soldiers).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -595,8 +595,8 @@ pro.revengeAlliance = function(msg, session, next){
  */
 pro.getAllianceViewData = function(msg, session, next){
 	var targetAllianceId = msg.targetAllianceId
-	this.allianceApiService3.getAllianceViewDataAsync(session.uid, targetAllianceId).then(function(){
-		next(null, {code:200})
+	this.allianceApiService3.getAllianceViewDataAsync(session.uid, targetAllianceId).then(function(allianceViewData){
+		next(null, {code:200, allianceViewData:allianceViewData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -610,8 +610,8 @@ pro.getAllianceViewData = function(msg, session, next){
  */
 pro.searchAllianceInfoByTag = function(msg, session, next){
 	var tag = msg.tag
-	this.allianceApiService3.searchAllianceInfoByTagAsync(session.uid, tag).then(function(){
-		next(null, {code:200})
+	this.allianceApiService3.searchAllianceInfoByTagAsync(session.uid, tag).then(function(allianceInfos){
+		next(null, {code:200, allianceInfos:allianceInfos})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -624,8 +624,8 @@ pro.searchAllianceInfoByTag = function(msg, session, next){
  * @param next
  */
 pro.getNearedAllianceInfos = function(msg, session, next){
-	this.allianceApiService3.getNearedAllianceInfosAsync(session.uid).then(function(){
-		next(null, {code:200})
+	this.allianceApiService3.getNearedAllianceInfosAsync(session.uid).then(function(allianceInfos){
+		next(null, {code:200, allianceInfos:allianceInfos})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})

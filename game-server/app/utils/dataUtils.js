@@ -2628,7 +2628,7 @@ Utils.isAllianceShrineStageLocked = function(allianceDoc, stageName){
 		if(theConfig.index == config.index - 1) previousStageName = theConfig.stageName
 	})
 
-	var stageData = LogicUtils.getAllianceShrineStageData(allianceDoc, stageName)
+	var stageData = LogicUtils.getAllianceShrineStageData(allianceDoc, previousStageName)
 	return !_.isObject(stageData)
 }
 

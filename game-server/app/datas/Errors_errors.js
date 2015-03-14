@@ -698,3 +698,83 @@ errors["youAlreadyHelpedTheEvent"] = {
 	code:639,
 	message:"您已经帮助过此事件了"
 }
+errors["allianceBuildingReachMaxLevel"] = {
+	key:"allianceBuildingReachMaxLevel",
+	code:640,
+	message:"联盟建筑已达到最高等级"
+}
+errors["onlyAllianceDecorateBuildingCanBeDistroy"] = {
+	key:"onlyAllianceDecorateBuildingCanBeDistroy",
+	code:641,
+	message:"只能拆除联盟装饰物"
+}
+errors["theAllianceShrineEventAlreadyActived"] = {
+	key:"theAllianceShrineEventAlreadyActived",
+	code:642,
+	message:"此联盟事件已经激活"
+}
+errors["alliancePerceptionNotEnough"] = {
+	key:"alliancePerceptionNotEnough",
+	code:643,
+	message:"联盟感知力不足"
+}
+errors["dragonLeaderShipNotEnough"] = {
+	key:"dragonLeaderShipNotEnough",
+	code:644,
+	message:"所选择的龙领导力不足"
+}
+errors["noFreeMarchQueue"] = {
+	key:"noFreeMarchQueue",
+	code:645,
+	message:"没有空闲的行军队列"
+}
+errors["shrineStageEventNotFound"] = {
+	key:"shrineStageEventNotFound",
+	code:646,
+	message:"关卡激活事件不存在"
+}
+errors["theShrineStageIsLocked"] = {
+	key:"theShrineStageIsLocked",
+	code:647,
+	message:"此联盟圣地关卡还未解锁"
+}
+errors["youHadSendTroopToTheShrineStage"] = {
+	key:"youHadSendTroopToTheShrineStage",
+	code:648,
+	message:"玩家已经对此关卡派出了部队"
+}
+errors["allianceInFightStatus"] = {
+	key:"allianceInFightStatus",
+	code:649,
+	message:"联盟正处于战争准备期或战争期"
+}
+errors["alreadySendAllianceFightRequest"] = {
+	key:"alreadySendAllianceFightRequest",
+	code:650,
+	message:"已经发送过开战请求"
+}
+errors["canNotFindAllianceToFight"] = {
+	key:"canNotFindAllianceToFight",
+	code:651,
+	message:"未能找到战力相匹配的联盟"
+}
+errors["allianceFightReportNotExist"] = {
+	key:"allianceFightReportNotExist",
+	code:652,
+	message:"联盟战报不存在"
+}
+errors["winnerOfAllianceFightCanNotRevenge"] = {
+	key:"winnerOfAllianceFightCanNotRevenge",
+	code:653,
+	message:"联盟战胜利方不能发起复仇"
+}
+errors["allianceFightRevengeTimeExpired"] = {
+	key:"allianceFightRevengeTimeExpired",
+	code:654,
+	message:"超过最长复仇期限"
+}
+errors["targetAllianceNotInPeaceStatus"] = {
+	key:"targetAllianceNotInPeaceStatus",
+	code:655,
+	message:"目标联盟未处于和平期,不能发起复仇"
+}

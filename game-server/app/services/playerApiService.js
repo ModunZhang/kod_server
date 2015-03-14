@@ -375,7 +375,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, building.level)
 		}else{
-			if(_.isObject(preBuildEvent)){
+			if(_.isObject(preBuildEvent) && preBuildEvent.finishTime > Date.now()){
 				preBuildEvent.finishTime = Date.now()
 				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preBuildEvent.id, preBuildEvent.finishTime])
 			}
@@ -563,7 +563,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 		}else{
-			if(_.isObject(preBuildEvent)){
+			if(_.isObject(preBuildEvent) && preBuildEvent.finishTime > Date.now()){
 				preBuildEvent.finishTime = Date.now()
 				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preBuildEvent.id, preBuildEvent.finishTime])
 			}
@@ -696,7 +696,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, house.level)
 		}else{
-			if(_.isObject(preBuildEvent)){
+			if(_.isObject(preBuildEvent) && preBuildEvent.finishTime > Date.now()){
 				preBuildEvent.finishTime = Date.now()
 				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preBuildEvent.id, preBuildEvent.finishTime])
 			}
@@ -837,7 +837,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
 		if(gemUsed > playerDoc.resources.gem){
-			return Promise.reject(new Error("宝石不足"))
+			return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		}
 		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(makeRequired.resources, playerDoc.resources)

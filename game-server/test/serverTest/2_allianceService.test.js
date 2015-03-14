@@ -662,150 +662,125 @@ describe("AllianceService", function(){
 			})
 		})
 
-		it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
-			Api.buyAllianceArchon(function(doc){
-				doc.code.should.equal(200)
-				Api.loginPlayer(Config.deviceId3, function(doc){
-					doc.code.should.equal(200)
-					Api.buyAllianceArchon(function(doc){
-						doc.code.should.equal(200)
-						Api.loginPlayer(Config.deviceId5, function(doc){
-							doc.code.should.equal(200)
-							done()
-						})
-					})
-				})
-			})
-		})
-
+		//it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
+		//	Api.buyAllianceArchon(function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.loginPlayer(Config.deviceId3, function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.buyAllianceArchon(function(doc){
+		//				doc.code.should.equal(200)
+		//				Api.loginPlayer(Config.deviceId5, function(doc){
+		//					doc.code.should.equal(200)
+		//					done()
+		//				})
+		//			})
+		//		})
+		//	})
+		//})
+		//
 		//it("searchAllianceByTag 正常搜索", function(done){
 		//	Api.searchAllianceByTag("test", function(doc){
 		//		doc.code.should.equal(200)
 		//		done()
 		//	})
 		//})
-
+		//
 		//it("getCanDirectJoinAlliances 正常获取", function(done){
 		//	Api.getCanDirectJoinAlliances(function(doc){
 		//		doc.code.should.equal(200)
 		//		done()
 		//	})
 		//})
-
+		//
 		//it("upgradeBuilding 加入联盟后", function(done){
 		//	var playerDoc = null
 		//	Api.upgradeBuilding(1, true, function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.upgradeBuilding(1, false, function(doc){
 		//			doc.code.should.equal(200)
-		//			var buildEvent = playerDoc.buildingEvents[0]
-		//			Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.BuildingEvents, buildEvent.id, function(doc){
+		//			Api.loginPlayer(Config.deviceId5, function(doc){
 		//				doc.code.should.equal(200)
-		//				done()
+		//				playerDoc = doc.playerData
+		//				var buildEvent = playerDoc.buildingEvents[0]
+		//				Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.BuildingEvents, buildEvent.id, function(doc){
+		//					doc.code.should.equal(200)
+		//					done()
+		//				})
 		//			})
 		//		})
-		//		var onPlayerDataChanged = function(doc){
-		//			playerDoc = doc
-		//			pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-		//		}
-		//		pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		//	})
 		//})
-
+		//
 		//it("createHouse 加入联盟后", function(done){
 		//	var playerDoc = null
 		//	Api.createHouse("dwelling", 3, 3, false, function(doc){
 		//		doc.code.should.equal(200)
-		//		var buildEvent = playerDoc.houseEvents[0]
-		//		Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.HouseEvents, buildEvent.id, function(doc){
+		//		Api.loginPlayer(Config.deviceId5, function(doc){
 		//			doc.code.should.equal(200)
-		//			done()
+		//			playerDoc = doc.playerData
+		//			var buildEvent = _.find(playerDoc.houseEvents, function(event){
+		//				return event.finishTime > Date.now()
+		//			})
+		//			Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.HouseEvents, buildEvent.id, function(doc){
+		//				doc.code.should.equal(200)
+		//				done()
+		//			})
 		//		})
 		//	})
-		//	var onPlayerDataChanged = function(doc){
-		//		playerDoc = doc
-		//		pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-		//	}
-		//	pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		//})
-
+		//
 		//it("upgradeHouse 加入联盟后", function(done){
 		//	var playerDoc = null
 		//	Api.createHouse("dwelling", 3, 1, true, function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.upgradeHouse(3, 1, false, function(doc){
 		//			doc.code.should.equal(200)
-		//			var buildEvent = playerDoc.houseEvents[1]
-		//			Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.HouseEvents, buildEvent.id, function(doc){
+		//			Api.loginPlayer(Config.deviceId5, function(doc){
 		//				doc.code.should.equal(200)
-		//				done()
+		//				playerDoc = doc.playerData
+		//				var buildEvent = _.find(playerDoc.houseEvents, function(event){
+		//					return event.finishTime > Date.now()
+		//				})
+		//				Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.HouseEvents, buildEvent.id, function(doc){
+		//					doc.code.should.equal(200)
+		//					done()
+		//				})
 		//			})
 		//		})
-		//		var onPlayerDataChanged = function(doc){
-		//			playerDoc = doc
-		//			pomelo.removeListener("onPlayerDataChanged", onPlayerDataChanged)
-		//		}
-		//		pomelo.on("onPlayerDataChanged", onPlayerDataChanged)
 		//	})
 		//})
-
+		//
 		//it("helpAllianceMemberSpeedUp 正常帮助1", function(done){
 		//	var alliance = null
 		//	Api.loginPlayer(Config.deviceId3, function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.getMyAllianceData(function(doc){
 		//			doc.code.should.equal(200)
+		//			alliance = doc.allianceData
 		//			var event = alliance.helpEvents[0]
 		//			Api.helpAllianceMemberSpeedUp(event.id, function(doc){
 		//				doc.code.should.equal(200)
 		//				done()
 		//			})
 		//		})
-		//		var onGetAllianceDataSuccess = function(doc){
-		//			alliance = doc
-		//			pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//		}
-		//		pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//	})
 		//})
-
-		//it("helpAllianceMemberSpeedUp 正常帮助2", function(done){
-		//	var alliance = null
-		//	Api.getMyAllianceData(function(doc){
+		//
+		//it("helpAllAllianceMemberSpeedUp 正常帮助", function(done){
+		//	Api.loginPlayer(Config.deviceId3, function(doc){
 		//		doc.code.should.equal(200)
-		//		var event = alliance.helpEvents[1]
-		//		Api.helpAllianceMemberSpeedUp(event.id, function(doc){
+		//		Api.helpAllAllianceMemberSpeedUp(function(doc){
 		//			doc.code.should.equal(200)
 		//			done()
 		//		})
 		//	})
-		//	var onGetAllianceDataSuccess = function(doc){
-		//		alliance = doc
-		//		pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//	}
-		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//})
-
-		//it("helpAllAllianceMemberSpeedUp 正常帮助", function(done){
-		//	Api.helpAllAllianceMemberSpeedUp(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-
-		//it("getMyAllianceData 正常获取", function(done){
-		//	Api.getMyAllianceData(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-
+		//
 		//it("donateToAlliance 资源不足", function(done){
-		//	Api.sendChat("rs 500", function(doc){
+		//	Api.sendChat("resources wood 500", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.donateToAlliance("wood", function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("资源不足")
+		//			doc.code.should.equal(Errors.resourceNotEnough.code)
 		//			done()
 		//		})
 		//	})
@@ -814,7 +789,7 @@ describe("AllianceService", function(){
 		//it("donateToAlliance 正常捐赠1", function(done){
 		//	Api.loginPlayer(Config.deviceId3, function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.sendChat("rs 5000000", function(doc){
+		//		Api.sendChat("resources wood 5000000", function(doc){
 		//			doc.code.should.equal(200)
 		//			Api.sendChat("donatelevel 6", function(doc){
 		//				doc.code.should.equal(200)
@@ -844,22 +819,13 @@ describe("AllianceService", function(){
 		//	})
 		//})
 		//
-		//it("upgradeAllianceBuilding 盟主城堡等级不足", function(done){
-		//	Api.upgradeAllianceBuilding("palace", function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("盟主城堡等级不足")
-		//		done()
-		//	})
-		//})
-		//
 		//it("upgradeAllianceBuilding 联盟荣耀值不足", function(done){
 		//	Api.sendChat("allianceHonour 10", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.sendChat("keep 5", function(doc){
 		//			doc.code.should.equal(200)
 		//			Api.upgradeAllianceBuilding("palace", function(doc){
-		//				doc.code.should.equal(500)
-		//				doc.message.should.equal("联盟荣耀值不足")
+		//				doc.code.should.equal(Errors.allianceHonourNotEnough.code)
 		//				done()
 		//			})
 		//		})
@@ -887,6 +853,7 @@ describe("AllianceService", function(){
 		//	var m_allianceData = null
 		//	Api.getMyAllianceData(function(doc){
 		//		doc.code.should.equal(200)
+		//		m_allianceData = doc.allianceData
 		//		var map = MapUtils.buildMap(m_allianceData.mapObjects)
 		//		var rect = MapUtils.getRect(map, 3, 3)
 		//		Api.moveAllianceBuilding("palace", rect.x, rect.y, function(doc){
@@ -894,17 +861,13 @@ describe("AllianceService", function(){
 		//			done()
 		//		})
 		//	})
-		//	var onGetAllianceDataSuccess = function(doc){
-		//		m_allianceData = doc
-		//		pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//	}
-		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//})
 		//
 		//it("distroyAllianceDecorate 正常拆除", function(done){
 		//	var m_allianceData = null
 		//	Api.getMyAllianceData(function(doc){
 		//		doc.code.should.equal(200)
+		//		m_allianceData = doc.allianceData
 		//		for(var i = 0; i < m_allianceData.mapObjects.length; i++){
 		//			var mapObject = m_allianceData.mapObjects[i]
 		//			if(mapObject.type.indexOf("decorate") >= 0){
@@ -916,39 +879,35 @@ describe("AllianceService", function(){
 		//			}
 		//		}
 		//	})
-		//	var onGetAllianceDataSuccess = function(doc){
-		//		m_allianceData = doc
-		//		pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//	}
-		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//})
-
+		//
+		//it("activateAllianceShrineStage 联盟感知力不足", function(done){
+		//	Api.sendChat("allianceperception 0", function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.activateAllianceShrineStage("1_1", function(doc){
+		//			doc.code.should.equal(Errors.alliancePerceptionNotEnough.code)
+		//			done()
+		//		})
+		//	})
+		//})
+		//
 		//it("activateAllianceShrineStage 正常激活", function(done){
 		//	Api.loginPlayer(Config.deviceId3, function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.activateAllianceShrineStage("1_1", function(doc){
+		//		Api.sendChat("allianceperception 1000", function(doc){
 		//			doc.code.should.equal(200)
-		//			done()
+		//			Api.activateAllianceShrineStage("1_1", function(doc){
+		//				doc.code.should.equal(200)
+		//				done()
+		//			})
 		//		})
 		//	})
 		//})
 		//
 		//it("activateAllianceShrineStage 此联盟事件已经激活", function(done){
 		//	Api.activateAllianceShrineStage("1_1", function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("此联盟事件已经激活")
+		//		doc.code.should.equal(Errors.theAllianceShrineEventAlreadyActived.code)
 		//		done()
-		//	})
-		//})
-		//
-		//it("activateAllianceShrineStage 联盟感知力不足", function(done){
-		//	Api.sendChat("allianceperception 0", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.activateAllianceShrineStage("1_2", function(doc){
-		//			doc.code.should.equal(500)
-		//			doc.message.should.equal("联盟感知力不足")
-		//			done()
-		//		})
 		//	})
 		//})
 		//
@@ -960,6 +919,7 @@ describe("AllianceService", function(){
 		//			doc.code.should.equal(200)
 		//			Api.getMyAllianceData(function(doc){
 		//				doc.code.should.equal(200)
+		//				m_allianceData = doc.allianceData
 		//				Api.attackAllianceShrine(m_allianceData.shrineEvents[0].id, "redDragon", [
 		//					{
 		//						name:"swordsman",
@@ -978,11 +938,6 @@ describe("AllianceService", function(){
 		//					done()
 		//				})
 		//			})
-		//			var onGetAllianceDataSuccess = function(doc){
-		//				m_allianceData = doc
-		//				pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//			}
-		//			pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//		})
 		//	})
 		//})
@@ -997,6 +952,7 @@ describe("AllianceService", function(){
 		//				doc.code.should.equal(200)
 		//				Api.getMyAllianceData(function(doc){
 		//					doc.code.should.equal(200)
+		//					m_allianceData = doc.allianceData
 		//					Api.attackAllianceShrine(m_allianceData.shrineEvents[0].id, "redDragon", [
 		//						{
 		//							name:"swordsman",
@@ -1015,11 +971,6 @@ describe("AllianceService", function(){
 		//						done()
 		//					})
 		//				})
-		//				var onGetAllianceDataSuccess = function(doc){
-		//					m_allianceData = doc
-		//					pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//				}
-		//				pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//			})
 		//		})
 		//	})
@@ -1035,6 +986,7 @@ describe("AllianceService", function(){
 		//				doc.code.should.equal(200)
 		//				Api.getMyAllianceData(function(doc){
 		//					doc.code.should.equal(200)
+		//					m_allianceData = doc.allianceData
 		//					Api.attackAllianceShrine(m_allianceData.shrineEvents[0].id, "redDragon", [
 		//						{
 		//							name:"swordsman",
@@ -1053,16 +1005,11 @@ describe("AllianceService", function(){
 		//						done()
 		//					})
 		//				})
-		//				var onGetAllianceDataSuccess = function(doc){
-		//					m_allianceData = doc
-		//					pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//				}
-		//				pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//			})
 		//		})
 		//	})
 		//})
-
+		//
 		//it("requestAllianceToFight 正常请求", function(done){
 		//	Api.loginPlayer(Config.deviceId3, function(doc){
 		//		doc.code.should.equal(200)
@@ -1072,33 +1019,28 @@ describe("AllianceService", function(){
 		//		})
 		//	})
 		//})
-
+		//
 		//it("requestAllianceToFight 已经发送过开战请求", function(done){
 		//	Api.requestAllianceToFight(function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("已经发送过开战请求")
+		//		doc.code.should.equal(Errors.alreadySendAllianceFightRequest.code)
 		//		done()
 		//	})
 		//})
 
-		//it("alliancefight 正常激活", function(done){
-		//	var m_allianceDoc = null
-		//	Api.getMyAllianceData(function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.loginPlayer(Config.deviceId4, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.sendChat("alliancefight " + m_allianceDoc.basicInfo.tag, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//	var onGetAllianceDataSuccess = function(doc){
-		//		m_allianceDoc = doc
-		//		pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//	}
-		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//})
+		it("alliancefight 正常激活", function(done){
+			var m_allianceDoc = null
+			Api.getMyAllianceData(function(doc){
+				doc.code.should.equal(200)
+				m_allianceDoc = doc.allianceData
+				Api.loginPlayer(Config.deviceId4, function(doc){
+					doc.code.should.equal(200)
+					Api.sendChat("alliancefight " + m_allianceDoc.basicInfo.tag, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
 
 		//it("findAllianceToFight 正常查找", function(done){
 		//	Api.findAllianceToFight(function(doc){
@@ -1111,16 +1053,12 @@ describe("AllianceService", function(){
 		//	var m_allianceData = null
 		//	Api.getMyAllianceData(function(doc){
 		//		doc.code.should.equal(200)
+		//		m_allianceData = doc.allianceData
 		//		Api.getAllianceViewData(m_allianceData._id, function(doc){
 		//			doc.code.should.equal(200)
 		//			done()
 		//		})
 		//	})
-		//	var onGetAllianceDataSuccess = function(doc){
-		//		m_allianceData = doc
-		//		pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//	}
-		//	pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
 		//})
 		//
 		//it("getNearedAllianceInfos 正常获取", function(done){
@@ -1136,6 +1074,18 @@ describe("AllianceService", function(){
 		//		done()
 		//	})
 		//})
+
+
+
+
+
+
+
+
+
+
+
+
 
 		//it("helpAllianceMemberDefence 正常协助", function(done){
 		//	Api.loginPlayer(Config.deviceId3, function(doc){

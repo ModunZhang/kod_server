@@ -69,14 +69,16 @@ pro.login = function(msg, session, next){
 	}).spread(function(doc_1, doc_2){
 		playerDoc = doc_1
 		allianceDoc = doc_2
+		return bindPlayerSession(session, playerDoc)
+	}).then(function(){
 		var funcs = []
-		funcs.push(bindPlayerSession(session, playerDoc))
 		funcs.push(addPlayerToChatChannel(session))
 		if(_.isObject(playerDoc.alliance)){
 			funcs.push(self.globalChannelService.addAsync(Consts.AllianceChannelPrefix + playerDoc.alliance.id, playerDoc._id, self.serverId))
 		}
 		return Promise.all(funcs)
 	}).then(function(){
+		console.log("user [" + session.uid + "] login success")
 		next(null, {code:200, playerData:FilterPlayerDoc.call(self, playerDoc), allianceData:allianceDoc})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -109,6 +111,8 @@ var PlayerLeave = function(session, reason){
 			funcs.push(self.globalChannelService.leaveAsync(Consts.AllianceChannelPrefix + playerDoc.alliance.id, playerDoc._id, self.serverId))
 		}
 		return Promise.all(funcs)
+	}).then(function(){
+		console.log("user [" + session.uid + "] logout success")
 	}).catch(function(e){
 		errorLogger.error("handle entryHandler:playerLogout Error -----------------------------")
 		errorLogger.error(e.stack)

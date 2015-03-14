@@ -27,7 +27,9 @@ var BaseDao = function(redis, scripto, modelName, model, env){
 	this.scripto = Promise.promisifyAll(scripto)
 	this.maxChangedCount = 1
 	this.env = env
-	this.tryTimes = 4
+	this.tryTimes = 1
+	this.lockWaitInterval = 100
+	this.forceFindTryTimes = 50
 }
 
 module.exports = BaseDao
@@ -156,21 +158,21 @@ pro.find = function(id, forceFind, callback){
 	}
 	var self = this
 	var tryTimes = 0
-	var totalTryTimes = forceFind ? self.tryTimes * 2 : self.tryTimes
+	var totalTryTimes = forceFind ? this.forceFindTryTimes : this.tryTimes
 	var findById = function(id){
 		self.scripto.runAsync("findById", [self.modelName, id, Date.now()]).then(function(docString){
 			if(_.isEqual(docString, LOCKED)){
 				tryTimes++
-				if(tryTimes == 1){
-					ErrorLogger.error("handle baseDao:findById Error -----------------------------")
-					ErrorLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
-					if(_.isEqual("production", self.env)){
-						ErrorMailLogger.error("handle baseDao:findById Error -----------------------------")
-						ErrorMailLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
-					}
-				}
+				//if(tryTimes == 1){
+				//	ErrorLogger.error("handle baseDao:findById Error -----------------------------")
+				//	ErrorLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
+				//	if(_.isEqual("production", self.env)){
+				//		ErrorMailLogger.error("handle baseDao:findById Error -----------------------------")
+				//		ErrorMailLogger.error("errorInfo->modelName:%s, id:%s is locked", self.modelName, id)
+				//	}
+				//}
 				if(tryTimes <= totalTryTimes){
-					setTimeout(findById, 500, id)
+					setTimeout(findById, self.lockWaitInterval, id)
 				}else{
 					callback(ErrorUtils.objectIsLocked(self.modelName, id))
 				}
@@ -236,17 +238,21 @@ pro.update = function(doc, persistNow, callback){
 		doc.__v = 0
 	}
 	var self = this
-	this.scripto.runAsync("update", [this.modelName, JSON.stringify(doc)]).then(function(){
-		if(shouldSaveToMongo){
-			return self.model.findByIdAndUpdateAsync(doc._id, _.omit(doc, "_id", "__v"))
-		}else{
-			return Promise.resolve()
-		}
-	}).then(function(){
-		callback(null, doc)
-	}).catch(function(e){
-		callback(e)
-	})
+	if(shouldSaveToMongo){
+		this.model.findByIdAndUpdateAsync(doc._id, _.omit(doc, "_id", "__v")).then(function(){
+			return self.scripto.runAsync("update", [self.modelName, JSON.stringify(doc)])
+		}).then(function(){
+			callback(null, doc)
+		}).catch(function(e){
+			callback(e)
+		})
+	}else{
+		this.scripto.runAsync("update", [this.modelName, JSON.stringify(doc)]).then(function(){
+			callback(null, doc)
+		}).catch(function(e){
+			callback(e)
+		})
+	}
 }
 
 /**

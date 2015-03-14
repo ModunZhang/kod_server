@@ -1464,3 +1464,173 @@ Utils.youAlreadyHelpedTheEvent = function(playerId, eventId){
 	var config = Errors.youAlreadyHelpedTheEvent
 	return CreateError(config, {playerId:playerId, eventId:eventId})
 }
+
+/**
+ * 联盟建筑已达到最高等级
+ * @param playerId
+ * @param allianceId
+ * @param buildingName
+ */
+Utils.allianceBuildingReachMaxLevel = function(playerId, allianceId, buildingName){
+	var config = Errors.allianceBuildingReachMaxLevel
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, buildingName:buildingName})
+}
+
+/**
+ * 只能拆除装饰物
+ * @param playerId
+ * @param allianceId
+ * @param decorateId
+ */
+Utils.onlyAllianceDecorateBuildingCanBeDistroy = function(playerId, allianceId, decorateId){
+	var config = Errors.onlyAllianceDecorateBuildingCanBeDistroy
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, decorateId:decorateId})
+}
+
+/**
+ * 此联盟事件已经激活
+ * @param playerId
+ * @param allianceId
+ * @param stageName
+ */
+Utils.theAllianceShrineEventAlreadyActived = function(playerId, allianceId, stageName){
+	var config = Errors.theAllianceShrineEventAlreadyActived
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, stageName:stageName})
+}
+
+/**
+ * 联盟感知力不足
+ * @param playerId
+ * @param allianceId
+ * @param stageName
+ */
+Utils.alliancePerceptionNotEnough = function(playerId, allianceId, stageName){
+	var config = Errors.alliancePerceptionNotEnough
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, stageName:stageName})
+}
+
+/**
+ * 所选择的龙领导力不足
+ * @param playerId
+ * @param dragon
+ */
+Utils.dragonLeaderShipNotEnough = function(playerId, dragon){
+	var config = Errors.dragonLeaderShipNotEnough
+	return CreateError(config, {playerId:playerId, dragon:dragon})
+}
+
+/**
+ * 没有空闲的行军队列
+ * @param playerId
+ */
+Utils.noFreeMarchQueue = function(playerId){
+	var config = Errors.noFreeMarchQueue
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 此关卡还未激活
+ * @param playerId
+ * @param allianceId
+ * @param stageEventId
+ */
+Utils.shrineStageEventNotFound = function(playerId, allianceId, stageEventId){
+	var config = Errors.shrineStageEventNotFound
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, stageEventId:stageEventId})
+}
+
+/**
+ * 此联盟圣地关卡还未解锁
+ * @param playerId
+ * @param allianceId
+ * @param stageName
+ */
+Utils.theShrineStageIsLocked = function(playerId, allianceId, stageName){
+	var config = Errors.theShrineStageIsLocked
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, stageName:stageName})
+}
+
+/**
+ * 玩家已经对此关卡派出了部队
+ * @param playerId
+ * @param allianceId
+ * @param stageName
+ */
+Utils.youHadSendTroopToTheShrineStage = function(playerId, allianceId, stageName){
+	var config = Errors.youHadSendTroopToTheShrineStage
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, stageName:stageName})
+}
+
+/**
+ * 联盟正处于战争准备期或战争期
+ * @param playerId
+ * @param allianceId
+ */
+Utils.allianceInFightStatus = function(playerId, allianceId){
+	var config = Errors.youHadSendTroopToTheShrineStage
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 已经发送过开战请求
+ * @param playerId
+ * @param allianceId
+ */
+Utils.alreadySendAllianceFightRequest = function(playerId, allianceId){
+	var config = Errors.alreadySendAllianceFightRequest
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 未能找到战力相匹配的联盟
+ * @param playerId
+ * @param allianceId
+ */
+Utils.canNotFindAllianceToFight = function(playerId, allianceId){
+	var config = Errors.canNotFindAllianceToFight
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 联盟战报不存在
+ * @param playerId
+ * @param allianceId
+ * @param reportId
+ */
+Utils.allianceFightReportNotExist = function(playerId, allianceId, reportId){
+	var config = Errors.allianceFightReportNotExist
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, reportId:reportId})
+}
+
+/**
+ * 联盟战胜利方不能发起复仇
+ * @param playerId
+ * @param allianceId
+ * @param reportId
+ */
+Utils.winnerOfAllianceFightCanNotRevenge = function(playerId, allianceId, reportId){
+	var config = Errors.winnerOfAllianceFightCanNotRevenge
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, reportId:reportId})
+}
+
+/**
+ * 超过最长复仇期限
+ * @param playerId
+ * @param allianceId
+ * @param reportId
+ */
+Utils.allianceFightRevengeTimeExpired = function(playerId, allianceId, reportId){
+	var config = Errors.allianceFightRevengeTimeExpired
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, reportId:reportId})
+}
+
+/**
+ * 目标联盟未处于和平期,不能发起复仇
+ * @param playerId
+ * @param allianceId
+ * @param reportId
+ */
+Utils.targetAllianceNotInPeaceStatus = function(playerId, allianceId, reportId){
+	var config = Errors.targetAllianceNotInPeaceStatus
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, reportId:reportId})
+}

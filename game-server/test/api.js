@@ -6,8 +6,12 @@
 
 var pomelo = require("./pomelo-client")
 var Config = require("./config")
+var _ = require("underscore")
 
 var Api = module.exports
+
+var GameDatas = require("../app/datas/GameDatas")
+var Errors = GameDatas.Errors.errors
 
 
 
@@ -30,7 +34,13 @@ Api.loginPlayer = function(deviceId, callback){
 					deviceId:deviceId
 				}
 				var route = "logic.entryHandler.login"
-				pomelo.request(route, loginInfo, callback)
+				pomelo.request(route, loginInfo, function(doc){
+					if(_.isEqual(doc.code, Errors.objectIsLocked.code) || _.isEqual(doc.code, Errors.reLoginNeeded.code)){
+						setTimeout(Api.loginPlayer, 1000, deviceId, callback)
+					}else{
+						callback(doc)
+					}
+				})
 			})
 		})
 	})
