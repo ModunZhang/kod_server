@@ -524,8 +524,6 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, defencePlayerDoc.basicInfo.terrain)
 	var defenceDragonPower = DataUtils.getDragonStrength(helpDefenceDragon, defencePlayerDoc.basicInfo.terrain)
 	var powerCompare = attackDragonPower / defenceDragonPower
-	DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
-	DataUtils.refreshPlayerDragonsHp(helpDefencePlayerDoc, helpDefenceDragon)
 	var attackDragonMaxHp = DataUtils.getDragonHpMax(attackDragon)
 	var attackDragonHpDecreasedPercent = AllianceInitData.intInit.dragonStrikeHpDecreasedPercent.value / 100
 	var attackDragonHpDecreased = Math.ceil(attackDragonMaxHp * attackDragonHpDecreasedPercent)
@@ -676,8 +674,6 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, defencePlayerDoc.basicInfo.terrain)
 	var defenceDragonPower = DataUtils.getDragonStrength(defenceDragon, defencePlayerDoc.basicInfo.terrain)
 	var powerCompare = attackDragonPower / defenceDragonPower
-	DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
-	DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon)
 	var attackDragonMaxHp = DataUtils.getDragonHpMax(attackDragon)
 	var attackDragonHpDecreasedPercent = AllianceInitData.intInit.dragonStrikeHpDecreasedPercent.value / 100
 	var attackDragonHpDecreased = Math.ceil(attackDragonMaxHp * attackDragonHpDecreasedPercent)
@@ -814,7 +810,6 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		return equipments
 	}
 
-	DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
 	var attackDragonData = createDragonData(attackDragon, 0)
 	var strikeCityReport = {
 		level:reportLevel,
@@ -1137,8 +1132,6 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, targetAllianceDoc.basicInfo.terrain)
 	var defenceDragonPower = DataUtils.getDragonStrength(defenceDragon, targetAllianceDoc.basicInfo.terrain)
 	var powerCompare = attackDragonPower / defenceDragonPower
-	DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
-	DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon)
 	var attackDragonMaxHp = DataUtils.getDragonHpMax(attackDragon)
 	var attackDragonHpDecreasedPercent = AllianceInitData.intInit.dragonStrikeHpDecreasedPercent.value / 100
 	var attackDragonHpDecreased = Math.ceil(attackDragonMaxHp * attackDragonHpDecreasedPercent)
@@ -1301,11 +1294,11 @@ Utils.getPlayerMarchTroopDetail = function(playerDoc, marchEventId, dragon, sold
 	}
 	var getMiliraryTechs = function(playerDoc){
 		var techs = []
-		_.each(playerDoc.militaryTechs, function(tech, name){
-			if(tech.level > 0){
+		_.each(playerDoc.militaryTechs, function(theTech, name){
+			if(theTech.level > 0){
 				var tech = {
 					name:name,
-					level:tech.level
+					level:theTech.level
 				}
 				techs.push(tech)
 			}

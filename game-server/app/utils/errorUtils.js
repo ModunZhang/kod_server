@@ -1634,3 +1634,188 @@ Utils.targetAllianceNotInPeaceStatus = function(playerId, allianceId, reportId){
 	var config = Errors.targetAllianceNotInPeaceStatus
 	return CreateError(config, {playerId:playerId, allianceId:allianceId, reportId:reportId})
 }
+
+/**
+ * 玩家已经对目标玩家派出了协防部队
+ * @param playerId
+ * @param targetPlayerId
+ * @param allianceId
+ */
+Utils.playerAlreadySendHelpDefenceTroopToTargetPlayer = function(playerId, targetPlayerId, allianceId){
+	var config = Errors.playerAlreadySendHelpDefenceTroopToTargetPlayer
+	return CreateError(config, {playerId:playerId, targetPlayerId:targetPlayerId, allianceId:allianceId})
+}
+
+/**
+ * 目标玩家协防部队数量已达最大
+ * @param playerId
+ * @param targetPlayerId
+ * @param allianceId
+ */
+Utils.targetPlayersHelpDefenceTroopsCountReachMax = function(playerId, targetPlayerId, allianceId){
+	var config = Errors.targetPlayersHelpDefenceTroopsCountReachMax
+	return CreateError(config, {playerId:playerId, targetPlayerId:targetPlayerId, allianceId:allianceId})
+}
+
+/**
+ * 玩家没有协防部队驻扎在目标玩家城市
+ * @param playerId
+ * @param targetPlayerId
+ * @param allianceId
+ */
+Utils.noHelpDefenceTroopInTargetPlayerCity = function(playerId, targetPlayerId, allianceId){
+	var config = Errors.noHelpDefenceTroopInTargetPlayerCity
+	return CreateError(config, {playerId:playerId, targetPlayerId:targetPlayerId, allianceId:allianceId})
+}
+
+/**
+ * 联盟未处于战争期
+ * @param playerId
+ * @param allianceId
+ */
+Utils.allianceNotInFightStatus = function(playerId, allianceId){
+	var config = Errors.allianceNotInFightStatus
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 玩家不在敌对联盟中
+ * @param playerId
+ * @param allianceId
+ * @param enemyPlayerId
+ * @param enemyAllianceId
+ */
+Utils.playerNotInEnemyAlliance = function(playerId, allianceId, enemyPlayerId, enemyAllianceId){
+	var config = Errors.playerNotInEnemyAlliance
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, enemyPlayerId:enemyAllianceId, enemyAllianceId:enemyAllianceId})
+}
+
+/**
+ * 玩家处于保护状态
+ * @param playerId
+ * @param targetPlayerId
+ */
+Utils.playerInProtectStatus = function(playerId, targetPlayerId){
+	var config = Errors.playerInProtectStatus
+	return CreateError(config, {playerId:playerId, targetPlayerId:targetPlayerId})
+}
+
+/**
+ * 目标联盟非当前匹配的敌对联盟
+ * @param playerId
+ * @param allianceId
+ * @param targetAllianceId
+ */
+Utils.targetAllianceNotTheEnemyAlliance = function(playerId, allianceId, targetAllianceId){
+	var config = Errors.playerInProtectStatus
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, targetAllianceId:targetAllianceId})
+}
+
+/**
+ * 村落不存在
+ * @param playerId
+ * @param allianceId
+ * @param villageId
+ */
+Utils.villageNotExist = function(playerId, allianceId, villageId){
+	var config = Errors.villageNotExist
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, villageId:villageId})
+}
+
+/**
+ * 村落采集事件不存在
+ * @param playerId
+ * @param allianceId
+ * @param eventId
+ */
+Utils.villageCollectEventNotExist = function(playerId, allianceId, eventId){
+	var config = Errors.villageCollectEventNotExist
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, eventId:eventId})
+}
+
+/**
+ * 没有此玩家的协防部队
+ * @param playerId
+ * @param allianceId
+ * @param beHelpedPlayerId
+ * @param helpPlayerId
+ */
+Utils.noHelpDefenceTroopByThePlayer = function(playerId, allianceId, beHelpedPlayerId, helpPlayerId){
+	var config = Errors.noHelpDefenceTroopByThePlayer
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, beHelpedPlayerId:beHelpedPlayerId, helpPlayerId:helpPlayerId})
+}
+
+/**
+ * 此道具未在联盟商店出售
+ * @param playerId
+ * @param allianceId
+ * @param itemName
+ */
+Utils.theItemNotSellInAllianceShop = function(playerId, allianceId, itemName){
+	var config = Errors.theItemNotSellInAllianceShop
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, itemName:itemName})
+}
+
+/**
+ * 普通道具不需要进货补充
+ * @param playerId
+ * @param allianceId
+ * @param itemName
+ */
+Utils.normalItemsNotNeedToAdd = function(playerId, allianceId, itemName){
+	var config = Errors.normalItemsNotNeedToAdd
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, itemName:itemName})
+}
+
+/**
+ * 玩家级别不足,不能购买高级道具
+ * @param playerId
+ * @param allianceId
+ * @param itemName
+ */
+Utils.playerLevelNotEoughCanNotBuyAdvancedItem = function(playerId, allianceId, itemName){
+	var config = Errors.playerLevelNotEoughCanNotBuyAdvancedItem
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, itemName:itemName})
+}
+
+/**
+ * 道具数量不足
+ * @param playerId
+ * @param allianceId
+ * @param itemName
+ */
+Utils.itemCountNotEnough = function(playerId, allianceId, itemName){
+	var config = Errors.itemCountNotEnough
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, itemName:itemName})
+}
+
+/**
+ * 玩家忠诚值不足
+ * @param playerId
+ * @param allianceId
+ */
+Utils.playerLoyaltyNotEnough = function(playerId, allianceId){
+	var config = Errors.playerLoyaltyNotEnough
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
+
+/**
+ * 联盟事件不存在
+ * @param allianceId
+ * @param eventType
+ * @param eventId
+ */
+Utils.allianceEventNotExist = function(allianceId, eventType, eventId){
+	var config = Errors.allianceEventNotExist
+	return CreateError(config, {allianceId:allianceId, eventType:eventType, eventId:eventId})
+}
+
+/**
+ * 非法的联盟状态
+ * @param allianceId
+ * @param allianceStatus
+ */
+Utils.illegalAllianceStatus = function(allianceId, allianceStatus){
+	var config = Errors.illegalAllianceStatus
+	return CreateError(config, {allianceId:allianceId, allianceStatus:allianceStatus})
+}

@@ -778,3 +778,88 @@ errors["targetAllianceNotInPeaceStatus"] = {
 	code:655,
 	message:"目标联盟未处于和平期,不能发起复仇"
 }
+errors["playerAlreadySendHelpDefenceTroopToTargetPlayer"] = {
+	key:"playerAlreadySendHelpDefenceTroopToTargetPlayer",
+	code:656,
+	message:"玩家已经对目标玩家派出了协防部队"
+}
+errors["targetPlayersHelpDefenceTroopsCountReachMax"] = {
+	key:"targetPlayersHelpDefenceTroopsCountReachMax",
+	code:657,
+	message:"目标玩家协防部队数量已达最大"
+}
+errors["noHelpDefenceTroopInTargetPlayerCity"] = {
+	key:"noHelpDefenceTroopInTargetPlayerCity",
+	code:658,
+	message:"玩家没有协防部队驻扎在目标玩家城市"
+}
+errors["allianceNotInFightStatus"] = {
+	key:"allianceNotInFightStatus",
+	code:659,
+	message:"联盟未处于战争期"
+}
+errors["playerNotInEnemyAlliance"] = {
+	key:"playerNotInEnemyAlliance",
+	code:660,
+	message:"玩家不在敌对联盟中"
+}
+errors["playerInProtectStatus"] = {
+	key:"playerInProtectStatus",
+	code:661,
+	message:"玩家处于保护状态"
+}
+errors["targetAllianceNotTheEnemyAlliance"] = {
+	key:"targetAllianceNotTheEnemyAlliance",
+	code:662,
+	message:"目标联盟非当前匹配的敌对联盟"
+}
+errors["villageNotExist"] = {
+	key:"villageNotExist",
+	code:663,
+	message:"村落不存在"
+}
+errors["villageCollectEventNotExist"] = {
+	key:"villageCollectEventNotExist",
+	code:664,
+	message:"村落采集事件不存在"
+}
+errors["noHelpDefenceTroopByThePlayer"] = {
+	key:"noHelpDefenceTroopByThePlayer",
+	code:665,
+	message:"没有此玩家的协防部队"
+}
+errors["theItemNotSellInAllianceShop"] = {
+	key:"theItemNotSellInAllianceShop",
+	code:666,
+	message:"此道具未在联盟商店出售"
+}
+errors["normalItemsNotNeedToAdd"] = {
+	key:"normalItemsNotNeedToAdd",
+	code:667,
+	message:"普通道具不需要进货补充"
+}
+errors["playerLevelNotEoughCanNotBuyAdvancedItem"] = {
+	key:"playerLevelNotEoughCanNotBuyAdvancedItem",
+	code:668,
+	message:"玩家级别不足,不能购买高级道具"
+}
+errors["itemCountNotEnough"] = {
+	key:"itemCountNotEnough",
+	code:669,
+	message:"道具数量不足"
+}
+errors["playerLoyaltyNotEnough"] = {
+	key:"playerLoyaltyNotEnough",
+	code:670,
+	message:"玩家忠诚值不足"
+}
+errors["allianceEventNotExist"] = {
+	key:"allianceEventNotExist",
+	code:671,
+	message:"联盟事件不存在"
+}
+errors["illegalAllianceStatus"] = {
+	key:"illegalAllianceStatus",
+	code:672,
+	message:"非法的联盟状态"
+}

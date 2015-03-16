@@ -39,13 +39,6 @@ var pro = AllianceApiService5.prototype
  * @param callback
  */
 pro.getHelpDefenceMarchEventDetail = function(playerId, eventId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isString(eventId)){
 		callback(new Error("eventId 不合法"))
 		return
@@ -58,38 +51,34 @@ pro.getHelpDefenceMarchEventDetail = function(playerId, eventId, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-
 	var marchEvent = null
+	var eventDetail = null
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		playerDoc = doc
-		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
-			return Promise.reject(new Error("玩家未加入联盟"))
-		}
+		if(!_.isObject(playerDoc.alliance))return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		return self.allianceDao.findAsync(playerDoc.alliance.id)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
 		marchEvent = _.find(allianceDoc.attackMarchEvents, function(marchEvent){
 			return _.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id) && _.isEqual(marchEvent.id, eventId)
 		})
-		if(!_.isObject(marchEvent)) return Promise.reject(new Error("行军事件不存在"))
+		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, allianceDoc._id, "attackMarchEvents", eventId))
 		if(!_.isEqual(playerId, marchEvent.attackPlayerData.id)){
 			return self.playerDao.findAsync(marchEvent.attackPlayerData.id)
 		}
 		return Promise.resolve()
 	}).then(function(doc){
 		if(!_.isEqual(playerId, marchEvent.attackPlayerData.id)){
-			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 			attackPlayerDoc = doc
 		}else{
 			attackPlayerDoc = playerDoc
 		}
-		var detail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, eventId, marchEvent.attackPlayerData.dragon, marchEvent.attackPlayerData.soldiers)
+		eventDetail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, eventId, marchEvent.attackPlayerData.dragon, marchEvent.attackPlayerData.soldiers)
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, attackPlayerDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockAsync, allianceDoc._id])
-		pushFuncs.push([self.pushService, self.pushService.onGetHelpDefenceMarchEventDetailAsync, playerDoc, detail])
+
+		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -97,7 +86,7 @@ pro.getHelpDefenceMarchEventDetail = function(playerId, eventId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback()
+		callback(null, eventDetail)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -127,13 +116,6 @@ pro.getHelpDefenceMarchEventDetail = function(playerId, eventId, callback){
  * @param callback
  */
 pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(callerId)){
-		callback(new Error("callerId 不合法"))
-		return
-	}
 	if(!_.isString(playerId)){
 		callback(new Error("playerId 不合法"))
 		return
@@ -150,10 +132,9 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-
 	var helpedByPlayerTroop = null
+	var troopDetail = null
 	this.playerDao.findAsync(callerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
 		callerDoc = doc
 		if(!_.isEqual(callerId, playerId)){
 			return self.playerDao.findAsync(playerId)
@@ -161,33 +142,33 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 		return Promise.resolve()
 	}).then(function(doc){
 		if(!_.isEqual(callerId, playerId)){
-			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(callerId, playerId))
 			playerDoc = doc
 		}else{
 			playerDoc = callerDoc
 		}
 		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
-			return Promise.reject(new Error("玩家未加入联盟"))
+			return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		}
 		helpedByPlayerTroop = _.find(playerDoc.helpedByTroops, function(troop){
 			return _.isEqual(troop.id, helpedByPlayerId)
 		})
-		if(!_.isObject(helpedByPlayerTroop)) return Promise.reject(new Error("没有此玩家的协防部队"))
+		if(!_.isObject(helpedByPlayerTroop)) return Promise.reject(ErrorUtils.noHelpDefenceTroopByThePlayer(callerId, playerDoc.alliance.id, playerDoc._id, helpedByPlayerId))
 		if(!_.isEqual(callerId, helpedByPlayerId)){
 			return self.playerDao.findAsync(helpedByPlayerId)
 		}
 		return Promise.resolve()
 	}).then(function(doc){
 		if(!_.isEqual(callerId, helpedByPlayerId)){
-			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(callerId, helpedByPlayerId))
 			attackPlayerDoc = doc
 		}else{
 			attackPlayerDoc = callerDoc
 		}
 
-		var detail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, helpedByPlayerId, helpedByPlayerTroop.dragon, helpedByPlayerTroop.soldiers)
-		delete detail.marchEventId
-		detail.helpedByPlayerId = helpedByPlayerId
+		troopDetail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, helpedByPlayerId, helpedByPlayerTroop.dragon, helpedByPlayerTroop.soldiers)
+		delete troopDetail.marchEventId
+		troopDetail.helpedByPlayerId = helpedByPlayerId
 
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, callerDoc._id])
 		if(!_.isEqual(callerDoc, playerDoc)){
@@ -196,7 +177,6 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 		if(!_.isEqual(callerDoc, attackPlayerDoc)){
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, attackPlayerDoc._id])
 		}
-		pushFuncs.push([self.pushService, self.pushService.onGetHelpDefenceTroopDetailAsync, callerDoc, detail])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -204,7 +184,7 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback()
+		callback(null, troopDetail)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(callerDoc)){
@@ -234,13 +214,6 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
  * @param callback
  */
 pro.addItem = function(playerId, itemName, count, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isItemNameExist(itemName)){
 		callback(new Error("itemName 不合法"))
 		return
@@ -253,43 +226,28 @@ pro.addItem = function(playerId, itemName, count, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
-	var allianceData = {}
+	var allianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
-		if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
+		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "addItem")){
-			return Promise.reject(new Error("此操作权限不足"))
+			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.alliance.id, "addItem"))
 		}
 		return self.allianceDao.findAsync(playerDoc.alliance.id)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
-
 		var itemConfig = DataUtils.getItemConfig(itemName)
-		if(!itemConfig.isSellInAlliance) return Promise.reject(new Error("此道具未在联盟商店出售"))
-		if(!itemConfig.isAdvancedItem) return Promise.reject(new Error("普通道具不需要进货补充"))
+		if(!itemConfig.isSellInAlliance) return Promise.reject(ErrorUtils.theItemNotSellInAllianceShop(playerId, allianceDoc._id, itemName))
+		if(!itemConfig.isAdvancedItem) return Promise.reject(ErrorUtils.normalItemsNotNeedToAdd(playerId, allianceDoc._id, itemName))
 		var honourNeed = itemConfig.buyPriceInAlliance * count
-		if(allianceDoc.basicInfo.honour < honourNeed) return Promise.reject(new Error("联盟荣誉值不足"))
+		if(allianceDoc.basicInfo.honour < honourNeed) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		allianceDoc.basicInfo.honour -= honourNeed
 		allianceData.basicInfo = allianceDoc.basicInfo
 		var resp = LogicUtils.addAllianceItem(allianceDoc, itemName, count)
-		if(resp.newlyCreated){
-			allianceData.__items = [{
-				type:Consts.DataChangedType.Add,
-				data:resp.item
-			}]
-		}else{
-			allianceData.__items = [{
-				type:Consts.DataChangedType.Edit,
-				data:resp.item
-			}]
-		}
+		allianceData.push(["items." + allianceDoc.items.indexOf(resp.item), resp.item])
 
 		var itemLog = LogicUtils.createAllianceItemLog(Consts.AllianceItemLogType.AddItem, playerDoc.basicInfo.name, itemName, count)
 		LogicUtils.addAllianceItemLog(allianceDoc, allianceData, itemLog)
@@ -332,13 +290,6 @@ pro.addItem = function(playerId, itemName, count, callback){
  * @param callback
  */
 pro.buyItem = function(playerId, itemName, count, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!DataUtils.isItemNameExist(itemName)){
 		callback(new Error("itemName 不合法"))
 		return
@@ -350,82 +301,56 @@ pro.buyItem = function(playerId, itemName, count, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = {}
+	var playerData = []
 	var allianceDoc = null
-	var allianceData = {}
+	var allianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
-		if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
+		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		return self.allianceDao.findAsync(playerDoc.alliance.id)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
-
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		var isAdvancedItem = itemConfig.isAdvancedItem
 		var eliteLevel = DataUtils.getAllianceTitleLevel("elite")
 		var myLevel = DataUtils.getAllianceTitleLevel(playerDoc.alliance.title)
 		if(isAdvancedItem){
-			if(myLevel > eliteLevel) return Promise.reject(new Error("玩家级别不足,不能购买高级道具"))
+			if(myLevel > eliteLevel) return Promise.reject(ErrorUtils.playerLevelNotEoughCanNotBuyAdvancedItem(playerId, allianceDoc._id, itemName))
 			var item = _.find(allianceDoc.items, function(item){
 				return _.isEqual(item.name, itemName)
 			})
-			if(!_.isObject(item) || item.count < count) return Promise.reject(new Error("道具数量不足"))
+			if(!_.isObject(item) || item.count < count) return Promise.reject(ErrorUtils.itemCountNotEnough(playerId, allianceDoc._id, itemName))
 		}
 
 		var loyaltyNeed = itemConfig.buyPriceInAlliance * count
-		if(playerDoc.allianceInfo.loyalty < loyaltyNeed) return Promise.reject(new Error("玩家忠诚值不足"))
+		if(playerDoc.allianceInfo.loyalty < loyaltyNeed) return Promise.reject(ErrorUtils.playerLoyaltyNotEnough(playerId, allianceDoc._id))
 		playerDoc.allianceInfo.loyalty -= loyaltyNeed
-		playerData.allianceInfo = playerDoc.basicInfo
+		playerData.push(["allianceInfo.loyalty", playerDoc.allianceInfo.loyalty])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.BuyItemInAllianceShop)
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
 		memberObject.loyalty -= loyaltyNeed
-		allianceData.__members = [{
-			type:Consts.DataChangedType.Edit,
-			data:memberObject
-		}]
+		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".loyalty", memberObject.loyalty])
 
 		if(isAdvancedItem){
 			item.count -= count
 			if(item.count <= 0){
+				allianceData.push(["items." + allianceDoc.items.indexOf(item), null])
 				LogicUtils.removeItemInArray(allianceDoc.items, item)
-				allianceData.__items = [{
-					type:Consts.DataChangedType.Remove,
-					data:item
-				}]
 			}else{
-				allianceData.__items = [{
-					type:Consts.DataChangedType.Edit,
-					data:item
-				}]
+				allianceData.push(["items." + allianceDoc.items.indexOf(item) + ".count", item.count])
 			}
-
 			var itemLog = LogicUtils.createAllianceItemLog(Consts.AllianceItemLogType.BuyItem, playerDoc.basicInfo.name, itemName, count)
 			LogicUtils.addAllianceItemLog(allianceDoc, allianceData, itemLog)
 		}
 
 		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)
-		if(resp.newlyCreated){
-			playerData.__items = [{
-				type:Consts.DataChangedType.Add,
-				data:resp.item
-			}]
-		}else{
-			playerData.__items = [{
-				type:Consts.DataChangedType.Edit,
-				data:resp.item
-			}]
-		}
+		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
 	}).then(function(){
@@ -435,7 +360,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -462,13 +387,6 @@ pro.buyItem = function(playerId, itemName, count, callback){
  * @param callback
  */
 pro.giveLoyaltyToAllianceMember = function(playerId, memberId, count, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
 	if(!_.isString(memberId)){
 		callback(new Error("memberId 不合法"))
 		return
@@ -481,59 +399,52 @@ pro.giveLoyaltyToAllianceMember = function(playerId, memberId, count, callback){
 	var self = this
 	var playerDoc = null
 	var memberDoc = null
-	var memberData = {}
+	var memberData = []
 	var memberObject = null
 	var allianceDoc = null
-	var allianceData = {}
+	var allianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
-		if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error("玩家未加入联盟"))
+		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "giveLoyaltyToAllianceMember")){
-			return Promise.reject(new Error("此操作权限不足"))
+			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.alliance.id, "giveLoyaltyToAllianceMember"))
 		}
 		return self.allianceDao.findAsync(playerDoc.alliance.id)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		allianceDoc = doc
-		if(allianceDoc.basicInfo.honour - count < 0) return Promise.reject(new Error("联盟荣耀值不足"))
+		if(allianceDoc.basicInfo.honour - count < 0) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
-		if(!_.isObject(memberObject)) return Promise.reject(new Error("联盟成员不存在"))
+		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
 		if(!_.isEqual(playerId, memberId)){
 			return self.playerDao.findAsync(memberId)
 		}
 		return Promise.resolve()
 	}).then(function(doc){
 		if(!_.isEqual(playerId, memberId)){
-			if(!_.isObject(doc)) return Promise.reject(new Error("玩家不存在"))
+			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 			memberDoc = doc
 		}else{
 			memberDoc = playerDoc
 		}
 		memberDoc.allianceInfo.loyalty += count
-		memberData.allianceInfo = memberDoc.allianceInfo
+		memberData.push(["allianceInfo.loyalty", memberDoc.allianceInfo.loyalty])
 
 		allianceDoc.basicInfo.honour -= count
-		allianceData.basicInfo = allianceDoc.basicInfo
+		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 		memberObject.loyalty = memberDoc.allianceInfo.loyalty
+		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".loyalty", memberObject.loyalty])
 		memberObject.lastRewardData = {
 			count:count,
 			time:Date.now()
 		}
-		allianceData.__members = [{
-			type:Consts.DataChangedType.Edit,
-			data:memberObject
-		}]
+		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".lastRewardData", memberObject.lastRewardData])
 
 		if(!_.isEqual(playerId, memberId)){
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		}
-
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])

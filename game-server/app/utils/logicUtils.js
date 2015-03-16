@@ -1572,20 +1572,15 @@ Utils.addPlayerReport = function(playerDoc, playerData, report){
  * @param report
  */
 Utils.addAllianceFightReport = function(allianceDoc, allianceData, report){
+	var self = this
 	var willRemovedReport = null
-	if(!_.isArray(allianceData.__allianceFightReports))allianceData.__allianceFightReports = []
 	if(allianceDoc.allianceFightReports.length >= Define.AllianceFightReportsMaxSize){
-		willRemovedReport = allianceDoc.allianceFightReports.shift()
-		allianceData.__allianceFightReports.push({
-			type:Consts.DataChangedType.Remove,
-			data:willRemovedReport
-		})
+		willRemovedReport = allianceDoc.allianceFightReports[0]
+		allianceData.push(["allianceFightReports." + allianceDoc.allianceFightReports.indexOf(willRemovedReport), null])
+		self.removeItemInArray(allianceDoc.allianceFightReports, willRemovedReport)
 	}
 	allianceDoc.allianceFightReports.push(report)
-	allianceData.__allianceFightReports.push({
-		type:Consts.DataChangedType.Add,
-		data:report
-	})
+	allianceData.push(["allianceFightReports." + allianceDoc.allianceFightReports.indexOf(report), report])
 }
 
 /**
@@ -2172,19 +2167,13 @@ Utils.createAllianceItemLog = function(logType, playerName, itemName, itemCount)
  */
 Utils.addAllianceItemLog = function(allianceDoc, allianceData, log){
 	var willRemovedLog = null
-	if(!_.isArray(allianceData.__itemLogs))allianceData.__itemLogs = []
 	if(allianceDoc.itemLogs.length >= Define.AllianceItemLogsMaxSize){
-		willRemovedLog = allianceDoc.itemLogs.shift()
-		allianceData.__itemLogs.push({
-			type:Consts.DataChangedType.Remove,
-			data:willRemovedLog
-		})
+		willRemovedLog = allianceDoc.itemLogs[0]
+		allianceData.push(["itemLogs." + allianceDoc.itemLogs.indexOf(willRemovedLog), null])
+		this.removeItemInArray(allianceDoc.itemLogs, willRemovedLog)
 	}
 	allianceDoc.itemLogs.push(log)
-	allianceData.__itemLogs.push({
-		type:Consts.DataChangedType.Add,
-		data:log
-	})
+	allianceData.push(["itemLogs." + allianceDoc.itemLogs.indexOf(log), log])
 }
 
 /**

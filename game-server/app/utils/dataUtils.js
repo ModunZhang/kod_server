@@ -2271,7 +2271,6 @@ Utils.createSoldiersForFight = function(soldiers){
  * @returns {*}
  */
 Utils.createPlayerDragonForFight = function(playerDoc, dragon, terrain){
-	this.refreshPlayerDragonsHp(playerDoc, dragon)
 	var dragonForFight = {
 		type:dragon.type,
 		level:dragon.level,

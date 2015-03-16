@@ -1075,59 +1075,43 @@ describe("AllianceService", function(){
 		//	})
 		//})
 
-
-
-
-
-
-
-
-
-
-
-
-
-		//it("helpAllianceMemberDefence 正常协助", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		var m_allianceData = null
-		//		Api.getMyAllianceData(function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.sendChat("dragonstar blueDragon 1", function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.sendChat("soldiers 1000", function(doc){
-		//					doc.code.should.equal(200)
-		//					Api.helpAllianceMemberDefence(
-		//						"blueDragon",
-		//						[
-		//							{
-		//								name:"swordsman",
-		//								count:5
-		//							},
-		//							{
-		//								name:"sentinel",
-		//								count:5
-		//							},
-		//							{
-		//								name:"ranger",
-		//								count:5
-		//							}
-		//						],
-		//						m_allianceData.members[1].id,
-		//						function(doc){
-		//							doc.code.should.equal(200)
-		//							done()
-		//						})
-		//				})
-		//			})
-		//		})
-		//		var onGetAllianceDataSuccess = function(doc){
-		//			m_allianceData = doc
-		//			pomelo.removeListener("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//		}
-		//		pomelo.on("onGetAllianceDataSuccess", onGetAllianceDataSuccess)
-		//	})
-		//})
+		it("helpAllianceMemberDefence 正常协助", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				var m_allianceData = null
+				Api.getMyAllianceData(function(doc){
+					doc.code.should.equal(200)
+					m_allianceData = doc.allianceData
+					Api.sendChat("dragonstar blueDragon 1", function(doc){
+						doc.code.should.equal(200)
+						Api.sendChat("soldiers 1000", function(doc){
+							doc.code.should.equal(200)
+							Api.helpAllianceMemberDefence(
+								"blueDragon",
+								[
+									{
+										name:"swordsman",
+										count:5
+									},
+									{
+										name:"sentinel",
+										count:5
+									},
+									{
+										name:"ranger",
+										count:5
+									}
+								],
+								m_allianceData.members[1].id,
+								function(doc){
+									doc.code.should.equal(200)
+									done()
+								})
+						})
+					})
+				})
+			})
+		})
 
 		//it("getHelpDefenceMarchEventDetail 正常获取", function(done){
 		//	var m_myAllianceData = null

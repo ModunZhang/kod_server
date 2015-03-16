@@ -495,7 +495,7 @@ pro.attackAllianceShrine = function(playerId, shrineEventId, dragonType, soldier
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon))
 		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
-		if(dragon.hp == 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon))
+		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon))
 		dragon.status = Consts.DragonStatus.March
 		playerData.push(["dragons." + dragonType, dragon])
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
