@@ -31,18 +31,22 @@ var pro = EventRemote.prototype
  * @param callback
  */
 pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	var id = setTimeout(ExcuteTimeEvent.bind(this), timeInterval, key, eventId)
-	var callbacks = this.callbacks[key]
-	if(_.isEmpty(callbacks)){
-		callbacks = {}
-		this.callbacks[key] = callbacks
+	if(timeInterval <= 0){
+		this.excuteTimeEvent(key, eventType, eventId, callback)
+	}else{
+		var id = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventId)
+		var callbacks = this.callbacks[key]
+		if(_.isEmpty(callbacks)){
+			callbacks = {}
+			this.callbacks[key] = callbacks
+		}
+		var callbackObj = {
+			id:id,
+			eventType:eventType
+		}
+		callbacks[eventId] = callbackObj
+		callback()
 	}
-	var callbackObj = {
-		id:id,
-		eventType:eventType
-	}
-	callbacks[eventId] = callbackObj
-	callback()
 }
 
 /**
@@ -78,11 +82,19 @@ pro.updateTimeEvent = function(key, eventId, timeInterval, callback){
 		clearTimeout(callbackObj.id)
 	}
 	delete callbacks[eventId]
+	if(_.isEmpty(callbacks)){
+		delete this.callbacks[key]
+	}
 
-	var id = setTimeout(ExcuteTimeEvent.bind(this), timeInterval, key, eventId)
-	callbackObj.id = id
-	callbacks[eventId] = callbackObj
-	callback()
+	if(timeInterval <= 0){
+		var eventType = callbackObj.eventType
+		this.excuteTimeEvent(key, eventType, eventId, callback)
+	}else{
+		var id = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventId)
+		callbackObj.id = id
+		callbacks[eventId] = callbackObj
+		callback()
+	}
 }
 
 /**
@@ -125,6 +137,7 @@ pro.triggerTimeEvent = function(key, eventId){
  * @param callback
  */
 pro.excuteTimeEvent = function(key, eventType, eventId, callback){
+	var self = this
 	var logicServers = this.app.getServersByType('logic')
 	var logicServerId = Dispatcher.dispatch(logicServers).id
 	logicLogger.info("ExcuteTimeEvent key:%s, eventType:%s, eventId:%s", key, eventType, eventId)
@@ -137,6 +150,8 @@ pro.excuteTimeEvent = function(key, eventType, eventId, callback){
 				errorMailLogger.error(e.stack)
 			}
 		}
-		callback(e)
+		if(_.isFunction(callback)){
+			callback(e)
+		}
 	})
 }
