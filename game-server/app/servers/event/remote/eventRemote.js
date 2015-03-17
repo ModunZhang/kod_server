@@ -100,30 +100,43 @@ pro.clearTimeEventsByKey = function(key, callback){
 }
 
 /**
- * 执行事件回调
+ * 触发事件回调
  * @param key
  * @param eventId
  */
-var ExcuteTimeEvent = function(key, eventId){
+pro.triggerTimeEvent = function(key, eventId){
 	var self = this
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
-	delete callbacks[eventId]
-	if(_.isEmpty(callbacks)){
-		delete this.callbacks[key]
-	}
+	var eventType = callbackObj.eventType
+	this.excuteTimeEvent(key, eventType, eventId, function(){
+		delete callbacks[eventId]
+		if(_.isEmpty(callbacks)){
+			delete self.callbacks[key]
+		}
+	})
+}
+
+/**
+ * 执行事件回调
+ * @param key
+ * @param eventType
+ * @param eventId
+ * @param callback
+ */
+pro.excuteTimeEvent = function(key, eventType, eventId, callback){
 	var logicServers = this.app.getServersByType('logic')
 	var logicServerId = Dispatcher.dispatch(logicServers).id
-	var eventType = callbackObj.eventType
 	logicLogger.info("ExcuteTimeEvent key:%s, eventType:%s, eventId:%s", key, eventType, eventId)
 	this.app.rpc.logic.logicRemote.onTimeEvent.toServer(logicServerId, key, eventType, eventId, function(e){
 		if(_.isObject(e)){
-			errorLogger.error("handle eventRemote:ExcuteTimeEvent Error -----------------------------")
+			errorLogger.error("handle eventRemote:excuteTimeEvent Error -----------------------------")
 			errorLogger.error(e.stack)
 			if("production" == self.app.get("env")){
-				errorMailLogger.error("handle eventRemote:ExcuteTimeEvent Error -----------------------------")
+				errorMailLogger.error("handle eventRemote:excuteTimeEvent Error -----------------------------")
 				errorMailLogger.error(e.stack)
 			}
 		}
+		callback(e)
 	})
 }
