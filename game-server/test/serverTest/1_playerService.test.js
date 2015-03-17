@@ -1548,6 +1548,17 @@ describe("PlayerService", function(){
 			})
 		})
 
+		it("bindGcId 此GameCenter账号已有玩家数据", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.bindGcId(Config.gcId, function(doc){
+					doc.code.should.equal(Errors.theGCAccountAlreadyHasDatas.code)
+					done()
+				})
+			})
+		})
+
+
 		//it("getDay60Reward 正常领取", function(done){
 		//	Api.getDay60Reward(function(doc){
 		//		doc.code.should.equal(200)

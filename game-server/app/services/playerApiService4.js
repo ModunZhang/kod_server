@@ -852,7 +852,7 @@ pro.gacha = function(playerId, type, callback){
 }
 
 /**
- * 设置GameCenter Id
+ * 绑定GameCenter账号到当前玩家数据
  * @param playerId
  * @param gcId
  * @param callback
@@ -869,10 +869,56 @@ pro.bindGcId = function(playerId, gcId, callback){
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAccountId(playerId, playerDoc.userId, playerDoc.gcId, gcId))
+		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.userId, playerDoc.gcId, gcId))
 		return self.User.findAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
 	}).then(function(docs){
-		
+		if(docs.length > 0) return Promise.reject(ErrorUtils.theGCIdAlreadyHasDatas(playerId, playerDoc.userId, gcId))
+		playerDoc.gcId = gcId
+		playerData.push(["gcId", gcId])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.User, self.User.findByIdAndUpdateAsync, playerDoc.userId, {gcId:gcId}])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 强制绑定GameCenter账号到当前玩家数据,放弃原GameCenter账号下的玩家数据
+ * @param playerId
+ * @param gcId
+ * @param callback
+ */
+pro.forceBindGcId = function(playerId, gcId, callback){
+	if(!_.isString(gcId)){
+		callback(new Error("gcId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	this.playerDao.findAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAccount(playerId, playerDoc.userId, playerDoc.gcId, gcId))
+		return self.User.findOneAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
+	}).then(function(docs){
+		if(docs.length == 0) return Promise.reject(ErrorUtils.theGCAccountDoNotHasData(playerId, playerDoc.userId, gcId))
+
 
 		playerDoc.gcId = gcId
 		playerData.push(["gcId", gcId])
@@ -895,5 +941,60 @@ pro.bindGcId = function(playerId, gcId, callback){
 			callback(e)
 		}
 	})
+}
+
+/**
+ * 切换GameCenter账号
+ * @param playerId
+ * @param gcId
+ * @param callback
+ */
+pro.switchGcId = function(playerId, gcId, callback){
+	if(!_.isString(gcId)){
+		callback(new Error("gcId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	this.playerDao.findAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAccountId(playerId, playerDoc.userId, playerDoc.gcId, gcId))
+		return self.User.findAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
+	}).then(function(docs){
+		if(docs.length > 0) return Promise.reject(ErrorUtils.theGCAccountAlreadyHasDatas(playerId, playerDoc.userId, gcId))
+		playerDoc.gcId = gcId
+		playerData.push(["gcId", gcId])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.User, self.User.findByIdAndUpdateAsync, playerDoc.userId, {gcId:gcId}])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 强制切换GameCenter账号到原GameCenter账号下的玩家数据
+ * @param playerId
+ * @param gcId
+ * @param callback
+ */
+pro.forceSwitchGcId = function(playerId, gcId, callback){
+
 }
 

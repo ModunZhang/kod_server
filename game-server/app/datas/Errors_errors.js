@@ -868,3 +868,8 @@ errors["playerAlreadyBindGCAccountId"] = {
 	code:673,
 	message:"账号GameCenter账号已经绑定"
 }
+errors["theGCAccountAlreadyHasDatas"] = {
+	key:"theGCAccountAlreadyHasDatas",
+	code:674,
+	message:"此GameCenter账号已有玩家数据"
+}

@@ -123,7 +123,6 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 	var pushFuncs = []
 	var memberDocInAlliance = null
 	var expAdd = null
-
 	this.playerDao.getModel().findOneAsync({deviceId:deviceId, selected:true}, {_id:true}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExistInMongo(deviceId))
 		activePlayerId = doc._id
@@ -253,7 +252,7 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 		callback(null, [playerDoc, allianceDoc])
 	}).catch(function(e){
 		var funcs = []
-		if(_.isObject(playerDoc)){
+		if(_.isObject(playerDoc) && !_.isEqual(e.code, ErrorUtils.reLoginNeeded(playerDoc._id).code)){
 			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(_.isObject(allianceDoc)){

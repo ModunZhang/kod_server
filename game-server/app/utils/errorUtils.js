@@ -1827,7 +1827,29 @@ Utils.illegalAllianceStatus = function(allianceId, allianceStatus){
  * @param gcIdBinded
  * @param gcIdToBind
  */
-Utils.playerAlreadyBindGCAccountId = function(playerId, userId, gcIdBinded, gcIdToBind){
-	var config = Errors.playerAlreadyBindGCAccountId
+Utils.playerAlreadyBindGCAId = function(playerId, userId, gcIdBinded, gcIdToBind){
+	var config = Errors.playerAlreadyBindGCAId
 	return CreateError(config, {playerId:playerId, userId:userId, gcIdBinded:gcIdBinded, gcIdToBind:gcIdToBind})
+}
+
+/**
+ * 此GameCenter账号已有玩家数据
+ * @param playerId
+ * @param userId
+ * @param gcIdToBind
+ */
+Utils.theGCIdAlreadyHasDatas = function(playerId, userId, gcIdToBind){
+	var config = Errors.theGCIdAlreadyHasDatas
+	return CreateError(config, {playerId:playerId, userId:userId, gcIdToBind:gcIdToBind})
+}
+
+/**
+ * 此GameCenter账号下无玩家数据
+ * @param playerId
+ * @param userId
+ * @param gcIdToBind
+ */
+Utils.theGCAccountDoNotHasData = function(playerId, userId, gcIdToBind){
+	var config = Errors.theGCAccountDoNotHasData
+	return CreateError(config, {playerId:playerId, userId:userId, gcIdToBind:gcIdToBind})
 }
