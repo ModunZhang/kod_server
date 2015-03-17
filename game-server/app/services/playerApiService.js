@@ -980,7 +980,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
 			var event = LogicUtils.createSoldierEvent(playerDoc, soldierName, count, finishTime)
 			playerDoc.soldierEvents.push(event)
-			playerData.push(["soldierDevents." + playerDoc.soldierEvents.indexOf(event), event])
+			playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime])
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
