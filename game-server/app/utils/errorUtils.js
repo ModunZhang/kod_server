@@ -1819,3 +1819,15 @@ Utils.illegalAllianceStatus = function(allianceId, allianceStatus){
 	var config = Errors.illegalAllianceStatus
 	return CreateError(config, {allianceId:allianceId, allianceStatus:allianceStatus})
 }
+
+/**
+ * 账号GameCenter账号已经绑定
+ * @param playerId
+ * @param userId
+ * @param gcIdBinded
+ * @param gcIdToBind
+ */
+Utils.playerAlreadyBindGCAccountId = function(playerId, userId, gcIdBinded, gcIdToBind){
+	var config = Errors.playerAlreadyBindGCAccountId
+	return CreateError(config, {playerId:playerId, userId:userId, gcIdBinded:gcIdBinded, gcIdToBind:gcIdToBind})
+}

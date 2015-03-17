@@ -876,6 +876,21 @@ pro.gacha = function(msg, session, next){
 }
 
 /**
+ * 设置GameCenter Id
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.bindGcId = function(msg, session, next){
+	var gcId = msg.gcId
+	this.playerApiService4.bindGcIdAsync(session.uid, gcId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
  * 获取每日登陆奖励
  * @param msg
  * @param session

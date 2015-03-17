@@ -25,7 +25,8 @@ var PlayerApiService4 = function(app){
 	this.globalChannelService = app.get("globalChannelService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
-	this.Player = app.get("Player")
+	this.User = app.get("User")
+	this.Device = app.get("Device")
 }
 module.exports = PlayerApiService4
 var pro = PlayerApiService4.prototype
@@ -798,6 +799,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 pro.gacha = function(playerId, type, callback){
 	if(!_.contains(_.values(Consts.GachaType), type)){
 		callback(new Error("type 不合法"))
+		return
 	}
 
 	var self = this
@@ -848,3 +850,50 @@ pro.gacha = function(playerId, type, callback){
 		}
 	})
 }
+
+/**
+ * 设置GameCenter Id
+ * @param playerId
+ * @param gcId
+ * @param callback
+ */
+pro.bindGcId = function(playerId, gcId, callback){
+	if(!_.isString(gcId)){
+		callback(new Error("gcId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	this.playerDao.findAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAccountId(playerId, playerDoc.userId, playerDoc.gcId, gcId))
+		return self.User.findAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
+	}).then(function(docs){
+		
+
+		playerDoc.gcId = gcId
+		playerData.push(["gcId", gcId])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.User, self.User.findByIdAndUpdateAsync, playerDoc.userId, {gcId:gcId}])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
