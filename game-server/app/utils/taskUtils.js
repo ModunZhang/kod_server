@@ -96,7 +96,7 @@ Utils.finishPlayerDailyTaskIfNeeded = function(playerDoc, playerData, taskType, 
 	var isFinished = _.contains(playerDoc.dailyTasks[taskType], taskIndex)
 	if(!isFinished){
 		playerDoc.dailyTasks[taskType].push(taskIndex)
-		playerData.push(["dailyTasks." + taskType], playerDoc.dailyTasks[taskType])
+		playerData.push(["dailyTasks." + taskType, playerDoc.dailyTasks[taskType]])
 	}
 }
 
