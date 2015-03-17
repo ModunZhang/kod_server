@@ -400,7 +400,7 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(attackPlayerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon))
 		_.each(soldiers, function(soldier){
 			attackPlayerDoc.soldiers[soldier.name] -= soldier.count
-			attackPlayerData.push(["soldiers." + soldier.name, attackAllianceDoc.soldiers[soldier.name]])
+			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
 		})
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 		return self.allianceDao.findAsync(attackPlayerDoc.alliance.id)
@@ -524,7 +524,7 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(attackPlayerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon))
 		_.each(soldiers, function(soldier){
 			attackPlayerDoc.soldiers[soldier.name] -= soldier.count
-			attackPlayerData.push(["soldiers." + soldier.name, attackAllianceDoc.soldiers[soldier.name]])
+			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
 		})
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, attackPlayerDoc])
 		return self.allianceDao.findAsync(attackPlayerDoc.alliance.id)
@@ -734,9 +734,9 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 
 	var self = this
 	var attackPlayerDoc = null
-	var attackPlayerData = {}
+	var attackPlayerData = []
 	var attackAllianceDoc = null
-	var attackAllianceData = {}
+	var attackAllianceData = []
 	var defenceAllianceDoc = null
 	var pushFuncs = []
 	var eventFuncs = []

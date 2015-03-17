@@ -1069,21 +1069,6 @@ Utils.getPlayerFirstUnSavedReport = function(playerDoc){
 }
 
 /**
- * 获取升级建筑后,获取玩家被修改的数据
- * @param playerDoc
- * @param playerData
- */
-Utils.refreshBuildingEventsData = function(playerDoc, playerData){
-	playerData.resources = playerDoc.resources
-	playerData.buildingMaterials = playerDoc.buildingMaterials
-	playerData.technologyMaterials = playerDoc.technologyMaterials
-	playerData.basicInfo = playerDoc.basicInfo
-	playerData.buildings = playerDoc.buildings
-	playerData.buildingEvents = playerDoc.buildingEvents
-	playerData.houseEvents = playerDoc.houseEvents
-}
-
-/**
  * 获取联盟盟主信息
  * @param allianceDoc
  * @returns {*}

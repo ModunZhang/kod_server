@@ -48,10 +48,7 @@ var ResetDonateStatus = function(allianceDoc, allianceData){
 			gem:1
 		}
 		member.donateStatus = donateStatus
-		allianceData.__members.push({
-			type:Consts.DataChangedType.Edit,
-			data:member
-		})
+		allianceData.push(["members." + allianceDoc.members.indexOf(member) + ".donateStatus", member.donateStatus])
 	})
 }
 
@@ -63,7 +60,6 @@ var ResetDonateStatus = function(allianceDoc, allianceData){
 var ResetMapDecorates = function(allianceDoc, allianceData){
 	var mapObjects = allianceDoc.mapObjects
 	var map = MapUtils.buildMap(mapObjects)
-	if(!_.isArray(allianceData.__mapObjects)) allianceData.__mapObjects = []
 	_.each(AllianceInit.decorateCount, function(countConfig, key){
 		var countHas = LogicUtils.getAllianceDecorateObjectCountByType(allianceDoc, key)
 		var config = AllianceInit.buildingType[key]
@@ -79,15 +75,10 @@ var ResetMapDecorates = function(allianceDoc, allianceData){
 					width:rect.width,
 					height:rect.height
 				}, key)
-				allianceData.__mapObjects.push({
-					type:Consts.DataChangedType.Add,
-					data:mapObject
-				})
+				allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(mapObject), mapObject])
 			}
 		}
 	})
-
-	if(_.isEmpty(allianceData.__mapObjects)) delete allianceData.__mapObjects
 }
 
 /**
@@ -105,9 +96,6 @@ var ResetVillages = function(allianceDoc, allianceData, enemyAllianceDoc){
 		return count
 	}
 
-	if(!_.isArray(allianceData.__villages)) allianceData.__villages = []
-	if(!_.isArray(allianceData.__mapObjects)) allianceData.__mapObjects = []
-
 	var villageTobeRemoved = []
 	_.each(allianceDoc.villages, function(village){
 		var villageEvent = _.find(allianceDoc.villageEvents, function(villageEvent){
@@ -121,16 +109,11 @@ var ResetVillages = function(allianceDoc, allianceData, enemyAllianceDoc){
 		if(!_.isObject(villageEvent)) villageTobeRemoved.push(village)
 	})
 	_.each(villageTobeRemoved, function(village){
+		allianceData.push(["villages." + allianceDoc.villages.indexOf(village), null])
 		LogicUtils.removeItemInArray(allianceDoc.villages, village)
-		var mapObject = LogicUtils.removeAllianceMapObjectByLocation(allianceDoc, village.location)
-		allianceData.__villages.push({
-			type:Consts.DataChangedType.Remove,
-			data:village
-		})
-		allianceData.__mapObjects.push({
-			type:Consts.DataChangedType.Remove,
-			data:mapObject
-		})
+		var mapObject = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, village.location)
+		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(mapObject), null])
+		LogicUtils.removeItemInArray(allianceDoc.mapObjects, mapObject)
 	})
 
 	var orderHallLevel = allianceDoc.buildings.orderHall.level
@@ -152,20 +135,11 @@ var ResetVillages = function(allianceDoc, allianceData, enemyAllianceDoc){
 				width:rect.width,
 				height:rect.height
 			}, config.type)
-			allianceData.__mapObjects.push({
-				type:Consts.DataChangedType.Add,
-				data:mapObject
-			})
+			allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(mapObject), mapObject])
 			var villageObject = DataUtils.addAllianceVillageObject(allianceDoc, mapObject)
-			allianceData.__villages.push({
-				type:Consts.DataChangedType.Add,
-				data:villageObject
-			})
+			allianceData.push(["villages." + allianceDoc.villages.indexOf(villageObject), villageObject])
 		}
 	})
-
-	if(!_.isArray(allianceData.__villages)) delete allianceData.__villages
-	if(!_.isArray(allianceData.__mapObjects)) delete allianceData.__mapObjects
 }
 
 /**
@@ -177,7 +151,7 @@ var ResolveOneAlliance = function(allianceId){
 	var self = this
 	var allianceDoc = null
 	var enemyAllianceDoc = null
-	var allianceData = {}
+	var allianceData = []
 	var enemyAllianceData = {}
 	var updateFuncs = []
 	var pushFuncs = []
