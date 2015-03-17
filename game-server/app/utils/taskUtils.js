@@ -33,8 +33,8 @@ Utils.updateGrowUpTaskData = function(playerDoc, playerData, type, task){
 			}
 		}
 		if(_.isObject(preTask)){
-			LogicUtils.removeItemInArray(playerDoc.growUpTasks[type], preTask)
 			playerData.push(["growUpTasks." + type + "." + playerDoc.growUpTasks[type].indexOf(preTask), null])
+			LogicUtils.removeItemInArray(playerDoc.growUpTasks[type], preTask)
 		}
 	}else{
 		playerDoc.growUpTasks[type].push(task)

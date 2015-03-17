@@ -389,7 +389,6 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 
