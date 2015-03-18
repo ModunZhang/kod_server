@@ -324,7 +324,7 @@ pro.getMyAllianceData = function(playerId, callback){
 pro.getCanDirectJoinAlliances = function(playerId, callback){
 	var self = this
 	var playerDoc = null
-	var allianceDocs = null
+	var allianceDocs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var funcs = []
@@ -332,7 +332,24 @@ pro.getCanDirectJoinAlliances = function(playerId, callback){
 		funcs.push(self.allianceDao.getModel().find({"basicInfo.joinType":Consts.AllianceJoinType.All}).sort({"basicInfo.power":-1}).limit(10).exec())
 		return Promise.all(funcs)
 	}).spread(function(tmp, docs){
-		allianceDocs = docs
+		_.each(docs, function(doc){
+			var shortDoc = {
+				id:doc._id,
+				name:doc.basicInfo.name,
+				tag:doc.basicInfo.tag,
+				flag:doc.basicInfo.flag,
+				level:doc.basicInfo.level,
+				members:doc.members.length,
+				power:doc.basicInfo.power,
+				language:doc.basicInfo.language,
+				kill:doc.basicInfo.kill,
+				archon:LogicUtils.getAllianceArchon(doc).name,
+				joinType:doc.basicInfo.joinType,
+				terrain:doc.basicInfo.terrain
+			}
+			allianceDocs.push(shortDoc)
+		})
+
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, allianceDocs)

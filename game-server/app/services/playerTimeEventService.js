@@ -225,7 +225,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		LogicUtils.removeItemInArray(playerDoc.militaryTechEvents, event)
 		var militaryTech = playerDoc.militaryTechs[event.name]
 		militaryTech.level += 1
-		playerData.push(["militaryTechs." + militaryTech.name + ".level", militaryTech.level])
+		playerData.push(["militaryTechs." + event.name + ".level", militaryTech.level])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 		TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, event.name, militaryTech.level)
 		if(_.isObject(allianceDoc)){
