@@ -1849,8 +1849,8 @@ Utils.theGCIdAlreadyBindedByOtherUser = function(playerId, userId, gcIdToBind){
  * @param userId
  * @param gcIdToBind
  */
-Utils.theGCAccountIsNotBindedByOtherUser = function(playerId, userId, gcIdToBind){
-	var config = Errors.theGCAccountIsNotBindedByOtherUser
+Utils.theGCIdIsNotBindedByOtherUser = function(playerId, userId, gcIdToBind){
+	var config = Errors.theGCIdIsNotBindedByOtherUser
 	return CreateError(config, {playerId:playerId, userId:userId, gcIdToBind:gcIdToBind})
 }
 
@@ -1862,4 +1862,15 @@ Utils.theGCAccountIsNotBindedByOtherUser = function(playerId, userId, gcIdToBind
 Utils.theUserDoNotBindGCId = function(playerId, userId){
 	var config = Errors.theUserDoNotBindGCId
 	return CreateError(config, {playerId:playerId, userId:userId})
+}
+
+/**
+ * 此GameCenter账号已绑定当前玩家
+ * @param playerId
+ * @param userId
+ * @param gcId
+ */
+Utils.theGCIdAlreadyBindedByCurrentUser = function(playerId, userId, gcId){
+	var config = Errors.theGCIdAlreadyBindedByCurrentUser
+	return CreateError(config, {playerId:playerId, userId:userId, gcId:gcId})
 }

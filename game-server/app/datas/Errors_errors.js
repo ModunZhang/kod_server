@@ -873,8 +873,8 @@ errors["theGCIdAlreadyBindedByOtherUser"] = {
 	code:674,
 	message:"此GameCenter账号已被其他玩家绑定"
 }
-errors["theGCAccountIsNotBindedByOtherUser"] = {
-	key:"theGCAccountIsNotBindedByOtherUser",
+errors["theGCIdIsNotBindedByOtherUser"] = {
+	key:"theGCIdIsNotBindedByOtherUser",
 	code:675,
 	message:"此GameCenter账号未被其他玩家绑定"
 }
@@ -882,4 +882,9 @@ errors["theUserDoNotBindGCId"] = {
 	key:"theUserDoNotBindGCId",
 	code:676,
 	message:"当前玩家还未绑定GameCenter账号"
+}
+errors["theGCIdAlreadyBindedByCurrentUser"] = {
+	key:"theGCIdAlreadyBindedByCurrentUser",
+	code:677,
+	message:"此GameCenter账号已绑定当前玩家"
 }

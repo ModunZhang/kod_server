@@ -921,6 +921,21 @@ pro.forceBindGcId = function(msg, session, next){
 }
 
 /**
+ * 切换GameCenter账号
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.switchGcId = function(msg, session, next){
+	var gcId = msg.gcId
+	this.playerApiService4.switchGcIdAsync(session.uid, session.get("deviceId"), gcId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
  * 获取每日登陆奖励
  * @param msg
  * @param session

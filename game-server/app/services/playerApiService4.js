@@ -939,7 +939,7 @@ pro.forceBindGcId = function(playerId, gcId, callback){
 		if(!_.isEmpty(doc.gcId)) return Promise.reject(ErrorUtils.userAlreadyBindGCAId(playerId, playerDoc.userId, playerDoc.gcId, gcId))
 		return self.User.findAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
 	}).then(function(docs){
-		if(docs.length == 0) return Promise.reject(ErrorUtils.theGCAccountIsNotBindedByOtherUser(playerId, playerDoc.userId, gcId))
+		if(docs.length == 0) return Promise.reject(ErrorUtils.theGCIdIsNotBindedByOtherUser(playerId, playerDoc.userId, gcId))
 
 		playerData.push(["gcId", gcId])
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
@@ -967,10 +967,11 @@ pro.forceBindGcId = function(playerId, gcId, callback){
 /**
  * 切换GameCenter账号
  * @param playerId
+ * @param deviceId
  * @param gcId
  * @param callback
  */
-pro.switchGcId = function(playerId, gcId, callback){
+pro.switchGcId = function(playerId, deviceId, gcId, callback){
 	if(!_.isString(gcId)){
 		callback(new Error("gcId 不合法"))
 		return
@@ -978,24 +979,35 @@ pro.switchGcId = function(playerId, gcId, callback){
 
 	var self = this
 	var playerDoc = null
-	var playerData = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		return self.User.findByIdAsync(playerDoc.userId)
 	}).then(function(doc){
-		if(_.isEmpty(doc.gcId)) return ErrorUtils.theUserDoNotBindGCId(playerId, playerDoc.userId)
+		if(_.isEmpty(doc.gcId)) return Promise.reject(ErrorUtils.theUserDoNotBindGCId(playerId, playerDoc.userId))
+		if(_.isEqual(doc.gcId, gcId)) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByCurrentUser(playerId, playerDoc.userId, gcId))
 		return self.User.findAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
 	}).then(function(docs){
-		if(docs.length > 0) return Promise.reject(ErrorUtils.theGCAccountAlreadyHasDatas(playerId, playerDoc.userId, gcId))
-		playerDoc.gcId = gcId
-		playerData.push(["gcId", gcId])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		updateFuncs.push([self.User, self.User.findByIdAndUpdateAsync, playerDoc.userId, {gcId:gcId}])
+		if(docs.length == 0){
+			var resp = LogicUtils.createUserAndFirstPlayer(Consts.ServerId)
+			var user = resp.user
+			user.gcId = gcId
+			var player = resp.player
+			updateFuncs.push([self.Device, self.Device.findByIdAndUpdateAsync, deviceId, {userId:user._id}])
+			updateFuncs.push([self.User, self.User.createAsync, user])
+			updateFuncs.push([self.playerDao.getModel(), self.playerDao.getModel().createAsync, player])
+		}else{
+			updateFuncs.push([self.Device, self.Device.findByIdAndUpdateAsync, deviceId, {userId:docs[0]._id}])
+		}
+		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		callback(null, playerData)
+		callback()
+		return Promise.resolve()
+	}).then(function(){
+		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){

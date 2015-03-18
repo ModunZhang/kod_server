@@ -69,7 +69,7 @@ pro.login = function(msg, session, next){
 	}).spread(function(doc_1, doc_2){
 		playerDoc = doc_1
 		allianceDoc = doc_2
-		return bindPlayerSession(session, playerDoc)
+		return bindPlayerSession(session, deviceId, playerDoc)
 	}).then(function(){
 		var funcs = []
 		funcs.push(addPlayerToChatChannel(session))
@@ -86,8 +86,10 @@ pro.login = function(msg, session, next){
 	})
 }
 
-var BindPlayerSession = function(session, playerDoc, callback){
+var BindPlayerSession = function(session, deviceId, playerDoc, callback){
 	session.bind(playerDoc._id)
+	session.set("serverId", playerDoc.serverId)
+	session.set("deviceId", deviceId)
 	session.set("logicServerId", playerDoc.logicServerId)
 	session.set("name", playerDoc.basicInfo.name)
 	session.set("icon", playerDoc.basicInfo.icon)

@@ -62,7 +62,7 @@ pro.createAccount = function(deviceId, callback){
 	}
 
 	var self = this
-	var resp = LogicUtils.createUserAndFirstPlayer("World-1")
+	var resp = LogicUtils.createUserAndFirstPlayer(Consts.ServerId)
 	var player = resp.player
 	var user = resp.user
 	var device = LogicUtils.createDevice(deviceId, user._id)

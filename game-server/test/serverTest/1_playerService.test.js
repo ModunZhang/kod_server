@@ -1573,6 +1573,19 @@ describe("PlayerService", function(){
 			})
 		})
 
+		it("switchGcId 切换到新建账号", function(done){
+			Api.switchGcId(Config.gcId3, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		//it("switchGcId 切换到老账号", function(done){
+		//	Api.switchGcId(Config.gcId, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
 
 		//it("getDay60Reward 正常领取", function(done){
 		//	Api.getDay60Reward(function(doc){

@@ -8,7 +8,7 @@ module.exports = {
 	GloablChatChannelName:"globalChatChannel",
 	AllianceChannelPrefix:"allianceChannel_",
 	PushServiceName:"pushService",
-	CallbackService:"callbackService",
+	ServerId:"World-1",
 	None:"__NONE__",
 	PlayerStatus:{
 		Normal:"normal",
