@@ -97,8 +97,8 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 	}
 
 	var self = this
-	var activePlayerId = null
 	var userDoc = null
+	var selectedPlayerId = null
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
@@ -118,17 +118,18 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 		var selectedPlayer = _.find(userDoc.players, function(player){
 			return player.selected
 		})
-		return self.playerDao.findAsync(selectedPlayer.id)
+		selectedPlayerId = selectedPlayer.id
+		return self.playerDao.findAsync(selectedPlayerId)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
-			return self.playerDao.getModel().findAsync(activePlayerId)
+			return self.playerDao.getModel().findByIdAsync(selectedPlayerId)
 		}else{
 			playerDoc = doc
 			return Promise.resolve()
 		}
 	}).then(function(doc){
 		if(_.isObject(doc)){
-			playerDoc = doc
+			playerDoc = JSON.parse(JSON.stringify(doc))
 			playerDoc.isActive = true
 			return self.playerDao.addAsync(doc)
 		}

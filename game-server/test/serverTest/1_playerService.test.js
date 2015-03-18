@@ -1533,60 +1533,86 @@ describe("PlayerService", function(){
 		//		done()
 		//	})
 		//})
-
-		it("getGcBindStatus", function(done){
-			Api.getGcBindStatus(Config.gcId, function(doc){
-				doc.code.should.equal(200)
-				doc.isBind.should.equal(false)
-				done()
-			})
-		})
-
-		it("bindGcId 正常绑定", function(done){
-			Api.bindGcId(Config.gcId, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("bindGcId 账号GameCenter账号已经绑定", function(done){
-			Api.bindGcId(Config.gcId, function(doc){
-				doc.code.should.equal(Errors.userAlreadyBindGCAId.code)
-				done()
-			})
-		})
-
-		it("bindGcId 此GameCenter账号已被其他玩家绑定", function(done){
-			Api.loginPlayer(Config.deviceId2, function(doc){
-				doc.code.should.equal(200)
-				Api.bindGcId(Config.gcId, function(doc){
-					doc.code.should.equal(Errors.theGCIdAlreadyBindedByOtherUser.code)
-					done()
-				})
-			})
-		})
-
-		it("forceBindGcId", function(done){
-			Api.forceBindGcId(Config.gcId, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("switchGcId 切换到新建账号", function(done){
-			Api.switchGcId(Config.gcId3, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		//it("switchGcId 切换到老账号", function(done){
-		//	Api.switchGcId(Config.gcId, function(doc){
+		//
+		//it("getGcBindStatus", function(done){
+		//	Api.getGcBindStatus(Config.gcId, function(doc){
+		//		doc.code.should.equal(200)
+		//		doc.isBind.should.equal(false)
+		//		done()
+		//	})
+		//})
+		//
+		//it("bindGcId 正常绑定", function(done){
+		//	Api.bindGcId(Config.gcId, function(doc){
 		//		doc.code.should.equal(200)
 		//		done()
 		//	})
 		//})
-
+		//
+		//it("bindGcId 账号GameCenter账号已经绑定", function(done){
+		//	Api.bindGcId(Config.gcId, function(doc){
+		//		doc.code.should.equal(Errors.userAlreadyBindGCAId.code)
+		//		done()
+		//	})
+		//})
+		//
+		//it("bindGcId 此GameCenter账号已被其他玩家绑定", function(done){
+		//	Api.loginPlayer(Config.deviceId2, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.bindGcId(Config.gcId, function(doc){
+		//			doc.code.should.equal(Errors.theGCIdAlreadyBindedByOtherUser.code)
+		//			done()
+		//		})
+		//	})
+		//})
+		//
+		//it("forceBindGcId", function(done){
+		//	Api.forceBindGcId(Config.gcId, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("switchGcId 切换到新建账号", function(done){
+		//	Api.switchGcId(Config.gcId3, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("switchGcId 切换到老账号", function(done){
+		//	Api.loginPlayer(Config.deviceId2, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.switchGcId(Config.gcId, function(doc){
+		//			doc.code.should.equal(200)
+		//			done()
+		//		})
+		//	})
+		//})
+		//
+		//it("forceSwitchGcId 此GameCenter账号未被其他玩家绑定", function(done){
+		//	Api.loginPlayer(Config.deviceId3, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.forceSwitchGcId(Config.gcId4, function(doc){
+		//			doc.code.should.equal(Errors.theGCIdIsNotBindedByOtherUser.code)
+		//			done()
+		//		})
+		//	})
+		//})
+		//
+		//it("forceSwitchGcId 正常切换", function(done){
+		//	Api.loginPlayer(Config.deviceId3, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.forceSwitchGcId(Config.gcId, function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.loginPlayer(Config.deviceId, function(doc){
+		//				doc.code.should.equal(200)
+		//				done()
+		//			})
+		//		})
+		//	})
+		//})
+		//
 		//it("getDay60Reward 正常领取", function(done){
 		//	Api.getDay60Reward(function(doc){
 		//		doc.code.should.equal(200)

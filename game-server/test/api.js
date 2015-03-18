@@ -543,6 +543,14 @@ Api.switchGcId = function(gcId, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.forceSwitchGcId = function(gcId, callback){
+	var info = {
+		gcId:gcId
+	}
+	var route = "logic.playerHandler.forceSwitchGcId"
+	pomelo.request(route, info, callback)
+}
+
 Api.getDay60Reward = function(callback){
 	var route = "logic.playerHandler.getDay60Reward"
 	pomelo.request(route, null, callback)

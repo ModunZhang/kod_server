@@ -936,6 +936,21 @@ pro.switchGcId = function(msg, session, next){
 }
 
 /**
+ * 强制切换GameCenter账号到原GameCenter账号下的玩家数据,当前未绑定的玩家账号数据会丢失
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.forceSwitchGcId = function(msg, session, next){
+	var gcId = msg.gcId
+	this.playerApiService4.forceSwitchGcIdAsync(session.uid, session.get("deviceId"), gcId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
  * 获取每日登陆奖励
  * @param msg
  * @param session

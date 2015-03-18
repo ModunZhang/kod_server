@@ -1824,34 +1824,33 @@ Utils.illegalAllianceStatus = function(allianceId, allianceStatus){
  * 账号GameCenter账号已经绑定
  * @param playerId
  * @param userId
- * @param gcIdBinded
- * @param gcIdToBind
+ * @param gcId
  */
-Utils.userAlreadyBindGCAId = function(playerId, userId, gcIdBinded, gcIdToBind){
+Utils.userAlreadyBindGCAId = function(playerId, userId, gcId){
 	var config = Errors.userAlreadyBindGCAId
-	return CreateError(config, {playerId:playerId, userId:userId, gcIdBinded:gcIdBinded, gcIdToBind:gcIdToBind})
+	return CreateError(config, {playerId:playerId, userId:userId, gcId:gcId})
 }
 
 /**
  * 此GameCenter账号已被其他玩家绑定
  * @param playerId
  * @param userId
- * @param gcIdToBind
+ * @param gcId
  */
-Utils.theGCIdAlreadyBindedByOtherUser = function(playerId, userId, gcIdToBind){
+Utils.theGCIdAlreadyBindedByOtherUser = function(playerId, userId, gcId){
 	var config = Errors.theGCIdAlreadyBindedByOtherUser
-	return CreateError(config, {playerId:playerId, userId:userId, gcIdToBind:gcIdToBind})
+	return CreateError(config, {playerId:playerId, userId:userId, gcId:gcId})
 }
 
 /**
  * 此GameCenter账号未被其他玩家绑定
  * @param playerId
  * @param userId
- * @param gcIdToBind
+ * @param gcId
  */
-Utils.theGCIdIsNotBindedByOtherUser = function(playerId, userId, gcIdToBind){
+Utils.theGCIdIsNotBindedByOtherUser = function(playerId, userId, gcId){
 	var config = Errors.theGCIdIsNotBindedByOtherUser
-	return CreateError(config, {playerId:playerId, userId:userId, gcIdToBind:gcIdToBind})
+	return CreateError(config, {playerId:playerId, userId:userId, gcId:gcId})
 }
 
 /**
