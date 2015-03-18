@@ -62,24 +62,10 @@ pro.createAccount = function(deviceId, callback){
 	}
 
 	var self = this
-	var name = ShortId.generate()
-	var playerId = ShortId.generate()
-	var userId = ShortId.generate()
-	var player = {
-		_id:playerId,
-		serverId:"World-1",
-		userId:userId,
-		selected:true,
-		basicInfo:{name:"player_" + name, cityName:"city_" + name}
-	}
-	var user = {
-		_id:userId,
-		players:[{id:playerId, selected:true}]
-	}
-	var device = {
-		_id:deviceId,
-		userId:user._id
-	}
+	var resp = LogicUtils.createUserAndFirstPlayer("World-1")
+	var player = resp.player
+	var user = resp.user
+	var device = LogicUtils.createDevice(deviceId, user._id)
 
 	var playerDoc = null
 	var updateFuncs = []
@@ -112,6 +98,7 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 
 	var self = this
 	var activePlayerId = null
+	var userDoc = null
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
@@ -124,14 +111,14 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 	var expAdd = null
 	this.Device.findByIdAsync(deviceId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.deviceNotExist(deviceId))
-		return self.User.findByIdAsync()
-	})
-
-
-	this.playerDao.getModel().findOneAsync({deviceId:deviceId, selected:true}, {_id:true}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExistInMongo(deviceId))
-		activePlayerId = doc._id
-		return self.playerDao.findAsync(activePlayerId)
+		return self.User.findByIdAsync(doc.userId)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.userNotExist(deviceId.userId))
+		userDoc = doc
+		var selectedPlayer = _.find(userDoc.players, function(player){
+			return player.selected
+		})
+		return self.playerDao.findAsync(selectedPlayer.id)
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			return self.playerDao.getModel().findAsync(activePlayerId)
@@ -201,6 +188,7 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 		playerDoc.countInfo.lastLoginTime = Date.now()
 		playerDoc.countInfo.loginCount += 1
 		playerDoc.logicServerId = logicServerId
+		playerDoc.gcId = userDoc.gcId
 		DataUtils.refreshPlayerResources(playerDoc)
 		DataUtils.refreshPlayerPower(playerDoc, [])
 		TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, [])

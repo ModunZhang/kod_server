@@ -2260,3 +2260,39 @@ Utils.addPlayerResources = function(playerDoc, resources){
 		if(_.isNumber(resources[key])) playerDoc.resources[key] += resources[key]
 	})
 }
+
+/**
+ * 创建用户账号和第一个玩家账号
+ * @param serverId
+ * @returns {*}
+ */
+Utils.createUserAndFirstPlayer = function(serverId){
+	var name = ShortId.generate()
+	var playerId = ShortId.generate()
+	var userId = ShortId.generate()
+	var player = {
+		_id:playerId,
+		serverId:serverId,
+		userId:userId,
+		selected:true,
+		basicInfo:{name:"player_" + name, cityName:"city_" + name}
+	}
+	var user = {
+		_id:userId,
+		players:[{id:playerId, selected:true}]
+	}
+	return {user:user, player:player}
+}
+
+/**
+ * 创建一个设备
+ * @param userId
+ * @returns {{_id: *, userId: *}}
+ */
+Utils.createDevice = function(deviceId, userId){
+	var device = {
+		_id:deviceId,
+		userId:userId
+	}
+	return device
+}

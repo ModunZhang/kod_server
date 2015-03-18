@@ -1,6 +1,6 @@
 /**
-* Created by modun on 14-7-25.
-*/
+ * Created by modun on 14-7-25.
+ */
 
 var Promise = require("bluebird")
 var pomelo = require("../pomelo-client")
@@ -1534,6 +1534,14 @@ describe("PlayerService", function(){
 		//	})
 		//})
 
+		it("getGcBindStatus", function(done){
+			Api.getGcBindStatus(Config.gcId, function(doc){
+				doc.code.should.equal(200)
+				doc.isBind.should.equal(false)
+				done()
+			})
+		})
+
 		it("bindGcId 正常绑定", function(done){
 			Api.bindGcId(Config.gcId, function(doc){
 				doc.code.should.equal(200)
@@ -1543,18 +1551,25 @@ describe("PlayerService", function(){
 
 		it("bindGcId 账号GameCenter账号已经绑定", function(done){
 			Api.bindGcId(Config.gcId, function(doc){
-				doc.code.should.equal(Errors.playerAlreadyBindGCAccountId.code)
+				doc.code.should.equal(Errors.userAlreadyBindGCAId.code)
 				done()
 			})
 		})
 
-		it("bindGcId 此GameCenter账号已有玩家数据", function(done){
+		it("bindGcId 此GameCenter账号已被其他玩家绑定", function(done){
 			Api.loginPlayer(Config.deviceId2, function(doc){
 				doc.code.should.equal(200)
 				Api.bindGcId(Config.gcId, function(doc){
-					doc.code.should.equal(Errors.theGCAccountAlreadyHasDatas.code)
+					doc.code.should.equal(Errors.theGCIdAlreadyBindedByOtherUser.code)
 					done()
 				})
+			})
+		})
+
+		it("forceBindGcId", function(done){
+			Api.forceBindGcId(Config.gcId, function(doc){
+				doc.code.should.equal(200)
+				done()
 			})
 		})
 

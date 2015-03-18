@@ -1827,29 +1827,39 @@ Utils.illegalAllianceStatus = function(allianceId, allianceStatus){
  * @param gcIdBinded
  * @param gcIdToBind
  */
-Utils.playerAlreadyBindGCAId = function(playerId, userId, gcIdBinded, gcIdToBind){
-	var config = Errors.playerAlreadyBindGCAId
+Utils.userAlreadyBindGCAId = function(playerId, userId, gcIdBinded, gcIdToBind){
+	var config = Errors.userAlreadyBindGCAId
 	return CreateError(config, {playerId:playerId, userId:userId, gcIdBinded:gcIdBinded, gcIdToBind:gcIdToBind})
 }
 
 /**
- * 此GameCenter账号已有玩家数据
+ * 此GameCenter账号已被其他玩家绑定
  * @param playerId
  * @param userId
  * @param gcIdToBind
  */
-Utils.theGCIdAlreadyHasDatas = function(playerId, userId, gcIdToBind){
-	var config = Errors.theGCIdAlreadyHasDatas
+Utils.theGCIdAlreadyBindedByOtherUser = function(playerId, userId, gcIdToBind){
+	var config = Errors.theGCIdAlreadyBindedByOtherUser
 	return CreateError(config, {playerId:playerId, userId:userId, gcIdToBind:gcIdToBind})
 }
 
 /**
- * 此GameCenter账号下无玩家数据
+ * 此GameCenter账号未被其他玩家绑定
  * @param playerId
  * @param userId
  * @param gcIdToBind
  */
-Utils.theGCAccountDoNotHasData = function(playerId, userId, gcIdToBind){
-	var config = Errors.theGCAccountDoNotHasData
+Utils.theGCAccountIsNotBindedByOtherUser = function(playerId, userId, gcIdToBind){
+	var config = Errors.theGCAccountIsNotBindedByOtherUser
 	return CreateError(config, {playerId:playerId, userId:userId, gcIdToBind:gcIdToBind})
+}
+
+/**
+ * 当前玩家还未绑定GameCenter账号
+ * @param playerId
+ * @param userId
+ */
+Utils.theUserDoNotBindGCId = function(playerId, userId){
+	var config = Errors.theUserDoNotBindGCId
+	return CreateError(config, {playerId:playerId, userId:userId})
 }

@@ -876,6 +876,21 @@ pro.gacha = function(msg, session, next){
 }
 
 /**
+ * 获取GameCenter账号绑定状态
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getGcBindStatus = function(msg, session, next){
+	var gcId = msg.gcId
+	this.playerApiService4.getGcBindStatusAsync(session.uid, gcId).then(function(isBind){
+		next(null, {code:200, isBind:isBind})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
  * 设置GameCenter Id
  * @param msg
  * @param session
@@ -884,6 +899,21 @@ pro.gacha = function(msg, session, next){
 pro.bindGcId = function(msg, session, next){
 	var gcId = msg.gcId
 	this.playerApiService4.bindGcIdAsync(session.uid, gcId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 强制绑定GameCenter账号到当前玩家数据,取消原GameCenter账号下的玩家数据绑定
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.forceBindGcId = function(msg, session, next){
+	var gcId = msg.gcId
+	this.playerApiService4.forceBindGcIdAsync(session.uid, gcId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

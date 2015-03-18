@@ -863,13 +863,23 @@ errors["illegalAllianceStatus"] = {
 	code:672,
 	message:"非法的联盟状态"
 }
-errors["playerAlreadyBindGCAccountId"] = {
-	key:"playerAlreadyBindGCAccountId",
+errors["userAlreadyBindGCAId"] = {
+	key:"userAlreadyBindGCAId",
 	code:673,
 	message:"账号GameCenter账号已经绑定"
 }
-errors["theGCAccountAlreadyHasDatas"] = {
-	key:"theGCAccountAlreadyHasDatas",
+errors["theGCIdAlreadyBindedByOtherUser"] = {
+	key:"theGCIdAlreadyBindedByOtherUser",
 	code:674,
-	message:"此GameCenter账号已有玩家数据"
+	message:"此GameCenter账号已被其他玩家绑定"
+}
+errors["theGCAccountIsNotBindedByOtherUser"] = {
+	key:"theGCAccountIsNotBindedByOtherUser",
+	code:675,
+	message:"此GameCenter账号未被其他玩家绑定"
+}
+errors["theUserDoNotBindGCId"] = {
+	key:"theUserDoNotBindGCId",
+	code:676,
+	message:"当前玩家还未绑定GameCenter账号"
 }

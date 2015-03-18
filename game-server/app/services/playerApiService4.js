@@ -852,6 +852,25 @@ pro.gacha = function(playerId, type, callback){
 }
 
 /**
+ * 获取GameCenter账号绑定状态
+ * @param playerId
+ * @param gcId
+ * @param callback
+ */
+pro.getGcBindStatus = function(playerId, gcId, callback){
+	if(!_.isString(gcId)){
+		callback(new Error("gcId 不合法"))
+		return
+	}
+
+	this.User.findOneAsync({gcId:gcId}).then(function(doc){
+		callback(null, !!doc)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * 绑定GameCenter账号到当前玩家数据
  * @param playerId
  * @param gcId
@@ -869,13 +888,14 @@ pro.bindGcId = function(playerId, gcId, callback){
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.userId, playerDoc.gcId, gcId))
+		return self.User.findByIdAsync(playerDoc.userId)
+	}).then(function(doc){
+		if(!_.isEmpty(doc.gcId)) return Promise.reject(ErrorUtils.userAlreadyBindGCAId(playerId, playerDoc.userId, playerDoc.gcId, gcId))
 		return self.User.findAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
 	}).then(function(docs){
-		if(docs.length > 0) return Promise.reject(ErrorUtils.theGCIdAlreadyHasDatas(playerId, playerDoc.userId, gcId))
-		playerDoc.gcId = gcId
+		if(docs.length > 0) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByOtherUser(playerId, playerDoc.userId, gcId))
 		playerData.push(["gcId", gcId])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc, true])
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		updateFuncs.push([self.User, self.User.findByIdAndUpdateAsync, playerDoc.userId, {gcId:gcId}])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -897,7 +917,7 @@ pro.bindGcId = function(playerId, gcId, callback){
 }
 
 /**
- * 强制绑定GameCenter账号到当前玩家数据,放弃原GameCenter账号下的玩家数据
+ * 强制绑定GameCenter账号到当前玩家数据,取消原GameCenter账号下的玩家数据绑定
  * @param playerId
  * @param gcId
  * @param callback
@@ -911,23 +931,20 @@ pro.forceBindGcId = function(playerId, gcId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	var otherUserDoc = null
-	var otherPlayerDocs = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAccount(playerId, playerDoc.userId, playerDoc.gcId, gcId))
-		return self.User.findOneAsync({gcId:gcId, _id:{$ne:playerDoc.userId}})
+		return self.User.findByIdAsync(doc.userId)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.theGCAccountDoNotHasData(playerId, playerDoc.userId, gcId))
-		otherUserDoc = doc
-		self.playerDao.getModel().findAsync({gcId:gcId}, {_id:true})
-	}).then(function(doc){
+		if(!_.isEmpty(doc.gcId)) return Promise.reject(ErrorUtils.userAlreadyBindGCAId(playerId, playerDoc.userId, playerDoc.gcId, gcId))
+		return self.User.findAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
+	}).then(function(docs){
+		if(docs.length == 0) return Promise.reject(ErrorUtils.theGCAccountIsNotBindedByOtherUser(playerId, playerDoc.userId, gcId))
 
-		playerDoc.gcId = gcId
 		playerData.push(["gcId", gcId])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		updateFuncs.push([self.User, self.User.findByIdAndUpdateAsync, playerDoc.userId, {gcId:gcId}])
+		updateFuncs.push([self.User, self.User.findByIdAndUpdateAsync, docs[0]._id, {gcId:""}])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -965,7 +982,9 @@ pro.switchGcId = function(playerId, gcId, callback){
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAccountId(playerId, playerDoc.userId, playerDoc.gcId, gcId))
+		return self.User.findByIdAsync(playerDoc.userId)
+	}).then(function(doc){
+		if(_.isEmpty(doc.gcId)) return ErrorUtils.theUserDoNotBindGCId(playerId, playerDoc.userId)
 		return self.User.findAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
 	}).then(function(docs){
 		if(docs.length > 0) return Promise.reject(ErrorUtils.theGCAccountAlreadyHasDatas(playerId, playerDoc.userId, gcId))
