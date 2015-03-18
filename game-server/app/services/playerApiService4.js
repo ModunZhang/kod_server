@@ -310,7 +310,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 
 		if(finishNow){
 			playerDoc.soldierStars[soldierName] += 1
-			playerData.push(["soldierStarts." + soldierName, playerDoc.soldierStars[soldierName]])
+			playerData.push(["soldierStars." + soldierName, playerDoc.soldierStars[soldierName]])
 			TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, soldierName, playerDoc.soldierStars[soldierName])
 		}else{
 			if(_.isObject(preTechEvent) && preTechEvent.finishTime > Date.now()){
