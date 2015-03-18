@@ -875,7 +875,7 @@ pro.bindGcId = function(playerId, gcId, callback){
 		if(docs.length > 0) return Promise.reject(ErrorUtils.theGCIdAlreadyHasDatas(playerId, playerDoc.userId, gcId))
 		playerDoc.gcId = gcId
 		playerData.push(["gcId", gcId])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc, true])
 		updateFuncs.push([self.User, self.User.findByIdAndUpdateAsync, playerDoc.userId, {gcId:gcId}])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -911,14 +911,18 @@ pro.forceBindGcId = function(playerId, gcId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var otherUserDoc = null
+	var otherPlayerDocs = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAccount(playerId, playerDoc.userId, playerDoc.gcId, gcId))
-		return self.User.findOneAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
-	}).then(function(docs){
-		if(docs.length == 0) return Promise.reject(ErrorUtils.theGCAccountDoNotHasData(playerId, playerDoc.userId, gcId))
-
+		return self.User.findOneAsync({gcId:gcId, _id:{$ne:playerDoc.userId}})
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.theGCAccountDoNotHasData(playerId, playerDoc.userId, gcId))
+		otherUserDoc = doc
+		self.playerDao.getModel().findAsync({gcId:gcId}, {_id:true})
+	}).then(function(doc){
 
 		playerDoc.gcId = gcId
 		playerData.push(["gcId", gcId])

@@ -68,7 +68,6 @@ pro.createAccount = function(deviceId, callback){
 	var player = {
 		_id:playerId,
 		serverId:"World-1",
-		deviceId:deviceId,
 		userId:userId,
 		selected:true,
 		basicInfo:{name:"player_" + name, cityName:"city_" + name}
@@ -123,6 +122,12 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 	var pushFuncs = []
 	var memberDocInAlliance = null
 	var expAdd = null
+	this.Device.findByIdAsync(deviceId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.deviceNotExist(deviceId))
+		return self.User.findByIdAsync()
+	})
+
+
 	this.playerDao.getModel().findOneAsync({deviceId:deviceId, selected:true}, {_id:true}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExistInMongo(deviceId))
 		activePlayerId = doc._id
