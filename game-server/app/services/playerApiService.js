@@ -214,6 +214,8 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 	}).then(function(doc){
 		if(_.isObject(playerDoc.alliance)){
 			allianceDoc = doc
+			console.log(playerDoc.alliance)
+			console.log(allianceDoc)
 			if(_.isObject(allianceDoc.allianceFight)){
 				if(_.isEqual(allianceDoc.allianceFight.attackAllianceId, allianceDoc._id)){
 					enemyAllianceId = allianceDoc.allianceFight.defenceAllianceId

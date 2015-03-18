@@ -240,7 +240,7 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 		playerData.push(["soldierStarEvents." + playerDoc.soldierStarEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.soldierStarEvents, event)
 		playerDoc.soldierStars[event.name]+= 1
-		playerData.push(["soldierStarts." + event.name, playerDoc.soldierStars[event.name]])
+		playerData.push(["soldierStars." + event.name, playerDoc.soldierStars[event.name]])
 		TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, event.name, playerDoc.soldierStars[event.name])
 		if(_.isObject(allianceDoc)){
 			helpEvent = getAllianceHelpEvent(event.id)

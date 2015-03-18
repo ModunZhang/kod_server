@@ -109,7 +109,7 @@ pro.loadAlliances = function(callback){
 		})
 	}
 
-	this.allianceDao.getModel().findAsync({isActive:true}, {_id:true}).then(function(theIds){
+	this.allianceDao.getModel().findAsync(null, {_id:true}).then(function(theIds){
 		ids = theIds
 		return addAllToRedis(ids)
 	}).then(function(){
