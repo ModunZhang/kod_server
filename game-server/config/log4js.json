@@ -109,6 +109,7 @@
 			"recipients":"zhangxuemin@batcatstudio.com, hejia@batcatstudio.com, daiguoqiang@batcatstudio.com, gaozhou@batcatstudio.com, shicihang@batcatstudio.com",
 			"sendInterval":5,
 			"transport":"SMTP",
+            "sender":"Modun Zhang <zhangxuemin@batcatstudio.com>",
 			"SMTP":{
 				"host":"smtp.exmail.qq.com",
 				"secureConnection":true,
