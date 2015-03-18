@@ -690,7 +690,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			}
 			playerDoc.pve.floors.push(theFloor)
 		}
-		playerData.push(["pve.floors", playerDoc.pve.floors.indexOf(theFloor), theFloor])
+		playerData.push(["pve.floors." + playerDoc.pve.floors.indexOf(theFloor), theFloor])
 
 		if(_.isObject(fightData)){
 			var dragon = fightData.dragon
