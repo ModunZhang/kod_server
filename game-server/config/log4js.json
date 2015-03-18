@@ -110,11 +110,11 @@
 			"sendInterval":5,
 			"transport":"SMTP",
 			"SMTP":{
-				"host":"smtp.exmail.qq.com",
+				"host":"smtp.qq.com",
 				"secureConnection":true,
 				"port":465,
 				"auth":{
-					"user":"zhangxuemin@batcatstudio.com",
+					"user":"modun1986@qq.com",
 					"pass":"Zxm75504109"
 				}
 			},
