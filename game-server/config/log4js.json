@@ -110,12 +110,12 @@
 			"sendInterval":5,
 			"transport":"SMTP",
 			"SMTP":{
-				"host":"smtp.gmail.com",
+				"host":"smtp.exmail.qq.com",
 				"secureConnection":true,
 				"port":465,
 				"auth":{
-					"user":"modunzhang@gmail.com",
-					"pass":"aisinile"
+					"user":"zhangxuemin@batcatstudio.com",
+					"pass":"Zxm75504109"
 				}
 			},
 			"category":"kod-mail-error"
