@@ -8,6 +8,7 @@ var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
 var crypto = require("crypto")
+var logicLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-logic", __filename)
 
 var CommonUtils = require("../utils/utils")
 var NodeUtils = require("util")
@@ -61,6 +62,7 @@ var CreateResponse = function(updateFuncs, eventFuncs, pushFuncs){
  * @param callback
  */
 pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
+	logicLogger.info("AllianceTimeEventService:onTimeEvent allianceId:%s, eventType:%s, eventId:%s", allianceId, eventType, eventId)
 	var self = this
 	var allianceDoc = null
 	var event = null

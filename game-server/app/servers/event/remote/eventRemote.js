@@ -31,6 +31,7 @@ var pro = EventRemote.prototype
  * @param callback
  */
 pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
+	logicLogger.info("eventRemote:addTimeEvent key:%s, eventType:%s, eventId:%s, timeInterval:%s", key, eventType, eventId, timeInterval)
 	if(timeInterval <= 0){
 		this.excuteTimeEvent(key, eventType, eventId, callback)
 	}else{
@@ -56,6 +57,7 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  * @param callback
  */
 pro.removeTimeEvent = function(key, eventId, callback){
+	logicLogger.info("eventRemote:removeTimeEvent key:%s, eventId:%s", key, eventId)
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	if(_.isObject(callbackObj)){
@@ -76,6 +78,7 @@ pro.removeTimeEvent = function(key, eventId, callback){
  * @param callback
  */
 pro.updateTimeEvent = function(key, eventId, timeInterval, callback){
+	logicLogger.info("eventRemote:updateTimeEvent key:%s, eventId:%s, timeInterval:%s", key, eventId, timeInterval)
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	if(_.isObject(callbackObj)){
@@ -103,6 +106,7 @@ pro.updateTimeEvent = function(key, eventId, timeInterval, callback){
  * @param callback
  */
 pro.clearTimeEventsByKey = function(key, callback){
+	logicLogger.info("eventRemote:clearTimeEventsByKey key:%s", key)
 	var callbacks = this.callbacks[key]
 	_.each(callbacks, function(callbackObj){
 		clearTimeout(callbackObj.id)
@@ -117,6 +121,7 @@ pro.clearTimeEventsByKey = function(key, callback){
  * @param eventId
  */
 pro.triggerTimeEvent = function(key, eventId){
+	logicLogger.info("eventRemote:triggerTimeEvent key:%s, eventId:%s", key, eventId)
 	var self = this
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
@@ -140,7 +145,7 @@ pro.excuteTimeEvent = function(key, eventType, eventId, callback){
 	var self = this
 	var logicServers = this.app.getServersByType('logic')
 	var logicServerId = Dispatcher.dispatch(logicServers).id
-	logicLogger.info("ExcuteTimeEvent key:%s, eventType:%s, eventId:%s", key, eventType, eventId)
+	logicLogger.info("eventRemote:excuteTimeEvent key:%s, eventType:%s, eventId:%s", key, eventType, eventId)
 	this.app.rpc.logic.logicRemote.onTimeEvent.toServer(logicServerId, key, eventType, eventId, function(e){
 		if(_.isObject(e)){
 			errorLogger.error("handle eventRemote:excuteTimeEvent Error -----------------------------")

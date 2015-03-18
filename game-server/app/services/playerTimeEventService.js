@@ -7,6 +7,7 @@ var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
 var crypto = require("crypto")
+var logicLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-logic", __filename)
 
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
@@ -38,6 +39,7 @@ var pro = PlayerTimeEventService.prototype
  * @param callback
  */
 pro.onTimeEvent = function(playerId, eventType, eventId, callback){
+	logicLogger.info("PlayerTimeEventService:onTimeEvent playerId:%s, eventType:%s, eventId:%s", playerId, eventType, eventId)
 	var self = this
 	var pushFuncs = []
 	var updateFuncs = []
