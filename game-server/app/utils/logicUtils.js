@@ -589,6 +589,8 @@ Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
 	var theMember = null
 	_.some(allianceDoc.members, function(member){
 		if(_.isEqual(member.id, playerDoc._id)){
+			member.apnId = playerDoc.apnId
+			member.language = playerDoc.basicInfo.language
 			member.name = playerDoc.basicInfo.name
 			member.icon = playerDoc.basicInfo.icon
 			member.level = playerDoc.basicInfo.level
@@ -973,10 +975,10 @@ Utils.sendSystemMail = function(playerDoc, playerData, titleKey, titleArgs, cont
 	var title = titleKey[language]
 	var content = contentKey[language]
 	if(!_.isString(title)){
-		return Promise.reject(new Error("title 本地化不存在"))
+		title = titleKey.en
 	}
 	if(!_.isString(content)){
-		return Promise.reject(new Error("content 本地化不存在"))
+		content = contentKey.en
 	}
 	if(titleArgs.length > 0){
 		title = sprintf.vsprintf(title, titleArgs)
@@ -1119,6 +1121,8 @@ Utils.AddAllianceEvent = function(allianceDoc, category, type, key, params){
 Utils.addAllianceMember = function(allianceDoc, playerDoc, title, rect){
 	var member = {
 		id:playerDoc._id,
+		apnId:playerDoc.apnId,
+		language:playerDoc.basicInfo.language,
 		name:playerDoc.basicInfo.name,
 		icon:playerDoc.basicInfo.icon,
 		level:playerDoc.basicInfo.level,

@@ -72,6 +72,7 @@ var AllianceSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		apnId:{type:String},
+		language:{type:String, required:true},
 		name:{type:String, required:true},
 		icon:{type:String, required:true},
 		level:{type:Number, required:true},

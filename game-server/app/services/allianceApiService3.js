@@ -17,6 +17,7 @@ var MarchUtils = require("../utils/marchUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
+var Localizations = require("../consts/localizations")
 
 
 var AllianceApiService3 = function(app){
@@ -27,6 +28,7 @@ var AllianceApiService3 = function(app){
 	this.globalChannelService = app.get("globalChannelService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
+	this.apnService = app.get("apnService")
 }
 module.exports = AllianceApiService3
 var pro = AllianceApiService3.prototype
@@ -672,6 +674,8 @@ pro.findAllianceToFight = function(playerId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
+		self.apnService.pushApnMessageToAllianceMembers(attackAllianceDoc, Localizations.Alliance.AttackAllianceMessage, [])
+		self.apnService.pushApnMessageToAllianceMembers(defenceAllianceDoc, Localizations.Alliance.AllianceBeAttackedMessage, [attackAllianceDoc.basicInfo.name])
 		callback()
 	}).catch(function(e){
 		var funcs = []

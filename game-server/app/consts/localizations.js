@@ -51,6 +51,14 @@ module.exports = {
 		HelpDefenceAttackContent:{
 			cn:"%s<%s>帮您抵御了一次进攻",
 			en:"%s<%s> help you defence a attack successfully"
+		},
+		AttackAllianceMessage:{
+			cn:"我方联盟刚刚发起了一次联盟战",
+			en:"Our alliance just start an alliance fight"
+		},
+		AllianceBeAttackedMessage:{
+			cn:"%s 联盟对我方联盟发起了一次联盟战",
+			en:"the %s just start an alliance fight to our alliance"
 		}
 	}
 }

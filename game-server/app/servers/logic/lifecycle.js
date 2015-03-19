@@ -8,6 +8,7 @@ var Promise = require("bluebird")
 var _ = require("underscore")
 
 var PushService = require("../../services/pushService")
+var ApnService = require("../../services/apnService")
 var PlayerTimeEventService = require("../../services/playerTimeEventService")
 var PlayerApiService = require("../../services/playerApiService")
 var PlayerApiService2 = require("../../services/playerApiService2")
@@ -42,6 +43,7 @@ life.beforeStartup = function(app, callback){
 	app.set("channelService", Promise.promisifyAll(app.get("channelService")))
 	app.set("globalChannelService", Promise.promisifyAll(app.get("globalChannelService")))
 
+	app.set("apnService", new ApnService(app))
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))
 	app.set("timeEventService", Promise.promisifyAll(new TimeEventService(app)))
 	app.set("playerTimeEventService", Promise.promisifyAll(new PlayerTimeEventService(app)))
