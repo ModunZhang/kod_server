@@ -888,3 +888,8 @@ errors["theGCIdAlreadyBindedByCurrentUser"] = {
 	code:677,
 	message:"此GameCenter账号已绑定当前玩家"
 }
+errors["ApnIdAlreadySeted"] = {
+	key:"ApnIdAlreadySeted",
+	code:678,
+	message:"ApnId已经设置"
+}

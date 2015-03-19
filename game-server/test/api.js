@@ -431,6 +431,14 @@ Api.removeMySellItem = function(itemId, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.setApnId = function(apnId, callback){
+	var info = {
+		apnId:apnId
+	}
+	var route = "logic.playerHandler.setApnId"
+	pomelo.request(route, info, callback)
+}
+
 Api.upgradeProductionTech = function(techName, finishNow, callback){
 	var info = {
 		techName:techName,

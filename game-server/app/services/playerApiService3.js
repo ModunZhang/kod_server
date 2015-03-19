@@ -990,3 +990,60 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 		}
 	})
 }
+
+/**
+ * 设置玩家Apple Push Notification Id
+ * @param playerId
+ * @param apnId
+ * @param callback
+ */
+pro.setApnId = function(playerId, apnId, callback){
+	if(!_.isString(apnId)){
+		callback(new Error("apnId 不合法"))
+		return
+	}
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var allianceDoc = null
+	var updateFuncs = []
+	this.playerDao.findAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(_.isEqual(apnId, playerDoc.apnId)) return Promise.reject(ErrorUtils.ApnIdAlreadySeted(playerId, apnId))
+		playerDoc.apnId = apnId
+		playerData.push(["apnId", playerDoc.apnId])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		if(_.isObject(playerDoc.alliance)){
+			return self.allianceDao.findAsync(playerDoc.alliance.id)
+		}
+		return Promise.resolve()
+	}).then(function(doc){
+		if(_.isObject(playerDoc.alliance)){
+			allianceDoc = doc
+			var member = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
+			member.apnId = playerDoc.apnId
+			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		}
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.allianceDao.removeLockAsync(allianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+

@@ -733,6 +733,21 @@ pro.removeMySellItem = function(msg, session, next){
 }
 
 /**
+ * 设置玩家Apple Push Notification Id
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.setApnId = function(msg, session, next){
+	var apnId = msg.apnId
+	this.playerApiService3.setApnIdAsync(session.uid, apnId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
  * 升级生产科技
  * @param msg
  * @param session

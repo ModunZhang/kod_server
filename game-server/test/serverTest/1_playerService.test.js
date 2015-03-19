@@ -1132,6 +1132,27 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
+		//it("setApnId 正常设置", function(done){
+		//	Api.setApnId("test", function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("setApnId 重复设置", function(done){
+		//	Api.setApnId("test", function(doc){
+		//		doc.code.should.equal(Errors.ApnIdAlreadySeted.code)
+		//		done()
+		//	})
+		//})
+		//
+		//it("setApnId 更换ApnId", function(done){
+		//	Api.setApnId("test2", function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
 		//it("upgradeProductionTech 前置科技条件不满足", function(done){
 		//	Api.sendChat("buildinglevel 7 1", function(doc){
 		//		doc.code.should.equal(200)

@@ -352,7 +352,7 @@ pro.distroyAllianceDecorate = function(playerId, decorateId, callback){
 		var decorateObject = LogicUtils.getAllianceMapObjectById(allianceDoc, decorateId)
 		if(!DataUtils.isAllianceMapObjectTypeADecorateObject(decorateObject.type)) return Promise.reject(ErrorUtils.onlyAllianceDecorateBuildingCanBeDistroy(playerId, allianceDoc._id, decorateId))
 		var distroyRequired = DataUtils.getAllianceDistroyDecorateRequired(decorateObject.type)
-		if(allianceDoc.basicInfo.honour < distroyRequired.honour) Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
+		if(allianceDoc.basicInfo.honour < distroyRequired.honour) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(decorateObject), null])
 		LogicUtils.removeItemInArray(allianceDoc.mapObjects, decorateObject)
 		allianceDoc.basicInfo.honour -= distroyRequired.honour

@@ -1873,3 +1873,13 @@ Utils.theGCIdAlreadyBindedByCurrentUser = function(playerId, userId, gcId){
 	var config = Errors.theGCIdAlreadyBindedByCurrentUser
 	return CreateError(config, {playerId:playerId, userId:userId, gcId:gcId})
 }
+
+/**
+ * ApnId已经设置
+ * @param playerId
+ * @param apnId
+ */
+Utils.ApnIdAlreadySeted = function(playerId, apnId){
+	var config = Errors.ApnIdAlreadySeted
+	return CreateError(config, {playerId:playerId, apnId:apnId})
+}

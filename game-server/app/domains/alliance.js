@@ -71,6 +71,7 @@ var AllianceSchema = new Schema({
 	members:[{
 		_id:false,
 		id:{type:String, required:true},
+		apnId:{type:String},
 		name:{type:String, required:true},
 		icon:{type:String, required:true},
 		level:{type:Number, required:true},
