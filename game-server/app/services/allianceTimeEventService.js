@@ -1582,7 +1582,7 @@ pro.onStrikeMarchReturnEvents = function(allianceDoc, event, callback){
 	var eventFuncs = []
 	var pushFuncs = []
 	var updateFuncs = []
-	allianceData.push(["strikeMarchReturnEvents." + allianceDoc.strikeMarchReturnEvents.indexOf(event), event])
+	allianceData.push(["strikeMarchReturnEvents." + allianceDoc.strikeMarchReturnEvents.indexOf(event), null])
 	LogicUtils.removeItemInArray(allianceDoc.strikeMarchReturnEvents, event)
 
 	var playerDoc = null
