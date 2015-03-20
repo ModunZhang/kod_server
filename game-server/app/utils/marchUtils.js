@@ -242,7 +242,7 @@ var getPlayerSoldiersMarchTime = function(playerDoc, soldiers, fromAllianceDoc, 
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(playerDoc) : 0].marchSpeedAdd
 	var time = Math.ceil(totalSpeed / totalCitizen * distance * 1000)
 	time = LogicUtils.getTimeEfffect(time, itemBuff + vipBuff)
-	return time//5 * 1000
+	return 5 * 1000
 }
 
 /**
@@ -260,7 +260,7 @@ var getPlayerDragonMarchTime = function(playerDoc, dragon, fromAllianceDoc, from
 	var baseSpeed = 2400
 	var marchSpeed = PlayerInitData.intInit.dragonMarchSpeed.value
 	var time = Math.ceil(baseSpeed / marchSpeed * distance * 1000)
-	return time//5 * 1000
+	return 5 * 1000
 }
 
 
