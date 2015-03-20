@@ -2290,6 +2290,7 @@ Utils.createUserAndFirstPlayer = function(serverId){
 
 /**
  * 创建一个设备
+ * @param deviceId
  * @param userId
  * @returns {{_id: *, userId: *}}
  */
@@ -2299,4 +2300,13 @@ Utils.createDevice = function(deviceId, userId){
 		userId:userId
 	}
 	return device
+}
+
+/**
+ * 时间是否靠近当前时间
+ * @param interval
+ * @returns {boolean}
+ */
+Utils.willFinished = function(interval){
+	return interval + 5000 >= Date.now()
 }

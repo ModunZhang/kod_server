@@ -482,22 +482,6 @@ pro.moveAllianceBuilding = function(msg, session, next){
 }
 
 /**
- * 移动玩家城市到新的位置
- * @param msg
- * @param session
- * @param next
- */
-pro.moveAllianceMember = function(msg, session, next){
-	var locationX = msg.locationX
-	var locationY = msg.locationY
-	this.allianceApiService3.moveAllianceMemberAsync(session.uid, locationX, locationY).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * 拆除装饰物
  * @param msg
  * @param session

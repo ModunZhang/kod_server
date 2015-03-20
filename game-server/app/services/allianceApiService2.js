@@ -956,20 +956,23 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 		return self.playerDao.findAsync(helpEvent.playerData.id)
 	}).then(function(doc){
 		memberDoc = doc
-		var playerEvent = LogicUtils.getPlayerEventByTypeAndId(memberDoc, helpEvent.eventData.type, helpEvent.eventData.id)
-		if(!_.isObject(playerEvent) || playerEvent.finishTime <= Date.now()) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, helpEvent.eventData.type, helpEvent.eventData.id))
+		var memberEvent = LogicUtils.getPlayerEventByTypeAndId(memberDoc, helpEvent.eventData.type, helpEvent.eventData.id)
+		if(!_.isObject(memberEvent) || memberEvent.finishTime <= Date.now()) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, helpEvent.eventData.type, helpEvent.eventData.id))
 		helpEvent.eventData.helpedMembers.push(playerDoc._id)
-		var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc, playerEvent.finishTime - playerEvent.startTime)
-		playerEvent.finishTime = playerEvent.finishTime - effect
-		eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, playerEvent.id, playerEvent.finishTime])
-		if(helpEvent.eventData.helpedMembers.length >= helpEvent.eventData.maxHelpCount || playerEvent.finishTime <= Date.now()){
+		var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc, memberEvent.finishTime - memberEvent.startTime)
+		memberEvent.finishTime = memberEvent.finishTime - effect
+		if(helpEvent.eventData.helpedMembers.length >= helpEvent.eventData.maxHelpCount || LogicUtils.willFinished(memberEvent.finishTime)){
 			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
 			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 		}else{
 			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent) + ".eventData", helpEvent.eventData])
 		}
-		if(playerEvent.finishTime > Date.now()){
-			memberData.push([helpEvent.eventData.type + "." + memberDoc[helpEvent.eventData.type].indexOf(playerEvent) + ".finishTime", playerEvent.finishTime])
+		if(LogicUtils.willFinished(memberEvent.finishTime)){
+			eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, memberDoc, memberEvent.id])
+			self.playerTimeEventService.onPlayerEvent(memberDoc, memberData, allianceDoc, allianceData, helpEvent.eventData.type, helpEvent.eventData.id)
+		}else{
+			eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, memberEvent.id, memberEvent.finishTime])
+			memberData.push([helpEvent.eventData.type + "." + memberDoc[helpEvent.eventData.type].indexOf(memberEvent) + ".finishTime", memberEvent.finishTime])
 		}
 
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
@@ -1051,14 +1054,18 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 					helpEvent.helpedMembers.push(playerDoc._id)
 					var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc, memberEvent.finishTime - memberEvent.startTime)
 					memberEvent.finishTime = memberEvent.finishTime - effect
-					eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, memberEvent.id, memberEvent.finishTime])
-					if(helpEvent.eventData.helpedMembers.length >= helpEvent.eventData.maxHelpCount || memberEvent.finishTime <= Date.now()){
+
+					if(helpEvent.eventData.helpedMembers.length >= helpEvent.eventData.maxHelpCount || LogicUtils.willFinished(memberEvent.finishTime)){
 						allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
 						LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 					}else{
 						allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent) + ".eventData", helpEvent.eventData])
 					}
-					if(playerEvent.finishTime > Date.now()){
+					if(LogicUtils.willFinished(memberEvent.finishTime)){
+						eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, memberDoc, memberEvent.id])
+						self.playerTimeEventService.onPlayerEvent(memberDoc, memberData, allianceDoc, allianceData, helpEvent.eventData.type, helpEvent.eventData.id)
+					}else{
+						eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, memberEvent.id, memberEvent.finishTime])
 						memberData.push([helpEvent.eventData.type + "." + memberDoc[helpEvent.eventData.type].indexOf(memberEvent) + ".finishTime", memberEvent.finishTime])
 					}
 				}

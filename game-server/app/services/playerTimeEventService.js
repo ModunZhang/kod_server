@@ -44,7 +44,9 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	var pushFuncs = []
 	var updateFuncs = []
 	var playerDoc = null
+	var playerData = []
 	var allianceDoc = null
+	var allianceData = []
 	this.playerDao.findAsync(playerId, true).then(function(doc){
 		playerDoc = doc
 		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
@@ -59,10 +61,9 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 		}
 		return Promise.resolve()
 	}).then(function(){
-		var params = self.onPlayerEvent(playerDoc, allianceDoc, eventType, eventId)
+		self.onPlayerEvent(playerDoc, playerData, allianceDoc, allianceData, eventType, eventId)
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, params.playerData])
-		var allianceData = params.allianceData
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		if(!_.isEmpty(allianceData)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
@@ -95,14 +96,14 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 /**
  * 刷新玩家时间数据
  * @param playerDoc
+ * @param playerData
  * @param allianceDoc
+ * @param allianceData
  * @param eventType
  * @param eventId
  * @returns {{playerData: Array, allianceData: Array}}
  */
-pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
-	var playerData = []
-	var allianceData = []
+pro.onPlayerEvent = function(playerDoc, playerData, allianceDoc, allianceData, eventType, eventId){
 	var event = null
 	var helpEvent = null
 	var dragon = null
@@ -264,7 +265,4 @@ pro.onPlayerEvent = function(playerDoc, allianceDoc, eventType, eventId){
 	DataUtils.refreshPlayerPower(playerDoc, playerData)
 	TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 	playerData.push(["resources", playerDoc.resources])
-
-	var response = {playerData:playerData, allianceData:allianceData}
-	return response
 }
