@@ -957,7 +957,16 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 	}).then(function(doc){
 		memberDoc = doc
 		var memberEvent = LogicUtils.getPlayerEventByTypeAndId(memberDoc, helpEvent.eventData.type, helpEvent.eventData.id)
-		if(!_.isObject(memberEvent) || memberEvent.finishTime <= Date.now()) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, helpEvent.eventData.type, helpEvent.eventData.id))
+		if(!_.isObject(memberEvent) || LogicUtils.willFinished(memberEvent.finishTime)){
+			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
+			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+
+			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, memberDoc._id])
+			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+			return Promise.resolve()
+		}
+
 		helpEvent.eventData.helpedMembers.push(playerDoc._id)
 		var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc, memberEvent.finishTime - memberEvent.startTime)
 		memberEvent.finishTime = memberEvent.finishTime - effect
@@ -971,11 +980,12 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, memberDoc, memberEvent.id])
 			self.playerTimeEventService.onPlayerEvent(memberDoc, memberData, allianceDoc, allianceData, helpEvent.eventData.type, helpEvent.eventData.id)
 		}else{
-			eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, memberEvent.id, memberEvent.finishTime])
+			eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, helpEvent.eventData.type, memberEvent.id, memberEvent.finishTime - Date.now()])
 			memberData.push([helpEvent.eventData.type + "." + memberDoc[helpEvent.eventData.type].indexOf(memberEvent) + ".finishTime", memberEvent.finishTime])
 		}
 
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
+
 		if(_.isEmpty(playerData)){
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		}else{
@@ -985,7 +995,6 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1050,7 +1059,16 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 				for(var i = 0; i < needHelpedEvents.length; i++){
 					var helpEvent = needHelpedEvents[i]
 					var memberEvent = LogicUtils.getPlayerEventByTypeAndId(memberDoc, helpEvent.helpEventType, helpEvent.eventId)
-					if(!_.isObject(memberEvent) || memberEvent.finishTime <= Date.now()) return Promise.reject(ErrorUtils.playerEventNotExist(memberDoc._id, helpEvent.helpEventType, helpEvent.eventId))
+					if(!_.isObject(memberEvent) || LogicUtils.willFinished(memberEvent.finishTime)){
+						allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
+						LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+
+						updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, memberDoc._id])
+						updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+						pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+						return Promise.resolve()
+					}
+
 					helpEvent.helpedMembers.push(playerDoc._id)
 					var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc, memberEvent.finishTime - memberEvent.startTime)
 					memberEvent.finishTime = memberEvent.finishTime - effect
@@ -1065,7 +1083,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 						eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, memberDoc, memberEvent.id])
 						self.playerTimeEventService.onPlayerEvent(memberDoc, memberData, allianceDoc, allianceData, helpEvent.eventData.type, helpEvent.eventData.id)
 					}else{
-						eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, memberEvent.id, memberEvent.finishTime])
+						eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, helpEvent.eventData.type, memberEvent.id, memberEvent.finishTime - Date.now()])
 						memberData.push([helpEvent.eventData.type + "." + memberDoc[helpEvent.eventData.type].indexOf(memberEvent) + ".finishTime", memberEvent.finishTime])
 					}
 				}

@@ -31,23 +31,25 @@ var pro = EventRemote.prototype
  * @param callback
  */
 pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	logicLogger.info("eventRemote:addTimeEvent %j", {key:key, eventType:eventType, eventId:eventId, timeInterval:timeInterval})
-	if(timeInterval <= 0){
-		this.excuteTimeEvent(key, eventType, eventId, callback)
-	}else{
-		var id = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventId)
-		var callbacks = this.callbacks[key]
-		if(_.isEmpty(callbacks)){
-			callbacks = {}
-			this.callbacks[key] = callbacks
-		}
-		var callbackObj = {
-			id:id,
-			eventType:eventType
-		}
-		callbacks[eventId] = callbackObj
-		callback()
+	logicLogger.info("eventRemote:addTimeEvent %j", {
+		key:key,
+		eventType:eventType,
+		eventId:eventId,
+		timeInterval:timeInterval
+	})
+
+	var id = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventId)
+	var callbacks = this.callbacks[key]
+	if(_.isEmpty(callbacks)){
+		callbacks = {}
+		this.callbacks[key] = callbacks
 	}
+	var callbackObj = {
+		id:id,
+		eventType:eventType
+	}
+	callbacks[eventId] = callbackObj
+	callback()
 }
 
 /**
@@ -73,31 +75,25 @@ pro.removeTimeEvent = function(key, eventId, callback){
 /**
  * 更新时间回调
  * @param key
+ * @param eventType
  * @param eventId
  * @param timeInterval
  * @param callback
  */
-pro.updateTimeEvent = function(key, eventId, timeInterval, callback){
+pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 	logicLogger.info("eventRemote:updateTimeEvent %j", {key:key, eventId:eventId, timeInterval:timeInterval})
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
-	if(_.isObject(callbackObj)){
-		clearTimeout(callbackObj.id)
-	}
+	clearTimeout(callbackObj.id)
 	delete callbacks[eventId]
 	if(_.isEmpty(callbacks)){
 		delete this.callbacks[key]
 	}
 
-	if(timeInterval <= 0){
-		var eventType = callbackObj.eventType
-		this.excuteTimeEvent(key, eventType, eventId, callback)
-	}else{
-		var id = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventId)
-		callbackObj.id = id
-		callbacks[eventId] = callbackObj
-		callback()
-	}
+	var id = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventId)
+	callbackObj.id = id
+	callbacks[eventId] = callbackObj
+	callback()
 }
 
 /**

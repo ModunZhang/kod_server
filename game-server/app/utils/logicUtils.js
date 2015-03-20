@@ -850,13 +850,13 @@ Utils.getUsedBuildQueue = function(playerDoc){
 Utils.getSmallestBuildEvent = function(playerDoc){
 	var event = null
 	_.each(playerDoc.buildingEvents, function(theEvent){
-		if(event == null || event.finishTime > theEvent){
-			event = theEvent
+		if(event == null || event.event.finishTime > theEvent){
+			event = {event:theEvent, type:"buildingEvents"}
 		}
 	})
 	_.each(playerDoc.houseEvents, function(theEvent){
-		if(event == null || event.finishTime > theEvent){
-			event = theEvent
+		if(event == null || event.event.finishTime > theEvent){
+			event = {event:theEvent, type:"houseEvents"}
 		}
 	})
 
@@ -2308,5 +2308,5 @@ Utils.createDevice = function(deviceId, userId){
  * @returns {boolean}
  */
 Utils.willFinished = function(interval){
-	return interval + 5000 >= Date.now()
+	return interval + 3000 >= Date.now()
 }

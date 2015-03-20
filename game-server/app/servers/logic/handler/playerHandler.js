@@ -107,8 +107,8 @@ pro.freeSpeedUp = function(msg, session, next){
 	var eventType = msg.eventType
 	var eventId = msg.eventId
 
-	this.playerApiService.freeSpeedUpAsync(session.uid, eventType, eventId).then(function(){
-		next(null, {code:200})
+	this.playerApiService.freeSpeedUpAsync(session.uid, eventType, eventId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})

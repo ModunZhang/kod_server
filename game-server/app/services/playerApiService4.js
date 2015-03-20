@@ -21,6 +21,7 @@ var PlayerApiService4 = function(app){
 	this.app = app
 	this.env = app.get("env")
 	this.pushService = app.get("pushService")
+	this.playerTimeEventService = app.get("playerTimeEventService")
 	this.timeEventService = app.get("timeEventService")
 	this.globalChannelService = app.get("globalChannelService")
 	this.allianceDao = app.get("allianceDao")
@@ -104,15 +105,15 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 			TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
-			if(_.isObject(preTechEvent) && preTechEvent.finishTime > Date.now()){
-				preTechEvent.finishTime = Date.now()
-				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, preTechEvent.finishTime])
+			if(_.isObject(preTechEvent)){
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "productionTechEvents", preTechEvent.id)
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preTechEvent.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createProductionTechEvent(playerDoc, techName, finishTime)
 			playerDoc.productionTechEvents.push(event)
 			playerData.push(["productionTechEvents." + playerDoc.productionTechEvents.indexOf(event), event])
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "productionTechEvents", event.id, finishTime])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "productionTechEvents", event.id, finishTime - Date.now()])
 		}
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
@@ -214,15 +215,15 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 			TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
-			if(_.isObject(preTechEvent) && preTechEvent.finishTime > Date.now()){
-				preTechEvent.finishTime = Date.now()
-				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, preTechEvent.finishTime])
+			if(_.isObject(preTechEvent)){
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "soldierStarEvents", preTechEvent.id)
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preTechEvent.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createMilitaryTechEvent(playerDoc, techName, finishTime)
 			playerDoc.militaryTechEvents.push(event)
 			playerData.push(["militaryTechEvents." + playerDoc.militaryTechEvents.indexOf(event), event])
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "militaryTechEvents", event.id, finishTime])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "militaryTechEvents", event.id, finishTime - Date.now()])
 		}
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
@@ -313,15 +314,15 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			playerData.push(["soldierStars." + soldierName, playerDoc.soldierStars[soldierName]])
 			TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, soldierName, playerDoc.soldierStars[soldierName])
 		}else{
-			if(_.isObject(preTechEvent) && preTechEvent.finishTime > Date.now()){
-				preTechEvent.finishTime = Date.now()
-				eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, preTechEvent.id, preTechEvent.finishTime])
+			if(_.isObject(preTechEvent)){
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "militaryTechEvents", preTechEvent.id)
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preTechEvent.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.upgradeTime * 1000)
 			var event = LogicUtils.createSoldierStarEvent(playerDoc, soldierName, finishTime)
 			playerDoc.soldierStarEvents.push(event)
 			playerData.push(["soldierStarEvents." + playerDoc.soldierStarEvents.indexOf(event), event])
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierStarEvents", event.id, finishTime])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierStarEvents", event.id, finishTime - Date.now()])
 		}
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
@@ -507,6 +508,16 @@ pro.useItem = function(playerId, itemName, params, callback){
 			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}else if(_.isEqual("warSpeedupClass_1", itemName) || _.isEqual("warSpeedupClass_2", itemName)){
 			return itemNameFunction(itemData, playerDoc, playerData, updateFuncs, self.allianceDao, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
+		}else if(_.isEqual("speedup_1", itemName)
+			|| _.isEqual("speedup_2", itemName)
+			|| _.isEqual("speedup_3", itemName)
+			|| _.isEqual("speedup_4", itemName)
+			|| _.isEqual("speedup_5", itemName)
+			|| _.isEqual("speedup_6", itemName)
+			|| _.isEqual("speedup_7", itemName)
+			|| _.isEqual("speedup_8", itemName)
+		){
+			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService, self.playerTimeEventService)
 		}else{
 			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService)
 		}
@@ -712,7 +723,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				var deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, theDragon)
 				playerDoc.dragonDeathEvents.push(deathEvent)
 				playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
-				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
 			}
 			DataUtils.addPlayerDragonExp(playerDoc, playerData, theDragon, expAdd, true)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve)

@@ -465,7 +465,7 @@ pro.dragonhp = function(uid, dragonType, count, callback){
 			if(dragon.hp <= 0){
 				deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, dragon)
 				playerDoc.dragonDeathEvents.push(deathEvent)
-				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime])
+				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
 			}else{
 				deathEvent = _.find(playerDoc.dragonDeathEvents, function(deathEvent){
 					return _.isEqual(deathEvent.dragonType, dragon.type)
@@ -818,7 +818,7 @@ pro.alliancefight = function(uid, targetAllianceTag, callback){
 		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc, true])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, defenceAllianceDoc, true])
-		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
 
 		attackAllianceData.push(["fightRequests", []])
 		attackAllianceData.push(["basicInfo", attackAllianceDoc.basicInfo])

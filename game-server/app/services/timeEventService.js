@@ -30,11 +30,11 @@ var pro = TimeEventService.prototype
  * @param key
  * @param eventType
  * @param eventId
- * @param finishTime
+ * @param interval
  * @param callback
  */
-pro.addTimeEvent = function(key, eventType, eventId, finishTime, callback){
-	this.app.rpc.event.eventRemote.addTimeEvent.toServer(this.eventServerId, key, eventType, eventId, finishTime - Date.now(), callback)
+pro.addTimeEvent = function(key, eventType, eventId, interval, callback){
+	this.app.rpc.event.eventRemote.addTimeEvent.toServer(this.eventServerId, key, eventType, eventId, interval, callback)
 }
 
 /**
@@ -50,12 +50,13 @@ pro.removeTimeEvent = function(key, eventId, callback){
 /**
  * 更新时间回调
  * @param key
+ * @param eventType
  * @param eventId
- * @param newFinishTime
+ * @param interval
  * @param callback
  */
-pro.updateTimeEvent = function(key, eventId, newFinishTime, callback){
-	this.app.rpc.event.eventRemote.updateTimeEvent.toServer(this.eventServerId, key, eventId, newFinishTime - Date.now(), callback)
+pro.updateTimeEvent = function(key, eventType, eventId, interval, callback){
+	this.app.rpc.event.eventRemote.updateTimeEvent.toServer(this.eventServerId, key, eventType, eventId, interval, callback)
 }
 
 /**
@@ -72,13 +73,13 @@ pro.clearTimeEvents = function(key, callback){
  * @param playerDoc
  * @param eventType
  * @param eventId
- * @param finishTime
+ * @param interval
  * @param callback
  * @returns {*}
  */
-pro.addPlayerTimeEvent = function(playerDoc, eventType, eventId, finishTime, callback){
+pro.addPlayerTimeEvent = function(playerDoc, eventType, eventId, interval, callback){
 	var key = Consts.TimeEventType.Player + ":" + playerDoc._id
-	this.addTimeEvent(key, eventType, eventId, finishTime, callback)
+	this.addTimeEvent(key, eventType, eventId, interval, callback)
 }
 
 /**
@@ -96,14 +97,15 @@ pro.removePlayerTimeEvent = function(playerDoc, eventId, callback){
 /**
  * 更新玩家时间回调
  * @param playerDoc
+ * @param eventType
  * @param eventId
- * @param newFinishTime
+ * @param interval
  * @param callback
  * @returns {*}
  */
-pro.updatePlayerTimeEvent = function(playerDoc, eventId, newFinishTime, callback){
+pro.updatePlayerTimeEvent = function(playerDoc, eventType, eventId, interval, callback){
 	var key = Consts.TimeEventType.Player + ":" + playerDoc._id
-	this.updateTimeEvent(key, eventId, newFinishTime, callback)
+	this.updateTimeEvent(key, eventType, eventId, interval, callback)
 }
 
 /**
@@ -122,13 +124,13 @@ pro.clearPlayerTimeEvents = function(playerDoc, callback){
  * @param allianceDoc
  * @param eventType
  * @param eventId
- * @param finishTime
+ * @param interval
  * @param callback
  * @returns {*}
  */
-pro.addAllianceTimeEvent = function(allianceDoc, eventType, eventId, finishTime, callback){
+pro.addAllianceTimeEvent = function(allianceDoc, eventType, eventId, interval, callback){
 	var key = Consts.TimeEventType.Alliance + ":" + allianceDoc._id
-	this.addTimeEvent(key, eventType, eventId, finishTime, callback)
+	this.addTimeEvent(key, eventType, eventId, interval, callback)
 }
 
 /**
@@ -146,14 +148,15 @@ pro.removeAllianceTimeEvent = function(allianceDoc, eventId, callback){
 /**
  * 更新联盟时间回调
  * @param allianceDoc
+ * @param eventType
  * @param eventId
- * @param newFinishTime
+ * @param interval
  * @param callback
  * @returns {*}
  */
-pro.updateAllianceTimeEvent = function(allianceDoc, eventId, newFinishTime, callback){
+pro.updateAllianceTimeEvent = function(allianceDoc, eventType, eventId, interval, callback){
 	var key = Consts.TimeEventType.Alliance + ":" + allianceDoc._id
-	this.updateTimeEvent(key, eventId, newFinishTime, callback)
+	this.updateTimeEvent(key, eventType, eventId, interval, callback)
 }
 
 /**
@@ -171,27 +174,28 @@ pro.clearAllianceTimeEvents = function(allianceDoc, callback){
  * 添加联盟战斗时间回调
  * @param attackAllianceDoc
  * @param defenceAllianceDoc
- * @param finishTime
+ * @param interval
  * @param callback
  */
-pro.addAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDoc, finishTime, callback){
+pro.addAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDoc, interval, callback){
 	var key = Consts.TimeEventType.AllianceFight
 	var eventType = Consts.TimeEventType.AllianceFight
 	var eventId = attackAllianceDoc._id + ":" + defenceAllianceDoc._id
-	this.addTimeEvent(key, eventType, eventId, finishTime, callback)
+	this.addTimeEvent(key, eventType, eventId, interval, callback)
 }
 
 /**
  * 更新联盟战斗时间回调
  * @param attackAllianceDoc
  * @param defenceAllianceDoc
- * @param newFinishTime
+ * @param interval
  * @param callback
  */
-pro.updateAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDoc, newFinishTime, callback){
+pro.updateAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDoc, interval, callback){
 	var key = Consts.TimeEventType.AllianceFight
+	var eventType = Consts.TimeEventType.AllianceFight
 	var eventId = attackAllianceDoc._id + ":" + defenceAllianceDoc._id
-	this.updateTimeEvent(key, eventId, newFinishTime, callback)
+	this.updateTimeEvent(key, eventType, eventId, interval, callback)
 }
 
 /**

@@ -82,7 +82,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			var event = LogicUtils.createDragonEquipmentEvent(playerDoc, equipmentName, finishTime)
 			playerDoc.dragonEquipmentEvents.push(event)
 			playerData.push(["dragonEquipmentEvents." + playerDoc.dragonEquipmentEvents.indexOf(event), event])
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonEquipmentEvents", event.id, event.finishTime])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonEquipmentEvents", event.id, event.finishTime - Date.now()])
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
@@ -171,7 +171,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			var event = LogicUtils.createTreatSoldierEvent(playerDoc, soldiers, finishTime)
 			playerDoc.treatSoldierEvents.push(event)
 			playerData.push(["treatSoldierEvents." + playerDoc.treatSoldierEvents.indexOf(event), event])
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "treatSoldierEvents", event.id, event.finishTime])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "treatSoldierEvents", event.id, event.finishTime - Date.now()])
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
@@ -230,7 +230,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 			var event = DataUtils.createPlayerHatchDragonEvent(playerDoc, dragon)
 			playerDoc.dragonHatchEvents.push(event)
 			playerData.push(["dragonHatchEvents." + playerDoc.dragonHatchEvents.indexOf(event), event])
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonHatchEvents", event.id, event.finishTime])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonHatchEvents", event.id, event.finishTime - Date.now()])
 		}
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
@@ -699,7 +699,7 @@ pro.startDailyQuest = function(playerId, questId, callback){
 		var event = DataUtils.createPlayerDailyQuestEvent(playerDoc, quest)
 		playerDoc.dailyQuestEvents.push(event)
 		playerData.push(["dailyQuestEvents." + playerDoc.dailyQuestEvents.indexOf(event), event])
-		eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dailyQuestEvents", event.id, event.finishTime])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dailyQuestEvents", event.id, event.finishTime - Date.now()])
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()

@@ -437,19 +437,26 @@ var Chest = function(playerDoc, playerData, itemConfig){
 var VipActive = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventService){
 	var event = playerDoc.vipEvents[0]
 	var time = parseInt(itemConfig.effect) * 60 * 1000
-	if(_.isObject(event)){
+
+	if(_.isObject(event) && !LogicUtils.willFinished(event.finishTime)){
 		event.finishTime += time
-		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
+		playerData.push(["vipEvents." + playerDoc.vipEvents.indexOf(event) + ".finishTime", event.finishTime])
+		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "vipEvents", event.id, event.finishTime - Date.now()])
 	}else{
+		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
+			playerData.push("vipEvents." + playerDoc.vipEvents.indexOf(event), null)
+			LogicUtils.removeItemInArray(playerDoc.vipEvents, event)
+			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, event.id])
+		}
 		event = {
 			id:ShortId.generate(),
 			startTime:Date.now(),
 			finishTime:Date.now() + time
 		}
 		playerDoc.vipEvents.push(event)
-		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "vipEvents", event.id, event.finishTime])
+		playerData.push(["vipEvents." + playerDoc.vipEvents.indexOf(event), event])
+		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "vipEvents", event.id, event.finishTime - Date.now()])
 	}
-	playerData.push(["vipEvents." + playerDoc.vipEvents.indexOf(event), event])
 
 	return Promise.resolve()
 }
@@ -485,10 +492,17 @@ var Buff = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventServ
 	var event = _.find(playerDoc.itemEvents, function(itemEvent){
 		return _.isEqual(itemEvent.type, itemConfig.type)
 	})
-	if(_.isObject(event)){
+
+	if(_.isObject(event) && !LogicUtils.willFinished(event.finishTime)){
 		event.finishTime += time
-		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
+		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event) + ".finishTime", event.finishTime])
+		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
 	}else{
+		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
+			playerData.push("itemEvents." + playerDoc.itemEvents.indexOf(event), null)
+			LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
+			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, event.id])
+		}
 		event = {
 			id:ShortId.generate(),
 			type:itemConfig.type,
@@ -496,9 +510,9 @@ var Buff = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventServ
 			finishTime:Date.now() + time
 		}
 		playerDoc.itemEvents.push(event)
-		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime])
+		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), event])
+		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
 	}
-	playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), event])
 
 	return Promise.resolve()
 }
@@ -529,19 +543,25 @@ var Resource = function(playerDoc, playerData, itemConfig, resourceName){
  * @param speedupTime
  * @param eventFuncs
  * @param timeEventService
+ * @param playerTimeEventService
  * @returns {*}
  */
-var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService){
+var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService){
 	var event = _.find(playerDoc[eventType], function(event){
 		return _.isEqual(event.id, eventId)
 	})
 	if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerDoc._id, eventType, eventId))
 	event.startTime -= speedupTime
 	event.finishTime -= speedupTime
-	if(event.finishTime > Date.now()){
+
+	if(LogicUtils.willFinished(event.finishTime)){
+		playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, eventType, eventId)
+		eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, event.id])
+	}else{
 		playerData.push([eventType + "." + playerDoc[eventType].indexOf(event), event])
+		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime - Date.now()])
 	}
-	eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
+
 	if(_.contains(Consts.BuildingSpeedupEventTypes, eventType)){
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.SpeedupBuildingBuild)
 	}else if(_.isEqual(eventType, "soldierEvents")){
@@ -575,18 +595,17 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 			return _.isEqual(marchEvent.id, eventId)
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerDoc._id, allianceDoc._id, eventType, eventId))
-
 		var marchTimeLeft = marchEvent.arriveTime - Date.now()
+		if(LogicUtils.willFinished(marchTimeLeft)) return Promise.resolve()
 		var marchTimeSpeedup = Math.round(marchTimeLeft * speedupPercent)
 		marchEvent.startTime -= marchTimeSpeedup
 		marchEvent.arriveTime -= marchTimeSpeedup
 		allianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), marchEvent])
-		eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, marchEvent.id, marchEvent.arriveTime])
+		eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, marchEvent.id, marchEvent.arriveTime - Date.now()])
 
-		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
 		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, pushService)
-
 		return Promise.resolve()
 	}).catch(function(e){
 		if(_.isObject(allianceDoc)){
@@ -1130,61 +1149,61 @@ var ItemNameFunctionMap = {
 		var itemConfig = Items.resource.casinoTokenClass_4
 		return Resource(playerDoc, playerData, itemConfig, "casinoToken")
 	},
-	speedup_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+	speedup_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
 		var itemConfig = Items.speedup.speedup_1
 		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
 		var eventType = itemData.eventType
 		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 	},
-	speedup_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+	speedup_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
 		var itemConfig = Items.speedup.speedup_2
 		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
 		var eventType = itemData.eventType
 		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 	},
-	speedup_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+	speedup_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
 		var itemConfig = Items.speedup.speedup_3
 		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
 		var eventType = itemData.eventType
 		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 	},
-	speedup_4:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+	speedup_4:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
 		var itemConfig = Items.speedup.speedup_4
 		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
 		var eventType = itemData.eventType
 		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 	},
-	speedup_5:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+	speedup_5:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
 		var itemConfig = Items.speedup.speedup_5
 		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
 		var eventType = itemData.eventType
 		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 	},
-	speedup_6:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+	speedup_6:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
 		var itemConfig = Items.speedup.speedup_6
 		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
 		var eventType = itemData.eventType
 		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 	},
-	speedup_7:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+	speedup_7:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
 		var itemConfig = Items.speedup.speedup_7
 		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
 		var eventType = itemData.eventType
 		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 	},
-	speedup_8:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+	speedup_8:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
 		var itemConfig = Items.speedup.speedup_8
 		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
 		var eventType = itemData.eventType
 		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService)
+		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 	},
 	warSpeedupClass_1:function(itemData, playerDoc, playerData, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
 		var itemConfig = Items.speedup.warSpeedupClass_1

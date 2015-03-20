@@ -3750,21 +3750,27 @@ Utils.addPlayerVipExp = function(playerDoc, playerData, expAdd, eventFuncs, time
 	for(var i = 0; i < afterLevel - preLevel; i++){
 		totalVipTime += parseInt(itemConfig.effect) * 60 * 1000
 	}
-	if(totalVipTime > 0){
-		var event = playerDoc.vipEvents[0]
-		if(_.isObject(event)){
-			event.finishTime += totalVipTime
-			eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, event.id, event.finishTime])
-		}else{
-			event = {
-				id:ShortId.generate(),
-				startTime:Date.now(),
-				finishTime:Date.now() + totalVipTime
-			}
-			playerDoc.vipEvents.push(event)
-			eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "vipEvents", event.id, event.finishTime])
+	if(totalVipTime < 0) return
+
+	var event = playerDoc.vipEvents[0]
+	if(_.isObject(event) && !LogicUtils.willFinished(event.finishTime)){
+		event.finishTime += totalVipTime
+		playerData.push(["vipEvents." + playerDoc.vipEvents.indexOf(event) + ".finishTime", event.finishTime])
+		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "vipEvents", event.id, event.finishTime - Date.now()])
+	}else{
+		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
+			playerData.push("vipEvents." + playerDoc.vipEvents.indexOf(event), null)
+			LogicUtils.removeItemInArray(playerDoc.vipEvents, event)
+			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, event.id])
 		}
+		event = {
+			id:ShortId.generate(),
+			startTime:Date.now(),
+			finishTime:Date.now() + totalVipTime
+		}
+		playerDoc.vipEvents.push(event)
 		playerData.push(["vipEvents." + playerDoc.vipEvents.indexOf(event), event])
+		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "vipEvents", event.id, event.finishTime - Date.now()])
 	}
 }
 
