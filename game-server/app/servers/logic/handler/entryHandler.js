@@ -142,14 +142,20 @@ var FilterPlayerDoc = function(playerDoc){
 	data.mails = []
 	data.reports = []
 	for(var i = playerDoc.mails.length - 1; i >= 0; i--){
-		data.mails.push(playerDoc.mails[i])
+		var mail = playerDoc.mails[i]
+		mail.index = i
+		data.mails.push(mail)
 	}
 	for(i = playerDoc.reports.length - 1; i >= 0; i--){
-		data.reports.push(playerDoc.reports[i])
+		var report = playerDoc.reports[i]
+		report.index = i
+		data.reports.push(report)
 	}
 	data.sendMails = []
 	for(i = playerDoc.sendMails.length - 1; i >= 0; i--){
-		data.sendMails.push(playerDoc.sendMails[i])
+		var sendMail = playerDoc.sendMails[i]
+		sendMail.index = i
+		data.sendMails.push(sendMail)
 	}
 	data.savedMails = []
 	data.savedReports = []

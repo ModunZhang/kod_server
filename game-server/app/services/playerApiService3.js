@@ -94,6 +94,7 @@ pro.getMails = function(playerId, fromIndex, callback){
 	}).then(function(){
 		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
 			var mail = playerDoc.mails[i]
+			mail.index = i
 			mails.push(mail)
 		}
 		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
@@ -139,6 +140,7 @@ pro.getSendMails = function(playerId, fromIndex, callback){
 	}).then(function(){
 		for(var i = playerDoc.sendMails.length - 1; i >= 0; i--){
 			var mail = playerDoc.sendMails[i]
+			mail.index = i
 			mails.push(mail)
 		}
 		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
@@ -184,6 +186,7 @@ pro.getSavedMails = function(playerId, fromIndex, callback){
 	}).then(function(){
 		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
 			var mail = playerDoc.mails[i]
+			mail.index = i
 			if(!!mail.isSaved) mails.push(mail)
 		}
 		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
@@ -408,6 +411,7 @@ pro.getReports = function(playerId, fromIndex, callback){
 	}).then(function(){
 		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
 			var report = playerDoc.reports[i]
+			report.index = i
 			reports.push(report)
 		}
 		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
@@ -454,6 +458,7 @@ pro.getSavedReports = function(playerId, fromIndex, callback){
 	}).then(function(){
 		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
 			var report = playerDoc.reports[i]
+			report.index = i
 			if(!!report.isSaved) reports.push(report)
 		}
 		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
