@@ -26,26 +26,26 @@ var Errors = GameDatas.Errors.errors
 describe("PlayerService", function(){
 	var m_user
 
-	//before(function(done){
-	//	mongoose.connect(Config.mongoAddr, function(){
-	//		var redis = Redis.createClient(Config.redisPort, Config.redisAddr)
-	//		redis.flushallAsync().then(function(){
-	//			return Player.removeAsync()
-	//		}).then(function(){
-	//			return Alliance.removeAsync()
-	//		}).then(function(){
-	//			return Device.removeAsync()
-	//		}).then(function(){
-	//			return User.removeAsync()
-	//		}).then(function(){
-	//			return Deal.removeAsync()
-	//		}).then(function(){
-	//			return Billing.removeAsync()
-	//		}).then(function(){
-	//			done()
-	//		})
-	//	})
-	//})
+	before(function(done){
+		mongoose.connect(Config.mongoAddr, function(){
+			var redis = Redis.createClient(Config.redisPort, Config.redisAddr)
+			redis.flushallAsync().then(function(){
+				return Player.removeAsync()
+			}).then(function(){
+				return Alliance.removeAsync()
+			}).then(function(){
+				return Device.removeAsync()
+			}).then(function(){
+				return User.removeAsync()
+			}).then(function(){
+				return Deal.removeAsync()
+			}).then(function(){
+				return Billing.removeAsync()
+			}).then(function(){
+				done()
+			})
+		})
+	})
 
 
 	describe("entryHandler", function(){
@@ -1785,13 +1785,20 @@ describe("PlayerService", function(){
 		//		})
 		//	})
 		//})
-
-		it("getPlayerRankList 获取Power排行", function(done){
-			Api.getPlayerRankList(Consts.PlayerRankTypes.PlayerPower, 20, function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
+		//
+		//it("getPlayerRankList 获取Power排行", function(done){
+		//	Api.getPlayerRankList(Consts.RankTypes.Power, 0, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("getPlayerRankList 获取Kill排行", function(done){
+		//	Api.getPlayerRankList(Consts.RankTypes.Kill, 0, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
 	})
 
 

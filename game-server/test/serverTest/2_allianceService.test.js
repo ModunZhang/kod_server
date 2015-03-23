@@ -662,6 +662,20 @@
 //			})
 //		})
 //
+//		it("getAllianceRankList 获取Power排行", function(done){
+//			Api.getAllianceRankList(Consts.RankTypes.Power, 0, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getAllianceRankList 获取Kill排行", function(done){
+//			Api.getAllianceRankList(Consts.RankTypes.Kill, 0, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		//it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
 //		//	Api.buyAllianceArchon(function(doc){
 //		//		doc.code.should.equal(200)

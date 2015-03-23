@@ -193,13 +193,9 @@ module.exports = {
 		PlayerKill:"playerKill",
 		PlayerPower:"playerPower"
 	},
-	PlayerRankTypes:{
-		PlayerPower:"basicInfo.power",
-		PlayerKill:"basicInfo.kill"
-	},
-	AllianceRankTypes:{
-		AlliancePower:"basicInfo.power",
-		AllianceKill:"basicInfo.kill"
+	RankTypes:{
+		Power:"power",
+		Kill:"kill"
 	},
 
 

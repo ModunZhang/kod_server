@@ -430,14 +430,14 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 }
 
 /**
- * 获取排名信息
+ * 获取玩家排名信息
  * @param playerId
  * @param rankType
  * @param fromRank
  * @param callback
  */
 pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
-	if(!_.contains(Consts.PlayerRankTypes, rankType)){
+	if(!_.contains(Consts.RankTypes, rankType)){
 		callback(new Error("rankType 不合法"))
 		return
 	}
@@ -449,9 +449,9 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
 	var self = this
 	var myRank = null
 	var rankDatas = []
-	this.redis.zrevrankAsync(["player." + rankType, playerId]).then(function(rank){
+	this.redis.zrevrankAsync(["player.basicInfo." + rankType, playerId]).then(function(rank){
 		myRank = rank
-		return self.redis.zrevrangeAsync(["player." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1])
+		return self.redis.zrevrangeAsync(["player.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1])
 	}).then(function(ids){
 		if(ids.length > 0){
 			return self.playerDao.findAllAsync(ids)
@@ -464,7 +464,7 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
 				name:doc.basicInfo.name,
 				icon:doc.basicInfo.icon
 			}
-			if(_.isEqual(rankType, Consts.PlayerRankTypes.PlayerKill)){
+			if(_.isEqual(rankType, Consts.RankTypes.Kill)){
 				rankData.kill = doc.basicInfo.kill
 			}else{
 				rankData.power = doc.basicInfo.power
@@ -478,6 +478,69 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
 	})
 }
 
-pro.getAllianceRankList = function(playerId, rankType, fromIndex, callback){
+/**
+ * 获取联盟排名信息
+ * @param playerId
+ * @param rankType
+ * @param fromRank
+ * @param callback
+ */
+pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
+	if(!_.contains(Consts.RankTypes, rankType)){
+		callback(new Error("rankType 不合法"))
+		return
+	}
+	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0){
+		callback(new Error("fromRank 不合法"))
+		return
+	}
 
+	var self = this
+	var playerDoc = null
+	var myRank = null
+	var rankDatas = []
+	this.playerDao.findAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
+		return	self.redis.zrevrankAsync(["alliance.basicInfo." + rankType, playerDoc.alliance.id])
+	}).then(function(rank){
+		myRank = rank
+		return self.redis.zrevrangeAsync(["alliance.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1])
+	}).then(function(ids){
+		if(ids.length > 0){
+			return self.allianceDao.findAllAsync(ids)
+		}
+		return Promise.resolve([])
+	}).then(function(docs){
+		_.each(docs, function(doc){
+			var rankData = {
+				id:doc._id,
+				name:doc.basicInfo.name,
+				tag:doc.basicInfo.tag,
+				flag:doc.basicInfo.flag
+			}
+			if(_.isEqual(rankType, Consts.RankTypes.Kill)){
+				rankData.kill = doc.basicInfo.kill
+			}else{
+				rankData.power = doc.basicInfo.power
+			}
+			rankDatas.push(rankData)
+		})
+	}).then(function(){
+		return self.playerDao.removeLockAsync(playerDoc._id)
+	}).then(function(){
+		callback(null, [myRank, rankDatas])
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
 }

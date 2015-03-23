@@ -74,7 +74,10 @@ pro.unloadPlayers = function(callback){
 		if(ids.length == 0) return Promise.resolve()
 		id = ids.shift()
 		return self.playerDao.directFindAsync(id).then(function(doc){
-			return self.playerDao.getModel().update({_id:doc._id}, _.omit(doc, "_id", "__v"))
+			if(_.isObject(doc.alliance)){
+				console.log(doc._id, doc.alliance.id, "-----------------")
+			}
+			return self.playerDao.getModel().updateAsync({_id:doc._id}, _.omit(doc, "_id", "__v"))
 		}).then(function(){
 			return saveAllToMongo(ids)
 		}).catch(function(e){
@@ -136,7 +139,7 @@ pro.unloadAlliances = function(callback){
 		if(ids.length == 0) return Promise.resolve()
 		id = ids.shift()
 		return self.allianceDao.directFindAsync(id).then(function(doc){
-			return self.allianceDao.getModel().update({_id:doc._id}, _.omit(doc, "_id", "__v"))
+			return self.allianceDao.getModel().updateAsync({_id:doc._id}, _.omit(doc, "_id", "__v"))
 		}).then(function(){
 			return saveAllToMongo(ids)
 		}).catch(function(e){

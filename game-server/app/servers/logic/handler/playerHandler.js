@@ -1100,7 +1100,7 @@ pro.getGrowUpTaskRewards = function(msg, session, next){
 }
 
 /**
- * 获取排名信息
+ * 获取玩家排名信息
  * @param msg
  * @param session
  * @param next
@@ -1108,7 +1108,23 @@ pro.getGrowUpTaskRewards = function(msg, session, next){
 pro.getPlayerRankList = function(msg, session, next){
 	var rankType = msg.rankType
 	var fromRank = msg.fromRank
-	this.playerApiService5.getPlayerRankListAsync(session.uid, rankType, fromRank).then(function(myRank, rankData){
+	this.playerApiService5.getPlayerRankListAsync(session.uid, rankType, fromRank).spread(function(myRank, rankData){
+		next(null, {code:200, myRank:myRank, rankData:rankData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 获取联盟排名信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getAllianceRankList = function(msg, session, next){
+	var rankType = msg.rankType
+	var fromRank = msg.fromRank
+	this.playerApiService5.getAllianceRankListAsync(session.uid, rankType, fromRank).spread(function(myRank, rankData){
 		next(null, {code:200, myRank:myRank, rankData:rankData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
