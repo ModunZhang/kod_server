@@ -2308,5 +2308,5 @@ Utils.createDevice = function(deviceId, userId){
  * @returns {boolean}
  */
 Utils.willFinished = function(interval){
-	return interval + 3000 >= Date.now()
+	return interval - 3000 <= Date.now()
 }
