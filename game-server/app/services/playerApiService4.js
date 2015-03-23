@@ -729,6 +729,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			var theDragon = playerDoc.dragons[dragonType]
 			if(theDragon.star <= 0) return Promise.reject(new Error("pveData 不合法"))
 
+			DataUtils.refreshPlayerDragonsHp(playerDoc, theDragon)
 			theDragon.hp -= hpDecreased
 			if(theDragon.hp <= 0){
 				theDragon.hp = 0
@@ -739,6 +740,9 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
 				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
 			}
+			playerData.push(["dragons." + theDragon.type + ".hp", theDragon.hp])
+			playerData.push(["dragons." + theDragon.type + ".hpRefreshTime", theDragon.hpRefreshTime])
+
 			DataUtils.addPlayerDragonExp(playerDoc, playerData, theDragon, expAdd, true)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve)
 

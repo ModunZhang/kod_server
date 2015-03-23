@@ -621,6 +621,15 @@ Api.getGrowUpTaskRewards =  function(taskType, taskId, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.getPlayerRankList =  function(rankType, fromRank, callback){
+	var info = {
+		rankType:rankType,
+		fromRank:fromRank
+	}
+	var route = "logic.playerHandler.getPlayerRankList"
+	pomelo.request(route, info, callback)
+}
+
 
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){

@@ -16,12 +16,12 @@ var LOCKED = "__LOCKED__"
  * @param redis
  * @param scripto
  * @param modelName
- * @param rankIndexs
+ * @param rankKeys
  * @param model
  * @param env
  * @constructor
  */
-var BaseDao = function(redis, scripto, modelName, rankIndexs, model, env){
+var BaseDao = function(redis, scripto, modelName, rankKeys, model, env){
 	this.redis = Promise.promisifyAll(redis)
 	this.modelName = modelName
 	this.model = model
@@ -31,11 +31,20 @@ var BaseDao = function(redis, scripto, modelName, rankIndexs, model, env){
 	this.tryTimes = 1
 	this.lockWaitInterval = 100
 	this.forceFindTryTimes = 50
-	this.rankIndexs = rankIndexs
+	this.rankKeys = rankKeys
 }
 
 module.exports = BaseDao
 var pro = BaseDao.prototype
+
+var GetValue = function(doc, key){
+	var keys = key.split(".")
+	var value = doc
+	_.each(keys, function(key){
+		value = value[key]
+	})
+	return value
+}
 
 /**
  * 获取Mongo对象
@@ -76,9 +85,11 @@ pro.directAdd = function(doc, callback){
 	var self = this
 	var docString = JSON.stringify(doc)
 	this.redis.setAsync(this.modelName + ":" + doc._id, docString).then(function(){
-		return self.redis.zaddAsync([self.modelName + "Power", doc.basicInfo.power, doc._id])
-	}).then(function(){
-		return self.redis.zaddAsync([self.modelName + "Kill", doc.basicInfo.kill, doc._id])
+		var funcs = []
+		_.each(self.rankKeys, function(key){
+			funcs.push(self.redis.zaddAsync([self.modelName + "." + key, GetValue(doc, key), doc._id]))
+		})
+		return Promise.all(funcs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -99,9 +110,11 @@ pro.add = function(doc, callback){
 	var self = this
 	var docString = JSON.stringify(doc)
 	this.scripto.runAsync("addAndLock", [this.modelName, docString, Date.now()]).then(function(){
-		return self.redis.zaddAsync([self.modelName + "Power", doc.basicInfo.power, doc._id])
-	}).then(function(){
-		return self.redis.zaddAsync([self.modelName + "Kill", doc.basicInfo.kill, doc._id])
+		var funcs = []
+		_.each(self.rankKeys, function(key){
+			funcs.push(self.redis.zaddAsync([self.modelName + "." + key, GetValue(doc, key), doc._id]))
+		})
+		return Promise.all(funcs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -255,9 +268,11 @@ pro.update = function(doc, persistNow, callback){
 		}).then(function(){
 			return self.scripto.runAsync("update", [self.modelName, JSON.stringify(doc)])
 		}).then(function(){
-			return self.redis.zaddAsync([self.modelName + "Power", doc.basicInfo.power, doc._id])
-		}).then(function(){
-			return self.redis.zaddAsync([self.modelName + "Kill", doc.basicInfo.kill, doc._id])
+			var funcs = []
+			_.each(self.rankKeys, function(key){
+				funcs.push(self.redis.zaddAsync([self.modelName + "." + key, GetValue(doc, key), doc._id]))
+			})
+			return Promise.all(funcs)
 		}).then(function(){
 			callback(null, doc)
 		}).catch(function(e){

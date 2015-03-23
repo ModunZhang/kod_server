@@ -1098,3 +1098,19 @@ pro.getGrowUpTaskRewards = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 获取排名信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getPlayerRankList = function(msg, session, next){
+	var rankType = msg.rankType
+	var fromRank = msg.fromRank
+	this.playerApiService5.getPlayerRankListAsync(session.uid, rankType, fromRank).then(function(myRank, rankData){
+		next(null, {code:200, myRank:myRank, rankData:rankData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
