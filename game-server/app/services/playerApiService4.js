@@ -707,13 +707,11 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 		if(_.isObject(theFloor)){
 			theFloor.fogs = fogs
 			theFloor.objects = objects
-			theFloor.percent = percent > theFloor.percent ? percent : theFloor.percent
 		}else{
 			theFloor = {
 				level:level,
 				fogs:fogs,
-				objects:objects,
-				percent:percent
+				objects:objects
 			}
 			playerDoc.pve.floors.push(theFloor)
 		}
