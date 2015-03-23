@@ -607,6 +607,16 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 			return Promise.reject(new Error("此道具不允许直接使用"))
 		}else if(_.isEqual("warSpeedupClass_1", itemName) || _.isEqual("warSpeedupClass_2", itemName)){
 			return itemNameFunction(itemData, playerDoc, playerData, updateFuncs, self.allianceDao, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
+		}else if(_.isEqual("speedup_1", itemName)
+			|| _.isEqual("speedup_2", itemName)
+			|| _.isEqual("speedup_3", itemName)
+			|| _.isEqual("speedup_4", itemName)
+			|| _.isEqual("speedup_5", itemName)
+			|| _.isEqual("speedup_6", itemName)
+			|| _.isEqual("speedup_7", itemName)
+			|| _.isEqual("speedup_8", itemName)
+		){
+			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService, self.playerTimeEventService)
 		}else{
 			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService)
 		}
