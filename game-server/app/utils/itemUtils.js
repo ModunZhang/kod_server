@@ -669,7 +669,7 @@ var ItemNameFunctionMap = {
 	dragonHp_1:function(itemData, playerDoc, playerData){
 		var dragonType = itemData.dragonType
 		var itemConfig = Items.special.dragonHp_1
-		return DragonExp(playerDoc, playerData, dragonType, itemConfig)
+		return DragonHp(playerDoc, playerData, dragonType, itemConfig)
 	},
 	dragonHp_2:function(itemData, playerDoc, playerData){
 		var dragonType = itemData.dragonType

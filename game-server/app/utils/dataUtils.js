@@ -3784,3 +3784,35 @@ Utils.isPlayerCanFreeNormalGacha = function(playerDoc){
 	freeCount += Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].normalGachaAdd
 	return freeCount > playerDoc.countInfo.todayFreeNormalGachaCount
 }
+
+/**
+ * 为联盟添加帮助事件
+ * @param allianceDoc
+ * @param playerDoc
+ * @param eventType
+ * @param eventId
+ * @param objectName
+ * @param objectLevel
+ * @returns {*}
+ */
+Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, eventType, eventId, objectName, objectLevel){
+	var keep = playerDoc.buildings.location_1
+	var event = {
+		id:ShortId.generate(),
+		playerData:{
+			id:playerDoc._id,
+			name:playerDoc.basicInfo.name,
+			vipExp:playerDoc.basicInfo.vipExp
+		},
+		eventData:{
+			type:eventType,
+			id:eventId,
+			name:objectName,
+			level:objectLevel,
+			maxHelpCount:BuildingFunction.keep[keep.level].beHelpedCount,
+			helpedMembers:[]
+		}
+	}
+	allianceDoc.helpEvents.push(event)
+	return event
+}

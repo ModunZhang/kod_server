@@ -890,7 +890,7 @@ pro.requestAllianceToSpeedUp = function(playerId, eventType, eventId, callback){
 		if(_.isObject(helpEvent)) return Promise.reject(ErrorUtils.speedupRequestAlreadySendForThisEvent(playerId, allianceDoc._id, eventType, eventId))
 
 		var object = LogicUtils.getPlayerObjectByEvent(playerDoc, eventType, eventId)
-		helpEvent = LogicUtils.addAllianceHelpEvent(allianceDoc, playerDoc, eventType, eventId, object.name, object.level + 1)
+		helpEvent = DataUtils.addAllianceHelpEvent(allianceDoc, playerDoc, eventType, eventId, object.name, object.level + 1)
 		allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), helpEvent])
 
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])

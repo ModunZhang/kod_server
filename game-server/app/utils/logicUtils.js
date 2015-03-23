@@ -929,38 +929,6 @@ Utils.getPlayerObjectByEvent = function(playerDoc, eventType, eventId){
 }
 
 /**
- * 为联盟添加帮助事件
- * @param allianceDoc
- * @param playerDoc
- * @param eventType
- * @param eventId
- * @param objectName
- * @param objectLevel
- * @returns {*}
- */
-Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, eventType, eventId, objectName, objectLevel){
-	var keep = playerDoc.buildings.location_1
-	var event = {
-		id:ShortId.generate(),
-		playerData:{
-			id:playerDoc._id,
-			name:playerDoc.basicInfo.name,
-			vipExp:playerDoc.basicInfo.vipExp
-		},
-		eventData:{
-			type:eventType,
-			id:eventId,
-			name:objectName,
-			level:objectLevel,
-			maxHelpCount:keep.level,
-			helpedMembers:[]
-		}
-	}
-	allianceDoc.helpEvents.push(event)
-	return event
-}
-
-/**
  * 发送系统邮件
  * @param playerDoc
  * @param playerData
