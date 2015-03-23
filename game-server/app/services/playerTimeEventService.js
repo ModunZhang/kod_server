@@ -192,7 +192,7 @@ pro.onPlayerEvent = function(playerDoc, playerData, allianceDoc, allianceData, e
 		dragon.level = 1
 		dragon.hp = DataUtils.getDragonMaxHp(dragon)
 		dragon.hpRefreshTime = Date.now()
-		playerData.push(["dragons." + dragon.dragonType, dragon])
+		playerData.push(["dragons." + dragon.type, dragon])
 	}else if(_.isEqual(eventType, "dragonDeathEvents")){
 		event = LogicUtils.getEventById(playerDoc.dragonDeathEvents, eventId)
 		playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(event), null])
@@ -200,8 +200,8 @@ pro.onPlayerEvent = function(playerDoc, playerData, allianceDoc, allianceData, e
 		dragon = playerDoc.dragons[event.dragonType]
 		dragon.hp = 1
 		dragon.hpRefreshTime = Date.now()
-		playerData.push(["dragons." + dragon.dragonType] + ".hp", dragon.hp)
-		playerData.push(["dragons." + dragon.dragonType] + ".hpRefreshTime", dragon.hpRefreshTime)
+		playerData.push(["dragons." + dragon.type] + ".hp", dragon.hp)
+		playerData.push(["dragons." + dragon.type] + ".hpRefreshTime", dragon.hpRefreshTime)
 	}else if(_.isEqual(eventType, "dailyQuestEvents")){
 		event = LogicUtils.getEventById(playerDoc.dailyQuestEvents, eventId)
 		event.finishTime = 0
