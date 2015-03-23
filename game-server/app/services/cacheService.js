@@ -7,6 +7,7 @@
 var Promise = require("bluebird")
 var _ = require("underscore")
 var DataUtils = require("../utils/dataUtils")
+var Consts = require("../consts/consts.js")
 
 var DataService = function(app){
 	this.app = app
@@ -37,11 +38,13 @@ pro.loadPlayers = function(callback){
 	var self = this
 	var ids = null
 	var id = null
+	var playerDoc = null
 	var addAllToRedis = function(ids){
 		if(ids.length == 0) return Promise.resolve()
 		id = ids.shift()._id
 		return self.playerDao.getModel().findByIdAsync(id).then(function(doc){
-			return self.playerDao.directAddAsync(doc)
+			playerDoc = doc
+			return self.playerDao.directAddAsync(playerDoc)
 		}).then(function(){
 			return addAllToRedis(ids)
 		}).catch(function(e){
@@ -97,11 +100,13 @@ pro.loadAlliances = function(callback){
 	var self = this
 	var ids = null
 	var id = null
+	var allianceDoc = null
 	var addAllToRedis = function(ids){
 		if(ids.length == 0) return Promise.resolve()
 		id = ids.shift()._id
 		return self.allianceDao.getModel().findByIdAsync(id).then(function(doc){
-			return self.allianceDao.directAddAsync(doc)
+			allianceDoc = doc
+			return self.allianceDao.directAddAsync(allianceDoc)
 		}).then(function(){
 			return addAllToRedis(ids)
 		}).catch(function(e){

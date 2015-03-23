@@ -8,6 +8,8 @@ module.exports = {
 	GloablChatChannelName:"globalChatChannel",
 	AllianceChannelPrefix:"allianceChannel_",
 	PushServiceName:"pushService",
+	AlliancePowerRank:"alliancePowerRank",
+	AllianceKillRank:"allianceKillRank",
 	ServerId:"World-1",
 	None:"__NONE__",
 	PlayerStatus:{

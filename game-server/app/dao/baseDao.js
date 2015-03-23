@@ -16,20 +16,22 @@ var LOCKED = "__LOCKED__"
  * @param redis
  * @param scripto
  * @param modelName
+ * @param rankIndexs
  * @param model
  * @param env
  * @constructor
  */
-var BaseDao = function(redis, scripto, modelName, model, env){
+var BaseDao = function(redis, scripto, modelName, rankIndexs, model, env){
 	this.redis = Promise.promisifyAll(redis)
 	this.modelName = modelName
 	this.model = model
 	this.scripto = Promise.promisifyAll(scripto)
-	this.maxChangedCount = 1
+	this.maxChangedCount = 10
 	this.env = env
 	this.tryTimes = 1
 	this.lockWaitInterval = 100
 	this.forceFindTryTimes = 50
+	this.rankIndexs = rankIndexs
 }
 
 module.exports = BaseDao
@@ -71,8 +73,13 @@ pro.directAdd = function(doc, callback){
 		callback(new Error("doc 不合法"))
 		return
 	}
+	var self = this
 	var docString = JSON.stringify(doc)
 	this.redis.setAsync(this.modelName + ":" + doc._id, docString).then(function(){
+		return self.redis.zaddAsync([self.modelName + "Power", doc.basicInfo.power, doc._id])
+	}).then(function(){
+		return self.redis.zaddAsync([self.modelName + "Kill", doc.basicInfo.kill, doc._id])
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -89,8 +96,13 @@ pro.add = function(doc, callback){
 		callback(new Error("doc 不合法"))
 		return
 	}
+	var self = this
 	var docString = JSON.stringify(doc)
 	this.scripto.runAsync("addAndLock", [this.modelName, docString, Date.now()]).then(function(){
+		return self.redis.zaddAsync([self.modelName + "Power", doc.basicInfo.power, doc._id])
+	}).then(function(){
+		return self.redis.zaddAsync([self.modelName + "Kill", doc.basicInfo.kill, doc._id])
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
@@ -240,7 +252,12 @@ pro.update = function(doc, persistNow, callback){
 	var self = this
 	if(shouldSaveToMongo){
 		this.model.findByIdAndUpdateAsync(doc._id, _.omit(doc, "_id", "__v")).then(function(){
+		}).then(function(){
 			return self.scripto.runAsync("update", [self.modelName, JSON.stringify(doc)])
+		}).then(function(){
+			return self.redis.zaddAsync([self.modelName + "Power", doc.basicInfo.power, doc._id])
+		}).then(function(){
+			return self.redis.zaddAsync([self.modelName + "Kill", doc.basicInfo.kill, doc._id])
 		}).then(function(){
 			callback(null, doc)
 		}).catch(function(e){

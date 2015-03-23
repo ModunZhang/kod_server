@@ -141,6 +141,7 @@ var FilterPlayerDoc = function(playerDoc){
 	}
 	data.mails = []
 	data.reports = []
+	var self = this
 	for(var i = playerDoc.mails.length - 1; i >= 0; i--){
 		var mail = playerDoc.mails[i]
 		mail.index = i
