@@ -74,9 +74,6 @@ pro.unloadPlayers = function(callback){
 		if(ids.length == 0) return Promise.resolve()
 		id = ids.shift()
 		return self.playerDao.directFindAsync(id).then(function(doc){
-			if(_.isObject(doc.alliance)){
-				console.log(doc._id, doc.alliance.id, "-----------------")
-			}
 			return self.playerDao.getModel().updateAsync({_id:doc._id}, _.omit(doc, "_id", "__v"))
 		}).then(function(){
 			return saveAllToMongo(ids)
