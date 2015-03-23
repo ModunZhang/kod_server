@@ -276,7 +276,7 @@ pro.moveAllianceBuilding = function(playerId, buildingName, locationX, locationY
 		var building = allianceDoc.buildings[buildingName]
 		var buildingObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, building.location)
 		var moveBuildingRequired = DataUtils.getAllianceMoveBuildingRequired(buildingName, building.level)
-		if(allianceDoc.basicInfo.honour < moveBuildingRequired.honour) Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
+		if(allianceDoc.basicInfo.honour < moveBuildingRequired.honour) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		var mapObjects = allianceDoc.mapObjects
 		var buildingSizeInMap = DataUtils.getSizeInAllianceMap("building")
 		var oldRect = {
