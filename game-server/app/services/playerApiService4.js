@@ -688,7 +688,11 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 		if(!_.isString(fogs)) return Promise.reject(new Error("pveData 不合法"))
 		var objects = floor.objects
 		if(!_.isString(objects)) return Promise.reject(new Error("pveData 不合法"))
-
+		if(_.isNumber(pveData.gemUsed)){
+			if(pveData.gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+			playerDoc.resources.gem -= pveData.gemUsed
+			playerData.push(["resources.gem", playerDoc.resources.gem])
+		}
 		playerDoc.resources.stamina -= staminaUsed
 		playerData.push(["resources.stamina", playerDoc.resources.stamina])
 		playerDoc.pve.totalStep += staminaUsed
@@ -703,11 +707,13 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 		if(_.isObject(theFloor)){
 			theFloor.fogs = fogs
 			theFloor.objects = objects
+			theFloor.percent = percent > theFloor.percent ? percent : theFloor.percent
 		}else{
 			theFloor = {
 				level:level,
 				fogs:fogs,
-				objects:objects
+				objects:objects,
+				percent:percent
 			}
 			playerDoc.pve.floors.push(theFloor)
 		}
