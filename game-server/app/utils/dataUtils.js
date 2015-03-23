@@ -2276,7 +2276,7 @@ Utils.createPlayerDragonForFight = function(playerDoc, dragon, terrain){
 		level:dragon.level,
 		strength:this.getDragonStrength(dragon, terrain),
 		vitality:this.getDragonVitality(dragon),
-		maxHp:this.getDragonHpMax(dragon),
+		maxHp:this.getDragonMaxHp(dragon),
 		totalHp:dragon.hp,
 		currentHp:dragon.hp,
 		isWin:false
@@ -2296,9 +2296,9 @@ Utils.createDragonForFight = function(dragon, terrain){
 		level:dragon.level,
 		strength:this.getDragonStrength(dragon, terrain),
 		vitality:this.getDragonVitality(dragon),
-		maxHp:this.getDragonHpMax(dragon),
-		totalHp:this.getDragonHpMax(dragon),
-		currentHp:this.getDragonHpMax(dragon),
+		maxHp:this.getDragonMaxHp(dragon),
+		totalHp:this.getDragonMaxHp(dragon),
+		currentHp:this.getDragonMaxHp(dragon),
 		isWin:false
 	}
 	return dragonForFight
@@ -2680,9 +2680,9 @@ Utils.getAllianceProtectTimeAfterAllianceFight = function(){
  * @param dragon
  * @returns {number}
  */
-Utils.getDragonHpMax = function(dragon){
+Utils.getDragonMaxHp = function(dragon){
 	var vitality = this.getDragonVitality(dragon)
-	return vitality * 2
+	return vitality * 4
 }
 
 /**
@@ -2748,7 +2748,7 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
 	var dragons = arguments.length > 1 ? [dragon] : playerDoc.dragons
 	_.each(dragons, function(dragon){
 		if(dragon.hp > 0 && dragon.level > 0 && !_.isEqual(dragon.status, Consts.DragonStatus.March)){
-			var dragonMaxHp = self.getDragonHpMax(dragon)
+			var dragonMaxHp = self.getDragonMaxHp(dragon)
 			if(dragon.hp < dragonMaxHp){
 				var totalMilSeconds = Date.now() - dragon.hpRefreshTime
 				var recoveryPerMilSecond = config.hpRecoveryPerHour / 60 / 60 / 1000

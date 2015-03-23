@@ -223,7 +223,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		if(!hasDragonHatched){
 			dragon.star = 1
 			dragon.level = 1
-			dragon.hp = DataUtils.getDragonHpMax(dragon)
+			dragon.hp = DataUtils.getDragonMaxHp(dragon)
 			dragon.hpRefreshTime = Date.now()
 			playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
 		}else{

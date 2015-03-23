@@ -271,7 +271,7 @@ var DragonHp = function(playerDoc, playerData, dragonType, itemConfig){
 	if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerDoc._id, dragonType))
 	if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerDoc._id, dragon))
 	DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
-	var dragonHpMax = DataUtils.getDragonHpMax(dragon)
+	var dragonHpMax = DataUtils.getDragonMaxHp(dragon)
 	dragon.hp += parseInt(itemConfig.effect)
 	dragon.hp = dragon.hp <= dragonHpMax ? dragon.hp : dragonHpMax
 	playerData.push(["dragons." + dragon.type + ".hp", dragon.hp])

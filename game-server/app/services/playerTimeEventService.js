@@ -190,7 +190,7 @@ pro.onPlayerEvent = function(playerDoc, playerData, allianceDoc, allianceData, e
 		dragon = playerDoc.dragons[event.dragonType]
 		dragon.star = 1
 		dragon.level = 1
-		dragon.hp = DataUtils.getDragonHpMax(dragon)
+		dragon.hp = DataUtils.getDragonMaxHp(dragon)
 		dragon.hpRefreshTime = Date.now()
 		playerData.push(["dragons." + dragon.dragonType, dragon])
 	}else if(_.isEqual(eventType, "dragonDeathEvents")){

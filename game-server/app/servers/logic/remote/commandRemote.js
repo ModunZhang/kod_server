@@ -607,7 +607,7 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 				equipment.exp = 0
 				equipment.buffs = []
 			})
-			dragon.hp = DataUtils.getDragonHpMax(dragon)
+			dragon.hp = DataUtils.getDragonMaxHp(dragon)
 			dragon.hpRefreshTime = Date.now()
 		}
 		playerData.push(["dragons." + dragon.type, dragon])
