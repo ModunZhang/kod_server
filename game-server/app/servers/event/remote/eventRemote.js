@@ -85,14 +85,9 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	clearTimeout(callbackObj.id)
-	delete callbacks[eventId]
-	if(_.isEmpty(callbacks)){
-		delete this.callbacks[key]
-	}
 
 	var id = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventId)
 	callbackObj.id = id
-	callbacks[eventId] = callbackObj
 	callback()
 }
 
