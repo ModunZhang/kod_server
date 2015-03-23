@@ -444,7 +444,7 @@ var VipActive = function(playerDoc, playerData, itemConfig, eventFuncs, timeEven
 		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "vipEvents", event.id, event.finishTime - Date.now()])
 	}else{
 		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
-			playerData.push("vipEvents." + playerDoc.vipEvents.indexOf(event), null)
+			playerData.push(["vipEvents." + playerDoc.vipEvents.indexOf(event), null])
 			LogicUtils.removeItemInArray(playerDoc.vipEvents, event)
 			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, event.id])
 		}
