@@ -1048,7 +1048,10 @@ Utils.getPlayerRecruitSpecialSoldierRequired = function(playerDoc, soldierName, 
 	var materialNames = config.specialMaterials.split(",")
 	var materials = {}
 	_.each(materialNames, function(value){
-		materials[value] = count
+		var values = value.split("_")
+		var materialName = values[0]
+		var materialCount = parseInt(values[1])
+		materials[materialName] = count * materialCount
 	})
 	var totalNeed = {
 		materials:materials,

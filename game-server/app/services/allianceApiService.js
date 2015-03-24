@@ -127,7 +127,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		}
 		playerData.push(["alliance", playerDoc.alliance])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, true])
 		updateFuncs.push([self.globalChannelService, self.globalChannelService.addAsync, Consts.AllianceChannelPrefix + allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 		return Promise.resolve()
 	}).then(function(){
@@ -466,7 +466,7 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		allianceDoc.basicInfo.tag = tag
 		allianceDoc.basicInfo.language = language
 		allianceDoc.basicInfo.flag = flag
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, forceSave])
 
 		allianceData.push(["basicInfo", allianceDoc.basicInfo])
 		var event = null
@@ -845,7 +845,7 @@ pro.editAllianceJoinType = function(playerId, joinType, callback){
 		allianceData.push(["basicInfo.joinType", allianceDoc.basicInfo.joinType])
 		var funcs = []
 		funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		funcs.push(self.allianceDao.updateAsync(allianceDoc))
+		funcs.push(self.allianceDao.updateAsync(allianceDoc, true))
 		return Promise.all(funcs)
 	}).then(function(){
 		return self.pushService.onAllianceDataChangedAsync(allianceDoc._id, allianceData)

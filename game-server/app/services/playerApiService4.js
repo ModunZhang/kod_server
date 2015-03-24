@@ -467,6 +467,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
+	var forceSave = false
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var item = _.find(playerDoc.items, function(item){
@@ -485,6 +486,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 		var itemNameFunction = ItemUtils.getItemNameFunction(itemName)
 		var itemData = params[itemName]
 		if(_.isEqual("changePlayerName", itemName)){
+			forceSave = true
 			return itemNameFunction(itemData, playerDoc, playerData, self.playerDao)
 		}else if(_.isEqual("retreatTroop", itemName)){
 			return itemNameFunction(itemData, playerDoc, playerData, updateFuncs, self.allianceDao, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
@@ -522,7 +524,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService)
 		}
 	}).then(function(){
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc, forceSave])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

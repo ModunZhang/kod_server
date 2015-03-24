@@ -212,7 +212,7 @@ pro.onPlayerEvent = function(playerDoc, playerData, allianceDoc, allianceData, e
 		LogicUtils.removeItemInArray(playerDoc.productionTechEvents, event)
 		var productionTech = playerDoc.productionTechs[event.name]
 		productionTech.level += 1
-		playerData.push(["productionTechs." + productionTech.name + ".level", productionTech.level])
+		playerData.push(["productionTechs." + event.name + ".level", productionTech.level])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 		TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, event.name, productionTech.level)
 		if(_.isObject(allianceDoc)){
