@@ -376,8 +376,29 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 		return
 	}
 
+	var allianceDocs = []
 	this.allianceDao.getModel().findAsync({"basicInfo.tag":{$regex:tag}}, null, {limit:10}).then(function(docs){
-		callback(null, docs)
+		_.each(docs, function(doc){
+			var shortDoc = {
+				id:doc._id,
+				name:doc.basicInfo.name,
+				tag:doc.basicInfo.tag,
+				flag:doc.basicInfo.flag,
+				level:doc.basicInfo.level,
+				members:doc.members.length,
+				power:doc.basicInfo.power,
+				language:doc.basicInfo.language,
+				kill:doc.basicInfo.kill,
+				archon:LogicUtils.getAllianceArchon(doc).name,
+				joinType:doc.basicInfo.joinType,
+				terrain:doc.basicInfo.terrain
+			}
+			allianceDocs.push(shortDoc)
+		})
+
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, allianceDocs)
 	}).catch(function(e){
 		callback(e)
 	})

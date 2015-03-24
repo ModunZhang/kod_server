@@ -375,3 +375,5 @@ var GameDatas = require("../app/datas/GameDatas")
 //_.each(times, function(count, key){
 //	console.log(key + "   " + count + "    " + Math.round(count / 10000 * 100) + "%")
 //})
+
+
