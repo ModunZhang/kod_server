@@ -200,8 +200,8 @@ pro.onPlayerEvent = function(playerDoc, playerData, allianceDoc, allianceData, e
 		dragon = playerDoc.dragons[event.dragonType]
 		dragon.hp = 1
 		dragon.hpRefreshTime = Date.now()
-		playerData.push(["dragons." + dragon.type] + ".hp", dragon.hp)
-		playerData.push(["dragons." + dragon.type] + ".hpRefreshTime", dragon.hpRefreshTime)
+		playerData.push(["dragons." + dragon.type + ".hp", dragon.hp])
+		playerData.push(["dragons." + dragon.type + ".hpRefreshTime", dragon.hpRefreshTime])
 	}else if(_.isEqual(eventType, "dailyQuestEvents")){
 		event = LogicUtils.getEventById(playerDoc.dailyQuestEvents, eventId)
 		event.finishTime = 0
