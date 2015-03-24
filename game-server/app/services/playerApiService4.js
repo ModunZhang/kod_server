@@ -366,6 +366,11 @@ pro.setTerrain = function(playerId, terrain, callback){
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
+
+		var gemNeed = DataUtils.getPlayerIntInit("changeTerrainNeedGemCount")
+		if(playerDoc.resources.gem < gemNeed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		playerDoc.resources.gem -= gemNeed
+		playerData.push(["resources.gem", playerDoc.resources.gem])
 		playerDoc.basicInfo.terrain = terrain
 		playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
 

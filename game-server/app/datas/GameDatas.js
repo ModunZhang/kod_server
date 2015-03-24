@@ -103,9 +103,10 @@ GameDatas.DragonEquipments.orb = require("./DragonEquipments_orb.js")
 
 GameDatas.Dragons = {}
 GameDatas.Dragons.dragons = require("./Dragons_dragons.js")
-GameDatas.Dragons.dragonAttributes = require("./Dragons_dragonAttributes.js")
-GameDatas.Dragons.dragonSkills = require("./Dragons_dragonSkills.js")
 GameDatas.Dragons.fightFix = require("./Dragons_fightFix.js")
+GameDatas.Dragons.dragonStar = require("./Dragons_dragonStar.js")
+GameDatas.Dragons.dragonLevel = require("./Dragons_dragonLevel.js")
+GameDatas.Dragons.dragonSkills = require("./Dragons_dragonSkills.js")
 
 GameDatas.Errors = {}
 GameDatas.Errors.errors = require("./Errors_errors.js")

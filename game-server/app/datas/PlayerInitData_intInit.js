@@ -108,3 +108,8 @@ intInit["playerHatchDragonNeedMinutes"] = {
 	value:10,
 	desc:"孵化龙所需的时间"
 }
+intInit["changeTerrainNeedGemCount"] = {
+	type:"changeTerrainNeedGemCount",
+	value:10,
+	desc:"修改玩家地形所需宝石数量"
+}

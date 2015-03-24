@@ -257,6 +257,21 @@ var ChatHandler = function(app){
 			}
 		},
 		{
+			command:"dragonlevel",
+			desc:"设置龙的等级:dragonlevel redDragon 5",
+			func:function(session, uid, text, callback){
+				var self = this
+				var dragonType = text.split(" ")[1]
+				var level = text.split(" ")[2]
+				level = parseInt(level)
+				if(_.isNumber(level)){
+					self.app.rpc.logic.commandRemote.dragonlevel(session, uid, dragonType, level, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
 			command:"donatelevel",
 			desc:"设置捐赠级别:donatelevel 1  (1 - 6)",
 			func:function(session, uid, text, callback){

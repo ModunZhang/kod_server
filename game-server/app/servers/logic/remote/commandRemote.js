@@ -469,7 +469,7 @@ pro.dragonskill = function(uid, dragonType, level, callback){
 		if(dragon && level >= 0){
 			_.each(dragon.skills, function(skill){
 				if(DataUtils.isDragonSkillUnlocked(dragon, skill.name)){
-					var maxLevel = DataUtils.getDragonSkillMaxLevel(skill)
+					var maxLevel = DataUtils.getDragonSkillMaxLevel()
 					skill.level = maxLevel > level ? level : maxLevel
 				}
 			})
@@ -533,16 +533,38 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 		if(dragon && star >= 0){
 			var maxStar = DataUtils.getDragonMaxStar()
 			dragon.star = maxStar > star ? star : maxStar
-			var lowestLevel = DataUtils.getDragonLowestLevelOnStar(dragon)
-			var highestLevel = DataUtils.getDragonHighestLevelOnStar(dragon)
-			if(dragon.level < lowestLevel) dragon.level = lowestLevel
-			if(dragon.level > highestLevel) dragon.level = highestLevel
 			_.each(dragon.equipments, function(equipment){
 				equipment.name = ""
 				equipment.star = 0
 				equipment.exp = 0
 				equipment.buffs = []
 			})
+		}
+		playerData.push(["dragons." + dragon.type, dragon])
+		return self.playerDao.updateAsync(doc)
+	}).then(function(doc){
+		return self.pushService.onPlayerDataChangedAsync(doc, playerData)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 设置龙的等级
+ * @param uid
+ * @param dragonType
+ * @param level
+ * @param callback
+ */
+pro.dragonlevel = function(uid, dragonType, level, callback){
+	var self = this
+	var playerData = []
+	this.playerDao.findAsync(uid).then(function(doc){
+		var dragon = doc.dragons[dragonType]
+		if(dragon && dragon.star >= 0){
+			dragon.level = level
 			dragon.hp = DataUtils.getDragonMaxHp(dragon)
 			dragon.hpRefreshTime = Date.now()
 		}

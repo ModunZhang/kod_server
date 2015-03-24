@@ -408,7 +408,7 @@ describe("PlayerService", function(){
 		//it("recruitSpecialSoldier 招募数量超过单次招募上限", function(done){
 		//	Api.sendChat("rmsoldierevents", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.recruitSpecialSoldier("skeletonWarrior", 100, false, function(doc){
+		//		Api.recruitSpecialSoldier("steamTank", 100, false, function(doc){
 		//			doc.code.should.equal(Errors.recruitTooMuchOnce.code)
 		//			done()
 		//		})
@@ -847,9 +847,12 @@ describe("PlayerService", function(){
 		//it("upgradeDragonStar 龙的装备未达到晋级要求", function(done){
 		//	Api.sendChat("dragonstar redDragon 1", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.upgradeDragonStar("redDragon", function(doc){
-		//			doc.code.should.equal(Errors.dragonUpgradeStarFailedForEquipmentNotLegal.code)
-		//			done()
+		//		Api.sendChat("dragonlevel redDragon 10", function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.upgradeDragonStar("redDragon", function(doc){
+		//				doc.code.should.equal(Errors.dragonUpgradeStarFailedForEquipmentNotLegal.code)
+		//				done()
+		//			})
 		//		})
 		//	})
 		//})
@@ -1038,9 +1041,9 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("setDefenceDragon 正常设置", function(done){
-		//	Api.sendChat("dragonstar greenDragon 1", function(doc){
+		//	Api.sendChat("dragonlevel redDragon 10", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.setDefenceDragon("greenDragon", function(doc){
+		//		Api.setDefenceDragon("redDragon", function(doc){
 		//			doc.code.should.equal(200)
 		//			done()
 		//		})

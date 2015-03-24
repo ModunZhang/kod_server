@@ -266,14 +266,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		return loadTotal
 	}
 	var getDragonSkillResourceLootPercentAdd = function(dragon){
-		var skillBuff = 0
-		var skill = _.find(dragon.skills, function(skill){
-			return _.isEqual(skill.name, "greedy")
-		})
-		if(_.isObject(skill)){
-			var config = Dragons.dragonSkills["greedy"]
-			skillBuff = skill.level * config.effectPerLevel
-		}
+		var skillBuff = this.getDragonSkillBuff(dragon, "greedy")
 		return skillBuff
 	}
 	var getPlayerItemBuffForResourceLootPercentSubtract = function(playerDoc){

@@ -12,7 +12,6 @@ var Consts = require("../consts/consts")
 var CommonUtils = require("./utils")
 var LogicUtils = require("./logicUtils")
 var TaskUtils = require("./taskUtils")
-var ItemUtils = require("./itemUtils")
 var GameDatas = require("../datas/GameDatas")
 var BuildingLevelUp = GameDatas.BuildingLevelUp
 var BuildingFunction = GameDatas.BuildingFunction
@@ -412,7 +411,7 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 	_.each(houses, function(house){
 		if(house.level > 0){
 			var config = HouseFunction[house.type][house.level]
-			totalPerHour += config.poduction
+			totalPerHour += config.production
 		}
 	})
 
@@ -441,7 +440,7 @@ Utils.getPlayerCoin = function(playerDoc){
 	_.each(houses, function(house){
 		if(house.level > 0){
 			var config = HouseFunction[house.type][house.level]
-			totalPerHour += config.poduction
+			totalPerHour += config.production
 		}
 	})
 
@@ -488,7 +487,7 @@ Utils.getPlayerFood = function(playerDoc){
 	_.each(houses, function(house){
 		if(house.level > 0){
 			var config = HouseFunction[house.type][house.level]
-			totalPerHour += config.poduction
+			totalPerHour += config.production
 		}
 	})
 
@@ -814,12 +813,12 @@ Utils.createMaterialEvent = function(toolShop, category, finishNow){
 	]
 
 	var config = BuildingFunction["toolShop"][toolShop.level]
-	var poduction = config.poduction
-	var materialTypeCount = config.poductionType
+	var production = config.production
+	var materialTypeCount = config.productionType
 	var materialTypes = categoryConfig[category]
 	materialTypes = CommonUtils.shuffle(materialTypes)
 	var materialCountArray = []
-	for(var i = 1; i <= poduction; i++){
+	for(var i = 1; i <= production; i++){
 		materialCountArray.push(i)
 	}
 	materialCountArray = CommonUtils.shuffle(materialCountArray)
@@ -834,13 +833,13 @@ Utils.createMaterialEvent = function(toolShop, category, finishNow){
 		materials.push(material)
 		totalGenerated += materialCountArray[i]
 
-		if(poduction <= totalGenerated){
-			material.count -= totalGenerated - poduction
+		if(production <= totalGenerated){
+			material.count -= totalGenerated - production
 			break
 		}
 
-		if(i == materialTypeCount - 1 && poduction > totalGenerated){
-			material.count += poduction - totalGenerated
+		if(i == materialTypeCount - 1 && production > totalGenerated){
+			material.count += production - totalGenerated
 		}
 	}
 
@@ -1202,6 +1201,22 @@ Utils.getPlayerTreatSoldierRequired = function(playerDoc, soldiers){
 }
 
 /**
+ * 获取龙的技能Buff
+ * @param dragon
+ * @param skillName
+ */
+Utils.getDragonSkillBuff = function(dragon, skillName){
+	var skillBuff = 0
+	var skill = _.find(dragon.skills, function(skill){
+		return _.isEqual(skill.name, skillName)
+	})
+	if(_.isObject(skill) && skill.level >= 1){
+		skillBuff = Dragons.dragonSkills[skill.level].effect
+	}
+	return skillBuff
+}
+
+/**
  * 获取龙力量Buff
  * @param dragon
  * @param terrain
@@ -1209,14 +1224,7 @@ Utils.getPlayerTreatSoldierRequired = function(playerDoc, soldiers){
  */
 Utils.getDragonStrengthBuff = function(dragon, terrain){
 	var terrainBuff = _.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain) ? 0.1 : 0
-	var dragonBreathSkill = _.find(dragon.skills, function(skill){
-		return _.isEqual(skill.name, "dragonBreath")
-	})
-	var skillBuff = 0
-	if(_.isObject(dragonBreathSkill)){
-		var config = Dragons.dragonSkills["dragonBreath"]
-		skillBuff = dragonBreathSkill.level * config.effectPerLevel
-	}
+	var skillBuff = this.getDragonSkillBuff(dragon, "dragonBreath")
 	return terrainBuff + skillBuff
 }
 
@@ -1227,8 +1235,7 @@ Utils.getDragonStrengthBuff = function(dragon, terrain){
  * @returns {*}
  */
 Utils.getDragonStrength = function(dragon, terrain){
-	var config = Dragons.dragonAttributes[dragon.star]
-	var strength = config.initStrength + (config.perLevelStrength * dragon.level)
+	var strength = Dragons.dragonLevel[dragon.level].strength
 	var buff = this.getDragonStrengthBuff(dragon, terrain)
 	strength += Math.floor(strength * buff)
 	_.each(dragon.equipments, function(equipment, category){
@@ -1239,7 +1246,6 @@ Utils.getDragonStrength = function(dragon, terrain){
 			strength += strengthAdd
 		}
 	})
-
 	return strength
 }
 
@@ -1249,14 +1255,7 @@ Utils.getDragonStrength = function(dragon, terrain){
  * @returns {number}
  */
 Utils.getDragonVitalityBuff = function(dragon){
-	var skillBuff = 0
-	var dragonBloodSkill = _.find(dragon.skills, function(skill){
-		return _.isEqual(skill.name, "dragonBlood")
-	})
-	if(_.isObject(dragonBloodSkill)){
-		var config = Dragons.dragonSkills["dragonBlood"]
-		skillBuff = dragonBloodSkill.level * config.effectPerLevel
-	}
+	var skillBuff = this.getDragonSkillBuff(dragon, "dragonBlood")
 	return skillBuff
 }
 
@@ -1266,8 +1265,7 @@ Utils.getDragonVitalityBuff = function(dragon){
  * @returns {*}
  */
 Utils.getDragonVitality = function(dragon){
-	var config = Dragons.dragonAttributes[dragon.star]
-	var vitality = config.initVitality + (config.perLevelVitality * dragon.level)
+	var vitality = Dragons.dragonLevel[dragon.level].vitality
 	var buff = this.getDragonVitalityBuff(dragon)
 	vitality += Math.floor(vitality * buff)
 	_.each(dragon.equipments, function(equipment, category){
@@ -1278,7 +1276,6 @@ Utils.getDragonVitality = function(dragon){
 			vitality += strengthAdd
 		}
 	})
-
 	return vitality
 }
 
@@ -1290,7 +1287,6 @@ Utils.getDragonVitality = function(dragon){
  */
 Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
 	var itemBuff = 0
-	var skillBuff = 0
 	var equipmentBuff = 0
 
 	var eventType = "troopSizeBonus"
@@ -1299,13 +1295,7 @@ Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
 	})
 	if(_.isObject(itemEvent)) itemBuff = 0.3
 
-	var leadershipSkill = _.find(dragon.skills, function(skill){
-		return _.isEqual(skill.name, "leadership")
-	})
-	if(_.isObject(leadershipSkill)){
-		var config = Dragons.dragonSkills["leadership"]
-		skillBuff = leadershipSkill.level * config.effectPerLevel
-	}
+	var skillBuff = this.getDragonSkillBuff(dragon, "leadership")
 	var vipHpBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonLeaderShipAdd
 
 	var equipmentBuffKey = "troopSizeAdd"
@@ -1327,8 +1317,7 @@ Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
  * @returns {*}
  */
 Utils.getPlayerDragonLeadership = function(playerDoc, dragon){
-	var config = Dragons.dragonAttributes[dragon.star]
-	var leadership = config.initLeadership + (config.perLevelLeadership * dragon.level)
+	var leadership = Dragons.dragonLevel[dragon.level].leadership
 	var buff = this.getPlayerDragonLeadershipBuff(playerDoc, dragon)
 	leadership += Math.floor(leadership * buff)
 	_.each(dragon.equipments, function(equipment, category){
@@ -1339,7 +1328,6 @@ Utils.getPlayerDragonLeadership = function(playerDoc, dragon){
 			leadership += leadershipAdd
 		}
 	})
-
 	return leadership
 }
 
@@ -1353,6 +1341,8 @@ Utils.generateDragonEquipmentBuffs = function(equipmentName){
 	var star = DragonEquipments.equipments[equipmentName].maxStar
 	var buffs = DragonEquipments.equipmentBuff
 	var buffKeys = Object.keys(buffs)
+	LogicUtils.removeItemInArray(buffKeys, "troopSizeAdd")
+	LogicUtils.removeItemInArray(buffKeys, "recoverAdd")
 	for(var i = 0; i < star; i++){
 		buffKeys = CommonUtils.shuffle(buffKeys)
 		var key = buffKeys[0]
@@ -1424,8 +1414,8 @@ Utils.getDragonEquipmentMaxStar = function(equipmentName){
  * @returns {boolean}
  */
 Utils.isDragonSkillUnlocked = function(dragon, skillName){
-	var config = Dragons.dragonSkills[skillName]
-	return config.unlockStar <= dragon.star
+	var unlockedSkills = Dragons.dragonStar[dragon.star].skillsUnlocked.split(",")
+	return _.contains(unlockedSkills, skillName)
 }
 
 /**
@@ -1445,9 +1435,8 @@ Utils.isDragonTypeExist = function(dragonType){
  * @returns {{}}
  */
 Utils.getDragonSkillUpgradeRequired = function(dragon, skill){
-	var config = Dragons.dragonSkills[skill.name]
 	var totalNeed = {}
-	totalNeed.blood = config.heroBloodCostPerLevel * (skill.level + 1) * (skill.level + 1)
+	totalNeed.blood = Dragons.dragonSkills[skill.level + 1][skill.name + "BloodCost"]
 	return totalNeed
 }
 
@@ -1457,18 +1446,15 @@ Utils.getDragonSkillUpgradeRequired = function(dragon, skill){
  * @returns {boolean}
  */
 Utils.isDragonSkillReachMaxLevel = function(skill){
-	var config = Dragons.dragonSkills[skill.name]
-	return skill.level >= config.maxLevel
+	return !_.isObject(Dragons.dragonSkills[skill.level + 1])
 }
 
 /**
  * 获取龙的指定技能的最高等级
- * @param skill
- * @returns {dragonSkill.dragonBlood.maxLevel|*|dragonSkill.infantryEnhance.maxLevel|dragonSkill.dragonBreath.maxLevel|dragonSkill.siegeEnhance.maxLevel|dragonSkill.cavalryEnhance.maxLevel}
+ * @returns {*}
  */
-Utils.getDragonSkillMaxLevel = function(skill){
-	var config = Dragons.dragonSkills[skill.name]
-	return config.maxLevel
+Utils.getDragonSkillMaxLevel = function(){
+	return Dragons.dragonSkills.length - 1
 }
 
 /**
@@ -1545,29 +1531,8 @@ Utils.getDragonEquipmentExp = function(dragonType, equipmentInDragon, equipmentN
  * @returns {boolean}
  */
 Utils.isDragonReachUpgradeLevel = function(dragon){
-	var config = Dragons.dragonAttributes[dragon.star + 1]
-	return dragon.level >= config.promotionLevel
-}
-
-/**
- * 获取指定龙的星级下的最小等级
- * @param dragon
- * @returns {promotionLevel|*}
- */
-Utils.getDragonLowestLevelOnStar = function(dragon){
-	if(dragon.star == 0) return 0
-	var config = Dragons.dragonAttributes[dragon.star]
-	return config.promotionLevel
-}
-
-/**
- * 获取指定龙的星级下的最大等级
- * @param dragon
- * @returns {levelMax|*}
- */
-Utils.getDragonHighestLevelOnStar = function(dragon){
-	var config = Dragons.dragonAttributes[dragon.star]
-	return config.levelMax
+	var config = Dragons.dragonStar[dragon.star]
+	return dragon.level >= config.levelMax
 }
 
 /**
@@ -1575,7 +1540,7 @@ Utils.getDragonHighestLevelOnStar = function(dragon){
  * @param dragon
  */
 Utils.isDragonEquipmentsReachUpgradeLevel = function(dragon){
-	var allCategory = Dragons.dragonAttributes[dragon.star + 1].allCategory.split(",")
+	var allCategory = Dragons.dragonStar[dragon.star + 1].allCategory.split(",")
 	return _.every(allCategory, function(category){
 		var equipment = dragon.equipments[category]
 		if(_.isEmpty(equipment.name)) return false
@@ -2032,11 +1997,7 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
 
 	if(_.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain)){
 		var dragonSkillName = soldierType + "Enhance"
-		var skill = _.find(dragon.skills, function(skill){
-			return _.isEqual(skill.name, dragonSkillName)
-		})
-		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effectPerLevel
+		skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
 	}
 
 	var equipmentBuffKey = soldierType + "AtkAdd"
@@ -2057,16 +2018,8 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
  * @returns {number}
  */
 Utils.getDragonAtkWallBuff = function(dragon){
-	var skillBuff = 0
 	var dragonSkillName = "earthquake"
-	var skill = _.find(dragon.skills, function(skill){
-		return _.isEqual(skill.name, dragonSkillName)
-	})
-	if(_.isObject(skill)){
-		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effectPerLevel
-	}
-
+	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
 	return skillBuff
 }
 
@@ -2094,11 +2047,7 @@ Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain)
 
 	if(_.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain)){
 		var dragonSkillName = soldierType + "Enhance"
-		var skill = _.find(dragon.skills, function(skill){
-			return _.isEqual(skill.name, dragonSkillName)
-		})
-		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effectPerLevel
+		skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
 	}
 
 	var equipmentBuffKey = soldierType + "HpAdd"
@@ -2384,17 +2333,9 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
  */
 Utils.getPlayerTreatSoldierPercent = function(playerDoc, dragon){
 	var basePercent = 0.3
-	var skillBuff = 0
 	var equipmentBuff = 0
-
 	var dragonSkillName = "recover"
-	var skill = _.find(dragon.skills, function(skill){
-		return _.isEqual(skill.name, dragonSkillName)
-	})
-	if(_.isObject(skill)){
-		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effectPerLevel
-	}
+	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
 
 	var equipmentBuffKey = "recoverAdd"
 	_.each(dragon.equipments, function(equipment){
@@ -2416,16 +2357,8 @@ Utils.getPlayerTreatSoldierPercent = function(playerDoc, dragon){
  */
 Utils.getPlayerSoldierMoraleDecreasedPercent = function(playerDoc, dragon){
 	var basePercent = 1
-	var skillBuff = 0
 	var dragonSkillName = "insensitive"
-	var skill = _.find(dragon.skills, function(skill){
-		return _.isEqual(skill.name, dragonSkillName)
-	})
-	if(_.isObject(skill)){
-		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effectPerLevel
-	}
-
+	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
 	return basePercent - skillBuff
 }
 
@@ -2436,16 +2369,8 @@ Utils.getPlayerSoldierMoraleDecreasedPercent = function(playerDoc, dragon){
  * @returns {number}
  */
 Utils.getEnemySoldierMoraleAddedPercent = function(playerDoc, dragon){
-	var skillBuff = 0
 	var dragonSkillName = "frenzied"
-	var skill = _.find(dragon.skills, function(skill){
-		return _.isEqual(skill.name, dragonSkillName)
-	})
-	if(_.isObject(skill)){
-		var skillConfig = Dragons.dragonSkills[dragonSkillName]
-		skillBuff = skill.level * skillConfig.effectPerLevel
-	}
-
+	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
 	return skillBuff
 }
 
@@ -2753,17 +2678,22 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
  * @param inFight
  */
 Utils.addPlayerDragonExp = function(playerDoc, playerData, dragon, expAdd, inFight){
+	var currentStarMaxLevel = Dragons.dragonStar[dragon.star].levelMax
+	if(dragon.level >= currentStarMaxLevel) return
+
 	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? 0.3 : 0
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonExpAdd
-	dragon.exp += expAdd * (1 + inFight ? (1 + itemBuff + vipBuff) : 0)
-	var currentStarMaxLevel = Dragons.dragonAttributes[dragon.star].levelMax
-	var nextLevelExpNeed = Dragons.dragonAttributes[dragon.star].perLevelExp * Math.pow(dragon.level, 2)
-	if(dragon.exp >= nextLevelExpNeed){
-		if(dragon.level >= currentStarMaxLevel) dragon.exp = nextLevelExpNeed
-		else{
+	expAdd = expAdd * (1 + inFight ? (1 + itemBuff + vipBuff) : 0)
+	while(true){
+		var nextLevelExpNeed = Dragons.dragonLevel[dragon.level + 1].expNeed
+		if(dragon.exp + expAdd > nextLevelExpNeed){
+			expAdd -= (nextLevelExpNeed - dragon.exp)
 			dragon.level += 1
-			dragon.exp -= nextLevelExpNeed
 			TaskUtils.finishDragonLevelTaskIfNeed(playerDoc, playerData, dragon.type, dragon.level)
+			if(dragon.level >= currentStarMaxLevel) break
+		}else{
+			dragon.exp += expAdd
+			break
 		}
 	}
 	playerData.push(["dragons." + dragon.type + ".level", dragon.level])
@@ -2917,19 +2847,13 @@ Utils.getDragonExpAdd = function(kill){
  * @returns {number}
  */
 Utils.getBloodAdd = function(dragon, kill, isWinner){
-	var dragonSkillBuff = 0
+	var skillBuff = 0
 	if(_.isObject(dragon)){
 		var dragonSkillName = "battleHunger"
-		var skill = _.find(dragon.skills, function(skill){
-			return _.isEqual(skill.name, dragonSkillName)
-		})
-		if(_.isObject(skill)){
-			var skillConfig = Dragons.dragonSkills[dragonSkillName]
-			dragonSkillBuff = skill.level * skillConfig.effectPerLevel
-		}
+		skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
 	}
 	var blood = kill / AllianceInitData.intInit.KilledCitizenPerBlood.value
-	return Math.floor(blood * (isWinner ? 0.7 : 0.3) * (1 + dragonSkillBuff))
+	return Math.floor(blood * (isWinner ? 0.7 : 0.3) * (1 + skillBuff))
 }
 
 /**
@@ -3160,7 +3084,7 @@ Utils.isMilitaryTechReachMaxLevel = function(techLevel){
  */
 Utils.isPlayerUpgradeSoldierStarTechPointEnough = function(playerDoc, soldierName){
 	var soldierStar = playerDoc.soldierStars[soldierName]
-	var config = Soldiers.normal[soldierName + "_" + soldierStar]
+	var config = Soldiers.normal[soldierName + "_" + (soldierStar + 1)]
 	var soldierType = config.type
 	var techPointNeed = config.upgradeTechPointNeed
 	var techNames = _.filter(_.keys(playerDoc.militaryTechs), function(name){
@@ -3172,7 +3096,6 @@ Utils.isPlayerUpgradeSoldierStarTechPointEnough = function(playerDoc, soldierNam
 		var tech = playerDoc.militaryTechs[name]
 		techPointTotal += techPointPerLevel * tech.level
 	})
-
 	return techPointTotal >= techPointNeed
 }
 

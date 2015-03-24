@@ -552,6 +552,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house), house])
 		if(finishNow){
 			house.level += 1
+			DataUtils.refreshPlayerResources(playerDoc)
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
@@ -684,6 +685,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		if(finishNow){
 			house.level += 1
 			playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house) + ".level", house.level])
+			DataUtils.refreshPlayerResources(playerDoc)
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)

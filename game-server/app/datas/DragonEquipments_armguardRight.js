@@ -5,141 +5,141 @@ module.exports = armguardRight
 
 armguardRight["1_0"] = {
 	star:"1_0",
-	enhanceExp:40,
-	strength:12,
-	vitality:9,
-	leadership:6
+	enhanceExp:100,
+	strength:10,
+	vitality:8,
+	leadership:0
 }
 armguardRight["1_1"] = {
 	star:"1_1",
-	enhanceExp:40,
-	strength:16,
+	enhanceExp:200,
+	strength:14,
 	vitality:12,
-	leadership:8
+	leadership:0
 }
 armguardRight["2_0"] = {
 	star:"2_0",
-	enhanceExp:120,
-	strength:18,
-	vitality:12,
-	leadership:8
+	enhanceExp:400,
+	strength:19,
+	vitality:13,
+	leadership:0
 }
 armguardRight["2_1"] = {
 	star:"2_1",
-	enhanceExp:160,
-	strength:22,
-	vitality:15,
-	leadership:10
+	enhanceExp:800,
+	strength:21,
+	vitality:14,
+	leadership:0
 }
 armguardRight["2_2"] = {
 	star:"2_2",
-	enhanceExp:200,
-	strength:27,
-	vitality:18,
-	leadership:12
+	enhanceExp:2400,
+	strength:30,
+	vitality:16,
+	leadership:0
 }
 armguardRight["3_0"] = {
 	star:"3_0",
-	enhanceExp:600,
-	strength:33,
-	vitality:23,
-	leadership:15
+	enhanceExp:1600,
+	strength:61,
+	vitality:43,
+	leadership:0
 }
 armguardRight["3_1"] = {
 	star:"3_1",
-	enhanceExp:800,
-	strength:40,
-	vitality:27,
-	leadership:18
+	enhanceExp:3200,
+	strength:72,
+	vitality:50,
+	leadership:0
 }
 armguardRight["3_2"] = {
 	star:"3_2",
-	enhanceExp:1000,
-	strength:47,
-	vitality:32,
-	leadership:21
+	enhanceExp:9600,
+	strength:85,
+	vitality:59,
+	leadership:0
 }
 armguardRight["3_3"] = {
 	star:"3_3",
-	enhanceExp:1200,
-	strength:53,
-	vitality:36,
-	leadership:24
+	enhanceExp:12800,
+	strength:100,
+	vitality:70,
+	leadership:0
 }
 armguardRight["4_0"] = {
 	star:"4_0",
-	enhanceExp:1600,
-	strength:62,
-	vitality:42,
-	leadership:28
+	enhanceExp:5600,
+	strength:135,
+	vitality:95,
+	leadership:0
 }
 armguardRight["4_1"] = {
 	star:"4_1",
-	enhanceExp:2000,
-	strength:69,
-	vitality:47,
-	leadership:31
+	enhanceExp:11200,
+	strength:159,
+	vitality:112,
+	leadership:0
 }
 armguardRight["4_2"] = {
 	star:"4_2",
-	enhanceExp:2400,
-	strength:75,
-	vitality:51,
-	leadership:34
+	enhanceExp:33600,
+	strength:187,
+	vitality:132,
+	leadership:0
 }
 armguardRight["4_3"] = {
 	star:"4_3",
-	enhanceExp:2800,
-	strength:82,
-	vitality:56,
-	leadership:37
+	enhanceExp:44800,
+	strength:220,
+	vitality:155,
+	leadership:0
 }
 armguardRight["4_4"] = {
 	star:"4_4",
-	enhanceExp:3200,
-	strength:88,
-	vitality:60,
-	leadership:40
+	enhanceExp:89600,
+	strength:259,
+	vitality:182,
+	leadership:0
 }
 armguardRight["5_0"] = {
 	star:"5_0",
-	enhanceExp:4000,
-	strength:99,
-	vitality:68,
-	leadership:45
+	enhanceExp:22400,
+	strength:363,
+	vitality:255,
+	leadership:0
 }
 armguardRight["5_1"] = {
 	star:"5_1",
-	enhanceExp:4800,
-	strength:106,
-	vitality:72,
-	leadership:48
+	enhanceExp:44800,
+	strength:404,
+	vitality:284,
+	leadership:0
 }
 armguardRight["5_2"] = {
 	star:"5_2",
-	enhanceExp:5600,
-	strength:113,
-	vitality:77,
-	leadership:51
+	enhanceExp:134400,
+	strength:449,
+	vitality:315,
+	leadership:0
 }
 armguardRight["5_3"] = {
 	star:"5_3",
-	enhanceExp:6400,
-	strength:119,
-	vitality:81,
-	leadership:54
+	enhanceExp:179200,
+	strength:499,
+	vitality:351,
+	leadership:0
 }
 armguardRight["5_4"] = {
 	star:"5_4",
-	enhanceExp:7200,
-	strength:126,
-	vitality:86,
-	leadership:57
+	enhanceExp:358400,
+	strength:554,
+	vitality:390,
+	leadership:0
 }
 armguardRight["5_5"] = {
 	star:"5_5",
-	enhanceExp:8000,
-	strength:132,
-	vitality:90,
-	leadership:60
+	enhanceExp:716800,
+	strength:616,
+	vitality:433,
+	leadership:0
 }

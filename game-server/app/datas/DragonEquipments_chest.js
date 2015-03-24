@@ -5,127 +5,127 @@ module.exports = chest
 
 chest["2_0"] = {
 	star:"2_0",
-	enhanceExp:120,
-	strength:12,
-	vitality:20,
-	leadership:6
+	enhanceExp:400,
+	strength:0,
+	vitality:44,
+	leadership:0
 }
 chest["2_1"] = {
 	star:"2_1",
-	enhanceExp:160,
-	strength:15,
-	vitality:24,
-	leadership:8
+	enhanceExp:800,
+	strength:0,
+	vitality:49,
+	leadership:0
 }
 chest["2_2"] = {
 	star:"2_2",
-	enhanceExp:200,
-	strength:17,
-	vitality:29,
-	leadership:8
+	enhanceExp:2400,
+	strength:0,
+	vitality:55,
+	leadership:0
 }
 chest["3_0"] = {
 	star:"3_0",
-	enhanceExp:600,
-	strength:22,
-	vitality:36,
-	leadership:10
+	enhanceExp:1600,
+	strength:0,
+	vitality:144,
+	leadership:0
 }
 chest["3_1"] = {
 	star:"3_1",
-	enhanceExp:800,
-	strength:26,
-	vitality:44,
-	leadership:12
+	enhanceExp:3200,
+	strength:0,
+	vitality:169,
+	leadership:0
 }
 chest["3_2"] = {
 	star:"3_2",
-	enhanceExp:1000,
-	strength:30,
-	vitality:51,
-	leadership:15
+	enhanceExp:9600,
+	strength:0,
+	vitality:199,
+	leadership:0
 }
 chest["3_3"] = {
 	star:"3_3",
-	enhanceExp:1200,
-	strength:34,
-	vitality:58,
-	leadership:18
+	enhanceExp:12800,
+	strength:0,
+	vitality:235,
+	leadership:0
 }
 chest["4_0"] = {
 	star:"4_0",
-	enhanceExp:1600,
-	strength:40,
-	vitality:68,
-	leadership:21
+	enhanceExp:5600,
+	strength:0,
+	vitality:318,
+	leadership:0
 }
 chest["4_1"] = {
 	star:"4_1",
-	enhanceExp:2000,
-	strength:44,
-	vitality:75,
-	leadership:24
+	enhanceExp:11200,
+	strength:0,
+	vitality:374,
+	leadership:0
 }
 chest["4_2"] = {
 	star:"4_2",
-	enhanceExp:2400,
-	strength:48,
-	vitality:82,
-	leadership:28
+	enhanceExp:33600,
+	strength:0,
+	vitality:440,
+	leadership:0
 }
 chest["4_3"] = {
 	star:"4_3",
-	enhanceExp:2800,
-	strength:52,
-	vitality:89,
-	leadership:31
+	enhanceExp:44800,
+	strength:0,
+	vitality:518,
+	leadership:0
 }
 chest["4_4"] = {
 	star:"4_4",
-	enhanceExp:3200,
-	strength:57,
-	vitality:96,
-	leadership:34
+	enhanceExp:89600,
+	strength:0,
+	vitality:609,
+	leadership:0
 }
 chest["5_0"] = {
 	star:"5_0",
-	enhanceExp:4000,
-	strength:64,
-	vitality:108,
-	leadership:37
+	enhanceExp:22400,
+	strength:0,
+	vitality:852,
+	leadership:0
 }
 chest["5_1"] = {
 	star:"5_1",
-	enhanceExp:4800,
-	strength:68,
-	vitality:116,
-	leadership:40
+	enhanceExp:44800,
+	strength:0,
+	vitality:947,
+	leadership:0
 }
 chest["5_2"] = {
 	star:"5_2",
-	enhanceExp:5600,
-	strength:72,
-	vitality:123,
-	leadership:45
+	enhanceExp:134400,
+	strength:0,
+	vitality:1053,
+	leadership:0
 }
 chest["5_3"] = {
 	star:"5_3",
-	enhanceExp:6400,
-	strength:76,
-	vitality:130,
-	leadership:48
+	enhanceExp:179200,
+	strength:0,
+	vitality:1170,
+	leadership:0
 }
 chest["5_4"] = {
 	star:"5_4",
-	enhanceExp:7200,
-	strength:80,
-	vitality:137,
-	leadership:51
+	enhanceExp:358400,
+	strength:0,
+	vitality:1300,
+	leadership:0
 }
 chest["5_5"] = {
 	star:"5_5",
-	enhanceExp:8000,
-	strength:85,
-	vitality:144,
-	leadership:54
+	enhanceExp:716800,
+	strength:0,
+	vitality:1444,
+	leadership:0
 }

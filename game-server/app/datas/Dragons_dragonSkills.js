@@ -1,109 +1,345 @@
 "use strict"
 
-var dragonSkills = {}
+var dragonSkills = []
 module.exports = dragonSkills
 
-dragonSkills["infantryEnhance"] = {
-	dragonSkill:"infantryEnhance",
-	unlockStar:1,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:360,
-	effectPerLevel:0.010000
+dragonSkills[1] = {
+	level:1,
+	effect:0.010000,
+	infantryEnhanceBloodCost:20,
+	archerEnhanceBloodCost:20,
+	dragonBloodBloodCost:30,
+	cavalryEnhanceBloodCost:30,
+	siegeEnhanceBloodCost:30,
+	dragonBreathBloodCost:40,
+	leadershipBloodCost:50,
+	greedyBloodCost:70,
+	frenziedBloodCost:70,
+	recoverBloodCost:70,
+	insensitiveBloodCost:70,
+	earthquakeBloodCost:70,
+	battleHungerBloodCost:70
 }
-dragonSkills["archerEnhance"] = {
-	dragonSkill:"archerEnhance",
-	unlockStar:1,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:360,
-	effectPerLevel:0.010000
+dragonSkills[2] = {
+	level:2,
+	effect:0.020000,
+	infantryEnhanceBloodCost:50,
+	archerEnhanceBloodCost:50,
+	dragonBloodBloodCost:70,
+	cavalryEnhanceBloodCost:60,
+	siegeEnhanceBloodCost:60,
+	dragonBreathBloodCost:100,
+	leadershipBloodCost:120,
+	greedyBloodCost:170,
+	frenziedBloodCost:170,
+	recoverBloodCost:170,
+	insensitiveBloodCost:170,
+	earthquakeBloodCost:170,
+	battleHungerBloodCost:170
 }
-dragonSkills["dragonBlood"] = {
-	dragonSkill:"dragonBlood",
-	unlockStar:1,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:360,
-	effectPerLevel:0.010000
+dragonSkills[3] = {
+	level:3,
+	effect:0.030000,
+	infantryEnhanceBloodCost:90,
+	archerEnhanceBloodCost:90,
+	dragonBloodBloodCost:120,
+	cavalryEnhanceBloodCost:100,
+	siegeEnhanceBloodCost:100,
+	dragonBreathBloodCost:170,
+	leadershipBloodCost:200,
+	greedyBloodCost:290,
+	frenziedBloodCost:290,
+	recoverBloodCost:290,
+	insensitiveBloodCost:290,
+	earthquakeBloodCost:290,
+	battleHungerBloodCost:290
 }
-dragonSkills["cavalryEnhance"] = {
-	dragonSkill:"cavalryEnhance",
-	unlockStar:2,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:1000,
-	effectPerLevel:0.010000
+dragonSkills[4] = {
+	level:4,
+	effect:0.040000,
+	infantryEnhanceBloodCost:130,
+	archerEnhanceBloodCost:130,
+	dragonBloodBloodCost:170,
+	cavalryEnhanceBloodCost:150,
+	siegeEnhanceBloodCost:150,
+	dragonBreathBloodCost:250,
+	leadershipBloodCost:290,
+	greedyBloodCost:420,
+	frenziedBloodCost:420,
+	recoverBloodCost:420,
+	insensitiveBloodCost:420,
+	earthquakeBloodCost:420,
+	battleHungerBloodCost:420
 }
-dragonSkills["siegeEnhance"] = {
-	dragonSkill:"siegeEnhance",
-	unlockStar:2,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:1000,
-	effectPerLevel:0.010000
+dragonSkills[5] = {
+	level:5,
+	effect:0.050000,
+	infantryEnhanceBloodCost:170,
+	archerEnhanceBloodCost:170,
+	dragonBloodBloodCost:230,
+	cavalryEnhanceBloodCost:200,
+	siegeEnhanceBloodCost:200,
+	dragonBreathBloodCost:340,
+	leadershipBloodCost:400,
+	greedyBloodCost:570,
+	frenziedBloodCost:570,
+	recoverBloodCost:570,
+	insensitiveBloodCost:570,
+	earthquakeBloodCost:570,
+	battleHungerBloodCost:570
 }
-dragonSkills["dragonBreath"] = {
-	dragonSkill:"dragonBreath",
-	unlockStar:3,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:3600,
-	effectPerLevel:0.010000
+dragonSkills[6] = {
+	level:6,
+	effect:0.060000,
+	infantryEnhanceBloodCost:420,
+	archerEnhanceBloodCost:420,
+	dragonBloodBloodCost:560,
+	cavalryEnhanceBloodCost:490,
+	siegeEnhanceBloodCost:490,
+	dragonBreathBloodCost:840,
+	leadershipBloodCost:980,
+	greedyBloodCost:1390,
+	frenziedBloodCost:1390,
+	recoverBloodCost:1390,
+	insensitiveBloodCost:1390,
+	earthquakeBloodCost:1390,
+	battleHungerBloodCost:1390
 }
-dragonSkills["leadership"] = {
-	dragonSkill:"leadership",
-	unlockStar:3,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:3600,
-	effectPerLevel:0.010000
+dragonSkills[7] = {
+	level:7,
+	effect:0.070000,
+	infantryEnhanceBloodCost:610,
+	archerEnhanceBloodCost:610,
+	dragonBloodBloodCost:810,
+	cavalryEnhanceBloodCost:710,
+	siegeEnhanceBloodCost:710,
+	dragonBreathBloodCost:1210,
+	leadershipBloodCost:1410,
+	greedyBloodCost:2020,
+	frenziedBloodCost:2020,
+	recoverBloodCost:2020,
+	insensitiveBloodCost:2020,
+	earthquakeBloodCost:2020,
+	battleHungerBloodCost:2020
 }
-dragonSkills["greedy"] = {
-	dragonSkill:"greedy",
-	unlockStar:4,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:7200,
-	effectPerLevel:0.010000
+dragonSkills[8] = {
+	level:8,
+	effect:0.080000,
+	infantryEnhanceBloodCost:810,
+	archerEnhanceBloodCost:810,
+	dragonBloodBloodCost:1080,
+	cavalryEnhanceBloodCost:950,
+	siegeEnhanceBloodCost:950,
+	dragonBreathBloodCost:1620,
+	leadershipBloodCost:1890,
+	greedyBloodCost:2700,
+	frenziedBloodCost:2700,
+	recoverBloodCost:2700,
+	insensitiveBloodCost:2700,
+	earthquakeBloodCost:2700,
+	battleHungerBloodCost:2700
 }
-dragonSkills["frenzied"] = {
-	dragonSkill:"frenzied",
-	unlockStar:4,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:7200,
-	effectPerLevel:0.010000
+dragonSkills[9] = {
+	level:9,
+	effect:0.090000,
+	infantryEnhanceBloodCost:1040,
+	archerEnhanceBloodCost:1040,
+	dragonBloodBloodCost:1390,
+	cavalryEnhanceBloodCost:1210,
+	siegeEnhanceBloodCost:1210,
+	dragonBreathBloodCost:2080,
+	leadershipBloodCost:2420,
+	greedyBloodCost:3460,
+	frenziedBloodCost:3460,
+	recoverBloodCost:3460,
+	insensitiveBloodCost:3460,
+	earthquakeBloodCost:3460,
+	battleHungerBloodCost:3460
 }
-dragonSkills["recover"] = {
-	dragonSkill:"recover",
-	unlockStar:4,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:7200,
-	effectPerLevel:0.010000
+dragonSkills[10] = {
+	level:10,
+	effect:0.100000,
+	infantryEnhanceBloodCost:1290,
+	archerEnhanceBloodCost:1290,
+	dragonBloodBloodCost:1710,
+	cavalryEnhanceBloodCost:1500,
+	siegeEnhanceBloodCost:1500,
+	dragonBreathBloodCost:2570,
+	leadershipBloodCost:2990,
+	greedyBloodCost:4270,
+	frenziedBloodCost:4270,
+	recoverBloodCost:4270,
+	insensitiveBloodCost:4270,
+	earthquakeBloodCost:4270,
+	battleHungerBloodCost:4270
 }
-dragonSkills["insensitive"] = {
-	dragonSkill:"insensitive",
-	unlockStar:4,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:7200,
-	effectPerLevel:0.010000
+dragonSkills[11] = {
+	level:11,
+	effect:0.110000,
+	infantryEnhanceBloodCost:3330,
+	archerEnhanceBloodCost:3330,
+	dragonBloodBloodCost:4430,
+	cavalryEnhanceBloodCost:3880,
+	siegeEnhanceBloodCost:3880,
+	dragonBreathBloodCost:6650,
+	leadershipBloodCost:7760,
+	greedyBloodCost:11080,
+	frenziedBloodCost:11080,
+	recoverBloodCost:11080,
+	insensitiveBloodCost:11080,
+	earthquakeBloodCost:11080,
+	battleHungerBloodCost:11080
 }
-dragonSkills["earthquake"] = {
-	dragonSkill:"earthquake",
-	unlockStar:4,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:7200,
-	effectPerLevel:0.010000
+dragonSkills[12] = {
+	level:12,
+	effect:0.120000,
+	infantryEnhanceBloodCost:4940,
+	archerEnhanceBloodCost:4940,
+	dragonBloodBloodCost:6580,
+	cavalryEnhanceBloodCost:5760,
+	siegeEnhanceBloodCost:5760,
+	dragonBreathBloodCost:9870,
+	leadershipBloodCost:11520,
+	greedyBloodCost:16450,
+	frenziedBloodCost:16450,
+	recoverBloodCost:16450,
+	insensitiveBloodCost:16450,
+	earthquakeBloodCost:16450,
+	battleHungerBloodCost:16450
 }
-dragonSkills["battleHunger"] = {
-	dragonSkill:"battleHunger",
-	unlockStar:4,
-	IntiLevel:0,
-	maxLevel:20,
-	heroBloodCostPerLevel:7200,
-	effectPerLevel:0.010000
+dragonSkills[13] = {
+	level:13,
+	effect:0.130000,
+	infantryEnhanceBloodCost:6860,
+	archerEnhanceBloodCost:6860,
+	dragonBloodBloodCost:9140,
+	cavalryEnhanceBloodCost:8000,
+	siegeEnhanceBloodCost:8000,
+	dragonBreathBloodCost:13710,
+	leadershipBloodCost:16000,
+	greedyBloodCost:22850,
+	frenziedBloodCost:22850,
+	recoverBloodCost:22850,
+	insensitiveBloodCost:22850,
+	earthquakeBloodCost:22850,
+	battleHungerBloodCost:22850
+}
+dragonSkills[14] = {
+	level:14,
+	effect:0.140000,
+	infantryEnhanceBloodCost:9090,
+	archerEnhanceBloodCost:9090,
+	dragonBloodBloodCost:12110,
+	cavalryEnhanceBloodCost:10600,
+	siegeEnhanceBloodCost:10600,
+	dragonBreathBloodCost:18170,
+	leadershipBloodCost:21200,
+	greedyBloodCost:30280,
+	frenziedBloodCost:30280,
+	recoverBloodCost:30280,
+	insensitiveBloodCost:30280,
+	earthquakeBloodCost:30280,
+	battleHungerBloodCost:30280
+}
+dragonSkills[15] = {
+	level:15,
+	effect:0.150000,
+	infantryEnhanceBloodCost:11620,
+	archerEnhanceBloodCost:11620,
+	dragonBloodBloodCost:15490,
+	cavalryEnhanceBloodCost:13560,
+	siegeEnhanceBloodCost:13560,
+	dragonBreathBloodCost:23240,
+	leadershipBloodCost:27110,
+	greedyBloodCost:38720,
+	frenziedBloodCost:38720,
+	recoverBloodCost:38720,
+	insensitiveBloodCost:38720,
+	earthquakeBloodCost:38720,
+	battleHungerBloodCost:38720
+}
+dragonSkills[16] = {
+	level:16,
+	effect:0.160000,
+	infantryEnhanceBloodCost:22120,
+	archerEnhanceBloodCost:22120,
+	dragonBloodBloodCost:29500,
+	cavalryEnhanceBloodCost:25810,
+	siegeEnhanceBloodCost:25810,
+	dragonBreathBloodCost:44240,
+	leadershipBloodCost:51610,
+	greedyBloodCost:73730,
+	frenziedBloodCost:73730,
+	recoverBloodCost:73730,
+	insensitiveBloodCost:73730,
+	earthquakeBloodCost:73730,
+	battleHungerBloodCost:73730
+}
+dragonSkills[17] = {
+	level:17,
+	effect:0.170000,
+	infantryEnhanceBloodCost:30110,
+	archerEnhanceBloodCost:30110,
+	dragonBloodBloodCost:40150,
+	cavalryEnhanceBloodCost:35130,
+	siegeEnhanceBloodCost:35130,
+	dragonBreathBloodCost:60220,
+	leadershipBloodCost:70250,
+	greedyBloodCost:100360,
+	frenziedBloodCost:100360,
+	recoverBloodCost:100360,
+	insensitiveBloodCost:100360,
+	earthquakeBloodCost:100360,
+	battleHungerBloodCost:100360
+}
+dragonSkills[18] = {
+	level:18,
+	effect:0.180000,
+	infantryEnhanceBloodCost:39330,
+	archerEnhanceBloodCost:39330,
+	dragonBloodBloodCost:52430,
+	cavalryEnhanceBloodCost:45880,
+	siegeEnhanceBloodCost:45880,
+	dragonBreathBloodCost:78650,
+	leadershipBloodCost:91760,
+	greedyBloodCost:131080,
+	frenziedBloodCost:131080,
+	recoverBloodCost:131080,
+	insensitiveBloodCost:131080,
+	earthquakeBloodCost:131080,
+	battleHungerBloodCost:131080
+}
+dragonSkills[19] = {
+	level:19,
+	effect:0.190000,
+	infantryEnhanceBloodCost:49770,
+	archerEnhanceBloodCost:49770,
+	dragonBloodBloodCost:66360,
+	cavalryEnhanceBloodCost:58070,
+	siegeEnhanceBloodCost:58070,
+	dragonBreathBloodCost:99540,
+	leadershipBloodCost:116130,
+	greedyBloodCost:165890,
+	frenziedBloodCost:165890,
+	recoverBloodCost:165890,
+	insensitiveBloodCost:165890,
+	earthquakeBloodCost:165890,
+	battleHungerBloodCost:165890
+}
+dragonSkills[20] = {
+	level:20,
+	effect:0.200000,
+	infantryEnhanceBloodCost:61440,
+	archerEnhanceBloodCost:61440,
+	dragonBloodBloodCost:81920,
+	cavalryEnhanceBloodCost:71680,
+	siegeEnhanceBloodCost:71680,
+	dragonBreathBloodCost:122880,
+	leadershipBloodCost:143360,
+	greedyBloodCost:204800,
+	frenziedBloodCost:204800,
+	recoverBloodCost:204800,
+	insensitiveBloodCost:204800,
+	earthquakeBloodCost:204800,
+	battleHungerBloodCost:204800
 }

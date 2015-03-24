@@ -5,127 +5,127 @@ module.exports = orb
 
 orb["2_0"] = {
 	star:"2_0",
-	enhanceExp:120,
-	strength:10,
-	vitality:13,
-	leadership:6
+	enhanceExp:400,
+	strength:0,
+	vitality:0,
+	leadership:49
 }
 orb["2_1"] = {
 	star:"2_1",
-	enhanceExp:160,
-	strength:12,
-	vitality:16,
-	leadership:8
+	enhanceExp:800,
+	strength:0,
+	vitality:0,
+	leadership:54
 }
 orb["2_2"] = {
 	star:"2_2",
-	enhanceExp:200,
-	strength:15,
-	vitality:20,
-	leadership:8
+	enhanceExp:2400,
+	strength:0,
+	vitality:0,
+	leadership:61
 }
 orb["3_0"] = {
 	star:"3_0",
-	enhanceExp:600,
-	strength:18,
-	vitality:24,
-	leadership:10
+	enhanceExp:1600,
+	strength:0,
+	vitality:0,
+	leadership:160
 }
 orb["3_1"] = {
 	star:"3_1",
-	enhanceExp:800,
-	strength:22,
-	vitality:29,
-	leadership:12
+	enhanceExp:3200,
+	strength:0,
+	vitality:0,
+	leadership:188
 }
 orb["3_2"] = {
 	star:"3_2",
-	enhanceExp:1000,
-	strength:26,
-	vitality:34,
-	leadership:15
+	enhanceExp:9600,
+	strength:0,
+	vitality:0,
+	leadership:221
 }
 orb["3_3"] = {
 	star:"3_3",
-	enhanceExp:1200,
-	strength:29,
-	vitality:39,
-	leadership:18
+	enhanceExp:12800,
+	strength:0,
+	vitality:0,
+	leadership:261
 }
 orb["4_0"] = {
 	star:"4_0",
-	enhanceExp:1600,
-	strength:34,
-	vitality:45,
-	leadership:21
+	enhanceExp:5600,
+	strength:0,
+	vitality:0,
+	leadership:353
 }
 orb["4_1"] = {
 	star:"4_1",
-	enhanceExp:2000,
-	strength:38,
-	vitality:50,
-	leadership:24
+	enhanceExp:11200,
+	strength:0,
+	vitality:0,
+	leadership:415
 }
 orb["4_2"] = {
 	star:"4_2",
-	enhanceExp:2400,
-	strength:41,
-	vitality:55,
-	leadership:28
+	enhanceExp:33600,
+	strength:0,
+	vitality:0,
+	leadership:489
 }
 orb["4_3"] = {
 	star:"4_3",
-	enhanceExp:2800,
-	strength:45,
-	vitality:60,
-	leadership:31
+	enhanceExp:44800,
+	strength:0,
+	vitality:0,
+	leadership:575
 }
 orb["4_4"] = {
 	star:"4_4",
-	enhanceExp:3200,
-	strength:48,
-	vitality:64,
-	leadership:34
+	enhanceExp:89600,
+	strength:0,
+	vitality:0,
+	leadership:677
 }
 orb["5_0"] = {
 	star:"5_0",
-	enhanceExp:4000,
-	strength:54,
-	vitality:72,
-	leadership:37
+	enhanceExp:22400,
+	strength:0,
+	vitality:0,
+	leadership:947
 }
 orb["5_1"] = {
 	star:"5_1",
-	enhanceExp:4800,
-	strength:58,
-	vitality:77,
-	leadership:40
+	enhanceExp:44800,
+	strength:0,
+	vitality:0,
+	leadership:1053
 }
 orb["5_2"] = {
 	star:"5_2",
-	enhanceExp:5600,
-	strength:62,
-	vitality:82,
-	leadership:45
+	enhanceExp:134400,
+	strength:0,
+	vitality:0,
+	leadership:1170
 }
 orb["5_3"] = {
 	star:"5_3",
-	enhanceExp:6400,
-	strength:65,
-	vitality:87,
-	leadership:48
+	enhanceExp:179200,
+	strength:0,
+	vitality:0,
+	leadership:1300
 }
 orb["5_4"] = {
 	star:"5_4",
-	enhanceExp:7200,
-	strength:69,
-	vitality:92,
-	leadership:51
+	enhanceExp:358400,
+	strength:0,
+	vitality:0,
+	leadership:1444
 }
 orb["5_5"] = {
 	star:"5_5",
-	enhanceExp:8000,
-	strength:72,
-	vitality:96,
-	leadership:54
+	enhanceExp:716800,
+	strength:0,
+	vitality:0,
+	leadership:1605
 }
