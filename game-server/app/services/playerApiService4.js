@@ -28,6 +28,7 @@ var PlayerApiService4 = function(app){
 	this.playerDao = app.get("playerDao")
 	this.User = app.get("User")
 	this.Device = app.get("Device")
+	this.GemUse = app.get("GemUse")
 }
 module.exports = PlayerApiService4
 var pro = PlayerApiService4.prototype
@@ -95,7 +96,16 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		}
 
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemUsed
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"upgradeProductionTech"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		}
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
@@ -204,7 +214,16 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		}
 
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemUsed
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"upgradeMilitaryTech"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		}
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.technologyMaterials)
 		playerData.push(["technologyMaterials", playerDoc.technologyMaterials])
@@ -306,7 +325,16 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		}
 
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemUsed
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"upgradeSoldierStar"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		}
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 
 		if(finishNow){
@@ -367,10 +395,18 @@ pro.setTerrain = function(playerId, terrain, callback){
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 
-		var gemNeed = DataUtils.getPlayerIntInit("changeTerrainNeedGemCount")
-		if(playerDoc.resources.gem < gemNeed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemNeed
+		var gemUsed = DataUtils.getPlayerIntInit("changeTerrainNeedGemCount")
+		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
+		var gemUse = {
+			playerId:playerId,
+			used:gemUsed,
+			left:playerDoc.resources.gem,
+			api:"setTerrain"
+		}
+		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+
 		playerDoc.basicInfo.terrain = terrain
 		playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
 
@@ -420,10 +456,18 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
-		var gemNeed = itemConfig.price * count
-		if(playerDoc.resources.gem < gemNeed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemNeed
+		var gemUsed = itemConfig.price * count
+		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
+		var gemUse = {
+			playerId:playerId,
+			used:gemUsed,
+			left:playerDoc.resources.gem,
+			api:"buyItem"
+		}
+		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+
 		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)
 		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
@@ -581,10 +625,18 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
-		var gemNeed = itemConfig.price * 1
-		if(playerDoc.resources.gem < gemNeed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemNeed
+		var gemUsed = itemConfig.price * 1
+		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
+		var gemUse = {
+			playerId:playerId,
+			used:gemUsed,
+			left:playerDoc.resources.gem,
+			api:"buyAndUseItem"
+		}
+		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
 		return Promise.resolve()
 	}).then(function(){
@@ -699,6 +751,13 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			if(pveData.gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 			playerDoc.resources.gem -= pveData.gemUsed
 			playerData.push(["resources.gem", playerDoc.resources.gem])
+			var gemUse = {
+				playerId:playerId,
+				used:pveData.gemUsed,
+				left:playerDoc.resources.gem,
+				api:"setPveData"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
 		playerDoc.resources.stamina -= staminaUsed
 		playerData.push(["resources.stamina", playerDoc.resources.stamina])

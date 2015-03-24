@@ -28,6 +28,7 @@ var PlayerApiService = function(app){
 	this.playerDao = app.get("playerDao")
 	this.Device = app.get("Device")
 	this.User = app.get("User")
+	this.GemUse = app.get("GemUse")
 }
 module.exports = PlayerApiService
 var pro = PlayerApiService.prototype
@@ -354,7 +355,16 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		}
 
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemUsed
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"upgradeBuilding"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		}
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		playerData.push(["resources", playerDoc.resources])
@@ -427,8 +437,18 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 		var building = playerDoc.buildings["location_" + buildingLocation]
 		if(!_.isObject(building) || building.level < 1) return Promise.reject(ErrorUtils.buildingNotExist(playerId, buildingLocation))
 		if(!_.contains(_.values(Consts.HouseBuildingMap), building.type)) return Promise.reject(ErrorUtils.onlyProductionBuildingCanSwitch(playerId, buildingLocation))
-		var gemNeed = DataUtils.getPlayerIntInit("switchProductionBuilding")
-		if(playerDoc.resources.gem < gemNeed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		var gemUsed = DataUtils.getPlayerIntInit("switchProductionBuilding")
+		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		playerDoc.resources.gem -= gemUsed
+		var gemUse = {
+			playerId:playerId,
+			used:gemUsed,
+			left:playerDoc.resources.gem,
+			api:"switchBuilding"
+		}
+		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		playerData.push(["resources.gem", playerDoc.resources.gem])
+
 		var houseType = Consts.BuildingHouseMap[building.type]
 		var maxHouseCount = DataUtils.getPlayerHouseMaxCountByType(playerDoc, houseType)
 		var currentCount = DataUtils.getPlayerHouseCountByType(playerDoc, houseType)
@@ -536,10 +556,17 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-		if(gemUsed > playerDoc.resources.gem){
-			return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"createHouse"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
-		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
@@ -678,7 +705,16 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			}
 		}
 		if(gemUsed > playerDoc.resources.gem)return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemUsed
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"upgradeHouse"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		}
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
@@ -834,10 +870,17 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
-		if(gemUsed > playerDoc.resources.gem){
-			return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"makeMaterial"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
-		playerDoc.resources.gem -= gemUsed
 		LogicUtils.reduce(makeRequired.resources, playerDoc.resources)
 
 		event = DataUtils.createMaterialEvent(building, category, finishNow)
@@ -966,7 +1009,16 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemUsed
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"recruitNormalSoldier"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		}
 		LogicUtils.reduce(recruitRequired.resources, playerDoc.resources)
 		if(finishNow){
 			playerDoc.soldiers[soldierName] += count
@@ -1055,7 +1107,16 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemUsed
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"recruitSpecialSoldier"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		}
 		LogicUtils.reduce(recruitRequired.materials, playerDoc.soldierMaterials)
 		LogicUtils.reduce({citizen:recruitRequired.citizen}, playerDoc.resources)
 		playerData.push(["soldierMaterials", playerDoc.soldierMaterials])

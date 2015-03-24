@@ -25,6 +25,7 @@ var PlayerApiService2 = function(app){
 	this.globalChannelService = app.get("globalChannelService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
+	this.GemUse = app.get("GemUse")
 }
 module.exports = PlayerApiService2
 var pro = PlayerApiService2.prototype
@@ -67,7 +68,17 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemUsed
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			playerData.push(["resources.gem", playerDoc.resources.gem])
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"makeDragonEuipment"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		}
 		LogicUtils.reduce({coin:makeRequired.coin}, playerDoc.resources)
 		LogicUtils.reduce(makeRequired.materials, playerDoc.dragonMaterials)
 		_.each(makeRequired.materials, function(value, key){
@@ -150,7 +161,16 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemUsed
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"treatSoldier"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		}
 		LogicUtils.reduce(treatRequired.resources, playerDoc.resources)
 		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
@@ -644,6 +664,14 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
+		var gemUse = {
+			playerId:playerId,
+			used:gemUsed,
+			left:playerDoc.resources.gem,
+			api:"addDailyQuestStar"
+		}
+		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+
 		quest.star += 1
 		playerData.push(["dailyQuests.quests." + playerDoc.dailyQuests.quests.indexOf(quest) + ".star", quest.star])
 

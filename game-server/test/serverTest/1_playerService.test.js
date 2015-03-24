@@ -17,6 +17,7 @@ var Billing = Promise.promisifyAll(require("../../app/domains/billing"))
 var Device = Promise.promisifyAll(require("../../app/domains/device"))
 var User = Promise.promisifyAll(require("../../app/domains/user"))
 var Player = Promise.promisifyAll(require("../../app/domains/player"))
+var GemUse = Promise.promisifyAll(require("../../app/domains/gemUse"))
 var Alliance = Promise.promisifyAll(require("../../app/domains/alliance"))
 var Api = require("../api")
 var commandDir = path.resolve(__dirname + "/../../app/commands")
@@ -41,6 +42,8 @@ describe("PlayerService", function(){
 				return Deal.removeAsync()
 			}).then(function(){
 				return Billing.removeAsync()
+			}).then(function(){
+				return GemUse.removeAsync()
 			}).then(function(){
 				done()
 			})

@@ -28,6 +28,7 @@ var AllianceApiService2 = function(app){
 	this.globalChannelService = app.get("globalChannelService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
+	this.GemUse = app.get("GemUse")
 }
 module.exports = AllianceApiService2
 var pro = AllianceApiService2.prototype
@@ -795,6 +796,13 @@ pro.buyAllianceArchon = function(playerId, callback){
 		var gemUsed = DataUtils.getGemByBuyAllianceArchon()
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
+		var gemUse = {
+			playerId:playerId,
+			used:gemUsed,
+			left:playerDoc.resources.gem,
+			api:"buyAllianceArchon"
+		}
+		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		return self.allianceDao.findAsync(doc.alliance.id)
 	}).then(function(doc){

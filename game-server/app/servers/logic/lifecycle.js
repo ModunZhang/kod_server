@@ -29,6 +29,8 @@ var Deal = require("../../domains/deal")
 var Billing = require("../../domains/billing")
 var Device = require("../../domains/device")
 var User = require("../../domains/user")
+var GemUse = require("../../domains/gemUse")
+var GemAdd = require("../../domains/gemAdd")
 
 var life = module.exports
 
@@ -37,6 +39,8 @@ life.beforeStartup = function(app, callback){
 	app.set("Billing", Promise.promisifyAll(Billing))
 	app.set("Device", Promise.promisifyAll(Device))
 	app.set("User", Promise.promisifyAll(User))
+	app.set("GemUse", Promise.promisifyAll(GemUse))
+	app.set("GemAdd", Promise.promisifyAll(GemAdd))
 	app.set("allianceDao", Promise.promisifyAll(new AllianceDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 

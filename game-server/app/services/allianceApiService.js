@@ -27,6 +27,7 @@ var AllianceApiService = function(app){
 	this.globalChannelService = app.get("globalChannelService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
+	this.GemUse = app.get("GemUse")
 }
 module.exports = AllianceApiService
 var pro = AllianceApiService.prototype
@@ -83,6 +84,13 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		var gemUsed = DataUtils.getGemByCreateAlliance()
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
+		var gemUse = {
+			playerId:playerId,
+			used:gemUsed,
+			left:playerDoc.resources.gem,
+			api:"createAlliance"
+		}
+		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		return Promise.resolve()
 	}).then(function(){
@@ -457,6 +465,13 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		var gemUsed = DataUtils.getEditAllianceBasicInfoGem()
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
+		var gemUse = {
+			playerId:playerId,
+			used:gemUsed,
+			left:playerDoc.resources.gem,
+			api:"editAllianceBasicInfo"
+		}
+		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		return self.allianceDao.findAsync(playerDoc.alliance.id)
 	}).then(function(doc){
