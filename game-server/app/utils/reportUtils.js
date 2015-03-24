@@ -16,6 +16,7 @@ var Define = require("../consts/define")
 var GameDatas = require("../datas/GameDatas")
 var Soldiers = GameDatas.Soldiers
 var AllianceInitData = GameDatas.AllianceInitData
+var BuildingFunction = GameDatas.BuildingFunction
 var Dragons = GameDatas.Dragons
 var Vip = GameDatas.Vip
 
@@ -74,22 +75,6 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 		return data
 	}
 
-	var getDragonExpAdd = function(kill){
-		return Math.floor(kill * AllianceInitData.floatInit.dragonExpByKilledCitizen.value)
-	}
-	var getBlood = function(dragon, totalKill, isWinner){
-		var dragonSkillBuff = 0
-		var dragonSkillName = "battleHunger"
-		var skill = _.find(dragon.skills, function(skill){
-			return _.isEqual(skill.name, dragonSkillName)
-		})
-		if(_.isObject(skill)){
-			var skillConfig = Dragons.dragonSkills[dragonSkillName]
-			dragonSkillBuff = skill.level * skillConfig.effectPerLevel
-		}
-		var blood = totalKill * AllianceInitData.floatInit.bloodByKilledCitizen.value
-		return Math.floor(blood * (isWinner ? 0.7 : 0.3) * (1 + dragonSkillBuff))
-	}
 	var createAllianceData = function(allianceDoc){
 		var data = {
 			id:allianceDoc._id,
@@ -123,10 +108,10 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 	var attackPlayerKilledCitizen = getKilledCitizen(soldierFightData.attackSoldiersAfterFight)
 	var helpDefenceDragon = helpDefencePlayerDoc.dragons[dragonFightData.defenceDragonAfterFight.type]
 	var helpDefencePlayerKilledCitizen = getKilledCitizen(soldierFightData.defenceSoldiersAfterFight)
-	var attackDragonExpAdd = getDragonExpAdd(attackPlayerKilledCitizen)
-	var helpDefenceDragonExpAdd = getDragonExpAdd(helpDefencePlayerKilledCitizen)
-	var attackPlayerGetBlood = getBlood(attackDragon, attackPlayerKilledCitizen + helpDefencePlayerKilledCitizen, _.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult))
-	var helpDefencePlayerGetBlood = getBlood(helpDefenceDragon, attackPlayerKilledCitizen + helpDefencePlayerKilledCitizen, _.isEqual(Consts.FightResult.DefenceWin, soldierFightData.fightResult))
+	var attackDragonExpAdd = DataUtils.getDragonExpAdd(attackPlayerKilledCitizen)
+	var helpDefenceDragonExpAdd = DataUtils.getDragonExpAdd(helpDefencePlayerKilledCitizen)
+	var attackPlayerGetBlood = DataUtils.getBloodAdd(attackDragon, attackPlayerKilledCitizen + helpDefencePlayerKilledCitizen, _.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult))
+	var helpDefencePlayerGetBlood = DataUtils.getBloodAdd(helpDefenceDragon, attackPlayerKilledCitizen + helpDefencePlayerKilledCitizen, _.isEqual(Consts.FightResult.DefenceWin, soldierFightData.fightResult))
 
 	var attackPlayerRewards = []
 	var helpDefencePlayerRewards = []
@@ -245,22 +230,6 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		return data
 	}
 
-	var getDragonExpAdd = function(kill){
-		return Math.floor(kill * AllianceInitData.floatInit.dragonExpByKilledCitizen.value)
-	}
-	var getBlood = function(dragon, totalKill, isWinner){
-		var dragonSkillBuff = 0
-		var dragonSkillName = "battleHunger"
-		var skill = _.find(dragon.skills, function(skill){
-			return _.isEqual(skill.name, dragonSkillName)
-		})
-		if(_.isObject(skill)){
-			var skillConfig = Dragons.dragonSkills[dragonSkillName]
-			dragonSkillBuff = skill.level * skillConfig.effectPerLevel
-		}
-		var blood = totalKill * AllianceInitData.floatInit.bloodByKilledCitizen.value
-		return Math.floor(blood * (isWinner ? 0.7 : 0.3) * (1 + dragonSkillBuff))
-	}
 	var createAllianceData = function(allianceDoc){
 		var data = {
 			id:allianceDoc._id,
@@ -313,30 +282,45 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		var itemEvent = _.find(playerDoc.itemEvents, function(event){
 			return _.isEqual(event.type, eventType)
 		})
-		if(_.isObject(itemEvent)) itemBuff = 0.3
+		if(_.isObject(itemEvent)) itemBuff = 0.25
 		return itemBuff
 	}
-	var getDefencePlayerResourceCanbeLootedPercent = function(defencePlayerDoc, attackDragon){
+	var getBuildingBuffForResourceProtectPercent = function(playerDoc, resourceName){
+		var buildingName = Consts.ResourceBuildingMap[resourceName]
+		var buildings = LogicUtils.getPlayerBuildingsByType(playerDoc, buildingName)
+		var protectPercent = 0
+		_.each(buildings, function(building){
+			if(building.level >= 1){
+				var config = BuildingFunction[buildingName][building.level]
+				protectPercent += config.protection
+			}
+		})
+		return protectPercent
+	}
+	var getDefencePlayerResourceProtectCount = function(defencePlayerDoc, resourceName, attackDragon){
 		var basePercent = 0.3
-		var lootPercentAdd = getDragonSkillResourceLootPercentAdd(attackDragon)
-		var lootPercentSubtract = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
-		var vipBuffSubtract = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
-		return 1 - basePercent + lootPercentAdd - lootPercentSubtract - vipBuffSubtract
+		var buildingBuffAddPercent = getBuildingBuffForResourceProtectPercent(defencePlayerDoc, resourceName)
+		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
+		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
+		var attackDragonBuffSubtractPercent = getDragonSkillResourceLootPercentAdd(attackDragon)
+		var finalPercent = (basePercent * (1 + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent)) - attackDragonBuffSubtractPercent
+		finalPercent = finalPercent > 0.9 ? 0.9 : finalPercent < 0.1 ? 0.1 : finalPercent
+		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
 	}
 
 	var attackPlayerKilledCitizenWithDefenceSoldiers = _.isObject(soldierFightData) ? getKilledCitizen(soldierFightData.attackSoldiersAfterFight) : 0
 	var defenceWallHpDecreased = _.isObject(wallFightData) ? wallFightData.defenceWallAfterFight.totalHp - wallFightData.defenceWallAfterFight.currentHp : 0
-	var attackPlayerKilledCitizenWithDefenceWall = Math.floor(defenceWallHpDecreased * AllianceInitData.floatInit.killScorePerWallHp.value)
+	var attackPlayerKilledCitizenWithDefenceWall = Math.floor(defenceWallHpDecreased * AllianceInitData.intInit.KilledCitizenPerWallHp.value)
 	var defencePlayerKilledCitizenBySoldiers = _.isObject(soldierFightData) ? getKilledCitizen(soldierFightData.defenceSoldiersAfterFight) : 0
 	var defencePlayerKilledCitizenByWall = _.isObject(wallFightData) ? getKilledCitizen(wallFightData.defenceWallAfterFight) : 0
-	var attackDragon = _.isObject(dragonFightData) ? attackPlayerDoc.dragons[dragonFightData.attackDragonAfterFight.type] : null
-	var attackDragonExpAdd = getDragonExpAdd(attackPlayerKilledCitizenWithDefenceSoldiers)
+	var attackDragon = attackPlayerDoc.dragons[attackDragonForFight.type]
+	var attackDragonExpAdd = DataUtils.getDragonExpAdd(attackPlayerKilledCitizenWithDefenceSoldiers)
 	var defenceDragon = _.isObject(dragonFightData) ? defencePlayerDoc.dragons[dragonFightData.defenceDragonAfterFight.type] : null
-	var defenceDragonExpAdd = getDragonExpAdd(defencePlayerKilledCitizenBySoldiers)
-	var attackPlayerGetBloodWithDefenceSoldiers = _.isObject(soldierFightData) ? getBlood(attackDragon, attackPlayerKilledCitizenWithDefenceSoldiers + defencePlayerKilledCitizenBySoldiers, _.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult)) : 0
-	var attackPlayerGetBloodWithDefenceWall = _.isObject(wallFightData) ? getBlood(attackPlayerKilledCitizenWithDefenceWall + defencePlayerKilledCitizenByWall, _.isEqual(Consts.FightResult.AttackWin, wallFightData.fightResult)) : 0
-	var defencePlayerGetBloodBySoldiers = _.isObject(soldierFightData) ? getBlood(defenceDragon, attackPlayerKilledCitizenWithDefenceSoldiers + defencePlayerKilledCitizenBySoldiers, _.isEqual(Consts.FightResult.DefenceWin, soldierFightData.fightResult)) : 0
-	var defencePlayerGetBloodByWall = _.isObject(wallFightData) ? getBlood(attackPlayerKilledCitizenWithDefenceWall + defencePlayerKilledCitizenByWall, _.isEqual(Consts.FightResult.DefenceWin, wallFightData.fightResult)) : 0
+	var defenceDragonExpAdd = DataUtils.getDragonExpAdd(defencePlayerKilledCitizenBySoldiers)
+	var attackPlayerGetBloodWithDefenceSoldiers = _.isObject(soldierFightData) ? DataUtils.getBloodAdd(attackDragon, attackPlayerKilledCitizenWithDefenceSoldiers + defencePlayerKilledCitizenBySoldiers, _.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult)) : 0
+	var attackPlayerGetBloodWithDefenceWall = _.isObject(wallFightData) ? DataUtils.getBloodAdd(null, attackPlayerKilledCitizenWithDefenceWall + defencePlayerKilledCitizenByWall, _.isEqual(Consts.FightResult.AttackWin, wallFightData.fightResult)) : 0
+	var defencePlayerGetBloodBySoldiers = _.isObject(soldierFightData) ? DataUtils.getBloodAdd(defenceDragon, attackPlayerKilledCitizenWithDefenceSoldiers + defencePlayerKilledCitizenBySoldiers, _.isEqual(Consts.FightResult.DefenceWin, soldierFightData.fightResult)) : 0
+	var defencePlayerGetBloodByWall = _.isObject(wallFightData) ? DataUtils.getBloodAdd(null, attackPlayerKilledCitizenWithDefenceWall + defencePlayerKilledCitizenByWall, _.isEqual(Consts.FightResult.DefenceWin, wallFightData.fightResult)) : 0
 
 	var attackPlayerRewards = []
 	var defencePlayerRewards = []
@@ -359,25 +343,57 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		})
 
 		var defencePlayerResources = defencePlayerDoc.resources
-		var lootPercent = getDefencePlayerResourceCanbeLootedPercent(defencePlayerDoc, attackPlayerDoc.dragons[attackDragonForFight.type])
-		var defencePlayerResourceTotal = (defencePlayerResources.wood + defencePlayerResources.stone + defencePlayerResources.iron + defencePlayerResources.food) * lootPercent
+		var woodProtectCount = getDefencePlayerResourceProtectCount(defencePlayerDoc, "wood", attackDragon)
+		var stoneProtectCount = getDefencePlayerResourceProtectCount(defencePlayerDoc, "stone", attackDragon)
+		var ironProtectCount = getDefencePlayerResourceProtectCount(defencePlayerDoc, "iron", attackDragon)
+		var foodProtectCount = getDefencePlayerResourceProtectCount(defencePlayerDoc, "food", attackDragon)
+		var woodLootCount = defencePlayerResources.wood > woodProtectCount ? defencePlayerResources.wood - woodProtectCount : 0
+		var stoneLootCount = defencePlayerResources.stone > stoneProtectCount ? defencePlayerResources.stone - woodProtectCount : 0
+		var ironLootCount = defencePlayerResources.iron > ironProtectCount ? defencePlayerResources.iron - woodProtectCount : 0
+		var foodLootCount = defencePlayerResources.food > foodProtectCount ? defencePlayerResources.food - woodProtectCount : 0
+		var resourceLootTotal = woodLootCount + stoneLootCount + ironLootCount + foodLootCount
 		var attackPlayerLoadTotal = getSoldiersLoadTotal(attackSoldiersForFight)
-		var loadPercent = defencePlayerResourceTotal > 0 ? attackPlayerLoadTotal / defencePlayerResourceTotal : 0
-		loadPercent = loadPercent > 1 ? 1 : loadPercent
-		var resourceKeys = ["wood", "stone", "iron", "food"]
-		var resourceGet = null
-		_.each(resourceKeys, function(key){
-			resourceGet = Math.floor(defencePlayerResources[key] * loadPercent)
-			attackPlayerRewards.push({
-				type:"resources",
-				name:key,
-				count:resourceGet
-			})
-			defencePlayerRewards.push({
-				type:"resources",
-				name:key,
-				count:-resourceGet
-			})
+		var canLootPercent = resourceLootTotal > 0 ? attackPlayerLoadTotal / resourceLootTotal : 0
+		canLootPercent = canLootPercent > 1 ? 1 : canLootPercent
+		attackPlayerRewards.push({
+			type:"resources",
+			name:"wood",
+			count:Math.floor(woodLootCount * canLootPercent)
+		})
+		defencePlayerRewards.push({
+			type:"resources",
+			name:"wood",
+			count:-Math.floor(woodLootCount * canLootPercent)
+		})
+		attackPlayerRewards.push({
+			type:"resources",
+			name:"stone",
+			count:Math.floor(stoneLootCount * canLootPercent)
+		})
+		defencePlayerRewards.push({
+			type:"resources",
+			name:"stone",
+			count:-Math.floor(stoneLootCount * canLootPercent)
+		})
+		attackPlayerRewards.push({
+			type:"resources",
+			name:"iron",
+			count:Math.floor(ironLootCount * canLootPercent)
+		})
+		defencePlayerRewards.push({
+			type:"resources",
+			name:"iron",
+			count:-Math.floor(ironLootCount * canLootPercent)
+		})
+		attackPlayerRewards.push({
+			type:"resources",
+			name:"food",
+			count:Math.floor(foodLootCount * canLootPercent)
+		})
+		defencePlayerRewards.push({
+			type:"resources",
+			name:"food",
+			count:-Math.floor(foodLootCount * canLootPercent)
 		})
 	}
 
@@ -941,22 +957,7 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 		}
 		return data
 	}
-	var getDragonExpAdd = function(kill){
-		return Math.floor(kill * AllianceInitData.floatInit.dragonExpByKilledCitizen.value)
-	}
-	var getBlood = function(dragon, totalKill, isWinner){
-		var dragonSkillBuff = 0
-		var dragonSkillName = "battleHunger"
-		var skill = _.find(dragon.skills, function(skill){
-			return _.isEqual(skill.name, dragonSkillName)
-		})
-		if(_.isObject(skill)){
-			var skillConfig = Dragons.dragonSkills[dragonSkillName]
-			dragonSkillBuff = skill.level * skillConfig.effectPerLevel
-		}
-		var blood = totalKill * AllianceInitData.floatInit.bloodByKilledCitizen.value
-		return Math.floor(blood * (isWinner ? 0.7 : 0.3) * (1 + dragonSkillBuff))
-	}
+
 	var createAllianceData = function(allianceDoc){
 		var data = {
 			id:allianceDoc._id,
@@ -990,11 +991,11 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 	var defencePlayerKilledCitizen = getKilledCitizen(soldierFightData.defenceSoldiersAfterFight)
 	var totalKilledCitizen = attackPlayerKilledCitizen + defencePlayerKilledCitizen
 	var attackDragon = attackPlayerDoc.dragons[dragonFightData.attackDragonAfterFight.type]
-	var attackDragonExpAdd = getDragonExpAdd(attackPlayerKilledCitizen)
-	var attackPlayerGetBlood = getBlood(attackDragon, totalKilledCitizen, _.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult))
+	var attackDragonExpAdd = DataUtils.getDragonExpAdd(attackPlayerKilledCitizen)
+	var attackPlayerGetBlood = DataUtils.getBloodAdd(attackDragon, totalKilledCitizen, _.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult))
 	var defenceDragon = defencePlayerDoc.dragons[dragonFightData.defenceDragonAfterFight.type]
-	var defenceDragonExpAdd = getDragonExpAdd(defencePlayerKilledCitizen)
-	var defencePlayerGetBlood = getBlood(defenceDragon, totalKilledCitizen, _.isEqual(Consts.FightResult.DefenceWin, soldierFightData.fightResult))
+	var defenceDragonExpAdd = DataUtils.getDragonExpAdd(defencePlayerKilledCitizen)
+	var defencePlayerGetBlood = DataUtils.getBloodAdd(defenceDragon, totalKilledCitizen, _.isEqual(Consts.FightResult.DefenceWin, soldierFightData.fightResult))
 
 	var attackPlayerRewards = []
 	pushBloodToRewards(attackPlayerGetBlood, attackPlayerRewards)

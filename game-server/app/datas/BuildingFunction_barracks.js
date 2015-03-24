@@ -5,201 +5,241 @@ module.exports = barracks
 
 barracks[1] = {
 	level:1,
-	maxRecruit:20,
-	power:10
+	maxRecruit:10,
+	unlockedSoldiers:"swordsman",
+	power:37
 }
 barracks[2] = {
 	level:2,
-	maxRecruit:40,
-	power:20
+	maxRecruit:20,
+	unlockedSoldiers:"swordsman",
+	power:75
 }
 barracks[3] = {
 	level:3,
-	maxRecruit:60,
-	power:60
+	maxRecruit:40,
+	unlockedSoldiers:"swordsman,sentinel",
+	power:112
 }
 barracks[4] = {
 	level:4,
-	maxRecruit:80,
-	power:120
+	maxRecruit:60,
+	unlockedSoldiers:"swordsman,sentinel",
+	power:150
 }
 barracks[5] = {
 	level:5,
-	maxRecruit:100,
-	power:360
+	maxRecruit:80,
+	unlockedSoldiers:"swordsman,sentinel,ranger",
+	power:187
 }
 barracks[6] = {
 	level:6,
-	maxRecruit:120,
-	power:600
+	maxRecruit:100,
+	unlockedSoldiers:"swordsman,sentinel,ranger",
+	power:225
 }
 barracks[7] = {
 	level:7,
-	maxRecruit:140,
-	power:840
+	maxRecruit:120,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman",
+	power:262
 }
 barracks[8] = {
 	level:8,
-	maxRecruit:160,
-	power:1080
+	maxRecruit:140,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman",
+	power:300
 }
 barracks[9] = {
 	level:9,
-	maxRecruit:180,
-	power:1320
+	maxRecruit:160,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer",
+	power:337
 }
 barracks[10] = {
 	level:10,
-	maxRecruit:200,
-	power:1560
+	maxRecruit:180,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer",
+	power:375
 }
 barracks[11] = {
 	level:11,
-	maxRecruit:220,
-	power:1800
+	maxRecruit:200,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher",
+	power:562
 }
 barracks[12] = {
 	level:12,
-	maxRecruit:240,
-	power:2040
+	maxRecruit:220,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher",
+	power:750
 }
 barracks[13] = {
 	level:13,
-	maxRecruit:260,
-	power:2280
+	maxRecruit:240,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult",
+	power:1125
 }
 barracks[14] = {
 	level:14,
-	maxRecruit:280,
-	power:2520
+	maxRecruit:260,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult",
+	power:1500
 }
 barracks[15] = {
 	level:15,
-	maxRecruit:300,
-	power:2760
+	maxRecruit:280,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:2250
 }
 barracks[16] = {
 	level:16,
-	maxRecruit:340,
+	maxRecruit:300,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
 	power:3000
 }
 barracks[17] = {
 	level:17,
-	maxRecruit:380,
-	power:3240
+	maxRecruit:320,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:3750
 }
 barracks[18] = {
 	level:18,
-	maxRecruit:420,
-	power:3480
+	maxRecruit:340,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:4500
 }
 barracks[19] = {
 	level:19,
-	maxRecruit:460,
-	power:3720
+	maxRecruit:360,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:5250
 }
 barracks[20] = {
 	level:20,
-	maxRecruit:500,
-	power:3960
+	maxRecruit:380,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:6000
 }
 barracks[21] = {
 	level:21,
-	maxRecruit:540,
-	power:4200
+	maxRecruit:400,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:6750
 }
 barracks[22] = {
 	level:22,
-	maxRecruit:580,
-	power:4440
+	maxRecruit:420,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:10125
 }
 barracks[23] = {
 	level:23,
-	maxRecruit:620,
-	power:4680
+	maxRecruit:440,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:13500
 }
 barracks[24] = {
 	level:24,
-	maxRecruit:660,
-	power:4920
+	maxRecruit:460,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:16875
 }
 barracks[25] = {
 	level:25,
-	maxRecruit:700,
-	power:5160
+	maxRecruit:480,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:22500
 }
 barracks[26] = {
 	level:26,
-	maxRecruit:740,
-	power:5400
+	maxRecruit:500,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:33750
 }
 barracks[27] = {
 	level:27,
-	maxRecruit:780,
-	power:5640
+	maxRecruit:520,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:45000
 }
 barracks[28] = {
 	level:28,
-	maxRecruit:820,
-	power:5880
+	maxRecruit:540,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:60000
 }
 barracks[29] = {
 	level:29,
-	maxRecruit:860,
-	power:6120
+	maxRecruit:560,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:75000
 }
 barracks[30] = {
 	level:30,
-	maxRecruit:900,
-	power:6360
+	maxRecruit:580,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:90000
 }
 barracks[31] = {
 	level:31,
-	maxRecruit:940,
-	power:6600
+	maxRecruit:600,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:105000
 }
 barracks[32] = {
 	level:32,
-	maxRecruit:980,
-	power:6840
+	maxRecruit:640,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:120000
 }
 barracks[33] = {
 	level:33,
-	maxRecruit:1020,
-	power:7080
+	maxRecruit:680,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:135000
 }
 barracks[34] = {
 	level:34,
-	maxRecruit:1060,
-	power:7320
+	maxRecruit:720,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:150000
 }
 barracks[35] = {
 	level:35,
-	maxRecruit:1100,
-	power:7560
+	maxRecruit:760,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:165000
 }
 barracks[36] = {
 	level:36,
-	maxRecruit:1140,
-	power:7800
+	maxRecruit:800,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:187500
 }
 barracks[37] = {
 	level:37,
-	maxRecruit:1180,
-	power:8040
+	maxRecruit:840,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:210000
 }
 barracks[38] = {
 	level:38,
-	maxRecruit:1220,
-	power:8280
+	maxRecruit:880,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:232500
 }
 barracks[39] = {
 	level:39,
-	maxRecruit:1260,
-	power:8520
+	maxRecruit:920,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:255000
 }
 barracks[40] = {
 	level:40,
-	maxRecruit:1300,
-	power:8760
+	maxRecruit:1000,
+	unlockedSoldiers:"swordsman,sentinel,ranger,crossbowman,lancer,horsArcher,catapult,balista",
+	power:337500
 }

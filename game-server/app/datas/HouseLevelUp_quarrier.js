@@ -3,255 +3,483 @@
 var quarrier = []
 module.exports = quarrier
 
-quarrier[0] = {
-	level:0,
-	wood:0,
-	stone:0,
-	iron:0,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:0,
-	citizen:0
-}
 quarrier[1] = {
 	level:1,
-	wood:350,
-	stone:350,
-	iron:350,
+	wood:180,
+	stone:90,
+	iron:180,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:30,
+	buildTime:25,
 	citizen:10
 }
 quarrier[2] = {
 	level:2,
-	wood:700,
-	stone:700,
-	iron:700,
+	wood:432,
+	stone:216,
+	iron:432,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:60,
-	citizen:40
+	buildTime:45,
+	citizen:16
 }
 quarrier[3] = {
 	level:3,
-	wood:2100,
-	stone:2100,
-	iron:2100,
+	wood:864,
+	stone:432,
+	iron:864,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:120,
-	citizen:120
+	buildTime:108,
+	citizen:22
 }
 quarrier[4] = {
 	level:4,
-	wood:4200,
-	stone:4200,
-	iron:4200,
+	wood:1296,
+	stone:648,
+	iron:1296,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:180,
-	citizen:360
+	buildTime:216,
+	citizen:32
 }
 quarrier[5] = {
 	level:5,
-	wood:12600,
-	stone:12600,
-	iron:12600,
+	wood:1728,
+	stone:864,
+	iron:1728,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:240,
-	citizen:600
+	buildTime:432,
+	citizen:44
 }
 quarrier[6] = {
 	level:6,
-	wood:25200,
-	stone:25200,
-	iron:25200,
+	wood:2160,
+	stone:1080,
+	iron:2160,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:864,
+	citizen:58
+}
+quarrier[7] = {
+	level:7,
+	wood:2592,
+	stone:1296,
+	iron:2592,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1296,
+	citizen:76
+}
+quarrier[8] = {
+	level:8,
+	wood:3370,
+	stone:1685,
+	iron:3370,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:2592,
+	citizen:94
+}
+quarrier[9] = {
+	level:9,
+	wood:8295,
+	stone:4148,
+	iron:8295,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:5184,
+	citizen:116
+}
+quarrier[10] = {
+	level:10,
+	wood:15034,
+	stone:7517,
+	iron:15034,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:7776,
+	citizen:140
+}
+quarrier[11] = {
+	level:11,
+	wood:38155,
+	stone:19078,
+	iron:38155,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:10368,
+	citizen:166
+}
+quarrier[12] = {
+	level:12,
+	wood:55988,
+	stone:27994,
+	iron:55988,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:12960,
+	citizen:196
+}
+quarrier[13] = {
+	level:13,
+	wood:77968,
+	stone:38984,
+	iron:77968,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:15552,
+	citizen:226
+}
+quarrier[14] = {
+	level:14,
+	wood:104510,
+	stone:52255,
+	iron:104510,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:18144,
+	citizen:260
+}
+quarrier[15] = {
+	level:15,
+	wood:136029,
+	stone:68015,
+	iron:136029,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:20736,
+	citizen:296
+}
+quarrier[16] = {
+	level:16,
+	wood:200173,
+	stone:100087,
+	iron:200173,
 	blueprints:1,
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:630,
-	citizen:1200
+	buildTime:23328,
+	citizen:334
 }
-quarrier[7] = {
-	level:7,
-	wood:37800,
-	stone:37800,
-	iron:37800,
+quarrier[17] = {
+	level:17,
+	wood:245568,
+	stone:122784,
+	iron:245568,
+	blueprints:1,
+	tools:1,
+	tiles:1,
+	pulley:1,
+	buildTime:25920,
+	citizen:376
+}
+quarrier[18] = {
+	level:18,
+	wood:294740,
+	stone:147370,
+	iron:294740,
+	blueprints:2,
+	tools:2,
+	tiles:2,
+	pulley:2,
+	buildTime:28512,
+	citizen:418
+}
+quarrier[19] = {
+	level:19,
+	wood:344205,
+	stone:172103,
+	iron:344205,
+	blueprints:3,
+	tools:3,
+	tiles:3,
+	pulley:3,
+	buildTime:31104,
+	citizen:464
+}
+quarrier[20] = {
+	level:20,
+	wood:390484,
+	stone:195242,
+	iron:390484,
 	blueprints:5,
 	tools:5,
 	tiles:5,
 	pulley:5,
-	buildTime:945,
-	citizen:1800
+	buildTime:33696,
+	citizen:512
 }
-quarrier[8] = {
-	level:8,
-	wood:50400,
-	stone:50400,
-	iron:50400,
-	blueprints:20,
-	tools:20,
-	tiles:20,
-	pulley:20,
-	buildTime:1260,
-	citizen:2400
+quarrier[21] = {
+	level:21,
+	wood:656530,
+	stone:328265,
+	iron:656530,
+	blueprints:8,
+	tools:8,
+	tiles:8,
+	pulley:8,
+	buildTime:36288,
+	citizen:562
 }
-quarrier[9] = {
-	level:9,
-	wood:62999,
-	stone:62999,
-	iron:62999,
-	blueprints:60,
-	tools:60,
-	tiles:60,
-	pulley:60,
-	buildTime:1890,
-	citizen:3000
+quarrier[22] = {
+	level:22,
+	wood:724973,
+	stone:362487,
+	iron:724973,
+	blueprints:12,
+	tools:12,
+	tiles:12,
+	pulley:12,
+	buildTime:38880,
+	citizen:616
 }
-quarrier[10] = {
-	level:10,
-	wood:75600,
-	stone:75600,
-	iron:75600,
-	blueprints:180,
-	tools:180,
-	tiles:180,
-	pulley:180,
-	buildTime:2520,
-	citizen:3600
+quarrier[23] = {
+	level:23,
+	wood:783931,
+	stone:391966,
+	iron:783931,
+	blueprints:18,
+	tools:18,
+	tiles:18,
+	pulley:18,
+	buildTime:41472,
+	citizen:670
 }
-quarrier[11] = {
-	level:11,
-	wood:88200,
-	stone:88200,
-	iron:88200,
-	blueprints:300,
-	tools:300,
-	tiles:300,
-	pulley:300,
-	buildTime:5040,
-	citizen:4200
+quarrier[24] = {
+	level:24,
+	wood:903432,
+	stone:451716,
+	iron:903432,
+	blueprints:26,
+	tools:26,
+	tiles:26,
+	pulley:26,
+	buildTime:46656,
+	citizen:728
 }
-quarrier[12] = {
-	level:12,
-	wood:100800,
-	stone:100800,
-	iron:100800,
-	blueprints:600,
-	tools:600,
-	tiles:600,
-	pulley:600,
-	buildTime:7560,
-	citizen:4800
+quarrier[25] = {
+	level:25,
+	wood:1018996,
+	stone:509498,
+	iron:1018996,
+	blueprints:35,
+	tools:35,
+	tiles:35,
+	pulley:35,
+	buildTime:51840,
+	citizen:788
 }
-quarrier[13] = {
-	level:13,
-	wood:113400,
-	stone:113400,
-	iron:113400,
-	blueprints:900,
-	tools:900,
-	tiles:900,
-	pulley:900,
-	buildTime:10080,
-	citizen:5400
+quarrier[26] = {
+	level:26,
+	wood:1756098,
+	stone:878049,
+	iron:1756098,
+	blueprints:47,
+	tools:47,
+	tiles:47,
+	pulley:47,
+	buildTime:57024,
+	citizen:850
 }
-quarrier[14] = {
-	level:14,
-	wood:125999,
-	stone:125999,
-	iron:125999,
-	blueprints:1200,
-	tools:1200,
-	tiles:1200,
-	pulley:1200,
-	buildTime:15120,
-	citizen:6000
+quarrier[27] = {
+	level:27,
+	wood:1965489,
+	stone:982745,
+	iron:1965489,
+	blueprints:61,
+	tools:61,
+	tiles:61,
+	pulley:61,
+	buildTime:62208,
+	citizen:916
 }
-quarrier[15] = {
-	level:15,
-	wood:168000,
-	stone:168000,
-	iron:168000,
-	blueprints:1500,
-	tools:1500,
-	tiles:1500,
-	pulley:1500,
-	buildTime:20160,
-	citizen:6600
+quarrier[28] = {
+	level:28,
+	wood:2174104,
+	stone:1087052,
+	iron:2174104,
+	blueprints:78,
+	tools:78,
+	tiles:78,
+	pulley:78,
+	buildTime:67392,
+	citizen:982
 }
-quarrier[16] = {
-	level:16,
-	wood:210000,
-	stone:210000,
-	iron:210000,
-	blueprints:1800,
-	tools:1800,
-	tiles:1800,
-	pulley:1800,
-	buildTime:25200,
-	citizen:7200
+quarrier[29] = {
+	level:29,
+	wood:2379876,
+	stone:1189938,
+	iron:2379876,
+	blueprints:98,
+	tools:98,
+	tiles:98,
+	pulley:98,
+	buildTime:72576,
+	citizen:1052
 }
-quarrier[17] = {
-	level:17,
-	wood:251999,
-	stone:251999,
-	iron:251999,
-	blueprints:2100,
-	tools:2100,
-	tiles:2100,
-	pulley:2100,
-	buildTime:30240,
-	citizen:7800
+quarrier[30] = {
+	level:30,
+	wood:2580743,
+	stone:1290372,
+	iron:2580743,
+	blueprints:121,
+	tools:121,
+	tiles:121,
+	pulley:121,
+	buildTime:77760,
+	citizen:1124
 }
-quarrier[18] = {
-	level:18,
-	wood:294000,
-	stone:294000,
-	iron:294000,
-	blueprints:2400,
-	tools:2400,
-	tiles:2400,
-	pulley:2400,
-	buildTime:40320,
-	citizen:8400
+quarrier[31] = {
+	level:31,
+	wood:4246249,
+	stone:2123125,
+	iron:4246249,
+	blueprints:148,
+	tools:148,
+	tiles:148,
+	pulley:148,
+	buildTime:82944,
+	citizen:1198
 }
-quarrier[19] = {
-	level:19,
-	wood:336000,
-	stone:336000,
-	iron:336000,
-	blueprints:2700,
-	tools:2700,
-	tiles:2700,
-	pulley:2700,
-	buildTime:50400,
-	citizen:9000
+quarrier[32] = {
+	level:32,
+	wood:4623355,
+	stone:2311678,
+	iron:4623355,
+	blueprints:179,
+	tools:179,
+	tiles:179,
+	pulley:179,
+	buildTime:88128,
+	citizen:1276
 }
-quarrier[20] = {
-	level:20,
-	wood:630000,
-	stone:630000,
-	iron:630000,
-	blueprints:3000,
-	tools:3000,
-	tiles:3000,
-	pulley:3000,
-	buildTime:60480,
-	citizen:9600
+quarrier[33] = {
+	level:33,
+	wood:5004475,
+	stone:2502238,
+	iron:5004475,
+	blueprints:213,
+	tools:213,
+	tiles:213,
+	pulley:213,
+	buildTime:93312,
+	citizen:1354
+}
+quarrier[34] = {
+	level:34,
+	wood:5388098,
+	stone:2694049,
+	iron:5388098,
+	blueprints:252,
+	tools:252,
+	tiles:252,
+	pulley:252,
+	buildTime:98496,
+	citizen:1436
+}
+quarrier[35] = {
+	level:35,
+	wood:5772711,
+	stone:2886356,
+	iron:5772711,
+	blueprints:295,
+	tools:295,
+	tiles:295,
+	pulley:295,
+	buildTime:103680,
+	citizen:1520
+}
+quarrier[36] = {
+	level:36,
+	wood:9070004,
+	stone:4535002,
+	iron:9070004,
+	blueprints:343,
+	tools:343,
+	tiles:343,
+	pulley:343,
+	buildTime:108864,
+	citizen:1606
+}
+quarrier[37] = {
+	level:37,
+	wood:9759578,
+	stone:4879789,
+	iron:9759578,
+	blueprints:396,
+	tools:396,
+	tiles:396,
+	pulley:396,
+	buildTime:114048,
+	citizen:1696
+}
+quarrier[38] = {
+	level:38,
+	wood:10465722,
+	stone:5232861,
+	iron:10465722,
+	blueprints:454,
+	tools:454,
+	tiles:454,
+	pulley:454,
+	buildTime:119232,
+	citizen:1786
+}
+quarrier[39] = {
+	level:39,
+	wood:11187546,
+	stone:5593773,
+	iron:11187546,
+	blueprints:518,
+	tools:518,
+	tiles:518,
+	pulley:518,
+	buildTime:124416,
+	citizen:1880
+}
+quarrier[40] = {
+	level:40,
+	wood:16476000,
+	stone:8238000,
+	iron:16476000,
+	blueprints:590,
+	tools:590,
+	tiles:590,
+	pulley:590,
+	buildTime:129600,
+	citizen:2000
 }

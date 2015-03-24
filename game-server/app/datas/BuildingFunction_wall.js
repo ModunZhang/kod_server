@@ -5,241 +5,241 @@ module.exports = wall
 
 wall[1] = {
 	level:1,
-	wallHp:1000,
-	wallRecovery:250,
-	power:10
+	wallHp:496,
+	wallRecovery:124,
+	power:40
 }
 wall[2] = {
 	level:2,
-	wallHp:2000,
-	wallRecovery:500,
-	power:20
+	wallHp:833,
+	wallRecovery:208,
+	power:80
 }
 wall[3] = {
 	level:3,
-	wallHp:3000,
-	wallRecovery:750,
-	power:60
+	wallHp:1065,
+	wallRecovery:266,
+	power:120
 }
 wall[4] = {
 	level:4,
-	wallHp:4000,
-	wallRecovery:1000,
-	power:120
+	wallHp:1224,
+	wallRecovery:306,
+	power:160
 }
 wall[5] = {
 	level:5,
-	wallHp:5000,
-	wallRecovery:1250,
-	power:360
+	wallHp:1333,
+	wallRecovery:333,
+	power:200
 }
 wall[6] = {
 	level:6,
-	wallHp:6000,
-	wallRecovery:1500,
-	power:600
+	wallHp:1406,
+	wallRecovery:352,
+	power:240
 }
 wall[7] = {
 	level:7,
-	wallHp:7000,
-	wallRecovery:1750,
-	power:840
+	wallHp:1453,
+	wallRecovery:363,
+	power:280
 }
 wall[8] = {
 	level:8,
-	wallHp:8000,
-	wallRecovery:2000,
-	power:1080
+	wallHp:1481,
+	wallRecovery:370,
+	power:320
 }
 wall[9] = {
 	level:9,
-	wallHp:9000,
-	wallRecovery:2250,
-	power:1320
+	wallHp:1496,
+	wallRecovery:374,
+	power:360
 }
 wall[10] = {
 	level:10,
-	wallHp:10000,
-	wallRecovery:2500,
-	power:1560
+	wallHp:1500,
+	wallRecovery:375,
+	power:400
 }
 wall[11] = {
 	level:11,
-	wallHp:11000,
-	wallRecovery:2750,
-	power:1800
+	wallHp:2721,
+	wallRecovery:680,
+	power:600
 }
 wall[12] = {
 	level:12,
-	wallHp:12000,
-	wallRecovery:3000,
-	power:2040
+	wallHp:2975,
+	wallRecovery:744,
+	power:800
 }
 wall[13] = {
 	level:13,
-	wallHp:13000,
-	wallRecovery:3250,
-	power:2280
+	wallHp:3176,
+	wallRecovery:794,
+	power:1200
 }
 wall[14] = {
 	level:14,
-	wallHp:14000,
-	wallRecovery:3500,
-	power:2520
+	wallHp:3333,
+	wallRecovery:833,
+	power:1600
 }
 wall[15] = {
 	level:15,
-	wallHp:16000,
-	wallRecovery:4000,
-	power:2760
+	wallHp:3456,
+	wallRecovery:864,
+	power:2400
 }
 wall[16] = {
 	level:16,
-	wallHp:18000,
-	wallRecovery:4500,
-	power:3000
+	wallHp:3550,
+	wallRecovery:888,
+	power:3200
 }
 wall[17] = {
 	level:17,
-	wallHp:20000,
-	wallRecovery:5000,
-	power:3240
+	wallHp:3621,
+	wallRecovery:905,
+	power:4000
 }
 wall[18] = {
 	level:18,
-	wallHp:22000,
-	wallRecovery:5500,
-	power:3480
+	wallHp:3673,
+	wallRecovery:918,
+	power:4800
 }
 wall[19] = {
 	level:19,
-	wallHp:24000,
-	wallRecovery:6000,
-	power:3720
+	wallHp:3710,
+	wallRecovery:927,
+	power:5600
 }
 wall[20] = {
 	level:20,
-	wallHp:26000,
-	wallRecovery:6500,
-	power:3960
+	wallHp:3733,
+	wallRecovery:933,
+	power:6400
 }
 wall[21] = {
 	level:21,
-	wallHp:28000,
-	wallRecovery:7000,
-	power:4200
+	wallHp:6993,
+	wallRecovery:1748,
+	power:7200
 }
 wall[22] = {
 	level:22,
-	wallHp:30000,
-	wallRecovery:7500,
-	power:4440
+	wallHp:7500,
+	wallRecovery:1875,
+	power:10800
 }
 wall[23] = {
 	level:23,
-	wallHp:32000,
-	wallRecovery:8000,
-	power:4680
+	wallHp:7934,
+	wallRecovery:1983,
+	power:14400
 }
 wall[24] = {
 	level:24,
-	wallHp:34000,
-	wallRecovery:8500,
-	power:4920
+	wallHp:8304,
+	wallRecovery:2076,
+	power:18000
 }
 wall[25] = {
 	level:25,
-	wallHp:36000,
-	wallRecovery:9000,
-	power:5160
+	wallHp:8620,
+	wallRecovery:2155,
+	power:24000
 }
 wall[26] = {
 	level:26,
-	wallHp:38000,
-	wallRecovery:9500,
-	power:5400
+	wallHp:8889,
+	wallRecovery:2222,
+	power:36000
 }
 wall[27] = {
 	level:27,
-	wallHp:40000,
-	wallRecovery:10000,
-	power:5640
+	wallHp:9116,
+	wallRecovery:2279,
+	power:48000
 }
 wall[28] = {
 	level:28,
-	wallHp:42000,
-	wallRecovery:10500,
-	power:5880
+	wallHp:9307,
+	wallRecovery:2327,
+	power:64000
 }
 wall[29] = {
 	level:29,
-	wallHp:44000,
-	wallRecovery:11000,
-	power:6120
+	wallHp:9467,
+	wallRecovery:2367,
+	power:80000
 }
 wall[30] = {
 	level:30,
-	wallHp:46000,
-	wallRecovery:11500,
-	power:6360
+	wallHp:9600,
+	wallRecovery:2400,
+	power:96000
 }
 wall[31] = {
 	level:31,
-	wallHp:48000,
-	wallRecovery:12000,
-	power:6600
+	wallHp:18275,
+	wallRecovery:4569,
+	power:112000
 }
 wall[32] = {
 	level:32,
-	wallHp:50000,
-	wallRecovery:12500,
-	power:6840
+	wallHp:19592,
+	wallRecovery:4898,
+	power:128000
 }
 wall[33] = {
 	level:33,
-	wallHp:52000,
-	wallRecovery:13000,
-	power:7080
+	wallHp:20768,
+	wallRecovery:5192,
+	power:144000
 }
 wall[34] = {
 	level:34,
-	wallHp:54000,
-	wallRecovery:13500,
-	power:7320
+	wallHp:21818,
+	wallRecovery:5455,
+	power:160000
 }
 wall[35] = {
 	level:35,
-	wallHp:56000,
-	wallRecovery:14000,
-	power:7560
+	wallHp:22756,
+	wallRecovery:5689,
+	power:176000
 }
 wall[36] = {
 	level:36,
-	wallHp:58000,
-	wallRecovery:14500,
-	power:7800
+	wallHp:23592,
+	wallRecovery:5898,
+	power:200000
 }
 wall[37] = {
 	level:37,
-	wallHp:60000,
-	wallRecovery:15000,
-	power:8040
+	wallHp:24337,
+	wallRecovery:6084,
+	power:224000
 }
 wall[38] = {
 	level:38,
-	wallHp:62000,
-	wallRecovery:15500,
-	power:8280
+	wallHp:25000,
+	wallRecovery:6250,
+	power:248000
 }
 wall[39] = {
 	level:39,
-	wallHp:64000,
-	wallRecovery:16000,
-	power:8520
+	wallHp:25589,
+	wallRecovery:6397,
+	power:272000
 }
 wall[40] = {
 	level:40,
-	wallHp:66000,
-	wallRecovery:16500,
-	power:8760
+	wallHp:26112,
+	wallRecovery:6528,
+	power:360000
 }

@@ -2278,3 +2278,46 @@ Utils.createDevice = function(deviceId, userId){
 Utils.willFinished = function(interval){
 	return interval - 5000 <= Date.now()
 }
+
+/**
+ * 根据建筑类型获取所有相关建筑
+ * @param playerDoc
+ * @param buildingType
+ * @returns {Array}
+ */
+Utils.getPlayerBuildingByType = function(playerDoc, buildingType){
+	return _.find(playerDoc.buildings, function(building){
+		return _.isEqual(buildingType, building.type)
+	})
+}
+
+/**
+ * 根据建筑类型获取所有相关建筑
+ * @param playerDoc
+ * @param buildingType
+ * @returns {*}
+ */
+Utils.getPlayerBuildingsByType = function(playerDoc, buildingType){
+	return _.filter(playerDoc.buildings, function(building){
+		return _.isEqual(buildingType, building.type)
+	})
+}
+
+/**
+ * 根据小屋类型获取所有相关小屋
+ * @param playerDoc
+ * @param houseType
+ * @returns {Array}
+ */
+Utils.getPlayerHousesByType = function(playerDoc, houseType){
+	var houses = []
+	_.each(playerDoc.buildings, function(building){
+		_.each(building.houses, function(house){
+			if(_.isEqual(houseType, house.type)){
+				houses.push(house)
+			}
+		})
+	})
+
+	return houses
+}

@@ -945,6 +945,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		playerDoc = doc
 		var building = playerDoc.buildings.location_5
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
+		if(DataUtils.isPlayerSoldierLocked(playerDoc, soldierName)) return Promise.reject(ErrorUtils.theSoldierIsLocked(playerId, soldierName))
 		if(!finishNow && playerDoc.soldierEvents.length > 0) return Promise.reject(ErrorUtils.soldiersAreRecruitingNow(playerId, soldierName, count))
 		if(count > DataUtils.getPlayerSoldierMaxRecruitCount(playerDoc, soldierName)) return Promise.reject(ErrorUtils.recruitTooMuchOnce(playerId, soldierName, count))
 		var gemUsed = 0

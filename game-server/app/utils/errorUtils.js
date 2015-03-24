@@ -417,6 +417,16 @@ Utils.materialEventNotExistOrIsMakeing = function(playerId, eventId){
 }
 
 /**
+ * 此士兵还处于锁定状态
+ * @param playerId
+ * @param soldierName
+ */
+Utils.theSoldierIsLocked = function(playerId, soldierName){
+	var config = Errors.theSoldierIsLocked
+	return CreateError(config, {playerId:playerId, soldierName:soldierName})
+}
+
+/**
  * 已有士兵正在被招募
  * @param playerId
  * @param soldierName

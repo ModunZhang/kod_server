@@ -3,23 +3,11 @@
 var woodcutter = []
 module.exports = woodcutter
 
-woodcutter[0] = {
-	level:0,
-	wood:0,
-	stone:0,
-	iron:0,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:0,
-	citizen:0
-}
 woodcutter[1] = {
 	level:1,
-	wood:300,
-	stone:300,
-	iron:300,
+	wood:86,
+	stone:213,
+	iron:128,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -29,229 +17,469 @@ woodcutter[1] = {
 }
 woodcutter[2] = {
 	level:2,
-	wood:600,
-	stone:600,
-	iron:600,
+	wood:205,
+	stone:511,
+	iron:306,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:50,
-	citizen:40
+	buildTime:44,
+	citizen:16
 }
 woodcutter[3] = {
 	level:3,
-	wood:1800,
-	stone:1800,
-	iron:1800,
+	wood:409,
+	stone:1021,
+	iron:612,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:110,
-	citizen:120
+	buildTime:102,
+	citizen:22
 }
 woodcutter[4] = {
 	level:4,
-	wood:3600,
-	stone:3600,
-	iron:3600,
+	wood:612,
+	stone:1530,
+	iron:918,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:170,
-	citizen:360
+	buildTime:204,
+	citizen:32
 }
 woodcutter[5] = {
 	level:5,
-	wood:10800,
-	stone:10800,
-	iron:10800,
+	wood:817,
+	stone:2041,
+	iron:1224,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:230,
-	citizen:600
+	buildTime:408,
+	citizen:44
 }
 woodcutter[6] = {
 	level:6,
-	wood:21600,
-	stone:21600,
-	iron:21600,
+	wood:1020,
+	stone:2550,
+	iron:1530,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:816,
+	citizen:58
+}
+woodcutter[7] = {
+	level:7,
+	wood:1224,
+	stone:3060,
+	iron:1836,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1224,
+	citizen:76
+}
+woodcutter[8] = {
+	level:8,
+	wood:1592,
+	stone:3979,
+	iron:2387,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:2448,
+	citizen:94
+}
+woodcutter[9] = {
+	level:9,
+	wood:3917,
+	stone:9792,
+	iron:5876,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:4896,
+	citizen:116
+}
+woodcutter[10] = {
+	level:10,
+	wood:7100,
+	stone:17748,
+	iron:10649,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:7344,
+	citizen:140
+}
+woodcutter[11] = {
+	level:11,
+	wood:18018,
+	stone:45044,
+	iron:27026,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:9792,
+	citizen:166
+}
+woodcutter[12] = {
+	level:12,
+	wood:26439,
+	stone:66096,
+	iron:39658,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:12240,
+	citizen:196
+}
+woodcutter[13] = {
+	level:13,
+	wood:36818,
+	stone:92045,
+	iron:55227,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:14688,
+	citizen:226
+}
+woodcutter[14] = {
+	level:14,
+	wood:49352,
+	stone:123380,
+	iron:74028,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:17136,
+	citizen:260
+}
+woodcutter[15] = {
+	level:15,
+	wood:64236,
+	stone:160589,
+	iron:96354,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:19584,
+	citizen:296
+}
+woodcutter[16] = {
+	level:16,
+	wood:94082,
+	stone:235205,
+	iron:141123,
 	blueprints:1,
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:540,
-	citizen:1200
+	buildTime:22032,
+	citizen:334
 }
-woodcutter[7] = {
-	level:7,
-	wood:32400,
-	stone:32400,
-	iron:32400,
+woodcutter[17] = {
+	level:17,
+	wood:115296,
+	stone:288240,
+	iron:172944,
+	blueprints:1,
+	tools:1,
+	tiles:1,
+	pulley:1,
+	buildTime:24480,
+	citizen:376
+}
+woodcutter[18] = {
+	level:18,
+	wood:138183,
+	stone:345456,
+	iron:207274,
+	blueprints:2,
+	tools:2,
+	tiles:2,
+	pulley:2,
+	buildTime:26928,
+	citizen:418
+}
+woodcutter[19] = {
+	level:19,
+	wood:160986,
+	stone:402465,
+	iron:241479,
+	blueprints:3,
+	tools:3,
+	tiles:3,
+	pulley:3,
+	buildTime:29376,
+	citizen:464
+}
+woodcutter[20] = {
+	level:20,
+	wood:181951,
+	stone:454876,
+	iron:272926,
 	blueprints:5,
 	tools:5,
 	tiles:5,
 	pulley:5,
-	buildTime:810,
-	citizen:1800
+	buildTime:31824,
+	citizen:512
 }
-woodcutter[8] = {
-	level:8,
-	wood:43200,
-	stone:43200,
-	iron:43200,
-	blueprints:20,
-	tools:20,
-	tiles:20,
-	pulley:20,
-	buildTime:1080,
-	citizen:2400
+woodcutter[21] = {
+	level:21,
+	wood:306251,
+	stone:765626,
+	iron:459376,
+	blueprints:8,
+	tools:8,
+	tiles:8,
+	pulley:8,
+	buildTime:34272,
+	citizen:562
 }
-woodcutter[9] = {
-	level:9,
-	wood:54000,
-	stone:54000,
-	iron:54000,
-	blueprints:60,
-	tools:60,
-	tiles:60,
-	pulley:60,
-	buildTime:1620,
-	citizen:3000
+woodcutter[22] = {
+	level:22,
+	wood:336682,
+	stone:841704,
+	iron:505023,
+	blueprints:12,
+	tools:12,
+	tiles:12,
+	pulley:12,
+	buildTime:36720,
+	citizen:616
 }
-woodcutter[10] = {
-	level:10,
-	wood:64800,
-	stone:64800,
-	iron:64800,
-	blueprints:180,
-	tools:180,
-	tiles:180,
-	pulley:180,
-	buildTime:2160,
-	citizen:3600
+woodcutter[23] = {
+	level:23,
+	wood:361968,
+	stone:904919,
+	iron:542952,
+	blueprints:18,
+	tools:18,
+	tiles:18,
+	pulley:18,
+	buildTime:39168,
+	citizen:670
 }
-woodcutter[11] = {
-	level:11,
-	wood:75600,
-	stone:75600,
-	iron:75600,
-	blueprints:300,
-	tools:300,
-	tiles:300,
-	pulley:300,
-	buildTime:4320,
-	citizen:4200
+woodcutter[24] = {
+	level:24,
+	wood:415065,
+	stone:1037663,
+	iron:622598,
+	blueprints:26,
+	tools:26,
+	tiles:26,
+	pulley:26,
+	buildTime:44064,
+	citizen:728
 }
-woodcutter[12] = {
-	level:12,
-	wood:86400,
-	stone:86400,
-	iron:86400,
-	blueprints:600,
-	tools:600,
-	tiles:600,
-	pulley:600,
-	buildTime:6480,
-	citizen:4800
+woodcutter[25] = {
+	level:25,
+	wood:465415,
+	stone:1163537,
+	iron:698122,
+	blueprints:35,
+	tools:35,
+	tiles:35,
+	pulley:35,
+	buildTime:48960,
+	citizen:788
 }
-woodcutter[13] = {
-	level:13,
-	wood:97200,
-	stone:97200,
-	iron:97200,
-	blueprints:900,
-	tools:900,
-	tiles:900,
-	pulley:900,
-	buildTime:8640,
-	citizen:5400
+woodcutter[26] = {
+	level:26,
+	wood:808269,
+	stone:2020671,
+	iron:1212403,
+	blueprints:47,
+	tools:47,
+	tiles:47,
+	pulley:47,
+	buildTime:53856,
+	citizen:850
 }
-woodcutter[14] = {
-	level:14,
-	wood:108000,
-	stone:108000,
-	iron:108000,
-	blueprints:1200,
-	tools:1200,
-	tiles:1200,
-	pulley:1200,
-	buildTime:12960,
-	citizen:6000
+woodcutter[27] = {
+	level:27,
+	wood:900815,
+	stone:2252036,
+	iron:1351222,
+	blueprints:61,
+	tools:61,
+	tiles:61,
+	pulley:61,
+	buildTime:58752,
+	citizen:916
 }
-woodcutter[15] = {
-	level:15,
-	wood:144000,
-	stone:144000,
-	iron:144000,
-	blueprints:1500,
-	tools:1500,
-	tiles:1500,
-	pulley:1500,
-	buildTime:17280,
-	citizen:6600
+woodcutter[28] = {
+	level:28,
+	wood:991771,
+	stone:2479428,
+	iron:1487657,
+	blueprints:78,
+	tools:78,
+	tiles:78,
+	pulley:78,
+	buildTime:63648,
+	citizen:982
 }
-woodcutter[16] = {
-	level:16,
-	wood:180000,
-	stone:180000,
-	iron:180000,
-	blueprints:1800,
-	tools:1800,
-	tiles:1800,
-	pulley:1800,
-	buildTime:21600,
-	citizen:7200
+woodcutter[29] = {
+	level:29,
+	wood:1080053,
+	stone:2700132,
+	iron:1620079,
+	blueprints:98,
+	tools:98,
+	tiles:98,
+	pulley:98,
+	buildTime:68544,
+	citizen:1052
 }
-woodcutter[17] = {
-	level:17,
-	wood:216000,
-	stone:216000,
-	iron:216000,
-	blueprints:2100,
-	tools:2100,
-	tiles:2100,
-	pulley:2100,
-	buildTime:25920,
-	citizen:7800
+woodcutter[30] = {
+	level:30,
+	wood:1164573,
+	stone:2911432,
+	iron:1746860,
+	blueprints:121,
+	tools:121,
+	tiles:121,
+	pulley:121,
+	buildTime:73440,
+	citizen:1124
 }
-woodcutter[18] = {
-	level:18,
-	wood:252000,
-	stone:252000,
-	iron:252000,
-	blueprints:2400,
-	tools:2400,
-	tiles:2400,
-	pulley:2400,
-	buildTime:34560,
-	citizen:8400
+woodcutter[31] = {
+	level:31,
+	wood:1939174,
+	stone:4847933,
+	iron:2908760,
+	blueprints:148,
+	tools:148,
+	tiles:148,
+	pulley:148,
+	buildTime:78336,
+	citizen:1198
 }
-woodcutter[19] = {
-	level:19,
-	wood:288000,
-	stone:288000,
-	iron:288000,
-	blueprints:2700,
-	tools:2700,
-	tiles:2700,
-	pulley:2700,
-	buildTime:43200,
-	citizen:9000
+woodcutter[32] = {
+	level:32,
+	wood:2103696,
+	stone:5259239,
+	iron:3155544,
+	blueprints:179,
+	tools:179,
+	tiles:179,
+	pulley:179,
+	buildTime:83232,
+	citizen:1276
 }
-woodcutter[20] = {
-	level:20,
-	wood:540000,
-	stone:540000,
-	iron:540000,
-	blueprints:3000,
-	tools:3000,
-	tiles:3000,
-	pulley:3000,
-	buildTime:51840,
-	citizen:9600
+woodcutter[33] = {
+	level:33,
+	wood:2268336,
+	stone:5670839,
+	iron:3402504,
+	blueprints:213,
+	tools:213,
+	tiles:213,
+	pulley:213,
+	buildTime:88128,
+	citizen:1354
+}
+woodcutter[34] = {
+	level:34,
+	wood:2432269,
+	stone:6080671,
+	iron:3648403,
+	blueprints:252,
+	tools:252,
+	tiles:252,
+	pulley:252,
+	buildTime:93024,
+	citizen:1436
+}
+woodcutter[35] = {
+	level:35,
+	wood:2594669,
+	stone:6486672,
+	iron:3892004,
+	blueprints:295,
+	tools:295,
+	tiles:295,
+	pulley:295,
+	buildTime:97920,
+	citizen:1520
+}
+woodcutter[36] = {
+	level:36,
+	wood:4130391,
+	stone:10325976,
+	iron:6195586,
+	blueprints:343,
+	tools:343,
+	tiles:343,
+	pulley:343,
+	buildTime:102816,
+	citizen:1606
+}
+woodcutter[37] = {
+	level:37,
+	wood:4432468,
+	stone:11081168,
+	iron:6648701,
+	blueprints:396,
+	tools:396,
+	tiles:396,
+	pulley:396,
+	buildTime:107712,
+	citizen:1696
+}
+woodcutter[38] = {
+	level:38,
+	wood:4740036,
+	stone:11850088,
+	iron:7110053,
+	blueprints:454,
+	tools:454,
+	tiles:454,
+	pulley:454,
+	buildTime:112608,
+	citizen:1786
+}
+woodcutter[39] = {
+	level:39,
+	wood:5052564,
+	stone:12631408,
+	iron:7578845,
+	blueprints:518,
+	tools:518,
+	tiles:518,
+	pulley:518,
+	buildTime:117504,
+	citizen:1880
+}
+woodcutter[40] = {
+	level:40,
+	wood:7522001,
+	stone:18805001,
+	iron:11283001,
+	blueprints:590,
+	tools:590,
+	tiles:590,
+	pulley:590,
+	buildTime:122400,
+	citizen:2000
 }

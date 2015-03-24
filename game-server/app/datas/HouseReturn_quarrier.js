@@ -12,141 +12,281 @@ quarrier[0] = {
 }
 quarrier[1] = {
 	level:1,
-	wood:35,
-	stone:35,
-	iron:35,
+	wood:90,
+	stone:45,
+	iron:90,
 	citizen:10
 }
 quarrier[2] = {
 	level:2,
-	wood:70,
-	stone:70,
-	iron:70,
-	citizen:40
+	wood:216,
+	stone:108,
+	iron:216,
+	citizen:16
 }
 quarrier[3] = {
 	level:3,
-	wood:210,
-	stone:210,
-	iron:210,
-	citizen:120
+	wood:432,
+	stone:216,
+	iron:432,
+	citizen:22
 }
 quarrier[4] = {
 	level:4,
-	wood:420,
-	stone:420,
-	iron:420,
-	citizen:360
+	wood:648,
+	stone:324,
+	iron:648,
+	citizen:32
 }
 quarrier[5] = {
 	level:5,
-	wood:1260,
-	stone:1260,
-	iron:1260,
-	citizen:600
+	wood:864,
+	stone:432,
+	iron:864,
+	citizen:44
 }
 quarrier[6] = {
 	level:6,
-	wood:2520,
-	stone:2520,
-	iron:2520,
-	citizen:1200
+	wood:1080,
+	stone:540,
+	iron:1080,
+	citizen:58
 }
 quarrier[7] = {
 	level:7,
-	wood:3780,
-	stone:3780,
-	iron:3780,
-	citizen:1800
+	wood:1296,
+	stone:648,
+	iron:1296,
+	citizen:76
 }
 quarrier[8] = {
 	level:8,
-	wood:5040,
-	stone:5040,
-	iron:5040,
-	citizen:2400
+	wood:1685,
+	stone:843,
+	iron:1685,
+	citizen:94
 }
 quarrier[9] = {
 	level:9,
-	wood:6299,
-	stone:6299,
-	iron:6299,
-	citizen:3000
+	wood:4148,
+	stone:2074,
+	iron:4148,
+	citizen:116
 }
 quarrier[10] = {
 	level:10,
-	wood:7560,
-	stone:7560,
-	iron:7560,
-	citizen:3600
+	wood:7517,
+	stone:3759,
+	iron:7517,
+	citizen:140
 }
 quarrier[11] = {
 	level:11,
-	wood:8820,
-	stone:8820,
-	iron:8820,
-	citizen:4200
+	wood:19078,
+	stone:9539,
+	iron:19078,
+	citizen:166
 }
 quarrier[12] = {
 	level:12,
-	wood:10080,
-	stone:10080,
-	iron:10080,
-	citizen:4800
+	wood:27994,
+	stone:13997,
+	iron:27994,
+	citizen:196
 }
 quarrier[13] = {
 	level:13,
-	wood:11340,
-	stone:11340,
-	iron:11340,
-	citizen:5400
+	wood:38984,
+	stone:19492,
+	iron:38984,
+	citizen:226
 }
 quarrier[14] = {
 	level:14,
-	wood:12599,
-	stone:12599,
-	iron:12599,
-	citizen:6000
+	wood:52255,
+	stone:26128,
+	iron:52255,
+	citizen:260
 }
 quarrier[15] = {
 	level:15,
-	wood:16800,
-	stone:16800,
-	iron:16800,
-	citizen:6600
+	wood:68015,
+	stone:34008,
+	iron:68015,
+	citizen:296
 }
 quarrier[16] = {
 	level:16,
-	wood:21000,
-	stone:21000,
-	iron:21000,
-	citizen:7200
+	wood:100087,
+	stone:50044,
+	iron:100087,
+	citizen:334
 }
 quarrier[17] = {
 	level:17,
-	wood:25199,
-	stone:25199,
-	iron:25199,
-	citizen:7800
+	wood:122784,
+	stone:61392,
+	iron:122784,
+	citizen:376
 }
 quarrier[18] = {
 	level:18,
-	wood:29400,
-	stone:29400,
-	iron:29400,
-	citizen:8400
+	wood:147370,
+	stone:73685,
+	iron:147370,
+	citizen:418
 }
 quarrier[19] = {
 	level:19,
-	wood:33600,
-	stone:33600,
-	iron:33600,
-	citizen:9000
+	wood:172103,
+	stone:86052,
+	iron:172103,
+	citizen:464
 }
 quarrier[20] = {
 	level:20,
-	wood:63000,
-	stone:63000,
-	iron:63000,
-	citizen:9600
+	wood:195242,
+	stone:97621,
+	iron:195242,
+	citizen:512
+}
+quarrier[21] = {
+	level:21,
+	wood:328265,
+	stone:164133,
+	iron:328265,
+	citizen:562
+}
+quarrier[22] = {
+	level:22,
+	wood:362487,
+	stone:181244,
+	iron:362487,
+	citizen:616
+}
+quarrier[23] = {
+	level:23,
+	wood:391966,
+	stone:195983,
+	iron:391966,
+	citizen:670
+}
+quarrier[24] = {
+	level:24,
+	wood:451716,
+	stone:225858,
+	iron:451716,
+	citizen:728
+}
+quarrier[25] = {
+	level:25,
+	wood:509498,
+	stone:254749,
+	iron:509498,
+	citizen:788
+}
+quarrier[26] = {
+	level:26,
+	wood:878049,
+	stone:439025,
+	iron:878049,
+	citizen:850
+}
+quarrier[27] = {
+	level:27,
+	wood:982745,
+	stone:491373,
+	iron:982745,
+	citizen:916
+}
+quarrier[28] = {
+	level:28,
+	wood:1087052,
+	stone:543526,
+	iron:1087052,
+	citizen:982
+}
+quarrier[29] = {
+	level:29,
+	wood:1189938,
+	stone:594969,
+	iron:1189938,
+	citizen:1052
+}
+quarrier[30] = {
+	level:30,
+	wood:1290372,
+	stone:645186,
+	iron:1290372,
+	citizen:1124
+}
+quarrier[31] = {
+	level:31,
+	wood:2123125,
+	stone:1061563,
+	iron:2123125,
+	citizen:1198
+}
+quarrier[32] = {
+	level:32,
+	wood:2311678,
+	stone:1155839,
+	iron:2311678,
+	citizen:1276
+}
+quarrier[33] = {
+	level:33,
+	wood:2502238,
+	stone:1251119,
+	iron:2502238,
+	citizen:1354
+}
+quarrier[34] = {
+	level:34,
+	wood:2694049,
+	stone:1347025,
+	iron:2694049,
+	citizen:1436
+}
+quarrier[35] = {
+	level:35,
+	wood:2886356,
+	stone:1443178,
+	iron:2886356,
+	citizen:1520
+}
+quarrier[36] = {
+	level:36,
+	wood:4535002,
+	stone:2267501,
+	iron:4535002,
+	citizen:1606
+}
+quarrier[37] = {
+	level:37,
+	wood:4879789,
+	stone:2439895,
+	iron:4879789,
+	citizen:1696
+}
+quarrier[38] = {
+	level:38,
+	wood:5232861,
+	stone:2616431,
+	iron:5232861,
+	citizen:1786
+}
+quarrier[39] = {
+	level:39,
+	wood:5593773,
+	stone:2796887,
+	iron:5593773,
+	citizen:1880
+}
+quarrier[40] = {
+	level:40,
+	wood:8238000,
+	stone:4119000,
+	iron:8238000,
+	citizen:2000
 }

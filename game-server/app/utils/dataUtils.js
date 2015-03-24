@@ -407,11 +407,13 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 	}
 
 	var houseType = this.getHouseTypeByResourceName(resourceName)
-	var houses = this.getPlayerHousesByType(playerDoc, houseType)
+	var houses = LogicUtils.getPlayerHousesByType(playerDoc, houseType)
 	var totalPerHour = 0
 	_.each(houses, function(house){
-		var config = HouseFunction[house.type][house.level]
-		totalPerHour += config.poduction
+		if(house.level > 0){
+			var config = HouseFunction[house.type][house.level]
+			totalPerHour += config.poduction
+		}
 	})
 
 	var totalPerSecond = totalPerHour / 60 / 60
@@ -434,11 +436,13 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
  */
 Utils.getPlayerCoin = function(playerDoc){
 	var resourceName = "coin"
-	var houses = this.getPlayerHousesByType(playerDoc, "dwelling")
+	var houses = LogicUtils.getPlayerHousesByType(playerDoc, "dwelling")
 	var totalPerHour = 0
 	_.each(houses, function(house){
-		var config = HouseFunction[house.type][house.level]
-		totalPerHour += config.poduction
+		if(house.level > 0){
+			var config = HouseFunction[house.type][house.level]
+			totalPerHour += config.poduction
+		}
 	})
 
 	var totalPerSecond = totalPerHour / 60 / 60
@@ -470,15 +474,22 @@ Utils.getPlayerSoldiersFoodConsumed = function(playerDoc, time){
 	return Math.ceil(consumed * time / 1000 / 60 / 60 * (1 - itemBuff - vipBuff))
 }
 
+/**
+ * 获取玩家粮食数量
+ * @param playerDoc
+ * @returns {number}
+ */
 Utils.getPlayerFood = function(playerDoc){
 	var resourceName = "food"
 	var resourceLimit = this.getPlayerResourceUpLimit(playerDoc, resourceName)
 	var houseType = this.getHouseTypeByResourceName(resourceName)
-	var houses = this.getPlayerHousesByType(playerDoc, houseType)
+	var houses = LogicUtils.getPlayerHousesByType(playerDoc, houseType)
 	var totalPerHour = 0
 	_.each(houses, function(house){
-		var config = HouseFunction[house.type][house.level]
-		totalPerHour += config.poduction
+		if(house.level > 0){
+			var config = HouseFunction[house.type][house.level]
+			totalPerHour += config.poduction
+		}
 	})
 
 	var totalPerSecond = totalPerHour / 60 / 60
@@ -573,7 +584,7 @@ Utils.getPlayerStamina = function(playerDoc){
  * @returns {number}
  */
 Utils.getPlayerResourceUpLimit = function(playerDoc, resourceName){
-	var building = this.getPlayerBuildingByType(playerDoc, "warehouse")
+	var building = LogicUtils.getPlayerBuildingByType(playerDoc, "warehouse")
 	var totalUpLimit = 0
 	if(building.level >= 1){
 		var config = BuildingFunction["warehouse"][building.level]
@@ -590,11 +601,13 @@ Utils.getPlayerResourceUpLimit = function(playerDoc, resourceName){
  * @returns {number}
  */
 Utils.getPlayerCitizenUpLimit = function(playerDoc){
-	var houses = this.getPlayerHousesByType(playerDoc, "dwelling")
+	var houses = LogicUtils.getPlayerHousesByType(playerDoc, "dwelling")
 	var totalUpLimit = 0
 	_.each(houses, function(house){
-		var config = HouseFunction["dwelling"][house.level]
-		totalUpLimit += config.citizen
+		if(house.level > 0){
+			var config = HouseFunction["dwelling"][house.level]
+			totalUpLimit += config.citizen
+		}
 	})
 	return totalUpLimit
 }
@@ -623,7 +636,10 @@ Utils.getPlayerUsedCitizen = function(playerDoc){
  * @returns {number}
  */
 Utils.getHouseUsedCitizen = function(houseType, houseLevel){
-	return HouseLevelUp[houseType][houseLevel].citizen
+	if(houseLevel > 0){
+		return HouseLevelUp[houseType][houseLevel].citizen
+	}
+	return 0
 }
 
 /**
@@ -647,49 +663,6 @@ Utils.getPlayerWallHp = function(playerDoc){
 	var output = Math.floor(totalSecond * totalPerSecond * (1 + techBuff + vipBuff))
 	var totalHp = playerDoc.resources["wallHp"] + output
 	return totalHp > hpLimit ? hpLimit : totalHp
-}
-
-/**
- * 根据建筑类型获取所有相关建筑
- * @param playerDoc
- * @param buildingType
- * @returns {Array}
- */
-Utils.getPlayerBuildingByType = function(playerDoc, buildingType){
-	return _.find(playerDoc.buildings, function(building){
-		return _.isEqual(buildingType, building.type)
-	})
-}
-
-/**
- * 根据建筑类型获取所有相关建筑
- * @param playerDoc
- * @param buildingType
- * @returns {*}
- */
-Utils.getPlayerBuildingsByType = function(playerDoc, buildingType){
-	return _.filter(playerDoc.buildings, function(building){
-		return _.isEqual(buildingType, building.type)
-	})
-}
-
-/**
- * 根据小屋类型获取所有相关小屋
- * @param playerDoc
- * @param houseType
- * @returns {Array}
- */
-Utils.getPlayerHousesByType = function(playerDoc, houseType){
-	var houses = []
-	_.each(playerDoc.buildings, function(building){
-		_.each(building.houses, function(house){
-			if(_.isEqual(houseType, house.type)){
-				houses.push(house)
-			}
-		})
-	})
-
-	return houses
 }
 
 /**
@@ -723,8 +696,11 @@ Utils.getResourceNameByHouseType = function(houseType){
  * @returns {citizen|*}
  */
 Utils.getDwellingPopulationByLevel = function(houseLevel){
-	var config = HouseFunction["dwelling"][houseLevel]
-	return config.citizen
+	if(houseLevel > 0){
+		var config = HouseFunction["dwelling"][houseLevel]
+		return config.citizen
+	}
+	return 0
 }
 
 /**
@@ -766,7 +742,7 @@ Utils.getPlayerFreeBuildingsCount = function(playerDoc){
  * @returns {number}
  */
 Utils.getMaterialUpLimit = function(playerDoc){
-	var building = this.getPlayerBuildingByType(playerDoc, "materialDepot")
+	var building = LogicUtils.getPlayerBuildingByType(playerDoc, "materialDepot")
 	var totalUpLimit = 0
 	if(building.level >= 1){
 		var config = BuildingFunction["materialDepot"][building.level]
@@ -919,8 +895,10 @@ Utils.getPlayerHousesPower = function(playerDoc){
 	var totalPower = 0
 	_.each(playerDoc.buildings, function(building){
 		_.each(building.houses, function(house){
-			var config = HouseFunction[house.type][house.level]
-			totalPower += config.power
+			if(house.level > 0){
+				var config = HouseFunction[house.type][house.level]
+				totalPower += config.power
+			}
 		})
 	})
 
@@ -961,7 +939,7 @@ Utils.getPlayerKeepLevel = function(playerDoc){
 Utils.getPlayerHouseMaxCountByType = function(playerDoc, houseType){
 	var limitBy = Consts.HouseBuildingMap[houseType]
 	var totalCount = HouseInit[houseType]
-	var buildings = this.getPlayerBuildingsByType(playerDoc, limitBy)
+	var buildings = LogicUtils.getPlayerBuildingsByType(playerDoc, limitBy)
 	_.each(buildings, function(building){
 		if(building.level >= 1){
 			var buildingFunction = BuildingFunction[building.type][building.level]
@@ -1948,7 +1926,7 @@ Utils.isAllianceMapObjectTypeADecorateObject = function(objectType){
 /**
  * 刷新联盟感知力
  * @param allianceDoc
- * @returns {perception|*|allianceSchema.basicInfo.perception}
+ * @returns {*|perception|AllianceSchema.basicInfo.perception|.basicInfo.perception}
  */
 Utils.getAlliancePerception = function(allianceDoc){
 	var shrine = allianceDoc.buildings.shrine
@@ -2925,7 +2903,30 @@ Utils.getAllianceVillageResourceMax = function(villageType, villageLevel){
  * @returns {number}
  */
 Utils.getDragonExpAdd = function(kill){
-	return Math.floor(kill * AllianceInit.floatInit.dragonExpByKilledCitizen.value)
+	return Math.floor(kill / AllianceInit.intInit.KilledCitizenPerDragonExp.value)
+}
+
+/**
+ * 英雄之血获得数量
+ * @param dragon
+ * @param kill
+ * @param isWinner
+ * @returns {number}
+ */
+Utils.getBloodAdd = function(dragon, kill, isWinner){
+	var dragonSkillBuff = 0
+	if(_.isObject(dragon)){
+		var dragonSkillName = "battleHunger"
+		var skill = _.find(dragon.skills, function(skill){
+			return _.isEqual(skill.name, dragonSkillName)
+		})
+		if(_.isObject(skill)){
+			var skillConfig = Dragons.dragonSkills[dragonSkillName]
+			dragonSkillBuff = skill.level * skillConfig.effectPerLevel
+		}
+	}
+	var blood = kill / AllianceInitData.intInit.KilledCitizenPerBlood.value
+	return Math.floor(blood * (isWinner ? 0.7 : 0.3) * (1 + dragonSkillBuff))
 }
 
 /**
@@ -2948,7 +2949,7 @@ Utils.getCollectResourceExpAdd = function(name, count){
  * @returns {{id: *, dragonType: *, finishTime: number}}
  */
 Utils.createPlayerHatchDragonEvent = function(playerDoc, dragon){
-	var needTime = AllianceInit.floatInit.playerHatchDragonNeedHours.value * 60 * 60 * 1000
+	var needTime = PlayerInitData.intInit.playerHatchDragonNeedMinutes.value * 60 * 1000
 	var event = {
 		id:ShortId.generate(),
 		dragonType:dragon.type,
@@ -2992,7 +2993,7 @@ Utils.createDailyQuests = function(){
  * @returns {number}
  */
 Utils.getDailyQuestsRefreshTime = function(){
-	return PlayerInitData.floatInit.dailyQuestsRefreshHours.value * 60 * 60 * 1000
+	return PlayerInitData.intInit.dailyQuestsRefreshMinites.value * 60 * 1000
 }
 
 /**
@@ -3032,8 +3033,9 @@ Utils.createPlayerDailyQuestEvent = function(playerDoc, quest){
  */
 Utils.getPlayerDailyQuestEventRewards = function(playerDoc, questEvent){
 	var config = DailyQuests.dailyQuests[questEvent.index]
-	var townhallLevel = playerDoc.buildings.location_14.level
-	var effect = questEvent.star * (1 + (0.02 * townhallLevel))
+	var building = playerDoc.buildings.location_14
+	var buildingConfig = BuildingFunction.townHall[building.level]
+	var effect = questEvent.star * (1 + buildingConfig.efficiency)
 	var rewards = []
 	var rewardStrings = config.rewards.split(",")
 	_.each(rewardStrings, function(rewardString){
@@ -3639,10 +3641,10 @@ Utils.isPlayerBuildingUpgradeLegal = function(playerDoc, location){
 	var preName = configParams[1]
 	var preLevel = parseInt(configParams[2])
 	if(_.isEqual("building", preType)){
-		var preBuilding = this.getPlayerBuildingByType(playerDoc, preName)
+		var preBuilding = LogicUtils.getPlayerBuildingByType(playerDoc, preName)
 		return preBuilding.level >= building.level + preLevel
 	}else{
-		var houses = this.getPlayerHousesByType(playerDoc, preName)
+		var houses = LogicUtils.getPlayerHousesByType(playerDoc, preName)
 		houses = _.sortBy(houses, function(house){
 			return -house.level
 		})
@@ -3671,10 +3673,10 @@ Utils.isPlayerHouseUpgradeLegal = function(playerDoc, buildingLocation, houseTyp
 	var preName = configParams[1]
 	var preLevel = parseInt(configParams[2])
 	if(_.isEqual("building", preType)){
-		var preBuilding = this.getPlayerBuildingByType(playerDoc, preName)
+		var preBuilding = LogicUtils.getPlayerBuildingByType(playerDoc, preName)
 		return preBuilding.level >= theHouse.level + preLevel
 	}else{
-		var houses = this.getPlayerHousesByType(playerDoc, preName)
+		var houses = LogicUtils.getPlayerHousesByType(playerDoc, preName)
 		houses = _.sortBy(houses, function(house){
 			return -house.level
 		})
@@ -3815,4 +3817,15 @@ Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, eventType, eventId
 	}
 	allianceDoc.helpEvents.push(event)
 	return event
+}
+
+/**
+ * 玩家士兵是否处于锁定状态(兵营等级解锁)
+ * @param playerDoc
+ * @param soldierName
+ */
+Utils.isPlayerSoldierLocked = function(playerDoc, soldierName){
+	var building = playerDoc.buildings.location_5
+	var unlockedSoldiers = BuildingFunction.barracks[building.level].unlockedSoldiers.split(",")
+	return !_.contains(unlockedSoldiers, soldierName)
 }

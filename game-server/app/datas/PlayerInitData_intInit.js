@@ -98,3 +98,13 @@ intInit["freeNormalGachaCountPerDay"] = {
 	value:1,
 	desc:"每日免费普通Gacha次数"
 }
+intInit["dailyQuestsRefreshMinites"] = {
+	type:"dailyQuestsRefreshMinites",
+	value:10,
+	desc:"每日任务每多少分钟刷新一次"
+}
+intInit["playerHatchDragonNeedMinutes"] = {
+	type:"playerHatchDragonNeedMinutes",
+	value:10,
+	desc:"孵化龙所需的时间"
+}
