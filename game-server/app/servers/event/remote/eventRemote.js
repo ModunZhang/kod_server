@@ -73,7 +73,7 @@ pro.removeTimeEvent = function(key, eventId, callback){
  * @param callback
  */
 pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	this.logService.info("eventRemote.updateTimeEvent", {key:key, eventId:eventId, timeInterval:timeInterval})
+	this.logService.info("eventRemote.updateTimeEvent", {key:key, eventType:eventType, eventId:eventId, timeInterval:timeInterval})
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	clearTimeout(callbackObj.id)
