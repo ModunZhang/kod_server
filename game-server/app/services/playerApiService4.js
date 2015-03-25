@@ -748,6 +748,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 		var objects = floor.objects
 		if(!_.isString(objects)) return Promise.reject(new Error("pveData 不合法"))
 		if(_.isNumber(pveData.gemUsed)){
+			if(pveData.gemUsed <= 0) return Promise.reject(new Error("pveData 不合法"))
 			if(pveData.gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 			playerDoc.resources.gem -= pveData.gemUsed
 			playerData.push(["resources.gem", playerDoc.resources.gem])

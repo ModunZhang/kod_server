@@ -28,6 +28,7 @@ var PlayerIAPService = function(app){
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
 	this.Billing = app.get("Billing")
+	this.GemAdd = app.get("GemAdd")
 	this.billingValidateHost = "sandbox.itunes.apple.com"
 	this.billingValidatePath = "/verifyReceipt"
 }
@@ -142,6 +143,8 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 		return billingValidateAsync(playerDoc, receiptData)
 	}).then(function(responseReceiptData){
 		billing = CreateBillingItem(playerId, responseReceiptData)
+		return self.Billing.createAsync(billing)
+	}).then(function(){
 		var quantity = billing.quantity
 		var itemConfig = _.find(StoreItems.items, function(item){
 			if(_.isObject(item)){
@@ -158,8 +161,14 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 			var resp = LogicUtils.addPlayerItem(playerDoc, reward.name, reward.count * quantity)
 			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
-
-		updateFuncs.push([self.Billing, self.Billing.createAsync, billing])
+		var gemAdd = {
+			playerId:playerId,
+			add:itemConfig.gem * quantity,
+			left:playerDoc.resources.gem,
+			from:Consts.GemAddFrom.Iap,
+			rewards:rewards
+		}
+		updateFuncs.push([self.GemAdd, self.GemAdd.createAsync, gemAdd])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){

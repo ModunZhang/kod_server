@@ -14,7 +14,7 @@ var GemAddSchema = new Schema({
 	add:{type:Number, required:true},
 	left:{type:Number, required:true},
 	from:{type:String, required:true},
-	rewards:{type:String},
+	rewards:{type:Schema.Types.Mixed},
 	time:{type:Number, required:true, default:Date.now()}
 })
 
