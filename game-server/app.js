@@ -11,8 +11,6 @@ var globalChannel = require("pomelo-globalchannel-plugin")
 var Scripto = require('redis-scripto')
 var NodeUtils = require("util")
 
-var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
-var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 var LoginFilter = require("./app/utils/loginFilter")
 var ReplayFilter = require("./app/utils/replayFilter")
 var SerialFilter = require("./app/utils/serialFilter")
@@ -145,25 +143,15 @@ app.configure("production|development", "time", function(){
 })
 
 app.set('errorHandler', function(err, msg, resp, session, opts, cb){
-	errorLogger.error("handle app:Error-----------------------------")
-	errorLogger.error(err.stack)
-	if("production" == app.get("env")){
-		errorMailLogger.error("handle app:Error-----------------------------")
-		errorMailLogger.error(err.stack)
-	}
+	app.get("logService").error("app.errorHandler", msg, err.stack)
 	cb(err, resp)
 	if(!_.isEmpty(err.message) && err.message.indexOf("Illegal request!") == 0){
 		app.get("sessionService").kickBySessionId(session.id)
 	}
 })
 
-app.start()
-
 process.on("uncaughtException", function(err){
-	errorLogger.error("handle app:uncaughtError-----------------------------")
-	errorLogger.error(err.stack)
-	if("production" == app.get("env")){
-		errorMailLogger.error("handle app:uncaughtError-----------------------------")
-		errorMailLogger.error(err.stack)
-	}
+	app.get("logService").error("app.uncaughtException", {}, err.stack)
 })
+
+app.start()

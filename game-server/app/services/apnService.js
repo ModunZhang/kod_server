@@ -11,9 +11,6 @@ var apn = require("apn")
 var fs = require("fs")
 var path = require("path")
 var sprintf = require("sprintf")
-var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
-var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
-var logicLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-logic", __filename)
 
 var Consts = require("../consts/consts")
 var Events = require("../consts/events")
@@ -23,6 +20,7 @@ var LogicUtils = require("../utils/logicUtils")
 var ApnService = function(app){
 	this.app = app
 	this.globalChannelService = app.get("globalChannelService")
+	this.logService = app.get("logService")
 	this.serverId = app.getServerId()
 	this.serverType = app.getServerType()
 	this.apnService = null
@@ -51,12 +49,7 @@ pro.getApnService = function(){
 		})
 
 		service.on("transmissionError", function(errCode, notification, device){
-			errorLogger.error("handle apnService:transmissionError -----------------------------")
-			errorLogger.error("Notification caused error: " + errCode + " for device ", device, notification)
-			if("production" == self.app.get("env")){
-				errorMailLogger.error("handle apnService:transmissionError -----------------------------")
-				errorMailLogger.error("Notification caused error: " + errCode + " for device ", device, notification)
-			}
+			self.logService.error("apnService.transmissionError", {errCode:errCode, device:device, notification:notification}, e.stack)
 		})
 
 		service.on("timeout", function(){
@@ -69,12 +62,7 @@ pro.getApnService = function(){
 
 		service.on("socketError", function(e){
 			self.apnService = null
-			errorLogger.error("handle apnService:socketError -----------------------------")
-			errorLogger.error(e.stack)
-			if("production" == self.app.get("env")){
-				errorMailLogger.error("handle apnService:socketError -----------------------------")
-				errorMailLogger.error(e.stack)
-			}
+			self.logService.error("apnService.socketError", {}, e.stack)
 		})
 
 		this.apnService = service

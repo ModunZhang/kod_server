@@ -5,9 +5,6 @@
  */
 
 var _ = require("underscore")
-var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
-var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
-var logicLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-logic", __filename)
 
 var Dispatcher = require('../../../utils/dispatcher')
 var Consts = require("../../../consts/consts")
@@ -18,6 +15,7 @@ module.exports = function(app){
 
 var EventRemote = function(app){
 	this.app = app
+	this.logService = app.get("logService")
 	this.callbacks = {}
 }
 var pro = EventRemote.prototype
@@ -31,13 +29,7 @@ var pro = EventRemote.prototype
  * @param callback
  */
 pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	logicLogger.info("eventRemote:addTimeEvent %j", {
-		key:key,
-		eventType:eventType,
-		eventId:eventId,
-		timeInterval:timeInterval
-	})
-
+	this.logService.info("eventRemote.addTimeEvent", {key:key, eventType:eventType, eventId:eventId, timeInterval:timeInterval})
 	var id = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventId)
 	var callbacks = this.callbacks[key]
 	if(_.isEmpty(callbacks)){
@@ -59,7 +51,7 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  * @param callback
  */
 pro.removeTimeEvent = function(key, eventId, callback){
-	logicLogger.info("eventRemote:removeTimeEvent %j", {key:key, eventId:eventId})
+	this.logService.info("eventRemote.removeTimeEvent", {key:key, eventId:eventId})
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	if(_.isObject(callbackObj)){
@@ -81,7 +73,7 @@ pro.removeTimeEvent = function(key, eventId, callback){
  * @param callback
  */
 pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	logicLogger.info("eventRemote:updateTimeEvent %j", {key:key, eventId:eventId, timeInterval:timeInterval})
+	this.logService.info("eventRemote.updateTimeEvent", {key:key, eventId:eventId, timeInterval:timeInterval})
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	clearTimeout(callbackObj.id)
@@ -97,7 +89,7 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  * @param callback
  */
 pro.clearTimeEventsByKey = function(key, callback){
-	logicLogger.info("eventRemote:clearTimeEventsByKey %j", {key:key})
+	this.logService.info("eventRemote.clearTimeEventsByKey", {key:key})
 	var callbacks = this.callbacks[key]
 	_.each(callbacks, function(callbackObj){
 		clearTimeout(callbackObj.id)
@@ -112,7 +104,8 @@ pro.clearTimeEventsByKey = function(key, callback){
  * @param eventId
  */
 pro.triggerTimeEvent = function(key, eventId){
-	logicLogger.info("eventRemote:triggerTimeEvent %j", {key:key, eventId:eventId})
+	var self = this
+	this.logService.info("eventRemote.triggerTimeEvent", {key:key, eventId:eventId})
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	var eventType = callbackObj.eventType
@@ -120,8 +113,12 @@ pro.triggerTimeEvent = function(key, eventId){
 	if(_.isEmpty(callbacks)){
 		delete this.callbacks[key]
 	}
-	this.excuteTimeEvent(key, eventType, eventId, function(){
-		logicLogger.info("eventRemote:triggerTimeEvent finished %j", {key:key, eventId:eventId})
+	this.excuteTimeEvent(key, eventType, eventId, function(e){
+		if(_.isObject(e)){
+			self.logService.error("eventRemote.triggerTimeEvent finished with error", {key:key, eventId:eventId}, e.stack)
+		}else{
+			self.logService.info("eventRemote.triggerTimeEvent finished", {key:key, eventId:eventId})
+		}
 	})
 }
 
@@ -133,21 +130,7 @@ pro.triggerTimeEvent = function(key, eventId){
  * @param callback
  */
 pro.excuteTimeEvent = function(key, eventType, eventId, callback){
-	var self = this
 	var logicServers = this.app.getServersByType('logic')
 	var logicServerId = Dispatcher.dispatch(logicServers).id
-	logicLogger.info("eventRemote:excuteTimeEvent %j", {key:key, eventType:eventType, eventId:eventId})
-	this.app.rpc.logic.logicRemote.onTimeEvent.toServer(logicServerId, key, eventType, eventId, function(e){
-		if(_.isObject(e)){
-			errorLogger.error("handle eventRemote:excuteTimeEvent Error -----------------------------")
-			errorLogger.error(e.stack)
-			if("production" == self.app.get("env")){
-				errorMailLogger.error("handle eventRemote:excuteTimeEvent Error -----------------------------")
-				errorMailLogger.error(e.stack)
-			}
-		}
-		if(_.isFunction(callback)){
-			callback(e)
-		}
-	})
+	this.app.rpc.logic.logicRemote.onTimeEvent.toServer(logicServerId, key, eventType, eventId, callback)
 }

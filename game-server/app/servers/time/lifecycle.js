@@ -7,9 +7,7 @@
 var Promise = require("bluebird")
 var _ = require("underscore")
 
-var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
-var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
-var logicLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-logic", __filename)
+var LogService = require("../../services/logService")
 var AllianceDao = require("../../dao/allianceDao")
 var PlayerDao = require("../../dao/playerDao")
 var CacheService = require("../../services/cacheService")
@@ -23,6 +21,7 @@ life.beforeStartup = function(app, callback){
 	app.set("allianceDao", Promise.promisifyAll(new AllianceDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 
+	app.set("logService", Promise.promisifyAll(new LogService(app)))
 	app.set("channelService", Promise.promisifyAll(app.get("channelService")))
 	app.set("globalChannelService", Promise.promisifyAll(app.get("globalChannelService")))
 	app.set("cacheService", Promise.promisifyAll(new CacheService(app)))
@@ -35,12 +34,7 @@ life.beforeStartup = function(app, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		errorLogger.error("handle time.lifecycle:beforeStartup Error -----------------------------")
-		errorLogger.error(e.stack)
-		if(_.isEqual("production", app.get("env"))){
-			errorMailLogger.error("handle time.lifecycle:beforeStartup Error -----------------------------")
-			errorMailLogger.error(e.stack)
-		}
+		app.get("logService").error("time.lifecycle.beforeStartup", {}, e.stack)
 		callback()
 	})
 }
@@ -56,12 +50,7 @@ life.beforeShutdown = function(app, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		errorLogger.error("handle time.lifecycle:beforeShutdown Error -----------------------------")
-		errorLogger.error(e.stack)
-		if(_.isEqual("production", app.get("env"))){
-			errorMailLogger.error("handle time.lifecycle:beforeShutdown Error -----------------------------")
-			errorMailLogger.error(e.stack)
-		}
+		app.get("logService").error("time.lifecycle.beforeShutdown", {}, e.stack)
 		callback()
 	})
 }
@@ -147,6 +136,11 @@ life.afterStartAll = function(app){
 				event.startTime = now
 				eventFuncs.push(addTimeEventAsync(eventServerId, key, "itemEvents", event.id, event.finishTime - event.startTime))
 			})
+			_.each(playerDoc.dailyQuestEvents, function(event){
+				event.finishTime = now + (event.finishTime - event.startTime)
+				event.startTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, "dailyQuestEvents", event.id, event.finishTime - event.startTime))
+			})
 			DataUtils.refreshPlayerPower(playerDoc, [])
 			return playerDao.updateAsync(playerDoc)
 		}).then(function(){
@@ -214,7 +208,8 @@ life.afterStartAll = function(app){
 	}
 
 	setTimeout(function(){
-		logicLogger.info("start restoring data")
+		var logService = app.get("logService")
+		logService.info("time.lifecycle.afterStartAll start restoring data")
 		playerDao.findAllKeysAsync().then(function(ids){
 			return activePlayersEvents(ids)
 		}).then(function(){
@@ -222,8 +217,8 @@ life.afterStartAll = function(app){
 		}).then(function(ids){
 			return activeAllianceEvents(ids)
 		}).then(function(){
-			logicLogger.info("restoring data finished")
-			logicLogger.info("start change server status")
+			logService.info("time.lifecycle.afterStartAll restoring data finished")
+			logService.info("time.lifecycle.afterStartAll start change server status")
 			var logicServers = app.getServersByType('logic')
 			var gateServerId = "gate-server-1"
 			var setLogicServerStatus = Promise.promisify(app.rpc.logic.logicRemote.setServerStatus.toServer)
@@ -236,14 +231,9 @@ life.afterStartAll = function(app){
 			funcs.push(setGateServerStatus(gateServerId, true))
 			return Promise.all(funcs)
 		}).then(function(){
-			logicLogger.info("change server status finished")
+			logService.info("time.lifecycle.afterStartAll change server status finished")
 		}).catch(function(e){
-			errorLogger.error("handle time.lifecycle:afterStartAll Error -----------------------------")
-			errorLogger.error(e.stack)
-			if(_.isEqual("production", app.get("env"))){
-				errorMailLogger.error("handle time.lifecycle:afterStartAll Error -----------------------------")
-				errorMailLogger.error(e.stack)
-			}
+			logService.error("time.lifecycle.afterStartAll", {}, e.stack)
 		})
 	}, 1000)
 }

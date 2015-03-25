@@ -129,7 +129,7 @@
           "pass": "Zxm75504109"
         }
       },
-      "category": "kod-logic-mail"
+      "category": "kod-logic-mailError"
     }
   ],
   "levels": {
@@ -144,8 +144,8 @@
     "pomelo-rpc": "DEBUG",
     "kod-logic": "TRACE",
     "kod-logic-error": "ERROR",
-    "kod-mail-error": "ERROR"
+    "kod-logic-mailError": "ERROR"
   },
   "replaceConsole": true,
-  "lineDebug": true
+  "lineDebug": false
 }

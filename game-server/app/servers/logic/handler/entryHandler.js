@@ -8,8 +8,6 @@ var Promise = require("bluebird")
 var Promisify = Promise.promisify
 var _ = require("underscore")
 var crypto = require('crypto')
-var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
-var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 var ErrorUtils = require("../../../utils/errorUtils")
 var Consts = require("../../../consts/consts")
 
@@ -27,6 +25,7 @@ var Handler = function(app){
 	this.playerApiService = app.get("playerApiService")
 	this.globalChannelService = app.get("globalChannelService")
 	this.sessionService = app.get("sessionService")
+	this.logService = app.get("logService")
 	this.maxReturnMailSize = 10
 	this.maxReturnReportSize = 10
 }
@@ -106,7 +105,9 @@ var PlayerLeave = function(session, reason){
 	console.log("user [" + session.uid + "] logout with reason [" + reason + "]")
 	var self = this
 	var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, this)
-	this.playerApiService.playerLogoutAsync(session.uid).then(function(playerDoc){
+	var playerDoc = null
+	this.playerApiService.playerLogoutAsync(session.uid).then(function(doc){
+		playerDoc = doc
 		var funcs = []
 		funcs.push(removePlayerFromChatChannel(session))
 		if(_.isObject(playerDoc.alliance)){
@@ -116,12 +117,7 @@ var PlayerLeave = function(session, reason){
 	}).then(function(){
 		console.log("user [" + session.uid + "] logout success")
 	}).catch(function(e){
-		errorLogger.error("handle entryHandler:playerLogout Error -----------------------------")
-		errorLogger.error(e.stack)
-		if(_.isEqual("production", self.app.get("env"))){
-			errorMailLogger.error("handle entryHandler:playerLogout Error -----------------------------")
-			errorMailLogger.error(e.stack)
-		}
+		self.logService.error("entryHandler.playerLeave", {playerId:playerDoc._id}, e.stack)
 	})
 }
 

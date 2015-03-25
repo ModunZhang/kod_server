@@ -3,8 +3,6 @@
 var _ = require("underscore")
 var Promise = require("bluebird")
 
-var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
-var errorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 var MapUtils = require("../../../utils/mapUtils")
 var LogicUtils = require("../../../utils/logicUtils")
 var DataUtils = require("../../../utils/dataUtils")
@@ -29,6 +27,7 @@ var Cron = function(app){
 	this.allianceDao = app.get("allianceDao")
 	this.channelService = app.get("channelService")
 	this.globalChannelService = app.get("globalChannelService")
+	this.logService = app.get("logService")
 }
 var pro = Cron.prototype
 
@@ -218,11 +217,6 @@ pro.resetAllianceStatus = function(){
 		return ResolveAllAlliances.call(self, allianceIds)
 	}).then(function(){
 	}).catch(function(e){
-		errorLogger.error("handle time.cron.timeCron:resetAllianceStatus Error -----------------------------")
-		errorLogger.error(e.stack)
-		if(_.isEqual("production", self.app.get("env"))){
-			errorMailLogger.error("handle time.cron.timeCron:resetAllianceStatus Error -----------------------------")
-			errorMailLogger.error(e.stack)
-		}
+		self.logService.error("time.cron.timeCron:resetAllianceStatus", {}, e.stack)
 	})
 }

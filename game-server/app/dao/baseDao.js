@@ -6,8 +6,6 @@
 
 var Promise = require("bluebird")
 var _ = require("underscore")
-var ErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
-var ErrorMailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 var ErrorUtils = require("../utils/errorUtils")
 
 var NONE = "__NONE__"
