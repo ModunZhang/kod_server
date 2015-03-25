@@ -465,9 +465,9 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
 				icon:doc.basicInfo.icon
 			}
 			if(_.isEqual(rankType, Consts.RankTypes.Kill)){
-				rankData.kill = doc.basicInfo.kill
+				rankData.value = doc.basicInfo.kill
 			}else{
-				rankData.power = doc.basicInfo.power
+				rankData.value = doc.basicInfo.power
 			}
 			rankDatas.push(rankData)
 		})
@@ -520,9 +520,9 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
 				flag:doc.basicInfo.flag
 			}
 			if(_.isEqual(rankType, Consts.RankTypes.Kill)){
-				rankData.kill = doc.basicInfo.kill
+				rankData.value = doc.basicInfo.kill
 			}else{
-				rankData.power = doc.basicInfo.power
+				rankData.value = doc.basicInfo.power
 			}
 			rankDatas.push(rankData)
 		})
