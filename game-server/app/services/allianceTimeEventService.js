@@ -75,7 +75,10 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 			allianceDoc.basicInfo.status = Consts.AllianceStatus.Peace
 			allianceDoc.basicInfo.statusStartTime = Date.now()
 			allianceDoc.basicInfo.statusFinishTime = 0
-			var allianceData = {}
+			var allianceData = []
+			allianceData.push(["basicInfo.status", allianceDoc.basicInfo.status])
+			allianceData.push(["basicInfo.statusStartTime", allianceDoc.basicInfo.statusStartTime])
+			allianceData.push(["basicInfo.statusFinishTime", allianceDoc.basicInfo.statusFinishTime])
 			allianceData.basicInfo = allianceDoc.basicInfo
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, true])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
