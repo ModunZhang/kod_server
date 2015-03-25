@@ -1209,6 +1209,26 @@ Utils.iapValidateFaild = function(playerId, errorData){
 }
 
 /**
+ * IAP服务器通讯出错
+ * @param playerId
+ * @param errorData
+ */
+Utils.netErrorWithIapServer = function(playerId, errorData){
+	var config = Errors.netErrorWithIapServer
+	return CreateError(config, {playerId:playerId, errorData:errorData})
+}
+
+/**
+ * IAP服务器关闭
+ * @param playerId
+ * @param errorData
+ */
+Utils.iapServerNotAvailable = function(playerId, errorData){
+	var config = Errors.iapServerNotAvailable
+	return CreateError(config, {playerId:playerId, errorData:errorData})
+}
+
+/**
  * 玩家已加入了联盟
  * @param playerId
  * @param memberId

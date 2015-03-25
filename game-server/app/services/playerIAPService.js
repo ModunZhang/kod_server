@@ -36,6 +36,28 @@ var PlayerIAPService = function(app){
 module.exports = PlayerIAPService
 var pro = PlayerIAPService.prototype
 
+
+/**
+ 21000
+ The App Store could not read the JSON object you provided.
+ 21002
+ The data in the receipt-data property was malformed or missing.
+ 21003
+ The receipt could not be authenticated.
+ 21004
+ The shared secret you provided does not match the shared secret on file for your account.
+ Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions.
+ 21005
+ The receipt server is not currently available.
+ 21006
+ This receipt is valid but the subscription has expired. When this status code is returned to your server, the receipt data is also decoded and returned as part of the response.
+ Only returned for iOS 6 style transaction receipts for auto-renewable subscriptions.
+ 21007
+ This receipt is from the test environment, but it was sent to the production environment for verification. Send it to the test environment instead.
+ 21008
+ This receipt is from the production environment, but it was sent to the test environment for verification. Send it to the production environment instead.
+ */
+
 /**
  * 去苹果商店验证
  * @param playerDoc
@@ -54,15 +76,18 @@ var BillingValidate = function(playerDoc, receiptData, callback){
 	var request = Https.request(httpOptions, function(response){
 		response.on("data", function(data){
 			var jsonObj = JSON.parse(data.toString())
-			if(jsonObj.status !== 0) callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj))
-			else{
+			if(jsonObj.status == 0){
 				callback(null, jsonObj.receipt)
+			}else if(jsonObj.status == 21005){
+				callback(ErrorUtils.iapServerNotAvailable(playerDoc._id, jsonObj))
+			}else{
+				callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj))
 			}
 		})
 	})
 
 	request.on("error", function(e){
-		callback(new Error("请求错误,错误信息:" + e.message))
+		callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message))
 	})
 	request.write(JSON.stringify(postData))
 	request.end()
