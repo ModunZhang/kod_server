@@ -159,16 +159,19 @@ life.afterStartAll = function(app){
 				allianceDoc.basicInfo.statusStartTime = now
 				eventFuncs.push(addTimeEventAsync(eventServerId, key, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime))
 			}else if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
-				var allianceFight = allianceDoc.allianceFight
-				if(_.isEqual(allianceDoc._id, allianceFight.attackAllianceId)){
-					var theKey = Consts.TimeEventType.AllianceFight
-					var eventType = Consts.TimeEventType.AllianceFight
-					var eventId = allianceFight.attackAllianceId + ":" + allianceFight.defenceAllianceId
-					allianceDoc.basicInfo.statusFinishTime = now + (allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime)
-					allianceDoc.basicInfo.statusStartTime = now
-					eventFuncs.push(addTimeEventAsync(eventServerId, theKey, eventType, eventId, allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime))
+				allianceDoc.basicInfo.statusFinishTime = now + (allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime)
+				allianceDoc.basicInfo.statusStartTime = now
+				if(_.isEqual(allianceDoc.allianceFight.attackAllianceId, allianceDoc._id)){
+					var thekey = Consts.TimeEventType.AllianceFight
+					var theEventType = Consts.TimeEventType.AllianceFight
+					var theEventId = allianceDoc.allianceFight.attackAllianceId + ":" + allianceDoc.allianceFight.defenceAllianceId
+					eventFuncs.push(addTimeEventAsync(eventServerId, thekey, theEventType, theEventId, allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime))
 				}
+			}else if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Peace)){
+				allianceDoc.basicInfo.statusStartTime = now
 			}
+
+
 			_.each(allianceDoc.shrineEvents, function(event){
 				event.startTime = now + (event.startTime - event.createTime)
 				event.createTime = now
@@ -199,26 +202,6 @@ life.afterStartAll = function(app){
 				event.startTime = now
 				eventFuncs.push(addTimeEventAsync(eventServerId, key, "attackMarchReturnEvents", event.id, event.arriveTime - event.startTime))
 			})
-			if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
-				allianceDoc.basicInfo.statusFinishTime = now + (allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime)
-				allianceDoc.basicInfo.statusStartTime = now
-				eventFuncs.push(addTimeEventAsync(eventServerId, key, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime))
-			}
-			if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
-				allianceDoc.basicInfo.statusFinishTime = now + (allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime)
-				allianceDoc.basicInfo.statusStartTime = now
-				console.log(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId, "11111111111111111111111")
-				if(_.isEqual(allianceDoc.allianceFight.attackAllianceId, allianceDoc._id)){
-					console.log(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId, "22222222222222222222222")
-					var thekey = Consts.TimeEventType.AllianceFight
-					var theEventType = Consts.TimeEventType.AllianceFight
-					var theEventId = allianceDoc.allianceFight.attackAllianceId + ":" + allianceDoc.allianceFight.defenceAllianceId
-					eventFuncs.push(addTimeEventAsync(eventServerId, thekey, theEventType, theEventId, allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime))
-				}
-			}
-			if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Peace)){
-				allianceDoc.basicInfo.statusStartTime = now
-			}
 			return allianceDao.updateAsync(allianceDoc)
 		}).then(function(){
 			return activeAllianceEvents(allianceIds)
