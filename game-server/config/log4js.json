@@ -1,153 +1,151 @@
 {
-	"appenders":[
-		{
-			"type":"console"
-		},
-		{
-			"type":"file",
-			"filename":"${opts:base}/logs/con-log-${opts:serverId}.log",
-			"pattern":"connector",
-			"maxLogSize":1048576,
-			"layout":{
-				"type":"basic"
-			},
-			"backups":5,
-			"category":"con-log"
-		},
-		{
-			"type":"file",
-			"filename":"${opts:base}/logs/rpc-log-${opts:serverId}.log",
-			"maxLogSize":1048576,
-			"layout":{
-				"type":"basic"
-			},
-			"backups":5,
-			"category":"rpc-log"
-		},
-		{
-			"type":"file",
-			"filename":"${opts:base}/logs/forward-log-${opts:serverId}.log",
-			"maxLogSize":1048576,
-			"layout":{
-				"type":"basic"
-			},
-			"backups":5,
-			"category":"forward-log"
-		},
-		{
-			"type":"file",
-			"filename":"${opts:base}/logs/rpc-debug-${opts:serverId}.log",
-			"maxLogSize":1048576,
-			"layout":{
-				"type":"basic"
-			},
-			"backups":5,
-			"category":"rpc-debug"
-		},
-		{
-			"type":"file",
-			"filename":"${opts:base}/logs/crash.log",
-			"maxLogSize":1048576,
-			"layout":{
-				"type":"basic"
-			},
-			"backups":5,
-			"category":"crash-log"
-		},
-		{
-			"type":"file",
-			"filename":"${opts:base}/logs/admin.log",
-			"maxLogSize":1048576,
-			"layout":{
-				"type":"basic"
-			},
-			"backups":5,
-			"category":"admin-log"
-		},
-		{
-			"type":"file",
-			"filename":"${opts:base}/logs/pomelo-${opts:serverId}.log",
-			"maxLogSize":1048576,
-			"layout":{
-				"type":"basic"
-			},
-			"backups":5,
-			"category":"pomelo"
-		},
-		{
-			"type":"file",
-			"filename":"${opts:base}/logs/pomelo-admin.log",
-			"maxLogSize":1048576,
-			"layout":{
-				"type":"basic"
-			},
-			"backups":5,
-			"category":"pomelo-admin"
-		},
-		{
-			"type":"file",
-			"filename":"${opts:base}/logs/pomelo-rpc.log",
-			"maxLogSize":1048576,
-			"layout":{
-				"type":"basic"
-			},
-			"backups":5,
-			"category":"pomelo-rpc"
-		},
-		{
-			"type":"file",
-			"filename":"${opts:base}/logs/kod-error.log",
-			"maxLogSize":1048576,
-			"layout":{
-				"type":"basic"
-			},
-			"backups":5,
-			"category":"kod-error"
-		},
-		{
-			"type":"smtp",
-			"recipients":"zhangxuemin@batcatstudio.com, hejia@batcatstudio.com, daiguoqiang@batcatstudio.com, gaozhou@batcatstudio.com, shicihang@batcatstudio.com",
-			"sendInterval":5,
-			"transport":"SMTP",
-            "sender":"Modun Zhang <zhangxuemin@batcatstudio.com>",
-			"SMTP":{
-				"host":"smtp.exmail.qq.com",
-				"secureConnection":true,
-				"port":465,
-				"auth":{
-					"user":"zhangxuemin@batcatstudio.com",
-					"pass":"Zxm75504109"
-				}
-			},
-			"category":"kod-mail-error"
-		},
-		{
-		  "type":"file",
-		  "filename":"${opts:base}/logs/kod-logic.log",
-		  "maxLogSize":10485760,
-		  "layout":{
-			"type":"basic"
-		  },
-		  "backups":20,
-		  "category":"kod-logic"
-		}
-	],
-
-	"levels":{
-		"rpc-log":"ERROR",
-		"forward-log":"ERROR",
-		"con-log":"DEBUG",
-		"rpc-debug":"DEBUG",
-		"crash-log":"DEBUG",
-		"admin-log":"DEBUG",
-		"pomelo":"DEBUG",
-		"pomelo-admin":"DEBUG",
-		"pomelo-rpc":"DEBUG",
-		"kod-error":"ERROR",
-		"kod-mail-error":"ERROR",
-		"kod-logic":"TRACE"
-	},
-
-	"replaceConsole":true,
-	"lineDebug":true
+  "appenders": [
+    {
+      "type": "console"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/con-log-${opts:serverId}.log",
+      "pattern": "connector",
+      "maxLogSize": 1048576,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 5,
+      "category": "con-log"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/rpc-log-${opts:serverId}.log",
+      "maxLogSize": 1048576,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 5,
+      "category": "rpc-log"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/forward-log-${opts:serverId}.log",
+      "maxLogSize": 1048576,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 5,
+      "category": "forward-log"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/rpc-debug-${opts:serverId}.log",
+      "maxLogSize": 1048576,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 5,
+      "category": "rpc-debug"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/crash.log",
+      "maxLogSize": 1048576,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 5,
+      "category": "crash-log"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/admin.log",
+      "maxLogSize": 1048576,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 5,
+      "category": "admin-log"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/pomelo-${opts:serverId}.log",
+      "maxLogSize": 1048576,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 5,
+      "category": "pomelo"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/pomelo-admin.log",
+      "maxLogSize": 1048576,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 5,
+      "category": "pomelo-admin"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/pomelo-rpc.log",
+      "maxLogSize": 1048576,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 5,
+      "category": "pomelo-rpc"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-logic.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-logic"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-logic-error.log",
+      "maxLogSize": 1048576,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 5,
+      "category": "kod-logic-error"
+    },
+    {
+      "type": "smtp",
+      "recipients": "zhangxuemin@batcatstudio.com, hejia@batcatstudio.com, daiguoqiang@batcatstudio.com, gaozhou@batcatstudio.com, shicihang@batcatstudio.com",
+      "sendInterval": 5,
+      "transport": "SMTP",
+      "sender": "Modun Zhang <zhangxuemin@batcatstudio.com>",
+      "SMTP": {
+        "host": "smtp.exmail.qq.com",
+        "secureConnection": true,
+        "port": 465,
+        "auth": {
+          "user": "zhangxuemin@batcatstudio.com",
+          "pass": "Zxm75504109"
+        }
+      },
+      "category": "kod-logic-mail"
+    }
+  ],
+  "levels": {
+    "rpc-log": "ERROR",
+    "forward-log": "ERROR",
+    "con-log": "DEBUG",
+    "rpc-debug": "DEBUG",
+    "crash-log": "DEBUG",
+    "admin-log": "DEBUG",
+    "pomelo": "DEBUG",
+    "pomelo-admin": "DEBUG",
+    "pomelo-rpc": "DEBUG",
+    "kod-logic": "TRACE",
+    "kod-logic-error": "ERROR",
+    "kod-mail-error": "ERROR"
+  },
+  "replaceConsole": true,
+  "lineDebug": true
 }
