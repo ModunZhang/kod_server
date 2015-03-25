@@ -207,8 +207,9 @@ life.afterStartAll = function(app){
 			if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 				allianceDoc.basicInfo.statusFinishTime = now + (allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime)
 				allianceDoc.basicInfo.statusStartTime = now
-				console.log(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId, "-----------------------------------")
+				console.log(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId, "11111111111111111111111")
 				if(_.isEqual(allianceDoc.allianceFight.attackAllianceId, allianceDoc._id)){
+					console.log(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId, "22222222222222222222222")
 					var thekey = Consts.TimeEventType.AllianceFight
 					var theEventType = Consts.TimeEventType.AllianceFight
 					var theEventId = allianceDoc.allianceFight.attackAllianceId + ":" + allianceDoc.allianceFight.defenceAllianceId
