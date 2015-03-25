@@ -219,7 +219,7 @@ life.afterStartAll = function(app){
 			}
 			return allianceDao.updateAsync(allianceDoc)
 		}).then(function(){
-			activeAllianceEvents(allianceIds)
+			return activeAllianceEvents(allianceIds)
 		}).catch(function(e){
 			return Promise.reject(e)
 		})
