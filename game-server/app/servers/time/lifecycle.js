@@ -199,6 +199,24 @@ life.afterStartAll = function(app){
 				event.startTime = now
 				eventFuncs.push(addTimeEventAsync(eventServerId, key, "attackMarchReturnEvents", event.id, event.arriveTime - event.startTime))
 			})
+			if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
+				allianceDoc.basicInfo.statusFinishTime = now + (allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime)
+				allianceDoc.basicInfo.statusStartTime = now
+				eventFuncs.push(addTimeEventAsync(eventServerId, key, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime))
+			}
+			if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+				allianceDoc.basicInfo.statusFinishTime = now + (allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime)
+				allianceDoc.basicInfo.statusStartTime = now
+				if(_.isEqual(allianceDoc.allianceFight.attackAllianceId, allianceDoc._id)){
+					var thekey = Consts.TimeEventType.AllianceFight
+					var theEventType = Consts.TimeEventType.AllianceFight
+					var theEventId = allianceDoc.allianceFight.attackAllianceId + ":" + allianceDoc.allianceFight.defenceAllianceId
+					eventFuncs.push(addTimeEventAsync(eventServerId, thekey, theEventType, theEventId, allianceDoc.basicInfo.statusFinishTime - allianceDoc.basicInfo.statusStartTime))
+				}
+			}
+			if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Peace)){
+				allianceDoc.basicInfo.statusStartTime = now
+			}
 			return allianceDao.updateAsync(allianceDoc)
 		}).then(function(){
 			activeAllianceEvents(allianceIds)

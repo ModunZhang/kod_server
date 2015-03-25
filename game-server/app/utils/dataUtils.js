@@ -26,8 +26,8 @@ var HouseInit = PlayerInitData.houses[1]
 var Soldiers = GameDatas.Soldiers
 var DragonEquipments = GameDatas.DragonEquipments
 var Dragons = GameDatas.Dragons
-var AllianceInit = GameDatas.AllianceInitData
-var AllianceRight = AllianceInit.right
+var AllianceInitData = GameDatas.AllianceInitData
+var AllianceRight = AllianceInitData.right
 var AllianceBuilding = GameDatas.AllianceBuilding
 var AllianceVillage = GameDatas.AllianceVillage
 var AllianceShrine = GameDatas.AllianceShrine
@@ -1571,7 +1571,7 @@ Utils.isDragonReachMaxStar = function(dragon){
  * @returns {*}
  */
 Utils.getGemByCreateAlliance = function(){
-	return AllianceInit.intInit.createAllianceGem.value
+	return AllianceInitData.intInit.createAllianceGem.value
 }
 
 /**
@@ -1579,7 +1579,7 @@ Utils.getGemByCreateAlliance = function(){
  * @returns {*}
  */
 Utils.getGemByBuyAllianceArchon = function(){
-	return AllianceInit.intInit.buyArchonGem.value
+	return AllianceInitData.intInit.buyArchonGem.value
 }
 
 /**
@@ -1645,7 +1645,7 @@ Utils.getPlayerFreeSpeedUpEffect = function(playerDoc){
  */
 Utils.hasAllianceDonateType = function(donateType){
 	var has = false
-	_.each(AllianceInit.donate, function(config){
+	_.each(AllianceInitData.donate, function(config){
 		if(_.isEqual(config.type, donateType)){
 			has = true
 		}
@@ -1661,7 +1661,7 @@ Utils.hasAllianceDonateType = function(donateType){
  */
 Utils.getAllianceDonateConfigByTypeAndLevel = function(donateType, donateLevel){
 	var donateConfig = null
-	_.each(AllianceInit.donate, function(config){
+	_.each(AllianceInitData.donate, function(config){
 		if(_.isEqual(config.type, donateType) && _.isEqual(config.level, donateLevel)){
 			donateConfig = config
 		}
@@ -1678,7 +1678,7 @@ Utils.getAllianceDonateConfigByTypeAndLevel = function(donateType, donateLevel){
 Utils.updateAllianceMemberDonateLevel = function(memberInAllianceDoc, donateType){
 	var currentLevel = memberInAllianceDoc.donateStatus[donateType]
 	var hasFound = false
-	_.each(AllianceInit.donate, function(config){
+	_.each(AllianceInitData.donate, function(config){
 		if(!hasFound && _.isEqual(config.type, donateType)){
 			if(config.level > currentLevel){
 				currentLevel += 1
@@ -1737,7 +1737,7 @@ Utils.getAllianceMoveBuildingRequired = function(buildingName, buildingLevel){
  * @returns {*}
  */
 Utils.getAllianceDistroyDecorateRequired = function(decorateType){
-	var config = AllianceInit.buildingType[decorateType]
+	var config = AllianceInitData.buildingType[decorateType]
 	var required = {
 		honour:config.distroyNeedHonour
 	}
@@ -1771,7 +1771,7 @@ Utils.isAllianceVillageReachMaxLevel = function(allianceType, allianceLevel){
  * @returns {*}
  */
 Utils.getEditAllianceBasicInfoGem = function(){
-	return AllianceInit.intInit.editAllianceBasicInfoGem.value
+	return AllianceInitData.intInit.editAllianceBasicInfoGem.value
 }
 
 /**
@@ -1779,7 +1779,7 @@ Utils.getEditAllianceBasicInfoGem = function(){
  * @returns {*}
  */
 Utils.getEditAllianceTerrianHonour = function(){
-	return AllianceInit.intInit.editAllianceTerrianHonour.value
+	return AllianceInitData.intInit.editAllianceTerrianHonour.value
 }
 
 /**
@@ -1787,7 +1787,7 @@ Utils.getEditAllianceTerrianHonour = function(){
  * @returns {*}
  */
 Utils.getAllianceVillageTypeConfigs = function(){
-	var config = AllianceInit.buildingType
+	var config = AllianceInitData.buildingType
 	var villages = _.filter(config, function(configObj){
 		return _.isEqual(configObj.category, "village")
 	})
@@ -1835,7 +1835,7 @@ Utils.createMapVillages = function(mapObjects){
 	var villages = []
 	var villageObjects = _.filter(mapObjects, function(mapObject){
 		var buildingType = mapObject.type
-		var config = AllianceInit.buildingType[buildingType]
+		var config = AllianceInitData.buildingType[buildingType]
 		return _.isEqual(config.category, "village")
 	})
 	_.each(villageObjects, function(villageObject){
@@ -1877,7 +1877,7 @@ Utils.addAllianceVillageObject = function(allianceDoc, mapObject){
  * @returns {{width: *, height: *}}
  */
 Utils.getSizeInAllianceMap = function(buildingType){
-	var config = AllianceInit.buildingType[buildingType]
+	var config = AllianceInitData.buildingType[buildingType]
 	return {width:config.width, height:config.height}
 }
 
@@ -1887,7 +1887,7 @@ Utils.getSizeInAllianceMap = function(buildingType){
  * @returns {*}
  */
 Utils.isAllianceMapObjectTypeADecorateObject = function(objectType){
-	var config = AllianceInit.buildingType[objectType]
+	var config = AllianceInitData.buildingType[objectType]
 	return _.isEqual(config.category, "decorate")
 }
 
@@ -1926,7 +1926,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
 		id:ShortId.generate(),
 		stageName:stageName,
 		createTime:Date.now(),
-		startTime:Date.now() + (AllianceInit.intInit.activeShrineStageEventTime.value * 1000),
+		startTime:Date.now() + (AllianceInitData.intInit.activeShrineStageEventTime.value * 1000),
 		playerTroops:[]
 	}
 	return event
@@ -2554,7 +2554,7 @@ Utils.getAllianceShrineStageFightHoner = function(stageName, fightStar){
  * @returns {number}
  */
 Utils.getAllianceFightPrepareTime = function(){
-	return AllianceInit.intInit.allianceFightPrepareTime.value * 1000
+	return AllianceInitData.intInit.allianceFightPrepareTime.value * 1000
 }
 
 /**
@@ -2562,7 +2562,7 @@ Utils.getAllianceFightPrepareTime = function(){
  * @returns {number}
  */
 Utils.getAllianceFightTotalFightTime = function(){
-	return AllianceInit.intInit.allianceFightTotalFightTime.value * 1000
+	return AllianceInitData.intInit.allianceFightTotalFightTime.value * 1000
 }
 
 /**
@@ -2570,15 +2570,7 @@ Utils.getAllianceFightTotalFightTime = function(){
  * @returns {number}
  */
 Utils.getAllianceFightSecondsPerFight = function(){
-	return AllianceInit.intInit.allianceFightTimePerFight.value * 1000
-}
-
-/**
- * 获取联盟战后联盟获得的保护时间
- * @returns {number}
- */
-Utils.getAllianceProtectTimeAfterAllianceFight = function(){
-	return AllianceInit.intInit.allianceFightFaiedProtectMinutes.value * 60 * 1000
+	return AllianceInitData.intInit.allianceFightTimePerFight.value * 1000
 }
 
 /**
@@ -2599,7 +2591,7 @@ Utils.getDragonMaxHp = function(dragon){
  */
 Utils.isAlliancePlayerBeHelpedTroopsReachMax = function(allianceDoc, playerDoc){
 	var currentCount = LogicUtils.getAlliancePlayerBeHelpedTroopsCount(allianceDoc, playerDoc)
-	return currentCount >= AllianceInit.intInit.allianceHelpDefenceTroopsMaxCount.value
+	return currentCount >= AllianceInitData.intInit.allianceHelpDefenceTroopsMaxCount.value
 }
 
 /**
@@ -2608,7 +2600,7 @@ Utils.isAlliancePlayerBeHelpedTroopsReachMax = function(allianceDoc, playerDoc){
  * @returns {boolean}
  */
 Utils.isAllianceRevengeTimeExpired = function(allianceFightReport){
-	return Date.now() > allianceFightReport.fightTime + (AllianceInit.intInit.allianceRevengeMaxTime.value * 1000)
+	return Date.now() > allianceFightReport.fightTime + (AllianceInitData.intInit.allianceRevengeMaxTime.value * 1000)
 }
 
 /**
@@ -2724,7 +2716,7 @@ Utils.getPlayerSoldiersCitizen = function(playerDoc, soldiers){
  */
 Utils.getPlayerDragonMaxCitizen = function(playerDoc, dragon){
 	var leaderShip = this.getPlayerDragonLeadership(playerDoc, dragon)
-	return leaderShip * AllianceInit.intInit.citizenPerLeadership.value
+	return leaderShip * AllianceInitData.intInit.citizenPerLeadership.value
 }
 
 /**
@@ -2836,7 +2828,7 @@ Utils.getAllianceVillageResourceMax = function(villageType, villageLevel){
  * @returns {number}
  */
 Utils.getDragonExpAdd = function(kill){
-	return Math.floor(kill / AllianceInit.intInit.KilledCitizenPerDragonExp.value)
+	return Math.floor(kill / AllianceInitData.intInit.KilledCitizenPerDragonExp.value)
 }
 
 /**
@@ -2864,7 +2856,7 @@ Utils.getBloodAdd = function(dragon, kill, isWinner){
  */
 Utils.getCollectResourceExpAdd = function(name, count){
 	name = name.charAt(0).toUpperCase() + name.slice(1)
-	var resourceCountPerExp = AllianceInit.intInit["collected" + name + "CountPerExp"].value
+	var resourceCountPerExp = AllianceInitData.intInit["collected" + name + "CountPerExp"].value
 	var exp = Math.floor(count / resourceCountPerExp)
 	return exp
 }
@@ -3626,6 +3618,15 @@ Utils.getPlayerLevelupExpireTime = function(playerDoc){
  */
 Utils.getPlayerIntInit = function(type){
 	return PlayerInitData.intInit[type].value
+}
+
+/**
+ * 获取联盟Int配置表
+ * @param type
+ * @returns {*}
+ */
+Utils.getAllianceIntInit = function(type){
+	return AllianceInitData.intInit[type].value
 }
 
 /**
