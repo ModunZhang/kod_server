@@ -68,6 +68,8 @@ pro.onEvent = function(api, object){
 pro.onEventError = function(api, object, stack){
 	errorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 	errorLogger.error(stack)
+	eventLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+	eventLogger.error(stack)
 	eventErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 	eventErrorLogger.error(stack)
 	if(_.isEqual(this.evn, "production")){

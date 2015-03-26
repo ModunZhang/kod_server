@@ -50,6 +50,7 @@ pro.createAlliance = function(msg, session, next){
  * @param next
  */
 pro.sendAllianceMail = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.sendAllianceMail", {playerId:session.uid, msg:msg})
 	var title = msg.title
 	var content = msg.content
 	this.allianceApiService.sendAllianceMailAsync(session.uid, title, content).then(function(playerData){
@@ -66,6 +67,7 @@ pro.sendAllianceMail = function(msg, session, next){
  * @param next
  */
 pro.getMyAllianceData = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getMyAllianceData", {playerId:session.uid, msg:msg})
 	this.allianceApiService.getMyAllianceDataAsync(session.uid).then(function(allianceData){
 		next(null, {code:200, allianceData:allianceData})
 	}).catch(function(e){
@@ -80,6 +82,7 @@ pro.getMyAllianceData = function(msg, session, next){
  * @param next
  */
 pro.getCanDirectJoinAlliances = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getCanDirectJoinAlliances", {playerId:session.uid, msg:msg})
 	this.allianceApiService.getCanDirectJoinAlliancesAsync(session.uid).then(function(allianceDatas){
 		next(null, {code:200, allianceDatas:allianceDatas})
 	}).catch(function(e){
@@ -94,6 +97,7 @@ pro.getCanDirectJoinAlliances = function(msg, session, next){
  * @param next
  */
 pro.searchAllianceByTag = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.searchAllianceByTag", {playerId:session.uid, msg:msg})
 	var tag = msg.tag
 	this.allianceApiService.searchAllianceByTagAsync(session.uid, tag).then(function(allianceDatas){
 		next(null, {code:200, allianceDatas:allianceDatas})
@@ -109,6 +113,7 @@ pro.searchAllianceByTag = function(msg, session, next){
  * @param next
  */
 pro.editAllianceBasicInfo = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.editAllianceBasicInfo", {playerId:session.uid, msg:msg})
 	var name = msg.name
 	var tag = msg.tag
 	var language = msg.language
@@ -127,6 +132,7 @@ pro.editAllianceBasicInfo = function(msg, session, next){
  * @param next
  */
 pro.editAllianceTerrian = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.editAllianceTerrian", {playerId:session.uid, msg:msg})
 	var terrain = msg.terrain
 	this.allianceApiService.editAllianceTerrianAsync(session.uid, terrain).then(function(){
 		next(null, {code:200})
@@ -142,6 +148,7 @@ pro.editAllianceTerrian = function(msg, session, next){
  * @param next
  */
 pro.editAllianceTitleName = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.editAllianceTitleName", {playerId:session.uid, msg:msg})
 	var title = msg.title
 	var titleName = msg.titleName
 	this.allianceApiService.editAllianceTitleNameAsync(session.uid, title, titleName).then(function(playerData){
@@ -158,6 +165,7 @@ pro.editAllianceTitleName = function(msg, session, next){
  * @param next
  */
 pro.editAllianceNotice = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.editAllianceNotice", {playerId:session.uid, msg:msg})
 	var notice = msg.notice
 	this.allianceApiService.editAllianceNoticeAsync(session.uid, notice).then(function(){
 		next(null, {code:200})
@@ -173,6 +181,7 @@ pro.editAllianceNotice = function(msg, session, next){
  * @param next
  */
 pro.editAllianceDescription = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.editAllianceDescription", {playerId:session.uid, msg:msg})
 	var description = msg.description
 	this.allianceApiService.editAllianceDescriptionAsync(session.uid, description).then(function(){
 		next(null, {code:200})
@@ -188,6 +197,7 @@ pro.editAllianceDescription = function(msg, session, next){
  * @param next
  */
 pro.editAllianceJoinType = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.editAllianceJoinType", {playerId:session.uid, msg:msg})
 	var joinType = msg.joinType
 	this.allianceApiService.editAllianceJoinTypeAsync(session.uid, joinType).then(function(){
 		next(null, {code:200})
@@ -203,6 +213,7 @@ pro.editAllianceJoinType = function(msg, session, next){
  * @param next
  */
 pro.editAllianceMemberTitle = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.editAllianceMemberTitle", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
 	var title = msg.title
 	this.allianceApiService.editAllianceMemberTitleAsync(session.uid, memberId, title).then(function(){
@@ -219,6 +230,7 @@ pro.editAllianceMemberTitle = function(msg, session, next){
  * @param next
  */
 pro.kickAllianceMemberOff = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.kickAllianceMemberOff", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
 	this.allianceApiService.kickAllianceMemberOffAsync(session.uid, memberId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -234,6 +246,7 @@ pro.kickAllianceMemberOff = function(msg, session, next){
  * @param next
  */
 pro.handOverAllianceArchon = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.handOverAllianceArchon", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
 	this.allianceApiService.handOverAllianceArchonAsync(session.uid, memberId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -249,6 +262,7 @@ pro.handOverAllianceArchon = function(msg, session, next){
  * @param next
  */
 pro.quitAlliance = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.quitAlliance", {playerId:session.uid, msg:msg})
 	this.allianceApiService2.quitAllianceAsync(session.uid).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -263,6 +277,7 @@ pro.quitAlliance = function(msg, session, next){
  * @param next
  */
 pro.joinAllianceDirectly = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.joinAllianceDirectly", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
 	this.allianceApiService2.joinAllianceDirectlyAsync(session.uid, allianceId).spread(function(playerData, allianceData){
 		next(null, {code:200, playerData:playerData, allianceData:allianceData})
@@ -278,6 +293,7 @@ pro.joinAllianceDirectly = function(msg, session, next){
  * @param next
  */
 pro.requestToJoinAlliance = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.requestToJoinAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
 	this.allianceApiService2.requestToJoinAllianceAsync(session.uid, allianceId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -293,6 +309,7 @@ pro.requestToJoinAlliance = function(msg, session, next){
  * @param next
  */
 pro.cancelJoinAllianceRequest = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.cancelJoinAllianceRequest", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
 	this.allianceApiService2.cancelJoinAllianceRequestAsync(session.uid, allianceId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -308,6 +325,7 @@ pro.cancelJoinAllianceRequest = function(msg, session, next){
  * @param next
  */
 pro.approveJoinAllianceRequest = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.approveJoinAllianceRequest", {playerId:session.uid, msg:msg})
 	var requestEventId = msg.requestEventId
 	this.allianceApiService2.approveJoinAllianceRequestAsync(session.uid, requestEventId).then(function(){
 		next(null, {code:200})
@@ -323,6 +341,7 @@ pro.approveJoinAllianceRequest = function(msg, session, next){
  * @param next
  */
 pro.removeJoinAllianceReqeusts = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.removeJoinAllianceReqeusts", {playerId:session.uid, msg:msg})
 	var requestEventIds = msg.requestEventIds
 	this.allianceApiService2.removeJoinAllianceReqeustsAsync(session.uid, requestEventIds).then(function(){
 		next(null, {code:200})
@@ -338,6 +357,7 @@ pro.removeJoinAllianceReqeusts = function(msg, session, next){
  * @param next
  */
 pro.inviteToJoinAlliance = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.inviteToJoinAlliance", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
 	this.allianceApiService2.inviteToJoinAllianceAsync(session.uid, memberId).then(function(){
 		next(null, {code:200})
@@ -353,6 +373,7 @@ pro.inviteToJoinAlliance = function(msg, session, next){
  * @param next
  */
 pro.handleJoinAllianceInvite = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.handleJoinAllianceInvite", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
 	var agree = msg.agree
 	this.allianceApiService2.handleJoinAllianceInviteAsync(session.uid, allianceId, agree).spread(function(playerData, allianceData){
@@ -369,6 +390,7 @@ pro.handleJoinAllianceInvite = function(msg, session, next){
  * @param next
  */
 pro.buyAllianceArchon = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.buyAllianceArchon", {playerId:session.uid, msg:msg})
 	this.allianceApiService2.buyAllianceArchonAsync(session.uid).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -383,6 +405,7 @@ pro.buyAllianceArchon = function(msg, session, next){
  * @param next
  */
 pro.requestAllianceToSpeedUp = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.requestAllianceToSpeedUp", {playerId:session.uid, msg:msg})
 	var eventType = msg.eventType
 	var eventId = msg.eventId
 	this.allianceApiService2.requestAllianceToSpeedUpAsync(session.uid, eventType, eventId).then(function(){
@@ -399,6 +422,7 @@ pro.requestAllianceToSpeedUp = function(msg, session, next){
  * @param next
  */
 pro.helpAllianceMemberSpeedUp = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.helpAllianceMemberSpeedUp", {playerId:session.uid, msg:msg})
 	var eventId = msg.eventId
 	this.allianceApiService2.helpAllianceMemberSpeedUpAsync(session.uid, eventId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -414,6 +438,7 @@ pro.helpAllianceMemberSpeedUp = function(msg, session, next){
  * @param next
  */
 pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.helpAllAllianceMemberSpeedUp", {playerId:session.uid, msg:msg})
 	this.allianceApiService2.helpAllAllianceMemberSpeedUpAsync(session.uid).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -428,6 +453,7 @@ pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
  * @param next
  */
 pro.donateToAlliance = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.donateToAlliance", {playerId:session.uid, msg:msg})
 	var donateType = msg.donateType
 	this.allianceApiService3.donateToAllianceAsync(session.uid, donateType).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -443,6 +469,7 @@ pro.donateToAlliance = function(msg, session, next){
  * @param next
  */
 pro.upgradeAllianceBuilding = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.upgradeAllianceBuilding", {playerId:session.uid, msg:msg})
 	var buildingName = msg.buildingName
 	this.allianceApiService3.upgradeAllianceBuildingAsync(session.uid, buildingName).then(function(){
 		next(null, {code:200})
@@ -458,6 +485,7 @@ pro.upgradeAllianceBuilding = function(msg, session, next){
  * @param next
  */
 pro.upgradeAllianceVillage = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.upgradeAllianceVillage", {playerId:session.uid, msg:msg})
 	var villageType = msg.villageType
 	this.allianceApiService3.upgradeAllianceVillageAsync(session.uid, villageType).then(function(){
 		next(null, {code:200})
@@ -473,6 +501,7 @@ pro.upgradeAllianceVillage = function(msg, session, next){
  * @param next
  */
 pro.moveAllianceBuilding = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.moveAllianceBuilding", {playerId:session.uid, msg:msg})
 	var buildingName = msg.buildingName
 	var locationX = msg.locationX
 	var locationY = msg.locationY
@@ -490,6 +519,7 @@ pro.moveAllianceBuilding = function(msg, session, next){
  * @param next
  */
 pro.distroyAllianceDecorate = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.distroyAllianceDecorate", {playerId:session.uid, msg:msg})
 	var decorateId = msg.decorateId
 	this.allianceApiService3.distroyAllianceDecorateAsync(session.uid, decorateId).then(function(){
 		next(null, {code:200})
@@ -505,6 +535,7 @@ pro.distroyAllianceDecorate = function(msg, session, next){
  * @param next
  */
 pro.activateAllianceShrineStage = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.activateAllianceShrineStage", {playerId:session.uid, msg:msg})
 	var stageName = msg.stageName
 	this.allianceApiService3.activateAllianceShrineStageAsync(session.uid, stageName).then(function(){
 		next(null, {code:200})
@@ -520,6 +551,7 @@ pro.activateAllianceShrineStage = function(msg, session, next){
  * @param next
  */
 pro.attackAllianceShrine = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.attackAllianceShrine", {playerId:session.uid, msg:msg})
 	var shrineEventId = msg.shrineEventId
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
@@ -537,6 +569,7 @@ pro.attackAllianceShrine = function(msg, session, next){
  * @param next
  */
 pro.requestAllianceToFight = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.requestAllianceToFight", {playerId:session.uid, msg:msg})
 	this.allianceApiService3.requestAllianceToFightAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
@@ -551,6 +584,7 @@ pro.requestAllianceToFight = function(msg, session, next){
  * @param next
  */
 pro.findAllianceToFight = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.findAllianceToFight", {playerId:session.uid, msg:msg})
 	this.allianceApiService3.findAllianceToFightAsync(session.uid).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
@@ -565,6 +599,7 @@ pro.findAllianceToFight = function(msg, session, next){
  * @param next
  */
 pro.revengeAlliance = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.revengeAlliance", {playerId:session.uid, msg:msg})
 	var reportId = msg.reportId
 	this.allianceApiService3.revengeAllianceAsync(session.uid, reportId).then(function(){
 		next(null, {code:200})
@@ -580,6 +615,7 @@ pro.revengeAlliance = function(msg, session, next){
  * @param next
  */
 pro.getAllianceViewData = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getAllianceViewData", {playerId:session.uid, msg:msg})
 	var targetAllianceId = msg.targetAllianceId
 	this.allianceApiService3.getAllianceViewDataAsync(session.uid, targetAllianceId).then(function(allianceViewData){
 		next(null, {code:200, allianceViewData:allianceViewData})
@@ -595,6 +631,7 @@ pro.getAllianceViewData = function(msg, session, next){
  * @param next
  */
 pro.searchAllianceInfoByTag = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.searchAllianceInfoByTag", {playerId:session.uid, msg:msg})
 	var tag = msg.tag
 	this.allianceApiService3.searchAllianceInfoByTagAsync(session.uid, tag).then(function(allianceInfos){
 		next(null, {code:200, allianceInfos:allianceInfos})
@@ -610,6 +647,7 @@ pro.searchAllianceInfoByTag = function(msg, session, next){
  * @param next
  */
 pro.getNearedAllianceInfos = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getNearedAllianceInfos", {playerId:session.uid, msg:msg})
 	this.allianceApiService3.getNearedAllianceInfosAsync(session.uid).then(function(allianceInfos){
 		next(null, {code:200, allianceInfos:allianceInfos})
 	}).catch(function(e){
@@ -624,6 +662,7 @@ pro.getNearedAllianceInfos = function(msg, session, next){
  * @param next
  */
 pro.helpAllianceMemberDefence = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.helpAllianceMemberDefence", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
 	var targetPlayerId = msg.targetPlayerId
@@ -641,6 +680,7 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
  * @param next
  */
 pro.retreatFromBeHelpedAllianceMember = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.retreatFromBeHelpedAllianceMember", {playerId:session.uid, msg:msg})
 	var beHelpedPlayerId = msg.beHelpedPlayerId
 	this.allianceApiService4.retreatFromBeHelpedAllianceMemberAsync(session.uid, beHelpedPlayerId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -656,6 +696,7 @@ pro.retreatFromBeHelpedAllianceMember = function(msg, session, next){
  * @param next
  */
 pro.strikePlayerCity = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.strikePlayerCity", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var defencePlayerId = msg.defencePlayerId
 	this.allianceApiService4.strikePlayerCityAsync(session.uid, dragonType, defencePlayerId).then(function(playerData){
@@ -672,6 +713,7 @@ pro.strikePlayerCity = function(msg, session, next){
  * @param next
  */
 pro.attackPlayerCity = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.attackPlayerCity", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
 	var defencePlayerId = msg.defencePlayerId
@@ -689,6 +731,7 @@ pro.attackPlayerCity = function(msg, session, next){
  * @param next
  */
 pro.attackVillage = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.attackVillage", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
 	var defenceAllianceId = msg.defenceAllianceId
@@ -707,6 +750,7 @@ pro.attackVillage = function(msg, session, next){
  * @param next
  */
 pro.retreatFromVillage = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.retreatFromVillage", {playerId:session.uid, msg:msg})
 	var villageEventId = msg.villageEventId
 	this.allianceApiService4.retreatFromVillageAsync(session.uid, villageEventId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -722,6 +766,7 @@ pro.retreatFromVillage = function(msg, session, next){
  * @param next
  */
 pro.strikeVillage = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.strikeVillage", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var defenceAllianceId = msg.defenceAllianceId
 	var defenceVillageId = msg.defenceVillageId
@@ -739,6 +784,7 @@ pro.strikeVillage = function(msg, session, next){
  * @param next
  */
 pro.getAttackMarchEventDetail = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getAttackMarchEventDetail", {playerId:session.uid, msg:msg})
 	var eventId = msg.eventId
 	this.allianceApiService4.getAttackMarchEventDetailAsync(session.uid, eventId).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
@@ -754,6 +800,7 @@ pro.getAttackMarchEventDetail = function(msg, session, next){
  * @param next
  */
 pro.getStrikeMarchEventDetail = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getStrikeMarchEventDetail", {playerId:session.uid, msg:msg})
 	var eventId = msg.eventId
 	this.allianceApiService4.getStrikeMarchEventDetailAsync(session.uid, eventId).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
@@ -769,6 +816,7 @@ pro.getStrikeMarchEventDetail = function(msg, session, next){
  * @param next
  */
 pro.getHelpDefenceMarchEventDetail = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getHelpDefenceMarchEventDetail", {playerId:session.uid, msg:msg})
 	var eventId = msg.eventId
 	this.allianceApiService5.getHelpDefenceMarchEventDetailAsync(session.uid, eventId).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
@@ -784,6 +832,7 @@ pro.getHelpDefenceMarchEventDetail = function(msg, session, next){
  * @param next
  */
 pro.getHelpDefenceTroopDetail = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getHelpDefenceTroopDetail", {playerId:session.uid, msg:msg})
 	var playerId = msg.playerId
 	var helpedByPlayerId = msg.helpedByPlayerId
 	this.allianceApiService5.getHelpDefenceTroopDetailAsync(session.uid, playerId, helpedByPlayerId).then(function(troopDetail){
@@ -800,6 +849,7 @@ pro.getHelpDefenceTroopDetail = function(msg, session, next){
  * @param next
  */
 pro.addItem = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.addItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var count = msg.count
 	this.allianceApiService5.addItemAsync(session.uid, itemName, count).then(function(){
@@ -816,6 +866,7 @@ pro.addItem = function(msg, session, next){
  * @param next
  */
 pro.buyItem = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.buyItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var count = msg.count
 	this.allianceApiService5.buyItemAsync(session.uid, itemName, count).then(function(playerData){
@@ -832,6 +883,7 @@ pro.buyItem = function(msg, session, next){
  * @param next
  */
 pro.giveLoyaltyToAllianceMember = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.giveLoyaltyToAllianceMember", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
 	var count = msg.count
 	this.allianceApiService5.giveLoyaltyToAllianceMemberAsync(session.uid, memberId, count).then(function(){
