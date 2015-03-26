@@ -17,6 +17,7 @@ var LogicRemote = function(app) {
 	this.playerTimeEventService = app.get("playerTimeEventService")
 	this.allianceTimeEventService = app.get("allianceTimeEventService")
 	this.sessionService = app.get("sessionService")
+	this.logService = app.get("logService")
 }
 var pro = LogicRemote.prototype
 
@@ -27,6 +28,7 @@ var pro = LogicRemote.prototype
  * @param callback
  */
 pro.kickPlayer = function(uid, reason, callback){
+	this.logService.onRequest("logic.logicRemote.kickPlayer", {playerId:uid, reason:reason})
 	this.sessionService.kick(uid, reason, callback)
 }
 
@@ -38,6 +40,7 @@ pro.kickPlayer = function(uid, reason, callback){
  * @param callback
  */
 pro.onTimeEvent = function(key, eventType, eventId, callback){
+	this.logService.onRequest("logic.logicRemote.onTimeEvent", {key:key, eventType:eventType, eventId:eventId})
 	var params = key.split(":")
 	var targetType = params[0]
 	var id = params[1]
@@ -59,6 +62,7 @@ pro.onTimeEvent = function(key, eventType, eventId, callback){
  * @param callback
  */
 pro.setServerStatus = function(status, callback){
+	this.logService.onRequest("logic.logicRemote.setServerStatus", {status:status})
 	this.app.set("isReady", status)
 	callback()
 }

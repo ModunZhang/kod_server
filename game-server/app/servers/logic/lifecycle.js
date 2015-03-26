@@ -84,7 +84,7 @@ life.beforeShutdown = function(app, callback){
 	Promise.all(funcs).then(function(){
 		callback()
 	}).catch(function(e){
-		app.get("logService").onCronError("logic.lifecycle.beforeShutdown", {}, e.stack)
+		app.get("logService").onEventError("logic.lifecycle.beforeShutdown", {}, e.stack)
 	})
 }
 

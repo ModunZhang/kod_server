@@ -10,6 +10,7 @@ module.exports = function(app) {
 
 var GateRemote = function(app) {
 	this.app = app
+	this.logService = app.get("logService")
 }
 var pro = GateRemote.prototype
 
@@ -20,6 +21,7 @@ var pro = GateRemote.prototype
  * @param callback
  */
 pro.setServerStatus = function(status, callback){
+	this.logService.onRequest("gate.gateRemote.setServerStatus", {status:status})
 	this.app.set("isReady", status)
 	callback()
 }

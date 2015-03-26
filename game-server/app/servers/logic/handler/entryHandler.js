@@ -38,6 +38,7 @@ var pro = Handler.prototype
  * @param next
  */
 pro.login = function(msg, session, next){
+	this.logService.onRequest("logic.entryHandler.login", msg)
 	var e = null
 	if(!this.app.get("isReady")){
 		e = ErrorUtils.serverUnderMaintain()
@@ -77,7 +78,6 @@ pro.login = function(msg, session, next){
 		}
 		return Promise.all(funcs)
 	}).then(function(){
-		console.log("user [" + session.uid + "] login success")
 		next(null, {code:200, playerData:FilterPlayerDoc.call(self, playerDoc), allianceData:allianceDoc})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -102,7 +102,7 @@ var BindPlayerSession = function(session, deviceId, playerDoc, callback){
 }
 
 var PlayerLeave = function(session, reason){
-	console.log("user [" + session.uid + "] logout with reason [" + reason + "]")
+	this.logService.onRequest("logic.entryHandler.playerLeave", {playerId:session.uid, reason:reason})
 	var self = this
 	var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, this)
 	var playerDoc = null
@@ -114,8 +114,6 @@ var PlayerLeave = function(session, reason){
 			funcs.push(self.globalChannelService.leaveAsync(Consts.AllianceChannelPrefix + playerDoc.alliance.id, playerDoc._id, self.serverId))
 		}
 		return Promise.all(funcs)
-	}).then(function(){
-		console.log("user [" + session.uid + "] logout success")
 	}).catch(function(e){
 		self.logService.onEventError("logic.entryHandler.playerLeave", {playerId:playerDoc._id}, e.stack)
 	})

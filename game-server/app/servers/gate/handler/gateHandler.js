@@ -5,6 +5,7 @@
  */
 
 var Dispatcher = require('../../../utils/dispatcher')
+var ErrorUtils = require("../../../utils/errorUtils")
 
 module.exports = function(app) {
   return new Handler(app)
@@ -12,6 +13,7 @@ module.exports = function(app) {
 
 var Handler = function(app) {
   this.app = app
+	this.logService = app.get("logService")
 }
 
 var pro = Handler.prototype
@@ -23,11 +25,11 @@ var pro = Handler.prototype
  * @param next
  */
 pro.queryEntry = function(msg, session, next){
+	this.logService.onRequest("gate.getHandler.queryEntry", msg)
+	var e = null
 	if(!this.app.get("isReady")){
-		next(null,{
-			message:"服务器维护中",
-			code:500
-		})
+		e = ErrorUtils.serverUnderMaintain()
+		next(e, ErrorUtils.getError(e))
 		return
 	}
 

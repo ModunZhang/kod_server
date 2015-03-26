@@ -40,6 +40,8 @@ pro.onRequest = function(api, object){
 pro.onRequestError = function(api, object, stack){
 	errorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 	errorLogger.error(stack)
+	requestLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+	requestLogger.error(stack)
 	requestErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 	requestErrorLogger.error(stack)
 	if(_.isEqual(this.evn, "production")){

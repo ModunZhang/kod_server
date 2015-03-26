@@ -18,6 +18,7 @@ var ChatHandler = function(app){
 	this.app = app
 	this.env = app.get("env")
 	this.channelService = app.get("channelService")
+	this.logService = app.get("logService")
 	this.globalChatChannel = this.channelService.getChannel(Consts.GloablChatChannelName)
 	this.chats = []
 	this.maxChatCount = 50
@@ -360,6 +361,7 @@ var pro = ChatHandler.prototype
  * @param next
  */
 pro.send = function(msg, session, next){
+	this.logService.onRequest("chat.chatHandler.send", {playerId:session.uid, msg:msg})
 	var self = this
 	var name = session.get("name")
 	var icon = session.get("icon")
@@ -410,6 +412,7 @@ pro.send = function(msg, session, next){
  * @param next
  */
 pro.getAll = function(msg, session, next){
+	this.logService.onRequest("chat.chatHandler.getAll", {playerId:session.uid, msg:msg})
 	PushToPlayer.call(this, Events.chat.onAllChat, session, this.chats)
 	next(null, {code:200})
 }

@@ -14,6 +14,7 @@ module.exports = function(app){
 
 var Handler = function(app){
 	this.app = app
+	this.logService = app.get("logService")
 	this.allianceApiService = app.get("allianceApiService")
 	this.allianceApiService2 = app.get("allianceApiService2")
 	this.allianceApiService3 = app.get("allianceApiService3")
@@ -29,6 +30,7 @@ var pro = Handler.prototype
  * @param next
  */
 pro.createAlliance = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.createAlliance", {playerId:session.uid, msg:msg})
 	var name = msg.name
 	var tag = msg.tag
 	var language = msg.language

@@ -17,13 +17,14 @@ module.exports = function(app){
 
 var Handler = function(app){
 	this.app = app
+	this.apnService = app.get("apnService")
+	this.logService = app.get("logService")
+	this.playerIAPService = app.get("playerIAPService")
 	this.playerApiService = app.get("playerApiService")
 	this.playerApiService2 = app.get("playerApiService2")
 	this.playerApiService3 = app.get("playerApiService3")
 	this.playerApiService4 = app.get("playerApiService4")
 	this.playerApiService5 = app.get("playerApiService5")
-	this.playerIAPService = app.get("playerIAPService")
-	this.apnService = app.get("apnService")
 }
 var pro = Handler.prototype
 
@@ -34,6 +35,7 @@ var pro = Handler.prototype
  * @param next
  */
 pro.upgradeBuilding = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.upgradeBuilding", {playerId:session.uid, msg:msg})
 	var location = msg.location
 	var finishNow = msg.finishNow
 
@@ -51,6 +53,7 @@ pro.upgradeBuilding = function(msg, session, next){
  * @param next
  */
 pro.switchBuilding = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.switchBuilding", {playerId:session.uid, msg:msg})
 	var buildingLocation = msg.buildingLocation
 	var newBuildingName = msg.newBuildingName
 	this.playerApiService.switchBuildingAsync(session.uid, buildingLocation, newBuildingName).then(function(playerData){
@@ -67,6 +70,7 @@ pro.switchBuilding = function(msg, session, next){
  * @param next
  */
 pro.createHouse = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.createHouse", {playerId:session.uid, msg:msg})
 	var buildingLocation = msg.buildingLocation
 	var houseType = msg.houseType
 	var houseLocation = msg.houseLocation
@@ -86,6 +90,7 @@ pro.createHouse = function(msg, session, next){
  * @param next
  */
 pro.upgradeHouse = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.upgradeHouse", {playerId:session.uid, msg:msg})
 	var buildingLocation = msg.buildingLocation
 	var houseLocation = msg.houseLocation
 	var finishNow = msg.finishNow
@@ -104,6 +109,7 @@ pro.upgradeHouse = function(msg, session, next){
  * @param next
  */
 pro.freeSpeedUp = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.freeSpeedUp", {playerId:session.uid, msg:msg})
 	var eventType = msg.eventType
 	var eventId = msg.eventId
 
@@ -121,6 +127,7 @@ pro.freeSpeedUp = function(msg, session, next){
  * @param next
  */
 pro.makeMaterial = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.makeMaterial", {playerId:session.uid, msg:msg})
 	var category = msg.category
 	var finishNow = msg.finishNow
 	this.playerApiService.makeMaterialAsync(session.uid, category, finishNow).then(function(playerData){
@@ -137,6 +144,7 @@ pro.makeMaterial = function(msg, session, next){
  * @param next
  */
 pro.getMaterials = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getMaterials", {playerId:session.uid, msg:msg})
 	var eventId = msg.eventId
 	this.playerApiService.getMaterialsAsync(session.uid, eventId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -152,6 +160,7 @@ pro.getMaterials = function(msg, session, next){
  * @param next
  */
 pro.recruitNormalSoldier = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.recruitNormalSoldier", {playerId:session.uid, msg:msg})
 	var soldierName = msg.soldierName
 	var count = msg.count
 	var finishNow = msg.finishNow
@@ -170,6 +179,7 @@ pro.recruitNormalSoldier = function(msg, session, next){
  * @param next
  */
 pro.recruitSpecialSoldier = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.recruitSpecialSoldier", {playerId:session.uid, msg:msg})
 	var soldierName = msg.soldierName
 	var count = msg.count
 	var finishNow = msg.finishNow
@@ -188,6 +198,7 @@ pro.recruitSpecialSoldier = function(msg, session, next){
  * @param next
  */
 pro.makeDragonEquipment = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.makeDragonEquipment", {playerId:session.uid, msg:msg})
 	var equipmentName = msg.equipmentName
 	var finishNow = msg.finishNow
 	this.playerApiService2.makeDragonEquipmentAsync(session.uid, equipmentName, finishNow).then(function(playerData){
@@ -204,6 +215,7 @@ pro.makeDragonEquipment = function(msg, session, next){
  * @param next
  */
 pro.treatSoldier = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.treatSoldier", {playerId:session.uid, msg:msg})
 	var soldiers = msg.soldiers
 	var finishNow = msg.finishNow
 	this.playerApiService2.treatSoldierAsync(session.uid, soldiers, finishNow).then(function(playerData){
@@ -220,6 +232,7 @@ pro.treatSoldier = function(msg, session, next){
  * @param next
  */
 pro.hatchDragon = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.hatchDragon", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	this.playerApiService2.hatchDragonAsync(session.uid, dragonType).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -235,6 +248,7 @@ pro.hatchDragon = function(msg, session, next){
  * @param next
  */
 pro.setDragonEquipment = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.setDragonEquipment", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var equipmentCategory = msg.equipmentCategory
 	var equipmentName = msg.equipmentName
@@ -252,6 +266,7 @@ pro.setDragonEquipment = function(msg, session, next){
  * @param next
  */
 pro.enhanceDragonEquipment = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.enhanceDragonEquipment", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var equipmentCategory = msg.equipmentCategory
 	var equipments = msg.equipments
@@ -269,6 +284,7 @@ pro.enhanceDragonEquipment = function(msg, session, next){
  * @param next
  */
 pro.resetDragonEquipment = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.resetDragonEquipment", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var equipmentCategory = msg.equipmentCategory
 	this.playerApiService2.resetDragonEquipmentAsync(session.uid, dragonType, equipmentCategory).then(function(playerData){
@@ -285,6 +301,7 @@ pro.resetDragonEquipment = function(msg, session, next){
  * @param next
  */
 pro.upgradeDragonSkill = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.upgradeDragonSkill", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var skillKey = msg.skillKey
 	this.playerApiService2.upgradeDragonSkillAsync(session.uid, dragonType, skillKey).then(function(playerData){
@@ -301,6 +318,7 @@ pro.upgradeDragonSkill = function(msg, session, next){
  * @param next
  */
 pro.upgradeDragonStar = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.upgradeDragonStar", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	this.playerApiService2.upgradeDragonStarAsync(session.uid, dragonType).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -316,6 +334,7 @@ pro.upgradeDragonStar = function(msg, session, next){
  * @param next
  */
 pro.getDailyQuests = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getDailyQuests", {playerId:session.uid, msg:msg})
 	this.playerApiService2.getDailyQuestsAsync(session.uid).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -330,6 +349,7 @@ pro.getDailyQuests = function(msg, session, next){
  * @param next
  */
 pro.addDailyQuestStar = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.addDailyQuestStar", {playerId:session.uid, msg:msg})
 	var questId = msg.questId
 	this.playerApiService2.addDailyQuestStarAsync(session.uid, questId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -345,6 +365,7 @@ pro.addDailyQuestStar = function(msg, session, next){
  * @param next
  */
 pro.startDailyQuest = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.startDailyQuest", {playerId:session.uid, msg:msg})
 	var questId = msg.questId
 	this.playerApiService2.startDailyQuestAsync(session.uid, questId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -360,6 +381,7 @@ pro.startDailyQuest = function(msg, session, next){
  * @param next
  */
 pro.getDailyQeustReward = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getDailyQeustReward", {playerId:session.uid, msg:msg})
 	var questEventId = msg.questEventId
 	this.playerApiService2.getDailyQeustRewardAsync(session.uid, questEventId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -375,6 +397,7 @@ pro.getDailyQeustReward = function(msg, session, next){
  * @param next
  */
 pro.setPlayerLanguage = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.setPlayerLanguage", {playerId:session.uid, msg:msg})
 	var language = msg.language
 	this.playerApiService2.setPlayerLanguageAsync(session.uid, language).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -390,6 +413,7 @@ pro.setPlayerLanguage = function(msg, session, next){
  * @param next
  */
 pro.getPlayerInfo = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getPlayerInfo", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
 	this.playerApiService2.getPlayerInfoAsync(session.uid, memberId).then(function(playerViewData){
 		next(null, {code:200, playerViewData:playerViewData})
@@ -405,6 +429,7 @@ pro.getPlayerInfo = function(msg, session, next){
  * @param next
  */
 pro.sendMail = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.sendMail", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
 	var title = msg.title
 	var content = msg.content
@@ -422,6 +447,7 @@ pro.sendMail = function(msg, session, next){
  * @param next
  */
 pro.readMails = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.readMails", {playerId:session.uid, msg:msg})
 	var mailIds = msg.mailIds
 	this.playerApiService2.readMailsAsync(session.uid, mailIds).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -437,6 +463,7 @@ pro.readMails = function(msg, session, next){
  * @param next
  */
 pro.saveMail = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.saveMail", {playerId:session.uid, msg:msg})
 	var mailId = msg.mailId
 	this.playerApiService2.saveMailAsync(session.uid, mailId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -452,6 +479,7 @@ pro.saveMail = function(msg, session, next){
  * @param next
  */
 pro.unSaveMail = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.unSaveMail", {playerId:session.uid, msg:msg})
 	var mailId = msg.mailId
 	this.playerApiService3.unSaveMailAsync(session.uid, mailId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -467,6 +495,7 @@ pro.unSaveMail = function(msg, session, next){
  * @param next
  */
 pro.getMails = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getMails", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
 	this.playerApiService3.getMailsAsync(session.uid, fromIndex).then(function(mails){
 		next(null, {code:200, mails:mails})
@@ -482,6 +511,7 @@ pro.getMails = function(msg, session, next){
  * @param next
  */
 pro.getSendMails = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getSendMails", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
 	this.playerApiService3.getSendMailsAsync(session.uid, fromIndex).then(function(mails){
 		next(null, {code:200, mails:mails})
@@ -497,6 +527,7 @@ pro.getSendMails = function(msg, session, next){
  * @param next
  */
 pro.getSavedMails = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getSavedMails", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
 	this.playerApiService3.getSavedMailsAsync(session.uid, fromIndex).then(function(mails){
 		next(null, {code:200, mails:mails})
@@ -512,6 +543,7 @@ pro.getSavedMails = function(msg, session, next){
  * @param next
  */
 pro.deleteMails = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.deleteMails", {playerId:session.uid, msg:msg})
 	var mailIds = msg.mailIds
 	this.playerApiService3.deleteMailsAsync(session.uid, mailIds).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -527,6 +559,7 @@ pro.deleteMails = function(msg, session, next){
  * @param next
  */
 pro.readReports = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.readReports", {playerId:session.uid, msg:msg})
 	var reportIds = msg.reportIds
 	this.playerApiService3.readReportsAsync(session.uid, reportIds).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -542,6 +575,7 @@ pro.readReports = function(msg, session, next){
  * @param next
  */
 pro.saveReport = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.saveReport", {playerId:session.uid, msg:msg})
 	var reportId = msg.reportId
 	this.playerApiService3.saveReportAsync(session.uid, reportId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -557,6 +591,7 @@ pro.saveReport = function(msg, session, next){
  * @param next
  */
 pro.unSaveReport = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.unSaveReport", {playerId:session.uid, msg:msg})
 	var reportId = msg.reportId
 	this.playerApiService3.unSaveReportAsync(session.uid, reportId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -572,6 +607,7 @@ pro.unSaveReport = function(msg, session, next){
  * @param next
  */
 pro.getReports = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getReports", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
 	this.playerApiService3.getReportsAsync(session.uid, fromIndex).then(function(reports){
 		next(null, {code:200, reports:reports})
@@ -587,6 +623,7 @@ pro.getReports = function(msg, session, next){
  * @param next
  */
 pro.getSavedReports = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getSavedReports", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
 	this.playerApiService3.getSavedReportsAsync(session.uid, fromIndex).then(function(reports){
 		next(null, {code:200, reports:reports})
@@ -602,6 +639,7 @@ pro.getSavedReports = function(msg, session, next){
  * @param next
  */
 pro.deleteReports = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.deleteReports", {playerId:session.uid, msg:msg})
 	var reportIds = msg.reportIds
 	this.playerApiService3.deleteReportsAsync(session.uid, reportIds).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -617,6 +655,7 @@ pro.deleteReports = function(msg, session, next){
  * @param next
  */
 pro.getPlayerViewData = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getPlayerViewData", {playerId:session.uid, msg:msg})
 	var targetPlayerId = msg.targetPlayerId
 	this.playerApiService3.getPlayerViewDataAsync(session.uid, targetPlayerId).then(function(playerViewData){
 		next(null, {code:200, playerViewData:playerViewData})
@@ -632,6 +671,7 @@ pro.getPlayerViewData = function(msg, session, next){
  * @param next
  */
 pro.setDefenceDragon = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.setDefenceDragon", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	this.playerApiService3.setDefenceDragonAsync(session.uid, dragonType).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -647,6 +687,7 @@ pro.setDefenceDragon = function(msg, session, next){
  * @param next
  */
 pro.cancelDefenceDragon = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.cancelDefenceDragon", {playerId:session.uid, msg:msg})
 	this.playerApiService3.cancelDefenceDragonAsync(session.uid).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -661,6 +702,7 @@ pro.cancelDefenceDragon = function(msg, session, next){
  * @param next
  */
 pro.sellItem = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.sellItem", {playerId:session.uid, msg:msg})
 	var type = msg.type
 	var name = msg.name
 	var count = msg.count
@@ -679,6 +721,7 @@ pro.sellItem = function(msg, session, next){
  * @param next
  */
 pro.getSellItems = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getSellItems", {playerId:session.uid, msg:msg})
 	var type = msg.type
 	var name = msg.name
 	this.playerApiService3.getSellItemsAsync(session.uid, type, name).then(function(itemDocs){
@@ -695,6 +738,7 @@ pro.getSellItems = function(msg, session, next){
  * @param next
  */
 pro.buySellItem = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.buySellItem", {playerId:session.uid, msg:msg})
 	var itemId = msg.itemId
 	this.playerApiService3.buySellItemAsync(session.uid, itemId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -710,6 +754,7 @@ pro.buySellItem = function(msg, session, next){
  * @param next
  */
 pro.getMyItemSoldMoney = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getMyItemSoldMoney", {playerId:session.uid, msg:msg})
 	var itemId = msg.itemId
 	this.playerApiService3.getMyItemSoldMoneyAsync(session.uid, itemId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -725,6 +770,7 @@ pro.getMyItemSoldMoney = function(msg, session, next){
  * @param next
  */
 pro.removeMySellItem = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.removeMySellItem", {playerId:session.uid, msg:msg})
 	var itemId = msg.itemId
 	this.playerApiService3.removeMySellItemAsync(session.uid, itemId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -740,6 +786,7 @@ pro.removeMySellItem = function(msg, session, next){
  * @param next
  */
 pro.setApnId = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.setApnId", {playerId:session.uid, msg:msg})
 	var apnId = msg.apnId
 	this.playerApiService3.setApnIdAsync(session.uid, apnId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -755,6 +802,7 @@ pro.setApnId = function(msg, session, next){
  * @param next
  */
 pro.upgradeProductionTech = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.upgradeProductionTech", {playerId:session.uid, msg:msg})
 	var techName = msg.techName
 	var finishNow = msg.finishNow
 	this.playerApiService4.upgradeProductionTechAsync(session.uid, techName, finishNow).then(function(playerData){
@@ -771,6 +819,7 @@ pro.upgradeProductionTech = function(msg, session, next){
  * @param next
  */
 pro.upgradeMilitaryTech = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.upgradeMilitaryTech", {playerId:session.uid, msg:msg})
 	var techName = msg.techName
 	var finishNow = msg.finishNow
 	this.playerApiService4.upgradeMilitaryTechAsync(session.uid, techName, finishNow).then(function(playerData){
@@ -787,6 +836,7 @@ pro.upgradeMilitaryTech = function(msg, session, next){
  * @param next
  */
 pro.upgradeSoldierStar = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.upgradeSoldierStar", {playerId:session.uid, msg:msg})
 	var soldierName = msg.soldierName
 	var finishNow = msg.finishNow
 	this.playerApiService4.upgradeSoldierStarAsync(session.uid, soldierName, finishNow).then(function(playerData){
@@ -803,6 +853,7 @@ pro.upgradeSoldierStar = function(msg, session, next){
  * @param next
  */
 pro.setTerrain = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.setTerrain", {playerId:session.uid, msg:msg})
 	var terrain = msg.terrain
 	this.playerApiService4.setTerrainAsync(session.uid, terrain).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -818,6 +869,7 @@ pro.setTerrain = function(msg, session, next){
  * @param next
  */
 pro.buyItem = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.buyItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var count = msg.count
 	this.playerApiService4.buyItemAsync(session.uid, itemName, count).then(function(playerData){
@@ -834,6 +886,7 @@ pro.buyItem = function(msg, session, next){
  * @param next
  */
 pro.useItem = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.useItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var params = msg.params
 	this.playerApiService4.useItemAsync(session.uid, itemName, params).then(function(playerData){
@@ -850,6 +903,7 @@ pro.useItem = function(msg, session, next){
  * @param next
  */
 pro.buyAndUseItem = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.buyAndUseItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var params = msg.params
 	this.playerApiService4.buyAndUseItemAsync(session.uid, itemName, params).then(function(playerData){
@@ -866,6 +920,7 @@ pro.buyAndUseItem = function(msg, session, next){
  * @param next
  */
 pro.setPveData = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.setPveData", {playerId:session.uid, msg:msg})
 	var pveData = msg.pveData
 	var fightData = msg.fightData
 	var rewards = msg.rewards
@@ -883,6 +938,7 @@ pro.setPveData = function(msg, session, next){
  * @param next
  */
 pro.gacha = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.gacha", {playerId:session.uid, msg:msg})
 	var type = msg.type
 	this.playerApiService4.gachaAsync(session.uid, type).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -898,6 +954,7 @@ pro.gacha = function(msg, session, next){
  * @param next
  */
 pro.getGcBindStatus = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getGcBindStatus", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
 	this.playerApiService4.getGcBindStatusAsync(session.uid, gcId).then(function(isBind){
 		next(null, {code:200, isBind:isBind})
@@ -913,6 +970,7 @@ pro.getGcBindStatus = function(msg, session, next){
  * @param next
  */
 pro.bindGcId = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.bindGcId", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
 	this.playerApiService4.bindGcIdAsync(session.uid, gcId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -928,6 +986,7 @@ pro.bindGcId = function(msg, session, next){
  * @param next
  */
 pro.forceBindGcId = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.forceBindGcId", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
 	this.playerApiService4.forceBindGcIdAsync(session.uid, gcId).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -943,6 +1002,7 @@ pro.forceBindGcId = function(msg, session, next){
  * @param next
  */
 pro.switchGcId = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.switchGcId", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
 	this.playerApiService4.switchGcIdAsync(session.uid, session.get("deviceId"), gcId).then(function(){
 		next(null, {code:200})
@@ -958,6 +1018,7 @@ pro.switchGcId = function(msg, session, next){
  * @param next
  */
 pro.forceSwitchGcId = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.forceSwitchGcId", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
 	this.playerApiService4.forceSwitchGcIdAsync(session.uid, session.get("deviceId"), gcId).then(function(){
 		next(null, {code:200})
@@ -973,6 +1034,7 @@ pro.forceSwitchGcId = function(msg, session, next){
  * @param next
  */
 pro.getDay60Reward = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getDay60Reward", {playerId:session.uid, msg:msg})
 	this.playerApiService5.getDay60RewardAsync(session.uid).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -987,6 +1049,7 @@ pro.getDay60Reward = function(msg, session, next){
  * @param next
  */
 pro.getOnlineReward = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getOnlineReward", {playerId:session.uid, msg:msg})
 	var timePoint = msg.timePoint
 	this.playerApiService5.getOnlineRewardAsync(session.uid, timePoint).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -1002,6 +1065,7 @@ pro.getOnlineReward = function(msg, session, next){
  * @param next
  */
 pro.getDay14Reward = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getDay14Reward", {playerId:session.uid, msg:msg})
 	this.playerApiService5.getDay14RewardAsync(session.uid).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -1016,6 +1080,7 @@ pro.getDay14Reward = function(msg, session, next){
  * @param next
  */
 pro.getLevelupReward = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getLevelupReward", {playerId:session.uid, msg:msg})
 	var levelupIndex = msg.levelupIndex
 	this.playerApiService5.getLevelupRewardAsync(session.uid, levelupIndex).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -1031,6 +1096,7 @@ pro.getLevelupReward = function(msg, session, next){
  * @param next
  */
 pro.addPlayerBillingData = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.addPlayerBillingData", {playerId:session.uid, msg:msg})
 	var transactionId = msg.transactionId
 	var receiptData = msg.receiptData
 	this.playerIAPService.addPlayerBillingDataAsync(session.uid, transactionId, receiptData).spread(function(playerData, transactionId){
@@ -1047,6 +1113,7 @@ pro.addPlayerBillingData = function(msg, session, next){
  * @param next
  */
 pro.getFirstIAPRewards = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getFirstIAPRewards", {playerId:session.uid, msg:msg})
 	this.playerApiService5.getFirstIAPRewardsAsync(session.uid).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -1061,6 +1128,7 @@ pro.getFirstIAPRewards = function(msg, session, next){
  * @param next
  */
 pro.passSelinasTest = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.passSelinasTest", {playerId:session.uid, msg:msg})
 	this.playerApiService5.passSelinasTestAsync(session.uid).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -1075,6 +1143,7 @@ pro.passSelinasTest = function(msg, session, next){
  * @param next
  */
 pro.getDailyTaskRewards = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getDailyTaskRewards", {playerId:session.uid, msg:msg})
 	var taskType = msg.taskType
 	this.playerApiService5.getDailyTaskRewardsAsync(session.uid, taskType).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
@@ -1090,6 +1159,7 @@ pro.getDailyTaskRewards = function(msg, session, next){
  * @param next
  */
 pro.getGrowUpTaskRewards = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getGrowUpTaskRewards", {playerId:session.uid, msg:msg})
 	var taskType = msg.taskType
 	var taskId = msg.taskId
 	this.playerApiService5.getGrowUpTaskRewardsAsync(session.uid, taskType, taskId).then(function(playerData){
@@ -1106,6 +1176,7 @@ pro.getGrowUpTaskRewards = function(msg, session, next){
  * @param next
  */
 pro.getPlayerRankList = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getPlayerRankList", {playerId:session.uid, msg:msg})
 	var rankType = msg.rankType
 	var fromRank = msg.fromRank
 	this.playerApiService5.getPlayerRankListAsync(session.uid, rankType, fromRank).spread(function(myRank, rankData){
@@ -1122,6 +1193,7 @@ pro.getPlayerRankList = function(msg, session, next){
  * @param next
  */
 pro.getAllianceRankList = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getAllianceRankList", {playerId:session.uid, msg:msg})
 	var rankType = msg.rankType
 	var fromRank = msg.fromRank
 	this.playerApiService5.getAllianceRankListAsync(session.uid, rankType, fromRank).spread(function(myRank, rankData){
