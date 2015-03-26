@@ -21,7 +21,7 @@ var pro = GateRemote.prototype
  * @param callback
  */
 pro.setServerStatus = function(status, callback){
-	this.logService.onRequest("gate.gateRemote.setServerStatus", {status:status})
+	this.logService.onEvent("gate.gateRemote.setServerStatus", {status:status})
 	this.app.set("isReady", status)
 	callback()
 }

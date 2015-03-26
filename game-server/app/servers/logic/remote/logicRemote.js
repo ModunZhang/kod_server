@@ -40,7 +40,7 @@ pro.kickPlayer = function(uid, reason, callback){
  * @param callback
  */
 pro.onTimeEvent = function(key, eventType, eventId, callback){
-	this.logService.onRequest("logic.logicRemote.onTimeEvent", {key:key, eventType:eventType, eventId:eventId})
+	this.logService.onEvent("logic.logicRemote.onTimeEvent", {key:key, eventType:eventType, eventId:eventId})
 	var params = key.split(":")
 	var targetType = params[0]
 	var id = params[1]
@@ -62,7 +62,7 @@ pro.onTimeEvent = function(key, eventType, eventId, callback){
  * @param callback
  */
 pro.setServerStatus = function(status, callback){
-	this.logService.onRequest("logic.logicRemote.setServerStatus", {status:status})
+	this.logService.onEvent("logic.logicRemote.setServerStatus", {status:status})
 	this.app.set("isReady", status)
 	callback()
 }
