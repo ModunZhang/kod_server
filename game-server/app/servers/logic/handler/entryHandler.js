@@ -11,9 +11,6 @@ var crypto = require('crypto')
 var ErrorUtils = require("../../../utils/errorUtils")
 var Consts = require("../../../consts/consts")
 
-var GameDatas = require("../../../datas/GameDatas")
-var Errors = GameDatas.Errors.errors
-
 module.exports = function(app){
 	return new Handler(app)
 }
@@ -82,7 +79,9 @@ pro.login = function(msg, session, next){
 		next(null, {code:200, playerData:FilterPlayerDoc.call(self, playerDoc), allianceData:allianceDoc})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
-		self.sessionService.kickBySessionId(session.id)
+		if(!_.isEqual(e.code, ErrorUtils.reLoginNeeded(playerDoc._id).code)){
+			self.sessionService.kickBySessionId(session.id)
+		}
 	})
 }
 
