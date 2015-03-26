@@ -3155,9 +3155,10 @@ Utils.getCasinoTokeNeededInGachaType = function(gachaType){
 /**
  * 获取Gacha出的道具
  * @param gachaType
+ * @param excludes
  * @returns {*}
  */
-Utils.getGachaItemByType = function(gachaType){
+		Utils.getGachaItemByType = function(gachaType, excludes){
 	var SortFunc = function(objects){
 		var totalWeight = 0
 		_.each(objects, function(object){
@@ -3178,12 +3179,14 @@ Utils.getGachaItemByType = function(gachaType){
 	var itemConfigs = Gacha[gachaType]
 	_.each(itemConfigs, function(itemConfig){
 		if(_.isObject(itemConfig)){
-			var item = {
-				name:itemConfig.itemName,
-				count:itemConfig.itemCount,
-				weight:itemConfig.weight
+			if(!_.contains(excludes, itemConfig.itemName)){
+				var item = {
+					name:itemConfig.itemName,
+					count:itemConfig.itemCount,
+					weight:itemConfig.weight
+				}
+				items.push(item)
 			}
-			items.push(item)
 		}
 	})
 

@@ -916,8 +916,10 @@ pro.gacha = function(playerId, type, callback){
 		}
 
 		var count = _.isEqual(type, Consts.GachaType.Normal) ? 1 : 3
+		var excludes = []
 		for(var i = 0; i < count; i++){
-			var item = DataUtils.getGachaItemByType(type)
+			var item = DataUtils.getGachaItemByType(type, excludes)
+			excludes.push(item.name)
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
 			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		}
