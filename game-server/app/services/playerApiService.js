@@ -388,6 +388,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			playerData.push(["buildingEvents." + playerDoc.buildingEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "buildingEvents", event.id, finishTime - Date.now()])
 		}
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -534,7 +535,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		var buyedMaterials = null
 		var preBuildEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -602,6 +602,9 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
 		}
+		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -685,7 +688,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		var buyedMaterials = null
 		var preBuildEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
@@ -745,6 +747,9 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
 		}
+		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
+
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -1000,7 +1005,6 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		var buyedResources = null
 		var preRecruitEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
 			buyedResources = DataUtils.buyResources(recruitRequired.resources, {})
@@ -1046,6 +1050,8 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime - Date.now()])
 		}
+		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -1106,7 +1112,6 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		var buyedResources = null
 		var preRecruitEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.push(["resources", playerDoc.resources])
 		if(!LogicUtils.isEnough(recruitRequired.materials, playerDoc.soldierMaterials)) return Promise.reject(ErrorUtils.soldierRecruitMaterialsNotEnough(playerId, soldierName, count))
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
@@ -1155,6 +1160,8 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime - Date.now()])
 		}
+		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){

@@ -147,8 +147,7 @@ Utils.getPlayerBuildingUpgradeRequired = function(playerDoc, buildingType, build
 		resources:{
 			wood:config.wood,
 			stone:config.stone,
-			iron:config.iron,
-			citizen:config.citizen
+			iron:config.iron
 		},
 		materials:{
 			blueprints:config.blueprints,
