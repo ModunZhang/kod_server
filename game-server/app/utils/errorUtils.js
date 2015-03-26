@@ -271,10 +271,11 @@ Utils.buildingNotAllowHouseCreate = function(playerId, buildingLocation, houseLo
  * @param playerId
  * @param buildingLocation
  * @param houseLocation
+ * @param houseType
  */
-Utils.houseLocationNotLegal = function(playerId, buildingLocation, houseLocation){
+Utils.houseLocationNotLegal = function(playerId, buildingLocation, houseLocation, houseType){
 	var config = Errors.houseLocationNotLegal
-	return CreateError(config, {playerId:playerId, buildingLocation:buildingLocation, houseLocation:houseLocation})
+	return CreateError(config, {playerId:playerId, buildingLocation:buildingLocation, houseLocation:houseLocation, houseType:houseType})
 }
 
 /**

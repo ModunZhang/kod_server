@@ -1251,8 +1251,8 @@ describe("PlayerService", function(){
 		//			movingConstruction:{
 		//				fromBuildingLocation:3,
 		//				fromHouseLocation:2,
-		//				toBuildingLocation:5,
-		//				toHouseLocation:2
+		//				toBuildingLocation:3,
+		//				toHouseLocation:3
 		//			}
 		//		}, function(doc){
 		//			doc.code.should.equal(200)
@@ -1266,8 +1266,8 @@ describe("PlayerService", function(){
 		//		doc.code.should.equal(200)
 		//		Api.useItem("torch", {
 		//			torch:{
-		//				buildingLocation:5,
-		//				houseLocation:2
+		//				buildingLocation:3,
+		//				houseLocation:3
 		//			}
 		//		}, function(doc){
 		//			doc.code.should.equal(200)
