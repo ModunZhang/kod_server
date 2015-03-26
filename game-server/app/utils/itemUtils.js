@@ -157,7 +157,7 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 		playerData.push(["dragons." + marchDragon.type, marchDragon])
 		allianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), null])
 		LogicUtils.removeItemInArray(allianceDoc[eventType], marchEvent)
-		eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
+		eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id])
 
 		if(_.isEqual(eventType, "attackMarchEvents")){
 			_.each(marchEvent.attackPlayerData.soldiers, function(soldier){
@@ -446,7 +446,7 @@ var VipActive = function(playerDoc, playerData, itemConfig, eventFuncs, timeEven
 		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
 			playerData.push(["vipEvents." + playerDoc.vipEvents.indexOf(event), null])
 			LogicUtils.removeItemInArray(playerDoc.vipEvents, event)
-			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, event.id])
+			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, "vipEvents", event.id])
 		}
 		event = {
 			id:ShortId.generate(),
@@ -501,7 +501,7 @@ var Buff = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventServ
 		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
 			playerData.push("itemEvents." + playerDoc.itemEvents.indexOf(event), null)
 			LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
-			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, event.id])
+			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, "itemEvents", event.id])
 		}
 		event = {
 			id:ShortId.generate(),
@@ -556,7 +556,7 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
 
 	if(LogicUtils.willFinished(event.finishTime)){
 		playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, eventType, eventId)
-		eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, event.id])
+		eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, eventType, event.id])
 	}else{
 		playerData.push([eventType + "." + playerDoc[eventType].indexOf(event), event])
 		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime - Date.now()])

@@ -646,7 +646,7 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 		var village = LogicUtils.getAllianceVillageById(targetAllianceDoc, villageEvent.villageData.id)
 		attackAllianceData.push(["villageEvents." + attackAllianceDoc.villageEvents.indexOf(villageEvent), null])
 		LogicUtils.removeItemInArray(attackAllianceDoc.villageEvents, villageEvent)
-		eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, villageEvent.id])
+		eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, "villageEvents", villageEvent.id])
 
 		var resourceCollected = Math.floor(villageEvent.villageData.collectTotal * ((Date.now() - villageEvent.startTime) / (villageEvent.finishTime - villageEvent.startTime)))
 		village.resource -= resourceCollected

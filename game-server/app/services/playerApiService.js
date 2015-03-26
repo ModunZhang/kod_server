@@ -380,7 +380,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		}else{
 			if(_.isObject(preBuildEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preBuildEvent.type, preBuildEvent.event.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createBuildingEvent(playerDoc, building.location, finishTime)
@@ -575,7 +575,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			level:0,
 			location:houseLocation
 		}
-		playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house), house])
+
 		if(finishNow){
 			house.level += 1
 			building.houses.push(house)
@@ -586,7 +586,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		}else{
 			if(_.isObject(preBuildEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preBuildEvent.type, preBuildEvent.event.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id])
 			}
 			building.houses.push(house)
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
@@ -595,6 +595,8 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			playerData.push(["houseEvents." + playerDoc.houseEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "houseEvents", event.id, finishTime - Date.now()])
 		}
+		playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house), house])
+
 		if(_.isEqual("dwelling", house.type) && finishNow){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
@@ -730,7 +732,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		}else{
 			if(_.isObject(preBuildEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preBuildEvent.type, preBuildEvent.event.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createHouseEvent(playerDoc, building.location, house.location, finishTime)
@@ -796,7 +798,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 			return Promise.reject(ErrorUtils.canNotFreeSpeedupNow(playerId, eventType, eventId))
 		}
 		self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, eventType, eventId)
-		eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, eventId])
+		eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, eventType, eventId])
 
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()

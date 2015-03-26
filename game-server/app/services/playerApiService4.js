@@ -117,7 +117,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		}else{
 			if(_.isObject(preTechEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "productionTechEvents", preTechEvent.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preTechEvent.id])
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "productionTechEvents", preTechEvent.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createProductionTechEvent(playerDoc, techName, finishTime)
@@ -236,7 +236,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		}else{
 			if(_.isObject(preTechEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "soldierStarEvents", preTechEvent.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preTechEvent.id])
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "soldierStarEvents", preTechEvent.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createMilitaryTechEvent(playerDoc, techName, finishTime)
@@ -344,7 +344,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		}else{
 			if(_.isObject(preTechEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "militaryTechEvents", preTechEvent.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preTechEvent.id])
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "militaryTechEvents", preTechEvent.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.upgradeTime * 1000)
 			var event = LogicUtils.createSoldierStarEvent(playerDoc, soldierName, finishTime)

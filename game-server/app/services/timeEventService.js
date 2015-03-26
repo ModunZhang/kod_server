@@ -40,11 +40,12 @@ pro.addTimeEvent = function(key, eventType, eventId, interval, callback){
 /**
  * 移除时间回调
  * @param key
+ * @param eventType
  * @param eventId
  * @param callback
  */
-pro.removeTimeEvent = function(key, eventId, callback){
-	this.app.rpc.event.eventRemote.removeTimeEvent.toServer(this.eventServerId, key, eventId, callback)
+pro.removeTimeEvent = function(key, eventType, eventId, callback){
+	this.app.rpc.event.eventRemote.removeTimeEvent.toServer(this.eventServerId, key, eventType, eventId, callback)
 }
 
 /**
@@ -85,13 +86,14 @@ pro.addPlayerTimeEvent = function(playerDoc, eventType, eventId, interval, callb
 /**
  * 移除玩家时间回调
  * @param playerDoc
+ * @param eventType
  * @param eventId
  * @param callback
  * @returns {*}
  */
-pro.removePlayerTimeEvent = function(playerDoc, eventId, callback){
+pro.removePlayerTimeEvent = function(playerDoc, eventType, eventId, callback){
 	var key = Consts.TimeEventType.Player + ":" + playerDoc._id
-	this.removeTimeEvent(key, eventId, callback)
+	this.removeTimeEvent(key, eventType, eventId, callback)
 }
 
 /**
@@ -136,13 +138,14 @@ pro.addAllianceTimeEvent = function(allianceDoc, eventType, eventId, interval, c
 /**
  * 移除联盟时间回调
  * @param allianceDoc
+ * @param eventType
  * @param eventId
  * @param callback
  * @returns {*}
  */
-pro.removeAllianceTimeEvent = function(allianceDoc, eventId, callback){
+pro.removeAllianceTimeEvent = function(allianceDoc, eventType, eventId, callback){
 	var key = Consts.TimeEventType.Alliance + ":" + allianceDoc._id
-	this.removeTimeEvent(key, eventId, callback)
+	this.removeTimeEvent(key, eventType, eventId, callback)
 }
 
 /**

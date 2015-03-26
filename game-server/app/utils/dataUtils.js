@@ -3634,7 +3634,7 @@ Utils.addPlayerVipExp = function(playerDoc, playerData, expAdd, eventFuncs, time
 		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
 			playerData.push("vipEvents." + playerDoc.vipEvents.indexOf(event), null)
 			LogicUtils.removeItemInArray(playerDoc.vipEvents, event)
-			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, event.id])
+			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, "vipEvents", event.id])
 		}
 		event = {
 			id:ShortId.generate(),

@@ -421,7 +421,7 @@ pro.dragonhp = function(uid, dragonType, count, callback){
 				})
 				if(_.isObject(deathEvent)){
 					LogicUtils.removeItemInArray(playerDoc.dragonDeathEvents, deathEvent)
-					eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, deathEvent.id])
+					eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id])
 				}
 			}
 			playerData.push(["dragonDeathEvents", playerDoc.dragonDeathEvents])

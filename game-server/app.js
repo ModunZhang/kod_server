@@ -9,7 +9,6 @@ var path = require("path")
 var _ = require("underscore")
 var globalChannel = require("pomelo-globalchannel-plugin")
 var Scripto = require('redis-scripto')
-var NodeUtils = require("util")
 
 var LoginFilter = require("./app/utils/loginFilter")
 var ReplayFilter = require("./app/utils/replayFilter")
@@ -56,7 +55,7 @@ app.configure("production|development", "logic", function(){
 		useDict:true,
 		useProtobuf:true,
 		disconnectOnTimeout:true,
-		"max-connections":1000
+		"max-connections":2000
 	})
 	app.set("proxyConfig", {
 		bufferMsg:false,

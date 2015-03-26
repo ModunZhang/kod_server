@@ -1721,7 +1721,7 @@ Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, all
 		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
 			allianceData.push(["strikeMarchEvents." + allianceDoc.strikeMarchEvents.indexOf(marchEvent), null])
 			allianceDoc.strikeMarchEvents.splice(i, 1)
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
+			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchEvents", marchEvent.id])
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
@@ -1734,7 +1734,7 @@ Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, all
 		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
 			allianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(marchEvent), null])
 			allianceDoc.attackMarchEvents.splice(i, 1)
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
+			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", marchEvent.id])
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
@@ -1766,7 +1766,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
 			allianceData.push(["strikeMarchReturnEvents." + allianceDoc.strikeMarchReturnEvents.indexOf(marchEvent), null])
 			allianceDoc.strikeMarchReturnEvents.splice(i, 1)
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
+			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchReturnEvents", marchEvent.id])
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
@@ -1786,7 +1786,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
 			allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchEvent), null])
 			allianceDoc.attackMarchReturnEvents.splice(i, 1)
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
+			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchEvent.id])
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
@@ -1823,7 +1823,7 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 		if(_.isEqual(villageEvent.playerData.id, playerDoc._id)){
 			allianceData.push(["villageEvents." + allianceDoc.villageEvents.indexOf(villageEvent), null])
 			allianceDoc.villageEvents.splice(i, 1)
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, villageEvent.id])
+			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "villageEvents", villageEvent.id])
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[villageEvent.playerData.dragon.type])
 			playerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
@@ -1945,7 +1945,7 @@ Utils.returnPlayerHelpToTroop = function(playerDoc, playerData, helpToTroop, hel
 Utils.returnPlayerHelpedByMarchTroop = function(playerDoc, playerData, marchEvent, allianceDoc, allianceData, eventFuncs, timeEventService){
 	allianceData.push(["attackMarchEvents." + allianceDoc.indexOf(marchEvent), null])
 	this.removeItemInArray(allianceDoc.attackMarchEvents, marchEvent)
-	eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, marchEvent.id])
+	eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", marchEvent.id])
 
 	DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 	playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free

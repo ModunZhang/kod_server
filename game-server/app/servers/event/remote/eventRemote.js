@@ -47,11 +47,12 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 /**
  * 移除时间回调
  * @param key
+ * @param eventType
  * @param eventId
  * @param callback
  */
-pro.removeTimeEvent = function(key, eventId, callback){
-	this.logService.onEvent("event.eventRemote.removeTimeEvent", {key:key, eventId:eventId})
+pro.removeTimeEvent = function(key, eventType, eventId, callback){
+	this.logService.onEvent("event.eventRemote.removeTimeEvent", {key:key, eventType:eventType, eventId:eventId})
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	if(_.isObject(callbackObj)){
