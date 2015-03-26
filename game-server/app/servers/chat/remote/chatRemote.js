@@ -13,7 +13,6 @@ module.exports = function(app) {
 var ChatRemote = function(app) {
 	this.app = app
 	this.channelService = this.app.get("channelService")
-	this.logService = this.app.get("logService")
 }
 
 var pro = ChatRemote.prototype
@@ -25,7 +24,6 @@ var pro = ChatRemote.prototype
  * @param callback
  */
 pro.add = function(uid, logicServerId, callback){
-	this.logService.onRequest("chat.chatRemote.add", {playerId:uid, logicServerId:logicServerId})
 	this.channelService.getChannel(Consts.GloablChatChannelName, true).add(uid, logicServerId)
 	callback()
 }
@@ -37,7 +35,6 @@ pro.add = function(uid, logicServerId, callback){
  * @param callback
  */
 pro.leave = function(uid, logicServerId, callback){
-	this.logService.onRequest("chat.chatRemote.leave", {playerId:uid, logicServerId:logicServerId})
 	this.channelService.getChannel(Consts.GloablChatChannelName).leave(uid, logicServerId)
 	callback()
 }

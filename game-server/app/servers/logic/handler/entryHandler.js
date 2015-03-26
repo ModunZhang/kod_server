@@ -78,6 +78,7 @@ pro.login = function(msg, session, next){
 		}
 		return Promise.all(funcs)
 	}).then(function(){
+		self.logService.onEvent("logic.entryHandler.playerLogin", {playerId:session.uid})
 		next(null, {code:200, playerData:FilterPlayerDoc.call(self, playerDoc), allianceData:allianceDoc})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -102,7 +103,7 @@ var BindPlayerSession = function(session, deviceId, playerDoc, callback){
 }
 
 var PlayerLeave = function(session, reason){
-	this.logService.onRequest("logic.entryHandler.playerLeave", {playerId:session.uid, reason:reason})
+	this.logService.onEvent("logic.entryHandler.playerLeave", {playerId:session.uid, reason:reason})
 	var self = this
 	var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, this)
 	var playerDoc = null
