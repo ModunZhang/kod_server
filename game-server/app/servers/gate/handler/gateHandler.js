@@ -37,7 +37,7 @@ pro.queryEntry = function(msg, session, next){
 	var logicServer = Dispatcher.dispatch(logicServers)
 	var data = {
 		id:logicServer.id,
-		host:logicServer.host,
+		host:logicServer.outHost,
 		port:logicServer.clientPort
 	}
 	next(null,{
