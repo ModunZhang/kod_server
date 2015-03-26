@@ -12,8 +12,7 @@ stoneMason[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1600,
-	citizen:0
+	buildTime:1600
 }
 stoneMason[2] = {
 	level:2,
@@ -24,8 +23,7 @@ stoneMason[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1800,
-	citizen:0
+	buildTime:1800
 }
 stoneMason[3] = {
 	level:3,
@@ -36,8 +34,7 @@ stoneMason[3] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2100,
-	citizen:0
+	buildTime:2100
 }
 stoneMason[4] = {
 	level:4,
@@ -48,8 +45,7 @@ stoneMason[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2400,
-	citizen:0
+	buildTime:2400
 }
 stoneMason[5] = {
 	level:5,
@@ -60,8 +56,7 @@ stoneMason[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2672,
-	citizen:0
+	buildTime:2672
 }
 stoneMason[6] = {
 	level:6,
@@ -72,8 +67,7 @@ stoneMason[6] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3344,
-	citizen:0
+	buildTime:3344
 }
 stoneMason[7] = {
 	level:7,
@@ -84,8 +78,7 @@ stoneMason[7] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4016,
-	citizen:0
+	buildTime:4016
 }
 stoneMason[8] = {
 	level:8,
@@ -96,8 +89,7 @@ stoneMason[8] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:6032,
-	citizen:0
+	buildTime:6032
 }
 stoneMason[9] = {
 	level:9,
@@ -108,8 +100,7 @@ stoneMason[9] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:10064,
-	citizen:0
+	buildTime:10064
 }
 stoneMason[10] = {
 	level:10,
@@ -120,8 +111,7 @@ stoneMason[10] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:14096,
-	citizen:0
+	buildTime:14096
 }
 stoneMason[11] = {
 	level:11,
@@ -132,8 +122,7 @@ stoneMason[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:18128,
-	citizen:0
+	buildTime:18128
 }
 stoneMason[12] = {
 	level:12,
@@ -144,8 +133,7 @@ stoneMason[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:22160,
-	citizen:0
+	buildTime:22160
 }
 stoneMason[13] = {
 	level:13,
@@ -156,8 +144,7 @@ stoneMason[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:26192,
-	citizen:0
+	buildTime:26192
 }
 stoneMason[14] = {
 	level:14,
@@ -168,8 +155,7 @@ stoneMason[14] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:30224,
-	citizen:0
+	buildTime:30224
 }
 stoneMason[15] = {
 	level:15,
@@ -180,8 +166,7 @@ stoneMason[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:34256,
-	citizen:0
+	buildTime:34256
 }
 stoneMason[16] = {
 	level:16,
@@ -192,8 +177,7 @@ stoneMason[16] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:38288,
-	citizen:0
+	buildTime:38288
 }
 stoneMason[17] = {
 	level:17,
@@ -204,8 +188,7 @@ stoneMason[17] = {
 	tools:3,
 	tiles:3,
 	pulley:3,
-	buildTime:42320,
-	citizen:0
+	buildTime:42320
 }
 stoneMason[18] = {
 	level:18,
@@ -216,8 +199,7 @@ stoneMason[18] = {
 	tools:6,
 	tiles:6,
 	pulley:6,
-	buildTime:46352,
-	citizen:0
+	buildTime:46352
 }
 stoneMason[19] = {
 	level:19,
@@ -228,8 +210,7 @@ stoneMason[19] = {
 	tools:10,
 	tiles:10,
 	pulley:10,
-	buildTime:50384,
-	citizen:0
+	buildTime:50384
 }
 stoneMason[20] = {
 	level:20,
@@ -240,8 +221,7 @@ stoneMason[20] = {
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:54416,
-	citizen:0
+	buildTime:54416
 }
 stoneMason[21] = {
 	level:21,
@@ -252,8 +232,7 @@ stoneMason[21] = {
 	tools:23,
 	tiles:23,
 	pulley:23,
-	buildTime:58448,
-	citizen:0
+	buildTime:58448
 }
 stoneMason[22] = {
 	level:22,
@@ -264,8 +243,7 @@ stoneMason[22] = {
 	tools:32,
 	tiles:32,
 	pulley:32,
-	buildTime:62480,
-	citizen:0
+	buildTime:62480
 }
 stoneMason[23] = {
 	level:23,
@@ -276,8 +254,7 @@ stoneMason[23] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:66512,
-	citizen:0
+	buildTime:66512
 }
 stoneMason[24] = {
 	level:24,
@@ -288,8 +265,7 @@ stoneMason[24] = {
 	tools:58,
 	tiles:58,
 	pulley:58,
-	buildTime:74576,
-	citizen:0
+	buildTime:74576
 }
 stoneMason[25] = {
 	level:25,
@@ -300,8 +276,7 @@ stoneMason[25] = {
 	tools:74,
 	tiles:74,
 	pulley:74,
-	buildTime:82640,
-	citizen:0
+	buildTime:82640
 }
 stoneMason[26] = {
 	level:26,
@@ -312,8 +287,7 @@ stoneMason[26] = {
 	tools:94,
 	tiles:94,
 	pulley:94,
-	buildTime:90704,
-	citizen:0
+	buildTime:90704
 }
 stoneMason[27] = {
 	level:27,
@@ -324,8 +298,7 @@ stoneMason[27] = {
 	tools:117,
 	tiles:117,
 	pulley:117,
-	buildTime:98768,
-	citizen:0
+	buildTime:98768
 }
 stoneMason[28] = {
 	level:28,
@@ -336,8 +309,7 @@ stoneMason[28] = {
 	tools:144,
 	tiles:144,
 	pulley:144,
-	buildTime:106832,
-	citizen:0
+	buildTime:106832
 }
 stoneMason[29] = {
 	level:29,
@@ -348,8 +320,7 @@ stoneMason[29] = {
 	tools:174,
 	tiles:174,
 	pulley:174,
-	buildTime:114896,
-	citizen:0
+	buildTime:114896
 }
 stoneMason[30] = {
 	level:30,
@@ -360,8 +331,7 @@ stoneMason[30] = {
 	tools:208,
 	tiles:208,
 	pulley:208,
-	buildTime:122960,
-	citizen:0
+	buildTime:122960
 }
 stoneMason[31] = {
 	level:31,
@@ -372,8 +342,7 @@ stoneMason[31] = {
 	tools:247,
 	tiles:247,
 	pulley:247,
-	buildTime:131024,
-	citizen:0
+	buildTime:131024
 }
 stoneMason[32] = {
 	level:32,
@@ -384,8 +353,7 @@ stoneMason[32] = {
 	tools:290,
 	tiles:290,
 	pulley:290,
-	buildTime:139088,
-	citizen:0
+	buildTime:139088
 }
 stoneMason[33] = {
 	level:33,
@@ -396,8 +364,7 @@ stoneMason[33] = {
 	tools:337,
 	tiles:337,
 	pulley:337,
-	buildTime:147152,
-	citizen:0
+	buildTime:147152
 }
 stoneMason[34] = {
 	level:34,
@@ -408,8 +375,7 @@ stoneMason[34] = {
 	tools:390,
 	tiles:390,
 	pulley:390,
-	buildTime:155216,
-	citizen:0
+	buildTime:155216
 }
 stoneMason[35] = {
 	level:35,
@@ -420,8 +386,7 @@ stoneMason[35] = {
 	tools:448,
 	tiles:448,
 	pulley:448,
-	buildTime:163280,
-	citizen:0
+	buildTime:163280
 }
 stoneMason[36] = {
 	level:36,
@@ -432,8 +397,7 @@ stoneMason[36] = {
 	tools:512,
 	tiles:512,
 	pulley:512,
-	buildTime:171344,
-	citizen:0
+	buildTime:171344
 }
 stoneMason[37] = {
 	level:37,
@@ -444,8 +408,7 @@ stoneMason[37] = {
 	tools:580,
 	tiles:580,
 	pulley:580,
-	buildTime:179408,
-	citizen:0
+	buildTime:179408
 }
 stoneMason[38] = {
 	level:38,
@@ -456,8 +419,7 @@ stoneMason[38] = {
 	tools:660,
 	tiles:660,
 	pulley:660,
-	buildTime:187472,
-	citizen:0
+	buildTime:187472
 }
 stoneMason[39] = {
 	level:39,
@@ -468,8 +430,7 @@ stoneMason[39] = {
 	tools:740,
 	tiles:740,
 	pulley:740,
-	buildTime:195536,
-	citizen:0
+	buildTime:195536
 }
 stoneMason[40] = {
 	level:40,
@@ -480,6 +441,5 @@ stoneMason[40] = {
 	tools:830,
 	tiles:830,
 	pulley:830,
-	buildTime:203600,
-	citizen:0
+	buildTime:203600
 }

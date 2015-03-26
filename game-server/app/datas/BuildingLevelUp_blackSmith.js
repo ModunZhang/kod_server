@@ -12,8 +12,7 @@ blackSmith[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:400,
-	citizen:0
+	buildTime:400
 }
 blackSmith[2] = {
 	level:2,
@@ -24,8 +23,7 @@ blackSmith[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:600,
-	citizen:0
+	buildTime:600
 }
 blackSmith[3] = {
 	level:3,
@@ -36,8 +34,7 @@ blackSmith[3] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:800,
-	citizen:0
+	buildTime:800
 }
 blackSmith[4] = {
 	level:4,
@@ -48,8 +45,7 @@ blackSmith[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1000,
-	citizen:0
+	buildTime:1000
 }
 blackSmith[5] = {
 	level:5,
@@ -60,8 +56,7 @@ blackSmith[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1244,
-	citizen:0
+	buildTime:1244
 }
 blackSmith[6] = {
 	level:6,
@@ -72,8 +67,7 @@ blackSmith[6] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1988,
-	citizen:0
+	buildTime:1988
 }
 blackSmith[7] = {
 	level:7,
@@ -84,8 +78,7 @@ blackSmith[7] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2732,
-	citizen:0
+	buildTime:2732
 }
 blackSmith[8] = {
 	level:8,
@@ -96,8 +89,7 @@ blackSmith[8] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4964,
-	citizen:0
+	buildTime:4964
 }
 blackSmith[9] = {
 	level:9,
@@ -108,8 +100,7 @@ blackSmith[9] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:9428,
-	citizen:0
+	buildTime:9428
 }
 blackSmith[10] = {
 	level:10,
@@ -120,8 +111,7 @@ blackSmith[10] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:13892,
-	citizen:0
+	buildTime:13892
 }
 blackSmith[11] = {
 	level:11,
@@ -132,8 +122,7 @@ blackSmith[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:18356,
-	citizen:0
+	buildTime:18356
 }
 blackSmith[12] = {
 	level:12,
@@ -144,8 +133,7 @@ blackSmith[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:22820,
-	citizen:0
+	buildTime:22820
 }
 blackSmith[13] = {
 	level:13,
@@ -156,8 +144,7 @@ blackSmith[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:27284,
-	citizen:0
+	buildTime:27284
 }
 blackSmith[14] = {
 	level:14,
@@ -168,8 +155,7 @@ blackSmith[14] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:31748,
-	citizen:0
+	buildTime:31748
 }
 blackSmith[15] = {
 	level:15,
@@ -180,8 +166,7 @@ blackSmith[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:36212,
-	citizen:0
+	buildTime:36212
 }
 blackSmith[16] = {
 	level:16,
@@ -192,8 +177,7 @@ blackSmith[16] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:40676,
-	citizen:0
+	buildTime:40676
 }
 blackSmith[17] = {
 	level:17,
@@ -204,8 +188,7 @@ blackSmith[17] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:45140,
-	citizen:0
+	buildTime:45140
 }
 blackSmith[18] = {
 	level:18,
@@ -216,8 +199,7 @@ blackSmith[18] = {
 	tools:7,
 	tiles:7,
 	pulley:7,
-	buildTime:49604,
-	citizen:0
+	buildTime:49604
 }
 blackSmith[19] = {
 	level:19,
@@ -228,8 +210,7 @@ blackSmith[19] = {
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:54068,
-	citizen:0
+	buildTime:54068
 }
 blackSmith[20] = {
 	level:20,
@@ -240,8 +221,7 @@ blackSmith[20] = {
 	tools:18,
 	tiles:18,
 	pulley:18,
-	buildTime:58532,
-	citizen:0
+	buildTime:58532
 }
 blackSmith[21] = {
 	level:21,
@@ -252,8 +232,7 @@ blackSmith[21] = {
 	tools:27,
 	tiles:27,
 	pulley:27,
-	buildTime:62996,
-	citizen:0
+	buildTime:62996
 }
 blackSmith[22] = {
 	level:22,
@@ -264,8 +243,7 @@ blackSmith[22] = {
 	tools:37,
 	tiles:37,
 	pulley:37,
-	buildTime:67460,
-	citizen:0
+	buildTime:67460
 }
 blackSmith[23] = {
 	level:23,
@@ -276,8 +254,7 @@ blackSmith[23] = {
 	tools:51,
 	tiles:51,
 	pulley:51,
-	buildTime:71924,
-	citizen:0
+	buildTime:71924
 }
 blackSmith[24] = {
 	level:24,
@@ -288,8 +265,7 @@ blackSmith[24] = {
 	tools:67,
 	tiles:67,
 	pulley:67,
-	buildTime:80852,
-	citizen:0
+	buildTime:80852
 }
 blackSmith[25] = {
 	level:25,
@@ -300,8 +276,7 @@ blackSmith[25] = {
 	tools:86,
 	tiles:86,
 	pulley:86,
-	buildTime:89780,
-	citizen:0
+	buildTime:89780
 }
 blackSmith[26] = {
 	level:26,
@@ -312,8 +287,7 @@ blackSmith[26] = {
 	tools:108,
 	tiles:108,
 	pulley:108,
-	buildTime:98708,
-	citizen:0
+	buildTime:98708
 }
 blackSmith[27] = {
 	level:27,
@@ -324,8 +298,7 @@ blackSmith[27] = {
 	tools:134,
 	tiles:134,
 	pulley:134,
-	buildTime:107636,
-	citizen:0
+	buildTime:107636
 }
 blackSmith[28] = {
 	level:28,
@@ -336,8 +309,7 @@ blackSmith[28] = {
 	tools:163,
 	tiles:163,
 	pulley:163,
-	buildTime:116564,
-	citizen:0
+	buildTime:116564
 }
 blackSmith[29] = {
 	level:29,
@@ -348,8 +320,7 @@ blackSmith[29] = {
 	tools:197,
 	tiles:197,
 	pulley:197,
-	buildTime:125492,
-	citizen:0
+	buildTime:125492
 }
 blackSmith[30] = {
 	level:30,
@@ -360,8 +331,7 @@ blackSmith[30] = {
 	tools:234,
 	tiles:234,
 	pulley:234,
-	buildTime:134420,
-	citizen:0
+	buildTime:134420
 }
 blackSmith[31] = {
 	level:31,
@@ -372,8 +342,7 @@ blackSmith[31] = {
 	tools:277,
 	tiles:277,
 	pulley:277,
-	buildTime:143348,
-	citizen:0
+	buildTime:143348
 }
 blackSmith[32] = {
 	level:32,
@@ -384,8 +353,7 @@ blackSmith[32] = {
 	tools:324,
 	tiles:324,
 	pulley:324,
-	buildTime:152276,
-	citizen:0
+	buildTime:152276
 }
 blackSmith[33] = {
 	level:33,
@@ -396,8 +364,7 @@ blackSmith[33] = {
 	tools:376,
 	tiles:376,
 	pulley:376,
-	buildTime:161204,
-	citizen:0
+	buildTime:161204
 }
 blackSmith[34] = {
 	level:34,
@@ -408,8 +375,7 @@ blackSmith[34] = {
 	tools:433,
 	tiles:433,
 	pulley:433,
-	buildTime:170132,
-	citizen:0
+	buildTime:170132
 }
 blackSmith[35] = {
 	level:35,
@@ -420,8 +386,7 @@ blackSmith[35] = {
 	tools:496,
 	tiles:496,
 	pulley:496,
-	buildTime:179060,
-	citizen:0
+	buildTime:179060
 }
 blackSmith[36] = {
 	level:36,
@@ -432,8 +397,7 @@ blackSmith[36] = {
 	tools:564,
 	tiles:564,
 	pulley:564,
-	buildTime:187988,
-	citizen:0
+	buildTime:187988
 }
 blackSmith[37] = {
 	level:37,
@@ -444,8 +408,7 @@ blackSmith[37] = {
 	tools:639,
 	tiles:639,
 	pulley:639,
-	buildTime:196916,
-	citizen:0
+	buildTime:196916
 }
 blackSmith[38] = {
 	level:38,
@@ -456,8 +419,7 @@ blackSmith[38] = {
 	tools:720,
 	tiles:720,
 	pulley:720,
-	buildTime:205844,
-	citizen:0
+	buildTime:205844
 }
 blackSmith[39] = {
 	level:39,
@@ -468,8 +430,7 @@ blackSmith[39] = {
 	tools:810,
 	tiles:810,
 	pulley:810,
-	buildTime:214772,
-	citizen:0
+	buildTime:214772
 }
 blackSmith[40] = {
 	level:40,
@@ -480,6 +441,5 @@ blackSmith[40] = {
 	tools:920,
 	tiles:920,
 	pulley:920,
-	buildTime:223700,
-	citizen:0
+	buildTime:223700
 }

@@ -12,8 +12,7 @@ hospital[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:160,
-	citizen:0
+	buildTime:160
 }
 hospital[2] = {
 	level:2,
@@ -24,8 +23,7 @@ hospital[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:240,
-	citizen:0
+	buildTime:240
 }
 hospital[3] = {
 	level:3,
@@ -36,8 +34,7 @@ hospital[3] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:320,
-	citizen:0
+	buildTime:320
 }
 hospital[4] = {
 	level:4,
@@ -48,8 +45,7 @@ hospital[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:440,
-	citizen:0
+	buildTime:440
 }
 hospital[5] = {
 	level:5,
@@ -60,8 +56,7 @@ hospital[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:864,
-	citizen:0
+	buildTime:864
 }
 hospital[6] = {
 	level:6,
@@ -72,8 +67,7 @@ hospital[6] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1728,
-	citizen:0
+	buildTime:1728
 }
 hospital[7] = {
 	level:7,
@@ -84,8 +78,7 @@ hospital[7] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2592,
-	citizen:0
+	buildTime:2592
 }
 hospital[8] = {
 	level:8,
@@ -96,8 +89,7 @@ hospital[8] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5184,
-	citizen:0
+	buildTime:5184
 }
 hospital[9] = {
 	level:9,
@@ -108,8 +100,7 @@ hospital[9] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:10368,
-	citizen:0
+	buildTime:10368
 }
 hospital[10] = {
 	level:10,
@@ -120,8 +111,7 @@ hospital[10] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:15552,
-	citizen:0
+	buildTime:15552
 }
 hospital[11] = {
 	level:11,
@@ -132,8 +122,7 @@ hospital[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:20736,
-	citizen:0
+	buildTime:20736
 }
 hospital[12] = {
 	level:12,
@@ -144,8 +133,7 @@ hospital[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:25920,
-	citizen:0
+	buildTime:25920
 }
 hospital[13] = {
 	level:13,
@@ -156,8 +144,7 @@ hospital[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:31104,
-	citizen:0
+	buildTime:31104
 }
 hospital[14] = {
 	level:14,
@@ -168,8 +155,7 @@ hospital[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:36288,
-	citizen:0
+	buildTime:36288
 }
 hospital[15] = {
 	level:15,
@@ -180,8 +166,7 @@ hospital[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:41472,
-	citizen:0
+	buildTime:41472
 }
 hospital[16] = {
 	level:16,
@@ -192,8 +177,7 @@ hospital[16] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:46656,
-	citizen:0
+	buildTime:46656
 }
 hospital[17] = {
 	level:17,
@@ -204,8 +188,7 @@ hospital[17] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:51840,
-	citizen:0
+	buildTime:51840
 }
 hospital[18] = {
 	level:18,
@@ -216,8 +199,7 @@ hospital[18] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:57024,
-	citizen:0
+	buildTime:57024
 }
 hospital[19] = {
 	level:19,
@@ -228,8 +210,7 @@ hospital[19] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:62208,
-	citizen:0
+	buildTime:62208
 }
 hospital[20] = {
 	level:20,
@@ -240,8 +221,7 @@ hospital[20] = {
 	tools:13,
 	tiles:13,
 	pulley:13,
-	buildTime:67392,
-	citizen:0
+	buildTime:67392
 }
 hospital[21] = {
 	level:21,
@@ -252,8 +232,7 @@ hospital[21] = {
 	tools:21,
 	tiles:21,
 	pulley:21,
-	buildTime:72576,
-	citizen:0
+	buildTime:72576
 }
 hospital[22] = {
 	level:22,
@@ -264,8 +243,7 @@ hospital[22] = {
 	tools:32,
 	tiles:32,
 	pulley:32,
-	buildTime:77760,
-	citizen:0
+	buildTime:77760
 }
 hospital[23] = {
 	level:23,
@@ -276,8 +254,7 @@ hospital[23] = {
 	tools:47,
 	tiles:47,
 	pulley:47,
-	buildTime:82944,
-	citizen:0
+	buildTime:82944
 }
 hospital[24] = {
 	level:24,
@@ -288,8 +265,7 @@ hospital[24] = {
 	tools:65,
 	tiles:65,
 	pulley:65,
-	buildTime:93312,
-	citizen:0
+	buildTime:93312
 }
 hospital[25] = {
 	level:25,
@@ -300,8 +276,7 @@ hospital[25] = {
 	tools:88,
 	tiles:88,
 	pulley:88,
-	buildTime:103680,
-	citizen:0
+	buildTime:103680
 }
 hospital[26] = {
 	level:26,
@@ -312,8 +287,7 @@ hospital[26] = {
 	tools:116,
 	tiles:116,
 	pulley:116,
-	buildTime:114048,
-	citizen:0
+	buildTime:114048
 }
 hospital[27] = {
 	level:27,
@@ -324,8 +298,7 @@ hospital[27] = {
 	tools:150,
 	tiles:150,
 	pulley:150,
-	buildTime:124416,
-	citizen:0
+	buildTime:124416
 }
 hospital[28] = {
 	level:28,
@@ -336,8 +309,7 @@ hospital[28] = {
 	tools:189,
 	tiles:189,
 	pulley:189,
-	buildTime:134784,
-	citizen:0
+	buildTime:134784
 }
 hospital[29] = {
 	level:29,
@@ -348,8 +320,7 @@ hospital[29] = {
 	tools:235,
 	tiles:235,
 	pulley:235,
-	buildTime:145152,
-	citizen:0
+	buildTime:145152
 }
 hospital[30] = {
 	level:30,
@@ -360,8 +331,7 @@ hospital[30] = {
 	tools:288,
 	tiles:288,
 	pulley:288,
-	buildTime:155520,
-	citizen:0
+	buildTime:155520
 }
 hospital[31] = {
 	level:31,
@@ -372,8 +342,7 @@ hospital[31] = {
 	tools:349,
 	tiles:349,
 	pulley:349,
-	buildTime:165888,
-	citizen:0
+	buildTime:165888
 }
 hospital[32] = {
 	level:32,
@@ -384,8 +353,7 @@ hospital[32] = {
 	tools:417,
 	tiles:417,
 	pulley:417,
-	buildTime:176256,
-	citizen:0
+	buildTime:176256
 }
 hospital[33] = {
 	level:33,
@@ -396,8 +364,7 @@ hospital[33] = {
 	tools:494,
 	tiles:494,
 	pulley:494,
-	buildTime:186624,
-	citizen:0
+	buildTime:186624
 }
 hospital[34] = {
 	level:34,
@@ -408,8 +375,7 @@ hospital[34] = {
 	tools:580,
 	tiles:580,
 	pulley:580,
-	buildTime:196992,
-	citizen:0
+	buildTime:196992
 }
 hospital[35] = {
 	level:35,
@@ -420,8 +386,7 @@ hospital[35] = {
 	tools:676,
 	tiles:676,
 	pulley:676,
-	buildTime:207360,
-	citizen:0
+	buildTime:207360
 }
 hospital[36] = {
 	level:36,
@@ -432,8 +397,7 @@ hospital[36] = {
 	tools:781,
 	tiles:781,
 	pulley:781,
-	buildTime:217728,
-	citizen:0
+	buildTime:217728
 }
 hospital[37] = {
 	level:37,
@@ -444,8 +408,7 @@ hospital[37] = {
 	tools:897,
 	tiles:897,
 	pulley:897,
-	buildTime:228096,
-	citizen:0
+	buildTime:228096
 }
 hospital[38] = {
 	level:38,
@@ -456,8 +419,7 @@ hospital[38] = {
 	tools:1024,
 	tiles:1024,
 	pulley:1024,
-	buildTime:238464,
-	citizen:0
+	buildTime:238464
 }
 hospital[39] = {
 	level:39,
@@ -468,8 +430,7 @@ hospital[39] = {
 	tools:1160,
 	tiles:1160,
 	pulley:1160,
-	buildTime:248832,
-	citizen:0
+	buildTime:248832
 }
 hospital[40] = {
 	level:40,
@@ -480,6 +441,5 @@ hospital[40] = {
 	tools:1320,
 	tiles:1320,
 	pulley:1320,
-	buildTime:259200,
-	citizen:0
+	buildTime:259200
 }

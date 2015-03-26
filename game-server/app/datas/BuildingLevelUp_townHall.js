@@ -12,8 +12,7 @@ townHall[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:600,
-	citizen:0
+	buildTime:600
 }
 townHall[2] = {
 	level:2,
@@ -24,8 +23,7 @@ townHall[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:800,
-	citizen:0
+	buildTime:800
 }
 townHall[3] = {
 	level:3,
@@ -36,8 +34,7 @@ townHall[3] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1192,
-	citizen:0
+	buildTime:1192
 }
 townHall[4] = {
 	level:4,
@@ -48,8 +45,7 @@ townHall[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1384,
-	citizen:0
+	buildTime:1384
 }
 townHall[5] = {
 	level:5,
@@ -60,8 +56,7 @@ townHall[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1768,
-	citizen:0
+	buildTime:1768
 }
 townHall[6] = {
 	level:6,
@@ -72,8 +67,7 @@ townHall[6] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2536,
-	citizen:0
+	buildTime:2536
 }
 townHall[7] = {
 	level:7,
@@ -84,8 +78,7 @@ townHall[7] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3304,
-	citizen:0
+	buildTime:3304
 }
 townHall[8] = {
 	level:8,
@@ -96,8 +89,7 @@ townHall[8] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5608,
-	citizen:0
+	buildTime:5608
 }
 townHall[9] = {
 	level:9,
@@ -108,8 +100,7 @@ townHall[9] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:10216,
-	citizen:0
+	buildTime:10216
 }
 townHall[10] = {
 	level:10,
@@ -120,8 +111,7 @@ townHall[10] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:14824,
-	citizen:0
+	buildTime:14824
 }
 townHall[11] = {
 	level:11,
@@ -132,8 +122,7 @@ townHall[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:19432,
-	citizen:0
+	buildTime:19432
 }
 townHall[12] = {
 	level:12,
@@ -144,8 +133,7 @@ townHall[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:24040,
-	citizen:0
+	buildTime:24040
 }
 townHall[13] = {
 	level:13,
@@ -156,8 +144,7 @@ townHall[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:28648,
-	citizen:0
+	buildTime:28648
 }
 townHall[14] = {
 	level:14,
@@ -168,8 +155,7 @@ townHall[14] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:33256,
-	citizen:0
+	buildTime:33256
 }
 townHall[15] = {
 	level:15,
@@ -180,8 +166,7 @@ townHall[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:37864,
-	citizen:0
+	buildTime:37864
 }
 townHall[16] = {
 	level:16,
@@ -192,8 +177,7 @@ townHall[16] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:42472,
-	citizen:0
+	buildTime:42472
 }
 townHall[17] = {
 	level:17,
@@ -204,8 +188,7 @@ townHall[17] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:47080,
-	citizen:0
+	buildTime:47080
 }
 townHall[18] = {
 	level:18,
@@ -216,8 +199,7 @@ townHall[18] = {
 	tools:7,
 	tiles:7,
 	pulley:7,
-	buildTime:51688,
-	citizen:0
+	buildTime:51688
 }
 townHall[19] = {
 	level:19,
@@ -228,8 +210,7 @@ townHall[19] = {
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:56296,
-	citizen:0
+	buildTime:56296
 }
 townHall[20] = {
 	level:20,
@@ -240,8 +221,7 @@ townHall[20] = {
 	tools:18,
 	tiles:18,
 	pulley:18,
-	buildTime:60904,
-	citizen:0
+	buildTime:60904
 }
 townHall[21] = {
 	level:21,
@@ -252,8 +232,7 @@ townHall[21] = {
 	tools:27,
 	tiles:27,
 	pulley:27,
-	buildTime:65512,
-	citizen:0
+	buildTime:65512
 }
 townHall[22] = {
 	level:22,
@@ -264,8 +243,7 @@ townHall[22] = {
 	tools:37,
 	tiles:37,
 	pulley:37,
-	buildTime:70120,
-	citizen:0
+	buildTime:70120
 }
 townHall[23] = {
 	level:23,
@@ -276,8 +254,7 @@ townHall[23] = {
 	tools:51,
 	tiles:51,
 	pulley:51,
-	buildTime:74728,
-	citizen:0
+	buildTime:74728
 }
 townHall[24] = {
 	level:24,
@@ -288,8 +265,7 @@ townHall[24] = {
 	tools:67,
 	tiles:67,
 	pulley:67,
-	buildTime:83944,
-	citizen:0
+	buildTime:83944
 }
 townHall[25] = {
 	level:25,
@@ -300,8 +276,7 @@ townHall[25] = {
 	tools:86,
 	tiles:86,
 	pulley:86,
-	buildTime:93160,
-	citizen:0
+	buildTime:93160
 }
 townHall[26] = {
 	level:26,
@@ -312,8 +287,7 @@ townHall[26] = {
 	tools:108,
 	tiles:108,
 	pulley:108,
-	buildTime:102376,
-	citizen:0
+	buildTime:102376
 }
 townHall[27] = {
 	level:27,
@@ -324,8 +298,7 @@ townHall[27] = {
 	tools:134,
 	tiles:134,
 	pulley:134,
-	buildTime:111592,
-	citizen:0
+	buildTime:111592
 }
 townHall[28] = {
 	level:28,
@@ -336,8 +309,7 @@ townHall[28] = {
 	tools:163,
 	tiles:163,
 	pulley:163,
-	buildTime:120808,
-	citizen:0
+	buildTime:120808
 }
 townHall[29] = {
 	level:29,
@@ -348,8 +320,7 @@ townHall[29] = {
 	tools:197,
 	tiles:197,
 	pulley:197,
-	buildTime:130024,
-	citizen:0
+	buildTime:130024
 }
 townHall[30] = {
 	level:30,
@@ -360,8 +331,7 @@ townHall[30] = {
 	tools:234,
 	tiles:234,
 	pulley:234,
-	buildTime:139240,
-	citizen:0
+	buildTime:139240
 }
 townHall[31] = {
 	level:31,
@@ -372,8 +342,7 @@ townHall[31] = {
 	tools:277,
 	tiles:277,
 	pulley:277,
-	buildTime:148456,
-	citizen:0
+	buildTime:148456
 }
 townHall[32] = {
 	level:32,
@@ -384,8 +353,7 @@ townHall[32] = {
 	tools:324,
 	tiles:324,
 	pulley:324,
-	buildTime:157672,
-	citizen:0
+	buildTime:157672
 }
 townHall[33] = {
 	level:33,
@@ -396,8 +364,7 @@ townHall[33] = {
 	tools:376,
 	tiles:376,
 	pulley:376,
-	buildTime:166888,
-	citizen:0
+	buildTime:166888
 }
 townHall[34] = {
 	level:34,
@@ -408,8 +375,7 @@ townHall[34] = {
 	tools:433,
 	tiles:433,
 	pulley:433,
-	buildTime:176104,
-	citizen:0
+	buildTime:176104
 }
 townHall[35] = {
 	level:35,
@@ -420,8 +386,7 @@ townHall[35] = {
 	tools:496,
 	tiles:496,
 	pulley:496,
-	buildTime:185320,
-	citizen:0
+	buildTime:185320
 }
 townHall[36] = {
 	level:36,
@@ -432,8 +397,7 @@ townHall[36] = {
 	tools:564,
 	tiles:564,
 	pulley:564,
-	buildTime:194536,
-	citizen:0
+	buildTime:194536
 }
 townHall[37] = {
 	level:37,
@@ -444,8 +408,7 @@ townHall[37] = {
 	tools:639,
 	tiles:639,
 	pulley:639,
-	buildTime:203752,
-	citizen:0
+	buildTime:203752
 }
 townHall[38] = {
 	level:38,
@@ -456,8 +419,7 @@ townHall[38] = {
 	tools:720,
 	tiles:720,
 	pulley:720,
-	buildTime:212968,
-	citizen:0
+	buildTime:212968
 }
 townHall[39] = {
 	level:39,
@@ -468,8 +430,7 @@ townHall[39] = {
 	tools:810,
 	tiles:810,
 	pulley:810,
-	buildTime:222184,
-	citizen:0
+	buildTime:222184
 }
 townHall[40] = {
 	level:40,
@@ -480,6 +441,5 @@ townHall[40] = {
 	tools:920,
 	tiles:920,
 	pulley:920,
-	buildTime:231400,
-	citizen:0
+	buildTime:231400
 }

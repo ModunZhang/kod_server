@@ -12,8 +12,7 @@ warehouse[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:36,
-	citizen:0
+	buildTime:36
 }
 warehouse[2] = {
 	level:2,
@@ -24,8 +23,7 @@ warehouse[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:72,
-	citizen:0
+	buildTime:72
 }
 warehouse[3] = {
 	level:3,
@@ -36,8 +34,7 @@ warehouse[3] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:180,
-	citizen:0
+	buildTime:180
 }
 warehouse[4] = {
 	level:4,
@@ -48,8 +45,7 @@ warehouse[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:360,
-	citizen:0
+	buildTime:360
 }
 warehouse[5] = {
 	level:5,
@@ -60,8 +56,7 @@ warehouse[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:720,
-	citizen:0
+	buildTime:720
 }
 warehouse[6] = {
 	level:6,
@@ -72,8 +67,7 @@ warehouse[6] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1440,
-	citizen:0
+	buildTime:1440
 }
 warehouse[7] = {
 	level:7,
@@ -84,8 +78,7 @@ warehouse[7] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2160,
-	citizen:0
+	buildTime:2160
 }
 warehouse[8] = {
 	level:8,
@@ -96,8 +89,7 @@ warehouse[8] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4320,
-	citizen:0
+	buildTime:4320
 }
 warehouse[9] = {
 	level:9,
@@ -108,8 +100,7 @@ warehouse[9] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:8640,
-	citizen:0
+	buildTime:8640
 }
 warehouse[10] = {
 	level:10,
@@ -120,8 +111,7 @@ warehouse[10] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:12960,
-	citizen:0
+	buildTime:12960
 }
 warehouse[11] = {
 	level:11,
@@ -132,8 +122,7 @@ warehouse[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:17280,
-	citizen:0
+	buildTime:17280
 }
 warehouse[12] = {
 	level:12,
@@ -144,8 +133,7 @@ warehouse[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:21600,
-	citizen:0
+	buildTime:21600
 }
 warehouse[13] = {
 	level:13,
@@ -156,8 +144,7 @@ warehouse[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:25920,
-	citizen:0
+	buildTime:25920
 }
 warehouse[14] = {
 	level:14,
@@ -168,8 +155,7 @@ warehouse[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:30240,
-	citizen:0
+	buildTime:30240
 }
 warehouse[15] = {
 	level:15,
@@ -180,8 +166,7 @@ warehouse[15] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:34560,
-	citizen:0
+	buildTime:34560
 }
 warehouse[16] = {
 	level:16,
@@ -192,8 +177,7 @@ warehouse[16] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:38880,
-	citizen:0
+	buildTime:38880
 }
 warehouse[17] = {
 	level:17,
@@ -204,8 +188,7 @@ warehouse[17] = {
 	tools:6,
 	tiles:6,
 	pulley:6,
-	buildTime:43200,
-	citizen:0
+	buildTime:43200
 }
 warehouse[18] = {
 	level:18,
@@ -216,8 +199,7 @@ warehouse[18] = {
 	tools:10,
 	tiles:10,
 	pulley:10,
-	buildTime:47520,
-	citizen:0
+	buildTime:47520
 }
 warehouse[19] = {
 	level:19,
@@ -228,8 +210,7 @@ warehouse[19] = {
 	tools:14,
 	tiles:14,
 	pulley:14,
-	buildTime:51840,
-	citizen:0
+	buildTime:51840
 }
 warehouse[20] = {
 	level:20,
@@ -240,8 +221,7 @@ warehouse[20] = {
 	tools:21,
 	tiles:21,
 	pulley:21,
-	buildTime:56160,
-	citizen:0
+	buildTime:56160
 }
 warehouse[21] = {
 	level:21,
@@ -252,8 +232,7 @@ warehouse[21] = {
 	tools:29,
 	tiles:29,
 	pulley:29,
-	buildTime:60480,
-	citizen:0
+	buildTime:60480
 }
 warehouse[22] = {
 	level:22,
@@ -264,8 +243,7 @@ warehouse[22] = {
 	tools:39,
 	tiles:39,
 	pulley:39,
-	buildTime:64800,
-	citizen:0
+	buildTime:64800
 }
 warehouse[23] = {
 	level:23,
@@ -276,8 +254,7 @@ warehouse[23] = {
 	tools:51,
 	tiles:51,
 	pulley:51,
-	buildTime:69120,
-	citizen:0
+	buildTime:69120
 }
 warehouse[24] = {
 	level:24,
@@ -288,8 +265,7 @@ warehouse[24] = {
 	tools:66,
 	tiles:66,
 	pulley:66,
-	buildTime:77760,
-	citizen:0
+	buildTime:77760
 }
 warehouse[25] = {
 	level:25,
@@ -300,8 +276,7 @@ warehouse[25] = {
 	tools:83,
 	tiles:83,
 	pulley:83,
-	buildTime:86400,
-	citizen:0
+	buildTime:86400
 }
 warehouse[26] = {
 	level:26,
@@ -312,8 +287,7 @@ warehouse[26] = {
 	tools:104,
 	tiles:104,
 	pulley:104,
-	buildTime:95040,
-	citizen:0
+	buildTime:95040
 }
 warehouse[27] = {
 	level:27,
@@ -324,8 +298,7 @@ warehouse[27] = {
 	tools:127,
 	tiles:127,
 	pulley:127,
-	buildTime:103680,
-	citizen:0
+	buildTime:103680
 }
 warehouse[28] = {
 	level:28,
@@ -336,8 +309,7 @@ warehouse[28] = {
 	tools:155,
 	tiles:155,
 	pulley:155,
-	buildTime:112320,
-	citizen:0
+	buildTime:112320
 }
 warehouse[29] = {
 	level:29,
@@ -348,8 +320,7 @@ warehouse[29] = {
 	tools:186,
 	tiles:186,
 	pulley:186,
-	buildTime:120960,
-	citizen:0
+	buildTime:120960
 }
 warehouse[30] = {
 	level:30,
@@ -360,8 +331,7 @@ warehouse[30] = {
 	tools:221,
 	tiles:221,
 	pulley:221,
-	buildTime:129600,
-	citizen:0
+	buildTime:129600
 }
 warehouse[31] = {
 	level:31,
@@ -372,8 +342,7 @@ warehouse[31] = {
 	tools:260,
 	tiles:260,
 	pulley:260,
-	buildTime:138240,
-	citizen:0
+	buildTime:138240
 }
 warehouse[32] = {
 	level:32,
@@ -384,8 +353,7 @@ warehouse[32] = {
 	tools:304,
 	tiles:304,
 	pulley:304,
-	buildTime:146880,
-	citizen:0
+	buildTime:146880
 }
 warehouse[33] = {
 	level:33,
@@ -396,8 +364,7 @@ warehouse[33] = {
 	tools:352,
 	tiles:352,
 	pulley:352,
-	buildTime:155520,
-	citizen:0
+	buildTime:155520
 }
 warehouse[34] = {
 	level:34,
@@ -408,8 +375,7 @@ warehouse[34] = {
 	tools:406,
 	tiles:406,
 	pulley:406,
-	buildTime:164160,
-	citizen:0
+	buildTime:164160
 }
 warehouse[35] = {
 	level:35,
@@ -420,8 +386,7 @@ warehouse[35] = {
 	tools:464,
 	tiles:464,
 	pulley:464,
-	buildTime:172800,
-	citizen:0
+	buildTime:172800
 }
 warehouse[36] = {
 	level:36,
@@ -432,8 +397,7 @@ warehouse[36] = {
 	tools:529,
 	tiles:529,
 	pulley:529,
-	buildTime:181440,
-	citizen:0
+	buildTime:181440
 }
 warehouse[37] = {
 	level:37,
@@ -444,8 +408,7 @@ warehouse[37] = {
 	tools:600,
 	tiles:600,
 	pulley:600,
-	buildTime:190080,
-	citizen:0
+	buildTime:190080
 }
 warehouse[38] = {
 	level:38,
@@ -456,8 +419,7 @@ warehouse[38] = {
 	tools:675,
 	tiles:675,
 	pulley:675,
-	buildTime:198720,
-	citizen:0
+	buildTime:198720
 }
 warehouse[39] = {
 	level:39,
@@ -468,8 +430,7 @@ warehouse[39] = {
 	tools:757,
 	tiles:757,
 	pulley:757,
-	buildTime:207360,
-	citizen:0
+	buildTime:207360
 }
 warehouse[40] = {
 	level:40,
@@ -480,6 +441,5 @@ warehouse[40] = {
 	tools:850,
 	tiles:850,
 	pulley:850,
-	buildTime:216000,
-	citizen:0
+	buildTime:216000
 }

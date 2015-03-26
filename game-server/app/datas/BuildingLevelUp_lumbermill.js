@@ -12,8 +12,7 @@ lumbermill[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1600,
-	citizen:0
+	buildTime:1600
 }
 lumbermill[2] = {
 	level:2,
@@ -24,8 +23,7 @@ lumbermill[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1800,
-	citizen:0
+	buildTime:1800
 }
 lumbermill[3] = {
 	level:3,
@@ -36,8 +34,7 @@ lumbermill[3] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2100,
-	citizen:0
+	buildTime:2100
 }
 lumbermill[4] = {
 	level:4,
@@ -48,8 +45,7 @@ lumbermill[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2400,
-	citizen:0
+	buildTime:2400
 }
 lumbermill[5] = {
 	level:5,
@@ -60,8 +56,7 @@ lumbermill[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2648,
-	citizen:0
+	buildTime:2648
 }
 lumbermill[6] = {
 	level:6,
@@ -72,8 +67,7 @@ lumbermill[6] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3296,
-	citizen:0
+	buildTime:3296
 }
 lumbermill[7] = {
 	level:7,
@@ -84,8 +78,7 @@ lumbermill[7] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3944,
-	citizen:0
+	buildTime:3944
 }
 lumbermill[8] = {
 	level:8,
@@ -96,8 +89,7 @@ lumbermill[8] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5888,
-	citizen:0
+	buildTime:5888
 }
 lumbermill[9] = {
 	level:9,
@@ -108,8 +100,7 @@ lumbermill[9] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:9776,
-	citizen:0
+	buildTime:9776
 }
 lumbermill[10] = {
 	level:10,
@@ -120,8 +111,7 @@ lumbermill[10] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:13664,
-	citizen:0
+	buildTime:13664
 }
 lumbermill[11] = {
 	level:11,
@@ -132,8 +122,7 @@ lumbermill[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:17552,
-	citizen:0
+	buildTime:17552
 }
 lumbermill[12] = {
 	level:12,
@@ -144,8 +133,7 @@ lumbermill[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:21440,
-	citizen:0
+	buildTime:21440
 }
 lumbermill[13] = {
 	level:13,
@@ -156,8 +144,7 @@ lumbermill[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:25328,
-	citizen:0
+	buildTime:25328
 }
 lumbermill[14] = {
 	level:14,
@@ -168,8 +155,7 @@ lumbermill[14] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:29216,
-	citizen:0
+	buildTime:29216
 }
 lumbermill[15] = {
 	level:15,
@@ -180,8 +166,7 @@ lumbermill[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:33104,
-	citizen:0
+	buildTime:33104
 }
 lumbermill[16] = {
 	level:16,
@@ -192,8 +177,7 @@ lumbermill[16] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:36992,
-	citizen:0
+	buildTime:36992
 }
 lumbermill[17] = {
 	level:17,
@@ -204,8 +188,7 @@ lumbermill[17] = {
 	tools:3,
 	tiles:3,
 	pulley:3,
-	buildTime:40880,
-	citizen:0
+	buildTime:40880
 }
 lumbermill[18] = {
 	level:18,
@@ -216,8 +199,7 @@ lumbermill[18] = {
 	tools:6,
 	tiles:6,
 	pulley:6,
-	buildTime:44768,
-	citizen:0
+	buildTime:44768
 }
 lumbermill[19] = {
 	level:19,
@@ -228,8 +210,7 @@ lumbermill[19] = {
 	tools:10,
 	tiles:10,
 	pulley:10,
-	buildTime:48656,
-	citizen:0
+	buildTime:48656
 }
 lumbermill[20] = {
 	level:20,
@@ -240,8 +221,7 @@ lumbermill[20] = {
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:52544,
-	citizen:0
+	buildTime:52544
 }
 lumbermill[21] = {
 	level:21,
@@ -252,8 +232,7 @@ lumbermill[21] = {
 	tools:23,
 	tiles:23,
 	pulley:23,
-	buildTime:56432,
-	citizen:0
+	buildTime:56432
 }
 lumbermill[22] = {
 	level:22,
@@ -264,8 +243,7 @@ lumbermill[22] = {
 	tools:32,
 	tiles:32,
 	pulley:32,
-	buildTime:60320,
-	citizen:0
+	buildTime:60320
 }
 lumbermill[23] = {
 	level:23,
@@ -276,8 +254,7 @@ lumbermill[23] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:64208,
-	citizen:0
+	buildTime:64208
 }
 lumbermill[24] = {
 	level:24,
@@ -288,8 +265,7 @@ lumbermill[24] = {
 	tools:58,
 	tiles:58,
 	pulley:58,
-	buildTime:71984,
-	citizen:0
+	buildTime:71984
 }
 lumbermill[25] = {
 	level:25,
@@ -300,8 +276,7 @@ lumbermill[25] = {
 	tools:74,
 	tiles:74,
 	pulley:74,
-	buildTime:79760,
-	citizen:0
+	buildTime:79760
 }
 lumbermill[26] = {
 	level:26,
@@ -312,8 +287,7 @@ lumbermill[26] = {
 	tools:94,
 	tiles:94,
 	pulley:94,
-	buildTime:87536,
-	citizen:0
+	buildTime:87536
 }
 lumbermill[27] = {
 	level:27,
@@ -324,8 +298,7 @@ lumbermill[27] = {
 	tools:117,
 	tiles:117,
 	pulley:117,
-	buildTime:95312,
-	citizen:0
+	buildTime:95312
 }
 lumbermill[28] = {
 	level:28,
@@ -336,8 +309,7 @@ lumbermill[28] = {
 	tools:144,
 	tiles:144,
 	pulley:144,
-	buildTime:103088,
-	citizen:0
+	buildTime:103088
 }
 lumbermill[29] = {
 	level:29,
@@ -348,8 +320,7 @@ lumbermill[29] = {
 	tools:174,
 	tiles:174,
 	pulley:174,
-	buildTime:110864,
-	citizen:0
+	buildTime:110864
 }
 lumbermill[30] = {
 	level:30,
@@ -360,8 +331,7 @@ lumbermill[30] = {
 	tools:208,
 	tiles:208,
 	pulley:208,
-	buildTime:118640,
-	citizen:0
+	buildTime:118640
 }
 lumbermill[31] = {
 	level:31,
@@ -372,8 +342,7 @@ lumbermill[31] = {
 	tools:247,
 	tiles:247,
 	pulley:247,
-	buildTime:126416,
-	citizen:0
+	buildTime:126416
 }
 lumbermill[32] = {
 	level:32,
@@ -384,8 +353,7 @@ lumbermill[32] = {
 	tools:290,
 	tiles:290,
 	pulley:290,
-	buildTime:134192,
-	citizen:0
+	buildTime:134192
 }
 lumbermill[33] = {
 	level:33,
@@ -396,8 +364,7 @@ lumbermill[33] = {
 	tools:337,
 	tiles:337,
 	pulley:337,
-	buildTime:141968,
-	citizen:0
+	buildTime:141968
 }
 lumbermill[34] = {
 	level:34,
@@ -408,8 +375,7 @@ lumbermill[34] = {
 	tools:390,
 	tiles:390,
 	pulley:390,
-	buildTime:149744,
-	citizen:0
+	buildTime:149744
 }
 lumbermill[35] = {
 	level:35,
@@ -420,8 +386,7 @@ lumbermill[35] = {
 	tools:448,
 	tiles:448,
 	pulley:448,
-	buildTime:157520,
-	citizen:0
+	buildTime:157520
 }
 lumbermill[36] = {
 	level:36,
@@ -432,8 +397,7 @@ lumbermill[36] = {
 	tools:512,
 	tiles:512,
 	pulley:512,
-	buildTime:165296,
-	citizen:0
+	buildTime:165296
 }
 lumbermill[37] = {
 	level:37,
@@ -444,8 +408,7 @@ lumbermill[37] = {
 	tools:580,
 	tiles:580,
 	pulley:580,
-	buildTime:173072,
-	citizen:0
+	buildTime:173072
 }
 lumbermill[38] = {
 	level:38,
@@ -456,8 +419,7 @@ lumbermill[38] = {
 	tools:660,
 	tiles:660,
 	pulley:660,
-	buildTime:180848,
-	citizen:0
+	buildTime:180848
 }
 lumbermill[39] = {
 	level:39,
@@ -468,8 +430,7 @@ lumbermill[39] = {
 	tools:740,
 	tiles:740,
 	pulley:740,
-	buildTime:188624,
-	citizen:0
+	buildTime:188624
 }
 lumbermill[40] = {
 	level:40,
@@ -480,6 +441,5 @@ lumbermill[40] = {
 	tools:830,
 	tiles:830,
 	pulley:830,
-	buildTime:196400,
-	citizen:0
+	buildTime:196400
 }
