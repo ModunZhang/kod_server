@@ -850,13 +850,29 @@ Utils.getUsedBuildQueue = function(playerDoc){
 Utils.getSmallestBuildEvent = function(playerDoc){
 	var event = null
 	_.each(playerDoc.buildingEvents, function(theEvent){
-		if(event == null || event.event.finishTime > theEvent){
+		if(event == null || event.event.finishTime > theEvent.finishTime){
 			event = {event:theEvent, type:"buildingEvents"}
 		}
 	})
 	_.each(playerDoc.houseEvents, function(theEvent){
-		if(event == null || event.event.finishTime > theEvent){
+		if(event == null || event.event.finishTime > theEvent.finishTime){
 			event = {event:theEvent, type:"houseEvents"}
+		}
+	})
+
+	return event
+}
+
+/**
+ * 获取最先完成的造兵事件
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getSmallestRecruitEvent = function(playerDoc){
+	var event = null
+	_.each(playerDoc.soldierEvents, function(theEvent){
+		if(event == null || event.event.finishTime > theEvent.finishTime){
+			event = {event:theEvent, type:"soldierEvents"}
 		}
 	})
 

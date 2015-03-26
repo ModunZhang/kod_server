@@ -427,17 +427,6 @@ Utils.theSoldierIsLocked = function(playerId, soldierName){
 }
 
 /**
- * 已有士兵正在被招募
- * @param playerId
- * @param soldierName
- * @param count
- */
-Utils.soldiersAreRecruitingNow = function(playerId, soldierName, count){
-	var config = Errors.soldiersAreRecruitingNow
-	return CreateError(config, {playerId:playerId, soldierName:soldierName, count:count})
-}
-
-/**
  * 招募数量超过单次招募上限
  * @param playerId
  * @param soldierName

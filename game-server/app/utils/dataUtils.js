@@ -1158,6 +1158,14 @@ Utils.playerHasFreeBuildQueue = function(playerDoc){
 }
 
 /**
+ * 是否还有可用的造兵队列
+ * @param playerDoc
+ */
+Utils.playerHasFreeRecruitQueue = function(playerDoc){
+	return playerDoc.basicInfo.recruitQueue - playerDoc.soldierEvents.length > 0
+}
+
+/**
  * 获取治疗指定伤兵所需时间
  * @param playerDoc
  * @param soldierName

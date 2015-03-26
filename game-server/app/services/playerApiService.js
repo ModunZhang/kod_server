@@ -707,7 +707,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-		if(gemUsed > playerDoc.resources.gem)return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -994,11 +994,11 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		var building = playerDoc.buildings.location_5
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
 		if(DataUtils.isPlayerSoldierLocked(playerDoc, soldierName)) return Promise.reject(ErrorUtils.theSoldierIsLocked(playerId, soldierName))
-		if(!finishNow && playerDoc.soldierEvents.length > 0) return Promise.reject(ErrorUtils.soldiersAreRecruitingNow(playerId, soldierName, count))
 		if(count > DataUtils.getPlayerSoldierMaxRecruitCount(playerDoc, soldierName)) return Promise.reject(ErrorUtils.recruitTooMuchOnce(playerId, soldierName, count))
 		var gemUsed = 0
 		var recruitRequired = DataUtils.getPlayerRecruitNormalSoldierRequired(playerDoc, soldierName, count)
 		var buyedResources = null
+		var preRecruitEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
@@ -1010,6 +1010,11 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			buyedResources = DataUtils.buyResources(recruitRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+			if(!DataUtils.playerHasFreeRecruitQueue(playerDoc)){
+				preRecruitEvent = LogicUtils.getSmallestRecruitEvent(playerDoc)
+				var timeRemain = (preRecruitEvent.event.finishTime - Date.now()) / 1000
+				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
+			}
 		}
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		if(gemUsed > 0){
@@ -1031,6 +1036,10 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
 			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		}else{
+			if(_.isObject(preRecruitEvent)){
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preRecruitEvent.type, preRecruitEvent.event.id)
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preRecruitEvent.type, preRecruitEvent.event.id])
+			}
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
 			var event = LogicUtils.createSoldierEvent(playerDoc, soldierName, count, finishTime)
 			playerDoc.soldierEvents.push(event)
@@ -1091,11 +1100,11 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		playerDoc = doc
 		var building = playerDoc.buildings.location_5
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
-		if(!finishNow && playerDoc.soldierEvents.length > 0) return Promise.reject(ErrorUtils.soldiersAreRecruitingNow(playerId, soldierName, count))
 		if(count > DataUtils.getPlayerSoldierMaxRecruitCount(playerDoc, soldierName)) return Promise.reject(ErrorUtils.recruitTooMuchOnce(playerId, soldierName, count))
 		var gemUsed = 0
 		var recruitRequired = DataUtils.getPlayerRecruitSpecialSoldierRequired(playerDoc, soldierName, count)
 		var buyedResources = null
+		var preRecruitEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		if(!LogicUtils.isEnough(recruitRequired.materials, playerDoc.soldierMaterials)) return Promise.reject(ErrorUtils.soldierRecruitMaterialsNotEnough(playerId, soldierName, count))
@@ -1108,6 +1117,11 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			buyedResources = DataUtils.buyResources({citizen:recruitRequired.citizen}, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+			if(!DataUtils.playerHasFreeRecruitQueue(playerDoc)){
+				preRecruitEvent = LogicUtils.getSmallestRecruitEvent(playerDoc)
+				var timeRemain = (preRecruitEvent.event.finishTime - Date.now()) / 1000
+				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
+			}
 		}
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		if(gemUsed > 0){
@@ -1131,6 +1145,10 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
 			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		}else{
+			if(_.isObject(preRecruitEvent)){
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preRecruitEvent.type, preRecruitEvent.event.id)
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preRecruitEvent.type, preRecruitEvent.event.id])
+			}
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
 			var event = LogicUtils.createSoldierEvent(playerDoc, soldierName, count, finishTime)
 			playerDoc.soldierEvents.push(event)

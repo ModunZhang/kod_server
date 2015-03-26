@@ -142,7 +142,7 @@ app.configure("production|development", "time", function(){
 })
 
 app.set('errorHandler', function(err, msg, resp, session, opts, cb){
-	app.get("logService").onRequestError("app.errorHandler", msg, err.stack)
+	app.get("logService").onRequestError("app.errorHandler", {playerId:session.uid, errorCode:err.code, msg:msg}, err.stack)
 	cb(err, resp)
 	if(!_.isEmpty(err.message) && err.message.indexOf("Illegal request!") == 0){
 		app.get("sessionService").kickBySessionId(session.id)

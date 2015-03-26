@@ -126,6 +126,7 @@ var PlayerSchema = new Schema({
 		vipExp:{type:Number, required:true, default:0},
 		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn},
 		buildQueue:{type:Number, required:true, default:1},
+		recruitQueue:{type:Number, required:true, default:1},
 		marchQueue:{type:Number, required:true, default:1},
 		terrain:{type:String, required:true, default:Consts.AllianceTerrain.GrassLand}
 	},

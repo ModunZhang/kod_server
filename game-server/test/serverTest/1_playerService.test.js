@@ -373,11 +373,11 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("recruitNormalSoldier 已有士兵正在被招募", function(done){
+		//it("recruitNormalSoldier 正常普通招募", function(done){
 		//	Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
-		//			doc.code.should.equal(Errors.soldiersAreRecruitingNow.code)
+		//			doc.code.should.equal(200)
 		//			done()
 		//		})
 		//	})
@@ -387,16 +387,6 @@ describe("PlayerService", function(){
 		//	Api.recruitNormalSoldier("swordsman", 5, true, function(doc){
 		//		doc.code.should.equal(200)
 		//		done()
-		//	})
-		//})
-		//
-		//it("recruitNormalSoldier 正常普通招募", function(done){
-		//	Api.sendChat("rmsoldierevents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
 		//	})
 		//})
 		//
@@ -418,13 +408,13 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("recruitSpecialSoldier 已有士兵正在被招募", function(done){
+		//it("recruitSpecialSoldier 正常普通招募", function(done){
 		//	Api.sendChat("rmsoldierevents", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
 		//			doc.code.should.equal(200)
 		//			Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
-		//				doc.code.should.equal(Errors.soldiersAreRecruitingNow.code)
+		//				doc.code.should.equal(200)
 		//				done()
 		//			})
 		//		})
@@ -451,13 +441,6 @@ describe("PlayerService", function(){
 		//			doc.code.should.equal(200)
 		//			done()
 		//		})
-		//	})
-		//})
-		//
-		//it("recruitSpecialSoldier 正常普通招募", function(done){
-		//	Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
 		//	})
 		//})
 		//
