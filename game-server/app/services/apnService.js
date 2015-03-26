@@ -49,7 +49,7 @@ pro.getApnService = function(){
 		})
 
 		service.on("transmissionError", function(errCode, notification, device){
-			self.logService.error("apnService.transmissionError", {errCode:errCode, device:device, notification:notification}, e.stack)
+			self.logService.onEventError("apnService.transmissionError", {errCode:errCode, device:device, notification:notification}, e.stack)
 		})
 
 		service.on("timeout", function(){
@@ -62,7 +62,7 @@ pro.getApnService = function(){
 
 		service.on("socketError", function(e){
 			self.apnService = null
-			self.logService.error("apnService.socketError", {}, e.stack)
+			self.logService.onEventError("apnService.socketError", {}, e.stack)
 		})
 
 		this.apnService = service

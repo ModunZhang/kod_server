@@ -84,11 +84,7 @@ life.beforeShutdown = function(app, callback){
 	Promise.all(funcs).then(function(){
 		callback()
 	}).catch(function(e){
-		errorLogger.error("handle logicServer.lifecycle: beforeShutdown Error -----------------------------")
-		errorLogger.error(e.stack)
-		errorMailLogger.error("handle logicServer.lifecycle: beforeShutdown Error -----------------------------")
-		errorMailLogger.error(e.stack)
-		callback()
+		app.get("logService").onCronError("logic.lifecycle.beforeShutdown", {}, e.stack)
 	})
 }
 

@@ -34,7 +34,7 @@ life.beforeStartup = function(app, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		app.get("logService").error("time.lifecycle.beforeStartup", {}, e.stack)
+		app.get("logService").onEventError("time.lifecycle.beforeStartup", {}, e.stack)
 		callback()
 	})
 }
@@ -50,7 +50,7 @@ life.beforeShutdown = function(app, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		app.get("logService").error("time.lifecycle.beforeShutdown", {}, e.stack)
+		app.get("logService").onEventError("time.lifecycle.beforeShutdown", {}, e.stack)
 		callback()
 	})
 }
@@ -212,7 +212,7 @@ life.afterStartAll = function(app){
 
 	setTimeout(function(){
 		var logService = app.get("logService")
-		logService.info("time.lifecycle.afterStartAll start restoring data")
+		logService.onEvent("time.lifecycle.afterStartAll start restoring data", {})
 		playerDao.findAllKeysAsync().then(function(ids){
 			return activePlayersEvents(ids)
 		}).then(function(){
@@ -220,8 +220,8 @@ life.afterStartAll = function(app){
 		}).then(function(ids){
 			return activeAllianceEvents(ids)
 		}).then(function(){
-			logService.info("time.lifecycle.afterStartAll restoring data finished")
-			logService.info("time.lifecycle.afterStartAll start change server status")
+			logService.onEvent("time.lifecycle.afterStartAll restoring data finished", {})
+			logService.onEvent("time.lifecycle.afterStartAll start change server status", {})
 			var logicServers = app.getServersByType('logic')
 			var gateServerId = "gate-server-1"
 			var setLogicServerStatus = Promise.promisify(app.rpc.logic.logicRemote.setServerStatus.toServer)
@@ -234,9 +234,9 @@ life.afterStartAll = function(app){
 			funcs.push(setGateServerStatus(gateServerId, true))
 			return Promise.all(funcs)
 		}).then(function(){
-			logService.info("time.lifecycle.afterStartAll change server status finished")
+			logService.onEvent("time.lifecycle.afterStartAll change server status finished", {})
 		}).catch(function(e){
-			logService.error("time.lifecycle.afterStartAll", {}, e.stack)
+			logService.onEventError("time.lifecycle.afterStartAll", {}, e.stack)
 		})
 	}, 1000)
 }

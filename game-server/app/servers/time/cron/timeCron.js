@@ -213,10 +213,12 @@ var ResolveAllAlliances = function(allianceIds){
  */
 pro.resetAllianceStatus = function(){
 	var self = this
+	self.logService.onCron("time.timeCron.resetAllianceStatus start", {})
 	this.allianceDao.findAllKeysAsync().then(function(allianceIds){
 		return ResolveAllAlliances.call(self, allianceIds)
 	}).then(function(){
+		self.logService.onCron("time.timeCron.resetAllianceStatus finished", {})
 	}).catch(function(e){
-		self.logService.error("time.cron.timeCron:resetAllianceStatus", {}, e.stack)
+		self.logService.onCronError("time.timeCron.resetAllianceStatus finished with error", {}, e.stack)
 	})
 }

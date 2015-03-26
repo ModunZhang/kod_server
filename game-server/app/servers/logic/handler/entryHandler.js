@@ -117,7 +117,7 @@ var PlayerLeave = function(session, reason){
 	}).then(function(){
 		console.log("user [" + session.uid + "] logout success")
 	}).catch(function(e){
-		self.logService.error("entryHandler.playerLeave", {playerId:playerDoc._id}, e.stack)
+		self.logService.onEventError("logic.entryHandler.playerLeave", {playerId:playerDoc._id}, e.stack)
 	})
 }
 

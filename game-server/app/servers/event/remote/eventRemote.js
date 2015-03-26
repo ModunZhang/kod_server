@@ -29,7 +29,7 @@ var pro = EventRemote.prototype
  * @param callback
  */
 pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	this.logService.info("eventRemote.addTimeEvent", {key:key, eventType:eventType, eventId:eventId, timeInterval:timeInterval})
+	this.logService.onEvent("event.eventRemote.addTimeEvent", {key:key, eventType:eventType, eventId:eventId, timeInterval:timeInterval})
 	var id = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventId)
 	var callbacks = this.callbacks[key]
 	if(_.isEmpty(callbacks)){
@@ -51,7 +51,7 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  * @param callback
  */
 pro.removeTimeEvent = function(key, eventId, callback){
-	this.logService.info("eventRemote.removeTimeEvent", {key:key, eventId:eventId})
+	this.logService.onEvent("event.eventRemote.removeTimeEvent", {key:key, eventId:eventId})
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	if(_.isObject(callbackObj)){
@@ -73,7 +73,7 @@ pro.removeTimeEvent = function(key, eventId, callback){
  * @param callback
  */
 pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	this.logService.info("eventRemote.updateTimeEvent", {key:key, eventType:eventType, eventId:eventId, timeInterval:timeInterval})
+	this.logService.onEvent("event.eventRemote.updateTimeEvent", {key:key, eventType:eventType, eventId:eventId, timeInterval:timeInterval})
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	clearTimeout(callbackObj.id)
@@ -89,7 +89,7 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  * @param callback
  */
 pro.clearTimeEventsByKey = function(key, callback){
-	this.logService.info("eventRemote.clearTimeEventsByKey", {key:key})
+	this.logService.onEvent("event.eventRemote.clearTimeEventsByKey", {key:key})
 	var callbacks = this.callbacks[key]
 	_.each(callbacks, function(callbackObj){
 		clearTimeout(callbackObj.id)
@@ -105,7 +105,7 @@ pro.clearTimeEventsByKey = function(key, callback){
  */
 pro.triggerTimeEvent = function(key, eventId){
 	var self = this
-	this.logService.info("eventRemote.triggerTimeEvent", {key:key, eventId:eventId})
+	this.logService.onEvent("event.eventRemote.triggerTimeEvent", {key:key, eventId:eventId})
 	var callbacks = this.callbacks[key]
 	var callbackObj = callbacks[eventId]
 	var eventType = callbackObj.eventType
@@ -115,9 +115,9 @@ pro.triggerTimeEvent = function(key, eventId){
 	}
 	this.excuteTimeEvent(key, eventType, eventId, function(e){
 		if(_.isObject(e)){
-			self.logService.error("eventRemote.triggerTimeEvent finished with error", {key:key, eventId:eventId}, e.stack)
+			self.logService.onEventError("event.eventRemote.triggerTimeEvent finished with error", {key:key, eventId:eventId}, e.stack)
 		}else{
-			self.logService.info("eventRemote.triggerTimeEvent finished", {key:key, eventId:eventId})
+			self.logService.onEvent("event.eventRemote.triggerTimeEvent finished", {key:key, eventId:eventId})
 		}
 	})
 }

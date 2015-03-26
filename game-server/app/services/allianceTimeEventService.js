@@ -30,7 +30,6 @@ var AllianceTimeEventService = function(app){
 	this.pushService = app.get("pushService")
 	this.globalChannelService = app.get("globalChannelService")
 	this.timeEventService = app.get("timeEventService")
-	this.logService = app.get("logService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
 }
