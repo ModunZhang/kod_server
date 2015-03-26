@@ -825,7 +825,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("upgradeDragonStar 龙的星级已达最高", function(done){
-		//	Api.sendChat("dragonstar redDragon 10", function(doc){
+		//	Api.sendChat("dragonstar redDragon 5", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.upgradeDragonStar("redDragon", function(doc){
 		//			doc.code.should.equal(Errors.dragonReachMaxStar.code)

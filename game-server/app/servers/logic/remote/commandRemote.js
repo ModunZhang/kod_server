@@ -17,6 +17,7 @@ var GameDatas = require("../../../datas/GameDatas")
 var AllianceInit = GameDatas.AllianceInitData
 var AllianceBuildingConfig = GameDatas.AllianceBuilding
 var PlayerInitData = GameDatas.PlayerInitData
+var Dragons = GameDatas.Dragons
 
 module.exports = function(app){
 	return new CommandRemote(app)
@@ -530,7 +531,7 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 	var playerData = []
 	this.playerDao.findAsync(uid).then(function(doc){
 		var dragon = doc.dragons[dragonType]
-		if(dragon && star >= 0){
+		if(dragon && star >= 0 && star <= 5){
 			var maxStar = DataUtils.getDragonMaxStar()
 			dragon.star = maxStar > star ? star : maxStar
 			_.each(dragon.equipments, function(equipment){
@@ -539,8 +540,15 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 				equipment.exp = 0
 				equipment.buffs = []
 			})
+
+			var maxLevel = Dragons.dragonStar[dragon.star].levelMax
+			var minLevel = dragon.star == 1 ? 1 : Dragons.dragonStar[dragon.star - 1].levelMax + 1
+			if(dragon.level > maxLevel) dragon.level = maxLevel
+			if(dragon.level < minLevel) dragon.level = minLevel
+			dragon.hp = DataUtils.getDragonMaxHp(dragon)
+			dragon.hpRefreshTime = Date.now()
+			playerData.push(["dragons." + dragon.type, dragon])
 		}
-		playerData.push(["dragons." + dragon.type, dragon])
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, playerData)
@@ -563,8 +571,10 @@ pro.dragonlevel = function(uid, dragonType, level, callback){
 	var playerData = []
 	this.playerDao.findAsync(uid).then(function(doc){
 		var dragon = doc.dragons[dragonType]
-		if(dragon && dragon.star >= 0){
-			dragon.level = level
+		if(dragon){
+			var maxLevel = Dragons.dragonStar[dragon.star].levelMax
+			var minLevel = dragon.star == 1 ? 1 : Dragons.dragonStar[dragon.star - 1].levelMax + 1
+			dragon.level = level > maxLevel ? maxLevel : level < minLevel ? minLevel : level
 			dragon.hp = DataUtils.getDragonMaxHp(dragon)
 			dragon.hpRefreshTime = Date.now()
 		}
@@ -748,7 +758,7 @@ pro.alliancefight = function(uid, targetAllianceTag, callback){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		defenceAllianceDoc = doc
 		var now = Date.now()
-		var finishTime = now + DataUtils.getAllianceFightPrepareTime()
+		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 1000)
 		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc, true])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, defenceAllianceDoc, true])

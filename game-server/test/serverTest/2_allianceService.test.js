@@ -1,6 +1,6 @@
 ///**
-//* Created by modun on 14-7-25.
-//*/
+// * Created by modun on 14-7-25.
+// */
 //
 //var pomelo = require("../pomelo-client")
 //var redis = require("redis")
@@ -1041,30 +1041,30 @@
 //		//	})
 //		//})
 //
-//		//it("alliancefight 正常激活", function(done){
-//		//	var m_allianceDoc = null
-//		//	Api.getMyAllianceData(function(doc){
-//		//		doc.code.should.equal(200)
-//		//		m_allianceDoc = doc.allianceData
-//		//		Api.loginPlayer(Config.deviceId4, function(doc){
-//		//			doc.code.should.equal(200)
-//		//			Api.sendChat("alliancefight " + m_allianceDoc.basicInfo.tag, function(doc){
-//		//				doc.code.should.equal(200)
-//		//				done()
-//		//			})
-//		//		})
-//		//	})
-//		//})
-//
-//		it("findAllianceToFight 正常查找", function(done){
-//			Api.loginPlayer(Config.deviceId3, function(doc){
+//		it("alliancefight 正常激活", function(done){
+//			var m_allianceDoc = null
+//			Api.getMyAllianceData(function(doc){
 //				doc.code.should.equal(200)
-//				Api.findAllianceToFight(function(doc){
+//				m_allianceDoc = doc.allianceData
+//				Api.loginPlayer(Config.deviceId4, function(doc){
 //					doc.code.should.equal(200)
-//					done()
+//					Api.sendChat("alliancefight " + m_allianceDoc.basicInfo.tag, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
 //				})
 //			})
 //		})
+//
+//		//it("findAllianceToFight 正常查找", function(done){
+//		//	Api.loginPlayer(Config.deviceId3, function(doc){
+//		//		doc.code.should.equal(200)
+//		//		Api.findAllianceToFight(function(doc){
+//		//			doc.code.should.equal(200)
+//		//			done()
+//		//		})
+//		//	})
+//		//})
 //
 //		//it("getAllianceViewData 正常获取", function(done){
 //		//	var m_allianceData = null
@@ -1710,11 +1710,12 @@
 //		//it("attackPlayerCity 无协防玩家,有防守玩家,防守玩家失败", function(done){
 //		//	Api.loginPlayer(Config.deviceId, function(doc){
 //		//		doc.code.should.equal(200)
-//		//		Api.sendChat("dragonstar greenDragon 1", function(doc){
+//		//		Api.sendChat("dragonstar redDragon 1", function(doc){
+//		//			doc.code.should.equal(200)
 //		//			doc.code.should.equal(200)
 //		//			Api.sendChat("soldiers 20", function(doc){
 //		//				doc.code.should.equal(200)
-//		//				Api.setDefenceDragon("greenDragon", function(doc){
+//		//				Api.setDefenceDragon("redDragon", function(doc){
 //		//					doc.code.should.equal(200)
 //		//				})
 //		//			})
@@ -1735,6 +1736,7 @@
 //		//					doc.code.should.equal(200)
 //		//					m_enemyAllianceData = doc.allianceViewData
 //		//					Api.sendChat("dragonstar greenDragon 3", function(doc){
+//		//						doc.code.should.equal(200)
 //		//						doc.code.should.equal(200)
 //		//						Api.sendChat("soldiers 5000", function(doc){
 //		//							doc.code.should.equal(200)

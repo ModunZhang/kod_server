@@ -793,7 +793,7 @@ pro.buyAllianceArchon = function(playerId, callback){
 		playerDoc = doc
 		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		if(_.isEqual(playerDoc.alliance.title, Consts.AllianceTitle.Archon)) return Promise.reject(ErrorUtils.playerAlreadyTheAllianceArchon(playerId, playerDoc.alliance.id))
-		var gemUsed = DataUtils.getGemByBuyAllianceArchon()
+		var gemUsed = DataUtils.getAllianceIntInit("buyArchonGem")
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {

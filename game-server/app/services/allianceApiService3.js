@@ -648,7 +648,7 @@ pro.findAllianceToFight = function(playerId, callback){
 	}).then(function(doc){
 		defenceAllianceDoc = doc
 		var now = Date.now()
-		var finishTime = now + DataUtils.getAllianceFightPrepareTime()
+		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 60 * 1000)
 		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
 		attackAllianceData.push(["basicInfo", attackAllianceDoc.basicInfo])
 		attackAllianceData.push(["allianceFight", attackAllianceDoc.allianceFight])
@@ -746,7 +746,7 @@ pro.revengeAlliance = function(playerId, reportId, callback){
 		defenceAllianceDoc = doc
 		if(!_.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Peace)) return Promise.reject(ErrorUtils.targetAllianceNotInPeaceStatus(playerId, attackAllianceDoc._id, reportId))
 		var now = Date.now()
-		var finishTime = now + DataUtils.getAllianceFightPrepareTime()
+		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 60 * 1000)
 		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
 		attackAllianceData.push(["basicInfo", attackAllianceDoc.basicInfo])
 		attackAllianceData.push(["allianceFight", attackAllianceDoc.allianceFight])

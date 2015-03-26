@@ -81,7 +81,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		if(_.isObject(playerDoc.alliance) && !_.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		}
-		var gemUsed = DataUtils.getGemByCreateAlliance()
+		var gemUsed = DataUtils.getAllianceIntInit("createAllianceGem")
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {
@@ -462,7 +462,7 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "editAllianceBasicInfo")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.alliance.id, "editAllianceBasicInfo"))
 		}
-		var gemUsed = DataUtils.getEditAllianceBasicInfoGem()
+		var gemUsed = DataUtils.getAllianceIntInit("editAllianceBasicInfoGem")
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {
@@ -611,7 +611,7 @@ pro.editAllianceTerrian = function(playerId, terrain, callback){
 		allianceDoc = doc
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 
-		var honourUsed = DataUtils.getEditAllianceTerrianHonour()
+		var honourUsed = DataUtils.getAllianceIntInit("editAllianceTerrianHonour")
 		if(allianceDoc.basicInfo.honour < honourUsed) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		allianceDoc.basicInfo.honour -= honourUsed
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])

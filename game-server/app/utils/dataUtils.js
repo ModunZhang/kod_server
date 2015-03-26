@@ -1567,22 +1567,6 @@ Utils.isDragonReachMaxStar = function(dragon){
 }
 
 /**
- * 获取建造联盟所消耗的宝石
- * @returns {*}
- */
-Utils.getGemByCreateAlliance = function(){
-	return AllianceInitData.intInit.createAllianceGem.value
-}
-
-/**
- * 获取购买盟主职位所需要的宝石
- * @returns {*}
- */
-Utils.getGemByBuyAllianceArchon = function(){
-	return AllianceInitData.intInit.buyArchonGem.value
-}
-
-/**
  * 检查操作联盟相关API的权限是否足够
  * @param title
  * @param api
@@ -1767,22 +1751,6 @@ Utils.isAllianceVillageReachMaxLevel = function(allianceType, allianceLevel){
 }
 
 /**
- * 获取编辑联盟基础信息消耗的宝石
- * @returns {*}
- */
-Utils.getEditAllianceBasicInfoGem = function(){
-	return AllianceInitData.intInit.editAllianceBasicInfoGem.value
-}
-
-/**
- * 获取改变联盟地形所消耗的荣耀值
- * @returns {*}
- */
-Utils.getEditAllianceTerrianHonour = function(){
-	return AllianceInitData.intInit.editAllianceTerrianHonour.value
-}
-
-/**
  * 获取村落配置
  * @returns {*}
  */
@@ -1926,7 +1894,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
 		id:ShortId.generate(),
 		stageName:stageName,
 		createTime:Date.now(),
-		startTime:Date.now() + (AllianceInitData.intInit.activeShrineStageEventTime.value * 1000),
+		startTime:Date.now() + this.getAllianceIntInit("activeShrineStageEventMinutes") * 60 * 1000,
 		playerTroops:[]
 	}
 	return event
@@ -2550,30 +2518,6 @@ Utils.getAllianceShrineStageFightHoner = function(stageName, fightStar){
 }
 
 /**
- * 获取联盟战准备期总时间
- * @returns {number}
- */
-Utils.getAllianceFightPrepareTime = function(){
-	return AllianceInitData.intInit.allianceFightPrepareTime.value * 1000
-}
-
-/**
- * 获取联盟战战争期总时间
- * @returns {number}
- */
-Utils.getAllianceFightTotalFightTime = function(){
-	return AllianceInitData.intInit.allianceFightTotalFightTime.value * 1000
-}
-
-/**
- * 获取联盟战单场战斗所需的时间
- * @returns {number}
- */
-Utils.getAllianceFightSecondsPerFight = function(){
-	return AllianceInitData.intInit.allianceFightTimePerFight.value * 1000
-}
-
-/**
  * 获取龙的血量的最大值
  * @param dragon
  * @returns {number}
@@ -2591,7 +2535,7 @@ Utils.getDragonMaxHp = function(dragon){
  */
 Utils.isAlliancePlayerBeHelpedTroopsReachMax = function(allianceDoc, playerDoc){
 	var currentCount = LogicUtils.getAlliancePlayerBeHelpedTroopsCount(allianceDoc, playerDoc)
-	return currentCount >= AllianceInitData.intInit.allianceHelpDefenceTroopsMaxCount.value
+	return currentCount >= this.getAllianceIntInit("allianceHelpDefenceTroopsMaxCount")
 }
 
 /**
@@ -2600,7 +2544,7 @@ Utils.isAlliancePlayerBeHelpedTroopsReachMax = function(allianceDoc, playerDoc){
  * @returns {boolean}
  */
 Utils.isAllianceRevengeTimeExpired = function(allianceFightReport){
-	return Date.now() > allianceFightReport.fightTime + (AllianceInitData.intInit.allianceRevengeMaxTime.value * 1000)
+	return Date.now() > allianceFightReport.fightTime + (this.getAllianceIntInit("allianceRevengeMaxMinutes") * 60 * 1000)
 }
 
 /**
@@ -2716,7 +2660,7 @@ Utils.getPlayerSoldiersCitizen = function(playerDoc, soldiers){
  */
 Utils.getPlayerDragonMaxCitizen = function(playerDoc, dragon){
 	var leaderShip = this.getPlayerDragonLeadership(playerDoc, dragon)
-	return leaderShip * AllianceInitData.intInit.citizenPerLeadership.value
+	return leaderShip * this.getAllianceIntInit("citizenPerLeadership")
 }
 
 /**
@@ -2828,7 +2772,7 @@ Utils.getAllianceVillageResourceMax = function(villageType, villageLevel){
  * @returns {number}
  */
 Utils.getDragonExpAdd = function(kill){
-	return Math.floor(kill / AllianceInitData.intInit.KilledCitizenPerDragonExp.value)
+	return Math.floor(kill / this.getAllianceIntInit("KilledCitizenPerDragonExp"))
 }
 
 /**
@@ -2844,7 +2788,7 @@ Utils.getBloodAdd = function(dragon, kill, isWinner){
 		var dragonSkillName = "battleHunger"
 		skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
 	}
-	var blood = kill / AllianceInitData.intInit.KilledCitizenPerBlood.value
+	var blood = kill / this.getAllianceIntInit("KilledCitizenPerBlood")
 	return Math.floor(blood * (isWinner ? 0.7 : 0.3) * (1 + skillBuff))
 }
 
@@ -2856,7 +2800,7 @@ Utils.getBloodAdd = function(dragon, kill, isWinner){
  */
 Utils.getCollectResourceExpAdd = function(name, count){
 	name = name.charAt(0).toUpperCase() + name.slice(1)
-	var resourceCountPerExp = AllianceInitData.intInit["collected" + name + "CountPerExp"].value
+	var resourceCountPerExp = this.getAllianceIntInit("collected" + name + "CountPerExp")
 	var exp = Math.floor(count / resourceCountPerExp)
 	return exp
 }

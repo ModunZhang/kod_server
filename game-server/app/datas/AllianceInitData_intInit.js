@@ -23,19 +23,19 @@ intInit["editAllianceTerrianHonour"] = {
 	value:50,
 	desc:"编辑联盟地形所需荣耀值"
 }
-intInit["activeShrineStageEventTime"] = {
-	type:"activeShrineStageEventTime",
-	value:120,
+intInit["activeShrineStageEventMinutes"] = {
+	type:"activeShrineStageEventMinutes",
+	value:2,
 	desc:"圣地战激活后持续时间"
 }
-intInit["allianceFightPrepareTime"] = {
-	type:"allianceFightPrepareTime",
-	value:2,
+intInit["allianceFightPrepareMinutes"] = {
+	type:"allianceFightPrepareMinutes",
+	value:1,
 	desc:"联盟战准备期时间"
 }
-intInit["allianceFightTotalFightTime"] = {
-	type:"allianceFightTotalFightTime",
-	value:300,
+intInit["allianceFightTotalFightMinutes"] = {
+	type:"allianceFightTotalFightMinutes",
+	value:5,
 	desc:"联盟战战争期时间"
 }
 intInit["allianceHelpDefenceTroopsMaxCount"] = {
@@ -43,9 +43,9 @@ intInit["allianceHelpDefenceTroopsMaxCount"] = {
 	value:2,
 	desc:"协防玩家最大数量"
 }
-intInit["allianceRevengeMaxTime"] = {
-	type:"allianceRevengeMaxTime",
-	value:300,
+intInit["allianceRevengeMaxMinutes"] = {
+	type:"allianceRevengeMaxMinutes",
+	value:5,
 	desc:"复仇最大时间"
 }
 intInit["allianceRegionMapWidth"] = {
@@ -106,15 +106,15 @@ intInit["allianceFightSuccessProtectMinutes"] = {
 intInit["KilledCitizenPerDragonExp"] = {
 	type:"KilledCitizenPerDragonExp",
 	value:2,
-	desc:"击杀多少兵力获得一点龙经验"
+	desc:"多少击杀积分获得一点龙经验"
 }
 intInit["KilledCitizenPerBlood"] = {
 	type:"KilledCitizenPerBlood",
 	value:2,
-	desc:"击杀多少兵力获得一点英雄之血"
+	desc:"多少击杀积分获得一点英雄之血"
 }
 intInit["KilledCitizenPerWallHp"] = {
 	type:"KilledCitizenPerWallHp",
 	value:1,
-	desc:"损失一点城墙血量算多少击杀"
+	desc:"损失一点城墙血量获得多少击杀积分"
 }
