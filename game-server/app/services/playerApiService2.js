@@ -145,11 +145,11 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		var building = playerDoc.buildings.location_6
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
 		if(!LogicUtils.isTreatSoldierLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
-		if(!finishNow && playerDoc.treatSoldierEvents.length > 0) return Promise.reject(ErrorUtils.soldierTreatEventExist(playerId, soldiers))
 
 		var gemUsed = 0
 		var treatRequired = DataUtils.getPlayerTreatSoldierRequired(playerDoc, soldiers)
 		var buyedResources = null
+		var preTreatEvent = null
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(treatRequired.treatTime)
 			buyedResources = DataUtils.buyResources(treatRequired.resources, {})
@@ -159,6 +159,11 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			buyedResources = DataUtils.buyResources(treatRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+			if(playerDoc.treatSoldierEvents.length > 0){
+				preTreatEvent = playerDoc.treatSoldierEvents[0]
+				var timeRemain = (preTreatEvent.finishTime - Date.now()) / 1000
+				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
+			}
 		}
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		if(gemUsed > 0){
@@ -183,6 +188,10 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 		}else{
+			if(_.isObject(preTreatEvent)){
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "treatSoldierEvents", preTreatEvent.id)
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "treatSoldierEvents", preTreatEvent.id])
+			}
 			_.each(soldiers, function(soldier){
 				playerDoc.woundedSoldiers[soldier.name] -= soldier.count
 				playerData.push(["woundedSoldiers." + soldier.name, playerDoc.woundedSoldiers[soldier.name]])

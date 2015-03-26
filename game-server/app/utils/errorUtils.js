@@ -480,16 +480,6 @@ Utils.soldierNotExistOrCountNotLegal = function(playerId, soldiers){
 }
 
 /**
- * 士兵质量事件已存在
- * @param playerId
- * @param soldiers
- */
-Utils.soldierTreatEventExist = function(playerId, soldiers){
-	var config = Errors.soldierTreatEventExist
-	return CreateError(config, {playerId:playerId, soldiers:soldiers})
-}
-
-/**
  * 龙蛋早已成功孵化
  * @param playerId
  * @param dragonType
