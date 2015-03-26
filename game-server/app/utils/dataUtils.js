@@ -621,7 +621,6 @@ Utils.getPlayerUsedCitizen = function(playerDoc){
 	_.each(playerDoc.buildings, function(building){
 		_.each(building.houses, function(house){
 			var houseLevel = LogicUtils.hasHouseEvents(playerDoc, building.location, house.location) ? house.level + 1 : house.level
-			console.log(house, playerDoc.houseEvents, "---------------------------")
 			var config = HouseLevelUp[house.type][houseLevel]
 			used += config.citizen
 		})

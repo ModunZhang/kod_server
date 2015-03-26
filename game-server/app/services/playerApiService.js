@@ -575,10 +575,10 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			level:0,
 			location:houseLocation
 		}
-		building.houses.push(house)
 		playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house), house])
 		if(finishNow){
 			house.level += 1
+			building.houses.push(house)
 			DataUtils.refreshPlayerResources(playerDoc)
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
@@ -588,6 +588,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preBuildEvent.type, preBuildEvent.event.id)
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.event.id])
 			}
+			building.houses.push(house)
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createHouseEvent(playerDoc, buildingLocation, houseLocation, finishTime)
 			playerDoc.houseEvents.push(event)
