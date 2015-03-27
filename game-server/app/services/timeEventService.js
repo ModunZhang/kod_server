@@ -209,6 +209,7 @@ pro.updateAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDo
  */
 pro.removeAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDoc, callback){
 	var key = Consts.TimeEventType.AllianceFight
+	var eventType = Consts.TimeEventType.AllianceFight
 	var eventId = attackAllianceDoc._id + ":" + defenceAllianceDoc._id
-	this.removeTimeEvent(key, eventId, callback)
+	this.removeTimeEvent(key, eventType, eventId, callback)
 }
