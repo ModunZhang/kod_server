@@ -20,7 +20,7 @@ pro.before = function(msg, session, next){
 	var now = Date.now()
 	if(!_.isNumber(time)){
 		next(new Error("Illegal request! info:" + msg.__route__))
-	}else if((now - time) / 1000 > 10){
+	}else if(Math.abs((now - time)) / 1000 > 5){
 		next(new Error("Illegal request! info:" + msg.__route__))
 	}else{
 		next()
