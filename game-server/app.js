@@ -68,7 +68,7 @@ app.configure("production|development", "logic", function(){
 		failMode:"failfast"
 	})
 
-	//app.before(ReplayFilter())
+	app.before(ReplayFilter())
 	app.before(LoginFilter())
 	app.filter(SerialFilter(5000))
 
@@ -91,7 +91,7 @@ app.configure("production|development", "logic", function(){
 })
 
 app.configure("production|development", "chat", function(){
-	//app.before(ReplayFilter())
+	app.before(ReplayFilter())
 	app.before(LoginFilter())
 	app.filter(SerialFilter(5000))
 
