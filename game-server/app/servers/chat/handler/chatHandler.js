@@ -413,7 +413,7 @@ pro.send = function(msg, session, next){
  */
 pro.getAll = function(msg, session, next){
 	this.logService.onRequest("chat.chatHandler.getAll", {playerId:session.uid, msg:msg})
-	PushToPlayer.call(this, Events.chat.onAllChat, session, this.chats)
+	//PushToPlayer.call(this, Events.chat.onAllChat, session, this.chats)
 	next(null, {code:200})
 }
 
