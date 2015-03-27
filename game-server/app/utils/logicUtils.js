@@ -900,14 +900,9 @@ Utils.getPlayerEventByTypeAndId = function(playerDoc, eventType, eventId){
  * @returns {*}
  */
 Utils.getEventById = function(events, id){
-	var theEvent = null
-	_.some(events, function(event){
-		if(_.isEqual(event.id, id)){
-			theEvent = event
-			return true
-		}
+	return _.find(events, function(event){
+		return _.isEqual(event.id, id)
 	})
-	return theEvent
 }
 
 /**

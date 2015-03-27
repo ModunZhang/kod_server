@@ -907,9 +907,10 @@ pro.requestAllianceToSpeedUp = function(playerId, eventType, eventId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
 		callback()
+		return Promise.resolve()
+	}).then(function(){
+		LogicUtils.excuteAll(pushFuncs)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
