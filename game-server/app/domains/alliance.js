@@ -215,6 +215,7 @@ var AllianceSchema = new Schema({
 		id:{type:String, required:true},
 		stageName:{type:String, required:true},
 		star:{type:Number, required:true},
+		time:{type:Number, required:true},
 		playerCount:{type:Number, required:true},
 		playerAvgPower:{type:Number, required:true},
 		playerDatas:[{

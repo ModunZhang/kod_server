@@ -1766,6 +1766,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			id:ShortId.generate(),
 			stageName:event.stageName,
 			star:fightStar,
+			time:Date.now(),
 			playerCount:event.playerTroops.length,
 			playerAvgPower:playerAvgPower,
 			playerDatas:playerDatas,
