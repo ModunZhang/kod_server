@@ -23,7 +23,7 @@ app.configure("production|development", "gate", function(){
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
 		useDict:true,
-		useProtobuf:true,
+		useProtobuf:false,
 		disconnectOnTimeout:true,
 		"max-connections":1000
 	})
@@ -53,7 +53,7 @@ app.configure("production|development", "logic", function(){
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:60,
 		useDict:true,
-		useProtobuf:true,
+		useProtobuf:false,
 		disconnectOnTimeout:true,
 		"max-connections":2000
 	})
