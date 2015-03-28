@@ -1616,7 +1616,7 @@ Utils.getPlayerVipLevel = function(playerDoc){
  */
 Utils.getPlayerHelpAllianceMemberSpeedUpEffect = function(playerDoc, totalTime){
 	var vipConfig = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0]
-	return 60 * 1000 + (totalTime * vipConfig.helpSpeedup / 100)
+	return Math.floor(60 * 1000 + (totalTime * vipConfig.helpSpeedup / 100))
 }
 
 /**

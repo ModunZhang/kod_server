@@ -1,6 +1,6 @@
 ///**
-// * Created by modun on 14-7-25.
-// */
+//* Created by modun on 14-7-25.
+//*/
 //
 //var pomelo = require("../pomelo-client")
 //var redis = require("redis")
@@ -705,7 +705,7 @@
 //		//		done()
 //		//	})
 //		//})
-//		//
+//
 //		//it("upgradeBuilding 加入联盟后", function(done){
 //		//	var playerDoc = null
 //		//	Api.upgradeBuilding(1, true, function(doc){
@@ -763,7 +763,7 @@
 //		//		})
 //		//	})
 //		//})
-//		//
+//
 //		//it("helpAllianceMemberSpeedUp 正常帮助1", function(done){
 //		//	var alliance = null
 //		//	Api.loginPlayer(Config.deviceId3, function(doc){
@@ -779,7 +779,7 @@
 //		//		})
 //		//	})
 //		//})
-//		//
+//
 //		//it("helpAllAllianceMemberSpeedUp 正常帮助", function(done){
 //		//	Api.loginPlayer(Config.deviceId3, function(doc){
 //		//		doc.code.should.equal(200)
@@ -789,7 +789,7 @@
 //		//		})
 //		//	})
 //		//})
-//		//
+//
 //		//it("donateToAlliance 资源不足", function(done){
 //		//	Api.sendChat("resources wood 500", function(doc){
 //		//		doc.code.should.equal(200)
