@@ -647,7 +647,7 @@ pro.findAllianceToFight = function(playerId, callback){
 		return self.allianceDao.findAsync(doc._id)
 	}).then(function(doc){
 		defenceAllianceDoc = doc
-		if(_.isEqual(attackAllianceDoc.basicInfo.allianceStatus, Consts.AllianceStatus.Protect)){
+		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent])
 		}
 		var now = Date.now()
@@ -748,7 +748,7 @@ pro.revengeAlliance = function(playerId, reportId, callback){
 	}).then(function(doc){
 		defenceAllianceDoc = doc
 		if(!_.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Peace)) return Promise.reject(ErrorUtils.targetAllianceNotInPeaceStatus(playerId, attackAllianceDoc._id, reportId))
-		if(_.isEqual(attackAllianceDoc.basicInfo.allianceStatus, Consts.AllianceStatus.Protect)){
+		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent])
 		}
 		var now = Date.now()

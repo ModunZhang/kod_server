@@ -757,7 +757,7 @@ pro.alliancefight = function(uid, targetAllianceTag, callback){
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("联盟不存在"))
 		defenceAllianceDoc = doc
-		if(_.isEqual(attackAllianceDoc.basicInfo.allianceStatus, Consts.AllianceStatus.Protect)){
+		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent])
 		}
 		var now = Date.now()
