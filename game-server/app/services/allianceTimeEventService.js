@@ -651,7 +651,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				}
 				_.each(defencePlayerRewards, function(reward){
 					defencePlayerDoc[reward.type][reward.name] += reward.count
-					defencePlayerData.push([reward.type] + "." + reward.name, defencePlayerDoc[reward.type][reward.name])
+					defencePlayerData.push([reward.type + "." + reward.name, defencePlayerDoc[reward.type][reward.name]])
 				})
 				LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.report)
 			}

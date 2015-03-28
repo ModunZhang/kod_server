@@ -1787,7 +1787,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 			playerData.push(["resources", playerDoc.resources])
 			_.each(marchEvent.attackPlayerData.rewards, function(reward){
 				playerDoc[reward.type][reward.name] += reward.count
-				playerData.push([reward.type] + "." + reward.name, playerDoc[reward.type][reward.name])
+				playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
 			})
 		}
 	}
@@ -1810,7 +1810,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 			playerData.push(["resources", playerDoc.resources])
 			_.each(marchEvent.attackPlayerData.rewards, function(reward){
 				playerDoc[reward.type][reward.name] += reward.count
-				playerData.push([reward.type] + "." + reward.name, playerDoc[reward.type][reward.name])
+				playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
 			})
 		}
 	}
@@ -1860,7 +1860,7 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 			playerData.push(["resources", playerDoc.resources])
 			_.each(originalRewards, function(reward){
 				playerDoc[reward.type][reward.name] += reward.count
-				playerData.push([reward.type] + "." + reward.name, playerDoc[reward.type][reward.name])
+				playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
 			})
 
 			var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
