@@ -1764,7 +1764,7 @@ Utils.isAllianceVillageReachMaxLevel = function(allianceType, allianceLevel){
 Utils.getAllianceVillageTypeConfigs = function(){
 	var config = AllianceInitData.buildingName
 	var villages = _.filter(config, function(configObj){
-		return _.isEqual(configObj.category, "village")
+		return _.isEqual(configObj.type, "village")
 	})
 	return villages
 }
@@ -1816,8 +1816,8 @@ Utils.createMapVillages = function(mapObjects){
 		var villageObjects = _.filter(mapObjects, function(mapObject){
 			return _.isEqual(mapObject.name, typeConfig.name)
 		})
-		villageObjects = Utils.clone(villageObjects)
-		villageObjects = Utils.shuffle(villageObjects)
+		villageObjects = CommonUtils.clone(villageObjects)
+		villageObjects = CommonUtils.shuffle(villageObjects)
 		for(var i = 0; i < villageTotalCount; i ++){
 			var villageObject = villageObjects[i]
 			var village = {
@@ -1830,7 +1830,6 @@ Utils.createMapVillages = function(mapObjects){
 			villages.push(village)
 		}
 	})
-
 	return villages
 }
 

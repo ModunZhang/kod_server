@@ -12,7 +12,7 @@ orderHall[1] = {
 	stoneVillageCount:1,
 	ironVillageCount:1,
 	foodVillageCount:1,
-	coinVillageCount:1,
+	coinVillageCount:0,
 	gemVillageCount:0
 }
 orderHall[2] = {
@@ -24,7 +24,7 @@ orderHall[2] = {
 	stoneVillageCount:2,
 	ironVillageCount:2,
 	foodVillageCount:2,
-	coinVillageCount:2,
+	coinVillageCount:0,
 	gemVillageCount:0
 }
 orderHall[3] = {
@@ -36,7 +36,7 @@ orderHall[3] = {
 	stoneVillageCount:3,
 	ironVillageCount:3,
 	foodVillageCount:3,
-	coinVillageCount:3,
+	coinVillageCount:0,
 	gemVillageCount:0
 }
 orderHall[4] = {
@@ -48,7 +48,7 @@ orderHall[4] = {
 	stoneVillageCount:4,
 	ironVillageCount:4,
 	foodVillageCount:4,
-	coinVillageCount:4,
+	coinVillageCount:0,
 	gemVillageCount:0
 }
 orderHall[5] = {
@@ -60,7 +60,7 @@ orderHall[5] = {
 	stoneVillageCount:5,
 	ironVillageCount:5,
 	foodVillageCount:5,
-	coinVillageCount:5,
+	coinVillageCount:0,
 	gemVillageCount:0
 }
 orderHall[6] = {
@@ -72,7 +72,7 @@ orderHall[6] = {
 	stoneVillageCount:6,
 	ironVillageCount:6,
 	foodVillageCount:6,
-	coinVillageCount:6,
+	coinVillageCount:0,
 	gemVillageCount:0
 }
 orderHall[7] = {
@@ -84,7 +84,7 @@ orderHall[7] = {
 	stoneVillageCount:7,
 	ironVillageCount:7,
 	foodVillageCount:7,
-	coinVillageCount:7,
+	coinVillageCount:0,
 	gemVillageCount:0
 }
 orderHall[8] = {
@@ -96,7 +96,7 @@ orderHall[8] = {
 	stoneVillageCount:8,
 	ironVillageCount:8,
 	foodVillageCount:8,
-	coinVillageCount:8,
+	coinVillageCount:0,
 	gemVillageCount:0
 }
 orderHall[9] = {
@@ -108,7 +108,7 @@ orderHall[9] = {
 	stoneVillageCount:9,
 	ironVillageCount:9,
 	foodVillageCount:9,
-	coinVillageCount:9,
+	coinVillageCount:0,
 	gemVillageCount:0
 }
 orderHall[10] = {
@@ -120,6 +120,6 @@ orderHall[10] = {
 	stoneVillageCount:10,
 	ironVillageCount:10,
 	foodVillageCount:10,
-	coinVillageCount:10,
+	coinVillageCount:0,
 	gemVillageCount:0
 }

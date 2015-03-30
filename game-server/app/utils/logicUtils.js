@@ -1195,14 +1195,14 @@ Utils.getAllianceMapObjectById = function(allianceDoc, objectId){
 
 /**
  * 创建联盟建筑对象
- * @param buildingType
+ * @param name
  * @param rect
  * @returns {{type: *, location: {x: (rect.x|*), y: (rect.y|*)}}}
  */
-Utils.createAllianceMapObject = function(buildingType, rect){
+Utils.createAllianceMapObject = function(name, rect){
 	var object = {
 		id:ShortId.generate(),
-		type:buildingType,
+		name:name,
 		location:{
 			x:rect.x,
 			y:rect.y

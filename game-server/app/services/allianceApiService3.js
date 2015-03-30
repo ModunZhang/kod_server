@@ -241,21 +241,23 @@ pro.upgradeAllianceVillage = function(playerId, villageType, callback){
 /**
  * 移动联盟建筑到新的位置
  * @param playerId
- * @param buildingName
+ * @param mapObjectId
  * @param locationX
  * @param locationY
  * @param callback
  */
-pro.moveAllianceBuilding = function(playerId, buildingName, locationX, locationY, callback){
-	if(!_.contains(Consts.AllianceBuildingNames, buildingName)){
-		callback(new Error("buildingName 不合法"))
+pro.moveAllianceBuilding = function(playerId, mapObjectId, locationX, locationY, callback){
+	if(!_.isString(mapObjectId)){
+		callback(new Error("mapObjectId 不合法"))
 		return
 	}
 	if(!_.isNumber(locationX) || locationX % 1 !== 0){
 		callback(new Error("locationX 不合法"))
+		return
 	}
 	if(!_.isNumber(locationY) || locationY % 1 !== 0){
 		callback(new Error("locationY 不合法"))
+		return
 	}
 
 	var self = this
@@ -273,8 +275,8 @@ pro.moveAllianceBuilding = function(playerId, buildingName, locationX, locationY
 		return self.allianceDao.findAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		allianceDoc = doc
-		var building = allianceDoc.buildings[buildingName]
-		var buildingObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, building.location)
+		var objectInMap = LogicUtils.getAllianceMapObjectById(allianceDoc, mapObjectId)
+		if(_.isEqual(objectInMap.name, "member")) return Promise.reject(ErrorUtils)
 		var moveBuildingRequired = DataUtils.getAllianceMoveBuildingRequired(buildingName, building.level)
 		if(allianceDoc.basicInfo.honour < moveBuildingRequired.honour) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		var mapObjects = allianceDoc.mapObjects
