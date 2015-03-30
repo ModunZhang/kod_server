@@ -348,6 +348,16 @@ var ChatHandler = function(app){
 					})
 				}
 			}
+		},
+		{
+			command:"cleargc",
+			desc:"清除所有玩家GCId",
+			func:function(session, uid, text, callback){
+				var self = this
+				self.app.rpc.logic.commandRemote.cleargc(session, uid, function(e){
+					callback(e)
+				})
+			}
 		}
 	]
 }
