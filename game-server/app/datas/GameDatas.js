@@ -20,9 +20,9 @@ GameDatas.AllianceInitData = {}
 GameDatas.AllianceInitData.intInit = require("./AllianceInitData_intInit.js")
 GameDatas.AllianceInitData.stringInit = require("./AllianceInitData_stringInit.js")
 GameDatas.AllianceInitData.right = require("./AllianceInitData_right.js")
-GameDatas.AllianceInitData.buildingType = require("./AllianceInitData_buildingType.js")
 GameDatas.AllianceInitData.donate = require("./AllianceInitData_donate.js")
-GameDatas.AllianceInitData.decorateCount = require("./AllianceInitData_decorateCount.js")
+GameDatas.AllianceInitData.buildingName = require("./AllianceInitData_buildingName.js")
+GameDatas.AllianceInitData.buildings = require("./AllianceInitData_buildings.js")
 
 GameDatas.AllianceShrine = {}
 GameDatas.AllianceShrine.shrineStage = require("./AllianceShrine_shrineStage.js")

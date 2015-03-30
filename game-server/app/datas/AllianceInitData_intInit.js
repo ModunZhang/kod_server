@@ -50,12 +50,12 @@ intInit["allianceRevengeMaxMinutes"] = {
 }
 intInit["allianceRegionMapWidth"] = {
 	type:"allianceRegionMapWidth",
-	value:51,
+	value:41,
 	desc:"联盟地图宽度"
 }
 intInit["allianceRegionMapHeight"] = {
 	type:"allianceRegionMapHeight",
-	value:51,
+	value:41,
 	desc:"联盟地图高度"
 }
 intInit["citizenPerLeadership"] = {
@@ -65,22 +65,22 @@ intInit["citizenPerLeadership"] = {
 }
 intInit["collectedWoodCountPerExp"] = {
 	type:"collectedWoodCountPerExp",
-	value:50,
+	value:100,
 	desc:"采集多少点资源增长一点采集经验"
 }
 intInit["collectedStoneCountPerExp"] = {
 	type:"collectedStoneCountPerExp",
-	value:50,
+	value:100,
 	desc:"采集多少点资源增长一点采集经验"
 }
 intInit["collectedIronCountPerExp"] = {
 	type:"collectedIronCountPerExp",
-	value:50,
+	value:100,
 	desc:"采集多少点资源增长一点采集经验"
 }
 intInit["collectedFoodCountPerExp"] = {
 	type:"collectedFoodCountPerExp",
-	value:50,
+	value:100,
 	desc:"采集多少点资源增长一点采集经验"
 }
 intInit["collectedCoinCountPerExp"] = {
@@ -105,7 +105,7 @@ intInit["allianceFightSuccessProtectMinutes"] = {
 }
 intInit["KilledCitizenPerDragonExp"] = {
 	type:"KilledCitizenPerDragonExp",
-	value:2,
+	value:1,
 	desc:"多少击杀积分获得一点龙经验"
 }
 intInit["KilledCitizenPerBlood"] = {

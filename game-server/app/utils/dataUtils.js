@@ -1728,7 +1728,7 @@ Utils.getAllianceMoveBuildingRequired = function(buildingName, buildingLevel){
  * @returns {*}
  */
 Utils.getAllianceDistroyDecorateRequired = function(decorateType){
-	var config = AllianceInitData.buildingType[decorateType]
+	var config = AllianceInitData.buildingName[decorateType]
 	var required = {
 		honour:config.distroyNeedHonour
 	}
@@ -1762,7 +1762,7 @@ Utils.isAllianceVillageReachMaxLevel = function(allianceType, allianceLevel){
  * @returns {*}
  */
 Utils.getAllianceVillageTypeConfigs = function(){
-	var config = AllianceInitData.buildingType
+	var config = AllianceInitData.buildingName
 	var villages = _.filter(config, function(configObj){
 		return _.isEqual(configObj.category, "village")
 	})
@@ -1781,12 +1781,12 @@ Utils.isAllianceVillageTypeLegal = function(villageType){
 
 /**
  * 获取村落产出
- * @param villageType
+ * @param villageName
  * @param villageLevel
  * @returns {production|*}
  */
-Utils.getAllianceVillageProduction = function(villageType, villageLevel){
-	var config = AllianceVillage[villageType][villageLevel]
+Utils.getAllianceVillageProduction = function(villageName, villageLevel){
+	var config = AllianceVillage[villageName][villageLevel]
 	return config.production
 }
 
@@ -1808,21 +1808,29 @@ Utils.getAllianceVillageLevelByType = function(allianceDoc, villageType){
 Utils.createMapVillages = function(mapObjects){
 	var self = this
 	var villages = []
-	var villageObjects = _.filter(mapObjects, function(mapObject){
-		var buildingType = mapObject.type
-		var config = AllianceInitData.buildingType[buildingType]
-		return _.isEqual(config.category, "village")
-	})
-	_.each(villageObjects, function(villageObject){
-		var village = {
-			id:ShortId.generate(),
-			type:villageObject.type,
-			level:1,
-			resource:self.getAllianceVillageProduction(villageObject.type, 1),
-			location:villageObject.location
+	var orderHallLevel = 1
+	var orderHallConfig = AllianceBuilding.orderHall[orderHallLevel]
+	var villageTypeConfigs = this.getAllianceVillageTypeConfigs()
+	_.each(villageTypeConfigs, function(typeConfig){
+		var villageTotalCount = orderHallConfig[typeConfig.name + "Count"]
+		var villageObjects = _.filter(mapObjects, function(mapObject){
+			return _.isEqual(mapObject.name, typeConfig.name)
+		})
+		villageObjects = Utils.clone(villageObjects)
+		villageObjects = Utils.shuffle(villageObjects)
+		for(var i = 0; i < villageTotalCount; i ++){
+			var villageObject = villageObjects[i]
+			var village = {
+				id:ShortId.generate(),
+				name:villageObject.name,
+				level:1,
+				resource:self.getAllianceVillageProduction(villageObject.name, 1),
+				location:villageObject.location
+			}
+			villages.push(village)
 		}
-		villages.push(village)
 	})
+
 	return villages
 }
 
@@ -1852,7 +1860,7 @@ Utils.addAllianceVillageObject = function(allianceDoc, mapObject){
  * @returns {{width: *, height: *}}
  */
 Utils.getSizeInAllianceMap = function(buildingType){
-	var config = AllianceInitData.buildingType[buildingType]
+	var config = AllianceInitData.buildingName[buildingType]
 	return {width:config.width, height:config.height}
 }
 
@@ -1862,7 +1870,7 @@ Utils.getSizeInAllianceMap = function(buildingType){
  * @returns {*}
  */
 Utils.isAllianceMapObjectTypeADecorateObject = function(objectType){
-	var config = AllianceInitData.buildingType[objectType]
+	var config = AllianceInitData.buildingName[objectType]
 	return _.isEqual(config.category, "decorate")
 }
 

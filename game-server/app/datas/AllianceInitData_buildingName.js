@@ -1,124 +1,124 @@
 "use strict"
 
-var buildingType = {}
-module.exports = buildingType
+var buildingName = {}
+module.exports = buildingName
 
-buildingType["decorate_lake_1"] = {
+buildingName["decorate_lake_1"] = {
 	name:"decorate_lake_1",
 	width:5,
 	height:5,
 	type:"decorate",
 	moveNeedHonour:100
 }
-buildingType["decorate_lake_2"] = {
+buildingName["decorate_lake_2"] = {
 	name:"decorate_lake_2",
 	width:3,
 	height:3,
 	type:"decorate",
 	moveNeedHonour:100
 }
-buildingType["decorate_mountain_1"] = {
+buildingName["decorate_mountain_1"] = {
 	name:"decorate_mountain_1",
 	width:5,
 	height:5,
 	type:"decorate",
 	moveNeedHonour:100
 }
-buildingType["decorate_mountain_2"] = {
+buildingName["decorate_mountain_2"] = {
 	name:"decorate_mountain_2",
 	width:3,
 	height:3,
 	type:"decorate",
 	moveNeedHonour:100
 }
-buildingType["decorate_tree_1"] = {
+buildingName["decorate_tree_1"] = {
 	name:"decorate_tree_1",
 	width:1,
 	height:1,
 	type:"decorate",
 	moveNeedHonour:100
 }
-buildingType["decorate_tree_2"] = {
+buildingName["decorate_tree_2"] = {
 	name:"decorate_tree_2",
 	width:1,
 	height:1,
 	type:"decorate",
 	moveNeedHonour:100
 }
-buildingType["palace"] = {
+buildingName["palace"] = {
 	name:"palace",
 	width:3,
 	height:3,
 	type:"building",
 	moveNeedHonour:100
 }
-buildingType["moonGate"] = {
+buildingName["moonGate"] = {
 	name:"moonGate",
 	width:3,
 	height:3,
 	type:"building",
 	moveNeedHonour:100
 }
-buildingType["orderHall"] = {
+buildingName["orderHall"] = {
 	name:"orderHall",
 	width:3,
 	height:3,
 	type:"building",
 	moveNeedHonour:100
 }
-buildingType["shrine"] = {
+buildingName["shrine"] = {
 	name:"shrine",
 	width:3,
 	height:3,
 	type:"building",
 	moveNeedHonour:100
 }
-buildingType["shop"] = {
+buildingName["shop"] = {
 	name:"shop",
 	width:3,
 	height:3,
 	type:"building",
 	moveNeedHonour:100
 }
-buildingType["woodVillage"] = {
+buildingName["woodVillage"] = {
 	name:"woodVillage",
 	width:1,
 	height:1,
 	type:"village",
 	moveNeedHonour:100
 }
-buildingType["stoneVillage"] = {
+buildingName["stoneVillage"] = {
 	name:"stoneVillage",
 	width:1,
 	height:1,
 	type:"village",
 	moveNeedHonour:100
 }
-buildingType["ironVillage"] = {
+buildingName["ironVillage"] = {
 	name:"ironVillage",
 	width:1,
 	height:1,
 	type:"village",
 	moveNeedHonour:100
 }
-buildingType["foodVillage"] = {
+buildingName["foodVillage"] = {
 	name:"foodVillage",
 	width:1,
 	height:1,
 	type:"village",
 	moveNeedHonour:100
 }
-buildingType["coinVillage"] = {
+buildingName["coinVillage"] = {
 	name:"coinVillage",
 	width:1,
 	height:1,
 	type:"village",
 	moveNeedHonour:100
 }
-buildingType["member"] = {
+buildingName["member"] = {
 	name:"member",
 	width:1,
 	height:1,
 	type:"member",
-	moveNeedHonour:100
+	moveNeedHonour:0
 }

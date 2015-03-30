@@ -4,6 +4,7 @@
  * Created by modun on 14-7-22.
  */
 
+var _ = require("underscore")
 var ShortId = require("shortid")
 var mongoose = require("mongoose")
 var Schema = mongoose.Schema
@@ -11,10 +12,19 @@ var Schema = mongoose.Schema
 var Consts = require("../consts/consts")
 var GameDatas = require("../datas/GameDatas")
 var AllianceBuilding = GameDatas.AllianceBuilding
+var AllianceInitData = GameDatas.AllianceInitData
 
-var createBuildingSchema = function(name, location){
+var GetBuildingLocation = function(name){
+	var config = _.find(AllianceInitData.buildings, function(building){
+		return _.isEqual(building.name, name)
+	})
+	return {x:config.locationX, y:config.locationY}
+}
+
+
+var createBuildingSchema = function(type, location){
 	var schema = {
-		name:{type:String, required:true, default:name},
+		name:{type:String, required:true, default:type},
 		level:{type:Number, required:true, default:1},
 		location:{
 			x:{type:Number, required:true, default:location.x},
@@ -119,11 +129,11 @@ var AllianceSchema = new Schema({
 		}
 	}],
 	buildings:{
-		palace:createBuildingSchema("palace", Consts.AllianceBuildingLocation.Palace),
-		moonGate:createBuildingSchema("moonGate", Consts.AllianceBuildingLocation.MoonGate),
-		orderHall:createBuildingSchema("orderHall", Consts.AllianceBuildingLocation.OrderHall),
-		shrine:createBuildingSchema("shrine", Consts.AllianceBuildingLocation.Shrine),
-		shop:createBuildingSchema("shop", Consts.AllianceBuildingLocation.Shop)
+		palace:createBuildingSchema("palace", GetBuildingLocation("palace")),
+		moonGate:createBuildingSchema("moonGate", GetBuildingLocation("moonGate")),
+		orderHall:createBuildingSchema("orderHall", GetBuildingLocation("orderHall")),
+		shrine:createBuildingSchema("shrine", GetBuildingLocation("shrine")),
+		shop:createBuildingSchema("shop", GetBuildingLocation("shop"))
 	},
 	villageLevels:{
 		woodVillage:{type:Number, required:true, default:1},
@@ -135,7 +145,7 @@ var AllianceSchema = new Schema({
 	villages:[{
 		_id:false,
 		id:{type:String, required:true},
-		type:{type:String, required:true},
+		name:{type:String, required:true},
 		level:{type:Number, required:true},
 		resource:{type:Number, required:true},
 		location:{
@@ -146,7 +156,7 @@ var AllianceSchema = new Schema({
 	mapObjects:[{
 		_id:false,
 		id:{type:String, require:true},
-		type:{type:String, required:true},
+		name:{type:String, required:true},
 		location:{
 			x:{type:Number, required:true},
 			y:{type:Number, required:true}

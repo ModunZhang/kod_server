@@ -447,32 +447,41 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
 	}
 
 	var self = this
-	var myRank = null
-	var rankDatas = []
-	this.redis.zrevrankAsync(["player.basicInfo." + rankType, playerId]).then(function(rank){
-		myRank = rank
-		return self.redis.zrevrangeAsync(["player.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1])
-	}).then(function(ids){
+	var myData = null
+	var ids = []
+	var scores = []
+	var datas = []
+	var funcs = []
+	funcs.push(this.redis.zrevrankAsync(["player.basicInfo." + rankType, playerId]))
+	funcs.push(this.redis.zscoreAsync(["player.basicInfo." + rankType, playerId]))
+	Promise.all(funcs).spread(function(rank, value){
+		myData = {
+			rank:rank,
+			value:value
+		}
+		return self.redis.zrevrangeAsync(["player.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1, "WITHSCORES"])
+	}).then(function(res){
+		for(var i = 0; i < res.length; i += 2){
+			ids.push(res[i])
+			scores.push(res[i + 1])
+		}
 		if(ids.length > 0){
 			return self.playerDao.findAllAsync(ids)
 		}
 		return Promise.resolve([])
 	}).then(function(docs){
-		_.each(docs, function(doc){
-			var rankData = {
-				id:doc._id,
-				name:doc.basicInfo.name,
-				icon:doc.basicInfo.icon
+		for(var i = 0; i < docs.length; i ++){
+			var data = {
+				id:docs[i]._id,
+				name:docs[i].basicInfo.name,
+				icon:docs[i].basicInfo.icon,
+				value:scores[i]
 			}
-			if(_.isEqual(rankType, Consts.RankTypes.Kill)){
-				rankData.value = doc.basicInfo.kill
-			}else{
-				rankData.value = doc.basicInfo.power
-			}
-			rankDatas.push(rankData)
-		})
+			datas.push(data)
+		}
+		return Promise.resolve()
 	}).then(function(){
-		callback(null, [myRank, rankDatas])
+		callback(null, [myData, datas])
 	}).catch(function(e){
 		callback(e)
 	})
@@ -497,39 +506,48 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
 
 	var self = this
 	var playerDoc = null
-	var myRank = null
-	var rankDatas = []
+	var myData = null
+	var ids = []
+	var scores = []
+	var datas = []
+	var funcs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return	self.redis.zrevrankAsync(["alliance.basicInfo." + rankType, playerDoc.alliance.id])
-	}).then(function(rank){
-		myRank = rank
-		return self.redis.zrevrangeAsync(["alliance.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1])
-	}).then(function(ids){
+
+		funcs.push(self.redis.zrevrankAsync(["alliance.basicInfo." + rankType, playerDoc.alliance.id]))
+		funcs.push(self.redis.zscoreAsync(["alliance.basicInfo." + rankType, playerDoc.alliance.id]))
+		return Promise.all(funcs)
+	}).spread(function(rank, value){
+		myData = {
+			rank:rank,
+			value:value
+		}
+		return self.redis.zrevrangeAsync(["alliance.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1, "WITHSCORES"])
+	}).then(function(res){
+		for(var i = 0; i < res.length; i += 2){
+			ids.push(res[i])
+			scores.push(res[i + 1])
+		}
 		if(ids.length > 0){
-			return self.allianceDao.findAllAsync(ids)
+			return self.playerDao.findAllAsync(ids)
 		}
 		return Promise.resolve([])
 	}).then(function(docs){
-		_.each(docs, function(doc){
-			var rankData = {
-				id:doc._id,
-				name:doc.basicInfo.name,
-				tag:doc.basicInfo.tag,
-				flag:doc.basicInfo.flag
+		for(var i = 0; i < docs.length; i ++){
+			var data = {
+				id:docs[i]._id,
+				name:docs[i].basicInfo.name,
+				icon:docs[i].basicInfo.icon,
+				value:scores[i]
 			}
-			if(_.isEqual(rankType, Consts.RankTypes.Kill)){
-				rankData.value = doc.basicInfo.kill
-			}else{
-				rankData.value = doc.basicInfo.power
-			}
-			rankDatas.push(rankData)
-		})
+			datas.push(data)
+		}
+		return Promise.resolve()
 	}).then(function(){
 		return self.playerDao.removeLockAsync(playerDoc._id)
 	}).then(function(){
-		callback(null, [myRank, rankDatas])
+		callback(null, [myData, datas])
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){

@@ -10,14 +10,13 @@ var ShortId = require("shortid")
 var Consts = require("../consts/consts")
 var GameDatas = require("../datas/GameDatas")
 var DataUtils = require("./dataUtils")
-var AllianceInit = GameDatas.AllianceInitData
-var AllianceBuildingConfig = GameDatas.AllianceBuilding
+var AllianceInitData = GameDatas.AllianceInitData
 
 var Utils = module.exports
 
 var MapSize = {
-	width:AllianceInit.intInit.allianceRegionMapWidth.value,
-	height:AllianceInit.intInit.allianceRegionMapHeight.value
+	width:AllianceInitData.intInit.allianceRegionMapWidth.value,
+	height:AllianceInitData.intInit.allianceRegionMapHeight.value
 }
 
 /**
@@ -29,65 +28,17 @@ Utils.create = function(){
 	var map = []
 	var mapObjects = []
 	this.initMap(map)
-	var buildingConfig = AllianceInit.buildingType["building"]
-	var buildingWidth = buildingConfig.width
-	var buildingHeight = buildingConfig.height
-	var locationConfig = Consts.AllianceBuildingLocation
-	this.addMapObject(map, mapObjects, {
-		x:locationConfig.Palace.x,
-		y:locationConfig.Palace.y,
-		width:buildingWidth,
-		height:buildingHeight
-	}, "building")
-	this.addMapObject(map, mapObjects, {
-		x:locationConfig.MoonGate.x,
-		y:locationConfig.MoonGate.y,
-		width:buildingWidth,
-		height:buildingHeight
-	}, "building")
-	this.addMapObject(map, mapObjects, {
-		x:locationConfig.OrderHall.x,
-		y:locationConfig.OrderHall.y,
-		width:buildingWidth,
-		height:buildingHeight
-	}, "building")
-	this.addMapObject(map, mapObjects, {
-		x:locationConfig.Shrine.x,
-		y:locationConfig.Shrine.y,
-		width:buildingWidth,
-		height:buildingHeight
-	}, "building")
-	this.addMapObject(map, mapObjects, {
-		x:locationConfig.Shop.x,
-		y:locationConfig.Shop.y,
-		width:buildingWidth,
-		height:buildingHeight
-	}, "building")
 
-	var orderHallConfig = AllianceBuildingConfig.orderHall[1]
-	//生成装饰物
-	_.each(AllianceInit.decorateCount, function(countConfig, key){
-		var config = AllianceInit.buildingType[key]
-		var width = config.width
-		var height = config.height
-		for(var i = 0; i < countConfig.count; i++){
-			var rect = self.getRect(map, width, height)
-			if(_.isObject(rect)){
-				self.addMapObject(map, mapObjects, {x:rect.x, y:rect.y, width:rect.width, height:rect.height}, key)
-			}
-		}
+	_.each(AllianceInitData.buildings, function(buildingConfig){
+		var typeConfig = AllianceInitData.buildingName[buildingConfig.name]
+		self.addMapObject(map, mapObjects, {
+			x:buildingConfig.locationX,
+			y:buildingConfig.locationY,
+			width:typeConfig.width,
+			height:typeConfig.height
+		}, typeConfig.name)
 	})
-	//生成村落
-	var villageTypeConfigs = DataUtils.getAllianceVillageTypeConfigs()
-	_.each(villageTypeConfigs, function(config){
-		var villageWidth = config.width
-		var villageHeight = config.height
-		var villageCount = orderHallConfig[config.type + "Count"]
-		for(var i = 0; i < villageCount; i++){
-			var rect = self.getRect(map, villageWidth, villageHeight)
-			self.addMapObject(map, mapObjects, {x:rect.x, y:rect.y, width:rect.width, height:rect.height}, config.type)
-		}
-	})
+
 	return mapObjects
 }
 
@@ -153,13 +104,13 @@ var unMarkMapWithRect = function(map, rect) {
  * @param map
  * @param mapObjects
  * @param rect
- * @param buildingType
+ * @param name
  */
-Utils.addMapObject = function(map, mapObjects, rect, buildingType){
+Utils.addMapObject = function(map, mapObjects, rect, name){
 	markMapWithRect(map, rect)
 	var object = {
 		id:ShortId.generate(),
-		type:buildingType,
+		name:name,
 		location:{
 			x:rect.x,
 			y:rect.y
@@ -269,7 +220,7 @@ Utils.buildMap = function(mapObjects){
 	var map = []
 	this.initMap(map)
 	_.each(mapObjects, function(mapObject){
-		var config = AllianceInit.buildingType[mapObject.type]
+		var config = AllianceInitData.buildingName[mapObject.name]
 		var rect = {
 			x:mapObject.location.x,
 			y:mapObject.location.y,

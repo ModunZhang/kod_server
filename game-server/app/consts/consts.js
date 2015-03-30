@@ -276,13 +276,6 @@ module.exports = {
 		Shrine:"shrine",//圣地
 		Shop:"shop"//联盟商店
 	},
-	AllianceBuildingLocation:{
-		Palace:{x:11, y:11},
-		MoonGate:{x:11, y:14},
-		OrderHall:{x:8, y:11},
-		Shrine:{x:11, y:8},
-		Shop:{x:14, y:11}
-	},
 	DragonStrikeReportLevel:{
 		E:1,
 		D:2,

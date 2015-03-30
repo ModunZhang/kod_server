@@ -1179,8 +1179,8 @@ pro.getPlayerRankList = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getPlayerRankList", {playerId:session.uid, msg:msg})
 	var rankType = msg.rankType
 	var fromRank = msg.fromRank
-	this.playerApiService5.getPlayerRankListAsync(session.uid, rankType, fromRank).spread(function(myRank, rankData){
-		next(null, {code:200, myRank:myRank, rankData:rankData})
+	this.playerApiService5.getPlayerRankListAsync(session.uid, rankType, fromRank).spread(function(myData, datas){
+		next(null, {code:200, myData:myData, datas:datas})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -1196,8 +1196,8 @@ pro.getAllianceRankList = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getAllianceRankList", {playerId:session.uid, msg:msg})
 	var rankType = msg.rankType
 	var fromRank = msg.fromRank
-	this.playerApiService5.getAllianceRankListAsync(session.uid, rankType, fromRank).spread(function(myRank, rankData){
-		next(null, {code:200, myRank:myRank, rankData:rankData})
+	this.playerApiService5.getAllianceRankListAsync(session.uid, rankType, fromRank).spread(function(myData, datas){
+		next(null, {code:200, myData:myData, datas:datas})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
