@@ -1029,7 +1029,7 @@ pro.cleargc = function(uid, callback){
 		playerDoc = doc
 		return self.playerDao.removeLockAsync(playerDoc._id)
 	}).then(function(){
-		return self.User.updateAsync({}, {gcId:""})
+		return self.User.updateAsync(null, {$set:{gcId:null}}, {multi:true})
 	}).then(function(){
 		callback()
 		return Promise.resolve()
