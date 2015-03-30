@@ -32,6 +32,7 @@ var CommandRemote = function(app){
 	this.sessionService = app.get("backendSessionService")
 	this.timeEventService = app.get("timeEventService")
 	this.playerTimeEventService = app.get("playerTimeEventService")
+	this.User = app.get("User")
 }
 
 var pro = CommandRemote.prototype
@@ -157,9 +158,10 @@ pro.kickme = function(uid, callback){
 		playerDoc = doc
 		return self.playerDao.removeLockAsync(playerDoc._id)
 	}).then(function(){
-		return kickPlayer(playerDoc.logicServerId, playerDoc._id)
-	}).then(function(){
 		callback()
+		return Promise.resolve()
+	}).then(function(){
+		kickPlayer(playerDoc.logicServerId, playerDoc._id)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -1011,5 +1013,29 @@ pro.playerlevel = function(uid, level, callback){
 		}else{
 			callback(e)
 		}
+	})
+}
+
+/**
+ * 清除所有玩家的GC
+ * @param uid
+ * @param callback
+ */
+pro.cleargc = function(uid, callback){
+	var self = this
+	var playerDoc = null
+	var kickPlayer = Promise.promisify(this.sessionService.kickByUid, this)
+	this.playerDao.findAsync(uid).then(function(doc){
+		playerDoc = doc
+		return self.playerDao.removeLockAsync(playerDoc._id)
+	}).then(function(){
+		return self.User.updateAsync({}, {gcId:""})
+	}).then(function(){
+		callback()
+		return Promise.resolve()
+	}).then(function(){
+		kickPlayer(playerDoc.logicServerId, playerDoc._id)
+	}).catch(function(e){
+		callback(e)
 	})
 }
