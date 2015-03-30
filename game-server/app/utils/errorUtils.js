@@ -1487,17 +1487,6 @@ Utils.allianceBuildingReachMaxLevel = function(playerId, allianceId, buildingNam
 }
 
 /**
- * 只能拆除装饰物
- * @param playerId
- * @param allianceId
- * @param decorateId
- */
-Utils.onlyAllianceDecorateBuildingCanBeDistroy = function(playerId, allianceId, decorateId){
-	var config = Errors.onlyAllianceDecorateBuildingCanBeDistroy
-	return CreateError(config, {playerId:playerId, allianceId:allianceId, decorateId:decorateId})
-}
-
-/**
  * 此联盟事件已经激活
  * @param playerId
  * @param allianceId
@@ -1892,4 +1881,27 @@ Utils.theGCIdAlreadyBindedByCurrentUser = function(playerId, userId, gcId){
 Utils.ApnIdAlreadySeted = function(playerId, apnId){
 	var config = Errors.ApnIdAlreadySeted
 	return CreateError(config, {playerId:playerId, apnId:apnId})
+}
+
+/**
+ * 此联盟建筑不允许移动
+ * @param playerId
+ * @param allianceId
+ * @param buildingObject
+ */
+Utils.theAllianceBuildingNotAllowMove = function(playerId, allianceId, buildingObject){
+	var config = Errors.theAllianceBuildingNotAllowMove
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, buildingObject:buildingObject})
+}
+
+/**
+ * 不能移动到目标点位
+ * @param playerId
+ * @param allianceId
+ * @param fromRect
+ * @param toRect
+ */
+Utils.theAllianceBuildingCanNotMoveToTargetPoint = function(playerId, allianceId, fromRect, toRect){
+	var config = Errors.theAllianceBuildingCanNotMoveToTargetPoint
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, fromRect:fromRect, toRect:toRect})
 }

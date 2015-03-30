@@ -116,9 +116,9 @@ pro.triggerTimeEvent = function(key, eventId){
 	}
 	this.excuteTimeEvent(key, eventType, eventId, function(e){
 		if(_.isObject(e)){
-			self.logService.onEventError("event.eventRemote.triggerTimeEvent finished with error", {key:key, eventId:eventId}, e.stack)
+			self.logService.onEventError("event.eventRemote.triggerTimeEvent finished with error", {key:key, eventType:eventType, eventId:eventId}, e.stack)
 		}else{
-			self.logService.onEvent("event.eventRemote.triggerTimeEvent finished", {key:key, eventId:eventId})
+			self.logService.onEvent("event.eventRemote.triggerTimeEvent finished", {key:key, eventType:eventType, eventId:eventId})
 		}
 	})
 }

@@ -502,26 +502,10 @@ pro.upgradeAllianceVillage = function(msg, session, next){
  */
 pro.moveAllianceBuilding = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.moveAllianceBuilding", {playerId:session.uid, msg:msg})
-	var buildingName = msg.buildingName
+	var mapObjectId = msg.mapObjectId
 	var locationX = msg.locationX
 	var locationY = msg.locationY
-	this.allianceApiService3.moveAllianceBuildingAsync(session.uid, buildingName, locationX, locationY).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
-	})
-}
-
-/**
- * 拆除装饰物
- * @param msg
- * @param session
- * @param next
- */
-pro.distroyAllianceDecorate = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.distroyAllianceDecorate", {playerId:session.uid, msg:msg})
-	var decorateId = msg.decorateId
-	this.allianceApiService3.distroyAllianceDecorateAsync(session.uid, decorateId).then(function(){
+	this.allianceApiService3.moveAllianceBuildingAsync(session.uid, mapObjectId, locationX, locationY).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

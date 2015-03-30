@@ -830,34 +830,11 @@ pro.resetAllianceStatus = function(uid, callback){
 			allianceData.push(["members." + allianceDoc.members.indexOf(member) + ".donateStatus", member.donateStatus])
 		})
 	}
-	var ResetMapDecorates = function(allianceDoc, allianceData){
-		var mapObjects = allianceDoc.mapObjects
-		var map = MapUtils.buildMap(mapObjects)
-		_.each(AllianceInit.decorateCount, function(countConfig, key){
-			var countHas = LogicUtils.getAllianceDecorateObjectCountByType(allianceDoc, key)
-			var config = AllianceInit.buildingType[key]
-			var width = config.width
-			var height = config.height
-			var count = countConfig.count - countHas
-			for(var i = 0; i < count; i++){
-				var rect = MapUtils.getRect(map, width, height)
-				if(_.isObject(rect)){
-					var mapObject = MapUtils.addMapObject(map, mapObjects, {
-						x:rect.x,
-						y:rect.y,
-						width:rect.width,
-						height:rect.height
-					}, key)
-					allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(mapObject), mapObject])
-				}
-			}
-		})
-	}
 	var ResetVillages = function(allianceDoc, allianceData, enemyAllianceDoc){
-		var getVillageCountByType = function(villageType){
+		var getVillageCountByName = function(villageName){
 			var count = 0
 			_.each(allianceDoc.villages, function(village){
-				if(_.isEqual(village.type, villageType)) count += 1
+				if(_.isEqual(village.name, villageName)) count += 1
 			})
 			return count
 		}
@@ -875,37 +852,30 @@ pro.resetAllianceStatus = function(uid, callback){
 			if(!_.isObject(villageEvent)) villageTobeRemoved.push(village)
 		})
 		_.each(villageTobeRemoved, function(village){
-			allianceData.push(["villages." + allianceDoc.villages.indexOf(village), null])
 			LogicUtils.removeItemInArray(allianceDoc.villages, village)
-			var mapObject = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, village.location)
-			allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(mapObject), null])
-			LogicUtils.removeItemInArray(allianceDoc.mapObjects, mapObject)
 		})
 
-		var orderHallLevel = allianceDoc.buildings.orderHall.level
-		var orderHallConfig = AllianceBuildingConfig.orderHall[orderHallLevel]
+		var villages = []
+		var orderHallLevel = _.find(allianceDoc.buildings, function(building){
+			return _.isEqual(building.name, Consts.AllianceBuildingNames.OrderHall)
+		}).level
+		var orderHallConfig = AllianceBuilding.orderHall[orderHallLevel]
 		var villageTypeConfigs = DataUtils.getAllianceVillageTypeConfigs()
-		var map = MapUtils.buildMap(allianceDoc.mapObjects)
-		var mapObjects = allianceDoc.mapObjects
-		_.each(villageTypeConfigs, function(config){
-			var villageWidth = config.width
-			var villageHeight = config.height
-			var villageTotalCount = orderHallConfig[config.type + "Count"]
-			var villageCurrentCount = getVillageCountByType(config.type)
+		_.each(villageTypeConfigs, function(typeConfig){
+			var villageTotalCount = orderHallConfig[typeConfig.name + "Count"]
+			var villageCurrentCount = getVillageCountByName(typeConfig.name)
 			var villageNeedTobeCreated = villageTotalCount - villageCurrentCount
-			for(var i = 0; i < villageNeedTobeCreated; i++){
-				var rect = MapUtils.getRect(map, villageWidth, villageHeight)
-				var mapObject = MapUtils.addMapObject(map, mapObjects, {
-					x:rect.x,
-					y:rect.y,
-					width:rect.width,
-					height:rect.height
-				}, config.type)
-				allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(mapObject), mapObject])
-				var villageObject = DataUtils.addAllianceVillageObject(allianceDoc, mapObject)
-				allianceData.push(["villages." + allianceDoc.villages.indexOf(villageObject), villageObject])
+			var villageMapObjects = _.filter(allianceDoc.mapObjects, function(mapObject){
+				return _.isEqual(mapObject.name, typeConfig.name)
+			})
+			villageMapObjects = CommonUtils.clone(villageMapObjects)
+			villageMapObjects = CommonUtils.shuffle(villageMapObjects)
+			for(var i = 0; i < villageNeedTobeCreated; i ++){
+				var villageMapObject = villageMapObjects[i]
+				DataUtils.addAllianceVillageObject(allianceDoc, villageMapObject)
 			}
 		})
+		allianceData.push(["villages", allianceDoc.villages])
 	}
 	var ResolveAllianceStatus = function(allianceId){
 		var self = this
@@ -930,7 +900,6 @@ pro.resetAllianceStatus = function(uid, callback){
 				enemyAllianceDoc = doc
 			}
 			ResetDonateStatus(allianceDoc, allianceData)
-			ResetMapDecorates(allianceDoc, allianceData)
 			ResetVillages(allianceDoc, allianceData, enemyAllianceDoc)
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])

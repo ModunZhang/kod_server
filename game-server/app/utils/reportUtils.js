@@ -125,7 +125,7 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			cityName:defencePlayerDoc.basicInfo.cityName,
-			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
+			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defenceAllianceDoc.basicInfo.terrain
 		},
@@ -396,7 +396,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			cityName:defencePlayerDoc.basicInfo.cityName,
-			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
+			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defenceAllianceDoc.basicInfo.terrain
 		},
@@ -546,7 +546,7 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			cityName:defencePlayerDoc.basicInfo.cityName,
-			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
+			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defencePlayerDoc.basicInfo.terrain,
 			fogOfTrick:DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")
@@ -696,7 +696,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			cityName:defencePlayerDoc.basicInfo.cityName,
-			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
+			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defencePlayerDoc.basicInfo.terrain,
 			fogOfTrick:DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")
@@ -826,7 +826,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			cityName:defencePlayerDoc.basicInfo.cityName,
-			location:LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id).location,
+			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defencePlayerDoc.basicInfo.terrain,
 			fogOfTrick:DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")
@@ -999,7 +999,7 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 		attackTarget:{
 			type:defenceVillage.type,
 			level:defenceVillage.level,
-			location:defenceVillage.location,
+			location:LogicUtils.getAllianceMapObjectById(targetAllianceDoc, defenceVillage.id).location,
 			alliance:createAllianceData(targetAllianceDoc),
 			terrain:defenceAllianceDoc.basicInfo.terrain
 		},
@@ -1138,7 +1138,7 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 		strikeTarget:{
 			type:defenceVillage.type,
 			level:defenceVillage.level,
-			location:defenceVillage.location,
+			location:LogicUtils.getAllianceMapObjectById(targetAllianceDoc, defenceVillage.id).location,
 			alliance:createAllianceData(targetAllianceDoc),
 			terrain:targetAllianceDoc.basicInfo.terrain
 		},
@@ -1221,7 +1221,7 @@ Utils.createCollectVillageReport = function(defenceAllianceDoc, defenceVillage, 
 		collectTarget:{
 			type:defenceVillage.type,
 			level:defenceVillage.level,
-			location:defenceVillage.location,
+			location:LogicUtils.getAllianceMapObjectById(defenceAllianceDoc, defenceVillage.id).location,
 			alliance:{
 				id:defenceAllianceDoc._id,
 				name:defenceAllianceDoc.basicInfo.name,

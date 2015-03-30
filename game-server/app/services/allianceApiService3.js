@@ -132,7 +132,9 @@ pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
 		return self.allianceDao.findAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		allianceDoc = doc
-		var building = allianceDoc.buildings[buildingName]
+		var building = _.find(allianceDoc.buildings, function(building){
+			return _.isEqual(building.name, buildingName)
+		})
 		var upgradeRequired = DataUtils.getAllianceBuildingUpgradeRequired(buildingName, building.level + 1)
 		if(upgradeRequired.honour > allianceDoc.basicInfo.honour) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		if(DataUtils.isAllianceBuildingReachMaxLevel(buildingName, building.level)) return Promise.reject(ErrorUtils.allianceBuildingReachMaxLevel(playerId, allianceDoc._id, buildingName))
@@ -144,7 +146,7 @@ pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
 			allianceData.push(["basicInfo.perceptionRefreshTime", allianceDoc.basicInfo.perceptionRefreshTime])
 		}
 		building.level += 1
-		allianceData.push(["buildings." + buildingName + ".level", building.level])
+		allianceData.push(["buildings." + allianceDoc.buildings.indexOf(building) + ".level", building.level])
 
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
@@ -275,91 +277,24 @@ pro.moveAllianceBuilding = function(playerId, mapObjectId, locationX, locationY,
 		return self.allianceDao.findAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		allianceDoc = doc
-		var objectInMap = LogicUtils.getAllianceMapObjectById(allianceDoc, mapObjectId)
-		if(_.isEqual(objectInMap.name, "member")) return Promise.reject(ErrorUtils)
-		var moveBuildingRequired = DataUtils.getAllianceMoveBuildingRequired(buildingName, building.level)
-		if(allianceDoc.basicInfo.honour < moveBuildingRequired.honour) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
+		var mapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, mapObjectId)
+		if(_.isEqual(mapObject.name, "member")) return Promise.reject(ErrorUtils.theAllianceBuildingNotAllowMove(playerId, allianceDoc._id, mapObject))
+		var honourNeeded = DataUtils.getAllianceMoveBuildingHonourRequired(mapObject.name)
+		if(allianceDoc.basicInfo.honour < honourNeeded) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		var mapObjects = allianceDoc.mapObjects
-		var buildingSizeInMap = DataUtils.getSizeInAllianceMap("building")
+		var buildingSizeInMap = DataUtils.getSizeInAllianceMap(mapObject.name)
 		var oldRect = {
-			x:building.location.x,
-			y:building.location.y,
+			x:mapObject.location.x,
+			y:mapObject.location.y,
 			width:buildingSizeInMap.width,
 			height:buildingSizeInMap.height
 		}
 		var newRect = {x:locationX, y:locationY, width:buildingSizeInMap.width, height:buildingSizeInMap.height}
 		var map = MapUtils.buildMap(mapObjects)
-		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(new Error("不能移动到目标点位"))
-		building.location = {x:newRect.x, y:newRect.y}
-		allianceData.push(["buildings." + buildingName + ".location", building.location])
-		buildingObjectInMap.location = {x:newRect.x, y:newRect.y}
-		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(buildingObjectInMap) + ".location", buildingObjectInMap.location])
-		allianceDoc.basicInfo.honour -= moveBuildingRequired.honour
-		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
-
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
-		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(allianceDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
- * 拆除装饰物
- * @param playerId
- * @param decorateId
- * @param callback
- */
-pro.distroyAllianceDecorate = function(playerId, decorateId, callback){
-	if(!_.isString(decorateId)){
-		callback(new Error("decorateId 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var allianceDoc = null
-	var allianceData = []
-	var pushFuncs = []
-	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
-		playerDoc = doc
-		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		if(!DataUtils.isAllianceOperationLegal(playerDoc.alliance.title, "distroyAllianceDecorate")){
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.alliance.id, "distroyAllianceDecorate"))
-		}
-		return self.allianceDao.findAsync(playerDoc.alliance.id)
-	}).then(function(doc){
-		allianceDoc = doc
-		var decorateObject = LogicUtils.getAllianceMapObjectById(allianceDoc, decorateId)
-		if(!DataUtils.isAllianceMapObjectTypeADecorateObject(decorateObject.type)) return Promise.reject(ErrorUtils.onlyAllianceDecorateBuildingCanBeDistroy(playerId, allianceDoc._id, decorateId))
-		var distroyRequired = DataUtils.getAllianceDistroyDecorateRequired(decorateObject.type)
-		if(allianceDoc.basicInfo.honour < distroyRequired.honour) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
-		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(decorateObject), null])
-		LogicUtils.removeItemInArray(allianceDoc.mapObjects, decorateObject)
-		allianceDoc.basicInfo.honour -= distroyRequired.honour
+		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(ErrorUtils.theAllianceBuildingCanNotMoveToTargetPoint(playerId, allianceDoc._id, oldRect, newRect))
+		mapObject.location = {x:newRect.x, y:newRect.y}
+		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(mapObject) + ".location", mapObject.location])
+		allianceDoc.basicInfo.honour -= honourNeeded
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])

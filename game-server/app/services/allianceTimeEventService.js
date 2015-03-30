@@ -874,13 +874,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			}
 			village = LogicUtils.getAllianceVillageById(targetAllianceDoc, event.defenceVillageData.id)
 			if(!_.isObject(village)){
-				var deletedVillage = {
-					id:event.defenceVillageData.id,
-					type:event.defenceVillageData.type,
-					level:event.defenceVillageData.level,
-					location:event.defenceVillageData.location
-				}
-				marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], targetAllianceDoc, deletedVillage, [])
+				marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], targetAllianceDoc, event.defenceVillageData, [])
 				attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 				attackAllianceData.push("attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent)
 				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
@@ -893,7 +887,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
 				return Promise.resolve()
 			}
-			resourceName = village.type.slice(0, -7)
+			resourceName = village.name.slice(0, -7)
 			if(!_.isObject(villageEvent)){
 				eventData = MarchUtils.createAllianceVillageEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], targetAllianceDoc, village, [])
 				newVillageEvent = eventData.event
@@ -910,7 +904,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				return Promise.resolve()
 			}
 			if(_.isObject(villageEvent) && _.isEqual(villageEvent.playerData.alliance.id, attackAllianceDoc._id)){
-				marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], targetAllianceDoc, village, [])
+				marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], targetAllianceDoc, event.defenceVillageData, [])
 				attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 				attackAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
@@ -1008,7 +1002,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					defenceAllianceData.push(["villageEvents." + defenceAllianceDoc.villageEvents.indexOf(villageEvent), null])
 					LogicUtils.removeItemInArray(defenceAllianceDoc.villageEvents, villageEvent)
 					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, defenceAllianceDoc, "villageEvents", villageEvent.id])
-					marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(defenceAllianceDoc, defencePlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, targetAllianceDoc, village, villageEvent.playerData.rewards)
+					marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(defenceAllianceDoc, defencePlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, targetAllianceDoc, event.defenceVillageData, villageEvent.playerData.rewards)
 					defenceAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 					defenceAllianceData.push(["attackMarchReturnEvents." + defenceAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 					eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
@@ -1022,7 +1016,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							count:eventData.collectTotal
 						}]
 						LogicUtils.mergeRewards(newVillageEvent.playerData.rewards, newRewards)
-						marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, newVillageEvent.playerData.dragon, newVillageEvent.playerData.soldiers, newVillageEvent.playerData.woundedSoldiers, targetAllianceDoc, village, newVillageEvent.playerData.rewards)
+						marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, newVillageEvent.playerData.dragon, newVillageEvent.playerData.soldiers, newVillageEvent.playerData.woundedSoldiers, targetAllianceDoc, event.defenceVillageData, newVillageEvent.playerData.rewards)
 						attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 						attackAllianceData.push(["attackMarchReturnEvents", attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 						eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
@@ -1043,7 +1037,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					LogicUtils.putAllianceDataToEnemyAllianceData(defenceAllianceData, attackAllianceData)
 					LogicUtils.putAllianceDataToEnemyAllianceData(attackAllianceData, defenceAllianceData)
 				}else{
-					marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackDragon, attackSoldiers, attackWoundedSoldiers, targetAllianceDoc, village, attackRewards)
+					marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackDragon, attackSoldiers, attackWoundedSoldiers, targetAllianceDoc, event.defenceVillageData, attackRewards)
 					attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 					attackAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 					eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
@@ -1063,7 +1057,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						LogicUtils.removeItemInArray(defenceAllianceDoc.villageEvents, villageEvent)
 						eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, defenceAllianceDoc, "villageEvents", villageEvent.id])
 
-						marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(defenceAllianceDoc, defencePlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, targetAllianceDoc, village, villageEvent.playerData.rewards)
+						marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(defenceAllianceDoc, defencePlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, targetAllianceDoc, event.defenceVillageData, villageEvent.playerData.rewards)
 						defenceAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 						defenceAllianceData.push(["attackMarchReturnEvents." + defenceAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 						eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
@@ -1468,13 +1462,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 			}
 			village = LogicUtils.getAllianceVillageById(targetAllianceDoc, event.defenceVillageData.id)
 			if(!_.isObject(village)){
-				var deletedVillage = {
-					id:event.defenceVillageData.id,
-					type:event.defenceVillageData.type,
-					level:event.defenceVillageData.level,
-					location:event.defenceVillageData.location
-				}
-				marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, targetAllianceDoc, deletedVillage)
+				marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, targetAllianceDoc, event.defenceVillageData)
 				attackAllianceDoc.strikeMarchReturnEvents.push(marchReturnEvent)
 				attackAllianceData.push(["strikeMarchReturnEvents." + attackAllianceDoc.strikeMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
@@ -1488,7 +1476,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				return Promise.resolve()
 			}
 			if(!_.isObject(villageEvent)){
-				marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, targetAllianceDoc, village)
+				marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, targetAllianceDoc, event.defenceVillageData)
 				attackAllianceDoc.strikeMarchReturnEvents.push(marchReturnEvent)
 				attackAllianceData.push(["strikeMarchReturnEvents." + attackAllianceDoc.strikeMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
@@ -1502,7 +1490,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				return Promise.resolve()
 			}
 			if(_.isObject(villageEvent) && _.isEqual(villageEvent.playerData.alliance.id, attackAllianceDoc._id)){
-				marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, targetAllianceDoc, village)
+				marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, targetAllianceDoc, event.defenceVillageData)
 				attackAllianceDoc.strikeMarchReturnEvents.push(marchReturnEvent)
 				attackAllianceData.push(["strikeMarchReturnEvents." + attackAllianceDoc.strikeMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
@@ -1537,7 +1525,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				updateFuncs.push([self.playerDao, self.playerDao.updateAsync, defencePlayerDoc])
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
 
-				marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackDragon, targetAllianceDoc, village)
+				marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackDragon, targetAllianceDoc, event.defenceVillageData)
 				attackAllianceDoc.strikeMarchReturnEvents.push(marchReturnEvent)
 				attackAllianceData.push(["strikeMarchReturnEvents." + attackAllianceDoc.strikeMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
@@ -1901,7 +1889,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 		}
 
 		var village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.villageData.id)
-		var resourceName = village.type.slice(0, -7)
+		var resourceName = village.name.slice(0, -7)
 		var newRewards = [{
 			type:"resources",
 			name:resourceName,
@@ -1909,7 +1897,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 		}]
 		LogicUtils.mergeRewards(event.playerData.rewards, newRewards)
 
-		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.playerData.dragon, event.playerData.soldiers, event.playerData.woundedSoldiers, defenceAllianceDoc, village, event.playerData.rewards)
+		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.playerData.dragon, event.playerData.soldiers, event.playerData.woundedSoldiers, defenceAllianceDoc, event.villageData, event.playerData.rewards)
 		attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 		attackAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
@@ -1925,9 +1913,6 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 		if(event.villageData.collectTotal >= village.resource){
 			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village), null])
 			LogicUtils.removeItemInArray(defenceAllianceDoc.villages, village)
-			var villageInMap = LogicUtils.findAllianceMapObjectByLocation(defenceAllianceDoc, village.location)
-			defenceAllianceData.push(["mapObjects." + defenceAllianceDoc.mapObjects.indexOf(villageInMap), null])
-			LogicUtils.removeItemInArray(defenceAllianceDoc.mapObjects, villageInMap)
 		}else{
 			village.resource -= event.villageData.collectTotal
 			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
@@ -2072,7 +2057,7 @@ pro.onAllianceFightFighting = function(attackAllianceDoc, defenceAllianceDoc, ca
 		var resourceCollected = Math.floor(villageEvent.villageData.collectTotal * ((Date.now() - villageEvent.startTime) / (villageEvent.finishTime - villageEvent.startTime)))
 		var village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, villageEvent.villageData.id)
 		var originalRewards = villageEvent.playerData.rewards
-		var resourceName = village.type.slice(0, -7)
+		var resourceName = village.name.slice(0, -7)
 		var newRewards = [{
 			type:"resources",
 			name:resourceName,

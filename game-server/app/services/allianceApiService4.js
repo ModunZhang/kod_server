@@ -652,7 +652,7 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 		village.resource -= resourceCollected
 		targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 		var originalRewards = villageEvent.playerData.rewards
-		var resourceType = village.type.slice(0, -7)
+		var resourceType = village.name.slice(0, -7)
 		var newRewards = [{
 			type:"resources",
 			name:resourceType,
@@ -660,7 +660,7 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 		}]
 		LogicUtils.mergeRewards(originalRewards, newRewards)
 
-		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, targetAllianceDoc, village, originalRewards)
+		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, targetAllianceDoc, villageEvent.villageData, originalRewards)
 		attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 		attackAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])

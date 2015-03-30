@@ -112,8 +112,8 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		}
 		var mapObjects = MapUtils.create()
 		alliance.mapObjects = mapObjects
-		var villages = DataUtils.createMapVillages(mapObjects)
-		alliance.villages = villages
+		alliance.buildings = DataUtils.createMapBuildings(mapObjects)
+		alliance.villages = DataUtils.createMapVillages(mapObjects)
 		return self.allianceDao.getModel().createAsync(alliance)
 	}).then(function(doc){
 		allianceDoc = JSON.parse(JSON.stringify(doc))
@@ -122,9 +122,9 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		var mapObjects = allianceDoc.mapObjects
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
 		var memberRect = LogicUtils.getFreePointInAllianceMap(mapObjects, memberSizeInMap.width, memberSizeInMap.height)
-		var memberObjInMap = LogicUtils.createAllianceMapObject("member", memberRect)
-		mapObjects.push(memberObjInMap)
-		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Archon, memberRect)
+		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
+		mapObjects.push(memberMapObject)
+		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Archon, memberMapObject.id)
 		LogicUtils.refreshAllianceBasicInfo(allianceDoc, [])
 		playerDoc.alliance = {
 			id:allianceDoc._id,
@@ -1026,7 +1026,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 	var allianceData = []
 	var memberDoc = null
 	var memberData = []
-	var memberInAllianceDoc = null
+	var memberObject = null
 	var otherPlayerDocs = []
 	var updateFuncs = []
 	var pushFuncs = []
@@ -1042,10 +1042,10 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		allianceDoc = doc
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotKickMemberOff(playerId, allianceDoc._id, memberId))
 		var playerInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
-		memberInAllianceDoc = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
-		if(!_.isObject(memberInAllianceDoc)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
+		memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
+		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
 		var myMemberLevel = DataUtils.getAllianceTitleLevel(playerInAllianceDoc.title)
-		var currentMemberLevel = DataUtils.getAllianceTitleLevel(memberInAllianceDoc.title)
+		var currentMemberLevel = DataUtils.getAllianceTitleLevel(memberObject.title)
 		if(currentMemberLevel <= myMemberLevel) return Promise.reject(ErrorUtils.canNotKickAllianceMemberOffForTitleIsUpperThanMe(playerId, allianceDoc._id, memberId))
 		return self.playerDao.findAsync(memberId)
 	}).then(function(doc){
@@ -1157,14 +1157,14 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 
 		memberDoc.alliance = null
 		memberData.push(["alliance", null])
-		allianceData.push(["members." + allianceDoc.members.indexOf(memberInAllianceDoc), null])
-		LogicUtils.removeItemInArray(allianceDoc.members, memberInAllianceDoc)
-		var memberObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, memberInAllianceDoc.location)
-		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberObjectInMap), null])
-		LogicUtils.removeItemInArray(allianceDoc.mapObjects, memberObjectInMap)
+		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject), null])
+		LogicUtils.removeItemInArray(allianceDoc.members, memberObject)
+		var memberMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, memberObject.mapId)
+		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberMapObject), null])
+		LogicUtils.removeItemInArray(allianceDoc.mapObjects, memberMapObject)
 
 		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Kick, memberInAllianceDoc.name, [])
+		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Kick, memberObject.name, [])
 		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
 
 		if(!_.isEmpty(playerData)){

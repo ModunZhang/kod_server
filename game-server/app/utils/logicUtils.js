@@ -654,14 +654,24 @@ Utils.isAllianceHasMember = function(allianceDoc, playerId){
  * @param memberId
  */
 Utils.getAllianceMemberById = function(allianceDoc, memberId){
-	var theMember = null
-	_.some(allianceDoc.members, function(member){
-		if(_.isEqual(member.id, memberId)){
-			theMember = member
-			return true
-		}
+	return _.find(allianceDoc.members, function(member){
+		return _.isEqual(member.id, memberId)
 	})
-	return theMember
+}
+
+/**
+ * 获取联盟地图对象
+ * @param allianceDoc
+ * @param memberId
+ * @returns {*}
+ */
+Utils.getAllianceMemberMapObjectById = function(allianceDoc, memberId){
+	var memberObject = _.find(allianceDoc.members, function(member){
+		return _.isEqual(member.id, memberId)
+	})
+	return _.find(allianceDoc.mapObjects, function(mapObject){
+		return _.isEqual(mapObject.id, memberObject.mapId)
+	})
 }
 
 /**
@@ -671,14 +681,9 @@ Utils.getAllianceMemberById = function(allianceDoc, memberId){
  * @returns {*}
  */
 Utils.getAllianceVillageById = function(allianceDoc, villageId){
-	var theVillage = null
-	_.some(allianceDoc.villages, function(village){
-		if(_.isEqual(village.id, villageId)){
-			theVillage = village
-			return true
-		}
+	return _.find(allianceDoc.villages, function(village){
+		return _.isEqual(village.id, villageId)
 	})
-	return theVillage
 }
 
 /**
@@ -1094,12 +1099,13 @@ Utils.AddAllianceEvent = function(allianceDoc, category, type, key, params){
  * @param allianceDoc
  * @param playerDoc
  * @param title
- * @param rect
+ * @param mapId
  * @return {*}
  */
-Utils.addAllianceMember = function(allianceDoc, playerDoc, title, rect){
+Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId){
 	var member = {
 		id:playerDoc._id,
+		mapId:mapId,
 		apnId:playerDoc.apnId,
 		language:playerDoc.basicInfo.language,
 		name:playerDoc.basicInfo.name,
@@ -1129,10 +1135,6 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, rect){
 			ironExp:playerDoc.allianceInfo.ironExp,
 			foodExp:playerDoc.allianceInfo.foodExp,
 			coinExp:playerDoc.allianceInfo.coinExp
-		},
-		location:{
-			x:rect.x,
-			y:rect.y
 		},
 		isProtected:false,
 		lastThreeDaysKillData:[],
@@ -1660,31 +1662,6 @@ Utils.isPlayerDragonLeadershipEnough = function(playerDoc, dragon, soldiers){
 }
 
 /**
- * 根据坐标查询地图对象
- * @param allianceDoc
- * @param location
- * @returns {*}
- */
-Utils.findAllianceMapObjectByLocation = function(allianceDoc, location){
-	var object = _.find(allianceDoc.mapObjects, function(mapObject){
-		return mapObject.location.x == location.x && mapObject.location.y == location.y
-	})
-	return object
-}
-
-/**
- * 根据坐标移除联盟地图对象
- * @param allianceDoc
- * @param location
- * @returns {*}
- */
-Utils.removeAllianceMapObjectByLocation = function(allianceDoc, location){
-	var mapObject = this.findAllianceMapObjectByLocation(allianceDoc, location)
-	if(_.isObject(mapObject)) this.removeItemInArray(allianceDoc.mapObjects, mapObject)
-	return mapObject
-}
-
-/**
  * 退还玩家在圣地的数据
  * @param playerDoc
  * @param playerData
@@ -1849,7 +1826,7 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 			)
 			var village = self.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
 			var originalRewards = villageEvent.playerData.rewards
-			var resourceName = village.type.slice(0, -7)
+			var resourceName = village.name.slice(0, -7)
 			var newRewards = [{
 				type:"resources",
 				name:resourceName,

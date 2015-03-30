@@ -184,15 +184,15 @@ Utils.getRect = function(map, width, height){
 /**
  *
  * @param map
- * @param targetRect
- * @param exceptRect
+ * @param newRect
+ * @param oldRect
  * @returns {boolean}
  */
-Utils.isRectLegal = function(map, targetRect, exceptRect){
-	var start_x = targetRect.x
-	var start_y = targetRect.y
-	var end_x = targetRect.x - targetRect.width + 1
-	var end_y = targetRect.y - targetRect.height + 1
+Utils.isRectLegal = function(map, newRect, oldRect){
+	var start_x = newRect.x
+	var start_y = newRect.y
+	var end_x = newRect.x - newRect.width + 1
+	var end_y = newRect.y - newRect.height + 1
 	var is_in_map = start_x > -1 && start_x < MapSize.width &&
 		start_y > -1 && start_y < MapSize.height &&
 		end_x > -1 && end_x < MapSize.width &&
@@ -200,9 +200,9 @@ Utils.isRectLegal = function(map, targetRect, exceptRect){
 	if (!is_in_map) {
 		return false
 	}
-	if(_.isObject(exceptRect)) unMarkMapWithRect(map, exceptRect)
-	for (var i = targetRect.x; i > targetRect.x - targetRect.width; i--) {
-		for (var j = targetRect.y; j > targetRect.y - targetRect.height; j--) {
+	if(_.isObject(oldRect)) unMarkMapWithRect(map, oldRect)
+	for (var i = newRect.x; i > newRect.x - newRect.width; i--) {
+		for (var j = newRect.y; j > newRect.y - newRect.height; j--) {
 			if (map[i][j]) {
 				return false
 			}

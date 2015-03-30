@@ -79,7 +79,7 @@ pro.login = function(msg, session, next){
 		next(null, {code:200, playerData:FilterPlayerDoc.call(self, playerDoc), allianceData:allianceDoc})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
-		if(!_.isEqual(e.code, ErrorUtils.reLoginNeeded(playerDoc._id).code)){
+		if(!_.isEqual(e.code, ErrorUtils.reLoginNeeded(deviceId).code)){
 			self.sessionService.kickBySessionId(session.id)
 		}
 	})

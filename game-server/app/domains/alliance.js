@@ -12,27 +12,6 @@ var Schema = mongoose.Schema
 var Consts = require("../consts/consts")
 var GameDatas = require("../datas/GameDatas")
 var AllianceBuilding = GameDatas.AllianceBuilding
-var AllianceInitData = GameDatas.AllianceInitData
-
-var GetBuildingLocation = function(name){
-	var config = _.find(AllianceInitData.buildings, function(building){
-		return _.isEqual(building.name, name)
-	})
-	return {x:config.locationX, y:config.locationY}
-}
-
-
-var createBuildingSchema = function(type, location){
-	var schema = {
-		name:{type:String, required:true, default:type},
-		level:{type:Number, required:true, default:1},
-		location:{
-			x:{type:Number, required:true, default:location.x},
-			y:{type:Number, required:true, default:location.y}
-		}
-	}
-	return schema
-}
 
 var AllianceSchema = new Schema({
 	_id:{type:String, required:true, default:ShortId.generate},
@@ -81,6 +60,7 @@ var AllianceSchema = new Schema({
 	members:[{
 		_id:false,
 		id:{type:String, required:true},
+		mapId:{type:String, required:true},
 		apnId:{type:String},
 		language:{type:String, required:true},
 		name:{type:String, required:true},
@@ -111,10 +91,6 @@ var AllianceSchema = new Schema({
 			foodExp:{type:Number, required:true},
 			coinExp:{type:Number, required:true}
 		},
-		location:{
-			x:{type:Number, required:true},
-			y:{type:Number, required:true}
-		},
 		isProtected:{type:Boolean, required:true},
 		lastThreeDaysKillData:[{
 			kill:{type:Number, rquired:true},
@@ -128,13 +104,12 @@ var AllianceSchema = new Schema({
 			required:false
 		}
 	}],
-	buildings:{
-		palace:createBuildingSchema("palace", GetBuildingLocation("palace")),
-		moonGate:createBuildingSchema("moonGate", GetBuildingLocation("moonGate")),
-		orderHall:createBuildingSchema("orderHall", GetBuildingLocation("orderHall")),
-		shrine:createBuildingSchema("shrine", GetBuildingLocation("shrine")),
-		shop:createBuildingSchema("shop", GetBuildingLocation("shop"))
-	},
+	buildings:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		level:{type:Number, required:true}
+	}],
 	villageLevels:{
 		woodVillage:{type:Number, required:true, default:1},
 		stoneVillage:{type:Number, required:true, default:1},
@@ -147,11 +122,7 @@ var AllianceSchema = new Schema({
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		level:{type:Number, required:true},
-		resource:{type:Number, required:true},
-		location:{
-			x:{type:Number, required:true},
-			y:{type:Number, required:true}
-		}
+		resource:{type:Number, required:true}
 	}],
 	mapObjects:[{
 		_id:false,
@@ -446,7 +417,7 @@ var AllianceSchema = new Schema({
 		},
 		defenceVillageData:{
 			id:{type:String, required:true},
-			type:{type:String, required:true},
+			name:{type:String, required:true},
 			level:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
@@ -504,7 +475,7 @@ var AllianceSchema = new Schema({
 		},
 		defenceVillageData:{
 			id:{type:String, required:true},
-			type:{type:String, required:true},
+			name:{type:String, required:true},
 			level:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
@@ -561,7 +532,7 @@ var AllianceSchema = new Schema({
 		},
 		defenceVillageData:{
 			id:{type:String, required:true},
-			type:{type:String, required:true},
+			name:{type:String, required:true},
 			level:{type:Number, required:true},
 			location:{
 				x:{type:Number, required:true},
@@ -641,7 +612,7 @@ var AllianceSchema = new Schema({
 		},
 		defenceVillageData:{
 			id:{type:String, required:true},
-			type:{type:String, required:true},
+			name:{type:String, required:true},
 			level:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},

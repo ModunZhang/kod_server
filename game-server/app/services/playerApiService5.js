@@ -530,7 +530,7 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
 			scores.push(res[i + 1])
 		}
 		if(ids.length > 0){
-			return self.playerDao.findAllAsync(ids)
+			return self.allianceDao.findAllAsync(ids)
 		}
 		return Promise.resolve([])
 	}).then(function(docs){

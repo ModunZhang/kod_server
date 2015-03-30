@@ -1711,15 +1711,10 @@ Utils.getAllianceVillageUpgradeRequired = function(villageType, villageLevel){
 /**
  * 获取移动联盟建筑需要的资源
  * @param buildingName
- * @param buildingLevel
- * @returns {{honour: (moveNeedHonour|*)}}
+ * @returns {*}
  */
-Utils.getAllianceMoveBuildingRequired = function(buildingName, buildingLevel){
-	var config = AllianceBuilding[buildingName][buildingLevel]
-	var required = {
-		honour:config.moveNeedHonour
-	}
-	return required
+Utils.getAllianceMoveBuildingHonourRequired = function(buildingName){
+	return AllianceInitData.buildingName[buildingName].moveNeedHonour
 }
 
 /**
@@ -1800,6 +1795,22 @@ Utils.getAllianceVillageLevelByType = function(allianceDoc, villageType){
 	return allianceDoc.villageLevels[villageType]
 }
 
+Utils.createMapBuildings = function(mapObjects){
+	var buildings = []
+	_.each(_.values(Consts.AllianceBuildingNames), function(buildingName){
+		var buildingMapObject = _.find(mapObjects, function(mapObject){
+			return _.isEqual(mapObject.name, buildingName)
+		})
+		var building = {
+			id:buildingMapObject.id,
+			name:buildingName,
+			level:1
+		}
+		buildings.push(building)
+	})
+	return buildings
+}
+
 /**
  * 创建联盟村落
  * @param mapObjects
@@ -1813,19 +1824,18 @@ Utils.createMapVillages = function(mapObjects){
 	var villageTypeConfigs = this.getAllianceVillageTypeConfigs()
 	_.each(villageTypeConfigs, function(typeConfig){
 		var villageTotalCount = orderHallConfig[typeConfig.name + "Count"]
-		var villageObjects = _.filter(mapObjects, function(mapObject){
+		var villageMapObjects = _.filter(mapObjects, function(mapObject){
 			return _.isEqual(mapObject.name, typeConfig.name)
 		})
-		villageObjects = CommonUtils.clone(villageObjects)
-		villageObjects = CommonUtils.shuffle(villageObjects)
+		villageMapObjects = CommonUtils.clone(villageMapObjects)
+		villageMapObjects = CommonUtils.shuffle(villageMapObjects)
 		for(var i = 0; i < villageTotalCount; i ++){
-			var villageObject = villageObjects[i]
+			var villageMapObject = villageMapObjects[i]
 			var village = {
-				id:ShortId.generate(),
-				name:villageObject.name,
+				id:villageMapObject.id,
+				name:villageMapObject.name,
 				level:1,
-				resource:self.getAllianceVillageProduction(villageObject.name, 1),
-				location:villageObject.location
+				resource:self.getAllianceVillageProduction(villageMapObject.name, 1)
 			}
 			villages.push(village)
 		}
@@ -1840,14 +1850,13 @@ Utils.createMapVillages = function(mapObjects){
  * @returns {{id: *, type: *, level: *, resource: *, dragon: *, soldiers: *, location: *}}
  */
 Utils.addAllianceVillageObject = function(allianceDoc, mapObject){
-	var villageType = mapObject.type
-	var villageLevel = allianceDoc.villageLevels[villageType]
+	var villageName = mapObject.name
+	var villageLevel = allianceDoc.villageLevels[villageName]
 	var village = {
-		id:ShortId.generate(),
-		type:mapObject.type,
+		id:mapObject.id,
+		name:villageName,
 		level:villageLevel,
-		resource:this.getAllianceVillageProduction(villageType, villageLevel),
-		location:mapObject.location
+		resource:this.getAllianceVillageProduction(villageName, villageLevel)
 	}
 	allianceDoc.villages.push(village)
 	return village
@@ -1855,11 +1864,11 @@ Utils.addAllianceVillageObject = function(allianceDoc, mapObject){
 
 /**
  * 获取建筑类型在联盟的宽高
- * @param buildingType
+ * @param buildingName
  * @returns {{width: *, height: *}}
  */
-Utils.getSizeInAllianceMap = function(buildingType){
-	var config = AllianceInitData.buildingName[buildingType]
+Utils.getSizeInAllianceMap = function(buildingName){
+	var config = AllianceInitData.buildingName[buildingName]
 	return {width:config.width, height:config.height}
 }
 
@@ -1879,7 +1888,9 @@ Utils.isAllianceMapObjectTypeADecorateObject = function(objectType){
  * @returns {*|perception|AllianceSchema.basicInfo.perception|.basicInfo.perception}
  */
 Utils.getAlliancePerception = function(allianceDoc){
-	var shrine = allianceDoc.buildings.shrine
+	var shrine = _.find(allianceDoc.buildings, function(building){
+		return _.isEqual(building.name, Consts.AllianceBuildingNames.Shrine)
+	})
 	var config = AllianceBuilding.shrine[shrine.level]
 	var perception = allianceDoc.basicInfo.perception
 	var addPerSecond = config.pRecovery / 60 / 60
@@ -2760,10 +2771,10 @@ Utils.getPlayerCollectLevel = function(playerDoc, resourceType){
  * @returns {*}
  */
 Utils.getPlayerCollectResourceInfo = function(playerDoc, soldierLoadTotal, allianceVillage){
-	var villageResourceMax = this.getAllianceVillageResourceMax(allianceVillage.type, allianceVillage.level)
+	var villageResourceMax = this.getAllianceVillageResourceMax(allianceVillage.name, allianceVillage.level)
 	var villageResourceCurrent = allianceVillage.resource
 	var collectTotal = soldierLoadTotal > villageResourceCurrent ? villageResourceCurrent : soldierLoadTotal
-	var resourceType = allianceVillage.type.slice(0, -7)
+	var resourceType = allianceVillage.name.slice(0, -7)
 	var playerCollectLevel = this.getPlayerCollectLevel(playerDoc, resourceType)
 	var collectPerHour = PlayerInitData.collectLevel[playerCollectLevel].collectPercentPerHour * villageResourceMax
 	var totalHour = collectTotal / collectPerHour
@@ -2772,12 +2783,12 @@ Utils.getPlayerCollectResourceInfo = function(playerDoc, soldierLoadTotal, allia
 
 /**
  * 获取联盟村落最大产量
- * @param villageType
+ * @param villageName
  * @param villageLevel
  * @returns {production|*}
  */
-Utils.getAllianceVillageResourceMax = function(villageType, villageLevel){
-	return AllianceVillage[villageType][villageLevel].production
+Utils.getAllianceVillageResourceMax = function(villageName, villageLevel){
+	return AllianceVillage[villageName][villageLevel].production
 }
 
 /**
