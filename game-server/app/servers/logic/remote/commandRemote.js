@@ -69,20 +69,27 @@ pro.resources = function(uid, name, count, callback){
  */
 pro.buildinglevel = function(uid, location, level, callback){
 	var self = this
+	var playerDoc = null
 	var playerData = []
 	this.playerDao.findAsync(uid).then(function(doc){
-		var building = doc.buildings["location_" + location]
+		playerDoc = doc
+		var building = playerDoc.buildings["location_" + location]
 		if(!_.isObject(building)) return Promise.reject(new Error("建筑不存在"))
 		building.level = level
 		playerData.push(["buildings.location_" + building.location, building])
-		var events = _.each(doc.buildingEvents, function(event){
+		var events = _.each(playerDoc.buildingEvents, function(event){
 			return _.isEqual(event.type, building.type)
 		})
-		LogicUtils.removeItemsInArray(doc.buildingEvents, events)
-		playerData.push(["buildingEvents", doc.buildingEvents])
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, playerData)
+		var funcs = []
+		_.each(events, function(event){
+			funcs.push(self.timeEventService.removePlayerTimeEventAsync(playerDoc, "buildingEvents", event.id))
+		})
+		LogicUtils.removeItemsInArray(playerDoc.buildingEvents, events)
+		playerData.push(["buildingEvents", playerDoc.buildingEvents])
+		funcs.push(self.playerDao.updateAsync(playerDoc))
+		return Promise.all(funcs)
+	}).then(function(){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -108,7 +115,7 @@ pro.rmevents = function(uid, eventType, callback){
 			var event = playerDoc[eventType].pop()
 			funcs.push(self.timeEventService.removePlayerTimeEventAsync(playerDoc, eventType, event.id))
 		}
-		playerData.push([eventType, []])
+		playerData.push([eventType, playerDoc[eventType]])
 		funcs.push(self.playerDao.updateAsync(doc))
 		return Promise.all(funcs)
 	}).then(function(){

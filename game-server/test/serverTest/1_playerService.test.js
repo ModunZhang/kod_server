@@ -110,12 +110,9 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("upgradeBuilding 正常普通升级", function(done){
-		//	Api.sendChat("rmevents buildingEvents", function(doc){
+		//	Api.upgradeBuilding(2, false, function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.upgradeBuilding(2, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
+		//		done()
 		//	})
 		//})
 		//
@@ -134,10 +131,7 @@ describe("PlayerService", function(){
 		//	setTimeout(function(){
 		//		Api.upgradeBuilding(2, true, function(doc){
 		//			doc.code.should.equal(200)
-		//			Api.sendChat("rmevents buildingEvents", function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
+		//			done()
 		//		})
 		//	}, 100)
 		//})
@@ -195,12 +189,9 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("createHouse 正常普通创建", function(done){
-		//	Api.sendChat("rmevents buildingEvents", function(doc){
+		//	Api.createHouse("farmer", 3, 3, false, function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.createHouse("farmer", 3, 3, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
+		//		done()
 		//	})
 		//})
 		//
@@ -219,14 +210,11 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("upgradeHouse 小屋正在升级", function(done){
-		//	Api.sendChat("rmevents buildingEvents", function(doc){
+		//	Api.upgradeHouse(3, 1, false, function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.upgradeHouse(3, 1, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.upgradeHouse(3, 1, false, function(doc){
-		//				doc.code.should.equal(Errors.houseUpgradingNow.code)
-		//				done()
-		//			})
+		//			doc.code.should.equal(Errors.houseUpgradingNow.code)
+		//			done()
 		//		})
 		//	})
 		//})
@@ -399,18 +387,13 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("recruitSpecialSoldier 招募数量超过单次招募上限", function(done){
-		//	Api.sendChat("rmevents soldierEvents", function(doc){
-		//		doc.code.should.equal(200)
 		//		Api.recruitSpecialSoldier("steamTank", 100, false, function(doc){
 		//			doc.code.should.equal(Errors.recruitTooMuchOnce.code)
 		//			done()
 		//		})
-		//	})
 		//})
 		//
 		//it("recruitSpecialSoldier 正常普通招募", function(done){
-		//	Api.sendChat("rmevents soldierEvents", function(doc){
-		//		doc.code.should.equal(200)
 		//		Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
 		//			doc.code.should.equal(200)
 		//			Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
@@ -418,7 +401,6 @@ describe("PlayerService", function(){
 		//				done()
 		//			})
 		//		})
-		//	})
 		//})
 		//
 		//it("recruitSpecialSoldier 材料不足", function(done){
@@ -435,13 +417,10 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("recruitSpecialSoldier 正常立即招募", function(done){
-		//	Api.sendChat("rmevents soldierEvents", function(doc){
-		//		doc.code.should.equal(200)
 		//		Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
 		//			doc.code.should.equal(200)
 		//			done()
 		//		})
-		//	})
 		//})
 		//
 		//it("makeDragonEquipment equipmentName 装备不存在", function(done){
