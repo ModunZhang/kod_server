@@ -110,7 +110,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("upgradeBuilding 正常普通升级", function(done){
-		//	Api.sendChat("rmbuildingevents", function(doc){
+		//	Api.sendChat("rmevents buildingEvents", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.upgradeBuilding(2, false, function(doc){
 		//			doc.code.should.equal(200)
@@ -134,7 +134,7 @@ describe("PlayerService", function(){
 		//	setTimeout(function(){
 		//		Api.upgradeBuilding(2, true, function(doc){
 		//			doc.code.should.equal(200)
-		//			Api.sendChat("rmbuildingevents", function(doc){
+		//			Api.sendChat("rmevents buildingEvents", function(doc){
 		//				doc.code.should.equal(200)
 		//				done()
 		//			})
@@ -195,7 +195,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("createHouse 正常普通创建", function(done){
-		//	Api.sendChat("rmbuildingevents", function(doc){
+		//	Api.sendChat("rmevents buildingEvents", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.createHouse("farmer", 3, 3, false, function(doc){
 		//			doc.code.should.equal(200)
@@ -219,7 +219,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("upgradeHouse 小屋正在升级", function(done){
-		//	Api.sendChat("rmbuildingevents", function(doc){
+		//	Api.sendChat("rmevents buildingEvents", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.upgradeHouse(3, 1, false, function(doc){
 		//			doc.code.should.equal(200)
@@ -312,7 +312,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("makeMaterial 同类型的材料制作完成后还未领取", function(done){
-		//	Api.sendChat("rmmaterialevents", function(doc){
+		//	Api.sendChat("rmevents materialEvents", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
 		//			doc.code.should.equal(200)
@@ -325,7 +325,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("makeMaterials 正常制造", function(done){
-		//	Api.sendChat("rmmaterialevents", function(doc){
+		//	Api.sendChat("rmevents materialEvents", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
 		//			doc.code.should.equal(200)
@@ -399,7 +399,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("recruitSpecialSoldier 招募数量超过单次招募上限", function(done){
-		//	Api.sendChat("rmsoldierevents", function(doc){
+		//	Api.sendChat("rmevents soldierEvents", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.recruitSpecialSoldier("steamTank", 100, false, function(doc){
 		//			doc.code.should.equal(Errors.recruitTooMuchOnce.code)
@@ -409,7 +409,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("recruitSpecialSoldier 正常普通招募", function(done){
-		//	Api.sendChat("rmsoldierevents", function(doc){
+		//	Api.sendChat("rmevents soldierEvents", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
 		//			doc.code.should.equal(200)
@@ -435,7 +435,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("recruitSpecialSoldier 正常立即招募", function(done){
-		//	Api.sendChat("rmsoldierevents", function(doc){
+		//	Api.sendChat("rmevents soldierEvents", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
 		//			doc.code.should.equal(200)
@@ -479,7 +479,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("makeDragonEquipment 正常普通制造", function(done){
-		//	Api.sendChat("rmdragonequipmentevents", function(doc){
+		//	Api.sendChat("rmevents dragonEquipmentEvents", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.makeDragonEquipment("redCrown_s1", false, function(doc){
 		//			doc.code.should.equal(200)

@@ -54,21 +54,12 @@ var ChatHandler = function(app){
 			}
 		},
 		{
-			command:"rmbuildingevents",
-			desc:"删除所有建筑的升级事件",
+			command:"rmevents",
+			desc:"清除玩家事件:rmevents vipEvents",
 			func:function(session, uid, text, callback){
 				var self = this
-				self.app.rpc.logic.commandRemote.rmbuildingevents(session, uid, function(e){
-					callback(e)
-				})
-			}
-		},
-		{
-			command:"rmmaterialevents",
-			desc:"清除材料制造事件",
-			func:function(session, uid, text, callback){
-				var self = this
-				self.app.rpc.logic.commandRemote.rmmaterialevents(session, uid, function(e){
+				var eventType = text.split(" ")[1]
+				self.app.rpc.logic.commandRemote.rmevents(session, uid, eventType, function(e){
 					callback(e)
 				})
 			}
@@ -112,16 +103,6 @@ var ChatHandler = function(app){
 			}
 		},
 		{
-			command:"rmsoldierevents",
-			desc:"清除士兵招募事件",
-			func:function(session, uid, text, callback){
-				var self = this
-				self.app.rpc.logic.commandRemote.rmsoldierevents(session, uid, function(e){
-					callback(e)
-				})
-			}
-		},
-		{
 			command:"dragonmaterial",
 			desc:"统一修改玩家制作龙装备的材料数量:dragonmaterial 5",
 			func:function(session, uid, text, callback){
@@ -150,16 +131,6 @@ var ChatHandler = function(app){
 			}
 		},
 		{
-			command:"rmdragonequipmentevents",
-			desc:"清除龙装备制造事件",
-			func:function(session, uid, text, callback){
-				var self = this
-				self.app.rpc.logic.commandRemote.rmdragonequipmentevents(session, uid, function(e){
-					callback(e)
-				})
-			}
-		},
-		{
 			command:"soldiers",
 			desc:"设置士兵数量:soldiers 5",
 			func:function(session, uid, text, callback){
@@ -185,16 +156,6 @@ var ChatHandler = function(app){
 						callback(e)
 					})
 				}
-			}
-		},
-		{
-			command:"rmtreatsoldierevents",
-			desc:"清除士兵治疗事件",
-			func:function(session, uid, text, callback){
-				var self = this
-				self.app.rpc.logic.commandRemote.rmtreatsoldierevents(session, uid, function(e){
-					callback(e)
-				})
 			}
 		},
 		{

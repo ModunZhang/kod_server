@@ -10,12 +10,9 @@ var _ = require("underscore")
 var Utils = require("../../../utils/utils")
 var DataUtils = require("../../../utils/dataUtils")
 var LogicUtils = require("../../../utils/logicUtils")
-var MapUtils = require("../../../utils/mapUtils")
 var Consts = require("../../../consts/consts")
 
 var GameDatas = require("../../../datas/GameDatas")
-var AllianceInit = GameDatas.AllianceInitData
-var AllianceBuildingConfig = GameDatas.AllianceBuilding
 var PlayerInitData = GameDatas.PlayerInitData
 var Dragons = GameDatas.Dragons
 
@@ -94,50 +91,28 @@ pro.buildinglevel = function(uid, location, level, callback){
 }
 
 /**
- * 清除所有建筑的建造事件
+ * 清除玩家事件
  * @param uid
+ * @param eventType
  * @param callback
  */
-pro.rmbuildingevents = function(uid, callback){
+pro.rmevents = function(uid, eventType, callback){
 	var self = this
+	var playerDoc = null
 	var playerData = []
 	this.playerDao.findAsync(uid).then(function(doc){
-		var event = null
-		while(doc.buildingEvents.length > 0){
-			event = doc.buildingEvents[0]
-			self.playerTimeEventService.onPlayerEvent(doc, playerData, null, null, "buildingEvents", event.id)
+		playerDoc = doc
+		if(!_.isArray(playerDoc[eventType])) return Promise.reject(new Error("玩家事件类型不存在"))
+		var funcs = []
+		while(playerDoc[eventType].length > 0){
+			var event = playerDoc[eventType].pop()
+			funcs.push(self.timeEventService.removePlayerTimeEventAsync(playerDoc, eventType, event.id))
 		}
-		while(doc.houseEvents.length > 0){
-			event = doc.houseEvents[0]
-			self.playerTimeEventService.onPlayerEvent(doc, playerData, null, null, "houseEvents", event.id)
-		}
-
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, playerData)
+		playerData.push([eventType, []])
+		funcs.push(self.playerDao.updateAsync(doc))
+		return Promise.all(funcs)
 	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 清除材料制造事件
- * @param uid
- * @param callback
- */
-pro.rmmaterialevents = function(uid, callback){
-	var self = this
-	var playerData = []
-	this.playerDao.findAsync(uid).then(function(doc){
-		while(doc.materialEvents.length > 0){
-			doc.materialEvents.pop()
-		}
-		playerData.push(["materialEvents", []])
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, playerData)
+		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
@@ -226,29 +201,6 @@ pro.soldiermaterial = function(uid, count, callback){
 }
 
 /**
- * 清除士兵招募事件
- * @param uid
- * @param callback
- */
-pro.rmsoldierevents = function(uid, callback){
-	var self = this
-	var playerData = []
-	this.playerDao.findAsync(uid).then(function(doc){
-		while(doc.soldierEvents.length > 0){
-			doc.soldierEvents.pop()
-		}
-		playerData.push(["soldierEvents", []])
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, playerData)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
  * 统一修改玩家制作龙装备的材料数量
  * @param uid
  * @param count
@@ -297,29 +249,6 @@ pro.dragonequipment = function(uid, count, callback){
 }
 
 /**
- * 清除龙装备制造事件
- * @param uid
- * @param callback
- */
-pro.rmdragonequipmentevents = function(uid, callback){
-	var self = this
-	var playerData = []
-	this.playerDao.findAsync(uid).then(function(doc){
-		while(doc.dragonEquipmentEvents.length > 0){
-			doc.dragonEquipmentEvents.pop()
-		}
-		playerData.push(["dragonEquipmentEvents", []])
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, playerData)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
  * 设置士兵数量
  * @param uid
  * @param count
@@ -357,29 +286,6 @@ pro.woundedsoldiers = function(uid, count, callback){
 			doc.woundedSoldiers[key] = count
 		})
 		playerData.push(["woundedSoldiers", doc.woundedSoldiers])
-		return self.playerDao.updateAsync(doc)
-	}).then(function(doc){
-		return self.pushService.onPlayerDataChangedAsync(doc, playerData)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 清除士兵治疗事件
- * @param uid
- * @param callback
- */
-pro.rmtreatsoldierevents = function(uid, callback){
-	var self = this
-	var playerData = []
-	this.playerDao.findAsync(uid).then(function(doc){
-		while(doc.treatSoldierEvents.length > 0){
-			doc.treatSoldierEvents.pop()
-		}
-		playerData.push(["treatSoldierEvents", []])
 		return self.playerDao.updateAsync(doc)
 	}).then(function(doc){
 		return self.pushService.onPlayerDataChangedAsync(doc, playerData)
