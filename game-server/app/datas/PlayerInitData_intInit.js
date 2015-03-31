@@ -90,7 +90,7 @@ intInit["soldierMaxStar"] = {
 }
 intInit["playerCitizenRecoverFullNeedHours"] = {
 	type:"playerCitizenRecoverFullNeedHours",
-	value:12,
+	value:6,
 	desc:"城民恢复满需要的小时数"
 }
 intInit["freeNormalGachaCountPerDay"] = {
