@@ -3029,6 +3029,23 @@ Utils.getPlayerMilitaryTechBuilding = function(playerDoc, techName){
 }
 
 /**
+ * 根据士兵名称获取所属科技建筑
+ * @param playerDoc
+ * @param soldierName
+ * @returns {*}
+ */
+Utils.getPlayerSoldierMilitaryTechBuilding = function(playerDoc, soldierName){
+	var soldierConfig = Soldiers.normal[soldierName+ "_1"]
+	var buildingName = soldierConfig.techBuildingName
+	var buildingConfig = _.find(Buildings.buildings, function(config){
+		return _.isObject(config) && _.isEqual(buildingName, config.name)
+	})
+	var building = playerDoc.buildings["location_" + buildingConfig.location]
+	return building
+}
+
+
+/**
  * 军事科技是否已达最高等级
  * @param techLevel
  * @returns {boolean}
@@ -3501,17 +3518,26 @@ Utils.getPlayerSoldierStarUpgradeEvent = function(playerDoc, militaryTechName){
 }
 
 /**
- * 根据士兵名字查找正在升级的军事科技
+ * 查找是否有此科技建筑对应的军事科技升级事件
  * @param playerDoc
- * @param soldierName
+ * @param buildingName
  * @returns {*}
  */
-Utils.getPlayerMilitaryTechUpgradeEvent = function(playerDoc, soldierName){
-	var buildingName = Soldiers.normal[soldierName + "_1"].techBuildingName
-	return _.find(playerDoc.militaryTechEvents, function(event){
+Utils.getPlayerMilitaryTechUpgradeEvent = function(playerDoc, buildingName){
+	var soldierStarEvent = _.find(playerDoc.soldierStarEvents, function(event){
+		var soldierConfig = Soldiers.normal[event.name + "_1"]
+		return _.isEqual(soldierConfig.techBuildingName, buildingName)
+	})
+	if(_.isObject(soldierStarEvent)){
+		return {type:"soldierStarEvents", event:soldierStarEvent}
+	}
+	var militaryTechEvent = _.find(playerDoc.militaryTechEvents, function(event){
 		var techConfig = MilitaryTechs.militaryTechs[event.name]
 		return _.isEqual(techConfig.building, buildingName)
 	})
+	if(_.isObject(militaryTechEvent)){
+		return {type:"militaryTechEvents", event:militaryTechEvent}
+	}
 }
 
 /**

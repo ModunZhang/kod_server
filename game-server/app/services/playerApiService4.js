@@ -172,10 +172,11 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var tech = null
+	var building = null
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 		tech = playerDoc.militaryTechs[techName]
-		var building = DataUtils.getPlayerMilitaryTechBuilding(playerDoc, techName)
+		building = DataUtils.getPlayerMilitaryTechBuilding(playerDoc, techName)
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
 		if(DataUtils.isMilitaryTechReachMaxLevel(tech.level)) return Promise.reject(ErrorUtils.techReachMaxLevel(playerId, techName, tech))
 		var isUpgrading = _.some(playerDoc.militaryTechEvents, function(event){
@@ -206,9 +207,9 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.technologyMaterials)
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
-			preTechEvent = DataUtils.getPlayerSoldierStarUpgradeEvent(playerDoc, techName)
+			preTechEvent = DataUtils.getPlayerMilitaryTechUpgradeEvent(playerDoc, building.type)
 			if(_.isObject(preTechEvent)){
-				var timeRemain = (preTechEvent.finishTime - Date.now()) / 1000
+				var timeRemain = (preTechEvent.event.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
@@ -235,8 +236,8 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "soldierStarEvents", preTechEvent.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "soldierStarEvents", preTechEvent.id])
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preTechEvent.type, preTechEvent.event.id)
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preTechEvent.type, preTechEvent.event.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createMilitaryTechEvent(playerDoc, techName, finishTime)
@@ -290,8 +291,11 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 	var playerData = []
 	var eventFuncs = []
 	var updateFuncs = []
+	var building = null
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
+		building = DataUtils.getPlayerSoldierMilitaryTechBuilding(playerDoc, soldierName)
+		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
 		var soldierMaxStar = DataUtils.getPlayerIntInit("soldierMaxStar")
 		if(playerDoc.soldierStars[soldierName] >= soldierMaxStar) return Promise.reject(ErrorUtils.soldierReachMaxStar(playerId, soldierName))
 		if(!DataUtils.isPlayerUpgradeSoldierStarTechPointEnough(playerDoc, soldierName)) return Promise.reject(ErrorUtils.techPointNotEnough(playerId, soldierName))
@@ -317,9 +321,9 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
-			preTechEvent = DataUtils.getPlayerMilitaryTechUpgradeEvent(playerDoc, soldierName)
+			preTechEvent = DataUtils.getPlayerMilitaryTechUpgradeEvent(playerDoc, building.type)
 			if(_.isObject(preTechEvent)){
-				var timeRemain = (preTechEvent.finishTime - Date.now()) / 1000
+				var timeRemain = (preTechEvent.event.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
@@ -343,8 +347,8 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, soldierName, playerDoc.soldierStars[soldierName])
 		}else{
 			if(_.isObject(preTechEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "militaryTechEvents", preTechEvent.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "militaryTechEvents", preTechEvent.id])
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preTechEvent.type, preTechEvent.event.id)
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preTechEvent.type, preTechEvent.event.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.upgradeTime * 1000)
 			var event = LogicUtils.createSoldierStarEvent(playerDoc, soldierName, finishTime)
