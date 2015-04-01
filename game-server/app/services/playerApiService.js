@@ -1113,7 +1113,6 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		var buyedResources = null
 		var preRecruitEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
-		self.logService.onRequest("1111111111", {requred:recruitRequired.materials, has:playerDoc.soldierMaterials})
 		if(!LogicUtils.isEnough(recruitRequired.materials, playerDoc.soldierMaterials)) return Promise.reject(ErrorUtils.soldierRecruitMaterialsNotEnough(playerId, soldierName, count))
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)

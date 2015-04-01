@@ -35,7 +35,7 @@ Utils.getTimeEfffect = function(time, decreasePercent){
  */
 Utils.isEnough = function(need, has){
 	return _.every(need, function(value, key){
-		return _.isNumber(has[key]) && has[key] > need[key]
+		return _.isNumber(has[key]) && has[key] >= need[key]
 	})
 }
 
