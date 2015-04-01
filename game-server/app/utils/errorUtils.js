@@ -450,16 +450,6 @@ Utils.soldierRecruitMaterialsNotEnough = function(playerId, soldierName, count){
 }
 
 /**
- * 龙装备制造事件已存在
- * @param playerId
- * @param equipmentName
- */
-Utils.dragonEquipmentEventsExist = function(playerId, equipmentName){
-	var config = Errors.dragonEquipmentEventsExist
-	return CreateError(config, {playerId:playerId, equipmentName:equipmentName})
-}
-
-/**
  * 制作龙装备材料不足
  * @param playerId
  * @param equipmentName

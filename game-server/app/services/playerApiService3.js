@@ -1053,4 +1053,3 @@ pro.setApnId = function(playerId, apnId, callback){
 		}
 	})
 }
-

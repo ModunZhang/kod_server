@@ -53,17 +53,23 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		playerDoc = doc
 		var building = playerDoc.buildings.location_9
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
-		if(!finishNow && playerDoc.dragonEquipmentEvents.length > 0) return Promise.reject(ErrorUtils.dragonEquipmentEventsExist(playerId, equipmentName))
 		var gemUsed = 0
 		var makeRequired = DataUtils.getPlayerMakeDragonEquipmentRequired(playerDoc, equipmentName)
-		var buyedResources = null
 		if(!LogicUtils.isEnough(makeRequired.materials, playerDoc.dragonMaterials)) return Promise.reject(ErrorUtils.dragonEquipmentMaterialsNotEnough(playerId, equipmentName))
+
+		var buyedResources = null
+		var preMakeEvent = null
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(makeRequired.makeTime)
 			buyedResources = DataUtils.buyResources({coin:makeRequired.coin}, {})
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
+			if(playerDoc.dragonEquipmentEvents.length > 0){
+				preMakeEvent = playerDoc.dragonEquipmentEvents[0]
+				var timeRemain = (preMakeEvent.finishTime - Date.now()) / 1000
+				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
+			}
 			buyedResources = DataUtils.buyResources({coin:makeRequired.coin}, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
@@ -90,6 +96,10 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			playerData.push(["dragonEquipments." + equipmentName, playerDoc.dragonEquipments[equipmentName]])
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.MakeDragonEquipment)
 		}else{
+			if(_.isObject(preMakeEvent)){
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "dragonEquipmentEvents", preMakeEvent.id)
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "dragonEquipmentEvents", preMakeEvent.id])
+			}
 			var finishTime = Date.now() + (makeRequired.makeTime * 1000)
 			var event = LogicUtils.createDragonEquipmentEvent(playerDoc, equipmentName, finishTime)
 			playerDoc.dragonEquipmentEvents.push(event)

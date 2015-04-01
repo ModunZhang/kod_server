@@ -450,16 +450,6 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("makeDragonEquipment 已有装备正在制作", function(done){
-		//	Api.makeDragonEquipment("redCrown_s1", false, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.makeDragonEquipment("redCrown_s1", false, function(doc){
-		//			doc.code.should.equal(Errors.dragonEquipmentEventsExist.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
 		//it("makeDragonEquipment 正常普通制造", function(done){
 		//	Api.sendChat("rmevents dragonEquipmentEvents", function(doc){
 		//		doc.code.should.equal(200)
