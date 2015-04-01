@@ -525,7 +525,8 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
 			var data = {
 				id:docs[i]._id,
 				name:docs[i].basicInfo.name,
-				icon:docs[i].basicInfo.icon,
+				tag:docs[i].basicInfo.tag,
+				flag:docs[i].basicInfo.flag,
 				value:scores[i]
 			}
 			datas.push(data)
