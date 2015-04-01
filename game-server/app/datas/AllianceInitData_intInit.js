@@ -50,12 +50,12 @@ intInit["allianceRevengeMaxMinutes"] = {
 }
 intInit["allianceRegionMapWidth"] = {
 	type:"allianceRegionMapWidth",
-	value:41,
+	value:51,
 	desc:"联盟地图宽度"
 }
 intInit["allianceRegionMapHeight"] = {
 	type:"allianceRegionMapHeight",
-	value:41,
+	value:51,
 	desc:"联盟地图高度"
 }
 intInit["citizenPerLeadership"] = {

@@ -7,10 +7,16 @@
 var Promise = require("bluebird")
 
 var LogService = require("../../services/logService")
+var PlayerDao = require("../../dao/playerDao")
+var Device = require("../../domains/device")
+var User = require("../../domains/user")
 
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
+	app.set("Device", Promise.promisifyAll(Device))
+	app.set("User", Promise.promisifyAll(User))
+	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("logService", Promise.promisifyAll(new LogService(app)))
 	callback()
 }

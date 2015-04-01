@@ -830,7 +830,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 }
 
 /**
- * 制造材料
+ * 制造建筑,科技使用的材料
  * @param playerId
  * @param category
  * @param finishNow
