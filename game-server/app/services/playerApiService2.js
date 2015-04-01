@@ -593,7 +593,7 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
