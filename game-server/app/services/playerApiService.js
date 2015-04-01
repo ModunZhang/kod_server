@@ -24,6 +24,7 @@ var PlayerApiService = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.playerTimeEventService = app.get("playerTimeEventService")
 	this.globalChannelService = app.get("globalChannelService")
+	this.logService = app.get("logService")
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
 	this.Device = app.get("Device")
@@ -1112,6 +1113,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		var buyedResources = null
 		var preRecruitEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
+		self.logService.onRequest("1111111111", {requred:recruitRequired.materials, has:playerDoc.soldierMaterials})
 		if(!LogicUtils.isEnough(recruitRequired.materials, playerDoc.soldierMaterials)) return Promise.reject(ErrorUtils.soldierRecruitMaterialsNotEnough(playerId, soldierName, count))
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)

@@ -451,14 +451,8 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
 	var ids = []
 	var scores = []
 	var datas = []
-	var funcs = []
-	funcs.push(this.redis.zrevrankAsync(["player.basicInfo." + rankType, playerId]))
-	funcs.push(this.redis.zscoreAsync(["player.basicInfo." + rankType, playerId]))
-	Promise.all(funcs).spread(function(rank, value){
-		myData = {
-			rank:rank,
-			value:value
-		}
+	this.redis.zrevrankAsync(["player.basicInfo." + rankType, playerId]).then(function(rank){
+		myData = {rank:rank}
 		return self.redis.zrevrangeAsync(["player.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1, "WITHSCORES"])
 	}).then(function(res){
 		for(var i = 0; i < res.length; i += 2){
@@ -470,7 +464,7 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
 		}
 		return Promise.resolve([])
 	}).then(function(docs){
-		for(var i = 0; i < docs.length; i ++){
+		for(var i = 0; i < docs.length; i++){
 			var data = {
 				id:docs[i]._id,
 				name:docs[i].basicInfo.name,
@@ -510,19 +504,12 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
 	var ids = []
 	var scores = []
 	var datas = []
-	var funcs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
-		funcs.push(self.redis.zrevrankAsync(["alliance.basicInfo." + rankType, playerDoc.alliance.id]))
-		funcs.push(self.redis.zscoreAsync(["alliance.basicInfo." + rankType, playerDoc.alliance.id]))
-		return Promise.all(funcs)
-	}).spread(function(rank, value){
-		myData = {
-			rank:rank,
-			value:value
-		}
+		return self.redis.zrevrankAsync(["alliance.basicInfo." + rankType, playerDoc.alliance.id])
+	}).then(function(rank){
+		myData = {rank:rank}
 		return self.redis.zrevrangeAsync(["alliance.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1, "WITHSCORES"])
 	}).then(function(res){
 		for(var i = 0; i < res.length; i += 2){
@@ -534,7 +521,7 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
 		}
 		return Promise.resolve([])
 	}).then(function(docs){
-		for(var i = 0; i < docs.length; i ++){
+		for(var i = 0; i < docs.length; i++){
 			var data = {
 				id:docs[i]._id,
 				name:docs[i].basicInfo.name,
