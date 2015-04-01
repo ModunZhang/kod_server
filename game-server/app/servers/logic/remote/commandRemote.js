@@ -661,11 +661,12 @@ pro.alliancefight = function(uid, targetAllianceTag, callback){
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 			return Promise.reject(new Error("联盟正在战争准备期或战争期"))
 		}
-		return self.allianceDao.getModel().findOne({
+		return self.allianceDao.getModel().findOneAsync({
 			"_id":{$ne:attackAllianceDoc._id},
+			"serverId":playerDoc.serverId,
 			"basicInfo.tag":targetAllianceTag,
 			"basicInfo.status":Consts.AllianceStatus.Peace
-		}).exec()
+		})
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(new Error("未能找到战力相匹配的联盟"))
 		return self.allianceDao.findAsync(doc._id)

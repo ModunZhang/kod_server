@@ -1168,20 +1168,6 @@ Utils.getFreePointInAllianceMap = function(mapObjects, width, height){
 }
 
 /**
- * 根据坐标获取联盟地图中的对象
- * @param allianceDoc
- * @param location
- * @returns {*}
- */
-Utils.getAllianceMapObjectByLocation = function(allianceDoc, location){
-	for(var i = 0; i < allianceDoc.mapObjects.length; i++){
-		var mapObject = allianceDoc.mapObjects[i]
-		if(_.isEqual(mapObject.location, location)) return mapObject
-	}
-	return null
-}
-
-/**
  * 根据Id获取联盟地图中的对象
  * @param allianceDoc
  * @param objectId
@@ -1947,14 +1933,14 @@ Utils.returnPlayerHelpedByMarchTroop = function(playerDoc, playerData, marchEven
 
 /**
  * 创建一笔交易
- * @param playerId
+ * @param playerDoc
  * @param type
  * @param name
  * @param count
  * @param price
  * @returns {*}
  */
-Utils.createDeal = function(playerId, type, name, count, price){
+Utils.createDeal = function(playerDoc, type, name, count, price){
 	var id = ShortId.generate()
 	var dealForPlayer = {
 		id:id,
@@ -1968,7 +1954,8 @@ Utils.createDeal = function(playerId, type, name, count, price){
 	}
 	var dealForAll = {
 		_id:id,
-		playerId:playerId,
+		playerId:playerDoc._id,
+		serverId:playerDoc.serverId,
 		itemData:{
 			type:type,
 			name:name,

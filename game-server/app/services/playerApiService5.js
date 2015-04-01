@@ -447,13 +447,19 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
 	}
 
 	var self = this
+	var playerDoc = null
 	var myData = null
 	var ids = []
 	var scores = []
 	var datas = []
-	this.redis.zrevrankAsync(["player.basicInfo." + rankType, playerId]).then(function(rank){
+	this.playerDao.findAsync(playerId).then(function(doc){
+		playerDoc = doc
+		return self.playerDao.removeLockAsync(playerDoc._id)
+	}).then(function(){
+		return self.redis.zrevrankAsync([playerDoc.serverId + ".player.basicInfo." + rankType, playerId])
+	}).then(function(rank){
 		myData = {rank:rank}
-		return self.redis.zrevrangeAsync(["player.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1, "WITHSCORES"])
+		return self.redis.zrevrangeAsync([playerDoc.serverId + ".player.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1, "WITHSCORES"])
 	}).then(function(res){
 		for(var i = 0; i < res.length; i += 2){
 			ids.push(res[i])
@@ -477,7 +483,17 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
 	}).then(function(){
 		callback(null, [myData, datas])
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -507,10 +523,12 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.redis.zrevrankAsync(["alliance.basicInfo." + rankType, playerDoc.alliance.id])
+		return self.playerDao.removeLockAsync(playerDoc._id)
+	}).then(function(){
+		return self.redis.zrevrankAsync([playerDoc.serverId + ".alliance.basicInfo." + rankType, playerDoc.alliance.id])
 	}).then(function(rank){
 		myData = {rank:rank}
-		return self.redis.zrevrangeAsync(["alliance.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1, "WITHSCORES"])
+		return self.redis.zrevrangeAsync([playerDoc.serverId + ".alliance.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1, "WITHSCORES"])
 	}).then(function(res){
 		for(var i = 0; i < res.length; i += 2){
 			ids.push(res[i])

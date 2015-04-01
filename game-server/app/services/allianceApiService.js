@@ -101,6 +101,8 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 	}).then(function(docs){
 		if(docs.length > 0) return Promise.reject(ErrorUtils.allianceTagExist(playerId, tag))
 		var alliance = {
+			_id:ShortId.generate(),
+			serverId:playerDoc.serverId,
 			basicInfo:{
 				name:name,
 				tag:tag,
@@ -335,11 +337,13 @@ pro.getCanDirectJoinAlliances = function(playerId, callback){
 	var allianceDocs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var funcs = []
-		funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		funcs.push(self.allianceDao.getModel().find({"basicInfo.joinType":Consts.AllianceJoinType.All}).sort({"basicInfo.power":-1}).limit(10).exec())
-		return Promise.all(funcs)
-	}).spread(function(tmp, docs){
+		return self.playerDao.removeLockAsync(playerDoc._id)
+	}).then(function(){
+		return self.allianceDao.getModel().findAsync({
+			"serverId":playerDoc.serverId,
+			"basicInfo.joinType":Consts.AllianceJoinType.All
+		}, null, {"sort":{"basicInfo.power":-1}, "limit":10})
+	}).then(function(docs){
 		_.each(docs, function(doc){
 			var shortDoc = {
 				id:doc._id,
@@ -362,8 +366,12 @@ pro.getCanDirectJoinAlliances = function(playerId, callback){
 	}).then(function(){
 		callback(null, allianceDocs)
 	}).catch(function(e){
+		var funcs = []
 		if(_.isObject(playerDoc)){
-			self.playerDao.removeLockAsync(playerDoc._id).then(function(){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
 				callback(e)
 			})
 		}else{
@@ -384,8 +392,18 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 		return
 	}
 
+	var self = this
+	var playerDoc = null
 	var allianceDocs = []
-	this.allianceDao.getModel().findAsync({"basicInfo.tag":{$regex:tag}}, null, {limit:10}).then(function(docs){
+	this.playerDao.findAsync(playerId).then(function(doc){
+		playerDoc = doc
+		return self.playerDao.removeLockAsync(playerDoc._id)
+	}).then(function(){
+		return self.allianceDao.getModel().findAsync({
+			"serverId":playerDoc.serverId,
+			"basicInfo.tag":{$regex:tag}
+		}, null, {"limit":10})
+	}).then(function(docs){
 		_.each(docs, function(doc){
 			var shortDoc = {
 				id:doc._id,
@@ -408,7 +426,17 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 	}).then(function(){
 		callback(null, allianceDocs)
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 

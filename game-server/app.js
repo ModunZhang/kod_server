@@ -1,7 +1,7 @@
 "use strict"
 
 //TRACE, DEBUG, INFO, WARN, ERROR, FATAL
-
+var ShortId = require("shortid")
 var pomelo = require("pomelo")
 var redis = require("redis")
 var mongoose = require("mongoose")
@@ -49,6 +49,9 @@ app.configure("production|development", "gate", function(){
 })
 
 app.configure("production|development", "logic", function(){
+	var idParams = app.serverId.split("-")
+	var intId = parseInt(idParams[idParams.length - 1])
+	process.NODE_UNIQUE_ID = intId
 	app.set("connectorConfig", {
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:60,

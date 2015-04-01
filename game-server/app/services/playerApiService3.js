@@ -726,7 +726,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 		playerData.push([type + "." + name, playerDoc[type][name]])
 		playerDoc.resources.cart -= cartNeed
 
-		var deal = LogicUtils.createDeal(playerDoc._id, type, name, count, price)
+		var deal = LogicUtils.createDeal(playerDoc, type, name, count, price)
 		playerDoc.deals.push(deal.dealForPlayer)
 		playerData.push(["deals." + playerDoc.deals.indexOf(deal.dealForPlayer), deal.dealForPlayer])
 
@@ -782,6 +782,7 @@ pro.getSellItems = function(playerId, type, name, callback){
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		return self.Deal.find({
 			"playerId":{$ne:playerDoc._id},
+			"serverId":playerDoc.serverId,
 			"itemData.type":type, "itemData.name":name
 		}).sort({
 			"itemData.price":1,
@@ -836,6 +837,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 		playerDoc = doc_1
 		if(!_.isObject(doc_2)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
 		itemDoc = doc_2
+		if(!_.isEqual(itemDoc.serverId, playerDoc.serverId)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
 
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])

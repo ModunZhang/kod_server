@@ -224,13 +224,13 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
 		})
 		if(hasMarchEvent) return Promise.reject(ErrorUtils.playerHasMarchEvent(playerDoc._id, allianceDoc._id))
-		var playerDocInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
-		var playerObjectInMap = LogicUtils.getAllianceMapObjectByLocation(allianceDoc, playerDocInAlliance.location)
+		var playerMapId = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).mapId
+		var playerMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, playerMapId)
 		var mapObjects = allianceDoc.mapObjects
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
 		var oldRect = {
-			x:playerDocInAlliance.location.x,
-			y:playerDocInAlliance.location.y,
+			x:playerMapObject.location.x,
+			y:playerMapObject.location.y,
 			width:memberSizeInMap.width,
 			height:memberSizeInMap.height
 		}
@@ -238,15 +238,12 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 		var newRect = {x:locationX, y:locationY, width:memberSizeInMap.width, height:memberSizeInMap.height}
 		var map = MapUtils.buildMap(mapObjects)
 		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(ErrorUtils.canNotMoveToTargetPlace(playerDoc._id, allianceDoc._id, oldRect, newRect))
-		playerDocInAlliance.location = {x:newRect.x, y:newRect.y}
-		allianceData.push(["members." + allianceDoc.members.indexOf(playerDocInAlliance) + ".location", playerDocInAlliance.location])
-		playerObjectInMap.location = {x:newRect.x, y:newRect.y}
-		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerObjectInMap) + ".location", playerObjectInMap.location])
+		playerMapObject.location = {x:newRect.x, y:newRect.y}
+		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject) + ".location", playerMapObject.location])
 
 		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, pushService)
-
 		return Promise.resolve()
 	}).catch(function(e){
 		if(_.isObject(allianceDoc)){

@@ -574,11 +574,12 @@ pro.findAllianceToFight = function(playerId, callback){
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, attackAllianceDoc._id))
 		}
-		return self.allianceDao.getModel().findOne({
+		return self.allianceDao.getModel().findOneAsync({
 			"_id":{$ne:attackAllianceDoc._id},
+			"serverId":playerDoc.serverId,
 			"basicInfo.status":Consts.AllianceStatus.Peace
 			//"basicInfo.power":{$gte:attackAllianceDoc.basicInfo.power * 0.8, $lt:attackAllianceDoc.basicInfo.power * 1.2}
-		}).exec()
+		})
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
 		return self.allianceDao.findAsync(doc._id)
@@ -797,9 +798,17 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 		callback(new Error("tag 不合法"))
 		return
 	}
-
+	var playerDoc = null
 	var allianceInfos = []
-	this.allianceDao.getModel().findAsync({"basicInfo.tag":{$regex:tag}}, null, {limit:10}).then(function(docs){
+	this.playerDao.findAsync(playerId).then(function(doc){
+		playerDoc = doc
+		return self.playerDao.removeLockAsync(playerDoc._id)
+	}).then(function(){
+		return self.allianceDao.getModel().findAsync({
+			"serverId":playerDoc.serverId,
+			"basicInfo.tag":{$regex:tag}
+		}, null, {limit:10})
+	}).then(function(docs){
 		_.each(docs, function(doc){
 			var data = {}
 			data._id = doc._id
@@ -811,7 +820,17 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 	}).then(function(){
 		callback(null, allianceInfos)
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -836,8 +855,14 @@ pro.getNearedAllianceInfos = function(playerId, callback){
 		allianceDoc = doc
 		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockAsync, allianceDoc._id])
 		var funcs = []
-		funcs.push(self.allianceDao.getModel().find({"basicInfo.power":{$lt:allianceDoc.basicInfo.power}}).sort({"basicInfo.power": -1}).limit(3).exec())
-		funcs.push(self.allianceDao.getModel().find({"basicInfo.power":{$gt:allianceDoc.basicInfo.power}}).sort({"basicInfo.power": 1}).limit(3).exec())
+		funcs.push(self.allianceDao.getModel().findAsync({"basicInfo.power":{$lt:allianceDoc.basicInfo.power}}, null, {
+			"sort":{"basicInfo.power":-1},
+			"limit":3
+		}))
+		funcs.push(self.allianceDao.getModel().findAsync({"basicInfo.power":{$gt:allianceDoc.basicInfo.power}}, null, {
+			"sort":{"basicInfo.power":1},
+			"limit":3
+		}))
 		return Promise.all(funcs)
 	}).spread(function(docsSmall, docsBig){
 		var allianceDocs = []
