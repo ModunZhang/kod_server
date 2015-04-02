@@ -233,19 +233,6 @@ describe("PlayerService", function(){
 		//	func()
 		//})
 		//
-		//it("upgradeHouse 升级小屋会造成可用城民小于0", function(done){
-		//	Api.sendChat("resources citizen 0", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeHouse(3, 3, true, function(doc){
-		//			doc.code.should.equal(Errors.noEnoughCitizenToUpgradeHouse.code)
-		//			Api.sendChat("resources citizen 100", function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
 		//it("upgradeHouse 正常升级1", function(done){
 		//	Api.upgradeHouse(3, 3, true, function(doc){
 		//		doc.code.should.equal(200)
@@ -1020,7 +1007,7 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("sellItem 马车数量不足", function(done){
-		//	Api.sellItem("resources", "wood", 100, 1000, function(doc){
+		//	Api.sellItem("resources", "wood", 10, 1000, function(doc){
 		//		doc.code.should.equal(Errors.cartNotEnough.code)
 		//		done()
 		//	})
@@ -1341,29 +1328,6 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("useItem chest_4 道具不存在或数量不足", function(done){
-		//	Api.buyItem("chest_4", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("chest_4", {}, function(doc){
-		//			doc.code.should.equal(Errors.itemNotExist.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem chest_4", function(done){
-		//	Api.buyItem("chest_4", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.buyItem("chestKey_4", 1, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.useItem("chest_4", {}, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
 		//it("useItem vipActive_3", function(done){
 		//	Api.buyItem("vipActive_3", 1, function(doc){
 		//		doc.code.should.equal(200)
@@ -1394,16 +1358,6 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("useItem stoneBonus_1", function(done){
-		//	Api.buyItem("stoneBonus_1", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("stoneBonus_1", {}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
 		//it("useItem stoneBonus_2", function(done){
 		//	Api.buyItem("stoneBonus_2", 1, function(doc){
 		//		doc.code.should.equal(200)
@@ -1418,6 +1372,16 @@ describe("PlayerService", function(){
 		//	Api.buyItem("woodClass_3", 1, function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.useItem("woodClass_3", {}, function(doc){
+		//			doc.code.should.equal(200)
+		//			done()
+		//		})
+		//	})
+		//})
+		//
+		//it("useItem citizenClass_2", function(done){
+		//	Api.buyItem("citizenClass_2", 1, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.useItem("citizenClass_2", {}, function(doc){
 		//			doc.code.should.equal(200)
 		//			done()
 		//		})

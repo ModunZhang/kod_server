@@ -49,33 +49,47 @@ var Utils = module.exports
 
 /**
  * 购买资源
+ * @param playerDoc
  * @param need
  * @param has
  * @returns {{gemUsed: number, totalBuy: {}}}
  */
-Utils.buyResources = function(need, has){
+Utils.buyResources = function(playerDoc, need, has){
+	var self = this
 	var gemUsed = 0
 	var totalBuy = {}
+	var i = null
+	var item = null
 	_.each(need, function(value, key){
 		var config = GemsPayment[key]
-		var required = null
-		if(_.isNumber(has[key])){
-			required = has[key] - value
-		}else{
-			required = -value
-		}
-		required = -required
+		var required = _.isNumber(has[key]) ? value - has[key] : value
 		if(required > 0){
 			var currentBuy = 0
-			while(required > 0){
-				for(var i = config.length; i >= 1; i--){
-					var item = config[i]
-					if(!_.isObject(item)) continue
-					if(item.min < required){
-						gemUsed += item.gem
-						required -= item.resource
-						currentBuy += item.resource
-						break
+			if(_.isEqual(key, "citizen")){
+				var freeCitizenLimit = self.getPlayerFreeCitizenLimit(playerDoc)
+				while(required > 0){
+					var requiredPercent = required / freeCitizenLimit
+					for(i = config.length - 1; i >= 1; i--){
+						item = config[i]
+						if(item.min < requiredPercent){
+							gemUsed += item.gem
+							var citizenBuyed = Math.floor(item.resource * freeCitizenLimit)
+							required -= citizenBuyed
+							currentBuy += citizenBuyed
+							break
+						}
+					}
+				}
+			}else{
+				while(required > 0){
+					for(i = config.length - 1; i >= 1; i--){
+						item = config[i]
+						if(item.min < required){
+							gemUsed += item.gem
+							required -= item.resource
+							currentBuy += item.resource
+							break
+						}
 					}
 				}
 			}
@@ -256,14 +270,14 @@ Utils.getSoldierStarUpgradeRequired = function(soldierName, star){
  */
 Utils.getPlayerHouseUpgradeRequired = function(playerDoc, houseType, houseLevel){
 	var buildingTimeBuff = this.getPlayerProductionTechBuff(playerDoc, "crane")
-	var houseUsed = this.getHouseUsedCitizen(houseType, houseLevel - 1)
+	var houseUsedCitizen = this.getHouseUsedCitizen(houseType, houseLevel - 1)
 	var config = HouseLevelUp[houseType][houseLevel]
 	var required = {
 		resources:{
 			wood:config.wood,
 			stone:config.stone,
 			iron:config.iron,
-			citizen:config.citizen - houseUsed
+			citizen:config.citizen - houseUsedCitizen
 		},
 		materials:{
 			blueprints:config.blueprints,
@@ -532,6 +546,18 @@ Utils.getPlayerCitizen = function(playerDoc){
 	var totalCitizen = playerDoc.resources["citizen"] + output
 	if(totalCitizen - usedCitizen > citizenLimit) totalCitizen = citizenLimit - usedCitizen
 	return totalCitizen
+}
+
+/**
+ * 获取玩家空闲城民上限
+ * @param playerDoc
+ * @returns {number}
+ */
+Utils.getPlayerFreeCitizenLimit = function(playerDoc){
+	var itemCityzenMaxCountBuff = this.getPlayerProductionTechBuff(playerDoc, "beerSupply")
+	var citizenLimit = Math.floor(this.getPlayerCitizenUpLimit(playerDoc) * (1 + itemCityzenMaxCountBuff))
+	var usedCitizen = this.getPlayerUsedCitizen(playerDoc)
+	return citizenLimit - usedCitizen
 }
 
 /**
@@ -1829,7 +1855,7 @@ Utils.createMapVillages = function(mapObjects){
 		})
 		villageMapObjects = CommonUtils.clone(villageMapObjects)
 		villageMapObjects = CommonUtils.shuffle(villageMapObjects)
-		for(var i = 0; i < villageTotalCount; i ++){
+		for(var i = 0; i < villageTotalCount; i++){
 			var villageMapObject = villageMapObjects[i]
 			var village = {
 				id:villageMapObject.id,
@@ -3036,7 +3062,7 @@ Utils.getPlayerMilitaryTechBuilding = function(playerDoc, techName){
  * @returns {*}
  */
 Utils.getPlayerSoldierMilitaryTechBuilding = function(playerDoc, soldierName){
-	var soldierConfig = Soldiers.normal[soldierName+ "_1"]
+	var soldierConfig = Soldiers.normal[soldierName + "_1"]
 	var buildingName = soldierConfig.techBuildingName
 	var buildingConfig = _.find(Buildings.buildings, function(config){
 		return _.isObject(config) && _.isEqual(buildingName, config.name)
@@ -3201,7 +3227,7 @@ Utils.getCasinoTokeNeededInGachaType = function(gachaType){
  * @param excludes
  * @returns {*}
  */
-		Utils.getGachaItemByType = function(gachaType, excludes){
+Utils.getGachaItemByType = function(gachaType, excludes){
 	var SortFunc = function(objects){
 		var totalWeight = 0
 		_.each(objects, function(object){

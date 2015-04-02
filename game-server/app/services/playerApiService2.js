@@ -61,7 +61,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		var preMakeEvent = null
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(makeRequired.makeTime)
-			buyedResources = DataUtils.buyResources({coin:makeRequired.coin}, {})
+			buyedResources = DataUtils.buyResources(playerDoc, {coin:makeRequired.coin}, {})
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
@@ -70,7 +70,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 				var timeRemain = (preMakeEvent.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
-			buyedResources = DataUtils.buyResources({coin:makeRequired.coin}, playerDoc.resources)
+			buyedResources = DataUtils.buyResources(playerDoc, {coin:makeRequired.coin}, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
@@ -163,11 +163,11 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		var preTreatEvent = null
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(treatRequired.treatTime)
-			buyedResources = DataUtils.buyResources(treatRequired.resources, {})
+			buyedResources = DataUtils.buyResources(playerDoc, treatRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
-			buyedResources = DataUtils.buyResources(treatRequired.resources, playerDoc.resources)
+			buyedResources = DataUtils.buyResources(playerDoc, treatRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			if(playerDoc.treatSoldierEvents.length > 0){

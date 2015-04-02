@@ -5,12 +5,12 @@ module.exports = material
 
 material[1] = {
 	index:1,
-	blueprints:5,
-	tools:5,
-	tiles:5,
-	pulley:5,
-	trainingFigure:5,
-	bowTarget:5,
-	saddle:5,
-	ironPart:5
+	blueprints:50,
+	tools:50,
+	tiles:50,
+	pulley:50,
+	trainingFigure:100,
+	bowTarget:100,
+	saddle:100,
+	ironPart:100
 }

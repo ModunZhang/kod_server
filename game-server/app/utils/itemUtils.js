@@ -539,8 +539,16 @@ var Buff = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventServ
  * @return {*}
  */
 var Resource = function(playerDoc, playerData, itemConfig, resourceName){
-	var count = Math.round(itemConfig.effect * 1000)
 	DataUtils.refreshPlayerResources(playerDoc)
+	var count = 0
+	if(_.isEqual(resourceName, "citizen")){
+		var freeCitizenLimit = DataUtils.getPlayerFreeCitizenLimit(playerDoc)
+		var freeCitizen = DataUtils.getPlayerCitizen(playerDoc)
+		var citizenAddCount = Math.round(itemConfig.effect * freeCitizenLimit)
+		count = citizenAddCount + freeCitizen > freeCitizenLimit ? freeCitizenLimit - freeCitizen : citizenAddCount
+	}else{
+		count = Math.round(itemConfig.effect * 1000)
+	}
 	playerDoc.resources[resourceName] += count
 	playerData.push(["resources", playerDoc.resources])
 
@@ -878,18 +886,6 @@ var ItemNameFunctionMap = {
 		var itemConfig = Items.buff.foodBonus_3
 		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 	},
-	coinBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.coinBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	coinBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.coinBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	coinBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.coinBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
 	citizenBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
 		var itemConfig = Items.buff.citizenBonus_1
 		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
@@ -1145,6 +1141,18 @@ var ItemNameFunctionMap = {
 	coinClass_6:function(itemData, playerDoc, playerData){
 		var itemConfig = Items.resource.coinClass_6
 		return Resource(playerDoc, playerData, itemConfig, "coin")
+	},
+	citizenClass_1:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.citizenClass_1
+		return Resource(playerDoc, playerData, itemConfig, "citizen")
+	},
+	citizenClass_2:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.citizenClass_2
+		return Resource(playerDoc, playerData, itemConfig, "citizen")
+	},
+	citizenClass_3:function(itemData, playerDoc, playerData){
+		var itemConfig = Items.resource.citizenClass_3
+		return Resource(playerDoc, playerData, itemConfig, "citizen")
 	},
 	casinoTokenClass_1:function(itemData, playerDoc, playerData){
 		var itemConfig = Items.resource.casinoTokenClass_1

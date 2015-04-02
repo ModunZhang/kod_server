@@ -75,14 +75,14 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
+			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		}else{
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
+			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.buildingMaterials)
@@ -194,14 +194,14 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
+			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
 			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
 		}else{
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
+			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.technologyMaterials)
@@ -314,11 +314,11 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.upgradeTime)
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, {})
+			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
-			buyedResources = DataUtils.buyResources(upgradeRequired.resources, playerDoc.resources)
+			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			preTechEvent = DataUtils.getPlayerMilitaryTechUpgradeEvent(playerDoc, building.type)

@@ -8,10 +8,9 @@ resource["woodClass_1"] = {
 	effect:0.100000,
 	order:1,
 	isSell:false,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:1,
+	sellPriceInAlliance:50,
+	buyPriceInAlliance:50,
 	isAdvancedItem:false
 }
 resource["woodClass_2"] = {
@@ -20,9 +19,8 @@ resource["woodClass_2"] = {
 	order:2,
 	isSell:false,
 	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	sellPriceInAlliance:500,
+	buyPriceInAlliance:500,
 	isAdvancedItem:false
 }
 resource["woodClass_3"] = {
@@ -30,10 +28,9 @@ resource["woodClass_3"] = {
 	effect:10.000000,
 	order:3,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:40,
+	sellPriceInAlliance:2000,
+	buyPriceInAlliance:2000,
 	isAdvancedItem:false
 }
 resource["woodClass_4"] = {
@@ -41,10 +38,9 @@ resource["woodClass_4"] = {
 	effect:50.000000,
 	order:4,
 	isSell:true,
-	price:10,
-	isSellInAlliance:true,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:160,
+	sellPriceInAlliance:8000,
+	buyPriceInAlliance:8000,
 	isAdvancedItem:false
 }
 resource["woodClass_5"] = {
@@ -52,10 +48,9 @@ resource["woodClass_5"] = {
 	effect:150.000000,
 	order:5,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:400,
+	sellPriceInAlliance:20000,
+	buyPriceInAlliance:20000,
 	isAdvancedItem:false
 }
 resource["woodClass_6"] = {
@@ -63,10 +58,9 @@ resource["woodClass_6"] = {
 	effect:500.000000,
 	order:6,
 	isSell:true,
-	price:10,
-	isSellInAlliance:true,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:1200,
+	sellPriceInAlliance:60000,
+	buyPriceInAlliance:60000,
 	isAdvancedItem:false
 }
 resource["woodClass_7"] = {
@@ -74,10 +68,9 @@ resource["woodClass_7"] = {
 	effect:1500.000000,
 	order:7,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:3300,
+	sellPriceInAlliance:165000,
+	buyPriceInAlliance:165000,
 	isAdvancedItem:false
 }
 resource["stoneClass_1"] = {
@@ -85,10 +78,9 @@ resource["stoneClass_1"] = {
 	effect:0.100000,
 	order:8,
 	isSell:false,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:1,
+	sellPriceInAlliance:50,
+	buyPriceInAlliance:50,
 	isAdvancedItem:false
 }
 resource["stoneClass_2"] = {
@@ -97,9 +89,8 @@ resource["stoneClass_2"] = {
 	order:9,
 	isSell:false,
 	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	sellPriceInAlliance:500,
+	buyPriceInAlliance:500,
 	isAdvancedItem:false
 }
 resource["stoneClass_3"] = {
@@ -107,10 +98,9 @@ resource["stoneClass_3"] = {
 	effect:10.000000,
 	order:10,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:40,
+	sellPriceInAlliance:2000,
+	buyPriceInAlliance:2000,
 	isAdvancedItem:false
 }
 resource["stoneClass_4"] = {
@@ -118,10 +108,9 @@ resource["stoneClass_4"] = {
 	effect:50.000000,
 	order:11,
 	isSell:true,
-	price:10,
-	isSellInAlliance:true,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:160,
+	sellPriceInAlliance:8000,
+	buyPriceInAlliance:8000,
 	isAdvancedItem:false
 }
 resource["stoneClass_5"] = {
@@ -129,10 +118,9 @@ resource["stoneClass_5"] = {
 	effect:150.000000,
 	order:12,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:400,
+	sellPriceInAlliance:20000,
+	buyPriceInAlliance:20000,
 	isAdvancedItem:false
 }
 resource["stoneClass_6"] = {
@@ -140,10 +128,9 @@ resource["stoneClass_6"] = {
 	effect:500.000000,
 	order:13,
 	isSell:true,
-	price:10,
-	isSellInAlliance:true,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:1200,
+	sellPriceInAlliance:60000,
+	buyPriceInAlliance:60000,
 	isAdvancedItem:false
 }
 resource["stoneClass_7"] = {
@@ -151,10 +138,9 @@ resource["stoneClass_7"] = {
 	effect:1500.000000,
 	order:14,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:3300,
+	sellPriceInAlliance:165000,
+	buyPriceInAlliance:165000,
 	isAdvancedItem:false
 }
 resource["ironClass_1"] = {
@@ -162,10 +148,9 @@ resource["ironClass_1"] = {
 	effect:0.100000,
 	order:15,
 	isSell:false,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:1,
+	sellPriceInAlliance:50,
+	buyPriceInAlliance:50,
 	isAdvancedItem:false
 }
 resource["ironClass_2"] = {
@@ -174,9 +159,8 @@ resource["ironClass_2"] = {
 	order:16,
 	isSell:false,
 	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	sellPriceInAlliance:500,
+	buyPriceInAlliance:500,
 	isAdvancedItem:false
 }
 resource["ironClass_3"] = {
@@ -184,10 +168,9 @@ resource["ironClass_3"] = {
 	effect:10.000000,
 	order:17,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:40,
+	sellPriceInAlliance:2000,
+	buyPriceInAlliance:2000,
 	isAdvancedItem:false
 }
 resource["ironClass_4"] = {
@@ -195,10 +178,9 @@ resource["ironClass_4"] = {
 	effect:50.000000,
 	order:18,
 	isSell:true,
-	price:10,
-	isSellInAlliance:true,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:160,
+	sellPriceInAlliance:8000,
+	buyPriceInAlliance:8000,
 	isAdvancedItem:false
 }
 resource["ironClass_5"] = {
@@ -206,10 +188,9 @@ resource["ironClass_5"] = {
 	effect:150.000000,
 	order:19,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:400,
+	sellPriceInAlliance:20000,
+	buyPriceInAlliance:20000,
 	isAdvancedItem:false
 }
 resource["ironClass_6"] = {
@@ -217,10 +198,9 @@ resource["ironClass_6"] = {
 	effect:500.000000,
 	order:20,
 	isSell:true,
-	price:10,
-	isSellInAlliance:true,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:1200,
+	sellPriceInAlliance:60000,
+	buyPriceInAlliance:60000,
 	isAdvancedItem:false
 }
 resource["ironClass_7"] = {
@@ -228,10 +208,9 @@ resource["ironClass_7"] = {
 	effect:1500.000000,
 	order:21,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:3300,
+	sellPriceInAlliance:165000,
+	buyPriceInAlliance:165000,
 	isAdvancedItem:false
 }
 resource["foodClass_1"] = {
@@ -239,10 +218,9 @@ resource["foodClass_1"] = {
 	effect:0.300000,
 	order:22,
 	isSell:false,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:1,
+	sellPriceInAlliance:50,
+	buyPriceInAlliance:50,
 	isAdvancedItem:false
 }
 resource["foodClass_2"] = {
@@ -251,9 +229,8 @@ resource["foodClass_2"] = {
 	order:23,
 	isSell:false,
 	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	sellPriceInAlliance:500,
+	buyPriceInAlliance:500,
 	isAdvancedItem:false
 }
 resource["foodClass_3"] = {
@@ -261,10 +238,9 @@ resource["foodClass_3"] = {
 	effect:30.000000,
 	order:24,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:40,
+	sellPriceInAlliance:2000,
+	buyPriceInAlliance:2000,
 	isAdvancedItem:false
 }
 resource["foodClass_4"] = {
@@ -272,10 +248,9 @@ resource["foodClass_4"] = {
 	effect:150.000000,
 	order:25,
 	isSell:true,
-	price:10,
-	isSellInAlliance:true,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:160,
+	sellPriceInAlliance:8000,
+	buyPriceInAlliance:8000,
 	isAdvancedItem:false
 }
 resource["foodClass_5"] = {
@@ -283,10 +258,9 @@ resource["foodClass_5"] = {
 	effect:500.000000,
 	order:26,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:400,
+	sellPriceInAlliance:20000,
+	buyPriceInAlliance:20000,
 	isAdvancedItem:false
 }
 resource["foodClass_6"] = {
@@ -294,10 +268,9 @@ resource["foodClass_6"] = {
 	effect:1500.000000,
 	order:27,
 	isSell:true,
-	price:10,
-	isSellInAlliance:true,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:1200,
+	sellPriceInAlliance:60000,
+	buyPriceInAlliance:60000,
 	isAdvancedItem:false
 }
 resource["foodClass_7"] = {
@@ -305,43 +278,39 @@ resource["foodClass_7"] = {
 	effect:4500.000000,
 	order:28,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:3300,
+	sellPriceInAlliance:165000,
+	buyPriceInAlliance:165000,
 	isAdvancedItem:false
 }
 resource["coinClass_1"] = {
 	name:"coinClass_1",
-	effect:0.300000,
+	effect:0.100000,
 	order:29,
 	isSell:false,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:2,
+	sellPriceInAlliance:100,
+	buyPriceInAlliance:100,
 	isAdvancedItem:false
 }
 resource["coinClass_2"] = {
 	name:"coinClass_2",
-	effect:3.000000,
+	effect:2.000000,
 	order:30,
-	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	isSell:false,
+	price:20,
+	sellPriceInAlliance:1000,
+	buyPriceInAlliance:1000,
 	isAdvancedItem:false
 }
 resource["coinClass_3"] = {
 	name:"coinClass_3",
-	effect:15.000000,
+	effect:10.000000,
 	order:31,
 	isSell:true,
-	price:10,
-	isSellInAlliance:true,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:80,
+	sellPriceInAlliance:4000,
+	buyPriceInAlliance:4000,
 	isAdvancedItem:false
 }
 resource["coinClass_4"] = {
@@ -349,75 +318,108 @@ resource["coinClass_4"] = {
 	effect:50.000000,
 	order:32,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:320,
+	sellPriceInAlliance:16000,
+	buyPriceInAlliance:16000,
 	isAdvancedItem:false
 }
 resource["coinClass_5"] = {
 	name:"coinClass_5",
-	effect:200.000000,
+	effect:150.000000,
 	order:33,
 	isSell:true,
-	price:10,
-	isSellInAlliance:true,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:800,
+	sellPriceInAlliance:40000,
+	buyPriceInAlliance:40000,
 	isAdvancedItem:false
 }
 resource["coinClass_6"] = {
 	name:"coinClass_6",
-	effect:600.000000,
+	effect:500.000000,
 	order:34,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:2400,
+	sellPriceInAlliance:120000,
+	buyPriceInAlliance:120000,
+	isAdvancedItem:false
+}
+resource["coinClass_7"] = {
+	name:"coinClass_7",
+	effect:1500.000000,
+	order:35,
+	isSell:true,
+	price:6600,
+	sellPriceInAlliance:330000,
+	buyPriceInAlliance:330000,
+	isAdvancedItem:false
+}
+resource["citizenClass_1"] = {
+	name:"citizenClass_1",
+	effect:0.200000,
+	order:36,
+	isSell:true,
+	price:155,
+	sellPriceInAlliance:7750,
+	buyPriceInAlliance:7750,
+	isAdvancedItem:false
+}
+resource["citizenClass_2"] = {
+	name:"citizenClass_2",
+	effect:0.500000,
+	order:37,
+	isSell:true,
+	price:300,
+	sellPriceInAlliance:15000,
+	buyPriceInAlliance:15000,
+	isAdvancedItem:false
+}
+resource["citizenClass_3"] = {
+	name:"citizenClass_3",
+	effect:1.000000,
+	order:38,
+	isSell:true,
+	price:600,
+	sellPriceInAlliance:30000,
+	buyPriceInAlliance:30000,
 	isAdvancedItem:false
 }
 resource["casinoTokenClass_1"] = {
 	name:"casinoTokenClass_1",
 	effect:7.000000,
-	order:35,
+	order:39,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:200,
+	sellPriceInAlliance:10000,
+	buyPriceInAlliance:10000,
 	isAdvancedItem:false
 }
 resource["casinoTokenClass_2"] = {
 	name:"casinoTokenClass_2",
 	effect:30.000000,
-	order:36,
+	order:40,
 	isSell:true,
-	price:10,
-	isSellInAlliance:true,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:750,
+	sellPriceInAlliance:37500,
+	buyPriceInAlliance:37500,
 	isAdvancedItem:false
 }
 resource["casinoTokenClass_3"] = {
 	name:"casinoTokenClass_3",
 	effect:90.000000,
-	order:37,
+	order:41,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:1800,
+	sellPriceInAlliance:90000,
+	buyPriceInAlliance:90000,
 	isAdvancedItem:false
 }
 resource["casinoTokenClass_4"] = {
 	name:"casinoTokenClass_4",
 	effect:250.000000,
-	order:38,
+	order:42,
 	isSell:true,
-	price:10,
-	isSellInAlliance:false,
-	sellPriceInAlliance:200,
-	buyPriceInAlliance:200,
+	price:4000,
+	sellPriceInAlliance:200000,
+	buyPriceInAlliance:200000,
 	isAdvancedItem:false
 }
