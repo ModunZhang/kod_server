@@ -68,14 +68,21 @@ life.afterStartAll = function(app){
 	var addTimeEventAsync = Promise.promisify(app.rpc.event.eventRemote.addTimeEvent.toServer)
 	var eventFuncs = []
 
-	var activePlayersEvents = function(playerIds){
+	var getServerStopInterval = function(lastStopTime, lastStartTime){
+		if(!_.isNumber(lastStopTime)) return 0
+		if(!_.isNumber(lastStartTime) || lastStartTime >= lastStopTime) return 0
+		return Date.now() - lastStopTime
+	}
+
+	var activePlayersEvents = function(playerIds, serverStopInterval){
 		if(playerIds.length == 0) return Promise.resolve()
 		id = playerIds.shift()
 		return playerDao.findAsync(id).then(function(playerDoc){
 			var key = Consts.TimeEventType.Player + ":" + playerDoc._id
 			_.each(playerDoc.buildingEvents, function(event){
-				event.finishTime = now + (event.finishTime - event.startTime)
-				event.startTime = now
+				event.startTime += serverStopInterval
+				event.finishTime += serverStopInterval
+				if(LogicUtils.willFinished(event.finishTime))
 				eventFuncs.push(addTimeEventAsync(eventServerId, key, "buildingEvents", event.id, event.finishTime - event.startTime))
 			})
 			_.each(playerDoc.houseEvents, function(event){
