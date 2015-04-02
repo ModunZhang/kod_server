@@ -818,7 +818,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve)
 
 			var soldiers = fightData.soldiers
-			soldiers = _.isElement(soldiers) ? [] : soldiers
+			soldiers = _.isEmpty(soldiers) ? [] : soldiers
 			if(!_.isArray(soldiers)) return Promise.reject(new Error("fightData 不合法"))
 
 			var name = null
