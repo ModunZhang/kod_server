@@ -734,7 +734,7 @@ militaryTech[55] = {
 militaryTech[56] = {
 	id:56,
 	index:1,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:2,
 	wood:480,
 	stone:480,
@@ -747,7 +747,7 @@ militaryTech[56] = {
 militaryTech[57] = {
 	id:57,
 	index:2,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:3,
 	wood:1080,
 	stone:1080,
@@ -760,7 +760,7 @@ militaryTech[57] = {
 militaryTech[58] = {
 	id:58,
 	index:3,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:4,
 	wood:1920,
 	stone:1920,
@@ -773,7 +773,7 @@ militaryTech[58] = {
 militaryTech[59] = {
 	id:59,
 	index:4,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:5,
 	wood:3000,
 	stone:3000,
@@ -786,7 +786,7 @@ militaryTech[59] = {
 militaryTech[60] = {
 	id:60,
 	index:5,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:6,
 	wood:4320,
 	stone:4320,
@@ -799,7 +799,7 @@ militaryTech[60] = {
 militaryTech[61] = {
 	id:61,
 	index:6,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:7,
 	wood:5880,
 	stone:5880,
@@ -812,7 +812,7 @@ militaryTech[61] = {
 militaryTech[62] = {
 	id:62,
 	index:7,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:8,
 	wood:7680,
 	stone:7680,
@@ -825,7 +825,7 @@ militaryTech[62] = {
 militaryTech[63] = {
 	id:63,
 	index:8,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:9,
 	wood:9720,
 	stone:9720,
@@ -838,7 +838,7 @@ militaryTech[63] = {
 militaryTech[64] = {
 	id:64,
 	index:9,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:10,
 	wood:12000,
 	stone:12000,
@@ -851,7 +851,7 @@ militaryTech[64] = {
 militaryTech[65] = {
 	id:65,
 	index:10,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:11,
 	wood:14520,
 	stone:14520,
@@ -864,7 +864,7 @@ militaryTech[65] = {
 militaryTech[66] = {
 	id:66,
 	index:11,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:12,
 	wood:17280,
 	stone:17280,
@@ -877,7 +877,7 @@ militaryTech[66] = {
 militaryTech[67] = {
 	id:67,
 	index:12,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:13,
 	wood:20280,
 	stone:20280,
@@ -890,7 +890,7 @@ militaryTech[67] = {
 militaryTech[68] = {
 	id:68,
 	index:13,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:14,
 	wood:23520,
 	stone:23520,
@@ -903,7 +903,7 @@ militaryTech[68] = {
 militaryTech[69] = {
 	id:69,
 	index:14,
-	name:"archer_infantry",
+	name:"infantry_hpAdd",
 	level:15,
 	wood:27000,
 	stone:27000,
@@ -916,7 +916,7 @@ militaryTech[69] = {
 militaryTech[70] = {
 	id:70,
 	index:1,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:2,
 	wood:480,
 	stone:480,
@@ -929,7 +929,7 @@ militaryTech[70] = {
 militaryTech[71] = {
 	id:71,
 	index:2,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:3,
 	wood:1080,
 	stone:1080,
@@ -942,7 +942,7 @@ militaryTech[71] = {
 militaryTech[72] = {
 	id:72,
 	index:3,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:4,
 	wood:1920,
 	stone:1920,
@@ -955,7 +955,7 @@ militaryTech[72] = {
 militaryTech[73] = {
 	id:73,
 	index:4,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:5,
 	wood:3000,
 	stone:3000,
@@ -968,7 +968,7 @@ militaryTech[73] = {
 militaryTech[74] = {
 	id:74,
 	index:5,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:6,
 	wood:4320,
 	stone:4320,
@@ -981,7 +981,7 @@ militaryTech[74] = {
 militaryTech[75] = {
 	id:75,
 	index:6,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:7,
 	wood:5880,
 	stone:5880,
@@ -994,7 +994,7 @@ militaryTech[75] = {
 militaryTech[76] = {
 	id:76,
 	index:7,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:8,
 	wood:7680,
 	stone:7680,
@@ -1007,7 +1007,7 @@ militaryTech[76] = {
 militaryTech[77] = {
 	id:77,
 	index:8,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:9,
 	wood:9720,
 	stone:9720,
@@ -1020,7 +1020,7 @@ militaryTech[77] = {
 militaryTech[78] = {
 	id:78,
 	index:9,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:10,
 	wood:12000,
 	stone:12000,
@@ -1033,7 +1033,7 @@ militaryTech[78] = {
 militaryTech[79] = {
 	id:79,
 	index:10,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:11,
 	wood:14520,
 	stone:14520,
@@ -1046,7 +1046,7 @@ militaryTech[79] = {
 militaryTech[80] = {
 	id:80,
 	index:11,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:12,
 	wood:17280,
 	stone:17280,
@@ -1059,7 +1059,7 @@ militaryTech[80] = {
 militaryTech[81] = {
 	id:81,
 	index:12,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:13,
 	wood:20280,
 	stone:20280,
@@ -1072,7 +1072,7 @@ militaryTech[81] = {
 militaryTech[82] = {
 	id:82,
 	index:13,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:14,
 	wood:23520,
 	stone:23520,
@@ -1085,7 +1085,7 @@ militaryTech[82] = {
 militaryTech[83] = {
 	id:83,
 	index:14,
-	name:"archer_archer",
+	name:"archer_infantry",
 	level:15,
 	wood:27000,
 	stone:27000,
@@ -1098,7 +1098,7 @@ militaryTech[83] = {
 militaryTech[84] = {
 	id:84,
 	index:1,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:2,
 	wood:480,
 	stone:480,
@@ -1111,7 +1111,7 @@ militaryTech[84] = {
 militaryTech[85] = {
 	id:85,
 	index:2,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:3,
 	wood:1080,
 	stone:1080,
@@ -1124,7 +1124,7 @@ militaryTech[85] = {
 militaryTech[86] = {
 	id:86,
 	index:3,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:4,
 	wood:1920,
 	stone:1920,
@@ -1137,7 +1137,7 @@ militaryTech[86] = {
 militaryTech[87] = {
 	id:87,
 	index:4,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:5,
 	wood:3000,
 	stone:3000,
@@ -1150,7 +1150,7 @@ militaryTech[87] = {
 militaryTech[88] = {
 	id:88,
 	index:5,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:6,
 	wood:4320,
 	stone:4320,
@@ -1163,7 +1163,7 @@ militaryTech[88] = {
 militaryTech[89] = {
 	id:89,
 	index:6,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:7,
 	wood:5880,
 	stone:5880,
@@ -1176,7 +1176,7 @@ militaryTech[89] = {
 militaryTech[90] = {
 	id:90,
 	index:7,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:8,
 	wood:7680,
 	stone:7680,
@@ -1189,7 +1189,7 @@ militaryTech[90] = {
 militaryTech[91] = {
 	id:91,
 	index:8,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:9,
 	wood:9720,
 	stone:9720,
@@ -1202,7 +1202,7 @@ militaryTech[91] = {
 militaryTech[92] = {
 	id:92,
 	index:9,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:10,
 	wood:12000,
 	stone:12000,
@@ -1215,7 +1215,7 @@ militaryTech[92] = {
 militaryTech[93] = {
 	id:93,
 	index:10,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:11,
 	wood:14520,
 	stone:14520,
@@ -1228,7 +1228,7 @@ militaryTech[93] = {
 militaryTech[94] = {
 	id:94,
 	index:11,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:12,
 	wood:17280,
 	stone:17280,
@@ -1241,7 +1241,7 @@ militaryTech[94] = {
 militaryTech[95] = {
 	id:95,
 	index:12,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:13,
 	wood:20280,
 	stone:20280,
@@ -1254,7 +1254,7 @@ militaryTech[95] = {
 militaryTech[96] = {
 	id:96,
 	index:13,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:14,
 	wood:23520,
 	stone:23520,
@@ -1267,7 +1267,7 @@ militaryTech[96] = {
 militaryTech[97] = {
 	id:97,
 	index:14,
-	name:"archer_cavalry",
+	name:"archer_archer",
 	level:15,
 	wood:27000,
 	stone:27000,
@@ -1280,7 +1280,7 @@ militaryTech[97] = {
 militaryTech[98] = {
 	id:98,
 	index:1,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:2,
 	wood:480,
 	stone:480,
@@ -1293,7 +1293,7 @@ militaryTech[98] = {
 militaryTech[99] = {
 	id:99,
 	index:2,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:3,
 	wood:1080,
 	stone:1080,
@@ -1306,7 +1306,7 @@ militaryTech[99] = {
 militaryTech[100] = {
 	id:100,
 	index:3,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:4,
 	wood:1920,
 	stone:1920,
@@ -1319,7 +1319,7 @@ militaryTech[100] = {
 militaryTech[101] = {
 	id:101,
 	index:4,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:5,
 	wood:3000,
 	stone:3000,
@@ -1332,7 +1332,7 @@ militaryTech[101] = {
 militaryTech[102] = {
 	id:102,
 	index:5,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:6,
 	wood:4320,
 	stone:4320,
@@ -1345,7 +1345,7 @@ militaryTech[102] = {
 militaryTech[103] = {
 	id:103,
 	index:6,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:7,
 	wood:5880,
 	stone:5880,
@@ -1358,7 +1358,7 @@ militaryTech[103] = {
 militaryTech[104] = {
 	id:104,
 	index:7,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:8,
 	wood:7680,
 	stone:7680,
@@ -1371,7 +1371,7 @@ militaryTech[104] = {
 militaryTech[105] = {
 	id:105,
 	index:8,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:9,
 	wood:9720,
 	stone:9720,
@@ -1384,7 +1384,7 @@ militaryTech[105] = {
 militaryTech[106] = {
 	id:106,
 	index:9,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:10,
 	wood:12000,
 	stone:12000,
@@ -1397,7 +1397,7 @@ militaryTech[106] = {
 militaryTech[107] = {
 	id:107,
 	index:10,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:11,
 	wood:14520,
 	stone:14520,
@@ -1410,7 +1410,7 @@ militaryTech[107] = {
 militaryTech[108] = {
 	id:108,
 	index:11,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:12,
 	wood:17280,
 	stone:17280,
@@ -1423,7 +1423,7 @@ militaryTech[108] = {
 militaryTech[109] = {
 	id:109,
 	index:12,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:13,
 	wood:20280,
 	stone:20280,
@@ -1436,7 +1436,7 @@ militaryTech[109] = {
 militaryTech[110] = {
 	id:110,
 	index:13,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:14,
 	wood:23520,
 	stone:23520,
@@ -1449,7 +1449,7 @@ militaryTech[110] = {
 militaryTech[111] = {
 	id:111,
 	index:14,
-	name:"archer_siege",
+	name:"archer_cavalry",
 	level:15,
 	wood:27000,
 	stone:27000,
@@ -1462,7 +1462,7 @@ militaryTech[111] = {
 militaryTech[112] = {
 	id:112,
 	index:1,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:2,
 	wood:480,
 	stone:480,
@@ -1475,7 +1475,7 @@ militaryTech[112] = {
 militaryTech[113] = {
 	id:113,
 	index:2,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:3,
 	wood:1080,
 	stone:1080,
@@ -1488,7 +1488,7 @@ militaryTech[113] = {
 militaryTech[114] = {
 	id:114,
 	index:3,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:4,
 	wood:1920,
 	stone:1920,
@@ -1501,7 +1501,7 @@ militaryTech[114] = {
 militaryTech[115] = {
 	id:115,
 	index:4,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:5,
 	wood:3000,
 	stone:3000,
@@ -1514,7 +1514,7 @@ militaryTech[115] = {
 militaryTech[116] = {
 	id:116,
 	index:5,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:6,
 	wood:4320,
 	stone:4320,
@@ -1527,7 +1527,7 @@ militaryTech[116] = {
 militaryTech[117] = {
 	id:117,
 	index:6,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:7,
 	wood:5880,
 	stone:5880,
@@ -1540,7 +1540,7 @@ militaryTech[117] = {
 militaryTech[118] = {
 	id:118,
 	index:7,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:8,
 	wood:7680,
 	stone:7680,
@@ -1553,7 +1553,7 @@ militaryTech[118] = {
 militaryTech[119] = {
 	id:119,
 	index:8,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:9,
 	wood:9720,
 	stone:9720,
@@ -1566,7 +1566,7 @@ militaryTech[119] = {
 militaryTech[120] = {
 	id:120,
 	index:9,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:10,
 	wood:12000,
 	stone:12000,
@@ -1579,7 +1579,7 @@ militaryTech[120] = {
 militaryTech[121] = {
 	id:121,
 	index:10,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:11,
 	wood:14520,
 	stone:14520,
@@ -1592,7 +1592,7 @@ militaryTech[121] = {
 militaryTech[122] = {
 	id:122,
 	index:11,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:12,
 	wood:17280,
 	stone:17280,
@@ -1605,7 +1605,7 @@ militaryTech[122] = {
 militaryTech[123] = {
 	id:123,
 	index:12,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:13,
 	wood:20280,
 	stone:20280,
@@ -1618,7 +1618,7 @@ militaryTech[123] = {
 militaryTech[124] = {
 	id:124,
 	index:13,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:14,
 	wood:23520,
 	stone:23520,
@@ -1631,7 +1631,7 @@ militaryTech[124] = {
 militaryTech[125] = {
 	id:125,
 	index:14,
-	name:"cavalry_infantry",
+	name:"archer_siege",
 	level:15,
 	wood:27000,
 	stone:27000,
@@ -1644,7 +1644,7 @@ militaryTech[125] = {
 militaryTech[126] = {
 	id:126,
 	index:1,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:2,
 	wood:480,
 	stone:480,
@@ -1657,7 +1657,7 @@ militaryTech[126] = {
 militaryTech[127] = {
 	id:127,
 	index:2,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:3,
 	wood:1080,
 	stone:1080,
@@ -1670,7 +1670,7 @@ militaryTech[127] = {
 militaryTech[128] = {
 	id:128,
 	index:3,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:4,
 	wood:1920,
 	stone:1920,
@@ -1683,7 +1683,7 @@ militaryTech[128] = {
 militaryTech[129] = {
 	id:129,
 	index:4,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:5,
 	wood:3000,
 	stone:3000,
@@ -1696,7 +1696,7 @@ militaryTech[129] = {
 militaryTech[130] = {
 	id:130,
 	index:5,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:6,
 	wood:4320,
 	stone:4320,
@@ -1709,7 +1709,7 @@ militaryTech[130] = {
 militaryTech[131] = {
 	id:131,
 	index:6,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:7,
 	wood:5880,
 	stone:5880,
@@ -1722,7 +1722,7 @@ militaryTech[131] = {
 militaryTech[132] = {
 	id:132,
 	index:7,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:8,
 	wood:7680,
 	stone:7680,
@@ -1735,7 +1735,7 @@ militaryTech[132] = {
 militaryTech[133] = {
 	id:133,
 	index:8,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:9,
 	wood:9720,
 	stone:9720,
@@ -1748,7 +1748,7 @@ militaryTech[133] = {
 militaryTech[134] = {
 	id:134,
 	index:9,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:10,
 	wood:12000,
 	stone:12000,
@@ -1761,7 +1761,7 @@ militaryTech[134] = {
 militaryTech[135] = {
 	id:135,
 	index:10,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:11,
 	wood:14520,
 	stone:14520,
@@ -1774,7 +1774,7 @@ militaryTech[135] = {
 militaryTech[136] = {
 	id:136,
 	index:11,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:12,
 	wood:17280,
 	stone:17280,
@@ -1787,7 +1787,7 @@ militaryTech[136] = {
 militaryTech[137] = {
 	id:137,
 	index:12,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:13,
 	wood:20280,
 	stone:20280,
@@ -1800,7 +1800,7 @@ militaryTech[137] = {
 militaryTech[138] = {
 	id:138,
 	index:13,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:14,
 	wood:23520,
 	stone:23520,
@@ -1813,7 +1813,7 @@ militaryTech[138] = {
 militaryTech[139] = {
 	id:139,
 	index:14,
-	name:"cavalry_archer",
+	name:"archer_hpAdd",
 	level:15,
 	wood:27000,
 	stone:27000,
@@ -1826,7 +1826,7 @@ militaryTech[139] = {
 militaryTech[140] = {
 	id:140,
 	index:1,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:2,
 	wood:480,
 	stone:480,
@@ -1839,7 +1839,7 @@ militaryTech[140] = {
 militaryTech[141] = {
 	id:141,
 	index:2,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:3,
 	wood:1080,
 	stone:1080,
@@ -1852,7 +1852,7 @@ militaryTech[141] = {
 militaryTech[142] = {
 	id:142,
 	index:3,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:4,
 	wood:1920,
 	stone:1920,
@@ -1865,7 +1865,7 @@ militaryTech[142] = {
 militaryTech[143] = {
 	id:143,
 	index:4,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:5,
 	wood:3000,
 	stone:3000,
@@ -1878,7 +1878,7 @@ militaryTech[143] = {
 militaryTech[144] = {
 	id:144,
 	index:5,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:6,
 	wood:4320,
 	stone:4320,
@@ -1891,7 +1891,7 @@ militaryTech[144] = {
 militaryTech[145] = {
 	id:145,
 	index:6,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:7,
 	wood:5880,
 	stone:5880,
@@ -1904,7 +1904,7 @@ militaryTech[145] = {
 militaryTech[146] = {
 	id:146,
 	index:7,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:8,
 	wood:7680,
 	stone:7680,
@@ -1917,7 +1917,7 @@ militaryTech[146] = {
 militaryTech[147] = {
 	id:147,
 	index:8,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:9,
 	wood:9720,
 	stone:9720,
@@ -1930,7 +1930,7 @@ militaryTech[147] = {
 militaryTech[148] = {
 	id:148,
 	index:9,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:10,
 	wood:12000,
 	stone:12000,
@@ -1943,7 +1943,7 @@ militaryTech[148] = {
 militaryTech[149] = {
 	id:149,
 	index:10,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:11,
 	wood:14520,
 	stone:14520,
@@ -1956,7 +1956,7 @@ militaryTech[149] = {
 militaryTech[150] = {
 	id:150,
 	index:11,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:12,
 	wood:17280,
 	stone:17280,
@@ -1969,7 +1969,7 @@ militaryTech[150] = {
 militaryTech[151] = {
 	id:151,
 	index:12,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:13,
 	wood:20280,
 	stone:20280,
@@ -1982,7 +1982,7 @@ militaryTech[151] = {
 militaryTech[152] = {
 	id:152,
 	index:13,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:14,
 	wood:23520,
 	stone:23520,
@@ -1995,7 +1995,7 @@ militaryTech[152] = {
 militaryTech[153] = {
 	id:153,
 	index:14,
-	name:"cavalry_cavalry",
+	name:"cavalry_infantry",
 	level:15,
 	wood:27000,
 	stone:27000,
@@ -2008,7 +2008,7 @@ militaryTech[153] = {
 militaryTech[154] = {
 	id:154,
 	index:1,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:2,
 	wood:480,
 	stone:480,
@@ -2021,7 +2021,7 @@ militaryTech[154] = {
 militaryTech[155] = {
 	id:155,
 	index:2,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:3,
 	wood:1080,
 	stone:1080,
@@ -2034,7 +2034,7 @@ militaryTech[155] = {
 militaryTech[156] = {
 	id:156,
 	index:3,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:4,
 	wood:1920,
 	stone:1920,
@@ -2047,7 +2047,7 @@ militaryTech[156] = {
 militaryTech[157] = {
 	id:157,
 	index:4,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:5,
 	wood:3000,
 	stone:3000,
@@ -2060,7 +2060,7 @@ militaryTech[157] = {
 militaryTech[158] = {
 	id:158,
 	index:5,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:6,
 	wood:4320,
 	stone:4320,
@@ -2073,7 +2073,7 @@ militaryTech[158] = {
 militaryTech[159] = {
 	id:159,
 	index:6,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:7,
 	wood:5880,
 	stone:5880,
@@ -2086,7 +2086,7 @@ militaryTech[159] = {
 militaryTech[160] = {
 	id:160,
 	index:7,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:8,
 	wood:7680,
 	stone:7680,
@@ -2099,7 +2099,7 @@ militaryTech[160] = {
 militaryTech[161] = {
 	id:161,
 	index:8,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:9,
 	wood:9720,
 	stone:9720,
@@ -2112,7 +2112,7 @@ militaryTech[161] = {
 militaryTech[162] = {
 	id:162,
 	index:9,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:10,
 	wood:12000,
 	stone:12000,
@@ -2125,7 +2125,7 @@ militaryTech[162] = {
 militaryTech[163] = {
 	id:163,
 	index:10,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:11,
 	wood:14520,
 	stone:14520,
@@ -2138,7 +2138,7 @@ militaryTech[163] = {
 militaryTech[164] = {
 	id:164,
 	index:11,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:12,
 	wood:17280,
 	stone:17280,
@@ -2151,7 +2151,7 @@ militaryTech[164] = {
 militaryTech[165] = {
 	id:165,
 	index:12,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:13,
 	wood:20280,
 	stone:20280,
@@ -2164,7 +2164,7 @@ militaryTech[165] = {
 militaryTech[166] = {
 	id:166,
 	index:13,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:14,
 	wood:23520,
 	stone:23520,
@@ -2177,7 +2177,7 @@ militaryTech[166] = {
 militaryTech[167] = {
 	id:167,
 	index:14,
-	name:"cavalry_siege",
+	name:"cavalry_archer",
 	level:15,
 	wood:27000,
 	stone:27000,
@@ -2190,7 +2190,7 @@ militaryTech[167] = {
 militaryTech[168] = {
 	id:168,
 	index:1,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:2,
 	wood:480,
 	stone:480,
@@ -2203,7 +2203,7 @@ militaryTech[168] = {
 militaryTech[169] = {
 	id:169,
 	index:2,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:3,
 	wood:1080,
 	stone:1080,
@@ -2216,7 +2216,7 @@ militaryTech[169] = {
 militaryTech[170] = {
 	id:170,
 	index:3,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:4,
 	wood:1920,
 	stone:1920,
@@ -2229,7 +2229,7 @@ militaryTech[170] = {
 militaryTech[171] = {
 	id:171,
 	index:4,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:5,
 	wood:3000,
 	stone:3000,
@@ -2242,7 +2242,7 @@ militaryTech[171] = {
 militaryTech[172] = {
 	id:172,
 	index:5,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:6,
 	wood:4320,
 	stone:4320,
@@ -2255,7 +2255,7 @@ militaryTech[172] = {
 militaryTech[173] = {
 	id:173,
 	index:6,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:7,
 	wood:5880,
 	stone:5880,
@@ -2268,7 +2268,7 @@ militaryTech[173] = {
 militaryTech[174] = {
 	id:174,
 	index:7,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:8,
 	wood:7680,
 	stone:7680,
@@ -2281,7 +2281,7 @@ militaryTech[174] = {
 militaryTech[175] = {
 	id:175,
 	index:8,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:9,
 	wood:9720,
 	stone:9720,
@@ -2294,7 +2294,7 @@ militaryTech[175] = {
 militaryTech[176] = {
 	id:176,
 	index:9,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:10,
 	wood:12000,
 	stone:12000,
@@ -2307,7 +2307,7 @@ militaryTech[176] = {
 militaryTech[177] = {
 	id:177,
 	index:10,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:11,
 	wood:14520,
 	stone:14520,
@@ -2320,7 +2320,7 @@ militaryTech[177] = {
 militaryTech[178] = {
 	id:178,
 	index:11,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:12,
 	wood:17280,
 	stone:17280,
@@ -2333,7 +2333,7 @@ militaryTech[178] = {
 militaryTech[179] = {
 	id:179,
 	index:12,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:13,
 	wood:20280,
 	stone:20280,
@@ -2346,7 +2346,7 @@ militaryTech[179] = {
 militaryTech[180] = {
 	id:180,
 	index:13,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:14,
 	wood:23520,
 	stone:23520,
@@ -2359,7 +2359,7 @@ militaryTech[180] = {
 militaryTech[181] = {
 	id:181,
 	index:14,
-	name:"siege_infantry",
+	name:"cavalry_cavalry",
 	level:15,
 	wood:27000,
 	stone:27000,
@@ -2372,7 +2372,7 @@ militaryTech[181] = {
 militaryTech[182] = {
 	id:182,
 	index:1,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:2,
 	wood:480,
 	stone:480,
@@ -2385,7 +2385,7 @@ militaryTech[182] = {
 militaryTech[183] = {
 	id:183,
 	index:2,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:3,
 	wood:1080,
 	stone:1080,
@@ -2398,7 +2398,7 @@ militaryTech[183] = {
 militaryTech[184] = {
 	id:184,
 	index:3,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:4,
 	wood:1920,
 	stone:1920,
@@ -2411,7 +2411,7 @@ militaryTech[184] = {
 militaryTech[185] = {
 	id:185,
 	index:4,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:5,
 	wood:3000,
 	stone:3000,
@@ -2424,7 +2424,7 @@ militaryTech[185] = {
 militaryTech[186] = {
 	id:186,
 	index:5,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:6,
 	wood:4320,
 	stone:4320,
@@ -2437,7 +2437,7 @@ militaryTech[186] = {
 militaryTech[187] = {
 	id:187,
 	index:6,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:7,
 	wood:5880,
 	stone:5880,
@@ -2450,7 +2450,7 @@ militaryTech[187] = {
 militaryTech[188] = {
 	id:188,
 	index:7,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:8,
 	wood:7680,
 	stone:7680,
@@ -2463,7 +2463,7 @@ militaryTech[188] = {
 militaryTech[189] = {
 	id:189,
 	index:8,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:9,
 	wood:9720,
 	stone:9720,
@@ -2476,7 +2476,7 @@ militaryTech[189] = {
 militaryTech[190] = {
 	id:190,
 	index:9,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:10,
 	wood:12000,
 	stone:12000,
@@ -2489,7 +2489,7 @@ militaryTech[190] = {
 militaryTech[191] = {
 	id:191,
 	index:10,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:11,
 	wood:14520,
 	stone:14520,
@@ -2502,7 +2502,7 @@ militaryTech[191] = {
 militaryTech[192] = {
 	id:192,
 	index:11,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:12,
 	wood:17280,
 	stone:17280,
@@ -2515,7 +2515,7 @@ militaryTech[192] = {
 militaryTech[193] = {
 	id:193,
 	index:12,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:13,
 	wood:20280,
 	stone:20280,
@@ -2528,7 +2528,7 @@ militaryTech[193] = {
 militaryTech[194] = {
 	id:194,
 	index:13,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:14,
 	wood:23520,
 	stone:23520,
@@ -2541,7 +2541,7 @@ militaryTech[194] = {
 militaryTech[195] = {
 	id:195,
 	index:14,
-	name:"siege_archer",
+	name:"cavalry_siege",
 	level:15,
 	wood:27000,
 	stone:27000,
@@ -2554,7 +2554,7 @@ militaryTech[195] = {
 militaryTech[196] = {
 	id:196,
 	index:1,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:2,
 	wood:480,
 	stone:480,
@@ -2567,7 +2567,7 @@ militaryTech[196] = {
 militaryTech[197] = {
 	id:197,
 	index:2,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:3,
 	wood:1080,
 	stone:1080,
@@ -2580,7 +2580,7 @@ militaryTech[197] = {
 militaryTech[198] = {
 	id:198,
 	index:3,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:4,
 	wood:1920,
 	stone:1920,
@@ -2593,7 +2593,7 @@ militaryTech[198] = {
 militaryTech[199] = {
 	id:199,
 	index:4,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:5,
 	wood:3000,
 	stone:3000,
@@ -2606,7 +2606,7 @@ militaryTech[199] = {
 militaryTech[200] = {
 	id:200,
 	index:5,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:6,
 	wood:4320,
 	stone:4320,
@@ -2619,7 +2619,7 @@ militaryTech[200] = {
 militaryTech[201] = {
 	id:201,
 	index:6,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:7,
 	wood:5880,
 	stone:5880,
@@ -2632,7 +2632,7 @@ militaryTech[201] = {
 militaryTech[202] = {
 	id:202,
 	index:7,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:8,
 	wood:7680,
 	stone:7680,
@@ -2645,7 +2645,7 @@ militaryTech[202] = {
 militaryTech[203] = {
 	id:203,
 	index:8,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:9,
 	wood:9720,
 	stone:9720,
@@ -2658,7 +2658,7 @@ militaryTech[203] = {
 militaryTech[204] = {
 	id:204,
 	index:9,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:10,
 	wood:12000,
 	stone:12000,
@@ -2671,7 +2671,7 @@ militaryTech[204] = {
 militaryTech[205] = {
 	id:205,
 	index:10,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:11,
 	wood:14520,
 	stone:14520,
@@ -2684,7 +2684,7 @@ militaryTech[205] = {
 militaryTech[206] = {
 	id:206,
 	index:11,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:12,
 	wood:17280,
 	stone:17280,
@@ -2697,7 +2697,7 @@ militaryTech[206] = {
 militaryTech[207] = {
 	id:207,
 	index:12,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:13,
 	wood:20280,
 	stone:20280,
@@ -2710,7 +2710,7 @@ militaryTech[207] = {
 militaryTech[208] = {
 	id:208,
 	index:13,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:14,
 	wood:23520,
 	stone:23520,
@@ -2723,7 +2723,7 @@ militaryTech[208] = {
 militaryTech[209] = {
 	id:209,
 	index:14,
-	name:"siege_cavalry",
+	name:"cavalry_hpAdd",
 	level:15,
 	wood:27000,
 	stone:27000,
@@ -2736,7 +2736,7 @@ militaryTech[209] = {
 militaryTech[210] = {
 	id:210,
 	index:1,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:2,
 	wood:480,
 	stone:480,
@@ -2749,7 +2749,7 @@ militaryTech[210] = {
 militaryTech[211] = {
 	id:211,
 	index:2,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:3,
 	wood:1080,
 	stone:1080,
@@ -2762,7 +2762,7 @@ militaryTech[211] = {
 militaryTech[212] = {
 	id:212,
 	index:3,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:4,
 	wood:1920,
 	stone:1920,
@@ -2775,7 +2775,7 @@ militaryTech[212] = {
 militaryTech[213] = {
 	id:213,
 	index:4,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:5,
 	wood:3000,
 	stone:3000,
@@ -2788,7 +2788,7 @@ militaryTech[213] = {
 militaryTech[214] = {
 	id:214,
 	index:5,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:6,
 	wood:4320,
 	stone:4320,
@@ -2801,7 +2801,7 @@ militaryTech[214] = {
 militaryTech[215] = {
 	id:215,
 	index:6,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:7,
 	wood:5880,
 	stone:5880,
@@ -2814,7 +2814,7 @@ militaryTech[215] = {
 militaryTech[216] = {
 	id:216,
 	index:7,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:8,
 	wood:7680,
 	stone:7680,
@@ -2827,7 +2827,7 @@ militaryTech[216] = {
 militaryTech[217] = {
 	id:217,
 	index:8,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:9,
 	wood:9720,
 	stone:9720,
@@ -2840,7 +2840,7 @@ militaryTech[217] = {
 militaryTech[218] = {
 	id:218,
 	index:9,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:10,
 	wood:12000,
 	stone:12000,
@@ -2853,7 +2853,7 @@ militaryTech[218] = {
 militaryTech[219] = {
 	id:219,
 	index:10,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:11,
 	wood:14520,
 	stone:14520,
@@ -2866,7 +2866,7 @@ militaryTech[219] = {
 militaryTech[220] = {
 	id:220,
 	index:11,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:12,
 	wood:17280,
 	stone:17280,
@@ -2879,7 +2879,7 @@ militaryTech[220] = {
 militaryTech[221] = {
 	id:221,
 	index:12,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:13,
 	wood:20280,
 	stone:20280,
@@ -2892,7 +2892,7 @@ militaryTech[221] = {
 militaryTech[222] = {
 	id:222,
 	index:13,
-	name:"siege_siege",
+	name:"siege_infantry",
 	level:14,
 	wood:23520,
 	stone:23520,
@@ -2905,7 +2905,735 @@ militaryTech[222] = {
 militaryTech[223] = {
 	id:223,
 	index:14,
+	name:"siege_infantry",
+	level:15,
+	wood:27000,
+	stone:27000,
+	iron:27000,
+	food:27000,
+	coin:27000,
+	gem:0,
+	exp:11250
+}
+militaryTech[224] = {
+	id:224,
+	index:1,
+	name:"siege_archer",
+	level:2,
+	wood:480,
+	stone:480,
+	iron:480,
+	food:480,
+	coin:480,
+	gem:0,
+	exp:200
+}
+militaryTech[225] = {
+	id:225,
+	index:2,
+	name:"siege_archer",
+	level:3,
+	wood:1080,
+	stone:1080,
+	iron:1080,
+	food:1080,
+	coin:1080,
+	gem:0,
+	exp:450
+}
+militaryTech[226] = {
+	id:226,
+	index:3,
+	name:"siege_archer",
+	level:4,
+	wood:1920,
+	stone:1920,
+	iron:1920,
+	food:1920,
+	coin:1920,
+	gem:0,
+	exp:800
+}
+militaryTech[227] = {
+	id:227,
+	index:4,
+	name:"siege_archer",
+	level:5,
+	wood:3000,
+	stone:3000,
+	iron:3000,
+	food:3000,
+	coin:3000,
+	gem:0,
+	exp:1250
+}
+militaryTech[228] = {
+	id:228,
+	index:5,
+	name:"siege_archer",
+	level:6,
+	wood:4320,
+	stone:4320,
+	iron:4320,
+	food:4320,
+	coin:4320,
+	gem:0,
+	exp:1800
+}
+militaryTech[229] = {
+	id:229,
+	index:6,
+	name:"siege_archer",
+	level:7,
+	wood:5880,
+	stone:5880,
+	iron:5880,
+	food:5880,
+	coin:5880,
+	gem:0,
+	exp:2450
+}
+militaryTech[230] = {
+	id:230,
+	index:7,
+	name:"siege_archer",
+	level:8,
+	wood:7680,
+	stone:7680,
+	iron:7680,
+	food:7680,
+	coin:7680,
+	gem:0,
+	exp:3200
+}
+militaryTech[231] = {
+	id:231,
+	index:8,
+	name:"siege_archer",
+	level:9,
+	wood:9720,
+	stone:9720,
+	iron:9720,
+	food:9720,
+	coin:9720,
+	gem:0,
+	exp:4050
+}
+militaryTech[232] = {
+	id:232,
+	index:9,
+	name:"siege_archer",
+	level:10,
+	wood:12000,
+	stone:12000,
+	iron:12000,
+	food:12000,
+	coin:12000,
+	gem:0,
+	exp:5000
+}
+militaryTech[233] = {
+	id:233,
+	index:10,
+	name:"siege_archer",
+	level:11,
+	wood:14520,
+	stone:14520,
+	iron:14520,
+	food:14520,
+	coin:14520,
+	gem:0,
+	exp:6050
+}
+militaryTech[234] = {
+	id:234,
+	index:11,
+	name:"siege_archer",
+	level:12,
+	wood:17280,
+	stone:17280,
+	iron:17280,
+	food:17280,
+	coin:17280,
+	gem:0,
+	exp:7200
+}
+militaryTech[235] = {
+	id:235,
+	index:12,
+	name:"siege_archer",
+	level:13,
+	wood:20280,
+	stone:20280,
+	iron:20280,
+	food:20280,
+	coin:20280,
+	gem:0,
+	exp:8450
+}
+militaryTech[236] = {
+	id:236,
+	index:13,
+	name:"siege_archer",
+	level:14,
+	wood:23520,
+	stone:23520,
+	iron:23520,
+	food:23520,
+	coin:23520,
+	gem:0,
+	exp:9800
+}
+militaryTech[237] = {
+	id:237,
+	index:14,
+	name:"siege_archer",
+	level:15,
+	wood:27000,
+	stone:27000,
+	iron:27000,
+	food:27000,
+	coin:27000,
+	gem:0,
+	exp:11250
+}
+militaryTech[238] = {
+	id:238,
+	index:1,
+	name:"siege_cavalry",
+	level:2,
+	wood:480,
+	stone:480,
+	iron:480,
+	food:480,
+	coin:480,
+	gem:0,
+	exp:200
+}
+militaryTech[239] = {
+	id:239,
+	index:2,
+	name:"siege_cavalry",
+	level:3,
+	wood:1080,
+	stone:1080,
+	iron:1080,
+	food:1080,
+	coin:1080,
+	gem:0,
+	exp:450
+}
+militaryTech[240] = {
+	id:240,
+	index:3,
+	name:"siege_cavalry",
+	level:4,
+	wood:1920,
+	stone:1920,
+	iron:1920,
+	food:1920,
+	coin:1920,
+	gem:0,
+	exp:800
+}
+militaryTech[241] = {
+	id:241,
+	index:4,
+	name:"siege_cavalry",
+	level:5,
+	wood:3000,
+	stone:3000,
+	iron:3000,
+	food:3000,
+	coin:3000,
+	gem:0,
+	exp:1250
+}
+militaryTech[242] = {
+	id:242,
+	index:5,
+	name:"siege_cavalry",
+	level:6,
+	wood:4320,
+	stone:4320,
+	iron:4320,
+	food:4320,
+	coin:4320,
+	gem:0,
+	exp:1800
+}
+militaryTech[243] = {
+	id:243,
+	index:6,
+	name:"siege_cavalry",
+	level:7,
+	wood:5880,
+	stone:5880,
+	iron:5880,
+	food:5880,
+	coin:5880,
+	gem:0,
+	exp:2450
+}
+militaryTech[244] = {
+	id:244,
+	index:7,
+	name:"siege_cavalry",
+	level:8,
+	wood:7680,
+	stone:7680,
+	iron:7680,
+	food:7680,
+	coin:7680,
+	gem:0,
+	exp:3200
+}
+militaryTech[245] = {
+	id:245,
+	index:8,
+	name:"siege_cavalry",
+	level:9,
+	wood:9720,
+	stone:9720,
+	iron:9720,
+	food:9720,
+	coin:9720,
+	gem:0,
+	exp:4050
+}
+militaryTech[246] = {
+	id:246,
+	index:9,
+	name:"siege_cavalry",
+	level:10,
+	wood:12000,
+	stone:12000,
+	iron:12000,
+	food:12000,
+	coin:12000,
+	gem:0,
+	exp:5000
+}
+militaryTech[247] = {
+	id:247,
+	index:10,
+	name:"siege_cavalry",
+	level:11,
+	wood:14520,
+	stone:14520,
+	iron:14520,
+	food:14520,
+	coin:14520,
+	gem:0,
+	exp:6050
+}
+militaryTech[248] = {
+	id:248,
+	index:11,
+	name:"siege_cavalry",
+	level:12,
+	wood:17280,
+	stone:17280,
+	iron:17280,
+	food:17280,
+	coin:17280,
+	gem:0,
+	exp:7200
+}
+militaryTech[249] = {
+	id:249,
+	index:12,
+	name:"siege_cavalry",
+	level:13,
+	wood:20280,
+	stone:20280,
+	iron:20280,
+	food:20280,
+	coin:20280,
+	gem:0,
+	exp:8450
+}
+militaryTech[250] = {
+	id:250,
+	index:13,
+	name:"siege_cavalry",
+	level:14,
+	wood:23520,
+	stone:23520,
+	iron:23520,
+	food:23520,
+	coin:23520,
+	gem:0,
+	exp:9800
+}
+militaryTech[251] = {
+	id:251,
+	index:14,
+	name:"siege_cavalry",
+	level:15,
+	wood:27000,
+	stone:27000,
+	iron:27000,
+	food:27000,
+	coin:27000,
+	gem:0,
+	exp:11250
+}
+militaryTech[252] = {
+	id:252,
+	index:1,
 	name:"siege_siege",
+	level:2,
+	wood:480,
+	stone:480,
+	iron:480,
+	food:480,
+	coin:480,
+	gem:0,
+	exp:200
+}
+militaryTech[253] = {
+	id:253,
+	index:2,
+	name:"siege_siege",
+	level:3,
+	wood:1080,
+	stone:1080,
+	iron:1080,
+	food:1080,
+	coin:1080,
+	gem:0,
+	exp:450
+}
+militaryTech[254] = {
+	id:254,
+	index:3,
+	name:"siege_siege",
+	level:4,
+	wood:1920,
+	stone:1920,
+	iron:1920,
+	food:1920,
+	coin:1920,
+	gem:0,
+	exp:800
+}
+militaryTech[255] = {
+	id:255,
+	index:4,
+	name:"siege_siege",
+	level:5,
+	wood:3000,
+	stone:3000,
+	iron:3000,
+	food:3000,
+	coin:3000,
+	gem:0,
+	exp:1250
+}
+militaryTech[256] = {
+	id:256,
+	index:5,
+	name:"siege_siege",
+	level:6,
+	wood:4320,
+	stone:4320,
+	iron:4320,
+	food:4320,
+	coin:4320,
+	gem:0,
+	exp:1800
+}
+militaryTech[257] = {
+	id:257,
+	index:6,
+	name:"siege_siege",
+	level:7,
+	wood:5880,
+	stone:5880,
+	iron:5880,
+	food:5880,
+	coin:5880,
+	gem:0,
+	exp:2450
+}
+militaryTech[258] = {
+	id:258,
+	index:7,
+	name:"siege_siege",
+	level:8,
+	wood:7680,
+	stone:7680,
+	iron:7680,
+	food:7680,
+	coin:7680,
+	gem:0,
+	exp:3200
+}
+militaryTech[259] = {
+	id:259,
+	index:8,
+	name:"siege_siege",
+	level:9,
+	wood:9720,
+	stone:9720,
+	iron:9720,
+	food:9720,
+	coin:9720,
+	gem:0,
+	exp:4050
+}
+militaryTech[260] = {
+	id:260,
+	index:9,
+	name:"siege_siege",
+	level:10,
+	wood:12000,
+	stone:12000,
+	iron:12000,
+	food:12000,
+	coin:12000,
+	gem:0,
+	exp:5000
+}
+militaryTech[261] = {
+	id:261,
+	index:10,
+	name:"siege_siege",
+	level:11,
+	wood:14520,
+	stone:14520,
+	iron:14520,
+	food:14520,
+	coin:14520,
+	gem:0,
+	exp:6050
+}
+militaryTech[262] = {
+	id:262,
+	index:11,
+	name:"siege_siege",
+	level:12,
+	wood:17280,
+	stone:17280,
+	iron:17280,
+	food:17280,
+	coin:17280,
+	gem:0,
+	exp:7200
+}
+militaryTech[263] = {
+	id:263,
+	index:12,
+	name:"siege_siege",
+	level:13,
+	wood:20280,
+	stone:20280,
+	iron:20280,
+	food:20280,
+	coin:20280,
+	gem:0,
+	exp:8450
+}
+militaryTech[264] = {
+	id:264,
+	index:13,
+	name:"siege_siege",
+	level:14,
+	wood:23520,
+	stone:23520,
+	iron:23520,
+	food:23520,
+	coin:23520,
+	gem:0,
+	exp:9800
+}
+militaryTech[265] = {
+	id:265,
+	index:14,
+	name:"siege_siege",
+	level:15,
+	wood:27000,
+	stone:27000,
+	iron:27000,
+	food:27000,
+	coin:27000,
+	gem:0,
+	exp:11250
+}
+militaryTech[266] = {
+	id:266,
+	index:1,
+	name:"siege_hpAdd",
+	level:2,
+	wood:480,
+	stone:480,
+	iron:480,
+	food:480,
+	coin:480,
+	gem:0,
+	exp:200
+}
+militaryTech[267] = {
+	id:267,
+	index:2,
+	name:"siege_hpAdd",
+	level:3,
+	wood:1080,
+	stone:1080,
+	iron:1080,
+	food:1080,
+	coin:1080,
+	gem:0,
+	exp:450
+}
+militaryTech[268] = {
+	id:268,
+	index:3,
+	name:"siege_hpAdd",
+	level:4,
+	wood:1920,
+	stone:1920,
+	iron:1920,
+	food:1920,
+	coin:1920,
+	gem:0,
+	exp:800
+}
+militaryTech[269] = {
+	id:269,
+	index:4,
+	name:"siege_hpAdd",
+	level:5,
+	wood:3000,
+	stone:3000,
+	iron:3000,
+	food:3000,
+	coin:3000,
+	gem:0,
+	exp:1250
+}
+militaryTech[270] = {
+	id:270,
+	index:5,
+	name:"siege_hpAdd",
+	level:6,
+	wood:4320,
+	stone:4320,
+	iron:4320,
+	food:4320,
+	coin:4320,
+	gem:0,
+	exp:1800
+}
+militaryTech[271] = {
+	id:271,
+	index:6,
+	name:"siege_hpAdd",
+	level:7,
+	wood:5880,
+	stone:5880,
+	iron:5880,
+	food:5880,
+	coin:5880,
+	gem:0,
+	exp:2450
+}
+militaryTech[272] = {
+	id:272,
+	index:7,
+	name:"siege_hpAdd",
+	level:8,
+	wood:7680,
+	stone:7680,
+	iron:7680,
+	food:7680,
+	coin:7680,
+	gem:0,
+	exp:3200
+}
+militaryTech[273] = {
+	id:273,
+	index:8,
+	name:"siege_hpAdd",
+	level:9,
+	wood:9720,
+	stone:9720,
+	iron:9720,
+	food:9720,
+	coin:9720,
+	gem:0,
+	exp:4050
+}
+militaryTech[274] = {
+	id:274,
+	index:9,
+	name:"siege_hpAdd",
+	level:10,
+	wood:12000,
+	stone:12000,
+	iron:12000,
+	food:12000,
+	coin:12000,
+	gem:0,
+	exp:5000
+}
+militaryTech[275] = {
+	id:275,
+	index:10,
+	name:"siege_hpAdd",
+	level:11,
+	wood:14520,
+	stone:14520,
+	iron:14520,
+	food:14520,
+	coin:14520,
+	gem:0,
+	exp:6050
+}
+militaryTech[276] = {
+	id:276,
+	index:11,
+	name:"siege_hpAdd",
+	level:12,
+	wood:17280,
+	stone:17280,
+	iron:17280,
+	food:17280,
+	coin:17280,
+	gem:0,
+	exp:7200
+}
+militaryTech[277] = {
+	id:277,
+	index:12,
+	name:"siege_hpAdd",
+	level:13,
+	wood:20280,
+	stone:20280,
+	iron:20280,
+	food:20280,
+	coin:20280,
+	gem:0,
+	exp:8450
+}
+militaryTech[278] = {
+	id:278,
+	index:13,
+	name:"siege_hpAdd",
+	level:14,
+	wood:23520,
+	stone:23520,
+	iron:23520,
+	food:23520,
+	coin:23520,
+	gem:0,
+	exp:9800
+}
+militaryTech[279] = {
+	id:279,
+	index:14,
+	name:"siege_hpAdd",
 	level:15,
 	wood:27000,
 	stone:27000,
