@@ -33,7 +33,6 @@ GameDatas.AllianceVillage.foodVillage = require("./AllianceVillage_foodVillage.j
 GameDatas.AllianceVillage.stoneVillage = require("./AllianceVillage_stoneVillage.js")
 GameDatas.AllianceVillage.ironVillage = require("./AllianceVillage_ironVillage.js")
 GameDatas.AllianceVillage.coinVillage = require("./AllianceVillage_coinVillage.js")
-GameDatas.AllianceVillage.gemVillage = require("./AllianceVillage_gemVillage.js")
 
 GameDatas.BuildingFunction = {}
 GameDatas.BuildingFunction.keep = require("./BuildingFunction_keep.js")

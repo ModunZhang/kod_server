@@ -234,8 +234,8 @@ buff["foodBonus_3"] = {
 	buyPriceInAlliance:100000,
 	isAdvancedItem:true
 }
-buff["taxesBonus_1"] = {
-	name:"taxesBonus_1",
+buff["coinBonus_1"] = {
+	name:"coinBonus_1",
 	effect:8,
 	type:"coinBonus",
 	order:22,
@@ -245,8 +245,8 @@ buff["taxesBonus_1"] = {
 	buyPriceInAlliance:30000,
 	isAdvancedItem:true
 }
-buff["taxesBonus_2"] = {
-	name:"taxesBonus_2",
+buff["coinBonus_2"] = {
+	name:"coinBonus_2",
 	effect:24,
 	type:"coinBonus",
 	order:23,
@@ -256,8 +256,8 @@ buff["taxesBonus_2"] = {
 	buyPriceInAlliance:60000,
 	isAdvancedItem:true
 }
-buff["taxesBonus_3"] = {
-	name:"taxesBonus_3",
+buff["coinBonus_3"] = {
+	name:"coinBonus_3",
 	effect:72,
 	type:"coinBonus",
 	order:24,

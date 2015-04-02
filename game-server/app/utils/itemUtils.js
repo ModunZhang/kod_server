@@ -886,6 +886,18 @@ var ItemNameFunctionMap = {
 		var itemConfig = Items.buff.foodBonus_3
 		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 	},
+	coinBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.buff.coinBonus_1
+		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+	},
+	coinBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.buff.coinBonus_2
+		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+	},
+	coinBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
+		var itemConfig = Items.buff.coinBonus_3
+		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+	},
 	citizenBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
 		var itemConfig = Items.buff.citizenBonus_1
 		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
