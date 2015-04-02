@@ -8,6 +8,7 @@ var Promise = require("bluebird")
 var _ = require("underscore")
 
 var LogService = require("../../services/logService")
+var ServerState = require("../../domains/serverState")
 var AllianceDao = require("../../dao/allianceDao")
 var PlayerDao = require("../../dao/playerDao")
 var CacheService = require("../../services/cacheService")
@@ -18,6 +19,7 @@ var Consts = require("../../consts/consts")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
+	app.set("ServerState", Promise.promisifyAll(ServerState))
 	app.set("allianceDao", Promise.promisifyAll(new AllianceDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 	app.set("playerDao", Promise.promisifyAll(new PlayerDao(app.get("redis"), app.get("scripto"), app.get("env"))))
 
@@ -45,7 +47,9 @@ life.afterStartup = function(app, callback){
 
 life.beforeShutdown = function(app, callback){
 	var cacheService = app.get("cacheService")
-	cacheService.unloadPlayersAsync().then(function(){
+	app.get("ServerState").createAsync({type:Consts.ServerState.Stop}).then(function(){
+		return cacheService.unloadPlayersAsync()
+	}).then(function(){
 		return cacheService.unloadAlliancesAsync()
 	}).then(function(){
 		callback()
@@ -235,6 +239,8 @@ life.afterStartAll = function(app){
 			return Promise.all(funcs)
 		}).then(function(){
 			logService.onEvent("time.lifecycle.afterStartAll change server status finished", {})
+		}).then(function(){
+			app.get("ServerState").createAsync({type:Consts.ServerState.Start})
 		}).catch(function(e){
 			logService.onEventError("time.lifecycle.afterStartAll", {}, e.stack)
 		})

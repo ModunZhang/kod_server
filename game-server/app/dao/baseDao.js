@@ -85,7 +85,7 @@ pro.directAdd = function(doc, callback){
 	this.redis.setAsync(this.modelName + ":" + doc._id, docString).then(function(){
 		var funcs = []
 		_.each(self.rankKeys, function(key){
-			funcs.push(self.redis.zaddAsync([doc.serverId + "." + self.modelName + "." + key, GetValue(doc, key), doc._id]))
+			funcs.push(self.redis.zaddAsync([self.modelName + "." + key, GetValue(doc, key), doc._id]))
 		})
 		return Promise.all(funcs)
 	}).then(function(){
@@ -268,7 +268,7 @@ pro.update = function(doc, persistNow, callback){
 		}).then(function(){
 			var funcs = []
 			_.each(self.rankKeys, function(key){
-				funcs.push(self.redis.zaddAsync([doc.serverId + "." + self.modelName + "." + key, GetValue(doc, key), doc._id]))
+				funcs.push(self.redis.zaddAsync([self.modelName + "." + key, GetValue(doc, key), doc._id]))
 			})
 			return Promise.all(funcs)
 		}).then(function(){

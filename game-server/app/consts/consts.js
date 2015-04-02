@@ -12,6 +12,10 @@ module.exports = {
 	AllianceKillRank:"allianceKillRank",
 	ServerId:"World-1",
 	None:"__NONE__",
+	ServerState:{
+		Start:"start",
+		Stop:"stop"
+	},
 	PlayerStatus:{
 		Normal:"normal",
 		Rout:"rout"
