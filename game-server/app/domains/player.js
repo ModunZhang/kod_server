@@ -529,6 +529,10 @@ var PlayerSchema = new Schema({
 			building:{type:String, required:true, default:"trainingGround"},
 			level:{type:Number, required:true, default:0}
 		},
+		infantry_hpAdd:{
+			building:{type:String, required:true, default:"trainingGround"},
+			level:{type:Number, required:true, default:0}
+		},
 		archer_infantry:{
 			building:{type:String, required:true, default:"hunterHall"},
 			level:{type:Number, required:true, default:0}
@@ -542,6 +546,10 @@ var PlayerSchema = new Schema({
 			level:{type:Number, required:true, default:0}
 		},
 		archer_siege:{
+			building:{type:String, required:true, default:"hunterHall"},
+			level:{type:Number, required:true, default:0}
+		},
+		archer_hpAdd:{
 			building:{type:String, required:true, default:"hunterHall"},
 			level:{type:Number, required:true, default:0}
 		},
@@ -561,6 +569,10 @@ var PlayerSchema = new Schema({
 			building:{type:String, required:true, default:"stable"},
 			level:{type:Number, required:true, default:0}
 		},
+		cavalry_hpAdd:{
+			building:{type:String, required:true, default:"stable"},
+			level:{type:Number, required:true, default:0}
+		},
 		siege_infantry:{
 			building:{type:String, required:true, default:"workshop"},
 			level:{type:Number, required:true, default:0}
@@ -574,6 +586,10 @@ var PlayerSchema = new Schema({
 			level:{type:Number, required:true, default:0}
 		},
 		siege_siege:{
+			building:{type:String, required:true, default:"workshop"},
+			level:{type:Number, required:true, default:0}
+		},
+		siege_hpAdd:{
 			building:{type:String, required:true, default:"workshop"},
 			level:{type:Number, required:true, default:0}
 		}

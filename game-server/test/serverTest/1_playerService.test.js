@@ -1135,7 +1135,7 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("upgradeMilitaryTech 正常升级", function(done){
+		//it("upgradeMilitaryTech 正常升级1", function(done){
 		//	Api.sendChat("keep 15", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.sendChat("buildinglevel 18 1", function(doc){
@@ -1148,8 +1148,15 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("upgradeMilitaryTech 正常升级", function(done){
+		//it("upgradeMilitaryTech 正常升级2", function(done){
 		//	Api.upgradeMilitaryTech("infantry_infantry", false, function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("upgradeMilitaryTech 正常升级3", function(done){
+		//	Api.upgradeMilitaryTech("infantry_hpAdd", false, function(doc){
 		//		doc.code.should.equal(200)
 		//		done()
 		//	})

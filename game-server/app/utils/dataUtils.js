@@ -2100,10 +2100,11 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 		var atkWallBuff = self.getDragonAtkWallBuff(dragon)
 		var hpBuff = self.getPlayerSoldierHpBuff(playerDoc, soldierName, dragon, terrain)
 		var loadBuff = self.getPlayerSoldierLoadBuff(playerDoc, soldierName, dragon)
-		var techBuffToInfantry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_" + "infantry")
-		var techBuffToArcher = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_" + "archer")
-		var techBuffToCavalry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_" + "cavalry")
-		var techBuffToSiege = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_" + "siege")
+		var techBuffToInfantry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_infantry")
+		var techBuffToArcher = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_archer")
+		var techBuffToCavalry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_cavalry")
+		var techBuffToSiege = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_siege")
+		var techBuffHpAdd = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_hpAdd")
 		var vipAttackBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].soldierAttackPowerAdd
 		var vipHpBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].soldierHpAdd
 		var soldierForFight = {
@@ -2114,7 +2115,7 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 			totalCount:soldierCount,
 			woundedCount:0,
 			power:config.power,
-			hp:Math.floor(config.hp * (1 + hpBuff + vipHpBuff)),
+			hp:Math.floor(config.hp * (1 + hpBuff + techBuffHpAdd + vipHpBuff)),
 			load:Math.floor(config.load * (1 + loadBuff)),
 			citizen:config.citizen,
 			morale:100,
