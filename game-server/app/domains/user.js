@@ -16,7 +16,7 @@ var UserSchema = new Schema({
 		id:{type:String, required:true},
 		selected:{type:Boolean, required:true}
 	}],
-	registerTime:{type:Number, required:true, default:Date.now()}
+	registerTime:{type:Number, required:true, default:Date.now}
 })
 
 module.exports = mongoose.model('user', UserSchema)

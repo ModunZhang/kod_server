@@ -15,7 +15,7 @@ var GemAddSchema = new Schema({
 	left:{type:Number, required:true},
 	from:{type:String, required:true},
 	rewards:{type:Schema.Types.Mixed},
-	time:{type:Number, required:true, default:Date.now()}
+	time:{type:Number, required:true, default:Date.now}
 })
 
 module.exports = mongoose.model('gemAdd', GemAddSchema)

@@ -11,7 +11,7 @@ var Schema = mongoose.Schema
 var ServerStateSchema = new Schema({
 	_id:{type:String, required:true, default:ShortId.generate},
 	type:{type:String, required:true},
-	time:{type:Number, required:true, default:Date.now()}
+	time:{type:Number, required:true, default:Date.now}
 })
 
 module.exports = mongoose.model('serverState', ServerStateSchema)

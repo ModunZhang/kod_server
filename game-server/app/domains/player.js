@@ -65,7 +65,7 @@ var createDragonSchema = function(dragonType){
 		exp:{type:Number, required:true, default:0},
 		star:{type:Number, required:true, default:0},
 		hp:{type:Number, required:true, default:0},
-		hpRefreshTime:{type:Number, required:true, default:Date.now()},
+		hpRefreshTime:{type:Number, required:true, default:Date.now},
 		status:{type:String, required:true, default:Consts.DragonStatus.Free},
 		equipments:{
 			crown:createDragonEquipmentSchema(),
@@ -98,8 +98,8 @@ var PlayerSchema = new Schema({
 	selected:{type:Boolean, required:true},
 	isActive:{type:Boolean, required:true, default:true},
 	countInfo:{
-		registerTime:{type:Number, required:true, default:Date.now()},
-		lastLoginTime:{type:Number, required:true, default:Date.now()},
+		registerTime:{type:Number, required:true, default:Date.now},
+		lastLoginTime:{type:Number, required:true, default:Date.now},
 		loginCount:{type:Number, required:true, default:0},
 		day60:{type:Number, required:true, default:1},
 		day60RewardsCount:{type:Number, required:true, default:0},
@@ -131,7 +131,7 @@ var PlayerSchema = new Schema({
 		terrain:{type:String, required:true, default:Consts.AllianceTerrain.GrassLand}
 	},
 	resources:{
-		refreshTime:{type:Number, required:true, default:Date.now()},
+		refreshTime:{type:Number, required:true, default:Date.now},
 		wood:{type:Number, required:true, default:ResourceInitData.wood},
 		stone:{type:Number, required:true, default:ResourceInitData.stone},
 		iron:{type:Number, required:true, default:ResourceInitData.iron},

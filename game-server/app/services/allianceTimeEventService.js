@@ -73,17 +73,13 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 			if(!_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
 				return Promise.reject(ErrorUtils.illegalAllianceStatus(allianceDoc._id, allianceDoc.basicInfo.status))
 			}
-			allianceDoc.basicInfo.status = Consts.AllianceStatus.Peace
-			allianceDoc.basicInfo.statusStartTime = Date.now()
-			allianceDoc.basicInfo.statusFinishTime = 0
+
 			var allianceData = []
-			allianceData.push(["basicInfo.status", allianceDoc.basicInfo.status])
-			allianceData.push(["basicInfo.statusStartTime", allianceDoc.basicInfo.statusStartTime])
-			allianceData.push(["basicInfo.statusFinishTime", allianceDoc.basicInfo.statusFinishTime])
-			allianceData.basicInfo = allianceDoc.basicInfo
-			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, true])
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-			return Promise.resolve()
+			return self.onAllianceStatusEventAsync(allianceDoc, allianceData).then(function(){
+				updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, true])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+				return Promise.resolve()
+			})
 		}else{
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 			event = LogicUtils.getEventById(allianceDoc[eventType], eventId)
@@ -121,60 +117,20 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 }
 
 /**
- * 到达指定时间时,联盟战斗触发的消息
- * @param ourAllianceId
- * @param enemyAllianceId
+ * 联盟建筑状态改变事件回调
+ * @param allianceDoc
+ * @param allianceData
  * @param callback
  */
-pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
-	var self = this
-	var attackAllianceDoc = null
-	var defenceAllianceDoc = null
-	var pushFuncs = []
-	var updateFuncs = []
-	var eventFuncs = []
-	var funcs = []
-	funcs.push(this.allianceDao.findAsync(ourAllianceId, true))
-	funcs.push(this.allianceDao.findAsync(enemyAllianceId, true))
-	Promise.all(funcs).spread(function(doc_1, doc_2){
-		attackAllianceDoc = doc_1
-		defenceAllianceDoc = doc_2
-		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare)){
-			return self.onAllianceFightPrepareAsync(attackAllianceDoc, defenceAllianceDoc)
-		}else if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
-			return self.onAllianceFightFightingAsync(attackAllianceDoc, defenceAllianceDoc)
-		}else{
-			return Promise.reject(ErrorUtils.illegalAllianceStatus(attackAllianceDoc._id, attackAllianceDoc.basicInfo.status))
-		}
-	}).then(function(params){
-		updateFuncs = updateFuncs.concat(params.updateFuncs)
-		eventFuncs = eventFuncs.concat(params.eventFuncs)
-		pushFuncs = pushFuncs.concat(params.pushFuncs)
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(attackAllianceDoc._id))
-		}
-		if(_.isObject(defenceAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(defenceAllianceDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
+pro.onAllianceStatusEvent = function(allianceDoc, allianceData, callback){
+	allianceDoc.basicInfo.status = Consts.AllianceStatus.Peace
+	allianceDoc.basicInfo.statusStartTime = Date.now()
+	allianceDoc.basicInfo.statusFinishTime = 0
+	allianceData.push(["basicInfo.status", allianceDoc.basicInfo.status])
+	allianceData.push(["basicInfo.statusStartTime", allianceDoc.basicInfo.statusStartTime])
+	allianceData.push(["basicInfo.statusFinishTime", allianceDoc.basicInfo.statusFinishTime])
+	allianceData.basicInfo = allianceDoc.basicInfo
+	callback()
 }
 
 /**
@@ -1936,6 +1892,63 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 			funcs.push(self.playerDao.removeLockAsync(attackPlayerDoc._id))
 		}
 		if(attackPlayerDoc != defenceAllianceDoc && _.isObject(defenceAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockAsync(defenceAllianceDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 到达指定时间时,联盟战斗触发的消息
+ * @param ourAllianceId
+ * @param enemyAllianceId
+ * @param callback
+ */
+pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
+	var self = this
+	var attackAllianceDoc = null
+	var defenceAllianceDoc = null
+	var pushFuncs = []
+	var updateFuncs = []
+	var eventFuncs = []
+	var funcs = []
+	funcs.push(this.allianceDao.findAsync(ourAllianceId, true))
+	funcs.push(this.allianceDao.findAsync(enemyAllianceId, true))
+	Promise.all(funcs).spread(function(doc_1, doc_2){
+		attackAllianceDoc = doc_1
+		defenceAllianceDoc = doc_2
+		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare)){
+			return self.onAllianceFightPrepareAsync(attackAllianceDoc, defenceAllianceDoc)
+		}else if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+			return self.onAllianceFightFightingAsync(attackAllianceDoc, defenceAllianceDoc)
+		}else{
+			return Promise.reject(ErrorUtils.illegalAllianceStatus(attackAllianceDoc._id, attackAllianceDoc.basicInfo.status))
+		}
+	}).then(function(params){
+		updateFuncs = updateFuncs.concat(params.updateFuncs)
+		eventFuncs = eventFuncs.concat(params.eventFuncs)
+		pushFuncs = pushFuncs.concat(params.pushFuncs)
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(attackAllianceDoc)){
+			funcs.push(self.allianceDao.removeLockAsync(attackAllianceDoc._id))
+		}
+		if(_.isObject(defenceAllianceDoc)){
 			funcs.push(self.allianceDao.removeLockAsync(defenceAllianceDoc._id))
 		}
 		if(funcs.length > 0){

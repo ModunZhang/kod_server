@@ -15,7 +15,7 @@ var GemUseSchema = new Schema({
 	left:{type:Number, required:true},
 	api:{type:String, required:true},
 	params:{type:Schema.Types.Mixed},
-	time:{type:Number, required:true, default:Date.now()}
+	time:{type:Number, required:true, default:Date.now}
 })
 
 module.exports = mongoose.model('gemUse', GemUseSchema)

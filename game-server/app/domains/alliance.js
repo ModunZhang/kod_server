@@ -27,10 +27,10 @@ var AllianceSchema = new Schema({
 		joinType:{type:String, required:true, default:Consts.AllianceJoinType.All},
 		honour:{type:Number, required:true, default:0},
 		perception:{type:Number, required:true, default:AllianceBuilding.shrine[1].perception},
-		perceptionRefreshTime:{type:Number, required:true, default:Date.now()},
-		createTime:{type:Number, required:true, default:Date.now()},
+		perceptionRefreshTime:{type:Number, required:true, default:Date.now},
+		createTime:{type:Number, required:true, default:Date.now},
 		status:{type:String, required:true, default:Consts.AllianceStatus.Peace},
-		statusStartTime:{type:Number, required:true, default:Date.now()},
+		statusStartTime:{type:Number, required:true, default:Date.now},
 		statusFinishTime:{type:Number, required:true, default:0}
 	},
 	countInfo:{

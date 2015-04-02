@@ -10,7 +10,8 @@ var Schema = mongoose.Schema
 
 var DeviceSchema = new Schema({
 	_id:{type:String, required:true},
-	userId:{type:String, required:true}
+	userId:{type:String, required:true},
+	registerTime:{type:Number, required:true, default:Date.now}
 })
 
 module.exports = mongoose.model('device', DeviceSchema)
