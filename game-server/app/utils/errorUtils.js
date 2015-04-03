@@ -15,7 +15,7 @@ var CustomError = function(code, message){
 	Error.captureStackTrace(this, CustomError)
 	this.code = code
 	this.name = "CustomError"
-	this.message = message + "(" + code + ")"
+	this.message = "(" + code + ")" + message
 }
 util.inherits(CustomError, Error)
 
