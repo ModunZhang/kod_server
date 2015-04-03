@@ -4,6 +4,7 @@
  * Created by modun on 15/2/1.
  */
 
+var ShortId = require("shortid")
 var Https = require("https")
 var Promise = require("bluebird")
 var _ = require("underscore")
@@ -22,6 +23,7 @@ var StoreItems = GameDatas.StoreItems
 var PlayerIAPService = function(app){
 	this.app = app
 	this.env = app.get("env")
+	this.logService = app.get("logService")
 	this.pushService = app.get("pushService")
 	this.timeEventService = app.get("timeEventService")
 	this.globalChannelService = app.get("globalChannelService")
@@ -114,21 +116,78 @@ var CreateBillingItem = function(playerId, receiptObject){
 /**
  * 获取商品道具奖励
  * @param config
- * @returns {Array}
+ * @returns {{rewardsToMe: Array, rewardToAllianceMember: *}}
+ * @constructor
  */
 var GetStoreItemRewardsFromConfig = function(config){
-	var objects = []
+	var rewardsToMe = []
+	var rewardToAllianceMember = null
 	var configArray_1 = config.rewards.split(",")
-	_.each(configArray_1, function(config_1){
-		var configArray_2 = config_1.split(":")
-		var object = {
-			type:configArray_2[0],
-			name:configArray_2[1],
-			count:parseInt(configArray_2[2])
+	_.each(configArray_1, function(config){
+		var rewardArray = config.split(":")
+		var reward = {
+			type:rewardArray[0],
+			name:rewardArray[1],
+			count:parseInt(rewardArray[2])
 		}
-		objects.push(object)
+		rewardsToMe.push(reward)
 	})
-	return objects
+	if(!_.isEmpty(config.allianceRewards)){
+		var rewardArray = config.allianceRewards.split(":")
+		rewardToAllianceMember = {
+			type:rewardArray[0],
+			name:rewardArray[1],
+			count:parseInt(rewardArray[2])
+		}
+	}
+
+	return {rewardsToMe:rewardsToMe, rewardToAllianceMember:rewardToAllianceMember}
+}
+
+var SendAllianceMembersRewards = function(senderId, senderName, memberIds, reward){
+	var self = this
+	if(memberIds.length == 0) return Promise.resolve()
+	var memberId = memberIds.shift()
+	if(_.isEqual(memberId, senderId)) return SendAllianceMembersRewards.call(this, senderId, senderName, memberIds, reward)
+	var memberDoc = null
+	var memberData = []
+	return this.playerDao.findAsync(memberId).then(function(doc){
+		memberDoc = doc
+		var iapGift = {
+			id:ShortId.generate(),
+			from:senderName,
+			name:reward.name,
+			count:reward.count,
+			time:Date.now()
+		}
+		if(memberDoc.iapGifts.length >= Define.PlayerIapGiftsMaxSize){
+			var giftToRemove = memberDoc.iapGifts[0]
+			memberData.push(["iapGifts." + memberDoc.iapGifts.indexOf(giftToRemove), null])
+			LogicUtils.removeItemInArray(memberDoc.iapGifts, giftToRemove)
+		}
+		memberDoc.iapGifts.push(iapGift)
+		memberData.push(["iapGifts." + memberDoc.iapGifts.indexOf(iapGift), iapGift])
+		return Promise.resolve()
+	}).then(function(){
+		return self.playerDao.updateAsync(memberDoc)
+	}).then(function(){
+		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
+	}).then(function(){
+		return SendAllianceMembersRewards.call(self, senderId, senderName, memberIds, reward)
+	}).catch(function(e){
+		self.logService.onIapGiftError("playerIAPService.SendAllianceMembersRewards", {senderId:senderId, senderName:senderName, memberId:memberId, reward:reward}, e.stack)
+		var funcs = []
+		if(_.isObject(memberDoc)){
+			funcs.push(self.playerDao.removeLockAsync(memberDoc._id))
+		}
+		if(funcs.length > 0){
+			return Promise.all(funcs).then(function(){
+				return SendAllianceMembersRewards.call(self, senderId, senderName, memberIds, reward)
+			})
+		}else{
+			return SendAllianceMembersRewards.call(self, senderId, senderName, memberIds, reward)
+		}
+	})
 }
 
 /**
@@ -156,9 +215,11 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 
 	var self = this
 	var playerDoc = null
+	var allianceDoc = null
 	var billing = null
 	var playerData = []
 	var updateFuncs = []
+	var rewards = null
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 		return self.Billing.findOneAsync({transactionId:transactionId})
@@ -181,8 +242,8 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		playerDoc.countInfo.iapCount += 1
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
-		var rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		_.each(rewards, function(reward){
+		rewards = GetStoreItemRewardsFromConfig(itemConfig)
+		_.each(rewards.rewardsToMe, function(reward){
 			var resp = LogicUtils.addPlayerItem(playerDoc, reward.name, reward.count * quantity)
 			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
@@ -197,12 +258,28 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
+		if(_.isObject(rewards.rewardToAllianceMember) && _.isObject(playerDoc.alliance)){
+			return self.allianceDao.findAsync(playerDoc.alliance.id, true)
+		}
+		return Promise.resolve()
+	}).then(function(doc){
+		if(_.isObject(rewards.rewardToAllianceMember) && _.isObject(playerDoc.alliance)){
+			allianceDoc = doc
+			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockAsync, allianceDoc._id])
+			var memberIds = _.pluck(allianceDoc.members, "id")
+			return SendAllianceMembersRewards.call(self, playerDoc._id, playerDoc.basicInfo.name, memberIds, rewards.rewardToAllianceMember)
+		}
+		return Promise.resolve()
+	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, [playerData, billing.transactionId])
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
 			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
 		}
 		if(funcs.length > 0){

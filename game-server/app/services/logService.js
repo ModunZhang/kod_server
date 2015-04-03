@@ -11,6 +11,8 @@ var eventLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-ev
 var eventErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-event-error")
 var cronLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-cron")
 var cronErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-cron-error")
+var iapGiftLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-iapGift")
+var iapGiftErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-iapGift-error")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var mailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail")
 
@@ -96,8 +98,38 @@ pro.onCron = function(api, object){
 pro.onCronError = function(api, object, stack){
 	errorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 	errorLogger.error(stack)
+	cronLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+	cronLogger.error(stack)
 	cronErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 	cronErrorLogger.error(stack)
+	if(_.isEqual(this.evn, "production")){
+		mailLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+		mailLogger.error(stack)
+	}
+}
+
+/**
+ * 定时任务日志
+ * @param api
+ * @param object
+ */
+pro.onIapGift = function(api, object){
+	iapGiftLogger.info(api + ":" + " %j", _.isObject(object) ? object : {})
+}
+
+/**
+ * 定时任务错误日志
+ * @param api
+ * @param object
+ * @param stack
+ */
+pro.onIapGiftError = function(api, object, stack){
+	errorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+	errorLogger.error(stack)
+	iapGiftLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+	iapGiftLogger.error(stack)
+	iapGiftErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+	iapGiftErrorLogger.error(stack)
 	if(_.isEqual(this.evn, "production")){
 		mailLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 		mailLogger.error(stack)

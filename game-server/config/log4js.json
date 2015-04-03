@@ -156,6 +156,26 @@
     },
     {
       "type": "file",
+      "filename": "${opts:base}/logs/kod-iapGift.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-iapGift"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-iapGift-error.log",
+      "maxLogSize": 1048576,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 5,
+      "category": "kod-iapGift-error"
+    },
+    {
+      "type": "file",
       "filename": "${opts:base}/logs/kod-error.log",
       "maxLogSize": 1048576,
       "layout": {
@@ -199,6 +219,8 @@
     "kod-event-error": "DEBUG",
     "kod-cron": "DEBUG",
     "kod-cron-error": "DEBUG",
+    "kod-iapGift": "DEBUG",
+    "kod-iapGift-error": "DEBUG",
     "kod-error": "DEBUG",
     "kod-mail": "DEBUG"
   },

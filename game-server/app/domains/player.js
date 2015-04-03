@@ -1526,7 +1526,15 @@ var PlayerSchema = new Schema({
 			index:{type:Number, required:true},
 			rewarded:{type:Boolean, required:true}
 		}]
-	}
+	},
+	iapGifts:[{
+		_id:false,
+		id:{type:String, required:true},
+		from:{type:String, required:true},
+		name:{type:String, required:true},
+		count:{type:String, required:true},
+		time:{type:Number, required:true}
+	}]
 })
 
 module.exports = mongoose.model('player', PlayerSchema)
