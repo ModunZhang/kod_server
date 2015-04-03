@@ -568,3 +568,53 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
 		}
 	})
 }
+
+/**
+ * 获取联盟其他玩家赠送的礼品
+ * @param playerId
+ * @param giftId
+ * @param callback
+ */
+pro.getIapGift = function(playerId, giftId, callback){
+	if(!_.isString(giftId)){
+		callback(new Error("giftId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	this.playerDao.findAsync(playerId).then(function(doc){
+		playerDoc = doc
+		var gift = _.find(playerDoc.iapGifts, function(gift){
+			return _.isEqual(gift.id, giftId)
+		})
+		if(!_.isObject(gift)) return Promise.reject(ErrorUtils.giftNotExist(playerId, giftId))
+		playerData.push(["iapGifts." + playerDoc.iapGifts.indexOf(gift), null])
+		LogicUtils.removeItemInArray(playerDoc.iapGifts, gift)
+		if(gift.time >= Date.now() - (DataUtils.getPlayerIntInit("giftExpireHours") * 60 * 60 * 1000)){
+			var resp = LogicUtils.addPlayerItem(playerDoc, gift.name, gift.count)
+			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+		}
+
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}

@@ -639,6 +639,14 @@ Api.getAllianceRankList =  function(rankType, fromRank, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.getIapGift = function(giftId, callback){
+	var info = {
+		giftId:giftId
+	}
+	var route = "logic.playerHandler.getIapGift"
+	pomelo.request(route, info, callback)
+}
+
 
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){

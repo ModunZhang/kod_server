@@ -113,3 +113,8 @@ intInit["changeTerrainNeedGemCount"] = {
 	value:10,
 	desc:"修改玩家地形所需宝石数量"
 }
+intInit["giftExpireHours"] = {
+	type:"giftExpireHours",
+	value:24,
+	desc:"礼品过期时间"
+}

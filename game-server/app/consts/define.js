@@ -13,7 +13,7 @@ module.exports = {
 	PlayerMaxReturnMailSize:10,//单次请求返回的最大邮件数量
 	PlayerMaxReturnReportSize:10,//单次请求返回的最大战报数量
 	PlayerMaxReturnRankListSize:20,//单次请求返回的最大排名数量,
-	PlayerIapGiftsMaxSize:10,//联盟玩家赠送的充值礼品最大数量
+	PlayerIapGiftsMaxSize:20,//联盟玩家赠送的充值礼品最大数量
 	SellItemsMaxSize:30,//
 	AllianceEventsMaxSize:20,//联盟事件最大数量
 	AllianceRequestMessageMaxSize:50,//联盟中的入盟申请信息最大数量,

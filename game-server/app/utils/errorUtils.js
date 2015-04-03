@@ -1895,3 +1895,13 @@ Utils.theAllianceBuildingCanNotMoveToTargetPoint = function(playerId, allianceId
 	var config = Errors.theAllianceBuildingCanNotMoveToTargetPoint
 	return CreateError(config, {playerId:playerId, allianceId:allianceId, fromRect:fromRect, toRect:toRect})
 }
+
+/**
+ * 礼品不存在
+ * @param playerId
+ * @param giftId
+ */
+Utils.giftNotExist = function(playerId, giftId){
+	var config = Errors.giftNotExist
+	return CreateError(config, {playerId:playerId, giftId:giftId})
+}

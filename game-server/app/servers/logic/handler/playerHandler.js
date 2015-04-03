@@ -1202,3 +1202,19 @@ pro.getAllianceRankList = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 获取联盟其他玩家赠送的礼品
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getIapGift = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getIapGift", {playerId:session.uid, msg:msg})
+	var giftId = msg.giftId
+	this.playerApiService5.getIapGiftAsync(session.uid, giftId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
