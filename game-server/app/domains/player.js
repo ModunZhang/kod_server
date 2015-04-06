@@ -846,7 +846,7 @@ var PlayerSchema = new Schema({
 			type:{
 				level:{type:Number, required:true},
 				strikeTarget:{
-					type:{type:String, required:true},
+					name:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{
 						x:{type:Number, required:true},
@@ -914,7 +914,7 @@ var PlayerSchema = new Schema({
 			type:{
 				level:{type:Number, required:true},
 				strikeTarget:{
-					type:{type:String, required:true},
+					name:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{
 						x:{type:Number, required:true},
@@ -1204,7 +1204,7 @@ var PlayerSchema = new Schema({
 		attackVillage:{
 			type:{
 				attackTarget:{
-					type:{type:String, required:true},
+					name:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{
 						x:{type:Number, required:true},
@@ -1321,7 +1321,7 @@ var PlayerSchema = new Schema({
 		collectResource:{
 			type:{
 				collectTarget:{
-					type:{type:String, required:true},
+					name:{type:String, required:true},
 					level:{type:Number, required:true},
 					location:{
 						x:{type:Number, required:true},

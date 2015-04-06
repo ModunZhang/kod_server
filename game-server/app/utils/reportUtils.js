@@ -17,7 +17,6 @@ var GameDatas = require("../datas/GameDatas")
 var Soldiers = GameDatas.Soldiers
 var AllianceInitData = GameDatas.AllianceInitData
 var BuildingFunction = GameDatas.BuildingFunction
-var Dragons = GameDatas.Dragons
 var Vip = GameDatas.Vip
 
 var Utils = module.exports
@@ -997,7 +996,7 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 
 	var attackVillageReport = {
 		attackTarget:{
-			type:defenceVillage.type,
+			name:defenceVillage.name,
 			level:defenceVillage.level,
 			location:LogicUtils.getAllianceMapObjectById(targetAllianceDoc, defenceVillage.id).location,
 			alliance:createAllianceData(targetAllianceDoc),
@@ -1136,7 +1135,7 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 	var strikeVillageReport = {
 		level:getReportLevel(powerCompare),
 		strikeTarget:{
-			type:defenceVillage.type,
+			name:defenceVillage.name,
 			level:defenceVillage.level,
 			location:LogicUtils.getAllianceMapObjectById(targetAllianceDoc, defenceVillage.id).location,
 			alliance:createAllianceData(targetAllianceDoc),
@@ -1219,7 +1218,7 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 Utils.createCollectVillageReport = function(defenceAllianceDoc, defenceVillage, rewards){
 	var collectResource = {
 		collectTarget:{
-			type:defenceVillage.type,
+			name:defenceVillage.name,
 			level:defenceVillage.level,
 			location:LogicUtils.getAllianceMapObjectById(defenceAllianceDoc, defenceVillage.id).location,
 			alliance:{
