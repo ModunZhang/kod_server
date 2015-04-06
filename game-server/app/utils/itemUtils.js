@@ -117,7 +117,7 @@ var ChangePlayerName = function(playerDoc, playerData, newPlayerName, playerDao)
 	if(_.isEqual(newPlayerName, playerDoc.basicInfo.name)) return Promise.reject(ErrorUtils.playerNameCanNotBeTheSame(playerDoc._id, newPlayerName))
 	return playerDao.getModel().findAsync({"basicInfo.name":newPlayerName}, {_id:true}, {limit:1}).then(function(docs){
 		if(docs.length > 0){
-			return playerDao.removeLockAsync(doc._id).then(function(){
+			return playerDao.removeLockAsync(docs[0]._id).then(function(){
 				return Promise.reject(ErrorUtils.playerNameAlreadyUsed(playerDoc._id, newPlayerName))
 			})
 		}else{
@@ -377,7 +377,7 @@ var DragonChest = function(playerDoc, playerData, itemConfig){
 	var items = ParseConfig(itemConfig.effect)
 	items = SortFunc(items)
 	var selectCount = PlayerInitData.intInit.dragonChestSelectCountPerItem.value
-	for(var i = 0; i < selectCount; i ++){
+	for(var i = 0; i < selectCount; i++){
 		var item = items[i]
 		playerDoc[item.type][item.name] += item.count
 		playerData.push([item.type + "." + item.name, playerDoc[item.type][item.name]])
@@ -429,7 +429,7 @@ var Chest = function(playerDoc, playerData, itemConfig){
 	var items = ParseConfig(itemConfig.effect)
 	items = SortFunc(items)
 	var selectCount = PlayerInitData.intInit.chestSelectCountPerItem.value
-	for(var i = 0; i < selectCount; i ++){
+	for(var i = 0; i < selectCount; i++){
 		var item = items[i]
 		var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
 		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
@@ -1325,8 +1325,7 @@ Utils.isParamsLegal = function(itemName, params){
 	if(_.isEqual(itemName, "speedup_1") || _.isEqual(itemName, "speedup_2") || _.isEqual(itemName, "speedup_3")
 		|| _.isEqual(itemName, "speedup_4") || _.isEqual(itemName, "speedup_5") || _.isEqual(itemName, "speedup_6")
 		|| _.isEqual(itemName, "speedup_7") || _.isEqual(itemName, "speedup_8")
-	)
-	{
+	){
 		if(!_.isObject(itemData)) return false
 		eventType = itemData.eventType
 		eventId = itemData.eventId
