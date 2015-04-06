@@ -889,6 +889,8 @@ Utils.refreshPlayerPower = function(playerDoc, playerData){
 	var housePower = this.getPlayerHousesPower(playerDoc)
 	var soldierPower = this.getPlayerSoldiersPower(playerDoc)
 	var totalPower = buildingPower + housePower + soldierPower
+
+	console.log(buildingPower, housePower, soldierPower, "111111111111111")
 	playerDoc.basicInfo.power = totalPower
 	playerData.push(["basicInfo.power", playerDoc.basicInfo.power])
 }
