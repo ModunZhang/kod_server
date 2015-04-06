@@ -904,6 +904,7 @@ Utils.getPlayerBuildingsPower = function(playerDoc){
 	_.each(playerDoc.buildings, function(building){
 		if(building.level >= 1){
 			var config = BuildingFunction[building.type][building.level]
+			console.log(building.type, building.level, config.power, "11111111111111")
 			totalPower += config.power
 		}
 	})

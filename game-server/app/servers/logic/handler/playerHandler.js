@@ -38,9 +38,7 @@ pro.upgradeBuilding = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.upgradeBuilding", {playerId:session.uid, msg:msg})
 	var location = msg.location
 	var finishNow = msg.finishNow
-	var self = this
 	this.playerApiService.upgradeBuildingAsync(session.uid, location, finishNow).then(function(playerData){
-		self.logService.onRequest("logic.playerHandler.upgradeBuilding", {playerId:session.uid, playerData:playerData})
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
