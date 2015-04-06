@@ -889,7 +889,6 @@ Utils.refreshPlayerPower = function(playerDoc, playerData){
 	var housePower = this.getPlayerHousesPower(playerDoc)
 	var soldierPower = this.getPlayerSoldiersPower(playerDoc)
 	var totalPower = buildingPower + housePower + soldierPower
-	console.log(buildingPower, housePower, soldierPower, totalPower, "2222222222222")
 
 	playerDoc.basicInfo.power = totalPower
 	playerData.push(["basicInfo.power", playerDoc.basicInfo.power])
@@ -905,7 +904,6 @@ Utils.getPlayerBuildingsPower = function(playerDoc){
 	_.each(playerDoc.buildings, function(building){
 		if(building.level >= 1){
 			var config = BuildingFunction[building.type][building.level]
-			console.log(building.type, building.level, config.power, "11111111111111")
 			totalPower += config.power
 		}
 	})

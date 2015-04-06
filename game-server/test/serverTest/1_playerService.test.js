@@ -63,16 +63,16 @@ describe("PlayerService", function(){
 
 
 	describe("playerHandler", function(){
-		it("upgradeBuilding 建筑正在升级", function(done){
-			Api.upgradeBuilding(1, false, function(doc){
-				doc.code.should.equal(200)
-				Api.upgradeBuilding(1, false, function(doc){
-					doc.code.should.equal(Errors.buildingUpgradingNow.code)
-					done()
-				})
-			})
-		})
-
+		//it("upgradeBuilding 建筑正在升级", function(done){
+		//	Api.upgradeBuilding(1, false, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.upgradeBuilding(1, false, function(doc){
+		//			doc.code.should.equal(Errors.buildingUpgradingNow.code)
+		//			done()
+		//		})
+		//	})
+		//})
+		//
 		//it("upgradeBuilding 建筑坑位不合法", function(done){
 		//	Api.upgradeBuilding(7, false, function(doc){
 		//		doc.code.should.equal(Errors.buildingLocationNotLegal.code)
