@@ -28,7 +28,7 @@ level[0] = {
 level[1] = {
 	level:1,
 	expFrom:0,
-	expTo:100,
+	expTo:120,
 	freeSpeedup:8,
 	helpSpeedup:0.550000,
 	woodProductionAdd:0.000000,
@@ -49,7 +49,7 @@ level[1] = {
 }
 level[2] = {
 	level:2,
-	expFrom:100,
+	expFrom:120,
 	expTo:300,
 	freeSpeedup:12,
 	helpSpeedup:0.600000,
@@ -94,7 +94,7 @@ level[3] = {
 level[4] = {
 	level:4,
 	expFrom:600,
-	expTo:1000,
+	expTo:1200,
 	freeSpeedup:20,
 	helpSpeedup:0.700000,
 	woodProductionAdd:0.080000,
@@ -115,8 +115,8 @@ level[4] = {
 }
 level[5] = {
 	level:5,
-	expFrom:1000,
-	expTo:1500,
+	expFrom:1200,
+	expTo:3600,
 	freeSpeedup:25,
 	helpSpeedup:0.750000,
 	woodProductionAdd:0.100000,
@@ -137,8 +137,8 @@ level[5] = {
 }
 level[6] = {
 	level:6,
-	expFrom:1500,
-	expTo:2100,
+	expFrom:3600,
+	expTo:8000,
 	freeSpeedup:30,
 	helpSpeedup:0.800000,
 	woodProductionAdd:0.120000,
@@ -159,8 +159,8 @@ level[6] = {
 }
 level[7] = {
 	level:7,
-	expFrom:2100,
-	expTo:2800,
+	expFrom:8000,
+	expTo:20000,
 	freeSpeedup:35,
 	helpSpeedup:0.850000,
 	woodProductionAdd:0.150000,
@@ -181,8 +181,8 @@ level[7] = {
 }
 level[8] = {
 	level:8,
-	expFrom:2800,
-	expTo:3600,
+	expFrom:20000,
+	expTo:50000,
 	freeSpeedup:40,
 	helpSpeedup:0.900000,
 	woodProductionAdd:0.200000,
@@ -203,8 +203,8 @@ level[8] = {
 }
 level[9] = {
 	level:9,
-	expFrom:3600,
-	expTo:4500,
+	expFrom:50000,
+	expTo:100000,
 	freeSpeedup:45,
 	helpSpeedup:0.950000,
 	woodProductionAdd:0.250000,
@@ -225,8 +225,8 @@ level[9] = {
 }
 level[10] = {
 	level:10,
-	expFrom:4500,
-	expTo:10000,
+	expFrom:100000,
+	expTo:9999999,
 	freeSpeedup:60,
 	helpSpeedup:1.000000,
 	woodProductionAdd:0.300000,
