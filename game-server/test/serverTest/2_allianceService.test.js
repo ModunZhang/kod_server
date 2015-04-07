@@ -662,108 +662,108 @@
 //			})
 //		})
 //
-//		//it("getAllianceRankList 获取Power排行", function(done){
-//		//	Api.getAllianceRankList(Consts.RankTypes.Power, 0, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it("getAllianceRankList 获取Kill排行", function(done){
-//		//	Api.getAllianceRankList(Consts.RankTypes.Kill, 0, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
-//		//	Api.buyAllianceArchon(function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.loginPlayer(Config.deviceId3, function(doc){
-//		//			doc.code.should.equal(200)
-//		//			Api.buyAllianceArchon(function(doc){
-//		//				doc.code.should.equal(200)
-//		//				Api.loginPlayer(Config.deviceId5, function(doc){
-//		//					doc.code.should.equal(200)
-//		//					done()
-//		//				})
-//		//			})
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("searchAllianceByTag 正常搜索", function(done){
-//		//	Api.searchAllianceByTag("test", function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it("getCanDirectJoinAlliances 正常获取", function(done){
-//		//	Api.getCanDirectJoinAlliances(function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it("upgradeBuilding 加入联盟后", function(done){
-//		//	var playerDoc = null
-//		//	Api.upgradeBuilding(1, true, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.upgradeBuilding(1, false, function(doc){
-//		//			doc.code.should.equal(200)
-//		//			Api.loginPlayer(Config.deviceId5, function(doc){
-//		//				doc.code.should.equal(200)
-//		//				playerDoc = doc.playerData
-//		//				var buildEvent = playerDoc.buildingEvents[0]
-//		//				Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.BuildingEvents, buildEvent.id, function(doc){
-//		//					doc.code.should.equal(200)
-//		//					done()
-//		//				})
-//		//			})
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("createHouse 加入联盟后", function(done){
-//		//	var playerDoc = null
-//		//	Api.createHouse("dwelling", 3, 3, false, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.loginPlayer(Config.deviceId5, function(doc){
-//		//			doc.code.should.equal(200)
-//		//			playerDoc = doc.playerData
-//		//			var buildEvent = _.find(playerDoc.houseEvents, function(event){
-//		//				return event.finishTime > Date.now()
-//		//			})
-//		//			Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.HouseEvents, buildEvent.id, function(doc){
-//		//				doc.code.should.equal(200)
-//		//				done()
-//		//			})
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("upgradeHouse 加入联盟后", function(done){
-//		//	var playerDoc = null
-//		//	Api.createHouse("dwelling", 3, 1, true, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.upgradeHouse(3, 1, false, function(doc){
-//		//			doc.code.should.equal(200)
-//		//			Api.loginPlayer(Config.deviceId5, function(doc){
-//		//				doc.code.should.equal(200)
-//		//				playerDoc = doc.playerData
-//		//				var buildEvent = _.find(playerDoc.houseEvents, function(event){
-//		//					return event.finishTime > Date.now()
-//		//				})
-//		//				Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.HouseEvents, buildEvent.id, function(doc){
-//		//					doc.code.should.equal(200)
-//		//					done()
-//		//				})
-//		//			})
-//		//		})
-//		//	})
-//		//})
-//		//
+//		it("getAllianceRankList 获取Power排行", function(done){
+//			Api.getAllianceRankList(Consts.RankTypes.Power, 0, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getAllianceRankList 获取Kill排行", function(done){
+//			Api.getAllianceRankList(Consts.RankTypes.Kill, 0, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
+//			Api.buyAllianceArchon(function(doc){
+//				doc.code.should.equal(200)
+//				Api.loginPlayer(Config.deviceId3, function(doc){
+//					doc.code.should.equal(200)
+//					Api.buyAllianceArchon(function(doc){
+//						doc.code.should.equal(200)
+//						Api.loginPlayer(Config.deviceId5, function(doc){
+//							doc.code.should.equal(200)
+//							done()
+//						})
+//					})
+//				})
+//			})
+//		})
+//
+//		it("searchAllianceByTag 正常搜索", function(done){
+//			Api.searchAllianceByTag("test", function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getCanDirectJoinAlliances 正常获取", function(done){
+//			Api.getCanDirectJoinAlliances(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("upgradeBuilding 加入联盟后", function(done){
+//			var playerDoc = null
+//			Api.upgradeBuilding(1, true, function(doc){
+//				doc.code.should.equal(200)
+//				Api.upgradeBuilding(1, false, function(doc){
+//					doc.code.should.equal(200)
+//					Api.loginPlayer(Config.deviceId5, function(doc){
+//						doc.code.should.equal(200)
+//						playerDoc = doc.playerData
+//						var buildEvent = playerDoc.buildingEvents[0]
+//						Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.BuildingEvents, buildEvent.id, function(doc){
+//							doc.code.should.equal(200)
+//							done()
+//						})
+//					})
+//				})
+//			})
+//		})
+//
+//		it("createHouse 加入联盟后", function(done){
+//			var playerDoc = null
+//			Api.createHouse("dwelling", 3, 3, false, function(doc){
+//				doc.code.should.equal(200)
+//				Api.loginPlayer(Config.deviceId5, function(doc){
+//					doc.code.should.equal(200)
+//					playerDoc = doc.playerData
+//					var buildEvent = _.find(playerDoc.houseEvents, function(event){
+//						return event.finishTime > Date.now()
+//					})
+//					Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.HouseEvents, buildEvent.id, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("upgradeHouse 加入联盟后", function(done){
+//			var playerDoc = null
+//			Api.createHouse("dwelling", 3, 1, true, function(doc){
+//				doc.code.should.equal(200)
+//				Api.upgradeHouse(3, 1, false, function(doc){
+//					doc.code.should.equal(200)
+//					Api.loginPlayer(Config.deviceId5, function(doc){
+//						doc.code.should.equal(200)
+//						playerDoc = doc.playerData
+//						var buildEvent = _.find(playerDoc.houseEvents, function(event){
+//							return event.finishTime > Date.now()
+//						})
+//						Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.HouseEvents, buildEvent.id, function(doc){
+//							doc.code.should.equal(200)
+//							done()
+//						})
+//					})
+//				})
+//			})
+//		})
+//
 //		//it("helpAllianceMemberSpeedUp 正常帮助1", function(done){
 //		//	var alliance = null
 //		//	Api.loginPlayer(Config.deviceId3, function(doc){
@@ -779,103 +779,103 @@
 //		//		})
 //		//	})
 //		//})
-//		//
-//		//it("helpAllAllianceMemberSpeedUp 正常帮助", function(done){
-//		//	Api.loginPlayer(Config.deviceId3, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.helpAllAllianceMemberSpeedUp(function(doc){
-//		//			doc.code.should.equal(200)
-//		//			done()
-//		//		})
-//		//	})
-//		//})
 //
-//		//it("donateToAlliance 资源不足", function(done){
-//		//	Api.sendChat("resources wood 500", function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.donateToAlliance("wood", function(doc){
-//		//			doc.code.should.equal(Errors.resourceNotEnough.code)
-//		//			done()
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("donateToAlliance 正常捐赠1", function(done){
-//		//	Api.loginPlayer(Config.deviceId3, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.sendChat("resources wood 5000000", function(doc){
-//		//			doc.code.should.equal(200)
-//		//			Api.sendChat("donatelevel 6", function(doc){
-//		//				doc.code.should.equal(200)
-//		//				Api.donateToAlliance("wood", function(doc){
-//		//					doc.code.should.equal(200)
-//		//					done()
-//		//				})
-//		//			})
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("donateToAlliance 正常捐赠2", function(done){
-//		//	Api.donateToAlliance("wood", function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it("donateToAlliance 正常捐赠3", function(done){
-//		//	Api.sendChat("donatelevel 1", function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.donateToAlliance("stone", function(doc){
-//		//			doc.code.should.equal(200)
-//		//			done()
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("upgradeAllianceBuilding 联盟荣耀值不足", function(done){
-//		//	Api.sendChat("allianceHonour 10", function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.sendChat("keep 5", function(doc){
-//		//			doc.code.should.equal(200)
-//		//			Api.upgradeAllianceBuilding("palace", function(doc){
-//		//				doc.code.should.equal(Errors.allianceHonourNotEnough.code)
-//		//				done()
-//		//			})
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("upgradeAllianceBuilding 正常升级", function(done){
-//		//	Api.sendChat("allianceHonour 5000", function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.upgradeAllianceBuilding("palace", function(doc){
-//		//			doc.code.should.equal(200)
-//		//			done()
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("upgradeAllianceVillage 正常升级", function(done){
-//		//	Api.upgradeAllianceVillage("woodVillage", function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it("moveAllianceBuilding 正常移动", function(done){
-//		//	var m_allianceData = null
-//		//	Api.getMyAllianceData(function(doc){
-//		//		doc.code.should.equal(200)
-//		//		m_allianceData = doc.allianceData
-//		//		var map = MapUtils.buildMap(m_allianceData.mapObjects)
-//		//		var rect = MapUtils.getRect(map, 3, 3)
-//		//		Api.moveAllianceBuilding(m_allianceData.mapObjects[0].id, rect.x, rect.y, function(doc){
-//		//			doc.code.should.equal(200)
-//		//			done()
-//		//		})
-//		//	})
-//		//})
+//		it("helpAllAllianceMemberSpeedUp 正常帮助", function(done){
+//			Api.loginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				Api.helpAllAllianceMemberSpeedUp(function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("donateToAlliance 资源不足", function(done){
+//			Api.sendChat("resources wood 500", function(doc){
+//				doc.code.should.equal(200)
+//				Api.donateToAlliance("wood", function(doc){
+//					doc.code.should.equal(Errors.resourceNotEnough.code)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("donateToAlliance 正常捐赠1", function(done){
+//			Api.loginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				Api.sendChat("resources wood 5000000", function(doc){
+//					doc.code.should.equal(200)
+//					Api.sendChat("donatelevel 6", function(doc){
+//						doc.code.should.equal(200)
+//						Api.donateToAlliance("wood", function(doc){
+//							doc.code.should.equal(200)
+//							done()
+//						})
+//					})
+//				})
+//			})
+//		})
+//
+//		it("donateToAlliance 正常捐赠2", function(done){
+//			Api.donateToAlliance("wood", function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("donateToAlliance 正常捐赠3", function(done){
+//			Api.sendChat("donatelevel 1", function(doc){
+//				doc.code.should.equal(200)
+//				Api.donateToAlliance("stone", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("upgradeAllianceBuilding 联盟荣耀值不足", function(done){
+//			Api.sendChat("allianceHonour 10", function(doc){
+//				doc.code.should.equal(200)
+//				Api.sendChat("keep 5", function(doc){
+//					doc.code.should.equal(200)
+//					Api.upgradeAllianceBuilding("palace", function(doc){
+//						doc.code.should.equal(Errors.allianceHonourNotEnough.code)
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("upgradeAllianceBuilding 正常升级", function(done){
+//			Api.sendChat("allianceHonour 5000", function(doc){
+//				doc.code.should.equal(200)
+//				Api.upgradeAllianceBuilding("palace", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("upgradeAllianceVillage 正常升级", function(done){
+//			Api.upgradeAllianceVillage("woodVillage", function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("moveAllianceBuilding 正常移动", function(done){
+//			var m_allianceData = null
+//			Api.getMyAllianceData(function(doc){
+//				doc.code.should.equal(200)
+//				m_allianceData = doc.allianceData
+//				var map = MapUtils.buildMap(m_allianceData.mapObjects)
+//				var rect = MapUtils.getRect(map, 3, 3)
+//				Api.moveAllianceBuilding(m_allianceData.mapObjects[0].id, rect.x, rect.y, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
 //
 //		//it("activateAllianceShrineStage 联盟感知力不足", function(done){
 //		//	Api.sendChat("allianceperception 0", function(doc){
@@ -2644,9 +2644,22 @@
 //		//it("addAllianceItem 普通道具不需要进货补充", function(done){
 //		//	Api.loginPlayer(Config.deviceId3, function(doc){
 //		//		doc.code.should.equal(200)
-//		//		Api.addAllianceItem("movingConstruction", 1, function(doc){
+//		//		Api.addAllianceItem("woodClass_4", 1, function(doc){
 //		//			doc.code.should.equal(Errors.normalItemsNotNeedToAdd.code)
 //		//			done()
+//		//		})
+//		//	})
+//		//})
+//		//
+//		//it("addAllianceItem 此道具未在联盟商店出售", function(done){
+//		//	Api.loginPlayer(Config.deviceId3, function(doc){
+//		//		doc.code.should.equal(200)
+//		//		Api.sendChat("allianceHonour 500000", function(doc){
+//		//			doc.code.should.equal(200)
+//		//			Api.addAllianceItem("vipPoint_3", 1, function(doc){
+//		//				doc.code.should.equal(Errors.theItemNotSellInAllianceShop.code)
+//		//				done()
+//		//			})
 //		//		})
 //		//	})
 //		//})
@@ -2654,9 +2667,9 @@
 //		//it("addAllianceItem 正常添加", function(done){
 //		//	Api.loginPlayer(Config.deviceId3, function(doc){
 //		//		doc.code.should.equal(200)
-//		//		Api.sendChat("allianceHonour 5000", function(doc){
+//		//		Api.sendChat("allianceHonour 500000", function(doc){
 //		//			doc.code.should.equal(200)
-//		//			Api.addAllianceItem("torch", 1, function(doc){
+//		//			Api.addAllianceItem("dragonChest_1", 1, function(doc){
 //		//				doc.code.should.equal(200)
 //		//				done()
 //		//			})
@@ -2665,14 +2678,14 @@
 //		//})
 //		//
 //		//it("buyAllianceItem 正常购买1", function(done){
-//		//	Api.buyAllianceItem("movingConstruction", 1, function(doc){
+//		//	Api.buyAllianceItem("woodClass_4", 1, function(doc){
 //		//		doc.code.should.equal(200)
 //		//		done()
 //		//	})
 //		//})
 //		//
 //		//it("buyAllianceItem 正常购买2", function(done){
-//		//	Api.buyAllianceItem("torch", 1, function(doc){
+//		//	Api.buyAllianceItem("dragonChest_1", 1, function(doc){
 //		//		doc.code.should.equal(200)
 //		//		done()
 //		//	})

@@ -6,60 +6,60 @@ module.exports = iron
 iron[1] = {
 	level:1,
 	expFrom:0,
-	expTo:100,
-	effect:0.050000
+	expTo:50,
+	effect:0.150000
 }
 iron[2] = {
 	level:2,
-	expFrom:100,
-	expTo:300,
-	effect:0.100000
+	expFrom:51,
+	expTo:214,
+	effect:0.160000
 }
 iron[3] = {
 	level:3,
-	expFrom:300,
-	expTo:600,
-	effect:0.150000
+	expFrom:215,
+	expTo:1769,
+	effect:0.170000
 }
 iron[4] = {
 	level:4,
-	expFrom:600,
-	expTo:1000,
-	effect:0.200000
+	expFrom:1770,
+	expTo:7607,
+	effect:0.180000
 }
 iron[5] = {
 	level:5,
-	expFrom:1000,
-	expTo:1500,
-	effect:0.250000
+	expFrom:7608,
+	expTo:20387,
+	effect:0.190000
 }
 iron[6] = {
 	level:6,
-	expFrom:1500,
-	expTo:2100,
-	effect:0.300000
+	expFrom:20388,
+	expTo:48748,
+	effect:0.200000
 }
 iron[7] = {
 	level:7,
-	expFrom:2100,
-	expTo:2800,
-	effect:0.350000
+	expFrom:48749,
+	expTo:104863,
+	effect:0.210000
 }
 iron[8] = {
 	level:8,
-	expFrom:2800,
-	expTo:3600,
-	effect:0.400000
+	expFrom:104864,
+	expTo:217010,
+	effect:0.220000
 }
 iron[9] = {
 	level:9,
-	expFrom:3600,
-	expTo:4500,
-	effect:0.450000
+	expFrom:217011,
+	expTo:419315,
+	effect:0.230000
 }
 iron[10] = {
 	level:10,
-	expFrom:4500,
-	expTo:100000000,
-	effect:0.500000
+	expFrom:419316,
+	expTo:786515,
+	effect:0.240000
 }

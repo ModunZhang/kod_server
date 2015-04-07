@@ -3782,3 +3782,17 @@ Utils.isPlayerSoldierLocked = function(playerDoc, soldierName){
 	var unlockedSoldiers = BuildingFunction.barracks[building.level].unlockedSoldiers.split(",")
 	return !_.contains(unlockedSoldiers, soldierName)
 }
+
+/**
+ * 某道具是否在联盟商店出售
+ * @param allianceDoc
+ * @param itemName
+ * @returns {*}
+ */
+Utils.isItemSellInAllianceShop = function(allianceDoc, itemName){
+	var building = _.find(allianceDoc.buildings, function(building){
+		return _.isEqual(building.name, "shop")
+	})
+	var unlockedItems = AllianceBuilding.shop[building.level].itemsUnlock.split(",")
+	return _.contains(unlockedItems, itemName)
+}

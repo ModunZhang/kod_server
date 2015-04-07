@@ -5,71 +5,61 @@ module.exports = moonGate
 
 moonGate[1] = {
 	level:1,
-	needHonour:400,
-	needKeep:3,
-	power:200,
-	defendingCount:1
+	needHonour:1300,
+	defendingCount:1,
+	power:33
 }
 moonGate[2] = {
 	level:2,
-	needHonour:800,
-	needKeep:5,
-	power:400,
-	defendingCount:2
+	needHonour:4700,
+	defendingCount:2,
+	power:118
 }
 moonGate[3] = {
 	level:3,
-	needHonour:1600,
-	needKeep:8,
-	power:800,
-	defendingCount:3
+	needHonour:14500,
+	defendingCount:3,
+	power:363
 }
 moonGate[4] = {
 	level:4,
-	needHonour:3200,
-	needKeep:9,
-	power:1600,
-	defendingCount:5
+	needHonour:29500,
+	defendingCount:5,
+	power:738
 }
 moonGate[5] = {
 	level:5,
-	needHonour:6400,
-	needKeep:10,
-	power:3200,
-	defendingCount:8
+	needHonour:53300,
+	defendingCount:8,
+	power:1333
 }
 moonGate[6] = {
 	level:6,
-	needHonour:12800,
-	needKeep:12,
-	power:6400,
-	defendingCount:10
+	needHonour:124100,
+	defendingCount:10,
+	power:3103
 }
 moonGate[7] = {
 	level:7,
-	needHonour:25600,
-	needKeep:14,
-	power:12800,
-	defendingCount:15
+	needHonour:205700,
+	defendingCount:15,
+	power:5143
 }
 moonGate[8] = {
 	level:8,
-	needHonour:51200,
-	needKeep:16,
-	power:25600,
-	defendingCount:20
+	needHonour:447500,
+	defendingCount:20,
+	power:11188
 }
 moonGate[9] = {
 	level:9,
-	needHonour:102400,
-	needKeep:18,
-	power:51200,
-	defendingCount:30
+	needHonour:687400,
+	defendingCount:30,
+	power:17185
 }
 moonGate[10] = {
 	level:10,
-	needHonour:204800,
-	needKeep:20,
-	power:102400,
-	defendingCount:40
+	needHonour:1008300,
+	defendingCount:40,
+	power:25208
 }

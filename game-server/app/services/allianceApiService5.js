@@ -12,7 +12,6 @@ var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var TaskUtils = require("../utils/taskUtils")
 var ErrorUtils = require("../utils/errorUtils")
-var MarchUtils = require("../utils/marchUtils")
 var ReportUtils = require("../utils/reportUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
@@ -239,8 +238,8 @@ pro.addItem = function(playerId, itemName, count, callback){
 		return self.allianceDao.findAsync(playerDoc.alliance.id)
 	}).then(function(doc){
 		allianceDoc = doc
+		if(!DataUtils.isItemSellInAllianceShop(allianceDoc, itemName)) return Promise.reject(ErrorUtils.theItemNotSellInAllianceShop(playerId, allianceDoc._id, itemName))
 		var itemConfig = DataUtils.getItemConfig(itemName)
-		if(!itemConfig.isSellInAlliance) return Promise.reject(ErrorUtils.theItemNotSellInAllianceShop(playerId, allianceDoc._id, itemName))
 		if(!itemConfig.isAdvancedItem) return Promise.reject(ErrorUtils.normalItemsNotNeedToAdd(playerId, allianceDoc._id, itemName))
 		var honourNeed = itemConfig.buyPriceInAlliance * count
 		if(allianceDoc.basicInfo.honour < honourNeed) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
