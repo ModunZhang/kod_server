@@ -14,6 +14,7 @@ var UserSchema = new Schema({
 	players:[{
 		_id:false,
 		id:{type:String, required:true},
+		serverId:{type:String, required:true},
 		selected:{type:Boolean, required:true}
 	}],
 	registerTime:{type:Number, required:true, default:Date.now}

@@ -1217,3 +1217,34 @@ pro.getIapGift = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 获取服务器列表
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getServers = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getServers", {playerId:session.uid, msg:msg})
+	this.playerApiService5.getServersAsync(session.uid).then(function(servers){
+		next(null, {code:200, servers:servers})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 切换服务器
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.switchServer = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.switchServer", {playerId:session.uid, msg:msg})
+	var serverId = msg.serverId
+	this.playerApiService5.switchServerAsync(session.uid, serverId).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}

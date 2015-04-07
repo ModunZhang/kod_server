@@ -647,6 +647,19 @@ Api.getIapGift = function(giftId, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.getServers = function(callback){
+	var route = "logic.playerHandler.getServers"
+	pomelo.request(route, null, callback)
+}
+
+Api.switchServer = function(serverId, callback){
+	var info = {
+		serverId:serverId
+	}
+	var route = "logic.playerHandler.switchServer"
+	pomelo.request(route, info, callback)
+}
+
 
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){

@@ -89,7 +89,7 @@ lumbermill[14] = {
 }
 lumbermill[15] = {
 	level:15,
-	houseAdd:2,
+	houseAdd:3,
 	protection:0.150000,
 	power:1620
 }
@@ -131,13 +131,13 @@ lumbermill[21] = {
 }
 lumbermill[22] = {
 	level:22,
-	houseAdd:3,
+	houseAdd:4,
 	protection:0.220000,
 	power:7290
 }
 lumbermill[23] = {
 	level:23,
-	houseAdd:3,
+	houseAdd:4,
 	protection:0.230000,
 	power:9720
 }
@@ -173,19 +173,19 @@ lumbermill[28] = {
 }
 lumbermill[29] = {
 	level:29,
-	houseAdd:4,
+	houseAdd:5,
 	protection:0.290000,
 	power:54000
 }
 lumbermill[30] = {
 	level:30,
-	houseAdd:4,
+	houseAdd:5,
 	protection:0.300000,
 	power:64800
 }
 lumbermill[31] = {
 	level:31,
-	houseAdd:4,
+	houseAdd:5,
 	protection:0.310000,
 	power:75600
 }
@@ -215,25 +215,25 @@ lumbermill[35] = {
 }
 lumbermill[36] = {
 	level:36,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.360000,
 	power:135000
 }
 lumbermill[37] = {
 	level:37,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.370000,
 	power:151200
 }
 lumbermill[38] = {
 	level:38,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.380000,
 	power:167400
 }
 lumbermill[39] = {
 	level:39,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.390000,
 	power:183600
 }

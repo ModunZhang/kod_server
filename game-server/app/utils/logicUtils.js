@@ -2214,21 +2214,30 @@ Utils.addPlayerResources = function(playerDoc, resources){
  * @returns {*}
  */
 Utils.createUserAndFirstPlayer = function(serverId){
-	var name = ShortId.generate()
-	var playerId = ShortId.generate()
 	var userId = ShortId.generate()
+	var player = this.createPlayer(serverId, userId)
+	var user = {
+		_id:userId,
+		players:[{id:player._id, serverId:player.serverId, selected:true}]
+	}
+	return {user:user, player:player}
+}
+
+/**
+ * 创建玩家
+ * @param serverId
+ * @param userId
+ */
+Utils.createPlayer = function(serverId, userId){
+	var playerId = ShortId.generate()
+	var name = ShortId.generate()
 	var player = {
 		_id:playerId,
 		serverId:serverId,
 		userId:userId,
-		selected:true,
 		basicInfo:{name:"player_" + name, cityName:"city_" + name}
 	}
-	var user = {
-		_id:userId,
-		players:[{id:playerId, selected:true}]
-	}
-	return {user:user, player:player}
+	return player
 }
 
 /**

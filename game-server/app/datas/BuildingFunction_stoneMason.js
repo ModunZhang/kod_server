@@ -89,7 +89,7 @@ stoneMason[14] = {
 }
 stoneMason[15] = {
 	level:15,
-	houseAdd:2,
+	houseAdd:3,
 	protection:0.150000,
 	power:1680
 }
@@ -131,13 +131,13 @@ stoneMason[21] = {
 }
 stoneMason[22] = {
 	level:22,
-	houseAdd:3,
+	houseAdd:4,
 	protection:0.220000,
 	power:7560
 }
 stoneMason[23] = {
 	level:23,
-	houseAdd:3,
+	houseAdd:4,
 	protection:0.230000,
 	power:10080
 }
@@ -173,19 +173,19 @@ stoneMason[28] = {
 }
 stoneMason[29] = {
 	level:29,
-	houseAdd:4,
+	houseAdd:5,
 	protection:0.290000,
 	power:56000
 }
 stoneMason[30] = {
 	level:30,
-	houseAdd:4,
+	houseAdd:5,
 	protection:0.300000,
 	power:67200
 }
 stoneMason[31] = {
 	level:31,
-	houseAdd:4,
+	houseAdd:5,
 	protection:0.310000,
 	power:78400
 }
@@ -215,25 +215,25 @@ stoneMason[35] = {
 }
 stoneMason[36] = {
 	level:36,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.360000,
 	power:140000
 }
 stoneMason[37] = {
 	level:37,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.370000,
 	power:156800
 }
 stoneMason[38] = {
 	level:38,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.380000,
 	power:173600
 }
 stoneMason[39] = {
 	level:39,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.390000,
 	power:190400
 }

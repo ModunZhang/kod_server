@@ -64,17 +64,20 @@ pro.createAccount = function(deviceId, callback){
 	}
 
 	var self = this
-	var resp = LogicUtils.createUserAndFirstPlayer(Consts.ServerId)
-	var player = resp.player
-	var user = resp.user
-	var device = LogicUtils.createDevice(deviceId, user._id)
-
 	var playerDoc = null
-	var updateFuncs = []
-	updateFuncs.push([this.Device, this.Device.createAsync, device])
-	updateFuncs.push([this.User, this.User.createAsync, user])
-	updateFuncs.push([this.playerDao.getModel(), this.playerDao.getModel().createAsync, player])
-	LogicUtils.excuteAll(updateFuncs).spread(function(doc_1, doc_2, doc_3){
+	var getPromotedServerAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getPromotedServer.toServer, this)
+	getPromotedServerAsync(this.app.getServersByType('gate')[0].id).then(function(server){
+		var resp = LogicUtils.createUserAndFirstPlayer(server.id)
+		var player = resp.player
+		var user = resp.user
+		var device = LogicUtils.createDevice(deviceId, user._id)
+		var updateFuncs = []
+		updateFuncs.push([self.Device, self.Device.createAsync, device])
+		updateFuncs.push([self.User, self.User.createAsync, user])
+		updateFuncs.push([self.playerDao.getModel(), self.playerDao.getModel().createAsync, player])
+
+		return LogicUtils.excuteAll(updateFuncs)
+	}).spread(function(doc_1, doc_2, doc_3){
 		playerDoc = JSON.parse(JSON.stringify(doc_3))
 		return self.playerDao.addAsync(playerDoc)
 	}).then(function(){

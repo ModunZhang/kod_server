@@ -1092,17 +1092,21 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 		return self.User.findAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
 	}).then(function(docs){
 		if(docs.length == 0){
-			var resp = LogicUtils.createUserAndFirstPlayer(Consts.ServerId)
-			var user = resp.user
-			user.gcId = gcId
-			var player = resp.player
-			updateFuncs.push([self.Device, self.Device.findByIdAndUpdateAsync, deviceId, {userId:user._id}])
-			updateFuncs.push([self.User, self.User.createAsync, user])
-			updateFuncs.push([self.playerDao.getModel(), self.playerDao.getModel().createAsync, player])
+			var getPromotedServerAsync = Promise.promisify(self.app.rpc.gate.gateRemote.getPromotedServer.toServer, self)
+			return getPromotedServerAsync(self.app.getServersByType('gate')[0].id).then(function(server){
+				var resp = LogicUtils.createUserAndFirstPlayer(server.id)
+				var user = resp.user
+				user.gcId = gcId
+				var player = resp.player
+				updateFuncs.push([self.Device, self.Device.findByIdAndUpdateAsync, deviceId, {userId:user._id}])
+				updateFuncs.push([self.User, self.User.createAsync, user])
+				updateFuncs.push([self.playerDao.getModel(), self.playerDao.getModel().createAsync, player])
+				return Promise.resolve()
+			})
 		}else{
 			updateFuncs.push([self.Device, self.Device.findByIdAndUpdateAsync, deviceId, {userId:docs[0]._id}])
+			return Promise.resolve()
 		}
-		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){

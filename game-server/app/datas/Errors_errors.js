@@ -908,3 +908,13 @@ errors["giftNotExist"] = {
 	code:681,
 	message:"礼品不存在"
 }
+errors["serverNotExist"] = {
+	key:"serverNotExist",
+	code:682,
+	message:"服务器不存在"
+}
+errors["canNotSwitchToTheSameServer"] = {
+	key:"canNotSwitchToTheSameServer",
+	code:683,
+	message:"不能切换到相同的服务器"
+}

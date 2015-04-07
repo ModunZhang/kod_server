@@ -24,6 +24,7 @@ var PlayerApiService5 = function(app){
 	this.allianceDao = app.get("allianceDao")
 	this.playerDao = app.get("playerDao")
 	this.Deal = app.get("Deal")
+	this.User = app.get("User")
 	this.redis = app.get("redis")
 }
 module.exports = PlayerApiService5
@@ -604,6 +605,120 @@ pro.getIapGift = function(playerId, giftId, callback){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 获取服务器列表
+ * @param playerId
+ * @param callback
+ */
+pro.getServers = function(playerId, callback){
+	var self = this
+	var playerDoc = null
+	var servers = null
+	var userDoc = null
+	var updateFuncs = []
+	var getServersAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getServers.toServer, this)
+
+	this.playerDao.findAsync(playerId).then(function(doc){
+		playerDoc = doc
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
+		return self.User.findByIdAsync(playerDoc.userId)
+	}).then(function(doc){
+		userDoc = doc
+		return getServersAsync(self.app.getServersByType('gate')[0].id)
+	}).then(function(theServers){
+		servers = theServers
+		_.each(servers, function(server){
+			server.hasPlayerData = _.some(userDoc.players, function(player){
+				return _.isEqual(player.serverId, server.id)
+			})
+		})
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		callback(null, servers)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
+}
+
+/**
+ * 切换服务器
+ * @param playerId
+ * @param serverId
+ * @param callback
+ */
+pro.switchServer = function(playerId, serverId, callback){
+	if(!_.isString(serverId)){
+		callback(new Error("serverId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var userDoc = null
+	var updateFuncs = []
+	var getServersAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getServers.toServer, this)
+	getServersAsync(self.app.getServersByType('gate')[0].id).then(function(theServers){
+		var isServerExist = _.some(theServers, function(server){
+			return _.isEqual(server.id, serverId)
+		})
+		if(!isServerExist) return Promise.reject(ErrorUtils.serverNotExist(playerId, serverId))
+		return self.playerDao.findAsync(playerId)
+	}).then(function(doc){
+		playerDoc = doc
+		if(_.isEqual(playerDoc.serverId, serverId)) return Promise.reject(ErrorUtils.canNotSwitchToTheSameServer(playerId, serverId))
+		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
+
+		return self.User.findByIdAsync(playerDoc.userId)
+	}).then(function(doc){
+		userDoc = doc
+		var hasPlayer = false
+		_.each(userDoc.players, function(player){
+			player.selected = _.isEqual(player.serverId, serverId)
+			hasPlayer = player.selected
+		})
+		if(!hasPlayer){
+			var player = LogicUtils.createPlayer(serverId, userDoc._id)
+			userDoc.players.push({id:player._id, serverId:player.serverId, selected:true})
+			updateFuncs.push([self.playerDao.getModel(), self.playerDao.getModel().createAsync, player])
+		}
+		updateFuncs.push([self.User, self.User.updateAsync, {"_id":userDoc._id}, {"players":userDoc.players}])
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		callback(null)
+		return Promise.resolve()
+	}).then(function(){
+		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){

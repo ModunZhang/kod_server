@@ -89,7 +89,7 @@ mill[14] = {
 }
 mill[15] = {
 	level:15,
-	houseAdd:2,
+	houseAdd:3,
 	protection:0.150000,
 	power:1560
 }
@@ -131,13 +131,13 @@ mill[21] = {
 }
 mill[22] = {
 	level:22,
-	houseAdd:3,
+	houseAdd:4,
 	protection:0.220000,
 	power:7020
 }
 mill[23] = {
 	level:23,
-	houseAdd:3,
+	houseAdd:4,
 	protection:0.230000,
 	power:9360
 }
@@ -173,19 +173,19 @@ mill[28] = {
 }
 mill[29] = {
 	level:29,
-	houseAdd:4,
+	houseAdd:5,
 	protection:0.290000,
 	power:52000
 }
 mill[30] = {
 	level:30,
-	houseAdd:4,
+	houseAdd:5,
 	protection:0.300000,
 	power:62400
 }
 mill[31] = {
 	level:31,
-	houseAdd:4,
+	houseAdd:5,
 	protection:0.310000,
 	power:72800
 }
@@ -215,25 +215,25 @@ mill[35] = {
 }
 mill[36] = {
 	level:36,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.360000,
 	power:130000
 }
 mill[37] = {
 	level:37,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.370000,
 	power:145600
 }
 mill[38] = {
 	level:38,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.380000,
 	power:161200
 }
 mill[39] = {
 	level:39,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.390000,
 	power:176800
 }

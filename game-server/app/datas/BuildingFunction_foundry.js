@@ -89,7 +89,7 @@ foundry[14] = {
 }
 foundry[15] = {
 	level:15,
-	houseAdd:2,
+	houseAdd:3,
 	protection:0.150000,
 	power:1739
 }
@@ -131,13 +131,13 @@ foundry[21] = {
 }
 foundry[22] = {
 	level:22,
-	houseAdd:3,
+	houseAdd:4,
 	protection:0.220000,
 	power:7829
 }
 foundry[23] = {
 	level:23,
-	houseAdd:3,
+	houseAdd:4,
 	protection:0.230000,
 	power:10440
 }
@@ -173,19 +173,19 @@ foundry[28] = {
 }
 foundry[29] = {
 	level:29,
-	houseAdd:4,
+	houseAdd:5,
 	protection:0.290000,
 	power:57999
 }
 foundry[30] = {
 	level:30,
-	houseAdd:4,
+	houseAdd:5,
 	protection:0.300000,
 	power:69600
 }
 foundry[31] = {
 	level:31,
-	houseAdd:4,
+	houseAdd:5,
 	protection:0.310000,
 	power:81200
 }
@@ -215,25 +215,25 @@ foundry[35] = {
 }
 foundry[36] = {
 	level:36,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.360000,
 	power:145000
 }
 foundry[37] = {
 	level:37,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.370000,
 	power:162400
 }
 foundry[38] = {
 	level:38,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.380000,
 	power:179800
 }
 foundry[39] = {
 	level:39,
-	houseAdd:5,
+	houseAdd:6,
 	protection:0.390000,
 	power:197200
 }

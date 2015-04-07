@@ -66,3 +66,13 @@ pro.setServerStatus = function(status, callback){
 	this.app.set("isReady", status)
 	callback()
 }
+
+/**
+ * 获取在线玩家数量
+ * @param callback
+ */
+pro.getOnlineUser = function(callback){
+	var connectionService = this.app.components.__connection__
+	var statisticsInfo = connectionService.getStatisticsInfo()
+	callback(null, statisticsInfo.loginedCount)
+}

@@ -1905,3 +1905,23 @@ Utils.giftNotExist = function(playerId, giftId){
 	var config = Errors.giftNotExist
 	return CreateError(config, {playerId:playerId, giftId:giftId})
 }
+
+/**
+ * 服务器不存在
+ * @param playerId
+ * @param serverId
+ */
+Utils.serverNotExist = function(playerId, serverId){
+	var config = Errors.serverNotExist
+	return CreateError(config, {playerId:playerId, serverId:serverId})
+}
+
+/**
+ * 不能切换到相同的服务器
+ * @param playerId
+ * @param serverId
+ */
+Utils.canNotSwitchToTheSameServer = function(playerId, serverId){
+	var config = Errors.canNotSwitchToTheSameServer
+	return CreateError(config, {playerId:playerId, serverId:serverId})
+}

@@ -65,11 +65,6 @@ app.configure("production|development", "logic", function(){
 		interval:20,
 		failMode:"failfast"
 	})
-	app.set("remoteConfig", {
-		bufferMsg:false,
-		interval:20,
-		failMode:"failfast"
-	})
 
 	app.before(ReplayFilter())
 	app.before(LoginFilter())

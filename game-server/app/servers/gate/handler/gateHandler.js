@@ -4,7 +4,6 @@
  * Created by modun on 14-7-22.
  */
 
-var Dispatcher = require('../../../utils/dispatcher')
 var ErrorUtils = require("../../../utils/errorUtils")
 
 module.exports = function(app) {
@@ -14,6 +13,7 @@ module.exports = function(app) {
 var Handler = function(app) {
   this.app = app
 	this.logService = app.get("logService")
+	this.gateService = app.get("gateService")
 }
 
 var pro = Handler.prototype
@@ -33,8 +33,7 @@ pro.queryEntry = function(msg, session, next){
 		return
 	}
 
-	var logicServers = this.app.getServersByType('logic')
-	var logicServer = Dispatcher.dispatch(logicServers)
+	var logicServer = this.gateService.getPromotedLogicServer()
 	var data = {
 		id:logicServer.id,
 		host:logicServer.outHost,
