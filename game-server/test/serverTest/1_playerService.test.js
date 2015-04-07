@@ -174,13 +174,6 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("createHouse 建造小屋会造成可用城民小于0", function(done){
-		//	Api.createHouse("farmer", 3, 3, false, function(doc){
-		//		doc.code.should.equal(Errors.noEnoughCitizenToCreateHouse.code)
-		//		done()
-		//	})
-		//})
-		//
 		//it("createHouse 正常加速创建", function(done){
 		//	Api.createHouse("dwelling", 3, 2, true, function(doc){
 		//		doc.code.should.equal(200)

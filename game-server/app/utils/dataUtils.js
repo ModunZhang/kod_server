@@ -626,7 +626,7 @@ Utils.getPlayerResourceUpLimit = function(playerDoc, resourceName){
  */
 Utils.getPlayerCitizenUpLimit = function(playerDoc){
 	var houses = LogicUtils.getPlayerHousesByType(playerDoc, "dwelling")
-	var totalUpLimit = 0
+	var totalUpLimit = this.getPlayerIntInit("initCitizen")
 	_.each(houses, function(house){
 		if(house.level > 0){
 			var config = HouseFunction["dwelling"][house.level]

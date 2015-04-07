@@ -118,3 +118,8 @@ intInit["giftExpireHours"] = {
 	value:24,
 	desc:"礼品过期时间"
 }
+intInit["initCitizen"] = {
+	type:"initCitizen",
+	value:100,
+	desc:"初始城民数量"
+}
