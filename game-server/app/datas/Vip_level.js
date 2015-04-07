@@ -6,7 +6,7 @@ module.exports = level
 level[0] = {
 	level:0,
 	expFrom:0,
-	expTo:0,
+	expTo:110,
 	freeSpeedup:5,
 	helpSpeedup:0.500000,
 	woodProductionAdd:0.000000,
@@ -27,8 +27,8 @@ level[0] = {
 }
 level[1] = {
 	level:1,
-	expFrom:0,
-	expTo:120,
+	expFrom:110,
+	expTo:150,
 	freeSpeedup:8,
 	helpSpeedup:0.550000,
 	woodProductionAdd:0.000000,
@@ -49,7 +49,7 @@ level[1] = {
 }
 level[2] = {
 	level:2,
-	expFrom:120,
+	expFrom:150,
 	expTo:300,
 	freeSpeedup:12,
 	helpSpeedup:0.600000,

@@ -1628,11 +1628,11 @@ Utils.getAllianceTitleLevel = function(title){
 Utils.getPlayerVipLevel = function(playerDoc){
 	var vipExpConfig = Vip.level
 	var vipExp = playerDoc.basicInfo.vipExp
-	for(var i = vipExpConfig.length - 1; i >= 1; i--){
+	for(var i = vipExpConfig.length - 1; i >= 0; i--){
 		var minExp = vipExpConfig[i].expFrom
 		if(vipExp >= minExp) return i
 	}
-	return 1
+	return 0
 }
 
 /**
@@ -3705,7 +3705,7 @@ Utils.addPlayerVipExp = function(playerDoc, playerData, expAdd, eventFuncs, time
 	for(var i = 0; i < afterLevel - preLevel; i++){
 		totalVipTime += parseInt(itemConfig.effect) * 60 * 1000
 	}
-	if(totalVipTime < 0) return
+	if(totalVipTime <= 0) return
 
 	var event = playerDoc.vipEvents[0]
 	if(_.isObject(event) && !LogicUtils.willFinished(event.finishTime)){
