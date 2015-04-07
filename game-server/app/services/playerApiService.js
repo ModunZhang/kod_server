@@ -1005,8 +1005,10 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
+			console.log(gemUsed, "11111111111111")
 			buyedResources = DataUtils.buyResources(playerDoc, recruitRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
+			console.log(gemUsed, "22222222222222")
 			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
 			buyedResources = DataUtils.buyResources(playerDoc, recruitRequired.resources, playerDoc.resources)
