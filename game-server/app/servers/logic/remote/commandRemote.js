@@ -783,8 +783,8 @@ pro.resetAllianceStatus = function(uid, callback){
 			var villageMapObjects = _.filter(allianceDoc.mapObjects, function(mapObject){
 				return _.isEqual(mapObject.name, typeConfig.name)
 			})
-			villageMapObjects = CommonUtils.clone(villageMapObjects)
-			villageMapObjects = CommonUtils.shuffle(villageMapObjects)
+			villageMapObjects = Utils.clone(villageMapObjects)
+			villageMapObjects = Utils.shuffle(villageMapObjects)
 			for(var i = 0; i < villageNeedTobeCreated; i ++){
 				var villageMapObject = villageMapObjects[i]
 				DataUtils.addAllianceVillageObject(allianceDoc, villageMapObject)
