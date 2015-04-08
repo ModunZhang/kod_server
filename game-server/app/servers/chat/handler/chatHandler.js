@@ -291,7 +291,7 @@ var ChatHandler = function(app){
 			desc:"重置联盟状态",
 			func:function(session, uid, text, callback){
 				var self = this
-				self.app.rpc.logic.commandRemote.resetAllianceStatus(session, uid, function(e){
+				self.app.rpc.logic.commandRemote.resetalliancestatus(session, uid, function(e){
 					callback(e)
 				})
 			}

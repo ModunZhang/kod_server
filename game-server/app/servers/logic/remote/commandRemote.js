@@ -730,7 +730,7 @@ pro.alliancefight = function(uid, targetAllianceTag, callback){
  * @param uid
  * @param callback
  */
-pro.resetAllianceStatus = function(uid, callback){
+pro.resetalliancestatus = function(uid, callback){
 	var ResetDonateStatus = function(allianceDoc, allianceData){
 		_.each(allianceDoc.members, function(member){
 			var donateStatus = {
