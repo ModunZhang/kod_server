@@ -19,9 +19,9 @@ pro.before = function(msg, session, next){
 	var time = msg.__time__
 	var now = Date.now()
 	if(!_.isNumber(time)){
-		next(new Error("Illegal request! info:" + msg.__route__))
+		next(new Error("Illegal request! info:" + msg.__route__ + "(" + now +")"))
 	}else if(Math.abs((now - time)) / 1000 > 5){
-		next(new Error("Illegal request! info:" + msg.__route__))
+		next(new Error("Illegal request! info:" + msg.__route__ + "(" + now +")"))
 	}else{
 		next()
 	}
