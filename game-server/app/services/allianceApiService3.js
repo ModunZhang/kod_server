@@ -205,7 +205,7 @@ pro.upgradeAllianceVillage = function(playerId, villageType, callback){
 		allianceDoc = doc
 		var villageLevel = allianceDoc.villageLevels[villageType]
 		var upgradeRequired = DataUtils.getAllianceVillageUpgradeRequired(villageType, villageLevel)
-		if(upgradeRequired.honour > allianceDoc.basicInfo.honour) Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
+		if(upgradeRequired.honour > allianceDoc.basicInfo.honour) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		if(DataUtils.isAllianceVillageReachMaxLevel(villageType, villageLevel)) return Promise.reject(ErrorUtils.allianceBuildingReachMaxLevel(playerId, allianceDoc._id, villageType))
 		allianceDoc.basicInfo.honour -= upgradeRequired.honour
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])

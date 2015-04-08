@@ -18,6 +18,10 @@ var commandDir = path.resolve("./app/commands")
 var app = pomelo.createApp()
 app.set("name", "KODServer")
 
+app.configure("production|development", function() {
+	//app.enable("systemMonitor")
+})
+
 app.configure("production|development", "gate", function(){
 	app.set("connectorConfig", {
 		connector:pomelo.connectors.hybridconnector,
