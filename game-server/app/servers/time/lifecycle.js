@@ -46,13 +46,17 @@ life.afterStartup = function(app, callback){
 	callback()
 }
 
-life.beforeShutdown = function(app, callback){
+life.beforeShutdown = function(app, callback, cancelShutDownTimer){
+	cancelShutDownTimer()
+	var logService = app.get("logService")
+	logService.onEvent("time.lifecycle.beforeShutdown start persistence data", {})
 	var cacheService = app.get("cacheService")
 	app.get("ServerState").createAsync({type:Consts.ServerState.Stop}).then(function(){
 		return cacheService.unloadPlayersAsync()
 	}).then(function(){
 		return cacheService.unloadAlliancesAsync()
 	}).then(function(){
+		logService.onEvent("time.lifecycle.beforeShutdown persistence data finished", {})
 		callback()
 	}).catch(function(e){
 		app.get("logService").onEventError("time.lifecycle.beforeShutdown", {}, e.stack)
@@ -283,8 +287,8 @@ life.afterStartAll = function(app){
 		var logService = app.get("logService")
 		logService.onEvent("time.lifecycle.afterStartAll start restoring data", {})
 		var funcs = []
-		funcs.push(ServerState.findOneAsync({"type": Consts.ServerState.Stop}, null, {"sort":{"time":-1}}))
-		funcs.push(ServerState.findOneAsync({"type": Consts.ServerState.Start}, null, {"sort":{"time":-1}}))
+		funcs.push(ServerState.findOneAsync({"type":Consts.ServerState.Stop}, null, {"sort":{"time":-1}}))
+		funcs.push(ServerState.findOneAsync({"type":Consts.ServerState.Start}, null, {"sort":{"time":-1}}))
 		Promise.all(funcs).spread(function(stopDoc, startDoc){
 			if(!_.isObject(stopDoc)) serverStopTime = 0
 			else if(!_.isObject(startDoc) || startDoc.time >= stopDoc.time) serverStopTime = 0

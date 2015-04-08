@@ -3,6 +3,7 @@
 var Promise = require("bluebird")
 //var Promisify = Promise.promisify
 var _ = require("underscore")
+var Api = require("./api")
 var MapUtils = require("../app/utils/mapUtils")
 var DataUtils = require("../app/utils/dataUtils")
 var LogicUtils = require("../app/utils/logicUtils")
@@ -375,3 +376,20 @@ var GameDatas = require("../app/datas/GameDatas")
 //_.each(times, function(count, key){
 //	console.log(key + "   " + count + "    " + Math.round(count / 10000 * 100) + "%")
 //})
+//
+//var totalCount = 100000
+//var currentCount = 0
+//var now = Date.now()
+//var loginPlayer = function(){
+//	Api.loginPlayer(currentCount.toString(), function(){
+//		currentCount ++
+//		if(currentCount < totalCount){
+//			loginPlayer()
+//		}else{
+//			var after = Date.now()
+//			console.log((after - now) / 1000)
+//			console.log("loginPlayer finished with time:" + ((after - now) / 1000))
+//		}
+//	})
+//}
+//loginPlayer()

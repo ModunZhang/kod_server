@@ -73,7 +73,8 @@ life.afterStartup = function(app, callback){
 	callback()
 }
 
-life.beforeShutdown = function(app, callback){
+life.beforeShutdown = function(app, callback, cancelShutDownTimer){
+	cancelShutDownTimer()
 	var sessionService = app.get("sessionService")
 	var kickAsync = Promise.promisify(sessionService.kick, sessionService)
 	var uids = _.keys(sessionService.service.uidMap)
