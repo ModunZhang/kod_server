@@ -798,6 +798,8 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 		callback(new Error("tag 不合法"))
 		return
 	}
+
+	var self = this
 	var playerDoc = null
 	var allianceInfos = []
 	this.playerDao.findAsync(playerId).then(function(doc){

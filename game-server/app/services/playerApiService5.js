@@ -538,10 +538,8 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
 		if(ids.length > 0){
 			return self.allianceDao.findAllAsync(ids)
 		}
-		console.log(ids, "11111111")
 		return Promise.resolve([])
 	}).then(function(docs){
-		console.log(docs, "222222222222")
 		for(var i = 0; i < docs.length; i++){
 			var data = {
 				id:docs[i]._id,
