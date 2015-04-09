@@ -623,7 +623,7 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 		marchEvent.startTime -= marchTimeSpeedup
 		marchEvent.arriveTime -= marchTimeSpeedup
 		allianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), marchEvent])
-		eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, marchEvent.id, marchEvent.arriveTime - Date.now()])
+		eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id, marchEvent.arriveTime - Date.now()])
 
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
