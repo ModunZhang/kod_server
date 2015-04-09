@@ -216,10 +216,8 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 		var allianceData = []
 		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
 		var marchEvents = []
-		marchEvents = marchEvents.concat(allianceDoc.attackMarchEvents)
-		marchEvents = marchEvents.concat(allianceDoc.attackMarchReturnEvents)
-		marchEvents = marchEvents.concat(allianceDoc.strikeMarchEvents)
-		marchEvents = marchEvents.concat(allianceDoc.strikeMarchReturnEvents)
+		marchEvents = marchEvents.concat(allianceDoc.attackMarchEvents, allianceDoc.attackMarchReturnEvents, allianceDoc.strikeMarchEvents, strikeMarchReturnEvents)
+		console.log(marchEvents, "11111111111111111")
 		var hasMarchEvent = _.some(marchEvents, function(marchEvent){
 			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
 		})
