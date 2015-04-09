@@ -992,8 +992,8 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 			eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, helpEvent.eventData.type, memberEvent.id, memberEvent.finishTime - Date.now()])
 		}
 
+		DataUtils.addPlayerHelpLoyalty(playerDoc, playerData, 1)
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
-
 		if(_.isEmpty(playerData)){
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		}else{
@@ -1048,6 +1048,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 	var eventFuncs = []
 	var pushFuncs = []
 	var updateFuncs = []
+	var helpCount = 0
 	this.playerDao.findAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isObject(doc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
@@ -1060,6 +1061,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 				return !_.contains(helpEvent.eventData.helpedMembers, playerId)
 			})
 			if(needHelpedEvents.length <= 0) return Promise.resolve()
+			helpCount += needHelpedEvents.length
 			return self.playerDao.findAsync(memberId).then(function(doc){
 				var memberDoc = doc
 				var memberData = []
@@ -1115,6 +1117,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 
 		return Promise.all(funcs)
 	}).then(function(){
+		DataUtils.addPlayerHelpLoyalty(playerDoc, playerData, helpCount)
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
 		if(_.isEmpty(playerData)){
 			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])

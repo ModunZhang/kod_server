@@ -10,6 +10,7 @@ var ShortId = require("shortid")
 
 var Consts = require("../consts/consts")
 var CommonUtils = require("./utils")
+var MapUtils = require("./mapUtils")
 var LogicUtils = require("./logicUtils")
 var TaskUtils = require("./taskUtils")
 var GameDatas = require("../datas/GameDatas")
@@ -1849,22 +1850,24 @@ Utils.createMapVillages = function(mapObjects){
 	var orderHallLevel = 1
 	var orderHallConfig = AllianceBuilding.orderHall[orderHallLevel]
 	var villageTypeConfigs = this.getAllianceVillageTypeConfigs()
+	var map = MapUtils.buildMap(mapObjects)
 	_.each(villageTypeConfigs, function(typeConfig){
 		var villageTotalCount = orderHallConfig[typeConfig.name + "Count"]
-		var villageMapObjects = _.filter(mapObjects, function(mapObject){
-			return _.isEqual(mapObject.name, typeConfig.name)
-		})
-		villageMapObjects = CommonUtils.clone(villageMapObjects)
-		villageMapObjects = CommonUtils.shuffle(villageMapObjects)
+		var config = AllianceInitData.buildingName[typeConfig.name]
+		var width = config.width
+		var height = config.height
 		for(var i = 0; i < villageTotalCount; i++){
-			var villageMapObject = villageMapObjects[i]
-			var village = {
-				id:villageMapObject.id,
-				name:villageMapObject.name,
-				level:1,
-				resource:self.getAllianceVillageProduction(villageMapObject.name, 1)
+			var rect = MapUtils.getRect(map, width, height)
+			if(_.isObject(rect)){
+				var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
+				var village = {
+					id:villageMapObject.id,
+					name:villageMapObject.name,
+					level:1,
+					resource:self.getAllianceVillageProduction(villageMapObject.name, 1)
+				}
+				villages.push(village)
 			}
-			villages.push(village)
 		}
 	})
 	return villages
@@ -3795,4 +3798,24 @@ Utils.isItemSellInAllianceShop = function(allianceDoc, itemName){
 	})
 	var unlockedItems = AllianceBuilding.shop[building.level].itemsUnlock.split(",")
 	return _.contains(unlockedItems, itemName)
+}
+
+/**
+ * 协助加速忠诚值获取
+ * @param playerDoc
+ * @param playerData
+ * @param helpCount
+ */
+Utils.addPlayerHelpLoyalty = function(playerDoc, playerData, helpCount){
+	var maxLoyaltyGetPerDay = this.getPlayerIntInit("maxLoyaltyGetPerDay")
+	var loyaltyGet = this.getPlayerIntInit("loyaltyCountPerHelp") * helpCount
+	if(playerDoc.countInfo.todayLoyaltyGet < maxLoyaltyGetPerDay){
+		if(playerDoc.countInfo.todayLoyaltyGet + loyaltyGet > maxLoyaltyGetPerDay){
+			loyaltyGet = maxLoyaltyGetPerDay - playerDoc.countInfo.todayLoyaltyGet
+		}
+		playerDoc.countInfo.todayLoyaltyGet += loyaltyGet
+		playerData.push(["countInfo.todayLoyaltyGet", playerDoc.countInfo.todayLoyaltyGet])
+		playerDoc.allianceInfo.loyalty += loyaltyGet
+		playerData.push(["allianceInfo.loyalty", playerDoc.allianceInfo.loyalty])
+	}
 }

@@ -767,10 +767,15 @@ pro.resetalliancestatus = function(uid, callback){
 			if(!_.isObject(villageEvent)) villageTobeRemoved.push(village)
 		})
 		_.each(villageTobeRemoved, function(village){
+			allianceData.push(["villages." + allianceDoc.villages.indexOf(village), null])
 			LogicUtils.removeItemInArray(allianceDoc.villages, village)
+			var villageMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, village.id)
+			allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), null])
+			LogicUtils.removeItemInArray(allianceDoc.mapObjects, villageMapObject)
 		})
 
-		var villages = []
+		var mapObjects = allianceDoc.mapObjects
+		var map = MapUtils.buildMap(mapObjects)
 		var orderHallLevel = _.find(allianceDoc.buildings, function(building){
 			return _.isEqual(building.name, Consts.AllianceBuildingNames.OrderHall)
 		}).level
@@ -780,17 +785,19 @@ pro.resetalliancestatus = function(uid, callback){
 			var villageTotalCount = orderHallConfig[typeConfig.name + "Count"]
 			var villageCurrentCount = getVillageCountByName(typeConfig.name)
 			var villageNeedTobeCreated = villageTotalCount - villageCurrentCount
-			var villageMapObjects = _.filter(allianceDoc.mapObjects, function(mapObject){
-				return _.isEqual(mapObject.name, typeConfig.name)
-			})
-			villageMapObjects = Utils.clone(villageMapObjects)
-			villageMapObjects = Utils.shuffle(villageMapObjects)
+			var config = AllianceInitData.buildingName[typeConfig.name]
+			var width = config.width
+			var height = config.height
 			for(var i = 0; i < villageNeedTobeCreated; i ++){
-				var villageMapObject = villageMapObjects[i]
-				DataUtils.addAllianceVillageObject(allianceDoc, villageMapObject)
+				var rect = MapUtils.getRect(map, width, height)
+				if(_.isObject(rect)){
+					var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
+					allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
+					var village = DataUtils.addAllianceVillageObject(allianceDoc, villageMapObject)
+					allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
+				}
 			}
 		})
-		allianceData.push(["villages", allianceDoc.villages])
 	}
 	var ResolveAllianceStatus = function(allianceId){
 		var self = this

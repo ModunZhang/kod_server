@@ -123,3 +123,13 @@ intInit["initCitizen"] = {
 	value:100,
 	desc:"初始城民数量"
 }
+intInit["maxLoyaltyGetPerDay"] = {
+	type:"maxLoyaltyGetPerDay",
+	value:10000,
+	desc:"每日最大忠诚值获取数量"
+}
+intInit["loyaltyCountPerHelp"] = {
+	type:"loyaltyCountPerHelp",
+	value:100,
+	desc:"每次帮助获取多少点忠诚值"
+}

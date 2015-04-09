@@ -166,6 +166,7 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 			playerDoc.countInfo.todayOnLineTime = 0
 			playerDoc.countInfo.todayOnLineTimeRewards = []
 			playerDoc.countInfo.todayFreeNormalGachaCount = 0
+			playerDoc.countInfo.todayLoyaltyGet = 0
 			if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)){
 				if(playerDoc.countInfo.day60 == 60){
 					playerDoc.countInfo.day60 = 1

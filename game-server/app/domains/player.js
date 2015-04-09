@@ -111,7 +111,8 @@ var PlayerSchema = new Schema({
 		gemUsed:{type:Number, required:true, default:0},
 		iapCount:{type:Number, required:true, default:0},
 		todayFreeNormalGachaCount:{type:Number, required:true, default:0},
-		isFirstIAPRewardsGeted:{type:Boolean, required:true, default:false}
+		isFirstIAPRewardsGeted:{type:Boolean, required:true, default:false},
+		todayLoyaltyGet:{type:Number, require:true, default:0}
 	},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},
