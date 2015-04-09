@@ -9,6 +9,7 @@ var _ = require("underscore")
 
 var Utils = require("../../../utils/utils")
 var DataUtils = require("../../../utils/dataUtils")
+var MapUtils = require("../../../utils/mapUtils")
 var LogicUtils = require("../../../utils/logicUtils")
 var Consts = require("../../../consts/consts")
 
@@ -841,7 +842,6 @@ pro.resetalliancestatus = function(uid, callback){
 	var self = this
 	var playerDoc = null
 	this.playerDao.findAsync(uid).then(function(doc){
-		
 		playerDoc = doc
 		if(!_.isObject(playerDoc.alliance) || _.isEmpty(playerDoc.alliance.id)){
 			return Promise.reject(new Error("玩家未加入联盟"))

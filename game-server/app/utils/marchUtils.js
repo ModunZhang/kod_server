@@ -542,7 +542,7 @@ Utils.createAttackVillageMarchEvent = function(allianceDoc, playerDoc, dragon, s
 		attackPlayerData:createAttackPlayerData(allianceDoc, playerDoc, playerLocation, dragon, soldiers),
 		defenceVillageData:{
 			id:defenceVillage.id,
-			type:defenceVillage.type,
+			name:defenceVillage.name,
 			level:defenceVillage.level,
 			location:defenceVillageLocation,
 			alliance:createAllianceData(defenceAllianceDoc)
