@@ -17,6 +17,7 @@ var GameDatas = require("../../../datas/GameDatas")
 var PlayerInitData = GameDatas.PlayerInitData
 var Dragons = GameDatas.Dragons
 var AllianceBuilding = GameDatas.AllianceBuilding
+var AllianceInitData = GameDatas.AllianceInitData
 
 module.exports = function(app){
 	return new CommandRemote(app)
