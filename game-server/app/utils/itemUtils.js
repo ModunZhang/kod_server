@@ -607,6 +607,7 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
  * @returns {*}
  */
 var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
+	console.log(eventType, eventId, speedupPercent, "11111111111111")
 	if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
 	var allianceDoc = null
 	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
@@ -617,12 +618,15 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerDoc._id, allianceDoc._id, eventType, eventId))
 		var marchTimeLeft = marchEvent.arriveTime - Date.now()
+		console.log(marchTimeLeft, "2222222222222222")
 		if(LogicUtils.willFinished(marchTimeLeft)) return Promise.resolve()
 		var marchTimeSpeedup = Math.round(marchTimeLeft * speedupPercent)
 		marchEvent.startTime -= marchTimeSpeedup
 		marchEvent.arriveTime -= marchTimeSpeedup
 		allianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), marchEvent])
 		eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, marchEvent.id, marchEvent.arriveTime - Date.now()])
+
+		console.log(marchEvent, marchTimeLeft, marchTimeSpeedup, "33333333333333333")
 
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
