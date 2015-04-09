@@ -679,7 +679,7 @@ Utils.createAllianceVillageEvent = function(allianceDoc, playerDoc, dragon, sold
 		},
 		villageData:{
 			id:defenceVillage.id,
-			type:defenceVillage.type,
+			name:defenceVillage.name,
 			level:defenceVillage.level,
 			resource:defenceVillage.resource,
 			collectTotal:collectInfo.collectTotal,

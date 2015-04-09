@@ -299,7 +299,7 @@ var AllianceSchema = new Schema({
 		},
 		villageData:{
 			id:{type:String, required:true},
-			type:{type:String, required:true},
+			name:{type:String, required:true},
 			level:{type:Number, required:true},
 			collectTotal:{type:Number, required:true},
 			location:{
