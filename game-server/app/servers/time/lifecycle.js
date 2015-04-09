@@ -30,11 +30,15 @@ life.beforeStartup = function(app, callback){
 	app.set("cacheService", Promise.promisifyAll(new CacheService(app)))
 
 	var cacheService = app.get("cacheService")
+	var logService = app.get("logService")
+
+	logService.onEvent("time.lifecycle.afterStartAll start restoring data", {})
 	cacheService.flushDbAsync().then(function(){
 		return cacheService.loadPlayersAsync()
 	}).then(function(){
 		return cacheService.loadAlliancesAsync()
 	}).then(function(){
+		logService.onEvent("time.lifecycle.afterStartAll restoring data finished", {})
 		callback()
 	}).catch(function(e){
 		app.get("logService").onEventError("time.lifecycle.beforeStartup", {}, e.stack)
@@ -285,7 +289,7 @@ life.afterStartAll = function(app){
 
 	setTimeout(function(){
 		var logService = app.get("logService")
-		logService.onEvent("time.lifecycle.afterStartAll start restoring data", {})
+		logService.onEvent("time.lifecycle.afterStartAll start restoring events", {})
 		var funcs = []
 		funcs.push(ServerState.findOneAsync({"type":Consts.ServerState.Stop}, null, {"sort":{"time":-1}}))
 		funcs.push(ServerState.findOneAsync({"type":Consts.ServerState.Start}, null, {"sort":{"time":-1}}))
@@ -301,7 +305,7 @@ life.afterStartAll = function(app){
 		}).then(function(ids){
 			return activeAllianceEvents(ids, serverStopTime)
 		}).then(function(){
-			logService.onEvent("time.lifecycle.afterStartAll restoring data finished", {})
+			logService.onEvent("time.lifecycle.afterStartAll restoring events finished", {})
 			logService.onEvent("time.lifecycle.afterStartAll start change server status", {})
 			var logicServers = app.getServersByType('logic')
 			var gateServerId = "gate-server-1"
