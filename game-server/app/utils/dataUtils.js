@@ -3819,3 +3819,14 @@ Utils.addPlayerHelpLoyalty = function(playerDoc, playerData, helpCount){
 		playerData.push(["allianceInfo.loyalty", playerDoc.allianceInfo.loyalty])
 	}
 }
+
+/**
+ * 是否允许建造特殊兵种
+ * @returns {*}
+ */
+Utils.canRecruitSpecialSoldier = function(){
+	var daysInWeek = PlayerInitData.stringInit.specialSoldierRecruitAbleDays.value.split("")
+	var today = new Date().getDay()
+	today = today == 0 ? 7 : today
+	return _.contains(daysInWeek, today.toString())
+}

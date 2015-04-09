@@ -1095,6 +1095,10 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		callback(new Error("finishNow 不合法"))
 		return
 	}
+	if(!DataUtils.canRecruitSpecialSoldier()){
+		callback(new Error("特殊兵种招募未开放"))
+		return
+	}
 
 	var self = this
 	var playerDoc = null

@@ -442,7 +442,7 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
 		callback(new Error("rankType 不合法"))
 		return
 	}
-	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0){
+	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0 || fromRank > 80){
 		callback(new Error("fromRank 不合法"))
 		return
 	}
@@ -510,7 +510,7 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
 		callback(new Error("rankType 不合法"))
 		return
 	}
-	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0){
+	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0 || fromRank > 80){
 		callback(new Error("fromRank 不合法"))
 		return
 	}
