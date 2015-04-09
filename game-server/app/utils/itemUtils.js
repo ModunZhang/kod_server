@@ -214,7 +214,6 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
-		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
 		var marchEvents = []
 		marchEvents.concat(allianceDoc.attackMarchEvents)
 		marchEvents.concat(allianceDoc.attackMarchReturnEvents)
@@ -223,6 +222,7 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 		var hasMarchEvent = _.some(marchEvents, function(marchEvent){
 			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
 		})
+		console.log(marchEvents, "1111111111111111111")
 		if(hasMarchEvent) return Promise.reject(ErrorUtils.playerHasMarchEvent(playerDoc._id, allianceDoc._id))
 		var playerMapId = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).mapId
 		var playerMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, playerMapId)
