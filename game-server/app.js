@@ -143,16 +143,16 @@ app.configure("production|development", "time", function(){
 	redisClient.debug_mode = true
 })
 
-app.set('errorHandler', function(err, msg, resp, session, opts, cb){
-	app.get("logService").onRequestError("app.errorHandler", {playerId:session.uid, msg:msg}, err.stack)
-	cb(err, resp)
-	if(!_.isEmpty(err.message) && err.message.indexOf("Illegal request!") == 0){
+app.set('errorHandler', function(e, msg, resp, session, opts, cb){
+	app.get("logService").onRequestError("app.errorHandler", {playerId:session.uid, msg:msg}, e.stack)
+	cb(e, resp)
+	if(!_.isEmpty(e.message) && e.message.indexOf("Illegal request!") == 0){
 		app.get("sessionService").kickBySessionId(session.id)
 	}
 })
 
-process.on("uncaughtException", function(err){
-	app.get("logService").onEventError("app.uncaughtException", {}, err.stack)
+process.on("uncaughtException", function(e){
+	app.get("logService").onEventError("app.uncaughtException", {}, e.stack)
 })
 
 app.start()
