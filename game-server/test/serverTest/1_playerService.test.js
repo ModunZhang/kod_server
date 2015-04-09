@@ -358,53 +358,53 @@ describe("PlayerService", function(){
 		//	})
 		//})
 		//
-		//it("recruitSpecialSoldier soldierName 特殊兵种不存在", function(done){
-		//	Api.recruitSpecialSoldier("adf", 12, false, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("soldierName 特殊兵种不存在")
-		//		done()
-		//	})
-		//})
-		//
-		//it("recruitSpecialSoldier 招募数量超过单次招募上限", function(done){
-		//		Api.recruitSpecialSoldier("steamTank", 100, false, function(doc){
-		//			doc.code.should.equal(Errors.recruitTooMuchOnce.code)
-		//			done()
-		//		})
-		//})
-		//
-		//it("recruitSpecialSoldier 正常普通招募", function(done){
-		//	Api.sendChat("soldiermaterial 1000", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitSpecialSoldier 材料不足", function(done){
-		//	Api.sendChat("soldiermaterial 0", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
-		//			doc.code.should.equal(Errors.soldierRecruitMaterialsNotEnough.code)
-		//			Api.sendChat("soldiermaterial 1000", function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitSpecialSoldier 正常立即招募", function(done){
-		//		Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//})
+		////it("recruitSpecialSoldier soldierName 特殊兵种不存在", function(done){
+		////	Api.recruitSpecialSoldier("adf", 12, false, function(doc){
+		////		doc.code.should.equal(500)
+		////		doc.message.should.equal("soldierName 特殊兵种不存在")
+		////		done()
+		////	})
+		////})
+		////
+		////it("recruitSpecialSoldier 招募数量超过单次招募上限", function(done){
+		////		Api.recruitSpecialSoldier("steamTank", 100, false, function(doc){
+		////			doc.code.should.equal(Errors.recruitTooMuchOnce.code)
+		////			done()
+		////		})
+		////})
+		////
+		////it("recruitSpecialSoldier 正常普通招募", function(done){
+		////	Api.sendChat("soldiermaterial 1000", function(doc){
+		////		doc.code.should.equal(200)
+		////		Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
+		////			doc.code.should.equal(200)
+		////			Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
+		////				doc.code.should.equal(200)
+		////				done()
+		////			})
+		////		})
+		////	})
+		////})
+		////
+		////it("recruitSpecialSoldier 材料不足", function(done){
+		////	Api.sendChat("soldiermaterial 0", function(doc){
+		////		doc.code.should.equal(200)
+		////		Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
+		////			doc.code.should.equal(Errors.soldierRecruitMaterialsNotEnough.code)
+		////			Api.sendChat("soldiermaterial 1000", function(doc){
+		////				doc.code.should.equal(200)
+		////				done()
+		////			})
+		////		})
+		////	})
+		////})
+		////
+		////it("recruitSpecialSoldier 正常立即招募", function(done){
+		////		Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
+		////			doc.code.should.equal(200)
+		////			done()
+		////		})
+		////})
 		//
 		//it("makeDragonEquipment equipmentName 装备不存在", function(done){
 		//	Api.makeDragonEquipment("adf", true, function(doc){
@@ -1000,9 +1000,12 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("sellItem 马车数量不足", function(done){
-		//	Api.sellItem("resources", "wood", 10, 1000, function(doc){
-		//		doc.code.should.equal(Errors.cartNotEnough.code)
-		//		done()
+		//	Api.sendChat("resources cart 0", function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.sellItem("resources", "wood", 10, 1000, function(doc){
+		//			doc.code.should.equal(Errors.cartNotEnough.code)
+		//			done()
+		//		})
 		//	})
 		//})
 		//
