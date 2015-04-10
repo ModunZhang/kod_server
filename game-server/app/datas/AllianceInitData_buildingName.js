@@ -5,80 +5,94 @@ module.exports = buildingName
 
 buildingName["decorate_lake_1"] = {
 	name:"decorate_lake_1",
-	width:5,
-	height:5,
+	width:3,
+	height:3,
 	type:"decorate",
-	moveNeedHonour:100
+	moveNeedHonour:24000
 }
 buildingName["decorate_lake_2"] = {
 	name:"decorate_lake_2",
 	width:3,
 	height:3,
 	type:"decorate",
-	moveNeedHonour:100
+	moveNeedHonour:24000
 }
 buildingName["decorate_mountain_1"] = {
 	name:"decorate_mountain_1",
-	width:5,
-	height:5,
+	width:3,
+	height:3,
 	type:"decorate",
-	moveNeedHonour:100
+	moveNeedHonour:24000
 }
 buildingName["decorate_mountain_2"] = {
 	name:"decorate_mountain_2",
 	width:3,
 	height:3,
 	type:"decorate",
-	moveNeedHonour:100
+	moveNeedHonour:24000
 }
 buildingName["decorate_tree_1"] = {
 	name:"decorate_tree_1",
 	width:1,
 	height:1,
 	type:"decorate",
-	moveNeedHonour:100
+	moveNeedHonour:3000
 }
 buildingName["decorate_tree_2"] = {
 	name:"decorate_tree_2",
 	width:1,
 	height:1,
 	type:"decorate",
-	moveNeedHonour:100
+	moveNeedHonour:3000
+}
+buildingName["decorate_tree_3"] = {
+	name:"decorate_tree_3",
+	width:1,
+	height:1,
+	type:"decorate",
+	moveNeedHonour:3000
+}
+buildingName["decorate_tree_4"] = {
+	name:"decorate_tree_4",
+	width:1,
+	height:1,
+	type:"decorate",
+	moveNeedHonour:3000
 }
 buildingName["palace"] = {
 	name:"palace",
-	width:3,
-	height:3,
+	width:1,
+	height:1,
 	type:"building",
-	moveNeedHonour:100
+	moveNeedHonour:12000
 }
 buildingName["moonGate"] = {
 	name:"moonGate",
-	width:3,
-	height:3,
+	width:1,
+	height:1,
 	type:"building",
-	moveNeedHonour:100
+	moveNeedHonour:16000
 }
 buildingName["orderHall"] = {
 	name:"orderHall",
-	width:3,
-	height:3,
+	width:1,
+	height:1,
 	type:"building",
-	moveNeedHonour:100
+	moveNeedHonour:8000
 }
 buildingName["shrine"] = {
 	name:"shrine",
-	width:3,
-	height:3,
+	width:1,
+	height:1,
 	type:"building",
-	moveNeedHonour:100
+	moveNeedHonour:20000
 }
 buildingName["shop"] = {
 	name:"shop",
-	width:3,
-	height:3,
+	width:1,
+	height:1,
 	type:"building",
-	moveNeedHonour:100
+	moveNeedHonour:10000
 }
 buildingName["woodVillage"] = {
 	name:"woodVillage",
