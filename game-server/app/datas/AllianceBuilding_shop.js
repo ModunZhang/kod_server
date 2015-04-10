@@ -5,71 +5,61 @@ module.exports = shop
 
 shop[1] = {
 	level:1,
-	needHonour:400,
-	needKeep:3,
+	needHonour:330,
 	itemsUnlock:"woodClass_4,stoneClass_4,ironClass_4,foodClass_4,coinClass_4,dragonChest_1",
-	power:200
+	power:9
 }
 shop[2] = {
 	level:2,
-	needHonour:800,
-	needKeep:5,
+	needHonour:1100,
 	itemsUnlock:"woodClass_4,stoneClass_4,ironClass_4,foodClass_4,coinClass_4,dragonChest_1,movingConstruction,torch,changePlayerName,changeCityName",
-	power:400
+	power:28
 }
 shop[3] = {
 	level:3,
-	needHonour:1600,
-	needKeep:8,
+	needHonour:3630,
 	itemsUnlock:"woodClass_4,stoneClass_4,ironClass_4,foodClass_4,coinClass_4,dragonChest_1,movingConstruction,torch,changePlayerName,changeCityName,woodClass_6,stoneClass_6,ironClass_6,foodClass_6,coinClass_6",
-	power:800
+	power:91
 }
 shop[4] = {
 	level:4,
-	needHonour:3200,
-	needKeep:9,
+	needHonour:29810,
 	itemsUnlock:"woodClass_4,stoneClass_4,ironClass_4,foodClass_4,coinClass_4,dragonChest_1,movingConstruction,torch,changePlayerName,changeCityName,woodClass_6,stoneClass_6,ironClass_6,foodClass_6,coinClass_6,retreatTroop,moveTheCity,vipActive_2,casinoTokenClass_1",
-	power:1600
+	power:746
 }
 shop[5] = {
 	level:5,
-	needHonour:6400,
-	needKeep:10,
+	needHonour:104060,
 	itemsUnlock:"woodClass_4,stoneClass_4,ironClass_4,foodClass_4,coinClass_4,dragonChest_1,movingConstruction,torch,changePlayerName,changeCityName,woodClass_6,stoneClass_6,ironClass_6,foodClass_6,coinClass_6,retreatTroop,moveTheCity,vipActive_2,casinoTokenClass_1,dragonChest_2,vipActive_3,casinoTokenClass_2,quarterMaster_1",
-	power:3200
+	power:2602
 }
 shop[6] = {
 	level:6,
-	needHonour:12800,
-	needKeep:12,
+	needHonour:299310,
 	itemsUnlock:"woodClass_4,stoneClass_4,ironClass_4,foodClass_4,coinClass_4,dragonChest_1,movingConstruction,torch,changePlayerName,changeCityName,woodClass_6,stoneClass_6,ironClass_6,foodClass_6,coinClass_6,retreatTroop,moveTheCity,vipActive_2,casinoTokenClass_1,dragonChest_2,vipActive_3,casinoTokenClass_2,quarterMaster_1,woodBonus_1,stoneBonus_1,ironBonus_1,foodBonus_1",
-	power:6400
+	power:7483
 }
 shop[7] = {
 	level:7,
-	needHonour:25600,
-	needKeep:14,
+	needHonour:679800,
 	itemsUnlock:"woodClass_4,stoneClass_4,ironClass_4,foodClass_4,coinClass_4,dragonChest_1,movingConstruction,torch,changePlayerName,changeCityName,woodClass_6,stoneClass_6,ironClass_6,foodClass_6,coinClass_6,retreatTroop,moveTheCity,vipActive_2,casinoTokenClass_1,dragonChest_2,vipActive_3,casinoTokenClass_2,quarterMaster_1,woodBonus_1,stoneBonus_1,ironBonus_1,foodBonus_1,dragonHp_2,restoreWall_2,masterOfDefender_1,coinBonus_1",
-	power:12800
+	power:16995
 }
 shop[8] = {
 	level:8,
-	needHonour:51200,
-	needKeep:16,
+	needHonour:1449140,
 	itemsUnlock:"woodClass_4,stoneClass_4,ironClass_4,foodClass_4,coinClass_4,dragonChest_1,movingConstruction,torch,changePlayerName,changeCityName,woodClass_6,stoneClass_6,ironClass_6,foodClass_6,coinClass_6,retreatTroop,moveTheCity,vipActive_2,casinoTokenClass_1,dragonChest_2,vipActive_3,casinoTokenClass_2,quarterMaster_1,woodBonus_1,stoneBonus_1,ironBonus_1,foodBonus_1,dragonHp_2,restoreWall_2,masterOfDefender_1,coinBonus_1,infantryAtkBonus_1,archerAtkBonus_1,cavalryAtkBonus_1,siegeAtkBonus_1",
-	power:25600
+	power:36229
 }
 shop[9] = {
 	level:9,
-	needHonour:102400,
-	needKeep:18,
+	needHonour:3452460,
 	itemsUnlock:"woodClass_4,stoneClass_4,ironClass_4,foodClass_4,coinClass_4,dragonChest_1,movingConstruction,torch,changePlayerName,changeCityName,woodClass_6,stoneClass_6,ironClass_6,foodClass_6,coinClass_6,retreatTroop,moveTheCity,vipActive_2,casinoTokenClass_1,dragonChest_2,vipActive_3,casinoTokenClass_2,quarterMaster_1,woodBonus_1,stoneBonus_1,ironBonus_1,foodBonus_1,dragonHp_2,restoreWall_2,masterOfDefender_1,coinBonus_1,infantryAtkBonus_1,archerAtkBonus_1,cavalryAtkBonus_1,siegeAtkBonus_1,dragonChest_3,unitHpBonus_1,dragonHpBonus_1",
-	power:51200
+	power:86312
 }
 shop[10] = {
 	level:10,
-	needHonour:204800,
-	needKeep:20,
+	needHonour:6297720,
 	itemsUnlock:"woodClass_4,stoneClass_4,ironClass_4,foodClass_4,coinClass_4,dragonChest_1,movingConstruction,torch,changePlayerName,changeCityName,woodClass_6,stoneClass_6,ironClass_6,foodClass_6,coinClass_6,retreatTroop,moveTheCity,vipActive_2,casinoTokenClass_1,dragonChest_2,vipActive_3,casinoTokenClass_2,quarterMaster_1,woodBonus_1,stoneBonus_1,ironBonus_1,foodBonus_1,dragonHp_2,restoreWall_2,masterOfDefender_1,coinBonus_1,infantryAtkBonus_1,archerAtkBonus_1,cavalryAtkBonus_1,siegeAtkBonus_1,dragonChest_3,unitHpBonus_1,dragonHpBonus_1,troopSizeBonus_1,heroBlood_2,dragonExp_2,vipPoint_3",
-	power:102400
+	power:157443
 }
