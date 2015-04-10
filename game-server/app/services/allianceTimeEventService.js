@@ -1869,6 +1869,9 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 		if(event.villageData.collectTotal >= village.resource){
 			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village), null])
 			LogicUtils.removeItemInArray(defenceAllianceDoc.villages, village)
+			var villageMapObject = LogicUtils.getAllianceMapObjectById(defenceAllianceDoc, village.id)
+			allianceData.push(["mapObjects." + defenceAllianceDoc.mapObjects.indexOf(villageMapObject), null])
+			LogicUtils.removeItemInArray(defenceAllianceDoc.mapObjects, villageMapObject)
 		}else{
 			village.resource -= event.villageData.collectTotal
 			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
