@@ -205,6 +205,12 @@ module.exports = {
 		Sys:"sys",
 		Iap:"iap"
 	},
+	TerrainDragonMap:{
+		grassLand:"greenDragon",
+		desert:"redDragon",
+		iceField:"blueDragon"
+	},
+
 
 
 	AllianceLanguage:{

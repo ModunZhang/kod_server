@@ -534,7 +534,7 @@ Utils.getPlayerCitizen = function(playerDoc){
 	var itemCityzenMaxCountBuff = this.getPlayerProductionTechBuff(playerDoc, "beerSupply")
 	var citizenLimit = Math.floor(this.getPlayerCitizenUpLimit(playerDoc) * (1 + itemCityzenMaxCountBuff))
 	var usedCitizen = this.getPlayerUsedCitizen(playerDoc)
-	if(citizenLimit <= playerDoc.resources["citizen"] + usedCitizen){
+	if(citizenLimit <= playerDoc.resources.citizen + usedCitizen){
 		return citizenLimit - usedCitizen
 	}
 
@@ -544,7 +544,7 @@ Utils.getPlayerCitizen = function(playerDoc){
 	var itemCitizenRecoverBuff = this.isPlayerHasItemEvent(playerDoc, "citizenBonus") ? 0.5 : 0
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].citizenRecoveryAdd
 	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemCitizenRecoverBuff + vipBuff))
-	var totalCitizen = playerDoc.resources["citizen"] + output
+	var totalCitizen = playerDoc.resources.citizen + output
 	if(totalCitizen - usedCitizen > citizenLimit) totalCitizen = citizenLimit - usedCitizen
 	return totalCitizen
 }
@@ -1935,7 +1935,7 @@ Utils.getAlliancePerception = function(allianceDoc){
  * @returns {*}
  */
 Utils.isAllianceShrineStageNameLegal = function(stageName){
-	var config = AllianceShrine.shrineStage
+	var config = AllianceInitData.shrineStage
 	return _.contains(_.keys(config), stageName)
 }
 
@@ -1961,7 +1961,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
  * @returns {{perception: *}}
  */
 Utils.getAllianceActiveShrineStageRequired = function(stageName){
-	var config = AllianceShrine.shrineStage[stageName]
+	var config = AllianceInitData.shrineStage[stageName]
 	var required = {
 		perception:config.needPerception
 	}
@@ -2298,14 +2298,14 @@ Utils.createPlayerWallForFight = function(playerDoc){
  */
 Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 	var troops = []
-	var troopStrings = AllianceShrine.shrineStage[stageName].troops.split("&")
+	var troopStrings = AllianceInitData.shrineStage[stageName].troops.split("&")
 	for(var i = 0; i < troopStrings.length; i++){
 		var troopString = troopStrings[i]
 		var soldierConfigStrings = troopString.split(",")
 		var dragonConfig = soldierConfigStrings.shift()
 		var dragonParams = dragonConfig.split("_")
 		var dragon = {
-			type:dragonParams[0],
+			type:Consts.TerrainDragonMap[allianceDoc.basicInfo.terrain],
 			star:parseInt(dragonParams[1]),
 			level:parseInt(dragonParams[2])
 		}
@@ -2400,12 +2400,13 @@ Utils.getEnemySoldierMoraleAddedPercent = function(playerDoc, dragon){
 
 /**
  * 圣地战斗结束后,获取需要的结果
+ * @param terrain
  * @param stageName
  * @param isWin
  * @param fightDatas
  * @returns {*}
  */
-Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas){
+Utils.getAllianceShrineStageResultDatas = function(terrain, stageName, isWin, fightDatas){
 	var self = this
 	var playerDatas = {}
 	var woundedSoldiers = {}
@@ -2433,7 +2434,7 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 			playerDragonHps[roundData.playerId] += roundData.attackDragonFightData.hpDecreased
 			_.each(roundData.defenceSoldierRoundDatas, function(defenceSoldierRoundData){
 				var soldierConfig = Soldiers.normal[defenceSoldierRoundData.soldierName + "_" + defenceSoldierRoundData.soldierStar]
-				var kill = defenceSoldierRoundData.soldierDamagedCount * soldierConfig.citizen
+				var kill = defenceSoldierRoundData.soldierDamagedCount * soldierConfig.killScore
 				playerData.kill += kill
 				playerKills[roundData.playerId] += kill
 			})
@@ -2446,7 +2447,7 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 					}
 					return soldierConfig
 				}()
-				totalDeath += attackSoldierRoundData.soldierDamagedCount * soldierConfig.citizen
+				totalDeath += attackSoldierRoundData.soldierDamagedCount * soldierConfig.killScore
 				if(!_.isObject(woundedSoldiers[roundData.playerId][attackSoldierRoundData.soldierName])){
 					woundedSoldiers[roundData.playerId][attackSoldierRoundData.soldierName] = {
 						name:attackSoldierRoundData.soldierName,
@@ -2469,43 +2470,27 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
 		fightStar += 1
 		if(fightDatas.length <= 1){
 			fightStar += 1
-			if(totalDeath <= AllianceShrine.shrineStage[stageName].star2DeathCitizen){
+			if(totalDeath <= AllianceInitData.shrineStage[stageName].star2DeathCitizen){
 				fightStar += 1
 			}
 		}
 	}
 
-	var stageConfig = AllianceShrine.shrineStage[stageName]
+	var getPlayerRewardsString = function(terrain, stageConfig, playerKill){
+		var rewardsString = null
+		for(var i = 3; i >= 1; i--){
+			var killNeed = stageConfig["playerKill" + i]
+			if(playerKill < killNeed) continue
+			rewardsString = stageConfig["playerReward" + i + terrain]
+			break
+		}
+		return rewardsString
+	}
+
+	var stageConfig = AllianceInitData.shrineStage[stageName]
 	_.each(playerDatas, function(playerData, playerId){
-		var rewardStrings = null
-		if(playerData.kill >= stageConfig.goldKill){
-			rewardStrings = stageConfig.goldRewards.split(",")
-			_.each(rewardStrings, function(rewardString){
-				var param = rewardString.split(":")
-				var type = param[0]
-				var name = param[1]
-				var count = parseInt(param[2])
-				playerData.rewards.push({
-					type:type,
-					name:name,
-					count:count
-				})
-			})
-		}else if(playerData.kill >= stageConfig.silverKill){
-			rewardStrings = stageConfig.silverRewards.split(",")
-			_.each(rewardStrings, function(rewardString){
-				var param = rewardString.split(":")
-				var type = param[0]
-				var name = param[1]
-				var count = parseInt(param[2])
-				playerData.rewards.push({
-					type:type,
-					name:name,
-					count:count
-				})
-			})
-		}else if(playerData.kill >= stageConfig.bronzeKill){
-			rewardStrings = stageConfig.bronzeRewards.split(",")
+		var rewardStrings = getPlayerRewardsString(terrain, stageConfig, playerData.kill)
+		if(_.isString(rewardStrings)){
 			_.each(rewardStrings, function(rewardString){
 				var param = rewardString.split(":")
 				var type = param[0]
@@ -2550,10 +2535,10 @@ Utils.getAllianceShrineStageResultDatas = function(stageName, isWin, fightDatas)
  * @param stageName
  */
 Utils.isAllianceShrineStageLocked = function(allianceDoc, stageName){
-	var config = AllianceShrine.shrineStage[stageName]
+	var config = AllianceInitData.shrineStage[stageName]
 	if(config.index == 1) return false
 	var previousStageName = null
-	_.each(AllianceShrine.shrineStage, function(theConfig){
+	_.each(AllianceInitData.shrineStage, function(theConfig){
 		if(theConfig.index == config.index - 1) previousStageName = theConfig.stageName
 	})
 
@@ -2568,7 +2553,7 @@ Utils.isAllianceShrineStageLocked = function(allianceDoc, stageName){
  * @returns {*}
  */
 Utils.getAllianceShrineStageFightHoner = function(stageName, fightStar){
-	var config = AllianceShrine.shrineStage[stageName]
+	var config = AllianceInitData.shrineStage[stageName]
 	var honerName = "star" + fightStar + "Honour"
 	return config[honerName]
 }
