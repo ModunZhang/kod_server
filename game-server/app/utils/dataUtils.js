@@ -3825,7 +3825,7 @@ Utils.addPlayerHelpLoyalty = function(playerDoc, playerData, helpCount){
  * @returns {*}
  */
 Utils.canRecruitSpecialSoldier = function(){
-	var daysInWeek = PlayerInitData.stringInit.specialSoldierRecruitAbleDays.value.split("")
+	var daysInWeek = this.getPlayerIntInit("specialSoldierRecruitAbleDays").toString().split("")
 	var today = new Date().getDay()
 	today = today == 0 ? 7 : today
 	return _.contains(daysInWeek, today.toString())

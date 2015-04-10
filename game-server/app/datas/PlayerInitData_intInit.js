@@ -133,3 +133,8 @@ intInit["loyaltyCountPerHelp"] = {
 	value:100,
 	desc:"每次帮助获取多少点忠诚值"
 }
+intInit["specialSoldierRecruitAbleDays"] = {
+	type:"specialSoldierRecruitAbleDays",
+	value:256,
+	desc:"特殊兵种在每周几可招募"
+}
