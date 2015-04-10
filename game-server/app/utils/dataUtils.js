@@ -2479,9 +2479,9 @@ Utils.getAllianceShrineStageResultDatas = function(terrain, stageName, isWin, fi
 	var getPlayerRewardsString = function(terrain, stageConfig, playerKill){
 		var rewardsString = null
 		for(var i = 3; i >= 1; i--){
-			var killNeed = stageConfig["playerKill" + i]
+			var killNeed = stageConfig["playerKill_" + i]
 			if(playerKill < killNeed) continue
-			rewardsString = stageConfig["playerReward" + i + terrain]
+			rewardsString = stageConfig["playerRewards_" + i + "_" + terrain]
 			break
 		}
 		return rewardsString
@@ -2489,8 +2489,9 @@ Utils.getAllianceShrineStageResultDatas = function(terrain, stageName, isWin, fi
 
 	var stageConfig = AllianceInitData.shrineStage[stageName]
 	_.each(playerDatas, function(playerData, playerId){
-		var rewardStrings = getPlayerRewardsString(terrain, stageConfig, playerData.kill)
-		if(_.isString(rewardStrings)){
+		var rewardString = getPlayerRewardsString(terrain, stageConfig, playerData.kill)
+		if(_.isString(rewardString)){
+			var rewardStrings = rewardString.split(",")
 			_.each(rewardStrings, function(rewardString){
 				var param = rewardString.split(":")
 				var type = param[0]

@@ -25,17 +25,17 @@ intInit["editAllianceTerrianHonour"] = {
 }
 intInit["activeShrineStageEventMinutes"] = {
 	type:"activeShrineStageEventMinutes",
-	value:2,
+	value:20,
 	desc:"圣地战激活后持续时间"
 }
 intInit["allianceFightPrepareMinutes"] = {
 	type:"allianceFightPrepareMinutes",
-	value:1,
+	value:5,
 	desc:"联盟战准备期时间"
 }
 intInit["allianceFightTotalFightMinutes"] = {
 	type:"allianceFightTotalFightMinutes",
-	value:5,
+	value:20,
 	desc:"联盟战战争期时间"
 }
 intInit["allianceHelpDefenceTroopsMaxCount"] = {

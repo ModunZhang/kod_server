@@ -1703,7 +1703,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			}
 		}
 
-		var params = DataUtils.getAllianceShrineStageResultDatas(event.stageName, playerTroopsForFight.length > 0, fightDatas)
+		var params = DataUtils.getAllianceShrineStageResultDatas(allianceDoc.basicInfo.terrain, event.stageName, playerTroopsForFight.length > 0, fightDatas)
 		var playerDatas = LogicUtils.fixAllianceShrineStagePlayerData(event.playerTroops, params.playerDatas)
 		var fightStar = params.fightStar
 		var shrineReport = {

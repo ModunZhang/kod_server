@@ -9,8 +9,8 @@ speedup["speedup_1"] = {
 	order:1,
 	isSell:true,
 	price:5,
-	sellPriceInAlliance:250,
-	buyPriceInAlliance:250,
+	sellPriceInAlliance:500,
+	buyPriceInAlliance:500,
 	isAdvancedItem:false
 }
 speedup["speedup_2"] = {
@@ -19,8 +19,8 @@ speedup["speedup_2"] = {
 	order:2,
 	isSell:true,
 	price:20,
-	sellPriceInAlliance:1000,
-	buyPriceInAlliance:1000,
+	sellPriceInAlliance:2000,
+	buyPriceInAlliance:2000,
 	isAdvancedItem:false
 }
 speedup["speedup_3"] = {
@@ -29,8 +29,8 @@ speedup["speedup_3"] = {
 	order:3,
 	isSell:true,
 	price:50,
-	sellPriceInAlliance:2500,
-	buyPriceInAlliance:2500,
+	sellPriceInAlliance:5000,
+	buyPriceInAlliance:5000,
 	isAdvancedItem:false
 }
 speedup["speedup_4"] = {
@@ -39,8 +39,8 @@ speedup["speedup_4"] = {
 	order:4,
 	isSell:true,
 	price:130,
-	sellPriceInAlliance:6500,
-	buyPriceInAlliance:6500,
+	sellPriceInAlliance:13000,
+	buyPriceInAlliance:13000,
 	isAdvancedItem:false
 }
 speedup["speedup_5"] = {
@@ -49,8 +49,8 @@ speedup["speedup_5"] = {
 	order:5,
 	isSell:true,
 	price:300,
-	sellPriceInAlliance:15000,
-	buyPriceInAlliance:15000,
+	sellPriceInAlliance:30000,
+	buyPriceInAlliance:30000,
 	isAdvancedItem:false
 }
 speedup["speedup_6"] = {
@@ -59,8 +59,8 @@ speedup["speedup_6"] = {
 	order:6,
 	isSell:true,
 	price:650,
-	sellPriceInAlliance:32500,
-	buyPriceInAlliance:32500,
+	sellPriceInAlliance:65000,
+	buyPriceInAlliance:65000,
 	isAdvancedItem:false
 }
 speedup["speedup_7"] = {
@@ -69,8 +69,8 @@ speedup["speedup_7"] = {
 	order:7,
 	isSell:true,
 	price:1000,
-	sellPriceInAlliance:50000,
-	buyPriceInAlliance:50000,
+	sellPriceInAlliance:100000,
+	buyPriceInAlliance:100000,
 	isAdvancedItem:false
 }
 speedup["speedup_8"] = {
@@ -79,8 +79,8 @@ speedup["speedup_8"] = {
 	order:8,
 	isSell:true,
 	price:1500,
-	sellPriceInAlliance:75000,
-	buyPriceInAlliance:75000,
+	sellPriceInAlliance:150000,
+	buyPriceInAlliance:150000,
 	isAdvancedItem:false
 }
 speedup["warSpeedupClass_1"] = {
@@ -89,8 +89,8 @@ speedup["warSpeedupClass_1"] = {
 	order:9,
 	isSell:true,
 	price:500,
-	sellPriceInAlliance:25000,
-	buyPriceInAlliance:25000,
+	sellPriceInAlliance:50000,
+	buyPriceInAlliance:50000,
 	isAdvancedItem:false
 }
 speedup["warSpeedupClass_2"] = {
@@ -99,7 +99,7 @@ speedup["warSpeedupClass_2"] = {
 	order:10,
 	isSell:true,
 	price:900,
-	sellPriceInAlliance:45000,
-	buyPriceInAlliance:45000,
+	sellPriceInAlliance:90000,
+	buyPriceInAlliance:90000,
 	isAdvancedItem:false
 }
