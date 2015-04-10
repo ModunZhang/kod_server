@@ -197,7 +197,6 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 		targetMemberInAlliance.helpedByTroopsCount -= 1
 		allianceData.push(["members." + allianceDoc.members.indexOf(targetMemberInAlliance) + ".helpedByTroopsCount", targetMemberInAlliance.helpedByTroopsCount])
 		var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(allianceDoc, playerDoc, beHelpedPlayerDoc, helpedByTroop.dragon, helpedByTroop.soldiers, [], helpedByTroop.rewards)
-		console.log(marchReturnEvent, playerId, beHelpedPlayerId, "1111111111111")
 		allianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 		allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, allianceData])
