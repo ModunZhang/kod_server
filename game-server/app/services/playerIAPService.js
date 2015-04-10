@@ -213,83 +213,83 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 		callback(new Error("receiptData 不合法"))
 	}
 
-	callback()
+	//callback()
 
-	//var self = this
-	//var playerDoc = null
-	//var allianceDoc = null
-	//var billing = null
-	//var playerData = []
-	//var updateFuncs = []
-	//var rewards = null
-	//this.playerDao.findAsync(playerId).then(function(doc){
-	//	playerDoc = doc
-	//	return self.Billing.findOneAsync({transactionId:transactionId})
-	//}).then(function(doc){
-	//	if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId, receiptData))
-	//	var billingValidateAsync = Promise.promisify(BillingValidate, self)
-	//	return billingValidateAsync(playerDoc, receiptData)
-	//}).then(function(responseReceiptData){
-	//	billing = CreateBillingItem(playerId, responseReceiptData)
-	//	return self.Billing.createAsync(billing)
-	//}).then(function(){
-	//	var quantity = billing.quantity
-	//	var itemConfig = _.find(StoreItems.items, function(item){
-	//		if(_.isObject(item)){
-	//			return _.isEqual(item.productId, billing.productId)
-	//		}
-	//	})
-	//	if(!_.isObject(itemConfig)) return Promise.reject(ErrorUtils.iapProductNotExist(playerId, responseReceiptData, billing))
-	//	playerDoc.resources.gem += itemConfig.gem * quantity
-	//	playerData.push(["resources.gem", playerDoc.resources.gem])
-	//	playerDoc.countInfo.iapCount += 1
-	//	playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
-	//	rewards = GetStoreItemRewardsFromConfig(itemConfig)
-	//	_.each(rewards.rewardsToMe, function(reward){
-	//		var resp = LogicUtils.addPlayerItem(playerDoc, reward.name, reward.count * quantity)
-	//		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-	//	})
-	//	var gemAdd = {
-	//		playerId:playerId,
-	//		add:itemConfig.gem * quantity,
-	//		left:playerDoc.resources.gem,
-	//		from:Consts.GemAddFrom.Iap,
-	//		rewards:rewards
-	//	}
-	//	updateFuncs.push([self.GemAdd, self.GemAdd.createAsync, gemAdd])
-	//	updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-	//	return Promise.resolve()
-	//}).then(function(){
-	//	if(_.isObject(rewards.rewardToAllianceMember) && _.isObject(playerDoc.alliance)){
-	//		return self.allianceDao.findAsync(playerDoc.alliance.id, true)
-	//	}
-	//	return Promise.resolve()
-	//}).then(function(doc){
-	//	if(_.isObject(rewards.rewardToAllianceMember) && _.isObject(playerDoc.alliance)){
-	//		allianceDoc = doc
-	//		updateFuncs.push([self.allianceDao, self.allianceDao.removeLockAsync, allianceDoc._id])
-	//		var memberIds = _.pluck(allianceDoc.members, "id")
-	//		return SendAllianceMembersRewards.call(self, playerDoc._id, playerDoc.basicInfo.name, memberIds, rewards.rewardToAllianceMember)
-	//	}
-	//	return Promise.resolve()
-	//}).then(function(){
-	//	return LogicUtils.excuteAll(updateFuncs)
-	//}).then(function(){
-	//	callback(null, [playerData, billing.transactionId])
-	//}).catch(function(e){
-	//	var funcs = []
-	//	if(_.isObject(playerDoc)){
-	//		funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-	//	}
-	//	if(_.isObject(allianceDoc)){
-	//		funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-	//	}
-	//	if(funcs.length > 0){
-	//		Promise.all(funcs).then(function(){
-	//			callback(e)
-	//		})
-	//	}else{
-	//		callback(e)
-	//	}
-	//})
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var billing = null
+	var playerData = []
+	var updateFuncs = []
+	var rewards = null
+	this.playerDao.findAsync(playerId).then(function(doc){
+		playerDoc = doc
+		return self.Billing.findOneAsync({transactionId:transactionId})
+	}).then(function(doc){
+		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId, receiptData))
+		var billingValidateAsync = Promise.promisify(BillingValidate, self)
+		return billingValidateAsync(playerDoc, receiptData)
+	}).then(function(responseReceiptData){
+		billing = CreateBillingItem(playerId, responseReceiptData)
+		return self.Billing.createAsync(billing)
+	}).then(function(){
+		var quantity = billing.quantity
+		var itemConfig = _.find(StoreItems.items, function(item){
+			if(_.isObject(item)){
+				return _.isEqual(item.productId, billing.productId)
+			}
+		})
+		if(!_.isObject(itemConfig)) return Promise.reject(ErrorUtils.iapProductNotExist(playerId, responseReceiptData, billing))
+		playerDoc.resources.gem += itemConfig.gem * quantity
+		playerData.push(["resources.gem", playerDoc.resources.gem])
+		playerDoc.countInfo.iapCount += 1
+		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
+		rewards = GetStoreItemRewardsFromConfig(itemConfig)
+		_.each(rewards.rewardsToMe, function(reward){
+			var resp = LogicUtils.addPlayerItem(playerDoc, reward.name, reward.count * quantity)
+			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+		})
+		var gemAdd = {
+			playerId:playerId,
+			add:itemConfig.gem * quantity,
+			left:playerDoc.resources.gem,
+			from:Consts.GemAddFrom.Iap,
+			rewards:rewards
+		}
+		updateFuncs.push([self.GemAdd, self.GemAdd.createAsync, gemAdd])
+		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		if(_.isObject(rewards.rewardToAllianceMember) && _.isObject(playerDoc.alliance)){
+			return self.allianceDao.findAsync(playerDoc.alliance.id, true)
+		}
+		return Promise.resolve()
+	}).then(function(doc){
+		if(_.isObject(rewards.rewardToAllianceMember) && _.isObject(playerDoc.alliance)){
+			allianceDoc = doc
+			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockAsync, allianceDoc._id])
+			var memberIds = _.pluck(allianceDoc.members, "id")
+			return SendAllianceMembersRewards.call(self, playerDoc._id, playerDoc.basicInfo.name, memberIds, rewards.rewardToAllianceMember)
+		}
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		callback(null, [playerData, billing.transactionId])
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+		}
+		if(funcs.length > 0){
+			Promise.all(funcs).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
+	})
 }

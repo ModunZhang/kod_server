@@ -395,21 +395,21 @@ pro.getAll = function(msg, session, next){
  * @param callback
  */
 var FilterCommand = function(chatText, session, callback){
-	callback()
+	//callback()
 
-	//if(_.isEqual("help", chatText)){
-	//	PushHelpMessageToPlayer.call(this, session)
-	//	callback()
-	//}else{
-	//	var func = GetPlayerCommand.call(this, chatText)
-	//	if(_.isFunction(func)){
-	//		func.call(this, session, session.uid, chatText, function(e){
-	//			callback(e)
-	//		})
-	//	}else{
-	//		callback()
-	//	}
-	//}
+	if(_.isEqual("help", chatText)){
+		PushHelpMessageToPlayer.call(this, session)
+		callback()
+	}else{
+		var func = GetPlayerCommand.call(this, chatText)
+		if(_.isFunction(func)){
+			func.call(this, session, session.uid, chatText, function(e){
+				callback(e)
+			})
+		}else{
+			callback()
+		}
+	}
 }
 
 var PushHelpMessageToPlayer = function(session){
