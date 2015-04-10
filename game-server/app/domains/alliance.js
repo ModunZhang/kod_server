@@ -509,6 +509,7 @@ var AllianceSchema = new Schema({
 			soldiers:[{
 				_id:false,
 				name:{type:String, required:true},
+				star:{type:Number, required:true},
 				count:{type:Number, required:true}
 			}],
 			alliance:{
@@ -578,6 +579,7 @@ var AllianceSchema = new Schema({
 			soldiers:[{
 				_id:false,
 				name:{type:String, required:true},
+				star:{type:Number, required:true},
 				count:{type:Number, required:true}
 			}],
 			alliance:{

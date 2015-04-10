@@ -132,6 +132,9 @@ var createAllianceData = function(allianceDoc){
  * @returns {*}
  */
 var createAttackPlayerData = function(allianceDoc, playerDoc, playerLocation, dragon, soldiers){
+	_.each(soldiers, function(soldier){
+		soldier.star = playerDoc.soldierStars[soldier.name]
+	})
 	var playerData = {
 		id:playerDoc._id,
 		name:playerDoc.basicInfo.name,
@@ -158,6 +161,9 @@ var createAttackPlayerData = function(allianceDoc, playerDoc, playerLocation, dr
  * @returns {*}
  */
 var createAttackPlayerReturnData = function(allianceDoc, playerDoc, playerLocation, dragon, soldiers, woundedSoldiers, rewards){
+	_.each(soldiers, function(soldier){
+		soldier.star = playerDoc.soldierStars[soldier.name]
+	})
 	var playerData = {
 		id:playerDoc._id,
 		name:playerDoc.basicInfo.name,
