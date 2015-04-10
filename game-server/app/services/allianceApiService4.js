@@ -175,7 +175,7 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 		funcs.push(self.playerDao.findAsync(beHelpedPlayerId))
 		return Promise.all(funcs)
 	}).spread(function(doc_1, doc_2){
-		if(!_.isObject(doc_2)) return Promise.reject(ErrorUtils.playerNotExist(playerId))
+		if(!_.isObject(doc_2)) return Promise.reject(ErrorUtils.playerNotExist(playerId, beHelpedPlayerId))
 		allianceDoc = doc_1
 		beHelpedPlayerDoc = doc_2
 		var helpedByTroop = _.find(beHelpedPlayerDoc.helpedByTroops, function(helpedByTroop){
@@ -197,6 +197,7 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 		targetMemberInAlliance.helpedByTroopsCount -= 1
 		allianceData.push(["members." + allianceDoc.members.indexOf(targetMemberInAlliance) + ".helpedByTroopsCount", targetMemberInAlliance.helpedByTroopsCount])
 		var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(allianceDoc, playerDoc, beHelpedPlayerDoc, helpedByTroop.dragon, helpedByTroop.soldiers, [], helpedByTroop.rewards)
+		console.log(marchReturnEvent, playerId, beHelpedPlayerId, "1111111111111")
 		allianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 		allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, allianceData])
