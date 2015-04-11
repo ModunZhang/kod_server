@@ -92,6 +92,18 @@ pro.onAllianceDataChanged = function(allianceId, data, callback){
 }
 
 /**
+ * 地方联盟数据改变
+ * @param allianceId
+ * @param data
+ * @param callback
+ */
+pro.onEnemyAllianceDataChanged = function(allianceId, data, callback){
+	var eventName = Events.alliance.onEnemyAllianceDataChanged
+	var channelName = Consts.AllianceChannelPrefix + allianceId
+	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
+}
+
+/**
  * 推送给联盟除指定玩家之外的其他玩家
  * @param allianceId
  * @param data

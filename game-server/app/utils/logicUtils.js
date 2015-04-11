@@ -1554,36 +1554,17 @@ Utils.getAllianceViewData = function(allianceDoc){
 }
 
 /**
- * 创建敌对联盟修改后的必要数据
- * @param allianceData
- * @param enemyAllianceData
- */
-Utils.putAllianceDataToEnemyAllianceData = function(allianceData, enemyAllianceData){
-	if(!_.isObject(enemyAllianceData.enemyAllianceDoc)) enemyAllianceData.enemyAllianceDoc = {}
-	_.forEach(Consts.AllianceViewDataKeys, function(key){
-		if(_.isObject(allianceData[key])) enemyAllianceData.enemyAllianceDoc[key] = allianceData[key]
-		var arrayKey = "__" + key
-		if(_.isObject(allianceData[arrayKey])) enemyAllianceData.enemyAllianceDoc[arrayKey] = allianceData[arrayKey]
-	})
-	if(_.isEmpty(enemyAllianceData.enemyAllianceDoc)) delete enemyAllianceData.enemyAllianceDoc
-}
-
-/**
  * 如果联盟正在战斗,推送我方联盟相关数据变化到敌对联盟
  * @param allianceDoc
- * @param allianceData
+ * @param enemyAllianceData
  * @param pushFuncs
  * @param pushService
  */
-Utils.pushAllianceDataToEnemyAllianceIfNeeded = function(allianceDoc, allianceData, pushFuncs, pushService){
-	if(_.isObject(allianceDoc.allianceFight)){
-		var enemyAllianceData = {}
-		this.putAllianceDataToEnemyAllianceData(allianceData, enemyAllianceData)
-		if(_.isObject(enemyAllianceData.enemyAllianceDoc)){
-			var enemyAllianceId = _.isEqual(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId)
-				? allianceDoc.allianceFight.defenceAllianceId : allianceDoc.allianceFight.attackAllianceId
-			pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, enemyAllianceId, enemyAllianceData])
-		}
+Utils.pushDataToEnemyAlliance = function(allianceDoc, enemyAllianceData, pushFuncs, pushService){
+	if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(enemyAllianceData)){
+		var enemyAllianceId = _.isEqual(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId)
+			? allianceDoc.allianceFight.defenceAllianceId : allianceDoc.allianceFight.attackAllianceId
+		pushFuncs.push([pushService, pushService.onEnemyAllianceDataChangedAsync, enemyAllianceId, enemyAllianceData])
 	}
 }
 

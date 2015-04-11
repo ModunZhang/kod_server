@@ -59,7 +59,7 @@ var ResetDonateStatus = function(allianceDoc, allianceData){
  * @param allianceData
  * @param enemyAllianceDoc
  */
-var ResetVillages = function(allianceDoc, allianceData, enemyAllianceDoc){
+var ResetVillages = function(allianceDoc, allianceData, enemyAllianceDoc, enemyAllianceData){
 	var getVillageCountByName = function(villageName){
 		var count = 0
 		_.each(allianceDoc.villages, function(village){
@@ -82,9 +82,11 @@ var ResetVillages = function(allianceDoc, allianceData, enemyAllianceDoc){
 	})
 	_.each(villageTobeRemoved, function(village){
 		allianceData.push(["villages." + allianceDoc.villages.indexOf(village), null])
+		enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), null])
 		LogicUtils.removeItemInArray(allianceDoc.villages, village)
 		var villageMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, village.id)
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), null])
+		enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), null])
 		LogicUtils.removeItemInArray(allianceDoc.mapObjects, villageMapObject)
 	})
 
@@ -107,8 +109,10 @@ var ResetVillages = function(allianceDoc, allianceData, enemyAllianceDoc){
 			if(_.isObject(rect)){
 				var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
 				allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
+				enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
 				var village = DataUtils.addAllianceVillageObject(allianceDoc, villageMapObject)
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
+				enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
 			}
 		}
 	})
@@ -142,14 +146,14 @@ var ResolveOneAlliance = function(allianceId){
 			enemyAllianceDoc = doc
 		}
 		ResetDonateStatus(allianceDoc, allianceData)
-		ResetVillages(allianceDoc, allianceData, enemyAllianceDoc)
+		ResetVillages(allianceDoc, allianceData, enemyAllianceDoc, enemyAllianceData)
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		var eventName = Events.alliance.onAllianceDataChanged
 		var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
 		pushFuncs.push([self.globalChannelService, self.globalChannelService.pushMessageAsync, "logic", eventName, allianceData, channelName, null])
 		if(_.isObject(enemyAllianceDoc)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockAsync, enemyAllianceDoc._id])
-			LogicUtils.putAllianceDataToEnemyAllianceData(allianceData, enemyAllianceData)
+			eventName = Events.alliance.onEnemyAllianceDataChanged
 			channelName = Consts.AllianceChannelPrefix + enemyAllianceDoc._id
 			pushFuncs.push([self.globalChannelService, self.globalChannelService.pushMessageAsync, "logic", eventName, enemyAllianceData, channelName, null])
 		}

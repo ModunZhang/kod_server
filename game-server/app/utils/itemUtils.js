@@ -162,6 +162,7 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
+		var enemyAllianceData = []
 		var marchEvent = _.find(allianceDoc[eventType], function(marchEvent){
 			return _.isEqual(marchEvent.id, eventId)
 		})
@@ -172,6 +173,7 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 		playerDoc.dragons[marchDragon.type].status = Consts.DragonStatus.Free
 		playerData.push(["dragons." + marchDragon.type, marchDragon])
 		allianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), null])
+		enemyAllianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), null])
 		LogicUtils.removeItemInArray(allianceDoc[eventType], marchEvent)
 		eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id])
 
@@ -181,10 +183,9 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 				playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 			})
 		}
-
 		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, pushService)
+		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, pushService)
 
 		return Promise.resolve()
 	}).catch(function(e){
@@ -214,6 +215,7 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
+		var enemyAllianceData = []
 		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
 		var marchEvents = []
 		marchEvents = marchEvents.concat(allianceDoc.attackMarchEvents, allianceDoc.attackMarchReturnEvents, allianceDoc.strikeMarchEvents, allianceDoc.strikeMarchReturnEvents)
@@ -237,10 +239,12 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(ErrorUtils.canNotMoveToTargetPlace(playerDoc._id, allianceDoc._id, oldRect, newRect))
 		playerMapObject.location = {x:newRect.x, y:newRect.y}
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject) + ".location", playerMapObject.location])
+		enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject) + ".location", playerMapObject.location])
 
 		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, pushService)
+		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, pushService)
+
 		return Promise.resolve()
 	}).catch(function(e){
 		if(_.isObject(allianceDoc)){
@@ -609,6 +613,7 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
+		var enemyAllianceData = []
 		var marchEvent = _.find(allianceDoc[eventType], function(marchEvent){
 			return _.isEqual(marchEvent.id, eventId)
 		})
@@ -620,11 +625,13 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 		marchEvent.startTime -= marchTimeSpeedup
 		marchEvent.arriveTime -= marchTimeSpeedup
 		allianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), marchEvent])
+		enemyAllianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), marchEvent])
 		eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id, marchEvent.arriveTime - Date.now()])
 
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, pushService)
+		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, pushService)
+
 		return Promise.resolve()
 	}).catch(function(e){
 		if(_.isObject(allianceDoc)){

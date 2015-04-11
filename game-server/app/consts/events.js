@@ -10,7 +10,8 @@ module.exports = {
 		onGetAllianceDataSuccess:"onGetAllianceDataSuccess"
 	},
 	alliance:{
-		onAllianceDataChanged:"onAllianceDataChanged"
+		onAllianceDataChanged:"onAllianceDataChanged",
+		onEnemyAllianceDataChanged:"onEnemyAllianceDataChanged"
 	},
 	chat:{
 		onChat:"onChat",

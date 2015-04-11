@@ -63,6 +63,7 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 	var targetPlayerDoc = null
 	var allianceDoc = null
 	var allianceData = []
+	var enemyAllianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -103,11 +104,12 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 		var event = MarchUtils.createHelpDefenceMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, targetPlayerDoc)
 		allianceDoc.attackMarchEvents.push(event)
 		allianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(event), event])
+		enemyAllianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(event), event])
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, targetPlayerDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
+		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -161,6 +163,7 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 	var beHelpedPlayerData = []
 	var allianceDoc = null
 	var allianceData = []
+	var enemyAllianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -199,10 +202,11 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 		var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(allianceDoc, playerDoc, beHelpedPlayerDoc, helpedByTroop.dragon, helpedByTroop.soldiers, [], helpedByTroop.rewards)
 		allianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 		allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+		enemyAllianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, allianceData])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
+		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 
 		return Promise.resolve()
 	}).then(function(){
@@ -265,6 +269,7 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 	var attackAllianceData = []
 	var defencePlayerDoc = null
 	var defenceAllianceDoc = null
+	var defenceAllianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -313,10 +318,11 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 		var event = MarchUtils.createStrikePlayerCityMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], defenceAllianceDoc, defencePlayerDoc)
 		attackAllianceDoc.strikeMarchEvents.push(event)
 		attackAllianceData.push(["strikeMarchEvents." + attackAllianceDoc.strikeMarchEvents.indexOf(event), event])
+		defenceAllianceData.push(["strikeMarchEvents." + attackAllianceDoc.strikeMarchEvents.indexOf(event), event])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchEvents", event.id, event.arriveTime - Date.now()])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
+		LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceAllianceData, pushFuncs, self.pushService)
 
 		return Promise.resolve()
 	}).then(function(){
@@ -380,6 +386,7 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 	var attackAllianceData = []
 	var defencePlayerDoc = null
 	var defenceAllianceDoc = null
+	var defenceAllianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -429,14 +436,16 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 		if(memberInAlliance.isProtected){
 			memberInAlliance.isProtected = false
 			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
+			defenceAllianceData.push(["members." + attackAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
 		}
 		var event = MarchUtils.createAttackPlayerCityMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defencePlayerDoc)
 		attackAllianceDoc.attackMarchEvents.push(event)
 		attackAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(event), event])
+		defenceAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(event), event])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
+		LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceAllianceData, pushFuncs, self.pushService)
 
 		return Promise.resolve()
 	}).then(function(){
@@ -504,6 +513,7 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 	var attackAllianceDoc = null
 	var attackAllianceData = []
 	var defenceAllianceDoc = null
+	var defenceAllianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -562,10 +572,11 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 		var event = MarchUtils.createAttackVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defenceVillage)
 		attackAllianceDoc.attackMarchEvents.push(event)
 		attackAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(event), event])
+		defenceAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(event), event])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
+		LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceAllianceData, pushFuncs, self.pushService)
 
 		return Promise.resolve()
 	}).then(function(){
@@ -618,6 +629,8 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 	var defenceAllianceData = []
 	var targetAllianceDoc = null
 	var targetAllianceData = null
+	var attackEnemyAllianceData = []
+	var defenceEnemyAllianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -645,12 +658,18 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 		}
 		var village = LogicUtils.getAllianceVillageById(targetAllianceDoc, villageEvent.villageData.id)
 		attackAllianceData.push(["villageEvents." + attackAllianceDoc.villageEvents.indexOf(villageEvent), null])
+		defenceEnemyAllianceData.push(["villageEvents." + attackAllianceDoc.villageEvents.indexOf(villageEvent), null])
 		LogicUtils.removeItemInArray(attackAllianceDoc.villageEvents, villageEvent)
 		eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, "villageEvents", villageEvent.id])
 
 		var resourceCollected = Math.floor(villageEvent.villageData.collectTotal * ((Date.now() - villageEvent.startTime) / (villageEvent.finishTime - villageEvent.startTime)))
 		village.resource -= resourceCollected
 		targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
+		if(_.isEqual(targetAllianceDoc, attackAllianceDoc)){
+			defenceEnemyAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
+		}else{
+			attackEnemyAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
+		}
 		var originalRewards = villageEvent.playerData.rewards
 		var resourceType = village.name.slice(0, -7)
 		var newRewards = [{
@@ -663,6 +682,7 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, targetAllianceDoc, villageEvent.villageData, originalRewards)
 		attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 		attackAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+		defenceEnemyAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 
 		var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
@@ -674,11 +694,9 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 		if(_.isObject(defenceAllianceDoc)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, defenceAllianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc._id, defenceAllianceData])
-			LogicUtils.putAllianceDataToEnemyAllianceData(defenceAllianceData, attackAllianceData)
-			LogicUtils.putAllianceDataToEnemyAllianceData(attackAllianceDoc, defenceAllianceData)
-		}else{
-			LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
+			LogicUtils.pushDataToEnemyAlliance(defenceAllianceDoc, attackEnemyAllianceData, pushFuncs, self.pushService)
 		}
+		LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
 
 		return Promise.resolve()
 	}).then(function(){
@@ -738,6 +756,7 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 	var attackAllianceDoc = null
 	var attackAllianceData = []
 	var defenceAllianceDoc = null
+	var defenceEnemyAllianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -786,14 +805,16 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 		if(memberInAlliance.isProtected){
 			memberInAlliance.isProtected = false
 			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
+			defenceEnemyAllianceData.push(["members." + attackAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
 		}
 		var event = MarchUtils.createStrikeVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], defenceAllianceDoc, defenceVillage)
 		attackAllianceDoc.strikeMarchEvents.push(event)
 		attackAllianceData.push(["strikeMarchEvents." + attackAllianceDoc.strikeMarchEvents.indexOf(event), event])
+		defenceEnemyAllianceData.push(["strikeMarchEvents." + attackAllianceDoc.strikeMarchEvents.indexOf(event), event])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchEvents", event.id, event.arriveTime - Date.now()])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, attackAllianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(attackAllianceDoc, attackAllianceData, pushFuncs, self.pushService)
+		LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
 
 		return Promise.resolve()
 	}).then(function(){

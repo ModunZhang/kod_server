@@ -787,17 +787,6 @@ Utils.sellItemNotExist = function(playerId, itemId){
 }
 
 /**
- * 银币不足
- * @param playerId
- * @param coinHas
- * @param coinNeed
- */
-Utils.coinNotEnough = function(playerId, coinHas, coinNeed){
-	var config = Errors.coinNotEnough
-	return CreateError(config, {playerId:playerId, coinHas:coinHas, coinNeed:coinNeed})
-}
-
-/**
  * 商品还未卖出
  * @param playerId
  * @param item

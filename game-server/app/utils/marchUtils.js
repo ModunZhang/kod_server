@@ -235,20 +235,20 @@ var createStrikePlayerReturnData = function(allianceDoc, playerDoc, playerLocati
  */
 var getPlayerSoldiersMarchTime = function(playerDoc, soldiers, fromAllianceDoc, fromLocation, toAllianceDoc, toLocation){
 	var distance = getAllianceLocationDistance(fromAllianceDoc, fromLocation, toAllianceDoc, toLocation)
-	var baseSpeed = 2400
+	var baseSpeed = 1200
 	var totalSpeed = 0
-	var totalCitizen = 0
+	var totalCount = 0
 	_.each(soldiers, function(soldier){
 		var config = DataUtils.getPlayerSoldierConfig(playerDoc, soldier.name)
-		var citizen = soldier.count * config.citizen
-		totalCitizen += citizen
-		totalSpeed += baseSpeed / config.march * citizen
+		var count = soldier.count
+		totalCount += count
+		totalSpeed += baseSpeed / config.march * count
 	})
 	var itemBuff = DataUtils.isPlayerHasItemEvent(playerDoc, "marchSpeedBonus") ? 0.3 : 0
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(playerDoc) : 0].marchSpeedAdd
-	var time = Math.ceil(totalSpeed / totalCitizen * distance * 1000)
+	var time = Math.ceil(totalSpeed / totalCount * distance * 1000)
 	time = LogicUtils.getTimeEfffect(time, itemBuff + vipBuff)
-	return time//5 * 1000
+	return time//10 * 1000
 }
 
 /**
@@ -263,10 +263,10 @@ var getPlayerSoldiersMarchTime = function(playerDoc, soldiers, fromAllianceDoc, 
  */
 var getPlayerDragonMarchTime = function(playerDoc, dragon, fromAllianceDoc, fromLocation, toAllianceDoc, toLocation){
 	var distance = getAllianceLocationDistance(fromAllianceDoc, fromLocation, toAllianceDoc, toLocation)
-	var baseSpeed = 2400
+	var baseSpeed = 1200
 	var marchSpeed = PlayerInitData.intInit.dragonMarchSpeed.value
 	var time = Math.ceil(baseSpeed / marchSpeed * distance * 1000)
-	return time//5 * 1000
+	return time//10 * 1000
 }
 
 

@@ -747,7 +747,7 @@ pro.resetalliancestatus = function(uid, callback){
 			allianceData.push(["members." + allianceDoc.members.indexOf(member) + ".donateStatus", member.donateStatus])
 		})
 	}
-	var ResetVillages = function(allianceDoc, allianceData, enemyAllianceDoc){
+	var ResetVillages = function(allianceDoc, allianceData, enemyAllianceDoc, enemyAllianceData){
 		var getVillageCountByName = function(villageName){
 			var count = 0
 			_.each(allianceDoc.villages, function(village){
@@ -770,9 +770,11 @@ pro.resetalliancestatus = function(uid, callback){
 		})
 		_.each(villageTobeRemoved, function(village){
 			allianceData.push(["villages." + allianceDoc.villages.indexOf(village), null])
+			enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), null])
 			LogicUtils.removeItemInArray(allianceDoc.villages, village)
 			var villageMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, village.id)
 			allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), null])
+			enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), null])
 			LogicUtils.removeItemInArray(allianceDoc.mapObjects, villageMapObject)
 		})
 
@@ -795,8 +797,10 @@ pro.resetalliancestatus = function(uid, callback){
 				if(_.isObject(rect)){
 					var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
 					allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
+					enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
 					var village = DataUtils.addAllianceVillageObject(allianceDoc, villageMapObject)
 					allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
+					enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
 				}
 			}
 		})
@@ -804,8 +808,8 @@ pro.resetalliancestatus = function(uid, callback){
 	var ResolveAllianceStatus = function(allianceId){
 		var self = this
 		var allianceDoc = null
-		var enemyAllianceDoc = null
 		var allianceData = []
+		var enemyAllianceDoc = null
 		var enemyAllianceData = []
 		var updateFuncs = []
 		var pushFuncs = []
@@ -824,12 +828,12 @@ pro.resetalliancestatus = function(uid, callback){
 				enemyAllianceDoc = doc
 			}
 			ResetDonateStatus(allianceDoc, allianceData)
-			ResetVillages(allianceDoc, allianceData, enemyAllianceDoc)
+			ResetVillages(allianceDoc, allianceData, enemyAllianceDoc, enemyAllianceData)
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 			if(_.isObject(enemyAllianceDoc)){
 				updateFuncs.push([self.allianceDao, self.allianceDao.removeLockAsync, enemyAllianceDoc._id])
-				LogicUtils.putAllianceDataToEnemyAllianceData(allianceData, enemyAllianceData)
+				LogicUtils.pushDataToEnemyAlliance(allianceData, enemyAllianceData, pushFuncs, self.pushService)
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc._id, enemyAllianceData])
 			}
 

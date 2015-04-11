@@ -480,6 +480,7 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 	var forceSave = false
 	var allianceDoc = null
 	var allianceData = []
+	var enemyAllianceData = []
 	var allianceMemberDocs = []
 	var pushFuncs = []
 	var updateFuncs = []
@@ -533,6 +534,7 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc, forceSave])
 
 		allianceData.push(["basicInfo", allianceDoc.basicInfo])
+		enemyAllianceData.push(["basicInfo", allianceDoc.basicInfo])
 		var event = null
 		if(isNameChanged){
 			event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Name, playerDoc.basicInfo.name, [allianceDoc.basicInfo.name])
@@ -583,7 +585,7 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		return Promise.resolve()
 	}).then(function(){
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
+		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
@@ -626,6 +628,7 @@ pro.editAllianceTerrian = function(playerId, terrain, callback){
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
+	var enemyAllianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
@@ -645,11 +648,13 @@ pro.editAllianceTerrian = function(playerId, terrain, callback){
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 		allianceDoc.basicInfo.terrain = terrain
 		allianceData.push(["basicInfo.terrain", allianceDoc.basicInfo.terrain])
+		enemyAllianceData.push(["basicInfo.terrain", allianceDoc.basicInfo.terrain])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Terrain, playerDoc.basicInfo.name, [allianceDoc.basicInfo.terrain])
 		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
+		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
+
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1002,7 +1007,6 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1205,7 +1209,6 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1302,7 +1305,6 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

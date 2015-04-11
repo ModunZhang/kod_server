@@ -266,6 +266,7 @@ pro.moveAllianceBuilding = function(playerId, mapObjectId, locationX, locationY,
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
+	var enemyAllianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
 	this.playerDao.findAsync(playerId).then(function(doc){
@@ -294,13 +295,14 @@ pro.moveAllianceBuilding = function(playerId, mapObjectId, locationX, locationY,
 		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(ErrorUtils.theAllianceBuildingCanNotMoveToTargetPoint(playerId, allianceDoc._id, oldRect, newRect))
 		mapObject.location = {x:newRect.x, y:newRect.y}
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(mapObject) + ".location", mapObject.location])
+		enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(mapObject) + ".location", mapObject.location])
 		allianceDoc.basicInfo.honour -= honourNeeded
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 
 		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
+		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -424,6 +426,7 @@ pro.attackAllianceShrine = function(playerId, shrineEventId, dragonType, soldier
 	var playerData = []
 	var allianceDoc = null
 	var allianceData = []
+	var enemyAllianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -457,11 +460,12 @@ pro.attackAllianceShrine = function(playerId, shrineEventId, dragonType, soldier
 		var event = MarchUtils.createAttackAllianceShrineMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, shrineEventId)
 		allianceDoc.attackMarchEvents.push(event)
 		allianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(event), event])
+		enemyAllianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(event), event])
 
 		updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
+		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

@@ -845,7 +845,20 @@ pro.buySellItem = function(playerId, itemId, callback){
 		var count = itemDoc.itemData.count
 		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
 		var totalPrice = itemDoc.itemData.price * count
-		if(playerDoc.resources.coin < totalPrice) return Promise.reject(ErrorUtils.coinNotEnough(playerId, playerDoc.resources.coin, totalPrice))
+		var buyedResources = DataUtils.buyResources(playerDoc, {coin:totalPrice}, playerDoc.resources)
+		var gemUsed = buyedResources.gemUsed
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"createHouse"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		}
 		playerDoc.resources.coin -= totalPrice
 		playerDoc[type][itemDoc.itemData.name] += realCount
 		playerData.push([type + "." + itemDoc.itemData.name, playerDoc[type][itemDoc.itemData.name]])

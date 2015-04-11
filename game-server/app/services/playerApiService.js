@@ -236,7 +236,6 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 		if(_.isObject(allianceDoc)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
-			LogicUtils.pushAllianceDataToEnemyAllianceIfNeeded(allianceDoc, allianceData, pushFuncs, self.pushService)
 		}
 		if(_.isObject(enemyAllianceDoc)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockAsync, enemyAllianceDoc._id])
