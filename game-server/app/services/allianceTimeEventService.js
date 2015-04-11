@@ -244,7 +244,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					id:defencePlayerDoc._id,
 					name:defencePlayerDoc.basicInfo.name,
 					cityName:defencePlayerDoc.basicInfo.cityName,
-					location:LogicUtils.getAllianceMemberById(attackAllianceDoc, defencePlayerDoc._id).location
+					location:LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id).location
 				}
 			}
 			attackPlayerDoc.helpToTroops.push(helpToTroop)
@@ -1924,7 +1924,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 			}
 			LogicUtils.removeItemInArray(defenceAllianceDoc.villages, village)
 			var villageMapObject = LogicUtils.getAllianceMapObjectById(defenceAllianceDoc, village.id)
-			allianceData.push(["mapObjects." + defenceAllianceDoc.mapObjects.indexOf(villageMapObject), null])
+			defenceAllianceData.push(["mapObjects." + defenceAllianceDoc.mapObjects.indexOf(villageMapObject), null])
 			if(attackAllianceDoc == defenceAllianceDoc){
 				defenceEnemyAllianceData.push(["mapObjects." + defenceAllianceDoc.mapObjects.indexOf(villageMapObject), null])
 			}else{
