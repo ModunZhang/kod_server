@@ -19,9 +19,8 @@ var Handler = function(app){
 	this.app = app
 	this.env = app.get("env")
 	this.serverId = app.getServerId()
-	this.playerApiService = app.get("playerApiService")
-	this.globalChannelService = app.get("globalChannelService")
 	this.sessionService = app.get("sessionService")
+	this.dataService = app.get("dataService")
 	this.logService = app.get("logService")
 	this.maxReturnMailSize = 10
 	this.maxReturnReportSize = 10
@@ -57,14 +56,8 @@ pro.login = function(msg, session, next){
 	var playerDoc = null
 	var allianceDoc = null
 	var enemyAllianceDoc = null
-	this.playerApiService.isAccountExistAsync(deviceId).then(function(isExist){
-		if(!isExist){
-			return self.playerApiService.createAccountAsync(deviceId)
-		}
-		return Promise.resolve()
-	}).then(function(){
-		return self.playerApiService.playerLoginAsync(deviceId, self.serverId)
-	}).spread(function(doc_1, doc_2, doc_3){
+
+	this.playerApiService.playerLoginAsync(deviceId, self.serverId).spread(function(doc_1, doc_2, doc_3){
 		playerDoc = doc_1
 		allianceDoc = doc_2
 		enemyAllianceDoc = doc_3
@@ -124,6 +117,10 @@ var PlayerLeave = function(session, reason){
 
 var AddPlayerToChatChannel = function(session, callback){
 	this.app.rpc.chat.chatRemote.add(session, session.uid, this.serverId, callback)
+}
+
+var AddPlayerToEventChannel = function(session, callback){
+	this.app.rpc.event.eventRemote.add(session, session.uid, this.serverId, callback)
 }
 
 var RemovePlayerFromChatChannel = function(session, callback){

@@ -24,7 +24,7 @@ var pro = ChatRemote.prototype
  * @param callback
  */
 pro.add = function(uid, logicServerId, callback){
-	this.channelService.getChannel(Consts.GloablChatChannelName, true).add(uid, logicServerId)
+	this.channelService.getChannel(Consts.GlobalChatChannel, true).add(uid, logicServerId)
 	callback()
 }
 
@@ -35,6 +35,6 @@ pro.add = function(uid, logicServerId, callback){
  * @param callback
  */
 pro.leave = function(uid, logicServerId, callback){
-	this.channelService.getChannel(Consts.GloablChatChannelName).leave(uid, logicServerId)
+	this.channelService.getChannel(Consts.GlobalChatChannel).leave(uid, logicServerId)
 	callback()
 }

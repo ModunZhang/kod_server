@@ -16,9 +16,33 @@ module.exports = function(app){
 var EventRemote = function(app){
 	this.app = app
 	this.logService = app.get("logService")
+	this.channelService = this.app.get("channelService")
 	this.callbacks = {}
 }
 var pro = EventRemote.prototype
+
+
+/**
+ * 将玩家添加到事件推送频道中
+ * @param uid
+ * @param logicServerId
+ * @param callback
+ */
+pro.add = function(uid, logicServerId, callback){
+	this.channelService.getChannel(Consts.GlobalEventChannel, true).add(uid, logicServerId)
+	callback()
+}
+
+/**
+ * 将玩家从事件推送频道中移除
+ * @param uid
+ * @param logicServerId
+ * @param callback
+ */
+pro.leave = function(uid, logicServerId, callback){
+	this.channelService.getChannel(Consts.GlobalEventChannel).leave(uid, logicServerId)
+	callback()
+}
 
 /**
  * 添加时间回调

@@ -8,12 +8,12 @@ var Promise = require("bluebird")
 
 var ErrorUtils = require("../../../utils/errorUtils")
 
-module.exports = function(app) {
-  return new Handler(app)
+module.exports = function(app){
+	return new Handler(app)
 }
 
-var Handler = function(app) {
-  this.app = app
+var Handler = function(app){
+	this.app = app
 	this.logService = app.get("logService")
 	this.gateService = app.get("gateService")
 	this.dataService = app.get("dataService")
@@ -41,23 +41,24 @@ pro.queryEntry = function(msg, session, next){
 		next(e, ErrorUtils.getError(new Error("deviceId 不合法")))
 		return
 	}
+
+	var self = this
 	this.dataService.findPlayerAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
 			return Promise.resolve(doc.serverId)
 		}else{
-
+			return Promise.resolve(self.gateService.getPromotedServer().id)
 		}
-	})
+	}).then(function(serverId){
+		var logicServer = self.gateService.getPromotedLogicServer(serverId)
+		var data = {
+			id:logicServer.id,
+			host:logicServer.outHost,
+			port:logicServer.clientPort
+		}
 
-
-	var logicServer = this.gateService.getPromotedLogicServer()
-	var data = {
-		id:logicServer.id,
-		host:logicServer.outHost,
-		port:logicServer.clientPort
-	}
-	next(null,{
-		data:data,
-		code:200
+		next(null, {data:data, code:200})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
 	})
 }
