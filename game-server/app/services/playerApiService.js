@@ -222,7 +222,7 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 	}).then(function(doc){
 		if(_.isObject(allianceDoc) && _.isObject(allianceDoc.allianceFight)){
 			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(enemyAllianceId))
-			enemyAllianceDoc = LogicUtils.getAllianceViewData(enemyAllianceDoc)
+			enemyAllianceDoc = LogicUtils.getAllianceViewData(doc)
 		}
 		if(_.isObject(allianceDoc)){
 			memberDocInAlliance = LogicUtils.updateMyPropertyInAlliance(playerDoc, allianceDoc)
