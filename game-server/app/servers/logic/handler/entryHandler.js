@@ -27,59 +27,6 @@ var Handler = function(app){
 }
 var pro = Handler.prototype
 
-/**
- * 玩家登陆
- * @param msg
- * @param session
- * @param next
- */
-pro.login = function(msg, session, next){
-	this.logService.onRequest("logic.entryHandler.login", msg)
-	var e = null
-	if(!this.app.get("isReady")){
-		e = ErrorUtils.serverUnderMaintain()
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	var self = this
-	var deviceId = msg.deviceId
-	if(!_.isString(deviceId)){
-		e = new Error("deviceId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	var bindPlayerSession = Promisify(BindPlayerSession, this)
-	var addPlayerToChatChannel = Promisify(AddPlayerToChatChannel, this)
-
-	var playerDoc = null
-	var allianceDoc = null
-	var enemyAllianceDoc = null
-
-	this.playerApiService.playerLoginAsync(deviceId, self.serverId).spread(function(doc_1, doc_2, doc_3){
-		playerDoc = doc_1
-		allianceDoc = doc_2
-		enemyAllianceDoc = doc_3
-		return bindPlayerSession(session, deviceId, playerDoc)
-	}).then(function(){
-		var funcs = []
-		funcs.push(addPlayerToChatChannel(session))
-		if(_.isObject(playerDoc.alliance)){
-			funcs.push(self.globalChannelService.addAsync(Consts.AllianceChannelPrefix + playerDoc.alliance.id, playerDoc._id, self.serverId))
-		}
-		return Promise.all(funcs)
-	}).then(function(){
-		self.logService.onEvent("logic.entryHandler.playerLogin", {playerId:session.uid})
-		next(null, {code:200, playerData:FilterPlayerDoc.call(self, playerDoc), allianceData:allianceDoc, enemyAllianceData:enemyAllianceDoc})
-	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
-		if(!_.isEqual(e.code, ErrorUtils.reLoginNeeded(deviceId).code)){
-			self.sessionService.kickBySessionId(session.id)
-		}
-	})
-}
-
 var BindPlayerSession = function(session, deviceId, playerDoc, callback){
 	session.bind(playerDoc._id)
 	session.set("serverId", playerDoc.serverId)
@@ -99,14 +46,15 @@ var BindPlayerSession = function(session, deviceId, playerDoc, callback){
 var PlayerLeave = function(session, reason){
 	this.logService.onEvent("logic.entryHandler.playerLeave", {playerId:session.uid, reason:reason})
 	var self = this
-	var removePlayerFromChatChannel = Promisify(RemovePlayerFromChatChannel, this)
+	var removePlayerFromChatChannelAsync = Promisify(RemovePlayerFromChatChannel, this)
+	var removePlayerFromAllianceChannelAsync = Promisify(RemovePlayerFromAllianceChannel, this)
 	var playerDoc = null
 	this.playerApiService.playerLogoutAsync(session.uid).then(function(doc){
 		playerDoc = doc
 		var funcs = []
-		funcs.push(removePlayerFromChatChannel(session))
+		funcs.push(removePlayerFromChatChannelAsync(session))
 		if(_.isObject(playerDoc.alliance)){
-			funcs.push(self.globalChannelService.leaveAsync(Consts.AllianceChannelPrefix + playerDoc.alliance.id, playerDoc._id, self.serverId))
+			funcs.push(removePlayerFromAllianceChannelAsync(session, playerDoc.alliance.id))
 		}
 		return Promise.all(funcs)
 	}).catch(function(e){
@@ -116,16 +64,21 @@ var PlayerLeave = function(session, reason){
 
 
 var AddPlayerToChatChannel = function(session, callback){
-	this.app.rpc.chat.chatRemote.add(session, session.uid, this.serverId, callback)
-}
-
-var AddPlayerToEventChannel = function(session, callback){
-	this.app.rpc.event.eventRemote.add(session, session.uid, this.serverId, callback)
+	this.app.rpc.chat.chatRemote.addToChatChannel(session, session.uid, this.serverId, callback)
 }
 
 var RemovePlayerFromChatChannel = function(session, callback){
-	this.app.rpc.chat.chatRemote.leave(session, session.uid, this.serverId, callback)
+	this.app.rpc.chat.chatRemote.removeFromChatChannel(session, session.uid, this.serverId, callback)
 }
+
+var AddPlayerToAllianceChannel = function(session, allianceId, callback){
+	this.app.rpc.chat.chatRemote.addToChatChannel(session, allianceId, session.uid, this.serverId, callback)
+}
+
+var RemovePlayerFromAllianceChannel = function(session, allianceId, callback){
+	this.app.rpc.chat.chatRemote.removeFromChatChannel(session, allianceId, session.uid, this.serverId, callback)
+}
+
 
 var FilterPlayerDoc = function(playerDoc){
 	var data = _.omit(playerDoc, "mails", "sendMails", "reports")
@@ -184,4 +137,59 @@ var FilterPlayerDoc = function(playerDoc){
 	data.serverTime = Date.now()
 
 	return data
+}
+
+
+/**
+ * 玩家登陆
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.login = function(msg, session, next){
+	this.logService.onRequest("logic.entryHandler.login", msg)
+	var e = null
+	if(!this.app.get("isReady")){
+		e = ErrorUtils.serverUnderMaintain()
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	var self = this
+	var deviceId = msg.deviceId
+	if(!_.isString(deviceId)){
+		e = new Error("deviceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	var bindPlayerSessionAsync = Promisify(BindPlayerSession, this)
+	var addPlayerToChatChannelAsync = Promisify(AddPlayerToChatChannel, this)
+	var addPlayerToAllianceChannelAsync = Promisify(AddPlayerToAllianceChannel, this)
+
+	var playerDoc = null
+	var allianceDoc = null
+	var enemyAllianceDoc = null
+
+	this.playerApiService.playerLoginAsync(deviceId, self.serverId).spread(function(doc_1, doc_2, doc_3){
+		playerDoc = doc_1
+		allianceDoc = doc_2
+		enemyAllianceDoc = doc_3
+		return bindPlayerSessionAsync(session, deviceId, playerDoc)
+	}).then(function(){
+		var funcs = []
+		funcs.push(addPlayerToChatChannelAsync(session))
+		if(_.isObject(playerDoc.alliance)){
+			funcs.push(addPlayerToAllianceChannelAsync(session, playerDoc.alliance.id))
+		}
+		return Promise.all(funcs)
+	}).then(function(){
+		self.logService.onEvent("logic.entryHandler.playerLogin", {playerId:session.uid})
+		next(null, {code:200, playerData:FilterPlayerDoc.call(self, playerDoc), allianceData:allianceDoc, enemyAllianceData:enemyAllianceDoc})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+		if(!_.isEqual(e.code, ErrorUtils.reLoginNeeded(deviceId).code)){
+			self.sessionService.kickBySessionId(session.id)
+		}
+	})
 }

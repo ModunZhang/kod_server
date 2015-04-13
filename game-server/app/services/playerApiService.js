@@ -35,24 +35,6 @@ module.exports = PlayerApiService
 var pro = PlayerApiService.prototype
 
 /**
- * 玩家账号是否存在
- * @param deviceId
- * @param callback
- */
-pro.isAccountExist = function(deviceId, callback){
-	if(!_.isString(deviceId)){
-		callback(new Error("deviceId 不合法"))
-		return
-	}
-
-	this.Device.findAsync({_id:deviceId}, {_id:true}, {limit:1}).then(function(docs){
-		callback(null, docs.length > 0)
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
  * 创建玩家账号
  * @param deviceId
  * @param callback

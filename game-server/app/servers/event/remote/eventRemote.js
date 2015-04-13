@@ -21,26 +21,30 @@ var EventRemote = function(app){
 }
 var pro = EventRemote.prototype
 
-
 /**
- * 将玩家添加到事件推送频道中
+ * 将玩家添加到联盟频道
+ * @param allianceId
  * @param uid
  * @param logicServerId
  * @param callback
  */
-pro.add = function(uid, logicServerId, callback){
-	this.channelService.getChannel(Consts.GlobalEventChannel, true).add(uid, logicServerId)
+pro.addToAllianceChannel = function(allianceId, uid, logicServerId , callback){
+	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(uid, logicServerId)
 	callback()
 }
 
 /**
- * 将玩家从事件推送频道中移除
+ * 将玩家从联盟频道移除
  * @param uid
  * @param logicServerId
+ * @param allianceId
  * @param callback
  */
-pro.leave = function(uid, logicServerId, callback){
-	this.channelService.getChannel(Consts.GlobalEventChannel).leave(uid, logicServerId)
+pro.removeFromAllianceChannel = function(uid, logicServerId, allianceId, callback){
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId)
+	channel.leave(uid, logicServerId)
+	if(channel.getMembers.length == 0) channel.destroy()
+
 	callback()
 }
 
