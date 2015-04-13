@@ -1023,30 +1023,15 @@
 //		//	})
 //		//})
 //
-//		it("alliancefight 正常激活", function(done){
-//			var m_allianceDoc = null
-//			Api.getMyAllianceData(function(doc){
+//		it("findAllianceToFight 正常查找", function(done){
+//			Api.loginPlayer(Config.deviceId3, function(doc){
 //				doc.code.should.equal(200)
-//				m_allianceDoc = doc.allianceData
-//				Api.loginPlayer(Config.deviceId4, function(doc){
+//				Api.findAllianceToFight(function(doc){
 //					doc.code.should.equal(200)
-//					Api.sendChat("alliancefight " + m_allianceDoc.basicInfo.tag, function(doc){
-//						doc.code.should.equal(200)
-//						done()
-//					})
+//					done()
 //				})
 //			})
 //		})
-//
-//		//it("findAllianceToFight 正常查找", function(done){
-//		//	Api.loginPlayer(Config.deviceId3, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.findAllianceToFight(function(doc){
-//		//			doc.code.should.equal(200)
-//		//			done()
-//		//		})
-//		//	})
-//		//})
 //
 //		//it("getAllianceViewData 正常获取", function(done){
 //		//	var m_allianceData = null

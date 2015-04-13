@@ -222,8 +222,7 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 	}).then(function(doc){
 		if(_.isObject(allianceDoc) && _.isObject(allianceDoc.allianceFight)){
 			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(enemyAllianceId))
-			enemyAllianceDoc = doc
-			allianceDoc.enemyAllianceDoc = LogicUtils.getAllianceViewData(enemyAllianceDoc)
+			enemyAllianceDoc = LogicUtils.getAllianceViewData(enemyAllianceDoc)
 		}
 		if(_.isObject(allianceDoc)){
 			memberDocInAlliance = LogicUtils.updateMyPropertyInAlliance(playerDoc, allianceDoc)
@@ -248,7 +247,7 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback(null, [playerDoc, allianceDoc])
+		callback(null, [playerDoc, allianceDoc, enemyAllianceDoc])
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc) && !_.isEqual(e.code, ErrorUtils.reLoginNeeded(playerDoc._id).code)){

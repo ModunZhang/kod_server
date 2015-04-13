@@ -104,6 +104,19 @@ pro.onEnemyAllianceDataChanged = function(allianceId, data, callback){
 }
 
 /**
+ * 联盟战开始或者结束
+ * @param allianceId
+ * @param allianceData
+ * @param enemyAllianceData
+ * @param callback
+ */
+pro.onAllianceFight = function(allianceId, allianceData, enemyAllianceData, callback){
+	var eventName = Events.alliance.onAllianceFight
+	var channelName = Consts.AllianceChannelPrefix + allianceId
+	this.globalChannelService.pushMessage(this.serverType, eventName, {allianceData:allianceData, enemyAllianceData:enemyAllianceData}, channelName, null, callback)
+}
+
+/**
  * 推送给联盟除指定玩家之外的其他玩家
  * @param allianceId
  * @param data

@@ -56,6 +56,7 @@ pro.login = function(msg, session, next){
 
 	var playerDoc = null
 	var allianceDoc = null
+	var enemyAllianceDoc = null
 	this.playerApiService.isAccountExistAsync(deviceId).then(function(isExist){
 		if(!isExist){
 			return self.playerApiService.createAccountAsync(deviceId)
@@ -63,9 +64,10 @@ pro.login = function(msg, session, next){
 		return Promise.resolve()
 	}).then(function(){
 		return self.playerApiService.playerLoginAsync(deviceId, self.serverId)
-	}).spread(function(doc_1, doc_2){
+	}).spread(function(doc_1, doc_2, doc_3){
 		playerDoc = doc_1
 		allianceDoc = doc_2
+		enemyAllianceDoc = doc_3
 		return bindPlayerSession(session, deviceId, playerDoc)
 	}).then(function(){
 		var funcs = []
@@ -76,7 +78,7 @@ pro.login = function(msg, session, next){
 		return Promise.all(funcs)
 	}).then(function(){
 		self.logService.onEvent("logic.entryHandler.playerLogin", {playerId:session.uid})
-		next(null, {code:200, playerData:FilterPlayerDoc.call(self, playerDoc), allianceData:allianceDoc})
+		next(null, {code:200, playerData:FilterPlayerDoc.call(self, playerDoc), allianceData:allianceDoc, enemyAllianceData:enemyAllianceDoc})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 		if(!_.isEqual(e.code, ErrorUtils.reLoginNeeded(deviceId).code)){
