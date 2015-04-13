@@ -12,23 +12,7 @@ var GateService = function(app){
 	this.serverId = app.getServerId()
 	this.logService = app.get("logService")
 	this.logicServers = null
-	this.servers = [
-		{
-			id:"World-1",
-			isPromoted:true,
-			isNew:true
-		},
-		{
-			id:"World-2",
-			isPromoted:false,
-			isNew:true
-		},
-		{
-			id:"World-3",
-			isPromoted:false,
-			isNew:true
-		}
-	]
+	this.cacheServers = null
 }
 module.exports = GateService
 var pro = GateService.prototype
@@ -38,6 +22,9 @@ var pro = GateService.prototype
  */
 pro.start = function(){
 	var self = this
+	this.logicServers = this.app.getServersByType("logic")
+	this.cacheServers = this.app.getServersByType("cache")
+
 	var getOnlineUser = function(logicServer, callback){
 		self.app.rpc.logic.logicRemote.getOnlineUser.toServer(logicServer.id, function(e, count){
 			if(_.isObject(e)){
@@ -50,18 +37,14 @@ pro.start = function(){
 			}
 		})
 	}
-	this.logicServers = this.app.getServersByType('logic')
+
 	var getOnlineUserAsync = Promise.promisify(getOnlineUser, this)
 	setInterval(function(){
 		var funcs = []
 		_.each(self.logicServers, function(logicServer){
 			funcs.push(getOnlineUserAsync(logicServer))
 		})
-		Promise.all(funcs).then(function(){
-			self.logicServers = _.sortBy(self.logicServers, function(logicServer){
-				return logicServer.userCount
-			})
-		})
+		Promise.all(funcs)
 	}, 5 * 1000)
 }
 
@@ -69,8 +52,14 @@ pro.start = function(){
  * 获取推荐的逻辑服务器
  * @returns {*}
  */
-pro.getPromotedLogicServer = function(){
-	return this.logicServers[0]
+pro.getPromotedLogicServer = function(cacheServerId){
+	var logicServers = _.filter(this.logicServers, function(logicServer){
+		return _.isEqual(logicServer.useFor, cacheServerId)
+	})
+	logicServers = _.sortBy(logicServers, function(logicServer){
+		return logicServer.userCount
+	})
+	return logicServers[0]
 }
 
 /**
@@ -78,7 +67,7 @@ pro.getPromotedLogicServer = function(){
  * @returns {Array}
  */
 pro.getServers = function(){
-	return this.servers
+	return this.cacheServers
 }
 
 /**
@@ -86,7 +75,7 @@ pro.getServers = function(){
  * @returns {*}
  */
 pro.getPromotedServer = function(){
-	return _.find(this.servers, function(server){
-		return server.isPromoted
+	return _.find(this.cacheServers, function(server){
+		return server.isPromoted == "true"
 	})
 }

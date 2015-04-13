@@ -11,7 +11,10 @@ var Consts = require("../consts/consts.js")
 
 var DataService = function(app){
 	this.app = app
-	this.redis = app.get("redis")
 }
 module.exports = DataService
 var pro = DataService.prototype
+
+pro.findPlayer = function(id, callback){
+
+}

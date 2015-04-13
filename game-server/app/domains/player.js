@@ -93,8 +93,8 @@ var createDragonSchema = function(dragonType){
 var PlayerSchema = new Schema({
 	_id:{type:String, required:true},
 	serverId:{type:String, required:true},
-	userId:{type:String, required:true},
 	apnId:{type:String},
+	gcId:{type:String},
 	isActive:{type:Boolean, required:true, default:true},
 	countInfo:{
 		registerTime:{type:Number, required:true, default:Date.now},
