@@ -13,7 +13,7 @@ var Scripto = require('redis-scripto')
 
 
 var LoginFilter = require("./app/utils/loginFilter")
-var ReplayFilter = require("./app/utils/replayFilter")
+//var ReplayFilter = require("./app/utils/replayFilter")
 var SerialFilter = require("./app/utils/serialFilter")
 var commandDir = path.resolve("./app/commands")
 
@@ -78,7 +78,7 @@ app.configure("production|development", "logic", function(){
 		failMode:"failfast"
 	})
 
-	app.before(ReplayFilter())
+	//app.before(ReplayFilter())
 	app.before(LoginFilter())
 	app.filter(SerialFilter(5000))
 
@@ -101,7 +101,7 @@ app.configure("production|development", "logic", function(){
 })
 
 app.configure("production|development", "chat", function(){
-	app.before(ReplayFilter())
+	//app.before(ReplayFilter())
 	app.before(LoginFilter())
 	app.filter(SerialFilter(5000))
 
