@@ -40,13 +40,6 @@
         "host": "127.0.0.1",
         "port": 6151
       }
-    ],
-    "time": [
-      {
-        "id": "time-server-1",
-        "host": "127.0.0.1",
-        "port": 7151
-      }
     ]
   },
   "production": {
