@@ -7,8 +7,10 @@ var redis = require("redis")
 var mongoose = require("mongoose")
 var path = require("path")
 var _ = require("underscore")
+var wsrpc = require("pomelo-rpc-ws")
 var globalChannel = require("pomelo-globalchannel-plugin")
 var Scripto = require('redis-scripto')
+
 
 var LoginFilter = require("./app/utils/loginFilter")
 var ReplayFilter = require("./app/utils/replayFilter")
@@ -19,7 +21,13 @@ var app = pomelo.createApp()
 app.set("name", "KODServer")
 
 app.configure("production|development", function() {
-	//app.enable("systemMonitor")
+	//app.set('proxyConfig', {
+	//	rpcClient: wsrpc.client
+	//})
+	//
+	//app.set('remoteConfig', {
+	//	rpcServer: wsrpc.server
+	//})
 })
 
 app.configure("production|development", "gate", function(){

@@ -2139,6 +2139,9 @@ Utils.isPlayerHasFreeMarchQueue = function(playerDoc, allianceDoc){
 	var attackMarchReturnEvents = _.filter(allianceDoc.attackMarchReturnEvents, function(event){
 		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
 	})
+	var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
+		return _.isEqual(event.playerData.id, playerDoc._id)
+	})
 	var helpEventsLength = playerDoc.helpToTroops.length
 	var shrineEventsLength = 0
 	_.each(allianceDoc.shrineEvents, function(shrineEvent){
@@ -2147,7 +2150,7 @@ Utils.isPlayerHasFreeMarchQueue = function(playerDoc, allianceDoc){
 		})
 	})
 	var usedMarchQueue = strikeMarchEvents.length + strikeMarchReturnEvents.length
-		+ attackMarchEvents.length + attackMarchReturnEvents.length
+		+ attackMarchEvents.length + attackMarchReturnEvents.length + villageEvents.length
 		+ helpEventsLength + shrineEventsLength
 	return usedMarchQueue < playerDoc.basicInfo.marchQueue
 }
