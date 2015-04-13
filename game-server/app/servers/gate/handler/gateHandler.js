@@ -43,7 +43,9 @@ pro.queryEntry = function(msg, session, next){
 	}
 	this.dataService.findPlayerAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
-			return Promo
+			return Promise.resolve(doc.serverId)
+		}else{
+
 		}
 	})
 
