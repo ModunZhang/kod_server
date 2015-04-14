@@ -39,6 +39,10 @@ app.configure("production|development", "gate", function(){
 	})
 
 	app.filter(SerialFilter(5000))
+
+	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
+	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
+	app.set("mongoose", mongooseClient)
 })
 
 app.configure("production|development", "logic", function(){

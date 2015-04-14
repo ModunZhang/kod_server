@@ -11,8 +11,9 @@ var GateService = function(app){
 	this.app = app
 	this.serverId = app.getServerId()
 	this.logService = app.get("logService")
-	this.logicServers = null
-	this.cacheServers = null
+	this.logicServers = app.getServersByType("logic")
+	this.cacheServers = app.getServersByType("cache")
+	this.start()
 }
 module.exports = GateService
 var pro = GateService.prototype
@@ -22,9 +23,6 @@ var pro = GateService.prototype
  */
 pro.start = function(){
 	var self = this
-	this.logicServers = this.app.getServersByType("logic")
-	this.cacheServers = this.app.getServersByType("cache")
-
 	var getOnlineUser = function(logicServer, callback){
 		self.app.rpc.logic.logicRemote.getOnlineUser.toServer(logicServer.id, function(e, count){
 			if(_.isObject(e)){

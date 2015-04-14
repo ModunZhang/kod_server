@@ -95,7 +95,6 @@ var PlayerSchema = new Schema({
 	serverId:{type:String, required:true},
 	apnId:{type:String},
 	gcId:{type:String},
-	isActive:{type:Boolean, required:true, default:true},
 	countInfo:{
 		registerTime:{type:Number, required:true, default:Date.now},
 		lastLoginTime:{type:Number, required:true, default:Date.now},

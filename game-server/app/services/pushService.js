@@ -11,15 +11,10 @@ var Consts = require("../consts/consts")
 var Events = require("../consts/events")
 var Utils = require("../utils/utils")
 var LogicUtils = require("../utils/logicUtils")
-var VersionUtils = require("../utils/versionUtils")
 
 var PushService = function(app){
 	this.app = app
 	this.channelService = app.get("channelService")
-	this.globalChannelService = app.get("globalChannelService")
-	this.serverId = app.getServerId()
-	this.serverType = app.getServerType()
-	this.serverVersion = VersionUtils.getServerVersion()
 }
 module.exports = PushService
 var pro = PushService.prototype
@@ -37,26 +32,6 @@ pro.pushToPlayer = function(playerDoc, eventName, data, callback){
 		return
 	}
 	this.channelService.pushMessageByUids(eventName, data, [{uid:playerDoc._id, sid:playerDoc.logicServerId}], callback)
-}
-
-/**
- * 推送信息给某部分玩家
- * @param playerDocs
- * @param eventName
- * @param data
- * @param callback
- */
-pro.pushToPlayers = function(playerDocs, eventName, data, callback){
-	var ids = []
-	_.each(playerDocs, function(playerDoc){
-		if(!_.isEmpty(playerDoc.logicServerId)){
-			ids.push({
-				uid:playerDoc._id,
-				sid:playerDoc.logicServerId
-			})
-		}
-	})
-	this.channelService.pushMessageByUids(eventName, data, ids, callback)
 }
 
 /**
@@ -87,20 +62,20 @@ pro.onGetAllianceDataSuccess = function(playerDoc, allianceDoc, callback){
  */
 pro.onAllianceDataChanged = function(allianceId, data, callback){
 	var eventName = Events.alliance.onAllianceDataChanged
-	var channelName = Consts.AllianceChannelPrefix + allianceId
-	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
+	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
+	this.channelService.getChannel(channelName).pushMessage(eventName, data, callback)
 }
 
 /**
- * 地方联盟数据改变
+ * 敌方联盟数据改变
  * @param allianceId
  * @param data
  * @param callback
  */
 pro.onEnemyAllianceDataChanged = function(allianceId, data, callback){
 	var eventName = Events.alliance.onEnemyAllianceDataChanged
-	var channelName = Consts.AllianceChannelPrefix + allianceId
-	this.globalChannelService.pushMessage(this.serverType, eventName, data, channelName, null, callback)
+	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
+	this.channelService.getChannel(channelName).pushMessage(eventName, data, callback)
 }
 
 /**
@@ -112,8 +87,12 @@ pro.onEnemyAllianceDataChanged = function(allianceId, data, callback){
  */
 pro.onAllianceFight = function(allianceId, allianceData, enemyAllianceData, callback){
 	var eventName = Events.alliance.onAllianceFight
-	var channelName = Consts.AllianceChannelPrefix + allianceId
-	this.globalChannelService.pushMessage(this.serverType, eventName, {allianceData:allianceData, enemyAllianceData:enemyAllianceData}, channelName, null, callback)
+	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
+	this.channelService.getChannel(channelName).pushMessage(eventName, {
+		allianceData:allianceData,
+		enemyAllianceData:enemyAllianceData
+	}, callback)
+
 }
 
 /**
@@ -126,30 +105,15 @@ pro.onAllianceFight = function(allianceId, allianceData, enemyAllianceData, call
 pro.onAllianceDataChangedExceptMemberId = function(allianceId, data, memberId, callback){
 	var self = this
 	var eventName = Events.alliance.onAllianceDataChanged
-	var channelName = Consts.AllianceChannelPrefix + allianceId
-	var servers = this.app.getServersByType(this.serverType)
+	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
 	var uids = []
-	var getMembersFunc = function(serverId){
-		return self.globalChannelService.getMembersBySidAsync(channelName, serverId).then(function(members){
-			_.each(members, function(playerId){
-				if(!_.isEqual(playerId, memberId)) uids.push({uid:playerId, sid:serverId})
-			})
-			return Promise.resolve()
-		}).catch(function(e){
-			return Promise.reject(e)
-		})
+	_.filter(this.channelService.getChannel(channelName).getMembers, function(uid){
+		return !_.isEqual(uid, memberId)
+	})
+	if(uids.length > 0){
+		self.channelService.pushMessageByUids(eventName, data, uids, callback)
+	}else{
+		callback()
 	}
-	var funcs = []
-	_.each(servers, function(server){
-		funcs.push(getMembersFunc(server.id))
-	})
-	Promise.all(funcs).then(function(){
-		if(uids.length > 0){
-			self.channelService.pushMessageByUids(eventName, data, uids, callback)
-		}else{
-			callback()
-		}
-	}).catch(function(e){
-		callback(e)
-	})
+
 }

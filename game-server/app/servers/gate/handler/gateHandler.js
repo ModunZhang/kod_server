@@ -16,7 +16,7 @@ var Handler = function(app){
 	this.app = app
 	this.logService = app.get("logService")
 	this.gateService = app.get("gateService")
-	this.dataService = app.get("dataService")
+	this.Player = app.get("Player")
 }
 
 var pro = Handler.prototype
@@ -43,7 +43,7 @@ pro.queryEntry = function(msg, session, next){
 	}
 
 	var self = this
-	this.dataService.findPlayerAsync(deviceId).then(function(doc){
+	this.Player.findByIdAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
 			return Promise.resolve(doc.serverId)
 		}else{

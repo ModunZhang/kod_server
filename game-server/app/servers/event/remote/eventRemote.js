@@ -16,7 +16,8 @@ module.exports = function(app){
 var EventRemote = function(app){
 	this.app = app
 	this.logService = app.get("logService")
-	this.channelService = this.app.get("channelService")
+	this.channelService = app.get("channelService")
+	this.pushService = app.get("pushService")
 	this.callbacks = {}
 }
 var pro = EventRemote.prototype

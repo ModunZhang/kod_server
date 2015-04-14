@@ -6,7 +6,9 @@
 
 var Promise = require("bluebird")
 
+var PushService = require("../../services/pushService")
 var LogService = require("../../services/logService")
+
 
 var life = module.exports
 
@@ -16,6 +18,7 @@ life.beforeStartup = function(app, callback){
 }
 
 life.afterStartup = function(app, callback){
+	app.set("pushService", Promise.promisifyAll(new PushService(app)))
 	callback()
 }
 

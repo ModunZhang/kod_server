@@ -38,11 +38,16 @@ life.beforeStartup = function(app, callback){
 	app.set("GemUse", Promise.promisifyAll(GemUse))
 	app.set("GemAdd", Promise.promisifyAll(GemAdd))
 
+	app.set("logService", Promise.promisifyAll(new LogService(app)))
+
+	callback()
+}
+
+life.afterStartup = function(app, callback){
 	app.set("channelService", Promise.promisifyAll(app.get("channelService")))
 	app.set("apnService", new ApnService(app))
-	app.set("pushService", Promise.promisifyAll(new PushService(app)))
-	app.set("logService", Promise.promisifyAll(new LogService(app)))
 	app.set("dataService", Promise.promisifyAll(new DataService(app)))
+	app.set("pushService", Promise.promisifyAll(new PushService(app)))
 	app.set("timeEventService", Promise.promisifyAll(new TimeEventService(app)))
 	app.set("playerTimeEventService", Promise.promisifyAll(new PlayerTimeEventService(app)))
 	app.set("allianceTimeEventService", Promise.promisifyAll(new AllianceTimeEventService(app)))
@@ -58,10 +63,25 @@ life.beforeStartup = function(app, callback){
 	app.set("allianceApiService4", Promise.promisifyAll(new AllianceApiService4(app)))
 	app.set("allianceApiService5", Promise.promisifyAll(new AllianceApiService5(app)))
 
-	callback()
-}
+	var logicServer = app.getCurServer()
+	var chatServer = _.find(app.getServersByType("chat"), function(server){
+		return _.isEqual(logicServer.usedFor, server.usedFor)
+	})
+	var eventServer = _.find(app.getServersByType("event"), function(server){
+		return _.isEqual(logicServer.usedFor, server.usedFor)
+	})
+	var cacheServer = _.find(app.getServersByType("cache"), function(server){
+		return _.isEqual(logicServer.usedFor, server.id)
+	})
+	var logicServerId = logicServer.id
+	var chatServerId = chatServer.id
+	var eventServerId = eventServer.id
+	var cacheServerId = cacheServer.id
+	app.set("logicServerId", logicServerId)
+	app.set("chatServerId", chatServerId)
+	app.set("eventServerId", eventServerId)
+	app.set("cacheServerId", cacheServerId)
 
-life.afterStartup = function(app, callback){
 	callback()
 }
 

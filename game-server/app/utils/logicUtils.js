@@ -2193,32 +2193,15 @@ Utils.addPlayerResources = function(playerDoc, resources){
 }
 
 /**
- * 创建用户账号和第一个玩家账号
- * @param serverId
- * @returns {*}
- */
-Utils.createUserAndFirstPlayer = function(serverId){
-	var userId = ShortId.generate()
-	var player = this.createPlayer(serverId, userId)
-	var user = {
-		_id:userId,
-		players:[{id:player._id, serverId:player.serverId, selected:true}]
-	}
-	return {user:user, player:player}
-}
-
-/**
  * 创建玩家
+ * @param deviceId
  * @param serverId
- * @param userId
  */
-Utils.createPlayer = function(serverId, userId){
-	var playerId = ShortId.generate()
+Utils.createPlayer = function(deviceId, serverId){
 	var name = ShortId.generate()
 	var player = {
-		_id:playerId,
+		_id:deviceId,
 		serverId:serverId,
-		userId:userId,
 		basicInfo:{name:"player_" + name, cityName:"city_" + name}
 	}
 	return player

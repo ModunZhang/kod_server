@@ -4,26 +4,16 @@
  * Created by modun on 14-10-28.
  */
 
-var _ = require("underscore")
-var Promise = require("bluebird")
-var ShortId = require("shortid")
-
-var DataUtils = require("../utils/dataUtils")
-var LogicUtils = require("../utils/logicUtils")
 var Consts = require("../consts/consts")
-var Define = require("../consts/define")
 
 
 var TimeEventService = function(app){
 	this.app = app
-	this.eventServerId = "event-server-1"
+	this.eventServerId = app.get("eventServerId")
 	this.pushService = app.get("pushService")
-	this.allianceDao = app.get("allianceDao")
-	this.playerDao = app.get("playerDao")
 }
 module.exports = TimeEventService
 var pro = TimeEventService.prototype
-
 
 /**
  * 添加时间回调

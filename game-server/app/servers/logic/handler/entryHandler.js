@@ -18,10 +18,15 @@ module.exports = function(app){
 var Handler = function(app){
 	this.app = app
 	this.env = app.get("env")
-	this.serverId = app.getServerId()
+	this.logService = app.get("logService")
 	this.sessionService = app.get("sessionService")
 	this.dataService = app.get("dataService")
-	this.logService = app.get("logService")
+	this.logicServerId = app.get("logicServerId")
+	this.chatServerId = app.get("chatServerId")
+	this.eventServerId = app.get("eventServerId")
+	this.logicServers = _.find(app.getServersByType("logic"), function(server){
+		return _.isEqual(server.usedFor, app.get("cacheServerId"))
+	})
 	this.maxReturnMailSize = 10
 	this.maxReturnReportSize = 10
 }
@@ -47,14 +52,18 @@ var PlayerLeave = function(session, reason){
 	this.logService.onEvent("logic.entryHandler.playerLeave", {playerId:session.uid, reason:reason})
 	var self = this
 	var removePlayerFromChatChannelAsync = Promisify(RemovePlayerFromChatChannel, this)
-	var removePlayerFromAllianceChannelAsync = Promisify(RemovePlayerFromAllianceChannel, this)
+	var removePlayerFromEventAllianceChannelAsync = Promisify(RemovePlayerFromEventAllianceChannel, this)
+	var removePlayerFromLogicAllianceChannelAsync = Promisify(RemovePlayerFromLogicAllianceChannel, this)
 	var playerDoc = null
 	this.playerApiService.playerLogoutAsync(session.uid).then(function(doc){
 		playerDoc = doc
 		var funcs = []
-		funcs.push(removePlayerFromChatChannelAsync(session))
+		funcs.push(removePlayerFromChatChannelAsync(playerDoc._id))
 		if(_.isObject(playerDoc.alliance)){
-			funcs.push(removePlayerFromAllianceChannelAsync(session, playerDoc.alliance.id))
+			funcs.push(removePlayerFromEventAllianceChannelAsync(playerDoc._id, playerDoc.alliance.id))
+			_.each(self.logicServers, function(server){
+				funcs.push(removePlayerFromLogicAllianceChannelAsync(server.id, playerDoc._id, playerDoc.alliance.id))
+			})
 		}
 		return Promise.all(funcs)
 	}).catch(function(e){
@@ -63,20 +72,28 @@ var PlayerLeave = function(session, reason){
 }
 
 
-var AddPlayerToChatChannel = function(session, callback){
-	this.app.rpc.chat.chatRemote.addToChatChannel(session, session.uid, this.serverId, callback)
+var AddPlayerToChatChannel = function(playerId, callback){
+	this.app.rpc.chat.chatRemote.addToChatChannel.toServer(this.chatServerId, playerId, this.logicServerId, callback)
 }
 
-var RemovePlayerFromChatChannel = function(session, callback){
-	this.app.rpc.chat.chatRemote.removeFromChatChannel(session, session.uid, this.serverId, callback)
+var RemovePlayerFromChatChannel = function(playerId, callback){
+	this.app.rpc.chat.chatRemote.removeFromChatChannel.toServer(this.chatServerId, playerId, this.logicServerId, callback)
 }
 
-var AddPlayerToAllianceChannel = function(session, allianceId, callback){
-	this.app.rpc.chat.chatRemote.addToChatChannel(session, allianceId, session.uid, this.serverId, callback)
+var AddPlayerToEventAllianceChannel = function(allianceId, playerId, callback){
+	this.app.rpc.chat.eventRemote.addToChatChannel.toServer(this.eventServerId, allianceId, playerId, this.logicServerId, callback)
 }
 
-var RemovePlayerFromAllianceChannel = function(session, allianceId, callback){
-	this.app.rpc.chat.chatRemote.removeFromChatChannel(session, allianceId, session.uid, this.serverId, callback)
+var RemovePlayerFromEventAllianceChannel = function(allianceId, playerId, callback){
+	this.app.rpc.chat.eventRemote.removeFromChatChannel.toServer(this.eventServerId, allianceId, playerId, this.logicServerId, callback)
+}
+
+var AddPlayerToLogicAllianceChannel = function(logicServerId, allianceId, playerId, callback){
+	this.app.rpc.chat.logicRemote.addToChatChannel.toServer(logicServerId, allianceId, playerId, this.logicServerId, callback)
+}
+
+var RemovePlayerFromLogicAllianceChannel = function(logicServerId, allianceId, playerId, callback){
+	this.app.rpc.chat.logicRemote.removeFromChatChannel.toServer(logicServerId, allianceId, playerId, this.logicServerId, callback)
 }
 
 
@@ -165,7 +182,8 @@ pro.login = function(msg, session, next){
 
 	var bindPlayerSessionAsync = Promisify(BindPlayerSession, this)
 	var addPlayerToChatChannelAsync = Promisify(AddPlayerToChatChannel, this)
-	var addPlayerToAllianceChannelAsync = Promisify(AddPlayerToAllianceChannel, this)
+	var addPlayerToEventAllianceChannelAsync = Promisify(AddPlayerToEventAllianceChannel, this)
+	var addPlayerToLogicAllianceChannelAsync = Promisify(AddPlayerToLogicAllianceChannel, this)
 
 	var playerDoc = null
 	var allianceDoc = null
@@ -178,9 +196,12 @@ pro.login = function(msg, session, next){
 		return bindPlayerSessionAsync(session, deviceId, playerDoc)
 	}).then(function(){
 		var funcs = []
-		funcs.push(addPlayerToChatChannelAsync(session))
+		funcs.push(addPlayerToChatChannelAsync(playerDoc._id))
 		if(_.isObject(playerDoc.alliance)){
-			funcs.push(addPlayerToAllianceChannelAsync(session, playerDoc.alliance.id))
+			funcs.push(addPlayerToEventAllianceChannelAsync(playerDoc._id, playerDoc.alliance.id))
+			_.each(self.logicServers, function(server){
+				funcs.push(addPlayerToLogicAllianceChannelAsync(server.id, playerDoc._id, playerDoc.alliance.id))
+			})
 		}
 		return Promise.all(funcs)
 	}).then(function(){
