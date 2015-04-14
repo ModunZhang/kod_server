@@ -672,7 +672,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					terrain:{type:String, required:true},
 					fogOfTrick:{type:Boolean, required:true}
@@ -684,7 +685,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -700,7 +702,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -732,7 +735,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -781,7 +785,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					terrain:{type:String, required:true}
 				},
@@ -792,7 +797,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -813,7 +819,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -829,7 +836,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -854,7 +862,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					terrain:{type:String, required:true}
 				},
@@ -865,7 +874,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -881,7 +891,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -922,7 +933,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					terrain:{type:String, required:true}
 				},
@@ -933,7 +945,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -954,7 +967,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -968,7 +982,6 @@ var PlayerSchema = new Schema({
 		},
 		attackCity:{
 			type:{
-				isRenamed:{type:Boolean, required:true},
 				attackTarget:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
@@ -980,7 +993,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					terrain:{type:String, required:true}
 				},
@@ -991,7 +1005,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					fightWithHelpDefenceTroop:{
 						dragon:{
@@ -1048,7 +1063,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -1078,7 +1094,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -1212,7 +1229,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					terrain:{type:String, required:true}
 				},
@@ -1223,7 +1241,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -1253,7 +1272,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -1329,7 +1349,8 @@ var PlayerSchema = new Schema({
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
-						tag:{type:String, required:true}
+						tag:{type:String, required:true},
+						flag:{type:String, required:true}
 					}
 				},
 				rewards:[{

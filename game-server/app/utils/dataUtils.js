@@ -3017,7 +3017,7 @@ Utils.isPlayerUnlockProductionTechLegal = function(playerDoc, techName){
  * @returns {boolean}
  */
 Utils.isProductionTechReachMaxLevel = function(techLevel){
-	return PlayerInitData.intInit.productionTechnologyMaxLevel <= techLevel
+	return this.getPlayerIntInit("productionTechnologyMaxLevel") <= techLevel
 }
 
 /**
@@ -3061,14 +3061,13 @@ Utils.getPlayerSoldierMilitaryTechBuilding = function(playerDoc, soldierName){
 	return building
 }
 
-
 /**
  * 军事科技是否已达最高等级
  * @param techLevel
  * @returns {boolean}
  */
 Utils.isMilitaryTechReachMaxLevel = function(techLevel){
-	return PlayerInitData.intInit.militaryTechnologyMaxLevel <= techLevel
+	return this.getPlayerIntInit("militaryTechnologyMaxLevel") <= techLevel
 }
 
 /**

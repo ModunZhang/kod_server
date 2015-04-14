@@ -5,136 +5,136 @@ module.exports = negotiation
 
 negotiation[1] = {
 	level:1,
-	coin:100,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:95
+	coin:792,
+	blueprints:10,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:2320
 }
 negotiation[2] = {
 	level:2,
-	coin:200,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:155
+	coin:2088,
+	blueprints:20,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:3040
 }
 negotiation[3] = {
 	level:3,
-	coin:300,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:258
+	coin:5472,
+	blueprints:40,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:4480
 }
 negotiation[4] = {
 	level:4,
-	coin:400,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:413
+	coin:10152,
+	blueprints:80,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:5920
 }
 negotiation[5] = {
 	level:5,
-	coin:500,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:774
+	coin:16704,
+	blueprints:120,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:10240
 }
 negotiation[6] = {
 	level:6,
-	coin:600,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:1548
+	coin:25200,
+	blueprints:240,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:18880
 }
 negotiation[7] = {
 	level:7,
-	coin:700,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:2322
+	coin:47808,
+	blueprints:480,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:27520
 }
 negotiation[8] = {
 	level:8,
-	coin:800,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:3096
+	coin:65856,
+	blueprints:720,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:36160
 }
 negotiation[9] = {
 	level:9,
-	coin:900,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:4644
+	coin:86784,
+	blueprints:960,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:44800
 }
 negotiation[10] = {
 	level:10,
-	coin:1000,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:6192
+	coin:112320,
+	blueprints:1200,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:53440
 }
 negotiation[11] = {
 	level:11,
-	coin:1100,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:12384
+	coin:142080,
+	blueprints:1440,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:62080
 }
 negotiation[12] = {
 	level:12,
-	coin:1200,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:18576
+	coin:220440,
+	blueprints:1680,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:70720
 }
 negotiation[13] = {
 	level:13,
-	coin:1300,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:24768
+	coin:270720,
+	blueprints:1920,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:79360
 }
 negotiation[14] = {
 	level:14,
-	coin:1400,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:37152
+	coin:326040,
+	blueprints:2160,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:88000
 }
 negotiation[15] = {
 	level:15,
-	coin:1500,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:49536
+	coin:460800,
+	blueprints:2400,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:96640
 }

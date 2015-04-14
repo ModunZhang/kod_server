@@ -5,136 +5,136 @@ module.exports = crane
 
 crane[1] = {
 	level:1,
-	coin:100,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:95
+	coin:660,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:600
 }
 crane[2] = {
 	level:2,
-	coin:200,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:155
+	coin:1740,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1200
 }
 crane[3] = {
 	level:3,
-	coin:300,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:258
+	coin:4560,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:2400
 }
 crane[4] = {
 	level:4,
-	coin:400,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:413
+	coin:8460,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:3600
 }
 crane[5] = {
 	level:5,
-	coin:500,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:774
+	coin:13920,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:7200
 }
 crane[6] = {
 	level:6,
-	coin:600,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:1548
+	coin:21000,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:5,
+	buildTime:14400
 }
 crane[7] = {
 	level:7,
-	coin:700,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:2322
+	coin:39840,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:10,
+	buildTime:21600
 }
 crane[8] = {
 	level:8,
-	coin:800,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:3096
+	coin:54880,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:20,
+	buildTime:28800
 }
 crane[9] = {
 	level:9,
-	coin:900,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:4644
+	coin:72320,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:40,
+	buildTime:36000
 }
 crane[10] = {
 	level:10,
-	coin:1000,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:6192
+	coin:93600,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:80,
+	buildTime:43200
 }
 crane[11] = {
 	level:11,
-	coin:1100,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:12384
+	coin:118400,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:120,
+	buildTime:50400
 }
 crane[12] = {
 	level:12,
-	coin:1200,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:18576
+	coin:183700,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:240,
+	buildTime:57600
 }
 crane[13] = {
 	level:13,
-	coin:1300,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:24768
+	coin:225600,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:480,
+	buildTime:64800
 }
 crane[14] = {
 	level:14,
-	coin:1400,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:37152
+	coin:271700,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:720,
+	buildTime:72000
 }
 crane[15] = {
 	level:15,
-	coin:1500,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:49536
+	coin:384000,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:960,
+	buildTime:79200
 }
