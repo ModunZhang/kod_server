@@ -1156,24 +1156,98 @@ describe("PlayerService", function(){
 		//})
 		//
 		//it("upgradeSoldierStar 正常升级", function(done){
-		//	Api.sendChat("buildinglevel 19 1", function(doc){
+		//	Api.sendChat("buildinglevel 19 5", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.upgradeMilitaryTech("archer_infantry", true, function(doc){
+		//		Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
 		//			doc.code.should.equal(200)
-		//			Api.upgradeSoldierStar("ranger", true, function(doc){
+		//			Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
 		//				doc.code.should.equal(200)
-		//				done()
+		//				Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+		//					doc.code.should.equal(200)
+		//					Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+		//						doc.code.should.equal(200)
+		//						Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+		//							doc.code.should.equal(200)
+		//							Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+		//								doc.code.should.equal(200)
+		//								Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+		//									doc.code.should.equal(200)
+		//									Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+		//										doc.code.should.equal(200)
+		//										Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+		//											doc.code.should.equal(200)
+		//											Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+		//												doc.code.should.equal(200)
+		//												Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+		//													doc.code.should.equal(200)
+		//													Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+		//														doc.code.should.equal(200)
+		//														Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+		//															doc.code.should.equal(200)
+		//															Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+		//																doc.code.should.equal(200)
+		//																Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																	doc.code.should.equal(200)
+		//																	Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																		doc.code.should.equal(200)
+		//																		Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																			doc.code.should.equal(200)
+		//																			Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																				doc.code.should.equal(200)
+		//																				Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																					doc.code.should.equal(200)
+		//																					Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																						doc.code.should.equal(200)
+		//																						Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																							doc.code.should.equal(200)
+		//																							Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																								doc.code.should.equal(200)
+		//																								Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																									doc.code.should.equal(200)
+		//																									Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																										doc.code.should.equal(200)
+		//																										Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																											doc.code.should.equal(200)
+		//																											Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																												doc.code.should.equal(200)
+		//																												Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																													doc.code.should.equal(200)
+		//																													Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																														doc.code.should.equal(200)
+		//																														Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
+		//																															doc.code.should.equal(200)
+		//																															Api.upgradeSoldierStar("swordsman", true, function(doc){
+		//																																doc.code.should.equal(200)
+		//																																done()
+		//																															})
+		//																														})
+		//																													})
+		//																												})
+		//																											})
+		//																										})
+		//																									})
+		//																								})
+		//																							})
+		//																						})
+		//																					})
+		//																				})
+		//																			})
+		//																		})
+		//																	})
+		//																})
+		//															})
+		//														})
+		//													})
+		//												})
+		//											})
+		//										})
+		//									})
+		//								})
+		//							})
+		//						})
+		//					})
+		//				})
 		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeSoldierStar 正常升级", function(done){
-		//	Api.upgradeMilitaryTech("archer_infantry", true, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeSoldierStar("ranger", false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
 		//		})
 		//	})
 		//})
