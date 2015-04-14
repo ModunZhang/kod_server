@@ -5,136 +5,136 @@ module.exports = infantry_archer
 
 infantry_archer[1] = {
 	level:1,
-	coin:100,
+	coin:660,
 	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:95
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:600
 }
 infantry_archer[2] = {
 	level:2,
-	coin:200,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:155
+	coin:1740,
+	trainingFigure:2,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:1200
 }
 infantry_archer[3] = {
 	level:3,
-	coin:300,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:258
+	coin:4560,
+	trainingFigure:5,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:2400
 }
 infantry_archer[4] = {
 	level:4,
-	coin:400,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:413
+	coin:8460,
+	trainingFigure:10,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:3600
 }
 infantry_archer[5] = {
 	level:5,
-	coin:500,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:774
+	coin:13920,
+	trainingFigure:20,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:7200
 }
 infantry_archer[6] = {
 	level:6,
-	coin:600,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:1548
+	coin:21000,
+	trainingFigure:40,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:14400
 }
 infantry_archer[7] = {
 	level:7,
-	coin:700,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:2322
+	coin:39840,
+	trainingFigure:80,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:21600
 }
 infantry_archer[8] = {
 	level:8,
-	coin:800,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:3096
+	coin:54880,
+	trainingFigure:160,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:28800
 }
 infantry_archer[9] = {
 	level:9,
-	coin:900,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:4644
+	coin:72320,
+	trainingFigure:320,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:36000
 }
 infantry_archer[10] = {
 	level:10,
-	coin:1000,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:6192
+	coin:93600,
+	trainingFigure:480,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:43200
 }
 infantry_archer[11] = {
 	level:11,
-	coin:1100,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:12384
+	coin:118400,
+	trainingFigure:640,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:50400
 }
 infantry_archer[12] = {
 	level:12,
-	coin:1200,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:18576
+	coin:183700,
+	trainingFigure:800,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:57600
 }
 infantry_archer[13] = {
 	level:13,
-	coin:1300,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:24768
+	coin:225600,
+	trainingFigure:960,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:64800
 }
 infantry_archer[14] = {
 	level:14,
-	coin:1400,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:37152
+	coin:271700,
+	trainingFigure:1120,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:72000
 }
 infantry_archer[15] = {
 	level:15,
-	coin:1500,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:49536
+	coin:384000,
+	trainingFigure:1280,
+	bowTarget:0,
+	saddle:0,
+	ironPart:0,
+	buildTime:79200
 }

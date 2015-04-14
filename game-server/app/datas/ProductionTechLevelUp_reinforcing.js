@@ -5,136 +5,136 @@ module.exports = reinforcing
 
 reinforcing[1] = {
 	level:1,
-	coin:100,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:95
+	coin:759,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1290
 }
 reinforcing[2] = {
 	level:2,
-	coin:200,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:155
+	coin:2001,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1980
 }
 reinforcing[3] = {
 	level:3,
-	coin:300,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:258
+	coin:5244,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:3360
 }
 reinforcing[4] = {
 	level:4,
-	coin:400,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:413
+	coin:9729,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:4740
 }
 reinforcing[5] = {
 	level:5,
-	coin:500,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:774
+	coin:16008,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:8880
 }
 reinforcing[6] = {
 	level:6,
-	coin:600,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:1548
+	coin:24150,
+	blueprints:10,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:17160
 }
 reinforcing[7] = {
 	level:7,
-	coin:700,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:2322
+	coin:45816,
+	blueprints:20,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:25440
 }
 reinforcing[8] = {
 	level:8,
-	coin:800,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:3096
+	coin:63112,
+	blueprints:40,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:33720
 }
 reinforcing[9] = {
 	level:9,
-	coin:900,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:4644
+	coin:83168,
+	blueprints:80,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:42000
 }
 reinforcing[10] = {
 	level:10,
-	coin:1000,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:6192
+	coin:107640,
+	blueprints:120,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:50280
 }
 reinforcing[11] = {
 	level:11,
-	coin:1100,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:12384
+	coin:136160,
+	blueprints:240,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:58560
 }
 reinforcing[12] = {
 	level:12,
-	coin:1200,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:18576
+	coin:211255,
+	blueprints:480,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:66840
 }
 reinforcing[13] = {
 	level:13,
-	coin:1300,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:24768
+	coin:259440,
+	blueprints:720,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:75120
 }
 reinforcing[14] = {
 	level:14,
-	coin:1400,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:37152
+	coin:312455,
+	blueprints:960,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:83400
 }
 reinforcing[15] = {
 	level:15,
-	coin:1500,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:49536
+	coin:441600,
+	blueprints:1200,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:91680
 }

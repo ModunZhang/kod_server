@@ -5,136 +5,136 @@ module.exports = siege_cavalry
 
 siege_cavalry[1] = {
 	level:1,
-	coin:100,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
+	coin:990,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
 	ironPart:1,
-	buildTime:95
+	buildTime:2100
 }
 siege_cavalry[2] = {
 	level:2,
-	coin:200,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:155
+	coin:2610,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:2,
+	buildTime:3000
 }
 siege_cavalry[3] = {
 	level:3,
-	coin:300,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:258
+	coin:6840,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:5,
+	buildTime:4800
 }
 siege_cavalry[4] = {
 	level:4,
-	coin:400,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:413
+	coin:12690,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:10,
+	buildTime:6600
 }
 siege_cavalry[5] = {
 	level:5,
-	coin:500,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:774
+	coin:20880,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:20,
+	buildTime:12000
 }
 siege_cavalry[6] = {
 	level:6,
-	coin:600,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:1548
+	coin:31500,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:40,
+	buildTime:22800
 }
 siege_cavalry[7] = {
 	level:7,
-	coin:700,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:2322
+	coin:59760,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:80,
+	buildTime:33600
 }
 siege_cavalry[8] = {
 	level:8,
-	coin:800,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:3096
+	coin:82320,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:160,
+	buildTime:44400
 }
 siege_cavalry[9] = {
 	level:9,
-	coin:900,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:4644
+	coin:108480,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:320,
+	buildTime:55200
 }
 siege_cavalry[10] = {
 	level:10,
-	coin:1000,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:6192
+	coin:140400,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:480,
+	buildTime:66000
 }
 siege_cavalry[11] = {
 	level:11,
-	coin:1100,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:12384
+	coin:177600,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:640,
+	buildTime:76800
 }
 siege_cavalry[12] = {
 	level:12,
-	coin:1200,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:18576
+	coin:275550,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:800,
+	buildTime:87600
 }
 siege_cavalry[13] = {
 	level:13,
-	coin:1300,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:24768
+	coin:338400,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:960,
+	buildTime:98400
 }
 siege_cavalry[14] = {
 	level:14,
-	coin:1400,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:37152
+	coin:407550,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:1120,
+	buildTime:109200
 }
 siege_cavalry[15] = {
 	level:15,
-	coin:1500,
-	trainingFigure:1,
-	bowTarget:1,
-	saddle:1,
-	ironPart:1,
-	buildTime:49536
+	coin:576000,
+	trainingFigure:0,
+	bowTarget:0,
+	saddle:0,
+	ironPart:1280,
+	buildTime:118800
 }

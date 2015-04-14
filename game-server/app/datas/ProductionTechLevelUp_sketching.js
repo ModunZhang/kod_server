@@ -5,136 +5,136 @@ module.exports = sketching
 
 sketching[1] = {
 	level:1,
-	coin:100,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:95
+	coin:608,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1352
 }
 sketching[2] = {
 	level:2,
-	coin:200,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:155
+	coin:1601,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1904
 }
 sketching[3] = {
 	level:3,
-	coin:300,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:258
+	coin:4196,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:3008
 }
 sketching[4] = {
 	level:4,
-	coin:400,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:413
+	coin:7784,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:4112
 }
 sketching[5] = {
 	level:5,
-	coin:500,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:774
+	coin:12807,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:7424
 }
 sketching[6] = {
 	level:6,
-	coin:600,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:1548
+	coin:19320,
+	blueprints:5,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:14048
 }
 sketching[7] = {
 	level:7,
-	coin:700,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:2322
+	coin:36653,
+	blueprints:10,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:20672
 }
 sketching[8] = {
 	level:8,
-	coin:800,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:3096
+	coin:50490,
+	blueprints:20,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:27296
 }
 sketching[9] = {
 	level:9,
-	coin:900,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:4644
+	coin:66535,
+	blueprints:40,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:33920
 }
 sketching[10] = {
 	level:10,
-	coin:1000,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:6192
+	coin:86112,
+	blueprints:80,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:40544
 }
 sketching[11] = {
 	level:11,
-	coin:1100,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:12384
+	coin:108928,
+	blueprints:120,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:47168
 }
 sketching[12] = {
 	level:12,
-	coin:1200,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:18576
+	coin:169004,
+	blueprints:240,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:53792
 }
 sketching[13] = {
 	level:13,
-	coin:1300,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:24768
+	coin:207552,
+	blueprints:480,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:60416
 }
 sketching[14] = {
 	level:14,
-	coin:1400,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:37152
+	coin:249964,
+	blueprints:720,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:67040
 }
 sketching[15] = {
 	level:15,
-	coin:1500,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:49536
+	coin:353280,
+	blueprints:960,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:73664
 }
