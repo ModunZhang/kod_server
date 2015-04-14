@@ -120,7 +120,6 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 	pushBloodToRewards(helpDefencePlayerGetBlood, helpDefencePlayerRewards)
 
 	var attackCityReport = {
-		isRenamed:false,
 		attackTarget:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
@@ -392,7 +391,6 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 	}
 
 	var attackCityReport = {
-		isRenamed:false,
 		attackTarget:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,

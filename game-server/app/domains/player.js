@@ -983,7 +983,6 @@ var PlayerSchema = new Schema({
 		},
 		attackCity:{
 			type:{
-				isRenamed:{type:Boolean, required:true},
 				attackTarget:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
