@@ -101,6 +101,7 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
 	playerData.push(["resources", playerDoc.resources])
 	playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house), null])
 	LogicUtils.removeItemInArray(building.houses, house)
+	DataUtils.refreshPlayerResources(playerDoc)
 
 	return Promise.resolve()
 }

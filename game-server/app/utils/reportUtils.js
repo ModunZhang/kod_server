@@ -78,7 +78,8 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 		var data = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
-			tag:allianceDoc.basicInfo.tag
+			tag:allianceDoc.basicInfo.tag,
+			flag:allianceDoc.basicInfo.flag
 		}
 		return data
 	}
@@ -233,7 +234,8 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		var data = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
-			tag:allianceDoc.basicInfo.tag
+			tag:allianceDoc.basicInfo.tag,
+			flag:allianceDoc.basicInfo.flag
 		}
 		return data
 	}
@@ -480,7 +482,8 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 		var data = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
-			tag:allianceDoc.basicInfo.tag
+			tag:allianceDoc.basicInfo.tag,
+			flag:allianceDoc.basicInfo.flag
 		}
 		return data
 	}
@@ -642,7 +645,8 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		var data = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
-			tag:allianceDoc.basicInfo.tag
+			tag:allianceDoc.basicInfo.tag,
+			flag:allianceDoc.basicInfo.flag
 		}
 		return data
 	}
@@ -678,6 +682,13 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		})
 		return equipments
 	}
+	var getDefenceSoldiers = function(playerDoc){
+		var soldiers = DataUtils.getPlayerDefenceSoldiers(playerDoc)
+		_.each(soldiers, function(soldier){
+			soldier.star = playerDoc.soldierStars[soldier.name]
+		})
+		return soldiers
+	}
 
 	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, defencePlayerDoc.basicInfo.terrain)
 	var defenceDragonPower = DataUtils.getDragonStrength(defenceDragon, defencePlayerDoc.basicInfo.terrain)
@@ -711,7 +722,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			icon:defencePlayerDoc.basicInfo.icon,
-			alliance:createAllianceData(defencePlayerDoc),
+			alliance:createAllianceData(defenceAllianceDoc),
 			dragon:_.extend(
 				{
 					equipments:getDragonEquipments(defenceDragon),
@@ -719,7 +730,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 				},
 				defenceDragonData
 			),
-			soldiers:DataUtils.getPlayerDefenceSoldiers(defencePlayerDoc),
+			soldiers:getDefenceSoldiers(defencePlayerDoc),
 			resources:{
 				wood:defencePlayerDoc.resources.wood,
 				stone:defencePlayerDoc.resources.stone,
@@ -790,7 +801,8 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		var data = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
-			tag:allianceDoc.basicInfo.tag
+			tag:allianceDoc.basicInfo.tag,
+			flag:allianceDoc.basicInfo.flag
 		}
 		return data
 	}
@@ -841,7 +853,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			icon:defencePlayerDoc.basicInfo.icon,
-			alliance:createAllianceData(defencePlayerDoc),
+			alliance:createAllianceData(defenceAllianceDoc),
 			resources:{
 				wood:defencePlayerDoc.resources.wood,
 				stone:defencePlayerDoc.resources.stone,
@@ -954,7 +966,8 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 		var data = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
-			tag:allianceDoc.basicInfo.tag
+			tag:allianceDoc.basicInfo.tag,
+			flag:allianceDoc.basicInfo.flag
 		}
 		return data
 	}
@@ -1074,7 +1087,8 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 		var data = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
-			tag:allianceDoc.basicInfo.tag
+			tag:allianceDoc.basicInfo.tag,
+			flag:allianceDoc.basicInfo.flag
 		}
 		return data
 	}
@@ -1224,7 +1238,8 @@ Utils.createCollectVillageReport = function(defenceAllianceDoc, defenceVillage, 
 			alliance:{
 				id:defenceAllianceDoc._id,
 				name:defenceAllianceDoc.basicInfo.name,
-				tag:defenceAllianceDoc.basicInfo.tag
+				tag:defenceAllianceDoc.basicInfo.tag,
+				flag:defenceAllianceDoc.basicInfo.flag
 			}
 		},
 		rewards:rewards

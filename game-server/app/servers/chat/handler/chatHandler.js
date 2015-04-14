@@ -276,17 +276,6 @@ var ChatHandler = function(app){
 			}
 		},
 		{
-			command:"alliancefight",
-			desc:"激活联盟对战:alliancefight abc(此处为联盟Tag)",
-			func:function(session, uid, text, callback){
-				var self = this
-				var targetAllianceTag = text.split(" ")[1]
-				self.app.rpc.logic.commandRemote.alliancefight(session, uid, targetAllianceTag, function(e){
-					callback(e)
-				})
-			}
-		},
-		{
 			command:"resetalliancestatus",
 			desc:"重置联盟状态",
 			func:function(session, uid, text, callback){
