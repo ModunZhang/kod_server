@@ -60,8 +60,8 @@ pro.updatePlayer = function(id, doc, callback){
  * @param doc
  * @param callback
  */
-pro.flashPlayer = function(id, doc, callback){
-	this.cacheService.flashPlayer(id, doc, callback)
+pro.flushPlayer = function(id, doc, callback){
+	this.cacheService.flushPlayer(id, doc, callback)
 }
 
 
@@ -109,6 +109,6 @@ pro.updateAlliance = function(id, doc, callback){
  * @param doc
  * @param callback
  */
-pro.flashAlliance = function(id, doc, callback){
+pro.flushAlliance = function(id, doc, callback){
 	this.cacheService.flashAlliance(id, doc, callback)
 }

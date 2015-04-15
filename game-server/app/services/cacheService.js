@@ -18,41 +18,159 @@ var DataService = function(app){
 	this.alliances = []
 	this.alliancesQueue = {}
 
-	this.flushInterval = 60 * 1000
+	this.flushInterval = 10 * 1000
 	this.flashOps = 30 * 1000
-	this.timeoutInterval = 600 * 1000
+	this.timeoutInterval = 30 * 1000
 }
 module.exports = DataService
 var pro = DataService.prototype
 
+var OnPlayerTimeout = function(id){
+	var self = this
+	this.lockPlayer(id, function(){
+		var player = self.players[id]
+		clearTimeout(player.interval)
+		delete self.players[id]
+		if(player.ops > 0){
+			var doc = player.doc
+			delete doc._id
+			self.Player.updateAsync({_id:id}, doc).then(function(){
+				self.unlockPlayer(id)
+			})
+		}else{
+			self.unlockPlayer(id)
+		}
+	})
+}
+
+var OnPlayerInterval = function(id){
+	var self = this
+	this.lockPlayer(id, function(){
+		var player = self.players[id]
+		if(player.ops > 0){
+			var doc = player.doc
+			delete doc._id
+			self.Player.updateAsync({_id:id}, doc).then(function(){
+				player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
+				self.unlockPlayer(id)
+			})
+			doc._id = id
+			player.ops = 0
+		}else{
+			player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
+			self.unlockPlayer(id)
+		}
+	})
+}
+
+
+var OnAllianceTimeout = function(id){
+	var self = this
+	this.lockAlliance(id, function(){
+		var alliance = self.alliances[id]
+		clearTimeout(alliance.interval)
+		delete self.alliances[id]
+		if(alliance.ops > 0){
+			var doc = alliance.doc
+			delete doc._id
+			self.Alliance.updateAsync({_id:id}, doc).then(function(){
+				self.unlockAlliance(id)
+			})
+		}else{
+			self.unlockAlliance(id)
+		}
+	})
+}
+
+var OnAllianceInterval = function(id){
+	var self = this
+	this.lockAlliance(id, function(){
+		var alliance = self.alliances[id]
+		if(alliance.ops > 0){
+			var doc = alliance.doc
+			delete doc._id
+			self.Alliance.updateAsync({_id:id}, doc).then(function(){
+				alliance.interval = setTimeout(OnAllianceInterval.bind(self), self.flushInterval, id)
+				self.unlockAlliance(id)
+			})
+			doc._id = id
+			alliance.ops = 0
+		}else{
+			alliance.interval = setTimeout(OnAllianceInterval.bind(self), self.flushInterval, id)
+			self.unlockAlliance(id)
+		}
+	})
+}
+
+/**
+ * 加入玩家请求队列
+ * @param id
+ * @param func
+ */
 pro.lockPlayer = function(id, func){
 	if(!_.isArray(this.playersQueue[id])) this.playersQueue[id] = []
 	this.playersQueue[id].push(func)
-	if(this.playersQueue[id].length() == 1) this.playersQueue[0].func()
+	if(this.playersQueue[id].length == 1) this.playersQueue[id][0]()
 }
 
+/**
+ * 从玩家请求队列移除
+ * @param id
+ */
 pro.unlockPlayer = function(id){
 	var playerQueue = this.playersQueue[id]
-	if(!_.isArray(playerQueue) || playerQueue.length == 0) throw new Error("此玩家请求队列不存在或为空:" + {id:id})
+	if(!_.isArray(playerQueue)) throw new Error("此玩家请求队列不存在或为空:" + {id:id})
 	playerQueue.shift()
 	if(playerQueue.length > 0){
-		playerQueue[0].func()
+		playerQueue[0]()
 	}else{
-		delete this.playerLocks[id]
+		delete this.playersQueue[id]
+	}
+}
+
+
+/**
+ * 加入玩家请求队列
+ * @param id
+ * @param func
+ */
+pro.lockAlliance = function(id, func){
+	if(!_.isArray(this.alliancesQueue[id])) this.alliancesQueue[id] = []
+	this.alliancesQueue[id].push(func)
+	if(this.alliancesQueue[id].length == 1) this.alliancesQueue[id][0]()
+}
+
+/**
+ * 从玩家请求队列移除
+ * @param id
+ */
+pro.unlockAlliance = function(id){
+	var allianceQueue = this.alliancesQueue[id]
+	if(!_.isArray(allianceQueue)) throw new Error("此玩家请求队列不存在或为空:" + {id:id})
+	allianceQueue.shift()
+	if(allianceQueue.length > 0){
+		allianceQueue[0]()
+	}else{
+		delete this.alliancesQueue[id]
 	}
 }
 
 /**
  * 创建玩家对象
- * @param doc
+ * @param playerData
  * @param callback
  */
-pro.createPlayer = function(doc, callback){
+pro.createPlayer = function(playerData, callback){
 	var self = this
-	this.lockPlayer(doc._id, function(){
-		self.Player.createAsync(doc).then(function(theDoc){
-			self.players[doc._id] = theDoc.toObject()
-			callback(null, self.players[doc._id])
+	this.lockPlayer(playerData._id, function(){
+		self.Player.createAsync(playerData).then(function(doc){
+			var player = {}
+			player.doc = doc.toObject()
+			player.ops = 0
+			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, playerData._id)
+			player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, playerData._id)
+			self.players[playerData._id] = player
+			callback(null, self.players[playerData._id].doc)
 		}).catch(function(e){
 			callback(e)
 		})
@@ -66,14 +184,28 @@ pro.createPlayer = function(doc, callback){
  */
 pro.directFindPlayer = function(id, callback){
 	var self = this
-	var player = this.players[id]
-	if(_.isObject(player)) callback(null, player)
-	else{
-		self.Player.findByIdAsync(id).then(function(doc){
-			if(_.isObject(doc)) self.players[id] = doc
-			callback(null, doc)
-		})
-	}
+	this.lockPlayer(id, function(){
+		var player = self.players[id]
+		if(_.isObject(player)){
+			callback(null, player.doc)
+			self.unlockPlayer(id)
+		}else{
+			self.Player.findByIdAsync(id).then(function(doc){
+				if(_.isObject(doc)){
+					var player = {}
+					player.doc = doc.toObject()
+					player.ops = 0
+					player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
+					player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
+					self.players[id] = player
+					callback(null, self.players[id].doc)
+				}else{
+					callback(null, null)
+				}
+				self.unlockPlayer(id)
+			})
+		}
+	})
 }
 
 /**
@@ -84,17 +216,22 @@ pro.directFindPlayer = function(id, callback){
 pro.findPlayer = function(id, callback){
 	var self = this
 	this.lockPlayer(id, function(){
-		var player = this.players[id]
+		var player = self.players[id]
 		if(_.isObject(player)){
-			callback(null, player)
+			callback(null, player.doc)
 		}else{
 			self.Player.findByIdAsync(id).then(function(doc){
 				if(_.isObject(doc)){
-					self.players[id] = doc.toObject()
-					callback(null, self.players[id])
+					var player = {}
+					player.doc = doc.toObject()
+					player.ops = 0
+					player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
+					player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
+					self.players[id] = player
+					callback(null, self.players[doc._id].doc)
 				}else{
 					self.unlockPlayer(id)
-					callback(null, doc)
+					callback(null, null)
 				}
 			})
 		}
@@ -108,33 +245,76 @@ pro.findPlayer = function(id, callback){
  * @param callback
  */
 pro.updatePlayer = function(id, doc, callback){
+	var self = this
 	if(_.isObject(doc)){
-		this.players[id] = doc
+		var player = this.players[id]
+		player.doc = doc
+		player.ops += 1
+		if(player.ops >= this.flashOps){
+			delete doc._id
+			self.Player.updateAsync({_id:id}, player.doc).then(function(){
+				clearTimeout(player.timeout)
+				clearTimeout(player.interval)
+				player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
+				player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
+				callback()
+				self.unlockPlayer(id)
+			})
+			doc._id = id
+			player.ops = 0
+		}else{
+			callback()
+			self.unlockPlayer(id)
+		}
 	}
-	self.unlockPlayer(id)
-	callback()
 }
 
 /**
  * 更新玩家对象并同步到Mongo
  * @param id
- * @param version
  * @param doc
  * @param callback
  */
-pro.flashPlayer = function(id, version, doc, callback){
-
+pro.flushPlayer = function(id, doc, callback){
+	var self = this
+	var player = this.players[id]
+	if(_.isObject(doc)){
+		player.doc = doc
+	}
+	delete doc._id
+	self.Player.updateAsync({_id:id}, player.doc).then(function(){
+		clearTimeout(player.timeout)
+		clearTimeout(player.interval)
+		player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
+		player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
+		callback()
+		self.unlockPlayer(id)
+	})
+	doc._id = id
+	player.ops = 0
 }
-
 
 
 /**
  * 创建联盟对象
- * @param doc
+ * @param allianceData
  * @param callback
  */
-pro.createAlliance = function(doc, callback){
-	this.cacheService.createAlliance(id, doc, callback)
+pro.createAlliance = function(allianceData, callback){
+	var self = this
+	this.lockAlliance(allianceData._id, function(){
+		self.Alliance.createAsync(allianceData).then(function(doc){
+			var alliance = {}
+			alliance.doc = doc.toObject()
+			alliance.ops = 0
+			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, allianceData._id)
+			alliance.interval = setTimeout(OnAllianceInterval.bind(self), self.flushInterval, allianceData._id)
+			self.alliances[allianceData._id] = alliance
+			callback(null, self.alliances[allianceData._id].doc)
+		}).catch(function(e){
+			callback(e)
+		})
+	})
 }
 
 /**
@@ -143,7 +323,29 @@ pro.createAlliance = function(doc, callback){
  * @param callback
  */
 pro.directFindAlliance = function(id, callback){
-	this.cacheService.directFindAlliance(id, callback)
+	var self = this
+	this.lockAlliance(id, function(){
+		var alliance = self.alliances[id]
+		if(_.isObject(alliance)){
+			callback(null, alliance.doc)
+			self.unlockAlliance(id)
+		}else{
+			self.Alliance.findByIdAsync(id).then(function(doc){
+				if(_.isObject(doc)){
+					var alliance = {}
+					alliance.doc = doc.toObject()
+					alliance.ops = 0
+					alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
+					alliance.interval = setTimeout(OnAllianceInterval.bind(self), self.flushInterval, id)
+					self.alliances[id] = alliance
+					callback(null, self.alliances[id].doc)
+				}else{
+					callback(null, null)
+				}
+				self.unlockAlliance(id)
+			})
+		}
+	})
 }
 
 /**
@@ -152,7 +354,28 @@ pro.directFindAlliance = function(id, callback){
  * @param callback
  */
 pro.findAlliance = function(id, callback){
-	this.cacheService.findAlliance(id, callback)
+	var self = this
+	this.lockAlliance(id, function(){
+		var alliance = self.alliances[id]
+		if(_.isObject(alliance)){
+			callback(null, alliance.doc)
+		}else{
+			self.Alliance.findByIdAsync(id).then(function(doc){
+				if(_.isObject(doc)){
+					var alliance = {}
+					alliance.doc = doc.toObject()
+					alliance.ops = 0
+					alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
+					alliance.interval = setTimeout(OnAllianceInterval.bind(self), self.flushInterval, id)
+					self.alliances[id] = alliance
+					callback(null, self.alliances[doc._id].doc)
+				}else{
+					self.unlockAlliance(id)
+					callback(null, null)
+				}
+			})
+		}
+	})
 }
 
 /**
@@ -163,7 +386,28 @@ pro.findAlliance = function(id, callback){
  * @param callback
  */
 pro.updateAlliance = function(id, version, doc, callback){
-	this.cacheService.updateAlliance(id, version, doc, callback)
+	var self = this
+	if(_.isObject(doc)){
+		var alliance = this.alliances[id]
+		alliance.doc = doc
+		alliance.ops += 1
+		if(alliance.ops >= this.flashOps){
+			delete doc._id
+			self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
+				clearTimeout(alliance.timeout)
+				clearTimeout(alliance.interval)
+				alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
+				alliance.interval = setTimeout(OnAllianceInterval.bind(self), self.flushInterval, id)
+				callback()
+				self.unlockAlliance(id)
+			})
+			doc._id = id
+			alliance.ops = 0
+		}else{
+			callback()
+			self.unlockAlliance(id)
+		}
+	}
 }
 
 /**
@@ -173,6 +417,21 @@ pro.updateAlliance = function(id, version, doc, callback){
  * @param doc
  * @param callback
  */
-pro.flashAlliance = function(id, version, doc, callback){
-	this.cacheService.flashAlliance(id, version, doc, callback)
+pro.flushAlliance = function(id, version, doc, callback){
+	var self = this
+	var alliance = this.alliances[id]
+	if(_.isObject(doc)){
+		alliance.doc = doc
+	}
+	delete doc._id
+	self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
+		clearTimeout(alliance.timeout)
+		clearTimeout(alliance.interval)
+		alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
+		alliance.interval = setTimeout(OnAllianceInterval.bind(self), self.flushInterval, id)
+		callback()
+		self.unlockAlliance(id)
+	})
+	doc._id = id
+	alliance.ops = 0
 }

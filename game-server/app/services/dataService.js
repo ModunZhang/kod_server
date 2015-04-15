@@ -56,8 +56,8 @@ pro.updatePlayer = function(doc, data, callback){
  * @param data
  * @param callback
  */
-pro.flashPlayer = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.flashPlayer.toServer(this.cacheServerId, doc._id, doc, callback)
+pro.flushPlayer = function(doc, data, callback){
+	this.app.rpc.cache.cacheRemote.flushPlayer.toServer(this.cacheServerId, doc._id, doc, callback)
 }
 
 /**
@@ -105,6 +105,6 @@ pro.updateAlliance = function(doc, data, callback){
  * @param data
  * @param callback
  */
-pro.flashAlliance = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.flashAlliance.toServer(this.cacheServerId, doc._id, doc, callback)
+pro.flushAlliance = function(doc, data, callback){
+	this.app.rpc.cache.cacheRemote.flushAlliance.toServer(this.cacheServerId, doc._id, doc, callback)
 }
