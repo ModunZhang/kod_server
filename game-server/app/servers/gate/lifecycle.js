@@ -15,6 +15,7 @@ var life = module.exports
 life.beforeStartup = function(app, callback){
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("logService", new LogService(app))
+	app.set("gateService", new GateService(app))
 
 	callback()
 }
@@ -28,5 +29,5 @@ life.beforeShutdown = function(app, callback){
 }
 
 life.afterStartAll = function(app){
-	app.set("gateService", new GateService(app))
+	app.get("gateService").start()
 }

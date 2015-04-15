@@ -13,7 +13,6 @@ var GateService = function(app){
 	this.logService = app.get("logService")
 	this.logicServers = app.getServersByType("logic")
 	this.cacheServers = app.getServersByType("cache")
-	this.start()
 }
 module.exports = GateService
 var pro = GateService.prototype
