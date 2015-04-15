@@ -589,7 +589,7 @@ pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
 		if(_.isObject(enemyAllianceDoc)){
 			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockAsync, enemyAllianceDoc._id])
 		}
-		pushFuncs.push([self.pushService, self.pushService.onJoinAllianceSuccessAsync, memberDoc, allianceDoc, enemyAllianceViewData])
+		pushFuncs.push([self.pushService, self.pushService.onJoinAllianceSuccessAsync, memberDoc, memberData, allianceDoc, enemyAllianceViewData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, memberDoc._id])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 
