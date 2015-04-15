@@ -279,8 +279,8 @@ pro.quitAlliance = function(msg, session, next){
 pro.joinAllianceDirectly = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.joinAllianceDirectly", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
-	this.allianceApiService2.joinAllianceDirectlyAsync(session.uid, allianceId).spread(function(playerData, allianceData){
-		next(null, {code:200, playerData:playerData, allianceData:allianceData})
+	this.allianceApiService2.joinAllianceDirectlyAsync(session.uid, allianceId).spread(function(playerData, allianceData, enemyAllianceData){
+		next(null, {code:200, playerData:playerData, allianceData:allianceData, enemyAllianceData:enemyAllianceData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -376,8 +376,8 @@ pro.handleJoinAllianceInvite = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.handleJoinAllianceInvite", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
 	var agree = msg.agree
-	this.allianceApiService2.handleJoinAllianceInviteAsync(session.uid, allianceId, agree).spread(function(playerData, allianceData){
-		next(null, {code:200, playerData:playerData, allianceData:allianceData})
+	this.allianceApiService2.handleJoinAllianceInviteAsync(session.uid, allianceId, agree).spread(function(playerData, allianceData, enemyAllianceData){
+		next(null, {code:200, playerData:playerData, allianceData:allianceData, enemyAllianceData:enemyAllianceData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
