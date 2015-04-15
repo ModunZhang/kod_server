@@ -6,7 +6,7 @@ module.exports = level
 level[0] = {
 	level:0,
 	expFrom:0,
-	expTo:110,
+	expTo:0,
 	freeSpeedup:5,
 	helpSpeedup:0.500000,
 	woodProductionAdd:0.000000,
@@ -27,8 +27,8 @@ level[0] = {
 }
 level[1] = {
 	level:1,
-	expFrom:110,
-	expTo:150,
+	expFrom:0,
+	expTo:120,
 	freeSpeedup:8,
 	helpSpeedup:0.550000,
 	woodProductionAdd:0.000000,
@@ -49,8 +49,8 @@ level[1] = {
 }
 level[2] = {
 	level:2,
-	expFrom:150,
-	expTo:300,
+	expFrom:120,
+	expTo:250,
 	freeSpeedup:12,
 	helpSpeedup:0.600000,
 	woodProductionAdd:0.050000,
@@ -71,8 +71,8 @@ level[2] = {
 }
 level[3] = {
 	level:3,
-	expFrom:300,
-	expTo:600,
+	expFrom:250,
+	expTo:400,
 	freeSpeedup:16,
 	helpSpeedup:0.650000,
 	woodProductionAdd:0.060000,
@@ -93,8 +93,8 @@ level[3] = {
 }
 level[4] = {
 	level:4,
-	expFrom:600,
-	expTo:1200,
+	expFrom:400,
+	expTo:800,
 	freeSpeedup:20,
 	helpSpeedup:0.700000,
 	woodProductionAdd:0.080000,
@@ -115,8 +115,8 @@ level[4] = {
 }
 level[5] = {
 	level:5,
-	expFrom:1200,
-	expTo:3600,
+	expFrom:800,
+	expTo:2000,
 	freeSpeedup:25,
 	helpSpeedup:0.750000,
 	woodProductionAdd:0.100000,
@@ -137,8 +137,8 @@ level[5] = {
 }
 level[6] = {
 	level:6,
-	expFrom:3600,
-	expTo:8000,
+	expFrom:2000,
+	expTo:6000,
 	freeSpeedup:30,
 	helpSpeedup:0.800000,
 	woodProductionAdd:0.120000,
@@ -159,7 +159,7 @@ level[6] = {
 }
 level[7] = {
 	level:7,
-	expFrom:8000,
+	expFrom:6000,
 	expTo:20000,
 	freeSpeedup:35,
 	helpSpeedup:0.850000,
@@ -172,7 +172,7 @@ level[7] = {
 	normalGachaAdd:1,
 	storageProtectAdd:0.080000,
 	wallHpRecoveryAdd:0.080000,
-	dragonExpAdd:0.050000,
+	dragonExpAdd:0.000000,
 	dragonHpRecoveryAdd:0.050000,
 	soldierAttackPowerAdd:0.000000,
 	soldierHpAdd:0.000000,
