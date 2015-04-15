@@ -47,11 +47,13 @@ pro.onPlayerDataChanged = function(playerDoc, data, callback){
 /**
  * 成功获取联盟完整数据
  * @param playerDoc
+ * @param playerData
  * @param allianceDoc
+ * @param enemyAllianceData
  * @param callback
  */
-pro.onGetAllianceDataSuccess = function(playerDoc, allianceDoc, callback){
-	this.pushToPlayer(playerDoc, Events.player.onGetAllianceDataSuccess, allianceDoc, callback)
+pro.onJoinAllianceSuccess = function(playerDoc, playerData, allianceDoc, enemyAllianceData, callback){
+	this.pushToPlayer(playerDoc, Events.player.onJoinAllianceSuccess, {playerData:playerData, allianceData:allianceDoc, enemyAllianceData:enemyAllianceData}, callback)
 }
 
 /**

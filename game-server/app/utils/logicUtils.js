@@ -2272,3 +2272,13 @@ Utils.getPlayerHousesByType = function(playerDoc, houseType){
 
 	return houses
 }
+
+/**
+ * 获取地推联盟Id
+ * @param allianceFight
+ * @param myAllianceId
+ * @returns {*}
+ */
+Utils.getEnemyAllianceId = function(allianceFight, myAllianceId){
+	return _.isEqual(allianceFight.attackAllianceId, myAllianceId) ? allianceFight.defenceAllianceId : allianceFight.attackAllianceId
+}
