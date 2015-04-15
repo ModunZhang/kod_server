@@ -18,46 +18,103 @@ var CacheRemote = function(app) {
 var pro = CacheRemote.prototype
 
 /**
- * 创建对象
- * @param modelName
+ * 创建玩家对象
  * @param id
  * @param doc
  * @param callback
  */
-pro.create = function(modelName, id, doc, callback){
-	this.cacheService.create(modelName, id, doc, callback)
+pro.createPlayer = function(id, doc, callback){
+	this.cacheService.createPlayer(id, doc, callback)
 }
 
 /**
- * 按Id查询
- * @param modelName
+ * 按Id直接查询玩家,不做请求排序
  * @param id
  * @param callback
  */
-pro.find = function(modelName, id, callback){
-	this.cacheService.find(modelName, id, callback)
+pro.directFindPlayer = function(id, callback){
+	this.cacheService.directFindPlayer(id, callback)
 }
 
 /**
- * 更新对象
- * @param modelName
+ * 按Id查询玩家
+ * @param id
+ * @param callback
+ */
+pro.findPlayer = function(id, callback){
+	this.cacheService.findPlayer(id, callback)
+}
+
+/**
+ * 更新玩家对象
  * @param id
  * @param version
  * @param doc
  * @param callback
  */
-pro.update = function(modelName, id, version, doc, callback){
-	this.cacheService.update(modelName, id, version, doc, callback)
+pro.updatePlayer = function(id, version, doc, callback){
+	this.cacheService.updatePlayer(id, version, doc, callback)
 }
 
 /**
- * 更新对象并同步到Mongo
- * @param modelName
+ * 更新玩家对象并同步到Mongo
  * @param id
  * @param version
  * @param doc
  * @param callback
  */
-pro.flash = function(modelName, id, version, doc, callback){
-	this.cacheService.flash(modelName, id, version, doc, callback)
+pro.flashPlayer = function(id, version, doc, callback){
+	this.cacheService.flashPlayer(id, version, doc, callback)
+}
+
+
+
+/**
+ * 创建联盟对象
+ * @param id
+ * @param doc
+ * @param callback
+ */
+pro.createAlliance = function(id, doc, callback){
+	this.cacheService.createAlliance(id, doc, callback)
+}
+
+/**
+ * 按Id直接查询联盟,不做请求排序
+ * @param id
+ * @param callback
+ */
+pro.directFindAlliance = function(id, callback){
+	this.cacheService.directFindAlliance(id, callback)
+}
+
+/**
+ * 按Id查询联盟
+ * @param id
+ * @param callback
+ */
+pro.findAlliance = function(id, callback){
+	this.cacheService.findAlliance(id, callback)
+}
+
+/**
+ * 更新联盟对象
+ * @param id
+ * @param version
+ * @param doc
+ * @param callback
+ */
+pro.updateAlliance = function(id, version, doc, callback){
+	this.cacheService.updateAlliance(id, version, doc, callback)
+}
+
+/**
+ * 更新玩家对象并同步到Mongo
+ * @param id
+ * @param version
+ * @param doc
+ * @param callback
+ */
+pro.flashAlliance = function(id, version, doc, callback){
+	this.cacheService.flashAlliance(id, version, doc, callback)
 }

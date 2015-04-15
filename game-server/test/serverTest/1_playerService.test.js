@@ -4,9 +4,7 @@
 
 var Promise = require("bluebird")
 var pomelo = require("../pomelo-client")
-var Redis = Promise.promisifyAll(require("redis"))
 var path = require("path")
-var Scripto = require('redis-scripto')
 var mongoose = require("mongoose")
 var should = require('should')
 
@@ -14,13 +12,10 @@ var Consts = require("../../app/consts/consts")
 var Config = require("../config")
 var Deal = Promise.promisifyAll(require("../../app/domains/deal"))
 var Billing = Promise.promisifyAll(require("../../app/domains/billing"))
-var Device = Promise.promisifyAll(require("../../app/domains/device"))
-var User = Promise.promisifyAll(require("../../app/domains/user"))
 var Player = Promise.promisifyAll(require("../../app/domains/player"))
 var GemUse = Promise.promisifyAll(require("../../app/domains/gemUse"))
 var Alliance = Promise.promisifyAll(require("../../app/domains/alliance"))
 var Api = require("../api")
-var commandDir = path.resolve(__dirname + "/../../app/commands")
 var GameDatas = require("../../app/datas/GameDatas")
 var Errors = GameDatas.Errors.errors
 
@@ -29,15 +24,8 @@ describe("PlayerService", function(){
 
 	before(function(done){
 		mongoose.connect(Config.mongoAddr, function(){
-			var redis = Redis.createClient(Config.redisPort, Config.redisAddr)
-			redis.flushallAsync().then(function(){
-				return Player.removeAsync()
-			}).then(function(){
+			Player.removeAsync().then(function(){
 				return Alliance.removeAsync()
-			}).then(function(){
-				return Device.removeAsync()
-			}).then(function(){
-				return User.removeAsync()
 			}).then(function(){
 				return Deal.removeAsync()
 			}).then(function(){
