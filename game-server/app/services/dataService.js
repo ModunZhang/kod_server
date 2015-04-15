@@ -15,12 +15,12 @@ var pro = DataService.prototype
 
 pro.createPlayer = function(id, callback){
 	var player = LogicUtils.createPlayer(id, this.cacheServerId)
-	this.app.rpc.cache.cacheRemote.create.toServer(this.cacheServerId, player._id, player, callback)
+	this.app.rpc.cache.cacheRemote.create.toServer(this.cacheServerId, "Player", player._id, player, callback)
 }
 
 pro.createAlliance = function(id, alliance, callback){
 	alliance.serverId = this.cacheServerId
-	this.app.rpc.cache.cacheRemote.create.toServer(this.cacheServerId, alliance._id, alliance, callback)
+	this.app.rpc.cache.cacheRemote.create.toServer(this.cacheServerId, "Alliance", alliance._id, alliance, callback)
 }
 
 pro.findPlayer = function(id, callback){
@@ -28,11 +28,11 @@ pro.findPlayer = function(id, callback){
 }
 
 pro.updatePlayer = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.find.toServer(this.cacheServerId, "Player", doc._id, doc.__v, doc, callback)
+	this.app.rpc.cache.cacheRemote.update.toServer(this.cacheServerId, "Player", doc._id, doc.__v, doc, callback)
 }
 
 pro.flashPlayer = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.find.toServer(this.cacheServerId, "Player", doc._id, doc.__v, doc, callback)
+	this.app.rpc.cache.cacheRemote.flash.toServer(this.cacheServerId, "Player", doc._id, doc.__v, doc, callback)
 }
 
 pro.findAlliance = function(id, callback){
@@ -40,9 +40,9 @@ pro.findAlliance = function(id, callback){
 }
 
 pro.updateAlliance = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.find.toServer(this.cacheServerId, "Alliance", doc._id, doc.__v, doc, callback)
+	this.app.rpc.cache.cacheRemote.update.toServer(this.cacheServerId, "Alliance", doc._id, doc.__v, doc, callback)
 }
 
 pro.flashAlliance = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.find.toServer(this.cacheServerId, "Alliance", doc._id, doc.__v, doc, callback)
+	this.app.rpc.cache.cacheRemote.flash.toServer(this.cacheServerId, "Alliance", doc._id, doc.__v, doc, callback)
 }

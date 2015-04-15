@@ -34,30 +34,6 @@ pro.kickPlayer = function(uid, reason, callback){
 }
 
 /**
- * 执行时间回调
- * @param key
- * @param eventType
- * @param eventId
- * @param callback
- */
-pro.onTimeEvent = function(key, eventType, eventId, callback){
-	this.logService.onEvent("logic.logicRemote.onTimeEvent", {key:key, eventType:eventType, eventId:eventId})
-	var params = key.split(":")
-	var targetType = params[0]
-	var id = params[1]
-	if(_.isEqual(Consts.TimeEventType.Player, targetType)){
-		this.playerTimeEventService.onTimeEvent(id, eventType, eventId, callback)
-	}else if(_.isEqual(Consts.TimeEventType.Alliance, targetType)){
-		this.allianceTimeEventService.onTimeEvent(id, eventType, eventId, callback)
-	}else if(_.isEqual(Consts.TimeEventType.AllianceFight, targetType)){
-		var ids = eventId.split(":")
-		this.allianceTimeEventService.onFightTimeEvent(ids[0], ids[1], callback)
-	}else{
-		callback(new Error("未知的事件类型"))
-	}
-}
-
-/**
  * 设置服务器状态
  * @param status
  * @param callback

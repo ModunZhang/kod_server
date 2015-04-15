@@ -6,7 +6,6 @@
 
 var _ = require("underscore")
 
-var Dispatcher = require('../../../utils/dispatcher')
 var Consts = require("../../../consts/consts")
 
 module.exports = function(app){
@@ -17,7 +16,8 @@ var EventRemote = function(app){
 	this.app = app
 	this.logService = app.get("logService")
 	this.channelService = app.get("channelService")
-	this.pushService = app.get("pushService")
+	this.playerTimeEventService = app.get("playerTimeEventService")
+	this.allianceTimeEventService = app.get("allianceTimeEventService")
 	this.callbacks = {}
 }
 var pro = EventRemote.prototype
@@ -160,7 +160,17 @@ pro.triggerTimeEvent = function(key, eventId){
  * @param callback
  */
 pro.excuteTimeEvent = function(key, eventType, eventId, callback){
-	var logicServers = this.app.getServersByType('logic')
-	var logicServerId = Dispatcher.dispatch(logicServers).id
-	this.app.rpc.logic.logicRemote.onTimeEvent.toServer(logicServerId, key, eventType, eventId, callback)
+	var params = key.split(":")
+	var targetType = params[0]
+	var id = params[1]
+	if(_.isEqual(Consts.TimeEventType.Player, targetType)){
+		this.playerTimeEventService.onTimeEvent(id, eventType, eventId, callback)
+	}else if(_.isEqual(Consts.TimeEventType.Alliance, targetType)){
+		this.allianceTimeEventService.onTimeEvent(id, eventType, eventId, callback)
+	}else if(_.isEqual(Consts.TimeEventType.AllianceFight, targetType)){
+		var ids = eventId.split(":")
+		this.allianceTimeEventService.onFightTimeEvent(ids[0], ids[1], callback)
+	}else{
+		callback(new Error("未知的事件类型"))
+	}
 }

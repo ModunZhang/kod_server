@@ -15,3 +15,19 @@ var DataService = function(app){
 }
 module.exports = DataService
 var pro = DataService.prototype
+
+pro.create = function(modelName, id, doc, callback){
+
+}
+
+pro.find = function(modelName, id, callback){
+
+}
+
+pro.update = function(modelName, id, version, doc, callback){
+
+}
+
+pro.flash = function(modelName, id, version, doc, callback){
+
+}
