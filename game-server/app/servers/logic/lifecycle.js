@@ -58,32 +58,24 @@ life.beforeStartup = function(app, callback){
 	app.set("allianceApiService4", Promise.promisifyAll(new AllianceApiService4(app)))
 	app.set("allianceApiService5", Promise.promisifyAll(new AllianceApiService5(app)))
 
-	console.log(app.getCurServer(), "11111111111111")
-	console.log(app.getServersByType())
+	var currentServer = app.getServerFromConfig(app.getServerId())
+	app.set("logicServerId", currentServer.id)
+	var servers = app.getServersFromConfig()
+	_.each(servers, function(server, id){
+		if(_.isEqual(server.serverType, "chat") && _.isEqual(server.usedFor, currentServer.usedFor)){
+			app.set("chatServerId", id)
+		}else if(_.isEqual(server.serverType, "event") && _.isEqual(server.usedFor, currentServer.usedFor)){
+			console.log(server, id)
+			app.set("eventServerId", id)
+		}else if(_.isEqual(server.serverType, "cache") && _.isEqual(server.id, currentServer.usedFor)){
+			app.set("cacheServerId", id)
+		}
+	})
 
 	callback()
 }
 
 life.afterStartup = function(app, callback){
-	var logicServer = app.getCurServer()
-	var chatServer = _.find(app.getServersByType("chat"), function(server){
-		return _.isEqual(logicServer.usedFor, server.usedFor)
-	})
-	var eventServer = _.find(app.getServersByType("event"), function(server){
-		return _.isEqual(logicServer.usedFor, server.usedFor)
-	})
-	var cacheServer = _.find(app.getServersByType("cache"), function(server){
-		return _.isEqual(logicServer.usedFor, server.id)
-	})
-	var logicServerId = logicServer.id
-	var chatServerId = chatServer.id
-	var eventServerId = eventServer.id
-	var cacheServerId = cacheServer.id
-	app.set("logicServerId", logicServerId)
-	app.set("chatServerId", chatServerId)
-	app.set("eventServerId", eventServerId)
-	app.set("cacheServerId", cacheServerId)
-
 	callback()
 }
 
