@@ -26,6 +26,7 @@ var PlayerApiService5 = function(app){
 	this.Deal = app.get("Deal")
 	this.User = app.get("User")
 	this.redis = app.get("redis")
+	this.logService = app.get("logService")
 }
 module.exports = PlayerApiService5
 var pro = PlayerApiService5.prototype
@@ -531,7 +532,7 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
 		myData = {rank:rank}
 		return self.redis.zrevrangeAsync([playerDoc.serverId + ".alliance.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1, "WITHSCORES"])
 	}).then(function(res){
-		console.log(myData, res, "111111111111111111111")
+		self.logService.onEvent("getAllianceRankList-------------------", {myData:myData, res:res})
 		for(var i = 0; i < res.length; i += 2){
 			ids.push(res[i])
 			scores.push(res[i + 1])
