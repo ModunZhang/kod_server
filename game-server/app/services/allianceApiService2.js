@@ -532,7 +532,8 @@ pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
 			return _.isEqual(event.id, requestEventId)
 		})
 		if(!_.isObject(requestEvent)) return Promise.reject(ErrorUtils.joinAllianceRequestNotExist(requestEventId, allianceDoc._id))
-
+		allianceData.push(["joinRequestEvents." + allianceDoc.joinRequestEvents.indexOf(requestEvent), null])
+		LogicUtils.removeItemInArray(allianceDoc.joinRequestEvents, requestEvent)
 		return self.playerDao.findAsync(requestEventId)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, requestEventId))
