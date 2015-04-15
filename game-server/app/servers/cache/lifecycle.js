@@ -3,7 +3,7 @@
 /**
 * Created by modun on 14-8-9.
 */
-
+var _ = require("underscore")
 var Promise = require("bluebird")
 
 var LogService = require("../../services/logService")
@@ -30,5 +30,16 @@ life.beforeShutdown = function(app, callback){
 }
 
 life.afterStartAll = function(app){
-	
+	var serverId = app.getServerId()
+	var logicServers = app.getServersByType("logic")
+	var funcs = []
+	var setServerStatusAsync = Promise.promisify(app.rpc.logic.logicRemote.setServerStatus.toServer)
+	_.each(logicServers, function(server){
+		if(_.isEqual(server.usedFor, serverId)){
+			funcs.push(setServerStatusAsync(server.id, true))
+		}
+	})
+	Promise.all(funcs).then(function(){
+		app.get("logService").onEvent("server start finished", {})
+	})
 }

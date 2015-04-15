@@ -27,6 +27,7 @@ var Handler = function(app){
 	this.logicServers = _.find(app.getServersByType("logic"), function(server){
 		return _.isEqual(server.usedFor, app.get("cacheServerId"))
 	})
+	this.playerApiService = app.get("playerApiService")
 	this.maxReturnMailSize = 10
 	this.maxReturnReportSize = 10
 }

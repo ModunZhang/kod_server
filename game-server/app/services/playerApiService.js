@@ -58,7 +58,8 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 			playerDoc = doc
 			return Promise.resolve()
 		}else{
-			return self.dataService.createPlayerAsync(deviceId).then(function(doc){
+			var player = LogicUtils.createPlayer(deviceId, self.app.get("cacheServerId"))
+			return self.dataService.createPlayerAsync(player).then(function(doc){
 				playerDoc = doc
 			})
 		}
@@ -72,13 +73,13 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 			}
 			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
 				return kickPlayerAsync(playerDoc)
+			}).then(function(){
+				return Promise.reject(ErrorUtils.reLoginNeeded(playerDoc._id))
 			})
 		}else{
 			return Promise.resolve()
 		}
 	}).then(function(){
-		if(!_.isEmpty(playerDoc.logicServerId)) return Promise.reject(ErrorUtils.reLoginNeeded(playerDoc._id))
-
 		var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
 		var todayDateString = LogicUtils.getTodayDateString()
 		if(!_.isEqual(todayDateString, previousLoginDateString)){
@@ -118,7 +119,6 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 		playerDoc.countInfo.lastLoginTime = Date.now()
 		playerDoc.countInfo.loginCount += 1
 		playerDoc.logicServerId = logicServerId
-		playerDoc.gcId = userDoc.gcId
 		DataUtils.refreshPlayerResources(playerDoc)
 		DataUtils.refreshPlayerPower(playerDoc, [])
 		TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, [])

@@ -11,8 +11,7 @@ var GateService = function(app){
 	this.app = app
 	this.serverId = app.getServerId()
 	this.logService = app.get("logService")
-	this.logicServers = app.getServersByType("logic")
-	this.cacheServers = app.getServersByType("cache")
+	this.logicServers = null
 }
 module.exports = GateService
 var pro = GateService.prototype
@@ -35,6 +34,7 @@ pro.init = function(){
 		})
 	}
 
+	this.logicServers = this.app.getServersByType("logic")
 	var getOnlineUserAsync = Promise.promisify(getOnlineUser, this)
 	setInterval(function(){
 		var funcs = []
@@ -51,7 +51,7 @@ pro.init = function(){
  */
 pro.getPromotedLogicServer = function(cacheServerId){
 	var logicServers = _.filter(this.logicServers, function(logicServer){
-		return _.isEqual(logicServer.useFor, cacheServerId)
+		return _.isEqual(logicServer.usedFor, cacheServerId)
 	})
 	logicServers = _.sortBy(logicServers, function(logicServer){
 		return logicServer.userCount
@@ -64,7 +64,7 @@ pro.getPromotedLogicServer = function(cacheServerId){
  * @returns {Array}
  */
 pro.getServers = function(){
-	return this.cacheServers
+	return this.app.getServersByType("cache")
 }
 
 /**
@@ -72,7 +72,7 @@ pro.getServers = function(){
  * @returns {*}
  */
 pro.getPromotedServer = function(){
-	return _.find(this.cacheServers, function(server){
+	return _.find(this.app.getServersByType("cache"), function(server){
 		return server.isPromoted == "true"
 	})
 }

@@ -11,16 +11,36 @@ var Consts = require("../consts/consts.js")
 
 var DataService = function(app){
 	this.app = app
-	this.redis = app.get("redis")
 	this.Player = app.get("Player")
 	this.Alliance = app.get("Alliance")
 	this.players = []
-	this.playerLocks = {}
+	this.playersQueue = {}
 	this.alliances = []
-	this.allianceLocks = {}
+	this.alliancesQueue = {}
+
+	this.flushInterval = 60 * 1000
+	this.flashOps = 30 * 1000
+	this.timeoutInterval = 600 * 1000
 }
 module.exports = DataService
 var pro = DataService.prototype
+
+pro.lockPlayer = function(id, func){
+	if(!_.isArray(this.playersQueue[id])) this.playersQueue[id] = []
+	this.playersQueue[id].push(func)
+	if(this.playersQueue[id].length() == 1) this.playersQueue[0].func()
+}
+
+pro.unlockPlayer = function(id){
+	var playerQueue = this.playersQueue[id]
+	if(!_.isArray(playerQueue) || playerQueue.length == 0) throw new Error("此玩家请求队列不存在或为空:" + {id:id})
+	playerQueue.shift()
+	if(playerQueue.length > 0){
+		playerQueue[0].func()
+	}else{
+		delete this.playerLocks[id]
+	}
+}
 
 /**
  * 创建玩家对象
@@ -29,11 +49,13 @@ var pro = DataService.prototype
  */
 pro.createPlayer = function(doc, callback){
 	var self = this
-	this.Player.createAsync(doc).then(function(doc){
-		self.players[doc._id] = doc
-		callback(doc)
-	}).catch(function(e){
-		callback(e)
+	this.lockPlayer(doc._id, function(){
+		self.Player.createAsync(doc).then(function(theDoc){
+			self.players[doc._id] = theDoc.toObject()
+			callback(null, self.players[doc._id])
+		}).catch(function(e){
+			callback(e)
+		})
 	})
 }
 
@@ -61,26 +83,35 @@ pro.directFindPlayer = function(id, callback){
  */
 pro.findPlayer = function(id, callback){
 	var self = this
-	var player = this.players[id]
-	if(_.isObject(player)){
-		callback(null, player)
-	}else{
-		self.Player.findByIdAsync(id).then(function(doc){
-			if(_.isObject(doc)) self.players[id] = doc
-			callback(null, doc)
-		})
-	}
+	this.lockPlayer(id, function(){
+		var player = this.players[id]
+		if(_.isObject(player)){
+			callback(null, player)
+		}else{
+			self.Player.findByIdAsync(id).then(function(doc){
+				if(_.isObject(doc)){
+					self.players[id] = doc.toObject()
+					callback(null, self.players[id])
+				}else{
+					self.unlockPlayer(id)
+					callback(null, doc)
+				}
+			})
+		}
+	})
 }
 
 /**
  * 更新玩家对象
  * @param id
- * @param version
  * @param doc
  * @param callback
  */
-pro.updatePlayer = function(id, version, doc, callback){
-	this.players[id] = doc
+pro.updatePlayer = function(id, doc, callback){
+	if(_.isObject(doc)){
+		this.players[id] = doc
+	}
+	self.unlockPlayer(id)
 	callback()
 }
 
@@ -92,7 +123,7 @@ pro.updatePlayer = function(id, version, doc, callback){
  * @param callback
  */
 pro.flashPlayer = function(id, version, doc, callback){
-	this.cacheService.flashPlayer(id, version, doc, callback)
+
 }
 
 

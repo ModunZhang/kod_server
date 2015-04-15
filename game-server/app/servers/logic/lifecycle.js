@@ -33,6 +33,19 @@ var GemAdd = require("../../domains/gemAdd")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
+	var currentServer = app.getServerFromConfig(app.getServerId())
+	app.set("logicServerId", currentServer.id)
+	var servers = app.getServersFromConfig()
+	_.each(servers, function(server, id){
+		if(_.isEqual(server.serverType, "chat") && _.isEqual(server.usedFor, currentServer.usedFor)){
+			app.set("chatServerId", id)
+		}else if(_.isEqual(server.serverType, "event") && _.isEqual(server.usedFor, currentServer.usedFor)){
+			app.set("eventServerId", id)
+		}else if(_.isEqual(server.serverType, "cache") && _.isEqual(server.id, currentServer.usedFor)){
+			app.set("cacheServerId", id)
+		}
+	})
+
 	app.set("Deal", Promise.promisifyAll(Deal))
 	app.set("Billing", Promise.promisifyAll(Billing))
 	app.set("GemUse", Promise.promisifyAll(GemUse))
@@ -57,20 +70,6 @@ life.beforeStartup = function(app, callback){
 	app.set("allianceApiService3", Promise.promisifyAll(new AllianceApiService3(app)))
 	app.set("allianceApiService4", Promise.promisifyAll(new AllianceApiService4(app)))
 	app.set("allianceApiService5", Promise.promisifyAll(new AllianceApiService5(app)))
-
-	var currentServer = app.getServerFromConfig(app.getServerId())
-	app.set("logicServerId", currentServer.id)
-	var servers = app.getServersFromConfig()
-	_.each(servers, function(server, id){
-		if(_.isEqual(server.serverType, "chat") && _.isEqual(server.usedFor, currentServer.usedFor)){
-			app.set("chatServerId", id)
-		}else if(_.isEqual(server.serverType, "event") && _.isEqual(server.usedFor, currentServer.usedFor)){
-			console.log(server, id)
-			app.set("eventServerId", id)
-		}else if(_.isEqual(server.serverType, "cache") && _.isEqual(server.id, currentServer.usedFor)){
-			app.set("cacheServerId", id)
-		}
-	})
 
 	callback()
 }

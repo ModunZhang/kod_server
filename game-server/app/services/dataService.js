@@ -15,11 +15,10 @@ var pro = DataService.prototype
 
 /**
  * 创建玩家对象
- * @param id
+ * @param player
  * @param callback
  */
-pro.createPlayer = function(id, callback){
-	var player = LogicUtils.createPlayer(id, this.cacheServerId)
+pro.createPlayer = function(player, callback){
 	this.app.rpc.cache.cacheRemote.createPlayer.toServer(this.cacheServerId, player, callback)
 }
 
@@ -48,7 +47,7 @@ pro.findPlayer = function(id, callback){
  * @param callback
  */
 pro.updatePlayer = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.updatePlayer.toServer(this.cacheServerId, doc._id, doc.__v, doc, callback)
+	this.app.rpc.cache.cacheRemote.updatePlayer.toServer(this.cacheServerId, doc._id, doc, callback)
 }
 
 /**
@@ -58,7 +57,7 @@ pro.updatePlayer = function(doc, data, callback){
  * @param callback
  */
 pro.flashPlayer = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.flashPlayer.toServer(this.cacheServerId, doc._id, doc.__v, doc, callback)
+	this.app.rpc.cache.cacheRemote.flashPlayer.toServer(this.cacheServerId, doc._id, doc, callback)
 }
 
 /**
@@ -97,7 +96,7 @@ pro.findAlliance = function(id, callback){
  * @param callback
  */
 pro.updateAlliance = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.updateAlliance.toServer(this.cacheServerId, doc._id, doc.__v, doc, callback)
+	this.app.rpc.cache.cacheRemote.updateAlliance.toServer(this.cacheServerId, doc._id, doc, callback)
 }
 
 /**
@@ -107,5 +106,5 @@ pro.updateAlliance = function(doc, data, callback){
  * @param callback
  */
 pro.flashAlliance = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.flashAlliance.toServer(this.cacheServerId, doc._id, doc.__v, doc, callback)
+	this.app.rpc.cache.cacheRemote.flashAlliance.toServer(this.cacheServerId, doc._id, doc, callback)
 }

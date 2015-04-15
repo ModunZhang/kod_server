@@ -19,12 +19,11 @@ var pro = CacheRemote.prototype
 
 /**
  * 创建玩家对象
- * @param id
  * @param doc
  * @param callback
  */
-pro.createPlayer = function(id, doc, callback){
-	this.cacheService.createPlayer(id, doc, callback)
+pro.createPlayer = function(doc, callback){
+	this.cacheService.createPlayer(doc, callback)
 }
 
 /**
@@ -48,35 +47,32 @@ pro.findPlayer = function(id, callback){
 /**
  * 更新玩家对象
  * @param id
- * @param version
  * @param doc
  * @param callback
  */
-pro.updatePlayer = function(id, version, doc, callback){
-	this.cacheService.updatePlayer(id, version, doc, callback)
+pro.updatePlayer = function(id, doc, callback){
+	this.cacheService.updatePlayer(id, doc, callback)
 }
 
 /**
  * 更新玩家对象并同步到Mongo
  * @param id
- * @param version
  * @param doc
  * @param callback
  */
-pro.flashPlayer = function(id, version, doc, callback){
-	this.cacheService.flashPlayer(id, version, doc, callback)
+pro.flashPlayer = function(id, doc, callback){
+	this.cacheService.flashPlayer(id, doc, callback)
 }
 
 
 
 /**
  * 创建联盟对象
- * @param id
  * @param doc
  * @param callback
  */
-pro.createAlliance = function(id, doc, callback){
-	this.cacheService.createAlliance(id, doc, callback)
+pro.createAlliance = function(doc, callback){
+	this.cacheService.createAlliance(doc, callback)
 }
 
 /**
@@ -100,21 +96,19 @@ pro.findAlliance = function(id, callback){
 /**
  * 更新联盟对象
  * @param id
- * @param version
  * @param doc
  * @param callback
  */
-pro.updateAlliance = function(id, version, doc, callback){
-	this.cacheService.updateAlliance(id, version, doc, callback)
+pro.updateAlliance = function(id, doc, callback){
+	this.cacheService.updateAlliance(id, doc, callback)
 }
 
 /**
  * 更新玩家对象并同步到Mongo
  * @param id
- * @param version
  * @param doc
  * @param callback
  */
-pro.flashAlliance = function(id, version, doc, callback){
-	this.cacheService.flashAlliance(id, version, doc, callback)
+pro.flashAlliance = function(id, doc, callback){
+	this.cacheService.flashAlliance(id, doc, callback)
 }

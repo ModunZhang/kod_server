@@ -4,6 +4,7 @@
  * Created by modun on 14-7-22.
  */
 
+var _ = require("underscore")
 var Promise = require("bluebird")
 
 var ErrorUtils = require("../../../utils/errorUtils")
@@ -29,14 +30,8 @@ var pro = Handler.prototype
  */
 pro.queryEntry = function(msg, session, next){
 	this.logService.onRequest("gate.getHandler.queryEntry", msg)
-	var e = null
-	if(!this.app.get("isReady")){
-		e = ErrorUtils.serverUnderMaintain()
-		next(e, ErrorUtils.getError(e))
-		return
-	}
 
-	var deviceId = msg.get("deviceId")
+	var deviceId = msg.deviceId
 	if(!_.isString(deviceId)){
 		next(e, ErrorUtils.getError(new Error("deviceId 不合法")))
 		return

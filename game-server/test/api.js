@@ -14,24 +14,19 @@ var GameDatas = require("../app/datas/GameDatas")
 var Errors = GameDatas.Errors.errors
 
 
-
-
 Api.loginPlayer = function(deviceId, callback){
 	pomelo.disconnect()
 	pomelo.init({
 		host:Config.gateHost, port:Config.gatePort, log:true
 	}, function(){
 		var route = "gate.gateHandler.queryEntry"
-		pomelo.request(route, null, function(doc){
+		pomelo.request(route, {deviceId:deviceId}, function(doc){
 			pomelo.disconnect()
 			pomelo.init({
 				host:doc.data.host, port:doc.data.port, log:true
 			}, function(){
-				var loginInfo = {
-					deviceId:deviceId
-				}
 				var route = "logic.entryHandler.login"
-				pomelo.request(route, loginInfo, function(doc){
+				pomelo.request(route, {deviceId:deviceId}, function(doc){
 					if(_.isEqual(doc.code, Errors.objectIsLocked.code) || _.isEqual(doc.code, Errors.reLoginNeeded.code)){
 						setTimeout(Api.loginPlayer, 1000, deviceId, callback)
 					}else{
@@ -601,7 +596,7 @@ Api.passSelinasTest = function(callback){
 	pomelo.request(route, null, callback)
 }
 
-Api.getDailyTaskRewards =  function(taskType, callback){
+Api.getDailyTaskRewards = function(taskType, callback){
 	var info = {
 		taskType:taskType
 	}
@@ -609,7 +604,7 @@ Api.getDailyTaskRewards =  function(taskType, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.getGrowUpTaskRewards =  function(taskType, taskId, callback){
+Api.getGrowUpTaskRewards = function(taskType, taskId, callback){
 	var info = {
 		taskType:taskType,
 		taskId:taskId
@@ -618,7 +613,7 @@ Api.getGrowUpTaskRewards =  function(taskType, taskId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.getPlayerRankList =  function(rankType, fromRank, callback){
+Api.getPlayerRankList = function(rankType, fromRank, callback){
 	var info = {
 		rankType:rankType,
 		fromRank:fromRank
@@ -627,7 +622,7 @@ Api.getPlayerRankList =  function(rankType, fromRank, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.getAllianceRankList =  function(rankType, fromRank, callback){
+Api.getAllianceRankList = function(rankType, fromRank, callback){
 	var info = {
 		rankType:rankType,
 		fromRank:fromRank
@@ -656,7 +651,6 @@ Api.switchServer = function(serverId, callback){
 	var route = "logic.playerHandler.switchServer"
 	pomelo.request(route, info, callback)
 }
-
 
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
