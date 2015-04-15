@@ -1545,7 +1545,7 @@ Utils.youHadSendTroopToTheShrineStage = function(playerId, allianceId, stageName
  * @param allianceId
  */
 Utils.allianceInFightStatus = function(playerId, allianceId){
-	var config = Errors.youHadSendTroopToTheShrineStage
+	var config = Errors.allianceInFightStatus
 	return CreateError(config, {playerId:playerId, allianceId:allianceId})
 }
 
