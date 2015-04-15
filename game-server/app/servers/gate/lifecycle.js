@@ -29,5 +29,5 @@ life.beforeShutdown = function(app, callback){
 }
 
 life.afterStartAll = function(app){
-	app.get("gateService").start()
+	app.get("gateService").init()
 }

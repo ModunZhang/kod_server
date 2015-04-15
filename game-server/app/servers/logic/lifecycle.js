@@ -39,11 +39,6 @@ life.beforeStartup = function(app, callback){
 	app.set("GemAdd", Promise.promisifyAll(GemAdd))
 
 	app.set("logService", Promise.promisifyAll(new LogService(app)))
-
-	callback()
-}
-
-life.afterStartup = function(app, callback){
 	app.set("channelService", Promise.promisifyAll(app.get("channelService")))
 	app.set("apnService", new ApnService(app))
 	app.set("dataService", Promise.promisifyAll(new DataService(app)))
@@ -63,6 +58,13 @@ life.afterStartup = function(app, callback){
 	app.set("allianceApiService4", Promise.promisifyAll(new AllianceApiService4(app)))
 	app.set("allianceApiService5", Promise.promisifyAll(new AllianceApiService5(app)))
 
+	console.log(app.getCurServer(), "11111111111111")
+	console.log(app.getServersByType())
+
+	callback()
+}
+
+life.afterStartup = function(app, callback){
 	var logicServer = app.getCurServer()
 	var chatServer = _.find(app.getServersByType("chat"), function(server){
 		return _.isEqual(logicServer.usedFor, server.usedFor)

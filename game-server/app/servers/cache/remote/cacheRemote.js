@@ -7,7 +7,7 @@
 var Consts = require("../../../consts/consts")
 
 module.exports = function(app) {
-	return new ChatRemote(app)
+	return new CacheRemote(app)
 }
 
 var CacheRemote = function(app) {

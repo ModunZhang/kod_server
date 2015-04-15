@@ -19,7 +19,6 @@ var ChatHandler = function(app){
 	this.env = app.get("env")
 	this.channelService = app.get("channelService")
 	this.logService = app.get("logService")
-	this.globalChatChannel = this.channelService.getChannel(Consts.GlobalChatChannel)
 	this.chats = []
 	this.maxChatCount = 50
 	this.commands = [

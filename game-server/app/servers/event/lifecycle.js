@@ -17,14 +17,14 @@ var life = module.exports
 
 life.beforeStartup = function(app, callback){
 	app.set("logService", Promise.promisifyAll(new LogService(app)))
-	callback()
-}
-
-life.afterStartup = function(app, callback){
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))
 	app.set("dataService", Promise.promisifyAll(new DataService(app)))
 	app.set("playerTimeEventService", Promise.promisifyAll(new PlayerTimeEventService(app)))
 	app.set("allianceTimeEventService", Promise.promisifyAll(new AllianceTimeEventService(app)))
+	callback()
+}
+
+life.afterStartup = function(app, callback){
 	callback()
 }
 

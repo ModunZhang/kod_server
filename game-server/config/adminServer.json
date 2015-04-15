@@ -1,26 +1,22 @@
 [
-	{
-		"type":"gate",
-		"token":"x8d4oTiN59vwOnoxWDxL"
-	},
-	{
-		"type":"front",
-		"token":"y86W18XiVaxNrmYB0Kqy"
-	},
-	{
-		"type":"logic",
-		"token":"hqZHlSR9edKiKNyAz8oi"
-	},
-	{
-		"type":"chat",
-		"token":"w8WDmWioU3uYywMEzElD"
-	},
-	{
-		"type":"event",
-		"token":"IeuEyUbGurFjWX9UKf43"
-	},
-	{
-		"type":"time",
-		"token":"SS9LEcxHBjvYFlOCV9Qd"
-	}
+  {
+    "type": "gate",
+    "token": "x8d4oTiN59vwOnoxWDxL"
+  },
+  {
+    "type": "chat",
+    "token": "w8WDmWioU3uYywMEzElD"
+  },
+  {
+    "type": "logic",
+    "token": "hqZHlSR9edKiKNyAz8oi"
+  },
+  {
+    "type": "event",
+    "token": "IeuEyUbGurFjWX9UKf43"
+  },
+  {
+    "type": "cache",
+    "token": "SS9LEcxHBjvYFlOCV9Qd"
+  }
 ]

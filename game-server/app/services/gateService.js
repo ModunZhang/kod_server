@@ -20,7 +20,7 @@ var pro = GateService.prototype
 /**
  * 启动
  */
-pro.start = function(){
+pro.init = function(){
 	var self = this
 	var getOnlineUser = function(logicServer, callback){
 		self.app.rpc.logic.logicRemote.getOnlineUser.toServer(logicServer.id, function(e, count){
