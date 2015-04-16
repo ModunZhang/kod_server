@@ -18,6 +18,7 @@ var Handler = function(app){
 	this.logService = app.get("logService")
 	this.gateService = app.get("gateService")
 	this.Player = app.get("Player")
+	this.Device = app.get("Device")
 }
 
 var pro = Handler.prototype
@@ -38,9 +39,11 @@ pro.queryEntry = function(msg, session, next){
 	}
 
 	var self = this
-	this.Player.findByIdAsync(deviceId).then(function(doc){
+	this.Device.findByIdAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
-			return Promise.resolve(doc.serverId)
+			return self.Player.findByIdAsync(doc.playerId).then(function(doc){
+				return Promise.resolve(doc.serverId)
+			})
 		}else{
 			return Promise.resolve(self.gateService.getPromotedServer().id)
 		}
@@ -51,7 +54,6 @@ pro.queryEntry = function(msg, session, next){
 			host:logicServer.outHost,
 			port:logicServer.clientPort
 		}
-
 		next(null, {data:data, code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

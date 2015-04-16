@@ -35,7 +35,6 @@ var pro = Handler.prototype
 
 var BindPlayerSession = function(session, deviceId, playerDoc, callback){
 	session.bind(playerDoc._id)
-	session.set("serverId", playerDoc.serverId)
 	session.set("deviceId", deviceId)
 	session.set("logicServerId", playerDoc.logicServerId)
 	session.set("chatServerId", this.chatServerId)
@@ -191,7 +190,7 @@ pro.login = function(msg, session, next){
 	var allianceDoc = null
 	var enemyAllianceDoc = null
 
-	this.playerApiService.playerLoginAsync(deviceId, self.serverId).spread(function(doc_1, doc_2, doc_3){
+	this.playerApiService.playerLoginAsync(deviceId, self.logicServerId).spread(function(doc_1, doc_2, doc_3){
 		playerDoc = doc_1
 		allianceDoc = doc_2
 		enemyAllianceDoc = doc_3

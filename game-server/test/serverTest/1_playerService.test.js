@@ -10,10 +10,8 @@ var should = require('should')
 
 var Consts = require("../../app/consts/consts")
 var Config = require("../config")
-var Deal = Promise.promisifyAll(require("../../app/domains/deal"))
-var Billing = Promise.promisifyAll(require("../../app/domains/billing"))
+var Device = Promise.promisifyAll(require("../../app/domains/device"))
 var Player = Promise.promisifyAll(require("../../app/domains/player"))
-var GemUse = Promise.promisifyAll(require("../../app/domains/gemUse"))
 var Alliance = Promise.promisifyAll(require("../../app/domains/alliance"))
 var Api = require("../api")
 var GameDatas = require("../../app/datas/GameDatas")
@@ -24,14 +22,10 @@ describe("PlayerService", function(){
 
 	before(function(done){
 		mongoose.connect(Config.mongoAddr, function(){
-			Player.removeAsync().then(function(){
+			Device.removeAsync().then(function(){
+				return Player.removeAsync()
+			}).then(function(){
 				return Alliance.removeAsync()
-			}).then(function(){
-				return Deal.removeAsync()
-			}).then(function(){
-				return Billing.removeAsync()
-			}).then(function(){
-				return GemUse.removeAsync()
 			}).then(function(){
 				done()
 			})

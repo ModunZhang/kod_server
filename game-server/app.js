@@ -20,6 +20,7 @@ var app = pomelo.createApp()
 app.set("name", "KODServer")
 
 app.route("chat", RouteUtils.chat)
+app.route("logic", RouteUtils.logic)
 
 app.configure("production|development", function() {
 	//app.set('proxyConfig', {

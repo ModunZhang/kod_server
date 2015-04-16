@@ -203,12 +203,12 @@
     }
   ],
   "levels": {
-    "rpc-log": "DEBUG",
-    "forward-log": "DEBUG",
-    "con-log": "DEBUG",
-    "rpc-debug": "DEBUG",
-    "crash-log": "DEBUG",
-    "admin-log": "DEBUG",
+    "rpc-log": "WARN",
+    "forward-log": "WARN",
+    "con-log": "WARN",
+    "rpc-debug": "WARN",
+    "crash-log": "WARN",
+    "admin-log": "WARN",
     "pomelo": "DEBUG",
     "pomelo-admin": "DEBUG",
     "pomelo-rpc": "DEBUG",

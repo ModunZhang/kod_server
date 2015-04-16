@@ -26,6 +26,7 @@ var PlayerApiService = function(app){
 	this.logService = app.get("logService")
 	this.dataService = app.get("dataService")
 	this.GemUse = app.get("GemUse")
+	this.Device = app.get("Device")
 }
 module.exports = PlayerApiService
 var pro = PlayerApiService.prototype
@@ -53,17 +54,20 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 	var pushFuncs = []
 	var memberDocInAlliance = null
 	var vipExpAdd = null
-	this.dataService.findPlayerAsync(deviceId).then(function(doc){
+
+	this.Device.findByIdAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
-			playerDoc = doc
-			return Promise.resolve()
+			return self.dataService.findPlayerAsync(doc.playerId)
 		}else{
-			var player = LogicUtils.createPlayer(deviceId, self.app.get("cacheServerId"))
-			return self.dataService.createPlayerAsync(player).then(function(doc){
-				playerDoc = doc
+			var playerId = ShortId.generate()
+			var device = LogicUtils.createDevice(deviceId, playerId)
+			var player = LogicUtils.createPlayer(playerId, self.app.get("cacheServerId"))
+			return self.Device.createAsync(device).then(function(){
+				return self.dataService.createPlayerAsync(player)
 			})
 		}
-	}).then(function(){
+	}).then(function(doc){
+		playerDoc = doc
 		if(!_.isEmpty(playerDoc.logicServerId)){
 			var kickPlayerAsync = function(playerDoc){
 				return self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "其他设备正使用此账号登录", function(e){

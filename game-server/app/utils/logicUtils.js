@@ -2193,32 +2193,32 @@ Utils.addPlayerResources = function(playerDoc, resources){
 }
 
 /**
- * 创建玩家
+ * 创建一个设备
  * @param deviceId
+ * @param playerId
+ * @returns {{_id: *, playerId: *}}
+ */
+Utils.createDevice = function(deviceId, playerId){
+	var device = {
+		_id:deviceId,
+		playerId:playerId
+	}
+	return device
+}
+
+/**
+ * 创建玩家
+ * @param playerId
  * @param serverId
  */
-Utils.createPlayer = function(deviceId, serverId){
+Utils.createPlayer = function(playerId, serverId){
 	var name = ShortId.generate()
 	var player = {
-		_id:deviceId,
+		_id:playerId,
 		serverId:serverId,
 		basicInfo:{name:"player_" + name, cityName:"city_" + name}
 	}
 	return player
-}
-
-/**
- * 创建一个设备
- * @param deviceId
- * @param userId
- * @returns {{_id: *, userId: *}}
- */
-Utils.createDevice = function(deviceId, userId){
-	var device = {
-		_id:deviceId,
-		userId:userId
-	}
-	return device
 }
 
 /**

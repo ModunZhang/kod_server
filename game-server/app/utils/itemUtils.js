@@ -646,622 +646,6 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 }
 
 /**
- * 道具和方法的映射
- */
-var ItemNameFunctionMap = {
-	movingConstruction:function(itemData, playerDoc, playerData){
-		var fromBuildingLocation = itemData.fromBuildingLocation
-		var fromHouseLocation = itemData.fromHouseLocation
-		var toBuildingLocation = itemData.toBuildingLocation
-		var toHouseLocation = itemData.toHouseLocation
-		return MovingConstruction(playerDoc, playerData, fromBuildingLocation, fromHouseLocation, toBuildingLocation, toHouseLocation)
-	},
-	torch:function(itemData, playerDoc, playerData){
-		var buildingLocation = itemData.buildingLocation
-		var houseLocation = itemData.houseLocation
-		return Torch(playerDoc, playerData, buildingLocation, houseLocation)
-	},
-	changePlayerName:function(itemData, playerDoc, playerData, playerDao){
-		var playerName = itemData.playerName
-		return ChangePlayerName(playerDoc, playerData, playerName, playerDao)
-	},
-	changeCityName:function(itemData, playerDoc, playerData){
-		var cityName = itemData.cityName
-		return ChangeCityName(playerDoc, playerData, cityName)
-	},
-	retreatTroop:function(itemData, playerDoc, playerData, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
-		var eventType = itemData.eventType
-		var eventId = itemData.eventId
-		return RetreatTroop(playerDoc, playerData, eventType, eventId, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService)
-	},
-	moveTheCity:function(itemData, playerDoc, playerData, allianceDao, updateFuncs, pushFuncs, pushService){
-		var locationX = itemData.locationX
-		var locationY = itemData.locationY
-		return MoveTheCity(playerDoc, playerData, locationX, locationY, allianceDao, updateFuncs, pushFuncs, pushService)
-	},
-	dragonExp_1:function(itemData, playerDoc, playerData){
-		var dragonType = itemData.dragonType
-		var itemConfig = Items.special.dragonExp_1
-		return DragonExp(playerDoc, playerData, dragonType, itemConfig)
-	},
-	dragonExp_2:function(itemData, playerDoc, playerData){
-		var dragonType = itemData.dragonType
-		var itemConfig = Items.special.dragonExp_2
-		return DragonExp(playerDoc, playerData, dragonType, itemConfig)
-	},
-	dragonExp_3:function(itemData, playerDoc, playerData){
-		var dragonType = itemData.dragonType
-		var itemConfig = Items.special.dragonExp_3
-		return DragonExp(playerDoc, playerData, dragonType, itemConfig)
-	},
-	dragonHp_1:function(itemData, playerDoc, playerData){
-		var dragonType = itemData.dragonType
-		var itemConfig = Items.special.dragonHp_1
-		return DragonHp(playerDoc, playerData, dragonType, itemConfig)
-	},
-	dragonHp_2:function(itemData, playerDoc, playerData){
-		var dragonType = itemData.dragonType
-		var itemConfig = Items.special.dragonHp_2
-		return DragonHp(playerDoc, playerData, dragonType, itemConfig)
-	},
-	dragonHp_3:function(itemData, playerDoc, playerData){
-		var dragonType = itemData.dragonType
-		var itemConfig = Items.special.dragonHp_3
-		return DragonHp(playerDoc, playerData, dragonType, itemConfig)
-	},
-	heroBlood_1:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.heroBlood_1
-		return HeroBlood(playerDoc, playerData, itemConfig)
-	},
-	heroBlood_2:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.heroBlood_2
-		return HeroBlood(playerDoc, playerData, itemConfig)
-	},
-	heroBlood_3:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.heroBlood_3
-		return HeroBlood(playerDoc, playerData, itemConfig)
-	},
-	stamina_1:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.stamina_1
-		return Stamina(playerDoc, playerData, itemConfig)
-	},
-	stamina_2:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.stamina_2
-		return Stamina(playerDoc, playerData, itemConfig)
-	},
-	stamina_3:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.stamina_3
-		return Stamina(playerDoc, playerData, itemConfig)
-	},
-	restoreWall_1:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.restoreWall_1
-		return RestoreWallHp(playerDoc, playerData, itemConfig)
-	},
-	restoreWall_2:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.restoreWall_2
-		return RestoreWallHp(playerDoc, playerData, itemConfig)
-	},
-	restoreWall_3:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.restoreWall_3
-		return RestoreWallHp(playerDoc, playerData, itemConfig)
-	},
-	dragonChest_1:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.dragonChest_1
-		return DragonChest(playerDoc, playerData, itemConfig)
-	},
-	dragonChest_2:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.dragonChest_2
-		return DragonChest(playerDoc, playerData, itemConfig)
-	},
-	dragonChest_3:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.dragonChest_3
-		return DragonChest(playerDoc, playerData, itemConfig)
-	},
-	chest_1:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.chest_1
-		return Chest(playerDoc, playerData, itemConfig)
-	},
-	chest_2:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.chest_2
-		return Chest(playerDoc, playerData, itemConfig)
-	},
-	chest_3:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.chest_3
-		return Chest(playerDoc, playerData, itemConfig)
-	},
-	chest_4:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.special.chest_4
-		return Chest(playerDoc, playerData, itemConfig)
-	},
-	vipActive_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.special.vipActive_1
-		return VipActive(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	vipActive_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.special.vipActive_2
-		return VipActive(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	vipActive_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.special.vipActive_3
-		return VipActive(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	vipActive_4:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.special.vipActive_4
-		return VipActive(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	vipActive_5:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.special.vipActive_5
-		return VipActive(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	vipPoint_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.special.vipPoint_1
-		return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	vipPoint_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.special.vipPoint_2
-		return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	vipPoint_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.special.vipPoint_3
-		return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	vipPoint_4:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.special.vipPoint_4
-		return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	masterOfDefender_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.masterOfDefender_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	masterOfDefender_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.masterOfDefender_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	masterOfDefender_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.masterOfDefender_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	quarterMaster_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.quarterMaster_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	quarterMaster_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.quarterMaster_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	quarterMaster_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.quarterMaster_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	fogOfTrick_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.fogOfTrick_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	fogOfTrick_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.fogOfTrick_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	fogOfTrick_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.fogOfTrick_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	woodBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.woodBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	woodBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.woodBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	woodBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.woodBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	stoneBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.stoneBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	stoneBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.stoneBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	stoneBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.stoneBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	ironBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.ironBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	ironBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.ironBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	ironBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.ironBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	foodBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.foodBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	foodBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.foodBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	foodBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.foodBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	coinBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.coinBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	coinBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.coinBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	coinBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.coinBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	citizenBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.citizenBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	citizenBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.citizenBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	citizenBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.citizenBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	dragonExpBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.dragonExpBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	dragonExpBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.dragonExpBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	dragonExpBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.dragonExpBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	troopSizeBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.troopSizeBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	troopSizeBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.troopSizeBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	troopSizeBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.troopSizeBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	dragonHpBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.dragonHpBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	dragonHpBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.dragonHpBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	dragonHpBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.dragonHpBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	marchSpeedBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.marchSpeedBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	marchSpeedBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.marchSpeedBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	marchSpeedBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.marchSpeedBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	unitHpBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.unitHpBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	unitHpBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.unitHpBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	unitHpBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.unitHpBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	infantryAtkBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.infantryAtkBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	infantryAtkBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.infantryAtkBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	infantryAtkBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.infantryAtkBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	archerAtkBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.archerAtkBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	archerAtkBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.archerAtkBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	archerAtkBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.archerAtkBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	cavalryAtkBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.cavalryAtkBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	cavalryAtkBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.cavalryAtkBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	cavalryAtkBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.cavalryAtkBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	siegeAtkBonus_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.siegeAtkBonus_1
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	siegeAtkBonus_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.siegeAtkBonus_2
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	siegeAtkBonus_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService){
-		var itemConfig = Items.buff.siegeAtkBonus_3
-		return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-	},
-	woodClass_1:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.woodClass_1
-		return Resource(playerDoc, playerData, itemConfig, "wood")
-	},
-	woodClass_2:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.woodClass_2
-		return Resource(playerDoc, playerData, itemConfig, "wood")
-	},
-	woodClass_3:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.woodClass_3
-		return Resource(playerDoc, playerData, itemConfig, "wood")
-	},
-	woodClass_4:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.woodClass_4
-		return Resource(playerDoc, playerData, itemConfig, "wood")
-	},
-	woodClass_5:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.woodClass_5
-		return Resource(playerDoc, playerData, itemConfig, "wood")
-	},
-	woodClass_6:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.woodClass_6
-		return Resource(playerDoc, playerData, itemConfig, "wood")
-	},
-	woodClass_7:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.woodClass_7
-		return Resource(playerDoc, playerData, itemConfig, "wood")
-	},
-	stoneClass_1:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.stoneClass_1
-		return Resource(playerDoc, playerData, itemConfig, "stone")
-	},
-	stoneClass_2:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.stoneClass_2
-		return Resource(playerDoc, playerData, itemConfig, "stone")
-	},
-	stoneClass_3:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.stoneClass_3
-		return Resource(playerDoc, playerData, itemConfig, "stone")
-	},
-	stoneClass_4:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.stoneClass_4
-		return Resource(playerDoc, playerData, itemConfig, "stone")
-	},
-	stoneClass_5:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.stoneClass_5
-		return Resource(playerDoc, playerData, itemConfig, "stone")
-	},
-	stoneClass_6:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.stoneClass_6
-		return Resource(playerDoc, playerData, itemConfig, "stone")
-	},
-	stoneClass_7:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.stoneClass_7
-		return Resource(playerDoc, playerData, itemConfig, "stone")
-	},
-	ironClass_1:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.ironClass_1
-		return Resource(playerDoc, playerData, itemConfig, "iron")
-	},
-	ironClass_2:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.ironClass_2
-		return Resource(playerDoc, playerData, itemConfig, "iron")
-	},
-	ironClass_3:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.ironClass_3
-		return Resource(playerDoc, playerData, itemConfig, "iron")
-	},
-	ironClass_4:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.ironClass_4
-		return Resource(playerDoc, playerData, itemConfig, "iron")
-	},
-	ironClass_5:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.ironClass_5
-		return Resource(playerDoc, playerData, itemConfig, "iron")
-	},
-	ironClass_6:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.ironClass_6
-		return Resource(playerDoc, playerData, itemConfig, "iron")
-	},
-	ironClass_7:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.ironClass_7
-		return Resource(playerDoc, playerData, itemConfig, "iron")
-	},
-	foodClass_1:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.foodClass_1
-		return Resource(playerDoc, playerData, itemConfig, "food")
-	},
-	foodClass_2:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.foodClass_2
-		return Resource(playerDoc, playerData, itemConfig, "food")
-	},
-	foodClass_3:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.foodClass_3
-		return Resource(playerDoc, playerData, itemConfig, "food")
-	},
-	foodClass_4:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.foodClass_4
-		return Resource(playerDoc, playerData, itemConfig, "food")
-	},
-	foodClass_5:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.foodClass_5
-		return Resource(playerDoc, playerData, itemConfig, "food")
-	},
-	foodClass_6:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.foodClass_6
-		return Resource(playerDoc, playerData, itemConfig, "food")
-	},
-	foodClass_7:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.foodClass_7
-		return Resource(playerDoc, playerData, itemConfig, "food")
-	},
-	coinClass_1:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.coinClass_1
-		return Resource(playerDoc, playerData, itemConfig, "coin")
-	},
-	coinClass_2:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.coinClass_2
-		return Resource(playerDoc, playerData, itemConfig, "coin")
-	},
-	coinClass_3:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.coinClass_3
-		return Resource(playerDoc, playerData, itemConfig, "coin")
-	},
-	coinClass_4:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.coinClass_4
-		return Resource(playerDoc, playerData, itemConfig, "coin")
-	},
-	coinClass_5:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.coinClass_5
-		return Resource(playerDoc, playerData, itemConfig, "coin")
-	},
-	coinClass_6:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.coinClass_6
-		return Resource(playerDoc, playerData, itemConfig, "coin")
-	},
-	citizenClass_1:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.citizenClass_1
-		return Resource(playerDoc, playerData, itemConfig, "citizen")
-	},
-	citizenClass_2:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.citizenClass_2
-		return Resource(playerDoc, playerData, itemConfig, "citizen")
-	},
-	citizenClass_3:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.citizenClass_3
-		return Resource(playerDoc, playerData, itemConfig, "citizen")
-	},
-	casinoTokenClass_1:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.casinoTokenClass_1
-		return Resource(playerDoc, playerData, itemConfig, "casinoToken")
-	},
-	casinoTokenClass_2:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.casinoTokenClass_2
-		return Resource(playerDoc, playerData, itemConfig, "casinoToken")
-	},
-	casinoTokenClass_3:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.casinoTokenClass_3
-		return Resource(playerDoc, playerData, itemConfig, "casinoToken")
-	},
-	casinoTokenClass_4:function(itemData, playerDoc, playerData){
-		var itemConfig = Items.resource.casinoTokenClass_4
-		return Resource(playerDoc, playerData, itemConfig, "casinoToken")
-	},
-	speedup_1:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
-		var itemConfig = Items.speedup.speedup_1
-		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
-		var eventType = itemData.eventType
-		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
-	},
-	speedup_2:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
-		var itemConfig = Items.speedup.speedup_2
-		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
-		var eventType = itemData.eventType
-		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
-	},
-	speedup_3:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
-		var itemConfig = Items.speedup.speedup_3
-		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
-		var eventType = itemData.eventType
-		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
-	},
-	speedup_4:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
-		var itemConfig = Items.speedup.speedup_4
-		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
-		var eventType = itemData.eventType
-		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
-	},
-	speedup_5:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
-		var itemConfig = Items.speedup.speedup_5
-		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
-		var eventType = itemData.eventType
-		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
-	},
-	speedup_6:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
-		var itemConfig = Items.speedup.speedup_6
-		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
-		var eventType = itemData.eventType
-		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
-	},
-	speedup_7:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
-		var itemConfig = Items.speedup.speedup_7
-		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
-		var eventType = itemData.eventType
-		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
-	},
-	speedup_8:function(itemData, playerDoc, playerData, eventFuncs, timeEventService, playerTimeEventService){
-		var itemConfig = Items.speedup.speedup_8
-		var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
-		var eventType = itemData.eventType
-		var eventId = itemData.eventId
-		return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
-	},
-	warSpeedupClass_1:function(itemData, playerDoc, playerData, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
-		var itemConfig = Items.speedup.warSpeedupClass_1
-		var speedupPercent = itemConfig.effect
-		var eventType = itemData.eventType
-		var eventId = itemData.eventId
-		return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService)
-	},
-	warSpeedupClass_2:function(itemData, playerDoc, playerData, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
-		var itemConfig = Items.speedup.warSpeedupClass_2
-		var speedupPercent = itemConfig.effect
-		var eventType = itemData.eventType
-		var eventId = itemData.eventId
-		return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService)
-	}
-}
-
-/**
  * 参数是否合法
  * @param itemName
  * @param params
@@ -1350,10 +734,632 @@ Utils.isParamsLegal = function(itemName, params){
 }
 
 /**
- * 获取道具调用方法名
+ * 使用道具
  * @param itemName
+ * @param itemData
+ * @param playerDoc
+ * @param playerData
+ * @param dataService
+ * @param updateFuncs
+ * @param eventFuncs
+ * @param pushFuncs
+ * @param pushService
+ * @param timeEventService
+ * @param playerTimeEventService
  * @returns {*}
  */
-Utils.getItemNameFunction = function(itemName){
-	return ItemNameFunctionMap[itemName]
+Utils.useItem = function(itemName, itemData, playerDoc, playerData, dataService, updateFuncs, eventFuncs, pushFuncs, pushService, timeEventService, playerTimeEventService){
+	var functionMap = {
+		movingConstruction:function(){
+			var fromBuildingLocation = itemData.fromBuildingLocation
+			var fromHouseLocation = itemData.fromHouseLocation
+			var toBuildingLocation = itemData.toBuildingLocation
+			var toHouseLocation = itemData.toHouseLocation
+			return MovingConstruction(playerDoc, playerData, fromBuildingLocation, fromHouseLocation, toBuildingLocation, toHouseLocation)
+		},
+		torch:function(){
+			var buildingLocation = itemData.buildingLocation
+			var houseLocation = itemData.houseLocation
+			return Torch(playerDoc, playerData, buildingLocation, houseLocation)
+		},
+		changePlayerName:function(){
+			var playerName = itemData.playerName
+			return ChangePlayerName(playerDoc, playerData, playerName, playerDao)
+		},
+		changeCityName:function(){
+			var cityName = itemData.cityName
+			return ChangeCityName(playerDoc, playerData, cityName)
+		},
+		retreatTroop:function(){
+			var eventType = itemData.eventType
+			var eventId = itemData.eventId
+			return RetreatTroop(playerDoc, playerData, eventType, eventId, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService)
+		},
+		moveTheCity:function(){
+			var locationX = itemData.locationX
+			var locationY = itemData.locationY
+			return MoveTheCity(playerDoc, playerData, locationX, locationY, allianceDao, updateFuncs, pushFuncs, pushService)
+		},
+		dragonExp_1:function(){
+			var dragonType = itemData.dragonType
+			var itemConfig = Items.special.dragonExp_1
+			return DragonExp(playerDoc, playerData, dragonType, itemConfig)
+		},
+		dragonExp_2:function(){
+			var dragonType = itemData.dragonType
+			var itemConfig = Items.special.dragonExp_2
+			return DragonExp(playerDoc, playerData, dragonType, itemConfig)
+		},
+		dragonExp_3:function(){
+			var dragonType = itemData.dragonType
+			var itemConfig = Items.special.dragonExp_3
+			return DragonExp(playerDoc, playerData, dragonType, itemConfig)
+		},
+		dragonHp_1:function(){
+			var dragonType = itemData.dragonType
+			var itemConfig = Items.special.dragonHp_1
+			return DragonHp(playerDoc, playerData, dragonType, itemConfig)
+		},
+		dragonHp_2:function(){
+			var dragonType = itemData.dragonType
+			var itemConfig = Items.special.dragonHp_2
+			return DragonHp(playerDoc, playerData, dragonType, itemConfig)
+		},
+		dragonHp_3:function(){
+			var dragonType = itemData.dragonType
+			var itemConfig = Items.special.dragonHp_3
+			return DragonHp(playerDoc, playerData, dragonType, itemConfig)
+		},
+		heroBlood_1:function(){
+			var itemConfig = Items.special.heroBlood_1
+			return HeroBlood(playerDoc, playerData, itemConfig)
+		},
+		heroBlood_2:function(){
+			var itemConfig = Items.special.heroBlood_2
+			return HeroBlood(playerDoc, playerData, itemConfig)
+		},
+		heroBlood_3:function(){
+			var itemConfig = Items.special.heroBlood_3
+			return HeroBlood(playerDoc, playerData, itemConfig)
+		},
+		stamina_1:function(){
+			var itemConfig = Items.special.stamina_1
+			return Stamina(playerDoc, playerData, itemConfig)
+		},
+		stamina_2:function(){
+			var itemConfig = Items.special.stamina_2
+			return Stamina(playerDoc, playerData, itemConfig)
+		},
+		stamina_3:function(){
+			var itemConfig = Items.special.stamina_3
+			return Stamina(playerDoc, playerData, itemConfig)
+		},
+		restoreWall_1:function(){
+			var itemConfig = Items.special.restoreWall_1
+			return RestoreWallHp(playerDoc, playerData, itemConfig)
+		},
+		restoreWall_2:function(){
+			var itemConfig = Items.special.restoreWall_2
+			return RestoreWallHp(playerDoc, playerData, itemConfig)
+		},
+		restoreWall_3:function(){
+			var itemConfig = Items.special.restoreWall_3
+			return RestoreWallHp(playerDoc, playerData, itemConfig)
+		},
+		dragonChest_1:function(){
+			var itemConfig = Items.special.dragonChest_1
+			return DragonChest(playerDoc, playerData, itemConfig)
+		},
+		dragonChest_2:function(){
+			var itemConfig = Items.special.dragonChest_2
+			return DragonChest(playerDoc, playerData, itemConfig)
+		},
+		dragonChest_3:function(){
+			var itemConfig = Items.special.dragonChest_3
+			return DragonChest(playerDoc, playerData, itemConfig)
+		},
+		chest_1:function(){
+			var itemConfig = Items.special.chest_1
+			return Chest(playerDoc, playerData, itemConfig)
+		},
+		chest_2:function(){
+			var itemConfig = Items.special.chest_2
+			return Chest(playerDoc, playerData, itemConfig)
+		},
+		chest_3:function(){
+			var itemConfig = Items.special.chest_3
+			return Chest(playerDoc, playerData, itemConfig)
+		},
+		chest_4:function(){
+			var itemConfig = Items.special.chest_4
+			return Chest(playerDoc, playerData, itemConfig)
+		},
+		vipActive_1:function(){
+			var itemConfig = Items.special.vipActive_1
+			return VipActive(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		vipActive_2:function(){
+			var itemConfig = Items.special.vipActive_2
+			return VipActive(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		vipActive_3:function(){
+			var itemConfig = Items.special.vipActive_3
+			return VipActive(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		vipActive_4:function(){
+			var itemConfig = Items.special.vipActive_4
+			return VipActive(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		vipActive_5:function(){
+			var itemConfig = Items.special.vipActive_5
+			return VipActive(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		vipPoint_1:function(){
+			var itemConfig = Items.special.vipPoint_1
+			return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		vipPoint_2:function(){
+			var itemConfig = Items.special.vipPoint_2
+			return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		vipPoint_3:function(){
+			var itemConfig = Items.special.vipPoint_3
+			return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		vipPoint_4:function(){
+			var itemConfig = Items.special.vipPoint_4
+			return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		masterOfDefender_1:function(){
+			var itemConfig = Items.buff.masterOfDefender_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		masterOfDefender_2:function(){
+			var itemConfig = Items.buff.masterOfDefender_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		masterOfDefender_3:function(){
+			var itemConfig = Items.buff.masterOfDefender_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		quarterMaster_1:function(){
+			var itemConfig = Items.buff.quarterMaster_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		quarterMaster_2:function(){
+			var itemConfig = Items.buff.quarterMaster_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		quarterMaster_3:function(){
+			var itemConfig = Items.buff.quarterMaster_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		fogOfTrick_1:function(){
+			var itemConfig = Items.buff.fogOfTrick_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		fogOfTrick_2:function(){
+			var itemConfig = Items.buff.fogOfTrick_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		fogOfTrick_3:function(){
+			var itemConfig = Items.buff.fogOfTrick_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		woodBonus_1:function(){
+			var itemConfig = Items.buff.woodBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		woodBonus_2:function(){
+			var itemConfig = Items.buff.woodBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		woodBonus_3:function(){
+			var itemConfig = Items.buff.woodBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		stoneBonus_1:function(){
+			var itemConfig = Items.buff.stoneBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		stoneBonus_2:function(){
+			var itemConfig = Items.buff.stoneBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		stoneBonus_3:function(){
+			var itemConfig = Items.buff.stoneBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		ironBonus_1:function(){
+			var itemConfig = Items.buff.ironBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		ironBonus_2:function(){
+			var itemConfig = Items.buff.ironBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		ironBonus_3:function(){
+			var itemConfig = Items.buff.ironBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		foodBonus_1:function(){
+			var itemConfig = Items.buff.foodBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		foodBonus_2:function(){
+			var itemConfig = Items.buff.foodBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		foodBonus_3:function(){
+			var itemConfig = Items.buff.foodBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		coinBonus_1:function(){
+			var itemConfig = Items.buff.coinBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		coinBonus_2:function(){
+			var itemConfig = Items.buff.coinBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		coinBonus_3:function(){
+			var itemConfig = Items.buff.coinBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		citizenBonus_1:function(){
+			var itemConfig = Items.buff.citizenBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		citizenBonus_2:function(){
+			var itemConfig = Items.buff.citizenBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		citizenBonus_3:function(){
+			var itemConfig = Items.buff.citizenBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		dragonExpBonus_1:function(){
+			var itemConfig = Items.buff.dragonExpBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		dragonExpBonus_2:function(){
+			var itemConfig = Items.buff.dragonExpBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		dragonExpBonus_3:function(){
+			var itemConfig = Items.buff.dragonExpBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		troopSizeBonus_1:function(){
+			var itemConfig = Items.buff.troopSizeBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		troopSizeBonus_2:function(){
+			var itemConfig = Items.buff.troopSizeBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		troopSizeBonus_3:function(){
+			var itemConfig = Items.buff.troopSizeBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		dragonHpBonus_1:function(){
+			var itemConfig = Items.buff.dragonHpBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		dragonHpBonus_2:function(){
+			var itemConfig = Items.buff.dragonHpBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		dragonHpBonus_3:function(){
+			var itemConfig = Items.buff.dragonHpBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		marchSpeedBonus_1:function(){
+			var itemConfig = Items.buff.marchSpeedBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		marchSpeedBonus_2:function(){
+			var itemConfig = Items.buff.marchSpeedBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		marchSpeedBonus_3:function(){
+			var itemConfig = Items.buff.marchSpeedBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		unitHpBonus_1:function(){
+			var itemConfig = Items.buff.unitHpBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		unitHpBonus_2:function(){
+			var itemConfig = Items.buff.unitHpBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		unitHpBonus_3:function(){
+			var itemConfig = Items.buff.unitHpBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		infantryAtkBonus_1:function(){
+			var itemConfig = Items.buff.infantryAtkBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		infantryAtkBonus_2:function(){
+			var itemConfig = Items.buff.infantryAtkBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		infantryAtkBonus_3:function(){
+			var itemConfig = Items.buff.infantryAtkBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		archerAtkBonus_1:function(){
+			var itemConfig = Items.buff.archerAtkBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		archerAtkBonus_2:function(){
+			var itemConfig = Items.buff.archerAtkBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		archerAtkBonus_3:function(){
+			var itemConfig = Items.buff.archerAtkBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		cavalryAtkBonus_1:function(){
+			var itemConfig = Items.buff.cavalryAtkBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		cavalryAtkBonus_2:function(){
+			var itemConfig = Items.buff.cavalryAtkBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		cavalryAtkBonus_3:function(){
+			var itemConfig = Items.buff.cavalryAtkBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		siegeAtkBonus_1:function(){
+			var itemConfig = Items.buff.siegeAtkBonus_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		siegeAtkBonus_2:function(){
+			var itemConfig = Items.buff.siegeAtkBonus_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		siegeAtkBonus_3:function(){
+			var itemConfig = Items.buff.siegeAtkBonus_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		woodClass_1:function(){
+			var itemConfig = Items.resource.woodClass_1
+			return Resource(playerDoc, playerData, itemConfig, "wood")
+		},
+		woodClass_2:function(){
+			var itemConfig = Items.resource.woodClass_2
+			return Resource(playerDoc, playerData, itemConfig, "wood")
+		},
+		woodClass_3:function(){
+			var itemConfig = Items.resource.woodClass_3
+			return Resource(playerDoc, playerData, itemConfig, "wood")
+		},
+		woodClass_4:function(){
+			var itemConfig = Items.resource.woodClass_4
+			return Resource(playerDoc, playerData, itemConfig, "wood")
+		},
+		woodClass_5:function(){
+			var itemConfig = Items.resource.woodClass_5
+			return Resource(playerDoc, playerData, itemConfig, "wood")
+		},
+		woodClass_6:function(){
+			var itemConfig = Items.resource.woodClass_6
+			return Resource(playerDoc, playerData, itemConfig, "wood")
+		},
+		woodClass_7:function(){
+			var itemConfig = Items.resource.woodClass_7
+			return Resource(playerDoc, playerData, itemConfig, "wood")
+		},
+		stoneClass_1:function(){
+			var itemConfig = Items.resource.stoneClass_1
+			return Resource(playerDoc, playerData, itemConfig, "stone")
+		},
+		stoneClass_2:function(){
+			var itemConfig = Items.resource.stoneClass_2
+			return Resource(playerDoc, playerData, itemConfig, "stone")
+		},
+		stoneClass_3:function(){
+			var itemConfig = Items.resource.stoneClass_3
+			return Resource(playerDoc, playerData, itemConfig, "stone")
+		},
+		stoneClass_4:function(){
+			var itemConfig = Items.resource.stoneClass_4
+			return Resource(playerDoc, playerData, itemConfig, "stone")
+		},
+		stoneClass_5:function(){
+			var itemConfig = Items.resource.stoneClass_5
+			return Resource(playerDoc, playerData, itemConfig, "stone")
+		},
+		stoneClass_6:function(){
+			var itemConfig = Items.resource.stoneClass_6
+			return Resource(playerDoc, playerData, itemConfig, "stone")
+		},
+		stoneClass_7:function(){
+			var itemConfig = Items.resource.stoneClass_7
+			return Resource(playerDoc, playerData, itemConfig, "stone")
+		},
+		ironClass_1:function(){
+			var itemConfig = Items.resource.ironClass_1
+			return Resource(playerDoc, playerData, itemConfig, "iron")
+		},
+		ironClass_2:function(){
+			var itemConfig = Items.resource.ironClass_2
+			return Resource(playerDoc, playerData, itemConfig, "iron")
+		},
+		ironClass_3:function(){
+			var itemConfig = Items.resource.ironClass_3
+			return Resource(playerDoc, playerData, itemConfig, "iron")
+		},
+		ironClass_4:function(){
+			var itemConfig = Items.resource.ironClass_4
+			return Resource(playerDoc, playerData, itemConfig, "iron")
+		},
+		ironClass_5:function(){
+			var itemConfig = Items.resource.ironClass_5
+			return Resource(playerDoc, playerData, itemConfig, "iron")
+		},
+		ironClass_6:function(){
+			var itemConfig = Items.resource.ironClass_6
+			return Resource(playerDoc, playerData, itemConfig, "iron")
+		},
+		ironClass_7:function(){
+			var itemConfig = Items.resource.ironClass_7
+			return Resource(playerDoc, playerData, itemConfig, "iron")
+		},
+		foodClass_1:function(){
+			var itemConfig = Items.resource.foodClass_1
+			return Resource(playerDoc, playerData, itemConfig, "food")
+		},
+		foodClass_2:function(){
+			var itemConfig = Items.resource.foodClass_2
+			return Resource(playerDoc, playerData, itemConfig, "food")
+		},
+		foodClass_3:function(){
+			var itemConfig = Items.resource.foodClass_3
+			return Resource(playerDoc, playerData, itemConfig, "food")
+		},
+		foodClass_4:function(){
+			var itemConfig = Items.resource.foodClass_4
+			return Resource(playerDoc, playerData, itemConfig, "food")
+		},
+		foodClass_5:function(){
+			var itemConfig = Items.resource.foodClass_5
+			return Resource(playerDoc, playerData, itemConfig, "food")
+		},
+		foodClass_6:function(){
+			var itemConfig = Items.resource.foodClass_6
+			return Resource(playerDoc, playerData, itemConfig, "food")
+		},
+		foodClass_7:function(){
+			var itemConfig = Items.resource.foodClass_7
+			return Resource(playerDoc, playerData, itemConfig, "food")
+		},
+		coinClass_1:function(){
+			var itemConfig = Items.resource.coinClass_1
+			return Resource(playerDoc, playerData, itemConfig, "coin")
+		},
+		coinClass_2:function(){
+			var itemConfig = Items.resource.coinClass_2
+			return Resource(playerDoc, playerData, itemConfig, "coin")
+		},
+		coinClass_3:function(){
+			var itemConfig = Items.resource.coinClass_3
+			return Resource(playerDoc, playerData, itemConfig, "coin")
+		},
+		coinClass_4:function(){
+			var itemConfig = Items.resource.coinClass_4
+			return Resource(playerDoc, playerData, itemConfig, "coin")
+		},
+		coinClass_5:function(){
+			var itemConfig = Items.resource.coinClass_5
+			return Resource(playerDoc, playerData, itemConfig, "coin")
+		},
+		coinClass_6:function(){
+			var itemConfig = Items.resource.coinClass_6
+			return Resource(playerDoc, playerData, itemConfig, "coin")
+		},
+		citizenClass_1:function(){
+			var itemConfig = Items.resource.citizenClass_1
+			return Resource(playerDoc, playerData, itemConfig, "citizen")
+		},
+		citizenClass_2:function(){
+			var itemConfig = Items.resource.citizenClass_2
+			return Resource(playerDoc, playerData, itemConfig, "citizen")
+		},
+		citizenClass_3:function(){
+			var itemConfig = Items.resource.citizenClass_3
+			return Resource(playerDoc, playerData, itemConfig, "citizen")
+		},
+		casinoTokenClass_1:function(){
+			var itemConfig = Items.resource.casinoTokenClass_1
+			return Resource(playerDoc, playerData, itemConfig, "casinoToken")
+		},
+		casinoTokenClass_2:function(){
+			var itemConfig = Items.resource.casinoTokenClass_2
+			return Resource(playerDoc, playerData, itemConfig, "casinoToken")
+		},
+		casinoTokenClass_3:function(){
+			var itemConfig = Items.resource.casinoTokenClass_3
+			return Resource(playerDoc, playerData, itemConfig, "casinoToken")
+		},
+		casinoTokenClass_4:function(){
+			var itemConfig = Items.resource.casinoTokenClass_4
+			return Resource(playerDoc, playerData, itemConfig, "casinoToken")
+		},
+		speedup_1:function(){
+			var itemConfig = Items.speedup.speedup_1
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var eventType = itemData.eventType
+			var eventId = itemData.eventId
+			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
+		},
+		speedup_2:function(){
+			var itemConfig = Items.speedup.speedup_2
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var eventType = itemData.eventType
+			var eventId = itemData.eventId
+			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
+		},
+		speedup_3:function(){
+			var itemConfig = Items.speedup.speedup_3
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var eventType = itemData.eventType
+			var eventId = itemData.eventId
+			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
+		},
+		speedup_4:function(){
+			var itemConfig = Items.speedup.speedup_4
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var eventType = itemData.eventType
+			var eventId = itemData.eventId
+			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
+		},
+		speedup_5:function(){
+			var itemConfig = Items.speedup.speedup_5
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var eventType = itemData.eventType
+			var eventId = itemData.eventId
+			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
+		},
+		speedup_6:function(){
+			var itemConfig = Items.speedup.speedup_6
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var eventType = itemData.eventType
+			var eventId = itemData.eventId
+			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
+		},
+		speedup_7:function(){
+			var itemConfig = Items.speedup.speedup_7
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var eventType = itemData.eventType
+			var eventId = itemData.eventId
+			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
+		},
+		speedup_8:function(){
+			var itemConfig = Items.speedup.speedup_8
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var eventType = itemData.eventType
+			var eventId = itemData.eventId
+			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
+		},
+		warSpeedupClass_1:function(){
+			var itemConfig = Items.speedup.warSpeedupClass_1
+			var speedupPercent = itemConfig.effect
+			var eventType = itemData.eventType
+			var eventId = itemData.eventId
+			return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService)
+		},
+		warSpeedupClass_2:function(){
+			var itemConfig = Items.speedup.warSpeedupClass_2
+			var speedupPercent = itemConfig.effect
+			var eventType = itemData.eventType
+			var eventId = itemData.eventId
+			return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService)
+		}
+	}
+	return functionMap[itemName]()
 }

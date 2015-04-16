@@ -25,6 +25,7 @@ var PlayerApiService4 = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
 	this.GemUse = app.get("GemUse")
+	this.Device = app.get("Device")
 	this.Player = app.get("Player")
 }
 module.exports = PlayerApiService4
@@ -533,15 +534,8 @@ pro.useItem = function(playerId, itemName, params, callback){
 		}
 		return Promise.resolve()
 	}).then(function(){
-		var itemNameFunction = ItemUtils.getItemNameFunction(itemName)
-		var itemData = params[itemName]
 		if(_.isEqual("changePlayerName", itemName)){
 			forceSave = true
-			return itemNameFunction(itemData, playerDoc, playerData, self.dataService)
-		}else if(_.isEqual("retreatTroop", itemName)){
-			return itemNameFunction(itemData, playerDoc, playerData, updateFuncs, self.allianceDao, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
-		}else if(_.isEqual("moveTheCity", itemName)){
-			return itemNameFunction(itemData, playerDoc, playerData, self.allianceDao, updateFuncs, pushFuncs, self.pushService)
 		}else if(_.isEqual("chest_2", itemName) || _.isEqual("chest_3", itemName) || _.isEqual("chest_4", itemName)){
 			var key = "chestKey_" + itemName.slice(-1)
 			var item = _.find(playerDoc.items, function(item){
@@ -555,26 +549,18 @@ pro.useItem = function(playerId, itemName, params, callback){
 			}else{
 				playerData.push(["items." + playerDoc.items.indexOf(item) + ".count", item.count])
 			}
-			return itemNameFunction(itemData, playerDoc, playerData)
 		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
 			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
-		}else if(_.isEqual("warSpeedupClass_1", itemName) || _.isEqual("warSpeedupClass_2", itemName)){
-			return itemNameFunction(itemData, playerDoc, playerData, updateFuncs, self.allianceDao, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
-		}else if(_.isEqual("speedup_1", itemName)
-			|| _.isEqual("speedup_2", itemName)
-			|| _.isEqual("speedup_3", itemName)
-			|| _.isEqual("speedup_4", itemName)
-			|| _.isEqual("speedup_5", itemName)
-			|| _.isEqual("speedup_6", itemName)
-			|| _.isEqual("speedup_7", itemName)
-			|| _.isEqual("speedup_8", itemName)
-		){
-			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService, self.playerTimeEventService)
-		}else{
-			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService)
 		}
+
+		var itemData = params[itemName]
+		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.dataService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService)
 	}).then(function(){
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc, forceSave])
+		if(forceSave){
+			updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc, playerDoc])
+		}else{
+			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		}
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -622,6 +608,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
+	var forceSave = false
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
@@ -644,29 +631,30 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		var itemNameFunction = ItemUtils.getItemNameFunction(itemName)
 		var itemData = params[itemName]
 		if(_.isEqual("changePlayerName", itemName)){
+			forceSave = true
 			return itemNameFunction(itemData, playerDoc, playerData, self.dataService)
 		}else if(_.isEqual("retreatTroop", itemName)){
-			return itemNameFunction(itemData, playerDoc, playerData, updateFuncs, self.allianceDao, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
+			return itemNameFunction(itemData, playerDoc, playerData, self.dataService, updateFuncs, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
 		}else if(_.isEqual("moveTheCity", itemName)){
-			return itemNameFunction(itemData, playerDoc, playerData, self.allianceDao, updateFuncs, pushFuncs, self.pushService)
+			return itemNameFunction(itemData, playerDoc, playerData, self.dataService, updateFuncs, pushFuncs, self.pushService)
 		}else if(_.isEqual("chest_2", itemName) || _.isEqual("chest_3", itemName) || _.isEqual("chest_4", itemName)){
 			var key = "chestKey_" + itemName.slice(-1)
 			var item = _.find(playerDoc.items, function(item){
 				return _.isEqual(item.name, key)
 			})
-			if(!_.isObject(item))  return Promise.reject(ErrorUtils.itemNotExist(playerId, itemName))
+			if(!_.isObject(item))  return Promise.reject(ErrorUtils.itemNotExist(playerId, key))
 			item.count -= 1
 			if(item.count <= 0){
 				playerData.push(["items." + playerDoc.items.indexOf(item), null])
 				LogicUtils.removeItemInArray(playerDoc.items, item)
 			}else{
-				playerData.push(["items." + playerDoc.items.indexOf(item), item])
+				playerData.push(["items." + playerDoc.items.indexOf(item) + ".count", item.count])
 			}
 			return itemNameFunction(itemData, playerDoc, playerData)
 		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
-			return Promise.reject(new Error("此道具不允许直接使用"))
+			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}else if(_.isEqual("warSpeedupClass_1", itemName) || _.isEqual("warSpeedupClass_2", itemName)){
-			return itemNameFunction(itemData, playerDoc, playerData, updateFuncs, self.allianceDao, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
+			return itemNameFunction(itemData, playerDoc, playerData, self.dataService, updateFuncs, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
 		}else if(_.isEqual("speedup_1", itemName)
 			|| _.isEqual("speedup_2", itemName)
 			|| _.isEqual("speedup_3", itemName)
@@ -681,7 +669,11 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService)
 		}
 	}).then(function(){
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		if(forceSave){
+			updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc, playerDoc])
+		}else{
+			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		}
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -963,7 +955,7 @@ pro.getGcBindStatus = function(playerId, gcId, callback){
 		return
 	}
 
-	this.User.findOneAsync({gcId:gcId}).then(function(doc){
+	this.Player.findOneAsync({gcId:gcId}, {_id:true}).then(function(doc){
 		callback(null, !!doc)
 	}).catch(function(e){
 		callback(e)
@@ -989,59 +981,12 @@ pro.bindGcId = function(playerId, gcId, callback){
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.gcId))
-		return self.Player.connection.findAsync({gcId:gcId, _id:{$ne:playerDoc.playerId}}, {_id:true}, {limit:1})
-	}).then(function(docs){
-		if(docs.length > 0) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByOtherPlayer(playerId, gcId))
+		return self.Player.findOneAsync({gcId:gcId}, {_id:true})
+	}).then(function(doc){
+		if(_.isObject(doc)) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByOtherPlayer(playerId, gcId))
 		playerDoc.gcId = gcId
 		playerData.push(["gcId", gcId])
 		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc, playerDoc])
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		callback(null, playerData)
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
- * 强制绑定GameCenter账号到当前玩家数据,取消原GameCenter账号下的玩家数据绑定
- * @param playerId
- * @param gcId
- * @param callback
- */
-pro.forceBindGcId = function(playerId, gcId, callback){
-	if(!_.isString(gcId)){
-		callback(new Error("gcId 不合法"))
-		return
-	}
-
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
-		return self.User.findByIdAsync(doc.userId)
-	}).then(function(doc){
-		if(!_.isEmpty(doc.gcId)) return Promise.reject(ErrorUtils.userAlreadyBindGCAId(playerId, doc._id, doc.gcId))
-		return self.User.findAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
-	}).then(function(docs){
-		if(docs.length == 0) return Promise.reject(ErrorUtils.theGCIdIsNotBindedByOtherUser(playerId, playerDoc.userId, gcId))
-		playerData.push(["gcId", gcId])
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
-		updateFuncs.push([self.User, self.User.findByIdAndUpdateAsync, playerDoc.userId, {gcId:gcId}])
-		updateFuncs.push([self.User, self.User.findByIdAndUpdateAsync, docs[0]._id, {gcId:""}])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -1076,34 +1021,25 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 
 	var self = this
 	var playerDoc = null
-	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	var newPlayerDoc = null
+	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
-		return self.User.findByIdAsync(playerDoc.userId)
+		if(_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.thePlayerDoNotBindGCId(playerId))
+		if(_.isEqual(playerDoc.gcId, gcId)) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByCurrentPlayer(playerId, gcId))
+		return self.Player.findOneAsync({gcId:gcId}, {_id:true})
 	}).then(function(doc){
-		if(_.isEmpty(doc.gcId)) return Promise.reject(ErrorUtils.theUserDoNotBindGCId(playerId, playerDoc.userId))
-		if(_.isEqual(doc.gcId, gcId)) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByCurrentUser(playerId, playerDoc.userId, gcId))
-		return self.User.findAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
-	}).then(function(docs){
-		if(docs.length == 0){
-			var getPromotedServerAsync = Promise.promisify(self.app.rpc.gate.gateRemote.getPromotedServer.toServer, self)
-			return getPromotedServerAsync(self.app.getServersByType('gate')[0].id).then(function(server){
-				var resp = LogicUtils.createUserAndFirstPlayer(server.id)
-				var user = resp.user
-				user.gcId = gcId
-				var player = resp.player
-				updateFuncs.push([self.Device, self.Device.findByIdAndUpdateAsync, deviceId, {userId:user._id}])
-				updateFuncs.push([self.User, self.User.createAsync, user])
-				updateFuncs.push([self.playerDao.getModel(), self.playerDao.getModel().createAsync, player])
-				return Promise.resolve()
+		if(!_.isObject(doc)){
+			var playerId = ShortId.generate()
+			var player = LogicUtils.createPlayer(playerId, playerDoc.serverId)
+			return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:player._id}).then(function(){
+				return self.dataService.createPlayerAsync(player).then(function(doc){
+					newPlayerDoc = doc
+					return self.dataService.updatePlayerAsync(newPlayerDoc, null)
+				})
 			})
 		}else{
-			updateFuncs.push([self.Device, self.Device.findByIdAndUpdateAsync, deviceId, {userId:docs[0]._id}])
-			return Promise.resolve()
+			return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:doc._id})
 		}
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback()
 		return Promise.resolve()
@@ -1111,8 +1047,8 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
 	}).catch(function(e){
 		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		if(_.isObject(newPlayerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(newPlayerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1139,37 +1075,19 @@ pro.forceSwitchGcId = function(playerId, deviceId, gcId, callback){
 
 	var self = this
 	var playerDoc = null
-	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
-		return self.User.findByIdAsync(playerDoc.userId)
+		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.gcId))
+		return self.Player.findOneAsync({gcId:gcId}, {_id:true})
 	}).then(function(doc){
-		if(!_.isEmpty(doc.gcId)) return Promise.reject(ErrorUtils.userAlreadyBindGCAId(playerId, playerDoc.userId, doc.gcId))
-		return self.User.findAsync({gcId:gcId, _id:{$ne:playerDoc.userId}}, {_id:true}, {limit:1})
-	}).then(function(docs){
-		if(docs.length == 0) return Promise.reject(ErrorUtils.theGCIdIsNotBindedByOtherUser(playerId, playerDoc.userId, gcId))
-		updateFuncs.push([self.Device, self.Device.findByIdAndUpdateAsync, deviceId, {userId:docs[0]._id}])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.theGCIdIsNotBindedByOtherPlayer(playerId, gcId))
+		return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:doc._id})
 	}).then(function(){
 		callback()
 		return Promise.resolve()
 	}).then(function(){
 		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
+		callback(e)
 	})
 }
-

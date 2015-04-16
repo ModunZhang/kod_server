@@ -861,25 +861,25 @@ errors["illegalAllianceStatus"] = {
 errors["playerAlreadyBindGCAId"] = {
 	key:"playerAlreadyBindGCAId",
 	code:672,
-	message:"账号GameCenter账号已经绑定"
+	message:"玩家GameCenter账号已经绑定"
 }
-errors["theGCIdAlreadyBindedByOtherUser"] = {
-	key:"theGCIdAlreadyBindedByOtherUser",
+errors["theGCIdAlreadyBindedByOtherPlayer"] = {
+	key:"theGCIdAlreadyBindedByOtherPlayer",
 	code:673,
 	message:"此GameCenter账号已被其他玩家绑定"
 }
-errors["theGCIdIsNotBindedByOtherUser"] = {
-	key:"theGCIdIsNotBindedByOtherUser",
+errors["theGCIdIsNotBindedByOtherPlayer"] = {
+	key:"theGCIdIsNotBindedByOtherPlayer",
 	code:674,
 	message:"此GameCenter账号未被其他玩家绑定"
 }
-errors["theUserDoNotBindGCId"] = {
-	key:"theUserDoNotBindGCId",
+errors["thePlayerDoNotBindGCId"] = {
+	key:"thePlayerDoNotBindGCId",
 	code:675,
 	message:"当前玩家还未绑定GameCenter账号"
 }
-errors["theGCIdAlreadyBindedByCurrentUser"] = {
-	key:"theGCIdAlreadyBindedByCurrentUser",
+errors["theGCIdAlreadyBindedByCurrentPlayer"] = {
+	key:"theGCIdAlreadyBindedByCurrentPlayer",
 	code:676,
 	message:"此GameCenter账号已绑定当前玩家"
 }

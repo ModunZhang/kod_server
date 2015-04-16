@@ -29,6 +29,7 @@ var Deal = require("../../domains/deal")
 var Billing = require("../../domains/billing")
 var GemUse = require("../../domains/gemUse")
 var GemAdd = require("../../domains/gemAdd")
+var Device = require("../../domains/device")
 var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
 
@@ -52,6 +53,7 @@ life.beforeStartup = function(app, callback){
 	app.set("Billing", Promise.promisifyAll(Billing))
 	app.set("GemUse", Promise.promisifyAll(GemUse))
 	app.set("GemAdd", Promise.promisifyAll(GemAdd))
+	app.set("Device", Promise.promisifyAll(Device))
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 

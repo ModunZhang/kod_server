@@ -1821,33 +1821,30 @@ Utils.theGCIdAlreadyBindedByOtherPlayer = function(playerId, gcId){
 /**
  * 此GameCenter账号未被其他玩家绑定
  * @param playerId
- * @param userId
  * @param gcId
  */
-Utils.theGCIdIsNotBindedByOtherUser = function(playerId, userId, gcId){
-	var config = Errors.theGCIdIsNotBindedByOtherUser
-	return CreateError(config, {playerId:playerId, userId:userId, gcId:gcId})
+Utils.theGCIdIsNotBindedByOtherPlayer = function(playerId, gcId){
+	var config = Errors.theGCIdIsNotBindedByOtherPlayer
+	return CreateError(config, {playerId:playerId, gcId:gcId})
 }
 
 /**
  * 当前玩家还未绑定GameCenter账号
  * @param playerId
- * @param userId
  */
-Utils.theUserDoNotBindGCId = function(playerId, userId){
-	var config = Errors.theUserDoNotBindGCId
-	return CreateError(config, {playerId:playerId, userId:userId})
+Utils.thePlayerDoNotBindGCId = function(playerId){
+	var config = Errors.thePlayerDoNotBindGCId
+	return CreateError(config, {playerId:playerId})
 }
 
 /**
  * 此GameCenter账号已绑定当前玩家
  * @param playerId
- * @param userId
  * @param gcId
  */
-Utils.theGCIdAlreadyBindedByCurrentUser = function(playerId, userId, gcId){
-	var config = Errors.theGCIdAlreadyBindedByCurrentUser
-	return CreateError(config, {playerId:playerId, userId:userId, gcId:gcId})
+Utils.theGCIdAlreadyBindedByCurrentPlayer = function(playerId, gcId){
+	var config = Errors.theGCIdAlreadyBindedByCurrentPlayer
+	return CreateError(config, {playerId:playerId, gcId:gcId})
 }
 
 /**

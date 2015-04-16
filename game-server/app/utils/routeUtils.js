@@ -13,3 +13,11 @@ routeUtil.chat = function(session, msg, app, callback){
 	}
 	callback(null, session.get("chatServerId"))
 }
+
+routeUtil.logic = function(session, msg, app, callback){
+	if(!session.get("logicServerId")){
+		callback(new Error("fail to find logicServerId in session"))
+		return
+	}
+	callback(null, session.get("logicServerId"))
+}
