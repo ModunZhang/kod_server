@@ -577,7 +577,7 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
 	event.finishTime -= speedupTime
 
 	if(LogicUtils.willFinished(event.finishTime)){
-		playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, eventType, eventId)
+		playerTimeEventService.onPlayerEvent(playerDoc, playerData, eventType, eventId)
 		eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, eventType, event.id])
 	}else{
 		playerData.push([eventType + "." + playerDoc[eventType].indexOf(event), event])

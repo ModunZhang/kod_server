@@ -313,7 +313,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, building.level)
 		}else{
 			if(_.isObject(preBuildEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preBuildEvent.type, preBuildEvent.event.id)
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preBuildEvent.type, preBuildEvent.event.id)
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
@@ -517,7 +517,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 		}else{
 			if(_.isObject(preBuildEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preBuildEvent.type, preBuildEvent.event.id)
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preBuildEvent.type, preBuildEvent.event.id)
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id])
 			}
 			building.houses.push(house)
@@ -661,7 +661,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, house.level)
 		}else{
 			if(_.isObject(preBuildEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preBuildEvent.type, preBuildEvent.event.id)
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preBuildEvent.type, preBuildEvent.event.id)
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
@@ -730,7 +730,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 		if(event.finishTime - DataUtils.getPlayerFreeSpeedUpEffect(playerDoc) > Date.now()){
 			return Promise.reject(ErrorUtils.canNotFreeSpeedupNow(playerId, eventType, eventId))
 		}
-		self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, eventType, eventId)
+		self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, eventType, eventId)
 		eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, eventType, eventId])
 
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
@@ -969,7 +969,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		}else{
 			if(_.isObject(preRecruitEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preRecruitEvent.type, preRecruitEvent.event.id)
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preRecruitEvent.type, preRecruitEvent.event.id)
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preRecruitEvent.type, preRecruitEvent.event.id])
 			}
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
@@ -1083,7 +1083,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		}else{
 			if(_.isObject(preRecruitEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preRecruitEvent.type, preRecruitEvent.event.id)
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preRecruitEvent.type, preRecruitEvent.event.id)
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preRecruitEvent.type, preRecruitEvent.event.id])
 			}
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)

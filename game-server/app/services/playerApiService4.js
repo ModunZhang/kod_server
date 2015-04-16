@@ -115,7 +115,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "productionTechEvents", preTechEvent.id)
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, "productionTechEvents", preTechEvent.id)
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "productionTechEvents", preTechEvent.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
@@ -235,7 +235,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preTechEvent.type, preTechEvent.event.id)
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preTechEvent.type, preTechEvent.event.id)
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preTechEvent.type, preTechEvent.event.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
@@ -346,7 +346,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, soldierName, playerDoc.soldierStars[soldierName])
 		}else{
 			if(_.isObject(preTechEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, preTechEvent.type, preTechEvent.event.id)
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preTechEvent.type, preTechEvent.event.id)
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preTechEvent.type, preTechEvent.event.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.upgradeTime * 1000)

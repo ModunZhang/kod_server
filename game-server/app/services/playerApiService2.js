@@ -95,7 +95,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.MakeDragonEquipment)
 		}else{
 			if(_.isObject(preMakeEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "dragonEquipmentEvents", preMakeEvent.id)
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, "dragonEquipmentEvents", preMakeEvent.id)
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "dragonEquipmentEvents", preMakeEvent.id])
 			}
 			var finishTime = Date.now() + (makeRequired.makeTime * 1000)
@@ -198,7 +198,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 		}else{
 			if(_.isObject(preTreatEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, null, null, "treatSoldierEvents", preTreatEvent.id)
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, "treatSoldierEvents", preTreatEvent.id)
 				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "treatSoldierEvents", preTreatEvent.id])
 			}
 			_.each(soldiers, function(soldier){
