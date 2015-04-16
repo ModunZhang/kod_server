@@ -4,6 +4,7 @@
  * Created by modun on 14-8-9.
  */
 
+var _ = require("underscore")
 var Promise = require("bluebird")
 
 var PushService = require("../../services/pushService")
@@ -16,6 +17,21 @@ var AllianceTimeEventService = require("../../services/allianceTimeEventService"
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
+	var currentServer = app.getServerFromConfig(app.getServerId())
+	app.set("logicServerId", currentServer.id)
+	var servers = app.getServersFromConfig()
+	_.each(servers, function(server, id){
+		if(_.isEqual(server.serverType, "chat") && _.isEqual(server.usedFor, currentServer.usedFor)){
+			app.set("chatServerId", id)
+		}else if(_.isEqual(server.serverType, "event") && _.isEqual(server.usedFor, currentServer.usedFor)){
+			app.set("eventServerId", id)
+		}else if(_.isEqual(server.serverType, "cache") && _.isEqual(server.id, currentServer.usedFor)){
+			app.set("cacheServerId", id)
+		}else if(_.isEqual(server.serverType, "gate")){
+			app.set("gateServerId", id)
+		}
+	})
+
 	app.set("logService", Promise.promisifyAll(new LogService(app)))
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))
 	app.set("dataService", Promise.promisifyAll(new DataService(app)))
