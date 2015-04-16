@@ -1801,23 +1801,21 @@ Utils.illegalAllianceStatus = function(allianceId, allianceStatus){
 /**
  * 账号GameCenter账号已经绑定
  * @param playerId
- * @param userId
  * @param gcId
  */
-Utils.userAlreadyBindGCAId = function(playerId, userId, gcId){
-	var config = Errors.userAlreadyBindGCAId
-	return CreateError(config, {playerId:playerId, userId:userId, gcId:gcId})
+Utils.playerAlreadyBindGCAId = function(playerId, gcId){
+	var config = Errors.playerAlreadyBindGCAId
+	return CreateError(config, {playerId:playerId, gcId:gcId})
 }
 
 /**
  * 此GameCenter账号已被其他玩家绑定
  * @param playerId
- * @param userId
  * @param gcId
  */
-Utils.theGCIdAlreadyBindedByOtherUser = function(playerId, userId, gcId){
-	var config = Errors.theGCIdAlreadyBindedByOtherUser
-	return CreateError(config, {playerId:playerId, userId:userId, gcId:gcId})
+Utils.theGCIdAlreadyBindedByOtherPlayer = function(playerId, gcId){
+	var config = Errors.theGCIdAlreadyBindedByOtherPlayer
+	return CreateError(config, {playerId:playerId, gcId:gcId})
 }
 
 /**

@@ -29,6 +29,8 @@ var Deal = require("../../domains/deal")
 var Billing = require("../../domains/billing")
 var GemUse = require("../../domains/gemUse")
 var GemAdd = require("../../domains/gemAdd")
+var Player = require("../../domains/player")
+var Alliance = require("../../domains/alliance")
 
 var life = module.exports
 
@@ -50,6 +52,8 @@ life.beforeStartup = function(app, callback){
 	app.set("Billing", Promise.promisifyAll(Billing))
 	app.set("GemUse", Promise.promisifyAll(GemUse))
 	app.set("GemAdd", Promise.promisifyAll(GemAdd))
+	app.set("Player", Promise.promisifyAll(Player))
+	app.set("Alliance", Promise.promisifyAll(Alliance))
 
 	app.set("logService", Promise.promisifyAll(new LogService(app)))
 	app.set("channelService", Promise.promisifyAll(app.get("channelService")))

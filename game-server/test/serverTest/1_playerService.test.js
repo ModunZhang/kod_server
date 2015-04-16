@@ -124,228 +124,228 @@ describe("PlayerService", function(){
 			}, 100)
 		})
 
-		//it("createHouse 主体建筑不存在", function(done){
-		//	Api.createHouse("dwelling", 20, 1, false, function(doc){
-		//		doc.code.should.equal(Errors.hostBuildingLevelMustBiggerThanOne.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse 主体建筑必须大于等于1级", function(done){
-		//	Api.createHouse("dwelling", 5, 1, false, function(doc){
-		//		doc.code.should.equal(Errors.hostBuildingLevelMustBiggerThanOne.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse 小屋类型不存在", function(done){
-		//	Api.createHouse("dwellinga", 3, 1, false, function(doc){
-		//		doc.code.should.equal(Errors.houseTypeNotExist.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse 建筑周围不允许建造小屋", function(done){
-		//	Api.createHouse("dwelling", 1, 1, false, function(doc){
-		//		doc.code.should.equal(Errors.buildingNotAllowHouseCreate.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse 创建小屋时,小屋坑位不合法", function(done){
-		//	Api.createHouse("dwelling", 3, 1, false, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.createHouse("dwelling", 3, 1, false, function(doc){
-		//			doc.code.should.equal(Errors.houseLocationNotLegal.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("createHouse 正常加速创建", function(done){
-		//	Api.createHouse("dwelling", 3, 2, true, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("createHouse 正常普通创建", function(done){
-		//	Api.createHouse("farmer", 3, 3, false, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeHouse 主体建筑必须大于等于1级", function(done){
-		//	Api.upgradeHouse(5, 1, false, function(doc){
-		//		doc.code.should.equal(Errors.hostBuildingLevelMustBiggerThanOne.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeHouse 小屋不存在", function(done){
-		//	Api.upgradeHouse(4, 1, false, function(doc){
-		//		doc.code.should.equal(Errors.houseNotExist.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeHouse 小屋正在升级", function(done){
-		//	Api.upgradeHouse(3, 1, false, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeHouse(3, 1, false, function(doc){
-		//			doc.code.should.equal(Errors.houseUpgradingNow.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeHouse 小屋已达到最高等级", function(done){
-		//	var func = function(){
-		//		Api.upgradeHouse(3, 2, true, function(doc){
-		//			if(doc.code == 200){
-		//				func()
-		//			}else{
-		//				doc.code.should.equal(Errors.houseReachMaxLevel.code)
-		//				done()
-		//			}
-		//		})
-		//	}
-		//	func()
-		//})
-		//
-		//it("upgradeHouse 正常升级1", function(done){
-		//	Api.upgradeHouse(3, 3, true, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("switchBuilding 正常转换", function(done){
-		//	Api.sendChat("buildinglevel 10 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendChat("buildinglevel 5 1", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.createHouse("quarrier", 5, 1, true, function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.upgradeHouse(5, 1, true, function(doc){
-		//					doc.code.should.equal(200)
-		//					Api.switchBuilding(10, "stoneMason", function(doc){
-		//						doc.code.should.equal(200)
-		//						done()
-		//					})
-		//				})
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("makeMaterial 工具作坊还未建造", function(done){
-		//	Api.makeMaterial(Consts.MaterialType.BuildingMaterials, true, function(doc){
-		//		doc.code.should.equal(Errors.buildingNotBuild.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("makeMaterial 同类型的材料正在制造", function(done){
-		//	Api.sendChat("buildinglevel 15 2", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
-		//				doc.code.should.equal(Errors.materialAsSameTypeIsMakeNow.code)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("makeMaterial 不同类型的材料正在制造", function(done){
-		//	Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, false, function(doc){
-		//		doc.code.should.equal(Errors.materialAsDifferentTypeIsMakeNow.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("makeMaterial 同类型的材料制作完成后还未领取", function(done){
-		//	Api.sendChat("rmevents materialEvents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
-		//				doc.code.should.equal(Errors.materialMakeFinishedButNotTakeAway.code)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("makeMaterials 正常制造", function(done){
-		//	Api.sendChat("rmevents materialEvents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("getMaterials 没有材料建造事件存在", function(done){
-		//	Api.getMaterials("asdfas", function(doc){
-		//		doc.code.should.equal(Errors.materialEventNotExistOrIsMakeing.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getMaterials 正常领取", function(done){
-		//	Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.loginPlayer(Config.deviceId, function(doc){
-		//			doc.code.should.equal(200)
-		//			m_user = doc.playerData
-		//			Api.getMaterials(m_user.materialEvents[1].id, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitNormalSoldier soldierName 普通兵种不存在", function(done){
-		//	Api.recruitNormalSoldier("adf", 12, true, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("soldierName 普通兵种不存在")
-		//		done()
-		//	})
-		//})
-		//
-		//it("recruitNormalSoldier 招募数量超过单次招募上限", function(done){
-		//	Api.sendChat("buildinglevel 5 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.recruitNormalSoldier("swordsman", 50, true, function(doc){
-		//			doc.code.should.equal(Errors.recruitTooMuchOnce.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitNormalSoldier 正常普通招募", function(done){
-		//	Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("recruitNormalSoldier 正常立即招募", function(done){
-		//	Api.recruitNormalSoldier("swordsman", 5, true, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
+		it("createHouse 主体建筑不存在", function(done){
+			Api.createHouse("dwelling", 20, 1, false, function(doc){
+				doc.code.should.equal(Errors.hostBuildingLevelMustBiggerThanOne.code)
+				done()
+			})
+		})
+
+		it("createHouse 主体建筑必须大于等于1级", function(done){
+			Api.createHouse("dwelling", 5, 1, false, function(doc){
+				doc.code.should.equal(Errors.hostBuildingLevelMustBiggerThanOne.code)
+				done()
+			})
+		})
+
+		it("createHouse 小屋类型不存在", function(done){
+			Api.createHouse("dwellinga", 3, 1, false, function(doc){
+				doc.code.should.equal(Errors.houseTypeNotExist.code)
+				done()
+			})
+		})
+
+		it("createHouse 建筑周围不允许建造小屋", function(done){
+			Api.createHouse("dwelling", 1, 1, false, function(doc){
+				doc.code.should.equal(Errors.buildingNotAllowHouseCreate.code)
+				done()
+			})
+		})
+
+		it("createHouse 创建小屋时,小屋坑位不合法", function(done){
+			Api.createHouse("dwelling", 3, 1, false, function(doc){
+				doc.code.should.equal(200)
+				Api.createHouse("dwelling", 3, 1, false, function(doc){
+					doc.code.should.equal(Errors.houseLocationNotLegal.code)
+					done()
+				})
+			})
+		})
+
+		it("createHouse 正常加速创建", function(done){
+			Api.createHouse("dwelling", 3, 2, true, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("createHouse 正常普通创建", function(done){
+			Api.createHouse("farmer", 3, 3, false, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("upgradeHouse 主体建筑必须大于等于1级", function(done){
+			Api.upgradeHouse(5, 1, false, function(doc){
+				doc.code.should.equal(Errors.hostBuildingLevelMustBiggerThanOne.code)
+				done()
+			})
+		})
+
+		it("upgradeHouse 小屋不存在", function(done){
+			Api.upgradeHouse(4, 1, false, function(doc){
+				doc.code.should.equal(Errors.houseNotExist.code)
+				done()
+			})
+		})
+
+		it("upgradeHouse 小屋正在升级", function(done){
+			Api.upgradeHouse(3, 1, false, function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeHouse(3, 1, false, function(doc){
+					doc.code.should.equal(Errors.houseUpgradingNow.code)
+					done()
+				})
+			})
+		})
+
+		it("upgradeHouse 小屋已达到最高等级", function(done){
+			var func = function(){
+				Api.upgradeHouse(3, 2, true, function(doc){
+					if(doc.code == 200){
+						func()
+					}else{
+						doc.code.should.equal(Errors.houseReachMaxLevel.code)
+						done()
+					}
+				})
+			}
+			func()
+		})
+
+		it("upgradeHouse 正常升级1", function(done){
+			Api.upgradeHouse(3, 3, true, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("switchBuilding 正常转换", function(done){
+			Api.sendChat("buildinglevel 10 1", function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("buildinglevel 5 1", function(doc){
+					doc.code.should.equal(200)
+					Api.createHouse("quarrier", 5, 1, true, function(doc){
+						doc.code.should.equal(200)
+						Api.upgradeHouse(5, 1, true, function(doc){
+							doc.code.should.equal(200)
+							Api.switchBuilding(10, "stoneMason", function(doc){
+								doc.code.should.equal(200)
+								done()
+							})
+						})
+					})
+				})
+			})
+		})
+
+		it("makeMaterial 工具作坊还未建造", function(done){
+			Api.makeMaterial(Consts.MaterialType.BuildingMaterials, true, function(doc){
+				doc.code.should.equal(Errors.buildingNotBuild.code)
+				done()
+			})
+		})
+
+		it("makeMaterial 同类型的材料正在制造", function(done){
+			Api.sendChat("buildinglevel 15 2", function(doc){
+				doc.code.should.equal(200)
+				Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
+					doc.code.should.equal(200)
+					Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
+						doc.code.should.equal(Errors.materialAsSameTypeIsMakeNow.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("makeMaterial 不同类型的材料正在制造", function(done){
+			Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, false, function(doc){
+				doc.code.should.equal(Errors.materialAsDifferentTypeIsMakeNow.code)
+				done()
+			})
+		})
+
+		it("makeMaterial 同类型的材料制作完成后还未领取", function(done){
+			Api.sendChat("rmevents materialEvents", function(doc){
+				doc.code.should.equal(200)
+				Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
+					doc.code.should.equal(200)
+					Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
+						doc.code.should.equal(Errors.materialMakeFinishedButNotTakeAway.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("makeMaterials 正常制造", function(done){
+			Api.sendChat("rmevents materialEvents", function(doc){
+				doc.code.should.equal(200)
+				Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("getMaterials 没有材料建造事件存在", function(done){
+			Api.getMaterials("asdfas", function(doc){
+				doc.code.should.equal(Errors.materialEventNotExistOrIsMakeing.code)
+				done()
+			})
+		})
+
+		it("getMaterials 正常领取", function(done){
+			Api.makeMaterial(Consts.MaterialType.TechnologyMaterials, true, function(doc){
+				doc.code.should.equal(200)
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					m_user = doc.playerData
+					Api.getMaterials(m_user.materialEvents[1].id, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("recruitNormalSoldier soldierName 普通兵种不存在", function(done){
+			Api.recruitNormalSoldier("adf", 12, true, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("soldierName 普通兵种不存在")
+				done()
+			})
+		})
+
+		it("recruitNormalSoldier 招募数量超过单次招募上限", function(done){
+			Api.sendChat("buildinglevel 5 1", function(doc){
+				doc.code.should.equal(200)
+				Api.recruitNormalSoldier("swordsman", 50, true, function(doc){
+					doc.code.should.equal(Errors.recruitTooMuchOnce.code)
+					done()
+				})
+			})
+		})
+
+		it("recruitNormalSoldier 正常普通招募", function(done){
+			Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
+				doc.code.should.equal(200)
+				Api.recruitNormalSoldier("swordsman", 5, false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("recruitNormalSoldier 正常立即招募", function(done){
+			Api.recruitNormalSoldier("swordsman", 5, true, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
 		////it("recruitSpecialSoldier soldierName 特殊兵种不存在", function(done){
 		////	Api.recruitSpecialSoldier("adf", 12, false, function(doc){
 		////		doc.code.should.equal(500)
@@ -393,685 +393,685 @@ describe("PlayerService", function(){
 		////			done()
 		////		})
 		////})
-		//
-		//it("makeDragonEquipment equipmentName 装备不存在", function(done){
-		//	Api.makeDragonEquipment("adf", true, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("equipmentName 装备不存在")
-		//		done()
-		//	})
-		//})
-		//
-		//it("makeDragonEquipment 材料不足", function(done){
-		//	Api.sendChat("dragonmaterial 0", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendChat("buildinglevel 9 1", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.makeDragonEquipment("redCrown_s1", true, function(doc){
-		//				doc.code.should.equal(Errors.dragonEquipmentMaterialsNotEnough.code)
-		//				Api.sendChat("dragonmaterial 1000", function(doc){
-		//					doc.code.should.equal(200)
-		//					done()
-		//				})
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("makeDragonEquipment 正常普通制造", function(done){
-		//	Api.sendChat("rmevents dragonEquipmentEvents", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.makeDragonEquipment("redCrown_s1", false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("makeDragonEquipment 正常立即制造", function(done){
-		//	Api.makeDragonEquipment("redCrown_s1", true, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("treatSoldier soldiers 不合法", function(done){
-		//	Api.treatSoldier("ad", true, function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("soldiers 不合法")
-		//		done()
-		//	})
-		//})
-		//
-		//it("treatSoldier 士兵不存在或士兵数量不合法1", function(done){
-		//	Api.sendChat("buildinglevel 6 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.treatSoldier([], true, function(doc){
-		//			doc.code.should.equal(Errors.soldierNotExistOrCountNotLegal.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("treatSoldier 士兵不存在或士兵数量不合法2", function(done){
-		//	Api.treatSoldier([{name:"add", count:12}], true, function(doc){
-		//		doc.code.should.equal(Errors.soldierNotExistOrCountNotLegal.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("treatSoldier 士兵不存在或士兵数量不合法3", function(done){
-		//	Api.treatSoldier([{name:"swordsman", count:1}], true, function(doc){
-		//		doc.code.should.equal(Errors.soldierNotExistOrCountNotLegal.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("treatSoldier 士兵不存在或士兵数量不合法4", function(done){
-		//	Api.sendChat("woundedsoldiers 5", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.treatSoldier([{name:"swordsman", count:6}], true, function(doc){
-		//			doc.code.should.equal(Errors.soldierNotExistOrCountNotLegal.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("treatSoldier 士兵不存在或士兵数量不合法5", function(done){
-		//	Api.treatSoldier([{name:"swordsman", count:5}], true, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.treatSoldier([{name:"swordsman", count:5}], true, function(doc){
-		//			doc.code.should.equal(Errors.soldierNotExistOrCountNotLegal.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("treatSoldier 正常普通治疗", function(done){
-		//	Api.sendChat("woundedsoldiers 5", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.treatSoldier([{name:"sentinel", count:5}, {name:"ranger", count:5}], false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("treatSoldier 正常加速治疗", function(done){
-		//	Api.treatSoldier([{name:"catapult", count:5}], true, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("hatchDragon 龙蛋早已成功孵化", function(done){
-		//	Api.hatchDragon("redDragon", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.hatchDragon("redDragon", function(doc){
-		//			doc.code.should.equal(Errors.dragonEggAlreadyHatched.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("hatchDragon 正常孵化", function(done){
-		//	Api.hatchDragon("blueDragon", function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("hatchDragon 已有龙蛋正在孵化", function(done){
-		//	Api.hatchDragon("blueDragon", function(doc){
-		//		doc.code.should.equal(Errors.dragonEggHatchEventExist.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("setDragonEquipment dragonType 不合法", function(done){
-		//	Api.setDragonEquipment("redDragona", "crown", "moltenCrown", function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("dragonType 不合法")
-		//		done()
-		//	})
-		//})
-		//
-		//it("setDragonEquipment equipmentCategory 不合法", function(done){
-		//	Api.setDragonEquipment("redDragon", "crowna", "moltenCrown", function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("equipmentCategory 不合法")
-		//		done()
-		//	})
-		//})
-		//
-		//it("setDragonEquipment equipmentName 不合法", function(done){
-		//	Api.setDragonEquipment("redDragon", "crown", "moltenCrowna", function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("equipmentName 不合法")
-		//		done()
-		//	})
-		//})
-		//
-		//it("setDragonEquipment equipmentName 不能装备到equipmentCategory", function(done){
-		//	Api.setDragonEquipment("redDragon", "crown", "blueChest_s2", function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("equipmentName 不能装备到equipmentCategory")
-		//		done()
-		//	})
-		//})
-		//
-		//it("setDragonEquipment equipmentName 不能装备到dragonType", function(done){
-		//	Api.setDragonEquipment("redDragon", "crown", "blueCrown_s1", function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("equipmentName 不能装备到dragonType")
-		//		done()
-		//	})
-		//})
-		//
-		//it("setDragonEquipment 龙还未孵化", function(done){
-		//	Api.setDragonEquipment("blueDragon", "crown", "blueCrown_s1", function(doc){
-		//		doc.code.should.equal(Errors.dragonNotHatched.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("setDragonEquipment 装备与龙的星级不匹配", function(done){
-		//	Api.setDragonEquipment("redDragon", "crown", "redCrown_s2", function(doc){
-		//		doc.code.should.equal(Errors.dragonEquipmentNotMatchForTheDragon.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("setDragonEquipment 仓库中没有此装备", function(done){
-		//	Api.sendChat("dragonequipment 0", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.setDragonEquipment("redDragon", "crown", "redCrown_s1", function(doc){
-		//			doc.code.should.equal(Errors.dragonEquipmentNotEnough.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("setDragonEquipment 龙身上已经存在相同类型的装备", function(done){
-		//	Api.sendChat("dragonequipment 10", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.setDragonEquipment("redDragon", "crown", "redCrown_s1", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.setDragonEquipment("redDragon", "crown", "redCrown_s1", function(doc){
-		//				doc.code.should.equal(Errors.dragonAlreadyHasTheSameCategory.code)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("enhanceDragonEquipment 此分类还没有配置装备", function(done){
-		//	Api.enhanceDragonEquipment("redDragon", "chest", [], function(doc){
-		//		doc.code.should.equal(Errors.dragonDoNotHasThisEquipment.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("enhanceDragonEquipment 装备已到最高星级", function(done){
-		//	Api.sendChat("dragonequipmentstar redDragon 10", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.enhanceDragonEquipment("redDragon", "crown", [{name:"redCrown_s1", count:5}], function(doc){
-		//			doc.code.should.equal(Errors.dragonEquipmentReachMaxStar.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("enhanceDragonEquipment 被牺牲的装备不存在或数量不足1", function(done){
-		//	Api.setDragonEquipment("redDragon", "armguardLeft", "redArmguard_s1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.enhanceDragonEquipment("redDragon", "armguardLeft", [], function(doc){
-		//			doc.code.should.equal(Errors.dragonEquipmentsNotExistOrNotEnough.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("enhanceDragonEquipment 被牺牲的装备不存在或数量不足2", function(done){
-		//	Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"redCrown_s2", count:30}], function(doc){
-		//		doc.code.should.equal(Errors.dragonEquipmentsNotExistOrNotEnough.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("enhanceDragonEquipment 被牺牲的装备不存在或数量不足3", function(done){
-		//	Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"redCrown_s6", count:5}], function(doc){
-		//		doc.code.should.equal(Errors.dragonEquipmentsNotExistOrNotEnough.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("enhanceDragonEquipment 正常强化", function(done){
-		//	Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"redArmguard_s1", count:5}], function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("resetDragonEquipment 此分类还没有配置装备", function(done){
-		//	Api.resetDragonEquipment("redDragon", "chest", function(doc){
-		//		doc.code.should.equal(Errors.dragonDoNotHasThisEquipment.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("resetDragonEquipment 仓库中没有此装备", function(done){
-		//	Api.sendChat("dragonequipment 0", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.resetDragonEquipment("redDragon", "crown", function(doc){
-		//			doc.code.should.equal(Errors.dragonEquipmentNotEnough.code)
-		//			Api.sendChat("dragonequipment 10", function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("resetDragonEquipment 正常重置", function(done){
-		//	Api.resetDragonEquipment("redDragon", "crown", function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeDragonSkill 龙还未孵化", function(done){
-		//	Api.upgradeDragonDragonSkill("blueDragon", "skill_1", function(doc){
-		//		doc.code.should.equal(Errors.dragonNotHatched.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeDragonSkill 此技能还未解锁", function(done){
-		//	Api.upgradeDragonDragonSkill("redDragon", "skill_4", function(doc){
-		//		doc.code.should.equal(Errors.dragonSkillIsLocked.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeDragonSkill 技能已达最高等级", function(done){
-		//	Api.sendChat("dragonskill redDragon 60", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeDragonDragonSkill("redDragon", "skill_1", function(doc){
-		//			doc.code.should.equal(Errors.dragonSkillReachMaxLevel.code)
-		//			Api.sendChat("dragonskill redDragon 0", function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeDragonSkill 英雄之血不足", function(done){
-		//	Api.sendChat("resources blood 0", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeDragonDragonSkill("redDragon", "skill_1", function(doc){
-		//			doc.code.should.equal(Errors.heroBloodNotEnough.code)
-		//			Api.sendChat("resources blood 1000", function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeDragonSkill 正常升级", function(done){
-		//	Api.upgradeDragonDragonSkill("redDragon", "skill_1", function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeDragonStar 龙还未孵化", function(done){
-		//	Api.upgradeDragonStar("blueDragon", function(doc){
-		//		doc.code.should.equal(Errors.dragonNotHatched.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeDragonStar 龙的星级已达最高", function(done){
-		//	Api.sendChat("dragonstar redDragon 5", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeDragonStar("redDragon", function(doc){
-		//			doc.code.should.equal(Errors.dragonReachMaxStar.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeDragonStar 龙的等级未达到晋级要求", function(done){
-		//	Api.sendChat("dragonstar redDragon 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendChat("dragonstar redDragon 2", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.upgradeDragonStar("redDragon", function(doc){
-		//				doc.code.should.equal(Errors.dragonUpgradeStarFailedForLevelNotLegal.code)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeDragonStar 龙的装备未达到晋级要求", function(done){
-		//	Api.sendChat("dragonstar redDragon 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendChat("dragonlevel redDragon 10", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.upgradeDragonStar("redDragon", function(doc){
-		//				doc.code.should.equal(Errors.dragonUpgradeStarFailedForEquipmentNotLegal.code)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeDragonStar 正常晋级", function(done){
-		//	Api.setDragonEquipment("redDragon", "crown", "redCrown_s1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.setDragonEquipment("redDragon", "armguardLeft", "redArmguard_s1", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.setDragonEquipment("redDragon", "armguardRight", "redArmguard_s1", function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.sendChat("dragonequipmentstar redDragon 5", function(doc){
-		//					doc.code.should.equal(200)
-		//					Api.upgradeDragonStar("redDragon", function(doc){
-		//						doc.code.should.equal(200)
-		//						done()
-		//					})
-		//				})
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("getDailyQuests 成功获取", function(done){
-		//	Api.sendChat("gem 500000", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendChat("buildinglevel 14 1", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.getDailyQuests(function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.getDailyQuests(function(doc){
-		//					doc.code.should.equal(200)
-		//					done()
-		//				})
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("addDailyQuestStar 成功升星", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		m_user = doc.playerData
-		//		Api.addDailyQuestStar(m_user.dailyQuests.quests[0].id, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("startDailyQuest 成功开始", function(done){
-		//	Api.startDailyQuest(m_user.dailyQuests.quests[0].id, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("startDailyQuest 任务不存在", function(done){
-		//	Api.startDailyQuest(m_user.dailyQuests.quests[0].id, function(doc){
-		//		doc.code.should.equal(Errors.dailyQuestNotExist.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("startDailyQuest 已经有任务正在进行中", function(done){
-		//	Api.startDailyQuest(m_user.dailyQuests.quests[1].id, function(doc){
-		//		doc.code.should.equal(Errors.dailyQuestEventExist.code)
-		//		done()
-		//	})
-		//})
-		//
-		////it("getDailyQeustReward 正常领取", function(done){
-		////	setTimeout(function(){
-		////		Api.getDailyQeustReward(m_user.dailyQuestEvents[0].id, function(doc){
-		////			doc.code.should.equal(200)
-		////			done()
-		////		})
-		////	}, 2000)
-		////})
-		//
-		//it("setPlayerLanguage", function(done){
-		//	Api.setPlayerLanguage("cn", function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getPlayerInfo", function(done){
-		//	Api.getPlayerInfo(m_user._id, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("sendMail 不能给自己发邮件", function(done){
-		//	Api.sendMail(m_user._id, "testMail", "this is a testMail", function(doc){
-		//		doc.code.should.equal(500)
-		//		doc.message.should.equal("playerId, memberId 不能给自己发邮件")
-		//		done()
-		//	})
-		//})
-		//
-		//it("sendMail 玩家不存在", function(done){
-		//	Api.sendMail("adfadf", "testMail", "this is a testMail", function(doc){
-		//		doc.code.should.equal(Errors.playerNotExist.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("sendMail 正常发送", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendMail(m_user._id, "testMail", "this is a testMail", function(doc){
+
+		it("makeDragonEquipment equipmentName 装备不存在", function(done){
+			Api.makeDragonEquipment("adf", true, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("equipmentName 装备不存在")
+				done()
+			})
+		})
+
+		it("makeDragonEquipment 材料不足", function(done){
+			Api.sendChat("dragonmaterial 0", function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("buildinglevel 9 1", function(doc){
+					doc.code.should.equal(200)
+					Api.makeDragonEquipment("redCrown_s1", true, function(doc){
+						doc.code.should.equal(Errors.dragonEquipmentMaterialsNotEnough.code)
+						Api.sendChat("dragonmaterial 1000", function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
+					})
+				})
+			})
+		})
+
+		it("makeDragonEquipment 正常普通制造", function(done){
+			Api.sendChat("rmevents dragonEquipmentEvents", function(doc){
+				doc.code.should.equal(200)
+				Api.makeDragonEquipment("redCrown_s1", false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("makeDragonEquipment 正常立即制造", function(done){
+			Api.makeDragonEquipment("redCrown_s1", true, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("treatSoldier soldiers 不合法", function(done){
+			Api.treatSoldier("ad", true, function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("soldiers 不合法")
+				done()
+			})
+		})
+
+		it("treatSoldier 士兵不存在或士兵数量不合法1", function(done){
+			Api.sendChat("buildinglevel 6 1", function(doc){
+				doc.code.should.equal(200)
+				Api.treatSoldier([], true, function(doc){
+					doc.code.should.equal(Errors.soldierNotExistOrCountNotLegal.code)
+					done()
+				})
+			})
+		})
+
+		it("treatSoldier 士兵不存在或士兵数量不合法2", function(done){
+			Api.treatSoldier([{name:"add", count:12}], true, function(doc){
+				doc.code.should.equal(Errors.soldierNotExistOrCountNotLegal.code)
+				done()
+			})
+		})
+
+		it("treatSoldier 士兵不存在或士兵数量不合法3", function(done){
+			Api.treatSoldier([{name:"swordsman", count:1}], true, function(doc){
+				doc.code.should.equal(Errors.soldierNotExistOrCountNotLegal.code)
+				done()
+			})
+		})
+
+		it("treatSoldier 士兵不存在或士兵数量不合法4", function(done){
+			Api.sendChat("woundedsoldiers 5", function(doc){
+				doc.code.should.equal(200)
+				Api.treatSoldier([{name:"swordsman", count:6}], true, function(doc){
+					doc.code.should.equal(Errors.soldierNotExistOrCountNotLegal.code)
+					done()
+				})
+			})
+		})
+
+		it("treatSoldier 士兵不存在或士兵数量不合法5", function(done){
+			Api.treatSoldier([{name:"swordsman", count:5}], true, function(doc){
+				doc.code.should.equal(200)
+				Api.treatSoldier([{name:"swordsman", count:5}], true, function(doc){
+					doc.code.should.equal(Errors.soldierNotExistOrCountNotLegal.code)
+					done()
+				})
+			})
+		})
+
+		it("treatSoldier 正常普通治疗", function(done){
+			Api.sendChat("woundedsoldiers 5", function(doc){
+				doc.code.should.equal(200)
+				Api.treatSoldier([{name:"sentinel", count:5}, {name:"ranger", count:5}], false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("treatSoldier 正常加速治疗", function(done){
+			Api.treatSoldier([{name:"catapult", count:5}], true, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("hatchDragon 龙蛋早已成功孵化", function(done){
+			Api.hatchDragon("redDragon", function(doc){
+				doc.code.should.equal(200)
+				Api.hatchDragon("redDragon", function(doc){
+					doc.code.should.equal(Errors.dragonEggAlreadyHatched.code)
+					done()
+				})
+			})
+		})
+
+		it("hatchDragon 正常孵化", function(done){
+			Api.hatchDragon("blueDragon", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("hatchDragon 已有龙蛋正在孵化", function(done){
+			Api.hatchDragon("blueDragon", function(doc){
+				doc.code.should.equal(Errors.dragonEggHatchEventExist.code)
+				done()
+			})
+		})
+
+		it("setDragonEquipment dragonType 不合法", function(done){
+			Api.setDragonEquipment("redDragona", "crown", "moltenCrown", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("dragonType 不合法")
+				done()
+			})
+		})
+
+		it("setDragonEquipment equipmentCategory 不合法", function(done){
+			Api.setDragonEquipment("redDragon", "crowna", "moltenCrown", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("equipmentCategory 不合法")
+				done()
+			})
+		})
+
+		it("setDragonEquipment equipmentName 不合法", function(done){
+			Api.setDragonEquipment("redDragon", "crown", "moltenCrowna", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("equipmentName 不合法")
+				done()
+			})
+		})
+
+		it("setDragonEquipment equipmentName 不能装备到equipmentCategory", function(done){
+			Api.setDragonEquipment("redDragon", "crown", "blueChest_s2", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("equipmentName 不能装备到equipmentCategory")
+				done()
+			})
+		})
+
+		it("setDragonEquipment equipmentName 不能装备到dragonType", function(done){
+			Api.setDragonEquipment("redDragon", "crown", "blueCrown_s1", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("equipmentName 不能装备到dragonType")
+				done()
+			})
+		})
+
+		it("setDragonEquipment 龙还未孵化", function(done){
+			Api.setDragonEquipment("blueDragon", "crown", "blueCrown_s1", function(doc){
+				doc.code.should.equal(Errors.dragonNotHatched.code)
+				done()
+			})
+		})
+
+		it("setDragonEquipment 装备与龙的星级不匹配", function(done){
+			Api.setDragonEquipment("redDragon", "crown", "redCrown_s2", function(doc){
+				doc.code.should.equal(Errors.dragonEquipmentNotMatchForTheDragon.code)
+				done()
+			})
+		})
+
+		it("setDragonEquipment 仓库中没有此装备", function(done){
+			Api.sendChat("dragonequipment 0", function(doc){
+				doc.code.should.equal(200)
+				Api.setDragonEquipment("redDragon", "crown", "redCrown_s1", function(doc){
+					doc.code.should.equal(Errors.dragonEquipmentNotEnough.code)
+					done()
+				})
+			})
+		})
+
+		it("setDragonEquipment 龙身上已经存在相同类型的装备", function(done){
+			Api.sendChat("dragonequipment 10", function(doc){
+				doc.code.should.equal(200)
+				Api.setDragonEquipment("redDragon", "crown", "redCrown_s1", function(doc){
+					doc.code.should.equal(200)
+					Api.setDragonEquipment("redDragon", "crown", "redCrown_s1", function(doc){
+						doc.code.should.equal(Errors.dragonAlreadyHasTheSameCategory.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("enhanceDragonEquipment 此分类还没有配置装备", function(done){
+			Api.enhanceDragonEquipment("redDragon", "chest", [], function(doc){
+				doc.code.should.equal(Errors.dragonDoNotHasThisEquipment.code)
+				done()
+			})
+		})
+
+		it("enhanceDragonEquipment 装备已到最高星级", function(done){
+			Api.sendChat("dragonequipmentstar redDragon 10", function(doc){
+				doc.code.should.equal(200)
+				Api.enhanceDragonEquipment("redDragon", "crown", [{name:"redCrown_s1", count:5}], function(doc){
+					doc.code.should.equal(Errors.dragonEquipmentReachMaxStar.code)
+					done()
+				})
+			})
+		})
+
+		it("enhanceDragonEquipment 被牺牲的装备不存在或数量不足1", function(done){
+			Api.setDragonEquipment("redDragon", "armguardLeft", "redArmguard_s1", function(doc){
+				doc.code.should.equal(200)
+				Api.enhanceDragonEquipment("redDragon", "armguardLeft", [], function(doc){
+					doc.code.should.equal(Errors.dragonEquipmentsNotExistOrNotEnough.code)
+					done()
+				})
+			})
+		})
+
+		it("enhanceDragonEquipment 被牺牲的装备不存在或数量不足2", function(done){
+			Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"redCrown_s2", count:30}], function(doc){
+				doc.code.should.equal(Errors.dragonEquipmentsNotExistOrNotEnough.code)
+				done()
+			})
+		})
+
+		it("enhanceDragonEquipment 被牺牲的装备不存在或数量不足3", function(done){
+			Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"redCrown_s6", count:5}], function(doc){
+				doc.code.should.equal(Errors.dragonEquipmentsNotExistOrNotEnough.code)
+				done()
+			})
+		})
+
+		it("enhanceDragonEquipment 正常强化", function(done){
+			Api.enhanceDragonEquipment("redDragon", "armguardLeft", [{name:"redArmguard_s1", count:5}], function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("resetDragonEquipment 此分类还没有配置装备", function(done){
+			Api.resetDragonEquipment("redDragon", "chest", function(doc){
+				doc.code.should.equal(Errors.dragonDoNotHasThisEquipment.code)
+				done()
+			})
+		})
+
+		it("resetDragonEquipment 仓库中没有此装备", function(done){
+			Api.sendChat("dragonequipment 0", function(doc){
+				doc.code.should.equal(200)
+				Api.resetDragonEquipment("redDragon", "crown", function(doc){
+					doc.code.should.equal(Errors.dragonEquipmentNotEnough.code)
+					Api.sendChat("dragonequipment 10", function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("resetDragonEquipment 正常重置", function(done){
+			Api.resetDragonEquipment("redDragon", "crown", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("upgradeDragonSkill 龙还未孵化", function(done){
+			Api.upgradeDragonDragonSkill("blueDragon", "skill_1", function(doc){
+				doc.code.should.equal(Errors.dragonNotHatched.code)
+				done()
+			})
+		})
+
+		it("upgradeDragonSkill 此技能还未解锁", function(done){
+			Api.upgradeDragonDragonSkill("redDragon", "skill_4", function(doc){
+				doc.code.should.equal(Errors.dragonSkillIsLocked.code)
+				done()
+			})
+		})
+
+		it("upgradeDragonSkill 技能已达最高等级", function(done){
+			Api.sendChat("dragonskill redDragon 60", function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeDragonDragonSkill("redDragon", "skill_1", function(doc){
+					doc.code.should.equal(Errors.dragonSkillReachMaxLevel.code)
+					Api.sendChat("dragonskill redDragon 0", function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("upgradeDragonSkill 英雄之血不足", function(done){
+			Api.sendChat("resources blood 0", function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeDragonDragonSkill("redDragon", "skill_1", function(doc){
+					doc.code.should.equal(Errors.heroBloodNotEnough.code)
+					Api.sendChat("resources blood 1000", function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("upgradeDragonSkill 正常升级", function(done){
+			Api.upgradeDragonDragonSkill("redDragon", "skill_1", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("upgradeDragonStar 龙还未孵化", function(done){
+			Api.upgradeDragonStar("blueDragon", function(doc){
+				doc.code.should.equal(Errors.dragonNotHatched.code)
+				done()
+			})
+		})
+
+		it("upgradeDragonStar 龙的星级已达最高", function(done){
+			Api.sendChat("dragonstar redDragon 5", function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeDragonStar("redDragon", function(doc){
+					doc.code.should.equal(Errors.dragonReachMaxStar.code)
+					done()
+				})
+			})
+		})
+
+		it("upgradeDragonStar 龙的等级未达到晋级要求", function(done){
+			Api.sendChat("dragonstar redDragon 1", function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("dragonstar redDragon 2", function(doc){
+					doc.code.should.equal(200)
+					Api.upgradeDragonStar("redDragon", function(doc){
+						doc.code.should.equal(Errors.dragonUpgradeStarFailedForLevelNotLegal.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("upgradeDragonStar 龙的装备未达到晋级要求", function(done){
+			Api.sendChat("dragonstar redDragon 1", function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("dragonlevel redDragon 10", function(doc){
+					doc.code.should.equal(200)
+					Api.upgradeDragonStar("redDragon", function(doc){
+						doc.code.should.equal(Errors.dragonUpgradeStarFailedForEquipmentNotLegal.code)
+						done()
+					})
+				})
+			})
+		})
+
+		it("upgradeDragonStar 正常晋级", function(done){
+			Api.setDragonEquipment("redDragon", "crown", "redCrown_s1", function(doc){
+				doc.code.should.equal(200)
+				Api.setDragonEquipment("redDragon", "armguardLeft", "redArmguard_s1", function(doc){
+					doc.code.should.equal(200)
+					Api.setDragonEquipment("redDragon", "armguardRight", "redArmguard_s1", function(doc){
+						doc.code.should.equal(200)
+						Api.sendChat("dragonequipmentstar redDragon 5", function(doc){
+							doc.code.should.equal(200)
+							Api.upgradeDragonStar("redDragon", function(doc){
+								doc.code.should.equal(200)
+								done()
+							})
+						})
+					})
+				})
+			})
+		})
+
+		it("getDailyQuests 成功获取", function(done){
+			Api.sendChat("gem 500000", function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("buildinglevel 14 1", function(doc){
+					doc.code.should.equal(200)
+					Api.getDailyQuests(function(doc){
+						doc.code.should.equal(200)
+						Api.getDailyQuests(function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
+					})
+				})
+			})
+		})
+
+		it("addDailyQuestStar 成功升星", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				m_user = doc.playerData
+				Api.addDailyQuestStar(m_user.dailyQuests.quests[0].id, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("startDailyQuest 成功开始", function(done){
+			Api.startDailyQuest(m_user.dailyQuests.quests[0].id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("startDailyQuest 任务不存在", function(done){
+			Api.startDailyQuest(m_user.dailyQuests.quests[0].id, function(doc){
+				doc.code.should.equal(Errors.dailyQuestNotExist.code)
+				done()
+			})
+		})
+
+		it("startDailyQuest 已经有任务正在进行中", function(done){
+			Api.startDailyQuest(m_user.dailyQuests.quests[1].id, function(doc){
+				doc.code.should.equal(Errors.dailyQuestEventExist.code)
+				done()
+			})
+		})
+
+		//it("getDailyQeustReward 正常领取", function(done){
+		//	setTimeout(function(){
+		//		Api.getDailyQeustReward(m_user.dailyQuestEvents[0].id, function(doc){
 		//			doc.code.should.equal(200)
 		//			done()
 		//		})
-		//	})
+		//	}, 2000)
 		//})
-		//
-		//it("readMails 正常阅读", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		m_user = doc.playerData
-		//		Api.readMails([m_user.mails[0].id], function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("saveMail 正常收藏", function(done){
-		//	Api.saveMail(m_user.mails[0].id, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("unSaveMail 正常取消收藏", function(done){
-		//	Api.unSaveMail(m_user.mails[0].id, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getMails 获取邮件", function(done){
-		//	Api.getMails(0, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getSendMails 获取已发邮件", function(done){
-		//	Api.getSendMails(0, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getSavedMails 获取已存邮件", function(done){
-		//	Api.getSavedMails(0, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("deleteMails 正常删除收藏", function(done){
-		//	Api.deleteMails([m_user.mails[0].id], function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getPlayerViewData 正常查看", function(done){
-		//	var m_userData = null
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		m_userData = doc.playerData
-		//		Api.loginPlayer(Config.deviceId, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.getPlayerViewData(m_userData._id, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("setDefenceDragon 正常设置", function(done){
-		//	Api.sendChat("dragonlevel redDragon 10", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.setDefenceDragon("redDragon", function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("cancelDefenceDragon 正常取消", function(done){
-		//	Api.cancelDefenceDragon(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("sellItem 没有足够的出售队列", function(done){
-		//	Api.sellItem("resources", "wood", 1000, 1, function(doc){
-		//		doc.code.should.equal(Errors.sellQueueNotEnough.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("sellItem 玩家资源不足", function(done){
-		//	Api.sendChat("buildinglevel 16 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sellItem("resources", "wood", 10000000, 1000, function(doc){
-		//			doc.code.should.equal(Errors.resourceNotEnough.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("sellItem 马车数量不足", function(done){
-		//	Api.sendChat("resources cart 0", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sellItem("resources", "wood", 10, 1000, function(doc){
-		//			doc.code.should.equal(Errors.cartNotEnough.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("sellItem 正常出售", function(done){
-		//	Api.sendChat("resources cart 100", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sellItem("resources", "wood", 2, 1, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//var sellItems = null
-		//it("getSellItems 正常获取", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.getSellItems("resources", "wood", function(doc){
-		//			doc.code.should.equal(200)
-		//			sellItems = doc.itemDocs
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("buySellItem 正常购买", function(done){
-		//	Api.buySellItem(sellItems[0]._id, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getMyItemSoldMoney 正常获取", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.getMyItemSoldMoney(sellItems[0]._id, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("removeMySellItem 正常下架", function(done){
-		//	var deal = null
-		//	Api.sellItem("resources", "wood", 1, 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.loginPlayer(Config.deviceId, function(doc){
-		//			doc.code.should.equal(200)
-		//			deal = doc.playerData.deals[0]
-		//			Api.removeMySellItem(deal.id, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("setApnId 正常设置", function(done){
-		//	Api.setApnId("test", function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("setApnId 重复设置", function(done){
-		//	Api.setApnId("test", function(doc){
-		//		doc.code.should.equal(Errors.ApnIdAlreadySeted.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("setApnId 更换ApnId", function(done){
-		//	Api.setApnId("test2", function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
+
+		it("setPlayerLanguage", function(done){
+			Api.setPlayerLanguage("cn", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getPlayerInfo", function(done){
+			Api.getPlayerInfo(m_user._id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("sendMail 不能给自己发邮件", function(done){
+			Api.sendMail(m_user._id, "testMail", "this is a testMail", function(doc){
+				doc.code.should.equal(500)
+				doc.message.should.equal("playerId, memberId 不能给自己发邮件")
+				done()
+			})
+		})
+
+		it("sendMail 玩家不存在", function(done){
+			Api.sendMail("adfadf", "testMail", "this is a testMail", function(doc){
+				doc.code.should.equal(Errors.playerNotExist.code)
+				done()
+			})
+		})
+
+		it("sendMail 正常发送", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.sendMail(m_user._id, "testMail", "this is a testMail", function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("readMails 正常阅读", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				m_user = doc.playerData
+				Api.readMails([m_user.mails[0].id], function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("saveMail 正常收藏", function(done){
+			Api.saveMail(m_user.mails[0].id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("unSaveMail 正常取消收藏", function(done){
+			Api.unSaveMail(m_user.mails[0].id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getMails 获取邮件", function(done){
+			Api.getMails(0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getSendMails 获取已发邮件", function(done){
+			Api.getSendMails(0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getSavedMails 获取已存邮件", function(done){
+			Api.getSavedMails(0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("deleteMails 正常删除收藏", function(done){
+			Api.deleteMails([m_user.mails[0].id], function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getPlayerViewData 正常查看", function(done){
+			var m_userData = null
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				m_userData = doc.playerData
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					Api.getPlayerViewData(m_userData._id, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("setDefenceDragon 正常设置", function(done){
+			Api.sendChat("dragonlevel redDragon 10", function(doc){
+				doc.code.should.equal(200)
+				Api.setDefenceDragon("redDragon", function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("cancelDefenceDragon 正常取消", function(done){
+			Api.cancelDefenceDragon(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("sellItem 没有足够的出售队列", function(done){
+			Api.sellItem("resources", "wood", 1000, 1, function(doc){
+				doc.code.should.equal(Errors.sellQueueNotEnough.code)
+				done()
+			})
+		})
+
+		it("sellItem 玩家资源不足", function(done){
+			Api.sendChat("buildinglevel 16 1", function(doc){
+				doc.code.should.equal(200)
+				Api.sellItem("resources", "wood", 10000000, 1000, function(doc){
+					doc.code.should.equal(Errors.resourceNotEnough.code)
+					done()
+				})
+			})
+		})
+
+		it("sellItem 马车数量不足", function(done){
+			Api.sendChat("resources cart 0", function(doc){
+				doc.code.should.equal(200)
+				Api.sellItem("resources", "wood", 10, 1000, function(doc){
+					doc.code.should.equal(Errors.cartNotEnough.code)
+					done()
+				})
+			})
+		})
+
+		it("sellItem 正常出售", function(done){
+			Api.sendChat("resources cart 100", function(doc){
+				doc.code.should.equal(200)
+				Api.sellItem("resources", "wood", 2, 1, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		var sellItems = null
+		it("getSellItems 正常获取", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.getSellItems("resources", "wood", function(doc){
+					doc.code.should.equal(200)
+					sellItems = doc.itemDocs
+					done()
+				})
+			})
+		})
+
+		it("buySellItem 正常购买", function(done){
+			Api.buySellItem(sellItems[0]._id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getMyItemSoldMoney 正常获取", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.getMyItemSoldMoney(sellItems[0]._id, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("removeMySellItem 正常下架", function(done){
+			var deal = null
+			Api.sellItem("resources", "wood", 1, 1, function(doc){
+				doc.code.should.equal(200)
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					deal = doc.playerData.deals[0]
+					Api.removeMySellItem(deal.id, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("setApnId 正常设置", function(done){
+			Api.setApnId("test", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("setApnId 重复设置", function(done){
+			Api.setApnId("test", function(doc){
+				doc.code.should.equal(Errors.ApnIdAlreadySeted.code)
+				done()
+			})
+		})
+
+		it("setApnId 更换ApnId", function(done){
+			Api.setApnId("test2", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
 		//it("upgradeProductionTech 前置科技条件不满足", function(done){
 		//	Api.sendChat("buildinglevel 7 1", function(doc){
 		//		doc.code.should.equal(200)

@@ -24,7 +24,7 @@ var pro = ChatRemote.prototype
  * @param callback
  */
 pro.addToChatChannel = function(uid, logicServerId, callback){
-	this.channelService.getChannel(Consts.GlobalChatChannel).add(uid, logicServerId)
+	this.channelService.getChannel(Consts.GlobalChatChannel, true).add(uid, logicServerId)
 	callback()
 }
 

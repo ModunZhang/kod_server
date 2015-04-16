@@ -11,12 +11,16 @@ var wsrpc = require("pomelo-rpc-ws")
 var Scripto = require('redis-scripto')
 
 
+var RouteUtils = require("./app/utils/routeUtils")
 var LoginFilter = require("./app/utils/loginFilter")
 //var ReplayFilter = require("./app/utils/replayFilter")
 var SerialFilter = require("./app/utils/serialFilter")
 
 var app = pomelo.createApp()
 app.set("name", "KODServer")
+
+app.route("chat", RouteUtils.chat)
+
 app.configure("production|development", function() {
 	//app.set('proxyConfig', {
 	//	rpcClient: wsrpc.client

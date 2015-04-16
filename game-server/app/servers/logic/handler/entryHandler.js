@@ -38,6 +38,7 @@ var BindPlayerSession = function(session, deviceId, playerDoc, callback){
 	session.set("serverId", playerDoc.serverId)
 	session.set("deviceId", deviceId)
 	session.set("logicServerId", playerDoc.logicServerId)
+	session.set("chatServerId", this.chatServerId)
 	session.set("name", playerDoc.basicInfo.name)
 	session.set("icon", playerDoc.basicInfo.icon)
 	session.set("vipExp", playerDoc.basicInfo.vipExp)

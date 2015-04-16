@@ -858,8 +858,8 @@ errors["illegalAllianceStatus"] = {
 	code:671,
 	message:"非法的联盟状态"
 }
-errors["userAlreadyBindGCAId"] = {
-	key:"userAlreadyBindGCAId",
+errors["playerAlreadyBindGCAId"] = {
+	key:"playerAlreadyBindGCAId",
 	code:672,
 	message:"账号GameCenter账号已经绑定"
 }

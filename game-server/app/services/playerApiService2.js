@@ -22,10 +22,8 @@ var PlayerApiService2 = function(app){
 	this.env = app.get("env")
 	this.pushService = app.get("pushService")
 	this.timeEventService = app.get("timeEventService")
-	this.globalChannelService = app.get("globalChannelService")
 	this.playerTimeEventService = app.get("playerTimeEventService")
-	this.allianceDao = app.get("allianceDao")
-	this.playerDao = app.get("playerDao")
+	this.dataService = app.get("dataService")
 	this.GemUse = app.get("GemUse")
 }
 module.exports = PlayerApiService2
@@ -49,7 +47,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_9
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -106,7 +104,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			playerData.push(["dragonEquipmentEvents." + playerDoc.dragonEquipmentEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonEquipmentEvents", event.id, event.finishTime - Date.now()])
 		}
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -117,7 +115,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -151,7 +149,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_6
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -213,7 +211,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			playerData.push(["treatSoldierEvents." + playerDoc.treatSoldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "treatSoldierEvents", event.id, event.finishTime - Date.now()])
 		}
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -224,7 +222,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -253,7 +251,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragons = playerDoc.dragons
 		var dragon = dragons[dragonType]
@@ -272,7 +270,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 			playerData.push(["dragonHatchEvents." + playerDoc.dragonHatchEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonHatchEvents", event.id, event.finishTime - Date.now()])
 		}
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -283,7 +281,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -330,7 +328,7 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -344,7 +342,7 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 		playerData.push(["dragonEquipments." + equipmentName, playerDoc.dragonEquipments[equipmentName]])
 		playerData.push(["dragons." + dragonType + ".equipments." + equipmentCategory, equipment])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -355,7 +353,7 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -394,7 +392,7 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		var equipment = dragon.equipments[equipmentCategory]
@@ -407,7 +405,7 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 			playerData.push(["dragonEquipments." + equipment.name, playerDoc.dragonEquipments[equipment.name]])
 		})
 		playerData.push(["dragons." + dragonType + ".equipments." + equipmentCategory, equipment])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -418,7 +416,7 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -452,7 +450,7 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		var equipment = dragon.equipments[equipmentCategory]
@@ -464,7 +462,7 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 		playerData.push(["dragonEquipments." + equipment.name, playerDoc.dragonEquipments[equipment.name]])
 		playerData.push(["dragons." + dragonType + ".equipments." + equipment.name, equipment])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -475,7 +473,7 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -509,7 +507,7 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -527,7 +525,7 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 		playerData.push(["resources.blood", playerDoc.resources.blood])
 		playerData.push(["dragons." + dragonType + ".skills." + skillKey, skill])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -538,7 +536,7 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -567,7 +565,7 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star < 1) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -586,7 +584,7 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
 		playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -597,7 +595,7 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -620,7 +618,7 @@ pro.getDailyQuests = function(playerId, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_14
 		if(building.level <= 0) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -630,9 +628,9 @@ pro.getDailyQuests = function(playerId, callback){
 			var dailyQuests = DataUtils.createDailyQuests()
 			playerDoc.dailyQuests.quests = dailyQuests
 			playerDoc.dailyQuests.refreshTime = now
-			updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		}else{
-			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
+			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, null])
 		}
 		playerData.push(["dailyQuests", playerDoc.dailyQuests])
 	}).then(function(){
@@ -644,7 +642,7 @@ pro.getDailyQuests = function(playerId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -673,7 +671,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var quest = _.find(playerDoc.dailyQuests.quests, function(quest){
 			return _.isEqual(quest.id, questId)
@@ -695,7 +693,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 		quest.star += 1
 		playerData.push(["dailyQuests.quests." + playerDoc.dailyQuests.quests.indexOf(quest) + ".star", quest.star])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -706,7 +704,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -735,7 +733,7 @@ pro.startDailyQuest = function(playerId, questId, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var quest = _.find(playerDoc.dailyQuests.quests, function(quest){
 			return _.isEqual(quest.id, questId)
@@ -749,7 +747,7 @@ pro.startDailyQuest = function(playerId, questId, callback){
 		playerData.push(["dailyQuestEvents." + playerDoc.dailyQuestEvents.indexOf(event), event])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dailyQuestEvents", event.id, event.finishTime - Date.now()])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -760,7 +758,7 @@ pro.startDailyQuest = function(playerId, questId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -789,7 +787,7 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var questEvent = _.find(playerDoc.dailyQuestEvents, function(event){
 			return _.isEqual(event.id, questEventId)
@@ -810,7 +808,7 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -821,7 +819,7 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -849,12 +847,12 @@ pro.setPlayerLanguage = function(playerId, language, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		playerDoc.basicInfo.language = language
 		playerData.push(["basicInfo.language", language])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -865,7 +863,7 @@ pro.setPlayerLanguage = function(playerId, language, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -893,13 +891,12 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 	var playerDoc = null
 	var playerViewData = null
 	var memberDoc = null
-	var updateFuncs = []
 	var pushFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 
 		if(!_.isEqual(playerId, memberId)){
-			return self.playerDao.findAsync(memberId)
+			return self.dataService.directFindPlayerAsync(memberId)
 		}
 		memberDoc = playerDoc
 		return Promise.resolve()
@@ -922,33 +919,13 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 			titleName:hasAlliance ? memberDoc.alliance.titleName : "",
 			lastLoginTime:memberDoc.countInfo.lastLoginTime
 		}
-
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
-		if(!_.isElement(playerId, memberId)){
-			updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, memberDoc._id])
-		}
 		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback(null, playerViewData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		}
-		if(_.isObject(memberDoc) && !_.isEqual(playerId, memberId)){
-			funcs.push(self.playerDao.removeLockAsync(memberDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
+		callback(e)
 	})
 }
 
@@ -985,9 +962,9 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 	var memberData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		return self.playerDao.findAsync(memberId)
+		return self.dataService.findPlayerAsync(memberId)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 		memberDoc = doc
@@ -1029,8 +1006,8 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 		playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mailToPlayer), mailToPlayer])
 
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, memberDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, memberDoc, memberDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1041,10 +1018,10 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(_.isObject(memberDoc)){
-			funcs.push(self.playerDao.removeLockAsync(memberDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1072,7 +1049,7 @@ pro.readMails = function(playerId, mailIds, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		for(var i = 0; i < mailIds.length; i++){
 			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
@@ -1081,7 +1058,7 @@ pro.readMails = function(playerId, mailIds, callback){
 			playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isRead", true])
 		}
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1090,7 +1067,7 @@ pro.readMails = function(playerId, mailIds, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1118,14 +1095,14 @@ pro.saveMail = function(playerId, mailId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
 		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
 		mail.isSaved = true
 		playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isSaved", true])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1134,7 +1111,7 @@ pro.saveMail = function(playerId, mailId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){

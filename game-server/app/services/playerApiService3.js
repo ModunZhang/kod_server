@@ -19,10 +19,7 @@ var PlayerApiService3 = function(app){
 	this.app = app
 	this.env = app.get("env")
 	this.pushService = app.get("pushService")
-	this.timeEventService = app.get("timeEventService")
-	this.globalChannelService = app.get("globalChannelService")
-	this.allianceDao = app.get("allianceDao")
-	this.playerDao = app.get("playerDao")
+	this.dataService = app.get("dataService")
 	this.Deal = app.get("Deal")
 }
 module.exports = PlayerApiService3
@@ -45,14 +42,14 @@ pro.unSaveMail = function(playerId, mailId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
 		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
 		mail.isSaved = false
 		playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isSaved", mail.isSaved])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -61,7 +58,7 @@ pro.unSaveMail = function(playerId, mailId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -88,9 +85,9 @@ pro.getMails = function(playerId, fromIndex, callback){
 	var self = this
 	var playerDoc = null
 	var mails = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		return self.playerDao.removeLockAsync(playerDoc._id)
+		return self.dataService.updatePlayerAsync(playerDoc, null)
 	}).then(function(){
 		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
 			var mail = playerDoc.mails[i]
@@ -104,7 +101,7 @@ pro.getMails = function(playerId, fromIndex, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -131,12 +128,12 @@ pro.getSendMails = function(playerId, fromIndex, callback){
 	var self = this
 	var playerDoc = null
 	var mails = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		return self.playerDao.removeLockAsync(playerDoc._id)
+		return self.dataService.updatePlayerAsync(playerDoc, null)
 	}).then(function(){
 		for(var i = playerDoc.sendMails.length - 1; i >= 0; i--){
 			var mail = playerDoc.sendMails[i]
@@ -150,7 +147,7 @@ pro.getSendMails = function(playerId, fromIndex, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -177,12 +174,12 @@ pro.getSavedMails = function(playerId, fromIndex, callback){
 	var self = this
 	var playerDoc = null
 	var mails = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		return self.playerDao.removeLockAsync(playerDoc._id)
+		return self.dataService.updatePlayerAsync(playerDoc, null)
 	}).then(function(){
 		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
 			var mail = playerDoc.mails[i]
@@ -196,7 +193,7 @@ pro.getSavedMails = function(playerId, fromIndex, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -224,19 +221,19 @@ pro.deleteMails = function(playerId, mailIds, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		for(var i = 0; i < mailIds.length; i ++){
+		for(var i = 0; i < mailIds.length; i++){
 			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
 			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailIds[i]))
 			playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
 			LogicUtils.removeItemInArray(playerDoc.mails, mail)
 		}
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -245,7 +242,7 @@ pro.deleteMails = function(playerId, mailIds, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -273,16 +270,16 @@ pro.readReports = function(playerId, reportIds, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		for(var i = 0; i < reportIds.length; i ++){
+		for(var i = 0; i < reportIds.length; i++){
 			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
 			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
 			report.isRead = true
 			playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isRead", report.isRead])
 		}
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -291,7 +288,7 @@ pro.readReports = function(playerId, reportIds, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -319,14 +316,14 @@ pro.saveReport = function(playerId, reportId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
 		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
 		report.isSaved = true
 		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", report.isSaved])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -335,7 +332,7 @@ pro.saveReport = function(playerId, reportId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -363,14 +360,14 @@ pro.unSaveReport = function(playerId, reportId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
 		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
 		report.isSaved = false
 		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", report.isSaved])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -378,7 +375,7 @@ pro.unSaveReport = function(playerId, reportId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -405,9 +402,9 @@ pro.getReports = function(playerId, fromIndex, callback){
 	var self = this
 	var playerDoc = null
 	var reports = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		return self.playerDao.removeLockAsync(playerDoc._id)
+		return self.dataService.updatePlayerAsync(playerDoc, null)
 	}).then(function(){
 		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
 			var report = playerDoc.reports[i]
@@ -422,7 +419,7 @@ pro.getReports = function(playerId, fromIndex, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -449,12 +446,12 @@ pro.getSavedReports = function(playerId, fromIndex, callback){
 	var self = this
 	var playerDoc = null
 	var reports = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)){
 			return Promise.reject(new Error("玩家不存在"))
 		}
 		playerDoc = doc
-		return self.playerDao.removeLockAsync(playerDoc._id)
+		return self.dataService.updatePlayerAsync(playerDoc, null)
 	}).then(function(){
 		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
 			var report = playerDoc.reports[i]
@@ -469,7 +466,7 @@ pro.getSavedReports = function(playerId, fromIndex, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -497,17 +494,17 @@ pro.deleteReports = function(playerId, reportIds, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 
-		for(var i = 0; i < reportIds.length; i ++){
+		for(var i = 0; i < reportIds.length; i++){
 			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
 			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
 			playerData.push(["reports." + playerDoc.reports.indexOf(report), null])
 			LogicUtils.removeItemInArray(playerDoc.reports, report)
 		}
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -516,7 +513,7 @@ pro.deleteReports = function(playerId, reportIds, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -548,10 +545,9 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 	var playerDoc = null
 	var targetPlayerDoc = null
 	var playerViewData = {}
-	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		return self.playerDao.findAsync(targetPlayerId)
+		return self.dataService.directFindPlayerAsync(targetPlayerId)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId))
 		targetPlayerDoc = doc
@@ -560,28 +556,11 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerViewData.buildings = targetPlayerDoc.buildings
 		playerViewData.helpedByTroops = targetPlayerDoc.helpedByTroops
 
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, targetPlayerDoc._id])
 		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerViewData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		}
-		if(_.isObject(targetPlayerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(targetPlayerDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
+		callback(e)
 	})
 }
 
@@ -601,7 +580,7 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
 		if(_.isObject(defenceDragon)){
@@ -617,7 +596,7 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
 		dragon.status = Consts.DragonStatus.Defence
 		playerData.push(["dragons." + dragon.type + ".status", dragon.status])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -626,7 +605,7 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -648,7 +627,7 @@ pro.cancelDefenceDragon = function(playerId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
 		if(!_.isObject(dragon)) return Promise.reject(ErrorUtils.noDragonInDefenceStatus(playerId, playerDoc.dragons))
@@ -656,7 +635,7 @@ pro.cancelDefenceDragon = function(playerId, callback){
 		dragon.status = Consts.DragonStatus.Free
 		playerData.push(["dragons." + dragon.type, dragon])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -665,7 +644,7 @@ pro.cancelDefenceDragon = function(playerId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -712,7 +691,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
@@ -730,7 +709,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 		playerDoc.deals.push(deal.dealForPlayer)
 		playerData.push(["deals." + playerDoc.deals.indexOf(deal.dealForPlayer), deal.dealForPlayer])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		updateFuncs.push([self.Deal, self.Deal.createAsync, deal.dealForAll])
 		return Promise.resolve()
 	}).then(function(){
@@ -740,7 +719,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -776,10 +755,8 @@ pro.getSellItems = function(playerId, type, name, callback){
 	var self = this
 	var playerDoc = null
 	var itemDocs = null
-	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		updateFuncs.push([self.playerDao, self.playerDao.removeLockAsync, playerDoc._id])
 		return self.Deal.find({
 			"playerId":{$ne:playerDoc._id},
 			"serverId":playerDoc.serverId,
@@ -792,21 +769,9 @@ pro.getSellItems = function(playerId, type, name, callback){
 		itemDocs = docs
 		return Promise.resolve()
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
 		callback(null, itemDocs)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
+		callback(e)
 	})
 }
 
@@ -831,7 +796,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 	var pushFuncs = []
 	var updateFuncs = []
 	var funcs = []
-	funcs.push(this.playerDao.findAsync(playerId))
+	funcs.push(this.dataService.findPlayerAsync(playerId))
 	funcs.push(this.Deal.findOneAsync({_id:itemId}))
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		playerDoc = doc_1
@@ -863,7 +828,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 		playerDoc[type][itemDoc.itemData.name] += realCount
 		playerData.push([type + "." + itemDoc.itemData.name, playerDoc[type][itemDoc.itemData.name]])
 
-		return self.playerDao.findAsync(itemDoc.playerId)
+		return self.dataService.findPlayerAsync(itemDoc.playerId)
 	}).then(function(doc){
 		sellerDoc = doc
 		var sellItem = _.find(sellerDoc.deals, function(deal){
@@ -872,8 +837,8 @@ pro.buySellItem = function(playerId, itemId, callback){
 		sellItem.isSold = true
 		sellerData.push(["deals." + sellerDoc.deals.indexOf(sellItem) + ".isSold", sellItem.isSold])
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, sellerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, sellerDoc, sellerDoc])
 		updateFuncs.push([self.Deal, self.Deal.findOneAndRemoveAsync, {_id:itemId}])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, sellerDoc, sellerData])
 		return Promise.resolve()
@@ -886,7 +851,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -914,7 +879,7 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var sellItem = _.find(playerDoc.deals, function(deal){
 			return _.isEqual(deal.id, itemId)
@@ -928,7 +893,7 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 		playerData.push(["deals." + playerDoc.deals.indexOf(sellItem), null])
 		LogicUtils.removeItemInArray(playerDoc.deals, sellItem)
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -937,7 +902,7 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -967,7 +932,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 	var itemDoc = null
 	var updateFuncs = []
 	var funcs = []
-	funcs.push(this.playerDao.findAsync(playerId))
+	funcs.push(this.dataService.findPlayerAsync(playerId))
 	funcs.push(this.Deal.findOneAsync({_id:itemId}))
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		playerDoc = doc_1
@@ -989,7 +954,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 		playerData.push(["deals." + playerDoc.deals.indexOf(sellItem), null])
 		LogicUtils.removeItemInArray(playerDoc.deals, sellItem)
 
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		updateFuncs.push([self.Deal, self.Deal.findOneAndRemoveAsync, {_id:itemId}])
 		return Promise.resolve()
 	}).then(function(){
@@ -999,7 +964,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -1027,14 +992,14 @@ pro.setApnId = function(playerId, apnId, callback){
 	var playerData = []
 	var allianceDoc = null
 	var updateFuncs = []
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(_.isEqual(apnId, playerDoc.apnId)) return Promise.reject(ErrorUtils.ApnIdAlreadySeted(playerId, apnId))
 		playerDoc.apnId = apnId
 		playerData.push(["apnId", playerDoc.apnId])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		if(_.isObject(playerDoc.alliance)){
-			return self.allianceDao.findAsync(playerDoc.alliance.id)
+			return self.dataService.findAllianceAsync(playerDoc.alliance.id)
 		}
 		return Promise.resolve()
 	}).then(function(doc){
@@ -1042,7 +1007,7 @@ pro.setApnId = function(playerId, apnId, callback){
 			allianceDoc = doc
 			var member = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
 			member.apnId = playerDoc.apnId
-			updateFuncs.push([self.allianceDao, self.allianceDao.updateAsync, allianceDoc])
+			updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		}
 		return Promise.resolve()
 	}).then(function(){
@@ -1052,10 +1017,10 @@ pro.setApnId = function(playerId, apnId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(allianceDoc._id))
+			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
