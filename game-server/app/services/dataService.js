@@ -9,9 +9,27 @@ var LogicUtils = require("../utils/logicUtils")
 var DataService = function(app){
 	this.app = app
 	this.cacheServerId = app.get("cacheServerId")
+	this.Player = app.get("Player")
+	this.Alliance = app.get("Alliance")
 }
 module.exports = DataService
 var pro = DataService.prototype
+
+/**
+ * 获取玩家模型
+ * @returns {*|DataService.Player}
+ */
+pro.getPlayerModel = function(){
+	return this.Player
+}
+
+/**
+ * 获取联盟模型
+ * @returns {*|DataService.Alliance}
+ */
+pro.getAllianceModel = function(){
+	return this.Alliance
+}
 
 /**
  * 创建玩家对象
@@ -58,6 +76,16 @@ pro.updatePlayer = function(doc, data, callback){
  */
 pro.flushPlayer = function(doc, data, callback){
 	this.app.rpc.cache.cacheRemote.flushPlayer.toServer(this.cacheServerId, doc._id, doc, callback)
+}
+
+/**
+ * 更新玩家并且将玩家从内存移除
+ * @param doc
+ * @param data
+ * @param callback
+ */
+pro.timeoutPlayer = function(doc, data, callback){
+	this.app.rpc.cache.cacheRemote.timeoutPlayer.toServer(this.cacheServerId, doc._id, doc, callback)
 }
 
 /**

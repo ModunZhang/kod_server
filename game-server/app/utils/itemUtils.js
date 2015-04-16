@@ -112,16 +112,14 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
  * @param playerDoc
  * @param playerData
  * @param newPlayerName
- * @param playerDao
+ * @param dataService
  * @returns {*}
  */
-var ChangePlayerName = function(playerDoc, playerData, newPlayerName, playerDao){
+var ChangePlayerName = function(playerDoc, playerData, newPlayerName, dataService){
 	if(_.isEqual(newPlayerName, playerDoc.basicInfo.name)) return Promise.reject(ErrorUtils.playerNameCanNotBeTheSame(playerDoc._id, newPlayerName))
-	return playerDao.getModel().findAsync({"basicInfo.name":newPlayerName}, {_id:true}, {limit:1}).then(function(docs){
-		if(docs.length > 0){
-			return playerDao.removeLockAsync(docs[0]._id).then(function(){
-				return Promise.reject(ErrorUtils.playerNameAlreadyUsed(playerDoc._id, newPlayerName))
-			})
+	return dataService.getPlayerModel().findOneAsync({"basicInfo.name":newPlayerName}, {_id:true}).then(function(doc){
+		if(_.isObject(doc)){
+			return Promise.reject(ErrorUtils.playerNameAlreadyUsed(playerDoc._id, newPlayerName))
 		}else{
 			playerDoc.basicInfo.name = newPlayerName
 			playerData.push(["basicInfo.name", playerDoc.basicInfo.name])
@@ -151,17 +149,17 @@ var ChangeCityName = function(playerDoc, playerData, newCityName){
  * @param eventType
  * @param eventId
  * @param updateFuncs
- * @param allianceDao
+ * @param dataService
  * @param eventFuncs
  * @param timeEventService
  * @param pushFuncs
  * @param pushService
  * @returns {*}
  */
-var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
+var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFuncs, dataService, eventFuncs, timeEventService, pushFuncs, pushService){
 	if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
 	var allianceDoc = null
-	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
+	return dataService.findAllianceAsync(playerDoc.alliance.id).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
 		var enemyAllianceData = []
@@ -185,14 +183,14 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 				playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 			})
 		}
-		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
+		updateFuncs.push([dataService, dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, pushService)
 
 		return Promise.resolve()
 	}).catch(function(e){
 		if(_.isObject(allianceDoc)){
-			return allianceDao.removeLockAsync(allianceDoc._id).then(function(){
+			return dataService.updateAllianceAsync(allianceDoc, null).then(function(){
 				return Promise.reject(e)
 			})
 		}
@@ -206,15 +204,15 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
  * @param playerData
  * @param locationX
  * @param locationY
- * @param allianceDao
+ * @param dataService
  * @param updateFuncs
  * @param pushFuncs
  * @param pushService
  */
-var MoveTheCity = function(playerDoc, playerData, locationX, locationY, allianceDao, updateFuncs, pushFuncs, pushService){
+var MoveTheCity = function(playerDoc, playerData, locationX, locationY, dataService, updateFuncs, pushFuncs, pushService){
 	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error(ErrorUtils.playerNotJoinAlliance(playerDoc._id)))
 	var allianceDoc = null
-	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
+	return dataService.findAllianceAsync(playerDoc.alliance.id).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
 		var enemyAllianceData = []
@@ -243,14 +241,14 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, alliance
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject) + ".location", playerMapObject.location])
 		enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject) + ".location", playerMapObject.location])
 
-		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
+		updateFuncs.push([dataService, dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, pushService)
 
 		return Promise.resolve()
 	}).catch(function(e){
 		if(_.isObject(allianceDoc)){
-			return allianceDao.removeLockAsync(allianceDoc._id).then(function(){
+			return dataService.updateAllianceAsync(allianceDoc, null).then(function(){
 				return Promise.reject(e)
 			})
 		}
@@ -602,17 +600,17 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
  * @param eventId
  * @param speedupPercent
  * @param updateFuncs
- * @param allianceDao
+ * @param dataService
  * @param eventFuncs
  * @param timeEventService
  * @param pushFuncs
  * @param pushService
  * @returns {*}
  */
-var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService){
+var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, dataService, eventFuncs, timeEventService, pushFuncs, pushService){
 	if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
 	var allianceDoc = null
-	return allianceDao.findAsync(playerDoc.alliance.id).then(function(doc){
+	return dataService.findAllianceAsync(playerDoc.alliance.id).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
 		var enemyAllianceData = []
@@ -631,13 +629,13 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 		eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id, marchEvent.arriveTime - Date.now()])
 
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		updateFuncs.push([allianceDao, allianceDao.updateAsync, allianceDoc])
+		updateFuncs.push([dataService, dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, pushService)
 
 		return Promise.resolve()
 	}).catch(function(e){
 		if(_.isObject(allianceDoc)){
-			return allianceDao.removeLockAsync(allianceDoc._id).then(function(){
+			return dataService.updateAllianceAsync(allianceDoc._id).then(function(){
 				return Promise.reject(e)
 			})
 		}
@@ -764,7 +762,7 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, dataService,
 		},
 		changePlayerName:function(){
 			var playerName = itemData.playerName
-			return ChangePlayerName(playerDoc, playerData, playerName, playerDao)
+			return ChangePlayerName(playerDoc, playerData, playerName, dataService)
 		},
 		changeCityName:function(){
 			var cityName = itemData.cityName
@@ -773,12 +771,12 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, dataService,
 		retreatTroop:function(){
 			var eventType = itemData.eventType
 			var eventId = itemData.eventId
-			return RetreatTroop(playerDoc, playerData, eventType, eventId, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService)
+			return RetreatTroop(playerDoc, playerData, eventType, eventId, updateFuncs, dataService, eventFuncs, timeEventService, pushFuncs, pushService)
 		},
 		moveTheCity:function(){
 			var locationX = itemData.locationX
 			var locationY = itemData.locationY
-			return MoveTheCity(playerDoc, playerData, locationX, locationY, allianceDao, updateFuncs, pushFuncs, pushService)
+			return MoveTheCity(playerDoc, playerData, locationX, locationY, dataService, updateFuncs, pushFuncs, pushService)
 		},
 		dragonExp_1:function(){
 			var dragonType = itemData.dragonType
@@ -1351,14 +1349,14 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, dataService,
 			var speedupPercent = itemConfig.effect
 			var eventType = itemData.eventType
 			var eventId = itemData.eventId
-			return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService)
+			return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, dataService, eventFuncs, timeEventService, pushFuncs, pushService)
 		},
 		warSpeedupClass_2:function(){
 			var itemConfig = Items.speedup.warSpeedupClass_2
 			var speedupPercent = itemConfig.effect
 			var eventType = itemData.eventType
 			var eventId = itemData.eventId
-			return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, allianceDao, eventFuncs, timeEventService, pushFuncs, pushService)
+			return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, dataService, eventFuncs, timeEventService, pushFuncs, pushService)
 		}
 	}
 	return functionMap[itemName]()

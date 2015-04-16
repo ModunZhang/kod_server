@@ -68,6 +68,7 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 		}
 	}).then(function(doc){
 		playerDoc = doc
+		if(!_.isEqual(playerDoc.serverId, self.app.get("cacheServerId"))) return Promise.reject(ErrorUtils.playerNotInCurrentServer(playerDoc._id, self.app.get("cacheServerId"), playerDoc.serverId))
 		if(!_.isEmpty(playerDoc.logicServerId)){
 			var kickPlayerAsync = function(playerDoc){
 				return self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "其他设备正使用此账号登录", function(e){
@@ -207,7 +208,11 @@ pro.playerLogout = function(playerId, callback){
 		playerDoc = doc
 		playerDoc.logicServerId = null
 		playerDoc.countInfo.todayOnLineTime += Date.now() - playerDoc.countInfo.lastLoginTime
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		if(_.isEqual(playerDoc.serverId, self.app.get("cacheServerId"))){
+			return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		}else{
+			return self.dataService.timeoutPlayerAsync(playerDoc, playerDoc)
+		}
 	}).then(function(){
 		callback(null, playerDoc)
 	}).catch(function(e){

@@ -4,6 +4,7 @@
  * Created by modun on 14-7-23.
  */
 
+var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
 
@@ -628,15 +629,8 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
 		return Promise.resolve()
 	}).then(function(){
-		var itemNameFunction = ItemUtils.getItemNameFunction(itemName)
-		var itemData = params[itemName]
 		if(_.isEqual("changePlayerName", itemName)){
 			forceSave = true
-			return itemNameFunction(itemData, playerDoc, playerData, self.dataService)
-		}else if(_.isEqual("retreatTroop", itemName)){
-			return itemNameFunction(itemData, playerDoc, playerData, self.dataService, updateFuncs, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
-		}else if(_.isEqual("moveTheCity", itemName)){
-			return itemNameFunction(itemData, playerDoc, playerData, self.dataService, updateFuncs, pushFuncs, self.pushService)
 		}else if(_.isEqual("chest_2", itemName) || _.isEqual("chest_3", itemName) || _.isEqual("chest_4", itemName)){
 			var key = "chestKey_" + itemName.slice(-1)
 			var item = _.find(playerDoc.items, function(item){
@@ -650,24 +644,12 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 			}else{
 				playerData.push(["items." + playerDoc.items.indexOf(item) + ".count", item.count])
 			}
-			return itemNameFunction(itemData, playerDoc, playerData)
 		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
 			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
-		}else if(_.isEqual("warSpeedupClass_1", itemName) || _.isEqual("warSpeedupClass_2", itemName)){
-			return itemNameFunction(itemData, playerDoc, playerData, self.dataService, updateFuncs, eventFuncs, self.timeEventService, pushFuncs, self.pushService)
-		}else if(_.isEqual("speedup_1", itemName)
-			|| _.isEqual("speedup_2", itemName)
-			|| _.isEqual("speedup_3", itemName)
-			|| _.isEqual("speedup_4", itemName)
-			|| _.isEqual("speedup_5", itemName)
-			|| _.isEqual("speedup_6", itemName)
-			|| _.isEqual("speedup_7", itemName)
-			|| _.isEqual("speedup_8", itemName)
-		){
-			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService, self.playerTimeEventService)
-		}else{
-			return itemNameFunction(itemData, playerDoc, playerData, eventFuncs, self.timeEventService)
 		}
+
+		var itemData = params[itemName]
+		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.dataService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService)
 	}).then(function(){
 		if(forceSave){
 			updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc, playerDoc])
@@ -955,7 +937,7 @@ pro.getGcBindStatus = function(playerId, gcId, callback){
 		return
 	}
 
-	this.Player.findOneAsync({gcId:gcId}, {_id:true}).then(function(doc){
+	this.dataService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true}).then(function(doc){
 		callback(null, !!doc)
 	}).catch(function(e){
 		callback(e)
@@ -981,7 +963,7 @@ pro.bindGcId = function(playerId, gcId, callback){
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.gcId))
-		return self.Player.findOneAsync({gcId:gcId}, {_id:true})
+		return self.dataService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})
 	}).then(function(doc){
 		if(_.isObject(doc)) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByOtherPlayer(playerId, gcId))
 		playerDoc.gcId = gcId
@@ -1026,11 +1008,12 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 		playerDoc = doc
 		if(_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.thePlayerDoNotBindGCId(playerId))
 		if(_.isEqual(playerDoc.gcId, gcId)) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByCurrentPlayer(playerId, gcId))
-		return self.Player.findOneAsync({gcId:gcId}, {_id:true})
+		return self.dataService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			var playerId = ShortId.generate()
 			var player = LogicUtils.createPlayer(playerId, playerDoc.serverId)
+			player.gcId = gcId
 			return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:player._id}).then(function(){
 				return self.dataService.createPlayerAsync(player).then(function(doc){
 					newPlayerDoc = doc
@@ -1078,7 +1061,7 @@ pro.forceSwitchGcId = function(playerId, deviceId, gcId, callback){
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.gcId))
-		return self.Player.findOneAsync({gcId:gcId}, {_id:true})
+		return self.dataService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.theGCIdIsNotBindedByOtherPlayer(playerId, gcId))
 		return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:doc._id})

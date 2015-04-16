@@ -46,6 +46,8 @@ life.beforeStartup = function(app, callback){
 			app.set("eventServerId", id)
 		}else if(_.isEqual(server.serverType, "cache") && _.isEqual(server.id, currentServer.usedFor)){
 			app.set("cacheServerId", id)
+		}else if(_.isEqual(server.serverType, "gate")){
+			app.set("gateServerId", id)
 		}
 	})
 

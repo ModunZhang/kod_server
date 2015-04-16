@@ -1909,3 +1909,14 @@ Utils.canNotSwitchToTheSameServer = function(playerId, serverId){
 	var config = Errors.canNotSwitchToTheSameServer
 	return CreateError(config, {playerId:playerId, serverId:serverId})
 }
+
+/**
+ * 玩家未在当前服务器
+ * @param playerId
+ * @param currentServerId
+ * @param dbServerId
+ */
+Utils.playerNotInCurrentServer = function(playerId, currentServerId, dbServerId){
+	var config = Errors.playerNotInCurrentServer
+	return CreateError(config, {playerId:playerId, currentServerId:currentServerId, dbServerId:dbServerId})
+}

@@ -979,22 +979,6 @@ pro.bindGcId = function(msg, session, next){
 }
 
 /**
- * 强制绑定GameCenter账号到当前玩家数据,取消原GameCenter账号下的玩家数据绑定
- * @param msg
- * @param session
- * @param next
- */
-pro.forceBindGcId = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.forceBindGcId", {playerId:session.uid, msg:msg})
-	var gcId = msg.gcId
-	this.playerApiService4.forceBindGcIdAsync(session.uid, gcId).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
-	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * 切换GameCenter账号
  * @param msg
  * @param session

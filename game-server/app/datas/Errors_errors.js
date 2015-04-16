@@ -913,3 +913,8 @@ errors["canNotSwitchToTheSameServer"] = {
 	code:682,
 	message:"不能切换到相同的服务器"
 }
+errors["playerNotInCurrentServer"] = {
+	key:"playerNotInCurrentServer",
+	code:683,
+	message:"玩家未在当前服务器"
+}

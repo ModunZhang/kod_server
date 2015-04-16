@@ -18,8 +18,8 @@ var DataService = function(app){
 	this.alliances = []
 	this.alliancesQueue = {}
 
-	this.flashOps = 60
-	this.flushInterval = 60 * 1000
+	this.flushOps = 60
+	this.flushInterval = 120 * 1000
 	this.timeoutInterval = 600 * 1000
 }
 module.exports = DataService
@@ -250,11 +250,11 @@ pro.updatePlayer = function(id, doc, callback){
 		var player = this.players[id]
 		player.doc = doc
 		player.ops += 1
-		if(player.ops >= this.flashOps){
+		if(player.ops >= this.flushOps){
+			clearTimeout(player.timeout)
+			clearTimeout(player.interval)
 			delete doc._id
 			self.Player.updateAsync({_id:id}, player.doc).then(function(){
-				clearTimeout(player.timeout)
-				clearTimeout(player.interval)
 				player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 				player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
 				callback()
@@ -280,19 +280,61 @@ pro.flushPlayer = function(id, doc, callback){
 	var player = this.players[id]
 	if(_.isObject(doc)){
 		player.doc = doc
+		player.ops += 1
 	}
-	delete doc._id
-	self.Player.updateAsync({_id:id}, player.doc).then(function(){
-		clearTimeout(player.timeout)
-		clearTimeout(player.interval)
+	clearTimeout(player.timeout)
+	clearTimeout(player.interval)
+	if(player.ops > 0){
+		delete doc._id
+		self.Player.updateAsync({_id:id}, player.doc).then(function(){
+			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
+			player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
+			callback()
+			self.unlockPlayer(id)
+		})
+		doc._id = id
+		player.ops = 0
+	}else{
 		player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 		player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
 		callback()
 		self.unlockPlayer(id)
-	})
-	doc._id = id
-	player.ops = 0
+	}
 }
+
+/**
+ * 更新玩家并且将玩家从内存移除
+ * @param id
+ * @param doc
+ * @param callback
+ */
+pro.timeoutPlayer = function(id, doc, callback){
+	var self = this
+	var player = this.players[id]
+	delete  this.players[id]
+	if(_.isObject(doc)){
+		player.doc = doc
+		player.ops += 1
+	}
+	clearTimeout(player.timeout)
+	clearTimeout(player.interval)
+	if(player.ops > 0){
+		delete doc._id
+		self.Player.updateAsync({_id:id}, player.doc).then(function(){
+			callback()
+			self.unlockPlayer(id)
+		})
+		doc._id = id
+		player.ops = 0
+	}else{
+		callback()
+		self.unlockPlayer(id)
+	}
+}
+
+
+
+
 
 
 /**
@@ -391,7 +433,7 @@ pro.updateAlliance = function(id, version, doc, callback){
 		var alliance = this.alliances[id]
 		alliance.doc = doc
 		alliance.ops += 1
-		if(alliance.ops >= this.flashOps){
+		if(alliance.ops >= this.flushOps){
 			delete doc._id
 			self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
 				clearTimeout(alliance.timeout)

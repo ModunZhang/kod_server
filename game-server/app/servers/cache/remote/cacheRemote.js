@@ -64,6 +64,15 @@ pro.flushPlayer = function(id, doc, callback){
 	this.cacheService.flushPlayer(id, doc, callback)
 }
 
+/**
+ * 更新玩家并且将玩家从内存移除
+ * @param id
+ * @param doc
+ * @param callback
+ */
+pro.timeoutPlayer = function(id, doc, callback){
+	this.cacheService.timeoutPlayer(id, doc, callback)
+}
 
 
 /**
