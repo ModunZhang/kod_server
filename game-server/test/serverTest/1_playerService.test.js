@@ -51,79 +51,79 @@ describe("PlayerService", function(){
 
 
 	describe("playerHandler", function(){
-		//it("upgradeBuilding 建筑正在升级", function(done){
-		//	Api.upgradeBuilding(1, false, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeBuilding(1, false, function(doc){
-		//			doc.code.should.equal(Errors.buildingUpgradingNow.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeBuilding 建筑坑位不合法", function(done){
-		//	Api.upgradeBuilding(7, false, function(doc){
-		//		doc.code.should.equal(Errors.buildingLocationNotLegal.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeBuilding 建造数量已达建造上限", function(done){
-		//	Api.upgradeBuilding(6, false, function(doc){
-		//		doc.code.should.equal(Errors.buildingCountReachUpLimit.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeBuilding 建筑已达到最高等级", function(done){
-		//	var func = function(){
-		//		Api.upgradeBuilding(3, true, function(doc){
-		//			if(doc.code == 200){
-		//				func()
-		//			}else{
-		//				doc.code.should.equal(Errors.buildingLevelReachUpLimit.code)
-		//				done()
-		//			}
-		//		})
-		//	}
-		//
-		//	Api.sendChat("buildinglevel 1 40", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendChat("buildinglevel 3 39")
-		//		Api.sendChat("resources gem 5000000", function(doc){
-		//			doc.code.should.equal(200)
-		//			func()
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeBuilding 正常普通升级", function(done){
-		//	Api.upgradeBuilding(2, false, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("freeSpeedUp 正常免费加速", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		m_user = doc.playerData
-		//		Api.freeSpeedUp("buildingEvents", m_user.buildingEvents[0].id, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeBuilding 正常升级立即完成", function(done){
-		//	setTimeout(function(){
-		//		Api.upgradeBuilding(2, true, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	}, 100)
-		//})
-		//
+		it("upgradeBuilding 建筑正在升级", function(done){
+			Api.upgradeBuilding(1, false, function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeBuilding(1, false, function(doc){
+					doc.code.should.equal(Errors.buildingUpgradingNow.code)
+					done()
+				})
+			})
+		})
+
+		it("upgradeBuilding 建筑坑位不合法", function(done){
+			Api.upgradeBuilding(7, false, function(doc){
+				doc.code.should.equal(Errors.buildingLocationNotLegal.code)
+				done()
+			})
+		})
+
+		it("upgradeBuilding 建造数量已达建造上限", function(done){
+			Api.upgradeBuilding(6, false, function(doc){
+				doc.code.should.equal(Errors.buildingCountReachUpLimit.code)
+				done()
+			})
+		})
+
+		it("upgradeBuilding 建筑已达到最高等级", function(done){
+			var func = function(){
+				Api.upgradeBuilding(3, true, function(doc){
+					if(doc.code == 200){
+						func()
+					}else{
+						doc.code.should.equal(Errors.buildingLevelReachUpLimit.code)
+						done()
+					}
+				})
+			}
+
+			Api.sendChat("buildinglevel 1 40", function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("buildinglevel 3 39")
+				Api.sendChat("resources gem 5000000", function(doc){
+					doc.code.should.equal(200)
+					func()
+				})
+			})
+		})
+
+		it("upgradeBuilding 正常普通升级", function(done){
+			Api.upgradeBuilding(2, false, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("freeSpeedUp 正常免费加速", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				m_user = doc.playerData
+				Api.freeSpeedUp("buildingEvents", m_user.buildingEvents[0].id, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("upgradeBuilding 正常升级立即完成", function(done){
+			setTimeout(function(){
+				Api.upgradeBuilding(2, true, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			}, 100)
+		})
+
 		//it("createHouse 主体建筑不存在", function(done){
 		//	Api.createHouse("dwelling", 20, 1, false, function(doc){
 		//		doc.code.should.equal(Errors.hostBuildingLevelMustBiggerThanOne.code)

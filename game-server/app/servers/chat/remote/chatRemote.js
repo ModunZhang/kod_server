@@ -12,7 +12,7 @@ module.exports = function(app) {
 
 var ChatRemote = function(app) {
 	this.app = app
-	this.channelService = this.app.get("channelService")
+	this.channelService = app.get("channelService")
 }
 
 var pro = ChatRemote.prototype
@@ -24,7 +24,7 @@ var pro = ChatRemote.prototype
  * @param callback
  */
 pro.addToChatChannel = function(uid, logicServerId, callback){
-	this.channelService.getChannel(Consts.GlobalChatChannel, true).add(uid, logicServerId)
+	this.channelService.getChannel(Consts.GlobalChatChannel).add(uid, logicServerId)
 	callback()
 }
 

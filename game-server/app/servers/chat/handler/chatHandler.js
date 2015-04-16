@@ -18,6 +18,7 @@ var ChatHandler = function(app){
 	this.app = app
 	this.env = app.get("env")
 	this.channelService = app.get("channelService")
+	this.chatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, true)
 	this.logService = app.get("logService")
 	this.chats = []
 	this.maxChatCount = 50
@@ -355,7 +356,7 @@ pro.send = function(msg, session, next){
 			self.chats.shift()
 		}
 		self.chats.push(response)
-		self.globalChatChannel.pushMessage(Events.chat.onChat, response)
+		self.chatChannel.pushMessage(Events.chat.onChat, response)
 		return Promise.resolve()
 	}).then(function(){
 		next(null, {code:200})
