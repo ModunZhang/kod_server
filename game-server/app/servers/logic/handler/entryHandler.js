@@ -23,10 +23,6 @@ var Handler = function(app){
 	this.dataService = app.get("dataService")
 	this.logicServerId = app.get("logicServerId")
 	this.chatServerId = app.get("chatServerId")
-	this.eventServerId = app.get("eventServerId")
-	this.logicServers = _.find(app.getServersByType("logic"), function(server){
-		return _.isEqual(server.usedFor, app.get("cacheServerId"))
-	})
 	this.playerApiService = app.get("playerApiService")
 	this.maxReturnMailSize = 10
 	this.maxReturnReportSize = 10
@@ -53,18 +49,13 @@ var PlayerLeave = function(session, reason){
 	this.logService.onEvent("logic.entryHandler.playerLeave", {playerId:session.uid, reason:reason})
 	var self = this
 	var removePlayerFromChatChannelAsync = Promisify(RemovePlayerFromChatChannel, this)
-	var removePlayerFromEventAllianceChannelAsync = Promisify(RemovePlayerFromEventAllianceChannel, this)
-	var removePlayerFromLogicAllianceChannelAsync = Promisify(RemovePlayerFromLogicAllianceChannel, this)
 	var playerDoc = null
 	this.playerApiService.playerLogoutAsync(session.uid).then(function(doc){
 		playerDoc = doc
 		var funcs = []
 		funcs.push(removePlayerFromChatChannelAsync(playerDoc._id))
-		if(_.isObject(playerDoc.alliance)){
-			funcs.push(removePlayerFromEventAllianceChannelAsync(playerDoc._id, playerDoc.alliance.id))
-			_.each(self.logicServers, function(server){
-				funcs.push(removePlayerFromLogicAllianceChannelAsync(server.id, playerDoc._id, playerDoc.alliance.id))
-			})
+		if(_.isString(playerDoc.allianceId)){
+			funcs.push(self.dataService.removePlayerFromAllianceChannelAsync(playerDoc.allianceId, playerDoc._id, self.logicServerId))
 		}
 		return Promise.all(funcs)
 	}).catch(function(e){
@@ -81,80 +72,61 @@ var RemovePlayerFromChatChannel = function(playerId, callback){
 	this.app.rpc.chat.chatRemote.removeFromChatChannel.toServer(this.chatServerId, playerId, this.logicServerId, callback)
 }
 
-var AddPlayerToEventAllianceChannel = function(allianceId, playerId, callback){
-	this.app.rpc.chat.eventRemote.addToChatChannel.toServer(this.eventServerId, allianceId, playerId, this.logicServerId, callback)
-}
-
-var RemovePlayerFromEventAllianceChannel = function(allianceId, playerId, callback){
-	this.app.rpc.chat.eventRemote.removeFromChatChannel.toServer(this.eventServerId, allianceId, playerId, this.logicServerId, callback)
-}
-
-var AddPlayerToLogicAllianceChannel = function(logicServerId, allianceId, playerId, callback){
-	this.app.rpc.chat.logicRemote.addToChatChannel.toServer(logicServerId, allianceId, playerId, this.logicServerId, callback)
-}
-
-var RemovePlayerFromLogicAllianceChannel = function(logicServerId, allianceId, playerId, callback){
-	this.app.rpc.chat.logicRemote.removeFromChatChannel.toServer(logicServerId, allianceId, playerId, this.logicServerId, callback)
-}
-
-
 var FilterPlayerDoc = function(playerDoc){
-	var data = _.omit(playerDoc, "mails", "sendMails", "reports")
-	if(!_.isObject(data.alliance) || _.isEmpty(data.alliance.id)){
-		data.alliance = {}
-	}
-	data.mails = []
-	data.reports = []
 	var self = this
-	for(var i = playerDoc.mails.length - 1; i >= 0; i--){
-		var mail = playerDoc.mails[i]
+	var mails = playerDoc.mails
+	var reports = playerDoc.reports
+	var sendMails = playerDoc.sendMails
+
+	playerDoc.mails = []
+	for(var i = mails.length - 1; i >= 0; i--){
+		var mail = mails[i]
 		mail.index = i
-		data.mails.push(mail)
+		playerDoc.mails.push(mail)
 	}
-	for(i = playerDoc.reports.length - 1; i >= 0; i--){
-		var report = playerDoc.reports[i]
+	playerDoc.reports = []
+	for(i = reports.length - 1; i >= 0; i--){
+		var report = reports[i]
 		report.index = i
-		data.reports.push(report)
+		playerDoc.reports.push(report)
 	}
-	data.sendMails = []
-	for(i = playerDoc.sendMails.length - 1; i >= 0; i--){
-		var sendMail = playerDoc.sendMails[i]
+	playerDoc.sendMails = []
+	for(i = sendMails.length - 1; i >= 0; i--){
+		var sendMail = sendMails[i]
 		sendMail.index = i
-		data.sendMails.push(sendMail)
+		playerDoc.sendMails.push(sendMail)
 	}
-	data.savedMails = []
-	data.savedReports = []
+
+	playerDoc.savedMails = []
+	playerDoc.savedReports = []
 	var unreadMails = 0
 	var unreadReports = 0
-	_.each(data.mails, function(mail){
+	_.each(playerDoc.mails, function(mail){
 		if(!mail.isRead){
 			unreadMails++
 		}
-		if(!!mail.isSaved && data.savedMails.length < self.maxReturnMailSize){
-			data.savedMails.push(mail)
+		if(!!mail.isSaved && playerDoc.savedMails.length < self.maxReturnMailSize){
+			playerDoc.savedMails.push(mail)
 		}
 	})
-	_.each(data.reports, function(report){
+	_.each(playerDoc.reports, function(report){
 		if(!report.isRead){
 			unreadReports++
 		}
-		if(!!report.isSaved && data.savedReports.length < self.maxReturnReportSize){
-			data.savedReports.push(report)
+		if(!!report.isSaved && playerDoc.savedReports.length < self.maxReturnReportSize){
+			playerDoc.savedReports.push(report)
 		}
 	})
-	data.mails = data.mails.slice(0, this.maxReturnMailSize)
-	data.reports = data.reports.slice(0, this.maxReturnReportSize)
-	data.sendMails = data.sendMails.slice(0, this.maxReturnMailSize)
+	playerDoc.mails = playerDoc.mails.slice(0, this.maxReturnMailSize)
+	playerDoc.reports = playerDoc.reports.slice(0, this.maxReturnReportSize)
+	playerDoc.sendMails = playerDoc.sendMails.slice(0, this.maxReturnMailSize)
 
-	data.mailStatus = {
+	playerDoc.mailStatus = {
 		unreadMails:unreadMails,
 		unreadReports:unreadReports
 	}
 
-	data.countInfo.serverVersion = this.serverVersion
-	data.serverTime = Date.now()
-
-	return data
+	playerDoc.serverTime = Date.now()
 }
 
 
@@ -183,8 +155,6 @@ pro.login = function(msg, session, next){
 
 	var bindPlayerSessionAsync = Promisify(BindPlayerSession, this)
 	var addPlayerToChatChannelAsync = Promisify(AddPlayerToChatChannel, this)
-	var addPlayerToEventAllianceChannelAsync = Promisify(AddPlayerToEventAllianceChannel, this)
-	var addPlayerToLogicAllianceChannelAsync = Promisify(AddPlayerToLogicAllianceChannel, this)
 
 	var playerDoc = null
 	var allianceDoc = null
@@ -198,16 +168,19 @@ pro.login = function(msg, session, next){
 	}).then(function(){
 		var funcs = []
 		funcs.push(addPlayerToChatChannelAsync(playerDoc._id))
-		if(_.isObject(playerDoc.alliance)){
-			funcs.push(addPlayerToEventAllianceChannelAsync(playerDoc._id, playerDoc.alliance.id))
-			_.each(self.logicServers, function(server){
-				funcs.push(addPlayerToLogicAllianceChannelAsync(server.id, playerDoc._id, playerDoc.alliance.id))
-			})
+		if(_.isString(playerDoc.allianceId)){
+			funcs.push(self.dataService.addPlayerToAllianceChannelAsync(playerDoc.allianceId, playerDoc._id, self.logicServerId))
 		}
 		return Promise.all(funcs)
 	}).then(function(){
 		self.logService.onEvent("logic.entryHandler.playerLogin", {playerId:session.uid})
-		next(null, {code:200, playerData:FilterPlayerDoc.call(self, playerDoc), allianceData:allianceDoc, enemyAllianceData:enemyAllianceDoc})
+		FilterPlayerDoc.call(self, playerDoc)
+		next(null, {
+			code:200,
+			playerData:playerDoc,
+			allianceData:allianceDoc,
+			enemyAllianceData:enemyAllianceDoc
+		})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 		if(!_.isEqual(e.code, ErrorUtils.reLoginNeeded(deviceId).code)){

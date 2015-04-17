@@ -25,10 +25,7 @@ var PlayerIAPService = function(app){
 	this.env = app.get("env")
 	this.logService = app.get("logService")
 	this.pushService = app.get("pushService")
-	this.timeEventService = app.get("timeEventService")
-	this.globalChannelService = app.get("globalChannelService")
-	this.allianceDao = app.get("allianceDao")
-	this.playerDao = app.get("playerDao")
+	this.dataService = app.get("dataService")
 	this.Billing = app.get("Billing")
 	this.GemAdd = app.get("GemAdd")
 	this.billingValidateHost = "sandbox.itunes.apple.com"
@@ -151,7 +148,7 @@ var SendAllianceMembersRewards = function(senderId, senderName, memberIds, rewar
 	if(_.isEqual(memberId, senderId)) return SendAllianceMembersRewards.call(this, senderId, senderName, memberIds, reward)
 	var memberDoc = null
 	var memberData = []
-	return this.playerDao.findAsync(memberId).then(function(doc){
+	return this.dataService.findPlayerAsync(memberId).then(function(doc){
 		memberDoc = doc
 		var iapGift = {
 			id:ShortId.generate(),
@@ -169,7 +166,7 @@ var SendAllianceMembersRewards = function(senderId, senderName, memberIds, rewar
 		memberData.push(["iapGifts." + memberDoc.iapGifts.indexOf(iapGift), iapGift])
 		return Promise.resolve()
 	}).then(function(){
-		return self.playerDao.updateAsync(memberDoc)
+		return self.dataService.updatePlayerAsync(memberDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
 	}).then(function(){
@@ -178,7 +175,7 @@ var SendAllianceMembersRewards = function(senderId, senderName, memberIds, rewar
 		self.logService.onIapGiftError("playerIAPService.SendAllianceMembersRewards", {senderId:senderId, senderName:senderName, memberId:memberId, reward:reward}, e.stack)
 		var funcs = []
 		if(_.isObject(memberDoc)){
-			funcs.push(self.playerDao.removeLockAsync(memberDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
 		}
 		if(funcs.length > 0){
 			return Promise.all(funcs).then(function(){
@@ -222,7 +219,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	var playerData = []
 	var updateFuncs = []
 	var rewards = null
-	this.playerDao.findAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){
@@ -257,21 +254,24 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 			rewards:rewards
 		}
 		updateFuncs.push([self.GemAdd, self.GemAdd.createAsync, gemAdd])
-		updateFuncs.push([self.playerDao, self.playerDao.updateAsync, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
-		if(_.isObject(rewards.rewardToAllianceMember) && _.isObject(playerDoc.alliance)){
-			return self.allianceDao.findAsync(playerDoc.alliance.id, true)
+		if(_.isObject(rewards.rewardToAllianceMember) && _.isString(playerDoc.allianceId)){
+			return self.dataService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc
+				return Promise.resolve()
+			})
+		}else{
+			return Promise.resolve()
 		}
-		return Promise.resolve()
-	}).then(function(doc){
-		if(_.isObject(rewards.rewardToAllianceMember) && _.isObject(playerDoc.alliance)){
-			allianceDoc = doc
-			updateFuncs.push([self.allianceDao, self.allianceDao.removeLockAsync, allianceDoc._id])
+	}).then(function(){
+		if(_.isObject(allianceDoc)){
 			var memberIds = _.pluck(allianceDoc.members, "id")
 			return SendAllianceMembersRewards.call(self, playerDoc._id, playerDoc.basicInfo.name, memberIds, rewards.rewardToAllianceMember)
+		}else{
+			return Promise.resolve()
 		}
-		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -279,10 +279,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){

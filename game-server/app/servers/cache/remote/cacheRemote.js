@@ -119,5 +119,5 @@ pro.updateAlliance = function(id, doc, callback){
  * @param callback
  */
 pro.flushAlliance = function(id, doc, callback){
-	this.cacheService.flashAlliance(id, doc, callback)
+	this.cacheService.flushAlliance(id, doc, callback)
 }

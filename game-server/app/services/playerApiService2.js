@@ -888,25 +888,12 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 	}
 
 	var self = this
-	var playerDoc = null
 	var playerViewData = null
 	var memberDoc = null
-	var pushFuncs = []
-	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
+	this.dataService.directFindPlayerAsync(memberId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
+		memberDoc = doc
 
-		if(!_.isEqual(playerId, memberId)){
-			return self.dataService.directFindPlayerAsync(memberId)
-		}
-		memberDoc = playerDoc
-		return Promise.resolve()
-	}).then(function(doc){
-		if(!_.isEqual(playerId, memberId)){
-			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
-			memberDoc = doc
-		}
-
-		var hasAlliance = _.isObject(memberDoc.alliance) && !_.isEmpty(memberDoc.alliance.id)
 		playerViewData = {
 			id:memberDoc._id,
 			name:memberDoc.basicInfo.name,
@@ -914,14 +901,23 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 			kill:memberDoc.basicInfo.kill,
 			levelExp:memberDoc.basicInfo.levelExp,
 			vipExp:memberDoc.basicInfo.vipExp,
-			alliance:hasAlliance ? memberDoc.alliance.name : "",
-			title:hasAlliance ? memberDoc.alliance.title : "",
-			titleName:hasAlliance ? memberDoc.alliance.titleName : "",
 			lastLoginTime:memberDoc.countInfo.lastLoginTime
 		}
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
+
+		if(_.isString(memberDoc.allianceId)){
+			return self.dataService.directFindAllianceAsync(memberDoc.allianceId).then(function(doc){
+				var memberObject = LogicUtils.getAllianceMemberById(doc, memberId)
+				playerViewData.alliance = {
+					name:doc.basicInfo.name,
+					tag:doc.basicInfo.tag,
+					title:memberObject.title,
+					titleName:doc.titles[memberObject.title]
+				}
+				return Promise.resolve()
+			})
+		}else{
+			return Promise.resolve()
+		}
 	}).then(function(){
 		callback(null, playerViewData)
 	}).catch(function(e){
@@ -960,6 +956,7 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 	var playerData = []
 	var memberDoc = null
 	var memberData = []
+	var allianceDoc = null
 	var updateFuncs = []
 	var pushFuncs = []
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
@@ -968,13 +965,21 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 		memberDoc = doc
-
+		if(_.isString(playerDoc.allianceId)){
+			return self.dataService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc
+				return Promise.resolve()
+			})
+		}else{
+			return Promise.resolve()
+		}
+	}).then(function(){
 		var mailToMember = {
 			id:ShortId.generate(),
 			title:title,
 			fromId:playerDoc._id,
 			fromName:playerDoc.basicInfo.name,
-			fromAllianceTag:(!!playerDoc.alliance && !!playerDoc.alliance.id) ? playerDoc.alliance.tag : "",
+			fromAllianceTag:_.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "",
 			content:content,
 			sendTime:Date.now(),
 			isRead:false,
@@ -992,7 +997,7 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 			id:ShortId.generate(),
 			title:title,
 			fromName:playerDoc.basicInfo.name,
-			fromAllianceTag:(!!playerDoc.alliance && !!playerDoc.alliance.id) ? playerDoc.alliance.tag : "",
+			fromAllianceTag:_.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "",
 			toId:memberDoc._id,
 			toName:memberDoc.basicInfo.name,
 			content:content,

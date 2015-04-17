@@ -90,7 +90,12 @@ pro.onEnemyAllianceDataChanged = function(allianceId, data, callback){
 pro.onAllianceFight = function(allianceId, allianceData, enemyAllianceData, callback){
 	var eventName = Events.alliance.onAllianceFight
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
-	this.channelService.getChannel(channelName).pushMessage(eventName, {
+	var channel = this.channelService.getChannel(channelName, false)
+	if(!_.isObject(channel)){
+		callback()
+		return
+	}
+	channel.pushMessage(eventName, {
 		allianceData:allianceData,
 		enemyAllianceData:enemyAllianceData
 	}, callback)
@@ -108,8 +113,13 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceId, data, memberId, c
 	var self = this
 	var eventName = Events.alliance.onAllianceDataChanged
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
+	var channel = this.channelService.getChannel(channelName, false)
+	if(!_.isObject(channel)){
+		callback()
+		return
+	}
 	var uids = []
-	_.filter(this.channelService.getChannel(channelName).getMembers, function(uid){
+	_.filter(channel.getMembers, function(uid){
 		return !_.isEqual(uid, memberId)
 	})
 	if(uids.length > 0){
@@ -117,5 +127,4 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceId, data, memberId, c
 	}else{
 		callback()
 	}
-
 }

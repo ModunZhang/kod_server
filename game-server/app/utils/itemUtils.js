@@ -157,9 +157,9 @@ var ChangeCityName = function(playerDoc, playerData, newCityName){
  * @returns {*}
  */
 var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFuncs, dataService, eventFuncs, timeEventService, pushFuncs, pushService){
-	if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
+	if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
 	var allianceDoc = null
-	return dataService.findAllianceAsync(playerDoc.alliance.id).then(function(doc){
+	return dataService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
 		var enemyAllianceData = []
@@ -210,9 +210,9 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
  * @param pushService
  */
 var MoveTheCity = function(playerDoc, playerData, locationX, locationY, dataService, updateFuncs, pushFuncs, pushService){
-	if(!_.isObject(playerDoc.alliance)) return Promise.reject(new Error(ErrorUtils.playerNotJoinAlliance(playerDoc._id)))
+	if(!_.isString(playerDoc.allianceId)) return Promise.reject(new Error(ErrorUtils.playerNotJoinAlliance(playerDoc._id)))
 	var allianceDoc = null
-	return dataService.findAllianceAsync(playerDoc.alliance.id).then(function(doc){
+	return dataService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
 		var enemyAllianceData = []
@@ -608,9 +608,9 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
  * @returns {*}
  */
 var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, dataService, eventFuncs, timeEventService, pushFuncs, pushService){
-	if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
+	if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
 	var allianceDoc = null
-	return dataService.findAllianceAsync(playerDoc.alliance.id).then(function(doc){
+	return dataService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
 		var enemyAllianceData = []

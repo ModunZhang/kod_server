@@ -23,6 +23,32 @@ var LogicRemote = function(app) {
 var pro = LogicRemote.prototype
 
 /**
+ * 将玩家添加到联盟频道
+ * @param allianceId
+ * @param uid
+ * @param logicServerId
+ * @param callback
+ */
+pro.addToAllianceChannel = function(allianceId, uid, logicServerId , callback){
+	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(uid, logicServerId)
+	callback()
+}
+
+/**
+ * 将玩家从联盟频道移除
+ * @param allianceId
+ * @param uid
+ * @param logicServerId
+ * @param callback
+ */
+pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId)
+	channel.leave(uid, logicServerId)
+	if(channel.getMembers.length == 0) channel.destroy()
+	callback()
+}
+
+/**
  * 将玩家踢下线
  * @param uid
  * @param reason
@@ -52,31 +78,4 @@ pro.getOnlineUser = function(callback){
 	var connectionService = this.app.components.__connection__
 	var statisticsInfo = connectionService.getStatisticsInfo()
 	callback(null, statisticsInfo.loginedCount)
-}
-
-/**
- * 将玩家添加到联盟频道
- * @param allianceId
- * @param uid
- * @param logicServerId
- * @param callback
- */
-pro.addToAllianceChannel = function(allianceId, uid, logicServerId , callback){
-	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(uid, logicServerId)
-	callback()
-}
-
-/**
- * 将玩家从联盟频道移除
- * @param uid
- * @param logicServerId
- * @param allianceId
- * @param callback
- */
-pro.removeFromAllianceChannel = function(uid, logicServerId, allianceId, callback){
-	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId)
-	channel.leave(uid, logicServerId)
-	if(channel.getMembers.length == 0) channel.destroy()
-
-	callback()
 }

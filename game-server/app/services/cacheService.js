@@ -11,6 +11,7 @@ var Consts = require("../consts/consts.js")
 
 var DataService = function(app){
 	this.app = app
+	this.logService = app.get("logService")
 	this.Player = app.get("Player")
 	this.Alliance = app.get("Alliance")
 	this.players = []
@@ -119,7 +120,11 @@ pro.lockPlayer = function(id, func){
  */
 pro.unlockPlayer = function(id){
 	var playerQueue = this.playersQueue[id]
-	if(!_.isArray(playerQueue)) throw new Error("此玩家请求队列不存在或为空:" + {id:id})
+	if(!_.isArray(playerQueue)){
+		var e = new Error("此玩家请求队列不存在或为空")
+		this.logService.onEventError("cache.cacheService.unlockPlayer", {id:id}, e.stack)
+		return
+	}
 	playerQueue.shift()
 	if(playerQueue.length > 0){
 		playerQueue[0]()
@@ -146,7 +151,11 @@ pro.lockAlliance = function(id, func){
  */
 pro.unlockAlliance = function(id){
 	var allianceQueue = this.alliancesQueue[id]
-	if(!_.isArray(allianceQueue)) throw new Error("此玩家请求队列不存在或为空:" + {id:id})
+	if(!_.isArray(allianceQueue)){
+		var e = new Error("此联盟请求队列不存在或为空")
+		this.logService.onEventError("cache.cacheService.unlockAlliance", {id:id}, e.stack)
+		return
+	}
 	allianceQueue.shift()
 	if(allianceQueue.length > 0){
 		allianceQueue[0]()
@@ -423,11 +432,10 @@ pro.findAlliance = function(id, callback){
 /**
  * 更新联盟对象
  * @param id
- * @param version
  * @param doc
  * @param callback
  */
-pro.updateAlliance = function(id, version, doc, callback){
+pro.updateAlliance = function(id, doc, callback){
 	var self = this
 	if(_.isObject(doc)){
 		var alliance = this.alliances[id]
@@ -455,11 +463,10 @@ pro.updateAlliance = function(id, version, doc, callback){
 /**
  * 更新玩家对象并同步到Mongo
  * @param id
- * @param version
  * @param doc
  * @param callback
  */
-pro.flushAlliance = function(id, version, doc, callback){
+pro.flushAlliance = function(id, doc, callback){
 	var self = this
 	var alliance = this.alliances[id]
 	if(_.isObject(doc)){

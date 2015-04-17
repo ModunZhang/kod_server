@@ -998,15 +998,18 @@ pro.setApnId = function(playerId, apnId, callback){
 		playerDoc.apnId = apnId
 		playerData.push(["apnId", playerDoc.apnId])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
-		if(_.isObject(playerDoc.alliance)){
-			return self.dataService.findAllianceAsync(playerDoc.alliance.id)
+		if(_.isString(playerDoc.allianceId)){
+			return self.dataService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc
+				return Promise.resolve()
+			})
+		}else{
+			return Promise.resolve()
 		}
-		return Promise.resolve()
-	}).then(function(doc){
-		if(_.isObject(playerDoc.alliance)){
-			allianceDoc = doc
-			var member = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
-			member.apnId = playerDoc.apnId
+	}).then(function(){
+		if(_.isObject(allianceDoc)){
+			var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
+			memberObject.apnId = playerDoc.apnId
 			updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		}
 		return Promise.resolve()

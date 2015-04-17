@@ -144,16 +144,7 @@ var PlayerSchema = new Schema({
 		stamina:{type:Number, required:true, default:ResourceInitData.stamina},
 		casinoToken:{type:Number, required:true, default:ResourceInitData.casinoToken}
 	},
-	alliance:{
-		type:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			tag:{type:String, required:true},
-			title:{type:String, required:true},
-			titleName:{type:String, required:true}
-		},
-		required:false
-	},
+	allianceId:{type:String, required:false},
 	allianceInfo:{
 		loyalty:{type:Number, reuqired:true, default:0},
 		woodExp:{type:Number, required:true, default:0},

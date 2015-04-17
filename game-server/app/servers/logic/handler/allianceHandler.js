@@ -151,8 +151,8 @@ pro.editAllianceTitleName = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.editAllianceTitleName", {playerId:session.uid, msg:msg})
 	var title = msg.title
 	var titleName = msg.titleName
-	this.allianceApiService.editAllianceTitleNameAsync(session.uid, title, titleName).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
+	this.allianceApiService.editAllianceTitleNameAsync(session.uid, title, titleName).then(function(){
+		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -232,8 +232,8 @@ pro.editAllianceMemberTitle = function(msg, session, next){
 pro.kickAllianceMemberOff = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.kickAllianceMemberOff", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
-	this.allianceApiService.kickAllianceMemberOffAsync(session.uid, memberId).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
+	this.allianceApiService.kickAllianceMemberOffAsync(session.uid, memberId).then(function(){
+		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -248,8 +248,8 @@ pro.kickAllianceMemberOff = function(msg, session, next){
 pro.handOverAllianceArchon = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.handOverAllianceArchon", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
-	this.allianceApiService.handOverAllianceArchonAsync(session.uid, memberId).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
+	this.allianceApiService.handOverAllianceArchonAsync(session.uid, memberId).then(function(){
+		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})

@@ -531,11 +531,11 @@ pro.donatelevel = function(uid, donatelevel, callback){
 	var allianceDoc = null
 	var allianceData = []
 	this.dataService.findPlayerAsync(uid).then(function(doc){
-		if(!_.isObject(doc.alliance)){
+		if(!_.isString(doc.allianceId)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
 		playerDoc = doc
-		return self.dataService.findAllianceAsync(playerDoc.alliance.id)
+		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
 		var docInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, uid)
@@ -578,11 +578,11 @@ pro.alliancehonour = function(uid, honnour, callback){
 	var allianceDoc = null
 	var allianceData = []
 	this.dataService.findPlayerAsync(uid).then(function(doc){
-		if(!_.isObject(doc.alliance)){
+		if(!_.isString(doc.allianceId)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
 		playerDoc = doc
-		return self.dataService.findAllianceAsync(playerDoc.alliance.id)
+		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
 		allianceDoc.basicInfo.honour = honnour
@@ -617,11 +617,11 @@ pro.allianceperception = function(uid, perception, callback){
 	var allianceDoc = null
 	var allianceData = []
 	this.dataService.findPlayerAsync(uid).then(function(doc){
-		if(!_.isObject(doc.alliance)){
+		if(!_.isString(doc.allianceId)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
 		playerDoc = doc
-		return self.dataService.findAllianceAsync(playerDoc.alliance.id)
+		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
 		allianceDoc.basicInfo.perception = perception
