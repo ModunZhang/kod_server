@@ -653,268 +653,263 @@ errors["playerCancelTheJoinRequestToTheAlliance"] = {
 	code:630,
 	message:"玩家已经取消对此联盟的申请"
 }
-errors["inviteRequestAlreadySend"] = {
-	key:"inviteRequestAlreadySend",
-	code:631,
-	message:"此玩家已被邀请加入我方联盟,请等候其处理"
-}
 errors["inviteRequestMessageIsFullForThisPlayer"] = {
 	key:"inviteRequestMessageIsFullForThisPlayer",
-	code:632,
+	code:631,
 	message:"此玩家的邀请信息已满,请等候其处理后再进行邀请"
 }
 errors["allianceInviteEventNotExist"] = {
 	key:"allianceInviteEventNotExist",
-	code:633,
+	code:632,
 	message:"联盟邀请事件不存在"
 }
 errors["playerAlreadyTheAllianceArchon"] = {
 	key:"playerAlreadyTheAllianceArchon",
-	code:634,
+	code:633,
 	message:"玩家已经是盟主了"
 }
 errors["onlyAllianceArchonMoreThanSevenDaysNotOnLinePlayerCanBuyArchonTitle"] = {
 	key:"onlyAllianceArchonMoreThanSevenDaysNotOnLinePlayerCanBuyArchonTitle",
-	code:635,
+	code:634,
 	message:"盟主连续7天不登陆时才能购买盟主职位"
 }
 errors["speedupRequestAlreadySendForThisEvent"] = {
 	key:"speedupRequestAlreadySendForThisEvent",
-	code:636,
+	code:635,
 	message:"此事件已经发送了加速请求"
 }
 errors["allianceHelpEventNotExist"] = {
 	key:"allianceHelpEventNotExist",
-	code:637,
+	code:636,
 	message:"帮助事件不存在"
 }
 errors["canNotHelpSelfSpeedup"] = {
 	key:"canNotHelpSelfSpeedup",
-	code:638,
+	code:637,
 	message:"不能帮助自己加速建造"
 }
 errors["youAlreadyHelpedTheEvent"] = {
 	key:"youAlreadyHelpedTheEvent",
-	code:639,
+	code:638,
 	message:"您已经帮助过此事件了"
 }
 errors["allianceBuildingReachMaxLevel"] = {
 	key:"allianceBuildingReachMaxLevel",
-	code:640,
+	code:639,
 	message:"联盟建筑已达到最高等级"
 }
 errors["theAllianceShrineEventAlreadyActived"] = {
 	key:"theAllianceShrineEventAlreadyActived",
-	code:641,
+	code:640,
 	message:"此联盟事件已经激活"
 }
 errors["alliancePerceptionNotEnough"] = {
 	key:"alliancePerceptionNotEnough",
-	code:642,
+	code:641,
 	message:"联盟感知力不足"
 }
 errors["dragonLeaderShipNotEnough"] = {
 	key:"dragonLeaderShipNotEnough",
-	code:643,
+	code:642,
 	message:"所选择的龙领导力不足"
 }
 errors["noFreeMarchQueue"] = {
 	key:"noFreeMarchQueue",
-	code:644,
+	code:643,
 	message:"没有空闲的行军队列"
 }
 errors["shrineStageEventNotFound"] = {
 	key:"shrineStageEventNotFound",
-	code:645,
+	code:644,
 	message:"关卡激活事件不存在"
 }
 errors["theShrineStageIsLocked"] = {
 	key:"theShrineStageIsLocked",
-	code:646,
+	code:645,
 	message:"此联盟圣地关卡还未解锁"
 }
 errors["youHadSendTroopToTheShrineStage"] = {
 	key:"youHadSendTroopToTheShrineStage",
-	code:647,
+	code:646,
 	message:"玩家已经对此关卡派出了部队"
 }
 errors["allianceInFightStatus"] = {
 	key:"allianceInFightStatus",
-	code:648,
+	code:647,
 	message:"联盟正处于战争准备期或战争期"
 }
 errors["alreadySendAllianceFightRequest"] = {
 	key:"alreadySendAllianceFightRequest",
-	code:649,
+	code:648,
 	message:"已经发送过开战请求"
 }
 errors["canNotFindAllianceToFight"] = {
 	key:"canNotFindAllianceToFight",
-	code:650,
+	code:649,
 	message:"未能找到战力相匹配的联盟"
 }
 errors["allianceFightReportNotExist"] = {
 	key:"allianceFightReportNotExist",
-	code:651,
+	code:650,
 	message:"联盟战报不存在"
 }
 errors["winnerOfAllianceFightCanNotRevenge"] = {
 	key:"winnerOfAllianceFightCanNotRevenge",
-	code:652,
+	code:651,
 	message:"联盟战胜利方不能发起复仇"
 }
 errors["allianceFightRevengeTimeExpired"] = {
 	key:"allianceFightRevengeTimeExpired",
-	code:653,
+	code:652,
 	message:"超过最长复仇期限"
 }
 errors["targetAllianceNotInPeaceStatus"] = {
 	key:"targetAllianceNotInPeaceStatus",
-	code:654,
+	code:653,
 	message:"目标联盟未处于和平期,不能发起复仇"
 }
 errors["playerAlreadySendHelpDefenceTroopToTargetPlayer"] = {
 	key:"playerAlreadySendHelpDefenceTroopToTargetPlayer",
-	code:655,
+	code:654,
 	message:"玩家已经对目标玩家派出了协防部队"
 }
 errors["targetPlayersHelpDefenceTroopsCountReachMax"] = {
 	key:"targetPlayersHelpDefenceTroopsCountReachMax",
-	code:656,
+	code:655,
 	message:"目标玩家协防部队数量已达最大"
 }
 errors["noHelpDefenceTroopInTargetPlayerCity"] = {
 	key:"noHelpDefenceTroopInTargetPlayerCity",
-	code:657,
+	code:656,
 	message:"玩家没有协防部队驻扎在目标玩家城市"
 }
 errors["allianceNotInFightStatus"] = {
 	key:"allianceNotInFightStatus",
-	code:658,
+	code:657,
 	message:"联盟未处于战争期"
 }
 errors["playerNotInEnemyAlliance"] = {
 	key:"playerNotInEnemyAlliance",
-	code:659,
+	code:658,
 	message:"玩家不在敌对联盟中"
 }
 errors["playerInProtectStatus"] = {
 	key:"playerInProtectStatus",
-	code:660,
+	code:659,
 	message:"玩家处于保护状态"
 }
 errors["targetAllianceNotTheEnemyAlliance"] = {
 	key:"targetAllianceNotTheEnemyAlliance",
-	code:661,
+	code:660,
 	message:"目标联盟非当前匹配的敌对联盟"
 }
 errors["villageNotExist"] = {
 	key:"villageNotExist",
-	code:662,
+	code:661,
 	message:"村落不存在"
 }
 errors["villageCollectEventNotExist"] = {
 	key:"villageCollectEventNotExist",
-	code:663,
+	code:662,
 	message:"村落采集事件不存在"
 }
 errors["noHelpDefenceTroopByThePlayer"] = {
 	key:"noHelpDefenceTroopByThePlayer",
-	code:664,
+	code:663,
 	message:"没有此玩家的协防部队"
 }
 errors["theItemNotSellInAllianceShop"] = {
 	key:"theItemNotSellInAllianceShop",
-	code:665,
+	code:664,
 	message:"此道具未在联盟商店出售"
 }
 errors["normalItemsNotNeedToAdd"] = {
 	key:"normalItemsNotNeedToAdd",
-	code:666,
+	code:665,
 	message:"普通道具不需要进货补充"
 }
 errors["playerLevelNotEoughCanNotBuyAdvancedItem"] = {
 	key:"playerLevelNotEoughCanNotBuyAdvancedItem",
-	code:667,
+	code:666,
 	message:"玩家级别不足,不能购买高级道具"
 }
 errors["itemCountNotEnough"] = {
 	key:"itemCountNotEnough",
-	code:668,
+	code:667,
 	message:"道具数量不足"
 }
 errors["playerLoyaltyNotEnough"] = {
 	key:"playerLoyaltyNotEnough",
-	code:669,
+	code:668,
 	message:"玩家忠诚值不足"
 }
 errors["allianceEventNotExist"] = {
 	key:"allianceEventNotExist",
-	code:670,
+	code:669,
 	message:"联盟事件不存在"
 }
 errors["illegalAllianceStatus"] = {
 	key:"illegalAllianceStatus",
-	code:671,
+	code:670,
 	message:"非法的联盟状态"
 }
 errors["playerAlreadyBindGCAId"] = {
 	key:"playerAlreadyBindGCAId",
-	code:672,
+	code:671,
 	message:"玩家GameCenter账号已经绑定"
 }
 errors["theGCIdAlreadyBindedByOtherPlayer"] = {
 	key:"theGCIdAlreadyBindedByOtherPlayer",
-	code:673,
+	code:672,
 	message:"此GameCenter账号已被其他玩家绑定"
 }
 errors["theGCIdIsNotBindedByOtherPlayer"] = {
 	key:"theGCIdIsNotBindedByOtherPlayer",
-	code:674,
+	code:673,
 	message:"此GameCenter账号未被其他玩家绑定"
 }
 errors["thePlayerDoNotBindGCId"] = {
 	key:"thePlayerDoNotBindGCId",
-	code:675,
+	code:674,
 	message:"当前玩家还未绑定GameCenter账号"
 }
 errors["theGCIdAlreadyBindedByCurrentPlayer"] = {
 	key:"theGCIdAlreadyBindedByCurrentPlayer",
-	code:676,
+	code:675,
 	message:"此GameCenter账号已绑定当前玩家"
 }
 errors["ApnIdAlreadySeted"] = {
 	key:"ApnIdAlreadySeted",
-	code:677,
+	code:676,
 	message:"ApnId已经设置"
 }
 errors["theAllianceBuildingNotAllowMove"] = {
 	key:"theAllianceBuildingNotAllowMove",
-	code:678,
+	code:677,
 	message:"此联盟建筑不允许移动"
 }
 errors["theAllianceBuildingCanNotMoveToTargetPoint"] = {
 	key:"theAllianceBuildingCanNotMoveToTargetPoint",
-	code:679,
+	code:678,
 	message:"不能移动到目标点位"
 }
 errors["giftNotExist"] = {
 	key:"giftNotExist",
-	code:680,
+	code:679,
 	message:"礼品不存在"
 }
 errors["serverNotExist"] = {
 	key:"serverNotExist",
-	code:681,
+	code:680,
 	message:"服务器不存在"
 }
 errors["canNotSwitchToTheSameServer"] = {
 	key:"canNotSwitchToTheSameServer",
-	code:682,
+	code:681,
 	message:"不能切换到相同的服务器"
 }
 errors["playerNotInCurrentServer"] = {
 	key:"playerNotInCurrentServer",
-	code:683,
+	code:682,
 	message:"玩家未在当前服务器"
 }

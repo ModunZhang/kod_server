@@ -948,7 +948,6 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "kickAllianceMemberOff")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "kickAllianceMemberOff"))
 		}
-
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotKickMemberOff(playerId, allianceDoc._id, memberId))
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
@@ -978,7 +977,6 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		return self.dataService.findPlayerAsync(memberId)
 	}).then(function(doc){
 		memberDoc = doc
-
 		LogicUtils.returnPlayerMarchTroops(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 		LogicUtils.returnPlayerMarchReturnTroops(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 		LogicUtils.returnPlayerShrineTroops(memberDoc, memberData, allianceDoc, allianceData)

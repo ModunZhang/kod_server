@@ -312,7 +312,7 @@ pro.flushPlayer = function(id, doc, callback){
 }
 
 /**
- * 更新玩家并且将玩家从内存移除
+ * 更新玩家并同步到Mongo最后将玩家从内存移除
  * @param id
  * @param doc
  * @param callback
@@ -483,4 +483,34 @@ pro.flushAlliance = function(id, doc, callback){
 	})
 	doc._id = id
 	alliance.ops = 0
+}
+
+/**
+ * 更新联盟并同步到Mongo最后将联盟从内存移除
+ * @param id
+ * @param doc
+ * @param callback
+ */
+pro.timeoutAlliance = function(id, doc, callback){
+	var self = this
+	var alliance = this.alliances[id]
+	delete  this.alliances[id]
+	if(_.isObject(doc)){
+		alliance.doc = doc
+		alliance.ops += 1
+	}
+	clearTimeout(alliance.timeout)
+	clearTimeout(alliance.interval)
+	if(alliance.ops > 0){
+		delete doc._id
+		self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
+			callback()
+			self.unlockAlliance(id)
+		})
+		doc._id = id
+		alliance.ops = 0
+	}else{
+		callback()
+		self.unlockPlayer(id)
+	}
 }

@@ -1361,17 +1361,6 @@ Utils.playerCancelTheJoinRequestToTheAlliance = function(playerId, allianceId){
 }
 
 /**
- * 此玩家已被邀请加入我方联盟,请等候其处理
- * @param playerId
- * @param allianceId
- * @param memberId
- */
-Utils.inviteRequestAlreadySend = function(playerId, allianceId, memberId){
-	var config = Errors.inviteRequestAlreadySend
-	return CreateError(config, {playerId:playerId, allianceId:allianceId, memberId:memberId})
-}
-
-/**
  * 此玩家的邀请信息已满,请等候其处理后再进行邀请
  * @param playerId
  * @param allianceId

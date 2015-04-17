@@ -65,7 +65,7 @@ pro.flushPlayer = function(id, doc, callback){
 }
 
 /**
- * 更新玩家并且将玩家从内存移除
+ * 更新玩家并同步到Mongo最后将玩家从内存移除
  * @param id
  * @param doc
  * @param callback
@@ -120,4 +120,14 @@ pro.updateAlliance = function(id, doc, callback){
  */
 pro.flushAlliance = function(id, doc, callback){
 	this.cacheService.flushAlliance(id, doc, callback)
+}
+
+/**
+ * 更新联盟并同步到Mongo最后将联盟从内存移除
+ * @param id
+ * @param doc
+ * @param callback
+ */
+pro.timeoutAlliance = function(id, doc, callback){
+	this.cacheService.timeoutAlliance(id, doc, callback)
 }
