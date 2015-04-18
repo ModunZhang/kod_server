@@ -65,7 +65,12 @@ pro.onJoinAllianceSuccess = function(playerDoc, playerData, allianceDoc, enemyAl
 pro.onAllianceDataChanged = function(allianceId, data, callback){
 	var eventName = Events.alliance.onAllianceDataChanged
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
-	this.channelService.getChannel(channelName).pushMessage(eventName, data, callback)
+	var channel = this.channelService.getChannel(channelName, false)
+	if(!_.isObject(channel)){
+		callback()
+		return
+	}
+	channel.pushMessage(eventName, data, callback)
 }
 
 /**
@@ -77,7 +82,12 @@ pro.onAllianceDataChanged = function(allianceId, data, callback){
 pro.onEnemyAllianceDataChanged = function(allianceId, data, callback){
 	var eventName = Events.alliance.onEnemyAllianceDataChanged
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
-	this.channelService.getChannel(channelName).pushMessage(eventName, data, callback)
+	var channel = this.channelService.getChannel(channelName, false)
+	if(!_.isObject(channel)){
+		callback()
+		return
+	}
+	channel.pushMessage(eventName, data, callback)
 }
 
 /**
