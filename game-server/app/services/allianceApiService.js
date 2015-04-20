@@ -25,6 +25,7 @@ var AllianceApiService = function(app){
 	this.pushService = app.get("pushService")
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
+	this.logService = app.get("logService")
 	this.GemUse = app.get("GemUse")
 }
 module.exports = AllianceApiService
@@ -174,13 +175,10 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 	var playerDoc = null
 	var playerData = []
 	var allianceDoc = null
-	var memberDocs = []
-	var pushFuncs = []
-	var updateFuncs = []
+	var mailToMember = null
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
 		return self.dataService.directFindAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -199,7 +197,7 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 			content:content,
 			sendTime:Date.now()
 		}
-		var mailToMember = {
+		mailToMember = {
 			id:ShortId.generate(),
 			title:title,
 			fromId:playerDoc._id,
@@ -210,6 +208,7 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 			isRead:false,
 			isSaved:false
 		}
+
 		if(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
 			playerDoc.sendMails.shift()
 			playerData.push(["sendMails.0", null])
@@ -224,52 +223,64 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		}
 		playerDoc.mails.push(mailToMember)
 		playerData.push(["mails." + playerDoc.mails.indexOf(mailToMember), mailToMember])
-		updateFuncs.push(self.dataService.updatePlayerAsync(playerDoc, playerDoc))
-
-		var sendMailToMember = function(member){
+		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
+		return Promise.resolve()
+	}, function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		}
+		if(funcs.length > 0){
+			return Promise.all(funcs).then(function(){
+				callback(e)
+				return Promise.reject(e)
+			})
+		}else{
+			callback(e)
+			return Promise.reject(e)
+		}
+	}).then(function(){
+		var SendMailToMemberAsync = function(member){
+			var memberDoc = null
+			var memberData = []
 			return self.dataService.findPlayerAsync(member.id).then(function(doc){
-				memberDocs.push(doc)
-				var docData = []
-				if(doc.mails.length >= Define.PlayerMailsMaxSize){
-					var mail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
-					docData.push(["mails." + doc.mails.indexOf(mail), null])
-					LogicUtils.removeItemInArray(playerDoc.mails, mail)
+				memberDoc = doc
+				if(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
+					var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
+					memberData.push(["mails." + memberDoc.mails.indexOf(mail), null])
+					LogicUtils.removeItemInArray(memberDoc.mails, mail)
 				}
-				doc.mails.push(mailToMember)
-				docData.push(["mails." + doc.mails.indexOf(mailToMember), mailToMember])
-				updateFuncs.push(self.dataService.updatePlayerAsync(doc, doc))
-				pushFuncs.push(self.pushService.onPlayerDataChangedAsync(doc, docData))
-				return Promise.resolve()
+				memberDoc.mails.push(mailToMember)
+				memberData.push(["mails." + doc.mails.indexOf(mailToMember), mailToMember])
+				return self.dataService.updatePlayerAsync(doc, doc)
+			}).then(function(){
+				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
+			}).catch(function(e){
+				self.logService.onEventError("logic.allianceApiService.SendMailToMemberAsync", {memberId:member._id}, e.stack)
+				var funcs = []
+				if(_.isObject(memberDoc)){
+					funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
+				}
+				if(funcs.length > 0){
+					return Promise.all(funcs).then(function(){
+						return Promise.resolve()
+					})
+				}else{
+					return Promise.resolve()
+				}
 			})
 		}
 		var funcs = []
 		_.each(allianceDoc.members, function(member){
 			if(!_.isEqual(member.id, playerDoc._id)){
-				funcs.push(sendMailToMember(member))
+				funcs.push(SendMailToMemberAsync(member))
 			}
 		})
 		return Promise.all(funcs)
-	}).then(function(){
-		return Promise.all(updateFuncs)
-	}).then(function(){
-		return Promise.all(pushFuncs)
-	}).then(function(){
-		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		_.each(memberDocs, function(memberDoc){
-			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
-		})
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
+		self.logService.onEventError("logic.allianceApiService.sendAllianceMail", {playerId:playerId, title:title, content:content}, e.stack)
 	})
 }
 
@@ -434,7 +445,6 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
 		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -565,7 +575,6 @@ pro.editAllianceTerrian = function(playerId, terrain, callback){
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
 		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -633,7 +642,6 @@ pro.editAllianceTitleName = function(playerId, title, titleName, callback){
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
 		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -688,7 +696,6 @@ pro.editAllianceNotice = function(playerId, notice, callback){
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
 		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -743,7 +750,6 @@ pro.editAllianceDescription = function(playerId, description, callback){
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
 		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -798,7 +804,6 @@ pro.editAllianceJoinType = function(playerId, joinType, callback){
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
 		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -862,7 +867,6 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
 		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -940,7 +944,6 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
 		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -983,27 +986,45 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		LogicUtils.returnPlayerVillageTroop(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 
 		var returnHelpedByMarchTroop = function(marchEvent){
-			return self.dataService.findPlayerAsync(marchEvent.attackPlayerData.id).then(function(doc){
-				var data = []
+			var doc = null
+			var data = []
+			return self.dataService.findPlayerAsync(marchEvent.attackPlayerData.id).then(function(theDoc){
+				doc = theDoc
 				LogicUtils.returnPlayerHelpedByMarchTroop(doc, data, marchEvent, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.dataService.updatePlayerAsync(doc, doc)
+			}).catch(function(e){
+				self.logService.onEventError("allianceApiService2.kickAllianceMemberOff.returnHelpedByMarchTroop", {marchEvent:marchEvent}, e.stack)
+				if(_.isObject(doc)) return self.dataService.updatePlayerAsync(doc, null)
+				return Promise.resolve()
 			})
 		}
 		var returnHelpedByTroop = function(helpedByTroop){
-			return self.dataService.findPlayerAsync(helpedByTroop.id).then(function(doc){
-				var data = []
+			var doc = null
+			var data = []
+			return self.dataService.findPlayerAsync(helpedByTroop.id).then(function(theDoc){
+				doc = theDoc
 				LogicUtils.returnPlayerHelpedByTroop(memberDoc, memberData, helpedByTroop, doc, data)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.dataService.updatePlayerAsync(doc, doc)
+			}).catch(function(e){
+				self.logService.onEventError("allianceApiService2.kickAllianceMemberOff.returnHelpedByTroop", {helpedByTroop:helpedByTroop}, e.stack)
+				if(_.isObject(doc)) return self.dataService.updatePlayerAsync(doc, null)
+				return Promise.resolve()
 			})
 		}
 		var returnHelpToTroop = function(helpToTroop){
-			return self.dataService.findPlayerAsync(helpToTroop.beHelpedPlayerData.id).then(function(doc){
-				var data = []
+			var doc = null
+			var data = []
+			return self.dataService.findPlayerAsync(helpToTroop.beHelpedPlayerData.id).then(function(theDoc){
+				doc = theDoc
 				LogicUtils.returnPlayerHelpToTroop(memberDoc, memberData, helpToTroop, doc, data)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.dataService.updatePlayerAsync(doc, doc)
+			}).catch(function(e){
+				self.logService.onEventError("allianceApiService2.kickAllianceMemberOff.returnHelpToTroop", {helpToTroop:helpToTroop}, e.stack)
+				if(_.isObject(doc)) return self.dataService.updatePlayerAsync(doc, null)
+				return Promise.resolve()
 			})
 		}
 

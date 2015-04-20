@@ -1909,3 +1909,12 @@ Utils.playerNotInCurrentServer = function(playerId, currentServerId, dbServerId)
 	var config = Errors.playerNotInCurrentServer
 	return CreateError(config, {playerId:playerId, currentServerId:currentServerId, dbServerId:dbServerId})
 }
+
+/**
+ * 没有事件需要协助加速
+ * @param playerId
+ */
+Utils.noEventsNeedTobeSpeedup = function(playerId){
+	var config = Errors.noEventsNeedTobeSpeedup
+	return CreateError(config, {playerId:playerId})
+}

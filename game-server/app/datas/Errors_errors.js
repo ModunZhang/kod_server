@@ -913,3 +913,8 @@ errors["playerNotInCurrentServer"] = {
 	code:682,
 	message:"玩家未在当前服务器"
 }
+errors["noEventsNeedTobeSpeedup"] = {
+	key:"noEventsNeedTobeSpeedup",
+	code:683,
+	message:"没有事件需要协助加速"
+}

@@ -13,6 +13,7 @@ var Config = require("../config")
 var Device = Promise.promisifyAll(require("../../app/domains/device"))
 var Player = Promise.promisifyAll(require("../../app/domains/player"))
 var Alliance = Promise.promisifyAll(require("../../app/domains/alliance"))
+var Billing = Promise.promisifyAll(require("../../app/domains/billing"))
 var Api = require("../api")
 var GameDatas = require("../../app/datas/GameDatas")
 var Errors = GameDatas.Errors.errors
@@ -26,6 +27,8 @@ describe("PlayerService", function(){
 				return Player.removeAsync()
 			}).then(function(){
 				return Alliance.removeAsync()
+			}).then(function(){
+				return Billing.removeAsync()
 			}).then(function(){
 				done()
 			})

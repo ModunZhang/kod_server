@@ -26,6 +26,7 @@ var AllianceApiService2 = function(app){
 	this.playerTimeEventService = app.get("playerTimeEventService")
 	this.allianceTimeEventService = app.get("allianceTimeEventService")
 	this.dataService = app.get("dataService")
+	this.logService = app.get("logService")
 	this.GemUse = app.get("GemUse")
 }
 module.exports = AllianceApiService2
@@ -85,27 +86,45 @@ pro.quitAlliance = function(playerId, callback){
 		LogicUtils.returnPlayerVillageTroop(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 
 		var returnHelpedByMarchTroop = function(marchEvent){
-			return self.dataService.findPlayerAsync(marchEvent.attackPlayerData.id).then(function(doc){
-				var data = []
+			var doc = null
+			var data = []
+			return self.dataService.findPlayerAsync(marchEvent.attackPlayerData.id).then(function(theDoc){
+				doc = theDoc
 				LogicUtils.returnPlayerHelpedByMarchTroop(doc, data, marchEvent, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.dataService.updatePlayerAsync(doc, doc)
+			}).catch(function(e){
+				self.logService.onEventError("allianceApiService2.quitAlliance.returnHelpedByMarchTroop", {marchEvent:marchEvent}, e.stack)
+				if(_.isObject(doc)) return self.dataService.updatePlayerAsync(doc, null)
+				return Promise.resolve()
 			})
 		}
 		var returnHelpedByTroop = function(helpedByTroop){
-			return self.dataService.findPlayerAsync(helpedByTroop.id).then(function(doc){
-				var data = []
+			var doc = null
+			var data = []
+			return self.dataService.findPlayerAsync(helpedByTroop.id).then(function(theDoc){
+				doc = theDoc
 				LogicUtils.returnPlayerHelpedByTroop(playerDoc, playerData, helpedByTroop, doc, data)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.dataService.updatePlayerAsync(doc, doc)
+			}).catch(function(e){
+				self.logService.onEventError("allianceApiService2.quitAlliance.returnHelpedByTroop", {helpedByTroop:helpedByTroop}, e.stack)
+				if(_.isObject(doc)) return self.dataService.updatePlayerAsync(doc, null)
+				return Promise.resolve()
 			})
 		}
 		var returnHelpToTroop = function(helpToTroop){
-			return self.dataService.findPlayerAsync(helpToTroop.beHelpedPlayerData.id).then(function(doc){
-				var data = []
+			var doc = null
+			var data = []
+			return self.dataService.findPlayerAsync(helpToTroop.beHelpedPlayerData.id).then(function(theDoc){
+				doc = theDoc
 				LogicUtils.returnPlayerHelpToTroop(playerDoc, playerData, helpToTroop, doc, data)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.dataService.updatePlayerAsync(doc, doc)
+			}).catch(function(e){
+				self.logService.onEventError("allianceApiService2.quitAlliance.returnHelpToTroop", {helpToTroop:helpToTroop}, e.stack)
+				if(_.isObject(doc)) return self.dataService.updatePlayerAsync(doc, null)
+				return Promise.resolve()
 			})
 		}
 
@@ -399,7 +418,6 @@ pro.removeJoinAllianceReqeusts = function(playerId, requestEventIds, callback){
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
 		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -474,7 +492,6 @@ pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
 		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -591,7 +608,6 @@ pro.inviteToJoinAlliance = function(playerId, memberId, callback){
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
 		return self.dataService.directFindAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -1023,9 +1039,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 	var playerData = []
 	var allianceDoc = null
 	var allianceData = []
-	var eventFuncs = []
-	var pushFuncs = []
-	var updateFuncs = []
+	var memberEvents = {}
 	var helpCount = 0
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -1033,18 +1047,24 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
+		_.each(allianceDoc.helpEvents, function(event){
+			var memberId = event.playerData.id
+			if(!_.isEqual(memberId, playerId) && !_.contains(event.eventData.helpedMembers, playerId)){
+				if(!_.isObject(memberEvents[memberId])) memberEvents[memberId] = []
+				memberEvents[memberId].push(event)
+				helpCount += 1
+			}
+		})
+		if(helpCount == 0) return Promise.reject(ErrorUtils.noEventsNeedTobeSpeedup(playerId))
 
 		var speedUp = function(memberId, helpEvents){
-			var needHelpedEvents = _.filter(helpEvents, function(helpEvent){
-				return !_.contains(helpEvent.eventData.helpedMembers, playerId)
-			})
-			if(needHelpedEvents.length <= 0) return Promise.resolve()
-			helpCount += needHelpedEvents.length
+			var memberDoc = null
+			var memberData = []
+			var eventFuncs = []
 			return self.dataService.findPlayerAsync(memberId).then(function(doc){
-				var memberDoc = doc
-				var memberData = []
-				for(var i = 0; i < needHelpedEvents.length; i++){
-					var helpEvent = needHelpedEvents[i]
+				memberDoc = doc
+				for(var i = 0; i < helpEvents.length; i++){
+					var helpEvent = helpEvents[i]
 					var memberEvent = LogicUtils.getPlayerEventByTypeAndId(memberDoc, helpEvent.eventData.type, helpEvent.eventData.id)
 					if(!_.isObject(memberEvent) || LogicUtils.willFinished(memberEvent.finishTime)){
 						allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
@@ -1062,54 +1082,44 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 						}
 						if(LogicUtils.willFinished(memberEvent.finishTime)){
 							self.playerTimeEventService.onPlayerEvent(memberDoc, memberData, helpEvent.eventData.type, helpEvent.eventData.id)
-							eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, memberDoc, helpEvent.eventData.type, memberEvent.id])
+							eventFuncs.push(self.timeEventService.removePlayerTimeEventAsync(memberDoc, helpEvent.eventData.type, memberEvent.id))
 						}else{
 							memberData.push([helpEvent.eventData.type + "." + memberDoc[helpEvent.eventData.type].indexOf(memberEvent) + ".finishTime", memberEvent.finishTime])
-							eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, memberDoc, helpEvent.eventData.type, memberEvent.id, memberEvent.finishTime - Date.now()])
+							eventFuncs.push(self.timeEventService.updatePlayerTimeEventAsync(memberDoc, helpEvent.eventData.type, memberEvent.id, memberEvent.finishTime - Date.now()))
 						}
 					}
 				}
-				if(!_.isEmpty(memberData)){
-					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
-				}
 				return self.dataService.updatePlayerAsync(memberDoc, _.isEmpty(memberData) ? null : memberDoc)
+			}).then(function(){
+				return Promise.all(eventFuncs)
+			}).then(function(){
+				return !_.isEmpty(memberData) ? self.pushService.onPlayerDataChangedAsync(memberDoc, memberData) : Promise.resolve()
+			}).catch(function(e){
+				self.logService.onEvent("logic.allianceApiService2.helpAllAllianceMemberSpeedUp.speedUp", {
+					memberId:memberId,
+					helpEvents:helpEvents
+				}, e.stack)
+				if(_.isObject(memberDoc)) return self.dataService.updatePlayerAsync(memberDoc, null)
+				return Promise.resolve()
 			})
 		}
-		var funcs = []
-		var memberEvents = {}
-		_.each(allianceDoc.helpEvents, function(event){
-			var memberId = event.playerData.id
-			if(!_.isEqual(memberId, playerId)){
-				if(!_.isObject(memberEvents[memberId])) memberEvents[memberId] = []
-				memberEvents[memberId].push(event)
-			}
-		})
-		_.each(memberEvents, function(theMemberEvents, memberId){
-			funcs.push(speedUp(memberId, theMemberEvents))
-		})
 
+		var funcs = []
+		_.each(memberEvents, function(helpEvents, memberId){
+			funcs.push(speedUp(memberId, helpEvents))
+		})
 		return Promise.all(funcs)
 	}).then(function(){
 		DataUtils.addPlayerHelpLoyalty(playerDoc, playerData, helpCount)
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
-
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, _.isEmpty(playerData) ? null : playerDoc])
-		if(_.isEmpty(allianceData)){
-			updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, null])
-		}else{
-			updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		}
-
-		return Promise.resolve()
+		var funcs = []
+		funcs.push(self.dataService.updatePlayerAsync(playerDoc, playerDoc))
+		funcs.push(self.dataService.updateAllianceAsync(allianceDoc, allianceDoc))
+		return Promise.all(funcs)
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		return self.pushService.onAllianceDataChangedAsync(allianceDoc._id, allianceData)
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback(null, _.isEmpty(playerData) ? null : playerData)
+		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
