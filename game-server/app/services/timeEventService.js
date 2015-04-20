@@ -5,6 +5,10 @@
  */
 
 var _ = require("underscore")
+var Promise = require("bluebird")
+
+var LogicUtils = require("../utils/logicUtils")
+var DataUtils = require("../utils/dataUtils")
 var Consts = require("../consts/consts")
 
 
@@ -13,8 +17,6 @@ var TimeEventService = function(app){
 	this.eventServerId = app.get("eventServerId")
 	this.isEventServer = _.isEqual(this.eventServerId, app.getServerId())
 	this.logService = app.get("logService")
-	this.playerTimeEventService = app.get("playerTimeEventService")
-	this.allianceTimeEventService = app.get("allianceTimeEventService")
 	this.timeouts = {}
 }
 module.exports = TimeEventService
@@ -32,7 +34,7 @@ var pro = TimeEventService.prototype
  */
 pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 	if(this.isEventServer){
-		this.logService.onEvent("event.eventRemote.addTimeEvent", {
+		this.logService.onEvent("event.timeEventService.addTimeEvent", {
 			key:key,
 			eventType:eventType,
 			eventId:eventId,
@@ -47,7 +49,7 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 		timeouts[eventId] = timeout
 		callback()
 	}else{
-
+		this.app.rpc.event.eventRemote.addTimeEvent.toServer(this.eventServerId, key, eventType, eventId, timeInterval, callback)
 	}
 }
 
@@ -59,15 +61,19 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  * @param callback
  */
 pro.removeTimeEvent = function(key, eventType, eventId, callback){
-	this.logService.onEvent("event.eventRemote.removeTimeEvent", {key:key, eventType:eventType, eventId:eventId})
-	var timeouts = this.timeouts[key]
-	var timeout = timeouts[eventId]
-	clearTimeout(timeout)
-	delete timeouts[eventId]
-	if(_.isEmpty(timeouts)){
-		delete this.timeouts[key]
+	if(this.isEventServer){
+		this.logService.onEvent("event.timeEventService.removeTimeEvent", {key:key, eventType:eventType, eventId:eventId})
+		var timeouts = this.timeouts[key]
+		var timeout = timeouts[eventId]
+		clearTimeout(timeout)
+		delete timeouts[eventId]
+		if(_.isEmpty(timeouts)){
+			delete this.timeouts[key]
+		}
+		callback()
+	}else{
+		this.app.rpc.event.eventRemote.removeTimeEvent.toServer(this.eventServerId, key, eventType, eventId, callback)
 	}
-	callback()
 }
 
 /**
@@ -79,19 +85,23 @@ pro.removeTimeEvent = function(key, eventType, eventId, callback){
  * @param callback
  */
 pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	this.logService.onEvent("event.eventRemote.updateTimeEvent", {
-		key:key,
-		eventType:eventType,
-		eventId:eventId,
-		timeInterval:timeInterval
-	})
-	var timeouts = this.timeouts[key]
-	var timeout = timeouts[eventId]
-	clearTimeout(timeout)
+	if(this.isEventServer){
+		this.logService.onEvent("event.timeEventService.updateTimeEvent", {
+			key:key,
+			eventType:eventType,
+			eventId:eventId,
+			timeInterval:timeInterval
+		})
+		var timeouts = this.timeouts[key]
+		var timeout = timeouts[eventId]
+		clearTimeout(timeout)
 
-	timeout = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
-	timeouts[eventId] = timeout
-	callback()
+		timeout = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
+		timeouts[eventId] = timeout
+		callback()
+	}else{
+		this.app.rpc.event.eventRemote.updateTimeEvent.toServer(this.eventServerId, key, eventType, eventId, timeInterval, callback)
+	}
 }
 
 /**
@@ -100,13 +110,17 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  * @param callback
  */
 pro.clearTimeEventsByKey = function(key, callback){
-	this.logService.onEvent("event.eventRemote.clearTimeEventsByKey", {key:key})
-	var timeouts = this.timeouts[key]
-	_.each(timeouts, function(timeout){
-		clearTimeout(timeout)
-	})
-	delete this.timeouts[key]
-	callback()
+	if(this.isEventServer){
+		this.logService.onEvent("event.timeEventService.clearTimeEventsByKey", {key:key})
+		var timeouts = this.timeouts[key]
+		_.each(timeouts, function(timeout){
+			clearTimeout(timeout)
+		})
+		delete this.timeouts[key]
+		callback()
+	}else{
+		this.app.rpc.event.eventRemote.clearTimeEventsByKey.toServer(this.eventServerId, key, callback)
+	}
 }
 
 /**
@@ -117,20 +131,20 @@ pro.clearTimeEventsByKey = function(key, callback){
  */
 pro.triggerTimeEvent = function(key, eventType, eventId){
 	var self = this
-	this.logService.onEvent("event.eventRemote.triggerTimeEvent", {key:key, eventType:eventType, eventId:eventId})
+	this.logService.onEvent("event.timeEventService.triggerTimeEvent", {key:key, eventType:eventType, eventId:eventId})
 	var timeouts = this.timeouts[key]
 	delete timeouts[eventId]
 	if(_.isEmpty(timeouts)){
 		delete this.timeouts[key]
 	}
 	this.excuteTimeEventAsync(key, eventType, eventId).then(function(){
-		self.logService.onEvent("event.eventRemote.triggerTimeEvent finished", {
+		self.logService.onEvent("event.timeEventService.triggerTimeEvent finished", {
 			key:key,
 			eventType:eventType,
 			eventId:eventId
 		})
 	}).catch(function(e){
-		self.logService.onEventError("event.eventRemote.triggerTimeEvent finished with error", {
+		self.logService.onEventError("event.timeEventService.triggerTimeEvent finished with error", {
 			key:key,
 			eventType:eventType,
 			eventId:eventId
@@ -150,12 +164,12 @@ pro.excuteTimeEvent = function(key, eventType, eventId, callback){
 	var targetType = params[0]
 	var id = params[1]
 	if(_.isEqual(Consts.TimeEventType.Player, targetType)){
-		this.playerTimeEventService.onTimeEvent(id, eventType, eventId, callback)
+		this.app.get("playerTimeEventService").onTimeEvent(id, eventType, eventId, callback)
 	}else if(_.isEqual(Consts.TimeEventType.Alliance, targetType)){
-		this.allianceTimeEventService.onTimeEvent(id, eventType, eventId, callback)
+		this.app.get("allianceTimeEventService").onTimeEvent(id, eventType, eventId, callback)
 	}else if(_.isEqual(Consts.TimeEventType.AllianceFight, targetType)){
 		var ids = eventId.split(":")
-		this.allianceTimeEventService.onFightTimeEvent(ids[0], ids[1], callback)
+		this.app.get("allianceTimeEventService").onFightTimeEvent(ids[0], ids[1], callback)
 	}else{
 		callback(new Error("未知的事件类型"))
 	}
@@ -167,13 +181,13 @@ pro.excuteTimeEvent = function(key, eventType, eventId, callback){
  * @param playerDoc
  * @param eventType
  * @param eventId
- * @param interval
+ * @param timeInterval
  * @param callback
  * @returns {*}
  */
-pro.addPlayerTimeEvent = function(playerDoc, eventType, eventId, interval, callback){
+pro.addPlayerTimeEvent = function(playerDoc, eventType, eventId, timeInterval, callback){
 	var key = Consts.TimeEventType.Player + ":" + playerDoc._id
-	this.addTimeEvent(key, eventType, eventId, interval, callback)
+	this.addTimeEvent(key, eventType, eventId, timeInterval, callback)
 }
 
 /**
@@ -194,13 +208,13 @@ pro.removePlayerTimeEvent = function(playerDoc, eventType, eventId, callback){
  * @param playerDoc
  * @param eventType
  * @param eventId
- * @param interval
+ * @param timeInterval
  * @param callback
  * @returns {*}
  */
-pro.updatePlayerTimeEvent = function(playerDoc, eventType, eventId, interval, callback){
+pro.updatePlayerTimeEvent = function(playerDoc, eventType, eventId, timeInterval, callback){
 	var key = Consts.TimeEventType.Player + ":" + playerDoc._id
-	this.updateTimeEvent(key, eventType, eventId, interval, callback)
+	this.updateTimeEvent(key, eventType, eventId, timeInterval, callback)
 }
 
 /**
@@ -211,7 +225,7 @@ pro.updatePlayerTimeEvent = function(playerDoc, eventType, eventId, interval, ca
  */
 pro.clearPlayerTimeEvents = function(playerDoc, callback){
 	var key = Consts.TimeEventType.Player + ":" + playerDoc._id
-	this.clearTimeEvents(key, callback)
+	this.clearTimeEventsByKey(key, callback)
 }
 
 /**
@@ -219,13 +233,13 @@ pro.clearPlayerTimeEvents = function(playerDoc, callback){
  * @param allianceDoc
  * @param eventType
  * @param eventId
- * @param interval
+ * @param timeInterval
  * @param callback
  * @returns {*}
  */
-pro.addAllianceTimeEvent = function(allianceDoc, eventType, eventId, interval, callback){
+pro.addAllianceTimeEvent = function(allianceDoc, eventType, eventId, timeInterval, callback){
 	var key = Consts.TimeEventType.Alliance + ":" + allianceDoc._id
-	this.addTimeEvent(key, eventType, eventId, interval, callback)
+	this.addTimeEvent(key, eventType, eventId, timeInterval, callback)
 }
 
 /**
@@ -246,13 +260,13 @@ pro.removeAllianceTimeEvent = function(allianceDoc, eventType, eventId, callback
  * @param allianceDoc
  * @param eventType
  * @param eventId
- * @param interval
+ * @param timeInterval
  * @param callback
  * @returns {*}
  */
-pro.updateAllianceTimeEvent = function(allianceDoc, eventType, eventId, interval, callback){
+pro.updateAllianceTimeEvent = function(allianceDoc, eventType, eventId, timeInterval, callback){
 	var key = Consts.TimeEventType.Alliance + ":" + allianceDoc._id
-	this.updateTimeEvent(key, eventType, eventId, interval, callback)
+	this.updateTimeEvent(key, eventType, eventId, timeInterval, callback)
 }
 
 /**
@@ -263,35 +277,35 @@ pro.updateAllianceTimeEvent = function(allianceDoc, eventType, eventId, interval
  */
 pro.clearAllianceTimeEvents = function(allianceDoc, callback){
 	var key = Consts.TimeEventType.Alliance + ":" + allianceDoc._id
-	this.clearTimeEvents(key, callback)
+	this.clearTimeEventsByKey(key, callback)
 }
 
 /**
  * 添加联盟战斗时间回调
  * @param attackAllianceDoc
  * @param defenceAllianceDoc
- * @param interval
+ * @param timeInterval
  * @param callback
  */
-pro.addAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDoc, interval, callback){
+pro.addAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDoc, timeInterval, callback){
 	var key = Consts.TimeEventType.AllianceFight
 	var eventType = Consts.TimeEventType.AllianceFight
 	var eventId = attackAllianceDoc._id + ":" + defenceAllianceDoc._id
-	this.addTimeEvent(key, eventType, eventId, interval, callback)
+	this.addTimeEvent(key, eventType, eventId, timeInterval, callback)
 }
 
 /**
  * 更新联盟战斗时间回调
  * @param attackAllianceDoc
  * @param defenceAllianceDoc
- * @param interval
+ * @param timeInterval
  * @param callback
  */
-pro.updateAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDoc, interval, callback){
+pro.updateAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDoc, timeInterval, callback){
 	var key = Consts.TimeEventType.AllianceFight
 	var eventType = Consts.TimeEventType.AllianceFight
 	var eventId = attackAllianceDoc._id + ":" + defenceAllianceDoc._id
-	this.updateTimeEvent(key, eventType, eventId, interval, callback)
+	this.updateTimeEvent(key, eventType, eventId, timeInterval, callback)
 }
 
 /**
@@ -311,8 +325,147 @@ pro.removeAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDo
 /**
  * 恢复玩家事件
  * @param playerDoc
+ * @param timeAdd
  * @param callback
  */
-pro.restorePlayerTimeEvents = function(playerDoc, callback){
+pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
+	var self = this
+	var playerTimeEventService = this.app.get("playerTimeEventService")
+	var funcs = []
+	var now = Date.now()
+	_.each(playerDoc.buildingEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "buildingEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "buildingEvents", event.id, event.finishTime - now))
+		}
+	})
+	_.each(playerDoc.houseEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "houseEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "houseEvents", event.id, event.finishTime - now))
+		}
+	})
+	_.each(playerDoc.materialEvents, function(event){
+		if(event.finishTime > 0){
+			event.startTime += timeAdd
+			event.finishTime += timeAdd
+			if(LogicUtils.willFinished(event.finishTime)){
+				playerTimeEventService.onPlayerEvent(playerDoc, [], "materialEvents", event.id)
+			}else{
+				funcs.push(self.addPlayerTimeEventAsync(playerDoc, "materialEvents", event.id, event.finishTime - now))
+			}
+		}
+	})
+	_.each(playerDoc.soldierEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "soldierEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "soldierEvents", event.id, event.finishTime - now))
+		}
+	})
+	_.each(playerDoc.dragonEquipmentEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "dragonEquipmentEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dragonEquipmentEvents", event.id, event.finishTime - now))
+		}
+	})
+	_.each(playerDoc.treatSoldierEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "treatSoldierEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "treatSoldierEvents", event.id, event.finishTime - now))
+		}
+	})
+	_.each(playerDoc.dragonHatchEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "dragonHatchEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dragonHatchEvents", event.id, event.finishTime - now))
+		}
+	})
+	_.each(playerDoc.dragonDeathEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "dragonDeathEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dragonDeathEvents", event.id, event.finishTime - now))
+		}
+	})
+	_.each(playerDoc.productionTechEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "productionTechEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "productionTechEvents", event.id, event.finishTime - now))
+		}
+	})
+	_.each(playerDoc.militaryTechEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "militaryTechEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "militaryTechEvents", event.id, event.finishTime - now))
+		}
+	})
+	_.each(playerDoc.soldierStarEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "soldierStarEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "soldierStarEvents", event.id, event.finishTime - now))
+		}
+	})
+	_.each(playerDoc.vipEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "vipEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "vipEvents", event.id, event.finishTime - now))
+		}
+	})
+	_.each(playerDoc.itemEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "itemEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "itemEvents", event.id, event.finishTime - now))
+		}
+	})
+	_.each(playerDoc.dailyQuestEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "dailyQuestEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dailyQuestEvents", event.id, event.finishTime - now))
+		}
+	})
+	DataUtils.refreshPlayerPower(playerDoc, [])
 
+	Promise.all(funcs).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
 }

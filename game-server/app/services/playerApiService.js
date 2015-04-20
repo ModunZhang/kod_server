@@ -206,6 +206,9 @@ pro.playerLogout = function(playerId, callback){
 					})
 					var restorePlayerTimeEventsAsync = Promise.promisify(self.app.rpc.event.eventRemote.restorePlayerTimeEvents.toServer, self)
 					return restorePlayerTimeEventsAsync(eventServer.id, playerDoc._id)
+				}).catch(function(e){
+					self.logService.onEventError("logic.playerApiService.playerLogout", {playerId:playerId}, e.stack)
+					return Promise.resolve()
 				})
 			})
 		}

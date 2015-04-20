@@ -15,6 +15,7 @@ module.exports = function(app){
 var EventRemote = function(app){
 	this.app = app
 	this.dataService = app.get("dataService")
+	this.channelService = app.get("channelService")
 	this.timeEventService = app.get("timeEventService")
 }
 var pro = EventRemote.prototype
@@ -77,7 +78,7 @@ pro.removeTimeEvent = function(key, eventType, eventId, callback){
  * @param callback
  */
 pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	this.timeEventService.removeTimeEvent(key, eventType, eventId, timeInterval, callback)
+	this.timeEventService.updateTimeEvent(key, eventType, eventId, timeInterval, callback)
 }
 
 /**
@@ -99,7 +100,9 @@ pro.restorePlayerTimeEvents = function(playerId, callback){
 	var playerDoc = null
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		return self.timeEventService.restorePlayerTimeEventsAsync(playerDoc)
+		return self.timeEventService.restorePlayerTimeEventsAsync(playerDoc, 0)
+	}).then(function(){
+		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
