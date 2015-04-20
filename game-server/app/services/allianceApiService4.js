@@ -10,6 +10,7 @@ var _ = require("underscore")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var TaskUtils = require("../utils/taskUtils")
 var ErrorUtils = require("../utils/errorUtils")
 var MarchUtils = require("../utils/marchUtils")
 var ReportUtils = require("../utils/reportUtils")
@@ -217,7 +218,7 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(_.isObject(beHelpedPlayerDoc)){
-			funcs.push(self.playerDao.updatePlayerAsync(beHelpedPlayerDoc, null))
+			funcs.push(self.dataService.updatePlayerAsync(beHelpedPlayerDoc, null))
 		}
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
@@ -328,10 +329,10 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(attackPlayerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(attackPlayerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(attackPlayerDoc, null))
 		}
 		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(attackAllianceDoc._id))
+			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
 		}
 
 		if(funcs.length > 0){
@@ -443,10 +444,10 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(attackPlayerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(attackPlayerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(attackPlayerDoc, null))
 		}
 		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(attackAllianceDoc._id))
+			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
 		}
 
 		if(funcs.length > 0){
@@ -563,10 +564,10 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(attackPlayerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(attackPlayerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(attackPlayerDoc, null))
 		}
 		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(attackAllianceDoc._id))
+			funcs.push(self.dataService.removeLockAsync(attackAllianceDoc, null))
 		}
 
 		if(funcs.length > 0){
@@ -614,8 +615,8 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 		attackAllianceDoc = doc
 		villageEvent = LogicUtils.getEventById(attackAllianceDoc.villageEvents, villageEventId)
 		if(!_.isObject(villageEvent)) return Promise.reject(ErrorUtils.villageCollectEventNotExist(playerId, attackAllianceDoc._id, villageEventId))
-		if(!_.isEqual(attackAllianceDoc._id, villageEvent.villageData.allianceId)){
-			return self.dataService.findAllianceAsync(villageEvent.villageData.allianceId).then(function(doc){
+		if(!_.isEqual(attackAllianceDoc._id, villageEvent.villageData.alliance.id)){
+			return self.dataService.findAllianceAsync(villageEvent.villageData.alliance.id).then(function(doc){
 				defenceAllianceDoc = doc
 				targetAllianceDoc = defenceAllianceDoc
 				targetAllianceData = defenceAllianceData
@@ -680,13 +681,13 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(attackPlayerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(attackPlayerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(attackPlayerDoc, null))
 		}
 		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(attackAllianceDoc._id))
+			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
 		}
 		if(_.isObject(defenceAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(defenceAllianceDoc._id))
+			funcs.push(self.dataService.updateAllianceAsync(defenceAllianceDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -792,10 +793,10 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(attackPlayerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(attackPlayerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(attackPlayerDoc, null))
 		}
 		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(attackAllianceDoc._id))
+			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
 		}
 
 		if(funcs.length > 0){
@@ -997,7 +998,7 @@ pro.addItem = function(playerId, itemName, count, callback){
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.allianceDao.findAsync(playerDoc.allianceId)
+		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
@@ -1073,10 +1074,11 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
+		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		var isAdvancedItem = itemConfig.isAdvancedItem
 		var eliteLevel = DataUtils.getAllianceTitleLevel("elite")
-		var myLevel = DataUtils.getAllianceTitleLevel(playerDoc.alliance.title)
+		var myLevel = DataUtils.getAllianceTitleLevel(playerObject.title)
 		if(isAdvancedItem){
 			if(myLevel > eliteLevel) return Promise.reject(ErrorUtils.playerLevelNotEoughCanNotBuyAdvancedItem(playerId, allianceDoc._id, itemName))
 			var item = _.find(allianceDoc.items, function(item){

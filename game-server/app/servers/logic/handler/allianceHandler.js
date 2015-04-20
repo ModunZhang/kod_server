@@ -769,8 +769,9 @@ pro.strikeVillage = function(msg, session, next){
  */
 pro.getAttackMarchEventDetail = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getAttackMarchEventDetail", {playerId:session.uid, msg:msg})
+	var enemyAllianceId = msg.enemyAllianceId
 	var eventId = msg.eventId
-	this.allianceApiService4.getAttackMarchEventDetailAsync(session.uid, eventId).then(function(eventDetail){
+	this.allianceApiService4.getAttackMarchEventDetailAsync(session.uid, enemyAllianceId, eventId).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -785,8 +786,9 @@ pro.getAttackMarchEventDetail = function(msg, session, next){
  */
 pro.getStrikeMarchEventDetail = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getStrikeMarchEventDetail", {playerId:session.uid, msg:msg})
+	var enemyAllianceId = msg.enemyAllianceId
 	var eventId = msg.eventId
-	this.allianceApiService4.getStrikeMarchEventDetailAsync(session.uid, eventId).then(function(eventDetail){
+	this.allianceApiService4.getStrikeMarchEventDetailAsync(session.uid, enemyAllianceId, eventId).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -801,8 +803,9 @@ pro.getStrikeMarchEventDetail = function(msg, session, next){
  */
 pro.getHelpDefenceMarchEventDetail = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getHelpDefenceMarchEventDetail", {playerId:session.uid, msg:msg})
+	var allianceId = msg.allianceId
 	var eventId = msg.eventId
-	this.allianceApiService5.getHelpDefenceMarchEventDetailAsync(session.uid, eventId).then(function(eventDetail){
+	this.allianceApiService4.getHelpDefenceMarchEventDetailAsync(session.uid, allianceId, eventId).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -819,7 +822,7 @@ pro.getHelpDefenceTroopDetail = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getHelpDefenceTroopDetail", {playerId:session.uid, msg:msg})
 	var playerId = msg.playerId
 	var helpedByPlayerId = msg.helpedByPlayerId
-	this.allianceApiService5.getHelpDefenceTroopDetailAsync(session.uid, playerId, helpedByPlayerId).then(function(troopDetail){
+	this.allianceApiService4.getHelpDefenceTroopDetailAsync(session.uid, playerId, helpedByPlayerId).then(function(troopDetail){
 		next(null, {code:200, troopDetail:troopDetail})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -836,7 +839,7 @@ pro.addItem = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.addItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var count = msg.count
-	this.allianceApiService5.addItemAsync(session.uid, itemName, count).then(function(){
+	this.allianceApiService4.addItemAsync(session.uid, itemName, count).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -853,7 +856,7 @@ pro.buyItem = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.buyItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var count = msg.count
-	this.allianceApiService5.buyItemAsync(session.uid, itemName, count).then(function(playerData){
+	this.allianceApiService4.buyItemAsync(session.uid, itemName, count).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

@@ -58,7 +58,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.playerDao.removeLockAsync(playerDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){

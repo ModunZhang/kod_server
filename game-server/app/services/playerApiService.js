@@ -133,7 +133,7 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 				allianceDoc = doc
 				if(_.isObject(allianceDoc.allianceFight)){
 					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
-					return self.dataService.directFindAlliance(enemyAllianceId).then(function(doc){
+					return self.dataService.directFindAllianceAsync(enemyAllianceId).then(function(doc){
 						enemyAllianceDoc = LogicUtils.getAllianceViewData(doc)
 						return Promise.resolve()
 					})

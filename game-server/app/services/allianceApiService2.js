@@ -643,7 +643,7 @@ pro.inviteToJoinAlliance = function(playerId, memberId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(memberDoc)){
-			funcs.push(self.playerDao.removeLockAsync(memberDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
 		}
 
 		if(funcs.length > 0){
@@ -769,7 +769,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(_.isObject(inviterDoc)){
-			funcs.push(self.playerDao.removeLockAsync(inviterDoc._id))
+			funcs.push(self.dataService.updatePlayerAsync(inviterDoc, null))
 		}
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))

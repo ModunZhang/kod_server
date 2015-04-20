@@ -603,7 +603,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				})
 				LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.report)
 			}
-			updateFuncs.push([self.dataService, self.dataService.updateAsyncAsync, defencePlayerDoc, defencePlayerDoc])
+			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, defencePlayerDoc, defencePlayerDoc])
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
 
 			if(_.isEqual(attackAllianceDoc._id, attackAllianceDoc.allianceFight.attackAllianceId)){

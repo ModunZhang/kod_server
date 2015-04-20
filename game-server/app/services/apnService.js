@@ -19,7 +19,7 @@ var LogicUtils = require("../utils/logicUtils")
 
 var ApnService = function(app){
 	this.app = app
-	this.globalChannelService = app.get("globalChannelService")
+	this.channelService = app.get("channelService")
 	this.logService = app.get("logService")
 	this.serverId = app.getServerId()
 	this.serverType = app.getServerType()
@@ -49,7 +49,11 @@ pro.getApnService = function(){
 		})
 
 		service.on("transmissionError", function(errCode, notification, device){
-			self.logService.onEventError("apnService.transmissionError", {errCode:errCode, device:device, notification:notification}, e.stack)
+			self.logService.onEventError("apnService.transmissionError", {
+				errCode:errCode,
+				device:device,
+				notification:notification
+			}, e.stack)
 		})
 
 		service.on("timeout", function(){
@@ -92,27 +96,26 @@ pro.pushApnMessage = function(apnIds, message){
 pro.pushApnMessageToAllianceMembers = function(allianceDoc, messageKey, messageArgs){
 	var self = this
 	var members = {}
-	var channelName = Consts.AllianceChannelPrefix + allianceDoc._id
-	this.globalChannelService.getMembersByChannelName(this.serverType, channelName, function(err, memberIds){
-		if(_.isObject(err)){
-			callback(err)
-			return
+	var onlineMembers = []
+	var channelName = Consts.AllianceChannelPrefix + "_" + allianceDoc._id
+	var channel = this.channelService.getChannel(channelName, false)
+	if(_.isObject(channel)){
+		onlineMembers = channel.getMembers()
+	}
+	_.each(allianceDoc.members, function(member){
+		if(!_.contains(onlineMembers, member.id) && !_.isEmpty(member.apnId)){
+			if(!_.isArray(members[member.language])) members[member.language] = []
+			members[member.language].push(member.apnId)
 		}
-		_.each(allianceDoc.members, function(theMember){
-			if(!_.contains(memberIds, theMember.id) && !_.isEmpty(theMember.apnId)){
-				if(!_.isArray(members[theMember.language])) members[theMember.language] = []
-				members[theMember.language].push(theMember.apnId)
-			}
-		})
-		_.each(members, function(apnIds, language){
-			var message = messageKey[language]
-			if(!_.isString(message)){
-				message = messageKey.en
-			}
-			if(messageArgs.length > 0){
-				message = sprintf.vsprintf(message, messageArgs)
-			}
-			self.pushApnMessage(apnIds, message)
-		})
+	})
+	_.each(members, function(apnIds, language){
+		var message = messageKey[language]
+		if(!_.isString(message)){
+			message = messageKey.en
+		}
+		if(messageArgs.length > 0){
+			message = sprintf.vsprintf(message, messageArgs)
+		}
+		self.pushApnMessage(apnIds, message)
 	})
 }

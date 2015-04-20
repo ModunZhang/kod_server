@@ -280,7 +280,11 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		})
 		return Promise.all(funcs)
 	}).catch(function(e){
-		self.logService.onEventError("logic.allianceApiService.sendAllianceMail", {playerId:playerId, title:title, content:content}, e.stack)
+		self.logService.onEventError("logic.allianceApiService.sendAllianceMail", {
+			playerId:playerId,
+			title:title,
+			content:content
+		}, e.stack)
 	})
 }
 
@@ -314,16 +318,12 @@ pro.getMyAllianceData = function(playerId, callback){
  */
 pro.getCanDirectJoinAlliances = function(playerId, callback){
 	var self = this
-	var playerDoc = null
 	var allianceDocs = []
-	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
 
-		return self.dataService.getAllianceModel().findAsync({
-			"serverId":playerDoc.serverId,
-			"basicInfo.joinType":Consts.AllianceJoinType.All
-		}, null, {"sort":{"basicInfo.power":-1}, "limit":10})
-	}).then(function(docs){
+	this.dataService.getAllianceModel().findAsync({
+		"serverId":self.app.get("cacheServerId"),
+		"basicInfo.joinType":Consts.AllianceJoinType.All
+	}, null, {"sort":{"basicInfo.power":-1}, "limit":10}).then(function(docs){
 		_.each(docs, function(doc){
 			var shortDoc = {
 				id:doc._id,
@@ -363,16 +363,11 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 	}
 
 	var self = this
-	var playerDoc = null
 	var allianceDocs = []
-	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
-
-		return self.dataService.getAllianceModel().findAsync({
-			"serverId":playerDoc.serverId,
-			"basicInfo.tag":{$regex:tag}
-		}, null, {"limit":10})
-	}).then(function(docs){
+	this.dataService.getAllianceModel().findAsync({
+		"serverId":self.app.get("cacheServerId"),
+		"basicInfo.tag":{$regex:tag}
+	}, null, {"limit":10}).then(function(docs){
 		_.each(docs, function(doc){
 			var shortDoc = {
 				id:doc._id,

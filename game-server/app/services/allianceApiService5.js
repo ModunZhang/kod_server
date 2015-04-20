@@ -57,7 +57,7 @@ pro.giveLoyaltyToAllianceMember = function(playerId, memberId, count, callback){
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.allianceDao.findAsync(playerDoc.allianceId)
+		return self.dataService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)

@@ -563,7 +563,7 @@ pro.findAllianceToFight = function(playerId, callback){
 		}
 		return self.dataService.getAllianceModel().findOneAsync({
 			"_id":{$ne:attackAllianceDoc._id},
-			"serverId":playerDoc.serverId,
+			"serverId":self.app.get("cacheServerId"),
 			"basicInfo.status":Consts.AllianceStatus.Peace
 			//"basicInfo.power":{$gte:attackAllianceDoc.basicInfo.power * 0.8, $lt:attackAllianceDoc.basicInfo.power * 1.2}
 		})
@@ -607,10 +607,10 @@ pro.findAllianceToFight = function(playerId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(attackAllianceDoc._id))
+			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
 		}
 		if(_.isObject(defenceAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(defenceAllianceDoc._id))
+			funcs.push(self.dataService.updateAllianceAsync(defenceAllianceDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -701,10 +701,10 @@ pro.revengeAlliance = function(playerId, reportId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(attackAllianceDoc._id))
+			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
 		}
 		if(_.isObject(defenceAllianceDoc)){
-			funcs.push(self.allianceDao.removeLockAsync(defenceAllianceDoc._id))
+			funcs.push(self.dataService.updateAllianceAsync(defenceAllianceDoc, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
@@ -760,10 +760,10 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 		return
 	}
 
+	var self = this
 	var allianceInfos = []
-
-	this.allianceDao.getModel().findAsync({
-		"serverId":playerDoc.serverId,
+	this.dataService.getAllianceModel().findAsync({
+		"serverId":self.app.get("cacheServerId"),
 		"basicInfo.tag":{$regex:tag}
 	}, null, {limit:10}).then(function(docs){
 		_.each(docs, function(doc){
@@ -799,11 +799,17 @@ pro.getNearedAllianceInfos = function(playerId, callback){
 	}).then(function(doc){
 		allianceDoc = doc
 		var funcs = []
-		funcs.push(self.allianceDao.getModel().findAsync({"basicInfo.power":{$lt:allianceDoc.basicInfo.power}}, null, {
+		funcs.push(self.dataService.getAllianceModel().findAsync({
+			"serverId":self.app.get("cacheServerId"),
+			"basicInfo.power":{$lt:allianceDoc.basicInfo.power}
+		}, null, {
 			"sort":{"basicInfo.power":-1},
 			"limit":3
 		}))
-		funcs.push(self.allianceDao.getModel().findAsync({"basicInfo.power":{$gt:allianceDoc.basicInfo.power}}, null, {
+		funcs.push(self.dataService.getAllianceModel().findAsync({
+			"serverId":self.app.get("cacheServerId"),
+			"basicInfo.power":{$gt:allianceDoc.basicInfo.power}
+		}, null, {
 			"sort":{"basicInfo.power":1},
 			"limit":3
 		}))
