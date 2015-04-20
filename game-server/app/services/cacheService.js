@@ -19,7 +19,7 @@ var DataService = function(app){
 	this.alliances = []
 	this.alliancesQueue = {}
 
-	this.flushOps = 60
+	this.flushOps = 1
 	this.flushInterval = 120 * 1000
 	this.timeoutInterval = 600 * 1000
 }
