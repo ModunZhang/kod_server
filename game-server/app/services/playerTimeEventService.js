@@ -22,7 +22,6 @@ var PlayerTimeEventService = function(app){
 	this.app = app
 	this.env = app.get("env")
 	this.pushService = app.get("pushService")
-	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
 }
 module.exports = PlayerTimeEventService

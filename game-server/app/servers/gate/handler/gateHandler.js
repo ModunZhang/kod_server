@@ -50,12 +50,17 @@ pro.queryEntry = function(msg, session, next){
 		}
 	}).then(function(serverId){
 		var logicServer = self.gateService.getPromotedLogicServer(serverId)
-		var data = {
-			id:logicServer.id,
-			host:logicServer.outHost,
-			port:logicServer.clientPort
+		if(!_.isObject(logicServer)){
+			var e = ErrorUtils.serverUnderMaintain()
+			next(e, ErrorUtils.getError(e))
+		}else{
+			var data = {
+				id:logicServer.id,
+				host:logicServer.outHost,
+				port:logicServer.clientPort
+			}
+			next(null, {data:data, code:200})
 		}
-		next(null, {data:data, code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})

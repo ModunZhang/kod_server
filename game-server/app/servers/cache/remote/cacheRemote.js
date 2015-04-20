@@ -74,7 +74,6 @@ pro.timeoutPlayer = function(id, doc, callback){
 	this.cacheService.timeoutPlayer(id, doc, callback)
 }
 
-
 /**
  * 创建联盟对象
  * @param doc

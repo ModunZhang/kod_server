@@ -50,6 +50,7 @@ pro.init = function(){
  * @returns {*}
  */
 pro.getPromotedLogicServer = function(cacheServerId){
+	if(!_.isObject(this.logicServers)) return null
 	var logicServers = _.filter(this.logicServers, function(logicServer){
 		return _.isEqual(logicServer.usedFor, cacheServerId)
 	})
