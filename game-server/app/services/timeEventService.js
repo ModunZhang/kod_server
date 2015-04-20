@@ -4,27 +4,51 @@
  * Created by modun on 14-10-28.
  */
 
+var _ = require("underscore")
 var Consts = require("../consts/consts")
 
 
 var TimeEventService = function(app){
 	this.app = app
 	this.eventServerId = app.get("eventServerId")
-	this.pushService = app.get("pushService")
+	this.isEventServer = _.isEqual(this.eventServerId, app.getServerId())
+	this.logService = app.get("logService")
+	this.playerTimeEventService = app.get("playerTimeEventService")
+	this.allianceTimeEventService = app.get("allianceTimeEventService")
+	this.timeouts = {}
 }
 module.exports = TimeEventService
 var pro = TimeEventService.prototype
+
+
 
 /**
  * 添加时间回调
  * @param key
  * @param eventType
  * @param eventId
- * @param interval
+ * @param timeInterval
  * @param callback
  */
-pro.addTimeEvent = function(key, eventType, eventId, interval, callback){
-	this.app.rpc.event.eventRemote.addTimeEvent.toServer(this.eventServerId, key, eventType, eventId, interval, callback)
+pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
+	if(this.isEventServer){
+		this.logService.onEvent("event.eventRemote.addTimeEvent", {
+			key:key,
+			eventType:eventType,
+			eventId:eventId,
+			timeInterval:timeInterval
+		})
+		var timeout = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
+		var timeouts = this.timeouts[key]
+		if(_.isEmpty(timeouts)){
+			timeouts = {}
+			this.timeouts[key] = timeouts
+		}
+		timeouts[eventId] = timeout
+		callback()
+	}else{
+
+	}
 }
 
 /**
@@ -35,7 +59,15 @@ pro.addTimeEvent = function(key, eventType, eventId, interval, callback){
  * @param callback
  */
 pro.removeTimeEvent = function(key, eventType, eventId, callback){
-	this.app.rpc.event.eventRemote.removeTimeEvent.toServer(this.eventServerId, key, eventType, eventId, callback)
+	this.logService.onEvent("event.eventRemote.removeTimeEvent", {key:key, eventType:eventType, eventId:eventId})
+	var timeouts = this.timeouts[key]
+	var timeout = timeouts[eventId]
+	clearTimeout(timeout)
+	delete timeouts[eventId]
+	if(_.isEmpty(timeouts)){
+		delete this.timeouts[key]
+	}
+	callback()
 }
 
 /**
@@ -43,21 +75,92 @@ pro.removeTimeEvent = function(key, eventType, eventId, callback){
  * @param key
  * @param eventType
  * @param eventId
- * @param interval
+ * @param timeInterval
  * @param callback
  */
-pro.updateTimeEvent = function(key, eventType, eventId, interval, callback){
-	this.app.rpc.event.eventRemote.updateTimeEvent.toServer(this.eventServerId, key, eventType, eventId, interval, callback)
+pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
+	this.logService.onEvent("event.eventRemote.updateTimeEvent", {
+		key:key,
+		eventType:eventType,
+		eventId:eventId,
+		timeInterval:timeInterval
+	})
+	var timeouts = this.timeouts[key]
+	var timeout = timeouts[eventId]
+	clearTimeout(timeout)
+
+	timeout = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
+	timeouts[eventId] = timeout
+	callback()
 }
 
 /**
- * 清除指定Key的时间回调
+ * 清除指定Key所有的时间回调
  * @param key
  * @param callback
  */
-pro.clearTimeEvents = function(key, callback){
-	this.app.rpc.event.eventRemote.clearTimeEventsByKey.toServer(this.eventServerId, key, callback)
+pro.clearTimeEventsByKey = function(key, callback){
+	this.logService.onEvent("event.eventRemote.clearTimeEventsByKey", {key:key})
+	var timeouts = this.timeouts[key]
+	_.each(timeouts, function(timeout){
+		clearTimeout(timeout)
+	})
+	delete this.timeouts[key]
+	callback()
 }
+
+/**
+ * 触发事件回调
+ * @param key
+ * @param eventType
+ * @param eventId
+ */
+pro.triggerTimeEvent = function(key, eventType, eventId){
+	var self = this
+	this.logService.onEvent("event.eventRemote.triggerTimeEvent", {key:key, eventType:eventType, eventId:eventId})
+	var timeouts = this.timeouts[key]
+	delete timeouts[eventId]
+	if(_.isEmpty(timeouts)){
+		delete this.timeouts[key]
+	}
+	this.excuteTimeEventAsync(key, eventType, eventId).then(function(){
+		self.logService.onEvent("event.eventRemote.triggerTimeEvent finished", {
+			key:key,
+			eventType:eventType,
+			eventId:eventId
+		})
+	}).catch(function(e){
+		self.logService.onEventError("event.eventRemote.triggerTimeEvent finished with error", {
+			key:key,
+			eventType:eventType,
+			eventId:eventId
+		}, e.stack)
+	})
+}
+
+/**
+ * 执行事件回调
+ * @param key
+ * @param eventType
+ * @param eventId
+ * @param callback
+ */
+pro.excuteTimeEvent = function(key, eventType, eventId, callback){
+	var params = key.split(":")
+	var targetType = params[0]
+	var id = params[1]
+	if(_.isEqual(Consts.TimeEventType.Player, targetType)){
+		this.playerTimeEventService.onTimeEvent(id, eventType, eventId, callback)
+	}else if(_.isEqual(Consts.TimeEventType.Alliance, targetType)){
+		this.allianceTimeEventService.onTimeEvent(id, eventType, eventId, callback)
+	}else if(_.isEqual(Consts.TimeEventType.AllianceFight, targetType)){
+		var ids = eventId.split(":")
+		this.allianceTimeEventService.onFightTimeEvent(ids[0], ids[1], callback)
+	}else{
+		callback(new Error("未知的事件类型"))
+	}
+}
+
 
 /**
  * 添加玩家时间回调
@@ -202,4 +305,14 @@ pro.removeAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDo
 	var eventType = Consts.TimeEventType.AllianceFight
 	var eventId = attackAllianceDoc._id + ":" + defenceAllianceDoc._id
 	this.removeTimeEvent(key, eventType, eventId, callback)
+}
+
+
+/**
+ * 恢复玩家事件
+ * @param playerDoc
+ * @param callback
+ */
+pro.restorePlayerTimeEvents = function(playerDoc, callback){
+
 }

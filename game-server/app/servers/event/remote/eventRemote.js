@@ -15,7 +15,7 @@ module.exports = function(app){
 var EventRemote = function(app){
 	this.app = app
 	this.dataService = app.get("dataService")
-	this.eventService = app.get("eventService")
+	this.timeEventService = app.get("timeEventService")
 }
 var pro = EventRemote.prototype
 
@@ -54,7 +54,7 @@ pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callbac
  * @param callback
  */
 pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	this.eventService.addTimeEvent(key, eventType, eventId, timeInterval, callback)
+	this.timeEventService.addTimeEvent(key, eventType, eventId, timeInterval, callback)
 }
 
 /**
@@ -65,7 +65,7 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  * @param callback
  */
 pro.removeTimeEvent = function(key, eventType, eventId, callback){
-	this.eventService.removeTimeEvent(key, eventType, eventId, callback)
+	this.timeEventService.removeTimeEvent(key, eventType, eventId, callback)
 }
 
 /**
@@ -77,7 +77,7 @@ pro.removeTimeEvent = function(key, eventType, eventId, callback){
  * @param callback
  */
 pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	this.eventService.removeTimeEvent(key, eventType, eventId, timeInterval, callback)
+	this.timeEventService.removeTimeEvent(key, eventType, eventId, timeInterval, callback)
 }
 
 /**
@@ -86,7 +86,7 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  * @param callback
  */
 pro.clearTimeEventsByKey = function(key, callback){
-	this.eventService.clearTimeEventsByKey(key, callback)
+	this.timeEventService.clearTimeEventsByKey(key, callback)
 }
 
 /**
@@ -99,7 +99,7 @@ pro.restorePlayerTimeEvents = function(playerId, callback){
 	var playerDoc = null
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		return self.eventService.restorePlayerTimeEventsAsync(playerDoc)
+		return self.timeEventService.restorePlayerTimeEventsAsync(playerDoc)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
