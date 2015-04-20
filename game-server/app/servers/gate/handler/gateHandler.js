@@ -34,6 +34,7 @@ pro.queryEntry = function(msg, session, next){
 
 	var deviceId = msg.deviceId
 	if(!_.isString(deviceId)){
+		var e = new Error("deviceId 不合法")
 		next(e, ErrorUtils.getError(new Error("deviceId 不合法")))
 		return
 	}
