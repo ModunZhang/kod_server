@@ -82,7 +82,7 @@ life.afterStartAll = function(app){
 	Promise.all(funcs).spread(function(stopDoc, startDoc){
 		if(!_.isObject(stopDoc)) serverStopTime = 0
 		else if(!_.isObject(startDoc) || startDoc.time >= stopDoc.time) serverStopTime = 0
-		else serverStopTime = now - stopDoc.time
+		else serverStopTime = Date.now() - stopDoc.time
 	}).then(function(){
 		var findAllianceId = function(callback){
 			Alliance.collection.find({serverId:app.get("cacheServerId")}, {_id:true}).toArray(function(e, docs){
@@ -118,7 +118,7 @@ life.afterStartAll = function(app){
 		funcs = []
 		_.each(logicServers, function(server){
 			if(_.isEqual(server.usedFor, cacheServerId)){
-				funcs.push(setServerStatusAsync(server.id, true))
+				funcs.push(setServerStatusAsync(server.id, Consts.ServerStatus.On))
 			}
 		})
 		return Promise.all(funcs)
