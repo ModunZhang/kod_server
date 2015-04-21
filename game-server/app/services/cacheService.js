@@ -16,9 +16,9 @@ var DataService = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.Player = app.get("Player")
 	this.Alliance = app.get("Alliance")
-	this.players = []
+	this.players = {}
 	this.playersQueue = {}
-	this.alliances = []
+	this.alliances = {}
 	this.alliancesQueue = {}
 
 	this.flushOps = 30
