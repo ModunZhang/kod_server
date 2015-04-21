@@ -21,19 +21,19 @@ var Errors = GameDatas.Errors.errors
 describe("PlayerService", function(){
 	var m_user
 
-	before(function(done){
-		mongoose.connect(Config.mongoAddr, function(){
-			Device.removeAsync().then(function(){
-				return Player.removeAsync()
-			}).then(function(){
-				return Alliance.removeAsync()
-			}).then(function(){
-				return Billing.removeAsync()
-			}).then(function(){
-				done()
-			})
-		})
-	})
+	//before(function(done){
+	//	mongoose.connect(Config.mongoAddr, function(){
+	//		Device.removeAsync().then(function(){
+	//			return Player.removeAsync()
+	//		}).then(function(){
+	//			return Alliance.removeAsync()
+	//		}).then(function(){
+	//			return Billing.removeAsync()
+	//		}).then(function(){
+	//			done()
+	//		})
+	//	})
+	//})
 
 
 	describe("entryHandler", function(){

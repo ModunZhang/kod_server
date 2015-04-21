@@ -41,11 +41,11 @@ var OnPlayerTimeout = function(id){
 		self.timeEventService.clearPlayerTimeEventsAsync(player.doc).then(function(){
 			delete self.players[id]
 			if(player.ops > 0){
-				var doc = player.doc
-				delete doc._id
-				self.Player.updateAsync({_id:id}, doc).then(function(){
+				delete player.doc._id
+				self.Player.updateAsync({_id:id}, player.doc).then(function(){
 					UnlockPlayer.call(self, id)
 				})
+				player.doc._id = id
 			}else{
 				UnlockPlayer.call(self, id)
 			}
@@ -66,13 +66,12 @@ var OnPlayerInterval = function(id){
 	LockPlayer.call(this, id, function(){
 		var player = self.players[id]
 		if(player.ops > 0){
-			var doc = player.doc
-			delete doc._id
-			self.Player.updateAsync({_id:id}, doc).then(function(){
+			delete player.doc._id
+			self.Player.updateAsync({_id:id}, player.doc).then(function(){
 				player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
 				UnlockPlayer.call(self, id)
 			})
-			doc._id = id
+			player.doc._id = id
 			player.ops = 0
 		}else{
 			player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
@@ -93,11 +92,11 @@ var OnAllianceTimeout = function(id){
 		clearTimeout(alliance.interval)
 		delete self.alliances[id]
 		if(alliance.ops > 0){
-			var doc = alliance.doc
-			delete doc._id
-			self.Alliance.updateAsync({_id:id}, doc).then(function(){
+			delete alliance.doc._id
+			self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
 				UnlockAlliance.call(self, id)
 			})
+			alliance.doc._id = id
 		}else{
 			UnlockAlliance.call(self, id)
 		}
@@ -113,13 +112,12 @@ var OnAllianceInterval = function(id){
 	LockAlliance.call(this, id, function(){
 		var alliance = self.alliances[id]
 		if(alliance.ops > 0){
-			var doc = alliance.doc
-			delete doc._id
-			self.Alliance.updateAsync({_id:id}, doc).then(function(){
+			delete alliance.doc._id
+			self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
 				alliance.interval = setTimeout(OnAllianceInterval.bind(self), self.flushInterval, id)
 				UnlockAlliance.call(self, id)
 			})
-			doc._id = id
+			alliance.doc._id = id
 			alliance.ops = 0
 		}else{
 			alliance.interval = setTimeout(OnAllianceInterval.bind(self), self.flushInterval, id)
@@ -303,14 +301,14 @@ pro.updatePlayer = function(id, doc, callback){
 		if(player.ops >= this.flushOps){
 			clearTimeout(player.timeout)
 			clearTimeout(player.interval)
-			delete doc._id
+			delete player.doc._id
 			self.Player.updateAsync({_id:id}, player.doc).then(function(){
 				player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 				player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
 				callback()
 				UnlockPlayer.call(self, id)
 			})
-			doc._id = id
+			player.doc._id = id
 			player.ops = 0
 		}else{
 			callback()
@@ -337,14 +335,14 @@ pro.flushPlayer = function(id, doc, callback){
 	clearTimeout(player.timeout)
 	clearTimeout(player.interval)
 	if(player.ops > 0){
-		delete doc._id
+		delete player.doc._id
 		self.Player.updateAsync({_id:id}, player.doc).then(function(){
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 			player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
 			callback()
 			UnlockPlayer.call(self, id)
 		})
-		doc._id = id
+		player.doc._id = id
 		player.ops = 0
 	}else{
 		player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
@@ -372,12 +370,12 @@ pro.timeoutPlayer = function(id, doc, callback){
 			player.ops += 1
 		}
 		if(player.ops > 0){
-			delete doc._id
+			delete player.doc._id
 			self.Player.updateAsync({_id:id}, player.doc).then(function(){
 				callback()
 				UnlockPlayer.call(self, id)
 			})
-			doc._id = id
+			player.doc._id = id
 			player.ops = 0
 		}else{
 			callback()
@@ -396,11 +394,26 @@ pro.timeoutPlayer = function(id, doc, callback){
 pro.timeoutAllPlayers = function(callback){
 	var self = this
 	var funcs = []
-	var timeoutPlayerAsync = function(id){
-		return self.findPlayerAsync(id).then(function(){
-			return self.timeoutPlayerAsync(id, null)
+	var timeoutPlayer = function(id, callback){
+		return self.findPlayerAsync(id).then(function(player){
+			clearTimeout(player.timeout)
+			clearTimeout(player.interval)
+			delete self.players[id]
+			if(player.ops > 0){
+				delete player.doc._id
+				self.Player.updateAsync({_id:id}, player.doc).then(function(){
+					callback()
+					UnlockPlayer.call(self, id)
+				})
+				player.doc._id = id
+				player.ops = 0
+			}else{
+				callback()
+				UnlockPlayer.call(self, id)
+			}
 		})
 	}
+	var timeoutPlayerAsync = Promise.promisify(timeoutPlayer, this)
 	_.each(this.players, function(player, id){
 		funcs.push(timeoutPlayerAsync(id))
 	})
@@ -524,7 +537,7 @@ pro.updateAlliance = function(id, doc, callback){
 		alliance.doc = doc
 		alliance.ops += 1
 		if(alliance.ops >= this.flushOps){
-			delete doc._id
+			delete alliance.doc._id
 			self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
 				clearTimeout(alliance.timeout)
 				clearTimeout(alliance.interval)
@@ -533,7 +546,7 @@ pro.updateAlliance = function(id, doc, callback){
 				callback()
 				UnlockAlliance.call(self, id)
 			})
-			doc._id = id
+			alliance.doc._id = id
 			alliance.ops = 0
 		}else{
 			callback()
@@ -556,7 +569,7 @@ pro.flushAlliance = function(id, doc, callback){
 	if(_.isObject(doc)){
 		alliance.doc = doc
 	}
-	delete doc._id
+	delete alliance.doc._id
 	self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
 		clearTimeout(alliance.timeout)
 		clearTimeout(alliance.interval)
@@ -565,7 +578,7 @@ pro.flushAlliance = function(id, doc, callback){
 		callback()
 		UnlockAlliance.call(self, id)
 	})
-	doc._id = id
+	alliance.doc._id = id
 	alliance.ops = 0
 }
 
@@ -586,12 +599,12 @@ pro.timeoutAlliance = function(id, doc, callback){
 	clearTimeout(alliance.timeout)
 	clearTimeout(alliance.interval)
 	if(alliance.ops > 0){
-		delete doc._id
+		delete alliance.doc._id
 		self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
 			callback()
 			UnlockAlliance.call(self, id)
 		})
-		doc._id = id
+		alliance.doc._id = id
 		alliance.ops = 0
 	}else{
 		callback()
@@ -606,11 +619,26 @@ pro.timeoutAlliance = function(id, doc, callback){
 pro.timeoutAllAlliances = function(callback){
 	var self = this
 	var funcs = []
-	var timeoutAllianceAsync = function(id){
-		return self.findAllianceAsync(id).then(function(){
-			return self.timeoutAllianceAsync(id, null)
+	var timeoutAlliance = function(id, callback){
+		return self.findAllianceAsync(id).then(function(alliance){
+			delete  self.alliances[id]
+			clearTimeout(alliance.timeout)
+			clearTimeout(alliance.interval)
+			if(alliance.ops > 0){
+				delete alliance.doc._id
+				self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
+					callback()
+					UnlockAlliance.call(self, id)
+				})
+				alliance.doc._id = id
+				alliance.ops = 0
+			}else{
+				callback()
+				UnlockAlliance.call(self, id)
+			}
 		})
 	}
+	var timeoutAllianceAsync = Promise.promisify(timeoutAlliance, this)
 	_.each(this.alliances, function(alliance, id){
 		funcs.push(timeoutAllianceAsync(id))
 	})
