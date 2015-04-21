@@ -10,7 +10,12 @@ module.exports = {
 	PushServiceName:"pushService",
 	AlliancePowerRank:"alliancePowerRank",
 	AllianceKillRank:"allianceKillRank",
-	ServerId:"World-1",
+	ServerStatus:{
+		Starting:"starting",
+		Stoping:"stoping",
+		On:"on",
+		ReadyShutdown:"readyShutdown"
+	},
 	None:"__NONE__",
 	ServerState:{
 		Start:"start",

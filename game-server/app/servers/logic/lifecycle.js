@@ -32,6 +32,7 @@ var GemAdd = require("../../domains/gemAdd")
 var Device = require("../../domains/device")
 var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
+var Consts = require("../../consts/consts")
 
 var life = module.exports
 
@@ -88,6 +89,7 @@ life.afterStartup = function(app, callback){
 
 life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 	cancelShutDownTimer()
+	app.set("serverStatus", Consts.ServerStatus.Stoping)
 	var sessionService = app.get("sessionService")
 	var kickAsync = Promise.promisify(sessionService.kick, sessionService)
 	var uids = _.keys(sessionService.service.uidMap)
@@ -96,9 +98,12 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 		funcs.push(kickAsync(uid, "服务器关闭"))
 	})
 	Promise.all(funcs).then(function(){
-		callback()
+		setTimeout(function(){
+			callback()
+		}, 1000 * 3)
 	}).catch(function(e){
 		app.get("logService").onEventError("logic.lifecycle.beforeShutdown", {}, e.stack)
+		callback()
 	})
 }
 

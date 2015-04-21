@@ -109,7 +109,6 @@ pro.onAllianceFight = function(allianceId, allianceData, enemyAllianceData, call
 		allianceData:allianceData,
 		enemyAllianceData:enemyAllianceData
 	}, callback)
-
 }
 
 /**

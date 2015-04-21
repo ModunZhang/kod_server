@@ -139,7 +139,7 @@ var FilterPlayerDoc = function(playerDoc){
 pro.login = function(msg, session, next){
 	this.logService.onRequest("logic.entryHandler.login", msg)
 	var e = null
-	if(!this.app.get("isReady")){
+	if(!_.isEqual(this.app.get("serverStatus"), Consts.ServerStatus.On)){
 		e = ErrorUtils.serverUnderMaintain()
 		next(e, ErrorUtils.getError(e))
 		return

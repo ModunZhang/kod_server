@@ -65,8 +65,7 @@ pro.kickPlayer = function(uid, reason, callback){
  * @param callback
  */
 pro.setServerStatus = function(status, callback){
-	this.logService.onEvent("logic.logicRemote.setServerStatus", {status:status})
-	this.app.set("isReady", status)
+	this.app.set("serverStatus", status)
 	callback()
 }
 
