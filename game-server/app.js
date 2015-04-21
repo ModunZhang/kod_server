@@ -13,7 +13,6 @@ var Scripto = require('redis-scripto')
 
 var RouteUtils = require("./app/utils/routeUtils")
 var LoginFilter = require("./app/utils/loginFilter")
-//var ReplayFilter = require("./app/utils/replayFilter")
 var SerialFilter = require("./app/utils/serialFilter")
 
 var app = pomelo.createApp()
@@ -23,13 +22,13 @@ app.route("chat", RouteUtils.chat)
 app.route("logic", RouteUtils.logic)
 
 app.configure("production|development", function() {
-	//app.set('proxyConfig', {
-	//	rpcClient: wsrpc.client
-	//})
-	//
-	//app.set('remoteConfig', {
-	//	rpcServer: wsrpc.server
-	//})
+	app.set('proxyConfig', {
+		rpcClient: wsrpc.client
+	})
+
+	app.set('remoteConfig', {
+		rpcServer: wsrpc.server
+	})
 })
 
 app.configure("production|development", "gate", function(){
@@ -61,13 +60,12 @@ app.configure("production|development", "logic", function(){
 		disconnectOnTimeout:true,
 		"max-connections":2000
 	})
-	app.set("proxyConfig", {
-		bufferMsg:false,
-		interval:20,
-		failMode:"failfast"
-	})
+	//app.set("proxyConfig", {
+	//	bufferMsg:false,
+	//	interval:20,
+	//	failMode:"failfast"
+	//})
 
-	//app.before(ReplayFilter())
 	app.before(LoginFilter())
 	app.filter(SerialFilter(5000))
 
@@ -77,23 +75,22 @@ app.configure("production|development", "logic", function(){
 })
 
 app.configure("production|development", "chat", function(){
-	app.set("proxyConfig", {
-		bufferMsg:false,
-		interval:20,
-		failMode:"failfast"
-	})
+	//app.set("proxyConfig", {
+	//	bufferMsg:false,
+	//	interval:20,
+	//	failMode:"failfast"
+	//})
 
-	//app.before(ReplayFilter())
 	app.before(LoginFilter())
 	app.filter(SerialFilter(5000))
 })
 
 app.configure("production|development", "event", function(){
-	app.set("proxyConfig", {
-		bufferMsg:false,
-		interval:20,
-		failMode:"failfast"
-	})
+	//app.set("proxyConfig", {
+	//	bufferMsg:false,
+	//	interval:20,
+	//	failMode:"failfast"
+	//})
 })
 
 app.configure("production|development", "cache", function(){

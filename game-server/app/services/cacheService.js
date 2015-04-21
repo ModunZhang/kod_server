@@ -6,6 +6,8 @@
 
 var Promise = require("bluebird")
 var _ = require("underscore")
+var Msgpack = require("msgpack")
+
 var DataUtils = require("../utils/dataUtils")
 var Consts = require("../consts/consts.js")
 
