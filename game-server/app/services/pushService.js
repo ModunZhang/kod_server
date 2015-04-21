@@ -129,7 +129,7 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceId, data, memberId, c
 		return
 	}
 	var uids = []
-	_.filter(channel.getMembers, function(uid){
+	_.filter(channel.getMembers(), function(uid){
 		return !_.isEqual(uid, memberId)
 	})
 	if(uids.length > 0){
