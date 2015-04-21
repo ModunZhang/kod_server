@@ -791,7 +791,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 		this.dataService.findPlayerAsync(event.attackPlayerData.id).then(function(doc){
 			attackPlayerDoc = doc
-			console.log(attackPlayerDoc._id, "1111111111")
 			if(_.isObject(attackAllianceDoc.allianceFight)){
 				var defenceAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id)
 				return self.dataService.findAllianceAsync(defenceAllianceId).then(function(doc){
@@ -841,7 +840,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			}
 			resourceName = village.name.slice(0, -7)
 			if(!_.isObject(villageEvent)){
-				console.log(attackPlayerDoc._id, "222222222222")
 				eventData = MarchUtils.createAllianceVillageEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], targetAllianceDoc, village, [])
 				newVillageEvent = eventData.event
 				attackAllianceDoc.villageEvents.push(newVillageEvent)
