@@ -23,7 +23,6 @@ module.exports = TimeEventService
 var pro = TimeEventService.prototype
 
 
-
 /**
  * 添加时间回调
  * @param key
@@ -330,8 +329,8 @@ pro.removeAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDo
 pro.restorePlayerTimeEvents = function(playerDoc, callback){
 	var self = this
 	var playerTimeEventService = this.app.get("playerTimeEventService")
-	var funcs = []
 	var now = Date.now()
+	var funcs = []
 	_.each(playerDoc.buildingEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "buildingEvents", event.id)
@@ -433,6 +432,71 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 		}
 	})
 	DataUtils.refreshPlayerPower(playerDoc, [])
+
+	Promise.all(funcs).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 恢复联盟事件
+ * @param allianceDoc
+ * @param timeAdd
+ * @param callback
+ */
+pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
+	var self = this
+	var now = Date.now()
+	var funcs = []
+	if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
+		allianceDoc.basicInfo.statusStartTime += timeAdd
+		allianceDoc.basicInfo.statusFinishTime += timeAdd
+		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, allianceDoc.basicInfo.statusFinishTime - now))
+	}else if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+		allianceDoc.basicInfo.statusStartTime += timeAdd
+		allianceDoc.basicInfo.statusFinishTime += timeAdd
+		if(_.isEqual(allianceDoc.allianceFight.attackAllianceId, allianceDoc._id)){
+			var thekey = Consts.TimeEventType.AllianceFight
+			var theEventType = Consts.TimeEventType.AllianceFight
+			var theEventId = allianceDoc.allianceFight.attackAllianceId + ":" + allianceDoc.allianceFight.defenceAllianceId
+			funcs.push(self.addTimeEventAsync(thekey, theEventType, theEventId, allianceDoc.basicInfo.statusFinishTime - now))
+		}
+	}else if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Peace)){
+		allianceDoc.basicInfo.statusStartTime += timeAdd
+	}
+
+	_.each(allianceDoc.shrineEvents, function(event){
+		event.createTime += timeAdd
+		event.startTime += timeAdd
+		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "shrineEvents", event.id, event.startTime - now))
+	})
+	_.each(allianceDoc.villageEvents, function(event){
+		event.startTime += timeAdd
+		event.finishTime += timeAdd
+		funcs.push([self.addAllianceTimeEventAsync, allianceDoc, "villageEvents", event.id, event.finishTime - now])
+	})
+	_.each(allianceDoc.strikeMarchEvents, function(event){
+		event.startTime += timeAdd
+		event.arriveTime += timeAdd
+		funcs.push([self.addAllianceTimeEventAsync, allianceDoc, "strikeMarchEvents", event.id, event.finishTime - now])
+	})
+	_.each(allianceDoc.strikeMarchReturnEvents, function(event){
+		event.startTime += timeAdd
+		event.arriveTime += timeAdd
+		funcs.push([self.addAllianceTimeEventAsync, allianceDoc, "strikeMarchReturnEvents", event.id, event.finishTime - now])
+	})
+	_.each(allianceDoc.attackMarchEvents, function(event){
+		event.startTime += timeAdd
+		event.arriveTime += timeAdd
+		funcs.push([self.addAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", event.id, event.finishTime - now])
+	})
+	_.each(allianceDoc.attackMarchReturnEvents, function(event){
+		event.startTime += timeAdd
+		event.arriveTime += timeAdd
+		funcs.push([self.addAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", event.id, event.finishTime - now])
+	})
 
 	Promise.all(funcs).then(function(){
 		callback()

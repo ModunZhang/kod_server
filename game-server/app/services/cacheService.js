@@ -147,7 +147,7 @@ var UnlockPlayer = function(id){
 	var playerQueue = this.playersQueue[id]
 	if(!_.isArray(playerQueue)){
 		var e = new Error("此玩家请求队列不存在或为空")
-		this.logService.onEventError("cache.cacheService.unlockPlayer", {id:id}, e.stack)
+		this.logService.onEventError("cache.cacheService.UnlockPlayer", {id:id}, e.stack)
 		return
 	}
 	playerQueue.shift()
@@ -178,7 +178,7 @@ var UnlockAlliance = function(id){
 	var allianceQueue = this.alliancesQueue[id]
 	if(!_.isArray(allianceQueue)){
 		var e = new Error("此联盟请求队列不存在或为空")
-		this.logService.onEventError("cache.cacheService.unlockAlliance", {id:id}, e.stack)
+		this.logService.onEventError("cache.cacheService.UnlockAlliance", {id:id}, e.stack)
 		return
 	}
 	allianceQueue.shift()
@@ -447,18 +447,25 @@ pro.directFindAlliance = function(id, callback){
 			callback(null, alliance.doc)
 			UnlockAlliance.call(self, id)
 		}else{
+			var allianceDoc = null
 			self.Alliance.findByIdAsync(id).then(function(doc){
 				if(_.isObject(doc)){
+					allianceDoc = doc.toObject()
 					var alliance = {}
-					alliance.doc = doc.toObject()
+					alliance.doc = allianceDoc
 					alliance.ops = 0
 					alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 					alliance.interval = setTimeout(OnAllianceInterval.bind(self), self.flushInterval, id)
 					self.alliances[id] = alliance
-					callback(null, self.alliances[id].doc)
+					return Promise.resolve()
 				}else{
-					callback(null, null)
+					return Promise.resolve()
 				}
+			}).then(function(){
+				callback(null, allianceDoc)
+				UnlockAlliance.call(self, id)
+			}).catch(function(e){
+				callback(e)
 				UnlockAlliance.call(self, id)
 			})
 		}
@@ -477,19 +484,28 @@ pro.findAlliance = function(id, callback){
 		if(_.isObject(alliance)){
 			callback(null, alliance.doc)
 		}else{
+			var allianceDoc = null
 			self.Alliance.findByIdAsync(id).then(function(doc){
 				if(_.isObject(doc)){
+					allianceDoc = doc.toObject()
 					var alliance = {}
-					alliance.doc = doc.toObject()
+					alliance.doc = allianceDoc
 					alliance.ops = 0
 					alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 					alliance.interval = setTimeout(OnAllianceInterval.bind(self), self.flushInterval, id)
 					self.alliances[id] = alliance
-					callback(null, self.alliances[doc._id].doc)
+					return Promise.resolve()
 				}else{
-					UnlockAlliance.call(self, id)
-					callback(null, null)
+					return Promise.resolve()
 				}
+			}).then(function(){
+				callback(null, allianceDoc)
+				if(!_.isObject(allianceDoc)){
+					UnlockAlliance.call(self, id)
+				}
+			}).catch(function(e){
+				callback(e)
+				UnlockAlliance.call(self, id)
 			})
 		}
 	})
@@ -523,6 +539,8 @@ pro.updateAlliance = function(id, doc, callback){
 			callback()
 			UnlockAlliance.call(self, id)
 		}
+	}else{
+		UnlockAlliance.call(self, id)
 	}
 }
 
@@ -577,7 +595,7 @@ pro.timeoutAlliance = function(id, doc, callback){
 		alliance.ops = 0
 	}else{
 		callback()
-		self.unlockPlayer(id)
+		UnlockAlliance.call(self, id)
 	}
 }
 
