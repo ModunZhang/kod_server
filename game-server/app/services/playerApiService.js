@@ -199,18 +199,7 @@ pro.playerLogout = function(playerId, callback){
 		if(_.isEqual(playerDoc.serverId, self.app.get("cacheServerId"))){
 			return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
 		}else{
-			return self.dataService.timeoutPlayerAsync(playerDoc, playerDoc).then(function(){
-				return self.timeEventService.clearPlayerTimeEventsAsync(playerDoc).then(function(){
-					var eventServer = _.find(self.app.getServersByType("event"), function(server){
-						return _.isEqual(server.usedFor, playerDoc.serverId)
-					})
-					var restorePlayerTimeEventsAsync = Promise.promisify(self.app.rpc.event.eventRemote.restorePlayerTimeEvents.toServer, self)
-					return restorePlayerTimeEventsAsync(eventServer.id, playerDoc._id)
-				}).catch(function(e){
-					self.logService.onEventError("logic.playerApiService.playerLogout", {playerId:playerId}, e.stack)
-					return Promise.resolve()
-				})
-			})
+			return self.dataService.timeoutPlayerAsync(playerDoc, playerDoc)
 		}
 	}).then(function(){
 		callback(null, playerDoc)

@@ -325,17 +325,14 @@ pro.removeAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDo
 /**
  * 恢复玩家事件
  * @param playerDoc
- * @param timeAdd
  * @param callback
  */
-pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
+pro.restorePlayerTimeEvents = function(playerDoc, callback){
 	var self = this
 	var playerTimeEventService = this.app.get("playerTimeEventService")
 	var funcs = []
 	var now = Date.now()
 	_.each(playerDoc.buildingEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "buildingEvents", event.id)
 		}else{
@@ -343,8 +340,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 		}
 	})
 	_.each(playerDoc.houseEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "houseEvents", event.id)
 		}else{
@@ -353,8 +348,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 	})
 	_.each(playerDoc.materialEvents, function(event){
 		if(event.finishTime > 0){
-			event.startTime += timeAdd
-			event.finishTime += timeAdd
 			if(LogicUtils.willFinished(event.finishTime)){
 				playerTimeEventService.onPlayerEvent(playerDoc, [], "materialEvents", event.id)
 			}else{
@@ -363,8 +356,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 		}
 	})
 	_.each(playerDoc.soldierEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "soldierEvents", event.id)
 		}else{
@@ -372,8 +363,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 		}
 	})
 	_.each(playerDoc.dragonEquipmentEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "dragonEquipmentEvents", event.id)
 		}else{
@@ -381,8 +370,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 		}
 	})
 	_.each(playerDoc.treatSoldierEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "treatSoldierEvents", event.id)
 		}else{
@@ -390,8 +377,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 		}
 	})
 	_.each(playerDoc.dragonHatchEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "dragonHatchEvents", event.id)
 		}else{
@@ -399,8 +384,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 		}
 	})
 	_.each(playerDoc.dragonDeathEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "dragonDeathEvents", event.id)
 		}else{
@@ -408,8 +391,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 		}
 	})
 	_.each(playerDoc.productionTechEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "productionTechEvents", event.id)
 		}else{
@@ -417,8 +398,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 		}
 	})
 	_.each(playerDoc.militaryTechEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "militaryTechEvents", event.id)
 		}else{
@@ -426,8 +405,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 		}
 	})
 	_.each(playerDoc.soldierStarEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "soldierStarEvents", event.id)
 		}else{
@@ -435,8 +412,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 		}
 	})
 	_.each(playerDoc.vipEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "vipEvents", event.id)
 		}else{
@@ -444,8 +419,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 		}
 	})
 	_.each(playerDoc.itemEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "itemEvents", event.id)
 		}else{
@@ -453,8 +426,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, timeAdd, callback){
 		}
 	})
 	_.each(playerDoc.dailyQuestEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "dailyQuestEvents", event.id)
 		}else{

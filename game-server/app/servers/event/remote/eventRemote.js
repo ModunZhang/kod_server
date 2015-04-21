@@ -89,29 +89,3 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 pro.clearTimeEventsByKey = function(key, callback){
 	this.timeEventService.clearTimeEventsByKey(key, callback)
 }
-
-/**
- * 恢复玩家事件
- * @param playerId
- * @param callback
- */
-pro.restorePlayerTimeEvents = function(playerId, callback){
-	var self = this
-	var playerDoc = null
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
-		return self.timeEventService.restorePlayerTimeEventsAsync(playerDoc, 0)
-	}).then(function(){
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}

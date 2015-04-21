@@ -2227,7 +2227,7 @@ Utils.createPlayer = function(playerId, serverId){
  * @returns {boolean}
  */
 Utils.willFinished = function(interval){
-	return interval - 5000 <= Date.now()
+	return interval - 3000 <= Date.now()
 }
 
 /**

@@ -14,18 +14,15 @@ var PlayerTimeEventService = require("../../services/playerTimeEventService")
 var AllianceTimeEventService = require("../../services/allianceTimeEventService")
 var TimeEventService = require("../../services/timeEventService")
 
-
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
 	var currentServer = app.getServerFromConfig(app.getServerId())
-	app.set("logicServerId", currentServer.id)
+	app.set("eventServerId", currentServer.id)
 	var servers = app.getServersFromConfig()
 	_.each(servers, function(server, id){
 		if(_.isEqual(server.serverType, "chat") && _.isEqual(server.usedFor, currentServer.usedFor)){
 			app.set("chatServerId", id)
-		}else if(_.isEqual(server.serverType, "event") && _.isEqual(server.usedFor, currentServer.usedFor)){
-			app.set("eventServerId", id)
 		}else if(_.isEqual(server.serverType, "cache") && _.isEqual(server.id, currentServer.usedFor)){
 			app.set("cacheServerId", id)
 		}else if(_.isEqual(server.serverType, "gate")){
