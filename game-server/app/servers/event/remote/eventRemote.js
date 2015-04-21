@@ -28,7 +28,7 @@ var pro = EventRemote.prototype
  * @param callback
  */
 pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
-	console.log(this.app.get("eventServerId"), "111111111111")
+	console.log(this.app.get("eventServerId"), allianceId, uid, logicServerId, "111111111111")
 	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(uid, logicServerId)
 	callback()
 }
@@ -41,7 +41,7 @@ pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
  * @param callback
  */
 pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
-	console.log(this.app.get("eventServerId"), "2222222222222")
+	console.log(this.app.get("eventServerId"), allianceId, uid, logicServerId, "2222222222222")
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 	channel.leave(uid, logicServerId)
 	if(channel.getMembers.length == 0) channel.destroy()
