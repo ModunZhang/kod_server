@@ -98,7 +98,9 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 		funcs.push(kickAsync(uid, "服务器关闭"))
 	})
 	Promise.all(funcs).then(function(){
+		setTimeout(function(){
 			callback()
+		}, 3 * 1000)
 	}).catch(function(e){
 		app.get("logService").onEventError("logic.lifecycle.beforeShutdown", {}, e.stack)
 		callback()

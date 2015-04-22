@@ -19,8 +19,11 @@ life.afterStartup = function(app, callback){
 	callback()
 }
 
-life.beforeShutdown = function(app, callback){
-	callback()
+life.beforeShutdown = function(app, callback, cancelShutDownTimer){
+	cancelShutDownTimer()
+	setTimeout(function(){
+		callback()
+	}, 6 * 1000)
 }
 
 life.afterStartAll = function(app){

@@ -47,20 +47,22 @@ life.afterStartup = function(app, callback){
 
 life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 	cancelShutDownTimer()
-	var cacheService = app.get("cacheService")
-	var logService = app.get("logService")
-	logService.onEvent("cache.lifecycle.beforeShutdown start persistence data", {cacheServerId:app.get("cacheServerId")})
-	app.get("ServerState").createAsync({type:Consts.ServerState.Stop}).then(function(){
-		return cacheService.timeoutAllAlliancesAsync()
-	}).then(function(){
-		return cacheService.timeoutAllPlayersAsync()
-	}).then(function(){
-		logService.onEvent("cache.lifecycle.beforeShutdown persistence data finished", {cacheServerId:app.get("cacheServerId")})
-		callback()
-	}).catch(function(e){
-		logService.onEventError("cache.lifecycle.beforeShutdown", {cacheServerId:app.get("cacheServerId")}, e.stack)
-		callback()
-	})
+	setTimeout(function(){
+		var cacheService = app.get("cacheService")
+		var logService = app.get("logService")
+		logService.onEvent("cache.lifecycle.beforeShutdown start persistence data", {cacheServerId:app.get("cacheServerId")})
+		app.get("ServerState").createAsync({type:Consts.ServerState.Stop}).then(function(){
+			return cacheService.timeoutAllAlliancesAsync()
+		}).then(function(){
+			return cacheService.timeoutAllPlayersAsync()
+		}).then(function(){
+			logService.onEvent("cache.lifecycle.beforeShutdown persistence data finished", {cacheServerId:app.get("cacheServerId")})
+			callback()
+		}).catch(function(e){
+			logService.onEventError("cache.lifecycle.beforeShutdown", {cacheServerId:app.get("cacheServerId")}, e.stack)
+			callback()
+		})
+	}, 12 * 1000)
 }
 
 life.afterStartAll = function(app){
