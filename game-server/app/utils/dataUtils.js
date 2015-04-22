@@ -2668,10 +2668,7 @@ Utils.addPlayerDragonExp = function(playerDoc, playerData, dragon, expAdd, inFig
 			expAdd -= (nextLevelExpNeed - dragon.exp)
 			dragon.level += 1
 			TaskUtils.finishDragonLevelTaskIfNeed(playerDoc, playerData, dragon.type, dragon.level)
-			if(dragon.level >= currentStarMaxLevel){
-				dragon.exp = 0
-				break
-			}
+			if(dragon.level >= currentStarMaxLevel) break
 		}else{
 			dragon.exp += expAdd
 			break
