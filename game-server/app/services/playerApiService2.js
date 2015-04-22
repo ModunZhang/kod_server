@@ -460,7 +460,7 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 		equipment.buffs = DataUtils.generateDragonEquipmentBuffs(equipment.name)
 		playerDoc.dragonEquipments[equipment.name] -= 1
 		playerData.push(["dragonEquipments." + equipment.name, playerDoc.dragonEquipments[equipment.name]])
-		playerData.push(["dragons." + dragonType + ".equipments." + equipment.name, equipment])
+		playerData.push(["dragons." + dragonType + ".equipments." + equipmentCategory, equipment])
 
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
