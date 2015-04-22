@@ -970,13 +970,12 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 			return Promise.resolve()
 		}else{
 			helpEvent.eventData.helpedMembers.push(playerDoc._id)
+			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent) + ".eventData.helpedMembers." + helpEvent.eventData.helpedMembers.indexOf(playerDoc._id), playerDoc._id])
 			var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc, memberEvent.finishTime - memberEvent.startTime)
 			memberEvent.finishTime = memberEvent.finishTime - effect
 			if(helpEvent.eventData.helpedMembers.length >= helpEvent.eventData.maxHelpCount || LogicUtils.willFinished(memberEvent.finishTime)){
 				allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
 				LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-			}else{
-				allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent) + ".eventData", helpEvent.eventData])
 			}
 			if(LogicUtils.willFinished(memberEvent.finishTime)){
 				self.playerTimeEventService.onPlayerEvent(memberDoc, memberData, helpEvent.eventData.type, helpEvent.eventData.id)
@@ -1071,14 +1070,13 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
 						LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 					}else{
 						helpEvent.eventData.helpedMembers.push(playerDoc._id)
+						allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent) + ".eventData.helpedMembers." + helpEvent.eventData.helpedMembers.indexOf(playerDoc._id), playerDoc._id])
 						var effect = DataUtils.getPlayerHelpAllianceMemberSpeedUpEffect(playerDoc, memberEvent.finishTime - memberEvent.startTime)
 						memberEvent.finishTime = memberEvent.finishTime - effect
 
 						if(helpEvent.eventData.helpedMembers.length >= helpEvent.eventData.maxHelpCount || LogicUtils.willFinished(memberEvent.finishTime)){
 							allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
 							LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-						}else{
-							allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent) + ".eventData", helpEvent.eventData])
 						}
 						if(LogicUtils.willFinished(memberEvent.finishTime)){
 							self.playerTimeEventService.onPlayerEvent(memberDoc, memberData, helpEvent.eventData.type, helpEvent.eventData.id)
