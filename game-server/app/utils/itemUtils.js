@@ -1263,6 +1263,10 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, dataService,
 			var itemConfig = Items.resource.coinClass_6
 			return Resource(playerDoc, playerData, itemConfig, "coin")
 		},
+		coinClass_7:function(){
+			var itemConfig = Items.resource.coinClass_7
+			return Resource(playerDoc, playerData, itemConfig, "coin")
+		},
 		citizenClass_1:function(){
 			var itemConfig = Items.resource.citizenClass_1
 			return Resource(playerDoc, playerData, itemConfig, "citizen")
