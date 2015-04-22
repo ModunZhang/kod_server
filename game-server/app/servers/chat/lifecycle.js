@@ -20,7 +20,7 @@ life.afterStartup = function(app, callback){
 }
 
 life.beforeShutdown = function(app, callback){
-	callback()
+	setTimeout(callback, 1000)
 }
 
 life.afterStartAll = function(app){
