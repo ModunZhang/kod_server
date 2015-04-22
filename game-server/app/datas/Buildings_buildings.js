@@ -96,24 +96,24 @@ buildings[13] = {
 }
 buildings[14] = {
 	location:14,
+	name:"tradeGuild",
+	hasHouse:true,
+	preCondition:"building_materialDepot_1",
+	desc:"贸易行会"
+}
+buildings[15] = {
+	location:15,
 	name:"townHall",
 	hasHouse:true,
 	preCondition:"house_dwelling_1",
 	desc:"市政厅"
 }
-buildings[15] = {
-	location:15,
+buildings[16] = {
+	location:16,
 	name:"toolShop",
 	hasHouse:true,
 	preCondition:"house_woodcutter_1",
 	desc:"工具作坊"
-}
-buildings[16] = {
-	location:16,
-	name:"tradeGuild",
-	hasHouse:true,
-	preCondition:"building_materialDepot_1",
-	desc:"贸易行会"
 }
 buildings[17] = {
 	location:17,

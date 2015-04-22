@@ -768,7 +768,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 	var eventFuncs = []
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var building = playerDoc.buildings.location_15
+		var building = playerDoc.buildings.location_16
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
 		var event = null
 		for(var i = 0; i < playerDoc.materialEvents.length; i++){

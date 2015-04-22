@@ -620,7 +620,7 @@ pro.getDailyQuests = function(playerId, callback){
 	var eventFuncs = []
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var building = playerDoc.buildings.location_14
+		var building = playerDoc.buildings.location_15
 		if(building.level <= 0) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
 		var refreshTime = DataUtils.getDailyQuestsRefreshTime()
 		var now = Date.now()

@@ -567,7 +567,7 @@ Utils.getPlayerFreeCitizenLimit = function(playerDoc){
  * @returns {*}
  */
 Utils.getPlayerCart = function(playerDoc){
-	var building = playerDoc.buildings.location_16
+	var building = playerDoc.buildings.location_14
 	if(building.level < 1) return playerDoc.resources["cart"]
 
 	var config = BuildingFunction.tradeGuild[building.level]
@@ -2938,7 +2938,7 @@ Utils.createPlayerDailyQuestEvent = function(playerDoc, quest){
  */
 Utils.getPlayerDailyQuestEventRewards = function(playerDoc, questEvent){
 	var config = DailyQuests.dailyQuests[questEvent.index]
-	var building = playerDoc.buildings.location_14
+	var building = playerDoc.buildings.location_15
 	var buildingConfig = BuildingFunction.townHall[building.level]
 	var effect = questEvent.star * (1 + buildingConfig.efficiency)
 	var rewards = []
@@ -2981,7 +2981,7 @@ Utils.getPlayerCartUsedForSale = function(playerDoc, resourceType, resourceName,
  * @returns {boolean}
  */
 Utils.isPlayerSellQueueEnough = function(playerDoc){
-	var buildingLevel = playerDoc.buildings.location_16.level
+	var buildingLevel = playerDoc.buildings.location_14.level
 	if(buildingLevel < 1) return false
 	var maxSellQueue = BuildingFunction.tradeGuild[buildingLevel].maxSellQueue
 	return playerDoc.deals.length < maxSellQueue
