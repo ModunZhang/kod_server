@@ -57,10 +57,10 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 			return cacheService.timeoutAllAlliancesAsync()
 		}).then(function(){
 			logService.onEvent("cache.lifecycle.beforeShutdown persistence data finished", {serverId:app.get("cacheServerId")})
-			setTimeout(callback, 1000)
+			callback()
 		}).catch(function(e){
 			logService.onEventError("cache.lifecycle.beforeShutdown", {serverId:app.get("cacheServerId")}, e.stack)
-			setTimeout(callback, 1000)
+			callback()
 		})
 	}, 1000)
 }
