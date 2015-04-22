@@ -207,7 +207,6 @@ GameDatas.PlayerInitData.soldierMaterials = require("./PlayerInitData_soldierMat
 GameDatas.PlayerInitData.dragonMaterials = require("./PlayerInitData_dragonMaterials.js")
 GameDatas.PlayerInitData.houses = require("./PlayerInitData_houses.js")
 GameDatas.PlayerInitData.playerLevel = require("./PlayerInitData_playerLevel.js")
-GameDatas.PlayerInitData.collectLevel = require("./PlayerInitData_collectLevel.js")
 
 GameDatas.PlayerVillageExp = {}
 GameDatas.PlayerVillageExp.exp = require("./PlayerVillageExp_exp.js")

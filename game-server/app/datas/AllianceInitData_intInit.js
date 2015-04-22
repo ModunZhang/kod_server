@@ -63,31 +63,6 @@ intInit["citizenPerLeadership"] = {
 	value:100,
 	desc:"每一点龙的领导力带领多少兵力"
 }
-intInit["collectedWoodCountPerExp"] = {
-	type:"collectedWoodCountPerExp",
-	value:100,
-	desc:"采集多少点资源增长一点采集经验"
-}
-intInit["collectedStoneCountPerExp"] = {
-	type:"collectedStoneCountPerExp",
-	value:100,
-	desc:"采集多少点资源增长一点采集经验"
-}
-intInit["collectedIronCountPerExp"] = {
-	type:"collectedIronCountPerExp",
-	value:100,
-	desc:"采集多少点资源增长一点采集经验"
-}
-intInit["collectedFoodCountPerExp"] = {
-	type:"collectedFoodCountPerExp",
-	value:100,
-	desc:"采集多少点资源增长一点采集经验"
-}
-intInit["collectedCoinCountPerExp"] = {
-	type:"collectedCoinCountPerExp",
-	value:50,
-	desc:"采集多少点资源增长一点采集经验"
-}
 intInit["dragonStrikeHpDecreasedPercent"] = {
 	type:"dragonStrikeHpDecreasedPercent",
 	value:10,

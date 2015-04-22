@@ -43,6 +43,7 @@ var Activities = GameDatas.Activities
 var StoreItems = GameDatas.StoreItems
 var GrowUpTasks = GameDatas.GrowUpTasks
 var Vip = GameDatas.Vip
+var PlayerVillageExp = GameDatas.PlayerVillageExp
 
 
 var Utils = module.exports
@@ -2763,7 +2764,7 @@ Utils.getPlayerSoldiersTotalLoad = function(playerDoc, soldiers){
  */
 Utils.getPlayerCollectLevel = function(playerDoc, resourceType){
 	var collectExp = playerDoc.allianceInfo[resourceType + "Exp"]
-	var collectExpConfig = PlayerInitData.collectLevel
+	var collectExpConfig = PlayerVillageExp[resourceType]
 	for(var i = collectExpConfig.length - 1; i >= 1; i--){
 		var expFrom = collectExpConfig[i].expFrom
 		if(collectExp >= expFrom) return i
@@ -2784,7 +2785,7 @@ Utils.getPlayerCollectResourceInfo = function(playerDoc, soldierLoadTotal, allia
 	var collectTotal = soldierLoadTotal > villageResourceCurrent ? villageResourceCurrent : soldierLoadTotal
 	var resourceType = allianceVillage.name.slice(0, -7)
 	var playerCollectLevel = this.getPlayerCollectLevel(playerDoc, resourceType)
-	var collectPerHour = PlayerInitData.collectLevel[playerCollectLevel].collectPercentPerHour * villageResourceMax
+	var collectPerHour =  villageResourceMax * PlayerVillageExp[resourceType][playerCollectLevel].percentPerHour
 	var totalHour = collectTotal / collectPerHour
 	return {collectTime:Math.ceil(totalHour * 60 * 60 * 1000), collectTotal:collectTotal}
 }
@@ -2832,8 +2833,7 @@ Utils.getBloodAdd = function(dragon, kill, isWinner){
  * @returns {number}
  */
 Utils.getCollectResourceExpAdd = function(name, count){
-	name = name.charAt(0).toUpperCase() + name.slice(1)
-	var resourceCountPerExp = this.getAllianceIntInit("collected" + name + "CountPerExp")
+	var resourceCountPerExp = PlayerVillageExp.exp[name].countPerExp
 	var exp = Math.floor(count / resourceCountPerExp)
 	return exp
 }
