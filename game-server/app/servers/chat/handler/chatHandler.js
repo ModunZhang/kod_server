@@ -65,16 +65,6 @@ var ChatHandler = function(app){
 			}
 		},
 		{
-			command:"kickme",
-			desc:"将自己踢出服务器",
-			func:function(session, uid, text, callback){
-				var self = this
-				self.app.rpc.logic.commandRemote.kickme(session, uid, function(e){
-					callback(e)
-				})
-			}
-		},
-		{
 			command:"material",
 			desc:"统一修改玩家材料数量 material 5",
 			func:function(session, uid, text, callback){

@@ -59,7 +59,13 @@ pro.resources = function(uid, name, count, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -96,7 +102,13 @@ pro.buildinglevel = function(uid, location, level, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -126,29 +138,13 @@ pro.rmevents = function(uid, eventType, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 将玩家踢下线
- * @param uid
- * @param callback
- */
-pro.kickme = function(uid, callback){
-	var self = this
-	var playerDoc = null
-	var kickPlayer = Promise.promisify(this.sessionService.kickByUid, this)
-	this.dataService.findPlayerAsync(uid).then(function(doc){
-		playerDoc = doc
-		return self.dataService.updatePlayerAsync(playerDoc, null)
-	}).then(function(){
-		callback()
-		return Promise.resolve()
-	}).then(function(){
-		kickPlayer(playerDoc.logicServerId, playerDoc._id)
-	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -179,7 +175,13 @@ pro.material = function(uid, count, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -210,7 +212,13 @@ pro.soldiermaterial = function(uid, count, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -236,7 +244,13 @@ pro.dragonmaterial = function(uid, count, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -262,7 +276,13 @@ pro.dragonequipment = function(uid, count, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -288,7 +308,13 @@ pro.soldiers = function(uid, count, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -314,7 +340,13 @@ pro.woundedsoldiers = function(uid, count, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -369,7 +401,13 @@ pro.dragonhp = function(uid, dragonType, count, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -404,7 +442,13 @@ pro.dragonskill = function(uid, dragonType, level, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -439,7 +483,13 @@ pro.dragonequipmentstar = function(uid, dragonType, star, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -481,7 +531,13 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -513,7 +569,13 @@ pro.dragonlevel = function(uid, dragonType, level, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		if(_.isObject(playerDoc)){
+			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+				callback(e)
+			})
+		}else{
+			callback(e)
+		}
 	})
 }
 
@@ -560,7 +622,16 @@ pro.donatelevel = function(uid, donatelevel, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
@@ -599,7 +670,16 @@ pro.alliancehonour = function(uid, honnour, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
@@ -639,7 +719,16 @@ pro.allianceperception = function(uid, perception, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
@@ -669,7 +758,13 @@ pro.playerlevel = function(uid, level, callback){
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
@@ -692,6 +787,12 @@ pro.cleargc = function(uid, callback){
 	}).then(function(){
 		kickPlayer(playerDoc.logicServerId, playerDoc._id)
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
