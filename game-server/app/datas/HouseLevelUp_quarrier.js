@@ -161,9 +161,9 @@ quarrier[13] = {
 }
 quarrier[14] = {
 	level:14,
-	wood:104510,
-	stone:52255,
-	iron:104510,
+	wood:98750,
+	stone:49375,
+	iron:98750,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -173,9 +173,9 @@ quarrier[14] = {
 }
 quarrier[15] = {
 	level:15,
-	wood:136029,
-	stone:68015,
-	iron:136029,
+	wood:124509,
+	stone:62255,
+	iron:124509,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -185,9 +185,9 @@ quarrier[15] = {
 }
 quarrier[16] = {
 	level:16,
-	wood:200173,
-	stone:100087,
-	iron:200173,
+	wood:193133,
+	stone:96567,
+	iron:193133,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -197,9 +197,9 @@ quarrier[16] = {
 }
 quarrier[17] = {
 	level:17,
-	wood:245568,
-	stone:122784,
-	iron:245568,
+	wood:229248,
+	stone:114624,
+	iron:229248,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -209,9 +209,9 @@ quarrier[17] = {
 }
 quarrier[18] = {
 	level:18,
-	wood:294740,
-	stone:147370,
-	iron:294740,
+	wood:255860,
+	stone:127930,
+	iron:255860,
 	blueprints:2,
 	tools:2,
 	tiles:2,
@@ -221,9 +221,9 @@ quarrier[18] = {
 }
 quarrier[19] = {
 	level:19,
-	wood:344205,
-	stone:172103,
-	iron:344205,
+	wood:279245,
+	stone:139623,
+	iron:279245,
 	blueprints:3,
 	tools:3,
 	tiles:3,
@@ -233,9 +233,9 @@ quarrier[19] = {
 }
 quarrier[20] = {
 	level:20,
-	wood:390484,
-	stone:195242,
-	iron:390484,
+	wood:294164,
+	stone:147082,
+	iron:294164,
 	blueprints:5,
 	tools:5,
 	tiles:5,
@@ -245,9 +245,9 @@ quarrier[20] = {
 }
 quarrier[21] = {
 	level:21,
-	wood:656530,
-	stone:328265,
-	iron:656530,
+	wood:527570,
+	stone:263785,
+	iron:527570,
 	blueprints:8,
 	tools:8,
 	tiles:8,
@@ -257,9 +257,9 @@ quarrier[21] = {
 }
 quarrier[22] = {
 	level:22,
-	wood:724973,
-	stone:362487,
-	iron:724973,
+	wood:554573,
+	stone:277287,
+	iron:554573,
 	blueprints:12,
 	tools:12,
 	tiles:12,
@@ -269,9 +269,9 @@ quarrier[22] = {
 }
 quarrier[23] = {
 	level:23,
-	wood:783931,
-	stone:391966,
-	iron:783931,
+	wood:573051,
+	stone:286526,
+	iron:573051,
 	blueprints:18,
 	tools:18,
 	tiles:18,
@@ -281,9 +281,9 @@ quarrier[23] = {
 }
 quarrier[24] = {
 	level:24,
-	wood:903432,
-	stone:451716,
-	iron:903432,
+	wood:731912,
+	stone:365956,
+	iron:731912,
 	blueprints:26,
 	tools:26,
 	tiles:26,
@@ -293,9 +293,9 @@ quarrier[24] = {
 }
 quarrier[25] = {
 	level:25,
-	wood:1018996,
-	stone:509498,
-	iron:1018996,
+	wood:809396,
+	stone:404698,
+	iron:809396,
 	blueprints:35,
 	tools:35,
 	tiles:35,
@@ -305,9 +305,9 @@ quarrier[25] = {
 }
 quarrier[26] = {
 	level:26,
-	wood:1756098,
-	stone:878049,
-	iron:1756098,
+	wood:1423458,
+	stone:711729,
+	iron:1423458,
 	blueprints:47,
 	tools:47,
 	tiles:47,
@@ -317,9 +317,9 @@ quarrier[26] = {
 }
 quarrier[27] = {
 	level:27,
-	wood:1965489,
-	stone:982745,
-	iron:1965489,
+	wood:1595889,
+	stone:797945,
+	iron:1595889,
 	blueprints:61,
 	tools:61,
 	tiles:61,
@@ -329,9 +329,9 @@ quarrier[27] = {
 }
 quarrier[28] = {
 	level:28,
-	wood:2174104,
-	stone:1087052,
-	iron:2174104,
+	wood:1771224,
+	stone:885612,
+	iron:1771224,
 	blueprints:78,
 	tools:78,
 	tiles:78,
@@ -341,9 +341,9 @@ quarrier[28] = {
 }
 quarrier[29] = {
 	level:29,
-	wood:2379876,
-	stone:1189938,
-	iron:2379876,
+	wood:2112676,
+	stone:1056338,
+	iron:2112676,
 	blueprints:98,
 	tools:98,
 	tiles:98,
@@ -353,9 +353,9 @@ quarrier[29] = {
 }
 quarrier[30] = {
 	level:30,
-	wood:2580743,
-	stone:1290372,
-	iron:2580743,
+	wood:2282343,
+	stone:1141172,
+	iron:2282343,
 	blueprints:121,
 	tools:121,
 	tiles:121,
@@ -365,9 +365,9 @@ quarrier[30] = {
 }
 quarrier[31] = {
 	level:31,
-	wood:4246249,
-	stone:2123125,
-	iron:4246249,
+	wood:3776809,
+	stone:1888405,
+	iron:3776809,
 	blueprints:148,
 	tools:148,
 	tiles:148,
@@ -377,9 +377,9 @@ quarrier[31] = {
 }
 quarrier[32] = {
 	level:32,
-	wood:4623355,
-	stone:2311678,
-	iron:4623355,
+	wood:4146555,
+	stone:2073278,
+	iron:4146555,
 	blueprints:179,
 	tools:179,
 	tiles:179,
@@ -389,9 +389,9 @@ quarrier[32] = {
 }
 quarrier[33] = {
 	level:33,
-	wood:5004475,
-	stone:2502238,
-	iron:5004475,
+	wood:4532475,
+	stone:2266238,
+	iron:4532475,
 	blueprints:213,
 	tools:213,
 	tiles:213,
@@ -401,9 +401,9 @@ quarrier[33] = {
 }
 quarrier[34] = {
 	level:34,
-	wood:5388098,
-	stone:2694049,
-	iron:5388098,
+	wood:4925538,
+	stone:2462769,
+	iron:4925538,
 	blueprints:252,
 	tools:252,
 	tiles:252,
@@ -413,9 +413,9 @@ quarrier[34] = {
 }
 quarrier[35] = {
 	level:35,
-	wood:5772711,
-	stone:2886356,
-	iron:5772711,
+	wood:5333991,
+	stone:2666996,
+	iron:5333991,
 	blueprints:295,
 	tools:295,
 	tiles:295,
@@ -425,9 +425,9 @@ quarrier[35] = {
 }
 quarrier[36] = {
 	level:36,
-	wood:9070004,
-	stone:4535002,
-	iron:9070004,
+	wood:8667764,
+	stone:4333882,
+	iron:8667764,
 	blueprints:343,
 	tools:343,
 	tiles:343,
@@ -437,9 +437,9 @@ quarrier[36] = {
 }
 quarrier[37] = {
 	level:37,
-	wood:9759578,
-	stone:4879789,
-	iron:9759578,
+	wood:9410458,
+	stone:4705229,
+	iron:9410458,
 	blueprints:396,
 	tools:396,
 	tiles:396,
@@ -449,9 +449,9 @@ quarrier[37] = {
 }
 quarrier[38] = {
 	level:38,
-	wood:10465722,
-	stone:5232861,
-	iron:10465722,
+	wood:10178842,
+	stone:5089421,
+	iron:10178842,
 	blueprints:454,
 	tools:454,
 	tiles:454,
@@ -461,9 +461,9 @@ quarrier[38] = {
 }
 quarrier[39] = {
 	level:39,
-	wood:11187546,
-	stone:5593773,
-	iron:11187546,
+	wood:10981786,
+	stone:5490893,
+	iron:10981786,
 	blueprints:518,
 	tools:518,
 	tiles:518,
@@ -473,9 +473,9 @@ quarrier[39] = {
 }
 quarrier[40] = {
 	level:40,
-	wood:16476000,
-	stone:8238000,
-	iron:16476000,
+	wood:16404480,
+	stone:8202240,
+	iron:16404480,
 	blueprints:590,
 	tools:590,
 	tiles:590,

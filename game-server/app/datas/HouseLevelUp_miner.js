@@ -161,9 +161,9 @@ miner[13] = {
 }
 miner[14] = {
 	level:14,
-	wood:110316,
-	stone:110316,
-	iron:55158,
+	wood:104236,
+	stone:104236,
+	iron:52118,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -173,9 +173,9 @@ miner[14] = {
 }
 miner[15] = {
 	level:15,
-	wood:143586,
-	stone:143586,
-	iron:71793,
+	wood:131426,
+	stone:131426,
+	iron:65713,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -185,9 +185,9 @@ miner[15] = {
 }
 miner[16] = {
 	level:16,
-	wood:212183,
-	stone:212183,
-	iron:106092,
+	wood:203863,
+	stone:203863,
+	iron:101932,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -197,9 +197,9 @@ miner[16] = {
 }
 miner[17] = {
 	level:17,
-	wood:260544,
-	stone:260544,
-	iron:130272,
+	wood:241984,
+	stone:241984,
+	iron:120992,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -209,9 +209,9 @@ miner[17] = {
 }
 miner[18] = {
 	level:18,
-	wood:313114,
-	stone:313114,
-	iron:156557,
+	wood:270074,
+	stone:270074,
+	iron:135037,
 	blueprints:2,
 	tools:2,
 	tiles:2,
@@ -221,9 +221,9 @@ miner[18] = {
 }
 miner[19] = {
 	level:19,
-	wood:366439,
-	stone:366439,
-	iron:183220,
+	wood:294759,
+	stone:294759,
+	iron:147380,
 	blueprints:3,
 	tools:3,
 	tiles:3,
@@ -233,9 +233,9 @@ miner[19] = {
 }
 miner[20] = {
 	level:20,
-	wood:417066,
-	stone:417066,
-	iron:208533,
+	wood:310506,
+	stone:310506,
+	iron:155253,
 	blueprints:5,
 	tools:5,
 	tiles:5,
@@ -245,9 +245,9 @@ miner[20] = {
 }
 miner[21] = {
 	level:21,
-	wood:700560,
-	stone:700560,
-	iron:350280,
+	wood:556880,
+	stone:556880,
+	iron:278440,
 	blueprints:8,
 	tools:8,
 	tiles:8,
@@ -257,9 +257,9 @@ miner[21] = {
 }
 miner[22] = {
 	level:22,
-	wood:776583,
-	stone:776583,
-	iron:388292,
+	wood:585383,
+	stone:585383,
+	iron:292692,
 	blueprints:12,
 	tools:12,
 	tiles:12,
@@ -269,9 +269,9 @@ miner[22] = {
 }
 miner[23] = {
 	level:23,
-	wood:843928,
-	stone:843928,
-	iron:421964,
+	wood:604888,
+	stone:604888,
+	iron:302444,
 	blueprints:18,
 	tools:18,
 	tiles:18,
@@ -281,9 +281,9 @@ miner[23] = {
 }
 miner[24] = {
 	level:24,
-	wood:976734,
-	stone:976734,
-	iron:488367,
+	wood:772574,
+	stone:772574,
+	iron:386287,
 	blueprints:26,
 	tools:26,
 	tiles:26,
@@ -293,9 +293,9 @@ miner[24] = {
 }
 miner[25] = {
 	level:25,
-	wood:1107162,
-	stone:1107162,
-	iron:553581,
+	wood:854362,
+	stone:854362,
+	iron:427181,
 	blueprints:35,
 	tools:35,
 	tiles:35,
@@ -305,9 +305,9 @@ miner[25] = {
 }
 miner[26] = {
 	level:26,
-	wood:1895659,
-	stone:1895659,
-	iron:947830,
+	wood:1502539,
+	stone:1502539,
+	iron:751270,
 	blueprints:47,
 	tools:47,
 	tiles:47,
@@ -317,9 +317,9 @@ miner[26] = {
 }
 miner[27] = {
 	level:27,
-	wood:2129350,
-	stone:2129350,
-	iron:1064675,
+	wood:1684550,
+	stone:1684550,
+	iron:842275,
 	blueprints:61,
 	tools:61,
 	tiles:61,
@@ -329,9 +329,9 @@ miner[27] = {
 }
 miner[28] = {
 	level:28,
-	wood:2364665,
-	stone:2364665,
-	iron:1182333,
+	wood:1869625,
+	stone:1869625,
+	iron:934813,
 	blueprints:78,
 	tools:78,
 	tiles:78,
@@ -341,9 +341,9 @@ miner[28] = {
 }
 miner[29] = {
 	level:29,
-	wood:2599647,
-	stone:2599647,
-	iron:1299824,
+	wood:2230047,
+	stone:2230047,
+	iron:1115024,
 	blueprints:98,
 	tools:98,
 	tiles:98,
@@ -353,9 +353,9 @@ miner[29] = {
 }
 miner[30] = {
 	level:30,
-	wood:2832340,
-	stone:2832340,
-	iron:1416170,
+	wood:2409140,
+	stone:2409140,
+	iron:1204570,
 	blueprints:121,
 	tools:121,
 	tiles:121,
@@ -365,9 +365,9 @@ miner[30] = {
 }
 miner[31] = {
 	level:31,
-	wood:4614152,
-	stone:4614152,
-	iron:2307076,
+	wood:3986632,
+	stone:3986632,
+	iron:1993316,
 	blueprints:148,
 	tools:148,
 	tiles:148,
@@ -377,9 +377,9 @@ miner[31] = {
 }
 miner[32] = {
 	level:32,
-	wood:5039320,
-	stone:5039320,
-	iron:2519660,
+	wood:4376920,
+	stone:4376920,
+	iron:2188460,
 	blueprints:179,
 	tools:179,
 	tiles:179,
@@ -389,9 +389,9 @@ miner[32] = {
 }
 miner[33] = {
 	level:33,
-	wood:5472280,
-	stone:5472280,
-	iron:2736140,
+	wood:4784280,
+	stone:4784280,
+	iron:2392140,
 	blueprints:213,
 	tools:213,
 	tiles:213,
@@ -401,9 +401,9 @@ miner[33] = {
 }
 miner[34] = {
 	level:34,
-	wood:5911659,
-	stone:5911659,
-	iron:2955830,
+	wood:5199179,
+	stone:5199179,
+	iron:2599590,
 	blueprints:252,
 	tools:252,
 	tiles:252,
@@ -413,9 +413,9 @@ miner[34] = {
 }
 miner[35] = {
 	level:35,
-	wood:6356084,
-	stone:6356084,
-	iron:3178042,
+	wood:5630324,
+	stone:5630324,
+	iron:2815162,
 	blueprints:295,
 	tools:295,
 	tiles:295,
@@ -425,9 +425,9 @@ miner[35] = {
 }
 miner[36] = {
 	level:36,
-	wood:9879226,
-	stone:9879226,
-	iron:4939613,
+	wood:9149306,
+	stone:9149306,
+	iron:4574653,
 	blueprints:343,
 	tools:343,
 	tiles:343,
@@ -437,9 +437,9 @@ miner[36] = {
 }
 miner[37] = {
 	level:37,
-	wood:10654221,
-	stone:10654221,
-	iron:5327111,
+	wood:9933261,
+	stone:9933261,
+	iron:4966631,
 	blueprints:396,
 	tools:396,
 	tiles:396,
@@ -449,9 +449,9 @@ miner[37] = {
 }
 miner[38] = {
 	level:38,
-	wood:11451373,
-	stone:11451373,
-	iron:5725687,
+	wood:10744333,
+	stone:10744333,
+	iron:5372167,
 	blueprints:454,
 	tools:454,
 	tiles:454,
@@ -461,9 +461,9 @@ miner[38] = {
 }
 miner[39] = {
 	level:39,
-	wood:12269965,
-	stone:12269965,
-	iron:6134983,
+	wood:11591885,
+	stone:11591885,
+	iron:5795943,
 	blueprints:518,
 	tools:518,
 	tiles:518,
@@ -473,9 +473,9 @@ miner[39] = {
 }
 miner[40] = {
 	level:40,
-	wood:17884000,
-	stone:17884000,
-	iron:8942000,
+	wood:17315840,
+	stone:17315840,
+	iron:8657920,
 	blueprints:592,
 	tools:592,
 	tiles:592,

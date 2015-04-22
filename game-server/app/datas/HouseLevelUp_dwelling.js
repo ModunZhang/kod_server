@@ -161,7 +161,7 @@ dwelling[13] = {
 }
 dwelling[14] = {
 	level:14,
-	wood:116122,
+	wood:109722,
 	stone:87092,
 	iron:87092,
 	blueprints:0,
@@ -173,7 +173,7 @@ dwelling[14] = {
 }
 dwelling[15] = {
 	level:15,
-	wood:135143,
+	wood:138343,
 	stone:101357,
 	iron:101357,
 	blueprints:1,
@@ -185,7 +185,7 @@ dwelling[15] = {
 }
 dwelling[16] = {
 	level:16,
-	wood:208192,
+	wood:214592,
 	stone:156144,
 	iron:156144,
 	blueprints:2,
@@ -197,7 +197,7 @@ dwelling[16] = {
 }
 dwelling[17] = {
 	level:17,
-	wood:247520,
+	wood:254720,
 	stone:185640,
 	iron:185640,
 	blueprints:3,
@@ -209,7 +209,7 @@ dwelling[17] = {
 }
 dwelling[18] = {
 	level:18,
-	wood:287488,
+	wood:284288,
 	stone:215616,
 	iron:215616,
 	blueprints:5,
@@ -221,7 +221,7 @@ dwelling[18] = {
 }
 dwelling[19] = {
 	level:19,
-	wood:324672,
+	wood:310272,
 	stone:243504,
 	iron:243504,
 	blueprints:7,
@@ -233,7 +233,7 @@ dwelling[19] = {
 }
 dwelling[20] = {
 	level:20,
-	wood:355648,
+	wood:326848,
 	stone:266736,
 	iron:266736,
 	blueprints:11,
@@ -245,7 +245,7 @@ dwelling[20] = {
 }
 dwelling[21] = {
 	level:21,
-	wood:628589,
+	wood:586189,
 	stone:471442,
 	iron:471442,
 	blueprints:15,
@@ -257,7 +257,7 @@ dwelling[21] = {
 }
 dwelling[22] = {
 	level:22,
-	wood:680192,
+	wood:616192,
 	stone:510144,
 	iron:510144,
 	blueprints:22,
@@ -269,7 +269,7 @@ dwelling[22] = {
 }
 dwelling[23] = {
 	level:23,
-	wood:719924,
+	wood:636724,
 	stone:539943,
 	iron:539943,
 	blueprints:30,
@@ -281,7 +281,7 @@ dwelling[23] = {
 }
 dwelling[24] = {
 	level:24,
-	wood:826036,
+	wood:813236,
 	stone:619527,
 	iron:619527,
 	blueprints:40,
@@ -293,7 +293,7 @@ dwelling[24] = {
 }
 dwelling[25] = {
 	level:25,
-	wood:927328,
+	wood:899328,
 	stone:695496,
 	iron:695496,
 	blueprints:52,
@@ -305,7 +305,7 @@ dwelling[25] = {
 }
 dwelling[26] = {
 	level:26,
-	wood:1719220,
+	wood:1581620,
 	stone:1289415,
 	iron:1289415,
 	blueprints:67,
@@ -317,7 +317,7 @@ dwelling[26] = {
 }
 dwelling[27] = {
 	level:27,
-	wood:1925210,
+	wood:1773210,
 	stone:1443908,
 	iron:1443908,
 	blueprints:84,
@@ -329,7 +329,7 @@ dwelling[27] = {
 }
 dwelling[28] = {
 	level:28,
-	wood:2131226,
+	wood:1968026,
 	stone:1598420,
 	iron:1598420,
 	blueprints:105,
@@ -341,7 +341,7 @@ dwelling[28] = {
 }
 dwelling[29] = {
 	level:29,
-	wood:2335418,
+	wood:2347418,
 	stone:1751564,
 	iron:1751564,
 	blueprints:128,
@@ -365,7 +365,7 @@ dwelling[30] = {
 }
 dwelling[31] = {
 	level:31,
-	wood:4366055,
+	wood:4196455,
 	stone:3274541,
 	iron:3274541,
 	blueprints:187,
@@ -377,7 +377,7 @@ dwelling[31] = {
 }
 dwelling[32] = {
 	level:32,
-	wood:4767284,
+	wood:4607284,
 	stone:3575463,
 	iron:3575463,
 	blueprints:222,
@@ -389,7 +389,7 @@ dwelling[32] = {
 }
 dwelling[33] = {
 	level:33,
-	wood:5176084,
+	wood:5036084,
 	stone:3882063,
 	iron:3882063,
 	blueprints:261,
@@ -401,7 +401,7 @@ dwelling[33] = {
 }
 dwelling[34] = {
 	level:34,
-	wood:5591220,
+	wood:5472820,
 	stone:4193415,
 	iron:4193415,
 	blueprints:305,
@@ -413,7 +413,7 @@ dwelling[34] = {
 }
 dwelling[35] = {
 	level:35,
-	wood:6011456,
+	wood:5926656,
 	stone:4508592,
 	iron:4508592,
 	blueprints:353,
@@ -425,7 +425,7 @@ dwelling[35] = {
 }
 dwelling[36] = {
 	level:36,
-	wood:9672448,
+	wood:9630848,
 	stone:7254336,
 	iron:7254336,
 	blueprints:407,
@@ -437,7 +437,7 @@ dwelling[36] = {
 }
 dwelling[37] = {
 	level:37,
-	wood:10440864,
+	wood:10456064,
 	stone:7830648,
 	iron:7830648,
 	blueprints:465,
@@ -449,7 +449,7 @@ dwelling[37] = {
 }
 dwelling[38] = {
 	level:38,
-	wood:11233024,
+	wood:11309824,
 	stone:8424768,
 	iron:8424768,
 	blueprints:530,
@@ -461,7 +461,7 @@ dwelling[38] = {
 }
 dwelling[39] = {
 	level:39,
-	wood:12048384,
+	wood:12201984,
 	stone:9036288,
 	iron:9036288,
 	blueprints:600,
@@ -473,7 +473,7 @@ dwelling[39] = {
 }
 dwelling[40] = {
 	level:40,
-	wood:17968000,
+	wood:18227200,
 	stone:13476000,
 	iron:13476000,
 	blueprints:680,
