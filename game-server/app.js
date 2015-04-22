@@ -109,7 +109,8 @@ app.set('errorHandler', function(e, msg, resp, session, opts, cb){
 })
 
 process.on("uncaughtException", function(e){
-	app.get("logService").onEventError("app.uncaughtException", {}, e.stack)
+	console.error("app.uncaughtException")
+	console.error(e)
 })
 
 app.start()

@@ -14,10 +14,7 @@ module.exports = function(app) {
 
 var LogicRemote = function(app) {
 	this.app = app
-	this.playerTimeEventService = app.get("playerTimeEventService")
-	this.allianceTimeEventService = app.get("allianceTimeEventService")
 	this.sessionService = app.get("sessionService")
-	this.logService = app.get("logService")
 	this.channelService = app.get("channelService")
 }
 var pro = LogicRemote.prototype
@@ -55,7 +52,6 @@ pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callbac
  * @param callback
  */
 pro.kickPlayer = function(uid, reason, callback){
-	this.logService.onRequest("logic.logicRemote.kickPlayer", {playerId:uid, reason:reason})
 	this.sessionService.kick(uid, reason, callback)
 }
 
