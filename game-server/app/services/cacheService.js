@@ -23,7 +23,7 @@ var DataService = function(app){
 
 	this.flushOps = 30
 	this.flushInterval = 60 * 1000
-	this.timeoutInterval = 6000 * 1000
+	this.timeoutInterval = 600 * 1000
 }
 module.exports = DataService
 var pro = DataService.prototype
@@ -59,7 +59,6 @@ var OnPlayerTimeout = function(id){
 /**
  * 玩家存库
  * @param id
- * @constructor
  */
 var OnPlayerInterval = function(id){
 	var self = this
@@ -196,13 +195,14 @@ pro.createPlayer = function(playerData, callback){
 	var self = this
 	LockPlayer.call(this, playerData._id, function(){
 		self.Player.createAsync(playerData).then(function(doc){
+			var playerDoc = doc.toObject()
 			var player = {}
-			player.doc = doc.toObject()
+			player.doc = playerDoc
 			player.ops = 0
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, playerData._id)
 			player.interval = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, playerData._id)
 			self.players[playerData._id] = player
-			callback(null, self.players[playerData._id].doc)
+			callback(null, playerDoc)
 		}).catch(function(e){
 			callback(e)
 		})
@@ -395,7 +395,8 @@ pro.timeoutAllPlayers = function(callback){
 	var self = this
 	var funcs = []
 	var timeoutPlayer = function(id, callback){
-		return self.findPlayerAsync(id).then(function(player){
+		LockPlayer.call(self, id, function(){
+			var player = self.players[id]
 			clearTimeout(player.timeout)
 			clearTimeout(player.interval)
 			delete self.players[id]
@@ -620,7 +621,8 @@ pro.timeoutAllAlliances = function(callback){
 	var self = this
 	var funcs = []
 	var timeoutAlliance = function(id, callback){
-		return self.findAllianceAsync(id).then(function(alliance){
+		LockAlliance.call(self, id, function(){
+			var alliance = self.alliances[id]
 			delete  self.alliances[id]
 			clearTimeout(alliance.timeout)
 			clearTimeout(alliance.interval)

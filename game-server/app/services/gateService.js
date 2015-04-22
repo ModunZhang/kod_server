@@ -12,6 +12,7 @@ var GateService = function(app){
 	this.serverId = app.getServerId()
 	this.logService = app.get("logService")
 	this.logicServers = null
+	this.countMax = 999999
 }
 module.exports = GateService
 var pro = GateService.prototype
@@ -25,7 +26,7 @@ pro.init = function(){
 		self.app.rpc.logic.logicRemote.getOnlineUser.toServer(logicServer.id, function(e, count){
 			if(_.isObject(e)){
 				self.logService.onEventError("gateService.start", logicServer, e.stack)
-				logicServer.userCount = 999999
+				logicServer.userCount = self.countMax
 				callback()
 			}else{
 				logicServer.userCount = count
@@ -57,7 +58,7 @@ pro.getPromotedLogicServer = function(cacheServerId){
 	logicServers = _.sortBy(logicServers, function(logicServer){
 		return logicServer.userCount
 	})
-	return logicServers[0]
+	return logicServers[0].userCount == this.countMax ? null : logicServers[0]
 }
 
 /**

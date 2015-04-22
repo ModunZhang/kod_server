@@ -97,13 +97,15 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 	_.each(uids, function(uid){
 		funcs.push(kickAsync(uid, "服务器关闭"))
 	})
+	app.get("logService").onEvent("logic.lifecycle.beforeShutdown", {serverId:app.get("logicServerId")})
 	Promise.all(funcs).then(function(){
+		app.get("logService").onEvent("logic.lifecycle.beforeShutdown success", {serverId:app.get("logicServerId")})
 		setTimeout(function(){
 			callback()
 		}, 3 * 1000)
 	}).catch(function(e){
-		app.get("logService").onEventError("logic.lifecycle.beforeShutdown", {}, e.stack)
-		callback()
+		app.get("logService").onEventError("logic.lifecycle.beforeShutdown", {serverId:app.get("logicServerId")}, e.stack)
+		setTimeout(callback, 1000)
 	})
 }
 
