@@ -52,9 +52,9 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 		var logService = app.get("logService")
 		logService.onEvent("cache.lifecycle.beforeShutdown persistence data", {serverId:app.get("cacheServerId")})
 		app.get("ServerState").createAsync({type:Consts.ServerState.Stop}).then(function(){
-			return cacheService.timeoutAllPlayersAsync()
-		}).then(function(){
 			return cacheService.timeoutAllAlliancesAsync()
+		}).then(function(){
+			return cacheService.timeoutAllPlayersAsync()
 		}).then(function(){
 			logService.onEvent("cache.lifecycle.beforeShutdown persistence data finished", {serverId:app.get("cacheServerId")})
 			callback()
@@ -62,7 +62,7 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 			logService.onEventError("cache.lifecycle.beforeShutdown", {serverId:app.get("cacheServerId")}, e.stack)
 			callback()
 		})
-	}, 1000)
+	}, 2000)
 }
 
 life.afterStartAll = function(app){
