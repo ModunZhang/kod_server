@@ -165,7 +165,7 @@ pro.login = function(msg, session, next){
 		playerDoc = doc_1
 		allianceDoc = doc_2
 		enemyAllianceDoc = doc_3
-		return bindPlayerSessionAsync(session, deviceId, playerDoc)
+		return bindPlayerSessionAsync(session, deviceId, playerDoc, allianceDoc)
 	}).then(function(){
 		var funcs = []
 		funcs.push(addPlayerToChatChannelAsync(playerDoc._id))
