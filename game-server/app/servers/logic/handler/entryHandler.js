@@ -29,13 +29,14 @@ var Handler = function(app){
 }
 var pro = Handler.prototype
 
-var BindPlayerSession = function(session, deviceId, playerDoc, callback){
+var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, callback){
 	session.bind(playerDoc._id)
 	session.set("deviceId", deviceId)
 	session.set("logicServerId", playerDoc.logicServerId)
 	session.set("chatServerId", this.chatServerId)
 	session.set("name", playerDoc.basicInfo.name)
 	session.set("icon", playerDoc.basicInfo.icon)
+	session.set("allianceTag", _.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "")
 	session.set("vipExp", playerDoc.basicInfo.vipExp)
 	session.on("closed", PlayerLeave.bind(this))
 	session.pushAll(function(err){

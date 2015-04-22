@@ -323,9 +323,6 @@ var pro = ChatHandler.prototype
 pro.send = function(msg, session, next){
 	this.logService.onRequest("chat.chatHandler.send", {playerId:session.uid, msg:msg})
 	var self = this
-	var name = session.get("name")
-	var icon = session.get("icon")
-	var vipExp = session.get("vipExp")
 	var text = msg.text
 	var channel = msg.channel
 	var error = null
@@ -340,14 +337,19 @@ pro.send = function(msg, session, next){
 		return
 	}
 
+	var name = session.get("name")
+	var icon = session.get("icon")
+	var vipExp = session.get("vipExp")
+
 	var filterCommand = Promise.promisify(FilterCommand, this)
 	filterCommand(text, session).then(function(){
 		var response = {
-			fromId:session.uid,
-			fromIcon:icon,
-			fromName:name,
-			fromVip:vipExp,
-			fromChannel:channel,
+			id:session.uid,
+			icon:session.get("icon"),
+			name:session.get("name"),
+			vip:session.get("vipExp"),
+			allianceTag:session.get("allianceTag"),
+			channel:channel,
 			text:text,
 			time:Date.now()
 		}
