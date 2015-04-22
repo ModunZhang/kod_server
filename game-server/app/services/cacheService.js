@@ -22,7 +22,7 @@ var DataService = function(app){
 	this.alliancesQueue = {}
 
 	this.flushOps = 30
-	this.flushInterval = 60 * 1000
+	this.flushInterval = 600 * 1000
 	this.timeoutInterval = 600 * 1000
 }
 module.exports = DataService
