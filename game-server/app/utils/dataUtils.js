@@ -31,7 +31,6 @@ var AllianceInitData = GameDatas.AllianceInitData
 var AllianceRight = AllianceInitData.right
 var AllianceBuilding = GameDatas.AllianceBuilding
 var AllianceVillage = GameDatas.AllianceVillage
-var AllianceShrine = GameDatas.AllianceShrine
 var DailyQuests = GameDatas.DailyQuests
 var ProductionTechs = GameDatas.ProductionTechs
 var ProductionTechLevelUp = GameDatas.ProductionTechLevelUp
