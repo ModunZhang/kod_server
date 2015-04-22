@@ -5,9 +5,9 @@ module.exports = stoneMason
 
 stoneMason[1] = {
 	level:1,
-	wood:281,
-	stone:141,
-	iron:281,
+	wood:211,
+	stone:281,
+	iron:211,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -16,9 +16,9 @@ stoneMason[1] = {
 }
 stoneMason[2] = {
 	level:2,
-	wood:673,
-	stone:337,
-	iron:673,
+	wood:505,
+	stone:673,
+	iron:505,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -27,9 +27,9 @@ stoneMason[2] = {
 }
 stoneMason[3] = {
 	level:3,
-	wood:1345,
-	stone:673,
-	iron:1345,
+	wood:1009,
+	stone:1345,
+	iron:1009,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -38,9 +38,9 @@ stoneMason[3] = {
 }
 stoneMason[4] = {
 	level:4,
-	wood:2017,
-	stone:1009,
-	iron:2017,
+	wood:1513,
+	stone:2017,
+	iron:1513,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -49,9 +49,9 @@ stoneMason[4] = {
 }
 stoneMason[5] = {
 	level:5,
-	wood:2689,
-	stone:1345,
-	iron:2689,
+	wood:2017,
+	stone:2689,
+	iron:2017,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -60,9 +60,9 @@ stoneMason[5] = {
 }
 stoneMason[6] = {
 	level:6,
-	wood:3360,
-	stone:1680,
-	iron:3360,
+	wood:2520,
+	stone:3360,
+	iron:2520,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -71,9 +71,9 @@ stoneMason[6] = {
 }
 stoneMason[7] = {
 	level:7,
-	wood:4033,
-	stone:2017,
-	iron:4033,
+	wood:3025,
+	stone:4033,
+	iron:3025,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -82,9 +82,9 @@ stoneMason[7] = {
 }
 stoneMason[8] = {
 	level:8,
-	wood:5242,
-	stone:2621,
-	iron:5242,
+	wood:3932,
+	stone:5242,
+	iron:3932,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -93,9 +93,9 @@ stoneMason[8] = {
 }
 stoneMason[9] = {
 	level:9,
-	wood:12903,
-	stone:6452,
-	iron:12903,
+	wood:9677,
+	stone:12903,
+	iron:9677,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -104,9 +104,9 @@ stoneMason[9] = {
 }
 stoneMason[10] = {
 	level:10,
-	wood:23386,
-	stone:11693,
-	iron:23386,
+	wood:17540,
+	stone:23386,
+	iron:17540,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -115,9 +115,9 @@ stoneMason[10] = {
 }
 stoneMason[11] = {
 	level:11,
-	wood:59352,
-	stone:29676,
-	iron:59352,
+	wood:44514,
+	stone:59352,
+	iron:44514,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -126,9 +126,9 @@ stoneMason[11] = {
 }
 stoneMason[12] = {
 	level:12,
-	wood:87092,
-	stone:43546,
-	iron:87092,
+	wood:65319,
+	stone:87092,
+	iron:65319,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -137,9 +137,9 @@ stoneMason[12] = {
 }
 stoneMason[13] = {
 	level:13,
-	wood:121283,
-	stone:60642,
-	iron:121283,
+	wood:90962,
+	stone:121283,
+	iron:90962,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -148,9 +148,9 @@ stoneMason[13] = {
 }
 stoneMason[14] = {
 	level:14,
-	wood:162571,
-	stone:81286,
-	iron:162571,
+	wood:115208,
+	stone:153611,
+	iron:115208,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -159,9 +159,9 @@ stoneMason[14] = {
 }
 stoneMason[15] = {
 	level:15,
-	wood:195600,
-	stone:97800,
-	iron:195600,
+	wood:145260,
+	stone:193680,
+	iron:145260,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -170,9 +170,9 @@ stoneMason[15] = {
 }
 stoneMason[16] = {
 	level:16,
-	wood:304269,
-	stone:152135,
-	iron:304269,
+	wood:225322,
+	stone:300429,
+	iron:225322,
 	blueprints:2,
 	tools:2,
 	tiles:2,
@@ -181,9 +181,9 @@ stoneMason[16] = {
 }
 stoneMason[17] = {
 	level:17,
-	wood:359329,
-	stone:179665,
-	iron:359329,
+	wood:267456,
+	stone:356609,
+	iron:267456,
 	blueprints:3,
 	tools:3,
 	tiles:3,
@@ -192,9 +192,9 @@ stoneMason[17] = {
 }
 stoneMason[18] = {
 	level:18,
-	wood:410484,
-	stone:205242,
-	iron:410484,
+	wood:298503,
+	stone:398004,
+	iron:298503,
 	blueprints:6,
 	tools:6,
 	tiles:6,
@@ -203,9 +203,9 @@ stoneMason[18] = {
 }
 stoneMason[19] = {
 	level:19,
-	wood:454541,
-	stone:227271,
-	iron:454541,
+	wood:325786,
+	stone:434381,
+	iron:325786,
 	blueprints:10,
 	tools:10,
 	tiles:10,
@@ -214,9 +214,9 @@ stoneMason[19] = {
 }
 stoneMason[20] = {
 	level:20,
-	wood:488308,
-	stone:244154,
-	iron:488308,
+	wood:343191,
+	stone:457588,
+	iron:343191,
 	blueprints:16,
 	tools:16,
 	tiles:16,
@@ -225,9 +225,9 @@ stoneMason[20] = {
 }
 stoneMason[21] = {
 	level:21,
-	wood:860825,
-	stone:430413,
-	iron:860825,
+	wood:615499,
+	stone:820665,
+	iron:615499,
 	blueprints:23,
 	tools:23,
 	tiles:23,
@@ -236,9 +236,9 @@ stoneMason[21] = {
 }
 stoneMason[22] = {
 	level:22,
-	wood:925069,
-	stone:462535,
-	iron:925069,
+	wood:647002,
+	stone:862669,
+	iron:647002,
 	blueprints:32,
 	tools:32,
 	tiles:32,
@@ -247,9 +247,9 @@ stoneMason[22] = {
 }
 stoneMason[23] = {
 	level:23,
-	wood:975893,
-	stone:487947,
-	iron:975893,
+	wood:668560,
+	stone:891413,
+	iron:668560,
 	blueprints:44,
 	tools:44,
 	tiles:44,
@@ -258,9 +258,9 @@ stoneMason[23] = {
 }
 stoneMason[24] = {
 	level:24,
-	wood:1124450,
-	stone:562225,
-	iron:1124450,
+	wood:853897,
+	stone:1138530,
+	iron:853897,
 	blueprints:58,
 	tools:58,
 	tiles:58,
@@ -269,9 +269,9 @@ stoneMason[24] = {
 }
 stoneMason[25] = {
 	level:25,
-	wood:1272660,
-	stone:636330,
-	iron:1272660,
+	wood:944295,
+	stone:1259060,
+	iron:944295,
 	blueprints:74,
 	tools:74,
 	tiles:74,
@@ -280,9 +280,9 @@ stoneMason[25] = {
 }
 stoneMason[26] = {
 	level:26,
-	wood:2395707,
-	stone:1197854,
-	iron:2395707,
+	wood:1660701,
+	stone:2214267,
+	iron:1660701,
 	blueprints:94,
 	tools:94,
 	tiles:94,
@@ -291,9 +291,9 @@ stoneMason[26] = {
 }
 stoneMason[27] = {
 	level:27,
-	wood:2708094,
-	stone:1354047,
-	iron:2708094,
+	wood:1861871,
+	stone:2482494,
+	iron:1861871,
 	blueprints:117,
 	tools:117,
 	tiles:117,
@@ -302,9 +302,9 @@ stoneMason[27] = {
 }
 stoneMason[28] = {
 	level:28,
-	wood:3031716,
-	stone:1515858,
-	iron:3031716,
+	wood:2066427,
+	stone:2755236,
+	iron:2066427,
 	blueprints:144,
 	tools:144,
 	tiles:144,
@@ -313,9 +313,9 @@ stoneMason[28] = {
 }
 stoneMason[29] = {
 	level:29,
-	wood:3365585,
-	stone:1682793,
-	iron:3365585,
+	wood:2464789,
+	stone:3286385,
+	iron:2464789,
 	blueprints:174,
 	tools:174,
 	tiles:174,
@@ -324,9 +324,9 @@ stoneMason[29] = {
 }
 stoneMason[30] = {
 	level:30,
-	wood:3708711,
-	stone:1854356,
-	iron:3708711,
+	wood:2662733,
+	stone:3550311,
+	iron:2662733,
 	blueprints:208,
 	tools:208,
 	tiles:208,
@@ -335,9 +335,9 @@ stoneMason[30] = {
 }
 stoneMason[31] = {
 	level:31,
-	wood:6349277,
-	stone:3174639,
-	iron:6349277,
+	wood:4406278,
+	stone:5875037,
+	iron:4406278,
 	blueprints:247,
 	tools:247,
 	tiles:247,
@@ -346,9 +346,9 @@ stoneMason[31] = {
 }
 stoneMason[32] = {
 	level:32,
-	wood:7006997,
-	stone:3503499,
-	iron:7006997,
+	wood:4837648,
+	stone:6450197,
+	iron:4837648,
 	blueprints:290,
 	tools:290,
 	tiles:290,
@@ -357,9 +357,9 @@ stoneMason[32] = {
 }
 stoneMason[33] = {
 	level:33,
-	wood:7694517,
-	stone:3847259,
-	iron:7694517,
+	wood:5287888,
+	stone:7050517,
+	iron:5287888,
 	blueprints:337,
 	tools:337,
 	tiles:337,
@@ -368,9 +368,9 @@ stoneMason[33] = {
 }
 stoneMason[34] = {
 	level:34,
-	wood:8411707,
-	stone:4205854,
-	iron:8411707,
+	wood:5746461,
+	stone:7661947,
+	iron:5746461,
 	blueprints:390,
 	tools:390,
 	tiles:390,
@@ -379,9 +379,9 @@ stoneMason[34] = {
 }
 stoneMason[35] = {
 	level:35,
-	wood:9158439,
-	stone:4579220,
-	iron:9158439,
+	wood:6222989,
+	stone:8297319,
+	iron:6222989,
 	blueprints:448,
 	tools:448,
 	tiles:448,
@@ -390,9 +390,9 @@ stoneMason[35] = {
 }
 stoneMason[36] = {
 	level:36,
-	wood:14466228,
-	stone:7233114,
-	iron:14466228,
+	wood:10112391,
+	stone:13483188,
+	iron:10112391,
 	blueprints:512,
 	tools:512,
 	tiles:512,
@@ -401,9 +401,9 @@ stoneMason[36] = {
 }
 stoneMason[37] = {
 	level:37,
-	wood:15750010,
-	stone:7875005,
-	iron:15750010,
+	wood:10978868,
+	stone:14638490,
+	iron:10978868,
 	blueprints:580,
 	tools:580,
 	tiles:580,
@@ -412,9 +412,9 @@ stoneMason[37] = {
 }
 stoneMason[38] = {
 	level:38,
-	wood:17094234,
-	stone:8547117,
-	iron:17094234,
+	wood:11875316,
+	stone:15833754,
+	iron:11875316,
 	blueprints:660,
 	tools:660,
 	tiles:660,
@@ -423,9 +423,9 @@ stoneMason[38] = {
 }
 stoneMason[39] = {
 	level:39,
-	wood:18499738,
-	stone:9249869,
-	iron:18499738,
+	wood:12812084,
+	stone:17082778,
+	iron:12812084,
 	blueprints:740,
 	tools:740,
 	tiles:740,
@@ -434,9 +434,9 @@ stoneMason[39] = {
 }
 stoneMason[40] = {
 	level:40,
-	wood:27048001,
-	stone:13524001,
-	iron:27048001,
+	wood:19138560,
+	stone:25518081,
+	iron:19138560,
 	blueprints:830,
 	tools:830,
 	tiles:830,

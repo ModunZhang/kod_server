@@ -148,9 +148,9 @@ townHall[13] = {
 }
 townHall[14] = {
 	level:14,
-	wood:139346,
-	stone:232244,
-	iron:92898,
+	wood:131666,
+	stone:219444,
+	iron:87778,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -159,9 +159,9 @@ townHall[14] = {
 }
 townHall[15] = {
 	level:15,
-	wood:169371,
-	stone:282285,
-	iron:112914,
+	wood:166011,
+	stone:276685,
+	iron:110674,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -170,9 +170,9 @@ townHall[15] = {
 }
 townHall[16] = {
 	level:16,
-	wood:264231,
-	stone:440384,
-	iron:176154,
+	wood:257511,
+	stone:429184,
+	iron:171674,
 	blueprints:2,
 	tools:2,
 	tiles:2,
@@ -181,9 +181,9 @@ townHall[16] = {
 }
 townHall[17] = {
 	level:17,
-	wood:311424,
-	stone:519040,
-	iron:207616,
+	wood:305664,
+	stone:509440,
+	iron:203776,
 	blueprints:4,
 	tools:4,
 	tiles:4,
@@ -192,9 +192,9 @@ townHall[17] = {
 }
 townHall[18] = {
 	level:18,
-	wood:353986,
-	stone:589976,
-	iron:235991,
+	wood:341146,
+	stone:568576,
+	iron:227431,
 	blueprints:7,
 	tools:7,
 	tiles:7,
@@ -203,9 +203,9 @@ townHall[18] = {
 }
 townHall[19] = {
 	level:19,
-	wood:389607,
-	stone:649344,
-	iron:259738,
+	wood:372327,
+	stone:620544,
+	iron:248218,
 	blueprints:12,
 	tools:12,
 	tiles:12,
@@ -214,9 +214,9 @@ townHall[19] = {
 }
 townHall[20] = {
 	level:20,
-	wood:415978,
-	stone:693296,
-	iron:277319,
+	wood:392218,
+	stone:653696,
+	iron:261479,
 	blueprints:18,
 	tools:18,
 	tiles:18,
@@ -225,9 +225,9 @@ townHall[20] = {
 }
 townHall[21] = {
 	level:21,
-	wood:732707,
-	stone:1221178,
-	iron:488472,
+	wood:703427,
+	stone:1172378,
+	iron:468952,
 	blueprints:27,
 	tools:27,
 	tiles:27,
@@ -236,9 +236,9 @@ townHall[21] = {
 }
 townHall[22] = {
 	level:22,
-	wood:785631,
-	stone:1309384,
-	iron:523754,
+	wood:739431,
+	stone:1232384,
+	iron:492954,
 	blueprints:37,
 	tools:37,
 	tiles:37,
@@ -247,9 +247,9 @@ townHall[22] = {
 }
 townHall[23] = {
 	level:23,
-	wood:827908,
-	stone:1379847,
-	iron:551939,
+	wood:764068,
+	stone:1273447,
+	iron:509379,
 	blueprints:51,
 	tools:51,
 	tiles:51,
@@ -258,9 +258,9 @@ townHall[23] = {
 }
 townHall[24] = {
 	level:24,
-	wood:955243,
-	stone:1592071,
-	iron:636829,
+	wood:975883,
+	stone:1626471,
+	iron:650589,
 	blueprints:67,
 	tools:67,
 	tiles:67,
@@ -269,9 +269,9 @@ townHall[24] = {
 }
 townHall[25] = {
 	level:25,
-	wood:1083994,
-	stone:1806656,
-	iron:722663,
+	wood:1079194,
+	stone:1798656,
+	iron:719463,
 	blueprints:86,
 	tools:86,
 	tiles:86,
@@ -280,9 +280,9 @@ townHall[25] = {
 }
 townHall[26] = {
 	level:26,
-	wood:2050464,
-	stone:3417439,
-	iron:1366976,
+	wood:1897944,
+	stone:3163239,
+	iron:1265296,
 	blueprints:108,
 	tools:108,
 	tiles:108,
@@ -291,9 +291,9 @@ townHall[26] = {
 }
 townHall[27] = {
 	level:27,
-	wood:2324652,
-	stone:3874420,
-	iron:1549768,
+	wood:2127852,
+	stone:3546420,
+	iron:1418568,
 	blueprints:134,
 	tools:134,
 	tiles:134,
@@ -302,9 +302,9 @@ townHall[27] = {
 }
 townHall[28] = {
 	level:28,
-	wood:2611471,
-	stone:4352452,
-	iron:1740981,
+	wood:2361631,
+	stone:3936052,
+	iron:1574421,
 	blueprints:163,
 	tools:163,
 	tiles:163,
@@ -313,9 +313,9 @@ townHall[28] = {
 }
 townHall[29] = {
 	level:29,
-	wood:2910502,
-	stone:4850836,
-	iron:1940335,
+	wood:2816902,
+	stone:4694836,
+	iron:1877935,
 	blueprints:197,
 	tools:197,
 	tiles:197,
@@ -324,9 +324,9 @@ townHall[29] = {
 }
 townHall[30] = {
 	level:30,
-	wood:3221324,
-	stone:5368872,
-	iron:2147549,
+	wood:3043124,
+	stone:5071872,
+	iron:2028749,
 	blueprints:234,
 	tools:234,
 	tiles:234,
@@ -335,9 +335,9 @@ townHall[30] = {
 }
 townHall[31] = {
 	level:31,
-	wood:5505666,
-	stone:9176109,
-	iron:3670444,
+	wood:5035746,
+	stone:8392909,
+	iron:3357164,
 	blueprints:277,
 	tools:277,
 	tiles:277,
@@ -346,9 +346,9 @@ townHall[31] = {
 }
 townHall[32] = {
 	level:32,
-	wood:6095140,
-	stone:10158567,
-	iron:4063427,
+	wood:5528740,
+	stone:9214567,
+	iron:3685827,
 	blueprints:324,
 	tools:324,
 	tiles:324,
@@ -357,9 +357,9 @@ townHall[32] = {
 }
 townHall[33] = {
 	level:33,
-	wood:6715300,
-	stone:11192167,
-	iron:4476867,
+	wood:6043300,
+	stone:10072167,
+	iron:4028867,
 	blueprints:376,
 	tools:376,
 	tiles:376,
@@ -368,9 +368,9 @@ townHall[33] = {
 }
 townHall[34] = {
 	level:34,
-	wood:7366464,
-	stone:12277439,
-	iron:4910976,
+	wood:6567384,
+	stone:10945639,
+	iron:4378256,
 	blueprints:433,
 	tools:433,
 	tiles:433,
@@ -379,9 +379,9 @@ townHall[34] = {
 }
 townHall[35] = {
 	level:35,
-	wood:8048948,
-	stone:13414912,
-	iron:5365965,
+	wood:7111988,
+	stone:11853312,
+	iron:4741325,
 	blueprints:496,
 	tools:496,
 	tiles:496,
@@ -390,9 +390,9 @@ townHall[35] = {
 }
 townHall[36] = {
 	level:36,
-	wood:12647338,
-	stone:21078896,
-	iron:8431559,
+	wood:11557018,
+	stone:19261696,
+	iron:7704679,
 	blueprints:564,
 	tools:564,
 	tiles:564,
@@ -401,9 +401,9 @@ townHall[36] = {
 }
 townHall[37] = {
 	level:37,
-	wood:13803437,
-	stone:23005728,
-	iron:9202292,
+	wood:12547277,
+	stone:20912128,
+	iron:8364852,
 	blueprints:639,
 	tools:639,
 	tiles:639,
@@ -412,9 +412,9 @@ townHall[37] = {
 }
 townHall[38] = {
 	level:38,
-	wood:15018629,
-	stone:25031048,
-	iron:10012420,
+	wood:13571789,
+	stone:22619648,
+	iron:9047860,
 	blueprints:720,
 	tools:720,
 	tiles:720,
@@ -423,9 +423,9 @@ townHall[38] = {
 }
 townHall[39] = {
 	level:39,
-	wood:16294061,
-	stone:27156768,
-	iron:10862708,
+	wood:14642381,
+	stone:24403968,
+	iron:9761588,
 	blueprints:810,
 	tools:810,
 	tiles:810,
@@ -434,9 +434,9 @@ townHall[39] = {
 }
 townHall[40] = {
 	level:40,
-	wood:23748000,
-	stone:39580000,
-	iron:15832000,
+	wood:21872640,
+	stone:36454400,
+	iron:14581760,
 	blueprints:920,
 	tools:920,
 	tiles:920,

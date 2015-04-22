@@ -5,9 +5,9 @@ module.exports = trainingGround
 
 trainingGround[1] = {
 	level:1,
-	wood:420,
-	stone:300,
-	iron:300,
+	wood:308,
+	stone:205,
+	iron:513,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -16,9 +16,9 @@ trainingGround[1] = {
 }
 trainingGround[2] = {
 	level:2,
-	wood:984,
-	stone:738,
-	iron:738,
+	wood:738,
+	stone:492,
+	iron:1230,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -27,9 +27,9 @@ trainingGround[2] = {
 }
 trainingGround[3] = {
 	level:3,
-	wood:1968,
-	stone:1476,
-	iron:1476,
+	wood:1476,
+	stone:984,
+	iron:2460,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -38,9 +38,9 @@ trainingGround[3] = {
 }
 trainingGround[4] = {
 	level:4,
-	wood:2952,
-	stone:2214,
-	iron:2214,
+	wood:2214,
+	stone:1476,
+	iron:3690,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -49,9 +49,9 @@ trainingGround[4] = {
 }
 trainingGround[5] = {
 	level:5,
-	wood:3936,
-	stone:2952,
-	iron:2952,
+	wood:2952,
+	stone:1968,
+	iron:4920,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -60,9 +60,9 @@ trainingGround[5] = {
 }
 trainingGround[6] = {
 	level:6,
-	wood:4920,
-	stone:3690,
-	iron:3690,
+	wood:3690,
+	stone:2460,
+	iron:6150,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -71,9 +71,9 @@ trainingGround[6] = {
 }
 trainingGround[7] = {
 	level:7,
-	wood:5904,
-	stone:4428,
-	iron:4428,
+	wood:4428,
+	stone:2952,
+	iron:7380,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -82,9 +82,9 @@ trainingGround[7] = {
 }
 trainingGround[8] = {
 	level:8,
-	wood:7676,
-	stone:5757,
-	iron:5757,
+	wood:5757,
+	stone:3838,
+	iron:9594,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -93,9 +93,9 @@ trainingGround[8] = {
 }
 trainingGround[9] = {
 	level:9,
-	wood:18893,
-	stone:14170,
-	iron:14170,
+	wood:14170,
+	stone:9447,
+	iron:23616,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -104,9 +104,9 @@ trainingGround[9] = {
 }
 trainingGround[10] = {
 	level:10,
-	wood:34244,
-	stone:25683,
-	iron:25683,
+	wood:25683,
+	stone:17122,
+	iron:42804,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -115,9 +115,9 @@ trainingGround[10] = {
 }
 trainingGround[11] = {
 	level:11,
-	wood:77307,
-	stone:57981,
-	iron:57981,
+	wood:65181,
+	stone:43454,
+	iron:108634,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -126,9 +126,9 @@ trainingGround[11] = {
 }
 trainingGround[12] = {
 	level:12,
-	wood:103527,
-	stone:77645,
-	iron:77645,
+	wood:95645,
+	stone:63764,
+	iron:159408,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -137,9 +137,9 @@ trainingGround[12] = {
 }
 trainingGround[13] = {
 	level:13,
-	wood:141593,
-	stone:106195,
-	iron:106195,
+	wood:133195,
+	stone:88797,
+	iron:221991,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -148,9 +148,9 @@ trainingGround[13] = {
 }
 trainingGround[14] = {
 	level:14,
-	wood:182050,
-	stone:136537,
-	iron:136537,
+	wood:168697,
+	stone:112465,
+	iron:281162,
 	blueprints:3,
 	tools:3,
 	tiles:3,
@@ -159,9 +159,9 @@ trainingGround[14] = {
 }
 trainingGround[15] = {
 	level:15,
-	wood:221842,
-	stone:166382,
-	iron:166382,
+	wood:212702,
+	stone:141801,
+	iron:354503,
 	blueprints:5,
 	tools:5,
 	tiles:5,
@@ -170,9 +170,9 @@ trainingGround[15] = {
 }
 trainingGround[16] = {
 	level:16,
-	wood:356394,
-	stone:267296,
-	iron:267296,
+	wood:329936,
+	stone:219957,
+	iron:549892,
 	blueprints:8,
 	tools:8,
 	tiles:8,
@@ -181,9 +181,9 @@ trainingGround[16] = {
 }
 trainingGround[17] = {
 	level:17,
-	wood:410016,
-	stone:307512,
-	iron:307512,
+	wood:391632,
+	stone:261088,
+	iron:652720,
 	blueprints:12,
 	tools:12,
 	tiles:12,
@@ -192,9 +192,9 @@ trainingGround[17] = {
 }
 trainingGround[18] = {
 	level:18,
-	wood:457351,
-	stone:343013,
-	iron:343013,
+	wood:437093,
+	stone:291396,
+	iron:728488,
 	blueprints:18,
 	tools:18,
 	tiles:18,
@@ -203,9 +203,9 @@ trainingGround[18] = {
 }
 trainingGround[19] = {
 	level:19,
-	wood:495578,
-	stone:371684,
-	iron:371684,
+	wood:477044,
+	stone:318029,
+	iron:795072,
 	blueprints:26,
 	tools:26,
 	tiles:26,
@@ -214,9 +214,9 @@ trainingGround[19] = {
 }
 trainingGround[20] = {
 	level:20,
-	wood:521879,
-	stone:391409,
-	iron:391409,
+	wood:502529,
+	stone:335020,
+	iron:837548,
 	blueprints:35,
 	tools:35,
 	tiles:35,
@@ -225,9 +225,9 @@ trainingGround[20] = {
 }
 trainingGround[21] = {
 	level:21,
-	wood:1049208,
-	stone:786906,
-	iron:786906,
+	wood:901266,
+	stone:600844,
+	iron:1502109,
 	blueprints:47,
 	tools:47,
 	tiles:47,
@@ -236,9 +236,9 @@ trainingGround[21] = {
 }
 trainingGround[22] = {
 	level:22,
-	wood:1131994,
-	stone:848996,
-	iron:848996,
+	wood:947396,
+	stone:631597,
+	iron:1578992,
 	blueprints:61,
 	tools:61,
 	tiles:61,
@@ -247,9 +247,9 @@ trainingGround[22] = {
 }
 trainingGround[23] = {
 	level:23,
-	wood:1203843,
-	stone:902882,
-	iron:902882,
+	wood:978962,
+	stone:652642,
+	iron:1631604,
 	blueprints:78,
 	tools:78,
 	tiles:78,
@@ -258,9 +258,9 @@ trainingGround[23] = {
 }
 trainingGround[24] = {
 	level:24,
-	wood:1429373,
-	stone:1072030,
-	iron:1072030,
+	wood:1250350,
+	stone:833567,
+	iron:2083916,
 	blueprints:98,
 	tools:98,
 	tiles:98,
@@ -269,9 +269,9 @@ trainingGround[24] = {
 }
 trainingGround[25] = {
 	level:25,
-	wood:1666823,
-	stone:1250117,
-	iron:1250117,
+	wood:1382717,
+	stone:921812,
+	iron:2304528,
 	blueprints:121,
 	tools:121,
 	tiles:121,
@@ -280,9 +280,9 @@ trainingGround[25] = {
 }
 trainingGround[26] = {
 	level:26,
-	wood:3346000,
-	stone:2509500,
-	iron:2509500,
+	wood:2431740,
+	stone:1621160,
+	iron:4052900,
 	blueprints:148,
 	tools:148,
 	tiles:148,
@@ -291,9 +291,9 @@ trainingGround[26] = {
 }
 trainingGround[27] = {
 	level:27,
-	wood:3854280,
-	stone:2890710,
-	iron:2890710,
+	wood:2726310,
+	stone:1817540,
+	iron:4543850,
 	blueprints:179,
 	tools:179,
 	tiles:179,
@@ -302,9 +302,9 @@ trainingGround[27] = {
 }
 trainingGround[28] = {
 	level:28,
-	wood:4397013,
-	stone:3297760,
-	iron:3297760,
+	wood:3025840,
+	stone:2017227,
+	iron:5043066,
 	blueprints:213,
 	tools:213,
 	tiles:213,
@@ -313,9 +313,9 @@ trainingGround[28] = {
 }
 trainingGround[29] = {
 	level:29,
-	wood:4974607,
-	stone:3730955,
-	iron:3730955,
+	wood:3609155,
+	stone:2406104,
+	iron:6015258,
 	blueprints:252,
 	tools:252,
 	tiles:252,
@@ -324,9 +324,9 @@ trainingGround[29] = {
 }
 trainingGround[30] = {
 	level:30,
-	wood:5587469,
-	stone:4190602,
-	iron:4190602,
+	wood:3899002,
+	stone:2599335,
+	iron:6498336,
 	blueprints:295,
 	tools:295,
 	tiles:295,
@@ -335,9 +335,9 @@ trainingGround[30] = {
 }
 trainingGround[31] = {
 	level:31,
-	wood:9588012,
-	stone:7191009,
-	iron:7191009,
+	wood:6452049,
+	stone:4301366,
+	iron:10753415,
 	blueprints:343,
 	tools:343,
 	tiles:343,
@@ -346,9 +346,9 @@ trainingGround[31] = {
 }
 trainingGround[32] = {
 	level:32,
-	wood:10710531,
-	stone:8032898,
-	iron:8032898,
+	wood:7083698,
+	stone:4722466,
+	iron:11806164,
 	blueprints:396,
 	tools:396,
 	tiles:396,
@@ -357,9 +357,9 @@ trainingGround[32] = {
 }
 trainingGround[33] = {
 	level:33,
-	wood:11903971,
-	stone:8927978,
-	iron:8927978,
+	wood:7742978,
+	stone:5161986,
+	iron:12904964,
 	blueprints:454,
 	tools:454,
 	tiles:454,
@@ -368,9 +368,9 @@ trainingGround[33] = {
 }
 trainingGround[34] = {
 	level:34,
-	wood:13170000,
-	stone:9877500,
-	iron:9877500,
+	wood:8414460,
+	stone:5609640,
+	iron:14024100,
 	blueprints:518,
 	tools:518,
 	tiles:518,
@@ -379,9 +379,9 @@ trainingGround[34] = {
 }
 trainingGround[35] = {
 	level:35,
-	wood:14510285,
-	stone:10882714,
-	iron:10882714,
+	wood:9112234,
+	stone:6074823,
+	iron:15187056,
 	blueprints:588,
 	tools:588,
 	tiles:588,
@@ -390,9 +390,9 @@ trainingGround[35] = {
 }
 trainingGround[36] = {
 	level:36,
-	wood:22562119,
-	stone:16921589,
-	iron:16921589,
+	wood:14807429,
+	stone:9871620,
+	iron:24679048,
 	blueprints:663,
 	tools:663,
 	tiles:663,
@@ -401,9 +401,9 @@ trainingGround[36] = {
 }
 trainingGround[37] = {
 	level:37,
-	wood:24756372,
-	stone:18567279,
-	iron:18567279,
+	wood:16076199,
+	stone:10717466,
+	iron:26793664,
 	blueprints:745,
 	tools:745,
 	tiles:745,
@@ -412,9 +412,9 @@ trainingGround[37] = {
 }
 trainingGround[38] = {
 	level:38,
-	wood:27075700,
-	stone:20306775,
-	iron:20306775,
+	wood:17388855,
+	stone:11592570,
+	iron:28981424,
 	blueprints:833,
 	tools:833,
 	tiles:833,
@@ -423,9 +423,9 @@ trainingGround[38] = {
 }
 trainingGround[39] = {
 	level:39,
-	wood:29523188,
-	stone:22142391,
-	iron:22142391,
+	wood:18760551,
+	stone:12507034,
+	iron:31267584,
 	blueprints:928,
 	tools:928,
 	tiles:928,
@@ -434,9 +434,9 @@ trainingGround[39] = {
 }
 trainingGround[40] = {
 	level:40,
-	wood:42552000,
-	stone:31914000,
-	iron:31914000,
+	wood:28024320,
+	stone:18682880,
+	iron:46707200,
 	blueprints:1030,
 	tools:1030,
 	tiles:1030,

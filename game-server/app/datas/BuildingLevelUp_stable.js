@@ -5,9 +5,9 @@ module.exports = stable
 
 stable[1] = {
 	level:1,
-	wood:320,
-	stone:440,
-	iron:320,
+	wood:323,
+	stone:215,
+	iron:538,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -17,8 +17,8 @@ stable[1] = {
 stable[2] = {
 	level:2,
 	wood:774,
-	stone:1032,
-	iron:774,
+	stone:516,
+	iron:1290,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -28,8 +28,8 @@ stable[2] = {
 stable[3] = {
 	level:3,
 	wood:1548,
-	stone:2064,
-	iron:1548,
+	stone:1032,
+	iron:2580,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -39,8 +39,8 @@ stable[3] = {
 stable[4] = {
 	level:4,
 	wood:2322,
-	stone:3096,
-	iron:2322,
+	stone:1548,
+	iron:3870,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -50,8 +50,8 @@ stable[4] = {
 stable[5] = {
 	level:5,
 	wood:3096,
-	stone:4128,
-	iron:3096,
+	stone:2064,
+	iron:5160,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -61,8 +61,8 @@ stable[5] = {
 stable[6] = {
 	level:6,
 	wood:3870,
-	stone:5160,
-	iron:3870,
+	stone:2580,
+	iron:6450,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -72,8 +72,8 @@ stable[6] = {
 stable[7] = {
 	level:7,
 	wood:4644,
-	stone:6192,
-	iron:4644,
+	stone:3096,
+	iron:7740,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -83,8 +83,8 @@ stable[7] = {
 stable[8] = {
 	level:8,
 	wood:6038,
-	stone:8050,
-	iron:6038,
+	stone:4025,
+	iron:10062,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -94,8 +94,8 @@ stable[8] = {
 stable[9] = {
 	level:9,
 	wood:14861,
-	stone:19815,
-	iron:14861,
+	stone:9908,
+	iron:24768,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -105,8 +105,8 @@ stable[9] = {
 stable[10] = {
 	level:10,
 	wood:26936,
-	stone:35914,
-	iron:26936,
+	stone:17957,
+	iron:44892,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -115,9 +115,9 @@ stable[10] = {
 }
 stable[11] = {
 	level:11,
-	wood:61160,
-	stone:81547,
-	iron:61160,
+	wood:68360,
+	stone:45574,
+	iron:113933,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -126,9 +126,9 @@ stable[11] = {
 }
 stable[12] = {
 	level:12,
-	wood:82311,
-	stone:109748,
-	iron:82311,
+	wood:100311,
+	stone:66874,
+	iron:167184,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -137,9 +137,9 @@ stable[12] = {
 }
 stable[13] = {
 	level:13,
-	wood:112692,
-	stone:150256,
-	iron:112692,
+	wood:139692,
+	stone:93128,
+	iron:232820,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -148,9 +148,9 @@ stable[13] = {
 }
 stable[14] = {
 	level:14,
-	wood:145247,
-	stone:193662,
-	iron:145247,
+	wood:176927,
+	stone:117951,
+	iron:294877,
 	blueprints:3,
 	tools:3,
 	tiles:3,
@@ -159,9 +159,9 @@ stable[14] = {
 }
 stable[15] = {
 	level:15,
-	wood:177718,
-	stone:236957,
-	iron:177718,
+	wood:223078,
+	stone:148719,
+	iron:371796,
 	blueprints:5,
 	tools:5,
 	tiles:5,
@@ -170,9 +170,9 @@ stable[15] = {
 }
 stable[16] = {
 	level:16,
-	wood:285310,
-	stone:380413,
-	iron:285310,
+	wood:346030,
+	stone:230687,
+	iron:576716,
 	blueprints:8,
 	tools:8,
 	tiles:8,
@@ -181,9 +181,9 @@ stable[16] = {
 }
 stable[17] = {
 	level:17,
-	wood:329976,
-	stone:439968,
-	iron:329976,
+	wood:410736,
+	stone:273824,
+	iron:684560,
 	blueprints:12,
 	tools:12,
 	tiles:12,
@@ -192,9 +192,9 @@ stable[17] = {
 }
 stable[18] = {
 	level:18,
-	wood:370575,
-	stone:494100,
-	iron:370575,
+	wood:458415,
+	stone:305610,
+	iron:764024,
 	blueprints:18,
 	tools:18,
 	tiles:18,
@@ -203,9 +203,9 @@ stable[18] = {
 }
 stable[19] = {
 	level:19,
-	wood:405034,
-	stone:540045,
-	iron:405034,
+	wood:500314,
+	stone:333543,
+	iron:833856,
 	blueprints:26,
 	tools:26,
 	tiles:26,
@@ -214,9 +214,9 @@ stable[19] = {
 }
 stable[20] = {
 	level:20,
-	wood:431283,
-	stone:575044,
-	iron:431283,
+	wood:527043,
+	stone:351362,
+	iron:878404,
 	blueprints:35,
 	tools:35,
 	tiles:35,
@@ -225,9 +225,9 @@ stable[20] = {
 }
 stable[21] = {
 	level:21,
-	wood:852950,
-	stone:1137266,
-	iron:852950,
+	wood:945230,
+	stone:630153,
+	iron:1575383,
 	blueprints:47,
 	tools:47,
 	tiles:47,
@@ -236,9 +236,9 @@ stable[21] = {
 }
 stable[22] = {
 	level:22,
-	wood:926410,
-	stone:1235213,
-	iron:926410,
+	wood:993610,
+	stone:662407,
+	iron:1656016,
 	blueprints:61,
 	tools:61,
 	tiles:61,
@@ -247,9 +247,9 @@ stable[22] = {
 }
 stable[23] = {
 	level:23,
-	wood:992877,
-	stone:1323835,
-	iron:992877,
+	wood:1026717,
+	stone:684478,
+	iron:1711194,
 	blueprints:78,
 	tools:78,
 	tiles:78,
@@ -258,9 +258,9 @@ stable[23] = {
 }
 stable[24] = {
 	level:24,
-	wood:1181982,
-	stone:1575976,
-	iron:1181982,
+	wood:1311342,
+	stone:874228,
+	iron:2185570,
 	blueprints:98,
 	tools:98,
 	tiles:98,
@@ -269,9 +269,9 @@ stable[24] = {
 }
 stable[25] = {
 	level:25,
-	wood:1382367,
-	stone:1843156,
-	iron:1382367,
+	wood:1450167,
+	stone:966778,
+	iron:2416944,
 	blueprints:121,
 	tools:121,
 	tiles:121,
@@ -280,9 +280,9 @@ stable[25] = {
 }
 stable[26] = {
 	level:26,
-	wood:2718841,
-	stone:3625122,
-	iron:2718841,
+	wood:2550361,
+	stone:1700241,
+	iron:4250602,
 	blueprints:148,
 	tools:148,
 	tiles:148,
@@ -291,9 +291,9 @@ stable[26] = {
 }
 stable[27] = {
 	level:27,
-	wood:3136501,
-	stone:4182001,
-	iron:3136501,
+	wood:2859301,
+	stone:1906201,
+	iron:4765501,
 	blueprints:179,
 	tools:179,
 	tiles:179,
@@ -302,9 +302,9 @@ stable[27] = {
 }
 stable[28] = {
 	level:28,
-	wood:3583602,
-	stone:4778136,
-	iron:3583602,
+	wood:3173442,
+	stone:2115628,
+	iron:5289069,
 	blueprints:213,
 	tools:213,
 	tiles:213,
@@ -313,9 +313,9 @@ stable[28] = {
 }
 stable[29] = {
 	level:29,
-	wood:4060611,
-	stone:5414148,
-	iron:4060611,
+	wood:3785211,
+	stone:2523474,
+	iron:6308685,
 	blueprints:252,
 	tools:252,
 	tiles:252,
@@ -324,9 +324,9 @@ stable[29] = {
 }
 stable[30] = {
 	level:30,
-	wood:4567997,
-	stone:6090663,
-	iron:4567997,
+	wood:4089197,
+	stone:2726132,
+	iron:6815328,
 	blueprints:295,
 	tools:295,
 	tiles:295,
@@ -335,9 +335,9 @@ stable[30] = {
 }
 stable[31] = {
 	level:31,
-	wood:7742863,
-	stone:10323817,
-	iron:7742863,
+	wood:6766783,
+	stone:4511189,
+	iron:11277972,
 	blueprints:343,
 	tools:343,
 	tiles:343,
@@ -346,9 +346,9 @@ stable[31] = {
 }
 stable[32] = {
 	level:32,
-	wood:8656845,
-	stone:11542459,
-	iron:8656845,
+	wood:7429245,
+	stone:4952830,
+	iron:12382074,
 	blueprints:396,
 	tools:396,
 	tiles:396,
@@ -357,9 +357,9 @@ stable[32] = {
 }
 stable[33] = {
 	level:33,
-	wood:9629685,
-	stone:12839579,
-	iron:9629685,
+	wood:8120685,
+	stone:5413790,
+	iron:13534474,
 	blueprints:454,
 	tools:454,
 	tiles:454,
@@ -368,9 +368,9 @@ stable[33] = {
 }
 stable[34] = {
 	level:34,
-	wood:10662841,
-	stone:14217122,
-	iron:10662841,
+	wood:8824921,
+	stone:5883281,
+	iron:14708202,
 	blueprints:518,
 	tools:518,
 	tiles:518,
@@ -379,9 +379,9 @@ stable[34] = {
 }
 stable[35] = {
 	level:35,
-	wood:11757773,
-	stone:15677031,
-	iron:11757773,
+	wood:9556733,
+	stone:6371156,
+	iron:15927888,
 	blueprints:588,
 	tools:588,
 	tiles:588,
@@ -390,9 +390,9 @@ stable[35] = {
 }
 stable[36] = {
 	level:36,
-	wood:18135423,
-	stone:24180564,
-	iron:18135423,
+	wood:15529743,
+	stone:10353162,
+	iron:25882904,
 	blueprints:663,
 	tools:663,
 	tiles:663,
@@ -401,9 +401,9 @@ stable[36] = {
 }
 stable[37] = {
 	level:37,
-	wood:19909244,
-	stone:26545658,
-	iron:19909244,
+	wood:16860404,
+	stone:11240269,
+	iron:28100672,
 	blueprints:745,
 	tools:745,
 	tiles:745,
@@ -412,9 +412,9 @@ stable[37] = {
 }
 stable[38] = {
 	level:38,
-	wood:21785252,
-	stone:29047002,
-	iron:21785252,
+	wood:18237092,
+	stone:12158061,
+	iron:30395152,
 	blueprints:833,
 	tools:833,
 	tiles:833,
@@ -423,9 +423,9 @@ stable[38] = {
 }
 stable[39] = {
 	level:39,
-	wood:23766020,
-	stone:31688026,
-	iron:23766020,
+	wood:19675700,
+	stone:13117133,
+	iron:32792832,
 	blueprints:928,
 	tools:928,
 	tiles:928,
@@ -434,9 +434,9 @@ stable[39] = {
 }
 stable[40] = {
 	level:40,
-	wood:34074000,
-	stone:45432000,
-	iron:34074000,
+	wood:29391360,
+	stone:19594240,
+	iron:48985600,
 	blueprints:1030,
 	tools:1030,
 	tiles:1030,

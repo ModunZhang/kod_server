@@ -5,9 +5,9 @@ module.exports = hunterHall
 
 hunterHall[1] = {
 	level:1,
-	wood:525,
+	wood:315,
 	stone:210,
-	iron:315,
+	iron:525,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -16,9 +16,9 @@ hunterHall[1] = {
 }
 hunterHall[2] = {
 	level:2,
-	wood:1260,
+	wood:756,
 	stone:504,
-	iron:756,
+	iron:1260,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -27,9 +27,9 @@ hunterHall[2] = {
 }
 hunterHall[3] = {
 	level:3,
-	wood:2520,
+	wood:1512,
 	stone:1008,
-	iron:1512,
+	iron:2520,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -38,9 +38,9 @@ hunterHall[3] = {
 }
 hunterHall[4] = {
 	level:4,
-	wood:3780,
+	wood:2268,
 	stone:1512,
-	iron:2268,
+	iron:3780,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -49,9 +49,9 @@ hunterHall[4] = {
 }
 hunterHall[5] = {
 	level:5,
-	wood:5040,
+	wood:3024,
 	stone:2016,
-	iron:3024,
+	iron:5040,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -60,9 +60,9 @@ hunterHall[5] = {
 }
 hunterHall[6] = {
 	level:6,
-	wood:6300,
+	wood:3780,
 	stone:2520,
-	iron:3780,
+	iron:6300,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -71,9 +71,9 @@ hunterHall[6] = {
 }
 hunterHall[7] = {
 	level:7,
-	wood:7560,
+	wood:4536,
 	stone:3024,
-	iron:4536,
+	iron:7560,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -82,9 +82,9 @@ hunterHall[7] = {
 }
 hunterHall[8] = {
 	level:8,
-	wood:9828,
+	wood:5897,
 	stone:3932,
-	iron:5897,
+	iron:9828,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -93,9 +93,9 @@ hunterHall[8] = {
 }
 hunterHall[9] = {
 	level:9,
-	wood:24192,
+	wood:14516,
 	stone:9677,
-	iron:14516,
+	iron:24192,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -104,9 +104,9 @@ hunterHall[9] = {
 }
 hunterHall[10] = {
 	level:10,
-	wood:43848,
+	wood:26309,
 	stone:17540,
-	iron:26309,
+	iron:43848,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -115,9 +115,9 @@ hunterHall[10] = {
 }
 hunterHall[11] = {
 	level:11,
-	wood:99284,
-	stone:39714,
-	iron:59570,
+	wood:66770,
+	stone:44514,
+	iron:111284,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -126,9 +126,9 @@ hunterHall[11] = {
 }
 hunterHall[12] = {
 	level:12,
-	wood:133296,
-	stone:53319,
-	iron:79978,
+	wood:97978,
+	stone:65319,
+	iron:163296,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -137,9 +137,9 @@ hunterHall[12] = {
 }
 hunterHall[13] = {
 	level:13,
-	wood:182405,
-	stone:72962,
-	iron:109443,
+	wood:136443,
+	stone:90962,
+	iron:227405,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -148,9 +148,9 @@ hunterHall[13] = {
 }
 hunterHall[14] = {
 	level:14,
-	wood:234820,
-	stone:93928,
-	iron:140892,
+	wood:172812,
+	stone:115208,
+	iron:288020,
 	blueprints:3,
 	tools:3,
 	tiles:3,
@@ -159,9 +159,9 @@ hunterHall[14] = {
 }
 hunterHall[15] = {
 	level:15,
-	wood:286749,
-	stone:114700,
-	iron:172050,
+	wood:217890,
+	stone:145260,
+	iron:363149,
 	blueprints:5,
 	tools:5,
 	tiles:5,
@@ -170,9 +170,9 @@ hunterHall[15] = {
 }
 hunterHall[16] = {
 	level:16,
-	wood:460504,
-	stone:184202,
-	iron:276303,
+	wood:337983,
+	stone:225322,
+	iron:563304,
 	blueprints:8,
 	tools:8,
 	tiles:8,
@@ -181,9 +181,9 @@ hunterHall[16] = {
 }
 hunterHall[17] = {
 	level:17,
-	wood:531240,
-	stone:212496,
-	iron:318744,
+	wood:401184,
+	stone:267456,
+	iron:668640,
 	blueprints:12,
 	tools:12,
 	tiles:12,
@@ -192,9 +192,9 @@ hunterHall[17] = {
 }
 hunterHall[18] = {
 	level:18,
-	wood:594656,
-	stone:237863,
-	iron:356794,
+	wood:447754,
+	stone:298503,
+	iron:746256,
 	blueprints:18,
 	tools:18,
 	tiles:18,
@@ -203,9 +203,9 @@ hunterHall[18] = {
 }
 hunterHall[19] = {
 	level:19,
-	wood:647264,
-	stone:258906,
-	iron:388359,
+	wood:488679,
+	stone:325786,
+	iron:814464,
 	blueprints:26,
 	tools:26,
 	tiles:26,
@@ -214,9 +214,9 @@ hunterHall[19] = {
 }
 hunterHall[20] = {
 	level:20,
-	wood:685576,
-	stone:274231,
-	iron:411346,
+	wood:514786,
+	stone:343191,
+	iron:857976,
 	blueprints:35,
 	tools:35,
 	tiles:35,
@@ -225,9 +225,9 @@ hunterHall[20] = {
 }
 hunterHall[21] = {
 	level:21,
-	wood:1366546,
-	stone:546619,
-	iron:819928,
+	wood:923248,
+	stone:615499,
+	iron:1538746,
 	blueprints:47,
 	tools:47,
 	tiles:47,
@@ -236,9 +236,9 @@ hunterHall[21] = {
 }
 hunterHall[22] = {
 	level:22,
-	wood:1479504,
-	stone:591802,
-	iron:887703,
+	wood:970503,
+	stone:647002,
+	iron:1617504,
 	blueprints:61,
 	tools:61,
 	tiles:61,
@@ -247,9 +247,9 @@ hunterHall[22] = {
 }
 hunterHall[23] = {
 	level:23,
-	wood:1579799,
-	stone:631920,
-	iron:947880,
+	wood:1002840,
+	stone:668560,
+	iron:1671399,
 	blueprints:78,
 	tools:78,
 	tiles:78,
@@ -258,9 +258,9 @@ hunterHall[23] = {
 }
 hunterHall[24] = {
 	level:24,
-	wood:1878343,
-	stone:751337,
-	iron:1127006,
+	wood:1280846,
+	stone:853897,
+	iron:2134743,
 	blueprints:98,
 	tools:98,
 	tiles:98,
@@ -269,9 +269,9 @@ hunterHall[24] = {
 }
 hunterHall[25] = {
 	level:25,
-	wood:2193736,
-	stone:877495,
-	iron:1316242,
+	wood:1416442,
+	stone:944295,
+	iron:2360736,
 	blueprints:121,
 	tools:121,
 	tiles:121,
@@ -280,9 +280,9 @@ hunterHall[25] = {
 }
 hunterHall[26] = {
 	level:26,
-	wood:4356951,
-	stone:1742781,
-	iron:2614171,
+	wood:2491051,
+	stone:1660701,
+	iron:4151751,
 	blueprints:148,
 	tools:148,
 	tiles:148,
@@ -291,9 +291,9 @@ hunterHall[26] = {
 }
 hunterHall[27] = {
 	level:27,
-	wood:5022676,
-	stone:2009071,
-	iron:3013606,
+	wood:2792806,
+	stone:1861871,
+	iron:4654676,
 	blueprints:179,
 	tools:179,
 	tiles:179,
@@ -302,9 +302,9 @@ hunterHall[27] = {
 }
 hunterHall[28] = {
 	level:28,
-	wood:5734468,
-	stone:2293787,
-	iron:3440681,
+	wood:3099641,
+	stone:2066427,
+	iron:5166068,
 	blueprints:213,
 	tools:213,
 	tiles:213,
@@ -313,9 +313,9 @@ hunterHall[28] = {
 }
 hunterHall[29] = {
 	level:29,
-	wood:6492972,
-	stone:2597189,
-	iron:3895783,
+	wood:3697183,
+	stone:2464789,
+	iron:6161972,
 	blueprints:252,
 	tools:252,
 	tiles:252,
@@ -324,9 +324,9 @@ hunterHall[29] = {
 }
 hunterHall[30] = {
 	level:30,
-	wood:7298832,
-	stone:2919533,
-	iron:4379300,
+	wood:3994100,
+	stone:2662733,
+	iron:6656832,
 	blueprints:295,
 	tools:295,
 	tiles:295,
@@ -335,9 +335,9 @@ hunterHall[30] = {
 }
 hunterHall[31] = {
 	level:31,
-	wood:12444893,
-	stone:4977958,
-	iron:7466936,
+	wood:6609416,
+	stone:4406278,
+	iron:11015693,
 	blueprints:343,
 	tools:343,
 	tiles:343,
@@ -346,9 +346,9 @@ hunterHall[31] = {
 }
 hunterHall[32] = {
 	level:32,
-	wood:13908119,
-	stone:5563248,
-	iron:8344872,
+	wood:7256472,
+	stone:4837648,
+	iron:12094119,
 	blueprints:396,
 	tools:396,
 	tiles:396,
@@ -357,9 +357,9 @@ hunterHall[32] = {
 }
 hunterHall[33] = {
 	level:33,
-	wood:15464719,
-	stone:6185888,
-	iron:9278832,
+	wood:7931832,
+	stone:5287888,
+	iron:13219719,
 	blueprints:454,
 	tools:454,
 	tiles:454,
@@ -368,9 +368,9 @@ hunterHall[33] = {
 }
 hunterHall[34] = {
 	level:34,
-	wood:17116951,
-	stone:6846781,
-	iron:10270171,
+	wood:8619691,
+	stone:5746461,
+	iron:14366151,
 	blueprints:518,
 	tools:518,
 	tiles:518,
@@ -379,9 +379,9 @@ hunterHall[34] = {
 }
 hunterHall[35] = {
 	level:35,
-	wood:18867072,
-	stone:7546829,
-	iron:11320244,
+	wood:9334484,
+	stone:6222989,
+	iron:15557472,
 	blueprints:588,
 	tools:588,
 	tiles:588,
@@ -390,9 +390,9 @@ hunterHall[35] = {
 }
 hunterHall[36] = {
 	level:36,
-	wood:29214176,
-	stone:11685671,
-	iron:17528506,
+	wood:15168586,
+	stone:10112391,
+	iron:25280976,
 	blueprints:663,
 	tools:663,
 	tiles:663,
@@ -401,9 +401,9 @@ hunterHall[36] = {
 }
 hunterHall[37] = {
 	level:37,
-	wood:32063768,
-	stone:12825508,
-	iron:19238261,
+	wood:16468301,
+	stone:10978868,
+	iron:27447168,
 	blueprints:745,
 	tools:745,
 	tiles:745,
@@ -412,9 +412,9 @@ hunterHall[37] = {
 }
 hunterHall[38] = {
 	level:38,
-	wood:35076688,
-	stone:14030676,
-	iron:21046013,
+	wood:17812973,
+	stone:11875316,
+	iron:29688288,
 	blueprints:833,
 	tools:833,
 	tiles:833,
@@ -423,9 +423,9 @@ hunterHall[38] = {
 }
 hunterHall[39] = {
 	level:39,
-	wood:38257008,
-	stone:15302804,
-	iron:22954205,
+	wood:19218125,
+	stone:12812084,
+	iron:32030208,
 	blueprints:928,
 	tools:928,
 	tiles:928,
@@ -434,9 +434,9 @@ hunterHall[39] = {
 }
 hunterHall[40] = {
 	level:40,
-	wood:54990000,
-	stone:21996000,
-	iron:32994000,
+	wood:28707840,
+	stone:19138560,
+	iron:47846400,
 	blueprints:1030,
 	tools:1030,
 	tiles:1030,

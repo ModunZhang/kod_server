@@ -148,9 +148,9 @@ tradeGuild[13] = {
 }
 tradeGuild[14] = {
 	level:14,
-	wood:174183,
-	stone:174183,
-	iron:87092,
+	wood:164583,
+	stone:164583,
+	iron:82292,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -159,9 +159,9 @@ tradeGuild[14] = {
 }
 tradeGuild[15] = {
 	level:15,
-	wood:210714,
-	stone:210714,
-	iron:105357,
+	wood:207514,
+	stone:207514,
+	iron:103757,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -170,9 +170,9 @@ tradeGuild[15] = {
 }
 tradeGuild[16] = {
 	level:16,
-	wood:328288,
-	stone:328288,
-	iron:164144,
+	wood:321888,
+	stone:321888,
+	iron:160944,
 	blueprints:2,
 	tools:2,
 	tiles:2,
@@ -181,9 +181,9 @@ tradeGuild[16] = {
 }
 tradeGuild[17] = {
 	level:17,
-	wood:385280,
-	stone:385280,
-	iron:192640,
+	wood:382080,
+	stone:382080,
+	iron:191040,
 	blueprints:4,
 	tools:4,
 	tiles:4,
@@ -192,9 +192,9 @@ tradeGuild[17] = {
 }
 tradeGuild[18] = {
 	level:18,
-	wood:435232,
-	stone:435232,
-	iron:217616,
+	wood:426432,
+	stone:426432,
+	iron:213216,
 	blueprints:7,
 	tools:7,
 	tiles:7,
@@ -203,9 +203,9 @@ tradeGuild[18] = {
 }
 tradeGuild[19] = {
 	level:19,
-	wood:475008,
-	stone:475008,
-	iron:237504,
+	wood:465408,
+	stone:465408,
+	iron:232704,
 	blueprints:12,
 	tools:12,
 	tiles:12,
@@ -214,9 +214,9 @@ tradeGuild[19] = {
 }
 tradeGuild[20] = {
 	level:20,
-	wood:501472,
-	stone:501472,
-	iron:250736,
+	wood:490272,
+	stone:490272,
+	iron:245136,
 	blueprints:18,
 	tools:18,
 	tiles:18,
@@ -225,9 +225,9 @@ tradeGuild[20] = {
 }
 tradeGuild[21] = {
 	level:21,
-	wood:888884,
-	stone:888884,
-	iron:444442,
+	wood:879284,
+	stone:879284,
+	iron:439642,
 	blueprints:27,
 	tools:27,
 	tiles:27,
@@ -236,9 +236,9 @@ tradeGuild[21] = {
 }
 tradeGuild[22] = {
 	level:22,
-	wood:944288,
-	stone:944288,
-	iron:472144,
+	wood:924288,
+	stone:924288,
+	iron:462144,
 	blueprints:37,
 	tools:37,
 	tiles:37,
@@ -247,9 +247,9 @@ tradeGuild[22] = {
 }
 tradeGuild[23] = {
 	level:23,
-	wood:983885,
-	stone:983885,
-	iron:491943,
+	wood:955085,
+	stone:955085,
+	iron:477543,
 	blueprints:51,
 	tools:51,
 	tiles:51,
@@ -258,9 +258,9 @@ tradeGuild[23] = {
 }
 tradeGuild[24] = {
 	level:24,
-	wood:1127053,
-	stone:1127053,
-	iron:563527,
+	wood:1219853,
+	stone:1219853,
+	iron:609927,
 	blueprints:67,
 	tools:67,
 	tiles:67,
@@ -269,9 +269,9 @@ tradeGuild[24] = {
 }
 tradeGuild[25] = {
 	level:25,
-	wood:1268992,
-	stone:1268992,
-	iron:634496,
+	wood:1348992,
+	stone:1348992,
+	iron:674496,
 	blueprints:86,
 	tools:86,
 	tiles:86,
@@ -280,9 +280,9 @@ tradeGuild[25] = {
 }
 tradeGuild[26] = {
 	level:26,
-	wood:2454829,
-	stone:2454829,
-	iron:1227415,
+	wood:2372429,
+	stone:2372429,
+	iron:1186215,
 	blueprints:108,
 	tools:108,
 	tiles:108,
@@ -291,9 +291,9 @@ tradeGuild[26] = {
 }
 tradeGuild[27] = {
 	level:27,
-	wood:2771815,
-	stone:2771815,
-	iron:1385908,
+	wood:2659815,
+	stone:2659815,
+	iron:1329908,
 	blueprints:134,
 	tools:134,
 	tiles:134,
@@ -302,9 +302,9 @@ tradeGuild[27] = {
 }
 tradeGuild[28] = {
 	level:28,
-	wood:3100839,
-	stone:3100839,
-	iron:1550420,
+	wood:2952039,
+	stone:2952039,
+	iron:1476020,
 	blueprints:163,
 	tools:163,
 	tiles:163,
@@ -313,9 +313,9 @@ tradeGuild[28] = {
 }
 tradeGuild[29] = {
 	level:29,
-	wood:3441127,
-	stone:3441127,
-	iron:1720564,
+	wood:3521127,
+	stone:3521127,
+	iron:1760564,
 	blueprints:197,
 	tools:197,
 	tiles:197,
@@ -324,9 +324,9 @@ tradeGuild[29] = {
 }
 tradeGuild[30] = {
 	level:30,
-	wood:3791904,
-	stone:3791904,
-	iron:1895952,
+	wood:3803904,
+	stone:3803904,
+	iron:1901952,
 	blueprints:234,
 	tools:234,
 	tiles:234,
@@ -335,9 +335,9 @@ tradeGuild[30] = {
 }
 tradeGuild[31] = {
 	level:31,
-	wood:6605082,
-	stone:6605082,
-	iron:3302541,
+	wood:6294682,
+	stone:6294682,
+	iron:3147341,
 	blueprints:277,
 	tools:277,
 	tiles:277,
@@ -346,9 +346,9 @@ tradeGuild[31] = {
 }
 tradeGuild[32] = {
 	level:32,
-	wood:7294925,
-	stone:7294925,
-	iron:3647463,
+	wood:6910925,
+	stone:6910925,
+	iron:3455463,
 	blueprints:324,
 	tools:324,
 	tiles:324,
@@ -357,9 +357,9 @@ tradeGuild[32] = {
 }
 tradeGuild[33] = {
 	level:33,
-	wood:8018125,
-	stone:8018125,
-	iron:4009063,
+	wood:7554125,
+	stone:7554125,
+	iron:3777063,
 	blueprints:376,
 	tools:376,
 	tiles:376,
@@ -368,9 +368,9 @@ tradeGuild[33] = {
 }
 tradeGuild[34] = {
 	level:34,
-	wood:8774829,
-	stone:8774829,
-	iron:4387415,
+	wood:8209229,
+	stone:8209229,
+	iron:4104615,
 	blueprints:433,
 	tools:433,
 	tiles:433,
@@ -379,9 +379,9 @@ tradeGuild[34] = {
 }
 tradeGuild[35] = {
 	level:35,
-	wood:9565184,
-	stone:9565184,
-	iron:4782592,
+	wood:8889984,
+	stone:8889984,
+	iron:4444992,
 	blueprints:496,
 	tools:496,
 	tiles:496,
@@ -390,9 +390,9 @@ tradeGuild[35] = {
 }
 tradeGuild[36] = {
 	level:36,
-	wood:15244672,
-	stone:15244672,
-	iron:7622336,
+	wood:14446272,
+	stone:14446272,
+	iron:7223136,
 	blueprints:564,
 	tools:564,
 	tiles:564,
@@ -401,9 +401,9 @@ tradeGuild[36] = {
 }
 tradeGuild[37] = {
 	level:37,
-	wood:16615296,
-	stone:16615296,
-	iron:8307648,
+	wood:15684096,
+	stone:15684096,
+	iron:7842048,
 	blueprints:640,
 	tools:640,
 	tiles:640,
@@ -412,9 +412,9 @@ tradeGuild[37] = {
 }
 tradeGuild[38] = {
 	level:38,
-	wood:18053536,
-	stone:18053536,
-	iron:9026768,
+	wood:16964736,
+	stone:16964736,
+	iron:8482368,
 	blueprints:720,
 	tools:720,
 	tiles:720,
@@ -423,9 +423,9 @@ tradeGuild[38] = {
 }
 tradeGuild[39] = {
 	level:39,
-	wood:19560576,
-	stone:19560576,
-	iron:9780288,
+	wood:18302976,
+	stone:18302976,
+	iron:9151488,
 	blueprints:810,
 	tools:810,
 	tiles:810,
@@ -434,9 +434,9 @@ tradeGuild[39] = {
 }
 tradeGuild[40] = {
 	level:40,
-	wood:28784000,
-	stone:28784000,
-	iron:14392000,
+	wood:27340800,
+	stone:27340800,
+	iron:13670400,
 	blueprints:900,
 	tools:900,
 	tiles:900,

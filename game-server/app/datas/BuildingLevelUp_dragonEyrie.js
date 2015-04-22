@@ -5,8 +5,8 @@ module.exports = dragonEyrie
 
 dragonEyrie[1] = {
 	level:1,
-	wood:450,
-	stone:600,
+	wood:300,
+	stone:750,
 	iron:450,
 	blueprints:0,
 	tools:0,
@@ -16,8 +16,8 @@ dragonEyrie[1] = {
 }
 dragonEyrie[2] = {
 	level:2,
-	wood:1080,
-	stone:1440,
+	wood:720,
+	stone:1800,
 	iron:1080,
 	blueprints:0,
 	tools:0,
@@ -27,8 +27,8 @@ dragonEyrie[2] = {
 }
 dragonEyrie[3] = {
 	level:3,
-	wood:2160,
-	stone:2880,
+	wood:1440,
+	stone:3600,
 	iron:2160,
 	blueprints:0,
 	tools:0,
@@ -38,8 +38,8 @@ dragonEyrie[3] = {
 }
 dragonEyrie[4] = {
 	level:4,
-	wood:3240,
-	stone:4320,
+	wood:2160,
+	stone:5400,
 	iron:3240,
 	blueprints:0,
 	tools:0,
@@ -49,8 +49,8 @@ dragonEyrie[4] = {
 }
 dragonEyrie[5] = {
 	level:5,
-	wood:4320,
-	stone:5760,
+	wood:2880,
+	stone:7200,
 	iron:4320,
 	blueprints:0,
 	tools:0,
@@ -60,8 +60,8 @@ dragonEyrie[5] = {
 }
 dragonEyrie[6] = {
 	level:6,
-	wood:5400,
-	stone:7200,
+	wood:3600,
+	stone:9000,
 	iron:5400,
 	blueprints:0,
 	tools:0,
@@ -71,8 +71,8 @@ dragonEyrie[6] = {
 }
 dragonEyrie[7] = {
 	level:7,
-	wood:6480,
-	stone:8640,
+	wood:4320,
+	stone:10800,
 	iron:6480,
 	blueprints:0,
 	tools:0,
@@ -82,8 +82,8 @@ dragonEyrie[7] = {
 }
 dragonEyrie[8] = {
 	level:8,
-	wood:8424,
-	stone:11232,
+	wood:5616,
+	stone:14040,
 	iron:8424,
 	blueprints:0,
 	tools:0,
@@ -93,8 +93,8 @@ dragonEyrie[8] = {
 }
 dragonEyrie[9] = {
 	level:9,
-	wood:20736,
-	stone:27648,
+	wood:13824,
+	stone:34560,
 	iron:20736,
 	blueprints:0,
 	tools:0,
@@ -104,8 +104,8 @@ dragonEyrie[9] = {
 }
 dragonEyrie[10] = {
 	level:10,
-	wood:37584,
-	stone:50112,
+	wood:25056,
+	stone:62640,
 	iron:37584,
 	blueprints:0,
 	tools:0,
@@ -115,8 +115,8 @@ dragonEyrie[10] = {
 }
 dragonEyrie[11] = {
 	level:11,
-	wood:95386,
-	stone:127181,
+	wood:63591,
+	stone:158976,
 	iron:95386,
 	blueprints:0,
 	tools:0,
@@ -126,8 +126,8 @@ dragonEyrie[11] = {
 }
 dragonEyrie[12] = {
 	level:12,
-	wood:139968,
-	stone:186624,
+	wood:93312,
+	stone:233280,
 	iron:139968,
 	blueprints:0,
 	tools:0,
@@ -137,8 +137,8 @@ dragonEyrie[12] = {
 }
 dragonEyrie[13] = {
 	level:13,
-	wood:194919,
-	stone:259892,
+	wood:129946,
+	stone:324864,
 	iron:194919,
 	blueprints:0,
 	tools:0,
@@ -148,9 +148,9 @@ dragonEyrie[13] = {
 }
 dragonEyrie[14] = {
 	level:14,
-	wood:249274,
-	stone:332365,
-	iron:249274,
+	wood:164583,
+	stone:411456,
+	iron:246874,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -159,9 +159,9 @@ dragonEyrie[14] = {
 }
 dragonEyrie[15] = {
 	level:15,
-	wood:316071,
-	stone:421428,
-	iron:316071,
+	wood:207514,
+	stone:518784,
+	iron:311271,
 	blueprints:2,
 	tools:2,
 	tiles:2,
@@ -170,9 +170,9 @@ dragonEyrie[15] = {
 }
 dragonEyrie[16] = {
 	level:16,
-	wood:492432,
-	stone:656576,
-	iron:492432,
+	wood:321888,
+	stone:804720,
+	iron:482832,
 	blueprints:4,
 	tools:4,
 	tiles:4,
@@ -181,9 +181,9 @@ dragonEyrie[16] = {
 }
 dragonEyrie[17] = {
 	level:17,
-	wood:565920,
-	stone:754560,
-	iron:565920,
+	wood:382080,
+	stone:955200,
+	iron:573120,
 	blueprints:9,
 	tools:9,
 	tiles:9,
@@ -192,9 +192,9 @@ dragonEyrie[17] = {
 }
 dragonEyrie[18] = {
 	level:18,
-	wood:634848,
-	stone:846464,
-	iron:634848,
+	wood:426432,
+	stone:1066080,
+	iron:639648,
 	blueprints:16,
 	tools:16,
 	tiles:16,
@@ -203,9 +203,9 @@ dragonEyrie[18] = {
 }
 dragonEyrie[19] = {
 	level:19,
-	wood:688512,
-	stone:918016,
-	iron:688512,
+	wood:465408,
+	stone:1163520,
+	iron:698112,
 	blueprints:26,
 	tools:26,
 	tiles:26,
@@ -214,9 +214,9 @@ dragonEyrie[19] = {
 }
 dragonEyrie[20] = {
 	level:20,
-	wood:728208,
-	stone:970944,
-	iron:728208,
+	wood:490272,
+	stone:1225680,
+	iron:735408,
 	blueprints:39,
 	tools:39,
 	tiles:39,
@@ -225,9 +225,9 @@ dragonEyrie[20] = {
 }
 dragonEyrie[21] = {
 	level:21,
-	wood:1297325,
-	stone:1729767,
-	iron:1297325,
+	wood:879284,
+	stone:2198208,
+	iron:1318925,
 	blueprints:57,
 	tools:57,
 	tiles:57,
@@ -236,9 +236,9 @@ dragonEyrie[21] = {
 }
 dragonEyrie[22] = {
 	level:22,
-	wood:1374432,
-	stone:1832576,
-	iron:1374432,
+	wood:924288,
+	stone:2310720,
+	iron:1386432,
 	blueprints:79,
 	tools:79,
 	tiles:79,
@@ -247,9 +247,9 @@ dragonEyrie[22] = {
 }
 dragonEyrie[23] = {
 	level:23,
-	wood:1427828,
-	stone:1903770,
-	iron:1427828,
+	wood:955085,
+	stone:2387712,
+	iron:1432628,
 	blueprints:106,
 	tools:106,
 	tiles:106,
@@ -258,9 +258,9 @@ dragonEyrie[23] = {
 }
 dragonEyrie[24] = {
 	level:24,
-	wood:1738580,
-	stone:2318106,
-	iron:1738580,
+	wood:1219853,
+	stone:3049632,
+	iron:1829780,
 	blueprints:130,
 	tools:130,
 	tiles:130,
@@ -269,9 +269,9 @@ dragonEyrie[24] = {
 }
 dragonEyrie[25] = {
 	level:25,
-	wood:2047488,
-	stone:2729984,
-	iron:2047488,
+	wood:1348992,
+	stone:3372480,
+	iron:2023488,
 	blueprints:160,
 	tools:160,
 	tiles:160,
@@ -280,9 +280,9 @@ dragonEyrie[25] = {
 }
 dragonEyrie[26] = {
 	level:26,
-	wood:3616244,
-	stone:4821658,
-	iron:3616244,
+	wood:2372429,
+	stone:5931072,
+	iron:3558644,
 	blueprints:222,
 	tools:222,
 	tiles:222,
@@ -291,9 +291,9 @@ dragonEyrie[26] = {
 }
 dragonEyrie[27] = {
 	level:27,
-	wood:4085722,
-	stone:5447629,
-	iron:4085722,
+	wood:2659815,
+	stone:6649536,
+	iron:3989722,
 	blueprints:274,
 	tools:274,
 	tiles:274,
@@ -302,9 +302,9 @@ dragonEyrie[27] = {
 }
 dragonEyrie[28] = {
 	level:28,
-	wood:4579258,
-	stone:6105677,
-	iron:4579258,
+	wood:2952039,
+	stone:7380096,
+	iron:4428058,
 	blueprints:333,
 	tools:333,
 	tiles:333,
@@ -313,9 +313,9 @@ dragonEyrie[28] = {
 }
 dragonEyrie[29] = {
 	level:29,
-	wood:5077690,
-	stone:6770253,
-	iron:5077690,
+	wood:3521127,
+	stone:8802816,
+	iron:5281690,
 	blueprints:401,
 	tools:401,
 	tiles:401,
@@ -324,9 +324,9 @@ dragonEyrie[29] = {
 }
 dragonEyrie[30] = {
 	level:30,
-	wood:5681856,
-	stone:7575808,
-	iron:5681856,
+	wood:3803904,
+	stone:9509760,
+	iron:5705856,
 	blueprints:470,
 	tools:470,
 	tiles:470,
@@ -335,9 +335,9 @@ dragonEyrie[30] = {
 }
 dragonEyrie[31] = {
 	level:31,
-	wood:9811623,
-	stone:13082164,
-	iron:9811623,
+	wood:6294682,
+	stone:15736704,
+	iron:9442023,
 	blueprints:562,
 	tools:562,
 	tiles:562,
@@ -346,9 +346,9 @@ dragonEyrie[31] = {
 }
 dragonEyrie[32] = {
 	level:32,
-	wood:10846388,
-	stone:14461850,
-	iron:10846388,
+	wood:6910925,
+	stone:17277312,
+	iron:10366388,
 	blueprints:656,
 	tools:656,
 	tiles:656,
@@ -357,9 +357,9 @@ dragonEyrie[32] = {
 }
 dragonEyrie[33] = {
 	level:33,
-	wood:11919188,
-	stone:15892250,
-	iron:11919188,
+	wood:7554125,
+	stone:18885312,
+	iron:11331188,
 	blueprints:761,
 	tools:761,
 	tiles:761,
@@ -368,9 +368,9 @@ dragonEyrie[33] = {
 }
 dragonEyrie[34] = {
 	level:34,
-	wood:13048244,
-	stone:17397658,
-	iron:13048244,
+	wood:8209229,
+	stone:20523072,
+	iron:12313844,
 	blueprints:876,
 	tools:876,
 	tiles:876,
@@ -379,9 +379,9 @@ dragonEyrie[34] = {
 }
 dragonEyrie[35] = {
 	level:35,
-	wood:14227776,
-	stone:18970368,
-	iron:14227776,
+	wood:8889984,
+	stone:22224960,
+	iron:13334976,
 	blueprints:1002,
 	tools:1002,
 	tiles:1002,
@@ -390,9 +390,9 @@ dragonEyrie[35] = {
 }
 dragonEyrie[36] = {
 	level:36,
-	wood:22747008,
-	stone:30329344,
-	iron:22747008,
+	wood:14446272,
+	stone:36115680,
+	iron:21669408,
 	blueprints:1139,
 	tools:1139,
 	tiles:1139,
@@ -401,9 +401,9 @@ dragonEyrie[36] = {
 }
 dragonEyrie[37] = {
 	level:37,
-	wood:24790944,
-	stone:33054592,
-	iron:24790944,
+	wood:15684096,
+	stone:39210240,
+	iron:23526144,
 	blueprints:1289,
 	tools:1289,
 	tiles:1289,
@@ -412,9 +412,9 @@ dragonEyrie[37] = {
 }
 dragonEyrie[38] = {
 	level:38,
-	wood:26942304,
-	stone:35923072,
-	iron:26942304,
+	wood:16964736,
+	stone:42411840,
+	iron:25447104,
 	blueprints:1451,
 	tools:1451,
 	tiles:1451,
@@ -423,9 +423,9 @@ dragonEyrie[38] = {
 }
 dragonEyrie[39] = {
 	level:39,
-	wood:29196864,
-	stone:38929152,
-	iron:29196864,
+	wood:18302976,
+	stone:45757440,
+	iron:27454464,
 	blueprints:1626,
 	tools:1626,
 	tiles:1626,
@@ -434,9 +434,9 @@ dragonEyrie[39] = {
 }
 dragonEyrie[40] = {
 	level:40,
-	wood:43032000,
-	stone:57376000,
-	iron:43032000,
+	wood:27340800,
+	stone:68352000,
+	iron:41011200,
 	blueprints:1814,
 	tools:1814,
 	tiles:1814,

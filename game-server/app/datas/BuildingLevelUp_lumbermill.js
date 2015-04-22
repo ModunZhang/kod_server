@@ -5,9 +5,9 @@ module.exports = lumbermill
 
 lumbermill[1] = {
 	level:1,
-	wood:200,
-	stone:200,
-	iron:280,
+	wood:203,
+	stone:203,
+	iron:270,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -148,9 +148,9 @@ lumbermill[13] = {
 }
 lumbermill[14] = {
 	level:14,
-	wood:117574,
-	stone:117574,
-	iron:156765,
+	wood:111094,
+	stone:111094,
+	iron:148125,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -159,9 +159,9 @@ lumbermill[14] = {
 }
 lumbermill[15] = {
 	level:15,
-	wood:141032,
-	stone:141032,
-	iron:188043,
+	wood:140072,
+	stone:140072,
+	iron:186763,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -170,9 +170,9 @@ lumbermill[15] = {
 }
 lumbermill[16] = {
 	level:16,
-	wood:219195,
-	stone:219195,
-	iron:292260,
+	wood:217275,
+	stone:217275,
+	iron:289700,
 	blueprints:2,
 	tools:2,
 	tiles:2,
@@ -181,9 +181,9 @@ lumbermill[16] = {
 }
 lumbermill[17] = {
 	level:17,
-	wood:258265,
-	stone:258265,
-	iron:344353,
+	wood:257904,
+	stone:257904,
+	iron:343872,
 	blueprints:3,
 	tools:3,
 	tiles:3,
@@ -192,9 +192,9 @@ lumbermill[17] = {
 }
 lumbermill[18] = {
 	level:18,
-	wood:294082,
-	stone:294082,
-	iron:392109,
+	wood:287842,
+	stone:287842,
+	iron:383789,
 	blueprints:6,
 	tools:6,
 	tiles:6,
@@ -203,9 +203,9 @@ lumbermill[18] = {
 }
 lumbermill[19] = {
 	level:19,
-	wood:324231,
-	stone:324231,
-	iron:432308,
+	wood:314151,
+	stone:314151,
+	iron:418868,
 	blueprints:10,
 	tools:10,
 	tiles:10,
@@ -214,9 +214,9 @@ lumbermill[19] = {
 }
 lumbermill[20] = {
 	level:20,
-	wood:346294,
-	stone:346294,
-	iron:461725,
+	wood:330934,
+	stone:330934,
+	iron:441245,
 	blueprints:16,
 	tools:16,
 	tiles:16,
@@ -225,9 +225,9 @@ lumbermill[20] = {
 }
 lumbermill[21] = {
 	level:21,
-	wood:612597,
-	stone:612597,
-	iron:816795,
+	wood:593517,
+	stone:593517,
+	iron:791355,
 	blueprints:23,
 	tools:23,
 	tiles:23,
@@ -236,9 +236,9 @@ lumbermill[21] = {
 }
 lumbermill[22] = {
 	level:22,
-	wood:655095,
-	stone:655095,
-	iron:873460,
+	wood:623895,
+	stone:623895,
+	iron:831860,
 	blueprints:32,
 	tools:32,
 	tiles:32,
@@ -247,9 +247,9 @@ lumbermill[22] = {
 }
 lumbermill[23] = {
 	level:23,
-	wood:686923,
-	stone:686923,
-	iron:915897,
+	wood:644683,
+	stone:644683,
+	iron:859577,
 	blueprints:44,
 	tools:44,
 	tiles:44,
@@ -258,9 +258,9 @@ lumbermill[23] = {
 }
 lumbermill[24] = {
 	level:24,
-	wood:788361,
-	stone:788361,
-	iron:1051148,
+	wood:823401,
+	stone:823401,
+	iron:1097868,
 	blueprints:58,
 	tools:58,
 	tiles:58,
@@ -269,9 +269,9 @@ lumbermill[24] = {
 }
 lumbermill[25] = {
 	level:25,
-	wood:888370,
-	stone:888370,
-	iron:1184493,
+	wood:910570,
+	stone:910570,
+	iron:1214093,
 	blueprints:74,
 	tools:74,
 	tiles:74,
@@ -280,9 +280,9 @@ lumbermill[25] = {
 }
 lumbermill[26] = {
 	level:26,
-	wood:1692110,
-	stone:1692110,
-	iron:2256146,
+	wood:1601390,
+	stone:1601390,
+	iron:2135186,
 	blueprints:94,
 	tools:94,
 	tiles:94,
@@ -291,9 +291,9 @@ lumbermill[26] = {
 }
 lumbermill[27] = {
 	level:27,
-	wood:1908175,
-	stone:1908175,
-	iron:2544233,
+	wood:1795375,
+	stone:1795375,
+	iron:2393833,
 	blueprints:117,
 	tools:117,
 	tiles:117,
@@ -302,9 +302,9 @@ lumbermill[27] = {
 }
 lumbermill[28] = {
 	level:28,
-	wood:2130866,
-	stone:2130866,
-	iron:2841155,
+	wood:1992626,
+	stone:1992626,
+	iron:2656835,
 	blueprints:144,
 	tools:144,
 	tiles:144,
@@ -313,9 +313,9 @@ lumbermill[28] = {
 }
 lumbermill[29] = {
 	level:29,
-	wood:2359361,
-	stone:2359361,
-	iron:3145814,
+	wood:2376761,
+	stone:2376761,
+	iron:3169014,
 	blueprints:174,
 	tools:174,
 	tiles:174,
@@ -324,9 +324,9 @@ lumbermill[29] = {
 }
 lumbermill[30] = {
 	level:30,
-	wood:2592836,
-	stone:2592836,
-	iron:3457114,
+	wood:2567636,
+	stone:2567636,
+	iron:3423514,
 	blueprints:208,
 	tools:208,
 	tiles:208,
@@ -335,9 +335,9 @@ lumbermill[30] = {
 }
 lumbermill[31] = {
 	level:31,
-	wood:4486031,
-	stone:4486031,
-	iron:5981374,
+	wood:4248911,
+	stone:4248911,
+	iron:5665214,
 	blueprints:247,
 	tools:247,
 	tiles:247,
@@ -346,9 +346,9 @@ lumbermill[31] = {
 }
 lumbermill[32] = {
 	level:32,
-	wood:4943275,
-	stone:4943275,
-	iron:6591033,
+	wood:4664875,
+	stone:4664875,
+	iron:6219833,
 	blueprints:290,
 	tools:290,
 	tiles:290,
@@ -357,9 +357,9 @@ lumbermill[32] = {
 }
 lumbermill[33] = {
 	level:33,
-	wood:5420035,
-	stone:5420035,
-	iron:7226713,
+	wood:5099035,
+	stone:5099035,
+	iron:6798713,
 	blueprints:337,
 	tools:337,
 	tiles:337,
@@ -368,9 +368,9 @@ lumbermill[33] = {
 }
 lumbermill[34] = {
 	level:34,
-	wood:5916110,
-	stone:5916110,
-	iron:7888146,
+	wood:5541230,
+	stone:5541230,
+	iron:7388306,
 	blueprints:390,
 	tools:390,
 	tiles:390,
@@ -379,9 +379,9 @@ lumbermill[34] = {
 }
 lumbermill[35] = {
 	level:35,
-	wood:6431300,
-	stone:6431300,
-	iron:8575066,
+	wood:6000740,
+	stone:6000740,
+	iron:8000986,
 	blueprints:448,
 	tools:448,
 	tiles:448,
@@ -390,9 +390,9 @@ lumbermill[35] = {
 }
 lumbermill[36] = {
 	level:36,
-	wood:10242754,
-	stone:10242754,
-	iron:13657005,
+	wood:9751234,
+	stone:9751234,
+	iron:13001645,
 	blueprints:512,
 	tools:512,
 	tiles:512,
@@ -401,9 +401,9 @@ lumbermill[36] = {
 }
 lumbermill[37] = {
 	level:37,
-	wood:11141525,
-	stone:11141525,
-	iron:14855367,
+	wood:10586765,
+	stone:10586765,
+	iron:14115687,
 	blueprints:580,
 	tools:580,
 	tiles:580,
@@ -412,9 +412,9 @@ lumbermill[37] = {
 }
 lumbermill[38] = {
 	level:38,
-	wood:12081437,
-	stone:12081437,
-	iron:16108583,
+	wood:11451197,
+	stone:11451197,
+	iron:15268263,
 	blueprints:660,
 	tools:660,
 	tiles:660,
@@ -423,9 +423,9 @@ lumbermill[38] = {
 }
 lumbermill[39] = {
 	level:39,
-	wood:13062989,
-	stone:13062989,
-	iron:17417319,
+	wood:12354509,
+	stone:12354509,
+	iron:16472679,
 	blueprints:740,
 	tools:740,
 	tiles:740,
@@ -434,9 +434,9 @@ lumbermill[39] = {
 }
 lumbermill[40] = {
 	level:40,
-	wood:19206000,
-	stone:19206000,
-	iron:25608000,
+	wood:18455040,
+	stone:18455040,
+	iron:24606721,
 	blueprints:830,
 	tools:830,
 	tiles:830,

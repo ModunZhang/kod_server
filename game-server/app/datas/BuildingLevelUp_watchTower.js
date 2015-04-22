@@ -5,9 +5,9 @@ module.exports = watchTower
 
 watchTower[1] = {
 	level:1,
-	wood:440,
-	stone:220,
-	iron:220,
+	wood:350,
+	stone:263,
+	iron:263,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -16,9 +16,9 @@ watchTower[1] = {
 }
 watchTower[2] = {
 	level:2,
-	wood:1050,
-	stone:525,
-	iron:525,
+	wood:840,
+	stone:630,
+	iron:630,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -27,9 +27,9 @@ watchTower[2] = {
 }
 watchTower[3] = {
 	level:3,
-	wood:2100,
-	stone:1050,
-	iron:1050,
+	wood:1680,
+	stone:1260,
+	iron:1260,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -38,9 +38,9 @@ watchTower[3] = {
 }
 watchTower[4] = {
 	level:4,
-	wood:3150,
-	stone:1575,
-	iron:1575,
+	wood:2520,
+	stone:1890,
+	iron:1890,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -49,9 +49,9 @@ watchTower[4] = {
 }
 watchTower[5] = {
 	level:5,
-	wood:4200,
-	stone:2100,
-	iron:2100,
+	wood:3360,
+	stone:2520,
+	iron:2520,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -60,9 +60,9 @@ watchTower[5] = {
 }
 watchTower[6] = {
 	level:6,
-	wood:5250,
-	stone:2625,
-	iron:2625,
+	wood:4200,
+	stone:3150,
+	iron:3150,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -71,9 +71,9 @@ watchTower[6] = {
 }
 watchTower[7] = {
 	level:7,
-	wood:6300,
-	stone:3150,
-	iron:3150,
+	wood:5040,
+	stone:3780,
+	iron:3780,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -82,9 +82,9 @@ watchTower[7] = {
 }
 watchTower[8] = {
 	level:8,
-	wood:8190,
-	stone:4095,
-	iron:4095,
+	wood:6552,
+	stone:4914,
+	iron:4914,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -93,9 +93,9 @@ watchTower[8] = {
 }
 watchTower[9] = {
 	level:9,
-	wood:20160,
-	stone:10080,
-	iron:10080,
+	wood:16128,
+	stone:12096,
+	iron:12096,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -104,9 +104,9 @@ watchTower[9] = {
 }
 watchTower[10] = {
 	level:10,
-	wood:36540,
-	stone:18270,
-	iron:18270,
+	wood:29232,
+	stone:21924,
+	iron:21924,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -115,9 +115,9 @@ watchTower[10] = {
 }
 watchTower[11] = {
 	level:11,
-	wood:92736,
-	stone:46368,
-	iron:46368,
+	wood:74189,
+	stone:55642,
+	iron:55642,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -126,9 +126,9 @@ watchTower[11] = {
 }
 watchTower[12] = {
 	level:12,
-	wood:136080,
-	stone:68040,
-	iron:68040,
+	wood:108864,
+	stone:81648,
+	iron:81648,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -137,9 +137,9 @@ watchTower[12] = {
 }
 watchTower[13] = {
 	level:13,
-	wood:189504,
-	stone:94752,
-	iron:94752,
+	wood:151604,
+	stone:113703,
+	iron:113703,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -148,9 +148,9 @@ watchTower[13] = {
 }
 watchTower[14] = {
 	level:14,
-	wood:234016,
-	stone:117008,
-	iron:117008,
+	wood:192013,
+	stone:144010,
+	iron:144010,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -159,9 +159,9 @@ watchTower[14] = {
 }
 watchTower[15] = {
 	level:15,
-	wood:290624,
-	stone:145312,
-	iron:145312,
+	wood:242100,
+	stone:181575,
+	iron:181575,
 	blueprints:2,
 	tools:2,
 	tiles:2,
@@ -170,9 +170,9 @@ watchTower[15] = {
 }
 watchTower[16] = {
 	level:16,
-	wood:465420,
-	stone:232710,
-	iron:232710,
+	wood:375536,
+	stone:281652,
+	iron:281652,
 	blueprints:3,
 	tools:3,
 	tiles:3,
@@ -181,9 +181,9 @@ watchTower[16] = {
 }
 watchTower[17] = {
 	level:17,
-	wood:555200,
-	stone:277600,
-	iron:277600,
+	wood:445760,
+	stone:334320,
+	iron:334320,
 	blueprints:5,
 	tools:5,
 	tiles:5,
@@ -192,9 +192,9 @@ watchTower[17] = {
 }
 watchTower[18] = {
 	level:18,
-	wood:663880,
-	stone:331940,
-	iron:331940,
+	wood:497504,
+	stone:373128,
+	iron:373128,
 	blueprints:7,
 	tools:7,
 	tiles:7,
@@ -203,9 +203,9 @@ watchTower[18] = {
 }
 watchTower[19] = {
 	level:19,
-	wood:732720,
-	stone:366360,
-	iron:366360,
+	wood:542976,
+	stone:407232,
+	iron:407232,
 	blueprints:12,
 	tools:12,
 	tiles:12,
@@ -214,9 +214,9 @@ watchTower[19] = {
 }
 watchTower[20] = {
 	level:20,
-	wood:802980,
-	stone:401490,
-	iron:401490,
+	wood:571984,
+	stone:428988,
+	iron:428988,
 	blueprints:18,
 	tools:18,
 	tiles:18,
@@ -225,9 +225,9 @@ watchTower[20] = {
 }
 watchTower[21] = {
 	level:21,
-	wood:1386288,
-	stone:693144,
-	iron:693144,
+	wood:1025831,
+	stone:769373,
+	iron:769373,
 	blueprints:27,
 	tools:27,
 	tiles:27,
@@ -236,9 +236,9 @@ watchTower[21] = {
 }
 watchTower[22] = {
 	level:22,
-	wood:1497920,
-	stone:748960,
-	iron:748960,
+	wood:1078336,
+	stone:808752,
+	iron:808752,
 	blueprints:38,
 	tools:38,
 	tiles:38,
@@ -247,9 +247,9 @@ watchTower[22] = {
 }
 watchTower[23] = {
 	level:23,
-	wood:1544832,
-	stone:772416,
-	iron:772416,
+	wood:1114266,
+	stone:835700,
+	iron:835700,
 	blueprints:54,
 	tools:54,
 	tiles:54,
@@ -258,9 +258,9 @@ watchTower[23] = {
 }
 watchTower[24] = {
 	level:24,
-	wood:1746952,
-	stone:873476,
-	iron:873476,
+	wood:1423162,
+	stone:1067372,
+	iron:1067372,
 	blueprints:73,
 	tools:73,
 	tiles:73,
@@ -269,9 +269,9 @@ watchTower[24] = {
 }
 watchTower[25] = {
 	level:25,
-	wood:1957280,
-	stone:978640,
-	iron:978640,
+	wood:1573824,
+	stone:1180368,
+	iron:1180368,
 	blueprints:95,
 	tools:95,
 	tiles:95,
@@ -280,9 +280,9 @@ watchTower[25] = {
 }
 watchTower[26] = {
 	level:26,
-	wood:3605792,
-	stone:1802896,
-	iron:1802896,
+	wood:2767834,
+	stone:2075876,
+	iron:2075876,
 	blueprints:125,
 	tools:125,
 	tiles:125,
@@ -291,9 +291,9 @@ watchTower[26] = {
 }
 watchTower[27] = {
 	level:27,
-	wood:3968896,
-	stone:1984448,
-	iron:1984448,
+	wood:3103117,
+	stone:2327338,
+	iron:2327338,
 	blueprints:160,
 	tools:160,
 	tiles:160,
@@ -302,9 +302,9 @@ watchTower[27] = {
 }
 watchTower[28] = {
 	level:28,
-	wood:4337056,
-	stone:2168528,
-	iron:2168528,
+	wood:3444045,
+	stone:2583034,
+	iron:2583034,
 	blueprints:200,
 	tools:200,
 	tiles:200,
@@ -313,9 +313,9 @@ watchTower[28] = {
 }
 watchTower[29] = {
 	level:29,
-	wood:4814976,
-	stone:2407488,
-	iron:2407488,
+	wood:4107981,
+	stone:3080986,
+	iron:3080986,
 	blueprints:240,
 	tools:240,
 	tiles:240,
@@ -324,9 +324,9 @@ watchTower[29] = {
 }
 watchTower[30] = {
 	level:30,
-	wood:5407360,
-	stone:2703680,
-	iron:2703680,
+	wood:4437888,
+	stone:3328416,
+	iron:3328416,
 	blueprints:280,
 	tools:280,
 	tiles:280,
@@ -335,9 +335,9 @@ watchTower[30] = {
 }
 watchTower[31] = {
 	level:31,
-	wood:8855744,
-	stone:4427872,
-	iron:4427872,
+	wood:7343796,
+	stone:5507847,
+	iron:5507847,
 	blueprints:362,
 	tools:362,
 	tiles:362,
@@ -346,9 +346,9 @@ watchTower[31] = {
 }
 watchTower[32] = {
 	level:32,
-	wood:9578432,
-	stone:4789216,
-	iron:4789216,
+	wood:8062746,
+	stone:6047060,
+	iron:6047060,
 	blueprints:431,
 	tools:431,
 	tiles:431,
@@ -357,9 +357,9 @@ watchTower[32] = {
 }
 watchTower[33] = {
 	level:33,
-	wood:10286432,
-	stone:5143216,
-	iron:5143216,
+	wood:8813146,
+	stone:6609860,
+	iron:6609860,
 	blueprints:509,
 	tools:509,
 	tiles:509,
@@ -368,9 +368,9 @@ watchTower[33] = {
 }
 watchTower[34] = {
 	level:34,
-	wood:11705792,
-	stone:5852896,
-	iron:5852896,
+	wood:9577434,
+	stone:7183076,
+	iron:7183076,
 	blueprints:560,
 	tools:560,
 	tiles:560,
@@ -379,9 +379,9 @@ watchTower[34] = {
 }
 watchTower[35] = {
 	level:35,
-	wood:12322560,
-	stone:6161280,
-	iron:6161280,
+	wood:10371648,
+	stone:7778736,
+	iron:7778736,
 	blueprints:660,
 	tools:660,
 	tiles:660,
@@ -390,9 +390,9 @@ watchTower[35] = {
 }
 watchTower[36] = {
 	level:36,
-	wood:19443480,
-	stone:9721740,
-	iron:9721740,
+	wood:16853984,
+	stone:12640488,
+	iron:12640488,
 	blueprints:798,
 	tools:798,
 	tiles:798,
@@ -401,9 +401,9 @@ watchTower[36] = {
 }
 watchTower[37] = {
 	level:37,
-	wood:20840640,
-	stone:10420320,
-	iron:10420320,
+	wood:18298112,
+	stone:13723584,
+	iron:13723584,
 	blueprints:915,
 	tools:915,
 	tiles:915,
@@ -412,9 +412,9 @@ watchTower[37] = {
 }
 watchTower[38] = {
 	level:38,
-	wood:22282240,
-	stone:11141120,
-	iron:11141120,
+	wood:19792192,
+	stone:14844144,
+	iron:14844144,
 	blueprints:1042,
 	tools:1042,
 	tiles:1042,
@@ -423,9 +423,9 @@ watchTower[38] = {
 }
 watchTower[39] = {
 	level:39,
-	wood:23715840,
-	stone:11857920,
-	iron:11857920,
+	wood:21353472,
+	stone:16015104,
+	iron:16015104,
 	blueprints:1182,
 	tools:1182,
 	tiles:1182,
@@ -434,9 +434,9 @@ watchTower[39] = {
 }
 watchTower[40] = {
 	level:40,
-	wood:36340000,
-	stone:18170000,
-	iron:18170000,
+	wood:31897600,
+	stone:23923200,
+	iron:23923200,
 	blueprints:1350,
 	tools:1350,
 	tiles:1350,

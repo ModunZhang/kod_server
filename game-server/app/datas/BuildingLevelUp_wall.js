@@ -148,9 +148,9 @@ wall[13] = {
 }
 wall[14] = {
 	level:14,
-	wood:108122,
-	stone:270304,
-	iron:162183,
+	wood:109722,
+	stone:274304,
+	iron:164583,
 	blueprints:2,
 	tools:2,
 	tiles:2,
@@ -159,9 +159,9 @@ wall[14] = {
 }
 wall[15] = {
 	level:15,
-	wood:139143,
-	stone:347856,
-	iron:208714,
+	wood:138343,
+	stone:345856,
+	iron:207514,
 	blueprints:4,
 	tools:4,
 	tiles:4,
@@ -170,9 +170,9 @@ wall[15] = {
 }
 wall[16] = {
 	level:16,
-	wood:220192,
-	stone:550480,
-	iron:330288,
+	wood:214592,
+	stone:536480,
+	iron:321888,
 	blueprints:8,
 	tools:8,
 	tiles:8,
@@ -181,9 +181,9 @@ wall[16] = {
 }
 wall[17] = {
 	level:17,
-	wood:263520,
-	stone:658800,
-	iron:395280,
+	wood:254720,
+	stone:636800,
+	iron:382080,
 	blueprints:13,
 	tools:13,
 	tiles:13,
@@ -192,9 +192,9 @@ wall[17] = {
 }
 wall[18] = {
 	level:18,
-	wood:303488,
-	stone:758720,
-	iron:455232,
+	wood:284288,
+	stone:710720,
+	iron:426432,
 	blueprints:21,
 	tools:21,
 	tiles:21,
@@ -203,9 +203,9 @@ wall[18] = {
 }
 wall[19] = {
 	level:19,
-	wood:336672,
-	stone:841680,
-	iron:505008,
+	wood:310272,
+	stone:775680,
+	iron:465408,
 	blueprints:32,
 	tools:32,
 	tiles:32,
@@ -214,9 +214,9 @@ wall[19] = {
 }
 wall[20] = {
 	level:20,
-	wood:359648,
-	stone:899120,
-	iron:539472,
+	wood:326848,
+	stone:817120,
+	iron:490272,
 	blueprints:47,
 	tools:47,
 	tiles:47,
@@ -225,9 +225,9 @@ wall[20] = {
 }
 wall[21] = {
 	level:21,
-	wood:620589,
-	stone:1551472,
-	iron:930884,
+	wood:586189,
+	stone:1465472,
+	iron:879284,
 	blueprints:65,
 	tools:65,
 	tiles:65,
@@ -236,9 +236,9 @@ wall[21] = {
 }
 wall[22] = {
 	level:22,
-	wood:656192,
-	stone:1640480,
-	iron:984288,
+	wood:616192,
+	stone:1540480,
+	iron:924288,
 	blueprints:88,
 	tools:88,
 	tiles:88,
@@ -247,9 +247,9 @@ wall[22] = {
 }
 wall[23] = {
 	level:23,
-	wood:675924,
-	stone:1689808,
-	iron:1013885,
+	wood:636724,
+	stone:1591808,
+	iron:955085,
 	blueprints:100,
 	tools:100,
 	tiles:100,
@@ -258,9 +258,9 @@ wall[23] = {
 }
 wall[24] = {
 	level:24,
-	wood:758036,
-	stone:1895088,
-	iron:1137053,
+	wood:813236,
+	stone:2033088,
+	iron:1219853,
 	blueprints:150,
 	tools:150,
 	tiles:150,
@@ -269,9 +269,9 @@ wall[24] = {
 }
 wall[25] = {
 	level:25,
-	wood:831328,
-	stone:2078320,
-	iron:1246992,
+	wood:899328,
+	stone:2248320,
+	iron:1348992,
 	blueprints:189,
 	tools:189,
 	tiles:189,
@@ -280,9 +280,9 @@ wall[25] = {
 }
 wall[26] = {
 	level:26,
-	wood:1591220,
-	stone:3978048,
-	iron:2386829,
+	wood:1581620,
+	stone:3954048,
+	iron:2372429,
 	blueprints:235,
 	tools:235,
 	tiles:235,
@@ -291,9 +291,9 @@ wall[26] = {
 }
 wall[27] = {
 	level:27,
-	wood:1761210,
-	stone:4403024,
-	iron:2641815,
+	wood:1773210,
+	stone:4433024,
+	iron:2659815,
 	blueprints:260,
 	tools:260,
 	tiles:260,
@@ -302,9 +302,9 @@ wall[27] = {
 }
 wall[28] = {
 	level:28,
-	wood:1927226,
-	stone:4818064,
-	iron:2890839,
+	wood:1968026,
+	stone:4920064,
+	iron:2952039,
 	blueprints:320,
 	tools:320,
 	tiles:320,
@@ -313,9 +313,9 @@ wall[28] = {
 }
 wall[29] = {
 	level:29,
-	wood:2087418,
-	stone:5218544,
-	iron:3131127,
+	wood:2347418,
+	stone:5868544,
+	iron:3521127,
 	blueprints:417,
 	tools:417,
 	tiles:417,
@@ -324,9 +324,9 @@ wall[29] = {
 }
 wall[30] = {
 	level:30,
-	wood:2239936,
-	stone:5599840,
-	iron:3359904,
+	wood:2535936,
+	stone:6339840,
+	iron:3803904,
 	blueprints:494,
 	tools:494,
 	tiles:494,
@@ -335,9 +335,9 @@ wall[30] = {
 }
 wall[31] = {
 	level:31,
-	wood:4018055,
-	stone:10045136,
-	iron:6027082,
+	wood:4196455,
+	stone:10491136,
+	iron:6294682,
 	blueprints:580,
 	tools:580,
 	tiles:580,
@@ -346,9 +346,9 @@ wall[31] = {
 }
 wall[32] = {
 	level:32,
-	wood:4363284,
-	stone:10908208,
-	iron:6544925,
+	wood:4607284,
+	stone:11518208,
+	iron:6910925,
 	blueprints:660,
 	tools:660,
 	tiles:660,
@@ -357,9 +357,9 @@ wall[32] = {
 }
 wall[33] = {
 	level:33,
-	wood:4712084,
-	stone:11780208,
-	iron:7068125,
+	wood:5036084,
+	stone:12590208,
+	iron:7554125,
 	blueprints:760,
 	tools:760,
 	tiles:760,
@@ -368,9 +368,9 @@ wall[33] = {
 }
 wall[34] = {
 	level:34,
-	wood:5063220,
-	stone:12658048,
-	iron:7594829,
+	wood:5472820,
+	stone:13682048,
+	iron:8209229,
 	blueprints:900,
 	tools:900,
 	tiles:900,
@@ -379,9 +379,9 @@ wall[34] = {
 }
 wall[35] = {
 	level:35,
-	wood:5415456,
-	stone:13538640,
-	iron:8123184,
+	wood:5926656,
+	stone:14816640,
+	iron:8889984,
 	blueprints:1024,
 	tools:1024,
 	tiles:1024,
@@ -390,9 +390,9 @@ wall[35] = {
 }
 wall[36] = {
 	level:36,
-	wood:9004448,
-	stone:22511120,
-	iron:13506672,
+	wood:9630848,
+	stone:24077120,
+	iron:14446272,
 	blueprints:1160,
 	tools:1160,
 	tiles:1160,
@@ -401,9 +401,9 @@ wall[36] = {
 }
 wall[37] = {
 	level:37,
-	wood:9696864,
-	stone:24242160,
-	iron:14545296,
+	wood:10456064,
+	stone:26140160,
+	iron:15684096,
 	blueprints:1320,
 	tools:1320,
 	tiles:1320,
@@ -412,9 +412,9 @@ wall[37] = {
 }
 wall[38] = {
 	level:38,
-	wood:10409024,
-	stone:26022560,
-	iron:15613536,
+	wood:11309824,
+	stone:28274560,
+	iron:16964736,
 	blueprints:1480,
 	tools:1480,
 	tiles:1480,
@@ -423,9 +423,9 @@ wall[38] = {
 }
 wall[39] = {
 	level:39,
-	wood:11140384,
-	stone:27850960,
-	iron:16710576,
+	wood:12201984,
+	stone:30504960,
+	iron:18302976,
 	blueprints:1320,
 	tools:1320,
 	tiles:1320,
@@ -434,9 +434,9 @@ wall[39] = {
 }
 wall[40] = {
 	level:40,
-	wood:16988000,
-	stone:42470000,
-	iron:25482000,
+	wood:18227200,
+	stone:45568000,
+	iron:27340800,
 	blueprints:1480,
 	tools:1480,
 	tiles:1480,

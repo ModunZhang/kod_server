@@ -5,9 +5,9 @@ module.exports = mill
 
 mill[1] = {
 	level:1,
-	wood:325,
+	wood:260,
 	stone:195,
-	iron:130,
+	iron:195,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -16,9 +16,9 @@ mill[1] = {
 }
 mill[2] = {
 	level:2,
-	wood:780,
+	wood:624,
 	stone:468,
-	iron:312,
+	iron:468,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -27,9 +27,9 @@ mill[2] = {
 }
 mill[3] = {
 	level:3,
-	wood:1560,
+	wood:1248,
 	stone:936,
-	iron:624,
+	iron:936,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -38,9 +38,9 @@ mill[3] = {
 }
 mill[4] = {
 	level:4,
-	wood:2340,
+	wood:1872,
 	stone:1404,
-	iron:936,
+	iron:1404,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -49,9 +49,9 @@ mill[4] = {
 }
 mill[5] = {
 	level:5,
-	wood:3120,
+	wood:2496,
 	stone:1872,
-	iron:1248,
+	iron:1872,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -60,9 +60,9 @@ mill[5] = {
 }
 mill[6] = {
 	level:6,
-	wood:3900,
+	wood:3120,
 	stone:2340,
-	iron:1560,
+	iron:2340,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -71,9 +71,9 @@ mill[6] = {
 }
 mill[7] = {
 	level:7,
-	wood:4680,
+	wood:3744,
 	stone:2808,
-	iron:1872,
+	iron:2808,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -82,9 +82,9 @@ mill[7] = {
 }
 mill[8] = {
 	level:8,
-	wood:6084,
+	wood:4868,
 	stone:3651,
-	iron:2434,
+	iron:3651,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -93,9 +93,9 @@ mill[8] = {
 }
 mill[9] = {
 	level:9,
-	wood:14976,
+	wood:11981,
 	stone:8986,
-	iron:5991,
+	iron:8986,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -104,9 +104,9 @@ mill[9] = {
 }
 mill[10] = {
 	level:10,
-	wood:27144,
+	wood:21716,
 	stone:16287,
-	iron:10858,
+	iron:16287,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -115,9 +115,9 @@ mill[10] = {
 }
 mill[11] = {
 	level:11,
-	wood:68890,
+	wood:55112,
 	stone:41334,
-	iron:27556,
+	iron:41334,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -126,9 +126,9 @@ mill[11] = {
 }
 mill[12] = {
 	level:12,
-	wood:101088,
+	wood:80871,
 	stone:60653,
-	iron:40436,
+	iron:60653,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -137,9 +137,9 @@ mill[12] = {
 }
 mill[13] = {
 	level:13,
-	wood:140775,
+	wood:112620,
 	stone:84465,
-	iron:56310,
+	iron:84465,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -148,9 +148,9 @@ mill[13] = {
 }
 mill[14] = {
 	level:14,
-	wood:188698,
-	stone:113219,
-	iron:75480,
+	wood:142639,
+	stone:106979,
+	iron:106979,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -159,9 +159,9 @@ mill[14] = {
 }
 mill[15] = {
 	level:15,
-	wood:225607,
-	stone:135364,
-	iron:90243,
+	wood:179846,
+	stone:134884,
+	iron:134884,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -170,9 +170,9 @@ mill[15] = {
 }
 mill[16] = {
 	level:16,
-	wood:350312,
-	stone:210188,
-	iron:140125,
+	wood:278970,
+	stone:209228,
+	iron:209228,
 	blueprints:2,
 	tools:2,
 	tiles:2,
@@ -181,9 +181,9 @@ mill[16] = {
 }
 mill[17] = {
 	level:17,
-	wood:411720,
-	stone:247032,
-	iron:164688,
+	wood:331136,
+	stone:248352,
+	iron:248352,
 	blueprints:3,
 	tools:3,
 	tiles:3,
@@ -192,9 +192,9 @@ mill[17] = {
 }
 mill[18] = {
 	level:18,
-	wood:467168,
-	stone:280301,
-	iron:186868,
+	wood:369575,
+	stone:277181,
+	iron:277181,
 	blueprints:6,
 	tools:6,
 	tiles:6,
@@ -203,9 +203,9 @@ mill[18] = {
 }
 mill[19] = {
 	level:19,
-	wood:512592,
-	stone:307556,
-	iron:205037,
+	wood:403354,
+	stone:302516,
+	iron:302516,
 	blueprints:10,
 	tools:10,
 	tiles:10,
@@ -214,9 +214,9 @@ mill[19] = {
 }
 mill[20] = {
 	level:20,
-	wood:543928,
-	stone:326357,
-	iron:217572,
+	wood:424903,
+	stone:318677,
+	iron:318677,
 	blueprints:16,
 	tools:16,
 	tiles:16,
@@ -225,9 +225,9 @@ mill[20] = {
 }
 mill[21] = {
 	level:21,
-	wood:965957,
-	stone:579575,
-	iron:386383,
+	wood:762046,
+	stone:571535,
+	iron:571535,
 	blueprints:23,
 	tools:23,
 	tiles:23,
@@ -236,9 +236,9 @@ mill[21] = {
 }
 mill[22] = {
 	level:22,
-	wood:1027312,
-	stone:616388,
-	iron:410925,
+	wood:801050,
+	stone:600788,
+	iron:600788,
 	blueprints:32,
 	tools:32,
 	tiles:32,
@@ -247,9 +247,9 @@ mill[22] = {
 }
 mill[23] = {
 	level:23,
-	wood:1069876,
-	stone:641926,
-	iron:427951,
+	wood:827741,
+	stone:620806,
+	iron:620806,
 	blueprints:44,
 	tools:44,
 	tiles:44,
@@ -258,9 +258,9 @@ mill[23] = {
 }
 mill[24] = {
 	level:24,
-	wood:1222308,
-	stone:733385,
-	iron:488923,
+	wood:1057206,
+	stone:792905,
+	iron:792905,
 	blueprints:58,
 	tools:58,
 	tiles:58,
@@ -269,9 +269,9 @@ mill[24] = {
 }
 mill[25] = {
 	level:25,
-	wood:1370408,
-	stone:822245,
-	iron:548164,
+	wood:1169127,
+	stone:876845,
+	iron:876845,
 	blueprints:74,
 	tools:74,
 	tiles:74,
@@ -280,9 +280,9 @@ mill[25] = {
 }
 mill[26] = {
 	level:26,
-	wood:2645732,
-	stone:1587439,
-	iron:1058293,
+	wood:2056105,
+	stone:1542079,
+	iron:1542079,
 	blueprints:94,
 	tools:94,
 	tiles:94,
@@ -291,9 +291,9 @@ mill[26] = {
 }
 mill[27] = {
 	level:27,
-	wood:2975466,
-	stone:1785280,
-	iron:1190187,
+	wood:2305173,
+	stone:1728880,
+	iron:1728880,
 	blueprints:117,
 	tools:117,
 	tiles:117,
@@ -302,9 +302,9 @@ mill[27] = {
 }
 mill[28] = {
 	level:28,
-	wood:3313242,
-	stone:1987945,
-	iron:1325297,
+	wood:2558434,
+	stone:1918825,
+	iron:1918825,
 	blueprints:144,
 	tools:144,
 	tiles:144,
@@ -313,9 +313,9 @@ mill[28] = {
 }
 mill[29] = {
 	level:29,
-	wood:3657554,
-	stone:2194533,
-	iron:1463022,
+	wood:3051643,
+	stone:2288733,
+	iron:2288733,
 	blueprints:174,
 	tools:174,
 	tiles:174,
@@ -324,9 +324,9 @@ mill[29] = {
 }
 mill[30] = {
 	level:30,
-	wood:4006896,
-	stone:2404138,
-	iron:1602759,
+	wood:3296717,
+	stone:2472538,
+	iron:2472538,
 	blueprints:208,
 	tools:208,
 	tiles:208,
@@ -335,9 +335,9 @@ mill[30] = {
 }
 mill[31] = {
 	level:31,
-	wood:7016839,
-	stone:4210104,
-	iron:2806736,
+	wood:5455391,
+	stone:4091544,
+	iron:4091544,
 	blueprints:247,
 	tools:247,
 	tiles:247,
@@ -346,9 +346,9 @@ mill[31] = {
 }
 mill[32] = {
 	level:32,
-	wood:7718836,
-	stone:4631302,
-	iron:3087535,
+	wood:5989469,
+	stone:4492102,
+	iron:4492102,
 	blueprints:290,
 	tools:290,
 	tiles:290,
@@ -357,9 +357,9 @@ mill[32] = {
 }
 mill[33] = {
 	level:33,
-	wood:8448636,
-	stone:5069182,
-	iron:3379455,
+	wood:6546909,
+	stone:4910182,
+	iron:4910182,
 	blueprints:337,
 	tools:337,
 	tiles:337,
@@ -368,9 +368,9 @@ mill[33] = {
 }
 mill[34] = {
 	level:34,
-	wood:9205732,
-	stone:5523439,
-	iron:3682293,
+	wood:7114665,
+	stone:5335999,
+	iron:5335999,
 	blueprints:390,
 	tools:390,
 	tiles:390,
@@ -379,9 +379,9 @@ mill[34] = {
 }
 mill[35] = {
 	level:35,
-	wood:9989616,
-	stone:5993770,
-	iron:3995847,
+	wood:7704653,
+	stone:5778490,
+	iron:5778490,
 	blueprints:448,
 	tools:448,
 	tiles:448,
@@ -390,9 +390,9 @@ mill[35] = {
 }
 mill[36] = {
 	level:36,
-	wood:16059728,
-	stone:9635837,
-	iron:6423892,
+	wood:12520103,
+	stone:9390077,
+	iron:9390077,
 	blueprints:512,
 	tools:512,
 	tiles:512,
@@ -401,9 +401,9 @@ mill[36] = {
 }
 mill[37] = {
 	level:37,
-	wood:17450904,
-	stone:10470543,
-	iron:6980362,
+	wood:13592884,
+	stone:10194663,
+	iron:10194663,
 	blueprints:580,
 	tools:580,
 	tiles:580,
@@ -412,9 +412,9 @@ mill[37] = {
 }
 mill[38] = {
 	level:38,
-	wood:18903664,
-	stone:11342199,
-	iron:7561466,
+	wood:14702772,
+	stone:11027079,
+	iron:11027079,
 	blueprints:660,
 	tools:660,
 	tiles:660,
@@ -423,9 +423,9 @@ mill[38] = {
 }
 mill[39] = {
 	level:39,
-	wood:20418624,
-	stone:12251175,
-	iron:8167450,
+	wood:15862580,
+	stone:11896935,
+	iron:11896935,
 	blueprints:740,
 	tools:740,
 	tiles:740,
@@ -434,9 +434,9 @@ mill[39] = {
 }
 mill[40] = {
 	level:40,
-	wood:30210000,
-	stone:18126000,
-	iron:12084000,
+	wood:23695360,
+	stone:17771520,
+	iron:17771520,
 	blueprints:830,
 	tools:830,
 	tiles:830,

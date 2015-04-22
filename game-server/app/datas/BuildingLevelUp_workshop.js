@@ -6,8 +6,8 @@ module.exports = workshop
 workshop[1] = {
 	level:1,
 	wood:330,
-	stone:440,
-	iron:330,
+	stone:330,
+	iron:440,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -17,8 +17,8 @@ workshop[1] = {
 workshop[2] = {
 	level:2,
 	wood:792,
-	stone:1056,
-	iron:792,
+	stone:792,
+	iron:1056,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -28,8 +28,8 @@ workshop[2] = {
 workshop[3] = {
 	level:3,
 	wood:1584,
-	stone:2112,
-	iron:1584,
+	stone:1584,
+	iron:2112,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -39,8 +39,8 @@ workshop[3] = {
 workshop[4] = {
 	level:4,
 	wood:2376,
-	stone:3168,
-	iron:2376,
+	stone:2376,
+	iron:3168,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -50,8 +50,8 @@ workshop[4] = {
 workshop[5] = {
 	level:5,
 	wood:3168,
-	stone:4224,
-	iron:3168,
+	stone:3168,
+	iron:4224,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -61,8 +61,8 @@ workshop[5] = {
 workshop[6] = {
 	level:6,
 	wood:3960,
-	stone:5280,
-	iron:3960,
+	stone:3960,
+	iron:5280,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -72,8 +72,8 @@ workshop[6] = {
 workshop[7] = {
 	level:7,
 	wood:4752,
-	stone:6336,
-	iron:4752,
+	stone:4752,
+	iron:6336,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -83,8 +83,8 @@ workshop[7] = {
 workshop[8] = {
 	level:8,
 	wood:6178,
-	stone:8237,
-	iron:6178,
+	stone:6178,
+	iron:8237,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -94,8 +94,8 @@ workshop[8] = {
 workshop[9] = {
 	level:9,
 	wood:15207,
-	stone:20276,
-	iron:15207,
+	stone:15207,
+	iron:20276,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -105,8 +105,8 @@ workshop[9] = {
 workshop[10] = {
 	level:10,
 	wood:27562,
-	stone:36749,
-	iron:27562,
+	stone:27562,
+	iron:36749,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -115,9 +115,9 @@ workshop[10] = {
 }
 workshop[11] = {
 	level:11,
-	wood:62750,
-	stone:83666,
-	iron:62750,
+	wood:69950,
+	stone:69950,
+	iron:93266,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -126,9 +126,9 @@ workshop[11] = {
 }
 workshop[12] = {
 	level:12,
-	wood:84644,
-	stone:112858,
-	iron:84644,
+	wood:102644,
+	stone:102644,
+	iron:136858,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -137,9 +137,9 @@ workshop[12] = {
 }
 workshop[13] = {
 	level:13,
-	wood:115941,
-	stone:154587,
-	iron:115941,
+	wood:142941,
+	stone:142941,
+	iron:190587,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -148,9 +148,9 @@ workshop[13] = {
 }
 workshop[14] = {
 	level:14,
-	wood:149601,
-	stone:199468,
-	iron:149601,
+	wood:181041,
+	stone:181041,
+	iron:241388,
 	blueprints:3,
 	tools:3,
 	tiles:3,
@@ -159,9 +159,9 @@ workshop[14] = {
 }
 workshop[15] = {
 	level:15,
-	wood:183385,
-	stone:244514,
-	iron:183385,
+	wood:228265,
+	stone:228265,
+	iron:304354,
 	blueprints:5,
 	tools:5,
 	tiles:5,
@@ -170,9 +170,9 @@ workshop[15] = {
 }
 workshop[16] = {
 	level:16,
-	wood:294317,
-	stone:392423,
-	iron:294317,
+	wood:354077,
+	stone:354077,
+	iron:472103,
 	blueprints:8,
 	tools:8,
 	tiles:8,
@@ -181,9 +181,9 @@ workshop[16] = {
 }
 workshop[17] = {
 	level:17,
-	wood:341208,
-	stone:454944,
-	iron:341208,
+	wood:420288,
+	stone:420288,
+	iron:560384,
 	blueprints:12,
 	tools:12,
 	tiles:12,
@@ -192,9 +192,9 @@ workshop[17] = {
 }
 workshop[18] = {
 	level:18,
-	wood:384356,
-	stone:512474,
-	iron:384356,
+	wood:469076,
+	stone:469076,
+	iron:625434,
 	blueprints:18,
 	tools:18,
 	tiles:18,
@@ -203,9 +203,9 @@ workshop[18] = {
 }
 workshop[19] = {
 	level:19,
-	wood:421709,
-	stone:562279,
-	iron:421709,
+	wood:511949,
+	stone:511949,
+	iron:682599,
 	blueprints:26,
 	tools:26,
 	tiles:26,
@@ -214,9 +214,9 @@ workshop[19] = {
 }
 workshop[20] = {
 	level:20,
-	wood:451220,
-	stone:601626,
-	iron:451220,
+	wood:539300,
+	stone:539300,
+	iron:719066,
 	blueprints:35,
 	tools:35,
 	tiles:35,
@@ -225,9 +225,9 @@ workshop[20] = {
 }
 workshop[21] = {
 	level:21,
-	wood:885972,
-	stone:1181296,
-	iron:885972,
+	wood:967212,
+	stone:967212,
+	iron:1289616,
 	blueprints:47,
 	tools:47,
 	tiles:47,
@@ -236,9 +236,9 @@ workshop[21] = {
 }
 workshop[22] = {
 	level:22,
-	wood:965117,
-	stone:1286823,
-	iron:965117,
+	wood:1016717,
+	stone:1016717,
+	iron:1355623,
 	blueprints:61,
 	tools:61,
 	tiles:61,
@@ -247,9 +247,9 @@ workshop[22] = {
 }
 workshop[23] = {
 	level:23,
-	wood:1037874,
-	stone:1383832,
-	iron:1037874,
+	wood:1050594,
+	stone:1050594,
+	iron:1400792,
 	blueprints:78,
 	tools:78,
 	tiles:78,
@@ -258,9 +258,9 @@ workshop[23] = {
 }
 workshop[24] = {
 	level:24,
-	wood:1236959,
-	stone:1649278,
-	iron:1236959,
+	wood:1341839,
+	stone:1341839,
+	iron:1789118,
 	blueprints:98,
 	tools:98,
 	tiles:98,
@@ -269,9 +269,9 @@ workshop[24] = {
 }
 workshop[25] = {
 	level:25,
-	wood:1448492,
-	stone:1931322,
-	iron:1448492,
+	wood:1483892,
+	stone:1483892,
+	iron:1978522,
 	blueprints:121,
 	tools:121,
 	tiles:121,
@@ -280,9 +280,9 @@ workshop[25] = {
 }
 workshop[26] = {
 	level:26,
-	wood:2823512,
-	stone:3764683,
-	iron:2823512,
+	wood:2609672,
+	stone:2609672,
+	iron:3479563,
 	blueprints:148,
 	tools:148,
 	tiles:148,
@@ -291,9 +291,9 @@ workshop[26] = {
 }
 workshop[27] = {
 	level:27,
-	wood:3259396,
-	stone:4345862,
-	iron:3259396,
+	wood:2925796,
+	stone:2925796,
+	iron:3901062,
 	blueprints:179,
 	tools:179,
 	tiles:179,
@@ -302,9 +302,9 @@ workshop[27] = {
 }
 workshop[28] = {
 	level:28,
-	wood:3726523,
-	stone:4968697,
-	iron:3726523,
+	wood:3247243,
+	stone:3247243,
+	iron:4329657,
 	blueprints:213,
 	tools:213,
 	tiles:213,
@@ -313,9 +313,9 @@ workshop[28] = {
 }
 workshop[29] = {
 	level:29,
-	wood:4225440,
-	stone:5633919,
-	iron:4225440,
+	wood:3873240,
+	stone:3873240,
+	iron:5164319,
 	blueprints:252,
 	tools:252,
 	tiles:252,
@@ -324,9 +324,9 @@ workshop[29] = {
 }
 workshop[30] = {
 	level:30,
-	wood:4756695,
-	stone:6342260,
-	iron:4756695,
+	wood:4184295,
+	stone:4184295,
+	iron:5579060,
 	blueprints:295,
 	tools:295,
 	tiles:295,
@@ -335,9 +335,9 @@ workshop[30] = {
 }
 workshop[31] = {
 	level:31,
-	wood:8018790,
-	stone:10691720,
-	iron:8018790,
+	wood:6924150,
+	stone:6924150,
+	iron:9232200,
 	blueprints:343,
 	tools:343,
 	tiles:343,
@@ -346,9 +346,9 @@ workshop[31] = {
 }
 workshop[32] = {
 	level:32,
-	wood:8968818,
-	stone:11958424,
-	iron:8968818,
+	wood:7602018,
+	stone:7602018,
+	iron:10136024,
 	blueprints:396,
 	tools:396,
 	tiles:396,
@@ -357,9 +357,9 @@ workshop[32] = {
 }
 workshop[33] = {
 	level:33,
-	wood:9980538,
-	stone:13307384,
-	iron:9980538,
+	wood:8309538,
+	stone:8309538,
+	iron:11079384,
 	blueprints:454,
 	tools:454,
 	tiles:454,
@@ -368,9 +368,9 @@ workshop[33] = {
 }
 workshop[34] = {
 	level:34,
-	wood:11055512,
-	stone:14740683,
-	iron:11055512,
+	wood:9030152,
+	stone:9030152,
+	iron:12040203,
 	blueprints:518,
 	tools:518,
 	tiles:518,
@@ -379,9 +379,9 @@ workshop[34] = {
 }
 workshop[35] = {
 	level:35,
-	wood:12195303,
-	stone:16260404,
-	iron:12195303,
+	wood:9778983,
+	stone:9778983,
+	iron:13038644,
 	blueprints:588,
 	tools:588,
 	tiles:588,
@@ -390,9 +390,9 @@ workshop[35] = {
 }
 workshop[36] = {
 	level:36,
-	wood:18742340,
-	stone:24989786,
-	iron:18742340,
+	wood:15890900,
+	stone:15890900,
+	iron:21187866,
 	blueprints:663,
 	tools:663,
 	tiles:663,
@@ -401,9 +401,9 @@ workshop[36] = {
 }
 workshop[37] = {
 	level:37,
-	wood:20580226,
-	stone:27440301,
-	iron:20580226,
+	wood:17252506,
+	stone:17252506,
+	iron:23003341,
 	blueprints:745,
 	tools:745,
 	tiles:745,
@@ -412,9 +412,9 @@ workshop[37] = {
 }
 workshop[38] = {
 	level:38,
-	wood:22524490,
-	stone:30032653,
-	iron:22524490,
+	wood:18661210,
+	stone:18661210,
+	iron:24881613,
 	blueprints:833,
 	tools:833,
 	tiles:833,
@@ -423,9 +423,9 @@ workshop[38] = {
 }
 workshop[39] = {
 	level:39,
-	wood:24577834,
-	stone:32770445,
-	iron:24577834,
+	wood:20133274,
+	stone:20133274,
+	iron:26844365,
 	blueprints:928,
 	tools:928,
 	tiles:928,
@@ -434,9 +434,9 @@ workshop[39] = {
 }
 workshop[40] = {
 	level:40,
-	wood:35154000,
-	stone:46872000,
-	iron:35154000,
+	wood:30074880,
+	stone:30074880,
+	iron:40099840,
 	blueprints:1030,
 	tools:1030,
 	tiles:1030,

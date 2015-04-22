@@ -148,9 +148,9 @@ hospital[13] = {
 }
 hospital[14] = {
 	level:14,
-	wood:193019,
-	stone:193019,
-	iron:96510,
+	wood:197499,
+	stone:197499,
+	iron:98750,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -159,9 +159,9 @@ hospital[14] = {
 }
 hospital[15] = {
 	level:15,
-	wood:256057,
-	stone:256057,
-	iron:128029,
+	wood:249017,
+	stone:249017,
+	iron:124509,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -170,9 +170,9 @@ hospital[15] = {
 }
 hospital[16] = {
 	level:16,
-	wood:408346,
-	stone:408346,
-	iron:204173,
+	wood:386266,
+	stone:386266,
+	iron:193133,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -181,9 +181,9 @@ hospital[16] = {
 }
 hospital[17] = {
 	level:17,
-	wood:499136,
-	stone:499136,
-	iron:249568,
+	wood:458496,
+	stone:458496,
+	iron:229248,
 	blueprints:2,
 	tools:2,
 	tiles:2,
@@ -192,9 +192,9 @@ hospital[17] = {
 }
 hospital[18] = {
 	level:18,
-	wood:589479,
-	stone:589479,
-	iron:294740,
+	wood:511719,
+	stone:511719,
+	iron:255860,
 	blueprints:4,
 	tools:4,
 	tiles:4,
@@ -203,9 +203,9 @@ hospital[18] = {
 }
 hospital[19] = {
 	level:19,
-	wood:672410,
-	stone:672410,
-	iron:336205,
+	wood:558490,
+	stone:558490,
+	iron:279245,
 	blueprints:8,
 	tools:8,
 	tiles:8,
@@ -214,9 +214,9 @@ hospital[19] = {
 }
 hospital[20] = {
 	level:20,
-	wood:740967,
-	stone:740967,
-	iron:370484,
+	wood:588327,
+	stone:588327,
+	iron:294164,
 	blueprints:13,
 	tools:13,
 	tiles:13,
@@ -225,9 +225,9 @@ hospital[20] = {
 }
 hospital[21] = {
 	level:21,
-	wood:1241060,
-	stone:1241060,
-	iron:620530,
+	wood:1055140,
+	stone:1055140,
+	iron:527570,
 	blueprints:21,
 	tools:21,
 	tiles:21,
@@ -236,9 +236,9 @@ hospital[21] = {
 }
 hospital[22] = {
 	level:22,
-	wood:1337946,
-	stone:1337946,
-	iron:668973,
+	wood:1109146,
+	stone:1109146,
+	iron:554573,
 	blueprints:32,
 	tools:32,
 	tiles:32,
@@ -247,9 +247,9 @@ hospital[22] = {
 }
 hospital[23] = {
 	level:23,
-	wood:1407862,
-	stone:1407862,
-	iron:703931,
+	wood:1146102,
+	stone:1146102,
+	iron:573051,
 	blueprints:47,
 	tools:47,
 	tiles:47,
@@ -258,9 +258,9 @@ hospital[23] = {
 }
 hospital[24] = {
 	level:24,
-	wood:1590864,
-	stone:1590864,
-	iron:795432,
+	wood:1463824,
+	stone:1463824,
+	iron:731912,
 	blueprints:65,
 	tools:65,
 	tiles:65,
@@ -269,9 +269,9 @@ hospital[24] = {
 }
 hospital[25] = {
 	level:25,
-	wood:1757991,
-	stone:1757991,
-	iron:878996,
+	wood:1618791,
+	stone:1618791,
+	iron:809396,
 	blueprints:88,
 	tools:88,
 	tiles:88,
@@ -280,9 +280,9 @@ hospital[25] = {
 }
 hospital[26] = {
 	level:26,
-	wood:3160195,
-	stone:3160195,
-	iron:1580098,
+	wood:2846915,
+	stone:2846915,
+	iron:1423458,
 	blueprints:116,
 	tools:116,
 	tiles:116,
@@ -291,9 +291,9 @@ hospital[26] = {
 }
 hospital[27] = {
 	level:27,
-	wood:3498978,
-	stone:3498978,
-	iron:1749489,
+	wood:3191778,
+	stone:3191778,
+	iron:1595889,
 	blueprints:150,
 	tools:150,
 	tiles:150,
@@ -302,9 +302,9 @@ hospital[27] = {
 }
 hospital[28] = {
 	level:28,
-	wood:3828207,
-	stone:3828207,
-	iron:1914104,
+	wood:3542447,
+	stone:3542447,
+	iron:1771224,
 	blueprints:189,
 	tools:189,
 	tiles:189,
@@ -313,9 +313,9 @@ hospital[28] = {
 }
 hospital[29] = {
 	level:29,
-	wood:4143752,
-	stone:4143752,
-	iron:2071876,
+	wood:4225352,
+	stone:4225352,
+	iron:2112676,
 	blueprints:235,
 	tools:235,
 	tiles:235,
@@ -324,9 +324,9 @@ hospital[29] = {
 }
 hospital[30] = {
 	level:30,
-	wood:4441485,
-	stone:4441485,
-	iron:2220743,
+	wood:4564685,
+	stone:4564685,
+	iron:2282343,
 	blueprints:288,
 	tools:288,
 	tiles:288,
@@ -335,9 +335,9 @@ hospital[30] = {
 }
 hospital[31] = {
 	level:31,
-	wood:7660498,
-	stone:7660498,
-	iron:3830249,
+	wood:7553618,
+	stone:7553618,
+	iron:3776809,
 	blueprints:349,
 	tools:349,
 	tiles:349,
@@ -346,9 +346,9 @@ hospital[31] = {
 }
 hospital[32] = {
 	level:32,
-	wood:8294710,
-	stone:8294710,
-	iron:4147355,
+	wood:8293110,
+	stone:8293110,
+	iron:4146555,
 	blueprints:417,
 	tools:417,
 	tiles:417,
@@ -357,9 +357,9 @@ hospital[32] = {
 }
 hospital[33] = {
 	level:33,
-	wood:8928950,
-	stone:8928950,
-	iron:4464475,
+	wood:9064950,
+	stone:9064950,
+	iron:4532475,
 	blueprints:494,
 	tools:494,
 	tiles:494,
@@ -368,9 +368,9 @@ hospital[33] = {
 }
 hospital[34] = {
 	level:34,
-	wood:9560195,
-	stone:9560195,
-	iron:4780098,
+	wood:9851075,
+	stone:9851075,
+	iron:4925538,
 	blueprints:580,
 	tools:580,
 	tiles:580,
@@ -379,9 +379,9 @@ hospital[34] = {
 }
 hospital[35] = {
 	level:35,
-	wood:10185421,
-	stone:10185421,
-	iron:5092711,
+	wood:10667981,
+	stone:10667981,
+	iron:5333991,
 	blueprints:676,
 	tools:676,
 	tiles:676,
@@ -390,9 +390,9 @@ hospital[35] = {
 }
 hospital[36] = {
 	level:36,
-	wood:16628007,
-	stone:16628007,
-	iron:8314004,
+	wood:17335527,
+	stone:17335527,
+	iron:8667764,
 	blueprints:781,
 	tools:781,
 	tiles:781,
@@ -401,9 +401,9 @@ hospital[36] = {
 }
 hospital[37] = {
 	level:37,
-	wood:17847156,
-	stone:17847156,
-	iron:8923578,
+	wood:18820916,
+	stone:18820916,
+	iron:9410458,
 	blueprints:897,
 	tools:897,
 	tiles:897,
@@ -412,9 +412,9 @@ hospital[37] = {
 }
 hospital[38] = {
 	level:38,
-	wood:19091444,
-	stone:19091444,
-	iron:9545722,
+	wood:20357684,
+	stone:20357684,
+	iron:10178842,
 	blueprints:1024,
 	tools:1024,
 	tiles:1024,
@@ -423,9 +423,9 @@ hospital[38] = {
 }
 hospital[39] = {
 	level:39,
-	wood:20359092,
-	stone:20359092,
-	iron:10179546,
+	wood:21963572,
+	stone:21963572,
+	iron:10981786,
 	blueprints:1160,
 	tools:1160,
 	tiles:1160,
@@ -434,9 +434,9 @@ hospital[39] = {
 }
 hospital[40] = {
 	level:40,
-	wood:30824000,
-	stone:30824000,
-	iron:15412000,
+	wood:32808960,
+	stone:32808960,
+	iron:16404480,
 	blueprints:1320,
 	tools:1320,
 	tiles:1320,

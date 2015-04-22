@@ -5,9 +5,9 @@ module.exports = academy
 
 academy[1] = {
 	level:1,
-	wood:430,
-	stone:320,
-	iron:320,
+	wood:425,
+	stone:319,
+	iron:319,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -148,9 +148,9 @@ academy[13] = {
 }
 academy[14] = {
 	level:14,
-	wood:230759,
-	stone:173069,
-	iron:173069,
+	wood:233159,
+	stone:174869,
+	iron:174869,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -159,9 +159,9 @@ academy[14] = {
 }
 academy[15] = {
 	level:15,
-	wood:305178,
-	stone:228884,
-	iron:228884,
+	wood:293978,
+	stone:220484,
+	iron:220484,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -170,9 +170,9 @@ academy[15] = {
 }
 academy[16] = {
 	level:16,
-	wood:486408,
-	stone:364806,
-	iron:364806,
+	wood:456008,
+	stone:342006,
+	iron:342006,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -181,9 +181,9 @@ academy[16] = {
 }
 academy[17] = {
 	level:17,
-	wood:588480,
-	stone:441360,
-	iron:441360,
+	wood:541280,
+	stone:405960,
+	iron:405960,
 	blueprints:3,
 	tools:3,
 	tiles:3,
@@ -192,9 +192,9 @@ academy[17] = {
 }
 academy[18] = {
 	level:18,
-	wood:684912,
-	stone:513684,
-	iron:513684,
+	wood:604112,
+	stone:453084,
+	iron:453084,
 	blueprints:6,
 	tools:6,
 	tiles:6,
@@ -203,9 +203,9 @@ academy[18] = {
 }
 academy[19] = {
 	level:19,
-	wood:768928,
-	stone:576696,
-	iron:576696,
+	wood:659328,
+	stone:494496,
+	iron:494496,
 	blueprints:11,
 	tools:11,
 	tiles:11,
@@ -214,9 +214,9 @@ academy[19] = {
 }
 academy[20] = {
 	level:20,
-	wood:833752,
-	stone:625314,
-	iron:625314,
+	wood:694552,
+	stone:520914,
+	iron:520914,
 	blueprints:18,
 	tools:18,
 	tiles:18,
@@ -225,9 +225,9 @@ academy[20] = {
 }
 academy[21] = {
 	level:21,
-	wood:1407252,
-	stone:1055439,
-	iron:1055439,
+	wood:1245652,
+	stone:934239,
+	iron:934239,
 	blueprints:29,
 	tools:29,
 	tiles:29,
@@ -236,9 +236,9 @@ academy[21] = {
 }
 academy[22] = {
 	level:22,
-	wood:1505408,
-	stone:1129056,
-	iron:1129056,
+	wood:1309408,
+	stone:982056,
+	iron:982056,
 	blueprints:43,
 	tools:43,
 	tiles:43,
@@ -247,9 +247,9 @@ academy[22] = {
 }
 academy[23] = {
 	level:23,
-	wood:1573837,
-	stone:1180378,
-	iron:1180378,
+	wood:1353037,
+	stone:1014778,
+	iron:1014778,
 	blueprints:61,
 	tools:61,
 	tiles:61,
@@ -258,9 +258,9 @@ academy[23] = {
 }
 academy[24] = {
 	level:24,
-	wood:1779325,
-	stone:1334494,
-	iron:1334494,
+	wood:1728125,
+	stone:1296094,
+	iron:1296094,
 	blueprints:83,
 	tools:83,
 	tiles:83,
@@ -269,9 +269,9 @@ academy[24] = {
 }
 academy[25] = {
 	level:25,
-	wood:1971072,
-	stone:1478304,
-	iron:1478304,
+	wood:1911072,
+	stone:1433304,
+	iron:1433304,
 	blueprints:111,
 	tools:111,
 	tiles:111,
@@ -280,9 +280,9 @@ academy[25] = {
 }
 academy[26] = {
 	level:26,
-	wood:3627341,
-	stone:2720506,
-	iron:2720506,
+	wood:3360941,
+	stone:2520706,
+	iron:2520706,
 	blueprints:144,
 	tools:144,
 	tiles:144,
@@ -291,9 +291,9 @@ academy[26] = {
 }
 academy[27] = {
 	level:27,
-	wood:4036071,
-	stone:3027053,
-	iron:3027053,
+	wood:3768071,
+	stone:2826053,
+	iron:2826053,
 	blueprints:183,
 	tools:183,
 	tiles:183,
@@ -302,9 +302,9 @@ academy[27] = {
 }
 academy[28] = {
 	level:28,
-	wood:4442855,
-	stone:3332141,
-	iron:3332141,
+	wood:4182055,
+	stone:3136541,
+	iron:3136541,
 	blueprints:228,
 	tools:228,
 	tiles:228,
@@ -313,9 +313,9 @@ academy[28] = {
 }
 academy[29] = {
 	level:29,
-	wood:4844263,
-	stone:3633197,
-	iron:3633197,
+	wood:4988263,
+	stone:3741197,
+	iron:3741197,
 	blueprints:281,
 	tools:281,
 	tiles:281,
@@ -324,9 +324,9 @@ academy[29] = {
 }
 academy[30] = {
 	level:30,
-	wood:5236864,
-	stone:3927648,
-	iron:3927648,
+	wood:5388864,
+	stone:4041648,
+	iron:4041648,
 	blueprints:341,
 	tools:341,
 	tiles:341,
@@ -335,9 +335,9 @@ academy[30] = {
 }
 academy[31] = {
 	level:31,
-	wood:9091866,
-	stone:6818900,
-	iron:6818900,
+	wood:8917466,
+	stone:6688100,
+	iron:6688100,
 	blueprints:409,
 	tools:409,
 	tiles:409,
@@ -346,9 +346,9 @@ academy[31] = {
 }
 academy[32] = {
 	level:32,
-	wood:9910477,
-	stone:7432858,
-	iron:7432858,
+	wood:9790477,
+	stone:7342858,
+	iron:7342858,
 	blueprints:485,
 	tools:485,
 	tiles:485,
@@ -357,9 +357,9 @@ academy[32] = {
 }
 academy[33] = {
 	level:33,
-	wood:10745677,
-	stone:8059258,
-	iron:8059258,
+	wood:10701677,
+	stone:8026258,
+	iron:8026258,
 	blueprints:571,
 	tools:571,
 	tiles:571,
@@ -368,9 +368,9 @@ academy[33] = {
 }
 academy[34] = {
 	level:34,
-	wood:11595341,
-	stone:8696506,
-	iron:8696506,
+	wood:11629741,
+	stone:8722306,
+	iron:8722306,
 	blueprints:666,
 	tools:666,
 	tiles:666,
@@ -379,9 +379,9 @@ academy[34] = {
 }
 academy[35] = {
 	level:35,
-	wood:12457344,
-	stone:9343008,
-	iron:9343008,
+	wood:12594144,
+	stone:9445608,
+	iron:9445608,
 	blueprints:771,
 	tools:771,
 	tiles:771,
@@ -390,9 +390,9 @@ academy[35] = {
 }
 academy[36] = {
 	level:36,
-	wood:20207952,
-	stone:15155964,
-	iron:15155964,
+	wood:20465552,
+	stone:15349164,
+	iron:15349164,
 	blueprints:886,
 	tools:886,
 	tiles:886,
@@ -401,9 +401,9 @@ academy[36] = {
 }
 academy[37] = {
 	level:37,
-	wood:21814336,
-	stone:16360752,
-	iron:16360752,
+	wood:22219136,
+	stone:16664352,
+	iron:16664352,
 	blueprints:1013,
 	tools:1013,
 	tiles:1013,
@@ -412,9 +412,9 @@ academy[37] = {
 }
 academy[38] = {
 	level:38,
-	wood:23474176,
-	stone:17605632,
-	iron:17605632,
+	wood:24033376,
+	stone:18025032,
+	iron:18025032,
 	blueprints:1151,
 	tools:1151,
 	tiles:1151,
@@ -423,9 +423,9 @@ academy[38] = {
 }
 academy[39] = {
 	level:39,
-	wood:25186816,
-	stone:18890112,
-	iron:18890112,
+	wood:25929216,
+	stone:19446912,
+	iron:19446912,
 	blueprints:1300,
 	tools:1300,
 	tiles:1300,
@@ -434,9 +434,9 @@ academy[39] = {
 }
 academy[40] = {
 	level:40,
-	wood:37784000,
-	stone:28338000,
-	iron:28338000,
+	wood:38732800,
+	stone:29049600,
+	iron:29049600,
 	blueprints:1480,
 	tools:1480,
 	tiles:1480,

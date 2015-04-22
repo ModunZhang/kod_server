@@ -5,9 +5,9 @@ module.exports = barracks
 
 barracks[1] = {
 	level:1,
-	wood:280,
-	stone:480,
-	iron:180,
+	wood:188,
+	stone:469,
+	iron:282,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -16,9 +16,9 @@ barracks[1] = {
 }
 barracks[2] = {
 	level:2,
-	wood:675,
+	wood:450,
 	stone:1125,
-	iron:450,
+	iron:675,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -27,9 +27,9 @@ barracks[2] = {
 }
 barracks[3] = {
 	level:3,
-	wood:1350,
+	wood:900,
 	stone:2250,
-	iron:900,
+	iron:1350,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -38,9 +38,9 @@ barracks[3] = {
 }
 barracks[4] = {
 	level:4,
-	wood:2025,
+	wood:1350,
 	stone:3375,
-	iron:1350,
+	iron:2025,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -49,9 +49,9 @@ barracks[4] = {
 }
 barracks[5] = {
 	level:5,
-	wood:2700,
+	wood:1800,
 	stone:4500,
-	iron:1800,
+	iron:2700,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -60,9 +60,9 @@ barracks[5] = {
 }
 barracks[6] = {
 	level:6,
-	wood:3375,
+	wood:2250,
 	stone:5625,
-	iron:2250,
+	iron:3375,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -71,9 +71,9 @@ barracks[6] = {
 }
 barracks[7] = {
 	level:7,
-	wood:4050,
+	wood:2700,
 	stone:6750,
-	iron:2700,
+	iron:4050,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -82,9 +82,9 @@ barracks[7] = {
 }
 barracks[8] = {
 	level:8,
-	wood:5265,
+	wood:3510,
 	stone:8775,
-	iron:3510,
+	iron:5265,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -93,9 +93,9 @@ barracks[8] = {
 }
 barracks[9] = {
 	level:9,
-	wood:12960,
+	wood:8640,
 	stone:21600,
-	iron:8640,
+	iron:12960,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -104,9 +104,9 @@ barracks[9] = {
 }
 barracks[10] = {
 	level:10,
-	wood:23490,
+	wood:15660,
 	stone:39150,
-	iron:15660,
+	iron:23490,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -115,9 +115,9 @@ barracks[10] = {
 }
 barracks[11] = {
 	level:11,
-	wood:59616,
+	wood:39744,
 	stone:99360,
-	iron:39744,
+	iron:59616,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -126,9 +126,9 @@ barracks[11] = {
 }
 barracks[12] = {
 	level:12,
-	wood:87480,
+	wood:58320,
 	stone:145800,
-	iron:58320,
+	iron:87480,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -137,9 +137,9 @@ barracks[12] = {
 }
 barracks[13] = {
 	level:13,
-	wood:121824,
+	wood:81216,
 	stone:203040,
-	iron:81216,
+	iron:121824,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -148,9 +148,9 @@ barracks[13] = {
 }
 barracks[14] = {
 	level:14,
-	wood:151296,
-	stone:252160,
-	iron:100864,
+	wood:102864,
+	stone:257160,
+	iron:154296,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -159,9 +159,9 @@ barracks[14] = {
 }
 barracks[15] = {
 	level:15,
-	wood:194544,
+	wood:129696,
 	stone:324240,
-	iron:129696,
+	iron:194544,
 	blueprints:1,
 	tools:1,
 	tiles:1,
@@ -170,9 +170,9 @@ barracks[15] = {
 }
 barracks[16] = {
 	level:16,
-	wood:307770,
-	stone:512950,
-	iron:205180,
+	wood:201180,
+	stone:502950,
+	iron:301770,
 	blueprints:2,
 	tools:2,
 	tiles:2,
@@ -181,9 +181,9 @@ barracks[16] = {
 }
 barracks[17] = {
 	level:17,
-	wood:367200,
-	stone:612000,
-	iron:244800,
+	wood:238800,
+	stone:597000,
+	iron:358200,
 	blueprints:4,
 	tools:4,
 	tiles:4,
@@ -192,9 +192,9 @@ barracks[17] = {
 }
 barracks[18] = {
 	level:18,
-	wood:420780,
-	stone:701300,
-	iron:280520,
+	wood:266520,
+	stone:666300,
+	iron:399780,
 	blueprints:8,
 	tools:8,
 	tiles:8,
@@ -203,9 +203,9 @@ barracks[18] = {
 }
 barracks[19] = {
 	level:19,
-	wood:463320,
-	stone:772200,
-	iron:308880,
+	wood:290880,
+	stone:727200,
+	iron:436320,
 	blueprints:13,
 	tools:13,
 	tiles:13,
@@ -214,9 +214,9 @@ barracks[19] = {
 }
 barracks[20] = {
 	level:20,
-	wood:489630,
-	stone:816050,
-	iron:326420,
+	wood:306420,
+	stone:766050,
+	iron:459630,
 	blueprints:21,
 	tools:21,
 	tiles:21,
@@ -225,9 +225,9 @@ barracks[20] = {
 }
 barracks[21] = {
 	level:21,
-	wood:848328,
-	stone:1413880,
-	iron:565552,
+	wood:549552,
+	stone:1373880,
+	iron:824328,
 	blueprints:32,
 	tools:32,
 	tiles:32,
@@ -236,9 +236,9 @@ barracks[21] = {
 }
 barracks[22] = {
 	level:22,
-	wood:887520,
-	stone:1479200,
-	iron:591680,
+	wood:577680,
+	stone:1444200,
+	iron:866520,
 	blueprints:47,
 	tools:47,
 	tiles:47,
@@ -247,9 +247,9 @@ barracks[22] = {
 }
 barracks[23] = {
 	level:23,
-	wood:901392,
-	stone:1502320,
-	iron:600928,
+	wood:596928,
+	stone:1492320,
+	iron:895392,
 	blueprints:65,
 	tools:65,
 	tiles:65,
@@ -258,9 +258,9 @@ barracks[23] = {
 }
 barracks[24] = {
 	level:24,
-	wood:999612,
-	stone:1666020,
-	iron:666408,
+	wood:762408,
+	stone:1906020,
+	iron:1143612,
 	blueprints:88,
 	tools:88,
 	tiles:88,
@@ -269,9 +269,9 @@ barracks[24] = {
 }
 barracks[25] = {
 	level:25,
-	wood:1081680,
-	stone:1802800,
-	iron:721120,
+	wood:843120,
+	stone:2107800,
+	iron:1264680,
 	blueprints:116,
 	tools:116,
 	tiles:116,
@@ -280,9 +280,9 @@ barracks[25] = {
 }
 barracks[26] = {
 	level:26,
-	wood:2125152,
-	stone:3541920,
-	iron:1416768,
+	wood:1482768,
+	stone:3706920,
+	iron:2224152,
 	blueprints:150,
 	tools:150,
 	tiles:150,
@@ -291,9 +291,9 @@ barracks[26] = {
 }
 barracks[27] = {
 	level:27,
-	wood:2334576,
-	stone:3890960,
-	iron:1556384,
+	wood:1662384,
+	stone:4155960,
+	iron:2493576,
 	blueprints:189,
 	tools:189,
 	tiles:189,
@@ -302,9 +302,9 @@ barracks[27] = {
 }
 barracks[28] = {
 	level:28,
-	wood:2533536,
-	stone:4222560,
-	iron:1689024,
+	wood:1845024,
+	stone:4612560,
+	iron:2767536,
 	blueprints:235,
 	tools:235,
 	tiles:235,
@@ -313,9 +313,9 @@ barracks[28] = {
 }
 barracks[29] = {
 	level:29,
-	wood:2719056,
-	stone:4531760,
-	iron:1812704,
+	wood:2200704,
+	stone:5501760,
+	iron:3301056,
 	blueprints:288,
 	tools:288,
 	tiles:288,
@@ -324,9 +324,9 @@ barracks[29] = {
 }
 barracks[30] = {
 	level:30,
-	wood:2888160,
-	stone:4813600,
-	iron:1925440,
+	wood:2377440,
+	stone:5943600,
+	iron:3566160,
 	blueprints:349,
 	tools:349,
 	tiles:349,
@@ -335,9 +335,9 @@ barracks[30] = {
 }
 barracks[31] = {
 	level:31,
-	wood:5337264,
-	stone:8895440,
-	iron:3558176,
+	wood:3934176,
+	stone:9835440,
+	iron:5901264,
 	blueprints:417,
 	tools:417,
 	tiles:417,
@@ -346,9 +346,9 @@ barracks[31] = {
 }
 barracks[32] = {
 	level:32,
-	wood:5764992,
-	stone:9608320,
-	iron:3843328,
+	wood:4319328,
+	stone:10798320,
+	iron:6478992,
 	blueprints:494,
 	tools:494,
 	tiles:494,
@@ -357,9 +357,9 @@ barracks[32] = {
 }
 barracks[33] = {
 	level:33,
-	wood:6190992,
-	stone:10318320,
-	iron:4127328,
+	wood:4721328,
+	stone:11803320,
+	iron:7081992,
 	blueprints:580,
 	tools:580,
 	tiles:580,
@@ -368,9 +368,9 @@ barracks[33] = {
 }
 barracks[34] = {
 	level:34,
-	wood:6613152,
-	stone:11021920,
-	iron:4408768,
+	wood:5130768,
+	stone:12826920,
+	iron:7696152,
 	blueprints:676,
 	tools:676,
 	tiles:676,
@@ -379,9 +379,9 @@ barracks[34] = {
 }
 barracks[35] = {
 	level:35,
-	wood:7029360,
-	stone:11715600,
-	iron:4686240,
+	wood:5556240,
+	stone:13890600,
+	iron:8334360,
 	blueprints:781,
 	tools:781,
 	tiles:781,
@@ -390,9 +390,9 @@ barracks[35] = {
 }
 barracks[36] = {
 	level:36,
-	wood:11989380,
-	stone:19982300,
-	iron:7992920,
+	wood:9028920,
+	stone:22572300,
+	iron:13543380,
 	blueprints:897,
 	tools:897,
 	tiles:897,
@@ -401,9 +401,9 @@ barracks[36] = {
 }
 barracks[37] = {
 	level:37,
-	wood:12867840,
-	stone:21446400,
-	iron:8578560,
+	wood:9802560,
+	stone:24506400,
+	iron:14703840,
 	blueprints:1024,
 	tools:1024,
 	tiles:1024,
@@ -412,9 +412,9 @@ barracks[37] = {
 }
 barracks[38] = {
 	level:38,
-	wood:13765440,
-	stone:22942400,
-	iron:9176960,
+	wood:10602960,
+	stone:26507400,
+	iron:15904440,
 	blueprints:1163,
 	tools:1163,
 	tiles:1163,
@@ -423,9 +423,9 @@ barracks[38] = {
 }
 barracks[39] = {
 	level:39,
-	wood:14681040,
-	stone:24468400,
-	iron:9787360,
+	wood:11439360,
+	stone:28598400,
+	iron:17159040,
 	blueprints:1320,
 	tools:1320,
 	tiles:1320,
@@ -434,9 +434,9 @@ barracks[39] = {
 }
 barracks[40] = {
 	level:40,
-	wood:22782000,
-	stone:37970000,
-	iron:15188000,
+	wood:17088000,
+	stone:42720000,
+	iron:25632000,
 	blueprints:1480,
 	tools:1480,
 	tiles:1480,
