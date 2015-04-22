@@ -5,63 +5,63 @@ module.exports = dragonLevel
 
 dragonLevel[1] = {
 	level:1,
-	expNeed:200,
+	expNeed:50,
 	leadership:12,
 	strength:19,
 	vitality:22
 }
 dragonLevel[2] = {
 	level:2,
-	expNeed:440,
+	expNeed:100,
 	leadership:14,
 	strength:22,
 	vitality:25
 }
 dragonLevel[3] = {
 	level:3,
-	expNeed:690,
+	expNeed:240,
 	leadership:16,
 	strength:26,
 	vitality:29
 }
 dragonLevel[4] = {
 	level:4,
-	expNeed:960,
+	expNeed:440,
 	leadership:18,
 	strength:29,
 	vitality:32
 }
 dragonLevel[5] = {
 	level:5,
-	expNeed:1250,
+	expNeed:960,
 	leadership:20,
 	strength:32,
 	vitality:36
 }
 dragonLevel[6] = {
 	level:6,
-	expNeed:1560,
+	expNeed:1250,
 	leadership:22,
 	strength:35,
 	vitality:40
 }
 dragonLevel[7] = {
 	level:7,
-	expNeed:1890,
+	expNeed:1560,
 	leadership:24,
 	strength:38,
 	vitality:43
 }
 dragonLevel[8] = {
 	level:8,
-	expNeed:2240,
+	expNeed:1890,
 	leadership:26,
 	strength:42,
 	vitality:47
 }
 dragonLevel[9] = {
 	level:9,
-	expNeed:2610,
+	expNeed:2240,
 	leadership:28,
 	strength:45,
 	vitality:50
