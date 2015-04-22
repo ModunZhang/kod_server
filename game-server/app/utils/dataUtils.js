@@ -1207,29 +1207,21 @@ Utils.getPlayerTreatSoldierTime = function(playerDoc, soldierName, count){
  * 获取资料普通兵种所需的资源
  * @param playerDoc
  * @param soldiers
- * @returns {{resources: {wood: number, stone: number, iron: number, food: number}, recruitTime: (*|Array)}}
+ * @returns {{resources: {coin: number}, treatTime: number}}
  */
 Utils.getPlayerTreatSoldierRequired = function(playerDoc, soldiers){
 	var self = this
 	var totalNeed = {
 		resources:{
-			wood:0,
-			stone:0,
-			iron:0,
-			food:0
+			coin:0
 		},
 		treatTime:0
 	}
 	_.each(soldiers, function(soldier){
 		var soldierName = soldier.name
-		var count = soldier.count
-		var soldierKey = soldierName + "_" + playerDoc.soldierStars[soldierName]
-		var config = Soldiers.normal[soldierKey]
-		totalNeed.resources.wood += config.treatWood * count
-		totalNeed.resources.stone += config.treatStone * count
-		totalNeed.resources.iron += config.treatIron * count
-		totalNeed.resources.food += config.treatFood * count
-		totalNeed.treatTime += self.getPlayerTreatSoldierTime(playerDoc, soldierName, count)
+		var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
+		totalNeed.resources.coin += config.treatCoin * soldier.count
+		totalNeed.treatTime += self.getPlayerTreatSoldierTime(playerDoc, soldierName, soldier.count)
 	})
 	return totalNeed
 }

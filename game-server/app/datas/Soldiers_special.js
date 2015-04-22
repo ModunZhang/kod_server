@@ -17,10 +17,12 @@ special["skeletonWarrior"] = {
 	hp:300,
 	load:80,
 	march:140,
-	consumeFoodPerHour:0,
+	consumeFoodPerHour:0.000000,
 	killScore:5,
 	citizen:1,
 	recruitTime:30,
+	treatCoin:200,
+	treatTime:10,
 	techBuildingName:"trainingGround"
 }
 special["skeletonArcher"] = {
@@ -37,10 +39,12 @@ special["skeletonArcher"] = {
 	hp:150,
 	load:60,
 	march:150,
-	consumeFoodPerHour:0,
+	consumeFoodPerHour:0.000000,
 	killScore:5,
 	citizen:1,
 	recruitTime:30,
+	treatCoin:400,
+	treatTime:10,
 	techBuildingName:"hunterHall"
 }
 special["deathKnight"] = {
@@ -57,10 +61,12 @@ special["deathKnight"] = {
 	hp:360,
 	load:180,
 	march:185,
-	consumeFoodPerHour:0,
+	consumeFoodPerHour:0.000000,
 	killScore:9,
 	citizen:2,
 	recruitTime:50,
+	treatCoin:600,
+	treatTime:10,
 	techBuildingName:"stable"
 }
 special["meatWagon"] = {
@@ -77,10 +83,12 @@ special["meatWagon"] = {
 	hp:900,
 	load:320,
 	march:125,
-	consumeFoodPerHour:0,
+	consumeFoodPerHour:0.000000,
 	killScore:18,
 	citizen:4,
 	recruitTime:100,
+	treatCoin:200,
+	treatTime:10,
 	techBuildingName:"siege"
 }
 special["priest"] = {
@@ -97,10 +105,12 @@ special["priest"] = {
 	hp:200,
 	load:140,
 	march:160,
-	consumeFoodPerHour:3,
+	consumeFoodPerHour:1.000000,
 	killScore:5,
 	citizen:1,
 	recruitTime:30,
+	treatCoin:400,
+	treatTime:10,
 	techBuildingName:"trainingGround"
 }
 special["demonHunter"] = {
@@ -117,10 +127,12 @@ special["demonHunter"] = {
 	hp:120,
 	load:80,
 	march:150,
-	consumeFoodPerHour:3,
+	consumeFoodPerHour:1.000000,
 	killScore:5,
 	citizen:1,
 	recruitTime:30,
+	treatCoin:600,
+	treatTime:10,
 	techBuildingName:"hunterHall"
 }
 special["paladin"] = {
@@ -137,10 +149,12 @@ special["paladin"] = {
 	hp:600,
 	load:280,
 	march:220,
-	consumeFoodPerHour:5,
+	consumeFoodPerHour:2.000000,
 	killScore:10,
 	citizen:2,
 	recruitTime:50,
+	treatCoin:200,
+	treatTime:10,
 	techBuildingName:"stable"
 }
 special["steamTank"] = {
@@ -157,9 +171,11 @@ special["steamTank"] = {
 	hp:1000,
 	load:700,
 	march:140,
-	consumeFoodPerHour:10,
+	consumeFoodPerHour:3.000000,
 	killScore:20,
 	citizen:4,
 	recruitTime:100,
+	treatCoin:400,
+	treatTime:10,
 	techBuildingName:"siege"
 }
