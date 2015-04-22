@@ -1,8 +1,8 @@
 "use strict"
 
 /**
-* Created by modun on 14-8-9.
-*/
+ * Created by modun on 14-8-9.
+ */
 
 var Promise = require("bluebird")
 
@@ -19,11 +19,8 @@ life.afterStartup = function(app, callback){
 	callback()
 }
 
-life.beforeShutdown = function(app, callback, cancelShutDownTimer){
-	cancelShutDownTimer()
-	setTimeout(function(){
-		callback()
-	}, 6 * 1000)
+life.beforeShutdown = function(app, callback){
+	callback()
 }
 
 life.afterStartAll = function(app){

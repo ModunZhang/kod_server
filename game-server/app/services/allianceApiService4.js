@@ -567,7 +567,7 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 			funcs.push(self.dataService.updatePlayerAsync(attackPlayerDoc, null))
 		}
 		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.dataService.removeLockAsync(attackAllianceDoc, null))
+			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
 		}
 
 		if(funcs.length > 0){

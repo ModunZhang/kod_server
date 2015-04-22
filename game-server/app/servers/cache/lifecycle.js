@@ -62,7 +62,7 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 			logService.onEventError("cache.lifecycle.beforeShutdown", {serverId:app.get("cacheServerId")}, e.stack)
 			setTimeout(callback, 1000)
 		})
-	}, 12 * 1000)
+	}, 1000)
 }
 
 life.afterStartAll = function(app){
