@@ -480,22 +480,22 @@ pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
 	_.each(allianceDoc.strikeMarchEvents, function(event){
 		event.startTime += timeAdd
 		event.arriveTime += timeAdd
-		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "strikeMarchEvents", event.id, event.finishTime - now))
+		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "strikeMarchEvents", event.id, event.arriveTime - now))
 	})
 	_.each(allianceDoc.strikeMarchReturnEvents, function(event){
 		event.startTime += timeAdd
 		event.arriveTime += timeAdd
-		funcs.push(self.addAllianceTimeEventAsync, allianceDoc("strikeMarchReturnEvents", event.id, event.finishTime - now))
+		funcs.push(self.addAllianceTimeEventAsync, allianceDoc("strikeMarchReturnEvents", event.id, event.arriveTime - now))
 	})
 	_.each(allianceDoc.attackMarchEvents, function(event){
 		event.startTime += timeAdd
 		event.arriveTime += timeAdd
-		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "attackMarchEvents", event.id, event.finishTime - now))
+		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "attackMarchEvents", event.id, event.arriveTime - now))
 	})
 	_.each(allianceDoc.attackMarchReturnEvents, function(event){
 		event.startTime += timeAdd
 		event.arriveTime += timeAdd
-		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "attackMarchReturnEvents", event.id, event.finishTime - now))
+		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "attackMarchReturnEvents", event.id, event.arriveTime - now))
 	})
 	Promise.all(funcs).then(function(){
 		callback()
