@@ -6,50 +6,50 @@ module.exports = orderHall
 orderHall[1] = {
 	level:1,
 	needHonour:345,
-	woodVillageCount:1,
-	stoneVillageCount:1,
-	ironVillageCount:1,
-	foodVillageCount:1,
+	woodVillageCount:4,
+	stoneVillageCount:4,
+	ironVillageCount:4,
+	foodVillageCount:4,
 	coinVillageCount:0,
 	power:9
 }
 orderHall[2] = {
 	level:2,
 	needHonour:1150,
-	woodVillageCount:3,
-	stoneVillageCount:3,
-	ironVillageCount:3,
-	foodVillageCount:3,
+	woodVillageCount:5,
+	stoneVillageCount:5,
+	ironVillageCount:5,
+	foodVillageCount:5,
 	coinVillageCount:0,
 	power:29
 }
 orderHall[3] = {
 	level:3,
 	needHonour:3795,
-	woodVillageCount:4,
-	stoneVillageCount:4,
-	ironVillageCount:4,
-	foodVillageCount:4,
+	woodVillageCount:6,
+	stoneVillageCount:6,
+	ironVillageCount:6,
+	foodVillageCount:6,
 	coinVillageCount:0,
 	power:95
 }
 orderHall[4] = {
 	level:4,
 	needHonour:31165,
-	woodVillageCount:6,
-	stoneVillageCount:6,
-	ironVillageCount:6,
-	foodVillageCount:6,
+	woodVillageCount:7,
+	stoneVillageCount:7,
+	ironVillageCount:7,
+	foodVillageCount:7,
 	coinVillageCount:0,
 	power:780
 }
 orderHall[5] = {
 	level:5,
 	needHonour:108790,
-	woodVillageCount:7,
-	stoneVillageCount:7,
-	ironVillageCount:7,
-	foodVillageCount:7,
+	woodVillageCount:8,
+	stoneVillageCount:8,
+	ironVillageCount:8,
+	foodVillageCount:8,
 	coinVillageCount:0,
 	power:2720
 }
@@ -76,10 +76,10 @@ orderHall[7] = {
 orderHall[8] = {
 	level:8,
 	needHonour:1515010,
-	woodVillageCount:12,
-	stoneVillageCount:12,
-	ironVillageCount:12,
-	foodVillageCount:12,
+	woodVillageCount:11,
+	stoneVillageCount:11,
+	ironVillageCount:11,
+	foodVillageCount:11,
 	coinVillageCount:0,
 	power:37876
 }
