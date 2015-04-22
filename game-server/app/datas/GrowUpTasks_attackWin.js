@@ -13,7 +13,7 @@ attackWin[0] = {
 	food:2000,
 	coin:0,
 	gem:0,
-	exp:100
+	exp:80
 }
 attackWin[1] = {
 	id:1,
@@ -61,7 +61,7 @@ attackWin[4] = {
 	food:50000,
 	coin:0,
 	gem:0,
-	exp:1200
+	exp:2000
 }
 attackWin[5] = {
 	id:5,
@@ -73,7 +73,7 @@ attackWin[5] = {
 	food:100000,
 	coin:0,
 	gem:0,
-	exp:1600
+	exp:4000
 }
 attackWin[6] = {
 	id:6,
@@ -85,65 +85,65 @@ attackWin[6] = {
 	food:200000,
 	coin:0,
 	gem:0,
-	exp:2000
+	exp:8000
 }
 attackWin[7] = {
 	id:7,
 	index:8,
 	count:500,
-	wood:500000,
-	stone:500000,
-	iron:500000,
-	food:500000,
+	wood:400000,
+	stone:400000,
+	iron:400000,
+	food:400000,
 	coin:0,
 	gem:0,
-	exp:2400
+	exp:16000
 }
 attackWin[8] = {
 	id:8,
 	index:9,
 	count:1000,
+	wood:600000,
+	stone:600000,
+	iron:600000,
+	food:600000,
+	coin:0,
+	gem:0,
+	exp:24000
+}
+attackWin[9] = {
+	id:9,
+	index:10,
+	count:2000,
+	wood:800000,
+	stone:800000,
+	iron:800000,
+	food:800000,
+	coin:0,
+	gem:0,
+	exp:32000
+}
+attackWin[10] = {
+	id:10,
+	index:11,
+	count:5000,
 	wood:1000000,
 	stone:1000000,
 	iron:1000000,
 	food:1000000,
 	coin:0,
 	gem:0,
-	exp:2800
-}
-attackWin[9] = {
-	id:9,
-	index:10,
-	count:2000,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:100,
-	exp:3200
-}
-attackWin[10] = {
-	id:10,
-	index:11,
-	count:5000,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:200,
-	exp:6400
+	exp:40000
 }
 attackWin[11] = {
 	id:11,
 	index:12,
 	count:10000,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
+	wood:1200000,
+	stone:1200000,
+	iron:1200000,
+	food:1200000,
 	coin:0,
-	gem:500,
-	exp:9600
+	gem:0,
+	exp:48000
 }

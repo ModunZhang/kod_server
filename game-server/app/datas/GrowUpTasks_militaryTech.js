@@ -8,3638 +8,3638 @@ militaryTech[0] = {
 	index:1,
 	name:"infantry_infantry",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1080,
+	stone:1080,
+	iron:1080,
+	food:1080,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:43
 }
 militaryTech[1] = {
 	id:1,
 	index:2,
 	name:"infantry_infantry",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2720,
+	stone:2720,
+	iron:2720,
+	food:2720,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:108
 }
 militaryTech[2] = {
 	id:2,
 	index:3,
 	name:"infantry_infantry",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5420,
+	stone:5420,
+	iron:5420,
+	food:5420,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:216
 }
 militaryTech[3] = {
 	id:3,
 	index:4,
 	name:"infantry_infantry",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:10690,
+	stone:10690,
+	iron:10690,
+	food:10690,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:427
 }
 militaryTech[4] = {
 	id:4,
 	index:5,
 	name:"infantry_infantry",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21050,
+	stone:21050,
+	iron:21050,
+	food:21050,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:842
 }
 militaryTech[5] = {
 	id:5,
 	index:6,
 	name:"infantry_infantry",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:41990,
+	stone:41990,
+	iron:41990,
+	food:41990,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1679
 }
 militaryTech[6] = {
 	id:6,
 	index:7,
 	name:"infantry_infantry",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:82740,
+	stone:82740,
+	iron:82740,
+	food:82740,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3309
 }
 militaryTech[7] = {
 	id:7,
 	index:8,
 	name:"infantry_infantry",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:163610,
+	stone:163610,
+	iron:163610,
+	food:163610,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6544
 }
 militaryTech[8] = {
 	id:8,
 	index:9,
 	name:"infantry_infantry",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:244680,
+	stone:244680,
+	iron:244680,
+	food:244680,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9787
 }
 militaryTech[9] = {
 	id:9,
 	index:10,
 	name:"infantry_infantry",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:325920,
+	stone:325920,
+	iron:325920,
+	food:325920,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13036
 }
 militaryTech[10] = {
 	id:10,
 	index:11,
 	name:"infantry_infantry",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:409180,
+	stone:409180,
+	iron:409180,
+	food:409180,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16367
 }
 militaryTech[11] = {
 	id:11,
 	index:12,
 	name:"infantry_infantry",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:491280,
+	stone:491280,
+	iron:491280,
+	food:491280,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19651
 }
 militaryTech[12] = {
 	id:12,
 	index:13,
 	name:"infantry_infantry",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:573580,
+	stone:573580,
+	iron:573580,
+	food:573580,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:22943
 }
 militaryTech[13] = {
 	id:13,
 	index:14,
 	name:"infantry_infantry",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:659200,
+	stone:659200,
+	iron:659200,
+	food:659200,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26368
 }
 militaryTech[14] = {
 	id:14,
 	index:1,
 	name:"infantry_archer",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1080,
+	stone:1080,
+	iron:1080,
+	food:1080,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:43
 }
 militaryTech[15] = {
 	id:15,
 	index:2,
 	name:"infantry_archer",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2720,
+	stone:2720,
+	iron:2720,
+	food:2720,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:108
 }
 militaryTech[16] = {
 	id:16,
 	index:3,
 	name:"infantry_archer",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5420,
+	stone:5420,
+	iron:5420,
+	food:5420,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:216
 }
 militaryTech[17] = {
 	id:17,
 	index:4,
 	name:"infantry_archer",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:10690,
+	stone:10690,
+	iron:10690,
+	food:10690,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:427
 }
 militaryTech[18] = {
 	id:18,
 	index:5,
 	name:"infantry_archer",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21050,
+	stone:21050,
+	iron:21050,
+	food:21050,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:842
 }
 militaryTech[19] = {
 	id:19,
 	index:6,
 	name:"infantry_archer",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:41990,
+	stone:41990,
+	iron:41990,
+	food:41990,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1679
 }
 militaryTech[20] = {
 	id:20,
 	index:7,
 	name:"infantry_archer",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:82740,
+	stone:82740,
+	iron:82740,
+	food:82740,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3309
 }
 militaryTech[21] = {
 	id:21,
 	index:8,
 	name:"infantry_archer",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:163610,
+	stone:163610,
+	iron:163610,
+	food:163610,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6544
 }
 militaryTech[22] = {
 	id:22,
 	index:9,
 	name:"infantry_archer",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:244680,
+	stone:244680,
+	iron:244680,
+	food:244680,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9787
 }
 militaryTech[23] = {
 	id:23,
 	index:10,
 	name:"infantry_archer",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:325920,
+	stone:325920,
+	iron:325920,
+	food:325920,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13036
 }
 militaryTech[24] = {
 	id:24,
 	index:11,
 	name:"infantry_archer",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:409180,
+	stone:409180,
+	iron:409180,
+	food:409180,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16367
 }
 militaryTech[25] = {
 	id:25,
 	index:12,
 	name:"infantry_archer",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:491280,
+	stone:491280,
+	iron:491280,
+	food:491280,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19651
 }
 militaryTech[26] = {
 	id:26,
 	index:13,
 	name:"infantry_archer",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:573580,
+	stone:573580,
+	iron:573580,
+	food:573580,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:22943
 }
 militaryTech[27] = {
 	id:27,
 	index:14,
 	name:"infantry_archer",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:659200,
+	stone:659200,
+	iron:659200,
+	food:659200,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26368
 }
 militaryTech[28] = {
 	id:28,
 	index:1,
 	name:"infantry_cavalry",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1080,
+	stone:1080,
+	iron:1080,
+	food:1080,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:43
 }
 militaryTech[29] = {
 	id:29,
 	index:2,
 	name:"infantry_cavalry",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2720,
+	stone:2720,
+	iron:2720,
+	food:2720,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:108
 }
 militaryTech[30] = {
 	id:30,
 	index:3,
 	name:"infantry_cavalry",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5420,
+	stone:5420,
+	iron:5420,
+	food:5420,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:216
 }
 militaryTech[31] = {
 	id:31,
 	index:4,
 	name:"infantry_cavalry",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:10690,
+	stone:10690,
+	iron:10690,
+	food:10690,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:427
 }
 militaryTech[32] = {
 	id:32,
 	index:5,
 	name:"infantry_cavalry",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21050,
+	stone:21050,
+	iron:21050,
+	food:21050,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:842
 }
 militaryTech[33] = {
 	id:33,
 	index:6,
 	name:"infantry_cavalry",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:41990,
+	stone:41990,
+	iron:41990,
+	food:41990,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1679
 }
 militaryTech[34] = {
 	id:34,
 	index:7,
 	name:"infantry_cavalry",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:82740,
+	stone:82740,
+	iron:82740,
+	food:82740,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3309
 }
 militaryTech[35] = {
 	id:35,
 	index:8,
 	name:"infantry_cavalry",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:163610,
+	stone:163610,
+	iron:163610,
+	food:163610,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6544
 }
 militaryTech[36] = {
 	id:36,
 	index:9,
 	name:"infantry_cavalry",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:244680,
+	stone:244680,
+	iron:244680,
+	food:244680,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9787
 }
 militaryTech[37] = {
 	id:37,
 	index:10,
 	name:"infantry_cavalry",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:325920,
+	stone:325920,
+	iron:325920,
+	food:325920,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13036
 }
 militaryTech[38] = {
 	id:38,
 	index:11,
 	name:"infantry_cavalry",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:409180,
+	stone:409180,
+	iron:409180,
+	food:409180,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16367
 }
 militaryTech[39] = {
 	id:39,
 	index:12,
 	name:"infantry_cavalry",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:491280,
+	stone:491280,
+	iron:491280,
+	food:491280,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19651
 }
 militaryTech[40] = {
 	id:40,
 	index:13,
 	name:"infantry_cavalry",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:573580,
+	stone:573580,
+	iron:573580,
+	food:573580,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:22943
 }
 militaryTech[41] = {
 	id:41,
 	index:14,
 	name:"infantry_cavalry",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:659200,
+	stone:659200,
+	iron:659200,
+	food:659200,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26368
 }
 militaryTech[42] = {
 	id:42,
 	index:1,
 	name:"infantry_siege",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1080,
+	stone:1080,
+	iron:1080,
+	food:1080,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:43
 }
 militaryTech[43] = {
 	id:43,
 	index:2,
 	name:"infantry_siege",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2720,
+	stone:2720,
+	iron:2720,
+	food:2720,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:108
 }
 militaryTech[44] = {
 	id:44,
 	index:3,
 	name:"infantry_siege",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5420,
+	stone:5420,
+	iron:5420,
+	food:5420,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:216
 }
 militaryTech[45] = {
 	id:45,
 	index:4,
 	name:"infantry_siege",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:10690,
+	stone:10690,
+	iron:10690,
+	food:10690,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:427
 }
 militaryTech[46] = {
 	id:46,
 	index:5,
 	name:"infantry_siege",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21050,
+	stone:21050,
+	iron:21050,
+	food:21050,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:842
 }
 militaryTech[47] = {
 	id:47,
 	index:6,
 	name:"infantry_siege",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:41990,
+	stone:41990,
+	iron:41990,
+	food:41990,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1679
 }
 militaryTech[48] = {
 	id:48,
 	index:7,
 	name:"infantry_siege",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:82740,
+	stone:82740,
+	iron:82740,
+	food:82740,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3309
 }
 militaryTech[49] = {
 	id:49,
 	index:8,
 	name:"infantry_siege",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:163610,
+	stone:163610,
+	iron:163610,
+	food:163610,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6544
 }
 militaryTech[50] = {
 	id:50,
 	index:9,
 	name:"infantry_siege",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:244680,
+	stone:244680,
+	iron:244680,
+	food:244680,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9787
 }
 militaryTech[51] = {
 	id:51,
 	index:10,
 	name:"infantry_siege",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:325920,
+	stone:325920,
+	iron:325920,
+	food:325920,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13036
 }
 militaryTech[52] = {
 	id:52,
 	index:11,
 	name:"infantry_siege",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:409180,
+	stone:409180,
+	iron:409180,
+	food:409180,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16367
 }
 militaryTech[53] = {
 	id:53,
 	index:12,
 	name:"infantry_siege",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:491280,
+	stone:491280,
+	iron:491280,
+	food:491280,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19651
 }
 militaryTech[54] = {
 	id:54,
 	index:13,
 	name:"infantry_siege",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:573580,
+	stone:573580,
+	iron:573580,
+	food:573580,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:22943
 }
 militaryTech[55] = {
 	id:55,
 	index:14,
 	name:"infantry_siege",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:659200,
+	stone:659200,
+	iron:659200,
+	food:659200,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26368
 }
 militaryTech[56] = {
 	id:56,
 	index:1,
 	name:"infantry_hpAdd",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:2170,
+	stone:2170,
+	iron:2170,
+	food:2170,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:86
 }
 militaryTech[57] = {
 	id:57,
 	index:2,
 	name:"infantry_hpAdd",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:5450,
+	stone:5450,
+	iron:5450,
+	food:5450,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:218
 }
 militaryTech[58] = {
 	id:58,
 	index:3,
 	name:"infantry_hpAdd",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:10840,
+	stone:10840,
+	iron:10840,
+	food:10840,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:433
 }
 militaryTech[59] = {
 	id:59,
 	index:4,
 	name:"infantry_hpAdd",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:21390,
+	stone:21390,
+	iron:21390,
+	food:21390,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:855
 }
 militaryTech[60] = {
 	id:60,
 	index:5,
 	name:"infantry_hpAdd",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:42100,
+	stone:42100,
+	iron:42100,
+	food:42100,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:1684
 }
 militaryTech[61] = {
 	id:61,
 	index:6,
 	name:"infantry_hpAdd",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:83980,
+	stone:83980,
+	iron:83980,
+	food:83980,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:3359
 }
 militaryTech[62] = {
 	id:62,
 	index:7,
 	name:"infantry_hpAdd",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:165480,
+	stone:165480,
+	iron:165480,
+	food:165480,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:6619
 }
 militaryTech[63] = {
 	id:63,
 	index:8,
 	name:"infantry_hpAdd",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:327230,
+	stone:327230,
+	iron:327230,
+	food:327230,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:13089
 }
 militaryTech[64] = {
 	id:64,
 	index:9,
 	name:"infantry_hpAdd",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:489360,
+	stone:489360,
+	iron:489360,
+	food:489360,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:19574
 }
 militaryTech[65] = {
 	id:65,
 	index:10,
 	name:"infantry_hpAdd",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:651840,
+	stone:651840,
+	iron:651840,
+	food:651840,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:26073
 }
 militaryTech[66] = {
 	id:66,
 	index:11,
 	name:"infantry_hpAdd",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:818370,
+	stone:818370,
+	iron:818370,
+	food:818370,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:32734
 }
 militaryTech[67] = {
 	id:67,
 	index:12,
 	name:"infantry_hpAdd",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:982560,
+	stone:982560,
+	iron:982560,
+	food:982560,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:39302
 }
 militaryTech[68] = {
 	id:68,
 	index:13,
 	name:"infantry_hpAdd",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:1147170,
+	stone:1147170,
+	iron:1147170,
+	food:1147170,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:45886
 }
 militaryTech[69] = {
 	id:69,
 	index:14,
 	name:"infantry_hpAdd",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:1318400,
+	stone:1318400,
+	iron:1318400,
+	food:1318400,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:52736
 }
 militaryTech[70] = {
 	id:70,
 	index:1,
 	name:"archer_infantry",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1090,
+	stone:1090,
+	iron:1090,
+	food:1090,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:43
 }
 militaryTech[71] = {
 	id:71,
 	index:2,
 	name:"archer_infantry",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2750,
+	stone:2750,
+	iron:2750,
+	food:2750,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:110
 }
 militaryTech[72] = {
 	id:72,
 	index:3,
 	name:"archer_infantry",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5460,
+	stone:5460,
+	iron:5460,
+	food:5460,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:218
 }
 militaryTech[73] = {
 	id:73,
 	index:4,
 	name:"archer_infantry",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:10760,
+	stone:10760,
+	iron:10760,
+	food:10760,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:430
 }
 militaryTech[74] = {
 	id:74,
 	index:5,
 	name:"archer_infantry",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21150,
+	stone:21150,
+	iron:21150,
+	food:21150,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:846
 }
 militaryTech[75] = {
 	id:75,
 	index:6,
 	name:"archer_infantry",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:42190,
+	stone:42190,
+	iron:42190,
+	food:42190,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1687
 }
 militaryTech[76] = {
 	id:76,
 	index:7,
 	name:"archer_infantry",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:83010,
+	stone:83010,
+	iron:83010,
+	food:83010,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3320
 }
 militaryTech[77] = {
 	id:77,
 	index:8,
 	name:"archer_infantry",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:163970,
+	stone:163970,
+	iron:163970,
+	food:163970,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6558
 }
 militaryTech[78] = {
 	id:78,
 	index:9,
 	name:"archer_infantry",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:245140,
+	stone:245140,
+	iron:245140,
+	food:245140,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9805
 }
 militaryTech[79] = {
 	id:79,
 	index:10,
 	name:"archer_infantry",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:326510,
+	stone:326510,
+	iron:326510,
+	food:326510,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13060
 }
 militaryTech[80] = {
 	id:80,
 	index:11,
 	name:"archer_infantry",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:410100,
+	stone:410100,
+	iron:410100,
+	food:410100,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16404
 }
 militaryTech[81] = {
 	id:81,
 	index:12,
 	name:"archer_infantry",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:492400,
+	stone:492400,
+	iron:492400,
+	food:492400,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19696
 }
 militaryTech[82] = {
 	id:82,
 	index:13,
 	name:"archer_infantry",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:574940,
+	stone:574940,
+	iron:574940,
+	food:574940,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:22997
 }
 militaryTech[83] = {
 	id:83,
 	index:14,
 	name:"archer_infantry",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:661120,
+	stone:661120,
+	iron:661120,
+	food:661120,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26444
 }
 militaryTech[84] = {
 	id:84,
 	index:1,
 	name:"archer_archer",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1090,
+	stone:1090,
+	iron:1090,
+	food:1090,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:43
 }
 militaryTech[85] = {
 	id:85,
 	index:2,
 	name:"archer_archer",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2750,
+	stone:2750,
+	iron:2750,
+	food:2750,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:110
 }
 militaryTech[86] = {
 	id:86,
 	index:3,
 	name:"archer_archer",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5460,
+	stone:5460,
+	iron:5460,
+	food:5460,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:218
 }
 militaryTech[87] = {
 	id:87,
 	index:4,
 	name:"archer_archer",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:10760,
+	stone:10760,
+	iron:10760,
+	food:10760,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:430
 }
 militaryTech[88] = {
 	id:88,
 	index:5,
 	name:"archer_archer",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21150,
+	stone:21150,
+	iron:21150,
+	food:21150,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:846
 }
 militaryTech[89] = {
 	id:89,
 	index:6,
 	name:"archer_archer",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:42190,
+	stone:42190,
+	iron:42190,
+	food:42190,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1687
 }
 militaryTech[90] = {
 	id:90,
 	index:7,
 	name:"archer_archer",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:83010,
+	stone:83010,
+	iron:83010,
+	food:83010,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3320
 }
 militaryTech[91] = {
 	id:91,
 	index:8,
 	name:"archer_archer",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:163970,
+	stone:163970,
+	iron:163970,
+	food:163970,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6558
 }
 militaryTech[92] = {
 	id:92,
 	index:9,
 	name:"archer_archer",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:245140,
+	stone:245140,
+	iron:245140,
+	food:245140,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9805
 }
 militaryTech[93] = {
 	id:93,
 	index:10,
 	name:"archer_archer",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:326510,
+	stone:326510,
+	iron:326510,
+	food:326510,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13060
 }
 militaryTech[94] = {
 	id:94,
 	index:11,
 	name:"archer_archer",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:410100,
+	stone:410100,
+	iron:410100,
+	food:410100,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16404
 }
 militaryTech[95] = {
 	id:95,
 	index:12,
 	name:"archer_archer",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:492400,
+	stone:492400,
+	iron:492400,
+	food:492400,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19696
 }
 militaryTech[96] = {
 	id:96,
 	index:13,
 	name:"archer_archer",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:574940,
+	stone:574940,
+	iron:574940,
+	food:574940,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:22997
 }
 militaryTech[97] = {
 	id:97,
 	index:14,
 	name:"archer_archer",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:661120,
+	stone:661120,
+	iron:661120,
+	food:661120,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26444
 }
 militaryTech[98] = {
 	id:98,
 	index:1,
 	name:"archer_cavalry",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1090,
+	stone:1090,
+	iron:1090,
+	food:1090,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:43
 }
 militaryTech[99] = {
 	id:99,
 	index:2,
 	name:"archer_cavalry",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2750,
+	stone:2750,
+	iron:2750,
+	food:2750,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:110
 }
 militaryTech[100] = {
 	id:100,
 	index:3,
 	name:"archer_cavalry",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5460,
+	stone:5460,
+	iron:5460,
+	food:5460,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:218
 }
 militaryTech[101] = {
 	id:101,
 	index:4,
 	name:"archer_cavalry",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:10760,
+	stone:10760,
+	iron:10760,
+	food:10760,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:430
 }
 militaryTech[102] = {
 	id:102,
 	index:5,
 	name:"archer_cavalry",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21150,
+	stone:21150,
+	iron:21150,
+	food:21150,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:846
 }
 militaryTech[103] = {
 	id:103,
 	index:6,
 	name:"archer_cavalry",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:42190,
+	stone:42190,
+	iron:42190,
+	food:42190,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1687
 }
 militaryTech[104] = {
 	id:104,
 	index:7,
 	name:"archer_cavalry",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:83010,
+	stone:83010,
+	iron:83010,
+	food:83010,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3320
 }
 militaryTech[105] = {
 	id:105,
 	index:8,
 	name:"archer_cavalry",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:163970,
+	stone:163970,
+	iron:163970,
+	food:163970,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6558
 }
 militaryTech[106] = {
 	id:106,
 	index:9,
 	name:"archer_cavalry",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:245140,
+	stone:245140,
+	iron:245140,
+	food:245140,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9805
 }
 militaryTech[107] = {
 	id:107,
 	index:10,
 	name:"archer_cavalry",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:326510,
+	stone:326510,
+	iron:326510,
+	food:326510,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13060
 }
 militaryTech[108] = {
 	id:108,
 	index:11,
 	name:"archer_cavalry",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:410100,
+	stone:410100,
+	iron:410100,
+	food:410100,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16404
 }
 militaryTech[109] = {
 	id:109,
 	index:12,
 	name:"archer_cavalry",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:492400,
+	stone:492400,
+	iron:492400,
+	food:492400,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19696
 }
 militaryTech[110] = {
 	id:110,
 	index:13,
 	name:"archer_cavalry",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:574940,
+	stone:574940,
+	iron:574940,
+	food:574940,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:22997
 }
 militaryTech[111] = {
 	id:111,
 	index:14,
 	name:"archer_cavalry",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:661120,
+	stone:661120,
+	iron:661120,
+	food:661120,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26444
 }
 militaryTech[112] = {
 	id:112,
 	index:1,
 	name:"archer_siege",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1090,
+	stone:1090,
+	iron:1090,
+	food:1090,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:43
 }
 militaryTech[113] = {
 	id:113,
 	index:2,
 	name:"archer_siege",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2750,
+	stone:2750,
+	iron:2750,
+	food:2750,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:110
 }
 militaryTech[114] = {
 	id:114,
 	index:3,
 	name:"archer_siege",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5460,
+	stone:5460,
+	iron:5460,
+	food:5460,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:218
 }
 militaryTech[115] = {
 	id:115,
 	index:4,
 	name:"archer_siege",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:10760,
+	stone:10760,
+	iron:10760,
+	food:10760,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:430
 }
 militaryTech[116] = {
 	id:116,
 	index:5,
 	name:"archer_siege",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21150,
+	stone:21150,
+	iron:21150,
+	food:21150,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:846
 }
 militaryTech[117] = {
 	id:117,
 	index:6,
 	name:"archer_siege",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:42190,
+	stone:42190,
+	iron:42190,
+	food:42190,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1687
 }
 militaryTech[118] = {
 	id:118,
 	index:7,
 	name:"archer_siege",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:83010,
+	stone:83010,
+	iron:83010,
+	food:83010,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3320
 }
 militaryTech[119] = {
 	id:119,
 	index:8,
 	name:"archer_siege",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:163970,
+	stone:163970,
+	iron:163970,
+	food:163970,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6558
 }
 militaryTech[120] = {
 	id:120,
 	index:9,
 	name:"archer_siege",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:245140,
+	stone:245140,
+	iron:245140,
+	food:245140,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9805
 }
 militaryTech[121] = {
 	id:121,
 	index:10,
 	name:"archer_siege",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:326510,
+	stone:326510,
+	iron:326510,
+	food:326510,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13060
 }
 militaryTech[122] = {
 	id:122,
 	index:11,
 	name:"archer_siege",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:410100,
+	stone:410100,
+	iron:410100,
+	food:410100,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16404
 }
 militaryTech[123] = {
 	id:123,
 	index:12,
 	name:"archer_siege",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:492400,
+	stone:492400,
+	iron:492400,
+	food:492400,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19696
 }
 militaryTech[124] = {
 	id:124,
 	index:13,
 	name:"archer_siege",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:574940,
+	stone:574940,
+	iron:574940,
+	food:574940,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:22997
 }
 militaryTech[125] = {
 	id:125,
 	index:14,
 	name:"archer_siege",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:661120,
+	stone:661120,
+	iron:661120,
+	food:661120,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26444
 }
 militaryTech[126] = {
 	id:126,
 	index:1,
 	name:"archer_hpAdd",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:2190,
+	stone:2190,
+	iron:2190,
+	food:2190,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:87
 }
 militaryTech[127] = {
 	id:127,
 	index:2,
 	name:"archer_hpAdd",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:5500,
+	stone:5500,
+	iron:5500,
+	food:5500,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:220
 }
 militaryTech[128] = {
 	id:128,
 	index:3,
 	name:"archer_hpAdd",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:10930,
+	stone:10930,
+	iron:10930,
+	food:10930,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:437
 }
 militaryTech[129] = {
 	id:129,
 	index:4,
 	name:"archer_hpAdd",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:21530,
+	stone:21530,
+	iron:21530,
+	food:21530,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:861
 }
 militaryTech[130] = {
 	id:130,
 	index:5,
 	name:"archer_hpAdd",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:42310,
+	stone:42310,
+	iron:42310,
+	food:42310,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:1692
 }
 militaryTech[131] = {
 	id:131,
 	index:6,
 	name:"archer_hpAdd",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:84380,
+	stone:84380,
+	iron:84380,
+	food:84380,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:3375
 }
 militaryTech[132] = {
 	id:132,
 	index:7,
 	name:"archer_hpAdd",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:166030,
+	stone:166030,
+	iron:166030,
+	food:166030,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:6641
 }
 militaryTech[133] = {
 	id:133,
 	index:8,
 	name:"archer_hpAdd",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:327950,
+	stone:327950,
+	iron:327950,
+	food:327950,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:13118
 }
 militaryTech[134] = {
 	id:134,
 	index:9,
 	name:"archer_hpAdd",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:490290,
+	stone:490290,
+	iron:490290,
+	food:490290,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:19611
 }
 militaryTech[135] = {
 	id:135,
 	index:10,
 	name:"archer_hpAdd",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:653020,
+	stone:653020,
+	iron:653020,
+	food:653020,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:26120
 }
 militaryTech[136] = {
 	id:136,
 	index:11,
 	name:"archer_hpAdd",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:820200,
+	stone:820200,
+	iron:820200,
+	food:820200,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:32808
 }
 militaryTech[137] = {
 	id:137,
 	index:12,
 	name:"archer_hpAdd",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:984810,
+	stone:984810,
+	iron:984810,
+	food:984810,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:39392
 }
 militaryTech[138] = {
 	id:138,
 	index:13,
 	name:"archer_hpAdd",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:1149880,
+	stone:1149880,
+	iron:1149880,
+	food:1149880,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:45995
 }
 militaryTech[139] = {
 	id:139,
 	index:14,
 	name:"archer_hpAdd",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:1322240,
+	stone:1322240,
+	iron:1322240,
+	food:1322240,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:52889
 }
 militaryTech[140] = {
 	id:140,
 	index:1,
 	name:"cavalry_infantry",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1100,
+	stone:1100,
+	iron:1100,
+	food:1100,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:44
 }
 militaryTech[141] = {
 	id:141,
 	index:2,
 	name:"cavalry_infantry",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2770,
+	stone:2770,
+	iron:2770,
+	food:2770,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:110
 }
 militaryTech[142] = {
 	id:142,
 	index:3,
 	name:"cavalry_infantry",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5500,
+	stone:5500,
+	iron:5500,
+	food:5500,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:220
 }
 militaryTech[143] = {
 	id:143,
 	index:4,
 	name:"cavalry_infantry",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:10830,
+	stone:10830,
+	iron:10830,
+	food:10830,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:433
 }
 militaryTech[144] = {
 	id:144,
 	index:5,
 	name:"cavalry_infantry",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21260,
+	stone:21260,
+	iron:21260,
+	food:21260,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:850
 }
 militaryTech[145] = {
 	id:145,
 	index:6,
 	name:"cavalry_infantry",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:42390,
+	stone:42390,
+	iron:42390,
+	food:42390,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1695
 }
 militaryTech[146] = {
 	id:146,
 	index:7,
 	name:"cavalry_infantry",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:83290,
+	stone:83290,
+	iron:83290,
+	food:83290,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3331
 }
 militaryTech[147] = {
 	id:147,
 	index:8,
 	name:"cavalry_infantry",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:164330,
+	stone:164330,
+	iron:164330,
+	food:164330,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6573
 }
 militaryTech[148] = {
 	id:148,
 	index:9,
 	name:"cavalry_infantry",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:245610,
+	stone:245610,
+	iron:245610,
+	food:245610,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9824
 }
 militaryTech[149] = {
 	id:149,
 	index:10,
 	name:"cavalry_infantry",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:327100,
+	stone:327100,
+	iron:327100,
+	food:327100,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13084
 }
 militaryTech[150] = {
 	id:150,
 	index:11,
 	name:"cavalry_infantry",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:411020,
+	stone:411020,
+	iron:411020,
+	food:411020,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16440
 }
 militaryTech[151] = {
 	id:151,
 	index:12,
 	name:"cavalry_infantry",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:493530,
+	stone:493530,
+	iron:493530,
+	food:493530,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19741
 }
 militaryTech[152] = {
 	id:152,
 	index:13,
 	name:"cavalry_infantry",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:576300,
+	stone:576300,
+	iron:576300,
+	food:576300,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:23052
 }
 militaryTech[153] = {
 	id:153,
 	index:14,
 	name:"cavalry_infantry",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:663040,
+	stone:663040,
+	iron:663040,
+	food:663040,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26521
 }
 militaryTech[154] = {
 	id:154,
 	index:1,
 	name:"cavalry_archer",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1100,
+	stone:1100,
+	iron:1100,
+	food:1100,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:44
 }
 militaryTech[155] = {
 	id:155,
 	index:2,
 	name:"cavalry_archer",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2770,
+	stone:2770,
+	iron:2770,
+	food:2770,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:110
 }
 militaryTech[156] = {
 	id:156,
 	index:3,
 	name:"cavalry_archer",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5500,
+	stone:5500,
+	iron:5500,
+	food:5500,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:220
 }
 militaryTech[157] = {
 	id:157,
 	index:4,
 	name:"cavalry_archer",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:10830,
+	stone:10830,
+	iron:10830,
+	food:10830,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:433
 }
 militaryTech[158] = {
 	id:158,
 	index:5,
 	name:"cavalry_archer",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21260,
+	stone:21260,
+	iron:21260,
+	food:21260,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:850
 }
 militaryTech[159] = {
 	id:159,
 	index:6,
 	name:"cavalry_archer",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:42390,
+	stone:42390,
+	iron:42390,
+	food:42390,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1695
 }
 militaryTech[160] = {
 	id:160,
 	index:7,
 	name:"cavalry_archer",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:83290,
+	stone:83290,
+	iron:83290,
+	food:83290,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3331
 }
 militaryTech[161] = {
 	id:161,
 	index:8,
 	name:"cavalry_archer",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:164330,
+	stone:164330,
+	iron:164330,
+	food:164330,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6573
 }
 militaryTech[162] = {
 	id:162,
 	index:9,
 	name:"cavalry_archer",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:245610,
+	stone:245610,
+	iron:245610,
+	food:245610,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9824
 }
 militaryTech[163] = {
 	id:163,
 	index:10,
 	name:"cavalry_archer",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:327100,
+	stone:327100,
+	iron:327100,
+	food:327100,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13084
 }
 militaryTech[164] = {
 	id:164,
 	index:11,
 	name:"cavalry_archer",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:411020,
+	stone:411020,
+	iron:411020,
+	food:411020,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16440
 }
 militaryTech[165] = {
 	id:165,
 	index:12,
 	name:"cavalry_archer",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:493530,
+	stone:493530,
+	iron:493530,
+	food:493530,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19741
 }
 militaryTech[166] = {
 	id:166,
 	index:13,
 	name:"cavalry_archer",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:576300,
+	stone:576300,
+	iron:576300,
+	food:576300,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:23052
 }
 militaryTech[167] = {
 	id:167,
 	index:14,
 	name:"cavalry_archer",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:663040,
+	stone:663040,
+	iron:663040,
+	food:663040,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26521
 }
 militaryTech[168] = {
 	id:168,
 	index:1,
 	name:"cavalry_cavalry",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1100,
+	stone:1100,
+	iron:1100,
+	food:1100,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:44
 }
 militaryTech[169] = {
 	id:169,
 	index:2,
 	name:"cavalry_cavalry",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2770,
+	stone:2770,
+	iron:2770,
+	food:2770,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:110
 }
 militaryTech[170] = {
 	id:170,
 	index:3,
 	name:"cavalry_cavalry",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5500,
+	stone:5500,
+	iron:5500,
+	food:5500,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:220
 }
 militaryTech[171] = {
 	id:171,
 	index:4,
 	name:"cavalry_cavalry",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:10830,
+	stone:10830,
+	iron:10830,
+	food:10830,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:433
 }
 militaryTech[172] = {
 	id:172,
 	index:5,
 	name:"cavalry_cavalry",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21260,
+	stone:21260,
+	iron:21260,
+	food:21260,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:850
 }
 militaryTech[173] = {
 	id:173,
 	index:6,
 	name:"cavalry_cavalry",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:42390,
+	stone:42390,
+	iron:42390,
+	food:42390,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1695
 }
 militaryTech[174] = {
 	id:174,
 	index:7,
 	name:"cavalry_cavalry",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:83290,
+	stone:83290,
+	iron:83290,
+	food:83290,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3331
 }
 militaryTech[175] = {
 	id:175,
 	index:8,
 	name:"cavalry_cavalry",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:164330,
+	stone:164330,
+	iron:164330,
+	food:164330,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6573
 }
 militaryTech[176] = {
 	id:176,
 	index:9,
 	name:"cavalry_cavalry",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:245610,
+	stone:245610,
+	iron:245610,
+	food:245610,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9824
 }
 militaryTech[177] = {
 	id:177,
 	index:10,
 	name:"cavalry_cavalry",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:327100,
+	stone:327100,
+	iron:327100,
+	food:327100,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13084
 }
 militaryTech[178] = {
 	id:178,
 	index:11,
 	name:"cavalry_cavalry",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:411020,
+	stone:411020,
+	iron:411020,
+	food:411020,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16440
 }
 militaryTech[179] = {
 	id:179,
 	index:12,
 	name:"cavalry_cavalry",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:493530,
+	stone:493530,
+	iron:493530,
+	food:493530,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19741
 }
 militaryTech[180] = {
 	id:180,
 	index:13,
 	name:"cavalry_cavalry",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:576300,
+	stone:576300,
+	iron:576300,
+	food:576300,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:23052
 }
 militaryTech[181] = {
 	id:181,
 	index:14,
 	name:"cavalry_cavalry",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:663040,
+	stone:663040,
+	iron:663040,
+	food:663040,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26521
 }
 militaryTech[182] = {
 	id:182,
 	index:1,
 	name:"cavalry_siege",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1100,
+	stone:1100,
+	iron:1100,
+	food:1100,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:44
 }
 militaryTech[183] = {
 	id:183,
 	index:2,
 	name:"cavalry_siege",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2770,
+	stone:2770,
+	iron:2770,
+	food:2770,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:110
 }
 militaryTech[184] = {
 	id:184,
 	index:3,
 	name:"cavalry_siege",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5500,
+	stone:5500,
+	iron:5500,
+	food:5500,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:220
 }
 militaryTech[185] = {
 	id:185,
 	index:4,
 	name:"cavalry_siege",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:10830,
+	stone:10830,
+	iron:10830,
+	food:10830,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:433
 }
 militaryTech[186] = {
 	id:186,
 	index:5,
 	name:"cavalry_siege",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21260,
+	stone:21260,
+	iron:21260,
+	food:21260,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:850
 }
 militaryTech[187] = {
 	id:187,
 	index:6,
 	name:"cavalry_siege",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:42390,
+	stone:42390,
+	iron:42390,
+	food:42390,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1695
 }
 militaryTech[188] = {
 	id:188,
 	index:7,
 	name:"cavalry_siege",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:83290,
+	stone:83290,
+	iron:83290,
+	food:83290,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3331
 }
 militaryTech[189] = {
 	id:189,
 	index:8,
 	name:"cavalry_siege",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:164330,
+	stone:164330,
+	iron:164330,
+	food:164330,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6573
 }
 militaryTech[190] = {
 	id:190,
 	index:9,
 	name:"cavalry_siege",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:245610,
+	stone:245610,
+	iron:245610,
+	food:245610,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9824
 }
 militaryTech[191] = {
 	id:191,
 	index:10,
 	name:"cavalry_siege",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:327100,
+	stone:327100,
+	iron:327100,
+	food:327100,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13084
 }
 militaryTech[192] = {
 	id:192,
 	index:11,
 	name:"cavalry_siege",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:411020,
+	stone:411020,
+	iron:411020,
+	food:411020,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16440
 }
 militaryTech[193] = {
 	id:193,
 	index:12,
 	name:"cavalry_siege",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:493530,
+	stone:493530,
+	iron:493530,
+	food:493530,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19741
 }
 militaryTech[194] = {
 	id:194,
 	index:13,
 	name:"cavalry_siege",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:576300,
+	stone:576300,
+	iron:576300,
+	food:576300,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:23052
 }
 militaryTech[195] = {
 	id:195,
 	index:14,
 	name:"cavalry_siege",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:663040,
+	stone:663040,
+	iron:663040,
+	food:663040,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26521
 }
 militaryTech[196] = {
 	id:196,
 	index:1,
 	name:"cavalry_hpAdd",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:2200,
+	stone:2200,
+	iron:2200,
+	food:2200,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:88
 }
 militaryTech[197] = {
 	id:197,
 	index:2,
 	name:"cavalry_hpAdd",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:5540,
+	stone:5540,
+	iron:5540,
+	food:5540,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:221
 }
 militaryTech[198] = {
 	id:198,
 	index:3,
 	name:"cavalry_hpAdd",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:11010,
+	stone:11010,
+	iron:11010,
+	food:11010,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:440
 }
 militaryTech[199] = {
 	id:199,
 	index:4,
 	name:"cavalry_hpAdd",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:21670,
+	stone:21670,
+	iron:21670,
+	food:21670,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:866
 }
 militaryTech[200] = {
 	id:200,
 	index:5,
 	name:"cavalry_hpAdd",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:42520,
+	stone:42520,
+	iron:42520,
+	food:42520,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:1700
 }
 militaryTech[201] = {
 	id:201,
 	index:6,
 	name:"cavalry_hpAdd",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:84780,
+	stone:84780,
+	iron:84780,
+	food:84780,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:3391
 }
 militaryTech[202] = {
 	id:202,
 	index:7,
 	name:"cavalry_hpAdd",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:166580,
+	stone:166580,
+	iron:166580,
+	food:166580,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:6663
 }
 militaryTech[203] = {
 	id:203,
 	index:8,
 	name:"cavalry_hpAdd",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:328670,
+	stone:328670,
+	iron:328670,
+	food:328670,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:13146
 }
 militaryTech[204] = {
 	id:204,
 	index:9,
 	name:"cavalry_hpAdd",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:491230,
+	stone:491230,
+	iron:491230,
+	food:491230,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:19649
 }
 militaryTech[205] = {
 	id:205,
 	index:10,
 	name:"cavalry_hpAdd",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:654200,
+	stone:654200,
+	iron:654200,
+	food:654200,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:26168
 }
 militaryTech[206] = {
 	id:206,
 	index:11,
 	name:"cavalry_hpAdd",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:822040,
+	stone:822040,
+	iron:822040,
+	food:822040,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:32881
 }
 militaryTech[207] = {
 	id:207,
 	index:12,
 	name:"cavalry_hpAdd",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:987070,
+	stone:987070,
+	iron:987070,
+	food:987070,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:39482
 }
 militaryTech[208] = {
 	id:208,
 	index:13,
 	name:"cavalry_hpAdd",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:1152600,
+	stone:1152600,
+	iron:1152600,
+	food:1152600,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:46104
 }
 militaryTech[209] = {
 	id:209,
 	index:14,
 	name:"cavalry_hpAdd",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:1326080,
+	stone:1326080,
+	iron:1326080,
+	food:1326080,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:53043
 }
 militaryTech[210] = {
 	id:210,
 	index:1,
 	name:"siege_infantry",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1130,
+	stone:1130,
+	iron:1130,
+	food:1130,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:45
 }
 militaryTech[211] = {
 	id:211,
 	index:2,
 	name:"siege_infantry",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2840,
+	stone:2840,
+	iron:2840,
+	food:2840,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:113
 }
 militaryTech[212] = {
 	id:212,
 	index:3,
 	name:"siege_infantry",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5630,
+	stone:5630,
+	iron:5630,
+	food:5630,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:225
 }
 militaryTech[213] = {
 	id:213,
 	index:4,
 	name:"siege_infantry",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:11040,
+	stone:11040,
+	iron:11040,
+	food:11040,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:441
 }
 militaryTech[214] = {
 	id:214,
 	index:5,
 	name:"siege_infantry",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21570,
+	stone:21570,
+	iron:21570,
+	food:21570,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:862
 }
 militaryTech[215] = {
 	id:215,
 	index:6,
 	name:"siege_infantry",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:42980,
+	stone:42980,
+	iron:42980,
+	food:42980,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1719
 }
 militaryTech[216] = {
 	id:216,
 	index:7,
 	name:"siege_infantry",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:84110,
+	stone:84110,
+	iron:84110,
+	food:84110,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3364
 }
 militaryTech[217] = {
 	id:217,
 	index:8,
 	name:"siege_infantry",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:165420,
+	stone:165420,
+	iron:165420,
+	food:165420,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6616
 }
 militaryTech[218] = {
 	id:218,
 	index:9,
 	name:"siege_infantry",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:247020,
+	stone:247020,
+	iron:247020,
+	food:247020,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9880
 }
 militaryTech[219] = {
 	id:219,
 	index:10,
 	name:"siege_infantry",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:328880,
+	stone:328880,
+	iron:328880,
+	food:328880,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13155
 }
 militaryTech[220] = {
 	id:220,
 	index:11,
 	name:"siege_infantry",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:413770,
+	stone:413770,
+	iron:413770,
+	food:413770,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16550
 }
 militaryTech[221] = {
 	id:221,
 	index:12,
 	name:"siege_infantry",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:496920,
+	stone:496920,
+	iron:496920,
+	food:496920,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19876
 }
 militaryTech[222] = {
 	id:222,
 	index:13,
 	name:"siege_infantry",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:580370,
+	stone:580370,
+	iron:580370,
+	food:580370,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:23214
 }
 militaryTech[223] = {
 	id:223,
 	index:14,
 	name:"siege_infantry",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:668800,
+	stone:668800,
+	iron:668800,
+	food:668800,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26752
 }
 militaryTech[224] = {
 	id:224,
 	index:1,
 	name:"siege_archer",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1130,
+	stone:1130,
+	iron:1130,
+	food:1130,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:45
 }
 militaryTech[225] = {
 	id:225,
 	index:2,
 	name:"siege_archer",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2840,
+	stone:2840,
+	iron:2840,
+	food:2840,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:113
 }
 militaryTech[226] = {
 	id:226,
 	index:3,
 	name:"siege_archer",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5630,
+	stone:5630,
+	iron:5630,
+	food:5630,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:225
 }
 militaryTech[227] = {
 	id:227,
 	index:4,
 	name:"siege_archer",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:11040,
+	stone:11040,
+	iron:11040,
+	food:11040,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:441
 }
 militaryTech[228] = {
 	id:228,
 	index:5,
 	name:"siege_archer",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21570,
+	stone:21570,
+	iron:21570,
+	food:21570,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:862
 }
 militaryTech[229] = {
 	id:229,
 	index:6,
 	name:"siege_archer",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:42980,
+	stone:42980,
+	iron:42980,
+	food:42980,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1719
 }
 militaryTech[230] = {
 	id:230,
 	index:7,
 	name:"siege_archer",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:84110,
+	stone:84110,
+	iron:84110,
+	food:84110,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3364
 }
 militaryTech[231] = {
 	id:231,
 	index:8,
 	name:"siege_archer",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:165420,
+	stone:165420,
+	iron:165420,
+	food:165420,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6616
 }
 militaryTech[232] = {
 	id:232,
 	index:9,
 	name:"siege_archer",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:247020,
+	stone:247020,
+	iron:247020,
+	food:247020,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9880
 }
 militaryTech[233] = {
 	id:233,
 	index:10,
 	name:"siege_archer",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:328880,
+	stone:328880,
+	iron:328880,
+	food:328880,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13155
 }
 militaryTech[234] = {
 	id:234,
 	index:11,
 	name:"siege_archer",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:413770,
+	stone:413770,
+	iron:413770,
+	food:413770,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16550
 }
 militaryTech[235] = {
 	id:235,
 	index:12,
 	name:"siege_archer",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:496920,
+	stone:496920,
+	iron:496920,
+	food:496920,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19876
 }
 militaryTech[236] = {
 	id:236,
 	index:13,
 	name:"siege_archer",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:580370,
+	stone:580370,
+	iron:580370,
+	food:580370,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:23214
 }
 militaryTech[237] = {
 	id:237,
 	index:14,
 	name:"siege_archer",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:668800,
+	stone:668800,
+	iron:668800,
+	food:668800,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26752
 }
 militaryTech[238] = {
 	id:238,
 	index:1,
 	name:"siege_cavalry",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1130,
+	stone:1130,
+	iron:1130,
+	food:1130,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:45
 }
 militaryTech[239] = {
 	id:239,
 	index:2,
 	name:"siege_cavalry",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2840,
+	stone:2840,
+	iron:2840,
+	food:2840,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:113
 }
 militaryTech[240] = {
 	id:240,
 	index:3,
 	name:"siege_cavalry",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5630,
+	stone:5630,
+	iron:5630,
+	food:5630,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:225
 }
 militaryTech[241] = {
 	id:241,
 	index:4,
 	name:"siege_cavalry",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:11040,
+	stone:11040,
+	iron:11040,
+	food:11040,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:441
 }
 militaryTech[242] = {
 	id:242,
 	index:5,
 	name:"siege_cavalry",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21570,
+	stone:21570,
+	iron:21570,
+	food:21570,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:862
 }
 militaryTech[243] = {
 	id:243,
 	index:6,
 	name:"siege_cavalry",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:42980,
+	stone:42980,
+	iron:42980,
+	food:42980,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1719
 }
 militaryTech[244] = {
 	id:244,
 	index:7,
 	name:"siege_cavalry",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:84110,
+	stone:84110,
+	iron:84110,
+	food:84110,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3364
 }
 militaryTech[245] = {
 	id:245,
 	index:8,
 	name:"siege_cavalry",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:165420,
+	stone:165420,
+	iron:165420,
+	food:165420,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6616
 }
 militaryTech[246] = {
 	id:246,
 	index:9,
 	name:"siege_cavalry",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:247020,
+	stone:247020,
+	iron:247020,
+	food:247020,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9880
 }
 militaryTech[247] = {
 	id:247,
 	index:10,
 	name:"siege_cavalry",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:328880,
+	stone:328880,
+	iron:328880,
+	food:328880,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13155
 }
 militaryTech[248] = {
 	id:248,
 	index:11,
 	name:"siege_cavalry",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:413770,
+	stone:413770,
+	iron:413770,
+	food:413770,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16550
 }
 militaryTech[249] = {
 	id:249,
 	index:12,
 	name:"siege_cavalry",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:496920,
+	stone:496920,
+	iron:496920,
+	food:496920,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19876
 }
 militaryTech[250] = {
 	id:250,
 	index:13,
 	name:"siege_cavalry",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:580370,
+	stone:580370,
+	iron:580370,
+	food:580370,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:23214
 }
 militaryTech[251] = {
 	id:251,
 	index:14,
 	name:"siege_cavalry",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:668800,
+	stone:668800,
+	iron:668800,
+	food:668800,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26752
 }
 militaryTech[252] = {
 	id:252,
 	index:1,
 	name:"siege_siege",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:1130,
+	stone:1130,
+	iron:1130,
+	food:1130,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:45
 }
 militaryTech[253] = {
 	id:253,
 	index:2,
 	name:"siege_siege",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:2840,
+	stone:2840,
+	iron:2840,
+	food:2840,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:113
 }
 militaryTech[254] = {
 	id:254,
 	index:3,
 	name:"siege_siege",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:5630,
+	stone:5630,
+	iron:5630,
+	food:5630,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:225
 }
 militaryTech[255] = {
 	id:255,
 	index:4,
 	name:"siege_siege",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:11040,
+	stone:11040,
+	iron:11040,
+	food:11040,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:441
 }
 militaryTech[256] = {
 	id:256,
 	index:5,
 	name:"siege_siege",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:21570,
+	stone:21570,
+	iron:21570,
+	food:21570,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:862
 }
 militaryTech[257] = {
 	id:257,
 	index:6,
 	name:"siege_siege",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:42980,
+	stone:42980,
+	iron:42980,
+	food:42980,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:1719
 }
 militaryTech[258] = {
 	id:258,
 	index:7,
 	name:"siege_siege",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:84110,
+	stone:84110,
+	iron:84110,
+	food:84110,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:3364
 }
 militaryTech[259] = {
 	id:259,
 	index:8,
 	name:"siege_siege",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:165420,
+	stone:165420,
+	iron:165420,
+	food:165420,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:6616
 }
 militaryTech[260] = {
 	id:260,
 	index:9,
 	name:"siege_siege",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:247020,
+	stone:247020,
+	iron:247020,
+	food:247020,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:9880
 }
 militaryTech[261] = {
 	id:261,
 	index:10,
 	name:"siege_siege",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:328880,
+	stone:328880,
+	iron:328880,
+	food:328880,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:13155
 }
 militaryTech[262] = {
 	id:262,
 	index:11,
 	name:"siege_siege",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:413770,
+	stone:413770,
+	iron:413770,
+	food:413770,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:16550
 }
 militaryTech[263] = {
 	id:263,
 	index:12,
 	name:"siege_siege",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:496920,
+	stone:496920,
+	iron:496920,
+	food:496920,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:19876
 }
 militaryTech[264] = {
 	id:264,
 	index:13,
 	name:"siege_siege",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:580370,
+	stone:580370,
+	iron:580370,
+	food:580370,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:23214
 }
 militaryTech[265] = {
 	id:265,
 	index:14,
 	name:"siege_siege",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:668800,
+	stone:668800,
+	iron:668800,
+	food:668800,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:26752
 }
 militaryTech[266] = {
 	id:266,
 	index:1,
 	name:"siege_hpAdd",
 	level:2,
-	wood:480,
-	stone:480,
-	iron:480,
-	food:480,
-	coin:480,
+	wood:2260,
+	stone:2260,
+	iron:2260,
+	food:2260,
+	coin:0,
 	gem:0,
-	exp:200
+	exp:90
 }
 militaryTech[267] = {
 	id:267,
 	index:2,
 	name:"siege_hpAdd",
 	level:3,
-	wood:1080,
-	stone:1080,
-	iron:1080,
-	food:1080,
-	coin:1080,
+	wood:5680,
+	stone:5680,
+	iron:5680,
+	food:5680,
+	coin:0,
 	gem:0,
-	exp:450
+	exp:227
 }
 militaryTech[268] = {
 	id:268,
 	index:3,
 	name:"siege_hpAdd",
 	level:4,
-	wood:1920,
-	stone:1920,
-	iron:1920,
-	food:1920,
-	coin:1920,
+	wood:11260,
+	stone:11260,
+	iron:11260,
+	food:11260,
+	coin:0,
 	gem:0,
-	exp:800
+	exp:450
 }
 militaryTech[269] = {
 	id:269,
 	index:4,
 	name:"siege_hpAdd",
 	level:5,
-	wood:3000,
-	stone:3000,
-	iron:3000,
-	food:3000,
-	coin:3000,
+	wood:22080,
+	stone:22080,
+	iron:22080,
+	food:22080,
+	coin:0,
 	gem:0,
-	exp:1250
+	exp:883
 }
 militaryTech[270] = {
 	id:270,
 	index:5,
 	name:"siege_hpAdd",
 	level:6,
-	wood:4320,
-	stone:4320,
-	iron:4320,
-	food:4320,
-	coin:4320,
+	wood:43150,
+	stone:43150,
+	iron:43150,
+	food:43150,
+	coin:0,
 	gem:0,
-	exp:1800
+	exp:1726
 }
 militaryTech[271] = {
 	id:271,
 	index:6,
 	name:"siege_hpAdd",
 	level:7,
-	wood:5880,
-	stone:5880,
-	iron:5880,
-	food:5880,
-	coin:5880,
+	wood:85970,
+	stone:85970,
+	iron:85970,
+	food:85970,
+	coin:0,
 	gem:0,
-	exp:2450
+	exp:3438
 }
 militaryTech[272] = {
 	id:272,
 	index:7,
 	name:"siege_hpAdd",
 	level:8,
-	wood:7680,
-	stone:7680,
-	iron:7680,
-	food:7680,
-	coin:7680,
+	wood:168230,
+	stone:168230,
+	iron:168230,
+	food:168230,
+	coin:0,
 	gem:0,
-	exp:3200
+	exp:6729
 }
 militaryTech[273] = {
 	id:273,
 	index:8,
 	name:"siege_hpAdd",
 	level:9,
-	wood:9720,
-	stone:9720,
-	iron:9720,
-	food:9720,
-	coin:9720,
+	wood:330840,
+	stone:330840,
+	iron:330840,
+	food:330840,
+	coin:0,
 	gem:0,
-	exp:4050
+	exp:13233
 }
 militaryTech[274] = {
 	id:274,
 	index:9,
 	name:"siege_hpAdd",
 	level:10,
-	wood:12000,
-	stone:12000,
-	iron:12000,
-	food:12000,
-	coin:12000,
+	wood:494040,
+	stone:494040,
+	iron:494040,
+	food:494040,
+	coin:0,
 	gem:0,
-	exp:5000
+	exp:19761
 }
 militaryTech[275] = {
 	id:275,
 	index:10,
 	name:"siege_hpAdd",
 	level:11,
-	wood:14520,
-	stone:14520,
-	iron:14520,
-	food:14520,
-	coin:14520,
+	wood:657760,
+	stone:657760,
+	iron:657760,
+	food:657760,
+	coin:0,
 	gem:0,
-	exp:6050
+	exp:26310
 }
 militaryTech[276] = {
 	id:276,
 	index:11,
 	name:"siege_hpAdd",
 	level:12,
-	wood:17280,
-	stone:17280,
-	iron:17280,
-	food:17280,
-	coin:17280,
+	wood:827550,
+	stone:827550,
+	iron:827550,
+	food:827550,
+	coin:0,
 	gem:0,
-	exp:7200
+	exp:33102
 }
 militaryTech[277] = {
 	id:277,
 	index:12,
 	name:"siege_hpAdd",
 	level:13,
-	wood:20280,
-	stone:20280,
-	iron:20280,
-	food:20280,
-	coin:20280,
+	wood:993840,
+	stone:993840,
+	iron:993840,
+	food:993840,
+	coin:0,
 	gem:0,
-	exp:8450
+	exp:39753
 }
 militaryTech[278] = {
 	id:278,
 	index:13,
 	name:"siege_hpAdd",
 	level:14,
-	wood:23520,
-	stone:23520,
-	iron:23520,
-	food:23520,
-	coin:23520,
+	wood:1160750,
+	stone:1160750,
+	iron:1160750,
+	food:1160750,
+	coin:0,
 	gem:0,
-	exp:9800
+	exp:46430
 }
 militaryTech[279] = {
 	id:279,
 	index:14,
 	name:"siege_hpAdd",
 	level:15,
-	wood:27000,
-	stone:27000,
-	iron:27000,
-	food:27000,
-	coin:27000,
+	wood:1337600,
+	stone:1337600,
+	iron:1337600,
+	food:1337600,
+	coin:0,
 	gem:0,
-	exp:11250
+	exp:53504
 }
