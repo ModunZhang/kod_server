@@ -2649,7 +2649,7 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
  */
 Utils.addPlayerDragonExp = function(playerDoc, playerData, dragon, expAdd, inFight){
 	var currentStarMaxLevel = Dragons.dragonStar[dragon.star].levelMax
-	if(dragon.level >= currentStarMaxLevel) return
+	//if(dragon.level >= currentStarMaxLevel) return
 
 	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? 0.3 : 0
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonExpAdd
@@ -2657,10 +2657,14 @@ Utils.addPlayerDragonExp = function(playerDoc, playerData, dragon, expAdd, inFig
 	while(true){
 		var nextLevelExpNeed = Dragons.dragonLevel[dragon.level + 1].expNeed
 		if(dragon.exp + expAdd > nextLevelExpNeed){
-			expAdd -= (nextLevelExpNeed - dragon.exp)
-			dragon.level += 1
-			TaskUtils.finishDragonLevelTaskIfNeed(playerDoc, playerData, dragon.type, dragon.level)
-			if(dragon.level >= currentStarMaxLevel) break
+			if(dragon.level >= currentStarMaxLevel){
+				dragon.exp = nextLevelExpNeed
+				break
+			}else{
+				dragon.level += 1
+				expAdd -= (nextLevelExpNeed - dragon.exp)
+				TaskUtils.finishDragonLevelTaskIfNeed(playerDoc, playerData, dragon.type, dragon.level)
+			}
 		}else{
 			dragon.exp += expAdd
 			break
