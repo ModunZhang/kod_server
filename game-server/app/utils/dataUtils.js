@@ -3820,3 +3820,28 @@ Utils.getAllianceMemberMaxCount = function(allianceDoc){
 	})
 	return AllianceBuilding.palace[allianceBuilding.level].memberCount
 }
+
+/**
+ * 添加玩家经验
+ * @param playerDoc
+ * @param playerData
+ * @param expAdd
+ */
+Utils.addPlayerLevelExp = function(playerDoc, playerData, expAdd){
+	var currentLevel = this.getPlayerLevel(playerDoc)
+	playerDoc.basicInfo.levelExp += expAdd
+	playerData.push(["basicInfo.levelExp", playerDoc.basicInfo.levelExp])
+	var afterLevel = this.getPlayerLevel(playerDoc)
+	while(afterLevel - currentLevel > 0){
+		currentLevel += 1
+		var rewardStrings = PlayerInitData.playerLevel[currentLevel].rewards.split(",")
+		_.each(rewardStrings, function(rewardString){
+			var params = rewardString.split(":")
+			var type = params[0]
+			var name = params[1]
+			var count = parseInt(params[2])
+			playerDoc[type][name] += count
+			playerData.push([type + "." + name, playerDoc[type][name]])
+		})
+	}
+}
