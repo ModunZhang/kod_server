@@ -19,7 +19,6 @@ var LogicUtils = require("../utils/logicUtils")
 
 var ApnService = function(app){
 	this.app = app
-	this.channelService = app.get("channelService")
 	this.logService = app.get("logService")
 	this.serverId = app.getServerId()
 	this.serverType = app.getServerType()
@@ -96,14 +95,8 @@ pro.pushApnMessage = function(apnIds, message){
 pro.pushApnMessageToAllianceMembers = function(allianceDoc, messageKey, messageArgs){
 	var self = this
 	var members = {}
-	var onlineMembers = []
-	var channelName = Consts.AllianceChannelPrefix + "_" + allianceDoc._id
-	var channel = this.channelService.getChannel(channelName, false)
-	if(_.isObject(channel)){
-		onlineMembers = channel.getMembers()
-	}
 	_.each(allianceDoc.members, function(member){
-		if(!_.contains(onlineMembers, member.id) && !_.isEmpty(member.apnId)){
+		if(!member.online && !_.isEmpty(member.apnId)){
 			if(!_.isArray(members[member.language])) members[member.language] = []
 			members[member.language].push(member.apnId)
 		}

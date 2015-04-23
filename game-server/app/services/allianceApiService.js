@@ -124,7 +124,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		var memberRect = LogicUtils.getFreePointInAllianceMap(mapObjects, memberSizeInMap.width, memberSizeInMap.height)
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
 		mapObjects.push(memberMapObject)
-		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Archon, memberMapObject.id)
+		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Archon, memberMapObject.id, true)
 		LogicUtils.refreshAllianceBasicInfo(allianceDoc, [])
 		playerDoc.allianceId = allianceDoc._id
 		playerData.push(["allianceId", playerDoc.allianceId])

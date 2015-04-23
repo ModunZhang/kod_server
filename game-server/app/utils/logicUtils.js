@@ -594,6 +594,7 @@ Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
 			member.name = playerDoc.basicInfo.name
 			member.icon = playerDoc.basicInfo.icon
 			member.levelExp = playerDoc.basicInfo.levelExp
+			member.online = true
 			member.power = playerDoc.basicInfo.power
 			member.kill = playerDoc.basicInfo.kill
 			member.loyalty = playerDoc.allianceInfo.loyalty
@@ -1101,9 +1102,10 @@ Utils.AddAllianceEvent = function(allianceDoc, category, type, key, params){
  * @param playerDoc
  * @param title
  * @param mapId
+ * @param online
  * @return {*}
  */
-Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId){
+Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online){
 	var member = {
 		id:playerDoc._id,
 		mapId:mapId,
@@ -1141,6 +1143,8 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId){
 		lastThreeDaysKillData:[],
 		lastRewardData:null
 	}
+	if(!!online)
+		member.online = online
 	allianceDoc.members.push(member)
 	return member
 }

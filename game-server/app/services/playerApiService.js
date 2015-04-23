@@ -232,23 +232,42 @@ pro.playerLogout = function(session, reason, callback){
 	var self = this
 	var playerId = session.uid
 	var playerDoc = null
+	var allianceDoc = null
+	var allianceData = []
+	var updateFuncs = []
+	var pushFuncs = []
 	var removePlayerFromChatChannelAsync = Promise.promisify(RemovePlayerFromChatChannel, this)
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		playerDoc.logicServerId = null
 		playerDoc.countInfo.todayOnLineTime += Date.now() - playerDoc.countInfo.lastLoginTime
-		if(_.isEqual(playerDoc.serverId, self.app.get("cacheServerId"))){
-			return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
-		}else{
-			return self.dataService.timeoutPlayerAsync(playerDoc, playerDoc)
-		}
+		if(_.isString(playerDoc.allianceId))
+			return self.dataService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc
+				var player = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+				delete player.online
+				allianceData.push(["members." + allianceDoc.members.indexOf(player) + ".online", null])
+				updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerId])
+				return Promise.resolve()
+			})
+		else
+			return Promise.resolve()
 	}).then(function(){
-		var funcs = []
-		funcs.push(removePlayerFromChatChannelAsync(playerDoc._id))
-		if(_.isString(playerDoc.allianceId)){
-			funcs.push(self.dataService.removePlayerFromAllianceChannelAsync(playerDoc.allianceId, playerDoc._id, self.logicServerId))
+		if(_.isEqual(playerDoc.serverId, self.app.get("cacheServerId"))){
+			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		}else{
+			updateFuncs.push([self.dataService, self.dataService.timeoutPlayerAsync, playerDoc, playerDoc])
 		}
-		return Promise.all(funcs)
+		updateFuncs.push([null, removePlayerFromChatChannelAsync, playerDoc._id])
+		if(_.isString(playerDoc.allianceId)){
+			updateFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, playerDoc.allianceId, playerDoc._id, self.logicServerId])
+		}
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		self.logService.onEvent("logic.playerApiService.playerLeave", {playerId:session.uid, logicServerId:self.logicServerId, reason:reason})
 		callback()
