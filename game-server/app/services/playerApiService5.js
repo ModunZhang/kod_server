@@ -689,8 +689,8 @@ pro.switchServer = function(playerId, serverId, callback){
  * @param callback
  */
 pro.setPlayerIcon = function(playerId, icon, callback){
-	if(!_.isString(icon)){
-		callback(new Error("serverId 不合法"))
+	if(!_.isNumber(icon) || icon % 1 !== 0 || icon < 1 || icon > 11){
+		callback(new Error("icon 不合法"))
 		return
 	}
 

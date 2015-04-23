@@ -90,6 +90,11 @@ var createDragonSchema = function(dragonType){
 	return schema
 }
 
+var getPlayerIcon = function(){
+	var index = 1 + ((Math.random() * 5) << 0)
+	return index
+}
+
 var PlayerSchema = new Schema({
 	_id:{type:String, required:true},
 	serverId:{type:String, required:true},
@@ -116,7 +121,7 @@ var PlayerSchema = new Schema({
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},
 		cityName:{type:String, required:true},
-		icon:{type:String, required:true, default:"playerIcon_default.png"},
+		icon:{type:Number, required:true, default:getPlayerIcon},
 		levelExp:{type:Number, required:true, default:0},
 		attackWin:{type:Number, required:true, default:0},
 		strikeWin:{type:Number, required:true, default:0},
@@ -634,7 +639,7 @@ var PlayerSchema = new Schema({
 		fromId:{type:String, required:true},
 		fromAllianceTag:{type:String, required:true},
 		fromName:{type:String, required:true},
-		fromIcon:{type:String, required:true},
+		fromIcon:{type:Number, required:true},
 		content:{type:String, required:true},
 		sendTime:{type:Number, required:true},
 		isRead:{type:Boolean, require:true},
@@ -645,7 +650,7 @@ var PlayerSchema = new Schema({
 		id:{type:String, required:true},
 		title:{type:String, required:true},
 		fromName:{type:String, required:true},
-		fromIcon:{type:String, required:true},
+		fromIcon:{type:Number, required:true},
 		fromAllianceTag:{type:String, required:true},
 		toId:{type:String, required:true},
 		toName:{type:String, required:true},
@@ -682,7 +687,7 @@ var PlayerSchema = new Schema({
 				attackPlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -699,7 +704,7 @@ var PlayerSchema = new Schema({
 				helpDefencePlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -732,7 +737,7 @@ var PlayerSchema = new Schema({
 				defencePlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -794,7 +799,7 @@ var PlayerSchema = new Schema({
 				attackPlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -816,7 +821,7 @@ var PlayerSchema = new Schema({
 				helpDefencePlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -833,7 +838,7 @@ var PlayerSchema = new Schema({
 				defencePlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -871,7 +876,7 @@ var PlayerSchema = new Schema({
 				attackPlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -888,7 +893,7 @@ var PlayerSchema = new Schema({
 				defencePlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -942,7 +947,7 @@ var PlayerSchema = new Schema({
 				attackPlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -964,7 +969,7 @@ var PlayerSchema = new Schema({
 				defencePlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -1002,7 +1007,7 @@ var PlayerSchema = new Schema({
 				attackPlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -1060,7 +1065,7 @@ var PlayerSchema = new Schema({
 				helpDefencePlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -1091,7 +1096,7 @@ var PlayerSchema = new Schema({
 				defencePlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -1238,7 +1243,7 @@ var PlayerSchema = new Schema({
 				attackPlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
@@ -1269,7 +1274,7 @@ var PlayerSchema = new Schema({
 				defencePlayerData:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					icon:{type:String, required:true},
+					icon:{type:Number, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},

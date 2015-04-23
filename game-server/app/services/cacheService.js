@@ -571,7 +571,7 @@ pro.timeoutPlayer = function(id, doc, callback){
 	clearTimeout(player.timeout)
 	clearTimeout(player.interval)
 	this.timeEventService.clearPlayerTimeEventsAsync(player.doc).then(function(){
-		delete  self.players[id]
+		delete self.players[id]
 		if(_.isObject(doc)){
 			player.doc = doc
 			player.ops += 1
@@ -608,7 +608,7 @@ pro.timeoutPlayer = function(id, doc, callback){
 pro.timeoutAlliance = function(id, doc, callback){
 	var self = this
 	var alliance = this.alliances[id]
-	delete  this.alliances[id]
+	delete this.alliances[id]
 	if(_.isObject(doc)){
 		alliance.doc = doc
 		alliance.ops += 1
@@ -618,6 +618,10 @@ pro.timeoutAlliance = function(id, doc, callback){
 	if(alliance.ops > 0){
 		delete alliance.doc._id
 		self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
+			callback()
+			UnlockAlliance.call(self, id)
+		}).catch(function(e){
+			self.logService.onEventError("cache.cacheService.timeoutAlliance", {allianceId:id}, e.stack)
 			callback()
 			UnlockAlliance.call(self, id)
 		})
@@ -683,7 +687,7 @@ pro.timeoutAllAlliances = function(callback){
 			var alliance = self.alliances[id]
 			clearTimeout(alliance.timeout)
 			clearTimeout(alliance.interval)
-			delete  self.alliances[id]
+			delete self.alliances[id]
 			if(alliance.ops > 0){
 				delete alliance.doc._id
 				self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
