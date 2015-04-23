@@ -810,7 +810,9 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 					count:wounedCount
 				})
 			}
+			console.log(woundedSoldiers, "1111111111")
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, woundedSoldiers)
+			console.log(playerData, "2222222222")
 		}
 
 		if(_.isObject(rewards)){
