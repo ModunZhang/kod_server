@@ -144,13 +144,9 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -234,15 +230,10 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			return Promise.all(funcs).then(function(){
-				callback(e)
-				return Promise.reject(e)
-			})
-		}else{
+		return Promise.all(funcs).then(function(){
 			callback(e)
 			return Promise.reject(e)
-		}
+		})
 	}).then(function(){
 		var SendMailToMemberAsync = function(member){
 			var memberDoc = null
@@ -343,7 +334,6 @@ pro.getCanDirectJoinAlliances = function(playerId, callback){
 			}
 			allianceDocs.push(shortDoc)
 		})
-
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, allianceDocs)
@@ -387,7 +377,6 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 			}
 			allianceDocs.push(shortDoc)
 		})
-
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, allianceDocs)
@@ -438,7 +427,6 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 	var allianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
-
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
@@ -462,7 +450,6 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 			api:"editAllianceBasicInfo"
 		}
 		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
-
 		return Promise.resolve()
 	}).then(function(){
 		if(!_.isEqual(allianceDoc.basicInfo.name, name)){
@@ -525,7 +512,6 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		}else{
 			updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		}
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -541,13 +527,9 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -590,7 +572,6 @@ pro.editAllianceTerrian = function(playerId, terrain, callback){
 		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -603,13 +584,9 @@ pro.editAllianceTerrian = function(playerId, terrain, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -651,7 +628,6 @@ pro.editAllianceTitleName = function(playerId, title, titleName, callback){
 		allianceData.push(["titles." + title, allianceDoc.titles[title]])
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -664,13 +640,9 @@ pro.editAllianceTitleName = function(playerId, title, titleName, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -705,7 +677,6 @@ pro.editAllianceNotice = function(playerId, notice, callback){
 		allianceData.push(["notice", allianceDoc.notice])
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Notice, playerDoc.basicInfo.name, [])
 		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
-
 		return Promise.resolve()
 	}).then(function(){
 		return self.dataService.updateAllianceAsync(allianceDoc, allianceDoc)
@@ -718,13 +689,9 @@ pro.editAllianceNotice = function(playerId, notice, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -759,7 +726,6 @@ pro.editAllianceDescription = function(playerId, description, callback){
 		allianceData.push(["desc", allianceDoc.desc])
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Desc, playerDoc.basicInfo.name, [])
 		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
-
 		return Promise.resolve()
 	}).then(function(){
 		return self.dataService.updateAllianceAsync(allianceDoc, allianceDoc)
@@ -772,13 +738,9 @@ pro.editAllianceDescription = function(playerId, description, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -811,7 +773,6 @@ pro.editAllianceJoinType = function(playerId, joinType, callback){
 
 		allianceDoc.basicInfo.joinType = joinType
 		allianceData.push(["basicInfo.joinType", allianceDoc.basicInfo.joinType])
-
 		return Promise.resolve()
 	}).then(function(){
 		return self.dataService.flushAllianceAsync(allianceDoc, allianceDoc)
@@ -824,13 +785,9 @@ pro.editAllianceJoinType = function(playerId, joinType, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -890,7 +847,6 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -903,13 +859,9 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -1040,11 +992,11 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 
 		return Promise.all(funcs)
 	}).then(function(){
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, memberDoc, memberDoc])
+		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, memberDoc, memberDoc])
 		if(_.isString(memberDoc.logicServerId)){
 			updateFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, memberDoc._id, memberDoc.logicServerId])
 		}
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
+		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
@@ -1064,14 +1016,9 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		if(_.isObject(memberDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
 		}
-
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -1132,12 +1079,8 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }

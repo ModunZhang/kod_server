@@ -125,13 +125,9 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -202,7 +198,6 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -223,13 +218,9 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -268,7 +259,6 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		attackPlayerDoc = doc
 		if(!_.isString(attackPlayerDoc.allianceId)) return Promise.reject(Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId)))
@@ -334,14 +324,9 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 		if(_.isObject(attackAllianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
 		}
-
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -378,7 +363,6 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		attackPlayerDoc = doc
 		if(!_.isString(attackPlayerDoc.allianceId)) return Promise.reject(Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId)))
@@ -449,14 +433,9 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 		if(_.isObject(attackAllianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
 		}
-
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -497,7 +476,6 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		attackPlayerDoc = doc
 		if(!_.isString(attackPlayerDoc.allianceId)) return Promise.reject(Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId)))
@@ -569,14 +547,9 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 		if(_.isObject(attackAllianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
 		}
-
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -689,13 +662,9 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 		if(_.isObject(defenceAllianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(defenceAllianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -731,7 +700,6 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		attackPlayerDoc = doc
 		if(!_.isString(attackPlayerDoc.allianceId)) return Promise.reject(Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId)))
@@ -798,14 +766,9 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 		if(_.isObject(attackAllianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
 		}
-
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -1033,13 +996,9 @@ pro.addItem = function(playerId, itemName, count, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -1131,12 +1090,8 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }

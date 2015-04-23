@@ -47,7 +47,6 @@ pro.getDay60Reward = function(playerId, callback){
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
 			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -59,13 +58,9 @@ pro.getDay60Reward = function(playerId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -100,7 +95,6 @@ pro.getOnlineReward = function(playerId, timePoint, callback){
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
 			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -112,13 +106,9 @@ pro.getOnlineReward = function(playerId, timePoint, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -145,7 +135,6 @@ pro.getDay14Reward = function(playerId, callback){
 			playerDoc[reward.type][reward.name] += reward.count
 			playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
 		})
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -157,13 +146,9 @@ pro.getDay14Reward = function(playerId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -201,7 +186,6 @@ pro.getLevelupReward = function(playerId, levelupIndex, callback){
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
 			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -213,13 +197,9 @@ pro.getLevelupReward = function(playerId, levelupIndex, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -249,7 +229,6 @@ pro.getFirstIAPRewards = function(playerId, callback){
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
 			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -261,13 +240,9 @@ pro.getFirstIAPRewards = function(playerId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -285,7 +260,6 @@ pro.passSelinasTest = function(playerId, callback){
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.PassSelinasTest)
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, _.isEmpty(playerData) ? null : playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -297,13 +271,9 @@ pro.passSelinasTest = function(playerId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -338,7 +308,6 @@ pro.getDailyTaskRewards = function(playerId, taskType, callback){
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
 			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		})
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -350,13 +319,9 @@ pro.getDailyTaskRewards = function(playerId, taskType, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -398,7 +363,6 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 
 		task.rewarded = true
 		TaskUtils.updateGrowUpTaskData(playerDoc, playerData, taskType, task)
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -410,13 +374,9 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -587,7 +547,6 @@ pro.getIapGift = function(playerId, giftId, callback){
 			var resp = LogicUtils.addPlayerItem(playerDoc, gift.name, gift.count)
 			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		}
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -599,13 +558,9 @@ pro.getIapGift = function(playerId, giftId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -618,14 +573,12 @@ pro.getServers = function(playerId, callback){
 	var self = this
 	var servers = null
 	var getServersAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getServers.toServer, this)
-
 	getServersAsync(self.app.get("gateServerId")).then(function(theServers){
 		servers = theServers
 		_.each(servers, function(server){
 			delete  server.host
 			delete  server.port
 		})
-
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, servers)
@@ -649,7 +602,6 @@ pro.switchServer = function(playerId, serverId, callback){
 	var self = this
 	var playerDoc = null
 	var getServersAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getServers.toServer, this)
-
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
@@ -665,20 +617,19 @@ pro.switchServer = function(playerId, serverId, callback){
 	}).then(function(){
 		callback(null)
 		return Promise.resolve()
-	}).then(function(){
-		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
-	}).catch(function(e){
+	}, function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		return Promise.all(funcs).then(function(){
 			callback(e)
-		}
+			return Promise.reject(e)
+		})
+	}).then(function(){
+		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
+	}).catch(function(e){
+		self.logService.onEventError("logic.playerApiService5.switchServer", {playerId:playerId, serverId:serverId}, e.stack)
 	})
 }
 

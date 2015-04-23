@@ -117,13 +117,9 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -224,13 +220,9 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -283,13 +275,9 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -355,13 +343,9 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -418,13 +402,9 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -475,13 +455,9 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -538,13 +514,9 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -597,13 +569,9 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -644,13 +612,9 @@ pro.getDailyQuests = function(playerId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -706,13 +670,9 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -760,13 +720,9 @@ pro.startDailyQuest = function(playerId, questId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -821,13 +777,9 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -865,13 +817,9 @@ pro.setPlayerLanguage = function(playerId, language, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -1030,13 +978,9 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 		if(_.isObject(memberDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -1076,13 +1020,9 @@ pro.readMails = function(playerId, mailIds, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -1120,12 +1060,8 @@ pro.saveMail = function(playerId, mailId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }

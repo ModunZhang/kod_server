@@ -25,6 +25,7 @@ var PlayerApiService4 = function(app){
 	this.playerTimeEventService = app.get("playerTimeEventService")
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
+	this.logService = app.get("logService")
 	this.GemUse = app.get("GemUse")
 	this.Device = app.get("Device")
 	this.Player = app.get("Player")
@@ -124,7 +125,6 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			playerData.push(["productionTechEvents." + playerDoc.productionTechEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "productionTechEvents", event.id, finishTime - Date.now()])
 		}
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -138,13 +138,9 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -244,7 +240,6 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			playerData.push(["militaryTechEvents." + playerDoc.militaryTechEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "militaryTechEvents", event.id, finishTime - Date.now()])
 		}
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -258,13 +253,9 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -355,7 +346,6 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			playerData.push(["soldierStarEvents." + playerDoc.soldierStarEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierStarEvents", event.id, finishTime - Date.now()])
 		}
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -369,13 +359,9 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -412,7 +398,6 @@ pro.setTerrain = function(playerId, terrain, callback){
 
 		playerDoc.basicInfo.terrain = terrain
 		playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -424,13 +409,9 @@ pro.setTerrain = function(playerId, terrain, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -474,7 +455,6 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)
 		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -486,13 +466,9 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -576,13 +552,9 @@ pro.useItem = function(playerId, itemName, params, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -670,13 +642,9 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -837,7 +805,6 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			}
 		}
 		TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData)
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -851,13 +818,9 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -902,7 +865,6 @@ pro.gacha = function(playerId, type, callback){
 		if(_.isEqual(type, Consts.GachaType.Advanced)){
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.AdvancedGachaOnce)
 		}
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -914,13 +876,9 @@ pro.gacha = function(playerId, type, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -977,13 +935,9 @@ pro.bindGcId = function(playerId, gcId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -1025,20 +979,19 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 	}).then(function(){
 		callback()
 		return Promise.resolve()
-	}).then(function(){
-		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
-	}).catch(function(e){
+	}, function(e){
 		var funcs = []
 		if(_.isObject(newPlayerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(newPlayerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		return Promise.all(funcs).then(function(){
 			callback(e)
-		}
+			return Promise.reject(e)
+		})
+	}).then(function(){
+		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
+	}).catch(function(e){
+		self.logService.onEventError("logic.playerApiService4.switchGcId", {playerId:playerId, deviceId:deviceId, gcId:gcId}, e.stack)
 	})
 }
 
@@ -1067,9 +1020,12 @@ pro.forceSwitchGcId = function(playerId, deviceId, gcId, callback){
 	}).then(function(){
 		callback()
 		return Promise.resolve()
+	}, function(e){
+		callback(e)
+		return Promise.reject(e)
 	}).then(function(){
 		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
 	}).catch(function(e){
-		callback(e)
+		self.logService.onEventError("logic.playerApiService4.forceSwitchGcId", {playerId:playerId, deviceId:deviceId, gcId:gcId}, e.stack)
 	})
 }

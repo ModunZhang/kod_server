@@ -93,13 +93,9 @@ pro.donateToAlliance = function(playerId, donateType, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -162,13 +158,9 @@ pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
 
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -223,14 +215,9 @@ pro.upgradeAllianceVillage = function(playerId, villageType, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -309,13 +296,9 @@ pro.moveAllianceBuilding = function(playerId, mapObjectId, locationX, locationY,
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -378,13 +361,9 @@ pro.activateAllianceShrineStage = function(playerId, stageName, callback){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
 
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -472,13 +451,9 @@ pro.attackAllianceShrine = function(playerId, shrineEventId, dragonType, soldier
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -522,14 +497,9 @@ pro.requestAllianceToFight = function(playerId, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -612,13 +582,9 @@ pro.findAllianceToFight = function(playerId, callback){
 		if(_.isObject(defenceAllianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(defenceAllianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -706,13 +672,9 @@ pro.revengeAlliance = function(playerId, reportId, callback){
 		if(_.isObject(defenceAllianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(defenceAllianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -739,7 +701,6 @@ pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId))
 		allianceDoc = doc
 		allianceViewData = LogicUtils.getAllianceViewData(allianceDoc)
-
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, allianceViewData)

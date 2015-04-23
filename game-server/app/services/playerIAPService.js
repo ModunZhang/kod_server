@@ -161,7 +161,6 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 		}
 		memberDoc.iapGifts.push(iapGift)
 		memberData.push(["iapGifts." + memberDoc.iapGifts.indexOf(iapGift), iapGift])
-
 		return self.dataService.updatePlayerAsync(memberDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
@@ -171,13 +170,9 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 		if(_.isObject(memberDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
 		}
-		if(funcs.length > 0){
-			return Promise.all(funcs).then(function(){
-				return Promise.resolve()
-			})
-		}else{
+		return Promise.all(funcs).then(function(){
 			return Promise.resolve()
-		}
+		})
 	})
 }
 
@@ -260,15 +255,10 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			return Promise.all(funcs).then(function(){
-				callback(e)
-				return Promise.reject(e)
-			})
-		}else{
+		return Promise.all(funcs).then(function(){
 			callback(e)
 			return Promise.reject(e)
-		}
+		})
 	}).then(function(){
 		if(_.isObject(rewards.rewardToAllianceMember) && _.isString(playerDoc.allianceId)){
 			return self.dataService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){

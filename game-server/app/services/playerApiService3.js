@@ -60,13 +60,9 @@ pro.unSaveMail = function(playerId, mailId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -82,13 +78,10 @@ pro.getMails = function(playerId, fromIndex, callback){
 		return
 	}
 
-	var self = this
 	var playerDoc = null
 	var mails = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		return self.dataService.updatePlayerAsync(playerDoc, null)
-	}).then(function(){
 		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
 			var mail = playerDoc.mails[i]
 			mail.index = i
@@ -99,17 +92,7 @@ pro.getMails = function(playerId, fromIndex, callback){
 	}).then(function(){
 		callback(null, mails)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
+		callback(e)
 	})
 }
 
@@ -125,16 +108,10 @@ pro.getSendMails = function(playerId, fromIndex, callback){
 		return
 	}
 
-	var self = this
 	var playerDoc = null
 	var mails = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
+	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		return self.dataService.updatePlayerAsync(playerDoc, null)
-	}).then(function(){
 		for(var i = playerDoc.sendMails.length - 1; i >= 0; i--){
 			var mail = playerDoc.sendMails[i]
 			mail.index = i
@@ -145,17 +122,7 @@ pro.getSendMails = function(playerId, fromIndex, callback){
 	}).then(function(){
 		callback(null, mails)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
+		callback(e)
 	})
 }
 
@@ -171,16 +138,10 @@ pro.getSavedMails = function(playerId, fromIndex, callback){
 		return
 	}
 
-	var self = this
 	var playerDoc = null
 	var mails = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
+	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		return self.dataService.updatePlayerAsync(playerDoc, null)
-	}).then(function(){
 		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
 			var mail = playerDoc.mails[i]
 			mail.index = i
@@ -191,17 +152,7 @@ pro.getSavedMails = function(playerId, fromIndex, callback){
 	}).then(function(){
 		callback(null, mails)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
+		callback(e)
 	})
 }
 
@@ -222,9 +173,6 @@ pro.deleteMails = function(playerId, mailIds, callback){
 	var playerData = []
 	var updateFuncs = []
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
 		playerDoc = doc
 		for(var i = 0; i < mailIds.length; i++){
 			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
@@ -232,7 +180,6 @@ pro.deleteMails = function(playerId, mailIds, callback){
 			playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
 			LogicUtils.removeItemInArray(playerDoc.mails, mail)
 		}
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -244,13 +191,9 @@ pro.deleteMails = function(playerId, mailIds, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -278,7 +221,6 @@ pro.readReports = function(playerId, reportIds, callback){
 			report.isRead = true
 			playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isRead", report.isRead])
 		}
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -290,13 +232,9 @@ pro.readReports = function(playerId, reportIds, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -322,7 +260,6 @@ pro.saveReport = function(playerId, reportId, callback){
 		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
 		report.isSaved = true
 		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", report.isSaved])
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -334,13 +271,9 @@ pro.saveReport = function(playerId, reportId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -366,7 +299,6 @@ pro.unSaveReport = function(playerId, reportId, callback){
 		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
 		report.isSaved = false
 		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", report.isSaved])
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -377,13 +309,9 @@ pro.unSaveReport = function(playerId, reportId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -399,35 +327,21 @@ pro.getReports = function(playerId, fromIndex, callback){
 		return
 	}
 
-	var self = this
 	var playerDoc = null
 	var reports = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		return self.dataService.updatePlayerAsync(playerDoc, null)
-	}).then(function(){
 		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
 			var report = playerDoc.reports[i]
 			report.index = i
 			reports.push(report)
 		}
 		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
-
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, reports)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
+		callback(e)
 	})
 }
 
@@ -443,38 +357,21 @@ pro.getSavedReports = function(playerId, fromIndex, callback){
 		return
 	}
 
-	var self = this
 	var playerDoc = null
 	var reports = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)){
-			return Promise.reject(new Error("玩家不存在"))
-		}
+	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		return self.dataService.updatePlayerAsync(playerDoc, null)
-	}).then(function(){
 		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
 			var report = playerDoc.reports[i]
 			report.index = i
 			if(!!report.isSaved) reports.push(report)
 		}
 		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
-
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, reports)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
+		callback(e)
 	})
 }
 
@@ -496,14 +393,12 @@ pro.deleteReports = function(playerId, reportIds, callback){
 	var updateFuncs = []
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-
 		for(var i = 0; i < reportIds.length; i++){
 			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
 			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
 			playerData.push(["reports." + playerDoc.reports.indexOf(report), null])
 			LogicUtils.removeItemInArray(playerDoc.reports, report)
 		}
-
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -515,13 +410,9 @@ pro.deleteReports = function(playerId, reportIds, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -555,7 +446,6 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerViewData.basicInfo = targetPlayerDoc.basicInfo
 		playerViewData.buildings = targetPlayerDoc.buildings
 		playerViewData.helpedByTroops = targetPlayerDoc.helpedByTroops
-
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, playerViewData)
@@ -588,7 +478,6 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
 			defenceDragon.status = Consts.DragonStatus.Free
 			playerData.push(["dragons." + defenceDragon.type, defenceDragon])
 		}
-
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragon.type))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon))
@@ -607,13 +496,9 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -646,13 +531,9 @@ pro.cancelDefenceDragon = function(playerId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -721,13 +602,9 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -827,7 +704,6 @@ pro.buySellItem = function(playerId, itemId, callback){
 		playerDoc.resources.coin -= totalPrice
 		playerDoc[type][itemDoc.itemData.name] += realCount
 		playerData.push([type + "." + itemDoc.itemData.name, playerDoc[type][itemDoc.itemData.name]])
-
 		return self.dataService.findPlayerAsync(itemDoc.playerId)
 	}).then(function(doc){
 		sellerDoc = doc
@@ -853,13 +729,12 @@ pro.buySellItem = function(playerId, itemId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
+		if(_.isObject(sellerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(sellerDoc, null))
 		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
@@ -904,13 +779,9 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -966,13 +837,9 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
@@ -1025,12 +892,8 @@ pro.setApnId = function(playerId, apnId, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
