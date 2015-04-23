@@ -581,7 +581,7 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
 		eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, eventType, event.id])
 	}else{
 		playerData.push([eventType + "." + playerDoc[eventType].indexOf(event), event])
-		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime - Date.now()])
+		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, eventType, event.id, event.finishTime - Date.now()])
 	}
 
 	if(_.contains(Consts.BuildingSpeedupEventTypes, eventType)){
