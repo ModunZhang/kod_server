@@ -205,11 +205,11 @@ var PlayerSchema = new Schema({
 		skeletonWarrior:{type:Number, required:true, default:0},
 		skeletonArcher:{type:Number, required:true, default:0},
 		deathKnight:{type:Number, required:true, default:0},
-		meatWagon:{type:Number, required:true, default:0},
-		priest:{type:Number, required:true, default:0},
-		demonHunter:{type:Number, required:true, default:0},
-		paladin:{type:Number, required:true, default:0},
-		steamTank:{type:Number, required:true, default:0}
+		meatWagon:{type:Number, required:true, default:0}
+		//priest:{type:Number, required:true, default:0},
+		//demonHunter:{type:Number, required:true, default:0},
+		//paladin:{type:Number, required:true, default:0},
+		//steamTank:{type:Number, required:true, default:0}
 	},
 	soldierEvents:[{
 		_id:false,
@@ -244,7 +244,15 @@ var PlayerSchema = new Schema({
 		lancer:{type:Number, required:true, default:0},
 		horseArcher:{type:Number, required:true, default:0},
 		catapult:{type:Number, required:true, default:0},
-		ballista:{type:Number, required:true, default:0}
+		ballista:{type:Number, required:true, default:0},
+		skeletonWarrior:{type:Number, required:true, default:0},
+		skeletonArcher:{type:Number, required:true, default:0},
+		deathKnight:{type:Number, required:true, default:0},
+		meatWagon:{type:Number, required:true, default:0}
+		//priest:{type:Number, required:true, default:0},
+		//demonHunter:{type:Number, required:true, default:0},
+		//paladin:{type:Number, required:true, default:0},
+		//steamTank:{type:Number, required:true, default:0}
 	},
 	treatSoldierEvents:[{
 		_id:false,
