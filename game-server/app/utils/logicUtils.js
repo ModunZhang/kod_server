@@ -593,7 +593,7 @@ Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
 			member.language = playerDoc.basicInfo.language
 			member.name = playerDoc.basicInfo.name
 			member.icon = playerDoc.basicInfo.icon
-			member.level = playerDoc.basicInfo.level
+			member.levelExp = playerDoc.basicInfo.levelExp
 			member.power = playerDoc.basicInfo.power
 			member.kill = playerDoc.basicInfo.kill
 			member.loyalty = playerDoc.allianceInfo.loyalty
@@ -762,7 +762,7 @@ Utils.addAllianceRequestEvent = function(allianceDoc, playerDoc, requestTime){
 		id:playerDoc._id,
 		name:playerDoc.basicInfo.name,
 		icon:playerDoc.basicInfo.icon,
-		level:playerDoc.basicInfo.level,
+		levelExp:playerDoc.basicInfo.levelExp,
 		power:playerDoc.basicInfo.power,
 		requestTime:requestTime
 	}
@@ -783,8 +783,8 @@ Utils.addPlayerJoinAllianceEvent = function(playerDoc, allianceDoc, requestTime)
 		name:allianceDoc.basicInfo.name,
 		tag:allianceDoc.basicInfo.tag,
 		flag:allianceDoc.basicInfo.flag,
-		level:allianceDoc.basicInfo.level,
 		members:allianceDoc.members.length,
+		membersMax:DataUtils.getAllianceMemberMaxCount(allianceDoc),
 		power:allianceDoc.basicInfo.power,
 		language:allianceDoc.basicInfo.language,
 		kill:allianceDoc.basicInfo.kill,
@@ -810,8 +810,8 @@ Utils.addPlayerInviteAllianceEvent = function(inviterId, playerDoc, allianceDoc,
 		tag:allianceDoc.basicInfo.tag,
 		flag:allianceDoc.basicInfo.flag,
 		terrain:allianceDoc.basicInfo.terrain,
-		level:allianceDoc.basicInfo.level,
 		members:allianceDoc.members.length,
+		membersMax:DataUtils.getAllianceMemberMaxCount(allianceDoc),
 		power:allianceDoc.basicInfo.power,
 		language:allianceDoc.basicInfo.language,
 		kill:allianceDoc.basicInfo.kill,
@@ -1111,7 +1111,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId){
 		language:playerDoc.basicInfo.language,
 		name:playerDoc.basicInfo.name,
 		icon:playerDoc.basicInfo.icon,
-		level:playerDoc.basicInfo.level,
+		levelExp:playerDoc.basicInfo.levelExp,
 		keepLevel:playerDoc.buildings.location_1.level,
 		wallLevel:playerDoc.buildings.location_21.level,
 		wallHp:playerDoc.resources.wallHp,

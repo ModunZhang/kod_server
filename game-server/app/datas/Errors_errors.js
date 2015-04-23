@@ -918,3 +918,8 @@ errors["noEventsNeedTobeSpeedup"] = {
 	code:683,
 	message:"没有事件需要协助加速"
 }
+errors["allianceMemberCountReachMax"] = {
+	key:"allianceMemberCountReachMax",
+	code:684,
+	message:"联盟人数已达最大"
+}

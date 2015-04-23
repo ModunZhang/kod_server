@@ -610,8 +610,8 @@ var PlayerSchema = new Schema({
 		name:{type:String, required:true},
 		tag:{type:String, required:true},
 		flag:{type:String, required:true},
-		level:{type:Number, required:true},
 		members:{type:Number, required:true},
+		membersMax:{type:Number, required:true},
 		power:{type:Number, required:true},
 		language:{type:String, required:true},
 		kill:{type:String, required:true},
@@ -624,8 +624,8 @@ var PlayerSchema = new Schema({
 		tag:{type:String, required:true},
 		flag:{type:String, required:true},
 		terrain:{type:String, required:true},
-		level:{type:Number, required:true},
 		members:{type:Number, required:true},
+		membersMax:{type:Number, required:true},
 		power:{type:Number, required:true},
 		language:{type:String, required:true},
 		kill:{type:String, required:true},
@@ -1386,7 +1386,7 @@ var PlayerSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		name:{type:String, required:true},
-		level:{type:Number, required:true},
+		levelExp:{type:Number, required:true},
 		cityName:{type:String, required:true},
 		dragon:{
 			type:{type:String, required:true}

@@ -237,7 +237,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			var helpedByTroop = {
 				id:attackPlayerDoc._id,
 				name:attackPlayerDoc.basicInfo.name,
-				level:attackPlayerDoc.basicInfo.level,
+				levelExp:attackPlayerDoc.basicInfo.levelExp,
 				cityName:attackPlayerDoc.basicInfo.cityName,
 				dragon:{
 					type:event.attackPlayerData.dragon.type
@@ -332,7 +332,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				playerKillData = {
 					id:playerDoc._id,
 					name:playerDoc.basicInfo.name,
-					level:playerDoc.basicInfo.level,
 					kill:newlyKill
 				}
 				playerKillDatas.push(playerKillData)

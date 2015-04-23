@@ -3808,3 +3808,15 @@ Utils.canRecruitSpecialSoldier = function(){
 	today = today == 0 ? 7 : today
 	return _.contains(daysInWeek, today.toString())
 }
+
+/**
+ * 获取联盟最大人数
+ * @param allianceDoc
+ * @returns {number}
+ */
+Utils.getAllianceMemberMaxCount = function(allianceDoc){
+	var allianceBuilding = _.find(allianceDoc.buildings, function(building){
+		return _.isEqual(building.name, "palace")
+	})
+	return AllianceBuilding.palace[allianceBuilding.level].memberCount
+}

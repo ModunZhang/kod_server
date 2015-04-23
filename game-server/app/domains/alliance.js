@@ -66,7 +66,7 @@ var AllianceSchema = new Schema({
 		language:{type:String, required:true},
 		name:{type:String, required:true},
 		icon:{type:String, required:true},
-		level:{type:Number, required:true},
+		levelExp:{type:Number, required:true},
 		keepLevel:{type:Number, required:true},
 		wallLevel:{type:Number, required:true},
 		wallHp:{type:Number, required:true},
@@ -139,7 +139,7 @@ var AllianceSchema = new Schema({
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		icon:{type:String, required:true},
-		level:{type:Number, required:true},
+		levelExp:{type:Number, required:true},
 		power:{type:Number, required:true},
 		requestTime:{type:Number, required:true}
 	}],

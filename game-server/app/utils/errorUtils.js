@@ -1918,3 +1918,13 @@ Utils.noEventsNeedTobeSpeedup = function(playerId){
 	var config = Errors.noEventsNeedTobeSpeedup
 	return CreateError(config, {playerId:playerId})
 }
+
+/**
+ * 联盟人数已达最大
+ * @param playerId
+ * @param allianceId
+ */
+Utils.allianceMemberCountReachMax = function(playerId, allianceId){
+	var config = Errors.allianceMemberCountReachMax
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}

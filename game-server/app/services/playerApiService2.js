@@ -845,6 +845,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 		playerViewData = {
 			id:memberDoc._id,
 			name:memberDoc.basicInfo.name,
+			icon:memberDoc.basicInfo.icon,
 			power:memberDoc.basicInfo.power,
 			kill:memberDoc.basicInfo.kill,
 			levelExp:memberDoc.basicInfo.levelExp,

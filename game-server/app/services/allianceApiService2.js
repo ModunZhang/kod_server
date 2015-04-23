@@ -206,7 +206,8 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 		allianceDoc = doc
-		if(!_.isEqual(doc.basicInfo.joinType, Consts.AllianceJoinType.All)) return Promise.reject(ErrorUtils.allianceDoNotAllowJoinDirectly(playerId, allianceDoc._id))
+		if(!_.isEqual(allianceDoc.basicInfo.joinType, Consts.AllianceJoinType.All)) return Promise.reject(ErrorUtils.allianceDoNotAllowJoinDirectly(playerId, allianceDoc._id))
+		if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
 		if(_.isObject(allianceDoc.allianceFight)){
 			var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
 			return self.dataService.directFindAllianceAsync(enemyAllianceId).then(function(doc){
@@ -478,6 +479,7 @@ pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "approveJoinAllianceRequest")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "approveJoinAllianceRequest"))
 		}
+		if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
 
 		requestEvent = _.find(allianceDoc.joinRequestEvents, function(event){
 			return _.isEqual(event.id, requestEventId)
@@ -669,6 +671,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			return Promise.all(funcs).spread(function(doc_1, doc_2){
 				allianceDoc = doc_1
 				inviterDoc = doc_2
+				if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
 				return Promise.resolve()
 			})
 		}else{
