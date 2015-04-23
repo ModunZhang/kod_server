@@ -5,7 +5,7 @@ module.exports = toolShop
 
 toolShop[1] = {
 	level:1,
-	poduction:5,
+	production:5,
 	poductionType:1,
 	productBmWood:20000,
 	productBmStone:20000,
@@ -19,7 +19,7 @@ toolShop[1] = {
 }
 toolShop[2] = {
 	level:2,
-	poduction:10,
+	production:10,
 	poductionType:1,
 	productBmWood:40000,
 	productBmStone:40000,
@@ -33,7 +33,7 @@ toolShop[2] = {
 }
 toolShop[3] = {
 	level:3,
-	poduction:15,
+	production:15,
 	poductionType:1,
 	productBmWood:60000,
 	productBmStone:60000,
@@ -47,7 +47,7 @@ toolShop[3] = {
 }
 toolShop[4] = {
 	level:4,
-	poduction:20,
+	production:20,
 	poductionType:2,
 	productBmWood:80000,
 	productBmStone:80000,
@@ -61,7 +61,7 @@ toolShop[4] = {
 }
 toolShop[5] = {
 	level:5,
-	poduction:25,
+	production:25,
 	poductionType:2,
 	productBmWood:100000,
 	productBmStone:100000,
@@ -75,7 +75,7 @@ toolShop[5] = {
 }
 toolShop[6] = {
 	level:6,
-	poduction:30,
+	production:30,
 	poductionType:2,
 	productBmWood:120000,
 	productBmStone:120000,
@@ -89,7 +89,7 @@ toolShop[6] = {
 }
 toolShop[7] = {
 	level:7,
-	poduction:35,
+	production:35,
 	poductionType:2,
 	productBmWood:140000,
 	productBmStone:140000,
@@ -103,7 +103,7 @@ toolShop[7] = {
 }
 toolShop[8] = {
 	level:8,
-	poduction:40,
+	production:40,
 	poductionType:2,
 	productBmWood:160000,
 	productBmStone:160000,
@@ -117,7 +117,7 @@ toolShop[8] = {
 }
 toolShop[9] = {
 	level:9,
-	poduction:45,
+	production:45,
 	poductionType:2,
 	productBmWood:180000,
 	productBmStone:180000,
@@ -131,7 +131,7 @@ toolShop[9] = {
 }
 toolShop[10] = {
 	level:10,
-	poduction:50,
+	production:50,
 	poductionType:3,
 	productBmWood:200000,
 	productBmStone:200000,
@@ -145,7 +145,7 @@ toolShop[10] = {
 }
 toolShop[11] = {
 	level:11,
-	poduction:55,
+	production:55,
 	poductionType:3,
 	productBmWood:220000,
 	productBmStone:220000,
@@ -159,7 +159,7 @@ toolShop[11] = {
 }
 toolShop[12] = {
 	level:12,
-	poduction:60,
+	production:60,
 	poductionType:3,
 	productBmWood:240000,
 	productBmStone:240000,
@@ -173,7 +173,7 @@ toolShop[12] = {
 }
 toolShop[13] = {
 	level:13,
-	poduction:65,
+	production:65,
 	poductionType:3,
 	productBmWood:260000,
 	productBmStone:260000,
@@ -187,7 +187,7 @@ toolShop[13] = {
 }
 toolShop[14] = {
 	level:14,
-	poduction:70,
+	production:70,
 	poductionType:3,
 	productBmWood:280000,
 	productBmStone:280000,
@@ -201,7 +201,7 @@ toolShop[14] = {
 }
 toolShop[15] = {
 	level:15,
-	poduction:75,
+	production:75,
 	poductionType:3,
 	productBmWood:300000,
 	productBmStone:300000,
@@ -215,7 +215,7 @@ toolShop[15] = {
 }
 toolShop[16] = {
 	level:16,
-	poduction:80,
+	production:80,
 	poductionType:3,
 	productBmWood:320000,
 	productBmStone:320000,
@@ -229,7 +229,7 @@ toolShop[16] = {
 }
 toolShop[17] = {
 	level:17,
-	poduction:85,
+	production:85,
 	poductionType:3,
 	productBmWood:340000,
 	productBmStone:340000,
@@ -243,7 +243,7 @@ toolShop[17] = {
 }
 toolShop[18] = {
 	level:18,
-	poduction:90,
+	production:90,
 	poductionType:3,
 	productBmWood:360000,
 	productBmStone:360000,
@@ -257,7 +257,7 @@ toolShop[18] = {
 }
 toolShop[19] = {
 	level:19,
-	poduction:95,
+	production:95,
 	poductionType:3,
 	productBmWood:380000,
 	productBmStone:380000,
@@ -271,7 +271,7 @@ toolShop[19] = {
 }
 toolShop[20] = {
 	level:20,
-	poduction:100,
+	production:100,
 	poductionType:3,
 	productBmWood:400000,
 	productBmStone:400000,
@@ -285,7 +285,7 @@ toolShop[20] = {
 }
 toolShop[21] = {
 	level:21,
-	poduction:105,
+	production:105,
 	poductionType:3,
 	productBmWood:420000,
 	productBmStone:420000,
@@ -299,7 +299,7 @@ toolShop[21] = {
 }
 toolShop[22] = {
 	level:22,
-	poduction:110,
+	production:110,
 	poductionType:3,
 	productBmWood:440000,
 	productBmStone:440000,
@@ -313,7 +313,7 @@ toolShop[22] = {
 }
 toolShop[23] = {
 	level:23,
-	poduction:115,
+	production:115,
 	poductionType:3,
 	productBmWood:460000,
 	productBmStone:460000,
@@ -327,7 +327,7 @@ toolShop[23] = {
 }
 toolShop[24] = {
 	level:24,
-	poduction:120,
+	production:120,
 	poductionType:3,
 	productBmWood:480000,
 	productBmStone:480000,
@@ -341,7 +341,7 @@ toolShop[24] = {
 }
 toolShop[25] = {
 	level:25,
-	poduction:125,
+	production:125,
 	poductionType:3,
 	productBmWood:500000,
 	productBmStone:500000,
@@ -355,7 +355,7 @@ toolShop[25] = {
 }
 toolShop[26] = {
 	level:26,
-	poduction:130,
+	production:130,
 	poductionType:3,
 	productBmWood:520000,
 	productBmStone:520000,
@@ -369,7 +369,7 @@ toolShop[26] = {
 }
 toolShop[27] = {
 	level:27,
-	poduction:135,
+	production:135,
 	poductionType:3,
 	productBmWood:540000,
 	productBmStone:540000,
@@ -383,7 +383,7 @@ toolShop[27] = {
 }
 toolShop[28] = {
 	level:28,
-	poduction:140,
+	production:140,
 	poductionType:3,
 	productBmWood:560000,
 	productBmStone:560000,
@@ -397,7 +397,7 @@ toolShop[28] = {
 }
 toolShop[29] = {
 	level:29,
-	poduction:145,
+	production:145,
 	poductionType:3,
 	productBmWood:580000,
 	productBmStone:580000,
@@ -411,7 +411,7 @@ toolShop[29] = {
 }
 toolShop[30] = {
 	level:30,
-	poduction:150,
+	production:150,
 	poductionType:3,
 	productBmWood:600000,
 	productBmStone:600000,
@@ -425,7 +425,7 @@ toolShop[30] = {
 }
 toolShop[31] = {
 	level:31,
-	poduction:155,
+	production:155,
 	poductionType:3,
 	productBmWood:620000,
 	productBmStone:620000,
@@ -439,7 +439,7 @@ toolShop[31] = {
 }
 toolShop[32] = {
 	level:32,
-	poduction:160,
+	production:160,
 	poductionType:3,
 	productBmWood:640000,
 	productBmStone:640000,
@@ -453,7 +453,7 @@ toolShop[32] = {
 }
 toolShop[33] = {
 	level:33,
-	poduction:165,
+	production:165,
 	poductionType:3,
 	productBmWood:660000,
 	productBmStone:660000,
@@ -467,7 +467,7 @@ toolShop[33] = {
 }
 toolShop[34] = {
 	level:34,
-	poduction:170,
+	production:170,
 	poductionType:3,
 	productBmWood:680000,
 	productBmStone:680000,
@@ -481,7 +481,7 @@ toolShop[34] = {
 }
 toolShop[35] = {
 	level:35,
-	poduction:175,
+	production:175,
 	poductionType:3,
 	productBmWood:700000,
 	productBmStone:700000,
@@ -495,7 +495,7 @@ toolShop[35] = {
 }
 toolShop[36] = {
 	level:36,
-	poduction:180,
+	production:180,
 	poductionType:3,
 	productBmWood:720000,
 	productBmStone:720000,
@@ -509,7 +509,7 @@ toolShop[36] = {
 }
 toolShop[37] = {
 	level:37,
-	poduction:185,
+	production:185,
 	poductionType:3,
 	productBmWood:740000,
 	productBmStone:740000,
@@ -523,7 +523,7 @@ toolShop[37] = {
 }
 toolShop[38] = {
 	level:38,
-	poduction:190,
+	production:190,
 	poductionType:3,
 	productBmWood:760000,
 	productBmStone:760000,
@@ -537,7 +537,7 @@ toolShop[38] = {
 }
 toolShop[39] = {
 	level:39,
-	poduction:195,
+	production:195,
 	poductionType:3,
 	productBmWood:780000,
 	productBmStone:780000,
@@ -551,7 +551,7 @@ toolShop[39] = {
 }
 toolShop[40] = {
 	level:40,
-	poduction:200,
+	production:200,
 	poductionType:3,
 	productBmWood:800000,
 	productBmStone:800000,
