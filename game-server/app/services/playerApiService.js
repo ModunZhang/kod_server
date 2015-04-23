@@ -25,19 +25,48 @@ var PlayerApiService = function(app){
 	this.playerTimeEventService = app.get("playerTimeEventService")
 	this.logService = app.get("logService")
 	this.dataService = app.get("dataService")
+	this.chatServerId = app.get("chatServerId")
+	this.logicServerId = app.get("logicServerId")
 	this.GemUse = app.get("GemUse")
 	this.Device = app.get("Device")
 }
 module.exports = PlayerApiService
 var pro = PlayerApiService.prototype
 
+
+var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, callback){
+	session.bind(playerDoc._id)
+	session.set("deviceId", deviceId)
+	session.set("logicServerId", this.logicServerId)
+	session.set("chatServerId", this.chatServerId)
+	session.set("name", playerDoc.basicInfo.name)
+	session.set("icon", playerDoc.basicInfo.icon)
+	session.set("allianceTag", _.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "")
+	session.set("vipExp", playerDoc.basicInfo.vipExp)
+	session.on("closed", this.playerLogoutAsync.bind(this))
+	session.pushAll(function(err){
+		process.nextTick(function(){
+			callback(err)
+		})
+	})
+}
+
+var AddPlayerToChatChannel = function(playerId, callback){
+	this.app.rpc.chat.chatRemote.addToChatChannel.toServer(this.chatServerId, playerId, this.logicServerId, callback)
+}
+
+var RemovePlayerFromChatChannel = function(playerId, callback){
+	this.app.rpc.chat.chatRemote.removeFromChatChannel.toServer(this.chatServerId, playerId, this.logicServerId, callback)
+}
+
+
 /**
  * 玩家登陆逻辑服务器
+ * @param session
  * @param deviceId
- * @param logicServerId
  * @param callback
  */
-pro.playerLogin = function(deviceId, logicServerId, callback){
+pro.playerLogin = function(session, deviceId, callback){
 	if(!_.isString(deviceId)){
 		callback(new Error("deviceId 不合法"))
 		return
@@ -52,6 +81,8 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 	var eventFuncs = []
 	var pushFuncs = []
 	var vipExpAdd = null
+	var bindPlayerSessionAsync = Promise.promisify(BindPlayerSession, this)
+	var addPlayerToChatChannelAsync = Promise.promisify(AddPlayerToChatChannel, this)
 
 	this.Device.findByIdAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
@@ -121,7 +152,7 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 		}
 		playerDoc.countInfo.lastLoginTime = Date.now()
 		playerDoc.countInfo.loginCount += 1
-		playerDoc.logicServerId = logicServerId
+		playerDoc.logicServerId = self.logicServerId
 		DataUtils.refreshPlayerResources(playerDoc)
 		DataUtils.refreshPlayerPower(playerDoc, [])
 		TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, [])
@@ -159,14 +190,25 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 		}
 		return Promise.resolve()
 	}).then(function(){
+		return bindPlayerSessionAsync(session, deviceId, playerDoc, allianceDoc)
+	}).then(function(){
+		var funcs = []
+		funcs.push(addPlayerToChatChannelAsync(playerDoc._id))
+		if(_.isString(playerDoc.allianceId)){
+			funcs.push(self.dataService.addPlayerToAllianceChannelAsync(playerDoc.allianceId, playerDoc._id, self.logicServerId))
+		}
+		return Promise.all(funcs)
+	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
+		self.logService.onEvent("logic.playerApiService.playerLogin", {playerId:session.uid, logicServerId:self.logicServerId})
 		callback(null, [playerDoc, allianceDoc, enemyAllianceDoc])
 	}).catch(function(e){
+		self.logService.onEventError("logic.playerApiService.playerLogin", {playerId:session.uid, logicServerId:self.logicServerId}, e.stack)
 		var funcs = []
 		if(_.isObject(playerDoc) && !_.isEqual(e.code, ErrorUtils.reLoginNeeded(playerDoc._id).code)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
@@ -174,24 +216,23 @@ pro.playerLogin = function(deviceId, logicServerId, callback){
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
+		Promise.all(funcs).then(function(){
 			callback(e)
-		}
+		})
 	})
 }
 
 /**
  * 玩家登出逻辑服务器
- * @param playerId
+ * @param session
+ * @param reason
  * @param callback
  */
-pro.playerLogout = function(playerId, callback){
+pro.playerLogout = function(session, reason, callback){
 	var self = this
+	var playerId = session.uid
 	var playerDoc = null
+	var removePlayerFromChatChannelAsync = Promise.promisify(RemovePlayerFromChatChannel, this)
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		playerDoc.logicServerId = null
@@ -202,15 +243,24 @@ pro.playerLogout = function(playerId, callback){
 			return self.dataService.timeoutPlayerAsync(playerDoc, playerDoc)
 		}
 	}).then(function(){
-		callback(null, playerDoc)
-	}).catch(function(e){
-		if(_.isObject(playerDoc)){
-			self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
+		var funcs = []
+		funcs.push(removePlayerFromChatChannelAsync(playerDoc._id))
+		if(_.isString(playerDoc.allianceId)){
+			funcs.push(self.dataService.removePlayerFromAllianceChannelAsync(playerDoc.allianceId, playerDoc._id, self.logicServerId))
 		}
+		return Promise.all(funcs)
+	}).then(function(){
+		self.logService.onEvent("logic.playerApiService.playerLeave", {playerId:session.uid, logicServerId:self.logicServerId, reason:reason})
+		callback()
+	}).catch(function(e){
+		self.logService.onEventError("logic.playerApiService.playerLeave", {playerId:session.uid, logicServerId:self.logicServerId, reason:reason}, e.stack)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 

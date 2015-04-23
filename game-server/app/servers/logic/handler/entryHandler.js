@@ -5,7 +5,6 @@
  */
 
 var Promise = require("bluebird")
-var Promisify = Promise.promisify
 var _ = require("underscore")
 var crypto = require('crypto')
 var ErrorUtils = require("../../../utils/errorUtils")
@@ -20,58 +19,11 @@ var Handler = function(app){
 	this.env = app.get("env")
 	this.logService = app.get("logService")
 	this.sessionService = app.get("sessionService")
-	this.dataService = app.get("dataService")
-	this.logicServerId = app.get("logicServerId")
-	this.chatServerId = app.get("chatServerId")
 	this.playerApiService = app.get("playerApiService")
 	this.maxReturnMailSize = 10
 	this.maxReturnReportSize = 10
 }
 var pro = Handler.prototype
-
-var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, callback){
-	session.bind(playerDoc._id)
-	session.set("deviceId", deviceId)
-	session.set("logicServerId", playerDoc.logicServerId)
-	session.set("chatServerId", this.chatServerId)
-	session.set("name", playerDoc.basicInfo.name)
-	session.set("icon", playerDoc.basicInfo.icon)
-	session.set("allianceTag", _.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "")
-	session.set("vipExp", playerDoc.basicInfo.vipExp)
-	session.on("closed", PlayerLeave.bind(this))
-	session.pushAll(function(err){
-		process.nextTick(function(){
-			callback(err)
-		})
-	})
-}
-
-var PlayerLeave = function(session, reason){
-	this.logService.onEvent("logic.entryHandler.playerLeave", {playerId:session.uid, reason:reason})
-	var self = this
-	var removePlayerFromChatChannelAsync = Promisify(RemovePlayerFromChatChannel, this)
-	var playerDoc = null
-	this.playerApiService.playerLogoutAsync(session.uid).then(function(doc){
-		playerDoc = doc
-		var funcs = []
-		funcs.push(removePlayerFromChatChannelAsync(playerDoc._id))
-		if(_.isString(playerDoc.allianceId)){
-			funcs.push(self.dataService.removePlayerFromAllianceChannelAsync(playerDoc.allianceId, playerDoc._id, self.logicServerId))
-		}
-		return Promise.all(funcs)
-	}).catch(function(e){
-		self.logService.onEventError("logic.entryHandler.playerLeave", {playerId:playerDoc._id}, e.stack)
-	})
-}
-
-
-var AddPlayerToChatChannel = function(playerId, callback){
-	this.app.rpc.chat.chatRemote.addToChatChannel.toServer(this.chatServerId, playerId, this.logicServerId, callback)
-}
-
-var RemovePlayerFromChatChannel = function(playerId, callback){
-	this.app.rpc.chat.chatRemote.removeFromChatChannel.toServer(this.chatServerId, playerId, this.logicServerId, callback)
-}
 
 var FilterPlayerDoc = function(playerDoc){
 	var self = this
@@ -154,27 +106,14 @@ pro.login = function(msg, session, next){
 		return
 	}
 
-	var bindPlayerSessionAsync = Promisify(BindPlayerSession, this)
-	var addPlayerToChatChannelAsync = Promisify(AddPlayerToChatChannel, this)
-
 	var playerDoc = null
 	var allianceDoc = null
 	var enemyAllianceDoc = null
-
-	this.playerApiService.playerLoginAsync(deviceId, self.logicServerId).spread(function(doc_1, doc_2, doc_3){
+	this.playerApiService.playerLoginAsync(session, deviceId).spread(function(doc_1, doc_2, doc_3){
 		playerDoc = doc_1
 		allianceDoc = doc_2
 		enemyAllianceDoc = doc_3
-		return bindPlayerSessionAsync(session, deviceId, playerDoc, allianceDoc)
 	}).then(function(){
-		var funcs = []
-		funcs.push(addPlayerToChatChannelAsync(playerDoc._id))
-		if(_.isString(playerDoc.allianceId)){
-			funcs.push(self.dataService.addPlayerToAllianceChannelAsync(playerDoc.allianceId, playerDoc._id, self.logicServerId))
-		}
-		return Promise.all(funcs)
-	}).then(function(){
-		self.logService.onEvent("logic.entryHandler.playerLogin", {playerId:session.uid})
 		FilterPlayerDoc.call(self, playerDoc)
 		next(null, {
 			code:200,

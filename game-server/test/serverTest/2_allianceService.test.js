@@ -3,9 +3,7 @@
 //*/
 //
 //var pomelo = require("../pomelo-client")
-//var redis = require("redis")
-//var path = require("path")
-//var Scripto = require('redis-scripto')
+//var mongoose = require("mongoose")
 //var Promise = require("bluebird")
 //var should = require('should')
 //var _ = require("underscore")
@@ -14,6 +12,10 @@
 //var Config = require("../config")
 //var Api = require("../api")
 //var MapUtils = require("../../app/utils/mapUtils")
+//var Device = Promise.promisifyAll(require("../../app/domains/device"))
+//var Player = Promise.promisifyAll(require("../../app/domains/player"))
+//var Alliance = Promise.promisifyAll(require("../../app/domains/alliance"))
+//var Billing = Promise.promisifyAll(require("../../app/domains/billing"))
 //
 //var GameDatas = require("../../app/datas/GameDatas")
 //var Errors = GameDatas.Errors.errors
@@ -22,7 +24,17 @@
 //	var m_user
 //
 //	before(function(done){
-//		done()
+//		mongoose.connect(Config.mongoAddr, function(){
+//			Device.removeAsync().then(function(){
+//				return Player.removeAsync()
+//			}).then(function(){
+//				return Alliance.removeAsync()
+//			}).then(function(){
+//				return Billing.removeAsync()
+//			}).then(function(){
+//				done()
+//			})
+//		})
 //	})
 //
 //
