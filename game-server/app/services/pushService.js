@@ -74,6 +74,35 @@ pro.onAllianceDataChanged = function(allianceId, data, callback){
 }
 
 /**
+ * 推送给联盟除指定玩家之外的其他玩家
+ * @param allianceId
+ * @param data
+ * @param memberId
+ * @param callback
+ */
+pro.onAllianceDataChangedExceptMemberId = function(allianceId, data, memberId, callback){
+	var self = this
+	var eventName = Events.alliance.onAllianceDataChanged
+	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
+	var channel = this.channelService.getChannel(channelName, false)
+	if(!_.isObject(channel)){
+		callback()
+		return
+	}
+	var uids = []
+	_.each(channel.getMembers(), function(uid){
+		if(!_.isEqual(uid, memberId)){
+			uids.push(channel.getMember(uid))
+		}
+	})
+	if(uids.length > 0){
+		self.channelService.pushMessageByUids(eventName, data, uids, callback)
+	}else{
+		callback()
+	}
+}
+
+/**
  * 敌方联盟数据改变
  * @param allianceId
  * @param data
@@ -109,31 +138,4 @@ pro.onAllianceFight = function(allianceId, allianceData, enemyAllianceData, call
 		allianceData:allianceData,
 		enemyAllianceData:enemyAllianceData
 	}, callback)
-}
-
-/**
- * 推送给联盟除指定玩家之外的其他玩家
- * @param allianceId
- * @param data
- * @param memberId
- * @param callback
- */
-pro.onAllianceDataChangedExceptMemberId = function(allianceId, data, memberId, callback){
-	var self = this
-	var eventName = Events.alliance.onAllianceDataChanged
-	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
-	var channel = this.channelService.getChannel(channelName, false)
-	if(!_.isObject(channel)){
-		callback()
-		return
-	}
-	var uids = []
-	_.filter(channel.getMembers(), function(uid){
-		return !_.isEqual(uid, memberId)
-	})
-	if(uids.length > 0){
-		self.channelService.pushMessageByUids(eventName, data, uids, callback)
-	}else{
-		callback()
-	}
 }
