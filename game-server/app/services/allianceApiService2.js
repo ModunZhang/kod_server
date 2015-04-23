@@ -720,7 +720,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 
 		playerDoc.allianceId = allianceDoc._id
-		playerData.push(["alliance", playerDoc.allianceId])
+		playerData.push(["allianceId", playerDoc.allianceId])
 		LogicUtils.clearArray(playerDoc.requestToAllianceEvents)
 		playerData.push(["requestToAllianceEvents", playerDoc.requestToAllianceEvents])
 		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
