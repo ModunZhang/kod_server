@@ -644,6 +644,14 @@ Api.switchServer = function(serverId, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.setPlayerIcon = function(icon, callback){
+	var info = {
+		icon:icon
+	}
+	var route = "logic.playerHandler.setPlayerIcon"
+	pomelo.request(route, info, callback)
+}
+
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {

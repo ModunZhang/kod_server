@@ -681,3 +681,36 @@ pro.switchServer = function(playerId, serverId, callback){
 		}
 	})
 }
+
+/**
+ * 设置玩家头像
+ * @param playerId
+ * @param icon
+ * @param callback
+ */
+pro.setPlayerIcon = function(playerId, icon, callback){
+	if(!_.isString(icon)){
+		callback(new Error("serverId 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		playerDoc.basicInfo.icon = icon
+		playerData.push(["basicInfo.icon", playerDoc.basicInfo.icon])
+		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}

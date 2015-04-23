@@ -1232,3 +1232,19 @@ pro.switchServer = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 设置玩家头像
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.setPlayerIcon = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.setPlayerIcon", {playerId:session.uid, msg:msg})
+	var icon = msg.icon
+	this.playerApiService5.setPlayerIconAsync(session.uid, icon).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}

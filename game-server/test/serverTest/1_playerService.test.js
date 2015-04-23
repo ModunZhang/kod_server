@@ -1804,6 +1804,16 @@
 //				done()
 //			})
 //		})
+//
+//		it("setPlayerIcon 正常设置", function(done){
+//			Api.loginPlayer(Config.deviceId, function(doc){
+//				doc.code.should.equal(200)
+//				Api.setPlayerIcon("a.png", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
 //	})
 //
 //
