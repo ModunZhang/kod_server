@@ -22,6 +22,48 @@ var TimeEventService = function(app){
 module.exports = TimeEventService
 var pro = TimeEventService.prototype
 
+function setLongTimeout(callback, ms){
+	if(typeof callback !== 'function')
+		throw new Error('callback must be a function');
+	ms = parseInt(ms);
+	if(Number.isNaN(ms))
+		throw new Error('delay must be an integer');
+
+	var args = Array.prototype.slice.call(arguments, 2);
+	var cb = callback.bind.apply(callback, [this].concat(args));
+
+	var longTimeout = {
+		timer:null,
+		clear:function(){
+			if(this.timer)
+				clearTimeout(this.timer);
+		}
+	};
+
+	var max = 2147483647;
+	if(ms <= max)
+		longTimeout.timer = setTimeout(cb, ms);
+	else{
+		var count = Math.floor(ms / max); // the number of times we need to delay by max
+		var rem = ms % max; // the length of the final delay
+		(function delay(){
+			if(count > 0){
+				count--;
+				longTimeout.timer = setTimeout(delay, max);
+			}else{
+				longTimeout.timer = setTimeout(cb, rem);
+			}
+		})();
+	}
+	return longTimeout;
+}
+
+function clearLongTimeout(longTimeoutObject){
+	if(longTimeoutObject &&
+		typeof longTimeoutObject.clear === 'function')
+		longTimeoutObject.clear()
+}
+
 
 /**
  * 添加时间回调
@@ -39,7 +81,7 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 			eventId:eventId,
 			timeInterval:timeInterval
 		})
-		var timeout = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
+		var timeout = setLongTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
 		var timeouts = this.timeouts[key]
 		if(_.isEmpty(timeouts)){
 			timeouts = {}
@@ -64,7 +106,7 @@ pro.removeTimeEvent = function(key, eventType, eventId, callback){
 		this.logService.onEvent("event.timeEventService.removeTimeEvent", {key:key, eventType:eventType, eventId:eventId})
 		var timeouts = this.timeouts[key]
 		var timeout = timeouts[eventId]
-		clearTimeout(timeout)
+		clearLongTimeout(timeout)
 		delete timeouts[eventId]
 		if(_.isEmpty(timeouts)){
 			delete this.timeouts[key]
@@ -93,9 +135,9 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 		})
 		var timeouts = this.timeouts[key]
 		var timeout = timeouts[eventId]
-		clearTimeout(timeout)
+		clearLongTimeout(timeout)
 
-		timeout = setTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
+		timeout = setLongTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
 		timeouts[eventId] = timeout
 		callback()
 	}else{
@@ -113,7 +155,7 @@ pro.clearTimeEventsByKey = function(key, callback){
 		this.logService.onEvent("event.timeEventService.clearTimeEventsByKey", {key:key})
 		var timeouts = this.timeouts[key]
 		_.each(timeouts, function(timeout){
-			clearTimeout(timeout)
+			clearLongTimeout(timeout)
 		})
 		delete this.timeouts[key]
 		callback()
