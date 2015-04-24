@@ -17,9 +17,12 @@ var MarchUtils = require("../utils/marchUtils")
 var FightUtils = require("../utils/fightUtils")
 var ReportUtils = require("../utils/reportUtils")
 var ErrorUtils = require("../utils/errorUtils")
+var MapUtils = require("../utils/mapUtils")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
 var Localizations = require("../consts/localizations")
+var GameDatas = require("../datas/GameDatas")
+var AllianceInitData = GameDatas.AllianceInitData
 
 var AllianceTimeEventService = function(app){
 	this.app = app
@@ -1908,6 +1911,9 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 				attackEnemyAllianceData.push(["mapObjects." + defenceAllianceDoc.mapObjects.indexOf(villageMapObject), null])
 			}
 			LogicUtils.removeItemInArray(defenceAllianceDoc.mapObjects, villageMapObject)
+			var villageCreateEvent = DataUtils.createVillageCreateEvent(village.name)
+			defenceAllianceDoc.villageCreateEvents.push(villageCreateEvent)
+			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "villageCreateEvents", villageCreateEvent.id, villageCreateEvent.finishTime - Date.now()])
 		}else{
 			village.resource -= event.villageData.collectTotal
 			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
@@ -1944,6 +1950,39 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 			callback(e)
 		}
 	})
+}
+
+/**
+ * 联盟村落刷新事件触发
+ * @param allianceDoc
+ * @param event
+ * @param callback
+ */
+pro.onVillageCreateEvents = function(allianceDoc, event, callback){
+	var self = this
+	var allianceData = []
+	var enemyAllianceData = []
+	var updateFuncs = []
+	var pushFuncs = []
+	var eventFuncs = []
+	LogicUtils.removeItemInArray(allianceDoc.villageCreateEvents, event)
+	var mapObjects = allianceDoc.mapObjects
+	var map = MapUtils.buildMap(mapObjects)
+	var config = AllianceInitData.buildingName[event.name]
+	var width = config.width
+	var height = config.height
+	var rect = MapUtils.getRect(map, width, height)
+	if(_.isObject(rect)){
+		var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, event.name)
+		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
+		enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
+		var village = DataUtils.addAllianceVillageObject(allianceDoc, villageMapObject)
+		allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
+		enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
+	}
+	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+	LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
+	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 }
 
 /**

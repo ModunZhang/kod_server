@@ -125,6 +125,13 @@ var AllianceSchema = new Schema({
 		level:{type:Number, required:true},
 		resource:{type:Number, required:true}
 	}],
+	villageCreateEvents:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		startTime:{type:Number, required:true},
+		finishTime:{type:Number, required:true}
+	}],
 	mapObjects:[{
 		_id:false,
 		id:{type:String, require:true},

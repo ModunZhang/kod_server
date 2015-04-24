@@ -95,26 +95,26 @@ intInit["KilledCitizenPerWallHp"] = {
 }
 intInit["woodVillageRefreshMinutes"] = {
 	type:"woodVillageRefreshMinutes",
-	value:5,
+	value:10,
 	desc:"村落采空后多少分钟后刷新"
 }
 intInit["stoneVillageRefreshMinutes"] = {
 	type:"stoneVillageRefreshMinutes",
-	value:5,
+	value:10,
 	desc:"村落采空后多少分钟后刷新"
 }
 intInit["ironVillageRefreshMinutes"] = {
 	type:"ironVillageRefreshMinutes",
-	value:5,
+	value:10,
 	desc:"村落采空后多少分钟后刷新"
 }
 intInit["woodVillageRefreshMinutes"] = {
 	type:"woodVillageRefreshMinutes",
-	value:5,
+	value:10,
 	desc:"村落采空后多少分钟后刷新"
 }
 intInit["coinVillageRefreshMinutes"] = {
 	type:"coinVillageRefreshMinutes",
-	value:5,
+	value:10,
 	desc:"村落采空后多少分钟后刷新"
 }

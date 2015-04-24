@@ -9,15 +9,12 @@ var _ = require("underscore")
 
 var Utils = require("../../../utils/utils")
 var DataUtils = require("../../../utils/dataUtils")
-var MapUtils = require("../../../utils/mapUtils")
 var LogicUtils = require("../../../utils/logicUtils")
 var Consts = require("../../../consts/consts")
 
 var GameDatas = require("../../../datas/GameDatas")
 var PlayerInitData = GameDatas.PlayerInitData
 var Dragons = GameDatas.Dragons
-var AllianceBuilding = GameDatas.AllianceBuilding
-var AllianceInitData = GameDatas.AllianceInitData
 
 module.exports = function(app){
 	return new CommandRemote(app)

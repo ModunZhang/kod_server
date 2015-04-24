@@ -3845,3 +3845,18 @@ Utils.addPlayerLevelExp = function(playerDoc, playerData, expAdd){
 		})
 	}
 }
+
+/**
+ * 创建联盟村落刷新事件
+ * @param villageName
+ * @returns {{name: *, startTime: number, finishTime: number}}
+ */
+Utils.createVillageCreateEvent = function(villageName){
+	var event = {
+		id:ShortId.generate(),
+		name:villageName,
+		startTime:Date.now(),
+		finishTime:Date.now() + (this.getAllianceIntInit(villageName + "RefreshMinutes") * 60 * 1000)
+	}
+	return event
+}
