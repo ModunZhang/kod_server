@@ -58,7 +58,7 @@ pro.getPromotedLogicServer = function(cacheServerId){
 	logicServers = _.sortBy(logicServers, function(logicServer){
 		return logicServer.userCount
 	})
-	return logicServers[0].userCount == this.countMax ? null : logicServers[0]
+	return _.isEmpty(logicServers) || logicServers[0].userCount == this.countMax ? null : logicServers[0]
 }
 
 /**
