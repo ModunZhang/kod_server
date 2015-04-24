@@ -266,7 +266,8 @@ module.exports = {
 	},
 	AllianceEventType:{
 		Donate:"donate",//捐赠
-		Promotion:"promotion",//升级,降级
+		PromotionUp:"promotionUp",//升级
+		PromotionDown:"promotionDown",//降级
 		Join:"join",//新成员加入
 		Kick:"kick",//踢出玩家
 		Quit:"quit",//玩家退出
