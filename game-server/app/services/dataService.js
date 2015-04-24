@@ -72,7 +72,7 @@ pro.findPlayer = function(id, callback){
  * @param callback
  */
 pro.updatePlayer = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.updatePlayer.toServer(this.cacheServerId, doc._id, doc, callback)
+	this.app.rpc.cache.cacheRemote.updatePlayer.toServer(this.cacheServerId, doc._id, data, callback)
 }
 
 /**
@@ -82,7 +82,7 @@ pro.updatePlayer = function(doc, data, callback){
  * @param callback
  */
 pro.flushPlayer = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.flushPlayer.toServer(this.cacheServerId, doc._id, doc, callback)
+	this.app.rpc.cache.cacheRemote.flushPlayer.toServer(this.cacheServerId, doc._id, data, callback)
 }
 
 /**
@@ -92,7 +92,7 @@ pro.flushPlayer = function(doc, data, callback){
  * @param callback
  */
 pro.timeoutPlayer = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.timeoutPlayer.toServer(this.cacheServerId, doc._id, doc, callback)
+	this.app.rpc.cache.cacheRemote.timeoutPlayer.toServer(this.cacheServerId, doc._id, data, callback)
 }
 
 /**
@@ -129,7 +129,7 @@ pro.findAlliance = function(id, callback){
  * @param callback
  */
 pro.updateAlliance = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.updateAlliance.toServer(this.cacheServerId, doc._id, doc, callback)
+	this.app.rpc.cache.cacheRemote.updateAlliance.toServer(this.cacheServerId, doc._id, data, callback)
 }
 
 /**
@@ -139,7 +139,7 @@ pro.updateAlliance = function(doc, data, callback){
  * @param callback
  */
 pro.flushAlliance = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.flushAlliance.toServer(this.cacheServerId, doc._id, doc, callback)
+	this.app.rpc.cache.cacheRemote.flushAlliance.toServer(this.cacheServerId, doc._id, data, callback)
 }
 
 /**
@@ -149,7 +149,7 @@ pro.flushAlliance = function(doc, data, callback){
  * @param callback
  */
 pro.timeoutAlliance = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.timeoutAlliance.toServer(this.cacheServerId, doc._id, doc, callback)
+	this.app.rpc.cache.cacheRemote.timeoutAlliance.toServer(this.cacheServerId, doc._id, data, callback)
 }
 
 /**

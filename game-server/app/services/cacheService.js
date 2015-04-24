@@ -431,6 +431,7 @@ pro.updatePlayer = function(id, doc, callback){
 			UnlockPlayer.call(self, id)
 		}
 	}else{
+		callback()
 		UnlockPlayer.call(self, id)
 	}
 }
@@ -470,6 +471,7 @@ pro.updateAlliance = function(id, doc, callback){
 			UnlockAlliance.call(self, id)
 		}
 	}else{
+		callback()
 		UnlockAlliance.call(self, id)
 	}
 }
