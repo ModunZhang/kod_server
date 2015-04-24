@@ -65,9 +65,18 @@ var OnAllianceTimeout = function(id){
 	clearTimeout(alliance.timeout)
 	clearTimeout(alliance.flush)
 	LockAlliance.call(this, id, function(){
-		delete self.alliances[id]
-		self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {allianceId:id})
-		UnlockAlliance.call(self, id)
+		var hasMemberOnline = _.some(alliance.doc.members, function(member){
+			return !!member.online
+		})
+		if(hasMemberOnline){
+			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
+			alliance.flush = setTimeout(OnAllianceInterval.bind(self), self.flushInterval, id)
+			UnlockAlliance.call(self, id)
+		}else{
+			delete self.alliances[id]
+			self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {allianceId:id})
+			UnlockAlliance.call(self, id)
+		}
 	})
 }
 
