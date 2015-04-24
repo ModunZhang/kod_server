@@ -377,20 +377,25 @@ var GameDatas = require("../app/datas/GameDatas")
 //_.each(times, function(count, key){
 //	console.log(key + "   " + count + "    " + Math.round(count / 10000 * 100) + "%")
 //})
-//
-//var totalCount = 100000
-//var currentCount = 0
-//var now = Date.now()
-//var loginPlayer = function(){
-//	Api.loginPlayer(currentCount.toString(), function(){
-//		currentCount ++
-//		if(currentCount < totalCount){
-//			loginPlayer()
-//		}else{
-//			var after = Date.now()
-//			console.log((after - now) / 1000)
-//			console.log("loginPlayer finished with time:" + ((after - now) / 1000))
-//		}
-//	})
-//}
-//loginPlayer()
+var startFrom = process.argv[2]
+console.log("startFrom:", startFrom)
+var totalCount = 1000
+var currentCount = 0
+var now = Date.now()
+var loginPlayer = function(){
+	Api.loginPlayer(startFrom.toString(), function(){
+		currentCount ++
+		startFrom ++
+		if(currentCount < totalCount){
+			loginPlayer()
+		}else{
+			var after = Date.now()
+			console.log((after - now) / 1000)
+			console.log("loginPlayer finished with time:" + ((after - now) / 1000))
+		}
+	})
+}
+loginPlayer()
+setInterval(function(){
+	console.log("currentCount:", currentCount)
+}, 1000)
