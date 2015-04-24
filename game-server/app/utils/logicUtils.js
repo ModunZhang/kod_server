@@ -582,32 +582,74 @@ Utils.isEnhanceDragonEquipmentLegal = function(playerDoc, equipments){
 /**
  * 更新玩家在联盟的属性
  * @param playerDoc
+ * @param online
  * @param allianceDoc
+ * @param allianceData
  * @returns {*}
  */
-Utils.updateMyPropertyInAlliance = function(playerDoc, allianceDoc){
-	var theMember = null
-	_.some(allianceDoc.members, function(member){
-		if(_.isEqual(member.id, playerDoc._id)){
-			member.apnId = playerDoc.apnId
-			member.language = playerDoc.basicInfo.language
-			member.name = playerDoc.basicInfo.name
-			member.icon = playerDoc.basicInfo.icon
-			member.levelExp = playerDoc.basicInfo.levelExp
-			member.online = true
-			member.power = playerDoc.basicInfo.power
-			member.kill = playerDoc.basicInfo.kill
-			member.loyalty = playerDoc.allianceInfo.loyalty
-			member.lastLoginTime = playerDoc.countInfo.lastLoginTime
-			member.allianceExp.woodExp = playerDoc.allianceInfo.woodExp
-			member.allianceExp.stoneExp = playerDoc.allianceInfo.stoneExp
-			member.allianceExp.ironExp = playerDoc.allianceInfo.ironExp
-			member.allianceExp.foodExp = playerDoc.allianceInfo.foodExp
-			member.allianceExp.coinExp = playerDoc.allianceInfo.coinExp
-			theMember = member
-		}
+Utils.updateMyPropertyInAlliance = function(playerDoc, online, allianceDoc, allianceData){
+	var member = _.find(allianceDoc.members, function(member){
+		return _.isEqual(member.id, playerDoc._id)
 	})
-	return theMember
+	var memberIndex = allianceDoc.members.indexOf(member)
+	member.online = online
+	allianceData.push(["members." + memberIndex + ".online", member.online])
+	if(!_.isEqual(member.apnId, playerDoc.apnId)){
+		member.apnId = playerDoc.apnId
+		allianceData.push(["members." + memberIndex + ".apnId", member.apnId])
+	}
+	if(!_.isEqual(member.language, playerDoc.basicInfo.language)){
+		member.language = playerDoc.basicInfo.language
+		allianceData.push(["members." + memberIndex + ".language", member.language])
+	}
+	if(!_.isEqual(member.name, playerDoc.basicInfo.name)){
+		member.name = playerDoc.basicInfo.name
+		allianceData.push(["members." + memberIndex + ".name", member.name])
+	}
+	if(!_.isEqual(member.icon, playerDoc.basicInfo.icon)){
+		member.icon = playerDoc.basicInfo.icon
+		allianceData.push(["members." + memberIndex + ".icon", member.icon])
+	}
+	if(!_.isEqual(member.levelExp, playerDoc.basicInfo.levelExp)){
+		member.levelExp = playerDoc.basicInfo.levelExp
+		allianceData.push(["members." + memberIndex + ".levelExp", member.levelExp])
+	}
+	if(!_.isEqual(member.levelExp, playerDoc.basicInfo.power)){
+		member.power = playerDoc.basicInfo.power
+		allianceData.push(["members." + memberIndex + ".power", member.power])
+	}
+	if(!_.isEqual(member.kill, playerDoc.basicInfo.kill)){
+		member.kill = playerDoc.basicInfo.kill
+		allianceData.push(["members." + memberIndex + ".kill", member.kill])
+	}
+	if(!_.isEqual(member.loyalty, playerDoc.allianceInfo.loyalty)){
+		member.loyalty = playerDoc.allianceInfo.loyalty
+		allianceData.push(["members." + memberIndex + ".loyalty", member.loyalty])
+	}
+	if(!_.isEqual(member.lastLoginTime, playerDoc.countInfo.lastLoginTime)){
+		member.lastLoginTime = playerDoc.countInfo.lastLoginTime
+		allianceData.push(["members." + memberIndex + ".lastLoginTime", member.lastLoginTime])
+	}
+	if(!_.isEqual(member.allianceExp.woodExp, playerDoc.allianceInfo.woodExp)){
+		member.allianceExp.woodExp = playerDoc.allianceInfo.woodExp
+		allianceData.push(["members." + memberIndex + ".allianceExp.woodExp", member.allianceExp.woodExp])
+	}
+	if(!_.isEqual(member.allianceExp.stoneExp, playerDoc.allianceInfo.stoneExp)){
+		member.allianceExp.stoneExp = playerDoc.allianceInfo.stoneExp
+		allianceData.push(["members." + memberIndex + ".allianceExp.stoneExp", member.allianceExp.stoneExp])
+	}
+	if(!_.isEqual(member.allianceExp.ironExp, playerDoc.allianceInfo.ironExp)){
+		member.allianceExp.ironExp = playerDoc.allianceInfo.ironExp
+		allianceData.push(["members." + memberIndex + ".allianceExp.ironExp", member.allianceExp.ironExp])
+	}
+	if(!_.isEqual(member.allianceExp.foodExp, playerDoc.allianceInfo.foodExp)){
+		member.allianceExp.foodExp = playerDoc.allianceInfo.foodExp
+		allianceData.push(["members." + memberIndex + ".allianceExp.foodExp", member.allianceExp.foodExp])
+	}
+	if(!_.isEqual(member.allianceExp.coinExp, playerDoc.allianceInfo.coinExp)){
+		member.allianceExp.coinExp = playerDoc.allianceInfo.coinExp
+		allianceData.push(["members." + memberIndex + ".allianceExp.coinExp", member.allianceExp.coinExp])
+	}
 }
 
 /**

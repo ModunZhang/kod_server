@@ -177,8 +177,7 @@ pro.playerLogin = function(session, deviceId, callback){
 		}
 	}).then(function(){
 		if(_.isObject(allianceDoc)){
-			var playerObject = LogicUtils.updateMyPropertyInAlliance(playerDoc, allianceDoc)
-			allianceData.push(["members." + allianceDoc.members.indexOf(playerObject), playerObject])
+			LogicUtils.updateMyPropertyInAlliance(playerDoc, true, allianceDoc, allianceData)
 			LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		}
 		return Promise.resolve()
@@ -244,9 +243,8 @@ pro.playerLogout = function(session, reason, callback){
 		if(_.isString(playerDoc.allianceId))
 			return self.dataService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc
-				var player = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
-				delete player.online
-				allianceData.push(["members." + allianceDoc.members.indexOf(player) + ".online", null])
+				LogicUtils.updateMyPropertyInAlliance(playerDoc, false, allianceDoc, allianceData)
+				LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 				updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerId])
 				return Promise.resolve()
