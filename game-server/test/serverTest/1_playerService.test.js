@@ -1806,13 +1806,15 @@
 //		})
 //
 //		it("setPlayerIcon 正常设置", function(done){
-//			Api.loginPlayer(Config.deviceId, function(doc){
-//				doc.code.should.equal(200)
-//				Api.setPlayerIcon(2, function(doc){
+//			setTimeout(function(){
+//				Api.loginPlayer(Config.deviceId, function(doc){
 //					doc.code.should.equal(200)
-//					done()
+//					Api.setPlayerIcon(2, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
 //				})
-//			})
+//			}, 100)
 //		})
 //	})
 //

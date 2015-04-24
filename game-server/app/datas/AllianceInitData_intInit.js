@@ -118,3 +118,8 @@ intInit["coinVillageRefreshMinutes"] = {
 	value:10,
 	desc:"村落采空后多少分钟后刷新"
 }
+intInit["allianceFightWillFinishedMinutes"] = {
+	type:"allianceFightWillFinishedMinutes",
+	value:1,
+	desc:"判断联盟战即将结束的时间"
+}

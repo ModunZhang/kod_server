@@ -38,25 +38,20 @@ var OnPlayerTimeout = function(id){
 	clearTimeout(player.timeout)
 	clearTimeout(player.flush)
 	LockPlayer.call(this, id, function(){
-		self.timeEventService.clearPlayerTimeEventsAsync(player.doc).then(function(){
-			delete self.players[id]
-			if(player.ops > 0){
-				delete player.doc._id
-				self.Player.updateAsync({_id:id}, player.doc).then(function(){
-					UnlockPlayer.call(self, id)
-				}).catch(function(e){
-					self.logService.onEventError("cache.cacheService.OnPlayerTimeout", {playerId:id}, e.stack)
-					UnlockPlayer.call(self, id)
-				})
-				player.doc._id = id
-				player.ops = 0
-			}else{
-				UnlockPlayer.call(self, id)
-			}
-		}).catch(function(e){
-			self.logService.onEventError("cache.cacheService.OnPlayerTimeout", {playerId:id}, e.stack)
+		if(!_.isEmpty(player.logicServerId)){
+			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
+			player.flush = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
 			UnlockPlayer.call(self, id)
-		})
+		}else{
+			self.timeEventService.clearPlayerTimeEventsAsync(player.doc).then(function(){
+				delete self.players[id]
+				self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {playerId:id})
+				UnlockPlayer.call(self, id)
+			}).catch(function(e){
+				self.logService.onEventError("cache.cacheService.OnPlayerTimeout", {playerId:id}, e.stack)
+				UnlockPlayer.call(self, id)
+			})
+		}
 	})
 }
 
@@ -71,19 +66,8 @@ var OnAllianceTimeout = function(id){
 	clearTimeout(alliance.flush)
 	LockAlliance.call(this, id, function(){
 		delete self.alliances[id]
-		if(alliance.ops > 0){
-			delete alliance.doc._id
-			self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
-				UnlockAlliance.call(self, id)
-			}).catch(function(e){
-				self.logService.onEventError("cache.cacheService.OnAllianceTimeout", {allianceId:id}, e.stack)
-				UnlockAlliance.call(self, id)
-			})
-			alliance.doc._id = id
-			alliance.ops = 0
-		}else{
-			UnlockAlliance.call(self, id)
-		}
+		self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {allianceId:id})
+		UnlockAlliance.call(self, id)
 	})
 }
 

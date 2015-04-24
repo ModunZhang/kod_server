@@ -851,7 +851,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 			levelExp:memberDoc.basicInfo.levelExp,
 			vipExp:memberDoc.basicInfo.vipExp,
 			lastLoginTime:memberDoc.countInfo.lastLoginTime,
-			online:_.isString(memberDoc.logicServerId)
+			online:!_.isEmpty(memberDoc.logicServerId)
 		}
 
 		if(_.isString(memberDoc.allianceId)){
