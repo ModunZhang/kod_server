@@ -974,7 +974,7 @@ pro.addItem = function(playerId, itemName, count, callback){
 		var honourNeed = itemConfig.buyPriceInAlliance * count
 		if(allianceDoc.basicInfo.honour < honourNeed) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		allianceDoc.basicInfo.honour -= honourNeed
-		allianceData.basicInfo = allianceDoc.basicInfo
+		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 		var resp = LogicUtils.addAllianceItem(allianceDoc, itemName, count)
 		allianceData.push(["items." + allianceDoc.items.indexOf(resp.item), resp.item])
 		var itemLog = LogicUtils.createAllianceItemLog(Consts.AllianceItemLogType.AddItem, playerDoc.basicInfo.name, itemName, count)
