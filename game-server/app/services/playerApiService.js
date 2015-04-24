@@ -207,10 +207,10 @@ pro.playerLogin = function(session, deviceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		self.logService.onEvent("logic.playerApiService.playerLogin", {playerId:session.uid, logicServerId:self.logicServerId})
+		self.logService.onEvent("logic.playerApiService.playerLogin", {playerId:session.uid, deviceId:deviceId, logicServerId:self.logicServerId})
 		callback(null, [playerDoc, allianceDoc, enemyAllianceDoc])
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService.playerLogin", {playerId:session.uid, logicServerId:self.logicServerId}, e.stack)
+		self.logService.onEventError("logic.playerApiService.playerLogin", {playerId:session.uid, deviceId:deviceId, logicServerId:self.logicServerId}, e.stack)
 		var funcs = []
 		if(_.isObject(playerDoc) && !_.isEqual(e.code, ErrorUtils.reLoginNeeded(playerDoc._id).code)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))

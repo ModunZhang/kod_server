@@ -1,9 +1,7 @@
 module.exports = {
-	gateHost:"127.0.0.1",
+	gateHost:"127.0.0.1",//"54.223.172.65",
 	gatePort:3011,
 	mongoAddr:"mongodb://127.0.0.1:27017/kod",
-	redisAddr:"127.0.0.1",
-	redisPort:6379,
 	gcId:"gc_id",
 	gcId2:"gc_id_2",
 	gcId3:"gc_id_3",
