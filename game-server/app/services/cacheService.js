@@ -38,7 +38,7 @@ var OnPlayerTimeout = function(id){
 	clearTimeout(player.timeout)
 	clearTimeout(player.flush)
 	LockPlayer.call(this, id, function(){
-		if(!_.isEmpty(player.logicServerId)){
+		if(!_.isEmpty(player.doc.logicServerId)){
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 			player.flush = setTimeout(OnPlayerInterval.bind(self), self.flushInterval, id)
 			UnlockPlayer.call(self, id)
