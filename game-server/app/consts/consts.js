@@ -16,6 +16,10 @@ module.exports = {
 		On:"on",
 		ReadyShutdown:"readyShutdown"
 	},
+	ChannelType:{
+		Global:"global",
+		Alliance:"alliance"
+	},
 	None:"__NONE__",
 	ServerState:{
 		Start:"start",

@@ -9,7 +9,6 @@ var _ = require("underscore")
 var ErrorUtils = require("../../../utils/errorUtils")
 
 var GameDatas = require("../../../datas/GameDatas")
-var Errors = GameDatas.Errors.errors
 
 module.exports = function(app){
 	return new Handler(app)

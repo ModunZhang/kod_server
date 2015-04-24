@@ -3869,5 +3869,5 @@ Utils.createVillageCreateEvent = function(villageName){
  */
 Utils.isAllianceFightWillFinished = function(allianceDoc){
 	var finishInterval = this.getAllianceIntInit("allianceFightWillFinishedMinutes") * 60 * 1000
-	return allianceDoc.basicInfo.statusFinishTime + finishInterval >= Date.now()
+	return allianceDoc.basicInfo.statusFinishTime - finishInterval >= Date.now()
 }

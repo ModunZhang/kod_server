@@ -11,6 +11,8 @@ var LogicUtils = require("../utils/logicUtils")
 var DataService = function(app){
 	this.app = app
 	this.cacheServerId = app.get("cacheServerId")
+	this.chatServerId = app.get("chatServerId")
+	this.eventServerId = app.get("eventServerId")
 	this.logicServers = _.filter(app.getServersFromConfig(), function(server){
 		return _.isEqual(server.serverType, "logic") && _.isEqual(server.usedFor, app.get("cacheServerId"))
 	})
@@ -153,20 +155,19 @@ pro.timeoutAlliance = function(doc, data, callback){
 /**
  * 将玩家添加到联盟频道
  * @param allianceId
- * @param playerId
- * @param logicServerId
+ * @param playerDoc
  * @param callback
  */
-pro.addPlayerToAllianceChannel = function(allianceId, playerId, logicServerId, callback){
-	var funcs = []
+pro.addPlayerToAllianceChannel = function(allianceId, playerDoc, callback){
+	var addToChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.addToAllianceChannel.toServer, this)
 	var addToEventChannelAsync = Promise.promisify(this.app.rpc.event.eventRemote.addToAllianceChannel.toServer, this)
 	var addToLogicChannelAsync = Promise.promisify(this.app.rpc.logic.logicRemote.addToAllianceChannel.toServer, this)
-
-	funcs.push(addToEventChannelAsync(this.app.get("eventServerId"), allianceId, playerId, logicServerId))
+	var funcs = []
+	funcs.push(addToChatAllianceChannelAsync(this.chatServerId, allianceId, playerDoc._id, playerDoc.logicServerId))
+	funcs.push(addToEventChannelAsync(this.eventServerId, allianceId, playerDoc._id, playerDoc.logicServerId))
 	_.each(this.logicServers, function(server){
-		funcs.push(addToLogicChannelAsync(server.id, allianceId, playerId, logicServerId))
+		funcs.push(addToLogicChannelAsync(server.id, allianceId, playerDoc._id, playerDoc.logicServerId))
 	})
-
 	Promise.all(funcs).then(function(){
 		callback()
 	}).catch(function(e){
@@ -177,20 +178,71 @@ pro.addPlayerToAllianceChannel = function(allianceId, playerId, logicServerId, c
 /**
  * 将玩家从联盟频道移除
  * @param allianceId
- * @param playerId
- * @param logicServerId
+ * @param playerDoc
  * @param callback
  */
-pro.removePlayerFromAllianceChannel = function(allianceId, playerId, logicServerId, callback){
-	var funcs = []
+pro.removePlayerFromAllianceChannel = function(allianceId, playerDoc, callback){
+	var removeFromChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.removeFromAllianceChannel.toServer, this)
 	var removeFromEventChannelAsync = Promise.promisify(this.app.rpc.event.eventRemote.removeFromAllianceChannel.toServer, this)
 	var removeFromLogicChannelAsync = Promise.promisify(this.app.rpc.logic.logicRemote.removeFromAllianceChannel.toServer, this)
-
-	funcs.push(removeFromEventChannelAsync(this.app.get("eventServerId"), allianceId, playerId, logicServerId))
+	var funcs = []
+	funcs.push(removeFromChatAllianceChannelAsync(this.chatServerId, allianceId, playerDoc._id, playerDoc.logicServerId))
+	funcs.push(removeFromEventChannelAsync(this.eventServerId, allianceId, playerDoc._id, playerDoc.logicServerId))
 	_.each(this.logicServers, function(server){
-		funcs.push(removeFromLogicChannelAsync(server.id, allianceId, playerId, logicServerId))
+		funcs.push(removeFromLogicChannelAsync(server.id, allianceId, playerDoc._id, playerDoc.logicServerId))
 	})
+	Promise.all(funcs).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
 
+/**
+ * 将玩家添加到所有频道中
+ * @param playerDoc
+ * @param callback
+ */
+pro.addPlayerToChannels = function(playerDoc, callback){
+	var addToChatChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.addToChatChannel.toServer, this)
+	var addToChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.addToAllianceChannel.toServer, this)
+	var addToEventChannelAsync = Promise.promisify(this.app.rpc.event.eventRemote.addToAllianceChannel.toServer, this)
+	var addToLogicChannelAsync = Promise.promisify(this.app.rpc.logic.logicRemote.addToAllianceChannel.toServer, this)
+	var funcs = []
+	funcs.push(addToChatChannelAsync(this.chatServerId, playerDoc._id, playerDoc.logicServerId))
+	if(_.isString(playerDoc.allianceId)){
+		funcs.push(addToChatAllianceChannelAsync(this.chatServerId, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
+		funcs.push(addToEventChannelAsync(this.eventServerId, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
+		_.each(this.logicServers, function(server){
+			funcs.push(addToLogicChannelAsync(server.id, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
+		})
+	}
+	Promise.all(funcs).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 将玩家从所有频道中移除
+ * @param playerDoc
+ * @param callback
+ */
+pro.removePlayerFromChannels = function(playerDoc, callback){
+	var removeFromChatChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.removeFromChatChannel.toServer, this)
+	var removeFromChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.removeFromAllianceChannel.toServer, this)
+	var removeFromEventChannelAsync = Promise.promisify(this.app.rpc.event.eventRemote.removeFromAllianceChannel.toServer, this)
+	var removeFromLogicChannelAsync = Promise.promisify(this.app.rpc.logic.logicRemote.removeFromAllianceChannel.toServer, this)
+	var funcs = []
+	funcs.push(removeFromChatChannelAsync(this.chatServerId, playerDoc._id, playerDoc.logicServerId))
+	if(_.isString(playerDoc.allianceId)){
+		funcs.push(removeFromChatAllianceChannelAsync(this.chatServerId, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
+		funcs.push(removeFromEventChannelAsync(this.eventServerId, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
+		_.each(this.logicServers, function(server){
+			funcs.push(removeFromLogicChannelAsync(server.id, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
+		})
+	}
 	Promise.all(funcs).then(function(){
 		callback()
 	}).catch(function(e){

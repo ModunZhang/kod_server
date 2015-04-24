@@ -41,6 +41,7 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 	session.set("chatServerId", this.chatServerId)
 	session.set("name", playerDoc.basicInfo.name)
 	session.set("icon", playerDoc.basicInfo.icon)
+	session.set("allianceId", _.isObject(allianceDoc) ? allianceDoc._id : "")
 	session.set("allianceTag", _.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "")
 	session.set("vipExp", playerDoc.basicInfo.vipExp)
 	session.on("closed", this.playerLogoutAsync.bind(this))
@@ -50,15 +51,6 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 		})
 	})
 }
-
-var AddPlayerToChatChannel = function(playerId, callback){
-	this.app.rpc.chat.chatRemote.addToChatChannel.toServer(this.chatServerId, playerId, this.logicServerId, callback)
-}
-
-var RemovePlayerFromChatChannel = function(playerId, callback){
-	this.app.rpc.chat.chatRemote.removeFromChatChannel.toServer(this.chatServerId, playerId, this.logicServerId, callback)
-}
-
 
 /**
  * 玩家登陆逻辑服务器
@@ -82,8 +74,6 @@ pro.playerLogin = function(session, deviceId, callback){
 	var pushFuncs = []
 	var vipExpAdd = null
 	var bindPlayerSessionAsync = Promise.promisify(BindPlayerSession, this)
-	var addPlayerToChatChannelAsync = Promise.promisify(AddPlayerToChatChannel, this)
-
 	this.Device.findByIdAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
 			return self.dataService.findPlayerAsync(doc.playerId)
@@ -194,12 +184,7 @@ pro.playerLogin = function(session, deviceId, callback){
 	}).then(function(){
 		return bindPlayerSessionAsync(session, deviceId, playerDoc, allianceDoc)
 	}).then(function(){
-		var funcs = []
-		funcs.push(addPlayerToChatChannelAsync(playerDoc._id))
-		if(_.isString(playerDoc.allianceId)){
-			funcs.push(self.dataService.addPlayerToAllianceChannelAsync(playerDoc.allianceId, playerDoc._id, self.logicServerId))
-		}
-		return Promise.all(funcs)
+		return self.dataService.addPlayerToChannelsAsync(playerDoc)
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -238,9 +223,10 @@ pro.playerLogout = function(session, reason, callback){
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	var removePlayerFromChatChannelAsync = Promise.promisify(RemovePlayerFromChatChannel, this)
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+		return self.dataService.removePlayerFromChannelsAsync(playerDoc)
+	}).then(function(){
 		playerDoc.logicServerId = null
 		playerDoc.countInfo.todayOnLineTime += Date.now() - playerDoc.countInfo.lastLoginTime
 		if(_.isString(playerDoc.allianceId))
@@ -259,10 +245,6 @@ pro.playerLogout = function(session, reason, callback){
 			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		}else{
 			updateFuncs.push([self.dataService, self.dataService.timeoutPlayerAsync, playerDoc, playerDoc])
-		}
-		updateFuncs.push([null, removePlayerFromChatChannelAsync, playerDoc._id])
-		if(_.isString(playerDoc.allianceId)){
-			updateFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, playerDoc.allianceId, playerDoc._id, self.logicServerId])
 		}
 		return Promise.resolve()
 	}).then(function(){

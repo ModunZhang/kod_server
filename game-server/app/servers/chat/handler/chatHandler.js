@@ -9,6 +9,7 @@ var Promise = require("bluebird")
 
 var Consts = require("../../../consts/consts")
 var Events = require("../../../consts/events")
+var ErrorUtils = require("../../../utils/errorUtils")
 
 module.exports = function(app){
 	return new ChatHandler(app)
@@ -18,10 +19,12 @@ var ChatHandler = function(app){
 	this.app = app
 	this.env = app.get("env")
 	this.channelService = app.get("channelService")
-	this.chatChannel = this.channelService.getChannel(Consts.GlobalChatChannel)
+	this.chatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, false)
 	this.logService = app.get("logService")
 	this.chats = []
+	this.allianceChats = []
 	this.maxChatCount = 50
+	this.maxAllianceChatCount = 50
 	this.commands = [
 		{
 			command:"resources",
@@ -315,18 +318,24 @@ pro.send = function(msg, session, next){
 	var self = this
 	var text = msg.text
 	var channel = msg.channel
-	var error = null
-	if(_.isEmpty(text) || _.isEmpty(text.trim())){
-		error = new Error("聊天内容不能为空")
-		next(error, {code:500, message:error.message})
+	var e = null
+	if(!_.isString(text) || _.isEmpty(text.trim())){
+		e = new Error("text 不合法")
+		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(_.isEmpty(channel) || _.isEmpty(channel.trim())){
-		error = new Error("channel 不能为空")
-		next(error, {code:500, message:error.message})
+	if(!_.contains(Consts.ChannelType, channel)){
+		e = new Error("channel 不合法")
+		next(e, ErrorUtils.getError(e))
 		return
 	}
 
+	var allianceId = session.get("allianceId")
+	if(_.isEqual(Consts.ChannelType.Alliance, channel) && _.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 	var name = session.get("name")
 	var icon = session.get("icon")
 	var vipExp = session.get("vipExp")
@@ -343,17 +352,26 @@ pro.send = function(msg, session, next){
 			text:text,
 			time:Date.now()
 		}
-
-		if(self.chats.length > self.maxChatCount){
-			self.chats.shift()
+		if(_.isEqual(Consts.ChannelType.Global, channel)){
+			if(self.chats.length > self.maxChatCount){
+				self.chats.shift()
+			}
+			self.chats.push(response)
+			self.chatChannel.pushMessage(Events.chat.onChat, response)
+		}else{
+			if(self.allianceChats.length > self.maxAllianceChatCount){
+				self.allianceChats.shift()
+			}
+			self.allianceChats.push(response)
+			var allianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+			if(_.isObject(allianceChannel))
+				allianceChannel.pushMessage(Events.chat.onChat, response)
 		}
-		self.chats.push(response)
-		self.chatChannel.pushMessage(Events.chat.onChat, response)
 		return Promise.resolve()
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, {code:500, message:e.message})
+		next(e, ErrorUtils.getError(e))
 	})
 }
 

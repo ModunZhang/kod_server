@@ -143,15 +143,14 @@ pro.quitAlliance = function(playerId, callback){
 
 		return Promise.all(funcs)
 	}).then(function(){
+		updateFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])
 		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc, playerDoc])
 		if(allianceDoc.members.length == 0){
 			updateFuncs.push([self.dataService, self.dataService.timeoutAllianceAsync, allianceDoc, allianceDoc])
 			updateFuncs.push([self.dataService.getAllianceModel(), self.dataService.getAllianceModel().findByIdAndRemoveAsync, allianceDoc._id])
-			updateFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 			eventFuncs.push([self.timeEventService, self.timeEventService.clearAllianceTimeEventsAsync, allianceDoc])
 		}else{
 			updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, allianceDoc, allianceDoc])
-			updateFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		}
 		return Promise.resolve()
@@ -241,9 +240,9 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
 		playerData.push(["inviteToAllianceEvents", playerDoc.inviteToAllianceEvents])
 
+		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
 		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, allianceDoc, allianceDoc])
 		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc, playerDoc])
-		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 		return Promise.resolve()
@@ -528,11 +527,11 @@ pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
 		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
 		memberData.push(["inviteToAllianceEvents", memberDoc.inviteToAllianceEvents])
 
+		if(!_.isEmpty(memberDoc.logicServerId)){
+			updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, memberDoc])
+		}
 		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, allianceDoc, allianceDoc])
 		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, memberDoc, memberDoc])
-		if(!_.isEmpty(memberDoc.logicServerId)){
-			updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, memberDoc._id, memberDoc.logicServerId])
-		}
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, memberDoc._id])
 		pushFuncs.push([self.pushService, self.pushService.onJoinAllianceSuccessAsync, memberDoc, memberData, allianceDoc, enemyAllianceViewData])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
@@ -698,7 +697,6 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		var titleKey = Localizations.Alliance.InviteApprovedTitle
 		var contentKey = Localizations.Alliance.InviteApprovedContent
 		LogicUtils.sendSystemMail(inviterDoc, inviterData, titleKey, [], contentKey, [playerDoc.basicInfo.name])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, inviterDoc, inviterDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, inviterDoc, inviterData])
 
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
@@ -714,8 +712,9 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
 
+		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, inviterDoc, inviterDoc])
 		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, allianceDoc, allianceDoc])
-		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc._id, playerDoc.logicServerId])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 

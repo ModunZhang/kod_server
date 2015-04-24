@@ -861,7 +861,7 @@ pro.setApnId = function(playerId, apnId, callback){
 	var updateFuncs = []
 	this.dataService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(_.isEqual(apnId, playerDoc.apnId)) return Promise.reject(ErrorUtils.ApnIdAlreadySeted(playerId, apnId))
+		if(_.isEqual(apnId, playerDoc.apnId)) return Promise.reject(ErrorUtils.apnIdAlreadySeted(playerId, apnId))
 		playerDoc.apnId = apnId
 		playerData.push(["apnId", playerDoc.apnId])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])

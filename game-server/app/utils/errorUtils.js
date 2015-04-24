@@ -1841,8 +1841,8 @@ Utils.theGCIdAlreadyBindedByCurrentPlayer = function(playerId, gcId){
  * @param playerId
  * @param apnId
  */
-Utils.ApnIdAlreadySeted = function(playerId, apnId){
-	var config = Errors.ApnIdAlreadySeted
+Utils.apnIdAlreadySeted = function(playerId, apnId){
+	var config = Errors.apnIdAlreadySeted
 	return CreateError(config, {playerId:playerId, apnId:apnId})
 }
 

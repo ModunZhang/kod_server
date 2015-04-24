@@ -58,7 +58,7 @@ app.configure("production|development", "logic", function(){
 		useDict:true,
 		useProtobuf:false,
 		disconnectOnTimeout:true,
-		"max-connections":2000
+		"max-connections":2500
 	})
 	//app.set("proxyConfig", {
 	//	bufferMsg:false,

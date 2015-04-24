@@ -35,6 +35,32 @@ pro.addToChatChannel = function(uid, logicServerId, callback){
  * @param callback
  */
 pro.removeFromChatChannel = function(uid, logicServerId, callback){
-	this.channelService.getChannel(Consts.GlobalChatChannel).leave(uid, logicServerId)
+	this.channelService.getChannel(Consts.GlobalChatChannel, false).leave(uid, logicServerId)
+	callback()
+}
+
+/**
+ * 将玩家添加到联盟频道
+ * @param allianceId
+ * @param uid
+ * @param logicServerId
+ * @param callback
+ */
+pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
+	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(uid, logicServerId)
+	callback()
+}
+
+/**
+ * 将玩家从联盟频道移除
+ * @param allianceId
+ * @param uid
+ * @param logicServerId
+ * @param callback
+ */
+pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	channel.leave(uid, logicServerId)
+	if(channel.getMembers().length == 0) channel.destroy()
 	callback()
 }
