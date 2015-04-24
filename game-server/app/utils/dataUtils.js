@@ -1681,23 +1681,24 @@ Utils.getAllianceDonateConfigByTypeAndLevel = function(donateType, donateLevel){
 }
 
 /**
- * 更新联盟玩家指定捐赠类型的下次捐赠等级
- * @param memberInAllianceDoc
+ * 更新玩家指定捐赠类型的下次捐赠等级
+ * @param playerDoc
+ * @param playerData
  * @param donateType
  * @returns {*}
  */
-Utils.updateAllianceMemberDonateLevel = function(memberInAllianceDoc, donateType){
-	var currentLevel = memberInAllianceDoc.donateStatus[donateType]
-	var hasFound = false
-	_.each(AllianceInitData.donate, function(config){
-		if(!hasFound && _.isEqual(config.type, donateType)){
-			if(config.level > currentLevel){
-				currentLevel += 1
-				hasFound = true
-			}
-		}
+Utils.updatePlayerDonateLevel = function(playerDoc, playerData, donateType){
+	var donates = _.filter(AllianceInitData.donate, function(donate){
+		return _.isEqual(donate.type, donateType)
 	})
-	memberInAllianceDoc.donateStatus[donateType] = currentLevel
+	var currentLevel = playerDoc.allianceDonate[donateType]
+	var hasNextLevel = _.find(donates, function(donate){
+		return _.isEqual(donate.level, currentLevel + 1)
+	})
+	if(hasNextLevel){
+		playerDoc.allianceDonate[donateType] = currentLevel + 1
+		playerData.push(["allianceDonate." + donateType, playerDoc.allianceDonate[donateType]])
+	}
 }
 
 /**

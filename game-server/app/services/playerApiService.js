@@ -120,6 +120,9 @@ pro.playerLogin = function(session, deviceId, callback){
 			_.each(playerDoc.dailyTasks, function(value, key){
 				playerDoc.dailyTasks[key] = []
 			})
+			_.each(playerDoc.allianceDonate, function(value, key){
+				playerDoc.allianceDonate[key] = 1
+			})
 
 			playerDoc.countInfo.todayOnLineTime = 0
 			playerDoc.countInfo.todayOnLineTimeRewards = []
@@ -177,7 +180,7 @@ pro.playerLogin = function(session, deviceId, callback){
 		}
 	}).then(function(){
 		if(_.isObject(allianceDoc)){
-			LogicUtils.updateMyPropertyInAlliance(playerDoc, true, allianceDoc, allianceData)
+			LogicUtils.updatePlayerPropertyInAlliance(playerDoc, true, allianceDoc, allianceData)
 			LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		}
 		return Promise.resolve()
@@ -243,7 +246,7 @@ pro.playerLogout = function(session, reason, callback){
 		if(_.isString(playerDoc.allianceId))
 			return self.dataService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc
-				LogicUtils.updateMyPropertyInAlliance(playerDoc, false, allianceDoc, allianceData)
+				LogicUtils.updatePlayerPropertyInAlliance(playerDoc, false, allianceDoc, allianceData)
 				LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 				updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerId])

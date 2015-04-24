@@ -587,7 +587,7 @@ Utils.isEnhanceDragonEquipmentLegal = function(playerDoc, equipments){
  * @param allianceData
  * @returns {*}
  */
-Utils.updateMyPropertyInAlliance = function(playerDoc, online, allianceDoc, allianceData){
+Utils.updatePlayerPropertyInAlliance = function(playerDoc, online, allianceDoc, allianceData){
 	var member = _.find(allianceDoc.members, function(member){
 		return _.isEqual(member.id, playerDoc._id)
 	})
@@ -1166,14 +1166,6 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		loyalty:playerDoc.allianceInfo.loyalty,
 		lastLoginTime:playerDoc.countInfo.lastLoginTime,
 		title:title,
-		donateStatus:{
-			wood:1,
-			stone:1,
-			iron:1,
-			food:1,
-			coin:1,
-			gem:1
-		},
 		allianceExp:{
 			woodExp:playerDoc.allianceInfo.woodExp,
 			stoneExp:playerDoc.allianceInfo.stoneExp,
@@ -1189,16 +1181,6 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		member.online = online
 	allianceDoc.members.push(member)
 	return member
-}
-
-/**
- * 获取联盟成员当前捐赠等级
- * @param memberDocInAlliance
- * @param donateType
- * @returns {*}
- */
-Utils.getAllianceMemberDonateLevelByType = function(memberDocInAlliance, donateType){
-	return memberDocInAlliance.donateStatus[donateType]
 }
 
 /**

@@ -158,6 +158,14 @@ var PlayerSchema = new Schema({
 		foodExp:{type:Number, required:true, default:0},
 		coinExp:{type:Number, required:true, default:0}
 	},
+	allianceDonate:{
+		wood:{type:Number, required:true, default:1},
+		stone:{type:Number, required:true, default:1},
+		iron:{type:Number, required:true, default:1},
+		food:{type:Number, required:true, default:1},
+		coin:{type:Number, required:true, default:1},
+		gem:{type:Number, required:true, default:1}
+	},
 	vipEvents:[{
 		_id:false,
 		id:{type:String, required:true},

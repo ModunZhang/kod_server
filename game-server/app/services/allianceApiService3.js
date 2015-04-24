@@ -56,8 +56,7 @@ pro.donateToAlliance = function(playerId, donateType, callback){
 		return self.dataService.findAllianceAsync(doc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
-		var donateLevel = LogicUtils.getAllianceMemberDonateLevelByType(playerObject, donateType)
+		var donateLevel = playerDoc.allianceDonate[donateType]
 		var donateConfig = DataUtils.getAllianceDonateConfigByTypeAndLevel(donateType, donateLevel)
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
@@ -67,12 +66,13 @@ pro.donateToAlliance = function(playerId, donateType, callback){
 		playerDoc.resources[donateType] -= donateConfig.count
 		playerDoc.allianceInfo.loyalty += donateConfig.loyalty * (1 + donateConfig.extra)
 		playerData.push(["allianceInfo.loyalty", playerDoc.allianceInfo.loyalty])
+		DataUtils.updatePlayerDonateLevel(playerDoc, playerData, donateType)
+
 		allianceDoc.basicInfo.honour += donateConfig.honour * (1 + donateConfig.extra)
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
+		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		playerObject.loyalty = playerDoc.allianceInfo.loyalty
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".loyalty", playerObject.loyalty])
-		DataUtils.updateAllianceMemberDonateLevel(playerObject, donateType)
-		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".donateStatus." + donateType, playerObject.donateStatus[donateType]])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.DonateToAlliance)
 
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])

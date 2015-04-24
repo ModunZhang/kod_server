@@ -587,30 +587,13 @@ pro.donatelevel = function(uid, donatelevel, callback){
 	var updateFuncs = []
 	var pushFuncs = []
 	var playerDoc = null
-	var allianceDoc = null
-	var allianceData = []
 	this.dataService.findPlayerAsync(uid).then(function(doc){
-		if(!_.isString(doc.allianceId)){
-			return Promise.reject(new Error("玩家未加入联盟"))
-		}
 		playerDoc = doc
-		return self.dataService.findAllianceAsync(playerDoc.allianceId)
-	}).then(function(doc){
-		allianceDoc = doc
-		var docInAlliance = LogicUtils.getAllianceMemberById(allianceDoc, uid)
-		docInAlliance.donateStatus = {
-			wood:donatelevel,
-			stone:donatelevel,
-			iron:donatelevel,
-			food:donatelevel,
-			coin:donatelevel,
-			gem:donatelevel
-		}
-		allianceData.push(["members." + allianceDoc.members.indexOf(docInAlliance), docInAlliance])
-
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, null])
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		_.each(playerDoc.allianceDonate, function(value, key){
+			playerDoc.allianceDonate[key] = donatelevel
+		})
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -622,9 +605,6 @@ pro.donatelevel = function(uid, donatelevel, callback){
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
 		return Promise.all(funcs).then(function(){
 			callback(e)
