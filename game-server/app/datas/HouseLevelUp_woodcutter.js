@@ -12,7 +12,7 @@ woodcutter[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:20,
+	buildTime:15,
 	citizen:10
 }
 woodcutter[2] = {
@@ -24,7 +24,7 @@ woodcutter[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:44,
+	buildTime:45,
 	citizen:16
 }
 woodcutter[3] = {
@@ -36,7 +36,7 @@ woodcutter[3] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:102,
+	buildTime:105,
 	citizen:22
 }
 woodcutter[4] = {
@@ -48,7 +48,7 @@ woodcutter[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:204,
+	buildTime:225,
 	citizen:32
 }
 woodcutter[5] = {
@@ -60,7 +60,7 @@ woodcutter[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:408,
+	buildTime:285,
 	citizen:44
 }
 woodcutter[6] = {

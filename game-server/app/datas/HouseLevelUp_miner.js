@@ -24,7 +24,7 @@ miner[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:50,
+	buildTime:55,
 	citizen:16
 }
 miner[3] = {
@@ -48,7 +48,7 @@ miner[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:228,
+	buildTime:235,
 	citizen:32
 }
 miner[5] = {
@@ -60,7 +60,7 @@ miner[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:456,
+	buildTime:295,
 	citizen:44
 }
 miner[6] = {
