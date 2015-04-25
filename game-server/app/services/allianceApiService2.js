@@ -667,9 +667,9 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			funcs.push(self.dataService.findAllianceAsync(allianceId))
 			funcs.push(self.dataService.findPlayerAsync(inviteEvent.inviterId))
 			return Promise.all(funcs).spread(function(doc_1, doc_2){
+				inviterDoc = doc_2
 				if(!_.isObject(doc_1)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 				allianceDoc = doc_1
-				inviterDoc = doc_2
 				if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
 				return Promise.resolve()
 			})
