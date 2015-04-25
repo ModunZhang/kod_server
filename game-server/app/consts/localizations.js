@@ -59,6 +59,22 @@ module.exports = {
 		AllianceBeAttackedMessage:{
 			cn:"%s 联盟对我方联盟发起了一次联盟战",
 			en:"the %s just start an alliance fight to our alliance"
+		},
+		AllianceTitleBeModifyedTitle:{
+			cn:"您在联盟的职位被调整",
+			en:"这是英文:您在联盟的职位被调整"
+		},
+		AllianceTitleBeModifyedContent:{
+			cn:"您的职位由%s调整为%s",
+			en:"这是英文:您的职位由%s调整为%s"
+		},
+		AllianceKickMemberOffTitle:{
+			cn:"您已被%s联盟踢出",
+			en:"这是英文:您已被%s联盟踢出"
+		},
+		AllianceKickMemberOffContent:{
+			cn:"您已被%s联盟踢出",
+			en:"这是英文:您已被%s联盟踢出"
 		}
 	}
 }
