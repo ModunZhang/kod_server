@@ -3,6 +3,9 @@
 var GameDatas = {}
 module.exports = GameDatas
 
+GameDatas.Localizations = {}
+GameDatas.Localizations.alliance = require("./Localizations_alliance.js")
+
 GameDatas.Activities = {}
 GameDatas.Activities.day60 = require("./Activities_day60.js")
 GameDatas.Activities.online = require("./Activities_online.js")

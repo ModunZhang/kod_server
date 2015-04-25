@@ -17,8 +17,6 @@ var MapUtils = require("../utils/mapUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
-var Localizations = require("../consts/localizations")
-
 
 var AllianceApiService = function(app){
 	this.app = app
@@ -859,8 +857,8 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 		return self.dataService.findPlayerAsync(memberId)
 	}).then(function(doc){
 		memberDoc = doc
-		var titleKey = Localizations.Alliance.AllianceTitleBeModifyedTitle
-		var contentKey = Localizations.Alliance.AllianceTitleBeModifyedContent
+		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedTitle")
+		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedContent")
 		LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [], contentKey, [previousTitleName, currentTitleName])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, memberDoc, memberDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
@@ -948,8 +946,8 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		memberDoc = doc
 		memberDoc.allianceId = null
 		memberData.push(["allianceId", null])
-		var titleKey = Localizations.Alliance.AllianceKickMemberOffTitle
-		var contentKey = Localizations.Alliance.AllianceKickMemberOffContent
+		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceKickMemberOffTitle")
+		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceKickMemberOffContent")
 		LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [allianceDoc.basicInfo.name], contentKey, [allianceDoc.basicInfo.name])
 
 		LogicUtils.returnPlayerMarchTroops(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
@@ -1101,8 +1099,8 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 		return self.dataService.findPlayerAsync(memberId)
 	}).then(function(doc){
 		memberDoc = doc
-		var titleKey = Localizations.Alliance.AllianceTitleBeModifyedTitle
-		var contentKey = Localizations.Alliance.AllianceTitleBeModifyedContent
+		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedTitle")
+		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedContent")
 		LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [], contentKey, [previousTitleName, currentTitleName])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, memberDoc, memberDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])

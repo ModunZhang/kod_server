@@ -15,7 +15,6 @@ var ErrorUtils = require("../utils/errorUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
-var Localizations = require("../consts/localizations")
 
 
 var AllianceApiService2 = function(app){
@@ -694,8 +693,8 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 	}).then(function(){
 		if(!agree) return Promise.resolve()
 
-		var titleKey = Localizations.Alliance.InviteApprovedTitle
-		var contentKey = Localizations.Alliance.InviteApprovedContent
+		var titleKey = DataUtils.getLocalizationConfig("alliance", "InviteApprovedTitle")
+		var contentKey = DataUtils.getLocalizationConfig("alliance", "InviteApprovedContent")
 		LogicUtils.sendSystemMail(inviterDoc, inviterData, titleKey, [], contentKey, [playerDoc.basicInfo.name])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, inviterDoc, inviterData])
 

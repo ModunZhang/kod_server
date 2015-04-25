@@ -44,6 +44,7 @@ var StoreItems = GameDatas.StoreItems
 var GrowUpTasks = GameDatas.GrowUpTasks
 var Vip = GameDatas.Vip
 var PlayerVillageExp = GameDatas.PlayerVillageExp
+var Localizations = GameDatas.Localizations
 
 
 var Utils = module.exports
@@ -3870,4 +3871,14 @@ Utils.createVillageCreateEvent = function(villageName){
 Utils.isAllianceFightWillFinished = function(allianceDoc){
 	var finishInterval = this.getAllianceIntInit("allianceFightWillFinishedMinutes") * 60 * 1000
 	return Date.now() + finishInterval >= allianceDoc.basicInfo.statusFinishTime
+}
+
+/**
+ * 获取服务器本地化配置
+ * @param type
+ * @param key
+ * @returns {*}
+ */
+Utils.getLocalizationConfig = function(type, key){
+	return Localizations[type][key]
 }
