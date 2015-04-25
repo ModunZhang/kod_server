@@ -380,7 +380,7 @@
 //				memberDoc = doc.playerData
 //				Api.loginPlayer(Config.deviceId, function(doc){
 //					doc.code.should.equal(200)
-//					Api.editAllianceMemberTitle(memberDoc._id, "member", function(doc){
+//					Api.editAllianceMemberTitle(memberDoc._id, Consts.AllianceTitle.Elite, function(doc){
 //						doc.code.should.equal(200)
 //						done()
 //					})

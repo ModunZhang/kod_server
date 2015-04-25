@@ -17,6 +17,7 @@ var MapUtils = require("../utils/mapUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
+var Localizations = require("../consts/localizations")
 
 
 var AllianceApiService = function(app){
@@ -814,10 +815,14 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 
 	var self = this
 	var playerDoc = null
+	var memberDoc = null
+	var memberData = []
 	var allianceDoc = null
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
+	var previousTitleName = null
+	var currentTitleName = null
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
@@ -841,13 +846,24 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 		if(afterMemberLevel <= myMemberLevel){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceDoc._id, "editAllianceMemberTitle"))
 		}
-
+		previousTitleName = allianceDoc.titles[memberObject.title]
 		memberObject.title = title
+		currentTitleName = allianceDoc.titles[memberObject.title]
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".title", memberObject.title])
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, promotionType, memberObject.name, [memberObject.title])
 		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		return Promise.resolve()
+	}).then(function(){
+		return self.dataService.findPlayerAsync(memberId)
+	}).then(function(doc){
+		memberDoc = doc
+		var titleKey = Localizations.Alliance.AllianceTitleBeModifyedTitle
+		var contentKey = Localizations.Alliance.AllianceTitleBeModifyedContent
+		LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [], contentKey, [previousTitleName, currentTitleName])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, memberDoc, memberDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -859,6 +875,9 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 		var funcs = []
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
+		}
+		if(_.isObject(memberDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -929,6 +948,9 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		memberDoc = doc
 		memberDoc.allianceId = null
 		memberData.push(["allianceId", null])
+		var titleKey = Localizations.Alliance.AllianceKickMemberOffTitle
+		var contentKey = Localizations.Alliance.AllianceKickMemberOffContent
+		LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [allianceDoc.basicInfo.name], contentKey, [allianceDoc.basicInfo.name])
 
 		LogicUtils.returnPlayerMarchTroops(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 		LogicUtils.returnPlayerMarchReturnTroops(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
@@ -1041,10 +1063,14 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 
 	var self = this
 	var playerDoc = null
+	var memberDoc = null
+	var memberData = []
 	var allianceDoc = null
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
+	var previousTitleName = null
+	var currentTitleName = null
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
@@ -1061,13 +1087,25 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
 		playerObject.title = Consts.AllianceTitle.Member
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".title", playerObject.title])
+		previousTitleName = allianceDoc.titles[memberObject.title]
 		memberObject.title = Consts.AllianceTitle.Archon
+		currentTitleName = allianceDoc.titles[memberObject.title]
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".title", memberObject.title])
 		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.HandOver, memberObject.name, [])
 		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 
+		return Promise.resolve()
+	}).then(function(){
+		return self.dataService.findPlayerAsync(memberId)
+	}).then(function(doc){
+		memberDoc = doc
+		var titleKey = Localizations.Alliance.AllianceTitleBeModifyedTitle
+		var contentKey = Localizations.Alliance.AllianceTitleBeModifyedContent
+		LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [], contentKey, [previousTitleName, currentTitleName])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, memberDoc, memberDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1079,6 +1117,9 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 		var funcs = []
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
+		}
+		if(_.isObject(memberDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
