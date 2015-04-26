@@ -3,12 +3,10 @@
 //TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 var ShortId = require("shortid")
 var pomelo = require("pomelo")
-var redis = require("redis")
 var mongoose = require("mongoose")
 var path = require("path")
 var _ = require("underscore")
 var wsrpc = require("pomelo-rpc-ws")
-var Scripto = require('redis-scripto')
 
 
 var RouteUtils = require("./app/utils/routeUtils")
