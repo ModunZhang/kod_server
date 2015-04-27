@@ -1058,7 +1058,7 @@
 //
 //		it("setApnId 重复设置", function(done){
 //			Api.setApnId("test", function(doc){
-//				doc.code.should.equal(Errors.ApnIdAlreadySeted.code)
+//				doc.code.should.equal(Errors.apnIdAlreadySeted.code)
 //				done()
 //			})
 //		})
