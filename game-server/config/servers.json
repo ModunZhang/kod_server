@@ -96,7 +96,7 @@
     "gate": [
       {
         "id": "gate-server-1",
-        "host": "127.0.0.1",
+        "host": "54.223.172.65",
         "port": 3151,
         "clientPort": 3011,
         "frontend": true
