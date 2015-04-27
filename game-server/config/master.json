@@ -6,7 +6,7 @@
   },
   "production": {
     "id": "master-server-1",
-    "host": "54.223.172.65",
+    "host": "172.31.9.24",
     "port": 3005
   }
 }
