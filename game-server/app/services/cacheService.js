@@ -48,12 +48,39 @@ var OnPlayerTimeout = function(id){
 			}else{
 				self.timeEventService.clearPlayerTimeEventsAsync(player.doc).then(function(){
 					delete self.players[id]
-					self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {playerId:id})
-					UnlockPlayer.call(self, id)
-				}).catch(function(e){
-					delete self.players[id]
+					if(player.ops > 0){
+						delete player.doc._id
+						self.Player.updateAsync({_id:id}, player.doc).then(function(){
+							self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {playerId:id})
+							UnlockPlayer.call(self, id)
+						}).catch(function(e){
+							self.logService.onEventError("cache.cacheService.OnPlayerTimeout", {playerId:id}, e.stack)
+							UnlockPlayer.call(self, id)
+						})
+						player.doc._id = id
+						player.ops = 0
+					}else{
+						self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {playerId:id})
+						UnlockPlayer.call(self, id)
+					}
+				}, function(e){
 					self.logService.onEventError("cache.cacheService.OnPlayerTimeout", {playerId:id}, e.stack)
-					UnlockPlayer.call(self, id)
+					delete self.players[id]
+					if(player.ops > 0){
+						delete player.doc._id
+						self.Player.updateAsync({_id:id}, player.doc).then(function(){
+							self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {playerId:id})
+							UnlockPlayer.call(self, id)
+						}).catch(function(e){
+							self.logService.onEventError("cache.cacheService.OnPlayerTimeout", {playerId:id}, e.stack)
+							UnlockPlayer.call(self, id)
+						})
+						player.doc._id = id
+						player.ops = 0
+					}else{
+						self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {playerId:id})
+						UnlockPlayer.call(self, id)
+					}
 				})
 			}
 		}
@@ -82,8 +109,21 @@ var OnAllianceTimeout = function(id){
 				UnlockAlliance.call(self, id)
 			}else{
 				delete self.alliances[id]
-				self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {allianceId:id})
-				UnlockAlliance.call(self, id)
+				if(alliance.ops > 0){
+					delete alliance.doc._id
+					self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
+						self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {allianceId:id})
+						UnlockAlliance.call(self, id)
+					}).catch(function(e){
+						self.logService.onEventError("cache.cacheService.OnAllianceTimeout", {allianceId:id}, e.stack)
+						UnlockAlliance.call(self, id)
+					})
+					alliance.doc._id = id
+					alliance.ops = 0
+				}else{
+					self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {allianceId:id})
+					UnlockAlliance.call(self, id)
+				}
 			}
 		}
 	})
@@ -622,7 +662,7 @@ pro.timeoutAlliance = function(id, doc, callback){
 	var alliance = this.alliances[id]
 	clearTimeout(alliance.timeout)
 	//clearTimeout(alliance.flush)
-	delete this.alliances[id]
+	delete self.alliances[id]
 	if(_.isObject(doc)){
 		alliance.doc = doc
 		alliance.ops += 1

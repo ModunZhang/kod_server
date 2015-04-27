@@ -260,6 +260,9 @@ pro.playerLogout = function(session, reason, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(allianceDoc, null))
+		}
 		Promise.all(funcs).then(function(){
 			callback(e)
 		})
