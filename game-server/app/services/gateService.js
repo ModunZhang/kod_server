@@ -30,7 +30,7 @@ pro.init = function(){
 				callback()
 			}else{
 				logicServer.userCount = count
-				self.logService.onEvent("gateService.start", {userCount:logicServer.userCount})
+				self.logService.onEvent("gateService.start", {serverId:logicServer.id, userCount:logicServer.userCount})
 				callback()
 			}
 		})
