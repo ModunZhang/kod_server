@@ -93,14 +93,5 @@
     ]
   },
   "production": {
-    "gate": [
-      {
-        "id": "gate-server-1",
-        "host": "172.31.9.24",
-        "port": 3151,
-        "clientPort": 3011,
-        "frontend": true
-      }
-    ]
   }
 }
