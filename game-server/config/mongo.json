@@ -3,6 +3,6 @@
 		"host":"mongodb://127.0.0.1:27017/kod"
 	},
 	"production":{
-		"host":"mongodb://172.31.9.24:27017/kod"
+		"host":"mongodb://127.0.0.1:27017/kod"
 	}
 }
