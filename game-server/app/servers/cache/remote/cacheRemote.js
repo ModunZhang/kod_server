@@ -13,6 +13,7 @@ module.exports = function(app) {
 var CacheRemote = function(app) {
 	this.app = app
 	this.cacheService = app.get("cacheService")
+	this.logService = app.get("logService")
 }
 
 var pro = CacheRemote.prototype
@@ -23,7 +24,14 @@ var pro = CacheRemote.prototype
  * @param callback
  */
 pro.createPlayer = function(doc, callback){
-	this.cacheService.createPlayer(doc, callback)
+	var self = this
+	this.cacheService.createPlayer(doc, function(e, theDoc){
+		try{
+			callback(e, theDoc)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.createPlayer", {id:doc._id, doc:doc}, e.stack)
+		}
+	})
 }
 
 /**
@@ -32,7 +40,13 @@ pro.createPlayer = function(doc, callback){
  * @param callback
  */
 pro.directFindPlayer = function(id, callback){
-	this.cacheService.directFindPlayer(id, callback)
+	this.cacheService.directFindPlayer(id, function(e, doc){
+		try{
+			callback(e, doc)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.directFindPlayer", {id:id}, e.stack)
+		}
+	})
 }
 
 /**
@@ -41,7 +55,13 @@ pro.directFindPlayer = function(id, callback){
  * @param callback
  */
 pro.findPlayer = function(id, callback){
-	this.cacheService.findPlayer(id, callback)
+	this.cacheService.findPlayer(id, function(e, doc){
+		try{
+			callback(e, doc)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.findPlayer", {id:id}, e.stack)
+		}
+	})
 }
 
 /**
@@ -51,7 +71,13 @@ pro.findPlayer = function(id, callback){
  * @param callback
  */
 pro.updatePlayer = function(id, doc, callback){
-	this.cacheService.updatePlayer(id, doc, callback)
+	this.cacheService.updatePlayer(id, doc, function(e){
+		try{
+			callback(e)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.updatePlayer", {id:id, doc:doc}, e.stack)
+		}
+	})
 }
 
 /**
@@ -61,7 +87,13 @@ pro.updatePlayer = function(id, doc, callback){
  * @param callback
  */
 pro.flushPlayer = function(id, doc, callback){
-	this.cacheService.flushPlayer(id, doc, callback)
+	this.cacheService.flushPlayer(id, doc, function(e){
+		try{
+			callback(e)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.flushPlayer", {id:id, doc:doc}, e.stack)
+		}
+	})
 }
 
 /**
@@ -71,7 +103,13 @@ pro.flushPlayer = function(id, doc, callback){
  * @param callback
  */
 pro.timeoutPlayer = function(id, doc, callback){
-	this.cacheService.timeoutPlayer(id, doc, callback)
+	this.cacheService.timeoutPlayer(id, doc, function(e){
+		try{
+			callback(e)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.timeoutPlayer", {id:id, doc:doc}, e.stack)
+		}
+	})
 }
 
 /**
@@ -80,7 +118,13 @@ pro.timeoutPlayer = function(id, doc, callback){
  * @param callback
  */
 pro.createAlliance = function(doc, callback){
-	this.cacheService.createAlliance(doc, callback)
+	this.cacheService.createAlliance(doc, function(e, theDoc){
+		try{
+			callback(e, theDoc)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.createAlliance", {id:doc._id, doc:doc}, e.stack)
+		}
+	})
 }
 
 /**
@@ -89,7 +133,13 @@ pro.createAlliance = function(doc, callback){
  * @param callback
  */
 pro.directFindAlliance = function(id, callback){
-	this.cacheService.directFindAlliance(id, callback)
+	this.cacheService.directFindAlliance(id, function(e, doc){
+		try{
+			callback(e, doc)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.directFindAlliance", {id:id}, e.stack)
+		}
+	})
 }
 
 /**
@@ -98,7 +148,13 @@ pro.directFindAlliance = function(id, callback){
  * @param callback
  */
 pro.findAlliance = function(id, callback){
-	this.cacheService.findAlliance(id, callback)
+	this.cacheService.findAlliance(id, function(e, doc){
+		try{
+			callback(e, doc)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.findAlliance", {id:id}, e.stack)
+		}
+	})
 }
 
 /**
@@ -108,7 +164,13 @@ pro.findAlliance = function(id, callback){
  * @param callback
  */
 pro.updateAlliance = function(id, doc, callback){
-	this.cacheService.updateAlliance(id, doc, callback)
+	this.cacheService.updateAlliance(id, doc, function(e){
+		try{
+			callback(e)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.updateAlliance", {id:id, doc:doc}, e.stack)
+		}
+	})
 }
 
 /**
@@ -118,7 +180,13 @@ pro.updateAlliance = function(id, doc, callback){
  * @param callback
  */
 pro.flushAlliance = function(id, doc, callback){
-	this.cacheService.flushAlliance(id, doc, callback)
+	this.cacheService.flushAlliance(id, doc, function(e){
+		try{
+			callback(e)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.flushAlliance", {id:id, doc:doc}, e.stack)
+		}
+	})
 }
 
 /**
@@ -128,5 +196,11 @@ pro.flushAlliance = function(id, doc, callback){
  * @param callback
  */
 pro.timeoutAlliance = function(id, doc, callback){
-	this.cacheService.timeoutAlliance(id, doc, callback)
+	this.cacheService.timeoutAlliance(id, doc, function(e){
+		try{
+			callback(e)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.timeoutAlliance", {id:id, doc:doc}, e.stack)
+		}
+	})
 }

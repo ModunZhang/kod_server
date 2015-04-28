@@ -57,7 +57,7 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 			return cacheService.timeoutAllPlayersAsync()
 		}).then(function(){
 			logService.onEvent("cache.lifecycle.beforeShutdown persistence data finished", {serverId:app.get("cacheServerId")})
-			callback()
+			setImmediate(callback)
 		}).catch(function(e){
 			logService.onEventError("cache.lifecycle.beforeShutdown", {serverId:app.get("cacheServerId")}, e.stack)
 			callback()
