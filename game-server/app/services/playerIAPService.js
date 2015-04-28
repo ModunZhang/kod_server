@@ -74,7 +74,12 @@ var BillingValidate = function(playerDoc, receiptData, callback){
 	}
 	var request = Https.request(httpOptions, function(response){
 		response.on("data", function(data){
-			var jsonObj = JSON.parse(data.toString())
+			try{
+				var jsonObj = JSON.parse(data.toString())
+			}catch(e){
+				jsonObj = {status:21005, error:e.stack}
+			}
+
 			if(jsonObj.status == 0){
 				callback(null, jsonObj.receipt)
 			}else if(jsonObj.status == 21005){
