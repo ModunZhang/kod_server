@@ -1019,7 +1019,7 @@ Utils.sendSystemMail = function(playerDoc, playerData, titleKey, titleArgs, cont
 		title:title,
 		fromId:"__system",
 		fromName:"__system",
-		fromIcon:"__system",
+		fromIcon:0,
 		fromAllianceTag:"",
 		sendTime:Date.now(),
 		content:content,
