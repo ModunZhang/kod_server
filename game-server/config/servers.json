@@ -119,7 +119,7 @@
         "port": 4152,
         "clientPort": 4012,
         "frontend": true,
-        "usedFor": "cache-server-1"
+        "usedFor": "cache-server-2"
       },
       {
         "id": "logic-server-3",
