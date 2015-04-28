@@ -265,8 +265,8 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 				allianceDoc = doc
 				var funcs = []
 				_.each(allianceDoc.members, function(member){
-					if(!_.isEqual(member._id, playerId)){
-						funcs.push(SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, member._id, rewards.rewardToAllianceMember))
+					if(!_.isEqual(member.id, playerId)){
+						funcs.push(SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, member.id, rewards.rewardToAllianceMember))
 					}
 				})
 				return Promise.all(funcs)
