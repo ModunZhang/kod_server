@@ -117,31 +117,31 @@ buildings[16] = {
 }
 buildings[17] = {
 	location:17,
-	name:"workshop",
-	hasHouse:true,
-	preCondition:"building_academy_1",
-	desc:"车间"
-}
-buildings[18] = {
-	location:18,
 	name:"trainingGround",
 	hasHouse:true,
 	preCondition:"building_academy_1",
 	desc:"训练场"
 }
-buildings[19] = {
-	location:19,
+buildings[18] = {
+	location:18,
 	name:"hunterHall",
 	hasHouse:true,
 	preCondition:"building_academy_1",
 	desc:"猎手大厅"
 }
-buildings[20] = {
-	location:20,
+buildings[19] = {
+	location:19,
 	name:"stable",
 	hasHouse:true,
 	preCondition:"building_academy_1",
 	desc:"马厩"
+}
+buildings[20] = {
+	location:20,
+	name:"workshop",
+	hasHouse:true,
+	preCondition:"building_academy_1",
+	desc:"车间"
 }
 buildings[21] = {
 	location:21,
