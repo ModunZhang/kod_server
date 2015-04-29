@@ -169,9 +169,9 @@
     "rpc-debug": "WARN",
     "crash-log": "WARN",
     "admin-log": "WARN",
-    "pomelo": "WARN",
-    "pomelo-admin": "WARN",
-    "pomelo-rpc": "WARN",
+    "pomelo": "INFO",
+    "pomelo-admin": "INFO",
+    "pomelo-rpc": "INFO",
 
     "kod-request": "DEBUG",
     "kod-request-error": "DEBUG",
