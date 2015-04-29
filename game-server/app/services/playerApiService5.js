@@ -20,6 +20,7 @@ var PlayerApiService5 = function(app){
 	this.env = app.get("env")
 	this.logService = app.get("logService")
 	this.dataService = app.get("dataService")
+	this.GemUse = app.get("GemUse")
 }
 module.exports = PlayerApiService5
 var pro = PlayerApiService5.prototype
@@ -628,7 +629,10 @@ pro.switchServer = function(playerId, serverId, callback){
 	}).then(function(){
 		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService5.switchServer", {playerId:playerId, serverId:serverId}, e.stack)
+		self.logService.onEventError("logic.playerApiService5.switchServer", {
+			playerId:playerId,
+			serverId:serverId
+		}, e.stack)
 	})
 }
 
@@ -652,6 +656,49 @@ pro.setPlayerIcon = function(playerId, icon, callback){
 		playerDoc.basicInfo.icon = icon
 		playerData.push(["basicInfo.icon", playerDoc.basicInfo.icon])
 		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
+ * 解锁玩家第二条队列
+ * @param playerId
+ * @param callback
+ */
+pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(playerDoc.basicInfo.marchQueue >= 2) return Promise.reject(ErrorUtils.playerSecondMarchQueueAlreadyUnlocked(playerId))
+		var gemUsed = DataUtils.getPlayerIntInit("unlockPlayerSecondMarchQueue")
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		playerDoc.resources.gem -= gemUsed
+		playerData.push(["resources.gem", playerDoc.resources.gem])
+		var gemUse = {
+			playerId:playerId,
+			used:gemUsed,
+			left:playerDoc.resources.gem,
+			api:"upgradeBuilding"
+		}
+		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		playerDoc.basicInfo.marchQueue = 2
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		playerData.push(["basicInfo.marchQueue", playerDoc.basicInfo.marchQueue])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){

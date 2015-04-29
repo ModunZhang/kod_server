@@ -1247,3 +1247,18 @@ pro.setPlayerIcon = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 解锁玩家第二条队列
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.unlockPlayerSecondMarchQueue = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.unlockPlayerSecondMarchQueue", {playerId:session.uid, msg:msg})
+	this.playerApiService5.unlockPlayerSecondMarchQueueAsync(session.uid).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}

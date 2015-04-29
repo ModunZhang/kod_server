@@ -652,6 +652,12 @@ Api.setPlayerIcon = function(icon, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.unlockPlayerSecondMarchQueue = function(callback){
+	var route = "logic.playerHandler.unlockPlayerSecondMarchQueue"
+	pomelo.request(route, null, callback)
+}
+
+
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {

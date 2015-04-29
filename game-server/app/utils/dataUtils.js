@@ -1933,9 +1933,8 @@ Utils.getAlliancePerception = function(allianceDoc){
 	var shrine = this.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.Shrine)
 	var config = AllianceBuilding.shrine[shrine.level]
 	var perception = allianceDoc.basicInfo.perception
-	var addPerSecond = config.pRecovery / 60 / 60
-	var totalSeconds = Date.now() - allianceDoc.basicInfo.perceptionRefreshTime
-	var perceptionAdd = Math.floor(addPerSecond * totalSeconds)
+	var totalHours = (Date.now() - allianceDoc.basicInfo.perceptionRefreshTime) / 1000 / 60 / 60
+	var perceptionAdd = Math.floor(config.pRecoveryPerHour * totalHours)
 	return perception + perceptionAdd > config.perception ? config.perception : perception + perceptionAdd
 }
 

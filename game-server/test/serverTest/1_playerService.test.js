@@ -1107,7 +1107,7 @@
 //		it("upgradeMilitaryTech 正常升级1", function(done){
 //			Api.sendChat("keep 15", function(doc){
 //				doc.code.should.equal(200)
-//				Api.sendChat("buildinglevel 18 1", function(doc){
+//				Api.sendChat("buildinglevel 17 1", function(doc){
 //					doc.code.should.equal(200)
 //					Api.upgradeMilitaryTech("infantry_infantry", true, function(doc){
 //						doc.code.should.equal(200)
@@ -1132,7 +1132,7 @@
 //		})
 //
 //		it("upgradeSoldierStar 科技点不足", function(done){
-//			Api.sendChat("buildinglevel 19 1", function(doc){
+//			Api.sendChat("buildinglevel 18 1", function(doc){
 //				doc.code.should.equal(200)
 //				Api.upgradeSoldierStar("ranger", true, function(doc){
 //					doc.code.should.equal(Errors.techPointNotEnough.code)
@@ -1142,7 +1142,7 @@
 //		})
 //
 //		it("upgradeSoldierStar 正常升级", function(done){
-//			Api.sendChat("buildinglevel 19 5", function(doc){
+//			Api.sendChat("buildinglevel 18 5", function(doc){
 //				doc.code.should.equal(200)
 //				Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
 //					doc.code.should.equal(200)
@@ -1747,16 +1747,16 @@
 //		})
 //
 //		it("getGrowUpTaskRewards 还有前置任务奖励未领取", function(done){
-//			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 860, function(doc){
+//			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 742, function(doc){
 //				doc.code.should.equal(Errors.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet.code)
 //				done()
 //			})
 //		})
 //
 //		it("getGrowUpTaskRewards 正常领取", function(done){
-//			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 858, function(doc){
+//			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 741, function(doc){
 //				doc.code.should.equal(200)
-//				Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 859, function(doc){
+//				Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 742, function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})
@@ -1815,6 +1815,13 @@
 //					})
 //				})
 //			}, 100)
+//		})
+//
+//		it("unlockPlayerSecondMarchQueue 正常设置", function(done){
+//			Api.unlockPlayerSecondMarchQueue(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
 //		})
 //	})
 //

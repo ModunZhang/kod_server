@@ -1948,3 +1948,12 @@ Utils.serverTooBusy = function(type, id){
 	var config = Errors.serverTooBusy
 	return CreateError(config, {type:type, id:id})
 }
+
+/**
+ * 玩家第二条队列已经解锁
+ * @param playerId
+ */
+Utils.playerSecondMarchQueueAlreadyUnlocked = function(playerId){
+	var config = Errors.playerSecondMarchQueueAlreadyUnlocked
+	return CreateError(config, {playerId:playerId})
+}

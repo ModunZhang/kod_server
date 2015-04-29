@@ -138,3 +138,8 @@ intInit["specialSoldierRecruitAbleDays"] = {
 	value:256,
 	desc:"特殊兵种在每周几可招募"
 }
+intInit["unlockPlayerSecondMarchQueue"] = {
+	type:"unlockPlayerSecondMarchQueue",
+	value:1000,
+	desc:"解锁第二条队列"
+}
