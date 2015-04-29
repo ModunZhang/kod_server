@@ -11,7 +11,6 @@ crane[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:1200,
-	academyLevel:1,
 	power:40
 }
 crane[2] = {
@@ -22,7 +21,6 @@ crane[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:2400,
-	academyLevel:2,
 	power:110
 }
 crane[3] = {
@@ -33,7 +31,6 @@ crane[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:4800,
-	academyLevel:3,
 	power:280
 }
 crane[4] = {
@@ -44,7 +41,6 @@ crane[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:7200,
-	academyLevel:4,
 	power:510
 }
 crane[5] = {
@@ -55,7 +51,6 @@ crane[5] = {
 	tiles:0,
 	pulley:0,
 	buildTime:14400,
-	academyLevel:5,
 	power:840
 }
 crane[6] = {
@@ -66,7 +61,6 @@ crane[6] = {
 	tiles:0,
 	pulley:5,
 	buildTime:28800,
-	academyLevel:6,
 	power:1260
 }
 crane[7] = {
@@ -77,7 +71,6 @@ crane[7] = {
 	tiles:0,
 	pulley:10,
 	buildTime:43200,
-	academyLevel:7,
 	power:2400
 }
 crane[8] = {
@@ -88,7 +81,6 @@ crane[8] = {
 	tiles:0,
 	pulley:20,
 	buildTime:57600,
-	academyLevel:8,
 	power:3300
 }
 crane[9] = {
@@ -99,7 +91,6 @@ crane[9] = {
 	tiles:0,
 	pulley:40,
 	buildTime:72000,
-	academyLevel:9,
 	power:4340
 }
 crane[10] = {
@@ -110,7 +101,6 @@ crane[10] = {
 	tiles:0,
 	pulley:80,
 	buildTime:86400,
-	academyLevel:10,
 	power:5620
 }
 crane[11] = {
@@ -121,7 +111,6 @@ crane[11] = {
 	tiles:0,
 	pulley:120,
 	buildTime:100800,
-	academyLevel:12,
 	power:7110
 }
 crane[12] = {
@@ -132,7 +121,6 @@ crane[12] = {
 	tiles:0,
 	pulley:240,
 	buildTime:115200,
-	academyLevel:14,
 	power:11030
 }
 crane[13] = {
@@ -143,7 +131,6 @@ crane[13] = {
 	tiles:0,
 	pulley:480,
 	buildTime:129600,
-	academyLevel:16,
 	power:13540
 }
 crane[14] = {
@@ -154,7 +141,6 @@ crane[14] = {
 	tiles:0,
 	pulley:720,
 	buildTime:144000,
-	academyLevel:18,
 	power:16310
 }
 crane[15] = {
@@ -165,6 +151,5 @@ crane[15] = {
 	tiles:0,
 	pulley:960,
 	buildTime:158400,
-	academyLevel:20,
 	power:23040
 }

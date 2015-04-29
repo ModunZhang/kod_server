@@ -593,7 +593,7 @@ pro.revengeAlliance = function(msg, session, next){
 }
 
 /**
- * 获取联盟简单数据
+ * 获取联盟可视化数据
  * @param msg
  * @param session
  * @param next

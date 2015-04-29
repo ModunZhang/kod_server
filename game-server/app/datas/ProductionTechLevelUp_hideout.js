@@ -11,7 +11,6 @@ hideout[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:3660,
-	academyLevel:11,
 	power:60
 }
 hideout[2] = {
@@ -22,7 +21,6 @@ hideout[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:4920,
-	academyLevel:12,
 	power:140
 }
 hideout[3] = {
@@ -33,7 +31,6 @@ hideout[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:7440,
-	academyLevel:13,
 	power:360
 }
 hideout[4] = {
@@ -44,7 +41,6 @@ hideout[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:9960,
-	academyLevel:14,
 	power:670
 }
 hideout[5] = {
@@ -55,7 +51,6 @@ hideout[5] = {
 	tiles:20,
 	pulley:0,
 	buildTime:17520,
-	academyLevel:15,
 	power:1100
 }
 hideout[6] = {
@@ -66,7 +61,6 @@ hideout[6] = {
 	tiles:40,
 	pulley:0,
 	buildTime:32640,
-	academyLevel:16,
 	power:1660
 }
 hideout[7] = {
@@ -77,7 +71,6 @@ hideout[7] = {
 	tiles:80,
 	pulley:0,
 	buildTime:47760,
-	academyLevel:17,
 	power:3140
 }
 hideout[8] = {
@@ -88,7 +81,6 @@ hideout[8] = {
 	tiles:120,
 	pulley:0,
 	buildTime:62880,
-	academyLevel:18,
 	power:4330
 }
 hideout[9] = {
@@ -99,7 +91,6 @@ hideout[9] = {
 	tiles:240,
 	pulley:0,
 	buildTime:78000,
-	academyLevel:19,
 	power:5700
 }
 hideout[10] = {
@@ -110,7 +101,6 @@ hideout[10] = {
 	tiles:480,
 	pulley:0,
 	buildTime:93120,
-	academyLevel:20,
 	power:7380
 }
 hideout[11] = {
@@ -121,7 +111,6 @@ hideout[11] = {
 	tiles:720,
 	pulley:0,
 	buildTime:108240,
-	academyLevel:22,
 	power:9330
 }
 hideout[12] = {
@@ -132,7 +121,6 @@ hideout[12] = {
 	tiles:960,
 	pulley:0,
 	buildTime:123360,
-	academyLevel:24,
 	power:14470
 }
 hideout[13] = {
@@ -143,7 +131,6 @@ hideout[13] = {
 	tiles:1200,
 	pulley:0,
 	buildTime:138480,
-	academyLevel:26,
 	power:17770
 }
 hideout[14] = {
@@ -154,7 +141,6 @@ hideout[14] = {
 	tiles:1440,
 	pulley:0,
 	buildTime:153600,
-	academyLevel:28,
 	power:21400
 }
 hideout[15] = {
@@ -165,6 +151,5 @@ hideout[15] = {
 	tiles:1680,
 	pulley:0,
 	buildTime:168720,
-	academyLevel:30,
 	power:30240
 }

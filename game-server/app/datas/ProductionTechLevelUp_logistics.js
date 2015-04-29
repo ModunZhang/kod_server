@@ -11,7 +11,6 @@ logistics[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:3420,
-	academyLevel:14,
 	power:50
 }
 logistics[2] = {
@@ -22,7 +21,6 @@ logistics[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:4440,
-	academyLevel:15,
 	power:120
 }
 logistics[3] = {
@@ -33,7 +31,6 @@ logistics[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:6480,
-	academyLevel:16,
 	power:300
 }
 logistics[4] = {
@@ -44,7 +41,6 @@ logistics[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:8520,
-	academyLevel:17,
 	power:540
 }
 logistics[5] = {
@@ -55,7 +51,6 @@ logistics[5] = {
 	tiles:0,
 	pulley:20,
 	buildTime:14640,
-	academyLevel:18,
 	power:890
 }
 logistics[6] = {
@@ -66,7 +61,6 @@ logistics[6] = {
 	tiles:0,
 	pulley:40,
 	buildTime:26880,
-	academyLevel:19,
 	power:1340
 }
 logistics[7] = {
@@ -77,7 +71,6 @@ logistics[7] = {
 	tiles:0,
 	pulley:80,
 	buildTime:39120,
-	academyLevel:20,
 	power:2540
 }
 logistics[8] = {
@@ -88,7 +81,6 @@ logistics[8] = {
 	tiles:0,
 	pulley:120,
 	buildTime:51360,
-	academyLevel:21,
 	power:3500
 }
 logistics[9] = {
@@ -99,7 +91,6 @@ logistics[9] = {
 	tiles:0,
 	pulley:240,
 	buildTime:63600,
-	academyLevel:22,
 	power:4620
 }
 logistics[10] = {
@@ -110,7 +101,6 @@ logistics[10] = {
 	tiles:0,
 	pulley:480,
 	buildTime:75840,
-	academyLevel:23,
 	power:5970
 }
 logistics[11] = {
@@ -121,7 +111,6 @@ logistics[11] = {
 	tiles:0,
 	pulley:720,
 	buildTime:88080,
-	academyLevel:25,
 	power:7550
 }
 logistics[12] = {
@@ -132,7 +121,6 @@ logistics[12] = {
 	tiles:0,
 	pulley:960,
 	buildTime:100320,
-	academyLevel:27,
 	power:11720
 }
 logistics[13] = {
@@ -143,7 +131,6 @@ logistics[13] = {
 	tiles:0,
 	pulley:1200,
 	buildTime:112560,
-	academyLevel:29,
 	power:14390
 }
 logistics[14] = {
@@ -154,7 +141,6 @@ logistics[14] = {
 	tiles:0,
 	pulley:1440,
 	buildTime:124800,
-	academyLevel:31,
 	power:17330
 }
 logistics[15] = {
@@ -165,6 +151,5 @@ logistics[15] = {
 	tiles:0,
 	pulley:1680,
 	buildTime:137040,
-	academyLevel:33,
 	power:24480
 }

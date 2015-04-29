@@ -11,7 +11,6 @@ mintedCoin[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:5920,
-	academyLevel:15,
 	power:80
 }
 mintedCoin[2] = {
@@ -22,7 +21,6 @@ mintedCoin[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:7840,
-	academyLevel:16,
 	power:210
 }
 mintedCoin[3] = {
@@ -33,7 +31,6 @@ mintedCoin[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:11680,
-	academyLevel:17,
 	power:550
 }
 mintedCoin[4] = {
@@ -44,7 +41,6 @@ mintedCoin[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:15520,
-	academyLevel:18,
 	power:1020
 }
 mintedCoin[5] = {
@@ -55,7 +51,6 @@ mintedCoin[5] = {
 	tiles:0,
 	pulley:0,
 	buildTime:27040,
-	academyLevel:19,
 	power:1680
 }
 mintedCoin[6] = {
@@ -66,7 +61,6 @@ mintedCoin[6] = {
 	tiles:0,
 	pulley:0,
 	buildTime:50080,
-	academyLevel:20,
 	power:2520
 }
 mintedCoin[7] = {
@@ -77,7 +71,6 @@ mintedCoin[7] = {
 	tiles:0,
 	pulley:0,
 	buildTime:73120,
-	academyLevel:21,
 	power:4790
 }
 mintedCoin[8] = {
@@ -88,7 +81,6 @@ mintedCoin[8] = {
 	tiles:0,
 	pulley:0,
 	buildTime:96160,
-	academyLevel:22,
 	power:6590
 }
 mintedCoin[9] = {
@@ -99,7 +91,6 @@ mintedCoin[9] = {
 	tiles:0,
 	pulley:0,
 	buildTime:119200,
-	academyLevel:23,
 	power:8680
 }
 mintedCoin[10] = {
@@ -110,7 +101,6 @@ mintedCoin[10] = {
 	tiles:0,
 	pulley:0,
 	buildTime:142240,
-	academyLevel:24,
 	power:11240
 }
 mintedCoin[11] = {
@@ -121,7 +111,6 @@ mintedCoin[11] = {
 	tiles:0,
 	pulley:0,
 	buildTime:165280,
-	academyLevel:26,
 	power:14210
 }
 mintedCoin[12] = {
@@ -132,7 +121,6 @@ mintedCoin[12] = {
 	tiles:0,
 	pulley:0,
 	buildTime:188320,
-	academyLevel:28,
 	power:22050
 }
 mintedCoin[13] = {
@@ -143,7 +131,6 @@ mintedCoin[13] = {
 	tiles:0,
 	pulley:0,
 	buildTime:211360,
-	academyLevel:30,
 	power:27080
 }
 mintedCoin[14] = {
@@ -154,7 +141,6 @@ mintedCoin[14] = {
 	tiles:0,
 	pulley:0,
 	buildTime:234400,
-	academyLevel:32,
 	power:32610
 }
 mintedCoin[15] = {
@@ -165,6 +151,5 @@ mintedCoin[15] = {
 	tiles:0,
 	pulley:0,
 	buildTime:257440,
-	academyLevel:34,
 	power:46080
 }

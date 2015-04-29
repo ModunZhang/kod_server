@@ -11,7 +11,6 @@ healingAgent[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:2860,
-	academyLevel:7,
 	power:60
 }
 healingAgent[2] = {
@@ -22,7 +21,6 @@ healingAgent[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:4120,
-	academyLevel:8,
 	power:140
 }
 healingAgent[3] = {
@@ -33,7 +31,6 @@ healingAgent[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:6640,
-	academyLevel:9,
 	power:360
 }
 healingAgent[4] = {
@@ -44,7 +41,6 @@ healingAgent[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:9160,
-	academyLevel:10,
 	power:670
 }
 healingAgent[5] = {
@@ -55,7 +51,6 @@ healingAgent[5] = {
 	tiles:0,
 	pulley:0,
 	buildTime:16720,
-	academyLevel:11,
 	power:1100
 }
 healingAgent[6] = {
@@ -66,7 +61,6 @@ healingAgent[6] = {
 	tiles:0,
 	pulley:0,
 	buildTime:31840,
-	academyLevel:12,
 	power:1660
 }
 healingAgent[7] = {
@@ -77,7 +71,6 @@ healingAgent[7] = {
 	tiles:0,
 	pulley:0,
 	buildTime:46960,
-	academyLevel:13,
 	power:3140
 }
 healingAgent[8] = {
@@ -88,7 +81,6 @@ healingAgent[8] = {
 	tiles:0,
 	pulley:0,
 	buildTime:62080,
-	academyLevel:14,
 	power:4330
 }
 healingAgent[9] = {
@@ -99,7 +91,6 @@ healingAgent[9] = {
 	tiles:0,
 	pulley:0,
 	buildTime:77200,
-	academyLevel:15,
 	power:5700
 }
 healingAgent[10] = {
@@ -110,7 +101,6 @@ healingAgent[10] = {
 	tiles:0,
 	pulley:0,
 	buildTime:92320,
-	academyLevel:16,
 	power:7380
 }
 healingAgent[11] = {
@@ -121,7 +111,6 @@ healingAgent[11] = {
 	tiles:0,
 	pulley:0,
 	buildTime:107440,
-	academyLevel:18,
 	power:9330
 }
 healingAgent[12] = {
@@ -132,7 +121,6 @@ healingAgent[12] = {
 	tiles:0,
 	pulley:0,
 	buildTime:122560,
-	academyLevel:20,
 	power:14470
 }
 healingAgent[13] = {
@@ -143,7 +131,6 @@ healingAgent[13] = {
 	tiles:0,
 	pulley:0,
 	buildTime:137680,
-	academyLevel:22,
 	power:17770
 }
 healingAgent[14] = {
@@ -154,7 +141,6 @@ healingAgent[14] = {
 	tiles:0,
 	pulley:0,
 	buildTime:152800,
-	academyLevel:24,
 	power:21400
 }
 healingAgent[15] = {
@@ -165,6 +151,5 @@ healingAgent[15] = {
 	tiles:0,
 	pulley:0,
 	buildTime:167920,
-	academyLevel:26,
 	power:30240
 }

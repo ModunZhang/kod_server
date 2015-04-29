@@ -11,7 +11,6 @@ sketching[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:2800,
-	academyLevel:9,
 	power:50
 }
 sketching[2] = {
@@ -22,7 +21,6 @@ sketching[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:4000,
-	academyLevel:10,
 	power:140
 }
 sketching[3] = {
@@ -33,7 +31,6 @@ sketching[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:6400,
-	academyLevel:11,
 	power:350
 }
 sketching[4] = {
@@ -44,7 +41,6 @@ sketching[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:8800,
-	academyLevel:12,
 	power:640
 }
 sketching[5] = {
@@ -55,7 +51,6 @@ sketching[5] = {
 	tiles:0,
 	pulley:0,
 	buildTime:16000,
-	academyLevel:13,
 	power:1050
 }
 sketching[6] = {
@@ -66,7 +61,6 @@ sketching[6] = {
 	tiles:0,
 	pulley:0,
 	buildTime:30400,
-	academyLevel:14,
 	power:1580
 }
 sketching[7] = {
@@ -77,7 +71,6 @@ sketching[7] = {
 	tiles:0,
 	pulley:0,
 	buildTime:44800,
-	academyLevel:15,
 	power:2990
 }
 sketching[8] = {
@@ -88,7 +81,6 @@ sketching[8] = {
 	tiles:0,
 	pulley:0,
 	buildTime:59200,
-	academyLevel:16,
 	power:4120
 }
 sketching[9] = {
@@ -99,7 +91,6 @@ sketching[9] = {
 	tiles:0,
 	pulley:0,
 	buildTime:73600,
-	academyLevel:17,
 	power:5430
 }
 sketching[10] = {
@@ -110,7 +101,6 @@ sketching[10] = {
 	tiles:0,
 	pulley:0,
 	buildTime:88000,
-	academyLevel:18,
 	power:7020
 }
 sketching[11] = {
@@ -121,7 +111,6 @@ sketching[11] = {
 	tiles:0,
 	pulley:0,
 	buildTime:102400,
-	academyLevel:20,
 	power:8880
 }
 sketching[12] = {
@@ -132,7 +121,6 @@ sketching[12] = {
 	tiles:0,
 	pulley:0,
 	buildTime:116800,
-	academyLevel:22,
 	power:13780
 }
 sketching[13] = {
@@ -143,7 +131,6 @@ sketching[13] = {
 	tiles:0,
 	pulley:0,
 	buildTime:131200,
-	academyLevel:24,
 	power:16920
 }
 sketching[14] = {
@@ -154,7 +141,6 @@ sketching[14] = {
 	tiles:0,
 	pulley:0,
 	buildTime:145600,
-	academyLevel:26,
 	power:20380
 }
 sketching[15] = {
@@ -165,6 +151,5 @@ sketching[15] = {
 	tiles:0,
 	pulley:0,
 	buildTime:160000,
-	academyLevel:28,
 	power:28800
 }

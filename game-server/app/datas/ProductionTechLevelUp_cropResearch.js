@@ -11,7 +11,6 @@ cropResearch[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:660,
-	academyLevel:4,
 	power:30
 }
 cropResearch[2] = {
@@ -22,7 +21,6 @@ cropResearch[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:1320,
-	academyLevel:5,
 	power:80
 }
 cropResearch[3] = {
@@ -33,7 +31,6 @@ cropResearch[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:2640,
-	academyLevel:6,
 	power:190
 }
 cropResearch[4] = {
@@ -44,7 +41,6 @@ cropResearch[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:3961,
-	academyLevel:7,
 	power:350
 }
 cropResearch[5] = {
@@ -55,7 +51,6 @@ cropResearch[5] = {
 	tiles:0,
 	pulley:0,
 	buildTime:7921,
-	academyLevel:8,
 	power:580
 }
 cropResearch[6] = {
@@ -66,7 +61,6 @@ cropResearch[6] = {
 	tiles:0,
 	pulley:0,
 	buildTime:15841,
-	academyLevel:9,
 	power:870
 }
 cropResearch[7] = {
@@ -77,7 +71,6 @@ cropResearch[7] = {
 	tiles:0,
 	pulley:0,
 	buildTime:23761,
-	academyLevel:10,
 	power:1650
 }
 cropResearch[8] = {
@@ -88,7 +81,6 @@ cropResearch[8] = {
 	tiles:0,
 	pulley:0,
 	buildTime:31681,
-	academyLevel:11,
 	power:2270
 }
 cropResearch[9] = {
@@ -99,7 +91,6 @@ cropResearch[9] = {
 	tiles:0,
 	pulley:0,
 	buildTime:39600,
-	academyLevel:12,
 	power:2990
 }
 cropResearch[10] = {
@@ -110,7 +101,6 @@ cropResearch[10] = {
 	tiles:0,
 	pulley:0,
 	buildTime:47521,
-	academyLevel:13,
 	power:3870
 }
 cropResearch[11] = {
@@ -121,7 +111,6 @@ cropResearch[11] = {
 	tiles:0,
 	pulley:0,
 	buildTime:55441,
-	academyLevel:15,
 	power:4890
 }
 cropResearch[12] = {
@@ -132,7 +121,6 @@ cropResearch[12] = {
 	tiles:0,
 	pulley:0,
 	buildTime:63361,
-	academyLevel:17,
 	power:7580
 }
 cropResearch[13] = {
@@ -143,7 +131,6 @@ cropResearch[13] = {
 	tiles:0,
 	pulley:0,
 	buildTime:71280,
-	academyLevel:19,
 	power:9310
 }
 cropResearch[14] = {
@@ -154,7 +141,6 @@ cropResearch[14] = {
 	tiles:0,
 	pulley:0,
 	buildTime:79200,
-	academyLevel:21,
 	power:11210
 }
 cropResearch[15] = {
@@ -165,6 +151,5 @@ cropResearch[15] = {
 	tiles:0,
 	pulley:0,
 	buildTime:87120,
-	academyLevel:23,
 	power:15840
 }

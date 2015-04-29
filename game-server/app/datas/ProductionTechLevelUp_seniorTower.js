@@ -11,7 +11,6 @@ seniorTower[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:3400,
-	academyLevel:10,
 	power:80
 }
 seniorTower[2] = {
@@ -22,7 +21,6 @@ seniorTower[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:5200,
-	academyLevel:11,
 	power:200
 }
 seniorTower[3] = {
@@ -33,7 +31,6 @@ seniorTower[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:8800,
-	academyLevel:12,
 	power:520
 }
 seniorTower[4] = {
@@ -44,7 +41,6 @@ seniorTower[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:12400,
-	academyLevel:13,
 	power:960
 }
 seniorTower[5] = {
@@ -55,7 +51,6 @@ seniorTower[5] = {
 	tiles:20,
 	pulley:0,
 	buildTime:23200,
-	academyLevel:14,
 	power:1570
 }
 seniorTower[6] = {
@@ -66,7 +61,6 @@ seniorTower[6] = {
 	tiles:40,
 	pulley:0,
 	buildTime:44800,
-	academyLevel:15,
 	power:2370
 }
 seniorTower[7] = {
@@ -77,7 +71,6 @@ seniorTower[7] = {
 	tiles:80,
 	pulley:0,
 	buildTime:66400,
-	academyLevel:16,
 	power:4490
 }
 seniorTower[8] = {
@@ -88,7 +81,6 @@ seniorTower[8] = {
 	tiles:120,
 	pulley:0,
 	buildTime:88000,
-	academyLevel:17,
 	power:6180
 }
 seniorTower[9] = {
@@ -99,7 +91,6 @@ seniorTower[9] = {
 	tiles:240,
 	pulley:0,
 	buildTime:109600,
-	academyLevel:18,
 	power:8140
 }
 seniorTower[10] = {
@@ -110,7 +101,6 @@ seniorTower[10] = {
 	tiles:480,
 	pulley:0,
 	buildTime:131200,
-	academyLevel:19,
 	power:10530
 }
 seniorTower[11] = {
@@ -121,7 +111,6 @@ seniorTower[11] = {
 	tiles:720,
 	pulley:0,
 	buildTime:152800,
-	academyLevel:21,
 	power:13320
 }
 seniorTower[12] = {
@@ -132,7 +121,6 @@ seniorTower[12] = {
 	tiles:960,
 	pulley:0,
 	buildTime:174400,
-	academyLevel:23,
 	power:20670
 }
 seniorTower[13] = {
@@ -143,7 +131,6 @@ seniorTower[13] = {
 	tiles:1200,
 	pulley:0,
 	buildTime:196000,
-	academyLevel:25,
 	power:25380
 }
 seniorTower[14] = {
@@ -154,7 +141,6 @@ seniorTower[14] = {
 	tiles:1440,
 	pulley:0,
 	buildTime:217600,
-	academyLevel:27,
 	power:30570
 }
 seniorTower[15] = {
@@ -165,6 +151,5 @@ seniorTower[15] = {
 	tiles:1680,
 	pulley:0,
 	buildTime:239200,
-	academyLevel:29,
 	power:43200
 }

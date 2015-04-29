@@ -11,7 +11,6 @@ rescueTent[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:2520,
-	academyLevel:8,
 	power:60
 }
 rescueTent[2] = {
@@ -22,7 +21,6 @@ rescueTent[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:3840,
-	academyLevel:9,
 	power:150
 }
 rescueTent[3] = {
@@ -33,7 +31,6 @@ rescueTent[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:6480,
-	academyLevel:10,
 	power:380
 }
 rescueTent[4] = {
@@ -44,7 +41,6 @@ rescueTent[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:9121,
-	academyLevel:11,
 	power:700
 }
 rescueTent[5] = {
@@ -55,7 +51,6 @@ rescueTent[5] = {
 	tiles:0,
 	pulley:0,
 	buildTime:17041,
-	academyLevel:12,
 	power:1150
 }
 rescueTent[6] = {
@@ -66,7 +61,6 @@ rescueTent[6] = {
 	tiles:10,
 	pulley:0,
 	buildTime:32881,
-	academyLevel:13,
 	power:1740
 }
 rescueTent[7] = {
@@ -77,7 +71,6 @@ rescueTent[7] = {
 	tiles:20,
 	pulley:0,
 	buildTime:48721,
-	academyLevel:14,
 	power:3290
 }
 rescueTent[8] = {
@@ -88,7 +81,6 @@ rescueTent[8] = {
 	tiles:40,
 	pulley:0,
 	buildTime:64561,
-	academyLevel:15,
 	power:4530
 }
 rescueTent[9] = {
@@ -99,7 +91,6 @@ rescueTent[9] = {
 	tiles:80,
 	pulley:0,
 	buildTime:80400,
-	academyLevel:16,
 	power:5970
 }
 rescueTent[10] = {
@@ -110,7 +101,6 @@ rescueTent[10] = {
 	tiles:120,
 	pulley:0,
 	buildTime:96241,
-	academyLevel:17,
 	power:7730
 }
 rescueTent[11] = {
@@ -121,7 +111,6 @@ rescueTent[11] = {
 	tiles:240,
 	pulley:0,
 	buildTime:112081,
-	academyLevel:19,
 	power:9770
 }
 rescueTent[12] = {
@@ -132,7 +121,6 @@ rescueTent[12] = {
 	tiles:480,
 	pulley:0,
 	buildTime:127921,
-	academyLevel:21,
 	power:15160
 }
 rescueTent[13] = {
@@ -143,7 +131,6 @@ rescueTent[13] = {
 	tiles:720,
 	pulley:0,
 	buildTime:143760,
-	academyLevel:23,
 	power:18620
 }
 rescueTent[14] = {
@@ -154,7 +141,6 @@ rescueTent[14] = {
 	tiles:960,
 	pulley:0,
 	buildTime:159600,
-	academyLevel:25,
 	power:22420
 }
 rescueTent[15] = {
@@ -165,6 +151,5 @@ rescueTent[15] = {
 	tiles:1200,
 	pulley:0,
 	buildTime:175440,
-	academyLevel:27,
 	power:31680
 }

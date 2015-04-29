@@ -11,7 +11,6 @@ beerSupply[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:1880,
-	academyLevel:5,
 	power:50
 }
 beerSupply[2] = {
@@ -22,7 +21,6 @@ beerSupply[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:2960,
-	academyLevel:6,
 	power:120
 }
 beerSupply[3] = {
@@ -33,7 +31,6 @@ beerSupply[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:5120,
-	academyLevel:7,
 	power:310
 }
 beerSupply[4] = {
@@ -44,7 +41,6 @@ beerSupply[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:7280,
-	academyLevel:8,
 	power:580
 }
 beerSupply[5] = {
@@ -55,7 +51,6 @@ beerSupply[5] = {
 	tiles:0,
 	pulley:0,
 	buildTime:13760,
-	academyLevel:9,
 	power:940
 }
 beerSupply[6] = {
@@ -66,7 +61,6 @@ beerSupply[6] = {
 	tiles:0,
 	pulley:0,
 	buildTime:26720,
-	academyLevel:10,
 	power:1420
 }
 beerSupply[7] = {
@@ -77,7 +71,6 @@ beerSupply[7] = {
 	tiles:0,
 	pulley:0,
 	buildTime:39680,
-	academyLevel:11,
 	power:2690
 }
 beerSupply[8] = {
@@ -88,7 +81,6 @@ beerSupply[8] = {
 	tiles:0,
 	pulley:0,
 	buildTime:52640,
-	academyLevel:12,
 	power:3710
 }
 beerSupply[9] = {
@@ -99,7 +91,6 @@ beerSupply[9] = {
 	tiles:0,
 	pulley:0,
 	buildTime:65600,
-	academyLevel:13,
 	power:4890
 }
 beerSupply[10] = {
@@ -110,7 +101,6 @@ beerSupply[10] = {
 	tiles:0,
 	pulley:0,
 	buildTime:78560,
-	academyLevel:14,
 	power:6320
 }
 beerSupply[11] = {
@@ -121,7 +111,6 @@ beerSupply[11] = {
 	tiles:0,
 	pulley:0,
 	buildTime:91520,
-	academyLevel:16,
 	power:8000
 }
 beerSupply[12] = {
@@ -132,7 +121,6 @@ beerSupply[12] = {
 	tiles:0,
 	pulley:0,
 	buildTime:104480,
-	academyLevel:18,
 	power:12400
 }
 beerSupply[13] = {
@@ -143,7 +131,6 @@ beerSupply[13] = {
 	tiles:0,
 	pulley:0,
 	buildTime:117440,
-	academyLevel:20,
 	power:15230
 }
 beerSupply[14] = {
@@ -154,7 +141,6 @@ beerSupply[14] = {
 	tiles:0,
 	pulley:0,
 	buildTime:130400,
-	academyLevel:22,
 	power:18340
 }
 beerSupply[15] = {
@@ -165,6 +151,5 @@ beerSupply[15] = {
 	tiles:0,
 	pulley:0,
 	buildTime:143360,
-	academyLevel:24,
 	power:25920
 }

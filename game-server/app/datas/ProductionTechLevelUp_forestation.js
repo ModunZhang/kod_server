@@ -11,7 +11,6 @@ forestation[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:720,
-	academyLevel:1,
 	power:30
 }
 forestation[2] = {
@@ -22,7 +21,6 @@ forestation[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:1440,
-	academyLevel:2,
 	power:80
 }
 forestation[3] = {
@@ -33,7 +31,6 @@ forestation[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:2880,
-	academyLevel:3,
 	power:210
 }
 forestation[4] = {
@@ -44,7 +41,6 @@ forestation[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:4320,
-	academyLevel:4,
 	power:390
 }
 forestation[5] = {
@@ -55,7 +51,6 @@ forestation[5] = {
 	tiles:0,
 	pulley:0,
 	buildTime:8640,
-	academyLevel:5,
 	power:630
 }
 forestation[6] = {
@@ -66,7 +61,6 @@ forestation[6] = {
 	tiles:0,
 	pulley:0,
 	buildTime:17280,
-	academyLevel:6,
 	power:950
 }
 forestation[7] = {
@@ -77,7 +71,6 @@ forestation[7] = {
 	tiles:0,
 	pulley:0,
 	buildTime:25920,
-	academyLevel:7,
 	power:1800
 }
 forestation[8] = {
@@ -88,7 +81,6 @@ forestation[8] = {
 	tiles:0,
 	pulley:0,
 	buildTime:34560,
-	academyLevel:8,
 	power:2470
 }
 forestation[9] = {
@@ -99,7 +91,6 @@ forestation[9] = {
 	tiles:0,
 	pulley:0,
 	buildTime:43200,
-	academyLevel:9,
 	power:3260
 }
 forestation[10] = {
@@ -110,7 +101,6 @@ forestation[10] = {
 	tiles:0,
 	pulley:0,
 	buildTime:51840,
-	academyLevel:10,
 	power:4220
 }
 forestation[11] = {
@@ -121,7 +111,6 @@ forestation[11] = {
 	tiles:0,
 	pulley:0,
 	buildTime:60480,
-	academyLevel:12,
 	power:5330
 }
 forestation[12] = {
@@ -132,7 +121,6 @@ forestation[12] = {
 	tiles:0,
 	pulley:0,
 	buildTime:69120,
-	academyLevel:14,
 	power:8270
 }
 forestation[13] = {
@@ -143,7 +131,6 @@ forestation[13] = {
 	tiles:0,
 	pulley:0,
 	buildTime:77760,
-	academyLevel:16,
 	power:10160
 }
 forestation[14] = {
@@ -154,7 +141,6 @@ forestation[14] = {
 	tiles:0,
 	pulley:0,
 	buildTime:86400,
-	academyLevel:18,
 	power:12230
 }
 forestation[15] = {
@@ -165,6 +151,5 @@ forestation[15] = {
 	tiles:0,
 	pulley:0,
 	buildTime:95040,
-	academyLevel:20,
 	power:17280
 }

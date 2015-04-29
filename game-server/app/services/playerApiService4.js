@@ -61,7 +61,6 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		playerDoc = doc
 		tech = playerDoc.productionTechs[techName]
 		if(tech.index > 9) return Promise.reject(new Error("此科技还未开放"))
-		if(playerDoc.buildings.location_7.level <= 0) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, 7))
 		if(DataUtils.isProductionTechReachMaxLevel(tech.level)) return Promise.reject(ErrorUtils.techReachMaxLevel(playerId, techName, tech))
 		if(tech.level == 0 && !DataUtils.isPlayerUnlockProductionTechLegal(playerDoc, techName)) return Promise.reject(ErrorUtils.techUpgradePreConditionNotMatch(playerId, techName, tech))
 		return Promise.resolve()

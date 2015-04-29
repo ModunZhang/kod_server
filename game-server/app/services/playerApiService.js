@@ -146,10 +146,7 @@ pro.playerLogin = function(session, deviceId, callback){
 		playerDoc.countInfo.lastLoginTime = Date.now()
 		playerDoc.countInfo.loginCount += 1
 		playerDoc.logicServerId = self.logicServerId
-		DataUtils.refreshPlayerResources(playerDoc)
-		DataUtils.refreshPlayerPower(playerDoc, [])
-		TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, [])
-		DataUtils.refreshPlayerDragonsHp(playerDoc)
+
 		return Promise.resolve()
 	}).then(function(){
 		if(_.isString(playerDoc.allianceId)){

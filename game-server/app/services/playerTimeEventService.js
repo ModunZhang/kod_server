@@ -83,6 +83,8 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 	var building = null
 
 	DataUtils.refreshPlayerResources(playerDoc)
+	playerData.push(["resources", playerDoc.resources])
+
 	if(_.isEqual(eventType, "buildingEvents")){
 		event = LogicUtils.getEventById(playerDoc.buildingEvents, eventId)
 		playerData.push(["buildingEvents." + playerDoc.buildingEvents.indexOf(event), null])
@@ -198,5 +200,4 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 
 	DataUtils.refreshPlayerPower(playerDoc, playerData)
 	TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
-	playerData.push(["resources", playerDoc.resources])
 }

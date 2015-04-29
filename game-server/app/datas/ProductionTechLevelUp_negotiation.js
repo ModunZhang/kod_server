@@ -11,7 +11,6 @@ negotiation[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:4700,
-	academyLevel:16,
 	power:70
 }
 negotiation[2] = {
@@ -22,7 +21,6 @@ negotiation[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:6200,
-	academyLevel:17,
 	power:170
 }
 negotiation[3] = {
@@ -33,7 +31,6 @@ negotiation[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:9200,
-	academyLevel:18,
 	power:430
 }
 negotiation[4] = {
@@ -44,7 +41,6 @@ negotiation[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:12200,
-	academyLevel:19,
 	power:800
 }
 negotiation[5] = {
@@ -55,7 +51,6 @@ negotiation[5] = {
 	tiles:0,
 	pulley:0,
 	buildTime:21200,
-	academyLevel:20,
 	power:1310
 }
 negotiation[6] = {
@@ -66,7 +61,6 @@ negotiation[6] = {
 	tiles:0,
 	pulley:0,
 	buildTime:39200,
-	academyLevel:21,
 	power:1970
 }
 negotiation[7] = {
@@ -77,7 +71,6 @@ negotiation[7] = {
 	tiles:0,
 	pulley:0,
 	buildTime:57200,
-	academyLevel:22,
 	power:3740
 }
 negotiation[8] = {
@@ -88,7 +81,6 @@ negotiation[8] = {
 	tiles:0,
 	pulley:0,
 	buildTime:75200,
-	academyLevel:23,
 	power:5150
 }
 negotiation[9] = {
@@ -99,7 +91,6 @@ negotiation[9] = {
 	tiles:0,
 	pulley:0,
 	buildTime:93200,
-	academyLevel:24,
 	power:6780
 }
 negotiation[10] = {
@@ -110,7 +101,6 @@ negotiation[10] = {
 	tiles:0,
 	pulley:0,
 	buildTime:111200,
-	academyLevel:25,
 	power:8780
 }
 negotiation[11] = {
@@ -121,7 +111,6 @@ negotiation[11] = {
 	tiles:0,
 	pulley:0,
 	buildTime:129200,
-	academyLevel:27,
 	power:11100
 }
 negotiation[12] = {
@@ -132,7 +121,6 @@ negotiation[12] = {
 	tiles:0,
 	pulley:0,
 	buildTime:147200,
-	academyLevel:29,
 	power:17230
 }
 negotiation[13] = {
@@ -143,7 +131,6 @@ negotiation[13] = {
 	tiles:0,
 	pulley:0,
 	buildTime:165200,
-	academyLevel:31,
 	power:21150
 }
 negotiation[14] = {
@@ -154,7 +141,6 @@ negotiation[14] = {
 	tiles:0,
 	pulley:0,
 	buildTime:183200,
-	academyLevel:33,
 	power:25480
 }
 negotiation[15] = {
@@ -165,6 +151,5 @@ negotiation[15] = {
 	tiles:0,
 	pulley:0,
 	buildTime:201200,
-	academyLevel:35,
 	power:36000
 }

@@ -473,8 +473,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dailyQuestEvents", event.id, event.finishTime - now))
 		}
 	})
-	DataUtils.refreshPlayerPower(playerDoc, [])
-
 	Promise.all(funcs).then(function(){
 		callback()
 	}).catch(function(e){

@@ -890,7 +890,8 @@ Utils.refreshPlayerPower = function(playerDoc, playerData){
 	var buildingPower = this.getPlayerBuildingsPower(playerDoc)
 	var housePower = this.getPlayerHousesPower(playerDoc)
 	var soldierPower = this.getPlayerSoldiersPower(playerDoc)
-	var totalPower = buildingPower + housePower + soldierPower
+	var techPower = this.getPlayerTechsPower(playerDoc)
+	var totalPower = buildingPower + housePower + soldierPower + techPower
 
 	playerDoc.basicInfo.power = totalPower
 	playerData.push(["basicInfo.power", playerDoc.basicInfo.power])
@@ -945,6 +946,23 @@ Utils.getPlayerSoldiersPower = function(playerDoc){
 		totalPower += config.power * soldierCount
 	})
 
+	return totalPower
+}
+
+/**
+ * 获取玩家科技战斗力
+ * @param playerDoc
+ */
+Utils.getPlayerTechsPower = function(playerDoc){
+	var totalPower = 0
+	_.each(playerDoc.productionTechs, function(tech, name){
+		if(tech.level > 0)
+			totalPower += ProductionTechLevelUp[name][tech.level].power
+	})
+	_.each(playerDoc.militaryTechs, function(tech, name){
+		if(tech.level > 0)
+			totalPower += MilitaryTechLevelUp[name][tech.level].power
+	})
 	return totalPower
 }
 
@@ -2998,12 +3016,13 @@ Utils.isProductionTechNameLegal = function(techName){
  * @returns {boolean}
  */
 Utils.isPlayerUnlockProductionTechLegal = function(playerDoc, techName){
+	var buildingLevel = playerDoc.buildings.location_7.level
 	var techConfig = ProductionTechs.productionTechs[techName]
 	var preTechConfig = _.find(ProductionTechs.productionTechs, function(theTech){
 		return theTech.index == techConfig.unlockBy
 	})
 	var preTech = playerDoc.productionTechs[preTechConfig.name]
-	return preTech.level >= techConfig.unlockLevel
+	return preTech.level >= techConfig.unlockLevel && buildingLevel >= techConfig.academyLevel
 }
 
 /**

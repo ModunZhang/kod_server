@@ -11,7 +11,6 @@ colonization[1] = {
 	tiles:10,
 	pulley:0,
 	buildTime:3840,
-	academyLevel:13,
 	power:60
 }
 colonization[2] = {
@@ -22,7 +21,6 @@ colonization[2] = {
 	tiles:20,
 	pulley:0,
 	buildTime:5280,
-	academyLevel:14,
 	power:160
 }
 colonization[3] = {
@@ -33,7 +31,6 @@ colonization[3] = {
 	tiles:40,
 	pulley:0,
 	buildTime:8160,
-	academyLevel:15,
 	power:420
 }
 colonization[4] = {
@@ -44,7 +41,6 @@ colonization[4] = {
 	tiles:80,
 	pulley:0,
 	buildTime:11040,
-	academyLevel:16,
 	power:770
 }
 colonization[5] = {
@@ -55,7 +51,6 @@ colonization[5] = {
 	tiles:120,
 	pulley:0,
 	buildTime:19680,
-	academyLevel:17,
 	power:1260
 }
 colonization[6] = {
@@ -66,7 +61,6 @@ colonization[6] = {
 	tiles:240,
 	pulley:0,
 	buildTime:36960,
-	academyLevel:18,
 	power:1890
 }
 colonization[7] = {
@@ -77,7 +71,6 @@ colonization[7] = {
 	tiles:480,
 	pulley:0,
 	buildTime:54240,
-	academyLevel:19,
 	power:3590
 }
 colonization[8] = {
@@ -88,7 +81,6 @@ colonization[8] = {
 	tiles:720,
 	pulley:0,
 	buildTime:71520,
-	academyLevel:20,
 	power:4940
 }
 colonization[9] = {
@@ -99,7 +91,6 @@ colonization[9] = {
 	tiles:960,
 	pulley:0,
 	buildTime:88800,
-	academyLevel:21,
 	power:6510
 }
 colonization[10] = {
@@ -110,7 +101,6 @@ colonization[10] = {
 	tiles:1200,
 	pulley:0,
 	buildTime:106080,
-	academyLevel:22,
 	power:8430
 }
 colonization[11] = {
@@ -121,7 +111,6 @@ colonization[11] = {
 	tiles:1440,
 	pulley:0,
 	buildTime:123360,
-	academyLevel:24,
 	power:10660
 }
 colonization[12] = {
@@ -132,7 +121,6 @@ colonization[12] = {
 	tiles:1680,
 	pulley:0,
 	buildTime:140640,
-	academyLevel:26,
 	power:16540
 }
 colonization[13] = {
@@ -143,7 +131,6 @@ colonization[13] = {
 	tiles:1920,
 	pulley:0,
 	buildTime:157920,
-	academyLevel:28,
 	power:20310
 }
 colonization[14] = {
@@ -154,7 +141,6 @@ colonization[14] = {
 	tiles:2160,
 	pulley:0,
 	buildTime:175200,
-	academyLevel:30,
 	power:24460
 }
 colonization[15] = {
@@ -165,6 +151,5 @@ colonization[15] = {
 	tiles:2400,
 	pulley:0,
 	buildTime:192480,
-	academyLevel:32,
 	power:34560
 }

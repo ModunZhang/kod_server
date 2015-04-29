@@ -11,7 +11,6 @@ reinforcing[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:2760,
-	academyLevel:6,
 	power:70
 }
 reinforcing[2] = {
@@ -22,7 +21,6 @@ reinforcing[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:4320,
-	academyLevel:7,
 	power:170
 }
 reinforcing[3] = {
@@ -33,7 +31,6 @@ reinforcing[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:7440,
-	academyLevel:8,
 	power:450
 }
 reinforcing[4] = {
@@ -44,7 +41,6 @@ reinforcing[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:10560,
-	academyLevel:9,
 	power:830
 }
 reinforcing[5] = {
@@ -55,7 +51,6 @@ reinforcing[5] = {
 	tiles:0,
 	pulley:0,
 	buildTime:19920,
-	academyLevel:10,
 	power:1360
 }
 reinforcing[6] = {
@@ -66,7 +61,6 @@ reinforcing[6] = {
 	tiles:0,
 	pulley:0,
 	buildTime:38640,
-	academyLevel:11,
 	power:2050
 }
 reinforcing[7] = {
@@ -77,7 +71,6 @@ reinforcing[7] = {
 	tiles:0,
 	pulley:0,
 	buildTime:57360,
-	academyLevel:12,
 	power:3890
 }
 reinforcing[8] = {
@@ -88,7 +81,6 @@ reinforcing[8] = {
 	tiles:0,
 	pulley:0,
 	buildTime:76080,
-	academyLevel:13,
 	power:5360
 }
 reinforcing[9] = {
@@ -99,7 +91,6 @@ reinforcing[9] = {
 	tiles:0,
 	pulley:0,
 	buildTime:94800,
-	academyLevel:14,
 	power:7060
 }
 reinforcing[10] = {
@@ -110,7 +101,6 @@ reinforcing[10] = {
 	tiles:0,
 	pulley:0,
 	buildTime:113520,
-	academyLevel:15,
 	power:9130
 }
 reinforcing[11] = {
@@ -121,7 +111,6 @@ reinforcing[11] = {
 	tiles:0,
 	pulley:0,
 	buildTime:132240,
-	academyLevel:17,
 	power:11550
 }
 reinforcing[12] = {
@@ -132,7 +121,6 @@ reinforcing[12] = {
 	tiles:0,
 	pulley:0,
 	buildTime:150960,
-	academyLevel:19,
 	power:17920
 }
 reinforcing[13] = {
@@ -143,7 +131,6 @@ reinforcing[13] = {
 	tiles:0,
 	pulley:0,
 	buildTime:169680,
-	academyLevel:21,
 	power:22000
 }
 reinforcing[14] = {
@@ -154,7 +141,6 @@ reinforcing[14] = {
 	tiles:0,
 	pulley:0,
 	buildTime:188400,
-	academyLevel:23,
 	power:26500
 }
 reinforcing[15] = {
@@ -165,6 +151,5 @@ reinforcing[15] = {
 	tiles:0,
 	pulley:0,
 	buildTime:207120,
-	academyLevel:25,
 	power:37440
 }

@@ -11,7 +11,6 @@ trap[1] = {
 	tiles:0,
 	pulley:0,
 	buildTime:3380,
-	academyLevel:12,
 	power:60
 }
 trap[2] = {
@@ -22,7 +21,6 @@ trap[2] = {
 	tiles:0,
 	pulley:0,
 	buildTime:4760,
-	academyLevel:13,
 	power:160
 }
 trap[3] = {
@@ -33,7 +31,6 @@ trap[3] = {
 	tiles:0,
 	pulley:0,
 	buildTime:7520,
-	academyLevel:14,
 	power:400
 }
 trap[4] = {
@@ -44,7 +41,6 @@ trap[4] = {
 	tiles:0,
 	pulley:0,
 	buildTime:10280,
-	academyLevel:15,
 	power:730
 }
 trap[5] = {
@@ -55,7 +51,6 @@ trap[5] = {
 	tiles:0,
 	pulley:0,
 	buildTime:18560,
-	academyLevel:16,
 	power:1210
 }
 trap[6] = {
@@ -66,7 +61,6 @@ trap[6] = {
 	tiles:0,
 	pulley:0,
 	buildTime:35120,
-	academyLevel:17,
 	power:1820
 }
 trap[7] = {
@@ -77,7 +71,6 @@ trap[7] = {
 	tiles:0,
 	pulley:0,
 	buildTime:51680,
-	academyLevel:18,
 	power:3440
 }
 trap[8] = {
@@ -88,7 +81,6 @@ trap[8] = {
 	tiles:0,
 	pulley:0,
 	buildTime:68240,
-	academyLevel:19,
 	power:4740
 }
 trap[9] = {
@@ -99,7 +91,6 @@ trap[9] = {
 	tiles:0,
 	pulley:0,
 	buildTime:84800,
-	academyLevel:20,
 	power:6240
 }
 trap[10] = {
@@ -110,7 +101,6 @@ trap[10] = {
 	tiles:0,
 	pulley:0,
 	buildTime:101360,
-	academyLevel:21,
 	power:8080
 }
 trap[11] = {
@@ -121,7 +111,6 @@ trap[11] = {
 	tiles:0,
 	pulley:0,
 	buildTime:117920,
-	academyLevel:23,
 	power:10220
 }
 trap[12] = {
@@ -132,7 +121,6 @@ trap[12] = {
 	tiles:0,
 	pulley:0,
 	buildTime:134480,
-	academyLevel:25,
 	power:15850
 }
 trap[13] = {
@@ -143,7 +131,6 @@ trap[13] = {
 	tiles:0,
 	pulley:0,
 	buildTime:151040,
-	academyLevel:27,
 	power:19460
 }
 trap[14] = {
@@ -154,7 +141,6 @@ trap[14] = {
 	tiles:0,
 	pulley:0,
 	buildTime:167600,
-	academyLevel:29,
 	power:23440
 }
 trap[15] = {
@@ -165,6 +151,5 @@ trap[15] = {
 	tiles:0,
 	pulley:0,
 	buildTime:184160,
-	academyLevel:31,
 	power:33120
 }
