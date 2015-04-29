@@ -52,10 +52,15 @@ pro.directFindPlayer = function(id, callback){
 /**
  * 按Id查询玩家
  * @param id
+ * @param force
  * @param callback
  */
-pro.findPlayer = function(id, callback){
-	this.cacheService.findPlayer(id, function(e, doc){
+pro.findPlayer = function(id, force, callback){
+	if(arguments.length == 2){
+		callback = force
+		force = false
+	}
+	this.cacheService.findPlayer(id, force, function(e, doc){
 		try{
 			callback(e, doc)
 		}catch(e){
@@ -145,10 +150,15 @@ pro.directFindAlliance = function(id, callback){
 /**
  * 按Id查询联盟
  * @param id
+ * @param force
  * @param callback
  */
-pro.findAlliance = function(id, callback){
-	this.cacheService.findAlliance(id, function(e, doc){
+pro.findAlliance = function(id, force, callback){
+	if(arguments.length == 2){
+		callback = force
+		force = false
+	}
+	this.cacheService.findAlliance(id, force, function(e, doc){
 		try{
 			callback(e, doc)
 		}catch(e){

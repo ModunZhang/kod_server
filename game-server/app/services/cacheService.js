@@ -21,11 +21,11 @@ var DataService = function(app){
 	this.alliances = {}
 	this.alliancesQueue = {}
 	this.maxPlayerQueue = 5
-	this.maxAllianceQueue = 10
+	this.maxAllianceQueue = 5
 	this.flushOps = 10
 	this.timeoutInterval = 10 * 60 * 1000
 	this.lockCheckInterval = 5 * 1000
-	this.lockInterval = 20 * 1000
+	this.lockInterval = 10 * 1000
 
 	setInterval(OnLockCheckInterval.bind(this), this.lockCheckInterval)
 }
@@ -185,6 +185,9 @@ var UnlockPlayer = function(id){
 	}else{
 		playerQueue.shift()
 		if(playerQueue.length > 0){
+			_.each(playerQueue, function(queue){
+				queue.time = Date.now()
+			})
 			process.nextTick(playerQueue[0].func)
 		}else{
 			delete this.playersQueue[id]
@@ -204,6 +207,9 @@ var UnlockAlliance = function(id){
 	}else{
 		allianceQueue.shift()
 		if(allianceQueue.length > 0){
+			_.each(allianceQueue, function(queue){
+				queue.time = Date.now()
+			})
 			process.nextTick(allianceQueue[0].func)
 		}else{
 			delete this.alliancesQueue[id]
@@ -346,11 +352,12 @@ pro.directFindAlliance = function(id, callback){
 /**
  * 按Id查询玩家
  * @param id
+ * @param force
  * @param callback
  */
-pro.findPlayer = function(id, callback){
+pro.findPlayer = function(id, force, callback){
 	var self = this
-	if(_.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
+	if(!force && _.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
 		callback(new Error("服务器繁忙"))
 		return
 	}
@@ -389,11 +396,12 @@ pro.findPlayer = function(id, callback){
 /**
  * 按Id查询联盟
  * @param id
+ * @param force
  * @param callback
  */
-pro.findAlliance = function(id, callback){
+pro.findAlliance = function(id, force, callback){
 	var self = this
-	if(_.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
+	if(!force && _.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
 		callback(new Error("服务器繁忙"))
 		return
 	}

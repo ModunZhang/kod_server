@@ -60,10 +60,15 @@ pro.directFindPlayer = function(id, callback){
 /**
  * 按Id查询玩家
  * @param id
+ * @param force
  * @param callback
  */
-pro.findPlayer = function(id, callback){
-	this.app.rpc.cache.cacheRemote.findPlayer.toServer(this.cacheServerId, id, callback)
+pro.findPlayer = function(id, force, callback){
+	if(arguments.length == 2){
+		callback = force
+		force = false
+	}
+	this.app.rpc.cache.cacheRemote.findPlayer.toServer(this.cacheServerId, id, force, callback)
 }
 
 /**
@@ -117,10 +122,15 @@ pro.directFindAlliance = function(id, callback){
 /**
  * 按Id查询联盟
  * @param id
+ * @param force
  * @param callback
  */
-pro.findAlliance = function(id, callback){
-	this.app.rpc.cache.cacheRemote.findAlliance.toServer(this.cacheServerId, id, callback)
+pro.findAlliance = function(id, force, callback){
+	if(arguments.length == 2){
+		callback = force
+		force = false
+	}
+	this.app.rpc.cache.cacheRemote.findAlliance.toServer(this.cacheServerId, id, force, callback)
 }
 
 /**

@@ -223,14 +223,14 @@ pro.playerLogout = function(session, reason, callback){
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, true).then(function(doc){
 		playerDoc = doc
 		return self.dataService.removePlayerFromChannelsAsync(playerDoc)
 	}).then(function(){
 		playerDoc.logicServerId = null
 		playerDoc.countInfo.todayOnLineTime += Date.now() - playerDoc.countInfo.lastLoginTime
 		if(_.isString(playerDoc.allianceId))
-			return self.dataService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+			return self.dataService.findAllianceAsync(playerDoc.allianceId, true).then(function(doc){
 				allianceDoc = doc
 				LogicUtils.updatePlayerPropertyInAlliance(playerDoc, false, allianceDoc, allianceData)
 				LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
