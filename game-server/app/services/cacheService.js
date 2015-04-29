@@ -20,10 +20,12 @@ var DataService = function(app){
 	this.playersQueue = {}
 	this.alliances = {}
 	this.alliancesQueue = {}
+	this.maxPlayerQueue = 5
+	this.maxAllianceQueue = 10
 	this.flushOps = 10
 	this.timeoutInterval = 10 * 60 * 1000
 	this.lockCheckInterval = 5 * 1000
-	this.lockInterval = 5 * 1000
+	this.lockInterval = 20 * 1000
 
 	setInterval(OnLockCheckInterval.bind(this), this.lockCheckInterval)
 }
@@ -177,8 +179,8 @@ var LockAlliance = function(id, func){
  */
 var UnlockPlayer = function(id){
 	var playerQueue = this.playersQueue[id]
-	if(playerQueue.length == 0){
-		var e = new Error("请求队列为空")
+	if(!_.isArray(playerQueue) || playerQueue.length == 0){
+		var e = new Error("请求队列不存在或为空")
 		this.logService.onEventError("cache.cacheService.UnlockPlayer", {id:id}, e.stack)
 	}else{
 		playerQueue.shift()
@@ -196,8 +198,8 @@ var UnlockPlayer = function(id){
  */
 var UnlockAlliance = function(id){
 	var allianceQueue = this.alliancesQueue[id]
-	if(allianceQueue.length == 0){
-		var e = new Error("请求队列为空")
+	if(!_.isArray(allianceQueue) || allianceQueue.length == 0){
+		var e = new Error("请求队列不存在为空")
 		this.logService.onEventError("cache.cacheService.UnlockAlliance", {id:id}, e.stack)
 	}else{
 		allianceQueue.shift()
@@ -264,6 +266,10 @@ pro.createAlliance = function(allianceData, callback){
  */
 pro.directFindPlayer = function(id, callback){
 	var self = this
+	if(_.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
+		callback(new Error("服务器繁忙"))
+		return
+	}
 	LockPlayer.call(this, id, function(){
 		var player = self.players[id]
 		if(_.isObject(player)){
@@ -302,6 +308,10 @@ pro.directFindPlayer = function(id, callback){
  */
 pro.directFindAlliance = function(id, callback){
 	var self = this
+	if(_.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
+		callback(new Error("服务器繁忙"))
+		return
+	}
 	LockAlliance.call(this, id, function(){
 		var alliance = self.alliances[id]
 		if(_.isObject(alliance)){
@@ -340,6 +350,10 @@ pro.directFindAlliance = function(id, callback){
  */
 pro.findPlayer = function(id, callback){
 	var self = this
+	if(_.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
+		callback(new Error("服务器繁忙"))
+		return
+	}
 	LockPlayer.call(this, id, function(){
 		var player = self.players[id]
 		if(_.isObject(player)){
@@ -379,6 +393,10 @@ pro.findPlayer = function(id, callback){
  */
 pro.findAlliance = function(id, callback){
 	var self = this
+	if(_.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
+		callback(new Error("服务器繁忙"))
+		return
+	}
 	LockAlliance.call(this, id, function(){
 		var alliance = self.alliances[id]
 		if(_.isObject(alliance)){
