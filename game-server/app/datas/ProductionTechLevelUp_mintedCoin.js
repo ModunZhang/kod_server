@@ -5,136 +5,166 @@ module.exports = mintedCoin
 
 mintedCoin[1] = {
 	level:1,
-	coin:832,
+	coin:3960,
 	blueprints:0,
 	tools:10,
 	tiles:0,
 	pulley:0,
-	buildTime:2756
+	buildTime:5920,
+	academyLevel:15,
+	power:80
 }
 mintedCoin[2] = {
 	level:2,
-	coin:2193,
+	coin:10440,
 	blueprints:0,
 	tools:20,
 	tiles:0,
 	pulley:0,
-	buildTime:3512
+	buildTime:7840,
+	academyLevel:16,
+	power:210
 }
 mintedCoin[3] = {
 	level:3,
-	coin:5746,
+	coin:27360,
 	blueprints:0,
 	tools:40,
 	tiles:0,
 	pulley:0,
-	buildTime:5024
+	buildTime:11680,
+	academyLevel:17,
+	power:550
 }
 mintedCoin[4] = {
 	level:4,
-	coin:10660,
+	coin:50760,
 	blueprints:0,
 	tools:80,
 	tiles:0,
 	pulley:0,
-	buildTime:6536
+	buildTime:15520,
+	academyLevel:18,
+	power:1020
 }
 mintedCoin[5] = {
 	level:5,
-	coin:17540,
+	coin:83520,
 	blueprints:0,
 	tools:120,
 	tiles:0,
 	pulley:0,
-	buildTime:11072
+	buildTime:27040,
+	academyLevel:19,
+	power:1680
 }
 mintedCoin[6] = {
 	level:6,
-	coin:26460,
+	coin:126000,
 	blueprints:0,
 	tools:240,
 	tiles:0,
 	pulley:0,
-	buildTime:20144
+	buildTime:50080,
+	academyLevel:20,
+	power:2520
 }
 mintedCoin[7] = {
 	level:7,
-	coin:50199,
+	coin:239040,
 	blueprints:0,
 	tools:480,
 	tiles:0,
 	pulley:0,
-	buildTime:29216
+	buildTime:73120,
+	academyLevel:21,
+	power:4790
 }
 mintedCoin[8] = {
 	level:8,
-	coin:69149,
+	coin:329280,
 	blueprints:0,
 	tools:720,
 	tiles:0,
 	pulley:0,
-	buildTime:38288
+	buildTime:96160,
+	academyLevel:22,
+	power:6590
 }
 mintedCoin[9] = {
 	level:9,
-	coin:91124,
+	coin:433920,
 	blueprints:0,
 	tools:960,
 	tiles:0,
 	pulley:0,
-	buildTime:47360
+	buildTime:119200,
+	academyLevel:23,
+	power:8680
 }
 mintedCoin[10] = {
 	level:10,
-	coin:117936,
+	coin:561600,
 	blueprints:0,
 	tools:1200,
 	tiles:0,
 	pulley:0,
-	buildTime:56432
+	buildTime:142240,
+	academyLevel:24,
+	power:11240
 }
 mintedCoin[11] = {
 	level:11,
-	coin:149184,
+	coin:710400,
 	blueprints:0,
 	tools:1440,
 	tiles:0,
 	pulley:0,
-	buildTime:65504
+	buildTime:165280,
+	academyLevel:26,
+	power:14210
 }
 mintedCoin[12] = {
 	level:12,
-	coin:231462,
+	coin:1102200,
 	blueprints:0,
 	tools:1680,
 	tiles:0,
 	pulley:0,
-	buildTime:74576
+	buildTime:188320,
+	academyLevel:28,
+	power:22050
 }
 mintedCoin[13] = {
 	level:13,
-	coin:284256,
+	coin:1353600,
 	blueprints:0,
 	tools:1920,
 	tiles:0,
 	pulley:0,
-	buildTime:83648
+	buildTime:211360,
+	academyLevel:30,
+	power:27080
 }
 mintedCoin[14] = {
 	level:14,
-	coin:342342,
+	coin:1630200,
 	blueprints:0,
 	tools:2160,
 	tiles:0,
 	pulley:0,
-	buildTime:92720
+	buildTime:234400,
+	academyLevel:32,
+	power:32610
 }
 mintedCoin[15] = {
 	level:15,
-	coin:483840,
+	coin:2304000,
 	blueprints:0,
 	tools:2400,
 	tiles:0,
 	pulley:0,
-	buildTime:101792
+	buildTime:257440,
+	academyLevel:34,
+	power:46080
 }
