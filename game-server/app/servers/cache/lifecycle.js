@@ -57,7 +57,7 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 		var eventServer = _.find(app.getServersByType("event"), function(server){
 			return _.isEqual(server.usedFor, app.getServerId())
 		})
-		console.log(logicServers, eventServer, "111111111111111")
+		console.log("logicServers:", logicServers, "eventServer:", eventServer)
 		if(currentInterval >= maxInterval || (logicServers.length == 0 && !_.isObject(eventServer))){
 			clearInterval(interval)
 			var cacheService = app.get("cacheService")
