@@ -47,14 +47,18 @@ life.afterStartup = function(app, callback){
 
 life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 	cancelShutDownTimer()
+	var maxInterval = 5
+	var currentInterval = 0
 	var interval = setInterval(function(){
+		currentInterval++
 		var logicServers = _.filter(app.getServersByType("logic"), function(server){
 			return _.isEqual(server.usedFor, app.getServerId())
 		})
 		var eventServer = _.find(app.getServersByType("event"), function(server){
 			return _.isEqual(server.usedFor, app.getServerId())
 		})
-		if(logicServers.length == 0 && !_.isObject(eventServer)){
+		console.log(logicServers, eventServer, "111111111111111")
+		if(currentInterval >= maxInterval || (logicServers.length == 0 && !_.isObject(eventServer))){
 			clearInterval(interval)
 			var cacheService = app.get("cacheService")
 			app.get("ServerState").createAsync({type:Consts.ServerState.Stop}).then(function(){
