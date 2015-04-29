@@ -20,12 +20,38 @@ var DataService = function(app){
 	this.playersQueue = {}
 	this.alliances = {}
 	this.alliancesQueue = {}
-
 	this.flushOps = 10
 	this.timeoutInterval = 10 * 60 * 1000
+	this.lockCheckInterval = 5 * 1000
+	this.lockInterval = 5 * 1000
+
+	setInterval(OnLockCheckInterval.bind(this), this.lockCheckInterval)
 }
 module.exports = DataService
 var pro = DataService.prototype
+
+
+/**
+ * 超时检测
+ * @constructor
+ */
+var OnLockCheckInterval = function(){
+	var self = this
+	_.each(this.playersQueue, function(queue, id){
+		if(queue.length > 0 && queue[0].time + self.lockInterval < Date.now()){
+			var e = new Error("玩家数据锁超时")
+			self.logService.onEventError("cache.cacheService.OnLockCheckInterval", {id:id}, e.stack)
+			UnlockPlayer.call(self, id)
+		}
+	})
+	_.each(this.alliancesQueue, function(queue, id){
+		if(queue.length > 0 && queue[0].time + self.lockInterval < Date.now()){
+			var e = new Error("联盟数据锁超时")
+			self.logService.onEventError("cache.cacheService.OnLockCheckInterval", {id:id}, e.stack)
+			UnlockAlliance.call(self, id)
+		}
+	})
+}
 
 /**
  * 玩家超时
@@ -130,8 +156,8 @@ var OnAllianceTimeout = function(id){
  */
 var LockPlayer = function(id, func){
 	if(!_.isObject(this.playersQueue[id])) this.playersQueue[id] = []
-	this.playersQueue[id].push(func)
-	if(this.playersQueue[id].length == 1) this.playersQueue[id][0]()
+	this.playersQueue[id].push({func:func, time:Date.now()})
+	if(this.playersQueue[id].length == 1) this.playersQueue[id][0].func()
 }
 
 /**
@@ -141,8 +167,8 @@ var LockPlayer = function(id, func){
  */
 var LockAlliance = function(id, func){
 	if(!_.isObject(this.alliancesQueue[id])) this.alliancesQueue[id] = []
-	this.alliancesQueue[id].push(func)
-	if(this.alliancesQueue[id].length == 1) this.alliancesQueue[id][0]()
+	this.alliancesQueue[id].push({func:func, time:Date.now()})
+	if(this.alliancesQueue[id].length == 1) this.alliancesQueue[id][0].func()
 }
 
 /**
@@ -157,7 +183,7 @@ var UnlockPlayer = function(id){
 	}else{
 		playerQueue.shift()
 		if(playerQueue.length > 0){
-			process.nextTick(playerQueue[0])
+			process.nextTick(playerQueue[0].func)
 		}else{
 			delete this.playersQueue[id]
 		}
@@ -176,7 +202,7 @@ var UnlockAlliance = function(id){
 	}else{
 		allianceQueue.shift()
 		if(allianceQueue.length > 0){
-			process.nextTick(allianceQueue[0])
+			process.nextTick(allianceQueue[0].func)
 		}else{
 			delete this.alliancesQueue[id]
 		}
