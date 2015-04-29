@@ -105,8 +105,8 @@
     "logic": [
       {
         "id": "logic-server-1",
-        "host": "54.223.180.75",
-        "outHost": "54.223.180.75",
+        "host": "54.223.172.65",
+        "outHost": "54.223.172.65",
         "port": 4151,
         "clientPort": 4011,
         "frontend": true,
@@ -114,8 +114,8 @@
       },
       {
         "id": "logic-server-2",
-        "host": "54.223.180.75",
-        "outHost": "54.223.180.75",
+        "host": "54.223.172.65",
+        "outHost": "54.223.172.65",
         "port": 4152,
         "clientPort": 4012,
         "frontend": true,
@@ -123,8 +123,8 @@
       },
       {
         "id": "logic-server-3",
-        "host": "54.223.180.75",
-        "outHost": "54.223.180.75",
+        "host": "54.223.172.65",
+        "outHost": "54.223.172.65",
         "port": 4153,
         "clientPort": 4013,
         "frontend": true,
@@ -132,8 +132,8 @@
       },
       {
         "id": "logic-server-4",
-        "host": "54.223.180.75",
-        "outHost": "54.223.180.75",
+        "host": "54.223.172.65",
+        "outHost": "54.223.172.65",
         "port": 4154,
         "clientPort": 4014,
         "frontend": true,
@@ -143,13 +143,13 @@
     "chat": [
       {
         "id": "chat-server-1",
-        "host": "54.223.180.75",
+        "host": "54.223.172.65",
         "port": 5151,
         "usedFor": "cache-server-1"
       },
       {
         "id": "chat-server-2",
-        "host": "54.223.180.75",
+        "host": "54.223.172.65",
         "port": 5152,
         "usedFor": "cache-server-2"
       }
@@ -157,13 +157,13 @@
     "event": [
       {
         "id": "event-server-1",
-        "host": "54.223.180.75",
+        "host": "54.223.172.65",
         "port": 6151,
         "usedFor": "cache-server-1"
       },
       {
         "id": "event-server-2",
-        "host": "54.223.180.75",
+        "host": "54.223.172.65",
         "port": 6152,
         "usedFor": "cache-server-2"
       }
@@ -171,14 +171,14 @@
     "cache": [
       {
         "id": "cache-server-1",
-        "host": "54.223.180.75",
+        "host": "54.223.172.65",
         "port": 7151,
         "isPromoted": "true",
         "isNew": "true"
       },
       {
         "id": "cache-server-2",
-        "host": "54.223.180.75",
+        "host": "54.223.172.65",
         "port": 7152,
         "isPromoted": "false",
         "isNew": "true"
