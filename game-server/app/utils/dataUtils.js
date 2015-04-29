@@ -1930,9 +1930,7 @@ Utils.isAllianceMapObjectTypeADecorateObject = function(objectType){
  * @returns {*|perception|AllianceSchema.basicInfo.perception|.basicInfo.perception}
  */
 Utils.getAlliancePerception = function(allianceDoc){
-	var shrine = _.find(allianceDoc.buildings, function(building){
-		return _.isEqual(building.name, Consts.AllianceBuildingNames.Shrine)
-	})
+	var shrine = this.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.Shrine)
 	var config = AllianceBuilding.shrine[shrine.level]
 	var perception = allianceDoc.basicInfo.perception
 	var addPerSecond = config.pRecovery / 60 / 60
@@ -2807,7 +2805,7 @@ Utils.getPlayerCollectResourceInfo = function(playerDoc, soldierLoadTotal, allia
 	var collectTotal = soldierLoadTotal > villageResourceCurrent ? villageResourceCurrent : soldierLoadTotal
 	var resourceType = allianceVillage.name.slice(0, -7)
 	var playerCollectLevel = this.getPlayerCollectLevel(playerDoc, resourceType)
-	var collectPerHour =  villageResourceMax * PlayerVillageExp[resourceType][playerCollectLevel].percentPerHour
+	var collectPerHour = villageResourceMax * PlayerVillageExp[resourceType][playerCollectLevel].percentPerHour
 	var totalHour = collectTotal / collectPerHour
 	return {collectTime:Math.ceil(totalHour * 60 * 60 * 1000), collectTotal:collectTotal}
 }
@@ -3792,9 +3790,7 @@ Utils.isPlayerSoldierLocked = function(playerDoc, soldierName){
  * @returns {*}
  */
 Utils.isItemSellInAllianceShop = function(allianceDoc, itemName){
-	var building = _.find(allianceDoc.buildings, function(building){
-		return _.isEqual(building.name, "shop")
-	})
+	var building = this.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.Shop)
 	var unlockedItems = AllianceBuilding.shop[building.level].itemsUnlock.split(",")
 	return _.contains(unlockedItems, itemName)
 }
@@ -3836,9 +3832,7 @@ Utils.canRecruitSpecialSoldier = function(){
  * @returns {number}
  */
 Utils.getAllianceMemberMaxCount = function(allianceDoc){
-	var allianceBuilding = _.find(allianceDoc.buildings, function(building){
-		return _.isEqual(building.name, "palace")
-	})
+	var allianceBuilding = this.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.Palace)
 	return AllianceBuilding.palace[allianceBuilding.level].memberCount
 }
 
@@ -3900,4 +3894,84 @@ Utils.isAllianceFightWillFinished = function(allianceDoc){
  */
 Utils.getLocalizationConfig = function(type, key){
 	return Localizations[type][key]
+}
+
+/**
+ * 获取联盟村落类型
+ * @returns {Array}
+ */
+Utils.getAllianceVillageNames = function(){
+	var names = []
+	_.each(AllianceInitData.buildingName, function(config){
+			if(_.isEqual(config.name.slice(-7), "Village")) names.push(config.name)
+	})
+	return names
+}
+
+/**
+ * 查找联盟建筑
+ * @param allianceDoc
+ * @param buildingName
+ */
+Utils.getAllianceBuildingByName = function(allianceDoc, buildingName){
+	return _.find(allianceDoc.buildings, function(building){
+		return _.isEqual(building.name, buildingName)
+	})
+}
+
+/**
+ * 获取联盟村落总个数
+ * @param allianceDoc
+ * @param villageName
+ * @returns {*}
+ */
+Utils.getAllianceVillagesTotalCount = function(allianceDoc, villageName){
+	var building = this.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.OrderHall)
+	return AllianceBuilding[building.name][building.level][villageName + "Count"]
+}
+
+/**
+ * 获取联盟当前村落个数
+ * @param allianceDoc
+ * @param villageName
+ * @returns {number}
+ */
+Utils.getAllianceVillagesCurrentCount = function(allianceDoc, villageName){
+	var count = 0
+	_.each(allianceDoc.villages, function(village){
+		if(_.isEqual(village.name, villageName)) count += 1
+	})
+	_.each(allianceDoc.villageCreateEvents, function(event){
+		if(_.isEqual(event.name, villageName)) count += 1
+	})
+	return count
+}
+
+/**
+ * 创建联盟村落
+ * @param allianceDoc
+ * @param allianceData
+ * @param enemyAllianceData
+ * @param villageName
+ * @param count
+ */
+Utils.createAllianceVillage = function(allianceDoc, allianceData, enemyAllianceData, villageName, count){
+	var mapObjects = allianceDoc.mapObjects
+	var map = MapUtils.buildMap(mapObjects)
+	var config = AllianceInitData.buildingName[villageName]
+	var width = config.width
+	var height = config.height
+
+	while(count > 0){
+		var rect = MapUtils.getRect(map, width, height)
+		if(_.isObject(rect)){
+			var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, villageName)
+			allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
+			enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
+			var village = this.addAllianceVillageObject(allianceDoc, villageMapObject)
+			allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
+			enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
+		}
+		count --
+	}
 }

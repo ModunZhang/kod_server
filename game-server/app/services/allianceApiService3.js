@@ -114,6 +114,7 @@ pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
+	var enemyAllianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
@@ -126,9 +127,7 @@ pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "upgradeAllianceBuilding")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "upgradeAllianceBuilding"))
 		}
-		var building = _.find(allianceDoc.buildings, function(building){
-			return _.isEqual(building.name, buildingName)
-		})
+		var building = DataUtils.getAllianceBuildingByName(allianceDoc, buildingName)
 		var upgradeRequired = DataUtils.getAllianceBuildingUpgradeRequired(buildingName, building.level + 1)
 		if(upgradeRequired.honour > allianceDoc.basicInfo.honour) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		if(DataUtils.isAllianceBuildingReachMaxLevel(buildingName, building.level)) return Promise.reject(ErrorUtils.allianceBuildingReachMaxLevel(playerId, allianceDoc._id, buildingName))
@@ -141,9 +140,18 @@ pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
 		}
 		building.level += 1
 		allianceData.push(["buildings." + allianceDoc.buildings.indexOf(building) + ".level", building.level])
+		if(_.isEqual(Consts.AllianceBuildingNames.OrderHall, buildingName)){
+			var villageNames = DataUtils.getAllianceVillageNames()
+			_.each(villageNames, function(name){
+				var totalCount = DataUtils.getAllianceVillagesTotalCount(allianceDoc, name)
+				var currentCount = DataUtils.getAllianceVillagesCurrentCount(allianceDoc, name)
+				DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, name, totalCount - currentCount)
+			})
+		}
 
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

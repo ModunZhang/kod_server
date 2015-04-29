@@ -1591,8 +1591,7 @@ Utils.getAllianceViewData = function(allianceDoc){
  */
 Utils.pushDataToEnemyAlliance = function(allianceDoc, enemyAllianceData, pushFuncs, pushService){
 	if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(enemyAllianceData)){
-		var enemyAllianceId = _.isEqual(allianceDoc._id, allianceDoc.allianceFight.attackAllianceId)
-			? allianceDoc.allianceFight.defenceAllianceId : allianceDoc.allianceFight.attackAllianceId
+		var enemyAllianceId = this.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
 		pushFuncs.push([pushService, pushService.onEnemyAllianceDataChangedAsync, enemyAllianceId, enemyAllianceData])
 	}
 }

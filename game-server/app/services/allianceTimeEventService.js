@@ -1966,20 +1966,7 @@ pro.onVillageCreateEvents = function(allianceDoc, event, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	LogicUtils.removeItemInArray(allianceDoc.villageCreateEvents, event)
-	var mapObjects = allianceDoc.mapObjects
-	var map = MapUtils.buildMap(mapObjects)
-	var config = AllianceInitData.buildingName[event.name]
-	var width = config.width
-	var height = config.height
-	var rect = MapUtils.getRect(map, width, height)
-	if(_.isObject(rect)){
-		var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, event.name)
-		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
-		enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
-		var village = DataUtils.addAllianceVillageObject(allianceDoc, villageMapObject)
-		allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
-		enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
-	}
+	DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, event.name, 1)
 	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 	LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))

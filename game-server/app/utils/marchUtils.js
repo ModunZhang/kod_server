@@ -281,9 +281,7 @@ var getPlayerDragonMarchTime = function(playerDoc, dragon, fromAllianceDoc, from
  */
 Utils.createAttackAllianceShrineMarchEvent = function(allianceDoc, playerDoc, dragon, soldiers, shrineEventId){
 	var playerLocation = LogicUtils.getAllianceMemberMapObjectById(allianceDoc, playerDoc._id).location
-	var shrineMapId = _.find(allianceDoc.buildings, function(building){
-		return _.isEqual(building.name, Consts.AllianceBuildingNames.Shrine)
-	}).id
+	var shrineMapId = DataUtils.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.Shrine).id
 	var shrineLocation = LogicUtils.getAllianceMapObjectById(allianceDoc, shrineMapId).location
 	var marchTime = getPlayerSoldiersMarchTime(playerDoc, soldiers, allianceDoc, playerLocation, allianceDoc, shrineLocation)
 
@@ -314,9 +312,7 @@ Utils.createAttackAllianceShrineMarchEvent = function(allianceDoc, playerDoc, dr
  */
 Utils.createAttackAllianceShrineMarchReturnEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, rewards){
 	var playerLocation = LogicUtils.getAllianceMemberMapObjectById(allianceDoc, playerDoc._id).location
-	var shrineMapId = _.find(allianceDoc.buildings, function(building){
-		return _.isEqual(building.name, Consts.AllianceBuildingNames.Shrine)
-	}).id
+	var shrineMapId = DataUtils.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.Shrine).id
 	var shrineLocation = LogicUtils.getAllianceMapObjectById(allianceDoc, shrineMapId).location
 	var marchTime = getPlayerSoldiersMarchTime(playerDoc, soldiers, allianceDoc, shrineLocation, allianceDoc, playerLocation)
 
