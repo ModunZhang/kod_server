@@ -252,6 +252,7 @@ pro.playerLogout = function(session, reason, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
+		self.app.set("membersCount", self.app.get("membersCount") - 1)
 		self.logService.onEvent("logic.playerApiService.playerLeave", {playerId:session.uid, logicServerId:self.logicServerId, reason:reason})
 		callback()
 	}).catch(function(e){
@@ -264,6 +265,7 @@ pro.playerLogout = function(session, reason, callback){
 			funcs.push(self.dataService.updatePlayerAsync(allianceDoc, null))
 		}
 		Promise.all(funcs).then(function(){
+			self.app.set("membersCount", self.app.get("membersCount") - 1)
 			callback(e)
 		})
 	})

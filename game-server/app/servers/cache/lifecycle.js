@@ -47,22 +47,29 @@ life.afterStartup = function(app, callback){
 
 life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 	cancelShutDownTimer()
-	setTimeout(function(){
-		var cacheService = app.get("cacheService")
-		var logService = app.get("logService")
-		logService.onEvent("cache.lifecycle.beforeShutdown persistence data", {serverId:app.get("cacheServerId")})
-		app.get("ServerState").createAsync({type:Consts.ServerState.Stop}).then(function(){
-			return cacheService.timeoutAllAlliancesAsync()
-		}).then(function(){
-			return cacheService.timeoutAllPlayersAsync()
-		}).then(function(){
-			logService.onEvent("cache.lifecycle.beforeShutdown persistence data finished", {serverId:app.get("cacheServerId")})
-			setImmediate(callback)
-		}).catch(function(e){
-			logService.onEventError("cache.lifecycle.beforeShutdown", {serverId:app.get("cacheServerId")}, e.stack)
-			callback()
+	var interval = setInterval(function(){
+		var logicServers = _.filter(app.getServersByType("logic"), function(server){
+			return _.isEqual(server.usedFor, app.getServerId())
 		})
-	}, 2000)
+		var eventServer = _.find(app.getServersByType("event"), function(server){
+			return _.isEqual(server.usedFor, app.getServerId())
+		})
+		if(logicServers.length == 0 && !_.isObject(eventServer)){
+			clearInterval(interval)
+			var cacheService = app.get("cacheService")
+			app.get("ServerState").createAsync({type:Consts.ServerState.Stop}).then(function(){
+				return cacheService.timeoutAllAlliancesAsync()
+			}).then(function(){
+				return cacheService.timeoutAllPlayersAsync()
+			}).then(function(){
+				app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
+				setTimeout(callback, 1000)
+			}).catch(function(e){
+				app.get("logService").onEventError("server stoped", {serverId:app.getServerId()}, e.stack)
+				setTimeout(callback, 1000)
+			})
+		}
+	}, 1000)
 }
 
 life.afterStartAll = function(app){
@@ -75,7 +82,6 @@ life.afterStartAll = function(app){
 	var Alliance = app.get("Alliance")
 	var serverStopTime = null
 
-	logService.onEvent("cache.lifecycle.afterStartAll", {serverId:app.get("cacheServerId")})
 	var funcs = []
 	funcs.push(ServerState.findOneAsync({"type":Consts.ServerState.Stop}, null, {"sort":{"time":-1}}))
 	funcs.push(ServerState.findOneAsync({"type":Consts.ServerState.Start}, null, {"sort":{"time":-1}}))
@@ -125,8 +131,8 @@ life.afterStartAll = function(app){
 	}).then(function(){
 		ServerState.createAsync({type:Consts.ServerState.Start})
 	}).then(function(){
-		logService.onEvent("cache.lifecycle.afterStartAll success", {serverId:app.get("cacheServerId")})
+		logService.onEvent("server started", {serverId:app.getServerId()})
 	}).catch(function(e){
-		logService.onEventError("cache.lifecycle.afterStartAll success with error", {serverId:app.get("cacheServerId")}, e.stack)
+		logService.onEventError("server started", {serverId:app.getServerId()}, e.stack)
 	})
 }

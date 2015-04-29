@@ -13,7 +13,6 @@
       {
         "id": "logic-server-1",
         "host": "192.168.0.30",
-        "outHost": "192.168.0.30",
         "port": 4151,
         "clientPort": 4011,
         "frontend": true,
@@ -22,7 +21,6 @@
       {
         "id": "logic-server-2",
         "host": "192.168.0.30",
-        "outHost": "192.168.0.30",
         "port": 4152,
         "clientPort": 4012,
         "frontend": true,
@@ -31,7 +29,6 @@
       {
         "id": "logic-server-3",
         "host": "192.168.0.30",
-        "outHost": "192.168.0.30",
         "port": 4153,
         "clientPort": 4013,
         "frontend": true,
@@ -40,7 +37,6 @@
       {
         "id": "logic-server-4",
         "host": "192.168.0.30",
-        "outHost": "192.168.0.30",
         "port": 4154,
         "clientPort": 4014,
         "frontend": true,
@@ -106,7 +102,6 @@
       {
         "id": "logic-server-1",
         "host": "54.223.172.65",
-        "outHost": "54.223.172.65",
         "port": 4151,
         "clientPort": 4011,
         "frontend": true,
@@ -115,7 +110,6 @@
       {
         "id": "logic-server-2",
         "host": "54.223.172.65",
-        "outHost": "54.223.172.65",
         "port": 4152,
         "clientPort": 4012,
         "frontend": true,
@@ -124,7 +118,6 @@
       {
         "id": "logic-server-3",
         "host": "54.223.172.65",
-        "outHost": "54.223.172.65",
         "port": 4153,
         "clientPort": 4013,
         "frontend": true,
@@ -133,7 +126,6 @@
       {
         "id": "logic-server-4",
         "host": "54.223.172.65",
-        "outHost": "54.223.172.65",
         "port": 4154,
         "clientPort": 4014,
         "frontend": true,

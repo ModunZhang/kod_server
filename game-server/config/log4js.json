@@ -163,13 +163,13 @@
     }
   ],
   "levels": {
-    "rpc-log": "WARN",
-    "forward-log": "WARN",
-    "con-log": "WARN",
-    "rpc-debug": "WARN",
-    "crash-log": "WARN",
-    "admin-log": "WARN",
-    "pomelo": "DEBUG",
+    "rpc-log": "INFO",
+    "forward-log": "INFO",
+    "con-log": "INFO",
+    "rpc-debug": "INFO",
+    "crash-log": "INFO",
+    "admin-log": "INFO",
+    "pomelo": "INFO",
     "pomelo-admin": "INFO",
     "pomelo-rpc": "INFO",
 

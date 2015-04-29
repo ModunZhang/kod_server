@@ -56,7 +56,7 @@ pro.queryEntry = function(msg, session, next){
 		}else{
 			var data = {
 				id:logicServer.id,
-				host:logicServer.outHost,
+				host:logicServer.host,
 				port:logicServer.clientPort
 			}
 			next(null, {data:data, code:200})
