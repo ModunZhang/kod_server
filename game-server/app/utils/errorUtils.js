@@ -1938,3 +1938,13 @@ Utils.allianceFightWillEndCanNotSendTroops = function(playerId, allianceId){
 	var config = Errors.allianceFightWillEndCanNotSendTroops
 	return CreateError(config, {playerId:playerId, allianceId:allianceId})
 }
+
+/**
+ * 服务器繁忙
+ * @param type
+ * @param id
+ */
+Utils.serverTooBusy = function(type, id){
+	var config = Errors.serverTooBusy
+	return CreateError(config, {type:type, id:id})
+}

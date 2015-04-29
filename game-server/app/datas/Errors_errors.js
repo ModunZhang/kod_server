@@ -928,3 +928,8 @@ errors["allianceFightWillEndCanNotSendTroops"] = {
 	code:685,
 	message:"联盟战即将结束,不能派兵"
 }
+errors["serverTooBusy"] = {
+	key:"serverTooBusy",
+	code:686,
+	message:"服务器繁忙"
+}

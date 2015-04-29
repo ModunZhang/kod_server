@@ -150,7 +150,7 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	var self = this
 	var memberDoc = null
 	var memberData = []
-	this.dataService.findPlayerAsync(memberId).then(function(doc){
+	this.dataService.findPlayerAsync(memberId, true).then(function(doc){
 		memberDoc = doc
 		var iapGift = {
 			id:ShortId.generate(),
@@ -213,7 +213,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	var playerData = []
 	var updateFuncs = []
 	var rewards = null
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, true).then(function(doc){
 		playerDoc = doc
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){

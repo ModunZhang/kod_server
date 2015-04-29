@@ -9,6 +9,7 @@ var _ = require("underscore")
 
 var DataUtils = require("../utils/dataUtils")
 var Consts = require("../consts/consts.js")
+var ErrorUtils = require("../utils/errorUtils.js")
 
 var DataService = function(app){
 	this.app = app
@@ -20,7 +21,7 @@ var DataService = function(app){
 	this.playersQueue = {}
 	this.alliances = {}
 	this.alliancesQueue = {}
-	this.maxPlayerQueue = 5
+	this.maxPlayerQueue = 3
 	this.maxAllianceQueue = 5
 	this.flushOps = 10
 	this.timeoutInterval = 10 * 60 * 1000
@@ -273,7 +274,7 @@ pro.createAlliance = function(allianceData, callback){
 pro.directFindPlayer = function(id, callback){
 	var self = this
 	if(_.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
-		callback(new Error("服务器繁忙"))
+		callback(ErrorUtils.serverTooBusy("player", id))
 		return
 	}
 	LockPlayer.call(this, id, function(){
@@ -315,7 +316,7 @@ pro.directFindPlayer = function(id, callback){
 pro.directFindAlliance = function(id, callback){
 	var self = this
 	if(_.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
-		callback(new Error("服务器繁忙"))
+		callback(ErrorUtils.serverTooBusy("alliance", id))
 		return
 	}
 	LockAlliance.call(this, id, function(){
@@ -358,7 +359,7 @@ pro.directFindAlliance = function(id, callback){
 pro.findPlayer = function(id, force, callback){
 	var self = this
 	if(!force && _.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
-		callback(new Error("服务器繁忙"))
+		callback(ErrorUtils.serverTooBusy("player", id))
 		return
 	}
 	LockPlayer.call(this, id, function(){
@@ -402,7 +403,7 @@ pro.findPlayer = function(id, force, callback){
 pro.findAlliance = function(id, force, callback){
 	var self = this
 	if(!force && _.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
-		callback(new Error("服务器繁忙"))
+		callback(ErrorUtils.serverTooBusy("alliance", id))
 		return
 	}
 	LockAlliance.call(this, id, function(){
