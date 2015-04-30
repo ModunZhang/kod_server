@@ -40,15 +40,6 @@ pro.getAllianceModel = function(){
 }
 
 /**
- * 创建玩家对象
- * @param player
- * @param callback
- */
-pro.createPlayer = function(player, callback){
-	this.app.rpc.cache.cacheRemote.createPlayer.toServer(this.cacheServerId, player, callback)
-}
-
-/**
  * 按Id直接查询玩家,不做请求排序
  * @param id
  * @param callback

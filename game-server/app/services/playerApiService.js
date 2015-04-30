@@ -78,12 +78,7 @@ pro.playerLogin = function(session, deviceId, callback){
 		if(_.isObject(doc)){
 			return self.dataService.findPlayerAsync(doc.playerId)
 		}else{
-			var playerId = ShortId.generate()
-			var device = LogicUtils.createDevice(deviceId, playerId)
-			var player = LogicUtils.createPlayer(playerId, self.app.get("cacheServerId"))
-			return self.Device.createAsync(device).then(function(){
-				return self.dataService.createPlayerAsync(player)
-			})
+			return Promise.reject(ErrorUtils.deviceNotExist(deviceId))
 		}
 	}).then(function(doc){
 		playerDoc = doc

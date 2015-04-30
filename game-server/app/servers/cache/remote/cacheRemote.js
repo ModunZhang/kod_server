@@ -19,22 +19,6 @@ var CacheRemote = function(app) {
 var pro = CacheRemote.prototype
 
 /**
- * 创建玩家对象
- * @param doc
- * @param callback
- */
-pro.createPlayer = function(doc, callback){
-	var self = this
-	this.cacheService.createPlayer(doc, function(e, theDoc){
-		try{
-			callback(e, theDoc)
-		}catch(e){
-			self.logService.onEventError("cache.cacheRemote.createPlayer", {id:doc._id, doc:doc}, e.stack)
-		}
-	})
-}
-
-/**
  * 按Id直接查询玩家,不做请求排序
  * @param id
  * @param callback

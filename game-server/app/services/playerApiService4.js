@@ -967,11 +967,8 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 			var playerId = ShortId.generate()
 			var player = LogicUtils.createPlayer(playerId, playerDoc.serverId)
 			player.gcId = gcId
-			return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:player._id}).then(function(){
-				return self.dataService.createPlayerAsync(player).then(function(doc){
-					newPlayerDoc = doc
-					return self.dataService.updatePlayerAsync(newPlayerDoc, null)
-				})
+			return self.Player.createAsync(player).then(function(){
+				return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:player._id})
 			})
 		}else{
 			return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:doc._id})

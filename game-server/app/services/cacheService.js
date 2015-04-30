@@ -219,30 +219,6 @@ var UnlockAlliance = function(id){
 }
 
 /**
- * 创建玩家对象
- * @param playerData
- * @param callback
- */
-pro.createPlayer = function(playerData, callback){
-	var self = this
-	LockPlayer.call(this, playerData._id, function(){
-		self.Player.createAsync(playerData).then(function(doc){
-			var playerDoc = doc.toObject()
-			var player = {}
-			player.doc = playerDoc
-			player.ops = 0
-			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, playerData._id)
-			self.players[playerData._id] = player
-			callback(null, playerDoc)
-		}).catch(function(e){
-			self.logService.onEventError("cache.cacheService.createPlayer", {playerData:playerData}, e.stack)
-			UnlockPlayer.call(self, playerData._id)
-			callback(e)
-		})
-	})
-}
-
-/**
  * 创建联盟对象
  * @param allianceData
  * @param callback
