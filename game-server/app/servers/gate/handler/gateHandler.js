@@ -8,8 +8,10 @@ var _ = require("underscore")
 var Promise = require("bluebird")
 var ShortId = require("shortid")
 
+var Utils = require("../../../utils/utils")
 var ErrorUtils = require("../../../utils/errorUtils")
 var LogicUtils = require("../../../utils/logicUtils")
+var DataUtils = require("../../../utils/dataUtils")
 
 module.exports = function(app){
 	return new Handler(app)
@@ -53,8 +55,14 @@ pro.queryEntry = function(msg, session, next){
 			var serverId = self.gateService.getPromotedServer().id
 			var player = LogicUtils.createPlayer(playerId, serverId)
 			return self.Device.createAsync(device).then(function(){
-				return self.Player.createAsync(player).then(function(){
-					return Promise.resolve(serverId)
+				return self.Player.createAsync(player).then(function(doc){
+					var playerDoc = Utils.clone(doc)
+					DataUtils.refreshPlayerPower(playerDoc, [])
+					var playerId = playerDoc._id
+					delete playerDoc._id
+					return self.Player.updateAsync({_id:playerId}, playerDoc).then(function(){
+						return Promise.resolve(serverId)
+					})
 				})
 			})
 		}
