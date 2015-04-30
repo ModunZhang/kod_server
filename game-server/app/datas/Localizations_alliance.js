@@ -93,3 +93,13 @@ alliance["AllianceKickMemberOffContent"] = {
 	cn:"您已被%s联盟踢出",
 	en:"这是英文:您已被%s联盟踢出"
 }
+alliance["giveLoyaltyToAllianceMemberTitle"] = {
+	key:"giveLoyaltyToAllianceMemberTitle",
+	cn:"忠诚值奖励",
+	en:"这是英文:忠诚值奖励"
+}
+alliance["giveLoyaltyToAllianceMemberContent"] = {
+	key:"giveLoyaltyToAllianceMemberContent",
+	cn:"%s联盟向你发放了%d点忠诚值奖励，请再接再厉！",
+	en:"这是英文:%s联盟向你发放了%d点忠诚值奖励，请再接再厉！"
+}

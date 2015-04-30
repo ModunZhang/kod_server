@@ -79,6 +79,10 @@ pro.giveLoyaltyToAllianceMember = function(playerId, memberId, count, callback){
 	}).then(function(){
 		memberDoc.allianceInfo.loyalty += count
 		memberData.push(["allianceInfo.loyalty", memberDoc.allianceInfo.loyalty])
+		var titleKey = DataUtils.getLocalizationConfig("alliance", "giveLoyaltyToAllianceMemberTitle")
+		var contentKey = DataUtils.getLocalizationConfig("alliance", "giveLoyaltyToAllianceMemberContent")
+		LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [], contentKey, [allianceDoc.basicInfo.name, count])
+
 		allianceDoc.basicInfo.honour -= count
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 		memberObject.loyalty = memberDoc.allianceInfo.loyalty
