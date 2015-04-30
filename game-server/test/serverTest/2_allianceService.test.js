@@ -1,6 +1,6 @@
 ///**
-//* Created by modun on 14-7-25.
-//*/
+// * Created by modun on 14-7-25.
+// */
 //
 //var pomelo = require("../pomelo-client")
 //var mongoose = require("mongoose")
@@ -603,16 +603,13 @@
 //			Api.loginPlayer(Config.deviceId5, function(doc){
 //				doc.code.should.equal(200)
 //				memberDoc = doc.playerData
-//				Api.cancelJoinAllianceRequest(m_user.allianceId, function(doc){
+//				Api.requestToJoinAlliance(m_user.allianceId, function(doc){
 //					doc.code.should.equal(200)
-//					Api.requestToJoinAlliance(m_user.allianceId, function(doc){
+//					Api.loginPlayer(Config.deviceId3, function(doc){
 //						doc.code.should.equal(200)
-//						Api.loginPlayer(Config.deviceId3, function(doc){
+//						Api.approveJoinAllianceRequest(memberDoc._id, function(doc){
 //							doc.code.should.equal(200)
-//							Api.approveJoinAllianceRequest(memberDoc._id, function(doc){
-//								doc.code.should.equal(200)
-//								done()
-//							})
+//							done()
 //						})
 //					})
 //				})

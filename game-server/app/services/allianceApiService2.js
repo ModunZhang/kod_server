@@ -697,20 +697,28 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		if(!_.isObject(inviteEvent)) return Promise.reject(ErrorUtils.allianceInviteEventNotExist(playerId, allianceId))
 		playerData.push(["inviteToAllianceEvents." + playerDoc.inviteToAllianceEvents.indexOf(inviteEvent), null])
 		LogicUtils.removeItemInArray(playerDoc.inviteToAllianceEvents, inviteEvent)
-
 		if(agree){
-			var funcs = []
-			funcs.push(self.dataService.findAllianceAsync(allianceId))
-			funcs.push(self.dataService.findPlayerAsync(inviteEvent.inviterId))
-			return Promise.all(funcs).spread(function(doc_1, doc_2){
-				inviterDoc = doc_2
-				if(!_.isObject(doc_1)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
-				allianceDoc = doc_1
+			updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc, playerDoc])
+		}else{
+			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		}
+		return self.dataService.findPlayerAsync(inviteEvent.inviterId)
+	}).then(function(doc){
+		inviterDoc = doc
+		if(!agree){
+			var titleKey = DataUtils.getLocalizationConfig("alliance", "InviteRejectedTitle")
+			var contentKey = DataUtils.getLocalizationConfig("alliance", "InviteRejectedContent")
+			LogicUtils.sendSystemMail(inviterDoc, inviterData, titleKey, [], contentKey, [playerDoc.basicInfo.name])
+			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, inviterDoc, inviterDoc])
+			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, inviterDoc, inviterData])
+			return Promise.resolve()
+		}else{
+			return self.dataService.findAllianceAsync(allianceId).then(function(doc){
+				if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
+				allianceDoc = doc
 				if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
 				return Promise.resolve()
 			})
-		}else{
-			return Promise.resolve()
 		}
 	}).then(function(){
 		if(!agree){
@@ -733,6 +741,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		var titleKey = DataUtils.getLocalizationConfig("alliance", "InviteApprovedTitle")
 		var contentKey = DataUtils.getLocalizationConfig("alliance", "InviteApprovedContent")
 		LogicUtils.sendSystemMail(inviterDoc, inviterData, titleKey, [], contentKey, [playerDoc.basicInfo.name])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, inviterDoc, inviterDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, inviterDoc, inviterData])
 
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
@@ -747,8 +756,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 
-		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, inviterDoc, inviterDoc])
+		updateFuncs.unshift([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
 		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
@@ -762,11 +770,6 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 
 		return Promise.resolve()
 	}).then(function(){
-		if(agree){
-			updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc, playerDoc])
-		}else{
-			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
-		}
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
