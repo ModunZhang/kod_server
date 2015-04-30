@@ -622,13 +622,16 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 			attackEnemyAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 		}
 		var originalRewards = villageEvent.playerData.rewards
-		var resourceType = village.name.slice(0, -7)
+		var resourceName = village.name.slice(0, -7)
 		var newRewards = [{
 			type:"resources",
-			name:resourceType,
+			name:resourceName,
 			count:resourceCollected
 		}]
 		LogicUtils.mergeRewards(originalRewards, newRewards)
+		var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
+		attackPlayerDoc.allianceInfo[resourceName + "Exp"] += collectExp
+		attackPlayerData.push(["allianceInfo." + resourceName + "Exp", attackPlayerDoc.allianceInfo[resourceName + "Exp"]])
 
 		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, targetAllianceDoc, villageEvent.villageData, originalRewards)
 		attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)

@@ -450,11 +450,10 @@ pro.removeJoinAllianceReqeusts = function(playerId, requestEventIds, callback){
 					var contentKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedContent")
 					LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [], contentKey, [allianceDoc.basicInfo.name])
 				}
-				if(memberData.length > 0){
-					return self.dataService.updatePlayerAsync(memberDoc, memberDoc)
-				}
-				else
+				if(_.isEmpty(memberData))
 					return self.dataService.updatePlayerAsync(memberDoc, null)
+				else
+					return self.dataService.updatePlayerAsync(memberDoc, memberDoc)
 			}).then(function(){
 				if(memberData.length > 0)
 					return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
