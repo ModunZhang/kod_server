@@ -25,7 +25,7 @@ intInit["editAllianceTerrianHonour"] = {
 }
 intInit["activeShrineStageEventMinutes"] = {
 	type:"activeShrineStageEventMinutes",
-	value:20,
+	value:3,
 	desc:"圣地战激活后持续时间"
 }
 intInit["allianceFightPrepareMinutes"] = {

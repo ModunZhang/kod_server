@@ -933,3 +933,8 @@ errors["serverTooBusy"] = {
 	code:686,
 	message:"服务器繁忙"
 }
+errors["playerSecondMarchQueueAlreadyUnlocked"] = {
+	key:"playerSecondMarchQueueAlreadyUnlocked",
+	code:687,
+	message:"玩家第二条队列已经解锁"
+}
