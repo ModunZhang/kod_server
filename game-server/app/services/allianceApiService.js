@@ -124,7 +124,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
 		mapObjects.push(memberMapObject)
 		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Archon, memberMapObject.id, true)
-		LogicUtils.refreshAllianceBasicInfo(allianceDoc, [])
+		DataUtils.refreshAllianceBasicInfo(allianceDoc, [])
 		playerDoc.allianceId = allianceDoc._id
 		playerData.push(["allianceId", playerDoc.allianceId])
 		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
@@ -929,7 +929,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberMapObject), null])
 		LogicUtils.removeItemInArray(allianceDoc.mapObjects, memberMapObject)
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Kick, memberObject.name, [])
-		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
+		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
 		return self.dataService.findPlayerAsync(memberId)
 	}).then(function(doc){

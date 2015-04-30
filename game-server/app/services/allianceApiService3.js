@@ -140,6 +140,7 @@ pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
 		}
 		building.level += 1
 		allianceData.push(["buildings." + allianceDoc.buildings.indexOf(building) + ".level", building.level])
+		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		if(_.isEqual(Consts.AllianceBuildingNames.OrderHall, buildingName)){
 			var villageNames = DataUtils.getAllianceVillageNames()
 			_.each(villageNames, function(name){

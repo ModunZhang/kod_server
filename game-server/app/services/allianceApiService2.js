@@ -71,7 +71,7 @@ pro.quitAlliance = function(playerId, callback){
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject), null])
 		LogicUtils.removeItemInArray(allianceDoc.mapObjects, playerMapObject)
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Quit, playerObject.name, [])
-		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
+		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
 		return Promise.resolve()
 	}).then(function(){
@@ -228,7 +228,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberMapObject), memberMapObject])
 
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
-		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
+		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
 		playerDoc.allianceId = allianceDoc._id
 		playerData.push(["allianceId", playerDoc.allianceId])
@@ -549,7 +549,7 @@ pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
 		var memberObject = LogicUtils.addAllianceMember(allianceDoc, memberDoc, Consts.AllianceTitle.Member, memberMapObject.id, !_.isEmpty(memberDoc.logicServerId))
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject), memberObject])
 		enemyAllianceData.push(["members." + allianceDoc.members.indexOf(memberObject), memberObject])
-		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
+		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, memberDoc.basicInfo.name, [])
 
 		memberDoc.allianceId = allianceDoc._id
@@ -753,7 +753,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		var memberObject = LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member, memberMapObject.id, true)
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject), memberObject])
 		enemyAllianceData.push(["members." + allianceDoc.members.indexOf(memberObject), memberObject])
-		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
+		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 
 		updateFuncs.unshift([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])

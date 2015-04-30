@@ -3974,3 +3974,24 @@ Utils.createAllianceVillage = function(allianceDoc, allianceData, enemyAllianceD
 		count --
 	}
 }
+
+/**
+ * 刷新联盟属性
+ * @param allianceDoc
+ * @param allianceData
+ */
+Utils.refreshAllianceBasicInfo = function(allianceDoc, allianceData){
+	var totalPower = 0
+	var totalKill = 0
+	_.each(allianceDoc.members, function(member){
+		totalPower += member.power
+		totalKill += member.kill
+	})
+	_.each(allianceDoc.buildings, function(building){
+		totalPower += AllianceBuilding[building.name][building.level].power
+	})
+	allianceDoc.basicInfo.power = totalPower
+	allianceData.push(["basicInfo.power", allianceDoc.basicInfo.power])
+	allianceDoc.basicInfo.kill = totalKill
+	allianceData.push(["basicInfo.kill", allianceDoc.basicInfo.kill])
+}
