@@ -221,6 +221,7 @@ var AllianceSchema = new Schema({
 				fightResult:{type:String, required:true},
 				attackDragonFightData:{
 					type:{type:String, required:true},
+					level:{type:Number, required:true},
 					hpMax:{type:Number, required:true},
 					hp:{type:Number, required:true},
 					hpDecreased:{type:Number, required:true},
@@ -228,6 +229,7 @@ var AllianceSchema = new Schema({
 				},
 				defenceDragonFightData:{
 					type:{type:String, required:true},
+					level:{type:Number, required:true},
 					hpMax:{type:Number, required:true},
 					hp:{type:Number, required:true},
 					hpDecreased:{type:Number, required:true},

@@ -1636,6 +1636,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 	var createDragonFightData = function(dragonAfterFight){
 		var data = {
 			type:dragonAfterFight.type,
+			level:dragonAfterFight.level,
 			hpMax:dragonAfterFight.maxHp,
 			hp:dragonAfterFight.totalHp,
 			hpDecreased:dragonAfterFight.totalHp - dragonAfterFight.currentHp,
