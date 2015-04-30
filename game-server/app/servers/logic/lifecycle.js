@@ -60,7 +60,7 @@ life.beforeStartup = function(app, callback){
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 
-	app.set("logService", Promise.promisifyAll(new LogService(app)))
+	app.set("logService", new LogService(app))
 	app.set("channelService", Promise.promisifyAll(app.get("channelService")))
 	app.set("apnService", new ApnService(app))
 	app.set("dataService", Promise.promisifyAll(new DataService(app)))

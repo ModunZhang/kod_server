@@ -11,7 +11,7 @@ var LogService = require("../../services/logService")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
-	app.set("logService", Promise.promisifyAll(new LogService(app)))
+	app.set("logService", new LogService(app))
 	callback()
 }
 

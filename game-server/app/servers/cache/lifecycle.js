@@ -34,7 +34,7 @@ life.beforeStartup = function(app, callback){
 	app.set("ServerState", Promise.promisifyAll(ServerState))
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
-	app.set("logService", Promise.promisifyAll(new LogService(app)))
+	app.set("logService", new LogService(app))
 	app.set("timeEventService", Promise.promisifyAll(new TimeEventService(app)))
 	app.set("playerTimeEventService", Promise.promisifyAll(new PlayerTimeEventService(app)))
 	app.set("cacheService", Promise.promisifyAll(new CacheService(app)))
@@ -57,7 +57,6 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 		var eventServer = _.find(app.getServersByType("event"), function(server){
 			return _.isEqual(server.usedFor, app.getServerId())
 		})
-		console.log("\nlogicServers:", logicServers, "\neventServer:", eventServer)
 		if(currentInterval >= maxInterval || (logicServers.length == 0 && !_.isObject(eventServer))){
 			clearInterval(interval)
 			var cacheService = app.get("cacheService")

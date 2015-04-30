@@ -384,7 +384,7 @@ pro.cancelJoinAllianceRequest = function(playerId, allianceId, callback){
  * @param callback
  */
 pro.removeJoinAllianceReqeusts = function(playerId, requestEventIds, callback){
-	if(!_.isArray(requestEventIds)){
+	if(!_.isArray(requestEventIds) || requestEventIds.length == 0){
 		callback(new Error("requestEventIds 不合法"))
 		return
 	}
@@ -415,13 +415,8 @@ pro.removeJoinAllianceReqeusts = function(playerId, requestEventIds, callback){
 			LogicUtils.removeItemInArray(allianceDoc.joinRequestEvents, requestEvent)
 		})
 
-		if(_.isEmpty(allianceData)){
-			updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, null])
-		}else{
-			updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		}
-
+		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -429,14 +424,57 @@ pro.removeJoinAllianceReqeusts = function(playerId, requestEventIds, callback){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
-	}).catch(function(e){
+		return Promise.resolve()
+	}, function(e){
 		var funcs = []
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
-		Promise.all(funcs).then(function(){
+		return Promise.all(funcs).then(function(){
 			callback(e)
+			return Promise.resolve()
 		})
+	}).then(function(){
+		var handleMemberAsync = function(memberId){
+			var memberDoc = null
+			var memberData = []
+			return self.dataService.findPlayerAsync(memberId).then(function(doc){
+				memberDoc = doc
+				var requestToAllianceEvent = _.find(memberDoc.requestToAllianceEvents, function(event){
+					return _.isEqual(event.id, allianceDoc._id)
+				})
+				if(_.isObject(requestToAllianceEvent)){
+					memberData.push(["requestToAllianceEvents." + memberDoc.requestToAllianceEvents.indexOf(requestToAllianceEvent), null])
+					LogicUtils.removeItemInArray(memberDoc.requestToAllianceEvents, requestToAllianceEvent)
+					var titleKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedTitle")
+					var contentKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedContent")
+					LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [], contentKey, [allianceDoc.basicInfo.name])
+				}
+				if(memberData.length > 0){
+					return self.dataService.updatePlayerAsync(memberDoc, memberDoc)
+				}
+				else
+					return self.dataService.updatePlayerAsync(memberDoc, null)
+			}).then(function(){
+				if(memberData.length > 0)
+					return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
+				else
+					return Promise.resolve()
+			}).catch(function(e){
+				self.logService.onEventError("logic.allianceApiService2.removeJoinAllianceReqeusts.handleMemberAsync", {memberId:memberId}, e.stack)
+				var funcs = []
+				if(_.isObject(memberDoc))
+					funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
+				return Promise.all(funcs)
+			})
+		}
+		var funcs = []
+		_.each(requestEventIds, function(eventId){
+			funcs.push(handleMemberAsync(eventId))
+		})
+		return Promise.all(funcs)
+	}).catch(function(e){
+		self.logService.onEventError("logic.allianceApiService2.removeJoinAllianceReqeusts", {playerId:playerId, allianceId:allianceDoc._id, requestEventIds:requestEventIds}, e.stack)
 	})
 }
 
@@ -521,6 +559,9 @@ pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
 		memberData.push(["requestToAllianceEvents", memberDoc.requestToAllianceEvents])
 		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
 		memberData.push(["inviteToAllianceEvents", memberDoc.inviteToAllianceEvents])
+		var titleKey = DataUtils.getLocalizationConfig("alliance", "RequestApprovedTitle")
+		var contentKey = DataUtils.getLocalizationConfig("alliance", "RequestApprovedContent")
+		LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [], contentKey, [allianceDoc.basicInfo.name])
 
 		if(!_.isEmpty(memberDoc.logicServerId)){
 			updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, memberDoc])

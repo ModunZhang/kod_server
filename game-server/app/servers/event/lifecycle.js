@@ -30,7 +30,7 @@ life.beforeStartup = function(app, callback){
 		}
 	})
 
-	app.set("logService", Promise.promisifyAll(new LogService(app)))
+	app.set("logService", new LogService(app))
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))
 	app.set("dataService", Promise.promisifyAll(new DataService(app)))
 	app.set("timeEventService", Promise.promisifyAll(new TimeEventService(app)))
