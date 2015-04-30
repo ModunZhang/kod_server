@@ -1116,13 +1116,14 @@ Utils.getAllianceArchon = function(allianceDoc){
 /**
  * 添加联盟事件
  * @param allianceDoc
+ * @param allianceData
  * @param category
  * @param type
  * @param key
  * @param params
  * @returns {{category: *, type: *, key: *, time: number, params: *}}
  */
-Utils.AddAllianceEvent = function(allianceDoc, category, type, key, params){
+Utils.AddAllianceEvent = function(allianceDoc, allianceData, category, type, key, params){
 	var event = {
 		category:category,
 		type:type,
@@ -1132,10 +1133,11 @@ Utils.AddAllianceEvent = function(allianceDoc, category, type, key, params){
 	}
 
 	if(allianceDoc.events.length >= Define.AllianceEventsMaxSize){
+		allianceData.push(["events." + 0, null])
 		allianceDoc.events.shift()
 	}
 	allianceDoc.events.push(event)
-	return event
+	allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
 }
 
 /**

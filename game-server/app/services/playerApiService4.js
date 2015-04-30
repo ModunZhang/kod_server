@@ -731,11 +731,12 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			if(!_.isObject(dragon)) return Promise.reject(new Error("pveData 不合法"))
 			var dragonType = dragon.type
 			if(!DataUtils.isDragonTypeExist(dragonType)) return Promise.reject(new Error("pveData 不合法"))
+			var theDragon = playerDoc.dragons[dragonType]
+			if(_.isEqual(Consts.DragonStatus.March, theDragon.status)) return Promise.reject(new Error("pveData 不合法"))
 			var hpDecreased = dragon.hpDecreased
 			if(!_.isNumber(hpDecreased)) return Promise.reject(new Error("pveData 不合法"))
 			var expAdd = dragon.expAdd
 			if(!_.isNumber(expAdd)) return Promise.reject(new Error("pveData 不合法"))
-			var theDragon = playerDoc.dragons[dragonType]
 			if(theDragon.star <= 0) return Promise.reject(new Error("pveData 不合法"))
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, theDragon)

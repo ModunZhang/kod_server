@@ -487,22 +487,17 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		allianceDoc.basicInfo.flag = flag
 
 		allianceData.push(["basicInfo", allianceDoc.basicInfo])
-		var event = null
 		if(isNameChanged){
-			event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Name, playerDoc.basicInfo.name, [allianceDoc.basicInfo.name])
-			allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+			LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Name, playerDoc.basicInfo.name, [allianceDoc.basicInfo.name])
 		}
 		if(isTagChanged){
-			event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Tag, playerDoc.basicInfo.name, [allianceDoc.basicInfo.tag])
-			allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+			LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Tag, playerDoc.basicInfo.name, [allianceDoc.basicInfo.tag])
 		}
 		if(isFlagChanged){
-			event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Flag, playerDoc.basicInfo.name, [allianceDoc.basicInfo.flag])
-			allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+			LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Flag, playerDoc.basicInfo.name, [allianceDoc.basicInfo.flag])
 		}
 		if(isLanguageChanged){
-			event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Language, playerDoc.basicInfo.name, [allianceDoc.basicInfo.language])
-			allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+			LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Language, playerDoc.basicInfo.name, [allianceDoc.basicInfo.language])
 		}
 
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
@@ -567,8 +562,7 @@ pro.editAllianceTerrian = function(playerId, terrain, callback){
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 		allianceDoc.basicInfo.terrain = terrain
 		allianceData.push(["basicInfo.terrain", allianceDoc.basicInfo.terrain])
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Terrain, playerDoc.basicInfo.name, [allianceDoc.basicInfo.terrain])
-		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Terrain, playerDoc.basicInfo.name, [allianceDoc.basicInfo.terrain])
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
@@ -674,8 +668,7 @@ pro.editAllianceNotice = function(playerId, notice, callback){
 
 		allianceDoc.notice = notice
 		allianceData.push(["notice", allianceDoc.notice])
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Notice, playerDoc.basicInfo.name, [])
-		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Notice, playerDoc.basicInfo.name, [])
 		return Promise.resolve()
 	}).then(function(){
 		return self.dataService.updateAllianceAsync(allianceDoc, allianceDoc)
@@ -723,8 +716,7 @@ pro.editAllianceDescription = function(playerId, description, callback){
 
 		allianceDoc.desc = description
 		allianceData.push(["desc", allianceDoc.desc])
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Desc, playerDoc.basicInfo.name, [])
-		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Desc, playerDoc.basicInfo.name, [])
 		return Promise.resolve()
 	}).then(function(){
 		return self.dataService.updateAllianceAsync(allianceDoc, allianceDoc)
@@ -848,8 +840,7 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 		memberObject.title = title
 		currentTitleName = allianceDoc.titles[memberObject.title]
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".title", memberObject.title])
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, promotionType, memberObject.name, [memberObject.title])
-		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, promotionType, memberObject.name, [memberObject.title])
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
@@ -937,8 +928,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 		var memberMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, memberObject.mapId)
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberMapObject), null])
 		LogicUtils.removeItemInArray(allianceDoc.mapObjects, memberMapObject)
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Kick, memberObject.name, [])
-		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Kick, memberObject.name, [])
 		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
 		return self.dataService.findPlayerAsync(memberId)
@@ -1089,8 +1079,7 @@ pro.handOverAllianceArchon = function(playerId, memberId, callback){
 		memberObject.title = Consts.AllianceTitle.Archon
 		currentTitleName = allianceDoc.titles[memberObject.title]
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".title", memberObject.title])
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.HandOver, memberObject.name, [])
-		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.HandOver, memberObject.name, [])
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 

@@ -739,6 +739,7 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 			data._id = doc._id
 			data.basicInfo = doc.basicInfo
 			data.countInfo = doc.countInfo
+			data.archer = LogicUtils.getAllianceArchon(doc).name
 			allianceInfos.push(data)
 		})
 		return Promise.resolve()
@@ -792,6 +793,7 @@ pro.getNearedAllianceInfos = function(playerId, callback){
 			data._id = doc._id
 			data.basicInfo = doc.basicInfo
 			data.countInfo = doc.countInfo
+			data.archer = LogicUtils.getAllianceArchon(doc).name
 			allianceInfos.push(data)
 		})
 		return Promise.resolve()

@@ -17,12 +17,8 @@ var MarchUtils = require("../utils/marchUtils")
 var FightUtils = require("../utils/fightUtils")
 var ReportUtils = require("../utils/reportUtils")
 var ErrorUtils = require("../utils/errorUtils")
-var MapUtils = require("../utils/mapUtils")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
-
-var GameDatas = require("../datas/GameDatas")
-var AllianceInitData = GameDatas.AllianceInitData
 
 var AllianceTimeEventService = function(app){
 	this.app = app
@@ -495,6 +491,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 			attackPlayerDoc.basicInfo.kill += countData.attackPlayerKill
 			attackPlayerData.push(["basicInfo.kill", attackPlayerDoc.basicInfo.kill])
+			attackPlayerDoc.basicInfo.attackTotal += 1
+			attackPlayerData.push(["basicInfo.attackTotal", attackPlayerDoc.basicInfo.attackTotal])
 			TaskUtils.finishPlayerKillTaskIfNeed(attackPlayerDoc, attackPlayerData)
 			memberObject = LogicUtils.addAlliancePlayerLastThreeDaysKillData(attackAllianceDoc, attackPlayerDoc._id, countData.attackPlayerKill)
 			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(memberObject) + ".lastThreeDaysKillData", memberObject.lastThreeDaysKillData])
@@ -635,6 +633,9 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						attackPlayerDoc.basicInfo.attackWin += 1
 						attackPlayerData.push(["basicInfo.attackWin", attackPlayerDoc.basicInfo.attackWin])
 						TaskUtils.finishAttackWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
+					}else{
+						helpDefencePlayerDoc.basicInfo.defenceWin += 1
+						helpDefencePlayerData.push(["basicInfo.defenceWin", helpDefencePlayerDoc.basicInfo.defenceWin])
 					}
 				}else{
 					if(!_.isObject(defenceSoldierFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
@@ -645,6 +646,10 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						attackPlayerDoc.basicInfo.attackWin += 1
 						attackPlayerData.push(["basicInfo.attackWin", attackPlayerDoc.basicInfo.attackWin])
 						TaskUtils.finishAttackWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
+					}
+					if(_.isObject(defenceSoldierFightData) && _.isEqual(Consts.FightResult.DefenceWin, defenceSoldierFightData.fightResult)){
+						defencePlayerDoc.basicInfo.defenceWin += 1
+						defencePlayerData.push(["basicInfo.defenceWin", defencePlayerDoc.basicInfo.defenceWin])
 					}
 					if(!_.isObject(defenceSoldierFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
 						if(!_.isObject(defenceWallFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceWallFightData.fightResult)){

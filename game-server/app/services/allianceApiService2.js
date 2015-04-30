@@ -70,8 +70,7 @@ pro.quitAlliance = function(playerId, callback){
 		var playerMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, playerObject.mapId)
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject), null])
 		LogicUtils.removeItemInArray(allianceDoc.mapObjects, playerMapObject)
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Quit, playerObject.name, [])
-		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Quit, playerObject.name, [])
 		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
 		return Promise.resolve()
@@ -228,8 +227,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberMapObject), memberMapObject])
 		enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberMapObject), memberMapObject])
 
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
-		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
 		playerDoc.allianceId = allianceDoc._id
@@ -314,8 +312,7 @@ pro.requestToJoinAlliance = function(playerId, allianceId, callback){
 			}
 			joinRequestEvent = LogicUtils.addAllianceRequestEvent(allianceDoc, playerDoc, requestTime)
 			allianceData.push(["joinRequestEvents." + allianceDoc.joinRequestEvents.indexOf(joinRequestEvent), joinRequestEvent])
-			var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Request, playerDoc.basicInfo.name, [])
-			allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+			LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Request, playerDoc.basicInfo.name, [])
 			updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 			return Promise.resolve()
@@ -516,8 +513,7 @@ pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject), memberObject])
 		enemyAllianceData.push(["members." + allianceDoc.members.indexOf(memberObject), memberObject])
 		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, memberDoc.basicInfo.name, [])
-		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, memberDoc.basicInfo.name, [])
 
 		memberDoc.allianceId = allianceDoc._id
 		memberData.push(["allianceId", memberDoc.allianceId])
@@ -709,8 +705,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject), memberObject])
 		enemyAllianceData.push(["members." + allianceDoc.members.indexOf(memberObject), memberObject])
 		LogicUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
-		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 
 		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, inviterDoc, inviterDoc])
@@ -803,8 +798,7 @@ pro.buyAllianceArchon = function(playerId, callback){
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".title", playerObject.title])
 		archonObject.title = Consts.AllianceTitle.Member
 		allianceData.push(["members." + allianceDoc.members.indexOf(archonObject) + ".title", archonObject.title])
-		var event = LogicUtils.AddAllianceEvent(allianceDoc, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.HandOver, playerDoc.basicInfo.name, [])
-		allianceData.push(["events." + allianceDoc.events.indexOf(event), event])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.HandOver, playerDoc.basicInfo.name, [])
 
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])

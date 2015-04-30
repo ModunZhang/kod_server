@@ -125,6 +125,8 @@ var PlayerSchema = new Schema({
 		levelExp:{type:Number, required:true, default:0},
 		attackWin:{type:Number, required:true, default:0},
 		strikeWin:{type:Number, required:true, default:0},
+		defenceWin:{type:Number, required:true, default:0},
+		attackTotal:{type:Number, required:true, default:0},
 		kill:{type:Number, required:true, default:0},
 		power:{type:Number, required:true, default:0},
 		vipExp:{type:Number, required:true, default:0},
