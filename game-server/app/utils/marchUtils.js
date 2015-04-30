@@ -246,10 +246,11 @@ var getPlayerSoldiersMarchTime = function(playerDoc, soldiers, fromAllianceDoc, 
 	})
 	var itemBuff = DataUtils.isPlayerHasItemEvent(playerDoc, "marchSpeedBonus") ? 0.3 : 0
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(playerDoc) : 0].marchSpeedAdd
-	var time = Math.ceil(totalSpeed / totalCount * distance * 1000)
-	time = LogicUtils.getTimeEfffect(time, itemBuff + vipBuff)
 	console.log(fromAllianceDoc._id, fromLocation, toAllianceDoc._id, toLocation, "11111111")
-	console.log(distance, time, "22222222222")
+	console.log(distance, itemBuff, vipBuff, "22222222222")
+	var time = Math.ceil(totalSpeed / totalCount * distance * 1000)
+	console.log(time, totalSpeed, totalCount, "3333333333")
+	time = LogicUtils.getTimeEfffect(time, itemBuff + vipBuff)
 	return time//5 * 1000
 }
 
