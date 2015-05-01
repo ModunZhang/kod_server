@@ -733,7 +733,7 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 	var allianceInfos = []
 	this.dataService.getAllianceModel().findAsync({
 		"serverId":self.app.get("cacheServerId"),
-		"basicInfo.tag":{$regex:tag}
+		"basicInfo.tag":{$regex:tag, $options:"i"}
 	}, null, {limit:10}).then(function(docs){
 		_.each(docs, function(doc){
 			var data = {}
