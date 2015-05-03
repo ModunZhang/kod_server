@@ -269,16 +269,6 @@ var ChatHandler = function(app){
 			}
 		},
 		{
-			command:"resetalliancestatus",
-			desc:"重置联盟状态",
-			func:function(session, uid, text, callback){
-				var self = this
-				self.app.rpc.logic.commandRemote.resetalliancestatus(session, uid, function(e){
-					callback(e)
-				})
-			}
-		},
-		{
 			command:"playerlevel",
 			desc:"设置玩家等级:playerlevel 5",
 			func:function(session, uid, text, callback){
