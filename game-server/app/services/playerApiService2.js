@@ -473,7 +473,7 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 		callback(new Error("dragonType 不合法"))
 		return
 	}
-	if(!_.isString(skillKey)){
+	if(!_.isString(skillKey) || skillKey.trim().length > Define.InputLength.DragonSkillKey){
 		callback(new Error("skillKey 不合法"))
 		return
 	}
@@ -625,7 +625,7 @@ pro.getDailyQuests = function(playerId, callback){
  * @param callback
  */
 pro.addDailyQuestStar = function(playerId, questId, callback){
-	if(!_.isString(questId)){
+	if(!_.isString(questId) || !ShortId.isValid(questId)){
 		callback(new Error("questId 不合法"))
 		return
 	}
@@ -683,7 +683,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
  * @param callback
  */
 pro.startDailyQuest = function(playerId, questId, callback){
-	if(!_.isString(questId)){
+	if(!_.isString(questId) || !ShortId.isValid(questId)){
 		callback(new Error("questId 不合法"))
 		return
 	}
@@ -733,7 +733,7 @@ pro.startDailyQuest = function(playerId, questId, callback){
  * @param callback
  */
 pro.getDailyQeustReward = function(playerId, questEventId, callback){
-	if(!_.isString(questEventId)){
+	if(!_.isString(questEventId) || !ShortId.isValid(questEventId)){
 		callback(new Error("questEventId 不合法"))
 		return
 	}
@@ -830,7 +830,7 @@ pro.setPlayerLanguage = function(playerId, language, callback){
  * @param callback
  */
 pro.getPlayerInfo = function(playerId, memberId, callback){
-	if(!_.isString(memberId)){
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		callback(new Error("memberId 不合法"))
 		return
 	}
@@ -884,7 +884,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
  * @param callback
  */
 pro.sendMail = function(playerId, memberId, title, content, callback){
-	if(!_.isString(memberId)){
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		callback(new Error("memberId 不合法"))
 		return
 	}
@@ -892,11 +892,11 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 		callback(new Error("playerId, memberId 不能给自己发邮件"))
 		return
 	}
-	if(!_.isString(title)){
+	if(!_.isString(title) || title.trim().length > Define.InputLength.MailTitle){
 		callback(new Error("title 不合法"))
 		return
 	}
-	if(!_.isString(content)){
+	if(!_.isString(content) || content.trim().length > Define.InputLength.MailContent){
 		callback(new Error("content 不合法"))
 		return
 	}
@@ -997,6 +997,12 @@ pro.readMails = function(playerId, mailIds, callback){
 		callback(new Error("mailIds 不合法"))
 		return
 	}
+	for(var i = 0; i < mailIds.length; i ++){
+		if(!ShortId.isValid(mailIds[i])){
+			callback(new Error("mailIds 不合法"))
+			return
+		}
+	}
 
 	var self = this
 	var playerDoc = null
@@ -1035,7 +1041,7 @@ pro.readMails = function(playerId, mailIds, callback){
  * @param callback
  */
 pro.saveMail = function(playerId, mailId, callback){
-	if(!_.isString(mailId)){
+	if(!_.isString(mailId) || !ShortId.isValid(mailId)){
 		callback(new Error("mailId 不合法"))
 		return
 	}

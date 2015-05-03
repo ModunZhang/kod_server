@@ -3995,3 +3995,17 @@ Utils.refreshAllianceBasicInfo = function(allianceDoc, allianceData){
 	allianceDoc.basicInfo.kill = totalKill
 	allianceData.push(["basicInfo.kill", allianceDoc.basicInfo.kill])
 }
+
+/**
+ * 龙技能名称是否存在
+ * @param skillName
+ * @returns {boolean}
+ */
+Utils.isValidDragonSkillName = function(skillName){
+	var skillTotalCount = 7
+	var config = Dragons.dragons
+	for(var i = 1; i <= skillTotalCount; i ++){
+		if(_.isEqual(config["skill_" + i], skillName)) return true
+	}
+	return false
+}

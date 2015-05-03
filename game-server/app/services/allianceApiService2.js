@@ -4,6 +4,7 @@
  * Created by modun on 14/12/10.
  */
 
+var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
 
@@ -181,7 +182,7 @@ pro.quitAlliance = function(playerId, callback){
  * @param callback
  */
 pro.joinAllianceDirectly = function(playerId, allianceId, callback){
-	if(!_.isString(allianceId)){
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
 		callback(new Error("allianceId 不合法"))
 		return
 	}
@@ -270,7 +271,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
  * @param callback
  */
 pro.requestToJoinAlliance = function(playerId, allianceId, callback){
-	if(!_.isString(allianceId)){
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
 		callback(new Error("allianceId 不合法"))
 		return
 	}
@@ -344,7 +345,7 @@ pro.requestToJoinAlliance = function(playerId, allianceId, callback){
  * @param callback
  */
 pro.cancelJoinAllianceRequest = function(playerId, allianceId, callback){
-	if(!_.isString(allianceId)){
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
 		callback(new Error("allianceId 不合法"))
 		return
 	}
@@ -387,6 +388,13 @@ pro.removeJoinAllianceReqeusts = function(playerId, requestEventIds, callback){
 	if(!_.isArray(requestEventIds) || requestEventIds.length == 0){
 		callback(new Error("requestEventIds 不合法"))
 		return
+	}
+	for(var i = 0; i < requestEventIds; i ++){
+		if(!ShortId.isValid(requestEventIds[i]))
+		{
+			callback(new Error("requestEventIds 不合法"))
+			return
+		}
 	}
 
 	var self = this
@@ -473,7 +481,11 @@ pro.removeJoinAllianceReqeusts = function(playerId, requestEventIds, callback){
 		})
 		return Promise.all(funcs)
 	}).catch(function(e){
-		self.logService.onEventError("logic.allianceApiService2.removeJoinAllianceReqeusts", {playerId:playerId, allianceId:allianceDoc._id, requestEventIds:requestEventIds}, e.stack)
+		self.logService.onEventError("logic.allianceApiService2.removeJoinAllianceReqeusts", {
+			playerId:playerId,
+			allianceId:allianceDoc._id,
+			requestEventIds:requestEventIds
+		}, e.stack)
 	})
 }
 
@@ -484,7 +496,7 @@ pro.removeJoinAllianceReqeusts = function(playerId, requestEventIds, callback){
  * @param callback
  */
 pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
-	if(!_.isString(requestEventId)){
+	if(!_.isString(requestEventId) || !ShortId.isValid(requestEventId)){
 		callback(new Error("requestEventId 不合法"))
 		return
 	}
@@ -598,7 +610,7 @@ pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
  * @param callback
  */
 pro.inviteToJoinAlliance = function(playerId, memberId, callback){
-	if(!_.isString(memberId)){
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		callback(new Error("memberId 不合法"))
 		return
 	}
@@ -668,7 +680,7 @@ pro.inviteToJoinAlliance = function(playerId, memberId, callback){
  * @param callback
  */
 pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
-	if(!_.isString(allianceId)){
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
 		callback(new Error("allianceId 不合法"))
 		return
 	}
@@ -876,7 +888,7 @@ pro.requestAllianceToSpeedUp = function(playerId, eventType, eventId, callback){
 		callback(new Error("eventType 不合法"))
 		return
 	}
-	if(!_.isString(eventId)){
+	if(!_.isString(eventId) || !ShortId.isValid(eventId)){
 		callback(new Error("eventId 不合法"))
 		return
 	}
@@ -928,7 +940,7 @@ pro.requestAllianceToSpeedUp = function(playerId, eventType, eventId, callback){
  * @param callback
  */
 pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
-	if(!_.isString(eventId)){
+	if(!_.isString(eventId) || !ShortId.isValid(eventId)){
 		callback(new Error("eventId 不合法"))
 		return
 	}

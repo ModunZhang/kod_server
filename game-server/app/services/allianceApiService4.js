@@ -4,6 +4,7 @@
  * Created by modun on 14/12/10.
  */
 
+var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
 
@@ -47,7 +48,7 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 		callback(new Error("soldiers 不合法"))
 		return
 	}
-	if(!_.isString(targetPlayerId)){
+	if(!_.isString(targetPlayerId) || !ShortId.isValid(targetPlayerId)){
 		callback(new Error("targetPlayerId 不合法"))
 		return
 	}
@@ -138,7 +139,7 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
  * @param callback
  */
 pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, callback){
-	if(!_.isString(beHelpedPlayerId)){
+	if(!_.isString(beHelpedPlayerId) || !ShortId.isValid(beHelpedPlayerId)){
 		callback(new Error("beHelpedPlayerId 不合法"))
 		return
 	}
@@ -243,7 +244,7 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 		callback(new Error("dragonType 不合法"))
 		return
 	}
-	if(!_.isString(defencePlayerId)){
+	if(!_.isString(defencePlayerId) || !ShortId.isValid(defencePlayerId)){
 		callback(new Error("defencePlayerId 不合法"))
 		return
 	}
@@ -349,7 +350,7 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 		callback(new Error("soldiers 不合法"))
 		return
 	}
-	if(!_.isString(defencePlayerId)){
+	if(!_.isString(defencePlayerId) || !ShortId.isValid(defencePlayerId)){
 		callback(new Error("defencePlayerId 不合法"))
 		return
 	}
@@ -461,11 +462,11 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 		callback(new Error("soldiers 不合法"))
 		return
 	}
-	if(!_.isString(defenceAllianceId)){
+	if(!_.isString(defenceAllianceId) || !ShortId.isValid(defenceAllianceId)){
 		callback(new Error("defenceAllianceId 不合法"))
 		return
 	}
-	if(!_.isString(defenceVillageId)){
+	if(!_.isString(defenceVillageId) || !ShortId.isValid(defenceVillageId)){
 		callback(new Error("defenceVillageId 不合法"))
 		return
 	}
@@ -566,7 +567,7 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
  * @param callback
  */
 pro.retreatFromVillage = function(playerId, villageEventId, callback){
-	if(!_.isString(villageEventId)){
+	if(!_.isString(villageEventId) || !ShortId.isValid(villageEventId)){
 		callback(new Error("villageEventId 不合法"))
 		return
 	}
@@ -690,11 +691,11 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 		callback(new Error("dragonType 不合法"))
 		return
 	}
-	if(!_.isString(defenceAllianceId)){
+	if(!_.isString(defenceAllianceId) || !ShortId.isValid(defenceAllianceId)){
 		callback(new Error("defenceAllianceId 不合法"))
 		return
 	}
-	if(!_.isString(defenceVillageId)){
+	if(!_.isString(defenceVillageId) || !ShortId.isValid(defenceVillageId)){
 		callback(new Error("defenceVillageId 不合法"))
 		return
 	}
@@ -791,11 +792,11 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
  * @param callback
  */
 pro.getAttackMarchEventDetail = function(playerId, enemyAllianceId, eventId, callback){
-	if(!_.isString(enemyAllianceId)){
+	if(!_.isString(enemyAllianceId) || !ShortId.isValid(enemyAllianceId)){
 		callback(new Error("enemyAllianceId 不合法"))
 		return
 	}
-	if(!_.isString(eventId)){
+	if(!_.isString(eventId) || !ShortId.isValid(eventId)){
 		callback(new Error("eventId 不合法"))
 		return
 	}
@@ -831,11 +832,11 @@ pro.getAttackMarchEventDetail = function(playerId, enemyAllianceId, eventId, cal
  * @param callback
  */
 pro.getStrikeMarchEventDetail = function(playerId, enemyAllianceId, eventId, callback){
-	if(!_.isString(enemyAllianceId)){
+	if(!_.isString(enemyAllianceId) || !ShortId.isValid(enemyAllianceId)){
 		callback(new Error("enemyAllianceId 不合法"))
 		return
 	}
-	if(!_.isString(eventId)){
+	if(!_.isString(eventId) || !ShortId.isValid(eventId)){
 		callback(new Error("eventId 不合法"))
 		return
 	}
@@ -871,7 +872,11 @@ pro.getStrikeMarchEventDetail = function(playerId, enemyAllianceId, eventId, cal
  * @param callback
  */
 pro.getHelpDefenceMarchEventDetail = function(playerId, allianceId, eventId, callback){
-	if(!_.isString(eventId)){
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		callback(new Error("allianceId 不合法"))
+		return
+	}
+	if(!_.isString(eventId) || !ShortId.isValid(eventId)){
 		callback(new Error("eventId 不合法"))
 		return
 	}
@@ -907,11 +912,11 @@ pro.getHelpDefenceMarchEventDetail = function(playerId, allianceId, eventId, cal
  * @param callback
  */
 pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, callback){
-	if(!_.isString(playerId)){
+	if(!_.isString(playerId) || !ShortId.isValid(playerId)){
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isString(helpedByPlayerId)){
+	if(!_.isString(helpedByPlayerId) || !ShortId.isValid(helpedByPlayerId)){
 		callback(new Error("helpedByPlayerId 不合法"))
 		return
 	}

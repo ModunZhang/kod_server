@@ -3,6 +3,7 @@
 /**
  * Created by modun on 14-7-23.
  */
+var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
 
@@ -526,7 +527,7 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
  * @param callback
  */
 pro.getIapGift = function(playerId, giftId, callback){
-	if(!_.isString(giftId)){
+	if(!_.isString(giftId) || !ShortId.isValid(giftId)){
 		callback(new Error("giftId 不合法"))
 		return
 	}

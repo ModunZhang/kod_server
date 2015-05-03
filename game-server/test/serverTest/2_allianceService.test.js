@@ -169,7 +169,7 @@
 //				doc.code.should.equal(200)
 //				Api.createAlliance("31231", Config.allianceTag2, "cn", "grassLand", "e", function(doc){
 //					doc.code.should.equal(200)
-//					Api.editAllianceBasicInfo(Config.allianceName, "adfad", "cn", "e", function(doc){
+//					Api.editAllianceBasicInfo(Config.allianceName, "adf", "cn", "e", function(doc){
 //						doc.code.should.equal(Errors.allianceNameExist.code)
 //						done()
 //					})
@@ -702,7 +702,7 @@
 //		})
 //
 //		it("searchAllianceByTag 正常搜索", function(done){
-//			Api.searchAllianceByTag("test", function(doc){
+//			Api.searchAllianceByTag("t", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})

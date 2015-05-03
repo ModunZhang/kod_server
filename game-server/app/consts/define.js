@@ -19,5 +19,19 @@ module.exports = {
 	AllianceRequestMessageMaxSize:50,//联盟中的入盟申请信息最大数量,
 	AllianceShrineReportsMaxSize:10,//圣地事件报告最大数量
 	AllianceFightReportsMaxSize:20,//联盟战日志
-	AllianceItemLogsMaxSize:20//联盟商店商品日志
+	AllianceItemLogsMaxSize:20,//联盟商店商品日志
+	InputLength:{
+		PlayerName:12,//玩家昵称长度
+		CityName:12,//玩家城市名称长度
+		DragonSkillKey:7,//龙技能Key长度
+		AllianceName:20,//联盟名称长度
+		AllianceTag:3,//联盟标签长度
+		AllianceFlag:50,//联盟Flag长度
+		MailTitle:16,//邮件标题长度
+		MailContent:300,//邮件正文长度
+		Chat:100,//聊天内容长度
+		AllianceNotice:200,//联盟公告长度
+		AllianceDesc:60,//联盟描述长度,
+		AllianceTitleName:20//联盟自定义职位名称长度
+	}
 }

@@ -35,7 +35,7 @@ var pro = AllianceApiService5.prototype
  * @param callback
  */
 pro.giveLoyaltyToAllianceMember = function(playerId, memberId, count, callback){
-	if(!_.isString(memberId)){
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		callback(new Error("memberId 不合法"))
 		return
 	}

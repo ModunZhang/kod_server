@@ -4,6 +4,7 @@
  * Created by modun on 14-7-23.
  */
 
+var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
 
@@ -33,7 +34,7 @@ var pro = PlayerApiService3.prototype
  * @param callback
  */
 pro.unSaveMail = function(playerId, mailId, callback){
-	if(!_.isString(mailId)){
+	if(!_.isString(mailId) || !ShortId.isValid(mailId)){
 		callback(new Error("mailId 不合法"))
 		return
 	}
@@ -167,6 +168,12 @@ pro.deleteMails = function(playerId, mailIds, callback){
 		callback(new Error("mailIds 不合法"))
 		return
 	}
+	for(var i = 0; i < mailIds.length; i ++){
+		if(!ShortId.isValid(mailIds[i])){
+			callback(new Error("mailIds 不合法"))
+			return
+		}
+	}
 
 	var self = this
 	var playerDoc = null
@@ -208,6 +215,12 @@ pro.readReports = function(playerId, reportIds, callback){
 		callback(new Error("reportIds 不合法"))
 		return
 	}
+	for(var i = 0; i < reportIds.length; i ++){
+		if(!ShortId.isValid(reportIds[i])){
+			callback(new Error("reportIds 不合法"))
+			return
+		}
+	}
 
 	var self = this
 	var playerDoc = null
@@ -245,7 +258,7 @@ pro.readReports = function(playerId, reportIds, callback){
  * @param callback
  */
 pro.saveReport = function(playerId, reportId, callback){
-	if(!_.isString(reportId)){
+	if(!_.isString(reportId) || !ShortId.isValid(reportId)){
 		callback(new Error("reportId 不合法"))
 		return
 	}
@@ -284,7 +297,7 @@ pro.saveReport = function(playerId, reportId, callback){
  * @param callback
  */
 pro.unSaveReport = function(playerId, reportId, callback){
-	if(!_.isString(reportId)){
+	if(!_.isString(reportId) || !ShortId.isValid(reportId)){
 		callback(new Error("reportId 不合法"))
 		return
 	}
@@ -386,6 +399,12 @@ pro.deleteReports = function(playerId, reportIds, callback){
 		callback(new Error("reportIds 不合法"))
 		return
 	}
+	for(var i = 0; i < reportIds.length; i ++){
+		if(!ShortId.isValid(reportIds[i])){
+			callback(new Error("reportIds 不合法"))
+			return
+		}
+	}
 
 	var self = this
 	var playerDoc = null
@@ -423,7 +442,7 @@ pro.deleteReports = function(playerId, reportIds, callback){
  * @param callback
  */
 pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
-	if(!_.isString(targetPlayerId)){
+	if(!_.isString(targetPlayerId) || !ShortId.isValid(targetPlayerId)){
 		callback(new Error("targetPlayerId 不合法"))
 		return
 	}
@@ -659,7 +678,7 @@ pro.getSellItems = function(playerId, type, name, callback){
  * @param callback
  */
 pro.buySellItem = function(playerId, itemId, callback){
-	if(!_.isString(itemId)){
+	if(!_.isString(itemId) || !ShortId.isValid(itemId)){
 		callback(new Error("itemId 不合法"))
 		return
 	}
@@ -745,7 +764,7 @@ pro.buySellItem = function(playerId, itemId, callback){
  * @param callback
  */
 pro.getMyItemSoldMoney = function(playerId, itemId, callback){
-	if(!_.isString(itemId)){
+	if(!_.isString(itemId) || !ShortId.isValid(itemId)){
 		callback(new Error("itemId 不合法"))
 		return
 	}
@@ -792,7 +811,7 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
  * @param callback
  */
 pro.removeMySellItem = function(playerId, itemId, callback){
-	if(!_.isString(itemId)){
+	if(!_.isString(itemId) || !ShortId.isValid(itemId)){
 		callback(new Error("itemId 不合法"))
 		return
 	}

@@ -48,11 +48,11 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isString(name)){
+	if(!_.isString(name) || name.trim().length > Define.InputLength.AllianceName){
 		callback(new Error("name 不合法"))
 		return
 	}
-	if(!_.isString(tag)){
+	if(!_.isString(tag) || tag.trim().length > Define.InputLength.AllianceTag){
 		callback(new Error("tag 不合法"))
 		return
 	}
@@ -348,7 +348,7 @@ pro.getCanDirectJoinAlliances = function(playerId, callback){
  * @param callback
  */
 pro.searchAllianceByTag = function(playerId, tag, callback){
-	if(!_.isString(tag)){
+	if(!_.isString(tag) || tag.trim().length > Define.InputLength.AllianceTag){
 		callback(new Error("tag 不合法"))
 		return
 	}
@@ -401,11 +401,11 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		callback(new Error("playerId 不合法"))
 		return
 	}
-	if(!_.isString(name)){
+	if(!_.isString(name) || name.trim().length > Define.InputLength.AllianceName){
 		callback(new Error("name 不合法"))
 		return
 	}
-	if(!_.isString(tag)){
+	if(!_.isString(tag) || tag.trim().length > Define.InputLength.AllianceTag){
 		callback(new Error("tag 不合法"))
 		return
 	}
@@ -413,7 +413,7 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 		callback(new Error("language 不合法"))
 		return
 	}
-	if(!_.isString(flag)){
+	if(!_.isString(flag) || flag.trim().length > Define.InputLength.AllianceFlag){
 		callback(new Error("flag 不合法"))
 		return
 	}
@@ -595,7 +595,7 @@ pro.editAllianceTitleName = function(playerId, title, titleName, callback){
 		callback(new Error("title 不合法"))
 		return
 	}
-	if(!_.isString(titleName)){
+	if(!_.isString(titleName) || titleName.trim().length > Define.InputLength.AllianceTitleName){
 		callback(new Error("titleName 不合法"))
 		return
 	}
@@ -646,7 +646,7 @@ pro.editAllianceTitleName = function(playerId, title, titleName, callback){
  * @param callback
  */
 pro.editAllianceNotice = function(playerId, notice, callback){
-	if(!_.isString(notice)){
+	if(!_.isString(notice) || notice.trim().length > Define.InputLength.AllianceNotice){
 		callback(new Error("notice 不合法"))
 		return
 	}
@@ -694,7 +694,7 @@ pro.editAllianceNotice = function(playerId, notice, callback){
  * @param callback
  */
 pro.editAllianceDescription = function(playerId, description, callback){
-	if(!_.isString(description)){
+	if(!_.isString(description) || description.trim().length > Define.InputLength.AllianceDesc){
 		callback(new Error("description 不合法"))
 		return
 	}
@@ -790,7 +790,7 @@ pro.editAllianceJoinType = function(playerId, joinType, callback){
  * @param callback
  */
 pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
-	if(!_.isString(memberId)){
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		callback(new Error("memberId 不合法"))
 		return
 	}
@@ -881,7 +881,7 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
  * @param callback
  */
 pro.kickAllianceMemberOff = function(playerId, memberId, callback){
-	if(!_.isString(memberId)){
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		callback(new Error("memberId 不合法"))
 		return
 	}
@@ -1040,7 +1040,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
  * @param callback
  */
 pro.handOverAllianceArchon = function(playerId, memberId, callback){
-	if(!_.isString(memberId)){
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		callback(new Error("memberId 不合法"))
 		return
 	}

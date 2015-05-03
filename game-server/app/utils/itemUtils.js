@@ -8,6 +8,7 @@ var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
 var Consts = require("../consts/consts")
+var Define = require("../consts/define")
 var LogicUtils = require("./logicUtils")
 var DataUtils = require("./dataUtils")
 var TaskUtils = require("../utils/taskUtils")
@@ -678,12 +679,12 @@ Utils.isParamsLegal = function(itemName, params){
 	if(_.isEqual(itemName, "changePlayerName")){
 		if(!_.isObject(itemData)) return false
 		var playerName = itemData.playerName
-		return !(!_.isString(playerName) || _.isEmpty(playerName))
+		return !(!_.isString(playerName) || playerName.trim().length > Define.InputLength.PlayerName)
 	}
 	if(_.isEqual(itemName, "changeCityName")){
 		if(!_.isObject(itemData)) return false
 		var cityName = itemData.cityName
-		return !(!_.isString(cityName) || _.isEmpty(cityName))
+		return !(!_.isString(cityName) || cityName.trim().length > Define.InputLength.CityName)
 	}
 	if(_.isEqual(itemName, "retreatTroop")){
 		if(!_.isObject(itemData)) return false
