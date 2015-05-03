@@ -787,8 +787,7 @@ pro.getNearedAllianceInfos = function(playerId, callback){
 	}).spread(function(docsSmall, docsBig){
 		var allianceDocs = []
 		allianceDocs.push(allianceDoc)
-		allianceDocs.concat(docsSmall)
-		allianceDocs.concat(docsBig)
+		allianceDocs = allianceDocs.concat(docsSmall, docsBig)
 		_.each(allianceDocs, function(doc){
 			var data = {}
 			data._id = doc._id
