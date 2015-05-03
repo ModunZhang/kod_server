@@ -691,7 +691,7 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 			playerId:playerId,
 			used:gemUsed,
 			left:playerDoc.resources.gem,
-			api:"upgradeBuilding"
+			api:"unlockPlayerSecondMarchQueue"
 		}
 		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		playerDoc.basicInfo.marchQueue = 2

@@ -24,22 +24,6 @@
         "port": 4152,
         "clientPort": 4012,
         "frontend": true,
-        "usedFor": "cache-server-1"
-      },
-      {
-        "id": "logic-server-3",
-        "host": "192.168.0.30",
-        "port": 4153,
-        "clientPort": 4013,
-        "frontend": true,
-        "usedFor": "cache-server-2"
-      },
-      {
-        "id": "logic-server-4",
-        "host": "192.168.0.30",
-        "port": 4154,
-        "clientPort": 4014,
-        "frontend": true,
         "usedFor": "cache-server-2"
       }
     ],
@@ -85,6 +69,20 @@
         "port": 7152,
         "isPromoted": "false",
         "isNew": "true"
+      }
+    ],
+    "rank": [
+      {
+        "id": "rank-server-1",
+        "host": "192.168.0.30",
+        "port": 8151,
+        "usedFor": "cache-server-1"
+      },
+      {
+        "id": "rank-server-2",
+        "host": "192.168.0.30",
+        "port": 8152,
+        "usedFor": "cache-server-2"
       }
     ]
   },
@@ -114,22 +112,6 @@
         "clientPort": 4012,
         "frontend": true,
         "usedFor": "cache-server-2"
-      },
-      {
-        "id": "logic-server-3",
-        "host": "54.223.172.65",
-        "port": 4153,
-        "clientPort": 4013,
-        "frontend": true,
-        "usedFor": "cache-server-2"
-      },
-      {
-        "id": "logic-server-4",
-        "host": "54.223.172.65",
-        "port": 4154,
-        "clientPort": 4014,
-        "frontend": true,
-        "usedFor": "cache-server-2"
       }
     ],
     "chat": [
@@ -174,6 +156,20 @@
         "port": 7152,
         "isPromoted": "false",
         "isNew": "true"
+      }
+    ],
+    "rank": [
+      {
+        "id": "rank-server-1",
+        "host": "54.223.172.65",
+        "port": 8151,
+        "usedFor": "cache-server-1"
+      },
+      {
+        "id": "rank-server-2",
+        "host": "54.223.172.65",
+        "port": 8152,
+        "usedFor": "cache-server-2"
       }
     ]
   }

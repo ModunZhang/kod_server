@@ -17,7 +17,6 @@ module.exports = function(app){
 
 var ChatHandler = function(app){
 	this.app = app
-	this.env = app.get("env")
 	this.channelService = app.get("channelService")
 	this.chatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, false)
 	this.logService = app.get("logService")
