@@ -1271,6 +1271,7 @@ Utils.getDragonSkillBuff = function(dragon, skillName){
 Utils.getDragonStrengthBuff = function(dragon, terrain){
 	var terrainBuff = _.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain) ? 0.1 : 0
 	var skillBuff = this.getDragonSkillBuff(dragon, "dragonBreath")
+	console.log(dragon.type, terrainBuff, skillBuff, terrain, "2222222222222")
 	return terrainBuff + skillBuff
 }
 
@@ -1283,6 +1284,7 @@ Utils.getDragonStrengthBuff = function(dragon, terrain){
 Utils.getDragonStrength = function(dragon, terrain){
 	var strength = Dragons.dragonLevel[dragon.level].strength
 	var buff = this.getDragonStrengthBuff(dragon, terrain)
+	console.log(dragon.type, strength, buff, "1111111111111")
 	strength += Math.floor(strength * buff)
 	_.each(dragon.equipments, function(equipment, category){
 		if(!_.isEmpty(equipment.name)){
