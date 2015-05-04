@@ -83,24 +83,24 @@ productionTechs["rescueTent"] = {
 	academyLevel:16,
 	effectPerLevel:0.020000
 }
-productionTechs["colonization"] = {
-	name:"colonization",
+productionTechs["trap"] = {
+	name:"trap",
 	index:11,
 	unlockBy:8,
 	unlockLevel:5,
 	academyLevel:24,
 	effectPerLevel:0.010000
 }
-productionTechs["negotiation"] = {
-	name:"negotiation",
+productionTechs["healingAgent"] = {
+	name:"healingAgent",
 	index:12,
 	unlockBy:9,
 	unlockLevel:5,
 	academyLevel:30,
 	effectPerLevel:0.010000
 }
-productionTechs["trap"] = {
-	name:"trap",
+productionTechs["colonization"] = {
+	name:"colonization",
 	index:13,
 	unlockBy:10,
 	unlockLevel:5,
@@ -115,24 +115,24 @@ productionTechs["hideout"] = {
 	academyLevel:26,
 	effectPerLevel:0.010000
 }
-productionTechs["logistics"] = {
-	name:"logistics",
+productionTechs["sketching"] = {
+	name:"sketching",
 	index:15,
 	unlockBy:12,
 	unlockLevel:5,
 	academyLevel:28,
 	effectPerLevel:0.020000
 }
-productionTechs["healingAgent"] = {
-	name:"healingAgent",
+productionTechs["negotiation"] = {
+	name:"negotiation",
 	index:16,
 	unlockBy:13,
 	unlockLevel:5,
 	academyLevel:18,
 	effectPerLevel:0.020000
 }
-productionTechs["sketching"] = {
-	name:"sketching",
+productionTechs["logistics"] = {
+	name:"logistics",
 	index:17,
 	unlockBy:14,
 	unlockLevel:5,
