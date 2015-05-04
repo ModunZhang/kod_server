@@ -426,7 +426,12 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 	})
 	_.each(playerDoc.dragonDeathEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
-			playerTimeEventService.onPlayerEvent(playerDoc, [], "dragonDeathEvents", event.id)
+			LogicUtils.removeItemInArray(playerDoc.dragonDeathEvents, event)
+			var dragon = playerDoc.dragons[event.dragonType]
+			dragon.hp = 1
+			dragon.hpRefreshTime = event.finishTime
+			playerData.push(["dragons." + dragon.type + ".hp", dragon.hp])
+			playerData.push(["dragons." + dragon.type + ".hpRefreshTime", dragon.hpRefreshTime])
 		}else{
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dragonDeathEvents", event.id, event.finishTime - now))
 		}

@@ -97,6 +97,11 @@ app.configure("production|development", "cache", function(){
 	app.set("mongoose", mongooseClient)
 })
 
+app.configure("production|development", "rank", function(){
+	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
+	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
+	app.set("mongoose", mongooseClient)
+})
 
 app.set('errorHandler', function(e, msg, resp, session, opts, cb){
 	app.get("logService").onRequestError("app.errorHandler", {playerId:session.uid, msg:msg}, e.stack)
