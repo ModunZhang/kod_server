@@ -808,6 +808,8 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(defenceAllianceId))
 		defenceAllianceDoc = doc
+		if(!_.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Peace))
+			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, defenceAllianceDoc._id))
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent])
 		}

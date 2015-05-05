@@ -29,9 +29,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 	var defenceSoldiersAfterFight = []
 	var attackResults = []
 	var defenceResults = []
-	var round = 0
 	while(attackSoldiers.length > 0 && defenceSoldiers.length > 0){
-		round += 1
 		var attackSoldier = attackSoldiers[0]
 		var defenceSoldier = defenceSoldiers[0]
 		var attackSoldierType = attackSoldier.type
@@ -184,9 +182,7 @@ Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent,
 	var attackSoldiersAfterFight = []
 	var attackResults = []
 	var defenceResults = []
-	var round = 0
 	while(attackSoldiers.length > 0 && defenceWall.currentHp > 0){
-		round += 1
 		var attackSoldier = attackSoldiers[0]
 		var attackSoldierType = attackSoldier.type
 		var defenceSoldierType = "wall"
