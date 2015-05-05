@@ -468,11 +468,10 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc, helpDefencePlayerDoc, helpDefenceDragon){
 	var getReportLevel = function(powerCompare){
 		var reportLevel = null
-		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.E
-		else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.D
-		else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.C
-		else if(powerCompare >= 2 && powerCompare < 4) reportLevel = Consts.DragonStrikeReportLevel.B
-		else if(powerCompare >= 4 && powerCompare < 6) reportLevel = Consts.DragonStrikeReportLevel.A
+		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.D
+		else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.C
+		else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.B
+		else if(powerCompare >= 2 && powerCompare < 3) reportLevel = Consts.DragonStrikeReportLevel.A
 		else reportLevel = Consts.DragonStrikeReportLevel.S
 		return reportLevel
 	}
@@ -631,11 +630,10 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc, defenceDragon){
 	var getReportLevel = function(powerCompare){
 		var reportLevel = null
-		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.E
-		else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.D
-		else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.C
-		else if(powerCompare >= 2 && powerCompare < 4) reportLevel = Consts.DragonStrikeReportLevel.B
-		else if(powerCompare >= 4 && powerCompare < 6) reportLevel = Consts.DragonStrikeReportLevel.A
+		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.D
+		else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.C
+		else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.B
+		else if(powerCompare >= 2 && powerCompare < 3) reportLevel = Consts.DragonStrikeReportLevel.A
 		else reportLevel = Consts.DragonStrikeReportLevel.S
 		return reportLevel
 	}
@@ -1073,11 +1071,10 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragon, targetAllianceDoc, defenceVillage, defenceAllianceDoc, defenceVillageEvent, defencePlayerDoc, defenceDragon){
 	var getReportLevel = function(powerCompare){
 		var reportLevel = null
-		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.E
-		else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.D
-		else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.C
-		else if(powerCompare >= 2 && powerCompare < 4) reportLevel = Consts.DragonStrikeReportLevel.B
-		else if(powerCompare >= 4 && powerCompare < 6) reportLevel = Consts.DragonStrikeReportLevel.A
+		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.D
+		else if(powerCompare >= 1 && powerCompare < 1.5) reportLevel = Consts.DragonStrikeReportLevel.C
+		else if(powerCompare >= 1.5 && powerCompare < 2) reportLevel = Consts.DragonStrikeReportLevel.B
+		else if(powerCompare >= 2 && powerCompare < 3) reportLevel = Consts.DragonStrikeReportLevel.A
 		else reportLevel = Consts.DragonStrikeReportLevel.S
 		return reportLevel
 	}

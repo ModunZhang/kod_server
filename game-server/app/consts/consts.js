@@ -297,12 +297,11 @@ module.exports = {
 		Shop:"shop"//联盟商店
 	},
 	DragonStrikeReportLevel:{
-		E:1,
-		D:2,
-		C:3,
-		B:4,
-		A:5,
-		S:6
+		D:1,
+		C:2,
+		B:3,
+		A:4,
+		S:5
 	},
 	AllianceStatus:{
 		Peace:"peace",
