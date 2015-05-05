@@ -1282,6 +1282,7 @@ Utils.getDragonStrengthBuff = function(dragon, terrain){
  */
 Utils.getDragonStrength = function(dragon, terrain){
 	var strength = Dragons.dragonLevel[dragon.level].strength
+	strength += Dragons.dragonStar[dragon.star].initStrength
 	var buff = this.getDragonStrengthBuff(dragon, terrain)
 	strength += Math.floor(strength * buff)
 	_.each(dragon.equipments, function(equipment, category){
@@ -1312,6 +1313,7 @@ Utils.getDragonVitalityBuff = function(dragon){
  */
 Utils.getDragonVitality = function(dragon){
 	var vitality = Dragons.dragonLevel[dragon.level].vitality
+	vitality += Dragons.dragonStar[dragon.star].initVitality
 	var buff = this.getDragonVitalityBuff(dragon)
 	vitality += Math.floor(vitality * buff)
 	_.each(dragon.equipments, function(equipment, category){
