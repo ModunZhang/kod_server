@@ -2051,12 +2051,13 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
 /**
  * 龙技能对进攻城墙的加成Buff
  * @param dragon
+ * @param isDragonWin
  * @returns {number}
  */
-Utils.getDragonAtkWallBuff = function(dragon){
+Utils.getDragonAtkWallBuff = function(dragon, isDragonWin){
 	var dragonSkillName = "earthquake"
 	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
-	return skillBuff
+	return skillBuff * (isDragonWin ? 1 : 0.5)
 }
 
 /**
@@ -2065,9 +2066,10 @@ Utils.getDragonAtkWallBuff = function(dragon){
  * @param soldierName
  * @param dragon
  * @param terrain
+ * @param isDragonWin
  * @returns {number}
  */
-Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain){
+Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain, isDragonWin){
 	var itemBuff = 0
 	var skillBuff = 0
 	var equipmentBuff = 0
@@ -2095,7 +2097,7 @@ Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain)
 		})
 	})
 
-	return itemBuff + skillBuff + equipmentBuff
+	return itemBuff + ((skillBuff + equipmentBuff) * (isDragonWin ? 1 : 0.5))
 }
 
 /**
@@ -2103,9 +2105,10 @@ Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain)
  * @param playerDoc
  * @param soldierName
  * @param dragon
+ * @param isDragonWin
  * @returns {number}
  */
-Utils.getPlayerSoldierLoadBuff = function(playerDoc, soldierName, dragon){
+Utils.getPlayerSoldierLoadBuff = function(playerDoc, soldierName, dragon, isDragonWin){
 	var equipmentBuff = 0
 
 	var soldierConfig = this.getPlayerSoldierConfig(playerDoc, soldierName)
@@ -2120,7 +2123,7 @@ Utils.getPlayerSoldierLoadBuff = function(playerDoc, soldierName, dragon){
 		})
 	})
 
-	return equipmentBuff
+	return equipmentBuff * (isDragonWin ? 1 : 0.5)
 }
 
 /**
@@ -2141,9 +2144,9 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 		var soldierCount = soldier.count
 		var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
 		var atkBuff = self.getPlayerSoldierAtkBuff(playerDoc, soldierName, dragon, terrain, isDragonWin)
-		var atkWallBuff = self.getDragonAtkWallBuff(dragon)
-		var hpBuff = self.getPlayerSoldierHpBuff(playerDoc, soldierName, dragon, terrain)
-		var loadBuff = self.getPlayerSoldierLoadBuff(playerDoc, soldierName, dragon)
+		var atkWallBuff = self.getDragonAtkWallBuff(dragon, isDragonWin)
+		var hpBuff = self.getPlayerSoldierHpBuff(playerDoc, soldierName, dragon, terrain, isDragonWin)
+		var loadBuff = self.getPlayerSoldierLoadBuff(playerDoc, soldierName, dragon, isDragonWin)
 		var techBuffToInfantry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_infantry")
 		var techBuffToArcher = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_archer")
 		var techBuffToCavalry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_cavalry")
