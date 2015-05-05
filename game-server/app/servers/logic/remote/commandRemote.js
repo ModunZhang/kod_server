@@ -777,7 +777,7 @@ pro.cleargc = function(uid, callback){
 
 /**
  * 开启联盟战
- * @param uid
+ * @param playerId
  * @param defenceAllianceId
  * @param callback
  */
@@ -837,8 +837,6 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		self.apnService.pushApnMessageToAllianceMembers(attackAllianceDoc, DataUtils.getLocalizationConfig("alliance", "AttackAllianceMessage"), [])
-		self.apnService.pushApnMessageToAllianceMembers(defenceAllianceDoc, DataUtils.getLocalizationConfig("alliance", "AllianceBeAttackedMessage"), [attackAllianceDoc.basicInfo.name])
 		callback()
 	}).catch(function(e){
 		var funcs = []
