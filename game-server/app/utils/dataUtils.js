@@ -2231,7 +2231,6 @@ Utils.createSoldiersForFight = function(soldiers){
 	soldiersForFight = _.sortBy(soldiersForFight, function(soldier){
 		return -(soldier.power * soldier.totalCount)
 	})
-	console.log(soldiersForFight, "1111111111")
 	return soldiersForFight
 }
 
@@ -2253,7 +2252,6 @@ Utils.createPlayerDragonForFight = function(playerDoc, dragon, terrain){
 		currentHp:dragon.hp,
 		isWin:false
 	}
-	console.log(dragonForFight, "22222222222")
 	return dragonForFight
 }
 

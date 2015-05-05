@@ -554,7 +554,7 @@ pro.findAllianceToFight = function(playerId, callback){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent])
 		}
 		var now = Date.now()
-		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 1 * 1000)
+		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 60 * 1000)
 		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
 		attackAllianceData.push(["basicInfo", attackAllianceDoc.basicInfo])
 		attackAllianceData.push(["allianceFight", attackAllianceDoc.allianceFight])
@@ -646,7 +646,7 @@ pro.revengeAlliance = function(playerId, reportId, callback){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent])
 		}
 		var now = Date.now()
-		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 1 * 1000)
+		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 60 * 1000)
 		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
 		attackAllianceData.push(["basicInfo", attackAllianceDoc.basicInfo])
 		attackAllianceData.push(["allianceFight", attackAllianceDoc.allianceFight])

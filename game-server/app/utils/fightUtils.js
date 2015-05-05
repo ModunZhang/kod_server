@@ -140,8 +140,10 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
 
 	if(effect >= 0){
 		defenceDragonStrengthFixed = defenceDragonStrength * (1 - effect)
+		attackDragonStrengthFixed = attackDragonStrength
 	}else{
 		attackDragonStrengthFixed = attackDragonStrength * (1 - (-effect))
+		defenceDragonStrengthFixed = defenceDragonStrength
 	}
 	var attackDragonHpDecreased = null
 	var defenceDragonHpDecreased = null

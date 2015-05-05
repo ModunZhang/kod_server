@@ -107,9 +107,9 @@ module.exports = {
 		M120:4
 	},
 	DragonFightBuffTerrain:{
-		redDragon:"grassLand",
-		blueDragon:"desert",
-		greenDragon:"iceField"
+		redDragon:"desert",
+		blueDragon:"iceField",
+		greenDragon:"grassLand"
 	},
 	ResourceTechNameMap:{
 		wood:"forestation",
