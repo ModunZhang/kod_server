@@ -73,7 +73,8 @@ module.exports = {
 		"buildingEvents",
 		"houseEvents",
 		"productionTechEvents",
-		"militaryTechEvents"
+		"militaryTechEvents",
+		"dailyQuestEvents"
 	],
 	BuildingSpeedupEventTypes:[
 		"buildingEvents",
