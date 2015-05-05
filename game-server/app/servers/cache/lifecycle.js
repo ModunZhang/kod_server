@@ -47,7 +47,7 @@ life.afterStartup = function(app, callback){
 
 life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 	cancelShutDownTimer()
-	var maxInterval = 5
+	var maxInterval = 30
 	var currentInterval = 0
 	var interval = setInterval(function(){
 		currentInterval++
