@@ -526,6 +526,13 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 		})
 		return soldiers
 	}
+	var getMilitaryTechs = function(playerDoc){
+		var techs = []
+		_.each(playerDoc.militaryTechs, function(tech, name){
+			if(tech.level > 0)techs.push({name:name, level:tech.level})
+		})
+		return techs
+	}
 
 	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, defencePlayerDoc.basicInfo.terrain)
 	var defenceDragonPower = DataUtils.getDragonStrength(helpDefenceDragon, defencePlayerDoc.basicInfo.terrain)
@@ -566,7 +573,8 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 				},
 				defenceDragonData
 			),
-			soldiers:getSoldiersInTroop(helpDefencePlayerDoc, defencePlayerDoc.helpedByTroops[0].soldiers)
+			soldiers:getSoldiersInTroop(helpDefencePlayerDoc, defencePlayerDoc.helpedByTroops[0].soldiers),
+			militaryTechs:getMilitaryTechs(helpDefencePlayerDoc)
 		}
 	}
 
@@ -682,6 +690,13 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		})
 		return soldiers
 	}
+	var getMilitaryTechs = function(playerDoc){
+		var techs = []
+		_.each(playerDoc.militaryTechs, function(tech, name){
+			if(tech.level > 0)techs.push({name:name, level:tech.level})
+		})
+		return techs
+	}
 
 	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, defencePlayerDoc.basicInfo.terrain)
 	var defenceDragonPower = DataUtils.getDragonStrength(defenceDragon, defencePlayerDoc.basicInfo.terrain)
@@ -723,6 +738,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 				defenceDragonData
 			),
 			soldiers:getDefenceSoldiers(defencePlayerDoc),
+			militaryTechs:getMilitaryTechs(defencePlayerDoc),
 			resources:{
 				wood:defencePlayerDoc.resources.wood,
 				stone:defencePlayerDoc.resources.stone,
@@ -850,8 +866,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 				stone:defencePlayerDoc.resources.stone,
 				iron:defencePlayerDoc.resources.iron,
 				food:defencePlayerDoc.resources.food,
-				coin:defencePlayerDoc.resources.coin,
-				wallHp:defencePlayerDoc.resources.wallHp
+				coin:defencePlayerDoc.resources.coin
 			}
 		}
 	}
@@ -1126,6 +1141,14 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 		})
 		return soldiers
 	}
+	var getMilitaryTechs = function(playerDoc){
+		var techs = []
+		_.each(playerDoc.militaryTechs, function(tech, name){
+			if(tech.level > 0)techs.push({name:name, level:tech.level})
+		})
+		return techs
+	}
+
 	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, targetAllianceDoc.basicInfo.terrain)
 	var defenceDragonPower = DataUtils.getDragonStrength(defenceDragon, targetAllianceDoc.basicInfo.terrain)
 	var powerCompare = attackDragonPower / defenceDragonPower
@@ -1164,7 +1187,8 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 				},
 				defenceDragonData
 			),
-			soldiers:getSoldiersInTroop(defencePlayerDoc, defenceVillageEvent.playerData.soldiers)
+			soldiers:getSoldiersInTroop(defencePlayerDoc, defenceVillageEvent.playerData.soldiers),
+			militaryTechs:getMilitaryTechs(helpDefencePlayerDoc)
 		}
 	}
 

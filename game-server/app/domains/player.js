@@ -740,6 +740,10 @@ var PlayerSchema = new Schema({
 						name:{type:String, required:true},
 						star:{type:Number, required:true},
 						count:{type:Number, required:true}
+					}],
+					militaryTechs:[{
+						name:{type:String, required:true},
+						level:{type:String, required:true}
 					}]
 				},
 				defencePlayerData:{
@@ -773,6 +777,10 @@ var PlayerSchema = new Schema({
 						name:{type:String, required:true},
 						star:{type:Number, required:true},
 						count:{type:Number, required:true}
+					}],
+					militaryTechs:[{
+						name:{type:String, required:true},
+						level:{type:String, required:true}
 					}],
 					resources:{
 						wood:{type:Number, required:true},
@@ -927,6 +935,10 @@ var PlayerSchema = new Schema({
 						name:{type:String, required:true},
 						star:{type:Number, required:true},
 						count:{type:Number, required:true}
+					}],
+					militaryTechs:[{
+						name:{type:String, required:true},
+						level:{type:String, required:true}
 					}]
 				}
 			},
