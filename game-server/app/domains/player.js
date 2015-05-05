@@ -780,8 +780,7 @@ var PlayerSchema = new Schema({
 						wood:{type:Number, required:true},
 						stone:{type:Number, required:true},
 						iron:{type:Number, required:true},
-						food:{type:Number, required:true},
-						wallHp:{type:Number, requird:true}
+						food:{type:Number, required:true}
 					}
 				}
 			},
