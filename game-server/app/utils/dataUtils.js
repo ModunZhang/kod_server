@@ -1364,6 +1364,7 @@ Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
  */
 Utils.getPlayerDragonLeadership = function(playerDoc, dragon){
 	var leadership = Dragons.dragonLevel[dragon.level].leadership
+	leadership += Dragons.dragonStar[dragon.star].initLeadership
 	var buff = this.getPlayerDragonLeadershipBuff(playerDoc, dragon)
 	leadership += Math.floor(leadership * buff)
 	_.each(dragon.equipments, function(equipment, category){
