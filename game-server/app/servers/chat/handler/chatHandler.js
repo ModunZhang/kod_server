@@ -290,6 +290,17 @@ var ChatHandler = function(app){
 					callback(e)
 				})
 			}
+		},
+		{
+			command:"alliancefight",
+			desc:"开启联盟战:alliancefight 目标联盟Id",
+			func:function(session, uid, text, callback){
+				var self = this
+				var defenceAllianceId = text.split(" ")[1]
+				self.app.rpc.logic.commandRemote.alliancefight(session, uid, defenceAllianceId, function(e){
+					callback(e)
+				})
+			}
 		}
 	]
 }
