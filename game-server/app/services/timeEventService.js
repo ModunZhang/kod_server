@@ -508,8 +508,6 @@ pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
 			var theEventId = allianceDoc.allianceFight.attackAllianceId + ":" + allianceDoc.allianceFight.defenceAllianceId
 			funcs.push(self.addTimeEventAsync(thekey, theEventType, theEventId, allianceDoc.basicInfo.statusFinishTime - now))
 		}
-	}else if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Peace)){
-		allianceDoc.basicInfo.statusStartTime += timeAdd
 	}
 
 	_.each(allianceDoc.shrineEvents, function(event){

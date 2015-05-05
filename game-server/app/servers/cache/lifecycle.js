@@ -94,7 +94,21 @@ life.afterStartAll = function(app){
 		else serverStopTime = Date.now() - stopDoc.time
 	}).then(function(){
 		var findAllianceId = function(callback){
-			Alliance.collection.find({serverId:app.get("cacheServerId")}, {_id:true}).toArray(function(e, docs){
+			Alliance.collection.find({
+				serverId:app.get("cacheServerId"),
+				$or:[
+					{"basicInfo.status":Consts.AllianceStatus.Protect},
+					{"basicInfo.status":Consts.AllianceStatus.Prepare},
+					{"basicInfo.status":Consts.AllianceStatus.Fight},
+					{"shrineEvents.0":{$exists:true}},
+					{"villageEvents.0":{$exists:true}},
+					{"villageCreateEvents.0":{$exists:true}},
+					{"strikeMarchEvents.0":{$exists:true}},
+					{"strikeMarchReturnEvents.0":{$exists:true}},
+					{"attackMarchEvents.0":{$exists:true}},
+					{"attackMarchReturnEvents.0":{$exists:true}}
+				]
+			}, {_id:true}).toArray(function(e, docs){
 				if(_.isObject(e)){
 					callback(e)
 				}else{
