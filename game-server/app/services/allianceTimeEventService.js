@@ -397,10 +397,10 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				return Promise.resolve()
 			}
 		}).then(function(){
+			attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
+			DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
+			attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon, defencePlayerDoc.basicInfo.terrain)
 			if(_.isObject(helpDefencePlayerDoc)){
-				attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
-				DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
-				attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon, defencePlayerDoc.basicInfo.terrain)
 				helpedByTroop = defencePlayerDoc.helpedByTroops[0]
 				helpDefenceDragon = helpDefencePlayerDoc.dragons[helpedByTroop.dragon.type]
 				DataUtils.refreshPlayerDragonsHp(helpDefencePlayerDoc, helpDefenceDragon)
@@ -427,9 +427,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			defenceDragon = LogicUtils.getPlayerDefenceDragon(defencePlayerDoc)
 			defenceSoldiers = DataUtils.getPlayerDefenceSoldiers(defencePlayerDoc)
 			if(_.isObject(defenceDragon) && defenceSoldiers.length > 0){
-				attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
-				DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
-				attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon, defencePlayerDoc.basicInfo.terrain)
 				DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon)
 				defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon, defencePlayerDoc.basicInfo.terrain)
 				attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers, attackDragon, defencePlayerDoc.basicInfo.terrain, attackDragonForFight.strength > defenceDragonForFight.strength)
