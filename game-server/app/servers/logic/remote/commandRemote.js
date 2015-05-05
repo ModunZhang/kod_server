@@ -10,6 +10,7 @@ var _ = require("underscore")
 var Utils = require("../../../utils/utils")
 var DataUtils = require("../../../utils/dataUtils")
 var LogicUtils = require("../../../utils/logicUtils")
+var ErrorUtils = require("../../../utils/errorUtils")
 var Consts = require("../../../consts/consts")
 
 var GameDatas = require("../../../datas/GameDatas")
@@ -769,6 +770,85 @@ pro.cleargc = function(uid, callback){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
+ * 开启联盟战
+ * @param uid
+ * @param defenceAllianceId
+ * @param callback
+ */
+pro.alliancefight = function(uid, defenceAllianceId, callback){
+	var self = this
+	var playerDoc = null
+	var attackAllianceDoc = null
+	var attackAllianceData = []
+	var defenceAllianceDoc = null
+	var defenceAllianceData = []
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
+		return self.dataService.findAllianceAsync(playerDoc.allianceId)
+	}).then(function(doc){
+		attackAllianceDoc = doc
+		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, playerId)
+		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "findAllianceToFight")){
+			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "findAllianceToFight"))
+		}
+		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, attackAllianceDoc._id))
+		}
+		return self.dataService.findAllianceAsync(defenceAllianceId)
+	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(defenceAllianceId))
+		defenceAllianceDoc = doc
+		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
+			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent])
+		}
+		var now = Date.now()
+		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 1 * 1000)
+		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
+		attackAllianceData.push(["basicInfo", attackAllianceDoc.basicInfo])
+		attackAllianceData.push(["allianceFight", attackAllianceDoc.allianceFight])
+		defenceAllianceData.push(["basicInfo", defenceAllianceDoc.basicInfo])
+		defenceAllianceData.push(["allianceFight", defenceAllianceDoc.allianceFight])
+		attackAllianceDoc.fightRequests = []
+		attackAllianceData.push(["fightRequests", attackAllianceDoc.fightRequests])
+		defenceAllianceDoc.fightRequests = []
+		defenceAllianceData.push(["fightRequests", defenceAllianceDoc.fightRequests])
+
+		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, attackAllianceDoc, attackAllianceDoc])
+		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, defenceAllianceDoc, defenceAllianceDoc])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, LogicUtils.getAllianceViewData(defenceAllianceDoc)])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, LogicUtils.getAllianceViewData(attackAllianceDoc)])
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		self.apnService.pushApnMessageToAllianceMembers(attackAllianceDoc, DataUtils.getLocalizationConfig("alliance", "AttackAllianceMessage"), [])
+		self.apnService.pushApnMessageToAllianceMembers(defenceAllianceDoc, DataUtils.getLocalizationConfig("alliance", "AllianceBeAttackedMessage"), [attackAllianceDoc.basicInfo.name])
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(attackAllianceDoc)){
+			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
+		}
+		if(_.isObject(defenceAllianceDoc)){
+			funcs.push(self.dataService.updateAllianceAsync(defenceAllianceDoc, null))
+		}
+		Promise.all(funcs).then(function(){
 			callback(e)
 		})
 	})
