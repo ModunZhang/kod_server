@@ -781,7 +781,7 @@ pro.cleargc = function(uid, callback){
  * @param defenceAllianceId
  * @param callback
  */
-pro.alliancefight = function(uid, defenceAllianceId, callback){
+pro.alliancefight = function(playerId, defenceAllianceId, callback){
 	var self = this
 	var playerDoc = null
 	var attackAllianceDoc = null
