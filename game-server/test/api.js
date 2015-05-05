@@ -350,14 +350,6 @@ Api.editPlayerName = function(name, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.editPlayerCityName = function(cityName, callback){
-	var info = {
-		cityName:cityName
-	}
-	var route = "logic.playerHandler.editPlayerCityName"
-	pomelo.request(route, info, callback)
-}
-
 Api.getPlayerViewData = function(targetPlayerId, callback){
 	var info = {
 		targetPlayerId:targetPlayerId

@@ -120,7 +120,6 @@ var PlayerSchema = new Schema({
 	},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},
-		cityName:{type:String, required:true},
 		icon:{type:Number, required:true, default:getPlayerIcon},
 		levelExp:{type:Number, required:true, default:0},
 		attackWin:{type:Number, required:true, default:0},
@@ -680,7 +679,6 @@ var PlayerSchema = new Schema({
 				strikeTarget:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					cityName:{type:String, required:true},
 					location:{
 						x:{type:Number, required:true},
 						y:{type:Number, required:true}
@@ -792,7 +790,6 @@ var PlayerSchema = new Schema({
 				strikeTarget:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					cityName:{type:String, required:true},
 					location:{
 						x:{type:Number, required:true},
 						y:{type:Number, required:true}
@@ -1000,7 +997,6 @@ var PlayerSchema = new Schema({
 				attackTarget:{
 					id:{type:String, required:true},
 					name:{type:String, required:true},
-					cityName:{type:String, required:true},
 					location:{
 						x:{type:Number, required:true},
 						y:{type:Number, required:true}
@@ -1384,7 +1380,6 @@ var PlayerSchema = new Schema({
 		beHelpedPlayerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			cityName:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
@@ -1396,7 +1391,6 @@ var PlayerSchema = new Schema({
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		levelExp:{type:Number, required:true},
-		cityName:{type:String, required:true},
 		dragon:{
 			type:{type:String, required:true}
 		},

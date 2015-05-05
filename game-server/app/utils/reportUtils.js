@@ -123,7 +123,6 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 		attackTarget:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
-			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defenceAllianceDoc.basicInfo.terrain
@@ -394,7 +393,6 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		attackTarget:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
-			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defenceAllianceDoc.basicInfo.terrain
@@ -544,7 +542,6 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 		strikeTarget:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
-			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defencePlayerDoc.basicInfo.terrain,
@@ -701,7 +698,6 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		strikeTarget:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
-			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defencePlayerDoc.basicInfo.terrain,
@@ -832,7 +828,6 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		strikeTarget:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
-			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
 			terrain:defencePlayerDoc.basicInfo.terrain,

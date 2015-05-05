@@ -236,12 +236,10 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
 	var datas = null
 	if(_.isEqual(Consts.RankTypes.Kill, rankType)){
 		myData = {rank:_.isNumber(this.playerKillIds[playerId]) ? this.playerKillIds[playerId] : null}
-		console.log(playerId, this.playerKillIds)
 		datas = this.playerKills.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize)
 		callback(null, [myData, datas])
 	}else{
 		myData = {rank:_.isNumber(this.playerPowerIds[playerId]) ? this.playerPowerIds[playerId] : null}
-		console.log(playerId, this.playerPowerIds)
 		datas = this.playerPowers.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize)
 		callback(null, [myData, datas])
 	}

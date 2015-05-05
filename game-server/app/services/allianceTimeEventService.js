@@ -200,7 +200,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			var playerTroop = {
 				id:event.attackPlayerData.id,
 				name:event.attackPlayerData.name,
-				cityName:event.attackPlayerData.cityName,
 				location:event.attackPlayerData.location,
 				dragon:event.attackPlayerData.dragon,
 				soldiers:event.attackPlayerData.soldiers
@@ -227,7 +226,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				beHelpedPlayerData:{
 					id:defencePlayerDoc._id,
 					name:defencePlayerDoc.basicInfo.name,
-					cityName:defencePlayerDoc.basicInfo.cityName,
 					location:LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id).location
 				}
 			}
@@ -237,7 +235,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				id:attackPlayerDoc._id,
 				name:attackPlayerDoc.basicInfo.name,
 				levelExp:attackPlayerDoc.basicInfo.levelExp,
-				cityName:attackPlayerDoc.basicInfo.cityName,
 				dragon:{
 					type:event.attackPlayerData.dragon.type
 				},

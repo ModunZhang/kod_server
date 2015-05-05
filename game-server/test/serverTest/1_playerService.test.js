@@ -1302,20 +1302,6 @@
 //			})
 //		})
 //
-//		it("useItem changeCityName", function(done){
-//			Api.buyItem("changeCityName", 1, function(doc){
-//				doc.code.should.equal(200)
-//				Api.useItem("changeCityName", {
-//					changeCityName:{
-//						cityName:"modunzhang"
-//					}
-//				}, function(doc){
-//					doc.code.should.equal(200)
-//					done()
-//				})
-//			})
-//		})
-//
 //		it("useItem dragonExp_2", function(done){
 //			Api.buyItem("dragonExp_2", 1, function(doc){
 //				doc.code.should.equal(200)

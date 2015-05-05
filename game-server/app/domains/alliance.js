@@ -174,7 +174,6 @@ var AllianceSchema = new Schema({
 			_id:false,
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			cityName:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
@@ -268,7 +267,6 @@ var AllianceSchema = new Schema({
 		playerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			cityName:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
@@ -389,7 +387,6 @@ var AllianceSchema = new Schema({
 		attackPlayerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			cityName:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
@@ -406,7 +403,6 @@ var AllianceSchema = new Schema({
 		defencePlayerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			cityName:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
@@ -441,7 +437,6 @@ var AllianceSchema = new Schema({
 		attackPlayerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			cityName:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
@@ -464,7 +459,6 @@ var AllianceSchema = new Schema({
 		defencePlayerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			cityName:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
@@ -499,7 +493,6 @@ var AllianceSchema = new Schema({
 		attackPlayerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			cityName:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
@@ -522,7 +515,6 @@ var AllianceSchema = new Schema({
 		defencePlayerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			cityName:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
@@ -569,7 +561,6 @@ var AllianceSchema = new Schema({
 		attackPlayerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			cityName:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
@@ -603,7 +594,6 @@ var AllianceSchema = new Schema({
 		defencePlayerData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
-			cityName:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}

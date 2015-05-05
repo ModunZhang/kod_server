@@ -931,16 +931,6 @@ Utils.playerNameAlreadyUsed = function(playerId, playerName){
 }
 
 /**
- * 不能修改为相同的城市名称
- * @param playerId
- * @param cityName
- */
-Utils.cityNameCanNotBeTheSame = function(playerId, cityName){
-	var config = Errors.cityNameCanNotBeTheSame
-	return CreateError(config, {playerId:playerId, cityName:cityName})
-}
-
-/**
  * 玩家未加入联盟
  * @param playerId
  */

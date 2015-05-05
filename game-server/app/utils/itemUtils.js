@@ -130,20 +130,6 @@ var ChangePlayerName = function(playerDoc, playerData, newPlayerName, dataServic
 }
 
 /**
- * 修改城市名称
- * @param playerDoc
- * @param playerData
- * @param newCityName
- * @returns {*}
- */
-var ChangeCityName = function(playerDoc, playerData, newCityName){
-	if(_.isEqual(newCityName, playerDoc.basicInfo.cityName)) return Promise.reject(ErrorUtils.cityNameCanNotBeTheSame(playerDoc._id, newCityName))
-	playerDoc.basicInfo.cityName = newCityName
-	playerData.push(["basicInfo.cityName", playerDoc.basicInfo.cityName])
-	return Promise.resolve()
-}
-
-/**
  * 撤销行军事件
  * @param playerDoc
  * @param playerData
@@ -681,11 +667,6 @@ Utils.isParamsLegal = function(itemName, params){
 		var playerName = itemData.playerName
 		return !(!_.isString(playerName) || playerName.trim().length > Define.InputLength.PlayerName)
 	}
-	if(_.isEqual(itemName, "changeCityName")){
-		if(!_.isObject(itemData)) return false
-		var cityName = itemData.cityName
-		return !(!_.isString(cityName) || cityName.trim().length > Define.InputLength.CityName)
-	}
 	if(_.isEqual(itemName, "retreatTroop")){
 		if(!_.isObject(itemData)) return false
 		var eventType = itemData.eventType
@@ -767,10 +748,6 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, dataService,
 		changePlayerName:function(){
 			var playerName = itemData.playerName
 			return ChangePlayerName(playerDoc, playerData, playerName, dataService)
-		},
-		changeCityName:function(){
-			var cityName = itemData.cityName
-			return ChangeCityName(playerDoc, playerData, cityName)
 		},
 		retreatTroop:function(){
 			var eventType = itemData.eventType

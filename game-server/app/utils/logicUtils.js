@@ -2228,7 +2228,7 @@ Utils.createPlayer = function(playerId, serverId){
 	var player = {
 		_id:playerId,
 		serverId:serverId,
-		basicInfo:{name:"p_" + name, cityName:"c_" + name}
+		basicInfo:{name:"p_" + name}
 	}
 	return player
 }

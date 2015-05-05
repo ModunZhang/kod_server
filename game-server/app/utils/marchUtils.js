@@ -138,7 +138,6 @@ var createAttackPlayerData = function(allianceDoc, playerDoc, playerLocation, dr
 	var playerData = {
 		id:playerDoc._id,
 		name:playerDoc.basicInfo.name,
-		cityName:playerDoc.basicInfo.cityName,
 		location:playerLocation,
 		dragon:{
 			type:dragon.type
@@ -167,7 +166,6 @@ var createAttackPlayerReturnData = function(allianceDoc, playerDoc, playerLocati
 	var playerData = {
 		id:playerDoc._id,
 		name:playerDoc.basicInfo.name,
-		cityName:playerDoc.basicInfo.cityName,
 		location:playerLocation,
 		dragon:{
 			type:dragon.type
@@ -192,7 +190,6 @@ var createStrikePlayerData = function(allianceDoc, playerDoc, playerLocation, dr
 	var playerData = {
 		id:playerDoc._id,
 		name:playerDoc.basicInfo.name,
-		cityName:playerDoc.basicInfo.cityName,
 		location:playerLocation,
 		dragon:{
 			type:dragon.type
@@ -214,7 +211,6 @@ var createStrikePlayerReturnData = function(allianceDoc, playerDoc, playerLocati
 	var playerData = {
 		id:playerDoc._id,
 		name:playerDoc.basicInfo.name,
-		cityName:playerDoc.basicInfo.cityName,
 		location:playerLocation,
 		dragon:{
 			type:dragon.type
@@ -353,7 +349,6 @@ Utils.createHelpDefenceMarchEvent = function(allianceDoc, playerDoc, dragon, sol
 		defencePlayerData:{
 			id:beHelpedPlayerDoc._id,
 			name:beHelpedPlayerDoc.basicInfo.name,
-			cityName:beHelpedPlayerDoc.basicInfo.cityName,
 			location:beHelpedPlayerLocation,
 			alliance:createAllianceData(allianceDoc)
 		}
@@ -385,7 +380,6 @@ Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, beHel
 		defencePlayerData:{
 			id:beHelpedPlayerDoc._id,
 			name:beHelpedPlayerDoc.basicInfo.name,
-			cityName:beHelpedPlayerDoc.basicInfo.cityName,
 			location:beHelpedPlayerLocation,
 			alliance:createAllianceData(allianceDoc)
 		}
@@ -416,7 +410,6 @@ Utils.createStrikePlayerCityMarchEvent = function(allianceDoc, playerDoc, dragon
 		defencePlayerData:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
-			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:defencePlayerLocation,
 			alliance:createAllianceData(defenceAllianceDoc)
 		}
@@ -447,7 +440,6 @@ Utils.createStrikePlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
 		defencePlayerData:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
-			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:defencePlayerLocation,
 			alliance:createAllianceData(defenceAllianceDoc)
 		}
@@ -479,7 +471,6 @@ Utils.createAttackPlayerCityMarchEvent = function(allianceDoc, playerDoc, dragon
 		defencePlayerData:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
-			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:defencePlayerLocation,
 			alliance:createAllianceData(defenceAllianceDoc)
 		}
@@ -514,7 +505,6 @@ Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
 		defencePlayerData:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
-			cityName:defencePlayerDoc.basicInfo.cityName,
 			location:defencePlayerLocation,
 			alliance:createAllianceData(defenceAllianceDoc)
 		}
@@ -670,7 +660,6 @@ Utils.createAllianceVillageEvent = function(allianceDoc, playerDoc, dragon, sold
 		playerData:{
 			id:playerDoc._id,
 			name:playerDoc.basicInfo.name,
-			cityName:playerDoc.basicInfo.cityName,
 			location:LogicUtils.getAllianceMemberMapObjectById(allianceDoc, playerDoc._id).location,
 			alliance:createAllianceData(allianceDoc),
 			dragon:{
