@@ -400,42 +400,25 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				return Promise.resolve()
 			}
 		}).then(function(){
-			attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
-			DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
-			attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon, defencePlayerDoc.basicInfo.terrain)
-			attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers, attackDragon, defencePlayerDoc.basicInfo.terrain)
-			attackTreatSoldierPercent = DataUtils.getPlayerTreatSoldierPercent(attackPlayerDoc, attackDragon)
-			attackSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(attackPlayerDoc, attackDragon)
-			attackToEnemySoldierMoralDecreasedAddPercent = DataUtils.getEnemySoldierMoraleAddedPercent(attackPlayerDoc, attackDragon)
-
 			if(_.isObject(helpDefencePlayerDoc)){
+				attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
+				DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
+				attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon, defencePlayerDoc.basicInfo.terrain)
 				helpedByTroop = defencePlayerDoc.helpedByTroops[0]
 				helpDefenceDragon = helpDefencePlayerDoc.dragons[helpedByTroop.dragon.type]
 				DataUtils.refreshPlayerDragonsHp(helpDefencePlayerDoc, helpDefenceDragon)
 				helpDefenceDragonForFight = DataUtils.createPlayerDragonForFight(helpDefencePlayerDoc, helpDefenceDragon, defencePlayerDoc.basicInfo.terrain)
-				helpDefenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(helpDefencePlayerDoc, helpedByTroop.soldiers, helpDefenceDragon, defencePlayerDoc.basicInfo.terrain)
+
+				attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers, attackDragon, defencePlayerDoc.basicInfo.terrain, attackDragonForFight.strength > helpDefenceDragonForFight.strength)
+				attackTreatSoldierPercent = DataUtils.getPlayerTreatSoldierPercent(attackPlayerDoc, attackDragon)
+				attackSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(attackPlayerDoc, attackDragon)
+				attackToEnemySoldierMoralDecreasedAddPercent = DataUtils.getEnemySoldierMoraleAddedPercent(attackPlayerDoc, attackDragon)
+				helpDefenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(helpDefencePlayerDoc, helpedByTroop.soldiers, helpDefenceDragon, defencePlayerDoc.basicInfo.terrain, attackDragonForFight.strength <= helpDefenceDragonForFight.strength)
 				helpDefenceTreatSoldierPercent = DataUtils.getPlayerTreatSoldierPercent(helpDefencePlayerDoc, helpDefenceDragon)
 				helpDefenceSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(helpDefencePlayerDoc, helpDefenceDragon)
 				helpDefenceToEnemySoldierMoralDecreasedAddPercent = DataUtils.getEnemySoldierMoraleAddedPercent(helpDefencePlayerDoc, helpDefenceDragon)
 				helpDefenceDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, helpDefenceSoldiersForFight)
-			}
-			defenceDragon = LogicUtils.getPlayerDefenceDragon(defencePlayerDoc)
-			var defenceSoldiers = DataUtils.getPlayerDefenceSoldiers(defencePlayerDoc)
-			if(_.isObject(defenceDragon) && defenceSoldiers.length > 0){
-				DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon)
-				defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon, defencePlayerDoc.basicInfo.terrain)
-				defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, defenceSoldiers, defenceDragon, defencePlayerDoc.basicInfo.terrain)
-				defenceTreatSoldierPercent = DataUtils.getPlayerTreatSoldierPercent(defencePlayerDoc, defenceDragon)
-				defenceSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(defencePlayerDoc, defenceDragon)
-				defenceToEnemySoldierMoralDecreasedAddPercent = DataUtils.getEnemySoldierMoraleAddedPercent(defencePlayerDoc, defenceDragon)
-				defenceDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, defenceSoldiersForFight)
-			}
-			if(defencePlayerDoc.resources.wallHp > 0){
-				defenceWallForFight = DataUtils.createPlayerWallForFight(defencePlayerDoc)
-			}
-			return Promise.resolve()
-		}).then(function(){
-			if(_.isObject(helpDefencePlayerDoc)){
+
 				helpDefenceDragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, helpDefenceDragonForFight, helpDefenceDragonFightFixEffect)
 				helpDefenceSoldierFightData = FightUtils.soldierToSoldierFight(attackSoldiersForFight, attackTreatSoldierPercent, attackSoldierMoraleDecreasedPercent + helpDefenceToEnemySoldierMoralDecreasedAddPercent, helpDefenceSoldiersForFight, helpDefenceTreatSoldierPercent, helpDefenceSoldierMoraleDecreasedPercent + attackToEnemySoldierMoralDecreasedAddPercent)
 				updateDragonForFight(attackDragonForFight, helpDefenceDragonFightData.attackDragonAfterFight)
@@ -444,7 +427,25 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				updateSoldiersForFight(helpDefenceSoldiersForFight, helpDefenceSoldierFightData.defenceSoldiersAfterFight)
 				return Promise.resolve()
 			}
-			if(_.isObject(defenceDragonForFight)){
+			defenceDragon = LogicUtils.getPlayerDefenceDragon(defencePlayerDoc)
+			defenceSoldiers = DataUtils.getPlayerDefenceSoldiers(defencePlayerDoc)
+			if(_.isObject(defenceDragon) && defenceSoldiers.length > 0){
+				attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
+				DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
+				attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon, defencePlayerDoc.basicInfo.terrain)
+				DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon)
+				defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon, defencePlayerDoc.basicInfo.terrain)
+
+				attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers, attackDragon, defencePlayerDoc.basicInfo.terrain, attackDragonForFight.strength > defenceDragonForFight.strength)
+				attackTreatSoldierPercent = DataUtils.getPlayerTreatSoldierPercent(attackPlayerDoc, attackDragon)
+				attackSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(attackPlayerDoc, attackDragon)
+				attackToEnemySoldierMoralDecreasedAddPercent = DataUtils.getEnemySoldierMoraleAddedPercent(attackPlayerDoc, attackDragon)
+				defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, defenceSoldiers, defenceDragon, defencePlayerDoc.basicInfo.terrain, attackDragonForFight.strength > defenceDragonForFight.strength)
+				defenceTreatSoldierPercent = DataUtils.getPlayerTreatSoldierPercent(defencePlayerDoc, defenceDragon)
+				defenceSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(defencePlayerDoc, defenceDragon)
+				defenceToEnemySoldierMoralDecreasedAddPercent = DataUtils.getEnemySoldierMoraleAddedPercent(defencePlayerDoc, defenceDragon)
+				defenceDragonFightFixEffect = DataUtils.getDragonFightFixedEffect(attackSoldiersForFight, defenceSoldiersForFight)
+
 				defenceDragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, defenceDragonForFight, defenceDragonFightFixEffect)
 				defenceSoldierFightData = FightUtils.soldierToSoldierFight(attackSoldiersForFight, attackTreatSoldierPercent, attackSoldierMoraleDecreasedPercent + defenceToEnemySoldierMoralDecreasedAddPercent, defenceSoldiersForFight, defenceTreatSoldierPercent, defenceSoldierMoraleDecreasedPercent + attackToEnemySoldierMoralDecreasedAddPercent)
 				updateDragonForFight(attackDragonForFight, defenceDragonFightData.attackDragonAfterFight)
@@ -468,9 +469,10 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					}
 				}
 			}else{
-				attackSoldiersLeftForFight = attackSoldiersForFight
+				attackSoldiersLeftForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers, attackDragon, defencePlayerDoc.basicInfo.terrain, true)
 			}
-			if(_.isObject(defenceWallForFight)){
+			if(defencePlayerDoc.resources.wallHp > 0){
+				defenceWallForFight = DataUtils.createPlayerWallForFight(defencePlayerDoc)
 				var defencePlayerMasterOfDefenderBuffAboutDefenceWall = DataUtils.getPlayerMasterOfDefenderBuffAboutDefenceWall(defencePlayerDoc)
 				defenceWallFightData = FightUtils.soldierToWallFight(attackSoldiersLeftForFight, attackTreatSoldierPercent, defenceWallForFight, defencePlayerMasterOfDefenderBuffAboutDefenceWall)
 				updateSoldiersForFight(attackSoldiersForFight, defenceWallFightData.attackSoldiersAfterFight)
@@ -882,15 +884,15 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
 				DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
 				attackDragonForFight = DataUtils.createPlayerDragonForFight(attackPlayerDoc, attackDragon, targetAllianceDoc.basicInfo.terrain)
-				attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers, attackDragon, targetAllianceDoc.basicInfo.terrain)
-				attackTreatSoldierPercent = DataUtils.getPlayerTreatSoldierPercent(attackPlayerDoc, attackDragon)
-				attackSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(attackPlayerDoc, attackDragon)
-				attackToEnemySoldierMoralDecreasedAddPercent = DataUtils.getEnemySoldierMoraleAddedPercent(attackPlayerDoc, attackDragon)
-
 				defenceDragon = defencePlayerDoc.dragons[villageEvent.playerData.dragon.type]
 				DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon)
 				defenceDragonForFight = DataUtils.createPlayerDragonForFight(defencePlayerDoc, defenceDragon, targetAllianceDoc.basicInfo.terrain)
-				defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, villageEvent.playerData.soldiers, defenceDragon, targetAllianceDoc.basicInfo.terrain)
+
+				attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers, attackDragon, targetAllianceDoc.basicInfo.terrain, attackDragonForFight.strength > defenceDragonForFight.strength)
+				attackTreatSoldierPercent = DataUtils.getPlayerTreatSoldierPercent(attackPlayerDoc, attackDragon)
+				attackSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(attackPlayerDoc, attackDragon)
+				attackToEnemySoldierMoralDecreasedAddPercent = DataUtils.getEnemySoldierMoraleAddedPercent(attackPlayerDoc, attackDragon)
+				defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, villageEvent.playerData.soldiers, defenceDragon, targetAllianceDoc.basicInfo.terrain, attackDragonForFight.strength <= defenceDragonForFight.strength)
 				defenceTreatSoldierPercent = DataUtils.getPlayerTreatSoldierPercent(defencePlayerDoc, defenceDragon)
 				defenceSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(defencePlayerDoc, defenceDragon)
 				defenceToEnemySoldierMoralDecreasedAddPercent = DataUtils.getEnemySoldierMoraleAddedPercent(defencePlayerDoc, defenceDragon)
@@ -1653,7 +1655,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			var dragon = playerDoc.dragons[playerTroop.dragon.type]
 			DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
 			var dragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, dragon, allianceDoc.basicInfo.terrain)
-			var soldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, playerTroop.soldiers, dragon, allianceDoc.basicInfo.terrain)
+			var soldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, playerTroop.soldiers, dragon, allianceDoc.basicInfo.terrain, true)
 			var playerTroopForFight = {
 				id:playerTroop.id,
 				name:playerTroop.name,
@@ -1715,6 +1717,13 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 				attackSoldierRoundDatas:soldierFightData.attackRoundDatas,
 				defenceSoldierRoundDatas:soldierFightData.defenceRoundDatas
 			})
+
+
+
+
+
+
+
 
 			if((playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0) || (stageTroopsForFight.length == 0 && stageSuccessedTroops.length > 0)){
 				if(playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0){

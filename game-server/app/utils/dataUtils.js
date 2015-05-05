@@ -2011,9 +2011,10 @@ Utils.getPlayerSoldierStar = function(playerDoc, soldierName){
  * @param soldierName
  * @param dragon
  * @param terrain
+ * @param isDragonWin
  * @returns {number}
  */
-Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain){
+Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain, isDragonWin){
 	var itemBuff = 0
 	var skillBuff = 0
 	var equipmentBuff = 0
@@ -2041,7 +2042,7 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
 		})
 	})
 
-	return itemBuff + skillBuff + equipmentBuff
+	return itemBuff + ((skillBuff + equipmentBuff) * (isDragonWin ? 1 : 0.5))
 }
 
 /**
@@ -2125,9 +2126,10 @@ Utils.getPlayerSoldierLoadBuff = function(playerDoc, soldierName, dragon){
  * @param soldiers
  * @param dragon
  * @param terrain
+ * @param isDragonWin
  * @returns {Array}
  */
-Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terrain){
+Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terrain, isDragonWin){
 	var self = this
 	var soldiersForFight = []
 	_.each(soldiers, function(soldier){
@@ -2135,7 +2137,7 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 		var soldierStar = self.getPlayerSoldierStar(playerDoc, soldierName)
 		var soldierCount = soldier.count
 		var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
-		var atkBuff = self.getPlayerSoldierAtkBuff(playerDoc, soldierName, dragon, terrain)
+		var atkBuff = self.getPlayerSoldierAtkBuff(playerDoc, soldierName, dragon, terrain, isDragonWin)
 		var atkWallBuff = self.getDragonAtkWallBuff(dragon)
 		var hpBuff = self.getPlayerSoldierHpBuff(playerDoc, soldierName, dragon, terrain)
 		var loadBuff = self.getPlayerSoldierLoadBuff(playerDoc, soldierName, dragon)

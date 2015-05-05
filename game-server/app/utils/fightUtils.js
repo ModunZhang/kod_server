@@ -134,20 +134,23 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
 	defenceDragon = CommonUtils.clone(defenceDragon)
 
 	var attackDragonStrength = attackDragon.strength
+	var attackDragonStrengthFixed = null
 	var defenceDragonStrength = defenceDragon.strength
+	var defenceDragonStrengthFixed = null
+
 	if(effect >= 0){
-		defenceDragonStrength -= defenceDragonStrength * effect
+		defenceDragonStrengthFixed = defenceDragonStrength * (1 - effect)
 	}else{
-		attackDragonStrength -= attackDragonStrength * (-effect)
+		attackDragonStrengthFixed = attackDragonStrength * (1 - (-effect))
 	}
 	var attackDragonHpDecreased = null
 	var defenceDragonHpDecreased = null
 	if(attackDragonStrength >= defenceDragonStrength){
-		attackDragonHpDecreased = Math.floor(defenceDragonStrength * 0.5)
-		defenceDragonHpDecreased = Math.floor(Math.sqrt(attackDragonStrength * defenceDragonStrength) * 0.5)
+		attackDragonHpDecreased = Math.floor(defenceDragonStrengthFixed * 0.5)
+		defenceDragonHpDecreased = Math.floor(Math.sqrt(attackDragonStrengthFixed * defenceDragonStrengthFixed) * 0.5)
 	}else{
-		attackDragonHpDecreased = Math.floor(Math.sqrt(attackDragonStrength * defenceDragonStrength) * 0.5)
-		defenceDragonHpDecreased = Math.floor(attackDragonStrength * 0.5)
+		attackDragonHpDecreased = Math.floor(Math.sqrt(attackDragonStrengthFixed * defenceDragonStrengthFixed) * 0.5)
+		defenceDragonHpDecreased = Math.floor(attackDragonStrengthFixed * 0.5)
 	}
 	attackDragon.currentHp = attackDragonHpDecreased > attackDragon.currentHp ? 0 : attackDragon.currentHp - attackDragonHpDecreased
 	defenceDragon.currentHp = defenceDragonHpDecreased > defenceDragon.currentHp ? 0 : defenceDragon.currentHp - defenceDragonHpDecreased
