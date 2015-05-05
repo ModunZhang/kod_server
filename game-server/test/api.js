@@ -610,16 +610,17 @@ Api.getPlayerRankList = function(rankType, fromRank, callback){
 		rankType:rankType,
 		fromRank:fromRank
 	}
-	var route = "logic.playerHandler.getPlayerRankList"
+	var route = "rank.rankHandler.getPlayerRankList"
 	pomelo.request(route, info, callback)
 }
 
-Api.getAllianceRankList = function(rankType, fromRank, callback){
+Api.getAllianceRankList = function(allianceId, rankType, fromRank, callback){
 	var info = {
+		allianceId:allianceId,
 		rankType:rankType,
 		fromRank:fromRank
 	}
-	var route = "logic.playerHandler.getAllianceRankList"
+	var route = "rank.rankHandler.getAllianceRankList"
 	pomelo.request(route, info, callback)
 }
 

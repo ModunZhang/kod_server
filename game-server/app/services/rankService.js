@@ -6,20 +6,28 @@
 
 var _ = require("underscore")
 var Promise = require("bluebird")
+var ShortId = require("shortid")
+
+var Consts = require("../consts/consts")
+var Define = require("../consts/define")
 
 var RankService = function(app){
 	this.app = app
 	this.logService = app.get("logService")
 	this.Alliance = app.get("Alliance")
 	this.Player = app.get("Player")
-	this.refreshTimeout = 5 * 1000
+	this.refreshTimeout = 10 * 60 * 1000
 	this.refreshTimeoutKey = null
 	this.allianceCount = 100
 	this.playerCount = 500
-	this.alliances = []
-	this.allianceIds = {}
-	this.players = []
-	this.playerIds = {}
+	this.allianceKills = []
+	this.allianceKillIds = {}
+	this.alliancePowers = []
+	this.alliancePowerIds = {}
+	this.playerKills = []
+	this.playerKillIds = {}
+	this.playerPowers = []
+	this.playerPowerIds = {}
 }
 module.exports = RankService
 var pro = RankService.prototype
@@ -28,50 +36,153 @@ var pro = RankService.prototype
 var RefreshAlliancesAsync = function(){
 	var self = this
 	return new Promise(function(resolve, reject){
-		self.Alliance.collection.find({
+		var cursor = self.Alliance.collection.find({
 			"serverId":self.app.get("cacheServerId")
 		}, {
 			_id:true,
 			"basicInfo.name":true,
 			"basicInfo.tag":true,
-			"basicInfo.flag":true
-		}).sort({"basicInfo.power":-1}).limit(self.allianceCount).toArray(function(e, docs){
-			if(_.isObject(e)) reject(e)
-			else{
-				self.alliances = []
-				self.allianceIds = {}
-				for(var i = 0; i < docs.length; i ++){
-					self.alliances.push(docs[i])
-					self.allianceIds[docs[i]._id] = i
+			"basicInfo.flag":true,
+			"basicInfo.kill":true
+		}).sort({"basicInfo.kill":-1}).limit(self.allianceCount)
+
+		var alliances = []
+		var allianceIds = {}
+		var getNext = function(){
+			cursor.next(function(e, doc){
+				if(_.isObject(e)){
+					reject(e)
+					return
 				}
-				resolve()
-			}
+				if(_.isObject(doc)){
+					var theDoc = {
+						id:doc._id,
+						name:doc.basicInfo.name,
+						tag:doc.basicInfo.tag,
+						flag:doc.basicInfo.flag,
+						value:doc.basicInfo.kill
+					}
+					alliances.push(theDoc)
+					allianceIds[doc._id] = alliances.indexOf(theDoc)
+					getNext()
+				}else{
+					self.allianceKills = alliances
+					self.allianceKillIds = allianceIds
+					resolve()
+				}
+			})
+		}
+		getNext()
+	}).then(function(){
+			return new Promise(function(resolve, reject){
+				var cursor = self.Alliance.collection.find({
+					"serverId":self.app.get("cacheServerId")
+				}, {
+					_id:true,
+					"basicInfo.name":true,
+					"basicInfo.tag":true,
+					"basicInfo.flag":true,
+					"basicInfo.power":true
+				}).sort({"basicInfo.power":-1}).limit(self.allianceCount)
+
+				var alliances = []
+				var allianceIds = {}
+				var getNext = function(){
+					cursor.next(function(e, doc){
+						if(_.isObject(e)){
+							reject(e)
+							return
+						}
+						if(_.isObject(doc)){
+							var theDoc = {
+								id:doc._id,
+								name:doc.basicInfo.name,
+								tag:doc.basicInfo.tag,
+								flag:doc.basicInfo.flag,
+								value:doc.basicInfo.power
+							}
+							alliances.push(theDoc)
+							allianceIds[doc._id] = alliances.indexOf(theDoc)
+							getNext()
+						}else{
+							self.alliancePowers = alliances
+							self.alliancePowerIds = allianceIds
+							resolve()
+						}
+					})
+				}
+				getNext()
+			})
 		})
-	})
 }
 
 var RefreshPlayersAsync = function(){
 	var self = this
 	return new Promise(function(resolve, reject){
-		self.Player.collection.find({
+		var cursor = self.Player.collection.find({
 			"serverId":self.app.get("cacheServerId")
 		}, {
 			_id:true,
 			"basicInfo.name":true,
-			"basicInfo.icon":true
-		}).sort({"basicInfo.power":-1}).limit(self.playerCount).toArray(function(e, docs){
-			if(_.isObject(e)) reject(e)
-			else{
-				self.players = []
-				self.playerIds = {}
-				for(var i = 0; i < docs.length; i ++){
-					self.players.push(docs[i])
-					self.playerIds[docs[i]._id] = i
+			"basicInfo.icon":true,
+			"basicInfo.kill":true
+		}).sort({"basicInfo.kill":-1}).limit(self.playerCount)
+
+		var players = []
+		var playerIds = {}
+		var getNext = function(){
+			cursor.next(function(e, doc){
+				if(_.isObject(e)){
+					reject(e)
+					return
 				}
-				resolve()
-			}
+				if(_.isObject(doc)){
+					var theDoc = {id:doc._id, name:doc.basicInfo.name, icon:doc.basicInfo.icon, value:doc.basicInfo.kill}
+					players.push(theDoc)
+					playerIds[doc._id] = players.indexOf(theDoc)
+					getNext()
+				}else{
+					self.playerKills = players
+					self.playerKillIds = playerIds
+					resolve()
+				}
+			})
+		}
+		getNext()
+	}).then(function(){
+			return new Promise(function(resolve, reject){
+				var cursor = self.Player.collection.find({
+					"serverId":self.app.get("cacheServerId")
+				}, {
+					_id:true,
+					"basicInfo.name":true,
+					"basicInfo.icon":true,
+					"basicInfo.power":true
+				}).sort({"basicInfo.power":-1}).limit(self.playerCount)
+
+				var players = []
+				var playerIds = {}
+				var getNext = function(){
+					cursor.next(function(e, doc){
+						if(_.isObject(e)){
+							reject(e)
+							return
+						}
+						if(_.isObject(doc)){
+							var theDoc = {id:doc._id, name:doc.basicInfo.name, icon:doc.basicInfo.icon, value:doc.basicInfo.power}
+							players.push(theDoc)
+							playerIds[doc._id] = players.indexOf(theDoc)
+							getNext()
+						}else{
+							self.playerPowers = players
+							self.playerPowerIds = playerIds
+							resolve()
+						}
+					})
+				}
+				getNext()
+			})
 		})
-	})
 }
 
 var OnRefreshInterval = function(){
@@ -121,64 +232,34 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
 		return
 	}
 
-	var self = this
-	var playerDoc = null
 	var myData = null
-	var ids = []
-	var scores = []
-	var datas = []
-	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
-
-		return self.redis.zrevrankAsync([playerDoc.serverId + ".player.basicInfo." + rankType, playerId])
-	}).then(function(rank){
-		myData = {rank:rank}
-		return self.redis.zrevrangeAsync([playerDoc.serverId + ".player.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1, "WITHSCORES"])
-	}).then(function(res){
-		for(var i = 0; i < res.length; i += 2){
-			ids.push(res[i])
-			scores.push(res[i + 1])
-		}
-		if(ids.length > 0){
-			return self.playerDao.findAllAsync(ids)
-		}
-		return Promise.resolve([])
-	}).then(function(docs){
-		for(var i = 0; i < docs.length; i++){
-			var data = {
-				id:docs[i]._id,
-				name:docs[i].basicInfo.name,
-				icon:docs[i].basicInfo.icon,
-				value:scores[i]
-			}
-			datas.push(data)
-		}
-		return Promise.resolve()
-	}).then(function(){
+	var datas = null
+	if(_.isEqual(Consts.RankTypes.Kill, rankType)){
+		myData = {rank:_.isNumber(this.playerKillIds[playerId]) ? this.playerKillIds[playerId] : null}
+		console.log(playerId, this.playerKillIds)
+		datas = this.playerKills.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize)
 		callback(null, [myData, datas])
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
+	}else{
+		myData = {rank:_.isNumber(this.playerPowerIds[playerId]) ? this.playerPowerIds[playerId] : null}
+		console.log(playerId, this.playerPowerIds)
+		datas = this.playerPowers.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize)
+		callback(null, [myData, datas])
+	}
 }
 
 /**
  * 获取联盟排名信息
  * @param playerId
+ * @param allianceId
  * @param rankType
  * @param fromRank
  * @param callback
  */
-pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
+pro.getAllianceRankList = function(playerId, allianceId, rankType, fromRank, callback){
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		callback(new Error("allianceId 不合法"))
+		return
+	}
 	if(!_.contains(Consts.RankTypes, rankType)){
 		callback(new Error("rankType 不合法"))
 		return
@@ -188,57 +269,15 @@ pro.getAllianceRankList = function(playerId, rankType, fromRank, callback){
 		return
 	}
 
-	var self = this
-	var playerDoc = null
 	var myData = null
-	var ids = []
-	var scores = []
-	var datas = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
-		if(!_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.dataService.updatePlayerAsync(playerDoc, null)
-	}).then(function(){
-		return self.redis.zrevrankAsync([playerDoc.serverId + ".alliance.basicInfo." + rankType, playerDoc.alliance.id])
-	}).then(function(rank){
-		myData = {rank:rank}
-		return self.redis.zrevrangeAsync([playerDoc.serverId + ".alliance.basicInfo." + rankType, fromRank, fromRank + Define.PlayerMaxReturnRankListSize - 1, "WITHSCORES"])
-	}).then(function(res){
-		for(var i = 0; i < res.length; i += 2){
-			ids.push(res[i])
-			scores.push(res[i + 1])
-		}
-		if(ids.length > 0){
-			return self.allianceDao.findAllAsync(ids)
-		}
-		return Promise.resolve([])
-	}).then(function(docs){
-		for(var i = 0; i < docs.length; i++){
-			var data = {
-				id:docs[i]._id,
-				name:docs[i].basicInfo.name,
-				tag:docs[i].basicInfo.tag,
-				flag:docs[i].basicInfo.flag,
-				value:scores[i]
-			}
-			datas.push(data)
-		}
-		return Promise.resolve()
-	}).then(function(){
-		return self.dataService.updatePlayerAsync(playerDoc, null)
-	}).then(function(){
+	var datas = null
+	if(_.isEqual(Consts.RankTypes.Kill, rankType)){
+		myData = {rank:_.isNumber(this.allianceKillIds[allianceId]) ? this.allianceKillIds[allianceId] : null}
+		datas = this.allianceKills.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize)
 		callback(null, [myData, datas])
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
+	}else{
+		myData = {rank:_.isNumber(this.alliancePowerIds[allianceId]) ? this.alliancePowerIds[allianceId] : null}
+		datas = this.alliancePowers.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize)
+		callback(null, [myData, datas])
+	}
 }

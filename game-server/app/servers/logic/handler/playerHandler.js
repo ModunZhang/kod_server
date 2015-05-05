@@ -1152,40 +1152,6 @@ pro.getGrowUpTaskRewards = function(msg, session, next){
 }
 
 /**
- * 获取玩家排名信息
- * @param msg
- * @param session
- * @param next
- */
-pro.getPlayerRankList = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getPlayerRankList", {playerId:session.uid, msg:msg})
-	var rankType = msg.rankType
-	var fromRank = msg.fromRank
-	this.playerApiService5.getPlayerRankListAsync(session.uid, rankType, fromRank).spread(function(myData, datas){
-		next(null, {code:200, myData:myData, datas:datas})
-	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
-	})
-}
-
-/**
- * 获取联盟排名信息
- * @param msg
- * @param session
- * @param next
- */
-pro.getAllianceRankList = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getAllianceRankList", {playerId:session.uid, msg:msg})
-	var rankType = msg.rankType
-	var fromRank = msg.fromRank
-	this.playerApiService5.getAllianceRankListAsync(session.uid, rankType, fromRank).spread(function(myData, datas){
-		next(null, {code:200, myData:myData, datas:datas})
-	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * 获取联盟其他玩家赠送的礼品
  * @param msg
  * @param session

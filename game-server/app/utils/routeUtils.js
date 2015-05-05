@@ -14,6 +14,14 @@ routeUtil.chat = function(session, msg, app, callback){
 	callback(null, session.get("chatServerId"))
 }
 
+routeUtil.rank = function(session, msg, app, callback){
+	if(!session.get("rankServerId")){
+		callback(new Error("fail to find rankServerId in session"))
+		return
+	}
+	callback(null, session.get("rankServerId"))
+}
+
 routeUtil.logic = function(session, msg, app, callback){
 	if(!session.get("logicServerId")){
 		callback(new Error("fail to find logicServerId in session"))

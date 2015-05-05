@@ -18,6 +18,7 @@ app.set("name", "KODServer")
 
 app.route("chat", RouteUtils.chat)
 app.route("logic", RouteUtils.logic)
+app.route("rank", RouteUtils.rank)
 
 app.configure("production|development", function() {
 	app.set('proxyConfig', {

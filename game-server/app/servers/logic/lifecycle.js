@@ -45,6 +45,8 @@ life.beforeStartup = function(app, callback){
 			app.set("chatServerId", id)
 		}else if(_.isEqual(server.serverType, "event") && _.isEqual(server.usedFor, currentServer.usedFor)){
 			app.set("eventServerId", id)
+		}else if(_.isEqual(server.serverType, "rank") && _.isEqual(server.usedFor, currentServer.usedFor)){
+			app.set("rankServerId", id)
 		}else if(_.isEqual(server.serverType, "cache") && _.isEqual(server.id, currentServer.usedFor)){
 			app.set("cacheServerId", id)
 		}else if(_.isEqual(server.serverType, "gate")){

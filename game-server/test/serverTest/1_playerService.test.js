@@ -1763,19 +1763,19 @@
 //			})
 //		})
 //
-//		//it("getPlayerRankList 获取Power排行", function(done){
-//		//	Api.getPlayerRankList(Consts.RankTypes.Power, 0, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it("getPlayerRankList 获取Kill排行", function(done){
-//		//	Api.getPlayerRankList(Consts.RankTypes.Kill, 0, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
+//		it("getPlayerRankList 获取Power排行", function(done){
+//			Api.getPlayerRankList(Consts.RankTypes.Power, 0, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getPlayerRankList 获取Kill排行", function(done){
+//			Api.getPlayerRankList(Consts.RankTypes.Kill, 0, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
 //
 //		it("getServers", function(done){
 //			Api.getServers(function(doc){

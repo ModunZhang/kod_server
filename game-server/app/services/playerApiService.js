@@ -27,6 +27,7 @@ var PlayerApiService = function(app){
 	this.dataService = app.get("dataService")
 	this.chatServerId = app.get("chatServerId")
 	this.logicServerId = app.get("logicServerId")
+	this.rankServerId = app.get("rankServerId")
 	this.GemUse = app.get("GemUse")
 	this.Device = app.get("Device")
 }
@@ -39,6 +40,7 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 	session.set("deviceId", deviceId)
 	session.set("logicServerId", this.logicServerId)
 	session.set("chatServerId", this.chatServerId)
+	session.set("rankServerId", this.rankServerId)
 	session.set("name", playerDoc.basicInfo.name)
 	session.set("icon", playerDoc.basicInfo.icon)
 	session.set("allianceId", _.isObject(allianceDoc) ? allianceDoc._id : "")
