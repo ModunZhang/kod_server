@@ -512,799 +512,409 @@ dragonLevel[38] = {
 }
 dragonLevel[39] = {
 	id:39,
-	index:40,
-	type:"redDragon",
-	level:41,
+	index:1,
+	type:"blueDragon",
+	level:2,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:200,
 	gem:0,
-	exp:0
+	exp:56
 }
 dragonLevel[40] = {
 	id:40,
-	index:41,
-	type:"redDragon",
-	level:42,
+	index:2,
+	type:"blueDragon",
+	level:3,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:480,
 	gem:0,
-	exp:0
+	exp:61
 }
 dragonLevel[41] = {
 	id:41,
-	index:42,
-	type:"redDragon",
-	level:43,
+	index:3,
+	type:"blueDragon",
+	level:4,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:880,
 	gem:0,
-	exp:0
+	exp:69
 }
 dragonLevel[42] = {
 	id:42,
-	index:43,
-	type:"redDragon",
-	level:44,
+	index:4,
+	type:"blueDragon",
+	level:5,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:1920,
 	gem:0,
-	exp:0
+	exp:90
 }
 dragonLevel[43] = {
 	id:43,
-	index:44,
-	type:"redDragon",
-	level:45,
+	index:5,
+	type:"blueDragon",
+	level:6,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:2500,
 	gem:0,
-	exp:0
+	exp:101
 }
 dragonLevel[44] = {
 	id:44,
-	index:45,
-	type:"redDragon",
-	level:46,
+	index:6,
+	type:"blueDragon",
+	level:7,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:3120,
 	gem:0,
-	exp:0
+	exp:114
 }
 dragonLevel[45] = {
 	id:45,
-	index:46,
-	type:"redDragon",
-	level:47,
+	index:7,
+	type:"blueDragon",
+	level:8,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:3780,
 	gem:0,
-	exp:0
+	exp:127
 }
 dragonLevel[46] = {
 	id:46,
-	index:47,
-	type:"redDragon",
-	level:48,
+	index:8,
+	type:"blueDragon",
+	level:9,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:4480,
 	gem:0,
-	exp:0
+	exp:141
 }
 dragonLevel[47] = {
 	id:47,
-	index:48,
-	type:"redDragon",
-	level:49,
+	index:9,
+	type:"blueDragon",
+	level:10,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:6000,
 	gem:0,
-	exp:0
+	exp:171
 }
 dragonLevel[48] = {
 	id:48,
-	index:49,
-	type:"redDragon",
-	level:50,
+	index:10,
+	type:"blueDragon",
+	level:11,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:12400,
 	gem:0,
-	exp:0
+	exp:299
 }
 dragonLevel[49] = {
 	id:49,
-	index:50,
-	type:"redDragon",
-	level:51,
+	index:11,
+	type:"blueDragon",
+	level:12,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:15360,
 	gem:0,
-	exp:0
+	exp:359
 }
 dragonLevel[50] = {
 	id:50,
-	index:51,
-	type:"redDragon",
-	level:52,
+	index:12,
+	type:"blueDragon",
+	level:13,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:18480,
 	gem:0,
-	exp:0
+	exp:421
 }
 dragonLevel[51] = {
 	id:51,
-	index:52,
-	type:"redDragon",
-	level:53,
+	index:13,
+	type:"blueDragon",
+	level:14,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:21760,
 	gem:0,
-	exp:0
+	exp:487
 }
 dragonLevel[52] = {
 	id:52,
-	index:53,
-	type:"redDragon",
-	level:54,
+	index:14,
+	type:"blueDragon",
+	level:15,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:25200,
 	gem:0,
-	exp:0
+	exp:555
 }
 dragonLevel[53] = {
 	id:53,
-	index:54,
-	type:"redDragon",
-	level:55,
+	index:15,
+	type:"blueDragon",
+	level:16,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:28800,
 	gem:0,
-	exp:0
+	exp:627
 }
 dragonLevel[54] = {
 	id:54,
-	index:55,
-	type:"redDragon",
-	level:56,
+	index:16,
+	type:"blueDragon",
+	level:17,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:32560,
 	gem:0,
-	exp:0
+	exp:703
 }
 dragonLevel[55] = {
 	id:55,
-	index:56,
-	type:"redDragon",
-	level:57,
+	index:17,
+	type:"blueDragon",
+	level:18,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:36480,
 	gem:0,
-	exp:0
+	exp:781
 }
 dragonLevel[56] = {
 	id:56,
-	index:57,
-	type:"redDragon",
-	level:58,
+	index:18,
+	type:"blueDragon",
+	level:19,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:40560,
 	gem:0,
-	exp:0
+	exp:863
 }
 dragonLevel[57] = {
 	id:57,
-	index:58,
-	type:"redDragon",
-	level:59,
+	index:19,
+	type:"blueDragon",
+	level:20,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:44800,
 	gem:0,
-	exp:0
+	exp:948
 }
 dragonLevel[58] = {
 	id:58,
-	index:59,
-	type:"redDragon",
-	level:60,
+	index:20,
+	type:"blueDragon",
+	level:21,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:98560,
 	gem:0,
-	exp:0
+	exp:2023
 }
 dragonLevel[59] = {
 	id:59,
-	index:60,
-	type:"redDragon",
-	level:61,
+	index:21,
+	type:"blueDragon",
+	level:22,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:122880,
 	gem:0,
-	exp:0
+	exp:2509
 }
 dragonLevel[60] = {
 	id:60,
-	index:61,
-	type:"redDragon",
-	level:62,
+	index:22,
+	type:"blueDragon",
+	level:23,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:149760,
 	gem:0,
-	exp:0
+	exp:3047
 }
 dragonLevel[61] = {
 	id:61,
-	index:62,
-	type:"redDragon",
-	level:63,
+	index:23,
+	type:"blueDragon",
+	level:24,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:179200,
 	gem:0,
-	exp:0
+	exp:3636
 }
 dragonLevel[62] = {
 	id:62,
-	index:63,
-	type:"redDragon",
-	level:64,
+	index:24,
+	type:"blueDragon",
+	level:25,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:211200,
 	gem:0,
-	exp:0
+	exp:4276
 }
 dragonLevel[63] = {
 	id:63,
-	index:64,
-	type:"redDragon",
-	level:65,
+	index:25,
+	type:"blueDragon",
+	level:26,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:245760,
 	gem:0,
-	exp:0
+	exp:4967
 }
 dragonLevel[64] = {
 	id:64,
-	index:65,
-	type:"redDragon",
-	level:66,
+	index:26,
+	type:"blueDragon",
+	level:27,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:282880,
 	gem:0,
-	exp:0
+	exp:5709
 }
 dragonLevel[65] = {
 	id:65,
-	index:66,
-	type:"redDragon",
-	level:67,
+	index:27,
+	type:"blueDragon",
+	level:28,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:322560,
 	gem:0,
-	exp:0
+	exp:6503
 }
 dragonLevel[66] = {
 	id:66,
-	index:67,
-	type:"redDragon",
-	level:68,
+	index:28,
+	type:"blueDragon",
+	level:29,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:364800,
 	gem:0,
-	exp:0
+	exp:7348
 }
 dragonLevel[67] = {
 	id:67,
-	index:68,
-	type:"redDragon",
-	level:69,
+	index:29,
+	type:"blueDragon",
+	level:30,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:409600,
 	gem:0,
-	exp:0
+	exp:8243
 }
 dragonLevel[68] = {
 	id:68,
-	index:69,
-	type:"redDragon",
-	level:70,
+	index:30,
+	type:"blueDragon",
+	level:31,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:0,
+	coin:675840,
 	gem:0,
-	exp:0
+	exp:13568
 }
 dragonLevel[69] = {
 	id:69,
-	index:1,
+	index:31,
 	type:"blueDragon",
-	level:2,
+	level:32,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:200,
+	coin:798720,
 	gem:0,
-	exp:56
+	exp:16026
 }
 dragonLevel[70] = {
 	id:70,
-	index:2,
-	type:"blueDragon",
-	level:3,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:480,
-	gem:0,
-	exp:61
-}
-dragonLevel[71] = {
-	id:71,
-	index:3,
-	type:"blueDragon",
-	level:4,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:880,
-	gem:0,
-	exp:69
-}
-dragonLevel[72] = {
-	id:72,
-	index:4,
-	type:"blueDragon",
-	level:5,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:1920,
-	gem:0,
-	exp:90
-}
-dragonLevel[73] = {
-	id:73,
-	index:5,
-	type:"blueDragon",
-	level:6,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:2500,
-	gem:0,
-	exp:101
-}
-dragonLevel[74] = {
-	id:74,
-	index:6,
-	type:"blueDragon",
-	level:7,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:3120,
-	gem:0,
-	exp:114
-}
-dragonLevel[75] = {
-	id:75,
-	index:7,
-	type:"blueDragon",
-	level:8,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:3780,
-	gem:0,
-	exp:127
-}
-dragonLevel[76] = {
-	id:76,
-	index:8,
-	type:"blueDragon",
-	level:9,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:4480,
-	gem:0,
-	exp:141
-}
-dragonLevel[77] = {
-	id:77,
-	index:9,
-	type:"blueDragon",
-	level:10,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:6000,
-	gem:0,
-	exp:171
-}
-dragonLevel[78] = {
-	id:78,
-	index:10,
-	type:"blueDragon",
-	level:11,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:12400,
-	gem:0,
-	exp:299
-}
-dragonLevel[79] = {
-	id:79,
-	index:11,
-	type:"blueDragon",
-	level:12,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:15360,
-	gem:0,
-	exp:359
-}
-dragonLevel[80] = {
-	id:80,
-	index:12,
-	type:"blueDragon",
-	level:13,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:18480,
-	gem:0,
-	exp:421
-}
-dragonLevel[81] = {
-	id:81,
-	index:13,
-	type:"blueDragon",
-	level:14,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:21760,
-	gem:0,
-	exp:487
-}
-dragonLevel[82] = {
-	id:82,
-	index:14,
-	type:"blueDragon",
-	level:15,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:25200,
-	gem:0,
-	exp:555
-}
-dragonLevel[83] = {
-	id:83,
-	index:15,
-	type:"blueDragon",
-	level:16,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:28800,
-	gem:0,
-	exp:627
-}
-dragonLevel[84] = {
-	id:84,
-	index:16,
-	type:"blueDragon",
-	level:17,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:32560,
-	gem:0,
-	exp:703
-}
-dragonLevel[85] = {
-	id:85,
-	index:17,
-	type:"blueDragon",
-	level:18,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:36480,
-	gem:0,
-	exp:781
-}
-dragonLevel[86] = {
-	id:86,
-	index:18,
-	type:"blueDragon",
-	level:19,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:40560,
-	gem:0,
-	exp:863
-}
-dragonLevel[87] = {
-	id:87,
-	index:19,
-	type:"blueDragon",
-	level:20,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:44800,
-	gem:0,
-	exp:948
-}
-dragonLevel[88] = {
-	id:88,
-	index:20,
-	type:"blueDragon",
-	level:21,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:98560,
-	gem:0,
-	exp:2023
-}
-dragonLevel[89] = {
-	id:89,
-	index:21,
-	type:"blueDragon",
-	level:22,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:122880,
-	gem:0,
-	exp:2509
-}
-dragonLevel[90] = {
-	id:90,
-	index:22,
-	type:"blueDragon",
-	level:23,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:149760,
-	gem:0,
-	exp:3047
-}
-dragonLevel[91] = {
-	id:91,
-	index:23,
-	type:"blueDragon",
-	level:24,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:179200,
-	gem:0,
-	exp:3636
-}
-dragonLevel[92] = {
-	id:92,
-	index:24,
-	type:"blueDragon",
-	level:25,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:211200,
-	gem:0,
-	exp:4276
-}
-dragonLevel[93] = {
-	id:93,
-	index:25,
-	type:"blueDragon",
-	level:26,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:245760,
-	gem:0,
-	exp:4967
-}
-dragonLevel[94] = {
-	id:94,
-	index:26,
-	type:"blueDragon",
-	level:27,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:282880,
-	gem:0,
-	exp:5709
-}
-dragonLevel[95] = {
-	id:95,
-	index:27,
-	type:"blueDragon",
-	level:28,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:322560,
-	gem:0,
-	exp:6503
-}
-dragonLevel[96] = {
-	id:96,
-	index:28,
-	type:"blueDragon",
-	level:29,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:364800,
-	gem:0,
-	exp:7348
-}
-dragonLevel[97] = {
-	id:97,
-	index:29,
-	type:"blueDragon",
-	level:30,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:409600,
-	gem:0,
-	exp:8243
-}
-dragonLevel[98] = {
-	id:98,
-	index:30,
-	type:"blueDragon",
-	level:31,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:675840,
-	gem:0,
-	exp:13568
-}
-dragonLevel[99] = {
-	id:99,
-	index:31,
-	type:"blueDragon",
-	level:32,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:798720,
-	gem:0,
-	exp:16026
-}
-dragonLevel[100] = {
-	id:100,
 	index:32,
 	type:"blueDragon",
 	level:33,
@@ -1316,8 +926,8 @@ dragonLevel[100] = {
 	gem:0,
 	exp:18688
 }
-dragonLevel[101] = {
-	id:101,
+dragonLevel[71] = {
+	id:71,
 	index:33,
 	type:"blueDragon",
 	level:34,
@@ -1329,8 +939,8 @@ dragonLevel[101] = {
 	gem:0,
 	exp:21555
 }
-dragonLevel[102] = {
-	id:102,
+dragonLevel[72] = {
+	id:72,
 	index:34,
 	type:"blueDragon",
 	level:35,
@@ -1342,8 +952,8 @@ dragonLevel[102] = {
 	gem:0,
 	exp:24627
 }
-dragonLevel[103] = {
-	id:103,
+dragonLevel[73] = {
+	id:73,
 	index:35,
 	type:"blueDragon",
 	level:36,
@@ -1355,8 +965,8 @@ dragonLevel[103] = {
 	gem:0,
 	exp:27904
 }
-dragonLevel[104] = {
-	id:104,
+dragonLevel[74] = {
+	id:74,
 	index:36,
 	type:"blueDragon",
 	level:37,
@@ -1368,8 +978,8 @@ dragonLevel[104] = {
 	gem:0,
 	exp:31386
 }
-dragonLevel[105] = {
-	id:105,
+dragonLevel[75] = {
+	id:75,
 	index:37,
 	type:"blueDragon",
 	level:38,
@@ -1381,8 +991,8 @@ dragonLevel[105] = {
 	gem:0,
 	exp:35072
 }
-dragonLevel[106] = {
-	id:106,
+dragonLevel[76] = {
+	id:76,
 	index:38,
 	type:"blueDragon",
 	level:39,
@@ -1394,8 +1004,8 @@ dragonLevel[106] = {
 	gem:0,
 	exp:38964
 }
-dragonLevel[107] = {
-	id:107,
+dragonLevel[77] = {
+	id:77,
 	index:39,
 	type:"blueDragon",
 	level:40,
@@ -1407,398 +1017,8 @@ dragonLevel[107] = {
 	gem:0,
 	exp:43060
 }
-dragonLevel[108] = {
-	id:108,
-	index:40,
-	type:"blueDragon",
-	level:41,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[109] = {
-	id:109,
-	index:41,
-	type:"blueDragon",
-	level:42,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[110] = {
-	id:110,
-	index:42,
-	type:"blueDragon",
-	level:43,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[111] = {
-	id:111,
-	index:43,
-	type:"blueDragon",
-	level:44,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[112] = {
-	id:112,
-	index:44,
-	type:"blueDragon",
-	level:45,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[113] = {
-	id:113,
-	index:45,
-	type:"blueDragon",
-	level:46,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[114] = {
-	id:114,
-	index:46,
-	type:"blueDragon",
-	level:47,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[115] = {
-	id:115,
-	index:47,
-	type:"blueDragon",
-	level:48,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[116] = {
-	id:116,
-	index:48,
-	type:"blueDragon",
-	level:49,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[117] = {
-	id:117,
-	index:49,
-	type:"blueDragon",
-	level:50,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[118] = {
-	id:118,
-	index:50,
-	type:"blueDragon",
-	level:51,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[119] = {
-	id:119,
-	index:51,
-	type:"blueDragon",
-	level:52,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[120] = {
-	id:120,
-	index:52,
-	type:"blueDragon",
-	level:53,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[121] = {
-	id:121,
-	index:53,
-	type:"blueDragon",
-	level:54,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[122] = {
-	id:122,
-	index:54,
-	type:"blueDragon",
-	level:55,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[123] = {
-	id:123,
-	index:55,
-	type:"blueDragon",
-	level:56,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[124] = {
-	id:124,
-	index:56,
-	type:"blueDragon",
-	level:57,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[125] = {
-	id:125,
-	index:57,
-	type:"blueDragon",
-	level:58,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[126] = {
-	id:126,
-	index:58,
-	type:"blueDragon",
-	level:59,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[127] = {
-	id:127,
-	index:59,
-	type:"blueDragon",
-	level:60,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[128] = {
-	id:128,
-	index:60,
-	type:"blueDragon",
-	level:61,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[129] = {
-	id:129,
-	index:61,
-	type:"blueDragon",
-	level:62,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[130] = {
-	id:130,
-	index:62,
-	type:"blueDragon",
-	level:63,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[131] = {
-	id:131,
-	index:63,
-	type:"blueDragon",
-	level:64,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[132] = {
-	id:132,
-	index:64,
-	type:"blueDragon",
-	level:65,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[133] = {
-	id:133,
-	index:65,
-	type:"blueDragon",
-	level:66,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[134] = {
-	id:134,
-	index:66,
-	type:"blueDragon",
-	level:67,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[135] = {
-	id:135,
-	index:67,
-	type:"blueDragon",
-	level:68,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[136] = {
-	id:136,
-	index:68,
-	type:"blueDragon",
-	level:69,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[137] = {
-	id:137,
-	index:69,
-	type:"blueDragon",
-	level:70,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[138] = {
-	id:138,
+dragonLevel[78] = {
+	id:78,
 	index:1,
 	type:"greenDragon",
 	level:2,
@@ -1810,8 +1030,8 @@ dragonLevel[138] = {
 	gem:0,
 	exp:56
 }
-dragonLevel[139] = {
-	id:139,
+dragonLevel[79] = {
+	id:79,
 	index:2,
 	type:"greenDragon",
 	level:3,
@@ -1823,8 +1043,8 @@ dragonLevel[139] = {
 	gem:0,
 	exp:61
 }
-dragonLevel[140] = {
-	id:140,
+dragonLevel[80] = {
+	id:80,
 	index:3,
 	type:"greenDragon",
 	level:4,
@@ -1836,8 +1056,8 @@ dragonLevel[140] = {
 	gem:0,
 	exp:69
 }
-dragonLevel[141] = {
-	id:141,
+dragonLevel[81] = {
+	id:81,
 	index:4,
 	type:"greenDragon",
 	level:5,
@@ -1849,8 +1069,8 @@ dragonLevel[141] = {
 	gem:0,
 	exp:90
 }
-dragonLevel[142] = {
-	id:142,
+dragonLevel[82] = {
+	id:82,
 	index:5,
 	type:"greenDragon",
 	level:6,
@@ -1862,8 +1082,8 @@ dragonLevel[142] = {
 	gem:0,
 	exp:101
 }
-dragonLevel[143] = {
-	id:143,
+dragonLevel[83] = {
+	id:83,
 	index:6,
 	type:"greenDragon",
 	level:7,
@@ -1875,8 +1095,8 @@ dragonLevel[143] = {
 	gem:0,
 	exp:114
 }
-dragonLevel[144] = {
-	id:144,
+dragonLevel[84] = {
+	id:84,
 	index:7,
 	type:"greenDragon",
 	level:8,
@@ -1888,8 +1108,8 @@ dragonLevel[144] = {
 	gem:0,
 	exp:127
 }
-dragonLevel[145] = {
-	id:145,
+dragonLevel[85] = {
+	id:85,
 	index:8,
 	type:"greenDragon",
 	level:9,
@@ -1901,8 +1121,8 @@ dragonLevel[145] = {
 	gem:0,
 	exp:141
 }
-dragonLevel[146] = {
-	id:146,
+dragonLevel[86] = {
+	id:86,
 	index:9,
 	type:"greenDragon",
 	level:10,
@@ -1914,8 +1134,8 @@ dragonLevel[146] = {
 	gem:0,
 	exp:171
 }
-dragonLevel[147] = {
-	id:147,
+dragonLevel[87] = {
+	id:87,
 	index:10,
 	type:"greenDragon",
 	level:11,
@@ -1927,8 +1147,8 @@ dragonLevel[147] = {
 	gem:0,
 	exp:299
 }
-dragonLevel[148] = {
-	id:148,
+dragonLevel[88] = {
+	id:88,
 	index:11,
 	type:"greenDragon",
 	level:12,
@@ -1940,8 +1160,8 @@ dragonLevel[148] = {
 	gem:0,
 	exp:359
 }
-dragonLevel[149] = {
-	id:149,
+dragonLevel[89] = {
+	id:89,
 	index:12,
 	type:"greenDragon",
 	level:13,
@@ -1953,8 +1173,8 @@ dragonLevel[149] = {
 	gem:0,
 	exp:421
 }
-dragonLevel[150] = {
-	id:150,
+dragonLevel[90] = {
+	id:90,
 	index:13,
 	type:"greenDragon",
 	level:14,
@@ -1966,8 +1186,8 @@ dragonLevel[150] = {
 	gem:0,
 	exp:487
 }
-dragonLevel[151] = {
-	id:151,
+dragonLevel[91] = {
+	id:91,
 	index:14,
 	type:"greenDragon",
 	level:15,
@@ -1979,8 +1199,8 @@ dragonLevel[151] = {
 	gem:0,
 	exp:555
 }
-dragonLevel[152] = {
-	id:152,
+dragonLevel[92] = {
+	id:92,
 	index:15,
 	type:"greenDragon",
 	level:16,
@@ -1992,8 +1212,8 @@ dragonLevel[152] = {
 	gem:0,
 	exp:627
 }
-dragonLevel[153] = {
-	id:153,
+dragonLevel[93] = {
+	id:93,
 	index:16,
 	type:"greenDragon",
 	level:17,
@@ -2005,8 +1225,8 @@ dragonLevel[153] = {
 	gem:0,
 	exp:703
 }
-dragonLevel[154] = {
-	id:154,
+dragonLevel[94] = {
+	id:94,
 	index:17,
 	type:"greenDragon",
 	level:18,
@@ -2018,8 +1238,8 @@ dragonLevel[154] = {
 	gem:0,
 	exp:781
 }
-dragonLevel[155] = {
-	id:155,
+dragonLevel[95] = {
+	id:95,
 	index:18,
 	type:"greenDragon",
 	level:19,
@@ -2031,8 +1251,8 @@ dragonLevel[155] = {
 	gem:0,
 	exp:863
 }
-dragonLevel[156] = {
-	id:156,
+dragonLevel[96] = {
+	id:96,
 	index:19,
 	type:"greenDragon",
 	level:20,
@@ -2044,8 +1264,8 @@ dragonLevel[156] = {
 	gem:0,
 	exp:948
 }
-dragonLevel[157] = {
-	id:157,
+dragonLevel[97] = {
+	id:97,
 	index:20,
 	type:"greenDragon",
 	level:21,
@@ -2057,8 +1277,8 @@ dragonLevel[157] = {
 	gem:0,
 	exp:2023
 }
-dragonLevel[158] = {
-	id:158,
+dragonLevel[98] = {
+	id:98,
 	index:21,
 	type:"greenDragon",
 	level:22,
@@ -2070,8 +1290,8 @@ dragonLevel[158] = {
 	gem:0,
 	exp:2509
 }
-dragonLevel[159] = {
-	id:159,
+dragonLevel[99] = {
+	id:99,
 	index:22,
 	type:"greenDragon",
 	level:23,
@@ -2083,8 +1303,8 @@ dragonLevel[159] = {
 	gem:0,
 	exp:3047
 }
-dragonLevel[160] = {
-	id:160,
+dragonLevel[100] = {
+	id:100,
 	index:23,
 	type:"greenDragon",
 	level:24,
@@ -2096,8 +1316,8 @@ dragonLevel[160] = {
 	gem:0,
 	exp:3636
 }
-dragonLevel[161] = {
-	id:161,
+dragonLevel[101] = {
+	id:101,
 	index:24,
 	type:"greenDragon",
 	level:25,
@@ -2109,8 +1329,8 @@ dragonLevel[161] = {
 	gem:0,
 	exp:4276
 }
-dragonLevel[162] = {
-	id:162,
+dragonLevel[102] = {
+	id:102,
 	index:25,
 	type:"greenDragon",
 	level:26,
@@ -2122,8 +1342,8 @@ dragonLevel[162] = {
 	gem:0,
 	exp:4967
 }
-dragonLevel[163] = {
-	id:163,
+dragonLevel[103] = {
+	id:103,
 	index:26,
 	type:"greenDragon",
 	level:27,
@@ -2135,8 +1355,8 @@ dragonLevel[163] = {
 	gem:0,
 	exp:5709
 }
-dragonLevel[164] = {
-	id:164,
+dragonLevel[104] = {
+	id:104,
 	index:27,
 	type:"greenDragon",
 	level:28,
@@ -2148,8 +1368,8 @@ dragonLevel[164] = {
 	gem:0,
 	exp:6503
 }
-dragonLevel[165] = {
-	id:165,
+dragonLevel[105] = {
+	id:105,
 	index:28,
 	type:"greenDragon",
 	level:29,
@@ -2161,8 +1381,8 @@ dragonLevel[165] = {
 	gem:0,
 	exp:7348
 }
-dragonLevel[166] = {
-	id:166,
+dragonLevel[106] = {
+	id:106,
 	index:29,
 	type:"greenDragon",
 	level:30,
@@ -2174,8 +1394,8 @@ dragonLevel[166] = {
 	gem:0,
 	exp:8243
 }
-dragonLevel[167] = {
-	id:167,
+dragonLevel[107] = {
+	id:107,
 	index:30,
 	type:"greenDragon",
 	level:31,
@@ -2187,8 +1407,8 @@ dragonLevel[167] = {
 	gem:0,
 	exp:13568
 }
-dragonLevel[168] = {
-	id:168,
+dragonLevel[108] = {
+	id:108,
 	index:31,
 	type:"greenDragon",
 	level:32,
@@ -2200,8 +1420,8 @@ dragonLevel[168] = {
 	gem:0,
 	exp:16026
 }
-dragonLevel[169] = {
-	id:169,
+dragonLevel[109] = {
+	id:109,
 	index:32,
 	type:"greenDragon",
 	level:33,
@@ -2213,8 +1433,8 @@ dragonLevel[169] = {
 	gem:0,
 	exp:18688
 }
-dragonLevel[170] = {
-	id:170,
+dragonLevel[110] = {
+	id:110,
 	index:33,
 	type:"greenDragon",
 	level:34,
@@ -2226,8 +1446,8 @@ dragonLevel[170] = {
 	gem:0,
 	exp:21555
 }
-dragonLevel[171] = {
-	id:171,
+dragonLevel[111] = {
+	id:111,
 	index:34,
 	type:"greenDragon",
 	level:35,
@@ -2239,8 +1459,8 @@ dragonLevel[171] = {
 	gem:0,
 	exp:24627
 }
-dragonLevel[172] = {
-	id:172,
+dragonLevel[112] = {
+	id:112,
 	index:35,
 	type:"greenDragon",
 	level:36,
@@ -2252,8 +1472,8 @@ dragonLevel[172] = {
 	gem:0,
 	exp:27904
 }
-dragonLevel[173] = {
-	id:173,
+dragonLevel[113] = {
+	id:113,
 	index:36,
 	type:"greenDragon",
 	level:37,
@@ -2265,8 +1485,8 @@ dragonLevel[173] = {
 	gem:0,
 	exp:31386
 }
-dragonLevel[174] = {
-	id:174,
+dragonLevel[114] = {
+	id:114,
 	index:37,
 	type:"greenDragon",
 	level:38,
@@ -2278,8 +1498,8 @@ dragonLevel[174] = {
 	gem:0,
 	exp:35072
 }
-dragonLevel[175] = {
-	id:175,
+dragonLevel[115] = {
+	id:115,
 	index:38,
 	type:"greenDragon",
 	level:39,
@@ -2291,8 +1511,8 @@ dragonLevel[175] = {
 	gem:0,
 	exp:38964
 }
-dragonLevel[176] = {
-	id:176,
+dragonLevel[116] = {
+	id:116,
 	index:39,
 	type:"greenDragon",
 	level:40,
@@ -2303,394 +1523,4 @@ dragonLevel[176] = {
 	coin:2150400,
 	gem:0,
 	exp:43060
-}
-dragonLevel[177] = {
-	id:177,
-	index:40,
-	type:"greenDragon",
-	level:41,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[178] = {
-	id:178,
-	index:41,
-	type:"greenDragon",
-	level:42,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[179] = {
-	id:179,
-	index:42,
-	type:"greenDragon",
-	level:43,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[180] = {
-	id:180,
-	index:43,
-	type:"greenDragon",
-	level:44,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[181] = {
-	id:181,
-	index:44,
-	type:"greenDragon",
-	level:45,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[182] = {
-	id:182,
-	index:45,
-	type:"greenDragon",
-	level:46,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[183] = {
-	id:183,
-	index:46,
-	type:"greenDragon",
-	level:47,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[184] = {
-	id:184,
-	index:47,
-	type:"greenDragon",
-	level:48,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[185] = {
-	id:185,
-	index:48,
-	type:"greenDragon",
-	level:49,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[186] = {
-	id:186,
-	index:49,
-	type:"greenDragon",
-	level:50,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[187] = {
-	id:187,
-	index:50,
-	type:"greenDragon",
-	level:51,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[188] = {
-	id:188,
-	index:51,
-	type:"greenDragon",
-	level:52,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[189] = {
-	id:189,
-	index:52,
-	type:"greenDragon",
-	level:53,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[190] = {
-	id:190,
-	index:53,
-	type:"greenDragon",
-	level:54,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[191] = {
-	id:191,
-	index:54,
-	type:"greenDragon",
-	level:55,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[192] = {
-	id:192,
-	index:55,
-	type:"greenDragon",
-	level:56,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[193] = {
-	id:193,
-	index:56,
-	type:"greenDragon",
-	level:57,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[194] = {
-	id:194,
-	index:57,
-	type:"greenDragon",
-	level:58,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[195] = {
-	id:195,
-	index:58,
-	type:"greenDragon",
-	level:59,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[196] = {
-	id:196,
-	index:59,
-	type:"greenDragon",
-	level:60,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[197] = {
-	id:197,
-	index:60,
-	type:"greenDragon",
-	level:61,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[198] = {
-	id:198,
-	index:61,
-	type:"greenDragon",
-	level:62,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[199] = {
-	id:199,
-	index:62,
-	type:"greenDragon",
-	level:63,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[200] = {
-	id:200,
-	index:63,
-	type:"greenDragon",
-	level:64,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[201] = {
-	id:201,
-	index:64,
-	type:"greenDragon",
-	level:65,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[202] = {
-	id:202,
-	index:65,
-	type:"greenDragon",
-	level:66,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[203] = {
-	id:203,
-	index:66,
-	type:"greenDragon",
-	level:67,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[204] = {
-	id:204,
-	index:67,
-	type:"greenDragon",
-	level:68,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[205] = {
-	id:205,
-	index:68,
-	type:"greenDragon",
-	level:69,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
-}
-dragonLevel[206] = {
-	id:206,
-	index:69,
-	type:"greenDragon",
-	level:70,
-	wood:0,
-	stone:0,
-	iron:0,
-	food:0,
-	coin:0,
-	gem:0,
-	exp:0
 }

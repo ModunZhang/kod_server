@@ -858,8 +858,13 @@ pro.gacha = function(playerId, type, callback){
 		for(var i = 0; i < count; i++){
 			var item = DataUtils.getGachaItemByType(type, excludes)
 			excludes.push(item.name)
-			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+			if(_.isEqual(item.type, "items")){
+				var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
+				playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+			}else{
+				playerDoc[item.type][item.name] += item.count
+				playerData.push([item.type + "." + item.name, playerDoc[item.type][item.name]])
+			}
 		}
 
 		if(_.isEqual(type, Consts.GachaType.Advanced)){

@@ -1523,9 +1523,12 @@
 //		})
 //
 //		it("gacha 正常Gacha2", function(done){
-//			Api.gacha(Consts.GachaType.Advanced, function(doc){
+//			Api.sendChat("resources casinoToken 1000000", function(doc){
 //				doc.code.should.equal(200)
-//				done()
+//				Api.gacha(Consts.GachaType.Advanced, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
 //			})
 //		})
 //

@@ -3251,9 +3251,13 @@ Utils.getGachaItemByType = function(gachaType, excludes){
 	var itemConfigs = Gacha[gachaType]
 	_.each(itemConfigs, function(itemConfig){
 		if(_.isObject(itemConfig)){
-			if(!_.contains(excludes, itemConfig.itemName)){
+			var itemNameParams = itemConfig.itemName.split(":")
+			var itemType = itemNameParams[0]
+			var itemName = itemNameParams[1]
+			if(!_.contains(excludes, itemName)){
 				var item = {
-					name:itemConfig.itemName,
+					type:itemType,
+					name:itemName,
 					count:itemConfig.itemCount,
 					weight:itemConfig.weight
 				}
