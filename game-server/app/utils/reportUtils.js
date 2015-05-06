@@ -290,7 +290,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		return protectPercent
 	}
 	var getDefencePlayerResourceProtectCount = function(defencePlayerDoc, resourceName, attackDragon){
-		var basePercent = 0.3
+		var basePercent = DataUtils.getPlayerIntInit("playerResourceProtect") / 100
 		var buildingBuffAddPercent = getBuildingBuffForResourceProtectPercent(defencePlayerDoc, resourceName)
 		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
 		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
@@ -323,6 +323,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 	if(!_.isObject(soldierFightData) || _.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult)){
 		var attackDragonCurrentHp = attackDragonForFight.currentHp
 		var coinGet = defencePlayerDoc.resources.coin >= attackDragonCurrentHp ? attackDragonCurrentHp : defencePlayerDoc.resources.coin
+		coinGet *= 100
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"coin",
@@ -697,6 +698,36 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		})
 		return techs
 	}
+	var getPlayerItemBuffForResourceLootPercentSubtract = function(playerDoc){
+		var itemBuff = 0
+		var eventType = "masterOfDefender"
+		var itemEvent = _.find(playerDoc.itemEvents, function(event){
+			return _.isEqual(event.type, eventType)
+		})
+		if(_.isObject(itemEvent)) itemBuff = 0.25
+		return itemBuff
+	}
+	var getBuildingBuffForResourceProtectPercent = function(playerDoc, resourceName){
+		var buildingName = Consts.ResourceBuildingMap[resourceName]
+		var buildings = LogicUtils.getPlayerBuildingsByType(playerDoc, buildingName)
+		var protectPercent = 0
+		_.each(buildings, function(building){
+			if(building.level >= 1){
+				var config = BuildingFunction[buildingName][building.level]
+				protectPercent += config.protection
+			}
+		})
+		return protectPercent
+	}
+	var getPlayerResourceProtectCount = function(defencePlayerDoc, resourceName){
+		var basePercent = DataUtils.getPlayerIntInit("playerResourceProtect") / 100
+		var buildingBuffAddPercent = getBuildingBuffForResourceProtectPercent(defencePlayerDoc, resourceName)
+		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
+		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
+		var finalPercent = basePercent * (1 + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent)
+		finalPercent = finalPercent > 0.9 ? 0.9 : finalPercent < 0.1 ? 0.1 : finalPercent
+		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
+	}
 
 	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, defencePlayerDoc.basicInfo.terrain)
 	var defenceDragonPower = DataUtils.getDragonStrength(defenceDragon, defencePlayerDoc.basicInfo.terrain)
@@ -740,12 +771,11 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 			soldiers:getDefenceSoldiers(defencePlayerDoc),
 			militaryTechs:getMilitaryTechs(defencePlayerDoc),
 			resources:{
-				wood:defencePlayerDoc.resources.wood,
-				stone:defencePlayerDoc.resources.stone,
-				iron:defencePlayerDoc.resources.iron,
-				food:defencePlayerDoc.resources.food,
-				coin:defencePlayerDoc.resources.coin,
-				wallHp:defencePlayerDoc.resources.wallHp
+				wood:defencePlayerDoc.resources.wood - getPlayerResourceProtectCount(defencePlayerDoc, "wood"),
+				stone:defencePlayerDoc.resources.stone - getPlayerResourceProtectCount(defencePlayerDoc, "stone"),
+				iron:defencePlayerDoc.resources.iron - getPlayerResourceProtectCount(defencePlayerDoc, "iron"),
+				food:defencePlayerDoc.resources.food - getPlayerResourceProtectCount(defencePlayerDoc, "food"),
+				coin:defencePlayerDoc.resources.coin
 			}
 		}
 	}
@@ -837,6 +867,36 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		})
 		return equipments
 	}
+	var getPlayerItemBuffForResourceLootPercentSubtract = function(playerDoc){
+		var itemBuff = 0
+		var eventType = "masterOfDefender"
+		var itemEvent = _.find(playerDoc.itemEvents, function(event){
+			return _.isEqual(event.type, eventType)
+		})
+		if(_.isObject(itemEvent)) itemBuff = 0.25
+		return itemBuff
+	}
+	var getBuildingBuffForResourceProtectPercent = function(playerDoc, resourceName){
+		var buildingName = Consts.ResourceBuildingMap[resourceName]
+		var buildings = LogicUtils.getPlayerBuildingsByType(playerDoc, buildingName)
+		var protectPercent = 0
+		_.each(buildings, function(building){
+			if(building.level >= 1){
+				var config = BuildingFunction[buildingName][building.level]
+				protectPercent += config.protection
+			}
+		})
+		return protectPercent
+	}
+	var getPlayerResourceProtectCount = function(defencePlayerDoc, resourceName){
+		var basePercent = DataUtils.getPlayerIntInit("playerResourceProtect") / 100
+		var buildingBuffAddPercent = getBuildingBuffForResourceProtectPercent(defencePlayerDoc, resourceName)
+		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
+		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
+		var finalPercent = basePercent * (1 + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent)
+		finalPercent = finalPercent > 0.9 ? 0.9 : finalPercent < 0.1 ? 0.1 : finalPercent
+		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
+	}
 
 	var attackDragonData = createDragonData(attackDragon, 0)
 	var strikeCityReport = {
@@ -862,10 +922,10 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			icon:defencePlayerDoc.basicInfo.icon,
 			alliance:createAllianceData(defenceAllianceDoc),
 			resources:{
-				wood:defencePlayerDoc.resources.wood,
-				stone:defencePlayerDoc.resources.stone,
-				iron:defencePlayerDoc.resources.iron,
-				food:defencePlayerDoc.resources.food,
+				wood:defencePlayerDoc.resources.wood - getPlayerResourceProtectCount(defencePlayerDoc, "wood"),
+				stone:defencePlayerDoc.resources.stone - getPlayerResourceProtectCount(defencePlayerDoc, "stone"),
+				iron:defencePlayerDoc.resources.iron - getPlayerResourceProtectCount(defencePlayerDoc, "iron"),
+				food:defencePlayerDoc.resources.food - getPlayerResourceProtectCount(defencePlayerDoc, "food"),
 				coin:defencePlayerDoc.resources.coin
 			}
 		}

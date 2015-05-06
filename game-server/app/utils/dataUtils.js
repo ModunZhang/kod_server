@@ -2019,7 +2019,6 @@ Utils.getPlayerSoldierStar = function(playerDoc, soldierName){
  */
 Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain, isDragonWin){
 	var itemBuff = 0
-	var skillBuff = 0
 	var equipmentBuff = 0
 
 	var soldierConfig = this.getPlayerSoldierConfig(playerDoc, soldierName)
@@ -2031,10 +2030,8 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
 	})
 	if(_.isObject(itemEvent)) itemBuff = 0.3
 
-	if(_.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain)){
-		var dragonSkillName = soldierType + "Enhance"
-		skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
-	}
+	var dragonSkillName = soldierType + "Enhance"
+	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
 
 	var equipmentBuffKey = soldierType + "AtkAdd"
 	_.each(dragon.equipments, function(equipment){
@@ -2071,7 +2068,6 @@ Utils.getDragonAtkWallBuff = function(dragon, isDragonWin){
  */
 Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain, isDragonWin){
 	var itemBuff = 0
-	var skillBuff = 0
 	var equipmentBuff = 0
 
 	var soldierConfig = this.getPlayerSoldierConfig(playerDoc, soldierName)
@@ -2083,10 +2079,8 @@ Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain,
 	})
 	if(_.isObject(itemEvent)) itemBuff = 0.3
 
-	if(_.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain)){
-		var dragonSkillName = soldierType + "Enhance"
-		skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
-	}
+	var dragonSkillName = soldierType + "Enhance"
+	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
 
 	var equipmentBuffKey = soldierType + "HpAdd"
 	_.each(dragon.equipments, function(equipment){
@@ -3910,7 +3904,7 @@ Utils.getLocalizationConfig = function(type, key){
 Utils.getAllianceVillageNames = function(){
 	var names = []
 	_.each(AllianceInitData.buildingName, function(config){
-			if(_.isEqual(config.name.slice(-7), "Village")) names.push(config.name)
+		if(_.isEqual(config.name.slice(-7), "Village")) names.push(config.name)
 	})
 	return names
 }
@@ -3979,7 +3973,7 @@ Utils.createAllianceVillage = function(allianceDoc, allianceData, enemyAllianceD
 			allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
 			enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
 		}
-		count --
+		count--
 	}
 }
 
@@ -4012,7 +4006,7 @@ Utils.refreshAllianceBasicInfo = function(allianceDoc, allianceData){
 Utils.isValidDragonSkillName = function(skillName){
 	var skillTotalCount = 7
 	var config = Dragons.dragons
-	for(var i = 1; i <= skillTotalCount; i ++){
+	for(var i = 1; i <= skillTotalCount; i++){
 		if(_.isEqual(config["skill_" + i], skillName)) return true
 	}
 	return false
