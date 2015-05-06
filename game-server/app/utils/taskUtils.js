@@ -191,15 +191,16 @@ Utils.finishDragonSkillTaskIfNeed = function(playerDoc, playerData, dragonType, 
 	var config = _.find(GrowUpTasks.dragonSkill, function(config){
 		return _.isEqual(config.type, dragonType) && _.isEqual(config.name, skillName) && _.isEqual(config.level, skillLevel)
 	})
-
-	var task = {
-		id:config.id,
-		index:config.index,
-		type:config.type,
-		name:skillName,
-		rewarded:false
+	if(_.isObject(config)){
+		var task = {
+			id:config.id,
+			index:config.index,
+			type:config.type,
+			name:skillName,
+			rewarded:false
+		}
+		this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.DragonSkill, task)
 	}
-	this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.DragonSkill, task)
 }
 
 /**

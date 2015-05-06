@@ -718,8 +718,18 @@
 //			})
 //		})
 //
-//		it("upgradeDragonSkill 正常升级", function(done){
-//			Api.upgradeDragonDragonSkill("redDragon", "skill_1", function(doc){
+//		it("upgradeDragonSkill 正常升级1", function(done){
+//			Api.sendChat("dragonstar redDragon 4", function(doc){
+//				doc.code.should.equal(200)
+//				Api.upgradeDragonDragonSkill("redDragon", "skill_9", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("upgradeDragonSkill 正常升级2", function(done){
+//			Api.upgradeDragonDragonSkill("redDragon", "skill_9", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
