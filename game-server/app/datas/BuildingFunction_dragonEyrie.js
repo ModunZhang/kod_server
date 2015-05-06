@@ -65,141 +65,141 @@ dragonEyrie[12] = {
 }
 dragonEyrie[13] = {
 	level:13,
-	hpRecoveryPerHour:120,
+	hpRecoveryPerHour:170,
 	power:1800
 }
 dragonEyrie[14] = {
 	level:14,
-	hpRecoveryPerHour:140,
+	hpRecoveryPerHour:200,
 	power:2400
 }
 dragonEyrie[15] = {
 	level:15,
-	hpRecoveryPerHour:150,
+	hpRecoveryPerHour:220,
 	power:3600
 }
 dragonEyrie[16] = {
 	level:16,
-	hpRecoveryPerHour:170,
+	hpRecoveryPerHour:240,
 	power:4800
 }
 dragonEyrie[17] = {
 	level:17,
-	hpRecoveryPerHour:180,
+	hpRecoveryPerHour:260,
 	power:6000
 }
 dragonEyrie[18] = {
 	level:18,
-	hpRecoveryPerHour:200,
+	hpRecoveryPerHour:280,
 	power:7200
 }
 dragonEyrie[19] = {
 	level:19,
-	hpRecoveryPerHour:210,
+	hpRecoveryPerHour:300,
 	power:8400
 }
 dragonEyrie[20] = {
 	level:20,
-	hpRecoveryPerHour:220,
+	hpRecoveryPerHour:330,
 	power:9600
 }
 dragonEyrie[21] = {
 	level:21,
-	hpRecoveryPerHour:430,
+	hpRecoveryPerHour:590,
 	power:10800
 }
 dragonEyrie[22] = {
 	level:22,
-	hpRecoveryPerHour:480,
+	hpRecoveryPerHour:680,
 	power:16200
 }
 dragonEyrie[23] = {
 	level:23,
-	hpRecoveryPerHour:540,
+	hpRecoveryPerHour:760,
 	power:21600
 }
 dragonEyrie[24] = {
 	level:24,
-	hpRecoveryPerHour:600,
+	hpRecoveryPerHour:850,
 	power:27000
 }
 dragonEyrie[25] = {
 	level:25,
-	hpRecoveryPerHour:660,
+	hpRecoveryPerHour:940,
 	power:36000
 }
 dragonEyrie[26] = {
 	level:26,
-	hpRecoveryPerHour:710,
+	hpRecoveryPerHour:1020,
 	power:54000
 }
 dragonEyrie[27] = {
 	level:27,
-	hpRecoveryPerHour:770,
+	hpRecoveryPerHour:1110,
 	power:72000
 }
 dragonEyrie[28] = {
 	level:28,
-	hpRecoveryPerHour:830,
+	hpRecoveryPerHour:1200,
 	power:96000
 }
 dragonEyrie[29] = {
 	level:29,
-	hpRecoveryPerHour:890,
+	hpRecoveryPerHour:1280,
 	power:120000
 }
 dragonEyrie[30] = {
 	level:30,
-	hpRecoveryPerHour:940,
+	hpRecoveryPerHour:1370,
 	power:144000
 }
 dragonEyrie[31] = {
 	level:31,
-	hpRecoveryPerHour:1410,
+	hpRecoveryPerHour:2240,
 	power:168000
 }
 dragonEyrie[32] = {
 	level:32,
-	hpRecoveryPerHour:1520,
+	hpRecoveryPerHour:2410,
 	power:192000
 }
 dragonEyrie[33] = {
 	level:33,
-	hpRecoveryPerHour:1640,
+	hpRecoveryPerHour:2580,
 	power:216000
 }
 dragonEyrie[34] = {
 	level:34,
-	hpRecoveryPerHour:1750,
+	hpRecoveryPerHour:2750,
 	power:240000
 }
 dragonEyrie[35] = {
 	level:35,
-	hpRecoveryPerHour:1870,
+	hpRecoveryPerHour:2930,
 	power:264000
 }
 dragonEyrie[36] = {
 	level:36,
-	hpRecoveryPerHour:1980,
+	hpRecoveryPerHour:3100,
 	power:300000
 }
 dragonEyrie[37] = {
 	level:37,
-	hpRecoveryPerHour:2100,
+	hpRecoveryPerHour:3270,
 	power:336000
 }
 dragonEyrie[38] = {
 	level:38,
-	hpRecoveryPerHour:2210,
+	hpRecoveryPerHour:3450,
 	power:372000
 }
 dragonEyrie[39] = {
 	level:39,
-	hpRecoveryPerHour:2330,
+	hpRecoveryPerHour:3620,
 	power:408000
 }
 dragonEyrie[40] = {
 	level:40,
-	hpRecoveryPerHour:2440,
+	hpRecoveryPerHour:3800,
 	power:540000
 }

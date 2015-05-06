@@ -68,9 +68,9 @@ special["chest_4"] = {
 	effect:"resource:woodClass_6:5:14,resource:stoneClass_6:5:14,resource:ironClass_6:5:14,resource:foodClass_6:5:14,resource:coinClass_6:5:18,resource:casinoTokenClass_1:5:10,speedup:speedup_5:5:10,speedup:speedup_6:5:6",
 	order:7,
 	isSell:false,
-	price:2000,
-	sellPriceInAlliance:200000,
-	buyPriceInAlliance:200000,
+	price:2500,
+	sellPriceInAlliance:250000,
+	buyPriceInAlliance:250000,
 	isAdvancedItem:true
 }
 special["chestKey_2"] = {
@@ -88,9 +88,9 @@ special["chestKey_3"] = {
 	effect:"NONE",
 	order:9,
 	isSell:true,
-	price:50,
-	sellPriceInAlliance:5000,
-	buyPriceInAlliance:5000,
+	price:40,
+	sellPriceInAlliance:4000,
+	buyPriceInAlliance:4000,
 	isAdvancedItem:true
 }
 special["chestKey_4"] = {
@@ -158,9 +158,9 @@ special["vipPoint_1"] = {
 	effect:"100.0",
 	order:16,
 	isSell:true,
-	price:150,
-	sellPriceInAlliance:15000,
-	buyPriceInAlliance:15000,
+	price:600,
+	sellPriceInAlliance:60000,
+	buyPriceInAlliance:60000,
 	isAdvancedItem:false
 }
 special["vipPoint_2"] = {
@@ -168,9 +168,9 @@ special["vipPoint_2"] = {
 	effect:"300.0",
 	order:17,
 	isSell:true,
-	price:400,
-	sellPriceInAlliance:40000,
-	buyPriceInAlliance:40000,
+	price:1600,
+	sellPriceInAlliance:160000,
+	buyPriceInAlliance:160000,
 	isAdvancedItem:false
 }
 special["vipPoint_3"] = {
@@ -178,9 +178,9 @@ special["vipPoint_3"] = {
 	effect:"1000.0",
 	order:18,
 	isSell:true,
-	price:1000,
-	sellPriceInAlliance:100000,
-	buyPriceInAlliance:100000,
+	price:5000,
+	sellPriceInAlliance:500000,
+	buyPriceInAlliance:500000,
 	isAdvancedItem:true
 }
 special["vipPoint_4"] = {
@@ -188,9 +188,9 @@ special["vipPoint_4"] = {
 	effect:"5000.0",
 	order:19,
 	isSell:true,
-	price:5000,
-	sellPriceInAlliance:500000,
-	buyPriceInAlliance:500000,
+	price:20000,
+	sellPriceInAlliance:2000000,
+	buyPriceInAlliance:2000000,
 	isAdvancedItem:true
 }
 special["movingConstruction"] = {
@@ -198,9 +198,9 @@ special["movingConstruction"] = {
 	effect:"NONE",
 	order:20,
 	isSell:true,
-	price:50,
-	sellPriceInAlliance:5000,
-	buyPriceInAlliance:5000,
+	price:100,
+	sellPriceInAlliance:10000,
+	buyPriceInAlliance:10000,
 	isAdvancedItem:false
 }
 special["torch"] = {
@@ -208,9 +208,9 @@ special["torch"] = {
 	effect:"NONE",
 	order:21,
 	isSell:true,
-	price:20,
-	sellPriceInAlliance:2000,
-	buyPriceInAlliance:2000,
+	price:50,
+	sellPriceInAlliance:5000,
+	buyPriceInAlliance:5000,
 	isAdvancedItem:false
 }
 special["changePlayerName"] = {
@@ -221,16 +221,6 @@ special["changePlayerName"] = {
 	price:200,
 	sellPriceInAlliance:20000,
 	buyPriceInAlliance:20000,
-	isAdvancedItem:false
-}
-special["changeCityName"] = {
-	name:"changeCityName",
-	effect:"NONE",
-	order:23,
-	isSell:true,
-	price:100,
-	sellPriceInAlliance:10000,
-	buyPriceInAlliance:10000,
 	isAdvancedItem:false
 }
 special["retreatTroop"] = {
@@ -258,9 +248,9 @@ special["dragonExp_1"] = {
 	effect:"1000.0",
 	order:26,
 	isSell:true,
-	price:200,
-	sellPriceInAlliance:20000,
-	buyPriceInAlliance:20000,
+	price:500,
+	sellPriceInAlliance:50000,
+	buyPriceInAlliance:50000,
 	isAdvancedItem:true
 }
 special["dragonExp_2"] = {
@@ -268,9 +258,9 @@ special["dragonExp_2"] = {
 	effect:"5000.0",
 	order:27,
 	isSell:true,
-	price:950,
-	sellPriceInAlliance:95000,
-	buyPriceInAlliance:95000,
+	price:4000,
+	sellPriceInAlliance:400000,
+	buyPriceInAlliance:400000,
 	isAdvancedItem:true
 }
 special["dragonExp_3"] = {
@@ -278,9 +268,9 @@ special["dragonExp_3"] = {
 	effect:"25000.0",
 	order:28,
 	isSell:true,
-	price:4500,
-	sellPriceInAlliance:450000,
-	buyPriceInAlliance:450000,
+	price:12000,
+	sellPriceInAlliance:1200000,
+	buyPriceInAlliance:1200000,
 	isAdvancedItem:true
 }
 special["dragonHp_1"] = {
@@ -318,9 +308,9 @@ special["heroBlood_1"] = {
 	effect:"1000.0",
 	order:32,
 	isSell:true,
-	price:400,
-	sellPriceInAlliance:40000,
-	buyPriceInAlliance:40000,
+	price:500,
+	sellPriceInAlliance:50000,
+	buyPriceInAlliance:50000,
 	isAdvancedItem:true
 }
 special["heroBlood_2"] = {
@@ -328,9 +318,9 @@ special["heroBlood_2"] = {
 	effect:"5000.0",
 	order:33,
 	isSell:true,
-	price:1900,
-	sellPriceInAlliance:190000,
-	buyPriceInAlliance:190000,
+	price:4000,
+	sellPriceInAlliance:400000,
+	buyPriceInAlliance:400000,
 	isAdvancedItem:true
 }
 special["heroBlood_3"] = {
@@ -338,9 +328,9 @@ special["heroBlood_3"] = {
 	effect:"25000.0",
 	order:34,
 	isSell:true,
-	price:9000,
-	sellPriceInAlliance:900000,
-	buyPriceInAlliance:900000,
+	price:12000,
+	sellPriceInAlliance:1200000,
+	buyPriceInAlliance:1200000,
 	isAdvancedItem:true
 }
 special["stamina_1"] = {
@@ -378,9 +368,9 @@ special["restoreWall_1"] = {
 	effect:"500.0",
 	order:38,
 	isSell:true,
-	price:150,
-	sellPriceInAlliance:15000,
-	buyPriceInAlliance:15000,
+	price:100,
+	sellPriceInAlliance:10000,
+	buyPriceInAlliance:10000,
 	isAdvancedItem:true
 }
 special["restoreWall_2"] = {
@@ -388,9 +378,9 @@ special["restoreWall_2"] = {
 	effect:"2500.0",
 	order:39,
 	isSell:true,
-	price:700,
-	sellPriceInAlliance:70000,
-	buyPriceInAlliance:70000,
+	price:600,
+	sellPriceInAlliance:60000,
+	buyPriceInAlliance:60000,
 	isAdvancedItem:true
 }
 special["restoreWall_3"] = {
@@ -398,8 +388,8 @@ special["restoreWall_3"] = {
 	effect:"12500.0",
 	order:40,
 	isSell:true,
-	price:3500,
-	sellPriceInAlliance:350000,
-	buyPriceInAlliance:350000,
+	price:2000,
+	sellPriceInAlliance:200000,
+	buyPriceInAlliance:200000,
 	isAdvancedItem:true
 }

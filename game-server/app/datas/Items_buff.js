@@ -9,9 +9,9 @@ buff["masterOfDefender_1"] = {
 	type:"masterOfDefender",
 	order:1,
 	isSell:false,
-	price:900,
-	sellPriceInAlliance:90000,
-	buyPriceInAlliance:90000,
+	price:600,
+	sellPriceInAlliance:60000,
+	buyPriceInAlliance:60000,
 	isAdvancedItem:true
 }
 buff["masterOfDefender_2"] = {
@@ -20,9 +20,9 @@ buff["masterOfDefender_2"] = {
 	type:"masterOfDefender",
 	order:2,
 	isSell:true,
-	price:1800,
-	sellPriceInAlliance:180000,
-	buyPriceInAlliance:180000,
+	price:1200,
+	sellPriceInAlliance:120000,
+	buyPriceInAlliance:120000,
 	isAdvancedItem:true
 }
 buff["masterOfDefender_3"] = {
@@ -31,9 +31,9 @@ buff["masterOfDefender_3"] = {
 	type:"masterOfDefender",
 	order:3,
 	isSell:true,
-	price:3600,
-	sellPriceInAlliance:360000,
-	buyPriceInAlliance:360000,
+	price:2400,
+	sellPriceInAlliance:240000,
+	buyPriceInAlliance:240000,
 	isAdvancedItem:true
 }
 buff["quarterMaster_1"] = {
@@ -75,9 +75,9 @@ buff["fogOfTrick_1"] = {
 	type:"fogOfTrick",
 	order:7,
 	isSell:false,
-	price:600,
-	sellPriceInAlliance:60000,
-	buyPriceInAlliance:60000,
+	price:500,
+	sellPriceInAlliance:50000,
+	buyPriceInAlliance:50000,
 	isAdvancedItem:true
 }
 buff["fogOfTrick_2"] = {
@@ -86,9 +86,9 @@ buff["fogOfTrick_2"] = {
 	type:"fogOfTrick",
 	order:8,
 	isSell:true,
-	price:1200,
-	sellPriceInAlliance:120000,
-	buyPriceInAlliance:120000,
+	price:1000,
+	sellPriceInAlliance:100000,
+	buyPriceInAlliance:100000,
 	isAdvancedItem:true
 }
 buff["fogOfTrick_3"] = {
@@ -97,9 +97,9 @@ buff["fogOfTrick_3"] = {
 	type:"fogOfTrick",
 	order:9,
 	isSell:true,
-	price:2400,
-	sellPriceInAlliance:240000,
-	buyPriceInAlliance:240000,
+	price:2000,
+	sellPriceInAlliance:200000,
+	buyPriceInAlliance:200000,
 	isAdvancedItem:true
 }
 buff["woodBonus_1"] = {
@@ -273,9 +273,9 @@ buff["citizenBonus_1"] = {
 	type:"citizenBonus",
 	order:25,
 	isSell:false,
-	price:400,
-	sellPriceInAlliance:40000,
-	buyPriceInAlliance:40000,
+	price:500,
+	sellPriceInAlliance:50000,
+	buyPriceInAlliance:50000,
 	isAdvancedItem:true
 }
 buff["citizenBonus_2"] = {
@@ -284,9 +284,9 @@ buff["citizenBonus_2"] = {
 	type:"citizenBonus",
 	order:26,
 	isSell:true,
-	price:800,
-	sellPriceInAlliance:80000,
-	buyPriceInAlliance:80000,
+	price:1000,
+	sellPriceInAlliance:100000,
+	buyPriceInAlliance:100000,
 	isAdvancedItem:true
 }
 buff["citizenBonus_3"] = {
@@ -295,9 +295,9 @@ buff["citizenBonus_3"] = {
 	type:"citizenBonus",
 	order:27,
 	isSell:true,
-	price:1600,
-	sellPriceInAlliance:160000,
-	buyPriceInAlliance:160000,
+	price:2000,
+	sellPriceInAlliance:200000,
+	buyPriceInAlliance:200000,
 	isAdvancedItem:true
 }
 buff["dragonExpBonus_1"] = {
@@ -306,9 +306,9 @@ buff["dragonExpBonus_1"] = {
 	type:"dragonExpBonus",
 	order:28,
 	isSell:false,
-	price:1600,
-	sellPriceInAlliance:160000,
-	buyPriceInAlliance:160000,
+	price:800,
+	sellPriceInAlliance:80000,
+	buyPriceInAlliance:80000,
 	isAdvancedItem:true
 }
 buff["dragonExpBonus_2"] = {
@@ -317,9 +317,9 @@ buff["dragonExpBonus_2"] = {
 	type:"dragonExpBonus",
 	order:29,
 	isSell:true,
-	price:3200,
-	sellPriceInAlliance:320000,
-	buyPriceInAlliance:320000,
+	price:1600,
+	sellPriceInAlliance:160000,
+	buyPriceInAlliance:160000,
 	isAdvancedItem:true
 }
 buff["dragonExpBonus_3"] = {
@@ -328,9 +328,9 @@ buff["dragonExpBonus_3"] = {
 	type:"dragonExpBonus",
 	order:30,
 	isSell:true,
-	price:6400,
-	sellPriceInAlliance:640000,
-	buyPriceInAlliance:640000,
+	price:3200,
+	sellPriceInAlliance:320000,
+	buyPriceInAlliance:320000,
 	isAdvancedItem:true
 }
 buff["troopSizeBonus_1"] = {
@@ -339,9 +339,9 @@ buff["troopSizeBonus_1"] = {
 	type:"troopSizeBonus",
 	order:31,
 	isSell:false,
-	price:3200,
-	sellPriceInAlliance:320000,
-	buyPriceInAlliance:320000,
+	price:800,
+	sellPriceInAlliance:80000,
+	buyPriceInAlliance:80000,
 	isAdvancedItem:true
 }
 buff["troopSizeBonus_2"] = {
@@ -350,9 +350,9 @@ buff["troopSizeBonus_2"] = {
 	type:"troopSizeBonus",
 	order:32,
 	isSell:true,
-	price:6400,
-	sellPriceInAlliance:640000,
-	buyPriceInAlliance:640000,
+	price:1600,
+	sellPriceInAlliance:160000,
+	buyPriceInAlliance:160000,
 	isAdvancedItem:true
 }
 buff["troopSizeBonus_3"] = {
@@ -361,9 +361,9 @@ buff["troopSizeBonus_3"] = {
 	type:"troopSizeBonus",
 	order:33,
 	isSell:true,
-	price:12800,
-	sellPriceInAlliance:1280000,
-	buyPriceInAlliance:1280000,
+	price:3200,
+	sellPriceInAlliance:320000,
+	buyPriceInAlliance:320000,
 	isAdvancedItem:true
 }
 buff["dragonHpBonus_1"] = {
@@ -372,9 +372,9 @@ buff["dragonHpBonus_1"] = {
 	type:"dragonHpBonus",
 	order:34,
 	isSell:false,
-	price:700,
-	sellPriceInAlliance:70000,
-	buyPriceInAlliance:70000,
+	price:500,
+	sellPriceInAlliance:50000,
+	buyPriceInAlliance:50000,
 	isAdvancedItem:true
 }
 buff["dragonHpBonus_2"] = {
@@ -383,9 +383,9 @@ buff["dragonHpBonus_2"] = {
 	type:"dragonHpBonus",
 	order:35,
 	isSell:true,
-	price:1400,
-	sellPriceInAlliance:140000,
-	buyPriceInAlliance:140000,
+	price:1000,
+	sellPriceInAlliance:100000,
+	buyPriceInAlliance:100000,
 	isAdvancedItem:true
 }
 buff["dragonHpBonus_3"] = {
@@ -394,9 +394,9 @@ buff["dragonHpBonus_3"] = {
 	type:"dragonHpBonus",
 	order:36,
 	isSell:true,
-	price:2800,
-	sellPriceInAlliance:280000,
-	buyPriceInAlliance:280000,
+	price:2000,
+	sellPriceInAlliance:200000,
+	buyPriceInAlliance:200000,
 	isAdvancedItem:true
 }
 buff["marchSpeedBonus_1"] = {
