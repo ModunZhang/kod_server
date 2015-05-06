@@ -892,7 +892,7 @@ pro.getHelpDefenceMarchEventDetail = function(playerId, allianceId, eventId, cal
 			return _.isEqual(marchEvent.id, eventId) && _.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, playerId)
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, allianceDoc._id, "attackMarchEvents", eventId))
-		return self.dataService.findPlayerAsync(marchEvent.attackPlayerData.id)
+		return self.dataService.directFindPlayerAsync(marchEvent.attackPlayerData.id)
 	}).then(function(doc){
 		attackPlayerDoc = doc
 		eventDetail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, eventId, marchEvent.attackPlayerData.dragon, marchEvent.attackPlayerData.soldiers)
@@ -927,7 +927,7 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 	var helpedByPlayerTroop = null
 	var troopDetail = null
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(callerId, playerId))
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId))
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)){
 			return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
@@ -936,10 +936,10 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 			return _.isEqual(troop.id, helpedByPlayerId)
 		})
 		if(!_.isObject(helpedByPlayerTroop)) return Promise.reject(ErrorUtils.noHelpDefenceTroopByThePlayer(callerId, playerDoc.allianceId, playerDoc._id, helpedByPlayerId))
-		return self.dataService.findPlayerAsync(helpedByPlayerId)
+		return self.dataService.directFindPlayerAsync(helpedByPlayerId)
 	}).then(function(doc){
 		attackPlayerDoc = doc
-		troopDetail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, helpedByPlayerId, helpedByPlayerTroop.dragon, helpedByPlayerTroop.soldiers)
+		troopDetail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, null, helpedByPlayerTroop.dragon, helpedByPlayerTroop.soldiers)
 		delete troopDetail.marchEventId
 		troopDetail.helpedByPlayerId = helpedByPlayerId
 		return Promise.resolve()
