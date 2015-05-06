@@ -125,7 +125,7 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 			name:defencePlayerDoc.basicInfo.name,
 			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defenceAllianceDoc.basicInfo.terrain
+			terrain:defencePlayerDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,
@@ -396,7 +396,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 			name:defencePlayerDoc.basicInfo.name,
 			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defenceAllianceDoc.basicInfo.terrain
+			terrain:defencePlayerDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,
@@ -1079,7 +1079,7 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 			level:defenceVillage.level,
 			location:LogicUtils.getAllianceMapObjectById(targetAllianceDoc, defenceVillage.id).location,
 			alliance:createAllianceData(targetAllianceDoc),
-			terrain:defenceAllianceDoc.basicInfo.terrain
+			terrain:defencePlayerDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,
