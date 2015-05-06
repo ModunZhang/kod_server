@@ -462,7 +462,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					}
 				}
 			}else{
-				attackSoldiersLeftForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers, attackDragon, defencePlayerDoc.basicInfo.terrain, true)
+				attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, event.attackPlayerData.soldiers, attackDragon, defencePlayerDoc.basicInfo.terrain, true)
+				attackSoldiersLeftForFight = attackSoldiersForFight
 			}
 			if(defencePlayerDoc.resources.wallHp > 0){
 				defenceWallForFight = DataUtils.createPlayerWallForFight(defencePlayerDoc)
