@@ -19,20 +19,20 @@ equipmentBuff["infantryMarchAdd"] = {
 	buff:"infantryMarchAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["hHunterAtkAdd"] = {
-	buff:"hHunterAtkAdd",
+equipmentBuff["archerAtkAdd"] = {
+	buff:"archerAtkAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["hunterHpAdd"] = {
-	buff:"hunterHpAdd",
+equipmentBuff["archerHpAdd"] = {
+	buff:"archerHpAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["hunterLoadAdd"] = {
-	buff:"hunterLoadAdd",
+equipmentBuff["archerLoadAdd"] = {
+	buff:"archerLoadAdd",
 	buffEffect:0.020000
 }
-equipmentBuff["hunterMarchAdd"] = {
-	buff:"hunterMarchAdd",
+equipmentBuff["archerMarchAdd"] = {
+	buff:"archerMarchAdd",
 	buffEffect:0.020000
 }
 equipmentBuff["cavalryAtkAdd"] = {
