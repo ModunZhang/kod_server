@@ -235,7 +235,7 @@ pro.createAlliance = function(allianceData, callback){
 			self.alliances[allianceData._id] = alliance
 			callback(null, allianceDoc)
 		}).catch(function(e){
-			self.logService.onEventError("cache.cacheService.createAlliance", {allianceData:allianceData}, e.stack)
+			self.logService.onEventError("cache.cacheService.createAlliance", {allianceId:allianceData._id, allianceName:allianceData.basicInfo.name, allianceTag:allianceData.basicInfo.tag}, e.stack)
 			UnlockAlliance.call(self, allianceData._id)
 			callback(e)
 		})

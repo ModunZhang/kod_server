@@ -55,16 +55,6 @@ Utils.userNotExist = function(userId){
 }
 
 /**
- * 没有激活的玩家Id
- * @param deviceId
- * @param userId
- */
-Utils.noActivePlayerId = function(deviceId, userId){
-	var config = Errors.noActivePlayerId
-	return CreateError(config, {deviceId:deviceId, userId:userId})
-}
-
-/**
  * 玩家不存在
  * @param playerId
  * @param memberId
@@ -75,42 +65,12 @@ Utils.playerNotExist = function(playerId, memberId){
 }
 
 /**
- * 玩家不存在于mongo数据库
- * @param deviceId
- */
-Utils.playerNotExistInMongo = function(deviceId){
-	var config = Errors.playerNotExistInMongo
-	return CreateError(config, {deviceId:deviceId})
-}
-
-/**
- * 对象被锁定
- * @param objectType
- * @param objectId
- */
-Utils.objectIsLocked = function(objectType, objectId){
-	var config = Errors.objectIsLocked
-	return CreateError(config, {objectType:objectType, objectId:objectId})
-}
-
-/**
- * 需要重新登录
+ * 玩家已经登录
  * @param playerId
  */
-Utils.reLoginNeeded = function(playerId){
-	var config = Errors.reLoginNeeded
-	return CreateError(config, {playerId:playerId})
-}
-
-/**
- * 玩家已经登录
- * @param playerDoc
- */
-Utils.playerAlreadyLogin = function(playerDoc){
+Utils.playerAlreadyLogin = function(playerId){
 	var config = Errors.playerAlreadyLogin
-	var error = CreateError(config, {playerId:playerDoc._id})
-	error.data = playerDoc
-	return error
+	return CreateError(config, {playerId:playerId})
 }
 
 /**

@@ -85,22 +85,8 @@ pro.playerLogin = function(session, deviceId, callback){
 	}).then(function(doc){
 		playerDoc = doc
 		if(!_.isEqual(playerDoc.serverId, self.app.get("cacheServerId"))) return Promise.reject(ErrorUtils.playerNotInCurrentServer(playerDoc._id, self.app.get("cacheServerId"), playerDoc.serverId))
-		if(!_.isEmpty(playerDoc.logicServerId)){
-			var kickPlayerAsync = function(playerDoc){
-				return self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "其他设备正使用此账号登录", function(e){
-					if(_.isObject(e)) return Promise.reject(e)
-					return Promise.resolve()
-				})
-			}
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
-				return kickPlayerAsync(playerDoc)
-			}).then(function(){
-				return Promise.reject(ErrorUtils.reLoginNeeded(playerDoc._id))
-			})
-		}else{
-			return Promise.resolve()
-		}
-	}).then(function(){
+		if(!_.isEmpty(playerDoc.logicServerId)) return Promise.reject(ErrorUtils.playerAlreadyLogin(playerDoc._id))
+
 		var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
 		var todayDateString = LogicUtils.getTodayDateString()
 		if(!_.isEqual(todayDateString, previousLoginDateString)){
@@ -191,7 +177,7 @@ pro.playerLogin = function(session, deviceId, callback){
 	}).catch(function(e){
 		self.logService.onEventError("logic.playerApiService.playerLogin", {playerId:session.uid, deviceId:deviceId, logicServerId:self.logicServerId}, e.stack)
 		var funcs = []
-		if(_.isObject(playerDoc) && !_.isEqual(e.code, ErrorUtils.reLoginNeeded(playerDoc._id).code)){
+		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
 		}
 		if(_.isObject(allianceDoc)){

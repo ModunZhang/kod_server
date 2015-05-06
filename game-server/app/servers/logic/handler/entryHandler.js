@@ -123,8 +123,5 @@ pro.login = function(msg, session, next){
 		})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
-		if(!_.isEqual(e.code, ErrorUtils.reLoginNeeded(deviceId).code)){
-			self.sessionService.kickBySessionId(session.id)
-		}
 	})
 }

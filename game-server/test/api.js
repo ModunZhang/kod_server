@@ -27,11 +27,7 @@ Api.loginPlayer = function(deviceId, callback){
 			}, function(){
 				var route = "logic.entryHandler.login"
 				pomelo.request(route, {deviceId:deviceId}, function(doc){
-					if(_.isEqual(doc.code, Errors.objectIsLocked.code) || _.isEqual(doc.code, Errors.reLoginNeeded.code)){
-						setTimeout(Api.loginPlayer, 1000, deviceId, callback)
-					}else{
-						callback(doc)
-					}
+					callback(doc)
 				})
 			})
 		})
@@ -649,7 +645,6 @@ Api.unlockPlayerSecondMarchQueue = function(callback){
 	var route = "logic.playerHandler.unlockPlayerSecondMarchQueue"
 	pomelo.request(route, null, callback)
 }
-
 
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
