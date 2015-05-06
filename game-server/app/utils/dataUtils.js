@@ -1269,7 +1269,8 @@ Utils.getDragonSkillBuff = function(dragon, skillName){
  * @returns {number}
  */
 Utils.getDragonStrengthBuff = function(dragon, terrain){
-	var terrainBuff = _.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain) ? 0.1 : 0
+	var dragonStrengthTerrainAddPercent = this.getPlayerIntInit("dragonStrengthTerrainAddPercent")
+	var terrainBuff = _.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain) ? (dragonStrengthTerrainAddPercent / 100) : 0
 	var skillBuff = this.getDragonSkillBuff(dragon, "dragonBreath")
 	return terrainBuff + skillBuff
 }

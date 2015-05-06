@@ -290,7 +290,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		return protectPercent
 	}
 	var getDefencePlayerResourceProtectCount = function(defencePlayerDoc, resourceName, attackDragon){
-		var basePercent = DataUtils.getPlayerIntInit("playerResourceProtect") / 100
+		var basePercent = DataUtils.getPlayerIntInit("playerResourceProtectPercent") / 100
 		var buildingBuffAddPercent = getBuildingBuffForResourceProtectPercent(defencePlayerDoc, resourceName)
 		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
 		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
@@ -720,7 +720,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		return protectPercent
 	}
 	var getPlayerResourceProtectCount = function(defencePlayerDoc, resourceName){
-		var basePercent = DataUtils.getPlayerIntInit("playerResourceProtect") / 100
+		var basePercent = DataUtils.getPlayerIntInit("playerResourceProtectPercent") / 100
 		var buildingBuffAddPercent = getBuildingBuffForResourceProtectPercent(defencePlayerDoc, resourceName)
 		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
 		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
@@ -889,7 +889,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		return protectPercent
 	}
 	var getPlayerResourceProtectCount = function(defencePlayerDoc, resourceName){
-		var basePercent = DataUtils.getPlayerIntInit("playerResourceProtect") / 100
+		var basePercent = DataUtils.getPlayerIntInit("playerResourceProtectPercent") / 100
 		var buildingBuffAddPercent = getBuildingBuffForResourceProtectPercent(defencePlayerDoc, resourceName)
 		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
 		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd

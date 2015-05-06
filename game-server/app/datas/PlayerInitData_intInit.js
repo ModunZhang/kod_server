@@ -143,8 +143,13 @@ intInit["unlockPlayerSecondMarchQueue"] = {
 	value:1000,
 	desc:"解锁第二条队列"
 }
-intInit["playerResourceProtect"] = {
-	type:"playerResourceProtect",
+intInit["playerResourceProtectPercent"] = {
+	type:"playerResourceProtectPercent",
 	value:10,
 	desc:"玩家资源保护基础百分比"
+}
+intInit["dragonStrengthTerrainAddPercent"] = {
+	type:"dragonStrengthTerrainAddPercent",
+	value:10,
+	desc:"龙在相应地形下的力量加成比例"
 }
