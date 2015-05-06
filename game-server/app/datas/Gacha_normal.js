@@ -41,31 +41,31 @@ normal[6] = {
 }
 normal[7] = {
 	index:7,
-	itemName:"items:ironClass3",
+	itemName:"items:ironClass_3",
 	itemCount:2,
 	weight:10
 }
 normal[8] = {
 	index:8,
-	itemName:"items:ironClass4",
+	itemName:"items:ironClass_4",
 	itemCount:1,
 	weight:5
 }
 normal[9] = {
 	index:9,
-	itemName:"items:foodClass3",
+	itemName:"items:foodClass_3",
 	itemCount:2,
 	weight:10
 }
 normal[10] = {
 	index:10,
-	itemName:"items:foodClass4",
+	itemName:"items:foodClass_4",
 	itemCount:1,
 	weight:5
 }
 normal[11] = {
 	index:11,
-	itemName:"items:coinClass3",
+	itemName:"items:coinClass_3",
 	itemCount:2,
 	weight:5
 }
