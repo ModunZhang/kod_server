@@ -494,8 +494,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(memberObject) + ".lastThreeDaysKillData", memberObject.lastThreeDaysKillData])
 
 			var attackPlayerRewards = attackCityReport.attackPlayerData.rewards
-			var attackPlayerKillRewards = DataUtils.getRewardsByKillScoreAndTerrain(countData.attackPlayerKill, defenceAllianceDoc.basicInfo.terrain)
-			attackPlayerRewards = attackPlayerRewards.concat(attackPlayerKillRewards)
 			attackDragon.hp -= attackDragonForFight.totalHp - attackDragonForFight.currentHp
 			if(attackDragon.hp <= 0){
 				deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
@@ -543,8 +541,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				var soldiers = getSoldiersFromSoldiersForFight(helpDefenceSoldierFightData.defenceSoldiersAfterFight)
 				var woundedSoldiers = getWoundedSoldiersFromSoldiersForFight(helpDefenceSoldiersForFight)
 				var rewards = LogicUtils.mergeRewards(helpedByTroop.rewards, attackCityReport.helpDefencePlayerData.rewards)
-				var helpDefencePlayerKillRewards = DataUtils.getRewardsByKillScoreAndTerrain(countData.defencePlayerKill, defenceAllianceDoc.basicInfo.terrain)
-				rewards = rewards.concat(rewards, helpDefencePlayerKillRewards)
 				defencePlayerData.push(["helpedByTroops." + defencePlayerDoc.helpedByTroops.indexOf(helpedByTroop), null])
 				LogicUtils.removeItemInArray(defencePlayerDoc.helpedByTroops, helpedByTroop)
 				var helpToTroop = _.find(helpDefencePlayerDoc.helpToTroops, function(troop){
@@ -573,8 +569,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberObject) + ".lastThreeDaysKillData", memberObject.lastThreeDaysKillData])
 
 				var defencePlayerRewards = attackCityReport.defencePlayerData.rewards
-				var defencePlayerKillRewards = DataUtils.getRewardsByKillScoreAndTerrain(countData.defencePlayerKill, defenceAllianceDoc.basicInfo.terrain)
-				defencePlayerRewards = defencePlayerRewards.concat(defencePlayerKillRewards)
 				if(_.isObject(defenceDragonFightData)){
 					defenceDragon.hp -= defenceDragonForFight.totalHp - defenceDragonForFight.currentHp
 					if(defenceDragon.hp <= 0){
@@ -780,7 +774,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var attackSoldiers = null
 		var attackWoundedSoldiers = null
 		var attackRewards = null
-		var attackKillRewards = null
 		var eventData = null
 		var newVillageEvent = null
 		var defenceDragonExpAdd = null
@@ -905,16 +898,12 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackSoldiers = createSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
 				attackWoundedSoldiers = createWoundedSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
 				attackRewards = report.report.attackVillage.attackPlayerData.rewards
-				attackKillRewards = DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKill, defenceAllianceDoc.basicInfo.terrain)
-				LogicUtils.mergeRewards(attackRewards, attackKillRewards)
 
 				defenceDragonExpAdd = countData.attackDragonExpAdd
 				defencePlayerKill = countData.attackPlayerKill
 				defenceSoldiers = createSoldiers(defenceSoldierFightData.defenceSoldiersAfterFight)
 				defenceWoundedSoldiers = createWoundedSoldiers(defenceSoldierFightData.defenceSoldiersAfterFight)
 				defenceRewards = report.report.attackVillage.defencePlayerData.rewards
-				var defenceKillRewards = DataUtils.getRewardsByKillScoreAndTerrain(defencePlayerKill, defenceAllianceDoc.basicInfo.terrain)
-				LogicUtils.mergeRewards(defenceRewards, defenceKillRewards)
 
 				villageEvent.playerData.soldiers = defenceSoldiers
 				LogicUtils.mergeRewards(villageEvent.playerData.rewards, defenceRewards)

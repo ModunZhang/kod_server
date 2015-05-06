@@ -118,6 +118,8 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 
 	pushBloodToRewards(attackPlayerGetBlood, attackPlayerRewards)
 	pushBloodToRewards(helpDefencePlayerGetBlood, helpDefencePlayerRewards)
+	LogicUtils.mergeRewards(attackPlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKilledCitizen, defenceAllianceDoc.basicInfo.terrain))
+	LogicUtils.mergeRewards(helpDefencePlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(helpDefencePlayerKilledCitizen, defenceAllianceDoc.basicInfo.terrain))
 
 	var attackCityReport = {
 		attackTarget:{
@@ -389,6 +391,8 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 			count:-Math.floor(foodLootCount * canLootPercent)
 		})
 	}
+	LogicUtils.mergeRewards(attackPlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKilledCitizenWithDefenceSoldiers + attackPlayerKilledCitizenWithDefenceWall, defenceAllianceDoc.basicInfo.terrain))
+	LogicUtils.mergeRewards(defencePlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(defencePlayerKilledCitizenBySoldiers + defencePlayerKilledCitizenByWall, defenceAllianceDoc.basicInfo.terrain))
 
 	var attackCityReport = {
 		attackTarget:{
@@ -620,7 +624,11 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 		cityBeStriked:cityBeStrikedReport
 	}
 
-	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, powerCompare:powerCompare}
+	return {
+		reportForAttackPlayer:reportForAttackPlayer,
+		reportForDefencePlayer:reportForDefencePlayer,
+		powerCompare:powerCompare
+	}
 }
 
 /**
@@ -821,7 +829,11 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		cityBeStriked:cityBeStrikedReport
 	}
 
-	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, powerCompare:powerCompare}
+	return {
+		reportForAttackPlayer:reportForAttackPlayer,
+		reportForDefencePlayer:reportForDefencePlayer,
+		powerCompare:powerCompare
+	}
 }
 
 /**
@@ -1069,9 +1081,11 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 	var defencePlayerGetBlood = DataUtils.getBloodAdd(defenceDragon, totalKilledCitizen, _.isEqual(Consts.FightResult.DefenceWin, soldierFightData.fightResult))
 
 	var attackPlayerRewards = []
-	pushBloodToRewards(attackPlayerGetBlood, attackPlayerRewards)
 	var defencePlayerRewards = []
+	pushBloodToRewards(attackPlayerGetBlood, attackPlayerRewards)
 	pushBloodToRewards(defencePlayerGetBlood, defencePlayerRewards)
+	LogicUtils.mergeRewards(attackPlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKilledCitizen, defenceAllianceDoc.basicInfo.terrain))
+	LogicUtils.mergeRewards(defencePlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(defencePlayerKilledCitizen, defenceAllianceDoc.basicInfo.terrain))
 
 	var attackVillageReport = {
 		attackTarget:{
@@ -1293,7 +1307,11 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 		villageBeStriked:villageBeStrikedReport
 	}
 
-	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, powerCompare:powerCompare}
+	return {
+		reportForAttackPlayer:reportForAttackPlayer,
+		reportForDefencePlayer:reportForDefencePlayer,
+		powerCompare:powerCompare
+	}
 }
 
 /**
