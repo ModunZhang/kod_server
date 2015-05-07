@@ -5,15 +5,13 @@ module.exports = buffTypes
 
 buffTypes["masterOfDefender"] = {
 	type:"masterOfDefender",
-	effect1:0.100000,
-	effect2:0.200000
+	effect1:0.200000,
+	effect2:0.200000,
+	desc:"1为城墙战损降低20% 2为暗仓提升20%"
 }
 buffTypes["quarterMaster"] = {
 	type:"quarterMaster",
 	effect1:0.250000
-}
-buffTypes["fogOfTrick"] = {
-	type:"fogOfTrick"
 }
 buffTypes["woodBonus"] = {
 	type:"woodBonus",

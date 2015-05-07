@@ -433,7 +433,7 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 	var totalPerSecond = totalPerHour / 60 / 60
 	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
 	var itemKey = resourceName + "Bonus"
-	var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? 0.5 : 0
+	var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? Items.buffTypes[itemKey].effect1 : 0
 	var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceTechNameMap[resourceName])
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0][resourceName + "ProductionAdd"]
 	var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, resourceName)
@@ -462,7 +462,7 @@ Utils.getPlayerCoin = function(playerDoc){
 	var totalPerSecond = totalPerHour / 60 / 60
 	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
 	var itemKey = resourceName + "Bonus"
-	var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? 0.5 : 0
+	var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? Items.buffTypes[itemKey].effect1 : 0
 	var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, resourceName)
 	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + buildingBuff))
 	var totalResource = playerDoc.resources[resourceName] + output
@@ -483,7 +483,7 @@ Utils.getPlayerSoldiersFoodConsumed = function(playerDoc, time){
 		consumed += config.consumeFoodPerHour * count
 	})
 
-	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "quarterMaster") ? 0.25 : 0
+	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "quarterMaster") ? Items.buffTypes.quarterMaster.effect1 : 0
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].soldierConsumeSub
 	return Math.ceil(consumed * time / 1000 / 60 / 60 * (1 - itemBuff - vipBuff))
 }
@@ -514,7 +514,7 @@ Utils.getPlayerFood = function(playerDoc){
 	}else{
 		var totalSecond = totalTime / 1000
 		var itemKey = resourceName + "Bonus"
-		var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? 0.5 : 0
+		var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? Items.buffTypes[itemKey].effect1 : 0
 		var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceTechNameMap[resourceName])
 		var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0][resourceName + "ProductionAdd"]
 		var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, resourceName)
@@ -542,7 +542,7 @@ Utils.getPlayerCitizen = function(playerDoc){
 	var totalPerHour = (citizenLimit - usedCitizen) / PlayerInitData.intInit.playerCitizenRecoverFullNeedHours.value
 	var totalPerSecond = totalPerHour / 60 / 60
 	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
-	var itemCitizenRecoverBuff = this.isPlayerHasItemEvent(playerDoc, "citizenBonus") ? 0.5 : 0
+	var itemCitizenRecoverBuff = this.isPlayerHasItemEvent(playerDoc, "citizenBonus") ? Items.buffTypes["citizenBonus"].effect1 : 0
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].citizenRecoveryAdd
 	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemCitizenRecoverBuff + vipBuff))
 	var totalCitizen = playerDoc.resources.citizen + output
@@ -1342,7 +1342,7 @@ Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
 	var itemEvent = _.find(playerDoc.itemEvents, function(event){
 		return _.isEqual(event.type, eventType)
 	})
-	if(_.isObject(itemEvent)) itemBuff = 0.3
+	if(_.isObject(itemEvent)) itemBuff = Items.buffTypes[eventType].effect1
 
 	var skillBuff = this.getDragonSkillBuff(dragon, "leadership")
 	var vipHpBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonLeaderShipAdd
@@ -2029,7 +2029,7 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
 	var itemEvent = _.find(playerDoc.itemEvents, function(event){
 		return _.isEqual(event.type, eventType)
 	})
-	if(_.isObject(itemEvent)) itemBuff = 0.3
+	if(_.isObject(itemEvent)) itemBuff = Items.buffTypes[eventType].effect1
 
 	var dragonSkillName = soldierType + "Enhance"
 	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
@@ -2078,7 +2078,7 @@ Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain,
 	var itemEvent = _.find(playerDoc.itemEvents, function(event){
 		return _.isEqual(event.type, eventType)
 	})
-	if(_.isObject(itemEvent)) itemBuff = 0.3
+	if(_.isObject(itemEvent)) itemBuff = Items.buffTypes[eventType].effect1
 
 	var dragonSkillName = soldierType + "Enhance"
 	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
@@ -2648,7 +2648,7 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
 			if(dragon.hp < dragonMaxHp){
 				var totalMilSeconds = Date.now() - dragon.hpRefreshTime
 				var recoveryPerMilSecond = config.hpRecoveryPerHour / 60 / 60 / 1000
-				var itemBuff = self.isPlayerHasItemEvent(playerDoc, "dragonHpBonus") ? 0.3 : 0
+				var itemBuff = self.isPlayerHasItemEvent(playerDoc, "dragonHpBonus") ? Items.buffTypes["dragonHpBonus"].effect1 : 0
 				var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].dragonHpRecoveryAdd
 				var hpRecovered = Math.floor(totalMilSeconds * recoveryPerMilSecond * (1 + itemBuff + vipBuff))
 				dragon.hp += hpRecovered
@@ -2669,7 +2669,7 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
  */
 Utils.addPlayerDragonExp = function(playerDoc, playerData, dragon, expAdd, inFight){
 	var currentStarMaxLevel = Dragons.dragonStar[dragon.star].levelMax
-	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? 0.3 : 0
+	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? Items.buffTypes["dragonExpBonus"].effect1 : 0
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonExpAdd
 	expAdd = expAdd * (1 + inFight ? (1 + itemBuff + vipBuff) : 0)
 	while(true){
@@ -3459,7 +3459,7 @@ Utils.getPlayerMasterOfDefenderBuffAboutDefenceWall = function(playerDoc){
 	var itemEvent = _.find(playerDoc.itemEvents, function(event){
 		return _.isEqual(event.type, "masterOfDefender")
 	})
-	if(_.isObject(itemEvent)) buff = 0.2
+	if(_.isObject(itemEvent)) buff = Items.buffTypes.masterOfDefender.effect1
 	return buff
 }
 

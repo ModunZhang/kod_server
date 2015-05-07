@@ -17,6 +17,7 @@ var GameDatas = require("../datas/GameDatas")
 var Soldiers = GameDatas.Soldiers
 var AllianceInitData = GameDatas.AllianceInitData
 var BuildingFunction = GameDatas.BuildingFunction
+var Items = GameDatas.Items
 var Vip = GameDatas.Vip
 
 var Utils = module.exports
@@ -276,7 +277,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		var itemEvent = _.find(playerDoc.itemEvents, function(event){
 			return _.isEqual(event.type, eventType)
 		})
-		if(_.isObject(itemEvent)) itemBuff = 0.25
+		if(_.isObject(itemEvent)) itemBuff = Items.buffTypes.masterOfDefender.effect2
 		return itemBuff
 	}
 	var getBuildingBuffForResourceProtectPercent = function(playerDoc, resourceName){
@@ -712,7 +713,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		var itemEvent = _.find(playerDoc.itemEvents, function(event){
 			return _.isEqual(event.type, eventType)
 		})
-		if(_.isObject(itemEvent)) itemBuff = 0.25
+		if(_.isObject(itemEvent)) itemBuff = Items.buffTypes.masterOfDefender.effect2
 		return itemBuff
 	}
 	var getBuildingBuffForResourceProtectPercent = function(playerDoc, resourceName){
@@ -885,7 +886,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		var itemEvent = _.find(playerDoc.itemEvents, function(event){
 			return _.isEqual(event.type, eventType)
 		})
-		if(_.isObject(itemEvent)) itemBuff = 0.25
+		if(_.isObject(itemEvent)) itemBuff = Items.buffTypes.masterOfDefender.effect2
 		return itemBuff
 	}
 	var getBuildingBuffForResourceProtectPercent = function(playerDoc, resourceName){
