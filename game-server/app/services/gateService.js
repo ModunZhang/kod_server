@@ -38,13 +38,20 @@ pro.init = function(){
 
 	this.logicServers = this.app.getServersByType("logic")
 	var getOnlineUserAsync = Promise.promisify(getOnlineUser, this)
-	setInterval(function(){
-		var funcs = []
-		_.each(self.logicServers, function(logicServer){
-			funcs.push(getOnlineUserAsync(logicServer))
-		})
-		Promise.all(funcs)
-	}, 5 * 1000)
+	function updateStatus(){
+		setTimeout(function(){
+			var funcs = []
+			_.each(self.logicServers, function(logicServer){
+				funcs.push(getOnlineUserAsync(logicServer))
+			})
+			Promise.all(funcs).then(function(){
+				updateStatus()
+			}).catch(function(){
+				updateStatus()
+			})
+		}, 5 * 1000)
+	}
+	updateStatus()
 }
 
 /**
