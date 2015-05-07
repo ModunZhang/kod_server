@@ -385,41 +385,71 @@ resource["citizenClass_3"] = {
 }
 resource["casinoTokenClass_1"] = {
 	name:"casinoTokenClass_1",
-	effect:7.000000,
+	effect:15.000000,
 	order:39,
 	isSell:true,
-	price:200,
-	sellPriceInAlliance:20000,
-	buyPriceInAlliance:20000,
+	price:500,
+	sellPriceInAlliance:50000,
+	buyPriceInAlliance:50000,
 	isAdvancedItem:false
 }
 resource["casinoTokenClass_2"] = {
 	name:"casinoTokenClass_2",
-	effect:30.000000,
+	effect:60.000000,
 	order:40,
 	isSell:true,
-	price:750,
-	sellPriceInAlliance:75000,
-	buyPriceInAlliance:75000,
+	price:1500,
+	sellPriceInAlliance:150000,
+	buyPriceInAlliance:150000,
 	isAdvancedItem:false
 }
 resource["casinoTokenClass_3"] = {
 	name:"casinoTokenClass_3",
-	effect:90.000000,
+	effect:180.000000,
 	order:41,
 	isSell:true,
-	price:1800,
-	sellPriceInAlliance:180000,
-	buyPriceInAlliance:180000,
+	price:3600,
+	sellPriceInAlliance:360000,
+	buyPriceInAlliance:360000,
 	isAdvancedItem:false
 }
 resource["casinoTokenClass_4"] = {
 	name:"casinoTokenClass_4",
-	effect:250.000000,
+	effect:500.000000,
 	order:42,
 	isSell:true,
-	price:4000,
-	sellPriceInAlliance:400000,
-	buyPriceInAlliance:400000,
+	price:8000,
+	sellPriceInAlliance:800000,
+	buyPriceInAlliance:800000,
+	isAdvancedItem:false
+}
+resource["gemClass_1"] = {
+	name:"gemClass_1",
+	effect:10.000000,
+	order:43,
+	isSell:false,
+	price:10,
+	sellPriceInAlliance:1000,
+	buyPriceInAlliance:1000,
+	isAdvancedItem:false
+}
+resource["gemClass_2"] = {
+	name:"gemClass_2",
+	effect:100.000000,
+	order:44,
+	isSell:false,
+	price:100,
+	sellPriceInAlliance:10000,
+	buyPriceInAlliance:10000,
+	isAdvancedItem:false
+}
+resource["gemClass_3"] = {
+	name:"gemClass_3",
+	effect:1000.000000,
+	order:45,
+	isSell:false,
+	price:1000,
+	sellPriceInAlliance:100000,
+	buyPriceInAlliance:100000,
 	isAdvancedItem:false
 }
