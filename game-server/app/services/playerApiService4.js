@@ -702,6 +702,11 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		if(_.isNumber(pveData.rewardedFloor) && pveData.rewardedFloor > 0 && pveData.rewardedFloor % 1 == 0 && pveData.rewardedFloor <= 24){
+			if(_.contains(playerDoc.pve.rewardedFloors, pveData.rewardedFloor)) return Promise.reject(new Error("pveData 不合法"))
+			playerDoc.pve.rewardedFloors.push(pveData.rewardedFloor)
+			playerData.push(["pve.rewardedFloors." + playerDoc.pve.rewardedFloors.indexOf(pveData.rewardedFloor), pveData.rewardedFloor])
+		}
 		playerDoc.resources.stamina -= staminaUsed
 		playerData.push(["resources.stamina", playerDoc.resources.stamina])
 		playerDoc.pve.totalStep += staminaUsed

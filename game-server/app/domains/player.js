@@ -1473,7 +1473,8 @@ var PlayerSchema = new Schema({
 			level:{type:Number, required:true},
 			fogs:{type:String, required:true},
 			objects:{type:String, required:true}
-		}]
+		}],
+		rewardedFloors:[Number]
 	},
 	dailyTasks:{
 		rewarded:[],
