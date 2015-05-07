@@ -325,8 +325,8 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 
 	if(!_.isObject(soldierFightData) || _.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult)){
 		var attackDragonCurrentHp = attackDragonForFight.currentHp
-		var coinGet = defencePlayerDoc.resources.coin >= attackDragonCurrentHp ? attackDragonCurrentHp : defencePlayerDoc.resources.coin
-		coinGet *= 100
+		var coinCanGet = attackDragonCurrentHp * 100
+		var coinGet = defencePlayerDoc.resources.coin >= coinCanGet ? coinCanGet : defencePlayerDoc.resources.coin
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"coin",
