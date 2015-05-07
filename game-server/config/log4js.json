@@ -169,7 +169,7 @@
     "rpc-debug": "WARN",
     "crash-log": "WARN",
     "admin-log": "WARN",
-    "pomelo": "DEBUG",
+    "pomelo": "WARN",
     "pomelo-admin": "WARN",
     "pomelo-rpc": "WARN",
 
