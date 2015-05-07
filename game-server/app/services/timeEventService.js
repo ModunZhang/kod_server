@@ -105,11 +105,15 @@ pro.removeTimeEvent = function(key, eventType, eventId, callback){
 	if(this.isEventServer){
 		this.logService.onEvent("event.timeEventService.removeTimeEvent", {key:key, eventType:eventType, eventId:eventId})
 		var timeouts = this.timeouts[key]
-		var timeout = timeouts[eventId]
-		clearLongTimeout(timeout)
-		delete timeouts[eventId]
-		if(_.isEmpty(timeouts)){
-			delete this.timeouts[key]
+		if(_.isObject(timeouts)){
+			var timeout = timeouts[eventId]
+			if(_.isObject(timeout)){
+				clearLongTimeout(timeout)
+				delete timeouts[eventId]
+				if(_.isEmpty(timeouts)){
+					delete this.timeouts[key]
+				}
+			}
 		}
 		callback()
 	}else{
@@ -134,8 +138,16 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 			timeInterval:timeInterval
 		})
 		var timeouts = this.timeouts[key]
-		var timeout = timeouts[eventId]
-		clearLongTimeout(timeout)
+		var timeout = null
+		if(_.isObject(timeouts)){
+			timeout = timeouts[eventId]
+			if(_.isObject(timeout)){
+				clearLongTimeout(timeout)
+			}
+		}else{
+			this.timeouts[key] = timeouts = {}
+		}
+
 
 		timeout = setLongTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
 		timeouts[eventId] = timeout
@@ -154,9 +166,11 @@ pro.clearTimeEventsByKey = function(key, callback){
 	if(this.isEventServer){
 		this.logService.onEvent("event.timeEventService.clearTimeEventsByKey", {key:key})
 		var timeouts = this.timeouts[key]
-		_.each(timeouts, function(timeout){
-			clearLongTimeout(timeout)
-		})
+		if(_.isObject(timeouts)){
+			_.each(timeouts, function(timeout){
+				clearLongTimeout(timeout)
+			})
+		}
 		delete this.timeouts[key]
 		callback()
 	}else{
@@ -174,9 +188,11 @@ pro.triggerTimeEvent = function(key, eventType, eventId){
 	var self = this
 	this.logService.onEvent("event.timeEventService.triggerTimeEvent", {key:key, eventType:eventType, eventId:eventId})
 	var timeouts = this.timeouts[key]
-	delete timeouts[eventId]
-	if(_.isEmpty(timeouts)){
-		delete this.timeouts[key]
+	if(_.isObject(timeouts)){
+		delete timeouts[eventId]
+		if(_.isEmpty(timeouts)){
+			delete this.timeouts[key]
+		}
 	}
 	this.excuteTimeEventAsync(key, eventType, eventId).then(function(){
 		self.logService.onEvent("event.timeEventService.triggerTimeEvent finished", {
