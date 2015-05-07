@@ -1635,6 +1635,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 	Promise.all(funcs).then(function(){
 		_.each(event.playerTroops, function(playerTroop){
 			var playerDoc = playerDocs[playerTroop.id]
+			playerTroop.icon = playerDoc.basicInfo.icon
 			var dragon = playerDoc.dragons[playerTroop.dragon.type]
 			DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
 			var dragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, dragon, allianceDoc.basicInfo.terrain)
@@ -1642,6 +1643,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			var playerTroopForFight = {
 				id:playerTroop.id,
 				name:playerTroop.name,
+				icon:playerTroop.icon,
 				dragonForFight:dragonForFight,
 				soldiersForFight:soldiersForFight,
 				woundedSoldierPercent:DataUtils.getPlayerTreatSoldierPercent(playerDocs[playerTroop.id], dragon),
@@ -1693,6 +1695,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			currentRoundDatas.push({
 				playerId:playerTroopForFight.id,
 				playerName:playerTroopForFight.name,
+				playerIcon:playerTroopForFight.icon,
 				stageTroopNumber:stageTroopForFight.troopNumber,
 				fightResult:soldierFightData.fightResult,
 				attackDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
@@ -1700,13 +1703,6 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 				attackSoldierRoundDatas:soldierFightData.attackRoundDatas,
 				defenceSoldierRoundDatas:soldierFightData.defenceRoundDatas
 			})
-
-
-
-
-
-
-
 
 			if((playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0) || (stageTroopsForFight.length == 0 && stageSuccessedTroops.length > 0)){
 				if(playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0){

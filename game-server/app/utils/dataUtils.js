@@ -2434,6 +2434,7 @@ Utils.getAllianceShrineStageResultDatas = function(terrain, stageName, isWin, fi
 				playerDatas[roundData.playerId] = {
 					id:roundData.playerId,
 					name:roundData.playerName,
+					icon:roundData.playerIcon,
 					kill:0,
 					rewards:[]
 				}

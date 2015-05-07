@@ -1427,17 +1427,18 @@ Utils.getPlayerTroopsAvgPower = function(playerTroopsForFight){
  * @return {*}
  */
 Utils.fixAllianceShrineStagePlayerData = function(playerTroops, playerDatas){
-	var playerIds = {}
+	var thePlayerTroops = {}
 	_.each(playerTroops, function(playerTroop){
-		playerIds[playerTroop.id] = playerTroop.name
+		thePlayerTroops[playerTroop.id] = playerTroop
 	})
 	_.each(playerDatas, function(playerData){
-		delete playerIds[playerData.id]
+		delete thePlayerTroops[playerData.id]
 	})
-	_.each(playerIds, function(playerName, playerId){
+	_.each(thePlayerTroops, function(playerTroop){
 		var playerData = {
-			id:playerId,
-			name:playerName,
+			id:playerTroop.id,
+			name:playerTroop.name,
+			icon:playerTroop.icon,
 			kill:0,
 			rewards:[]
 		}

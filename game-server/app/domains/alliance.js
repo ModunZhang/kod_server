@@ -202,6 +202,7 @@ var AllianceSchema = new Schema({
 			_id:false,
 			id:{type:String, required:true},
 			name:{type:String, required:true},
+			icon:{type:Number, required:true},
 			kill:{type:Number, required:true},
 			rewards:[{
 				_id:false,
