@@ -1273,6 +1273,18 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, dataService,
 			var itemConfig = Items.resource.casinoTokenClass_4
 			return Resource(playerDoc, playerData, itemConfig, "casinoToken")
 		},
+		gemClass_1:function(){
+			var itemConfig = Items.resource.gemClass_1
+			return Resource(playerDoc, playerData, itemConfig, "gem")
+		},
+		gemClass_2:function(){
+			var itemConfig = Items.resource.gemClass_2
+			return Resource(playerDoc, playerData, itemConfig, "gem")
+		},
+		gemClass_3:function(){
+			var itemConfig = Items.resource.gemClass_3
+			return Resource(playerDoc, playerData, itemConfig, "gem")
+		},
 		speedup_1:function(){
 			var itemConfig = Items.speedup.speedup_1
 			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)

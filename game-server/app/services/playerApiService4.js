@@ -858,13 +858,8 @@ pro.gacha = function(playerId, type, callback){
 		for(var i = 0; i < count; i++){
 			var item = DataUtils.getGachaItemByType(type, excludes)
 			excludes.push(item.name)
-			if(_.isEqual(item.type, "items")){
-				var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-				playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-			}else{
-				playerDoc[item.type][item.name] += item.count
-				playerData.push([item.type + "." + item.name, playerDoc[item.type][item.name]])
-			}
+			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
+			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		}
 
 		if(_.isEqual(type, Consts.GachaType.Advanced)){
@@ -993,7 +988,11 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 	}).then(function(){
 		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService4.switchGcId", {playerId:playerId, deviceId:deviceId, gcId:gcId}, e.stack)
+		self.logService.onEventError("logic.playerApiService4.switchGcId", {
+			playerId:playerId,
+			deviceId:deviceId,
+			gcId:gcId
+		}, e.stack)
 	})
 }
 
@@ -1028,6 +1027,10 @@ pro.forceSwitchGcId = function(playerId, deviceId, gcId, callback){
 	}).then(function(){
 		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService4.forceSwitchGcId", {playerId:playerId, deviceId:deviceId, gcId:gcId}, e.stack)
+		self.logService.onEventError("logic.playerApiService4.forceSwitchGcId", {
+			playerId:playerId,
+			deviceId:deviceId,
+			gcId:gcId
+		}, e.stack)
 	})
 }
