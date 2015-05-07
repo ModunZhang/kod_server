@@ -278,22 +278,19 @@ Utils.finishSoldierStarTaskIfNeed = function(playerDoc, playerData, soldierName,
 Utils.finishSoldierCountTaskIfNeed = function(playerDoc, playerData, soldierName){
 	var config = null
 	var task = null
-	var nextCount = null
 	var tasks = _.filter(playerDoc.growUpTasks.soldierCount, function(task){
 		return _.isEqual(task.name, soldierName)
 	})
 	if(tasks.length > 0){
 		task = tasks[tasks.length - 1]
 		config = GrowUpTasks.soldierCount[task.id + 1]
-		if(!_.isObject(config) || !_.isEqual(task.name, soldierName)) return
-		nextCount = config.count
+		if(!_.isObject(config) || !_.isEqual(config.name, soldierName)) return
 	}else{
 		config = _.find(GrowUpTasks.soldierCount, function(config){
 			return _.isEqual(config.name, soldierName) && config.index == 1
 		})
-		nextCount = config.count
 	}
-	if(playerDoc.soldiers[soldierName] < nextCount) return
+	if(playerDoc.soldiers[soldierName] < config.count) return
 
 	task = {
 		id:config.id,

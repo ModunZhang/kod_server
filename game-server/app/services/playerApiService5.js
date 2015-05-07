@@ -355,6 +355,7 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 			return _.isEqual(task.id, taskId)
 		})
 		if(!_.isObject(task)) return Promise.reject(ErrorUtils.growUpTaskNotExist(playerId, taskType, taskId))
+		if(task.rewarded) return Promise.reject(ErrorUtils.growUpTaskRewardAlreadyGet(playerId, taskType, taskId))
 		if(TaskUtils.hasPreGrowUpTask(playerDoc, taskType, task)) return Promise.reject(ErrorUtils.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet(playerId, taskType, taskId))
 		var rewards = DataUtils.getGrowUpTaskRewards(taskType, taskId)
 		DataUtils.addPlayerLevelExp(playerDoc, playerData, rewards.exp)

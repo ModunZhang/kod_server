@@ -1075,6 +1075,17 @@ Utils.growUpTaskNotExist = function(playerId, taskType, taskId){
 }
 
 /**
+ * 成长任务奖励已经领取
+ * @param playerId
+ * @param taskType
+ * @param taskId
+ */
+Utils.growUpTaskRewardAlreadyGet = function(playerId, taskType, taskId){
+	var config = Errors.growUpTaskRewardAlreadyGet
+	return CreateError(config, {playerId:playerId, taskType:taskType, taskId:taskId})
+}
+
+/**
  * 前置任务奖励未领取
  * @param playerId
  * @param taskType
