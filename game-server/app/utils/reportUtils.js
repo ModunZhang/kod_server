@@ -230,7 +230,6 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		}
 		return data
 	}
-
 	var createAllianceData = function(allianceDoc){
 		var data = {
 			id:allianceDoc._id,
@@ -307,7 +306,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 	var defenceWallHpDecreased = _.isObject(wallFightData) ? wallFightData.defenceWallAfterFight.totalHp - wallFightData.defenceWallAfterFight.currentHp : 0
 	var attackPlayerKilledCitizenWithDefenceWall = Math.floor(defenceWallHpDecreased * AllianceInitData.intInit.KilledCitizenPerWallHp.value)
 	var defencePlayerKilledCitizenBySoldiers = _.isObject(soldierFightData) ? getKilledCitizen(soldierFightData.defenceSoldiersAfterFight) : 0
-	var defencePlayerKilledCitizenByWall = _.isObject(wallFightData) ? getKilledCitizen(wallFightData.defenceWallAfterFight) : 0
+	var defencePlayerKilledCitizenByWall = _.isObject(wallFightData) ? getKilledCitizen([wallFightData.defenceWallAfterFight]) : 0
 	var attackDragon = attackPlayerDoc.dragons[attackDragonForFight.type]
 	var attackDragonExpAdd = DataUtils.getDragonExpAdd(attackPlayerKilledCitizenWithDefenceSoldiers)
 	var defenceDragon = _.isObject(dragonFightData) ? defencePlayerDoc.dragons[dragonFightData.defenceDragonAfterFight.type] : null

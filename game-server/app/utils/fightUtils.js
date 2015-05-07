@@ -48,8 +48,8 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 		if(attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
 		if(defenceDamagedSoldierCount > defenceSoldier.currentCount * 0.7) defenceDamagedSoldierCount = Math.ceil(defenceSoldier.currentCount * 0.7)
 
-		var attackWoundedSoldierCount = Math.ceil(attackDamagedSoldierCount * attackWoundedSoldierPercent)
-		var defenceWoundedSoldierCount = Math.ceil(defenceDamagedSoldierCount * defenceWoundedSoldierPercent)
+		var attackWoundedSoldierCount = Math.floor(attackDamagedSoldierCount * attackWoundedSoldierPercent)
+		var defenceWoundedSoldierCount = Math.floor(defenceDamagedSoldierCount * defenceWoundedSoldierPercent)
 		var attackMoraleDecreased = Math.ceil(attackDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / attackSoldier.totalCount * 100 * attackSoldierMoraleDecreasedPercent)
 		var dfenceMoraleDecreased = Math.ceil(defenceDamagedSoldierCount * Math.pow(2, defenceSoldier.round - 1) / defenceSoldier.totalCount * 100 * defenceSoldierMoraleDecreasedPercent)
 		attackResults.push({
@@ -200,7 +200,7 @@ Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent,
 		if(attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
 		if(defenceDamagedHp > defenceWall.currentHp) defenceDamagedHp = defenceWall.currentHp
 
-		var attackWoundedSoldierCount = Math.ceil(attackDamagedSoldierCount * attackWoundedSoldierPercent)
+		var attackWoundedSoldierCount = Math.floor(attackDamagedSoldierCount * attackWoundedSoldierPercent)
 		attackResults.push({
 			soldierName:attackSoldier.name,
 			soldierStar:attackSoldier.star,
