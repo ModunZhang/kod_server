@@ -2651,7 +2651,8 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
 				var recoveryPerMilSecond = config.hpRecoveryPerHour / 60 / 60 / 1000
 				var itemBuff = self.isPlayerHasItemEvent(playerDoc, "dragonHpBonus") ? Items.buffTypes["dragonHpBonus"].effect1 : 0
 				var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].dragonHpRecoveryAdd
-				var hpRecovered = Math.floor(totalMilSeconds * recoveryPerMilSecond * (1 + itemBuff + vipBuff))
+				var terrainBuff = _.isEqual(dragon.type, Consts.TerrainDragonMap[playerDoc.basicInfo.terrain]) ? self.getPlayerIntInit("dragonHpRecoverTerrainAddPercent") / 100 : 0
+				var hpRecovered = Math.floor(totalMilSeconds * recoveryPerMilSecond * (1 + itemBuff + vipBuff + terrainBuff))
 				dragon.hp += hpRecovered
 				dragon.hp = dragon.hp > dragonMaxHp ? dragonMaxHp : dragon.hp
 			}

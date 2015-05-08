@@ -150,6 +150,11 @@ intInit["playerResourceProtectPercent"] = {
 }
 intInit["dragonStrengthTerrainAddPercent"] = {
 	type:"dragonStrengthTerrainAddPercent",
-	value:10,
+	value:20,
 	desc:"龙在相应地形下的力量加成比例"
+}
+intInit["dragonHpRecoverTerrainAddPercent"] = {
+	type:"dragonHpRecoverTerrainAddPercent",
+	value:20,
+	desc:"龙在相应地形下的hp回复加成比例"
 }
