@@ -24,6 +24,22 @@
         "port": 4152,
         "clientPort": 4012,
         "frontend": true,
+        "usedFor": "cache-server-1"
+      },
+      {
+        "id": "logic-server-3",
+        "host": "192.168.0.30",
+        "port": 4153,
+        "clientPort": 4013,
+        "frontend": true,
+        "usedFor": "cache-server-2"
+      },
+      {
+        "id": "logic-server-4",
+        "host": "192.168.0.30",
+        "port": 4154,
+        "clientPort": 4014,
+        "frontend": true,
         "usedFor": "cache-server-2"
       }
     ],

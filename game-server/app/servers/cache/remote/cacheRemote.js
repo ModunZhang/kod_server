@@ -209,3 +209,51 @@ pro.timeoutAlliance = function(id, doc, callback){
 		}
 	})
 }
+
+/**
+ * 玩家名字是否存在
+ * @param playerName
+ * @param callback
+ */
+pro.isPlayerNameExist = function(playerName, callback){
+	var self = this
+	this.cacheService.isPlayerNameExist(playerName, function(e, exist){
+		try{
+			callback(e, exist)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.isPlayerNameExist", {playerName:playerName}, e.stack)
+		}
+	})
+}
+
+/**
+ * 联盟名称是否存在
+ * @param allianceName
+ * @param callback
+ */
+pro.isAllianceNameExist = function(allianceName, callback){
+	var self = this
+	this.cacheService.isAllianceNameExist(allianceName, function(e, exist){
+		try{
+			callback(e, exist)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.isAllianceNameExist", {allianceName:allianceName}, e.stack)
+		}
+	})
+}
+
+/**
+ * 联盟标签是否存在
+ * @param allianceTag
+ * @param callback
+ */
+pro.isAllianceTagExist = function(allianceTag, callback){
+	var self = this
+	this.cacheService.isAllianceTagExist(allianceTag, function(e, exist){
+		try{
+			callback(e, exist)
+		}catch(e){
+			self.logService.onEventError("cache.cacheRemote.isAllianceTagExist", {allianceTag:allianceTag}, e.stack)
+		}
+	})
+}

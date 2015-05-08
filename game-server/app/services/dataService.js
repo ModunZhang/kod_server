@@ -155,6 +155,33 @@ pro.timeoutAlliance = function(doc, data, callback){
 }
 
 /**
+ * 玩家名字是否存在
+ * @param playerName
+ * @param callback
+ */
+pro.isPlayerNameExist = function(playerName, callback){
+	this.app.rpc.cache.cacheRemote.isPlayerNameExist.toServer(this.cacheServerId, playerName, callback)
+}
+
+/**
+ * 联盟名称是否存在
+ * @param allianceName
+ * @param callback
+ */
+pro.isAllianceNameExist = function(allianceName, callback){
+	this.app.rpc.cache.cacheRemote.isAllianceNameExist.toServer(this.cacheServerId, allianceName, callback)
+}
+
+/**
+ * 联盟标签是否存在
+ * @param allianceTag
+ * @param callback
+ */
+pro.isAllianceTagExist = function(allianceTag, callback){
+	this.app.rpc.cache.cacheRemote.isAllianceTagExist.toServer(this.cacheServerId, allianceTag, callback)
+}
+
+/**
  * 将玩家添加到联盟频道
  * @param allianceId
  * @param playerDoc

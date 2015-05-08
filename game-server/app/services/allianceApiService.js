@@ -92,13 +92,12 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		return Promise.resolve()
 	}).then(function(){
-		return self.dataService.getAllianceModel().findOneAsync({"basicInfo.name":name}, {_id:true})
-	}).then(function(doc){
-		if(_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNameExist(playerId, name))
-		return self.dataService.getAllianceModel().findOneAsync({"basicInfo.tag":tag}, {_id:true})
-	}).then(function(doc){
-		if(_.isObject(doc)) return Promise.reject(ErrorUtils.allianceTagExist(playerId, tag))
-
+		return self.dataService.isAllianceNameExistAsync(name)
+	}).then(function(exist){
+		if(exist) return Promise.reject(ErrorUtils.allianceNameExist(playerId, name))
+		return self.dataService.isAllianceTagExistAsync(tag)
+	}).then(function(exist){
+		if(exist) return Promise.reject(ErrorUtils.allianceTagExist(playerId, tag))
 		var alliance = {
 			_id:ShortId.generate(),
 			serverId:playerDoc.serverId,

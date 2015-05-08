@@ -118,8 +118,8 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
  */
 var ChangePlayerName = function(playerDoc, playerData, newPlayerName, dataService){
 	if(_.isEqual(newPlayerName, playerDoc.basicInfo.name)) return Promise.reject(ErrorUtils.playerNameCanNotBeTheSame(playerDoc._id, newPlayerName))
-	return dataService.getPlayerModel().findOneAsync({"basicInfo.name":newPlayerName}, {_id:true}).then(function(doc){
-		if(_.isObject(doc)){
+	return dataService.isPlayerNameExistAsync(newPlayerName).then(function(exist){
+		if(exist){
 			return Promise.reject(ErrorUtils.playerNameAlreadyUsed(playerDoc._id, newPlayerName))
 		}else{
 			playerDoc.basicInfo.name = newPlayerName
@@ -534,6 +534,8 @@ var Resource = function(playerDoc, playerData, itemConfig, resourceName){
 		var freeCitizen = DataUtils.getPlayerCitizen(playerDoc)
 		var citizenAddCount = Math.round(itemConfig.effect * freeCitizenLimit)
 		count = citizenAddCount + freeCitizen > freeCitizenLimit ? freeCitizenLimit - freeCitizen : citizenAddCount
+	}else if(_.isEqual(resourceName, "gem")){
+		count = itemConfig.effect
 	}else{
 		count = Math.round(itemConfig.effect * 1000)
 	}
