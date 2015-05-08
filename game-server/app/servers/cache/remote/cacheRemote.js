@@ -25,6 +25,7 @@ var pro = CacheRemote.prototype
  */
 pro.directFindPlayer = function(id, callback){
 	this.cacheService.directFindPlayer(id, function(e, doc){
+		var self = this
 		try{
 			callback(e, doc)
 		}catch(e){
@@ -40,6 +41,7 @@ pro.directFindPlayer = function(id, callback){
  * @param callback
  */
 pro.findPlayer = function(id, force, callback){
+	var self = this
 	if(arguments.length == 2){
 		callback = force
 		force = false
@@ -60,6 +62,7 @@ pro.findPlayer = function(id, force, callback){
  * @param callback
  */
 pro.updatePlayer = function(id, doc, callback){
+	var self = this
 	this.cacheService.updatePlayer(id, doc, function(e){
 		try{
 			callback(e)
@@ -76,6 +79,7 @@ pro.updatePlayer = function(id, doc, callback){
  * @param callback
  */
 pro.flushPlayer = function(id, doc, callback){
+	var self = this
 	this.cacheService.flushPlayer(id, doc, function(e){
 		try{
 			callback(e)
@@ -92,6 +96,7 @@ pro.flushPlayer = function(id, doc, callback){
  * @param callback
  */
 pro.timeoutPlayer = function(id, doc, callback){
+	var self = this
 	this.cacheService.timeoutPlayer(id, doc, function(e){
 		try{
 			callback(e)
@@ -107,6 +112,7 @@ pro.timeoutPlayer = function(id, doc, callback){
  * @param callback
  */
 pro.createAlliance = function(doc, callback){
+	var self = this
 	this.cacheService.createAlliance(doc, function(e, theDoc){
 		try{
 			callback(e, theDoc)
@@ -122,6 +128,7 @@ pro.createAlliance = function(doc, callback){
  * @param callback
  */
 pro.directFindAlliance = function(id, callback){
+	var self = this
 	this.cacheService.directFindAlliance(id, function(e, doc){
 		try{
 			callback(e, doc)
@@ -138,6 +145,7 @@ pro.directFindAlliance = function(id, callback){
  * @param callback
  */
 pro.findAlliance = function(id, force, callback){
+	var self = this
 	if(arguments.length == 2){
 		callback = force
 		force = false
@@ -158,6 +166,7 @@ pro.findAlliance = function(id, force, callback){
  * @param callback
  */
 pro.updateAlliance = function(id, doc, callback){
+	var self = this
 	this.cacheService.updateAlliance(id, doc, function(e){
 		try{
 			callback(e)
@@ -174,6 +183,7 @@ pro.updateAlliance = function(id, doc, callback){
  * @param callback
  */
 pro.flushAlliance = function(id, doc, callback){
+	var self = this
 	this.cacheService.flushAlliance(id, doc, function(e){
 		try{
 			callback(e)
@@ -190,6 +200,7 @@ pro.flushAlliance = function(id, doc, callback){
  * @param callback
  */
 pro.timeoutAlliance = function(id, doc, callback){
+	var self = this
 	this.cacheService.timeoutAlliance(id, doc, function(e){
 		try{
 			callback(e)

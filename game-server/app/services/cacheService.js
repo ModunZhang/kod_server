@@ -21,11 +21,11 @@ var DataService = function(app){
 	this.playersQueue = {}
 	this.alliances = {}
 	this.alliancesQueue = {}
-	this.maxPlayerQueue = 2
-	this.maxAllianceQueue = 5
+	this.maxPlayerQueue = 1
+	this.maxAllianceQueue = 2
 	this.flushOps = 10
 	this.timeoutInterval = 10 * 60 * 1000
-	this.lockCheckInterval = 15 * 1000
+	this.lockCheckInterval = 10 * 1000
 	this.lockInterval = 30 * 1000
 
 	setInterval(OnLockCheckInterval.bind(this), this.lockCheckInterval)

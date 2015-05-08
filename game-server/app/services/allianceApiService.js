@@ -317,21 +317,23 @@ pro.getCanDirectJoinAlliances = function(playerId, callback){
 		"basicInfo.joinType":Consts.AllianceJoinType.All
 	}, null, {"sort":{"basicInfo.power":-1}, "limit":10}).then(function(docs){
 		_.each(docs, function(doc){
-			var shortDoc = {
-				id:doc._id,
-				name:doc.basicInfo.name,
-				tag:doc.basicInfo.tag,
-				flag:doc.basicInfo.flag,
-				members:doc.members.length,
-				membersMax:DataUtils.getAllianceMemberMaxCount(doc),
-				power:doc.basicInfo.power,
-				language:doc.basicInfo.language,
-				kill:doc.basicInfo.kill,
-				archon:LogicUtils.getAllianceArchon(doc).name,
-				joinType:doc.basicInfo.joinType,
-				terrain:doc.basicInfo.terrain
+			if(doc.members.length > 0){
+				var shortDoc = {
+					id:doc._id,
+					name:doc.basicInfo.name,
+					tag:doc.basicInfo.tag,
+					flag:doc.basicInfo.flag,
+					members:doc.members.length,
+					membersMax:DataUtils.getAllianceMemberMaxCount(doc),
+					power:doc.basicInfo.power,
+					language:doc.basicInfo.language,
+					kill:doc.basicInfo.kill,
+					archon:LogicUtils.getAllianceArchon(doc).name,
+					joinType:doc.basicInfo.joinType,
+					terrain:doc.basicInfo.terrain
+				}
+				allianceDocs.push(shortDoc)
 			}
-			allianceDocs.push(shortDoc)
 		})
 		return Promise.resolve()
 	}).then(function(){
