@@ -1914,12 +1914,12 @@ Utils.allianceFightWillEndCanNotSendTroops = function(playerId, allianceId){
 
 /**
  * 服务器繁忙
- * @param type
- * @param id
+ * @param api
+ * @param data
  */
-Utils.serverTooBusy = function(type, id){
+Utils.serverTooBusy = function(api, data){
 	var config = Errors.serverTooBusy
-	return CreateError(config, {type:type, id:id})
+	return CreateError(config, {api:api, data:data})
 }
 
 /**
@@ -1929,4 +1929,13 @@ Utils.serverTooBusy = function(type, id){
 Utils.playerSecondMarchQueueAlreadyUnlocked = function(playerId){
 	var config = Errors.playerSecondMarchQueueAlreadyUnlocked
 	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 非法的请求
+ * @param msg
+ */
+Utils.illegalRequest = function(msg){
+	var config = Errors.illegalRequest
+	return CreateError(config, msg)
 }

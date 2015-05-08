@@ -8,10 +8,8 @@ var path = require("path")
 var _ = require("underscore")
 var wsrpc = require("pomelo-rpc-ws")
 
-
+var FilterService = require("./app/services/filterService")
 var RouteUtils = require("./app/utils/routeUtils")
-var LoginFilter = require("./app/utils/loginFilter")
-var SerialFilter = require("./app/utils/serialFilter")
 
 var app = pomelo.createApp()
 app.set("name", "KODServer")
@@ -40,8 +38,6 @@ app.configure("production|development", "gate", function(){
 		"max-connections":1000
 	})
 
-	app.filter(SerialFilter(5000))
-
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
@@ -65,8 +61,9 @@ app.configure("production|development", "logic", function(){
 	//	failMode:"failfast"
 	//})
 
-	app.before(LoginFilter())
-	app.filter(SerialFilter(5000))
+	var filterService = new FilterService(app)
+	app.before(filterService.toobusyFilter())
+	app.before(filterService.loginFilter())
 
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
@@ -79,9 +76,8 @@ app.configure("production|development", "chat", function(){
 	//	interval:20,
 	//	failMode:"failfast"
 	//})
-
-	app.before(LoginFilter())
-	app.filter(SerialFilter(5000))
+	var filterService = new FilterService(app)
+	app.before(filterService.loginFilter())
 })
 
 app.configure("production|development", "event", function(){
@@ -102,6 +98,9 @@ app.configure("production|development", "rank", function(){
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
+
+	var filterService = new FilterService(app)
+	app.before(filterService.loginFilter())
 })
 
 app.set('errorHandler', function(e, msg, resp, session, opts, cb){

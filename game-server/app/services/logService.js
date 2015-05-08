@@ -9,17 +9,12 @@ var requestLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-
 var requestErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-request-error")
 var eventLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-event")
 var eventErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-event-error")
-var cronLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-cron")
-var cronErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-cron-error")
-var iapGiftLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-iapGift")
-var iapGiftErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-iapGift-error")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var mailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail")
 
 var LogService = function(app){
 	this.app = app
 	this.evn = app.get("env")
-	this.serverId = app.getServerId()
 }
 module.exports = LogService
 var pro = LogService.prototype

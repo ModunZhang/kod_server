@@ -283,7 +283,7 @@ pro.createAlliance = function(allianceData, callback){
 pro.directFindPlayer = function(id, callback){
 	var self = this
 	if(_.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
-		callback(ErrorUtils.serverTooBusy("player", id))
+		callback(ErrorUtils.serverTooBusy("cache.cacheService.directFindPlayer", {id:id}))
 		return
 	}
 	LockPlayer.call(this, id, function(){
@@ -325,7 +325,7 @@ pro.directFindPlayer = function(id, callback){
 pro.directFindAlliance = function(id, callback){
 	var self = this
 	if(_.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
-		callback(ErrorUtils.serverTooBusy("alliance", id))
+		callback(ErrorUtils.serverTooBusy("cache.cacheService.directFindAlliance", {id:id}))
 		return
 	}
 	LockAlliance.call(this, id, function(){
@@ -368,7 +368,7 @@ pro.directFindAlliance = function(id, callback){
 pro.findPlayer = function(id, force, callback){
 	var self = this
 	if(!force && _.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
-		callback(ErrorUtils.serverTooBusy("player", id))
+		callback(ErrorUtils.serverTooBusy("cache.cacheService.findPlayer", {id:id}))
 		return
 	}
 	LockPlayer.call(this, id, function(){
@@ -412,7 +412,7 @@ pro.findPlayer = function(id, force, callback){
 pro.findAlliance = function(id, force, callback){
 	var self = this
 	if(!force && _.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
-		callback(ErrorUtils.serverTooBusy("alliance", id))
+		callback(ErrorUtils.serverTooBusy("cache.cacheService.findAlliance", {id:id}))
 		return
 	}
 	LockAlliance.call(this, id, function(){

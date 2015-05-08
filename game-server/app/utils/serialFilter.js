@@ -3,8 +3,9 @@
  */
 
 var _ = require("underscore")
-var logger = require("pomelo/node_modules/pomelo-logger").getLogger('pomelo', __filename)
 var taskManager = require('pomelo/lib/common/manager/taskManager')
+
+
 
 module.exports = function(timeout){
 	return new Filter(timeout)
