@@ -5,8 +5,8 @@ module.exports = normal
 
 normal[1] = {
 	index:1,
-	itemName:"gemClass_1",
-	itemCount:10,
+	itemName:"gemClass_2",
+	itemCount:1,
 	weight:5
 }
 normal[2] = {
@@ -18,7 +18,7 @@ normal[2] = {
 normal[3] = {
 	index:3,
 	itemName:"woodClass_3",
-	itemCount:2,
+	itemCount:3,
 	weight:10
 }
 normal[4] = {
@@ -30,7 +30,7 @@ normal[4] = {
 normal[5] = {
 	index:5,
 	itemName:"stoneClass_3",
-	itemCount:2,
+	itemCount:3,
 	weight:10
 }
 normal[6] = {
@@ -42,7 +42,7 @@ normal[6] = {
 normal[7] = {
 	index:7,
 	itemName:"ironClass_3",
-	itemCount:2,
+	itemCount:3,
 	weight:10
 }
 normal[8] = {
@@ -54,7 +54,7 @@ normal[8] = {
 normal[9] = {
 	index:9,
 	itemName:"foodClass_3",
-	itemCount:2,
+	itemCount:3,
 	weight:10
 }
 normal[10] = {
@@ -66,7 +66,7 @@ normal[10] = {
 normal[11] = {
 	index:11,
 	itemName:"coinClass_3",
-	itemCount:2,
+	itemCount:3,
 	weight:5
 }
 normal[12] = {
@@ -78,7 +78,7 @@ normal[12] = {
 normal[13] = {
 	index:13,
 	itemName:"speedup_3",
-	itemCount:2,
+	itemCount:3,
 	weight:10
 }
 normal[14] = {
