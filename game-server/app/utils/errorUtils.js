@@ -10,12 +10,13 @@ var GameDatas = require("../datas/GameDatas")
 var Errors = GameDatas.Errors.errors
 
 
-var CustomError = function(code, message){
+var CustomError = function(code, message, showCode){
+	showCode = _.isBoolean(showCode) ? showCode : true
 	Error.call(this)
 	Error.captureStackTrace(this, CustomError)
 	this.code = code
 	this.name = "CustomError"
-	this.message = "(" + code + ")" + message
+	this.message = showCode ? "(" + code + ")" + message : message
 }
 util.inherits(CustomError, Error)
 
@@ -26,6 +27,17 @@ var CreateError = function(config, params){
 	var message = config.message
 	if(_.isObject(params)) message += ":" + JSON.stringify(params)
 	return new CustomError(code, message)
+}
+
+/**
+ * 创建错误信息
+ * @param code
+ * @param message
+ * @param showCode
+ * @returns {CustomError}
+ */
+Utils.createError = function(code, message, showCode){
+	return new CustomError(code, message, showCode)
 }
 
 /**

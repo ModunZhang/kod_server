@@ -7,6 +7,7 @@ var _ = require("underscore")
 var Promise = require("bluebird")
 
 var LogicUtils = require("../utils/logicUtils")
+var ErrorUtils = require("../utils/errorUtils")
 
 var DataService = function(app){
 	this.app = app
@@ -45,7 +46,11 @@ pro.getAllianceModel = function(){
  * @param callback
  */
 pro.directFindPlayer = function(id, callback){
-	this.app.rpc.cache.cacheRemote.directFindPlayer.toServer(this.cacheServerId, id, callback)
+	this.app.rpc.cache.cacheRemote.directFindPlayer.toServer(this.cacheServerId, id, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
 }
 
 /**
@@ -59,7 +64,11 @@ pro.findPlayer = function(id, force, callback){
 		callback = force
 		force = false
 	}
-	this.app.rpc.cache.cacheRemote.findPlayer.toServer(this.cacheServerId, id, force, callback)
+	this.app.rpc.cache.cacheRemote.findPlayer.toServer(this.cacheServerId, id, force, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
 }
 
 /**
@@ -69,7 +78,11 @@ pro.findPlayer = function(id, force, callback){
  * @param callback
  */
 pro.updatePlayer = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.updatePlayer.toServer(this.cacheServerId, doc._id, data, callback)
+	this.app.rpc.cache.cacheRemote.updatePlayer.toServer(this.cacheServerId, doc._id, data, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
 }
 
 /**
@@ -79,7 +92,11 @@ pro.updatePlayer = function(doc, data, callback){
  * @param callback
  */
 pro.flushPlayer = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.flushPlayer.toServer(this.cacheServerId, doc._id, data, callback)
+	this.app.rpc.cache.cacheRemote.flushPlayer.toServer(this.cacheServerId, doc._id, data, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
 }
 
 /**
@@ -89,7 +106,11 @@ pro.flushPlayer = function(doc, data, callback){
  * @param callback
  */
 pro.timeoutPlayer = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.timeoutPlayer.toServer(this.cacheServerId, doc._id, data, callback)
+	this.app.rpc.cache.cacheRemote.timeoutPlayer.toServer(this.cacheServerId, doc._id, data, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
 }
 
 /**
@@ -98,7 +119,11 @@ pro.timeoutPlayer = function(doc, data, callback){
  * @param callback
  */
 pro.createAlliance = function(alliance, callback){
-	this.app.rpc.cache.cacheRemote.createAlliance.toServer(this.cacheServerId, alliance, callback)
+	this.app.rpc.cache.cacheRemote.createAlliance.toServer(this.cacheServerId, alliance, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
 }
 
 /**
@@ -107,7 +132,11 @@ pro.createAlliance = function(alliance, callback){
  * @param callback
  */
 pro.directFindAlliance = function(id, callback){
-	this.app.rpc.cache.cacheRemote.directFindAlliance.toServer(this.cacheServerId, id, callback)
+	this.app.rpc.cache.cacheRemote.directFindAlliance.toServer(this.cacheServerId, id, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
 }
 
 /**
@@ -121,7 +150,11 @@ pro.findAlliance = function(id, force, callback){
 		callback = force
 		force = false
 	}
-	this.app.rpc.cache.cacheRemote.findAlliance.toServer(this.cacheServerId, id, force, callback)
+	this.app.rpc.cache.cacheRemote.findAlliance.toServer(this.cacheServerId, id, force, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
 }
 
 /**
@@ -131,7 +164,11 @@ pro.findAlliance = function(id, force, callback){
  * @param callback
  */
 pro.updateAlliance = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.updateAlliance.toServer(this.cacheServerId, doc._id, data, callback)
+	this.app.rpc.cache.cacheRemote.updateAlliance.toServer(this.cacheServerId, doc._id, data, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
 }
 
 /**
@@ -141,7 +178,11 @@ pro.updateAlliance = function(doc, data, callback){
  * @param callback
  */
 pro.flushAlliance = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.flushAlliance.toServer(this.cacheServerId, doc._id, data, callback)
+	this.app.rpc.cache.cacheRemote.flushAlliance.toServer(this.cacheServerId, doc._id, data, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
 }
 
 /**
@@ -151,34 +192,11 @@ pro.flushAlliance = function(doc, data, callback){
  * @param callback
  */
 pro.timeoutAlliance = function(doc, data, callback){
-	this.app.rpc.cache.cacheRemote.timeoutAlliance.toServer(this.cacheServerId, doc._id, data, callback)
-}
-
-/**
- * 玩家名字是否存在
- * @param playerName
- * @param callback
- */
-pro.isPlayerNameExist = function(playerName, callback){
-	this.app.rpc.cache.cacheRemote.isPlayerNameExist.toServer(this.cacheServerId, playerName, callback)
-}
-
-/**
- * 联盟名称是否存在
- * @param allianceName
- * @param callback
- */
-pro.isAllianceNameExist = function(allianceName, callback){
-	this.app.rpc.cache.cacheRemote.isAllianceNameExist.toServer(this.cacheServerId, allianceName, callback)
-}
-
-/**
- * 联盟标签是否存在
- * @param allianceTag
- * @param callback
- */
-pro.isAllianceTagExist = function(allianceTag, callback){
-	this.app.rpc.cache.cacheRemote.isAllianceTagExist.toServer(this.cacheServerId, allianceTag, callback)
+	this.app.rpc.cache.cacheRemote.timeoutAlliance.toServer(this.cacheServerId, doc._id, data, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
 }
 
 /**

@@ -118,14 +118,16 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
  */
 var ChangePlayerName = function(playerDoc, playerData, newPlayerName, dataService){
 	if(_.isEqual(newPlayerName, playerDoc.basicInfo.name)) return Promise.reject(ErrorUtils.playerNameCanNotBeTheSame(playerDoc._id, newPlayerName))
-	return dataService.isPlayerNameExistAsync(newPlayerName).then(function(exist){
-		if(exist){
-			return Promise.reject(ErrorUtils.playerNameAlreadyUsed(playerDoc._id, newPlayerName))
-		}else{
-			playerDoc.basicInfo.name = newPlayerName
-			playerData.push(["basicInfo.name", playerDoc.basicInfo.name])
-			return Promise.resolve()
-		}
+	return new Promise(function(resolve, reject){
+		dataService.getPlayerModel().collection.find({"basicInfo.name":newPlayerName}, {_id:true}).count(function(e, size){
+			if(_.isObject(e)) reject(e)
+			else if(size > 0) reject(ErrorUtils.playerNameAlreadyUsed(playerDoc._id, newPlayerName))
+			else{
+				playerDoc.basicInfo.name = newPlayerName
+				playerData.push(["basicInfo.name", playerDoc.basicInfo.name])
+				resolve()
+			}
+		})
 	})
 }
 

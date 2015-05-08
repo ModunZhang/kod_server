@@ -21,11 +21,10 @@ var DataService = function(app){
 	this.playersQueue = {}
 	this.alliances = {}
 	this.alliancesQueue = {}
-	this.playerNameMap = {}
 	this.allianceNameMap = {}
 	this.allianceTagMap = {}
-	this.maxPlayerQueue = 1
-	this.maxAllianceQueue = 2
+	this.maxPlayerQueue = 2
+	this.maxAllianceQueue = 3
 	this.flushOps = 10
 	this.timeoutInterval = 10 * 60 * 1000
 	this.lockCheckInterval = 10 * 1000
@@ -229,9 +228,34 @@ var UnlockAlliance = function(id){
 pro.createAlliance = function(allianceData, callback){
 	var self = this
 	LockAlliance.call(this, allianceData._id, function(){
+		if(self.allianceNameMap[allianceData.basicInfo.name]){
+			callback(ErrorUtils.allianceNameExist(null, allianceData.basicInfo.name))
+			return
+		}
+		if(self.allianceNameMap[allianceData.basicInfo.tag]){
+			callback(ErrorUtils.allianceTagExist(null, allianceData.basicInfo.tag))
+			return
+		}
 		self.allianceNameMap[allianceData.basicInfo.name] = true
 		self.allianceTagMap[allianceData.basicInfo.tag] = true
-		self.Alliance.createAsync(allianceData).then(function(doc){
+		var promise = new Promise(function(resolve, reject){
+			self.Alliance.collection.find({"basicInfo.name":allianceData.basicInfo.name}, {_id:true}).count(function(e, size){
+				if(_.isObject(e)) reject(e)
+				else if(size > 0) reject(ErrorUtils.allianceNameExist(null, allianceData.basicInfo.name))
+				else resolve()
+			})
+		})
+		promise.then(function(){
+			return new Promise(function(resolve, reject){
+				self.Alliance.collection.find({"basicInfo.tag":allianceData.basicInfo.tag}, {_id:true}).count(function(e, size){
+					if(_.isObject(e)) reject(e)
+					else if(size > 0) reject(ErrorUtils.allianceTagExist(null, allianceData.basicInfo.tag))
+					else resolve()
+				})
+			})
+		}).then(function(){
+			return self.Alliance.createAsync(allianceData)
+		}).then(function(doc){
 			delete self.allianceNameMap[allianceData.basicInfo.name]
 			delete self.allianceTagMap[allianceData.basicInfo.tag]
 			var allianceDoc = doc.toObject()
@@ -512,16 +536,13 @@ pro.flushPlayer = function(id, doc, callback){
 	}
 	clearTimeout(player.timeout)
 	if(player.ops > 0){
-		self.playerNameMap[player.doc.basicInfo.name] = true
 		delete player.doc._id
 		self.Player.updateAsync({_id:id}, player.doc).then(function(){
-			delete self.playerNameMap[player.doc.basicInfo.name]
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 			UnlockPlayer.call(self, id)
 			callback()
 		}).catch(function(e){
 			self.logService.onEventError("cache.cacheService.flushPlayer", {id:id}, e.stack)
-			delete self.playerNameMap[player.doc.basicInfo.name]
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 			UnlockPlayer.call(self, id)
 			callback(e)
@@ -550,19 +571,13 @@ pro.flushAlliance = function(id, doc, callback){
 	}
 	clearTimeout(alliance.timeout)
 	if(alliance.ops > 0){
-		self.allianceNameMap[alliance.doc.basicInfo.name] = true
-		self.allianceTagMap[alliance.doc.basicInfo.tag] = true
 		delete alliance.doc._id
 		self.Alliance.updateAsync({_id:id}, alliance.doc).then(function(){
-			delete self.allianceNameMap[alliance.doc.basicInfo.name]
-			delete self.allianceTagMap[alliance.doc.basicInfo.tag]
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 			UnlockAlliance.call(self, id)
 			callback()
 		}).catch(function(e){
 			self.logService.onEventError("cache.cacheService.flushAlliance", {id:id}, e.stack)
-			delete self.allianceNameMap[alliance.doc.basicInfo.name]
-			delete self.allianceTagMap[alliance.doc.basicInfo.tag]
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 			UnlockAlliance.call(self, id)
 			callback(e)
@@ -765,44 +780,5 @@ pro.timeoutAllAlliances = function(callback){
 		callback()
 	}).catch(function(e){
 		callback(e)
-	})
-}
-
-/**
- * 玩家名字是否存在
- * @param playerName
- * @param callback
- */
-pro.isPlayerNameExist = function(playerName, callback){
-	if(this.playerNameMap[playerName]) callback(null, true)
-	this.Player.collection.find({"basicInfo.name": playerName}, {_id:true}).count(function(e, size){
-		if(_.isObject(e)) callback(e)
-		else callback(null, size > 0)
-	})
-}
-
-/**
- * 联盟名称是否存在
- * @param allianceName
- * @param callback
- */
-pro.isAllianceNameExist = function(allianceName, callback){
-	if(this.allianceNameMap[allianceName]) callback(null, true)
-	this.Alliance.collection.find({"basicInfo.name": allianceName}, {_id:true}).count(function(e, size){
-		if(_.isObject(e)) callback(e)
-		else callback(null, size > 0)
-	})
-}
-
-/**
- * 联盟标签是否存在
- * @param allianceTag
- * @param callback
- */
-pro.isAllianceTagExist = function(allianceTag, callback){
-	if(this.allianceTagMap[allianceTag]) callback(null, true)
-	this.Alliance.collection.find({"basicInfo.tag": allianceTag}, {_id:true}).count(function(e, size){
-		if(_.isObject(e)) callback(e)
-		else callback(null, size > 0)
 	})
 }
