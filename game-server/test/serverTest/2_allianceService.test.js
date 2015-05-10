@@ -50,6 +50,13 @@
 //
 //
 //	describe("allianceHandler", function(){
+//		it("initPlayerData 正常初始化", function(done){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		it("createAlliance language 不合法", function(done){
 //			Api.createAlliance(Config.allianceName, Config.allianceTag, "c", "grassLand", "e", function(doc){
 //				doc.code.should.equal(500)
@@ -103,6 +110,13 @@
 //			})
 //		})
 //
+//		it("initPlayerData 正常初始化", function(done){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		it("createAlliance 联盟标签已经存在", function(done){
 //			Api.createAlliance("Hello", Config.allianceTag, "cn", "grassLand", "e", function(doc){
 //				doc.code.should.equal(Errors.allianceTagExist.code)
@@ -131,6 +145,13 @@
 //						done()
 //					})
 //				})
+//			})
+//		})
+//
+//		it("initPlayerData 正常初始化", function(done){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, function(doc){
+//				doc.code.should.equal(200)
+//				done()
 //			})
 //		})
 //
@@ -174,6 +195,13 @@
 //						done()
 //					})
 //				})
+//			})
+//		})
+//
+//		it("initPlayerData 正常初始化", function(done){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, function(doc){
+//				doc.code.should.equal(200)
+//				done()
 //			})
 //		})
 //
@@ -570,6 +598,13 @@
 //						done()
 //					})
 //				})
+//			})
+//		})
+//
+//		it("initPlayerData 正常初始化", function(done){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, function(doc){
+//				doc.code.should.equal(200)
+//				done()
 //			})
 //		})
 //
