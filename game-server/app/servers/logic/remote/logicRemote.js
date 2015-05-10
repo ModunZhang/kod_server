@@ -74,3 +74,27 @@ pro.getOnlineUser = function(callback){
 	var statisticsInfo = connectionService.getStatisticsInfo()
 	callback(null, statisticsInfo.loginedCount)
 }
+
+/**
+ * 更新玩家session信息
+ * @param playerId
+ * @param keys
+ * @param values
+ * @param callback
+ */
+pro.updatePlayerSession = function(playerId, keys, values, callback){
+	if(keys.length != values.length || keys.length == 0){
+		callback()
+		return
+	}
+
+	var sessions = this.sessionService.service.uidMap[playerId]
+	if(sessions.length == 0) callback()
+	else{
+		var session = sessions[0]
+		for(var i = 0; i < keys.length; i ++){
+			session.settings[keys[i]] = values[i]
+		}
+		callback()
+	}
+}

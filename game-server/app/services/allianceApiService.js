@@ -120,6 +120,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		playerDoc.allianceId = allianceDoc._id
 		playerData.push(["allianceId", playerDoc.allianceId])
 		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, ["allianceId", ["allianceTag"]], [allianceDoc._id, allianceDoc.basicInfo.tag]])
 		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, allianceDoc, allianceDoc])
 		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
@@ -997,7 +998,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
 
 		return Promise.all(funcs)
 	}).then(function(){
-		if(_.isString(memberDoc.logicServerId)){
+		if(!_.isEmpty(memberDoc.logicServerId)){
 			updateFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, memberDoc])
 		}
 		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, memberDoc, memberDoc])

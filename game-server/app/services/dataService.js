@@ -304,3 +304,18 @@ pro.removePlayerFromChannels = function(playerDoc, callback){
 		callback()
 	})
 }
+
+/**
+ * 更新玩家session信息
+ * @param playerDoc
+ * @param keys
+ * @param values
+ * @param callback
+ */
+pro.updatePlayerSession = function(playerDoc, keys, values, callback){
+	if(_.isEmpty(playerDoc.logicServerId)){
+		callback()
+		return
+	}
+	this.app.rpc.logic.logicRemote.updatePlayerSession.toServer(playerDoc.logicServerId, playerDoc._id, keys, values, callback)
+}
