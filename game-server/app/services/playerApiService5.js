@@ -604,6 +604,7 @@ pro.initPlayerData = function(playerId, terrain, callback){
 		dragon.hp = DataUtils.getDragonMaxHp(dragon)
 		dragon.hpRefreshTime = Date.now()
 		playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
+
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
