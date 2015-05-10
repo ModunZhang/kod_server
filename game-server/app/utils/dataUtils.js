@@ -3881,16 +3881,6 @@ Utils.createVillageCreateEvent = function(villageName){
 }
 
 /**
- * 联盟战是否即将结束
- * @param allianceDoc
- * @returns {boolean}
- */
-Utils.isAllianceFightWillFinished = function(allianceDoc){
-	var finishInterval = this.getAllianceIntInit("allianceFightWillFinishedMinutes") * 60 * 1000
-	return Date.now() + finishInterval >= allianceDoc.basicInfo.statusFinishTime
-}
-
-/**
  * 获取服务器本地化配置
  * @param type
  * @param key

@@ -1903,16 +1903,6 @@ Utils.allianceMemberCountReachMax = function(playerId, allianceId){
 }
 
 /**
- * 联盟战即将结束,不能派兵
- * @param playerId
- * @param allianceId
- */
-Utils.allianceFightWillEndCanNotSendTroops = function(playerId, allianceId){
-	var config = Errors.allianceFightWillEndCanNotSendTroops
-	return CreateError(config, {playerId:playerId, allianceId:allianceId})
-}
-
-/**
  * 服务器繁忙
  * @param api
  * @param data

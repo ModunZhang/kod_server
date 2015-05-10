@@ -281,8 +281,6 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 		if(!_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 			return Promise.reject(ErrorUtils.allianceNotInFightStatus(playerId, attackAllianceDoc._id))
 		}
-		if(DataUtils.isAllianceFightWillFinished(attackAllianceDoc))
-			return Promise.reject(ErrorUtils.allianceFightWillEndCanNotSendTroops(playerId, attackAllianceDoc._id))
 		var defenceAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id)
 		var funcs = []
 		funcs.push(self.dataService.directFindAllianceAsync(defenceAllianceId))
@@ -392,8 +390,6 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 		if(!_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 			return Promise.reject(ErrorUtils.allianceNotInFightStatus(playerId, attackAllianceDoc._id))
 		}
-		if(DataUtils.isAllianceFightWillFinished(attackAllianceDoc))
-			return Promise.reject(ErrorUtils.allianceFightWillEndCanNotSendTroops(playerId, attackAllianceDoc._id))
 		var defenceAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id)
 		var funcs = []
 		funcs.push(self.dataService.directFindAllianceAsync(defenceAllianceId))
@@ -508,8 +504,6 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 			if(!_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 				return Promise.reject(ErrorUtils.allianceNotInFightStatus(playerId, attackAllianceDoc._id))
 			}
-			if(DataUtils.isAllianceFightWillFinished(attackAllianceDoc))
-				return Promise.reject(ErrorUtils.allianceFightWillEndCanNotSendTroops(playerId, attackAllianceDoc._id))
 			var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id)
 			if(!_.isEqual(enemyAllianceId, defenceAllianceId)) return Promise.reject(ErrorUtils.targetAllianceNotTheEnemyAlliance(playerId, attackAllianceDoc._id, defenceAllianceId))
 			return self.dataService.directFindAllianceAsync(defenceAllianceId).then(function(doc){
@@ -731,8 +725,6 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 			if(!_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 				return Promise.reject(ErrorUtils.allianceNotInFightStatus(playerId, attackAllianceDoc._id))
 			}
-			if(DataUtils.isAllianceFightWillFinished(attackAllianceDoc))
-				return Promise.reject(ErrorUtils.allianceFightWillEndCanNotSendTroops(playerId, attackAllianceDoc._id))
 			var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id)
 			if(!_.isEqual(enemyAllianceId, defenceAllianceId)) return Promise.reject(ErrorUtils.targetAllianceNotTheEnemyAlliance(playerId, attackAllianceDoc._id, defenceAllianceId))
 			return self.dataService.directFindAllianceAsync(defenceAllianceId).then(function(doc){

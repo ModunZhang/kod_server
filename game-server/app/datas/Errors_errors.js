@@ -913,28 +913,23 @@ errors["allianceMemberCountReachMax"] = {
 	code:682,
 	message:"联盟人数已达最大"
 }
-errors["allianceFightWillEndCanNotSendTroops"] = {
-	key:"allianceFightWillEndCanNotSendTroops",
-	code:683,
-	message:"联盟战即将结束,不能派兵"
-}
 errors["serverTooBusy"] = {
 	key:"serverTooBusy",
-	code:684,
+	code:683,
 	message:"服务器繁忙"
 }
 errors["playerSecondMarchQueueAlreadyUnlocked"] = {
 	key:"playerSecondMarchQueueAlreadyUnlocked",
-	code:685,
+	code:684,
 	message:"玩家第二条队列已经解锁"
 }
 errors["illegalRequest"] = {
 	key:"illegalRequest",
-	code:686,
+	code:685,
 	message:"非法的请求"
 }
 errors["playerDataAlreadyInited"] = {
 	key:"playerDataAlreadyInited",
-	code:687,
+	code:686,
 	message:"玩家数据已经初始化"
 }
