@@ -1,6 +1,5 @@
 "use strict"
 
-require("oneapm")
 //TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 var ShortId = require("shortid")
 var pomelo = require("pomelo")
