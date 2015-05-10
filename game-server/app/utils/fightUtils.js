@@ -45,8 +45,8 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 			attackDamagedSoldierCount = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.5 / attackSoldier.hp)
 			defenceDamagedSoldierCount = Math.ceil(attackTotalPower * 0.5 / defenceSoldier.hp)
 		}
-		if(attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
-		if(defenceDamagedSoldierCount > defenceSoldier.currentCount * 0.7) defenceDamagedSoldierCount = Math.ceil(defenceSoldier.currentCount * 0.7)
+		if(attackSoldier.currentCount >= 50 && attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
+		if(defenceSoldier.currentCount >= 50 && defenceDamagedSoldierCount > defenceSoldier.currentCount * 0.7) defenceDamagedSoldierCount = Math.ceil(defenceSoldier.currentCount * 0.7)
 
 		var attackWoundedSoldierCount = Math.floor(attackDamagedSoldierCount * attackWoundedSoldierPercent)
 		var defenceWoundedSoldierCount = Math.floor(defenceDamagedSoldierCount * defenceWoundedSoldierPercent)
@@ -197,7 +197,7 @@ Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent,
 			attackDamagedSoldierCount = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.5 / attackSoldier.hp)
 			defenceDamagedHp = Math.ceil(attackTotalPower * 0.5 / defenceWall.defencePower * (1 - defenceWallDamageDecreasedPercent))
 		}
-		if(attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
+		if(attackSoldier.currentCount >= 50 && attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
 		if(defenceDamagedHp > defenceWall.currentHp) defenceDamagedHp = defenceWall.currentHp
 
 		var attackWoundedSoldierCount = Math.floor(attackDamagedSoldierCount * attackWoundedSoldierPercent)
