@@ -20,6 +20,7 @@
     "mocha": ">=0.0.1",
     "ws": ">=0.0.1",
     "pomelo-protocol": ">=0.0.1",
-    "pomelo-protobuf": ">=0.0.1"
+    "pomelo-protobuf": ">=0.0.1",
+    "webkit-devtools-agent": "0.3.1"
   }
 }

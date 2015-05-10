@@ -600,6 +600,7 @@ pro.initPlayerData = function(playerId, terrain, callback){
 		var dragon = playerDoc.dragons[dragonType]
 		dragon.star = 1
 		dragon.level = 1
+		dragon.status = Consts.DragonStatus.Defence
 		dragon.hp = DataUtils.getDragonMaxHp(dragon)
 		dragon.hpRefreshTime = Date.now()
 		playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])

@@ -5,6 +5,7 @@
  */
 
 var _ = require("underscore")
+var toobusy = require("toobusy-js")
 
 var Consts = require("../../../consts/consts")
 
@@ -26,13 +27,13 @@ var pro = CacheRemote.prototype
  * @param callback
  */
 pro.directFindPlayer = function(id, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.directFindPlayer", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
 	this.cacheService.directFindPlayer(id, function(e, doc){
-		var self = this
-		try{
-			callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
-		}catch(e){
-			self.logService.onEventError("cache.cacheRemote.directFindPlayer", {id:id}, e.stack)
-		}
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }
 
@@ -43,17 +44,17 @@ pro.directFindPlayer = function(id, callback){
  * @param callback
  */
 pro.findPlayer = function(id, force, callback){
-	var self = this
 	if(arguments.length == 2){
 		callback = force
 		force = false
 	}
+	if(!force && toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.findPlayer", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
 	this.cacheService.findPlayer(id, force, function(e, doc){
-		try{
-			callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
-		}catch(e){
-			self.logService.onEventError("cache.cacheRemote.findPlayer", {id:id}, e.stack)
-		}
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }
 
@@ -64,13 +65,8 @@ pro.findPlayer = function(id, force, callback){
  * @param callback
  */
 pro.updatePlayer = function(id, doc, callback){
-	var self = this
 	this.cacheService.updatePlayer(id, doc, function(e){
-		try{
-			callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:null})
-		}catch(e){
-			self.logService.onEventError("cache.cacheRemote.updatePlayer", {id:id, doc:doc}, e.stack)
-		}
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:null})
 	})
 }
 
@@ -81,13 +77,8 @@ pro.updatePlayer = function(id, doc, callback){
  * @param callback
  */
 pro.flushPlayer = function(id, doc, callback){
-	var self = this
 	this.cacheService.flushPlayer(id, doc, function(e){
-		try{
-			callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:null})
-		}catch(e){
-			self.logService.onEventError("cache.cacheRemote.flushPlayer", {id:id, doc:doc}, e.stack)
-		}
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:null})
 	})
 }
 
@@ -98,13 +89,8 @@ pro.flushPlayer = function(id, doc, callback){
  * @param callback
  */
 pro.timeoutPlayer = function(id, doc, callback){
-	var self = this
 	this.cacheService.timeoutPlayer(id, doc, function(e){
-		try{
-			callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:null})
-		}catch(e){
-			self.logService.onEventError("cache.cacheRemote.timeoutPlayer", {id:id, doc:doc}, e.stack)
-		}
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:null})
 	})
 }
 
@@ -114,13 +100,17 @@ pro.timeoutPlayer = function(id, doc, callback){
  * @param callback
  */
 pro.createAlliance = function(doc, callback){
-	var self = this
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.createAlliance", {
+			id:doc._id,
+			name:doc.basicInfo.name,
+			tag:doc.basicInfo.tag
+		})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
 	this.cacheService.createAlliance(doc, function(e, theDoc){
-		try{
-			callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:theDoc})
-		}catch(e){
-			self.logService.onEventError("cache.cacheRemote.createAlliance", {id:doc._id, doc:doc}, e.stack)
-		}
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:theDoc})
 	})
 }
 
@@ -130,13 +120,13 @@ pro.createAlliance = function(doc, callback){
  * @param callback
  */
 pro.directFindAlliance = function(id, callback){
-	var self = this
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.directFindAlliance", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
 	this.cacheService.directFindAlliance(id, function(e, doc){
-		try{
-			callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
-		}catch(e){
-			self.logService.onEventError("cache.cacheRemote.directFindAlliance", {id:id}, e.stack)
-		}
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }
 
@@ -147,17 +137,17 @@ pro.directFindAlliance = function(id, callback){
  * @param callback
  */
 pro.findAlliance = function(id, force, callback){
-	var self = this
 	if(arguments.length == 2){
 		callback = force
 		force = false
 	}
+	if(!force && toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.directFindAlliance", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
 	this.cacheService.findAlliance(id, force, function(e, doc){
-		try{
-			callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
-		}catch(e){
-			self.logService.onEventError("cache.cacheRemote.findAlliance", {id:id}, e.stack)
-		}
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }
 
@@ -168,13 +158,8 @@ pro.findAlliance = function(id, force, callback){
  * @param callback
  */
 pro.updateAlliance = function(id, doc, callback){
-	var self = this
 	this.cacheService.updateAlliance(id, doc, function(e){
-		try{
-			callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
-		}catch(e){
-			self.logService.onEventError("cache.cacheRemote.updateAlliance", {id:id, doc:doc}, e.stack)
-		}
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }
 
@@ -185,13 +170,8 @@ pro.updateAlliance = function(id, doc, callback){
  * @param callback
  */
 pro.flushAlliance = function(id, doc, callback){
-	var self = this
 	this.cacheService.flushAlliance(id, doc, function(e){
-		try{
-			callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
-		}catch(e){
-			self.logService.onEventError("cache.cacheRemote.flushAlliance", {id:id, doc:doc}, e.stack)
-		}
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }
 
@@ -202,12 +182,7 @@ pro.flushAlliance = function(id, doc, callback){
  * @param callback
  */
 pro.timeoutAlliance = function(id, doc, callback){
-	var self = this
 	this.cacheService.timeoutAlliance(id, doc, function(e){
-		try{
-			callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
-		}catch(e){
-			self.logService.onEventError("cache.cacheRemote.timeoutAlliance", {id:id, doc:doc}, e.stack)
-		}
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }
