@@ -17,6 +17,11 @@ var CacheRemote = function(app){
 	this.app = app
 	this.cacheService = app.get("cacheService")
 	this.logService = app.get("logService")
+	this.toobusyMaxLag = 140
+	this.toobusyInterval = 500
+
+	toobusy.maxLag(this.toobusyMaxLag)
+	toobusy.interval(this.toobusyInterval)
 }
 
 var pro = CacheRemote.prototype
