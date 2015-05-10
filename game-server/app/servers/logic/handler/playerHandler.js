@@ -1228,3 +1228,19 @@ pro.unlockPlayerSecondMarchQueue = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 初始化玩家数据
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.initPlayerData = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.unlockPlayerSecondMarchQueue", {playerId:session.uid, msg:msg})
+	var terrain = msg.terrain
+	this.playerApiService5.initPlayerDataAsync(session.uid, terrain).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}

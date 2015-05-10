@@ -249,19 +249,10 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		var dragon = dragons[dragonType]
 		if(dragon.star > 0) return Promise.reject(ErrorUtils.dragonEggAlreadyHatched(playerId, dragonType))
 		if(playerDoc.dragonHatchEvents.length > 0) return Promise.reject(ErrorUtils.dragonEggHatchEventExist(playerId, dragonType))
-		var hasDragonHatched = dragons.redDragon.star > 0 || dragons.blueDragon.star > 0 || dragons.greenDragon.star > 0
-		if(!hasDragonHatched){
-			dragon.star = 1
-			dragon.level = 1
-			dragon.hp = DataUtils.getDragonMaxHp(dragon)
-			dragon.hpRefreshTime = Date.now()
-			playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
-		}else{
-			var event = DataUtils.createPlayerHatchDragonEvent(playerDoc, dragon)
-			playerDoc.dragonHatchEvents.push(event)
-			playerData.push(["dragonHatchEvents." + playerDoc.dragonHatchEvents.indexOf(event), event])
-			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonHatchEvents", event.id, event.finishTime - Date.now()])
-		}
+		var event = DataUtils.createPlayerHatchDragonEvent(playerDoc, dragon)
+		playerDoc.dragonHatchEvents.push(event)
+		playerData.push(["dragonHatchEvents." + playerDoc.dragonHatchEvents.indexOf(event), event])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonHatchEvents", event.id, event.finishTime - Date.now()])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -997,7 +988,7 @@ pro.readMails = function(playerId, mailIds, callback){
 		callback(new Error("mailIds 不合法"))
 		return
 	}
-	for(var i = 0; i < mailIds.length; i ++){
+	for(var i = 0; i < mailIds.length; i++){
 		if(!ShortId.isValid(mailIds[i])){
 			callback(new Error("mailIds 不合法"))
 			return

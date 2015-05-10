@@ -574,3 +574,48 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 		})
 	})
 }
+
+/**
+ * 初始化玩家数据
+ * @param playerId
+ * @param terrain
+ * @param callback
+ */
+pro.initPlayerData = function(playerId, terrain, callback){
+	if(!_.contains(_.values(Consts.AllianceTerrain), terrain)){
+		callback(new Error("terrain 不合法"))
+		return
+	}
+
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(!_.isEqual(playerDoc.basicInfo.terrain, Consts.None)) return Promise.reject(ErrorUtils.playerDataAlreadyInited(playerId))
+		playerDoc.basicInfo.terrain = terrain
+		playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
+		var dragonType = Consts.TerrainDragonMap[terrain]
+		var dragon = playerDoc.dragons[dragonType]
+		dragon.star = 1
+		dragon.level = 1
+		dragon.hp = DataUtils.getDragonMaxHp(dragon)
+		dragon.hpRefreshTime = Date.now()
+		playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}

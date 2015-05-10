@@ -49,6 +49,20 @@
 //
 //
 //	describe("playerHandler", function(){
+//		it("initPlayerData 正常初始化", function(done){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("initPlayerData 玩家数据已经初始化", function(done){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, function(doc){
+//				doc.code.should.equal(Errors.playerDataAlreadyInited.code)
+//				done()
+//			})
+//		})
+//
 //		it("upgradeBuilding 建筑正在升级", function(done){
 //			Api.upgradeBuilding(1, false, function(doc){
 //				doc.code.should.equal(200)
@@ -504,11 +518,8 @@
 //
 //		it("hatchDragon 龙蛋早已成功孵化", function(done){
 //			Api.hatchDragon("redDragon", function(doc){
-//				doc.code.should.equal(200)
-//				Api.hatchDragon("redDragon", function(doc){
-//					doc.code.should.equal(Errors.dragonEggAlreadyHatched.code)
-//					done()
-//				})
+//				doc.code.should.equal(Errors.dragonEggAlreadyHatched.code)
+//				done()
 //			})
 //		})
 //

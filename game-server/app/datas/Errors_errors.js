@@ -933,3 +933,8 @@ errors["illegalRequest"] = {
 	code:686,
 	message:"非法的请求"
 }
+errors["playerDataAlreadyInited"] = {
+	key:"playerDataAlreadyInited",
+	code:687,
+	message:"玩家数据已经初始化"
+}

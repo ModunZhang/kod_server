@@ -1939,3 +1939,12 @@ Utils.illegalRequest = function(msg){
 	var config = Errors.illegalRequest
 	return CreateError(config, msg)
 }
+
+/**
+ * 玩家数据已经初始化
+ * @param playerId
+ */
+Utils.playerDataAlreadyInited = function(playerId){
+	var config = Errors.playerDataAlreadyInited
+	return CreateError(config, {playerId:playerId})
+}

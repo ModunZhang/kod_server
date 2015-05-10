@@ -133,7 +133,7 @@ var PlayerSchema = new Schema({
 		buildQueue:{type:Number, required:true, default:1},
 		recruitQueue:{type:Number, required:true, default:1},
 		marchQueue:{type:Number, required:true, default:1},
-		terrain:{type:String, required:true, default:Consts.AllianceTerrain.GrassLand}
+		terrain:{type:String, required:true, default:Consts.None}
 	},
 	resources:{
 		refreshTime:{type:Number, required:true, default:Date.now},
