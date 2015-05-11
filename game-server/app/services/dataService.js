@@ -319,3 +319,16 @@ pro.updatePlayerSession = function(playerDoc, keys, values, callback){
 	}
 	this.app.rpc.logic.logicRemote.updatePlayerSession.toServer(playerDoc.logicServerId, playerDoc._id, keys, values, callback)
 }
+
+/**
+ * 玩家是否在线
+ * @param playerDoc
+ * @param callback
+ */
+pro.isPlayerOnline = function(playerDoc, callback){
+	if(_.isEmpty(playerDoc.logicServerId)){
+		callback(null, false)
+		return
+	}
+	this.app.rpc.logic.logicRemote.isPlayerOnline.toServer(playerDoc.logicServerId, playerDoc._id, callback)
+}

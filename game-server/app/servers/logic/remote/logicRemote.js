@@ -98,3 +98,13 @@ pro.updatePlayerSession = function(playerId, keys, values, callback){
 		callback()
 	}
 }
+
+/**
+ * 玩家是否在线
+ * @param playerId
+ * @param callback
+ */
+pro.isPlayerOnline = function(playerId, callback){
+	var sessions = this.sessionService.service.uidMap[playerId]
+	callback(null, sessions.length > 0)
+}

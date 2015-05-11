@@ -42,7 +42,11 @@
 //			Api.loginPlayer(Config.deviceId, function(doc){
 //				doc.code.should.equal(200)
 //				m_user = doc.playerData
-//				done()
+//				Api.loginPlayer(Config.deviceId, function(doc){
+//					doc.code.should.equal(200)
+//					m_user = doc.playerData
+//					done()
+//				})
 //			})
 //		})
 //	})
@@ -74,14 +78,14 @@
 //		})
 //
 //		it("upgradeBuilding 建筑坑位不合法", function(done){
-//			Api.upgradeBuilding(7, false, function(doc){
+//			Api.upgradeBuilding(17, false, function(doc){
 //				doc.code.should.equal(Errors.buildingLocationNotLegal.code)
 //				done()
 //			})
 //		})
 //
 //		it("upgradeBuilding 建造数量已达建造上限", function(done){
-//			Api.upgradeBuilding(6, false, function(doc){
+//			Api.upgradeBuilding(9, false, function(doc){
 //				doc.code.should.equal(Errors.buildingCountReachUpLimit.code)
 //				done()
 //			})
@@ -144,7 +148,7 @@
 //		})
 //
 //		it("createHouse 主体建筑必须大于等于1级", function(done){
-//			Api.createHouse("dwelling", 5, 1, false, function(doc){
+//			Api.createHouse("dwelling", 9, 1, false, function(doc){
 //				doc.code.should.equal(Errors.hostBuildingLevelMustBiggerThanOne.code)
 //				done()
 //			})
@@ -182,14 +186,14 @@
 //		})
 //
 //		it("createHouse 正常普通创建", function(done){
-//			Api.createHouse("farmer", 3, 3, false, function(doc){
+//			Api.createHouse("farmer", 7, 1, false, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
 //		})
 //
 //		it("upgradeHouse 主体建筑必须大于等于1级", function(done){
-//			Api.upgradeHouse(5, 1, false, function(doc){
+//			Api.upgradeHouse(9, 1, false, function(doc){
 //				doc.code.should.equal(Errors.hostBuildingLevelMustBiggerThanOne.code)
 //				done()
 //			})
@@ -1684,7 +1688,7 @@
 //		})
 //
 //		it("getLevelupReward 正常领取", function(done){
-//			Api.sendChat("buildinglevel 1 5", function(doc){
+//			Api.sendChat("buildinglevel 1 6", function(doc){
 //				doc.code.should.equal(200)
 //				Api.getLevelupReward(1, function(doc){
 //					doc.code.should.equal(200)

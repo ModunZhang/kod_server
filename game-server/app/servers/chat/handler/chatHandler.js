@@ -347,6 +347,7 @@ pro.send = function(msg, session, next){
 			icon:session.get("icon"),
 			name:session.get("name"),
 			vip:session.get("vipExp"),
+			allianceId:session.get("allianceId"),
 			allianceTag:session.get("allianceTag"),
 			channel:channel,
 			text:text,

@@ -777,7 +777,7 @@
 //
 //		it("createHouse 加入联盟后", function(done){
 //			var playerDoc = null
-//			Api.createHouse("dwelling", 3, 3, false, function(doc){
+//			Api.createHouse("dwelling", 3, 2, false, function(doc){
 //				doc.code.should.equal(200)
 //				Api.loginPlayer(Config.deviceId5, function(doc){
 //					doc.code.should.equal(200)

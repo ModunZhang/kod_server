@@ -85,7 +85,10 @@ pro.playerLogin = function(session, deviceId, callback){
 	}).then(function(doc){
 		playerDoc = doc
 		if(!_.isEqual(playerDoc.serverId, self.app.get("cacheServerId"))) return Promise.reject(ErrorUtils.playerNotInCurrentServer(playerDoc._id, self.app.get("cacheServerId"), playerDoc.serverId))
-		if(!_.isEmpty(playerDoc.logicServerId)) return Promise.reject(ErrorUtils.playerAlreadyLogin(playerDoc._id))
+		if(_.isEmpty(playerDoc.logicServerId)) return Promise.resolve(false)
+		else return self.dataService.isPlayerOnlineAsync(playerDoc)
+	}).then(function(online){
+		if(online) return Promise.reject(ErrorUtils.playerAlreadyLogin(playerDoc._id))
 
 		var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
 		var todayDateString = LogicUtils.getTodayDateString()
@@ -172,10 +175,18 @@ pro.playerLogin = function(session, deviceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		self.logService.onEvent("logic.playerApiService.playerLogin", {playerId:session.uid, deviceId:deviceId, logicServerId:self.logicServerId})
+		self.logService.onEvent("logic.playerApiService.playerLogin", {
+			playerId:session.uid,
+			deviceId:deviceId,
+			logicServerId:self.logicServerId
+		})
 		callback(null, [playerDoc, allianceDoc, enemyAllianceDoc])
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService.playerLogin", {playerId:session.uid, deviceId:deviceId, logicServerId:self.logicServerId}, e.stack)
+		self.logService.onEventError("logic.playerApiService.playerLogin", {
+			playerId:session.uid,
+			deviceId:deviceId,
+			logicServerId:self.logicServerId
+		}, e.stack)
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
@@ -233,10 +244,18 @@ pro.playerLogout = function(session, reason, callback){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		self.app.set("membersCount", self.app.get("membersCount") - 1)
-		self.logService.onEvent("logic.playerApiService.playerLeave", {playerId:session.uid, logicServerId:self.logicServerId, reason:reason})
+		self.logService.onEvent("logic.playerApiService.playerLeave", {
+			playerId:session.uid,
+			logicServerId:self.logicServerId,
+			reason:reason
+		})
 		callback()
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService.playerLeave", {playerId:session.uid, logicServerId:self.logicServerId, reason:reason}, e.stack)
+		self.logService.onEventError("logic.playerApiService.playerLeave", {
+			playerId:session.uid,
+			logicServerId:self.logicServerId,
+			reason:reason
+		}, e.stack)
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
@@ -279,9 +298,9 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		building = playerDoc.buildings["location_" + location]
 		if(!_.isObject(building))return Promise.reject(ErrorUtils.buildingNotExist(playerId, location))
 		if(LogicUtils.hasBuildingEvents(playerDoc, location))return Promise.reject(ErrorUtils.buildingUpgradingNow(playerId, location))
-		if(building.level == 0 && !LogicUtils.isBuildingCanCreateAtLocation(playerDoc, location))return Promise.reject(ErrorUtils.buildingLocationNotLegal(playerId, location))
-		if(building.level == 0 && DataUtils.getPlayerFreeBuildingsCount(playerDoc) <= 0)return Promise.reject(ErrorUtils.buildingCountReachUpLimit(playerId, location))
-		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.level))return Promise.reject(ErrorUtils.buildingLevelReachUpLimit(playerId, location))
+		if(building.level == 0 && !LogicUtils.isBuildingCanCreateAtLocation(playerDoc, location)) return Promise.reject(ErrorUtils.buildingLocationNotLegal(playerId, location))
+		if(building.level == 0 && DataUtils.getPlayerFreeBuildingsCount(playerDoc) <= 0) return Promise.reject(ErrorUtils.buildingCountReachUpLimit(playerId, location))
+		if(building.level > 0 && DataUtils.isBuildingReachMaxLevel(building.level)) return Promise.reject(ErrorUtils.buildingLevelReachUpLimit(playerId, location))
 		if(!DataUtils.isPlayerBuildingUpgradeLegal(playerDoc, location)) return Promise.reject(ErrorUtils.buildingUpgradePreConditionNotMatch(playerId, location))
 		return Promise.resolve()
 	}).then(function(){
