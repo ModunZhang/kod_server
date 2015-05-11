@@ -879,3 +879,13 @@ pro.giveLoyaltyToAllianceMember = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 	})
 }
+
+pro.getAllianceInfo = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getAllianceInfo", {playerId:session.uid, msg:msg})
+	var allianceId = msg.allianceId
+	this.allianceApiService5.getAllianceInfoAsync(session.uid, allianceId).then(function(allianceData){
+		next(null, {code:200, allianceData:allianceData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}

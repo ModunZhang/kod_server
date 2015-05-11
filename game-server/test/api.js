@@ -1068,10 +1068,10 @@ Api.giveLoyaltyToAllianceMember = function(memberId, count, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.testApn = function(message, callback){
+Api.getAllianceInfo = function(allianceId, callback){
 	var info = {
-		message:message
+		allianceId:allianceId
 	}
-	var route = "logic.playerHandler.testApn"
+	var route = "logic.allianceHandler.getAllianceInfo"
 	pomelo.request(route, info, callback)
 }

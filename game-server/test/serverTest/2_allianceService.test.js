@@ -760,7 +760,7 @@
 //			var playerDoc = null
 //			Api.upgradeBuilding(1, true, function(doc){
 //				doc.code.should.equal(200)
-//				Api.upgradeBuilding(1, false, function(doc){
+//				Api.upgradeBuilding(2, false, function(doc){
 //					doc.code.should.equal(200)
 //					Api.loginPlayer(Config.deviceId5, function(doc){
 //						doc.code.should.equal(200)
@@ -2774,6 +2774,18 @@
 //		//		})
 //		//	})
 //		//})
+//
+//		it("getAllianceInfo 正常查看", function(done){
+//			var m_myAllianceData = null
+//			Api.getMyAllianceData(function(doc){
+//				doc.code.should.equal(200)
+//				m_myAllianceData = doc.allianceData
+//				Api.getAllianceInfo(m_myAllianceData._id, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
 //	})
 //
 //

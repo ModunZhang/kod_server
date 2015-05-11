@@ -5,6 +5,7 @@
  */
 
 var Promise = require("bluebird")
+var ShortId = require("shortId")
 var _ = require("underscore")
 
 var Utils = require("../utils/utils")
@@ -123,5 +124,50 @@ pro.giveLoyaltyToAllianceMember = function(playerId, memberId, count, callback){
 		Promise.all(funcs).then(function(){
 			callback(e)
 		})
+	})
+}
+
+pro.getAllianceInfo = function(playerId, allianceId, callback){
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		callback(new Error("allianceId 不合法"))
+		return
+	}
+
+	this.dataService.directFindAllianceAsync(allianceId).then(function(doc){
+		var allianceData = {
+			id:doc._id,
+			name:doc.basicInfo.name,
+			tag:doc.basicInfo.tag,
+			flag:doc.basicInfo.flag,
+			members:doc.members.length,
+			membersMax:DataUtils.getAllianceMemberMaxCount(doc),
+			power:doc.basicInfo.power,
+			language:doc.basicInfo.language,
+			kill:doc.basicInfo.kill,
+			joinType:doc.basicInfo.joinType,
+			terrain:doc.basicInfo.terrain,
+			desc:doc.desc,
+			memberList:(function(){
+				var members = []
+				_.each(doc.members, function(member){
+					var theMember = {
+						id:member.id,
+						name:member.name,
+						icon:member.icon,
+						levelExp:member.levelExp,
+						power:member.power,
+						title:member.title,
+						online:_.isBoolean(member.online) ? member.online : false,
+						lastLoginTime:member.lastLoginTime
+					}
+					members.push(theMember)
+				})
+				return members
+			})()
+		}
+
+		callback(null, allianceData)
+	}).catch(function(e){
+		callback(e)
 	})
 }
