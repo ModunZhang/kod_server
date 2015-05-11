@@ -761,15 +761,15 @@ pro.getNearedAllianceInfos = function(playerId, callback){
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceInfos = []
-
 	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.dataService.directFindAllianceAsync(playerDoc.allianceId)
+		return self.dataService.getAllianceModel().findByIdAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
 		var funcs = []
 		funcs.push(self.dataService.getAllianceModel().findAsync({
+			"_id":{$ne:allianceDoc._id},
 			"serverId":self.app.get("cacheServerId"),
 			"basicInfo.power":{$lt:allianceDoc.basicInfo.power}
 		}, null, {
@@ -777,6 +777,7 @@ pro.getNearedAllianceInfos = function(playerId, callback){
 			"limit":3
 		}))
 		funcs.push(self.dataService.getAllianceModel().findAsync({
+			"_id":{$ne:allianceDoc._id},
 			"serverId":self.app.get("cacheServerId"),
 			"basicInfo.power":{$gt:allianceDoc.basicInfo.power}
 		}, null, {
