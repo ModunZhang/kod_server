@@ -36,7 +36,7 @@ pro.getApnService = function(){
 	if(!_.isObject(this.apnService)){
 		var service = new apn.Connection({
 			production:false,
-			pfx:fs.readFileSync(path.resolve("./config/aps_development.p12")),
+			pfx:fs.readFileSync(path.resolve("./config/alan_aps_development.p12")),
 			passphrase:"aisinile",
 			cacheLength:"200"
 		})
