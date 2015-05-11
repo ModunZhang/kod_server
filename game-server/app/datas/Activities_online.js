@@ -6,7 +6,7 @@ module.exports = online
 online[1] = {
 	timePoint:1,
 	onLineMinutes:1,
-	rewards:"speedup:speedup_1:2"
+	rewards:"speedup:speedup_1:1"
 }
 online[2] = {
 	timePoint:2,
@@ -71,37 +71,37 @@ online[13] = {
 online[14] = {
 	timePoint:14,
 	onLineMinutes:60,
-	rewards:"special:chestKey_3:1"
+	rewards:"resource:gemClass_1:1"
 }
 online[15] = {
 	timePoint:15,
 	onLineMinutes:65,
-	rewards:"resource:gemClass_1:2"
+	rewards:"special:chestKey_3:1"
 }
 online[16] = {
 	timePoint:16,
 	onLineMinutes:70,
-	rewards:"speedup:warSpeedupClass_1:1"
+	rewards:"special:retreatTroop:1"
 }
 online[17] = {
 	timePoint:17,
 	onLineMinutes:75,
-	rewards:"special:retreatTroop:2"
+	rewards:"speedup:warSpeedupClass_1:1"
 }
 online[18] = {
 	timePoint:18,
 	onLineMinutes:80,
-	rewards:"special:stamina_1:1"
+	rewards:"resource:gemClass_1:1"
 }
 online[19] = {
 	timePoint:19,
 	onLineMinutes:85,
-	rewards:"resource:citizenClass_1:1"
+	rewards:"speedup:speedup_3:1"
 }
 online[20] = {
 	timePoint:20,
 	onLineMinutes:90,
-	rewards:"resource:coinClass_3:1"
+	rewards:"special:chestKey_4:1"
 }
 online[21] = {
 	timePoint:21,
@@ -126,10 +126,10 @@ online[24] = {
 online[25] = {
 	timePoint:25,
 	onLineMinutes:115,
-	rewards:"resource:gemClass_1:3"
+	rewards:"resource:coinClass_3:1"
 }
 online[26] = {
 	timePoint:26,
 	onLineMinutes:120,
-	rewards:"special:chestKey_4:1"
+	rewards:"resource:gemClass_1:3"
 }
