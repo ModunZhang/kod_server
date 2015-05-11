@@ -880,6 +880,12 @@ pro.giveLoyaltyToAllianceMember = function(msg, session, next){
 	})
 }
 
+/**
+ * 查看联盟信息
+ * @param msg
+ * @param session
+ * @param next
+ */
 pro.getAllianceInfo = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getAllianceInfo", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId

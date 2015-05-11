@@ -127,6 +127,12 @@ pro.giveLoyaltyToAllianceMember = function(playerId, memberId, count, callback){
 	})
 }
 
+/**
+ * 查看联盟信息
+ * @param playerId
+ * @param allianceId
+ * @param callback
+ */
 pro.getAllianceInfo = function(playerId, allianceId, callback){
 	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
 		callback(new Error("allianceId 不合法"))
