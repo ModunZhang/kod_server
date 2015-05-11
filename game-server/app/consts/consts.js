@@ -166,30 +166,26 @@ module.exports = {
 		EmpireRise:{
 			UpgradeBuilding:1,
 			RecruitSoldiers:2,
-			UpgradeTech:3,
-			PassSelinasTest:4,
-			MakeBuildingMaterials:5
+			PassSelinasTest:3,
+			MakeBuildingMaterials:4
 		},
 		Conqueror:{
 			JoinAllianceShrineEvent:1,
-			StrikeEnemyPlayersCity:2,
-			AttackEnemyPlayersCity:3,
-			OccupyVillage:4,
-			StartPve:5
+			AttackEnemyPlayersCity:2,
+			OccupyVillage:3,
+			StartPve:4
 		},
 		BrotherClub:{
 			DonateToAlliance:1,
 			BuyItemInAllianceShop:2,
 			HelpAllianceMemberSpeedUp:3,
-			SwitchVillageOccupant:4,
-			HelpAllianceMemberDefence:5
+			HelpAllianceMemberDefence:4
 		},
 		GrowUp:{
 			SpeedupBuildingBuild:1,
 			SpeedupSoldiersRecruit:2,
 			MakeDragonEquipment:3,
-			AdvancedGachaOnce:4,
-			BuyItemInShop:5
+			BuyItemInShop:4
 		}
 	},
 	GrowUpTaskTypes:{

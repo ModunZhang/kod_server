@@ -1201,7 +1201,6 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				}
 				attackPlayerData.push(["dragons." + attackDragon.type + ".hp", attackDragon.hp])
 				attackPlayerData.push(["dragons." + attackDragon.type + ".hpRefreshTime", attackDragon.hpRefreshTime])
-				TaskUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StrikeEnemyPlayersCity)
 				updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, attackPlayerDoc, attackPlayerDoc])
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 				updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, helpDefencePlayerDoc, helpDefencePlayerDoc])
@@ -1257,7 +1256,6 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					report = ReportUtils.createStrikeCityNoDefenceDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc)
 					LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
 					LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.reportForDefencePlayer)
-					TaskUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StrikeEnemyPlayersCity)
 					updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, attackPlayerDoc, attackPlayerDoc])
 					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 					updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, defencePlayerDoc, defencePlayerDoc])
@@ -1314,7 +1312,6 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					}
 					attackPlayerData.push(["dragons." + attackDragon.type + ".hp", attackDragon.hp])
 					attackPlayerData.push(["dragons." + attackDragon.type + ".hpRefreshTime", attackDragon.hpRefreshTime])
-					TaskUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StrikeEnemyPlayersCity)
 					updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, attackPlayerDoc, attackPlayerDoc])
 					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 					updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, defencePlayerDoc, defencePlayerDoc])

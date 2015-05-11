@@ -170,7 +170,6 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		var productionTech = playerDoc.productionTechs[event.name]
 		productionTech.level += 1
 		playerData.push(["productionTechs." + event.name + ".level", productionTech.level])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 		TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, event.name, productionTech.level)
 	}else if(_.isEqual(eventType, "militaryTechEvents")){
 		event = LogicUtils.getEventById(playerDoc.militaryTechEvents, eventId)
@@ -179,7 +178,6 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		var militaryTech = playerDoc.militaryTechs[event.name]
 		militaryTech.level += 1
 		playerData.push(["militaryTechs." + event.name + ".level", militaryTech.level])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 		TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, event.name, militaryTech.level)
 	}else if(_.isEqual(eventType, "soldierStarEvents")){
 		event = LogicUtils.getEventById(playerDoc.soldierStarEvents, eventId)

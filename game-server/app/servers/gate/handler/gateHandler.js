@@ -141,6 +141,7 @@ pro.queryEntry = function(msg, session, next){
 						"level": 1,
 						"location": 3
 					})
+					playerDoc.buildings.location_1.level = 5
 					playerDoc.resources.citizen = 90
 					playerDoc.soldiers.ranger = 100
 					playerDoc.soldiers.swordsman = 110

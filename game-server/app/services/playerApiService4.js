@@ -111,7 +111,6 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		if(finishNow){
 			tech.level += 1
 			playerData.push(["productionTechs." + techName + ".level", tech.level])
-			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 			TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
@@ -226,7 +225,6 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		if(finishNow){
 			tech.level += 1
 			playerData.push(["militaryTechs." + techName + ".level", tech.level])
-			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeTech)
 			TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
@@ -867,9 +865,6 @@ pro.gacha = function(playerId, type, callback){
 			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		}
 
-		if(_.isEqual(type, Consts.GachaType.Advanced)){
-			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.AdvancedGachaOnce)
-		}
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
