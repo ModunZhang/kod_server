@@ -27,11 +27,11 @@ module.exports = {
 		AllianceName:20,//联盟名称长度
 		AllianceTag:3,//联盟标签长度
 		AllianceFlag:50,//联盟Flag长度
-		MailTitle:16,//邮件标题长度
-		MailContent:300,//邮件正文长度
-		Chat:100,//聊天内容长度
-		AllianceNotice:200,//联盟公告长度
-		AllianceDesc:60,//联盟描述长度,
+		MailTitle:140,//邮件标题长度
+		MailContent:1000,//邮件正文长度
+		Chat:140,//聊天内容长度
+		AllianceNotice:600,//联盟公告长度
+		AllianceDesc:600,//联盟描述长度,
 		AllianceTitleName:20//联盟自定义职位名称长度
 	}
 }
