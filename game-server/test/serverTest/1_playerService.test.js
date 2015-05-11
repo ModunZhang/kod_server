@@ -1791,6 +1791,20 @@
 //			})
 //		})
 //
+//		it("getAllianceRankList 获取Power排行", function(done){
+//			Api.getAllianceRankList(null, Consts.RankTypes.Power, 0, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getAllianceRankList 获取Kill排行", function(done){
+//			Api.getAllianceRankList(null, Consts.RankTypes.Kill, 0, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		it("getServers", function(done){
 //			Api.getServers(function(doc){
 //				doc.code.should.equal(200)

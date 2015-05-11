@@ -34,10 +34,11 @@ app.configure("production|development", "gate", function(){
 		heartbeat:10,
 		useDict:true,
 		useProtobuf:false,
-		disconnectOnTimeout:true,
-		"max-connections":1000
+		disconnectOnTimeout:true
 	})
 
+	var filterService = new FilterService(app)
+	app.before(filterService.toobusyFilter())
 	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
@@ -52,14 +53,8 @@ app.configure("production|development", "logic", function(){
 		heartbeat:60,
 		useDict:true,
 		useProtobuf:false,
-		disconnectOnTimeout:true,
-		"max-connections":2500
+		disconnectOnTimeout:true
 	})
-	//app.set("proxyConfig", {
-	//	bufferMsg:false,
-	//	interval:20,
-	//	failMode:"failfast"
-	//})
 
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
@@ -71,21 +66,15 @@ app.configure("production|development", "logic", function(){
 })
 
 app.configure("production|development", "chat", function(){
-	//app.set("proxyConfig", {
-	//	bufferMsg:false,
-	//	interval:20,
-	//	failMode:"failfast"
-	//})
 	var filterService = new FilterService(app)
+	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
 })
 
 app.configure("production|development", "event", function(){
-	//app.set("proxyConfig", {
-	//	bufferMsg:false,
-	//	interval:20,
-	//	failMode:"failfast"
-	//})
+	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
+	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
+	app.set("mongoose", mongooseClient)
 })
 
 app.configure("production|development", "cache", function(){

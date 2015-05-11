@@ -254,7 +254,7 @@ pro.getPlayerRankList = function(playerId, rankType, fromRank, callback){
  * @param callback
  */
 pro.getAllianceRankList = function(playerId, allianceId, rankType, fromRank, callback){
-	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+	if(_.isString(allianceId) && !ShortId.isValid(allianceId)){
 		callback(new Error("allianceId 不合法"))
 		return
 	}

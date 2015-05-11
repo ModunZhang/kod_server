@@ -7,6 +7,7 @@
 var _ = require("underscore")
 var toobusy = require("toobusy-js")
 
+var ErrorUtils = require("../../../utils/errorUtils")
 var Consts = require("../../../consts/consts")
 
 module.exports = function(app){
