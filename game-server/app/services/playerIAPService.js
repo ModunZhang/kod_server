@@ -28,8 +28,8 @@ var PlayerIAPService = function(app){
 	this.dataService = app.get("dataService")
 	this.Billing = app.get("Billing")
 	this.GemAdd = app.get("GemAdd")
-	this.billingValidateHost = "sandbox.itunes.apple.com"
-	this.billingValidatePath = "/verifyReceipt"
+	this.billingValidateHost =  Consts.IapValidateUrl
+	this.billingValidatePath = Consts.IapValidatePath
 }
 
 module.exports = PlayerIAPService

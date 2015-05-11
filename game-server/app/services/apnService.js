@@ -22,6 +22,7 @@ var ApnService = function(app){
 	this.logService = app.get("logService")
 	this.serverId = app.getServerId()
 	this.serverType = app.getServerType()
+	this.apnPushCert = fs.readFileSync(path.resolve("./config/" + Consts.ApnPushCert))
 	this.apnService = null
 }
 module.exports = ApnService
@@ -36,7 +37,7 @@ pro.getApnService = function(){
 	if(!_.isObject(this.apnService)){
 		var service = new apn.Connection({
 			production:false,
-			pfx:fs.readFileSync(path.resolve("./config/alan_aps_development.p12")),
+			pfx:self.apnPushCert,
 			passphrase:"aisinile",
 			cacheLength:"200"
 		})
