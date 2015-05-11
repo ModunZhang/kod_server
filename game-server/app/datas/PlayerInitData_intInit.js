@@ -75,7 +75,7 @@ intInit["dragonMarchSpeed"] = {
 }
 intInit["playerLevelupRewardsHours"] = {
 	type:"playerLevelupRewardsHours",
-	value:48,
+	value:72,
 	desc:"新手冲级奖励时间"
 }
 intInit["switchProductionBuilding"] = {

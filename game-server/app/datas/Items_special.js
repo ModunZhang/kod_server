@@ -35,7 +35,7 @@ special["dragonChest_3"] = {
 }
 special["chest_1"] = {
 	name:"chest_1",
-	effect:"resource:woodClass_2:20:20,resource:stoneClass_2:20:20,resource:ironClass_2:20:20,resource:foodClass_2:20:20,resource:coinClass_2:15:10,speedup:speedup_1:30:5,speedup:speedup_2:20:5",
+	effect:"resource:woodClass_3:5:16,resource:stoneClass_3:5:16,resource:ironClass_3:5:16,resource:foodClass_3:5:16,resource:coinClass_3:2:10,speedup:speedup_2:10:16,speedup:speedup_3:5:5,resource:casinoTokenClass_1:1:5",
 	order:4,
 	isSell:false,
 	price:200,
@@ -45,7 +45,7 @@ special["chest_1"] = {
 }
 special["chest_2"] = {
 	name:"chest_2",
-	effect:"resource:woodClass_3:15:14,resource:stoneClass_3:15:14,resource:ironClass_3:15:14,resource:foodClass_3:15:14,resource:coinClass_3:5:10,resource:casinoTokenClass_1:2:16,speedup:speedup_3:8:16,speedup:speedup_4:5:2",
+	effect:"resource:woodClass_3:15:10,resource:stoneClass_3:15:10,resource:ironClass_3:15:10,resource:foodClass_3:15:10,resource:coinClass_3:5:19,resource:casinoTokenClass_2:1:20,speedup:speedup_3:10:20,speedup:speedup_4:5:1",
 	order:5,
 	isSell:false,
 	price:500,
@@ -55,7 +55,7 @@ special["chest_2"] = {
 }
 special["chest_3"] = {
 	name:"chest_3",
-	effect:"resource:woodClass_4:5:16,resource:stoneClass_4:5:16,resource:ironClass_4:5:16,resource:foodClass_4:5:16,resource:coinClass_4:5:10,resource:casinoTokenClass_1:2:10,speedup:speedup_4:8:10,speedup:speedup_5:5:6",
+	effect:"resource:woodClass_4:5:15,resource:stoneClass_4:5:15,resource:ironClass_4:5:15,resource:foodClass_4:5:15,resource:coinClass_4:5:15,resource:casinoTokenClass_3:1:10,speedup:speedup_4:10:10,speedup:speedup_5:5:5",
 	order:6,
 	isSell:false,
 	price:1000,
@@ -65,12 +65,12 @@ special["chest_3"] = {
 }
 special["chest_4"] = {
 	name:"chest_4",
-	effect:"resource:woodClass_6:5:14,resource:stoneClass_6:5:14,resource:ironClass_6:5:14,resource:foodClass_6:5:14,resource:coinClass_6:5:18,resource:casinoTokenClass_1:5:10,speedup:speedup_5:5:10,speedup:speedup_6:5:6",
+	effect:"resource:woodClass_5:5:15,resource:stoneClass_5:5:15,resource:ironClass_5:5:15,resource:foodClass_5:5:15,resource:coinClass_5:5:15,resource:casinoTokenClass_4:1:10,speedup:speedup_5:10:10,speedup:speedup_6:5:5",
 	order:7,
 	isSell:false,
-	price:2500,
-	sellPriceInAlliance:250000,
-	buyPriceInAlliance:250000,
+	price:2600,
+	sellPriceInAlliance:260000,
+	buyPriceInAlliance:260000,
 	isAdvancedItem:true
 }
 special["chestKey_2"] = {
@@ -78,9 +78,9 @@ special["chestKey_2"] = {
 	effect:"NONE",
 	order:8,
 	isSell:true,
-	price:20,
-	sellPriceInAlliance:2000,
-	buyPriceInAlliance:2000,
+	price:50,
+	sellPriceInAlliance:5000,
+	buyPriceInAlliance:5000,
 	isAdvancedItem:true
 }
 special["chestKey_3"] = {
@@ -88,9 +88,9 @@ special["chestKey_3"] = {
 	effect:"NONE",
 	order:9,
 	isSell:true,
-	price:40,
-	sellPriceInAlliance:4000,
-	buyPriceInAlliance:4000,
+	price:100,
+	sellPriceInAlliance:10000,
+	buyPriceInAlliance:10000,
 	isAdvancedItem:true
 }
 special["chestKey_4"] = {
@@ -98,9 +98,9 @@ special["chestKey_4"] = {
 	effect:"NONE",
 	order:10,
 	isSell:true,
-	price:100,
-	sellPriceInAlliance:10000,
-	buyPriceInAlliance:10000,
+	price:200,
+	sellPriceInAlliance:20000,
+	buyPriceInAlliance:20000,
 	isAdvancedItem:true
 }
 special["vipActive_1"] = {

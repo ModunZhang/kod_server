@@ -1277,6 +1277,10 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, dataService,
 			var itemConfig = Items.resource.casinoTokenClass_4
 			return Resource(playerDoc, playerData, itemConfig, "casinoToken")
 		},
+		casinoTokenClass_5:function(){
+			var itemConfig = Items.resource.casinoTokenClass_5
+			return Resource(playerDoc, playerData, itemConfig, "casinoToken")
+		},
 		gemClass_1:function(){
 			var itemConfig = Items.resource.gemClass_1
 			return Resource(playerDoc, playerData, itemConfig, "gem")

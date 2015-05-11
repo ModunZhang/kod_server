@@ -5,21 +5,21 @@ module.exports = stringInit
 
 stringInit["firstIAPRewards"] = {
 	type:"firstIAPRewards",
-	value:"resource:woodClass_3:1,resource:stoneClass_3:1,resource:ironClass_3:1,resource:foodClass_3:1,resource:coinClass_2:1,resource:casinoTokenClass_1:1,speedup:speedup_3:2,speedup:speedup_4:1"
+	value:"resource:casinoTokenClass_2:1,special:vipActive_3:1,special:stamina_2:1,special:moveTheCity:1,special:dragonExp_1:1,special:heroBlood_1:1"
 }
 stringInit["empireRiseDailyTaskRewards"] = {
 	type:"empireRiseDailyTaskRewards",
-	value:"resource:woodClass_3:1,resource:stoneClass_3:1,resource:ironClass_3:1,resource:foodClass_3:1,resource:coinClass_2:1,resource:casinoTokenClass_1:1,speedup:speedup_3:2,speedup:speedup_4:1"
+	value:"special:chest_1:1"
 }
 stringInit["conquerorDailyTaskRewards"] = {
 	type:"conquerorDailyTaskRewards",
-	value:"resource:woodClass_3:1,resource:stoneClass_3:1,resource:ironClass_3:1,resource:foodClass_3:1,resource:coinClass_2:1,resource:casinoTokenClass_1:1,speedup:speedup_3:2,speedup:speedup_4:1"
+	value:"special:dragonChest_1:1"
 }
 stringInit["brotherClubDailyTaskRewards"] = {
 	type:"brotherClubDailyTaskRewards",
-	value:"resource:woodClass_3:1,resource:stoneClass_3:1,resource:ironClass_3:1,resource:foodClass_3:1,resource:coinClass_2:1,resource:casinoTokenClass_1:1,speedup:speedup_3:2,speedup:speedup_4:1"
+	value:"speedup:speedup_3:2"
 }
 stringInit["growUpDailyTaskRewards"] = {
 	type:"growUpDailyTaskRewards",
-	value:"resource:woodClass_3:1,resource:stoneClass_3:1,resource:ironClass_3:1,resource:foodClass_3:1,resource:coinClass_2:1,resource:casinoTokenClass_1:1,speedup:speedup_3:2,speedup:speedup_4:1"
+	value:"buff:quarterMaster_1:1"
 }
