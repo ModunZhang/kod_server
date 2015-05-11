@@ -5,7 +5,7 @@
  */
 
 var Promise = require("bluebird")
-var ShortId = require("shortId")
+var ShortId = require("shortid")
 var _ = require("underscore")
 
 var Utils = require("../utils/utils")
