@@ -1173,9 +1173,10 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					return Promise.resolve()
 				})
 			}else{
+				DataUtils.refreshPlayerResources(defencePlayerDoc)
+				defencePlayerData.push(["resources", defencePlayerDoc.resources])
 				return Promise.resolve()
 			}
-
 		}).then(function(){
 			var attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
 			DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
