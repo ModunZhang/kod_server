@@ -907,6 +907,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
 		var finalPercent = basePercent * (1 + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent)
 		finalPercent = finalPercent > 0.9 ? 0.9 : finalPercent < 0.1 ? 0.1 : finalPercent
+		console.log(basePercent, buildingBuffAddPercent, itemBuffAddPercent, vipBuffAddPercent, finalPercent, resourceName, DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName), "11111111111111111111111")
 		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
 	}
 
