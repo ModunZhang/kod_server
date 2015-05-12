@@ -30,15 +30,16 @@ var pro = CacheRemote.prototype
 /**
  * 按Id直接查询玩家,不做请求排序
  * @param id
+ * @param keys
  * @param callback
  */
-pro.directFindPlayer = function(id, callback){
+pro.directFindPlayer = function(id, keys, callback){
 	if(toobusy()){
 		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.directFindPlayer", {id:id})
 		callback(null, {code:e.code, data:e.message})
 		return
 	}
-	this.cacheService.directFindPlayer(id, function(e, doc){
+	this.cacheService.directFindPlayer(id, keys, function(e, doc){
 		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }
@@ -46,20 +47,17 @@ pro.directFindPlayer = function(id, callback){
 /**
  * 按Id查询玩家
  * @param id
+ * @param keys
  * @param force
  * @param callback
  */
-pro.findPlayer = function(id, force, callback){
-	if(arguments.length == 2){
-		callback = force
-		force = false
-	}
+pro.findPlayer = function(id, keys, force, callback){
 	if(!force && toobusy()){
 		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.findPlayer", {id:id})
 		callback(null, {code:e.code, data:e.message})
 		return
 	}
-	this.cacheService.findPlayer(id, force, function(e, doc){
+	this.cacheService.findPlayer(id, keys, force, function(e, doc){
 		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }
@@ -123,15 +121,16 @@ pro.createAlliance = function(doc, callback){
 /**
  * 按Id直接查询联盟,不做请求排序
  * @param id
+ * @param keys
  * @param callback
  */
-pro.directFindAlliance = function(id, callback){
+pro.directFindAlliance = function(id, keys, callback){
 	if(toobusy()){
 		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.directFindAlliance", {id:id})
 		callback(null, {code:e.code, data:e.message})
 		return
 	}
-	this.cacheService.directFindAlliance(id, function(e, doc){
+	this.cacheService.directFindAlliance(id, keys, function(e, doc){
 		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }
@@ -139,20 +138,17 @@ pro.directFindAlliance = function(id, callback){
 /**
  * 按Id查询联盟
  * @param id
+ * @param keys
  * @param force
  * @param callback
  */
-pro.findAlliance = function(id, force, callback){
-	if(arguments.length == 2){
-		callback = force
-		force = false
-	}
+pro.findAlliance = function(id, keys, force, callback){
 	if(!force && toobusy()){
 		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.directFindAlliance", {id:id})
 		callback(null, {code:e.code, data:e.message})
 		return
 	}
-	this.cacheService.findAlliance(id, force, function(e, doc){
+	this.cacheService.findAlliance(id, keys, force, function(e, doc){
 		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }

@@ -43,10 +43,11 @@ pro.getAllianceModel = function(){
 /**
  * 按Id直接查询玩家,不做请求排序
  * @param id
+ * @param keys
  * @param callback
  */
-pro.directFindPlayer = function(id, callback){
-	this.app.rpc.cache.cacheRemote.directFindPlayer.toServer(this.cacheServerId, id, function(e, resp){
+pro.directFindPlayer = function(id, keys, callback){
+	this.app.rpc.cache.cacheRemote.directFindPlayer.toServer(this.cacheServerId, id, keys, function(e, resp){
 		if(_.isObject(e)) callback(e)
 		else if(resp.code == 200) callback(null, resp.data)
 		else callback(ErrorUtils.createError(resp.code, resp.data, false))
@@ -56,15 +57,12 @@ pro.directFindPlayer = function(id, callback){
 /**
  * 按Id查询玩家
  * @param id
+ * @param keys
  * @param force
  * @param callback
  */
-pro.findPlayer = function(id, force, callback){
-	if(arguments.length == 2){
-		callback = force
-		force = false
-	}
-	this.app.rpc.cache.cacheRemote.findPlayer.toServer(this.cacheServerId, id, force, function(e, resp){
+pro.findPlayer = function(id, keys, force, callback){
+	this.app.rpc.cache.cacheRemote.findPlayer.toServer(this.cacheServerId, id, keys, force, function(e, resp){
 		if(_.isObject(e)) callback(e)
 		else if(resp.code == 200) callback(null, resp.data)
 		else callback(ErrorUtils.createError(resp.code, resp.data, false))
@@ -129,10 +127,11 @@ pro.createAlliance = function(alliance, callback){
 /**
  * 按Id直接查询联盟,不做请求排序
  * @param id
+ * @param keys
  * @param callback
  */
-pro.directFindAlliance = function(id, callback){
-	this.app.rpc.cache.cacheRemote.directFindAlliance.toServer(this.cacheServerId, id, function(e, resp){
+pro.directFindAlliance = function(id, keys, callback){
+	this.app.rpc.cache.cacheRemote.directFindAlliance.toServer(this.cacheServerId, id, keys, function(e, resp){
 		if(_.isObject(e)) callback(e)
 		else if(resp.code == 200) callback(null, resp.data)
 		else callback(ErrorUtils.createError(resp.code, resp.data, false))
@@ -142,15 +141,12 @@ pro.directFindAlliance = function(id, callback){
 /**
  * 按Id查询联盟
  * @param id
+ * @param keys
  * @param force
  * @param callback
  */
-pro.findAlliance = function(id, force, callback){
-	if(arguments.length == 2){
-		callback = force
-		force = false
-	}
-	this.app.rpc.cache.cacheRemote.findAlliance.toServer(this.cacheServerId, id, force, function(e, resp){
+pro.findAlliance = function(id, keys, force, callback){
+	this.app.rpc.cache.cacheRemote.findAlliance.toServer(this.cacheServerId, id, keys, force, function(e, resp){
 		if(_.isObject(e)) callback(e)
 		else if(resp.code == 200) callback(null, resp.data)
 		else callback(ErrorUtils.createError(resp.code, resp.data, false))

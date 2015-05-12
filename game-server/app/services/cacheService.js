@@ -278,9 +278,10 @@ pro.createAlliance = function(allianceData, callback){
 /**
  * 按Id直接查询玩家,不做请求排序
  * @param id
+ * @param keys
  * @param callback
  */
-pro.directFindPlayer = function(id, callback){
+pro.directFindPlayer = function(id, keys, callback){
 	var self = this
 	if(_.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
 		callback(ErrorUtils.serverTooBusy("cache.cacheService.directFindPlayer", {id:id}))
@@ -320,9 +321,10 @@ pro.directFindPlayer = function(id, callback){
 /**
  * 按Id直接查询联盟,不做请求排序
  * @param id
+ * @param keys
  * @param callback
  */
-pro.directFindAlliance = function(id, callback){
+pro.directFindAlliance = function(id, keys, callback){
 	var self = this
 	if(_.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
 		callback(ErrorUtils.serverTooBusy("cache.cacheService.directFindAlliance", {id:id}))
@@ -362,10 +364,11 @@ pro.directFindAlliance = function(id, callback){
 /**
  * 按Id查询玩家
  * @param id
+ * @param keys
  * @param force
  * @param callback
  */
-pro.findPlayer = function(id, force, callback){
+pro.findPlayer = function(id, keys, force, callback){
 	var self = this
 	if(!force && _.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
 		callback(ErrorUtils.serverTooBusy("cache.cacheService.findPlayer", {id:id}))
@@ -406,10 +409,11 @@ pro.findPlayer = function(id, force, callback){
 /**
  * 按Id查询联盟
  * @param id
+ * @param keys
  * @param force
  * @param callback
  */
-pro.findAlliance = function(id, force, callback){
+pro.findAlliance = function(id, keys, force, callback){
 	var self = this
 	if(!force && _.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
 		callback(ErrorUtils.serverTooBusy("cache.cacheService.findAlliance", {id:id}))
