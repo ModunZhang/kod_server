@@ -2568,10 +2568,10 @@ Utils.isAllianceShrineStageLocked = function(allianceDoc, stageName){
  * @param fightStar
  * @returns {*}
  */
-Utils.getAllianceShrineStageFightHoner = function(stageName, fightStar){
+Utils.getAllianceShrineStageFightHonour = function(stageName, fightStar){
 	var config = AllianceInitData.shrineStage[stageName]
-	var honerName = "star" + fightStar + "Honour"
-	return config[honerName]
+	var honourName = "star" + fightStar + "Honour"
+	return config[honourName]
 }
 
 /**
@@ -4005,4 +4005,22 @@ Utils.isValidDragonSkillName = function(skillName){
 		if(_.isEqual(config["skill_" + i], skillName)) return true
 	}
 	return false
+}
+
+/**
+ * 获取联盟战第一名宝石奖励
+ * @param serverLevel
+ * @returns {*}
+ */
+Utils.getAllianceFightKillFirstGemCount = function(serverLevel){
+	return AllianceInitData.fightRewards[serverLevel].gem
+}
+
+/**
+ * 获取联盟战基础荣耀值奖励
+ * @param serverLevel
+ * @returns {*}
+ */
+Utils.getAllianceFightInitHonourCount = function(serverLevel){
+	return AllianceInitData.fightRewards[serverLevel].honour
 }

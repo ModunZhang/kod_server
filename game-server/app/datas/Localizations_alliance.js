@@ -103,3 +103,13 @@ alliance["giveLoyaltyToAllianceMemberContent"] = {
 	cn:"%s联盟向你发放了%d点忠诚值奖励，请再接再厉！",
 	en:"这是英文:%s联盟向你发放了%d点忠诚值奖励，请再接再厉！"
 }
+alliance["AllianceFightKillFirstRewardTitle"] = {
+	key:"AllianceFightKillFirstRewardTitle",
+	cn:"联盟战最高击杀奖励",
+	en:"这是英文:联盟战最高击杀奖励"
+}
+alliance["AllianceFightKillFirstRewardContent"] = {
+	key:"AllianceFightKillFirstRewardContent",
+	cn:"由于您在联盟战中击杀数第一,系统奖励您%d金龙币",
+	en:"这是英文:由于您在联盟战中击杀数第一,系统奖励您%d金龙币"
+}

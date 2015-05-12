@@ -1742,7 +1742,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 		allianceDoc.shrineReports.push(shrineReport)
 		allianceData.push(["shrineReports." + allianceDoc.shrineReports.indexOf(shrineReport), shrineReport])
 		if(fightStar > 0){
-			var honour = DataUtils.getAllianceShrineStageFightHoner(event.stageName, fightStar)
+			var honour = DataUtils.getAllianceShrineStageFightHonour(event.stageName, fightStar)
 			allianceDoc.basicInfo.honour += honour
 			allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 		}
@@ -2075,6 +2075,24 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	var playerIds = {}
 	var attackDragon = null
 
+	var killMaxPlayerId = (function(){
+		var maxPlayerKill = null
+		var playerKills = attackAllianceData.allianceFight.attackPlayerKills.concat(attackAllianceData.allianceFight.defencePlayerKills)
+		_.each(playerKills, function(playerKill){
+			if(maxKill == null || maxPlayerKill < playerKill.kill) maxPlayerKill = playerKill
+		})
+		return _.isObject(maxPlayerKill) ? maxPlayerKill.id : null
+	})()
+	var killMaxPlayerGemGet = (function(){
+		if(!_.isString(killMaxPlayerId)) return 0
+		var serverConfig = self.app.getServerById(self.app.get("cacheServerId"))
+		return DataUtils.getAllianceFightKillFirstGemCount(serverConfig.level)
+	})()
+	var allianceFightInitHonour = (function(){
+		var serverConfig = self.app.getServerById(self.app.get("cacheServerId"))
+		return DataUtils.getAllianceFightInitHonourCount(serverConfig.level)
+	})()
+
 	var pushPlayerIds = function(attackAllianceDoc, attackAllianceData, defenceAllianceDoc, defenceAllianceData, playerIds){
 		var pushEvent = function(playerId, eventType, eventData){
 			if(!_.isObject(playerIds[playerId])) playerIds[playerId] = []
@@ -2273,7 +2291,39 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		funcs.push(releasePlayerDataAsync(playerId))
 	})
 
-	Promise.all(funcs).then(function(){
+	var promise = new Promise(function(resolve){
+		if(_.isString(killMaxPlayerId)){
+			var memberDoc = null
+			var memberData = []
+			self.dateService.findPlayerAsync(killMaxPlayerId, true).then(function(doc){
+				memberDoc = doc
+				memberDoc.resources.gem += killMaxPlayerGemGet
+				memberData.push(["resources.gem", memberDoc.resources.gem])
+				var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardTitle")
+				var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardContent")
+				LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [], contentKey, [killMaxPlayerGemGet])
+				return self.dataService.updatePlayerAsync(memberDoc, memberDoc)
+			}).then(function(){
+				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
+			}).then(function(){
+				resolve()
+			}).catch(function(e){
+				self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.allianceFightKillFirstGemGet", {
+					playerId:killMaxPlayerId,
+					gemGet:killMaxPlayerGemGet
+				}, e.stack)
+				if(_.isObject(memberDoc)){
+					return self.dataService.updatePlayerAsync(memberDoc, null).then(function(){
+						resolve()
+					})
+				}else resolve()
+			})
+		}else resolve()
+	})
+
+	promise.then(function(){
+		return Promise.all(funcs)
+	}).then(function(){
 		var attackAllianceKill = attackAllianceDoc.allianceFight.attackAllianceCountData.kill
 		var defenceAllianceKill = attackAllianceDoc.allianceFight.defenceAllianceCountData.kill
 		var allianceFightReport = {
@@ -2288,6 +2338,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				tag:attackAllianceDoc.basicInfo.tag,
 				flag:attackAllianceDoc.basicInfo.flag,
 				kill:attackAllianceKill,
+				honour:allianceFightInitHonour,
 				routCount:attackAllianceDoc.allianceFight.attackAllianceCountData.routCount,
 				strikeCount:attackAllianceDoc.allianceFight.attackAllianceCountData.strikeCount,
 				strikeSuccessCount:attackAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount,
@@ -2299,6 +2350,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				tag:defenceAllianceDoc.basicInfo.tag,
 				flag:defenceAllianceDoc.basicInfo.flag,
 				kill:defenceAllianceKill,
+				honour:allianceFightInitHonour,
 				routCount:attackAllianceDoc.allianceFight.defenceAllianceCountData.routCount,
 				strikeCount:attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount,
 				strikeSuccessCount:attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount,
@@ -2314,6 +2366,8 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		attackAllianceData.push(["countInfo", attackAllianceDoc.countInfo])
 		defenceAllianceData.push(["countInfo", defenceAllianceDoc.countInfo])
 
+		attackAllianceDoc.basicInfo.honour += allianceFightInitHonour
+		attackAllianceData.push(["basicInfo.honour", attackAllianceDoc.basicInfo.honour])
 		attackAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
 		attackAllianceData.push(["basicInfo.status", attackAllianceDoc.basicInfo.status])
 		attackAllianceDoc.basicInfo.statusStartTime = now
@@ -2330,6 +2384,8 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			}
 		})
 
+		defenceAllianceDoc.basicInfo.honour += allianceFightInitHonour
+		defenceAllianceData.push(["basicInfo.honour", defenceAllianceDoc.basicInfo.honour])
 		defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
 		defenceAllianceData.push(["basicInfo.status", defenceAllianceDoc.basicInfo.status])
 		defenceAllianceDoc.basicInfo.statusStartTime = now
