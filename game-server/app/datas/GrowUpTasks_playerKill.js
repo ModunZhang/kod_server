@@ -6,7 +6,7 @@ module.exports = playerKill
 playerKill[0] = {
 	id:0,
 	index:1,
-	kill:200,
+	kill:1000,
 	wood:2000,
 	stone:2000,
 	iron:2000,
@@ -18,7 +18,7 @@ playerKill[0] = {
 playerKill[1] = {
 	id:1,
 	index:2,
-	kill:500,
+	kill:2000,
 	wood:5000,
 	stone:5000,
 	iron:5000,
@@ -30,7 +30,7 @@ playerKill[1] = {
 playerKill[2] = {
 	id:2,
 	index:3,
-	kill:1000,
+	kill:5000,
 	wood:10000,
 	stone:10000,
 	iron:10000,
@@ -42,7 +42,7 @@ playerKill[2] = {
 playerKill[3] = {
 	id:3,
 	index:4,
-	kill:2000,
+	kill:10000,
 	wood:25000,
 	stone:25000,
 	iron:25000,
@@ -54,7 +54,7 @@ playerKill[3] = {
 playerKill[4] = {
 	id:4,
 	index:5,
-	kill:5000,
+	kill:20000,
 	wood:50000,
 	stone:50000,
 	iron:50000,
@@ -66,7 +66,7 @@ playerKill[4] = {
 playerKill[5] = {
 	id:5,
 	index:6,
-	kill:10000,
+	kill:50000,
 	wood:100000,
 	stone:100000,
 	iron:100000,
@@ -78,7 +78,7 @@ playerKill[5] = {
 playerKill[6] = {
 	id:6,
 	index:7,
-	kill:20000,
+	kill:100000,
 	wood:200000,
 	stone:200000,
 	iron:200000,
@@ -90,7 +90,7 @@ playerKill[6] = {
 playerKill[7] = {
 	id:7,
 	index:8,
-	kill:50000,
+	kill:200000,
 	wood:300000,
 	stone:300000,
 	iron:300000,
@@ -102,7 +102,7 @@ playerKill[7] = {
 playerKill[8] = {
 	id:8,
 	index:9,
-	kill:100000,
+	kill:500000,
 	wood:400000,
 	stone:400000,
 	iron:400000,
@@ -114,7 +114,7 @@ playerKill[8] = {
 playerKill[9] = {
 	id:9,
 	index:10,
-	kill:200000,
+	kill:1000000,
 	wood:500000,
 	stone:500000,
 	iron:500000,
@@ -126,7 +126,7 @@ playerKill[9] = {
 playerKill[10] = {
 	id:10,
 	index:11,
-	kill:500000,
+	kill:2000000,
 	wood:600000,
 	stone:600000,
 	iron:600000,
@@ -138,7 +138,7 @@ playerKill[10] = {
 playerKill[11] = {
 	id:11,
 	index:12,
-	kill:1000000,
+	kill:5000000,
 	wood:700000,
 	stone:700000,
 	iron:700000,
@@ -150,7 +150,7 @@ playerKill[11] = {
 playerKill[12] = {
 	id:12,
 	index:13,
-	kill:2000000,
+	kill:10000000,
 	wood:800000,
 	stone:800000,
 	iron:800000,
@@ -162,7 +162,7 @@ playerKill[12] = {
 playerKill[13] = {
 	id:13,
 	index:14,
-	kill:5000000,
+	kill:20000000,
 	wood:900000,
 	stone:900000,
 	iron:900000,
