@@ -182,11 +182,6 @@ pro.playerLogin = function(session, deviceId, callback){
 		})
 		callback(null, [playerDoc, allianceDoc, enemyAllianceDoc])
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService.playerLogin", {
-			playerId:session.uid,
-			deviceId:deviceId,
-			logicServerId:self.logicServerId
-		}, e.stack)
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
