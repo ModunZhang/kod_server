@@ -22,6 +22,7 @@ var PlayerApiService3 = function(app){
 	this.pushService = app.get("pushService")
 	this.dataService = app.get("dataService")
 	this.Deal = app.get("Deal")
+	this.GemUse = app.get("GemUse")
 }
 module.exports = PlayerApiService3
 var pro = PlayerApiService3.prototype
