@@ -51,5 +51,5 @@ levelup[9] = {
 levelup[10] = {
 	index:10,
 	level:15,
-	rewards:"resource:casinoTokenClass_2,resource:gemClass_2:1"
+	rewards:"resource:casinoTokenClass_2:1,resource:gemClass_2:1"
 }
