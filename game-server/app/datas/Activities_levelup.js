@@ -16,17 +16,17 @@ levelup[2] = {
 levelup[3] = {
 	index:3,
 	level:8,
-	rewards:"coinClass_4:1,resource:gemClass_1:6"
+	rewards:"resource:coinClass_4:1,resource:gemClass_1:6"
 }
 levelup[4] = {
 	index:4,
 	level:9,
-	rewards:"stamina_1:1,resource:gemClass_1:8"
+	rewards:"special:stamina_1:1,resource:gemClass_1:8"
 }
 levelup[5] = {
 	index:5,
 	level:10,
-	rewards:"warSpeedupClass_2:1,resource:gemClass_2:1"
+	rewards:"speedup:warSpeedupClass_2:1,resource:gemClass_2:1"
 }
 levelup[6] = {
 	index:6,
@@ -36,20 +36,20 @@ levelup[6] = {
 levelup[7] = {
 	index:7,
 	level:12,
-	rewards:"casinoTokenClass_1:1,resource:gemClass_2:1"
+	rewards:"resource:casinoTokenClass_1:1,resource:gemClass_2:1"
 }
 levelup[8] = {
 	index:8,
 	level:13,
-	rewards:"dragonExp_1:1,resource:gemClass_2:1"
+	rewards:"special:dragonExp_1:1,resource:gemClass_2:1"
 }
 levelup[9] = {
 	index:9,
 	level:14,
-	rewards:"heroBlood_1:1,resource:gemClass_2:1"
+	rewards:"special:heroBlood_1:1,resource:gemClass_2:1"
 }
 levelup[10] = {
 	index:10,
 	level:15,
-	rewards:"casinoTokenClass_2,resource:gemClass_2:1"
+	rewards:"resource:casinoTokenClass_2,resource:gemClass_2:1"
 }

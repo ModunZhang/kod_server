@@ -19,6 +19,13 @@ module.exports = {
 		On:"on",
 		ReadyShutdown:"readyShutdown"
 	},
+	ServerType:{
+		Bronze:"bronze",
+		Silver:"silver",
+		Gold:"gold",
+		Platinum:"platinum",
+		Diamond:"diamond"
+	},
 	ChannelType:{
 		Global:"global",
 		Alliance:"alliance"
