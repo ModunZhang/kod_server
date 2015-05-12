@@ -2517,6 +2517,8 @@ Utils.getAllianceShrineStageResultDatas = function(terrain, stageName, isWin, fi
 				})
 			})
 		}
+		var killRewards = self.getRewardsByKillScoreAndTerrain(playerData.kill, terrain)
+		LogicUtils.mergeRewards(playerData.rewards, killRewards)
 		playerRewards[playerId] = playerData.rewards
 	})
 
