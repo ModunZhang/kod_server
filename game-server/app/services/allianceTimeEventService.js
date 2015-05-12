@@ -2295,7 +2295,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		if(_.isString(killMaxPlayerId)){
 			var memberDoc = null
 			var memberData = []
-			self.dateService.findPlayerAsync(killMaxPlayerId, true).then(function(doc){
+			self.dataService.findPlayerAsync(killMaxPlayerId, true).then(function(doc){
 				memberDoc = doc
 				memberDoc.resources.gem += killMaxPlayerGemGet
 				memberData.push(["resources.gem", memberDoc.resources.gem])
