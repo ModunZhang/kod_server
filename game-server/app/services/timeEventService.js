@@ -9,6 +9,7 @@ var Promise = require("bluebird")
 
 var LogicUtils = require("../utils/logicUtils")
 var DataUtils = require("../utils/dataUtils")
+var Utils = require("../utils/utils")
 var Consts = require("../consts/consts")
 
 
@@ -427,21 +428,25 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 	var playerTimeEventService = this.app.get("playerTimeEventService")
 	var now = Date.now()
 	var funcs = []
-	_.each(playerDoc.buildingEvents, function(event){
+
+	var buildingEvents = [].concat(playerDoc.buildingEvents)
+	_.each(buildingEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "buildingEvents", event.id)
 		}else{
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "buildingEvents", event.id, event.finishTime - now))
 		}
 	})
-	_.each(playerDoc.houseEvents, function(event){
+	var houseEvents = [].concat(playerDoc.houseEvents)
+	_.each(houseEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "houseEvents", event.id)
 		}else{
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "houseEvents", event.id, event.finishTime - now))
 		}
 	})
-	_.each(playerDoc.materialEvents, function(event){
+	var materialEvents = [].concat(playerDoc.materialEvents)
+	_.each(materialEvents, function(event){
 		if(event.finishTime > 0){
 			if(LogicUtils.willFinished(event.finishTime)){
 				playerTimeEventService.onPlayerEvent(playerDoc, [], "materialEvents", event.id)
@@ -450,35 +455,40 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 			}
 		}
 	})
-	_.each(playerDoc.soldierEvents, function(event){
+	var soldierEvents = [].concat(playerDoc.soldierEvents)
+	_.each(soldierEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "soldierEvents", event.id)
 		}else{
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "soldierEvents", event.id, event.finishTime - now))
 		}
 	})
-	_.each(playerDoc.dragonEquipmentEvents, function(event){
+	var dragonEquipmentEvents = [].concat(playerDoc.dragonEquipmentEvents)
+	_.each(dragonEquipmentEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "dragonEquipmentEvents", event.id)
 		}else{
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dragonEquipmentEvents", event.id, event.finishTime - now))
 		}
 	})
-	_.each(playerDoc.treatSoldierEvents, function(event){
+	var treatSoldierEvents = [].concat(playerDoc.treatSoldierEvents)
+	_.each(treatSoldierEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "treatSoldierEvents", event.id)
 		}else{
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "treatSoldierEvents", event.id, event.finishTime - now))
 		}
 	})
-	_.each(playerDoc.dragonHatchEvents, function(event){
+	var dragonHatchEvents = [].concat(playerDoc.dragonHatchEvents)
+	_.each(dragonHatchEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "dragonHatchEvents", event.id)
 		}else{
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dragonHatchEvents", event.id, event.finishTime - now))
 		}
 	})
-	_.each(playerDoc.dragonDeathEvents, function(event){
+	var dragonDeathEvents = [].concat(playerDoc.dragonDeathEvents)
+	_.each(dragonDeathEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			LogicUtils.removeItemInArray(playerDoc.dragonDeathEvents, event)
 			var dragon = playerDoc.dragons[event.dragonType]
@@ -490,6 +500,7 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dragonDeathEvents", event.id, event.finishTime - now))
 		}
 	})
+	var productionTechEvents = [].concat(playerDoc.productionTechEvents)
 	_.each(playerDoc.productionTechEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "productionTechEvents", event.id)
@@ -497,6 +508,7 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "productionTechEvents", event.id, event.finishTime - now))
 		}
 	})
+	var militaryTechEvents = [].concat(playerDoc.militaryTechEvents)
 	_.each(playerDoc.militaryTechEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "militaryTechEvents", event.id)
@@ -504,28 +516,32 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "militaryTechEvents", event.id, event.finishTime - now))
 		}
 	})
-	_.each(playerDoc.soldierStarEvents, function(event){
+	var soldierStarEvents = [].concat(playerDoc.soldierStarEvents)
+	_.each(soldierStarEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "soldierStarEvents", event.id)
 		}else{
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "soldierStarEvents", event.id, event.finishTime - now))
 		}
 	})
-	_.each(playerDoc.vipEvents, function(event){
+	var vipEvents = [].concat(playerDoc.vipEvents)
+	_.each(vipEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "vipEvents", event.id)
 		}else{
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "vipEvents", event.id, event.finishTime - now))
 		}
 	})
-	_.each(playerDoc.itemEvents, function(event){
+	var itemEvents = [].concat(playerDoc.itemEvents)
+	_.each(itemEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "itemEvents", event.id)
 		}else{
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "itemEvents", event.id, event.finishTime - now))
 		}
 	})
-	_.each(playerDoc.dailyQuestEvents, function(event){
+	var dailyQuestEvents = [].concat(playerDoc.dailyQuestEvents)
+	_.each(dailyQuestEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "dailyQuestEvents", event.id)
 		}else{

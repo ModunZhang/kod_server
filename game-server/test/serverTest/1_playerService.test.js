@@ -1281,6 +1281,51 @@
 //			})
 //		})
 //
+//		it("buyAndUseItem masterOfDefender_2", function(done){
+//			Api.buyAndUseItem("masterOfDefender_2", {
+//				masterOfDefender_2:{}
+//			}, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("buyAndUseItem quarterMaster_2", function(done){
+//			Api.buyAndUseItem("quarterMaster_2", {
+//				quarterMaster_2:{}
+//			}, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("buyAndUseItem fogOfTrick_2", function(done){
+//			Api.buyAndUseItem("fogOfTrick_2", {
+//				fogOfTrick_2:{}
+//			}, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("buyAndUseItem woodBonus_2", function(done){
+//			Api.buyAndUseItem("woodBonus_2", {
+//				woodBonus_2:{}
+//			}, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("buyAndUseItem stoneBonus_2", function(done){
+//			Api.buyAndUseItem("stoneBonus_2", {
+//				stoneBonus_2:{}
+//			}, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		it("useItem movingConstruction", function(done){
 //			Api.buyItem("movingConstruction", 1, function(doc){
 //				doc.code.should.equal(200)
