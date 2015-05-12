@@ -2079,7 +2079,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var maxPlayerKill = null
 		var playerKills = attackAllianceDoc.allianceFight.attackPlayerKills.concat(attackAllianceDoc.allianceFight.defencePlayerKills)
 		_.each(playerKills, function(playerKill){
-			if(maxKill == null || maxPlayerKill < playerKill.kill) maxPlayerKill = playerKill
+			if(maxPlayerKill == null || maxPlayerKill < playerKill.kill) maxPlayerKill = playerKill
 		})
 		return _.isObject(maxPlayerKill) ? maxPlayerKill.id : null
 	})()
