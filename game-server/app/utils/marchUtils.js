@@ -17,6 +17,7 @@ var GameDatas = require("../datas/GameDatas")
 var AllianceInitData = GameDatas.AllianceInitData
 var PlayerInitData = GameDatas.PlayerInitData
 var DragonEquipments = GameDatas.DragonEquipments
+var Items = GameDatas.Items
 var Vip = GameDatas.Vip
 
 var Utils = module.exports
