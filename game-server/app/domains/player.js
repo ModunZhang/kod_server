@@ -1405,7 +1405,6 @@ var PlayerSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		name:{type:String, required:true},
-		levelExp:{type:Number, required:true},
 		dragon:{
 			type:{type:String, required:true}
 		},
