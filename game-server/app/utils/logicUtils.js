@@ -1142,6 +1142,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		language:playerDoc.basicInfo.language,
 		name:playerDoc.basicInfo.name,
 		icon:playerDoc.basicInfo.icon,
+		terrain:playerDoc.basicInfo.terrain,
 		levelExp:playerDoc.basicInfo.levelExp,
 		keepLevel:playerDoc.buildings.location_1.level,
 		wallLevel:playerDoc.buildings.location_21.level,
