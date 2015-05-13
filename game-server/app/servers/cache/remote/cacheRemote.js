@@ -56,7 +56,7 @@ pro.loginPlayer = function(id, callback){
 		var unreadReports = _.filter(doc.reports, function(report){
 			return !report.isRead
 		}).length
-		playerDoc = _.omit(doc, ["mails, sendMails, reports"])
+		playerDoc = _.omit(doc, ["mails", "sendMails", "reports"])
 		playerDoc.mailStatus = {
 			unreadMails:unreadMails,
 			unreadReports:unreadReports
