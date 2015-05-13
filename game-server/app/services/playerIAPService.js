@@ -166,7 +166,7 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 		}
 		memberDoc.iapGifts.push(iapGift)
 		memberData.push(["iapGifts." + memberDoc.iapGifts.indexOf(iapGift), iapGift])
-		return self.dataService.updatePlayerAsync(memberDoc)
+		return self.dataService.updatePlayerAsync(memberDoc, memberDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
 	}).catch(function(e){
@@ -265,7 +265,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 			return Promise.reject(e)
 		})
 	}).then(function(){
-		if(_.isObject(rewards.rewardToAllianceMember) && _.isString(playerDoc.allianceId)){
+		if(_.isObject(rewards.rewardToAllianceMember) && !_.isEmpty(playerDoc.allianceId)){
 			return self.dataService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc
 				var funcs = []
