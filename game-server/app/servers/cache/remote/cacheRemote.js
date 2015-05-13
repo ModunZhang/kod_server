@@ -57,6 +57,9 @@ pro.loginPlayer = function(id, callback){
 			return !report.isRead
 		}).length
 		playerDoc = _.omit(doc, ["mails", "sendMails", "reports"])
+		playerDoc.mails = []
+		playerDoc.sendMails = []
+		playerDoc.reports = []
 		playerDoc.mailStatus = {
 			unreadMails:unreadMails,
 			unreadReports:unreadReports
@@ -65,7 +68,11 @@ pro.loginPlayer = function(id, callback){
 
 		if(!_.isEmpty(playerDoc.allianceId)){
 			return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
-				allianceDoc = _.omit(doc, ["serverId", "joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs"])
+				allianceDoc = _.omit(doc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs"])
+				allianceDoc.joinRequestEvents = []
+				allianceDoc.shrineReports = []
+				allianceDoc.allianceFightReports = []
+				allianceDoc.itemLogs = []
 				if(_.isObject(allianceDoc.allianceFight)){
 					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
 					return self.cacheService.directFindAllianceAsync(enemyAllianceId, [], false).then(function(doc){
