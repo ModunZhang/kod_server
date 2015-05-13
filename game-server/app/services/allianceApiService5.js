@@ -178,3 +178,101 @@ pro.getAllianceInfo = function(playerId, allianceId, callback){
 		callback(e)
 	})
 }
+
+/**
+ * 获取联盟申请列表
+ * @param playerId
+ * @param allianceId
+ * @param callback
+ */
+pro.getJoinRequestEvents = function(playerId, allianceId, callback){
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		callback(new Error("allianceId 不合法"))
+		return
+	}
+
+	var allianceDoc = null
+	this.dataService.directFindAllianceAsync(allianceId, ["_id", "members", "joinRequestEvents"], false).then(function(doc){
+		allianceDoc = doc
+		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		if(!_.isObject(playerObject)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
+		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "getJoinRequestEvents"))
+			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "getJoinRequestEvents"))
+
+		callback(null, allianceDoc.joinRequestEvents)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 获取联盟圣地战历史记录
+ * @param playerId
+ * @param allianceId
+ * @param callback
+ */
+pro.getShrineReports = function(playerId, allianceId, callback){
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		callback(new Error("allianceId 不合法"))
+		return
+	}
+
+	var allianceDoc = null
+	this.dataService.directFindAllianceAsync(allianceId, ["_id", "members", "shrineReports"], false).then(function(doc){
+		allianceDoc = doc
+		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		if(!_.isObject(playerObject)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
+
+		callback(null, allianceDoc.shrineReports)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 获取联盟战历史记录
+ * @param playerId
+ * @param allianceId
+ * @param callback
+ */
+pro.getAllianceFightReports = function(playerId, allianceId, callback){
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		callback(new Error("allianceId 不合法"))
+		return
+	}
+
+	var allianceDoc = null
+	this.dataService.directFindAllianceAsync(allianceId, ["_id", "members", "allianceFightReports"], false).then(function(doc){
+		allianceDoc = doc
+		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		if(!_.isObject(playerObject)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
+
+		callback(null, allianceDoc.allianceFightReports)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 获取联盟商店买入卖出记录
+ * @param playerId
+ * @param allianceId
+ * @param callback
+ */
+pro.getItemLogs = function(playerId, allianceId, callback){
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		callback(new Error("allianceId 不合法"))
+		return
+	}
+
+	var allianceDoc = null
+	this.dataService.directFindAllianceAsync(allianceId, ["_id", "members", "itemLogs"], false).then(function(doc){
+		allianceDoc = doc
+		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		if(!_.isObject(playerObject)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
+
+		callback(null, allianceDoc.itemLogs)
+	}).catch(function(e){
+		callback(e)
+	})
+}

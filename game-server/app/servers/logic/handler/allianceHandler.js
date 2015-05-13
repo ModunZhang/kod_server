@@ -895,3 +895,67 @@ pro.getAllianceInfo = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 获取联盟申请列表
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getJoinRequestEvents = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getJoinRequestEvents", {playerId:session.uid, msg:msg})
+	var allianceId = msg.allianceId
+	this.allianceApiService5.getJoinRequestEventsAsync(session.uid, allianceId).then(function(joinRequestEvents){
+		next(null, {code:200, joinRequestEvents:joinRequestEvents})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 获取联盟圣地战历史记录
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getShrineReports = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getShrineReports", {playerId:session.uid, msg:msg})
+	var allianceId = msg.allianceId
+	this.allianceApiService5.getShrineReportsAsync(session.uid, allianceId).then(function(shrineReports){
+		next(null, {code:200, shrineReports:shrineReports})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 获取联盟战历史记录
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getAllianceFightReports = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getAllianceFightReports", {playerId:session.uid, msg:msg})
+	var allianceId = msg.allianceId
+	this.allianceApiService5.getAllianceFightReportsAsync(session.uid, allianceId).then(function(allianceFightReports){
+		next(null, {code:200, allianceFightReports:allianceFightReports})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 获取联盟商店买入卖出记录
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getItemLogs = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getItemLogs", {playerId:session.uid, msg:msg})
+	var allianceId = msg.allianceId
+	this.allianceApiService5.getItemLogsAsync(session.uid, allianceId).then(function(itemLogs){
+		next(null, {code:200, itemLogs:itemLogs})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}

@@ -101,7 +101,6 @@ pomelo.disconnect = function() {
 
 pomelo.request = function(route, msg, cb) {
   msg = msg || {};
-	msg.__time__ = Date.now()
   route = route || msg.route;
   if(!route) {
     return;
@@ -116,7 +115,6 @@ pomelo.request = function(route, msg, cb) {
 
 pomelo.notify = function(route, msg) {
   msg = msg || {};
-	msg.__time__ = Date.now()
   sendMessage(0, route, msg);
 };
 

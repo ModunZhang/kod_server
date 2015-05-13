@@ -63,7 +63,7 @@ pro.loginPlayer = function(id, callback){
 		}
 
 		if(!_.isEmpty(playerDoc.allianceId)){
-			return self.cacheService.findAllianceAsync(id, [], false).then(function(doc){
+			return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
 				allianceDoc = _.omit(doc, ["serverId", "joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs"])
 				if(_.isObject(allianceDoc.allianceFight)){
 					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
@@ -79,10 +79,10 @@ pro.loginPlayer = function(id, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})

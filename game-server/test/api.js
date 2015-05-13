@@ -1075,3 +1075,35 @@ Api.getAllianceInfo = function(allianceId, callback){
 	var route = "logic.allianceHandler.getAllianceInfo"
 	pomelo.request(route, info, callback)
 }
+
+Api.getJoinRequestEvents = function(allianceId, callback){
+	var info = {
+		allianceId:allianceId
+	}
+	var route = "logic.allianceHandler.getJoinRequestEvents"
+	pomelo.request(route, info, callback)
+}
+
+Api.getShrineReports = function(allianceId, callback){
+	var info = {
+		allianceId:allianceId
+	}
+	var route = "logic.allianceHandler.getShrineReports"
+	pomelo.request(route, info, callback)
+}
+
+Api.getAllianceFightReports = function(allianceId, callback){
+	var info = {
+		allianceId:allianceId
+	}
+	var route = "logic.allianceHandler.getAllianceFightReports"
+	pomelo.request(route, info, callback)
+}
+
+Api.getItemLogs = function(allianceId, callback){
+	var info = {
+		allianceId:allianceId
+	}
+	var route = "logic.allianceHandler.getItemLogs"
+	pomelo.request(route, info, callback)
+}
