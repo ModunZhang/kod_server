@@ -57,10 +57,11 @@ pro.loginPlayer = function(id, callback){
  * 按Id直接查询玩家,不做请求排序
  * @param id
  * @param keys
+ * @param force
  * @param callback
  */
-pro.directFindPlayer = function(id, keys, callback){
-	this.app.rpc.cache.cacheRemote.directFindPlayer.toServer(this.cacheServerId, id, keys, function(e, resp){
+pro.directFindPlayer = function(id, keys, force, callback){
+	this.app.rpc.cache.cacheRemote.directFindPlayer.toServer(this.cacheServerId, id, keys, force, function(e, resp){
 		if(_.isObject(e)) callback(e)
 		else if(resp.code == 200) callback(null, resp.data)
 		else callback(ErrorUtils.createError(resp.code, resp.data, false))
@@ -141,10 +142,11 @@ pro.createAlliance = function(alliance, callback){
  * 按Id直接查询联盟,不做请求排序
  * @param id
  * @param keys
+ * @param force
  * @param callback
  */
-pro.directFindAlliance = function(id, keys, callback){
-	this.app.rpc.cache.cacheRemote.directFindAlliance.toServer(this.cacheServerId, id, keys, function(e, resp){
+pro.directFindAlliance = function(id, keys, force, callback){
+	this.app.rpc.cache.cacheRemote.directFindAlliance.toServer(this.cacheServerId, id, keys, force, function(e, resp){
 		if(_.isObject(e)) callback(e)
 		else if(resp.code == 200) callback(null, resp.data)
 		else callback(ErrorUtils.createError(resp.code, resp.data, false))

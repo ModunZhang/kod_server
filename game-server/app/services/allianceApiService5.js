@@ -139,7 +139,7 @@ pro.getAllianceInfo = function(playerId, allianceId, callback){
 		return
 	}
 
-	this.dataService.directFindAllianceAsync(allianceId, []).then(function(doc){
+	this.dataService.directFindAllianceAsync(allianceId, [], false).then(function(doc){
 		var allianceData = {
 			id:doc._id,
 			name:doc.basicInfo.name,

@@ -957,7 +957,7 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 	var self = this
 	var playerDoc = null
 	var newPlayerDoc = null
-	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.thePlayerDoNotBindGCId(playerId))
 		if(_.isEqual(playerDoc.gcId, gcId)) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByCurrentPlayer(playerId, gcId))
@@ -1011,7 +1011,7 @@ pro.forceSwitchGcId = function(playerId, deviceId, gcId, callback){
 
 	var self = this
 	var playerDoc = null
-	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.gcId))
 		return self.dataService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})

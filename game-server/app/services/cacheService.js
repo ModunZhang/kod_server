@@ -265,11 +265,12 @@ pro.createAlliance = function(allianceData, callback){
  * 按Id直接查询玩家,不做请求排序
  * @param id
  * @param keys
+ * @param force
  * @param callback
  */
-pro.directFindPlayer = function(id, keys, callback){
+pro.directFindPlayer = function(id, keys, force, callback){
 	var self = this
-	if(_.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
+	if(!force && _.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
 		callback(ErrorUtils.serverTooBusy("cache.cacheService.directFindPlayer", {id:id}))
 		return
 	}
@@ -308,11 +309,12 @@ pro.directFindPlayer = function(id, keys, callback){
  * 按Id直接查询联盟,不做请求排序
  * @param id
  * @param keys
+ * @param force
  * @param callback
  */
-pro.directFindAlliance = function(id, keys, callback){
+pro.directFindAlliance = function(id, keys, force, callback){
 	var self = this
-	if(_.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
+	if(!force && _.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
 		callback(ErrorUtils.serverTooBusy("cache.cacheService.directFindAlliance", {id:id}))
 		return
 	}
@@ -609,6 +611,19 @@ pro.timeoutPlayer = function(id, doc, callback){
 			callback()
 		}
 	})
+}
+
+/**
+ * 移除玩家缓存
+ * @param id
+ * @param callback
+ */
+pro.removePlayer = function(id, callback){
+	var player = this.players[id]
+	clearTimeout(player.timeout)
+	delete self.players[id]
+	UnlockPlayer.call(self, id)
+	callback()
 }
 
 /**

@@ -9,6 +9,7 @@ var toobusy = require("toobusy-js")
 var Promise = require("bluebird")
 
 var ErrorUtils = require("../../../utils/errorUtils")
+var LogicUtils = require("../../../utils/logicUtils")
 var Consts = require("../../../consts/consts")
 
 module.exports = function(app){
@@ -34,44 +35,58 @@ var pro = CacheRemote.prototype
  * @param callback
  */
 pro.loginPlayer = function(id, callback){
-	if(!force && toobusy()){
-		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.loginPlayer", {id:id})
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.directFindPlayer", {id:id})
 		callback(null, {code:e.code, data:e.message})
 		return
 	}
+
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
+	var enemyAllianceDoc = null
 	this.cacheService.findPlayerAsync(id, [], false).then(function(doc){
-		playerDoc = doc
-		if(!_.isEmpty(playerDoc.allianceId)){
-			return self.cacheService.findAllianceAsync(id, [], false).then(function(doc){
-				allianceDoc = doc
-				return Promise.resolve()
-			})
-		}else return Promise.resolve()
-	}).then(function(){
-		var unreadMails = _.filter(playerDoc.mails, function(mail){
+		if(!_.isEqual(doc.serverId, self.app.get("cacheServerId"))){
+			return Promise.reject(ErrorUtils.playerNotInCurrentServer(playerDoc._id, self.app.get("cacheServerId"), playerDoc.serverId))
+		}
+
+		var unreadMails = _.filter(doc.mails, function(mail){
 			return !mail.isRead
 		}).length
-		var unreadReports = _.filter(playerDoc.reports, function(report){
+		var unreadReports = _.filter(doc.reports, function(report){
 			return !report.isRead
 		}).length
-		playerDoc = _.omit(playerDoc, ["mails, sendMails, reports"])
+		playerDoc = _.omit(doc, ["mails, sendMails, reports"])
 		playerDoc.mailStatus = {
 			unreadMails:unreadMails,
 			unreadReports:unreadReports
 		}
 
-		if(_.isObject(allianceDoc)){
-
-		}
+		if(!_.isEmpty(playerDoc.allianceId)){
+			return self.cacheService.findAllianceAsync(id, [], false).then(function(doc){
+				allianceDoc = _.omit(doc, ["serverId", "joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs"])
+				if(_.isObject(allianceDoc.allianceFight)){
+					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
+					return self.cacheService.directFindAllianceAsync(enemyAllianceId, [], false).then(function(doc){
+						enemyAllianceDoc = _.omit(doc, Consts.AllianceViewDataKeys)
+						return Promise.resolve()
+					})
+				}else return Promise.resolve()
+			})
+		}else return Promise.resolve()
 	}).then(function(){
-
-	})
-
-	this.cacheService.findPlayer(id, keys, force, function(e, doc){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
+		callback(null, {code:200, data:[playerDoc, allianceDoc, enemyAllianceDoc]})
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc, null))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		})
 	})
 }
 
@@ -79,15 +94,16 @@ pro.loginPlayer = function(id, callback){
  * 按Id直接查询玩家,不做请求排序
  * @param id
  * @param keys
+ * @param force
  * @param callback
  */
-pro.directFindPlayer = function(id, keys, callback){
+pro.directFindPlayer = function(id, keys, force, callback){
 	if(toobusy()){
 		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.directFindPlayer", {id:id})
 		callback(null, {code:e.code, data:e.message})
 		return
 	}
-	this.cacheService.directFindPlayer(id, keys, function(e, doc){
+	this.cacheService.directFindPlayer(id, keys, force, function(e, doc){
 		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }
@@ -170,15 +186,16 @@ pro.createAlliance = function(doc, callback){
  * 按Id直接查询联盟,不做请求排序
  * @param id
  * @param keys
+ * @param force
  * @param callback
  */
-pro.directFindAlliance = function(id, keys, callback){
+pro.directFindAlliance = function(id, keys, force, callback){
 	if(toobusy()){
 		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.directFindAlliance", {id:id})
 		callback(null, {code:e.code, data:e.message})
 		return
 	}
-	this.cacheService.directFindAlliance(id, keys, function(e, doc){
+	this.cacheService.directFindAlliance(id, keys, force, function(e, doc){
 		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }

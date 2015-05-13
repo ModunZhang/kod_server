@@ -180,7 +180,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 	if(_.isEqual(event.marchType, Consts.MarchType.Shrine)){
 		var shrineEvent = LogicUtils.getEventById(attackAllianceDoc.shrineEvents, event.defenceShrineData.shrineEventId)
 		if(!_.isObject(shrineEvent)){
-			this.dataService.directFindPlayerAsync(event.attackPlayerData.id, []).then(function(doc){
+			this.dataService.directFindPlayerAsync(event.attackPlayerData.id, [], false).then(function(doc){
 				attackPlayerDoc = doc
 				var marchReturnEvent = MarchUtils.createAttackAllianceShrineMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], [])
 				attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
@@ -234,7 +234,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			var helpedByTroop = {
 				id:attackPlayerDoc._id,
 				name:attackPlayerDoc.basicInfo.name,
-				levelExp:attackPlayerDoc.basicInfo.levelExp,
 				dragon:{
 					type:event.attackPlayerData.dragon.type
 				},

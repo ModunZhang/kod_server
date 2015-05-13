@@ -791,7 +791,7 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		return self.dataService.findAllianceAsync(playerDoc.allianceId, [], false)
@@ -828,8 +828,8 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, attackAllianceDoc, attackAllianceDoc])
 		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, defenceAllianceDoc, defenceAllianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, LogicUtils.getAllianceViewData(defenceAllianceDoc)])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, LogicUtils.getAllianceViewData(attackAllianceDoc)])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.omit(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.omit(attackAllianceDoc, Consts.AllianceViewDataKeys)])
 
 		return Promise.resolve()
 	}).then(function(){

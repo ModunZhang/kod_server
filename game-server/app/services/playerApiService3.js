@@ -82,7 +82,7 @@ pro.getMails = function(playerId, fromIndex, callback){
 
 	var playerDoc = null
 	var mails = []
-	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
 			var mail = playerDoc.mails[i]
@@ -112,7 +112,7 @@ pro.getSendMails = function(playerId, fromIndex, callback){
 
 	var playerDoc = null
 	var mails = []
-	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		for(var i = playerDoc.sendMails.length - 1; i >= 0; i--){
 			var mail = playerDoc.sendMails[i]
@@ -142,7 +142,7 @@ pro.getSavedMails = function(playerId, fromIndex, callback){
 
 	var playerDoc = null
 	var mails = []
-	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
 			var mail = playerDoc.mails[i]
@@ -343,7 +343,7 @@ pro.getReports = function(playerId, fromIndex, callback){
 
 	var playerDoc = null
 	var reports = []
-	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
 			var report = playerDoc.reports[i]
@@ -373,7 +373,7 @@ pro.getSavedReports = function(playerId, fromIndex, callback){
 
 	var playerDoc = null
 	var reports = []
-	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
 			var report = playerDoc.reports[i]
@@ -456,9 +456,9 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 	var playerDoc = null
 	var targetPlayerDoc = null
 	var playerViewData = {}
-	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
-		return self.dataService.directFindPlayerAsync(targetPlayerId, [])
+		return self.dataService.directFindPlayerAsync(targetPlayerId, [], false)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId))
 		targetPlayerDoc = doc
@@ -652,7 +652,7 @@ pro.getSellItems = function(playerId, type, name, callback){
 	var self = this
 	var playerDoc = null
 	var itemDocs = null
-	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		return self.Deal.find({
 			"playerId":{$ne:playerDoc._id},

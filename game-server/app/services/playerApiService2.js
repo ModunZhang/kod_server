@@ -829,7 +829,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 	var self = this
 	var playerViewData = null
 	var memberDoc = null
-	this.dataService.directFindPlayerAsync(memberId, []).then(function(doc){
+	this.dataService.directFindPlayerAsync(memberId, [], false).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 		memberDoc = doc
 
@@ -846,7 +846,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 		}
 
 		if(_.isString(memberDoc.allianceId)){
-			return self.dataService.directFindAllianceAsync(memberDoc.allianceId, []).then(function(doc){
+			return self.dataService.directFindAllianceAsync(memberDoc.allianceId, [], false).then(function(doc){
 				var memberObject = LogicUtils.getAllianceMemberById(doc, memberId)
 				playerViewData.alliance = {
 					name:doc.basicInfo.name,
@@ -907,7 +907,7 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 		memberDoc = doc
 		if(_.isString(playerDoc.allianceId)){
-			return self.dataService.directFindAllianceAsync(playerDoc.allianceId, []).then(function(doc){
+			return self.dataService.directFindAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
 				allianceDoc = doc
 				return Promise.resolve()
 			})

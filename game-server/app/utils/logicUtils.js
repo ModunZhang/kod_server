@@ -1558,20 +1558,6 @@ Utils.addAllianceFightReport = function(allianceDoc, allianceData, report){
 }
 
 /**
- * 获取联盟
- * @param allianceDoc
- * @return {*}
- */
-Utils.getAllianceViewData = function(allianceDoc){
-	var viewData = {}
-	viewData._id = allianceDoc._id
-	_.each(Consts.AllianceViewDataKeys, function(key){
-		viewData[key] = allianceDoc[key]
-	})
-	return viewData
-}
-
-/**
  * 如果联盟正在战斗,推送我方联盟相关数据变化到敌对联盟
  * @param allianceDoc
  * @param enemyAllianceData

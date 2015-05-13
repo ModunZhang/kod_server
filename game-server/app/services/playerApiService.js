@@ -78,13 +78,14 @@ pro.playerLogin = function(session, deviceId, callback){
 	var bindPlayerSessionAsync = Promise.promisify(BindPlayerSession, this)
 	this.Device.findByIdAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
-			return self.dataService.findPlayerAsync(doc.playerId, [], false)
+			return self.dataService.loginPlayerAsync(doc.playerId)
 		}else{
 			return Promise.reject(ErrorUtils.deviceNotExist(deviceId))
 		}
-	}).then(function(doc){
-		playerDoc = doc
-		if(!_.isEqual(playerDoc.serverId, self.app.get("cacheServerId"))) return Promise.reject(ErrorUtils.playerNotInCurrentServer(playerDoc._id, self.app.get("cacheServerId"), playerDoc.serverId))
+	}).spread(function(doc_1, doc_2, doc_3){
+		playerDoc = doc_1
+		allianceDoc = doc_2
+		enemyAllianceDoc = doc_3
 		if(_.isEmpty(playerDoc.logicServerId)) return Promise.resolve(false)
 		else return self.dataService.isPlayerOnlineAsync(playerDoc)
 	}).then(function(online){
@@ -134,23 +135,6 @@ pro.playerLogin = function(session, deviceId, callback){
 		playerDoc.logicServerId = self.logicServerId
 
 		return Promise.resolve()
-	}).then(function(){
-		if(_.isString(playerDoc.allianceId)){
-			return self.dataService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
-				allianceDoc = doc
-				if(_.isObject(allianceDoc.allianceFight)){
-					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
-					return self.dataService.directFindAllianceAsync(enemyAllianceId, []).then(function(doc){
-						enemyAllianceDoc = LogicUtils.getAllianceViewData(doc)
-						return Promise.resolve()
-					})
-				}else{
-					return Promise.resolve()
-				}
-			})
-		}else{
-			return Promise.resolve()
-		}
 	}).then(function(){
 		if(_.isObject(allianceDoc)){
 			LogicUtils.updatePlayerPropertyInAlliance(playerDoc, true, allianceDoc, allianceData)
