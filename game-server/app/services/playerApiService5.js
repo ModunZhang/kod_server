@@ -73,7 +73,7 @@ pro.getDay60Reward = function(playerId, callback){
  * @param callback
  */
 pro.getOnlineReward = function(playerId, timePoint, callback){
-	if(!_.contains(_.values(Consts.OnlineTimePoint), timePoint)){
+	if(!DataUtils.isOnLineTimePointExist(timePoint)){
 		callback(new Error("timePoint 不合法"))
 	}
 

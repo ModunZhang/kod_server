@@ -1681,28 +1681,11 @@
 //		})
 //
 //		it("getOnlineReward 在线时间不足,不能领取", function(done){
-//			Api.getOnlineReward(Consts.OnlineTimePoint.M15, function(doc){
+//			Api.getOnlineReward(1, function(doc){
 //				doc.code.should.equal(Errors.onlineTimeNotEough.code)
 //				done()
 //			})
 //		})
-//
-//		//it("getOnlineReward 正常领取", function(done){
-//		//	setTimeout(function(){
-//		//		Api.getOnlineReward(Consts.OnlineTimePoint.M15, function(doc){
-//		//			doc.code.should.equal(200)
-//		//			done()
-//		//		})
-//		//	}, 15 * 1000)
-//		//})
-//
-//		//it("getOnlineReward 此时间节点的在线奖励已经领取", function(done){
-//		//	Api.getOnlineReward(Consts.OnlineTimePoint.M15, function(doc){
-//		//		doc.code.should.equal(500)
-//		//		doc.message.should.equal("此时间节点的在线奖励已经领取")
-//		//		done()
-//		//	})
-//		//})
 //
 //		it("getDay14Reward 正常领取", function(done){
 //			Api.getDay14Reward(function(doc){

@@ -4024,3 +4024,11 @@ Utils.getAllianceFightKillFirstGemCount = function(serverLevel){
 Utils.getAllianceFightInitHonourCount = function(serverLevel){
 	return AllianceInitData.fightRewards[serverLevel].honour
 }
+
+/**
+ * 在线时间节点是否合法
+ * @param timePoint
+ */
+Utils.isOnLineTimePointExist = function(timePoint){
+	return _.isObject(Activities.online[timePoint])
+}

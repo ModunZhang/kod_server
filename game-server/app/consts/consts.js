@@ -110,12 +110,6 @@ module.exports = {
 		Normal:"normal",
 		Advanced:"advanced"
 	},
-	OnlineTimePoint:{
-		M15:1,
-		M30:2,
-		M60:3,
-		M120:4
-	},
 	DragonFightBuffTerrain:{
 		redDragon:"desert",
 		blueDragon:"iceField",
