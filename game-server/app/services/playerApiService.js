@@ -78,7 +78,7 @@ pro.playerLogin = function(session, deviceId, callback){
 	var bindPlayerSessionAsync = Promise.promisify(BindPlayerSession, this)
 	this.Device.findByIdAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
-			return self.dataService.findPlayerAsync(doc.playerId)
+			return self.dataService.findPlayerAsync(doc.playerId, [], false)
 		}else{
 			return Promise.reject(ErrorUtils.deviceNotExist(deviceId))
 		}
@@ -136,11 +136,11 @@ pro.playerLogin = function(session, deviceId, callback){
 		return Promise.resolve()
 	}).then(function(){
 		if(_.isString(playerDoc.allianceId)){
-			return self.dataService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+			return self.dataService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
 				allianceDoc = doc
 				if(_.isObject(allianceDoc.allianceFight)){
 					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
-					return self.dataService.directFindAllianceAsync(enemyAllianceId).then(function(doc){
+					return self.dataService.directFindAllianceAsync(enemyAllianceId, []).then(function(doc){
 						enemyAllianceDoc = LogicUtils.getAllianceViewData(doc)
 						return Promise.resolve()
 					})
@@ -209,14 +209,14 @@ pro.playerLogout = function(session, reason, callback){
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.dataService.findPlayerAsync(playerId, true).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], true).then(function(doc){
 		playerDoc = doc
 		return self.dataService.removePlayerFromChannelsAsync(playerDoc)
 	}).then(function(){
 		playerDoc.logicServerId = null
 		playerDoc.countInfo.todayOnLineTime += Date.now() - playerDoc.countInfo.lastLoginTime
 		if(_.isString(playerDoc.allianceId))
-			return self.dataService.findAllianceAsync(playerDoc.allianceId, true).then(function(doc){
+			return self.dataService.findAllianceAsync(playerDoc.allianceId, [], true).then(function(doc){
 				allianceDoc = doc
 				LogicUtils.updatePlayerPropertyInAlliance(playerDoc, false, allianceDoc, allianceData)
 				DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
@@ -288,7 +288,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var building = null
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + location]
 		if(!_.isObject(building))return Promise.reject(ErrorUtils.buildingNotExist(playerId, location))
@@ -402,7 +402,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings["location_" + buildingLocation]
 		if(!_.isObject(building) || building.level < 1) return Promise.reject(ErrorUtils.buildingNotExist(playerId, buildingLocation))
@@ -479,7 +479,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 	var updateFuncs = []
 	var eventFuncs = []
 	var building = null
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + buildingLocation]
 		if(building.level <= 0) return Promise.reject(ErrorUtils.hostBuildingLevelMustBiggerThanOne(playerId, buildingLocation, houseLocation))
@@ -620,7 +620,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 	var eventFuncs = []
 	var building = null
 	var house = null
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + buildingLocation]
 		if(building.level <= 0) return Promise.reject(ErrorUtils.hostBuildingLevelMustBiggerThanOne(playerId, buildingLocation, houseLocation))
@@ -746,7 +746,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 	var updateFuncs = []
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
 		if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))
@@ -797,7 +797,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_16
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -882,7 +882,7 @@ pro.getMaterials = function(playerId, eventId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var event = _.find(playerDoc.materialEvents, function(event){
 			return _.isEqual(event.id, eventId)
@@ -933,7 +933,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_5
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -1041,7 +1041,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_5
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))

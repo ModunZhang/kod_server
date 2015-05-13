@@ -57,7 +57,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var tech = null
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		tech = playerDoc.productionTechs[techName]
 		if(tech.index > 9) return Promise.reject(new Error("此科技还未开放"))
@@ -166,7 +166,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 	var updateFuncs = []
 	var tech = null
 	var building = null
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		tech = playerDoc.militaryTechs[techName]
 		building = DataUtils.getPlayerMilitaryTechBuilding(playerDoc, techName)
@@ -279,7 +279,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var building = null
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		building = DataUtils.getPlayerSoldierMilitaryTechBuilding(playerDoc, soldierName)
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -378,7 +378,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 
 		var gemUsed = DataUtils.getPlayerIntInit("changeTerrainNeedGemCount")
@@ -433,7 +433,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
@@ -493,7 +493,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 	var eventFuncs = []
 	var pushFuncs = []
 	var forceSave = false
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var item = _.find(playerDoc.items, function(item){
 			return _.isEqual(item.name, itemName)
@@ -579,7 +579,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var forceSave = false
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
@@ -672,7 +672,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 	var playerData = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var staminaUsed = pveData.staminaUsed
 		if(!_.isNumber(staminaUsed)) return Promise.reject(new Error("pveData 不合法"))
@@ -844,7 +844,7 @@ pro.gacha = function(playerId, type, callback){
 	var playerData = []
 	var updateFuncs = []
 
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(_.isEqual(type, Consts.GachaType.Normal) && DataUtils.isPlayerCanFreeNormalGacha(playerDoc)){
 			playerDoc.countInfo.todayFreeNormalGachaCount += 1
@@ -917,7 +917,7 @@ pro.bindGcId = function(playerId, gcId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.gcId))
 		return self.dataService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})
@@ -957,7 +957,7 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 	var self = this
 	var playerDoc = null
 	var newPlayerDoc = null
-	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
 		playerDoc = doc
 		if(_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.thePlayerDoNotBindGCId(playerId))
 		if(_.isEqual(playerDoc.gcId, gcId)) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByCurrentPlayer(playerId, gcId))
@@ -1011,7 +1011,7 @@ pro.forceSwitchGcId = function(playerId, deviceId, gcId, callback){
 
 	var self = this
 	var playerDoc = null
-	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
 		playerDoc = doc
 		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.gcId))
 		return self.dataService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})

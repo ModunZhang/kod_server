@@ -38,7 +38,7 @@ pro.getDay60Reward = function(playerId, callback){
 	var playerData = []
 	var updateFuncs = []
 
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)) return Promise.reject(ErrorUtils.loginRewardAlreadyGet(playerId))
 		playerDoc.countInfo.day60RewardsCount = playerDoc.countInfo.day60
@@ -82,7 +82,7 @@ pro.getOnlineReward = function(playerId, timePoint, callback){
 	var playerData = []
 	var updateFuncs = []
 
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(!DataUtils.isPlayerReachOnlineTimePoint(playerDoc, timePoint)) return Promise.reject(ErrorUtils.onlineTimeNotEough(playerId))
 		var theTimePoint = _.find(playerDoc.countInfo.todayOnLineTimeRewards, function(reward){
@@ -125,7 +125,7 @@ pro.getDay14Reward = function(playerId, callback){
 	var playerData = []
 	var updateFuncs = []
 
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 
 		if(_.isEqual(playerDoc.countInfo.day14, playerDoc.countInfo.day14RewardsCount)) return Promise.reject(ErrorUtils.wonderAssistanceRewardAlreadyGet(playerId))
@@ -171,7 +171,7 @@ pro.getLevelupReward = function(playerId, levelupIndex, callback){
 	var playerData = []
 	var updateFuncs = []
 
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 
 		var theLevelupIndex = _.find(playerDoc.countInfo.levelupRewards, function(reward){
@@ -216,7 +216,7 @@ pro.getFirstIAPRewards = function(playerId, callback){
 	var playerData = []
 	var updateFuncs = []
 
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 
 		if(playerDoc.countInfo.iapCount <= 0) return Promise.reject(ErrorUtils.firstIAPNotHappen(playerId))
@@ -259,7 +259,7 @@ pro.passSelinasTest = function(playerId, callback){
 	var playerData = []
 	var updateFuncs = []
 
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.PassSelinasTest)
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, _.isEmpty(playerData) ? null : playerDoc])
@@ -296,7 +296,7 @@ pro.getDailyTaskRewards = function(playerId, taskType, callback){
 	var playerData = []
 	var updateFuncs = []
 
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var isRewarded = _.contains(playerDoc.dailyTasks.rewarded, taskType)
 		if(isRewarded) return Promise.reject(ErrorUtils.dailyTaskRewardAlreadyGet(playerId))
@@ -348,7 +348,7 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 
 		var task = _.find(playerDoc.growUpTasks[taskType], function(task){
@@ -398,7 +398,7 @@ pro.getIapGift = function(playerId, giftId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var gift = _.find(playerDoc.iapGifts, function(gift){
 			return _.isEqual(gift.id, giftId)
@@ -465,7 +465,7 @@ pro.switchServer = function(playerId, serverId, callback){
 	var self = this
 	var playerDoc = null
 	var getServersAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getServers.toServer, this)
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(_.isObject(playerDoc.alliance)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		if(_.isEqual(playerDoc.serverId, serverId)) return Promise.reject(ErrorUtils.canNotSwitchToTheSameServer(playerId, serverId))
@@ -514,7 +514,7 @@ pro.setPlayerIcon = function(playerId, icon, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		playerDoc.basicInfo.icon = icon
 		playerData.push(["basicInfo.icon", playerDoc.basicInfo.icon])
@@ -542,7 +542,7 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.basicInfo.marchQueue >= 2) return Promise.reject(ErrorUtils.playerSecondMarchQueueAlreadyUnlocked(playerId))
 		var gemUsed = DataUtils.getPlayerIntInit("unlockPlayerSecondMarchQueue")
@@ -591,7 +591,7 @@ pro.initPlayerData = function(playerId, terrain, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(!_.isEqual(playerDoc.basicInfo.terrain, Consts.None)) return Promise.reject(ErrorUtils.playerDataAlreadyInited(playerId))
 		playerDoc.basicInfo.terrain = terrain

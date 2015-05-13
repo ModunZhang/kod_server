@@ -55,10 +55,10 @@ pro.giveLoyaltyToAllianceMember = function(playerId, memberId, count, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.dataService.findAllianceAsync(playerDoc.allianceId)
+		return self.dataService.findAllianceAsync(playerDoc.allianceId, [], false)
 	}).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
@@ -69,7 +69,7 @@ pro.giveLoyaltyToAllianceMember = function(playerId, memberId, count, callback){
 		memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
 		if(!_.isEqual(playerId, memberId)){
-			return self.dataService.findPlayerAsync(memberId).then(function(doc){
+			return self.dataService.findPlayerAsync(memberId, [], false).then(function(doc){
 				memberDoc = doc
 				return Promise.resolve()
 			})
@@ -139,7 +139,7 @@ pro.getAllianceInfo = function(playerId, allianceId, callback){
 		return
 	}
 
-	this.dataService.directFindAllianceAsync(allianceId).then(function(doc){
+	this.dataService.directFindAllianceAsync(allianceId, []).then(function(doc){
 		var allianceData = {
 			id:doc._id,
 			name:doc.basicInfo.name,

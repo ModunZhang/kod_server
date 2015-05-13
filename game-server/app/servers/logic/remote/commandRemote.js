@@ -35,16 +35,16 @@ var pro = CommandRemote.prototype
 
 /**
  * 修改指定资源数量
- * @param uid
+ * @param playerId
  * @param name
  * @param count
  * @param callback
  */
-pro.resources = function(uid, name, count, callback){
+pro.resources = function(playerId, name, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(_.isUndefined(playerDoc.resources[name])) return Promise.reject(new Error("资源不存在"))
 		playerDoc.resources[name] = count
@@ -69,16 +69,16 @@ pro.resources = function(uid, name, count, callback){
 
 /**
  * 设置建筑等级
- * @param uid
+ * @param playerId
  * @param location
  * @param level
  * @param callback
  */
-pro.buildinglevel = function(uid, location, level, callback){
+pro.buildinglevel = function(playerId, location, level, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings["location_" + location]
 		if(!_.isObject(building)) return Promise.reject(new Error("建筑不存在"))
@@ -112,15 +112,15 @@ pro.buildinglevel = function(uid, location, level, callback){
 
 /**
  * 清除玩家事件
- * @param uid
+ * @param playerId
  * @param eventType
  * @param callback
  */
-pro.rmevents = function(uid, eventType, callback){
+pro.rmevents = function(playerId, eventType, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(!_.isArray(playerDoc[eventType])) return Promise.reject(new Error("玩家事件类型不存在"))
 		var funcs = []
@@ -148,15 +148,15 @@ pro.rmevents = function(uid, eventType, callback){
 
 /**
  * 统一修改玩家材料数量
- * @param uid
+ * @param playerId
  * @param count
  * @param callback
  */
-pro.material = function(uid, count, callback){
+pro.material = function(playerId, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		playerDoc.materials.blueprints = count
 		playerDoc.materials.tools = count
@@ -185,15 +185,15 @@ pro.material = function(uid, count, callback){
 
 /**
  * 统一修改玩家特殊材料数量
- * @param uid
+ * @param playerId
  * @param count
  * @param callback
  */
-pro.soldiermaterial = function(uid, count, callback){
+pro.soldiermaterial = function(playerId, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		playerDoc.soldierMaterials.deathHand = count
 		playerDoc.soldierMaterials.heroBones = count
@@ -222,15 +222,15 @@ pro.soldiermaterial = function(uid, count, callback){
 
 /**
  * 统一修改玩家制作龙装备的材料数量
- * @param uid
+ * @param playerId
  * @param count
  * @param callback
  */
-pro.dragonmaterial = function(uid, count, callback){
+pro.dragonmaterial = function(playerId, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		_.each(playerDoc.dragonMaterials, function(theCount, key){
 			playerDoc.dragonMaterials[key] = count
@@ -254,15 +254,15 @@ pro.dragonmaterial = function(uid, count, callback){
 
 /**
  * 统一修改玩家龙装备的数量
- * @param uid
+ * @param playerId
  * @param count
  * @param callback
  */
-pro.dragonequipment = function(uid, count, callback){
+pro.dragonequipment = function(playerId, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		_.each(playerDoc.dragonEquipments, function(theCount, key){
 			playerDoc.dragonEquipments[key] = count
@@ -286,15 +286,15 @@ pro.dragonequipment = function(uid, count, callback){
 
 /**
  * 设置士兵数量
- * @param uid
+ * @param playerId
  * @param count
  * @param callback
  */
-pro.soldiers = function(uid, count, callback){
+pro.soldiers = function(playerId, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		_.each(playerDoc.soldiers, function(value, key){
 			playerDoc.soldiers[key] = count
@@ -318,15 +318,15 @@ pro.soldiers = function(uid, count, callback){
 
 /**
  * 设置伤兵数量
- * @param uid
+ * @param playerId
  * @param count
  * @param callback
  */
-pro.woundedsoldiers = function(uid, count, callback){
+pro.woundedsoldiers = function(playerId, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		_.each(playerDoc.woundedSoldiers, function(value, key){
 			playerDoc.woundedSoldiers[key] = count
@@ -350,19 +350,19 @@ pro.woundedsoldiers = function(uid, count, callback){
 
 /**
  * 修改指定龙的活力
- * @param uid
+ * @param playerId
  * @param dragonType
  * @param count
  * @param callback
  */
-pro.dragonhp = function(uid, dragonType, count, callback){
+pro.dragonhp = function(playerId, dragonType, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var dragon = _.find(playerDoc.dragons, function(dragon){
 			if(_.isEqual(dragon.type, dragonType)) return true
@@ -411,16 +411,16 @@ pro.dragonhp = function(uid, dragonType, count, callback){
 
 /**
  * 设置龙的技能的等级
- * @param uid
+ * @param playerId
  * @param dragonType
  * @param level
  * @param callback
  */
-pro.dragonskill = function(uid, dragonType, level, callback){
+pro.dragonskill = function(playerId, dragonType, level, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var dragon = _.find(playerDoc.dragons, function(dragon){
 			if(_.isEqual(dragon.type, dragonType)) return true
@@ -452,16 +452,16 @@ pro.dragonskill = function(uid, dragonType, level, callback){
 
 /**
  * 设置龙装备的星级
- * @param uid
+ * @param playerId
  * @param dragonType
  * @param star
  * @param callback
  */
-pro.dragonequipmentstar = function(uid, dragonType, star, callback){
+pro.dragonequipmentstar = function(playerId, dragonType, star, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var dragon = _.find(playerDoc.dragons, function(dragon){
 			if(_.isEqual(dragon.type, dragonType)) return true
@@ -493,16 +493,16 @@ pro.dragonequipmentstar = function(uid, dragonType, star, callback){
 
 /**
  * 设置龙的星级
- * @param uid
+ * @param playerId
  * @param dragonType
  * @param star
  * @param callback
  */
-pro.dragonstar = function(uid, dragonType, star, callback){
+pro.dragonstar = function(playerId, dragonType, star, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon && star >= 0 && star <= 5){
@@ -541,16 +541,16 @@ pro.dragonstar = function(uid, dragonType, star, callback){
 
 /**
  * 设置龙的等级
- * @param uid
+ * @param playerId
  * @param dragonType
  * @param level
  * @param callback
  */
-pro.dragonlevel = function(uid, dragonType, level, callback){
+pro.dragonlevel = function(playerId, dragonType, level, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon){
@@ -579,16 +579,16 @@ pro.dragonlevel = function(uid, dragonType, level, callback){
 
 /**
  * 设置捐赠级别
- * @param uid
+ * @param playerId
  * @param donatelevel
  * @param callback
  */
-pro.donatelevel = function(uid, donatelevel, callback){
+pro.donatelevel = function(playerId, donatelevel, callback){
 	var self = this
 	var updateFuncs = []
 	var pushFuncs = []
 	var playerDoc = null
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		_.each(playerDoc.allianceDonate, function(value, key){
 			playerDoc.allianceDonate[key] = donatelevel
@@ -615,23 +615,23 @@ pro.donatelevel = function(uid, donatelevel, callback){
 
 /**
  * 设置联盟荣耀
- * @param uid
+ * @param playerId
  * @param honnour
  * @param callback
  */
-pro.alliancehonour = function(uid, honnour, callback){
+pro.alliancehonour = function(playerId, honnour, callback){
 	var self = this
 	var updateFuncs = []
 	var pushFuncs = []
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		if(!_.isString(doc.allianceId)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
 		playerDoc = doc
-		return self.dataService.findAllianceAsync(playerDoc.allianceId)
+		return self.dataService.findAllianceAsync(playerDoc.allianceId, [], false)
 	}).then(function(doc){
 		allianceDoc = doc
 		allianceDoc.basicInfo.honour = honnour
@@ -663,23 +663,23 @@ pro.alliancehonour = function(uid, honnour, callback){
 
 /**
  * 设置联盟感知力
- * @param uid
+ * @param playerId
  * @param perception
  * @param callback
  */
-pro.allianceperception = function(uid, perception, callback){
+pro.allianceperception = function(playerId, perception, callback){
 	var self = this
 	var updateFuncs = []
 	var pushFuncs = []
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		if(!_.isString(doc.allianceId)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
 		playerDoc = doc
-		return self.dataService.findAllianceAsync(playerDoc.allianceId)
+		return self.dataService.findAllianceAsync(playerDoc.allianceId, [], false)
 	}).then(function(doc){
 		allianceDoc = doc
 		allianceDoc.basicInfo.perception = perception
@@ -712,17 +712,17 @@ pro.allianceperception = function(uid, perception, callback){
 
 /**
  * 设置玩家等级
- * @param uid
+ * @param playerId
  * @param level
  * @param callback
  */
-pro.playerlevel = function(uid, level, callback){
+pro.playerlevel = function(playerId, level, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		playerDoc.basicInfo.levelExp = PlayerInitData.playerLevel[level].expFrom
 		playerData.push(["basicInfo", playerDoc.basicInfo])
@@ -748,14 +748,14 @@ pro.playerlevel = function(uid, level, callback){
 
 /**
  * 清除所有玩家的GC
- * @param uid
+ * @param playerId
  * @param callback
  */
-pro.cleargc = function(uid, callback){
+pro.cleargc = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var kickPlayer = Promise.promisify(this.sessionService.kickByUid, this)
-	this.dataService.findPlayerAsync(uid).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		playerDoc.gcId = null
 		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
@@ -791,10 +791,10 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.directFindPlayerAsync(playerId).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, []).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.dataService.findAllianceAsync(playerDoc.allianceId)
+		return self.dataService.findAllianceAsync(playerDoc.allianceId, [], false)
 	}).then(function(doc){
 		attackAllianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, playerId)
@@ -804,7 +804,7 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, attackAllianceDoc._id))
 		}
-		return self.dataService.findAllianceAsync(defenceAllianceId)
+		return self.dataService.findAllianceAsync(defenceAllianceId, [], false)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(defenceAllianceId))
 		defenceAllianceDoc = doc

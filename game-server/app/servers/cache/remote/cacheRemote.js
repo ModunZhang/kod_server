@@ -18,8 +18,8 @@ var CacheRemote = function(app){
 	this.app = app
 	this.cacheService = app.get("cacheService")
 	this.logService = app.get("logService")
-	this.toobusyMaxLag = 100
-	this.toobusyInterval = 500
+	this.toobusyMaxLag = 140
+	this.toobusyInterval = 100
 
 	toobusy.maxLag(this.toobusyMaxLag)
 	toobusy.interval(this.toobusyInterval)

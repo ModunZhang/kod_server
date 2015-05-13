@@ -62,7 +62,7 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 	var pushFuncs = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findAllianceAsync(allianceId, true).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, [], true).then(function(doc){
 		allianceDoc = doc
 		if(_.isEqual(eventType, Consts.AllianceStatusEvent)){
 			if(!_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
@@ -180,7 +180,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 	if(_.isEqual(event.marchType, Consts.MarchType.Shrine)){
 		var shrineEvent = LogicUtils.getEventById(attackAllianceDoc.shrineEvents, event.defenceShrineData.shrineEventId)
 		if(!_.isObject(shrineEvent)){
-			this.dataService.directFindPlayerAsync(event.attackPlayerData.id).then(function(doc){
+			this.dataService.directFindPlayerAsync(event.attackPlayerData.id, []).then(function(doc){
 				attackPlayerDoc = doc
 				var marchReturnEvent = MarchUtils.createAttackAllianceShrineMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], [])
 				attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
@@ -215,8 +215,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 	}
 	if(_.isEqual(event.marchType, Consts.MarchType.HelpDefence)){
 		funcs = []
-		funcs.push(this.dataService.findPlayerAsync(event.attackPlayerData.id, true))
-		funcs.push(this.dataService.findPlayerAsync(event.defencePlayerData.id, true))
+		funcs.push(this.dataService.findPlayerAsync(event.attackPlayerData.id, [], true))
+		funcs.push(this.dataService.findPlayerAsync(event.defencePlayerData.id, [], true))
 		Promise.all(funcs).spread(function(doc_1, doc_2){
 			attackPlayerDoc = doc_1
 			defencePlayerDoc = doc_2
@@ -379,15 +379,15 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var memberObject
 
 		funcs = []
-		funcs.push(self.dataService.findPlayerAsync(event.attackPlayerData.id, true))
-		funcs.push(self.dataService.findAllianceAsync(event.defencePlayerData.alliance.id, true))
-		funcs.push(self.dataService.findPlayerAsync(event.defencePlayerData.id, true))
+		funcs.push(self.dataService.findPlayerAsync(event.attackPlayerData.id, [], true))
+		funcs.push(self.dataService.findAllianceAsync(event.defencePlayerData.alliance.id, [], true))
+		funcs.push(self.dataService.findPlayerAsync(event.defencePlayerData.id, [], true))
 		Promise.all(funcs).spread(function(doc_1, doc_2, doc_3){
 			attackPlayerDoc = doc_1
 			defenceAllianceDoc = doc_2
 			defencePlayerDoc = doc_3
 			if(defencePlayerDoc.helpedByTroops.length > 0){
-				return self.dataService.findPlayerAsync(defencePlayerDoc.helpedByTroops[0].id, true).then(function(doc){
+				return self.dataService.findPlayerAsync(defencePlayerDoc.helpedByTroops[0].id, [], true).then(function(doc){
 					helpDefencePlayerDoc = doc
 					return Promise.resolve()
 				})
@@ -787,11 +787,11 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var resourceName = null
 		var newRewards = null
 
-		this.dataService.findPlayerAsync(event.attackPlayerData.id, true).then(function(doc){
+		this.dataService.findPlayerAsync(event.attackPlayerData.id, [], true).then(function(doc){
 			attackPlayerDoc = doc
 			if(_.isObject(attackAllianceDoc.allianceFight)){
 				var defenceAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id)
-				return self.dataService.findAllianceAsync(defenceAllianceId, true).then(function(doc){
+				return self.dataService.findAllianceAsync(defenceAllianceId, [], true).then(function(doc){
 					defenceAllianceDoc = doc
 					targetAllianceDoc = _.isEqual(event.defenceVillageData.alliance.id, attackAllianceDoc._id) ? attackAllianceDoc : defenceAllianceDoc
 					targetAllianceData = _.isEqual(event.defenceVillageData.alliance.id, attackAllianceDoc._id) ? attackAllianceData : defenceAllianceData
@@ -812,7 +812,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				})
 			}
 			if(_.isObject(villageEvent)){
-				return self.dataService.findPlayerAsync(villageEvent.playerData.id, true).then(function(doc){
+				return self.dataService.findPlayerAsync(villageEvent.playerData.id, [], true).then(function(doc){
 					defencePlayerDoc = doc
 					return Promise.resolve()
 				})
@@ -1087,7 +1087,7 @@ pro.onAttackMarchReturnEvents = function(allianceDoc, event, callback){
 	//console.log(NodeUtils.inspect(event, false, null))
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(event.attackPlayerData.id, true).then(function(doc){
+	this.dataService.findPlayerAsync(event.attackPlayerData.id, [], true).then(function(doc){
 		playerDoc = doc
 
 		var dragonType = event.attackPlayerData.dragon.type
@@ -1160,15 +1160,15 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 	LogicUtils.removeItemInArray(attackAllianceDoc.strikeMarchEvents, event)
 	if(_.isEqual(event.marchType, Consts.MarchType.City)){
 		funcs = []
-		funcs.push(self.dataService.findPlayerAsync(event.attackPlayerData.id, true))
-		funcs.push(self.dataService.findAllianceAsync(event.defencePlayerData.alliance.id, true))
-		funcs.push(self.dataService.findPlayerAsync(event.defencePlayerData.id, true))
+		funcs.push(self.dataService.findPlayerAsync(event.attackPlayerData.id, [], true))
+		funcs.push(self.dataService.findAllianceAsync(event.defencePlayerData.alliance.id, [], true))
+		funcs.push(self.dataService.findPlayerAsync(event.defencePlayerData.id, [], true))
 		Promise.all(funcs).spread(function(doc_1, doc_2, doc_3){
 			attackPlayerDoc = doc_1
 			defenceAllianceDoc = doc_2
 			defencePlayerDoc = doc_3
 			if(defencePlayerDoc.helpedByTroops.length > 0){
-				return self.dataService.findPlayerAsync(defencePlayerDoc.helpedByTroops[0].id, true).then(function(doc){
+				return self.dataService.findPlayerAsync(defencePlayerDoc.helpedByTroops[0].id, [], true).then(function(doc){
 					helpDefencePlayerDoc = doc
 					return Promise.resolve()
 				})
@@ -1395,11 +1395,11 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 		var report = null
 		var marchReturnEvent = null
 
-		this.dataService.findPlayerAsync(event.attackPlayerData.id, true).then(function(doc){
+		this.dataService.findPlayerAsync(event.attackPlayerData.id, [], true).then(function(doc){
 			attackPlayerDoc = doc
 			if(_.isObject(attackAllianceDoc.allianceFight)){
 				var defenceAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id)
-				return self.dataService.findAllianceAsync(defenceAllianceId, true).then(function(doc){
+				return self.dataService.findAllianceAsync(defenceAllianceId, [], true).then(function(doc){
 					defenceAllianceDoc = doc
 					targetAllianceDoc = _.isEqual(event.defenceVillageData.alliance.id, attackAllianceDoc._id) ? attackAllianceDoc : defenceAllianceDoc
 					return Promise.resolve()
@@ -1418,7 +1418,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				})
 			}
 			if(_.isObject(villageEvent)){
-				return self.dataService.findPlayerAsync(villageEvent.playerData.id, true).then(function(doc){
+				return self.dataService.findPlayerAsync(villageEvent.playerData.id, [], true).then(function(doc){
 					defencePlayerDoc = doc
 					return Promise.resolve()
 				})
@@ -1548,7 +1548,7 @@ pro.onStrikeMarchReturnEvents = function(allianceDoc, event, callback){
 
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(event.attackPlayerData.id, true).then(function(doc){
+	this.dataService.findPlayerAsync(event.attackPlayerData.id, [], true).then(function(doc){
 		playerDoc = doc
 		var dragonType = event.attackPlayerData.dragon.type
 		var dragon = playerDoc.dragons[dragonType]
@@ -1606,7 +1606,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 	var playerTroopsForFight = []
 	var funcs = []
 	var findPlayerDoc = function(playerId){
-		return self.dataService.findPlayerAsync(playerId, true).then(function(doc){
+		return self.dataService.findPlayerAsync(playerId, [], true).then(function(doc){
 			playerDocs[doc._id] = doc
 			return Promise.resolve()
 		})
@@ -1850,10 +1850,10 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 	defenceEnemyAllianceData.push(["villageEvents." + attackAllianceDoc.villageEvents.indexOf(event), null])
 	LogicUtils.removeItemInArray(attackAllianceDoc.villageEvents, event)
 
-	this.dataService.findPlayerAsync(event.playerData.id, true).then(function(doc){
+	this.dataService.findPlayerAsync(event.playerData.id, [], true).then(function(doc){
 		attackPlayerDoc = doc
 		if(!_.isEqual(event.playerData.alliance.id, event.villageData.alliance.id)){
-			return self.dataService.findAllianceAsync(event.villageData.alliance.id, true).then(function(doc){
+			return self.dataService.findAllianceAsync(event.villageData.alliance.id, [], true).then(function(doc){
 				defenceAllianceDoc = doc
 				defenceAllianceData = []
 				return Promise.resolve()
@@ -1978,8 +1978,8 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var funcs = []
-	funcs.push(this.dataService.findAllianceAsync(ourAllianceId, true))
-	funcs.push(this.dataService.findAllianceAsync(enemyAllianceId, true))
+	funcs.push(this.dataService.findAllianceAsync(ourAllianceId, [], true))
+	funcs.push(this.dataService.findAllianceAsync(enemyAllianceId, [], true))
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		attackAllianceDoc = doc_1
 		defenceAllianceDoc = doc_2
@@ -2249,7 +2249,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var playerDoc = null
 		var playerData = []
 		var funcs = []
-		return self.dataService.findPlayerAsync(playerId, true).then(function(doc){
+		return self.dataService.findPlayerAsync(playerId, [], true).then(function(doc){
 			playerDoc = doc
 			var events = playerIds[playerDoc._id]
 			_.each(events, function(event){
@@ -2295,7 +2295,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		if(_.isString(killMaxPlayerId)){
 			var memberDoc = null
 			var memberData = []
-			self.dataService.findPlayerAsync(killMaxPlayerId, true).then(function(doc){
+			self.dataService.findPlayerAsync(killMaxPlayerId, [], true).then(function(doc){
 				memberDoc = doc
 				memberDoc.resources.gem += killMaxPlayerGemGet
 				memberData.push(["resources.gem", memberDoc.resources.gem])

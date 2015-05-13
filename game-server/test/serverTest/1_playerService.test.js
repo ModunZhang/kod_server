@@ -42,11 +42,7 @@
 //			Api.loginPlayer(Config.deviceId, function(doc){
 //				doc.code.should.equal(200)
 //				m_user = doc.playerData
-//				Api.loginPlayer(Config.deviceId, function(doc){
-//					doc.code.should.equal(200)
-//					m_user = doc.playerData
-//					done()
-//				})
+//				done()
 //			})
 //		})
 //	})
