@@ -669,11 +669,11 @@ pro.timeoutAllPlayers = function(callback){
 	var players = _.values(this.players)
 	_.each(players, function(player){
 		clearTimeout(player.timeout)
-	})
+	});
 
 	(function excuteTimeout(){
 		if(players.length > 0){
-			timeoutPlayerAsync.then(function(){
+			timeoutPlayerAsync(players.shift()).then(function(){
 				excuteTimeout()
 			})
 		}else{
@@ -707,11 +707,11 @@ pro.timeoutAllAlliances = function(callback){
 	var alliances = _.values(this.alliances)
 	_.each(alliances, function(alliance){
 		clearTimeout(alliance.timeout)
-	})
+	});
 
 	(function excuteTimeout(){
 		if(alliances.length > 0){
-			timeoutAllianceAsync.then(function(){
+			timeoutAllianceAsync(alliances.shift()).then(function(){
 				excuteTimeout()
 			})
 		}else{

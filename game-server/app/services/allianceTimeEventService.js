@@ -2073,8 +2073,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	var pushFuncs = []
 	var now = Date.now()
 	var playerIds = {}
-	var attackDragon = null
-
+	var attackDragon = null;
 	var killMaxPlayerId = (function(){
 		var maxPlayerKill = null
 		var playerKills = attackAllianceDoc.allianceFight.attackPlayerKills.concat(attackAllianceDoc.allianceFight.defencePlayerKills)
@@ -2082,16 +2081,16 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			if(maxPlayerKill == null || maxPlayerKill < playerKill.kill) maxPlayerKill = playerKill
 		})
 		return _.isObject(maxPlayerKill) ? maxPlayerKill.id : null
-	})()
+	})();
 	var killMaxPlayerGemGet = (function(){
 		if(!_.isString(killMaxPlayerId)) return 0
 		var serverConfig = self.app.getServerById(self.app.get("cacheServerId"))
 		return DataUtils.getAllianceFightKillFirstGemCount(serverConfig.level)
-	})()
+	})();
 	var allianceFightInitHonour = (function(){
 		var serverConfig = self.app.getServerById(self.app.get("cacheServerId"))
 		return DataUtils.getAllianceFightInitHonourCount(serverConfig.level)
-	})()
+	})();
 
 	var pushPlayerIds = function(attackAllianceDoc, attackAllianceData, defenceAllianceDoc, defenceAllianceData, playerIds){
 		var pushEvent = function(playerId, eventType, eventData){
