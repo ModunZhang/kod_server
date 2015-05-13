@@ -41,6 +41,19 @@ pro.getAllianceModel = function(){
 }
 
 /**
+ * 获取玩家登陆时的数据
+ * @param id
+ * @param callback
+ */
+pro.loginPlayer = function(id, callback){
+	this.app.rpc.cache.cacheRemote.loginPlayer.toServer(this.cacheServerId, id, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
  * 按Id直接查询玩家,不做请求排序
  * @param id
  * @param keys

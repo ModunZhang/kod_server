@@ -6,6 +6,7 @@
 
 var _ = require("underscore")
 var toobusy = require("toobusy-js")
+var Promise = require("bluebird")
 
 var ErrorUtils = require("../../../utils/errorUtils")
 var Consts = require("../../../consts/consts")
@@ -26,6 +27,53 @@ var CacheRemote = function(app){
 }
 
 var pro = CacheRemote.prototype
+
+/**
+ * 获取玩家登陆时的数据
+ * @param id
+ * @param callback
+ */
+pro.loginPlayer = function(id, callback){
+	if(!force && toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.loginPlayer", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	this.cacheService.findPlayerAsync(id, [], false).then(function(doc){
+		playerDoc = doc
+		if(!_.isEmpty(playerDoc.allianceId)){
+			return self.cacheService.findAllianceAsync(id, [], false).then(function(doc){
+				allianceDoc = doc
+				return Promise.resolve()
+			})
+		}else return Promise.resolve()
+	}).then(function(){
+		var unreadMails = _.filter(playerDoc.mails, function(mail){
+			return !mail.isRead
+		}).length
+		var unreadReports = _.filter(playerDoc.reports, function(report){
+			return !report.isRead
+		}).length
+		playerDoc = _.omit(playerDoc, ["mails, sendMails, reports"])
+		playerDoc.mailStatus = {
+			unreadMails:unreadMails,
+			unreadReports:unreadReports
+		}
+
+		if(_.isObject(allianceDoc)){
+
+		}
+	}).then(function(){
+
+	})
+
+	this.cacheService.findPlayer(id, keys, force, function(e, doc){
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
+	})
+}
 
 /**
  * 按Id直接查询玩家,不做请求排序
