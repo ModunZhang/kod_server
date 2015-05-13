@@ -931,7 +931,7 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 		return self.dataService.directFindPlayerAsync(helpedByPlayerId, [])
 	}).then(function(doc){
 		attackPlayerDoc = doc
-		troopDetail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, null, helpedByPlayerTroop.dragon, helpedByPlayerTroop.soldiers)
+		troopDetail = ReportUtils.getPlayerHelpDefenceTroopDetail(attackPlayerDoc, helpedByPlayerTroop.dragon, helpedByPlayerTroop.soldiers)
 		delete troopDetail.marchEventId
 		troopDetail.helpedByPlayerId = helpedByPlayerId
 		return Promise.resolve()
