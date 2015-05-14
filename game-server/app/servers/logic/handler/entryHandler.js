@@ -56,12 +56,6 @@ pro.login = function(msg, session, next){
 		playerDoc.reports = []
 		playerDoc.savedReports = []
 		allianceDoc = doc_2
-		if(_.isObject(allianceDoc)){
-			allianceDoc.joinRequestEvents = []
-			allianceDoc.shrineReports = []
-			allianceDoc.allianceFightReports = []
-			allianceDoc.itemLogs = []
-		}
 		enemyAllianceDoc = doc_3
 	}).then(function(){
 		next(null, {
