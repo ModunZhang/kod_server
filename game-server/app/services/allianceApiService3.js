@@ -568,8 +568,8 @@ pro.findAllianceToFight = function(playerId, callback){
 		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, attackAllianceDoc, attackAllianceDoc])
 		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, defenceAllianceDoc, defenceAllianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.omit(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.omit(attackAllianceDoc, Consts.AllianceViewDataKeys)])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.pick(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.pick(attackAllianceDoc, Consts.AllianceViewDataKeys)])
 
 		return Promise.resolve()
 	}).then(function(){
@@ -660,8 +660,8 @@ pro.revengeAlliance = function(playerId, reportId, callback){
 		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, attackAllianceDoc, attackAllianceDoc])
 		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, defenceAllianceDoc, defenceAllianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.omit(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.omit(attackAllianceDoc, Consts.AllianceViewDataKeys)])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.pick(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.pick(attackAllianceDoc, Consts.AllianceViewDataKeys)])
 
 		return Promise.resolve()
 	}).then(function(){
@@ -708,7 +708,7 @@ pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId))
 		allianceDoc = doc
-		allianceViewData = _.omit(allianceDoc, Consts.AllianceViewDataKeys)
+		allianceViewData = _.pick(allianceDoc, Consts.AllianceViewDataKeys)
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, allianceViewData)

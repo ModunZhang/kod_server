@@ -36,14 +36,14 @@ pro.onRequest = function(api, object){
  */
 pro.onRequestError = function(api, object, stack){
 	errorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-	errorLogger.error(stack)
+	errorLogger.error(_.isString(stack) ? stack : '')
 	requestLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-	requestLogger.error(stack)
+	requestLogger.error(_.isString(stack) ? stack : '')
 	requestErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-	requestErrorLogger.error(stack)
+	requestErrorLogger.error(_.isString(stack) ? stack : '')
 	if(_.isEqual(this.evn, "production")){
 		mailLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-		mailLogger.error(stack)
+		mailLogger.error(_.isString(stack) ? stack : '')
 	}
 }
 
@@ -64,13 +64,13 @@ pro.onEvent = function(api, object){
  */
 pro.onEventError = function(api, object, stack){
 	errorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-	errorLogger.error(stack)
+	errorLogger.error(_.isString(stack) ? stack : '')
 	eventLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-	eventLogger.error(stack)
+	eventLogger.error(_.isString(stack) ? stack : '')
 	eventErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-	eventErrorLogger.error(stack)
+	eventErrorLogger.error(_.isString(stack) ? stack : '')
 	if(_.isEqual(this.evn, "production")){
 		mailLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-		mailLogger.error(stack)
+		mailLogger.error(_.isString(stack) ? stack : '')
 	}
 }

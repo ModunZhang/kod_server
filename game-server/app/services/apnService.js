@@ -53,7 +53,7 @@ pro.getApnService = function(){
 				errCode:errCode,
 				device:device,
 				notification:notification
-			}, e.stack)
+			})
 		})
 
 		service.on("timeout", function(){

@@ -211,7 +211,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 			var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
 			return self.dataService.directFindAllianceAsync(enemyAllianceId, [], false).then(function(doc){
 				enemyAllianceDoc = doc
-				enemyAllianceViewData = _.omit(enemyAllianceDoc, Consts.AllianceViewDataKeys)
+				enemyAllianceViewData = _.pick(enemyAllianceDoc, Consts.AllianceViewDataKeys)
 				return Promise.resolve()
 			})
 		}else{
@@ -547,7 +547,7 @@ pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
 			var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
 			return self.dataService.directFindAllianceAsync(enemyAllianceId, [], false).then(function(doc){
 				enemyAllianceDoc = doc
-				enemyAllianceViewData = _.omit(enemyAllianceDoc, Consts.AllianceViewDataKeys)
+				enemyAllianceViewData = _.pick(enemyAllianceDoc, Consts.AllianceViewDataKeys)
 				return Promise.resolve()
 			})
 		}else{
@@ -743,7 +743,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 				var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
 				return self.dataService.directFindAllianceAsync(enemyAllianceId, [], false).then(function(doc){
 					enemyAllianceDoc = doc
-					enemyAllianceViewData = _.omit(enemyAllianceDoc, Consts.AllianceViewDataKeys)
+					enemyAllianceViewData = _.pick(enemyAllianceDoc, Consts.AllianceViewDataKeys)
 					return Promise.resolve()
 				})
 			}else{
