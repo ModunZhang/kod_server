@@ -3862,7 +3862,6 @@ Utils.addPlayerLevelExp = function(playerDoc, playerData, expAdd){
 			var name = params[1]
 			var count = parseInt(params[2])
 			playerDoc[type][name] += count
-			playerData.push([type + "." + name, playerDoc[type][name]])
 		})
 	}
 }

@@ -14,6 +14,7 @@
 //var Player = Promise.promisifyAll(require("../../app/domains/player"))
 //var Alliance = Promise.promisifyAll(require("../../app/domains/alliance"))
 //var Billing = Promise.promisifyAll(require("../../app/domains/billing"))
+//var Deal = Promise.promisifyAll(require("../../app/domains/deal"))
 //var Api = require("../api")
 //
 //var GameDatas = require("../../app/datas/GameDatas")
@@ -30,6 +31,8 @@
 //				return Alliance.removeAsync()
 //			}).then(function(){
 //				return Billing.removeAsync()
+//			}).then(function(){
+//				return Deal.removeAsync()
 //			}).then(function(){
 //				done()
 //			})

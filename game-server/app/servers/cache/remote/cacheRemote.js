@@ -46,6 +46,7 @@ pro.loginPlayer = function(id, callback){
 	var allianceDoc = null
 	var enemyAllianceDoc = null
 	this.cacheService.findPlayerAsync(id, [], false).then(function(doc){
+		if(_.isEmpty(doc)) return Promise.reject(ErrorUtils.playerNotExist(id, id))
 		if(!_.isEqual(doc.serverId, self.app.get("cacheServerId"))){
 			return new Promise(function(resolve, reject){
 				self.cacheService.removePlayerAsync(id).then(function(){
@@ -108,7 +109,7 @@ pro.directFindPlayer = function(id, keys, force, callback){
 		return
 	}
 	this.cacheService.directFindPlayer(id, keys, force, function(e, doc){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:_.isEmpty(doc) ? null : doc})
 	})
 }
 
@@ -126,7 +127,7 @@ pro.findPlayer = function(id, keys, force, callback){
 		return
 	}
 	this.cacheService.findPlayer(id, keys, force, function(e, doc){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:_.isEmpty(doc) ? null : doc})
 	})
 }
 
@@ -200,7 +201,7 @@ pro.directFindAlliance = function(id, keys, force, callback){
 		return
 	}
 	this.cacheService.directFindAlliance(id, keys, force, function(e, doc){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:_.isEmpty(doc) ? null : doc})
 	})
 }
 
@@ -218,7 +219,7 @@ pro.findAlliance = function(id, keys, force, callback){
 		return
 	}
 	this.cacheService.findAlliance(id, keys, force, function(e, doc){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:_.isEmpty(doc) ? null : doc})
 	})
 }
 

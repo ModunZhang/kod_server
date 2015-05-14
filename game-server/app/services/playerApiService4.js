@@ -57,7 +57,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var tech = null
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'buildingMaterials', 'growUpTasks', 'vipEvents', 'itemEvents', 'productionTechEvents'], false).then(function(doc){
 		playerDoc = doc
 		tech = playerDoc.productionTechs[techName]
 		if(tech.index > 9) return Promise.reject(new Error("此科技还未开放"))
@@ -71,7 +71,6 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		var buyedMaterials = null
 		var preTechEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, {})
@@ -123,6 +122,8 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			playerData.push(["productionTechEvents." + playerDoc.productionTechEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "productionTechEvents", event.id, finishTime - Date.now()])
 		}
+		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -166,7 +167,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 	var updateFuncs = []
 	var tech = null
 	var building = null
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'technologyMaterials', 'growUpTasks', 'vipEvents', 'itemEvents', 'militaryTechEvents'], false).then(function(doc){
 		playerDoc = doc
 		tech = playerDoc.militaryTechs[techName]
 		building = DataUtils.getPlayerMilitaryTechBuilding(playerDoc, techName)
@@ -184,7 +185,6 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		var buyedMaterials = null
 		var preTechEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, {})
@@ -237,6 +237,8 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			playerData.push(["militaryTechEvents." + playerDoc.militaryTechEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "militaryTechEvents", event.id, finishTime - Date.now()])
 		}
+		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -279,7 +281,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var building = null
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'growUpTasks', 'soldierStarEvents', 'vipEvents', 'itemEvents'], false).then(function(doc){
 		playerDoc = doc
 		building = DataUtils.getPlayerSoldierMilitaryTechBuilding(playerDoc, soldierName)
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -298,7 +300,6 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		var preTechEvent = null
 
 		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.push(["resources", playerDoc.resources])
 		if(finishNow){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.upgradeTime)
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, {})
@@ -343,6 +344,8 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			playerData.push(["soldierStarEvents." + playerDoc.soldierStarEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierStarEvents", event.id, finishTime - Date.now()])
 		}
+		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -378,7 +381,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'productionTechs', 'vipEvents', 'itemEvents'], false).then(function(doc){
 		playerDoc = doc
 
 		var gemUsed = DataUtils.getPlayerIntInit("changeTerrainNeedGemCount")
@@ -433,7 +436,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'items', 'dailyTasks'], false).then(function(doc){
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
@@ -493,7 +496,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 	var eventFuncs = []
 	var pushFuncs = []
 	var forceSave = false
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'allianceId', 'vipEvents', 'buildingMaterials', 'technologyMaterials', 'materialEvents', 'soldierMaterials', 'soldiers', 'soldierEvents', 'soldierStars', 'soldierStarEvents', 'woundedSoldiers', 'treatSoldierEvents', 'dragonMaterials', 'dragonEquipments', 'dragonEquipmentEvents', 'dragons', 'dragonHatchEvents', 'dragonDeathEvents', 'buildings', 'buildingEvents', 'houseEvents', 'productionTechs', 'productionTechEvents', 'militaryTechs', 'militaryTechEvents', 'helpToTroops', 'helpedByTroops', 'dailyQuests', 'dailyQuestEvents', 'items', 'itemEvents', 'dailyTasks', 'growUpTasks'], false).then(function(doc){
 		playerDoc = doc
 		var item = _.find(playerDoc.items, function(item){
 			return _.isEqual(item.name, itemName)
@@ -579,7 +582,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var forceSave = false
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'allianceId', 'vipEvents', 'buildingMaterials', 'technologyMaterials', 'materialEvents', 'soldierMaterials', 'soldiers', 'soldierEvents', 'soldierStars', 'soldierStarEvents', 'woundedSoldiers', 'treatSoldierEvents', 'dragonMaterials', 'dragonEquipments', 'dragonEquipmentEvents', 'dragons', 'dragonHatchEvents', 'dragonDeathEvents', 'buildings', 'buildingEvents', 'houseEvents', 'productionTechs', 'productionTechEvents', 'militaryTechs', 'militaryTechEvents', 'helpToTroops', 'helpedByTroops', 'dailyQuests', 'dailyQuestEvents', 'items', 'itemEvents', 'dailyTasks', 'growUpTasks'], false).then(function(doc){
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
@@ -672,10 +675,11 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 	var playerData = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'pve', 'dragons', 'growUpTasks', 'dailyTasks', 'soldiers', 'soldierStars', 'woundedSoldiers', 'buildings', 'productionTechs', 'items', 'soldierMaterials', 'vipEvents', 'itemEvents', 'dragonDeathEvents'], false).then(function(doc){
 		playerDoc = doc
 		var staminaUsed = pveData.staminaUsed
 		if(!_.isNumber(staminaUsed)) return Promise.reject(new Error("pveData 不合法"))
+		DataUtils.refreshPlayerResources(playerDoc)
 		if(playerDoc.resources.stamina - staminaUsed < 0) return Promise.reject(new Error("pveData 不合法"))
 		var location = pveData.location
 		if(!_.isNumber(location.x) || !_.isNumber(location.y) || !_.isNumber(location.z)) return Promise.reject(new Error("pveData 不合法"))
@@ -706,7 +710,6 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			playerData.push(["pve.rewardedFloors." + playerDoc.pve.rewardedFloors.indexOf(pveData.rewardedFloor), pveData.rewardedFloor])
 		}
 		playerDoc.resources.stamina -= staminaUsed
-		playerData.push(["resources.stamina", playerDoc.resources.stamina])
 		playerDoc.pve.totalStep += staminaUsed
 		playerData.push(["pve.totalStep", playerDoc.pve.totalStep])
 		playerDoc.pve.location = location
@@ -803,11 +806,14 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 						return Promise.reject(new Error("rewards 不合法"))
 					}
 					playerDoc[type][name] += count
-					playerData.push([type + "." + name, playerDoc[type][name]])
+					if(!_.isEqual("resources", type))
+						playerData.push([type + "." + name, playerDoc[type][name]])
 				}
 			}
 		}
 		TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData)
+		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -844,7 +850,7 @@ pro.gacha = function(playerId, type, callback){
 	var playerData = []
 	var updateFuncs = []
 
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'countInfo', 'basicInfo', 'resources', 'items', 'vipEvents'], false).then(function(doc){
 		playerDoc = doc
 		if(_.isEqual(type, Consts.GachaType.Normal) && DataUtils.isPlayerCanFreeNormalGacha(playerDoc)){
 			playerDoc.countInfo.todayFreeNormalGachaCount += 1
@@ -917,7 +923,7 @@ pro.bindGcId = function(playerId, gcId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'gcId'], false).then(function(doc){
 		playerDoc = doc
 		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.gcId))
 		return self.dataService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})
@@ -957,7 +963,7 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 	var self = this
 	var playerDoc = null
 	var newPlayerDoc = null
-	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, ['_id', 'gcId', 'serverId', 'logicServerId'], false).then(function(doc){
 		playerDoc = doc
 		if(_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.thePlayerDoNotBindGCId(playerId))
 		if(_.isEqual(playerDoc.gcId, gcId)) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByCurrentPlayer(playerId, gcId))
@@ -1011,7 +1017,7 @@ pro.forceSwitchGcId = function(playerId, deviceId, gcId, callback){
 
 	var self = this
 	var playerDoc = null
-	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, ['_id', 'gcId', 'logicServerId'], false).then(function(doc){
 		playerDoc = doc
 		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.gcId))
 		return self.dataService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})

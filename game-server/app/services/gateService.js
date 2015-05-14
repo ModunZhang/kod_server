@@ -74,7 +74,17 @@ pro.getPromotedLogicServer = function(cacheServerId){
  * @returns {Array}
  */
 pro.getServers = function(){
-	return this.app.getServersByType("cache")
+	var self = this
+	var cacheServers = this.app.getServersByType("cache");
+	_.each(cacheServers, function(cacheServer){
+		var userCount = 0;
+		_.each(self.logicServers, function(logicServer){
+			if(_.isEqual(logicServer.usedFor, cacheServer.id))
+				userCount += logicServer.userCount;
+		})
+		cacheServer.userCount = userCount;
+	})
+	return cacheServers
 }
 
 /**
