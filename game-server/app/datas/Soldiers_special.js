@@ -21,8 +21,8 @@ special["skeletonWarrior"] = {
 	killScore:5,
 	citizen:1,
 	recruitTime:30,
-	treatCoin:500,
-	treatTime:15,
+	treatCoin:250,
+	treatTime:8,
 	techBuildingName:"trainingGround"
 }
 special["skeletonArcher"] = {
@@ -43,8 +43,8 @@ special["skeletonArcher"] = {
 	killScore:5,
 	citizen:1,
 	recruitTime:30,
-	treatCoin:500,
-	treatTime:15,
+	treatCoin:250,
+	treatTime:8,
 	techBuildingName:"hunterHall"
 }
 special["deathKnight"] = {
@@ -65,8 +65,8 @@ special["deathKnight"] = {
 	killScore:9,
 	citizen:2,
 	recruitTime:60,
-	treatCoin:900,
-	treatTime:30,
+	treatCoin:450,
+	treatTime:15,
 	techBuildingName:"stable"
 }
 special["meatWagon"] = {
@@ -87,8 +87,8 @@ special["meatWagon"] = {
 	killScore:18,
 	citizen:4,
 	recruitTime:120,
-	treatCoin:1800,
-	treatTime:60,
+	treatCoin:900,
+	treatTime:30,
 	techBuildingName:"siege"
 }
 special["priest"] = {
@@ -108,9 +108,9 @@ special["priest"] = {
 	consumeFoodPerHour:1.000000,
 	killScore:5,
 	citizen:1,
-	recruitTime:30,
-	treatCoin:500,
-	treatTime:15,
+	recruitTime:40,
+	treatCoin:420,
+	treatTime:10,
 	techBuildingName:"trainingGround"
 }
 special["demonHunter"] = {
@@ -130,9 +130,9 @@ special["demonHunter"] = {
 	consumeFoodPerHour:1.000000,
 	killScore:5,
 	citizen:1,
-	recruitTime:30,
-	treatCoin:500,
-	treatTime:15,
+	recruitTime:40,
+	treatCoin:420,
+	treatTime:10,
 	techBuildingName:"hunterHall"
 }
 special["paladin"] = {
@@ -152,9 +152,9 @@ special["paladin"] = {
 	consumeFoodPerHour:2.000000,
 	killScore:10,
 	citizen:2,
-	recruitTime:60,
-	treatCoin:1000,
-	treatTime:30,
+	recruitTime:80,
+	treatCoin:780,
+	treatTime:20,
 	techBuildingName:"stable"
 }
 special["steamTank"] = {
@@ -174,8 +174,8 @@ special["steamTank"] = {
 	consumeFoodPerHour:3.000000,
 	killScore:20,
 	citizen:4,
-	recruitTime:120,
-	treatCoin:2000,
-	treatTime:60,
+	recruitTime:160,
+	treatCoin:1500,
+	treatTime:40,
 	techBuildingName:"siege"
 }

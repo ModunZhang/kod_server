@@ -8,7 +8,7 @@ materialDepot[1] = {
 	maxMaterial:10,
 	maxSoldierMaterial:10,
 	maxDragonMaterial:10,
-	maxDragonEquipment:2,
+	maxDragonEquipment:10,
 	power:32
 }
 materialDepot[2] = {
@@ -16,7 +16,7 @@ materialDepot[2] = {
 	maxMaterial:20,
 	maxSoldierMaterial:20,
 	maxDragonMaterial:20,
-	maxDragonEquipment:4,
+	maxDragonEquipment:20,
 	power:65
 }
 materialDepot[3] = {
@@ -24,7 +24,7 @@ materialDepot[3] = {
 	maxMaterial:40,
 	maxSoldierMaterial:40,
 	maxDragonMaterial:40,
-	maxDragonEquipment:8,
+	maxDragonEquipment:40,
 	power:97
 }
 materialDepot[4] = {
@@ -32,7 +32,7 @@ materialDepot[4] = {
 	maxMaterial:60,
 	maxSoldierMaterial:60,
 	maxDragonMaterial:60,
-	maxDragonEquipment:12,
+	maxDragonEquipment:60,
 	power:130
 }
 materialDepot[5] = {
@@ -40,7 +40,7 @@ materialDepot[5] = {
 	maxMaterial:80,
 	maxSoldierMaterial:80,
 	maxDragonMaterial:80,
-	maxDragonEquipment:16,
+	maxDragonEquipment:80,
 	power:162
 }
 materialDepot[6] = {
@@ -48,7 +48,7 @@ materialDepot[6] = {
 	maxMaterial:100,
 	maxSoldierMaterial:100,
 	maxDragonMaterial:100,
-	maxDragonEquipment:20,
+	maxDragonEquipment:100,
 	power:195
 }
 materialDepot[7] = {
@@ -56,7 +56,7 @@ materialDepot[7] = {
 	maxMaterial:120,
 	maxSoldierMaterial:120,
 	maxDragonMaterial:120,
-	maxDragonEquipment:24,
+	maxDragonEquipment:120,
 	power:227
 }
 materialDepot[8] = {
@@ -64,7 +64,7 @@ materialDepot[8] = {
 	maxMaterial:140,
 	maxSoldierMaterial:140,
 	maxDragonMaterial:140,
-	maxDragonEquipment:28,
+	maxDragonEquipment:140,
 	power:260
 }
 materialDepot[9] = {
@@ -72,7 +72,7 @@ materialDepot[9] = {
 	maxMaterial:160,
 	maxSoldierMaterial:160,
 	maxDragonMaterial:160,
-	maxDragonEquipment:32,
+	maxDragonEquipment:160,
 	power:292
 }
 materialDepot[10] = {
@@ -80,7 +80,7 @@ materialDepot[10] = {
 	maxMaterial:180,
 	maxSoldierMaterial:180,
 	maxDragonMaterial:180,
-	maxDragonEquipment:36,
+	maxDragonEquipment:180,
 	power:325
 }
 materialDepot[11] = {
@@ -88,7 +88,7 @@ materialDepot[11] = {
 	maxMaterial:200,
 	maxSoldierMaterial:200,
 	maxDragonMaterial:200,
-	maxDragonEquipment:40,
+	maxDragonEquipment:200,
 	power:487
 }
 materialDepot[12] = {
@@ -96,7 +96,7 @@ materialDepot[12] = {
 	maxMaterial:220,
 	maxSoldierMaterial:220,
 	maxDragonMaterial:220,
-	maxDragonEquipment:44,
+	maxDragonEquipment:220,
 	power:650
 }
 materialDepot[13] = {
@@ -104,7 +104,7 @@ materialDepot[13] = {
 	maxMaterial:240,
 	maxSoldierMaterial:240,
 	maxDragonMaterial:240,
-	maxDragonEquipment:48,
+	maxDragonEquipment:240,
 	power:975
 }
 materialDepot[14] = {
@@ -112,7 +112,7 @@ materialDepot[14] = {
 	maxMaterial:260,
 	maxSoldierMaterial:260,
 	maxDragonMaterial:260,
-	maxDragonEquipment:52,
+	maxDragonEquipment:260,
 	power:1300
 }
 materialDepot[15] = {
@@ -120,7 +120,7 @@ materialDepot[15] = {
 	maxMaterial:280,
 	maxSoldierMaterial:280,
 	maxDragonMaterial:280,
-	maxDragonEquipment:56,
+	maxDragonEquipment:280,
 	power:1950
 }
 materialDepot[16] = {
@@ -128,7 +128,7 @@ materialDepot[16] = {
 	maxMaterial:300,
 	maxSoldierMaterial:300,
 	maxDragonMaterial:300,
-	maxDragonEquipment:60,
+	maxDragonEquipment:300,
 	power:2600
 }
 materialDepot[17] = {
@@ -136,7 +136,7 @@ materialDepot[17] = {
 	maxMaterial:320,
 	maxSoldierMaterial:320,
 	maxDragonMaterial:320,
-	maxDragonEquipment:64,
+	maxDragonEquipment:320,
 	power:3250
 }
 materialDepot[18] = {
@@ -144,7 +144,7 @@ materialDepot[18] = {
 	maxMaterial:340,
 	maxSoldierMaterial:340,
 	maxDragonMaterial:340,
-	maxDragonEquipment:68,
+	maxDragonEquipment:340,
 	power:3900
 }
 materialDepot[19] = {
@@ -152,7 +152,7 @@ materialDepot[19] = {
 	maxMaterial:360,
 	maxSoldierMaterial:360,
 	maxDragonMaterial:360,
-	maxDragonEquipment:72,
+	maxDragonEquipment:360,
 	power:4550
 }
 materialDepot[20] = {
@@ -160,7 +160,7 @@ materialDepot[20] = {
 	maxMaterial:380,
 	maxSoldierMaterial:380,
 	maxDragonMaterial:380,
-	maxDragonEquipment:76,
+	maxDragonEquipment:380,
 	power:5200
 }
 materialDepot[21] = {
@@ -168,7 +168,7 @@ materialDepot[21] = {
 	maxMaterial:400,
 	maxSoldierMaterial:400,
 	maxDragonMaterial:400,
-	maxDragonEquipment:80,
+	maxDragonEquipment:400,
 	power:5850
 }
 materialDepot[22] = {
@@ -176,7 +176,7 @@ materialDepot[22] = {
 	maxMaterial:420,
 	maxSoldierMaterial:420,
 	maxDragonMaterial:420,
-	maxDragonEquipment:84,
+	maxDragonEquipment:420,
 	power:8775
 }
 materialDepot[23] = {
@@ -184,7 +184,7 @@ materialDepot[23] = {
 	maxMaterial:440,
 	maxSoldierMaterial:440,
 	maxDragonMaterial:440,
-	maxDragonEquipment:88,
+	maxDragonEquipment:440,
 	power:11700
 }
 materialDepot[24] = {
@@ -192,7 +192,7 @@ materialDepot[24] = {
 	maxMaterial:460,
 	maxSoldierMaterial:460,
 	maxDragonMaterial:460,
-	maxDragonEquipment:92,
+	maxDragonEquipment:460,
 	power:14625
 }
 materialDepot[25] = {
@@ -200,7 +200,7 @@ materialDepot[25] = {
 	maxMaterial:480,
 	maxSoldierMaterial:480,
 	maxDragonMaterial:480,
-	maxDragonEquipment:96,
+	maxDragonEquipment:480,
 	power:19500
 }
 materialDepot[26] = {
@@ -208,7 +208,7 @@ materialDepot[26] = {
 	maxMaterial:500,
 	maxSoldierMaterial:500,
 	maxDragonMaterial:500,
-	maxDragonEquipment:100,
+	maxDragonEquipment:500,
 	power:29250
 }
 materialDepot[27] = {
@@ -216,7 +216,7 @@ materialDepot[27] = {
 	maxMaterial:550,
 	maxSoldierMaterial:550,
 	maxDragonMaterial:550,
-	maxDragonEquipment:110,
+	maxDragonEquipment:550,
 	power:39000
 }
 materialDepot[28] = {
@@ -224,7 +224,7 @@ materialDepot[28] = {
 	maxMaterial:600,
 	maxSoldierMaterial:600,
 	maxDragonMaterial:600,
-	maxDragonEquipment:120,
+	maxDragonEquipment:600,
 	power:52000
 }
 materialDepot[29] = {
@@ -232,7 +232,7 @@ materialDepot[29] = {
 	maxMaterial:700,
 	maxSoldierMaterial:700,
 	maxDragonMaterial:700,
-	maxDragonEquipment:140,
+	maxDragonEquipment:700,
 	power:65000
 }
 materialDepot[30] = {
@@ -240,7 +240,7 @@ materialDepot[30] = {
 	maxMaterial:800,
 	maxSoldierMaterial:800,
 	maxDragonMaterial:800,
-	maxDragonEquipment:160,
+	maxDragonEquipment:800,
 	power:78000
 }
 materialDepot[31] = {
@@ -248,7 +248,7 @@ materialDepot[31] = {
 	maxMaterial:900,
 	maxSoldierMaterial:900,
 	maxDragonMaterial:900,
-	maxDragonEquipment:180,
+	maxDragonEquipment:900,
 	power:91000
 }
 materialDepot[32] = {
@@ -256,7 +256,7 @@ materialDepot[32] = {
 	maxMaterial:1000,
 	maxSoldierMaterial:1000,
 	maxDragonMaterial:1000,
-	maxDragonEquipment:200,
+	maxDragonEquipment:1000,
 	power:104000
 }
 materialDepot[33] = {
@@ -264,62 +264,62 @@ materialDepot[33] = {
 	maxMaterial:1200,
 	maxSoldierMaterial:1200,
 	maxDragonMaterial:1200,
-	maxDragonEquipment:240,
+	maxDragonEquipment:1200,
 	power:117000
 }
 materialDepot[34] = {
 	level:34,
-	maxMaterial:1500,
-	maxSoldierMaterial:1500,
-	maxDragonMaterial:1500,
-	maxDragonEquipment:300,
+	maxMaterial:1400,
+	maxSoldierMaterial:1400,
+	maxDragonMaterial:1400,
+	maxDragonEquipment:1400,
 	power:130000
 }
 materialDepot[35] = {
 	level:35,
-	maxMaterial:2000,
-	maxSoldierMaterial:2000,
-	maxDragonMaterial:2000,
-	maxDragonEquipment:400,
+	maxMaterial:1600,
+	maxSoldierMaterial:1600,
+	maxDragonMaterial:1600,
+	maxDragonEquipment:1600,
 	power:143000
 }
 materialDepot[36] = {
 	level:36,
-	maxMaterial:2500,
-	maxSoldierMaterial:2500,
-	maxDragonMaterial:2500,
-	maxDragonEquipment:500,
+	maxMaterial:1800,
+	maxSoldierMaterial:1800,
+	maxDragonMaterial:1800,
+	maxDragonEquipment:1800,
 	power:162500
 }
 materialDepot[37] = {
 	level:37,
-	maxMaterial:3000,
-	maxSoldierMaterial:3000,
-	maxDragonMaterial:3000,
-	maxDragonEquipment:600,
+	maxMaterial:2000,
+	maxSoldierMaterial:2000,
+	maxDragonMaterial:2000,
+	maxDragonEquipment:2000,
 	power:182000
 }
 materialDepot[38] = {
 	level:38,
-	maxMaterial:3500,
-	maxSoldierMaterial:3500,
-	maxDragonMaterial:3500,
-	maxDragonEquipment:700,
+	maxMaterial:2200,
+	maxSoldierMaterial:2200,
+	maxDragonMaterial:2200,
+	maxDragonEquipment:2200,
 	power:201500
 }
 materialDepot[39] = {
 	level:39,
-	maxMaterial:4000,
-	maxSoldierMaterial:4000,
-	maxDragonMaterial:4000,
-	maxDragonEquipment:800,
+	maxMaterial:2500,
+	maxSoldierMaterial:2500,
+	maxDragonMaterial:2500,
+	maxDragonEquipment:2500,
 	power:221000
 }
 materialDepot[40] = {
 	level:40,
-	maxMaterial:5000,
-	maxSoldierMaterial:5000,
-	maxDragonMaterial:5000,
-	maxDragonEquipment:1000,
+	maxMaterial:3000,
+	maxSoldierMaterial:3000,
+	maxDragonMaterial:3000,
+	maxDragonEquipment:3000,
 	power:292500
 }
