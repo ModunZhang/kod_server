@@ -908,9 +908,13 @@
 //			Api.loginPlayer(Config.deviceId, function(doc){
 //				doc.code.should.equal(200)
 //				m_user = doc.playerData
-//				Api.readMails([m_user.mails[0].id], function(doc){
+//				Api.getMails(0, function(doc){
+//					m_user.mails = doc.mails
 //					doc.code.should.equal(200)
-//					done()
+//					Api.readMails([m_user.mails[0].id], function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
 //				})
 //			})
 //		})
@@ -924,13 +928,6 @@
 //
 //		it("unSaveMail 正常取消收藏", function(done){
 //			Api.unSaveMail(m_user.mails[0].id, function(doc){
-//				doc.code.should.equal(200)
-//				done()
-//			})
-//		})
-//
-//		it("getMails 获取邮件", function(done){
-//			Api.getMails(0, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})

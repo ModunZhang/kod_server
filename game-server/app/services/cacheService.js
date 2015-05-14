@@ -621,8 +621,8 @@ pro.timeoutPlayer = function(id, doc, callback){
 pro.removePlayer = function(id, callback){
 	var player = this.players[id]
 	clearTimeout(player.timeout)
-	delete self.players[id]
-	UnlockPlayer.call(self, id)
+	delete this.players[id]
+	UnlockPlayer.call(this, id)
 	callback()
 }
 

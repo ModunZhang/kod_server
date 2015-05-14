@@ -106,5 +106,5 @@ pro.updatePlayerSession = function(playerId, keys, values, callback){
  */
 pro.isPlayerOnline = function(playerId, callback){
 	var sessions = this.sessionService.service.uidMap[playerId]
-	callback(null, sessions.length > 0)
+	callback(null, !_.isEmpty(sessions))
 }

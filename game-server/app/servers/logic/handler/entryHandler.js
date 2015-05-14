@@ -38,7 +38,6 @@ pro.login = function(msg, session, next){
 		return
 	}
 
-	var self = this
 	var deviceId = msg.deviceId
 	if(!_.isString(deviceId)){
 		e = new Error("deviceId 不合法")
@@ -51,7 +50,16 @@ pro.login = function(msg, session, next){
 	var enemyAllianceDoc = null
 	this.playerApiService.playerLoginAsync(session, deviceId).spread(function(doc_1, doc_2, doc_3){
 		playerDoc = doc_1
+		playerDoc.mails = []
+		playerDoc.sendMails = []
+		playerDoc.reports = []
 		allianceDoc = doc_2
+		if(_.isObject(allianceDoc)){
+			allianceDoc.joinRequestEvents = []
+			allianceDoc.shrineReports = []
+			allianceDoc.allianceFightReports = []
+			allianceDoc.itemLogs = []
+		}
 		enemyAllianceDoc = doc_3
 	}).then(function(){
 		next(null, {

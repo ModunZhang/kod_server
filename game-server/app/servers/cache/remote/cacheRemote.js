@@ -47,7 +47,11 @@ pro.loginPlayer = function(id, callback){
 	var enemyAllianceDoc = null
 	this.cacheService.findPlayerAsync(id, [], false).then(function(doc){
 		if(!_.isEqual(doc.serverId, self.app.get("cacheServerId"))){
-			return Promise.reject(ErrorUtils.playerNotInCurrentServer(playerDoc._id, self.app.get("cacheServerId"), playerDoc.serverId))
+			return new Promise(function(resolve, reject){
+				self.cacheService.removePlayerAsync(id).then(function(){
+					reject(ErrorUtils.playerNotInCurrentServer(doc._id, self.app.get("cacheServerId"), doc.serverId))
+				})
+			})
 		}
 
 		var unreadMails = _.filter(doc.mails, function(mail){
@@ -57,22 +61,14 @@ pro.loginPlayer = function(id, callback){
 			return !report.isRead
 		}).length
 		playerDoc = _.omit(doc, ["mails", "sendMails", "reports"])
-		playerDoc.mails = []
-		playerDoc.sendMails = []
-		playerDoc.reports = []
 		playerDoc.mailStatus = {
 			unreadMails:unreadMails,
 			unreadReports:unreadReports
 		}
 		playerDoc.serverTime = Date.now()
-
 		if(!_.isEmpty(playerDoc.allianceId)){
 			return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
 				allianceDoc = _.omit(doc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs"])
-				allianceDoc.joinRequestEvents = []
-				allianceDoc.shrineReports = []
-				allianceDoc.allianceFightReports = []
-				allianceDoc.itemLogs = []
 				if(_.isObject(allianceDoc.allianceFight)){
 					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
 					return self.cacheService.directFindAllianceAsync(enemyAllianceId, [], false).then(function(doc){

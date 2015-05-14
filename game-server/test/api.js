@@ -10,9 +10,6 @@ var _ = require("underscore")
 
 var Api = module.exports
 
-var GameDatas = require("../app/datas/GameDatas")
-var Errors = GameDatas.Errors.errors
-
 
 Api.loginPlayer = function(deviceId, callback){
 	pomelo.disconnect()
