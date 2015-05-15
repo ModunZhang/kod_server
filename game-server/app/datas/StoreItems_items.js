@@ -6,7 +6,7 @@ module.exports = items
 items[1] = {
 	order:1,
 	name:"product_1",
-	productId:"product_1",
+	productId:"com.dragonfall.2500dragoncoins",
 	price:4.990000,
 	desc:"新手大礼包",
 	gem:2500,
@@ -15,7 +15,7 @@ items[1] = {
 items[2] = {
 	order:2,
 	name:"product_2",
-	productId:"product_2",
+	productId:"com.dragonfall.5500dragoncoins",
 	price:9.990000,
 	desc:"探险家礼包",
 	gem:5500,
@@ -25,7 +25,7 @@ items[2] = {
 items[3] = {
 	order:3,
 	name:"product_3",
-	productId:"product__3",
+	productId:"com.dragonfall.12000dragoncoins",
 	price:19.990000,
 	desc:"铁血军团礼包",
 	gem:12000,
@@ -35,7 +35,7 @@ items[3] = {
 items[4] = {
 	order:4,
 	name:"product_4",
-	productId:"product_4",
+	productId:"com.dragonfall.35000dragoncoins",
 	price:49.990000,
 	desc:"帝国荣耀礼包",
 	gem:35000,
@@ -45,7 +45,7 @@ items[4] = {
 items[5] = {
 	order:5,
 	name:"product_5",
-	productId:"product_5",
+	productId:"com.dragonfall.80000dragoncoins",
 	price:99.990000,
 	desc:"龙族王朝礼包",
 	gem:80000,
