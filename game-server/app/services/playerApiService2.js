@@ -47,7 +47,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'buildings', 'productionTechs', 'soldiers', 'soldierStars', 'dragonMaterials', 'dragonEquipments', 'dailyTasks', 'vipEvents', 'itemEvents', 'dragonEquipmentEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'buildings', 'productionTechs', 'soldiers', 'soldierStars', 'dragonMaterials', 'dragonEquipments', 'dailyTasks', 'vipEvents', 'itemEvents', 'dragonEquipmentEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_9
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -147,7 +147,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'woundedSoldiers', 'productionTechs', 'growUpTasks', 'vipEvents', 'itemEvents', 'treatSoldierEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'woundedSoldiers', 'productionTechs', 'growUpTasks', 'vipEvents', 'itemEvents', 'treatSoldierEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_6
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -733,7 +733,7 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'dailyQuestEvents', 'vipEvents', 'itemEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'dailyQuestEvents', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		var questEvent = _.find(playerDoc.dailyQuestEvents, function(event){
 			return _.isEqual(event.id, questEventId)

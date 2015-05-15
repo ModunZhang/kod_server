@@ -57,7 +57,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var tech = null
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'buildingMaterials', 'growUpTasks', 'vipEvents', 'itemEvents', 'productionTechEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'buildingMaterials', 'growUpTasks', 'vipEvents', 'itemEvents', 'productionTechEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		tech = playerDoc.productionTechs[techName]
 		if(tech.index > 9) return Promise.reject(new Error("此科技还未开放"))
@@ -167,7 +167,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 	var updateFuncs = []
 	var tech = null
 	var building = null
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'technologyMaterials', 'growUpTasks', 'vipEvents', 'itemEvents', 'militaryTechEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'technologyMaterials', 'growUpTasks', 'vipEvents', 'itemEvents', 'militaryTechEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		tech = playerDoc.militaryTechs[techName]
 		building = DataUtils.getPlayerMilitaryTechBuilding(playerDoc, techName)
@@ -281,7 +281,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var building = null
-	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'growUpTasks', 'soldierStarEvents', 'vipEvents', 'itemEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'growUpTasks', 'soldierStarEvents', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		building = DataUtils.getPlayerSoldierMilitaryTechBuilding(playerDoc, soldierName)
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -675,7 +675,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 	var playerData = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'pve', 'dragons', 'growUpTasks', 'dailyTasks', 'soldiers', 'soldierStars', 'woundedSoldiers', 'buildings', 'productionTechs', 'items', 'soldierMaterials', 'vipEvents', 'itemEvents', 'dragonDeathEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'pve', 'dragons', 'growUpTasks', 'dailyTasks', 'soldiers', 'soldierStars', 'woundedSoldiers', 'buildings', 'productionTechs', 'items', 'soldierMaterials', 'vipEvents', 'itemEvents', 'dragonDeathEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		var staminaUsed = pveData.staminaUsed
 		if(!_.isNumber(staminaUsed)) return Promise.reject(new Error("pveData 不合法"))
