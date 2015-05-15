@@ -126,6 +126,36 @@ pro.timeoutPlayer = function(doc, data, callback){
 }
 
 /**
+ * 发送玩家邮件
+ * @param id
+ * @param memberId
+ * @param title
+ * @param content
+ * @param callback
+ */
+pro.sendPlayerMail = function(id, memberId, title, content, callback){
+	this.app.rpc.cache.cacheRemote.sendPlayerMail.toServer(this.cacheServerId, id, memberId, title, content, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
+ * 新增玩家邮件
+ * @param id
+ * @param mail
+ * @param callback
+ */
+pro.addPlayerMail = function(id, mail, callback){
+	this.app.rpc.cache.cacheRemote.addPlayerMail.toServer(this.cacheServerId, id, mail, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
  * 阅读邮件
  * @param id
  * @param mailIds

@@ -47,7 +47,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'buildings', 'productionTechs', 'soldiers', 'soldierStars', 'dragonMaterials', 'dragonEquipments', 'dailyTasks', 'vipEvents', 'itemEvents', 'dragonEquipmentEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'soldiers', 'soldierStars', 'dragonMaterials', 'dragonEquipments', 'dailyTasks', 'vipEvents', 'itemEvents', 'dragonEquipmentEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_9
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -888,89 +888,12 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 		callback(new Error("content 不合法"))
 		return
 	}
-
 	var self = this
-	var playerDoc = null
-	var playerData = []
-	var memberDoc = null
-	var memberData = []
-	var allianceDoc = null
-	var updateFuncs = []
-	var pushFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'allianceId', 'basicInfo', 'sendMails'], false).then(function(doc){
-		playerDoc = doc
-		return self.dataService.findPlayerAsync(memberId, ['_id', 'basicInfo', 'mails'], false)
-	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
-		memberDoc = doc
-		if(_.isString(playerDoc.allianceId)){
-			return self.dataService.directFindAllianceAsync(playerDoc.allianceId, ['_id', 'logicServerId', 'basicInfo'], false).then(function(doc){
-				allianceDoc = doc
-				return Promise.resolve()
-			})
-		}else{
-			return Promise.resolve()
-		}
-	}).then(function(){
-		var mailToMember = {
-			id:ShortId.generate(),
-			title:title,
-			fromId:playerDoc._id,
-			fromName:playerDoc.basicInfo.name,
-			fromIcon:playerDoc.basicInfo.icon,
-			fromAllianceTag:_.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "",
-			content:content,
-			sendTime:Date.now(),
-			isRead:false,
-			isSaved:false
-		}
-		if(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
-			var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
-			LogicUtils.removeItemInArray(memberDoc.mails, mail)
-			memberData.push(["mails." + memberDoc.mails.indexOf(mail), null])
-		}
-		memberDoc.mails.push(mailToMember)
-		memberData.push(["mails." + memberDoc.mails.indexOf(mailToMember), mailToMember])
-
-		var mailToPlayer = {
-			id:ShortId.generate(),
-			title:title,
-			fromName:playerDoc.basicInfo.name,
-			fromIcon:playerDoc.basicInfo.icon,
-			fromAllianceTag:_.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "",
-			toId:memberDoc._id,
-			toName:memberDoc.basicInfo.name,
-			content:content,
-			sendTime:Date.now()
-		}
-		if(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
-			playerDoc.sendMails.shift()
-			playerData.push(["sendMails.0", null])
-		}
-		playerDoc.sendMails.push(mailToPlayer)
-		playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mailToPlayer), mailToPlayer])
-
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, memberDoc, memberDoc])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
+	this.dataService.sendPlayerMailAsync(playerId, memberId, title, content).spread(function(playerData, memberDoc, memberData){
+		self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		if(_.isObject(memberDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		callback(e)
 	})
 }
 

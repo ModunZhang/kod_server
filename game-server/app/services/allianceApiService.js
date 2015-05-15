@@ -74,7 +74,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 	var playerData = []
 	var allianceDoc = null
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'allianceId', 'serverId', 'apnId', 'basicInfo', 'buildings', 'allianceInfo', 'countInfo', 'resources'], false).then(function(doc){
 		playerDoc = doc
 		if(_.isString(playerDoc.allianceId)){
 			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
