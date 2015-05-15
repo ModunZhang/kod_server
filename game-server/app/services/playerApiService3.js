@@ -158,7 +158,7 @@ pro.readReports = function(playerId, reportIds, callback){
 		}
 	}
 
-	this.dataService.readReportsAsync(playerId, reportIds).then(function(data){
+	this.dataService.readPlayerReportsAsync(playerId, reportIds).then(function(data){
 		callback(null, data)
 	}).catch(function(e){
 		callback(e)
@@ -177,7 +177,7 @@ pro.saveReport = function(playerId, reportId, callback){
 		return
 	}
 
-	this.dataService.saveReportAsync(playerId, reportId).then(function(data){
+	this.dataService.savePlayerReportAsync(playerId, reportId).then(function(data){
 		callback(null, data)
 	}).catch(function(e){
 		callback(e)
@@ -196,7 +196,7 @@ pro.unSaveReport = function(playerId, reportId, callback){
 		return
 	}
 
-	this.dataService.unSaveReportAsync(playerId, reportId).then(function(data){
+	this.dataService.unSavePlayerReportAsync(playerId, reportId).then(function(data){
 		callback(null, data)
 	}).catch(function(e){
 		callback(e)
@@ -215,7 +215,7 @@ pro.getReports = function(playerId, fromIndex, callback){
 		return
 	}
 
-	this.dataService.getReportsAsync(playerId, fromIndex).then(function(data){
+	this.dataService.getPlayerReportsAsync(playerId, fromIndex).then(function(data){
 		callback(null, data)
 	}).catch(function(e){
 		callback(e)
@@ -234,7 +234,7 @@ pro.getSavedReports = function(playerId, fromIndex, callback){
 		return
 	}
 
-	this.dataService.getSavedReportsAsync(playerId, fromIndex).then(function(data){
+	this.dataService.getPlayerSavedReportsAsync(playerId, fromIndex).then(function(data){
 		callback(null, data)
 	}).catch(function(e){
 		callback(e)
@@ -259,7 +259,7 @@ pro.deleteReports = function(playerId, reportIds, callback){
 		}
 	}
 
-	this.dataService.deleteReportsAsync(playerId, reportIds).then(function(data){
+	this.dataService.deletePlayerReportsAsync(playerId, reportIds).then(function(data){
 		callback(null, data)
 	}).catch(function(e){
 		callback(e)
