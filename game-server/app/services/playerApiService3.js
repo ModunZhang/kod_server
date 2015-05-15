@@ -727,7 +727,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 			playerData.push([type + "." + itemDoc.itemData.name, playerDoc[type][itemDoc.itemData.name]])
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		return self.dataService.findPlayerAsync(itemDoc.playerId, [], false)
+		return self.dataService.findPlayerAsync(itemDoc.playerId, ['_id', 'logicServerId', 'deals'], false)
 	}).then(function(doc){
 		sellerDoc = doc
 		var sellItem = _.find(sellerDoc.deals, function(deal){

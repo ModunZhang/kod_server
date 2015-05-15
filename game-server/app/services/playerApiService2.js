@@ -904,7 +904,7 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 		memberDoc = doc
 		if(_.isString(playerDoc.allianceId)){
-			return self.dataService.directFindAllianceAsync(playerDoc.allianceId, ['_id', 'basicInfo'], false).then(function(doc){
+			return self.dataService.directFindAllianceAsync(playerDoc.allianceId, ['_id', 'logicServerId', 'basicInfo'], false).then(function(doc){
 				allianceDoc = doc
 				return Promise.resolve()
 			})
