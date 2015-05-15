@@ -422,7 +422,7 @@ pro.unSavePlayerReport = function(id, reportId, callback){
 	var playerData = []
 	this.cacheService.findPlayerAsync(id, ['_id', 'reports'], false).then(function(doc){
 		playerDoc = doc
-		var report = LogicUtils.getPlayerMailById(playerDoc, reportId)
+		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
 		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(id, reportId))
 		report.isSaved = false
 		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", report.isSaved])
