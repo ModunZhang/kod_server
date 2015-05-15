@@ -597,21 +597,21 @@ Utils.dragonReachMaxStar = function(playerId, dragonType, currentStar){
 /**
  * 龙的等级未达到晋级要求
  * @param playerId
- * @param dragon
+ * @param dragonType
  */
-Utils.dragonUpgradeStarFailedForLevelNotLegal = function(playerId, dragon){
+Utils.dragonUpgradeStarFailedForLevelNotLegal = function(playerId, dragonType){
 	var config = Errors.dragonUpgradeStarFailedForLevelNotLegal
-	return CreateError(config, {playerId:playerId, dragon:dragon})
+	return CreateError(config, {playerId:playerId, dragonType:dragonType})
 }
 
 /**
  * 龙的装备未达到晋级要求
  * @param playerId
- * @param dragon
+ * @param dragonType
  */
-Utils.dragonUpgradeStarFailedForEquipmentNotLegal = function(playerId, dragon){
+Utils.dragonUpgradeStarFailedForEquipmentNotLegal = function(playerId, dragonType){
 	var config = Errors.dragonUpgradeStarFailedForEquipmentNotLegal
-	return CreateError(config, {playerId:playerId, dragon:dragon})
+	return CreateError(config, {playerId:playerId, dragonType:dragonType})
 }
 
 /**
@@ -688,31 +688,30 @@ Utils.reportNotExist = function(playerId, reportId){
 /**
  * 龙未处于空闲状态
  * @param playerId
- * @param dragon
+ * @param dragonType
  */
-Utils.dragonIsNotFree = function(playerId, dragon){
+Utils.dragonIsNotFree = function(playerId, dragonType){
 	var config = Errors.dragonIsNotFree
-	return CreateError(config, {playerId:playerId, dragon:dragon})
+	return CreateError(config, {playerId:playerId, dragonType:dragonType})
 }
 
 /**
  * 所选择的龙已经阵亡
  * @param playerId
- * @param dragon
+ * @param dragonType
  */
-Utils.dragonSelectedIsDead = function(playerId, dragon){
+Utils.dragonSelectedIsDead = function(playerId, dragonType){
 	var config = Errors.dragonSelectedIsDead
-	return CreateError(config, {playerId:playerId, dragon:dragon})
+	return CreateError(config, {playerId:playerId, dragonType:dragonType})
 }
 
 /**
  * 没有龙驻防在城墙
  * @param playerId
- * @param dragons
  */
-Utils.noDragonInDefenceStatus = function(playerId, dragons){
+Utils.noDragonInDefenceStatus = function(playerId){
 	var config = Errors.noDragonInDefenceStatus
-	return CreateError(config, {playerId:playerId, dragons:dragons})
+	return CreateError(config, {playerId:playerId})
 }
 
 /**
@@ -1452,11 +1451,11 @@ Utils.alliancePerceptionNotEnough = function(playerId, allianceId, stageName){
 /**
  * 所选择的龙领导力不足
  * @param playerId
- * @param dragon
+ * @param dragonType
  */
-Utils.dragonLeaderShipNotEnough = function(playerId, dragon){
+Utils.dragonLeaderShipNotEnough = function(playerId, dragonType){
 	var config = Errors.dragonLeaderShipNotEnough
-	return CreateError(config, {playerId:playerId, dragon:dragon})
+	return CreateError(config, {playerId:playerId, dragonType:dragonType})
 }
 
 /**

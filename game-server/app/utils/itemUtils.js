@@ -272,7 +272,7 @@ var DragonExp = function(playerDoc, playerData, dragonType, itemConfig){
 var DragonHp = function(playerDoc, playerData, dragonType, itemConfig){
 	var dragon = playerDoc.dragons[dragonType]
 	if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerDoc._id, dragonType))
-	if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerDoc._id, dragon))
+	if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerDoc._id, dragon.type))
 	DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
 	var dragonHpMax = DataUtils.getDragonMaxHp(dragon)
 	dragon.hp += parseInt(itemConfig.effect)

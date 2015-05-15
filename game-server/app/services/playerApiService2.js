@@ -535,8 +535,8 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star < 1) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
 		if(DataUtils.isDragonReachMaxStar(dragon)) return Promise.reject(ErrorUtils.dragonReachMaxStar(playerId, dragonType, dragon.star))
-		if(!DataUtils.isDragonReachUpgradeLevel(dragon)) return Promise.reject(ErrorUtils.dragonUpgradeStarFailedForLevelNotLegal(playerId, dragon))
-		if(!DataUtils.isDragonEquipmentsReachUpgradeLevel(dragon)) return Promise.reject(ErrorUtils.dragonUpgradeStarFailedForEquipmentNotLegal(playerId, dragon))
+		if(!DataUtils.isDragonReachUpgradeLevel(dragon)) return Promise.reject(ErrorUtils.dragonUpgradeStarFailedForLevelNotLegal(playerId, dragon.type))
+		if(!DataUtils.isDragonEquipmentsReachUpgradeLevel(dragon)) return Promise.reject(ErrorUtils.dragonUpgradeStarFailedForEquipmentNotLegal(playerId, dragon.type))
 
 		dragon.star += 1
 		_.each(dragon.equipments, function(equipment){

@@ -330,8 +330,8 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
 		}
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragon.type))
-		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon))
-		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon))
+		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
+		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
 		dragon.status = Consts.DragonStatus.Defence
 		playerData.push(["dragons." + dragon.type + ".status", dragon.status])
 
@@ -365,7 +365,7 @@ pro.cancelDefenceDragon = function(playerId, callback){
 	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'dragons', 'buildings', 'vipEvents', 'itemEvents'], false).then(function(doc){
 		playerDoc = doc
 		var dragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
-		if(!_.isObject(dragon)) return Promise.reject(ErrorUtils.noDragonInDefenceStatus(playerId, playerDoc.dragons))
+		if(!_.isObject(dragon)) return Promise.reject(ErrorUtils.noDragonInDefenceStatus(playerId))
 		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
 		dragon.status = Consts.DragonStatus.Free
 		playerData.push(["dragons." + dragon.type, dragon])
