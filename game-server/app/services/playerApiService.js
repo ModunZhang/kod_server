@@ -193,7 +193,7 @@ pro.playerLogout = function(session, reason, callback){
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'apnId', 'allianceId', 'logicServerId', 'countInfo', 'basicInfo', 'allianceInfo'], true).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'serverId', 'apnId', 'allianceId', 'logicServerId', 'countInfo', 'basicInfo', 'allianceInfo'], true).then(function(doc){
 		playerDoc = doc
 		return self.dataService.removePlayerFromChannelsAsync(playerDoc)
 	}).then(function(){

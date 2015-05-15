@@ -1576,7 +1576,7 @@ var PlayerSchema = new Schema({
 		id:{type:String, required:true},
 		from:{type:String, required:true},
 		name:{type:String, required:true},
-		count:{type:String, required:true},
+		count:{type:Number, required:true},
 		time:{type:Number, required:true}
 	}]
 })

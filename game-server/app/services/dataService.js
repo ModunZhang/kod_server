@@ -143,6 +143,20 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, cal
 }
 
 /**
+ * 为玩家添加战报
+ * @param id
+ * @param report
+ * @param callback
+ */
+pro.sendSysReport = function(id, report, callback){
+	this.app.rpc.cache.cacheRemote.sendSysReport.toServer(this.cacheServerId, id, report, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
  * 发送玩家邮件
  * @param id
  * @param memberId

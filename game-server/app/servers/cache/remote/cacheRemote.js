@@ -267,6 +267,40 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, cal
 }
 
 /**
+ * 为玩家添加战报
+ * @param id
+ * @param report
+ * @param callback
+ */
+pro.sendSysReport = function(id, report, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(id, ['_id', 'logicServerId', 'basicInfo', 'reports'], true).then(function(doc){
+		playerDoc = doc
+		if(playerDoc.reports.length >= Define.PlayerReportsMaxSize){
+			var willRemovedReport = this.getPlayerFirstUnSavedReport(playerDoc)
+			playerData.push(["reports." + playerDoc.reports.indexOf(willRemovedReport), null])
+			this.removeItemInArray(playerDoc.reports, willRemovedReport)
+		}
+		playerDoc.reports.push(report)
+		playerData.push(["reports." + playerDoc.reports.indexOf(report), report])
+		return self.cacheService.updatePlayerAsync(id, playerDoc)
+	}).then(function(){
+		PushToPlayer.call(self, playerDoc, playerData)
+		callback(null, {code:200, data:null})
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		})
+	})
+}
+
+/**
  * 发送玩家邮件
  * @param id
  * @param memberId

@@ -739,6 +739,7 @@ pro.editAllianceMemberTitle = function(playerId, allianceId, memberId, title, ca
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
+		allianceDoc = null
 		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedTitle")
 		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedContent")
 		return self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [previousTitleName, currentTitleName])
@@ -773,7 +774,6 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 	}
 
 	var self = this
-	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
 	var memberDoc = null
@@ -781,15 +781,11 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 	var updateFuncs = []
 	var pushFuncs = []
 	var eventFuncs = []
-	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
-		playerDoc = doc
-		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.dataService.findAllianceAsync(playerDoc.allianceId, [], false)
-	}).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'members', 'allianceFight', 'mapObjects', 'events', 'helpEvents', 'attackMarchEvents', 'attackMarchReturnEvents', 'strikeMarchEvents', 'strikeMarchReturnEvents', 'villageEvents', 'shrineEvents'], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "kickAllianceMemberOff")){
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "kickAllianceMemberOff"))
+			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "kickAllianceMemberOff"))
 		}
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotKickMemberOff(playerId, allianceDoc._id, memberId))
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
@@ -813,14 +809,11 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Kick, memberObject.name, [])
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
-		return self.dataService.findPlayerAsync(memberId, [], false)
+		return self.dataService.findPlayerAsync(memberId, ['_id', 'logicServerId', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'dragons', 'soldierMaterials', 'dragonMaterials', 'items', 'soldiers', 'soldierStars', 'helpToTroops', 'helpedByTroops', 'houseEvents', 'vipEvents', 'itemEvents'], false)
 	}).then(function(doc){
 		memberDoc = doc
 		memberDoc.allianceId = null
 		memberData.push(["allianceId", null])
-		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceKickMemberOffTitle")
-		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceKickMemberOffContent")
-		LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [allianceDoc.basicInfo.name], contentKey, [allianceDoc.basicInfo.name])
 
 		LogicUtils.returnPlayerMarchTroops(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 		LogicUtils.returnPlayerMarchReturnTroops(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
@@ -830,7 +823,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		var returnHelpedByMarchTroop = function(marchEvent){
 			var doc = null
 			var data = []
-			return self.dataService.findPlayerAsync(marchEvent.attackPlayerData.id, [], false).then(function(theDoc){
+			return self.dataService.findPlayerAsync(marchEvent.attackPlayerData.id, ['_id', 'logicServerId', 'basicInfo', 'dragons', 'soldiers', 'vipEvents', 'itemEvents'], false).then(function(theDoc){
 				doc = theDoc
 				LogicUtils.returnPlayerHelpedByMarchTroop(doc, data, marchEvent, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
@@ -844,7 +837,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		var returnHelpedByTroop = function(helpedByTroop){
 			var doc = null
 			var data = []
-			return self.dataService.findPlayerAsync(helpedByTroop.id, [], false).then(function(theDoc){
+			return self.dataService.findPlayerAsync(helpedByTroop.id, ['_id', 'logicServerId', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'dragons', 'soldierMaterials', 'dragonMaterials', 'items', 'soldiers', 'soldierStars', 'helpToTroops', 'houseEvents', 'vipEvents', 'itemEvents'], false).then(function(theDoc){
 				doc = theDoc
 				LogicUtils.returnPlayerHelpedByTroop(memberDoc, memberData, helpedByTroop, doc, data)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
@@ -858,7 +851,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		var returnHelpToTroop = function(helpToTroop){
 			var doc = null
 			var data = []
-			return self.dataService.findPlayerAsync(helpToTroop.beHelpedPlayerData.id, [], false).then(function(theDoc){
+			return self.dataService.findPlayerAsync(helpToTroop.beHelpedPlayerData.id, ['_id', 'logicServerId', 'helpedByTroops'], false).then(function(theDoc){
 				doc = theDoc
 				LogicUtils.returnPlayerHelpToTroop(memberDoc, memberData, helpToTroop, doc, data)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
@@ -901,6 +894,13 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
+		var allianceName = allianceDoc.basicInfo.name
+		allianceDoc = null
+		memberDoc = null
+		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceKickMemberOffTitle")
+		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceKickMemberOffContent")
+		return self.dataService.sendSysMailAsync(memberId, titleKey, [allianceName], contentKey, [allianceName])
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		var funcs = []
@@ -934,25 +934,17 @@ pro.handOverAllianceArchon = function(playerId, allianceId, memberId, callback){
 	}
 
 	var self = this
-	var playerDoc = null
-	var memberDoc = null
-	var memberData = []
 	var allianceDoc = null
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
 	var previousTitleName = null
 	var currentTitleName = null
-	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
-		playerDoc = doc
-		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-
-		return self.dataService.findAllianceAsync(playerDoc.allianceId, [], false)
-	}).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, ['_id', 'members', 'titles', 'events'], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!_.isEqual(playerObject.title, Consts.AllianceTitle.Archon)){
-			return Promise.reject(ErrorUtils.youAreNotTheAllianceArchon(playerId, playerDoc.allianceId))
+			return Promise.reject(ErrorUtils.youAreNotTheAllianceArchon(playerId, allianceId))
 		}
 
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
@@ -966,31 +958,22 @@ pro.handOverAllianceArchon = function(playerId, allianceId, memberId, callback){
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.HandOver, memberObject.name, [])
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-
-		return Promise.resolve()
-	}).then(function(){
-		return self.dataService.findPlayerAsync(memberId, [], false)
-	}).then(function(doc){
-		memberDoc = doc
-		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedTitle")
-		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedContent")
-		LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [], contentKey, [previousTitleName, currentTitleName])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, memberDoc, memberDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
+		allianceDoc = null
+		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedTitle")
+		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedContent")
+		return self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [previousTitleName, currentTitleName])
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
-		}
-		if(_.isObject(memberDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
