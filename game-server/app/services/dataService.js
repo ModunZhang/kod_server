@@ -125,7 +125,6 @@ pro.timeoutPlayer = function(doc, data, callback){
 	})
 }
 
-
 /**
  * 阅读邮件
  * @param id
@@ -134,6 +133,20 @@ pro.timeoutPlayer = function(doc, data, callback){
  */
 pro.readPlayerMails = function(id, mailIds, callback){
 	this.app.rpc.cache.cacheRemote.readPlayerMails.toServer(this.cacheServerId, id, mailIds, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
+ * 阅读邮件
+ * @param id
+ * @param mailId
+ * @param callback
+ */
+pro.savePlayerMail = function(id, mailId, callback){
+	this.app.rpc.cache.cacheRemote.savePlayerMail.toServer(this.cacheServerId, id, mailId, function(e, resp){
 		if(_.isObject(e)) callback(e)
 		else if(resp.code == 200) callback(null, resp.data)
 		else callback(ErrorUtils.createError(resp.code, resp.data, false))
@@ -243,7 +256,10 @@ pro.addPlayerToAllianceChannel = function(allianceId, playerDoc, callback){
 		funcs.push(addToLogicChannelAsync(server.id, allianceId, playerDoc._id, playerDoc.logicServerId))
 	})
 	Promise.all(funcs).catch(function(e){
-		self.logService.onEventError("logic.dataService.addPlayerToAllianceChannel", {allianceId:allianceId, playerId:playerDoc._id}, e.stack)
+		self.logService.onEventError("logic.dataService.addPlayerToAllianceChannel", {
+			allianceId:allianceId,
+			playerId:playerDoc._id
+		}, e.stack)
 	})
 	callback()
 }
@@ -266,7 +282,10 @@ pro.removePlayerFromAllianceChannel = function(allianceId, playerDoc, callback){
 		funcs.push(removeFromLogicChannelAsync(server.id, allianceId, playerDoc._id, playerDoc.logicServerId))
 	})
 	Promise.all(funcs).catch(function(e){
-		self.logService.onEventError("logic.dataService.removePlayerFromAllianceChannel", {allianceId:allianceId, playerId:playerDoc._id}, e.stack)
+		self.logService.onEventError("logic.dataService.removePlayerFromAllianceChannel", {
+			allianceId:allianceId,
+			playerId:playerDoc._id
+		}, e.stack)
 	})
 	callback()
 }
@@ -338,7 +357,11 @@ pro.updatePlayerSession = function(playerDoc, keys, values, callback){
 	var self = this
 	this.app.rpc.logic.logicRemote.updatePlayerSession.toServer(playerDoc.logicServerId, playerDoc._id, keys, values, function(e){
 		if(_.isObject(e)){
-			self.logService.onEventError("logic.dataService.updatePlayerSession", {playerId:playerDoc._id, keys:keys, values:values}, e.stack)
+			self.logService.onEventError("logic.dataService.updatePlayerSession", {
+				playerId:playerDoc._id,
+				keys:keys,
+				values:values
+			}, e.stack)
 		}
 	})
 	callback()

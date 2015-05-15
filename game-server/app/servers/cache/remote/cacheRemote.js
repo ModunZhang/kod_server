@@ -177,7 +177,7 @@ pro.readPlayerMails = function(id, mailIds, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(id, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(id, ['_id', 'mails'], false).then(function(doc){
 		playerDoc = doc
 		for(var i = 0; i < mailIds.length; i++){
 			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
@@ -189,7 +189,43 @@ pro.readPlayerMails = function(id, mailIds, callback){
 	}).then(function(){
 		callback(null, {code:200, data:playerData})
 	}).catch(function(e){
-		callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		})
+	})
+}
+
+/**
+ * 收藏邮件
+ * @param id
+ * @param mailId
+ * @param callback
+ */
+pro.savePlayerMail = function(id, mailId, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(id, ['_id', 'mails'], false).then(function(doc){
+		playerDoc = doc
+		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
+		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
+		mail.isSaved = true
+		playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isSaved", true])
+		return self.cacheService.updatePlayerAsync(id, playerDoc)
+	}).then(function(){
+		callback(null, {code:200, data:playerData})
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		})
 	})
 }
 
