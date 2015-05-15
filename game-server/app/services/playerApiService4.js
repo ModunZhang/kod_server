@@ -281,7 +281,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var building = null
-	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'growUpTasks', 'soldierStarEvents', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'growUpTasks', 'soldierStarEvents', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		building = DataUtils.getPlayerSoldierMilitaryTechBuilding(playerDoc, soldierName)
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))

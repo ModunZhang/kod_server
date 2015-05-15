@@ -60,8 +60,8 @@ pro.sendAllianceMail = function(msg, session, next){
 
 	var title = msg.title
 	var content = msg.content
-	this.allianceApiService.sendAllianceMailAsync(session.uid, allianceId, title, content).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
+	this.allianceApiService.sendAllianceMailAsync(session.uid, allianceId, title, content).then(function(){
+		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})
@@ -159,9 +159,9 @@ pro.editAllianceTerrian = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-
+	var playerName = session.get("name")
 	var terrain = msg.terrain
-	this.allianceApiService.editAllianceTerrianAsync(session.uid, allianceId, terrain).then(function(){
+	this.allianceApiService.editAllianceTerrianAsync(session.uid, playerName, allianceId, terrain).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -207,8 +207,9 @@ pro.editAllianceNotice = function(msg, session, next){
 		return
 	}
 
+	var playerName = session.get("name")
 	var notice = msg.notice
-	this.allianceApiService.editAllianceNoticeAsync(session.uid, allianceId, notice).then(function(){
+	this.allianceApiService.editAllianceNoticeAsync(session.uid, playerName, allianceId, notice).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -230,8 +231,9 @@ pro.editAllianceDescription = function(msg, session, next){
 		return
 	}
 
+	var playerName = session.get('name')
 	var description = msg.description
-	this.allianceApiService.editAllianceDescriptionAsync(session.uid, allianceId, description).then(function(){
+	this.allianceApiService.editAllianceDescriptionAsync(session.uid, playerName, allianceId, description).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

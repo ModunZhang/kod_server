@@ -733,7 +733,7 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'dailyQuestEvents', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'dailyQuestEvents', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		var questEvent = _.find(playerDoc.dailyQuestEvents, function(event){
 			return _.isEqual(event.id, questEventId)
@@ -888,10 +888,9 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
 		callback(new Error("content 不合法"))
 		return
 	}
-	var self = this
-	this.dataService.sendPlayerMailAsync(playerId, memberId, title, content).spread(function(playerData, memberDoc, memberData){
-		self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
-		callback(null, playerData)
+
+	this.dataService.sendPlayerMailAsync(playerId, memberId, title, content).then(function(){
+		callback(null)
 	}).catch(function(e){
 		callback(e)
 	})

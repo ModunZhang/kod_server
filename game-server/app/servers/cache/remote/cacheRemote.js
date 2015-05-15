@@ -7,6 +7,7 @@
 var ShortId = require('shortid')
 var _ = require("underscore")
 var toobusy = require("toobusy-js")
+var sprintf = require("sprintf")
 var Promise = require("bluebird")
 
 var ErrorUtils = require("../../../utils/errorUtils")
@@ -23,6 +24,7 @@ var CacheRemote = function(app){
 	this.app = app
 	this.cacheService = app.get("cacheService")
 	this.logService = app.get("logService")
+	this.channelService = app.get('channelService')
 	this.toobusyMaxLag = 140
 	this.toobusyInterval = 100
 
@@ -31,6 +33,28 @@ var CacheRemote = function(app){
 }
 
 var pro = CacheRemote.prototype
+
+/**
+ * 推送消息给玩家
+ * @param playerDoc
+ * @param eventName
+ * @param data
+ */
+var PushToPlayer = function(playerDoc, eventName, data){
+	if(_.isEmpty(playerDoc.logicServerId)){
+		return
+	}
+	var self = this
+	this.channelService.pushMessageByUids(eventName, data, [{
+		uid:playerDoc._id,
+		sid:playerDoc.logicServerId
+	}], {}, function(e){
+		if(_.isObject(e)) self.logService.onEventError("logic.pushService.pushToPlayer", {
+			playerId:playerDoc._id,
+			serverId:playerDoc.logicServerId
+		}, e.stack)
+	})
+}
 
 /**
  * 获取玩家登陆时的数据
@@ -177,6 +201,72 @@ pro.timeoutPlayer = function(id, doc, callback){
 }
 
 /**
+ * 为玩家添加邮件
+ * @param id
+ * @param titleKey
+ * @param titleArgs
+ * @param contentKey
+ * @param contentArgs
+ * @param callback
+ */
+pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(id, ['_id', 'logicServerId', 'basicInfo', 'mails'], true).then(function(doc){
+		playerDoc = doc
+		var language = playerDoc.basicInfo.language
+		var title = titleKey[language]
+		var content = contentKey[language]
+		if(!_.isString(title)){
+			title = titleKey.en
+		}
+		if(!_.isString(content)){
+			content = contentKey.en
+		}
+		if(titleArgs.length > 0){
+			title = sprintf.vsprintf(title, titleArgs)
+		}
+		if(contentArgs.length > 0){
+			content = sprintf.vsprintf(content, contentArgs)
+		}
+
+		var mail = {
+			id:ShortId.generate(),
+			title:title,
+			fromId:"__system",
+			fromName:"__system",
+			fromIcon:0,
+			fromAllianceTag:"",
+			sendTime:Date.now(),
+			content:content,
+			isRead:false,
+			isSaved:false
+		}
+
+		if(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
+			var willRemovedMail = this.getPlayerFirstUnSavedMail(playerDoc)
+			playerData.push(["mails." + playerDoc.mails.indexOf(willRemovedMail), null])
+			this.removeItemInArray(playerDoc.mails, willRemovedMail)
+		}
+		playerDoc.mails.push(mail)
+		playerData.push(["mails." + playerDoc.mails.indexOf(mail), mail])
+		return self.cacheService.updatePlayerAsync(id, playerDoc)
+	}).then(function(){
+		PushToPlayer.call(self, playerDoc, playerData)
+		callback(null, {code:200, data:null})
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		})
+	})
+}
+
+/**
  * 发送玩家邮件
  * @param id
  * @param memberId
@@ -198,7 +288,7 @@ pro.sendPlayerMail = function(id, memberId, title, content, callback){
 	var memberData = []
 	var allianceDoc = null
 	var updateFuncs = []
-	this.cacheService.findPlayerAsync(id, ['_id', 'allianceId', 'basicInfo', 'sendMails'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(id, ['_id', 'logicServerId', 'allianceId', 'basicInfo', 'sendMails'], false).then(function(doc){
 		playerDoc = doc
 		return self.cacheService.findPlayerAsync(memberId, ['_id', 'logicServerId', 'basicInfo', 'mails'], false)
 	}).then(function(doc){
@@ -252,7 +342,9 @@ pro.sendPlayerMail = function(id, memberId, title, content, callback){
 		updateFuncs.push(self.cacheService.updatePlayerAsync(memberId, memberDoc))
 		return Promise.all(updateFuncs)
 	}).then(function(){
-		callback(null, {code:200, data:[playerData, {_id:memberDoc._id, logicServerId:memberDoc.logicServerId}, memberData]})
+		PushToPlayer.call(self, playerDoc, playerData)
+		PushToPlayer.call(self, memberDoc, memberData)
+		callback(null, {code:200, data:null})
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -289,7 +381,7 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 	var memberDocs = []
 	var memberDatas = []
 	var updateFuncs = []
-	this.cacheService.findPlayerAsync(id, ['_id', 'basicInfo', 'mails', 'sendMails'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(id, ['_id', 'logicServerId', 'basicInfo', 'mails', 'sendMails'], false).then(function(doc){
 		playerDoc = doc
 		return self.cacheService.directFindAllianceAsync(allianceId, ['_id', 'basicInfo', 'members'], false)
 	}).then(function(doc){
@@ -363,7 +455,11 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 		})
 		return Promise.all(updateFuncs)
 	}).then(function(){
-		callback(null, {code:200, data:[playerData, memberDatas]})
+		PushToPlayer.call(self, playerDoc, playerData)
+		_.each(memberDatas, function(memberData){
+			PushToPlayer.call(self, memberData.doc, memberData.data)
+		})
+		callback(null, {code:200, data:null})
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){

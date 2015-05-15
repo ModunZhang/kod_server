@@ -431,8 +431,8 @@ pro.sendMail = function(msg, session, next){
 	var memberId = msg.memberId
 	var title = msg.title
 	var content = msg.content
-	this.playerApiService2.sendMailAsync(session.uid, memberId, title, content).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
+	this.playerApiService2.sendMailAsync(session.uid, memberId, title, content).then(function(){
+		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})

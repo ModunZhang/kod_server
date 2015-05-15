@@ -422,7 +422,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'serverId', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'deals', type, 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'serverId', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'deals', type, 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		DataUtils.refreshPlayerResources(playerDoc)
 		if(!DataUtils.isPlayerSellQueueEnough(playerDoc)) return Promise.reject(ErrorUtils.sellQueueNotEnough(playerId))
@@ -524,7 +524,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 	var pushFuncs = []
 	var updateFuncs = []
 	var funcs = []
-	funcs.push(this.dataService.findPlayerAsync(playerId, ['_id', 'serverId', 'resources', 'buildings', 'soldiers', 'soldierStars', 'buildingMaterials', 'technologyMaterials', 'productionTechs', 'vipEvents', 'itemEvents', 'houseEvents'], false))
+	funcs.push(this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'serverId', 'resources', 'buildings', 'soldiers', 'soldierStars', 'buildingMaterials', 'technologyMaterials', 'productionTechs', 'vipEvents', 'itemEvents', 'houseEvents'], false))
 	funcs.push(this.Deal.findOneAsync({_id:itemId}))
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		playerDoc = doc_1
@@ -607,7 +607,7 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'deals', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'deals', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		var sellItem = _.find(playerDoc.deals, function(deal){
 			return _.isEqual(deal.id, itemId)

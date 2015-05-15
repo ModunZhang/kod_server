@@ -126,6 +126,23 @@ pro.timeoutPlayer = function(doc, data, callback){
 }
 
 /**
+ * 为玩家添加系统邮件
+ * @param id
+ * @param titleKey
+ * @param titleArgs
+ * @param contentKey
+ * @param contentArgs
+ * @param callback
+ */
+pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, callback){
+	this.app.rpc.cache.cacheRemote.sendSysMail.toServer(this.cacheServerId, id, titleKey, titleArgs, contentKey, contentArgs, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
  * 发送玩家邮件
  * @param id
  * @param memberId
