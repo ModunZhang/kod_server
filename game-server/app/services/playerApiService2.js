@@ -993,31 +993,10 @@ pro.readMails = function(playerId, mailIds, callback){
 	}
 
 	var self = this
-	var playerDoc = null
-	var playerData = []
-	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', "mails"], false).then(function(doc){
-		playerDoc = doc
-		for(var i = 0; i < mailIds.length; i++){
-			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailIds[i]))
-			mail.isRead = true
-			playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isRead", true])
-		}
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		callback(null, playerData)
+	this.dataService.readPlayerMailsAsync(playerId, mailIds).then(function(data){
+		callback(null, data)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		callback(e)
 	})
 }
 

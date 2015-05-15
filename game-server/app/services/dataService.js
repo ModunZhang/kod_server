@@ -125,6 +125,21 @@ pro.timeoutPlayer = function(doc, data, callback){
 	})
 }
 
+
+/**
+ * 阅读邮件
+ * @param id
+ * @param mailIds
+ * @param callback
+ */
+pro.readPlayerMails = function(id, mailIds, callback){
+	this.app.rpc.cache.cacheRemote.readPlayerMails.toServer(this.cacheServerId, id, mailIds, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
 /**
  * 创建联盟对象
  * @param alliance

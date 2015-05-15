@@ -168,6 +168,32 @@ pro.timeoutPlayer = function(id, doc, callback){
 }
 
 /**
+ * 阅读邮件
+ * @param id
+ * @param mailIds
+ * @param callback
+ */
+pro.readPlayerMails = function(id, mailIds, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(id, [], false).then(function(doc){
+		playerDoc = doc
+		for(var i = 0; i < mailIds.length; i++){
+			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
+			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailIds[i]))
+			mail.isRead = true
+			playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isRead", true])
+		}
+		return self.cacheService.updatePlayerAsync(id, playerDoc)
+	}).then(function(){
+		callback(null, {code:200, data:playerData})
+	}).catch(function(e){
+		callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+	})
+}
+
+/**
  * 创建联盟对象
  * @param doc
  * @param callback
