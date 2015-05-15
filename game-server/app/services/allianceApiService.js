@@ -74,7 +74,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 	var playerData = []
 	var allianceDoc = null
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'allianceId', 'serverId', 'apnId', 'basicInfo', 'buildings', 'allianceInfo', 'countInfo', 'resources'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'logicServerId', 'allianceId', 'serverId', 'apnId', 'basicInfo', 'buildings', 'allianceInfo', 'countInfo', 'resources'], false).then(function(doc){
 		playerDoc = doc
 		if(_.isString(playerDoc.allianceId)){
 			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
@@ -160,116 +160,13 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 	}
 
 	var self = this
-	var playerDoc = null
-	var playerData = []
-	var allianceDoc = null
-	var mailToMember = null
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
-		playerDoc = doc
-		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.dataService.directFindAllianceAsync(playerDoc.allianceId, [], false)
-	}).then(function(doc){
-		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
-		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "sendAllianceMail")){
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "sendAllianceMail"))
-		}
-
-		var mailToPlayer = {
-			id:ShortId.generate(),
-			title:title,
-			fromName:playerDoc.basicInfo.name,
-			fromIcon:playerDoc.basicInfo.icon,
-			fromAllianceTag:allianceDoc.basicInfo.tag,
-			toId:"__allianceMembers",
-			toName:"__allianceMembers",
-			content:content,
-			sendTime:Date.now()
-		}
-		mailToMember = {
-			id:ShortId.generate(),
-			title:title,
-			fromId:playerDoc._id,
-			fromName:playerDoc.basicInfo.name,
-			fromIcon:playerDoc.basicInfo.icon,
-			fromAllianceTag:allianceDoc.basicInfo.tag,
-			content:content,
-			sendTime:Date.now(),
-			isRead:false,
-			isSaved:false
-		}
-
-		if(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
-			playerDoc.sendMails.shift()
-			playerData.push(["sendMails.0", null])
-		}
-		playerDoc.sendMails.push(mailToPlayer)
-		playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mailToPlayer), mailToPlayer])
-
-		if(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
-			var mail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
-			playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
-			LogicUtils.removeItemInArray(playerDoc.mails, mail)
-		}
-		playerDoc.mails.push(mailToMember)
-		playerData.push(["mails." + playerDoc.mails.indexOf(mailToMember), mailToMember])
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
-	}).then(function(){
+	this.dataService.sendAllianceMailAsync(playerId, title, content).spread(function(playerData, memberDatas){
+		_.each(memberDatas, function(memberData){
+			self.pushService.onPlayerDataChangedAsync(memberData.doc, memberData.data)
+		})
 		callback(null, playerData)
-		return Promise.resolve()
-	}, function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		return Promise.all(funcs).then(function(){
-			callback(e)
-			return Promise.reject(e)
-		})
-	}).then(function(){
-		var SendMailToMemberAsync = function(member){
-			var memberDoc = null
-			var memberData = []
-			return self.dataService.findPlayerAsync(member.id, [], false).then(function(doc){
-				memberDoc = doc
-				if(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
-					var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
-					memberData.push(["mails." + memberDoc.mails.indexOf(mail), null])
-					LogicUtils.removeItemInArray(memberDoc.mails, mail)
-				}
-				memberDoc.mails.push(mailToMember)
-				memberData.push(["mails." + doc.mails.indexOf(mailToMember), mailToMember])
-				return self.dataService.updatePlayerAsync(doc, doc)
-			}).then(function(){
-				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
-			}).catch(function(e){
-				self.logService.onEventError("logic.allianceApiService.SendMailToMemberAsync", {memberId:member._id}, e.stack)
-				var funcs = []
-				if(_.isObject(memberDoc)){
-					funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
-				}
-				if(funcs.length > 0){
-					return Promise.all(funcs).then(function(){
-						return Promise.resolve()
-					})
-				}else{
-					return Promise.resolve()
-				}
-			})
-		}
-		var funcs = []
-		_.each(allianceDoc.members, function(member){
-			if(!_.isEqual(member.id, playerDoc._id)){
-				funcs.push(SendMailToMemberAsync(member))
-			}
-		})
-		return Promise.all(funcs)
 	}).catch(function(e){
-		self.logService.onEventError("logic.allianceApiService.sendAllianceMail", {
-			playerId:playerId,
-			title:title,
-			content:content
-		}, e.stack)
+		callback(e)
 	})
 }
 

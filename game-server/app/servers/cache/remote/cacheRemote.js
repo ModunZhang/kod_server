@@ -11,6 +11,7 @@ var Promise = require("bluebird")
 
 var ErrorUtils = require("../../../utils/errorUtils")
 var LogicUtils = require("../../../utils/logicUtils")
+var DataUtils = require("../../../utils/dataUtils")
 var Define = require("../../../consts/define")
 var Consts = require("../../../consts/consts")
 
@@ -184,6 +185,12 @@ pro.timeoutPlayer = function(id, doc, callback){
  * @param callback
  */
 pro.sendPlayerMail = function(id, memberId, title, content, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.sendPlayerMail", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -261,31 +268,110 @@ pro.sendPlayerMail = function(id, memberId, title, content, callback){
 }
 
 /**
- * 新增玩家邮件
+ * 发送联盟邮件
  * @param id
- * @param mail
+ * @param title
+ * @param content
  * @param callback
  */
-pro.addPlayerMail = function(id, mail, callback){
+pro.sendAllianceMail = function(id, title, content, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.sendPlayerMail", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
+	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(id, ['_id', 'mails'], false).then(function(doc){
+	var allianceDoc = null
+	var memberDocs = []
+	var memberDatas = []
+	var updateFuncs = []
+	this.cacheService.findPlayerAsync(id, ['_id', 'allianceId', 'basicInfo', 'mails', 'sendMails'], false).then(function(doc){
 		playerDoc = doc
+		if(_.isEmpty(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(id))
+		return self.cacheService.directFindAllianceAsync(playerDoc.allianceId, ['_id', 'basicInfo', 'members'], false)
+	}).then(function(doc){
+		allianceDoc = doc
+		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, id)
+		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "sendAllianceMail"))
+			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(id, playerDoc.allianceId, "sendAllianceMail"));
+
+		var funcs = []
+		_.each(allianceDoc.members, function(member){
+			if(!_.isEqual(member.id, id))
+				funcs.push(self.cacheService.findPlayerAsync(member.id, ['_id', 'logicServerId', 'mails'], false))
+		})
+		return Promise.all(funcs)
+	}).then(function(docs){
+		memberDocs = docs
+
+		var mailToPlayer = {
+			id:ShortId.generate(),
+			title:title,
+			fromName:playerDoc.basicInfo.name,
+			fromIcon:playerDoc.basicInfo.icon,
+			fromAllianceTag:allianceDoc.basicInfo.tag,
+			toId:"__allianceMembers",
+			toName:"__allianceMembers",
+			content:content,
+			sendTime:Date.now()
+		}
+		var mailToMember = {
+			id:ShortId.generate(),
+			title:title,
+			fromId:playerDoc._id,
+			fromName:playerDoc.basicInfo.name,
+			fromIcon:playerDoc.basicInfo.icon,
+			fromAllianceTag:allianceDoc.basicInfo.tag,
+			content:content,
+			sendTime:Date.now(),
+			isRead:false,
+			isSaved:false
+		}
+
+		if(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
+			playerDoc.sendMails.shift()
+			playerData.push(["sendMails.0", null])
+		}
+		playerDoc.sendMails.push(mailToPlayer)
+		playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mailToPlayer), mailToPlayer])
+
 		if(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 			var mail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
-			LogicUtils.removeItemInArray(playerDoc.mails, mail)
 			playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
+			LogicUtils.removeItemInArray(playerDoc.mails, mail)
 		}
-		playerDoc.mails.push(mail)
-		playerData.push(["mails." + playerDoc.mails.indexOf(mail), mail])
-		return self.cacheService.updatePlayerAsync(id, playerDoc)
+		playerDoc.mails.push(mailToMember)
+		playerData.push(["mails." + playerDoc.mails.indexOf(mailToMember), mailToMember])
+		updateFuncs.push(self.cacheService.updatePlayerAsync(id, playerDoc))
+
+		_.each(memberDocs, function(memberDoc){
+			var memberData = {}
+			memberData.doc = {_id:memberDoc._id, logicServerId:memberDoc.logicServerId}
+			memberData.data = []
+			if(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
+				var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
+				memberData.data.push(["mails." + memberDoc.mails.indexOf(mail), null])
+				LogicUtils.removeItemInArray(memberDoc.mails, mail)
+			}
+			memberDoc.mails.push(mailToMember)
+			memberData.data.push(["mails." + memberDoc.mails.indexOf(mailToMember), mailToMember])
+			memberDatas.push(memberData)
+			updateFuncs.push(self.cacheService.updatePlayerAsync(memberDoc._id, memberDoc))
+		})
+		return Promise.all(updateFuncs)
 	}).then(function(){
-		callback(null, {code:200, data:playerData})
+		callback(null, {code:200, data:[playerData, memberDatas]})
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.cacheService.updatePlayerAsync(id, null))
 		}
+		_.each(memberDocs, function(memberDoc){
+			funcs.push(self.cacheService.updatePlayerAsync(memberDoc._id, null))
+		})
 		Promise.all(funcs).then(function(){
 			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
 		})
@@ -299,6 +385,12 @@ pro.addPlayerMail = function(id, mail, callback){
  * @param callback
  */
 pro.readPlayerMails = function(id, mailIds, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.readPlayerMails", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -331,6 +423,12 @@ pro.readPlayerMails = function(id, mailIds, callback){
  * @param callback
  */
 pro.savePlayerMail = function(id, mailId, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.savePlayerMail", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -361,6 +459,12 @@ pro.savePlayerMail = function(id, mailId, callback){
  * @param callback
  */
 pro.unSavePlayerMail = function(id, mailId, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.unSavePlayerMail", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -391,6 +495,12 @@ pro.unSavePlayerMail = function(id, mailId, callback){
  * @param callback
  */
 pro.getPlayerMails = function(id, fromIndex, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.getPlayerMails", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var playerDoc = null
 	var mails = []
 	this.cacheService.directFindPlayerAsync(id, ['_id', 'mails'], false).then(function(doc){
@@ -416,6 +526,12 @@ pro.getPlayerMails = function(id, fromIndex, callback){
  * @param callback
  */
 pro.getPlayerSavedMails = function(id, fromIndex, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.getPlayerSavedMails", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var playerDoc = null
 	var mails = []
 	this.cacheService.directFindPlayerAsync(id, ['_id', 'mails'], false).then(function(doc){
@@ -441,6 +557,12 @@ pro.getPlayerSavedMails = function(id, fromIndex, callback){
  * @param callback
  */
 pro.deletePlayerMails = function(id, mailIds, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.deletePlayerMails", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -473,6 +595,12 @@ pro.deletePlayerMails = function(id, mailIds, callback){
  * @param callback
  */
 pro.readPlayerReports = function(id, reportIds, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.readPlayerReports", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -505,6 +633,12 @@ pro.readPlayerReports = function(id, reportIds, callback){
  * @param callback
  */
 pro.savePlayerReport = function(id, reportId, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.savePlayerReport", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -535,6 +669,12 @@ pro.savePlayerReport = function(id, reportId, callback){
  * @param callback
  */
 pro.unSavePlayerReport = function(id, reportId, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.unSavePlayerReport", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -565,6 +705,12 @@ pro.unSavePlayerReport = function(id, reportId, callback){
  * @param callback
  */
 pro.getPlayerReports = function(id, fromIndex, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.getPlayerReports", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var playerDoc = null
 	var reports = []
 	this.cacheService.directFindPlayerAsync(id, ['_id', 'reports'], false).then(function(doc){
@@ -590,6 +736,12 @@ pro.getPlayerReports = function(id, fromIndex, callback){
  * @param callback
  */
 pro.getPlayerSavedReports = function(id, fromIndex, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.getPlayerSavedReports", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var playerDoc = null
 	var reports = []
 	this.cacheService.directFindPlayerAsync(id, ['_id', 'reports'], false).then(function(doc){
@@ -615,6 +767,12 @@ pro.getPlayerSavedReports = function(id, fromIndex, callback){
  * @param callback
  */
 pro.deletePlayerReports = function(id, reportIds, callback){
+	if(toobusy()){
+		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.deletePlayerReports", {id:id})
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+
 	var self = this
 	var playerDoc = null
 	var playerData = []
