@@ -198,7 +198,7 @@ pro.readPlayerMails = function(id, mailIds, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
@@ -228,7 +228,7 @@ pro.savePlayerMail = function(id, mailId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
@@ -258,7 +258,7 @@ pro.unSavePlayerMail = function(id, mailId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
@@ -372,7 +372,7 @@ pro.readPlayerReports = function(id, reportIds, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
@@ -402,7 +402,7 @@ pro.savePlayerReport = function(id, reportId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
@@ -432,7 +432,7 @@ pro.unSavePlayerReport = function(id, reportId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
