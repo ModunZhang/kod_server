@@ -144,12 +144,13 @@ pro.sendPlayerMail = function(id, memberId, title, content, callback){
 /**
  * 发送联盟邮件
  * @param id
+ * @param allianceId
  * @param title
  * @param content
  * @param callback
  */
-pro.sendAllianceMail = function(id, title, content, callback){
-	this.app.rpc.cache.cacheRemote.sendAllianceMail.toServer(this.cacheServerId, id, title, content, function(e, resp){
+pro.sendAllianceMail = function(id, allianceId, title, content, callback){
+	this.app.rpc.cache.cacheRemote.sendAllianceMail.toServer(this.cacheServerId, id, allianceId, title, content, function(e, resp){
 		if(_.isObject(e)) callback(e)
 		else if(resp.code == 200) callback(null, resp.data)
 		else callback(ErrorUtils.createError(resp.code, resp.data, false))

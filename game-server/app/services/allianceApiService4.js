@@ -34,12 +34,13 @@ var pro = AllianceApiService4.prototype
 /**
  * 协助联盟其他玩家防御
  * @param playerId
+ * @param allianceId
  * @param dragonType
  * @param soldiers
  * @param targetPlayerId
  * @param callback
  */
-pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetPlayerId, callback){
+pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldiers, targetPlayerId, callback){
 	if(!DataUtils.isDragonTypeExist(dragonType)){
 		callback(new Error("dragonType 不合法"))
 		return
@@ -135,10 +136,11 @@ pro.helpAllianceMemberDefence = function(playerId, dragonType, soldiers, targetP
 /**
  * 从被协防的联盟成员城市撤兵
  * @param playerId
+ * @param allianceId
  * @param beHelpedPlayerId
  * @param callback
  */
-pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, callback){
+pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedPlayerId, callback){
 	if(!_.isString(beHelpedPlayerId) || !ShortId.isValid(beHelpedPlayerId)){
 		callback(new Error("beHelpedPlayerId 不合法"))
 		return
@@ -228,11 +230,12 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, beHelpedPlayerId, cal
 /**
  * 突袭玩家城市
  * @param playerId
+ * @param allianceId
  * @param dragonType
  * @param defencePlayerId
  * @param callback
  */
-pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback){
+pro.strikePlayerCity = function(playerId, allianceId, dragonType, defencePlayerId, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -334,12 +337,13 @@ pro.strikePlayerCity = function(playerId, dragonType, defencePlayerId, callback)
 /**
  * 进攻玩家城市
  * @param playerId
+ * @param allianceId
  * @param dragonType
  * @param soldiers
  * @param defencePlayerId
  * @param callback
  */
-pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId, callback){
+pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defencePlayerId, callback){
 	if(!DataUtils.isDragonTypeExist(dragonType)){
 		callback(new Error("dragonType 不合法"))
 		return
@@ -443,13 +447,14 @@ pro.attackPlayerCity = function(playerId, dragonType, soldiers, defencePlayerId,
 /**
  * 进攻村落
  * @param playerId
+ * @param allianceId
  * @param dragonType
  * @param soldiers
  * @param defenceAllianceId
  * @param defenceVillageId
  * @param callback
  */
-pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, defenceVillageId, callback){
+pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defenceAllianceId, defenceVillageId, callback){
 	if(!DataUtils.isDragonTypeExist(dragonType)){
 		callback(new Error("dragonType 不合法"))
 		return
@@ -557,10 +562,11 @@ pro.attackVillage = function(playerId, dragonType, soldiers, defenceAllianceId, 
 /**
  * 从村落撤兵
  * @param playerId
+ * @param allianceId
  * @param villageEventId
  * @param callback
  */
-pro.retreatFromVillage = function(playerId, villageEventId, callback){
+pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback){
 	if(!_.isString(villageEventId) || !ShortId.isValid(villageEventId)){
 		callback(new Error("villageEventId 不合法"))
 		return
@@ -675,12 +681,13 @@ pro.retreatFromVillage = function(playerId, villageEventId, callback){
 /**
  * 突袭村落
  * @param playerId
+ * @param allianceId
  * @param dragonType
  * @param defenceAllianceId
  * @param defenceVillageId
  * @param callback
  */
-pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVillageId, callback){
+pro.strikeVillage = function(playerId, allianceId, dragonType, defenceAllianceId, defenceVillageId, callback){
 	if(!DataUtils.isDragonTypeExist(dragonType)){
 		callback(new Error("dragonType 不合法"))
 		return
@@ -779,11 +786,12 @@ pro.strikeVillage = function(playerId, dragonType, defenceAllianceId, defenceVil
 /**
  * 查看敌方进攻行军事件详细信息
  * @param playerId
+ * @param allianceId
  * @param enemyAllianceId
  * @param eventId
  * @param callback
  */
-pro.getAttackMarchEventDetail = function(playerId, enemyAllianceId, eventId, callback){
+pro.getAttackMarchEventDetail = function(playerId, allianceId, enemyAllianceId, eventId, callback){
 	if(!_.isString(enemyAllianceId) || !ShortId.isValid(enemyAllianceId)){
 		callback(new Error("enemyAllianceId 不合法"))
 		return
@@ -819,11 +827,12 @@ pro.getAttackMarchEventDetail = function(playerId, enemyAllianceId, eventId, cal
 /**
  * 查看敌方突袭行军事件详细信息
  * @param playerId
+ * @param allianceId
  * @param enemyAllianceId
  * @param eventId
  * @param callback
  */
-pro.getStrikeMarchEventDetail = function(playerId, enemyAllianceId, eventId, callback){
+pro.getStrikeMarchEventDetail = function(playerId, allianceId, enemyAllianceId, eventId, callback){
 	if(!_.isString(enemyAllianceId) || !ShortId.isValid(enemyAllianceId)){
 		callback(new Error("enemyAllianceId 不合法"))
 		return
@@ -899,11 +908,12 @@ pro.getHelpDefenceMarchEventDetail = function(playerId, allianceId, eventId, cal
 /**
  * 查看协防部队详细信息
  * @param callerId
+ * @param allianceId
  * @param playerId
  * @param helpedByPlayerId
  * @param callback
  */
-pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, callback){
+pro.getHelpDefenceTroopDetail = function(callerId, allianceId, playerId, helpedByPlayerId, callback){
 	if(!_.isString(playerId) || !ShortId.isValid(playerId)){
 		callback(new Error("playerId 不合法"))
 		return
@@ -945,11 +955,12 @@ pro.getHelpDefenceTroopDetail = function(callerId, playerId, helpedByPlayerId, c
 /**
  * 联盟商店补充道具
  * @param playerId
+ * @param allianceId
  * @param itemName
  * @param count
  * @param callback
  */
-pro.addItem = function(playerId, itemName, count, callback){
+pro.addItem = function(playerId, allianceId, itemName, count, callback){
 	if(!DataUtils.isItemNameExist(itemName)){
 		callback(new Error("itemName 不合法"))
 		return
@@ -1013,11 +1024,12 @@ pro.addItem = function(playerId, itemName, count, callback){
 /**
  * 购买联盟商店的道具
  * @param playerId
+ * @param allianceId
  * @param itemName
  * @param count
  * @param callback
  */
-pro.buyItem = function(playerId, itemName, count, callback){
+pro.buyItem = function(playerId, allianceId, itemName, count, callback){
 	if(!DataUtils.isItemNameExist(itemName)){
 		callback(new Error("itemName 不合法"))
 		return

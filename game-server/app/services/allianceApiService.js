@@ -145,11 +145,12 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 /**
  * 发送联盟邮件
  * @param playerId
+ * @param allianceId
  * @param title
  * @param content
  * @param callback
  */
-pro.sendAllianceMail = function(playerId, title, content, callback){
+pro.sendAllianceMail = function(playerId, allianceId, title, content, callback){
 	if(!_.isString(title)){
 		callback(new Error("title 不合法"))
 		return
@@ -160,7 +161,7 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 	}
 
 	var self = this
-	this.dataService.sendAllianceMailAsync(playerId, title, content).spread(function(playerData, memberDatas){
+	this.dataService.sendAllianceMailAsync(playerId, allianceId, title, content).spread(function(playerData, memberDatas){
 		_.each(memberDatas, function(memberData){
 			self.pushService.onPlayerDataChangedAsync(memberData.doc, memberData.data)
 		})
@@ -173,9 +174,10 @@ pro.sendAllianceMail = function(playerId, title, content, callback){
 /**
  * 主动获取玩家联盟的信息
  * @param playerId
+ * @param allianceId
  * @param callback
  */
-pro.getMyAllianceData = function(playerId, callback){
+pro.getMyAllianceData = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
@@ -279,13 +281,14 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 /**
  * 编辑联盟基础信息
  * @param playerId
+ * @param allianceId
  * @param name
  * @param tag
  * @param language
  * @param flag
  * @param callback
  */
-pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callback){
+pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, language, flag, callback){
 	if(!_.isFunction(callback)){
 		throw new Error("callback 不合法")
 	}
@@ -422,10 +425,11 @@ pro.editAllianceBasicInfo = function(playerId, name, tag, language, flag, callba
 /**
  * 编辑联盟地形
  * @param playerId
+ * @param allianceId
  * @param terrain
  * @param callback
  */
-pro.editAllianceTerrian = function(playerId, terrain, callback){
+pro.editAllianceTerrian = function(playerId, allianceId, terrain, callback){
 	if(!_.contains(Consts.AllianceTerrain, terrain)){
 		callback(new Error("terrain 不合法"))
 		return
@@ -478,11 +482,12 @@ pro.editAllianceTerrian = function(playerId, terrain, callback){
 /**
  * 编辑职位名称
  * @param playerId
+ * @param allianceId
  * @param title
  * @param titleName
  * @param callback
  */
-pro.editAllianceTitleName = function(playerId, title, titleName, callback){
+pro.editAllianceTitleName = function(playerId, allianceId, title, titleName, callback){
 	if(!_.contains(Consts.AllianceTitle, title)){
 		callback(new Error("title 不合法"))
 		return
@@ -534,10 +539,11 @@ pro.editAllianceTitleName = function(playerId, title, titleName, callback){
 /**
  * 编辑联盟公告
  * @param playerId
+ * @param allianceId
  * @param notice
  * @param callback
  */
-pro.editAllianceNotice = function(playerId, notice, callback){
+pro.editAllianceNotice = function(playerId, allianceId, notice, callback){
 	if(!_.isString(notice) || notice.trim().length > Define.InputLength.AllianceNotice){
 		callback(new Error("notice 不合法"))
 		return
@@ -582,10 +588,11 @@ pro.editAllianceNotice = function(playerId, notice, callback){
 /**
  * 编辑联盟描述
  * @param playerId
+ * @param allianceId
  * @param description
  * @param callback
  */
-pro.editAllianceDescription = function(playerId, description, callback){
+pro.editAllianceDescription = function(playerId, allianceId, description, callback){
 	if(!_.isString(description) || description.trim().length > Define.InputLength.AllianceDesc){
 		callback(new Error("description 不合法"))
 		return
@@ -630,10 +637,11 @@ pro.editAllianceDescription = function(playerId, description, callback){
 /**
  * 编辑联盟加入方式
  * @param playerId
+ * @param allianceId
  * @param joinType
  * @param callback
  */
-pro.editAllianceJoinType = function(playerId, joinType, callback){
+pro.editAllianceJoinType = function(playerId, allianceId, joinType, callback){
 	if(!_.contains(Consts.AllianceJoinType, joinType)){
 		callback(new Error("joinType 不合法"))
 		return
@@ -677,11 +685,12 @@ pro.editAllianceJoinType = function(playerId, joinType, callback){
 /**
  * 修改联盟某个玩家的职位
  * @param playerId
+ * @param allianceId
  * @param memberId
  * @param title
  * @param callback
  */
-pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
+pro.editAllianceMemberTitle = function(playerId, allianceId, memberId, title, callback){
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		callback(new Error("memberId 不合法"))
 		return
@@ -769,10 +778,11 @@ pro.editAllianceMemberTitle = function(playerId, memberId, title, callback){
 /**
  * 将玩家踢出联盟
  * @param playerId
+ * @param allianceId
  * @param memberId
  * @param callback
  */
-pro.kickAllianceMemberOff = function(playerId, memberId, callback){
+pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		callback(new Error("memberId 不合法"))
 		return
@@ -932,7 +942,7 @@ pro.kickAllianceMemberOff = function(playerId, memberId, callback){
  * @param memberId
  * @param callback
  */
-pro.handOverAllianceArchon = function(playerId, memberId, callback){
+pro.handOverAllianceArchon = function(playerId, allianceId, memberId, callback){
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		callback(new Error("memberId 不合法"))
 		return

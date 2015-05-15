@@ -36,9 +36,10 @@ var pro = AllianceApiService2.prototype
 /**
  * 退出联盟
  * @param playerId
+ * @param allianceId
  * @param callback
  */
-pro.quitAlliance = function(playerId, callback){
+pro.quitAlliance = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -383,10 +384,11 @@ pro.cancelJoinAllianceRequest = function(playerId, allianceId, callback){
 /**
  * 删除加入联盟申请事件
  * @param playerId
+ * @param allianceId
  * @param requestEventIds
  * @param callback
  */
-pro.removeJoinAllianceReqeusts = function(playerId, requestEventIds, callback){
+pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds, callback){
 	if(!_.isArray(requestEventIds) || requestEventIds.length == 0){
 		callback(new Error("requestEventIds 不合法"))
 		return
@@ -494,10 +496,11 @@ pro.removeJoinAllianceReqeusts = function(playerId, requestEventIds, callback){
 /**
  * 同意加入联盟申请
  * @param playerId
+ * @param allianceId
  * @param requestEventId
  * @param callback
  */
-pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
+pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, callback){
 	if(!_.isString(requestEventId) || !ShortId.isValid(requestEventId)){
 		callback(new Error("requestEventId 不合法"))
 		return
@@ -609,10 +612,11 @@ pro.approveJoinAllianceRequest = function(playerId, requestEventId, callback){
 /**
  * 邀请玩家加入联盟
  * @param playerId
+ * @param allianceId
  * @param memberId
  * @param callback
  */
-pro.inviteToJoinAlliance = function(playerId, memberId, callback){
+pro.inviteToJoinAlliance = function(playerId, allianceId, memberId, callback){
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		callback(new Error("memberId 不合法"))
 		return
@@ -811,9 +815,10 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 /**
  * 盟主长时间不登录时,玩家可宝石购买盟主职位
  * @param playerId
+ * @param allianceId
  * @param callback
  */
-pro.buyAllianceArchon = function(playerId, callback){
+pro.buyAllianceArchon = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -883,11 +888,12 @@ pro.buyAllianceArchon = function(playerId, callback){
 /**
  * 请求联盟成员协助加速
  * @param playerId
+ * @param allianceId
  * @param eventType
  * @param eventId
  * @param callback
  */
-pro.requestAllianceToSpeedUp = function(playerId, eventType, eventId, callback){
+pro.requestAllianceToSpeedUp = function(playerId, allianceId, eventType, eventId, callback){
 	if(!_.contains(Consts.AllianceHelpEventType, eventType)){
 		callback(new Error("eventType 不合法"))
 		return
@@ -940,10 +946,11 @@ pro.requestAllianceToSpeedUp = function(playerId, eventType, eventId, callback){
 /**
  * 协助联盟玩家加速
  * @param playerId
+ * @param allianceId
  * @param eventId
  * @param callback
  */
-pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
+pro.helpAllianceMemberSpeedUp = function(playerId, allianceId, eventId, callback){
 	if(!_.isString(eventId) || !ShortId.isValid(eventId)){
 		callback(new Error("eventId 不合法"))
 		return
@@ -1038,9 +1045,10 @@ pro.helpAllianceMemberSpeedUp = function(playerId, eventId, callback){
 /**
  * 协助联盟所有玩家加速
  * @param playerId
+ * @param allianceId
  * @param callback
  */
-pro.helpAllAllianceMemberSpeedUp = function(playerId, callback){
+pro.helpAllAllianceMemberSpeedUp = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []

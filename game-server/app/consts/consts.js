@@ -327,6 +327,7 @@ module.exports = {
 		Bottom:"bottom"
 	},
 	AllianceViewDataKeys:[
+		"_id",
 		"basicInfo",
 		"members",
 		"buildings",

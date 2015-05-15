@@ -31,11 +31,12 @@ var pro = AllianceApiService5.prototype
 /**
  * 为联盟成员添加荣耀值
  * @param playerId
+ * @param allianceId
  * @param memberId
  * @param count
  * @param callback
  */
-pro.giveLoyaltyToAllianceMember = function(playerId, memberId, count, callback){
+pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count, callback){
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		callback(new Error("memberId 不合法"))
 		return

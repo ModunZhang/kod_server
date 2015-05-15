@@ -270,11 +270,12 @@ pro.sendPlayerMail = function(id, memberId, title, content, callback){
 /**
  * 发送联盟邮件
  * @param id
+ * @param allianceId
  * @param title
  * @param content
  * @param callback
  */
-pro.sendAllianceMail = function(id, title, content, callback){
+pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 	if(toobusy()){
 		var e = ErrorUtils.serverTooBusy("cache.cacheRemote.sendPlayerMail", {id:id})
 		callback(null, {code:e.code, data:e.message})
@@ -288,15 +289,14 @@ pro.sendAllianceMail = function(id, title, content, callback){
 	var memberDocs = []
 	var memberDatas = []
 	var updateFuncs = []
-	this.cacheService.findPlayerAsync(id, ['_id', 'allianceId', 'basicInfo', 'mails', 'sendMails'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(id, ['_id', 'basicInfo', 'mails', 'sendMails'], false).then(function(doc){
 		playerDoc = doc
-		if(_.isEmpty(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(id))
-		return self.cacheService.directFindAllianceAsync(playerDoc.allianceId, ['_id', 'basicInfo', 'members'], false)
+		return self.cacheService.directFindAllianceAsync(allianceId, ['_id', 'basicInfo', 'members'], false)
 	}).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, id)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "sendAllianceMail"))
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(id, playerDoc.allianceId, "sendAllianceMail"));
+			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(id, allianceId, "sendAllianceMail"));
 
 		var funcs = []
 		_.each(allianceDoc.members, function(member){

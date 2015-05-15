@@ -33,10 +33,11 @@ var pro = AllianceApiService3.prototype
 /**
  * 联盟捐赠
  * @param playerId
+ * @param allianceId
  * @param donateType
  * @param callback
  */
-pro.donateToAlliance = function(playerId, donateType, callback){
+pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
 	if(!DataUtils.hasAllianceDonateType(donateType)){
 		callback(new Error("donateType "))
 		return
@@ -101,10 +102,11 @@ pro.donateToAlliance = function(playerId, donateType, callback){
 /**
  * 升级联盟建筑
  * @param playerId
+ * @param allianceId
  * @param buildingName
  * @param callback
  */
-pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
+pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callback){
 	if(!_.contains(Consts.AllianceBuildingNames, buildingName)){
 		callback(new Error("buildingName 不合法"))
 		return
@@ -175,10 +177,11 @@ pro.upgradeAllianceBuilding = function(playerId, buildingName, callback){
 /**
  * 升级联盟村落
  * @param playerId
+ * @param allianceId
  * @param villageType
  * @param callback
  */
-pro.upgradeAllianceVillage = function(playerId, villageType, callback){
+pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callback){
 	if(!DataUtils.isAllianceVillageTypeLegal(villageType)){
 		callback(new Error("villageType 不合法"))
 		return
@@ -232,12 +235,13 @@ pro.upgradeAllianceVillage = function(playerId, villageType, callback){
 /**
  * 移动联盟建筑到新的位置
  * @param playerId
+ * @param allianceId
  * @param mapObjectId
  * @param locationX
  * @param locationY
  * @param callback
  */
-pro.moveAllianceBuilding = function(playerId, mapObjectId, locationX, locationY, callback){
+pro.moveAllianceBuilding = function(playerId, allianceId, mapObjectId, locationX, locationY, callback){
 	if(!_.isString(mapObjectId)){
 		callback(new Error("mapObjectId 不合法"))
 		return
@@ -313,10 +317,11 @@ pro.moveAllianceBuilding = function(playerId, mapObjectId, locationX, locationY,
 /**
  * 激活联盟圣地事件
  * @param playerId
+ * @param allianceId
  * @param stageName
  * @param callback
  */
-pro.activateAllianceShrineStage = function(playerId, stageName, callback){
+pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, callback){
 	if(!DataUtils.isAllianceShrineStageNameLegal(stageName)){
 		callback(new Error("stageName 不合法"))
 		return
@@ -378,12 +383,13 @@ pro.activateAllianceShrineStage = function(playerId, stageName, callback){
 /**
  * 进攻联盟圣地
  * @param playerId
+ * @param allianceId
  * @param shrineEventId
  * @param dragonType
  * @param soldiers
  * @param callback
  */
-pro.attackAllianceShrine = function(playerId, shrineEventId, dragonType, soldiers, callback){
+pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonType, soldiers, callback){
 	if(!_.isString(shrineEventId)){
 		callback(new Error("shrineEventId 不合法"))
 		return
@@ -468,9 +474,10 @@ pro.attackAllianceShrine = function(playerId, shrineEventId, dragonType, soldier
 /**
  * 请求联盟进行联盟战
  * @param playerId
+ * @param allianceId
  * @param callback
  */
-pro.requestAllianceToFight = function(playerId, callback){
+pro.requestAllianceToFight = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
@@ -514,9 +521,10 @@ pro.requestAllianceToFight = function(playerId, callback){
 /**
  * 查找合适的联盟进行战斗
  * @param playerId
+ * @param allianceId
  * @param callback
  */
-pro.findAllianceToFight = function(playerId, callback){
+pro.findAllianceToFight = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var attackAllianceDoc = null
@@ -599,10 +607,11 @@ pro.findAllianceToFight = function(playerId, callback){
 /**
  * 复仇其他联盟
  * @param playerId
+ * @param allianceId
  * @param reportId
  * @param callback
  */
-pro.revengeAlliance = function(playerId, reportId, callback){
+pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
 	if(!_.isString(reportId)){
 		callback(new Error("reportId 不合法"))
 		return
