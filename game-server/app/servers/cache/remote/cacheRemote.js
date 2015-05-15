@@ -188,7 +188,7 @@ pro.readPlayerMails = function(id, mailIds, callback){
 		playerDoc = doc
 		for(var i = 0; i < mailIds.length; i++){
 			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailIds[i]))
+			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(id, mailIds[i]))
 			mail.isRead = true
 			playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isRead", true])
 		}
@@ -219,7 +219,7 @@ pro.savePlayerMail = function(id, mailId, callback){
 	this.cacheService.findPlayerAsync(id, ['_id', 'mails'], false).then(function(doc){
 		playerDoc = doc
 		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
-		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
+		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(id, mailId))
 		mail.isSaved = true
 		playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isSaved", true])
 		return self.cacheService.updatePlayerAsync(id, playerDoc)
@@ -249,7 +249,7 @@ pro.unSavePlayerMail = function(id, mailId, callback){
 	this.cacheService.findPlayerAsync(id, ['_id', 'mails'], false).then(function(doc){
 		playerDoc = doc
 		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
-		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
+		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(id, mailId))
 		mail.isSaved = false
 		playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isSaved", mail.isSaved])
 		return self.cacheService.updatePlayerAsync(id, playerDoc)
@@ -330,7 +330,7 @@ pro.deletePlayerMails = function(id, mailIds, callback){
 		playerDoc = doc
 		for(var i = 0; i < mailIds.length; i++){
 			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailIds[i]))
+			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(id, mailIds[i]))
 			playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
 			LogicUtils.removeItemInArray(playerDoc.mails, mail)
 		}
@@ -362,7 +362,7 @@ pro.readPlayerReports = function(id, reportIds, callback){
 		playerDoc = doc
 		for(var i = 0; i < reportIds.length; i++){
 			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
-			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
+			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(id, reportIds[i]))
 			report.isRead = true
 			playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isRead", true])
 		}
@@ -393,7 +393,7 @@ pro.savePlayerReport = function(id, reportId, callback){
 	this.cacheService.findPlayerAsync(id, ['_id', 'reports'], false).then(function(doc){
 		playerDoc = doc
 		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
-		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
+		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(id, reportId))
 		report.isSaved = true
 		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", true])
 		return self.cacheService.updatePlayerAsync(id, playerDoc)
@@ -423,7 +423,7 @@ pro.unSavePlayerReport = function(id, reportId, callback){
 	this.cacheService.findPlayerAsync(id, ['_id', 'reports'], false).then(function(doc){
 		playerDoc = doc
 		var report = LogicUtils.getPlayerMailById(playerDoc, reportId)
-		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
+		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(id, reportId))
 		report.isSaved = false
 		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", report.isSaved])
 		return self.cacheService.updatePlayerAsync(id, playerDoc)
@@ -504,7 +504,7 @@ pro.deletePlayerReports = function(id, reportIds, callback){
 		playerDoc = doc
 		for(var i = 0; i < reportIds.length; i++){
 			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
-			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
+			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(id, reportIds[i]))
 			playerData.push(["reports." + playerDoc.reports.indexOf(report), null])
 			LogicUtils.removeItemInArray(playerDoc.reports, report)
 		}
