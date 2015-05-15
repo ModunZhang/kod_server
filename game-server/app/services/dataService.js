@@ -140,13 +140,153 @@ pro.readPlayerMails = function(id, mailIds, callback){
 }
 
 /**
- * 阅读邮件
+ * 收藏邮件
  * @param id
  * @param mailId
  * @param callback
  */
 pro.savePlayerMail = function(id, mailId, callback){
 	this.app.rpc.cache.cacheRemote.savePlayerMail.toServer(this.cacheServerId, id, mailId, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
+ * 取消收藏邮件
+ * @param id
+ * @param mailId
+ * @param callback
+ */
+pro.unSavePlayerMail = function(id, mailId, callback){
+	this.app.rpc.cache.cacheRemote.unSavePlayerMail.toServer(this.cacheServerId, id, mailId, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
+ * 获取玩家邮件
+ * @param id
+ * @param fromIndex
+ * @param callback
+ */
+pro.getPlayerMails = function(id, fromIndex, callback){
+	this.app.rpc.cache.cacheRemote.getPlayerMails.toServer(this.cacheServerId, id, fromIndex, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
+ * 获取玩家已存邮件
+ * @param id
+ * @param fromIndex
+ * @param callback
+ */
+pro.getPlayerSavedMails = function(id, fromIndex, callback){
+	this.app.rpc.cache.cacheRemote.getPlayerSavedMails.toServer(this.cacheServerId, id, fromIndex, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
+ * 删除邮件
+ * @param id
+ * @param mailIds
+ * @param callback
+ */
+pro.deletePlayerMails = function(id, mailIds, callback){
+	this.app.rpc.cache.cacheRemote.deletePlayerMails.toServer(this.cacheServerId, id, mailIds, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
+ * 阅读战报
+ * @param id
+ * @param reportIds
+ * @param callback
+ */
+pro.readPlayerReports = function(id, reportIds, callback){
+	this.app.rpc.cache.cacheRemote.readPlayerReports.toServer(this.cacheServerId, id, reportIds, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
+ * 收藏战报
+ * @param id
+ * @param reportId
+ * @param callback
+ */
+pro.savePlayerReport = function(id, reportId, callback){
+	this.app.rpc.cache.cacheRemote.savePlayerReport.toServer(this.cacheServerId, id, reportId, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
+ * 取消收藏战报
+ * @param id
+ * @param reportId
+ * @param callback
+ */
+pro.unSavePlayerReport = function(id, reportId, callback){
+	this.app.rpc.cache.cacheRemote.unSavePlayerReport.toServer(this.cacheServerId, id, reportId, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
+ * 获取玩家战报
+ * @param id
+ * @param fromIndex
+ * @param callback
+ */
+pro.getPlayerReports = function(id, fromIndex, callback){
+	this.app.rpc.cache.cacheRemote.getPlayerReports.toServer(this.cacheServerId, id, fromIndex, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
+ * 获取玩家已存战报
+ * @param id
+ * @param fromIndex
+ * @param callback
+ */
+pro.getPlayerSavedReports = function(id, fromIndex, callback){
+	this.app.rpc.cache.cacheRemote.getPlayerSavedReports.toServer(this.cacheServerId, id, fromIndex, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
+ * 删除战报
+ * @param id
+ * @param reportIds
+ * @param callback
+ */
+pro.deletePlayerReports = function(id, reportIds, callback){
+	this.app.rpc.cache.cacheRemote.deletePlayerReports.toServer(this.cacheServerId, id, reportIds, function(e, resp){
 		if(_.isObject(e)) callback(e)
 		else if(resp.code == 200) callback(null, resp.data)
 		else callback(ErrorUtils.createError(resp.code, resp.data, false))

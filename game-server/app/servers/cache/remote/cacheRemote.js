@@ -10,6 +10,7 @@ var Promise = require("bluebird")
 
 var ErrorUtils = require("../../../utils/errorUtils")
 var LogicUtils = require("../../../utils/logicUtils")
+var Define = require("../../../consts/define")
 var Consts = require("../../../consts/consts")
 
 module.exports = function(app){
@@ -109,7 +110,10 @@ pro.directFindPlayer = function(id, keys, force, callback){
 		return
 	}
 	this.cacheService.directFindPlayer(id, keys, force, function(e, doc){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:_.isEmpty(doc) ? null : doc})
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {
+			code:200,
+			data:_.isEmpty(doc) ? null : doc
+		})
 	})
 }
 
@@ -127,7 +131,10 @@ pro.findPlayer = function(id, keys, force, callback){
 		return
 	}
 	this.cacheService.findPlayer(id, keys, force, function(e, doc){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:_.isEmpty(doc) ? null : doc})
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {
+			code:200,
+			data:_.isEmpty(doc) ? null : doc
+		})
 	})
 }
 
@@ -191,7 +198,7 @@ pro.readPlayerMails = function(id, mailIds, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+			funcs.push(self.dataService.updatePlayerAsync(id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
@@ -221,7 +228,293 @@ pro.savePlayerMail = function(id, mailId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+			funcs.push(self.dataService.updatePlayerAsync(id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		})
+	})
+}
+
+/**
+ * 取消收藏邮件
+ * @param id
+ * @param mailId
+ * @param callback
+ */
+pro.unSavePlayerMail = function(id, mailId, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(id, ['_id', 'mails'], false).then(function(doc){
+		playerDoc = doc
+		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
+		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
+		mail.isSaved = false
+		playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isSaved", mail.isSaved])
+		return self.cacheService.updatePlayerAsync(id, playerDoc)
+	}).then(function(){
+		callback(null, {code:200, data:playerData})
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		})
+	})
+}
+
+/**
+ * 获取玩家邮件
+ * @param id
+ * @param fromIndex
+ * @param callback
+ */
+pro.getPlayerMails = function(id, fromIndex, callback){
+	var playerDoc = null
+	var mails = []
+	this.cacheService.directFindPlayerAsync(id, ['_id', 'mails'], false).then(function(doc){
+		playerDoc = doc
+		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
+			var mail = playerDoc.mails[i]
+			mail.index = i
+			mails.push(mail)
+		}
+		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, {code:200, data:mails})
+	}).catch(function(e){
+		callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+	})
+}
+
+/**
+ * 获取玩家已存邮件
+ * @param id
+ * @param fromIndex
+ * @param callback
+ */
+pro.getPlayerSavedMails = function(id, fromIndex, callback){
+	var playerDoc = null
+	var mails = []
+	this.cacheService.directFindPlayerAsync(id, ['_id', 'mails'], false).then(function(doc){
+		playerDoc = doc
+		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
+			var mail = playerDoc.mails[i]
+			mail.index = i
+			if(!!mail.isSaved) mails.push(mail)
+		}
+		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, {code:200, data:mails})
+	}).catch(function(e){
+		callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+	})
+}
+
+/**
+ * 删除邮件
+ * @param id
+ * @param mailIds
+ * @param callback
+ */
+pro.deletePlayerMails = function(id, mailIds, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(id, ['_id', 'mails'], false).then(function(doc){
+		playerDoc = doc
+		for(var i = 0; i < mailIds.length; i++){
+			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
+			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailIds[i]))
+			playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
+			LogicUtils.removeItemInArray(playerDoc.mails, mail)
+		}
+		return self.cacheService.updatePlayerAsync(id, playerDoc)
+	}).then(function(){
+		callback(null, {code:200, data:playerData})
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		})
+	})
+}
+
+/**
+ * 阅读战报
+ * @param id
+ * @param reportIds
+ * @param callback
+ */
+pro.readPlayerReports = function(id, reportIds, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(id, ['_id', 'reports'], false).then(function(doc){
+		playerDoc = doc
+		for(var i = 0; i < reportIds.length; i++){
+			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
+			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
+			report.isRead = true
+			playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isRead", true])
+		}
+		return self.cacheService.updatePlayerAsync(id, playerDoc)
+	}).then(function(){
+		callback(null, {code:200, data:playerData})
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		})
+	})
+}
+
+/**
+ * 收藏战报
+ * @param id
+ * @param reportId
+ * @param callback
+ */
+pro.savePlayerReport = function(id, reportId, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(id, ['_id', 'reports'], false).then(function(doc){
+		playerDoc = doc
+		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
+		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
+		report.isSaved = true
+		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", true])
+		return self.cacheService.updatePlayerAsync(id, playerDoc)
+	}).then(function(){
+		callback(null, {code:200, data:playerData})
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		})
+	})
+}
+
+/**
+ * 取消收藏战报
+ * @param id
+ * @param reportId
+ * @param callback
+ */
+pro.unSavePlayerReport = function(id, reportId, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(id, ['_id', 'reports'], false).then(function(doc){
+		playerDoc = doc
+		var report = LogicUtils.getPlayerMailById(playerDoc, reportId)
+		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
+		report.isSaved = false
+		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", report.isSaved])
+		return self.cacheService.updatePlayerAsync(id, playerDoc)
+	}).then(function(){
+		callback(null, {code:200, data:playerData})
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		})
+	})
+}
+
+/**
+ * 获取玩家战报
+ * @param id
+ * @param fromIndex
+ * @param callback
+ */
+pro.getPlayerReports = function(id, fromIndex, callback){
+	var playerDoc = null
+	var reports = []
+	this.cacheService.directFindPlayerAsync(id, ['_id', 'reports'], false).then(function(doc){
+		playerDoc = doc
+		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
+			var report = playerDoc.reports[i]
+			report.index = i
+			reports.push(report)
+		}
+		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, {code:200, data:reports})
+	}).catch(function(e){
+		callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+	})
+}
+
+/**
+ * 获取玩家已存战报
+ * @param id
+ * @param fromIndex
+ * @param callback
+ */
+pro.getPlayerSavedReports = function(id, fromIndex, callback){
+	var playerDoc = null
+	var reports = []
+	this.cacheService.directFindPlayerAsync(id, ['_id', 'reports'], false).then(function(doc){
+		playerDoc = doc
+		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
+			var report = playerDoc.reports[i]
+			report.index = i
+			if(!!report.isSaved) reports.push(report)
+		}
+		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, {code:200, data:reports})
+	}).catch(function(e){
+		callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+	})
+}
+
+/**
+ * 删除战报
+ * @param id
+ * @param reportIds
+ * @param callback
+ */
+pro.deletePlayerReports = function(id, reportIds, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(id, ['_id', 'reports'], false).then(function(doc){
+		playerDoc = doc
+		for(var i = 0; i < reportIds.length; i++){
+			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
+			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
+			playerData.push(["reports." + playerDoc.reports.indexOf(report), null])
+			LogicUtils.removeItemInArray(playerDoc.reports, report)
+		}
+		return self.cacheService.updatePlayerAsync(id, playerDoc)
+	}).then(function(){
+		callback(null, {code:200, data:playerData})
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
@@ -263,7 +556,10 @@ pro.directFindAlliance = function(id, keys, force, callback){
 		return
 	}
 	this.cacheService.directFindAlliance(id, keys, force, function(e, doc){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:_.isEmpty(doc) ? null : doc})
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {
+			code:200,
+			data:_.isEmpty(doc) ? null : doc
+		})
 	})
 }
 
@@ -281,7 +577,10 @@ pro.findAlliance = function(id, keys, force, callback){
 		return
 	}
 	this.cacheService.findAlliance(id, keys, force, function(e, doc){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:_.isEmpty(doc) ? null : doc})
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {
+			code:200,
+			data:_.isEmpty(doc) ? null : doc
+		})
 	})
 }
 

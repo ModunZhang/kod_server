@@ -40,31 +40,10 @@ pro.unSaveMail = function(playerId, mailId, callback){
 		return
 	}
 
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'mails'], false).then(function(doc){
-		playerDoc = doc
-		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
-		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
-		mail.isSaved = false
-		playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isSaved", mail.isSaved])
-
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		callback(null, playerData)
+	this.dataService.unSavePlayerMailAsync(playerId, mailId).then(function(data){
+		callback(null, data)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		callback(e)
 	})
 }
 
@@ -80,19 +59,8 @@ pro.getMails = function(playerId, fromIndex, callback){
 		return
 	}
 
-	var playerDoc = null
-	var mails = []
-	this.dataService.directFindPlayerAsync(playerId, ['_id', 'mails'], false).then(function(doc){
-		playerDoc = doc
-		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
-			var mail = playerDoc.mails[i]
-			mail.index = i
-			mails.push(mail)
-		}
-		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
-		return Promise.resolve()
-	}).then(function(){
-		callback(null, mails)
+	this.dataService.getPlayerMailsAsync(playerId, fromIndex).then(function(data){
+		callback(null, data)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -140,19 +108,8 @@ pro.getSavedMails = function(playerId, fromIndex, callback){
 		return
 	}
 
-	var playerDoc = null
-	var mails = []
-	this.dataService.directFindPlayerAsync(playerId, ['_id', 'mails'], false).then(function(doc){
-		playerDoc = doc
-		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
-			var mail = playerDoc.mails[i]
-			mail.index = i
-			if(!!mail.isSaved) mails.push(mail)
-		}
-		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
-		return Promise.resolve()
-	}).then(function(){
-		callback(null, mails)
+	this.dataService.getPlayerSavedMailsAsync(playerId, fromIndex).then(function(data){
+		callback(null, data)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -176,32 +133,10 @@ pro.deleteMails = function(playerId, mailIds, callback){
 		}
 	}
 
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'mails'], false).then(function(doc){
-		playerDoc = doc
-		for(var i = 0; i < mailIds.length; i++){
-			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailIds[i]))
-			playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
-			LogicUtils.removeItemInArray(playerDoc.mails, mail)
-		}
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		callback(null, playerData)
+	this.dataService.deletePlayerMailsAsync(playerId, mailIds).then(function(data){
+		callback(null, data)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		callback(e)
 	})
 }
 
@@ -223,32 +158,10 @@ pro.readReports = function(playerId, reportIds, callback){
 		}
 	}
 
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'reports'], false).then(function(doc){
-		playerDoc = doc
-		for(var i = 0; i < reportIds.length; i++){
-			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
-			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
-			report.isRead = true
-			playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isRead", report.isRead])
-		}
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		callback(null, playerData)
+	this.dataService.readReportsAsync(playerId, reportIds).then(function(data){
+		callback(null, data)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		callback(e)
 	})
 }
 
@@ -264,30 +177,10 @@ pro.saveReport = function(playerId, reportId, callback){
 		return
 	}
 
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'reports'], false).then(function(doc){
-		playerDoc = doc
-		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
-		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
-		report.isSaved = true
-		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", report.isSaved])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		callback(null, playerData)
+	this.dataService.saveReportAsync(playerId, reportId).then(function(data){
+		callback(null, data)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		callback(e)
 	})
 }
 
@@ -303,29 +196,10 @@ pro.unSaveReport = function(playerId, reportId, callback){
 		return
 	}
 
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'reports'], false).then(function(doc){
-		playerDoc = doc
-		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
-		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
-		report.isSaved = false
-		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", report.isSaved])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		callback(null, playerData)
+	this.dataService.unSaveReportAsync(playerId, reportId).then(function(data){
+		callback(null, data)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		callback(e)
 	})
 }
 
@@ -341,19 +215,8 @@ pro.getReports = function(playerId, fromIndex, callback){
 		return
 	}
 
-	var playerDoc = null
-	var reports = []
-	this.dataService.directFindPlayerAsync(playerId, ['_id', 'reports'], false).then(function(doc){
-		playerDoc = doc
-		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
-			var report = playerDoc.reports[i]
-			report.index = i
-			reports.push(report)
-		}
-		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
-		return Promise.resolve()
-	}).then(function(){
-		callback(null, reports)
+	this.dataService.getReportsAsync(playerId, fromIndex).then(function(data){
+		callback(null, data)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -371,19 +234,8 @@ pro.getSavedReports = function(playerId, fromIndex, callback){
 		return
 	}
 
-	var playerDoc = null
-	var reports = []
-	this.dataService.directFindPlayerAsync(playerId, ['_id', 'reports'], false).then(function(doc){
-		playerDoc = doc
-		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
-			var report = playerDoc.reports[i]
-			report.index = i
-			if(!!report.isSaved) reports.push(report)
-		}
-		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
-		return Promise.resolve()
-	}).then(function(){
-		callback(null, reports)
+	this.dataService.getSavedReportsAsync(playerId, fromIndex).then(function(data){
+		callback(null, data)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -407,32 +259,10 @@ pro.deleteReports = function(playerId, reportIds, callback){
 		}
 	}
 
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'reports'], false).then(function(doc){
-		playerDoc = doc
-		for(var i = 0; i < reportIds.length; i++){
-			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
-			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
-			playerData.push(["reports." + playerDoc.reports.indexOf(report), null])
-			LogicUtils.removeItemInArray(playerDoc.reports, report)
-		}
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		callback(null, playerData)
+	this.dataService.deleteReportsAsync(playerId, reportIds).then(function(data){
+		callback(null, data)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		callback(e)
 	})
 }
 
