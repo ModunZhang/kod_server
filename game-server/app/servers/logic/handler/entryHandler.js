@@ -50,11 +50,6 @@ pro.login = function(msg, session, next){
 	var enemyAllianceDoc = null
 	this.playerApiService.playerLoginAsync(session, deviceId).spread(function(doc_1, doc_2, doc_3){
 		playerDoc = doc_1
-		playerDoc.mails = []
-		playerDoc.savedMails = []
-		playerDoc.sendMails = []
-		playerDoc.reports = []
-		playerDoc.savedReports = []
 		allianceDoc = doc_2
 		enemyAllianceDoc = doc_3
 	}).then(function(){
