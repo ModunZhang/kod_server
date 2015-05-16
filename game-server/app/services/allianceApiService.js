@@ -99,32 +99,31 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 				tag:tag,
 				language:language,
 				terrain:terrain,
-				flag:flag
+				flag:flag,
+				kill:0,
+				power:0
 			},
-			members:[]
+			members:[],
+			allianceFight:null
 		}
 		var mapObjects = MapUtils.create()
 		alliance.mapObjects = mapObjects
 		alliance.buildings = DataUtils.createMapBuildings(mapObjects)
 		alliance.villages = DataUtils.createMapVillages(mapObjects)
-		return self.dataService.createAllianceAsync(alliance)
-	}).then(function(doc){
-		allianceDoc = doc
-		var mapObjects = allianceDoc.mapObjects
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
 		var memberRect = LogicUtils.getFreePointInAllianceMap(mapObjects, memberSizeInMap.width, memberSizeInMap.height)
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
 		mapObjects.push(memberMapObject)
-		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Archon, memberMapObject.id, true)
-		DataUtils.refreshAllianceBasicInfo(allianceDoc, [])
+		LogicUtils.addAllianceMember(alliance, playerDoc, Consts.AllianceTitle.Archon, memberMapObject.id, true)
+		DataUtils.refreshAllianceBasicInfo(alliance, [])
+		return self.dataService.createAllianceAsync(alliance)
+	}).then(function(doc){
+		allianceDoc = doc
 		playerDoc.allianceId = allianceDoc._id
 		playerData.push(["allianceId", playerDoc.allianceId])
 		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, ["allianceId", ["allianceTag"]], [allianceDoc._id, allianceDoc.basicInfo.tag]])
-		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, allianceDoc, allianceDoc])
 		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc, playerDoc])
-		return Promise.resolve()
-	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, [playerData, allianceDoc])
@@ -132,9 +131,6 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)

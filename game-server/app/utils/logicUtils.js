@@ -2260,6 +2260,9 @@ Utils.createPlayer = function(playerId, serverId){
 	var player = {
 		_id:playerId,
 		serverId:serverId,
+		apnId:null,
+		gcId:null,
+		allianceId:null,
 		basicInfo:{name:"p_" + name}
 	}
 	return player

@@ -660,6 +660,22 @@ pro.timeoutAlliance = function(id, doc, callback){
 }
 
 /**
+ * 删除联盟
+ * @param id
+ * @param callback
+ */
+pro.deleteAlliance = function(id, callback){
+	var self = this
+	var alliance = this.alliances[id]
+	clearTimeout(alliance.timeout)
+	delete self.alliances[id]
+	self.Alliance.findByIdAndRemoveAsync(id).then(function(){
+		UnlockAlliance.call(self, id)
+		callback()
+	})
+}
+
+/**
  * 更新所有玩家并同步到Mongo最后将玩家从内存移除
  * @param callback
  */

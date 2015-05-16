@@ -726,21 +726,15 @@ describe("AllianceService", function(){
 			})
 		})
 
-		//it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
-		//	Api.buyAllianceArchon(function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.loginPlayer(Config.deviceId3, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.buyAllianceArchon(function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.loginPlayer(Config.deviceId5, function(doc){
-		//					doc.code.should.equal(200)
-		//					done()
-		//				})
-		//			})
-		//		})
-		//	})
-		//})
+		it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
+			Api.buyAllianceArchon(function(doc){
+				doc.code.should.equal(Errors.onlyAllianceArchonMoreThanSevenDaysNotOnLinePlayerCanBuyArchonTitle.code)
+				Api.loginPlayer(Config.deviceId5, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
 
 		it("searchAllianceByTag 正常搜索", function(done){
 			Api.searchAllianceByTag("t", function(doc){

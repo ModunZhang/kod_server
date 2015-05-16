@@ -442,6 +442,19 @@ pro.timeoutAlliance = function(doc, data, callback){
 }
 
 /**
+ * 删除联盟
+ * @param doc
+ * @param callback
+ */
+pro.deleteAlliance = function(doc, callback){
+	this.app.rpc.cache.cacheRemote.deleteAlliance.toServer(this.cacheServerId, doc._id, function(e, resp){
+		if(_.isObject(e)) callback(e)
+		else if(resp.code == 200) callback(null, resp.data)
+		else callback(ErrorUtils.createError(resp.code, resp.data, false))
+	})
+}
+
+/**
  * 将玩家添加到联盟频道
  * @param allianceId
  * @param playerDoc

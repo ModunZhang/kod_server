@@ -100,6 +100,7 @@ var PlayerSchema = new Schema({
 	serverId:{type:String, required:true},
 	apnId:{type:String},
 	gcId:{type:String},
+	allianceId:{type:String},
 	countInfo:{
 		registerTime:{type:Number, required:true, default:Date.now},
 		lastLoginTime:{type:Number, required:true, default:Date.now},
@@ -150,7 +151,6 @@ var PlayerSchema = new Schema({
 		stamina:{type:Number, required:true, default:ResourceInitData.stamina},
 		casinoToken:{type:Number, required:true, default:ResourceInitData.casinoToken}
 	},
-	allianceId:{type:String, required:false},
 	allianceInfo:{
 		loyalty:{type:Number, reuqired:true, default:0},
 		woodExp:{type:Number, required:true, default:0},

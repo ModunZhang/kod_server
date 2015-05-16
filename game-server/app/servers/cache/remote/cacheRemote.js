@@ -943,8 +943,21 @@ pro.createAlliance = function(doc, callback){
 		callback(null, {code:e.code, data:e.message})
 		return
 	}
-	this.cacheService.createAlliance(doc, function(e, theDoc){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:theDoc})
+	var self = this
+	var allianceDoc = null
+	this.cacheService.createAllianceAsync(doc).then(function(theDoc){
+		allianceDoc = _.omit(theDoc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs"])
+		return self.cacheService.updateAllianceAsync(doc._id, null)
+	}).then(function(){
+		callback(null, {code:200, data:allianceDoc})
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.cacheService.updateAllianceAsync(doc._id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		})
 	})
 }
 
@@ -1022,6 +1035,17 @@ pro.flushAlliance = function(id, doc, callback){
  */
 pro.timeoutAlliance = function(id, doc, callback){
 	this.cacheService.timeoutAlliance(id, doc, function(e){
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
+	})
+}
+
+/**
+ * 删除联盟
+ * @param id
+ * @param callback
+ */
+pro.deleteAlliance = function(id, callback){
+	this.cacheService.deleteAlliance(id, function(e){
 		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:doc})
 	})
 }

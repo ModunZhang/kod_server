@@ -63,6 +63,7 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	this.dataService.findAllianceAsync(allianceId, [], true).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId, allianceId))
 		allianceDoc = doc
 		if(_.isEqual(eventType, Consts.AllianceStatusEvent)){
 			if(!_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
