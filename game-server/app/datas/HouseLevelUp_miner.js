@@ -12,7 +12,7 @@ miner[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:25,
+	buildTime:1,
 	citizen:10
 }
 miner[2] = {
