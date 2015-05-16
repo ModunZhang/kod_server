@@ -12,7 +12,7 @@ barracks[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:45
+	buildTime:2
 }
 barracks[2] = {
 	level:2,

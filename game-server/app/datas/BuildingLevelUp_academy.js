@@ -12,7 +12,7 @@ academy[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:100
+	buildTime:2
 }
 academy[2] = {
 	level:2,
@@ -23,7 +23,7 @@ academy[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:200
+	buildTime:150
 }
 academy[3] = {
 	level:3,

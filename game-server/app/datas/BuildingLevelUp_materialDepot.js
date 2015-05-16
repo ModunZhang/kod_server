@@ -12,7 +12,7 @@ materialDepot[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:40
+	buildTime:2
 }
 materialDepot[2] = {
 	level:2,
