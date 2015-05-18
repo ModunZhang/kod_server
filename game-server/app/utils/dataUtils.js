@@ -3658,7 +3658,6 @@ Utils.getPlayerIntInit = function(type){
  * @returns {*}
  */
 Utils.getAllianceIntInit = function(type){
-	console.log(type, "1111111111111111111")
 	return AllianceInitData.intInit[type].value
 }
 

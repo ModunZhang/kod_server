@@ -108,8 +108,8 @@ intInit["ironVillageRefreshMinutes"] = {
 	value:10,
 	desc:"村落采空后多少分钟后刷新"
 }
-intInit["woodVillageRefreshMinutes"] = {
-	type:"woodVillageRefreshMinutes",
+intInit["foodVillageRefreshMinutes"] = {
+	type:"foodVillageRefreshMinutes",
 	value:10,
 	desc:"村落采空后多少分钟后刷新"
 }
