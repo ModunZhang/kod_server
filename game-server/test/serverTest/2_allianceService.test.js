@@ -1087,31 +1087,31 @@ describe("AllianceService", function(){
 			})
 		})
 
-		//it("getAllianceViewData 正常获取", function(done){
-		//	var m_allianceData = null
-		//	Api.getMyAllianceData(function(doc){
-		//		doc.code.should.equal(200)
-		//		m_allianceData = doc.allianceData
-		//		Api.getAllianceViewData(m_allianceData._id, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("getNearedAllianceInfos 正常获取", function(done){
-		//	Api.getNearedAllianceInfos(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
+		it("getAllianceViewData 正常获取", function(done){
+			var m_allianceData = null
+			Api.getMyAllianceData(function(doc){
+				doc.code.should.equal(200)
+				m_allianceData = doc.allianceData
+				Api.getAllianceViewData(m_allianceData._id, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
 
-		//it("searchAllianceInfoByTag 正常搜索", function(done){
-		//	Api.searchAllianceInfoByTag("test", function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
+		it("getNearedAllianceInfos 正常获取", function(done){
+			Api.getNearedAllianceInfos(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("searchAllianceInfoByTag 正常搜索", function(done){
+			Api.searchAllianceInfoByTag("t", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
 
 		//it("helpAllianceMemberDefence 正常协助", function(done){
 		//	Api.loginPlayer(Config.deviceId3, function(doc){

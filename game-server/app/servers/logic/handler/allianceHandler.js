@@ -829,7 +829,14 @@ pro.searchAllianceInfoByTag = function(msg, session, next){
  */
 pro.getNearedAllianceInfos = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getNearedAllianceInfos", {playerId:session.uid, msg:msg})
-	this.allianceApiService3.getNearedAllianceInfosAsync(session.uid).then(function(allianceInfos){
+	var allianceId = session.get('allianceId');
+	if(_.isEmpty(allianceId)){
+		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.allianceApiService3.getNearedAllianceInfosAsync(session.uid, allianceId).then(function(allianceInfos){
 		next(null, {code:200, allianceInfos:allianceInfos})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

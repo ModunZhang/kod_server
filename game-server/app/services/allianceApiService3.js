@@ -520,15 +520,43 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, attackAllianceDoc._id))
 		}
-		return self.dataService.getAllianceModel().findOneAsync({
-			"_id":{$ne:attackAllianceDoc._id},
-			"serverId":self.app.get("cacheServerId"),
-			"basicInfo.status":Consts.AllianceStatus.Peace,
-			"basicInfo.power":{$gte:attackAllianceDoc.basicInfo.power * 0.1, $lt:attackAllianceDoc.basicInfo.power * 1.9}
-		})
-	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
-		return self.dataService.findAllianceAsync(doc._id, ['_id', 'basicInfo', 'allianceFight', 'fightRequests'], false)
+
+		var funcs = []
+		funcs.push(new Promise(function(resolve, reject){
+			self.dataService.getAllianceModel().collection.find({
+				_id:{$ne:allianceId._id},
+				serverId:self.app.get("cacheServerId"),
+				'basicInfo.power':{$lt:attackAllianceDoc.basicInfo.power}
+			}, {
+				_id:true,
+				basicInfo:true
+			}).sort({'basicInfo.power':-1}).limit(1).toArray(function(e, docs){
+				if(_.isObject(e)) reject(e)
+				else resolve(docs.length > 0 ? docs[0] : null)
+			})
+		}))
+		funcs.push(new Promise(function(resolve, reject){
+			self.dataService.getAllianceModel().collection.find({
+				_id:{$ne:allianceId},
+				serverId:self.app.get("cacheServerId"),
+				'basicInfo.power':{$gt:attackAllianceDoc.basicInfo.power}
+			}, {
+				_id:true,
+				basicInfo:true
+			}).sort({'basicInfo.power':1}).limit(1).toArray(function(e, docs){
+				if(_.isObject(e)) reject(e)
+				else resolve(docs.length > 0 ? docs[0] : null)
+			})
+		}))
+		return Promise.all(funcs)
+	}).spread(function(docSmall, docBig){
+		if(!_.isObject(docSmall) && !_.isObject(docBig)) return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
+		var powerSmall = _.isObject(docSmall) ?  attackAllianceDoc.basicInfo.power  - docSmall.basicInfo.power : null
+		var powerBig = _.isObject(docBig) ? docBig.basicInfo.power - attackAllianceDoc.basicInfo.power : null
+		var finalDoc = _.isNull(docSmall) ? docBig : _.isNull(docBig) ? docSmall : powerBig >= powerSmall ? docSmall : docBig
+		if(attackAllianceDoc.basicInfo.power * 1.9 < finalDoc.basicInfo.power || attackAllianceDoc.basicInfo.power * 0.1 > finalDoc.basicInfo.power)
+			return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
+		return self.dataService.findAllianceAsync(finalDoc._id, ['_id', 'basicInfo', 'allianceFight', 'fightRequests'], false)
 	}).then(function(doc){
 		defenceAllianceDoc = doc
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
@@ -675,20 +703,9 @@ pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
 		return
 	}
 
-	var self = this
-	var playerDoc = null
-	var allianceDoc = null
-	var allianceViewData = null
-	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
-		playerDoc = doc
-		return self.dataService.directFindAllianceAsync(targetAllianceId, [], false)
-	}).then(function(doc){
+	this.dataService.directFindAllianceAsync(targetAllianceId, Consts.AllianceViewDataKeys, false).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId))
-		allianceDoc = doc
-		allianceViewData = _.pick(allianceDoc, Consts.AllianceViewDataKeys)
-		return Promise.resolve()
-	}).then(function(){
-		callback(null, allianceViewData)
+		callback(null, doc)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -706,12 +723,24 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 		return
 	}
 
-	var self = this
+	var self = this;
 	var allianceInfos = []
-	this.dataService.getAllianceModel().findAsync({
-		"serverId":self.app.get("cacheServerId"),
-		"basicInfo.tag":{$regex:tag, $options:"i"}
-	}, null, {limit:10}).then(function(docs){
+	var findAlliancesAsync = new Promise(function(resolve, reject){
+		self.dataService.getAllianceModel().collection.find({
+			serverId:self.app.get("cacheServerId"),
+			'basicInfo.tag':{$regex:tag, $options:"i"}
+		}, {
+			_id:true,
+			basicInfo:true,
+			countInfo:true,
+			members:true
+		}).limit(10).toArray(function(e, docs){
+			if(_.isObject(e)) reject(e)
+			else resolve(docs)
+		})
+	})
+
+	findAlliancesAsync.then(function(docs){
 		_.each(docs, function(doc){
 			var data = {}
 			data._id = doc._id
@@ -731,35 +760,43 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 /**
  * 查看战力相近的3个联盟的数据
  * @param playerId
+ * @param allianceId
  * @param callback
  */
-pro.getNearedAllianceInfos = function(playerId, callback){
+pro.getNearedAllianceInfos = function(playerId, allianceId, callback){
 	var self = this
-	var playerDoc = null
 	var allianceDoc = null
 	var allianceInfos = []
-	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
-		playerDoc = doc
-		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.dataService.getAllianceModel().findByIdAsync(playerDoc.allianceId)
-	}).then(function(doc){
+	this.dataService.getAllianceModel().findByIdAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var funcs = []
-		funcs.push(self.dataService.getAllianceModel().findAsync({
-			"_id":{$ne:allianceDoc._id},
-			"serverId":self.app.get("cacheServerId"),
-			"basicInfo.power":{$lt:allianceDoc.basicInfo.power}
-		}, null, {
-			"sort":{"basicInfo.power":-1},
-			"limit":3
+		funcs.push(new Promise(function(resolve, reject){
+			self.dataService.getAllianceModel().collection.find({
+				_id:{$ne:allianceDoc._id},
+				serverId:self.app.get("cacheServerId"),
+				'basicInfo.power':{$lt:allianceDoc.basicInfo.power}
+			}, {
+				basicInfo:true,
+				countInfo:true,
+				members:true
+			}).sort({'basicInfo.power':-1}).limit(3).toArray(function(e, docs){
+				if(_.isObject(e)) reject(e)
+				else resolve(docs)
+			})
 		}))
-		funcs.push(self.dataService.getAllianceModel().findAsync({
-			"_id":{$ne:allianceDoc._id},
-			"serverId":self.app.get("cacheServerId"),
-			"basicInfo.power":{$gt:allianceDoc.basicInfo.power}
-		}, null, {
-			"sort":{"basicInfo.power":1},
-			"limit":3
+		funcs.push(new Promise(function(resolve, reject){
+			self.dataService.getAllianceModel().collection.find({
+				_id:{$ne:allianceDoc._id},
+				serverId:self.app.get("cacheServerId"),
+				'basicInfo.power':{$gt:allianceDoc.basicInfo.power}
+			}, {
+				basicInfo:true,
+				countInfo:true,
+				members:true
+			}).sort({'basicInfo.power':1}).limit(3).toArray(function(e, docs){
+				if(_.isObject(e)) reject(e)
+				else resolve(docs)
+			})
 		}))
 		return Promise.all(funcs)
 	}).spread(function(docsSmall, docsBig){
