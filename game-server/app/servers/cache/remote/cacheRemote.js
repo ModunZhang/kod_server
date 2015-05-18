@@ -1012,7 +1012,7 @@ pro.findAlliance = function(id, keys, force, callback){
  */
 pro.updateAlliance = function(id, doc, callback){
 	this.cacheService.updateAlliance(id, doc, function(e){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200})
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:null})
 	})
 }
 
@@ -1024,7 +1024,7 @@ pro.updateAlliance = function(id, doc, callback){
  */
 pro.flushAlliance = function(id, doc, callback){
 	this.cacheService.flushAlliance(id, doc, function(e){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200})
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:null})
 	})
 }
 
@@ -1036,7 +1036,7 @@ pro.flushAlliance = function(id, doc, callback){
  */
 pro.timeoutAlliance = function(id, doc, callback){
 	this.cacheService.timeoutAlliance(id, doc, function(e){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200})
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:null})
 	})
 }
 
@@ -1047,6 +1047,6 @@ pro.timeoutAlliance = function(id, doc, callback){
  */
 pro.deleteAlliance = function(id, callback){
 	this.cacheService.deleteAlliance(id, function(e){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200})
+		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:null})
 	})
 }
