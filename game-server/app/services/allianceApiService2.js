@@ -583,7 +583,7 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 		memberDoc = null
 		var titleKey = DataUtils.getLocalizationConfig("alliance", "RequestApprovedTitle")
 		var contentKey = DataUtils.getLocalizationConfig("alliance", "RequestApprovedContent")
-		return self.dataService.sendSysMail(memberId, titleKey, [], contentKey, [allianceName])
+		return self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [allianceName])
 	}).then(function(){
 		callback()
 	}).catch(function(e){
