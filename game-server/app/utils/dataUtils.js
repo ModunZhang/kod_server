@@ -3759,7 +3759,7 @@ Utils.isPlayerCanFreeNormalGacha = function(playerDoc){
 Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, eventType, eventId, objectName, objectLevel){
 	var keep = playerDoc.buildings.location_1
 	var event = {
-		id:ShortId.generate(),
+		id:eventId,
 		playerData:{
 			id:playerDoc._id,
 			name:playerDoc.basicInfo.name,
