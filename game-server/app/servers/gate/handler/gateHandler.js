@@ -57,7 +57,9 @@ pro.queryEntry = function(msg, session, next){
 			return self.Device.createAsync(device).then(function(){
 				return self.Player.createAsync(player).then(function(doc){
 					var playerDoc = Utils.clone(doc)
-					playerDoc.dailyTasks.growUp.push(5)
+					playerDoc.dailyTasks.empireRise = [1,2]
+					playerDoc.dailyTasks.conqueror = [4]
+					playerDoc.dailyTasks.growUp.push(1)
 					playerDoc.growUpTasks.cityBuild.push({
 						"id": 0,
 						"index": 1,
