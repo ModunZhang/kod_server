@@ -300,7 +300,7 @@ pro.getDailyTaskRewards = function(playerId, taskType, callback){
 		playerDoc = doc
 		var isRewarded = _.contains(playerDoc.dailyTasks.rewarded, taskType)
 		if(isRewarded) return Promise.reject(ErrorUtils.dailyTaskRewardAlreadyGet(playerId))
-		if(playerDoc.dailyTasks[taskType].length < 5) return Promise.reject(ErrorUtils.dailyTaskNotFinished(playerId))
+		if(playerDoc.dailyTasks[taskType].length < 4) return Promise.reject(ErrorUtils.dailyTaskNotFinished(playerId))
 
 		playerDoc.dailyTasks.rewarded.push(taskType)
 		playerData.push(["dailyTasks.rewarded." + playerDoc.dailyTasks.rewarded.indexOf(taskType), taskType])
