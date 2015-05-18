@@ -10,6 +10,7 @@ var toobusy = require("toobusy-js")
 var sprintf = require("sprintf")
 var Promise = require("bluebird")
 
+var Events = require("../../../consts/events")
 var ErrorUtils = require("../../../utils/errorUtils")
 var LogicUtils = require("../../../utils/logicUtils")
 var DataUtils = require("../../../utils/dataUtils")
@@ -253,7 +254,7 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, cal
 		playerData.push(["mails." + playerDoc.mails.indexOf(mail), mail])
 		return self.cacheService.updatePlayerAsync(id, playerDoc)
 	}).then(function(){
-		PushToPlayer.call(self, playerDoc, playerData)
+		PushToPlayer.call(self, playerDoc, Events.player.onPlayerDataChanged, playerData)
 		callback(null, {code:200, data:null})
 	}).catch(function(e){
 		var funcs = []
@@ -287,7 +288,7 @@ pro.sendSysReport = function(id, report, callback){
 		playerData.push(["reports." + playerDoc.reports.indexOf(report), report])
 		return self.cacheService.updatePlayerAsync(id, playerDoc)
 	}).then(function(){
-		PushToPlayer.call(self, playerDoc, playerData)
+		PushToPlayer.call(self, playerDoc, Events.player.onPlayerDataChanged, playerData)
 		callback(null, {code:200, data:null})
 	}).catch(function(e){
 		var funcs = []
@@ -376,8 +377,8 @@ pro.sendPlayerMail = function(id, memberId, title, content, callback){
 		updateFuncs.push(self.cacheService.updatePlayerAsync(memberId, memberDoc))
 		return Promise.all(updateFuncs)
 	}).then(function(){
-		PushToPlayer.call(self, playerDoc, playerData)
-		PushToPlayer.call(self, memberDoc, memberData)
+		PushToPlayer.call(self, playerDoc, Events.player.onPlayerDataChanged, playerData)
+		PushToPlayer.call(self, memberDoc, Events.player.onPlayerDataChanged, memberData)
 		callback(null, {code:200, data:null})
 	}).catch(function(e){
 		var funcs = []
@@ -489,9 +490,9 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 		})
 		return Promise.all(updateFuncs)
 	}).then(function(){
-		PushToPlayer.call(self, playerDoc, playerData)
+		PushToPlayer.call(self, playerDoc, Events.player.onPlayerDataChanged, playerData)
 		_.each(memberDatas, function(memberData){
-			PushToPlayer.call(self, memberData.doc, memberData.data)
+			PushToPlayer.call(self, memberData.doc, Events.player.onPlayerDataChanged, memberData.data)
 		})
 		callback(null, {code:200, data:null})
 	}).catch(function(e){
