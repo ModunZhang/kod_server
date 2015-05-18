@@ -878,7 +878,7 @@ pro.requestAllianceToSpeedUp = function(playerId, allianceId, eventType, eventId
 	var allianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
-	this.dataService.directFindPlayerAsync(playerId, ['_id', 'basicInfo', 'buildings', eventType], false).then(function(doc){
+	this.dataService.directFindPlayerAsync(playerId, ['_id', 'basicInfo', 'buildings', 'militaryTechs', 'productionTechs', 'soldierStars', eventType], false).then(function(doc){
 		playerDoc = doc
 		var playerEvent = LogicUtils.getPlayerEventByTypeAndId(playerDoc, eventType, eventId)
 		if(!_.isObject(playerEvent)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))

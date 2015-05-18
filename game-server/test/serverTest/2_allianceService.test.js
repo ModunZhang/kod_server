@@ -1261,7 +1261,7 @@ describe("AllianceService", function(){
 		//		})
 		//	})
 		//})
-
+		//
 		//it("retreatFromHelpedAllianceMember 正常撤回", function(done){
 		//	var m_allianceData = null
 		//	Api.getMyAllianceData(function(doc){

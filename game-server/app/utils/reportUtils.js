@@ -1262,7 +1262,7 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 				defenceDragonData
 			),
 			soldiers:getSoldiersInTroop(defencePlayerDoc, defenceVillageEvent.playerData.soldiers),
-			militaryTechs:getMilitaryTechs(helpDefencePlayerDoc)
+			militaryTechs:getMilitaryTechs(defencePlayerDoc)
 		}
 	}
 
