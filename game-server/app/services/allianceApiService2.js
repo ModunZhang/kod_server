@@ -199,7 +199,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 	this.dataService.findPlayerAsync(playerId, ['_id', 'logicServerId', 'allianceId', 'apnId', 'basicInfo', 'buildings', 'resources', 'allianceInfo', 'countInfo', 'requestToAllianceEvents', 'inviteToAllianceEvents'], false).then(function(doc){
 		playerDoc = doc
 		if(_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
-		return self.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'buildings', 'allianceFight', 'members', 'mapObjects', 'events'], false)
+		return self.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'countInfo', 'notice', 'desc', 'titles', 'events', 'members', 'buildings', 'villageLevels', 'villages', 'mapObjects', 'helpEvents', 'shrineDatas', 'shrineEvents', 'villageEvents', 'fightRequests', 'allianceFight', 'strikeMarchEvents', 'strikeMarchReturnEvents', 'attackMarchEvents', 'attackMarchReturnEvents', 'items'], false)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 		allianceDoc = doc
@@ -509,7 +509,7 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 	var memberData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.dataService.findAllianceAsync(allianceId, ['_id', 'members', 'allianceFight', 'mapObjects', 'buildings', 'basicInfo', 'events', 'joinRequestEvents'], false).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'countInfo', 'notice', 'desc', 'titles', 'events', 'members', 'buildings', 'villageLevels', 'villages', 'mapObjects', 'helpEvents', 'shrineDatas', 'shrineEvents', 'villageEvents', 'fightRequests', 'allianceFight', 'strikeMarchEvents', 'strikeMarchReturnEvents', 'attackMarchEvents', 'attackMarchReturnEvents', 'items', 'joinRequestEvents'], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "approveJoinAllianceRequest")){
@@ -717,7 +717,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		}
 	}).then(function(){
 		if(agree){
-			return self.dataService.findAllianceAsync(allianceId, ['_id', 'members', 'allianceFight', 'mapObjects', 'buildings', 'basicInfo', 'events'], false).then(function(doc){
+			return self.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'countInfo', 'notice', 'desc', 'titles', 'events', 'members', 'buildings', 'villageLevels', 'villages', 'mapObjects', 'helpEvents', 'shrineDatas', 'shrineEvents', 'villageEvents', 'fightRequests', 'allianceFight', 'strikeMarchEvents', 'strikeMarchReturnEvents', 'attackMarchEvents', 'attackMarchReturnEvents', 'items'], false).then(function(doc){
 				if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 				allianceDoc = doc
 				if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))

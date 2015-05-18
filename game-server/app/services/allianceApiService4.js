@@ -946,12 +946,13 @@ pro.getHelpDefenceTroopDetail = function(callerId, allianceId, playerId, helpedB
 /**
  * 联盟商店补充道具
  * @param playerId
+ * @param playerName
  * @param allianceId
  * @param itemName
  * @param count
  * @param callback
  */
-pro.addItem = function(playerId, allianceId, itemName, count, callback){
+pro.addItem = function(playerId, playerName, allianceId, itemName, count, callback){
 	if(!DataUtils.isItemNameExist(itemName)){
 		callback(new Error("itemName 不合法"))
 		return
@@ -962,21 +963,16 @@ pro.addItem = function(playerId, allianceId, itemName, count, callback){
 	}
 
 	var self = this
-	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
-		playerDoc = doc
-		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.dataService.findAllianceAsync(playerDoc.allianceId, [], false)
-	}).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'members', 'buildings', 'items', 'itemLogs'], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "addItem")){
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "addItem"))
+			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "addItem"))
 		}
 		if(!DataUtils.isItemSellInAllianceShop(allianceDoc, itemName)) return Promise.reject(ErrorUtils.theItemNotSellInAllianceShop(playerId, allianceDoc._id, itemName))
 		var itemConfig = DataUtils.getItemConfig(itemName)
@@ -987,7 +983,7 @@ pro.addItem = function(playerId, allianceId, itemName, count, callback){
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 		var resp = LogicUtils.addAllianceItem(allianceDoc, itemName, count)
 		allianceData.push(["items." + allianceDoc.items.indexOf(resp.item), resp.item])
-		var itemLog = LogicUtils.createAllianceItemLog(Consts.AllianceItemLogType.AddItem, playerDoc.basicInfo.name, itemName, count)
+		var itemLog = LogicUtils.createAllianceItemLog(Consts.AllianceItemLogType.AddItem, playerName, itemName, count)
 		LogicUtils.addAllianceItemLog(allianceDoc, allianceData, itemLog)
 
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
@@ -1038,10 +1034,9 @@ pro.buyItem = function(playerId, allianceId, itemName, count, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'allianceInfo', 'dailyTasks', 'items'], false).then(function(doc){
 		playerDoc = doc
-		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.dataService.findAllianceAsync(playerDoc.allianceId, [], false)
+		return self.dataService.findAllianceAsync(allianceId, ['_id', 'members', 'items', 'itemLogs'], false)
 	}).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)

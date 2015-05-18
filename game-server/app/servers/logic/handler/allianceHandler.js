@@ -1123,10 +1123,11 @@ pro.addItem = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
+	var playerName = session.get('name')
 
 	var itemName = msg.itemName
 	var count = msg.count
-	this.allianceApiService4.addItemAsync(session.uid, allianceId, itemName, count).then(function(){
+	this.allianceApiService4.addItemAsync(session.uid, playerName, allianceId, itemName, count).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
