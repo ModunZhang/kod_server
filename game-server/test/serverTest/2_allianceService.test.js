@@ -963,14 +963,14 @@ describe("AllianceService", function(){
 		//
 		//it("attackAllianceShrine 正常行军1", function(done){
 		//	var m_allianceData = null
-		//	Api.sendChat("dragonstar redDragon 1", function(doc){
+		//	Api.sendChat("dragonstar blueDragon 1", function(doc){
 		//		doc.code.should.equal(200)
 		//		Api.sendChat("soldiers 1000", function(doc){
 		//			doc.code.should.equal(200)
 		//			Api.getMyAllianceData(function(doc){
 		//				doc.code.should.equal(200)
 		//				m_allianceData = doc.allianceData
-		//				Api.attackAllianceShrine(m_allianceData.shrineEvents[0].id, "redDragon", [
+		//				Api.attackAllianceShrine(m_allianceData.shrineEvents[0].id, "blueDragon", [
 		//					{
 		//						name:"swordsman",
 		//						count:20
@@ -996,14 +996,14 @@ describe("AllianceService", function(){
 		//	var m_allianceData = null
 		//	Api.loginPlayer(Config.deviceId, function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.sendChat("dragonstar redDragon 1", function(doc){
+		//		Api.sendChat("dragonstar blueDragon 1", function(doc){
 		//			doc.code.should.equal(200)
 		//			Api.sendChat("soldiers 1000", function(doc){
 		//				doc.code.should.equal(200)
 		//				Api.getMyAllianceData(function(doc){
 		//					doc.code.should.equal(200)
 		//					m_allianceData = doc.allianceData
-		//					Api.attackAllianceShrine(m_allianceData.shrineEvents[0].id, "redDragon", [
+		//					Api.attackAllianceShrine(m_allianceData.shrineEvents[0].id, "blueDragon", [
 		//						{
 		//							name:"swordsman",
 		//							count:20
@@ -1030,14 +1030,14 @@ describe("AllianceService", function(){
 		//	var m_allianceData = null
 		//	Api.loginPlayer(Config.deviceId5, function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.sendChat("dragonstar redDragon 1", function(doc){
+		//		Api.sendChat("dragonstar blueDragon 1", function(doc){
 		//			doc.code.should.equal(200)
 		//			Api.sendChat("soldiers 1000", function(doc){
 		//				doc.code.should.equal(200)
 		//				Api.getMyAllianceData(function(doc){
 		//					doc.code.should.equal(200)
 		//					m_allianceData = doc.allianceData
-		//					Api.attackAllianceShrine(m_allianceData.shrineEvents[0].id, "redDragon", [
+		//					Api.attackAllianceShrine(m_allianceData.shrineEvents[0].id, "blueDragon", [
 		//						{
 		//							name:"swordsman",
 		//							count:20
@@ -1060,22 +1060,22 @@ describe("AllianceService", function(){
 		//	})
 		//})
 
-		//it("requestAllianceToFight 正常请求", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.requestAllianceToFight(function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("requestAllianceToFight 已经发送过开战请求", function(done){
-		//	Api.requestAllianceToFight(function(doc){
-		//		doc.code.should.equal(Errors.alreadySendAllianceFightRequest.code)
-		//		done()
-		//	})
-		//})
+		it("requestAllianceToFight 正常请求", function(done){
+			Api.loginPlayer(Config.deviceId3, function(doc){
+				doc.code.should.equal(200)
+				Api.requestAllianceToFight(function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("requestAllianceToFight 已经发送过开战请求", function(done){
+			Api.requestAllianceToFight(function(doc){
+				doc.code.should.equal(Errors.alreadySendAllianceFightRequest.code)
+				done()
+			})
+		})
 
 		it("findAllianceToFight 正常查找", function(done){
 			Api.loginPlayer(Config.deviceId3, function(doc){

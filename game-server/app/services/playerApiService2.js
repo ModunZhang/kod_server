@@ -47,7 +47,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'soldiers', 'soldierStars', 'dragonMaterials', 'dragonEquipments', 'dailyTasks', 'vipEvents', 'itemEvents', 'dragonEquipmentEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'soldiers', 'soldierStars', 'dragonMaterials', 'dragonEquipments', 'dailyTasks', 'growUpTasks', 'vipEvents', 'itemEvents', 'dragonEquipmentEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_9
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))

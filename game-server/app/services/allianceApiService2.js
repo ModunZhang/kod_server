@@ -400,7 +400,7 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.dataService.findAllianceAsync(allianceId, ['_id', 'members', 'joinRequestEvents'], false).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'members', 'joinRequestEvents'], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "removeJoinAllianceReqeusts")){
@@ -458,9 +458,11 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 				else
 					return Promise.resolve()
 			}).then(function(){
+				var allianceName = allianceDoc.basicInfo.name
+				allianceDoc = null
 				var titleKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedTitle")
 				var contentKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedContent")
-				return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [allianceDoc.basicInfo.name])
+				return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [allianceName])
 			}).catch(function(e){
 				self.logService.onEventError("logic.allianceApiService2.removeJoinAllianceReqeusts.handleMemberAsync", {memberId:memberId}, e.stack)
 				var funcs = []
