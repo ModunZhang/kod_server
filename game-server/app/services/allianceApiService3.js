@@ -550,10 +550,12 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		}))
 		return Promise.all(funcs)
 	}).spread(function(docSmall, docBig){
+		console.log(docSmall, docBig, '11111111111111111111111111')
 		if(!_.isObject(docSmall) && !_.isObject(docBig)) return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
 		var powerSmall = _.isObject(docSmall) ?  attackAllianceDoc.basicInfo.power  - docSmall.basicInfo.power : null
 		var powerBig = _.isObject(docBig) ? docBig.basicInfo.power - attackAllianceDoc.basicInfo.power : null
 		var finalDoc = _.isNull(docSmall) ? docBig : _.isNull(docBig) ? docSmall : powerBig >= powerSmall ? docSmall : docBig
+		console.log(finalDoc, '222222222222222222222222222')
 		if(attackAllianceDoc.basicInfo.power * 1.9 < finalDoc.basicInfo.power || attackAllianceDoc.basicInfo.power * 0.1 > finalDoc.basicInfo.power)
 			return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
 		return self.dataService.findAllianceAsync(finalDoc._id, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests'), false)
