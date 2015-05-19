@@ -181,7 +181,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 	if(_.isEqual(event.marchType, Consts.MarchType.Shrine)){
 		var shrineEvent = LogicUtils.getEventById(attackAllianceDoc.shrineEvents, event.defenceShrineData.shrineEventId)
 		if(!_.isObject(shrineEvent)){
-			this.dataService.directFindPlayerAsync(event.attackPlayerData.id, [], false).then(function(doc){
+			this.dataService.directFindPlayerAsync(event.attackPlayerData.id, ['_id', 'basicInfo', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'itemEvents', 'vipEvents'], false).then(function(doc){
 				attackPlayerDoc = doc
 				var marchReturnEvent = MarchUtils.createAttackAllianceShrineMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], [])
 				attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
@@ -216,8 +216,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 	}
 	if(_.isEqual(event.marchType, Consts.MarchType.HelpDefence)){
 		funcs = []
-		funcs.push(this.dataService.findPlayerAsync(event.attackPlayerData.id, [], true))
-		funcs.push(this.dataService.findPlayerAsync(event.defencePlayerData.id, [], true))
+		funcs.push(this.dataService.findPlayerAsync(event.attackPlayerData.id, ['_id', 'basicInfo', 'helpToTroops', 'dailyTasks'], true))
+		funcs.push(this.dataService.findPlayerAsync(event.defencePlayerData.id, ['_id', 'basicInfo', 'helpedByTroops'], true))
 		Promise.all(funcs).spread(function(doc_1, doc_2){
 			attackPlayerDoc = doc_1
 			defencePlayerDoc = doc_2
@@ -379,15 +379,15 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var memberObject
 
 		funcs = []
-		funcs.push(self.dataService.findPlayerAsync(event.attackPlayerData.id, [], true))
-		funcs.push(self.dataService.findAllianceAsync(event.defencePlayerData.alliance.id, [], true))
-		funcs.push(self.dataService.findPlayerAsync(event.defencePlayerData.id, [], true))
+		funcs.push(self.dataService.findPlayerAsync(event.attackPlayerData.id, ['_id', 'basicInfo', 'dragons', 'soldiers', 'soldierStars', 'buildings', 'militaryTechs', 'growUpTasks', 'dailyTasks', 'itemEvents', 'vipEvents', 'dragonDeathEvents'], true))
+		funcs.push(self.dataService.findAllianceAsync(event.defencePlayerData.alliance.id, ['_id', 'basicInfo', 'members', 'mapObjects', 'allianceFight', 'attackMarchReturnEvents'], true))
+		funcs.push(self.dataService.findPlayerAsync(event.defencePlayerData.id, ['_id', 'basicInfo', 'resources', 'buildings', 'dragons', 'soldiers', 'woundedSoldiers', 'soldierStars', 'helpedByTroops', 'productionTechs', 'militaryTechs', 'dragonMaterials', 'itemEvents', 'vipEvents', 'houseEvents', 'dragonDeathEvents', 'growUpTasks'], true))
 		Promise.all(funcs).spread(function(doc_1, doc_2, doc_3){
 			attackPlayerDoc = doc_1
 			defenceAllianceDoc = doc_2
 			defencePlayerDoc = doc_3
 			if(defencePlayerDoc.helpedByTroops.length > 0){
-				return self.dataService.findPlayerAsync(defencePlayerDoc.helpedByTroops[0].id, [], true).then(function(doc){
+				return self.dataService.findPlayerAsync(defencePlayerDoc.helpedByTroops[0].id, ['_id', 'basicInfo', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'militaryTechs', 'growUpTasks', 'helpToTroops', 'itemEvents', 'vipEvents', 'dragonDeathEvents'], true).then(function(doc){
 					helpDefencePlayerDoc = doc
 					return Promise.resolve()
 				})
@@ -506,7 +506,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			DataUtils.addPlayerDragonExp(attackPlayerDoc, attackPlayerData, attackDragon, countData.attackDragonExpAdd, true)
 			attackPlayerData.push(["dragons." + attackDragon.type + ".hp", attackDragon.hp])
 			attackPlayerData.push(["dragons." + attackDragon.type + ".hpRefreshTime", attackDragon.hpRefreshTime])
-			LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.report)
+			pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.report])
 
 			var attackCityMarchReturnEvent = MarchUtils.createAttackPlayerCityMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, getSoldiersFromSoldiersForFight(attackSoldiersForFight), getWoundedSoldiersFromSoldiersForFight(attackSoldiersForFight), defenceAllianceDoc, defencePlayerDoc, attackPlayerRewards)
 			attackAllianceDoc.attackMarchReturnEvents.push(attackCityMarchReturnEvent)
@@ -534,11 +534,12 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				DataUtils.addPlayerDragonExp(helpDefencePlayerDoc, helpDefencePlayerData, helpDefenceDragon, countData.defenceDragonExpAdd, true)
 				helpDefencePlayerData.push(["dragons." + helpDefenceDragon.type + ".hp", helpDefenceDragon.hp])
 				helpDefencePlayerData.push(["dragons." + helpDefenceDragon.type + ".hpRefreshTime", helpDefenceDragon.hpRefreshTime])
-				LogicUtils.addPlayerReport(helpDefencePlayerDoc, helpDefencePlayerData, report.report)
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, helpDefencePlayerDoc._id, report.report])
+
 				var helpDefenceMailTitle = DataUtils.getLocalizationConfig("alliance", "HelpDefenceAttackTitle")
 				var helpDefenceMailContent = DataUtils.getLocalizationConfig("alliance", "HelpDefenceAttackContent")
 				var helpDefenceMailParams = [helpDefencePlayerDoc.basicInfo.name, defenceAllianceDoc.basicInfo.tag]
-				LogicUtils.sendSystemMail(defencePlayerDoc, defencePlayerData, helpDefenceMailTitle, helpDefenceMailParams, helpDefenceMailContent, helpDefenceMailParams)
+				pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, defencePlayerDoc._id, helpDefenceMailTitle, [], helpDefenceMailContent, helpDefenceMailParams])
 
 				var soldiers = getSoldiersFromSoldiersForFight(helpDefenceSoldierFightData.defenceSoldiersAfterFight)
 				var woundedSoldiers = getWoundedSoldiersFromSoldiersForFight(helpDefenceSoldiersForFight)
@@ -593,7 +594,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					defencePlayerDoc[reward.type][reward.name] += reward.count
 					defencePlayerData.push([reward.type + "." + reward.name, defencePlayerDoc[reward.type][reward.name]])
 				})
-				LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.report)
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.report])
 			}
 			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, defencePlayerDoc, defencePlayerDoc])
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
@@ -787,11 +788,11 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var resourceName = null
 		var newRewards = null
 
-		this.dataService.findPlayerAsync(event.attackPlayerData.id, [], true).then(function(doc){
+		this.dataService.findPlayerAsync(event.attackPlayerData.id, ['_id', 'basicInfo', 'allianceInfo', 'dragons', 'soldiers', 'soldierStars', 'buildings', 'militaryTechs', 'growUpTasks', 'dailyTasks', 'itemEvents', 'vipEvents', 'dragonDeathEvents'], true).then(function(doc){
 			attackPlayerDoc = doc
 			if(_.isObject(attackAllianceDoc.allianceFight)){
 				var defenceAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id)
-				return self.dataService.findAllianceAsync(defenceAllianceId, [], true).then(function(doc){
+				return self.dataService.findAllianceAsync(defenceAllianceId, ['_id', 'basicInfo', 'allianceFight', 'members', 'mapObjects', 'villages', 'villageEvents', 'attackMarchReturnEvents'], true).then(function(doc){
 					defenceAllianceDoc = doc
 					targetAllianceDoc = _.isEqual(event.defenceVillageData.alliance.id, attackAllianceDoc._id) ? attackAllianceDoc : defenceAllianceDoc
 					targetAllianceData = _.isEqual(event.defenceVillageData.alliance.id, attackAllianceDoc._id) ? attackAllianceData : defenceAllianceData
@@ -812,7 +813,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				})
 			}
 			if(_.isObject(villageEvent)){
-				return self.dataService.findPlayerAsync(villageEvent.playerData.id, [], true).then(function(doc){
+				return self.dataService.findPlayerAsync(villageEvent.playerData.id, ['_id', 'basicInfo', 'allianceInfo', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'militaryTechs', 'growUpTasks', 'itemEvents', 'vipEvents', 'dragonDeathEvents'], true).then(function(doc){
 					defencePlayerDoc = doc
 					return Promise.resolve()
 				})
@@ -892,8 +893,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 				report = ReportUtils.createAttackVillageFightWithDefenceTroopReport(attackAllianceDoc, attackPlayerDoc, targetAllianceDoc, village, defenceAllianceDoc, defencePlayerDoc, defenceDragonFightData, defenceSoldierFightData)
 				countData = report.countData
-				LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.report)
-				LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.report)
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.report])
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.report])
 
 				attackDragonExpAdd = countData.attackDragonExpAdd
 				attackPlayerKill = countData.attackPlayerKill
@@ -1087,7 +1088,7 @@ pro.onAttackMarchReturnEvents = function(allianceDoc, event, callback){
 	//console.log(NodeUtils.inspect(event, false, null))
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(event.attackPlayerData.id, [], true).then(function(doc){
+	this.dataService.findPlayerAsync(event.attackPlayerData.id, ['_id', 'basicInfo', 'buildings', 'resources', 'dragons', 'dragonMaterials', 'soldiers', 'soldierStars', 'woundedSoldiers', 'productionTechs', 'vipEvents', 'itemEvents', 'houseEvents'], true).then(function(doc){
 		playerDoc = doc
 
 		var dragonType = event.attackPlayerData.dragon.type
@@ -1105,7 +1106,8 @@ pro.onAttackMarchReturnEvents = function(allianceDoc, event, callback){
 		playerData.push(["resources", playerDoc.resources])
 		_.each(event.attackPlayerData.rewards, function(reward){
 			playerDoc[reward.type][reward.name] += reward.count
-			playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
+			if(!_.isEqual(reward.type, 'resources'))
+				playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
 		})
 
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
@@ -1160,15 +1162,15 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 	LogicUtils.removeItemInArray(attackAllianceDoc.strikeMarchEvents, event)
 	if(_.isEqual(event.marchType, Consts.MarchType.City)){
 		funcs = []
-		funcs.push(self.dataService.findPlayerAsync(event.attackPlayerData.id, [], true))
-		funcs.push(self.dataService.findAllianceAsync(event.defencePlayerData.alliance.id, [], true))
-		funcs.push(self.dataService.findPlayerAsync(event.defencePlayerData.id, [], true))
+		funcs.push(self.dataService.findPlayerAsync(event.attackPlayerData.id, ['_id', 'basicInfo', 'dragons', 'buildings', 'militaryTechs', 'dailyTasks', 'itemEvents', 'vipEvents', 'dragonDeathEvents'], true))
+		funcs.push(self.dataService.findAllianceAsync(event.defencePlayerData.alliance.id, ['_id', 'basicInfo', 'members', 'mapObjects', 'allianceFight'], true))
+		funcs.push(self.dataService.findPlayerAsync(event.defencePlayerData.id, ['_id', 'basicInfo', 'resources', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'helpedByTroops', 'productionTechs', 'militaryTechs', 'itemEvents', 'vipEvents', 'houseEvents'], true))
 		Promise.all(funcs).spread(function(doc_1, doc_2, doc_3){
 			attackPlayerDoc = doc_1
 			defenceAllianceDoc = doc_2
 			defencePlayerDoc = doc_3
 			if(defencePlayerDoc.helpedByTroops.length > 0){
-				return self.dataService.findPlayerAsync(defencePlayerDoc.helpedByTroops[0].id, [], true).then(function(doc){
+				return self.dataService.findPlayerAsync(defencePlayerDoc.helpedByTroops[0].id, ['_id', 'basicInfo', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'militaryTechs', 'itemEvents', 'vipEvents'], true).then(function(doc){
 					helpDefencePlayerDoc = doc
 					return Promise.resolve()
 				})
@@ -1186,12 +1188,12 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				var helpDefenceDragon = helpDefencePlayerDoc.dragons[defencePlayerDoc.helpedByTroops[0].dragon.type]
 				DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, helpDefenceDragon)
 				report = ReportUtils.createStrikeCityFightWithHelpDefenceDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc, helpDefencePlayerDoc, helpDefenceDragon)
-				LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
-				LogicUtils.addPlayerReport(helpDefencePlayerDoc, helpDefencePlayerData, report.reportForDefencePlayer)
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.reportForAttackPlayer])
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, helpDefencePlayerDoc._id, report.reportForDefencePlayer])
 				var helpDefenceTitle = DataUtils.getLocalizationConfig("alliance", "HelpDefenceStrikeTitle")
 				var helpDefenceContent = DataUtils.getLocalizationConfig("alliance", "HelpDefenceStrikeContent")
 				var helpDefenceParams = [helpDefencePlayerDoc.basicInfo.name, defenceAllianceDoc.basicInfo.tag]
-				LogicUtils.sendSystemMail(defencePlayerDoc, defencePlayerData, helpDefenceTitle, helpDefenceParams, helpDefenceContent, helpDefenceParams)
+				pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, defencePlayerDoc._id, helpDefenceTitle, helpDefenceParams, helpDefenceContent, helpDefenceParams])
 
 				attackDragon.hp -= report.reportForAttackPlayer.strikeCity.attackPlayerData.dragon.hpDecreased
 				if(attackDragon.hp <= 0){
@@ -1255,8 +1257,8 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				var defenceDragon = LogicUtils.getPlayerDefenceDragon(defencePlayerDoc)
 				if(!_.isObject(defenceDragon)){
 					report = ReportUtils.createStrikeCityNoDefenceDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc)
-					LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
-					LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.reportForDefencePlayer)
+					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.reportForAttackPlayer])
+					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
 					updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, attackPlayerDoc, attackPlayerDoc])
 					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 					updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, defencePlayerDoc, defencePlayerDoc])
@@ -1301,8 +1303,8 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				}
 				if(_.isObject(defenceDragon)){
 					report = ReportUtils.createStrikeCityFightWithDefenceDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc, defenceDragon)
-					LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
-					LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.reportForDefencePlayer)
+					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.reportForAttackPlayer])
+					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
 
 					attackDragon.hp -= report.reportForAttackPlayer.strikeCity.attackPlayerData.dragon.hpDecreased
 					if(attackDragon.hp <= 0){
@@ -1395,11 +1397,11 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 		var report = null
 		var marchReturnEvent = null
 
-		this.dataService.findPlayerAsync(event.attackPlayerData.id, [], true).then(function(doc){
+		this.dataService.findPlayerAsync(event.attackPlayerData.id, ['_id', 'basicInfo', 'dragons', 'buildings', 'militaryTechs', 'dailyTasks', 'itemEvents', 'vipEvents', 'dragonDeathEvents'], true).then(function(doc){
 			attackPlayerDoc = doc
 			if(_.isObject(attackAllianceDoc.allianceFight)){
 				var defenceAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id)
-				return self.dataService.findAllianceAsync(defenceAllianceId, [], true).then(function(doc){
+				return self.dataService.findAllianceAsync(defenceAllianceId, ['_id', 'basicInfo', 'allianceFight', 'members', 'mapObjects', 'villages', 'villageEvents'], true).then(function(doc){
 					defenceAllianceDoc = doc
 					targetAllianceDoc = _.isEqual(event.defenceVillageData.alliance.id, attackAllianceDoc._id) ? attackAllianceDoc : defenceAllianceDoc
 					return Promise.resolve()
@@ -1418,7 +1420,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				})
 			}
 			if(_.isObject(villageEvent)){
-				return self.dataService.findPlayerAsync(villageEvent.playerData.id, [], true).then(function(doc){
+				return self.dataService.findPlayerAsync(villageEvent.playerData.id, ['_id', 'basicInfo', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'militaryTechs', 'itemEvents', 'vipEvents'], true).then(function(doc){
 					defencePlayerDoc = doc
 					return Promise.resolve()
 				})
@@ -1477,8 +1479,8 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				var attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
 				var defenceDragon = defencePlayerDoc.dragons[villageEvent.playerData.dragon.type]
 				report = ReportUtils.createStrikeVillageFightWithDefencePlayerDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragon, targetAllianceDoc, village, defenceAllianceDoc, villageEvent, defencePlayerDoc, defenceDragon)
-				LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, report.reportForAttackPlayer)
-				LogicUtils.addPlayerReport(defencePlayerDoc, defencePlayerData, report.reportForDefencePlayer)
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.reportForAttackPlayer])
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
 				attackDragon.hp -= report.reportForAttackPlayer.strikeVillage.attackPlayerData.dragon.hpDecreased
 				if(attackDragon.hp <= 0){
 					deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
@@ -1548,7 +1550,7 @@ pro.onStrikeMarchReturnEvents = function(allianceDoc, event, callback){
 
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(event.attackPlayerData.id, [], true).then(function(doc){
+	this.dataService.findPlayerAsync(event.attackPlayerData.id, ['_id', 'basicInfo', 'buildings', 'resources', 'dragonMaterials', 'soldiers', 'soldierStars', 'woundedSoldiers', 'productionTechs', 'vipEvents', 'itemEvents', 'houseEvents'], true).then(function(doc){
 		playerDoc = doc
 		var dragonType = event.attackPlayerData.dragon.type
 		var dragon = playerDoc.dragons[dragonType]
@@ -1561,7 +1563,8 @@ pro.onStrikeMarchReturnEvents = function(allianceDoc, event, callback){
 		playerData.push(["resources", playerDoc.resources])
 		_.each(event.attackPlayerData.rewards, function(reward){
 			playerDoc[reward.type][reward.name] += reward.count
-			playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
+			if(!_.isEqual(reward.type, 'resources'))
+				playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
 		})
 
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
@@ -1606,7 +1609,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 	var playerTroopsForFight = []
 	var funcs = []
 	var findPlayerDoc = function(playerId){
-		return self.dataService.findPlayerAsync(playerId, [], true).then(function(doc){
+		return self.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'militaryTechs', 'dailyTasks', 'growUpTasks', 'itemEvents', 'vipEvents', 'dragonDeathEvents'], true).then(function(doc){
 			playerDocs[doc._id] = doc
 			return Promise.resolve()
 		})
@@ -1850,7 +1853,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 	defenceEnemyAllianceData.push(["villageEvents." + attackAllianceDoc.villageEvents.indexOf(event), null])
 	LogicUtils.removeItemInArray(attackAllianceDoc.villageEvents, event)
 
-	this.dataService.findPlayerAsync(event.playerData.id, [], true).then(function(doc){
+	this.dataService.findPlayerAsync(event.playerData.id, ['_id', 'basicInfo', 'soldiers', 'soldierStars', 'allianceInfo', 'vipEvents', 'itemEvents'], true).then(function(doc){
 		attackPlayerDoc = doc
 		if(!_.isEqual(event.playerData.alliance.id, event.villageData.alliance.id)){
 			return self.dataService.findAllianceAsync(event.villageData.alliance.id, [], true).then(function(doc){
@@ -1883,7 +1886,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 		attackPlayerDoc.allianceInfo[resourceName + "Exp"] += collectExp
 		attackPlayerData.push(["allianceInfo." + resourceName + "Exp", attackPlayerDoc.allianceInfo[resourceName + "Exp"]])
 		var collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, newRewards)
-		LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, collectReport)
+		pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, attackPlayerDoc, attackPlayerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 
@@ -1978,8 +1981,8 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var funcs = []
-	funcs.push(this.dataService.findAllianceAsync(ourAllianceId, [], true))
-	funcs.push(this.dataService.findAllianceAsync(enemyAllianceId, [], true))
+	funcs.push(this.dataService.findAllianceAsync(ourAllianceId, ['_id', 'basicInfo', 'countInfo', 'members', 'mapObjects', 'villages', 'allianceFight', 'allianceFightReports', 'villageEvents', 'attackMarchEvents', 'attackMarchReturnEvents', 'strikeMarchEvents', 'strikeMarchReturnEvents'], true))
+	funcs.push(this.dataService.findAllianceAsync(enemyAllianceId, ['_id', 'basicInfo', 'countInfo', 'members', 'mapObjects', 'villages', 'allianceFight', 'allianceFightReports', 'villageEvents', 'attackMarchEvents', 'attackMarchReturnEvents', 'strikeMarchEvents', 'strikeMarchReturnEvents'], true))
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		attackAllianceDoc = doc_1
 		defenceAllianceDoc = doc_2
@@ -2156,14 +2159,15 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		attackPlayerData.push(["resources." + attackPlayerDoc.resources])
 		_.each(originalRewards, function(reward){
 			attackPlayerDoc[reward.type][reward.name] += reward.count
-			attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
+			if(!_.isEqual(reward.type, 'resources'))
+				attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
 		})
 
 		var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
 		attackPlayerDoc.allianceInfo[resourceName + "Exp"] += collectExp
 		attackPlayerData.push(["allianceInfo." + resourceName + "Exp", attackPlayerDoc.allianceInfo[resourceName + "Exp"]])
 		var collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, newRewards)
-		LogicUtils.addPlayerReport(attackPlayerDoc, attackPlayerData, collectReport)
+		pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 
 		attackDragon = attackPlayerDoc.dragons[villageEvent.playerData.dragon.type]
 		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
@@ -2210,7 +2214,8 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		attackPlayerData.push(["resoruces", attackPlayerDoc.resources])
 		_.each(marchReturnEvent.attackPlayerData.rewards, function(reward){
 			attackPlayerDoc[reward.type][reward.name] += reward.count
-			attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
+			if(!_.isEqual(reward.type, 'resources'))
+				attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
 		})
 	}
 	var resolveStrikeMarchEvent = function(attackAllianceDoc, attackAllianceData, attackPlayerDoc, attackPlayerData, marchEvent){
@@ -2237,7 +2242,8 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		attackPlayerData.push(["resoruces", attackPlayerDoc.resources])
 		_.each(marchReturnEvent.attackPlayerData.rewards, function(reward){
 			attackPlayerDoc[reward.type][reward.name] += reward.count
-			attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
+			if(!_.isEqual(reward.type, 'resources'))
+				attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
 		})
 	}
 
@@ -2248,9 +2254,10 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var playerDoc = null
 		var playerData = []
 		var funcs = []
-		return self.dataService.findPlayerAsync(playerId, [], true).then(function(doc){
+		var events = null
+		return self.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'productionTechs', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'dragonMaterials', 'growUpTasks', 'allianceInfo', 'itemEvents', 'vipEvents', 'houseEvents'], true).then(function(doc){
 			playerDoc = doc
-			var events = playerIds[playerDoc._id]
+			events = playerIds[playerDoc._id]
 			_.each(events, function(event){
 				if(_.isEqual(event.eventType, "villageEvents")){
 					resolveVillageEvent(event.attackAllianceDoc, event.attackAllianceData, event.defenceAllianceDoc, event.defenceAllianceData, playerDoc, playerData, event.eventData)
