@@ -2077,16 +2077,16 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	var now = Date.now()
 	var playerIds = {}
 	var attackDragon = null;
-	var killMaxPlayerId = (function(){
+	var killMaxPlayer = (function(){
 		var maxPlayerKill = null
 		var playerKills = attackAllianceDoc.allianceFight.attackPlayerKills.concat(attackAllianceDoc.allianceFight.defencePlayerKills)
 		_.each(playerKills, function(playerKill){
 			if(maxPlayerKill == null || maxPlayerKill < playerKill.kill) maxPlayerKill = playerKill
 		})
-		return _.isObject(maxPlayerKill) ? maxPlayerKill.id : null
+		return _.isObject(maxPlayerKill) ? maxPlayerKill : null
 	})();
 	var killMaxPlayerGemGet = (function(){
-		if(!_.isString(killMaxPlayerId)) return 0
+		if(!_.isObject(killMaxPlayer)) return 0
 		var serverConfig = self.app.getServerById(self.app.get("cacheServerId"))
 		return DataUtils.getAllianceFightKillFirstGemCount(serverConfig.level)
 	})();
@@ -2298,10 +2298,10 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	})
 
 	var promise = new Promise(function(resolve){
-		if(_.isString(killMaxPlayerId)){
+		if(_.isObject(killMaxPlayer)){
 			var memberDoc = null
 			var memberData = []
-			self.dataService.findPlayerAsync(killMaxPlayerId, [], true).then(function(doc){
+			self.dataService.findPlayerAsync(killMaxPlayer.id, ['_id', 'resources'], true).then(function(doc){
 				memberDoc = doc
 				memberDoc.resources.gem += killMaxPlayerGemGet
 				memberData.push(["resources.gem", memberDoc.resources.gem])
@@ -2316,7 +2316,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				resolve()
 			}).catch(function(e){
 				self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.allianceFightKillFirstGemGet", {
-					playerId:killMaxPlayerId,
+					playerId:killMaxPlayer.id,
 					gemGet:killMaxPlayerGemGet
 				}, e.stack)
 				if(_.isObject(memberDoc)){
@@ -2340,6 +2340,11 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			defenceAllianceId:attackAllianceDoc.allianceFight.defenceAllianceId,
 			fightResult:attackAllianceKill >= defenceAllianceKill ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin,
 			fightTime:now,
+			killMax:{
+				allianceId:_.isNull(killMaxPlayer) ? null : _.contains(attackAllianceDoc.allianceFight.attackPlayerKill, killMaxPlayer) ? attackAllianceDoc.allianceFight.attackAllianceId : attackAllianceDoc.allianceFight.defenceAllianceId,
+				playerId:_.isNull(killMaxPlayer) ? null :killMaxPlayer.id,
+				playerName:_.isNull(killMaxPlayer) ? null :killMaxPlayer.name
+			},
 			attackAlliance:{
 				name:attackAllianceDoc.basicInfo.name,
 				tag:attackAllianceDoc.basicInfo.tag,

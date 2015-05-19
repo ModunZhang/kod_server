@@ -357,6 +357,11 @@ var AllianceSchema = new Schema({
 		defenceAllianceId:{type:String, required:true},
 		fightResult:{type:String, required:true},
 		fightTime:{type:Number, required:true},
+		killMax:{
+			allianceId:{type:String, required:true},
+			playerId:{type:String, required:true},
+			playerName:{type:String, required:true}
+		},
 		attackAlliance:{
 			name:{type:String, required:true},
 			tag:{type:String, required:true},
