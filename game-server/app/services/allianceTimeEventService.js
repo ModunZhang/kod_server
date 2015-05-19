@@ -62,7 +62,7 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 	var pushFuncs = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findAllianceAsync(allianceId, [], true).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'countInfo', 'members', 'buildings', 'villageLevels', 'villages', 'villageCreateEvents', 'mapObjects', 'shrineDatas', 'shrineEvents', 'shrineReports', 'villageEvents', 'allianceFight', 'allianceFightReports', 'strikeMarchEvents', 'strikeMarchReturnEvents', 'attackMarchEvents', 'attackMarchReturnEvents'], true).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId, allianceId))
 		allianceDoc = doc
 		if(_.isEqual(eventType, Consts.AllianceStatusEvent)){

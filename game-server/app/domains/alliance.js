@@ -15,21 +15,21 @@ var AllianceBuilding = GameDatas.AllianceBuilding
 
 var AllianceSchema = new Schema({
 	_id:{type:String, required:true},
-	serverId:{type:String, required:true},
+	serverId:{type:String, required:true, index:true},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},
 		tag:{type:String, required:true, unique:true, index:true},
 		language:{type:String, required:true},
 		terrain:{type:String, required:true},
 		flag:{type:String, required:true},
-		power:{type:Number, required:true, default:0},
-		kill:{type:Number, required:true, default:0},
-		joinType:{type:String, required:true, default:Consts.AllianceJoinType.All},
+		power:{type:Number, required:true, default:0, index:true},
+		kill:{type:Number, required:true, default:0, index:true},
+		joinType:{type:String, required:true, default:Consts.AllianceJoinType.All, index:true},
 		honour:{type:Number, required:true, default:0},
 		perception:{type:Number, required:true, default:AllianceBuilding.shrine[1].perception},
 		perceptionRefreshTime:{type:Number, required:true, default:Date.now},
 		createTime:{type:Number, required:true, default:Date.now},
-		status:{type:String, required:true, default:Consts.AllianceStatus.Peace},
+		status:{type:String, required:true, default:Consts.AllianceStatus.Peace, index:true},
 		statusStartTime:{type:Number, required:true, default:Date.now},
 		statusFinishTime:{type:Number, required:true, default:0}
 	},
