@@ -744,7 +744,7 @@
 //		})
 //
 //		it("getCanDirectJoinAlliances 正常获取", function(done){
-//			Api.getCanDirectJoinAlliances(function(doc){
+//			Api.getCanDirectJoinAlliances(0, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})

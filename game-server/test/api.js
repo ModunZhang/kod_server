@@ -681,9 +681,12 @@ Api.searchAllianceByTag = function(tag, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.getCanDirectJoinAlliances = function(callback){
+Api.getCanDirectJoinAlliances = function(fromIndex, callback){
+	var info = {
+		fromIndex:fromIndex
+	}
 	var route = "logic.allianceHandler.getCanDirectJoinAlliances"
-	pomelo.request(route, null, callback)
+	pomelo.request(route, info, callback)
 }
 
 Api.editAllianceBasicInfo = function(name, tag, language, flag, callback){

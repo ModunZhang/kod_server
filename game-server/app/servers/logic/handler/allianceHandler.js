@@ -96,7 +96,8 @@ pro.getMyAllianceData = function(msg, session, next){
  */
 pro.getCanDirectJoinAlliances = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getCanDirectJoinAlliances", {playerId:session.uid, msg:msg})
-	this.allianceApiService.getCanDirectJoinAlliancesAsync(session.uid).then(function(allianceDatas){
+	var fromIndex = msg.fromIndex
+	this.allianceApiService.getCanDirectJoinAlliancesAsync(session.uid, fromIndex).then(function(allianceDatas){
 		next(null, {code:200, allianceDatas:allianceDatas})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

@@ -190,9 +190,15 @@ pro.getMyAllianceData = function(playerId, allianceId, callback){
 /**
  * 获取能直接加入的联盟
  * @param playerId
+ * @param fromIndex
  * @param callback
  */
-pro.getCanDirectJoinAlliances = function(playerId, callback){
+pro.getCanDirectJoinAlliances = function(playerId, fromIndex, callback){
+	if(!_.isNumber(fromIndex) || fromIndex < 0 || fromIndex % 10 != 0){
+		callback(new Error("fromIndex 不合法"))
+		return
+	}
+
 	var self = this
 	var allianceDocs = []
 
@@ -205,7 +211,7 @@ pro.getCanDirectJoinAlliances = function(playerId, callback){
 			basicInfo:true,
 			members:true,
 			buildings:true
-		}).sort({'basicInfo.power':-1}).limit(10).toArray(function(e, docs){
+		}).sort({'basicInfo.power':-1}).skip(fromIndex).limit(10).toArray(function(e, docs){
 			if(_.isObject(e)) reject(e)
 			else resolve(docs)
 		})
