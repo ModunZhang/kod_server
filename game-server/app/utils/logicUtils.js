@@ -1013,57 +1013,6 @@ Utils.createSysMail = function(titleKey, titleArgs, contentKey, contentArgs){
 }
 
 /**
- * 发送系统邮件
- * @param playerDoc
- * @param playerData
- * @param titleKey
- * @param titleArgs
- * @param contentKey
- * @param contentArgs
- * @returns {*}
- */
-Utils.sendSystemMail = function(playerDoc, playerData, titleKey, titleArgs, contentKey, contentArgs){
-	var language = playerDoc.basicInfo.language
-	var title = titleKey[language]
-	var content = contentKey[language]
-	if(!_.isString(title)){
-		title = titleKey.en
-	}
-	if(!_.isString(content)){
-		content = contentKey.en
-	}
-	if(titleArgs.length > 0){
-		title = sprintf.vsprintf(title, titleArgs)
-	}
-	if(contentArgs.length > 0){
-		content = sprintf.vsprintf(content, contentArgs)
-	}
-
-	var mail = {
-		id:ShortId.generate(),
-		title:title,
-		fromId:"__system",
-		fromName:"__system",
-		fromIcon:0,
-		fromAllianceTag:"",
-		sendTime:Date.now(),
-		content:content,
-		isRead:false,
-		isSaved:false
-	}
-
-	if(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
-		var willRemovedMail = this.getPlayerFirstUnSavedMail(playerDoc)
-		playerData.push(["mails." + playerDoc.mails.indexOf(willRemovedMail), null])
-		this.removeItemInArray(playerDoc.mails, willRemovedMail)
-	}
-	playerDoc.mails.push(mail)
-	playerData.push(["mails." + playerDoc.mails.indexOf(mail), mail])
-
-	return mail
-}
-
-/**
  * 根据邮件Id获取邮件
  * @param playerDoc
  * @param mailId
@@ -1565,22 +1514,6 @@ Utils.getPlayerDefenceDragon = function(playerDoc){
 }
 
 /**
- * 为玩家添加战报
- * @param playerDoc
- * @param playerData
- * @param report
- */
-Utils.addPlayerReport = function(playerDoc, playerData, report){
-	if(playerDoc.reports.length >= Define.PlayerReportsMaxSize){
-		var willRemovedReport = this.getPlayerFirstUnSavedReport(playerDoc)
-		playerData.push(["reports." + playerDoc.reports.indexOf(willRemovedReport), null])
-		this.removeItemInArray(playerDoc.reports, willRemovedReport)
-	}
-	playerDoc.reports.push(report)
-	playerData.push(["reports." + playerDoc.reports.indexOf(report), report])
-}
-
-/**
  * 添加联盟战历史记录战报
  * @param allianceDoc
  * @param allianceData
@@ -1812,8 +1745,9 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
  * @param allianceData
  * @param eventFuncs
  * @param timeEventService
+ * @param dataService
  */
-Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, timeEventService){
+Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, timeEventService, dataService){
 	var self = this
 	var i = allianceDoc.villageEvents.length
 	var villageEvent = null
@@ -1854,10 +1788,10 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 			var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
 			playerDoc.allianceInfo[resourceName + "Exp"] += collectExp
 			playerData.allianceInfo = playerDoc.allianceInfo
-			var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
-			self.addPlayerReport(playerDoc, playerData, collectReport)
 			village.resource -= resourceCollected
 			allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
+			var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
+			eventFuncs.push([dataService, dataService.sendSysReportAsync, playerDoc._id, collectReport])
 		}
 	}
 }

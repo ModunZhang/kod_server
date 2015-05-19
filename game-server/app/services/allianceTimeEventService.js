@@ -2305,12 +2305,13 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				memberDoc = doc
 				memberDoc.resources.gem += killMaxPlayerGemGet
 				memberData.push(["resources.gem", memberDoc.resources.gem])
-				var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardTitle")
-				var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardContent")
-				LogicUtils.sendSystemMail(memberDoc, memberData, titleKey, [], contentKey, [killMaxPlayerGemGet])
 				return self.dataService.updatePlayerAsync(memberDoc, memberDoc)
 			}).then(function(){
 				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
+			}).then(function(){
+				var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardTitle")
+				var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardContent")
+				return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [killMaxPlayerGemGet])
 			}).then(function(){
 				resolve()
 			}).catch(function(e){
