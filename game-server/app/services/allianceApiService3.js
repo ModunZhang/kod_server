@@ -526,7 +526,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 			self.dataService.getAllianceModel().collection.find({
 				_id:{$ne:allianceId._id},
 				serverId:self.app.get("cacheServerId"),
-				'basicInfo.power':{$lt:attackAllianceDoc.basicInfo.power}
+				'basicInfo.power':{$lte:attackAllianceDoc.basicInfo.power}
 			}, {
 				_id:true,
 				basicInfo:true
