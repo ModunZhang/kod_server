@@ -298,6 +298,7 @@ module.exports = {
 		Shop:"shop"//联盟商店
 	},
 	DragonStrikeReportLevel:{
+		E:0,//诡计之雾
 		D:1,
 		C:2,
 		B:3,

@@ -748,7 +748,12 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 	var defenceDragonData = createDragonData(defenceDragon, 0)
 
 	var strikeCityReport = {
-		level:getReportLevel(powerCompare),
+		level:(function(){
+			var itemEvent = _.find(defencePlayerDoc.itemEvents, function(event){
+				return _.isEqual(event.type, 'fogOfTrick')
+			})
+			return _.isObject(itemEvent) ? Consts.DragonStrikeReportLevel.E : getReportLevel(powerCompare)
+		})(),
 		strikeTarget:{
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
