@@ -929,7 +929,7 @@ pro.getHelpDefenceTroopDetail = function(callerId, allianceId, playerId, helpedB
 			return _.isEqual(troop.id, helpedByPlayerId)
 		})
 		if(!_.isObject(helpedByPlayerTroop)) return Promise.reject(ErrorUtils.noHelpDefenceTroopByThePlayer(callerId, allianceId, playerDoc._id, helpedByPlayerId))
-		return self.dataService.directFindPlayerAsync(helpedByPlayerId, ['_id', 'soldierStars', 'militaryTechs', 'dragons', 'itemEvents'], false)
+		return self.dataService.directFindPlayerAsync(helpedByPlayerId, ['_id', 'basicInfo', 'soldierStars', 'dragons', 'itemEvents'], false)
 	}).then(function(doc){
 		attackPlayerDoc = doc
 		troopDetail = ReportUtils.getPlayerHelpDefenceTroopDetail(attackPlayerDoc, helpedByPlayerTroop.dragon, helpedByPlayerTroop.soldiers)
