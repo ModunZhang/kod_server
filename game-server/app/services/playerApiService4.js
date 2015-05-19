@@ -759,7 +759,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			playerData.push(["dragons." + theDragon.type + ".hp", theDragon.hp])
 			playerData.push(["dragons." + theDragon.type + ".hpRefreshTime", theDragon.hpRefreshTime])
 
-			DataUtils.addPlayerDragonExp(playerDoc, playerData, theDragon, expAdd, true)
+			DataUtils.addPlayerDragonExp(playerDoc, playerData, theDragon, expAdd)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve)
 
 			var soldiers = fightData.soldiers

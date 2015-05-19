@@ -2669,13 +2669,9 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
  * @param playerData
  * @param dragon
  * @param expAdd
- * @param inFight
  */
-Utils.addPlayerDragonExp = function(playerDoc, playerData, dragon, expAdd, inFight){
+Utils.addPlayerDragonExp = function(playerDoc, playerData, dragon, expAdd){
 	var currentStarMaxLevel = Dragons.dragonStar[dragon.star].levelMax
-	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? Items.buffTypes["dragonExpBonus"].effect1 : 0
-	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonExpAdd
-	expAdd = expAdd * (1 + inFight ? (1 + itemBuff + vipBuff) : 0)
 	while(true){
 		var nextLevelExpNeed = Dragons.dragonLevel[dragon.level].expNeed
 		if(dragon.exp + expAdd > nextLevelExpNeed){
@@ -2828,11 +2824,16 @@ Utils.getAllianceVillageResourceMax = function(villageName, villageLevel){
 
 /**
  * 龙经验获取数量
+ * @param playerDoc
  * @param kill
  * @returns {number}
  */
-Utils.getDragonExpAdd = function(kill){
-	return Math.floor(kill / this.getAllianceIntInit("KilledCitizenPerDragonExp"))
+Utils.getPlayerDragonExpAdd = function(playerDoc, kill){
+	var expAdd = kill / this.getAllianceIntInit("KilledCitizenPerDragonExp")
+	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? Items.buffTypes["dragonExpBonus"].effect1 : 0
+	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonExpAdd
+	expAdd = Math.floor(expAdd * (1 + itemBuff + vipBuff))
+	return expAdd
 }
 
 /**

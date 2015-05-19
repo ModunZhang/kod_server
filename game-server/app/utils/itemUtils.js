@@ -256,7 +256,7 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, dataServ
 var DragonExp = function(playerDoc, playerData, dragonType, itemConfig){
 	var dragon = playerDoc.dragons[dragonType]
 	if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerDoc._id, dragonType))
-	DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, parseInt(itemConfig.effect), false)
+	DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, parseInt(itemConfig.effect))
 
 	return Promise.resolve()
 }
