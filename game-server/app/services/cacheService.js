@@ -187,7 +187,7 @@ var UnlockPlayer = function(id){
 var UnlockAlliance = function(id){
 	var allianceQueue = this.alliancesQueue[id]
 	if(!_.isArray(allianceQueue) || allianceQueue.length == 0){
-		var e = new Error("请求队列不存在为空")
+		var e = new Error("请求队列不存在或为空")
 		this.logService.onEventError("cache.cacheService.UnlockAlliance", {id:id}, e.stack)
 	}else{
 		allianceQueue.shift()
