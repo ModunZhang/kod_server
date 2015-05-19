@@ -1385,7 +1385,7 @@ Utils.getPlayerMarchTroopDetail = function(playerDoc, marchEventId, dragon, sold
 		_.each(soldiersInTroop, function(soldierInTroop){
 			var soldier = {
 				name:soldierInTroop.name,
-				star:1,
+				star:playerDoc.soldierStars[soldierInTroop.name],
 				count:soldierInTroop.count
 			}
 			soldiers.push(soldier)
@@ -1467,7 +1467,7 @@ Utils.getPlayerHelpDefenceTroopDetail = function(playerDoc, dragon, soldiers){
 		_.each(soldiersInTroop, function(soldierInTroop){
 			var soldier = {
 				name:soldierInTroop.name,
-				star:1,
+				star:playerDoc.soldierStars[soldierInTroop.name],
 				count:soldierInTroop.count
 			}
 			soldiers.push(soldier)

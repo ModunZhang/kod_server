@@ -807,7 +807,7 @@ pro.getAttackMarchEventDetail = function(playerId, allianceId, enemyAllianceId, 
 			return _.isEqual(marchEvent.id, eventId) && _.isEqual(marchEvent.marchType, Consts.MarchType.City) && _.isEqual(marchEvent.defencePlayerData.id, playerId)
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, attackAllianceDoc._id, "attackMarchEvents", eventId))
-		return self.dataService.directFindPlayerAsync(marchEvent.attackPlayerData.id, ['_id', 'militaryTechs', 'dragons', 'itemEvents'], false)
+		return self.dataService.directFindPlayerAsync(marchEvent.attackPlayerData.id, ['_id', 'soldierStars', 'militaryTechs', 'dragons', 'itemEvents'], false)
 	}).then(function(doc){
 		attackPlayerDoc = doc
 		eventDetail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, eventId, marchEvent.attackPlayerData.dragon, marchEvent.attackPlayerData.soldiers)
@@ -848,7 +848,7 @@ pro.getStrikeMarchEventDetail = function(playerId, allianceId, enemyAllianceId, 
 			return _.isEqual(marchEvent.id, eventId) && _.isEqual(marchEvent.marchType, Consts.MarchType.City) && _.isEqual(marchEvent.defencePlayerData.id, playerId)
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, attackAllianceDoc._id, "strikeMarchEvents", eventId))
-		return self.dataService.directFindPlayerAsync(marchEvent.attackPlayerData.id, ['_id', 'militaryTechs', 'dragons', 'itemEvents'], false)
+		return self.dataService.directFindPlayerAsync(marchEvent.attackPlayerData.id, ['_id', 'soldierStars', 'militaryTechs', 'dragons', 'itemEvents'], false)
 	}).then(function(doc){
 		attackPlayerDoc = doc
 		eventDetail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, eventId, marchEvent.attackPlayerData.dragon, null)
@@ -887,7 +887,7 @@ pro.getHelpDefenceMarchEventDetail = function(playerId, allianceId, eventId, cal
 			return _.isEqual(marchEvent.id, eventId) && _.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence) && _.isEqual(marchEvent.defencePlayerData.id, playerId)
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, allianceDoc._id, "attackMarchEvents", eventId))
-		return self.dataService.directFindPlayerAsync(marchEvent.attackPlayerData.id, ['_id', 'militaryTechs', 'dragons', 'itemEvents'], false)
+		return self.dataService.directFindPlayerAsync(marchEvent.attackPlayerData.id, ['_id', 'soldierStars', 'militaryTechs', 'dragons', 'itemEvents'], false)
 	}).then(function(doc){
 		attackPlayerDoc = doc
 		eventDetail = ReportUtils.getPlayerMarchTroopDetail(attackPlayerDoc, eventId, marchEvent.attackPlayerData.dragon, marchEvent.attackPlayerData.soldiers)
@@ -929,7 +929,7 @@ pro.getHelpDefenceTroopDetail = function(callerId, allianceId, playerId, helpedB
 			return _.isEqual(troop.id, helpedByPlayerId)
 		})
 		if(!_.isObject(helpedByPlayerTroop)) return Promise.reject(ErrorUtils.noHelpDefenceTroopByThePlayer(callerId, allianceId, playerDoc._id, helpedByPlayerId))
-		return self.dataService.directFindPlayerAsync(helpedByPlayerId, ['_id', 'militaryTechs', 'dragons', 'itemEvents'], false)
+		return self.dataService.directFindPlayerAsync(helpedByPlayerId, ['_id', 'soldierStars', 'militaryTechs', 'dragons', 'itemEvents'], false)
 	}).then(function(doc){
 		attackPlayerDoc = doc
 		troopDetail = ReportUtils.getPlayerHelpDefenceTroopDetail(attackPlayerDoc, helpedByPlayerTroop.dragon, helpedByPlayerTroop.soldiers)
