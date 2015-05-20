@@ -524,7 +524,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		var funcs = []
 		funcs.push(new Promise(function(resolve, reject){
 			self.dataService.getAllianceModel().collection.find({
-				_id:{$ne:allianceId._id},
+				_id:{$ne:allianceId},
 				serverId:self.app.get("cacheServerId"),
 				'basicInfo.power':{$lte:attackAllianceDoc.basicInfo.power}
 			}, {
@@ -559,6 +559,9 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		return self.dataService.findAllianceAsync(finalDoc._id, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests'), false)
 	}).then(function(doc){
 		defenceAllianceDoc = doc
+		if(_.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, defenceAllianceDoc._id))
+		}
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent])
 		}
