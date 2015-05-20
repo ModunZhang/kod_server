@@ -18,7 +18,7 @@ app.route("chat", RouteUtils.chat)
 app.route("logic", RouteUtils.logic)
 app.route("rank", RouteUtils.rank)
 
-app.configure("production|development", function() {
+app.configure("local|develop|awschina", function() {
 	app.set('proxyConfig', {
 		rpcClient: wsrpc.client
 	})
@@ -28,7 +28,7 @@ app.configure("production|development", function() {
 	})
 })
 
-app.configure("production|development", "gate", function(){
+app.configure("local|develop|awschina", "gate", function(){
 	app.set("connectorConfig", {
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
@@ -36,15 +36,14 @@ app.configure("production|development", "gate", function(){
 		useProtobuf:false,
 		disconnectOnTimeout:true
 	})
-
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
-	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
+	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("production|development", "logic", function(){
+app.configure("local|develop|awschina", "logic", function(){
 	var idParams = app.serverId.split("-")
 	var intId = parseInt(idParams[idParams.length - 1])
 	process.NODE_UNIQUE_ID = intId
@@ -60,31 +59,31 @@ app.configure("production|development", "logic", function(){
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
 
-	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
+	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("production|development", "chat", function(){
+app.configure("local|develop|awschina", "chat", function(){
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
 })
 
-app.configure("production|development", "event", function(){
-	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
+app.configure("local|develop|awschina", "event", function(){
+	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("production|development", "cache", function(){
-	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
+app.configure("local|develop|awschina", "cache", function(){
+	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("production|development", "rank", function(){
-	app.loadConfig("mongoConfig", path.resolve("./config/mongo.json"))
+app.configure("local|develop|awschina", "rank", function(){
+	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)
 
