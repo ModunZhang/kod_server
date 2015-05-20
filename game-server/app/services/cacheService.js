@@ -244,6 +244,7 @@ pro.createAlliance = function(allianceData, callback){
 			var alliance = {}
 			alliance.doc = allianceDoc
 			alliance.ops = 0
+			alliance.doc.members[0].online = true
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, allianceData._id)
 			self.alliances[allianceData._id] = alliance
 			callback(null, allianceDoc)
