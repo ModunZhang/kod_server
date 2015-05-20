@@ -41,7 +41,7 @@ pro.onRequestError = function(api, object, stack){
 	requestLogger.error(_.isString(stack) ? stack : '')
 	requestErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 	requestErrorLogger.error(_.isString(stack) ? stack : '')
-	if(_.isEqual(this.evn, "production")){
+	if(!_.isEqual(this.evn, "local")){
 		mailLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 		mailLogger.error(_.isString(stack) ? stack : '')
 	}
@@ -69,7 +69,7 @@ pro.onEventError = function(api, object, stack){
 	eventLogger.error(_.isString(stack) ? stack : '')
 	eventErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 	eventErrorLogger.error(_.isString(stack) ? stack : '')
-	if(_.isEqual(this.evn, "production")){
+	if(!_.isEqual(this.evn, "local")){
 		mailLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 		mailLogger.error(_.isString(stack) ? stack : '')
 	}
