@@ -4,7 +4,6 @@
       "id": "gate-server-1",
       "host": "127.0.0.1",
       "port": 3151,
-      "clientHost":"192.168.0.30",
       "clientPort": 3011,
       "frontend": true
     }

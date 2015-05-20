@@ -440,6 +440,7 @@ pro.getServers = function(playerId, callback){
 		servers = theServers
 		_.each(servers, function(server){
 			delete server.host
+			delete server.clientHost
 			delete server.port
 			delete server.isPromoted
 			delete server.isNew
