@@ -517,9 +517,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "findAllianceToFight")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "findAllianceToFight"))
 		}
-		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
-			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, attackAllianceDoc._id))
-		}
+		if(_.isObject(attackAllianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, attackAllianceDoc._id))
 
 		var funcs = []
 		funcs.push(new Promise(function(resolve, reject){
@@ -634,9 +632,8 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "revengeAlliance")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "revengeAlliance"))
 		}
-		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
-			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, attackAllianceDoc._id))
-		}
+		if(_.isObject(attackAllianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, attackAllianceDoc._id))
+
 		var report = _.find(attackAllianceDoc.allianceFightReports, function(report){
 			return _.isEqual(report.id, reportId)
 		})
