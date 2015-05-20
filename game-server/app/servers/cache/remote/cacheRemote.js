@@ -948,13 +948,13 @@ pro.createAlliance = function(doc, callback){
 	var allianceDoc = null
 	this.cacheService.createAllianceAsync(doc).then(function(theDoc){
 		allianceDoc = _.omit(theDoc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs"])
-		return self.cacheService.updateAllianceAsync(doc._id, null)
+		return self.cacheService.updateAllianceAsync(allianceDoc._id, null)
 	}).then(function(){
 		callback(null, {code:200, data:allianceDoc})
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(doc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
