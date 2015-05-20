@@ -1088,7 +1088,7 @@ pro.onAttackMarchReturnEvents = function(allianceDoc, event, callback){
 	//console.log(NodeUtils.inspect(event, false, null))
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(event.attackPlayerData.id, ['_id', 'logicServerId', 'basicInfo', 'buildings', 'resources', 'dragons', 'dragonMaterials', 'soldiers', 'soldierStars', 'woundedSoldiers', 'productionTechs', 'vipEvents', 'itemEvents', 'houseEvents'], true).then(function(doc){
+	this.dataService.findPlayerAsync(event.attackPlayerData.id, ['_id', 'logicServerId', 'basicInfo', 'buildings', 'resources', 'dragons', 'dragonMaterials', 'allianceInfo', 'soldiers', 'soldierStars', 'woundedSoldiers', 'productionTechs', 'vipEvents', 'itemEvents', 'houseEvents'], true).then(function(doc){
 		playerDoc = doc
 
 		var dragonType = event.attackPlayerData.dragon.type

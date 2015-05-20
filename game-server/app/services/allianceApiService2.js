@@ -48,7 +48,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'logicServerId', 'allianceId', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'dragons', 'soldierMaterials', 'dragonMaterials', 'items', 'soldiers', 'soldierStars', 'helpToTroops', 'helpedByTroops', 'houseEvents', 'vipEvents', 'itemEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'logicServerId', 'allianceId', 'allianceInfo', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'dragons', 'soldierMaterials', 'dragonMaterials', 'items', 'soldiers', 'soldierStars', 'helpToTroops', 'helpedByTroops', 'houseEvents', 'vipEvents', 'itemEvents'], false).then(function(doc){
 		playerDoc = doc
 		return self.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'members', 'allianceFight', 'mapObjects', 'events', 'helpEvents', 'attackMarchEvents', 'attackMarchReturnEvents', 'strikeMarchEvents', 'strikeMarchReturnEvents', 'villageEvents', 'shrineEvents'], false)
 	}).then(function(doc){

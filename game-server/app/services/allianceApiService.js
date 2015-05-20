@@ -811,7 +811,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Kick, memberObject.name, [])
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
-		return self.dataService.findPlayerAsync(memberId, ['_id', 'logicServerId', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'dragons', 'soldierMaterials', 'dragonMaterials', 'items', 'soldiers', 'soldierStars', 'helpToTroops', 'helpedByTroops', 'houseEvents', 'vipEvents', 'itemEvents'], false)
+		return self.dataService.findPlayerAsync(memberId, ['_id', 'logicServerId', 'basicInfo', 'resources', 'allianceInfo', 'buildings', 'productionTechs', 'dragons', 'soldierMaterials', 'dragonMaterials', 'items', 'soldiers', 'soldierStars', 'helpToTroops', 'helpedByTroops', 'houseEvents', 'vipEvents', 'itemEvents'], false)
 	}).then(function(doc){
 		memberDoc = doc
 		memberDoc.allianceId = null
