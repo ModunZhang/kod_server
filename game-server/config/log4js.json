@@ -149,7 +149,7 @@
       "recipients": "bugs@batcatstudio.com",
       "sendInterval": 5,
       "transport": "SMTP",
-      "sender": "Modun Zhang <zhangxuemin@batcatstudio.com>",
+      "sender": "ServerError <server_error@batcatstudio.com>",
       "SMTP": {
         "host": "smtp.exmail.qq.com",
         "secureConnection": true,
