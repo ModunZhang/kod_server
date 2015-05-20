@@ -2333,12 +2333,24 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	}).then(function(){
 		var attackAllianceKill = attackAllianceDoc.allianceFight.attackAllianceCountData.kill
 		var defenceAllianceKill = attackAllianceDoc.allianceFight.defenceAllianceCountData.kill
+		var allianceFightResult = attackAllianceKill >= defenceAllianceKill ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin
+		var allianceFightHonourTotal = allianceFightInitHonour + ((attackAllianceKill + defenceAllianceKill) * 2)
+		var attackAllianceRoutCount = attackAllianceDoc.allianceFight.attackAllianceCountData.routCount
+		var defenceAllianceRoutCount = attackAllianceDoc.allianceFight.defenceAllianceCountData.routCount
+		var allianceFightRoutResult = attackAllianceRoutCount - defenceAllianceRoutCount
+		var attackAllianceHonourGetPercent = _.isEqual(allianceFightResult, Consts.FightResult.AttackWin) ? 0.7 : 0.3 + (0.01 * allianceFightRoutResult)
+		if(attackAllianceHonourGetPercent > 1) attackAllianceHonourGetPercent = 1
+		else if(attackAllianceHonourGetPercent < 0) attackAllianceHonourGetPercent = 0
+		var attackAllianceHonourGet = Math.floor(allianceFightHonourTotal * attackAllianceHonourGetPercent)
+		var defenceAllianceHonourGet = allianceFightHonourTotal - attackAllianceHonourGet
+
+
 		var allianceFightReport = {
 			id:ShortId.generate(),
 			mergeStyle:attackAllianceDoc.allianceFight.mergeStyle,
 			attackAllianceId:attackAllianceDoc.allianceFight.attackAllianceId,
 			defenceAllianceId:attackAllianceDoc.allianceFight.defenceAllianceId,
-			fightResult:attackAllianceKill >= defenceAllianceKill ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin,
+			fightResult:allianceFightResult,
 			fightTime:now,
 			killMax:{
 				allianceId:_.isNull(killMaxPlayer) ? null : _.contains(attackAllianceDoc.allianceFight.attackPlayerKill, killMaxPlayer) ? attackAllianceDoc.allianceFight.attackAllianceId : attackAllianceDoc.allianceFight.defenceAllianceId,
@@ -2350,7 +2362,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				tag:attackAllianceDoc.basicInfo.tag,
 				flag:attackAllianceDoc.basicInfo.flag,
 				kill:attackAllianceKill,
-				honour:allianceFightInitHonour,
+				honour:attackAllianceHonourGet,
 				routCount:attackAllianceDoc.allianceFight.attackAllianceCountData.routCount,
 				strikeCount:attackAllianceDoc.allianceFight.attackAllianceCountData.strikeCount,
 				strikeSuccessCount:attackAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount,
@@ -2362,7 +2374,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				tag:defenceAllianceDoc.basicInfo.tag,
 				flag:defenceAllianceDoc.basicInfo.flag,
 				kill:defenceAllianceKill,
-				honour:allianceFightInitHonour,
+				honour:defenceAllianceHonourGet,
 				routCount:attackAllianceDoc.allianceFight.defenceAllianceCountData.routCount,
 				strikeCount:attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount,
 				strikeSuccessCount:attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount,
@@ -2378,7 +2390,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		attackAllianceData.push(["countInfo", attackAllianceDoc.countInfo])
 		defenceAllianceData.push(["countInfo", defenceAllianceDoc.countInfo])
 
-		attackAllianceDoc.basicInfo.honour += allianceFightInitHonour
+		attackAllianceDoc.basicInfo.honour += attackAllianceHonourGet
 		attackAllianceData.push(["basicInfo.honour", attackAllianceDoc.basicInfo.honour])
 		attackAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
 		attackAllianceData.push(["basicInfo.status", attackAllianceDoc.basicInfo.status])
@@ -2396,7 +2408,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			}
 		})
 
-		defenceAllianceDoc.basicInfo.honour += allianceFightInitHonour
+		defenceAllianceDoc.basicInfo.honour += defenceAllianceHonourGet
 		defenceAllianceData.push(["basicInfo.honour", defenceAllianceDoc.basicInfo.honour])
 		defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Protect
 		defenceAllianceData.push(["basicInfo.status", defenceAllianceDoc.basicInfo.status])
