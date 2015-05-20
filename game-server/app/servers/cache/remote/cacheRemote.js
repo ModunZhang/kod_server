@@ -100,8 +100,8 @@ pro.loginPlayer = function(id, callback){
 				allianceDoc = _.omit(doc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs", 'villageCreateEvents'])
 				if(_.isObject(allianceDoc.allianceFight)){
 					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
-					return self.cacheService.directFindAllianceAsync(enemyAllianceId, [], false).then(function(doc){
-						enemyAllianceDoc = _.pick(doc, Consts.AllianceViewDataKeys)
+					return self.cacheService.directFindAllianceAsync(enemyAllianceId, Consts.AllianceViewDataKeys, false).then(function(doc){
+						enemyAllianceDoc = doc
 						return Promise.resolve()
 					})
 				}else return Promise.resolve()
