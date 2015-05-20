@@ -146,7 +146,7 @@
     },
     {
       "type": "smtp",
-      "recipients": "zhangxuemin@batcatstudio.com, hejia@batcatstudio.com, daiguoqiang@batcatstudio.com, gaozhou@batcatstudio.com, shicihang@batcatstudio.com",
+      "recipients": "bugs@batcatstudio.com",
       "sendInterval": 5,
       "transport": "SMTP",
       "sender": "Modun Zhang <zhangxuemin@batcatstudio.com>",
@@ -155,8 +155,8 @@
         "secureConnection": true,
         "port": 465,
         "auth": {
-          "user": "zhangxuemin@batcatstudio.com",
-          "pass": "Zxm75504109"
+          "user": "server_error@batcatstudio.com",
+          "pass": "aisinile12032104"
         }
       },
       "category": "kod-mail"
