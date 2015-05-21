@@ -1162,7 +1162,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 	LogicUtils.removeItemInArray(attackAllianceDoc.strikeMarchEvents, event)
 	if(_.isEqual(event.marchType, Consts.MarchType.City)){
 		funcs = []
-		funcs.push(self.dataService.findPlayerAsync(event.attackPlayerData.id, ['_id', 'logicServerId', 'basicInfo', 'dragons', 'buildings', 'militaryTechs', 'dailyTasks', 'itemEvents', 'vipEvents', 'dragonDeathEvents'], true))
+		funcs.push(self.dataService.findPlayerAsync(event.attackPlayerData.id, ['_id', 'logicServerId', 'basicInfo', 'dragons', 'buildings', 'militaryTechs', 'dailyTasks', 'growUpTasks', 'itemEvents', 'vipEvents', 'dragonDeathEvents'], true))
 		funcs.push(self.dataService.findAllianceAsync(event.defencePlayerData.alliance.id, ['_id', 'basicInfo', 'members', 'mapObjects', 'allianceFight'], true))
 		funcs.push(self.dataService.findPlayerAsync(event.defencePlayerData.id, ['_id', 'logicServerId', 'basicInfo', 'resources', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'helpedByTroops', 'productionTechs', 'militaryTechs', 'itemEvents', 'vipEvents', 'houseEvents'], true))
 		Promise.all(funcs).spread(function(doc_1, doc_2, doc_3){
