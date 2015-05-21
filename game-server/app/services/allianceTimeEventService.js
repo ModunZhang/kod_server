@@ -1216,7 +1216,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					attackAllianceData.push(["allianceFight.attackAllianceCountData.strikeCount", attackAllianceDoc.allianceFight.attackAllianceCountData.strikeCount])
 					defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeCount += 1
 					defenceAllianceData.push(["allianceFight.attackAllianceCountData.strikeCount", defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeCount])
-					if(_.isEqual(report.powerCompare >= 1)){
+					if(report.powerCompare >= 1){
 						attackAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
 						attackAllianceData.push(["allianceFight.attackAllianceCountData.strikeSuccessCount", attackAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount])
 						defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
@@ -1230,7 +1230,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					attackAllianceData.push(["allianceFight.defenceAllianceCountData.strikeCount", attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount])
 					defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount += 1
 					defenceAllianceData.push(["allianceFight.defenceAllianceCountData.strikeCount", defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount])
-					if(_.isEqual(report.powerCompare >= 1)){
+					if(report.powerCompare >= 1){
 						attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
 						attackAllianceData.push(["allianceFight.defenceAllianceCountData.strikeSuccessCount", attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount])
 						defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
@@ -1305,6 +1305,10 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					report = ReportUtils.createStrikeCityFightWithDefenceDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc, defenceDragon)
 					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.reportForAttackPlayer])
 					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
+					updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, attackPlayerDoc, attackPlayerDoc])
+					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
+					updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, defencePlayerDoc, defencePlayerDoc])
+					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
 
 					attackDragon.hp -= report.reportForAttackPlayer.strikeCity.attackPlayerData.dragon.hpDecreased
 					if(attackDragon.hp <= 0){
@@ -1315,17 +1319,14 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					}
 					attackPlayerData.push(["dragons." + attackDragon.type + ".hp", attackDragon.hp])
 					attackPlayerData.push(["dragons." + attackDragon.type + ".hpRefreshTime", attackDragon.hpRefreshTime])
-					updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, attackPlayerDoc, attackPlayerDoc])
-					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
-					updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, defencePlayerDoc, defencePlayerDoc])
-					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
+
 
 					if(_.isEqual(attackAllianceDoc._id, attackAllianceDoc.allianceFight.attackAllianceId)){
 						attackAllianceDoc.allianceFight.attackAllianceCountData.strikeCount += 1
 						attackAllianceData.push(["allianceFight.attackAllianceCountData.strikeCount", attackAllianceDoc.allianceFight.attackAllianceCountData.strikeCount])
 						defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeCount += 1
 						defenceAllianceData.push(["allianceFight.attackAllianceCountData.strikeCount", defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeCount])
-						if(_.isEqual(report.powerCompare >= 1)){
+						if(report.powerCompare >= 1){
 							attackAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
 							attackAllianceData.push(["allianceFight.attackAllianceCountData.strikeSuccessCount", attackAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount])
 							defenceAllianceDoc.allianceFight.attackAllianceCountData.strikeSuccessCount += 1
@@ -1334,13 +1335,12 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 							attackPlayerData.push(["basicInfo.strikeWin", attackPlayerDoc.basicInfo.strikeWin])
 							TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 						}
-
 					}else{
 						attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount += 1
 						attackAllianceData.push(["allianceFight.defenceAllianceCountData.strikeCount", attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount])
 						defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount += 1
 						defenceAllianceData.push(["allianceFight.defenceAllianceCountData.strikeCount", defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount])
-						if(_.isEqual(report.powerCompare >= 1)){
+						if(report.powerCompare >= 1){
 							attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1
 							attackAllianceData.push(["allianceFight.defenceAllianceCountData.strikeSuccessCount", attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount])
 							defenceAllianceDoc.allianceFight.defenceAllianceCountData.strikeSuccessCount += 1

@@ -833,7 +833,6 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		isSaved:false,
 		cityBeStriked:cityBeStrikedReport
 	}
-
 	return {
 		reportForAttackPlayer:reportForAttackPlayer,
 		reportForDefencePlayer:reportForDefencePlayer,
