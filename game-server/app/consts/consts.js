@@ -234,7 +234,8 @@ module.exports = {
 		Ja:"ja",
 		Ru:"ru",
 		Es:"es",
-		Pt:"pt"
+		Pt:"pt",
+		It:"it"
 	},
 	AllianceTerrain:{
 		GrassLand:"grassLand",
