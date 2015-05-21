@@ -2081,7 +2081,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var maxPlayerKill = null
 		var playerKills = attackAllianceDoc.allianceFight.attackPlayerKills.concat(attackAllianceDoc.allianceFight.defencePlayerKills)
 		_.each(playerKills, function(playerKill){
-			if(maxPlayerKill == null || maxPlayerKill < playerKill.kill) maxPlayerKill = playerKill
+			if(maxPlayerKill == null || maxPlayerKill.kill < playerKill.kill) maxPlayerKill = playerKill
 		})
 		return _.isObject(maxPlayerKill) ? maxPlayerKill : null
 	})();
@@ -2353,7 +2353,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			fightResult:allianceFightResult,
 			fightTime:now,
 			killMax:{
-				allianceId:_.isNull(killMaxPlayer) ? null : _.contains(attackAllianceDoc.allianceFight.attackPlayerKill, killMaxPlayer) ? attackAllianceDoc.allianceFight.attackAllianceId : attackAllianceDoc.allianceFight.defenceAllianceId,
+				allianceId:_.isNull(killMaxPlayer) ? null : _.contains(attackAllianceDoc.allianceFight.attackPlayerKills, killMaxPlayer) ? attackAllianceDoc.allianceFight.attackAllianceId : attackAllianceDoc.allianceFight.defenceAllianceId,
 				playerId:_.isNull(killMaxPlayer) ? null :killMaxPlayer.id,
 				playerName:_.isNull(killMaxPlayer) ? null :killMaxPlayer.name
 			},
