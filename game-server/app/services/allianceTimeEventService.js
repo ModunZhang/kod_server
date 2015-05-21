@@ -1986,8 +1986,8 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		attackAllianceDoc = doc_1
 		defenceAllianceDoc = doc_2
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, attackAllianceDoc, attackAllianceDoc])
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, defenceAllianceDoc, defenceAllianceDoc])
+		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, attackAllianceDoc, attackAllianceDoc])
+		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, defenceAllianceDoc, defenceAllianceDoc])
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare)){
 			return self.onAlliancePrepareStatusFinishedAsync(attackAllianceDoc, defenceAllianceDoc)
 		}else if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){

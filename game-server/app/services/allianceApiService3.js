@@ -557,7 +557,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		return self.dataService.findAllianceAsync(finalDoc._id, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests'), false)
 	}).then(function(doc){
 		defenceAllianceDoc = doc
-		if(_.isObject(defenceAllianceDoc.allianceFight))
+		if(!_.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Peace))
 			return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
 
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
