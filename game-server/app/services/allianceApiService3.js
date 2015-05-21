@@ -511,7 +511,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'members', 'allianceFight', 'fightRequests'], false).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests'), false).then(function(doc){
 		attackAllianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "findAllianceToFight")){
@@ -626,7 +626,7 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'members', 'allianceFight', 'fightRequests', 'allianceFightReports'], false).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests', 'allianceFightReports'), false).then(function(doc){
 		attackAllianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "revengeAlliance")){
