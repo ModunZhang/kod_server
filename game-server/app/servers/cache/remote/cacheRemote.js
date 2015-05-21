@@ -94,6 +94,7 @@ pro.loginPlayer = function(id, callback){
 			unreadMails:unreadMails,
 			unreadReports:unreadReports
 		}
+		playerDoc.serverLevel = self.app.getCurServer().level
 		playerDoc.serverTime = Date.now()
 		if(!_.isEmpty(playerDoc.allianceId)){
 			return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
