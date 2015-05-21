@@ -2255,7 +2255,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var playerData = []
 		var funcs = []
 		var events = null
-		return self.dataService.findPlayerAsync(playerId, ['_id', 'logicServerId', 'basicInfo', 'resources', 'productionTechs', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'dragonMaterials', 'growUpTasks', 'allianceInfo', 'itemEvents', 'vipEvents', 'houseEvents'], true).then(function(doc){
+		return self.dataService.findPlayerAsync(playerId, ['_id', 'logicServerId', 'basicInfo', 'resources', 'productionTechs', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'woundedSoldiers', 'dragonMaterials', 'growUpTasks', 'allianceInfo', 'itemEvents', 'vipEvents', 'houseEvents'], true).then(function(doc){
 			playerDoc = doc
 			events = playerIds[playerDoc._id]
 			_.each(events, function(event){
