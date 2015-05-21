@@ -1937,3 +1937,21 @@ Utils.playerDataAlreadyInited = function(playerId){
 	var config = Errors.playerDataAlreadyInited
 	return CreateError(config, {playerId:playerId})
 }
+
+/**
+ * 设备禁止登陆
+ * @param deviceId
+ */
+Utils.deviceLocked = function(deviceId){
+	var config = Errors.deviceLocked
+	return CreateError(config, {deviceId:deviceId})
+}
+
+/**
+ * 玩家禁止登陆
+ * @param playerId
+ */
+Utils.playerLocked = function(playerId){
+	var config = Errors.playerLocked
+	return CreateError(config, {playerId:playerId})
+}
