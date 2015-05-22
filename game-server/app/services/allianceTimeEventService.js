@@ -1906,7 +1906,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 				attackEnemyAllianceData.push(["mapObjects." + defenceAllianceDoc.mapObjects.indexOf(villageMapObject), null])
 			}
 			LogicUtils.removeItemInArray(defenceAllianceDoc.mapObjects, villageMapObject)
-			var villageCreateEvent = DataUtils.createVillageCreateEvent(village.name)
+			var villageCreateEvent = DataUtils.createVillageCreateEvent()
 			defenceAllianceDoc.villageCreateEvents.push(villageCreateEvent)
 			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "villageCreateEvents", villageCreateEvent.id, villageCreateEvent.finishTime - Date.now()])
 		}else{
@@ -1961,7 +1961,7 @@ pro.onVillageCreateEvents = function(allianceDoc, event, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	LogicUtils.removeItemInArray(allianceDoc.villageCreateEvents, event)
-	DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, event.name, 1)
+	DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, 1)
 	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 	LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))

@@ -1867,25 +1867,23 @@ Utils.createMapVillages = function(mapObjects){
 	var orderHallConfig = AllianceBuilding.orderHall[orderHallLevel]
 	var villageTypeConfigs = this.getAllianceVillageTypeConfigs()
 	var map = MapUtils.buildMap(mapObjects)
-	_.each(villageTypeConfigs, function(typeConfig){
-		var villageTotalCount = orderHallConfig[typeConfig.name + "Count"]
+	for(var i = 0; i < orderHallConfig.villageCount; i ++){
+		var typeConfig = _.sample(villageTypeConfigs)
 		var config = AllianceInitData.buildingName[typeConfig.name]
 		var width = config.width
 		var height = config.height
-		for(var i = 0; i < villageTotalCount; i++){
-			var rect = MapUtils.getRect(map, width, height)
-			if(_.isObject(rect)){
-				var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
-				var village = {
-					id:villageMapObject.id,
-					name:villageMapObject.name,
-					level:1,
-					resource:self.getAllianceVillageProduction(villageMapObject.name, 1)
-				}
-				villages.push(village)
+		var rect = MapUtils.getRect(map, width, height)
+		if(_.isObject(rect)){
+			var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
+			var village = {
+				id:villageMapObject.id,
+				name:villageMapObject.name,
+				level:1,
+				resource:self.getAllianceVillageProduction(villageMapObject.name, 1)
 			}
+			villages.push(village)
 		}
-	})
+	}
 	return villages
 }
 
@@ -3869,15 +3867,13 @@ Utils.addPlayerLevelExp = function(playerDoc, playerData, expAdd){
 
 /**
  * 创建联盟村落刷新事件
- * @param villageName
- * @returns {{name: *, startTime: number, finishTime: number}}
+ * @returns {{id: *, startTime: number, finishTime: number}}
  */
-Utils.createVillageCreateEvent = function(villageName){
+Utils.createVillageCreateEvent = function(){
 	var event = {
 		id:ShortId.generate(),
-		name:villageName,
 		startTime:Date.now(),
-		finishTime:Date.now() + (this.getAllianceIntInit(villageName + "RefreshMinutes") * 60 * 1000)
+		finishTime:Date.now() + (this.getAllianceIntInit('villageRefreshMinutes') * 60 * 1000)
 	}
 	return event
 }
@@ -3890,18 +3886,6 @@ Utils.createVillageCreateEvent = function(villageName){
  */
 Utils.getLocalizationConfig = function(type, key){
 	return Localizations[type][key]
-}
-
-/**
- * 获取联盟村落类型
- * @returns {Array}
- */
-Utils.getAllianceVillageNames = function(){
-	var names = []
-	_.each(AllianceInitData.buildingName, function(config){
-		if(_.isEqual(config.name.slice(-7), "Village")) names.push(config.name)
-	})
-	return names
 }
 
 /**
@@ -3918,29 +3902,11 @@ Utils.getAllianceBuildingByName = function(allianceDoc, buildingName){
 /**
  * 获取联盟村落总个数
  * @param allianceDoc
- * @param villageName
  * @returns {*}
  */
-Utils.getAllianceVillagesTotalCount = function(allianceDoc, villageName){
+Utils.getAllianceVillagesTotalCount = function(allianceDoc){
 	var building = this.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.OrderHall)
-	return AllianceBuilding[building.name][building.level][villageName + "Count"]
-}
-
-/**
- * 获取联盟当前村落个数
- * @param allianceDoc
- * @param villageName
- * @returns {number}
- */
-Utils.getAllianceVillagesCurrentCount = function(allianceDoc, villageName){
-	var count = 0
-	_.each(allianceDoc.villages, function(village){
-		if(_.isEqual(village.name, villageName)) count += 1
-	})
-	_.each(allianceDoc.villageCreateEvents, function(event){
-		if(_.isEqual(event.name, villageName)) count += 1
-	})
-	return count
+	return AllianceBuilding[building.name][building.level].villageCount
 }
 
 /**
@@ -3948,27 +3914,25 @@ Utils.getAllianceVillagesCurrentCount = function(allianceDoc, villageName){
  * @param allianceDoc
  * @param allianceData
  * @param enemyAllianceData
- * @param villageName
  * @param count
  */
-Utils.createAllianceVillage = function(allianceDoc, allianceData, enemyAllianceData, villageName, count){
+Utils.createAllianceVillage = function(allianceDoc, allianceData, enemyAllianceData, count){
 	var mapObjects = allianceDoc.mapObjects
 	var map = MapUtils.buildMap(mapObjects)
-	var config = AllianceInitData.buildingName[villageName]
-	var width = config.width
-	var height = config.height
-
-	while(count > 0){
+	var villageTypeConfigs = this.getAllianceVillageTypeConfigs()
+	for(var i = 0; i < count; i ++){
+		var config = _.sample(villageTypeConfigs)
+		var width = config.width
+		var height = config.height
 		var rect = MapUtils.getRect(map, width, height)
 		if(_.isObject(rect)){
-			var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, villageName)
+			var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, config.name)
 			allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
 			enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
 			var village = this.addAllianceVillageObject(allianceDoc, villageMapObject)
 			allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
 			enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
 		}
-		count--
 	}
 }
 

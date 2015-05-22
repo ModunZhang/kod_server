@@ -119,7 +119,7 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 	var updateFuncs = []
 	var keys = null
 	if(_.isEqual(buildingName, Consts.AllianceBuildingNames.OrderHall))
-		keys = ['_id', 'basicInfo', 'members', 'buildings', 'mapObjects', 'villages', 'villageLevels']
+		keys = ['_id', 'basicInfo', 'members', 'buildings', 'mapObjects', 'villages', 'villageCreateEvents', 'villageLevels']
 	else
 		keys = ['_id', 'basicInfo', 'members', 'buildings']
 	this.dataService.findAllianceAsync(allianceId, keys, false).then(function(doc){
@@ -143,12 +143,9 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 		allianceData.push(["buildings." + allianceDoc.buildings.indexOf(building) + ".level", building.level])
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		if(_.isEqual(Consts.AllianceBuildingNames.OrderHall, buildingName)){
-			var villageNames = DataUtils.getAllianceVillageNames()
-			_.each(villageNames, function(name){
-				var totalCount = DataUtils.getAllianceVillagesTotalCount(allianceDoc, name)
-				var currentCount = DataUtils.getAllianceVillagesCurrentCount(allianceDoc, name)
-				DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, name, totalCount - currentCount)
-			})
+			var totalCount = DataUtils.getAllianceVillagesTotalCount(allianceDoc)
+			var currentCount = allianceDoc.villages.length + allianceDoc.villageCreateEvents.length
+			DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, totalCount - currentCount)
 		}
 
 		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
@@ -549,7 +546,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		return Promise.all(funcs)
 	}).spread(function(docSmall, docBig){
 		if(!_.isObject(docSmall) && !_.isObject(docBig)) return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
-		var powerSmall = _.isObject(docSmall) ?  attackAllianceDoc.basicInfo.power  - docSmall.basicInfo.power : null
+		var powerSmall = _.isObject(docSmall) ? attackAllianceDoc.basicInfo.power - docSmall.basicInfo.power : null
 		var powerBig = _.isObject(docBig) ? docBig.basicInfo.power - attackAllianceDoc.basicInfo.power : null
 		var finalDoc = _.isNull(docSmall) ? docBig : _.isNull(docBig) ? docSmall : powerBig >= powerSmall ? docSmall : docBig
 		if(attackAllianceDoc.basicInfo.power * 1.9 < finalDoc.basicInfo.power || attackAllianceDoc.basicInfo.power * 0.1 > finalDoc.basicInfo.power)
