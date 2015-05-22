@@ -5,12 +5,12 @@ module.exports = intInit
 
 intInit["createAllianceGem"] = {
 	type:"createAllianceGem",
-	value:50,
+	value:200,
 	desc:"创建联盟所需宝石"
 }
 intInit["buyArchonGem"] = {
 	type:"buyArchonGem",
-	value:100,
+	value:1000,
 	desc:"竞选盟主所需宝石"
 }
 intInit["editAllianceBasicInfoGem"] = {
@@ -25,7 +25,7 @@ intInit["editAllianceTerrianHonour"] = {
 }
 intInit["activeShrineStageEventMinutes"] = {
 	type:"activeShrineStageEventMinutes",
-	value:3,
+	value:10,
 	desc:"圣地战激活后持续时间"
 }
 intInit["allianceFightPrepareMinutes"] = {
@@ -50,12 +50,12 @@ intInit["allianceRevengeMaxMinutes"] = {
 }
 intInit["allianceRegionMapWidth"] = {
 	type:"allianceRegionMapWidth",
-	value:51,
+	value:21,
 	desc:"联盟地图宽度"
 }
 intInit["allianceRegionMapHeight"] = {
 	type:"allianceRegionMapHeight",
-	value:51,
+	value:21,
 	desc:"联盟地图高度"
 }
 intInit["citizenPerLeadership"] = {
@@ -93,33 +93,8 @@ intInit["KilledCitizenPerWallHp"] = {
 	value:1,
 	desc:"损失一点城墙血量获得多少击杀积分"
 }
-intInit["woodVillageRefreshMinutes"] = {
-	type:"woodVillageRefreshMinutes",
+intInit["villageRefreshMinutes"] = {
+	type:"villageRefreshMinutes",
 	value:10,
 	desc:"村落采空后多少分钟后刷新"
-}
-intInit["stoneVillageRefreshMinutes"] = {
-	type:"stoneVillageRefreshMinutes",
-	value:10,
-	desc:"村落采空后多少分钟后刷新"
-}
-intInit["ironVillageRefreshMinutes"] = {
-	type:"ironVillageRefreshMinutes",
-	value:10,
-	desc:"村落采空后多少分钟后刷新"
-}
-intInit["foodVillageRefreshMinutes"] = {
-	type:"foodVillageRefreshMinutes",
-	value:10,
-	desc:"村落采空后多少分钟后刷新"
-}
-intInit["coinVillageRefreshMinutes"] = {
-	type:"coinVillageRefreshMinutes",
-	value:10,
-	desc:"村落采空后多少分钟后刷新"
-}
-intInit["allianceFightWillFinishedMinutes"] = {
-	type:"allianceFightWillFinishedMinutes",
-	value:1,
-	desc:"判断联盟战即将结束的时间"
 }
