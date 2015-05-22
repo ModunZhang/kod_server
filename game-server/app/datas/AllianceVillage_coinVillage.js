@@ -5,51 +5,51 @@ module.exports = coinVillage
 
 coinVillage[1] = {
 	level:1,
-	needHonour:400,
-	production:40000
+	needHonour:6900,
+	production:120000
 }
 coinVillage[2] = {
 	level:2,
-	needHonour:1250,
-	production:80000
+	needHonour:13800,
+	production:132000
 }
 coinVillage[3] = {
 	level:3,
-	needHonour:3500,
-	production:120000
+	needHonour:27600,
+	production:144000
 }
 coinVillage[4] = {
 	level:4,
-	needHonour:9650,
-	production:160000
+	needHonour:55200,
+	production:156000
 }
 coinVillage[5] = {
 	level:5,
-	needHonour:18450,
-	production:240000
+	needHonour:110400,
+	production:168000
 }
 coinVillage[6] = {
 	level:6,
-	needHonour:32000,
-	production:320000
+	needHonour:220900,
+	production:180000
 }
 coinVillage[7] = {
 	level:7,
-	needHonour:72400,
-	production:400000
+	needHonour:510900,
+	production:192000
 }
 coinVillage[8] = {
 	level:8,
-	needHonour:117550,
-	production:510000
+	needHonour:961600,
+	production:204000
 }
 coinVillage[9] = {
 	level:9,
-	needHonour:251700,
-	production:722500
+	needHonour:1903000,
+	production:216000
 }
 coinVillage[10] = {
 	level:10,
-	needHonour:381850,
-	production:1080000
+	needHonour:3514000,
+	production:240000
 }
