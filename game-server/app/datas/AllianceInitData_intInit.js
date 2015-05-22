@@ -35,7 +35,7 @@ intInit["allianceFightPrepareMinutes"] = {
 }
 intInit["allianceFightTotalFightMinutes"] = {
 	type:"allianceFightTotalFightMinutes",
-	value:5,
+	value:20,
 	desc:"联盟战战争期时间"
 }
 intInit["allianceHelpDefenceTroopsMaxCount"] = {

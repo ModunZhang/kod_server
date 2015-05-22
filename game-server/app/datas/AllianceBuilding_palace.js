@@ -5,61 +5,61 @@ module.exports = palace
 
 palace[1] = {
 	level:1,
-	needHonour:300,
-	memberCount:15,
-	power:8
+	needHonour:17200,
+	memberCount:11,
+	power:172
 }
 palace[2] = {
 	level:2,
-	needHonour:1000,
-	memberCount:20,
-	power:25
+	needHonour:34500,
+	memberCount:12,
+	power:345
 }
 palace[3] = {
 	level:3,
-	needHonour:3300,
-	memberCount:25,
-	power:83
+	needHonour:69000,
+	memberCount:13,
+	power:690
 }
 palace[4] = {
 	level:4,
-	needHonour:27100,
-	memberCount:30,
-	power:678
+	needHonour:138100,
+	memberCount:14,
+	power:1381
 }
 palace[5] = {
 	level:5,
-	needHonour:94600,
-	memberCount:35,
-	power:2365
+	needHonour:276200,
+	memberCount:15,
+	power:2762
 }
 palace[6] = {
 	level:6,
-	needHonour:272100,
-	memberCount:40,
-	power:6803
+	needHonour:552400,
+	memberCount:16,
+	power:5524
 }
 palace[7] = {
 	level:7,
-	needHonour:618000,
-	memberCount:45,
-	power:15450
+	needHonour:1277300,
+	memberCount:17,
+	power:12773
 }
 palace[8] = {
 	level:8,
-	needHonour:1317400,
-	memberCount:50,
-	power:32935
+	needHonour:2404100,
+	memberCount:18,
+	power:24041
 }
 palace[9] = {
 	level:9,
-	needHonour:3138600,
-	memberCount:55,
-	power:78465
+	needHonour:4757700,
+	memberCount:19,
+	power:47577
 }
 palace[10] = {
 	level:10,
-	needHonour:5725200,
-	memberCount:60,
-	power:143130
+	needHonour:8785200,
+	memberCount:20,
+	power:87852
 }

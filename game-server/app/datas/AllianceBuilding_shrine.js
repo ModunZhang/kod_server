@@ -5,71 +5,71 @@ module.exports = shrine
 
 shrine[1] = {
 	level:1,
-	needHonour:360,
+	needHonour:13800,
 	perception:150,
 	pRecoveryPerHour:7,
-	power:9
+	power:138
 }
 shrine[2] = {
 	level:2,
-	needHonour:1200,
+	needHonour:27600,
 	perception:200,
 	pRecoveryPerHour:9,
-	power:30
+	power:276
 }
 shrine[3] = {
 	level:3,
-	needHonour:3960,
+	needHonour:55200,
 	perception:250,
 	pRecoveryPerHour:11,
-	power:99
+	power:552
 }
 shrine[4] = {
 	level:4,
-	needHonour:32520,
+	needHonour:110400,
 	perception:300,
 	pRecoveryPerHour:13,
-	power:813
+	power:1104
 }
 shrine[5] = {
 	level:5,
-	needHonour:113520,
+	needHonour:220900,
 	perception:350,
 	pRecoveryPerHour:15,
-	power:2838
+	power:2209
 }
 shrine[6] = {
 	level:6,
-	needHonour:326520,
+	needHonour:441900,
 	perception:400,
 	pRecoveryPerHour:17,
-	power:8163
+	power:4419
 }
 shrine[7] = {
 	level:7,
-	needHonour:741600,
+	needHonour:1021900,
 	perception:450,
 	pRecoveryPerHour:19,
-	power:18540
+	power:10219
 }
 shrine[8] = {
 	level:8,
-	needHonour:1580880,
+	needHonour:1923300,
 	perception:500,
 	pRecoveryPerHour:21,
-	power:39522
+	power:19233
 }
 shrine[9] = {
 	level:9,
-	needHonour:3766320,
+	needHonour:3806100,
 	perception:550,
 	pRecoveryPerHour:23,
-	power:94158
+	power:38061
 }
 shrine[10] = {
 	level:10,
-	needHonour:6870240,
+	needHonour:7028100,
 	perception:600,
 	pRecoveryPerHour:25,
-	power:171756
+	power:70281
 }
