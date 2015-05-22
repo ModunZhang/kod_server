@@ -21,5 +21,5 @@ exp["food"] = {
 }
 exp["coin"] = {
 	type:"coin",
-	countPerExp:100
+	countPerExp:50
 }
