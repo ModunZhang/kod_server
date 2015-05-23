@@ -49,7 +49,7 @@ app.configure("local|develop|awschina", "logic", function(){
 	process.NODE_UNIQUE_ID = intId
 	app.set("connectorConfig", {
 		connector:pomelo.connectors.hybridconnector,
-		heartbeat:60,
+		heartbeat:10,
 		useDict:true,
 		useProtobuf:false,
 		disconnectOnTimeout:true
