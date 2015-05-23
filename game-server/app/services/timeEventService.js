@@ -15,8 +15,8 @@ var Consts = require("../consts/consts")
 
 var TimeEventService = function(app){
 	this.app = app
-	this.eventServerId = app.get("eventServerId")
-	this.isEventServer = _.isEqual(this.eventServerId, app.getServerId())
+	this.cacheServerId = app.get("cacheServerId")
+	this.isCacheServer = _.isEqual(this.cacheServerId, app.getServerId())
 	this.logService = app.get("logService")
 	this.timeouts = {}
 }
@@ -76,8 +76,8 @@ function clearLongTimeout(longTimeoutObject){
  */
 pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 	var self = this
-	if(this.isEventServer){
-		this.logService.onEvent("event.timeEventService.addTimeEvent", {
+	if(this.isCacheServer){
+		this.logService.onEvent("cache.timeEventService.addTimeEvent", {
 			key:key,
 			eventType:eventType,
 			eventId:eventId,
@@ -92,9 +92,9 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 		timeouts[eventId] = timeout
 		callback()
 	}else{
-		this.app.rpc.event.eventRemote.addTimeEvent.toServer(this.eventServerId, key, eventType, eventId, timeInterval, function(e){
+		this.app.rpc.cache.cacheRemote.addTimeEvent.toServer(this.cacheServerId, key, eventType, eventId, timeInterval, function(e){
 			if(_.isObject(e)){
-				self.logService.onEventError("logic.timeEventService.addTimeEvent", {
+				self.logService.onEventError("cache.timeEventService.addTimeEvent", {
 					key:key,
 					eventType:eventType,
 					eventId:eventId,
@@ -115,8 +115,8 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  */
 pro.removeTimeEvent = function(key, eventType, eventId, callback){
 	var self = this
-	if(this.isEventServer){
-		this.logService.onEvent("event.timeEventService.removeTimeEvent", {key:key, eventType:eventType, eventId:eventId})
+	if(this.isCacheServer){
+		this.logService.onEvent("cache.timeEventService.removeTimeEvent", {key:key, eventType:eventType, eventId:eventId})
 		var timeouts = this.timeouts[key]
 		if(_.isObject(timeouts)){
 			var timeout = timeouts[eventId]
@@ -130,9 +130,9 @@ pro.removeTimeEvent = function(key, eventType, eventId, callback){
 		}
 		callback()
 	}else{
-		this.app.rpc.event.eventRemote.removeTimeEvent.toServer(this.eventServerId, key, eventType, eventId, function(e){
+		this.app.rpc.cache.cacheRemote.removeTimeEvent.toServer(this.cacheServerId, key, eventType, eventId, function(e){
 			if(_.isObject(e)){
-				self.logService.onEventError("logic.timeEventService.removeTimeEvent", {
+				self.logService.onEventError("cache.timeEventService.removeTimeEvent", {
 					key:key,
 					eventType:eventType,
 					eventId:eventId
@@ -153,8 +153,8 @@ pro.removeTimeEvent = function(key, eventType, eventId, callback){
  */
 pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 	var self = this
-	if(this.isEventServer){
-		this.logService.onEvent("event.timeEventService.updateTimeEvent", {
+	if(this.isCacheServer){
+		this.logService.onEvent("cache.timeEventService.updateTimeEvent", {
 			key:key,
 			eventType:eventType,
 			eventId:eventId,
@@ -174,9 +174,9 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 		timeouts[eventId] = timeout
 		callback()
 	}else{
-		this.app.rpc.event.eventRemote.updateTimeEvent.toServer(this.eventServerId, key, eventType, eventId, timeInterval, function(e){
+		this.app.rpc.cache.cacheRemote.updateTimeEvent.toServer(this.cacheServerId, key, eventType, eventId, timeInterval, function(e){
 			if(_.isObject(e)){
-				self.logService.onEventError("logic.timeEventService.updateTimeEvent", {
+				self.logService.onEventError("cache.timeEventService.updateTimeEvent", {
 					key:key,
 					eventType:eventType,
 					eventId:eventId,
@@ -195,8 +195,8 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  */
 pro.clearTimeEventsByKey = function(key, callback){
 	var self = this
-	if(this.isEventServer){
-		this.logService.onEvent("event.timeEventService.clearTimeEventsByKey", {key:key})
+	if(this.isCacheServer){
+		this.logService.onEvent("cache.timeEventService.clearTimeEventsByKey", {key:key})
 		var timeouts = this.timeouts[key]
 		if(_.isObject(timeouts)){
 			_.each(timeouts, function(timeout){
@@ -206,9 +206,9 @@ pro.clearTimeEventsByKey = function(key, callback){
 		delete this.timeouts[key]
 		callback()
 	}else{
-		this.app.rpc.event.eventRemote.clearTimeEventsByKey.toServer(this.eventServerId, key, function(e){
+		this.app.rpc.cache.cacheRemote.clearTimeEventsByKey.toServer(this.cacheServerId, key, function(e){
 			if(_.isObject(e)){
-				self.logService.onEventError("logic.timeEventService.clearTimeEventsByKey", {
+				self.logService.onEventError("cache.timeEventService.clearTimeEventsByKey", {
 					key:key
 				}, e.stack)
 			}
@@ -225,7 +225,7 @@ pro.clearTimeEventsByKey = function(key, callback){
  */
 pro.triggerTimeEvent = function(key, eventType, eventId){
 	var self = this
-	this.logService.onEvent("event.timeEventService.triggerTimeEvent", {key:key, eventType:eventType, eventId:eventId})
+	this.logService.onEvent("cache.timeEventService.triggerTimeEvent", {key:key, eventType:eventType, eventId:eventId})
 	var timeouts = this.timeouts[key]
 	if(_.isObject(timeouts)){
 		delete timeouts[eventId]
@@ -234,13 +234,13 @@ pro.triggerTimeEvent = function(key, eventType, eventId){
 		}
 	}
 	this.excuteTimeEventAsync(key, eventType, eventId).then(function(){
-		self.logService.onEvent("event.timeEventService.triggerTimeEvent finished", {
+		self.logService.onEvent("cache.timeEventService.triggerTimeEvent finished", {
 			key:key,
 			eventType:eventType,
 			eventId:eventId
 		})
 	}).catch(function(e){
-		self.logService.onEventError("event.timeEventService.triggerTimeEvent finished with error", {
+		self.logService.onEventError("cache.timeEventService.triggerTimeEvent finished with error", {
 			key:key,
 			eventType:eventType,
 			eventId:eventId

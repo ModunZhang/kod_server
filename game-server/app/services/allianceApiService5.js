@@ -80,8 +80,8 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 		}
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".lastRewardData", memberObject.lastRewardData])
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, memberDoc, memberDoc])
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, memberDoc._id, memberDoc])
+		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
@@ -103,10 +103,10 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(memberDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
+			funcs.push(self.dataService.updatePlayerAsync(memberDoc._id, null))
 		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
+			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)

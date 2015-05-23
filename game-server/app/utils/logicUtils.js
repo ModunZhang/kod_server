@@ -1622,7 +1622,7 @@ Utils.returnPlayerShrineTroops = function(playerDoc, playerData, allianceDoc, al
 		if(_.isObject(playerTroop)) playerTroops.push({event:shrineEvent, troop:playerTroop})
 	})
 	_.each(playerTroops, function(playerTroop){
-		allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(playerTroop.event) + ".playerTroops." + event.playerTroops.indexOf(playerTroop.troop), null])
+		allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(playerTroop.event) + ".playerTroops." + playerTroop.event.playerTroops.indexOf(playerTroop.troop), null])
 		self.removeItemInArray(playerTroop.event.playerTroops, playerTroop.troop)
 
 		DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[playerTroop.dragon.type])

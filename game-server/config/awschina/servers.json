@@ -60,20 +60,6 @@
       "usedFor": "cache-server-2"
     }
   ],
-  "event": [
-    {
-      "id": "event-server-1",
-      "host": "172.31.13.174",
-      "port": 6151,
-      "usedFor": "cache-server-1"
-    },
-    {
-      "id": "event-server-2",
-      "host": "172.31.13.174",
-      "port": 6152,
-      "usedFor": "cache-server-2"
-    }
-  ],
   "cache": [
     {
       "id": "cache-server-1",

@@ -51,14 +51,14 @@ pro.resources = function(playerId, name, count, callback){
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -93,7 +93,7 @@ pro.buildinglevel = function(playerId, location, level, callback){
 		})
 		LogicUtils.removeItemsInArray(playerDoc.buildingEvents, events)
 		playerData.push(["buildingEvents", playerDoc.buildingEvents])
-		funcs.push(self.dataService.updatePlayerAsync(playerDoc, playerDoc))
+		funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, playerDoc))
 		return Promise.all(funcs)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
@@ -101,7 +101,7 @@ pro.buildinglevel = function(playerId, location, level, callback){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -129,7 +129,7 @@ pro.rmevents = function(playerId, eventType, callback){
 			funcs.push(self.timeEventService.removePlayerTimeEventAsync(playerDoc, eventType, event.id))
 		}
 		playerData.push([eventType, playerDoc[eventType]])
-		funcs.push(self.dataService.updatePlayerAsync(doc, doc))
+		funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, playerDoc))
 		return Promise.all(funcs)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
@@ -137,7 +137,7 @@ pro.rmevents = function(playerId, eventType, callback){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -167,14 +167,14 @@ pro.material = function(playerId, count, callback){
 		playerDoc.materials.saddle = count
 		playerDoc.materials.ironPart = count
 		playerData.push(["materials", playerDoc.materials])
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -204,14 +204,14 @@ pro.soldiermaterial = function(playerId, count, callback){
 		playerDoc.soldierMaterials.holyBook = count
 		playerDoc.soldierMaterials.brightAlloy = count
 		playerData.push(["soldierMaterials", playerDoc.soldierMaterials])
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -236,14 +236,14 @@ pro.dragonmaterial = function(playerId, count, callback){
 			playerDoc.dragonMaterials[key] = count
 		})
 		playerData.push(["dragonMaterials", playerDoc.dragonMaterials])
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -268,14 +268,14 @@ pro.dragonequipment = function(playerId, count, callback){
 			playerDoc.dragonEquipments[key] = count
 		})
 		playerData.push(["dragonEquipments", playerDoc.dragonEquipments])
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -300,14 +300,14 @@ pro.soldiers = function(playerId, count, callback){
 			playerDoc.soldiers[key] = count
 		})
 		playerData.push(["soldiers", playerDoc.soldiers])
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -332,14 +332,14 @@ pro.woundedsoldiers = function(playerId, count, callback){
 			playerDoc.woundedSoldiers[key] = count
 		})
 		playerData.push(["woundedSoldiers", playerDoc.woundedSoldiers])
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -386,7 +386,7 @@ pro.dragonhp = function(playerId, dragonType, count, callback){
 			}
 			playerData.push(["dragonDeathEvents", playerDoc.dragonDeathEvents])
 			playerData.push(["dragons." + dragon.type, dragon])
-			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		}
 		return Promise.resolve()
@@ -400,7 +400,7 @@ pro.dragonhp = function(playerId, dragonType, count, callback){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -434,14 +434,14 @@ pro.dragonskill = function(playerId, dragonType, level, callback){
 			})
 		}
 		playerData.push(["dragons." + dragon.type, dragon])
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -475,14 +475,14 @@ pro.dragonequipmentstar = function(playerId, dragonType, star, callback){
 			})
 		}
 		playerData.push(["dragons." + dragon.type, dragon])
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -523,14 +523,14 @@ pro.dragonstar = function(playerId, dragonType, star, callback){
 			dragon.hpRefreshTime = Date.now()
 			playerData.push(["dragons." + dragon.type, dragon])
 		}
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -561,14 +561,14 @@ pro.dragonlevel = function(playerId, dragonType, level, callback){
 			dragon.hpRefreshTime = Date.now()
 		}
 		playerData.push(["dragons." + dragon.type, dragon])
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc, null).then(function(){
+			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
 				callback(e)
 			})
 		}else{
@@ -593,7 +593,7 @@ pro.donatelevel = function(playerId, donatelevel, callback){
 		_.each(playerDoc.allianceDonate, function(value, key){
 			playerDoc.allianceDonate[key] = donatelevel
 		})
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -605,7 +605,7 @@ pro.donatelevel = function(playerId, donatelevel, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
 		}
 		return Promise.all(funcs).then(function(){
 			callback(e)
@@ -637,8 +637,8 @@ pro.alliancehonour = function(playerId, honnour, callback){
 		allianceDoc.basicInfo.honour = honnour
 		allianceData.push(["basicInfo", allianceDoc.basicInfo])
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, null])
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, null])
+		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
 	}).then(function(){
@@ -650,10 +650,10 @@ pro.alliancehonour = function(playerId, honnour, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
 		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
+			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		return Promise.all(funcs).then(function(){
 			callback(e)
@@ -686,8 +686,8 @@ pro.allianceperception = function(playerId, perception, callback){
 		allianceDoc.basicInfo.perceptionRefreshTime = Date.now()
 		allianceData.push(["basicInfo", allianceDoc.basicInfo])
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, null])
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc, allianceDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, null])
+		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
 	}).then(function(){
@@ -699,10 +699,10 @@ pro.allianceperception = function(playerId, perception, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
 		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc, null))
+			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		return Promise.all(funcs).then(function(){
 			callback(e)
@@ -726,7 +726,7 @@ pro.playerlevel = function(playerId, level, callback){
 		playerDoc = doc
 		playerDoc.basicInfo.levelExp = PlayerInitData.playerLevel[level].expFrom
 		playerData.push(["basicInfo", playerDoc.basicInfo])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return Promise.resolve()
 	}).then(function(){
@@ -738,7 +738,7 @@ pro.playerlevel = function(playerId, level, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
 		}
 		return Promise.all(funcs).then(function(){
 			callback(e)
@@ -758,7 +758,7 @@ pro.cleargc = function(playerId, callback){
 	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		playerDoc.gcId = null
-		return self.dataService.updatePlayerAsync(playerDoc, playerDoc)
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		callback()
 		return Promise.resolve()
@@ -767,7 +767,7 @@ pro.cleargc = function(playerId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
 		}
 		return Promise.all(funcs).then(function(){
 			callback(e)
@@ -825,8 +825,8 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 		defenceAllianceDoc.fightRequests = []
 		defenceAllianceData.push(["fightRequests", defenceAllianceDoc.fightRequests])
 
-		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, attackAllianceDoc, attackAllianceDoc])
-		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, defenceAllianceDoc, defenceAllianceDoc])
+		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
+		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.pick(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.pick(attackAllianceDoc, Consts.AllianceViewDataKeys)])
@@ -843,10 +843,10 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc, null))
+			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc._id, null))
 		}
 		if(_.isObject(defenceAllianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(defenceAllianceDoc, null))
+			funcs.push(self.dataService.updateAllianceAsync(defenceAllianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)

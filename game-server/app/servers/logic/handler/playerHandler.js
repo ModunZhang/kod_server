@@ -1236,7 +1236,7 @@ pro.unlockPlayerSecondMarchQueue = function(msg, session, next){
  * @param next
  */
 pro.initPlayerData = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.unlockPlayerSecondMarchQueue", {playerId:session.uid, msg:msg})
+	this.logService.onRequest("logic.playerHandler.initPlayerData", {playerId:session.uid, msg:msg})
 	var terrain = msg.terrain
 	this.playerApiService5.initPlayerDataAsync(session.uid, terrain).then(function(playerData){
 		next(null, {code:200, playerData:playerData})

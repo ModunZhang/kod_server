@@ -7,9 +7,12 @@ var _ = require("underscore")
 var Promise = require("bluebird")
 
 var LogService = require("../../services/logService")
+var PushService = require("../../services/pushService")
 var CacheService = require("../../services/cacheService")
+var DataService = require("../../services/dataService")
 var TimeEventService = require("../../services/timeEventService")
 var PlayerTimeEventService = require("../../services/playerTimeEventService")
+var AllianceTimeEventService = require("../../services/allianceTimeEventService")
 var ServerState = require("../../domains/serverState")
 var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
@@ -24,8 +27,6 @@ life.beforeStartup = function(app, callback){
 	_.each(servers, function(server, id){
 		if(_.isEqual(server.serverType, "chat") && _.isEqual(server.usedFor, currentServer.id)){
 			app.set("chatServerId", id)
-		}else if(_.isEqual(server.serverType, "event") && _.isEqual(server.usedFor, currentServer.id)){
-			app.set("eventServerId", id)
 		}else if(_.isEqual(server.serverType, "gate")){
 			app.set("gateServerId", id)
 		}
@@ -35,9 +36,12 @@ life.beforeStartup = function(app, callback){
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 	app.set("logService", new LogService(app))
+	app.set("pushService", Promise.promisifyAll(new PushService(app)))
 	app.set("timeEventService", Promise.promisifyAll(new TimeEventService(app)))
-	app.set("playerTimeEventService", Promise.promisifyAll(new PlayerTimeEventService(app)))
 	app.set("cacheService", Promise.promisifyAll(new CacheService(app)))
+	app.set("dataService", Promise.promisifyAll(new DataService(app)))
+	app.set("playerTimeEventService", Promise.promisifyAll(new PlayerTimeEventService(app)))
+	app.set("allianceTimeEventService", Promise.promisifyAll(new AllianceTimeEventService(app)))
 	callback()
 }
 

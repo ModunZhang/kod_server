@@ -166,14 +166,14 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 		}
 		memberDoc.iapGifts.push(iapGift)
 		memberData.push(["iapGifts." + memberDoc.iapGifts.indexOf(iapGift), iapGift])
-		return self.dataService.updatePlayerAsync(memberDoc, memberDoc)
+		return self.dataService.updatePlayerAsync(memberDoc._id, memberDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
 	}).catch(function(e){
 		self.logService.onEventError("logic.playerIAPService.SendAllianceMembersRewardsAsync", {senderId:senderId, memberId:memberId, reward:reward}, e.stack)
 		var funcs = []
 		if(_.isObject(memberDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(memberDoc, null))
+			funcs.push(self.dataService.updatePlayerAsync(memberDoc._id, null))
 		}
 		return Promise.all(funcs).then(function(){
 			return Promise.resolve()
@@ -248,7 +248,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 			rewards:rewards
 		}
 		updateFuncs.push([self.GemAdd, self.GemAdd.createAsync, gemAdd])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -258,7 +258,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	}, function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
 		}
 		return Promise.all(funcs).then(function(){
 			callback(e)

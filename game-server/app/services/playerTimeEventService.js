@@ -48,7 +48,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 
 		self.onPlayerEvent(playerDoc, playerData, eventType, eventId)
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc, playerDoc])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -58,7 +58,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc, null))
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
