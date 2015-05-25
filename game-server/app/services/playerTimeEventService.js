@@ -40,7 +40,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	var updateFuncs = []
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'logicServerId', 'basicInfo', 'resources', 'vipEvents', 'materialEvents', 'soldiers', 'soldierEvents', 'soldierStars', 'soldierStarEvents', 'treatSoldierEvents', 'dragonEquipments', 'dragonEquipmentEvents', 'dragons', 'dragonHatchEvents', 'dragonDeathEvents', 'buildings', 'buildingEvents', 'houseEvents', 'productionTechs', 'productionTechEvents', 'militaryTechs', 'militaryTechEvents', 'dailyQuestEvents', 'items', 'itemEvents', 'dailyTasks', 'growUpTasks'], true).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], true).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId))
 		playerDoc = doc
 		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
