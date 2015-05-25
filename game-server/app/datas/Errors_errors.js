@@ -943,3 +943,13 @@ errors["playerLocked"] = {
 	code:688,
 	message:"玩家禁止登录"
 }
+errors["firstJoinAllianceRewardAlreadyGeted"] = {
+	key:"firstJoinAllianceRewardAlreadyGeted",
+	code:689,
+	message:"首次加入联盟奖励已经领取"
+}
+errors["fteAlreadyFinished"] = {
+	key:"fteAlreadyFinished",
+	code:690,
+	message:"新手引导已经完成"
+}

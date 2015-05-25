@@ -1869,8 +1869,15 @@
 //			}, 100)
 //		})
 //
-//		it("unlockPlayerSecondMarchQueue 正常设置", function(done){
+//		it("unlockPlayerSecondMarchQueue 正常解锁", function(done){
 //			Api.unlockPlayerSecondMarchQueue(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("finishFTE 正常完成", function(done){
+//			Api.finishFTE(function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})

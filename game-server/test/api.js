@@ -651,6 +651,17 @@ Api.initPlayerData = function(terrain, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.getFirstJoinAllianceReward = function(callback){
+	var route = "logic.playerHandler.getFirstJoinAllianceReward"
+	pomelo.request(route, null, callback)
+}
+
+Api.finishFTE = function(callback){
+	var route = "logic.playerHandler.finishFTE"
+	pomelo.request(route, null, callback)
+}
+
+
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {

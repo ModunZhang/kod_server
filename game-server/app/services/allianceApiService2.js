@@ -235,11 +235,6 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		playerData.push(["requestToAllianceEvents", playerDoc.requestToAllianceEvents])
 		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
 		playerData.push(["inviteToAllianceEvents", playerDoc.inviteToAllianceEvents])
-		if(!playerDoc.countInfo.firstJoinAllianceRewardGeted){
-			playerDoc.countInfo.firstJoinAllianceRewardGeted = true
-			playerDoc.resources.gem += DataUtils.getPlayerIntInit('firstJoinAllianceGemGeted')
-			playerData.push(["resources.gem", playerDoc.resources.gem])
-		}
 
 		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, ["allianceId", ["allianceTag"]], [allianceDoc._id, allianceDoc.basicInfo.tag]])
@@ -566,11 +561,6 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 		memberData.push(["requestToAllianceEvents", memberDoc.requestToAllianceEvents])
 		LogicUtils.clearArray(memberDoc.inviteToAllianceEvents)
 		memberData.push(["inviteToAllianceEvents", memberDoc.inviteToAllianceEvents])
-		if(!memberDoc.countInfo.firstJoinAllianceRewardGeted){
-			memberDoc.countInfo.firstJoinAllianceRewardGeted = true
-			memberDoc.resources.gem += DataUtils.getPlayerIntInit('firstJoinAllianceGemGeted')
-			memberData.push(["resources.gem", memberDoc.resources.gem])
-		}
 
 		if(!_.isEmpty(memberDoc.logicServerId)){
 			updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, memberDoc])
@@ -766,11 +756,6 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		playerData.push(["requestToAllianceEvents", playerDoc.requestToAllianceEvents])
 		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
 		playerData.push(["inviteToAllianceEvents", playerDoc.inviteToAllianceEvents])
-		if(!playerDoc.countInfo.firstJoinAllianceRewardGeted){
-			playerDoc.countInfo.firstJoinAllianceRewardGeted = true
-			playerDoc.resources.gem += DataUtils.getPlayerIntInit('firstJoinAllianceGemGeted')
-			playerData.push(["resources.gem", playerDoc.resources.gem])
-		}
 
 		return Promise.resolve()
 	}).then(function(){

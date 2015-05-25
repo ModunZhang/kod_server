@@ -1244,3 +1244,40 @@ pro.initPlayerData = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 领取首次加入联盟奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getFirstJoinAllianceReward = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getFirstJoinAllianceReward", {playerId:session.uid, msg:msg})
+	var allianceId = session.get('allianceId');
+	if(_.isEmpty(allianceId)){
+		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.playerApiService5.getFirstJoinAllianceRewardAsync(session.uid, allianceId).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 完成新手引导
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.finishFTE = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.finishFTE", {playerId:session.uid, msg:msg})
+	this.playerApiService5.finishFTEAsync(session.uid).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}

@@ -121,11 +121,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		allianceDoc = doc
 		playerDoc.allianceId = allianceDoc._id
 		playerData.push(["allianceId", playerDoc.allianceId])
-		if(!playerDoc.countInfo.firstJoinAllianceRewardGeted){
-			playerDoc.countInfo.firstJoinAllianceRewardGeted = true
-			playerDoc.resources.gem += DataUtils.getPlayerIntInit('firstJoinAllianceGemGeted')
-			playerData.push(["resources.gem", playerDoc.resources.gem])
-		}
+
 		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, ["allianceId", ["allianceTag"]], [allianceDoc._id, allianceDoc.basicInfo.tag]])
 		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc._id, playerDoc])

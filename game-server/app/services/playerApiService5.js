@@ -624,3 +624,62 @@ pro.initPlayerData = function(playerId, terrain, callback){
 		})
 	})
 }
+
+/**
+ * 领取首次加入联盟奖励
+ * @param playerId
+ * @param allianceId
+ * @param callback
+ */
+pro.getFirstJoinAllianceReward = function(playerId, allianceId, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.dataService.findPlayerAsync(playerId, ['_id', 'countInfo', 'items'], false).then(function(doc){
+		playerDoc = doc
+		if(playerDoc.countInfo.firstJoinAllianceRewardGeted) return Promise.reject(ErrorUtils.firstJoinAllianceRewardAlreadyGeted(playerId))
+		playerDoc.countInfo.firstJoinAllianceRewardGeted = true
+		playerData.push(['countInfo.firstJoinAllianceRewardGeted', true])
+		var resp = LogicUtils.addPlayerItem(playerDoc, 'gemClass_2', 2)
+		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
+ * 完成新手引导
+ * @param playerId
+ * @param callback
+ */
+pro.finishFTE = function(playerId, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.dataService.findPlayerAsync(playerId, ['_id', 'countInfo'], false).then(function(doc){
+		playerDoc = doc
+		if(playerDoc.countInfo.isFTEFinished) return Promise.reject(ErrorUtils.fteAlreadyFinished(playerId))
+		playerDoc.countInfo.isFTEFinished = true
+		playerData.push(['countInfo.isFTEFinished', true])
+		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}

@@ -1955,3 +1955,21 @@ Utils.playerLocked = function(playerId){
 	var config = Errors.playerLocked
 	return CreateError(config, {playerId:playerId})
 }
+
+/**
+ * 首次加入联盟奖励已经领取
+ * @param playerId
+ */
+Utils.firstJoinAllianceRewardAlreadyGeted = function(playerId){
+	var config = Errors.firstJoinAllianceRewardAlreadyGeted
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
+ * 新手引导已经完成
+ * @param playerId
+ */
+Utils.fteAlreadyFinished = function(playerId){
+	var config = Errors.fteAlreadyFinished
+	return CreateError(config, {playerId:playerId})
+}

@@ -118,7 +118,8 @@ var PlayerSchema = new Schema({
 		todayFreeNormalGachaCount:{type:Number, required:true, default:0},
 		isFirstIAPRewardsGeted:{type:Boolean, required:true, default:false},
 		todayLoyaltyGet:{type:Number, require:true, default:0},
-		firstJoinAllianceRewardGeted:{type:Boolean, require:true, default:false}
+		firstJoinAllianceRewardGeted:{type:Boolean, require:true, default:false},
+		isFTEFinished:{type:Boolean, required:true, default:false}
 	},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},
