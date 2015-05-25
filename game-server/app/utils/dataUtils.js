@@ -2308,9 +2308,9 @@ Utils.createPlayerWallForFight = function(playerDoc){
  */
 Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 	var troops = []
-	var troopStrings = AllianceInitData.shrineStage[stageName].troops.split("&")
-	for(var i = 0; i < troopStrings.length; i++){
-		var troopString = troopStrings[i]
+	var stageConfig = AllianceInitData.shrineStage[stageName]
+	var troopString = stageConfig.troops
+	for(var i = 0; i < stageConfig.suggestPlayer; i ++){
 		var soldierConfigStrings = troopString.split(",")
 		var dragonConfig = soldierConfigStrings.shift()
 		var dragonParams = dragonConfig.split("_")
@@ -2334,6 +2334,9 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 			soldiers.push(soldier)
 		})
 		var soldiersForFight = this.createSoldiersForFight(soldiers)
+		soldiersForFight = _.sortBy(soldiersForFight, function(soldier){
+			return -soldier.power * soldier.count
+		})
 		troops.push({
 			stageName:stageName,
 			troopNumber:i + 1,
@@ -2341,11 +2344,6 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 			soldiersForFight:soldiersForFight
 		})
 	}
-	_.each(troops, function(troop){
-		_.sortBy(troop.soldiersForFight, function(soldier){
-			return -soldier.power * soldier.count
-		})
-	})
 
 	var getSoldiersTotalPower = function(soldiers){
 		var totalPower = 0
