@@ -1290,8 +1290,9 @@ pro.finishFTE = function(msg, session, next){
  */
 pro.getPlayerWallHp = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getPlayerWallHp", {playerId:session.uid, msg:msg})
-	this.playerApiService5.getPlayerWallHpAsync(session.uid).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
+	var memberId = msg.memberId
+	this.playerApiService5.getPlayerWallHpAsync(session.uid, memberId).then(function(wallHp){
+		next(null, {code:200, wallHp:wallHp})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})

@@ -689,8 +689,8 @@ pro.finishFTE = function(playerId, callback){
  * @param playerId
  * @param callback
  */
-pro.getPlayerWallHp = function(playerId, callback){
-	this.dataService.directFindPlayerAsync(playerId, ['_id', 'resources'], false).then(function(doc){
+pro.getPlayerWallHp = function(playerId, memberId, callback){
+	this.dataService.directFindPlayerAsync(memberId, ['_id', 'resources'], false).then(function(doc){
 		callback(null, doc.resources.wallHp)
 	}).catch(function(e){
 		callback(e)
