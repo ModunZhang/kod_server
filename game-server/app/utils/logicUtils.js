@@ -626,10 +626,6 @@ Utils.updatePlayerPropertyInAlliance = function(playerDoc, online, allianceDoc, 
 		member.kill = playerDoc.basicInfo.kill
 		allianceData.push(["members." + memberIndex + ".kill", member.kill])
 	}
-	if(!_.isEqual(member.loyalty, playerDoc.allianceInfo.loyalty)){
-		member.loyalty = playerDoc.allianceInfo.loyalty
-		allianceData.push(["members." + memberIndex + ".loyalty", member.loyalty])
-	}
 	if(!_.isEqual(member.lastLoginTime, playerDoc.countInfo.lastLoginTime)){
 		member.lastLoginTime = playerDoc.countInfo.lastLoginTime
 		allianceData.push(["members." + memberIndex + ".lastLoginTime", member.lastLoginTime])
@@ -642,7 +638,10 @@ Utils.updatePlayerPropertyInAlliance = function(playerDoc, online, allianceDoc, 
 		member.wallHp = playerDoc.resources.wallHp
 		allianceData.push(["members." + memberIndex + ".wallHp", member.wallHp])
 	}
-
+	if(!_.isEqual(member.loyalty, playerDoc.allianceInfo.loyalty)){
+		member.loyalty = playerDoc.allianceInfo.loyalty
+		allianceData.push(["members." + memberIndex + ".loyalty", member.loyalty])
+	}
 	if(!_.isEqual(member.allianceExp.woodExp, playerDoc.allianceInfo.woodExp)){
 		member.allianceExp.woodExp = playerDoc.allianceInfo.woodExp
 		allianceData.push(["members." + memberIndex + ".allianceExp.woodExp", member.allianceExp.woodExp])
