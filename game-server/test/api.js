@@ -661,11 +661,11 @@ Api.finishFTE = function(callback){
 	pomelo.request(route, null, callback)
 }
 
-Api.getPlayerWallHp = function(memberId, callback){
+Api.getPlayerWallInfo = function(memberId, callback){
 	var info = {
 		memberId:memberId
 	}
-	var route = "logic.playerHandler.getPlayerWallHp"
+	var route = "logic.playerHandler.getPlayerWallInfo"
 	pomelo.request(route, info, callback)
 }
 

@@ -1288,11 +1288,11 @@ pro.finishFTE = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.getPlayerWallHp = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getPlayerWallHp", {playerId:session.uid, msg:msg})
+pro.getPlayerWallInfo = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getPlayerWallInfo", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
-	this.playerApiService5.getPlayerWallHpAsync(session.uid, memberId).then(function(wallHp){
-		next(null, {code:200, wallHp:wallHp})
+	this.playerApiService5.getPlayerWallInfoAsync(session.uid, memberId).then(function(wallInfo){
+		next(null, {code:200, wallInfo:wallInfo})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
 	})

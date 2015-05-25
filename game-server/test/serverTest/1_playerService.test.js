@@ -1883,8 +1883,8 @@
 //			})
 //		})
 //
-//		it("getPlayerWallHp 正常完成", function(done){
-//			Api.getPlayerWallHp(m_user._id, function(doc){
+//		it("getPlayerWallInfo 正常完成", function(done){
+//			Api.getPlayerWallInfo(m_user._id, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})

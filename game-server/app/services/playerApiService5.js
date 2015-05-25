@@ -687,11 +687,16 @@ pro.finishFTE = function(playerId, callback){
 /**
  * 获取玩家城墙血量
  * @param playerId
+ * @param memberId
  * @param callback
  */
-pro.getPlayerWallHp = function(playerId, memberId, callback){
-	this.dataService.directFindPlayerAsync(memberId, ['_id', 'resources'], false).then(function(doc){
-		callback(null, doc.resources.wallHp)
+pro.getPlayerWallInfo = function(playerId, memberId, callback){
+	this.dataService.directFindPlayerAsync(memberId, ['_id', 'resources', 'buildings'], false).then(function(doc){
+		var info = {
+			wallLevel:doc.buildings.location_21.level,
+			wallHp:doc.resources.wallHp
+		}
+		callback(null, info)
 	}).catch(function(e){
 		callback(e)
 	})
