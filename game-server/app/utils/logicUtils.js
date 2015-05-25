@@ -634,10 +634,6 @@ Utils.updatePlayerPropertyInAlliance = function(playerDoc, online, allianceDoc, 
 		member.keepLevel = playerDoc.buildings.location_1.level
 		allianceData.push(["members." + memberIndex + ".keepLevel", member.keepLevel])
 	}
-	if(!_.isEqual(member.wallHp, playerDoc.resources.wallHp)){
-		member.wallHp = playerDoc.resources.wallHp
-		allianceData.push(["members." + memberIndex + ".wallHp", member.wallHp])
-	}
 	if(!_.isEqual(member.loyalty, playerDoc.allianceInfo.loyalty)){
 		member.loyalty = playerDoc.allianceInfo.loyalty
 		allianceData.push(["members." + memberIndex + ".loyalty", member.loyalty])
@@ -1147,7 +1143,6 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		terrain:playerDoc.basicInfo.terrain,
 		levelExp:playerDoc.basicInfo.levelExp,
 		keepLevel:playerDoc.buildings.location_1.level,
-		wallHp:playerDoc.resources.wallHp,
 		status:Consts.PlayerStatus.Normal,
 		helpedByTroopsCount:0,
 		power:playerDoc.basicInfo.power,

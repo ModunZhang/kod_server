@@ -1281,3 +1281,18 @@ pro.finishFTE = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 获取玩家城墙血量
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getPlayerWallHp = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getPlayerWallHp", {playerId:session.uid, msg:msg})
+	this.playerApiService5.getPlayerWallHpAsync(session.uid).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(e, ErrorUtils.getError(e))
+	})
+}

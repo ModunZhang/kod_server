@@ -683,3 +683,16 @@ pro.finishFTE = function(playerId, callback){
 		})
 	})
 }
+
+/**
+ * 获取玩家城墙血量
+ * @param playerId
+ * @param callback
+ */
+pro.getPlayerWallHp = function(playerId, callback){
+	this.dataService.directFindPlayerAsync(playerId, ['_id', 'resources'], false).then(function(doc){
+		callback(null, doc.resources.wallHp)
+	}).catch(function(e){
+		callback(e)
+	})
+}

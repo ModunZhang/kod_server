@@ -1882,6 +1882,13 @@
 //				done()
 //			})
 //		})
+//
+//		it("getPlayerWallHp 正常完成", function(done){
+//			Api.getPlayerWallHp(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
 //	})
 //
 //

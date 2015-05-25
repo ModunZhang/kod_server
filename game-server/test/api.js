@@ -661,6 +661,11 @@ Api.finishFTE = function(callback){
 	pomelo.request(route, null, callback)
 }
 
+Api.getPlayerWallHp = function(callback){
+	var route = "logic.playerHandler.getPlayerWallHp"
+	pomelo.request(route, null, callback)
+}
+
 
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
