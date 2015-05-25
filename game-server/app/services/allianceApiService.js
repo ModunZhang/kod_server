@@ -74,7 +74,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 	var playerData = []
 	var allianceDoc = null
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'logicServerId', 'allianceId', 'serverId', 'apnId', 'basicInfo', 'buildings', 'allianceInfo', 'countInfo', 'resources'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'logicServerId', 'allianceId', 'serverId', 'apnId', 'countInfo', 'basicInfo', 'buildings', 'allianceInfo', 'countInfo', 'resources'], false).then(function(doc){
 		playerDoc = doc
 		if(_.isString(playerDoc.allianceId)){
 			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
@@ -121,6 +121,11 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		allianceDoc = doc
 		playerDoc.allianceId = allianceDoc._id
 		playerData.push(["allianceId", playerDoc.allianceId])
+		if(!playerDoc.countInfo.firstJoinAllianceRewardGeted){
+			playerDoc.countInfo.firstJoinAllianceRewardGeted = true
+			playerDoc.resources.gem += DataUtils.getPlayerIntInit('firstJoinAllianceGemGeted')
+			playerData.push(["resources.gem", playerDoc.resources.gem])
+		}
 		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, ["allianceId", ["allianceTag"]], [allianceDoc._id, allianceDoc.basicInfo.tag]])
 		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc._id, playerDoc])

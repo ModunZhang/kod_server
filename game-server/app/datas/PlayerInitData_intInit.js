@@ -158,3 +158,8 @@ intInit["dragonHpRecoverTerrainAddPercent"] = {
 	value:20,
 	desc:"龙在相应地形下的hp回复加成比例"
 }
+intInit["firstJoinAllianceGemGeted"] = {
+	type:"firstJoinAllianceGemGeted",
+	value:200,
+	desc:"首次加入联盟送宝石"
+}
