@@ -817,6 +817,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		memberDoc = doc
 		memberDoc.allianceId = null
 		memberData.push(["allianceId", null])
+		DataUtils.refreshPlayerResources(memberDoc)
 
 		LogicUtils.returnPlayerMarchTroops(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 		LogicUtils.returnPlayerMarchReturnTroops(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
@@ -879,6 +880,8 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			funcs.push(returnHelpToTroop(helpToTroop))
 		})
 
+		DataUtils.refreshPlayerResources(memberDoc)
+		memberData.push(["resources", memberDoc.resources])
 		return Promise.all(funcs)
 	}).then(function(){
 		if(!_.isEmpty(memberDoc.logicServerId)){

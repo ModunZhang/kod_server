@@ -78,6 +78,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 	}).then(function(){
 		playerDoc.allianceId = null
 		playerData.push(["allianceId", null])
+		DataUtils.refreshPlayerResources(playerDoc)
 
 		LogicUtils.returnPlayerShrineTroops(playerDoc, playerData, allianceDoc, allianceData)
 		LogicUtils.returnPlayerMarchTroops(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
@@ -140,6 +141,8 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			funcs.push(returnHelpToTroop(helpToTroop))
 		})
 
+		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
 		return Promise.all(funcs)
 	}).then(function(){
 		updateFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])

@@ -1703,13 +1703,6 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-
-			DataUtils.refreshPlayerResources(playerDoc)
-			playerData.push(["resources", playerDoc.resources])
-			_.each(marchEvent.attackPlayerData.rewards, function(reward){
-				playerDoc[reward.type][reward.name] += reward.count
-				playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
-			})
 		}
 	}
 	i = allianceDoc.attackMarchReturnEvents.length
@@ -1723,15 +1716,12 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-
 			self.addPlayerSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.soldiers)
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.woundedSoldiers)
-
-			DataUtils.refreshPlayerResources(playerDoc)
-			playerData.push(["resources", playerDoc.resources])
 			_.each(marchEvent.attackPlayerData.rewards, function(reward){
 				playerDoc[reward.type][reward.name] += reward.count
-				playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
+				if(!_.isEqual(reward.type, 'resources'))
+					playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
 			})
 		}
 	}
@@ -1778,11 +1768,10 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 				count:resourceCollected
 			}]
 			self.mergeRewards(originalRewards, newRewards)
-			DataUtils.refreshPlayerResources(playerDoc)
-			playerData.push(["resources", playerDoc.resources])
 			_.each(originalRewards, function(reward){
 				playerDoc[reward.type][reward.name] += reward.count
-				playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
+				if(!_.isEqual(reward.type, 'resources'))
+					playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
 			})
 
 			var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
@@ -1827,7 +1816,8 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByTroop,
 	helpedByPlayerData.push(["resources", helpedByPlayerDoc.resources])
 	_.each(helpedByTroop.rewards, function(reward){
 		helpedByPlayerDoc[reward.type][reward.name] += reward.count
-		helpedByPlayerData.push([reward.type + "." + reward.name, helpedByPlayerDoc[reward.type][reward.name]])
+		if(!_.isEqual(reward.type, 'resources'))
+			helpedByPlayerData.push([reward.type + "." + reward.name, helpedByPlayerDoc[reward.type][reward.name]])
 	})
 }
 
@@ -1857,11 +1847,10 @@ Utils.returnPlayerHelpToTroop = function(playerDoc, playerData, helpToTroop, hel
 		playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 	})
 
-	DataUtils.refreshPlayerResources(playerDoc)
-	playerData.push(["resources", playerData.resources])
 	_.each(helpedByTroop.rewards, function(reward){
 		playerDoc[reward.type][reward.name] += reward.count
-		playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
+		if(!_.isEqual(reward.type, 'resources'))
+			playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
 	})
 }
 

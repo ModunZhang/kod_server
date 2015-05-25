@@ -456,13 +456,7 @@ var AllianceSchema = new Schema({
 				id:{type:String, required:true},
 				name:{type:String, required:true},
 				tag:{type:String, required:true}
-			},
-			rewards:[{
-				_id:false,
-				type:{type:String, required:true},
-				name:{type:String, required:true},
-				count:{type:Number, required:true}
-			}]
+			}
 		},
 		defencePlayerData:{
 			id:{type:String, required:true},
