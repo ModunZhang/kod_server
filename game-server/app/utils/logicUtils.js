@@ -610,11 +610,15 @@ Utils.updatePlayerPropertyInAlliance = function(playerDoc, online, allianceDoc, 
 		member.icon = playerDoc.basicInfo.icon
 		allianceData.push(["members." + memberIndex + ".icon", member.icon])
 	}
+	if(!_.isEqual(member.terrain, playerDoc.basicInfo.terrain)){
+		member.terrain = playerDoc.basicInfo.terrain
+		allianceData.push(["members." + memberIndex + ".terrain", member.terrain])
+	}
 	if(!_.isEqual(member.levelExp, playerDoc.basicInfo.levelExp)){
 		member.levelExp = playerDoc.basicInfo.levelExp
 		allianceData.push(["members." + memberIndex + ".levelExp", member.levelExp])
 	}
-	if(!_.isEqual(member.levelExp, playerDoc.basicInfo.power)){
+	if(!_.isEqual(member.power, playerDoc.basicInfo.power)){
 		member.power = playerDoc.basicInfo.power
 		allianceData.push(["members." + memberIndex + ".power", member.power])
 	}
@@ -630,6 +634,15 @@ Utils.updatePlayerPropertyInAlliance = function(playerDoc, online, allianceDoc, 
 		member.lastLoginTime = playerDoc.countInfo.lastLoginTime
 		allianceData.push(["members." + memberIndex + ".lastLoginTime", member.lastLoginTime])
 	}
+	if(!_.isEqual(member.keepLevel, playerDoc.buildings.location_1.level)){
+		member.keepLevel = playerDoc.buildings.location_1.level
+		allianceData.push(["members." + memberIndex + ".keepLevel", member.keepLevel])
+	}
+	if(!_.isEqual(member.wallHp, playerDoc.resources.wallHp)){
+		member.wallHp = playerDoc.resources.wallHp
+		allianceData.push(["members." + memberIndex + ".wallHp", member.wallHp])
+	}
+
 	if(!_.isEqual(member.allianceExp.woodExp, playerDoc.allianceInfo.woodExp)){
 		member.allianceExp.woodExp = playerDoc.allianceInfo.woodExp
 		allianceData.push(["members." + memberIndex + ".allianceExp.woodExp", member.allianceExp.woodExp])
@@ -1135,7 +1148,6 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		terrain:playerDoc.basicInfo.terrain,
 		levelExp:playerDoc.basicInfo.levelExp,
 		keepLevel:playerDoc.buildings.location_1.level,
-		wallLevel:playerDoc.buildings.location_21.level,
 		wallHp:playerDoc.resources.wallHp,
 		status:Consts.PlayerStatus.Normal,
 		helpedByTroopsCount:0,

@@ -69,7 +69,6 @@ var AllianceSchema = new Schema({
 		terrain:{type:String, required:true},
 		levelExp:{type:Number, required:true},
 		keepLevel:{type:Number, required:true},
-		wallLevel:{type:Number, required:true},
 		wallHp:{type:Number, required:true},
 		status:{type:String, required:true},
 		helpedByTroopsCount:{type:Number, required:true},
