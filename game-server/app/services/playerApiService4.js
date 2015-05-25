@@ -962,7 +962,6 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 
 	var self = this
 	var playerDoc = null
-	var newPlayerDoc = null
 	this.dataService.directFindPlayerAsync(playerId, ['_id', 'gcId', 'serverId', 'logicServerId'], false).then(function(doc){
 		playerDoc = doc
 		if(_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.thePlayerDoNotBindGCId(playerId))
@@ -973,8 +972,14 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 			var playerId = ShortId.generate()
 			var player = LogicUtils.createPlayer(playerId, playerDoc.serverId)
 			player.gcId = gcId
-			return self.Player.createAsync(player).then(function(){
-				return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:player._id})
+			return self.Player.createAsync(player).then(function(doc){
+				doc = Utils.clone(doc)
+				LogicUtils.initPlayerDoc(doc)
+				var id = doc._id
+				delete doc._id
+				return self.Player.updateAsync({_id:id}, doc).then(function(){
+					return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:player._id})
+				})
 			})
 		}else{
 			return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:doc._id})
@@ -983,14 +988,8 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 		callback()
 		return Promise.resolve()
 	}, function(e){
-		var funcs = []
-		if(_.isObject(newPlayerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(newPlayerDoc._id, null))
-		}
-		return Promise.all(funcs).then(function(){
-			callback(e)
-			return Promise.reject(e)
-		})
+		callback(e)
+		return Promise.reject(e)
 	}).then(function(){
 		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
 	}).catch(function(e){

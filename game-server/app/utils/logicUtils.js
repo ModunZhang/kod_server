@@ -2263,3 +2263,101 @@ Utils.getPlayerHousesByType = function(playerDoc, houseType){
 Utils.getEnemyAllianceId = function(allianceFight, myAllianceId){
 	return _.isEqual(allianceFight.attackAllianceId, myAllianceId) ? allianceFight.defenceAllianceId : allianceFight.attackAllianceId
 }
+
+/**
+ * 初始化玩家数据
+ * @param playerDoc
+ */
+Utils.initPlayerDoc = function(playerDoc){
+	playerDoc.dailyTasks.empireRise = [1, 2]
+	playerDoc.dailyTasks.conqueror = [4]
+	playerDoc.dailyTasks.growUp.push(1)
+	playerDoc.growUpTasks.cityBuild.push({
+		"id":0,
+		"index":1,
+		"name":"keep",
+		"rewarded":false
+	})
+	playerDoc.growUpTasks.cityBuild.push({
+		"id":351,
+		"index":1,
+		"name":"farmer",
+		"rewarded":false
+	})
+	playerDoc.growUpTasks.cityBuild.push({
+		"id":1,
+		"index":2,
+		"name":"keep",
+		"rewarded":false
+	})
+	playerDoc.growUpTasks.cityBuild.push({
+		"id":2,
+		"index":3,
+		"name":"keep",
+		"rewarded":false
+	})
+	playerDoc.growUpTasks.cityBuild.push({
+		"id":3,
+		"index":4,
+		"name":"keep",
+		"rewarded":false
+	})
+	playerDoc.pve.floors.push({
+		"level":1,
+		"fogs":"0000000000000000000000000000000000m|10W|300|700|F00{V00y|00m|10W|300|700000000000000000000000000000000000",
+		"objects":"[[9,12,1]]"
+	})
+	playerDoc.pve.location = {
+		"y":12,
+		"x":9,
+		"z":1
+	}
+	playerDoc.pve.totalStep = 5
+	playerDoc.vipEvents.push({
+		"id":"NJb2piruQ",
+		"startTime":1431264427863,
+		"finishTime":1431350827863
+	})
+	playerDoc.soldierEvents.push({
+		"id":"EkDqjBOX",
+		"startTime":1431264374499,
+		"name":"swordsman",
+		"count":10,
+		"finishTime":1431264574499
+	})
+	playerDoc.buildings.location_8.level = 1
+	playerDoc.buildings.location_8.houses.push({
+		"type":"miner",
+		"level":1,
+		"location":3
+	})
+	playerDoc.buildings.location_7.level = 1
+	playerDoc.buildings.location_7.houses.push({
+		"type":"quarrier",
+		"level":1,
+		"location":3
+	})
+	playerDoc.buildings.location_6.level = 1
+	playerDoc.buildings.location_6.houses.push({
+		"type":"woodcutter",
+		"level":1,
+		"location":3
+	})
+	playerDoc.buildings.location_5.level = 1
+	playerDoc.buildings.location_5.houses.push({
+		"type":"farmer",
+		"level":2,
+		"location":3
+	})
+	playerDoc.buildings.location_3.level = 1
+	playerDoc.buildings.location_3.houses.push({
+		"type":"dwelling",
+		"level":1,
+		"location":3
+	})
+	playerDoc.buildings.location_1.level = 5
+	playerDoc.resources.citizen = 90
+	playerDoc.soldiers.ranger = 100
+	playerDoc.soldiers.swordsman = 110
+	DataUtils.refreshPlayerPower(playerDoc, [])
+}
