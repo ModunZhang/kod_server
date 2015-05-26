@@ -577,6 +577,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.pick(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.pick(attackAllianceDoc, Consts.AllianceViewDataKeys)])
+		pushFuncs.push([self.dataService, self.dataService.createAllianceFightChannelAsync, attackAllianceDoc._id, defenceAllianceDoc._id])
 		self.apnService.pushApnMessageToAllianceMembers(attackAllianceDoc, DataUtils.getLocalizationConfig("alliance", "AttackAllianceMessage"), [])
 		self.apnService.pushApnMessageToAllianceMembers(defenceAllianceDoc, DataUtils.getLocalizationConfig("alliance", "AllianceBeAttackedMessage"), [attackAllianceDoc.basicInfo.name])
 		return Promise.resolve()
@@ -663,7 +664,7 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.pick(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.pick(attackAllianceDoc, Consts.AllianceViewDataKeys)])
-
+		pushFuncs.push([self.dataService, self.dataService.createAllianceFightChannelAsync, attackAllianceDoc._id, defenceAllianceDoc._id])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

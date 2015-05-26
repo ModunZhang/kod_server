@@ -39,6 +39,30 @@ Api.sendChat = function(text, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.sendAllianceChat = function(text, callback){
+	var info = {
+		text:text, channel:"alliance"
+	}
+	var route = "chat.chatHandler.send"
+	pomelo.request(route, info, callback)
+}
+
+Api.sendAllianceFightChat = function(text, callback){
+	var info = {
+		text:text, channel:"allianceFight"
+	}
+	var route = "chat.chatHandler.send"
+	pomelo.request(route, info, callback)
+}
+
+Api.getChats = function(channel, callback){
+	var info = {
+		channel:channel
+	}
+	var route = "chat.chatHandler.getAll"
+	pomelo.request(route, info, callback)
+}
+
 Api.upgradeBuilding = function(location, finishNow, callback){
 	var info = {
 		location:location, finishNow:finishNow

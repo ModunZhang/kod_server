@@ -61,7 +61,10 @@ pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
 pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 	channel.leave(uid, logicServerId)
-	if(channel.getMembers().length == 0) channel.destroy()
+	if(channel.getMembers().length == 0){
+		channel.destroy()
+		delete this.app.get('allianceChats')[allianceId]
+	}
 	callback()
 }
 
@@ -71,12 +74,8 @@ pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callbac
  * @param defenceAllianceId
  * @param callback
  */
-pro.addAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
+pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
 	var allianceFights = this.app.get('allianceFights')
-	if(!_.isObject(allianceFights)){
-		allianceFights = {}
-		this.app.set('allianceFights', allianceFights)
-	}
 	allianceFights[attackAllianceId] = attackAllianceId + '_' + defenceAllianceId
 	allianceFights[defenceAllianceId] = attackAllianceId + '_' + defenceAllianceId
 	callback()
@@ -88,9 +87,10 @@ pro.addAllianceFightChannel = function(attackAllianceId, defenceAllianceId, call
  * @param defenceAllianceId
  * @param callback
  */
-pro.removeAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
+pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
 	var allianceFights = this.app.get('allianceFights')
 	delete allianceFights[attackAllianceId]
 	delete allianceFights[defenceAllianceId]
+	delete this.app.get('allianceFightChats')[attackAllianceId + '_' + defenceAllianceId]
 	callback()
 }

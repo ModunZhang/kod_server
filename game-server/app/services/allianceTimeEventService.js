@@ -2428,6 +2428,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, defenceAllianceDoc.basicInfo.statusFinishTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, null])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, null])
+		pushFuncs.push([self.dataService, self.dataService.deleteAllianceFightChannelAsync, attackAllianceDoc._id, defenceAllianceDoc._id])
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
