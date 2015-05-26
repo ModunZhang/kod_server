@@ -3942,10 +3942,24 @@ Utils.createAllianceVillage = function(allianceDoc, allianceData, enemyAllianceD
 Utils.refreshAllianceBasicInfo = function(allianceDoc, allianceData){
 	var totalPower = 0
 	var totalKill = 0
-	_.each(allianceDoc.members, function(member){
-		totalPower += member.power
-		totalKill += member.kill
+	var powerPercent = [
+		{from:1, to:2, percent:0.5},
+		{from:2, to:5, percent:0.2},
+		{from:5, to:10, percent:0.1},
+		{from:10, to:15, percent:0.05},
+		{from:15, to:9999, percent:0.02}
+	]
+	var sortedMembers = _.sortBy(allianceDoc.members, function(member){
+		return -member.power
 	})
+	for(var i = 0; i < sortedMembers.length; i ++){
+		for(var j = 0; j < powerPercent.length; j ++){
+			if((i + 1) < powerPercent[j].to){
+				totalPower += Math.ceil(sortedMembers[i].power * powerPercent[j].percent)
+				totalKill += sortedMembers[i].kill
+			}
+		}
+	}
 	_.each(allianceDoc.buildings, function(building){
 		totalPower += AllianceBuilding[building.name][building.level].power
 	})
