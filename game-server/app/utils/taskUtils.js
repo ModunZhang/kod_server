@@ -408,12 +408,12 @@ Utils.finishPlayerKillTaskIfNeed = function(playerDoc, playerData){
 		task = tasks[tasks.length - 1]
 		config = GrowUpTasks.playerKill[task.id + 1]
 		if(!_.isObject(config)) return
-		nextCount = config.count
+		nextCount = config.kill
 	}else{
 		config = _.find(GrowUpTasks.playerKill, function(config){
 			return config.index == 1
 		})
-		nextCount = config.count
+		nextCount = config.kill
 	}
 	if(playerDoc.basicInfo.kill < nextCount) return
 
@@ -424,7 +424,6 @@ Utils.finishPlayerKillTaskIfNeed = function(playerDoc, playerData){
 	}
 	this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PlayerKill, task)
 }
-
 
 /**
  * 按情况完成玩家总Power成就任务

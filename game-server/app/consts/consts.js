@@ -28,7 +28,8 @@ module.exports = {
 	},
 	ChannelType:{
 		Global:"global",
-		Alliance:"alliance"
+		Alliance:"alliance",
+		AllianceFight:"allianceFight"
 	},
 	None:"__NONE__",
 	ServerState:{
