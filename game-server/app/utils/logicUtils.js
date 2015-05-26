@@ -1286,7 +1286,7 @@ Utils.resetFightSoldiersByFightResult = function(soldiersForFight, fightRoundDat
 		var soldierForFight = _.find(soldiersForFight, function(soldierForFight){
 			return _.isEqual(soldierForFight.name, fightResult.soldierName)
 		})
-		soldierForFight.totalCount -= fightResult.solderDamagedCount
+		soldierForFight.totalCount -= fightResult.soldierDamagedCount
 		soldierForFight.currentCount = soldierForFight.totalCount
 		soldierForFight.morale = 100
 		if(soldierForFight.totalCount <= 0) soldiersWillRemoved.push(soldierForFight)

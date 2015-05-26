@@ -1724,8 +1724,6 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			}
 		}
 
-		//console.log(NodeUtils.inspect(fightDatas, false, null))
-
 		var params = DataUtils.getAllianceShrineStageResultDatas(allianceDoc.basicInfo.terrain, event.stageName, playerTroopsForFight.length > 0, fightDatas)
 		var playerDatas = LogicUtils.fixAllianceShrineStagePlayerData(event.playerTroops, params.playerDatas)
 		var fightStar = params.fightStar
