@@ -16,6 +16,7 @@ module.exports = {
 	},
 	chat:{
 		onChat:"onChat",
-		onAllChat:"onAllChat"
+		onAllChat:"onAllChat",
+		onNotice:'onNotice'
 	}
 }

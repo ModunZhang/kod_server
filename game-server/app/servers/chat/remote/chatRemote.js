@@ -5,6 +5,7 @@
  */
 
 var Consts = require("../../../consts/consts")
+var Events = require("../../../consts/events")
 
 module.exports = function(app) {
 	return new ChatRemote(app)
@@ -13,6 +14,7 @@ module.exports = function(app) {
 var ChatRemote = function(app) {
 	this.app = app
 	this.channelService = app.get("channelService")
+	this.globalChatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, true)
 }
 
 var pro = ChatRemote.prototype
@@ -24,8 +26,8 @@ var pro = ChatRemote.prototype
  * @param callback
  */
 pro.addToChatChannel = function(uid, logicServerId, callback){
-	this.channelService.getChannel(Consts.GlobalChatChannel, true).add(uid, logicServerId)
-	callback()
+	this.globalChatChannel.add(uid, logicServerId)
+	this.sendNotice(Consts.NoticeType.Info, '热烈欢迎 ' + uid + ' 登录游戏', callback)
 }
 
 /**
@@ -35,7 +37,7 @@ pro.addToChatChannel = function(uid, logicServerId, callback){
  * @param callback
  */
 pro.removeFromChatChannel = function(uid, logicServerId, callback){
-	this.channelService.getChannel(Consts.GlobalChatChannel, false).leave(uid, logicServerId)
+	this.globalChatChannel.leave(uid, logicServerId)
 	callback()
 }
 
@@ -92,5 +94,16 @@ pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
 	delete allianceFights[attackAllianceId]
 	delete allianceFights[defenceAllianceId]
 	delete this.app.get('allianceFightChats')[attackAllianceId + '_' + defenceAllianceId]
+	callback()
+}
+
+/**
+ * 发送全服通告
+ * @param type
+ * @param content
+ * @param callback
+ */
+pro.sendNotice = function(type, content, callback){
+	this.globalChatChannel.pushMessage(Events.chat.onNotice, {type:type, content:content}, {}, null)
 	callback()
 }

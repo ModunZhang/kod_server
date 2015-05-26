@@ -31,6 +31,10 @@ module.exports = {
 		Alliance:"alliance",
 		AllianceFight:"allianceFight"
 	},
+	NoticeType:{
+		Info:'info',
+		Warning:'warning'
+	},
 	None:"__NONE__",
 	ServerState:{
 		Start:"start",
@@ -281,7 +285,6 @@ module.exports = {
 		Request:"request",//玩家申请
 		Notice:"notice",//联盟公告
 		Desc:"desc",//联盟描述
-		Diplomacy:"diplomacy",//外交关系
 		HandOver:"handover",//转让盟主
 		Tools:"tools",//补充道具
 		Upgrade:"upgrade",//联盟建筑升级
