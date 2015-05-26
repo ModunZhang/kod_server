@@ -450,7 +450,7 @@ pro.getAll = function(msg, session, next){
 	else if(_.isEqual(Consts.ChannelType.Alliance, channel)) chats = this.allianceChats[allianceId]
 	else if(_.isEqual(Consts.ChannelType.AllianceFight, channel)) chats = this.allianceFightChats[this.allianceFights[allianceId]]
 
-	next(null, {code:200, chats:_.isNull(chats) ? null : chats})
+	next(null, {code:200, chats:_.isNull(chats) ? [] : chats})
 }
 
 /**
