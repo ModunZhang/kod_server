@@ -104,6 +104,8 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 				power:0
 			},
 			members:[],
+			notice:null,
+			desc:null,
 			allianceFight:null
 		}
 		var mapObjects = MapUtils.create()

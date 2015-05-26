@@ -38,6 +38,7 @@ app.configure("local|develop|awschina", "gate", function(){
 	})
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
+
 	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/mongo.json"))
 	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
 	app.set("mongoose", mongooseClient)

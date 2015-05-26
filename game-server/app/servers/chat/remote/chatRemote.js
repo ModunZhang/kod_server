@@ -64,3 +64,33 @@ pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callbac
 	if(channel.getMembers().length == 0) channel.destroy()
 	callback()
 }
+
+/**
+ * 将对战中的联盟记录起来
+ * @param attackAllianceId
+ * @param defenceAllianceId
+ * @param callback
+ */
+pro.addAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
+	var allianceFights = this.app.get('allianceFights')
+	if(!_.isObject(allianceFights)){
+		allianceFights = {}
+		this.app.set('allianceFights', allianceFights)
+	}
+	allianceFights[attackAllianceId] = attackAllianceId + '_' + defenceAllianceId
+	allianceFights[defenceAllianceId] = attackAllianceId + '_' + defenceAllianceId
+	callback()
+}
+
+/**
+ * 将对战中的联盟从记录中移除
+ * @param attackAllianceId
+ * @param defenceAllianceId
+ * @param callback
+ */
+pro.removeAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
+	var allianceFights = this.app.get('allianceFights')
+	delete allianceFights[attackAllianceId]
+	delete allianceFights[defenceAllianceId]
+	callback()
+}
