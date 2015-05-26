@@ -2675,8 +2675,9 @@ Utils.addPlayerDragonExp = function(playerDoc, playerData, dragon, expAdd){
 				dragon.exp = nextLevelExpNeed
 				break
 			}else{
-				dragon.level += 1
 				expAdd -= (nextLevelExpNeed - dragon.exp)
+				dragon.level += 1
+				dragon.exp = 0
 				TaskUtils.finishDragonLevelTaskIfNeed(playerDoc, playerData, dragon.type, dragon.level)
 			}
 		}else{
