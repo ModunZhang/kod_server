@@ -138,7 +138,7 @@ cavalry_siege[14] = {
 	coin:3056700,
 	trainingFigure:0,
 	bowTarget:0,
-	saddle:1200,
+	saddle:1120,
 	ironPart:0,
 	buildTime:311640,
 	power:61140
@@ -148,7 +148,7 @@ cavalry_siege[15] = {
 	coin:4320000,
 	trainingFigure:0,
 	bowTarget:0,
-	saddle:1500,
+	saddle:1280,
 	ironPart:0,
 	buildTime:345600,
 	power:86400

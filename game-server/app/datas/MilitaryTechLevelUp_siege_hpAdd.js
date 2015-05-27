@@ -139,7 +139,7 @@ siege_hpAdd[14] = {
 	trainingFigure:0,
 	bowTarget:0,
 	saddle:0,
-	ironPart:2400,
+	ironPart:2240,
 	buildTime:778800,
 	power:152840
 }
@@ -149,7 +149,7 @@ siege_hpAdd[15] = {
 	trainingFigure:0,
 	bowTarget:0,
 	saddle:0,
-	ironPart:3000,
+	ironPart:2560,
 	buildTime:864000,
 	power:216000
 }

@@ -136,7 +136,7 @@ infantry_hpAdd[13] = {
 infantry_hpAdd[14] = {
 	level:14,
 	coin:5094400,
-	trainingFigure:2400,
+	trainingFigure:2240,
 	bowTarget:0,
 	saddle:0,
 	ironPart:0,
@@ -146,7 +146,7 @@ infantry_hpAdd[14] = {
 infantry_hpAdd[15] = {
 	level:15,
 	coin:7200000,
-	trainingFigure:3000,
+	trainingFigure:2560,
 	bowTarget:0,
 	saddle:0,
 	ironPart:0,

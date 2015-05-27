@@ -136,7 +136,7 @@ infantry_archer[13] = {
 infantry_archer[14] = {
 	level:14,
 	coin:2547200,
-	trainingFigure:1200,
+	trainingFigure:1120,
 	bowTarget:0,
 	saddle:0,
 	ironPart:0,
@@ -146,7 +146,7 @@ infantry_archer[14] = {
 infantry_archer[15] = {
 	level:15,
 	coin:3600000,
-	trainingFigure:1500,
+	trainingFigure:1280,
 	bowTarget:0,
 	saddle:0,
 	ironPart:0,

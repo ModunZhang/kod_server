@@ -138,7 +138,7 @@ cavalry_hpAdd[14] = {
 	coin:6113300,
 	trainingFigure:0,
 	bowTarget:0,
-	saddle:2400,
+	saddle:2240,
 	ironPart:0,
 	buildTime:622680,
 	power:122270
@@ -148,7 +148,7 @@ cavalry_hpAdd[15] = {
 	coin:8640000,
 	trainingFigure:0,
 	bowTarget:0,
-	saddle:3000,
+	saddle:2560,
 	ironPart:0,
 	buildTime:691200,
 	power:172800
