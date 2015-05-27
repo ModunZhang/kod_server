@@ -1,1 +1,12 @@
-{}
+{
+  "gate.gateHandler.queryEntry":{
+    "required uInt32 code":1,
+    "optional string message":2,
+    "message Data":{
+      "required string id":1,
+      "required string host":2,
+      "required uInt32 port":3
+    },
+    "optional Data data":3
+  }
+}

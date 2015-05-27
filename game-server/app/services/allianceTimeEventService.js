@@ -1192,7 +1192,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, helpDefencePlayerDoc._id, report.reportForDefencePlayer])
 				var helpDefenceTitle = DataUtils.getLocalizationConfig("alliance", "HelpDefenceStrikeTitle")
 				var helpDefenceContent = DataUtils.getLocalizationConfig("alliance", "HelpDefenceStrikeContent")
-				var helpDefenceParams = [helpDefencePlayerDoc.basicInfo.name, defenceAllianceDoc.basicInfo.tag]
+				var helpDefenceParams = [defenceAllianceDoc.basicInfo.tag, helpDefencePlayerDoc.basicInfo.name]
 				pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, defencePlayerDoc._id, helpDefenceTitle, helpDefenceParams, helpDefenceContent, helpDefenceParams])
 
 				attackDragon.hp -= report.reportForAttackPlayer.strikeCity.attackPlayerData.dragon.hpDecreased

@@ -26,6 +26,7 @@ app.configure("local|develop|awschina", function() {
 	app.set('remoteConfig', {
 		rpcServer: wsrpc.server
 	})
+
 })
 
 app.configure("local|develop|awschina", "gate", function(){
@@ -33,7 +34,7 @@ app.configure("local|develop|awschina", "gate", function(){
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
 		useDict:true,
-		useProtobuf:false,
+		useProtobuf:true,
 		disconnectOnTimeout:true
 	})
 	var filterService = new FilterService(app)
@@ -52,7 +53,7 @@ app.configure("local|develop|awschina", "logic", function(){
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
 		useDict:true,
-		useProtobuf:false,
+		useProtobuf:true,
 		disconnectOnTimeout:true
 	})
 
