@@ -5,441 +5,441 @@ module.exports = stable
 
 stable[1] = {
 	level:1,
-	wood:323,
-	stone:215,
-	iron:538,
+	wood:6770,
+	stone:4510,
+	iron:11280,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4800
+	buildTime:3000
 }
 stable[2] = {
 	level:2,
-	wood:774,
-	stone:516,
-	iron:1290,
+	wood:7250,
+	stone:4840,
+	iron:12080,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:3400
+}
+stable[3] = {
+	level:3,
+	wood:7760,
+	stone:5170,
+	iron:12930,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:3800
+}
+stable[4] = {
+	level:4,
+	wood:8300,
+	stone:5540,
+	iron:13830,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:4200
+}
+stable[5] = {
+	level:5,
+	wood:9110,
+	stone:6080,
+	iron:15180,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:4600
+}
+stable[6] = {
+	level:6,
+	wood:9790,
+	stone:6530,
+	iron:16310,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:5000
 }
-stable[3] = {
-	level:3,
-	wood:1548,
-	stone:1032,
-	iron:2580,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:5258
-}
-stable[4] = {
-	level:4,
-	wood:2322,
-	stone:1548,
-	iron:3870,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:5516
-}
-stable[5] = {
-	level:5,
-	wood:3096,
-	stone:2064,
-	iron:5160,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:6032
-}
-stable[6] = {
-	level:6,
-	wood:3870,
-	stone:2580,
-	iron:6450,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:7064
-}
 stable[7] = {
 	level:7,
-	wood:4644,
-	stone:3096,
-	iron:7740,
+	wood:12330,
+	stone:8220,
+	iron:20550,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:8096
+	buildTime:5456
 }
 stable[8] = {
 	level:8,
-	wood:6038,
-	stone:4025,
-	iron:10062,
+	wood:18840,
+	stone:12560,
+	iron:31400,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:11192
+	buildTime:5912
 }
 stable[9] = {
 	level:9,
-	wood:14861,
-	stone:9908,
-	iron:24768,
+	wood:34270,
+	stone:22850,
+	iron:57120,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:17384
+	buildTime:6824
 }
 stable[10] = {
 	level:10,
-	wood:26936,
-	stone:17957,
-	iron:44892,
+	wood:48970,
+	stone:32650,
+	iron:81610,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:23576
+	buildTime:7736
 }
 stable[11] = {
 	level:11,
-	wood:68360,
-	stone:45574,
-	iron:113933,
+	wood:65590,
+	stone:43730,
+	iron:109310,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:29768
+	buildTime:8648
 }
 stable[12] = {
 	level:12,
-	wood:100311,
-	stone:66874,
-	iron:167184,
+	wood:81780,
+	stone:54520,
+	iron:136290,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:35960
+	buildTime:9560
 }
 stable[13] = {
 	level:13,
-	wood:139692,
-	stone:93128,
-	iron:232820,
+	wood:106340,
+	stone:70890,
+	iron:177230,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:42152
+	buildTime:10472
 }
 stable[14] = {
 	level:14,
-	wood:176927,
-	stone:117951,
-	iron:294877,
-	blueprints:3,
-	tools:3,
-	tiles:3,
-	pulley:3,
-	buildTime:48344
+	wood:195690,
+	stone:130460,
+	iron:326150,
+	blueprints:1,
+	tools:1,
+	tiles:1,
+	pulley:1,
+	buildTime:15944
 }
 stable[15] = {
 	level:15,
-	wood:223078,
-	stone:148719,
-	iron:371796,
-	blueprints:5,
-	tools:5,
-	tiles:5,
-	pulley:5,
-	buildTime:54536
+	wood:296330,
+	stone:197560,
+	iron:493890,
+	blueprints:2,
+	tools:2,
+	tiles:2,
+	pulley:2,
+	buildTime:21416
 }
 stable[16] = {
 	level:16,
-	wood:346030,
-	stone:230687,
-	iron:576716,
+	wood:390360,
+	stone:260240,
+	iron:650590,
+	blueprints:4,
+	tools:4,
+	tiles:4,
+	pulley:4,
+	buildTime:26888
+}
+stable[17] = {
+	level:17,
+	wood:537200,
+	stone:358130,
+	iron:895330,
 	blueprints:8,
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:60728
+	buildTime:32360
 }
-stable[17] = {
-	level:17,
-	wood:410736,
-	stone:273824,
-	iron:684560,
+stable[18] = {
+	level:18,
+	wood:629040,
+	stone:419360,
+	iron:1048400,
 	blueprints:12,
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:66920
-}
-stable[18] = {
-	level:18,
-	wood:458415,
-	stone:305610,
-	iron:764024,
-	blueprints:18,
-	tools:18,
-	tiles:18,
-	pulley:18,
-	buildTime:73112
+	buildTime:37832
 }
 stable[19] = {
 	level:19,
-	wood:500314,
-	stone:333543,
-	iron:833856,
-	blueprints:26,
-	tools:26,
-	tiles:26,
-	pulley:26,
-	buildTime:79304
+	wood:747950,
+	stone:498640,
+	iron:1246590,
+	blueprints:16,
+	tools:16,
+	tiles:16,
+	pulley:16,
+	buildTime:43304
 }
 stable[20] = {
 	level:20,
-	wood:527043,
-	stone:351362,
-	iron:878404,
-	blueprints:35,
-	tools:35,
-	tiles:35,
-	pulley:35,
-	buildTime:85496
+	wood:858750,
+	stone:572500,
+	iron:1431250,
+	blueprints:20,
+	tools:20,
+	tiles:20,
+	pulley:20,
+	buildTime:48776
 }
 stable[21] = {
 	level:21,
-	wood:945230,
-	stone:630153,
-	iron:1575383,
-	blueprints:47,
-	tools:47,
-	tiles:47,
-	pulley:47,
-	buildTime:91688
+	wood:1152710,
+	stone:768480,
+	iron:1921180,
+	blueprints:28,
+	tools:28,
+	tiles:28,
+	pulley:28,
+	buildTime:54248
 }
 stable[22] = {
 	level:22,
-	wood:993610,
-	stone:662407,
-	iron:1656016,
-	blueprints:61,
-	tools:61,
-	tiles:61,
-	pulley:61,
-	buildTime:97880
+	wood:1264410,
+	stone:842940,
+	iron:2107350,
+	blueprints:36,
+	tools:36,
+	tiles:36,
+	pulley:36,
+	buildTime:59720
 }
 stable[23] = {
 	level:23,
-	wood:1026717,
-	stone:684478,
-	iron:1711194,
-	blueprints:78,
-	tools:78,
-	tiles:78,
-	pulley:78,
-	buildTime:104072
+	wood:1423170,
+	stone:948780,
+	iron:2371940,
+	blueprints:44,
+	tools:44,
+	tiles:44,
+	pulley:44,
+	buildTime:65192
 }
 stable[24] = {
 	level:24,
-	wood:1311342,
-	stone:874228,
-	iron:2185570,
-	blueprints:98,
-	tools:98,
-	tiles:98,
-	pulley:98,
-	buildTime:116456
+	wood:1565290,
+	stone:1043530,
+	iron:2608810,
+	blueprints:52,
+	tools:52,
+	tiles:52,
+	pulley:52,
+	buildTime:70664
 }
 stable[25] = {
 	level:25,
-	wood:1450167,
-	stone:966778,
-	iron:2416944,
-	blueprints:121,
-	tools:121,
-	tiles:121,
-	pulley:121,
-	buildTime:128840
+	wood:2179710,
+	stone:1453140,
+	iron:3632840,
+	blueprints:68,
+	tools:68,
+	tiles:68,
+	pulley:68,
+	buildTime:76136
 }
 stable[26] = {
 	level:26,
-	wood:2550361,
-	stone:1700241,
-	iron:4250602,
-	blueprints:148,
-	tools:148,
-	tiles:148,
-	pulley:148,
-	buildTime:141224
+	wood:2316230,
+	stone:1544150,
+	iron:3860380,
+	blueprints:84,
+	tools:84,
+	tiles:84,
+	pulley:84,
+	buildTime:81608
 }
 stable[27] = {
 	level:27,
-	wood:2859301,
-	stone:1906201,
-	iron:4765501,
-	blueprints:179,
-	tools:179,
-	tiles:179,
-	pulley:179,
-	buildTime:153608
+	wood:2525760,
+	stone:1683840,
+	iron:4209600,
+	blueprints:100,
+	tools:100,
+	tiles:100,
+	pulley:100,
+	buildTime:87080
 }
 stable[28] = {
 	level:28,
-	wood:3173442,
-	stone:2115628,
-	iron:5289069,
-	blueprints:213,
-	tools:213,
-	tiles:213,
-	pulley:213,
-	buildTime:165992
+	wood:2711320,
+	stone:1807550,
+	iron:4518860,
+	blueprints:116,
+	tools:116,
+	tiles:116,
+	pulley:116,
+	buildTime:92552
 }
 stable[29] = {
 	level:29,
-	wood:3785211,
-	stone:2523474,
-	iron:6308685,
-	blueprints:252,
-	tools:252,
-	tiles:252,
-	pulley:252,
-	buildTime:178376
+	wood:4333480,
+	stone:2888990,
+	iron:7222460,
+	blueprints:132,
+	tools:132,
+	tiles:132,
+	pulley:132,
+	buildTime:103496
 }
 stable[30] = {
 	level:30,
-	wood:4089197,
-	stone:2726132,
-	iron:6815328,
-	blueprints:295,
-	tools:295,
-	tiles:295,
-	pulley:295,
-	buildTime:190760
+	wood:4834340,
+	stone:3222890,
+	iron:8057230,
+	blueprints:164,
+	tools:164,
+	tiles:164,
+	pulley:164,
+	buildTime:114440
 }
 stable[31] = {
 	level:31,
-	wood:6766783,
-	stone:4511189,
-	iron:11277972,
-	blueprints:343,
-	tools:343,
-	tiles:343,
-	pulley:343,
-	buildTime:203144
+	wood:5488100,
+	stone:3658740,
+	iron:9146830,
+	blueprints:196,
+	tools:196,
+	tiles:196,
+	pulley:196,
+	buildTime:125384
 }
 stable[32] = {
 	level:32,
-	wood:7429245,
-	stone:4952830,
-	iron:12382074,
-	blueprints:396,
-	tools:396,
-	tiles:396,
-	pulley:396,
-	buildTime:215528
+	wood:6145040,
+	stone:4096700,
+	iron:10241740,
+	blueprints:228,
+	tools:228,
+	tiles:228,
+	pulley:228,
+	buildTime:136328
 }
 stable[33] = {
 	level:33,
-	wood:8120685,
-	stone:5413790,
-	iron:13534474,
-	blueprints:454,
-	tools:454,
-	tiles:454,
-	pulley:454,
-	buildTime:227912
+	wood:8698350,
+	stone:5798900,
+	iron:14497240,
+	blueprints:292,
+	tools:292,
+	tiles:292,
+	pulley:292,
+	buildTime:147272
 }
 stable[34] = {
 	level:34,
-	wood:8824921,
-	stone:5883281,
-	iron:14708202,
-	blueprints:518,
-	tools:518,
-	tiles:518,
-	pulley:518,
-	buildTime:240296
+	wood:9371870,
+	stone:6247910,
+	iron:15619780,
+	blueprints:356,
+	tools:356,
+	tiles:356,
+	pulley:356,
+	buildTime:158216
 }
 stable[35] = {
 	level:35,
-	wood:9556733,
-	stone:6371156,
-	iron:15927888,
-	blueprints:588,
-	tools:588,
-	tiles:588,
-	pulley:588,
-	buildTime:252680
+	wood:10282480,
+	stone:6854990,
+	iron:17137470,
+	blueprints:420,
+	tools:420,
+	tiles:420,
+	pulley:420,
+	buildTime:169160
 }
 stable[36] = {
 	level:36,
-	wood:15529743,
-	stone:10353162,
-	iron:25882904,
-	blueprints:663,
-	tools:663,
-	tiles:663,
-	pulley:663,
-	buildTime:265064
+	wood:11205610,
+	stone:7470410,
+	iron:18676020,
+	blueprints:484,
+	tools:484,
+	tiles:484,
+	pulley:484,
+	buildTime:180104
 }
 stable[37] = {
 	level:37,
-	wood:16860404,
-	stone:11240269,
-	iron:28100672,
-	blueprints:745,
-	tools:745,
-	tiles:745,
-	pulley:745,
-	buildTime:277448
+	wood:15627390,
+	stone:10418260,
+	iron:26045650,
+	blueprints:612,
+	tools:612,
+	tiles:612,
+	pulley:612,
+	buildTime:191048
 }
 stable[38] = {
 	level:38,
-	wood:18237092,
-	stone:12158061,
-	iron:30395152,
-	blueprints:833,
-	tools:833,
-	tiles:833,
-	pulley:833,
-	buildTime:289832
+	wood:16379790,
+	stone:10919860,
+	iron:27299650,
+	blueprints:740,
+	tools:740,
+	tiles:740,
+	pulley:740,
+	buildTime:201992
 }
 stable[39] = {
 	level:39,
-	wood:19675700,
-	stone:13117133,
-	iron:32792832,
-	blueprints:928,
-	tools:928,
-	tiles:928,
-	pulley:928,
-	buildTime:302216
+	wood:17473230,
+	stone:11648820,
+	iron:29122040,
+	blueprints:868,
+	tools:868,
+	tiles:868,
+	pulley:868,
+	buildTime:212936
 }
 stable[40] = {
 	level:40,
-	wood:29391360,
-	stone:19594240,
-	iron:48985600,
-	blueprints:1030,
-	tools:1030,
-	tiles:1030,
-	pulley:1030,
-	buildTime:314600
+	wood:18567930,
+	stone:12378620,
+	iron:30946550,
+	blueprints:1000,
+	tools:1000,
+	tiles:1000,
+	pulley:1000,
+	buildTime:223880
 }

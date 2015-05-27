@@ -5,441 +5,441 @@ module.exports = academy
 
 academy[1] = {
 	level:1,
-	wood:425,
-	stone:319,
-	iron:319,
+	wood:4190,
+	stone:3150,
+	iron:3150,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2
+	buildTime:203
 }
 academy[2] = {
 	level:2,
-	wood:1020,
-	stone:765,
-	iron:765,
+	wood:4800,
+	stone:3600,
+	iron:3600,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:150
+	buildTime:246
 }
 academy[3] = {
 	level:3,
-	wood:2040,
-	stone:1530,
-	iron:1530,
+	wood:5440,
+	stone:4080,
+	iron:4080,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:300
+	buildTime:290
 }
 academy[4] = {
 	level:4,
-	wood:3060,
-	stone:2295,
-	iron:2295,
+	wood:6130,
+	stone:4600,
+	iron:4600,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:510
+	buildTime:333
 }
 academy[5] = {
 	level:5,
-	wood:4080,
-	stone:3060,
-	iron:3060,
+	wood:7150,
+	stone:5360,
+	iron:5360,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1020
+	buildTime:376
 }
 academy[6] = {
 	level:6,
-	wood:5100,
-	stone:3825,
-	iron:3825,
+	wood:8010,
+	stone:6010,
+	iron:6010,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2040
+	buildTime:419
 }
 academy[7] = {
 	level:7,
-	wood:6120,
-	stone:4590,
-	iron:4590,
+	wood:11220,
+	stone:8410,
+	iron:8410,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3060
+	buildTime:592
 }
 academy[8] = {
 	level:8,
-	wood:7956,
-	stone:5967,
-	iron:5967,
+	wood:19440,
+	stone:14580,
+	iron:14580,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:6120
+	buildTime:1024
 }
 academy[9] = {
 	level:9,
-	wood:19584,
-	stone:14688,
-	iron:14688,
+	wood:38930,
+	stone:29200,
+	iron:29200,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:12240
+	buildTime:1888
 }
 academy[10] = {
 	level:10,
-	wood:35496,
-	stone:26622,
-	iron:26622,
+	wood:57490,
+	stone:43120,
+	iron:43120,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:18360
+	buildTime:2752
 }
 academy[11] = {
 	level:11,
-	wood:90087,
-	stone:67565,
-	iron:67565,
+	wood:78490,
+	stone:58870,
+	iron:58870,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:24480
+	buildTime:3616
 }
 academy[12] = {
 	level:12,
-	wood:132192,
-	stone:99144,
-	iron:99144,
+	wood:98940,
+	stone:74200,
+	iron:74200,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:30600
+	buildTime:4480
 }
 academy[13] = {
 	level:13,
-	wood:184090,
-	stone:138068,
-	iron:138068,
+	wood:129960,
+	stone:97470,
+	iron:97470,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:36720
+	buildTime:5344
 }
 academy[14] = {
 	level:14,
-	wood:233159,
-	stone:174869,
-	iron:174869,
+	wood:241820,
+	stone:181370,
+	iron:181370,
 	blueprints:1,
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:42840
+	buildTime:10528
 }
 academy[15] = {
 	level:15,
-	wood:293978,
-	stone:220484,
-	iron:220484,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:48960
+	wood:367940,
+	stone:275950,
+	iron:275950,
+	blueprints:2,
+	tools:2,
+	tiles:2,
+	pulley:2,
+	buildTime:15712
 }
 academy[16] = {
 	level:16,
-	wood:456008,
-	stone:342006,
-	iron:342006,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:55080
+	wood:484680,
+	stone:363510,
+	iron:363510,
+	blueprints:4,
+	tools:4,
+	tiles:4,
+	pulley:4,
+	buildTime:20896
 }
 academy[17] = {
 	level:17,
-	wood:541280,
-	stone:405960,
-	iron:405960,
-	blueprints:3,
-	tools:3,
-	tiles:3,
-	pulley:3,
-	buildTime:61200
+	wood:666120,
+	stone:499590,
+	iron:499590,
+	blueprints:8,
+	tools:8,
+	tiles:8,
+	pulley:8,
+	buildTime:26080
 }
 academy[18] = {
 	level:18,
-	wood:604112,
-	stone:453084,
-	iron:453084,
-	blueprints:6,
-	tools:6,
-	tiles:6,
-	pulley:6,
-	buildTime:67320
+	wood:778090,
+	stone:583570,
+	iron:583570,
+	blueprints:12,
+	tools:12,
+	tiles:12,
+	pulley:12,
+	buildTime:31264
 }
 academy[19] = {
 	level:19,
-	wood:659328,
-	stone:494496,
-	iron:494496,
-	blueprints:11,
-	tools:11,
-	tiles:11,
-	pulley:11,
-	buildTime:73440
+	wood:924260,
+	stone:693190,
+	iron:693190,
+	blueprints:16,
+	tools:16,
+	tiles:16,
+	pulley:16,
+	buildTime:36448
 }
 academy[20] = {
 	level:20,
-	wood:694552,
-	stone:520914,
-	iron:520914,
-	blueprints:18,
-	tools:18,
-	tiles:18,
-	pulley:18,
-	buildTime:79560
+	wood:1060170,
+	stone:795130,
+	iron:795130,
+	blueprints:20,
+	tools:20,
+	tiles:20,
+	pulley:20,
+	buildTime:41632
 }
 academy[21] = {
 	level:21,
-	wood:1245652,
-	stone:934239,
-	iron:934239,
-	blueprints:29,
-	tools:29,
-	tiles:29,
-	pulley:29,
-	buildTime:85680
+	wood:1423400,
+	stone:1067550,
+	iron:1067550,
+	blueprints:28,
+	tools:28,
+	tiles:28,
+	pulley:28,
+	buildTime:46816
 }
 academy[22] = {
 	level:22,
-	wood:1309408,
-	stone:982056,
-	iron:982056,
-	blueprints:43,
-	tools:43,
-	tiles:43,
-	pulley:43,
-	buildTime:91800
+	wood:1556410,
+	stone:1167310,
+	iron:1167310,
+	blueprints:36,
+	tools:36,
+	tiles:36,
+	pulley:36,
+	buildTime:52000
 }
 academy[23] = {
 	level:23,
-	wood:1353037,
-	stone:1014778,
-	iron:1014778,
-	blueprints:61,
-	tools:61,
-	tiles:61,
-	pulley:61,
-	buildTime:97920
+	wood:1748860,
+	stone:1311650,
+	iron:1311650,
+	blueprints:44,
+	tools:44,
+	tiles:44,
+	pulley:44,
+	buildTime:57184
 }
 academy[24] = {
 	level:24,
-	wood:1728125,
-	stone:1296094,
-	iron:1296094,
-	blueprints:83,
-	tools:83,
-	tiles:83,
-	pulley:83,
-	buildTime:110160
+	wood:1920300,
+	stone:1440230,
+	iron:1440230,
+	blueprints:52,
+	tools:52,
+	tiles:52,
+	pulley:52,
+	buildTime:62368
 }
 academy[25] = {
 	level:25,
-	wood:1911072,
-	stone:1433304,
-	iron:1433304,
-	blueprints:111,
-	tools:111,
-	tiles:111,
-	pulley:111,
-	buildTime:122400
+	wood:2680240,
+	stone:2010180,
+	iron:2010180,
+	blueprints:68,
+	tools:68,
+	tiles:68,
+	pulley:68,
+	buildTime:67552
 }
 academy[26] = {
 	level:26,
-	wood:3360941,
-	stone:2520706,
-	iron:2520706,
-	blueprints:144,
-	tools:144,
-	tiles:144,
-	pulley:144,
-	buildTime:134640
+	wood:2836520,
+	stone:2127390,
+	iron:2127390,
+	blueprints:84,
+	tools:84,
+	tiles:84,
+	pulley:84,
+	buildTime:72736
 }
 academy[27] = {
 	level:27,
-	wood:3768071,
-	stone:2826053,
-	iron:2826053,
-	blueprints:183,
-	tools:183,
-	tiles:183,
-	pulley:183,
-	buildTime:146880
+	wood:3085020,
+	stone:2313770,
+	iron:2313770,
+	blueprints:100,
+	tools:100,
+	tiles:100,
+	pulley:100,
+	buildTime:77920
 }
 academy[28] = {
 	level:28,
-	wood:4182055,
-	stone:3136541,
-	iron:3136541,
-	blueprints:228,
-	tools:228,
-	tiles:228,
-	pulley:228,
-	buildTime:159120
+	wood:3303240,
+	stone:2477430,
+	iron:2477430,
+	blueprints:116,
+	tools:116,
+	tiles:116,
+	pulley:116,
+	buildTime:83104
 }
 academy[29] = {
 	level:29,
-	wood:4988263,
-	stone:3741197,
-	iron:3741197,
-	blueprints:281,
-	tools:281,
-	tiles:281,
-	pulley:281,
-	buildTime:171360
+	wood:4721720,
+	stone:3541290,
+	iron:3541290,
+	blueprints:164,
+	tools:164,
+	tiles:164,
+	pulley:164,
+	buildTime:93472
 }
 academy[30] = {
 	level:30,
-	wood:5388864,
-	stone:4041648,
-	iron:4041648,
-	blueprints:341,
-	tools:341,
-	tiles:341,
-	pulley:341,
-	buildTime:183600
+	wood:5014850,
+	stone:3761140,
+	iron:3761140,
+	blueprints:212,
+	tools:212,
+	tiles:212,
+	pulley:212,
+	buildTime:103840
 }
 academy[31] = {
 	level:31,
-	wood:8917466,
-	stone:6688100,
-	iron:6688100,
-	blueprints:409,
-	tools:409,
-	tiles:409,
-	pulley:409,
-	buildTime:195840
+	wood:5501120,
+	stone:4125840,
+	iron:4125840,
+	blueprints:260,
+	tools:260,
+	tiles:260,
+	pulley:260,
+	buildTime:114208
 }
 academy[32] = {
 	level:32,
-	wood:9790477,
-	stone:7342858,
-	iron:7342858,
-	blueprints:485,
-	tools:485,
-	tiles:485,
-	pulley:485,
-	buildTime:208080
+	wood:5991400,
+	stone:4493550,
+	iron:4493550,
+	blueprints:308,
+	tools:308,
+	tiles:308,
+	pulley:308,
+	buildTime:124576
 }
 academy[33] = {
 	level:33,
-	wood:10701677,
-	stone:8026258,
-	iron:8026258,
-	blueprints:571,
-	tools:571,
-	tiles:571,
-	pulley:571,
-	buildTime:220320
+	wood:8537550,
+	stone:6403160,
+	iron:6403160,
+	blueprints:404,
+	tools:404,
+	tiles:404,
+	pulley:404,
+	buildTime:134944
 }
 academy[34] = {
 	level:34,
-	wood:11629741,
-	stone:8722306,
-	iron:8722306,
-	blueprints:666,
-	tools:666,
-	tiles:666,
-	pulley:666,
-	buildTime:232560
+	wood:8709240,
+	stone:6531930,
+	iron:6531930,
+	blueprints:500,
+	tools:500,
+	tiles:500,
+	pulley:500,
+	buildTime:145312
 }
 academy[35] = {
 	level:35,
-	wood:12594144,
-	stone:9445608,
-	iron:9445608,
-	blueprints:771,
-	tools:771,
-	tiles:771,
-	pulley:771,
-	buildTime:244800
+	wood:9180420,
+	stone:6885320,
+	iron:6885320,
+	blueprints:596,
+	tools:596,
+	tiles:596,
+	pulley:596,
+	buildTime:155680
 }
 academy[36] = {
 	level:36,
-	wood:20465552,
-	stone:15349164,
-	iron:15349164,
-	blueprints:886,
-	tools:886,
-	tiles:886,
-	pulley:886,
-	buildTime:257040
+	wood:9667400,
+	stone:7250550,
+	iron:7250550,
+	blueprints:692,
+	tools:692,
+	tiles:692,
+	pulley:692,
+	buildTime:166048
 }
 academy[37] = {
 	level:37,
-	wood:22219136,
-	stone:16664352,
-	iron:16664352,
-	blueprints:1013,
-	tools:1013,
-	tiles:1013,
-	pulley:1013,
-	buildTime:269280
+	wood:15737860,
+	stone:11803400,
+	iron:11803400,
+	blueprints:788,
+	tools:788,
+	tiles:788,
+	pulley:788,
+	buildTime:176416
 }
 academy[38] = {
 	level:38,
-	wood:24033376,
-	stone:18025032,
-	iron:18025032,
-	blueprints:1151,
-	tools:1151,
-	tiles:1151,
-	pulley:1151,
-	buildTime:281520
+	wood:17173320,
+	stone:12879990,
+	iron:12879990,
+	blueprints:884,
+	tools:884,
+	tiles:884,
+	pulley:884,
+	buildTime:186784
 }
 academy[39] = {
 	level:39,
-	wood:25929216,
-	stone:19446912,
-	iron:19446912,
-	blueprints:1300,
-	tools:1300,
-	tiles:1300,
-	pulley:1300,
-	buildTime:293760
+	wood:19039550,
+	stone:14279660,
+	iron:14279660,
+	blueprints:980,
+	tools:980,
+	tiles:980,
+	pulley:980,
+	buildTime:197152
 }
 academy[40] = {
 	level:40,
-	wood:38732800,
-	stone:29049600,
-	iron:29049600,
-	blueprints:1480,
-	tools:1480,
-	tiles:1480,
-	pulley:1480,
-	buildTime:306000
+	wood:20980150,
+	stone:15735110,
+	iron:15735110,
+	blueprints:1076,
+	tools:1076,
+	tiles:1076,
+	pulley:1076,
+	buildTime:207520
 }

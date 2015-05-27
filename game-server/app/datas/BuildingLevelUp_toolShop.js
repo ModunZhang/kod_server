@@ -5,9 +5,9 @@ module.exports = toolShop
 
 toolShop[1] = {
 	level:1,
-	wood:248,
-	stone:248,
-	iron:330,
+	wood:2150,
+	stone:2150,
+	iron:2860,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -16,430 +16,430 @@ toolShop[1] = {
 }
 toolShop[2] = {
 	level:2,
-	wood:594,
-	stone:594,
-	iron:792,
+	wood:2500,
+	stone:2500,
+	iron:3340,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1400
+}
+toolShop[3] = {
+	level:3,
+	wood:2880,
+	stone:2880,
+	iron:3830,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:1600
 }
-toolShop[3] = {
-	level:3,
-	wood:1188,
-	stone:1188,
-	iron:1584,
+toolShop[4] = {
+	level:4,
+	wood:3280,
+	stone:3280,
+	iron:4370,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1800
+}
+toolShop[5] = {
+	level:5,
+	wood:3870,
+	stone:3870,
+	iron:5160,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:2000
 }
-toolShop[4] = {
-	level:4,
-	wood:1782,
-	stone:1782,
-	iron:2376,
+toolShop[6] = {
+	level:6,
+	wood:4370,
+	stone:4370,
+	iron:5830,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:2200
+}
+toolShop[7] = {
+	level:7,
+	wood:6240,
+	stone:6240,
+	iron:8320,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:2400
 }
-toolShop[5] = {
-	level:5,
-	wood:2376,
-	stone:2376,
-	iron:3168,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:2792
-}
-toolShop[6] = {
-	level:6,
-	wood:2970,
-	stone:2970,
-	iron:3960,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:3584
-}
-toolShop[7] = {
-	level:7,
-	wood:3564,
-	stone:3564,
-	iron:4752,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:4376
-}
 toolShop[8] = {
 	level:8,
-	wood:4634,
-	stone:4634,
-	iron:6178,
+	wood:11040,
+	stone:11040,
+	iron:14720,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:6752
+	buildTime:2672
 }
 toolShop[9] = {
 	level:9,
-	wood:11405,
-	stone:11405,
-	iron:15207,
+	wood:22410,
+	stone:22410,
+	iron:29880,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:11504
+	buildTime:3344
 }
 toolShop[10] = {
 	level:10,
-	wood:20672,
-	stone:20672,
-	iron:27562,
+	wood:33240,
+	stone:33240,
+	iron:44320,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:16256
+	buildTime:4016
 }
 toolShop[11] = {
 	level:11,
-	wood:52463,
-	stone:52463,
-	iron:69950,
+	wood:45490,
+	stone:45490,
+	iron:60650,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:21008
+	buildTime:4688
 }
 toolShop[12] = {
 	level:12,
-	wood:76983,
-	stone:76983,
-	iron:102644,
+	wood:57420,
+	stone:57420,
+	iron:76550,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:25760
+	buildTime:5360
 }
 toolShop[13] = {
 	level:13,
-	wood:107206,
-	stone:107206,
-	iron:142941,
+	wood:75510,
+	stone:75510,
+	iron:100680,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:30512
+	buildTime:6032
 }
 toolShop[14] = {
 	level:14,
-	wood:135781,
-	stone:135781,
-	iron:181041,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:35264
-}
-toolShop[15] = {
-	level:15,
-	wood:171199,
-	stone:171199,
-	iron:228265,
+	wood:137560,
+	stone:137560,
+	iron:183420,
 	blueprints:1,
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:40016
+	buildTime:10064
 }
-toolShop[16] = {
-	level:16,
-	wood:265558,
-	stone:265558,
-	iron:354077,
+toolShop[15] = {
+	level:15,
+	wood:207930,
+	stone:207930,
+	iron:277240,
 	blueprints:2,
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:44768
+	buildTime:14096
 }
-toolShop[17] = {
-	level:17,
-	wood:315216,
-	stone:315216,
-	iron:420288,
+toolShop[16] = {
+	level:16,
+	wood:269630,
+	stone:269630,
+	iron:359510,
 	blueprints:4,
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:49520
+	buildTime:18128
+}
+toolShop[17] = {
+	level:17,
+	wood:362670,
+	stone:362670,
+	iron:483560,
+	blueprints:8,
+	tools:8,
+	tiles:8,
+	pulley:8,
+	buildTime:22160
 }
 toolShop[18] = {
 	level:18,
-	wood:351807,
-	stone:351807,
-	iron:469076,
-	blueprints:7,
-	tools:7,
-	tiles:7,
-	pulley:7,
-	buildTime:54272
-}
-toolShop[19] = {
-	level:19,
-	wood:383962,
-	stone:383962,
-	iron:511949,
+	wood:415190,
+	stone:415190,
+	iron:553590,
 	blueprints:12,
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:59024
+	buildTime:26192
+}
+toolShop[19] = {
+	level:19,
+	wood:487650,
+	stone:487650,
+	iron:650200,
+	blueprints:16,
+	tools:16,
+	tiles:16,
+	pulley:16,
+	buildTime:30224
 }
 toolShop[20] = {
 	level:20,
-	wood:404475,
-	stone:404475,
-	iron:539300,
-	blueprints:18,
-	tools:18,
-	tiles:18,
-	pulley:18,
-	buildTime:63776
+	wood:554130,
+	stone:554130,
+	iron:738840,
+	blueprints:20,
+	tools:20,
+	tiles:20,
+	pulley:20,
+	buildTime:34256
 }
 toolShop[21] = {
 	level:21,
-	wood:725409,
-	stone:725409,
-	iron:967212,
-	blueprints:27,
-	tools:27,
-	tiles:27,
-	pulley:27,
-	buildTime:68528
+	wood:740420,
+	stone:740420,
+	iron:987230,
+	blueprints:28,
+	tools:28,
+	tiles:28,
+	pulley:28,
+	buildTime:38288
 }
 toolShop[22] = {
 	level:22,
-	wood:762538,
-	stone:762538,
-	iron:1016717,
-	blueprints:37,
-	tools:37,
-	tiles:37,
-	pulley:37,
-	buildTime:73280
+	wood:792410,
+	stone:792410,
+	iron:1056540,
+	blueprints:36,
+	tools:36,
+	tiles:36,
+	pulley:36,
+	buildTime:42320
 }
 toolShop[23] = {
 	level:23,
-	wood:787945,
-	stone:787945,
-	iron:1050594,
-	blueprints:51,
-	tools:51,
-	tiles:51,
-	pulley:51,
-	buildTime:78032
+	wood:879070,
+	stone:879070,
+	iron:1172090,
+	blueprints:44,
+	tools:44,
+	tiles:44,
+	pulley:44,
+	buildTime:46352
 }
 toolShop[24] = {
 	level:24,
-	wood:1006379,
-	stone:1006379,
-	iron:1341839,
-	blueprints:67,
-	tools:67,
-	tiles:67,
-	pulley:67,
-	buildTime:87536
+	wood:953480,
+	stone:953480,
+	iron:1271300,
+	blueprints:52,
+	tools:52,
+	tiles:52,
+	pulley:52,
+	buildTime:50384
 }
 toolShop[25] = {
 	level:25,
-	wood:1112919,
-	stone:1112919,
-	iron:1483892,
-	blueprints:86,
-	tools:86,
-	tiles:86,
-	pulley:86,
-	buildTime:97040
+	wood:1345580,
+	stone:1345580,
+	iron:1794100,
+	blueprints:68,
+	tools:68,
+	tiles:68,
+	pulley:68,
+	buildTime:54416
 }
 toolShop[26] = {
 	level:26,
-	wood:1957254,
-	stone:1957254,
-	iron:2609672,
-	blueprints:108,
-	tools:108,
-	tiles:108,
-	pulley:108,
-	buildTime:106544
+	wood:1385540,
+	stone:1385540,
+	iron:1847380,
+	blueprints:84,
+	tools:84,
+	tiles:84,
+	pulley:84,
+	buildTime:58448
 }
 toolShop[27] = {
 	level:27,
-	wood:2194347,
-	stone:2194347,
-	iron:2925796,
-	blueprints:134,
-	tools:134,
-	tiles:134,
-	pulley:134,
-	buildTime:116048
+	wood:1479300,
+	stone:1479300,
+	iron:1972400,
+	blueprints:100,
+	tools:100,
+	tiles:100,
+	pulley:100,
+	buildTime:62480
 }
 toolShop[28] = {
 	level:28,
-	wood:2435432,
-	stone:2435432,
-	iron:3247243,
-	blueprints:163,
-	tools:163,
-	tiles:163,
-	pulley:163,
-	buildTime:125552
+	wood:1555390,
+	stone:1555390,
+	iron:2073850,
+	blueprints:116,
+	tools:116,
+	tiles:116,
+	pulley:116,
+	buildTime:66512
 }
 toolShop[29] = {
 	level:29,
-	wood:2904930,
-	stone:2904930,
-	iron:3873240,
-	blueprints:197,
-	tools:197,
-	tiles:197,
-	pulley:197,
-	buildTime:135056
+	wood:2690040,
+	stone:2690040,
+	iron:3586720,
+	blueprints:132,
+	tools:132,
+	tiles:132,
+	pulley:132,
+	buildTime:74576
 }
 toolShop[30] = {
 	level:30,
-	wood:3138221,
-	stone:3138221,
-	iron:4184295,
-	blueprints:234,
-	tools:234,
-	tiles:234,
-	pulley:234,
-	buildTime:144560
+	wood:2937830,
+	stone:2937830,
+	iron:3917100,
+	blueprints:164,
+	tools:164,
+	tiles:164,
+	pulley:164,
+	buildTime:82640
 }
 toolShop[31] = {
 	level:31,
-	wood:5193113,
-	stone:5193113,
-	iron:6924150,
-	blueprints:277,
-	tools:277,
-	tiles:277,
-	pulley:277,
-	buildTime:154064
+	wood:3298290,
+	stone:3298290,
+	iron:4397710,
+	blueprints:196,
+	tools:196,
+	tiles:196,
+	pulley:196,
+	buildTime:90704
 }
 toolShop[32] = {
 	level:32,
-	wood:5701513,
-	stone:5701513,
-	iron:7602018,
-	blueprints:324,
-	tools:324,
-	tiles:324,
-	pulley:324,
-	buildTime:163568
+	wood:3661090,
+	stone:3661090,
+	iron:4881450,
+	blueprints:228,
+	tools:228,
+	tiles:228,
+	pulley:228,
+	buildTime:98768
 }
 toolShop[33] = {
 	level:33,
-	wood:6232153,
-	stone:6232153,
-	iron:8309538,
-	blueprints:376,
-	tools:376,
-	tiles:376,
-	pulley:376,
-	buildTime:173072
+	wood:5299940,
+	stone:5299940,
+	iron:7066580,
+	blueprints:292,
+	tools:292,
+	tiles:292,
+	pulley:292,
+	buildTime:106832
 }
 toolShop[34] = {
 	level:34,
-	wood:6772614,
-	stone:6772614,
-	iron:9030152,
-	blueprints:433,
-	tools:433,
-	tiles:433,
-	pulley:433,
-	buildTime:182576
+	wood:5553690,
+	stone:5553690,
+	iron:7404920,
+	blueprints:356,
+	tools:356,
+	tiles:356,
+	pulley:356,
+	buildTime:114896
 }
 toolShop[35] = {
 	level:35,
-	wood:7334237,
-	stone:7334237,
-	iron:9778983,
-	blueprints:496,
-	tools:496,
-	tiles:496,
-	pulley:496,
-	buildTime:192080
+	wood:5982150,
+	stone:5982150,
+	iron:7976200,
+	blueprints:420,
+	tools:420,
+	tiles:420,
+	pulley:420,
+	buildTime:122960
 }
 toolShop[36] = {
 	level:36,
-	wood:11918175,
-	stone:11918175,
-	iron:15890900,
-	blueprints:564,
-	tools:564,
-	tiles:564,
-	pulley:564,
-	buildTime:201584
+	wood:6419820,
+	stone:6419820,
+	iron:8559760,
+	blueprints:484,
+	tools:484,
+	tiles:484,
+	pulley:484,
+	buildTime:131024
 }
 toolShop[37] = {
 	level:37,
-	wood:12939380,
-	stone:12939380,
-	iron:17252506,
-	blueprints:640,
-	tools:640,
-	tiles:640,
-	pulley:640,
-	buildTime:211088
+	wood:10114520,
+	stone:10114520,
+	iron:13486030,
+	blueprints:548,
+	tools:548,
+	tiles:548,
+	pulley:548,
+	buildTime:139088
 }
 toolShop[38] = {
 	level:38,
-	wood:13995908,
-	stone:13995908,
-	iron:18661210,
-	blueprints:720,
-	tools:720,
-	tiles:720,
-	pulley:720,
-	buildTime:220592
+	wood:11105470,
+	stone:11105470,
+	iron:14807290,
+	blueprints:612,
+	tools:612,
+	tiles:612,
+	pulley:612,
+	buildTime:147152
 }
 toolShop[39] = {
 	level:39,
-	wood:15099956,
-	stone:15099956,
-	iron:20133274,
-	blueprints:810,
-	tools:810,
-	tiles:810,
-	pulley:810,
-	buildTime:230096
+	wood:12347710,
+	stone:12347710,
+	iron:16463610,
+	blueprints:676,
+	tools:676,
+	tiles:676,
+	pulley:676,
+	buildTime:155216
 }
 toolShop[40] = {
 	level:40,
-	wood:22556160,
-	stone:22556160,
-	iron:30074880,
-	blueprints:900,
-	tools:900,
-	tiles:900,
-	pulley:900,
-	buildTime:239600
+	wood:13633320,
+	stone:13633320,
+	iron:18177760,
+	blueprints:740,
+	tools:740,
+	tiles:740,
+	pulley:740,
+	buildTime:163280
 }

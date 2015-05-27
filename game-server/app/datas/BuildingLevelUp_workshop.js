@@ -5,441 +5,441 @@ module.exports = workshop
 
 workshop[1] = {
 	level:1,
-	wood:330,
-	stone:330,
-	iron:440,
+	wood:6780,
+	stone:6780,
+	iron:9040,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:3000
+}
+workshop[2] = {
+	level:2,
+	wood:7280,
+	stone:7280,
+	iron:9700,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:3400
+}
+workshop[3] = {
+	level:3,
+	wood:7800,
+	stone:7800,
+	iron:10400,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:3800
+}
+workshop[4] = {
+	level:4,
+	wood:8350,
+	stone:8350,
+	iron:11140,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:4200
+}
+workshop[5] = {
+	level:5,
+	wood:9190,
+	stone:9190,
+	iron:12250,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:4600
+}
+workshop[6] = {
+	level:6,
+	wood:9880,
+	stone:9880,
+	iron:13170,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:5000
 }
-workshop[2] = {
-	level:2,
-	wood:792,
-	stone:792,
-	iron:1056,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:5200
-}
-workshop[3] = {
-	level:3,
-	wood:1584,
-	stone:1584,
-	iron:2112,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:5464
-}
-workshop[4] = {
-	level:4,
-	wood:2376,
-	stone:2376,
-	iron:3168,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:5728
-}
-workshop[5] = {
-	level:5,
-	wood:3168,
-	stone:3168,
-	iron:4224,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:6256
-}
-workshop[6] = {
-	level:6,
-	wood:3960,
-	stone:3960,
-	iron:5280,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:7312
-}
 workshop[7] = {
 	level:7,
-	wood:4752,
-	stone:4752,
-	iron:6336,
+	wood:12490,
+	stone:12490,
+	iron:16650,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:8368
+	buildTime:5468
 }
 workshop[8] = {
 	level:8,
-	wood:6178,
-	stone:6178,
-	iron:8237,
+	wood:19170,
+	stone:19170,
+	iron:25560,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:11536
+	buildTime:5936
 }
 workshop[9] = {
 	level:9,
-	wood:15207,
-	stone:15207,
-	iron:20276,
+	wood:35010,
+	stone:35010,
+	iron:46670,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:17872
+	buildTime:6872
 }
 workshop[10] = {
 	level:10,
-	wood:27562,
-	stone:27562,
-	iron:36749,
+	wood:50090,
+	stone:50090,
+	iron:66780,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:24208
+	buildTime:7808
 }
 workshop[11] = {
 	level:11,
-	wood:69950,
-	stone:69950,
-	iron:93266,
+	wood:67150,
+	stone:67150,
+	iron:89530,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:30544
+	buildTime:8744
 }
 workshop[12] = {
 	level:12,
-	wood:102644,
-	stone:102644,
-	iron:136858,
+	wood:83760,
+	stone:83760,
+	iron:111680,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:36880
+	buildTime:9680
 }
 workshop[13] = {
 	level:13,
-	wood:142941,
-	stone:142941,
-	iron:190587,
+	wood:108970,
+	stone:108970,
+	iron:145290,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:43216
+	buildTime:10616
 }
 workshop[14] = {
 	level:14,
-	wood:181041,
-	stone:181041,
-	iron:241388,
-	blueprints:3,
-	tools:3,
-	tiles:3,
-	pulley:3,
-	buildTime:49552
+	wood:201050,
+	stone:201050,
+	iron:268070,
+	blueprints:1,
+	tools:1,
+	tiles:1,
+	pulley:1,
+	buildTime:16232
 }
 workshop[15] = {
 	level:15,
-	wood:228265,
-	stone:228265,
-	iron:304354,
-	blueprints:5,
-	tools:5,
-	tiles:5,
-	pulley:5,
-	buildTime:55888
+	wood:304720,
+	stone:304720,
+	iron:406300,
+	blueprints:2,
+	tools:2,
+	tiles:2,
+	pulley:2,
+	buildTime:21848
 }
 workshop[16] = {
 	level:16,
-	wood:354077,
-	stone:354077,
-	iron:472103,
+	wood:401980,
+	stone:401980,
+	iron:535970,
+	blueprints:4,
+	tools:4,
+	tiles:4,
+	pulley:4,
+	buildTime:27464
+}
+workshop[17] = {
+	level:17,
+	wood:554200,
+	stone:554200,
+	iron:738930,
 	blueprints:8,
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:62224
+	buildTime:33080
 }
-workshop[17] = {
-	level:17,
-	wood:420288,
-	stone:420288,
-	iron:560384,
+workshop[18] = {
+	level:18,
+	wood:649980,
+	stone:649980,
+	iron:866640,
 	blueprints:12,
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:68560
-}
-workshop[18] = {
-	level:18,
-	wood:469076,
-	stone:469076,
-	iron:625434,
-	blueprints:18,
-	tools:18,
-	tiles:18,
-	pulley:18,
-	buildTime:74896
+	buildTime:38696
 }
 workshop[19] = {
 	level:19,
-	wood:511949,
-	stone:511949,
-	iron:682599,
-	blueprints:26,
-	tools:26,
-	tiles:26,
-	pulley:26,
-	buildTime:81232
+	wood:773530,
+	stone:773530,
+	iron:1031380,
+	blueprints:16,
+	tools:16,
+	tiles:16,
+	pulley:16,
+	buildTime:44312
 }
 workshop[20] = {
 	level:20,
-	wood:539300,
-	stone:539300,
-	iron:719066,
-	blueprints:35,
-	tools:35,
-	tiles:35,
-	pulley:35,
-	buildTime:87568
+	wood:888760,
+	stone:888760,
+	iron:1185020,
+	blueprints:20,
+	tools:20,
+	tiles:20,
+	pulley:20,
+	buildTime:49928
 }
 workshop[21] = {
 	level:21,
-	wood:967212,
-	stone:967212,
-	iron:1289616,
-	blueprints:47,
-	tools:47,
-	tiles:47,
-	pulley:47,
-	buildTime:93904
+	wood:1193490,
+	stone:1193490,
+	iron:1591320,
+	blueprints:28,
+	tools:28,
+	tiles:28,
+	pulley:28,
+	buildTime:55544
 }
 workshop[22] = {
 	level:22,
-	wood:1016717,
-	stone:1016717,
-	iron:1355623,
-	blueprints:61,
-	tools:61,
-	tiles:61,
-	pulley:61,
-	buildTime:100240
+	wood:1311160,
+	stone:1311160,
+	iron:1748210,
+	blueprints:36,
+	tools:36,
+	tiles:36,
+	pulley:36,
+	buildTime:61160
 }
 workshop[23] = {
 	level:23,
-	wood:1050594,
-	stone:1050594,
-	iron:1400792,
-	blueprints:78,
-	tools:78,
-	tiles:78,
-	pulley:78,
-	buildTime:106576
+	wood:1477120,
+	stone:1477120,
+	iron:1969500,
+	blueprints:44,
+	tools:44,
+	tiles:44,
+	pulley:44,
+	buildTime:66776
 }
 workshop[24] = {
 	level:24,
-	wood:1341839,
-	stone:1341839,
-	iron:1789118,
-	blueprints:98,
-	tools:98,
-	tiles:98,
-	pulley:98,
-	buildTime:119248
+	wood:1626020,
+	stone:1626020,
+	iron:2168020,
+	blueprints:52,
+	tools:52,
+	tiles:52,
+	pulley:52,
+	buildTime:72392
 }
 workshop[25] = {
 	level:25,
-	wood:1483892,
-	stone:1483892,
-	iron:1978522,
-	blueprints:121,
-	tools:121,
-	tiles:121,
-	pulley:121,
-	buildTime:131920
+	wood:2262670,
+	stone:2262670,
+	iron:3016890,
+	blueprints:68,
+	tools:68,
+	tiles:68,
+	pulley:68,
+	buildTime:78008
 }
 workshop[26] = {
 	level:26,
-	wood:2609672,
-	stone:2609672,
-	iron:3479563,
-	blueprints:148,
-	tools:148,
-	tiles:148,
-	pulley:148,
-	buildTime:144592
+	wood:2408850,
+	stone:2408850,
+	iron:3211790,
+	blueprints:84,
+	tools:84,
+	tiles:84,
+	pulley:84,
+	buildTime:83624
 }
 workshop[27] = {
 	level:27,
-	wood:2925796,
-	stone:2925796,
-	iron:3901062,
-	blueprints:179,
-	tools:179,
-	tiles:179,
-	pulley:179,
-	buildTime:157264
+	wood:2629960,
+	stone:2629960,
+	iron:3506610,
+	blueprints:100,
+	tools:100,
+	tiles:100,
+	pulley:100,
+	buildTime:89240
 }
 workshop[28] = {
 	level:28,
-	wood:3247243,
-	stone:3247243,
-	iron:4329657,
-	blueprints:213,
-	tools:213,
-	tiles:213,
-	pulley:213,
-	buildTime:169936
+	wood:2826460,
+	stone:2826460,
+	iron:3768610,
+	blueprints:116,
+	tools:116,
+	tiles:116,
+	pulley:116,
+	buildTime:94856
 }
 workshop[29] = {
 	level:29,
-	wood:3873240,
-	stone:3873240,
-	iron:5164319,
-	blueprints:252,
-	tools:252,
-	tiles:252,
-	pulley:252,
-	buildTime:182608
+	wood:4497370,
+	stone:4497370,
+	iron:5996500,
+	blueprints:132,
+	tools:132,
+	tiles:132,
+	pulley:132,
+	buildTime:106088
 }
 workshop[30] = {
 	level:30,
-	wood:4184295,
-	stone:4184295,
-	iron:5579060,
-	blueprints:295,
-	tools:295,
-	tiles:295,
-	pulley:295,
-	buildTime:195280
+	wood:5023540,
+	stone:5023540,
+	iron:6698050,
+	blueprints:164,
+	tools:164,
+	tiles:164,
+	pulley:164,
+	buildTime:117320
 }
 workshop[31] = {
 	level:31,
-	wood:6924150,
-	stone:6924150,
-	iron:9232200,
-	blueprints:343,
-	tools:343,
-	tiles:343,
-	pulley:343,
-	buildTime:207952
+	wood:5706630,
+	stone:5706630,
+	iron:7608840,
+	blueprints:196,
+	tools:196,
+	tiles:196,
+	pulley:196,
+	buildTime:128552
 }
 workshop[32] = {
 	level:32,
-	wood:7602018,
-	stone:7602018,
-	iron:10136024,
-	blueprints:396,
-	tools:396,
-	tiles:396,
-	pulley:396,
-	buildTime:220624
+	wood:6392990,
+	stone:6392990,
+	iron:8523980,
+	blueprints:228,
+	tools:228,
+	tiles:228,
+	pulley:228,
+	buildTime:139784
 }
 workshop[33] = {
 	level:33,
-	wood:8309538,
-	stone:8309538,
-	iron:11079384,
-	blueprints:454,
-	tools:454,
-	tiles:454,
-	pulley:454,
-	buildTime:233296
+	wood:9037740,
+	stone:9037740,
+	iron:12050310,
+	blueprints:292,
+	tools:292,
+	tiles:292,
+	pulley:292,
+	buildTime:151016
 }
 workshop[34] = {
 	level:34,
-	wood:9030152,
-	stone:9030152,
-	iron:12040203,
-	blueprints:518,
-	tools:518,
-	tiles:518,
-	pulley:518,
-	buildTime:245968
+	wood:9753240,
+	stone:9753240,
+	iron:13004310,
+	blueprints:356,
+	tools:356,
+	tiles:356,
+	pulley:356,
+	buildTime:162248
 }
 workshop[35] = {
 	level:35,
-	wood:9778983,
-	stone:9778983,
-	iron:13038644,
-	blueprints:588,
-	tools:588,
-	tiles:588,
-	pulley:588,
-	buildTime:258640
+	wood:10712070,
+	stone:10712070,
+	iron:14282760,
+	blueprints:420,
+	tools:420,
+	tiles:420,
+	pulley:420,
+	buildTime:173480
 }
 workshop[36] = {
 	level:36,
-	wood:15890900,
-	stone:15890900,
-	iron:21187866,
-	blueprints:663,
-	tools:663,
-	tiles:663,
-	pulley:663,
-	buildTime:271312
+	wood:11683740,
+	stone:11683740,
+	iron:15578320,
+	blueprints:484,
+	tools:484,
+	tiles:484,
+	pulley:484,
+	buildTime:184712
 }
 workshop[37] = {
 	level:37,
-	wood:17252506,
-	stone:17252506,
-	iron:23003341,
-	blueprints:745,
-	tools:745,
-	tiles:745,
-	pulley:745,
-	buildTime:283984
+	wood:16270390,
+	stone:16270390,
+	iron:21693850,
+	blueprints:612,
+	tools:612,
+	tiles:612,
+	pulley:612,
+	buildTime:195944
 }
 workshop[38] = {
 	level:38,
-	wood:18661210,
-	stone:18661210,
-	iron:24881613,
-	blueprints:833,
-	tools:833,
-	tiles:833,
-	pulley:833,
-	buildTime:296656
+	wood:17091100,
+	stone:17091100,
+	iron:22788130,
+	blueprints:740,
+	tools:740,
+	tiles:740,
+	pulley:740,
+	buildTime:207176
 }
 workshop[39] = {
 	level:39,
-	wood:20133274,
-	stone:20133274,
-	iron:26844365,
-	blueprints:928,
-	tools:928,
-	tiles:928,
-	pulley:928,
-	buildTime:309328
+	wood:18261810,
+	stone:18261810,
+	iron:24349080,
+	blueprints:868,
+	tools:868,
+	tiles:868,
+	pulley:868,
+	buildTime:218408
 }
 workshop[40] = {
 	level:40,
-	wood:30074880,
-	stone:30074880,
-	iron:40099840,
-	blueprints:1030,
-	tools:1030,
-	tiles:1030,
-	pulley:1030,
-	buildTime:322000
+	wood:19435350,
+	stone:19435350,
+	iron:25913790,
+	blueprints:1000,
+	tools:1000,
+	tiles:1000,
+	pulley:1000,
+	buildTime:229640
 }

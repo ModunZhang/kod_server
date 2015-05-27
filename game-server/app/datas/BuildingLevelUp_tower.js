@@ -5,441 +5,441 @@ module.exports = tower
 
 tower[1] = {
 	level:1,
-	wood:188,
-	stone:188,
-	iron:250,
+	wood:2050,
+	stone:2050,
+	iron:2730,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:18
+	buildTime:184
 }
 tower[2] = {
 	level:2,
-	wood:450,
-	stone:450,
-	iron:600,
+	wood:2300,
+	stone:2300,
+	iron:3070,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:36
+	buildTime:208
 }
 tower[3] = {
 	level:3,
-	wood:900,
-	stone:900,
-	iron:1200,
+	wood:2570,
+	stone:2570,
+	iron:3430,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:90
+	buildTime:232
 }
 tower[4] = {
 	level:4,
-	wood:1350,
-	stone:1350,
-	iron:1800,
+	wood:2860,
+	stone:2860,
+	iron:3810,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:180
+	buildTime:256
 }
 tower[5] = {
 	level:5,
-	wood:1800,
-	stone:1800,
-	iron:2400,
+	wood:3280,
+	stone:3280,
+	iron:4370,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:360
+	buildTime:280
 }
 tower[6] = {
 	level:6,
-	wood:2250,
-	stone:2250,
-	iron:3000,
+	wood:3640,
+	stone:3640,
+	iron:4850,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:720
+	buildTime:304
 }
 tower[7] = {
 	level:7,
-	wood:2700,
-	stone:2700,
-	iron:3600,
+	wood:4980,
+	stone:4980,
+	iron:6630,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1080
+	buildTime:400
 }
 tower[8] = {
 	level:8,
-	wood:3510,
-	stone:3510,
-	iron:4680,
+	wood:8400,
+	stone:8400,
+	iron:11200,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2160
+	buildTime:640
 }
 tower[9] = {
 	level:9,
-	wood:8640,
-	stone:8640,
-	iron:11520,
+	wood:16520,
+	stone:16520,
+	iron:22030,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4320
+	buildTime:1120
 }
 tower[10] = {
 	level:10,
-	wood:15660,
-	stone:15660,
-	iron:20880,
+	wood:24260,
+	stone:24260,
+	iron:32340,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:6480
+	buildTime:1600
 }
 tower[11] = {
 	level:11,
-	wood:39744,
-	stone:39744,
-	iron:52992,
+	wood:33010,
+	stone:33010,
+	iron:44010,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:8640
+	buildTime:2080
 }
 tower[12] = {
 	level:12,
-	wood:58320,
-	stone:58320,
-	iron:77760,
+	wood:41530,
+	stone:41530,
+	iron:55370,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:10800
+	buildTime:2560
 }
 tower[13] = {
 	level:13,
-	wood:81216,
-	stone:81216,
-	iron:108288,
+	wood:54450,
+	stone:54450,
+	iron:72600,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:12960
+	buildTime:3040
 }
 tower[14] = {
 	level:14,
-	wood:102864,
-	stone:102864,
-	iron:137152,
+	wood:109060,
+	stone:109060,
+	iron:145410,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:15120
+	buildTime:5920
 }
 tower[15] = {
 	level:15,
-	wood:129696,
-	stone:129696,
-	iron:172928,
+	wood:155210,
+	stone:155210,
+	iron:206940,
 	blueprints:1,
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:17280
+	buildTime:8800
 }
 tower[16] = {
 	level:16,
-	wood:201180,
-	stone:201180,
-	iron:268240,
+	wood:205450,
+	stone:205450,
+	iron:273940,
 	blueprints:2,
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:19440
+	buildTime:11680
 }
 tower[17] = {
 	level:17,
-	wood:238800,
-	stone:238800,
-	iron:318400,
+	wood:298650,
+	stone:298650,
+	iron:398200,
 	blueprints:3,
 	tools:3,
 	tiles:3,
 	pulley:3,
-	buildTime:21600
+	buildTime:14560
 }
 tower[18] = {
 	level:18,
-	wood:266520,
-	stone:266520,
-	iron:355360,
+	wood:334110,
+	stone:334110,
+	iron:445480,
 	blueprints:6,
 	tools:6,
 	tiles:6,
 	pulley:6,
-	buildTime:23760
+	buildTime:17440
 }
 tower[19] = {
 	level:19,
-	wood:290880,
-	stone:290880,
-	iron:387840,
+	wood:369410,
+	stone:369410,
+	iron:492540,
 	blueprints:10,
 	tools:10,
 	tiles:10,
 	pulley:10,
-	buildTime:25920
+	buildTime:20320
 }
 tower[20] = {
 	level:20,
-	wood:306420,
-	stone:306420,
-	iron:408560,
+	wood:371640,
+	stone:371640,
+	iron:495520,
 	blueprints:16,
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:28080
+	buildTime:23200
 }
 tower[21] = {
 	level:21,
-	wood:549552,
-	stone:549552,
-	iron:732736,
-	blueprints:23,
-	tools:23,
-	tiles:23,
-	pulley:23,
-	buildTime:30240
+	wood:471790,
+	stone:471790,
+	iron:629050,
+	blueprints:24,
+	tools:24,
+	tiles:24,
+	pulley:24,
+	buildTime:26080
 }
 tower[22] = {
 	level:22,
-	wood:577680,
-	stone:577680,
-	iron:770240,
+	wood:476010,
+	stone:476010,
+	iron:634680,
 	blueprints:32,
 	tools:32,
 	tiles:32,
 	pulley:32,
-	buildTime:32400
+	buildTime:28960
 }
 tower[23] = {
 	level:23,
-	wood:596928,
-	stone:596928,
-	iron:795904,
-	blueprints:44,
-	tools:44,
-	tiles:44,
-	pulley:44,
-	buildTime:34560
+	wood:504990,
+	stone:504990,
+	iron:673320,
+	blueprints:40,
+	tools:40,
+	tiles:40,
+	pulley:40,
+	buildTime:31840
 }
 tower[24] = {
 	level:24,
-	wood:762408,
-	stone:762408,
-	iron:1016544,
-	blueprints:58,
-	tools:58,
-	tiles:58,
-	pulley:58,
-	buildTime:38880
+	wood:525230,
+	stone:525230,
+	iron:700300,
+	blueprints:48,
+	tools:48,
+	tiles:48,
+	pulley:48,
+	buildTime:34720
 }
 tower[25] = {
 	level:25,
-	wood:843120,
-	stone:843120,
-	iron:1124160,
-	blueprints:74,
-	tools:74,
-	tiles:74,
-	pulley:74,
-	buildTime:43200
+	wood:854670,
+	stone:854670,
+	iron:1139560,
+	blueprints:56,
+	tools:56,
+	tiles:56,
+	pulley:56,
+	buildTime:37600
 }
 tower[26] = {
 	level:26,
-	wood:1482768,
-	stone:1482768,
-	iron:1977024,
-	blueprints:94,
-	tools:94,
-	tiles:94,
-	pulley:94,
-	buildTime:47520
+	wood:932590,
+	stone:932590,
+	iron:1243450,
+	blueprints:64,
+	tools:64,
+	tiles:64,
+	pulley:64,
+	buildTime:40480
 }
 tower[27] = {
 	level:27,
-	wood:1662384,
-	stone:1662384,
-	iron:2216512,
-	blueprints:117,
-	tools:117,
-	tiles:117,
-	pulley:117,
-	buildTime:51840
+	wood:1048930,
+	stone:1048930,
+	iron:1398570,
+	blueprints:72,
+	tools:72,
+	tiles:72,
+	pulley:72,
+	buildTime:43360
 }
 tower[28] = {
 	level:28,
-	wood:1845024,
-	stone:1845024,
-	iron:2460032,
+	wood:1152650,
+	stone:1152650,
+	iron:1536870,
+	blueprints:80,
+	tools:80,
+	tiles:80,
+	pulley:80,
+	buildTime:46240
+}
+tower[29] = {
+	level:29,
+	wood:1897290,
+	stone:1897290,
+	iron:2529710,
+	blueprints:96,
+	tools:96,
+	tiles:96,
+	pulley:96,
+	buildTime:52000
+}
+tower[30] = {
+	level:30,
+	wood:2173020,
+	stone:2173020,
+	iron:2897360,
+	blueprints:112,
+	tools:112,
+	tiles:112,
+	pulley:112,
+	buildTime:57760
+}
+tower[31] = {
+	level:31,
+	wood:2529230,
+	stone:2529230,
+	iron:3372310,
+	blueprints:128,
+	tools:128,
+	tiles:128,
+	pulley:128,
+	buildTime:63520
+}
+tower[32] = {
+	level:32,
+	wood:2887120,
+	stone:2887120,
+	iron:3849490,
 	blueprints:144,
 	tools:144,
 	tiles:144,
 	pulley:144,
-	buildTime:56160
+	buildTime:69280
 }
-tower[29] = {
-	level:29,
-	wood:2200704,
-	stone:2200704,
-	iron:2934272,
-	blueprints:174,
-	tools:174,
-	tiles:174,
-	pulley:174,
-	buildTime:60480
+tower[33] = {
+	level:33,
+	wood:4255220,
+	stone:4255220,
+	iron:5673620,
+	blueprints:176,
+	tools:176,
+	tiles:176,
+	pulley:176,
+	buildTime:75040
 }
-tower[30] = {
-	level:30,
-	wood:2377440,
-	stone:2377440,
-	iron:3169920,
+tower[34] = {
+	level:34,
+	wood:4633950,
+	stone:4633950,
+	iron:6178600,
 	blueprints:208,
 	tools:208,
 	tiles:208,
 	pulley:208,
-	buildTime:64800
-}
-tower[31] = {
-	level:31,
-	wood:3934176,
-	stone:3934176,
-	iron:5245568,
-	blueprints:247,
-	tools:247,
-	tiles:247,
-	pulley:247,
-	buildTime:69120
-}
-tower[32] = {
-	level:32,
-	wood:4319328,
-	stone:4319328,
-	iron:5759104,
-	blueprints:290,
-	tools:290,
-	tiles:290,
-	pulley:290,
-	buildTime:73440
-}
-tower[33] = {
-	level:33,
-	wood:4721328,
-	stone:4721328,
-	iron:6295104,
-	blueprints:337,
-	tools:337,
-	tiles:337,
-	pulley:337,
-	buildTime:77760
-}
-tower[34] = {
-	level:34,
-	wood:5130768,
-	stone:5130768,
-	iron:6841024,
-	blueprints:390,
-	tools:390,
-	tiles:390,
-	pulley:390,
-	buildTime:82080
+	buildTime:80800
 }
 tower[35] = {
 	level:35,
-	wood:5556240,
-	stone:5556240,
-	iron:7408320,
-	blueprints:448,
-	tools:448,
-	tiles:448,
-	pulley:448,
-	buildTime:86400
+	wood:5137480,
+	stone:5137480,
+	iron:6849970,
+	blueprints:240,
+	tools:240,
+	tiles:240,
+	pulley:240,
+	buildTime:86560
 }
 tower[36] = {
 	level:36,
-	wood:9028920,
-	stone:9028920,
-	iron:12038560,
-	blueprints:512,
-	tools:512,
-	tiles:512,
-	pulley:512,
-	buildTime:90720
+	wood:5647590,
+	stone:5647590,
+	iron:7530120,
+	blueprints:272,
+	tools:272,
+	tiles:272,
+	pulley:272,
+	buildTime:92320
 }
 tower[37] = {
 	level:37,
-	wood:9802560,
-	stone:9802560,
-	iron:13070080,
-	blueprints:580,
-	tools:580,
-	tiles:580,
-	pulley:580,
-	buildTime:95040
+	wood:8023350,
+	stone:8023350,
+	iron:10697790,
+	blueprints:336,
+	tools:336,
+	tiles:336,
+	pulley:336,
+	buildTime:98080
 }
 tower[38] = {
 	level:38,
-	wood:10602960,
-	stone:10602960,
-	iron:14137280,
-	blueprints:660,
-	tools:660,
-	tiles:660,
-	pulley:660,
-	buildTime:99360
+	wood:8467850,
+	stone:8467850,
+	iron:11290470,
+	blueprints:400,
+	tools:400,
+	tiles:400,
+	pulley:400,
+	buildTime:103840
 }
 tower[39] = {
 	level:39,
-	wood:11439360,
-	stone:11439360,
-	iron:15252480,
-	blueprints:740,
-	tools:740,
-	tiles:740,
-	pulley:740,
-	buildTime:103680
+	wood:9091850,
+	stone:9091850,
+	iron:12122460,
+	blueprints:464,
+	tools:464,
+	tiles:464,
+	pulley:464,
+	buildTime:109600
 }
 tower[40] = {
 	level:40,
-	wood:17088000,
-	stone:17088000,
-	iron:22784000,
-	blueprints:830,
-	tools:830,
-	tiles:830,
-	pulley:830,
-	buildTime:108000
+	wood:9746830,
+	stone:9746830,
+	iron:12995770,
+	blueprints:528,
+	tools:528,
+	tiles:528,
+	pulley:528,
+	buildTime:115360
 }

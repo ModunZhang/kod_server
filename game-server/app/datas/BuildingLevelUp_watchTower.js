@@ -5,441 +5,441 @@ module.exports = watchTower
 
 watchTower[1] = {
 	level:1,
-	wood:350,
-	stone:263,
-	iron:263,
+	wood:1690,
+	stone:1270,
+	iron:1270,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:42
+	buildTime:136
 }
 watchTower[2] = {
 	level:2,
-	wood:840,
-	stone:630,
-	iron:630,
+	wood:2200,
+	stone:1650,
+	iron:1650,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:84
+	buildTime:172
 }
 watchTower[3] = {
 	level:3,
-	wood:1680,
-	stone:1260,
-	iron:1260,
+	wood:2740,
+	stone:2050,
+	iron:2050,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:210
+	buildTime:208
 }
 watchTower[4] = {
 	level:4,
-	wood:2520,
-	stone:1890,
-	iron:1890,
+	wood:3310,
+	stone:2480,
+	iron:2480,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:420
+	buildTime:244
 }
 watchTower[5] = {
 	level:5,
-	wood:3360,
-	stone:2520,
-	iron:2520,
+	wood:4160,
+	stone:3120,
+	iron:3120,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:840
+	buildTime:280
 }
 watchTower[6] = {
 	level:6,
-	wood:4200,
-	stone:3150,
-	iron:3150,
+	wood:4870,
+	stone:3660,
+	iron:3660,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1680
+	buildTime:316
 }
 watchTower[7] = {
 	level:7,
-	wood:5040,
-	stone:3780,
-	iron:3780,
+	wood:7550,
+	stone:5660,
+	iron:5660,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2520
+	buildTime:460
 }
 watchTower[8] = {
 	level:8,
-	wood:6552,
-	stone:4914,
-	iron:4914,
+	wood:14400,
+	stone:10800,
+	iron:10800,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5040
+	buildTime:820
 }
 watchTower[9] = {
 	level:9,
-	wood:16128,
-	stone:12096,
-	iron:12096,
+	wood:30640,
+	stone:22980,
+	iron:22980,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:10080
+	buildTime:1540
 }
 watchTower[10] = {
 	level:10,
-	wood:29232,
-	stone:21924,
-	iron:21924,
+	wood:46110,
+	stone:34580,
+	iron:34580,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:15120
+	buildTime:2260
 }
 watchTower[11] = {
 	level:11,
-	wood:74189,
-	stone:55642,
-	iron:55642,
+	wood:63610,
+	stone:47710,
+	iron:47710,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:20160
+	buildTime:2980
 }
 watchTower[12] = {
 	level:12,
-	wood:108864,
-	stone:81648,
-	iron:81648,
+	wood:80650,
+	stone:60490,
+	iron:60490,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:25200
+	buildTime:3700
 }
 watchTower[13] = {
 	level:13,
-	wood:151604,
-	stone:113703,
-	iron:113703,
+	wood:106500,
+	stone:79880,
+	iron:79880,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:30240
+	buildTime:4420
 }
 watchTower[14] = {
 	level:14,
-	wood:192013,
-	stone:144010,
-	iron:144010,
+	wood:196520,
+	stone:147390,
+	iron:147390,
 	blueprints:1,
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:35280
+	buildTime:8740
 }
 watchTower[15] = {
 	level:15,
-	wood:242100,
-	stone:181575,
-	iron:181575,
+	wood:298410,
+	stone:223810,
+	iron:223810,
 	blueprints:2,
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:40320
+	buildTime:13060
 }
 watchTower[16] = {
 	level:16,
-	wood:375536,
-	stone:281652,
-	iron:281652,
-	blueprints:3,
-	tools:3,
-	tiles:3,
-	pulley:3,
-	buildTime:45360
+	wood:389300,
+	stone:291980,
+	iron:291980,
+	blueprints:4,
+	tools:4,
+	tiles:4,
+	pulley:4,
+	buildTime:17380
 }
 watchTower[17] = {
 	level:17,
-	wood:445760,
-	stone:334320,
-	iron:334320,
-	blueprints:5,
-	tools:5,
-	tiles:5,
-	pulley:5,
-	buildTime:50400
+	wood:527700,
+	stone:395780,
+	iron:395780,
+	blueprints:8,
+	tools:8,
+	tiles:8,
+	pulley:8,
+	buildTime:21700
 }
 watchTower[18] = {
 	level:18,
-	wood:497504,
-	stone:373128,
-	iron:373128,
-	blueprints:7,
-	tools:7,
-	tiles:7,
-	pulley:7,
-	buildTime:55440
-}
-watchTower[19] = {
-	level:19,
-	wood:542976,
-	stone:407232,
-	iron:407232,
+	wood:608210,
+	stone:456160,
+	iron:456160,
 	blueprints:12,
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:60480
+	buildTime:26020
+}
+watchTower[19] = {
+	level:19,
+	wood:717210,
+	stone:537910,
+	iron:537910,
+	blueprints:16,
+	tools:16,
+	tiles:16,
+	pulley:16,
+	buildTime:30340
 }
 watchTower[20] = {
 	level:20,
-	wood:571984,
-	stone:428988,
-	iron:428988,
-	blueprints:18,
-	tools:18,
-	tiles:18,
-	pulley:18,
-	buildTime:65520
+	wood:817680,
+	stone:613260,
+	iron:613260,
+	blueprints:20,
+	tools:20,
+	tiles:20,
+	pulley:20,
+	buildTime:34660
 }
 watchTower[21] = {
 	level:21,
-	wood:1025831,
-	stone:769373,
-	iron:769373,
-	blueprints:27,
-	tools:27,
-	tiles:27,
-	pulley:27,
-	buildTime:70560
+	wood:1017970,
+	stone:763480,
+	iron:763480,
+	blueprints:32,
+	tools:32,
+	tiles:32,
+	pulley:32,
+	buildTime:38980
 }
 watchTower[22] = {
 	level:22,
-	wood:1078336,
-	stone:808752,
-	iron:808752,
-	blueprints:38,
-	tools:38,
-	tiles:38,
-	pulley:38,
-	buildTime:75600
+	wood:1026410,
+	stone:769810,
+	iron:769810,
+	blueprints:44,
+	tools:44,
+	tiles:44,
+	pulley:44,
+	buildTime:43300
 }
 watchTower[23] = {
 	level:23,
-	wood:1114266,
-	stone:835700,
-	iron:835700,
-	blueprints:54,
-	tools:54,
-	tiles:54,
-	pulley:54,
-	buildTime:80640
+	wood:1084380,
+	stone:813290,
+	iron:813290,
+	blueprints:56,
+	tools:56,
+	tiles:56,
+	pulley:56,
+	buildTime:47620
 }
 watchTower[24] = {
 	level:24,
-	wood:1423162,
-	stone:1067372,
-	iron:1067372,
-	blueprints:73,
-	tools:73,
-	tiles:73,
-	pulley:73,
-	buildTime:90720
+	wood:1124850,
+	stone:843640,
+	iron:843640,
+	blueprints:68,
+	tools:68,
+	tiles:68,
+	pulley:68,
+	buildTime:51940
 }
 watchTower[25] = {
 	level:25,
-	wood:1573824,
-	stone:1180368,
-	iron:1180368,
-	blueprints:95,
-	tools:95,
-	tiles:95,
-	pulley:95,
-	buildTime:100800
+	wood:1630130,
+	stone:1222600,
+	iron:1222600,
+	blueprints:88,
+	tools:88,
+	tiles:88,
+	pulley:88,
+	buildTime:56260
 }
 watchTower[26] = {
 	level:26,
-	wood:2767834,
-	stone:2075876,
-	iron:2075876,
-	blueprints:125,
-	tools:125,
-	tiles:125,
-	pulley:125,
-	buildTime:110880
+	wood:1632370,
+	stone:1224280,
+	iron:1224280,
+	blueprints:108,
+	tools:108,
+	tiles:108,
+	pulley:108,
+	buildTime:60580
 }
 watchTower[27] = {
 	level:27,
-	wood:3103117,
-	stone:2327338,
-	iron:2327338,
-	blueprints:160,
-	tools:160,
-	tiles:160,
-	pulley:160,
-	buildTime:120960
+	wood:1711450,
+	stone:1283590,
+	iron:1283590,
+	blueprints:128,
+	tools:128,
+	tiles:128,
+	pulley:128,
+	buildTime:64900
 }
 watchTower[28] = {
 	level:28,
-	wood:3444045,
-	stone:2583034,
-	iron:2583034,
-	blueprints:200,
-	tools:200,
-	tiles:200,
-	pulley:200,
-	buildTime:131040
+	wood:1765300,
+	stone:1323980,
+	iron:1323980,
+	blueprints:148,
+	tools:148,
+	tiles:148,
+	pulley:148,
+	buildTime:69220
 }
 watchTower[29] = {
 	level:29,
-	wood:4107981,
-	stone:3080986,
-	iron:3080986,
-	blueprints:240,
-	tools:240,
-	tiles:240,
-	pulley:240,
-	buildTime:141120
+	wood:3331370,
+	stone:2498530,
+	iron:2498530,
+	blueprints:168,
+	tools:168,
+	tiles:168,
+	pulley:168,
+	buildTime:77860
 }
 watchTower[30] = {
 	level:30,
-	wood:4437888,
-	stone:3328416,
-	iron:3328416,
-	blueprints:280,
-	tools:280,
-	tiles:280,
-	pulley:280,
-	buildTime:151200
+	wood:3959640,
+	stone:2969730,
+	iron:2969730,
+	blueprints:188,
+	tools:188,
+	tiles:188,
+	pulley:188,
+	buildTime:86500
 }
 watchTower[31] = {
 	level:31,
-	wood:7343796,
-	stone:5507847,
-	iron:5507847,
-	blueprints:362,
-	tools:362,
-	tiles:362,
-	pulley:362,
-	buildTime:161280
+	wood:4748860,
+	stone:3561650,
+	iron:3561650,
+	blueprints:208,
+	tools:208,
+	tiles:208,
+	pulley:208,
+	buildTime:95140
 }
 watchTower[32] = {
 	level:32,
-	wood:8062746,
-	stone:6047060,
-	iron:6047060,
-	blueprints:431,
-	tools:431,
-	tiles:431,
-	pulley:431,
-	buildTime:171360
+	wood:5157430,
+	stone:3868080,
+	iron:3868080,
+	blueprints:248,
+	tools:248,
+	tiles:248,
+	pulley:248,
+	buildTime:103780
 }
 watchTower[33] = {
 	level:33,
-	wood:8813146,
-	stone:6609860,
-	iron:6609860,
-	blueprints:509,
-	tools:509,
-	tiles:509,
-	pulley:509,
-	buildTime:181440
+	wood:8047230,
+	stone:6035420,
+	iron:6035420,
+	blueprints:288,
+	tools:288,
+	tiles:288,
+	pulley:288,
+	buildTime:112420
 }
 watchTower[34] = {
 	level:34,
-	wood:9577434,
-	stone:7183076,
-	iron:7183076,
-	blueprints:560,
-	tools:560,
-	tiles:560,
-	pulley:560,
-	buildTime:191520
+	wood:8958300,
+	stone:6718730,
+	iron:6718730,
+	blueprints:328,
+	tools:328,
+	tiles:328,
+	pulley:328,
+	buildTime:121060
 }
 watchTower[35] = {
 	level:35,
-	wood:10371648,
-	stone:7778736,
-	iron:7778736,
-	blueprints:660,
-	tools:660,
-	tiles:660,
-	pulley:660,
-	buildTime:201600
+	wood:9350950,
+	stone:7013220,
+	iron:7013220,
+	blueprints:408,
+	tools:408,
+	tiles:408,
+	pulley:408,
+	buildTime:129700
 }
 watchTower[36] = {
 	level:36,
-	wood:16853984,
-	stone:12640488,
-	iron:12640488,
-	blueprints:798,
-	tools:798,
-	tiles:798,
-	pulley:798,
-	buildTime:211680
+	wood:9756770,
+	stone:7317580,
+	iron:7317580,
+	blueprints:488,
+	tools:488,
+	tiles:488,
+	pulley:488,
+	buildTime:138340
 }
 watchTower[37] = {
 	level:37,
-	wood:18298112,
-	stone:13723584,
-	iron:13723584,
-	blueprints:915,
-	tools:915,
-	tiles:915,
-	pulley:915,
-	buildTime:221760
+	wood:14815490,
+	stone:11111620,
+	iron:11111620,
+	blueprints:568,
+	tools:568,
+	tiles:568,
+	pulley:568,
+	buildTime:146980
 }
 watchTower[38] = {
 	level:38,
-	wood:19792192,
-	stone:14844144,
-	iron:14844144,
-	blueprints:1042,
-	tools:1042,
-	tiles:1042,
-	pulley:1042,
-	buildTime:231840
+	wood:16011700,
+	stone:12008780,
+	iron:12008780,
+	blueprints:648,
+	tools:648,
+	tiles:648,
+	pulley:648,
+	buildTime:155620
 }
 watchTower[39] = {
 	level:39,
-	wood:21353472,
-	stone:16015104,
-	iron:16015104,
-	blueprints:1182,
-	tools:1182,
-	tiles:1182,
-	pulley:1182,
-	buildTime:241920
+	wood:17566890,
+	stone:13175170,
+	iron:13175170,
+	blueprints:728,
+	tools:728,
+	tiles:728,
+	pulley:728,
+	buildTime:164260
 }
 watchTower[40] = {
 	level:40,
-	wood:31897600,
-	stone:23923200,
-	iron:23923200,
-	blueprints:1350,
-	tools:1350,
-	tiles:1350,
-	pulley:1350,
-	buildTime:252000
+	wood:19184060,
+	stone:14388040,
+	iron:14388040,
+	blueprints:808,
+	tools:808,
+	tiles:808,
+	pulley:808,
+	buildTime:172900
 }

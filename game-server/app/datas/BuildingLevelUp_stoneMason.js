@@ -5,441 +5,441 @@ module.exports = stoneMason
 
 stoneMason[1] = {
 	level:1,
-	wood:211,
-	stone:281,
-	iron:211,
+	wood:2990,
+	stone:3980,
+	iron:2990,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1000
+}
+stoneMason[2] = {
+	level:2,
+	wood:3280,
+	stone:4370,
+	iron:3280,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1200
+}
+stoneMason[3] = {
+	level:3,
+	wood:3590,
+	stone:4780,
+	iron:3590,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1400
+}
+stoneMason[4] = {
+	level:4,
+	wood:3910,
+	stone:5220,
+	iron:3910,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:1600
 }
-stoneMason[2] = {
-	level:2,
-	wood:505,
-	stone:673,
-	iron:505,
+stoneMason[5] = {
+	level:5,
+	wood:4400,
+	stone:5870,
+	iron:4400,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:1800
 }
-stoneMason[3] = {
-	level:3,
-	wood:1009,
-	stone:1345,
-	iron:1009,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:2100
-}
-stoneMason[4] = {
-	level:4,
-	wood:1513,
-	stone:2017,
-	iron:1513,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:2400
-}
-stoneMason[5] = {
-	level:5,
-	wood:2017,
-	stone:2689,
-	iron:2017,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:2672
-}
 stoneMason[6] = {
 	level:6,
-	wood:2520,
-	stone:3360,
-	iron:2520,
+	wood:4810,
+	stone:6420,
+	iron:4810,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3344
+	buildTime:2000
 }
 stoneMason[7] = {
 	level:7,
-	wood:3025,
-	stone:4033,
-	iron:3025,
+	wood:6350,
+	stone:8470,
+	iron:6350,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4016
+	buildTime:2276
 }
 stoneMason[8] = {
 	level:8,
-	wood:3932,
-	stone:5242,
-	iron:3932,
+	wood:10290,
+	stone:13720,
+	iron:10290,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:6032
+	buildTime:2552
 }
 stoneMason[9] = {
 	level:9,
-	wood:9677,
-	stone:12903,
-	iron:9677,
+	wood:19630,
+	stone:26170,
+	iron:19630,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:10064
+	buildTime:3104
 }
 stoneMason[10] = {
 	level:10,
-	wood:17540,
-	stone:23386,
-	iron:17540,
+	wood:28530,
+	stone:38030,
+	iron:28530,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:14096
+	buildTime:3656
 }
 stoneMason[11] = {
 	level:11,
-	wood:44514,
-	stone:59352,
-	iron:44514,
+	wood:38590,
+	stone:51450,
+	iron:38590,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:18128
+	buildTime:4208
 }
 stoneMason[12] = {
 	level:12,
-	wood:65319,
-	stone:87092,
-	iron:65319,
+	wood:48390,
+	stone:64510,
+	iron:48390,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:22160
+	buildTime:4760
 }
 stoneMason[13] = {
 	level:13,
-	wood:90962,
-	stone:121283,
-	iron:90962,
+	wood:63250,
+	stone:84330,
+	iron:63250,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:26192
+	buildTime:5312
 }
 stoneMason[14] = {
 	level:14,
-	wood:115208,
-	stone:153611,
-	iron:115208,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:30224
-}
-stoneMason[15] = {
-	level:15,
-	wood:145260,
-	stone:193680,
-	iron:145260,
+	wood:111650,
+	stone:148860,
+	iron:111650,
 	blueprints:1,
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:34256
+	buildTime:8624
 }
-stoneMason[16] = {
-	level:16,
-	wood:225322,
-	stone:300429,
-	iron:225322,
+stoneMason[15] = {
+	level:15,
+	wood:166880,
+	stone:222510,
+	iron:166880,
 	blueprints:2,
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:38288
+	buildTime:11936
+}
+stoneMason[16] = {
+	level:16,
+	wood:212420,
+	stone:283230,
+	iron:212420,
+	blueprints:4,
+	tools:4,
+	tiles:4,
+	pulley:4,
+	buildTime:15248
 }
 stoneMason[17] = {
 	level:17,
-	wood:267456,
-	stone:356609,
-	iron:267456,
-	blueprints:3,
-	tools:3,
-	tiles:3,
-	pulley:3,
-	buildTime:42320
+	wood:278560,
+	stone:371410,
+	iron:278560,
+	blueprints:8,
+	tools:8,
+	tiles:8,
+	pulley:8,
+	buildTime:18560
 }
 stoneMason[18] = {
 	level:18,
-	wood:298503,
-	stone:398004,
-	iron:298503,
-	blueprints:6,
-	tools:6,
-	tiles:6,
-	pulley:6,
-	buildTime:46352
+	wood:311410,
+	stone:415220,
+	iron:311410,
+	blueprints:12,
+	tools:12,
+	tiles:12,
+	pulley:12,
+	buildTime:21872
 }
 stoneMason[19] = {
 	level:19,
-	wood:325786,
-	stone:434381,
-	iron:325786,
-	blueprints:10,
-	tools:10,
-	tiles:10,
-	pulley:10,
-	buildTime:50384
-}
-stoneMason[20] = {
-	level:20,
-	wood:343191,
-	stone:457588,
-	iron:343191,
+	wood:360650,
+	stone:480870,
+	iron:360650,
 	blueprints:16,
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:54416
+	buildTime:25184
+}
+stoneMason[20] = {
+	level:20,
+	wood:404980,
+	stone:539970,
+	iron:404980,
+	blueprints:20,
+	tools:20,
+	tiles:20,
+	pulley:20,
+	buildTime:28496
 }
 stoneMason[21] = {
 	level:21,
-	wood:615499,
-	stone:820665,
-	iron:615499,
-	blueprints:23,
-	tools:23,
-	tiles:23,
-	pulley:23,
-	buildTime:58448
+	wood:537430,
+	stone:716570,
+	iron:537430,
+	blueprints:28,
+	tools:28,
+	tiles:28,
+	pulley:28,
+	buildTime:31808
 }
 stoneMason[22] = {
 	level:22,
-	wood:647002,
-	stone:862669,
-	iron:647002,
-	blueprints:32,
-	tools:32,
-	tiles:32,
-	pulley:32,
-	buildTime:62480
+	wood:559560,
+	stone:746080,
+	iron:559560,
+	blueprints:36,
+	tools:36,
+	tiles:36,
+	pulley:36,
+	buildTime:35120
 }
 stoneMason[23] = {
 	level:23,
-	wood:668560,
-	stone:891413,
-	iron:668560,
+	wood:610170,
+	stone:813560,
+	iron:610170,
 	blueprints:44,
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:66512
+	buildTime:38432
 }
 stoneMason[24] = {
 	level:24,
-	wood:853897,
-	stone:1138530,
-	iron:853897,
-	blueprints:58,
-	tools:58,
-	tiles:58,
-	pulley:58,
-	buildTime:74576
+	wood:650720,
+	stone:867630,
+	iron:650720,
+	blueprints:52,
+	tools:52,
+	tiles:52,
+	pulley:52,
+	buildTime:41744
 }
 stoneMason[25] = {
 	level:25,
-	wood:944295,
-	stone:1259060,
-	iron:944295,
-	blueprints:74,
-	tools:74,
-	tiles:74,
-	pulley:74,
-	buildTime:82640
+	wood:1046860,
+	stone:1395810,
+	iron:1046860,
+	blueprints:60,
+	tools:60,
+	tiles:60,
+	pulley:60,
+	buildTime:45056
 }
 stoneMason[26] = {
 	level:26,
-	wood:1660701,
-	stone:2214267,
-	iron:1660701,
-	blueprints:94,
-	tools:94,
-	tiles:94,
-	pulley:94,
-	buildTime:90704
+	wood:1153740,
+	stone:1538320,
+	iron:1153740,
+	blueprints:68,
+	tools:68,
+	tiles:68,
+	pulley:68,
+	buildTime:48368
 }
 stoneMason[27] = {
 	level:27,
-	wood:1861871,
-	stone:2482494,
-	iron:1861871,
-	blueprints:117,
-	tools:117,
-	tiles:117,
-	pulley:117,
-	buildTime:98768
+	wood:1304820,
+	stone:1739760,
+	iron:1304820,
+	blueprints:76,
+	tools:76,
+	tiles:76,
+	pulley:76,
+	buildTime:51680
 }
 stoneMason[28] = {
 	level:28,
-	wood:2066427,
-	stone:2755236,
-	iron:2066427,
-	blueprints:144,
-	tools:144,
-	tiles:144,
-	pulley:144,
-	buildTime:106832
+	wood:1441380,
+	stone:1921840,
+	iron:1441380,
+	blueprints:84,
+	tools:84,
+	tiles:84,
+	pulley:84,
+	buildTime:54992
 }
 stoneMason[29] = {
 	level:29,
-	wood:2464789,
-	stone:3286385,
-	iron:2464789,
-	blueprints:174,
-	tools:174,
-	tiles:174,
-	pulley:174,
-	buildTime:114896
+	wood:2332270,
+	stone:3109690,
+	iron:2332270,
+	blueprints:100,
+	tools:100,
+	tiles:100,
+	pulley:100,
+	buildTime:61616
 }
 stoneMason[30] = {
 	level:30,
-	wood:2662733,
-	stone:3550311,
-	iron:2662733,
-	blueprints:208,
-	tools:208,
-	tiles:208,
-	pulley:208,
-	buildTime:122960
+	wood:2683920,
+	stone:3578560,
+	iron:2683920,
+	blueprints:116,
+	tools:116,
+	tiles:116,
+	pulley:116,
+	buildTime:68240
 }
 stoneMason[31] = {
 	level:31,
-	wood:4406278,
-	stone:5875037,
-	iron:4406278,
-	blueprints:247,
-	tools:247,
-	tiles:247,
-	pulley:247,
-	buildTime:131024
+	wood:3128130,
+	stone:4170840,
+	iron:3128130,
+	blueprints:132,
+	tools:132,
+	tiles:132,
+	pulley:132,
+	buildTime:74864
 }
 stoneMason[32] = {
 	level:32,
-	wood:4837648,
-	stone:6450197,
-	iron:4837648,
-	blueprints:290,
-	tools:290,
-	tiles:290,
-	pulley:290,
-	buildTime:139088
+	wood:3574260,
+	stone:4765670,
+	iron:3574260,
+	blueprints:148,
+	tools:148,
+	tiles:148,
+	pulley:148,
+	buildTime:81488
 }
 stoneMason[33] = {
 	level:33,
-	wood:5287888,
-	stone:7050517,
-	iron:5287888,
-	blueprints:337,
-	tools:337,
-	tiles:337,
-	pulley:337,
-	buildTime:147152
+	wood:5216690,
+	stone:6955580,
+	iron:5216690,
+	blueprints:180,
+	tools:180,
+	tiles:180,
+	pulley:180,
+	buildTime:88112
 }
 stoneMason[34] = {
 	level:34,
-	wood:5746461,
-	stone:7661947,
-	iron:5746461,
-	blueprints:390,
-	tools:390,
-	tiles:390,
-	pulley:390,
-	buildTime:155216
+	wood:5721360,
+	stone:7628470,
+	iron:5721360,
+	blueprints:212,
+	tools:212,
+	tiles:212,
+	pulley:212,
+	buildTime:94736
 }
 stoneMason[35] = {
 	level:35,
-	wood:6222989,
-	stone:8297319,
-	iron:6222989,
-	blueprints:448,
-	tools:448,
-	tiles:448,
-	pulley:448,
-	buildTime:163280
+	wood:6369530,
+	stone:8492700,
+	iron:6369530,
+	blueprints:244,
+	tools:244,
+	tiles:244,
+	pulley:244,
+	buildTime:101360
 }
 stoneMason[36] = {
 	level:36,
-	wood:10112391,
-	stone:13483188,
-	iron:10112391,
-	blueprints:512,
-	tools:512,
-	tiles:512,
-	pulley:512,
-	buildTime:171344
+	wood:7025280,
+	stone:9367030,
+	iron:7025280,
+	blueprints:276,
+	tools:276,
+	tiles:276,
+	pulley:276,
+	buildTime:107984
 }
 stoneMason[37] = {
 	level:37,
-	wood:10978868,
-	stone:14638490,
-	iron:10978868,
-	blueprints:580,
-	tools:580,
-	tiles:580,
-	pulley:580,
-	buildTime:179408
+	wood:9895640,
+	stone:13194180,
+	iron:9895640,
+	blueprints:340,
+	tools:340,
+	tiles:340,
+	pulley:340,
+	buildTime:114608
 }
 stoneMason[38] = {
 	level:38,
-	wood:11875316,
-	stone:15833754,
-	iron:11875316,
-	blueprints:660,
-	tools:660,
-	tiles:660,
-	pulley:660,
-	buildTime:187472
+	wood:10545060,
+	stone:14060080,
+	iron:10545060,
+	blueprints:404,
+	tools:404,
+	tiles:404,
+	pulley:404,
+	buildTime:121232
 }
 stoneMason[39] = {
 	level:39,
-	wood:12812084,
-	stone:17082778,
-	iron:12812084,
-	blueprints:740,
-	tools:740,
-	tiles:740,
-	pulley:740,
-	buildTime:195536
+	wood:11400890,
+	stone:15201190,
+	iron:11400890,
+	blueprints:468,
+	tools:468,
+	tiles:468,
+	pulley:468,
+	buildTime:127856
 }
 stoneMason[40] = {
 	level:40,
-	wood:19138560,
-	stone:25518081,
-	iron:19138560,
-	blueprints:830,
-	tools:830,
-	tiles:830,
-	pulley:830,
-	buildTime:203600
+	wood:12292360,
+	stone:16389820,
+	iron:12292360,
+	blueprints:532,
+	tools:532,
+	tiles:532,
+	pulley:532,
+	buildTime:134480
 }

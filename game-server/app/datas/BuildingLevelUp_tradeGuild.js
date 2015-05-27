@@ -5,441 +5,441 @@ module.exports = tradeGuild
 
 tradeGuild[1] = {
 	level:1,
-	wood:300,
-	stone:300,
-	iron:150,
+	wood:1610,
+	stone:1610,
+	iron:810,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:600
+}
+tradeGuild[2] = {
+	level:2,
+	wood:2040,
+	stone:2040,
+	iron:1020,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:800
+}
+tradeGuild[3] = {
+	level:3,
+	wood:2480,
+	stone:2480,
+	iron:1240,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:1000
 }
-tradeGuild[2] = {
-	level:2,
-	wood:720,
-	stone:720,
-	iron:360,
+tradeGuild[4] = {
+	level:4,
+	wood:2960,
+	stone:2960,
+	iron:1480,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1300
+	buildTime:1200
 }
-tradeGuild[3] = {
-	level:3,
-	wood:1440,
-	stone:1440,
-	iron:720,
+tradeGuild[5] = {
+	level:5,
+	wood:3670,
+	stone:3670,
+	iron:1840,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:1400
+}
+tradeGuild[6] = {
+	level:6,
+	wood:4260,
+	stone:4260,
+	iron:2130,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:1680
 }
-tradeGuild[4] = {
-	level:4,
-	wood:2160,
-	stone:2160,
-	iron:1080,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:1860
-}
-tradeGuild[5] = {
-	level:5,
-	wood:2880,
-	stone:2880,
-	iron:1440,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:2220
-}
-tradeGuild[6] = {
-	level:6,
-	wood:3600,
-	stone:3600,
-	iron:1800,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:2940
-}
 tradeGuild[7] = {
 	level:7,
-	wood:4320,
-	stone:4320,
-	iron:2160,
+	wood:6490,
+	stone:6490,
+	iron:3250,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3660
+	buildTime:1800
 }
 tradeGuild[8] = {
 	level:8,
-	wood:5616,
-	stone:5616,
-	iron:2808,
+	wood:12200,
+	stone:12200,
+	iron:6100,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5820
+	buildTime:2100
 }
 tradeGuild[9] = {
 	level:9,
-	wood:13824,
-	stone:13824,
-	iron:6912,
+	wood:25740,
+	stone:25740,
+	iron:12870,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:10140
+	buildTime:2700
 }
 tradeGuild[10] = {
 	level:10,
-	wood:25056,
-	stone:25056,
-	iron:12528,
+	wood:38630,
+	stone:38630,
+	iron:19320,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:14460
+	buildTime:3300
 }
 tradeGuild[11] = {
 	level:11,
-	wood:63591,
-	stone:63591,
-	iron:31796,
+	wood:53210,
+	stone:53210,
+	iron:26610,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:18780
+	buildTime:3900
 }
 tradeGuild[12] = {
 	level:12,
-	wood:93312,
-	stone:93312,
-	iron:46656,
+	wood:67410,
+	stone:67410,
+	iron:33710,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:23100
+	buildTime:4500
 }
 tradeGuild[13] = {
 	level:13,
-	wood:129946,
-	stone:129946,
-	iron:64973,
+	wood:88950,
+	stone:88950,
+	iron:44480,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:27420
+	buildTime:5100
 }
 tradeGuild[14] = {
 	level:14,
-	wood:164583,
-	stone:164583,
-	iron:82292,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:31740
-}
-tradeGuild[15] = {
-	level:15,
-	wood:207514,
-	stone:207514,
-	iron:103757,
+	wood:160770,
+	stone:160770,
+	iron:80390,
 	blueprints:1,
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:36060
+	buildTime:8700
 }
-tradeGuild[16] = {
-	level:16,
-	wood:321888,
-	stone:321888,
-	iron:160944,
+tradeGuild[15] = {
+	level:15,
+	wood:242480,
+	stone:242480,
+	iron:121240,
 	blueprints:2,
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:40380
+	buildTime:12300
 }
-tradeGuild[17] = {
-	level:17,
-	wood:382080,
-	stone:382080,
-	iron:191040,
+tradeGuild[16] = {
+	level:16,
+	wood:311820,
+	stone:311820,
+	iron:155910,
 	blueprints:4,
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:44700
+	buildTime:15900
+}
+tradeGuild[17] = {
+	level:17,
+	wood:414350,
+	stone:414350,
+	iron:207180,
+	blueprints:8,
+	tools:8,
+	tiles:8,
+	pulley:8,
+	buildTime:19500
 }
 tradeGuild[18] = {
 	level:18,
-	wood:426432,
-	stone:426432,
-	iron:213216,
-	blueprints:7,
-	tools:7,
-	tiles:7,
-	pulley:7,
-	buildTime:49020
-}
-tradeGuild[19] = {
-	level:19,
-	wood:465408,
-	stone:465408,
-	iron:232704,
+	wood:468640,
+	stone:468640,
+	iron:234320,
 	blueprints:12,
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:53340
+	buildTime:23100
+}
+tradeGuild[19] = {
+	level:19,
+	wood:546680,
+	stone:546680,
+	iron:273340,
+	blueprints:16,
+	tools:16,
+	tiles:16,
+	pulley:16,
+	buildTime:26700
 }
 tradeGuild[20] = {
 	level:20,
-	wood:490272,
-	stone:490272,
-	iron:245136,
-	blueprints:18,
-	tools:18,
-	tiles:18,
-	pulley:18,
-	buildTime:57660
+	wood:617600,
+	stone:617600,
+	iron:308800,
+	blueprints:20,
+	tools:20,
+	tiles:20,
+	pulley:20,
+	buildTime:30300
 }
 tradeGuild[21] = {
 	level:21,
-	wood:879284,
-	stone:879284,
-	iron:439642,
-	blueprints:27,
-	tools:27,
-	tiles:27,
-	pulley:27,
-	buildTime:61980
+	wood:822910,
+	stone:822910,
+	iron:411460,
+	blueprints:28,
+	tools:28,
+	tiles:28,
+	pulley:28,
+	buildTime:33900
 }
 tradeGuild[22] = {
 	level:22,
-	wood:924288,
-	stone:924288,
-	iron:462144,
-	blueprints:37,
-	tools:37,
-	tiles:37,
-	pulley:37,
-	buildTime:66300
+	wood:868340,
+	stone:868340,
+	iron:434170,
+	blueprints:36,
+	tools:36,
+	tiles:36,
+	pulley:36,
+	buildTime:37500
 }
 tradeGuild[23] = {
 	level:23,
-	wood:955085,
-	stone:955085,
-	iron:477543,
-	blueprints:51,
-	tools:51,
-	tiles:51,
-	pulley:51,
-	buildTime:70620
+	wood:955050,
+	stone:955050,
+	iron:477530,
+	blueprints:44,
+	tools:44,
+	tiles:44,
+	pulley:44,
+	buildTime:41100
 }
 tradeGuild[24] = {
 	level:24,
-	wood:1219853,
-	stone:1219853,
-	iron:609927,
-	blueprints:67,
-	tools:67,
-	tiles:67,
-	pulley:67,
-	buildTime:79260
+	wood:1027180,
+	stone:1027180,
+	iron:513590,
+	blueprints:52,
+	tools:52,
+	tiles:52,
+	pulley:52,
+	buildTime:44700
 }
 tradeGuild[25] = {
 	level:25,
-	wood:1348992,
-	stone:1348992,
-	iron:674496,
-	blueprints:86,
-	tools:86,
-	tiles:86,
-	pulley:86,
-	buildTime:87900
+	wood:1461050,
+	stone:1461050,
+	iron:730530,
+	blueprints:68,
+	tools:68,
+	tiles:68,
+	pulley:68,
+	buildTime:48300
 }
 tradeGuild[26] = {
 	level:26,
-	wood:2372429,
-	stone:2372429,
-	iron:1186215,
-	blueprints:108,
-	tools:108,
-	tiles:108,
-	pulley:108,
-	buildTime:96540
+	wood:1475710,
+	stone:1475710,
+	iron:737860,
+	blueprints:84,
+	tools:84,
+	tiles:84,
+	pulley:84,
+	buildTime:51900
 }
 tradeGuild[27] = {
 	level:27,
-	wood:2659815,
-	stone:2659815,
-	iron:1329908,
-	blueprints:134,
-	tools:134,
-	tiles:134,
-	pulley:134,
-	buildTime:105180
+	wood:1554410,
+	stone:1554410,
+	iron:777210,
+	blueprints:100,
+	tools:100,
+	tiles:100,
+	pulley:100,
+	buildTime:55500
 }
 tradeGuild[28] = {
 	level:28,
-	wood:2952039,
-	stone:2952039,
-	iron:1476020,
-	blueprints:163,
-	tools:163,
-	tiles:163,
-	pulley:163,
-	buildTime:113820
+	wood:1612080,
+	stone:1612080,
+	iron:806040,
+	blueprints:116,
+	tools:116,
+	tiles:116,
+	pulley:116,
+	buildTime:59100
 }
 tradeGuild[29] = {
 	level:29,
-	wood:3521127,
-	stone:3521127,
-	iron:1760564,
-	blueprints:197,
-	tools:197,
-	tiles:197,
-	pulley:197,
-	buildTime:122460
+	wood:2929940,
+	stone:2929940,
+	iron:1464970,
+	blueprints:132,
+	tools:132,
+	tiles:132,
+	pulley:132,
+	buildTime:66300
 }
 tradeGuild[30] = {
 	level:30,
-	wood:3803904,
-	stone:3803904,
-	iron:1901952,
-	blueprints:234,
-	tools:234,
-	tiles:234,
-	pulley:234,
-	buildTime:131100
+	wood:3159100,
+	stone:3159100,
+	iron:1579550,
+	blueprints:164,
+	tools:164,
+	tiles:164,
+	pulley:164,
+	buildTime:73500
 }
 tradeGuild[31] = {
 	level:31,
-	wood:6294682,
-	stone:6294682,
-	iron:3147341,
-	blueprints:277,
-	tools:277,
-	tiles:277,
-	pulley:277,
-	buildTime:139740
+	wood:3522390,
+	stone:3522390,
+	iron:1761200,
+	blueprints:196,
+	tools:196,
+	tiles:196,
+	pulley:196,
+	buildTime:80700
 }
 tradeGuild[32] = {
 	level:32,
-	wood:6910925,
-	stone:6910925,
-	iron:3455463,
-	blueprints:324,
-	tools:324,
-	tiles:324,
-	pulley:324,
-	buildTime:148380
+	wood:3888460,
+	stone:3888460,
+	iron:1944230,
+	blueprints:228,
+	tools:228,
+	tiles:228,
+	pulley:228,
+	buildTime:87900
 }
 tradeGuild[33] = {
 	level:33,
-	wood:7554125,
-	stone:7554125,
-	iron:3777063,
-	blueprints:376,
-	tools:376,
-	tiles:376,
-	pulley:376,
-	buildTime:157020
+	wood:5707820,
+	stone:5707820,
+	iron:2853910,
+	blueprints:292,
+	tools:292,
+	tiles:292,
+	pulley:292,
+	buildTime:95100
 }
 tradeGuild[34] = {
 	level:34,
-	wood:8209229,
-	stone:8209229,
-	iron:4104615,
-	blueprints:433,
-	tools:433,
-	tiles:433,
-	pulley:433,
-	buildTime:165660
+	wood:5878250,
+	stone:5878250,
+	iron:2939130,
+	blueprints:356,
+	tools:356,
+	tiles:356,
+	pulley:356,
+	buildTime:102300
 }
 tradeGuild[35] = {
 	level:35,
-	wood:8889984,
-	stone:8889984,
-	iron:4444992,
-	blueprints:496,
-	tools:496,
-	tiles:496,
-	pulley:496,
-	buildTime:174300
+	wood:6256660,
+	stone:6256660,
+	iron:3128330,
+	blueprints:420,
+	tools:420,
+	tiles:420,
+	pulley:420,
+	buildTime:109500
 }
 tradeGuild[36] = {
 	level:36,
-	wood:14446272,
-	stone:14446272,
-	iron:7223136,
-	blueprints:564,
-	tools:564,
-	tiles:564,
-	pulley:564,
-	buildTime:182940
+	wood:6646040,
+	stone:6646040,
+	iron:3323020,
+	blueprints:484,
+	tools:484,
+	tiles:484,
+	pulley:484,
+	buildTime:116700
 }
 tradeGuild[37] = {
 	level:37,
-	wood:15684096,
-	stone:15684096,
-	iron:7842048,
-	blueprints:640,
-	tools:640,
-	tiles:640,
-	pulley:640,
-	buildTime:191580
+	wood:10912840,
+	stone:10912840,
+	iron:5456420,
+	blueprints:548,
+	tools:548,
+	tiles:548,
+	pulley:548,
+	buildTime:123900
 }
 tradeGuild[38] = {
 	level:38,
-	wood:16964736,
-	stone:16964736,
-	iron:8482368,
-	blueprints:720,
-	tools:720,
-	tiles:720,
-	pulley:720,
-	buildTime:200220
+	wood:11960880,
+	stone:11960880,
+	iron:5980440,
+	blueprints:612,
+	tools:612,
+	tiles:612,
+	pulley:612,
+	buildTime:131100
 }
 tradeGuild[39] = {
 	level:39,
-	wood:18302976,
-	stone:18302976,
-	iron:9151488,
-	blueprints:810,
-	tools:810,
-	tiles:810,
-	pulley:810,
-	buildTime:208860
+	wood:13308080,
+	stone:13308080,
+	iron:6654040,
+	blueprints:676,
+	tools:676,
+	tiles:676,
+	pulley:676,
+	buildTime:138300
 }
 tradeGuild[40] = {
 	level:40,
-	wood:27340800,
-	stone:27340800,
-	iron:13670400,
-	blueprints:900,
-	tools:900,
-	tiles:900,
-	pulley:900,
-	buildTime:217500
+	wood:14706910,
+	stone:14706910,
+	iron:7353460,
+	blueprints:740,
+	tools:740,
+	tiles:740,
+	pulley:740,
+	buildTime:145500
 }

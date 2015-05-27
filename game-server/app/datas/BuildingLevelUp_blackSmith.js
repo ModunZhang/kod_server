@@ -5,441 +5,441 @@ module.exports = blackSmith
 
 blackSmith[1] = {
 	level:1,
-	wood:155,
-	stone:233,
-	iron:388,
+	wood:1420,
+	stone:2120,
+	iron:3540,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:400
+	buildTime:280
 }
 blackSmith[2] = {
 	level:2,
-	wood:372,
-	stone:558,
-	iron:930,
+	wood:1640,
+	stone:2450,
+	iron:4080,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:360
+}
+blackSmith[3] = {
+	level:3,
+	wood:1870,
+	stone:2800,
+	iron:4660,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:440
+}
+blackSmith[4] = {
+	level:4,
+	wood:2120,
+	stone:3170,
+	iron:5280,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:520
+}
+blackSmith[5] = {
+	level:5,
+	wood:2490,
+	stone:3730,
+	iron:6210,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:600
 }
-blackSmith[3] = {
-	level:3,
-	wood:744,
-	stone:1116,
-	iron:1860,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:800
-}
-blackSmith[4] = {
-	level:4,
-	wood:1116,
-	stone:1674,
-	iron:2790,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:1000
-}
-blackSmith[5] = {
-	level:5,
-	wood:1488,
-	stone:2232,
-	iron:3720,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:1244
-}
 blackSmith[6] = {
 	level:6,
-	wood:1860,
-	stone:2790,
-	iron:4650,
+	wood:2790,
+	stone:4190,
+	iron:6980,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1988
+	buildTime:680
 }
 blackSmith[7] = {
 	level:7,
-	wood:2232,
-	stone:3348,
-	iron:5580,
+	wood:3950,
+	stone:5930,
+	iron:9880,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2732
+	buildTime:812
 }
 blackSmith[8] = {
 	level:8,
-	wood:2902,
-	stone:4353,
-	iron:7254,
+	wood:6920,
+	stone:10380,
+	iron:17300,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4964
+	buildTime:1124
 }
 blackSmith[9] = {
 	level:9,
-	wood:7143,
-	stone:10714,
-	iron:17856,
+	wood:13960,
+	stone:20940,
+	iron:34900,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:9428
+	buildTime:1748
 }
 blackSmith[10] = {
 	level:10,
-	wood:12946,
-	stone:19419,
-	iron:32364,
+	wood:20660,
+	stone:30990,
+	iron:51650,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:13892
+	buildTime:2372
 }
 blackSmith[11] = {
 	level:11,
-	wood:32856,
-	stone:49283,
-	iron:82138,
+	wood:28250,
+	stone:42370,
+	iron:70610,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:18356
+	buildTime:2996
 }
 blackSmith[12] = {
 	level:12,
-	wood:48212,
-	stone:72317,
-	iron:120528,
+	wood:35630,
+	stone:53440,
+	iron:89070,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:22820
+	buildTime:3620
 }
 blackSmith[13] = {
 	level:13,
-	wood:67139,
-	stone:100708,
-	iron:167847,
+	wood:46830,
+	stone:70250,
+	iron:117080,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:27284
+	buildTime:4244
 }
 blackSmith[14] = {
 	level:14,
-	wood:85035,
-	stone:127552,
-	iron:212586,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:31748
-}
-blackSmith[15] = {
-	level:15,
-	wood:107216,
-	stone:160824,
-	iron:268039,
+	wood:84560,
+	stone:126840,
+	iron:211390,
 	blueprints:1,
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:36212
+	buildTime:7988
 }
-blackSmith[16] = {
-	level:16,
-	wood:166309,
-	stone:249464,
-	iron:415772,
+blackSmith[15] = {
+	level:15,
+	wood:127440,
+	stone:191150,
+	iron:318580,
 	blueprints:2,
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:40676
+	buildTime:11732
 }
-blackSmith[17] = {
-	level:17,
-	wood:197408,
-	stone:296112,
-	iron:493520,
+blackSmith[16] = {
+	level:16,
+	wood:164260,
+	stone:246390,
+	iron:410640,
 	blueprints:4,
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:45140
+	buildTime:15476
+}
+blackSmith[17] = {
+	level:17,
+	wood:219110,
+	stone:328670,
+	iron:547780,
+	blueprints:8,
+	tools:8,
+	tiles:8,
+	pulley:8,
+	buildTime:19220
 }
 blackSmith[18] = {
 	level:18,
-	wood:220324,
-	stone:330485,
-	iron:550808,
-	blueprints:7,
-	tools:7,
-	tiles:7,
-	pulley:7,
-	buildTime:49604
-}
-blackSmith[19] = {
-	level:19,
-	wood:240461,
-	stone:360692,
-	iron:601152,
+	wood:248880,
+	stone:373320,
+	iron:622200,
 	blueprints:12,
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:54068
+	buildTime:22964
+}
+blackSmith[19] = {
+	level:19,
+	wood:291000,
+	stone:436490,
+	iron:727480,
+	blueprints:16,
+	tools:16,
+	tiles:16,
+	pulley:16,
+	buildTime:26708
 }
 blackSmith[20] = {
 	level:20,
-	wood:253308,
-	stone:379961,
-	iron:633268,
-	blueprints:18,
-	tools:18,
-	tiles:18,
-	pulley:18,
-	buildTime:58532
+	wood:329410,
+	stone:494110,
+	iron:823520,
+	blueprints:20,
+	tools:20,
+	tiles:20,
+	pulley:20,
+	buildTime:30452
 }
 blackSmith[21] = {
 	level:21,
-	wood:454297,
-	stone:681445,
-	iron:1135741,
-	blueprints:27,
-	tools:27,
-	tiles:27,
-	pulley:27,
-	buildTime:62996
+	wood:439240,
+	stone:658860,
+	iron:1098100,
+	blueprints:28,
+	tools:28,
+	tiles:28,
+	pulley:28,
+	buildTime:34196
 }
 blackSmith[22] = {
 	level:22,
-	wood:477549,
-	stone:716324,
-	iron:1193872,
-	blueprints:37,
-	tools:37,
-	tiles:37,
-	pulley:37,
-	buildTime:67460
+	wood:465940,
+	stone:698910,
+	iron:1164850,
+	blueprints:36,
+	tools:36,
+	tiles:36,
+	pulley:36,
+	buildTime:37940
 }
 blackSmith[23] = {
 	level:23,
-	wood:493461,
-	stone:740191,
-	iron:1233652,
-	blueprints:51,
-	tools:51,
-	tiles:51,
-	pulley:51,
-	buildTime:71924
+	wood:514100,
+	stone:771150,
+	iron:1285250,
+	blueprints:44,
+	tools:44,
+	tiles:44,
+	pulley:44,
+	buildTime:41684
 }
 blackSmith[24] = {
 	level:24,
-	wood:630258,
-	stone:945386,
-	iron:1575644,
-	blueprints:67,
-	tools:67,
-	tiles:67,
-	pulley:67,
-	buildTime:80852
+	wood:554680,
+	stone:832010,
+	iron:1386690,
+	blueprints:52,
+	tools:52,
+	tiles:52,
+	pulley:52,
+	buildTime:45428
 }
 blackSmith[25] = {
 	level:25,
-	wood:696980,
-	stone:1045469,
-	iron:1742448,
-	blueprints:86,
-	tools:86,
-	tiles:86,
-	pulley:86,
-	buildTime:89780
+	wood:786430,
+	stone:1179650,
+	iron:1966080,
+	blueprints:68,
+	tools:68,
+	tiles:68,
+	pulley:68,
+	buildTime:49172
 }
 blackSmith[26] = {
 	level:26,
-	wood:1225755,
-	stone:1838633,
-	iron:3064388,
-	blueprints:108,
-	tools:108,
-	tiles:108,
-	pulley:108,
-	buildTime:98708
+	wood:800200,
+	stone:1200300,
+	iron:2000500,
+	blueprints:84,
+	tools:84,
+	tiles:84,
+	pulley:84,
+	buildTime:52916
 }
 blackSmith[27] = {
 	level:27,
-	wood:1374238,
-	stone:2061357,
-	iron:3435594,
-	blueprints:134,
-	tools:134,
-	tiles:134,
-	pulley:134,
-	buildTime:107636
+	wood:847270,
+	stone:1270910,
+	iron:2118180,
+	blueprints:100,
+	tools:100,
+	tiles:100,
+	pulley:100,
+	buildTime:56660
 }
 blackSmith[28] = {
 	level:28,
-	wood:1525220,
-	stone:2287830,
-	iron:3813050,
-	blueprints:163,
-	tools:163,
-	tiles:163,
-	pulley:163,
-	buildTime:116564
+	wood:883410,
+	stone:1325110,
+	iron:2208510,
+	blueprints:116,
+	tools:116,
+	tiles:116,
+	pulley:116,
+	buildTime:60404
 }
 blackSmith[29] = {
 	level:29,
-	wood:1819249,
-	stone:2728873,
-	iron:4548122,
-	blueprints:197,
-	tools:197,
-	tiles:197,
-	pulley:197,
-	buildTime:125492
+	wood:1574840,
+	stone:2362250,
+	iron:3937080,
+	blueprints:132,
+	tools:132,
+	tiles:132,
+	pulley:132,
+	buildTime:67892
 }
 blackSmith[30] = {
 	level:30,
-	wood:1965351,
-	stone:2948026,
-	iron:4913376,
-	blueprints:234,
-	tools:234,
-	tiles:234,
-	pulley:234,
-	buildTime:134420
+	wood:1706290,
+	stone:2559430,
+	iron:4265710,
+	blueprints:164,
+	tools:164,
+	tiles:164,
+	pulley:164,
+	buildTime:75380
 }
 blackSmith[31] = {
 	level:31,
-	wood:3252253,
-	stone:4878379,
-	iron:8130631,
-	blueprints:277,
-	tools:277,
-	tiles:277,
-	pulley:277,
-	buildTime:143348
+	wood:1907480,
+	stone:2861220,
+	iron:4768700,
+	blueprints:196,
+	tools:196,
+	tiles:196,
+	pulley:196,
+	buildTime:82868
 }
 blackSmith[32] = {
 	level:32,
-	wood:3570645,
-	stone:5355967,
-	iron:8926612,
-	blueprints:324,
-	tools:324,
-	tiles:324,
-	pulley:324,
-	buildTime:152276
+	wood:2110130,
+	stone:3165190,
+	iron:5275320,
+	blueprints:228,
+	tools:228,
+	tiles:228,
+	pulley:228,
+	buildTime:90356
 }
 blackSmith[33] = {
 	level:33,
-	wood:3902965,
-	stone:5854447,
-	iron:9757412,
-	blueprints:376,
-	tools:376,
-	tiles:376,
-	pulley:376,
-	buildTime:161204
+	wood:3080770,
+	stone:4621160,
+	iron:7701930,
+	blueprints:292,
+	tools:292,
+	tiles:292,
+	pulley:292,
+	buildTime:97844
 }
 blackSmith[34] = {
 	level:34,
-	wood:4241435,
-	stone:6362153,
-	iron:10603588,
-	blueprints:433,
-	tools:433,
-	tiles:433,
-	pulley:433,
-	buildTime:170132
+	wood:3193970,
+	stone:4790960,
+	iron:7984930,
+	blueprints:356,
+	tools:356,
+	tiles:356,
+	pulley:356,
+	buildTime:105332
 }
 blackSmith[35] = {
 	level:35,
-	wood:4593159,
-	stone:6889738,
-	iron:11482896,
-	blueprints:496,
-	tools:496,
-	tiles:496,
-	pulley:496,
-	buildTime:179060
+	wood:3415320,
+	stone:5122980,
+	iron:8538300,
+	blueprints:420,
+	tools:420,
+	tiles:420,
+	pulley:420,
+	buildTime:112820
 }
 blackSmith[36] = {
 	level:36,
-	wood:7463908,
-	stone:11195861,
-	iron:18659768,
-	blueprints:564,
-	tools:564,
-	tiles:564,
-	pulley:564,
-	buildTime:187988
+	wood:3642380,
+	stone:5463560,
+	iron:9105930,
+	blueprints:484,
+	tools:484,
+	tiles:484,
+	pulley:484,
+	buildTime:120308
 }
 blackSmith[37] = {
 	level:37,
-	wood:8103450,
-	stone:12155175,
-	iron:20258624,
-	blueprints:639,
-	tools:639,
-	tiles:639,
-	pulley:639,
-	buildTime:196916
+	wood:5885690,
+	stone:8828530,
+	iron:14714210,
+	blueprints:548,
+	tools:548,
+	tiles:548,
+	pulley:548,
+	buildTime:127796
 }
 blackSmith[38] = {
 	level:38,
-	wood:8765114,
-	stone:13147671,
-	iron:21912784,
-	blueprints:720,
-	tools:720,
-	tiles:720,
-	pulley:720,
-	buildTime:205844
+	wood:6455250,
+	stone:9682870,
+	iron:16138110,
+	blueprints:612,
+	tools:612,
+	tiles:612,
+	pulley:612,
+	buildTime:135284
 }
 blackSmith[39] = {
 	level:39,
-	wood:9456538,
-	stone:14184807,
-	iron:23641344,
-	blueprints:810,
-	tools:810,
-	tiles:810,
-	pulley:810,
-	buildTime:214772
+	wood:7180360,
+	stone:10770540,
+	iron:17950900,
+	blueprints:676,
+	tools:676,
+	tiles:676,
+	pulley:676,
+	buildTime:142772
 }
 blackSmith[40] = {
 	level:40,
-	wood:14126080,
-	stone:21189120,
-	iron:35315200,
-	blueprints:920,
-	tools:920,
-	tiles:920,
-	pulley:920,
-	buildTime:223700
+	wood:7932330,
+	stone:11898500,
+	iron:19830830,
+	blueprints:740,
+	tools:740,
+	tiles:740,
+	pulley:740,
+	buildTime:150260
 }

@@ -5,441 +5,441 @@ module.exports = warehouse
 
 warehouse[1] = {
 	level:1,
-	wood:300,
-	stone:225,
-	iron:225,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:36
-}
-warehouse[2] = {
-	level:2,
-	wood:720,
-	stone:540,
-	iron:540,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:0,
-	buildTime:72
-}
-warehouse[3] = {
-	level:3,
-	wood:1440,
-	stone:1080,
-	iron:1080,
+	wood:1610,
+	stone:1210,
+	iron:1210,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:180
 }
-warehouse[4] = {
-	level:4,
-	wood:2160,
-	stone:1620,
-	iron:1620,
+warehouse[2] = {
+	level:2,
+	wood:2040,
+	stone:1530,
+	iron:1530,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:360
+	buildTime:210
+}
+warehouse[3] = {
+	level:3,
+	wood:2480,
+	stone:1860,
+	iron:1860,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:240
+}
+warehouse[4] = {
+	level:4,
+	wood:2960,
+	stone:2220,
+	iron:2220,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:270
 }
 warehouse[5] = {
 	level:5,
-	wood:2880,
-	stone:2160,
-	iron:2160,
+	wood:3670,
+	stone:2750,
+	iron:2750,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:720
+	buildTime:300
 }
 warehouse[6] = {
 	level:6,
-	wood:3600,
-	stone:2700,
-	iron:2700,
+	wood:4260,
+	stone:3200,
+	iron:3200,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1440
+	buildTime:330
 }
 warehouse[7] = {
 	level:7,
-	wood:4320,
-	stone:3240,
-	iron:3240,
+	wood:6490,
+	stone:4870,
+	iron:4870,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2160
+	buildTime:450
 }
 warehouse[8] = {
 	level:8,
-	wood:5616,
-	stone:4212,
-	iron:4212,
+	wood:12200,
+	stone:9150,
+	iron:9150,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4320
+	buildTime:750
 }
 warehouse[9] = {
 	level:9,
-	wood:13824,
-	stone:10368,
-	iron:10368,
+	wood:25740,
+	stone:19300,
+	iron:19300,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:8640
+	buildTime:1350
 }
 warehouse[10] = {
 	level:10,
-	wood:25056,
-	stone:18792,
-	iron:18792,
+	wood:38630,
+	stone:28970,
+	iron:28970,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:12960
+	buildTime:1950
 }
 warehouse[11] = {
 	level:11,
-	wood:63591,
-	stone:47693,
-	iron:47693,
+	wood:53210,
+	stone:39910,
+	iron:39910,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:17280
+	buildTime:2550
 }
 warehouse[12] = {
 	level:12,
-	wood:93312,
-	stone:69984,
-	iron:69984,
+	wood:67410,
+	stone:50560,
+	iron:50560,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:21600
+	buildTime:3150
 }
 warehouse[13] = {
 	level:13,
-	wood:129946,
-	stone:97460,
-	iron:97460,
+	wood:88950,
+	stone:66720,
+	iron:66720,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:25920
+	buildTime:3750
 }
 warehouse[14] = {
 	level:14,
-	wood:164583,
-	stone:123437,
-	iron:123437,
+	wood:160770,
+	stone:120580,
+	iron:120580,
 	blueprints:1,
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:30240
+	buildTime:7350
 }
 warehouse[15] = {
 	level:15,
-	wood:207514,
-	stone:155636,
-	iron:155636,
+	wood:242480,
+	stone:181860,
+	iron:181860,
 	blueprints:2,
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:34560
+	buildTime:10950
 }
 warehouse[16] = {
 	level:16,
-	wood:321888,
-	stone:241416,
-	iron:241416,
+	wood:311820,
+	stone:233870,
+	iron:233870,
 	blueprints:4,
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:38880
+	buildTime:14550
 }
 warehouse[17] = {
 	level:17,
-	wood:382080,
-	stone:286560,
-	iron:286560,
+	wood:452750,
+	stone:339570,
+	iron:339570,
 	blueprints:6,
 	tools:6,
 	tiles:6,
 	pulley:6,
-	buildTime:43200
+	buildTime:18150
 }
 warehouse[18] = {
 	level:18,
-	wood:426432,
-	stone:319824,
-	iron:319824,
+	wood:507040,
+	stone:380280,
+	iron:380280,
 	blueprints:10,
 	tools:10,
 	tiles:10,
 	pulley:10,
-	buildTime:47520
+	buildTime:21750
 }
 warehouse[19] = {
 	level:19,
-	wood:465408,
-	stone:349056,
-	iron:349056,
+	wood:585080,
+	stone:438810,
+	iron:438810,
 	blueprints:14,
 	tools:14,
 	tiles:14,
 	pulley:14,
-	buildTime:51840
+	buildTime:25350
 }
 warehouse[20] = {
 	level:20,
-	wood:490272,
-	stone:367704,
-	iron:367704,
+	wood:598400,
+	stone:448800,
+	iron:448800,
 	blueprints:21,
 	tools:21,
 	tiles:21,
 	pulley:21,
-	buildTime:56160
+	buildTime:28950
 }
 warehouse[21] = {
 	level:21,
-	wood:879284,
-	stone:659463,
-	iron:659463,
-	blueprints:29,
-	tools:29,
-	tiles:29,
-	pulley:29,
-	buildTime:60480
+	wood:822910,
+	stone:617180,
+	iron:617180,
+	blueprints:28,
+	tools:28,
+	tiles:28,
+	pulley:28,
+	buildTime:32550
 }
 warehouse[22] = {
 	level:22,
-	wood:924288,
-	stone:693216,
-	iron:693216,
-	blueprints:39,
-	tools:39,
-	tiles:39,
-	pulley:39,
-	buildTime:64800
+	wood:887540,
+	stone:665660,
+	iron:665660,
+	blueprints:35,
+	tools:35,
+	tiles:35,
+	pulley:35,
+	buildTime:36150
 }
 warehouse[23] = {
 	level:23,
-	wood:955085,
-	stone:716314,
-	iron:716314,
-	blueprints:51,
-	tools:51,
-	tiles:51,
-	pulley:51,
-	buildTime:69120
+	wood:993450,
+	stone:745090,
+	iron:745090,
+	blueprints:42,
+	tools:42,
+	tiles:42,
+	pulley:42,
+	buildTime:39750
 }
 warehouse[24] = {
 	level:24,
-	wood:1219853,
-	stone:914890,
-	iron:914890,
-	blueprints:66,
-	tools:66,
-	tiles:66,
-	pulley:66,
-	buildTime:77760
+	wood:1084780,
+	stone:813580,
+	iron:813580,
+	blueprints:49,
+	tools:49,
+	tiles:49,
+	pulley:49,
+	buildTime:43350
 }
 warehouse[25] = {
 	level:25,
-	wood:1348992,
-	stone:1011744,
-	iron:1011744,
-	blueprints:83,
-	tools:83,
-	tiles:83,
-	pulley:83,
-	buildTime:86400
+	wood:1557050,
+	stone:1167790,
+	iron:1167790,
+	blueprints:63,
+	tools:63,
+	tiles:63,
+	pulley:63,
+	buildTime:46950
 }
 warehouse[26] = {
 	level:26,
-	wood:2372429,
-	stone:1779322,
-	iron:1779322,
-	blueprints:104,
-	tools:104,
-	tiles:104,
-	pulley:104,
-	buildTime:95040
+	wood:1610110,
+	stone:1207580,
+	iron:1207580,
+	blueprints:77,
+	tools:77,
+	tiles:77,
+	pulley:77,
+	buildTime:50550
 }
 warehouse[27] = {
 	level:27,
-	wood:2659815,
-	stone:1994861,
-	iron:1994861,
-	blueprints:127,
-	tools:127,
-	tiles:127,
-	pulley:127,
-	buildTime:103680
+	wood:1727210,
+	stone:1295410,
+	iron:1295410,
+	blueprints:91,
+	tools:91,
+	tiles:91,
+	pulley:91,
+	buildTime:54150
 }
 warehouse[28] = {
 	level:28,
-	wood:2952039,
-	stone:2214029,
-	iron:2214029,
-	blueprints:155,
-	tools:155,
-	tiles:155,
-	pulley:155,
-	buildTime:112320
+	wood:1823280,
+	stone:1367460,
+	iron:1367460,
+	blueprints:105,
+	tools:105,
+	tiles:105,
+	pulley:105,
+	buildTime:57750
 }
 warehouse[29] = {
 	level:29,
-	wood:3521127,
-	stone:2640845,
-	iron:2640845,
-	blueprints:186,
-	tools:186,
-	tiles:186,
-	pulley:186,
-	buildTime:120960
+	wood:2910740,
+	stone:2183060,
+	iron:2183060,
+	blueprints:133,
+	tools:133,
+	tiles:133,
+	pulley:133,
+	buildTime:64950
 }
 warehouse[30] = {
 	level:30,
-	wood:3803904,
-	stone:2852928,
-	iron:2852928,
-	blueprints:221,
-	tools:221,
-	tiles:221,
-	pulley:221,
-	buildTime:129600
+	wood:3216700,
+	stone:2412530,
+	iron:2412530,
+	blueprints:161,
+	tools:161,
+	tiles:161,
+	pulley:161,
+	buildTime:72150
 }
 warehouse[31] = {
 	level:31,
-	wood:6294682,
-	stone:4721012,
-	iron:4721012,
-	blueprints:260,
-	tools:260,
-	tiles:260,
-	pulley:260,
-	buildTime:138240
+	wood:3656790,
+	stone:2742590,
+	iron:2742590,
+	blueprints:189,
+	tools:189,
+	tiles:189,
+	pulley:189,
+	buildTime:79350
 }
 warehouse[32] = {
 	level:32,
-	wood:6910925,
-	stone:5183194,
-	iron:5183194,
-	blueprints:304,
-	tools:304,
-	tiles:304,
-	pulley:304,
-	buildTime:146880
+	wood:4099660,
+	stone:3074750,
+	iron:3074750,
+	blueprints:217,
+	tools:217,
+	tiles:217,
+	pulley:217,
+	buildTime:86550
 }
 warehouse[33] = {
 	level:33,
-	wood:7554125,
-	stone:5665594,
-	iron:5665594,
-	blueprints:352,
-	tools:352,
-	tiles:352,
-	pulley:352,
-	buildTime:155520
+	wood:6072620,
+	stone:4554470,
+	iron:4554470,
+	blueprints:273,
+	tools:273,
+	tiles:273,
+	pulley:273,
+	buildTime:93750
 }
 warehouse[34] = {
 	level:34,
-	wood:8209229,
-	stone:6156922,
-	iron:6156922,
-	blueprints:406,
-	tools:406,
-	tiles:406,
-	pulley:406,
-	buildTime:164160
+	wood:6396650,
+	stone:4797490,
+	iron:4797490,
+	blueprints:329,
+	tools:329,
+	tiles:329,
+	pulley:329,
+	buildTime:100950
 }
 warehouse[35] = {
 	level:35,
-	wood:8889984,
-	stone:6667488,
-	iron:6667488,
-	blueprints:464,
-	tools:464,
-	tiles:464,
-	pulley:464,
-	buildTime:172800
+	wood:6928660,
+	stone:5196500,
+	iron:5196500,
+	blueprints:385,
+	tools:385,
+	tiles:385,
+	pulley:385,
+	buildTime:108150
 }
 warehouse[36] = {
 	level:36,
-	wood:14446272,
-	stone:10834704,
-	iron:10834704,
-	blueprints:529,
-	tools:529,
-	tiles:529,
-	pulley:529,
-	buildTime:181440
+	wood:7471640,
+	stone:5603730,
+	iron:5603730,
+	blueprints:441,
+	tools:441,
+	tiles:441,
+	pulley:441,
+	buildTime:115350
 }
 warehouse[37] = {
 	level:37,
-	wood:15684096,
-	stone:11763072,
-	iron:11763072,
-	blueprints:600,
-	tools:600,
-	tiles:600,
-	pulley:600,
-	buildTime:190080
+	wood:11892040,
+	stone:8919030,
+	iron:8919030,
+	blueprints:497,
+	tools:497,
+	tiles:497,
+	pulley:497,
+	buildTime:122550
 }
 warehouse[38] = {
 	level:38,
-	wood:16964736,
-	stone:12723552,
-	iron:12723552,
-	blueprints:675,
-	tools:675,
-	tiles:675,
-	pulley:675,
-	buildTime:198720
+	wood:13093680,
+	stone:9820260,
+	iron:9820260,
+	blueprints:553,
+	tools:553,
+	tiles:553,
+	pulley:553,
+	buildTime:129750
 }
 warehouse[39] = {
 	level:39,
-	wood:18302976,
-	stone:13727232,
-	iron:13727232,
-	blueprints:757,
-	tools:757,
-	tiles:757,
-	pulley:757,
-	buildTime:207360
+	wood:14594480,
+	stone:10945860,
+	iron:10945860,
+	blueprints:609,
+	tools:609,
+	tiles:609,
+	pulley:609,
+	buildTime:136950
 }
 warehouse[40] = {
 	level:40,
-	wood:27340800,
-	stone:20505600,
-	iron:20505600,
-	blueprints:850,
-	tools:850,
-	tiles:850,
-	pulley:850,
-	buildTime:216000
+	wood:16146910,
+	stone:12110190,
+	iron:12110190,
+	blueprints:665,
+	tools:665,
+	tiles:665,
+	pulley:665,
+	buildTime:144150
 }

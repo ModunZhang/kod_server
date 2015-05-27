@@ -5,441 +5,441 @@ module.exports = wall
 
 wall[1] = {
 	level:1,
-	wood:200,
-	stone:500,
-	iron:300,
+	wood:1530,
+	stone:3820,
+	iron:2290,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:24
+	buildTime:148
 }
 wall[2] = {
 	level:2,
-	wood:480,
-	stone:1200,
-	iron:720,
+	wood:1870,
+	stone:4670,
+	iron:2800,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:48
+	buildTime:196
 }
 wall[3] = {
 	level:3,
-	wood:960,
-	stone:2400,
-	iron:1440,
+	wood:2230,
+	stone:5560,
+	iron:3340,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:96
+	buildTime:244
 }
 wall[4] = {
 	level:4,
-	wood:1440,
-	stone:3600,
-	iron:2160,
+	wood:2610,
+	stone:6510,
+	iron:3910,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:240
+	buildTime:292
 }
 wall[5] = {
 	level:5,
-	wood:1920,
-	stone:4800,
-	iron:2880,
+	wood:3170,
+	stone:7930,
+	iron:4760,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:480
+	buildTime:340
 }
 wall[6] = {
 	level:6,
-	wood:2400,
-	stone:6000,
-	iron:3600,
+	wood:3650,
+	stone:9120,
+	iron:5470,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:720
+	buildTime:388
 }
 wall[7] = {
 	level:7,
-	wood:2880,
-	stone:7200,
-	iron:4320,
+	wood:5430,
+	stone:13580,
+	iron:8150,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1920
+	buildTime:580
 }
 wall[8] = {
 	level:8,
-	wood:3744,
-	stone:9360,
-	iron:5616,
+	wood:10000,
+	stone:25000,
+	iron:15000,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2880
+	buildTime:1060
 }
 wall[9] = {
 	level:9,
-	wood:9216,
-	stone:23040,
-	iron:13824,
+	wood:20830,
+	stone:52070,
+	iron:31240,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5760
+	buildTime:2020
 }
 wall[10] = {
 	level:10,
-	wood:16704,
-	stone:41760,
-	iron:25056,
+	wood:31140,
+	stone:77850,
+	iron:46710,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:11520
+	buildTime:2980
 }
 wall[11] = {
 	level:11,
-	wood:42394,
-	stone:105984,
-	iron:63591,
+	wood:42810,
+	stone:107010,
+	iron:64210,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:17280
+	buildTime:3940
 }
 wall[12] = {
 	level:12,
-	wood:62208,
-	stone:155520,
-	iron:93312,
-	blueprints:1,
-	tools:1,
-	tiles:1,
-	pulley:1,
-	buildTime:23040
+	wood:54170,
+	stone:135410,
+	iron:81250,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:4900
 }
 wall[13] = {
 	level:13,
-	wood:86631,
-	stone:216576,
-	iron:129946,
+	wood:71400,
+	stone:178500,
+	iron:107100,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:5860
+}
+wall[14] = {
+	level:14,
+	wood:134610,
+	stone:336530,
+	iron:201920,
 	blueprints:1,
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:28800
+	buildTime:11620
 }
-wall[14] = {
-	level:14,
-	wood:109722,
-	stone:274304,
-	iron:164583,
+wall[15] = {
+	level:15,
+	wood:205740,
+	stone:514350,
+	iron:308610,
 	blueprints:2,
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:34560
+	buildTime:17380
 }
-wall[15] = {
-	level:15,
-	wood:138343,
-	stone:345856,
-	iron:207514,
+wall[16] = {
+	level:16,
+	wood:272740,
+	stone:681830,
+	iron:409100,
 	blueprints:4,
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:40320
+	buildTime:23140
 }
-wall[16] = {
-	level:16,
-	wood:214592,
-	stone:536480,
-	iron:321888,
+wall[17] = {
+	level:17,
+	wood:377800,
+	stone:944500,
+	iron:566700,
 	blueprints:8,
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:46080
-}
-wall[17] = {
-	level:17,
-	wood:254720,
-	stone:636800,
-	iron:382080,
-	blueprints:13,
-	tools:13,
-	tiles:13,
-	pulley:13,
-	buildTime:51840
+	buildTime:28900
 }
 wall[18] = {
 	level:18,
-	wood:284288,
-	stone:710720,
-	iron:426432,
-	blueprints:21,
-	tools:21,
-	tiles:21,
-	pulley:21,
-	buildTime:57600
+	wood:415480,
+	stone:1038680,
+	iron:623210,
+	blueprints:15,
+	tools:15,
+	tiles:15,
+	pulley:15,
+	buildTime:34660
 }
 wall[19] = {
 	level:19,
-	wood:310272,
-	stone:775680,
-	iron:465408,
+	wood:491340,
+	stone:1228350,
+	iron:737010,
+	blueprints:20,
+	tools:20,
+	tiles:20,
+	pulley:20,
+	buildTime:40420
+}
+wall[20] = {
+	level:20,
+	wood:494320,
+	stone:1235790,
+	iron:741480,
 	blueprints:32,
 	tools:32,
 	tiles:32,
 	pulley:32,
-	buildTime:63360
-}
-wall[20] = {
-	level:20,
-	wood:326848,
-	stone:817120,
-	iron:490272,
-	blueprints:47,
-	tools:47,
-	tiles:47,
-	pulley:47,
-	buildTime:69120
+	buildTime:46180
 }
 wall[21] = {
 	level:21,
-	wood:586189,
-	stone:1465472,
-	iron:879284,
-	blueprints:65,
-	tools:65,
-	tiles:65,
-	pulley:65,
-	buildTime:74880
+	wood:627850,
+	stone:1569620,
+	iron:941770,
+	blueprints:48,
+	tools:48,
+	tiles:48,
+	pulley:48,
+	buildTime:51940
 }
 wall[22] = {
 	level:22,
-	wood:616192,
-	stone:1540480,
-	iron:924288,
-	blueprints:88,
-	tools:88,
-	tiles:88,
-	pulley:88,
-	buildTime:80640
+	wood:633480,
+	stone:1583680,
+	iron:950210,
+	blueprints:64,
+	tools:64,
+	tiles:64,
+	pulley:64,
+	buildTime:57700
 }
 wall[23] = {
 	level:23,
-	wood:636724,
-	stone:1591808,
-	iron:955085,
-	blueprints:100,
-	tools:100,
-	tiles:100,
-	pulley:100,
-	buildTime:86400
+	wood:672120,
+	stone:1680300,
+	iron:1008180,
+	blueprints:80,
+	tools:80,
+	tiles:80,
+	pulley:80,
+	buildTime:63460
 }
 wall[24] = {
 	level:24,
-	wood:813236,
-	stone:2033088,
-	iron:1219853,
-	blueprints:150,
-	tools:150,
-	tiles:150,
-	pulley:150,
-	buildTime:92160
+	wood:699100,
+	stone:1747750,
+	iron:1048650,
+	blueprints:96,
+	tools:96,
+	tiles:96,
+	pulley:96,
+	buildTime:69220
 }
 wall[25] = {
 	level:25,
-	wood:899328,
-	stone:2248320,
-	iron:1348992,
-	blueprints:189,
-	tools:189,
-	tiles:189,
-	pulley:189,
-	buildTime:103680
+	wood:869560,
+	stone:2173890,
+	iron:1304330,
+	blueprints:140,
+	tools:140,
+	tiles:140,
+	pulley:140,
+	buildTime:74980
 }
 wall[26] = {
 	level:26,
-	wood:1581620,
-	stone:3954048,
-	iron:2372429,
-	blueprints:235,
-	tools:235,
-	tiles:235,
-	pulley:235,
-	buildTime:115200
+	wood:935050,
+	stone:2337610,
+	iron:1402570,
+	blueprints:160,
+	tools:160,
+	tiles:160,
+	pulley:160,
+	buildTime:80740
 }
 wall[27] = {
 	level:27,
-	wood:1773210,
-	stone:4433024,
-	iron:2659815,
-	blueprints:260,
-	tools:260,
-	tiles:260,
-	pulley:260,
-	buildTime:126720
+	wood:1003770,
+	stone:2509420,
+	iron:1505650,
+	blueprints:180,
+	tools:180,
+	tiles:180,
+	pulley:180,
+	buildTime:86500
 }
 wall[28] = {
 	level:28,
-	wood:1968026,
-	stone:4920064,
-	iron:2952039,
+	wood:1055670,
+	stone:2639160,
+	iron:1583500,
+	blueprints:210,
+	tools:210,
+	tiles:210,
+	pulley:210,
+	buildTime:92260
+}
+wall[29] = {
+	level:29,
+	wood:1299710,
+	stone:3249280,
+	iron:1949570,
 	blueprints:320,
 	tools:320,
 	tiles:320,
 	pulley:320,
-	buildTime:138240
-}
-wall[29] = {
-	level:29,
-	wood:2347418,
-	stone:5868544,
-	iron:3521127,
-	blueprints:417,
-	tools:417,
-	tiles:417,
-	pulley:417,
-	buildTime:149760
+	buildTime:103780
 }
 wall[30] = {
 	level:30,
-	wood:2535936,
-	stone:6339840,
-	iron:3803904,
-	blueprints:494,
-	tools:494,
-	tiles:494,
-	pulley:494,
-	buildTime:161280
+	wood:1302560,
+	stone:3256390,
+	iron:1953840,
+	blueprints:390,
+	tools:390,
+	tiles:390,
+	pulley:390,
+	buildTime:115300
 }
 wall[31] = {
 	level:31,
-	wood:4196455,
-	stone:10491136,
-	iron:6294682,
-	blueprints:580,
-	tools:580,
-	tiles:580,
-	pulley:580,
-	buildTime:172800
+	wood:1508710,
+	stone:3771770,
+	iron:2263060,
+	blueprints:450,
+	tools:450,
+	tiles:450,
+	pulley:450,
+	buildTime:126820
 }
 wall[32] = {
 	level:32,
-	wood:4607284,
-	stone:11518208,
-	iron:6910925,
-	blueprints:660,
-	tools:660,
-	tiles:660,
-	pulley:660,
-	buildTime:184320
+	wood:1813090,
+	stone:4532720,
+	iron:2719630,
+	blueprints:500,
+	tools:500,
+	tiles:500,
+	pulley:500,
+	buildTime:138340
 }
 wall[33] = {
 	level:33,
-	wood:5036084,
-	stone:12590208,
-	iron:7554125,
-	blueprints:760,
-	tools:760,
-	tiles:760,
-	pulley:760,
-	buildTime:195840
+	wood:2523620,
+	stone:6309040,
+	iron:3785430,
+	blueprints:680,
+	tools:680,
+	tiles:680,
+	pulley:680,
+	buildTime:149860
 }
 wall[34] = {
 	level:34,
-	wood:5472820,
-	stone:13682048,
-	iron:8209229,
+	wood:2683000,
+	stone:6707500,
+	iron:4024500,
+	blueprints:780,
+	tools:780,
+	tiles:780,
+	pulley:780,
+	buildTime:161380
+}
+wall[35] = {
+	level:35,
+	wood:2816770,
+	stone:7041920,
+	iron:4225150,
 	blueprints:900,
 	tools:900,
 	tiles:900,
 	pulley:900,
-	buildTime:207360
-}
-wall[35] = {
-	level:35,
-	wood:5926656,
-	stone:14816640,
-	iron:8889984,
-	blueprints:1024,
-	tools:1024,
-	tiles:1024,
-	pulley:1024,
-	buildTime:218880
+	buildTime:172900
 }
 wall[36] = {
 	level:36,
-	wood:9630848,
-	stone:24077120,
-	iron:14446272,
+	wood:2959320,
+	stone:7398280,
+	iron:4438970,
+	blueprints:1020,
+	tools:1020,
+	tiles:1020,
+	pulley:1020,
+	buildTime:184420
+}
+wall[37] = {
+	level:37,
+	wood:6011790,
+	stone:15029480,
+	iron:9017690,
 	blueprints:1160,
 	tools:1160,
 	tiles:1160,
 	pulley:1160,
-	buildTime:230400
-}
-wall[37] = {
-	level:37,
-	wood:10456064,
-	stone:26140160,
-	iron:15684096,
-	blueprints:1320,
-	tools:1320,
-	tiles:1320,
-	pulley:1320,
-	buildTime:244800
+	buildTime:195940
 }
 wall[38] = {
 	level:38,
-	wood:11309824,
-	stone:28274560,
-	iron:16964736,
-	blueprints:1480,
-	tools:1480,
-	tiles:1480,
-	pulley:1480,
-	buildTime:259200
+	wood:6681270,
+	stone:16703160,
+	iron:10021900,
+	blueprints:1280,
+	tools:1280,
+	tiles:1280,
+	pulley:1280,
+	buildTime:207460
 }
 wall[39] = {
 	level:39,
-	wood:12201984,
-	stone:30504960,
-	iron:18302976,
-	blueprints:1320,
-	tools:1320,
-	tiles:1320,
-	pulley:1320,
-	buildTime:273600
-}
-wall[40] = {
-	level:40,
-	wood:18227200,
-	stone:45568000,
-	iron:27340800,
+	wood:6822060,
+	stone:17055150,
+	iron:10233090,
 	blueprints:1480,
 	tools:1480,
 	tiles:1480,
 	pulley:1480,
-	buildTime:288000
+	buildTime:218980
+}
+wall[40] = {
+	level:40,
+	wood:7292170,
+	stone:18230420,
+	iron:10938260,
+	blueprints:1650,
+	tools:1650,
+	tiles:1650,
+	pulley:1650,
+	buildTime:230500
 }
