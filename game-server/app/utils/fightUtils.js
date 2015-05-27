@@ -47,8 +47,8 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 		}
 		if(attackDamagedSoldierCount > attackSoldier.currentCount) attackDamagedSoldierCount = attackSoldier.currentCount
 		if(defenceDamagedSoldierCount > defenceSoldier.currentCount) defenceDamagedSoldierCount = defenceSoldier.currentCount
-		if(attackSoldier.currentCount >= 50 && attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
-		if(defenceSoldier.currentCount >= 50 && defenceDamagedSoldierCount > defenceSoldier.currentCount * 0.7) defenceDamagedSoldierCount = Math.ceil(defenceSoldier.currentCount * 0.7)
+		//if(attackSoldier.currentCount >= 50 && attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
+		//if(defenceSoldier.currentCount >= 50 && defenceDamagedSoldierCount > defenceSoldier.currentCount * 0.7) defenceDamagedSoldierCount = Math.ceil(defenceSoldier.currentCount * 0.7)
 
 		var attackWoundedSoldierCount = Math.floor(attackDamagedSoldierCount * attackWoundedSoldierPercent)
 		var defenceWoundedSoldierCount = Math.floor(defenceDamagedSoldierCount * defenceWoundedSoldierPercent)
@@ -200,7 +200,7 @@ Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent,
 			defenceDamagedHp = Math.ceil(attackTotalPower * 0.5 / defenceWall.defencePower * (1 - defenceWallDamageDecreasedPercent))
 		}
 		if(attackDamagedSoldierCount > attackSoldier.currentCount) attackDamagedSoldierCount = attackSoldier.currentCount
-		if(attackSoldier.currentCount >= 50 && attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
+		//if(attackSoldier.currentCount >= 50 && attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
 		if(defenceDamagedHp > defenceWall.currentHp) defenceDamagedHp = defenceWall.currentHp
 
 		var attackWoundedSoldierCount = Math.floor(attackDamagedSoldierCount * attackWoundedSoldierPercent)
