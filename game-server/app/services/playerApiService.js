@@ -728,7 +728,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 	var updateFuncs = []
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'militaryTechs', 'soldierStars', 'dailyTasks', 'growUpTasks', eventType, 'vipEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'militaryTechs', 'soldiers', 'soldierStars', 'dailyTasks', 'growUpTasks', eventType, 'vipEvents'], false).then(function(doc){
 		playerDoc = doc
 		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
 		if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))
