@@ -1,5 +1,5 @@
 var WebSocket = require('ws');
-var Protocol = require('pomelo-protocol');
+var Protocol = require('pomelo/node_modules/pomelo-protocol');
 var Package = Protocol.Package;
 var Message = Protocol.Message;
 var EventEmitter = require('events').EventEmitter;

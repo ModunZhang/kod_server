@@ -3,22 +3,21 @@
   "private": true,
   "dependencies": {
     "pomelo": "1.1.7",
-    "mongoose": "4.0.2",
-    "bluebird": "2.9.24",
+    "mongoose": "4.0.3",
+    "bluebird": "2.9.26",
     "underscore": "1.8.3",
     "nodemailer": "0.7",
     "sprintf": "0.1.5",
     "shortid": "2.2.2",
     "shelljs": "0.4.0",
     "apn":"1.7.3",
-    "pomelo-rpc-ws":"0.5.0",
-    "toobusy-js":"0.4.1"
+    "pomelo-rpc-ws":"0.5.2",
+    "toobusy-js":"0.4.2",
+    "pomelo-protobuf":"ModunZhang/pomelo-protobuf"
   },
   "devDependencies": {
     "should": ">=0.0.1",
     "mocha": ">=0.0.1",
-    "ws": ">=0.0.1",
-    "pomelo-protocol": ">=0.0.1",
-    "pomelo-protobuf": ">=0.0.1"
+    "ws": ">=0.0.1"
   }
 }
