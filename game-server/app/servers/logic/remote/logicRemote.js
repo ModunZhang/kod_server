@@ -14,6 +14,7 @@ module.exports = function(app) {
 
 var LogicRemote = function(app) {
 	this.app = app
+	this.logService = app.get('logService');
 	this.sessionService = app.get("sessionService")
 	this.channelService = app.get("channelService")
 }
@@ -40,6 +41,11 @@ pro.addToAllianceChannel = function(allianceId, uid, logicServerId , callback){
  */
 pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	if(!_.isObject(channel)){
+		this.logService.onEventError('logic.logicRemote.removeFromAllianceChannel', {allianceId:allianceId, playerId:uid, logicServerId:logicServerId})
+		callback()
+		return
+	}
 	channel.leave(uid, logicServerId)
 	if(channel.getMembers().length == 0) channel.destroy()
 	callback()

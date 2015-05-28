@@ -14,6 +14,7 @@ module.exports = function(app){
 
 var CacheRemote = function(app){
 	this.app = app
+	this.logService = app.get('logService');
 	this.dataService = app.get("dataService")
 	this.channelService = app.get('channelService')
 	this.timeEventService = app.get("timeEventService")
@@ -400,6 +401,11 @@ pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
  */
 pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	if(!_.isObject(channel)){
+		this.logService.onEventError('cache.cacheRemote.removeFromAllianceChannel', {allianceId:allianceId, playerId:uid, logicServerId:logicServerId})
+		callback()
+		return
+	}
 	channel.leave(uid, logicServerId)
 	if(channel.getMembers().length == 0) channel.destroy()
 	callback()

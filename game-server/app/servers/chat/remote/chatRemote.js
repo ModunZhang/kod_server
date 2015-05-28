@@ -13,6 +13,7 @@ module.exports = function(app) {
 
 var ChatRemote = function(app) {
 	this.app = app
+	this.logService = app.get('logService');
 	this.channelService = app.get("channelService")
 	this.globalChatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, true)
 }
@@ -62,6 +63,11 @@ pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
  */
 pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	if(!_.isObject(channel)){
+		this.logService.onEventError('chat.chatRemote.removeFromAllianceChannel', {allianceId:allianceId, playerId:uid, logicServerId:logicServerId})
+		callback()
+		return
+	}
 	channel.leave(uid, logicServerId)
 	if(channel.getMembers().length == 0){
 		channel.destroy()
