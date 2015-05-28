@@ -640,7 +640,8 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
 		isWin = isWin ? isWin : _.isEqual(attackAllianceDoc._id, report.defenceAllianceId) && _.isEqual(report.fightResult, Consts.FightResult.DefenceWin)
 		if(isWin) return Promise.reject(ErrorUtils.winnerOfAllianceFightCanNotRevenge(playerId, attackAllianceDoc._id, reportId))
 		if(DataUtils.isAllianceRevengeTimeExpired(report)) return Promise.reject(ErrorUtils.allianceFightRevengeTimeExpired(playerId, attackAllianceDoc._id, reportId))
-		return self.dataService.findAllianceAsync(report.enemyAlliance.id, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests'), false)
+		var enemyAllianceId = LogicUtils.getEnemyAllianceId(report, attackAllianceDoc._id)
+		return self.dataService.findAllianceAsync(enemyAllianceId, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests'), false)
 	}).then(function(doc){
 		defenceAllianceDoc = doc
 		if(!_.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Peace)) return Promise.reject(ErrorUtils.targetAllianceNotInPeaceStatus(playerId, attackAllianceDoc._id, reportId))
