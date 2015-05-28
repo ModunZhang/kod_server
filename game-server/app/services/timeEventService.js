@@ -601,7 +601,7 @@ pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
 	_.each(allianceDoc.strikeMarchReturnEvents, function(event){
 		event.startTime += timeAdd
 		event.arriveTime += timeAdd
-		funcs.push(self.addAllianceTimeEventAsync, allianceDoc("strikeMarchReturnEvents", event.id, event.arriveTime - now))
+		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "strikeMarchReturnEvents", event.id, event.arriveTime - now))
 	})
 	_.each(allianceDoc.attackMarchEvents, function(event){
 		event.startTime += timeAdd

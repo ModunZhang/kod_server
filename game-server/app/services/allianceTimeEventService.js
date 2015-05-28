@@ -451,13 +451,16 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					for(var i = defenceSoldierFightData.attackSoldiersAfterFight.length - 1; i >= 0; i--){
 						var attackSoldiers = Utils.clone(defenceSoldierFightData.attackSoldiersAfterFight[i])
 						if(attackSoldiers.currentCount > 0){
-							attackSoldiersLeftForFight.unshift(attackSoldiers)
-							if(attackSoldiers.round > 0){
-								attackSoldiers.totalCount = attackSoldiers.currentCount
-								attackSoldiers.woundedCount = 0
-								attackSoldiers.morale = 100
-								attackSoldiers.round = 0
-								attackSoldiers.killedSoldiers = []
+							if(attackSoldiers.round == 0)
+								attackSoldiersLeftForFight.unshift(attackSoldiers);
+							else{
+								if(attackSoldiers.morale > 20){
+									attackSoldiers.totalCount = attackSoldiers.currentCount
+									attackSoldiers.woundedCount = 0
+									attackSoldiers.morale = 100
+									attackSoldiers.round = 0
+									attackSoldiers.killedSoldiers = []
+								}
 								break
 							}
 						}
