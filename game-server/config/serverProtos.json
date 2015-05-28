@@ -1,12 +1,41 @@
 {
-  "gate.gateHandler.queryEntry":{
-    "required uInt32 code":1,
-    "optional string message":2,
-    "message Data":{
-      "required string id":1,
-      "required string host":2,
-      "required uInt32 port":3
+  "gate.gateHandler.queryEntry": {
+    "required uInt32 code": 1,
+    "message Data": {
+      "required string id": 1,
+      "required string host": 2,
+      "required uInt32 port": 3
     },
-    "optional Data data":3
+    "optional Data data": 2
+  },
+  "chat.chatHandler.getAll": {
+    "required uInt32 code": 1,
+    "message Chat": {
+      "required string id": 1,
+      "required uInt32 icon": 2,
+      "required string name": 3,
+      "required uInt32 vip": 4,
+      "required string allianceId": 5,
+      "required string allianceTag": 6,
+      "required string channel": 7,
+      "required string text": 8,
+      "required uInt64 time": 9
+    },
+    "repeated Chat chats": 2
+  },
+  "logic.entryHandler.login": {
+    "required uInt32 code": 1,
+    "message PlayerData": {
+      "required string _id": 1
+    },
+    "message AllianceData": {
+      "required string _id": 1
+    },
+    "message EnemyAllianceData": {
+      "required string _id": 1
+    },
+    "required PlayerData playerData": 2,
+    "optional AllianceData allianceData": 3,
+    "optional EnemyAllianceData enemyAllianceData": 4
   }
 }

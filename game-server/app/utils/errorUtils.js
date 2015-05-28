@@ -45,7 +45,7 @@ Utils.createError = function(code, message, showCode){
  * @param e
  */
 Utils.getError = function(e){
-	return {code:_.isNumber(e.code) ? e.code : 500, message:e.message}
+	return {code:_.isNumber(e.code) ? e.code : 500}
 }
 
 /**
