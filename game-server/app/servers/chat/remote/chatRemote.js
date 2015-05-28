@@ -4,6 +4,8 @@
  * Created by modun on 14-7-29.
  */
 
+var _ = require("underscore")
+
 var Consts = require("../../../consts/consts")
 var Events = require("../../../consts/events")
 
