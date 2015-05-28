@@ -234,7 +234,7 @@ var createStrikePlayerReturnData = function(allianceDoc, playerDoc, playerLocati
  */
 var getPlayerSoldiersMarchTime = function(playerDoc, dragon, soldiers, fromAllianceDoc, fromLocation, toAllianceDoc, toLocation){
 	var distance = getAllianceLocationDistance(fromAllianceDoc, fromLocation, toAllianceDoc, toLocation)
-	var baseSpeed = 1200
+	var baseSpeed = 2000
 	var totalSpeed = 0
 	var totalCount = 0
 	_.each(soldiers, function(soldier){
@@ -273,7 +273,7 @@ var getPlayerSoldiersMarchTime = function(playerDoc, dragon, soldiers, fromAllia
  */
 var getPlayerDragonMarchTime = function(playerDoc, dragon, fromAllianceDoc, fromLocation, toAllianceDoc, toLocation){
 	var distance = getAllianceLocationDistance(fromAllianceDoc, fromLocation, toAllianceDoc, toLocation)
-	var baseSpeed = 1200
+	var baseSpeed = 2000
 	var marchSpeed = PlayerInitData.intInit.dragonMarchSpeed.value
 	var time = Math.ceil(baseSpeed / marchSpeed * distance * 1000)
 	return time//5 * 1000
