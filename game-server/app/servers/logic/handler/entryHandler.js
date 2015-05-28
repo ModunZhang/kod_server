@@ -9,6 +9,7 @@ var _ = require("underscore")
 var crypto = require('crypto')
 var ErrorUtils = require("../../../utils/errorUtils")
 var Consts = require("../../../consts/consts")
+var NodeUtils = require("util")
 
 module.exports = function(app){
 	return new Handler(app)
@@ -53,6 +54,7 @@ pro.login = function(msg, session, next){
 		allianceDoc = doc_2
 		enemyAllianceDoc = doc_3
 	}).then(function(){
+		//console.log(NodeUtils.inspect(playerDoc, false, null))
 		next(null, {
 			code:200,
 			playerData:playerDoc,

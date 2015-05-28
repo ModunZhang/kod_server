@@ -1,5 +1,6 @@
 {
   "name": "KOD",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "pomelo": "1.1.7",
@@ -12,8 +13,7 @@
     "shelljs": "0.4.0",
     "apn":"1.7.3",
     "pomelo-rpc-ws":"0.5.2",
-    "toobusy-js":"0.4.2",
-    "pomelo-protobuf":"ModunZhang/pomelo-protobuf"
+    "toobusy-js":"0.4.2"
   },
   "devDependencies": {
     "should": ">=0.0.1",

@@ -34,7 +34,7 @@ app.configure("local|develop|awschina", "gate", function(){
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
 		useDict:true,
-		useProtobuf:true,
+		useProtobuf:false,
 		disconnectOnTimeout:true
 	})
 	var filterService = new FilterService(app)
@@ -53,7 +53,7 @@ app.configure("local|develop|awschina", "logic", function(){
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
 		useDict:true,
-		useProtobuf:true,
+		useProtobuf:false,
 		disconnectOnTimeout:true
 	})
 

@@ -3,7 +3,7 @@ var Protocol = require('pomelo/node_modules/pomelo-protocol');
 var Package = Protocol.Package;
 var Message = Protocol.Message;
 var EventEmitter = require('events').EventEmitter;
-var protobuf = require('pomelo-protobuf');
+var protobuf = require('pomelo/node_modules/pomelo-protobuf');
 var JS_WS_CLIENT_TYPE = 'js-websocket';
 var JS_WS_CLIENT_VERSION = '0.0.1';
 

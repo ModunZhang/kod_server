@@ -54,7 +54,7 @@ pro.unSaveMail = function(playerId, mailId, callback){
  * @param callback
  */
 pro.getMails = function(playerId, fromIndex, callback){
-	if(!_.isNumber(fromIndex) || fromIndex % 10 !== 0 || fromIndex < 0){
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
 		callback(new Error("fromIndex 不合法"))
 		return
 	}
@@ -73,7 +73,7 @@ pro.getMails = function(playerId, fromIndex, callback){
  * @param callback
  */
 pro.getSendMails = function(playerId, fromIndex, callback){
-	if(!_.isNumber(fromIndex) || fromIndex % 10 !== 0 || fromIndex < 0){
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
 		callback(new Error("fromIndex 不合法"))
 		return
 	}
@@ -210,7 +210,7 @@ pro.unSaveReport = function(playerId, reportId, callback){
  * @param callback
  */
 pro.getReports = function(playerId, fromIndex, callback){
-	if(!_.isNumber(fromIndex) || fromIndex % 10 !== 0 || fromIndex < 0){
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
 		callback(new Error("fromIndex 不合法"))
 		return
 	}
@@ -229,7 +229,7 @@ pro.getReports = function(playerId, fromIndex, callback){
  * @param callback
  */
 pro.getSavedReports = function(playerId, fromIndex, callback){
-	if(!_.isNumber(fromIndex) || fromIndex % 10 !== 0 || fromIndex < 0){
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
 		callback(new Error("fromIndex 不合法"))
 		return
 	}

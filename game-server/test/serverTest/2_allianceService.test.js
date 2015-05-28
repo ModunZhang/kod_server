@@ -60,7 +60,6 @@
 //		it("createAlliance language 不合法", function(done){
 //			Api.createAlliance(Config.allianceName, Config.allianceTag, "c", "grassLand", "e", function(doc){
 //				doc.code.should.equal(500)
-//				doc.message.should.equal("language 不合法")
 //				done()
 //			})
 //		})
@@ -68,7 +67,6 @@
 //		it("createAlliance terrain 不合法", function(done){
 //			Api.createAlliance(Config.allianceName, Config.allianceTag, "cn", "d", "e", function(doc){
 //				doc.code.should.equal(500)
-//				doc.message.should.equal("terrain 不合法")
 //				done()
 //			})
 //		})
