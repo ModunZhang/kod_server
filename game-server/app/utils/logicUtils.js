@@ -1631,11 +1631,11 @@ Utils.returnPlayerShrineTroops = function(playerDoc, playerData, allianceDoc, al
 		allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(playerTroop.event) + ".playerTroops." + playerTroop.event.playerTroops.indexOf(playerTroop.troop), null])
 		self.removeItemInArray(playerTroop.event.playerTroops, playerTroop.troop)
 
-		DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[playerTroop.dragon.type])
-		playerDoc.dragons[playerTroop.dragon.type].status = Consts.DragonStatus.Free
-		playerData.push(["dragons." + playerTroop.dragon.type], playerDoc.dragons[playerTroop.dragon.type])
+		DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[playerTroop.troop.dragon.type])
+		playerDoc.dragons[playerTroop.troop.dragon.type].status = Consts.DragonStatus.Free
+		playerData.push(["dragons." + playerTroop.troop.dragon.type], playerDoc.dragons[playerTroop.troop.dragon.type])
 
-		_.each(playerTroop.soldiers, function(soldier){
+		_.each(playerTroop.troop.soldiers, function(soldier){
 			playerDoc.soldiers[soldier.name] += soldier.count
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
