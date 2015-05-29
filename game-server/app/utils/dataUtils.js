@@ -1294,6 +1294,7 @@ Utils.getDragonStrength = function(dragon, terrain){
 			strength += strengthAdd
 		}
 	})
+	console.log('getDragonStrength', dragonForFight)
 	return strength
 }
 
@@ -2245,6 +2246,7 @@ Utils.createPlayerDragonForFight = function(playerDoc, dragon, terrain){
 		currentHp:dragon.hp,
 		isWin:false
 	}
+	console.log('createPlayerDragonForFight', dragonForFight)
 	return dragonForFight
 }
 

@@ -53,7 +53,12 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 		var attackWoundedSoldierCount = Math.floor(attackDamagedSoldierCount * attackWoundedSoldierPercent)
 		var defenceWoundedSoldierCount = Math.floor(defenceDamagedSoldierCount * defenceWoundedSoldierPercent)
 		var attackMoraleDecreased = Math.ceil(attackDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / attackSoldier.totalCount * 100 * attackSoldierMoraleDecreasedPercent)
-		var dfenceMoraleDecreased = Math.ceil(defenceDamagedSoldierCount * Math.pow(2, defenceSoldier.round - 1) / defenceSoldier.totalCount * 100 * defenceSoldierMoraleDecreasedPercent)
+		var defenceMoraleDecreased = Math.ceil(defenceDamagedSoldierCount * Math.pow(2, defenceSoldier.round - 1) / defenceSoldier.totalCount * 100 * defenceSoldierMoraleDecreasedPercent)
+		if(attackMoraleDecreased > attackSoldier.morale)
+			attackMoraleDecreased = attackSoldier.morale;
+		if(defenceMoraleDecreased > defenceSoldier.morale)
+			defenceMoraleDecreased = defenceSoldier.morale;
+
 		attackResults.push({
 			soldierName:attackSoldier.name,
 			soldierStar:attackSoldier.star,
@@ -71,7 +76,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 			soldierDamagedCount:defenceDamagedSoldierCount,
 			soldierWoundedCount:defenceWoundedSoldierCount,
 			morale:defenceSoldier.morale,
-			moraleDecreased:dfenceMoraleDecreased > defenceSoldier.morale ? defenceSoldier.morale : dfenceMoraleDecreased,
+			moraleDecreased:defenceMoraleDecreased > defenceSoldier.morale ? defenceSoldier.morale : defenceMoraleDecreased,
 			isWin:attackTotalPower < defenceTotalPower
 		})
 		attackSoldier.round += 1
@@ -86,7 +91,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 		defenceSoldier.round += 1
 		defenceSoldier.currentCount -= defenceDamagedSoldierCount
 		defenceSoldier.woundedCount += defenceWoundedSoldierCount
-		defenceSoldier.morale -= dfenceMoraleDecreased
+		defenceSoldier.morale -= defenceMoraleDecreased
 		defenceSoldier.killedSoldiers.push({
 			name:attackSoldier.name,
 			star:attackSoldier.star,
@@ -106,10 +111,15 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 	defenceSoldiersAfterFight = defenceSoldiersAfterFight.concat(defenceSoldiers)
 
 	var fightResult = null
-	if(attackSoldiers.length > 0 || (attackSoldiers.length == 0 && defenceSoldiers.length == 0)){
-		fightResult = Consts.FightResult.AttackWin
-	}else{
-		fightResult = Consts.FightResult.DefenceWin
+	if(attackSoldiers.length > 0)
+		fightResult = Consts.FightResult.AttackWin;
+	else if(defenceSoldiers.length > 0)
+		fightResult = Consts.FightResult.DefenceWin;
+	else{
+		if(attackResults[attackResults.length -1].isWin)
+			fightResult = Consts.FightResult.AttackWin;
+		else
+			fightResult = Consts.FightResult.DefenceWin;
 	}
 
 	var response = {

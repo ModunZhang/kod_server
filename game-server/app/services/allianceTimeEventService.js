@@ -451,7 +451,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					for(var i = defenceSoldierFightData.attackSoldiersAfterFight.length - 1; i >= 0; i--){
 						var attackSoldiers = Utils.clone(defenceSoldierFightData.attackSoldiersAfterFight[i])
 						if(attackSoldiers.currentCount > 0){
-							if(attackSoldiers.round == 0)
+							if(attackSoldiers.round == 1)
 								attackSoldiersLeftForFight.unshift(attackSoldiers);
 							else{
 								if(attackSoldiers.morale > 20){
@@ -460,6 +460,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 									attackSoldiers.morale = 100
 									attackSoldiers.round = 0
 									attackSoldiers.killedSoldiers = []
+									attackSoldiersLeftForFight.unshift(attackSoldiers);
 								}
 								break
 							}

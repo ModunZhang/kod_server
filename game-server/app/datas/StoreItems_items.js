@@ -49,6 +49,6 @@ items[5] = {
 	price:99.990000,
 	desc:"龙族王朝礼包",
 	gem:80000,
-	rewards:"resource:woodClass_7:5,resource:stoneClass_7:5,resource:ironClass_7:5,resource:foodClass_7:5,resource:coinClass_7:5,speedup:speedup_3:5,speedup:speedup_4:5,speedup:speedup_5:5,speedup:speedup_6:5,speedup:speedup_7:5,buff:woodBonus_1:5,buff:stoneBonus_1:5,buff:ironBonus_1:5,buff:foodBonus_1:5,buff:coinBonus_1:5,buff:unitHpBonus_1:5,buff:infantryAtkBonus_1:5,buff:archerAtkBonus_1:5,buff:cavalryAtkBonus_1:,buff:siegeAtkBonus_1:5,special:dragonChest_2:10,special:dragonChest_3:10",
+	rewards:"resource:woodClass_7:5,resource:stoneClass_7:5,resource:ironClass_7:5,resource:foodClass_7:5,resource:coinClass_7:5,speedup:speedup_3:5,speedup:speedup_4:5,speedup:speedup_5:5,speedup:speedup_6:5,speedup:speedup_7:5,buff:woodBonus_1:5,buff:stoneBonus_1:5,buff:ironBonus_1:5,buff:foodBonus_1:5,buff:coinBonus_1:5,buff:unitHpBonus_1:5,buff:infantryAtkBonus_1:5,buff:archerAtkBonus_1:5,buff:cavalryAtkBonus_1:5,buff:siegeAtkBonus_1:5,special:dragonChest_2:10,special:dragonChest_3:10",
 	allianceRewards:"special:chest_4:1"
 }
