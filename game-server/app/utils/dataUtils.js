@@ -2375,7 +2375,6 @@ Utils.getPlayerTreatSoldierPercent = function(playerDoc, dragon){
 			}
 		})
 	})
-
 	return basePercent + skillBuff + equipmentBuff
 }
 

@@ -691,7 +691,8 @@ pro.finishFTE = function(playerId, callback){
  * @param callback
  */
 pro.getPlayerWallInfo = function(playerId, memberId, callback){
-	this.dataService.directFindPlayerAsync(memberId, ['_id', 'resources', 'buildings'], false).then(function(doc){
+	this.dataService.directFindPlayerAsync(memberId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'dailyTasks', 'growUpTasks', 'vipEvents', 'itemEvents', 'soldierEvents', 'houseEvents'], false).then(function(doc){
+		DataUtils.refreshPlayerResources(doc)
 		var info = {
 			wallLevel:doc.buildings.location_21.level,
 			wallHp:doc.resources.wallHp

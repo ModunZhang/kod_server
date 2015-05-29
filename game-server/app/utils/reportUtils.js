@@ -297,7 +297,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
 		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
 		var attackDragonBuffSubtractPercent = getDragonSkillResourceLootPercentAdd(attackDragon)
-		var finalPercent = (basePercent * (1 + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent)) - attackDragonBuffSubtractPercent
+		var finalPercent = basePercent + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent - attackDragonBuffSubtractPercent
 		finalPercent = finalPercent > 0.9 ? 0.9 : finalPercent < 0.1 ? 0.1 : finalPercent
 		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
 	}
@@ -732,7 +732,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		var buildingBuffAddPercent = getBuildingBuffForResourceProtectPercent(defencePlayerDoc, resourceName)
 		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
 		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
-		var finalPercent = basePercent * (1 + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent)
+		var finalPercent = basePercent + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent
 		finalPercent = finalPercent > 0.9 ? 0.9 : finalPercent < 0.1 ? 0.1 : finalPercent
 		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
 	}
@@ -746,6 +746,20 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 	attackDragonHpDecreased = attackDragonHpDecreased > attackDragon.hp ? attackDragon.hp : attackDragonHpDecreased
 	var attackDragonData = createDragonData(attackDragon, attackDragonHpDecreased)
 	var defenceDragonData = createDragonData(defenceDragon, 0)
+
+	var woodCanbeLooted = defencePlayerDoc.resources.wood - getPlayerResourceProtectCount(defencePlayerDoc, "wood")
+	if(woodCanbeLooted < 0)
+		woodCanbeLooted = 0;
+	var stoneCanbeLooted = defencePlayerDoc.resources.stone - getPlayerResourceProtectCount(defencePlayerDoc, "stone")
+	if(stoneCanbeLooted < 0)
+		stoneCanbeLooted = 0;
+	var ironCanbeLooted = defencePlayerDoc.resources.iron - getPlayerResourceProtectCount(defencePlayerDoc, "iron")
+	if(ironCanbeLooted < 0)
+		ironCanbeLooted = 0;
+	var foodCanbeLooted = defencePlayerDoc.resources.food - getPlayerResourceProtectCount(defencePlayerDoc, "food")
+	if(foodCanbeLooted < 0)
+		foodCanbeLooted = 0;
+	var coinCanbeLooted = defencePlayerDoc.resources.coin
 
 	var strikeCityReport = {
 		level:(function(){
@@ -784,11 +798,11 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 			soldiers:getDefenceSoldiers(defencePlayerDoc),
 			militaryTechs:getMilitaryTechs(defencePlayerDoc),
 			resources:{
-				wood:defencePlayerDoc.resources.wood - getPlayerResourceProtectCount(defencePlayerDoc, "wood"),
-				stone:defencePlayerDoc.resources.stone - getPlayerResourceProtectCount(defencePlayerDoc, "stone"),
-				iron:defencePlayerDoc.resources.iron - getPlayerResourceProtectCount(defencePlayerDoc, "iron"),
-				food:defencePlayerDoc.resources.food - getPlayerResourceProtectCount(defencePlayerDoc, "food"),
-				coin:defencePlayerDoc.resources.coin
+				wood:woodCanbeLooted,
+				stone:stoneCanbeLooted,
+				iron:ironCanbeLooted,
+				food:foodCanbeLooted,
+				coin:coinCanbeLooted
 			}
 		}
 	}
@@ -909,10 +923,24 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		var buildingBuffAddPercent = getBuildingBuffForResourceProtectPercent(defencePlayerDoc, resourceName)
 		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
 		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
-		var finalPercent = basePercent * (1 + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent)
+		var finalPercent = basePercent + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent
 		finalPercent = finalPercent > 0.9 ? 0.9 : finalPercent < 0.1 ? 0.1 : finalPercent
 		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
 	}
+
+	var woodCanbeLooted = defencePlayerDoc.resources.wood - getPlayerResourceProtectCount(defencePlayerDoc, "wood")
+	if(woodCanbeLooted < 0)
+		woodCanbeLooted = 0;
+	var stoneCanbeLooted = defencePlayerDoc.resources.stone - getPlayerResourceProtectCount(defencePlayerDoc, "stone")
+	if(stoneCanbeLooted < 0)
+		stoneCanbeLooted = 0;
+	var ironCanbeLooted = defencePlayerDoc.resources.iron - getPlayerResourceProtectCount(defencePlayerDoc, "iron")
+	if(ironCanbeLooted < 0)
+		ironCanbeLooted = 0;
+	var foodCanbeLooted = defencePlayerDoc.resources.food - getPlayerResourceProtectCount(defencePlayerDoc, "food")
+	if(foodCanbeLooted < 0)
+		foodCanbeLooted = 0;
+	var coinCanbeLooted = defencePlayerDoc.resources.coin
 
 	var attackDragonData = createDragonData(attackDragon, 0)
 	var strikeCityReport = {
@@ -938,11 +966,11 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			icon:defencePlayerDoc.basicInfo.icon,
 			alliance:createAllianceData(defenceAllianceDoc),
 			resources:{
-				wood:defencePlayerDoc.resources.wood - getPlayerResourceProtectCount(defencePlayerDoc, "wood"),
-				stone:defencePlayerDoc.resources.stone - getPlayerResourceProtectCount(defencePlayerDoc, "stone"),
-				iron:defencePlayerDoc.resources.iron - getPlayerResourceProtectCount(defencePlayerDoc, "iron"),
-				food:defencePlayerDoc.resources.food - getPlayerResourceProtectCount(defencePlayerDoc, "food"),
-				coin:defencePlayerDoc.resources.coin
+				wood:woodCanbeLooted,
+				stone:stoneCanbeLooted,
+				iron:ironCanbeLooted,
+				food:foodCanbeLooted,
+				coin:coinCanbeLooted
 			}
 		}
 	}

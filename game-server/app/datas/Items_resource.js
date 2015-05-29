@@ -358,9 +358,9 @@ resource["citizenClass_1"] = {
 	effect:0.200000,
 	order:36,
 	isSell:true,
-	price:155,
-	sellPriceInAlliance:15500,
-	buyPriceInAlliance:15500,
+	price:120,
+	sellPriceInAlliance:12000,
+	buyPriceInAlliance:12000,
 	isAdvancedItem:false
 }
 resource["citizenClass_2"] = {
@@ -368,9 +368,9 @@ resource["citizenClass_2"] = {
 	effect:0.500000,
 	order:37,
 	isSell:true,
-	price:300,
-	sellPriceInAlliance:30000,
-	buyPriceInAlliance:30000,
+	price:240,
+	sellPriceInAlliance:24000,
+	buyPriceInAlliance:24000,
 	isAdvancedItem:false
 }
 resource["citizenClass_3"] = {
@@ -378,9 +378,9 @@ resource["citizenClass_3"] = {
 	effect:1.000000,
 	order:38,
 	isSell:true,
-	price:600,
-	sellPriceInAlliance:60000,
-	buyPriceInAlliance:60000,
+	price:400,
+	sellPriceInAlliance:40000,
+	buyPriceInAlliance:40000,
 	isAdvancedItem:false
 }
 resource["casinoTokenClass_1"] = {
