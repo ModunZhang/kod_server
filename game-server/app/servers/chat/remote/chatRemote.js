@@ -64,6 +64,7 @@ pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
  * @param callback
  */
 pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
+	console.log(_.keys(this.app.settings))
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 	if(!_.isObject(channel)){
 		this.logService.onEventError('chat.chatRemote.removeFromAllianceChannel', {allianceId:allianceId, playerId:uid, logicServerId:logicServerId})
@@ -98,6 +99,7 @@ pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
  * @param callback
  */
 pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
+	console.log(_.keys(this.app.settings))
 	var allianceFights = this.app.get('allianceFights')
 	delete allianceFights[attackAllianceId]
 	delete allianceFights[defenceAllianceId]
