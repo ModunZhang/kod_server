@@ -701,8 +701,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							defenceAllianceData.push(["allianceFight.defenceAllianceCountData.routCount", defenceAllianceDoc.allianceFight.defenceAllianceCountData.routCount])
 							memberInAlliance = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
 							memberInAlliance.isProtected = true
-							defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtechted", memberInAlliance.isProtected])
-							attackEnemyAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtechted", memberInAlliance.isProtected])
+							defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
+							attackEnemyAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
 						}
 					}
 				}

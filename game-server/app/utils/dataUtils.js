@@ -1272,7 +1272,6 @@ Utils.getDragonStrengthBuff = function(dragon, terrain){
 	var dragonStrengthTerrainAddPercent = this.getPlayerIntInit("dragonStrengthTerrainAddPercent")
 	var terrainBuff = _.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain) ? (dragonStrengthTerrainAddPercent / 100) : 0
 	var skillBuff = this.getDragonSkillBuff(dragon, "dragonBreath")
-	console.log('getDragonStrengthBuff', terrainBuff, skillBuff)
 	return terrainBuff + skillBuff
 }
 
@@ -1286,7 +1285,6 @@ Utils.getDragonStrength = function(dragon, terrain){
 	var strength = Dragons.dragonLevel[dragon.level].strength
 	strength += Dragons.dragonStar[dragon.star].initStrength
 	var buff = this.getDragonStrengthBuff(dragon, terrain)
-	console.log('getDragonStrength', strength, Math.floor(strength * buff))
 	strength += Math.floor(strength * buff)
 	_.each(dragon.equipments, function(equipment, category){
 		if(!_.isEmpty(equipment.name)){
@@ -1296,7 +1294,6 @@ Utils.getDragonStrength = function(dragon, terrain){
 			strength += strengthAdd
 		}
 	})
-	console.log('getDragonStrength', strength)
 	return strength
 }
 
@@ -2043,7 +2040,6 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
 			}
 		})
 	})
-	console.log('getPlayerSoldierAtkBuff', itemBuff, skillBuff, equipmentBuff, isDragonWin)
 	return itemBuff + ((skillBuff + equipmentBuff) * (isDragonWin ? 1 : 0.5))
 }
 
@@ -2092,7 +2088,6 @@ Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain,
 			}
 		})
 	})
-	console.log('getPlayerSoldierHpBuff', itemBuff, skillBuff, equipmentBuff, isDragonWin)
 	return itemBuff + ((skillBuff + equipmentBuff) * (isDragonWin ? 1 : 0.5))
 }
 
@@ -2150,7 +2145,6 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 		var techBuffHpAdd = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_hpAdd")
 		var vipAttackBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].soldierAttackPowerAdd
 		var vipHpBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].soldierHpAdd
-		console.log(atkBuff, atkWallBuff, hpBuff, loadBuff, techBuffToInfantry, techBuffToArcher, techBuffToCavalry, techBuffToSiege, techBuffHpAdd, vipAttackBuff, vipHpBuff)
 		var soldierForFight = {
 			name:soldierName,
 			star:soldierStar,
@@ -2178,7 +2172,6 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 	soldiersForFight = _.sortBy(soldiersForFight, function(soldier){
 		return -(soldier.power * soldier.totalCount)
 	})
-	console.log('createPlayerSoldiersForFight', soldiersForFight);
 	return soldiersForFight
 }
 
@@ -2250,7 +2243,6 @@ Utils.createPlayerDragonForFight = function(playerDoc, dragon, terrain){
 		currentHp:dragon.hp,
 		isWin:false
 	}
-	console.log('createPlayerDragonForFight', dragonForFight)
 	return dragonForFight
 }
 
