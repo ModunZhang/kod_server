@@ -11,6 +11,9 @@ var LogService = require("../../services/logService")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
+	app.set('allianceChats', {})
+	app.set('allianceFights', {})
+	app.set('allianceFightChats', {})
 	app.set("logService", new LogService(app))
 	callback()
 }

@@ -18,6 +18,9 @@ var ChatRemote = function(app) {
 	this.logService = app.get('logService');
 	this.channelService = app.get("channelService")
 	this.globalChatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, true)
+	this.allianceChats = app.get('allianceChats')
+	this.allianceFights = app.get('allianceFights')
+	this.allianceFightChats = app.get('allianceFightChats')
 }
 
 var pro = ChatRemote.prototype
@@ -64,7 +67,6 @@ pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
  * @param callback
  */
 pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
-	console.log('removeFromAllianceChannel', _.keys(this.app.settings))
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 	if(!_.isObject(channel)){
 		this.logService.onEventError('chat.chatRemote.removeFromAllianceChannel', {allianceId:allianceId, playerId:uid, logicServerId:logicServerId})
@@ -74,7 +76,7 @@ pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callbac
 	channel.leave(uid, logicServerId)
 	if(channel.getMembers().length == 0){
 		channel.destroy()
-		delete this.app.get('allianceChats')[allianceId]
+		delete this.allianceChats[allianceId]
 	}
 	callback()
 }
@@ -86,9 +88,8 @@ pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callbac
  * @param callback
  */
 pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
-	var allianceFights = this.app.get('allianceFights')
-	allianceFights[attackAllianceId] = attackAllianceId + '_' + defenceAllianceId
-	allianceFights[defenceAllianceId] = attackAllianceId + '_' + defenceAllianceId
+	this.allianceFights[attackAllianceId] = attackAllianceId + '_' + defenceAllianceId
+	this.allianceFights[defenceAllianceId] = attackAllianceId + '_' + defenceAllianceId
 	callback()
 }
 
@@ -99,11 +100,10 @@ pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
  * @param callback
  */
 pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
-	console.log('deleteAllianceFightChannel', _.keys(this.app.settings))
 	var allianceFights = this.app.get('allianceFights')
 	delete allianceFights[attackAllianceId]
 	delete allianceFights[defenceAllianceId]
-	delete this.app.get('allianceFightChats')[attackAllianceId + '_' + defenceAllianceId]
+	delete this.allianceFightChats[attackAllianceId + '_' + defenceAllianceId]
 	callback()
 }
 

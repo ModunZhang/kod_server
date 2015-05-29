@@ -21,11 +21,8 @@ var ChatHandler = function(app){
 	this.chatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, false)
 	this.logService = app.get("logService")
 	this.chats = []
-	app.set('allianceChats', {})
 	this.allianceChats = app.get('allianceChats')
-	app.set('allianceFights', {})
 	this.allianceFights = app.get('allianceFights')
-	app.set('allianceFightChats', {})
 	this.allianceFightChats = app.get('allianceFightChats')
 	this.maxChatCount = 50
 	this.maxAllianceChatCount = 50
