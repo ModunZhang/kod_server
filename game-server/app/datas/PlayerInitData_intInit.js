@@ -55,7 +55,7 @@ intInit["chestSelectCountPerItem"] = {
 }
 intInit["dragonReviveNeedMinutes"] = {
 	type:"dragonReviveNeedMinutes",
-	value:3600,
+	value:60,
 	desc:"龙复活需要的时间"
 }
 intInit["casinoTokenNeededPerNormalGacha"] = {
@@ -105,7 +105,7 @@ intInit["dailyQuestsRefreshMinites"] = {
 }
 intInit["playerHatchDragonNeedMinutes"] = {
 	type:"playerHatchDragonNeedMinutes",
-	value:7200,
+	value:120,
 	desc:"孵化龙所需的时间"
 }
 intInit["changeTerrainNeedGemCount"] = {

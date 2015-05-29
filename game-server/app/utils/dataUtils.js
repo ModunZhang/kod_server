@@ -2827,6 +2827,7 @@ Utils.getPlayerDragonExpAdd = function(playerDoc, kill){
 	var expAdd = kill / this.getAllianceIntInit("KilledCitizenPerDragonExp")
 	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? Items.buffTypes["dragonExpBonus"].effect1 : 0
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonExpAdd
+	console.log(expAdd, itemBuff, vipBuff, '111111111111111111')
 	expAdd = Math.floor(expAdd * (1 + itemBuff + vipBuff))
 	return expAdd
 }
