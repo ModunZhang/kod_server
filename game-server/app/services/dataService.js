@@ -1376,6 +1376,7 @@ pro.removePlayerFromChannels = function(playerDoc, callback){
  * @param callback
  */
 pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
+	var self = this
 	var createAllianceFightChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.createAllianceFightChannel.toServer, this)
 	createAllianceFightChannelAsync(this.chatServerId, attackAllianceId, defenceAllianceId).catch(function(e){
 		self.logService.onEventError("logic.dataService.createAllianceFightChannel", {attackAllianceId:attackAllianceId, defenceAllianceId:defenceAllianceId}, e.stack)
@@ -1390,6 +1391,7 @@ pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
  * @param callback
  */
 pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
+	var self = this
 	var deleteAllianceFightChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.deleteAllianceFightChannel.toServer, this)
 	deleteAllianceFightChannelAsync(this.chatServerId, attackAllianceId, defenceAllianceId).catch(function(e){
 		self.logService.onEventError("logic.dataService.deleteAllianceFightChannel", {attackAllianceId:attackAllianceId, defenceAllianceId:defenceAllianceId}, e.stack)

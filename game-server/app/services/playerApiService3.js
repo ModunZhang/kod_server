@@ -656,7 +656,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 	var itemDoc = null
 	var updateFuncs = []
 	var funcs = []
-	funcs.push(this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'deals', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'buildingMaterials', 'technologyMaterials', 'vipEvents', 'itemEvents'], false))
+	funcs.push(this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'deals', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'buildingMaterials', 'technologyMaterials', 'vipEvents', 'itemEvents'], false))
 	funcs.push(this.Deal.findOneAsync({_id:itemId}))
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		playerDoc = doc_1
