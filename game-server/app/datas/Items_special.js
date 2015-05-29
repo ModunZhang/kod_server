@@ -275,12 +275,12 @@ special["dragonExp_3"] = {
 }
 special["dragonHp_1"] = {
 	name:"dragonHp_1",
-	effect:"500.0",
+	effect:"200.0",
 	order:29,
 	isSell:true,
-	price:150,
-	sellPriceInAlliance:15000,
-	buyPriceInAlliance:15000,
+	price:60,
+	sellPriceInAlliance:6000,
+	buyPriceInAlliance:6000,
 	isAdvancedItem:true
 }
 special["dragonHp_2"] = {
@@ -365,7 +365,7 @@ special["stamina_3"] = {
 }
 special["restoreWall_1"] = {
 	name:"restoreWall_1",
-	effect:"500.0",
+	effect:"200.0",
 	order:38,
 	isSell:true,
 	price:100,
@@ -375,7 +375,7 @@ special["restoreWall_1"] = {
 }
 special["restoreWall_2"] = {
 	name:"restoreWall_2",
-	effect:"2500.0",
+	effect:"2000.0",
 	order:39,
 	isSell:true,
 	price:600,
@@ -385,7 +385,7 @@ special["restoreWall_2"] = {
 }
 special["restoreWall_3"] = {
 	name:"restoreWall_3",
-	effect:"12500.0",
+	effect:"10000.0",
 	order:40,
 	isSell:true,
 	price:2000,
