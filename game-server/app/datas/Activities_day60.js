@@ -101,7 +101,7 @@ day60[24] = {
 }
 day60[25] = {
 	day:25,
-	rewards:"special:vipActive_3"
+	rewards:"special:vipActive_3:1"
 }
 day60[26] = {
 	day:26,

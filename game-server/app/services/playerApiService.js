@@ -46,6 +46,7 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 	session.set("allianceId", _.isObject(allianceDoc) ? allianceDoc._id : "")
 	session.set("allianceTag", _.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "")
 	session.set("vipExp", playerDoc.basicInfo.vipExp)
+	session.set("isVipActive", playerDoc.vipEvents.length > 0)
 	session.on("closed", this.playerLogoutAsync.bind(this))
 	session.pushAll(function(err){
 		process.nextTick(function(){

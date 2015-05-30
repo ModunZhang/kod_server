@@ -132,7 +132,7 @@ pro.getDay14Reward = function(playerId, callback){
 		playerDoc.countInfo.day14RewardsCount = playerDoc.countInfo.day14
 		playerData.push(["countInfo.day14RewardsCount", playerDoc.countInfo.day14RewardsCount])
 
-		var rewards = DataUtils.getDay14Rewards(playerDoc.countInfo.day60)
+		var rewards = DataUtils.getDay14Rewards(playerDoc.countInfo.day14)
 		_.each(rewards, function(reward){
 			playerDoc[reward.type][reward.name] += reward.count
 			playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])

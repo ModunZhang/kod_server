@@ -351,10 +351,6 @@ pro.send = function(msg, session, next){
 		}
 	}
 
-	var name = session.get("name")
-	var icon = session.get("icon")
-	var vipExp = session.get("vipExp")
-
 	var filterCommand = Promise.promisify(FilterCommand, this)
 	filterCommand(text, session).then(function(){
 		var response = {
@@ -362,6 +358,7 @@ pro.send = function(msg, session, next){
 			icon:session.get("icon"),
 			name:session.get("name"),
 			vip:session.get("vipExp"),
+			vipActive:session.get('isVipActive'),
 			allianceId:session.get("allianceId"),
 			allianceTag:session.get("allianceTag"),
 			channel:channel,
