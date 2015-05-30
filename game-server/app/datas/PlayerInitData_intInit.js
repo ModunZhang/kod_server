@@ -105,7 +105,7 @@ intInit["dailyQuestsRefreshMinites"] = {
 }
 intInit["playerHatchDragonNeedMinutes"] = {
 	type:"playerHatchDragonNeedMinutes",
-	value:120,
+	value:1440,
 	desc:"孵化龙所需的时间"
 }
 intInit["changeTerrainNeedGemCount"] = {

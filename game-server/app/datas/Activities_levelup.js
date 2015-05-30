@@ -6,12 +6,12 @@ module.exports = levelup
 levelup[1] = {
 	index:1,
 	level:6,
-	rewards:"speedup:speedup_5:1,resource:gemClass_1:2"
+	rewards:"special:dragonChest_1:1,resource:gemClass_1:2"
 }
 levelup[2] = {
 	index:2,
 	level:7,
-	rewards:"resource:citizenClass_2:1,resource:gemClass_1:4"
+	rewards:"special:stamina_1:1,resource:gemClass_1:4"
 }
 levelup[3] = {
 	index:3,
@@ -21,17 +21,17 @@ levelup[3] = {
 levelup[4] = {
 	index:4,
 	level:9,
-	rewards:"special:stamina_1:1,resource:gemClass_1:8"
+	rewards:"special:stamina_2:1,resource:gemClass_1:8"
 }
 levelup[5] = {
 	index:5,
 	level:10,
-	rewards:"speedup:warSpeedupClass_2:1,resource:gemClass_2:1"
+	rewards:"speedup:warSpeedupClass_2:2,resource:gemClass_2:1"
 }
 levelup[6] = {
 	index:6,
 	level:11,
-	rewards:"speedup:speedup_6:1,resource:gemClass_2:1"
+	rewards:"speedup:speedup_4:3,resource:gemClass_2:1"
 }
 levelup[7] = {
 	index:7,
@@ -41,7 +41,7 @@ levelup[7] = {
 levelup[8] = {
 	index:8,
 	level:13,
-	rewards:"special:dragonExp_1:1,resource:gemClass_2:1"
+	rewards:"special:dragonExp_1:2,resource:gemClass_2:1"
 }
 levelup[9] = {
 	index:9,
