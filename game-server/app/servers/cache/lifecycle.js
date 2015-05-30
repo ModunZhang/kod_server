@@ -64,7 +64,9 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 		if(currentInterval >= maxInterval || (logicServers.length == 0 && !_.isObject(eventServer))){
 			clearInterval(interval)
 			var cacheService = app.get("cacheService")
-			app.get("ServerState").createAsync({type:Consts.ServerState.Stop}).then(function(){
+			app.get("timeEventService").clearAllTimeEventsAsync().then(function(){
+				return app.get("ServerState").createAsync({type:Consts.ServerState.Stop})
+			}).then(function(){
 				return cacheService.timeoutAllAlliancesAsync()
 			}).then(function(){
 				return cacheService.timeoutAllPlayersAsync()

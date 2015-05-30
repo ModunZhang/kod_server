@@ -218,6 +218,31 @@ pro.clearTimeEventsByKey = function(key, callback){
 }
 
 /**
+ * 清除所有事件回调
+ * @param callback
+ */
+pro.clearAllTimeEvents = function(callback){
+	var self = this
+	if(this.isCacheServer){
+		this.logService.onEvent("cache.timeEventService.clearAllTimeEvents", {})
+		var keys = _.keys(this.timeouts)
+		_.each(keys, function(key){
+			self.clearTimeEventsByKeyAsync(key)
+		})
+		callback()
+	}else{
+		this.app.rpc.cache.cacheRemote.clearAllTimeEvents.toServer(this.cacheServerId, function(e){
+			if(_.isObject(e)){
+				self.logService.onEventError("cache.timeEventService.clearAllTimeEvents", {
+					key:key
+				}, e.stack)
+			}
+		})
+		callback()
+	}
+}
+
+/**
  * 触发事件回调
  * @param key
  * @param eventType
