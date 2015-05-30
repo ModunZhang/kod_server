@@ -1149,6 +1149,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		kill:playerDoc.basicInfo.kill,
 		loyalty:playerDoc.allianceInfo.loyalty,
 		lastLoginTime:playerDoc.countInfo.lastLoginTime,
+		lastBeAttackedTime:0,
 		title:title,
 		allianceExp:{
 			woodExp:playerDoc.allianceInfo.woodExp,

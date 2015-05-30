@@ -2415,6 +2415,10 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				member.isProtected = false
 				attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
 			}
+			if(member.lastBeAttackedTime > 0){
+				member.lastBeAttackedTime = 0
+				attackAllianceData.push(['members.' + attackAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
+			}
 		})
 
 		defenceAllianceDoc.basicInfo.honour += defenceAllianceHonourGet
@@ -2432,6 +2436,10 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			if(member.isProtected){
 				member.isProtected = false
 				defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
+			}
+			if(member.lastBeAttackedTime > 0){
+				member.lastBeAttackedTime = 0
+				defenceAllianceData.push(['members.' + defenceAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
 			}
 		})
 
