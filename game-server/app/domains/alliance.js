@@ -75,6 +75,7 @@ var AllianceSchema = new Schema({
 		kill:{type:Number, required:true},
 		loyalty:{type:Number, required:true},
 		lastLoginTime:{type:Number, required:true},
+		lastBeAttackedTime:{type:Number, required:true},
 		title:{type:String, required:true},
 		allianceExp:{
 			woodExp:{type:Number, required:true},
