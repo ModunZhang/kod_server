@@ -127,6 +127,7 @@ pro.getAllianceInfo = function(playerId, allianceId, callback){
 	}
 
 	this.dataService.directFindAllianceAsync(allianceId, ['_id', 'basicInfo', 'members', 'buildings', 'desc', 'titles'], false).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 		var allianceData = {
 			id:doc._id,
 			name:doc.basicInfo.name,

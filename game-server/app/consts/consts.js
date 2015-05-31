@@ -282,7 +282,6 @@ module.exports = {
 		Join:"join",//新成员加入
 		Kick:"kick",//踢出玩家
 		Quit:"quit",//玩家退出
-		Request:"request",//玩家申请
 		Notice:"notice",//联盟公告
 		Desc:"desc",//联盟描述
 		HandOver:"handover",//转让盟主
