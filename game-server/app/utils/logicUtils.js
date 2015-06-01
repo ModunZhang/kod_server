@@ -2265,95 +2265,85 @@ Utils.getEnemyAllianceId = function(allianceFight, myAllianceId){
  * @param playerDoc
  */
 Utils.initPlayerDoc = function(playerDoc){
-	playerDoc.dailyTasks.empireRise = [1, 2]
-	playerDoc.dailyTasks.conqueror = [4]
-	playerDoc.dailyTasks.growUp.push(1)
-	playerDoc.growUpTasks.cityBuild.push({
-		"id":0,
-		"index":1,
-		"name":"keep",
-		"rewarded":false
-	})
-	playerDoc.growUpTasks.cityBuild.push({
-		"id":351,
-		"index":1,
-		"name":"farmer",
-		"rewarded":false
-	})
-	playerDoc.growUpTasks.cityBuild.push({
-		"id":1,
-		"index":2,
-		"name":"keep",
-		"rewarded":false
-	})
-	playerDoc.growUpTasks.cityBuild.push({
-		"id":2,
-		"index":3,
-		"name":"keep",
-		"rewarded":false
-	})
-	playerDoc.growUpTasks.cityBuild.push({
-		"id":3,
-		"index":4,
-		"name":"keep",
-		"rewarded":false
-	})
-	playerDoc.pve.floors.push({
-		"level":1,
-		"fogs":"0000000000000000000000000000000000m|10W|300|700|F00{V00y|00m|10W|300|700000000000000000000000000000000000",
-		"objects":"[[9,12,1]]"
-	})
+	playerDoc.pve.floors = [{
+		"level": 1,
+		"fogs": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+		"objects": "[[9,12,3]]"
+	}]
 	playerDoc.pve.location = {
-		"y":12,
-		"x":9,
-		"z":1
+		"z": 1,
+		"y": 12,
+		"x": 9
 	}
-	playerDoc.pve.totalStep = 5
-	playerDoc.vipEvents.push({
-		"id":"NJb2piruQ",
-		"startTime":1431264427863,
-		"finishTime":1431350827863
+	playerDoc.growUpTasks.cityBuild.push({
+		"id": 0,
+		"index": 1,
+		"name": "keep",
+		"rewarded": false
 	})
-	playerDoc.soldierEvents.push({
-		"id":"EkDqjBOX",
-		"startTime":1431264374499,
-		"name":"swordsman",
-		"count":10,
-		"finishTime":1431264574499
+	playerDoc.growUpTasks.cityBuild.push({
+		"id": 351,
+		"index": 1,
+		"name": "farmer",
+		"rewarded": false
 	})
+	playerDoc.growUpTasks.cityBuild.push({
+		"id": 1,
+		"index": 2,
+		"name": "keep",
+		"rewarded": false
+	})
+	playerDoc.growUpTasks.cityBuild.push({
+		"id": 2,
+		"index": 3,
+		"name": "keep",
+		"rewarded": false
+	})
+	playerDoc.growUpTasks.cityBuild.push({
+		"id": 3,
+		"index": 4,
+		"name": "keep",
+		"rewarded": false
+	})
+	playerDoc.productionTechs.forestation.level = 1
+	playerDoc.buildings.location_22.level = 1
+	playerDoc.buildings.location_21.level = 1
 	playerDoc.buildings.location_8.level = 1
-	playerDoc.buildings.location_8.houses.push({
-		"type":"miner",
-		"level":1,
-		"location":3
-	})
+	playerDoc.buildings.location_8.houses = [{
+		"type": "miner",
+		"level": 1,
+		"location": 3
+	}]
 	playerDoc.buildings.location_7.level = 1
-	playerDoc.buildings.location_7.houses.push({
-		"type":"quarrier",
-		"level":1,
-		"location":3
-	})
+	playerDoc.buildings.location_7.houses = [{
+		"type": "quarrier",
+		"level": 1,
+		"location": 3
+	}]
 	playerDoc.buildings.location_6.level = 1
-	playerDoc.buildings.location_6.houses.push({
-		"type":"woodcutter",
-		"level":1,
-		"location":3
-	})
-	playerDoc.buildings.location_5.level = 1
-	playerDoc.buildings.location_5.houses.push({
-		"type":"farmer",
-		"level":2,
-		"location":3
-	})
+	playerDoc.buildings.location_6.houses = [{
+		"type": "woodcutter",
+		"level": 1,
+		"location": 3
+	}]
+	playerDoc.buildings.location_6.level = 1
+	playerDoc.buildings.location_6.houses = [{
+		"type": "farmer",
+		"level": 1,
+		"location": 3
+	}]
+	playerDoc.buildings.location_4.level = 1
 	playerDoc.buildings.location_3.level = 1
-	playerDoc.buildings.location_3.houses.push({
-		"type":"dwelling",
-		"level":1,
-		"location":3
-	})
+	playerDoc.buildings.location_3.houses = [{
+		"type": "dwelling",
+		"level": 1,
+		"location": 3
+	}]
+	playerDoc.buildings.location_2.level = 1
 	playerDoc.buildings.location_1.level = 5
-	playerDoc.resources.citizen = 90
 	playerDoc.soldiers.ranger = 100
-	playerDoc.soldiers.swordsman = 110
+	playerDoc.soldiers.swordsman = 100
+	playerDoc.soldiers.skeletonWarrior = 1
+	playerDoc.resources.citizen = 90
 	DataUtils.refreshPlayerPower(playerDoc, [])
 }
