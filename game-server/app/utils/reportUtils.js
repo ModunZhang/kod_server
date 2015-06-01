@@ -158,7 +158,15 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 		}
 	}
 
-	var report = {
+	var reportForAttackPlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.AttackCity,
+		createTime:Date.now(),
+		isRead:false,
+		isSaved:false,
+		attackCity:attackCityReport
+	}
+	var reportForDefencePlayer = {
 		id:ShortId.generate(),
 		type:Consts.PlayerReportType.AttackCity,
 		createTime:Date.now(),
@@ -173,7 +181,7 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 		defencePlayerKill:helpDefencePlayerKilledCitizen,
 		defenceDragonExpAdd:helpDefenceDragonExpAdd
 	}
-	return {report:report, countData:countData}
+	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, countData:countData}
 }
 
 /**
@@ -439,7 +447,15 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		}
 	}
 
-	var report = {
+	var reportForAttackPlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.AttackCity,
+		createTime:Date.now(),
+		isRead:false,
+		isSaved:false,
+		attackCity:attackCityReport
+	}
+	var reportForDefencePlayer = {
 		id:ShortId.generate(),
 		type:Consts.PlayerReportType.AttackCity,
 		createTime:Date.now(),
@@ -454,7 +470,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		defencePlayerKill:defencePlayerKilledCitizenBySoldiers + defencePlayerKilledCitizenByWall,
 		defenceDragonExpAdd:defenceDragonExpAdd
 	}
-	return {report:report, countData:countData}
+	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, countData:countData}
 }
 
 /**
@@ -1153,7 +1169,15 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 		}
 	}
 
-	var report = {
+	var reportForAttackPlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.AttackVillage,
+		createTime:Date.now(),
+		isRead:false,
+		isSaved:false,
+		attackVillage:attackVillageReport
+	}
+	var reportForDefencePlayer = {
 		id:ShortId.generate(),
 		type:Consts.PlayerReportType.AttackVillage,
 		createTime:Date.now(),
@@ -1168,7 +1192,7 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 		defencePlayerKill:defencePlayerKilledCitizen,
 		defenceDragonExpAdd:defenceDragonExpAdd
 	}
-	return {report:report, countData:countData}
+	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, countData:countData}
 }
 
 /**

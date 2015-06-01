@@ -248,6 +248,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			var beHelpedMemberInAlliance = LogicUtils.getAllianceMemberById(attackAllianceDoc, defencePlayerDoc._id)
 			beHelpedMemberInAlliance.helpedByTroopsCount += 1
 			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(beHelpedMemberInAlliance) + ".helpedByTroopsCount", beHelpedMemberInAlliance.helpedByTroopsCount])
+			defenceEnemyAllianceData.push(["members." + attackAllianceDoc.members.indexOf(beHelpedMemberInAlliance) + ".helpedByTroopsCount", beHelpedMemberInAlliance.helpedByTroopsCount])
 			TaskUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberDefence)
 
 			updateFuncs.push([self.dataService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
@@ -492,7 +493,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			}else{
 				report = ReportUtils.createAttackCityFightWithDefencePlayerReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiersForFight, defenceAllianceDoc, defencePlayerDoc, defenceDragonFightData, defenceSoldierFightData, defenceWallFightData)
 			}
-			attackCityReport = report.report.attackCity
+			attackCityReport = report.reportForAttackPlayer.attackCity
 			var countData = report.countData
 			//console.log(NodeUtils.inspect(report, false, null))
 
@@ -515,7 +516,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			DataUtils.addPlayerDragonExp(attackPlayerDoc, attackPlayerData, attackDragon, countData.attackDragonExpAdd)
 			attackPlayerData.push(["dragons." + attackDragon.type + ".hp", attackDragon.hp])
 			attackPlayerData.push(["dragons." + attackDragon.type + ".hpRefreshTime", attackDragon.hpRefreshTime])
-			pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.report])
+			pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.reportForAttackPlayer])
 
 			var attackCityMarchReturnEvent = MarchUtils.createAttackPlayerCityMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, getSoldiersFromSoldiersForFight(attackSoldiersForFight), getWoundedSoldiersFromSoldiersForFight(attackSoldiersForFight), defenceAllianceDoc, defencePlayerDoc, attackPlayerRewards)
 			attackAllianceDoc.attackMarchReturnEvents.push(attackCityMarchReturnEvent)
@@ -543,7 +544,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				DataUtils.addPlayerDragonExp(helpDefencePlayerDoc, helpDefencePlayerData, helpDefenceDragon, countData.defenceDragonExpAdd)
 				helpDefencePlayerData.push(["dragons." + helpDefenceDragon.type + ".hp", helpDefenceDragon.hp])
 				helpDefencePlayerData.push(["dragons." + helpDefenceDragon.type + ".hpRefreshTime", helpDefenceDragon.hpRefreshTime])
-				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, helpDefencePlayerDoc._id, report.report])
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, helpDefencePlayerDoc._id, report.reportForDefencePlayer])
 
 				var helpDefenceMailTitle = DataUtils.getLocalizationConfig("alliance", "HelpDefenceAttackTitle")
 				var helpDefenceMailContent = DataUtils.getLocalizationConfig("alliance", "HelpDefenceAttackContent")
@@ -603,7 +604,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					defencePlayerDoc[reward.type][reward.name] += reward.count
 					defencePlayerData.push([reward.type + "." + reward.name, defencePlayerDoc[reward.type][reward.name]])
 				})
-				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.report])
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
 			}
 			updateFuncs.push([self.dataService, self.cacheService.updatePlayerAsync, defencePlayerDoc._id, defencePlayerDoc])
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
@@ -901,20 +902,20 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 				report = ReportUtils.createAttackVillageFightWithDefenceTroopReport(attackAllianceDoc, attackPlayerDoc, targetAllianceDoc, village, defenceAllianceDoc, defencePlayerDoc, defenceDragonFightData, defenceSoldierFightData)
 				countData = report.countData
-				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.report])
-				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.report])
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.reportForAttackPlayer])
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
 
 				attackDragonExpAdd = countData.attackDragonExpAdd
 				attackPlayerKill = countData.attackPlayerKill
 				attackSoldiers = createSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
 				attackWoundedSoldiers = createWoundedSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
-				attackRewards = report.report.attackVillage.attackPlayerData.rewards
+				attackRewards = report.reportForAttackPlayer.attackVillage.attackPlayerData.rewards
 
 				defenceDragonExpAdd = countData.attackDragonExpAdd
 				defencePlayerKill = countData.attackPlayerKill
 				defenceSoldiers = createSoldiers(defenceSoldierFightData.defenceSoldiersAfterFight)
 				defenceWoundedSoldiers = createWoundedSoldiers(defenceSoldierFightData.defenceSoldiersAfterFight)
-				defenceRewards = report.report.attackVillage.defencePlayerData.rewards
+				defenceRewards = report.reportForAttackPlayer.attackVillage.defencePlayerData.rewards
 
 				villageEvent.playerData.soldiers = defenceSoldiers
 				LogicUtils.mergeRewards(villageEvent.playerData.rewards, defenceRewards)

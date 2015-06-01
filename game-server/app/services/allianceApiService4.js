@@ -68,7 +68,7 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'helpToTroops', 'itemEvents', 'vipEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'helpToTroops', 'itemEvents', 'vipEvents', 'allianceFight'], false).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -160,7 +160,7 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedP
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'helpToTroops', 'soldierStars', 'itemEvents', 'vipEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'helpToTroops', 'soldierStars', 'itemEvents', 'vipEvents', 'allianceFight'], false).then(function(doc){
 		playerDoc = doc
 		if(!LogicUtils.isPlayerHasHelpedTroopInAllianceMember(playerDoc, beHelpedPlayerId)){
 			return Promise.reject(ErrorUtils.noHelpDefenceTroopInTargetPlayerCity(playerId, beHelpedPlayerData, allianceId))
@@ -191,6 +191,7 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedP
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, beHelpedPlayerId)
 		memberObject.helpedByTroopsCount -= 1
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".helpedByTroopsCount", memberObject.helpedByTroopsCount])
+		enemyAllianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".helpedByTroopsCount", memberObject.helpedByTroopsCount])
 		var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(allianceDoc, playerDoc, beHelpedPlayerDoc, helpedByTroop.dragon, helpedByTroop.soldiers, [], helpedByTroop.rewards)
 		allianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 		allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
