@@ -13,7 +13,7 @@ resources[1] = {
 	citizen:100,
 	coin:50000,
 	cart:20,
-	blood:1000,
+	blood:100,
 	stamina:100,
 	casinoToken:5000
 }
