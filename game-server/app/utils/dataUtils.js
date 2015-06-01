@@ -2471,16 +2471,12 @@ Utils.getAllianceShrineStageResultDatas = function(terrain, stageName, isWin, fi
 			})
 		})
 	})
-
-	if(isWin){
-		fightStar += 1
-		if(fightDatas.length <= 1){
-			fightStar += 1
-			if(totalDeath <= AllianceInitData.shrineStage[stageName].star2DeathCitizen){
-				fightStar += 1
-			}
-		}
-	}
+	if(isWin)
+		fightStar += 1;
+	if(totalDeath <= AllianceInitData.shrineStage[stageName].star2DeathCitizen)
+		fightStar += 1;
+	if(fightDatas.length <= 1)
+		fightStar += 1;
 
 	var getPlayerRewardsString = function(terrain, stageConfig, playerKill){
 		var rewardsString = null
