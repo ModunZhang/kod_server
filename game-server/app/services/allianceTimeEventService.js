@@ -475,6 +475,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				var defenceMember = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
 				defenceMember.lastBeAttackedTime = Date.now()
 				defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(defenceMember) + ".lastBeAttackedTime", defenceMember.lastBeAttackedTime]);
+				attackEnemyAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(defenceMember) + ".lastBeAttackedTime", defenceMember.lastBeAttackedTime])
 				defenceWallForFight = DataUtils.createPlayerWallForFight(defencePlayerDoc)
 				var defencePlayerMasterOfDefenderBuffAboutDefenceWall = DataUtils.getPlayerMasterOfDefenderBuffAboutDefenceWall(defencePlayerDoc)
 				defenceWallFightData = FightUtils.soldierToWallFight(attackSoldiersLeftForFight, attackTreatSoldierPercent, defenceWallForFight, defencePlayerMasterOfDefenderBuffAboutDefenceWall)
