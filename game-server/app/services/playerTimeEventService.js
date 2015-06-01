@@ -22,7 +22,7 @@ var PlayerTimeEventService = function(app){
 	this.app = app
 	this.env = app.get("env")
 	this.pushService = app.get("pushService")
-	this.dataService = app.get("dataService")
+	this.cacheService = app.get('cacheService');
 }
 module.exports = PlayerTimeEventService
 var pro = PlayerTimeEventService.prototype
@@ -40,7 +40,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	var updateFuncs = []
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId, [], true).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], true).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId))
 		playerDoc = doc
 		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
@@ -48,7 +48,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 
 		self.onPlayerEvent(playerDoc, playerData, eventType, eventId)
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -58,7 +58,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		if(funcs.length > 0){
 			Promise.all(funcs).then(function(){
