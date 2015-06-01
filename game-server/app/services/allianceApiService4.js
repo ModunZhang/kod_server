@@ -68,7 +68,7 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'helpToTroops', 'itemEvents', 'vipEvents', 'allianceFight'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'buildings', 'dragons', 'soldiers', 'soldierStars', 'helpToTroops', 'itemEvents', 'vipEvents'], false).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -87,7 +87,7 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return self.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'mapObjects', 'members', 'buildings', 'strikeMarchEvents', 'strikeMarchReturnEvents', 'attackMarchEvents', 'attackMarchReturnEvents', 'villageEvents', 'shrineEvents'], false)
+		return self.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'mapObjects', 'members', 'buildings', 'allianceFight', 'strikeMarchEvents', 'strikeMarchReturnEvents', 'attackMarchEvents', 'attackMarchReturnEvents', 'villageEvents', 'shrineEvents'], false)
 	}).then(function(doc){
 		allianceDoc = doc
 		if(!LogicUtils.isPlayerHasFreeMarchQueue(playerDoc, allianceDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
@@ -160,13 +160,13 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedP
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'helpToTroops', 'soldierStars', 'itemEvents', 'vipEvents', 'allianceFight'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'helpToTroops', 'soldierStars', 'itemEvents', 'vipEvents'], false).then(function(doc){
 		playerDoc = doc
 		if(!LogicUtils.isPlayerHasHelpedTroopInAllianceMember(playerDoc, beHelpedPlayerId)){
 			return Promise.reject(ErrorUtils.noHelpDefenceTroopInTargetPlayerCity(playerId, beHelpedPlayerData, allianceId))
 		}
 		var funcs = []
-		funcs.push(self.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'members', 'mapObjects', 'attackMarchReturnEvents'], false))
+		funcs.push(self.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'members', 'mapObjects', 'allianceFight', 'attackMarchReturnEvents'], false))
 		funcs.push(self.dataService.findPlayerAsync(beHelpedPlayerId, ['_id', 'logicServerId', 'basicInfo', 'helpedByTroops'], false))
 		return Promise.all(funcs)
 	}).spread(function(doc_1, doc_2){
