@@ -1,9 +1,0 @@
-{
-	"name": "BattleFront",
-	"version": "0.0.1",
-	"private": true,
-	"dependencies": {
-		"express": "4.0.0",
-        "express-error-handler":"0.5.4"
-	}
-}
