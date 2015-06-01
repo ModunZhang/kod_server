@@ -2637,7 +2637,7 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
 	var self = this
 	if(!_.isObject(playerDoc)) return
 	var config = BuildingFunction.dragonEyrie[playerDoc.buildings.location_4.level]
-	var dragons = arguments.length > 1 ? [dragon] : playerDoc.dragons
+	var dragons = _.isObject(dragon) ? [dragon] : playerDoc.dragons
 	_.each(dragons, function(dragon){
 		if(dragon.hp > 0 && dragon.level > 0 && !_.isEqual(dragon.status, Consts.DragonStatus.March)){
 			var dragonMaxHp = self.getDragonMaxHp(dragon)
