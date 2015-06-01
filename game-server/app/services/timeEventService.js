@@ -519,8 +519,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 			var dragon = playerDoc.dragons[event.dragonType]
 			dragon.hp = 1
 			dragon.hpRefreshTime = event.finishTime
-			playerData.push(["dragons." + dragon.type + ".hp", dragon.hp])
-			playerData.push(["dragons." + dragon.type + ".hpRefreshTime", dragon.hpRefreshTime])
 		}else{
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dragonDeathEvents", event.id, event.finishTime - now))
 		}
