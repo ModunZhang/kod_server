@@ -2326,8 +2326,8 @@ Utils.initPlayerDoc = function(playerDoc){
 		"level": 1,
 		"location": 3
 	}]
-	playerDoc.buildings.location_6.level = 1
-	playerDoc.buildings.location_6.houses = [{
+	playerDoc.buildings.location_5.level = 1
+	playerDoc.buildings.location_5.houses = [{
 		"type": "farmer",
 		"level": 1,
 		"location": 3
