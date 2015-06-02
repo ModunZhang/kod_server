@@ -381,7 +381,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'dragons', 'buildings'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'dragons', 'buildings', 'itemEvents', 'vipEvents'], false).then(function(doc){
 		playerDoc = doc
 
 		var gemUsed = DataUtils.getPlayerIntInit("changeTerrainNeedGemCount")
@@ -399,6 +399,12 @@ pro.setTerrain = function(playerId, terrain, callback){
 
 		playerDoc.basicInfo.terrain = terrain
 		playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
+		playerData.push(['dragons.redDragon.hp', playerDoc.dragons.redDragon.hp])
+		playerData.push(['dragons.redDragon.hpRefreshTime', playerDoc.dragons.redDragon.hpRefreshTime])
+		playerData.push(['dragons.blueDragon.hp', playerDoc.dragons.blueDragon.hp])
+		playerData.push(['dragons.blueDragon.hpRefreshTime', playerDoc.dragons.blueDragon.hpRefreshTime])
+		playerData.push(['dragons.greenDragon.hp', playerDoc.dragons.greenDragon.hp])
+		playerData.push(['dragons.greenDragon.hpRefreshTime', playerDoc.dragons.greenDragon.hpRefreshTime])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
