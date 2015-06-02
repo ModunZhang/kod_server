@@ -5,7 +5,7 @@ module.exports = resources
 
 resources[1] = {
 	level:1,
-	gem:2000,
+	gem:1000,
 	wood:25000,
 	stone:25000,
 	iron:25000,
