@@ -1794,13 +1794,15 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 
 /**
  * 退还数据给协防方
+ * @param allianceDoc
+ * @param allianceData
  * @param playerDoc
  * @param playerData
  * @param helpedByTroop
  * @param helpedByPlayerDoc
  * @param helpedByPlayerData
  */
-Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByTroop, helpedByPlayerDoc, helpedByPlayerData){
+Utils.returnPlayerHelpedByTroop = function(allianceDoc, allianceData, playerDoc, playerData, helpedByTroop, helpedByPlayerDoc, helpedByPlayerData){
 	playerData.push(["helpedByTroops." + playerDoc.helpedByTroops.indexOf(helpedByTroop), null])
 	this.removeItemInArray(playerDoc.helpedByTroops, helpedByTroop)
 	var helpedToTroop = _.find(helpedByPlayerDoc.helpToTroops, function(helpToTroop){
@@ -1808,6 +1810,9 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByTroop,
 	})
 	playerData.push(["helpToTroops." + helpedByPlayerDoc.helpToTroops.indexOf(helpedToTroop), null])
 	this.removeItemInArray(helpedByPlayerDoc.helpToTroops, helpedToTroop)
+	var memberObject = this.getAllianceMemberById(allianceDoc, helpedByPlayerDoc._id)
+	memberObject.helpedByTroopsCount -= 1
+	allianceData.push(['members.' + allianceDoc.members.indexOf(memberObject) + '.helpedByTroopsCount', memberObject.helpedByTroopsCount])
 
 	DataUtils.refreshPlayerDragonsHp(helpedByPlayerDoc, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type])
 	helpedByPlayerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free

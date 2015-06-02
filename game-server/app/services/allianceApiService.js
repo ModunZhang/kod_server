@@ -845,7 +845,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			var data = []
 			return self.dataService.findPlayerAsync(helpedByTroop.id, ['_id', 'logicServerId', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'dragons', 'soldierMaterials', 'dragonMaterials', 'items', 'soldiers', 'soldierStars', 'helpToTroops', 'houseEvents', 'vipEvents', 'itemEvents'], false).then(function(theDoc){
 				doc = theDoc
-				LogicUtils.returnPlayerHelpedByTroop(memberDoc, memberData, helpedByTroop, doc, data)
+				LogicUtils.returnPlayerHelpedByTroop(allianceDoc, allianceData, memberDoc, memberData, helpedByTroop, doc, data)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.dataService.updatePlayerAsync(doc._id, doc)
 			}).catch(function(e){
