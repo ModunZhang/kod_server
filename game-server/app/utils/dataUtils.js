@@ -2733,21 +2733,18 @@ Utils.getPlayerDefenceSoldiers = function(playerDoc){
 		})
 		return theSoldiers
 	}
-
+	var playerSoldiers = getSoldiers(playerDoc.soldiers)
 	var defenceDragonMaxCitizen = this.getPlayerDragonMaxCitizen(playerDoc, defenceDragon)
-	var playerSoldiersTotalCitizen = this.getPlayerSoldiersCitizen(playerDoc, getSoldiers(playerDoc.soldiers))
+	var playerSoldiersTotalCitizen = this.getPlayerSoldiersCitizen(playerDoc, playerSoldiers)
 	var citizenPercent = playerSoldiersTotalCitizen > 0 ? defenceDragonMaxCitizen / playerSoldiersTotalCitizen : 0
 	citizenPercent = citizenPercent > 1 ? 1 : citizenPercent
-	_.each(playerDoc.soldiers, function(count, name){
-		if(count > 0){
-			var config = self.getPlayerSoldierConfig(playerDoc, name)
-			var totalCitizen = config.citizen * count
+	_.each(playerSoldiers, function(soldier){
+			var config = self.getPlayerSoldierConfig(playerDoc, soldier.name)
 			var defenceSoldier = {
-				name:name,
-				count:Math.floor(totalCitizen * citizenPercent / config.citizen)
+				name:soldier.name,
+				count:Math.floor(citizenPercent * soldier.count)
 			}
 			defenceSoldiers.push(defenceSoldier)
-		}
 	})
 	return defenceSoldiers
 }
