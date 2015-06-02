@@ -125,6 +125,7 @@ Utils.finishCityBuildTaskIfNeed = function(playerDoc, playerData, buildingName, 
 			return _.isEqual(config.name, buildingName) && _.isEqual(config.level, level)
 		})
 	}
+	if(!_.isObject(config)) return
 	task = {
 		id:config.id,
 		index:config.index,
@@ -146,7 +147,7 @@ Utils.finishDragonLevelTaskIfNeed = function(playerDoc, playerData, dragonType, 
 	var config = _.find(GrowUpTasks.dragonLevel, function(config){
 		return _.isEqual(config.type, dragonType) && _.isEqual(config.level, level)
 	})
-
+	if(!_.isObject(config)) return
 	var task = {
 		id:config.id,
 		index:config.index,
@@ -168,7 +169,7 @@ Utils.finishDragonStarTaskIfNeed = function(playerDoc, playerData, dragonType, s
 	var config = _.find(GrowUpTasks.dragonStar, function(config){
 		return _.isEqual(config.type, dragonType) && _.isEqual(config.star, star)
 	})
-
+	if(!_.isObject(config)) return
 	var task = {
 		id:config.id,
 		index:config.index,
@@ -191,6 +192,7 @@ Utils.finishDragonSkillTaskIfNeed = function(playerDoc, playerData, dragonType, 
 	var config = _.find(GrowUpTasks.dragonSkill, function(config){
 		return _.isEqual(config.type, dragonType) && _.isEqual(config.name, skillName) && _.isEqual(config.level, skillLevel)
 	})
+	if(!_.isObject(config)) return
 	if(_.isObject(config)){
 		var task = {
 			id:config.id,
@@ -215,7 +217,7 @@ Utils.finishProductionTechTaskIfNeed = function(playerDoc, playerData, skillName
 	var config = _.find(GrowUpTasks.productionTech, function(config){
 		return _.isEqual(config.name, skillName) && _.isEqual(config.level, skillLevel)
 	})
-
+	if(!_.isObject(config)) return
 	var task = {
 		id:config.id,
 		index:config.index,
@@ -237,7 +239,7 @@ Utils.finishMilitaryTechTaskIfNeed = function(playerDoc, playerData, skillName, 
 	var config = _.find(GrowUpTasks.militaryTech, function(config){
 		return _.isEqual(config.name, skillName) && _.isEqual(config.level, skillLevel)
 	})
-
+	if(!_.isObject(config)) return
 	var task = {
 		id:config.id,
 		index:config.index,
@@ -259,7 +261,7 @@ Utils.finishSoldierStarTaskIfNeed = function(playerDoc, playerData, soldierName,
 	var config = _.find(GrowUpTasks.soldierStar, function(config){
 		return _.isEqual(config.name, soldierName) && _.isEqual(config.star, soldierStar)
 	})
-
+	if(!_.isObject(config)) return
 	var task = {
 		id:config.id,
 		index:config.index,
@@ -290,6 +292,7 @@ Utils.finishSoldierCountTaskIfNeed = function(playerDoc, playerData, soldierName
 			return _.isEqual(config.name, soldierName) && config.index == 1
 		})
 	}
+	if(!_.isObject(config)) return
 	if(playerDoc.soldiers[soldierName] < config.count) return
 
 	task = {
@@ -309,20 +312,18 @@ Utils.finishSoldierCountTaskIfNeed = function(playerDoc, playerData, soldierName
 Utils.finishPveCountTaskIfNeed = function(playerDoc, playerData){
 	var config = null
 	var task = null
-	var nextCount = null
 	var tasks = playerDoc.growUpTasks.pveCount
 	if(tasks.length > 0){
 		task = tasks[tasks.length - 1]
 		config = GrowUpTasks.pveCount[task.id + 1]
 		if(!_.isObject(config)) return
-		nextCount = config.count
 	}else{
 		config = _.find(GrowUpTasks.pveCount, function(config){
 			return config.index == 1
 		})
-		nextCount = config.count
 	}
-	if(playerDoc.pve.totalStep < nextCount) return
+	if(!_.isObject(config)) return
+	if(playerDoc.pve.totalStep < config.count) return
 
 	task = {
 		id:config.id,
@@ -340,20 +341,18 @@ Utils.finishPveCountTaskIfNeed = function(playerDoc, playerData){
 Utils.finishAttackWinTaskIfNeed = function(playerDoc, playerData){
 	var config = null
 	var task = null
-	var nextCount = null
 	var tasks = playerDoc.growUpTasks.attackWin
 	if(tasks.length > 0){
 		task = tasks[tasks.length - 1]
 		config = GrowUpTasks.attackWin[task.id + 1]
 		if(!_.isObject(config)) return
-		nextCount = config.count
 	}else{
 		config = _.find(GrowUpTasks.attackWin, function(config){
 			return config.index == 1
 		})
-		nextCount = config.count
 	}
-	if(playerDoc.basicInfo.attackWin < nextCount) return
+	if(!_.isObject(config)) return
+	if(playerDoc.basicInfo.attackWin < config.count) return
 
 	task = {
 		id:config.id,
@@ -371,20 +370,18 @@ Utils.finishAttackWinTaskIfNeed = function(playerDoc, playerData){
 Utils.finishStrikeWinTaskIfNeed = function(playerDoc, playerData){
 	var config = null
 	var task = null
-	var nextCount = null
 	var tasks = playerDoc.growUpTasks.strikeWin
 	if(tasks.length > 0){
 		task = tasks[tasks.length - 1]
 		config = GrowUpTasks.strikeWin[task.id + 1]
 		if(!_.isObject(config)) return
-		nextCount = config.count
 	}else{
 		config = _.find(GrowUpTasks.strikeWin, function(config){
 			return config.index == 1
 		})
-		nextCount = config.count
 	}
-	if(playerDoc.basicInfo.strikeWin < nextCount) return
+	if(!_.isObject(config)) return
+	if(playerDoc.basicInfo.strikeWin < config.count) return
 
 	task = {
 		id:config.id,
@@ -402,20 +399,18 @@ Utils.finishStrikeWinTaskIfNeed = function(playerDoc, playerData){
 Utils.finishPlayerKillTaskIfNeed = function(playerDoc, playerData){
 	var config = null
 	var task = null
-	var nextCount = null
 	var tasks = playerDoc.growUpTasks.playerKill
 	if(tasks.length > 0){
 		task = tasks[tasks.length - 1]
 		config = GrowUpTasks.playerKill[task.id + 1]
 		if(!_.isObject(config)) return
-		nextCount = config.kill
 	}else{
 		config = _.find(GrowUpTasks.playerKill, function(config){
 			return config.index == 1
 		})
-		nextCount = config.kill
 	}
-	if(playerDoc.basicInfo.kill < nextCount) return
+	if(!_.isObject(config)) return
+	if(playerDoc.basicInfo.kill < config.kill) return
 
 	task = {
 		id:config.id,
@@ -433,20 +428,18 @@ Utils.finishPlayerKillTaskIfNeed = function(playerDoc, playerData){
 Utils.finishPlayerPowerTaskIfNeed = function(playerDoc, playerData){
 	var config = null
 	var task = null
-	var nextCount = null
 	var tasks = playerDoc.growUpTasks.playerPower
 	if(tasks.length > 0){
 		task = tasks[tasks.length - 1]
 		config = GrowUpTasks.playerPower[task.id + 1]
 		if(!_.isObject(config)) return
-		nextCount = config.power
 	}else{
 		config = _.find(GrowUpTasks.playerPower, function(config){
 			return config.index == 1
 		})
-		nextCount = config.power
 	}
-	if(playerDoc.basicInfo.power < nextCount) return
+	if(!_.isObject(config)) return
+	if(playerDoc.basicInfo.power < config.power) return
 
 	task = {
 		id:config.id,
