@@ -40,7 +40,7 @@ intInit["staminaMax"] = {
 }
 intInit["staminaRecoverPerHour"] = {
 	type:"staminaRecoverPerHour",
-	value:4,
+	value:10,
 	desc:"精力每小时恢复量"
 }
 intInit["dragonChestSelectCountPerItem"] = {
