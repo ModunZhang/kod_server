@@ -70,20 +70,6 @@ var ChatHandler = function(app){
 			}
 		},
 		{
-			command:"material",
-			desc:"统一修改玩家材料数量 material 5",
-			func:function(session, uid, text, callback){
-				var self = this
-				var count = text.split(" ")[1]
-				count = parseInt(count)
-				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.material(session, uid, count, function(e){
-						callback(e)
-					})
-				}
-			}
-		},
-		{
 			command:"soldiermaterial",
 			desc:"统一修改玩家招募特殊兵种材料数量:soldiermaterial 5",
 			func:function(session, uid, text, callback){

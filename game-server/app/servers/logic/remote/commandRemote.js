@@ -147,43 +147,6 @@ pro.rmevents = function(playerId, eventType, callback){
 }
 
 /**
- * 统一修改玩家材料数量
- * @param playerId
- * @param count
- * @param callback
- */
-pro.material = function(playerId, count, callback){
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
-		playerDoc = doc
-		playerDoc.materials.blueprints = count
-		playerDoc.materials.tools = count
-		playerDoc.materials.tiles = count
-		playerDoc.materials.pulley = count
-		playerDoc.materials.trainingFigure = count
-		playerDoc.materials.bowTarget = count
-		playerDoc.materials.saddle = count
-		playerDoc.materials.ironPart = count
-		playerData.push(["materials", playerDoc.materials])
-		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
-	}).then(function(){
-		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		if(_.isObject(playerDoc)){
-			return self.dataService.updatePlayerAsync(playerDoc._id, null).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
-}
-
-/**
  * 统一修改玩家特殊材料数量
  * @param playerId
  * @param count
