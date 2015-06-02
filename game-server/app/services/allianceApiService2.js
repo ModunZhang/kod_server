@@ -104,7 +104,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			var data = []
 			return self.dataService.findPlayerAsync(helpedByTroop.id, ['_id', 'logicServerId', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'dragons', 'soldierMaterials', 'dragonMaterials', 'items', 'soldiers', 'soldierStars', 'helpToTroops', 'houseEvents', 'vipEvents', 'itemEvents'], false).then(function(theDoc){
 				doc = theDoc
-				LogicUtils.returnPlayerHelpedByTroop(allianceDoc, allianceData, playerDoc, playerData, helpedByTroop, doc, data)
+				LogicUtils.returnPlayerHelpedByTroop(playerDoc, playerData, helpedByTroop, doc, data)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.dataService.updatePlayerAsync(doc._id, doc)
 			}).catch(function(e){
@@ -118,7 +118,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			var data = []
 			return self.dataService.findPlayerAsync(helpToTroop.beHelpedPlayerData.id, ['_id', 'logicServerId', 'helpedByTroops'], false).then(function(theDoc){
 				doc = theDoc
-				LogicUtils.returnPlayerHelpToTroop(playerDoc, playerData, helpToTroop, doc, data)
+				LogicUtils.returnPlayerHelpToTroop(allianceDoc, allianceData, playerDoc, playerData, helpToTroop, doc, data)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.dataService.updatePlayerAsync(doc._id, doc)
 			}).catch(function(e){

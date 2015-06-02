@@ -381,7 +381,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'dragons'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'dragons', 'buildings'], false).then(function(doc){
 		playerDoc = doc
 
 		var gemUsed = DataUtils.getPlayerIntInit("changeTerrainNeedGemCount")
