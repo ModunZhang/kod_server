@@ -73,7 +73,7 @@ productionTechs["beerSupply"] = {
 	unlockBy:6,
 	unlockLevel:2,
 	academyLevel:12,
-	effectPerLevel:0.010000
+	effectPerLevel:0.020000
 }
 productionTechs["rescueTent"] = {
 	name:"rescueTent",
