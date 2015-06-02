@@ -522,6 +522,7 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 		if(playerObject.isProtected){
 			playerObject.isProtected = false
 			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
+			defenceAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
 		}
 		var event = MarchUtils.createAttackVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defenceVillage)
 		attackAllianceDoc.attackMarchEvents.push(event)
