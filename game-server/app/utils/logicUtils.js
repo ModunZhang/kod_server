@@ -2350,5 +2350,15 @@ Utils.initPlayerDoc = function(playerDoc){
 	playerDoc.soldiers.swordsman = 100
 	playerDoc.soldiers.skeletonWarrior = 1
 	playerDoc.resources.citizen = 90
+	playerDoc.items.push({
+		name:'changePlayerName',
+		count:1
+	})
+	playerDoc.items.push({
+		name:'moveTheCity',
+		count:1
+	})
+
+
 	DataUtils.refreshPlayerPower(playerDoc, [])
 }
