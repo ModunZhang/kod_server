@@ -273,7 +273,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var building = null
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'buildingEvents', 'houseEvents', 'vipEvents', 'itemEvents', 'productionTechs', 'buildingMaterials', 'growUpTasks', 'dailyTasks'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'buildingMaterials', 'growUpTasks', 'dailyTasks', 'buildingEvents', 'houseEvents', 'vipEvents', 'itemEvents'], false).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + location]
 		if(!_.isObject(building))return Promise.reject(ErrorUtils.buildingNotExist(playerId, location))
@@ -464,7 +464,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 	var updateFuncs = []
 	var eventFuncs = []
 	var building = null
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'buildingEvents', 'houseEvents', 'vipEvents', 'itemEvents', 'productionTechs', 'buildingMaterials', 'growUpTasks', 'dailyTasks'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'buildingMaterials', 'growUpTasks', 'dailyTasks', 'buildingEvents', 'houseEvents', 'vipEvents', 'itemEvents'], false).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + buildingLocation]
 		if(building.level <= 0) return Promise.reject(ErrorUtils.hostBuildingLevelMustBiggerThanOne(playerId, buildingLocation, houseLocation))
@@ -604,7 +604,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 	var eventFuncs = []
 	var building = null
 	var house = null
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'buildingEvents', 'houseEvents', 'vipEvents', 'itemEvents', 'productionTechs', 'buildingMaterials', 'growUpTasks', 'dailyTasks'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'buildingMaterials', 'growUpTasks', 'dailyTasks', 'buildingEvents', 'houseEvents', 'vipEvents', 'itemEvents'], false).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + buildingLocation]
 		if(building.level <= 0) return Promise.reject(ErrorUtils.hostBuildingLevelMustBiggerThanOne(playerId, buildingLocation, houseLocation))

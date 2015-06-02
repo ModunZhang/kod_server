@@ -147,7 +147,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'woundedSoldiers', 'productionTechs', 'growUpTasks', 'vipEvents', 'itemEvents', 'treatSoldierEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'woundedSoldiers', 'productionTechs', 'militaryTechs', 'growUpTasks', 'vipEvents', 'itemEvents', 'treatSoldierEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_6
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
