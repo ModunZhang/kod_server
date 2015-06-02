@@ -2715,7 +2715,6 @@ Utils.getPlayerDragonMaxCitizen = function(playerDoc, dragon){
  * @returns {Array}
  */
 Utils.getPlayerDefenceSoldiers = function(playerDoc){
-	var self = this
 	var defenceSoldiers = []
 	var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
 	if(!_.isObject(defenceDragon)) return defenceSoldiers
@@ -2739,12 +2738,12 @@ Utils.getPlayerDefenceSoldiers = function(playerDoc){
 	var citizenPercent = playerSoldiersTotalCitizen > 0 ? defenceDragonMaxCitizen / playerSoldiersTotalCitizen : 0
 	citizenPercent = citizenPercent > 1 ? 1 : citizenPercent
 	_.each(playerSoldiers, function(soldier){
-			var config = self.getPlayerSoldierConfig(playerDoc, soldier.name)
 			var defenceSoldier = {
 				name:soldier.name,
 				count:Math.floor(citizenPercent * soldier.count)
 			}
-			defenceSoldiers.push(defenceSoldier)
+			if(defenceSoldier.count > 0)
+				defenceSoldiers.push(defenceSoldier);
 	})
 	return defenceSoldiers
 }
