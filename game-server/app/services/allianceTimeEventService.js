@@ -1751,7 +1751,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			playerDatas:playerDatas,
 			fightDatas:fightDatas
 		}
-		if(allianceDoc.shrineReports.length > Define.AllianceShrineReportsMaxSize){
+		if(allianceDoc.shrineReports.length >= Define.AllianceShrineReportsMaxSize){
 			var willRemovedshrineReport = allianceDoc.shrineReports[0]
 			allianceData.push(["shrineReports." + allianceDoc.shrineReports.indexOf(willRemovedshrineReport), null])
 			LogicUtils.removeItemInArray(allianceDoc.shrineReports, willRemovedshrineReport)
