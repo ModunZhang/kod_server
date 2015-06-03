@@ -1115,7 +1115,7 @@ pro.onAttackMarchReturnEvents = function(allianceDoc, event, callback){
 
 		LogicUtils.addPlayerSoldiers(playerDoc, playerData, event.attackPlayerData.soldiers)
 		DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, event.attackPlayerData.woundedSoldiers)
-
+		DataUtils.refreshPlayerPower(playerDoc, playerData)
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		_.each(event.attackPlayerData.rewards, function(reward){

@@ -393,7 +393,7 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'buildings', 'soldiers', 'soldierStars', 'dragons', 'helpToTroops', 'vipEvents', 'itemEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'buildings', 'soldiers', 'productionTechs', 'militaryTechs', 'soldierStars', 'dragons', 'helpToTroops', 'vipEvents', 'itemEvents'], false).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -408,7 +408,7 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 			playerDoc.soldiers[soldier.name] -= soldier.count
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
-
+		DataUtils.refreshPlayerPower(playerDoc, playerData)
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return self.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'mapObjects', 'members', 'buildings', 'strikeMarchEvents', 'strikeMarchReturnEvents', 'attackMarchEvents', 'attackMarchReturnEvents', 'villageEvents', 'shrineEvents'], false)
 	}).then(function(doc){
