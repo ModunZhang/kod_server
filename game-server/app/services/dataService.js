@@ -329,9 +329,10 @@ pro.deleteAlliance = function(id, callback){
 /**
  * 获取玩家登陆时的数据
  * @param id
+ * @param requestTime
  * @param callback
  */
-pro.loginPlayer = function(id, callback){
+pro.loginPlayer = function(id, requestTime, callback){
 	if(this.isCacheServer){
 		if(toobusy()){
 			callback(ErrorUtils.serverTooBusy("cache.dataService.directFindPlayer", {id:id}))
@@ -364,7 +365,7 @@ pro.loginPlayer = function(id, callback){
 				unreadReports:unreadReports
 			}
 			playerDoc.serverLevel = self.app.getCurServer().level
-			playerDoc.serverTime = Date.now()
+			playerDoc.deltaTime = Date.now() - requestTime
 			if(!_.isEmpty(playerDoc.allianceId)){
 				return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
 					allianceDoc = _.omit(doc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs", 'villageCreateEvents'])
@@ -394,7 +395,7 @@ pro.loginPlayer = function(id, callback){
 		return
 	}
 
-	this.app.rpc.cache.cacheRemote.loginPlayer.toServer(this.cacheServerId, id, function(e, resp){
+	this.app.rpc.cache.cacheRemote.loginPlayer.toServer(this.cacheServerId, id, requestTime, function(e, resp){
 		if(_.isObject(e)) callback(e)
 		else if(resp.code == 200) callback(null, resp.data)
 		else callback(ErrorUtils.createError(resp.code, resp.data, false))

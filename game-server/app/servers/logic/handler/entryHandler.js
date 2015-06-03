@@ -40,8 +40,14 @@ pro.login = function(msg, session, next){
 	}
 
 	var deviceId = msg.deviceId
+	var requestTime = msg.requestTime
 	if(!_.isString(deviceId)){
 		e = new Error("deviceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(requestTime) || requestTime <= 0){
+		e = new Error("requestTime 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
@@ -49,7 +55,7 @@ pro.login = function(msg, session, next){
 	var playerDoc = null
 	var allianceDoc = null
 	var enemyAllianceDoc = null
-	this.playerApiService.playerLoginAsync(session, deviceId).spread(function(doc_1, doc_2, doc_3){
+	this.playerApiService.playerLoginAsync(session, deviceId, requestTime).spread(function(doc_1, doc_2, doc_3){
 		playerDoc = doc_1
 		allianceDoc = doc_2
 		enemyAllianceDoc = doc_3

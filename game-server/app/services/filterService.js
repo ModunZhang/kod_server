@@ -35,7 +35,7 @@ pro.toobusyFilter = function(){
  */
 pro.loginFilter = function(){
 	var before = function(msg, session, next){
-		if(_.isEqual("logic.entryHandler.login", msg.__route__) || !!session.uid) next()
+		if(_.isEqual("logic.entryHandler.login", msg.__route__) || (!_.isEmpty(session.uid) && !_.isEmpty(session.get('logicServerId')))) next()
 		else next(ErrorUtils.illegalRequest(msg))
 	}
 	return {before:before}

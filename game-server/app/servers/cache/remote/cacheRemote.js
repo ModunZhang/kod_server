@@ -172,10 +172,11 @@ pro.deleteAlliance = function(id, callback){
 /**
  * 获取玩家登陆时的数据
  * @param id
+ * @param requestTime
  * @param callback
  */
-pro.loginPlayer = function(id, callback){
-	this.dataService.loginPlayer(id, function(e, datas){
+pro.loginPlayer = function(id, requestTime, callback){
+	this.dataService.loginPlayer(id, requestTime, function(e, datas){
 		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:datas})
 	})
 }

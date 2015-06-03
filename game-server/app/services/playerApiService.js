@@ -59,9 +59,10 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
  * 玩家登陆逻辑服务器
  * @param session
  * @param deviceId
+ * @param requestTime
  * @param callback
  */
-pro.playerLogin = function(session, deviceId, callback){
+pro.playerLogin = function(session, deviceId, requestTime, callback){
 	if(!_.isString(deviceId)){
 		callback(new Error("deviceId 不合法"))
 		return
@@ -79,7 +80,7 @@ pro.playerLogin = function(session, deviceId, callback){
 	var bindPlayerSessionAsync = Promise.promisify(BindPlayerSession, this)
 	this.Device.findByIdAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
-			return self.dataService.loginPlayerAsync(doc.playerId)
+			return self.dataService.loginPlayerAsync(doc.playerId, requestTime)
 		}else{
 			return Promise.reject(ErrorUtils.deviceNotExist(deviceId))
 		}
