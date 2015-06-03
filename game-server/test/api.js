@@ -667,9 +667,10 @@ Api.unlockPlayerSecondMarchQueue = function(callback){
 	pomelo.request(route, null, callback)
 }
 
-Api.initPlayerData = function(terrain, callback){
+Api.initPlayerData = function(terrain, language, callback){
 	var info = {
-		terrain:terrain
+		terrain:terrain,
+		language:language
 	}
 	var route = "logic.playerHandler.initPlayerData"
 	pomelo.request(route, info, callback)

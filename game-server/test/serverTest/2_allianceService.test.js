@@ -51,7 +51,7 @@
 //
 //	describe("allianceHandler", function(){
 //		it("initPlayerData 正常初始化", function(done){
-//			Api.initPlayerData(Consts.AllianceTerrain.Desert, function(doc){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
@@ -109,7 +109,7 @@
 //		})
 //
 //		it("initPlayerData 正常初始化", function(done){
-//			Api.initPlayerData(Consts.AllianceTerrain.Desert, function(doc){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
@@ -147,7 +147,7 @@
 //		})
 //
 //		it("initPlayerData 正常初始化", function(done){
-//			Api.initPlayerData(Consts.AllianceTerrain.Desert, function(doc){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
@@ -600,7 +600,7 @@
 //		})
 //
 //		it("initPlayerData 正常初始化", function(done){
-//			Api.initPlayerData(Consts.AllianceTerrain.Desert, function(doc){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})

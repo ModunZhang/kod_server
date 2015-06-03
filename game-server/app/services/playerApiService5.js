@@ -582,11 +582,16 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
  * 初始化玩家数据
  * @param playerId
  * @param terrain
+ * @param language
  * @param callback
  */
-pro.initPlayerData = function(playerId, terrain, callback){
+pro.initPlayerData = function(playerId, terrain, language, callback){
 	if(!_.contains(_.values(Consts.AllianceTerrain), terrain)){
 		callback(new Error("terrain 不合法"))
+		return
+	}
+	if(!_.contains(Consts.AllianceLanguage, language)){
+		callback(new Error("language 不合法"))
 		return
 	}
 
@@ -598,7 +603,9 @@ pro.initPlayerData = function(playerId, terrain, callback){
 		playerDoc = doc
 		if(!_.isEqual(playerDoc.basicInfo.terrain, Consts.None)) return Promise.reject(ErrorUtils.playerDataAlreadyInited(playerId))
 		playerDoc.basicInfo.terrain = terrain
+		playerDoc.basicInfo.language = language
 		playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
+		playerData.push(["basicInfo.language", playerDoc.basicInfo.language])
 		var dragonType = Consts.TerrainDragonMap[terrain]
 		var dragon = playerDoc.dragons[dragonType]
 		dragon.star = 1

@@ -1238,7 +1238,8 @@ pro.unlockPlayerSecondMarchQueue = function(msg, session, next){
 pro.initPlayerData = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.initPlayerData", {playerId:session.uid, msg:msg})
 	var terrain = msg.terrain
-	this.playerApiService5.initPlayerDataAsync(session.uid, terrain).then(function(playerData){
+	var language = msg.language
+	this.playerApiService5.initPlayerDataAsync(session.uid, terrain, language).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
