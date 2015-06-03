@@ -3945,12 +3945,14 @@ Utils.refreshAllianceBasicInfo = function(allianceDoc, allianceData){
 	for(var i = 0; i < sortedMembers.length; i ++){
 		for(var j = 0; j < powerPercent.length; j ++){
 			if((i + 1) < powerPercent[j].to){
+				console.log(sortedMembers[i].name, sortedMembers[i].power, powerPercent[j], '1111111111111')
 				totalPower += Math.ceil(sortedMembers[i].power * powerPercent[j].percent)
 				totalKill += sortedMembers[i].kill
 			}
 		}
 	}
 	_.each(allianceDoc.buildings, function(building){
+		console.log(building.name, AllianceBuilding[building.name][building.level].power, '2222222222222222')
 		totalPower += AllianceBuilding[building.name][building.level].power
 	})
 	allianceDoc.basicInfo.power = totalPower
