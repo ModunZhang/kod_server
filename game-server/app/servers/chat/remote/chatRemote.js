@@ -33,7 +33,6 @@ var pro = ChatRemote.prototype
  */
 pro.addToChatChannel = function(uid, logicServerId, callback){
 	this.globalChatChannel.add(uid, logicServerId)
-	this.sendNotice(Consts.NoticeType.Info, '热烈欢迎 ' + uid + ' 登录游戏', callback)
 }
 
 /**
