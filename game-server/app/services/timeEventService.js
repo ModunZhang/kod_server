@@ -451,7 +451,6 @@ pro.removeAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDo
 pro.restorePlayerTimeEvents = function(playerDoc, callback){
 	var self = this
 	var playerTimeEventService = this.app.get("playerTimeEventService")
-	var dataService = this.app.get('dataService');
 	var now = Date.now()
 	var funcs = []
 
@@ -601,7 +600,7 @@ pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
 			var theEventType = Consts.TimeEventType.AllianceFight
 			var theEventId = allianceDoc.allianceFight.attackAllianceId + ":" + allianceDoc.allianceFight.defenceAllianceId
 			funcs.push(self.addTimeEventAsync(thekey, theEventType, theEventId, allianceDoc.basicInfo.statusFinishTime - now))
-			funcs.push(self.dataService.createAllianceFightChannelAsync(attackAllianceDoc._id, defenceAllianceDoc._id))
+			funcs.push(self.app.get('dataService').createAllianceFightChannelAsync(attackAllianceDoc._id, defenceAllianceDoc._id))
 		}
 	}
 
