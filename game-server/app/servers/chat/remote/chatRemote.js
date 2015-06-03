@@ -33,6 +33,7 @@ var pro = ChatRemote.prototype
  */
 pro.addToChatChannel = function(uid, logicServerId, callback){
 	this.globalChatChannel.add(uid, logicServerId)
+	callback()
 }
 
 /**
