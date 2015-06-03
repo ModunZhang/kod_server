@@ -30,7 +30,7 @@ intInit["activeShrineStageEventMinutes"] = {
 }
 intInit["allianceFightPrepareMinutes"] = {
 	type:"allianceFightPrepareMinutes",
-	value:10,
+	value:20,
 	desc:"联盟战准备期时间"
 }
 intInit["allianceFightTotalFightMinutes"] = {

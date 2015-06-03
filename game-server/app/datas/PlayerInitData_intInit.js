@@ -70,7 +70,7 @@ intInit["casinoTokenNeededPerAdvancedGacha"] = {
 }
 intInit["dragonMarchSpeed"] = {
 	type:"dragonMarchSpeed",
-	value:480,
+	value:960,
 	desc:"龙的行军速度"
 }
 intInit["playerLevelupRewardsHours"] = {
