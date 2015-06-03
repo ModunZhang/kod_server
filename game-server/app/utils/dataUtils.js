@@ -3948,6 +3948,7 @@ Utils.refreshAllianceBasicInfo = function(allianceDoc, allianceData){
 				console.log(sortedMembers[i].name, sortedMembers[i].power, powerPercent[j], '1111111111111')
 				totalPower += Math.ceil(sortedMembers[i].power * powerPercent[j].percent)
 				totalKill += sortedMembers[i].kill
+				break
 			}
 		}
 	}
