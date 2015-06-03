@@ -600,7 +600,7 @@ pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
 			var theEventType = Consts.TimeEventType.AllianceFight
 			var theEventId = allianceDoc.allianceFight.attackAllianceId + ":" + allianceDoc.allianceFight.defenceAllianceId
 			funcs.push(self.addTimeEventAsync(thekey, theEventType, theEventId, allianceDoc.basicInfo.statusFinishTime - now))
-			funcs.push(self.app.get('dataService').createAllianceFightChannelAsync(attackAllianceDoc._id, defenceAllianceDoc._id))
+			funcs.push(self.app.get('dataService').createAllianceFightChannelAsync(allianceDoc.allianceFight.attackAllianceId, allianceDoc.allianceFight.defenceAllianceId))
 		}
 	}
 
