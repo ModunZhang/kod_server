@@ -245,7 +245,7 @@ special["moveTheCity"] = {
 }
 special["dragonExp_1"] = {
 	name:"dragonExp_1",
-	effect:"1000.0",
+	effect:"5000.0",
 	order:26,
 	isSell:true,
 	price:500,
@@ -255,7 +255,7 @@ special["dragonExp_1"] = {
 }
 special["dragonExp_2"] = {
 	name:"dragonExp_2",
-	effect:"5000.0",
+	effect:"50000.0",
 	order:27,
 	isSell:true,
 	price:4000,
@@ -265,7 +265,7 @@ special["dragonExp_2"] = {
 }
 special["dragonExp_3"] = {
 	name:"dragonExp_3",
-	effect:"25000.0",
+	effect:"200000.0",
 	order:28,
 	isSell:true,
 	price:12000,
