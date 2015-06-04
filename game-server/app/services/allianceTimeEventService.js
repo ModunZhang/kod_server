@@ -181,38 +181,39 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 	if(_.isEqual(event.marchType, Consts.MarchType.Shrine)){
 		var shrineEvent = LogicUtils.getEventById(attackAllianceDoc.shrineEvents, event.defenceShrineData.shrineEventId)
-		if(!_.isObject(shrineEvent)){
-			this.cacheService.directFindPlayerAsync(event.attackPlayerData.id, [], false).then(function(doc){
-				attackPlayerDoc = doc
+		this.cacheService.findPlayerAsync(event.attackPlayerData.id, [], true).then(function(doc){
+			attackPlayerDoc = doc
+			if(!_.isObject(shrineEvent)){
 				var marchReturnEvent = MarchUtils.createAttackAllianceShrineMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], [])
 				attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 				attackAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 				defenceEnemyAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
-
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
 				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
-				return Promise.resolve()
-			}).then(function(){
-				callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
-			}).catch(function(e){
-				callback(e)
-			})
-		}else{
-			var playerTroop = {
-				id:event.attackPlayerData.id,
-				name:event.attackPlayerData.name,
-				location:event.attackPlayerData.location,
-				dragon:event.attackPlayerData.dragon,
-				soldiers:event.attackPlayerData.soldiers
+				updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, attackPlayerDoc._id, null])
+			}else{
+				var playerTroop = {
+					id:event.attackPlayerData.id,
+					name:event.attackPlayerData.name,
+					location:event.attackPlayerData.location,
+					dragon:event.attackPlayerData.dragon,
+					soldiers:event.attackPlayerData.soldiers
+				}
+				shrineEvent.playerTroops.push(playerTroop)
+				attackAllianceData.push(["shrineEvents." + attackAllianceDoc.shrineEvents.indexOf(shrineEvent) + ".playerTroops." + shrineEvent.playerTroops.indexOf(playerTroop), playerTroop])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
+				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
+				TaskUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.JoinAllianceShrineEvent)
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
+				updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
 			}
-			shrineEvent.playerTroops.push(playerTroop)
-			attackAllianceData.push(["shrineEvents." + attackAllianceDoc.shrineEvents.indexOf(shrineEvent) + ".playerTroops." + shrineEvent.playerTroops.indexOf(playerTroop), playerTroop])
-
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
-			LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
+			return Promise.resolve()
+		}).then(function(){
 			callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
-		}
+		}).catch(function(e){
+			callback(e)
+		})
 		return
 	}
 	if(_.isEqual(event.marchType, Consts.MarchType.HelpDefence)){
@@ -1818,7 +1819,6 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, dragonExpAdd)
 			playerData.push(["dragons." + dragon.type + ".hp", dragon.hp])
 			playerData.push(["dragons." + dragon.type + ".hpRefreshTime", dragon.hpRefreshTime])
-			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.JoinAllianceShrineEvent)
 			updateFuncs.push([self.dataService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 

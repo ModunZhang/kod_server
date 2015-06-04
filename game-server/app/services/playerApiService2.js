@@ -89,10 +89,10 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		_.each(makeRequired.materials, function(value, key){
 			playerData.push(["dragonMaterials." + key, playerDoc.dragonMaterials[key]])
 		})
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.MakeDragonEquipment)
 		if(finishNow){
 			playerDoc.dragonEquipments[equipmentName] += 1
 			playerData.push(["dragonEquipments." + equipmentName, playerDoc.dragonEquipments[equipmentName]])
-			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.MakeDragonEquipment)
 		}else{
 			if(_.isObject(preMakeEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, "dragonEquipmentEvents", preMakeEvent.id)

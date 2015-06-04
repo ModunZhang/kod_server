@@ -93,7 +93,6 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		building = LogicUtils.getBuildingByEvent(playerDoc, event)
 		building.level += 1
 		playerData.push(["buildings.location_" + building.location + ".level", building.level])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, building.level)
 	}else if(_.isEqual(eventType, "houseEvents")){
 		event = LogicUtils.getEventById(playerDoc.houseEvents, eventId)
@@ -103,7 +102,6 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		var house = LogicUtils.getHouseByEvent(playerDoc, event)
 		house.level += 1
 		playerData.push(["buildings.location_" + event.buildingLocation + ".houses." + building.houses.indexOf(house) + ".level", house.level])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
 		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, house.level)
 		if(_.isEqual("dwelling", house.type)){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
@@ -115,16 +113,12 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		event = LogicUtils.getEventById(playerDoc.materialEvents, eventId)
 		event.finishTime = 0
 		playerData.push(["materialEvents." + playerDoc.materialEvents.indexOf(event) + ".finishTime", 0])
-		if(_.isEqual(event.category, Consts.MaterialType.BuildingMaterials)){
-			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.MakeBuildingMaterials)
-		}
 	}else if(_.isEqual(eventType, "soldierEvents")){
 		event = LogicUtils.getEventById(playerDoc.soldierEvents, eventId)
 		playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.soldierEvents, event)
 		playerDoc.soldiers[event.name] += event.count
 		playerData.push(["soldiers." + event.name, playerDoc.soldiers[event.name]])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
 		TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, event.name)
 	}else if(_.isEqual(eventType, "dragonEquipmentEvents")){
 		event = LogicUtils.getEventById(playerDoc.dragonEquipmentEvents, eventId)
@@ -132,7 +126,6 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		LogicUtils.removeItemInArray(playerDoc.dragonEquipmentEvents, event)
 		playerDoc.dragonEquipments[event.name] += 1
 		playerData.push(["dragonEquipments." + event.name, playerDoc.dragonEquipments[event.name]])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.MakeDragonEquipment)
 	}else if(_.isEqual(eventType, "treatSoldierEvents")){
 		event = LogicUtils.getEventById(playerDoc.treatSoldierEvents, eventId)
 		playerData.push(["treatSoldierEvents." + playerDoc.treatSoldierEvents.indexOf(event), null])
