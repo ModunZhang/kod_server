@@ -779,7 +779,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'makeMaterial', 'soldiers', 'soldierStars', 'materialEvents', 'productionTechs', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'makeMaterial', 'dailyTasks', 'soldiers', 'soldierStars', 'materialEvents', 'productionTechs', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_16
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
