@@ -30,12 +30,12 @@ intInit["activeShrineStageEventMinutes"] = {
 }
 intInit["allianceFightPrepareMinutes"] = {
 	type:"allianceFightPrepareMinutes",
-	value:1,
+	value:20,
 	desc:"联盟战准备期时间"
 }
 intInit["allianceFightTotalFightMinutes"] = {
 	type:"allianceFightTotalFightMinutes",
-	value:5,
+	value:60,
 	desc:"联盟战战争期时间"
 }
 intInit["allianceHelpDefenceTroopsMaxCount"] = {
@@ -70,12 +70,12 @@ intInit["dragonStrikeHpDecreasedPercent"] = {
 }
 intInit["allianceFightFaiedProtectMinutes"] = {
 	type:"allianceFightFaiedProtectMinutes",
-	value:1,
+	value:180,
 	desc:"联盟战失败保护期时间"
 }
 intInit["allianceFightSuccessProtectMinutes"] = {
 	type:"allianceFightSuccessProtectMinutes",
-	value:1,
+	value:180,
 	desc:"联盟战成功保护期时间"
 }
 intInit["KilledCitizenPerDragonExp"] = {
