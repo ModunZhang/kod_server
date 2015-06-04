@@ -731,6 +731,7 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 			_id:true,
 			basicInfo:true,
 			countInfo:true,
+			buildings:true,
 			members:true
 		}).limit(10).toArray(function(e, docs){
 			if(_.isObject(e)) reject(e)
@@ -779,6 +780,7 @@ pro.getNearedAllianceInfos = function(playerId, allianceId, callback){
 			}, {
 				basicInfo:true,
 				countInfo:true,
+				buildings:true,
 				members:true
 			}).sort({'basicInfo.power':-1}).limit(3).toArray(function(e, docs){
 				if(_.isObject(e)) reject(e)
@@ -793,6 +795,7 @@ pro.getNearedAllianceInfos = function(playerId, allianceId, callback){
 			}, {
 				basicInfo:true,
 				countInfo:true,
+				buildings:true,
 				members:true
 			}).sort({'basicInfo.power':1}).limit(3).toArray(function(e, docs){
 				if(_.isObject(e)) reject(e)
