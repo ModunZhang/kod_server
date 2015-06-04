@@ -740,11 +740,14 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 
 	findAlliancesAsync.then(function(docs){
 		_.each(docs, function(doc){
-			var data = {}
-			data._id = doc._id
-			data.basicInfo = doc.basicInfo
-			data.countInfo = doc.countInfo
-			data.archer = LogicUtils.getAllianceArchon(doc).name
+			var data = {
+				_id:doc._id,
+				basicInfo:doc.basicInfo,
+				countInfo:doc.countInfo,
+				archer:LogicUtils.getAllianceArchon(doc).name,
+				members:doc.members.length,
+				membersMax:DataUtils.getAllianceMemberMaxCount(doc)
+			}
 			allianceInfos.push(data)
 		})
 		return Promise.resolve()
@@ -802,11 +805,14 @@ pro.getNearedAllianceInfos = function(playerId, allianceId, callback){
 		allianceDocs.push(allianceDoc)
 		allianceDocs = allianceDocs.concat(docsSmall, docsBig)
 		_.each(allianceDocs, function(doc){
-			var data = {}
-			data._id = doc._id
-			data.basicInfo = doc.basicInfo
-			data.countInfo = doc.countInfo
-			data.archer = LogicUtils.getAllianceArchon(doc).name
+			var data = {
+				_id:doc._id,
+				basicInfo:doc.basicInfo,
+				countInfo:doc.countInfo,
+				archer:LogicUtils.getAllianceArchon(doc).name,
+				members:doc.members.length,
+				membersMax:DataUtils.getAllianceMemberMaxCount(doc)
+			}
 			allianceInfos.push(data)
 		})
 		return Promise.resolve()
