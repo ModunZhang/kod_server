@@ -294,7 +294,6 @@ pro.strikePlayerCity = function(playerId, allianceId, dragonType, defencePlayerI
 		defencePlayerDoc = doc_2
 		var defenceMemberObject = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerId)
 		if(!_.isObject(defenceMemberObject)) return Promise.reject(ErrorUtils.playerNotInEnemyAlliance(playerId, attackAllianceDoc._id, defencePlayerId, defenceAllianceDoc._id))
-		if(defenceMemberObject.isProtected) return Promise.reject(ErrorUtils.playerInProtectStatus(playerId, defencePlayerId))
 		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, attackPlayerDoc._id)
 		if(playerObject.isProtected){
 			playerObject.isProtected = false
@@ -404,7 +403,6 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 		defencePlayerDoc = doc_2
 		var defenceMemberObject = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerId)
 		if(!_.isObject(defenceMemberObject)) return Promise.reject(ErrorUtils.playerNotInEnemyAlliance(playerId, attackAllianceDoc._id, defencePlayerId, defenceAllianceDoc._id))
-		if(defenceMemberObject.isProtected) return Promise.reject(ErrorUtils.playerInProtectStatus(playerId, defencePlayerId))
 		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, attackPlayerDoc._id)
 		if(playerObject.isProtected){
 			playerObject.isProtected = false
