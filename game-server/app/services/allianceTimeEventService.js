@@ -1451,7 +1451,6 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 								attackPlayerData.push(["basicInfo.strikeWin", attackPlayerDoc.basicInfo.strikeWin])
 								TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 							}
-							return Promise.resolve()
 						}else{
 							attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount += 1
 							attackAllianceData.push(["allianceFight.defenceAllianceCountData.strikeCount", attackAllianceDoc.allianceFight.defenceAllianceCountData.strikeCount])
@@ -1479,7 +1478,6 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 						pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc._id, defenceAllianceData])
 						return Promise.resolve()
 					}
-
 				}
 			}
 		}).then(function(){
