@@ -5,9 +5,6 @@
  */
 
 module.exports = {
-	IapValidateUrl:"sandbox.itunes.apple.com",
-	IapValidatePath:"/verifyReceipt",
-	ApnPushCert:"alan_aps_production.p12",
 	GlobalChatChannel:"globalChatChannel",
 	AllianceChannelPrefix:"allianceChannel",
 	PushServiceName:"pushService",

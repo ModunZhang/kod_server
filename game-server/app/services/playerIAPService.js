@@ -28,8 +28,8 @@ var PlayerIAPService = function(app){
 	this.dataService = app.get("dataService")
 	this.Billing = app.get("Billing")
 	this.GemAdd = app.get("GemAdd")
-	this.billingValidateHost =  Consts.IapValidateUrl
-	this.billingValidatePath = Consts.IapValidatePath
+	this.billingValidateHost =  app.get('serverConfig').iapValidateUrl
+	this.billingValidatePath = app.get('serverConfig').iapValidatePath
 }
 
 module.exports = PlayerIAPService

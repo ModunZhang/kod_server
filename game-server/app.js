@@ -40,8 +40,8 @@ app.configure("local|develop|awschina", "gate", function(){
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 
-	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/mongo.json"))
-	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
+	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
+	var mongooseClient = mongoose.connect(app.get("mongoConfig").mongoHost)
 	app.set("mongoose", mongooseClient)
 })
 
@@ -61,8 +61,8 @@ app.configure("local|develop|awschina", "logic", function(){
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
 
-	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/mongo.json"))
-	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
+	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
 	app.set("mongoose", mongooseClient)
 })
 
@@ -73,20 +73,20 @@ app.configure("local|develop|awschina", "chat", function(){
 })
 
 app.configure("local|develop|awschina", "event", function(){
-	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/mongo.json"))
-	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
+	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
 	app.set("mongoose", mongooseClient)
 })
 
 app.configure("local|develop|awschina", "cache", function(){
-	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/mongo.json"))
-	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
+	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
 	app.set("mongoose", mongooseClient)
 })
 
 app.configure("local|develop|awschina", "rank", function(){
-	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/mongo.json"))
-	var mongooseClient = mongoose.connect(app.get("mongoConfig").host)
+	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
 	app.set("mongoose", mongooseClient)
 
 	var filterService = new FilterService(app)
