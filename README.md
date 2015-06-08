@@ -1,4 +1,4 @@
-kod_server for test
+kod_server
 ==========
 
 kod server
