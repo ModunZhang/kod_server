@@ -74,10 +74,6 @@ pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callbac
 		return
 	}
 	channel.leave(uid, logicServerId)
-	if(channel.getMembers().length == 0){
-		channel.destroy()
-		delete this.allianceChats[allianceId]
-	}
 	callback()
 }
 
