@@ -1,4 +1,4 @@
-kod_server a
+kod_server
 ==========
 
 kod server
