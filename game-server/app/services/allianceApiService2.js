@@ -149,6 +149,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, ["allianceId", ["allianceTag"]], ["", ""]])
 		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc._id, playerDoc])
 		if(allianceDoc.members.length == 0){
+			updateFuncs.push([self.dataService, self.dataService.destroyAllianceChatChannelAsync, allianceDoc._id])
 			updateFuncs.push([self.dataService, self.dataService.deleteAllianceAsync, allianceDoc._id])
 			eventFuncs.push([self.timeEventService, self.timeEventService.clearAllianceTimeEventsAsync, allianceDoc])
 		}else{

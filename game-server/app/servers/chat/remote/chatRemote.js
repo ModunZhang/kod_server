@@ -82,6 +82,22 @@ pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callbac
 }
 
 /**
+ * 删除联盟聊天频道
+ * @param allianceId
+ * @param callback
+ */
+pro.destroyAllianceChannel = function(allianceId, callback){
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	if(!_.isObject(channel)){
+		this.logService.onEventError('chat.chatRemote.destroyAllianceChannel', {allianceId:allianceId})
+		callback()
+		return
+	}
+	channel.destroy()
+	callback()
+}
+
+/**
  * 将对战中的联盟记录起来
  * @param attackAllianceId
  * @param defenceAllianceId

@@ -1319,6 +1319,20 @@ pro.removePlayerFromAllianceChannel = function(allianceId, playerDoc, callback){
 }
 
 /**
+ * 删除联盟聊天频道
+ * @param allianceId
+ * @param callback
+ */
+pro.destroyAllianceChatChannel = function(allianceId, callback){
+	this.app.rpc.chat.chatRemote.destroyAllianceChannel.toServer(this.chatServerId, allianceId, function(e){
+		self.logService.onEventError("logic.dataService.destroyAllianceChatChannel", {
+			allianceId:allianceId
+		}, e.stack)
+	})
+	callback()
+}
+
+/**
  * 将玩家添加到所有频道中
  * @param playerDoc
  * @param callback
