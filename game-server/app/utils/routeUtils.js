@@ -29,3 +29,11 @@ routeUtil.logic = function(session, msg, app, callback){
 	}
 	callback(null, session.get("logicServerId"))
 }
+
+routeUtil.cache = function(session, msg, app, callback){
+	if(!session.get("cacheServerId")){
+		callback(new Error("fail to find cacheServerId in session"))
+		return
+	}
+	callback(null, session.get("cacheServerId"))
+}

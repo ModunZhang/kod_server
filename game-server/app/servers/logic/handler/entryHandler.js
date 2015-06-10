@@ -18,11 +18,12 @@ var Handler = function(app){
 	this.app = app
 	this.env = app.get("env")
 	this.logService = app.get("logService")
-	this.dataService = app.get('dataService')
 	this.sessionService = app.get("sessionService")
+	this.request = app.get('request');
 	this.logicServerId = app.get('logicServerId')
 	this.chatServerId = app.get('chatServerId')
 	this.rankServerId = app.get('rankServerId')
+	this.cacheServerId = app.get('cacheServerId');
 }
 var pro = Handler.prototype
 
@@ -58,7 +59,7 @@ pro.login = function(msg, session, next){
 	var playerDoc = null
 	var allianceDoc = null
 	var enemyAllianceDoc = null
-	this.dataService.requestAsync('login', [deviceId, requestTime, this.logicServerId]).spread(function(doc_1, doc_2, doc_3){
+	this.request('login', [deviceId, requestTime, this.logicServerId]).spread(function(doc_1, doc_2, doc_3){
 		playerDoc = doc_1
 		allianceDoc = doc_2
 		enemyAllianceDoc = doc_3
@@ -70,9 +71,13 @@ pro.login = function(msg, session, next){
 			})
 		})
 	}).then(function(){
+		self.logService.onRequest("logic.entryHandler.login success", {
+			deviceId:deviceId,
+			logicServerId:self.logicServerId
+		})
 		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc, enemyAllianceData:enemyAllianceDoc})
 	}).catch(function(e){
-		self.logService.onRequest("logic.entryHandler.login", {
+		self.logService.onRequestError("logic.entryHandler.login failed", {
 			deviceId:deviceId,
 			logicServerId:self.logicServerId
 		}, e.stack)
@@ -87,6 +92,7 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 	session.set("logicServerId", this.logicServerId)
 	session.set("chatServerId", this.chatServerId)
 	session.set("rankServerId", this.rankServerId)
+	session.set("cacheServerId", this.cacheServerId)
 	session.set("name", playerDoc.basicInfo.name)
 	session.set("icon", playerDoc.basicInfo.icon)
 	session.set("allianceId", _.isObject(allianceDoc) ? allianceDoc._id : "")
@@ -94,14 +100,19 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 	session.set("vipExp", playerDoc.basicInfo.vipExp)
 	session.set("isVipActive", playerDoc.vipEvents.length > 0)
 	session.on("closed", function(session, reason){
-		self.dataService.requestAsync('logout', [session.uid, self.logicServerId, reason]).then(function(){
-			self.logService.onRequest("logic.entryHandler.logout", {
+		self.logService.onRequest("logic.entryHandler.logout", {
+			playerId:session.uid,
+			logicServerId:self.logicServerId,
+			reason:reason
+		})
+		self.request('logout', [session.uid, self.logicServerId, reason]).then(function(){
+			self.logService.onRequest("logic.entryHandler.logout success", {
 				playerId:session.uid,
 				logicServerId:self.logicServerId,
 				reason:reason
 			})
 		}).catch(function(e){
-			self.logService.onRequestError("logic.entryHandler.logout", {
+			self.logService.onRequestError("logic.entryHandler.logout failed", {
 				playerId:session.uid,
 				logicServerId:self.logicServerId,
 				reason:reason

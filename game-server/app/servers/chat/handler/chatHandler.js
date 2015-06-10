@@ -37,7 +37,7 @@ var ChatHandler = function(app){
 				var name = params[1]
 				var count = parseInt(params[2])
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.resources(session, uid, name, count, function(e){
+					self.app.rpc.cache.commandRemote.resources(session, uid, name, count, function(e){
 						callback(e)
 					})
 				}
@@ -52,7 +52,7 @@ var ChatHandler = function(app){
 				var location = parseInt(params[1])
 				var level = parseInt(params[2])
 				if(_.isNumber(level)){
-					self.app.rpc.logic.commandRemote.buildinglevel(session, uid, location, level, function(e){
+					self.app.rpc.cache.commandRemote.buildinglevel(session, uid, location, level, function(e){
 						callback(e)
 					})
 				}
@@ -64,7 +64,7 @@ var ChatHandler = function(app){
 			func:function(session, uid, text, callback){
 				var self = this
 				var eventType = text.split(" ")[1]
-				self.app.rpc.logic.commandRemote.rmevents(session, uid, eventType, function(e){
+				self.app.rpc.cache.commandRemote.rmevents(session, uid, eventType, function(e){
 					callback(e)
 				})
 			}
@@ -77,7 +77,7 @@ var ChatHandler = function(app){
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.soldiermaterial(session, uid, count, function(e){
+					self.app.rpc.cache.commandRemote.soldiermaterial(session, uid, count, function(e){
 						callback(e)
 					})
 				}
@@ -91,7 +91,7 @@ var ChatHandler = function(app){
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.dragonmaterial(session, uid, count, function(e){
+					self.app.rpc.cache.commandRemote.dragonmaterial(session, uid, count, function(e){
 						callback(e)
 					})
 				}
@@ -105,7 +105,7 @@ var ChatHandler = function(app){
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.dragonequipment(session, uid, count, function(e){
+					self.app.rpc.cache.commandRemote.dragonequipment(session, uid, count, function(e){
 						callback(e)
 					})
 				}
@@ -119,7 +119,7 @@ var ChatHandler = function(app){
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.soldiers(session, uid, count, function(e){
+					self.app.rpc.cache.commandRemote.soldiers(session, uid, count, function(e){
 						callback(e)
 					})
 				}
@@ -133,7 +133,7 @@ var ChatHandler = function(app){
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.woundedsoldiers(session, uid, count, function(e){
+					self.app.rpc.cache.commandRemote.woundedsoldiers(session, uid, count, function(e){
 						callback(e)
 					})
 				}
@@ -148,7 +148,7 @@ var ChatHandler = function(app){
 				var count = text.split(" ")[2]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.dragonhp(session, uid, dragonType, count, function(e){
+					self.app.rpc.cache.commandRemote.dragonhp(session, uid, dragonType, count, function(e){
 						callback(e)
 					})
 				}
@@ -163,7 +163,7 @@ var ChatHandler = function(app){
 				var level = text.split(" ")[2]
 				level = parseInt(level)
 				if(_.isNumber(level)){
-					self.app.rpc.logic.commandRemote.dragonskill(session, uid, dragonType, level, function(e){
+					self.app.rpc.cache.commandRemote.dragonskill(session, uid, dragonType, level, function(e){
 						callback(e)
 					})
 				}
@@ -178,7 +178,7 @@ var ChatHandler = function(app){
 				var star = text.split(" ")[2]
 				star = parseInt(star)
 				if(_.isNumber(star)){
-					self.app.rpc.logic.commandRemote.dragonequipmentstar(session, uid, dragonType, star, function(e){
+					self.app.rpc.cache.commandRemote.dragonequipmentstar(session, uid, dragonType, star, function(e){
 						callback(e)
 					})
 				}
@@ -193,7 +193,7 @@ var ChatHandler = function(app){
 				var star = text.split(" ")[2]
 				star = parseInt(star)
 				if(_.isNumber(star)){
-					self.app.rpc.logic.commandRemote.dragonstar(session, uid, dragonType, star, function(e){
+					self.app.rpc.cache.commandRemote.dragonstar(session, uid, dragonType, star, function(e){
 						callback(e)
 					})
 				}
@@ -208,7 +208,7 @@ var ChatHandler = function(app){
 				var level = text.split(" ")[2]
 				level = parseInt(level)
 				if(_.isNumber(level)){
-					self.app.rpc.logic.commandRemote.dragonlevel(session, uid, dragonType, level, function(e){
+					self.app.rpc.cache.commandRemote.dragonlevel(session, uid, dragonType, level, function(e){
 						callback(e)
 					})
 				}
@@ -222,7 +222,7 @@ var ChatHandler = function(app){
 				var donatelevel = text.split(" ")[1]
 				donatelevel = parseInt(donatelevel)
 				if(_.isNumber(donatelevel) && donatelevel >= 1 && donatelevel <= 6){
-					self.app.rpc.logic.commandRemote.donatelevel(session, uid, donatelevel, function(e){
+					self.app.rpc.cache.commandRemote.donatelevel(session, uid, donatelevel, function(e){
 						callback(e)
 					})
 				}
@@ -236,7 +236,7 @@ var ChatHandler = function(app){
 				var honour = text.split(" ")[1]
 				honour = parseInt(honour)
 				if(_.isNumber(honour)){
-					self.app.rpc.logic.commandRemote.alliancehonour(session, uid, honour, function(e){
+					self.app.rpc.cache.commandRemote.alliancehonour(session, uid, honour, function(e){
 						callback(e)
 					})
 				}
@@ -250,7 +250,7 @@ var ChatHandler = function(app){
 				var perception = text.split(" ")[1]
 				perception = parseInt(perception)
 				if(_.isNumber(perception)){
-					self.app.rpc.logic.commandRemote.allianceperception(session, uid, perception, function(e){
+					self.app.rpc.cache.commandRemote.allianceperception(session, uid, perception, function(e){
 						callback(e)
 					})
 				}
@@ -264,7 +264,7 @@ var ChatHandler = function(app){
 				var level = text.split(" ")[1]
 				level = parseInt(level)
 				if(_.isNumber(level)){
-					self.app.rpc.logic.commandRemote.playerlevel(session, uid, level, function(e){
+					self.app.rpc.cache.commandRemote.playerlevel(session, uid, level, function(e){
 						callback(e)
 					})
 				}
@@ -275,7 +275,7 @@ var ChatHandler = function(app){
 			desc:"清除所有玩家GCId",
 			func:function(session, uid, text, callback){
 				var self = this
-				self.app.rpc.logic.commandRemote.cleargc(session, uid, function(e){
+				self.app.rpc.cache.commandRemote.cleargc(session, uid, function(e){
 					callback(e)
 				})
 			}
@@ -286,7 +286,7 @@ var ChatHandler = function(app){
 			func:function(session, uid, text, callback){
 				var self = this
 				var defenceAllianceId = text.split(" ")[1]
-				self.app.rpc.logic.commandRemote.alliancefight(session, uid, defenceAllianceId, function(e){
+				self.app.rpc.cache.commandRemote.alliancefight(session, uid, defenceAllianceId, function(e){
 					callback(e)
 				})
 			}

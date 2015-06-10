@@ -24,6 +24,7 @@ var AllianceApiService5 = function(app){
 	this.pushService = app.get("pushService")
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
+	this.cacheService = app.get('cacheService');
 }
 module.exports = AllianceApiService5
 var pro = AllianceApiService5.prototype
@@ -46,7 +47,7 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "giveLoyaltyToAllianceMember")){
@@ -55,7 +56,7 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 		if(allianceDoc.basicInfo.honour - count < 0) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
-		return self.dataService.findPlayerAsync(memberId, [], false)
+		return self.cacheService.findPlayerAsync(memberId, [], false)
 	}).then(function(doc){
 		memberDoc = doc
 		memberDoc.allianceInfo.loyalty += count
@@ -71,8 +72,8 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 		}
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".lastRewardData", memberObject.lastRewardData])
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, memberDoc._id, memberDoc])
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, memberDoc._id, memberDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
@@ -94,10 +95,10 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(memberDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(memberDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(memberDoc._id, null))
 		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -112,7 +113,7 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
  * @param callback
  */
 pro.getAllianceInfo = function(playerId, allianceId, callback){
-	this.dataService.directFindAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.directFindAllianceAsync(allianceId, [], false).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 		var allianceData = {
 			id:doc._id,
@@ -166,7 +167,7 @@ pro.getJoinRequestEvents = function(playerId, allianceId, callback){
 	}
 
 	var allianceDoc = null
-	this.dataService.directFindAllianceAsync(allianceId, ["_id", "members", "joinRequestEvents"], false).then(function(doc){
+	this.cacheService.directFindAllianceAsync(allianceId, ["_id", "members", "joinRequestEvents"], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!_.isObject(playerObject)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
@@ -192,7 +193,7 @@ pro.getShrineReports = function(playerId, allianceId, callback){
 	}
 
 	var allianceDoc = null
-	this.dataService.directFindAllianceAsync(allianceId, ["_id", "members", "shrineReports"], false).then(function(doc){
+	this.cacheService.directFindAllianceAsync(allianceId, ["_id", "members", "shrineReports"], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!_.isObject(playerObject)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
@@ -216,7 +217,7 @@ pro.getAllianceFightReports = function(playerId, allianceId, callback){
 	}
 
 	var allianceDoc = null
-	this.dataService.directFindAllianceAsync(allianceId, ["_id", "members", "allianceFightReports"], false).then(function(doc){
+	this.cacheService.directFindAllianceAsync(allianceId, ["_id", "members", "allianceFightReports"], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!_.isObject(playerObject)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
@@ -240,7 +241,7 @@ pro.getItemLogs = function(playerId, allianceId, callback){
 	}
 
 	var allianceDoc = null
-	this.dataService.directFindAllianceAsync(allianceId, ["_id", "members", "itemLogs"], false).then(function(doc){
+	this.cacheService.directFindAllianceAsync(allianceId, ["_id", "members", "itemLogs"], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!_.isObject(playerObject)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))

@@ -9,7 +9,7 @@ var ErrorUtils = require("../utils/errorUtils")
 var FilterService = function(app){
 	this.app = app
 	this.toobusyMaxLag = 140
-	this.toobusyInterval = 100
+	this.toobusyInterval = 250
 
 	toobusy.maxLag(this.toobusyMaxLag)
 	toobusy.interval(this.toobusyInterval)

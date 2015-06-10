@@ -26,6 +26,7 @@ var AllianceApiService3 = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.apnService = app.get("apnService")
 	this.dataService = app.get("dataService")
+	this.cacheService = app.get('cacheService');
 }
 module.exports = AllianceApiService3
 var pro = AllianceApiService3.prototype
@@ -45,9 +46,9 @@ pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
 	var allianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
-		return self.dataService.findAllianceAsync(allianceId, [], false)
+		return self.cacheService.findAllianceAsync(allianceId, [], false)
 	}).then(function(doc){
 		allianceDoc = doc
 		var donateLevel = playerDoc.allianceDonate[donateType]
@@ -70,8 +71,8 @@ pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.DonateToAlliance)
 
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -82,10 +83,10 @@ pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -112,7 +113,7 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 		keys = []
 	else
 		keys = []
-	this.dataService.findAllianceAsync(allianceId, keys, false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId, keys, false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "upgradeAllianceBuilding")){
@@ -138,7 +139,7 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 			DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, totalCount - currentCount)
 		}
 
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 		return Promise.resolve()
@@ -151,7 +152,7 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 
 		Promise.all(funcs).then(function(){
@@ -173,7 +174,7 @@ pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callbac
 	var allianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
-	this.dataService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "upgradeAllianceVillage")){
@@ -188,7 +189,7 @@ pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callbac
 		allianceDoc.villageLevels[villageType] += 1
 		allianceData.push(["villageLevels." + villageType, allianceDoc.villageLevels[villageType]])
 
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
 	}).then(function(){
@@ -200,7 +201,7 @@ pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callbac
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -224,7 +225,7 @@ pro.moveAllianceBuilding = function(playerId, allianceId, mapObjectId, locationX
 	var enemyAllianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
-	this.dataService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "moveAllianceBuilding")){
@@ -251,7 +252,7 @@ pro.moveAllianceBuilding = function(playerId, allianceId, mapObjectId, locationX
 		allianceDoc.basicInfo.honour -= honourNeeded
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 		return Promise.resolve()
@@ -264,7 +265,7 @@ pro.moveAllianceBuilding = function(playerId, allianceId, mapObjectId, locationX
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -286,7 +287,7 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "activateAllianceShrineStage")){
@@ -304,7 +305,7 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
 		allianceDoc.shrineEvents.push(event)
 		allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(event), event])
 
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "shrineEvents", event.id, event.startTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
@@ -319,7 +320,7 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 
 		Promise.all(funcs).then(function(){
@@ -347,7 +348,7 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -363,8 +364,8 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
 		DataUtils.refreshPlayerPower(playerDoc, playerData)
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return self.dataService.findAllianceAsync(allianceId, [], false)
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+		return self.cacheService.findAllianceAsync(allianceId, [], false)
 	}).then(function(doc){
 		allianceDoc = doc
 		if(!LogicUtils.isPlayerHasFreeMarchQueue(playerDoc, allianceDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
@@ -378,7 +379,7 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 		allianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(event), event])
 		enemyAllianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(event), event])
 
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
@@ -394,10 +395,10 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -417,7 +418,7 @@ pro.requestAllianceToFight = function(playerId, allianceId, callback){
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.dataService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
 		allianceDoc = doc
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id))
 		var findedPlayerId = _.find(allianceDoc.fightRequests, function(thePlayerId){
@@ -427,7 +428,7 @@ pro.requestAllianceToFight = function(playerId, allianceId, callback){
 		allianceDoc.fightRequests.push(playerId)
 		allianceData.push(["fightRequests." + allianceDoc.fightRequests.indexOf(playerId), playerId])
 
-		updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		return Promise.resolve()
 	}).then(function(){
@@ -439,7 +440,7 @@ pro.requestAllianceToFight = function(playerId, allianceId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -462,7 +463,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findAllianceAsync(allianceId, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests'), false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests'), false).then(function(doc){
 		attackAllianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "findAllianceToFight")){
@@ -472,7 +473,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 
 		var funcs = []
 		funcs.push(new Promise(function(resolve, reject){
-			self.dataService.getAllianceModel().collection.find({
+			self.cacheService.getAllianceModel().collection.find({
 				_id:{$ne:allianceId},
 				serverId:self.app.get("cacheServerId"),
 				'basicInfo.power':{$lte:attackAllianceDoc.basicInfo.power}
@@ -485,7 +486,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 			})
 		}))
 		funcs.push(new Promise(function(resolve, reject){
-			self.dataService.getAllianceModel().collection.find({
+			self.cacheService.getAllianceModel().collection.find({
 				_id:{$ne:allianceId},
 				serverId:self.app.get("cacheServerId"),
 				'basicInfo.power':{$gt:attackAllianceDoc.basicInfo.power}
@@ -505,7 +506,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		var finalDoc = _.isNull(docSmall) ? docBig : _.isNull(docBig) ? docSmall : powerBig >= powerSmall ? docSmall : docBig
 		if(attackAllianceDoc.basicInfo.power * 1.9 < finalDoc.basicInfo.power || attackAllianceDoc.basicInfo.power * 0.1 > finalDoc.basicInfo.power)
 			return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
-		return self.dataService.findAllianceAsync(finalDoc._id, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests'), false)
+		return self.cacheService.findAllianceAsync(finalDoc._id, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests'), false)
 	}).then(function(doc){
 		defenceAllianceDoc = doc
 		if(!_.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Peace))
@@ -526,8 +527,8 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		defenceAllianceDoc.fightRequests = []
 		defenceAllianceData.push(["fightRequests", defenceAllianceDoc.fightRequests])
 
-		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
-		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.pick(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.pick(attackAllianceDoc, Consts.AllianceViewDataKeys)])
@@ -546,10 +547,10 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(attackAllianceDoc._id, null))
 		}
 		if(_.isObject(defenceAllianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(defenceAllianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(defenceAllianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -573,7 +574,7 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findAllianceAsync(allianceId, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests', 'allianceFightReports'), false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests', 'allianceFightReports'), false).then(function(doc){
 		attackAllianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "revengeAlliance")){
@@ -590,7 +591,7 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
 		if(isWin) return Promise.reject(ErrorUtils.winnerOfAllianceFightCanNotRevenge(playerId, attackAllianceDoc._id, reportId))
 		if(DataUtils.isAllianceRevengeTimeExpired(report)) return Promise.reject(ErrorUtils.allianceFightRevengeTimeExpired(playerId, attackAllianceDoc._id, reportId))
 		var enemyAllianceId = LogicUtils.getEnemyAllianceId(report, attackAllianceDoc._id)
-		return self.dataService.findAllianceAsync(enemyAllianceId, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests'), false)
+		return self.cacheService.findAllianceAsync(enemyAllianceId, Consts.AllianceViewDataKeys.concat('allianceFight', 'fightRequests'), false)
 	}).then(function(doc){
 		defenceAllianceDoc = doc
 		if(!_.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Peace)) return Promise.reject(ErrorUtils.targetAllianceNotInPeaceStatus(playerId, attackAllianceDoc._id, reportId))
@@ -609,8 +610,8 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
 		defenceAllianceDoc.fightRequests = []
 		defenceAllianceData.push(["fightRequests", defenceAllianceDoc.fightRequests])
 
-		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
-		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.pick(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.pick(attackAllianceDoc, Consts.AllianceViewDataKeys)])
@@ -627,10 +628,10 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(attackAllianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(attackAllianceDoc._id, null))
 		}
 		if(_.isObject(defenceAllianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(defenceAllianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(defenceAllianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -645,7 +646,7 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
  * @param callback
  */
 pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
-	this.dataService.directFindAllianceAsync(targetAllianceId, Consts.AllianceViewDataKeys, false).then(function(doc){
+	this.cacheService.directFindAllianceAsync(targetAllianceId, Consts.AllianceViewDataKeys, false).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId))
 		callback(null, doc)
 	}).catch(function(e){
@@ -663,7 +664,7 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 	var self = this;
 	var allianceInfos = []
 	var findAlliancesAsync = new Promise(function(resolve, reject){
-		self.dataService.getAllianceModel().collection.find({
+		self.cacheService.getAllianceModel().collection.find({
 			serverId:self.app.get("cacheServerId"),
 			'basicInfo.tag':{$regex:tag, $options:"i"}
 		}, {
@@ -708,11 +709,11 @@ pro.getNearedAllianceInfos = function(playerId, allianceId, callback){
 	var self = this
 	var allianceDoc = null
 	var allianceInfos = []
-	this.dataService.getAllianceModel().findByIdAsync(allianceId).then(function(doc){
+	this.cacheService.getAllianceModel().findByIdAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var funcs = []
 		funcs.push(new Promise(function(resolve, reject){
-			self.dataService.getAllianceModel().collection.find({
+			self.cacheService.getAllianceModel().collection.find({
 				_id:{$ne:allianceDoc._id},
 				serverId:self.app.get("cacheServerId"),
 				'basicInfo.power':{$lt:allianceDoc.basicInfo.power}
@@ -727,7 +728,7 @@ pro.getNearedAllianceInfos = function(playerId, allianceId, callback){
 			})
 		}))
 		funcs.push(new Promise(function(resolve, reject){
-			self.dataService.getAllianceModel().collection.find({
+			self.cacheService.getAllianceModel().collection.find({
 				_id:{$ne:allianceDoc._id},
 				serverId:self.app.get("cacheServerId"),
 				'basicInfo.power':{$gt:allianceDoc.basicInfo.power}

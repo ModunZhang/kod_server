@@ -2688,168 +2688,168 @@
 //		//	}, 2 * 1000)
 //		//})
 //
-//		//it("addShopItem 普通道具不需要进货补充", function(done){
-//		//	Api.loginPlayer(Config.deviceId3, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.addShopItem("woodClass_4", 1, function(doc){
-//		//			doc.code.should.equal(Errors.normalItemsNotNeedToAdd.code)
-//		//			done()
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("addAllianceItem 此道具未在联盟商店出售", function(done){
-//		//	Api.loginPlayer(Config.deviceId3, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.sendChat("allianceHonour 500000", function(doc){
-//		//			doc.code.should.equal(200)
-//		//			Api.addShopItem("vipPoint_3", 1, function(doc){
-//		//				doc.code.should.equal(Errors.theItemNotSellInAllianceShop.code)
-//		//				done()
-//		//			})
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("addAllianceItem 正常添加", function(done){
-//		//	Api.loginPlayer(Config.deviceId3, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.sendChat("alliancehonour 500000", function(doc){
-//		//			doc.code.should.equal(200)
-//		//			Api.addShopItem("dragonChest_1", 1, function(doc){
-//		//				doc.code.should.equal(200)
-//		//				done()
-//		//			})
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("buyShopItem 玩家忠诚值不足", function(done){
-//		//	Api.buyShopItem("woodClass_4", 1, function(doc){
-//		//		doc.code.should.equal(Errors.playerLoyaltyNotEnough.code)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it("buyShopItem 正常购买", function(done){
-//		//	Api.sendChat("resources gem 5000000", function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.sendChat("donatelevel 6", function(doc){
-//		//			doc.code.should.equal(200)
-//		//			Api.donateToAlliance("gem", function(doc){
-//		//				doc.code.should.equal(200)
-//		//				Api.donateToAlliance("gem", function(doc){
-//		//					doc.code.should.equal(200)
-//		//					Api.donateToAlliance("gem", function(doc){
-//		//						doc.code.should.equal(200)
-//		//						Api.buyShopItem("dragonChest_1", 1, function(doc){
-//		//							doc.code.should.equal(200)
-//		//							done()
-//		//						})
-//		//					})
-//		//				})
-//		//			})
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("giveLoyaltyToAllianceMember 正常给予1", function(done){
-//		//	var m_myAllianceData = null
-//		//	Api.loginPlayer(Config.deviceId3, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.getMyAllianceData(function(doc){
-//		//			doc.code.should.equal(200)
-//		//			m_myAllianceData = doc.allianceData
-//		//			Api.giveLoyaltyToAllianceMember(m_myAllianceData.members[0].id, 10, function(doc){
-//		//				doc.code.should.equal(200)
-//		//				done()
-//		//			})
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("giveLoyaltyToAllianceMember 正常给予2", function(done){
-//		//	var m_myAllianceData = null
-//		//	Api.loginPlayer(Config.deviceId3, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.getMyAllianceData(function(doc){
-//		//			doc.code.should.equal(200)
-//		//			m_myAllianceData = doc.allianceData
-//		//			Api.giveLoyaltyToAllianceMember(m_myAllianceData.members[1].id, 10, function(doc){
-//		//				doc.code.should.equal(200)
-//		//				done()
-//		//			})
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//var m_myAllianceData = null
-//		//it("getAllianceInfo 正常查看", function(done){
-//		//	Api.getMyAllianceData(function(doc){
-//		//		doc.code.should.equal(200)
-//		//		m_myAllianceData = doc.allianceData
-//		//		Api.getAllianceInfo(m_myAllianceData._id, function(doc){
-//		//			doc.code.should.equal(200)
-//		//			done()
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("getJoinRequestEvents 正常查看", function(done){
-//		//	Api.getJoinRequestEvents(m_myAllianceData._id, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it("getShrineReports 正常查看", function(done){
-//		//	Api.getShrineReports(m_myAllianceData._id, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it("getAllianceFightReports 正常查看", function(done){
-//		//	Api.getAllianceFightReports(m_myAllianceData._id, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it("getItemLogs 正常查看", function(done){
-//		//	Api.getItemLogs(m_myAllianceData._id, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it('sendAllianceChat 正常发送', function(done){
-//		//	Api.sendAllianceChat('test,test', function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it('sendAllianceFightChat 正常发送', function(done){
-//		//	Api.sendAllianceFightChat('test,test', function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it('getAllianceChats 正常获取', function(done){
-//		//	Api.getChats('alliance', function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it('getAllianceFightChats 正常获取', function(done){
-//		//	Api.getChats('allianceFight', function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
+//		it("addShopItem 普通道具不需要进货补充", function(done){
+//			Api.loginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				Api.addShopItem("woodClass_4", 1, function(doc){
+//					doc.code.should.equal(Errors.normalItemsNotNeedToAdd.code)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("addAllianceItem 此道具未在联盟商店出售", function(done){
+//			Api.loginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				Api.sendChat("allianceHonour 500000", function(doc){
+//					doc.code.should.equal(200)
+//					Api.addShopItem("vipPoint_3", 1, function(doc){
+//						doc.code.should.equal(Errors.theItemNotSellInAllianceShop.code)
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("addAllianceItem 正常添加", function(done){
+//			Api.loginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				Api.sendChat("alliancehonour 500000", function(doc){
+//					doc.code.should.equal(200)
+//					Api.addShopItem("dragonChest_1", 1, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("buyShopItem 玩家忠诚值不足", function(done){
+//			Api.buyShopItem("woodClass_4", 1, function(doc){
+//				doc.code.should.equal(Errors.playerLoyaltyNotEnough.code)
+//				done()
+//			})
+//		})
+//
+//		it("buyShopItem 正常购买", function(done){
+//			Api.sendChat("resources gem 5000000", function(doc){
+//				doc.code.should.equal(200)
+//				Api.sendChat("donatelevel 6", function(doc){
+//					doc.code.should.equal(200)
+//					Api.donateToAlliance("gem", function(doc){
+//						doc.code.should.equal(200)
+//						Api.donateToAlliance("gem", function(doc){
+//							doc.code.should.equal(200)
+//							Api.donateToAlliance("gem", function(doc){
+//								doc.code.should.equal(200)
+//								Api.buyShopItem("dragonChest_1", 1, function(doc){
+//									doc.code.should.equal(200)
+//									done()
+//								})
+//							})
+//						})
+//					})
+//				})
+//			})
+//		})
+//
+//		it("giveLoyaltyToAllianceMember 正常给予1", function(done){
+//			var m_myAllianceData = null
+//			Api.loginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				Api.getMyAllianceData(function(doc){
+//					doc.code.should.equal(200)
+//					m_myAllianceData = doc.allianceData
+//					Api.giveLoyaltyToAllianceMember(m_myAllianceData.members[0].id, 10, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("giveLoyaltyToAllianceMember 正常给予2", function(done){
+//			var m_myAllianceData = null
+//			Api.loginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				Api.getMyAllianceData(function(doc){
+//					doc.code.should.equal(200)
+//					m_myAllianceData = doc.allianceData
+//					Api.giveLoyaltyToAllianceMember(m_myAllianceData.members[1].id, 10, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		var m_myAllianceData = null
+//		it("getAllianceInfo 正常查看", function(done){
+//			Api.getMyAllianceData(function(doc){
+//				doc.code.should.equal(200)
+//				m_myAllianceData = doc.allianceData
+//				Api.getAllianceInfo(m_myAllianceData._id, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("getJoinRequestEvents 正常查看", function(done){
+//			Api.getJoinRequestEvents(m_myAllianceData._id, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getShrineReports 正常查看", function(done){
+//			Api.getShrineReports(m_myAllianceData._id, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getAllianceFightReports 正常查看", function(done){
+//			Api.getAllianceFightReports(m_myAllianceData._id, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getItemLogs 正常查看", function(done){
+//			Api.getItemLogs(m_myAllianceData._id, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it('sendAllianceChat 正常发送', function(done){
+//			Api.sendAllianceChat('test,test', function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it('sendAllianceFightChat 正常发送', function(done){
+//			Api.sendAllianceFightChat('test,test', function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it('getAllianceChats 正常获取', function(done){
+//			Api.getChats('alliance', function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it('getAllianceFightChats 正常获取', function(done){
+//			Api.getChats('allianceFight', function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
 //	})
 //
 //

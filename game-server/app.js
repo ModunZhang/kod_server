@@ -17,6 +17,7 @@ app.set("name", "KODServer")
 app.route("chat", RouteUtils.chat)
 app.route("logic", RouteUtils.logic)
 app.route("rank", RouteUtils.rank)
+app.route("cache", RouteUtils.cache)
 
 app.configure("local|develop|awschina", function() {
 	app.set('proxyConfig', {
@@ -60,22 +61,12 @@ app.configure("local|develop|awschina", "logic", function(){
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
-
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
-	app.set("mongoose", mongooseClient)
 })
 
 app.configure("local|develop|awschina", "chat", function(){
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
-})
-
-app.configure("local|develop|awschina", "event", function(){
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
-	app.set("mongoose", mongooseClient)
 })
 
 app.configure("local|develop|awschina", "cache", function(){

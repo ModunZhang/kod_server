@@ -20,6 +20,7 @@ var PlayerApiService3 = function(app){
 	this.app = app
 	this.env = app.get("env")
 	this.pushService = app.get("pushService")
+	this.cacheService = app.get('cacheService');
 	this.dataService = app.get("dataService")
 	this.Deal = app.get("Deal")
 	this.GemUse = app.get("GemUse")
@@ -35,10 +36,26 @@ var pro = PlayerApiService3.prototype
  * @param callback
  */
 pro.unSaveMail = function(playerId, mailId, callback){
-	this.dataService.unSavePlayerMailAsync(playerId, mailId).then(function(data){
-		callback(null, data)
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+		playerDoc = doc
+		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
+		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
+		mail.isSaved = false
+		playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isSaved", mail.isSaved])
+		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
@@ -49,8 +66,19 @@ pro.unSaveMail = function(playerId, mailId, callback){
  * @param callback
  */
 pro.getMails = function(playerId, fromIndex, callback){
-	this.dataService.getPlayerMailsAsync(playerId, fromIndex).then(function(data){
-		callback(null, data)
+	var playerDoc = null
+	var mails = []
+	this.cacheService.directFindPlayerAsync(playerId, [], false).then(function(doc){
+		playerDoc = doc
+		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
+			var mail = playerDoc.mails[i]
+			mail.index = i
+			mails.push(mail)
+		}
+		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, mails)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -65,7 +93,7 @@ pro.getMails = function(playerId, fromIndex, callback){
 pro.getSendMails = function(playerId, fromIndex, callback){
 	var playerDoc = null
 	var mails = []
-	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.directFindPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		for(var i = playerDoc.sendMails.length - 1; i >= 0; i--){
 			var mail = playerDoc.sendMails[i]
@@ -88,8 +116,19 @@ pro.getSendMails = function(playerId, fromIndex, callback){
  * @param callback
  */
 pro.getSavedMails = function(playerId, fromIndex, callback){
-	this.dataService.getPlayerSavedMailsAsync(playerId, fromIndex).then(function(data){
-		callback(null, data)
+	var playerDoc = null
+	var mails = []
+	this.cacheService.directFindPlayerAsync(playerId, [], false).then(function(doc){
+		playerDoc = doc
+		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
+			var mail = playerDoc.mails[i]
+			mail.index = i
+			if(!!mail.isSaved) mails.push(mail)
+		}
+		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, mails)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -102,10 +141,28 @@ pro.getSavedMails = function(playerId, fromIndex, callback){
  * @param callback
  */
 pro.deleteMails = function(playerId, mailIds, callback){
-	this.dataService.deletePlayerMailsAsync(playerId, mailIds).then(function(data){
-		callback(null, data)
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+		playerDoc = doc
+		for(var i = 0; i < mailIds.length; i++){
+			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
+			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailIds[i]))
+			playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
+			LogicUtils.removeItemInArray(playerDoc.mails, mail)
+		}
+		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
@@ -116,10 +173,28 @@ pro.deleteMails = function(playerId, mailIds, callback){
  * @param callback
  */
 pro.readReports = function(playerId, reportIds, callback){
-	this.dataService.readPlayerReportsAsync(playerId, reportIds).then(function(data){
-		callback(null, data)
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+		playerDoc = doc
+		for(var i = 0; i < reportIds.length; i++){
+			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
+			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
+			report.isRead = true
+			playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isRead", true])
+		}
+		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
@@ -130,10 +205,26 @@ pro.readReports = function(playerId, reportIds, callback){
  * @param callback
  */
 pro.saveReport = function(playerId, reportId, callback){
-	this.dataService.savePlayerReportAsync(playerId, reportId).then(function(data){
-		callback(null, data)
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+		playerDoc = doc
+		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
+		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
+		report.isSaved = true
+		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", true])
+		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
@@ -144,10 +235,26 @@ pro.saveReport = function(playerId, reportId, callback){
  * @param callback
  */
 pro.unSaveReport = function(playerId, reportId, callback){
-	this.dataService.unSavePlayerReportAsync(playerId, reportId).then(function(data){
-		callback(null, data)
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+		playerDoc = doc
+		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
+		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
+		report.isSaved = false
+		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", report.isSaved])
+		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
@@ -158,8 +265,19 @@ pro.unSaveReport = function(playerId, reportId, callback){
  * @param callback
  */
 pro.getReports = function(playerId, fromIndex, callback){
-	this.dataService.getPlayerReportsAsync(playerId, fromIndex).then(function(data){
-		callback(null, data)
+	var playerDoc = null
+	var reports = []
+	this.cacheService.directFindPlayerAsync(playerId, [], false).then(function(doc){
+		playerDoc = doc
+		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
+			var report = playerDoc.reports[i]
+			report.index = i
+			reports.push(report)
+		}
+		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, reports)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -172,8 +290,19 @@ pro.getReports = function(playerId, fromIndex, callback){
  * @param callback
  */
 pro.getSavedReports = function(playerId, fromIndex, callback){
-	this.dataService.getPlayerSavedReportsAsync(playerId, fromIndex).then(function(data){
-		callback(null, data)
+	var playerDoc = null
+	var reports = []
+	this.cacheService.directFindPlayerAsync(playerId, [], false).then(function(doc){
+		playerDoc = doc
+		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
+			var report = playerDoc.reports[i]
+			report.index = i
+			if(!!report.isSaved) reports.push(report)
+		}
+		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, reports)
 	}).catch(function(e){
 		callback(e)
 	})
@@ -186,10 +315,28 @@ pro.getSavedReports = function(playerId, fromIndex, callback){
  * @param callback
  */
 pro.deleteReports = function(playerId, reportIds, callback){
-	this.dataService.deletePlayerReportsAsync(playerId, reportIds).then(function(data){
-		callback(null, data)
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+		playerDoc = doc
+		for(var i = 0; i < reportIds.length; i++){
+			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
+			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
+			playerData.push(["reports." + playerDoc.reports.indexOf(report), null])
+			LogicUtils.removeItemInArray(playerDoc.reports, report)
+		}
+		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
@@ -201,7 +348,7 @@ pro.deleteReports = function(playerId, reportIds, callback){
  */
 pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 	var playerViewData = {}
-	this.dataService.directFindPlayerAsync(targetPlayerId, [], false).then(function(doc){
+	this.cacheService.directFindPlayerAsync(targetPlayerId, [], false).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId))
 		playerViewData._id = doc._id
 		playerViewData.basicInfo = doc.basicInfo
@@ -226,7 +373,7 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
 		if(_.isObject(defenceDragon)){
@@ -241,7 +388,7 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
 		dragon.status = Consts.DragonStatus.Defence
 		playerData.push(["dragons." + dragon.type + ".status", dragon.status])
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -250,7 +397,7 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -268,7 +415,7 @@ pro.cancelDefenceDragon = function(playerId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var dragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
 		if(!_.isObject(dragon)) return Promise.reject(ErrorUtils.noDragonInDefenceStatus(playerId))
@@ -276,7 +423,7 @@ pro.cancelDefenceDragon = function(playerId, callback){
 		dragon.status = Consts.DragonStatus.Free
 		playerData.push(["dragons." + dragon.type, dragon])
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -285,7 +432,7 @@ pro.cancelDefenceDragon = function(playerId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -307,7 +454,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		DataUtils.refreshPlayerResources(playerDoc)
 		if(!DataUtils.isPlayerSellQueueEnough(playerDoc)) return Promise.reject(ErrorUtils.sellQueueNotEnough(playerId))
@@ -326,7 +473,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		updateFuncs.push([self.Deal, self.Deal.createAsync, deal.dealForAll])
 		return Promise.resolve()
 	}).then(function(){
@@ -336,7 +483,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -355,7 +502,7 @@ pro.getSellItems = function(playerId, type, name, callback){
 	var self = this
 	var playerDoc = null
 	var itemDocs = null
-	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.directFindPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		return self.Deal.find({
 			"playerId":{$ne:playerDoc._id},
@@ -391,7 +538,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 	var pushFuncs = []
 	var updateFuncs = []
 	var funcs = []
-	funcs.push(this.dataService.findPlayerAsync(playerId, [], false))
+	funcs.push(this.cacheService.findPlayerAsync(playerId, [], false))
 	funcs.push(this.Deal.findOneAsync({_id:itemId}))
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		playerDoc = doc_1
@@ -424,7 +571,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 			playerData.push([type + "." + itemDoc.itemData.name, playerDoc[type][itemDoc.itemData.name]])
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		return self.dataService.findPlayerAsync(itemDoc.playerId, [], false)
+		return self.cacheService.findPlayerAsync(itemDoc.playerId, [], false)
 	}).then(function(doc){
 		sellerDoc = doc
 		var sellItem = _.find(sellerDoc.deals, function(deal){
@@ -433,8 +580,8 @@ pro.buySellItem = function(playerId, itemId, callback){
 		sellItem.isSold = true
 		sellerData.push(["deals." + sellerDoc.deals.indexOf(sellItem) + ".isSold", sellItem.isSold])
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, sellerDoc._id, sellerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, sellerDoc._id, sellerDoc])
 		updateFuncs.push([self.Deal, self.Deal.findOneAndRemoveAsync, {_id:itemId}])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, sellerDoc, sellerData])
 		return Promise.resolve()
@@ -447,10 +594,10 @@ pro.buySellItem = function(playerId, itemId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		if(_.isObject(sellerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(sellerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(sellerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -469,7 +616,7 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var sellItem = _.find(playerDoc.deals, function(deal){
 			return _.isEqual(deal.id, itemId)
@@ -483,7 +630,7 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 		playerData.push(["deals." + playerDoc.deals.indexOf(sellItem), null])
 		LogicUtils.removeItemInArray(playerDoc.deals, sellItem)
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -492,7 +639,7 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -513,7 +660,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 	var itemDoc = null
 	var updateFuncs = []
 	var funcs = []
-	funcs.push(this.dataService.findPlayerAsync(playerId, [], false))
+	funcs.push(this.cacheService.findPlayerAsync(playerId, [], false))
 	funcs.push(this.Deal.findOneAsync({_id:itemId}))
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		playerDoc = doc_1
@@ -535,7 +682,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 		playerData.push(["deals." + playerDoc.deals.indexOf(sellItem), null])
 		LogicUtils.removeItemInArray(playerDoc.deals, sellItem)
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		updateFuncs.push([self.Deal, self.Deal.findOneAndRemoveAsync, {_id:itemId}])
 		return Promise.resolve()
 	}).then(function(){
@@ -545,7 +692,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -565,14 +712,14 @@ pro.setApnId = function(playerId, apnId, callback){
 	var playerData = []
 	var allianceDoc = null
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(_.isEqual(apnId, playerDoc.apnId)) return Promise.reject(ErrorUtils.apnIdAlreadySeted(playerId, apnId))
 		playerDoc.apnId = apnId
 		playerData.push(["apnId", playerDoc.apnId])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		if(_.isString(playerDoc.allianceId)){
-			return self.dataService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
+			return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
 				allianceDoc = doc
 				return Promise.resolve()
 			})
@@ -583,7 +730,7 @@ pro.setApnId = function(playerId, apnId, callback){
 		if(_.isObject(allianceDoc)){
 			var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
 			memberObject.apnId = playerDoc.apnId
-			updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		}
 		return Promise.resolve()
 	}).then(function(){
@@ -593,10 +740,10 @@ pro.setApnId = function(playerId, apnId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)

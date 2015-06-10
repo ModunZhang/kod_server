@@ -203,6 +203,22 @@ var UnlockAlliance = function(id){
 }
 
 /**
+ * 获取玩家模型
+ * @returns {*|DataService.Player}
+ */
+pro.getPlayerModel = function(){
+	return this.Player
+}
+
+/**
+ * 获取联盟模型
+ * @returns {*|DataService.Alliance}
+ */
+pro.getAllianceModel = function(){
+	return this.Alliance
+}
+
+/**
  * 创建联盟对象
  * @param allianceData
  * @param callback

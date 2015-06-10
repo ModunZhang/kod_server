@@ -25,7 +25,7 @@ module.exports = function(app){
 var Handler = function(app){
 	this.app = app
 	this.logService = app.get("logService")
-	this.dataService = app.get('dataService')
+	this.request = app.get('request');
 }
 var pro = Handler.prototype
 
@@ -51,7 +51,7 @@ pro.upgradeBuilding = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('upgradeBuilding', [session.uid, location, finishNow]).then(function(playerData){
+	this.request('upgradeBuilding', [session.uid, location, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -80,7 +80,7 @@ pro.switchBuilding = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('switchBuilding', [session.uid, buildingLocation, newBuildingName]).then(function(playerData){
+	this.request('switchBuilding', [session.uid, buildingLocation, newBuildingName]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -121,7 +121,7 @@ pro.createHouse = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('createHouse', [session.uid, buildingLocation, houseType, houseLocation, finishNow]).then(function(playerData){
+	this.request('createHouse', [session.uid, buildingLocation, houseType, houseLocation, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -156,7 +156,7 @@ pro.upgradeHouse = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('upgradeHouse', [session.uid, buildingLocation, houseLocation, finishNow]).then(function(playerData){
+	this.request('upgradeHouse', [session.uid, buildingLocation, houseLocation, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -185,7 +185,7 @@ pro.freeSpeedUp = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('freeSpeedUp', [session.uid, eventType, eventId]).then(function(playerData){
+	this.request('freeSpeedUp', [session.uid, eventType, eventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -214,7 +214,7 @@ pro.makeMaterial = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('makeMaterial', [session.uid, category, finishNow]).then(function(playerData){
+	this.request('makeMaterial', [session.uid, category, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -237,7 +237,7 @@ pro.getMaterials = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getMaterials', [session.uid, eventId]).then(function(playerData){
+	this.request('getMaterials', [session.uid, eventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -272,7 +272,7 @@ pro.recruitNormalSoldier = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('recruitNormalSoldier', [session.uid, soldierName, count, finishNow]).then(function(playerData){
+	this.request('recruitNormalSoldier', [session.uid, soldierName, count, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -312,7 +312,7 @@ pro.recruitSpecialSoldier = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('recruitSpecialSoldier', [session.uid, soldierName, count, finishNow]).then(function(playerData){
+	this.request('recruitSpecialSoldier', [session.uid, soldierName, count, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -341,7 +341,7 @@ pro.makeDragonEquipment = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('makeDragonEquipment', [session.uid, equipmentName, finishNow]).then(function(playerData){
+	this.request('makeDragonEquipment', [session.uid, equipmentName, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -370,7 +370,7 @@ pro.treatSoldier = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('treatSoldier', [session.uid, soldiers, finishNow]).then(function(playerData){
+	this.request('treatSoldier', [session.uid, soldiers, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -393,7 +393,7 @@ pro.hatchDragon = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('hatchDragon', [session.uid, dragonType]).then(function(playerData){
+	this.request('hatchDragon', [session.uid, dragonType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -438,7 +438,7 @@ pro.setDragonEquipment = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('setDragonEquipment', [session.uid, dragonType, equipmentCategory, equipmentName]).then(function(playerData){
+	this.request('setDragonEquipment', [session.uid, dragonType, equipmentCategory, equipmentName]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -473,7 +473,7 @@ pro.enhanceDragonEquipment = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('enhanceDragonEquipment', [session.uid, dragonType, equipmentCategory, equipments]).then(function(playerData){
+	this.request('enhanceDragonEquipment', [session.uid, dragonType, equipmentCategory, equipments]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -502,7 +502,7 @@ pro.resetDragonEquipment = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('resetDragonEquipment', [session.uid, dragonType, equipmentCategory]).then(function(playerData){
+	this.request('resetDragonEquipment', [session.uid, dragonType, equipmentCategory]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -531,7 +531,7 @@ pro.upgradeDragonSkill = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('upgradeDragonSkill', [session.uid, dragonType, skillKey]).then(function(playerData){
+	this.request('upgradeDragonSkill', [session.uid, dragonType, skillKey]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -554,7 +554,7 @@ pro.upgradeDragonStar = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('upgradeDragonStar', [session.uid, dragonType]).then(function(playerData){
+	this.request('upgradeDragonStar', [session.uid, dragonType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -569,7 +569,7 @@ pro.upgradeDragonStar = function(msg, session, next){
  */
 pro.getDailyQuests = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getDailyQuests", {playerId:session.uid, msg:msg})
-	this.dataService.requestAsync('getDailyQuests', [session.uid]).then(function(playerData){
+	this.request('getDailyQuests', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -592,7 +592,7 @@ pro.addDailyQuestStar = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('addDailyQuestStar', [session.uid, questId]).then(function(playerData){
+	this.request('addDailyQuestStar', [session.uid, questId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -615,7 +615,7 @@ pro.startDailyQuest = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('startDailyQuest', [session.uid, questId]).then(function(playerData){
+	this.request('startDailyQuest', [session.uid, questId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -638,7 +638,7 @@ pro.getDailyQeustReward = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getDailyQeustReward', [session.uid, questEventId]).then(function(playerData){
+	this.request('getDailyQeustReward', [session.uid, questEventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -661,7 +661,7 @@ pro.setPlayerLanguage = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('setPlayerLanguage', [session.uid, language]).then(function(playerData){
+	this.request('setPlayerLanguage', [session.uid, language]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -684,7 +684,7 @@ pro.getPlayerInfo = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getPlayerInfo', [session.uid, memberId]).then(function(playerViewData){
+	this.request('getPlayerInfo', [session.uid, memberId]).then(function(playerViewData){
 		next(null, {code:200, playerViewData:playerViewData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -724,7 +724,7 @@ pro.sendMail = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('sendMail', [session.uid, memberId, title, content]).then(function(){
+	this.request('sendMail', [session.uid, memberId, title, content]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -754,7 +754,7 @@ pro.readMails = function(msg, session, next){
 		}
 	}
 
-	this.dataService.requestAsync('readMails', [session.uid, mailIds]).then(function(playerData){
+	this.request('readMails', [session.uid, mailIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -777,7 +777,7 @@ pro.saveMail = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('saveMail', [session.uid, mailId]).then(function(playerData){
+	this.request('saveMail', [session.uid, mailId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -800,7 +800,7 @@ pro.unSaveMail = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('unSaveMail', [session.uid, mailId]).then(function(playerData){
+	this.request('unSaveMail', [session.uid, mailId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -823,7 +823,7 @@ pro.getMails = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getMails', [session.uid, fromIndex]).then(function(mails){
+	this.request('getMails', [session.uid, fromIndex]).then(function(mails){
 		next(null, {code:200, mails:mails})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -846,7 +846,7 @@ pro.getSendMails = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getSendMails', [session.uid, fromIndex]).then(function(mails){
+	this.request('getSendMails', [session.uid, fromIndex]).then(function(mails){
 		next(null, {code:200, mails:mails})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -869,7 +869,7 @@ pro.getSavedMails = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getSavedMails', [session.uid, fromIndex]).then(function(mails){
+	this.request('getSavedMails', [session.uid, fromIndex]).then(function(mails){
 		next(null, {code:200, mails:mails})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -899,7 +899,7 @@ pro.deleteMails = function(msg, session, next){
 		}
 	}
 
-	this.dataService.requestAsync('deleteMails', [session.uid, mailIds]).then(function(playerData){
+	this.request('deleteMails', [session.uid, mailIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -929,7 +929,7 @@ pro.readReports = function(msg, session, next){
 		}
 	}
 
-	this.dataService.requestAsync('readReports', [session.uid, reportIds]).then(function(playerData){
+	this.request('readReports', [session.uid, reportIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -952,7 +952,7 @@ pro.saveReport = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('saveReport', [session.uid, reportId]).then(function(playerData){
+	this.request('saveReport', [session.uid, reportId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -975,7 +975,7 @@ pro.unSaveReport = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('unSaveReport', [session.uid, reportId]).then(function(playerData){
+	this.request('unSaveReport', [session.uid, reportId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -998,7 +998,7 @@ pro.getReports = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getReports', [session.uid, fromIndex]).then(function(reports){
+	this.request('getReports', [session.uid, fromIndex]).then(function(reports){
 		next(null, {code:200, reports:reports})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1021,7 +1021,7 @@ pro.getSavedReports = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getSavedReports', [session.uid, fromIndex]).then(function(reports){
+	this.request('getSavedReports', [session.uid, fromIndex]).then(function(reports){
 		next(null, {code:200, reports:reports})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1051,7 +1051,7 @@ pro.deleteReports = function(msg, session, next){
 		}
 	}
 
-	this.dataService.requestAsync('deleteReports', [session.uid, reportIds]).then(function(playerData){
+	this.request('deleteReports', [session.uid, reportIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1074,7 +1074,7 @@ pro.getPlayerViewData = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getPlayerViewData', [session.uid, targetPlayerId]).then(function(playerViewData){
+	this.request('getPlayerViewData', [session.uid, targetPlayerId]).then(function(playerViewData){
 		next(null, {code:200, playerViewData:playerViewData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1097,7 +1097,7 @@ pro.setDefenceDragon = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('setDefenceDragon', [session.uid, dragonType]).then(function(playerData){
+	this.request('setDefenceDragon', [session.uid, dragonType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1112,7 +1112,7 @@ pro.setDefenceDragon = function(msg, session, next){
  */
 pro.cancelDefenceDragon = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.cancelDefenceDragon", {playerId:session.uid, msg:msg})
-	this.dataService.requestAsync('cancelDefenceDragon', [session.uid]).then(function(playerData){
+	this.request('cancelDefenceDragon', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1158,7 +1158,7 @@ pro.sellItem = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('sellItem', [session.uid, type, name, count, price]).then(function(playerData){
+	this.request('sellItem', [session.uid, type, name, count, price]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1192,7 +1192,7 @@ pro.getSellItems = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getSellItems', [session.uid, type, name]).then(function(itemDocs){
+	this.request('getSellItems', [session.uid, type, name]).then(function(itemDocs){
 		next(null, {code:200, itemDocs:itemDocs})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1215,7 +1215,7 @@ pro.buySellItem = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('buySellItem', [session.uid, itemId]).then(function(playerData){
+	this.request('buySellItem', [session.uid, itemId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1238,7 +1238,7 @@ pro.getMyItemSoldMoney = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getMyItemSoldMoney', [session.uid, itemId]).then(function(playerData){
+	this.request('getMyItemSoldMoney', [session.uid, itemId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1261,7 +1261,7 @@ pro.removeMySellItem = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('removeMySellItem', [session.uid, itemId]).then(function(playerData){
+	this.request('removeMySellItem', [session.uid, itemId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1284,7 +1284,7 @@ pro.setApnId = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('setApnId', [session.uid, apnId]).then(function(playerData){
+	this.request('setApnId', [session.uid, apnId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1313,7 +1313,7 @@ pro.upgradeProductionTech = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('upgradeProductionTech', [session.uid, techName, finishNow]).then(function(playerData){
+	this.request('upgradeProductionTech', [session.uid, techName, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1342,7 +1342,7 @@ pro.upgradeMilitaryTech = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('upgradeMilitaryTech', [session.uid, techName, finishNow]).then(function(playerData){
+	this.request('upgradeMilitaryTech', [session.uid, techName, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1371,7 +1371,7 @@ pro.upgradeSoldierStar = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('upgradeSoldierStar', [session.uid, soldierName, finishNow]).then(function(playerData){
+	this.request('upgradeSoldierStar', [session.uid, soldierName, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1394,7 +1394,7 @@ pro.setTerrain = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('setTerrain', [session.uid, terrain]).then(function(playerData){
+	this.request('setTerrain', [session.uid, terrain]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1423,7 +1423,7 @@ pro.buyItem = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('buyItem', [session.uid, itemName, count]).then(function(playerData){
+	this.request('buyItem', [session.uid, itemName, count]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1452,7 +1452,7 @@ pro.useItem = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('useItem', [session.uid, itemName, params]).then(function(playerData){
+	this.request('useItem', [session.uid, itemName, params]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1481,7 +1481,7 @@ pro.buyAndUseItem = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('buyAndUseItem', [session.uid, itemName, params]).then(function(playerData){
+	this.request('buyAndUseItem', [session.uid, itemName, params]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1516,7 +1516,7 @@ pro.setPveData = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('setPveData', [session.uid, pveData, fightData, rewards]).then(function(playerData){
+	this.request('setPveData', [session.uid, pveData, fightData, rewards]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1539,7 +1539,7 @@ pro.gacha = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('gacha', [session.uid, type]).then(function(playerData){
+	this.request('gacha', [session.uid, type]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1562,7 +1562,7 @@ pro.getGcBindStatus = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getGcBindStatus', [session.uid, gcId]).then(function(isBind){
+	this.request('getGcBindStatus', [session.uid, gcId]).then(function(isBind){
 		next(null, {code:200, isBind:isBind})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1585,7 +1585,7 @@ pro.bindGcId = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('bindGcId', [session.uid, gcId]).then(function(playerData){
+	this.request('bindGcId', [session.uid, gcId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1608,7 +1608,7 @@ pro.switchGcId = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('switchGcId', [session.uid, session.get("deviceId"), gcId]).then(function(){
+	this.request('switchGcId', [session.uid, session.get("deviceId"), gcId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1631,7 +1631,7 @@ pro.forceSwitchGcId = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('forceSwitchGcId', [session.uid, session.get("deviceId"), gcId]).then(function(){
+	this.request('forceSwitchGcId', [session.uid, session.get("deviceId"), gcId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1646,7 +1646,7 @@ pro.forceSwitchGcId = function(msg, session, next){
  */
 pro.getDay60Reward = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getDay60Reward", {playerId:session.uid, msg:msg})
-	this.dataService.requestAsync('getDay60Reward', [session.uid]).then(function(playerData){
+	this.request('getDay60Reward', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1668,7 +1668,7 @@ pro.getOnlineReward = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 	}
 
-	this.dataService.requestAsync('getOnlineReward', [session.uid, timePoint]).then(function(playerData){
+	this.request('getOnlineReward', [session.uid, timePoint]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1683,7 +1683,7 @@ pro.getOnlineReward = function(msg, session, next){
  */
 pro.getDay14Reward = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getDay14Reward", {playerId:session.uid, msg:msg})
-	this.dataService.requestAsync('getDay14Reward', [session.uid]).then(function(playerData){
+	this.request('getDay14Reward', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1706,7 +1706,7 @@ pro.getLevelupReward = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getLevelupReward', [session.uid, levelupIndex]).then(function(playerData){
+	this.request('getLevelupReward', [session.uid, levelupIndex]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1735,7 +1735,7 @@ pro.addPlayerBillingData = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('addPlayerBillingData', [session.uid, transactionId, receiptData]).spread(function(playerData, transactionId){
+	this.request('addPlayerBillingData', [session.uid, transactionId, receiptData]).spread(function(playerData, transactionId){
 		next(null, {code:200, playerData:playerData, transactionId:transactionId})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1750,7 +1750,7 @@ pro.addPlayerBillingData = function(msg, session, next){
  */
 pro.getFirstIAPRewards = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getFirstIAPRewards", {playerId:session.uid, msg:msg})
-	this.dataService.requestAsync('getFirstIAPRewards', [session.uid]).then(function(playerData){
+	this.request('getFirstIAPRewards', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1765,7 +1765,7 @@ pro.getFirstIAPRewards = function(msg, session, next){
  */
 pro.passSelinasTest = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.passSelinasTest", {playerId:session.uid, msg:msg})
-	this.dataService.requestAsync('passSelinasTest', [session.uid]).then(function(playerData){
+	this.request('passSelinasTest', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1788,7 +1788,7 @@ pro.getDailyTaskRewards = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getDailyTaskRewards', [session.uid, taskType]).then(function(playerData){
+	this.request('getDailyTaskRewards', [session.uid, taskType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1817,7 +1817,7 @@ pro.getGrowUpTaskRewards = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getGrowUpTaskRewards', [session.uid, taskType, taskId]).then(function(playerData){
+	this.request('getGrowUpTaskRewards', [session.uid, taskType, taskId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1840,7 +1840,7 @@ pro.getIapGift = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getIapGift', [session.uid, giftId]).then(function(playerData){
+	this.request('getIapGift', [session.uid, giftId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1855,7 +1855,7 @@ pro.getIapGift = function(msg, session, next){
  */
 pro.getServers = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getServers", {playerId:session.uid, msg:msg})
-	this.dataService.requestAsync('getServers', [session.uid]).then(function(servers){
+	this.request('getServers', [session.uid]).then(function(servers){
 		next(null, {code:200, servers:servers})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1878,7 +1878,7 @@ pro.switchServer = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('switchServer', [session.uid, serverId]).then(function(){
+	this.request('switchServer', [session.uid, serverId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1901,7 +1901,7 @@ pro.setPlayerIcon = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('setPlayerIcon', [session.uid, icon]).then(function(playerData){
+	this.request('setPlayerIcon', [session.uid, icon]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1916,7 +1916,7 @@ pro.setPlayerIcon = function(msg, session, next){
  */
 pro.unlockPlayerSecondMarchQueue = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.unlockPlayerSecondMarchQueue", {playerId:session.uid, msg:msg})
-	this.dataService.requestAsync('unlockPlayerSecondMarchQueue', [session.uid]).then(function(playerData){
+	this.request('unlockPlayerSecondMarchQueue', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1945,7 +1945,7 @@ pro.initPlayerData = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('initPlayerData', [session.uid, terrain, language]).then(function(playerData){
+	this.request('initPlayerData', [session.uid, terrain, language]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1968,7 +1968,7 @@ pro.getFirstJoinAllianceReward = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getFirstJoinAllianceReward', [session.uid, allianceId]).then(function(playerData){
+	this.request('getFirstJoinAllianceReward', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1983,7 +1983,7 @@ pro.getFirstJoinAllianceReward = function(msg, session, next){
  */
 pro.finishFTE = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.finishFTE", {playerId:session.uid, msg:msg})
-	this.dataService.requestAsync('finishFTE', [session.uid]).then(function(playerData){
+	this.request('finishFTE', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -2006,7 +2006,7 @@ pro.getPlayerWallInfo = function(msg, session, next){
 		return
 	}
 
-	this.dataService.requestAsync('getPlayerWallInfo', [session.uid, memberId]).then(function(wallInfo){
+	this.request('getPlayerWallInfo', [session.uid, memberId]).then(function(wallInfo){
 		next(null, {code:200, wallInfo:wallInfo})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

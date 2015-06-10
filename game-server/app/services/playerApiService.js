@@ -26,9 +26,6 @@ var PlayerApiService = function(app){
 	this.logService = app.get("logService")
 	this.cacheService = app.get('cacheService');
 	this.dataService = app.get("dataService")
-	this.chatServerId = app.get("chatServerId")
-	this.logicServerId = app.get("logicServerId")
-	this.rankServerId = app.get("rankServerId")
 	this.GemUse = app.get("GemUse")
 	this.Device = app.get("Device")
 }
@@ -174,9 +171,9 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 		}
 		return Promise.resolve()
 	}).then(function(){
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		if(_.isObject(allianceDoc)){
-			updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
 		}
 		return Promise.resolve()
@@ -202,10 +199,10 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 		}, e.stack)
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -227,18 +224,18 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], true).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], true).then(function(doc){
 		playerDoc = doc
 		return self.dataService.removePlayerFromChannelsAsync(playerDoc)
 	}).then(function(){
 		playerDoc.logicServerId = null
 		playerDoc.countInfo.todayOnLineTime += Date.now() - playerDoc.countInfo.lastLoginTime
 		if(!_.isEmpty(playerDoc.allianceId))
-			return self.dataService.findAllianceAsync(playerDoc.allianceId, [], true).then(function(doc){
+			return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], true).then(function(doc){
 				allianceDoc = doc
 				LogicUtils.updatePlayerPropertyInAlliance(playerDoc, false, allianceDoc, allianceData)
 				DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
-				updateFuncs.push([self.dataService, self.dataService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+				updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
 				return Promise.resolve()
 			})
@@ -246,9 +243,9 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 			return Promise.resolve()
 	}).then(function(){
 		if(_.isEqual(playerDoc.serverId, self.app.get("cacheServerId"))){
-			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+			updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		}else{
-			updateFuncs.push([self.dataService, self.dataService.timeoutPlayerAsync, playerDoc._id, playerDoc])
+			updateFuncs.push([self.cacheService, self.cacheService.timeoutPlayerAsync, playerDoc._id, playerDoc])
 		}
 		return Promise.resolve()
 	}).then(function(){
@@ -271,10 +268,10 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 		}, e.stack)
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		if(_.isObject(allianceDoc)){
-			funcs.push(self.dataService.updateAllianceAsync(allianceDoc._id, null))
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			self.app.set("membersCount", self.app.get("membersCount") - 1)
@@ -297,7 +294,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var building = null
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + location]
 		if(!_.isObject(building))return Promise.reject(ErrorUtils.buildingNotExist(playerId, location))
@@ -370,7 +367,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -381,7 +378,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -401,7 +398,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings["location_" + buildingLocation]
 		if(!_.isObject(building) || building.level < 1) return Promise.reject(ErrorUtils.buildingNotExist(playerId, buildingLocation))
@@ -428,7 +425,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 		if(!DataUtils.isPlayerBuildingUpgradeLegal(playerDoc, buildingLocation)) return Promise.reject(ErrorUtils.buildingUpgradePreConditionNotMatch(playerId, buildingLocation))
 		building.level += 1
 		playerData.push(["buildings.location_" + buildingLocation + ".type", newBuildingName])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -437,7 +434,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -461,7 +458,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 	var updateFuncs = []
 	var eventFuncs = []
 	var building = null
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + buildingLocation]
 		if(building.level <= 0) return Promise.reject(ErrorUtils.hostBuildingLevelMustBiggerThanOne(playerId, buildingLocation, houseLocation))
@@ -548,7 +545,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -559,7 +556,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -583,7 +580,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 	var eventFuncs = []
 	var building = null
 	var house = null
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + buildingLocation]
 		if(building.level <= 0) return Promise.reject(ErrorUtils.hostBuildingLevelMustBiggerThanOne(playerId, buildingLocation, houseLocation))
@@ -667,7 +664,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -678,7 +675,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -699,7 +696,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 	var updateFuncs = []
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
 		if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))
@@ -709,7 +706,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 		self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, eventType, eventId)
 		eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, eventType, eventId])
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -720,7 +717,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -741,7 +738,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_16
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -793,7 +790,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -804,7 +801,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -822,7 +819,7 @@ pro.getMaterials = function(playerId, eventId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var event = _.find(playerDoc.materialEvents, function(event){
 			return _.isEqual(event.id, eventId)
@@ -832,13 +829,13 @@ pro.getMaterials = function(playerId, eventId, callback){
 		LogicUtils.removeItemInArray(playerDoc.materialEvents, event)
 		DataUtils.addPlayerMaterials(playerDoc, event)
 		playerData.push([event.category, playerDoc[event.category]])
-		return self.dataService.updatePlayerAsync(playerDoc._id, playerDoc)
+		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -860,7 +857,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_5
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -918,7 +915,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -929,7 +926,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -951,7 +948,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_5
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -1011,7 +1008,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -1022,7 +1019,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
