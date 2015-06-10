@@ -193,7 +193,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
 				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
-				updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, attackPlayerDoc._id, null])
+				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, null])
 			}else{
 				var playerTroop = {
 					id:event.attackPlayerData.id,
@@ -208,7 +208,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
 				TaskUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.JoinAllianceShrineEvent)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
-				updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
+				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
 			}
 			return Promise.resolve()
 		}).then(function(){
