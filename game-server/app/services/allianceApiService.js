@@ -125,7 +125,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		playerData.push(["allianceId", playerDoc.allianceId])
 
 		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, ["allianceId", ["allianceTag"]], [allianceDoc._id, allianceDoc.basicInfo.tag]])
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc,{allianceId:allianceDoc._id, allianceTag:allianceDoc.basicInfo.tag}])
 		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, playerDoc._id, playerDoc])
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -888,7 +888,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 	}).then(function(){
 		if(!_.isEmpty(memberDoc.logicServerId)){
 			updateFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, memberDoc])
-			updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, memberDoc, ["allianceId", ["allianceTag"]], ["", ""]])
+			updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, memberDoc, {allianceId:"", allianceTag:""}])
 		}
 		updateFuncs.push([self.dataService, self.dataService.flushPlayerAsync, memberDoc._id, memberDoc])
 		updateFuncs.push([self.dataService, self.dataService.flushAllianceAsync, allianceDoc._id, allianceDoc])

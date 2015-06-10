@@ -24,6 +24,7 @@ var PlayerApiService = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.playerTimeEventService = app.get("playerTimeEventService")
 	this.logService = app.get("logService")
+	this.cacheService = app.get('cacheService');
 	this.dataService = app.get("dataService")
 	this.chatServerId = app.get("chatServerId")
 	this.logicServerId = app.get("logicServerId")
@@ -34,40 +35,70 @@ var PlayerApiService = function(app){
 module.exports = PlayerApiService
 var pro = PlayerApiService.prototype
 
+var LoginPlayer = function(id, requestTime){
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var enemyAllianceDoc = null
+	return this.cacheService.findPlayerAsync(id, [], false).then(function(doc){
+		if(_.isEmpty(doc)) return Promise.reject(ErrorUtils.playerNotExist(id, id))
+		if(!_.isEqual(doc.serverId, self.app.get("cacheServerId"))){
+			return new Promise(function(resolve, reject){
+				self.cacheService.removePlayerAsync(id).then(function(){
+					reject(ErrorUtils.playerNotInCurrentServer(doc._id, self.app.get("cacheServerId"), doc.serverId))
+				})
+			})
+		}
 
-var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, callback){
-	session.bind(playerDoc._id)
-	session.set("deviceId", deviceId)
-	session.set("logicServerId", this.logicServerId)
-	session.set("chatServerId", this.chatServerId)
-	session.set("rankServerId", this.rankServerId)
-	session.set("name", playerDoc.basicInfo.name)
-	session.set("icon", playerDoc.basicInfo.icon)
-	session.set("allianceId", _.isObject(allianceDoc) ? allianceDoc._id : "")
-	session.set("allianceTag", _.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "")
-	session.set("vipExp", playerDoc.basicInfo.vipExp)
-	session.set("isVipActive", playerDoc.vipEvents.length > 0)
-	session.on("closed", this.playerLogoutAsync.bind(this))
-	session.pushAll(function(err){
-		process.nextTick(function(){
-			callback(err)
+		var unreadMails = _.filter(doc.mails, function(mail){
+			return !mail.isRead
+		}).length
+		var unreadReports = _.filter(doc.reports, function(report){
+			return !report.isRead
+		}).length
+		playerDoc = _.omit(doc, ["__v", "mails", "sendMails", "reports"])
+		playerDoc.mailStatus = {
+			unreadMails:unreadMails,
+			unreadReports:unreadReports
+		}
+		playerDoc.serverLevel = self.app.getCurServer().level
+		playerDoc.deltaTime = Date.now() - requestTime
+		if(!_.isEmpty(playerDoc.allianceId)){
+			return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
+				allianceDoc = _.omit(doc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs", "villageCreateEvents"])
+				if(_.isObject(allianceDoc.allianceFight)){
+					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
+					return self.cacheService.directFindAllianceAsync(enemyAllianceId, Consts.AllianceViewDataKeys, false).then(function(doc){
+						enemyAllianceDoc = doc
+						return Promise.resolve()
+					})
+				}else return Promise.resolve()
+			})
+		}else return Promise.resolve()
+	}).then(function(){
+		return Promise.resolve([playerDoc, allianceDoc, enemyAllianceDoc])
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
+		}
+		return Promise.all(funcs).then(function(){
+			return Promise.reject(e)
 		})
 	})
 }
 
 /**
  * 玩家登陆逻辑服务器
- * @param session
  * @param deviceId
  * @param requestTime
+ * @param logicServerId
  * @param callback
  */
-pro.playerLogin = function(session, deviceId, requestTime, callback){
-	if(!_.isString(deviceId)){
-		callback(new Error("deviceId 不合法"))
-		return
-	}
-
+pro.login = function(deviceId, requestTime, logicServerId, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
@@ -77,10 +108,9 @@ pro.playerLogin = function(session, deviceId, requestTime, callback){
 	var eventFuncs = []
 	var pushFuncs = []
 	var vipExpAdd = null
-	var bindPlayerSessionAsync = Promise.promisify(BindPlayerSession, this)
 	this.Device.findByIdAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
-			return self.dataService.loginPlayerAsync(doc.playerId, requestTime)
+			return LoginPlayer.call(self, doc.playerId, requestTime)
 		}else{
 			return Promise.reject(ErrorUtils.deviceNotExist(deviceId))
 		}
@@ -134,7 +164,7 @@ pro.playerLogin = function(session, deviceId, requestTime, callback){
 		}
 		playerDoc.countInfo.lastLoginTime = Date.now()
 		playerDoc.countInfo.loginCount += 1
-		playerDoc.logicServerId = self.logicServerId
+		playerDoc.logicServerId = logicServerId
 
 		return Promise.resolve()
 	}).then(function(){
@@ -151,8 +181,6 @@ pro.playerLogin = function(session, deviceId, requestTime, callback){
 		}
 		return Promise.resolve()
 	}).then(function(){
-		return bindPlayerSessionAsync(session, deviceId, playerDoc, allianceDoc)
-	}).then(function(){
 		return self.dataService.addPlayerToChannelsAsync(playerDoc)
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -161,13 +189,17 @@ pro.playerLogin = function(session, deviceId, requestTime, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		self.logService.onEvent("logic.playerApiService.playerLogin", {
-			playerId:session.uid,
+		self.logService.onEvent("logic.playerApiService.login", {
+			playerId:playerDoc._id,
 			deviceId:deviceId,
-			logicServerId:self.logicServerId
+			logicServerId:logicServerId
 		})
 		callback(null, [playerDoc, allianceDoc, enemyAllianceDoc])
 	}).catch(function(e){
+		self.logService.onEventError("logic.playerApiService.login", {
+			deviceId:deviceId,
+			logicServerId:logicServerId
+		}, e.stack)
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
@@ -183,19 +215,19 @@ pro.playerLogin = function(session, deviceId, requestTime, callback){
 
 /**
  * 玩家登出逻辑服务器
- * @param session
+ * @param playerId
+ * @param logicServerId
  * @param reason
  * @param callback
  */
-pro.playerLogout = function(session, reason, callback){
+pro.logout = function(playerId, logicServerId, reason, callback){
 	var self = this
-	var playerId = session.uid
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'serverId', 'apnId', 'allianceId', 'logicServerId', 'countInfo', 'basicInfo', 'resources', 'allianceInfo', 'buildings'], true).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], true).then(function(doc){
 		playerDoc = doc
 		return self.dataService.removePlayerFromChannelsAsync(playerDoc)
 	}).then(function(){
@@ -225,16 +257,16 @@ pro.playerLogout = function(session, reason, callback){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		self.app.set("membersCount", self.app.get("membersCount") - 1)
-		self.logService.onEvent("logic.playerApiService.playerLeave", {
-			playerId:session.uid,
-			logicServerId:self.logicServerId,
+		self.logService.onEvent("logic.playerApiService.logout", {
+			playerId:playerId,
+			logicServerId:logicServerId,
 			reason:reason
 		})
 		callback()
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService.playerLeave", {
-			playerId:session.uid,
-			logicServerId:self.logicServerId,
+		self.logService.onEventError("logic.playerApiService.logout", {
+			playerId:playerId,
+			logicServerId:logicServerId,
 			reason:reason
 		}, e.stack)
 		var funcs = []
@@ -259,22 +291,13 @@ pro.playerLogout = function(session, reason, callback){
  * @param callback
  */
 pro.upgradeBuilding = function(playerId, location, finishNow, callback){
-	if(!_.isNumber(location) || location % 1 !== 0 || location < 1 || location > 22){
-		callback(new Error("location 不合法"))
-		return
-	}
-	if(!_.isBoolean(finishNow)){
-		callback(new Error("finishNow 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var eventFuncs = []
 	var updateFuncs = []
 	var building = null
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'buildingMaterials', 'growUpTasks', 'dailyTasks', 'buildingEvents', 'houseEvents', 'vipEvents', 'itemEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + location]
 		if(!_.isObject(building))return Promise.reject(ErrorUtils.buildingNotExist(playerId, location))
@@ -374,20 +397,11 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
  * @param callback
  */
 pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callback){
-	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1){
-		callback(new Error("buildingLocation 不合法"))
-		return
-	}
-	if(!_.contains(_.values(Consts.ResourceBuildingMap), newBuildingName) || _.isEqual("townHall", newBuildingName)){
-		callback(new Error("newBuildingName 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'buildings', 'resources'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings["location_" + buildingLocation]
 		if(!_.isObject(building) || building.level < 1) return Promise.reject(ErrorUtils.buildingNotExist(playerId, buildingLocation))
@@ -441,30 +455,13 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
  * @param callback
  */
 pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation, finishNow, callback){
-	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1 || buildingLocation > 20){
-		callback(new Error("buildingLocation 不合法"))
-		return
-	}
-	if(!_.isString(houseType)){
-		callback(new Error("houseType 不合法"))
-		return
-	}
-	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0 || houseLocation < 1 || houseLocation > 3){
-		callback(new Error("houseLocation 不合法"))
-		return
-	}
-	if(!_.isBoolean(finishNow)){
-		callback(new Error("finishNow 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
 	var building = null
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'buildingMaterials', 'growUpTasks', 'dailyTasks', 'buildingEvents', 'houseEvents', 'vipEvents', 'itemEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + buildingLocation]
 		if(building.level <= 0) return Promise.reject(ErrorUtils.hostBuildingLevelMustBiggerThanOne(playerId, buildingLocation, houseLocation))
@@ -579,23 +576,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
  * @param callback
  */
 pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow, callback){
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1 || buildingLocation > 20){
-		callback(new Error("buildingLocation 不合法"))
-		return
-	}
-	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0 || houseLocation < 1 || houseLocation > 3){
-		callback(new Error("houseLocation 不合法"))
-		return
-	}
-	if(!_.isBoolean(finishNow)){
-		callback(new Error("finishNow 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -603,7 +583,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 	var eventFuncs = []
 	var building = null
 	var house = null
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'buildingMaterials', 'growUpTasks', 'dailyTasks', 'buildingEvents', 'houseEvents', 'vipEvents', 'itemEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + buildingLocation]
 		if(building.level <= 0) return Promise.reject(ErrorUtils.hostBuildingLevelMustBiggerThanOne(playerId, buildingLocation, houseLocation))
@@ -714,21 +694,12 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
  * @param callback
  */
 pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
-	if(!_.contains(Consts.FreeSpeedUpAbleEventTypes, eventType)){
-		callback(new Error("eventType 不合法"))
-		return
-	}
-	if(!_.isString(eventId)){
-		callback(new Error("eventId 不合法"))
-		return
-	}
-
 	var self = this
 	var eventFuncs = []
 	var updateFuncs = []
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'militaryTechs', 'soldiers', 'soldierStars', 'dailyTasks', 'growUpTasks', eventType, 'vipEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
 		if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))
@@ -765,21 +736,12 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
  * @param callback
  */
 pro.makeMaterial = function(playerId, category, finishNow, callback){
-	if(!_.contains(Consts.MaterialType, category)){
-		callback(new Error("category 不合法"))
-		return
-	}
-	if(!_.isBoolean(finishNow)){
-		callback(new Error("finishNow 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'makeMaterial', 'dailyTasks', 'soldiers', 'soldierStars', 'materialEvents', 'productionTechs', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_16
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -857,15 +819,10 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
  * @param callback
  */
 pro.getMaterials = function(playerId, eventId, callback){
-	if(!_.isString(eventId)){
-		callback(new Error("eventId 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'buildings', 'buildingMaterials', 'technologyMaterials', 'materialEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var event = _.find(playerDoc.materialEvents, function(event){
 			return _.isEqual(event.id, eventId)
@@ -898,25 +855,12 @@ pro.getMaterials = function(playerId, eventId, callback){
  * @param callback
  */
 pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, callback){
-	if(!DataUtils.isNormalSoldier(soldierName)){
-		callback(new Error("soldierName 普通兵种不存在"))
-		return
-	}
-	if(!_.isNumber(count) || count % 1 !== 0 || count < 1){
-		callback(new Error("count 不合法"))
-		return
-	}
-	if(!_.isBoolean(finishNow)){
-		callback(new Error("finishNow 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'dailyTasks', 'growUpTasks', 'vipEvents', 'itemEvents', 'soldierEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_5
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -1002,29 +946,12 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
  * @param callback
  */
 pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, callback){
-	if(!DataUtils.hasSpecialSoldier(soldierName)){
-		callback(new Error("soldierName 特殊兵种不存在"))
-		return
-	}
-	if(!_.isNumber(count) || count % 1 !== 0 || count < 1){
-		callback(new Error("count 不合法"))
-		return
-	}
-	if(!_.isBoolean(finishNow)){
-		callback(new Error("finishNow 不合法"))
-		return
-	}
-	if(!DataUtils.canRecruitSpecialSoldier()){
-		callback(new Error("特殊兵种招募未开放"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldierMaterials', 'soldiers', 'soldierStars', 'productionTechs', 'militaryTechs', 'dailyTasks', 'growUpTasks', 'vipEvents', 'itemEvents', 'soldierEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_5
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))

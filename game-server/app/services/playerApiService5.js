@@ -37,8 +37,7 @@ pro.getDay60Reward = function(playerId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-
-	this.dataService.findPlayerAsync(playerId, ['_id', 'countInfo', 'items'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)) return Promise.reject(ErrorUtils.loginRewardAlreadyGet(playerId))
 		playerDoc.countInfo.day60RewardsCount = playerDoc.countInfo.day60
@@ -73,16 +72,11 @@ pro.getDay60Reward = function(playerId, callback){
  * @param callback
  */
 pro.getOnlineReward = function(playerId, timePoint, callback){
-	if(!DataUtils.isOnLineTimePointExist(timePoint)){
-		callback(new Error("timePoint 不合法"))
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-
-	this.dataService.findPlayerAsync(playerId, ['_id', 'countInfo', 'items'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(!DataUtils.isPlayerReachOnlineTimePoint(playerDoc, timePoint)) return Promise.reject(ErrorUtils.onlineTimeNotEough(playerId))
 		var theTimePoint = _.find(playerDoc.countInfo.todayOnLineTimeRewards, function(reward){
@@ -124,8 +118,7 @@ pro.getDay14Reward = function(playerId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-
-	this.dataService.findPlayerAsync(playerId, ['_id', 'countInfo', 'basicInfo', 'soldiers'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 
 		if(_.isEqual(playerDoc.countInfo.day14, playerDoc.countInfo.day14RewardsCount)) return Promise.reject(ErrorUtils.wonderAssistanceRewardAlreadyGet(playerId))
@@ -161,17 +154,11 @@ pro.getDay14Reward = function(playerId, callback){
  * @param callback
  */
 pro.getLevelupReward = function(playerId, levelupIndex, callback){
-	if(!DataUtils.isLevelupIndexExist(levelupIndex)){
-		callback(new Error("levelupIndex 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-
-	this.dataService.findPlayerAsync(playerId, ['_id', 'countInfo', 'buildings', 'items'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 
 		var theLevelupIndex = _.find(playerDoc.countInfo.levelupRewards, function(reward){
@@ -215,8 +202,7 @@ pro.getFirstIAPRewards = function(playerId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-
-	this.dataService.findPlayerAsync(playerId, ['_id', 'countInfo', 'basicInfo', 'items'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 
 		if(playerDoc.countInfo.iapCount <= 0) return Promise.reject(ErrorUtils.firstIAPNotHappen(playerId))
@@ -258,8 +244,7 @@ pro.passSelinasTest = function(playerId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-
-	this.dataService.findPlayerAsync(playerId, ['_id', 'dailyTasks'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.PassSelinasTest)
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, _.isEmpty(playerData) ? null : playerDoc])
@@ -286,17 +271,11 @@ pro.passSelinasTest = function(playerId, callback){
  * @param callback
  */
 pro.getDailyTaskRewards = function(playerId, taskType, callback){
-	if(!_.contains(_.values(Consts.DailyTaskTypes), taskType)){
-		callback(new Error("taskType 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-
-	this.dataService.findPlayerAsync(playerId, ['_id', 'dailyTasks', 'items'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var isRewarded = _.contains(playerDoc.dailyTasks.rewarded, taskType)
 		if(isRewarded) return Promise.reject(ErrorUtils.dailyTaskRewardAlreadyGet(playerId))
@@ -335,20 +314,11 @@ pro.getDailyTaskRewards = function(playerId, taskType, callback){
  * @param callback
  */
 pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
-	if(!_.contains(Consts.GrowUpTaskTypes, taskType)){
-		callback(new Error("taskType 不合法"))
-		return
-	}
-	if(!_.isNumber(taskId) || taskId % 1 !== 0 || taskId < 0){
-		callback(new Error("taskId 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'growUpTasks', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var task = _.find(playerDoc.growUpTasks[taskType], function(task){
 			return _.isEqual(task.id, taskId)
@@ -389,16 +359,11 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
  * @param callback
  */
 pro.getIapGift = function(playerId, giftId, callback){
-	if(!_.isString(giftId) || !ShortId.isValid(giftId)){
-		callback(new Error("giftId 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'iapGifts', 'items'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var gift = _.find(playerDoc.iapGifts, function(gift){
 			return _.isEqual(gift.id, giftId)
@@ -460,15 +425,10 @@ pro.getServers = function(playerId, callback){
  * @param callback
  */
 pro.switchServer = function(playerId, serverId, callback){
-	if(!_.isString(serverId)){
-		callback(new Error("serverId 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var getServersAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getServers.toServer, this)
-	this.dataService.findPlayerAsync(playerId, ['_id', 'allianceId', 'serverId', 'logicServerId'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(!_.isEmpty(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		if(_.isEqual(playerDoc.serverId, serverId)) return Promise.reject(ErrorUtils.canNotSwitchToTheSameServer(playerId, serverId))
@@ -509,15 +469,10 @@ pro.switchServer = function(playerId, serverId, callback){
  * @param callback
  */
 pro.setPlayerIcon = function(playerId, icon, callback){
-	if(!_.isNumber(icon) || icon % 1 !== 0 || icon < 1 || icon > 11){
-		callback(new Error("icon 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		playerDoc.basicInfo.icon = icon
 		playerData.push(["basicInfo.icon", playerDoc.basicInfo.icon])
@@ -545,7 +500,7 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.basicInfo.marchQueue >= 2) return Promise.reject(ErrorUtils.playerSecondMarchQueueAlreadyUnlocked(playerId))
 		var gemUsed = DataUtils.getPlayerIntInit("unlockPlayerSecondMarchQueue")
@@ -586,20 +541,11 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
  * @param callback
  */
 pro.initPlayerData = function(playerId, terrain, language, callback){
-	if(!_.contains(_.values(Consts.AllianceTerrain), terrain)){
-		callback(new Error("terrain 不合法"))
-		return
-	}
-	if(!_.contains(Consts.AllianceLanguage, language)){
-		callback(new Error("language 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'dragons'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(!_.isEqual(playerDoc.basicInfo.terrain, Consts.None)) return Promise.reject(ErrorUtils.playerDataAlreadyInited(playerId))
 		playerDoc.basicInfo.terrain = terrain
@@ -642,7 +588,7 @@ pro.getFirstJoinAllianceReward = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'countInfo', 'items'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.countInfo.firstJoinAllianceRewardGeted) return Promise.reject(ErrorUtils.firstJoinAllianceRewardAlreadyGeted(playerId))
 		playerDoc.countInfo.firstJoinAllianceRewardGeted = true
@@ -672,7 +618,7 @@ pro.finishFTE = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'countInfo'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.countInfo.isFTEFinished) return Promise.reject(ErrorUtils.fteAlreadyFinished(playerId))
 		playerDoc.countInfo.isFTEFinished = true
@@ -698,7 +644,7 @@ pro.finishFTE = function(playerId, callback){
  * @param callback
  */
 pro.getPlayerWallInfo = function(playerId, memberId, callback){
-	this.dataService.directFindPlayerAsync(memberId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'dailyTasks', 'growUpTasks', 'vipEvents', 'itemEvents', 'soldierEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.directFindPlayerAsync(memberId, [], false).then(function(doc){
 		DataUtils.refreshPlayerResources(doc)
 		var info = {
 			wallLevel:doc.buildings.location_21.level,

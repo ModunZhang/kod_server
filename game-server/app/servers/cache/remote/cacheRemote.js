@@ -6,6 +6,7 @@
 
 var _ = require("underscore")
 
+var ErrorUtils = require("../../../utils/errorUtils")
 var Consts = require("../../../consts/consts")
 
 module.exports = function(app){
@@ -18,6 +19,35 @@ var CacheRemote = function(app){
 	this.dataService = app.get("dataService")
 	this.channelService = app.get('channelService')
 	this.timeEventService = app.get("timeEventService")
+
+	this.playerApiService = app.get("playerApiService")
+	this.playerApiService2 = app.get("playerApiService2")
+	this.playerApiService3 = app.get("playerApiService3")
+	this.playerApiService4 = app.get("playerApiService4")
+	this.playerApiService5 = app.get("playerApiService5")
+	this.playerIAPService = app.get("playerIAPService")
+	this.allianceApiService = app.get("allianceApiService")
+	this.allianceApiService2 = app.get("allianceApiService2")
+	this.allianceApiService3 = app.get("allianceApiService3")
+	this.allianceApiService4 = app.get("allianceApiService4")
+	this.allianceApiService5 = app.get("allianceApiService5")
+	this.apiMap = {}
+	var self = this
+	var services = [this.playerApiService, this.playerApiService2, this.playerApiService3, this.playerApiService4, this.playerApiService5,
+		this.playerIAPService, this.allianceApiService, this.allianceApiService2, this.allianceApiService3, this.allianceApiService4, this.allianceApiService5
+	]
+	_.each(services, function(service){
+		if(!_.isObject(service)) return
+		var properties = Object.getPrototypeOf(service)
+		_.each(properties, function(value, key){
+			if(_.isFunction(value)){
+				if(_.isObject(self.apiMap[key])){
+					throw new Error("api名称重复:" + key)
+				}else
+					self.apiMap[key] = service;
+			}
+		})
+	})
 }
 
 var pro = CacheRemote.prototype
@@ -170,14 +200,105 @@ pro.deleteAlliance = function(id, callback){
 
 
 /**
- * 获取玩家登陆时的数据
- * @param id
- * @param requestTime
+ * 将玩家添加到联盟频道
+ * @param allianceId
+ * @param uid
+ * @param logicServerId
  * @param callback
  */
-pro.loginPlayer = function(id, requestTime, callback){
-	this.dataService.loginPlayer(id, requestTime, function(e, datas){
-		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:datas})
+pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
+	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(uid, logicServerId)
+	callback()
+}
+
+/**
+ * 将玩家从联盟频道移除
+ * @param allianceId
+ * @param uid
+ * @param logicServerId
+ * @param callback
+ */
+pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	if(!_.isObject(channel)){
+		this.logService.onEventError('cache.cacheRemote.removeFromAllianceChannel', {
+			allianceId:allianceId,
+			playerId:uid,
+			logicServerId:logicServerId
+		})
+		callback()
+		return
+	}
+	channel.leave(uid, logicServerId)
+	if(channel.getMembers().length == 0) channel.destroy()
+	callback()
+}
+
+/**
+ * 添加时间回调
+ * @param key
+ * @param eventType
+ * @param eventId
+ * @param timeInterval
+ * @param callback
+ */
+pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
+	this.timeEventService.addTimeEvent(key, eventType, eventId, timeInterval, callback)
+}
+
+/**
+ * 移除时间回调
+ * @param key
+ * @param eventType
+ * @param eventId
+ * @param callback
+ */
+pro.removeTimeEvent = function(key, eventType, eventId, callback){
+	this.timeEventService.removeTimeEvent(key, eventType, eventId, callback)
+}
+
+/**
+ * 更新时间回调
+ * @param key
+ * @param eventType
+ * @param eventId
+ * @param timeInterval
+ * @param callback
+ */
+pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
+	this.timeEventService.updateTimeEvent(key, eventType, eventId, timeInterval, callback)
+}
+
+/**
+ * 清除指定Key所有的时间回调
+ * @param key
+ * @param callback
+ */
+pro.clearTimeEventsByKey = function(key, callback){
+	this.timeEventService.clearTimeEventsByKey(key, callback)
+}
+
+
+/**
+ * 处理前端服务器发来的请求
+ * @param api
+ * @param params
+ * @param callback
+ */
+pro.request = function(api, params, callback){
+	var self = this
+	var service = this.apiMap[api]
+	if(!_.isObject(service)){
+		var e = ErrorUtils.createError(500, {api:api, params:params}, true)
+		self.logService.onEventError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
+	service[api + 'Async'].apply(service, Array.prototype.slice.call(params, 0)).then(function(data){
+		callback(null, {code:200, data:data})
+	}).catch(function(e){
+		self.logService.onEventError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
+		callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
 	})
 }
 
@@ -378,80 +499,4 @@ pro.deletePlayerReports = function(id, reportIds, callback){
 	this.dataService.deletePlayerReports(id, reportIds, function(e, data){
 		callback(null, _.isObject(e) ? {code:_.isNumber(e.code) ? e.code : 500, data:e.message} : {code:200, data:data})
 	})
-}
-
-
-/**
- * 将玩家添加到联盟频道
- * @param allianceId
- * @param uid
- * @param logicServerId
- * @param callback
- */
-pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
-	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(uid, logicServerId)
-	callback()
-}
-
-/**
- * 将玩家从联盟频道移除
- * @param allianceId
- * @param uid
- * @param logicServerId
- * @param callback
- */
-pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
-	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
-	if(!_.isObject(channel)){
-		this.logService.onEventError('cache.cacheRemote.removeFromAllianceChannel', {allianceId:allianceId, playerId:uid, logicServerId:logicServerId})
-		callback()
-		return
-	}
-	channel.leave(uid, logicServerId)
-	if(channel.getMembers().length == 0) channel.destroy()
-	callback()
-}
-
-/**
- * 添加时间回调
- * @param key
- * @param eventType
- * @param eventId
- * @param timeInterval
- * @param callback
- */
-pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	this.timeEventService.addTimeEvent(key, eventType, eventId, timeInterval, callback)
-}
-
-/**
- * 移除时间回调
- * @param key
- * @param eventType
- * @param eventId
- * @param callback
- */
-pro.removeTimeEvent = function(key, eventType, eventId, callback){
-	this.timeEventService.removeTimeEvent(key, eventType, eventId, callback)
-}
-
-/**
- * 更新时间回调
- * @param key
- * @param eventType
- * @param eventId
- * @param timeInterval
- * @param callback
- */
-pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-	this.timeEventService.updateTimeEvent(key, eventType, eventId, timeInterval, callback)
-}
-
-/**
- * 清除指定Key所有的时间回调
- * @param key
- * @param callback
- */
-pro.clearTimeEventsByKey = function(key, callback){
-	this.timeEventService.clearTimeEventsByKey(key, callback)
 }

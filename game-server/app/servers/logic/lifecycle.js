@@ -25,6 +25,8 @@ var AllianceApiService3 = require("../../services/allianceApiService3")
 var AllianceApiService4 = require("../../services/allianceApiService4")
 var AllianceApiService5 = require("../../services/allianceApiService5")
 var TimeEventService = require("../../services/timeEventService")
+var Consts = require("../../consts/consts")
+
 var Deal = require("../../domains/deal")
 var Billing = require("../../domains/billing")
 var GemUse = require("../../domains/gemUse")
@@ -32,7 +34,6 @@ var GemAdd = require("../../domains/gemAdd")
 var Device = require("../../domains/device")
 var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
-var Consts = require("../../consts/consts")
 
 var life = module.exports
 

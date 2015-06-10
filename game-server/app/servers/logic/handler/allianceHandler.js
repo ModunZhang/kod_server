@@ -1116,7 +1116,7 @@ pro.getHelpDefenceTroopDetail = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.addItem = function(msg, session, next){
+pro.addShopItem = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.addItem", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	if(_.isEmpty(allianceId)){
@@ -1128,7 +1128,7 @@ pro.addItem = function(msg, session, next){
 
 	var itemName = msg.itemName
 	var count = msg.count
-	this.allianceApiService4.addItemAsync(session.uid, playerName, allianceId, itemName, count).then(function(){
+	this.allianceApiService4.addShopItemAsync(session.uid, playerName, allianceId, itemName, count).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1141,7 +1141,7 @@ pro.addItem = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.buyItem = function(msg, session, next){
+pro.buyShopItem = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.buyItem", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	if(_.isEmpty(allianceId)){
@@ -1152,7 +1152,7 @@ pro.buyItem = function(msg, session, next){
 
 	var itemName = msg.itemName
 	var count = msg.count
-	this.allianceApiService4.buyItemAsync(session.uid, allianceId, itemName, count).then(function(playerData){
+	this.allianceApiService4.buyShopItemAsync(session.uid, allianceId, itemName, count).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

@@ -955,7 +955,7 @@ pro.getHelpDefenceTroopDetail = function(callerId, allianceId, playerId, helpedB
  * @param count
  * @param callback
  */
-pro.addItem = function(playerId, playerName, allianceId, itemName, count, callback){
+pro.addShopItem = function(playerId, playerName, allianceId, itemName, count, callback){
 	if(!DataUtils.isItemNameExist(itemName)){
 		callback(new Error("itemName 不合法"))
 		return
@@ -1019,7 +1019,7 @@ pro.addItem = function(playerId, playerName, allianceId, itemName, count, callba
  * @param count
  * @param callback
  */
-pro.buyItem = function(playerId, allianceId, itemName, count, callback){
+pro.buyShopItem = function(playerId, allianceId, itemName, count, callback){
 	if(!DataUtils.isItemNameExist(itemName)){
 		callback(new Error("itemName 不合法"))
 		return

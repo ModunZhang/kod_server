@@ -1085,21 +1085,21 @@ Api.getHelpDefenceTroopDetail = function(playerId, helpedByPlayerId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.addAllianceItem = function(itemName, count, callback){
+Api.addShopItem = function(itemName, count, callback){
 	var info = {
 		itemName:itemName,
 		count:count
 	}
-	var route = "logic.allianceHandler.addItem"
+	var route = "logic.allianceHandler.addShopItem"
 	pomelo.request(route, info, callback)
 }
 
-Api.buyAllianceItem = function(itemName, count, callback){
+Api.buyShopItem = function(itemName, count, callback){
 	var info = {
 		itemName:itemName,
 		count:count
 	}
-	var route = "logic.allianceHandler.buyItem"
+	var route = "logic.allianceHandler.buyShopItem"
 	pomelo.request(route, info, callback)
 }
 

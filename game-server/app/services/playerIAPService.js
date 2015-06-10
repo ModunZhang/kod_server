@@ -150,7 +150,7 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	var self = this
 	var memberDoc = null
 	var memberData = []
-	this.dataService.findPlayerAsync(memberId, ['_id', 'logicServerId', 'iapGifts'], true).then(function(doc){
+	this.dataService.findPlayerAsync(memberId, [], true).then(function(doc){
 		memberDoc = doc
 		var iapGift = {
 			id:ShortId.generate(),
@@ -189,23 +189,6 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
  * @param callback
  */
 pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isString(transactionId)){
-		callback(new Error("transactionId 不合法"))
-		return
-	}
-	if(!_.isString(receiptData) || _.isEmpty(receiptData.trim())){
-		callback(new Error("receiptData 不合法"))
-	}
-
-	//callback()
-
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
@@ -213,7 +196,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	var playerData = []
 	var updateFuncs = []
 	var rewards = null
-	this.dataService.findPlayerAsync(playerId, ['_id', 'allianceId', 'countInfo', 'basicInfo', 'resources', 'items'], true).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], true).then(function(doc){
 		playerDoc = doc
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){

@@ -84,12 +84,11 @@ pro.getOnlineUser = function(callback){
 /**
  * 更新玩家session信息
  * @param playerId
- * @param keys
- * @param values
+ * @param params
  * @param callback
  */
-pro.updatePlayerSession = function(playerId, keys, values, callback){
-	if(keys.length != values.length || keys.length == 0){
+pro.updatePlayerSession = function(playerId, params, callback){
+	if(_.size(params) == 0){
 		callback()
 		return
 	}
@@ -98,9 +97,9 @@ pro.updatePlayerSession = function(playerId, keys, values, callback){
 	if(sessions.length == 0) callback()
 	else{
 		var session = sessions[0]
-		for(var i = 0; i < keys.length; i ++){
-			session.settings[keys[i]] = values[i]
-		}
+		_.each(params, function(value, key){
+			session.settings[key] = value
+		})
 		callback()
 	}
 }
