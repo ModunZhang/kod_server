@@ -253,7 +253,6 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		self.app.set("membersCount", self.app.get("membersCount") - 1)
 		self.logService.onEvent("logic.playerApiService.logout", {
 			playerId:playerId,
 			logicServerId:logicServerId,
@@ -274,7 +273,6 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
-			self.app.set("membersCount", self.app.get("membersCount") - 1)
 			callback(e)
 		})
 	})
