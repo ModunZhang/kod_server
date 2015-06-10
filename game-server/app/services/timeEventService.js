@@ -121,25 +121,25 @@ pro.removeTimeEvent = function(key, eventType, eventId, callback){
  * @param callback
  */
 pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
-		this.logService.onEvent("cache.timeEventService.updateTimeEvent", {
-			key:key,
-			eventType:eventType,
-			eventId:eventId,
-			timeInterval:timeInterval
-		})
-		var timeouts = this.timeouts[key]
-		var timeout = null
-		if(_.isObject(timeouts)){
-			timeout = timeouts[eventId]
-			if(_.isObject(timeout)){
-				clearLongTimeout(timeout)
-			}
-		}else{
-			this.timeouts[key] = timeouts = {}
+	this.logService.onEvent("cache.timeEventService.updateTimeEvent", {
+		key:key,
+		eventType:eventType,
+		eventId:eventId,
+		timeInterval:timeInterval
+	})
+	var timeouts = this.timeouts[key]
+	var timeout = null
+	if(_.isObject(timeouts)){
+		timeout = timeouts[eventId]
+		if(_.isObject(timeout)){
+			clearLongTimeout(timeout)
 		}
-		timeout = setLongTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
-		timeouts[eventId] = timeout
-		callback()
+	}else{
+		this.timeouts[key] = timeouts = {}
+	}
+	timeout = setLongTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
+	timeouts[eventId] = timeout
+	callback()
 }
 
 /**
@@ -148,15 +148,15 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  * @param callback
  */
 pro.clearTimeEventsByKey = function(key, callback){
-		this.logService.onEvent("cache.timeEventService.clearTimeEventsByKey", {key:key})
-		var timeouts = this.timeouts[key]
-		if(_.isObject(timeouts)){
-			_.each(timeouts, function(timeout){
-				clearLongTimeout(timeout)
-			})
-		}
-		delete this.timeouts[key]
-		callback()
+	this.logService.onEvent("cache.timeEventService.clearTimeEventsByKey", {key:key})
+	var timeouts = this.timeouts[key]
+	if(_.isObject(timeouts)){
+		_.each(timeouts, function(timeout){
+			clearLongTimeout(timeout)
+		})
+	}
+	delete this.timeouts[key]
+	callback()
 }
 
 /**
@@ -164,12 +164,13 @@ pro.clearTimeEventsByKey = function(key, callback){
  * @param callback
  */
 pro.clearAllTimeEvents = function(callback){
-		this.logService.onEvent("cache.timeEventService.clearAllTimeEvents", {})
-		var keys = _.keys(this.timeouts)
-		_.each(keys, function(key){
-			self.clearTimeEventsByKeyAsync(key)
-		})
-		callback()
+	var self = this
+	this.logService.onEvent("cache.timeEventService.clearAllTimeEvents", {})
+	var keys = _.keys(this.timeouts)
+	_.each(keys, function(key){
+		self.clearTimeEventsByKeyAsync(key)
+	})
+	callback()
 }
 
 /**
