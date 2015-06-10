@@ -200,20 +200,13 @@ pro.deleteReports = function(playerId, reportIds, callback){
  * @param callback
  */
 pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
-	var self = this
-	var playerDoc = null
-	var targetPlayerDoc = null
 	var playerViewData = {}
-	this.dataService.directFindPlayerAsync(playerId, [], false).then(function(doc){
-		playerDoc = doc
-		return self.dataService.directFindPlayerAsync(targetPlayerId, [], false)
-	}).then(function(doc){
+	this.dataService.directFindPlayerAsync(targetPlayerId, [], false).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId))
-		targetPlayerDoc = doc
-		playerViewData._id = targetPlayerDoc._id
-		playerViewData.basicInfo = targetPlayerDoc.basicInfo
-		playerViewData.buildings = targetPlayerDoc.buildings
-		playerViewData.helpedByTroops = targetPlayerDoc.helpedByTroops
+		playerViewData._id = doc._id
+		playerViewData.basicInfo = doc.basicInfo
+		playerViewData.buildings = doc.buildings
+		playerViewData.helpedByTroops = doc.helpedByTroops
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, playerViewData)

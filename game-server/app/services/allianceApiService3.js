@@ -38,11 +38,6 @@ var pro = AllianceApiService3.prototype
  * @param callback
  */
 pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
-	if(!DataUtils.hasAllianceDonateType(donateType)){
-		callback(new Error("donateType "))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -50,9 +45,9 @@ pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
 	var allianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'allianceDonate', 'allianceInfo', 'dailyTasks', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'vipEvents', 'itemEvents', 'soldierEvents', 'houseEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
-		return self.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'members'], false)
+		return self.dataService.findAllianceAsync(allianceId, [], false)
 	}).then(function(doc){
 		allianceDoc = doc
 		var donateLevel = playerDoc.allianceDonate[donateType]
@@ -106,11 +101,6 @@ pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
  * @param callback
  */
 pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callback){
-	if(!_.contains(Consts.AllianceBuildingNames, buildingName)){
-		callback(new Error("buildingName 不合法"))
-		return
-	}
-
 	var self = this
 	var allianceDoc = null
 	var allianceData = []
@@ -119,9 +109,9 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 	var updateFuncs = []
 	var keys = null
 	if(_.isEqual(buildingName, Consts.AllianceBuildingNames.OrderHall))
-		keys = ['_id', 'basicInfo', 'members', 'buildings', 'mapObjects', 'villages', 'villageCreateEvents', 'villageLevels']
+		keys = []
 	else
-		keys = ['_id', 'basicInfo', 'members', 'buildings']
+		keys = []
 	this.dataService.findAllianceAsync(allianceId, keys, false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
@@ -178,17 +168,12 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
  * @param callback
  */
 pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callback){
-	if(!DataUtils.isAllianceVillageTypeLegal(villageType)){
-		callback(new Error("villageType 不合法"))
-		return
-	}
-
 	var self = this
 	var allianceDoc = null
 	var allianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
-	this.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'members', 'villageLevels'], false).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, [], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "upgradeAllianceVillage")){
@@ -233,26 +218,13 @@ pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callbac
  * @param callback
  */
 pro.moveAllianceBuilding = function(playerId, allianceId, mapObjectId, locationX, locationY, callback){
-	if(!_.isString(mapObjectId)){
-		callback(new Error("mapObjectId 不合法"))
-		return
-	}
-	if(!_.isNumber(locationX) || locationX % 1 !== 0){
-		callback(new Error("locationX 不合法"))
-		return
-	}
-	if(!_.isNumber(locationY) || locationY % 1 !== 0){
-		callback(new Error("locationY 不合法"))
-		return
-	}
-
 	var self = this
 	var allianceDoc = null
 	var allianceData = []
 	var enemyAllianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
-	this.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'members', 'mapObjects'], false).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, [], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "moveAllianceBuilding")){
@@ -308,18 +280,13 @@ pro.moveAllianceBuilding = function(playerId, allianceId, mapObjectId, locationX
  * @param callback
  */
 pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, callback){
-	if(!DataUtils.isAllianceShrineStageNameLegal(stageName)){
-		callback(new Error("stageName 不合法"))
-		return
-	}
-
 	var self = this
 	var allianceDoc = null
 	var allianceData = []
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'buildings', 'members', 'shrineDatas', 'shrineEvents'], false).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, [], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "activateAllianceShrineStage")){
@@ -371,19 +338,6 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
  * @param callback
  */
 pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonType, soldiers, callback){
-	if(!_.isString(shrineEventId)){
-		callback(new Error("shrineEventId 不合法"))
-		return
-	}
-	if(!DataUtils.isDragonTypeExist(dragonType)){
-		callback(new Error("dragonType 不合法"))
-		return
-	}
-	if(!_.isArray(soldiers)){
-		callback(new Error("soldiers 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -393,7 +347,7 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'buildings', 'soldiers', 'productionTechs', 'militaryTechs', 'soldierStars', 'dragons', 'helpToTroops', 'vipEvents', 'itemEvents'], false).then(function(doc){
+	this.dataService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -410,7 +364,7 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 		})
 		DataUtils.refreshPlayerPower(playerDoc, playerData)
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return self.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'mapObjects', 'members', 'buildings', 'strikeMarchEvents', 'strikeMarchReturnEvents', 'attackMarchEvents', 'attackMarchReturnEvents', 'villageEvents', 'shrineEvents'], false)
+		return self.dataService.findAllianceAsync(allianceId, [], false)
 	}).then(function(doc){
 		allianceDoc = doc
 		if(!LogicUtils.isPlayerHasFreeMarchQueue(playerDoc, allianceDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
@@ -463,7 +417,7 @@ pro.requestAllianceToFight = function(playerId, allianceId, callback){
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.dataService.findAllianceAsync(allianceId, ['_id', 'allianceFight', 'fightRequests'], false).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, [], false).then(function(doc){
 		allianceDoc = doc
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id))
 		var findedPlayerId = _.find(allianceDoc.fightRequests, function(thePlayerId){
@@ -611,11 +565,6 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
  * @param callback
  */
 pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
-	if(!_.isString(reportId)){
-		callback(new Error("reportId 不合法"))
-		return
-	}
-
 	var self = this
 	var attackAllianceDoc = null
 	var attackAllianceData = []
@@ -696,11 +645,6 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
  * @param callback
  */
 pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
-	if(!_.isString(targetAllianceId)){
-		callback(new Error("targetAllianceId 不合法"))
-		return
-	}
-
 	this.dataService.directFindAllianceAsync(targetAllianceId, Consts.AllianceViewDataKeys, false).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId))
 		callback(null, doc)
@@ -716,11 +660,6 @@ pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
  * @param callback
  */
 pro.searchAllianceInfoByTag = function(playerId, tag, callback){
-	if(!_.isString(tag)){
-		callback(new Error("tag 不合法"))
-		return
-	}
-
 	var self = this;
 	var allianceInfos = []
 	var findAlliancesAsync = new Promise(function(resolve, reject){

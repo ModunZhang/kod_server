@@ -7,8 +7,8 @@
 var Promise = require("bluebird")
 var _ = require("underscore")
 
-var PushService = require("../../services/pushService")
 var LogService = require("../../services/logService")
+var PushService = require("../../services/pushService")
 var ApnService = require("../../services/apnService")
 var DataService = require("../../services/dataService")
 var PlayerTimeEventService = require("../../services/playerTimeEventService")

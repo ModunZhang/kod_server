@@ -8,6 +8,7 @@ var Promise = require("bluebird")
 
 var LogService = require("../../services/logService")
 var PushService = require("../../services/pushService")
+var ApnService = require("../../services/apnService")
 var CacheService = require("../../services/cacheService")
 var DataService = require("../../services/dataService")
 var TimeEventService = require("../../services/timeEventService")
@@ -60,6 +61,7 @@ life.beforeStartup = function(app, callback){
 
 	app.set("logService", new LogService(app))
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))
+	app.set("apnService", new ApnService(app))
 	app.set("timeEventService", Promise.promisifyAll(new TimeEventService(app)))
 	app.set("cacheService", Promise.promisifyAll(new CacheService(app)))
 	app.set("dataService", Promise.promisifyAll(new DataService(app)))

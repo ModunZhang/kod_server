@@ -1073,11 +1073,6 @@ pro.getPlayerViewData = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(_.isEqual(session.uid, targetPlayerId)){
-		e = new Error("不能查看自己的玩家数据")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
 
 	this.dataService.requestAsync('getPlayerViewData', [session.uid, targetPlayerId]).then(function(playerViewData){
 		next(null, {code:200, playerViewData:playerViewData})

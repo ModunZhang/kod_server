@@ -4,9 +4,16 @@
  * Created by modun on 14-10-28.
  */
 
+var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
+
+var DataUtils = require("../../../utils/dataUtils")
+var LogicUtils = require("../../../utils/logicUtils")
 var ErrorUtils = require("../../../utils/errorUtils")
+
+var Consts = require("../../../consts/consts")
+var Define = require("../../../consts/define")
 
 module.exports = function(app){
 	return new Handler(app)
@@ -15,11 +22,7 @@ module.exports = function(app){
 var Handler = function(app){
 	this.app = app
 	this.logService = app.get("logService")
-	this.allianceApiService = app.get("allianceApiService")
-	this.allianceApiService2 = app.get("allianceApiService2")
-	this.allianceApiService3 = app.get("allianceApiService3")
-	this.allianceApiService4 = app.get("allianceApiService4")
-	this.allianceApiService5 = app.get("allianceApiService5")
+	this.dataService = app.get('dataService')
 }
 var pro = Handler.prototype
 
@@ -36,7 +39,34 @@ pro.createAlliance = function(msg, session, next){
 	var language = msg.language
 	var terrain = msg.terrain
 	var flag = msg.flag
-	this.allianceApiService.createAllianceAsync(session.uid, name, tag, language, terrain, flag).spread(function(playerData, allianceData){
+	var e = null
+	if(!_.isString(name) || name.trim().length > Define.InputLength.AllianceName){
+		e = new Error("name 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(tag) || tag.trim().length > Define.InputLength.AllianceTag){
+		e = new Error("tag 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.AllianceLanguage, language)){
+		e = new Error("language 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.AllianceTerrain, terrain)){
+		e = new Error("terrain 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(flag)){
+		e = new Error("flag 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('createAlliance', [session.uid, name, tag, language, terrain, flag]).spread(function(playerData, allianceData){
 		next(null, {code:200, playerData:playerData, allianceData:allianceData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -52,15 +82,26 @@ pro.createAlliance = function(msg, session, next){
 pro.sendAllianceMail = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.sendAllianceMail", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var title = msg.title
+	var content = msg.content
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(title)){
+		e = new Error("title 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(content)){
+		e = new Error("content 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var title = msg.title
-	var content = msg.content
-	this.allianceApiService.sendAllianceMailAsync(session.uid, allianceId, title, content).then(function(){
+	this.dataService.requestAsync('sendAllianceMail', [session.uid, allianceId, title, content]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -76,12 +117,14 @@ pro.sendAllianceMail = function(msg, session, next){
 pro.getMyAllianceData = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getMyAllianceData", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	this.allianceApiService.getMyAllianceDataAsync(session.uid, allianceId).then(function(allianceData){
+
+	this.dataService.requestAsync('getMyAllianceData', [session.uid, allianceId]).then(function(allianceData){
 		next(null, {code:200, allianceData:allianceData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -97,7 +140,14 @@ pro.getMyAllianceData = function(msg, session, next){
 pro.getCanDirectJoinAlliances = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getCanDirectJoinAlliances", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
-	this.allianceApiService.getCanDirectJoinAlliancesAsync(session.uid, fromIndex).then(function(allianceDatas){
+	var e = null
+	if(!_.isNumber(fromIndex) || fromIndex < 0 || fromIndex % 10 != 0){
+		e = new Error("fromIndex 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('getCanDirectJoinAlliances', [session.uid, fromIndex]).then(function(allianceDatas){
 		next(null, {code:200, allianceDatas:allianceDatas})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -113,7 +163,14 @@ pro.getCanDirectJoinAlliances = function(msg, session, next){
 pro.searchAllianceByTag = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.searchAllianceByTag", {playerId:session.uid, msg:msg})
 	var tag = msg.tag
-	this.allianceApiService.searchAllianceByTagAsync(session.uid, tag).then(function(allianceDatas){
+	var e = null
+	if(!_.isString(tag) || tag.trim().length > Define.InputLength.AllianceTag){
+		e = new Error("tag 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('searchAllianceByTag', [session.uid, tag]).then(function(allianceDatas){
 		next(null, {code:200, allianceDatas:allianceDatas})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -129,17 +186,38 @@ pro.searchAllianceByTag = function(msg, session, next){
 pro.editAllianceBasicInfo = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.editAllianceBasicInfo", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
-	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
 	var name = msg.name
 	var tag = msg.tag
 	var language = msg.language
 	var flag = msg.flag
-	this.allianceApiService.editAllianceBasicInfoAsync(session.uid, allianceId, name, tag, language, flag).then(function(playerData){
+	var e = null
+	if(_.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(name) || name.trim().length > Define.InputLength.AllianceName){
+		e = new Error("name 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(tag) || tag.trim().length > Define.InputLength.AllianceTag){
+		e = new Error("tag 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.AllianceLanguage, language)){
+		e = new Error("language 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(flag) || flag.trim().length > Define.InputLength.AllianceFlag){
+		e = new Error("flag 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('editAllianceBasicInfo', [session.uid, allianceId, name, tag, language, flag]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -155,14 +233,21 @@ pro.editAllianceBasicInfo = function(msg, session, next){
 pro.editAllianceTerrian = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.editAllianceTerrian", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var playerName = session.get("name")
+	var terrain = msg.terrain
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	var playerName = session.get("name")
-	var terrain = msg.terrain
-	this.allianceApiService.editAllianceTerrianAsync(session.uid, playerName, allianceId, terrain).then(function(){
+	if(!_.contains(Consts.AllianceTerrain, terrain)){
+		e = new Error("terrain 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('editAllianceTerrian', [session.uid, playerName, allianceId, terrain]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -178,15 +263,26 @@ pro.editAllianceTerrian = function(msg, session, next){
 pro.editAllianceTitleName = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.editAllianceTitleName", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var title = msg.title
+	var titleName = msg.titleName
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.AllianceTitle, title)){
+		e = new Error("title 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(titleName) || titleName.trim().length > Define.InputLength.AllianceTitleName){
+		e = new Error("titleName 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var title = msg.title
-	var titleName = msg.titleName
-	this.allianceApiService.editAllianceTitleNameAsync(session.uid, allianceId, title, titleName).then(function(){
+	this.dataService.requestAsync('editAllianceTitleName', [session.uid, allianceId, title, titleName]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -202,15 +298,21 @@ pro.editAllianceTitleName = function(msg, session, next){
 pro.editAllianceNotice = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.editAllianceNotice", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var playerName = session.get("name")
+	var notice = msg.notice
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(notice) || notice.trim().length > Define.InputLength.AllianceNotice){
+		e = new Error("notice 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var playerName = session.get("name")
-	var notice = msg.notice
-	this.allianceApiService.editAllianceNoticeAsync(session.uid, playerName, allianceId, notice).then(function(){
+	this.dataService.requestAsync('editAllianceNotice', [session.uid, playerName, allianceId, notice]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -226,15 +328,21 @@ pro.editAllianceNotice = function(msg, session, next){
 pro.editAllianceDescription = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.editAllianceDescription", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var playerName = session.get('name')
+	var description = msg.description
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(description) || description.trim().length > Define.InputLength.AllianceDesc){
+		e = new Error("description 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var playerName = session.get('name')
-	var description = msg.description
-	this.allianceApiService.editAllianceDescriptionAsync(session.uid, playerName, allianceId, description).then(function(){
+	this.dataService.requestAsync('editAllianceDescription', [session.uid, playerName, allianceId, description]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -250,14 +358,20 @@ pro.editAllianceDescription = function(msg, session, next){
 pro.editAllianceJoinType = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.editAllianceJoinType", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var joinType = msg.joinType
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.AllianceJoinType, joinType)){
+		e = new Error("joinType 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var joinType = msg.joinType
-	this.allianceApiService.editAllianceJoinTypeAsync(session.uid, allianceId, joinType).then(function(){
+	this.dataService.requestAsync('editAllianceJoinType', [session.uid, allianceId, joinType]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -273,15 +387,31 @@ pro.editAllianceJoinType = function(msg, session, next){
 pro.editAllianceMemberTitle = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.editAllianceMemberTitle", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var memberId = msg.memberId
+	var title = msg.title
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
+		e = new Error("memberId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.AllianceTitle, title)){
+		e = new Error("title 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(_.isEqual(session.uid, memberId)){
+		e = new Error("不能修改玩家自己的职位")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var memberId = msg.memberId
-	var title = msg.title
-	this.allianceApiService.editAllianceMemberTitleAsync(session.uid, allianceId, memberId, title).then(function(){
+	this.dataService.requestAsync('editAllianceMemberTitle', [session.uid, allianceId, memberId, title]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -297,14 +427,25 @@ pro.editAllianceMemberTitle = function(msg, session, next){
 pro.kickAllianceMemberOff = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.kickAllianceMemberOff", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var memberId = msg.memberId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
+		e = new Error("memberId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(_.isEqual(session.uid, memberId)){
+		e = new Error("不能将自己踢出联盟")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var memberId = msg.memberId
-	this.allianceApiService.kickAllianceMemberOffAsync(session.uid, allianceId, memberId).then(function(){
+	this.dataService.requestAsync('kickAllianceMemberOff', [session.uid, allianceId, memberId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -320,14 +461,25 @@ pro.kickAllianceMemberOff = function(msg, session, next){
 pro.handOverAllianceArchon = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.handOverAllianceArchon", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var memberId = msg.memberId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
+		e = new Error("memberId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(_.isEqual(session.uid, memberId)){
+		e = new Error("不能将盟主职位移交给自己")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var memberId = msg.memberId
-	this.allianceApiService.handOverAllianceArchonAsync(session.uid, allianceId, memberId).then(function(){
+	this.dataService.requestAsync('handOverAllianceArchon', [session.uid, allianceId, memberId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -343,13 +495,14 @@ pro.handOverAllianceArchon = function(msg, session, next){
 pro.quitAlliance = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.quitAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.allianceApiService2.quitAllianceAsync(session.uid, allianceId).then(function(playerData){
+	this.dataService.requestAsync('quitAlliance', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -365,7 +518,14 @@ pro.quitAlliance = function(msg, session, next){
 pro.joinAllianceDirectly = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.joinAllianceDirectly", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
-	this.allianceApiService2.joinAllianceDirectlyAsync(session.uid, allianceId).spread(function(playerData, allianceData, enemyAllianceData){
+	var e = null
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		e = new Error("allianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('joinAllianceDirectly', [session.uid, allianceId]).spread(function(playerData, allianceData, enemyAllianceData){
 		next(null, {code:200, playerData:playerData, allianceData:allianceData, enemyAllianceData:enemyAllianceData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -381,7 +541,14 @@ pro.joinAllianceDirectly = function(msg, session, next){
 pro.requestToJoinAlliance = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.requestToJoinAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
-	this.allianceApiService2.requestToJoinAllianceAsync(session.uid, allianceId).then(function(playerData){
+	var e = null
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		e = new Error("allianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('requestToJoinAlliance', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -397,7 +564,14 @@ pro.requestToJoinAlliance = function(msg, session, next){
 pro.cancelJoinAllianceRequest = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.cancelJoinAllianceRequest", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
-	this.allianceApiService2.cancelJoinAllianceRequestAsync(session.uid, allianceId).then(function(playerData){
+	var e = null
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		e = new Error("allianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('cancelJoinAllianceRequest', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -413,14 +587,20 @@ pro.cancelJoinAllianceRequest = function(msg, session, next){
 pro.approveJoinAllianceRequest = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.approveJoinAllianceRequest", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var requestEventId = msg.requestEventId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(requestEventId) || !ShortId.isValid(requestEventId)){
+		e = new Error("requestEventId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var requestEventId = msg.requestEventId
-	this.allianceApiService2.approveJoinAllianceRequestAsync(session.uid, allianceId, requestEventId).then(function(){
+	this.dataService.requestAsync('approveJoinAllianceRequest', [session.uid, allianceId, requestEventId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -436,14 +616,27 @@ pro.approveJoinAllianceRequest = function(msg, session, next){
 pro.removeJoinAllianceReqeusts = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.removeJoinAllianceReqeusts", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var requestEventIds = msg.requestEventIds
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
+	if(!_.isArray(requestEventIds) || requestEventIds.length == 0){
+		e = new Error("requestEventIds 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	for(var i = 0; i < requestEventIds; i++){
+		if(!ShortId.isValid(requestEventIds[i])){
+			e = new Error("requestEventIds 不合法")
+			next(e, ErrorUtils.getError(e))
+			return
+		}
+	}
 
-	var requestEventIds = msg.requestEventIds
-	this.allianceApiService2.removeJoinAllianceReqeustsAsync(session.uid, allianceId, requestEventIds).then(function(){
+	this.dataService.requestAsync('removeJoinAllianceReqeusts', [session.uid, allianceId, requestEventIds]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -459,14 +652,25 @@ pro.removeJoinAllianceReqeusts = function(msg, session, next){
 pro.inviteToJoinAlliance = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.inviteToJoinAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var memberId = msg.memberId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
+		e = new Error("memberId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(_.isEqual(session.uid, memberId)){
+		e = new Error("不能邀请自己加入联盟")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var memberId = msg.memberId
-	this.allianceApiService2.inviteToJoinAllianceAsync(session.uid, allianceId, memberId).then(function(){
+	this.dataService.requestAsync('inviteToJoinAlliance', [session.uid, allianceId, memberId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -483,7 +687,19 @@ pro.handleJoinAllianceInvite = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.handleJoinAllianceInvite", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
 	var agree = msg.agree
-	this.allianceApiService2.handleJoinAllianceInviteAsync(session.uid, allianceId, agree).spread(function(playerData, allianceData, enemyAllianceData){
+	var e = null
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		e = new Error("allianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(agree)){
+		e = new Error("agree 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('handleJoinAllianceInvite', [session.uid, allianceId, agree]).spread(function(playerData, allianceData, enemyAllianceData){
 		next(null, {code:200, playerData:playerData, allianceData:allianceData, enemyAllianceData:enemyAllianceData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -499,13 +715,14 @@ pro.handleJoinAllianceInvite = function(msg, session, next){
 pro.buyAllianceArchon = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.buyAllianceArchon", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.allianceApiService2.buyAllianceArchonAsync(session.uid, allianceId).then(function(playerData){
+	this.dataService.requestAsync('buyAllianceArchon', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -521,15 +738,26 @@ pro.buyAllianceArchon = function(msg, session, next){
 pro.requestAllianceToSpeedUp = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.requestAllianceToSpeedUp", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var eventType = msg.eventType
+	var eventId = msg.eventId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.AllianceHelpEventType, eventType)){
+		e = new Error("eventType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(eventId) || !ShortId.isValid(eventId)){
+		e = new Error("eventId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var eventType = msg.eventType
-	var eventId = msg.eventId
-	this.allianceApiService2.requestAllianceToSpeedUpAsync(session.uid, allianceId, eventType, eventId).then(function(){
+	this.dataService.requestAsync('requestAllianceToSpeedUp', [session.uid, allianceId, eventType, eventId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -545,14 +773,20 @@ pro.requestAllianceToSpeedUp = function(msg, session, next){
 pro.helpAllianceMemberSpeedUp = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.helpAllianceMemberSpeedUp", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var eventId = msg.eventId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(eventId) || !ShortId.isValid(eventId)){
+		e = new Error("eventId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var eventId = msg.eventId
-	this.allianceApiService2.helpAllianceMemberSpeedUpAsync(session.uid, allianceId, eventId).then(function(playerData){
+	this.dataService.requestAsync('helpAllianceMemberSpeedUp', [session.uid, allianceId, eventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -568,13 +802,14 @@ pro.helpAllianceMemberSpeedUp = function(msg, session, next){
 pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.helpAllAllianceMemberSpeedUp", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.allianceApiService2.helpAllAllianceMemberSpeedUpAsync(session.uid, allianceId).then(function(playerData){
+	this.dataService.requestAsync('helpAllAllianceMemberSpeedUp', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -590,14 +825,20 @@ pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
 pro.donateToAlliance = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.donateToAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var donateType = msg.donateType
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.hasAllianceDonateType(donateType)){
+		e = new Error("donateType 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var donateType = msg.donateType
-	this.allianceApiService3.donateToAllianceAsync(session.uid, allianceId, donateType).then(function(playerData){
+	this.dataService.requestAsync('donateToAlliance', [session.uid, allianceId, donateType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -613,14 +854,20 @@ pro.donateToAlliance = function(msg, session, next){
 pro.upgradeAllianceBuilding = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.upgradeAllianceBuilding", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var buildingName = msg.buildingName
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.AllianceBuildingNames, buildingName)){
+		e = new Error("buildingName 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var buildingName = msg.buildingName
-	this.allianceApiService3.upgradeAllianceBuildingAsync(session.uid, allianceId, buildingName).then(function(){
+	this.dataService.requestAsync('upgradeAllianceBuilding', [session.uid, allianceId, buildingName]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -636,14 +883,20 @@ pro.upgradeAllianceBuilding = function(msg, session, next){
 pro.upgradeAllianceVillage = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.upgradeAllianceVillage", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var villageType = msg.villageType
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isAllianceVillageTypeLegal(villageType)){
+		e = new Error("villageType 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var villageType = msg.villageType
-	this.allianceApiService3.upgradeAllianceVillageAsync(session.uid, allianceId, villageType).then(function(){
+	this.dataService.requestAsync('upgradeAllianceVillage', [session.uid, allianceId, villageType]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -659,16 +912,32 @@ pro.upgradeAllianceVillage = function(msg, session, next){
 pro.moveAllianceBuilding = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.moveAllianceBuilding", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var mapObjectId = msg.mapObjectId
+	var locationX = msg.locationX
+	var locationY = msg.locationY
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(mapObjectId)){
+		e = new Error("mapObjectId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(locationX) || locationX % 1 !== 0){
+		e = new Error("locationX 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(locationY) || locationY % 1 !== 0){
+		e = new Error("locationY 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var mapObjectId = msg.mapObjectId
-	var locationX = msg.locationX
-	var locationY = msg.locationY
-	this.allianceApiService3.moveAllianceBuildingAsync(session.uid, allianceId, mapObjectId, locationX, locationY).then(function(){
+	this.dataService.requestAsync('moveAllianceBuilding', [session.uid, allianceId, mapObjectId, locationX, locationY]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -684,14 +953,20 @@ pro.moveAllianceBuilding = function(msg, session, next){
 pro.activateAllianceShrineStage = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.activateAllianceShrineStage", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var stageName = msg.stageName
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isAllianceShrineStageNameLegal(stageName)){
+		e = new Error("stageName 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var stageName = msg.stageName
-	this.allianceApiService3.activateAllianceShrineStageAsync(session.uid, allianceId, stageName).then(function(){
+	this.dataService.requestAsync('activateAllianceShrineStage', [session.uid, allianceId, stageName]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -707,16 +982,32 @@ pro.activateAllianceShrineStage = function(msg, session, next){
 pro.attackAllianceShrine = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.attackAllianceShrine", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var shrineEventId = msg.shrineEventId
+	var dragonType = msg.dragonType
+	var soldiers = msg.soldiers
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(shrineEventId)){
+		e = new Error("shrineEventId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isArray(soldiers)){
+		e = new Error("soldiers 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var shrineEventId = msg.shrineEventId
-	var dragonType = msg.dragonType
-	var soldiers = msg.soldiers
-	this.allianceApiService3.attackAllianceShrineAsync(session.uid, allianceId, shrineEventId, dragonType, soldiers).then(function(playerData){
+	this.dataService.requestAsync('attackAllianceShrine', [session.uid, allianceId, shrineEventId, dragonType, soldiers]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -732,13 +1023,14 @@ pro.attackAllianceShrine = function(msg, session, next){
 pro.requestAllianceToFight = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.requestAllianceToFight", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.allianceApiService3.requestAllianceToFightAsync(session.uid, allianceId).then(function(){
+	this.dataService.requestAsync('requestAllianceToFight', [session.uid, allianceId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -754,13 +1046,14 @@ pro.requestAllianceToFight = function(msg, session, next){
 pro.findAllianceToFight = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.findAllianceToFight", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.allianceApiService3.findAllianceToFightAsync(session.uid, allianceId).then(function(){
+	this.dataService.requestAsync('findAllianceToFight', [session.uid, allianceId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -776,14 +1069,20 @@ pro.findAllianceToFight = function(msg, session, next){
 pro.revengeAlliance = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.revengeAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var reportId = msg.reportId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(reportId)){
+		e = new Error("reportId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var reportId = msg.reportId
-	this.allianceApiService3.revengeAllianceAsync(session.uid, allianceId, reportId).then(function(){
+	this.dataService.requestAsync('revengeAlliance', [session.uid, allianceId, reportId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -799,7 +1098,14 @@ pro.revengeAlliance = function(msg, session, next){
 pro.getAllianceViewData = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getAllianceViewData", {playerId:session.uid, msg:msg})
 	var targetAllianceId = msg.targetAllianceId
-	this.allianceApiService3.getAllianceViewDataAsync(session.uid, targetAllianceId).then(function(allianceViewData){
+	var e = null
+	if(!_.isString(targetAllianceId)){
+		e = new Error("targetAllianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('getAllianceViewData', [session.uid, targetAllianceId]).then(function(allianceViewData){
 		next(null, {code:200, allianceViewData:allianceViewData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -815,7 +1121,14 @@ pro.getAllianceViewData = function(msg, session, next){
 pro.searchAllianceInfoByTag = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.searchAllianceInfoByTag", {playerId:session.uid, msg:msg})
 	var tag = msg.tag
-	this.allianceApiService3.searchAllianceInfoByTagAsync(session.uid, tag).then(function(allianceInfos){
+	var e = null
+	if(!_.isString(tag)){
+		e = new Error("tag 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('searchAllianceInfoByTag', [session.uid, tag]).then(function(allianceInfos){
 		next(null, {code:200, allianceInfos:allianceInfos})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -831,13 +1144,14 @@ pro.searchAllianceInfoByTag = function(msg, session, next){
 pro.getNearedAllianceInfos = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getNearedAllianceInfos", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.allianceApiService3.getNearedAllianceInfosAsync(session.uid, allianceId).then(function(allianceInfos){
+	this.dataService.requestAsync('getNearedAllianceInfos', [session.uid, allianceId]).then(function(allianceInfos){
 		next(null, {code:200, allianceInfos:allianceInfos})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -853,16 +1167,37 @@ pro.getNearedAllianceInfos = function(msg, session, next){
 pro.helpAllianceMemberDefence = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.helpAllianceMemberDefence", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var dragonType = msg.dragonType
+	var soldiers = msg.soldiers
+	var targetPlayerId = msg.targetPlayerId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isArray(soldiers)){
+		e = new Error("soldiers 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(targetPlayerId) || !ShortId.isValid(targetPlayerId)){
+		e = new Error("targetPlayerId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(_.isEqual(session.uid, targetPlayerId)){
+		e = new Error("不能对自己协防")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var dragonType = msg.dragonType
-	var soldiers = msg.soldiers
-	var targetPlayerId = msg.targetPlayerId
-	this.allianceApiService4.helpAllianceMemberDefenceAsync(session.uid, allianceId, dragonType, soldiers, targetPlayerId).then(function(playerData){
+	this.dataService.requestAsync('helpAllianceMemberDefence', [session.uid, allianceId, dragonType, soldiers, targetPlayerId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -878,14 +1213,25 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
 pro.retreatFromBeHelpedAllianceMember = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.retreatFromBeHelpedAllianceMember", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var beHelpedPlayerId = msg.beHelpedPlayerId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(beHelpedPlayerId) || !ShortId.isValid(beHelpedPlayerId)){
+		e = new Error("beHelpedPlayerId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(_.isEqual(session.uid, beHelpedPlayerId)){
+		e = new Error("不能从自己的城市撤销协防部队")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var beHelpedPlayerId = msg.beHelpedPlayerId
-	this.allianceApiService4.retreatFromBeHelpedAllianceMemberAsync(session.uid, allianceId, beHelpedPlayerId).then(function(playerData){
+	this.dataService.requestAsync('retreatFromBeHelpedAllianceMember', [session.uid, allianceId, beHelpedPlayerId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -901,15 +1247,26 @@ pro.retreatFromBeHelpedAllianceMember = function(msg, session, next){
 pro.strikePlayerCity = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.strikePlayerCity", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var dragonType = msg.dragonType
+	var defencePlayerId = msg.defencePlayerId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(defencePlayerId) || !ShortId.isValid(defencePlayerId)){
+		e = new Error("defencePlayerId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var dragonType = msg.dragonType
-	var defencePlayerId = msg.defencePlayerId
-	this.allianceApiService4.strikePlayerCityAsync(session.uid, allianceId, dragonType, defencePlayerId).then(function(playerData){
+	this.dataService.requestAsync('strikePlayerCity', [session.uid, allianceId, dragonType, defencePlayerId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -925,16 +1282,32 @@ pro.strikePlayerCity = function(msg, session, next){
 pro.attackPlayerCity = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.attackPlayerCity", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var dragonType = msg.dragonType
+	var soldiers = msg.soldiers
+	var defencePlayerId = msg.defencePlayerId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isArray(soldiers)){
+		e = new Error("soldiers 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(defencePlayerId) || !ShortId.isValid(defencePlayerId)){
+		e = new Error("defencePlayerId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var dragonType = msg.dragonType
-	var soldiers = msg.soldiers
-	var defencePlayerId = msg.defencePlayerId
-	this.allianceApiService4.attackPlayerCityAsync(session.uid, allianceId, dragonType, soldiers, defencePlayerId).then(function(playerData){
+	this.dataService.requestAsync('attackPlayerCity', [session.uid, allianceId, dragonType, soldiers, defencePlayerId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -950,17 +1323,38 @@ pro.attackPlayerCity = function(msg, session, next){
 pro.attackVillage = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.attackVillage", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
-	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
 	var defenceAllianceId = msg.defenceAllianceId
 	var defenceVillageId = msg.defenceVillageId
-	this.allianceApiService4.attackVillageAsync(session.uid, allianceId, dragonType, soldiers, defenceAllianceId, defenceVillageId).then(function(playerData){
+	var e = null
+	if(_.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isArray(soldiers)){
+		e = new Error("soldiers 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(defenceAllianceId) || !ShortId.isValid(defenceAllianceId)){
+		e = new Error("defenceAllianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(defenceVillageId) || !ShortId.isValid(defenceVillageId)){
+		e = new Error("defenceVillageId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('attackVillage', [session.uid, allianceId, dragonType, soldiers, defenceAllianceId, defenceVillageId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -976,14 +1370,20 @@ pro.attackVillage = function(msg, session, next){
 pro.retreatFromVillage = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.retreatFromVillage", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var villageEventId = msg.villageEventId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(villageEventId) || !ShortId.isValid(villageEventId)){
+		e = new Error("villageEventId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var villageEventId = msg.villageEventId
-	this.allianceApiService4.retreatFromVillageAsync(session.uid, allianceId, villageEventId).then(function(playerData){
+	this.dataService.requestAsync('retreatFromVillage', [session.uid, allianceId, villageEventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -999,16 +1399,32 @@ pro.retreatFromVillage = function(msg, session, next){
 pro.strikeVillage = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.strikeVillage", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var dragonType = msg.dragonType
+	var defenceAllianceId = msg.defenceAllianceId
+	var defenceVillageId = msg.defenceVillageId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(defenceAllianceId) || !ShortId.isValid(defenceAllianceId)){
+		e = new Error("defenceAllianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(defenceVillageId) || !ShortId.isValid(defenceVillageId)){
+		e = new Error("defenceVillageId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var dragonType = msg.dragonType
-	var defenceAllianceId = msg.defenceAllianceId
-	var defenceVillageId = msg.defenceVillageId
-	this.allianceApiService4.strikeVillageAsync(session.uid, allianceId, dragonType, defenceAllianceId, defenceVillageId).then(function(playerData){
+	this.dataService.requestAsync('strikeVillage', [session.uid, allianceId, dragonType, defenceAllianceId, defenceVillageId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1024,15 +1440,26 @@ pro.strikeVillage = function(msg, session, next){
 pro.getAttackMarchEventDetail = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getAttackMarchEventDetail", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var enemyAllianceId = msg.enemyAllianceId
+	var eventId = msg.eventId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(enemyAllianceId) || !ShortId.isValid(enemyAllianceId)){
+		e = new Error("enemyAllianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(eventId) || !ShortId.isValid(eventId)){
+		e = new Error("eventId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var enemyAllianceId = msg.enemyAllianceId
-	var eventId = msg.eventId
-	this.allianceApiService4.getAttackMarchEventDetailAsync(session.uid, allianceId, enemyAllianceId, eventId).then(function(eventDetail){
+	this.dataService.requestAsync('getAttackMarchEventDetail', [session.uid, allianceId, enemyAllianceId, eventId]).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1048,15 +1475,26 @@ pro.getAttackMarchEventDetail = function(msg, session, next){
 pro.getStrikeMarchEventDetail = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getStrikeMarchEventDetail", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var enemyAllianceId = msg.enemyAllianceId
+	var eventId = msg.eventId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(enemyAllianceId) || !ShortId.isValid(enemyAllianceId)){
+		e = new Error("enemyAllianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(eventId) || !ShortId.isValid(eventId)){
+		e = new Error("eventId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var enemyAllianceId = msg.enemyAllianceId
-	var eventId = msg.eventId
-	this.allianceApiService4.getStrikeMarchEventDetailAsync(session.uid, allianceId, enemyAllianceId, eventId).then(function(eventDetail){
+	this.dataService.requestAsync('getStrikeMarchEventDetail', [session.uid, allianceId, enemyAllianceId, eventId]).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1072,14 +1510,25 @@ pro.getStrikeMarchEventDetail = function(msg, session, next){
 pro.getHelpDefenceMarchEventDetail = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getHelpDefenceMarchEventDetail", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var eventId = msg.eventId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		e = new Error("allianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(eventId) || !ShortId.isValid(eventId)){
+		e = new Error("eventId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var eventId = msg.eventId
-	this.allianceApiService4.getHelpDefenceMarchEventDetailAsync(session.uid, allianceId, eventId).then(function(eventDetail){
+	this.dataService.requestAsync('getHelpDefenceMarchEventDetail', [session.uid, allianceId, eventId]).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1095,15 +1544,21 @@ pro.getHelpDefenceMarchEventDetail = function(msg, session, next){
 pro.getHelpDefenceTroopDetail = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getHelpDefenceTroopDetail", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var playerId = msg.playerId
+	var helpedByPlayerId = msg.helpedByPlayerId
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(helpedByPlayerId) || !ShortId.isValid(helpedByPlayerId)){
+		e = new Error("helpedByPlayerId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var playerId = msg.playerId
-	var helpedByPlayerId = msg.helpedByPlayerId
-	this.allianceApiService4.getHelpDefenceTroopDetailAsync(session.uid, allianceId, playerId, helpedByPlayerId).then(function(troopDetail){
+	this.dataService.requestAsync('getHelpDefenceTroopDetail', [session.uid, allianceId, playerId, helpedByPlayerId]).then(function(troopDetail){
 		next(null, {code:200, troopDetail:troopDetail})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1119,16 +1574,27 @@ pro.getHelpDefenceTroopDetail = function(msg, session, next){
 pro.addShopItem = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.addItem", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var playerName = session.get('name')
+	var itemName = msg.itemName
+	var count = msg.count
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	var playerName = session.get('name')
+	if(!DataUtils.isItemNameExist(itemName)){
+		e = new Error("itemName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(count) || count % 1 !== 0 || count <= 0){
+		e = new Error("count 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
-	var itemName = msg.itemName
-	var count = msg.count
-	this.allianceApiService4.addShopItemAsync(session.uid, playerName, allianceId, itemName, count).then(function(){
+	this.dataService.requestAsync('addShopItem', [session.uid, playerName, allianceId, itemName, count]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1144,15 +1610,26 @@ pro.addShopItem = function(msg, session, next){
 pro.buyShopItem = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.buyItem", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var itemName = msg.itemName
+	var count = msg.count
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isItemNameExist(itemName)){
+		e = new Error("itemName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(count) || count % 1 !== 0 || count <= 0){
+		e = new Error("count 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var itemName = msg.itemName
-	var count = msg.count
-	this.allianceApiService4.buyShopItemAsync(session.uid, allianceId, itemName, count).then(function(playerData){
+	this.dataService.requestAsync('buyShopItem', [session.uid, allianceId, itemName, count]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1168,15 +1645,26 @@ pro.buyShopItem = function(msg, session, next){
 pro.giveLoyaltyToAllianceMember = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.giveLoyaltyToAllianceMember", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var memberId = msg.memberId
+	var count = msg.count
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
+		e = new Error("memberId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(count) || count % 1 !== 0 || count <= 0){
+		e = new Error("count 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	var memberId = msg.memberId
-	var count = msg.count
-	this.allianceApiService5.giveLoyaltyToAllianceMemberAsync(session.uid, allianceId, memberId, count).then(function(){
+	this.dataService.requestAsync('giveLoyaltyToAllianceMember', [session.uid, allianceId, memberId, count]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1192,7 +1680,14 @@ pro.giveLoyaltyToAllianceMember = function(msg, session, next){
 pro.getAllianceInfo = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getAllianceInfo", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
-	this.allianceApiService5.getAllianceInfoAsync(session.uid, allianceId).then(function(allianceData){
+	var e = null
+	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
+		e = new Error("allianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.dataService.requestAsync('getAllianceInfo', [session.uid, allianceId]).then(function(allianceData){
 		next(null, {code:200, allianceData:allianceData})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1208,13 +1703,14 @@ pro.getAllianceInfo = function(msg, session, next){
 pro.getJoinRequestEvents = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getJoinRequestEvents", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.allianceApiService5.getJoinRequestEventsAsync(session.uid, allianceId).then(function(joinRequestEvents){
+	this.dataService.requestAsync('getJoinRequestEvents', [session.uid, allianceId]).then(function(joinRequestEvents){
 		next(null, {code:200, joinRequestEvents:joinRequestEvents})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1230,13 +1726,14 @@ pro.getJoinRequestEvents = function(msg, session, next){
 pro.getShrineReports = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getShrineReports", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.allianceApiService5.getShrineReportsAsync(session.uid, allianceId).then(function(shrineReports){
+	this.dataService.requestAsync('getShrineReports', [session.uid, allianceId]).then(function(shrineReports){
 		next(null, {code:200, shrineReports:shrineReports})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1252,13 +1749,14 @@ pro.getShrineReports = function(msg, session, next){
 pro.getAllianceFightReports = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getAllianceFightReports", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.allianceApiService5.getAllianceFightReportsAsync(session.uid, allianceId).then(function(allianceFightReports){
+	this.dataService.requestAsync('getAllianceFightReports', [session.uid, allianceId]).then(function(allianceFightReports){
 		next(null, {code:200, allianceFightReports:allianceFightReports})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))
@@ -1274,13 +1772,14 @@ pro.getAllianceFightReports = function(msg, session, next){
 pro.getItemLogs = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getItemLogs", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.allianceApiService5.getItemLogsAsync(session.uid, allianceId).then(function(itemLogs){
+	this.dataService.requestAsync('getItemLogs', [session.uid, allianceId]).then(function(itemLogs){
 		next(null, {code:200, itemLogs:itemLogs})
 	}).catch(function(e){
 		next(e, ErrorUtils.getError(e))

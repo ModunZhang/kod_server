@@ -50,7 +50,7 @@
 //
 //
 //	describe("allianceHandler", function(){
-//		it("initPlayerData 正常初始化", function(done){
+//		it("initPlayerData 正常初始化1", function(done){
 //			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)
 //				done()
@@ -108,7 +108,7 @@
 //			})
 //		})
 //
-//		it("initPlayerData 正常初始化", function(done){
+//		it("initPlayerData 正常初始化2", function(done){
 //			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)
 //				done()
@@ -146,7 +146,7 @@
 //			})
 //		})
 //
-//		it("initPlayerData 正常初始化", function(done){
+//		it("initPlayerData 正常初始化3", function(done){
 //			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)
 //				done()
@@ -196,8 +196,8 @@
 //			})
 //		})
 //
-//		it("initPlayerData 正常初始化", function(done){
-//			Api.initPlayerData(Consts.AllianceTerrain.Desert, function(doc){
+//		it("initPlayerData 正常初始化4", function(done){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
@@ -599,7 +599,7 @@
 //			})
 //		})
 //
-//		it("initPlayerData 正常初始化", function(done){
+//		it("initPlayerData 正常初始化5", function(done){
 //			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)
 //				done()
@@ -750,17 +750,20 @@
 //
 //		it("upgradeBuilding 加入联盟后", function(done){
 //			var playerDoc = null
-//			Api.upgradeBuilding(1, true, function(doc){
+//			Api.sendChat('resources gem 100000', function(doc){
 //				doc.code.should.equal(200)
-//				Api.upgradeBuilding(2, false, function(doc){
+//				Api.upgradeBuilding(1, true, function(doc){
 //					doc.code.should.equal(200)
-//					Api.loginPlayer(Config.deviceId5, function(doc){
+//					Api.upgradeBuilding(2, false, function(doc){
 //						doc.code.should.equal(200)
-//						playerDoc = doc.playerData
-//						var buildEvent = playerDoc.buildingEvents[0]
-//						Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.BuildingEvents, buildEvent.id, function(doc){
+//						Api.loginPlayer(Config.deviceId5, function(doc){
 //							doc.code.should.equal(200)
-//							done()
+//							playerDoc = doc.playerData
+//							var buildEvent = playerDoc.buildingEvents[0]
+//							Api.requestAllianceToSpeedUp(Consts.AllianceHelpEventType.BuildingEvents, buildEvent.id, function(doc){
+//								doc.code.should.equal(200)
+//								done()
+//							})
 //						})
 //					})
 //				})
@@ -1266,7 +1269,7 @@
 //		//		})
 //		//	})
 //		//})
-//		//
+//
 //		//it("retreatFromHelpedAllianceMember 正常撤回", function(done){
 //		//	var m_allianceData = null
 //		//	Api.getMyAllianceData(function(doc){
@@ -2685,10 +2688,10 @@
 //		//	}, 2 * 1000)
 //		//})
 //
-//		//it("addAllianceItem 普通道具不需要进货补充", function(done){
+//		//it("addShopItem 普通道具不需要进货补充", function(done){
 //		//	Api.loginPlayer(Config.deviceId3, function(doc){
 //		//		doc.code.should.equal(200)
-//		//		Api.addAllianceItem("woodClass_4", 1, function(doc){
+//		//		Api.addShopItem("woodClass_4", 1, function(doc){
 //		//			doc.code.should.equal(Errors.normalItemsNotNeedToAdd.code)
 //		//			done()
 //		//		})
@@ -2700,7 +2703,7 @@
 //		//		doc.code.should.equal(200)
 //		//		Api.sendChat("allianceHonour 500000", function(doc){
 //		//			doc.code.should.equal(200)
-//		//			Api.addAllianceItem("vipPoint_3", 1, function(doc){
+//		//			Api.addShopItem("vipPoint_3", 1, function(doc){
 //		//				doc.code.should.equal(Errors.theItemNotSellInAllianceShop.code)
 //		//				done()
 //		//			})
@@ -2713,7 +2716,7 @@
 //		//		doc.code.should.equal(200)
 //		//		Api.sendChat("alliancehonour 500000", function(doc){
 //		//			doc.code.should.equal(200)
-//		//			Api.addAllianceItem("dragonChest_1", 1, function(doc){
+//		//			Api.addShopItem("dragonChest_1", 1, function(doc){
 //		//				doc.code.should.equal(200)
 //		//				done()
 //		//			})
@@ -2721,29 +2724,35 @@
 //		//	})
 //		//})
 //		//
-//		//it("buyAllianceItem 玩家忠诚值不足", function(done){
-//		//	Api.buyAllianceItem("woodClass_4", 1, function(doc){
+//		//it("buyShopItem 玩家忠诚值不足", function(done){
+//		//	Api.buyShopItem("woodClass_4", 1, function(doc){
 //		//		doc.code.should.equal(Errors.playerLoyaltyNotEnough.code)
 //		//		done()
 //		//	})
 //		//})
 //		//
-//		//it("buyAllianceItem 正常购买", function(done){
+//		//it("buyShopItem 正常购买", function(done){
 //		//	Api.sendChat("resources gem 5000000", function(doc){
 //		//		doc.code.should.equal(200)
 //		//		Api.sendChat("donatelevel 6", function(doc){
 //		//			doc.code.should.equal(200)
 //		//			Api.donateToAlliance("gem", function(doc){
 //		//				doc.code.should.equal(200)
-//		//				Api.buyAllianceItem("dragonChest_1", 1, function(doc){
+//		//				Api.donateToAlliance("gem", function(doc){
 //		//					doc.code.should.equal(200)
-//		//					done()
+//		//					Api.donateToAlliance("gem", function(doc){
+//		//						doc.code.should.equal(200)
+//		//						Api.buyShopItem("dragonChest_1", 1, function(doc){
+//		//							doc.code.should.equal(200)
+//		//							done()
+//		//						})
+//		//					})
 //		//				})
 //		//			})
 //		//		})
 //		//	})
 //		//})
-//
+//		//
 //		//it("giveLoyaltyToAllianceMember 正常给予1", function(done){
 //		//	var m_myAllianceData = null
 //		//	Api.loginPlayer(Config.deviceId3, function(doc){
@@ -2773,7 +2782,7 @@
 //		//		})
 //		//	})
 //		//})
-//
+//		//
 //		//var m_myAllianceData = null
 //		//it("getAllianceInfo 正常查看", function(done){
 //		//	Api.getMyAllianceData(function(doc){
@@ -2785,7 +2794,7 @@
 //		//		})
 //		//	})
 //		//})
-//
+//		//
 //		//it("getJoinRequestEvents 正常查看", function(done){
 //		//	Api.getJoinRequestEvents(m_myAllianceData._id, function(doc){
 //		//		doc.code.should.equal(200)
@@ -2813,7 +2822,7 @@
 //		//		done()
 //		//	})
 //		//})
-//
+//		//
 //		//it('sendAllianceChat 正常发送', function(done){
 //		//	Api.sendAllianceChat('test,test', function(doc){
 //		//		doc.code.should.equal(200)

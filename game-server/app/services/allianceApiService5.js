@@ -37,15 +37,6 @@ var pro = AllianceApiService5.prototype
  * @param callback
  */
 pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count, callback){
-	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
-		callback(new Error("memberId 不合法"))
-		return
-	}
-	if(!_.isNumber(count) || count % 1 !== 0 || count <= 0){
-		callback(new Error("count 不合法"))
-		return
-	}
-
 	var self = this
 	var memberDoc = null
 	var memberData = []
@@ -55,7 +46,7 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.dataService.findAllianceAsync(allianceId, ['_id', 'basicInfo', 'members'], false).then(function(doc){
+	this.dataService.findAllianceAsync(allianceId, [], false).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "giveLoyaltyToAllianceMember")){
@@ -64,7 +55,7 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 		if(allianceDoc.basicInfo.honour - count < 0) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
-		return self.dataService.findPlayerAsync(memberId, ['_id', 'logicServerId', 'allianceInfo'], false)
+		return self.dataService.findPlayerAsync(memberId, [], false)
 	}).then(function(doc){
 		memberDoc = doc
 		memberDoc.allianceInfo.loyalty += count
@@ -121,12 +112,7 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
  * @param callback
  */
 pro.getAllianceInfo = function(playerId, allianceId, callback){
-	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
-		callback(new Error("allianceId 不合法"))
-		return
-	}
-
-	this.dataService.directFindAllianceAsync(allianceId, ['_id', 'basicInfo', 'members', 'buildings', 'desc', 'titles'], false).then(function(doc){
+	this.dataService.directFindAllianceAsync(allianceId, [], false).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 		var allianceData = {
 			id:doc._id,
