@@ -2,5 +2,6 @@
   "mongoHost": "mongodb://127.0.0.1:27017/kod",
   "iapValidateUrl":"sandbox.itunes.apple.com",
   "iapValidatePath":"/verifyReceipt",
-  "apnPushCert":"alan_aps_development.p12"
+  "apnPushCert":"alan_aps_development.p12",
+  "cheatEnabled":true
 }

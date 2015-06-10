@@ -27,6 +27,7 @@ var ChatHandler = function(app){
 	this.maxChatCount = 50
 	this.maxAllianceChatCount = 50
 	this.maxAllianceFightChatCount = 50
+	this.serverConfig = app.get('serverConfig')
 	this.commands = [
 		{
 			command:"resources",
@@ -440,7 +441,10 @@ pro.getAll = function(msg, session, next){
  * @param callback
  */
 var FilterCommand = function(chatText, session, callback){
-	//callback()
+	if(!this.serverConfig.cheatEnabled){
+		callback()
+		return
+	}
 
 	if(_.isEqual("help", chatText)){
 		PushHelpMessageToPlayer.call(this, session)
