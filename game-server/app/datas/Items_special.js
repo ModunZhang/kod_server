@@ -5,7 +5,7 @@ module.exports = special
 
 special["dragonChest_1"] = {
 	name:"dragonChest_1",
-	effect:"dragonMaterials:ingo_1:6:9,dragonMaterials:redCrystal_1:6:9,dragonMaterials:blueCrystal_1:6:9,dragonMaterials:greenCrystal_1:6:9,dragonMaterials:runes_1:6:8,dragonMaterials:ingo_2:2:7,dragonMaterials:redSoul_2:2:7,dragonMaterials:blueSoul_2:2:7,dragonMaterials:greenSoul_2:2:7,dragonMaterials:redCrystal_2:2:7,dragonMaterials:blueCrystal_2:2:7,dragonMaterials:greenCrystal_2:2:7,dragonMaterials:runes_2:2:7",
+	effect:"dragonMaterials:ingo_1:6,dragonMaterials:runes_1:6,dragonMaterials:greenCrystal_1:6,22|dragonMaterials:ingo_1:6,dragonMaterials:runes_1:6,dragonMaterials:redCrystal_1:6,21|dragonMaterials:ingo_1:6,dragonMaterials:runes_1:6,dragonMaterials:blueCrystal_1:6,21|dragonMaterials:ingo_2:2,dragonMaterials:runes_2:2,dragonMaterials:redCrystal_2:2,6|dragonMaterials:ingo_2:2,dragonMaterials:runes_2:2,dragonMaterials:greenCrystal_2:2,6|dragonMaterials:ingo_2:2,dragonMaterials:runes_2:2,dragonMaterials:blueCrystal_2:2,6|dragonMaterials:ingo_2:2,dragonMaterials:redSoul_2:2,dragonMaterials:redCrystal_2:2,6|dragonMaterials:ingo_2:2,dragonMaterials:greenSoul_2:2,dragonMaterials:greenCrystal_2:2,6|dragonMaterials:ingo_2:2,dragonMaterials:blueSoul_2:2,dragonMaterials:blueCrystal_2:2,6",
 	order:1,
 	isSell:true,
 	price:400,
@@ -15,7 +15,7 @@ special["dragonChest_1"] = {
 }
 special["dragonChest_2"] = {
 	name:"dragonChest_2",
-	effect:"dragonMaterials:ingo_2:6:7,dragonMaterials:redSoul_2:6:6,dragonMaterials:blueSoul_2:6:6,dragonMaterials:greenSoul_2:6:6,dragonMaterials:redCrystal_2:6:6,dragonMaterials:blueCrystal_2:6:6,dragonMaterials:greenCrystal_2:6:6,dragonMaterials:runes_2:6:7,dragonMaterials:ingo_3:6:7,dragonMaterials:redSoul_3:6:6,dragonMaterials:blueSoul_3:6:6,dragonMaterials:greenSoul_3:6:6,dragonMaterials:redCrystal_3:6:6,dragonMaterials:blueCrystal_3:6:6,dragonMaterials:greenCrystal_3:6:6,dragonMaterials:runes_3:6:7",
+	effect:"dragonMaterials:ingo_2:6,dragonMaterials:runes_2:6,dragonMaterials:redCrystal_2:6,15|dragonMaterials:ingo_2:6,dragonMaterials:runes_2:6,dragonMaterials:greenCrystal_2:6,16|dragonMaterials:ingo_2:6,dragonMaterials:runes_2:6,dragonMaterials:blueCrystal_2:6,15|dragonMaterials:ingo_2:6,dragonMaterials:redSoul_2:6,dragonMaterials:redCrystal_2:6,14|dragonMaterials:ingo_2:6,dragonMaterials:greenSoul_2:6,dragonMaterials:greenCrystal_2:6,14|dragonMaterials:ingo_2:6,dragonMaterials:blueSoul_2:6,dragonMaterials:blueCrystal_2:6,14|dragonMaterials:ingo_3:2,dragonMaterials:runes_3:2,dragonMaterials:redCrystal_3:2,2|dragonMaterials:ingo_3:2,dragonMaterials:runes_3:2,dragonMaterials:greenCrystal_3:2,2|dragonMaterials:ingo_3:2,dragonMaterials:runes_3:2,dragonMaterials:blueCrystal_3:2,2|dragonMaterials:ingo_3:2,dragonMaterials:redSoul_3:2,dragonMaterials:redCrystal_3:2,2|dragonMaterials:ingo_3:2,dragonMaterials:greenSoul_3:2,dragonMaterials:greenCrystal_3:2,2|dragonMaterials:ingo_3:2,dragonMaterials:blueSoul_3:2,dragonMaterials:blueCrystal_3:2,2",
 	order:2,
 	isSell:true,
 	price:1500,
@@ -25,7 +25,7 @@ special["dragonChest_2"] = {
 }
 special["dragonChest_3"] = {
 	name:"dragonChest_3",
-	effect:"dragonMaterials:ingo_3:6:7,dragonMaterials:redSoul_3:6:6,dragonMaterials:blueSoul_3:6:6,dragonMaterials:greenSoul_3:6:6,dragonMaterials:redCrystal_3:6:6,dragonMaterials:blueCrystal_3:6:6,dragonMaterials:greenCrystal_3:6:6,dragonMaterials:runes_3:6:7,dragonMaterials:ingo_4:2:7,dragonMaterials:redSoul_4:2:6,dragonMaterials:blueSoul_4:2:6,dragonMaterials:greenSoul_4:2:6,dragonMaterials:redCrystal_4:2:6,dragonMaterials:blueCrystal_4:2:6,dragonMaterials:greenCrystal_4:2:6,dragonMaterials:runes_4:2:7",
+	effect:"dragonMaterials:ingo_3:6,dragonMaterials:runes_3:6,dragonMaterials:redCrystal_3:6,12|dragonMaterials:ingo_3:6,dragonMaterials:runes_3:6,dragonMaterials:greenCrystal_3:6,13|dragonMaterials:ingo_3:6,dragonMaterials:runes_3:6,dragonMaterials:blueCrystal_3:6,12|dragonMaterials:ingo_3:6,dragonMaterials:redSoul_3:6,dragonMaterials:redCrystal_3:6,11|dragonMaterials:ingo_3:6,dragonMaterials:greenSoul_3:6,dragonMaterials:greenCrystal_3:6,11|dragonMaterials:ingo_3:6,dragonMaterials:blueSoul_3:6,dragonMaterials:blueCrystal_3:6,11|dragonMaterials:ingo_4:2,dragonMaterials:runes_4:2,dragonMaterials:redCrystal_4:2,5|dragonMaterials:ingo_4:2,dragonMaterials:runes_4:2,dragonMaterials:greenCrystal_4:2,5|dragonMaterials:ingo_4:2,dragonMaterials:runes_4:2,dragonMaterials:blueCrystal_4:2,5|dragonMaterials:ingo_4:2,dragonMaterials:redSoul_4:2,dragonMaterials:redCrystal_4:2,5|dragonMaterials:ingo_4:2,dragonMaterials:greenSoul_4:2,dragonMaterials:greenCrystal_4:2,5|dragonMaterials:ingo_4:2,dragonMaterials:blueSoul_4:2,dragonMaterials:blueCrystal_4:2,5",
 	order:3,
 	isSell:true,
 	price:5000,

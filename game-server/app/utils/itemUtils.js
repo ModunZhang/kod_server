@@ -335,14 +335,23 @@ var RestoreWallHp = function(playerDoc, playerData, itemConfig){
 var DragonChest = function(playerDoc, playerData, itemConfig){
 	var ParseConfig = function(config){
 		var objects = []
-		var configArray_1 = config.split(",")
+		var configArray_1 = config.split("|")
 		_.each(configArray_1, function(config_1){
-			var configArray_2 = config_1.split(":")
+			var configArray_2 = config_1.split(",")
+			var weight = parseInt(configArray_2.pop())
+			var items = []
+			_.each(configArray_2, function(config_2){
+				var configArray_3 = config_2.split(":")
+				var item = {
+					type:configArray_3[0],
+					name:configArray_3[1],
+					count:parseInt(configArray_3[2])
+				}
+				items.push(item)
+			})
 			var object = {
-				type:configArray_2[0],
-				name:configArray_2[1],
-				count:parseInt(configArray_2[2]),
-				weight:parseInt(configArray_2[3])
+				items:items,
+				weight:weight
 			}
 			objects.push(object)
 		})
@@ -364,10 +373,11 @@ var DragonChest = function(playerDoc, playerData, itemConfig){
 		})
 	}
 
-	var items = ParseConfig(itemConfig.effect)
-	items = SortFunc(items)
-	var selectCount = PlayerInitData.intInit.dragonChestSelectCountPerItem.value
-	for(var i = 0; i < selectCount; i++){
+	var objects = ParseConfig(itemConfig.effect)
+	objects = SortFunc(objects)
+	var items = objects[0].items
+
+	for(var i = 0; i < items.length; i++){
 		var item = items[i]
 		playerDoc[item.type][item.name] += item.count
 		playerData.push([item.type + "." + item.name, playerDoc[item.type][item.name]])
