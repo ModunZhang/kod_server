@@ -237,19 +237,8 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, [playerData, billing.transactionId])
-		return Promise.resolve()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
-		return
-	}).then(function(){
 		if(_.isObject(rewards.rewardToAllianceMember) && !_.isEmpty(playerDoc.allianceId)){
-			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
+			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId, [], true).then(function(doc){
 				allianceDoc = doc
 				var funcs = []
 				_.each(allianceDoc.members, function(member){
@@ -258,9 +247,17 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 					}
 				})
 				return Promise.all(funcs)
+			}).catch(function(e){
+				self.logService.onEventError("logic.playerIAPService.addPlayerBillingData", {playerId:playerId, transactionId:transactionId}, e.stack)
 			})
 		}
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerIAPService.addPlayerBillingData", {playerId:playerId, transactionId:transactionId}, e.stack)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
