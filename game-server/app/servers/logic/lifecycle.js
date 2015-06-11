@@ -8,8 +8,8 @@ var Promise = require("bluebird")
 var _ = require("underscore")
 
 var LogService = require("../../services/logService")
-var Consts = require("../../consts/consts")
 var ErrorUtils = require("../../utils/errorUtils")
+var Consts = require("../../consts/consts")
 
 var life = module.exports
 
