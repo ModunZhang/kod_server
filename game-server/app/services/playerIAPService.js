@@ -238,14 +238,13 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	}).then(function(){
 		callback(null, [playerData, billing.transactionId])
 		return Promise.resolve()
-	}, function(e){
+	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
-		return Promise.all(funcs).then(function(){
+		Promise.all(funcs).then(function(){
 			callback(e)
-			return Promise.reject(e)
 		})
 	}).then(function(){
 		if(_.isObject(rewards.rewardToAllianceMember) && !_.isEmpty(playerDoc.allianceId)){
