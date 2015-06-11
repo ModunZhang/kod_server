@@ -28,7 +28,7 @@ var DataService = function(app){
 	this.flushOps = 10
 	this.timeoutInterval = 10 * 60 * 1000
 	this.lockCheckInterval = 2 * 1000
-	this.lockInterval = 4 * 1000
+	this.lockInterval = 2 * 1000
 
 	setInterval(OnLockCheckInterval.bind(this), this.lockCheckInterval)
 }
