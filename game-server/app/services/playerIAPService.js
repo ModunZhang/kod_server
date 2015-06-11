@@ -246,6 +246,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 		Promise.all(funcs).then(function(){
 			callback(e)
 		})
+		return
 	}).then(function(){
 		if(_.isObject(rewards.rewardToAllianceMember) && !_.isEmpty(playerDoc.allianceId)){
 			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
