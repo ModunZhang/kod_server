@@ -95,15 +95,15 @@ pro.request = function(api, params, callback){
 	var self = this
 	var service = this.apiMap[api]
 	if(!_.isObject(service)){
-		var e = ErrorUtils.createError(500, {api:api, params:params}, true)
-		self.logService.onEventError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
-		callback(null, {code:e.code, data:e.message})
+		var e = new Error('后端Api 不存在')
+		self.logService.onRequestError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
+		callback(null, {code:500, data:e.message})
 		return
 	}
 	service[api + 'Async'].apply(service, Array.prototype.slice.call(params, 0)).then(function(data){
 		callback(null, {code:200, data:data})
 	}).catch(function(e){
-		self.logService.onEventError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
+		self.logService.onRequestError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
 		callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
 	})
 }

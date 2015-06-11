@@ -388,6 +388,7 @@ pro.send = function(msg, session, next){
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
+		self.logService.onRequestError("chat.chatHandler.send", {playerId:session.uid, msg:msg}, e.stack)
 		next(e, ErrorUtils.getError(e))
 	})
 }

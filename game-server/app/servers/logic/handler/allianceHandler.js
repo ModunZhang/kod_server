@@ -69,7 +69,7 @@ pro.createAlliance = function(msg, session, next){
 	this.request('createAlliance', [session.uid, name, tag, language, terrain, flag]).spread(function(playerData, allianceData){
 		next(null, {code:200, playerData:playerData, allianceData:allianceData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -104,7 +104,7 @@ pro.sendAllianceMail = function(msg, session, next){
 	this.request('sendAllianceMail', [session.uid, allianceId, title, content]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -127,7 +127,7 @@ pro.getMyAllianceData = function(msg, session, next){
 	this.request('getMyAllianceData', [session.uid, allianceId]).then(function(allianceData){
 		next(null, {code:200, allianceData:allianceData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -150,7 +150,7 @@ pro.getCanDirectJoinAlliances = function(msg, session, next){
 	this.request('getCanDirectJoinAlliances', [session.uid, fromIndex]).then(function(allianceDatas){
 		next(null, {code:200, allianceDatas:allianceDatas})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -173,7 +173,7 @@ pro.searchAllianceByTag = function(msg, session, next){
 	this.request('searchAllianceByTag', [session.uid, tag]).then(function(allianceDatas){
 		next(null, {code:200, allianceDatas:allianceDatas})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -220,7 +220,7 @@ pro.editAllianceBasicInfo = function(msg, session, next){
 	this.request('editAllianceBasicInfo', [session.uid, allianceId, name, tag, language, flag]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -250,7 +250,7 @@ pro.editAllianceTerrian = function(msg, session, next){
 	this.request('editAllianceTerrian', [session.uid, playerName, allianceId, terrain]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -285,7 +285,7 @@ pro.editAllianceTitleName = function(msg, session, next){
 	this.request('editAllianceTitleName', [session.uid, allianceId, title, titleName]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -315,7 +315,7 @@ pro.editAllianceNotice = function(msg, session, next){
 	this.request('editAllianceNotice', [session.uid, playerName, allianceId, notice]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -345,7 +345,7 @@ pro.editAllianceDescription = function(msg, session, next){
 	this.request('editAllianceDescription', [session.uid, playerName, allianceId, description]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -374,7 +374,7 @@ pro.editAllianceJoinType = function(msg, session, next){
 	this.request('editAllianceJoinType', [session.uid, allianceId, joinType]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -414,7 +414,7 @@ pro.editAllianceMemberTitle = function(msg, session, next){
 	this.request('editAllianceMemberTitle', [session.uid, allianceId, memberId, title]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -448,7 +448,7 @@ pro.kickAllianceMemberOff = function(msg, session, next){
 	this.request('kickAllianceMemberOff', [session.uid, allianceId, memberId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -482,7 +482,7 @@ pro.handOverAllianceArchon = function(msg, session, next){
 	this.request('handOverAllianceArchon', [session.uid, allianceId, memberId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -505,7 +505,7 @@ pro.quitAlliance = function(msg, session, next){
 	this.request('quitAlliance', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -528,7 +528,7 @@ pro.joinAllianceDirectly = function(msg, session, next){
 	this.request('joinAllianceDirectly', [session.uid, allianceId]).spread(function(playerData, allianceData, enemyAllianceData){
 		next(null, {code:200, playerData:playerData, allianceData:allianceData, enemyAllianceData:enemyAllianceData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -551,7 +551,7 @@ pro.requestToJoinAlliance = function(msg, session, next){
 	this.request('requestToJoinAlliance', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -574,7 +574,7 @@ pro.cancelJoinAllianceRequest = function(msg, session, next){
 	this.request('cancelJoinAllianceRequest', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -603,7 +603,7 @@ pro.approveJoinAllianceRequest = function(msg, session, next){
 	this.request('approveJoinAllianceRequest', [session.uid, allianceId, requestEventId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -639,7 +639,7 @@ pro.removeJoinAllianceReqeusts = function(msg, session, next){
 	this.request('removeJoinAllianceReqeusts', [session.uid, allianceId, requestEventIds]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -673,7 +673,7 @@ pro.inviteToJoinAlliance = function(msg, session, next){
 	this.request('inviteToJoinAlliance', [session.uid, allianceId, memberId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -702,7 +702,7 @@ pro.handleJoinAllianceInvite = function(msg, session, next){
 	this.request('handleJoinAllianceInvite', [session.uid, allianceId, agree]).spread(function(playerData, allianceData, enemyAllianceData){
 		next(null, {code:200, playerData:playerData, allianceData:allianceData, enemyAllianceData:enemyAllianceData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -725,7 +725,7 @@ pro.buyAllianceArchon = function(msg, session, next){
 	this.request('buyAllianceArchon', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -760,7 +760,7 @@ pro.requestAllianceToSpeedUp = function(msg, session, next){
 	this.request('requestAllianceToSpeedUp', [session.uid, allianceId, eventType, eventId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -789,7 +789,7 @@ pro.helpAllianceMemberSpeedUp = function(msg, session, next){
 	this.request('helpAllianceMemberSpeedUp', [session.uid, allianceId, eventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -812,7 +812,7 @@ pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
 	this.request('helpAllAllianceMemberSpeedUp', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -841,7 +841,7 @@ pro.donateToAlliance = function(msg, session, next){
 	this.request('donateToAlliance', [session.uid, allianceId, donateType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -870,7 +870,7 @@ pro.upgradeAllianceBuilding = function(msg, session, next){
 	this.request('upgradeAllianceBuilding', [session.uid, allianceId, buildingName]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -899,7 +899,7 @@ pro.upgradeAllianceVillage = function(msg, session, next){
 	this.request('upgradeAllianceVillage', [session.uid, allianceId, villageType]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -940,7 +940,7 @@ pro.moveAllianceBuilding = function(msg, session, next){
 	this.request('moveAllianceBuilding', [session.uid, allianceId, mapObjectId, locationX, locationY]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -969,7 +969,7 @@ pro.activateAllianceShrineStage = function(msg, session, next){
 	this.request('activateAllianceShrineStage', [session.uid, allianceId, stageName]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1010,7 +1010,7 @@ pro.attackAllianceShrine = function(msg, session, next){
 	this.request('attackAllianceShrine', [session.uid, allianceId, shrineEventId, dragonType, soldiers]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1033,7 +1033,7 @@ pro.requestAllianceToFight = function(msg, session, next){
 	this.request('requestAllianceToFight', [session.uid, allianceId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1056,7 +1056,7 @@ pro.findAllianceToFight = function(msg, session, next){
 	this.request('findAllianceToFight', [session.uid, allianceId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1085,7 +1085,7 @@ pro.revengeAlliance = function(msg, session, next){
 	this.request('revengeAlliance', [session.uid, allianceId, reportId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1108,7 +1108,7 @@ pro.getAllianceViewData = function(msg, session, next){
 	this.request('getAllianceViewData', [session.uid, targetAllianceId]).then(function(allianceViewData){
 		next(null, {code:200, allianceViewData:allianceViewData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1131,7 +1131,7 @@ pro.searchAllianceInfoByTag = function(msg, session, next){
 	this.request('searchAllianceInfoByTag', [session.uid, tag]).then(function(allianceInfos){
 		next(null, {code:200, allianceInfos:allianceInfos})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1154,7 +1154,7 @@ pro.getNearedAllianceInfos = function(msg, session, next){
 	this.request('getNearedAllianceInfos', [session.uid, allianceId]).then(function(allianceInfos){
 		next(null, {code:200, allianceInfos:allianceInfos})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1200,7 +1200,7 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
 	this.request('helpAllianceMemberDefence', [session.uid, allianceId, dragonType, soldiers, targetPlayerId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1234,7 +1234,7 @@ pro.retreatFromBeHelpedAllianceMember = function(msg, session, next){
 	this.request('retreatFromBeHelpedAllianceMember', [session.uid, allianceId, beHelpedPlayerId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1269,7 +1269,7 @@ pro.strikePlayerCity = function(msg, session, next){
 	this.request('strikePlayerCity', [session.uid, allianceId, dragonType, defencePlayerId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1310,7 +1310,7 @@ pro.attackPlayerCity = function(msg, session, next){
 	this.request('attackPlayerCity', [session.uid, allianceId, dragonType, soldiers, defencePlayerId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1357,7 +1357,7 @@ pro.attackVillage = function(msg, session, next){
 	this.request('attackVillage', [session.uid, allianceId, dragonType, soldiers, defenceAllianceId, defenceVillageId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1386,7 +1386,7 @@ pro.retreatFromVillage = function(msg, session, next){
 	this.request('retreatFromVillage', [session.uid, allianceId, villageEventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1427,7 +1427,7 @@ pro.strikeVillage = function(msg, session, next){
 	this.request('strikeVillage', [session.uid, allianceId, dragonType, defenceAllianceId, defenceVillageId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1462,7 +1462,7 @@ pro.getAttackMarchEventDetail = function(msg, session, next){
 	this.request('getAttackMarchEventDetail', [session.uid, allianceId, enemyAllianceId, eventId]).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1497,7 +1497,7 @@ pro.getStrikeMarchEventDetail = function(msg, session, next){
 	this.request('getStrikeMarchEventDetail', [session.uid, allianceId, enemyAllianceId, eventId]).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1531,7 +1531,7 @@ pro.getHelpDefenceMarchEventDetail = function(msg, session, next){
 	this.request('getHelpDefenceMarchEventDetail', [session.uid, allianceId, eventId]).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1561,7 +1561,7 @@ pro.getHelpDefenceTroopDetail = function(msg, session, next){
 	this.request('getHelpDefenceTroopDetail', [session.uid, allianceId, playerId, helpedByPlayerId]).then(function(troopDetail){
 		next(null, {code:200, troopDetail:troopDetail})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1572,7 +1572,7 @@ pro.getHelpDefenceTroopDetail = function(msg, session, next){
  * @param next
  */
 pro.addShopItem = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.addItem", {playerId:session.uid, msg:msg})
+	this.logService.onRequest("logic.allianceHandler.addShopItem", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var playerName = session.get('name')
 	var itemName = msg.itemName
@@ -1597,7 +1597,7 @@ pro.addShopItem = function(msg, session, next){
 	this.request('addShopItem', [session.uid, playerName, allianceId, itemName, count]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1608,7 +1608,7 @@ pro.addShopItem = function(msg, session, next){
  * @param next
  */
 pro.buyShopItem = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.buyItem", {playerId:session.uid, msg:msg})
+	this.logService.onRequest("logic.allianceHandler.buyShopItem", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var itemName = msg.itemName
 	var count = msg.count
@@ -1632,7 +1632,7 @@ pro.buyShopItem = function(msg, session, next){
 	this.request('buyShopItem', [session.uid, allianceId, itemName, count]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1667,7 +1667,7 @@ pro.giveLoyaltyToAllianceMember = function(msg, session, next){
 	this.request('giveLoyaltyToAllianceMember', [session.uid, allianceId, memberId, count]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1690,7 +1690,7 @@ pro.getAllianceInfo = function(msg, session, next){
 	this.request('getAllianceInfo', [session.uid, allianceId]).then(function(allianceData){
 		next(null, {code:200, allianceData:allianceData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1713,7 +1713,7 @@ pro.getJoinRequestEvents = function(msg, session, next){
 	this.request('getJoinRequestEvents', [session.uid, allianceId]).then(function(joinRequestEvents){
 		next(null, {code:200, joinRequestEvents:joinRequestEvents})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1736,7 +1736,7 @@ pro.getShrineReports = function(msg, session, next){
 	this.request('getShrineReports', [session.uid, allianceId]).then(function(shrineReports){
 		next(null, {code:200, shrineReports:shrineReports})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1759,7 +1759,7 @@ pro.getAllianceFightReports = function(msg, session, next){
 	this.request('getAllianceFightReports', [session.uid, allianceId]).then(function(allianceFightReports){
 		next(null, {code:200, allianceFightReports:allianceFightReports})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1782,6 +1782,6 @@ pro.getItemLogs = function(msg, session, next){
 	this.request('getItemLogs', [session.uid, allianceId]).then(function(itemLogs){
 		next(null, {code:200, itemLogs:itemLogs})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }

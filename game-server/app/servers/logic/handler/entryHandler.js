@@ -81,7 +81,7 @@ pro.login = function(msg, session, next){
 			deviceId:deviceId,
 			logicServerId:self.logicServerId
 		}, e.stack)
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 

@@ -92,6 +92,7 @@ pro.queryEntry = function(msg, session, next){
 			next(null, {data:data, code:200})
 		}
 	}).catch(function(e){
+		self.logService.onRequestError("gate.getHandler.queryEntry", {deviceId:deviceId}, e.stack)
 		next(e, ErrorUtils.getError(e))
 	})
 }

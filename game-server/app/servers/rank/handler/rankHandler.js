@@ -30,12 +30,14 @@ var pro = RankHandler.prototype
  * @param next
  */
 pro.getPlayerRankList = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getPlayerRankList", {playerId:session.uid, msg:msg})
+	this.logService.onRequest("rank.rankHandler.getPlayerRankList", {playerId:session.uid, msg:msg})
+	var self = this
 	var rankType = msg.rankType
 	var fromRank = msg.fromRank
 	this.rankService.getPlayerRankListAsync(session.uid, rankType, fromRank).spread(function(myData, datas){
 		next(null, {code:200, myData:myData, datas:datas})
 	}).catch(function(e){
+		self.logService.onRequestError("rank.rankHandler.getPlayerRankList", {playerId:session.uid, msg:msg}, e.stack)
 		next(e, ErrorUtils.getError(e))
 	})
 }
@@ -47,13 +49,15 @@ pro.getPlayerRankList = function(msg, session, next){
  * @param next
  */
 pro.getAllianceRankList = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getAllianceRankList", {playerId:session.uid, msg:msg})
+	this.logService.onRequest("rank.rankHandler.getAllianceRankList", {playerId:session.uid, msg:msg})
+	var self = this
 	var allianceId = msg.allianceId
 	var rankType = msg.rankType
 	var fromRank = msg.fromRank
 	this.rankService.getAllianceRankListAsync(session.uid, allianceId, rankType, fromRank).spread(function(myData, datas){
 		next(null, {code:200, myData:myData, datas:datas})
 	}).catch(function(e){
+		self.logService.onRequestError("rank.rankHandler.getAllianceRankList", {playerId:session.uid, msg:msg}, e.stack)
 		next(e, ErrorUtils.getError(e))
 	})
 }
