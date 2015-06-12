@@ -126,6 +126,6 @@ pro.queryEntry = function(msg, session, next){
 		}
 	}).catch(function(e){
 		self.logService.onRequestError("gate.getHandler.queryEntry", {deviceId:deviceId}, e.stack)
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
