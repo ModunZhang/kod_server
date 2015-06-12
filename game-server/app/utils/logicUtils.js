@@ -2358,7 +2358,10 @@ Utils.initPlayerDoc = function(playerDoc){
 		name:'moveTheCity',
 		count:1
 	})
-
+	playerDoc.items.push({
+		name:'ironBonus_1',
+		count:1
+	})
 
 	DataUtils.refreshPlayerPower(playerDoc, [])
 }
