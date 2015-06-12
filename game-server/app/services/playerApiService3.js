@@ -353,6 +353,7 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerViewData._id = doc._id
 		playerViewData.basicInfo = doc.basicInfo
 		playerViewData.buildings = doc.buildings
+		playerViewData.soldiers = doc.soldiers
 		playerViewData.helpedByTroops = doc.helpedByTroops
 		return Promise.resolve()
 	}).then(function(){
