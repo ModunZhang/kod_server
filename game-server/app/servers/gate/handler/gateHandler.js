@@ -7,6 +7,7 @@
 var _ = require("underscore")
 var Promise = require("bluebird")
 var ShortId = require("shortid")
+var Http = require("http")
 
 var Utils = require("../../../utils/utils")
 var ErrorUtils = require("../../../utils/errorUtils")
@@ -24,6 +25,7 @@ var Handler = function(app){
 	this.Player = app.get("Player")
 	this.Device = app.get("Device")
 	this.Lock = app.get('Lock');
+	this.serverConfig = app.get('serverConfig')
 }
 
 var pro = Handler.prototype
@@ -38,14 +40,41 @@ pro.queryEntry = function(msg, session, next){
 	this.logService.onRequest("gate.getHandler.queryEntry", msg)
 
 	var deviceId = msg.deviceId
+	var tag = msg.tag
+	var e = null
 	if(!_.isString(deviceId)){
-		var e = new Error("deviceId 不合法")
+		e = new Error("deviceId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-
+	if(!_.isNumber(tag) || tag < 0 || tag % 1 != 0){
+		e = new Error("tag 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 	var self = this;
-	this.Lock.findOneAsync({type:'device', value:deviceId, finishTime:{$gt:Date.now()}}).then(function(doc){
+	var getClientBuildAsync = new Promise(function(resolve, reject){
+		if(!self.serverConfig.clientTagCheckEnabled) resolve()
+		else{
+			Http.get(self.serverConfig.clientTagValidateUrl, function(res){
+				if(res.statusCode != 200) reject(ErrorUtils.versionValidateFailed(tag))
+				else{
+					res.on('data', function(data){
+						var config = JSON.parse(data.toString())
+						if(_.isEqual(tag, config.tag)) resolve()
+						else reject(ErrorUtils.versionNotEqual(tag, config.tag))
+					})
+				}
+			}).on('error', function(e){
+				self.logService.onRequestError("gate.getHandler.queryEntry", msg, e.stack)
+				reject(ErrorUtils.versionValidateFailed(tag))
+			})
+		}
+	})
+
+	getClientBuildAsync.then(function(){
+		return self.Lock.findOneAsync({type:'device', value:deviceId, finishTime:{$gt:Date.now()}})
+	}).then(function(doc){
 		if(_.isObject(doc)) return Promise.reject(ErrorUtils.deviceLocked(deviceId))
 	}).then(function(){
 		return self.Device.findByIdAsync(deviceId)
@@ -53,7 +82,11 @@ pro.queryEntry = function(msg, session, next){
 		var device = null
 		if(_.isObject(doc)){
 			device = doc
-			return self.Lock.findOneAsync({type:'player', value:device.playerId, finishTime:{$gt:Date.now()}}).then(function(doc){
+			return self.Lock.findOneAsync({
+				type:'player',
+				value:device.playerId,
+				finishTime:{$gt:Date.now()}
+			}).then(function(doc){
 				if(_.isObject(doc)) return Promise.reject(ErrorUtils.playerLocked(device.playerId))
 				else{
 					return self.Player.findByIdAsync(device.playerId, {serverId:true}).then(function(doc){

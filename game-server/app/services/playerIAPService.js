@@ -73,6 +73,11 @@ var BillingValidate = function(playerDoc, receiptData, callback){
 		method:"post"
 	}
 	var request = Https.request(httpOptions, function(response){
+		if(response.statusCode != 200){
+			callback(ErrorUtils.iapServerNotAvailable(playerDoc._id, jsonObj))
+			return
+		}
+
 		response.on("data", function(data){
 			try{
 				var jsonObj = JSON.parse(data.toString())

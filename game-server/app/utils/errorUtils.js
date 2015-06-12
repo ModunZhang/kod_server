@@ -1973,3 +1973,22 @@ Utils.fteAlreadyFinished = function(playerId){
 	var config = Errors.fteAlreadyFinished
 	return CreateError(config, {playerId:playerId})
 }
+
+/**
+ * 版本验证失败
+ * @param tagUpload
+ */
+Utils.versionValidateFailed = function(tagUpload){
+	var config = Errors.versionValidateFailed
+	return CreateError(config, {tagUpload:tagUpload})
+}
+
+/**
+ * 版本不匹配
+ * @param tagUpload
+ * @param tag
+ */
+Utils.versionNotEqual = function(tagUpload, tag){
+	var config = Errors.versionNotEqual
+	return CreateError(config, {tagUpload:tagUpload, tag:tag})
+}
