@@ -349,9 +349,10 @@ pro.send = function(msg, session, next){
 	}
 
 	var filterCommand = Promise.promisify(FilterCommand, this)
+	var msg = null
 	filterCommand(text, session).then(function(data){
 		if(!_.isUndefined(data)){
-			var msg = {
+			msg = {
 				fromId:"system",
 				fromIcon:"playerIcon_default.png",
 				fromName:"系统",
@@ -360,10 +361,11 @@ pro.send = function(msg, session, next){
 				text:data,
 				time:Date.now()
 			}
-			PushToPlayer.call(self, Events.chat.onChat, session, msg)
+			self.chatChannel.pushMessage(Events.chat.onChat, msg, {}, null)
+			//PushToPlayer.call(self, Events.chat.onChat, session, msg)
 			return
 		}
-		var response = {
+		msg = {
 			id:session.uid,
 			icon:session.get("icon"),
 			name:session.get("name"),
@@ -379,33 +381,33 @@ pro.send = function(msg, session, next){
 			if(self.chats.length > self.maxChatCount){
 				self.chats.shift()
 			}
-			self.chats.push(response)
-			self.chatChannel.pushMessage(Events.chat.onChat, response, {}, null)
+			self.chats.push(msg)
+			self.chatChannel.pushMessage(Events.chat.onChat, msg, {}, null)
 		}else if(_.isEqual(Consts.ChannelType.Alliance, channel)){
 			if(!_.isArray(self.allianceChats[allianceId])) self.allianceChats[allianceId] = []
 			if(self.allianceChats[allianceId].length > self.maxAllianceChatCount){
 				self.allianceChats[allianceId].shift()
 			}
-			self.allianceChats[allianceId].push(response)
+			self.allianceChats[allianceId].push(msg)
 			var allianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 			if(_.isObject(allianceChannel))
-				allianceChannel.pushMessage(Events.chat.onChat, response, {}, null)
+				allianceChannel.pushMessage(Events.chat.onChat, msg, {}, null)
 		}else if(_.isEqual(Consts.ChannelType.AllianceFight, channel)){
 			var allianceFightKey = self.allianceFights[allianceId]
 			if(!_.isArray(self.allianceFightChats[allianceFightKey])) self.allianceFightChats[allianceFightKey] = []
 			if(self.allianceFightChats[allianceFightKey].length > self.maxAllianceFightChatCount){
 				self.allianceFightChats[allianceFightKey].shift()
 			}
-			self.allianceFightChats[allianceFightKey].push(response)
+			self.allianceFightChats[allianceFightKey].push(msg)
 			var allianceIdKeys = allianceFightKey.split('_')
 			var attackAllianceId = allianceIdKeys[0]
 			var defenceAllianceId = allianceIdKeys[1]
 			var attackAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + attackAllianceId, false)
 			var defenceAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + defenceAllianceId, false)
 			if(_.isObject(attackAllianceChannel))
-				attackAllianceChannel.pushMessage(Events.chat.onChat, response, {}, null)
+				attackAllianceChannel.pushMessage(Events.chat.onChat, msg, {}, null)
 			if(_.isObject(defenceAllianceChannel))
-				defenceAllianceChannel.pushMessage(Events.chat.onChat, response, {}, null)
+				defenceAllianceChannel.pushMessage(Events.chat.onChat, msg, {}, null)
 		}
 		return Promise.resolve()
 	}).then(function(){
