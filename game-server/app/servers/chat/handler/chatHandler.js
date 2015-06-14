@@ -349,23 +349,25 @@ pro.send = function(msg, session, next){
 	}
 
 	var filterCommand = Promise.promisify(FilterCommand, this)
-	var msg = null
+	var message = null
 	filterCommand(text, session).then(function(data){
 		if(!_.isUndefined(data)){
-			msg = {
-				fromId:"system",
-				fromIcon:"playerIcon_default.png",
-				fromName:"系统",
-				fromVip:0,
-				fromChannel:"system",
+			message = {
+				id:"system",
+				icon:"playerIcon_default.png",
+				name:"System",
+				vip:0,
+				vipActive:false,
+				allianceId:'',
+				allianceTag:'',
+				channel:channel,
 				text:data,
 				time:Date.now()
 			}
-			//self.chatChannel.pushMessage(Events.chat.onChat, msg, {}, null)
-			PushToPlayer.call(self, Events.chat.onChat, session, msg)
+			PushToPlayer.call(self, Events.chat.onChat, session, message)
 			return
 		}
-		msg = {
+		message = {
 			id:session.uid,
 			icon:session.get("icon"),
 			name:session.get("name"),
@@ -381,39 +383,39 @@ pro.send = function(msg, session, next){
 			if(self.chats.length > self.maxChatCount){
 				self.chats.shift()
 			}
-			self.chats.push(msg)
-			self.chatChannel.pushMessage(Events.chat.onChat, msg, {}, null)
+			self.chats.push(message)
+			self.chatChannel.pushMessage(Events.chat.onChat, message, {}, null)
 		}else if(_.isEqual(Consts.ChannelType.Alliance, channel)){
 			if(!_.isArray(self.allianceChats[allianceId])) self.allianceChats[allianceId] = []
 			if(self.allianceChats[allianceId].length > self.maxAllianceChatCount){
 				self.allianceChats[allianceId].shift()
 			}
-			self.allianceChats[allianceId].push(msg)
+			self.allianceChats[allianceId].push(message)
 			var allianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 			if(_.isObject(allianceChannel))
-				allianceChannel.pushMessage(Events.chat.onChat, msg, {}, null)
+				allianceChannel.pushMessage(Events.chat.onChat, message, {}, null)
 		}else if(_.isEqual(Consts.ChannelType.AllianceFight, channel)){
 			var allianceFightKey = self.allianceFights[allianceId]
 			if(!_.isArray(self.allianceFightChats[allianceFightKey])) self.allianceFightChats[allianceFightKey] = []
 			if(self.allianceFightChats[allianceFightKey].length > self.maxAllianceFightChatCount){
 				self.allianceFightChats[allianceFightKey].shift()
 			}
-			self.allianceFightChats[allianceFightKey].push(msg)
+			self.allianceFightChats[allianceFightKey].push(message)
 			var allianceIdKeys = allianceFightKey.split('_')
 			var attackAllianceId = allianceIdKeys[0]
 			var defenceAllianceId = allianceIdKeys[1]
 			var attackAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + attackAllianceId, false)
 			var defenceAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + defenceAllianceId, false)
 			if(_.isObject(attackAllianceChannel))
-				attackAllianceChannel.pushMessage(Events.chat.onChat, msg, {}, null)
+				attackAllianceChannel.pushMessage(Events.chat.onChat, message, {}, null)
 			if(_.isObject(defenceAllianceChannel))
-				defenceAllianceChannel.pushMessage(Events.chat.onChat, msg, {}, null)
+				defenceAllianceChannel.pushMessage(Events.chat.onChat, message, {}, null)
 		}
 		return Promise.resolve()
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		self.logService.onRequestError("chat.chatHandler.send", {playerId:session.uid, msg:msg}, e.stack)
+		self.logService.onRequestError("chat.chatHandler.send", {playerId:session.uid, msg:message}, e.stack)
 		next(e, ErrorUtils.getError(e))
 	})
 }
@@ -493,17 +495,20 @@ var PushHelpMessageToPlayer = function(session){
 		commands += value.command + ":" + value.desc + "\n"
 	})
 
-	var msg = {
-		fromId:"system",
-		fromIcon:"playerIcon_default.png",
-		fromName:"系统",
-		fromVip:0,
-		fromChannel:"system",
+	var message = {
+		id:"system",
+		icon:"playerIcon_default.png",
+		name:"System",
+		vip:0,
+		vipActive:false,
+		allianceId:'',
+		allianceTag:'',
+		channel:'global',
 		text:commands,
 		time:Date.now()
 	}
 
-	PushToPlayer.call(this, Events.chat.onChat, session, msg)
+	PushToPlayer.call(this, Events.chat.onChat, session, message)
 }
 
 var GetPlayerCommand = function(text){
