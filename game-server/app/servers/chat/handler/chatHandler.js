@@ -361,8 +361,8 @@ pro.send = function(msg, session, next){
 				text:data,
 				time:Date.now()
 			}
-			self.chatChannel.pushMessage(Events.chat.onChat, msg, {}, null)
-			//PushToPlayer.call(self, Events.chat.onChat, session, msg)
+			//self.chatChannel.pushMessage(Events.chat.onChat, msg, {}, null)
+			PushToPlayer.call(self, Events.chat.onChat, session, msg)
 			return
 		}
 		msg = {
