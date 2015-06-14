@@ -455,7 +455,7 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 		}
 	})
 	var productionTechEvents = [].concat(playerDoc.productionTechEvents)
-	_.each(playerDoc.productionTechEvents, function(event){
+	_.each(productionTechEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "productionTechEvents", event.id)
 		}else{
@@ -463,7 +463,7 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 		}
 	})
 	var militaryTechEvents = [].concat(playerDoc.militaryTechEvents)
-	_.each(playerDoc.militaryTechEvents, function(event){
+	_.each(militaryTechEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "militaryTechEvents", event.id)
 		}else{
