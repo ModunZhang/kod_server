@@ -28,8 +28,8 @@ var DataService = function(app){
 	this.maxAllianceQueue = 1
 	this.flushOps = 10
 	this.timeoutInterval = 10 * 60 * 1000
-	this.lockCheckInterval = 8 * 1000
-	this.lockInterval = 4 * 1000
+	this.lockCheckInterval = 4 * 1000
+	this.lockInterval = 8 * 1000
 	setInterval(OnLockCheckInterval.bind(this), this.lockCheckInterval)
 	this.toobusyMaxLag = 140
 	this.toobusyInterval = 250
