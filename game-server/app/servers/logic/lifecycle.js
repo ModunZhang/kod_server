@@ -55,14 +55,14 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 	var sessionService = app.get("sessionService")
 	var kickAsync = Promise.promisify(sessionService.kick, sessionService)
 	var uids = _.keys(sessionService.service.uidMap)
-	app.set("membersCount", uids.length)
+	app.set("loginedCount", uids.length)
 	var funcs = []
 	_.each(uids, function(uid){
 		funcs.push(kickAsync(uid, "服务器关闭"))
 	})
 	Promise.all(funcs).then(function(){
 		var interval = setInterval(function(){
-			if(app.get("membersCount") == 0){
+			if(app.get("loginedCount") == 0){
 				clearInterval(interval)
 				app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
 				setTimeout(callback, 1000)

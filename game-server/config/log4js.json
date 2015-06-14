@@ -136,6 +136,16 @@
     },
     {
       "type": "file",
+      "filename": "${opts:base}/logs/kod-find.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-find"
+    },
+    {
+      "type": "file",
       "filename": "${opts:base}/logs/kod-error.log",
       "maxLogSize": 10485760,
       "layout": {
@@ -177,6 +187,7 @@
     "kod-request-error": "DEBUG",
     "kod-event": "DEBUG",
     "kod-event-error": "DEBUG",
+    "kod-find": "DEBUG",
     "kod-error": "DEBUG",
     "kod-mail": "DEBUG"
   },

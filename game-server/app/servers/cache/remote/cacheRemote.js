@@ -86,6 +86,14 @@ pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callbac
 }
 
 /**
+ * 获取在线玩家数量
+ * @param callback
+ */
+pro.getLoginedCount = function(callback){
+	callback(null, this.app.get('loginedCount'))
+}
+
+/**
  * 处理前端服务器发来的请求
  * @param api
  * @param params

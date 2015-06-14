@@ -291,6 +291,16 @@ var ChatHandler = function(app){
 					callback(e)
 				})
 			}
+		},
+		{
+			command:"online",
+			desc:"显示在线玩家数量",
+			func:function(session, uid, text, callback){
+				var self = this
+				self.app.rpc.cache.commandRemote.online(session, uid, function(e, loginedCount){
+					callback(e, loginedCount)
+				})
+			}
 		}
 	]
 }
@@ -339,7 +349,20 @@ pro.send = function(msg, session, next){
 	}
 
 	var filterCommand = Promise.promisify(FilterCommand, this)
-	filterCommand(text, session).then(function(){
+	filterCommand(text, session).then(function(data){
+		if(!_.isUndefined(data)){
+			var msg = {
+				fromId:"system",
+				fromIcon:"playerIcon_default.png",
+				fromName:"系统",
+				fromVip:0,
+				fromChannel:"system",
+				text:data,
+				time:Date.now()
+			}
+			PushToPlayer.call(self, Events.chat.onChat, session, msg)
+			return
+		}
 		var response = {
 			id:session.uid,
 			icon:session.get("icon"),
@@ -453,8 +476,8 @@ var FilterCommand = function(chatText, session, callback){
 	}else{
 		var func = GetPlayerCommand.call(this, chatText)
 		if(_.isFunction(func)){
-			func.call(this, session, session.uid, chatText, function(e){
-				callback(e)
+			func.call(this, session, session.uid, chatText, function(e, data){
+				callback(e, data)
 			})
 		}else{
 			callback()

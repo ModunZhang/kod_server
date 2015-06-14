@@ -49,14 +49,14 @@ var OnLockCheckInterval = function(){
 	_.each(this.playersQueue, function(queue, id){
 		if(queue.length > 0 && queue[0].time + self.lockInterval < Date.now()){
 			var e = new Error("玩家数据锁超时")
-			self.logService.onEventError("cache.cacheService.OnLockCheckInterval", {id:id}, e.stack)
+			self.logService.onEventError("cache.cacheService.OnLockCheckInterval", {id:id, timeLocked:Date.now() - queue[0].time}, e.stack)
 			UnlockPlayer.call(self, id)
 		}
 	})
 	_.each(this.alliancesQueue, function(queue, id){
 		if(queue.length > 0 && queue[0].time + self.lockInterval < Date.now()){
 			var e = new Error("联盟数据锁超时")
-			self.logService.onEventError("cache.cacheService.OnLockCheckInterval", {id:id}, e.stack)
+			self.logService.onEventError("cache.cacheService.OnLockCheckInterval", {id:id, timeLocked:Date.now() - queue[0].time}, e.stack)
 			UnlockAlliance.call(self, id)
 		}
 	})
@@ -228,6 +228,7 @@ pro.getAllianceModel = function(){
  * @param callback
  */
 pro.createAlliance = function(allianceData, callback){
+	this.logService.onFind('cache.cacheService.createAlliance', {id:allianceData._id})
 	var self = this
 	LockAlliance.call(this, allianceData._id, function(){
 		if(self.allianceNameMap[allianceData.basicInfo.name]){
@@ -290,6 +291,7 @@ pro.createAlliance = function(allianceData, callback){
  * @param callback
  */
 pro.directFindPlayer = function(id, keys, force, callback){
+	this.logService.onFind('cache.cacheService.directFindPlayer', {id:id, keys:keys, force:force})
 	var self = this
 	if(!force){
 		if(toobusy()){
@@ -339,6 +341,7 @@ pro.directFindPlayer = function(id, keys, force, callback){
  * @param callback
  */
 pro.directFindAlliance = function(id, keys, force, callback){
+	this.logService.onFind('cache.cacheService.directFindAlliance', {id:id, keys:keys, force:force})
 	var self = this
 	if(!force){
 		if(toobusy()){
@@ -388,6 +391,7 @@ pro.directFindAlliance = function(id, keys, force, callback){
  * @param callback
  */
 pro.findPlayer = function(id, keys, force, callback){
+	this.logService.onFind('cache.cacheService.findPlayer', {id:id, keys:keys, force:force})
 	var self = this
 	if(!force){
 		if(toobusy()){
@@ -438,6 +442,7 @@ pro.findPlayer = function(id, keys, force, callback){
  * @param callback
  */
 pro.findAlliance = function(id, keys, force, callback){
+	this.logService.onFind('cache.cacheService.findAlliance', {id:id, keys:keys, force:force})
 	var self = this
 	if(!force){
 		if(toobusy()){
@@ -487,6 +492,7 @@ pro.findAlliance = function(id, keys, force, callback){
  * @param callback
  */
 pro.updatePlayer = function(id, doc, callback){
+	this.logService.onFind('cache.cacheService.updatePlayer', {id:id})
 	var self = this
 	if(_.isObject(doc)){
 		var player = this.players[id]
@@ -522,6 +528,7 @@ pro.updatePlayer = function(id, doc, callback){
  * @param callback
  */
 pro.updateAlliance = function(id, doc, callback){
+	this.logService.onFind('cache.cacheService.updateAlliance', {id:id})
 	var self = this
 	if(_.isObject(doc)){
 		var alliance = this.alliances[id]
@@ -557,6 +564,7 @@ pro.updateAlliance = function(id, doc, callback){
  * @param callback
  */
 pro.flushPlayer = function(id, doc, callback){
+	this.logService.onFind('cache.cacheService.flushPlayer', {id:id})
 	var self = this
 	var player = this.players[id]
 	if(_.isObject(doc)){
@@ -590,6 +598,7 @@ pro.flushPlayer = function(id, doc, callback){
  * @param callback
  */
 pro.flushAlliance = function(id, doc, callback){
+	this.logService.onFind('cache.cacheService.flushAlliance', {id:id})
 	var self = this
 	var alliance = this.alliances[id]
 	if(_.isObject(doc)){
@@ -623,6 +632,7 @@ pro.flushAlliance = function(id, doc, callback){
  * @param callback
  */
 pro.timeoutPlayer = function(id, doc, callback){
+	this.logService.onFind('cache.cacheService.timeoutPlayer', {id:id})
 	var self = this
 	var player = this.players[id]
 	clearTimeout(player.timeout)
@@ -660,6 +670,7 @@ pro.timeoutPlayer = function(id, doc, callback){
  * @param callback
  */
 pro.removePlayer = function(id, callback){
+	this.logService.onFind('cache.cacheService.removePlayer', {id:id})
 	var player = this.players[id]
 	clearTimeout(player.timeout)
 	delete this.players[id]
@@ -674,6 +685,7 @@ pro.removePlayer = function(id, callback){
  * @param callback
  */
 pro.timeoutAlliance = function(id, doc, callback){
+	this.logService.onFind('cache.cacheService.timeoutAlliance', {id:id})
 	var self = this
 	var alliance = this.alliances[id]
 	clearTimeout(alliance.timeout)
@@ -706,6 +718,7 @@ pro.timeoutAlliance = function(id, doc, callback){
  * @param callback
  */
 pro.deleteAlliance = function(id, callback){
+	this.logService.onFind('cache.cacheService.deleteAlliance', {id:id})
 	var self = this
 	var alliance = this.alliances[id]
 	clearTimeout(alliance.timeout)

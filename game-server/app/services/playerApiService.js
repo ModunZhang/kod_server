@@ -191,6 +191,7 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 			deviceId:deviceId,
 			logicServerId:logicServerId
 		})
+		self.app.set('loginedCount', self.app.get('loginedCount') + 1)
 		callback(null, [playerDoc, allianceDoc, enemyAllianceDoc])
 	}).catch(function(e){
 		self.logService.onEventError("logic.playerApiService.login", {
@@ -258,6 +259,7 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 			logicServerId:logicServerId,
 			reason:reason
 		})
+		self.app.set('loginedCount', self.app.get('loginedCount') - 1)
 		callback()
 	}).catch(function(e){
 		self.logService.onEventError("logic.playerApiService.logout", {

@@ -111,14 +111,14 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 				logicServerId:self.logicServerId,
 				reason:reason
 			})
-			self.app.set("membersCount", self.app.get("membersCount") - 1)
+			self.app.set("loginedCount", self.app.get("loginedCount") - 1)
 		}).catch(function(e){
 			self.logService.onRequestError("logic.entryHandler.logout failed", {
 				playerId:session.uid,
 				logicServerId:self.logicServerId,
 				reason:reason
 			}, e.stack)
-			self.app.set("membersCount", self.app.get("membersCount") - 1)
+			self.app.set("loginedCount", self.app.get("loginedCount") - 1)
 		})
 	})
 	session.pushAll(function(err){

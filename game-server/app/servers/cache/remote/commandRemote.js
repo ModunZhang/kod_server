@@ -816,3 +816,12 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 		})
 	})
 }
+
+/**
+ * 显示在线玩家数量
+ * @param playerId
+ * @param callback
+ */
+pro.online = function(playerId, callback){
+	callback(null, '当前在线:' + this.app.get('loginedCount'))
+}

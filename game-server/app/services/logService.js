@@ -9,6 +9,7 @@ var requestLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-
 var requestErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-request-error")
 var eventLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-event")
 var eventErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-event-error")
+var findLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-find")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var mailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail")
 
@@ -52,6 +53,15 @@ pro.onRequestError = function(api, object, stack){
  */
 pro.onEvent = function(api, object){
 	eventLogger.info(api + ":" + " %j", _.isObject(object) ? object : {})
+}
+
+/**
+ * 缓存查询触发日志
+ * @param api
+ * @param object
+ */
+pro.onFind = function(api, object){
+	findLogger.info(api + ":" + " %j", _.isObject(object) ? object : {})
 }
 
 /**

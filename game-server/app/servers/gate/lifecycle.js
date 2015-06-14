@@ -19,7 +19,7 @@ life.beforeStartup = function(app, callback){
 	app.set("Device", Promise.promisifyAll(Device))
 	app.set("Lock", Promise.promisifyAll(Lock))
 	app.set("logService", new LogService(app))
-	app.set("gateService", new GateService(app))
+	app.set("gateService", Promise.promisifyAll(new GateService(app)))
 
 	callback()
 }
@@ -35,5 +35,4 @@ life.beforeShutdown = function(app, callback){
 
 life.afterStartAll = function(app){
 	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
-	app.get("gateService").init()
 }

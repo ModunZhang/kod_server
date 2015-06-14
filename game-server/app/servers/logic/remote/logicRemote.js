@@ -72,16 +72,6 @@ pro.setServerStatus = function(status, callback){
 }
 
 /**
- * 获取在线玩家数量
- * @param callback
- */
-pro.getOnlineUser = function(callback){
-	var connectionService = this.app.components.__connection__
-	var statisticsInfo = connectionService.getStatisticsInfo()
-	callback(null, statisticsInfo.loginedCount)
-}
-
-/**
  * 更新玩家session信息
  * @param playerId
  * @param params

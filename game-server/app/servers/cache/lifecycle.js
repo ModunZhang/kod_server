@@ -40,6 +40,7 @@ var life = module.exports
 
 life.beforeStartup = function(app, callback){
 	var currentServer = app.getServerFromConfig(app.getServerId())
+	app.set('loginedCount', 0)
 	app.set("cacheServerId", currentServer.id)
 	var servers = app.getServersFromConfig()
 	_.each(servers, function(server, id){
@@ -88,17 +89,11 @@ life.afterStartup = function(app, callback){
 
 life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 	cancelShutDownTimer()
-	var maxInterval = 30
+	var maxInterval = 60
 	var currentInterval = 0
 	var interval = setInterval(function(){
 		currentInterval++
-		var logicServers = _.filter(app.getServersByType("logic"), function(server){
-			return _.isEqual(server.usedFor, app.getServerId())
-		})
-		var eventServer = _.find(app.getServersByType("event"), function(server){
-			return _.isEqual(server.usedFor, app.getServerId())
-		})
-		if(currentInterval >= maxInterval || (logicServers.length == 0 && !_.isObject(eventServer))){
+		if(currentInterval >= maxInterval || app.get('loginedCount') <= 0){
 			clearInterval(interval)
 			var cacheService = app.get("cacheService")
 			app.get("timeEventService").clearAllTimeEventsAsync().then(function(){

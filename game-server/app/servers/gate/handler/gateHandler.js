@@ -112,7 +112,7 @@ pro.queryEntry = function(msg, session, next){
 			})
 		}
 	}).then(function(serverId){
-		var logicServer = self.gateService.getPromotedLogicServer(serverId)
+		var logicServer = self.gateService.getLogicServer(serverId)
 		if(!_.isObject(logicServer)){
 			var e = ErrorUtils.serverUnderMaintain()
 			next(e, ErrorUtils.getError(e))
