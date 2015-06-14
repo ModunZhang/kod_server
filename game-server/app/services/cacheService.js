@@ -4,6 +4,7 @@
  * Created by modun on 15/3/6.
  */
 
+var toobusy = require("toobusy-js")
 var Promise = require("bluebird")
 var _ = require("underscore")
 
