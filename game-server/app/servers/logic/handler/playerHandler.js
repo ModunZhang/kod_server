@@ -907,6 +907,36 @@ pro.deleteMails = function(msg, session, next){
 }
 
 /**
+ * 删除已发邮件
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.deleteSendMails = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.deleteSendMails", {playerId:session.uid, msg:msg})
+	var mailIds = msg.mailIds
+	var e = null
+	if(!_.isArray(mailIds) || mailIds.length == 0){
+		e = new Error("mailIds 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	for(var i = 0; i < mailIds.length; i ++){
+		if(!ShortId.isValid(mailIds[i])){
+			e = new Error("mailIds 不合法")
+			next(e, ErrorUtils.getError(e))
+			return
+		}
+	}
+
+	this.request('deleteSendMails', [session.uid, mailIds]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
  * 阅读战报
  * @param msg
  * @param session

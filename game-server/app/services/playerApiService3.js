@@ -145,14 +145,53 @@ pro.deleteMails = function(playerId, mailIds, callback){
 	var playerDoc = null
 	var playerData = []
 	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
-		playerDoc = doc
+		playerDoc = doc;
 		for(var i = 0; i < mailIds.length; i++){
-			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailIds[i]))
-			playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
-			LogicUtils.removeItemInArray(playerDoc.mails, mail)
+			(function(){
+				var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
+				if(!_.isObject(mail)) throw ErrorUtils.mailNotExist(playerId, mailIds[i])
+				playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
+				LogicUtils.removeItemInArray(playerDoc.mails, mail)
+			})()
 		}
 		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
+ * 删除邮件
+ * @param playerId
+ * @param mailIds
+ * @param callback
+ */
+pro.deleteSendMails = function(playerId, mailIds, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+		playerDoc = doc;
+		for(var i = 0; i < mailIds.length; i++){
+			(function(){
+				var mailId = mailIds[i]
+				var mail = _.find(playerDoc.sendMails, function(mail){
+					return _.isEqual(mail.id, mailId)
+				})
+				if(!_.isObject(mail)) throw ErrorUtils.mailNotExist(playerId, mailId)
+				playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mail), null])
+				LogicUtils.removeItemInArray(playerDoc.sendMails, mail)
+			})()
+		}
+		return self.cacheService.updatePlayerAsync(playerId, playerDoc);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -179,10 +218,12 @@ pro.readReports = function(playerId, reportIds, callback){
 	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		for(var i = 0; i < reportIds.length; i++){
-			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
-			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
-			report.isRead = true
-			playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isRead", true])
+			(function(){
+				var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
+				if(!_.isObject(report)) throw ErrorUtils.reportNotExist(playerId, reportIds[i])
+				report.isRead = true
+				playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isRead", true])
+			})()
 		}
 		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
 	}).then(function(){
@@ -321,10 +362,12 @@ pro.deleteReports = function(playerId, reportIds, callback){
 	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
 		playerDoc = doc
 		for(var i = 0; i < reportIds.length; i++){
-			var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
-			if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportIds[i]))
-			playerData.push(["reports." + playerDoc.reports.indexOf(report), null])
-			LogicUtils.removeItemInArray(playerDoc.reports, report)
+			(function(){
+				var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
+				if(!_.isObject(report)) throw ErrorUtils.reportNotExist(playerId, reportIds[i])
+				playerData.push(["reports." + playerDoc.reports.indexOf(report), null])
+				LogicUtils.removeItemInArray(playerDoc.reports, report)
+			})()
 		}
 		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
 	}).then(function(){

@@ -791,12 +791,14 @@ pro.readMails = function(playerId, mailIds, callback){
 	var playerDoc = null
 	var playerData = []
 	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
-		playerDoc = doc
+		playerDoc = doc;
 		for(var i = 0; i < mailIds.length; i++){
-			var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-			if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailIds[i]))
-			mail.isRead = true
-			playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isRead", true])
+			(function(){
+				var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
+				if(!_.isObject(mail)) throw ErrorUtils.mailNotExist(playerId, mailIds[i])
+				mail.isRead = true
+				playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isRead", true])
+			})()
 		}
 		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
 	}).then(function(){

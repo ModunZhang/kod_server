@@ -711,7 +711,6 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		playerData.push(["requestToAllianceEvents", playerDoc.requestToAllianceEvents])
 		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
 		playerData.push(["inviteToAllianceEvents", playerDoc.inviteToAllianceEvents])
-
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

@@ -287,6 +287,14 @@ Api.deleteMails = function(mailIds, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.deleteSendMails = function(mailIds, callback){
+	var info = {
+		mailIds:mailIds
+	}
+	var route = "logic.playerHandler.deleteSendMails"
+	pomelo.request(route, info, callback)
+}
+
 Api.getMails = function(fromIndex, callback){
 	var info = {
 		fromIndex:fromIndex
