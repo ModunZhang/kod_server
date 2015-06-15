@@ -871,7 +871,7 @@
 //		it("donateToAlliance 正常捐赠3", function(done){
 //			Api.sendChat("donatelevel 1", function(doc){
 //				doc.code.should.equal(200)
-//				Api.donateToAlliance("stone", function(doc){
+//				Api.donateToAlliance("gem", function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})
@@ -881,30 +881,17 @@
 //		it("upgradeAllianceBuilding 联盟荣耀值不足", function(done){
 //			Api.sendChat("allianceHonour 10", function(doc){
 //				doc.code.should.equal(200)
-//				Api.sendChat("keep 5", function(doc){
-//					doc.code.should.equal(200)
-//					Api.upgradeAllianceBuilding(Consts.AllianceBuildingNames.Palace, function(doc){
-//						doc.code.should.equal(Errors.allianceHonourNotEnough.code)
-//						done()
-//					})
-//				})
-//			})
-//		})
-//
-//		it("upgradeAllianceBuilding 正常升级1", function(done){
-//			Api.sendChat("allianceHonour 50000", function(doc){
-//				doc.code.should.equal(200)
 //				Api.upgradeAllianceBuilding(Consts.AllianceBuildingNames.Palace, function(doc){
-//					doc.code.should.equal(200)
+//					doc.code.should.equal(Errors.allianceHonourNotEnough.code)
 //					done()
 //				})
 //			})
 //		})
 //
-//		it("upgradeAllianceBuilding 正常升级2", function(done){
-//			Api.sendChat("allianceHonour 50000", function(doc){
+//		it("upgradeAllianceBuilding 正常升级1", function(done){
+//			Api.sendChat("allianceHonour 50000000", function(doc){
 //				doc.code.should.equal(200)
-//				Api.upgradeAllianceBuilding(Consts.AllianceBuildingNames.OrderHall, function(doc){
+//				Api.upgradeAllianceBuilding(Consts.AllianceBuildingNames.Palace, function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})
@@ -2725,7 +2712,7 @@
 //		})
 //
 //		it("buyShopItem 玩家忠诚值不足", function(done){
-//			Api.buyShopItem("woodClass_4", 1, function(doc){
+//			Api.buyShopItem("dragonChest_1", 1, function(doc){
 //				doc.code.should.equal(Errors.playerLoyaltyNotEnough.code)
 //				done()
 //			})
