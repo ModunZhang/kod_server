@@ -354,7 +354,7 @@ pro.send = function(msg, session, next){
 		if(!_.isUndefined(data)){
 			message = {
 				id:"system",
-				icon:"playerIcon_default.png",
+				icon:0,
 				name:"System",
 				vip:0,
 				vipActive:false,
@@ -497,7 +497,7 @@ var PushHelpMessageToPlayer = function(session){
 
 	var message = {
 		id:"system",
-		icon:"playerIcon_default.png",
+		icon:'0',
 		name:"System",
 		vip:0,
 		vipActive:false,
