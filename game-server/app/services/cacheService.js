@@ -232,10 +232,12 @@ pro.createAlliance = function(allianceData, callback){
 	var self = this
 	LockAlliance.call(this, allianceData._id, function(){
 		if(self.allianceNameMap[allianceData.basicInfo.name]){
+			UnlockAlliance.call(self, allianceData._id)
 			callback(ErrorUtils.allianceNameExist(null, allianceData.basicInfo.name))
 			return
 		}
-		if(self.allianceNameMap[allianceData.basicInfo.tag]){
+		if(self.allianceTagMap[allianceData.basicInfo.tag]){
+			UnlockAlliance.call(self, allianceData._id)
 			callback(ErrorUtils.allianceTagExist(null, allianceData.basicInfo.tag))
 			return
 		}
