@@ -968,3 +968,8 @@ errors["versionNotEqual"] = {
 	code:692,
 	message:"版本不匹配"
 }
+errors["theAllianceDoNotNeedRequestToJoin"] = {
+	key:"theAllianceDoNotNeedRequestToJoin",
+	code:693,
+	message:"此联盟不需要申请加入"
+}

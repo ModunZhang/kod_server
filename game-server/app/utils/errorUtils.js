@@ -1992,3 +1992,13 @@ Utils.versionNotEqual = function(tagUpload, tag){
 	var config = Errors.versionNotEqual
 	return CreateError(config, {tagUpload:tagUpload, tag:tag})
 }
+
+/**
+ * 此联盟不需要申请加入
+ * @param playerId
+ * @param allianceId
+ */
+Utils.theAllianceDoNotNeedRequestToJoin = function(playerId, allianceId){
+	var config = Errors.theAllianceDoNotNeedRequestToJoin
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}

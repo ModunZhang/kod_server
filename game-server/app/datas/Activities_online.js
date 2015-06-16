@@ -6,37 +6,37 @@ module.exports = online
 online[1] = {
 	timePoint:1,
 	onLineMinutes:1,
-	rewards:"speedup:speedup_1:3"
+	rewards:"speedup:speedup_1:5"
 }
 online[2] = {
 	timePoint:2,
 	onLineMinutes:5,
-	rewards:"resource:coinClass_1:2"
+	rewards:"resource:coinClass_1:3"
 }
 online[3] = {
 	timePoint:3,
 	onLineMinutes:10,
-	rewards:"resource:woodClass_1:2"
+	rewards:"resource:woodClass_1:3"
 }
 online[4] = {
 	timePoint:4,
 	onLineMinutes:15,
-	rewards:"resource:stoneClass_1:2"
+	rewards:"resource:stoneClass_1:3"
 }
 online[5] = {
 	timePoint:5,
 	onLineMinutes:20,
-	rewards:"resource:ironClass_1:2"
+	rewards:"resource:ironClass_1:3"
 }
 online[6] = {
 	timePoint:6,
 	onLineMinutes:25,
-	rewards:"resource:foodClass_1:2"
+	rewards:"resource:foodClass_1:3"
 }
 online[7] = {
 	timePoint:7,
 	onLineMinutes:30,
-	rewards:"speedup:speedup_2:1"
+	rewards:"speedup:speedup_2:2"
 }
 online[8] = {
 	timePoint:8,
