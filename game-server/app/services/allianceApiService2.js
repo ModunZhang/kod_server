@@ -208,7 +208,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		if(_.isObject(allianceDoc.allianceFight)){
 			var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
 			return self.cacheService.directFindAllianceAsync(enemyAllianceId).then(function(doc){
-				enemyAllianceViewData = _.omit(doc, Consts.AllianceViewDataKeys)
+				enemyAllianceViewData = _.pick(doc, Consts.AllianceViewDataKeys)
 				return Promise.resolve()
 			})
 		}else{
@@ -680,7 +680,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 				if(_.isObject(allianceDoc.allianceFight)){
 					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
 					return self.cacheService.directFindAllianceAsync(enemyAllianceId).then(function(doc){
-						enemyAllianceViewData = _.omit(doc, Consts.AllianceViewDataKeys)
+						enemyAllianceViewData = _.pick(doc, Consts.AllianceViewDataKeys)
 						return Promise.resolve()
 					})
 				}else return Promise.resolve()

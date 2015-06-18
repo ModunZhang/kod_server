@@ -643,7 +643,7 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
 pro.getAllianceViewData = function(playerId, targetAllianceId, callback){
 	this.cacheService.directFindAllianceAsync(targetAllianceId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId))
-		callback(null, _.omit(doc, Consts.AllianceViewDataKeys))
+		callback(null, _.pick(doc, Consts.AllianceViewDataKeys))
 	}).catch(function(e){
 		callback(e)
 	})
