@@ -25,8 +25,8 @@ var DataService = function(app){
 	this.allianceTagMap = {}
 	this.flushOps = 10
 	this.timeoutInterval = 10 * 60 * 1000
-	this.lockCheckInterval = 4 * 1000
-	this.lockInterval = 8 * 1000
+	this.lockCheckInterval = 5 * 1000
+	this.lockInterval = 10 * 1000
 	setInterval(OnLockCheckInterval.bind(this), this.lockCheckInterval)
 }
 module.exports = DataService
