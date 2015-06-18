@@ -39,11 +39,11 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 		var attackDamagedSoldierCount = null
 		var defenceDamagedSoldierCount = null
 		if(attackTotalPower >= defenceTotalPower){
-			attackDamagedSoldierCount = Math.ceil(defenceTotalPower * 0.5 / attackSoldier.hp)
-			defenceDamagedSoldierCount = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.5 / defenceSoldier.hp)
+			attackDamagedSoldierCount = Math.ceil(defenceTotalPower * 0.3 / attackSoldier.hp)
+			defenceDamagedSoldierCount = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.3 / defenceSoldier.hp)
 		}else{
-			attackDamagedSoldierCount = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.5 / attackSoldier.hp)
-			defenceDamagedSoldierCount = Math.ceil(attackTotalPower * 0.5 / defenceSoldier.hp)
+			attackDamagedSoldierCount = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.3 / attackSoldier.hp)
+			defenceDamagedSoldierCount = Math.ceil(attackTotalPower * 0.3 / defenceSoldier.hp)
 		}
 		if(attackDamagedSoldierCount > attackSoldier.currentCount) attackDamagedSoldierCount = attackSoldier.currentCount
 		if(defenceDamagedSoldierCount > defenceSoldier.currentCount) defenceDamagedSoldierCount = defenceSoldier.currentCount
@@ -158,11 +158,11 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
 	var attackDragonHpDecreased = null
 	var defenceDragonHpDecreased = null
 	if(attackDragonStrength >= defenceDragonStrength){
-		attackDragonHpDecreased = Math.ceil(defenceDragonStrengthFixed * 0.5)
-		defenceDragonHpDecreased = Math.ceil(Math.sqrt(attackDragonStrengthFixed * defenceDragonStrengthFixed) * 0.5)
+		attackDragonHpDecreased = Math.ceil(defenceDragonStrengthFixed * 0.3)
+		defenceDragonHpDecreased = Math.ceil(Math.sqrt(attackDragonStrengthFixed * defenceDragonStrengthFixed) * 0.3)
 	}else{
-		attackDragonHpDecreased = Math.ceil(Math.sqrt(attackDragonStrengthFixed * defenceDragonStrengthFixed) * 0.5)
-		defenceDragonHpDecreased = Math.ceil(attackDragonStrengthFixed * 0.5)
+		attackDragonHpDecreased = Math.ceil(Math.sqrt(attackDragonStrengthFixed * defenceDragonStrengthFixed) * 0.3)
+		defenceDragonHpDecreased = Math.ceil(attackDragonStrengthFixed * 0.3)
 	}
 	attackDragon.currentHp = attackDragonHpDecreased > attackDragon.currentHp ? 0 : attackDragon.currentHp - attackDragonHpDecreased
 	defenceDragon.currentHp = defenceDragonHpDecreased > defenceDragon.currentHp ? 0 : defenceDragon.currentHp - defenceDragonHpDecreased
@@ -203,11 +203,11 @@ Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent,
 		var attackDamagedSoldierCount = null
 		var defenceDamagedHp = null
 		if(attackTotalPower >= defenceTotalPower){
-			attackDamagedSoldierCount = Math.ceil(defenceTotalPower * 0.5 / attackSoldier.hp)
-			defenceDamagedHp = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.5 / defenceWall.defencePower * (1 - defenceWallDamageDecreasedPercent))
+			attackDamagedSoldierCount = Math.ceil(defenceTotalPower * 0.3 / attackSoldier.hp)
+			defenceDamagedHp = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.3 / defenceWall.defencePower * (1 - defenceWallDamageDecreasedPercent))
 		}else{
-			attackDamagedSoldierCount = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.5 / attackSoldier.hp)
-			defenceDamagedHp = Math.ceil(attackTotalPower * 0.5 / defenceWall.defencePower * (1 - defenceWallDamageDecreasedPercent))
+			attackDamagedSoldierCount = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.3 / attackSoldier.hp)
+			defenceDamagedHp = Math.ceil(attackTotalPower * 0.3 / defenceWall.defencePower * (1 - defenceWallDamageDecreasedPercent))
 		}
 		if(attackDamagedSoldierCount > attackSoldier.currentCount) attackDamagedSoldierCount = attackSoldier.currentCount
 		//if(attackSoldier.currentCount >= 50 && attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
