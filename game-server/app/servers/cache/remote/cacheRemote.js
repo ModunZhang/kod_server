@@ -108,7 +108,7 @@ pro.request = function(api, params, callback){
 	var self = this
 	var service = this.apiMap[api]
 	var e = null
-	if(toobusy()){
+	if(toobusy() && !_.isEqual(api, 'logout') && !_.isEqual(api, 'addPlayerBillingData')){
 		e = ErrorUtils.serverTooBusy(api, params)
 		self.logService.onRequestError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
 		callback(null, {code:e.code, data:e.message})

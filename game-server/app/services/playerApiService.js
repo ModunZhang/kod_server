@@ -177,19 +177,19 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 		var unreadReports = _.filter(playerDoc.reports, function(report){
 			return !report.isRead
 		}).length
-		var playerData = _.omit(playerDoc, ["__v", "mails", "sendMails", "reports"])
-		playerData.mailStatus = {
+		var filteredPlayerDoc = _.omit(playerDoc, ["__v", "mails", "sendMails", "reports"])
+		filteredPlayerDoc.mailStatus = {
 			unreadMails:unreadMails,
 			unreadReports:unreadReports
 		}
-		playerData.serverLevel = self.app.getCurServer().level
-		playerData.deltaTime = Date.now() - requestTime
-		var allianceData = null
+		filteredPlayerDoc.serverLevel = self.app.getCurServer().level
+		filteredPlayerDoc.deltaTime = Date.now() - requestTime
+		var filteredAllianceDoc = null
 		if(_.isObject(allianceDoc))
-			allianceData = _.omit(allianceDoc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs", "villageCreateEvents"]);
-		var enemyAllianceData = null
+			filteredAllianceDoc = _.omit(allianceDoc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs", "villageCreateEvents"]);
+		var filteredEnemyAllianceDoc = null
 		if(_.isObject(enemyAllianceDoc))
-			enemyAllianceData = _.omit(enemyAllianceDoc, Consts.AllianceViewDataKeys)
+			filteredEnemyAllianceDoc = _.omit(enemyAllianceDoc, Consts.AllianceViewDataKeys)
 
 		self.logService.onEvent("logic.playerApiService.login", {
 			playerId:playerDoc._id,
@@ -197,7 +197,7 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 			logicServerId:logicServerId
 		})
 		self.app.set('loginedCount', self.app.get('loginedCount') + 1)
-		callback(null, [playerData, allianceData, enemyAllianceData])
+		callback(null, [filteredPlayerDoc, filteredAllianceDoc, filteredEnemyAllianceDoc])
 	}).catch(function(e){
 		self.logService.onEventError("logic.playerApiService.login", {
 			deviceId:deviceId,
