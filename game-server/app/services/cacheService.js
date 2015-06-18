@@ -4,7 +4,6 @@
  * Created by modun on 15/3/6.
  */
 
-var toobusy = require("toobusy-js")
 var Promise = require("bluebird")
 var _ = require("underscore")
 
@@ -24,17 +23,11 @@ var DataService = function(app){
 	this.alliancesQueue = {}
 	this.allianceNameMap = {}
 	this.allianceTagMap = {}
-	this.maxPlayerQueue = 1
-	this.maxAllianceQueue = 1
 	this.flushOps = 10
 	this.timeoutInterval = 10 * 60 * 1000
 	this.lockCheckInterval = 4 * 1000
 	this.lockInterval = 8 * 1000
 	setInterval(OnLockCheckInterval.bind(this), this.lockCheckInterval)
-	this.toobusyMaxLag = 140
-	this.toobusyInterval = 250
-	toobusy.maxLag(this.toobusyMaxLag)
-	toobusy.interval(this.toobusyInterval)
 }
 module.exports = DataService
 var pro = DataService.prototype
@@ -49,14 +42,20 @@ var OnLockCheckInterval = function(){
 	_.each(this.playersQueue, function(queue, id){
 		if(queue.length > 0 && queue[0].time + self.lockInterval < Date.now()){
 			var e = new Error("玩家数据锁超时")
-			self.logService.onEventError("cache.cacheService.OnLockCheckInterval", {id:id, timeLocked:Date.now() - queue[0].time}, e.stack)
+			self.logService.onEventError("cache.cacheService.OnLockCheckInterval", {
+				id:id,
+				timeLocked:Date.now() - queue[0].time
+			}, e.stack)
 			UnlockPlayer.call(self, id)
 		}
 	})
 	_.each(this.alliancesQueue, function(queue, id){
 		if(queue.length > 0 && queue[0].time + self.lockInterval < Date.now()){
 			var e = new Error("联盟数据锁超时")
-			self.logService.onEventError("cache.cacheService.OnLockCheckInterval", {id:id, timeLocked:Date.now() - queue[0].time}, e.stack)
+			self.logService.onEventError("cache.cacheService.OnLockCheckInterval", {
+				id:id,
+				timeLocked:Date.now() - queue[0].time
+			}, e.stack)
 			UnlockAlliance.call(self, id)
 		}
 	})
@@ -288,27 +287,16 @@ pro.createAlliance = function(allianceData, callback){
 /**
  * 按Id直接查询玩家,不做请求排序
  * @param id
- * @param keys
- * @param force
  * @param callback
  */
-pro.directFindPlayer = function(id, keys, force, callback){
-	this.logService.onFind('cache.cacheService.directFindPlayer', {id:id, keys:keys, force:force})
+pro.directFindPlayer = function(id, callback){
+	this.logService.onFind('cache.cacheService.directFindPlayer', {id:id})
 	var self = this
-	if(!force){
-		if(toobusy()){
-			callback(ErrorUtils.serverTooBusy("cache.cacheService.directFindPlayer", {id:id}))
-			return
-		}else if(_.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
-			callback(ErrorUtils.serverTooBusy("cache.cacheService.directFindPlayer", {id:id}))
-			return
-		}
-	}
 	LockPlayer.call(this, id, function(){
 		var player = self.players[id]
 		if(_.isObject(player)){
 			UnlockPlayer.call(self, id)
-			callback(null, _.isEmpty(keys) ? player.doc : _.pick(player.doc, keys))
+			callback(null, player.doc)
 		}else{
 			var playerDoc = null
 			self.Player.findByIdAsync(id).then(function(doc){
@@ -325,7 +313,7 @@ pro.directFindPlayer = function(id, keys, force, callback){
 				}
 			}).then(function(){
 				UnlockPlayer.call(self, id)
-				callback(null, _.isNull(playerDoc) ? null : _.isEmpty(keys) ? playerDoc : _.pick(playerDoc, keys))
+				callback(null, _.isNull(playerDoc) ? null : playerDoc)
 			}).catch(function(e){
 				self.logService.onEventError("cache.cacheService.directFindPlayer", {id:id}, e.stack)
 				UnlockPlayer.call(self, id)
@@ -338,27 +326,16 @@ pro.directFindPlayer = function(id, keys, force, callback){
 /**
  * 按Id直接查询联盟,不做请求排序
  * @param id
- * @param keys
- * @param force
  * @param callback
  */
-pro.directFindAlliance = function(id, keys, force, callback){
-	this.logService.onFind('cache.cacheService.directFindAlliance', {id:id, keys:keys, force:force})
+pro.directFindAlliance = function(id, callback){
+	this.logService.onFind('cache.cacheService.directFindAlliance', {id:id})
 	var self = this
-	if(!force){
-		if(toobusy()){
-			callback(ErrorUtils.serverTooBusy("cache.cacheService.directFindAlliance", {id:id}))
-			return
-		}else if(_.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
-			callback(ErrorUtils.serverTooBusy("cache.cacheService.directFindAlliance", {id:id}))
-			return
-		}
-	}
 	LockAlliance.call(this, id, function(){
 		var alliance = self.alliances[id]
 		if(_.isObject(alliance)){
 			UnlockAlliance.call(self, id)
-			callback(null, _.isEmpty(keys) ? alliance.doc : _.pick(alliance.doc, keys))
+			callback(null, alliance.doc)
 		}else{
 			var allianceDoc = null
 			self.Alliance.findByIdAsync(id).then(function(doc){
@@ -375,7 +352,7 @@ pro.directFindAlliance = function(id, keys, force, callback){
 				}
 			}).then(function(){
 				UnlockAlliance.call(self, id)
-				callback(null, _.isNull(allianceDoc) ? null : _.isEmpty(keys) ? allianceDoc : _.pick(allianceDoc, keys))
+				callback(null, _.isNull(allianceDoc) ? null : allianceDoc)
 			}).catch(function(e){
 				self.logService.onEventError("cache.cacheService.directFindAlliance", {id:id}, e.stack)
 				UnlockAlliance.call(self, id)
@@ -388,26 +365,15 @@ pro.directFindAlliance = function(id, keys, force, callback){
 /**
  * 按Id查询玩家
  * @param id
- * @param keys
- * @param force
  * @param callback
  */
-pro.findPlayer = function(id, keys, force, callback){
-	this.logService.onFind('cache.cacheService.findPlayer', {id:id, keys:keys, force:force})
+pro.findPlayer = function(id, callback){
+	this.logService.onFind('cache.cacheService.findPlayer', {id:id})
 	var self = this
-	if(!force){
-		if(toobusy()){
-			callback(ErrorUtils.serverTooBusy("cache.cacheService.findPlayer", {id:id}))
-			return
-		}else if(_.isArray(this.playersQueue[id]) && this.playersQueue[id].length >= this.maxPlayerQueue){
-			callback(ErrorUtils.serverTooBusy("cache.cacheService.findPlayer", {id:id}))
-			return
-		}
-	}
 	LockPlayer.call(this, id, function(){
 		var player = self.players[id]
 		if(_.isObject(player)){
-			callback(null, _.isEmpty(keys) ? player.doc : _.pick(player.doc, keys))
+			callback(null, player.doc)
 		}else{
 			var playerDoc = null
 			self.Player.findByIdAsync(id).then(function(doc){
@@ -426,7 +392,7 @@ pro.findPlayer = function(id, keys, force, callback){
 				if(!_.isObject(playerDoc)){
 					UnlockPlayer.call(self, id)
 				}
-				callback(null, _.isNull(playerDoc) ? null : _.isEmpty(keys) ? playerDoc : _.pick(playerDoc, keys))
+				callback(null, _.isNull(playerDoc) ? null : playerDoc)
 			}).catch(function(e){
 				self.logService.onEventError("cache.cacheService.findPlayer", {id:id}, e.stack)
 				UnlockPlayer.call(self, id)
@@ -439,26 +405,15 @@ pro.findPlayer = function(id, keys, force, callback){
 /**
  * 按Id查询联盟
  * @param id
- * @param keys
- * @param force
  * @param callback
  */
-pro.findAlliance = function(id, keys, force, callback){
-	this.logService.onFind('cache.cacheService.findAlliance', {id:id, keys:keys, force:force})
+pro.findAlliance = function(id, callback){
+	this.logService.onFind('cache.cacheService.findAlliance', {id:id})
 	var self = this
-	if(!force){
-		if(toobusy()){
-			callback(ErrorUtils.serverTooBusy("cache.cacheService.findAlliance", {id:id}))
-			return
-		}else if(_.isArray(this.alliancesQueue[id]) && this.alliancesQueue[id].length >= this.maxAllianceQueue){
-			callback(ErrorUtils.serverTooBusy("cache.cacheService.findAlliance", {id:id}))
-			return
-		}
-	}
 	LockAlliance.call(this, id, function(){
 		var alliance = self.alliances[id]
 		if(_.isObject(alliance)){
-			callback(null, _.isEmpty(keys) ? alliance.doc : _.pick(alliance.doc, keys))
+			callback(null, alliance.doc)
 		}else{
 			var allianceDoc = null
 			self.Alliance.findByIdAsync(id).then(function(doc){
@@ -477,7 +432,7 @@ pro.findAlliance = function(id, keys, force, callback){
 				if(!_.isObject(allianceDoc)){
 					UnlockAlliance.call(self, id)
 				}
-				callback(null, _.isNull(allianceDoc) ? null : _.isEmpty(keys) ? allianceDoc : _.pick(allianceDoc, keys))
+				callback(null, _.isNull(allianceDoc) ? null : allianceDoc)
 			}).catch(function(e){
 				self.logService.onEventError("cache.cacheService.findAlliance", {id:id}, e.stack)
 				UnlockAlliance.call(self, id)
@@ -496,27 +451,24 @@ pro.findAlliance = function(id, keys, force, callback){
 pro.updatePlayer = function(id, doc, callback){
 	this.logService.onFind('cache.cacheService.updatePlayer', {id:id})
 	var self = this
+	var player = this.players[id]
 	if(_.isObject(doc)){
-		var player = this.players[id]
-		_.extend(player.doc, doc)
+		player.doc = doc
 		player.ops += 1
-		if(player.ops >= this.flushOps){
-			clearTimeout(player.timeout)
-			self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(function(){
-				player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
-				UnlockPlayer.call(self, id)
-				callback()
-			}).catch(function(e){
-				self.logService.onEventError("cache.cacheService.updatePlayer", {id:id}, e.stack)
-				player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
-				UnlockPlayer.call(self, id)
-				callback(e)
-			})
-			player.ops = 0
-		}else{
+	}
+	if(player.ops >= this.flushOps){
+		clearTimeout(player.timeout)
+		this.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(function(){
+			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 			UnlockPlayer.call(self, id)
 			callback()
-		}
+		}).catch(function(e){
+			self.logService.onEventError("cache.cacheService.updatePlayer", {id:id}, e.stack)
+			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
+			UnlockPlayer.call(self, id)
+			callback(e)
+		})
+		player.ops = 0
 	}else{
 		UnlockPlayer.call(self, id)
 		callback()
@@ -532,27 +484,24 @@ pro.updatePlayer = function(id, doc, callback){
 pro.updateAlliance = function(id, doc, callback){
 	this.logService.onFind('cache.cacheService.updateAlliance', {id:id})
 	var self = this
+	var alliance = this.alliances[id]
 	if(_.isObject(doc)){
-		var alliance = this.alliances[id]
-		_.extend(alliance.doc, doc)
+		alliance.doc = doc
 		alliance.ops += 1
-		if(alliance.ops >= this.flushOps){
-			clearTimeout(alliance.timeout)
-			self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
-				alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
-				UnlockAlliance.call(self, id)
-				callback()
-			}).catch(function(e){
-				self.logService.onEventError("cache.cacheService.updateAlliance", {id:id}, e.stack)
-				alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
-				UnlockAlliance.call(self, id)
-				callback(e)
-			})
-			alliance.ops = 0
-		}else{
+	}
+	if(alliance.ops >= this.flushOps){
+		clearTimeout(alliance.timeout)
+		this.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
+			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 			UnlockAlliance.call(self, id)
 			callback()
-		}
+		}).catch(function(e){
+			self.logService.onEventError("cache.cacheService.updateAlliance", {id:id}, e.stack)
+			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
+			UnlockAlliance.call(self, id)
+			callback(e)
+		})
+		alliance.ops = 0
 	}else{
 		UnlockAlliance.call(self, id)
 		callback()
@@ -570,7 +519,7 @@ pro.flushPlayer = function(id, doc, callback){
 	var self = this
 	var player = this.players[id]
 	if(_.isObject(doc)){
-		_.extend(player.doc, doc)
+		player.doc = doc
 		player.ops += 1
 	}
 	clearTimeout(player.timeout)
@@ -604,7 +553,7 @@ pro.flushAlliance = function(id, doc, callback){
 	var self = this
 	var alliance = this.alliances[id]
 	if(_.isObject(doc)){
-		_.extend(alliance.doc, doc)
+		alliance.doc = doc
 		alliance.ops += 1
 	}
 	clearTimeout(alliance.timeout)
@@ -637,16 +586,16 @@ pro.timeoutPlayer = function(id, doc, callback){
 	this.logService.onFind('cache.cacheService.timeoutPlayer', {id:id})
 	var self = this
 	var player = this.players[id]
+	if(_.isObject(doc)){
+		player.doc = doc
+		player.ops += 1
+	}
 	clearTimeout(player.timeout)
+	delete self.players[id]
 	this.timeEventService.clearPlayerTimeEventsAsync(player.doc).catch(function(e){
 		self.logService.onEventError("cache.cacheService.timeoutPlayer.clearPlayerTimeEvents", {id:id}, e.stack)
 		return Promise.resolve()
 	}).then(function(){
-		delete self.players[id]
-		if(_.isObject(doc)){
-			_.extend(player.doc, doc)
-			player.ops += 1
-		}
 		if(player.ops > 0){
 			self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(function(){
 				self.logService.onEvent("cache.cacheService.timeoutPlayer", {id:id})
@@ -690,12 +639,12 @@ pro.timeoutAlliance = function(id, doc, callback){
 	this.logService.onFind('cache.cacheService.timeoutAlliance', {id:id})
 	var self = this
 	var alliance = this.alliances[id]
-	clearTimeout(alliance.timeout)
-	delete self.alliances[id]
 	if(_.isObject(doc)){
-		_.extend(alliance.doc, doc)
+		alliance.doc = doc
 		alliance.ops += 1
 	}
+	clearTimeout(alliance.timeout)
+	delete self.alliances[id]
 	if(alliance.ops > 0){
 		self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
 			self.logService.onEvent("cache.cacheService.timeoutAlliance", {id:id})

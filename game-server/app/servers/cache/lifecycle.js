@@ -159,7 +159,7 @@ life.afterStartAll = function(app){
 	}).then(function(docs){
 		var restoreAllianceEventsAsync = function(id){
 			var allianceDoc = null
-			return cacheService.findAllianceAsync(id, [], true).then(function(doc){
+			return cacheService.findAllianceAsync(id).then(function(doc){
 				allianceDoc = doc
 				return timeEventService.restoreAllianceTimeEventsAsync(allianceDoc, serverStopTime)
 			}).then(function(){

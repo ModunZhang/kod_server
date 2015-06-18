@@ -155,7 +155,7 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	var self = this
 	var memberDoc = null
 	var memberData = []
-	this.cacheService.findPlayerAsync(memberId, [], true).then(function(doc){
+	this.cacheService.findPlayerAsync(memberId).then(function(doc){
 		memberDoc = doc
 		var iapGift = {
 			id:ShortId.generate(),
@@ -201,7 +201,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	var playerData = []
 	var updateFuncs = []
 	var rewards = null
-	this.cacheService.findPlayerAsync(playerId, [], true).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){
@@ -243,7 +243,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	}).then(function(){
 		callback(null, [playerData, billing.transactionId])
 		if(_.isObject(rewards.rewardToAllianceMember) && !_.isEmpty(playerDoc.allianceId)){
-			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId, [], true).then(function(doc){
+			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc
 				var funcs = []
 				_.each(allianceDoc.members, function(member){

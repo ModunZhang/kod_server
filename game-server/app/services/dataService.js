@@ -234,7 +234,7 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, cal
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(id, [], true).then(function(doc){
+	this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
 		var language = playerDoc.basicInfo.language
 		var title = titleKey[language]
@@ -298,7 +298,7 @@ pro.sendSysReport = function(id, report, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(id, [], true).then(function(doc){
+	this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.reports.length >= Define.PlayerReportsMaxSize){
 			var willRemovedReport = this.getPlayerFirstUnSavedReport(playerDoc)
@@ -339,14 +339,14 @@ pro.sendPlayerMail = function(id, memberId, title, content, callback){
 	var memberData = []
 	var allianceDoc = null
 	var updateFuncs = []
-	this.cacheService.findPlayerAsync(id, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
-		return self.cacheService.findPlayerAsync(memberId, [], false)
+		return self.cacheService.findPlayerAsync(memberId)
 	}).then(function(doc){
 		if(_.isEmpty(doc)) return Promise.reject(ErrorUtils.playerNotExist(id, memberId))
 		memberDoc = doc
 		if(!_.isEmpty(playerDoc.allianceId)){
-			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
+			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc
 			})
 		}else return Promise.resolve()
@@ -428,9 +428,9 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 	var memberDocs = []
 	var memberDatas = []
 	var updateFuncs = []
-	this.cacheService.findPlayerAsync(id, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
-		return self.cacheService.directFindAllianceAsync(allianceId, [], false)
+		return self.cacheService.directFindAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, id)
@@ -440,7 +440,7 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 		var funcs = []
 		_.each(allianceDoc.members, function(member){
 			if(!_.isEqual(member.id, id))
-				funcs.push(self.cacheService.findPlayerAsync(member.id, [], false))
+				funcs.push(self.cacheService.findPlayerAsync(member.id))
 		})
 		return Promise.all(funcs)
 	}).then(function(docs){

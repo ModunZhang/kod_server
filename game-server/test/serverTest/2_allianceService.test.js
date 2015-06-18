@@ -587,13 +587,19 @@
 //		})
 //
 //		it("requestToJoinAlliance 对此联盟的申请已发出,请耐心等候审核", function(done){
-//			Api.loginPlayer(Config.deviceId5, function(doc){
+//			Api.loginPlayer(Config.deviceId3, function(doc){
 //				doc.code.should.equal(200)
-//				Api.requestToJoinAlliance(m_user.allianceId, function(doc){
+//				Api.editAllianceJoinType("audit", function(doc){
 //					doc.code.should.equal(200)
-//					Api.requestToJoinAlliance(m_user.allianceId, function(doc){
-//						doc.code.should.equal(Errors.joinTheAllianceRequestAlreadySend.code)
-//						done()
+//					Api.loginPlayer(Config.deviceId5, function(doc){
+//						doc.code.should.equal(200)
+//						Api.requestToJoinAlliance(m_user.allianceId, function(doc){
+//							doc.code.should.equal(200)
+//							Api.requestToJoinAlliance(m_user.allianceId, function(doc){
+//								doc.code.should.equal(Errors.joinTheAllianceRequestAlreadySend.code)
+//								done()
+//							})
+//						})
 //					})
 //				})
 //			})

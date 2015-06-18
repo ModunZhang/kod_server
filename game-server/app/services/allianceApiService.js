@@ -47,7 +47,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 	var playerData = []
 	var allianceDoc = null
 	var updateFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(_.isString(playerDoc.allianceId)){
 			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
@@ -144,10 +144,10 @@ pro.getMyAllianceData = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
-	this.cacheService.directFindPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.cacheService.directFindAllianceAsync(playerDoc.allianceId, [], false)
+		return self.cacheService.directFindAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
 		return Promise.resolve()
@@ -278,9 +278,9 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, language, 
 	var allianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		return self.cacheService.findAllianceAsync(allianceId, [], false)
+		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
@@ -392,7 +392,7 @@ pro.editAllianceTerrian = function(playerId, playerName, allianceId, terrain, ca
 	var allianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
-	self.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	self.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceTerrian")){
@@ -440,7 +440,7 @@ pro.editAllianceTitleName = function(playerId, allianceId, title, titleName, cal
 	var allianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
-	this.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceTitleName")){
@@ -481,7 +481,7 @@ pro.editAllianceNotice = function(playerId, playerName, allianceId, notice, call
 	var self = this
 	var allianceDoc = null
 	var allianceData = []
-	this.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceNotice")){
@@ -521,7 +521,7 @@ pro.editAllianceDescription = function(playerId, playerName, allianceId, descrip
 	var self = this
 	var allianceDoc = null
 	var allianceData = []
-	this.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceDescription")){
@@ -560,7 +560,7 @@ pro.editAllianceJoinType = function(playerId, allianceId, joinType, callback){
 	var self = this
 	var allianceDoc = null
 	var allianceData = []
-	this.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceJoinType")){
@@ -603,7 +603,7 @@ pro.editAllianceMemberTitle = function(playerId, allianceId, memberId, title, ca
 	var pushFuncs = []
 	var previousTitleName = null
 	var currentTitleName = null
-	this.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceMemberTitle")){
@@ -668,7 +668,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 	var updateFuncs = []
 	var pushFuncs = []
 	var eventFuncs = []
-	this.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "kickAllianceMemberOff")){
@@ -696,7 +696,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Kick, memberObject.name, [])
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
-		return self.cacheService.findPlayerAsync(memberId, [], false)
+		return self.cacheService.findPlayerAsync(memberId)
 	}).then(function(doc){
 		memberDoc = doc
 		memberDoc.allianceId = null
@@ -711,7 +711,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		var returnHelpedByMarchTroop = function(marchEvent){
 			var doc = null
 			var data = []
-			return self.cacheService.findPlayerAsync(marchEvent.attackPlayerData.id, [], false).then(function(theDoc){
+			return self.cacheService.findPlayerAsync(marchEvent.attackPlayerData.id).then(function(theDoc){
 				doc = theDoc
 				LogicUtils.returnPlayerHelpedByMarchTroop(doc, data, marchEvent, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
@@ -725,7 +725,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		var returnHelpedByTroop = function(helpedByTroop){
 			var doc = null
 			var data = []
-			return self.cacheService.findPlayerAsync(helpedByTroop.id, [], false).then(function(theDoc){
+			return self.cacheService.findPlayerAsync(helpedByTroop.id).then(function(theDoc){
 				doc = theDoc
 				LogicUtils.returnPlayerHelpedByTroop(memberDoc, memberData, helpedByTroop, doc, data)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
@@ -739,7 +739,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		var returnHelpToTroop = function(helpToTroop){
 			var doc = null
 			var data = []
-			return self.cacheService.findPlayerAsync(helpToTroop.beHelpedPlayerData.id, [], false).then(function(theDoc){
+			return self.cacheService.findPlayerAsync(helpToTroop.beHelpedPlayerData.id).then(function(theDoc){
 				doc = theDoc
 				LogicUtils.returnPlayerHelpToTroop(allianceDoc, allianceData, memberDoc, memberData, helpToTroop, doc, data)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
@@ -821,7 +821,7 @@ pro.handOverAllianceArchon = function(playerId, allianceId, memberId, callback){
 	var pushFuncs = []
 	var previousTitleName = null
 	var currentTitleName = null
-	this.cacheService.findAllianceAsync(allianceId, [], false).then(function(doc){
+	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!_.isEqual(playerObject.title, Consts.AllianceTitle.Archon)){

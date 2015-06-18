@@ -44,7 +44,7 @@ pro.resources = function(playerId, name, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(_.isUndefined(playerDoc.resources[name])) return Promise.reject(new Error("资源不存在"))
 		playerDoc.resources[name] = count
@@ -78,7 +78,7 @@ pro.buildinglevel = function(playerId, location, level, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings["location_" + location]
 		if(!_.isObject(building)) return Promise.reject(new Error("建筑不存在"))
@@ -120,7 +120,7 @@ pro.rmevents = function(playerId, eventType, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isArray(playerDoc[eventType])) return Promise.reject(new Error("玩家事件类型不存在"))
 		var funcs = []
@@ -156,7 +156,7 @@ pro.soldiermaterial = function(playerId, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		playerDoc.soldierMaterials.deathHand = count
 		playerDoc.soldierMaterials.heroBones = count
@@ -193,7 +193,7 @@ pro.dragonmaterial = function(playerId, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		_.each(playerDoc.dragonMaterials, function(theCount, key){
 			playerDoc.dragonMaterials[key] = count
@@ -225,7 +225,7 @@ pro.dragonequipment = function(playerId, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		_.each(playerDoc.dragonEquipments, function(theCount, key){
 			playerDoc.dragonEquipments[key] = count
@@ -257,7 +257,7 @@ pro.soldiers = function(playerId, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		_.each(playerDoc.soldiers, function(value, key){
 			playerDoc.soldiers[key] = count
@@ -289,7 +289,7 @@ pro.woundedsoldiers = function(playerId, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		_.each(playerDoc.woundedSoldiers, function(value, key){
 			playerDoc.woundedSoldiers[key] = count
@@ -325,7 +325,7 @@ pro.dragonhp = function(playerId, dragonType, count, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = _.find(playerDoc.dragons, function(dragon){
 			if(_.isEqual(dragon.type, dragonType)) return true
@@ -383,7 +383,7 @@ pro.dragonskill = function(playerId, dragonType, level, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = _.find(playerDoc.dragons, function(dragon){
 			if(_.isEqual(dragon.type, dragonType)) return true
@@ -424,7 +424,7 @@ pro.dragonequipmentstar = function(playerId, dragonType, star, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = _.find(playerDoc.dragons, function(dragon){
 			if(_.isEqual(dragon.type, dragonType)) return true
@@ -465,7 +465,7 @@ pro.dragonstar = function(playerId, dragonType, star, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon && star >= 0 && star <= 5){
@@ -513,7 +513,7 @@ pro.dragonlevel = function(playerId, dragonType, level, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon){
@@ -551,7 +551,7 @@ pro.donatelevel = function(playerId, donatelevel, callback){
 	var updateFuncs = []
 	var pushFuncs = []
 	var playerDoc = null
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		_.each(playerDoc.allianceDonate, function(value, key){
 			playerDoc.allianceDonate[key] = donatelevel
@@ -589,12 +589,12 @@ pro.alliancehonour = function(playerId, honnour, callback){
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		if(!_.isString(doc.allianceId)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
 		playerDoc = doc
-		return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], false)
+		return self.cacheService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
 		allianceDoc.basicInfo.honour = honnour
@@ -637,12 +637,12 @@ pro.allianceperception = function(playerId, perception, callback){
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		if(!_.isString(doc.allianceId)){
 			return Promise.reject(new Error("玩家未加入联盟"))
 		}
 		playerDoc = doc
-		return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], false)
+		return self.cacheService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
 		allianceDoc.basicInfo.perception = perception
@@ -685,7 +685,7 @@ pro.playerlevel = function(playerId, level, callback){
 	var playerData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		playerDoc.basicInfo.levelExp = PlayerInitData.playerLevel[level].expFrom
 		playerData.push(["basicInfo", playerDoc.basicInfo])
@@ -718,7 +718,7 @@ pro.cleargc = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var kickPlayer = Promise.promisify(this.sessionService.kickByUid, this)
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		playerDoc.gcId = null
 		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
@@ -754,10 +754,10 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
-	this.cacheService.directFindPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], false)
+		return self.cacheService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		attackAllianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, playerId)
@@ -767,7 +767,7 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, attackAllianceDoc._id))
 		}
-		return self.cacheService.findAllianceAsync(defenceAllianceId, [], false)
+		return self.cacheService.findAllianceAsync(defenceAllianceId)
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(defenceAllianceId))
 		defenceAllianceDoc = doc

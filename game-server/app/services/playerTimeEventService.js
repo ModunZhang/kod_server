@@ -40,7 +40,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	var updateFuncs = []
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], true).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId))
 		playerDoc = doc
 		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)

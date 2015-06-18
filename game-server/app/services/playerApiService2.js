@@ -43,7 +43,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_9
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -134,7 +134,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_6
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -229,7 +229,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragons = playerDoc.dragons
 		var dragon = dragons[dragonType]
@@ -272,7 +272,7 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -319,7 +319,7 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		var equipment = dragon.equipments[equipmentCategory]
@@ -364,7 +364,7 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		var equipment = dragon.equipments[equipmentCategory]
@@ -408,7 +408,7 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -455,7 +455,7 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star < 1) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -503,7 +503,7 @@ pro.getDailyQuests = function(playerId, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_15
 		if(building.level <= 0) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -547,7 +547,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var quest = _.find(playerDoc.dailyQuests.quests, function(quest){
 			return _.isEqual(quest.id, questId)
@@ -599,7 +599,7 @@ pro.startDailyQuest = function(playerId, questId, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var quest = _.find(playerDoc.dailyQuests.quests, function(quest){
 			return _.isEqual(quest.id, questId)
@@ -643,7 +643,7 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var questEvent = _.find(playerDoc.dailyQuestEvents, function(event){
 			return _.isEqual(event.id, questEventId)
@@ -694,7 +694,7 @@ pro.setPlayerLanguage = function(playerId, language, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		playerDoc.basicInfo.language = language
 		playerData.push(["basicInfo.language", language])
@@ -727,7 +727,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 	var self = this
 	var playerViewData = null
 	var memberDoc = null
-	this.cacheService.directFindPlayerAsync(memberId, [], false).then(function(doc){
+	this.cacheService.directFindPlayerAsync(memberId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 		memberDoc = doc
 
@@ -744,7 +744,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 		}
 
 		if(_.isString(memberDoc.allianceId)){
-			return self.cacheService.directFindAllianceAsync(memberDoc.allianceId, [], false).then(function(doc){
+			return self.cacheService.directFindAllianceAsync(memberDoc.allianceId).then(function(doc){
 				var memberObject = LogicUtils.getAllianceMemberById(doc, memberId)
 				playerViewData.alliance = {
 					name:doc.basicInfo.name,
@@ -790,7 +790,7 @@ pro.readMails = function(playerId, mailIds, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
 		for(var i = 0; i < mailIds.length; i++){
 			(function(){
@@ -824,7 +824,7 @@ pro.saveMail = function(playerId, mailId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
 		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))

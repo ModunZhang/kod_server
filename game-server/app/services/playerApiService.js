@@ -32,40 +32,27 @@ var PlayerApiService = function(app){
 module.exports = PlayerApiService
 var pro = PlayerApiService.prototype
 
-var LoginPlayer = function(id, requestTime){
+var LoginPlayer = function(id){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
 	var enemyAllianceDoc = null
-	return this.cacheService.findPlayerAsync(id, [], false).then(function(doc){
-		if(_.isEmpty(doc)) return Promise.reject(ErrorUtils.playerNotExist(id, id))
-		if(!_.isEqual(doc.serverId, self.app.get("cacheServerId"))){
+	return this.cacheService.findPlayerAsync(id).then(function(doc){
+		playerDoc = doc
+		if(_.isEmpty(playerDoc)) return Promise.reject(ErrorUtils.playerNotExist(id, id))
+		if(!_.isEqual(playerDoc.serverId, self.app.get("cacheServerId"))){
 			return new Promise(function(resolve, reject){
 				self.cacheService.removePlayerAsync(id).then(function(){
-					reject(ErrorUtils.playerNotInCurrentServer(doc._id, self.app.get("cacheServerId"), doc.serverId))
+					reject(ErrorUtils.playerNotInCurrentServer(playerDoc._id, self.app.get("cacheServerId"), playerDoc.serverId))
 				})
 			})
 		}
-
-		var unreadMails = _.filter(doc.mails, function(mail){
-			return !mail.isRead
-		}).length
-		var unreadReports = _.filter(doc.reports, function(report){
-			return !report.isRead
-		}).length
-		playerDoc = _.omit(doc, ["__v", "mails", "sendMails", "reports"])
-		playerDoc.mailStatus = {
-			unreadMails:unreadMails,
-			unreadReports:unreadReports
-		}
-		playerDoc.serverLevel = self.app.getCurServer().level
-		playerDoc.deltaTime = Date.now() - requestTime
 		if(!_.isEmpty(playerDoc.allianceId)){
-			return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
-				allianceDoc = _.omit(doc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs", "villageCreateEvents"])
+			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc
 				if(_.isObject(allianceDoc.allianceFight)){
 					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
-					return self.cacheService.directFindAllianceAsync(enemyAllianceId, Consts.AllianceViewDataKeys, false).then(function(doc){
+					return self.cacheService.directFindAllianceAsync(enemyAllianceId).then(function(doc){
 						enemyAllianceDoc = doc
 						return Promise.resolve()
 					})
@@ -107,7 +94,7 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 	var vipExpAdd = null
 	this.Device.findByIdAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
-			return LoginPlayer.call(self, doc.playerId, requestTime)
+			return LoginPlayer.call(self, doc.playerId)
 		}else{
 			return Promise.reject(ErrorUtils.deviceNotExist(deviceId))
 		}
@@ -119,7 +106,6 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 		else return self.dataService.isPlayerOnlineAsync(playerDoc)
 	}).then(function(online){
 		if(online) return Promise.reject(ErrorUtils.playerAlreadyLogin(playerDoc._id))
-
 		var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
 		var todayDateString = LogicUtils.getTodayDateString()
 		if(!_.isEqual(todayDateString, previousLoginDateString)){
@@ -162,7 +148,6 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 		playerDoc.countInfo.lastLoginTime = Date.now()
 		playerDoc.countInfo.loginCount += 1
 		playerDoc.logicServerId = logicServerId
-
 		return Promise.resolve()
 	}).then(function(){
 		if(_.isObject(allianceDoc)){
@@ -186,13 +171,33 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
+		var unreadMails = _.filter(playerDoc.mails, function(mail){
+			return !mail.isRead
+		}).length
+		var unreadReports = _.filter(playerDoc.reports, function(report){
+			return !report.isRead
+		}).length
+		var playerData = _.omit(playerDoc, ["__v", "mails", "sendMails", "reports"])
+		playerData.mailStatus = {
+			unreadMails:unreadMails,
+			unreadReports:unreadReports
+		}
+		playerData.serverLevel = self.app.getCurServer().level
+		playerData.deltaTime = Date.now() - requestTime
+		var allianceData = null
+		if(_.isObject(allianceDoc))
+			allianceData = _.omit(allianceDoc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs", "villageCreateEvents"]);
+		var enemyAllianceData = null
+		if(_.isObject(enemyAllianceDoc))
+			enemyAllianceData = _.omit(enemyAllianceDoc, Consts.AllianceViewDataKeys)
+
 		self.logService.onEvent("logic.playerApiService.login", {
 			playerId:playerDoc._id,
 			deviceId:deviceId,
 			logicServerId:logicServerId
 		})
 		self.app.set('loginedCount', self.app.get('loginedCount') + 1)
-		callback(null, [playerDoc, allianceDoc, enemyAllianceDoc])
+		callback(null, [playerData, allianceData, enemyAllianceData])
 	}).catch(function(e){
 		self.logService.onEventError("logic.playerApiService.login", {
 			deviceId:deviceId,
@@ -225,14 +230,14 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 	var allianceData = []
 	var updateFuncs = []
 	var pushFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], true).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		return self.dataService.removePlayerFromChannelsAsync(playerDoc)
 	}).then(function(){
 		playerDoc.logicServerId = null
 		playerDoc.countInfo.todayOnLineTime += Date.now() - playerDoc.countInfo.lastLoginTime
 		if(!_.isEmpty(playerDoc.allianceId))
-			return self.cacheService.findAllianceAsync(playerDoc.allianceId, [], true).then(function(doc){
+			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc
 				LogicUtils.updatePlayerPropertyInAlliance(playerDoc, false, allianceDoc, allianceData)
 				DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
@@ -294,7 +299,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 	var eventFuncs = []
 	var updateFuncs = []
 	var building = null
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + location]
 		if(!_.isObject(building))return Promise.reject(ErrorUtils.buildingNotExist(playerId, location))
@@ -398,7 +403,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings["location_" + buildingLocation]
 		if(!_.isObject(building) || building.level < 1) return Promise.reject(ErrorUtils.buildingNotExist(playerId, buildingLocation))
@@ -458,7 +463,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 	var updateFuncs = []
 	var eventFuncs = []
 	var building = null
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + buildingLocation]
 		if(building.level <= 0) return Promise.reject(ErrorUtils.hostBuildingLevelMustBiggerThanOne(playerId, buildingLocation, houseLocation))
@@ -580,7 +585,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 	var eventFuncs = []
 	var building = null
 	var house = null
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		building = playerDoc.buildings["location_" + buildingLocation]
 		if(building.level <= 0) return Promise.reject(ErrorUtils.hostBuildingLevelMustBiggerThanOne(playerId, buildingLocation, houseLocation))
@@ -696,7 +701,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 	var updateFuncs = []
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
 		if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))
@@ -738,7 +743,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_16
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -819,7 +824,7 @@ pro.getMaterials = function(playerId, eventId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var event = _.find(playerDoc.materialEvents, function(event){
 			return _.isEqual(event.id, eventId)
@@ -857,7 +862,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_5
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -948,7 +953,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.cacheService.findPlayerAsync(playerId, [], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_5
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))

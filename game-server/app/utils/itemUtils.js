@@ -148,7 +148,7 @@ var ChangePlayerName = function(playerDoc, playerData, newPlayerName, cacheServi
 var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFuncs, cacheService, eventFuncs, timeEventService, pushFuncs, pushService){
 	if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
 	var allianceDoc = null
-	return cacheService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
+	return cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
 		var enemyAllianceData = []
@@ -201,7 +201,7 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 var MoveTheCity = function(playerDoc, playerData, locationX, locationY, cacheService, updateFuncs, pushFuncs, pushService){
 	if(!_.isString(playerDoc.allianceId)) return Promise.reject(new Error(ErrorUtils.playerNotJoinAlliance(playerDoc._id)))
 	var allianceDoc = null
-	return cacheService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
+	return cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
 		var enemyAllianceData = []
@@ -611,7 +611,7 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
 var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, cacheService, eventFuncs, timeEventService, pushFuncs, pushService){
 	if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
 	var allianceDoc = null
-	return cacheService.findAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
+	return cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
 		var enemyAllianceData = []

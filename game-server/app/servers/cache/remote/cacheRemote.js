@@ -4,6 +4,7 @@
  * Created by modun on 14-7-29.
  */
 
+var toobusy = require("toobusy-js")
 var _ = require("underscore")
 
 var ErrorUtils = require("../../../utils/errorUtils")
@@ -29,6 +30,10 @@ var CacheRemote = function(app){
 	this.allianceApiService3 = app.get("allianceApiService3")
 	this.allianceApiService4 = app.get("allianceApiService4")
 	this.allianceApiService5 = app.get("allianceApiService5")
+	this.toobusyMaxLag = 140
+	this.toobusyInterval = 250
+	toobusy.maxLag(this.toobusyMaxLag)
+	toobusy.interval(this.toobusyInterval)
 	this.apiMap = {}
 	var self = this
 	var services = [this.playerApiService, this.playerApiService2, this.playerApiService3, this.playerApiService4, this.playerApiService5,
@@ -102,8 +107,15 @@ pro.getLoginedCount = function(callback){
 pro.request = function(api, params, callback){
 	var self = this
 	var service = this.apiMap[api]
+	var e = null
+	if(toobusy()){
+		e = ErrorUtils.serverTooBusy(api, params)
+		self.logService.onRequestError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
+		callback(null, {code:e.code, data:e.message})
+		return
+	}
 	if(!_.isObject(service)){
-		var e = new Error('后端Api 不存在')
+		e = new Error('后端Api 不存在')
 		self.logService.onRequestError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
 		callback(null, {code:500, data:e.message})
 		return
