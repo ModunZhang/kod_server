@@ -188,8 +188,12 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 		if(_.isObject(allianceDoc))
 			filteredAllianceDoc = _.omit(allianceDoc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs", "villageCreateEvents"]);
 		var filteredEnemyAllianceDoc = null
-		if(_.isObject(enemyAllianceDoc))
+		if(_.isObject(enemyAllianceDoc)){
+			console.log(enemyAllianceDoc, '111111111111')
 			filteredEnemyAllianceDoc = _.omit(enemyAllianceDoc, Consts.AllianceViewDataKeys);
+			console.log(filteredEnemyAllianceDoc, '22222222222222')
+		}
+
 
 		self.logService.onEvent("logic.playerApiService.login", {
 			playerId:playerDoc._id,
