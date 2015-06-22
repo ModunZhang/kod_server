@@ -87,7 +87,7 @@ var OnPlayerTimeout = function(id){
 							self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id})
 							UnlockPlayer.call(self, id)
 						}).catch(function(e){
-							self.logService.onEventError("cache.cacheService.OnPlayerTimeout", {id:id}, e.stack)
+							self.logService.onEventError("cache.cacheService.OnPlayerTimeout", {id:id, doc:player.doc}, e.stack)
 							UnlockPlayer.call(self, id)
 						})
 						player.ops = 0
@@ -126,7 +126,7 @@ var OnAllianceTimeout = function(id){
 						self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id})
 						UnlockAlliance.call(self, id)
 					}).catch(function(e){
-						self.logService.onEventError("cache.cacheService.OnAllianceTimeout", {id:id}, e.stack)
+						self.logService.onEventError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack)
 						UnlockAlliance.call(self, id)
 					})
 					alliance.ops = 0
@@ -463,7 +463,7 @@ pro.updatePlayer = function(id, doc, callback){
 			UnlockPlayer.call(self, id)
 			callback()
 		}).catch(function(e){
-			self.logService.onEventError("cache.cacheService.updatePlayer", {id:id}, e.stack)
+			self.logService.onEventError("cache.cacheService.updatePlayer", {id:id, doc:player.doc}, e.stack)
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 			UnlockPlayer.call(self, id)
 			callback(e)
@@ -496,7 +496,7 @@ pro.updateAlliance = function(id, doc, callback){
 			UnlockAlliance.call(self, id)
 			callback()
 		}).catch(function(e){
-			self.logService.onEventError("cache.cacheService.updateAlliance", {id:id}, e.stack)
+			self.logService.onEventError("cache.cacheService.updateAlliance", {id:id, doc:alliance.doc}, e.stack)
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 			UnlockAlliance.call(self, id)
 			callback(e)
@@ -529,7 +529,7 @@ pro.flushPlayer = function(id, doc, callback){
 			UnlockPlayer.call(self, id)
 			callback()
 		}).catch(function(e){
-			self.logService.onEventError("cache.cacheService.flushPlayer", {id:id}, e.stack)
+			self.logService.onEventError("cache.cacheService.flushPlayer", {id:id, doc:player.doc}, e.stack)
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 			UnlockPlayer.call(self, id)
 			callback(e)
@@ -563,7 +563,7 @@ pro.flushAlliance = function(id, doc, callback){
 			UnlockAlliance.call(self, id)
 			callback()
 		}).catch(function(e){
-			self.logService.onEventError("cache.cacheService.flushAlliance", {id:id}, e.stack)
+			self.logService.onEventError("cache.cacheService.flushAlliance", {id:id, doc:alliance.doc}, e.stack)
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 			UnlockAlliance.call(self, id)
 			callback(e)
@@ -602,7 +602,7 @@ pro.timeoutPlayer = function(id, doc, callback){
 				UnlockPlayer.call(self, id)
 				callback()
 			}).catch(function(e){
-				self.logService.onEventError("cache.cacheService.timeoutPlayer", {id:id}, e.stack)
+				self.logService.onEventError("cache.cacheService.timeoutPlayer", {id:id, doc:player.doc}, e.stack)
 				UnlockPlayer.call(self, id)
 				callback(e)
 			})
@@ -651,7 +651,7 @@ pro.timeoutAlliance = function(id, doc, callback){
 			UnlockAlliance.call(self, id)
 			callback()
 		}).catch(function(e){
-			self.logService.onEventError("cache.cacheService.timeoutAlliance", {id:id}, e.stack)
+			self.logService.onEventError("cache.cacheService.timeoutAlliance", {id:id, doc:alliance.doc}, e.stack)
 			UnlockAlliance.call(self, id)
 			callback()
 		})
@@ -692,7 +692,7 @@ pro.timeoutAllPlayers = function(callback){
 				self.logService.onEvent("cache.cacheService.timeoutPlayer", {id:player.doc._id})
 				callback()
 			}).catch(function(e){
-				self.logService.onEventError("cache.cacheService.timeoutPlayer", {id:player.doc._id}, e.stack)
+				self.logService.onEventError("cache.cacheService.timeoutPlayer", {id:player.doc._id, doc:player.doc}, e.stack)
 				callback()
 			})
 			player.ops = 0
@@ -730,7 +730,7 @@ pro.timeoutAllAlliances = function(callback){
 				self.logService.onEvent("cache.cacheService.timeoutAlliance", {id:alliance.doc._id})
 				callback()
 			}).catch(function(e){
-				self.logService.onEventError("cache.cacheService.timeoutAlliance", {id:alliance.doc._id}, e.stack)
+				self.logService.onEventError("cache.cacheService.timeoutAlliance", {id:alliance.doc._id, doc:alliance.doc}, e.stack)
 				callback()
 			})
 			alliance.ops = 0
