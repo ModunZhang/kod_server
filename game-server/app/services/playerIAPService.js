@@ -236,7 +236,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 			rewards:rewards
 		}
 		updateFuncs.push([self.GemAdd, self.GemAdd.createAsync, gemAdd])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
