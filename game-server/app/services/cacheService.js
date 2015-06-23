@@ -222,6 +222,24 @@ pro.getAllianceModel = function(){
 }
 
 /**
+ * 玩家数据是否被锁定
+ * @param id
+ * @returns {boolean}
+ */
+pro.isPlayerLocked = function(id){
+	return _.isObject(this.playersQueue[id]) && this.playersQueue[id].length > 0
+}
+
+/**
+ * 联盟数据是否被锁定
+ * @param id
+ * @returns {boolean}
+ */
+pro.isAllianceLocked = function(id){
+	return _.isObject(this.alliancesQueue[id]) && this.alliancesQueue[id].length > 0
+}
+
+/**
  * 创建联盟对象
  * @param allianceData
  * @param callback

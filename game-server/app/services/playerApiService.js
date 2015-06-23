@@ -37,6 +37,8 @@ var LoginPlayer = function(id){
 	var playerDoc = null
 	var allianceDoc = null
 	var enemyAllianceDoc = null
+	if(this.cacheService.isPlayerLocked(id))
+		return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {playerId:id}));
 	return this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
 		if(_.isEmpty(playerDoc)) return Promise.reject(ErrorUtils.playerNotExist(id, id))
@@ -48,10 +50,14 @@ var LoginPlayer = function(id){
 			})
 		}
 		if(!_.isEmpty(playerDoc.allianceId)){
+			if(self.cacheService.isAllianceLocked(playerDoc.allianceId))
+				return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {allianceId:playerDoc.allianceId}));
 			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc
 				if(_.isObject(allianceDoc.allianceFight)){
 					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
+					if(self.cacheService.isAllianceLocked(enemyAllianceId))
+						return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {allianceId:enemyAllianceId}));
 					return self.cacheService.directFindAllianceAsync(enemyAllianceId).then(function(doc){
 						enemyAllianceDoc = doc
 						return Promise.resolve()
