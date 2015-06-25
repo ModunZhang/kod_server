@@ -42,7 +42,7 @@ app.configure("local|develop|awschina", "gate", function(){
 	app.before(filterService.toobusyFilter())
 
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, { server: { socketOptions: { keepAlive: 1 } } })
 	app.set("mongoose", mongooseClient)
 })
 
@@ -72,13 +72,13 @@ app.configure("local|develop|awschina", "chat", function(){
 
 app.configure("local|develop|awschina", "cache", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, { server: { socketOptions: { keepAlive: 1 } } })
 	app.set("mongoose", mongooseClient)
 })
 
 app.configure("local|develop|awschina", "rank", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, { server: { socketOptions: { keepAlive: 1 } } })
 	app.set("mongoose", mongooseClient)
 
 	var filterService = new FilterService(app)
