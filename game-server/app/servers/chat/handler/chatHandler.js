@@ -27,6 +27,7 @@ var ChatHandler = function(app){
 	this.maxChatCount = 50
 	this.maxAllianceChatCount = 50
 	this.maxAllianceFightChatCount = 50
+	this.serverConfig = app.get('serverConfig')
 	this.commands = [
 		{
 			command:"resources",
@@ -37,7 +38,7 @@ var ChatHandler = function(app){
 				var name = params[1]
 				var count = parseInt(params[2])
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.resources(session, uid, name, count, function(e){
+					self.app.rpc.cache.commandRemote.resources(session, uid, name, count, function(e){
 						callback(e)
 					})
 				}
@@ -52,7 +53,7 @@ var ChatHandler = function(app){
 				var location = parseInt(params[1])
 				var level = parseInt(params[2])
 				if(_.isNumber(level)){
-					self.app.rpc.logic.commandRemote.buildinglevel(session, uid, location, level, function(e){
+					self.app.rpc.cache.commandRemote.buildinglevel(session, uid, location, level, function(e){
 						callback(e)
 					})
 				}
@@ -64,7 +65,7 @@ var ChatHandler = function(app){
 			func:function(session, uid, text, callback){
 				var self = this
 				var eventType = text.split(" ")[1]
-				self.app.rpc.logic.commandRemote.rmevents(session, uid, eventType, function(e){
+				self.app.rpc.cache.commandRemote.rmevents(session, uid, eventType, function(e){
 					callback(e)
 				})
 			}
@@ -77,7 +78,7 @@ var ChatHandler = function(app){
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.soldiermaterial(session, uid, count, function(e){
+					self.app.rpc.cache.commandRemote.soldiermaterial(session, uid, count, function(e){
 						callback(e)
 					})
 				}
@@ -91,7 +92,7 @@ var ChatHandler = function(app){
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.dragonmaterial(session, uid, count, function(e){
+					self.app.rpc.cache.commandRemote.dragonmaterial(session, uid, count, function(e){
 						callback(e)
 					})
 				}
@@ -105,7 +106,7 @@ var ChatHandler = function(app){
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.dragonequipment(session, uid, count, function(e){
+					self.app.rpc.cache.commandRemote.dragonequipment(session, uid, count, function(e){
 						callback(e)
 					})
 				}
@@ -119,7 +120,7 @@ var ChatHandler = function(app){
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.soldiers(session, uid, count, function(e){
+					self.app.rpc.cache.commandRemote.soldiers(session, uid, count, function(e){
 						callback(e)
 					})
 				}
@@ -133,7 +134,7 @@ var ChatHandler = function(app){
 				var count = text.split(" ")[1]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.woundedsoldiers(session, uid, count, function(e){
+					self.app.rpc.cache.commandRemote.woundedsoldiers(session, uid, count, function(e){
 						callback(e)
 					})
 				}
@@ -148,7 +149,7 @@ var ChatHandler = function(app){
 				var count = text.split(" ")[2]
 				count = parseInt(count)
 				if(_.isNumber(count)){
-					self.app.rpc.logic.commandRemote.dragonhp(session, uid, dragonType, count, function(e){
+					self.app.rpc.cache.commandRemote.dragonhp(session, uid, dragonType, count, function(e){
 						callback(e)
 					})
 				}
@@ -163,7 +164,7 @@ var ChatHandler = function(app){
 				var level = text.split(" ")[2]
 				level = parseInt(level)
 				if(_.isNumber(level)){
-					self.app.rpc.logic.commandRemote.dragonskill(session, uid, dragonType, level, function(e){
+					self.app.rpc.cache.commandRemote.dragonskill(session, uid, dragonType, level, function(e){
 						callback(e)
 					})
 				}
@@ -178,7 +179,7 @@ var ChatHandler = function(app){
 				var star = text.split(" ")[2]
 				star = parseInt(star)
 				if(_.isNumber(star)){
-					self.app.rpc.logic.commandRemote.dragonequipmentstar(session, uid, dragonType, star, function(e){
+					self.app.rpc.cache.commandRemote.dragonequipmentstar(session, uid, dragonType, star, function(e){
 						callback(e)
 					})
 				}
@@ -193,7 +194,7 @@ var ChatHandler = function(app){
 				var star = text.split(" ")[2]
 				star = parseInt(star)
 				if(_.isNumber(star)){
-					self.app.rpc.logic.commandRemote.dragonstar(session, uid, dragonType, star, function(e){
+					self.app.rpc.cache.commandRemote.dragonstar(session, uid, dragonType, star, function(e){
 						callback(e)
 					})
 				}
@@ -208,7 +209,7 @@ var ChatHandler = function(app){
 				var level = text.split(" ")[2]
 				level = parseInt(level)
 				if(_.isNumber(level)){
-					self.app.rpc.logic.commandRemote.dragonlevel(session, uid, dragonType, level, function(e){
+					self.app.rpc.cache.commandRemote.dragonlevel(session, uid, dragonType, level, function(e){
 						callback(e)
 					})
 				}
@@ -222,7 +223,7 @@ var ChatHandler = function(app){
 				var donatelevel = text.split(" ")[1]
 				donatelevel = parseInt(donatelevel)
 				if(_.isNumber(donatelevel) && donatelevel >= 1 && donatelevel <= 6){
-					self.app.rpc.logic.commandRemote.donatelevel(session, uid, donatelevel, function(e){
+					self.app.rpc.cache.commandRemote.donatelevel(session, uid, donatelevel, function(e){
 						callback(e)
 					})
 				}
@@ -236,7 +237,7 @@ var ChatHandler = function(app){
 				var honour = text.split(" ")[1]
 				honour = parseInt(honour)
 				if(_.isNumber(honour)){
-					self.app.rpc.logic.commandRemote.alliancehonour(session, uid, honour, function(e){
+					self.app.rpc.cache.commandRemote.alliancehonour(session, uid, honour, function(e){
 						callback(e)
 					})
 				}
@@ -250,7 +251,7 @@ var ChatHandler = function(app){
 				var perception = text.split(" ")[1]
 				perception = parseInt(perception)
 				if(_.isNumber(perception)){
-					self.app.rpc.logic.commandRemote.allianceperception(session, uid, perception, function(e){
+					self.app.rpc.cache.commandRemote.allianceperception(session, uid, perception, function(e){
 						callback(e)
 					})
 				}
@@ -264,7 +265,7 @@ var ChatHandler = function(app){
 				var level = text.split(" ")[1]
 				level = parseInt(level)
 				if(_.isNumber(level)){
-					self.app.rpc.logic.commandRemote.playerlevel(session, uid, level, function(e){
+					self.app.rpc.cache.commandRemote.playerlevel(session, uid, level, function(e){
 						callback(e)
 					})
 				}
@@ -275,7 +276,7 @@ var ChatHandler = function(app){
 			desc:"清除所有玩家GCId",
 			func:function(session, uid, text, callback){
 				var self = this
-				self.app.rpc.logic.commandRemote.cleargc(session, uid, function(e){
+				self.app.rpc.cache.commandRemote.cleargc(session, uid, function(e){
 					callback(e)
 				})
 			}
@@ -286,8 +287,18 @@ var ChatHandler = function(app){
 			func:function(session, uid, text, callback){
 				var self = this
 				var defenceAllianceId = text.split(" ")[1]
-				self.app.rpc.logic.commandRemote.alliancefight(session, uid, defenceAllianceId, function(e){
+				self.app.rpc.cache.commandRemote.alliancefight(session, uid, defenceAllianceId, function(e){
 					callback(e)
+				})
+			}
+		},
+		{
+			command:"online",
+			desc:"显示在线玩家数量",
+			func:function(session, uid, text, callback){
+				var self = this
+				self.app.rpc.cache.commandRemote.online(session, uid, function(e, loginedCount){
+					callback(e, loginedCount)
 				})
 			}
 		}
@@ -338,8 +349,25 @@ pro.send = function(msg, session, next){
 	}
 
 	var filterCommand = Promise.promisify(FilterCommand, this)
-	filterCommand(text, session).then(function(){
-		var response = {
+	var message = null
+	filterCommand(text, session).then(function(data){
+		if(!_.isUndefined(data)){
+			message = {
+				id:"system",
+				icon:0,
+				name:"System",
+				vip:0,
+				vipActive:false,
+				allianceId:'',
+				allianceTag:'',
+				channel:channel,
+				text:data,
+				time:Date.now()
+			}
+			PushToPlayer.call(self, Events.chat.onChat, session, message)
+			return
+		}
+		message = {
 			id:session.uid,
 			icon:session.get("icon"),
 			name:session.get("name"),
@@ -355,38 +383,39 @@ pro.send = function(msg, session, next){
 			if(self.chats.length > self.maxChatCount){
 				self.chats.shift()
 			}
-			self.chats.push(response)
-			self.chatChannel.pushMessage(Events.chat.onChat, response, {}, null)
+			self.chats.push(message)
+			self.chatChannel.pushMessage(Events.chat.onChat, message, {}, null)
 		}else if(_.isEqual(Consts.ChannelType.Alliance, channel)){
 			if(!_.isArray(self.allianceChats[allianceId])) self.allianceChats[allianceId] = []
 			if(self.allianceChats[allianceId].length > self.maxAllianceChatCount){
 				self.allianceChats[allianceId].shift()
 			}
-			self.allianceChats[allianceId].push(response)
+			self.allianceChats[allianceId].push(message)
 			var allianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 			if(_.isObject(allianceChannel))
-				allianceChannel.pushMessage(Events.chat.onChat, response, {}, null)
+				allianceChannel.pushMessage(Events.chat.onChat, message, {}, null)
 		}else if(_.isEqual(Consts.ChannelType.AllianceFight, channel)){
 			var allianceFightKey = self.allianceFights[allianceId]
 			if(!_.isArray(self.allianceFightChats[allianceFightKey])) self.allianceFightChats[allianceFightKey] = []
 			if(self.allianceFightChats[allianceFightKey].length > self.maxAllianceFightChatCount){
 				self.allianceFightChats[allianceFightKey].shift()
 			}
-			self.allianceFightChats[allianceFightKey].push(response)
+			self.allianceFightChats[allianceFightKey].push(message)
 			var allianceIdKeys = allianceFightKey.split('_')
 			var attackAllianceId = allianceIdKeys[0]
 			var defenceAllianceId = allianceIdKeys[1]
 			var attackAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + attackAllianceId, false)
 			var defenceAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + defenceAllianceId, false)
 			if(_.isObject(attackAllianceChannel))
-				attackAllianceChannel.pushMessage(Events.chat.onChat, response, {}, null)
+				attackAllianceChannel.pushMessage(Events.chat.onChat, message, {}, null)
 			if(_.isObject(defenceAllianceChannel))
-				defenceAllianceChannel.pushMessage(Events.chat.onChat, response, {}, null)
+				defenceAllianceChannel.pushMessage(Events.chat.onChat, message, {}, null)
 		}
 		return Promise.resolve()
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
+		self.logService.onRequestError("chat.chatHandler.send", {playerId:session.uid, msg:message}, e.stack)
 		next(e, ErrorUtils.getError(e))
 	})
 }
@@ -440,7 +469,10 @@ pro.getAll = function(msg, session, next){
  * @param callback
  */
 var FilterCommand = function(chatText, session, callback){
-	//callback()
+	if(!this.serverConfig.cheatEnabled){
+		callback()
+		return
+	}
 
 	if(_.isEqual("help", chatText)){
 		PushHelpMessageToPlayer.call(this, session)
@@ -448,8 +480,8 @@ var FilterCommand = function(chatText, session, callback){
 	}else{
 		var func = GetPlayerCommand.call(this, chatText)
 		if(_.isFunction(func)){
-			func.call(this, session, session.uid, chatText, function(e){
-				callback(e)
+			func.call(this, session, session.uid, chatText, function(e, data){
+				callback(e, data)
 			})
 		}else{
 			callback()
@@ -463,17 +495,20 @@ var PushHelpMessageToPlayer = function(session){
 		commands += value.command + ":" + value.desc + "\n"
 	})
 
-	var msg = {
-		fromId:"system",
-		fromIcon:"playerIcon_default.png",
-		fromName:"系统",
-		fromVip:0,
-		fromChannel:"system",
+	var message = {
+		id:"system",
+		icon:'0',
+		name:"System",
+		vip:0,
+		vipActive:false,
+		allianceId:'',
+		allianceTag:'',
+		channel:'global',
 		text:commands,
 		time:Date.now()
 	}
 
-	PushToPlayer.call(this, Events.chat.onChat, session, msg)
+	PushToPlayer.call(this, Events.chat.onChat, session, message)
 }
 
 var GetPlayerCommand = function(text){

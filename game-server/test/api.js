@@ -17,7 +17,7 @@ Api.loginPlayer = function(deviceId, callback){
 		host:Config.gateHost, port:Config.gatePort, log:true
 	}, function(){
 		var route = "gate.gateHandler.queryEntry"
-		pomelo.request(route, {deviceId:deviceId}, function(doc){
+		pomelo.request(route, {deviceId:deviceId, tag:0}, function(doc){
 			pomelo.disconnect()
 			pomelo.init({
 				host:doc.data.host, port:doc.data.port, log:true
@@ -284,6 +284,14 @@ Api.deleteMails = function(mailIds, callback){
 		mailIds:mailIds
 	}
 	var route = "logic.playerHandler.deleteMails"
+	pomelo.request(route, info, callback)
+}
+
+Api.deleteSendMails = function(mailIds, callback){
+	var info = {
+		mailIds:mailIds
+	}
+	var route = "logic.playerHandler.deleteSendMails"
 	pomelo.request(route, info, callback)
 }
 
@@ -1085,21 +1093,21 @@ Api.getHelpDefenceTroopDetail = function(playerId, helpedByPlayerId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.addAllianceItem = function(itemName, count, callback){
+Api.addShopItem = function(itemName, count, callback){
 	var info = {
 		itemName:itemName,
 		count:count
 	}
-	var route = "logic.allianceHandler.addItem"
+	var route = "logic.allianceHandler.addShopItem"
 	pomelo.request(route, info, callback)
 }
 
-Api.buyAllianceItem = function(itemName, count, callback){
+Api.buyShopItem = function(itemName, count, callback){
 	var info = {
 		itemName:itemName,
 		count:count
 	}
-	var route = "logic.allianceHandler.buyItem"
+	var route = "logic.allianceHandler.buyShopItem"
 	pomelo.request(route, info, callback)
 }
 

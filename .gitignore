@@ -4,7 +4,6 @@
 */node-log.log
 !.gitignore
 */node_modules/*
-.project
 .settings/
 .idea
 *.svn

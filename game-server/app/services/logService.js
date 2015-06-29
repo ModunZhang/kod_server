@@ -9,6 +9,7 @@ var requestLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-
 var requestErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-request-error")
 var eventLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-event")
 var eventErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-event-error")
+var findLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-find")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var mailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail")
 
@@ -35,16 +36,14 @@ pro.onRequest = function(api, object){
  * @param stack
  */
 pro.onRequestError = function(api, object, stack){
-	errorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-	errorLogger.error(_.isString(stack) ? stack : '')
-	requestLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-	requestLogger.error(_.isString(stack) ? stack : '')
+	if(!_.isEqual(this.evn, "local")){
+		errorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+		errorLogger.error(_.isString(stack) ? stack : '')
+		requestLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+		requestLogger.error(_.isString(stack) ? stack : '')
+	}
 	requestErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 	requestErrorLogger.error(_.isString(stack) ? stack : '')
-	if(!_.isEqual(this.evn, "local")){
-		mailLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-		mailLogger.error(_.isString(stack) ? stack : '')
-	}
 }
 
 /**
@@ -57,16 +56,27 @@ pro.onEvent = function(api, object){
 }
 
 /**
+ * 缓存查询触发日志
+ * @param api
+ * @param object
+ */
+pro.onFind = function(api, object){
+	findLogger.info(api + ":" + " %j", _.isObject(object) ? object : {})
+}
+
+/**
  * 事件触发错误日志
  * @param api
  * @param object
  * @param stack
  */
 pro.onEventError = function(api, object, stack){
-	errorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-	errorLogger.error(_.isString(stack) ? stack : '')
-	eventLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
-	eventLogger.error(_.isString(stack) ? stack : '')
+	if(!_.isEqual(this.evn, "local")){
+		errorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+		errorLogger.error(_.isString(stack) ? stack : '')
+		eventLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+		eventLogger.error(_.isString(stack) ? stack : '')
+	}
 	eventErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 	eventErrorLogger.error(_.isString(stack) ? stack : '')
 	if(!_.isEqual(this.evn, "local")){

@@ -897,6 +897,17 @@
 //			})
 //		})
 //
+//		it("deleteSendMails 正常删除", function(done){
+//			Api.getSendMails(0, function(doc){
+//				m_user.sendMails = doc.mails
+//				doc.code.should.equal(200)
+//				Api.deleteSendMails([m_user.sendMails[0].id], function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
 //		it("readMails 正常阅读", function(done){
 //			Api.loginPlayer(Config.deviceId, function(doc){
 //				doc.code.should.equal(200)

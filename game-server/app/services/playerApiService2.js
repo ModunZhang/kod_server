@@ -23,6 +23,7 @@ var PlayerApiService2 = function(app){
 	this.pushService = app.get("pushService")
 	this.timeEventService = app.get("timeEventService")
 	this.playerTimeEventService = app.get("playerTimeEventService")
+	this.cacheService = app.get('cacheService');
 	this.dataService = app.get("dataService")
 	this.GemUse = app.get("GemUse")
 }
@@ -37,17 +38,12 @@ var pro = PlayerApiService2.prototype
  * @param callback
  */
 pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback){
-	if(!DataUtils.isDragonEquipment(equipmentName)){
-		callback(new Error("equipmentName 装备不存在"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'productionTechs', 'soldiers', 'soldierStars', 'dragonMaterials', 'dragonEquipments', 'dailyTasks', 'growUpTasks', 'vipEvents', 'itemEvents', 'dragonEquipmentEvents', 'houseEvents'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_9
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -106,7 +102,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -117,7 +113,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -133,21 +129,12 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
  * @param callback
  */
 pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
-	if(!_.isArray(soldiers)){
-		callback(new Error("soldiers 不合法"))
-		return
-	}
-	if(!_.isBoolean(finishNow)){
-		callback(new Error("finishNow 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'woundedSoldiers', 'productionTechs', 'militaryTechs', 'growUpTasks', 'vipEvents', 'itemEvents', 'treatSoldierEvents', 'houseEvents'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_6
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -211,7 +198,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -222,7 +209,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -237,17 +224,12 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
  * @param callback
  */
 pro.hatchDragon = function(playerId, dragonType, callback){
-	if(!DataUtils.isDragonTypeExist(dragonType)){
-		callback(new Error("dragonType 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'dragons', 'dragonHatchEvents'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragons = playerDoc.dragons
 		var dragon = dragons[dragonType]
@@ -257,7 +239,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		playerDoc.dragonHatchEvents.push(event)
 		playerData.push(["dragonHatchEvents." + playerDoc.dragonHatchEvents.indexOf(event), event])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonHatchEvents", event.id, event.finishTime - Date.now()])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -268,7 +250,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -285,33 +267,12 @@ pro.hatchDragon = function(playerId, dragonType, callback){
  * @param callback
  */
 pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equipmentName, callback){
-	if(!DataUtils.isDragonTypeExist(dragonType)){
-		callback(new Error("dragonType 不合法"))
-		return
-	}
-	if(!_.contains(Consts.DragonEquipmentCategory, equipmentCategory)){
-		callback(new Error("equipmentCategory 不合法"))
-		return
-	}
-	if(!DataUtils.isDragonEquipment(equipmentName)){
-		callback(new Error("equipmentName 不合法"))
-		return
-	}
-	if(!DataUtils.isDragonEquipmentLegalAtCategory(equipmentName, equipmentCategory)){
-		callback(new Error("equipmentName 不能装备到equipmentCategory"))
-		return
-	}
-	if(!DataUtils.isDragonEquipmentLegalOnDragon(equipmentName, dragonType)){
-		callback(new Error("equipmentName 不能装备到dragonType"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'dragons', 'dragonEquipments'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -325,7 +286,7 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 		playerData.push(["dragonEquipments." + equipmentName, playerDoc.dragonEquipments[equipmentName]])
 		playerData.push(["dragons." + dragonType + ".equipments." + equipmentCategory, equipment])
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -336,7 +297,7 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -353,25 +314,12 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
  * @param callback
  */
 pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, equipments, callback){
-	if(!DataUtils.isDragonTypeExist(dragonType)){
-		callback(new Error("dragonType 不合法"))
-		return
-	}
-	if(!_.contains(Consts.DragonEquipmentCategory, equipmentCategory)){
-		callback(new Error("equipmentCategory 不合法"))
-		return
-	}
-	if(!_.isArray(equipments)){
-		callback(new Error("equipments 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'dragons', 'dragonEquipments'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		var equipment = dragon.equipments[equipmentCategory]
@@ -384,7 +332,7 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 			playerData.push(["dragonEquipments." + equipment.name, playerDoc.dragonEquipments[equipment.name]])
 		})
 		playerData.push(["dragons." + dragonType + ".equipments." + equipmentCategory, equipment])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -395,7 +343,7 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -411,21 +359,12 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
  * @param callback
  */
 pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, callback){
-	if(!DataUtils.isDragonTypeExist(dragonType)){
-		callback(new Error("dragonType 不合法"))
-		return
-	}
-	if(!_.contains(Consts.DragonEquipmentCategory, equipmentCategory)){
-		callback(new Error("equipmentCategory 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'dragons', 'dragonEquipments'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		var equipment = dragon.equipments[equipmentCategory]
@@ -437,7 +376,7 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 		playerData.push(["dragonEquipments." + equipment.name, playerDoc.dragonEquipments[equipment.name]])
 		playerData.push(["dragons." + dragonType + ".equipments." + equipmentCategory, equipment])
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -448,7 +387,7 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -464,21 +403,12 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
  * @param callback
  */
 pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
-	if(!DataUtils.isDragonTypeExist(dragonType)){
-		callback(new Error("dragonType 不合法"))
-		return
-	}
-	if(!_.isString(skillKey) || skillKey.trim().length > Define.InputLength.DragonSkillKey){
-		callback(new Error("skillKey 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'dragons', 'growUpTasks'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -494,7 +424,7 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 		playerDoc.resources.blood -= upgradeRequired.blood
 		playerData.push(["resources.blood", playerDoc.resources.blood])
 		playerData.push(["dragons." + dragonType + ".skills." + skillKey, skill])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -505,7 +435,7 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -520,17 +450,12 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
  * @param callback
  */
 pro.upgradeDragonStar = function(playerId, dragonType, callback){
-	if(!DataUtils.isDragonTypeExist(dragonType)){
-		callback(new Error("dragonType 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'dragons', 'buildings', 'growUpTasks', 'vipEvents', 'itemEvents'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star < 1) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
@@ -548,7 +473,7 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 		TaskUtils.finishDragonStarTaskIfNeed(playerDoc, playerData, dragon.type, dragon.star)
 		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
 		playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -559,7 +484,7 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -578,7 +503,7 @@ pro.getDailyQuests = function(playerId, callback){
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'buildings', 'dailyQuests'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var building = playerDoc.buildings.location_15
 		if(building.level <= 0) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
@@ -588,9 +513,9 @@ pro.getDailyQuests = function(playerId, callback){
 			var dailyQuests = DataUtils.createDailyQuests()
 			playerDoc.dailyQuests.quests = dailyQuests
 			playerDoc.dailyQuests.refreshTime = now
-			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+			updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		}else{
-			updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, null])
+			updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, null])
 		}
 		playerData.push(["dailyQuests", playerDoc.dailyQuests])
 	}).then(function(){
@@ -602,7 +527,7 @@ pro.getDailyQuests = function(playerId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -617,17 +542,12 @@ pro.getDailyQuests = function(playerId, callback){
  * @param callback
  */
 pro.addDailyQuestStar = function(playerId, questId, callback){
-	if(!_.isString(questId) || !ShortId.isValid(questId)){
-		callback(new Error("questId 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'resources', 'dailyQuests'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var quest = _.find(playerDoc.dailyQuests.quests, function(quest){
 			return _.isEqual(quest.id, questId)
@@ -648,7 +568,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 
 		quest.star += 1
 		playerData.push(["dailyQuests.quests." + playerDoc.dailyQuests.quests.indexOf(quest) + ".star", quest.star])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -659,7 +579,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -674,17 +594,12 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
  * @param callback
  */
 pro.startDailyQuest = function(playerId, questId, callback){
-	if(!_.isString(questId) || !ShortId.isValid(questId)){
-		callback(new Error("questId 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'dailyQuests', 'dailyQuestEvents'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var quest = _.find(playerDoc.dailyQuests.quests, function(quest){
 			return _.isEqual(quest.id, questId)
@@ -697,7 +612,7 @@ pro.startDailyQuest = function(playerId, questId, callback){
 		playerDoc.dailyQuestEvents.push(event)
 		playerData.push(["dailyQuestEvents." + playerDoc.dailyQuestEvents.indexOf(event), event])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dailyQuestEvents", event.id, event.finishTime - Date.now()])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -708,7 +623,7 @@ pro.startDailyQuest = function(playerId, questId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -723,17 +638,12 @@ pro.startDailyQuest = function(playerId, questId, callback){
  * @param callback
  */
 pro.getDailyQeustReward = function(playerId, questEventId, callback){
-	if(!_.isString(questEventId) || !ShortId.isValid(questEventId)){
-		callback(new Error("questEventId 不合法"))
-		return
-	}
-
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo', 'resources', 'buildings', 'soldiers', 'soldierStars', 'productionTechs', 'dailyQuestEvents', 'vipEvents', 'itemEvents', 'houseEvents'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var questEvent = _.find(playerDoc.dailyQuestEvents, function(event){
 			return _.isEqual(event.id, questEventId)
@@ -753,7 +663,7 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 		})
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -764,7 +674,7 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -779,20 +689,16 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
  * @param callback
  */
 pro.setPlayerLanguage = function(playerId, language, callback){
-	if(!_.contains(Consts.AllianceLanguage, language)){
-		callback(new Error("language 不合法"))
-		return
-	}
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	var eventFuncs = []
-	this.dataService.findPlayerAsync(playerId, ['_id', 'basicInfo'], false).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		playerDoc.basicInfo.language = language
 		playerData.push(["basicInfo.language", language])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -803,7 +709,7 @@ pro.setPlayerLanguage = function(playerId, language, callback){
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)
@@ -818,15 +724,10 @@ pro.setPlayerLanguage = function(playerId, language, callback){
  * @param callback
  */
 pro.getPlayerInfo = function(playerId, memberId, callback){
-	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
-		callback(new Error("memberId 不合法"))
-		return
-	}
-
 	var self = this
 	var playerViewData = null
 	var memberDoc = null
-	this.dataService.directFindPlayerAsync(memberId, ['_id', 'logicServerId', 'allianceId', 'countInfo', 'basicInfo'], false).then(function(doc){
+	this.cacheService.directFindPlayerAsync(memberId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 		memberDoc = doc
 
@@ -843,7 +744,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 		}
 
 		if(_.isString(memberDoc.allianceId)){
-			return self.dataService.directFindAllianceAsync(memberDoc.allianceId, ['_id', 'basicInfo', 'titles', 'members'], false).then(function(doc){
+			return self.cacheService.directFindAllianceAsync(memberDoc.allianceId).then(function(doc){
 				var memberObject = LogicUtils.getAllianceMemberById(doc, memberId)
 				playerViewData.alliance = {
 					name:doc.basicInfo.name,
@@ -872,23 +773,6 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
  * @param callback
  */
 pro.sendMail = function(playerId, memberId, title, content, callback){
-	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
-		callback(new Error("memberId 不合法"))
-		return
-	}
-	if(_.isEqual(playerId, memberId)){
-		callback(new Error("playerId, memberId 不能给自己发邮件"))
-		return
-	}
-	if(!_.isString(title) || title.trim().length > Define.InputLength.MailTitle){
-		callback(new Error("title 不合法"))
-		return
-	}
-	if(!_.isString(content) || content.trim().length > Define.InputLength.MailContent){
-		callback(new Error("content 不合法"))
-		return
-	}
-
 	this.dataService.sendPlayerMailAsync(playerId, memberId, title, content).then(function(){
 		callback(null)
 	}).catch(function(e){
@@ -903,21 +787,30 @@ pro.sendMail = function(playerId, memberId, title, content, callback){
  * @param callback
  */
 pro.readMails = function(playerId, mailIds, callback){
-	if(!_.isArray(mailIds) || mailIds.length == 0){
-		callback(new Error("mailIds 不合法"))
-		return
-	}
-	for(var i = 0; i < mailIds.length; i++){
-		if(!ShortId.isValid(mailIds[i])){
-			callback(new Error("mailIds 不合法"))
-			return
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		for(var i = 0; i < mailIds.length; i++){
+			(function(){
+				var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
+				if(!_.isObject(mail)) throw ErrorUtils.mailNotExist(playerId, mailIds[i])
+				mail.isRead = true
+				playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isRead", true])
+			})()
 		}
-	}
-
-	this.dataService.readPlayerMailsAsync(playerId, mailIds).then(function(data){
-		callback(null, data)
+		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
@@ -928,14 +821,25 @@ pro.readMails = function(playerId, mailIds, callback){
  * @param callback
  */
 pro.saveMail = function(playerId, mailId, callback){
-	if(!_.isString(mailId) || !ShortId.isValid(mailId)){
-		callback(new Error("mailId 不合法"))
-		return
-	}
-
-	this.dataService.savePlayerMailAsync(playerId, mailId).then(function(data){
-		callback(null, data)
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
+		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
+		mail.isSaved = true
+		playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isSaved", true])
+		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }

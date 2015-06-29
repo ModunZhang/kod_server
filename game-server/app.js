@@ -17,6 +17,7 @@ app.set("name", "KODServer")
 app.route("chat", RouteUtils.chat)
 app.route("logic", RouteUtils.logic)
 app.route("rank", RouteUtils.rank)
+app.route("cache", RouteUtils.cache)
 
 app.configure("local|develop|awschina", function() {
 	app.set('proxyConfig', {
@@ -40,8 +41,8 @@ app.configure("local|develop|awschina", "gate", function(){
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 
-	app.loadConfig("mongoConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("mongoConfig").mongoHost)
+	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, { server: { socketOptions: { keepAlive: 1 } } })
 	app.set("mongoose", mongooseClient)
 })
 
@@ -60,33 +61,24 @@ app.configure("local|develop|awschina", "logic", function(){
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
-
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
-	app.set("mongoose", mongooseClient)
 })
 
 app.configure("local|develop|awschina", "chat", function(){
+	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
 })
 
-app.configure("local|develop|awschina", "event", function(){
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
-	app.set("mongoose", mongooseClient)
-})
-
 app.configure("local|develop|awschina", "cache", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, { server: { socketOptions: { keepAlive: 1 } } })
 	app.set("mongoose", mongooseClient)
 })
 
 app.configure("local|develop|awschina", "rank", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost)
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, { server: { socketOptions: { keepAlive: 1 } } })
 	app.set("mongoose", mongooseClient)
 
 	var filterService = new FilterService(app)

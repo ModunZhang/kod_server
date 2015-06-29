@@ -1027,14 +1027,9 @@ Utils.createSysMail = function(titleKey, titleArgs, contentKey, contentArgs){
  * @returns {*}
  */
 Utils.getPlayerMailById = function(playerDoc, mailId){
-	var theMail = null
-	_.some(playerDoc.mails, function(mail){
-		if(_.isEqual(mail.id, mailId)){
-			theMail = mail
-			return true
-		}
+	return _.find(playerDoc.mails, function(mail){
+		return _.isEqual(mail.id, mailId)
 	})
-	return theMail
 }
 
 /**
@@ -1044,11 +1039,9 @@ Utils.getPlayerMailById = function(playerDoc, mailId){
  * @returns {*}
  */
 Utils.getPlayerReportById = function(playerDoc, reportId){
-	for(var i = 0; i < playerDoc.reports.length; i++){
-		var report = playerDoc.reports[i]
-		if(_.isEqual(report.id, reportId)) return report
-	}
-	return null
+	return _.find(playerDoc.reports, function(report){
+		return _.isEqual(report.id, reportId)
+	})
 }
 
 /**
@@ -2358,7 +2351,10 @@ Utils.initPlayerDoc = function(playerDoc){
 		name:'moveTheCity',
 		count:1
 	})
-
+	playerDoc.items.push({
+		name:'ironBonus_1',
+		count:1
+	})
 
 	DataUtils.refreshPlayerPower(playerDoc, [])
 }

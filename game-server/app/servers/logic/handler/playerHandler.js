@@ -4,9 +4,17 @@
  * Created by modun on 14-7-22.
  */
 
+var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
+
+var DataUtils = require("../../../utils/dataUtils")
+var LogicUtils = require("../../../utils/logicUtils")
 var ErrorUtils = require("../../../utils/errorUtils")
+var ItemUtils = require("../../../utils/itemUtils")
+
+var Consts = require("../../../consts/consts")
+var Define = require("../../../consts/define")
 
 var GameDatas = require("../../../datas/GameDatas")
 
@@ -16,14 +24,8 @@ module.exports = function(app){
 
 var Handler = function(app){
 	this.app = app
-	this.apnService = app.get("apnService")
 	this.logService = app.get("logService")
-	this.playerIAPService = app.get("playerIAPService")
-	this.playerApiService = app.get("playerApiService")
-	this.playerApiService2 = app.get("playerApiService2")
-	this.playerApiService3 = app.get("playerApiService3")
-	this.playerApiService4 = app.get("playerApiService4")
-	this.playerApiService5 = app.get("playerApiService5")
+	this.request = app.get('request');
 }
 var pro = Handler.prototype
 
@@ -37,10 +39,22 @@ pro.upgradeBuilding = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.upgradeBuilding", {playerId:session.uid, msg:msg})
 	var location = msg.location
 	var finishNow = msg.finishNow
-	this.playerApiService.upgradeBuildingAsync(session.uid, location, finishNow).then(function(playerData){
+	var e = null
+	if(!_.isNumber(location) || location % 1 !== 0 || location < 1 || location > 22){
+		e = new Error("location 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		e = new Error("finishNow 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('upgradeBuilding', [session.uid, location, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -54,10 +68,22 @@ pro.switchBuilding = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.switchBuilding", {playerId:session.uid, msg:msg})
 	var buildingLocation = msg.buildingLocation
 	var newBuildingName = msg.newBuildingName
-	this.playerApiService.switchBuildingAsync(session.uid, buildingLocation, newBuildingName).then(function(playerData){
+	var e = null
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1){
+		e = new Error("buildingLocation 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(_.values(Consts.ResourceBuildingMap), newBuildingName) || _.isEqual("townHall", newBuildingName)){
+		e = new Error("newBuildingName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('switchBuilding', [session.uid, buildingLocation, newBuildingName]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -73,11 +99,32 @@ pro.createHouse = function(msg, session, next){
 	var houseType = msg.houseType
 	var houseLocation = msg.houseLocation
 	var finishNow = msg.finishNow
+	var e = null
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1 || buildingLocation > 20){
+		e = new Error("buildingLocation 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(houseType)){
+		e = new Error("houseType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0 || houseLocation < 1 || houseLocation > 3){
+		e = new Error("houseLocation 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		e = new Error("finishNow 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
-	this.playerApiService.createHouseAsync(session.uid, buildingLocation, houseType, houseLocation, finishNow).then(function(playerData){
+	this.request('createHouse', [session.uid, buildingLocation, houseType, houseLocation, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -92,11 +139,27 @@ pro.upgradeHouse = function(msg, session, next){
 	var buildingLocation = msg.buildingLocation
 	var houseLocation = msg.houseLocation
 	var finishNow = msg.finishNow
+	var e = null
+	if(!_.isNumber(buildingLocation) || buildingLocation % 1 !== 0 || buildingLocation < 1 || buildingLocation > 20){
+		e = new Error("buildingLocation 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(houseLocation) || houseLocation % 1 !== 0 || houseLocation < 1 || houseLocation > 3){
+		e = new Error("houseLocation 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		e = new Error("finishNow 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
-	this.playerApiService.upgradeHouseAsync(session.uid, buildingLocation, houseLocation, finishNow).then(function(playerData){
+	this.request('upgradeHouse', [session.uid, buildingLocation, houseLocation, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -110,11 +173,22 @@ pro.freeSpeedUp = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.freeSpeedUp", {playerId:session.uid, msg:msg})
 	var eventType = msg.eventType
 	var eventId = msg.eventId
+	var e = null
+	if(!_.contains(Consts.FreeSpeedUpAbleEventTypes, eventType)){
+		e = new Error("eventType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(eventId)){
+		e = new Error("eventId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
-	this.playerApiService.freeSpeedUpAsync(session.uid, eventType, eventId).then(function(playerData){
+	this.request('freeSpeedUp', [session.uid, eventType, eventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -128,10 +202,22 @@ pro.makeMaterial = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.makeMaterial", {playerId:session.uid, msg:msg})
 	var category = msg.category
 	var finishNow = msg.finishNow
-	this.playerApiService.makeMaterialAsync(session.uid, category, finishNow).then(function(playerData){
+	var e = null
+	if(!_.contains(Consts.MaterialType, category)){
+		e = new Error("category 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		e = new Error("finishNow 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('makeMaterial', [session.uid, category, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -144,10 +230,17 @@ pro.makeMaterial = function(msg, session, next){
 pro.getMaterials = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getMaterials", {playerId:session.uid, msg:msg})
 	var eventId = msg.eventId
-	this.playerApiService.getMaterialsAsync(session.uid, eventId).then(function(playerData){
+	var e = null
+	if(!_.isString(eventId)){
+		e = new Error("eventId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getMaterials', [session.uid, eventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -162,11 +255,27 @@ pro.recruitNormalSoldier = function(msg, session, next){
 	var soldierName = msg.soldierName
 	var count = msg.count
 	var finishNow = msg.finishNow
+	var e = null
+	if(!DataUtils.isNormalSoldier(soldierName)){
+		e = new Error("soldierName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(count) || count % 1 !== 0 || count < 1){
+		e = new Error("count 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		e = new Error("finishNow 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
-	this.playerApiService.recruitNormalSoldierAsync(session.uid, soldierName, count, finishNow).then(function(playerData){
+	this.request('recruitNormalSoldier', [session.uid, soldierName, count, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -181,11 +290,32 @@ pro.recruitSpecialSoldier = function(msg, session, next){
 	var soldierName = msg.soldierName
 	var count = msg.count
 	var finishNow = msg.finishNow
+	var e = null
+	if(!DataUtils.hasSpecialSoldier(soldierName)){
+		e = new Error("soldierName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(count) || count % 1 !== 0 || count < 1){
+		e = new Error("count 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		e = new Error("finishNow 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.canRecruitSpecialSoldier()){
+		e = new Error("特殊兵种招募未开放")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
-	this.playerApiService.recruitSpecialSoldierAsync(session.uid, soldierName, count, finishNow).then(function(playerData){
+	this.request('recruitSpecialSoldier', [session.uid, soldierName, count, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -199,10 +329,22 @@ pro.makeDragonEquipment = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.makeDragonEquipment", {playerId:session.uid, msg:msg})
 	var equipmentName = msg.equipmentName
 	var finishNow = msg.finishNow
-	this.playerApiService2.makeDragonEquipmentAsync(session.uid, equipmentName, finishNow).then(function(playerData){
+	var e = null
+	if(!DataUtils.isDragonEquipment(equipmentName)){
+		e = new Error("equipmentName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		e = new Error("finishNow 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('makeDragonEquipment', [session.uid, equipmentName, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -216,10 +358,22 @@ pro.treatSoldier = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.treatSoldier", {playerId:session.uid, msg:msg})
 	var soldiers = msg.soldiers
 	var finishNow = msg.finishNow
-	this.playerApiService2.treatSoldierAsync(session.uid, soldiers, finishNow).then(function(playerData){
+	var e = null
+	if(!_.isArray(soldiers)){
+		e = new Error("soldiers 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		e = new Error("finishNow 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('treatSoldier', [session.uid, soldiers, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -232,10 +386,17 @@ pro.treatSoldier = function(msg, session, next){
 pro.hatchDragon = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.hatchDragon", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
-	this.playerApiService2.hatchDragonAsync(session.uid, dragonType).then(function(playerData){
+	var e = null
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('hatchDragon', [session.uid, dragonType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -250,10 +411,37 @@ pro.setDragonEquipment = function(msg, session, next){
 	var dragonType = msg.dragonType
 	var equipmentCategory = msg.equipmentCategory
 	var equipmentName = msg.equipmentName
-	this.playerApiService2.setDragonEquipmentAsync(session.uid, dragonType, equipmentCategory, equipmentName).then(function(playerData){
+	var e = null
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.DragonEquipmentCategory, equipmentCategory)){
+		e = new Error("equipmentCategory 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isDragonEquipment(equipmentName)){
+		e = new Error("equipmentName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isDragonEquipmentLegalAtCategory(equipmentName, equipmentCategory)){
+		e = new Error("equipmentName 不能装备到equipmentCategory")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isDragonEquipmentLegalOnDragon(equipmentName, dragonType)){
+		e = new Error("equipmentName 不能装备到dragonType")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('setDragonEquipment', [session.uid, dragonType, equipmentCategory, equipmentName]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -268,10 +456,27 @@ pro.enhanceDragonEquipment = function(msg, session, next){
 	var dragonType = msg.dragonType
 	var equipmentCategory = msg.equipmentCategory
 	var equipments = msg.equipments
-	this.playerApiService2.enhanceDragonEquipmentAsync(session.uid, dragonType, equipmentCategory, equipments).then(function(playerData){
+	var e = null
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.DragonEquipmentCategory, equipmentCategory)){
+		e = new Error("equipmentCategory 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isArray(equipments)){
+		e = new Error("equipments 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('enhanceDragonEquipment', [session.uid, dragonType, equipmentCategory, equipments]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -285,10 +490,22 @@ pro.resetDragonEquipment = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.resetDragonEquipment", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var equipmentCategory = msg.equipmentCategory
-	this.playerApiService2.resetDragonEquipmentAsync(session.uid, dragonType, equipmentCategory).then(function(playerData){
+	var e = null
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.DragonEquipmentCategory, equipmentCategory)){
+		e = new Error("equipmentCategory 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('resetDragonEquipment', [session.uid, dragonType, equipmentCategory]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -302,10 +519,22 @@ pro.upgradeDragonSkill = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.upgradeDragonSkill", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var skillKey = msg.skillKey
-	this.playerApiService2.upgradeDragonSkillAsync(session.uid, dragonType, skillKey).then(function(playerData){
+	var e = null
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(skillKey) || skillKey.trim().length > Define.InputLength.DragonSkillKey){
+		e = new Error("skillKey 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('upgradeDragonSkill', [session.uid, dragonType, skillKey]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -318,10 +547,17 @@ pro.upgradeDragonSkill = function(msg, session, next){
 pro.upgradeDragonStar = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.upgradeDragonStar", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
-	this.playerApiService2.upgradeDragonStarAsync(session.uid, dragonType).then(function(playerData){
+	var e = null
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('upgradeDragonStar', [session.uid, dragonType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -333,10 +569,10 @@ pro.upgradeDragonStar = function(msg, session, next){
  */
 pro.getDailyQuests = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getDailyQuests", {playerId:session.uid, msg:msg})
-	this.playerApiService2.getDailyQuestsAsync(session.uid).then(function(playerData){
+	this.request('getDailyQuests', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -349,10 +585,17 @@ pro.getDailyQuests = function(msg, session, next){
 pro.addDailyQuestStar = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.addDailyQuestStar", {playerId:session.uid, msg:msg})
 	var questId = msg.questId
-	this.playerApiService2.addDailyQuestStarAsync(session.uid, questId).then(function(playerData){
+	var e = null
+	if(!_.isString(questId) || !ShortId.isValid(questId)){
+		e = new Error("questId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('addDailyQuestStar', [session.uid, questId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -365,10 +608,17 @@ pro.addDailyQuestStar = function(msg, session, next){
 pro.startDailyQuest = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.startDailyQuest", {playerId:session.uid, msg:msg})
 	var questId = msg.questId
-	this.playerApiService2.startDailyQuestAsync(session.uid, questId).then(function(playerData){
+	var e = null
+	if(!_.isString(questId) || !ShortId.isValid(questId)){
+		e = new Error("questId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('startDailyQuest', [session.uid, questId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -381,10 +631,17 @@ pro.startDailyQuest = function(msg, session, next){
 pro.getDailyQeustReward = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getDailyQeustReward", {playerId:session.uid, msg:msg})
 	var questEventId = msg.questEventId
-	this.playerApiService2.getDailyQeustRewardAsync(session.uid, questEventId).then(function(playerData){
+	var e = null
+	if(!_.isString(questEventId) || !ShortId.isValid(questEventId)){
+		e = new Error("questEventId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getDailyQeustReward', [session.uid, questEventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -397,10 +654,17 @@ pro.getDailyQeustReward = function(msg, session, next){
 pro.setPlayerLanguage = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.setPlayerLanguage", {playerId:session.uid, msg:msg})
 	var language = msg.language
-	this.playerApiService2.setPlayerLanguageAsync(session.uid, language).then(function(playerData){
+	var e = null
+	if(!_.contains(Consts.AllianceLanguage, language)){
+		e = new Error("language 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('setPlayerLanguage', [session.uid, language]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -413,10 +677,17 @@ pro.setPlayerLanguage = function(msg, session, next){
 pro.getPlayerInfo = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getPlayerInfo", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
-	this.playerApiService2.getPlayerInfoAsync(session.uid, memberId).then(function(playerViewData){
+	var e = null
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
+		e = new Error("memberId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getPlayerInfo', [session.uid, memberId]).then(function(playerViewData){
 		next(null, {code:200, playerViewData:playerViewData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -431,10 +702,32 @@ pro.sendMail = function(msg, session, next){
 	var memberId = msg.memberId
 	var title = msg.title
 	var content = msg.content
-	this.playerApiService2.sendMailAsync(session.uid, memberId, title, content).then(function(){
+	var e = null
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
+		e = new Error("memberId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(_.isEqual(session.uid, memberId)){
+		e = new Error("不能给自己发邮件")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(title) || title.trim().length > Define.InputLength.MailTitle){
+		e = new Error("title 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(content) || content.trim().length > Define.InputLength.MailContent){
+		e = new Error("content 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('sendMail', [session.uid, memberId, title, content]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -447,10 +740,24 @@ pro.sendMail = function(msg, session, next){
 pro.readMails = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.readMails", {playerId:session.uid, msg:msg})
 	var mailIds = msg.mailIds
-	this.playerApiService2.readMailsAsync(session.uid, mailIds).then(function(playerData){
+	var e = null
+	if(!_.isArray(mailIds) || mailIds.length == 0){
+		e = new Error("mailIds 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	for(var i = 0; i < mailIds.length; i++){
+		if(!ShortId.isValid(mailIds[i])){
+			e = new Error("mailIds 不合法")
+			next(e, ErrorUtils.getError(e))
+			return
+		}
+	}
+
+	this.request('readMails', [session.uid, mailIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -463,10 +770,17 @@ pro.readMails = function(msg, session, next){
 pro.saveMail = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.saveMail", {playerId:session.uid, msg:msg})
 	var mailId = msg.mailId
-	this.playerApiService2.saveMailAsync(session.uid, mailId).then(function(playerData){
+	var e = null
+	if(!_.isString(mailId) || !ShortId.isValid(mailId)){
+		e = new Error("mailId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('saveMail', [session.uid, mailId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -479,10 +793,17 @@ pro.saveMail = function(msg, session, next){
 pro.unSaveMail = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.unSaveMail", {playerId:session.uid, msg:msg})
 	var mailId = msg.mailId
-	this.playerApiService3.unSaveMailAsync(session.uid, mailId).then(function(playerData){
+	var e = null
+	if(!_.isString(mailId) || !ShortId.isValid(mailId)){
+		e = new Error("mailId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('unSaveMail', [session.uid, mailId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -495,10 +816,17 @@ pro.unSaveMail = function(msg, session, next){
 pro.getMails = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getMails", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
-	this.playerApiService3.getMailsAsync(session.uid, fromIndex).then(function(mails){
+	var e = null
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
+		e = new Error("fromIndex 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getMails', [session.uid, fromIndex]).then(function(mails){
 		next(null, {code:200, mails:mails})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -511,10 +839,17 @@ pro.getMails = function(msg, session, next){
 pro.getSendMails = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getSendMails", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
-	this.playerApiService3.getSendMailsAsync(session.uid, fromIndex).then(function(mails){
+	var e = null
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
+		e = new Error("fromIndex 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getSendMails', [session.uid, fromIndex]).then(function(mails){
 		next(null, {code:200, mails:mails})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -527,10 +862,17 @@ pro.getSendMails = function(msg, session, next){
 pro.getSavedMails = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getSavedMails", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
-	this.playerApiService3.getSavedMailsAsync(session.uid, fromIndex).then(function(mails){
+	var e = null
+	if(!_.isNumber(fromIndex) || fromIndex % 10 !== 0 || fromIndex < 0){
+		e = new Error("fromIndex 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getSavedMails', [session.uid, fromIndex]).then(function(mails){
 		next(null, {code:200, mails:mails})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -543,10 +885,54 @@ pro.getSavedMails = function(msg, session, next){
 pro.deleteMails = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.deleteMails", {playerId:session.uid, msg:msg})
 	var mailIds = msg.mailIds
-	this.playerApiService3.deleteMailsAsync(session.uid, mailIds).then(function(playerData){
+	var e = null
+	if(!_.isArray(mailIds) || mailIds.length == 0){
+		e = new Error("mailIds 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	for(var i = 0; i < mailIds.length; i ++){
+		if(!ShortId.isValid(mailIds[i])){
+			e = new Error("mailIds 不合法")
+			next(e, ErrorUtils.getError(e))
+			return
+		}
+	}
+
+	this.request('deleteMails', [session.uid, mailIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 删除已发邮件
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.deleteSendMails = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.deleteSendMails", {playerId:session.uid, msg:msg})
+	var mailIds = msg.mailIds
+	var e = null
+	if(!_.isArray(mailIds) || mailIds.length == 0){
+		e = new Error("mailIds 不合法")
 		next(e, ErrorUtils.getError(e))
+		return
+	}
+	for(var i = 0; i < mailIds.length; i ++){
+		if(!ShortId.isValid(mailIds[i])){
+			e = new Error("mailIds 不合法")
+			next(e, ErrorUtils.getError(e))
+			return
+		}
+	}
+
+	this.request('deleteSendMails', [session.uid, mailIds]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -559,10 +945,24 @@ pro.deleteMails = function(msg, session, next){
 pro.readReports = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.readReports", {playerId:session.uid, msg:msg})
 	var reportIds = msg.reportIds
-	this.playerApiService3.readReportsAsync(session.uid, reportIds).then(function(playerData){
+	var e = null
+	if(!_.isArray(reportIds) || reportIds.length == 0){
+		e = new Error("reportIds 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	for(var i = 0; i < reportIds.length; i ++){
+		if(!ShortId.isValid(reportIds[i])){
+			e = new Error("reportIds 不合法")
+			next(e, ErrorUtils.getError(e))
+			return
+		}
+	}
+
+	this.request('readReports', [session.uid, reportIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -575,10 +975,17 @@ pro.readReports = function(msg, session, next){
 pro.saveReport = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.saveReport", {playerId:session.uid, msg:msg})
 	var reportId = msg.reportId
-	this.playerApiService3.saveReportAsync(session.uid, reportId).then(function(playerData){
+	var e = null
+	if(!_.isString(reportId) || !ShortId.isValid(reportId)){
+		e = new Error("reportId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('saveReport', [session.uid, reportId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -591,10 +998,17 @@ pro.saveReport = function(msg, session, next){
 pro.unSaveReport = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.unSaveReport", {playerId:session.uid, msg:msg})
 	var reportId = msg.reportId
-	this.playerApiService3.unSaveReportAsync(session.uid, reportId).then(function(playerData){
+	var e = null
+	if(!_.isString(reportId) || !ShortId.isValid(reportId)){
+		e = new Error("reportId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('unSaveReport', [session.uid, reportId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -607,10 +1021,17 @@ pro.unSaveReport = function(msg, session, next){
 pro.getReports = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getReports", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
-	this.playerApiService3.getReportsAsync(session.uid, fromIndex).then(function(reports){
+	var e = null
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
+		e = new Error("fromIndex 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getReports', [session.uid, fromIndex]).then(function(reports){
 		next(null, {code:200, reports:reports})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -623,10 +1044,17 @@ pro.getReports = function(msg, session, next){
 pro.getSavedReports = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getSavedReports", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
-	this.playerApiService3.getSavedReportsAsync(session.uid, fromIndex).then(function(reports){
+	var e = null
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
+		e = new Error("fromIndex 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getSavedReports', [session.uid, fromIndex]).then(function(reports){
 		next(null, {code:200, reports:reports})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -639,10 +1067,24 @@ pro.getSavedReports = function(msg, session, next){
 pro.deleteReports = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.deleteReports", {playerId:session.uid, msg:msg})
 	var reportIds = msg.reportIds
-	this.playerApiService3.deleteReportsAsync(session.uid, reportIds).then(function(playerData){
+	var e = null
+	if(!_.isArray(reportIds) || reportIds.length == 0){
+		e = new Error("reportIds 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	for(var i = 0; i < reportIds.length; i ++){
+		if(!ShortId.isValid(reportIds[i])){
+			e = new Error("reportIds 不合法")
+			next(e, ErrorUtils.getError(e))
+			return
+		}
+	}
+
+	this.request('deleteReports', [session.uid, reportIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -655,10 +1097,17 @@ pro.deleteReports = function(msg, session, next){
 pro.getPlayerViewData = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getPlayerViewData", {playerId:session.uid, msg:msg})
 	var targetPlayerId = msg.targetPlayerId
-	this.playerApiService3.getPlayerViewDataAsync(session.uid, targetPlayerId).then(function(playerViewData){
+	var e = null
+	if(!_.isString(targetPlayerId) || !ShortId.isValid(targetPlayerId)){
+		e = new Error("targetPlayerId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getPlayerViewData', [session.uid, targetPlayerId]).then(function(playerViewData){
 		next(null, {code:200, playerViewData:playerViewData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -671,10 +1120,17 @@ pro.getPlayerViewData = function(msg, session, next){
 pro.setDefenceDragon = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.setDefenceDragon", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
-	this.playerApiService3.setDefenceDragonAsync(session.uid, dragonType).then(function(playerData){
+	var e = null
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('setDefenceDragon', [session.uid, dragonType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -686,10 +1142,10 @@ pro.setDefenceDragon = function(msg, session, next){
  */
 pro.cancelDefenceDragon = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.cancelDefenceDragon", {playerId:session.uid, msg:msg})
-	this.playerApiService3.cancelDefenceDragonAsync(session.uid).then(function(playerData){
+	this.request('cancelDefenceDragon', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -705,10 +1161,37 @@ pro.sellItem = function(msg, session, next){
 	var name = msg.name
 	var count = msg.count
 	var price = msg.price
-	this.playerApiService3.sellItemAsync(session.uid, type, name, count, price).then(function(playerData){
+	var e = null
+	if(!_.contains(_.values(_.keys(Consts.ResourcesCanDeal)), type)){
+		e = new Error("type 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.ResourcesCanDeal[type], name)){
+		e = new Error("name 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(name)){
+		e = new Error("name 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(count) || count % 1 !== 0 || count <= 0){
+		e = new Error("count 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(price) || price % 1 !== 0 || price <= 0){
+		e = new Error("price 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('sellItem', [session.uid, type, name, count, price]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -722,10 +1205,27 @@ pro.getSellItems = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getSellItems", {playerId:session.uid, msg:msg})
 	var type = msg.type
 	var name = msg.name
-	this.playerApiService3.getSellItemsAsync(session.uid, type, name).then(function(itemDocs){
+	var e = null
+	if(!_.contains(_.values(_.keys(Consts.ResourcesCanDeal)), type)){
+		e = new Error("type 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.ResourcesCanDeal[type], name)){
+		e = new Error("name 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(name)){
+		e = new Error("name 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getSellItems', [session.uid, type, name]).then(function(itemDocs){
 		next(null, {code:200, itemDocs:itemDocs})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -738,10 +1238,17 @@ pro.getSellItems = function(msg, session, next){
 pro.buySellItem = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.buySellItem", {playerId:session.uid, msg:msg})
 	var itemId = msg.itemId
-	this.playerApiService3.buySellItemAsync(session.uid, itemId).then(function(playerData){
+	var e = null
+	if(!_.isString(itemId) || !ShortId.isValid(itemId)){
+		e = new Error("itemId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('buySellItem', [session.uid, itemId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -754,10 +1261,17 @@ pro.buySellItem = function(msg, session, next){
 pro.getMyItemSoldMoney = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getMyItemSoldMoney", {playerId:session.uid, msg:msg})
 	var itemId = msg.itemId
-	this.playerApiService3.getMyItemSoldMoneyAsync(session.uid, itemId).then(function(playerData){
+	var e = null
+	if(!_.isString(itemId) || !ShortId.isValid(itemId)){
+		e = new Error("itemId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getMyItemSoldMoney', [session.uid, itemId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -770,10 +1284,17 @@ pro.getMyItemSoldMoney = function(msg, session, next){
 pro.removeMySellItem = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.removeMySellItem", {playerId:session.uid, msg:msg})
 	var itemId = msg.itemId
-	this.playerApiService3.removeMySellItemAsync(session.uid, itemId).then(function(playerData){
+	var e = null
+	if(!_.isString(itemId) || !ShortId.isValid(itemId)){
+		e = new Error("itemId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('removeMySellItem', [session.uid, itemId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -786,10 +1307,17 @@ pro.removeMySellItem = function(msg, session, next){
 pro.setApnId = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.setApnId", {playerId:session.uid, msg:msg})
 	var apnId = msg.apnId
-	this.playerApiService3.setApnIdAsync(session.uid, apnId).then(function(playerData){
+	var e = null
+	if(!_.isString(apnId)){
+		e = new Error("apnId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('setApnId', [session.uid, apnId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -803,10 +1331,22 @@ pro.upgradeProductionTech = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.upgradeProductionTech", {playerId:session.uid, msg:msg})
 	var techName = msg.techName
 	var finishNow = msg.finishNow
-	this.playerApiService4.upgradeProductionTechAsync(session.uid, techName, finishNow).then(function(playerData){
+	var e = null
+	if(!DataUtils.isProductionTechNameLegal(techName)){
+		e = new Error("techName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		e = new Error("finishNow 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('upgradeProductionTech', [session.uid, techName, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -820,10 +1360,22 @@ pro.upgradeMilitaryTech = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.upgradeMilitaryTech", {playerId:session.uid, msg:msg})
 	var techName = msg.techName
 	var finishNow = msg.finishNow
-	this.playerApiService4.upgradeMilitaryTechAsync(session.uid, techName, finishNow).then(function(playerData){
+	var e = null
+	if(!DataUtils.isMilitaryTechNameLegal(techName)){
+		e = new Error("techName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		e = new Error("finishNow 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('upgradeMilitaryTech', [session.uid, techName, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -837,10 +1389,22 @@ pro.upgradeSoldierStar = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.upgradeSoldierStar", {playerId:session.uid, msg:msg})
 	var soldierName = msg.soldierName
 	var finishNow = msg.finishNow
-	this.playerApiService4.upgradeSoldierStarAsync(session.uid, soldierName, finishNow).then(function(playerData){
+	var e = null
+	if(!DataUtils.isNormalSoldier(soldierName)){
+		e = new Error("soldierName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(finishNow)){
+		e = new Error("finishNow 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('upgradeSoldierStar', [session.uid, soldierName, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -853,10 +1417,17 @@ pro.upgradeSoldierStar = function(msg, session, next){
 pro.setTerrain = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.setTerrain", {playerId:session.uid, msg:msg})
 	var terrain = msg.terrain
-	this.playerApiService4.setTerrainAsync(session.uid, terrain).then(function(playerData){
+	var e = null
+	if(!_.contains(_.values(Consts.AllianceTerrain), terrain)){
+		e = new Error("terrain 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('setTerrain', [session.uid, terrain]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -870,10 +1441,22 @@ pro.buyItem = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.buyItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var count = msg.count
-	this.playerApiService4.buyItemAsync(session.uid, itemName, count).then(function(playerData){
+	var e = null
+	if(!DataUtils.isItemNameExist(itemName)){
+		e = new Error("itemName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(count) || count % 1 !== 0 || count <= 0){
+		e = new Error("count 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('buyItem', [session.uid, itemName, count]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -887,10 +1470,22 @@ pro.useItem = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.useItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var params = msg.params
-	this.playerApiService4.useItemAsync(session.uid, itemName, params).then(function(playerData){
+	var e = null
+	if(!DataUtils.isItemNameExist(itemName)){
+		e = new Error("itemName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isObject(params) || !ItemUtils.isParamsLegal(itemName, params)){
+		e = new Error("params 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('useItem', [session.uid, itemName, params]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -904,10 +1499,22 @@ pro.buyAndUseItem = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.buyAndUseItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var params = msg.params
-	this.playerApiService4.buyAndUseItemAsync(session.uid, itemName, params).then(function(playerData){
+	var e = null
+	if(!DataUtils.isItemNameExist(itemName)){
+		e = new Error("itemName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isObject(params) || !ItemUtils.isParamsLegal(itemName, params)){
+		e = new Error("params 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('buyAndUseItem', [session.uid, itemName, params]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -922,10 +1529,27 @@ pro.setPveData = function(msg, session, next){
 	var pveData = msg.pveData
 	var fightData = msg.fightData
 	var rewards = msg.rewards
-	this.playerApiService4.setPveDataAsync(session.uid, pveData, fightData, rewards).then(function(playerData){
+	var e = null
+	if(!_.isObject(pveData)){
+		e = new Error("pveData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isUndefined(fightData) && !_.isObject(fightData)){
+		e = new Error("fightData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isUndefined(rewards) && !_.isObject(rewards)){
+		e = new Error("rewards 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('setPveData', [session.uid, pveData, fightData, rewards]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -938,10 +1562,17 @@ pro.setPveData = function(msg, session, next){
 pro.gacha = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.gacha", {playerId:session.uid, msg:msg})
 	var type = msg.type
-	this.playerApiService4.gachaAsync(session.uid, type).then(function(playerData){
+	var e = null
+	if(!_.contains(_.values(Consts.GachaType), type)){
+		e = new Error("type 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('gacha', [session.uid, type]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -954,10 +1585,17 @@ pro.gacha = function(msg, session, next){
 pro.getGcBindStatus = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getGcBindStatus", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
-	this.playerApiService4.getGcBindStatusAsync(session.uid, gcId).then(function(isBind){
+	var e = null
+	if(!_.isString(gcId)){
+		e = new Error("gcId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getGcBindStatus', [session.uid, gcId]).then(function(isBind){
 		next(null, {code:200, isBind:isBind})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -970,10 +1608,17 @@ pro.getGcBindStatus = function(msg, session, next){
 pro.bindGcId = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.bindGcId", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
-	this.playerApiService4.bindGcIdAsync(session.uid, gcId).then(function(playerData){
+	var e = null
+	if(!_.isString(gcId)){
+		e = new Error("gcId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('bindGcId', [session.uid, gcId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -986,10 +1631,17 @@ pro.bindGcId = function(msg, session, next){
 pro.switchGcId = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.switchGcId", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
-	this.playerApiService4.switchGcIdAsync(session.uid, session.get("deviceId"), gcId).then(function(){
+	var e = null
+	if(!_.isString(gcId)){
+		e = new Error("gcId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('switchGcId', [session.uid, session.get("deviceId"), gcId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1002,10 +1654,17 @@ pro.switchGcId = function(msg, session, next){
 pro.forceSwitchGcId = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.forceSwitchGcId", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
-	this.playerApiService4.forceSwitchGcIdAsync(session.uid, session.get("deviceId"), gcId).then(function(){
+	var e = null
+	if(!_.isString(gcId)){
+		e = new Error("gcId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('forceSwitchGcId', [session.uid, session.get("deviceId"), gcId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1017,10 +1676,10 @@ pro.forceSwitchGcId = function(msg, session, next){
  */
 pro.getDay60Reward = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getDay60Reward", {playerId:session.uid, msg:msg})
-	this.playerApiService5.getDay60RewardAsync(session.uid).then(function(playerData){
+	this.request('getDay60Reward', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1033,10 +1692,16 @@ pro.getDay60Reward = function(msg, session, next){
 pro.getOnlineReward = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getOnlineReward", {playerId:session.uid, msg:msg})
 	var timePoint = msg.timePoint
-	this.playerApiService5.getOnlineRewardAsync(session.uid, timePoint).then(function(playerData){
+	var e = null
+	if(!DataUtils.isOnLineTimePointExist(timePoint)){
+		e = new Error("timePoint 不合法")
+		next(e, ErrorUtils.getError(e))
+	}
+
+	this.request('getOnlineReward', [session.uid, timePoint]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1048,10 +1713,10 @@ pro.getOnlineReward = function(msg, session, next){
  */
 pro.getDay14Reward = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getDay14Reward", {playerId:session.uid, msg:msg})
-	this.playerApiService5.getDay14RewardAsync(session.uid).then(function(playerData){
+	this.request('getDay14Reward', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1064,10 +1729,17 @@ pro.getDay14Reward = function(msg, session, next){
 pro.getLevelupReward = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getLevelupReward", {playerId:session.uid, msg:msg})
 	var levelupIndex = msg.levelupIndex
-	this.playerApiService5.getLevelupRewardAsync(session.uid, levelupIndex).then(function(playerData){
+	var e = null
+	if(!DataUtils.isLevelupIndexExist(levelupIndex)){
+		e = new Error("levelupIndex 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getLevelupReward', [session.uid, levelupIndex]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1081,10 +1753,22 @@ pro.addPlayerBillingData = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.addPlayerBillingData", {playerId:session.uid, msg:msg})
 	var transactionId = msg.transactionId
 	var receiptData = msg.receiptData
-	this.playerIAPService.addPlayerBillingDataAsync(session.uid, transactionId, receiptData).spread(function(playerData, transactionId){
+	var e = null
+	if(!_.isString(transactionId)){
+		e = new Error("transactionId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(receiptData) || _.isEmpty(receiptData.trim())){
+		e = new Error("receiptData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('addPlayerBillingData', [session.uid, transactionId, receiptData]).spread(function(playerData, transactionId){
 		next(null, {code:200, playerData:playerData, transactionId:transactionId})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1096,10 +1780,10 @@ pro.addPlayerBillingData = function(msg, session, next){
  */
 pro.getFirstIAPRewards = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getFirstIAPRewards", {playerId:session.uid, msg:msg})
-	this.playerApiService5.getFirstIAPRewardsAsync(session.uid).then(function(playerData){
+	this.request('getFirstIAPRewards', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1111,10 +1795,10 @@ pro.getFirstIAPRewards = function(msg, session, next){
  */
 pro.passSelinasTest = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.passSelinasTest", {playerId:session.uid, msg:msg})
-	this.playerApiService5.passSelinasTestAsync(session.uid).then(function(playerData){
+	this.request('passSelinasTest', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1127,10 +1811,17 @@ pro.passSelinasTest = function(msg, session, next){
 pro.getDailyTaskRewards = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getDailyTaskRewards", {playerId:session.uid, msg:msg})
 	var taskType = msg.taskType
-	this.playerApiService5.getDailyTaskRewardsAsync(session.uid, taskType).then(function(playerData){
+	var e = null
+	if(!_.contains(_.values(Consts.DailyTaskTypes), taskType)){
+		e = new Error("taskType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getDailyTaskRewards', [session.uid, taskType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1144,10 +1835,22 @@ pro.getGrowUpTaskRewards = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getGrowUpTaskRewards", {playerId:session.uid, msg:msg})
 	var taskType = msg.taskType
 	var taskId = msg.taskId
-	this.playerApiService5.getGrowUpTaskRewardsAsync(session.uid, taskType, taskId).then(function(playerData){
+	var e = null
+	if(!_.contains(Consts.GrowUpTaskTypes, taskType)){
+		e = new Error("taskType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(taskId) || taskId % 1 !== 0 || taskId < 0){
+		e = new Error("taskId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getGrowUpTaskRewards', [session.uid, taskType, taskId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1160,10 +1863,17 @@ pro.getGrowUpTaskRewards = function(msg, session, next){
 pro.getIapGift = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getIapGift", {playerId:session.uid, msg:msg})
 	var giftId = msg.giftId
-	this.playerApiService5.getIapGiftAsync(session.uid, giftId).then(function(playerData){
+	var e = null
+	if(!_.isString(giftId) || !ShortId.isValid(giftId)){
+		e = new Error("giftId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getIapGift', [session.uid, giftId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1175,10 +1885,10 @@ pro.getIapGift = function(msg, session, next){
  */
 pro.getServers = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getServers", {playerId:session.uid, msg:msg})
-	this.playerApiService5.getServersAsync(session.uid).then(function(servers){
+	this.request('getServers', [session.uid]).then(function(servers){
 		next(null, {code:200, servers:servers})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1191,10 +1901,17 @@ pro.getServers = function(msg, session, next){
 pro.switchServer = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.switchServer", {playerId:session.uid, msg:msg})
 	var serverId = msg.serverId
-	this.playerApiService5.switchServerAsync(session.uid, serverId).then(function(){
+	var e = null
+	if(!_.isString(serverId)){
+		e = new Error("serverId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('switchServer', [session.uid, serverId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1207,10 +1924,17 @@ pro.switchServer = function(msg, session, next){
 pro.setPlayerIcon = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.setPlayerIcon", {playerId:session.uid, msg:msg})
 	var icon = msg.icon
-	this.playerApiService5.setPlayerIconAsync(session.uid, icon).then(function(playerData){
+	var e = null
+	if(!_.isNumber(icon) || icon % 1 !== 0 || icon < 1 || icon > 11){
+		e = new Error("icon 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('setPlayerIcon', [session.uid, icon]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1222,10 +1946,10 @@ pro.setPlayerIcon = function(msg, session, next){
  */
 pro.unlockPlayerSecondMarchQueue = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.unlockPlayerSecondMarchQueue", {playerId:session.uid, msg:msg})
-	this.playerApiService5.unlockPlayerSecondMarchQueueAsync(session.uid).then(function(playerData){
+	this.request('unlockPlayerSecondMarchQueue', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1239,10 +1963,22 @@ pro.initPlayerData = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.initPlayerData", {playerId:session.uid, msg:msg})
 	var terrain = msg.terrain
 	var language = msg.language
-	this.playerApiService5.initPlayerDataAsync(session.uid, terrain, language).then(function(playerData){
+	var e = null
+	if(!_.contains(_.values(Consts.AllianceTerrain), terrain)){
+		e = new Error("terrain 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.contains(Consts.AllianceLanguage, language)){
+		e = new Error("language 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('initPlayerData', [session.uid, terrain, language]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1255,16 +1991,17 @@ pro.initPlayerData = function(msg, session, next){
 pro.getFirstJoinAllianceReward = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getFirstJoinAllianceReward", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var e = null
 	if(_.isEmpty(allianceId)){
-		var e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.playerApiService5.getFirstJoinAllianceRewardAsync(session.uid, allianceId).then(function(playerData){
+	this.request('getFirstJoinAllianceReward', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1276,10 +2013,10 @@ pro.getFirstJoinAllianceReward = function(msg, session, next){
  */
 pro.finishFTE = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.finishFTE", {playerId:session.uid, msg:msg})
-	this.playerApiService5.finishFTEAsync(session.uid).then(function(playerData){
+	this.request('finishFTE', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -1292,9 +2029,16 @@ pro.finishFTE = function(msg, session, next){
 pro.getPlayerWallInfo = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getPlayerWallInfo", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
-	this.playerApiService5.getPlayerWallInfoAsync(session.uid, memberId).then(function(wallInfo){
+	var e = null
+	if(!ShortId.isValid(memberId)){
+		e = new Error("questId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getPlayerWallInfo', [session.uid, memberId]).then(function(wallInfo){
 		next(null, {code:200, wallInfo:wallInfo})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }

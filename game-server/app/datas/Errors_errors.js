@@ -958,3 +958,18 @@ errors["fteAlreadyFinished"] = {
 	code:690,
 	message:"新手引导已经完成"
 }
+errors["versionValidateFailed"] = {
+	key:"versionValidateFailed",
+	code:691,
+	message:"版本验证失败"
+}
+errors["versionNotEqual"] = {
+	key:"versionNotEqual",
+	code:692,
+	message:"版本不匹配"
+}
+errors["theAllianceDoNotNeedRequestToJoin"] = {
+	key:"theAllianceDoNotNeedRequestToJoin",
+	code:693,
+	message:"此联盟不需要申请加入"
+}

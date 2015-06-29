@@ -20,8 +20,6 @@ var LogicUtils = require("../utils/logicUtils")
 var ApnService = function(app){
 	this.app = app
 	this.logService = app.get("logService")
-	this.serverId = app.getServerId()
-	this.serverType = app.getServerType()
 	this.apnPushCert = fs.readFileSync(path.resolve("./config/" + app.get('serverConfig').apnPushCert))
 	this.apnService = null
 }

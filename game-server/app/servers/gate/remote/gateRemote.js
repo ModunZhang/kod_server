@@ -40,5 +40,7 @@ pro.getPromotedServer = function(callback){
  * @param callback
  */
 pro.getServers = function(callback){
-	callback(null, this.gateService.getServers())
+	this.gateService.getServersAsync().then(function(servers){
+		callback(null, servers)
+	})
 }

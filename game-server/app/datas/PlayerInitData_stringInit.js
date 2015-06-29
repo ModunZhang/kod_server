@@ -9,17 +9,17 @@ stringInit["firstIAPRewards"] = {
 }
 stringInit["empireRiseDailyTaskRewards"] = {
 	type:"empireRiseDailyTaskRewards",
-	value:"special:chest_1:1"
+	value:"special:chest_1:2"
 }
 stringInit["conquerorDailyTaskRewards"] = {
 	type:"conquerorDailyTaskRewards",
-	value:"special:dragonChest_1:1"
+	value:"special:stamina_1:1"
 }
 stringInit["brotherClubDailyTaskRewards"] = {
 	type:"brotherClubDailyTaskRewards",
-	value:"speedup:speedup_3:2"
+	value:"speedup:speedup_3:5"
 }
 stringInit["growUpDailyTaskRewards"] = {
 	type:"growUpDailyTaskRewards",
-	value:"buff:quarterMaster_1:1"
+	value:"resource:gemClass_2:2"
 }

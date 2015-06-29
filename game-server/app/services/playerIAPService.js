@@ -25,7 +25,7 @@ var PlayerIAPService = function(app){
 	this.env = app.get("env")
 	this.logService = app.get("logService")
 	this.pushService = app.get("pushService")
-	this.dataService = app.get("dataService")
+	this.cacheService = app.get('cacheService');
 	this.Billing = app.get("Billing")
 	this.GemAdd = app.get("GemAdd")
 	this.billingValidateHost =  app.get('serverConfig').iapValidateUrl
@@ -73,6 +73,11 @@ var BillingValidate = function(playerDoc, receiptData, callback){
 		method:"post"
 	}
 	var request = Https.request(httpOptions, function(response){
+		if(response.statusCode != 200){
+			callback(ErrorUtils.iapServerNotAvailable(playerDoc._id, jsonObj))
+			return
+		}
+
 		response.on("data", function(data){
 			try{
 				var jsonObj = JSON.parse(data.toString())
@@ -150,7 +155,7 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	var self = this
 	var memberDoc = null
 	var memberData = []
-	this.dataService.findPlayerAsync(memberId, ['_id', 'logicServerId', 'iapGifts'], true).then(function(doc){
+	this.cacheService.findPlayerAsync(memberId).then(function(doc){
 		memberDoc = doc
 		var iapGift = {
 			id:ShortId.generate(),
@@ -166,14 +171,14 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 		}
 		memberDoc.iapGifts.push(iapGift)
 		memberData.push(["iapGifts." + memberDoc.iapGifts.indexOf(iapGift), iapGift])
-		return self.dataService.updatePlayerAsync(memberDoc._id, memberDoc)
+		return self.cacheService.updatePlayerAsync(memberDoc._id, memberDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
 	}).catch(function(e){
 		self.logService.onEventError("logic.playerIAPService.SendAllianceMembersRewardsAsync", {senderId:senderId, memberId:memberId, reward:reward}, e.stack)
 		var funcs = []
 		if(_.isObject(memberDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(memberDoc._id, null))
+			funcs.push(self.cacheService.updatePlayerAsync(memberDoc._id, null))
 		}
 		return Promise.all(funcs).then(function(){
 			return Promise.resolve()
@@ -189,23 +194,6 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
  * @param callback
  */
 pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callback){
-	if(!_.isFunction(callback)){
-		throw new Error("callback 不合法")
-	}
-	if(!_.isString(playerId)){
-		callback(new Error("playerId 不合法"))
-		return
-	}
-	if(!_.isString(transactionId)){
-		callback(new Error("transactionId 不合法"))
-		return
-	}
-	if(!_.isString(receiptData) || _.isEmpty(receiptData.trim())){
-		callback(new Error("receiptData 不合法"))
-	}
-
-	//callback()
-
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
@@ -213,7 +201,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	var playerData = []
 	var updateFuncs = []
 	var rewards = null
-	this.dataService.findPlayerAsync(playerId, ['_id', 'allianceId', 'countInfo', 'basicInfo', 'resources', 'items'], true).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){
@@ -248,25 +236,14 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 			rewards:rewards
 		}
 		updateFuncs.push([self.GemAdd, self.GemAdd.createAsync, gemAdd])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, [playerData, billing.transactionId])
-		return Promise.resolve()
-	}, function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.dataService.updatePlayerAsync(playerDoc._id, null))
-		}
-		return Promise.all(funcs).then(function(){
-			callback(e)
-			return Promise.reject(e)
-		})
-	}).then(function(){
 		if(_.isObject(rewards.rewardToAllianceMember) && !_.isEmpty(playerDoc.allianceId)){
-			return self.dataService.directFindAllianceAsync(playerDoc.allianceId, [], false).then(function(doc){
+			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc
 				var funcs = []
 				_.each(allianceDoc.members, function(member){
@@ -275,9 +252,17 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 					}
 				})
 				return Promise.all(funcs)
+			}).catch(function(e){
+				self.logService.onEventError("logic.playerIAPService.addPlayerBillingData", {playerId:playerId, transactionId:transactionId}, e.stack)
 			})
 		}
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerIAPService.addPlayerBillingData", {playerId:playerId, transactionId:transactionId}, e.stack)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }

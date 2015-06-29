@@ -8,20 +8,39 @@ var Promise = require("bluebird")
 
 var LogService = require("../../services/logService")
 var PushService = require("../../services/pushService")
+var ApnService = require("../../services/apnService")
 var CacheService = require("../../services/cacheService")
 var DataService = require("../../services/dataService")
 var TimeEventService = require("../../services/timeEventService")
 var PlayerTimeEventService = require("../../services/playerTimeEventService")
 var AllianceTimeEventService = require("../../services/allianceTimeEventService")
+var PlayerApiService = require("../../services/playerApiService")
+var PlayerApiService2 = require("../../services/playerApiService2")
+var PlayerApiService3 = require("../../services/playerApiService3")
+var PlayerApiService4 = require("../../services/playerApiService4")
+var PlayerApiService5 = require("../../services/playerApiService5")
+var PlayerIAPService = require("../../services/playerIAPService")
+var AllianceApiService = require("../../services/allianceApiService")
+var AllianceApiService2 = require("../../services/allianceApiService2")
+var AllianceApiService3 = require("../../services/allianceApiService3")
+var AllianceApiService4 = require("../../services/allianceApiService4")
+var AllianceApiService5 = require("../../services/allianceApiService5")
+var Consts = require("../../consts/consts")
+
 var ServerState = require("../../domains/serverState")
+var Deal = require("../../domains/deal")
+var Billing = require("../../domains/billing")
+var GemUse = require("../../domains/gemUse")
+var GemAdd = require("../../domains/gemAdd")
+var Device = require("../../domains/device")
 var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
-var Consts = require("../../consts/consts")
 
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
 	var currentServer = app.getServerFromConfig(app.getServerId())
+	app.set('loginedCount', 0)
 	app.set("cacheServerId", currentServer.id)
 	var servers = app.getServersFromConfig()
 	_.each(servers, function(server, id){
@@ -33,15 +52,34 @@ life.beforeStartup = function(app, callback){
 	})
 
 	app.set("ServerState", Promise.promisifyAll(ServerState))
+	app.set("Deal", Promise.promisifyAll(Deal))
+	app.set("Billing", Promise.promisifyAll(Billing))
+	app.set("GemUse", Promise.promisifyAll(GemUse))
+	app.set("GemAdd", Promise.promisifyAll(GemAdd))
+	app.set("Device", Promise.promisifyAll(Device))
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
+
 	app.set("logService", new LogService(app))
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))
+	app.set("apnService", new ApnService(app))
 	app.set("timeEventService", Promise.promisifyAll(new TimeEventService(app)))
 	app.set("cacheService", Promise.promisifyAll(new CacheService(app)))
 	app.set("dataService", Promise.promisifyAll(new DataService(app)))
 	app.set("playerTimeEventService", Promise.promisifyAll(new PlayerTimeEventService(app)))
 	app.set("allianceTimeEventService", Promise.promisifyAll(new AllianceTimeEventService(app)))
+	app.set("playerApiService", Promise.promisifyAll(new PlayerApiService(app)))
+	app.set("playerApiService2", Promise.promisifyAll(new PlayerApiService2(app)))
+	app.set("playerApiService3", Promise.promisifyAll(new PlayerApiService3(app)))
+	app.set("playerApiService4", Promise.promisifyAll(new PlayerApiService4(app)))
+	app.set("playerApiService5", Promise.promisifyAll(new PlayerApiService5(app)))
+	app.set("playerIAPService", Promise.promisifyAll(new PlayerIAPService(app)))
+	app.set("allianceApiService", Promise.promisifyAll(new AllianceApiService(app)))
+	app.set("allianceApiService2", Promise.promisifyAll(new AllianceApiService2(app)))
+	app.set("allianceApiService3", Promise.promisifyAll(new AllianceApiService3(app)))
+	app.set("allianceApiService4", Promise.promisifyAll(new AllianceApiService4(app)))
+	app.set("allianceApiService5", Promise.promisifyAll(new AllianceApiService5(app)))
+
 	callback()
 }
 
@@ -51,17 +89,11 @@ life.afterStartup = function(app, callback){
 
 life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 	cancelShutDownTimer()
-	var maxInterval = 30
+	var maxInterval = 60
 	var currentInterval = 0
 	var interval = setInterval(function(){
 		currentInterval++
-		var logicServers = _.filter(app.getServersByType("logic"), function(server){
-			return _.isEqual(server.usedFor, app.getServerId())
-		})
-		var eventServer = _.find(app.getServersByType("event"), function(server){
-			return _.isEqual(server.usedFor, app.getServerId())
-		})
-		if(currentInterval >= maxInterval || (logicServers.length == 0 && !_.isObject(eventServer))){
+		if(currentInterval >= maxInterval || app.get('loginedCount') <= 0){
 			clearInterval(interval)
 			var cacheService = app.get("cacheService")
 			app.get("timeEventService").clearAllTimeEventsAsync().then(function(){
@@ -127,7 +159,7 @@ life.afterStartAll = function(app){
 	}).then(function(docs){
 		var restoreAllianceEventsAsync = function(id){
 			var allianceDoc = null
-			return cacheService.findAllianceAsync(id, [], false).then(function(doc){
+			return cacheService.findAllianceAsync(id).then(function(doc){
 				allianceDoc = doc
 				return timeEventService.restoreAllianceTimeEventsAsync(allianceDoc, serverStopTime)
 			}).then(function(){

@@ -43,11 +43,6 @@ intInit["staminaRecoverPerHour"] = {
 	value:10,
 	desc:"精力每小时恢复量"
 }
-intInit["dragonChestSelectCountPerItem"] = {
-	type:"dragonChestSelectCountPerItem",
-	value:3,
-	desc:"开巨龙宝箱每次选取的材料个数"
-}
 intInit["chestSelectCountPerItem"] = {
 	type:"chestSelectCountPerItem",
 	value:1,

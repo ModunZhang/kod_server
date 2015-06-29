@@ -9,7 +9,6 @@ var _ = require("underscore")
 var crypto = require('crypto')
 var ErrorUtils = require("../../../utils/errorUtils")
 var Consts = require("../../../consts/consts")
-var NodeUtils = require("util")
 
 module.exports = function(app){
 	return new Handler(app)
@@ -20,7 +19,11 @@ var Handler = function(app){
 	this.env = app.get("env")
 	this.logService = app.get("logService")
 	this.sessionService = app.get("sessionService")
-	this.playerApiService = app.get("playerApiService")
+	this.request = app.get('request');
+	this.logicServerId = app.get('logicServerId')
+	this.chatServerId = app.get('chatServerId')
+	this.rankServerId = app.get('rankServerId')
+	this.cacheServerId = app.get('cacheServerId');
 }
 var pro = Handler.prototype
 
@@ -52,22 +55,75 @@ pro.login = function(msg, session, next){
 		return
 	}
 
+	var self = this
 	var playerDoc = null
 	var allianceDoc = null
 	var enemyAllianceDoc = null
-	this.playerApiService.playerLoginAsync(session, deviceId, requestTime).spread(function(doc_1, doc_2, doc_3){
+	this.request('login', [deviceId, requestTime, this.logicServerId]).spread(function(doc_1, doc_2, doc_3){
 		playerDoc = doc_1
 		allianceDoc = doc_2
 		enemyAllianceDoc = doc_3
 	}).then(function(){
-		//console.log(NodeUtils.inspect(playerDoc, false, null))
-		next(null, {
-			code:200,
-			playerData:playerDoc,
-			allianceData:allianceDoc,
-			enemyAllianceData:enemyAllianceDoc
+		return new Promise(function(resolve, reject){
+			BindPlayerSession.call(self, session, deviceId, playerDoc, allianceDoc, function(e){
+				if(_.isObject(e)) reject(e)
+				else resolve()
+			})
 		})
+	}).then(function(){
+		self.logService.onRequest("logic.entryHandler.login success", {
+			deviceId:deviceId,
+			logicServerId:self.logicServerId
+		})
+		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc, enemyAllianceData:enemyAllianceDoc})
 	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
+		self.logService.onRequestError("logic.entryHandler.login failed", {
+			deviceId:deviceId,
+			logicServerId:self.logicServerId
+		}, e.stack)
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, callback){
+	var self = this
+	session.bind(playerDoc._id)
+	session.set("deviceId", deviceId)
+	session.set("logicServerId", this.logicServerId)
+	session.set("chatServerId", this.chatServerId)
+	session.set("rankServerId", this.rankServerId)
+	session.set("cacheServerId", this.cacheServerId)
+	session.set("name", playerDoc.basicInfo.name)
+	session.set("icon", playerDoc.basicInfo.icon)
+	session.set("allianceId", _.isObject(allianceDoc) ? allianceDoc._id : "")
+	session.set("allianceTag", _.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "")
+	session.set("vipExp", playerDoc.basicInfo.vipExp)
+	session.set("isVipActive", playerDoc.vipEvents.length > 0)
+	session.on("closed", function(session, reason){
+		self.logService.onRequest("logic.entryHandler.logout", {
+			playerId:session.uid,
+			logicServerId:self.logicServerId,
+			reason:reason
+		})
+		self.request('logout', [session.uid, self.logicServerId, reason]).then(function(){
+			self.logService.onRequest("logic.entryHandler.logout success", {
+				playerId:session.uid,
+				logicServerId:self.logicServerId,
+				reason:reason
+			})
+			self.app.set("loginedCount", self.app.get("loginedCount") - 1)
+		}).catch(function(e){
+			self.logService.onRequestError("logic.entryHandler.logout failed", {
+				playerId:session.uid,
+				logicServerId:self.logicServerId,
+				reason:reason
+			}, e.stack)
+			self.app.set("loginedCount", self.app.get("loginedCount") - 1)
+		})
+	})
+	session.pushAll(function(err){
+		process.nextTick(function(){
+			callback(err)
+		})
 	})
 }
