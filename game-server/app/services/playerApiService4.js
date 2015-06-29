@@ -646,6 +646,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			playerData.push(["pve.rewardedFloors." + playerDoc.pve.rewardedFloors.indexOf(pveData.rewardedFloor), pveData.rewardedFloor])
 		}
 		playerDoc.resources.stamina -= staminaUsed
+		console.log(playerDoc.resources.stamina, staminaUsed, '22222222222');
 		playerDoc.pve.totalStep += staminaUsed
 		playerData.push(["pve.totalStep", playerDoc.pve.totalStep])
 		playerDoc.pve.location = location
