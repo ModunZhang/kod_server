@@ -598,7 +598,7 @@ Utils.getPlayerStamina = function(playerDoc){
 
 	var totalPerSecond = staminaRecoverPerHour / 60 / 60
 	var totalSecond = (Date.now() - playerDoc.resources.refreshTime) / 1000
-	var output = Math.floor(totalSecond * totalPerSecond)
+	var output = (totalSecond * totalPerSecond).toFixed(4);
 	var totalStamina = playerDoc.resources["stamina"] + output
 	return totalStamina > staminaMax ? staminaMax : totalStamina
 }
