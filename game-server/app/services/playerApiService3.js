@@ -169,7 +169,7 @@ pro.deleteMails = function(playerId, mailIds, callback){
 }
 
 /**
- * 删除邮件
+ * 删除已发邮件
  * @param playerId
  * @param mailIds
  * @param callback
