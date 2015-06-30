@@ -2,6 +2,7 @@
   "mongoHost": "mongodb://172.31.2.115:27017/kod",
   "iapValidateUrl":"itunes.apple.com",
   "iapValidatePath":"/verifyReceipt",
+  "apnProductionMode":true,
   "apnPushCert":"alan_aps_production.p12",
   "clientTagValidateUrl":"http://54.223.166.65:3000/update/res/version.json",
   "clientTagCheckEnabled":true,

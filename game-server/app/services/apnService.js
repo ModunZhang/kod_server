@@ -20,6 +20,7 @@ var LogicUtils = require("../utils/logicUtils")
 var ApnService = function(app){
 	this.app = app
 	this.logService = app.get("logService")
+	this.apnProductionMode = app.get('serverConfig').apnProductionMode;
 	this.apnPushCert = fs.readFileSync(path.resolve("./config/" + app.get('serverConfig').apnPushCert))
 	this.apnService = null
 }
@@ -34,7 +35,7 @@ pro.getApnService = function(){
 	var self = this
 	if(!_.isObject(this.apnService)){
 		var service = new apn.Connection({
-			production:false,
+			production:self.apnProductionMode,
 			pfx:self.apnPushCert,
 			passphrase:"aisinile",
 			cacheLength:"200"
