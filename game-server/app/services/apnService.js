@@ -8,7 +8,6 @@
 var _ = require("underscore")
 var Promise = require("bluebird")
 var apn = require("apn")
-var fs = require("fs")
 var path = require("path")
 var sprintf = require("sprintf")
 
@@ -21,7 +20,7 @@ var ApnService = function(app){
 	this.app = app
 	this.logService = app.get("logService")
 	this.apnProductionMode = app.get('serverConfig').apnProductionMode;
-	this.apnPushCert = fs.readFileSync(path.resolve("./config/" + app.get('serverConfig').apnPushCert))
+	this.apnPushCert = path.join(__dirname, '../../config/' + app.get('serverConfig').apnPushCert);
 	this.apnService = null
 }
 module.exports = ApnService
