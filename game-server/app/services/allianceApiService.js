@@ -54,15 +54,6 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		}
 		var gemUsed = DataUtils.getAllianceIntInit("createAllianceGem")
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemUsed
-		var gemUse = {
-			playerId:playerId,
-			used:gemUsed,
-			left:playerDoc.resources.gem,
-			api:"createAlliance"
-		}
-		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
-		playerData.push(["resources.gem", playerDoc.resources.gem])
 
 		var alliance = {
 			_id:ShortId.generate(),
@@ -96,6 +87,16 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		allianceDoc = doc
 		playerDoc.allianceId = allianceDoc._id
 		playerData.push(["allianceId", playerDoc.allianceId])
+
+		playerDoc.resources.gem -= gemUsed
+		var gemUse = {
+			playerId:playerId,
+			used:gemUsed,
+			left:playerDoc.resources.gem,
+			api:"createAlliance"
+		}
+		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		playerData.push(["resources.gem", playerDoc.resources.gem])
 
 		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
 		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc,{allianceId:allianceDoc._id, allianceTag:allianceDoc.basicInfo.tag}])
