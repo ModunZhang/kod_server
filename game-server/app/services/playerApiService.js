@@ -243,6 +243,7 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 	}).then(function(){
 		playerDoc.logicServerId = null
 		playerDoc.countInfo.todayOnLineTime += Date.now() - playerDoc.countInfo.lastLoginTime
+		playerDoc.countInfo.lastLoginTime = Date.now();
 		if(!_.isEmpty(playerDoc.allianceId))
 			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc

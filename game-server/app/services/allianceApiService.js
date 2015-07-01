@@ -47,12 +47,13 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 	var playerData = []
 	var allianceDoc = null
 	var updateFuncs = []
+	var gemUsed = null
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(_.isString(playerDoc.allianceId)){
 			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		}
-		var gemUsed = DataUtils.getAllianceIntInit("createAllianceGem")
+		gemUsed = DataUtils.getAllianceIntInit("createAllianceGem")
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 
 		var alliance = {
