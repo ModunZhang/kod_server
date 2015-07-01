@@ -741,10 +741,10 @@ pro.cleargc = function(playerId, callback){
 /**
  * 开启联盟战
  * @param playerId
- * @param defenceAllianceId
+ * @param defenceAllianceTag
  * @param callback
  */
-pro.alliancefight = function(playerId, defenceAllianceId, callback){
+pro.alliancefight = function(playerId, defenceAllianceTag, callback){
 	var self = this
 	var playerDoc = null
 	var attackAllianceDoc = null
@@ -767,9 +767,11 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, attackAllianceDoc._id))
 		}
-		return self.cacheService.findAllianceAsync(defenceAllianceId)
+		return self.cacheService.getAllianceModel().findOne({'basicInfo.tag':defenceAllianceTag}).then(function(doc){
+			if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(defenceAllianceTag))
+			return self.cacheService.findAllianceAsync(doc._id)
+		})
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(defenceAllianceId))
 		defenceAllianceDoc = doc
 		if(!_.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Peace))
 			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, defenceAllianceDoc._id))
@@ -777,7 +779,7 @@ pro.alliancefight = function(playerId, defenceAllianceId, callback){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent])
 		}
 		var now = Date.now()
-		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 60 * 1000)
+		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 1 * 1000)
 		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
 		attackAllianceData.push(["basicInfo", attackAllianceDoc.basicInfo])
 		attackAllianceData.push(["allianceFight", attackAllianceDoc.allianceFight])

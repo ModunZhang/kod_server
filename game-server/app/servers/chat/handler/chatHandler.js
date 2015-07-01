@@ -283,11 +283,11 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"alliancefight",
-			desc:"开启联盟战:alliancefight 目标联盟Id",
+			desc:"开启联盟战:alliancefight 目标联盟Tag",
 			func:function(session, uid, text, callback){
 				var self = this
-				var defenceAllianceId = text.split(" ")[1]
-				self.app.rpc.cache.commandRemote.alliancefight(session, uid, defenceAllianceId, function(e){
+				var defenceAllianceTag = text.split(" ")[1]
+				self.app.rpc.cache.commandRemote.alliancefight(session, uid, defenceAllianceTag, function(e){
 					callback(e)
 				})
 			}
