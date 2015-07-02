@@ -2,7 +2,7 @@ var path = require("path")
 var pomelo = require("./pomelo-client")
 var Promise = require("bluebird")
 var Http = require('http')
-var Https = require("https")
+var Https = require('https')
 var _ = require("underscore")
 
 var Api = require("./api")

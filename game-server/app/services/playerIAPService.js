@@ -199,6 +199,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
+	var responseReceiptData = null
 	var billing = null
 	var playerData = []
 	var updateFuncs = []
@@ -210,7 +211,8 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId, receiptData))
 		var billingValidateAsync = Promise.promisify(BillingValidate, self)
 		return billingValidateAsync(playerDoc, receiptData)
-	}).then(function(responseReceiptData){
+	}).then(function(respData){
+		responseReceiptData = respData
 		billing = CreateBillingItem(playerId, responseReceiptData)
 		return self.Billing.createAsync(billing)
 	}).then(function(){
