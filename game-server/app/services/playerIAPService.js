@@ -73,14 +73,16 @@ var BillingValidate = function(playerDoc, receiptData, callback){
 		method:"post"
 	}
 	var request = Https.request(httpOptions, function(response){
+		var jsonObj = null
 		if(response.statusCode != 200){
+			jsonObj = {status:response.statusCode}
 			callback(ErrorUtils.iapServerNotAvailable(playerDoc._id, jsonObj))
 			return
 		}
 
 		response.on("data", function(data){
 			try{
-				var jsonObj = JSON.parse(data.toString())
+				jsonObj = JSON.parse(data.toString())
 			}catch(e){
 				jsonObj = {status:21005, error:e.stack}
 			}
@@ -197,6 +199,7 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
+	var responseReceiptData = null
 	var billing = null
 	var playerData = []
 	var updateFuncs = []
@@ -208,7 +211,8 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId, receiptData))
 		var billingValidateAsync = Promise.promisify(BillingValidate, self)
 		return billingValidateAsync(playerDoc, receiptData)
-	}).then(function(responseReceiptData){
+	}).then(function(respData){
+		responseReceiptData = respData
 		billing = CreateBillingItem(playerId, responseReceiptData)
 		return self.Billing.createAsync(billing)
 	}).then(function(){

@@ -1,6 +1,6 @@
 {
   "mongoHost": "mongodb://172.31.2.115:27017/kod",
-  "iapValidateUrl":"itunes.apple.com",
+  "iapValidateUrl":"buy.itunes.apple.com",
   "iapValidatePath":"/verifyReceipt",
   "apnProductionMode":true,
   "apnPushCert":"alan_aps_production.p12",
