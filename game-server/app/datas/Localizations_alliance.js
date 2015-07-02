@@ -77,15 +77,15 @@ alliance["HelpDefenceAttackContent"] = {
 }
 alliance["AttackAllianceMessage"] = {
 	key:"AttackAllianceMessage",
-	cn:"我方联盟刚刚发起了一场联盟会战，请做好战斗准备！",
-	en:"这是英文:我方联盟刚刚发起了一场联盟会战，，请做好战斗准备！",
-	tw:"我方聯盟剛剛發起了壹場聯盟會戰，請做好戰鬥準備！"
+	cn:"我方联盟发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
+	en:"这是英文:我方联盟刚刚发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
+	tw:"我方聯盟剛剛發起了壹場聯盟會戰，戰鬥將於20分鐘後開始，請做好戰鬥準備！"
 }
 alliance["AllianceBeAttackedMessage"] = {
 	key:"AllianceBeAttackedMessage",
-	cn:"%s 联盟向我方发起了一场联盟会战，请做好战斗准备！",
-	en:"这是英文:%s 联盟对我方发起了一场联盟会战，请做好战斗准备！",
-	tw:"%s 聯盟向我方發起了壹場聯盟會戰，請做好戰鬥準備！"
+	cn:"%s联盟向我方发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
+	en:"这是英文:%s联盟对我方发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
+	tw:"%s聯盟向我方發起了壹場聯盟會戰，戰鬥將於20分鐘後開始，請做好戰鬥準備！"
 }
 alliance["AllianceTitleBeModifyedTitle"] = {
 	key:"AllianceTitleBeModifyedTitle",
