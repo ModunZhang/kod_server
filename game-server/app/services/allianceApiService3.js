@@ -114,6 +114,7 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "upgradeAllianceBuilding")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "upgradeAllianceBuilding"))
 		}
+
 		var building = DataUtils.getAllianceBuildingByName(allianceDoc, buildingName)
 		var upgradeRequired = DataUtils.getAllianceBuildingUpgradeRequired(buildingName, building.level + 1)
 		if(upgradeRequired.honour > allianceDoc.basicInfo.honour) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
@@ -175,6 +176,7 @@ pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callbac
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "upgradeAllianceVillage")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "upgradeAllianceVillage"))
 		}
+
 		var villageLevel = allianceDoc.villageLevels[villageType]
 		var upgradeRequired = DataUtils.getAllianceVillageUpgradeRequired(villageType, villageLevel)
 		if(upgradeRequired.honour > allianceDoc.basicInfo.honour) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
@@ -226,6 +228,7 @@ pro.moveAllianceBuilding = function(playerId, allianceId, mapObjectId, locationX
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "moveAllianceBuilding")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "moveAllianceBuilding"))
 		}
+
 		var mapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, mapObjectId)
 		if(_.isEqual(mapObject.name, "member")) return Promise.reject(ErrorUtils.theAllianceBuildingNotAllowMove(playerId, allianceDoc._id, mapObject))
 		var honourNeeded = DataUtils.getAllianceMoveBuildingHonourRequired(mapObject.name)
@@ -288,6 +291,7 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "activateAllianceShrineStage")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "activateAllianceShrineStage"))
 		}
+
 		if(DataUtils.isAllianceShrineStageLocked(allianceDoc, stageName)) return Promise.reject(ErrorUtils.theShrineStageIsLocked(playerId, allianceDoc._id, stageName))
 		if(LogicUtils.isAllianceShrineStageActivated(allianceDoc, stageName)) return Promise.reject(ErrorUtils.theAllianceShrineEventAlreadyActived(playerId, allianceDoc._id, stageName))
 		var activeStageRequired = DataUtils.getAllianceActiveShrineStageRequired(stageName)
@@ -340,26 +344,19 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 	var allianceDoc = null
 	var allianceData = []
 	var enemyAllianceData = []
+	var dragon = null
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var dragon = playerDoc.dragons[dragonType]
+		dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
 		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
 		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
-		dragon.status = Consts.DragonStatus.March
-		playerData.push(["dragons." + dragonType, dragon])
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
-		_.each(soldiers, function(soldier){
-			playerDoc.soldiers[soldier.name] -= soldier.count
-			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
-		})
-		DataUtils.refreshPlayerPower(playerDoc, playerData)
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -369,6 +366,16 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 		if(LogicUtils.isPlayerHasTroopMarchToAllianceShrineStage(allianceDoc, shrineEvent, playerId)){
 			return Promise.reject(ErrorUtils.youHadSendTroopToTheShrineStage(playerId, allianceDoc._id, shrineEvent.stageName))
 		}
+
+		dragon.status = Consts.DragonStatus.March
+		playerData.push(["dragons." + dragonType, dragon])
+		_.each(soldiers, function(soldier){
+			playerDoc.soldiers[soldier.name] -= soldier.count
+			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
+		})
+		DataUtils.refreshPlayerPower(playerDoc, playerData)
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+
 		var event = MarchUtils.createAttackAllianceShrineMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, shrineEventId)
 		allianceDoc.attackMarchEvents.push(event)
 		allianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(event), event])

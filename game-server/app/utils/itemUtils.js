@@ -61,18 +61,31 @@ var MovingConstruction = function(playerDoc, playerData, fromBuildingLocation, f
 	if(_.isObject(toHouse)){
 		playerData.push(["buildings.location_" + toBuilding.location + ".houses." + toBuilding.houses.indexOf(toHouse), null])
 		LogicUtils.removeItemInArray(toBuilding.houses, toHouse)
-		if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, fromBuildingLocation, toHouse.type, fromHouseLocation)) return Promise.reject(ErrorUtils.houseLocationNotLegal(playerDoc._id, fromBuildingLocation, fromHouseLocation, toHouse.type))
-	}
-	if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, toBuildingLocation, house.type, toHouseLocation)) return Promise.reject(ErrorUtils.houseLocationNotLegal(playerDoc._id, toBuildingLocation, toHouseLocation, house.type))
-
-	if(_.isObject(toHouse)){
+		if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, fromBuildingLocation, toHouse.type, fromHouseLocation)){
+			fromBuilding.houses.push(house);
+			toBuilding.houses.push(toHouse);
+			return Promise.reject(ErrorUtils.houseLocationNotLegal(playerDoc._id, fromBuildingLocation, fromHouseLocation, toHouse.type));
+		}
+		if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, toBuildingLocation, house.type, toHouseLocation)){
+			fromBuilding.houses.push(house);
+			toBuilding.houses.push(toHouse);
+			return Promise.reject(ErrorUtils.houseLocationNotLegal(playerDoc._id, toBuildingLocation, toHouseLocation, house.type))
+		}
 		toHouse.location = fromHouseLocation
 		fromBuilding.houses.push(toHouse)
 		playerData.push(["buildings.location_" + fromBuilding.location + ".houses." + fromBuilding.houses.indexOf(toHouse), toHouse])
+		house.location = toHouseLocation
+		toBuilding.houses.push(house)
+		playerData.push(["buildings.location_" + toBuilding.location + ".houses." + toBuilding.houses.indexOf(house), house])
+	}else{
+		if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, toBuildingLocation, house.type, toHouseLocation)){
+			fromBuilding.houses.push(house);
+			return Promise.reject(ErrorUtils.houseLocationNotLegal(playerDoc._id, toBuildingLocation, toHouseLocation, house.type))
+		}
+		house.location = toHouseLocation
+		toBuilding.houses.push(house)
+		playerData.push(["buildings.location_" + toBuilding.location + ".houses." + toBuilding.houses.indexOf(house), house])
 	}
-	house.location = toHouseLocation
-	toBuilding.houses.push(house)
-	playerData.push(["buildings.location_" + toBuilding.location + ".houses." + toBuilding.houses.indexOf(house), house])
 
 	DataUtils.refreshPlayerResources(playerDoc)
 	playerData.push(["resources", playerDoc.resources])

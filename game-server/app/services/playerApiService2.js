@@ -50,7 +50,6 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		var gemUsed = 0
 		var makeRequired = DataUtils.getPlayerMakeDragonEquipmentRequired(playerDoc, equipmentName)
 		if(!LogicUtils.isEnough(makeRequired.materials, playerDoc.dragonMaterials)) return Promise.reject(ErrorUtils.dragonEquipmentMaterialsNotEnough(playerId, equipmentName))
-
 		var buyedResources = null
 		var preMakeEvent = null
 		DataUtils.refreshPlayerResources(playerDoc)
@@ -58,7 +57,6 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			gemUsed += DataUtils.getGemByTimeInterval(makeRequired.makeTime)
 			buyedResources = DataUtils.buyResources(playerDoc, {coin:makeRequired.coin}, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
 			if(playerDoc.dragonEquipmentEvents.length > 0){
 				preMakeEvent = playerDoc.dragonEquipmentEvents[0]
@@ -67,7 +65,6 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			}
 			buyedResources = DataUtils.buyResources(playerDoc, {coin:makeRequired.coin}, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		if(gemUsed > 0){
@@ -80,6 +77,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce({coin:makeRequired.coin}, playerDoc.resources)
 		LogicUtils.reduce(makeRequired.materials, playerDoc.dragonMaterials)
 		_.each(makeRequired.materials, function(value, key){
@@ -149,11 +147,9 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			gemUsed += DataUtils.getGemByTimeInterval(treatRequired.treatTime)
 			buyedResources = DataUtils.buyResources(playerDoc, treatRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
 			buyedResources = DataUtils.buyResources(playerDoc, treatRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			if(playerDoc.treatSoldierEvents.length > 0){
 				preTreatEvent = playerDoc.treatSoldierEvents[0]
 				var timeRemain = (preTreatEvent.finishTime - Date.now()) / 1000
@@ -171,6 +167,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(treatRequired.resources, playerDoc.resources)
 		if(finishNow){
 			_.each(soldiers, function(soldier){
@@ -795,7 +792,7 @@ pro.readMails = function(playerId, mailIds, callback){
 		for(var i = 0; i < mailIds.length; i++){
 			(function(){
 				var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-				if(!_.isObject(mail)) throw ErrorUtils.mailNotExist(playerId, mailIds[i])
+				if(!_.isObject(mail)) return;
 				mail.isRead = true
 				playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isRead", true])
 			})()

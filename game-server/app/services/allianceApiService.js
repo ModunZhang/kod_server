@@ -46,8 +46,8 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 	var playerDoc = null
 	var playerData = []
 	var allianceDoc = null
-	var updateFuncs = []
 	var gemUsed = null
+	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(_.isString(playerDoc.allianceId)){
@@ -278,6 +278,7 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, language, 
 	var forceSave = false
 	var allianceDoc = null
 	var allianceData = []
+	var gemUsed = null
 	var pushFuncs = []
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
@@ -289,19 +290,9 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, language, 
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceBasicInfo")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "editAllianceBasicInfo"))
 		}
-		var gemUsed = DataUtils.getAllianceIntInit("editAllianceBasicInfoGem")
-		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemUsed
-		playerData.push(["resources.gem", playerDoc.resources.gem])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 
-		var gemUse = {
-			playerId:playerId,
-			used:gemUsed,
-			left:playerDoc.resources.gem,
-			api:"editAllianceBasicInfo"
-		}
-		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		gemUsed = DataUtils.getAllianceIntInit("editAllianceBasicInfoGem")
+		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		return Promise.resolve()
 	}).then(function(){
 		if(!_.isEqual(allianceDoc.basicInfo.name, name)){
@@ -330,6 +321,18 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, language, 
 			return Promise.resolve()
 		}
 	}).then(function(){
+		playerDoc.resources.gem -= gemUsed
+		playerData.push(["resources.gem", playerDoc.resources.gem])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+
+		var gemUse = {
+			playerId:playerId,
+			used:gemUsed,
+			left:playerDoc.resources.gem,
+			api:"editAllianceBasicInfo"
+		}
+		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+
 		var isNameChanged = !_.isEqual(allianceDoc.basicInfo.name, name)
 		var isTagChanged = !_.isEqual(allianceDoc.basicInfo.tag, tag)
 		var isFlagChanged = !_.isEqual(allianceDoc.basicInfo.flag, flag)
@@ -400,6 +403,7 @@ pro.editAllianceTerrian = function(playerId, playerName, allianceId, terrain, ca
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceTerrian")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "editAllianceTerrian"))
 		}
+
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id))
 		var honourUsed = DataUtils.getAllianceIntInit("editAllianceTerrianHonour")
 		if(allianceDoc.basicInfo.honour < honourUsed) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
@@ -676,6 +680,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "kickAllianceMemberOff")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "kickAllianceMemberOff"))
 		}
+
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotKickMemberOff(playerId, allianceDoc._id, memberId))
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))

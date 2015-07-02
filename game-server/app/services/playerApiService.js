@@ -328,24 +328,19 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		}else{
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.buildingMaterials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
@@ -357,6 +352,8 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
@@ -418,6 +415,21 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 		if(!_.contains(_.values(Consts.HouseBuildingMap), building.type)) return Promise.reject(ErrorUtils.onlyProductionBuildingCanSwitch(playerId, buildingLocation))
 		var gemUsed = DataUtils.getPlayerIntInit("switchProductionBuilding")
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+
+		var houseType = Consts.BuildingHouseMap[building.type]
+		var maxHouseCount = DataUtils.getPlayerHouseMaxCountByType(playerDoc, houseType)
+		var currentCount = DataUtils.getPlayerHouseCountByType(playerDoc, houseType)
+		var buildingAddedHouseCount = DataUtils.getPlayerBuildingAddedHouseCount(playerDoc, buildingLocation)
+		if(maxHouseCount - buildingAddedHouseCount < currentCount) return Promise.reject(ErrorUtils.houseTooMuchMore(playerId, buildingLocation))
+
+		var buildingType = building.type
+		building.type = newBuildingName
+		building.level -= 1
+		if(!DataUtils.isPlayerBuildingUpgradeLegal(playerDoc, buildingLocation)){
+			building.type = buildingType
+			building.level += 1
+			return Promise.reject(ErrorUtils.buildingUpgradePreConditionNotMatch(playerId, buildingLocation))
+		}
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {
 			playerId:playerId,
@@ -428,15 +440,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 
-		var houseType = Consts.BuildingHouseMap[building.type]
-		var maxHouseCount = DataUtils.getPlayerHouseMaxCountByType(playerDoc, houseType)
-		var currentCount = DataUtils.getPlayerHouseCountByType(playerDoc, houseType)
-		var buildingAddedHouseCount = DataUtils.getPlayerBuildingAddedHouseCount(playerDoc, buildingLocation)
-		if(maxHouseCount - buildingAddedHouseCount < currentCount) return Promise.reject(ErrorUtils.houseTooMuchMore(playerId, buildingLocation))
 		building.type = newBuildingName
-		building.level -= 1
-		if(!DataUtils.isPlayerBuildingUpgradeLegal(playerDoc, buildingLocation)) return Promise.reject(ErrorUtils.buildingUpgradePreConditionNotMatch(playerId, buildingLocation))
-		building.level += 1
 		playerData.push(["buildings.location_" + buildingLocation + ".type", newBuildingName])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
@@ -480,8 +484,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		if(!DataUtils.isBuildingHasHouse(buildingLocation)) return Promise.reject(ErrorUtils.buildingNotAllowHouseCreate(playerId, buildingLocation, houseLocation, houseType))
 		if(!LogicUtils.isHouseCanCreateAtLocation(playerDoc, buildingLocation, houseType, houseLocation)) return Promise.reject(ErrorUtils.houseLocationNotLegal(playerId, buildingLocation, houseLocation, houseType))
 		if(!DataUtils.isPlayerHouseUpgradeLegal(playerDoc, buildingLocation, houseType, houseLocation)) return Promise.reject(ErrorUtils.houseUpgradePrefixNotMatch(playerId, buildingLocation, houseLocation, houseType))
-		return Promise.resolve()
-	}).then(function(){
+
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getPlayerHouseUpgradeRequired(playerDoc, houseType, 1)
 		var freeCitizenLimit = DataUtils.getPlayerFreeCitizenLimit(playerDoc)
@@ -494,17 +497,13 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		}else{
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.buildingMaterials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
@@ -522,6 +521,8 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
@@ -606,8 +607,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		if(LogicUtils.hasHouseEvents(playerDoc, building.location, house.location))return Promise.reject(ErrorUtils.houseUpgradingNow(playerId, buildingLocation, houseLocation))
 		if(DataUtils.isHouseReachMaxLevel(house.type, house.level))return Promise.reject(ErrorUtils.houseReachMaxLevel(playerId, buildingLocation, houseLocation))
 		if(!DataUtils.isPlayerHouseUpgradeLegal(playerDoc, buildingLocation, house.type, houseLocation)) return Promise.reject(ErrorUtils.houseUpgradePrefixNotMatch(playerId, buildingLocation, houseLocation, house.type))
-		return Promise.resolve()
-	}).then(function(){
+
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getPlayerHouseUpgradeRequired(playerDoc, house.type, house.level + 1)
 		var freeCitizenLimit = DataUtils.getPlayerFreeCitizenLimit(playerDoc)
@@ -620,17 +620,13 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		}else{
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.buildingMaterials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 			if(!DataUtils.playerHasFreeBuildQueue(playerDoc)){
 				preBuildEvent = LogicUtils.getSmallestBuildEvent(playerDoc)
 				var timeRemain = (preBuildEvent.event.finishTime - Date.now()) / 1000
@@ -648,6 +644,8 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
@@ -772,11 +770,9 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 			gemUsed += DataUtils.getGemByTimeInterval(makeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(playerDoc, makeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
 			buyedResources = DataUtils.buyResources(playerDoc, makeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		if(gemUsed > 0){
@@ -789,6 +785,7 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(makeRequired.resources, playerDoc.resources)
 
 		event = DataUtils.createMaterialEvent(building, category, finishNow)
@@ -885,11 +882,9 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
 			buyedResources = DataUtils.buyResources(playerDoc, recruitRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
 			buyedResources = DataUtils.buyResources(playerDoc, recruitRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			if(!DataUtils.playerHasFreeRecruitQueue(playerDoc)){
 				preRecruitEvent = LogicUtils.getSmallestRecruitEvent(playerDoc)
 				var timeRemain = (preRecruitEvent.event.finishTime - Date.now()) / 1000
@@ -907,6 +902,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(recruitRequired.resources, playerDoc.resources)
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
 		if(finishNow){
@@ -976,11 +972,9 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			gemUsed += DataUtils.getGemByTimeInterval(recruitRequired.recruitTime)
 			buyedResources = DataUtils.buyResources(playerDoc, {citizen:recruitRequired.citizen}, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
 			buyedResources = DataUtils.buyResources(playerDoc, {citizen:recruitRequired.citizen}, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			if(!DataUtils.playerHasFreeRecruitQueue(playerDoc)){
 				preRecruitEvent = LogicUtils.getSmallestRecruitEvent(playerDoc)
 				var timeRemain = (preRecruitEvent.event.finishTime - Date.now()) / 1000
@@ -998,6 +992,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(recruitRequired.materials, playerDoc.soldierMaterials)
 		LogicUtils.reduce({citizen:recruitRequired.citizen}, playerDoc.resources)
 		playerData.push(["soldierMaterials", playerDoc.soldierMaterials])

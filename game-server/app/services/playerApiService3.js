@@ -149,7 +149,7 @@ pro.deleteMails = function(playerId, mailIds, callback){
 		for(var i = 0; i < mailIds.length; i++){
 			(function(){
 				var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-				if(!_.isObject(mail)) throw ErrorUtils.mailNotExist(playerId, mailIds[i])
+				if(!_.isObject(mail)) return;
 				playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
 				LogicUtils.removeItemInArray(playerDoc.mails, mail)
 			})()
@@ -186,7 +186,7 @@ pro.deleteSendMails = function(playerId, mailIds, callback){
 				var mail = _.find(playerDoc.sendMails, function(mail){
 					return _.isEqual(mail.id, mailId)
 				})
-				if(!_.isObject(mail)) throw ErrorUtils.mailNotExist(playerId, mailId)
+				if(!_.isObject(mail)) return;
 				playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mail), null])
 				LogicUtils.removeItemInArray(playerDoc.sendMails, mail)
 			})()
@@ -220,7 +220,7 @@ pro.readReports = function(playerId, reportIds, callback){
 		for(var i = 0; i < reportIds.length; i++){
 			(function(){
 				var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
-				if(!_.isObject(report)) throw ErrorUtils.reportNotExist(playerId, reportIds[i])
+				if(!_.isObject(report)) return;
 				report.isRead = true
 				playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isRead", true])
 			})()
@@ -364,7 +364,7 @@ pro.deleteReports = function(playerId, reportIds, callback){
 		for(var i = 0; i < reportIds.length; i++){
 			(function(){
 				var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
-				if(!_.isObject(report)) throw ErrorUtils.reportNotExist(playerId, reportIds[i])
+				if(!_.isObject(report)) return;
 				playerData.push(["reports." + playerDoc.reports.indexOf(report), null])
 				LogicUtils.removeItemInArray(playerDoc.reports, report)
 			})()
@@ -419,16 +419,18 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+		var dragon = playerDoc.dragons[dragonType]
+		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragon.type))
+		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
+		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
+
 		var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
 		if(_.isObject(defenceDragon)){
 			DataUtils.refreshPlayerDragonsHp(playerDoc, defenceDragon)
 			defenceDragon.status = Consts.DragonStatus.Free
 			playerData.push(["dragons." + defenceDragon.type, defenceDragon])
 		}
-		var dragon = playerDoc.dragons[dragonType]
-		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragon.type))
-		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
-		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
+
 		dragon.status = Consts.DragonStatus.Defence
 		playerData.push(["dragons." + dragon.type + ".status", dragon.status])
 
@@ -597,7 +599,6 @@ pro.buySellItem = function(playerId, itemId, callback){
 		var totalPrice = itemDoc.itemData.price * count
 		var buyedResources = DataUtils.buyResources(playerDoc, {coin:totalPrice}, playerDoc.resources)
 		var gemUsed = buyedResources.gemUsed
-		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
@@ -609,6 +610,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		playerDoc.resources.coin -= totalPrice
 		playerDoc[type][itemDoc.itemData.name] += realCount
 		if(!_.isEqual(type, "resources"))

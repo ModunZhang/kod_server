@@ -55,8 +55,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		if(tech.index > 9) return Promise.reject(new Error("此科技还未开放"))
 		if(DataUtils.isProductionTechReachMaxLevel(tech.level)) return Promise.reject(ErrorUtils.techReachMaxLevel(playerId, techName, tech))
 		if(tech.level == 0 && !DataUtils.isPlayerUnlockProductionTechLegal(playerDoc, techName)) return Promise.reject(ErrorUtils.techUpgradePreConditionNotMatch(playerId, techName, tech))
-		return Promise.resolve()
-	}).then(function(){
+
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getPlayerProductionTechUpgradeRequired(playerDoc, techName, tech.level + 1)
 		var buyedResources = null
@@ -67,17 +66,13 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		}else{
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.buildingMaterials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 			if(playerDoc.productionTechEvents.length > 0){
 				preTechEvent = playerDoc.productionTechEvents[0]
 				var timeRemain = (preTechEvent.finishTime - Date.now()) / 1000
@@ -96,6 +91,8 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
@@ -172,17 +169,13 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.buildTime)
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, {})
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
 		}else{
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			buyedMaterials = DataUtils.buyMaterials(upgradeRequired.materials, playerDoc.technologyMaterials)
 			gemUsed += buyedMaterials.gemUsed
-			LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
 			preTechEvent = DataUtils.getPlayerMilitaryTechUpgradeEvent(playerDoc, building.type)
 			if(_.isObject(preTechEvent)){
 				var timeRemain = (preTechEvent.event.finishTime - Date.now()) / 1000
@@ -201,6 +194,8 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
+		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.technologyMaterials)
 		playerData.push(["technologyMaterials", playerDoc.technologyMaterials])
@@ -278,11 +273,9 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			gemUsed += DataUtils.getGemByTimeInterval(upgradeRequired.upgradeTime)
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, {})
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		}else{
 			buyedResources = DataUtils.buyResources(playerDoc, upgradeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
-			LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 			preTechEvent = DataUtils.getPlayerMilitaryTechUpgradeEvent(playerDoc, building.type)
 			if(_.isObject(preTechEvent)){
 				var timeRemain = (preTechEvent.event.finishTime - Date.now()) / 1000
@@ -301,6 +294,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 
 		if(finishNow){
@@ -450,16 +444,33 @@ pro.useItem = function(playerId, itemName, params, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var item = null
+	var chestKey = null
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
 	var forceSave = false
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var item = _.find(playerDoc.items, function(item){
+		item = _.find(playerDoc.items, function(item){
 			return _.isEqual(item.name, itemName)
 		})
 		if(!_.isObject(item))  return Promise.reject(ErrorUtils.itemNotExist(playerId, itemName))
+
+		if(_.isEqual("changePlayerName", itemName)){
+			forceSave = true
+		}else if(_.isEqual("chest_2", itemName) || _.isEqual("chest_3", itemName) || _.isEqual("chest_4", itemName)){
+			var key = "chestKey_" + itemName.slice(-1)
+			chestKey = _.find(playerDoc.items, function(item){
+				return _.isEqual(item.name, key)
+			})
+			if(!_.isObject(chestKey))  return Promise.reject(ErrorUtils.itemNotExist(playerId, key))
+		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
+			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
+		}
+		var itemData = params[itemName]
+		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService)
+	}).then(function(){
 		item.count -= 1
 		if(item.count <= 0){
 			playerData.push(["items." + playerDoc.items.indexOf(item), null])
@@ -467,30 +478,16 @@ pro.useItem = function(playerId, itemName, params, callback){
 		}else{
 			playerData.push(["items." + playerDoc.items.indexOf(item) + ".count", item.count])
 		}
-		return Promise.resolve()
-	}).then(function(){
-		if(_.isEqual("changePlayerName", itemName)){
-			forceSave = true
-		}else if(_.isEqual("chest_2", itemName) || _.isEqual("chest_3", itemName) || _.isEqual("chest_4", itemName)){
-			var key = "chestKey_" + itemName.slice(-1)
-			var item = _.find(playerDoc.items, function(item){
-				return _.isEqual(item.name, key)
-			})
-			if(!_.isObject(item))  return Promise.reject(ErrorUtils.itemNotExist(playerId, key))
-			item.count -= 1
-			if(item.count <= 0){
-				playerData.push(["items." + playerDoc.items.indexOf(item), null])
-				LogicUtils.removeItemInArray(playerDoc.items, item)
+		if(_.isObject(chestKey)){
+			chestKey.count -= 1
+			if(chestKey.count <= 0){
+				playerData.push(["items." + playerDoc.items.indexOf(chestKey), null])
+				LogicUtils.removeItemInArray(playerDoc.items, chestKey)
 			}else{
-				playerData.push(["items." + playerDoc.items.indexOf(item) + ".count", item.count])
+				playerData.push(["items." + playerDoc.items.indexOf(chestKey) + ".count", chestKey.count])
 			}
-		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
-			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}
 
-		var itemData = params[itemName]
-		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService)
-	}).then(function(){
 		if(forceSave){
 			updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 		}else{
