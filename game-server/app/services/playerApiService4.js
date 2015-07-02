@@ -524,33 +524,16 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	var gemUsed = null
-	var chestKey = null
-	var forceSave = false
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
+	var forceSave = false
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
-		gemUsed = itemConfig.price * 1
+		var gemUsed = itemConfig.price * 1
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-
-		if(_.isEqual("changePlayerName", itemName)){
-			forceSave = true
-		}else if(_.isEqual("chest_2", itemName) || _.isEqual("chest_3", itemName) || _.isEqual("chest_4", itemName)){
-			var key = "chestKey_" + itemName.slice(-1)
-			chestKey = _.find(playerDoc.items, function(item){
-				return _.isEqual(item.name, key)
-			})
-			if(!_.isObject(chestKey))  return Promise.reject(ErrorUtils.itemNotExist(playerId, key))
-		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
-			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
-		}
-		var itemData = params[itemName]
-		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService)
-	}).then(function(){
 		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		var gemUse = {
@@ -560,18 +543,32 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 			api:"buyAndUseItem"
 		}
 		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
 
-		if(_.isObject(chestKey)){
-			chestKey.count -= 1
-			if(chestKey.count <= 0){
-				playerData.push(["items." + playerDoc.items.indexOf(chestKey), null])
-				LogicUtils.removeItemInArray(playerDoc.items, chestKey)
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
+		return Promise.resolve()
+	}).then(function(){
+		if(_.isEqual("changePlayerName", itemName)){
+			forceSave = true
+		}else if(_.isEqual("chest_2", itemName) || _.isEqual("chest_3", itemName) || _.isEqual("chest_4", itemName)){
+			var key = "chestKey_" + itemName.slice(-1)
+			var item = _.find(playerDoc.items, function(item){
+				return _.isEqual(item.name, key)
+			})
+			if(!_.isObject(item))  return Promise.reject(ErrorUtils.itemNotExist(playerId, key))
+			item.count -= 1
+			if(item.count <= 0){
+				playerData.push(["items." + playerDoc.items.indexOf(item), null])
+				LogicUtils.removeItemInArray(playerDoc.items, item)
 			}else{
-				playerData.push(["items." + playerDoc.items.indexOf(chestKey) + ".count", chestKey.count])
+				playerData.push(["items." + playerDoc.items.indexOf(item) + ".count", item.count])
 			}
+		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
+			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}
 
+		var itemData = params[itemName]
+		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService)
+	}).then(function(){
 		if(forceSave){
 			updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 		}else{
@@ -630,70 +627,31 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 		if(_.isNumber(pveData.gemUsed)){
 			if(pveData.gemUsed <= 0) return Promise.reject(new Error("pveData 不合法"))
 			if(pveData.gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+			playerDoc.resources.gem -= pveData.gemUsed
+			playerData.push(["resources.gem", playerDoc.resources.gem])
+			var gemUse = {
+				playerId:playerId,
+				used:pveData.gemUsed,
+				left:playerDoc.resources.gem,
+				api:"setPveData"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
 		if(_.isNumber(pveData.rewardedFloor) && pveData.rewardedFloor > 0 && pveData.rewardedFloor % 1 == 0 && pveData.rewardedFloor <= 24){
 			if(_.contains(playerDoc.pve.rewardedFloors, pveData.rewardedFloor)) return Promise.reject(new Error("pveData 不合法"))
+			playerDoc.pve.rewardedFloors.push(pveData.rewardedFloor)
+			playerData.push(["pve.rewardedFloors." + playerDoc.pve.rewardedFloors.indexOf(pveData.rewardedFloor), pveData.rewardedFloor])
 		}
-		if(_.isObject(fightData)){
-			var dragon = fightData.dragon
-			if(!_.isObject(dragon)) return Promise.reject(new Error("pveData 不合法"))
-			var dragonType = dragon.type
-			if(!DataUtils.isDragonTypeExist(dragonType)) return Promise.reject(new Error("pveData 不合法"))
-			var theDragon = playerDoc.dragons[dragonType]
-			if(_.isEqual(Consts.DragonStatus.March, theDragon.status)) return Promise.reject(new Error("pveData 不合法"))
-			var hpDecreased = dragon.hpDecreased
-			if(!_.isNumber(hpDecreased)) return Promise.reject(new Error("pveData 不合法"))
-			var expAdd = dragon.expAdd
-			if(!_.isNumber(expAdd)) return Promise.reject(new Error("pveData 不合法"))
-			if(theDragon.star <= 0) return Promise.reject(new Error("pveData 不合法"))
-			var soldiers = fightData.soldiers
-			soldiers = _.isEmpty(soldiers) ? [] : soldiers
-			if(!_.isArray(soldiers)) return Promise.reject(new Error("fightData 不合法"))
-			var name = null
-			var woundedSoldiers = []
-			for(var i = 0; i < soldiers.length; i++){
-				var soldier = soldiers[i]
-				name = soldier.name
-				if(_.isUndefined(playerDoc.soldiers[name])) return Promise.reject(new Error("fightData 不合法"))
-				var damagedCount = soldier.damagedCount
-				if(!_.isNumber(damagedCount)) return Promise.reject(new Error("fightData 不合法"))
-				if(playerDoc.soldiers[name] - damagedCount < 0) return Promise.reject(new Error("fightData 不合法"))
-				var wounedCount = soldier.woundedCount
-				if(!_.isNumber(wounedCount)) return Promise.reject(new Error("fightData 不合法"))
-				woundedSoldiers.push({
-					name:name,
-					count:wounedCount
-				})
-			}
-		}
-		if(_.isObject(rewards)){
-			for(i = 0; i < rewards.length; i++){
-				var reward = rewards[i]
-				var type = reward.type
-				if(_.isUndefined(playerDoc[type])) return Promise.reject(new Error("rewards 不合法"))
-				name = reward.name
-				var count = reward.count
-				if(_.isEqual("items", type)){
-					if(!DataUtils.isItemNameExist(name)){
-						return Promise.reject(new Error("rewards 不合法"))
-					}
-				}else{
-					if(_.isUndefined(playerDoc[type][name])) return Promise.reject(new Error("rewards 不合法"))
-					if(count < 0 && playerDoc[type][name] + count < 0){
-						return Promise.reject(new Error("rewards 不合法"))
-					}
-				}
-			}
-		}
-
 		playerDoc.resources.stamina -= staminaUsed
 		playerDoc.pve.totalStep += staminaUsed
 		playerData.push(["pve.totalStep", playerDoc.pve.totalStep])
 		playerDoc.pve.location = location
 		playerData.push(["pve.location", playerDoc.pve.location])
+
 		var theFloor = _.find(playerDoc.pve.floors, function(theFloor){
 			return _.isEqual(theFloor.level, level)
 		})
+
 		if(_.isObject(theFloor)){
 			theFloor.fogs = fogs
 			theFloor.objects = objects
@@ -707,23 +665,19 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 		}
 		playerData.push(["pve.floors." + playerDoc.pve.floors.indexOf(theFloor), theFloor])
 
-		if(_.isNumber(pveData.gemUsed)){
-			playerDoc.resources.gem -= pveData.gemUsed
-			playerData.push(["resources.gem", playerDoc.resources.gem])
-			var gemUse = {
-				playerId:playerId,
-				used:pveData.gemUsed,
-				left:playerDoc.resources.gem,
-				api:"setPveData"
-			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
-		}
-		if(_.isNumber(pveData.rewardedFloor) && pveData.rewardedFloor > 0 && pveData.rewardedFloor % 1 == 0 && pveData.rewardedFloor <= 24){
-			playerDoc.pve.rewardedFloors.push(pveData.rewardedFloor)
-			playerData.push(["pve.rewardedFloors." + playerDoc.pve.rewardedFloors.indexOf(pveData.rewardedFloor), pveData.rewardedFloor])
-		}
-
 		if(_.isObject(fightData)){
+			var dragon = fightData.dragon
+			if(!_.isObject(dragon)) return Promise.reject(new Error("pveData 不合法"))
+			var dragonType = dragon.type
+			if(!DataUtils.isDragonTypeExist(dragonType)) return Promise.reject(new Error("pveData 不合法"))
+			var theDragon = playerDoc.dragons[dragonType]
+			if(_.isEqual(Consts.DragonStatus.March, theDragon.status)) return Promise.reject(new Error("pveData 不合法"))
+			var hpDecreased = dragon.hpDecreased
+			if(!_.isNumber(hpDecreased)) return Promise.reject(new Error("pveData 不合法"))
+			var expAdd = dragon.expAdd
+			if(!_.isNumber(expAdd)) return Promise.reject(new Error("pveData 不合法"))
+			if(theDragon.star <= 0) return Promise.reject(new Error("pveData 不合法"))
+
 			DataUtils.refreshPlayerDragonsHp(playerDoc, theDragon)
 			theDragon.hp -= hpDecreased
 			if(theDragon.hp <= 0){
@@ -741,13 +695,23 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			DataUtils.addPlayerDragonExp(playerDoc, playerData, theDragon, expAdd)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve)
 
+			var soldiers = fightData.soldiers
+			soldiers = _.isEmpty(soldiers) ? [] : soldiers
+			if(!_.isArray(soldiers)) return Promise.reject(new Error("fightData 不合法"))
+
+			var name = null
+			var woundedSoldiers = []
 			for(var i = 0; i < soldiers.length; i++){
 				var soldier = soldiers[i]
-				var soldierName = soldier.name
+				name = soldier.name
+				if(_.isUndefined(playerDoc.soldiers[name])) return Promise.reject(new Error("fightData 不合法"))
 				var damagedCount = soldier.damagedCount
-				playerDoc.soldiers[soldierName] -= damagedCount
-				playerData.push(["soldiers." + soldierName, playerDoc.soldiers[soldierName]])
+				if(!_.isNumber(damagedCount)) return Promise.reject(new Error("fightData 不合法"))
+				if(playerDoc.soldiers[name] - damagedCount < 0) return Promise.reject(new Error("fightData 不合法"))
+				playerDoc.soldiers[name] -= damagedCount
+				playerData.push(["soldiers." + name, playerDoc.soldiers[name]])
 				var wounedCount = soldier.woundedCount
+				if(!_.isNumber(wounedCount)) return Promise.reject(new Error("fightData 不合法"))
 				woundedSoldiers.push({
 					name:name,
 					count:wounedCount
@@ -780,9 +744,6 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				}
 			}
 		}
-
-
-
 		TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData)
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
