@@ -973,20 +973,23 @@
 //			})
 //		})
 //
+//		it("cancelDefenceDragon 正常取消", function(done){
+//			Api.cancelDefenceDragon(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		it("setDefenceDragon 正常设置", function(done){
 //			Api.sendChat("dragonlevel redDragon 10", function(doc){
 //				doc.code.should.equal(200)
 //				Api.setDefenceDragon("redDragon", function(doc){
 //					doc.code.should.equal(200)
-//					done()
+//					Api.cancelDefenceDragon(function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
 //				})
-//			})
-//		})
-//
-//		it("cancelDefenceDragon 正常取消", function(done){
-//			Api.cancelDefenceDragon(function(doc){
-//				doc.code.should.equal(200)
-//				done()
 //			})
 //		})
 //

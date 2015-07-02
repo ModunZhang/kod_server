@@ -73,14 +73,16 @@ var BillingValidate = function(playerDoc, receiptData, callback){
 		method:"post"
 	}
 	var request = Https.request(httpOptions, function(response){
+		var jsonObj = null
 		if(response.statusCode != 200){
+			jsonObj = {status:response.statusCode}
 			callback(ErrorUtils.iapServerNotAvailable(playerDoc._id, jsonObj))
 			return
 		}
 
 		response.on("data", function(data){
 			try{
-				var jsonObj = JSON.parse(data.toString())
+				jsonObj = JSON.parse(data.toString())
 			}catch(e){
 				jsonObj = {status:21005, error:e.stack}
 			}
