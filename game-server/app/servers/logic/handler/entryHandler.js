@@ -73,12 +73,14 @@ pro.login = function(msg, session, next){
 	}).then(function(){
 		self.logService.onRequest("logic.entryHandler.login success", {
 			deviceId:deviceId,
+			playerId:playerDoc._id,
 			logicServerId:self.logicServerId
 		})
 		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc, enemyAllianceData:enemyAllianceDoc})
 	}).catch(function(e){
 		self.logService.onRequestError("logic.entryHandler.login failed", {
 			deviceId:deviceId,
+			playerId:_.isObject(playerDoc) ? playerDoc._id : null,
 			logicServerId:self.logicServerId
 		}, e.stack)
 		next(null, ErrorUtils.getError(e))
