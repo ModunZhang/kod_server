@@ -79,7 +79,7 @@ pro.onEventError = function(api, object, stack){
 	}
 	eventErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 	eventErrorLogger.error(_.isString(stack) ? stack : '')
-	if(!_.isEqual(this.evn, "local")){
+	if(!_.isEqual(this.evn, "local") && !_.isEqual(this.evn, 'develop')){
 		mailLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 		mailLogger.error(_.isString(stack) ? stack : '')
 	}
