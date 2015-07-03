@@ -44,6 +44,10 @@ pro.onRequestError = function(api, object, stack){
 	}
 	requestErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
 	requestErrorLogger.error(_.isString(stack) ? stack : '')
+	if(!_.isEqual(this.evn, "local") && !_.isEqual(this.evn, 'develop')){
+		mailLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+		mailLogger.error(_.isString(stack) ? stack : '')
+	}
 }
 
 /**
