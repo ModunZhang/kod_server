@@ -30,7 +30,7 @@ var CacheRemote = function(app){
 	this.allianceApiService3 = app.get("allianceApiService3")
 	this.allianceApiService4 = app.get("allianceApiService4")
 	this.allianceApiService5 = app.get("allianceApiService5")
-	this.toobusyMaxLag = 70
+	this.toobusyMaxLag = 100
 	this.toobusyInterval = 250
 	toobusy.maxLag(this.toobusyMaxLag)
 	toobusy.interval(this.toobusyInterval)
