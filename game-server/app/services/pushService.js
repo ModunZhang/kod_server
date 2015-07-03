@@ -108,11 +108,10 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceId, data, memberId, c
 		callback()
 		return
 	}
-	var uids = []
-	_.each(channel.getMembers(), function(uid){
-		if(!_.isEqual(uid, memberId)){
-			uids.push(channel.getMember(uid))
-		}
+
+	var uids = _.values(channel.records)
+	uids = _.filter(uids, function(uid){
+		return !_.isEqual(uid.uid, memberId)
 	})
 	if(uids.length > 0){
 		self.channelService.pushMessageByUids(eventName, data, uids, {}, function(e){
