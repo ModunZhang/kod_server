@@ -88,7 +88,7 @@ speedup["warSpeedupClass_1"] = {
 	effect:0.250000,
 	order:9,
 	isSell:true,
-	price:150,
+	price:120,
 	sellPriceInAlliance:7500,
 	buyPriceInAlliance:7500,
 	isAdvancedItem:false
@@ -98,7 +98,7 @@ speedup["warSpeedupClass_2"] = {
 	effect:0.500000,
 	order:10,
 	isSell:true,
-	price:450,
+	price:200,
 	sellPriceInAlliance:22500,
 	buyPriceInAlliance:22500,
 	isAdvancedItem:false
