@@ -649,11 +649,9 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			var soldiers = fightData.soldiers
 			soldiers = _.isEmpty(soldiers) ? [] : soldiers
 			if(!_.isArray(soldiers)) return Promise.reject(new Error("fightData 不合法"))
-			var name = null
 			var woundedSoldiers = []
-			for(var i = 0; i < soldiers.length; i++){
-				var soldier = soldiers[i]
-				name = soldier.name
+			_.each(soldiers, function(soldier){
+				var name = soldier.name
 				if(_.isUndefined(playerDoc.soldiers[name])) return Promise.reject(new Error("fightData 不合法"))
 				var damagedCount = soldier.damagedCount
 				if(!_.isNumber(damagedCount)) return Promise.reject(new Error("fightData 不合法"))
@@ -664,14 +662,13 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 					name:name,
 					count:wounedCount
 				})
-			}
+			})
 		}
-		if(_.isObject(rewards)){
-			for(i = 0; i < rewards.length; i++){
-				var reward = rewards[i]
+		if(_.isArray(rewards)){
+			_.each(rewards, function(reward){
 				var type = reward.type
 				if(_.isUndefined(playerDoc[type])) return Promise.reject(new Error("rewards 不合法"))
-				name = reward.name
+				var name = reward.name
 				var count = reward.count
 				if(_.isEqual("items", type)){
 					if(!DataUtils.isItemNameExist(name)){
@@ -683,7 +680,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 						return Promise.reject(new Error("rewards 不合法"))
 					}
 				}
-			}
+			})
 		}
 
 		playerDoc.resources.stamina -= staminaUsed
@@ -718,6 +715,7 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
+
 		if(_.isNumber(pveData.rewardedFloor) && pveData.rewardedFloor > 0 && pveData.rewardedFloor % 1 == 0 && pveData.rewardedFloor <= 24){
 			playerDoc.pve.rewardedFloors.push(pveData.rewardedFloor)
 			playerData.push(["pve.rewardedFloors." + playerDoc.pve.rewardedFloors.indexOf(pveData.rewardedFloor), pveData.rewardedFloor])
@@ -741,47 +739,30 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			DataUtils.addPlayerDragonExp(playerDoc, playerData, theDragon, expAdd)
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve)
 
-			for(var i = 0; i < soldiers.length; i++){
-				var soldier = soldiers[i]
-				var soldierName = soldier.name
+			_.each(soldiers, function(soldier){
+				var name = soldier.name
 				var damagedCount = soldier.damagedCount
-				playerDoc.soldiers[soldierName] -= damagedCount
-				playerData.push(["soldiers." + soldierName, playerDoc.soldiers[soldierName]])
-				var wounedCount = soldier.woundedCount
-				woundedSoldiers.push({
-					name:name,
-					count:wounedCount
-				})
-			}
+				playerDoc.soldiers[name] -= damagedCount
+				playerData.push(["soldiers." + name, playerDoc.soldiers[name]])
+			})
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, woundedSoldiers)
 		}
 
-		if(_.isObject(rewards)){
-			for(i = 0; i < rewards.length; i++){
-				var reward = rewards[i]
+		if(_.isArray(rewards)){
+			_.each(rewards, function(reward){
 				var type = reward.type
-				if(_.isUndefined(playerDoc[type])) return Promise.reject(new Error("rewards 不合法"))
-				name = reward.name
+				var name = reward.name
 				var count = reward.count
 				if(_.isEqual("items", type)){
-					if(!DataUtils.isItemNameExist(name)){
-						return Promise.reject(new Error("rewards 不合法"))
-					}
 					var resp = LogicUtils.addPlayerItem(playerDoc, name, count)
 					playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 				}else{
-					if(_.isUndefined(playerDoc[type][name])) return Promise.reject(new Error("rewards 不合法"))
-					if(count < 0 && playerDoc[type][name] + count < 0){
-						return Promise.reject(new Error("rewards 不合法"))
-					}
 					playerDoc[type][name] += count
 					if(!_.isEqual("resources", type))
 						playerData.push([type + "." + name, playerDoc[type][name]])
 				}
-			}
+			})
 		}
-
-
 
 		TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData)
 		DataUtils.refreshPlayerResources(playerDoc)
