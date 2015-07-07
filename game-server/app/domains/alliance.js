@@ -320,7 +320,7 @@ var AllianceSchema = new Schema({
 			defenceAllianceId:{type:String, required:true},
 			attackPlayerKills:[{
 				id:{type:Number, required:true},
-				name:{type:Number, required:true},
+				name:{type:String, required:true},
 				kill:{type:Number, required:true}
 			}],
 			attackAllianceCountData:{
@@ -333,7 +333,7 @@ var AllianceSchema = new Schema({
 			},
 			defencePlayerKills:[{
 				id:{type:Number, required:true},
-				name:{type:Number, required:true},
+				name:{type:String, required:true},
 				kill:{type:Number, required:true}
 			}],
 			defenceAllianceCountData:{
