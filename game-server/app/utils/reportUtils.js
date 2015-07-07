@@ -351,52 +351,56 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		var ironProtectCount = getDefencePlayerResourceProtectCount(defencePlayerDoc, "iron", attackDragon)
 		var foodProtectCount = getDefencePlayerResourceProtectCount(defencePlayerDoc, "food", attackDragon)
 		var woodLootCount = defencePlayerResources.wood > woodProtectCount ? defencePlayerResources.wood - woodProtectCount : 0
-		var stoneLootCount = defencePlayerResources.stone > stoneProtectCount ? defencePlayerResources.stone - woodProtectCount : 0
-		var ironLootCount = defencePlayerResources.iron > ironProtectCount ? defencePlayerResources.iron - woodProtectCount : 0
-		var foodLootCount = defencePlayerResources.food > foodProtectCount ? defencePlayerResources.food - woodProtectCount : 0
+		var stoneLootCount = defencePlayerResources.stone > stoneProtectCount ? defencePlayerResources.stone - stoneProtectCount : 0
+		var ironLootCount = defencePlayerResources.iron > ironProtectCount ? defencePlayerResources.iron - ironProtectCount : 0
+		var foodLootCount = defencePlayerResources.food > foodProtectCount ? defencePlayerResources.food - foodProtectCount : 0
 		var resourceLootTotal = woodLootCount + stoneLootCount + ironLootCount + foodLootCount
 		var attackPlayerLoadTotal = getSoldiersLoadTotal(attackSoldiersForFight)
 		var canLootPercent = resourceLootTotal > 0 ? attackPlayerLoadTotal / resourceLootTotal : 0
-		canLootPercent = canLootPercent > 1 ? 1 : canLootPercent
+		canLootPercent = canLootPercent > 1 ? 1 : canLootPercent < 0 ? 0 : canLootPercent;
+		var resourceLootCount = Math.floor(woodLootCount * canLootPercent)
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"wood",
-			count:Math.floor(woodLootCount * canLootPercent)
+			count:resourceLootCount
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"wood",
-			count:-Math.floor(woodLootCount * canLootPercent)
+			count:-resourceLootCount
 		})
+		resourceLootCount = Math.floor(stoneLootCount * canLootPercent)
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"stone",
-			count:Math.floor(stoneLootCount * canLootPercent)
+			count:resourceLootCount
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"stone",
-			count:-Math.floor(stoneLootCount * canLootPercent)
+			count:-resourceLootCount
 		})
+		resourceLootCount = Math.floor(ironLootCount * canLootPercent)
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"iron",
-			count:Math.floor(ironLootCount * canLootPercent)
+			count:resourceLootCount
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"iron",
-			count:-Math.floor(ironLootCount * canLootPercent)
+			count:-resourceLootCount
 		})
+		resourceLootCount = Math.floor(foodLootCount * canLootPercent)
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"food",
-			count:Math.floor(foodLootCount * canLootPercent)
+			count:resourceLootCount
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"food",
-			count:-Math.floor(foodLootCount * canLootPercent)
+			count:-resourceLootCount
 		})
 	}
 	LogicUtils.mergeRewards(attackPlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKilledCitizenWithDefenceSoldiers + attackPlayerKilledCitizenWithDefenceWall, defenceAllianceDoc.basicInfo.terrain))
