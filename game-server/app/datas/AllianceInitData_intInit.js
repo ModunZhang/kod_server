@@ -25,7 +25,7 @@ intInit["editAllianceTerrianHonour"] = {
 }
 intInit["activeShrineStageEventMinutes"] = {
 	type:"activeShrineStageEventMinutes",
-	value:30,
+	value:20,
 	desc:"圣地战激活后持续时间"
 }
 intInit["allianceFightPrepareMinutes"] = {
@@ -97,4 +97,19 @@ intInit["villageRefreshMinutes"] = {
 	type:"villageRefreshMinutes",
 	value:240,
 	desc:"村落采空后多少分钟后刷新"
+}
+intInit["monsterRefreshMinutes"] = {
+	type:"monsterRefreshMinutes",
+	value:5,
+	desc:"区域地图野怪多少分钟后刷新"
+}
+intInit["minMonsterCount"] = {
+	type:"minMonsterCount",
+	value:20,
+	desc:"联盟领地最少的野怪数量"
+}
+intInit["monstersPerPlayer"] = {
+	type:"monstersPerPlayer",
+	value:4,
+	desc:"每个联盟玩家创建多少个野怪"
 }

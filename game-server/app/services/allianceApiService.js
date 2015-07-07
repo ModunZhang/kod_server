@@ -47,6 +47,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 	var playerData = []
 	var allianceDoc = null
 	var gemUsed = null
+	var eventFuncs = []
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -74,9 +75,14 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 			allianceFight:null
 		}
 		var mapObjects = MapUtils.create()
+		var map = MapUtils.buildMap(mapObjects)
 		alliance.mapObjects = mapObjects
-		alliance.buildings = DataUtils.createMapBuildings(mapObjects)
-		alliance.villages = DataUtils.createMapVillages(mapObjects)
+		DataUtils.initMapBuildings(alliance, mapObjects, map);
+		DataUtils.initMapVillages(alliance, mapObjects, map);
+		DataUtils.initMapMonsters(alliance, mapObjects, map, playerDoc.buildings.location_1.level);
+		var monsterRefreshTime = DataUtils.getAllianceIntInit('monsterRefreshMinutes') * 60 * 1000
+		alliance.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, alliance, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime])
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
 		var memberRect = LogicUtils.getFreePointInAllianceMap(mapObjects, memberSizeInMap.width, memberSizeInMap.height)
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
@@ -99,11 +105,18 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 
-		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc,{allianceId:allianceDoc._id, allianceTag:allianceDoc.basicInfo.tag}])
+		eventFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
+		eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
+			allianceId:allianceDoc._id,
+			allianceTag:allianceDoc.basicInfo.tag
+		}])
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, null])
+		return Promise.resolve()
+	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, [playerData, allianceDoc])
 	}).catch(function(e){
@@ -777,7 +790,10 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 	}).then(function(){
 		if(!_.isEmpty(memberDoc.logicServerId)){
 			updateFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, memberDoc])
-			updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, memberDoc, {allianceId:"", allianceTag:""}])
+			updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, memberDoc, {
+				allianceId:"",
+				allianceTag:""
+			}])
 		}
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, memberDoc._id, memberDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id, allianceDoc])

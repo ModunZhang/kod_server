@@ -333,6 +333,21 @@ pro.clearAllianceTimeEvents = function(allianceDoc, callback){
 }
 
 /**
+ * 清楚联盟临时事件
+ * @param allianceDoc
+ * @param callback
+ */
+pro.removeAllianceTempTimeEvents = function(allianceDoc, callback){
+	var funcs = []
+	funcs.push(this.removeAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent))
+	Promise.all(funcs).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
  * 添加联盟战斗时间回调
  * @param attackAllianceDoc
  * @param defenceAllianceDoc
@@ -372,7 +387,6 @@ pro.removeAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDo
 	var eventId = attackAllianceDoc._id + ":" + defenceAllianceDoc._id
 	this.removeTimeEvent(key, eventType, eventId, callback)
 }
-
 
 /**
  * 恢复玩家事件
@@ -568,6 +582,22 @@ pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
 		event.arriveTime += timeAdd
 		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "attackMarchReturnEvents", event.id, event.arriveTime - now))
 	})
+	Promise.all(funcs).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 恢复联盟临时事件
+ * @param allianceDoc
+ * @param callback
+ */
+pro.restoreAllianceTempTimeEvents = function(allianceDoc, callback){
+	var now = Date.now()
+	var funcs = []
+	funcs.push(this.addAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, allianceDoc.basicInfo.monsterRefreshTime - now))
 	Promise.all(funcs).then(function(){
 		callback()
 	}).catch(function(e){

@@ -129,3 +129,10 @@ buildingName["member"] = {
 	type:"member",
 	moveNeedHonour:0
 }
+buildingName["monster"] = {
+	name:"monster",
+	width:1,
+	height:1,
+	type:"monster",
+	moveNeedHonour:0
+}

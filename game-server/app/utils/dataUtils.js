@@ -1839,34 +1839,46 @@ Utils.getAllianceVillageLevelByType = function(allianceDoc, villageType){
 	return allianceDoc.villageLevels[villageType]
 }
 
-Utils.createMapBuildings = function(mapObjects){
+/**
+ * 初始化联盟建筑和装饰物
+ * @param allianceDoc
+ * @param mapObjects
+ * @param map
+ */
+Utils.initMapBuildings = function(allianceDoc, mapObjects, map){
 	var buildings = []
-	_.each(_.values(Consts.AllianceBuildingNames), function(buildingName){
-		var buildingMapObject = _.find(mapObjects, function(mapObject){
-			return _.isEqual(mapObject.name, buildingName)
-		})
-		var building = {
-			id:buildingMapObject.id,
-			name:buildingName,
-			level:1
+	_.each(AllianceInitData.buildings, function(buildingConfig){
+		var typeConfig = AllianceInitData.buildingName[buildingConfig.name]
+		var buildingMapObject = MapUtils.addMapObject(map, mapObjects, {
+			x:buildingConfig.locationX,
+			y:buildingConfig.locationY,
+			width:typeConfig.width,
+			height:typeConfig.height
+		}, typeConfig.name)
+		if(_.contains(Consts.AllianceBuildingNames, buildingMapObject.name)){
+			var building = {
+				id:buildingMapObject.id,
+				name:buildingMapObject.name,
+				level:1
+			}
+			buildings.push(building)
 		}
-		buildings.push(building)
 	})
-	return buildings
+	allianceDoc.buildings = buildings
 }
 
 /**
- * 创建联盟村落
+ * 初始化联盟村落
+ * @param allianceDoc
  * @param mapObjects
- * @returns {Array}
+ * @param map
  */
-Utils.createMapVillages = function(mapObjects){
+Utils.initMapVillages = function(allianceDoc, mapObjects, map){
 	var self = this
 	var villages = []
 	var orderHallLevel = 1
 	var orderHallConfig = AllianceBuilding.orderHall[orderHallLevel]
 	var villageTypeConfigs = this.getAllianceVillageTypeConfigs()
-	var map = MapUtils.buildMap(mapObjects)
 	for(var i = 0; i < orderHallConfig.villageCount; i ++){
 		var typeConfig = _.sample(villageTypeConfigs)
 		var config = AllianceInitData.buildingName[typeConfig.name]
@@ -1884,7 +1896,35 @@ Utils.createMapVillages = function(mapObjects){
 			villages.push(village)
 		}
 	}
-	return villages
+	allianceDoc.villages = villages
+}
+
+/**
+ * 初始化区域地图野怪
+ * @param allianceDoc
+ * @param mapObjects
+ * @param map
+ * @param playerKeepleLevel
+ */
+Utils.initMapMonsters = function(allianceDoc, mapObjects, map, playerKeepleLevel){
+	var monsters = []
+	var minMonsterCount = this.getAllianceIntInit('minMonsterCount')
+	var monsterConfig = AllianceInitData.buildingName['monster']
+	for(var i = 0; i < minMonsterCount; i ++){
+		var width = monsterConfig.width
+		var height = monsterConfig.height
+		var rect = MapUtils.getRect(map, width, height)
+		if(_.isObject(rect)){
+			var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, monsterConfig.name)
+			var monster = {
+				id:monsterMapObject.id,
+				name:monsterMapObject.name,
+				level:playerKeepleLevel
+			}
+			monsters.push(monster)
+		}
+	}
+	allianceDoc.monsters = monsters
 }
 
 /**

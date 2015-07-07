@@ -313,6 +313,7 @@ module.exports = {
 		Protect:"protect"
 	},
 	AllianceStatusEvent:"allianceStatusEvent",
+	MonsterRefreshEvent:"monsterRefreshEvent",
 	PlayerReportType:{
 		StrikeCity:"strikeCity",
 		CityBeStriked:"cityBeStriked",
@@ -334,6 +335,7 @@ module.exports = {
 		"members",
 		"buildings",
 		"villages",
+		"monsters",
 		"mapObjects",
 		"villageEvents",
 		"strikeMarchEvents",

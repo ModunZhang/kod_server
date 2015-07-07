@@ -31,7 +31,8 @@ var AllianceSchema = new Schema({
 		createTime:{type:Number, required:true, default:Date.now},
 		status:{type:String, required:true, default:Consts.AllianceStatus.Peace, index:true},
 		statusStartTime:{type:Number, required:true, default:Date.now},
-		statusFinishTime:{type:Number, required:true, default:0}
+		statusFinishTime:{type:Number, required:true, default:0},
+		monsterRefreshTime:{type:Number, required:true}
 	},
 	countInfo:{
 		kill:{type:Number, required:true, default:0},
@@ -122,6 +123,12 @@ var AllianceSchema = new Schema({
 		id:{type:String, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
+	}],
+	monsters:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		level:{type:Number, required:true}
 	}],
 	mapObjects:[{
 		_id:false,

@@ -24,21 +24,9 @@ var MapSize = {
  * @returns {Array}
  */
 Utils.create = function(){
-	var self = this
 	var map = []
 	var mapObjects = []
 	this.initMap(map)
-
-	_.each(AllianceInitData.buildings, function(buildingConfig){
-		var typeConfig = AllianceInitData.buildingName[buildingConfig.name]
-		self.addMapObject(map, mapObjects, {
-			x:buildingConfig.locationX,
-			y:buildingConfig.locationY,
-			width:typeConfig.width,
-			height:typeConfig.height
-		}, typeConfig.name)
-	})
-
 	return mapObjects
 }
 

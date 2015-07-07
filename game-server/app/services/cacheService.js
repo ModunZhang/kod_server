@@ -120,20 +120,25 @@ var OnAllianceTimeout = function(id){
 				alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 				UnlockAlliance.call(self, id)
 			}else{
-				delete self.alliances[id]
-				if(alliance.ops > 0){
-					self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
+				self.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
+					self.logService.onEventError("cache.cacheService.OnAllianceTimeout.removeAllianceTempTimeEvents", {id:id}, e.stack)
+					return Promise.resolve()
+				}).then(function(){
+					delete self.alliances[id]
+					if(alliance.ops > 0){
+						self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
+							self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id})
+							UnlockAlliance.call(self, id)
+						}).catch(function(e){
+							self.logService.onEventError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack)
+							UnlockAlliance.call(self, id)
+						})
+						alliance.ops = 0
+					}else{
 						self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id})
 						UnlockAlliance.call(self, id)
-					}).catch(function(e){
-						self.logService.onEventError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack)
-						UnlockAlliance.call(self, id)
-					})
-					alliance.ops = 0
-				}else{
-					self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id})
-					UnlockAlliance.call(self, id)
-				}
+					}
+				})
 			}
 		}
 	})
@@ -364,7 +369,7 @@ pro.directFindAlliance = function(id, callback){
 					alliance.ops = 0
 					alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 					self.alliances[id] = alliance
-					return Promise.resolve()
+					return self.timeEventService.restoreAllianceTempTimeEventsAsync(allianceDoc)
 				}else{
 					return Promise.resolve()
 				}
@@ -442,7 +447,7 @@ pro.findAlliance = function(id, callback){
 					alliance.ops = 0
 					alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 					self.alliances[id] = alliance
-					return Promise.resolve()
+					return self.timeEventService.restoreAllianceTempTimeEventsAsync(allianceDoc)
 				}else{
 					return Promise.resolve()
 				}
@@ -663,22 +668,27 @@ pro.timeoutAlliance = function(id, doc, callback){
 	}
 	clearTimeout(alliance.timeout)
 	delete self.alliances[id]
-	if(alliance.ops > 0){
-		self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
+	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
+		self.logService.onEventError("cache.cacheService.timeoutPlayer.removeAllianceTempTimeEvents", {id:id}, e.stack)
+		return Promise.resolve()
+	}).then(function(){
+		if(alliance.ops > 0){
+			self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
+				self.logService.onEvent("cache.cacheService.timeoutAlliance", {id:id})
+				UnlockAlliance.call(self, id)
+				callback()
+			}).catch(function(e){
+				self.logService.onEventError("cache.cacheService.timeoutAlliance", {id:id, doc:alliance.doc}, e.stack)
+				UnlockAlliance.call(self, id)
+				callback()
+			})
+			alliance.ops = 0
+		}else{
 			self.logService.onEvent("cache.cacheService.timeoutAlliance", {id:id})
 			UnlockAlliance.call(self, id)
 			callback()
-		}).catch(function(e){
-			self.logService.onEventError("cache.cacheService.timeoutAlliance", {id:id, doc:alliance.doc}, e.stack)
-			UnlockAlliance.call(self, id)
-			callback()
-		})
-		alliance.ops = 0
-	}else{
-		self.logService.onEvent("cache.cacheService.timeoutAlliance", {id:id})
-		UnlockAlliance.call(self, id)
-		callback()
-	}
+		}
+	})
 }
 
 /**
@@ -692,9 +702,16 @@ pro.deleteAlliance = function(id, callback){
 	var alliance = this.alliances[id]
 	clearTimeout(alliance.timeout)
 	delete self.alliances[id]
-	self.Alliance.findByIdAndRemoveAsync(id).then(function(){
-		UnlockAlliance.call(self, id)
-		callback()
+	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
+		self.logService.onEventError("cache.cacheService.timeoutPlayer.removeAllianceTempTimeEvents", {id:id}, e.stack)
+		return Promise.resolve()
+	}).then(function(){
+		self.Alliance.findByIdAndRemoveAsync(id).then(function(){
+			UnlockAlliance.call(self, id)
+			callback()
+		}).catch(function(e){
+			self.logService.onEventError("cache.cacheService.deleteAlliance", {id:id}, e.stack)
+		})
 	})
 }
 

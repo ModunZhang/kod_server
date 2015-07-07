@@ -16,9 +16,13 @@ var TaskUtils = require("../utils/taskUtils")
 var MarchUtils = require("../utils/marchUtils")
 var FightUtils = require("../utils/fightUtils")
 var ReportUtils = require("../utils/reportUtils")
+var MapUtils = require("../utils/mapUtils");
 var ErrorUtils = require("../utils/errorUtils")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
+
+var GameDatas = require('../datas/GameDatas')
+var AllianceInitData = GameDatas.AllianceInitData
 
 var AllianceTimeEventService = function(app){
 	this.app = app
@@ -70,13 +74,14 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 			if(!_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
 				return Promise.reject(ErrorUtils.illegalAllianceStatus(allianceDoc._id, allianceDoc.basicInfo.status))
 			}
-
 			var allianceData = []
 			return self.onAllianceProtectedStatusFinishedAsync(allianceDoc, allianceData).then(function(){
 				updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id, allianceDoc])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 				return Promise.resolve()
 			})
+		}else if(_.isEqual(eventType, Consts.MonsterRefreshEvent)){
+			return self.onMonsterRefreshEventAsync(allianceDoc)
 		}else{
 			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 			event = LogicUtils.getEventById(allianceDoc[eventType], eventId)
@@ -2063,6 +2068,80 @@ pro.onVillageCreateEvents = function(allianceDoc, event, callback){
 	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 	LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+}
+
+pro.onMonsterRefreshEvent = function(allianceDoc, callback){
+	var self = this
+	var allianceData = []
+	var enemyAllianceData = []
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
+
+	var minMonsterCount = DataUtils.getAllianceIntInit('minMonsterCount')
+	var monstersPerPlayer = DataUtils.getAllianceIntInit('monstersPerPlayer')
+	var allianceMembers = allianceDoc.members;
+	var monsterCount =  (function(){
+		var count = allianceMembers.length * monstersPerPlayer
+		return count > minMonsterCount ? count : minMonsterCount
+	})();
+	var monsterMapObjects = _.filter(allianceDoc.mapObjects, function(mapObject){
+		return _.isEqual(mapObject.name, 'monster')
+	});
+	LogicUtils.removeItemsInArray(allianceDoc.mapObjects, monsterMapObjects);
+	allianceDoc.monsters.length = 0;
+	var avgKeepLevel = (function(){
+		var totalLevel = 0
+		_.each(allianceMembers, function(member){
+			totalLevel += member.keepLevel
+		})
+		return Math.ceil(totalLevel / allianceMembers.length)
+	})();
+	var monsterConfig = AllianceInitData.buildingName['monster'];
+	var map = MapUtils.buildMap(allianceDoc.mapObjects);
+	var mapObjects = allianceDoc.mapObjects;
+	for(var i = 0; i < monsterCount; i ++){
+		(function(){
+			var memberIndex = Math.floor(i / monstersPerPlayer);
+			var memberObject = allianceMembers[memberIndex]
+			var monsterLevel = _.isObject(memberObject) ? memberObject.keepLevel : avgKeepLevel
+			var width = monsterConfig.width
+			var height = monsterConfig.height
+			var rect = MapUtils.getRect(map, width, height)
+			if(_.isObject(rect)){
+				var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, monsterConfig.name)
+				var monster = {
+					id:monsterMapObject.id,
+					name:monsterMapObject.name,
+					level:monsterLevel
+				}
+				allianceDoc.monsters.push(monster)
+			}
+		})();
+	}
+
+	var monsterRefreshTime = DataUtils.getAllianceIntInit('monsterRefreshMinutes') * 60 * 1000;
+	allianceDoc.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime;
+	eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime]);
+
+	allianceData.push(['basicInfo.monsterRefreshTime', allianceDoc.basicInfo.monsterRefreshTime])
+	allianceData.push(['monsters', allianceDoc.monsters])
+	enemyAllianceData.push(['monsters', allianceDoc.monsters])
+	allianceData.push(['mapObjects', allianceDoc.mapObjects])
+	enemyAllianceData.push(['mapObjects', allianceDoc.mapObjects])
+	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+	LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
+	updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+
+	LogicUtils.excuteAll(updateFuncs).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
 }
 
 /**
