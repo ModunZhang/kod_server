@@ -106,7 +106,8 @@ module.exports = {
 		Village:"village",
 		City:"city",
 		Shrine:"shrine",
-		HelpDefence:"helpDefence"
+		HelpDefence:"helpDefence",
+		Monster:"monster"
 	},
 	GachaType:{
 		Normal:"normal",

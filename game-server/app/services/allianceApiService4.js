@@ -707,6 +707,110 @@ pro.strikeVillage = function(playerId, allianceId, dragonType, defenceAllianceId
 }
 
 /**
+ * 进攻野怪
+ * @param playerId
+ * @param allianceId
+ * @param dragonType
+ * @param soldiers
+ * @param defenceAllianceId
+ * @param defenceMonsterId
+ * @param callback
+ */
+pro.attackMonster = function(playerId, allianceId, dragonType, soldiers, defenceAllianceId, defenceMonsterId, callback){
+	var self = this
+	var attackPlayerDoc = null
+	var attackPlayerData = []
+	var attackAllianceDoc = null
+	var attackAllianceData = []
+	var defenceAllianceDoc = null
+	var defenceAllianceData = []
+	var dragon = null
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		attackPlayerDoc = doc
+		dragon = attackPlayerDoc.dragons[dragonType]
+		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
+		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
+		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, dragon)
+		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
+		if(!LogicUtils.isPlayerMarchSoldiersLegal(attackPlayerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
+		if(!LogicUtils.isPlayerDragonLeadershipEnough(attackPlayerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
+		return self.cacheService.findAllianceAsync(allianceId)
+	}).then(function(doc){
+		attackAllianceDoc = doc
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc, attackAllianceDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
+		if(!_.isEqual(allianceId, defenceAllianceId)){
+			if(!_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+				return Promise.reject(ErrorUtils.allianceNotInFightStatus(playerId, attackAllianceDoc._id))
+			}
+			var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id)
+			if(!_.isEqual(enemyAllianceId, defenceAllianceId)) return Promise.reject(ErrorUtils.targetAllianceNotTheEnemyAlliance(playerId, attackAllianceDoc._id, defenceAllianceId))
+			return self.cacheService.directFindAllianceAsync(defenceAllianceId).then(function(doc){
+				defenceAllianceDoc = doc
+				return Promise.resolve()
+			})
+		}else{
+			defenceAllianceDoc = attackAllianceDoc
+			return Promise.resolve()
+		}
+	}).then(function(){
+		var defenceMonster = _.find(defenceAllianceDoc.monsters, function(monster){
+			return _.isEqual(monster.id, defenceMonsterId)
+		})
+		if(!_.isObject(defenceMonster)) return Promise.reject(ErrorUtils.monsterNotExist(playerId, attackAllianceDoc._id, defenceMonsterId))
+
+		dragon.status = Consts.DragonStatus.March
+		attackPlayerData.push(["dragons." + dragonType + ".hp", dragon.hp])
+		attackPlayerData.push(["dragons." + dragonType + ".hpRefreshTime", dragon.hpRefreshTime])
+		attackPlayerData.push(["dragons." + dragonType + ".status", dragon.status])
+		_.each(soldiers, function(soldier){
+			attackPlayerDoc.soldiers[soldier.name] -= soldier.count
+			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
+		})
+		DataUtils.refreshPlayerPower(attackPlayerDoc, attackPlayerData)
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
+
+		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, attackPlayerDoc._id)
+		if(playerObject.isProtected){
+			playerObject.isProtected = false
+			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
+			defenceAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
+		}
+		var event = MarchUtils.createAttackMonsterMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defenceMonster)
+		attackAllianceDoc.attackMarchEvents.push(event)
+		attackAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(event), event])
+		defenceAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(event), event])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
+		LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceAllianceData, pushFuncs, self.pushService)
+
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback(null, attackPlayerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(attackPlayerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(attackPlayerDoc._id, null))
+		}
+		if(_.isObject(attackAllianceDoc)){
+			funcs.push(self.cacheService.updateAllianceAsync(attackAllianceDoc._id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
  * 查看敌方进攻行军事件详细信息
  * @param playerId
  * @param allianceId
@@ -833,147 +937,5 @@ pro.getHelpDefenceTroopDetail = function(callerId, allianceId, playerId, helpedB
 		callback(null, troopDetail)
 	}).catch(function(e){
 		callback(e)
-	})
-}
-
-/**
- * 联盟商店补充道具
- * @param playerId
- * @param playerName
- * @param allianceId
- * @param itemName
- * @param count
- * @param callback
- */
-pro.addShopItem = function(playerId, playerName, allianceId, itemName, count, callback){
-	var self = this
-	var allianceDoc = null
-	var allianceData = []
-	var pushFuncs = []
-	var eventFuncs = []
-	var updateFuncs = []
-	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
-		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
-		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "addItem")){
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "addItem"))
-		}
-		if(!DataUtils.isItemSellInAllianceShop(allianceDoc, itemName)) return Promise.reject(ErrorUtils.theItemNotSellInAllianceShop(playerId, allianceDoc._id, itemName))
-		var itemConfig = DataUtils.getItemConfig(itemName)
-		if(!itemConfig.isAdvancedItem) return Promise.reject(ErrorUtils.normalItemsNotNeedToAdd(playerId, allianceDoc._id, itemName))
-		var honourNeed = itemConfig.buyPriceInAlliance * count
-		if(allianceDoc.basicInfo.honour < honourNeed) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
-
-		allianceDoc.basicInfo.honour -= honourNeed
-		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
-		var resp = LogicUtils.addAllianceItem(allianceDoc, itemName, count)
-		allianceData.push(["items." + allianceDoc.items.indexOf(resp.item), resp.item])
-		var itemLog = LogicUtils.createAllianceItemLog(Consts.AllianceItemLogType.AddItem, playerName, itemName, count)
-		LogicUtils.addAllianceItemLog(allianceDoc, allianceData, itemLog)
-
-		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
-	})
-}
-
-/**
- * 购买联盟商店的道具
- * @param playerId
- * @param allianceId
- * @param itemName
- * @param count
- * @param callback
- */
-pro.buyShopItem = function(playerId, allianceId, itemName, count, callback){
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	var allianceDoc = null
-	var allianceData = []
-	var pushFuncs = []
-	var eventFuncs = []
-	var updateFuncs = []
-	this.cacheService.findPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
-		return self.cacheService.findAllianceAsync(allianceId)
-	}).then(function(doc){
-		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
-		var itemConfig = DataUtils.getItemConfig(itemName)
-		var isAdvancedItem = itemConfig.isAdvancedItem
-		var eliteLevel = DataUtils.getAllianceTitleLevel("elite")
-		var myLevel = DataUtils.getAllianceTitleLevel(playerObject.title)
-		if(isAdvancedItem){
-			if(myLevel > eliteLevel) return Promise.reject(ErrorUtils.playerLevelNotEoughCanNotBuyAdvancedItem(playerId, allianceDoc._id, itemName))
-			var item = _.find(allianceDoc.items, function(item){
-				return _.isEqual(item.name, itemName)
-			})
-			if(!_.isObject(item) || item.count < count) return Promise.reject(ErrorUtils.itemCountNotEnough(playerId, allianceDoc._id, itemName))
-		}
-
-		var loyaltyNeed = itemConfig.buyPriceInAlliance * count
-		if(playerDoc.allianceInfo.loyalty < loyaltyNeed) return Promise.reject(ErrorUtils.playerLoyaltyNotEnough(playerId, allianceDoc._id))
-		playerDoc.allianceInfo.loyalty -= loyaltyNeed
-		playerData.push(["allianceInfo.loyalty", playerDoc.allianceInfo.loyalty])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.BuyItemInAllianceShop)
-		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
-		memberObject.loyalty -= loyaltyNeed
-		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".loyalty", memberObject.loyalty])
-
-		if(isAdvancedItem){
-			item.count -= count
-			if(item.count <= 0){
-				allianceData.push(["items." + allianceDoc.items.indexOf(item), null])
-				LogicUtils.removeItemInArray(allianceDoc.items, item)
-			}else{
-				allianceData.push(["items." + allianceDoc.items.indexOf(item) + ".count", item.count])
-			}
-			var itemLog = LogicUtils.createAllianceItemLog(Consts.AllianceItemLogType.BuyItem, playerDoc.basicInfo.name, itemName, count)
-			LogicUtils.addAllianceItemLog(allianceDoc, allianceData, itemLog)
-		}
-
-		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)
-		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback(null, playerData)
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
 	})
 }

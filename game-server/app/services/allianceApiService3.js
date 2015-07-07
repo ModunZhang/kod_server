@@ -767,3 +767,193 @@ pro.getNearedAllianceInfos = function(playerId, allianceId, callback){
 		callback(e)
 	})
 }
+
+/**
+ * 联盟商店补充道具
+ * @param playerId
+ * @param playerName
+ * @param allianceId
+ * @param itemName
+ * @param count
+ * @param callback
+ */
+pro.addShopItem = function(playerId, playerName, allianceId, itemName, count, callback){
+	var self = this
+	var allianceDoc = null
+	var allianceData = []
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
+		allianceDoc = doc
+		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "addItem")){
+			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "addItem"))
+		}
+		if(!DataUtils.isItemSellInAllianceShop(allianceDoc, itemName)) return Promise.reject(ErrorUtils.theItemNotSellInAllianceShop(playerId, allianceDoc._id, itemName))
+		var itemConfig = DataUtils.getItemConfig(itemName)
+		if(!itemConfig.isAdvancedItem) return Promise.reject(ErrorUtils.normalItemsNotNeedToAdd(playerId, allianceDoc._id, itemName))
+		var honourNeed = itemConfig.buyPriceInAlliance * count
+		if(allianceDoc.basicInfo.honour < honourNeed) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
+
+		allianceDoc.basicInfo.honour -= honourNeed
+		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
+		var resp = LogicUtils.addAllianceItem(allianceDoc, itemName, count)
+		allianceData.push(["items." + allianceDoc.items.indexOf(resp.item), resp.item])
+		var itemLog = LogicUtils.createAllianceItemLog(Consts.AllianceItemLogType.AddItem, playerName, itemName, count)
+		LogicUtils.addAllianceItemLog(allianceDoc, allianceData, itemLog)
+
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
+ * 购买联盟商店的道具
+ * @param playerId
+ * @param allianceId
+ * @param itemName
+ * @param count
+ * @param callback
+ */
+pro.buyShopItem = function(playerId, allianceId, itemName, count, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var allianceDoc = null
+	var allianceData = []
+	var pushFuncs = []
+	var eventFuncs = []
+	var updateFuncs = []
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		return self.cacheService.findAllianceAsync(allianceId)
+	}).then(function(doc){
+		allianceDoc = doc
+		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
+		var itemConfig = DataUtils.getItemConfig(itemName)
+		var isAdvancedItem = itemConfig.isAdvancedItem
+		var eliteLevel = DataUtils.getAllianceTitleLevel("elite")
+		var myLevel = DataUtils.getAllianceTitleLevel(playerObject.title)
+		if(isAdvancedItem){
+			if(myLevel > eliteLevel) return Promise.reject(ErrorUtils.playerLevelNotEoughCanNotBuyAdvancedItem(playerId, allianceDoc._id, itemName))
+			var item = _.find(allianceDoc.items, function(item){
+				return _.isEqual(item.name, itemName)
+			})
+			if(!_.isObject(item) || item.count < count) return Promise.reject(ErrorUtils.itemCountNotEnough(playerId, allianceDoc._id, itemName))
+		}
+
+		var loyaltyNeed = itemConfig.buyPriceInAlliance * count
+		if(playerDoc.allianceInfo.loyalty < loyaltyNeed) return Promise.reject(ErrorUtils.playerLoyaltyNotEnough(playerId, allianceDoc._id))
+		playerDoc.allianceInfo.loyalty -= loyaltyNeed
+		playerData.push(["allianceInfo.loyalty", playerDoc.allianceInfo.loyalty])
+		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.BuyItemInAllianceShop)
+		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
+		memberObject.loyalty -= loyaltyNeed
+		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".loyalty", memberObject.loyalty])
+
+		if(isAdvancedItem){
+			item.count -= count
+			if(item.count <= 0){
+				allianceData.push(["items." + allianceDoc.items.indexOf(item), null])
+				LogicUtils.removeItemInArray(allianceDoc.items, item)
+			}else{
+				allianceData.push(["items." + allianceDoc.items.indexOf(item) + ".count", item.count])
+			}
+			var itemLog = LogicUtils.createAllianceItemLog(Consts.AllianceItemLogType.BuyItem, playerDoc.basicInfo.name, itemName, count)
+			LogicUtils.addAllianceItemLog(allianceDoc, allianceData, itemLog)
+		}
+
+		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)
+		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
+ * 查看联盟信息
+ * @param playerId
+ * @param allianceId
+ * @param callback
+ */
+pro.getAllianceInfo = function(playerId, allianceId, callback){
+	this.cacheService.directFindAllianceAsync(allianceId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
+		var allianceData = {
+			id:doc._id,
+			name:doc.basicInfo.name,
+			tag:doc.basicInfo.tag,
+			flag:doc.basicInfo.flag,
+			members:doc.members.length,
+			membersMax:DataUtils.getAllianceMemberMaxCount(doc),
+			power:doc.basicInfo.power,
+			language:doc.basicInfo.language,
+			kill:doc.basicInfo.kill,
+			joinType:doc.basicInfo.joinType,
+			terrain:doc.basicInfo.terrain,
+			desc:doc.desc,
+			titles:doc.titles,
+			memberList:(function(){
+				var members = []
+				_.each(doc.members, function(member){
+					var theMember = {
+						id:member.id,
+						name:member.name,
+						icon:member.icon,
+						levelExp:member.levelExp,
+						power:member.power,
+						title:member.title,
+						online:_.isBoolean(member.online) ? member.online : false,
+						lastLoginTime:member.lastLoginTime
+					}
+					members.push(theMember)
+				})
+				return members
+			})()
+		}
+
+		callback(null, allianceData)
+	}).catch(function(e){
+		callback(e)
+	})
+}

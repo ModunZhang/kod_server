@@ -108,54 +108,6 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 }
 
 /**
- * 查看联盟信息
- * @param playerId
- * @param allianceId
- * @param callback
- */
-pro.getAllianceInfo = function(playerId, allianceId, callback){
-	this.cacheService.directFindAllianceAsync(allianceId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
-		var allianceData = {
-			id:doc._id,
-			name:doc.basicInfo.name,
-			tag:doc.basicInfo.tag,
-			flag:doc.basicInfo.flag,
-			members:doc.members.length,
-			membersMax:DataUtils.getAllianceMemberMaxCount(doc),
-			power:doc.basicInfo.power,
-			language:doc.basicInfo.language,
-			kill:doc.basicInfo.kill,
-			joinType:doc.basicInfo.joinType,
-			terrain:doc.basicInfo.terrain,
-			desc:doc.desc,
-			titles:doc.titles,
-			memberList:(function(){
-				var members = []
-				_.each(doc.members, function(member){
-					var theMember = {
-						id:member.id,
-						name:member.name,
-						icon:member.icon,
-						levelExp:member.levelExp,
-						power:member.power,
-						title:member.title,
-						online:_.isBoolean(member.online) ? member.online : false,
-						lastLoginTime:member.lastLoginTime
-					}
-					members.push(theMember)
-				})
-				return members
-			})()
-		}
-
-		callback(null, allianceData)
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
  * 获取联盟申请列表
  * @param playerId
  * @param allianceId

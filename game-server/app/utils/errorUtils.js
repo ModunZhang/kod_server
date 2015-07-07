@@ -1662,6 +1662,17 @@ Utils.villageNotExist = function(playerId, allianceId, villageId){
 }
 
 /**
+ * 野怪不存在
+ * @param playerId
+ * @param allianceId
+ * @param monsterId
+ */
+Utils.monsterNotExist = function(playerId, allianceId, monsterId){
+	var config = Errors.monsterNotExist
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, monsterId:monsterId})
+}
+
+/**
  * 村落采集事件不存在
  * @param playerId
  * @param allianceId

@@ -595,6 +595,72 @@ Utils.createAttackVillageMarchReturnEvent = function(allianceDoc, playerDoc, dra
 }
 
 /**
+ * 创建进攻联盟村落行军事件
+ * @param allianceDoc
+ * @param playerDoc
+ * @param dragon
+ * @param soldiers
+ * @param defenceAllianceDoc
+ * @param defenceMonster
+ * @returns {*}
+ */
+Utils.createAttackMonsterMarchEvent = function(allianceDoc, playerDoc, dragon, soldiers, defenceAllianceDoc, defenceMonster){
+	var playerLocation = LogicUtils.getAllianceMemberMapObjectById(allianceDoc, playerDoc._id).location
+	var defenceMonsterLocation = LogicUtils.getAllianceMapObjectById(defenceAllianceDoc, defenceMonster.id).location
+	var marchTime = getPlayerSoldiersMarchTime(playerDoc, dragon, soldiers, allianceDoc, playerLocation, defenceAllianceDoc, defenceMonsterLocation)
+
+	var event = {
+		id:ShortId.generate(),
+		marchType:Consts.MarchType.Monster,
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime,
+		attackPlayerData:createAttackPlayerData(allianceDoc, playerDoc, playerLocation, dragon, soldiers),
+		defenceMonsterData:{
+			id:defenceMonster.id,
+			name:defenceMonster.name,
+			level:defenceMonster.level,
+			location:defenceVillageLocation,
+			alliance:createAllianceData(defenceAllianceDoc)
+		}
+	}
+	return event
+}
+
+/**
+ * 创建进攻联盟村落回城事件
+ * @param allianceDoc
+ * @param playerDoc
+ * @param dragon
+ * @param soldiers
+ * @param woundedSoldiers
+ * @param defenceAllianceDoc
+ * @param defenceMonsterData
+ * @param rewards
+ * @returns {*}
+ */
+Utils.createAttackMonsterMarchReturnEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, defenceAllianceDoc, defenceMonsterData, rewards){
+	var playerLocation = LogicUtils.getAllianceMemberMapObjectById(allianceDoc, playerDoc._id).location
+	var marchTime = _.isEmpty(soldiers) ? getPlayerDragonMarchTime(playerDoc, dragon, defenceAllianceDoc, defenceMonsterData.location, allianceDoc, playerLocation)
+		: getPlayerSoldiersMarchTime(playerDoc, dragon, soldiers, defenceAllianceDoc, defenceMonsterData.location, allianceDoc, playerLocation)
+
+	var event = {
+		id:ShortId.generate(),
+		marchType:Consts.MarchType.Village,
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime,
+		attackPlayerData:createAttackPlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, soldiers, woundedSoldiers, rewards),
+		defenceVillageData:{
+			id:defenceMonsterData.id,
+			name:defenceMonsterData.name,
+			level:defenceMonsterData.level,
+			location:defenceMonsterData.location,
+			alliance:createAllianceData(defenceAllianceDoc)
+		}
+	}
+	return event
+}
+
+/**
  * 创建突袭联盟村落行军事件
  * @param allianceDoc
  * @param playerDoc

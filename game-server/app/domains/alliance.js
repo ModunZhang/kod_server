@@ -327,7 +327,7 @@ var AllianceSchema = new Schema({
 			defenceAllianceId:{type:String, required:true},
 			attackPlayerKills:[{
 				id:{type:Number, required:true},
-				name:{type:Number, required:true},
+				name:{type:String, required:true},
 				kill:{type:Number, required:true}
 			}],
 			attackAllianceCountData:{
@@ -340,7 +340,7 @@ var AllianceSchema = new Schema({
 			},
 			defencePlayerKills:[{
 				id:{type:Number, required:true},
-				name:{type:Number, required:true},
+				name:{type:String, required:true},
 				kill:{type:Number, required:true}
 			}],
 			defenceAllianceCountData:{
@@ -534,6 +534,20 @@ var AllianceSchema = new Schema({
 			}
 		},
 		defenceVillageData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			level:{type:Number, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			alliance:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				tag:{type:String, required:true}
+			}
+		},
+		defenceMonsterData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			level:{type:Number, required:true},

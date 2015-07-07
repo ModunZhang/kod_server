@@ -2396,6 +2396,32 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 }
 
 /**
+ * 创建战斗用野怪
+ * @param allianceDoc
+ * @param monster
+ * @returns {{dragonForFight: {type: *, level: *, strength: *, vitality: *, maxHp: number, totalHp: number, currentHp: number, isWin: boolean}, soldiersForFight: Array}}
+ */
+Utils.createAllianceMonsterForFight = function(allianceDoc, monster){
+	var monsterConfig = AllianceInitData.monster[monster.level]
+	var dragonConfigArray = monsterConfig.dragon.split('_');
+	var soldierConfigArray = monsterConfig.soldiers.split('_');
+	var dragon = {
+		type:dragonConfigArray[0],
+		star:parseInt(dragonConfigArray[1]),
+		level:parseInt(dragonConfigArray[2])
+	}
+	var dragonForFight = this.createDragonForFight(dragon, allianceDoc.basicInfo.terrain)
+	var soldiers = [{
+		name:soldierConfigArray[0],
+		star:parseInt(soldierConfigArray[1]),
+		count:parseInt(soldierConfigArray[2])
+	}]
+	var soldiersForFight = this.createSoldiersForFight(soldiers)
+
+	return {dragonForFight:dragonForFight, soldiersForFight:soldiersForFight}
+}
+
+/**
  * 获取玩家战损兵力去医院的数量
  * @param playerDoc
  * @param dragon
