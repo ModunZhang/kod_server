@@ -338,13 +338,14 @@ pro.clearAllianceTimeEvents = function(allianceDoc, callback){
  * @param callback
  */
 pro.removeAllianceTempTimeEvents = function(allianceDoc, callback){
-	var funcs = []
-	funcs.push(this.removeAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent))
-	Promise.all(funcs).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
+	//var funcs = []
+	//funcs.push(this.removeAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent))
+	//Promise.all(funcs).then(function(){
+	//	callback()
+	//}).catch(function(e){
+	//	callback(e)
+	//})
+	callback()
 }
 
 /**
@@ -595,12 +596,13 @@ pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
  * @param callback
  */
 pro.restoreAllianceTempTimeEvents = function(allianceDoc, callback){
-	var now = Date.now()
-	var funcs = []
-	funcs.push(this.addAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, allianceDoc.basicInfo.monsterRefreshTime - now))
-	Promise.all(funcs).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
+	callback()
+	//var now = Date.now()
+	//var funcs = []
+	//funcs.push(this.addAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, allianceDoc.basicInfo.monsterRefreshTime - now))
+	//Promise.all(funcs).then(function(){
+	//	callback()
+	//}).catch(function(e){
+	//	callback(e)
+	//})
 }
