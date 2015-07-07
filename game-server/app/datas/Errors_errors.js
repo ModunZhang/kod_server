@@ -973,3 +973,8 @@ errors["theAllianceDoNotNeedRequestToJoin"] = {
 	code:693,
 	message:"此联盟不需要申请加入"
 }
+errors["monsterNotExist"] = {
+	key:"monsterNotExist",
+	code:694,
+	message:"野怪不存在"
+}
