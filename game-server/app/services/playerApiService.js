@@ -440,6 +440,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 
+		building.level += 1
 		building.type = newBuildingName
 		playerData.push(["buildings.location_" + buildingLocation + ".type", newBuildingName])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
