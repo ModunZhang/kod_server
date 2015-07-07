@@ -268,7 +268,7 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, cal
 		if(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 			var willRemovedMail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
 			playerData.push(["mails." + playerDoc.mails.indexOf(willRemovedMail), null])
-			this.removeItemInArray(playerDoc.mails, willRemovedMail)
+			LogicUtils.removeItemInArray(playerDoc.mails, willRemovedMail)
 		}
 		playerDoc.mails.push(mail)
 		playerData.push(["mails." + playerDoc.mails.indexOf(mail), mail])
@@ -303,7 +303,7 @@ pro.sendSysReport = function(id, report, callback){
 		if(playerDoc.reports.length >= Define.PlayerReportsMaxSize){
 			var willRemovedReport = LogicUtils.getPlayerFirstUnSavedReport(playerDoc)
 			playerData.push(["reports." + playerDoc.reports.indexOf(willRemovedReport), null])
-			this.removeItemInArray(playerDoc.reports, willRemovedReport)
+			LogicUtils.removeItemInArray(playerDoc.reports, willRemovedReport)
 		}
 		playerDoc.reports.push(report)
 		playerData.push(["reports." + playerDoc.reports.indexOf(report), report])
