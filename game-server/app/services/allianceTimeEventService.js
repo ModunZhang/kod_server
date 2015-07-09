@@ -2200,6 +2200,11 @@ pro.onVillageCreateEvents = function(allianceDoc, event, callback){
 	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 }
 
+/**
+ * 联盟野怪刷新事件触发
+ * @param allianceDoc
+ * @param callback
+ */
 pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 	var self = this
 	var allianceData = []
