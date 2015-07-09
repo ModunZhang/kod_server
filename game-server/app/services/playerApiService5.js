@@ -128,6 +128,7 @@ pro.getDay14Reward = function(playerId, callback){
 
 		var rewards = DataUtils.getDay14Rewards(playerDoc.countInfo.day14)
 		_.each(rewards, function(reward){
+			if(_.isEqual(reward.name, 'marchQueue') && playerDoc.basicInfo.marchQueue >= 2) return;
 			playerDoc[reward.type][reward.name] += reward.count
 			playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
 		})
