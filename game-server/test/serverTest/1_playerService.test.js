@@ -1483,7 +1483,7 @@
 //		it("useItem woodClass_3", function(done){
 //			Api.buyItem("woodClass_3", 1, function(doc){
 //				doc.code.should.equal(200)
-//				Api.useItem("woodClass_3", {}, function(doc){
+//				Api.useItem("woodClass_3", {woodClass_3:{count:1}}, function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})
@@ -1491,9 +1491,9 @@
 //		})
 //
 //		it("useItem citizenClass_2", function(done){
-//			Api.buyItem("citizenClass_2", 1, function(doc){
+//			Api.buyItem("citizenClass_2", 2, function(doc){
 //				doc.code.should.equal(200)
-//				Api.useItem("citizenClass_2", {}, function(doc){
+//				Api.useItem("citizenClass_2", {citizenClass_2:{count:2}}, function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})
@@ -1501,9 +1501,9 @@
 //		})
 //
 //		it("useItem casinoTokenClass_2", function(done){
-//			Api.buyItem("casinoTokenClass_2", 1, function(doc){
+//			Api.buyItem("casinoTokenClass_2", 5, function(doc){
 //				doc.code.should.equal(200)
-//				Api.useItem("casinoTokenClass_2", {}, function(doc){
+//				Api.useItem("casinoTokenClass_2", {casinoTokenClass_2:{count:5}}, function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})
