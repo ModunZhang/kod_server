@@ -2473,9 +2473,9 @@ Utils.getAllianceShrineStageResultDatas = function(terrain, stageName, isWin, fi
 	})
 	if(isWin)
 		fightStar += 1;
-	if(fightDatas.length > 0 && totalDeath <= AllianceInitData.shrineStage[stageName].star2DeathCitizen)
+	if(isWin && fightDatas.length > 0 && totalDeath <= AllianceInitData.shrineStage[stageName].star2DeathCitizen)
 		fightStar += 1;
-	if(fightDatas.length == 1)
+	if(isWin && fightDatas.length == 1)
 		fightStar += 1;
 
 	var getPlayerRewardsString = function(terrain, stageConfig, playerKill){
