@@ -4103,3 +4103,11 @@ Utils.getMonsterRewards = function(monsterLevel){
 	rewards = SortFunc(rewards)
 	return {type:rewards[0].type, name:rewards[0].name, count:rewards[0].count}
 }
+
+/**
+ * 是否资源道具
+ * @param itemName
+ */
+Utils.isResourceItem = function(itemName){
+	return _.isObject(Items.resource[itemName]);
+}

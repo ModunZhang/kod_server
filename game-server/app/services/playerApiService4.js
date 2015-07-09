@@ -446,6 +446,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 	var playerData = []
 	var item = null
 	var chestKey = null
+	var itemData = null
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
@@ -456,7 +457,8 @@ pro.useItem = function(playerId, itemName, params, callback){
 			return _.isEqual(item.name, itemName)
 		})
 		if(!_.isObject(item))  return Promise.reject(ErrorUtils.itemNotExist(playerId, itemName))
-
+		itemData = params[itemName]
+		if(DataUtils.isResourceItem(itemName) && item.count < itemData.count) return Promise.reject(ErrorUtils.itemCountNotEnough(playerId, playerDoc.allianceId, itemName));
 		if(_.isEqual("changePlayerName", itemName)){
 			forceSave = true
 		}else if(_.isEqual("chest_2", itemName) || _.isEqual("chest_3", itemName) || _.isEqual("chest_4", itemName)){
@@ -468,10 +470,10 @@ pro.useItem = function(playerId, itemName, params, callback){
 		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
 			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}
-		var itemData = params[itemName]
 		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService)
 	}).then(function(){
-		item.count -= 1
+		if(DataUtils.isResourceItem(itemName)) item.count -= itemData.count;
+		else item.count -= 1;
 		if(item.count <= 0){
 			playerData.push(["items." + playerDoc.items.indexOf(item), null])
 			LogicUtils.removeItemInArray(playerDoc.items, item)
@@ -534,7 +536,8 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
-		gemUsed = itemConfig.price * 1
+		var itemData = params[itemName]
+		gemUsed = itemConfig.price * DataUtils.isResourceItem(itemName) ? itemData.count : 1;
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 
 		if(_.isEqual("changePlayerName", itemName)){
@@ -548,7 +551,6 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
 			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}
-		var itemData = params[itemName]
 		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService)
 	}).then(function(){
 		playerDoc.resources.gem -= gemUsed
