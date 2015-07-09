@@ -222,6 +222,13 @@ module.exports = {
 		desert:"redDragon",
 		iceField:"blueDragon"
 	},
+	MaterialDepotTypes:[
+		'soldierMaterials',
+		'buildingMaterials',
+		'technologyMaterials',
+		'dragonMaterials'
+	],
+
 
 
 

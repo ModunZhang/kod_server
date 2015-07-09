@@ -190,10 +190,10 @@ var PlayerSchema = new Schema({
 	materialEvents:[{
 		_id:false,
 		id:{type:String, required:true},
-		category:{type:String, required:true},
+		type:{type:String, required:true},
 		materials:[{
 			_id:false,
-			type:{type:String, required:true},
+			name:{type:String, required:true},
 			count:{type:Number, required:true}
 		}],
 		startTime:{type:Number, required:true},

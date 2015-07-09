@@ -756,10 +756,14 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 				if(_.isEqual("items", type)){
 					var resp = LogicUtils.addPlayerItem(playerDoc, name, count)
 					playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+				}else if(_.isEqual('resources', type)){
+					playerDoc[type][name] += count
+				}else if(_.contains(Consts.MaterialDepotTypes, type)){
+					DataUtils.addPlayerMaterials(playerDoc, type, [{name:name, count:count}])
+					playerData.push([type + "." + name, playerDoc[type][name]])
 				}else{
 					playerDoc[type][name] += count
-					if(!_.isEqual("resources", type))
-						playerData.push([type + "." + name, playerDoc[type][name]])
+					playerData.push([type + "." + name, playerDoc[type][name]])
 				}
 			})
 		}

@@ -352,31 +352,31 @@ Utils.buildingNotBuild = function(playerId, buildingLocation){
 /**
  * 同类型的材料正在制造
  * @param playerId
- * @param category
+ * @param type
  */
-Utils.materialAsSameTypeIsMakeNow = function(playerId, category){
+Utils.materialAsSameTypeIsMakeNow = function(playerId, type){
 	var config = Errors.materialAsSameTypeIsMakeNow
-	return CreateError(config, {playerId:playerId, category:category})
+	return CreateError(config, {playerId:playerId, type:type})
 }
 
 /**
  * 同类型的材料制作完成后还未领取
  * @param playerId
- * @param category
+ * @param type
  */
-Utils.materialMakeFinishedButNotTakeAway = function(playerId, category){
+Utils.materialMakeFinishedButNotTakeAway = function(playerId, type){
 	var config = Errors.materialMakeFinishedButNotTakeAway
-	return CreateError(config, {playerId:playerId, category:category})
+	return CreateError(config, {playerId:playerId, type:type})
 }
 
 /**
  * 不同类型的材料正在制造
  * @param playerId
- * @param category
+ * @param type
  */
-Utils.materialAsDifferentTypeIsMakeNow = function(playerId, category){
+Utils.materialAsDifferentTypeIsMakeNow = function(playerId, type){
 	var config = Errors.materialAsDifferentTypeIsMakeNow
-	return CreateError(config, {playerId:playerId, category:category})
+	return CreateError(config, {playerId:playerId, type:type})
 }
 
 /**
