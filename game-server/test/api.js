@@ -105,9 +105,9 @@ Api.freeSpeedUp = function(eventType, eventId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.makeMaterial = function(category, finishNow, callback){
+Api.makeMaterial = function(type, finishNow, callback){
 	var info = {
-		category:category,
+		type:type,
 		finishNow:finishNow
 	}
 	var route = "logic.playerHandler.makeMaterial"
