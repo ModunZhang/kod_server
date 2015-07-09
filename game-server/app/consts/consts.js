@@ -320,6 +320,8 @@ module.exports = {
 		CityBeStriked:"cityBeStriked",
 		AttackCity:"attackCity",
 		AttackVillage:"attackVillage",
+		AttackMonster:'attackMonster',
+		AttackShine:'attackShine',
 		StrikeVillage:"strikeVillage",
 		VillageBeStriked:"villageBeStriked",
 		CollectResource:"collectResource"

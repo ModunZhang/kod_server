@@ -258,7 +258,7 @@ var getPlayerSoldiersMarchTime = function(playerDoc, dragon, soldiers, fromAllia
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(playerDoc) : 0].marchSpeedAdd
 	var time = Math.ceil(totalSpeed / totalCount * distance * 1000)
 	time = LogicUtils.getTimeEfffect(time, itemBuff + vipBuff)
-	return time//5 * 1000
+	return 5 * 1000
 }
 
 /**
@@ -276,7 +276,7 @@ var getPlayerDragonMarchTime = function(playerDoc, dragon, fromAllianceDoc, from
 	var baseSpeed = 2000
 	var marchSpeed = PlayerInitData.intInit.dragonMarchSpeed.value
 	var time = Math.ceil(baseSpeed / marchSpeed * distance * 1000)
-	return time//5 * 1000
+	return 5 * 1000
 }
 
 
@@ -617,9 +617,8 @@ Utils.createAttackMonsterMarchEvent = function(allianceDoc, playerDoc, dragon, s
 		attackPlayerData:createAttackPlayerData(allianceDoc, playerDoc, playerLocation, dragon, soldiers),
 		defenceMonsterData:{
 			id:defenceMonster.id,
-			name:defenceMonster.name,
 			level:defenceMonster.level,
-			location:defenceVillageLocation,
+			location:defenceMonsterLocation,
 			alliance:createAllianceData(defenceAllianceDoc)
 		}
 	}
@@ -649,9 +648,8 @@ Utils.createAttackMonsterMarchReturnEvent = function(allianceDoc, playerDoc, dra
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createAttackPlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, soldiers, woundedSoldiers, rewards),
-		defenceVillageData:{
+		defenceMonsterData:{
 			id:defenceMonsterData.id,
-			name:defenceMonsterData.name,
 			level:defenceMonsterData.level,
 			location:defenceMonsterData.location,
 			alliance:createAllianceData(defenceAllianceDoc)

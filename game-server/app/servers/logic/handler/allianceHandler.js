@@ -1362,6 +1362,53 @@ pro.attackVillage = function(msg, session, next){
 }
 
 /**
+ * 进攻野怪
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.attackMonster = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.attackMonster", {playerId:session.uid, msg:msg})
+	var allianceId = session.get('allianceId');
+	var dragonType = msg.dragonType
+	var soldiers = msg.soldiers
+	var defenceAllianceId = msg.defenceAllianceId
+	var defenceMonsterId = msg.defenceMonsterId
+	var e = null
+	if(_.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isArray(soldiers)){
+		e = new Error("soldiers 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(defenceAllianceId) || !ShortId.isValid(defenceAllianceId)){
+		e = new Error("defenceAllianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(defenceMonsterId) || !ShortId.isValid(defenceMonsterId)){
+		e = new Error("defenceMonsterId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('attackMonster', [session.uid, allianceId, dragonType, soldiers, defenceAllianceId, defenceMonsterId]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
  * 从村落撤兵
  * @param msg
  * @param session

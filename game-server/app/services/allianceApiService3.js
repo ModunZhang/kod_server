@@ -518,7 +518,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent])
 		}
 		var now = Date.now()
-		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 60 * 1000)
+		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 100)
 		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
 		attackAllianceData.push(["basicInfo", attackAllianceDoc.basicInfo])
 		attackAllianceData.push(["allianceFight", attackAllianceDoc.allianceFight])

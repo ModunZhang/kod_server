@@ -4065,3 +4065,42 @@ Utils.getAllianceFightInitHonourCount = function(serverLevel){
 Utils.isOnLineTimePointExist = function(timePoint){
 	return _.isObject(Activities.online[timePoint])
 }
+
+/**
+ * 获取野怪奖励
+ * @param monsterLevel
+ * @returns {*}
+ */
+Utils.getMonsterRewards = function(monsterLevel){
+	var rewardStrings = AllianceInitData.monster[monsterLevel].rewards.split(',');
+	var rewards = [];
+	_.each(rewardStrings, function(rewardString){
+		(function(){
+			var rewardParams = rewardString.split(':');
+			var reward = {
+				type:rewardParams[0],
+				name:rewardParams[1],
+				count:parseInt(rewardParams[2]),
+				weight:parseInt(rewardParams[3])
+			};
+			rewards.push(reward);
+		})();
+	})
+	var SortFunc = function(objects){
+		var totalWeight = 0
+		_.each(objects, function(object){
+			totalWeight += object.weight + 1
+		})
+
+		_.each(objects, function(object){
+			var weight = object.weight + 1 + (Math.random() * totalWeight << 0)
+			object.weight = weight
+		})
+
+		return _.sortBy(objects, function(object){
+			return -object.weight
+		})
+	}
+	rewards = SortFunc(rewards)
+	return {type:rewards[0].type, name:rewards[0].name, count:rewards[0].count}
+}

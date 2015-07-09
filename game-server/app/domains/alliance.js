@@ -221,10 +221,42 @@ var AllianceSchema = new Schema({
 			_id:false,
 			roundDatas:[{
 				_id:false,
-				playerId:{type:String, required:true},
-				playerName:{type:String, required:true},
-				stageTroopNumber:{type:String, required:true},
-				fightResult:{type:String, required:true},
+				attackPlayerData:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					icon:{type:Number, required:true},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						expAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
+					},
+					soldiers:[{
+						_id:false,
+						name:{type:String, required:true},
+						star:{type:Number, required:true},
+						count:{type:Number, required:true},
+						countDecreased:{type:Number, required:true}
+					}]
+				},
+				defenceTroopData:{
+					stageTroopNumber:{type:String, required:true},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						expAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
+					},
+					soldiers:[{
+						_id:false,
+						name:{type:String, required:true},
+						star:{type:Number, required:true},
+						count:{type:Number, required:true},
+						countDecreased:{type:Number, required:true}
+					}]
+				},
 				attackDragonFightData:{
 					type:{type:String, required:true},
 					level:{type:Number, required:true},
@@ -549,7 +581,6 @@ var AllianceSchema = new Schema({
 		},
 		defenceMonsterData:{
 			id:{type:String, required:true},
-			name:{type:String, required:true},
 			level:{type:Number, required:true},
 			location:{
 				x:{type:Number, required:true},
@@ -629,6 +660,19 @@ var AllianceSchema = new Schema({
 		defenceVillageData:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
+			level:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
+			},
+			alliance:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				tag:{type:String, required:true}
+			}
+		},
+		defenceMonsterData:{
+			id:{type:String, required:true},
 			level:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},

@@ -181,7 +181,11 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 		defencePlayerKill:helpDefencePlayerKilledCitizen,
 		defenceDragonExpAdd:helpDefenceDragonExpAdd
 	}
-	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, countData:countData}
+	return {
+		reportForAttackPlayer:reportForAttackPlayer,
+		reportForDefencePlayer:reportForDefencePlayer,
+		countData:countData
+	}
 }
 
 /**
@@ -474,7 +478,11 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		defencePlayerKill:defencePlayerKilledCitizenBySoldiers + defencePlayerKilledCitizenByWall,
 		defenceDragonExpAdd:defenceDragonExpAdd
 	}
-	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, countData:countData}
+	return {
+		reportForAttackPlayer:reportForAttackPlayer,
+		reportForDefencePlayer:reportForDefencePlayer,
+		countData:countData
+	}
 }
 
 /**
@@ -1196,7 +1204,11 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 		defencePlayerKill:defencePlayerKilledCitizen,
 		defenceDragonExpAdd:defenceDragonExpAdd
 	}
-	return {reportForAttackPlayer:reportForAttackPlayer, reportForDefencePlayer:reportForDefencePlayer, countData:countData}
+	return {
+		reportForAttackPlayer:reportForAttackPlayer,
+		reportForDefencePlayer:reportForDefencePlayer,
+		countData:countData
+	}
 }
 
 /**
@@ -1406,6 +1418,139 @@ Utils.createCollectVillageReport = function(defenceAllianceDoc, defenceVillage, 
 		collectResource:collectResource
 	}
 	return report
+}
+
+
+/**
+ * 创建进攻区域地图野怪报告
+ * @param attackAllianceDoc
+ * @param attackPlayerDoc
+ * @param attackDragonForFight
+ * @param attackSoldiersForFight
+ * @param defenceAllianceDoc
+ * @param defenceMonster
+ * @param dragonFightData
+ * @param soldierFightData
+ * @returns {*}
+ */
+Utils.createAttackMonsterReport = function(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiersForFight, defenceAllianceDoc, defenceMonster, dragonFightData, soldierFightData){
+	var getKilledCitizen = function(soldiersForFight){
+		var killed = 0
+		var config = null
+		_.each(soldiersForFight, function(soldierForFight){
+			_.each(soldierForFight.killedSoldiers, function(soldier){
+				if(DataUtils.isNormalSoldier(soldier.name)){
+					var soldierFullKey = soldier.name + "_" + soldier.star
+					config = Soldiers.normal[soldierFullKey]
+					killed += soldier.count * config.killScore
+				}else{
+					config = Soldiers.special[soldier.name]
+					killed += soldier.count * config.killScore
+				}
+			})
+		})
+		return killed
+	}
+	var createSoldiersDataAfterFight = function(soldiersForFight){
+		var soldiers = []
+		_.each(soldiersForFight, function(soldierForFight){
+			var soldier = {
+				name:soldierForFight.name,
+				star:soldierForFight.star,
+				count:soldierForFight.totalCount,
+				countDecreased:soldierForFight.totalCount - soldierForFight.currentCount
+			}
+			soldiers.push(soldier)
+		})
+		return soldiers
+	}
+	var createDragonFightData = function(dragonForFight){
+		var data = {
+			type:dragonForFight.type,
+			hpMax:dragonForFight.maxHp,
+			hp:dragonForFight.totalHp,
+			hpDecreased:dragonForFight.totalHp - dragonForFight.currentHp,
+			isWin:dragonForFight.isWin
+		}
+		return data
+	}
+	var createAllianceData = function(allianceDoc){
+		var data = {
+			id:allianceDoc._id,
+			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag,
+			flag:allianceDoc.basicInfo.flag
+		}
+		return data
+	}
+	var createDragonData = function(dragonAfterFight, expAdd){
+		var dragonData = {
+			type:dragonAfterFight.type,
+			level:dragonAfterFight.level,
+			expAdd:expAdd,
+			hp:dragonAfterFight.totalHp,
+			hpDecreased:dragonAfterFight.totalHp - dragonAfterFight.currentHp
+		}
+		return dragonData
+	}
+
+	var attackPlayerKilledCitizen = getKilledCitizen(soldierFightData.attackSoldiersAfterFight)
+	var attackDragonExpAdd = DataUtils.getPlayerDragonExpAdd(attackPlayerDoc, attackPlayerKilledCitizen)
+	var attackPlayerRewards = []
+
+	if(_.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult))
+		attackPlayerRewards.push(DataUtils.getMonsterRewards(defenceMonster.level));
+	LogicUtils.mergeRewards(attackPlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKilledCitizen, defenceAllianceDoc.basicInfo.terrain))
+
+	var attackMonsterReport = {
+		attackTarget:{
+			level:defenceMonster.level,
+			location:_.find(defenceAllianceDoc.mapObjects, function(mapObject){
+				return _.isEqual(mapObject.id, defenceMonster.id);
+			}).location,
+			alliance:createAllianceData(defenceAllianceDoc),
+			terrain:defenceAllianceDoc.basicInfo.terrain
+		},
+		attackPlayerData:{
+			id:attackPlayerDoc._id,
+			name:attackPlayerDoc.basicInfo.name,
+			icon:attackPlayerDoc.basicInfo.icon,
+			alliance:createAllianceData(attackAllianceDoc),
+			dragon:createDragonData(dragonFightData.attackDragonAfterFight, attackDragonExpAdd),
+			soldiers:createSoldiersDataAfterFight(soldierFightData.attackSoldiersAfterFight),
+			rewards:attackPlayerRewards
+		},
+		defenceMonsterData:{
+			id:defenceMonster.id,
+			level:defenceMonster.level,
+			dragon:createDragonData(dragonFightData.defenceDragonAfterFight),
+			soldiers:createSoldiersDataAfterFight(soldierFightData.defenceSoldiersAfterFight)
+		},
+		fightWithDefenceMonsterReports:{
+			attackPlayerDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
+			defenceMonsterDragonFightData:createDragonFightData(dragonFightData.defenceDragonAfterFight),
+			attackPlayerSoldierRoundDatas:soldierFightData.attackRoundDatas,
+			defenceMonsterSoldierRoundDatas:soldierFightData.defenceRoundDatas
+		}
+	}
+
+	var reportForAttackPlayer = {
+		id:ShortId.generate(),
+		type:Consts.PlayerReportType.AttackMonster,
+		createTime:Date.now(),
+		isRead:false,
+		isSaved:false,
+		attackMonster:attackMonsterReport
+	}
+
+	var countData = {
+		attackPlayerKill:attackPlayerKilledCitizen,
+		attackDragonExpAdd:attackDragonExpAdd
+	}
+	return {
+		reportForAttackPlayer:reportForAttackPlayer,
+		countData:countData
+	}
 }
 
 /**

@@ -1039,6 +1039,17 @@ Api.attackVillage = function(dragonType, soldiers, defenceAllianceId, defenceVil
 	pomelo.request(route, info, callback)
 }
 
+Api.attackMonster = function(dragonType, soldiers, defenceAllianceId, defenceMonsterId, callback){
+	var info = {
+		dragonType:dragonType,
+		soldiers:soldiers,
+		defenceAllianceId:defenceAllianceId,
+		defenceMonsterId:defenceMonsterId
+	}
+	var route = "logic.allianceHandler.attackMonster"
+	pomelo.request(route, info, callback)
+}
+
 Api.retreatFromVillage = function(villageEventId, callback){
 	var info = {
 		villageEventId:villageEventId
