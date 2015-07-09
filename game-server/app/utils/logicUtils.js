@@ -157,7 +157,13 @@ Utils.isBuildingCanCreateAtLocation = function(playerDoc, location){
 		var building = playerDoc.buildings['location_' + i];
 		if(building.level < 0) return false
 	}
-	return false
+	var middleLocation = this.getBuildingRoundMiddleLocation(currentRound)
+	if(middleLocation == location){
+		var previousBuilding = playerDoc.buildings['location_' + (middleLocation - 1)]
+		var nextBuilding = playerDoc.buildings['location_' + (middleLocation + 1)]
+		if(previousBuilding.level == 0 && nextBuilding.level == 0) return false
+	}
+	return true
 }
 
 /**
