@@ -223,46 +223,10 @@ var AllianceSchema = new Schema({
 				_id:false,
 				playerId:{type:String, required:true},
 				playerName:{type:String, required:true},
+				playerIcon:{type:Number, required:true},
+				playerKill:{type:Number, reqyired:true},
 				stageTroopNumber:{type:String, required:true},
-				fightResult:{type:String, required:true},
-				attackDragonFightData:{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					hpMax:{type:Number, required:true},
-					hp:{type:Number, required:true},
-					hpDecreased:{type:Number, required:true},
-					isWin:{type:Boolean, required:true}
-				},
-				defenceDragonFightData:{
-					type:{type:String, required:true},
-					level:{type:Number, required:true},
-					hpMax:{type:Number, required:true},
-					hp:{type:Number, required:true},
-					hpDecreased:{type:Number, required:true},
-					isWin:{type:Boolean, required:true}
-				},
-				attackSoldierRoundDatas:[{
-					_id:false,
-					soldierName:{type:String, required:true},
-					soldierStar:{type:Number, required:true},
-					soldierCount:{type:Number, required:true},
-					soldierDamagedCount:{type:Number, required:true},
-					soldierWoundedCount:{type:Number, required:true},
-					morale:{type:Number, required:true},
-					moraleDecreased:{type:Number, required:true},
-					isWin:{type:Boolean, required:true}
-				}],
-				defenceSoldierRoundDatas:[{
-					_id:false,
-					soldierName:{type:String, required:true},
-					soldierStar:{type:Number, required:true},
-					soldierCount:{type:Number, required:true},
-					soldierDamagedCount:{type:Number, required:true},
-					soldierWoundedCount:{type:Number, required:true},
-					morale:{type:Number, required:true},
-					moraleDecreased:{type:Number, required:true},
-					isWin:{type:Boolean, required:true}
-				}]
+				fightResult:{type:String, required:true}
 			}]
 		}]
 	}],
