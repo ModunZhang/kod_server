@@ -5,281 +5,321 @@ module.exports = materialDepot
 
 materialDepot[1] = {
 	level:1,
-	maxMaterial:10,
-	maxSoldierMaterial:10,
-	maxDragonMaterial:10,
+	soldierMaterials:10,
+	buildingMaterials:10,
+	technologyMaterials:10,
+	dragonMaterials:10,
 	power:15
 }
 materialDepot[2] = {
 	level:2,
-	maxMaterial:20,
-	maxSoldierMaterial:20,
-	maxDragonMaterial:20,
+	soldierMaterials:20,
+	buildingMaterials:20,
+	technologyMaterials:20,
+	dragonMaterials:20,
 	power:20
 }
 materialDepot[3] = {
 	level:3,
-	maxMaterial:40,
-	maxSoldierMaterial:40,
-	maxDragonMaterial:40,
+	soldierMaterials:40,
+	buildingMaterials:40,
+	technologyMaterials:40,
+	dragonMaterials:40,
 	power:25
 }
 materialDepot[4] = {
 	level:4,
-	maxMaterial:60,
-	maxSoldierMaterial:60,
-	maxDragonMaterial:60,
+	soldierMaterials:60,
+	buildingMaterials:60,
+	technologyMaterials:60,
+	dragonMaterials:60,
 	power:30
 }
 materialDepot[5] = {
 	level:5,
-	maxMaterial:80,
-	maxSoldierMaterial:80,
-	maxDragonMaterial:80,
+	soldierMaterials:80,
+	buildingMaterials:80,
+	technologyMaterials:80,
+	dragonMaterials:80,
 	power:40
 }
 materialDepot[6] = {
 	level:6,
-	maxMaterial:100,
-	maxSoldierMaterial:100,
-	maxDragonMaterial:100,
+	soldierMaterials:100,
+	buildingMaterials:100,
+	technologyMaterials:100,
+	dragonMaterials:100,
 	power:50
 }
 materialDepot[7] = {
 	level:7,
-	maxMaterial:120,
-	maxSoldierMaterial:120,
-	maxDragonMaterial:120,
+	soldierMaterials:120,
+	buildingMaterials:120,
+	technologyMaterials:120,
+	dragonMaterials:120,
 	power:80
 }
 materialDepot[8] = {
 	level:8,
-	maxMaterial:140,
-	maxSoldierMaterial:140,
-	maxDragonMaterial:140,
+	soldierMaterials:140,
+	buildingMaterials:140,
+	technologyMaterials:140,
+	dragonMaterials:140,
 	power:160
 }
 materialDepot[9] = {
 	level:9,
-	maxMaterial:160,
-	maxSoldierMaterial:160,
-	maxDragonMaterial:160,
+	soldierMaterials:160,
+	buildingMaterials:160,
+	technologyMaterials:160,
+	dragonMaterials:160,
 	power:350
 }
 materialDepot[10] = {
 	level:10,
-	maxMaterial:180,
-	maxSoldierMaterial:180,
-	maxDragonMaterial:180,
+	soldierMaterials:180,
+	buildingMaterials:180,
+	technologyMaterials:180,
+	dragonMaterials:180,
 	power:520
 }
 materialDepot[11] = {
 	level:11,
-	maxMaterial:200,
-	maxSoldierMaterial:200,
-	maxDragonMaterial:200,
+	soldierMaterials:200,
+	buildingMaterials:200,
+	technologyMaterials:200,
+	dragonMaterials:200,
 	power:730
 }
 materialDepot[12] = {
 	level:12,
-	maxMaterial:220,
-	maxSoldierMaterial:220,
-	maxDragonMaterial:220,
+	soldierMaterials:220,
+	buildingMaterials:220,
+	technologyMaterials:220,
+	dragonMaterials:220,
 	power:920
 }
 materialDepot[13] = {
 	level:13,
-	maxMaterial:240,
-	maxSoldierMaterial:240,
-	maxDragonMaterial:240,
+	soldierMaterials:240,
+	buildingMaterials:240,
+	technologyMaterials:240,
+	dragonMaterials:240,
 	power:1220
 }
 materialDepot[14] = {
 	level:14,
-	maxMaterial:260,
-	maxSoldierMaterial:260,
-	maxDragonMaterial:260,
+	soldierMaterials:260,
+	buildingMaterials:260,
+	technologyMaterials:260,
+	dragonMaterials:260,
 	power:2470
 }
 materialDepot[15] = {
 	level:15,
-	maxMaterial:280,
-	maxSoldierMaterial:280,
-	maxDragonMaterial:280,
+	soldierMaterials:280,
+	buildingMaterials:280,
+	technologyMaterials:280,
+	dragonMaterials:280,
 	power:3860
 }
 materialDepot[16] = {
 	level:16,
-	maxMaterial:300,
-	maxSoldierMaterial:300,
-	maxDragonMaterial:300,
+	soldierMaterials:300,
+	buildingMaterials:300,
+	technologyMaterials:300,
+	dragonMaterials:300,
 	power:5340
 }
 materialDepot[17] = {
 	level:17,
-	maxMaterial:320,
-	maxSoldierMaterial:320,
-	maxDragonMaterial:320,
+	soldierMaterials:320,
+	buildingMaterials:320,
+	technologyMaterials:320,
+	dragonMaterials:320,
 	power:7800
 }
 materialDepot[18] = {
 	level:18,
-	maxMaterial:340,
-	maxSoldierMaterial:340,
-	maxDragonMaterial:340,
+	soldierMaterials:340,
+	buildingMaterials:340,
+	technologyMaterials:340,
+	dragonMaterials:340,
 	power:9610
 }
 materialDepot[19] = {
 	level:19,
-	maxMaterial:360,
-	maxSoldierMaterial:360,
-	maxDragonMaterial:360,
+	soldierMaterials:360,
+	buildingMaterials:360,
+	technologyMaterials:360,
+	dragonMaterials:360,
 	power:11730
 }
 materialDepot[20] = {
 	level:20,
-	maxMaterial:380,
-	maxSoldierMaterial:380,
-	maxDragonMaterial:380,
+	soldierMaterials:380,
+	buildingMaterials:380,
+	technologyMaterials:380,
+	dragonMaterials:380,
 	power:13770
 }
 materialDepot[21] = {
 	level:21,
-	maxMaterial:400,
-	maxSoldierMaterial:400,
-	maxDragonMaterial:400,
+	soldierMaterials:400,
+	buildingMaterials:400,
+	technologyMaterials:400,
+	dragonMaterials:400,
 	power:18700
 }
 materialDepot[22] = {
 	level:22,
-	maxMaterial:420,
-	maxSoldierMaterial:420,
-	maxDragonMaterial:420,
+	soldierMaterials:420,
+	buildingMaterials:420,
+	technologyMaterials:420,
+	dragonMaterials:420,
 	power:21440
 }
 materialDepot[23] = {
 	level:23,
-	maxMaterial:440,
-	maxSoldierMaterial:440,
-	maxDragonMaterial:440,
+	soldierMaterials:440,
+	buildingMaterials:440,
+	technologyMaterials:440,
+	dragonMaterials:440,
 	power:24740
 }
 materialDepot[24] = {
 	level:24,
-	maxMaterial:460,
-	maxSoldierMaterial:460,
-	maxDragonMaterial:460,
+	soldierMaterials:460,
+	buildingMaterials:460,
+	technologyMaterials:460,
+	dragonMaterials:460,
 	power:27850
 }
 materialDepot[25] = {
 	level:25,
-	maxMaterial:480,
-	maxSoldierMaterial:480,
-	maxDragonMaterial:480,
+	soldierMaterials:480,
+	buildingMaterials:480,
+	technologyMaterials:480,
+	dragonMaterials:480,
 	power:38030
 }
 materialDepot[26] = {
 	level:26,
-	maxMaterial:500,
-	maxSoldierMaterial:500,
-	maxDragonMaterial:500,
+	soldierMaterials:500,
+	buildingMaterials:500,
+	technologyMaterials:500,
+	dragonMaterials:500,
 	power:42460
 }
 materialDepot[27] = {
 	level:27,
-	maxMaterial:550,
-	maxSoldierMaterial:550,
-	maxDragonMaterial:550,
+	soldierMaterials:550,
+	buildingMaterials:550,
+	technologyMaterials:550,
+	dragonMaterials:550,
 	power:47770
 }
 materialDepot[28] = {
 	level:28,
-	maxMaterial:600,
-	maxSoldierMaterial:600,
-	maxDragonMaterial:600,
+	soldierMaterials:600,
+	buildingMaterials:600,
+	technologyMaterials:600,
+	dragonMaterials:600,
 	power:52780
 }
 materialDepot[29] = {
 	level:29,
-	maxMaterial:700,
-	maxSoldierMaterial:700,
-	maxDragonMaterial:700,
+	soldierMaterials:700,
+	buildingMaterials:700,
+	technologyMaterials:700,
+	dragonMaterials:700,
 	power:75130
 }
 materialDepot[30] = {
 	level:30,
-	maxMaterial:800,
-	maxSoldierMaterial:800,
-	maxDragonMaterial:800,
+	soldierMaterials:800,
+	buildingMaterials:800,
+	technologyMaterials:800,
+	dragonMaterials:800,
 	power:86730
 }
 materialDepot[31] = {
 	level:31,
-	maxMaterial:900,
-	maxSoldierMaterial:900,
-	maxDragonMaterial:900,
+	soldierMaterials:900,
+	buildingMaterials:900,
+	technologyMaterials:900,
+	dragonMaterials:900,
 	power:100170
 }
 materialDepot[32] = {
 	level:32,
-	maxMaterial:1000,
-	maxSoldierMaterial:1000,
-	maxDragonMaterial:1000,
+	soldierMaterials:1000,
+	buildingMaterials:1000,
+	technologyMaterials:1000,
+	dragonMaterials:1000,
 	power:113650
 }
 materialDepot[33] = {
 	level:33,
-	maxMaterial:1200,
-	maxSoldierMaterial:1200,
-	maxDragonMaterial:1200,
+	soldierMaterials:1200,
+	buildingMaterials:1200,
+	technologyMaterials:1200,
+	dragonMaterials:1200,
 	power:155560
 }
 materialDepot[34] = {
 	level:34,
-	maxMaterial:1400,
-	maxSoldierMaterial:1400,
-	maxDragonMaterial:1400,
+	soldierMaterials:1400,
+	buildingMaterials:1400,
+	technologyMaterials:1400,
+	dragonMaterials:1400,
 	power:174800
 }
 materialDepot[35] = {
 	level:35,
-	maxMaterial:1600,
-	maxSoldierMaterial:1600,
-	maxDragonMaterial:1600,
+	soldierMaterials:1600,
+	buildingMaterials:1600,
+	technologyMaterials:1600,
+	dragonMaterials:1600,
 	power:196900
 }
 materialDepot[36] = {
 	level:36,
-	maxMaterial:1800,
-	maxSoldierMaterial:1800,
-	maxDragonMaterial:1800,
+	soldierMaterials:1800,
+	buildingMaterials:1800,
+	technologyMaterials:1800,
+	dragonMaterials:1800,
 	power:219150
 }
 materialDepot[37] = {
 	level:37,
-	maxMaterial:2000,
-	maxSoldierMaterial:2000,
-	maxDragonMaterial:2000,
+	soldierMaterials:2000,
+	buildingMaterials:2000,
+	technologyMaterials:2000,
+	dragonMaterials:2000,
 	power:294720
 }
 materialDepot[38] = {
 	level:38,
-	maxMaterial:2200,
-	maxSoldierMaterial:2200,
-	maxDragonMaterial:2200,
+	soldierMaterials:2200,
+	buildingMaterials:2200,
+	technologyMaterials:2200,
+	dragonMaterials:2200,
 	power:326020
 }
 materialDepot[39] = {
 	level:39,
-	maxMaterial:2500,
-	maxSoldierMaterial:2500,
-	maxDragonMaterial:2500,
+	soldierMaterials:2500,
+	buildingMaterials:2500,
+	technologyMaterials:2500,
+	dragonMaterials:2500,
 	power:361440
 }
 materialDepot[40] = {
 	level:40,
-	maxMaterial:3000,
-	maxSoldierMaterial:3000,
-	maxDragonMaterial:3000,
+	soldierMaterials:3000,
+	buildingMaterials:3000,
+	technologyMaterials:3000,
+	dragonMaterials:3000,
 	power:397570
 }

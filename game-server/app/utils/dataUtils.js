@@ -765,14 +765,15 @@ Utils.getPlayerFreeBuildingsCount = function(playerDoc){
 /**
  * 获取材料仓库单个材料上限
  * @param playerDoc
+ * @param materialCategory
  * @returns {number}
  */
-Utils.getMaterialUpLimit = function(playerDoc){
+Utils.getMaterialUpLimit = function(playerDoc, materialCategory){
 	var building = LogicUtils.getPlayerBuildingByType(playerDoc, "materialDepot")
 	var totalUpLimit = 0
 	if(building.level >= 1){
 		var config = BuildingFunction["materialDepot"][building.level]
-		totalUpLimit += config.maxMaterial
+		totalUpLimit += config[materialCategory]
 	}
 
 	return totalUpLimit
@@ -781,17 +782,16 @@ Utils.getMaterialUpLimit = function(playerDoc){
 /**
  * 将材料添加到材料仓库中,超过仓库上限后直接丢弃
  * @param playerDoc
- * @param materialEvent
+ * @param materialType
+ * @param materials
  */
-Utils.addPlayerMaterials = function(playerDoc, materialEvent){
-	var materialUpLimit = this.getMaterialUpLimit(playerDoc)
-	var materials = materialEvent.materials
-	var playerMaterilas = playerDoc[materialEvent.category]
+Utils.addPlayerMaterials = function(playerDoc, materialType, materials){
+	var materialUpLimit = this.getMaterialUpLimit(playerDoc, materialType)
+	var playerMaterilas = playerDoc[materialType]
 	_.each(materials, function(material){
-		var currentMaterial = playerMaterilas[material.type]
+		var currentMaterial = playerMaterilas[material.name]
 		if(currentMaterial < materialUpLimit){
 			currentMaterial += material.count
-			currentMaterial = currentMaterial > materialUpLimit ? materialUpLimit : currentMaterial
 			playerMaterilas[material.type] = currentMaterial
 		}
 	})
@@ -799,21 +799,21 @@ Utils.addPlayerMaterials = function(playerDoc, materialEvent){
 
 /**
  * 获取制造材料所需的资源
- * @param category
+ * @param type
  * @param toolShopLevel
  * @returns {{}}
  */
-Utils.getMakeMaterialRequired = function(category, toolShopLevel){
+Utils.getMakeMaterialRequired = function(type, toolShopLevel){
 	var required = {}
 	var config = BuildingFunction["toolShop"][toolShopLevel]
-	if(_.isEqual(Consts.MaterialType.BuildingMaterials, category)){
+	if(_.isEqual(Consts.MaterialType.BuildingMaterials, type)){
 		required.resources = {
 			wood:config.productBmWood,
 			stone:config.productBmStone,
 			iron:config.productBmIron
 		}
 		required.buildTime = config.productBmtime
-	}else if(_.isEqual(Consts.MaterialType.TechnologyMaterials, category)){
+	}else if(_.isEqual(Consts.MaterialType.TechnologyMaterials, type)){
 		required.resources = {
 			wood:config.productAmWood,
 			stone:config.productAmStone,
@@ -827,22 +827,22 @@ Utils.getMakeMaterialRequired = function(category, toolShopLevel){
 /**
  * 产生制作材料的事件
  * @param toolShop
- * @param category
+ * @param type
  * @param finishNow
  */
-Utils.createMaterialEvent = function(toolShop, category, finishNow){
-	var categoryConfig = {}
-	categoryConfig[Consts.MaterialType.BuildingMaterials] = [
+Utils.createMaterialEvent = function(toolShop, type, finishNow){
+	var typeConfig = {}
+	typeConfig[Consts.MaterialType.BuildingMaterials] = [
 		"blueprints", "tools", "tiles", "pulley"
 	]
-	categoryConfig[Consts.MaterialType.TechnologyMaterials] = [
+	typeConfig[Consts.MaterialType.TechnologyMaterials] = [
 		"trainingFigure", "bowTarget", "saddle", "ironPart"
 	]
 
 	var config = BuildingFunction["toolShop"][toolShop.level]
 	var production = config.production
 	var materialTypeCount = config.productionType
-	var materialTypes = categoryConfig[category]
+	var materialTypes = typeConfig[type]
 	materialTypes = CommonUtils.shuffle(materialTypes)
 	var materialCountArray = []
 	for(var i = 1; i <= production; i++){
@@ -854,7 +854,7 @@ Utils.createMaterialEvent = function(toolShop, category, finishNow){
 	var totalGenerated = 0
 	for(i = 0; i < materialTypeCount; i++){
 		var material = {
-			type:materialTypes[i],
+			name:materialTypes[i],
 			count:materialCountArray[i]
 		}
 		materials.push(material)
@@ -870,10 +870,10 @@ Utils.createMaterialEvent = function(toolShop, category, finishNow){
 		}
 	}
 
-	var buildTime = _.isEqual(Consts.MaterialType.BuildingMaterials, category) ? config.productBmtime : config.productAmtime
+	var buildTime = _.isEqual(Consts.MaterialType.BuildingMaterials, type) ? config.productBmtime : config.productAmtime
 	var event = {
 		id:ShortId.generate(),
-		category:category,
+		type:type,
 		materials:materials,
 		startTime:Date.now(),
 		finishTime:finishNow ? 0 : (Date.now() + (buildTime * 1000))
@@ -2539,9 +2539,9 @@ Utils.getAllianceShrineStageResultDatas = function(terrain, stageName, isWin, fi
 	})
 	if(isWin)
 		fightStar += 1;
-	if(fightDatas.length > 0 && totalDeath <= AllianceInitData.shrineStage[stageName].star2DeathCitizen)
+	if(isWin && fightDatas.length > 0 && totalDeath <= AllianceInitData.shrineStage[stageName].star2DeathCitizen)
 		fightStar += 1;
-	if(fightDatas.length == 1)
+	if(isWin && fightDatas.length == 1)
 		fightStar += 1;
 
 	var getPlayerRewardsString = function(terrain, stageConfig, playerKill){
@@ -2646,8 +2646,7 @@ Utils.getDragonMaxHp = function(dragon){
  * @returns {boolean}
  */
 Utils.isAlliancePlayerBeHelpedTroopsReachMax = function(allianceDoc, playerDoc){
-	var currentCount = LogicUtils.getAlliancePlayerBeHelpedTroopsCount(allianceDoc, playerDoc)
-	return currentCount >= this.getAllianceIntInit("allianceHelpDefenceTroopsMaxCount")
+	return playerDoc.helpedByTroops.length >= this.getAllianceIntInit("allianceHelpDefenceTroopsMaxCount")
 }
 
 /**

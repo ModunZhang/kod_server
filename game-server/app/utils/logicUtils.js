@@ -56,9 +56,7 @@ Utils.removeItemInArray = function(array, item){
  * @param array
  */
 Utils.clearArray = function(array){
-	while(array.length > 0){
-		array.pop()
-	}
+	array.length = 0;
 }
 
 /**
@@ -153,20 +151,21 @@ Utils.updateBuildingsLevel = function(playerDoc){
  * @returns {boolean}
  */
 Utils.isBuildingCanCreateAtLocation = function(playerDoc, location){
+	var currentRound = this.getBuildingCurrentRound(location)
+	var previousRoundFromAndTo = this.getBuildingRoundFromAndEnd(currentRound - 1);
+	for(var i = previousRoundFromAndTo.from; i <= previousRoundFromAndTo.to; i ++){
+		var building = playerDoc.buildings['location_' + i];
+		if(building.level < 0) return false
+	}
 	var previousLocation = this.getPreviousBuildingLocation(location)
-	var nextLocation = this.getNextBuildingLocation(location)
-	var frontLocation = this.getFrontBuildingLocation(location)
 	if(previousLocation){
 		var previousBuilding = playerDoc.buildings["location_" + previousLocation]
 		if(previousBuilding.level > 0) return true
 	}
+	var nextLocation = this.getNextBuildingLocation(location)
 	if(nextLocation){
 		var nextBuilding = playerDoc.buildings["location_" + nextLocation]
 		if(!_.isObject(nextBuilding) || nextBuilding.level > 0) return true
-	}
-	if(frontLocation){
-		var frontBuilding = playerDoc.buildings["location_" + frontLocation]
-		if(frontBuilding.level > 0) return true
 	}
 
 	return false
@@ -1345,24 +1344,6 @@ Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlay
 		if(_.isEqual(playerTroop.beHelpedPlayerData.id, targetPlayerId)) return true
 	}
 	return false
-}
-
-/**
- * 协助某指定玩家的部队的数量
- * @param allianceDoc
- * @param playerDoc
- * @returns {number}
- */
-Utils.getAlliancePlayerBeHelpedTroopsCount = function(allianceDoc, playerDoc){
-	var count = 0
-	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
-		var marchEvent = allianceDoc.attackMarchEvents[i]
-		if(_.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence)
-			&& _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id)
-		) count += 1
-	}
-	count += playerDoc.helpedByTroops.length
-	return count
 }
 
 /**

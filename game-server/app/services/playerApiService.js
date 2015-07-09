@@ -740,11 +740,11 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 /**
  * 制造建筑,科技使用的材料
  * @param playerId
- * @param category
+ * @param type
  * @param finishNow
  * @param callback
  */
-pro.makeMaterial = function(playerId, category, finishNow, callback){
+pro.makeMaterial = function(playerId, type, finishNow, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -757,14 +757,14 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		var event = null
 		for(var i = 0; i < playerDoc.materialEvents.length; i++){
 			event = playerDoc.materialEvents[i]
-			if(_.isEqual(event.category, category)){
-				if(event.finishTime > 0) return Promise.reject(ErrorUtils.materialAsSameTypeIsMakeNow(playerId, category))
-				else return Promise.reject(ErrorUtils.materialMakeFinishedButNotTakeAway(playerId, category))
-			}else if(!finishNow && event.finishTime > 0) return Promise.reject(ErrorUtils.materialAsDifferentTypeIsMakeNow(playerId, category))
+			if(_.isEqual(event.type, type)){
+				if(event.finishTime > 0) return Promise.reject(ErrorUtils.materialAsSameTypeIsMakeNow(playerId, type))
+				else return Promise.reject(ErrorUtils.materialMakeFinishedButNotTakeAway(playerId, type))
+			}else if(!finishNow && event.finishTime > 0) return Promise.reject(ErrorUtils.materialAsDifferentTypeIsMakeNow(playerId, type))
 		}
 
 		var gemUsed = 0
-		var makeRequired = DataUtils.getMakeMaterialRequired(category, building.level)
+		var makeRequired = DataUtils.getMakeMaterialRequired(type, building.level)
 		var buyedResources = null
 		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){
@@ -789,10 +789,10 @@ pro.makeMaterial = function(playerId, category, finishNow, callback){
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(makeRequired.resources, playerDoc.resources)
 
-		event = DataUtils.createMaterialEvent(building, category, finishNow)
+		event = DataUtils.createMaterialEvent(building, type, finishNow)
 		playerDoc.materialEvents.push(event)
 		playerData.push(["materialEvents." + playerDoc.materialEvents.indexOf(event), event])
-		if(_.isEqual(category, Consts.MaterialType.BuildingMaterials)){
+		if(_.isEqual(type, Consts.MaterialType.BuildingMaterials)){
 			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.MakeBuildingMaterials)
 		}
 		if(finishNow){
@@ -838,8 +838,8 @@ pro.getMaterials = function(playerId, eventId, callback){
 		if(!_.isObject(event) || event.finishTime > 0) return Promise.reject(ErrorUtils.materialEventNotExistOrIsMakeing(playerId, eventId))
 		playerData.push(["materialEvents." + playerDoc.materialEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.materialEvents, event)
-		DataUtils.addPlayerMaterials(playerDoc, event)
-		playerData.push([event.category, playerDoc[event.category]])
+		DataUtils.addPlayerMaterials(playerDoc, event.type, event.materials)
+		playerData.push([event.type, playerDoc[event.type]])
 		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		callback(null, playerData)

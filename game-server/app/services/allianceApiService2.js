@@ -594,7 +594,7 @@ pro.inviteToJoinAlliance = function(playerId, allianceId, memberId, callback){
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId))
 		memberDoc = doc
-		if(_.isObject(memberDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, memberId))
+		if(_.isString(memberDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, memberId))
 		if(LogicUtils.hasInviteEventToAlliance(memberDoc, allianceDoc)){
 			updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, memberDoc._id, null])
 			return Promise.resolve()

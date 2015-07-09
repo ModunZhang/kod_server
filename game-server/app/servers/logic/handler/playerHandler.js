@@ -200,11 +200,11 @@ pro.freeSpeedUp = function(msg, session, next){
  */
 pro.makeMaterial = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.makeMaterial", {playerId:session.uid, msg:msg})
-	var category = msg.category
+	var type = msg.type
 	var finishNow = msg.finishNow
 	var e = null
-	if(!_.contains(Consts.MaterialType, category)){
-		e = new Error("category 不合法")
+	if(!_.contains(Consts.MaterialType, type)){
+		e = new Error("type 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
@@ -214,7 +214,7 @@ pro.makeMaterial = function(msg, session, next){
 		return
 	}
 
-	this.request('makeMaterial', [session.uid, category, finishNow]).then(function(playerData){
+	this.request('makeMaterial', [session.uid, type, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
