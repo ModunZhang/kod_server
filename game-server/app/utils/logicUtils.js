@@ -56,9 +56,7 @@ Utils.removeItemInArray = function(array, item){
  * @param array
  */
 Utils.clearArray = function(array){
-	while(array.length > 0){
-		array.pop()
-	}
+	array.length = 0;
 }
 
 /**
