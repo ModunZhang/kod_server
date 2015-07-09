@@ -153,11 +153,8 @@ Utils.updateBuildingsLevel = function(playerDoc){
 Utils.isBuildingCanCreateAtLocation = function(playerDoc, location){
 	var currentRound = this.getBuildingCurrentRound(location)
 	var previousRoundFromAndTo = this.getBuildingRoundFromAndEnd(currentRound - 1);
-	console.log(currentRound)
-	console.log(previousRoundFromAndTo)
-	for(var i = previousRoundFromAndTo.from; i <= previousRoundFromAndTo.to; i ++){
+	for(var i = previousRoundFromAndTo.from; i < previousRoundFromAndTo.to; i ++){
 		var building = playerDoc.buildings['location_' + i];
-		console.log(building)
 		if(building.level < 0) return false
 	}
 	var previousLocation = this.getPreviousBuildingLocation(location)
