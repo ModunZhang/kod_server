@@ -158,7 +158,6 @@ Utils.isBuildingCanCreateAtLocation = function(playerDoc, location){
 		if(building.level < 0) return false
 	}
 	var middleLocation = this.getBuildingRoundMiddleLocation(currentRound)
-	console.log(middleLocation, location)
 	if(middleLocation == location){
 		var previousBuilding = playerDoc.buildings['location_' + (middleLocation - 1)]
 		var nextBuilding = playerDoc.buildings['location_' + (middleLocation + 1)]
