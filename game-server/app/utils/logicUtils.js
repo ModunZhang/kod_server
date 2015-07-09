@@ -301,7 +301,7 @@ Utils.getBuildingRoundFromAndEnd = function(currentRound){
 Utils.getBuildingRoundMiddleLocation = function(currentRound){
 	var fromAndTo = this.getBuildingRoundFromAndEnd(currentRound)
 	var middle = fromAndTo.from + ((fromAndTo.to - fromAndTo.from) / 2)
-	return middle
+	return Math.floor(middle)
 }
 
 /**
