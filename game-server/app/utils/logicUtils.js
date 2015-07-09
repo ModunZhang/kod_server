@@ -1349,24 +1349,6 @@ Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlay
 }
 
 /**
- * 协助某指定玩家的部队的数量
- * @param allianceDoc
- * @param playerDoc
- * @returns {number}
- */
-Utils.getAlliancePlayerBeHelpedTroopsCount = function(allianceDoc, playerDoc){
-	var count = 0
-	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
-		var marchEvent = allianceDoc.attackMarchEvents[i]
-		if(_.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence)
-			&& _.isEqual(marchEvent.defencePlayerData.id, playerDoc._id)
-		) count += 1
-	}
-	count += playerDoc.helpedByTroops.length
-	return count
-}
-
-/**
  * 玩家是否有协防部队驻扎在某玩家城市中
  * @param playerDoc
  * @param targetPlayerId

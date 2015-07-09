@@ -225,42 +225,53 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		Promise.all(funcs).spread(function(doc_1, doc_2){
 			attackPlayerDoc = doc_1
 			defencePlayerDoc = doc_2
-
-			var helpToTroop = {
-				playerDragon:event.attackPlayerData.dragon.type,
-				beHelpedPlayerData:{
-					id:defencePlayerDoc._id,
-					name:defencePlayerDoc.basicInfo.name,
-					location:LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id).location
+			if(DataUtils.isAlliancePlayerBeHelpedTroopsReachMax(attackAllianceDoc, defencePlayerDoc)){
+				var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, defencePlayerDoc, attackPlayerDoc.dragons[event.attackPlayerData.dragon.type], event.attackPlayerData.soldiers, [], [])
+				attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
+				attackAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+				defenceEnemyAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
+				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
+				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, null])
+				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, defencePlayerDoc._id, null])
+				return Promise.resolve()
+			}else{
+				var helpToTroop = {
+					playerDragon:event.attackPlayerData.dragon.type,
+					beHelpedPlayerData:{
+						id:defencePlayerDoc._id,
+						name:defencePlayerDoc.basicInfo.name,
+						location:LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id).location
+					}
 				}
-			}
-			attackPlayerDoc.helpToTroops.push(helpToTroop)
-			attackPlayerData.push(["helpToTroops." + attackPlayerDoc.helpToTroops.indexOf(helpToTroop), helpToTroop])
-			var helpedByTroop = {
-				id:attackPlayerDoc._id,
-				name:attackPlayerDoc.basicInfo.name,
-				dragon:{
-					type:event.attackPlayerData.dragon.type
-				},
-				soldiers:event.attackPlayerData.soldiers,
-				rewards:[]
-			}
-			defencePlayerDoc.helpedByTroops.push(helpedByTroop)
-			defencePlayerData.push(["helpedByTroops." + defencePlayerDoc.helpedByTroops.indexOf(helpedByTroop), helpedByTroop])
+				attackPlayerDoc.helpToTroops.push(helpToTroop)
+				attackPlayerData.push(["helpToTroops." + attackPlayerDoc.helpToTroops.indexOf(helpToTroop), helpToTroop])
+				var helpedByTroop = {
+					id:attackPlayerDoc._id,
+					name:attackPlayerDoc.basicInfo.name,
+					dragon:{
+						type:event.attackPlayerData.dragon.type
+					},
+					soldiers:event.attackPlayerData.soldiers,
+					rewards:[]
+				}
+				defencePlayerDoc.helpedByTroops.push(helpedByTroop)
+				defencePlayerData.push(["helpedByTroops." + defencePlayerDoc.helpedByTroops.indexOf(helpedByTroop), helpedByTroop])
 
-			var beHelpedMemberInAlliance = LogicUtils.getAllianceMemberById(attackAllianceDoc, defencePlayerDoc._id)
-			beHelpedMemberInAlliance.helpedByTroopsCount += 1
-			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(beHelpedMemberInAlliance) + ".helpedByTroopsCount", beHelpedMemberInAlliance.helpedByTroopsCount])
-			defenceEnemyAllianceData.push(["members." + attackAllianceDoc.members.indexOf(beHelpedMemberInAlliance) + ".helpedByTroopsCount", beHelpedMemberInAlliance.helpedByTroopsCount])
-			TaskUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberDefence)
+				var beHelpedMemberInAlliance = LogicUtils.getAllianceMemberById(attackAllianceDoc, defencePlayerDoc._id)
+				beHelpedMemberInAlliance.helpedByTroopsCount += 1
+				attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(beHelpedMemberInAlliance) + ".helpedByTroopsCount", beHelpedMemberInAlliance.helpedByTroopsCount])
+				defenceEnemyAllianceData.push(["members." + attackAllianceDoc.members.indexOf(beHelpedMemberInAlliance) + ".helpedByTroopsCount", beHelpedMemberInAlliance.helpedByTroopsCount])
+				TaskUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberDefence)
 
-			updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
-			updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, defencePlayerDoc._id, defencePlayerDoc])
-			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
-			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
-			LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
-			return Promise.resolve()
+				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
+				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, defencePlayerDoc._id, defencePlayerDoc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
+				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
+				return Promise.resolve()
+			}
 		}).then(function(){
 			callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 		}).catch(function(e){

@@ -2580,8 +2580,7 @@ Utils.getDragonMaxHp = function(dragon){
  * @returns {boolean}
  */
 Utils.isAlliancePlayerBeHelpedTroopsReachMax = function(allianceDoc, playerDoc){
-	var currentCount = LogicUtils.getAlliancePlayerBeHelpedTroopsCount(allianceDoc, playerDoc)
-	return currentCount >= this.getAllianceIntInit("allianceHelpDefenceTroopsMaxCount")
+	return playerDoc.helpedByTroops.length >= this.getAllianceIntInit("allianceHelpDefenceTroopsMaxCount")
 }
 
 /**
