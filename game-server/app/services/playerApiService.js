@@ -94,10 +94,10 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 	var allianceDoc = null
 	var allianceData = []
 	var enemyAllianceDoc = null
+	var vipExpAdd = null
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	var vipExpAdd = null
 	this.Device.findByIdAsync(deviceId).then(function(doc){
 		if(_.isObject(doc)){
 			return LoginPlayer.call(self, doc.playerId)
@@ -242,6 +242,46 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 		return self.dataService.removePlayerFromChannelsAsync(playerDoc)
 	}).then(function(){
 		playerDoc.logicServerId = null
+		var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
+		var todayDateString = LogicUtils.getTodayDateString()
+		if(!_.isEqual(todayDateString, previousLoginDateString)){
+			_.each(playerDoc.dailyTasks, function(value, key){
+				playerDoc.dailyTasks[key] = []
+			})
+			_.each(playerDoc.allianceDonate, function(value, key){
+				playerDoc.allianceDonate[key] = 1
+			})
+
+			playerDoc.countInfo.todayOnLineTime = 0
+			playerDoc.countInfo.todayOnLineTimeRewards = []
+			playerDoc.countInfo.todayFreeNormalGachaCount = 0
+			playerDoc.countInfo.todayLoyaltyGet = 0
+			if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)){
+				if(playerDoc.countInfo.day60 == 60){
+					playerDoc.countInfo.day60 = 1
+					playerDoc.countInfo.day60RewardsCount = 0
+				}else{
+					playerDoc.countInfo.day60 += 1
+				}
+			}
+			if(_.isEqual(playerDoc.countInfo.day14, playerDoc.countInfo.day14RewardsCount) && playerDoc.countInfo.day14 < 14){
+				playerDoc.countInfo.day14 += 1
+			}
+		}
+		var vipExpAdd = null
+		var yestodayString = LogicUtils.getYesterdayDateString()
+		if(!_.isEqual(previousLoginDateString, yestodayString) && !_.isEqual(previousLoginDateString, todayDateString)){
+			playerDoc.countInfo.vipLoginDaysCount = 1
+			vipExpAdd = DataUtils.getPlayerVipExpByLoginDaysCount(1)
+			DataUtils.addPlayerVipExp(playerDoc, [], vipExpAdd, eventFuncs, self.timeEventService)
+		}else if(_.isEqual(previousLoginDateString, yestodayString)){
+			playerDoc.countInfo.vipLoginDaysCount += 1
+			vipExpAdd = DataUtils.getPlayerVipExpByLoginDaysCount(playerDoc.countInfo.vipLoginDaysCount)
+			DataUtils.addPlayerVipExp(playerDoc, [], vipExpAdd, eventFuncs, self.timeEventService)
+		}else if(playerDoc.countInfo.loginCount == 0){
+			vipExpAdd = DataUtils.getPlayerVipExpByLoginDaysCount(1)
+			DataUtils.addPlayerVipExp(playerDoc, [], vipExpAdd, eventFuncs, self.timeEventService)
+		}
 		playerDoc.countInfo.todayOnLineTime += Date.now() - playerDoc.countInfo.lastLoginTime
 		playerDoc.countInfo.lastLoginTime = Date.now();
 		if(!_.isEmpty(playerDoc.allianceId))
