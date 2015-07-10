@@ -1420,6 +1420,9 @@ Utils.createCollectVillageReport = function(defenceAllianceDoc, defenceVillage, 
 	return report
 }
 
+Utils.createAttackShrineReport = function(){
+
+}
 
 /**
  * 创建进攻区域地图野怪报告

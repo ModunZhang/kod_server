@@ -1872,15 +1872,12 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 	Promise.all(funcs).then(function(){
 		_.each(event.playerTroops, function(playerTroop){
 			var playerDoc = playerDocs[playerTroop.id]
-			playerTroop.icon = playerDoc.basicInfo.icon
 			var dragon = playerDoc.dragons[playerTroop.dragon.type]
 			DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
 			var dragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, dragon, allianceDoc.basicInfo.terrain)
 			var soldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, playerTroop.soldiers, dragon, allianceDoc.basicInfo.terrain, true)
 			var playerTroopForFight = {
-				id:playerTroop.id,
-				name:playerTroop.name,
-				icon:playerTroop.icon,
+				playerDoc:playerDoc,
 				dragonForFight:dragonForFight,
 				soldiersForFight:soldiersForFight,
 				woundedSoldierPercent:DataUtils.getPlayerTreatSoldierPercent(playerDocs[playerTroop.id], dragon),
@@ -1898,64 +1895,62 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 		var currentRound = 1
 		var playerSuccessedTroops = []
 		var stageSuccessedTroops = []
-		var fightDatas = []
+		var fightDatas = [];
 		while(playerTroopsForFight.length > 0 && stageTroopsForFight.length > 0){
-			var playerTroopForFight = playerTroopsForFight[0]
-			var stageTroopForFight = stageTroopsForFight[0]
-			var dragonFightFixedEffect = DataUtils.getDragonFightFixedEffect(playerTroopForFight.soldiersForFight, stageTroopForFight.soldiersForFight)
-			var dragonFightData = FightUtils.dragonToDragonFight(playerTroopForFight.dragonForFight, stageTroopForFight.dragonForFight, dragonFightFixedEffect)
-			var soldierFightData = FightUtils.soldierToSoldierFight(playerTroopForFight.soldiersForFight, playerTroopForFight.woundedSoldierPercent, playerTroopForFight.soldierMoraleDecreasedPercent, stageTroopForFight.soldiersForFight, 0, 1 + playerTroopForFight.soldierToEnemyMoraleDecreasedAddPercent)
-			if(_.isEqual(soldierFightData.fightResult, Consts.FightResult.AttackWin)){
-				playerSuccessedTroops.push(playerTroopForFight)
-			}else{
-				stageSuccessedTroops.push(stageTroopForFight)
-			}
-			LogicUtils.removeItemInArray(playerTroopsForFight, playerTroopForFight)
-			LogicUtils.removeItemInArray(stageTroopsForFight, stageTroopForFight)
-			LogicUtils.resetFightSoldiersByFightResult(playerTroopForFight.soldiersForFight, soldierFightData.attackRoundDatas)
-			LogicUtils.resetFightSoldiersByFightResult(stageTroopForFight.soldiersForFight, soldierFightData.defenceRoundDatas)
-			playerTroopForFight.dragonForFight.totalHp = dragonFightData.attackDragonAfterFight.currentHp
-			playerTroopForFight.dragonForFight.currentHp = dragonFightData.attackDragonAfterFight.currentHp
-			stageTroopForFight.dragonForFight.totalHp = dragonFightData.defenceDragonAfterFight.currentHp
-			stageTroopForFight.dragonForFight.currentHp = dragonFightData.defenceDragonAfterFight.currentHp
+			(function(){
+				var playerTroopForFight = playerTroopsForFight[0]
+				var stageTroopForFight = stageTroopsForFight[0]
+				var dragonFightFixedEffect = DataUtils.getDragonFightFixedEffect(playerTroopForFight.soldiersForFight, stageTroopForFight.soldiersForFight)
+				var dragonFightData = FightUtils.dragonToDragonFight(playerTroopForFight.dragonForFight, stageTroopForFight.dragonForFight, dragonFightFixedEffect)
+				var soldierFightData = FightUtils.soldierToSoldierFight(playerTroopForFight.soldiersForFight, playerTroopForFight.woundedSoldierPercent, playerTroopForFight.soldierMoraleDecreasedPercent, stageTroopForFight.soldiersForFight, 0, 1 + playerTroopForFight.soldierToEnemyMoraleDecreasedAddPercent)
+				if(_.isEqual(soldierFightData.fightResult, Consts.FightResult.AttackWin)){
+					playerSuccessedTroops.push(playerTroopForFight)
+				}else{
+					stageSuccessedTroops.push(stageTroopForFight)
+				}
 
-			var currentFightData = null
-			if(fightDatas.length < currentRound){
-				currentFightData = {
-					roundDatas:[]
-				}
-				fightDatas.push(currentFightData)
-			}else{
-				currentFightData = fightDatas[currentRound - 1]
-			}
-			var currentRoundDatas = currentFightData.roundDatas
-			currentRoundDatas.push({
-				playerId:playerTroopForFight.id,
-				playerName:playerTroopForFight.name,
-				playerIcon:playerTroopForFight.icon,
-				stageTroopNumber:stageTroopForFight.troopNumber,
-				fightResult:soldierFightData.fightResult,
-				attackDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
-				defenceDragonFightData:createDragonFightData(dragonFightData.defenceDragonAfterFight),
-				attackSoldierRoundDatas:soldierFightData.attackRoundDatas,
-				defenceSoldierRoundDatas:soldierFightData.defenceRoundDatas
-			})
+				LogicUtils.removeItemInArray(playerTroopsForFight, playerTroopForFight)
+				LogicUtils.removeItemInArray(stageTroopsForFight, stageTroopForFight)
+				LogicUtils.resetFightSoldiersByFightResult(playerTroopForFight.soldiersForFight, soldierFightData.attackRoundDatas)
+				LogicUtils.resetFightSoldiersByFightResult(stageTroopForFight.soldiersForFight, soldierFightData.defenceRoundDatas)
+				playerTroopForFight.dragonForFight.totalHp = dragonFightData.attackDragonAfterFight.currentHp
+				playerTroopForFight.dragonForFight.currentHp = dragonFightData.attackDragonAfterFight.currentHp
+				stageTroopForFight.dragonForFight.totalHp = dragonFightData.defenceDragonAfterFight.currentHp
+				stageTroopForFight.dragonForFight.currentHp = dragonFightData.defenceDragonAfterFight.currentHp
 
-			if((playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0) || (stageTroopsForFight.length == 0 && stageSuccessedTroops.length > 0)){
-				if(playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0){
-					_.each(playerSuccessedTroops, function(troop){
-						if(troop.dragonForFight.maxHp > 0) playerTroopsForFight.push(troop)
-					})
-					LogicUtils.clearArray(playerSuccessedTroops)
+				var currentFightData = null
+				if(fightDatas.length < currentRound){
+					currentFightData = {
+						roundDatas:[]
+					}
+					fightDatas.push(currentFightData)
+				}else{
+					currentFightData = fightDatas[currentRound - 1]
 				}
-				if(stageTroopsForFight.length == 0 && stageSuccessedTroops.length > 0){
-					_.each(stageSuccessedTroops, function(troop){
-						if(troop.dragonForFight.maxHp > 0) stageTroopsForFight.push(troop)
-					})
-					LogicUtils.clearArray(stageSuccessedTroops)
+				var currentRoundDatas = currentFightData.roundDatas
+				currentRoundDatas.push({
+					playerDoc:playerTroopForFight.playerDoc,
+					stageTroopNumber:stageTroopForFight.troopNumber,
+					dragonFightData:dragonFightData,
+					soldierFightData:soldierFightData
+				})
+
+				if((playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0) || (stageTroopsForFight.length == 0 && stageSuccessedTroops.length > 0)){
+					if(playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0){
+						_.each(playerSuccessedTroops, function(troop){
+							if(troop.dragonForFight.maxHp > 0) playerTroopsForFight.push(troop)
+						})
+						LogicUtils.clearArray(playerSuccessedTroops)
+					}
+					if(stageTroopsForFight.length == 0 && stageSuccessedTroops.length > 0){
+						_.each(stageSuccessedTroops, function(troop){
+							if(troop.dragonForFight.maxHp > 0) stageTroopsForFight.push(troop)
+						})
+						LogicUtils.clearArray(stageSuccessedTroops)
+					}
+					currentRound += 1
 				}
-				currentRound += 1
-			}
+			})();
 		}
 
 		var params = DataUtils.getAllianceShrineStageResultDatas(allianceDoc.basicInfo.terrain, event.stageName, playerTroopsForFight.length > 0, fightDatas)
@@ -2216,7 +2211,7 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 	var minMonsterCount = DataUtils.getAllianceIntInit('minMonsterCount')
 	var monstersPerPlayer = DataUtils.getAllianceIntInit('monstersPerPlayer')
 	var allianceMembers = allianceDoc.members;
-	var monsterCount =  (function(){
+	var monsterCount = (function(){
 		var count = allianceMembers.length * monstersPerPlayer
 		return count > minMonsterCount ? count : minMonsterCount
 	})();
@@ -2235,7 +2230,7 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 	var monsterConfig = AllianceInitData.buildingName['monster'];
 	var map = MapUtils.buildMap(allianceDoc.mapObjects);
 	var mapObjects = allianceDoc.mapObjects;
-	for(var i = 0; i < monsterCount; i ++){
+	for(var i = 0; i < monsterCount; i++){
 		(function(){
 			var memberIndex = Math.floor(i / monstersPerPlayer);
 			var memberObject = allianceMembers[memberIndex]
