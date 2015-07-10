@@ -1242,7 +1242,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(attackMonsterMarchReturnEvent), attackMonsterMarchReturnEvent])
 				defenceEnemyAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(attackMonsterMarchReturnEvent), attackMonsterMarchReturnEvent])
 				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", attackMonsterMarchReturnEvent.id, attackMonsterMarchReturnEvent.arriveTime - Date.now()])
-
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
+				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
 				if(_.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
 					targetAllianceData.push(['monsters.' + targetAllianceDoc.monsters.indexOf(defenceMonster), null])
 					LogicUtils.removeItemInArray(targetAllianceDoc.monsters, defenceMonster)
