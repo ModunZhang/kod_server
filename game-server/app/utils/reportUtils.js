@@ -1420,7 +1420,14 @@ Utils.createCollectVillageReport = function(defenceAllianceDoc, defenceVillage, 
 	return report
 }
 
-Utils.createAttackShrineReport = function(){
+/**
+ * 创建进攻联盟圣地战报
+ * @param allianceDoc
+ * @param stageName
+ * @param playerAvgPower
+ * @param fightDatas
+ */
+Utils.createAttackShrineReport = function(allianceDoc, stageName, playerAvgPower, fightDatas){
 
 }
 
