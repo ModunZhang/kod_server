@@ -644,7 +644,7 @@ Utils.createAttackMonsterMarchReturnEvent = function(allianceDoc, playerDoc, dra
 
 	var event = {
 		id:ShortId.generate(),
-		marchType:Consts.MarchType.Village,
+		marchType:Consts.MarchType.Monster,
 		startTime:Date.now(),
 		arriveTime:Date.now() + marchTime,
 		attackPlayerData:createAttackPlayerReturnData(allianceDoc, playerDoc, playerLocation, dragon, soldiers, woundedSoldiers, rewards),
