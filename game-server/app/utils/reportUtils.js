@@ -1426,9 +1426,55 @@ Utils.createCollectVillageReport = function(defenceAllianceDoc, defenceVillage, 
  * @param stageName
  * @param playerAvgPower
  * @param fightDatas
+ * @param isWin
  */
-Utils.createAttackShrineReport = function(allianceDoc, stageName, playerAvgPower, fightDatas){
+Utils.createAttackShrineReport = function(allianceDoc, stageName, playerAvgPower, fightDatas, isWin){
+	var playerDatas = {};
+	_.each(fightDatas, function(fightData){
+		(function(){
+			_.each(fightData.roundDatas, function(roundData){
+				(function(){
+					var playerDoc = roundData.playerDoc;
+					var dragonFightData = roundData.dragonFightData;
+					var soldierFightData = roundData.soldierFightData;
+					if(!_.isObject(playerDatas[playerDoc._id])) playerDatas[playerDoc._id] = {
+						kill:0,
+						death:0
+					}
+					var playerData = playerDatas[playerDoc._id];
+					_.each(soldierFightData.attackSoldiersAfterFight, function(soldiersAfterFight){
+						(function(){
+							_.each(soldiersAfterFight, function(soldierAfterFight){
+								(function(){
+									var soldierConfig = DataUtils.getPlayerSoldierConfig(playerDoc, soldierAfterFight.name)
+									playerData.death += soldierConfig.killScore * (soldierAfterFight.totalCount - soldierAfterFight.currentCount)
+									//playerData.kill +=
+								})()
+							})
+						})()
+					})
+				})();
+			})
+		})();
+	})
+}
 
+/**
+ * 创建空的圣地战战报
+ * @param stageName
+ * @returns {*}
+ */
+Utils.createAttackShrineEmptyReport = function(stageName){
+	return {
+		id:ShortId.generate(),
+		stageName:stageName,
+		star:0,
+		time:Date.now(),
+		playerCount:0,
+		playerAvgPower:0,
+		playerDatas:[],
+		fightDatas:[]
+	}
 }
 
 /**

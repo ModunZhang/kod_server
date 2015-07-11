@@ -1839,134 +1839,8 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 	var updateFuncs = []
 	allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(event), null])
 	LogicUtils.removeItemInArray(allianceDoc.shrineEvents, event)
-
-	var playerDocs = {}
-	var playerTroopsForFight = []
-	var funcs = []
-	var findPlayerDoc = function(playerId){
-		return self.cacheService.findPlayerAsync(playerId).then(function(doc){
-			playerDocs[doc._id] = doc
-			return Promise.resolve()
-		})
-	}
-	var getTotalPower = function(soldiersForFight){
-		var power = 0
-		_.each(soldiersForFight, function(soldierForFight){
-			power += soldierForFight.power * soldierForFight.totalCount
-		})
-		return power
-	}
-	var createDragonFightData = function(dragonAfterFight){
-		var data = {
-			type:dragonAfterFight.type,
-			level:dragonAfterFight.level,
-			hpMax:dragonAfterFight.maxHp,
-			hp:dragonAfterFight.totalHp,
-			hpDecreased:dragonAfterFight.totalHp - dragonAfterFight.currentHp,
-			isWin:dragonAfterFight.isWin
-		}
-		return data
-	}
-	_.each(event.playerTroops, function(playerTroop){
-		funcs.push(findPlayerDoc(playerTroop.id))
-	})
-	Promise.all(funcs).then(function(){
-		_.each(event.playerTroops, function(playerTroop){
-			var playerDoc = playerDocs[playerTroop.id]
-			var dragon = playerDoc.dragons[playerTroop.dragon.type]
-			DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
-			var dragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, dragon, allianceDoc.basicInfo.terrain)
-			var soldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, playerTroop.soldiers, dragon, allianceDoc.basicInfo.terrain, true)
-			var playerTroopForFight = {
-				playerDoc:playerDoc,
-				dragonForFight:dragonForFight,
-				soldiersForFight:soldiersForFight,
-				woundedSoldierPercent:DataUtils.getPlayerTreatSoldierPercent(playerDocs[playerTroop.id], dragon),
-				soldierMoraleDecreasedPercent:DataUtils.getPlayerSoldierMoraleDecreasedPercent(playerDocs[playerTroop.id], dragon),
-				soldierToEnemyMoraleDecreasedAddPercent:DataUtils.getEnemySoldierMoraleAddedPercent(playerDocs[playerTroop.id], dragon)
-			}
-			playerTroopsForFight.push(playerTroopForFight)
-		})
-		playerTroopsForFight = _.sortBy(playerTroopsForFight, function(playerTroopForFight){
-			return -getTotalPower(playerTroopForFight.soldiersForFight)
-		})
-
-		var stageTroopsForFight = DataUtils.getAllianceShrineStageTroops(allianceDoc, event.stageName)
-		var playerAvgPower = LogicUtils.getPlayerTroopsAvgPower(playerTroopsForFight)
-		var currentRound = 1
-		var playerSuccessedTroops = []
-		var stageSuccessedTroops = []
-		var fightDatas = [];
-		while(playerTroopsForFight.length > 0 && stageTroopsForFight.length > 0){
-			(function(){
-				var playerTroopForFight = playerTroopsForFight[0]
-				var stageTroopForFight = stageTroopsForFight[0]
-				var dragonFightFixedEffect = DataUtils.getDragonFightFixedEffect(playerTroopForFight.soldiersForFight, stageTroopForFight.soldiersForFight)
-				var dragonFightData = FightUtils.dragonToDragonFight(playerTroopForFight.dragonForFight, stageTroopForFight.dragonForFight, dragonFightFixedEffect)
-				var soldierFightData = FightUtils.soldierToSoldierFight(playerTroopForFight.soldiersForFight, playerTroopForFight.woundedSoldierPercent, playerTroopForFight.soldierMoraleDecreasedPercent, stageTroopForFight.soldiersForFight, 0, 1 + playerTroopForFight.soldierToEnemyMoraleDecreasedAddPercent)
-				if(_.isEqual(soldierFightData.fightResult, Consts.FightResult.AttackWin)){
-					playerSuccessedTroops.push(playerTroopForFight)
-				}else{
-					stageSuccessedTroops.push(stageTroopForFight)
-				}
-
-				LogicUtils.removeItemInArray(playerTroopsForFight, playerTroopForFight)
-				LogicUtils.removeItemInArray(stageTroopsForFight, stageTroopForFight)
-				LogicUtils.resetFightSoldiersByFightResult(playerTroopForFight.soldiersForFight, soldierFightData.attackRoundDatas)
-				LogicUtils.resetFightSoldiersByFightResult(stageTroopForFight.soldiersForFight, soldierFightData.defenceRoundDatas)
-				playerTroopForFight.dragonForFight.totalHp = dragonFightData.attackDragonAfterFight.currentHp
-				playerTroopForFight.dragonForFight.currentHp = dragonFightData.attackDragonAfterFight.currentHp
-				stageTroopForFight.dragonForFight.totalHp = dragonFightData.defenceDragonAfterFight.currentHp
-				stageTroopForFight.dragonForFight.currentHp = dragonFightData.defenceDragonAfterFight.currentHp
-
-				var currentFightData = null
-				if(fightDatas.length < currentRound){
-					currentFightData = {
-						roundDatas:[]
-					}
-					fightDatas.push(currentFightData)
-				}else{
-					currentFightData = fightDatas[currentRound - 1]
-				}
-				var currentRoundDatas = currentFightData.roundDatas
-				currentRoundDatas.push({
-					playerDoc:playerTroopForFight.playerDoc,
-					stageTroopNumber:stageTroopForFight.troopNumber,
-					dragonFightData:dragonFightData,
-					soldierFightData:soldierFightData
-				})
-
-				if((playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0) || (stageTroopsForFight.length == 0 && stageSuccessedTroops.length > 0)){
-					if(playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0){
-						_.each(playerSuccessedTroops, function(troop){
-							if(troop.dragonForFight.maxHp > 0) playerTroopsForFight.push(troop)
-						})
-						LogicUtils.clearArray(playerSuccessedTroops)
-					}
-					if(stageTroopsForFight.length == 0 && stageSuccessedTroops.length > 0){
-						_.each(stageSuccessedTroops, function(troop){
-							if(troop.dragonForFight.maxHp > 0) stageTroopsForFight.push(troop)
-						})
-						LogicUtils.clearArray(stageSuccessedTroops)
-					}
-					currentRound += 1
-				}
-			})();
-		}
-
-		var params = DataUtils.getAllianceShrineStageResultDatas(allianceDoc.basicInfo.terrain, event.stageName, playerTroopsForFight.length > 0, fightDatas)
-		var playerDatas = LogicUtils.fixAllianceShrineStagePlayerData(event.playerTroops, params.playerDatas)
-		var fightStar = params.fightStar
-		var shrineReport = {
-			id:ShortId.generate(),
-			stageName:event.stageName,
-			star:fightStar,
-			time:Date.now(),
-			playerCount:event.playerTroops.length,
-			playerAvgPower:playerAvgPower,
-			playerDatas:playerDatas,
-			fightDatas:fightDatas
-		}
+	if(event.playerTroops.length == 0){
+		var shrineReport = ReportUtils.createAttackShrineEmptyReport(event.stageName);
 		if(allianceDoc.shrineReports.length >= Define.AllianceShrineReportsMaxSize){
 			var willRemovedshrineReport = allianceDoc.shrineReports[0]
 			allianceData.push(["shrineReports." + allianceDoc.shrineReports.indexOf(willRemovedshrineReport), null])
@@ -1974,88 +1848,215 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 		}
 		allianceDoc.shrineReports.push(shrineReport)
 		allianceData.push(["shrineReports." + allianceDoc.shrineReports.indexOf(shrineReport), shrineReport])
-		if(fightStar > 0){
-			var honour = DataUtils.getAllianceShrineStageFightHonour(event.stageName, fightStar)
-			allianceDoc.basicInfo.honour += honour
-			allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
-		}
-
-		var stageData = LogicUtils.getAllianceShrineStageData(allianceDoc, event.stageName)
-		if(!_.isObject(stageData)){
-			stageData = {
-				stageName:event.stageName,
-				maxStar:fightStar
-			}
-			allianceDoc.shrineDatas.push(stageData)
-			allianceData.push(["shrineDatas." + allianceDoc.shrineDatas.indexOf(stageData), stageData])
-		}else if(stageData.maxStar < fightStar){
-			stageData.maxStar = fightStar
-			allianceData.push(["shrineDatas." + allianceDoc.shrineDatas.indexOf(stageData) + ".maxStar", stageData.maxStar])
-		}
-		var getLeftSoldiers = function(soldiers, damagedSoldiers){
-			var leftSoldiers = []
-			_.each(soldiers, function(soldier){
-				var damagedSoldier = _.find(damagedSoldiers, function(damagedSoldier){
-					return _.isEqual(soldier.name, damagedSoldier.name)
-				})
-				if(_.isObject(damagedSoldier)) soldier.count -= damagedSoldier.count
-				if(soldier.count > 0) leftSoldiers.push(soldier)
-			})
-			return leftSoldiers
-		}
-
-		_.each(event.playerTroops, function(playerTroop){
-			var playerId = playerTroop.id
-			var playerDoc = playerDocs[playerId]
-			var woundedSoldiers = _.isObject(params.woundedSoldiers[playerId]) ? params.woundedSoldiers[playerId] : []
-			var leftSoldiers = _.isObject(params.damagedSoldiers[playerId]) ? getLeftSoldiers(playerTroop.soldiers, params.damagedSoldiers[playerId]) : playerTroop.soldiers
-			var rewards = _.isObject(params.playerRewards[playerId]) ? params.playerRewards[playerId] : []
-			var kill = _.isNumber(params.playerKills[playerId]) ? params.playerKills[playerId] : 0
-			var dragon = playerDoc.dragons[playerTroop.dragon.type]
-			var dragonHpDecreased = _.isNumber(params.playerDragonHps[playerId]) ? params.playerDragonHps[playerId] : 0
-			var dragonExpAdd = DataUtils.getPlayerDragonExpAdd(playerDoc, kill)
-			var playerData = []
-
-			playerDoc.basicInfo.kill += kill
-			playerData.push(["basicInfo.kill", playerDoc.basicInfo.kill])
-			TaskUtils.finishPlayerKillTaskIfNeed(playerDoc, playerData)
-			dragon.hp -= dragonHpDecreased
-			if(dragon.hp <= 0){
-				var deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, dragon)
-				playerDoc.dragonDeathEvents.push(deathEvent)
-				playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
-				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
-			}
-			DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, dragonExpAdd)
-			playerData.push(["dragons." + dragon.type + ".hp", dragon.hp])
-			playerData.push(["dragons." + dragon.type + ".hpRefreshTime", dragon.hpRefreshTime])
-			updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-
-			var marchReturnEvent = MarchUtils.createAttackAllianceShrineMarchReturnEvent(allianceDoc, playerDoc, dragon, leftSoldiers, woundedSoldiers, rewards)
-			allianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
-			allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
-			enemyAllianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
-			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
-		})
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
-		return Promise.resolve()
-	}).then(function(){
 		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
-	}).catch(function(e){
+	}else{
+		var playerDocs = {}
+		var playerTroopsForFight = []
 		var funcs = []
-		_.each(_.values(playerDocs), function(playerDoc){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		})
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
+		var findPlayerDoc = function(playerId){
+			return self.cacheService.findPlayerAsync(playerId).then(function(doc){
+				playerDocs[doc._id] = doc
+				return Promise.resolve()
 			})
-		}else{
-			callback(e)
 		}
-	})
+		var getTotalPower = function(soldiersForFight){
+			var power = 0
+			_.each(soldiersForFight, function(soldierForFight){
+				power += soldierForFight.power * soldierForFight.totalCount
+			})
+			return power
+		}
+		_.each(event.playerTroops, function(playerTroop){
+			funcs.push(findPlayerDoc(playerTroop.id))
+		})
+		Promise.all(funcs).then(function(){
+			_.each(event.playerTroops, function(playerTroop){
+				var playerDoc = playerDocs[playerTroop.id]
+				var dragon = playerDoc.dragons[playerTroop.dragon.type]
+				DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
+				var dragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, dragon, allianceDoc.basicInfo.terrain)
+				var soldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, playerTroop.soldiers, dragon, allianceDoc.basicInfo.terrain, true)
+				var playerTroopForFight = {
+					playerDoc:playerDoc,
+					dragonForFight:dragonForFight,
+					soldiersForFight:soldiersForFight,
+					woundedSoldierPercent:DataUtils.getPlayerTreatSoldierPercent(playerDocs[playerTroop.id], dragon),
+					soldierMoraleDecreasedPercent:DataUtils.getPlayerSoldierMoraleDecreasedPercent(playerDocs[playerTroop.id], dragon),
+					soldierToEnemyMoraleDecreasedAddPercent:DataUtils.getEnemySoldierMoraleAddedPercent(playerDocs[playerTroop.id], dragon)
+				}
+				playerTroopsForFight.push(playerTroopForFight)
+			})
+			playerTroopsForFight = _.sortBy(playerTroopsForFight, function(playerTroopForFight){
+				return -getTotalPower(playerTroopForFight.soldiersForFight)
+			})
+
+			var stageTroopsForFight = DataUtils.getAllianceShrineStageTroops(allianceDoc, event.stageName)
+			var playerAvgPower = LogicUtils.getPlayerTroopsAvgPower(playerTroopsForFight)
+			var currentRound = 1
+			var playerSuccessedTroops = []
+			var stageSuccessedTroops = []
+			var fightDatas = [];
+			while(playerTroopsForFight.length > 0 && stageTroopsForFight.length > 0){
+				(function(){
+					var playerTroopForFight = playerTroopsForFight[0]
+					var stageTroopForFight = stageTroopsForFight[0]
+					var dragonFightFixedEffect = DataUtils.getDragonFightFixedEffect(playerTroopForFight.soldiersForFight, stageTroopForFight.soldiersForFight)
+					var dragonFightData = FightUtils.dragonToDragonFight(playerTroopForFight.dragonForFight, stageTroopForFight.dragonForFight, dragonFightFixedEffect)
+					var soldierFightData = FightUtils.soldierToSoldierFight(playerTroopForFight.soldiersForFight, playerTroopForFight.woundedSoldierPercent, playerTroopForFight.soldierMoraleDecreasedPercent, stageTroopForFight.soldiersForFight, 0, 1 + playerTroopForFight.soldierToEnemyMoraleDecreasedAddPercent)
+					if(_.isEqual(soldierFightData.fightResult, Consts.FightResult.AttackWin)){
+						playerSuccessedTroops.push(playerTroopForFight)
+					}else{
+						stageSuccessedTroops.push(stageTroopForFight)
+					}
+
+					LogicUtils.removeItemInArray(playerTroopsForFight, playerTroopForFight)
+					LogicUtils.removeItemInArray(stageTroopsForFight, stageTroopForFight)
+					LogicUtils.resetFightSoldiersByFightResult(playerTroopForFight.soldiersForFight, soldierFightData.attackRoundDatas)
+					LogicUtils.resetFightSoldiersByFightResult(stageTroopForFight.soldiersForFight, soldierFightData.defenceRoundDatas)
+					playerTroopForFight.dragonForFight.totalHp = dragonFightData.attackDragonAfterFight.currentHp
+					playerTroopForFight.dragonForFight.currentHp = dragonFightData.attackDragonAfterFight.currentHp
+					stageTroopForFight.dragonForFight.totalHp = dragonFightData.defenceDragonAfterFight.currentHp
+					stageTroopForFight.dragonForFight.currentHp = dragonFightData.defenceDragonAfterFight.currentHp
+
+					var currentFightData = null
+					if(fightDatas.length < currentRound){
+						currentFightData = {
+							roundDatas:[]
+						}
+						fightDatas.push(currentFightData)
+					}else{
+						currentFightData = fightDatas[currentRound - 1]
+					}
+					var currentRoundDatas = currentFightData.roundDatas
+					currentRoundDatas.push({
+						playerDoc:playerTroopForFight.playerDoc,
+						stageTroopNumber:stageTroopForFight.troopNumber,
+						dragonFightData:dragonFightData,
+						soldierFightData:soldierFightData
+					})
+
+					if((playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0) || (stageTroopsForFight.length == 0 && stageSuccessedTroops.length > 0)){
+						if(playerTroopsForFight.length == 0 && playerSuccessedTroops.length > 0){
+							_.each(playerSuccessedTroops, function(troop){
+								if(troop.dragonForFight.maxHp > 0) playerTroopsForFight.push(troop)
+							})
+							LogicUtils.clearArray(playerSuccessedTroops)
+						}
+						if(stageTroopsForFight.length == 0 && stageSuccessedTroops.length > 0){
+							_.each(stageSuccessedTroops, function(troop){
+								if(troop.dragonForFight.maxHp > 0) stageTroopsForFight.push(troop)
+							})
+							LogicUtils.clearArray(stageSuccessedTroops)
+						}
+						currentRound += 1
+					}
+				})();
+			}
+
+			var params = DataUtils.getAllianceShrineStageResultDatas(allianceDoc.basicInfo.terrain, event.stageName, playerTroopsForFight.length > 0, fightDatas)
+			var playerDatas = LogicUtils.fixAllianceShrineStagePlayerData(event.playerTroops, params.playerDatas)
+			var fightStar = params.fightStar
+			var shrineReport = {
+				id:ShortId.generate(),
+				stageName:event.stageName,
+				star:fightStar,
+				time:Date.now(),
+				playerCount:event.playerTroops.length,
+				playerAvgPower:playerAvgPower,
+				playerDatas:playerDatas,
+				fightDatas:fightDatas
+			}
+			if(allianceDoc.shrineReports.length >= Define.AllianceShrineReportsMaxSize){
+				var willRemovedshrineReport = allianceDoc.shrineReports[0]
+				allianceData.push(["shrineReports." + allianceDoc.shrineReports.indexOf(willRemovedshrineReport), null])
+				LogicUtils.removeItemInArray(allianceDoc.shrineReports, willRemovedshrineReport)
+			}
+			allianceDoc.shrineReports.push(shrineReport)
+			allianceData.push(["shrineReports." + allianceDoc.shrineReports.indexOf(shrineReport), shrineReport])
+			if(fightStar > 0){
+				var honour = DataUtils.getAllianceShrineStageFightHonour(event.stageName, fightStar)
+				allianceDoc.basicInfo.honour += honour
+				allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
+			}
+
+			var stageData = LogicUtils.getAllianceShrineStageData(allianceDoc, event.stageName)
+			if(!_.isObject(stageData)){
+				stageData = {
+					stageName:event.stageName,
+					maxStar:fightStar
+				}
+				allianceDoc.shrineDatas.push(stageData)
+				allianceData.push(["shrineDatas." + allianceDoc.shrineDatas.indexOf(stageData), stageData])
+			}else if(stageData.maxStar < fightStar){
+				stageData.maxStar = fightStar
+				allianceData.push(["shrineDatas." + allianceDoc.shrineDatas.indexOf(stageData) + ".maxStar", stageData.maxStar])
+			}
+			var getLeftSoldiers = function(soldiers, damagedSoldiers){
+				var leftSoldiers = []
+				_.each(soldiers, function(soldier){
+					var damagedSoldier = _.find(damagedSoldiers, function(damagedSoldier){
+						return _.isEqual(soldier.name, damagedSoldier.name)
+					})
+					if(_.isObject(damagedSoldier)) soldier.count -= damagedSoldier.count
+					if(soldier.count > 0) leftSoldiers.push(soldier)
+				})
+				return leftSoldiers
+			}
+
+			_.each(event.playerTroops, function(playerTroop){
+				var playerId = playerTroop.id
+				var playerDoc = playerDocs[playerId]
+				var woundedSoldiers = _.isObject(params.woundedSoldiers[playerId]) ? params.woundedSoldiers[playerId] : []
+				var leftSoldiers = _.isObject(params.damagedSoldiers[playerId]) ? getLeftSoldiers(playerTroop.soldiers, params.damagedSoldiers[playerId]) : playerTroop.soldiers
+				var rewards = _.isObject(params.playerRewards[playerId]) ? params.playerRewards[playerId] : []
+				var kill = _.isNumber(params.playerKills[playerId]) ? params.playerKills[playerId] : 0
+				var dragon = playerDoc.dragons[playerTroop.dragon.type]
+				var dragonHpDecreased = _.isNumber(params.playerDragonHps[playerId]) ? params.playerDragonHps[playerId] : 0
+				var dragonExpAdd = DataUtils.getPlayerDragonExpAdd(playerDoc, kill)
+				var playerData = []
+
+				playerDoc.basicInfo.kill += kill
+				playerData.push(["basicInfo.kill", playerDoc.basicInfo.kill])
+				TaskUtils.finishPlayerKillTaskIfNeed(playerDoc, playerData)
+				dragon.hp -= dragonHpDecreased
+				if(dragon.hp <= 0){
+					var deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, dragon)
+					playerDoc.dragonDeathEvents.push(deathEvent)
+					playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
+					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
+				}
+				DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, dragonExpAdd)
+				playerData.push(["dragons." + dragon.type + ".hp", dragon.hp])
+				playerData.push(["dragons." + dragon.type + ".hpRefreshTime", dragon.hpRefreshTime])
+				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+
+				var marchReturnEvent = MarchUtils.createAttackAllianceShrineMarchReturnEvent(allianceDoc, playerDoc, dragon, leftSoldiers, woundedSoldiers, rewards)
+				allianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
+				allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+				enemyAllianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
+			})
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+			LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
+			return Promise.resolve()
+		}).then(function(){
+			callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+		}).catch(function(e){
+			var funcs = []
+			_.each(_.values(playerDocs), function(playerDoc){
+				funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+			})
+			if(funcs.length > 0){
+				Promise.all(funcs).then(function(){
+					callback(e)
+				})
+			}else{
+				callback(e)
+			}
+		})
+	}
 }
 
 /**
