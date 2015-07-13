@@ -304,7 +304,7 @@ var ChatHandler = function(app){
 		},
 		{
 			command:"vipevents",
-			desc:"修改VipBuff时间:itemevent 60",
+			desc:"修改VipBuff时间:vipevents 60",
 			func:function(session, uid, text, callback){
 				var self = this
 				var seconds = text.split(" ")[1]
