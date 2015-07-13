@@ -303,14 +303,14 @@ var ChatHandler = function(app){
 			}
 		},
 		{
-			command:"vipevent",
+			command:"vipevents",
 			desc:"修改VipBuff时间:itemevent 60",
 			func:function(session, uid, text, callback){
 				var self = this
 				var seconds = text.split(" ")[1]
 				seconds = parseInt(seconds)
 				if(_.isNumber(seconds) && seconds){
-					self.app.rpc.cache.commandRemote.vipevent(session, uid, seconds, function(e){
+					self.app.rpc.cache.commandRemote.vipevents(session, uid, seconds, function(e){
 						callback(e)
 					})
 				}

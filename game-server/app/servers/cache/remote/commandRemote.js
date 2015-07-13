@@ -834,7 +834,7 @@ pro.online = function(playerId, callback){
  * @param seconds
  * @param callback
  */
-pro.vipevent = function(playerId, seconds, callback){
+pro.vipevents = function(playerId, seconds, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
