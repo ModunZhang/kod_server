@@ -759,7 +759,7 @@ pro.buyAllianceArchon = function(playerId, allianceId, callback){
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		archonObject = LogicUtils.getAllianceArchon(allianceDoc)
 		var canBuyInterval = 1000 * 60 * 60 * 24 * 7 //7天
-		if(archonObject.lastLoginTime + canBuyInterval > Date.now()){
+		if(archonObject.lastLogoutTime + canBuyInterval > Date.now()){
 			return Promise.reject(ErrorUtils.onlyAllianceArchonMoreThanSevenDaysNotOnLinePlayerCanBuyArchonTitle(playerId, allianceDoc._id))
 		}
 		return self.cacheService.directFindPlayerAsync(archonObject.id)
@@ -921,7 +921,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, allianceId, eventId, callback
 		if(!_.isEmpty(playerData)){
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		}
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -930,7 +930,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, allianceId, eventId, callback
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback(null, playerData)
+		callback(null, [playerData, allianceData])
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -1037,9 +1037,9 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, allianceId, callback){
 		funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, allianceDoc))
 		return Promise.all(funcs)
 	}).then(function(){
-		return self.pushService.onAllianceDataChangedAsync(allianceDoc._id, allianceData)
+		return self.pushService.onAllianceDataChangedExceptMemberIdAsync(allianceDoc._id, allianceData, playerDoc._id)
 	}).then(function(){
-		callback(null, playerData)
+		callback(null, [playerData, allianceData])
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){

@@ -944,7 +944,7 @@ pro.getAllianceInfo = function(playerId, allianceId, callback){
 						power:member.power,
 						title:member.title,
 						online:_.isBoolean(member.online) ? member.online : false,
-						lastLoginTime:member.lastLoginTime
+						lastLogoutTime:member.lastLogoutTime
 					}
 					members.push(theMember)
 				})

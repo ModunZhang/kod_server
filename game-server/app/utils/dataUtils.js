@@ -1879,22 +1879,48 @@ Utils.initMapVillages = function(allianceDoc, mapObjects, map){
 	var orderHallLevel = 1
 	var orderHallConfig = AllianceBuilding.orderHall[orderHallLevel]
 	var villageTypeConfigs = this.getAllianceVillageTypeConfigs()
-	for(var i = 0; i < orderHallConfig.villageCount; i ++){
-		var typeConfig = _.sample(villageTypeConfigs)
-		var config = AllianceInitData.buildingName[typeConfig.name]
-		var width = config.width
-		var height = config.height
-		var rect = MapUtils.getRect(map, width, height)
-		if(_.isObject(rect)){
-			var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
-			var village = {
-				id:villageMapObject.id,
-				name:villageMapObject.name,
-				level:1,
-				resource:self.getAllianceVillageProduction(villageMapObject.name, 1)
+	var villageCount = orderHallConfig.villageCount;
+	while(villageCount > villageTypeConfigs.length){
+		(function(){
+			_.each(villageTypeConfigs, function(typeConfig){
+				(function(){
+					var config = AllianceInitData.buildingName[typeConfig.name]
+					var width = config.width
+					var height = config.height
+					var rect = MapUtils.getRect(map, width, height)
+					if(_.isObject(rect)){
+						var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
+						var village = {
+							id:villageMapObject.id,
+							name:villageMapObject.name,
+							level:1,
+							resource:self.getAllianceVillageProduction(villageMapObject.name, 1)
+						}
+						villages.push(village)
+					}
+					villageCount -= 1;
+				})();
+			})
+		})();
+	}
+	for(var i = 0; i < villageCount; i ++){
+		(function(){
+			var typeConfig = _.sample(villageTypeConfigs)
+			var config = AllianceInitData.buildingName[typeConfig.name]
+			var width = config.width
+			var height = config.height
+			var rect = MapUtils.getRect(map, width, height)
+			if(_.isObject(rect)){
+				var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
+				var village = {
+					id:villageMapObject.id,
+					name:villageMapObject.name,
+					level:1,
+					resource:self.getAllianceVillageProduction(villageMapObject.name, 1)
+				}
+				villages.push(village)
 			}
-			villages.push(village)
-		}
+		})();
 	}
 	allianceDoc.villages = villages
 }
@@ -3970,22 +3996,50 @@ Utils.getAllianceVillagesTotalCount = function(allianceDoc){
  * @param count
  */
 Utils.createAllianceVillage = function(allianceDoc, allianceData, enemyAllianceData, count){
+	var self = this
 	var mapObjects = allianceDoc.mapObjects
 	var map = MapUtils.buildMap(mapObjects)
+	var orderHall = this.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.OrderHall);
+	var orderHallConfig = AllianceBuilding.orderHall[orderHall.level];
 	var villageTypeConfigs = this.getAllianceVillageTypeConfigs()
+	var eachVillageTypeCount = Math.floor(orderHallConfig.villageCount / villageTypeConfigs.length);
+	_.each(villageTypeConfigs, function(config){
+		(function(){
+			if(count <= 0) return;
+			var villages = _.filter(allianceDoc.villages, function(village){
+				return _.isEqual(village.name, config.name);
+			})
+			if(villages.length < eachVillageTypeCount){
+				var width = config.width
+				var height = config.height
+				var rect = MapUtils.getRect(map, width, height)
+				if(_.isObject(rect)){
+					var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, config.name)
+					allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
+					enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
+					var village = self.addAllianceVillageObject(allianceDoc, villageMapObject)
+					allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
+					enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
+				}
+				count --
+			}
+		})();
+	})
 	for(var i = 0; i < count; i ++){
-		var config = _.sample(villageTypeConfigs)
-		var width = config.width
-		var height = config.height
-		var rect = MapUtils.getRect(map, width, height)
-		if(_.isObject(rect)){
-			var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, config.name)
-			allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
-			enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
-			var village = this.addAllianceVillageObject(allianceDoc, villageMapObject)
-			allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
-			enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
-		}
+		(function(){
+			var config = _.sample(villageTypeConfigs)
+			var width = config.width
+			var height = config.height
+			var rect = MapUtils.getRect(map, width, height)
+			if(_.isObject(rect)){
+				var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, config.name)
+				allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
+				enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
+				var village = self.addAllianceVillageObject(allianceDoc, villageMapObject)
+				allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
+				enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
+			}
+		})();
 	}
 }
 
