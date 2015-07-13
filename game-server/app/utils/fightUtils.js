@@ -158,11 +158,11 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
 	var attackDragonHpDecreased = null
 	var defenceDragonHpDecreased = null
 	if(attackDragonStrength >= defenceDragonStrength){
-		attackDragonHpDecreased = Math.ceil(defenceDragonStrengthFixed * 0.3)
-		defenceDragonHpDecreased = Math.ceil(Math.sqrt(attackDragonStrengthFixed * defenceDragonStrengthFixed) * 0.3)
+		attackDragonHpDecreased = Math.ceil(defenceDragonStrengthFixed * 0.8)
+		defenceDragonHpDecreased = Math.ceil(Math.sqrt(attackDragonStrengthFixed * defenceDragonStrengthFixed) * 0.8)
 	}else{
-		attackDragonHpDecreased = Math.ceil(Math.sqrt(attackDragonStrengthFixed * defenceDragonStrengthFixed) * 0.3)
-		defenceDragonHpDecreased = Math.ceil(attackDragonStrengthFixed * 0.3)
+		attackDragonHpDecreased = Math.ceil(Math.sqrt(attackDragonStrengthFixed * defenceDragonStrengthFixed) * 0.8)
+		defenceDragonHpDecreased = Math.ceil(attackDragonStrengthFixed * 0.8)
 	}
 	attackDragon.currentHp = attackDragonHpDecreased > attackDragon.currentHp ? 0 : attackDragon.currentHp - attackDragonHpDecreased
 	defenceDragon.currentHp = defenceDragonHpDecreased > defenceDragon.currentHp ? 0 : defenceDragon.currentHp - defenceDragonHpDecreased
