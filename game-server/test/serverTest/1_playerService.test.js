@@ -1450,6 +1450,13 @@
 //			})
 //		})
 //
+//		it("vipevent 修改玩家Buff时间", function(done){
+//			Api.sendChat('vipevent 60', function(doc){
+//				doc.code.should.equal(200);
+//				done();
+//			})
+//		})
+//
 //		it("useItem vipPoint_3", function(done){
 //			Api.buyItem("vipPoint_3", 1, function(doc){
 //				doc.code.should.equal(200)
