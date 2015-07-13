@@ -1642,7 +1642,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 		var fullReports = {}
 		_.each(playerTroops, function(playerTroop){
 			(function(){
-				var report = playerReports[playerTroop._id];
+				var report = playerReports[playerTroop.id];
 				if(_.isObject(report)){
 					var fullReport = {
 						id:ShortId.generate(),
@@ -1660,7 +1660,16 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	})();
 
 	var playerDragonAndSoldierDatas = (function(){
+		var dragonAndSoldierDatas = {}
+		_.each(playerTroops, function(playerTroop){
+			(function(){
+				if(!_.isObject(playerReports[playerReports[playerTroop.id]])){
+					
+				}else{
 
+				}
+			})();
+		})
 	})();
 
 	return {
