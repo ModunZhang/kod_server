@@ -620,9 +620,9 @@ Utils.updatePlayerPropertyInAlliance = function(playerDoc, online, allianceDoc, 
 		member.kill = playerDoc.basicInfo.kill
 		allianceData.push(["members." + memberIndex + ".kill", member.kill])
 	}
-	if(!_.isEqual(member.lastLoginTime, playerDoc.countInfo.lastLoginTime)){
-		member.lastLoginTime = playerDoc.countInfo.lastLoginTime
-		allianceData.push(["members." + memberIndex + ".lastLoginTime", member.lastLoginTime])
+	if(!_.isEqual(member.lastLogoutTime, playerDoc.countInfo.lastLogoutTime)){
+		member.lastLogoutTime = playerDoc.countInfo.lastLogoutTime
+		allianceData.push(["members." + memberIndex + ".lastLogoutTime", member.lastLogoutTime])
 	}
 	if(!_.isEqual(member.keepLevel, playerDoc.buildings.location_1.level)){
 		member.keepLevel = playerDoc.buildings.location_1.level
@@ -1135,7 +1135,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		power:playerDoc.basicInfo.power,
 		kill:playerDoc.basicInfo.kill,
 		loyalty:playerDoc.allianceInfo.loyalty,
-		lastLoginTime:playerDoc.countInfo.lastLoginTime,
+		lastLogoutTime:playerDoc.countInfo.lastLogoutTime,
 		lastBeAttackedTime:0,
 		title:title,
 		allianceExp:{

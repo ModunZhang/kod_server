@@ -104,6 +104,7 @@ var PlayerSchema = new Schema({
 	countInfo:{
 		registerTime:{type:Number, required:true, default:Date.now},
 		lastLoginTime:{type:Number, required:true, default:Date.now},
+		lastLogoutTime:{type:Number, required:true, default:Date.now},
 		loginCount:{type:Number, required:true, default:0},
 		day60:{type:Number, required:true, default:1},
 		day60RewardsCount:{type:Number, required:true, default:0},
