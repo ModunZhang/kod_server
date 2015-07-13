@@ -827,3 +827,45 @@ pro.alliancefight = function(playerId, defenceAllianceTag, callback){
 pro.online = function(playerId, callback){
 	callback(null, '当前在线:' + this.app.get('loginedCount'))
 }
+
+/**
+ * 修改道具Buff时间
+ * @param playerId
+ * @param seconds
+ * @param callback
+ */
+pro.vipevents = function(playerId, seconds, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		var event = playerDoc.vipEvents[0]
+		if(!_.isObject(event)) return Promise.reject(new Error('事件不存在'))
+		event.finishTime = Date.now() + (seconds * 1000);
+		playerData.push(['vipEvents.' + playerDoc.vipEvents.indexOf(event) + '.finishTime', event.finishTime]);
+		eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, 'vipEvents', event.id, (seconds * 1000)])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
