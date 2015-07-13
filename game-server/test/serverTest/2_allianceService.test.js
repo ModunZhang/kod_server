@@ -904,6 +904,20 @@
 //			})
 //		})
 //
+//		it("upgradeAllianceBuilding 正常升级2", function(done){
+//			Api.upgradeAllianceBuilding(Consts.AllianceBuildingNames.OrderHall, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("upgradeAllianceBuilding 正常升级3", function(done){
+//			Api.upgradeAllianceBuilding(Consts.AllianceBuildingNames.OrderHall, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		it("upgradeAllianceVillage 正常升级", function(done){
 //			Api.upgradeAllianceVillage("woodVillage", function(doc){
 //				doc.code.should.equal(200)
