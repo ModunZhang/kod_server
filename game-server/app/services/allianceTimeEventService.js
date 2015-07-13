@@ -1873,6 +1873,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 		Promise.all(funcs).then(function(){
 			_.each(event.playerTroops, function(playerTroop){
 				var playerDoc = playerDocs[playerTroop.id]
+				playerTroop.playerDoc = playerDoc
 				var dragon = playerDoc.dragons[playerTroop.dragon.type]
 				DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
 				var dragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, dragon, allianceDoc.basicInfo.terrain)
@@ -1953,6 +1954,9 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 					}
 				})();
 			}
+
+			var report = ReportUtils.createAttackShrineReport(allianceDoc, event.stageName, event.playerTroops, playerAvgPower, fightDatas, playerTroopsForFight.length > 0)
+
 
 			var params = DataUtils.getAllianceShrineStageResultDatas(allianceDoc.basicInfo.terrain, event.stageName, playerTroopsForFight.length > 0, fightDatas)
 			var playerDatas = LogicUtils.fixAllianceShrineStagePlayerData(event.playerTroops, params.playerDatas)
