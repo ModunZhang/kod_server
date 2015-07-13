@@ -786,8 +786,8 @@ pro.helpAllianceMemberSpeedUp = function(msg, session, next){
 		return
 	}
 
-	this.request('helpAllianceMemberSpeedUp', [session.uid, allianceId, eventId]).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
+	this.request('helpAllianceMemberSpeedUp', [session.uid, allianceId, eventId]).spread(function(playerData, allianceData){
+		next(null, {code:200, playerData:playerData, allianceData:allianceData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})
@@ -809,8 +809,8 @@ pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
 		return
 	}
 
-	this.request('helpAllAllianceMemberSpeedUp', [session.uid, allianceId]).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
+	this.request('helpAllAllianceMemberSpeedUp', [session.uid, allianceId]).spread(function(playerData, allianceData){
+		next(null, {code:200, playerData:playerData, allianceData:allianceData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})

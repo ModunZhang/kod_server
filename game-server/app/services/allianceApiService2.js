@@ -921,7 +921,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, allianceId, eventId, callback
 		if(!_.isEmpty(playerData)){
 			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		}
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -930,7 +930,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, allianceId, eventId, callback
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback(null, playerData)
+		callback(null, [playerData, allianceData])
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -1037,9 +1037,9 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, allianceId, callback){
 		funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, allianceDoc))
 		return Promise.all(funcs)
 	}).then(function(){
-		return self.pushService.onAllianceDataChangedAsync(allianceDoc._id, allianceData)
+		return self.pushService.onAllianceDataChangedExceptMemberIdAsync(allianceDoc._id, allianceData, playerDoc._id)
 	}).then(function(){
-		callback(null, playerData)
+		callback(null, [playerData, allianceData])
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
