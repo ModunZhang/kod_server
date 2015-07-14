@@ -101,31 +101,40 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 	session.set("allianceTag", _.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "")
 	session.set("vipExp", playerDoc.basicInfo.vipExp)
 	session.set("isVipActive", playerDoc.vipEvents.length > 0)
-	session.on("closed", function(session, reason){
-		self.logService.onRequest("logic.entryHandler.logout", {
+	session.on("closed", OnSessionClose.bind(this));
+	session.pushAll(function(err){
+		if(_.isObject(err)){
+			session.uid = playerDoc._id;
+			OnSessionClose.call(self, session, err.message)
+			callback(err);
+		}else{
+			process.nextTick(function(){
+				callback(err)
+			})
+		}
+	})
+}
+
+var OnSessionClose = function(session, reason){
+	var self = this;
+	self.logService.onRequest("logic.entryHandler.logout", {
+		playerId:session.uid,
+		logicServerId:self.logicServerId,
+		reason:reason
+	})
+	self.request('logout', [session.uid, self.logicServerId, reason]).then(function(){
+		self.logService.onRequest("logic.entryHandler.logout success", {
 			playerId:session.uid,
 			logicServerId:self.logicServerId,
 			reason:reason
 		})
-		self.request('logout', [session.uid, self.logicServerId, reason]).then(function(){
-			self.logService.onRequest("logic.entryHandler.logout success", {
-				playerId:session.uid,
-				logicServerId:self.logicServerId,
-				reason:reason
-			})
-			self.app.set("loginedCount", self.app.get("loginedCount") - 1)
-		}).catch(function(e){
-			self.logService.onRequestError("logic.entryHandler.logout failed", {
-				playerId:session.uid,
-				logicServerId:self.logicServerId,
-				reason:reason
-			}, e.stack)
-			self.app.set("loginedCount", self.app.get("loginedCount") - 1)
-		})
-	})
-	session.pushAll(function(err){
-		process.nextTick(function(){
-			callback(err)
-		})
+		self.app.set("loginedCount", self.app.get("loginedCount") - 1)
+	}).catch(function(e){
+		self.logService.onRequestError("logic.entryHandler.logout failed", {
+			playerId:session.uid,
+			logicServerId:self.logicServerId,
+			reason:reason
+		}, e.stack)
+		self.app.set("loginedCount", self.app.get("loginedCount") - 1)
 	})
 }
