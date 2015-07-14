@@ -765,15 +765,15 @@ Utils.getPlayerFreeBuildingsCount = function(playerDoc){
 /**
  * 获取材料仓库单个材料上限
  * @param playerDoc
- * @param materialCategory
+ * @param materialType
  * @returns {number}
  */
-Utils.getMaterialUpLimit = function(playerDoc, materialCategory){
+Utils.getMaterialUpLimit = function(playerDoc, materialType){
 	var building = LogicUtils.getPlayerBuildingByType(playerDoc, "materialDepot")
 	var totalUpLimit = 0
 	if(building.level >= 1){
 		var config = BuildingFunction["materialDepot"][building.level]
-		totalUpLimit += config[materialCategory]
+		totalUpLimit += config[materialType]
 	}
 
 	return totalUpLimit
@@ -789,6 +789,7 @@ Utils.addPlayerMaterials = function(playerDoc, materialType, materials){
 	console.log(materialType, materials, '11111111111111')
 	var materialUpLimit = this.getMaterialUpLimit(playerDoc, materialType)
 	var playerMaterilas = playerDoc[materialType]
+	console.log(materialUpLimit, playerMaterilas, '2222222222222')
 	_.each(materials, function(material){
 		var currentMaterial = playerMaterilas[material.name]
 		if(currentMaterial < materialUpLimit){
