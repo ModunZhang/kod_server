@@ -786,6 +786,7 @@ Utils.getMaterialUpLimit = function(playerDoc, materialCategory){
  * @param materials
  */
 Utils.addPlayerMaterials = function(playerDoc, materialType, materials){
+	console.log(materialType, materials, '11111111111111')
 	var materialUpLimit = this.getMaterialUpLimit(playerDoc, materialType)
 	var playerMaterilas = playerDoc[materialType]
 	_.each(materials, function(material){
