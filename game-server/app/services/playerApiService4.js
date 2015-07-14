@@ -537,7 +537,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
 		var itemData = params[itemName]
-		gemUsed = itemConfig.price * DataUtils.isResourceItem(itemName) ? itemData.count : 1;
+		gemUsed = itemConfig.price * (DataUtils.isResourceItem(itemName) ? itemData.count : 1);
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 
 		if(_.isEqual("changePlayerName", itemName)){
