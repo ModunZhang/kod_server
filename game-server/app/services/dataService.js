@@ -365,8 +365,8 @@ pro.sendPlayerMail = function(id, memberId, title, content, callback){
 		}
 		if(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
 			var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
-			LogicUtils.removeItemInArray(memberDoc.mails, mail)
 			memberData.push(["mails." + memberDoc.mails.indexOf(mail), null])
+			LogicUtils.removeItemInArray(memberDoc.mails, mail)
 		}
 		memberDoc.mails.push(mailToMember)
 		memberData.push(["mails." + memberDoc.mails.indexOf(mailToMember), mailToMember])
