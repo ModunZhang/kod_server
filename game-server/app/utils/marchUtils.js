@@ -135,7 +135,7 @@ var createAllianceData = function(allianceDoc){
  */
 var createAttackPlayerData = function(allianceDoc, playerDoc, playerLocation, dragon, soldiers){
 	_.each(soldiers, function(soldier){
-		soldier.star = playerDoc.soldierStars[soldier.name]
+		soldier.star = DataUtils.getPlayerSoldierStar(playerDoc, soldier.name);
 	})
 	var playerData = {
 		id:playerDoc._id,
