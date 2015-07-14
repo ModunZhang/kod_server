@@ -1243,24 +1243,24 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				defenceEnemyAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(attackMonsterMarchReturnEvent), attackMonsterMarchReturnEvent])
 				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", attackMonsterMarchReturnEvent.id, attackMonsterMarchReturnEvent.arriveTime - Date.now()])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
+				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
 				if(_.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
 					targetAllianceData.push(['monsters.' + targetAllianceDoc.monsters.indexOf(defenceMonster), null])
-					LogicUtils.removeItemInArray(targetAllianceDoc.monsters, defenceMonster)
-					var monsterMapObject = _.find(targetAllianceDoc.mapObjects, function(mapObject){
+					var defenceMonsterMapObject = _.find(targetAllianceDoc.mapObjects, function(mapObject){
 						return _.isEqual(mapObject.id, defenceMonster.id);
 					})
-					targetAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(monsterMapObject), null])
-					LogicUtils.removeItemInArray(targetAllianceDoc.mapObjects, monsterMapObject)
+					targetAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(defenceMonsterMapObject), null])
 					if(_.isEqual(attackAllianceDoc, targetAllianceDoc)){
 						defenceEnemyAllianceData.push(['monsters.' + targetAllianceDoc.monsters.indexOf(defenceMonster), null])
-						defenceEnemyAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(monsterMapObject), null])
+						defenceEnemyAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(defenceMonsterMapObject), null])
 					}else{
 						attackEnemyAllianceData.push(['monsters.' + targetAllianceDoc.monsters.indexOf(defenceMonster), null])
-						attackEnemyAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(monsterMapObject), null])
+						attackEnemyAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(defenceMonsterMapObject), null])
+						LogicUtils.pushDataToEnemyAlliance(defenceAllianceDoc, attackEnemyAllianceData, pushFuncs, self.pushService)
 					}
+					LogicUtils.removeItemInArray(targetAllianceDoc.monsters, defenceMonster)
+					LogicUtils.removeItemInArray(targetAllianceDoc.mapObjects, defenceMonsterMapObject)
 				}
-				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
-				LogicUtils.pushDataToEnemyAlliance(defenceAllianceDoc, attackEnemyAllianceData, pushFuncs, self.pushService)
 				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
 				if(_.isObject(defenceAllianceDoc)){
 					updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
