@@ -549,6 +549,7 @@ var AllianceSchema = new Schema({
 		},
 		defenceMonsterData:{
 			id:{type:String, required:true},
+			name:{type:String, required:true},
 			level:{type:Number, required:true},
 			location:{
 				x:{type:Number, required:true},
@@ -641,6 +642,7 @@ var AllianceSchema = new Schema({
 		},
 		defenceMonsterData:{
 			id:{type:String, required:true},
+			name:{type:String, required:true},
 			level:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
