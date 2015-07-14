@@ -757,8 +757,8 @@ pro.requestAllianceToSpeedUp = function(msg, session, next){
 		return
 	}
 
-	this.request('requestAllianceToSpeedUp', [session.uid, allianceId, eventType, eventId]).then(function(){
-		next(null, {code:200})
+	this.request('requestAllianceToSpeedUp', [session.uid, allianceId, eventType, eventId]).then(function(allianceData){
+		next(null, {code:200, allianceData:allianceData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})
