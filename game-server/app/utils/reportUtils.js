@@ -1659,19 +1659,6 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 		return fullReports;
 	})();
 
-	var playerDragonAndSoldierDatas = (function(){
-		var dragonAndSoldierDatas = {}
-		_.each(playerTroops, function(playerTroop){
-			(function(){
-				if(!_.isObject(playerReports[playerReports[playerTroop.id]])){
-					
-				}else{
-
-				}
-			})();
-		})
-	})();
-
 	return {
 		fightStar:fightStar,
 		allianceHonourGet:stageConfig['star' + fightStar + 'Honour'],
