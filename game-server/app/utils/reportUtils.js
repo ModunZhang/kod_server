@@ -1500,7 +1500,7 @@ Utils.createAttackMonsterReport = function(attackAllianceDoc, attackPlayerDoc, a
 
 	if(_.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult))
 		attackPlayerRewards.push(DataUtils.getMonsterRewards(defenceMonster.level));
-	LogicUtils.mergeRewards(attackPlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKilledCitizen, defenceAllianceDoc.basicInfo.terrain))
+	//LogicUtils.mergeRewards(attackPlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKilledCitizen, defenceAllianceDoc.basicInfo.terrain))
 
 	var attackMonsterReport = {
 		attackTarget:{
