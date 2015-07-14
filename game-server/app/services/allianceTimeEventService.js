@@ -1256,6 +1256,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					}else{
 						attackEnemyAllianceData.push(['monsters.' + targetAllianceDoc.monsters.indexOf(defenceMonster), null])
 						attackEnemyAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(defenceMonsterMapObject), null])
+						pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc._id, defenceAllianceData]);
 						LogicUtils.pushDataToEnemyAlliance(defenceAllianceDoc, attackEnemyAllianceData, pushFuncs, self.pushService)
 					}
 					LogicUtils.removeItemInArray(targetAllianceDoc.monsters, defenceMonster)
