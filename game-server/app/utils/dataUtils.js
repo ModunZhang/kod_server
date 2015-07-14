@@ -1935,20 +1935,26 @@ Utils.initMapVillages = function(allianceDoc, mapObjects, map){
 Utils.initMapMonsters = function(allianceDoc, mapObjects, map, playerKeepleLevel){
 	var monsters = []
 	var minMonsterCount = this.getAllianceIntInit('minMonsterCount')
-	var monsterConfig = AllianceInitData.buildingName['monster']
+	var buildingConfig = AllianceInitData.buildingName['monster']
+	var monsterConfig = AllianceInitData.monsters[playerKeepleLevel];
+	var soldiersConfigStrings = monsterConfig.soldiers.split(';');
+	var soldiersConfigString = _.sample(soldiersConfigStrings);
+	var soldierName = soldiersConfigString.split(':')[0];
 	for(var i = 0; i < minMonsterCount; i ++){
-		var width = monsterConfig.width
-		var height = monsterConfig.height
-		var rect = MapUtils.getRect(map, width, height)
-		if(_.isObject(rect)){
-			var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, monsterConfig.name)
-			var monster = {
-				id:monsterMapObject.id,
-				name:monsterMapObject.name,
-				level:playerKeepleLevel
+		(function(){
+			var width = buildingConfig.width
+			var height = buildingConfig.height
+			var rect = MapUtils.getRect(map, width, height)
+			if(_.isObject(rect)){
+				var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, buildingConfig.name)
+				var monster = {
+					id:monsterMapObject.id,
+					name:soldierName,
+					level:playerKeepleLevel
+				}
+				monsters.push(monster)
 			}
-			monsters.push(monster)
-		}
+		})();
 	}
 	allianceDoc.monsters = monsters
 }
@@ -2428,9 +2434,11 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
  * @returns {{dragonForFight: {type: *, level: *, strength: *, vitality: *, maxHp: number, totalHp: number, currentHp: number, isWin: boolean}, soldiersForFight: Array}}
  */
 Utils.createAllianceMonsterForFight = function(allianceDoc, monster){
-	var monsterConfig = AllianceInitData.monster[monster.level]
+	var monsterConfig = AllianceInitData.monsters[monster.level]
 	var dragonConfigArray = monsterConfig.dragon.split('_');
-	var soldierConfigArray = monsterConfig.soldiers.split('_');
+	var soldierConfigArray = _.find(monsterConfig.soldiers.split(';'), function(configString){
+				return configString.indexOf(monster.name) == 0;
+		}).split('_');
 	var dragon = {
 		type:dragonConfigArray[0],
 		star:parseInt(dragonConfigArray[1]),
@@ -4125,7 +4133,7 @@ Utils.isOnLineTimePointExist = function(timePoint){
  * @returns {*}
  */
 Utils.getMonsterRewards = function(monsterLevel){
-	var rewardStrings = AllianceInitData.monster[monsterLevel].rewards.split(',');
+	var rewardStrings = AllianceInitData.monsters[monsterLevel].rewards.split(',');
 	var rewards = [];
 	_.each(rewardStrings, function(rewardString){
 		(function(){

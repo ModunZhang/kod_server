@@ -2233,7 +2233,7 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 		})
 		return Math.ceil(totalLevel / allianceMembers.length)
 	})();
-	var monsterConfig = AllianceInitData.buildingName['monster'];
+	var buildingConfig = AllianceInitData.buildingName['monster'];
 	var map = MapUtils.buildMap(allianceDoc.mapObjects);
 	var mapObjects = allianceDoc.mapObjects;
 	for(var i = 0; i < monsterCount; i ++){
@@ -2241,14 +2241,18 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 			var memberIndex = Math.floor(i / monstersPerPlayer);
 			var memberObject = allianceMembers[memberIndex]
 			var monsterLevel = _.isObject(memberObject) ? memberObject.keepLevel : avgKeepLevel
-			var width = monsterConfig.width
-			var height = monsterConfig.height
+			var width = buildingConfig.width
+			var height = buildingConfig.height
 			var rect = MapUtils.getRect(map, width, height)
+			var monsterConfig = AllianceInitData.monsters[monsterLevel];
+			var soldiersConfigStrings = monsterConfig.soldiers.split(';');
+			var soldiersConfigString = _.sample(soldiersConfigStrings);
+			var soldierName = soldiersConfigString.split(':')[0];
 			if(_.isObject(rect)){
-				var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, monsterConfig.name)
+				var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, buildingConfig.name)
 				var monster = {
 					id:monsterMapObject.id,
-					name:monsterMapObject.name,
+					name:soldierName,
 					level:monsterLevel
 				}
 				allianceDoc.monsters.push(monster)

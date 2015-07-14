@@ -28,7 +28,7 @@ GameDatas.AllianceInitData.shrineStage = require("./AllianceInitData_shrineStage
 GameDatas.AllianceInitData.buildingName = require("./AllianceInitData_buildingName.js")
 GameDatas.AllianceInitData.buildings = require("./AllianceInitData_buildings.js")
 GameDatas.AllianceInitData.fightRewards = require("./AllianceInitData_fightRewards.js")
-GameDatas.AllianceInitData.monster = require("./AllianceInitData_monster.js")
+GameDatas.AllianceInitData.monsters = require("./AllianceInitData_monsters.js")
 
 GameDatas.AllianceVillage = {}
 GameDatas.AllianceVillage.woodVillage = require("./AllianceVillage_woodVillage.js")
