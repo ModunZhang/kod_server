@@ -1226,7 +1226,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackSoldiers = createSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
 				attackWoundedSoldiers = createWoundedSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
 				attackPlayerRewards = attackMonsterReport.attackPlayerData.rewards
-				attackDragon.hp -= attackDragonForFight.totalHp - attackDragonForFight.currentHp
+				attackDragon.hp -= defenceDragonFightData.attackDragonAfterFight.totalHp - defenceDragonFightData.attackDragonAfterFight.currentHp
 				if(attackDragon.hp <= 0){
 					deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
 					attackPlayerDoc.dragonDeathEvents.push(deathEvent)
