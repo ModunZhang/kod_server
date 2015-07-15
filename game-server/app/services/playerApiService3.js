@@ -551,7 +551,7 @@ pro.getSellItems = function(playerId, type, name, callback){
 	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		return self.Deal.find({
-			"playerId":{$ne:playerDoc._id},
+			//"playerId":{$ne:playerDoc._id},
 			"serverId":playerDoc.serverId,
 			"itemData.type":type, "itemData.name":name
 		}).sort({
@@ -591,7 +591,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 		if(!_.isObject(doc_2)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
 		itemDoc = doc_2
 		if(!_.isEqual(itemDoc.serverId, playerDoc.serverId)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
-
+		if(_.isEqual(itemDoc.playerId, playerDoc._id)) return Promise.reject(ErrorUtils.canNotBuyYourOwnSellItem(playerId, itemId));
 		DataUtils.refreshPlayerResources(playerDoc)
 		var type = itemDoc.itemData.type
 		var count = itemDoc.itemData.count
