@@ -1064,7 +1064,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							newRewards = [{
 								type:"resources",
 								name:resourceName,
-								count:eventData.collectTotal
+								count:eventData.collectTotal > resourceCollected ? resourceCollected : eventData.collectTotal
 							}]
 							LogicUtils.mergeRewards(newVillageEvent.playerData.rewards, newRewards)
 							marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, newVillageEvent.playerData.dragon, newVillageEvent.playerData.soldiers, newVillageEvent.playerData.woundedSoldiers, targetAllianceDoc, event.defenceVillageData, newVillageEvent.playerData.rewards)
@@ -1075,7 +1075,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
 							pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 
-							village.resource -= eventData.collectTotal
+							village.resource -= eventData.collectTotal > resourceCollected ? resourceCollected : eventData.collectTotal;
 							targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 							if(_.isEqual(attackAllianceDoc, targetAllianceDoc)){
 								defenceEnemyAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
