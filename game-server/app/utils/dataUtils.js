@@ -2874,7 +2874,7 @@ Utils.getPlayerCollectResourceInfo = function(playerDoc, soldierLoadTotal, allia
 	var playerCollectLevel = this.getPlayerCollectLevel(playerDoc, resourceType)
 	var collectPerHour = villageResourceMax * PlayerVillageExp[resourceType][playerCollectLevel].percentPerHour
 	var totalHour = collectTotal / collectPerHour
-	return {collectTime:Math.ceil(totalHour * 60 * 60 * 1000), collectTotal:collectTotal}
+	return {collectTime:Math.ceil(totalHour * 60 * 60 * 1000 / 60 / 3), collectTotal:collectTotal}
 }
 
 /**
@@ -3942,7 +3942,7 @@ Utils.createVillageCreateEvent = function(villageName){
 		id:ShortId.generate(),
 		name:villageName,
 		startTime:Date.now(),
-		finishTime:Date.now() + (this.getAllianceIntInit('villageRefreshMinutes') * 60 * 1000)
+		finishTime:Date.now() + (this.getAllianceIntInit('villageRefreshMinutes') * 60 * 1000 / 60 / 3)
 	}
 	return event
 }
