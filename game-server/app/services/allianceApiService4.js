@@ -74,9 +74,9 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 	}).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId))
 		targetPlayerDoc = doc
-		if(DataUtils.isAlliancePlayerBeHelpedTroopsReachMax(allianceDoc, targetPlayerDoc)){
-			return Promise.reject(ErrorUtils.targetPlayersHelpDefenceTroopsCountReachMax(playerId, targetPlayerId, allianceDoc._id))
-		}
+		//if(DataUtils.isAlliancePlayerBeHelpedTroopsReachMax(allianceDoc, targetPlayerDoc)){
+		//	return Promise.reject(ErrorUtils.targetPlayersHelpDefenceTroopsCountReachMax(playerId, targetPlayerId, allianceDoc._id))
+		//}
 
 		dragon.status = Consts.DragonStatus.March
 		playerData.push(["dragons." + dragon.type + ".hp", dragon.hp])
