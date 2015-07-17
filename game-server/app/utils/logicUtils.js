@@ -1452,7 +1452,29 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 	defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
 	defenceAllianceDoc.basicInfo.statusStartTime = now
 	defenceAllianceDoc.basicInfo.statusFinishTime = prepareTime
-	defenceAllianceDoc.allianceFight = attackAllianceDoc.allianceFight
+	defenceAllianceDoc.allianceFight = {
+		mergeStyle:mergeStyle,
+		attackAllianceId:attackAllianceDoc._id,
+		defenceAllianceId:defenceAllianceDoc._id,
+		attackPlayerKills:[],
+		attackAllianceCountData:{
+			kill:0,
+			routCount:0,
+			strikeCount:0,
+			strikeSuccessCount:0,
+			attackCount:0,
+			attackSuccessCount:0
+		},
+		defencePlayerKills:[],
+		defenceAllianceCountData:{
+			kill:0,
+			routCount:0,
+			strikeCount:0,
+			strikeSuccessCount:0,
+			attackCount:0,
+			attackSuccessCount:0
+		}
+	}
 }
 
 /**
