@@ -2219,7 +2219,7 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 	var minMonsterCount = DataUtils.getAllianceIntInit('minMonsterCount')
 	var monstersPerPlayer = DataUtils.getAllianceIntInit('monstersPerPlayer')
 	var allianceMembers = allianceDoc.members;
-	var monsterCount =  (function(){
+	var monsterCount = (function(){
 		var count = allianceMembers.length * monstersPerPlayer
 		return count > minMonsterCount ? count : minMonsterCount
 	})();
@@ -2238,7 +2238,7 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 	var buildingConfig = AllianceInitData.buildingName['monster'];
 	var map = MapUtils.buildMap(allianceDoc.mapObjects);
 	var mapObjects = allianceDoc.mapObjects;
-	for(var i = 0; i < monsterCount; i ++){
+	for(var i = 0; i < monsterCount; i++){
 		(function(){
 			var memberIndex = Math.floor(i / monstersPerPlayer);
 			var memberObject = allianceMembers[memberIndex]
@@ -2400,7 +2400,9 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var maxPlayerKill = null
 		var playerKills = attackAllianceDoc.allianceFight.attackPlayerKills.concat(attackAllianceDoc.allianceFight.defencePlayerKills)
 		_.each(playerKills, function(playerKill){
-			if(maxPlayerKill == null || maxPlayerKill.kill < playerKill.kill) maxPlayerKill = playerKill
+			(function(){
+				if(maxPlayerKill == null || maxPlayerKill.kill < playerKill.kill) maxPlayerKill = playerKill
+			})();
 		})
 		return _.isObject(maxPlayerKill) ? maxPlayerKill : null
 	})();
@@ -2427,41 +2429,51 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			})
 		}
 		_.each(attackAllianceDoc.villageEvents, function(villageEvent){
-			if(!_.isEqual(villageEvent.villageData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(villageEvent.playerData.id, "villageEvents", villageEvent)
-			}
+			(function(){
+				if(!_.isEqual(villageEvent.villageData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(villageEvent.playerData.id, "villageEvents", villageEvent)
+				}
+			})();
 		})
 		_.each(attackAllianceDoc.attackMarchEvents, function(marchEvent){
-			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
-				pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
-			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
-			}else if(_.isEqual(Consts.MarchType.Monster, marchEvent.marchType) && !_.isEqual(marchEvent.defenceMonsterData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
-			}
+			(function(){
+				if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
+					pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
+				}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
+				}else if(_.isEqual(Consts.MarchType.Monster, marchEvent.marchType) && !_.isEqual(marchEvent.defenceMonsterData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
+				}
+			})();
 		})
 		_.each(attackAllianceDoc.attackMarchReturnEvents, function(marchEvent){
-			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
-				pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
-			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
-			}else if(_.isEqual(Consts.MarchType.Monster, marchEvent.marchType) && !_.isEqual(marchEvent.defenceMonsterData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
-			}
+			(function(){
+				if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
+					pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
+				}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
+				}else if(_.isEqual(Consts.MarchType.Monster, marchEvent.marchType) && !_.isEqual(marchEvent.defenceMonsterData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
+				}
+			})();
 		})
 		_.each(attackAllianceDoc.strikeMarchEvents, function(marchEvent){
-			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
-				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
-			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
-			}
+			(function(){
+				if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
+					pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
+				}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
+				}
+			})();
 		})
 		_.each(attackAllianceDoc.strikeMarchReturnEvents, function(marchEvent){
-			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
-				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
-			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
-			}
+			(function(){
+				if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
+					pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
+				}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
+				}
+			})();
 		})
 	}
 	var resolveVillageEvent = function(attackAllianceDoc, attackAllianceData, defenceAllianceDoc, defenceAllianceData, attackPlayerDoc, attackPlayerData, villageEvent){
@@ -2481,9 +2493,11 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		DataUtils.refreshPlayerResources(attackPlayerDoc)
 		attackPlayerData.push(["resources." + attackPlayerDoc.resources])
 		_.each(originalRewards, function(reward){
-			attackPlayerDoc[reward.type][reward.name] += reward.count
-			if(!_.isEqual(reward.type, 'resources'))
-				attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
+			(function(){
+				attackPlayerDoc[reward.type][reward.name] += reward.count
+				if(!_.isEqual(reward.type, 'resources'))
+					attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
+			})();
 		})
 
 		var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
@@ -2516,8 +2530,10 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 
 		if(!_.isObject(attackPlayerData.soldiers)) attackPlayerData.soldiers = {}
 		_.each(marchEvent.attackPlayerData.soldiers, function(soldier){
-			attackPlayerDoc.soldiers[soldier.name] += soldier.count
-			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
+			(function(){
+				attackPlayerDoc.soldiers[soldier.name] += soldier.count
+				attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
+			})();
 		})
 	}
 	var resolveAttackMarchReturnEvent = function(attackAllianceDoc, attackAllianceData, attackPlayerDoc, attackPlayerData, marchReturnEvent){
@@ -2534,9 +2550,11 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		DataUtils.addPlayerWoundedSoldiers(attackPlayerDoc, attackPlayerData, marchReturnEvent.attackPlayerData.woundedSoldiers)
 
 		_.each(marchReturnEvent.attackPlayerData.rewards, function(reward){
-			attackPlayerDoc[reward.type][reward.name] += reward.count
-			if(!_.isEqual(reward.type, 'resources'))
-				attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
+			(function(){
+				attackPlayerDoc[reward.type][reward.name] += reward.count
+				if(!_.isEqual(reward.type, 'resources'))
+					attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]]);
+			})();
 		})
 	}
 	var resolveStrikeMarchEvent = function(attackAllianceDoc, attackAllianceData, attackPlayerDoc, attackPlayerData, marchEvent){
@@ -2560,9 +2578,11 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		attackPlayerData.push(["dragons." + attackDragon.type + ".status", attackDragon.status])
 
 		_.each(marchReturnEvent.attackPlayerData.rewards, function(reward){
-			attackPlayerDoc[reward.type][reward.name] += reward.count
-			if(!_.isEqual(reward.type, 'resources'))
-				attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
+			(function(){
+				attackPlayerDoc[reward.type][reward.name] += reward.count
+				if(!_.isEqual(reward.type, 'resources'))
+					attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]]);
+			})();
 		})
 	}
 
@@ -2572,7 +2592,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	var releasePlayerDataAsync = function(playerId){
 		var playerDoc = null
 		var playerData = []
-		var funcs = []
+		var eventFuncs = []
 		var events = null
 		return self.cacheService.findPlayerAsync(playerId).then(function(doc){
 			playerDoc = doc
@@ -2590,13 +2610,13 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				}else if(_.isEqual(event.eventType, "strikeMarchReturnEvents")){
 					resolveStrikeMarchReturnEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
 				}
-				funcs.push(self.timeEventService.removeAllianceTimeEventAsync(event.attackAllianceDoc, event.eventType, event.eventData.id))
+				funcs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, event.attackAllianceDoc, event.eventType, event.eventData.id]);
 			})
 			DataUtils.refreshPlayerResources(playerDoc)
 			playerData.push(['resources', playerDoc.resources])
 			return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
 		}).then(function(){
-			return Promise.all(funcs)
+			return LogicUtils.excuteAll(eventFuncs);
 		}).then(function(){
 			return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 		}).catch(function(e){
@@ -2660,7 +2680,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var attackAllianceRoutCount = attackAllianceDoc.allianceFight.attackAllianceCountData.routCount
 		var defenceAllianceRoutCount = attackAllianceDoc.allianceFight.defenceAllianceCountData.routCount
 		var allianceFightRoutResult = attackAllianceRoutCount - defenceAllianceRoutCount
-		var attackAllianceHonourGetPercent = _.isEqual(allianceFightResult, Consts.FightResult.AttackWin) ? 0.7 : 0.3 + (0.01 * allianceFightRoutResult)
+		var attackAllianceHonourGetPercent = (_.isEqual(allianceFightResult, Consts.FightResult.AttackWin) ? 0.7 : 0.3) + (0.01 * allianceFightRoutResult)
 		if(attackAllianceHonourGetPercent > 1) attackAllianceHonourGetPercent = 1
 		else if(attackAllianceHonourGetPercent < 0) attackAllianceHonourGetPercent = 0
 		var attackAllianceHonourGet = Math.floor(allianceFightHonourTotal * attackAllianceHonourGetPercent)
@@ -2723,14 +2743,16 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		attackAllianceDoc.allianceFight = null
 		attackAllianceData.push(["allianceFight", null])
 		_.each(attackAllianceDoc.members, function(member){
-			if(member.isProtected){
-				member.isProtected = false
-				attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
-			}
-			if(member.lastBeAttackedTime > 0){
-				member.lastBeAttackedTime = 0
-				attackAllianceData.push(['members.' + attackAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
-			}
+			(function(){
+				if(member.isProtected){
+					member.isProtected = false
+					attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
+				}
+				if(member.lastBeAttackedTime > 0){
+					member.lastBeAttackedTime = 0
+					attackAllianceData.push(['members.' + attackAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
+				}
+			})();
 		})
 
 		defenceAllianceDoc.basicInfo.honour += defenceAllianceHonourGet
@@ -2745,14 +2767,16 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		defenceAllianceDoc.allianceFight = null
 		defenceAllianceData.push(["allianceFight", null])
 		_.each(defenceAllianceDoc.members, function(member){
-			if(member.isProtected){
-				member.isProtected = false
-				defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
-			}
-			if(member.lastBeAttackedTime > 0){
-				member.lastBeAttackedTime = 0
-				defenceAllianceData.push(['members.' + defenceAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
-			}
+			(function(){
+				if(member.isProtected){
+					member.isProtected = false
+					defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
+				}
+				if(member.lastBeAttackedTime > 0){
+					member.lastBeAttackedTime = 0
+					defenceAllianceData.push(['members.' + defenceAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
+				}
+			})();
 		})
 
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime - Date.now()])
