@@ -2599,18 +2599,20 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			DataUtils.refreshPlayerResources(playerDoc)
 			events = playerIds[playerDoc._id]
 			_.each(events, function(event){
-				if(_.isEqual(event.eventType, "villageEvents")){
-					resolveVillageEvent(event.attackAllianceDoc, event.attackAllianceData, event.defenceAllianceDoc, event.defenceAllianceData, playerDoc, playerData, event.eventData)
-				}else if(_.isEqual(event.eventType, "attackMarchEvents")){
-					resolveAttackMarchEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
-				}else if(_.isEqual(event.eventType, "attackMarchReturnEvents")){
-					resolveAttackMarchReturnEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
-				}else if(_.isEqual(event.eventType, "strikeMarchEvents")){
-					resolveStrikeMarchEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
-				}else if(_.isEqual(event.eventType, "strikeMarchReturnEvents")){
-					resolveStrikeMarchReturnEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
-				}
-				funcs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, event.attackAllianceDoc, event.eventType, event.eventData.id]);
+				(function(){
+					if(_.isEqual(event.eventType, "villageEvents")){
+						resolveVillageEvent(event.attackAllianceDoc, event.attackAllianceData, event.defenceAllianceDoc, event.defenceAllianceData, playerDoc, playerData, event.eventData)
+					}else if(_.isEqual(event.eventType, "attackMarchEvents")){
+						resolveAttackMarchEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
+					}else if(_.isEqual(event.eventType, "attackMarchReturnEvents")){
+						resolveAttackMarchReturnEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
+					}else if(_.isEqual(event.eventType, "strikeMarchEvents")){
+						resolveStrikeMarchEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
+					}else if(_.isEqual(event.eventType, "strikeMarchReturnEvents")){
+						resolveStrikeMarchReturnEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
+					}
+					funcs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, event.attackAllianceDoc, event.eventType, event.eventData.id]);
+				})();
 			})
 			DataUtils.refreshPlayerResources(playerDoc)
 			playerData.push(['resources', playerDoc.resources])
