@@ -2611,7 +2611,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					}else if(_.isEqual(event.eventType, "strikeMarchReturnEvents")){
 						resolveStrikeMarchReturnEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
 					}
-					funcs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, event.attackAllianceDoc, event.eventType, event.eventData.id]);
+					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, event.attackAllianceDoc, event.eventType, event.eventData.id]);
 				})();
 			})
 			DataUtils.refreshPlayerResources(playerDoc)
