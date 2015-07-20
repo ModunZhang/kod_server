@@ -1958,21 +1958,8 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			}
 
 			var report = ReportUtils.createAttackShrineReport(allianceDoc, event.stageName, event.playerTroops, playerAvgPower, fightDatas, playerTroopsForFight.length > 0)
-
-
-			var params = DataUtils.getAllianceShrineStageResultDatas(allianceDoc.basicInfo.terrain, event.stageName, playerTroopsForFight.length > 0, fightDatas)
-			var playerDatas = LogicUtils.fixAllianceShrineStagePlayerData(event.playerTroops, params.playerDatas)
-			var fightStar = params.fightStar
-			var shrineReport = {
-				id:ShortId.generate(),
-				stageName:event.stageName,
-				star:fightStar,
-				time:Date.now(),
-				playerCount:event.playerTroops.length,
-				playerAvgPower:playerAvgPower,
-				playerDatas:playerDatas,
-				fightDatas:fightDatas
-			}
+			var shrineReport = report.shrineReport;
+			var fightStar = report.fightStar;
 			if(allianceDoc.shrineReports.length >= Define.AllianceShrineReportsMaxSize){
 				var willRemovedshrineReport = allianceDoc.shrineReports[0]
 				allianceData.push(["shrineReports." + allianceDoc.shrineReports.indexOf(willRemovedshrineReport), null])
@@ -1980,12 +1967,8 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			}
 			allianceDoc.shrineReports.push(shrineReport)
 			allianceData.push(["shrineReports." + allianceDoc.shrineReports.indexOf(shrineReport), shrineReport])
-			if(fightStar > 0){
-				var honour = DataUtils.getAllianceShrineStageFightHonour(event.stageName, fightStar)
-				allianceDoc.basicInfo.honour += honour
-				allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
-			}
-
+			allianceDoc.basicInfo.honour += report.allianceHonourGet;
+			allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 			var stageData = LogicUtils.getAllianceShrineStageData(allianceDoc, event.stageName)
 			if(!_.isObject(stageData)){
 				stageData = {
@@ -1998,25 +1981,15 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 				stageData.maxStar = fightStar
 				allianceData.push(["shrineDatas." + allianceDoc.shrineDatas.indexOf(stageData) + ".maxStar", stageData.maxStar])
 			}
-			var getLeftSoldiers = function(soldiers, damagedSoldiers){
-				var leftSoldiers = []
-				_.each(soldiers, function(soldier){
-					var damagedSoldier = _.find(damagedSoldiers, function(damagedSoldier){
-						return _.isEqual(soldier.name, damagedSoldier.name)
-					})
-					if(_.isObject(damagedSoldier)) soldier.count -= damagedSoldier.count
-					if(soldier.count > 0) leftSoldiers.push(soldier)
-				})
-				return leftSoldiers
-			}
 
 			_.each(event.playerTroops, function(playerTroop){
-				var playerId = playerTroop.id
-				var playerDoc = playerDocs[playerId]
-				var woundedSoldiers = _.isObject(params.woundedSoldiers[playerId]) ? params.woundedSoldiers[playerId] : []
-				var leftSoldiers = _.isObject(params.damagedSoldiers[playerId]) ? getLeftSoldiers(playerTroop.soldiers, params.damagedSoldiers[playerId]) : playerTroop.soldiers
-				var rewards = _.isObject(params.playerRewards[playerId]) ? params.playerRewards[playerId] : []
-				var kill = _.isNumber(params.playerKills[playerId]) ? params.playerKills[playerId] : 0
+				var playerId = playerTroop.id;
+				var playerDoc = playerTroop.playerDoc;
+				var playerReport = report.playerFullReports[playerId];
+				var soldiers = report.playersSoldiersAndWoundedSoldiers[playerId].soldiers;
+				var woundedSoldiers = report.playersSoldiersAndWoundedSoldiers[playerId].woundedSoldiers;
+				var rewards = report.playerRewards[playerId];
+				var kill = report.playerKills[playerId];
 				var dragon = playerDoc.dragons[playerTroop.dragon.type]
 				var dragonHpDecreased = _.isNumber(params.playerDragonHps[playerId]) ? params.playerDragonHps[playerId] : 0
 				var dragonExpAdd = DataUtils.getPlayerDragonExpAdd(playerDoc, kill)
