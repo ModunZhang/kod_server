@@ -238,9 +238,9 @@ special["moveTheCity"] = {
 	effect:"NONE",
 	order:25,
 	isSell:true,
-	price:500,
-	sellPriceInAlliance:25000,
-	buyPriceInAlliance:25000,
+	price:300,
+	sellPriceInAlliance:15000,
+	buyPriceInAlliance:15000,
 	isAdvancedItem:true
 }
 special["dragonExp_1"] = {

@@ -13,11 +13,11 @@ stringInit["empireRiseDailyTaskRewards"] = {
 }
 stringInit["conquerorDailyTaskRewards"] = {
 	type:"conquerorDailyTaskRewards",
-	value:"resource:coinClass_4"
+	value:"resource:coinClass_4:1"
 }
 stringInit["brotherClubDailyTaskRewards"] = {
 	type:"brotherClubDailyTaskRewards",
-	value:"resource:coinClass_4"
+	value:"resource:coinClass_4:1"
 }
 stringInit["growUpDailyTaskRewards"] = {
 	type:"growUpDailyTaskRewards",

@@ -264,6 +264,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
 				attackAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 				defenceEnemyAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
 				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
 				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, null])
@@ -1064,18 +1065,18 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							newRewards = [{
 								type:"resources",
 								name:resourceName,
-								count:eventData.collectTotal
+								count:eventData.collectTotal > resourceCollected ? resourceCollected : eventData.collectTotal
 							}]
 							LogicUtils.mergeRewards(newVillageEvent.playerData.rewards, newRewards)
 							marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, newVillageEvent.playerData.dragon, newVillageEvent.playerData.soldiers, newVillageEvent.playerData.woundedSoldiers, targetAllianceDoc, event.defenceVillageData, newVillageEvent.playerData.rewards)
 							attackAllianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
-							attackAllianceData.push(["attackMarchReturnEvents.", attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
-							defenceEnemyAllianceData.push(["attackMarchReturnEvents.", attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+							attackAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+							defenceEnemyAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 							eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 							collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
 							pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 
-							village.resource -= eventData.collectTotal
+							village.resource -= eventData.collectTotal > resourceCollected ? resourceCollected : eventData.collectTotal;
 							targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 							if(_.isEqual(attackAllianceDoc, targetAllianceDoc)){
 								defenceEnemyAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
@@ -1226,7 +1227,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackSoldiers = createSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
 				attackWoundedSoldiers = createWoundedSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
 				attackPlayerRewards = attackMonsterReport.attackPlayerData.rewards
-				attackDragon.hp -= attackDragonForFight.totalHp - attackDragonForFight.currentHp
+				attackDragon.hp -= defenceDragonFightData.attackDragonAfterFight.totalHp - defenceDragonFightData.attackDragonAfterFight.currentHp
 				if(attackDragon.hp <= 0){
 					deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
 					attackPlayerDoc.dragonDeathEvents.push(deathEvent)
@@ -1246,21 +1247,22 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
 				if(_.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
 					targetAllianceData.push(['monsters.' + targetAllianceDoc.monsters.indexOf(defenceMonster), null])
-					LogicUtils.removeItemInArray(targetAllianceDoc.monsters, defenceMonster)
-					var monsterMapObject = _.find(targetAllianceDoc.mapObjects, function(mapObject){
+					var defenceMonsterMapObject = _.find(targetAllianceDoc.mapObjects, function(mapObject){
 						return _.isEqual(mapObject.id, defenceMonster.id);
 					})
-					targetAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(monsterMapObject), null])
-					LogicUtils.removeItemInArray(targetAllianceDoc.mapObjects, monsterMapObject)
+					targetAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(defenceMonsterMapObject), null])
 					if(_.isEqual(attackAllianceDoc, targetAllianceDoc)){
 						defenceEnemyAllianceData.push(['monsters.' + targetAllianceDoc.monsters.indexOf(defenceMonster), null])
-						defenceEnemyAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(monsterMapObject), null])
+						defenceEnemyAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(defenceMonsterMapObject), null])
 					}else{
 						attackEnemyAllianceData.push(['monsters.' + targetAllianceDoc.monsters.indexOf(defenceMonster), null])
-						attackEnemyAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(monsterMapObject), null])
+						attackEnemyAllianceData.push(['mapObjects.' + targetAllianceDoc.mapObjects.indexOf(defenceMonsterMapObject), null])
+						pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc._id, defenceAllianceData]);
+						LogicUtils.pushDataToEnemyAlliance(defenceAllianceDoc, attackEnemyAllianceData, pushFuncs, self.pushService)
 					}
+					LogicUtils.removeItemInArray(targetAllianceDoc.monsters, defenceMonster)
+					LogicUtils.removeItemInArray(targetAllianceDoc.mapObjects, defenceMonsterMapObject)
 				}
-
 				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
 				if(_.isObject(defenceAllianceDoc)){
 					updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
@@ -2140,7 +2142,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 				attackEnemyAllianceData.push(["mapObjects." + defenceAllianceDoc.mapObjects.indexOf(villageMapObject), null])
 			}
 			LogicUtils.removeItemInArray(defenceAllianceDoc.mapObjects, villageMapObject)
-			var villageCreateEvent = DataUtils.createVillageCreateEvent()
+			var villageCreateEvent = DataUtils.createVillageCreateEvent(village.name);
 			defenceAllianceDoc.villageCreateEvents.push(villageCreateEvent)
 			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "villageCreateEvents", villageCreateEvent.id, villageCreateEvent.finishTime - Date.now()])
 		}else{
@@ -2195,7 +2197,7 @@ pro.onVillageCreateEvents = function(allianceDoc, event, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	LogicUtils.removeItemInArray(allianceDoc.villageCreateEvents, event)
-	DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, 1)
+	DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, event.name, 1);
 	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 	LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
@@ -2233,7 +2235,7 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 		})
 		return Math.ceil(totalLevel / allianceMembers.length)
 	})();
-	var monsterConfig = AllianceInitData.buildingName['monster'];
+	var buildingConfig = AllianceInitData.buildingName['monster'];
 	var map = MapUtils.buildMap(allianceDoc.mapObjects);
 	var mapObjects = allianceDoc.mapObjects;
 	for(var i = 0; i < monsterCount; i++){
@@ -2241,14 +2243,18 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 			var memberIndex = Math.floor(i / monstersPerPlayer);
 			var memberObject = allianceMembers[memberIndex]
 			var monsterLevel = _.isObject(memberObject) ? memberObject.keepLevel : avgKeepLevel
-			var width = monsterConfig.width
-			var height = monsterConfig.height
+			var width = buildingConfig.width
+			var height = buildingConfig.height
 			var rect = MapUtils.getRect(map, width, height)
+			var monsterConfig = AllianceInitData.monsters[monsterLevel];
+			var soldiersConfigStrings = monsterConfig.soldiers.split(';');
+			var soldiersConfigString = _.sample(soldiersConfigStrings);
+			var soldierName = soldiersConfigString.split(':')[0];
 			if(_.isObject(rect)){
-				var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, monsterConfig.name)
+				var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, buildingConfig.name)
 				var monster = {
 					id:monsterMapObject.id,
-					name:monsterMapObject.name,
+					name:soldierName,
 					level:monsterLevel
 				}
 				allianceDoc.monsters.push(monster)
@@ -2394,7 +2400,9 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var maxPlayerKill = null
 		var playerKills = attackAllianceDoc.allianceFight.attackPlayerKills.concat(attackAllianceDoc.allianceFight.defencePlayerKills)
 		_.each(playerKills, function(playerKill){
-			if(maxPlayerKill == null || maxPlayerKill.kill < playerKill.kill) maxPlayerKill = playerKill
+			(function(){
+				if(maxPlayerKill == null || maxPlayerKill.kill < playerKill.kill) maxPlayerKill = playerKill
+			})();
 		})
 		return _.isObject(maxPlayerKill) ? maxPlayerKill : null
 	})();
@@ -2421,41 +2429,51 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			})
 		}
 		_.each(attackAllianceDoc.villageEvents, function(villageEvent){
-			if(!_.isEqual(villageEvent.villageData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(villageEvent.playerData.id, "villageEvents", villageEvent)
-			}
+			(function(){
+				if(!_.isEqual(villageEvent.villageData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(villageEvent.playerData.id, "villageEvents", villageEvent)
+				}
+			})();
 		})
 		_.each(attackAllianceDoc.attackMarchEvents, function(marchEvent){
-			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
-				pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
-			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
-			}else if(_.isEqual(Consts.MarchType.Monster, marchEvent.marchType) && !_.isEqual(marchEvent.defenceMonsterData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
-			}
+			(function(){
+				if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
+					pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
+				}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
+				}else if(_.isEqual(Consts.MarchType.Monster, marchEvent.marchType) && !_.isEqual(marchEvent.defenceMonsterData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
+				}
+			})();
 		})
 		_.each(attackAllianceDoc.attackMarchReturnEvents, function(marchEvent){
-			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
-				pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
-			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
-			}else if(_.isEqual(Consts.MarchType.Monster, marchEvent.marchType) && !_.isEqual(marchEvent.defenceMonsterData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
-			}
+			(function(){
+				if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
+					pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
+				}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
+				}else if(_.isEqual(Consts.MarchType.Monster, marchEvent.marchType) && !_.isEqual(marchEvent.defenceMonsterData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
+				}
+			})();
 		})
 		_.each(attackAllianceDoc.strikeMarchEvents, function(marchEvent){
-			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
-				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
-			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
-			}
+			(function(){
+				if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
+					pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
+				}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
+				}
+			})();
 		})
 		_.each(attackAllianceDoc.strikeMarchReturnEvents, function(marchEvent){
-			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
-				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
-			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
-				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
-			}
+			(function(){
+				if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
+					pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
+				}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+					pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
+				}
+			})();
 		})
 	}
 	var resolveVillageEvent = function(attackAllianceDoc, attackAllianceData, defenceAllianceDoc, defenceAllianceData, attackPlayerDoc, attackPlayerData, villageEvent){
@@ -2475,9 +2493,11 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		DataUtils.refreshPlayerResources(attackPlayerDoc)
 		attackPlayerData.push(["resources." + attackPlayerDoc.resources])
 		_.each(originalRewards, function(reward){
-			attackPlayerDoc[reward.type][reward.name] += reward.count
-			if(!_.isEqual(reward.type, 'resources'))
-				attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
+			(function(){
+				attackPlayerDoc[reward.type][reward.name] += reward.count
+				if(!_.isEqual(reward.type, 'resources'))
+					attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
+			})();
 		})
 
 		var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
@@ -2510,8 +2530,10 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 
 		if(!_.isObject(attackPlayerData.soldiers)) attackPlayerData.soldiers = {}
 		_.each(marchEvent.attackPlayerData.soldiers, function(soldier){
-			attackPlayerDoc.soldiers[soldier.name] += soldier.count
-			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
+			(function(){
+				attackPlayerDoc.soldiers[soldier.name] += soldier.count
+				attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
+			})();
 		})
 	}
 	var resolveAttackMarchReturnEvent = function(attackAllianceDoc, attackAllianceData, attackPlayerDoc, attackPlayerData, marchReturnEvent){
@@ -2528,9 +2550,11 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		DataUtils.addPlayerWoundedSoldiers(attackPlayerDoc, attackPlayerData, marchReturnEvent.attackPlayerData.woundedSoldiers)
 
 		_.each(marchReturnEvent.attackPlayerData.rewards, function(reward){
-			attackPlayerDoc[reward.type][reward.name] += reward.count
-			if(!_.isEqual(reward.type, 'resources'))
-				attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
+			(function(){
+				attackPlayerDoc[reward.type][reward.name] += reward.count
+				if(!_.isEqual(reward.type, 'resources'))
+					attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]]);
+			})();
 		})
 	}
 	var resolveStrikeMarchEvent = function(attackAllianceDoc, attackAllianceData, attackPlayerDoc, attackPlayerData, marchEvent){
@@ -2554,9 +2578,11 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		attackPlayerData.push(["dragons." + attackDragon.type + ".status", attackDragon.status])
 
 		_.each(marchReturnEvent.attackPlayerData.rewards, function(reward){
-			attackPlayerDoc[reward.type][reward.name] += reward.count
-			if(!_.isEqual(reward.type, 'resources'))
-				attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]])
+			(function(){
+				attackPlayerDoc[reward.type][reward.name] += reward.count
+				if(!_.isEqual(reward.type, 'resources'))
+					attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]]);
+			})();
 		})
 	}
 
@@ -2566,31 +2592,33 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	var releasePlayerDataAsync = function(playerId){
 		var playerDoc = null
 		var playerData = []
-		var funcs = []
+		var eventFuncs = []
 		var events = null
 		return self.cacheService.findPlayerAsync(playerId).then(function(doc){
 			playerDoc = doc
 			DataUtils.refreshPlayerResources(playerDoc)
 			events = playerIds[playerDoc._id]
 			_.each(events, function(event){
-				if(_.isEqual(event.eventType, "villageEvents")){
-					resolveVillageEvent(event.attackAllianceDoc, event.attackAllianceData, event.defenceAllianceDoc, event.defenceAllianceData, playerDoc, playerData, event.eventData)
-				}else if(_.isEqual(event.eventType, "attackMarchEvents")){
-					resolveAttackMarchEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
-				}else if(_.isEqual(event.eventType, "attackMarchReturnEvents")){
-					resolveAttackMarchReturnEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
-				}else if(_.isEqual(event.eventType, "strikeMarchEvents")){
-					resolveStrikeMarchEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
-				}else if(_.isEqual(event.eventType, "strikeMarchReturnEvents")){
-					resolveStrikeMarchReturnEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
-				}
-				funcs.push(self.timeEventService.removeAllianceTimeEventAsync(event.attackAllianceDoc, event.eventType, event.eventData.id))
+				(function(){
+					if(_.isEqual(event.eventType, "villageEvents")){
+						resolveVillageEvent(event.attackAllianceDoc, event.attackAllianceData, event.defenceAllianceDoc, event.defenceAllianceData, playerDoc, playerData, event.eventData)
+					}else if(_.isEqual(event.eventType, "attackMarchEvents")){
+						resolveAttackMarchEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
+					}else if(_.isEqual(event.eventType, "attackMarchReturnEvents")){
+						resolveAttackMarchReturnEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
+					}else if(_.isEqual(event.eventType, "strikeMarchEvents")){
+						resolveStrikeMarchEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
+					}else if(_.isEqual(event.eventType, "strikeMarchReturnEvents")){
+						resolveStrikeMarchReturnEvent(event.attackAllianceDoc, event.attackAllianceData, playerDoc, playerData, event.eventData)
+					}
+					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, event.attackAllianceDoc, event.eventType, event.eventData.id]);
+				})();
 			})
 			DataUtils.refreshPlayerResources(playerDoc)
 			playerData.push(['resources', playerDoc.resources])
 			return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
 		}).then(function(){
-			return Promise.all(funcs)
+			return LogicUtils.excuteAll(eventFuncs);
 		}).then(function(){
 			return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 		}).catch(function(e){
@@ -2654,7 +2682,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var attackAllianceRoutCount = attackAllianceDoc.allianceFight.attackAllianceCountData.routCount
 		var defenceAllianceRoutCount = attackAllianceDoc.allianceFight.defenceAllianceCountData.routCount
 		var allianceFightRoutResult = attackAllianceRoutCount - defenceAllianceRoutCount
-		var attackAllianceHonourGetPercent = _.isEqual(allianceFightResult, Consts.FightResult.AttackWin) ? 0.7 : 0.3 + (0.01 * allianceFightRoutResult)
+		var attackAllianceHonourGetPercent = (_.isEqual(allianceFightResult, Consts.FightResult.AttackWin) ? 0.7 : 0.3) + (0.01 * allianceFightRoutResult)
 		if(attackAllianceHonourGetPercent > 1) attackAllianceHonourGetPercent = 1
 		else if(attackAllianceHonourGetPercent < 0) attackAllianceHonourGetPercent = 0
 		var attackAllianceHonourGet = Math.floor(allianceFightHonourTotal * attackAllianceHonourGetPercent)
@@ -2717,14 +2745,16 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		attackAllianceDoc.allianceFight = null
 		attackAllianceData.push(["allianceFight", null])
 		_.each(attackAllianceDoc.members, function(member){
-			if(member.isProtected){
-				member.isProtected = false
-				attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
-			}
-			if(member.lastBeAttackedTime > 0){
-				member.lastBeAttackedTime = 0
-				attackAllianceData.push(['members.' + attackAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
-			}
+			(function(){
+				if(member.isProtected){
+					member.isProtected = false
+					attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
+				}
+				if(member.lastBeAttackedTime > 0){
+					member.lastBeAttackedTime = 0
+					attackAllianceData.push(['members.' + attackAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
+				}
+			})();
 		})
 
 		defenceAllianceDoc.basicInfo.honour += defenceAllianceHonourGet
@@ -2739,14 +2769,16 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		defenceAllianceDoc.allianceFight = null
 		defenceAllianceData.push(["allianceFight", null])
 		_.each(defenceAllianceDoc.members, function(member){
-			if(member.isProtected){
-				member.isProtected = false
-				defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
-			}
-			if(member.lastBeAttackedTime > 0){
-				member.lastBeAttackedTime = 0
-				defenceAllianceData.push(['members.' + defenceAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
-			}
+			(function(){
+				if(member.isProtected){
+					member.isProtected = false
+					defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
+				}
+				if(member.lastBeAttackedTime > 0){
+					member.lastBeAttackedTime = 0
+					defenceAllianceData.push(['members.' + defenceAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
+				}
+			})();
 		})
 
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime - Date.now()])

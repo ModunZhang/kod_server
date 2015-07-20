@@ -978,3 +978,8 @@ errors["monsterNotExist"] = {
 	code:694,
 	message:"野怪不存在"
 }
+errors["canNotBuyYourOwnSellItem"] = {
+	key:"canNotBuyYourOwnSellItem",
+	code:695,
+	message:"不能购买自己出售的商品"
+}

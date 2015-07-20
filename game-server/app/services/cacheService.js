@@ -15,6 +15,7 @@ var DataService = function(app){
 	this.app = app
 	this.logService = app.get("logService")
 	this.timeEventService = app.get("timeEventService")
+	this.cacheServerId = app.get('cacheServerId');
 	this.Player = app.get("Player")
 	this.Alliance = app.get("Alliance")
 	this.players = {}
@@ -322,7 +323,7 @@ pro.directFindPlayer = function(id, callback){
 			callback(null, player.doc)
 		}else{
 			var playerDoc = null
-			self.Player.findByIdAsync(id).then(function(doc){
+			self.Player.findOneAsync({_id:id, 'serverId': self.cacheServerId}).then(function(doc){
 				if(_.isObject(doc)){
 					playerDoc = doc.toObject()
 					player = {}
@@ -361,7 +362,7 @@ pro.directFindAlliance = function(id, callback){
 			callback(null, alliance.doc)
 		}else{
 			var allianceDoc = null
-			self.Alliance.findByIdAsync(id).then(function(doc){
+			self.Alliance.findOneAsync({_id:id, 'serverId': self.cacheServerId}).then(function(doc){
 				if(_.isObject(doc)){
 					allianceDoc = doc.toObject()
 					alliance = {}
@@ -399,7 +400,7 @@ pro.findPlayer = function(id, callback){
 			callback(null, player.doc)
 		}else{
 			var playerDoc = null
-			self.Player.findByIdAsync(id).then(function(doc){
+			self.Player.findOneAsync({_id:id, 'serverId': self.cacheServerId}).then(function(doc){
 				if(_.isObject(doc)){
 					playerDoc = doc.toObject()
 					player = {}
@@ -439,7 +440,7 @@ pro.findAlliance = function(id, callback){
 			callback(null, alliance.doc)
 		}else{
 			var allianceDoc = null
-			self.Alliance.findByIdAsync(id).then(function(doc){
+			self.Alliance.findOneAsync({_id:id, 'serverId': self.cacheServerId}).then(function(doc){
 				if(_.isObject(doc)){
 					allianceDoc = doc.toObject()
 					alliance = {}
@@ -636,20 +637,6 @@ pro.timeoutPlayer = function(id, doc, callback){
 			callback()
 		}
 	})
-}
-
-/**
- * 移除玩家缓存
- * @param id
- * @param callback
- */
-pro.removePlayer = function(id, callback){
-	this.logService.onFind('cache.cacheService.removePlayer', {id:id})
-	var player = this.players[id]
-	clearTimeout(player.timeout)
-	delete this.players[id]
-	UnlockPlayer.call(this, id)
-	callback()
 }
 
 /**

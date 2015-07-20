@@ -30,12 +30,12 @@ intInit["activeShrineStageEventMinutes"] = {
 }
 intInit["allianceFightPrepareMinutes"] = {
 	type:"allianceFightPrepareMinutes",
-	value:20,
+	value:15,
 	desc:"联盟战准备期时间"
 }
 intInit["allianceFightTotalFightMinutes"] = {
 	type:"allianceFightTotalFightMinutes",
-	value:60,
+	value:45,
 	desc:"联盟战战争期时间"
 }
 intInit["allianceHelpDefenceTroopsMaxCount"] = {
@@ -95,12 +95,12 @@ intInit["KilledCitizenPerWallHp"] = {
 }
 intInit["villageRefreshMinutes"] = {
 	type:"villageRefreshMinutes",
-	value:240,
+	value:180,
 	desc:"村落采空后多少分钟后刷新"
 }
 intInit["monsterRefreshMinutes"] = {
 	type:"monsterRefreshMinutes",
-	value:5,
+	value:240,
 	desc:"区域地图野怪多少分钟后刷新"
 }
 intInit["minMonsterCount"] = {

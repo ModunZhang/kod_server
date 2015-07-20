@@ -788,6 +788,16 @@ Utils.sellItemAlreadySold = function(playerId, item){
 }
 
 /**
+ * 不能购买自己出售的商品
+ * @param playerId
+ * @param item
+ */
+Utils.canNotBuyYourOwnSellItem = function(playerId, item){
+	var config = Errors.canNotBuyYourOwnSellItem;
+	return CreateError(config, {playerId:playerId, item:item})
+}
+
+/**
  * 科技已达最高等级
  * @param playerId
  * @param techName

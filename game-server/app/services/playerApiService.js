@@ -42,13 +42,6 @@ var LoginPlayer = function(id){
 	return this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
 		if(_.isEmpty(playerDoc)) return Promise.reject(ErrorUtils.playerNotExist(id, id))
-		if(!_.isEqual(playerDoc.serverId, self.app.get("cacheServerId"))){
-			return new Promise(function(resolve, reject){
-				self.cacheService.removePlayerAsync(id).then(function(){
-					reject(ErrorUtils.playerNotInCurrentServer(playerDoc._id, self.app.get("cacheServerId"), playerDoc.serverId))
-				})
-			})
-		}
 		if(!_.isEmpty(playerDoc.allianceId)){
 			if(self.cacheService.isAllianceLocked(playerDoc.allianceId))
 				return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {allianceId:playerDoc.allianceId}));

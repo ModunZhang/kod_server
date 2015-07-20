@@ -132,9 +132,9 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 		if(_.isEqual(Consts.AllianceBuildingNames.OrderHall, buildingName)){
 			var totalCount = DataUtils.getAllianceVillagesTotalCount(allianceDoc)
 			var currentCount = allianceDoc.villages.length + allianceDoc.villageCreateEvents.length
-			DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, totalCount - currentCount)
+			var villageTypeConfig = _.sample(DataUtils.getAllianceVillageTypeConfigs());
+			DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, villageTypeConfig.name, totalCount - currentCount);
 		}
-
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
@@ -178,7 +178,7 @@ pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callbac
 		}
 
 		var villageLevel = allianceDoc.villageLevels[villageType]
-		var upgradeRequired = DataUtils.getAllianceVillageUpgradeRequired(villageType, villageLevel)
+		var upgradeRequired = DataUtils.getAllianceVillageUpgradeRequired(villageType, villageLevel + 1)
 		if(upgradeRequired.honour > allianceDoc.basicInfo.honour) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		if(DataUtils.isAllianceVillageReachMaxLevel(villageType, villageLevel)) return Promise.reject(ErrorUtils.allianceBuildingReachMaxLevel(playerId, allianceDoc._id, villageType))
 		allianceDoc.basicInfo.honour -= upgradeRequired.honour
