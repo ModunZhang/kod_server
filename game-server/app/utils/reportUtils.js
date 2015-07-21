@@ -1512,6 +1512,10 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	var shrineReportFightDatas = [];
 	var playersSoldiersAndWoundedSoldiers = {};
 	var playerDragons = {};
+	var shrine = DataUtils.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.Shrine);
+	var shrineMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, shrine.id);
+	var shrineLocation = shrineMapObject.location;
+	var allianceData = createAllianceData(allianceDoc);
 	_.each(fightDatas, function(fightData){
 		(function(){
 			var shrineReportRoundDatas = []
@@ -1521,16 +1525,12 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 					var playerDoc = roundData.playerDoc;
 					var dragonFightData = roundData.dragonFightData;
 					var soldierFightData = roundData.soldierFightData;
-					if(!_.isObject(playerDatas[playerDoc._id])){
+					if(!_.isObject(playerReports[playerDoc._id])){
 						playerReports[playerDoc._id] = {
 							attackTarget:{
 								stageName:stageName,
-								location:(function(){
-									var building = DataUtils.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.Shrine).location;
-									var mapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, building.id);
-									return mapObject.location;
-								})(),
-								alliance:createAllianceData(allianceDoc),
+								location:shrineLocation,
+								alliance:allianceData,
 								terrain:allianceDoc.basicInfo.terrain,
 								isWin:isWin
 							},
@@ -1666,8 +1666,16 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 			var report = playerReports[playerTroop.id];
 			if(!_.isObject(report)){
 				report = {
-					
-				};
+					attackTarget:{
+						stageName:stageName,
+						location:shrineLocation,
+						alliance:allianceData,
+						terrain:allianceDoc.basicInfo.terrain,
+						isWin:isWin
+					},
+					rewards:[],
+					roundDatas:[]
+				}
 			}
 			var fullReport = {
 				id:ShortId.generate(),
@@ -1704,7 +1712,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 		playerFullReports:playerFullReports,
 		playersSoldiersAndWoundedSoldiers:finalPlayersSoldiersAndWoundedSoldiers,
 		playerKills:playerKills,
-		playerRewards:playerReports,
+		playerRewards:playerRewards,
 		playerDragons:playerDragons
 	}
 }

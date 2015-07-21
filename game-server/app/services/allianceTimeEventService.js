@@ -1958,6 +1958,7 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			}
 
 			var report = ReportUtils.createAttackShrineReport(allianceDoc, event.stageName, event.playerTroops, playerAvgPower, fightDatas, playerTroopsForFight.length > 0)
+			//console.log(NodeUtils.inspect(report, false, null))
 			var shrineReport = report.shrineReport;
 			var fightStar = report.fightStar;
 			if(allianceDoc.shrineReports.length >= Define.AllianceShrineReportsMaxSize){
@@ -1983,39 +1984,42 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 			}
 
 			_.each(event.playerTroops, function(playerTroop){
-				var playerId = playerTroop.id;
-				var playerDoc = playerTroop.playerDoc;
-				var playerReport = report.playerFullReports[playerId];
-				var soldiers = report.playersSoldiersAndWoundedSoldiers[playerId].soldiers;
-				var woundedSoldiers = report.playersSoldiersAndWoundedSoldiers[playerId].woundedSoldiers;
-				var rewards = report.playerRewards[playerId];
-				var kill = report.playerKills[playerId];
-				var dragon = playerDoc.dragons[playerTroop.dragon.type]
-				var dragonHpDecreased = _.isNumber(params.playerDragonHps[playerId]) ? params.playerDragonHps[playerId] : 0
-				var dragonExpAdd = DataUtils.getPlayerDragonExpAdd(playerDoc, kill)
-				var playerData = []
+				(function(){
+					var playerId = playerTroop.id;
+					var playerDoc = playerTroop.playerDoc;
+					var playerReport = report.playerFullReports[playerId];
+					var soldiers = report.playersSoldiersAndWoundedSoldiers[playerId].soldiers;
+					var woundedSoldiers = report.playersSoldiersAndWoundedSoldiers[playerId].woundedSoldiers;
+					var rewards = report.playerRewards[playerId];
+					var kill = report.playerKills[playerId];
+					var dragon = playerDoc.dragons[playerTroop.dragon.type];
+					var dragonHpDecreased = report.playerDragons[playerId].hpDecreased;
+					var dragonExpAdd = report.playerDragons[playerId].expAdd;
+					var playerData = [];
 
-				playerDoc.basicInfo.kill += kill
-				playerData.push(["basicInfo.kill", playerDoc.basicInfo.kill])
-				TaskUtils.finishPlayerKillTaskIfNeed(playerDoc, playerData)
-				dragon.hp -= dragonHpDecreased
-				if(dragon.hp <= 0){
-					var deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, dragon)
-					playerDoc.dragonDeathEvents.push(deathEvent)
-					playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
-					eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
-				}
-				DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, dragonExpAdd)
-				playerData.push(["dragons." + dragon.type + ".hp", dragon.hp])
-				playerData.push(["dragons." + dragon.type + ".hpRefreshTime", dragon.hpRefreshTime])
-				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+					playerDoc.basicInfo.kill += kill
+					playerData.push(["basicInfo.kill", playerDoc.basicInfo.kill])
+					TaskUtils.finishPlayerKillTaskIfNeed(playerDoc, playerData)
+					dragon.hp -= dragonHpDecreased
+					if(dragon.hp <= 0){
+						var deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, dragon)
+						playerDoc.dragonDeathEvents.push(deathEvent)
+						playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
+						eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
+					}
+					DataUtils.addPlayerDragonExp(playerDoc, playerData, dragon, dragonExpAdd)
+					playerData.push(["dragons." + dragon.type + ".hp", dragon.hp])
+					playerData.push(["dragons." + dragon.type + ".hpRefreshTime", dragon.hpRefreshTime])
+					updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, playerDoc._id, playerReport])
 
-				var marchReturnEvent = MarchUtils.createAttackAllianceShrineMarchReturnEvent(allianceDoc, playerDoc, dragon, leftSoldiers, woundedSoldiers, rewards)
-				allianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
-				allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
-				enemyAllianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
-				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
+					var marchReturnEvent = MarchUtils.createAttackAllianceShrineMarchReturnEvent(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, rewards)
+					allianceDoc.attackMarchReturnEvents.push(marchReturnEvent)
+					allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+					enemyAllianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+					eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
+				})();
 			})
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 			LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
