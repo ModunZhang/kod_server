@@ -55,37 +55,37 @@ alliance["HelpDefenceStrikeTitle"] = {
 	key:"HelpDefenceStrikeTitle",
 	cn:"[%s]%s帮你抵御了一次突袭",
 	en:"这是英文[%s]%s帮你抵御了一次突袭",
-	tw:"[%s]%s幫你抵禦了壹次突襲"
+	tw:"[%s]%s幫你抵禦了一次突襲"
 }
 alliance["HelpDefenceStrikeContent"] = {
 	key:"HelpDefenceStrikeContent",
 	cn:"[%s]%s帮你抵御了一次突袭。",
 	en:"这是英文:[%s]%s帮你抵御了一次突袭。",
-	tw:"[%s]%s幫你抵禦了壹次突襲。"
+	tw:"[%s]%s幫你抵禦了一次突襲。"
 }
 alliance["HelpDefenceAttackTitle"] = {
 	key:"HelpDefenceAttackTitle",
 	cn:"[%s]%s帮你抵御了一次进攻",
 	en:"这是英文:[%s]%s帮你抵御了一次进攻",
-	tw:"[%s]%s幫你抵禦了壹次進攻"
+	tw:"[%s]%s幫你抵禦了一次進攻"
 }
 alliance["HelpDefenceAttackContent"] = {
 	key:"HelpDefenceAttackContent",
 	cn:"[%s]%s帮你抵御了一次进攻。",
 	en:"这是英文:[%s]%s帮你抵御了一次进攻。",
-	tw:"[%s]%s幫你抵禦了壹次進攻。"
+	tw:"[%s]%s幫你抵禦了一次進攻。"
 }
 alliance["AttackAllianceMessage"] = {
 	key:"AttackAllianceMessage",
 	cn:"我方联盟发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
 	en:"这是英文:我方联盟刚刚发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
-	tw:"我方聯盟剛剛發起了壹場聯盟會戰，戰鬥將於20分鐘後開始，請做好戰鬥準備！"
+	tw:"我方聯盟剛剛發起了一場聯盟會戰，戰鬥將於20分鐘後開始，請做好戰鬥準備！"
 }
 alliance["AllianceBeAttackedMessage"] = {
 	key:"AllianceBeAttackedMessage",
 	cn:"%s联盟向我方发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
 	en:"这是英文:%s联盟对我方发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
-	tw:"%s聯盟向我方發起了壹場聯盟會戰，戰鬥將於20分鐘後開始，請做好戰鬥準備！"
+	tw:"%s聯盟向我方發起了一場聯盟會戰，戰鬥將於20分鐘後開始，請做好戰鬥準備！"
 }
 alliance["AllianceTitleBeModifyedTitle"] = {
 	key:"AllianceTitleBeModifyedTitle",

@@ -263,7 +263,7 @@
 //		})
 //
 //		it("makeMaterial 同类型的材料正在制造", function(done){
-//			Api.sendChat("buildinglevel 16 2", function(doc){
+//			Api.sendChat("buildinglevel 16 10", function(doc){
 //				doc.code.should.equal(200)
 //				Api.makeMaterial(Consts.MaterialType.BuildingMaterials, false, function(doc){
 //					doc.code.should.equal(200)

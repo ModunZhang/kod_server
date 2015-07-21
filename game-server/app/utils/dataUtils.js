@@ -839,42 +839,25 @@ Utils.createMaterialEvent = function(toolShop, type, finishNow){
 		"trainingFigure", "bowTarget", "saddle", "ironPart"
 	]
 
-	var config = BuildingFunction["toolShop"][toolShop.level]
-	var production = config.production
-	var materialTypeCount = config.productionType
-	var materialTypes = typeConfig[type]
-	materialTypes = CommonUtils.shuffle(materialTypes)
-	var materialCountArray = []
-	for(var i = 1; i <= production; i++){
-		materialCountArray.push(i)
-	}
-	materialCountArray = CommonUtils.shuffle(materialCountArray)
-
-	var materials = []
-	var totalGenerated = 0
-	for(i = 0; i < materialTypeCount; i++){
-		var material = {
-			name:materialTypes[i],
-			count:materialCountArray[i]
-		}
-		materials.push(material)
-		totalGenerated += materialCountArray[i]
-
-		if(production <= totalGenerated){
-			material.count -= totalGenerated - production
-			break
-		}
-
-		if(i == materialTypeCount - 1 && production > totalGenerated){
-			material.count += production - totalGenerated
-		}
+	var config = BuildingFunction["toolShop"][toolShop.level];
+	var production = config.production;
+	var materialTypeCount = config.productionType;
+	var materialTypes = CommonUtils.shuffle(typeConfig[type]);
+	materialTypes.length = materialTypeCount;
+	var materials = {};
+	while(production > 0){
+		var name = _.sample(materialTypes);
+		var count = _.random(1, production);
+		if(!_.isObject(materials[name])) materials[name] = {name:name, count:0};
+		materials[name].count += count;
+		production -= count;
 	}
 
 	var buildTime = _.isEqual(Consts.MaterialType.BuildingMaterials, type) ? config.productBmtime : config.productAmtime
 	var event = {
 		id:ShortId.generate(),
 		type:type,
-		materials:materials,
+		materials:_.values(materials),
 		startTime:Date.now(),
 		finishTime:finishNow ? 0 : (Date.now() + (buildTime * 1000))
 	}
