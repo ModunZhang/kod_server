@@ -226,7 +226,7 @@ var AllianceSchema = new Schema({
 				playerName:{type:String, required:true},
 				playerIcon:{type:Number, required:true},
 				playerKill:{type:Number, reqyired:true},
-				stageTroopNumber:{type:String, required:true},
+				stageTroopNumber:{type:Number, required:true},
 				fightResult:{type:String, required:true}
 			}]
 		}]

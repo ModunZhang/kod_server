@@ -1518,7 +1518,7 @@ var PlayerSchema = new Schema({
 						}]
 					},
 					defenceTroopData:{
-						stageTroopNumber:{type:String, required:true},
+						stageTroopNumber:{type:Number, required:true},
 						dragon:{
 							type:{type:String, required:true},
 							level:{type:Number, required:true},
