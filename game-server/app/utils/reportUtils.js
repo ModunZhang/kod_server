@@ -1679,7 +1679,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 			}
 			var fullReport = {
 				id:ShortId.generate(),
-				type:Consts.PlayerReportType.AttackShine,
+				type:Consts.PlayerReportType.AttackShrine,
 				createTime:Date.now(),
 				isRead:false,
 				isSaved:false,
