@@ -1487,6 +1487,7 @@ var PlayerSchema = new Schema({
 						flag:{type:String, required:true}
 					},
 					terrain:{type:String, required:true},
+					fightStar:{type:Number, required:true},
 					isWin:{type:Boolean, required:true}
 				},
 				rewards:[{

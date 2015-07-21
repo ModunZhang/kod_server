@@ -1671,6 +1671,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 						location:shrineLocation,
 						alliance:allianceData,
 						terrain:allianceDoc.basicInfo.terrain,
+						fightStar:fightStar,
 						isWin:isWin
 					},
 					rewards:[],
