@@ -214,6 +214,24 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		})
 		return soldiers
 	}
+	var updatePlayerKillData = function(allianceDoc, allianceData, key, playerDoc, newlyKill){
+		var playerKillDatas = allianceDoc.allianceFight[key]
+		var playerKillData = _.find(playerKillDatas, function(playerKillData){
+			return _.isEqual(playerKillData.id, playerDoc._id)
+		})
+		if(!_.isObject(playerKillData)){
+			playerKillData = {
+				id:playerDoc._id,
+				name:playerDoc.basicInfo.name,
+				kill:newlyKill
+			}
+			playerKillDatas.push(playerKillData)
+			allianceData.push(["allianceFight." + key + "." + allianceDoc.allianceFight[key].indexOf(playerKillData), playerKillData])
+		}else{
+			playerKillData.kill += newlyKill
+			allianceData.push(["allianceFight." + key + "." + allianceDoc.allianceFight[key].indexOf(playerKillData) + ".kill", playerKillData.kill])
+		}
+	}
 
 	if(_.isEqual(event.marchType, Consts.MarchType.Shrine)){
 		var shrineEvent = LogicUtils.getEventById(attackAllianceDoc.shrineEvents, event.defenceShrineData.shrineEventId)
@@ -370,24 +388,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		var updateWallForFight = function(wallForFight, wallAfterFight){
 			wallForFight.currentHp = wallAfterFight.currentHp
 		}
-		var updatePlayerKillData = function(allianceDoc, allianceData, key, playerDoc, newlyKill){
-			var playerKillDatas = allianceDoc.allianceFight[key]
-			var playerKillData = _.find(playerKillDatas, function(playerKillData){
-				return _.isEqual(playerKillData.id, playerDoc._id)
-			})
-			if(!_.isObject(playerKillData)){
-				playerKillData = {
-					id:playerDoc._id,
-					name:playerDoc.basicInfo.name,
-					kill:newlyKill
-				}
-				playerKillDatas.push(playerKillData)
-				allianceData.push(["allianceFight." + key + "." + allianceDoc.allianceFight[key].indexOf(playerKillData), playerKillData])
-			}else{
-				playerKillData.kill += newlyKill
-				allianceData.push(["allianceFight." + key + "." + allianceDoc.allianceFight[key].indexOf(playerKillData) + ".kill", playerKillData.kill])
-			}
-		}
+
 		var updatePlayerSoldiers = function(playerDoc, playerData, soldiersForFight){
 			var soldiers = []
 			_.each(soldiersForFight, function(soldierForFight){
@@ -1137,6 +1138,35 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							eventFuncs.push([self.timeEventService, self.timeEventService.updateAllianceTimeEventAsync, defenceAllianceDoc, "villageEvents", villageEvent.id, villageEvent.finishTime - Date.now()])
 						}
 					}
+
+					if(_.isEqual(attackAllianceDoc._id, attackAllianceDoc.allianceFight.attackAllianceId)){
+						attackAllianceDoc.allianceFight.attackAllianceCountData.kill += attackPlayerKill
+						attackAllianceData.push(["allianceFight.attackAllianceCountData.kill", attackAllianceDoc.allianceFight.attackAllianceCountData.kill])
+						defenceAllianceDoc.allianceFight.attackAllianceCountData.kill += attackPlayerKill
+						defenceAllianceData.push(["allianceFight.attackAllianceCountData.kill", defenceAllianceDoc.allianceFight.attackAllianceCountData.kill])
+						updatePlayerKillData(attackAllianceDoc, attackAllianceData, "attackPlayerKills", attackPlayerDoc, attackPlayerKill)
+						updatePlayerKillData(defenceAllianceDoc, defenceAllianceData, "attackPlayerKills", attackPlayerDoc, attackPlayerKill)
+						attackAllianceDoc.allianceFight.defenceAllianceCountData.kill += defencePlayerKill
+						attackAllianceData.push(["allianceFight.defenceAllianceCountData.kill", attackAllianceDoc.allianceFight.defenceAllianceCountData.kill])
+						defenceAllianceDoc.allianceFight.defenceAllianceCountData.kill += defencePlayerKill
+						defenceAllianceData.push(["allianceFight.defenceAllianceCountData.kill", defenceAllianceDoc.allianceFight.defenceAllianceCountData.kill])
+						updatePlayerKillData(attackAllianceDoc, attackAllianceData, "defencePlayerKills", defencePlayerDoc, defencePlayerKill)
+						updatePlayerKillData(defenceAllianceDoc, defenceAllianceData, "defencePlayerKills", defencePlayerDoc, defencePlayerKill)
+					}else{
+						attackAllianceDoc.allianceFight.defenceAllianceCountData.kill += attackPlayerKill
+						attackAllianceData.push(["allianceFight.defenceAllianceCountData.kill", attackAllianceDoc.allianceFight.defenceAllianceCountData.kill])
+						defenceAllianceDoc.allianceFight.defenceAllianceCountData.kill += attackPlayerKill
+						defenceAllianceData.push(["allianceFight.defenceAllianceCountData.kill", defenceAllianceDoc.allianceFight.defenceAllianceCountData.kill])
+						updatePlayerKillData(attackAllianceDoc, attackAllianceData, "defencePlayerKills", attackPlayerDoc, attackPlayerKill)
+						updatePlayerKillData(defenceAllianceDoc, defenceAllianceData, "defencePlayerKills", attackPlayerDoc, attackPlayerKill)
+						attackAllianceDoc.allianceFight.attackAllianceCountData.kill += defencePlayerKill
+						attackAllianceData.push(["allianceFight.attackAllianceCountData.kill", attackAllianceDoc.allianceFight.attackAllianceCountData.kill])
+						defenceAllianceDoc.allianceFight.attackAllianceCountData.kill += defencePlayerKill
+						defenceAllianceData.push(["allianceFight.attackAllianceCountData.kill", defenceAllianceDoc.allianceFight.attackAllianceCountData.kill])
+						updatePlayerKillData(attackAllianceDoc, attackAllianceData, "attackPlayerKills", defencePlayerDoc, defencePlayerKill)
+						updatePlayerKillData(defenceAllianceDoc, defenceAllianceData, "attackPlayerKills", defencePlayerDoc, defencePlayerKill)
+					}
+
 					updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
 					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 					updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, defencePlayerDoc._id, defencePlayerDoc])
@@ -1861,13 +1891,6 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 				playerDocs[doc._id] = doc
 				return Promise.resolve()
 			})
-		}
-		var getTotalPower = function(soldiersForFight){
-			var power = 0
-			_.each(soldiersForFight, function(soldierForFight){
-				power += soldierForFight.power * soldierForFight.totalCount
-			})
-			return power
 		}
 		_.each(event.playerTroops, function(playerTroop){
 			funcs.push(findPlayerDoc(playerTroop.id))
