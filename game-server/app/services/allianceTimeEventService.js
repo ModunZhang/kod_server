@@ -1890,9 +1890,9 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 				}
 				playerTroopsForFight.push(playerTroopForFight)
 			})
-			playerTroopsForFight = _.sortBy(playerTroopsForFight, function(playerTroopForFight){
-				return -getTotalPower(playerTroopForFight.soldiersForFight)
-			})
+			//playerTroopsForFight = _.sortBy(playerTroopsForFight, function(playerTroopForFight){
+			//	return -getTotalPower(playerTroopForFight.soldiersForFight)
+			//})
 
 			var stageTroopsForFight = DataUtils.getAllianceShrineStageTroops(allianceDoc, event.stageName)
 			var playerAvgPower = LogicUtils.getPlayerTroopsAvgPower(playerTroopsForFight)
