@@ -1679,7 +1679,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 				}
 			}else
 				report.attackTarget.fightStar = fightStar;
-			
+
 			var fullReport = {
 				id:ShortId.generate(),
 				type:Consts.PlayerReportType.AttackShrine,
