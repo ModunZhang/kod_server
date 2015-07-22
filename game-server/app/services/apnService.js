@@ -227,7 +227,7 @@ pro.onAllianceShrineEventStart = function(allianceDoc){
 pro.onCityBeAttacked = function(playerDoc){
 	var self = this
 	var messageKey = DataUtils.getLocalizationConfig("alliance", "CityBeAttacked");
-	var messageArgs = [stageName];
+	var messageArgs = [];
 	if(_.isEmpty(playerDoc.logicServerId) && !_.isEmpty(playerDoc.apnId)){
 		var message = messageKey[language]
 		if(!_.isString(message)) message = messageKey.en;
