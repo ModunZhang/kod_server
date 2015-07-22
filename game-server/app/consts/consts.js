@@ -232,7 +232,7 @@ module.exports = {
 	ApnTypes:{
 		OnAllianceFightPrepare:'onAllianceFightPrepare',
 		OnAllianceFightStart:'onAllianceFightStart',
-		OnShrineEventStart:'onShrineEventStart',
+		OnAllianceShrineEventStart:'onAllianceShrineEventStart',
 		OnCityBeAttacked:'onCityBeAttacked'
 	},
 
