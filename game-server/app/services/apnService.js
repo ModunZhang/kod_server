@@ -229,7 +229,7 @@ pro.onCityBeAttacked = function(playerDoc){
 	var messageKey = DataUtils.getLocalizationConfig("alliance", "CityBeAttacked");
 	var messageArgs = [];
 	if(_.isEmpty(playerDoc.logicServerId) && !_.isEmpty(playerDoc.apnId)){
-		var message = messageKey[language]
+		var message = messageKey[playerDoc.basicInfo.language];
 		if(!_.isString(message)) message = messageKey.en;
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs);
