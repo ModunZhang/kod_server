@@ -96,6 +96,12 @@ var AllianceSchema = new Schema({
 				time:{type:Number, required:true}
 			},
 			required:false
+		},
+		apnStatus:{
+			onAllianceFightPrepare:{type:Boolean, required:true, default:true},
+			onAllianceFightStart:{type:Boolean, required:true, default:true},
+			onAllianceShrineEventStart:{type:Boolean, required:true, default:true},
+			onCityBeAttacked:{type:Boolean, required:true, default:true}
 		}
 	}],
 	buildings:[{

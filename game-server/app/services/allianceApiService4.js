@@ -381,6 +381,7 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
+		self.apnService.onCityBeAttacked(defencePlayerDoc);
 		callback(null, attackPlayerData)
 	}).catch(function(e){
 		var funcs = []

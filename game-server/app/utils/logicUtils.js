@@ -9,6 +9,7 @@ var _ = require("underscore")
 var sprintf = require("sprintf")
 var Promise = require("bluebird")
 
+var CommonUtils = require('./utils');
 var ReportUtils = require("./reportUtils")
 var DataUtils = require("./dataUtils")
 var MapUtils = require("./mapUtils")
@@ -153,7 +154,7 @@ Utils.updateBuildingsLevel = function(playerDoc){
 Utils.isBuildingCanCreateAtLocation = function(playerDoc, location){
 	var currentRound = this.getBuildingCurrentRound(location)
 	var previousRoundFromAndTo = this.getBuildingRoundFromAndEnd(currentRound - 1);
-	for(var i = previousRoundFromAndTo.from; i < previousRoundFromAndTo.to; i ++){
+	for(var i = previousRoundFromAndTo.from; i < previousRoundFromAndTo.to; i++){
 		var building = playerDoc.buildings['location_' + i];
 		if(building.level <= 0) return false
 	}
@@ -652,6 +653,7 @@ Utils.updatePlayerPropertyInAlliance = function(playerDoc, online, allianceDoc, 
 		member.allianceExp.coinExp = playerDoc.allianceInfo.coinExp
 		allianceData.push(["members." + memberIndex + ".allianceExp.coinExp", member.allianceExp.coinExp])
 	}
+	member.apnStatus = CommonUtils.clone(playerDoc.apnStatus);
 }
 
 /**
@@ -1145,6 +1147,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 			foodExp:playerDoc.allianceInfo.foodExp,
 			coinExp:playerDoc.allianceInfo.coinExp
 		},
+		apnStatus:CommonUtils.clone(playerDoc.apnStatus),
 		isProtected:false,
 		lastThreeDaysKillData:[],
 		lastRewardData:null
@@ -2262,78 +2265,78 @@ Utils.getEnemyAllianceId = function(allianceFight, myAllianceId){
  */
 Utils.initPlayerDoc = function(playerDoc){
 	playerDoc.pve.floors = [{
-		"level": 1,
-		"fogs": "000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-		"objects": "[[9,12,3]]"
+		"level":1,
+		"fogs":"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
+		"objects":"[[9,12,3]]"
 	}]
 	playerDoc.pve.location = {
-		"z": 1,
-		"y": 12,
-		"x": 9
+		"z":1,
+		"y":12,
+		"x":9
 	}
 	playerDoc.growUpTasks.cityBuild.push({
-		"id": 0,
-		"index": 1,
-		"name": "keep",
-		"rewarded": false
+		"id":0,
+		"index":1,
+		"name":"keep",
+		"rewarded":false
 	})
 	playerDoc.growUpTasks.cityBuild.push({
-		"id": 351,
-		"index": 1,
-		"name": "farmer",
-		"rewarded": false
+		"id":351,
+		"index":1,
+		"name":"farmer",
+		"rewarded":false
 	})
 	playerDoc.growUpTasks.cityBuild.push({
-		"id": 1,
-		"index": 2,
-		"name": "keep",
-		"rewarded": false
+		"id":1,
+		"index":2,
+		"name":"keep",
+		"rewarded":false
 	})
 	playerDoc.growUpTasks.cityBuild.push({
-		"id": 2,
-		"index": 3,
-		"name": "keep",
-		"rewarded": false
+		"id":2,
+		"index":3,
+		"name":"keep",
+		"rewarded":false
 	})
 	playerDoc.growUpTasks.cityBuild.push({
-		"id": 3,
-		"index": 4,
-		"name": "keep",
-		"rewarded": false
+		"id":3,
+		"index":4,
+		"name":"keep",
+		"rewarded":false
 	})
 	playerDoc.productionTechs.forestation.level = 1
 	playerDoc.buildings.location_22.level = 1
 	playerDoc.buildings.location_21.level = 1
 	playerDoc.buildings.location_8.level = 1
 	playerDoc.buildings.location_8.houses = [{
-		"type": "miner",
-		"level": 1,
-		"location": 3
+		"type":"miner",
+		"level":1,
+		"location":3
 	}]
 	playerDoc.buildings.location_7.level = 1
 	playerDoc.buildings.location_7.houses = [{
-		"type": "quarrier",
-		"level": 1,
-		"location": 3
+		"type":"quarrier",
+		"level":1,
+		"location":3
 	}]
 	playerDoc.buildings.location_6.level = 1
 	playerDoc.buildings.location_6.houses = [{
-		"type": "woodcutter",
-		"level": 1,
-		"location": 3
+		"type":"woodcutter",
+		"level":1,
+		"location":3
 	}]
 	playerDoc.buildings.location_5.level = 1
 	playerDoc.buildings.location_5.houses = [{
-		"type": "farmer",
-		"level": 1,
-		"location": 3
+		"type":"farmer",
+		"level":1,
+		"location":3
 	}]
 	playerDoc.buildings.location_4.level = 1
 	playerDoc.buildings.location_3.level = 1
 	playerDoc.buildings.location_3.houses = [{
-		"type": "dwelling",
-		"level": 1,
-		"location": 3
+		"type":"dwelling",
+		"level":1,
+		"location":3
 	}]
 	playerDoc.buildings.location_2.level = 1
 	playerDoc.buildings.location_1.level = 5

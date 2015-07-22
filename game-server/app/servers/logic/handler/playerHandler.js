@@ -2042,3 +2042,32 @@ pro.getPlayerWallInfo = function(msg, session, next){
 		next(null, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 设置远程推送状态
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.setApnStatus = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.setApnStatus", {playerId:session.uid, msg:msg})
+	var type = msg.type
+	var status = msg.status
+	var e = null
+	if(!_.contains(Consts.ApnTypes, type)){
+		e = new Error("type 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isBoolean(status)){
+		e = new Error("status 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('setApnStatus', [session.uid, type, status]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}

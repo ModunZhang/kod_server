@@ -27,6 +27,7 @@ var AllianceInitData = GameDatas.AllianceInitData
 var AllianceTimeEventService = function(app){
 	this.app = app
 	this.env = app.get("env")
+	this.apnService = app.get('apnService');
 	this.pushService = app.get("pushService")
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
@@ -2352,7 +2353,6 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
  * @param callback
  */
 pro.onAlliancePrepareStatusFinished = function(attackAllianceDoc, defenceAllianceDoc, callback){
-	var self = this
 	var attackAllianceData = []
 	var defenceAllianceData = []
 	var eventFuncs = []
@@ -2374,10 +2374,11 @@ pro.onAlliancePrepareStatusFinished = function(attackAllianceDoc, defenceAllianc
 	defenceAllianceDoc.basicInfo.statusFinishTime = statusFinishTime
 	defenceAllianceData.push(["basicInfo.statusFinishTime", defenceAllianceDoc.basicInfo.statusFinishTime])
 
-	eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, statusFinishTime - Date.now()])
-	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
-	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc._id, defenceAllianceData])
+	eventFuncs.push([this.timeEventService, this.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, statusFinishTime - Date.now()])
+	pushFuncs.push([this.pushService, this.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
+	pushFuncs.push([this.pushService, this.pushService.onAllianceDataChangedAsync, defenceAllianceDoc._id, defenceAllianceData])
 	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+	this.apnService.onAllianceFightStart(attackAllianceDoc, defenceAllianceDoc);
 }
 
 /**

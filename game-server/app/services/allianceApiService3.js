@@ -315,6 +315,7 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
+		self.apnService.onAllianceShrineEventStart(allianceDoc);
 		callback()
 	}).catch(function(e){
 		var funcs = []
@@ -535,8 +536,6 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.pick(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.pick(attackAllianceDoc, Consts.AllianceViewDataKeys)])
 		pushFuncs.push([self.dataService, self.dataService.createAllianceFightChannelAsync, attackAllianceDoc._id, defenceAllianceDoc._id])
-		self.apnService.pushApnMessageToAllianceMembers(attackAllianceDoc, DataUtils.getLocalizationConfig("alliance", "AttackAllianceMessage"), [])
-		self.apnService.pushApnMessageToAllianceMembers(defenceAllianceDoc, DataUtils.getLocalizationConfig("alliance", "AllianceBeAttackedMessage"), [attackAllianceDoc.basicInfo.name])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -545,6 +544,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
+		self.apnService.onAllianceFightPrepare(attackAllianceDoc, defenceAllianceDoc);
 		callback()
 	}).catch(function(e){
 		var funcs = []
@@ -626,6 +626,7 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
+		self.apnService.onAllianceFightPrepare(attackAllianceDoc, defenceAllianceDoc);
 		callback()
 	}).catch(function(e){
 		var funcs = []

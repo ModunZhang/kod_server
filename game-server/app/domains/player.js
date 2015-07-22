@@ -101,6 +101,12 @@ var PlayerSchema = new Schema({
 	apnId:{type:String},
 	gcId:{type:String},
 	allianceId:{type:String},
+	apnStatus:{
+		onAllianceFightPrepare:{type:Boolean, required:true, default:true},
+		onAllianceFightStart:{type:Boolean, required:true, default:true},
+		onAllianceShrineEventStart:{type:Boolean, required:true, default:true},
+		onCityBeAttacked:{type:Boolean, required:true, default:true}
+	},
 	countInfo:{
 		registerTime:{type:Number, required:true, default:Date.now},
 		lastLoginTime:{type:Number, required:true, default:Date.now},

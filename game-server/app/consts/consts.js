@@ -229,6 +229,12 @@ module.exports = {
 		'technologyMaterials',
 		'dragonMaterials'
 	],
+	ApnTypes:{
+		OnAllianceFightPrepare:'onAllianceFightPrepare',
+		OnAllianceFightStart:'onAllianceFightStart',
+		OnShrineEventStart:'onShrineEventStart',
+		OnCityBeAttacked:'onCityBeAttacked'
+	},
 
 
 

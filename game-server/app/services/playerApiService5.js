@@ -657,3 +657,32 @@ pro.getPlayerWallInfo = function(playerId, memberId, callback){
 		callback(e)
 	})
 }
+
+/**
+ * 设置远程推送状态
+ * @param playerId
+ * @param type
+ * @param status
+ * @param callback
+ */
+pro.setApnStatus = function(playerId, type, status, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		playerDoc.apnStatus[type] = status;
+		playerData.push(['apnStatus.' + type, status]);
+		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}

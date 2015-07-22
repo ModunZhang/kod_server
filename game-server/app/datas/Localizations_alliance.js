@@ -75,17 +75,29 @@ alliance["HelpDefenceAttackContent"] = {
 	en:"这是英文:[%s]%s帮你抵御了一次进攻。",
 	tw:"[%s]%s幫你抵禦了一次進攻。"
 }
-alliance["AttackAllianceMessage"] = {
-	key:"AttackAllianceMessage",
+alliance["AttackAlliancePrepare"] = {
+	key:"AttackAlliancePrepare",
 	cn:"我方联盟发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
 	en:"这是英文:我方联盟刚刚发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
 	tw:"我方聯盟剛剛發起了一場聯盟會戰，戰鬥將於20分鐘後開始，請做好戰鬥準備！"
 }
-alliance["AllianceBeAttackedMessage"] = {
-	key:"AllianceBeAttackedMessage",
+alliance["AllianceBeAttackedPrepare"] = {
+	key:"AllianceBeAttackedPrepare",
 	cn:"%s联盟向我方发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
 	en:"这是英文:%s联盟对我方发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
 	tw:"%s聯盟向我方發起了一場聯盟會戰，戰鬥將於20分鐘後開始，請做好戰鬥準備！"
+}
+alliance["AttackAllianceStart"] = {
+	key:"AttackAllianceStart",
+	cn:"我方联盟与%s联盟的联盟战已经开始,战斗吧,骚年!",
+	en:"这是英文:我方联盟与%s联盟的联盟战已经开始,战斗吧,骚年!",
+	tw:"我方联盟与%s联盟的联盟战已经开始,战斗吧,骚年!"
+}
+alliance["AllianceBeAttackedStart"] = {
+	key:"AllianceBeAttackedStart",
+	cn:"%s联盟对我方联盟发起的联盟战已经开始,战斗吧,骚年!",
+	en:"这是英文:%s联盟对我方联盟发起的联盟战已经开始,战斗吧,骚年!",
+	tw:"%s联盟对我方联盟发起的联盟战已经开始,战斗吧,骚年!"
 }
 alliance["AllianceTitleBeModifyedTitle"] = {
 	key:"AllianceTitleBeModifyedTitle",
@@ -134,4 +146,16 @@ alliance["AllianceFightKillFirstRewardContent"] = {
 	cn:"你在联盟会战中奋勇杀敌，成为“头号杀手”,系统已奖励%d金龙币到你的账户中。",
 	en:"这是英文:你在联盟会战中奋勇杀敌，成为“头号杀手”,系统已奖励%d金龙币到你的账户中。",
 	tw:"你在聯盟會戰中奮勇殺敵，成為“頭號殺手”,系統已獎勵%d金龍幣到你的賬戶中。"
+}
+alliance["AllianceShrineEventStart"] = {
+	key:"AllianceShrineEventStart",
+	cn:"我方联盟激活了一场圣地战,战斗将于20分钟后开始,请做好战斗准备",
+	en:"这是英文:我方联盟激活了圣地战,战斗将于20分钟后开始,请做好战斗准备",
+	tw:"我方联盟激活了圣地战,战斗将于20分钟后开始,请做好战斗准备"
+}
+alliance["CityBeAttacked"] = {
+	key:"CityBeAttacked",
+	cn:"主淫,您的城市即将被攻打,请注意啦",
+	en:"这是英文:主淫,您的城市即将被攻打,请注意啦",
+	tw:"主淫,您的城市即将被攻打,请注意啦"
 }

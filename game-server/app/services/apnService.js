@@ -15,6 +15,7 @@ var Consts = require("../consts/consts")
 var Events = require("../consts/events")
 var Utils = require("../utils/utils")
 var LogicUtils = require("../utils/logicUtils")
+var DataUtils = require("../utils/dataUtils")
 
 var ApnService = function(app){
 	this.app = app
@@ -73,7 +74,7 @@ pro.getApnService = function(){
 }
 
 /**
- * 推送消息到离线
+ * 推送消息到离线玩家
  * @param apnIds
  * @param message
  */
@@ -86,28 +87,153 @@ pro.pushApnMessage = function(apnIds, message){
 }
 
 /**
- * 给联盟玩家推送APN
- * @param allianceDoc
- * @param messageKey
- * @param messageArgs
+ * 联盟战进入准备期推送通知
+ * @param attackAllianceDoc
+ * @param defenceAllianceDoc
  */
-pro.pushApnMessageToAllianceMembers = function(allianceDoc, messageKey, messageArgs){
+pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 	var self = this
+	var messageKey = DataUtils.getLocalizationConfig("alliance", "AttackAlliancePrepare");
+	var messageArgs = [];
 	var members = {}
-	_.each(allianceDoc.members, function(member){
-		if(!member.online && !_.isEmpty(member.apnId)){
-			if(!_.isArray(members[member.language])) members[member.language] = []
-			members[member.language].push(member.apnId)
-		}
+
+	_.each(attackAllianceDoc.members, function(member){
+		(function(){
+			if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightPrepare){
+				if(!_.isArray(members[member.language])) members[member.language] = []
+				members[member.language].push(member.apnId)
+			}
+		})();
 	})
 	_.each(members, function(apnIds, language){
-		var message = messageKey[language]
-		if(!_.isString(message)){
-			message = messageKey.en
-		}
-		if(messageArgs.length > 0){
-			message = sprintf.vsprintf(message, messageArgs)
-		}
-		self.pushApnMessage(apnIds, message)
+		(function(){
+			var message = messageKey[language]
+			if(!_.isString(message)) message = messageKey.en;
+			if(messageArgs.length > 0){
+				message = sprintf.vsprintf(message, messageArgs)
+			}
+			self.pushApnMessage(apnIds, message)
+		})();
 	})
+
+	messageKey = DataUtils.getLocalizationConfig("alliance", "AllianceBeAttackedPrepare");
+	messageArgs = [attackAllianceDoc.basicInfo.name];
+	members = {}
+	_.each(defenceAllianceDoc.members, function(member){
+		(function(){
+			if(!member.online && !_.isEmpty(member.apnId) && !!member.apnStatus.onAllianceFightPrepare){
+				if(!_.isArray(members[member.language])) members[member.language] = []
+				members[member.language].push(member.apnId)
+			}
+		})();
+	})
+	_.each(members, function(apnIds, language){
+		(function(){
+			var message = messageKey[language]
+			if(!_.isString(message)) message = messageKey.en;
+			if(messageArgs.length > 0){
+				message = sprintf.vsprintf(message, messageArgs)
+			}
+			self.pushApnMessage(apnIds, message)
+		})();
+	})
+}
+
+/**
+ * 联盟战进入战争期推送通知
+ * @param attackAllianceDoc
+ * @param defenceAllianceDoc
+ */
+pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
+	var self = this
+	var messageKey = DataUtils.getLocalizationConfig("alliance", "AttackAllianceStart");
+	var messageArgs = [defenceAllianceDoc.basicInfo.name];
+	var members = {}
+	_.each(attackAllianceDoc.members, function(member){
+		(function(){
+			if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus)  && !!member.apnStatus.onAllianceFightStart){
+				if(!_.isArray(members[member.language])) members[member.language] = []
+				members[member.language].push(member.apnId)
+			}
+		})();
+	})
+	_.each(members, function(apnIds, language){
+		(function(){
+			var message = messageKey[language]
+			if(!_.isString(message)) message = messageKey.en;
+			if(messageArgs.length > 0){
+				message = sprintf.vsprintf(message, messageArgs)
+			}
+			self.pushApnMessage(apnIds, message)
+		})();
+	})
+
+	messageKey = DataUtils.getLocalizationConfig("alliance", "AllianceBeAttackedStart");
+	messageArgs = [attackAllianceDoc.basicInfo.name];
+	members = {}
+	_.each(defenceAllianceDoc.members, function(member){
+		(function(){
+			if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus)  && !!member.apnStatus.onAllianceFightStart){
+				if(!_.isArray(members[member.language])) members[member.language] = []
+				members[member.language].push(member.apnId)
+			}
+		})();
+	})
+	_.each(members, function(apnIds, language){
+		(function(){
+			var message = messageKey[language]
+			if(!_.isString(message)) message = messageKey.en;
+			if(messageArgs.length > 0){
+				message = sprintf.vsprintf(message, messageArgs)
+			}
+			self.pushApnMessage(apnIds, message)
+		})();
+	})
+}
+
+/**
+ * 圣地战激活推送通知
+ * @param allianceDoc
+ */
+pro.onAllianceShrineEventStart = function(allianceDoc){
+	var self = this
+	var messageKey = DataUtils.getLocalizationConfig("alliance", "AllianceShrineEventStart");
+	var messageArgs = [];
+	var members = {}
+	_.each(allianceDoc.members, function(member){
+		(function(){
+			if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus)  && !!member.apnStatus.onAllianceShrineEventStart){
+				if(!_.isArray(members[member.language])) members[member.language] = []
+				members[member.language].push(member.apnId)
+			}
+		})();
+	})
+	_.each(members, function(apnIds, language){
+		(function(){
+			var message = messageKey[language]
+			if(!_.isString(message)) message = messageKey.en;
+			if(messageArgs.length > 0){
+				message = sprintf.vsprintf(message, messageArgs)
+			}
+			self.pushApnMessage(apnIds, message)
+		})();
+	})
+}
+
+/**
+ * 玩家城市即将被攻打推送通知
+ * @param playerDoc
+ */
+pro.onCityBeAttacked = function(playerDoc){
+	var self = this
+	var messageKey = DataUtils.getLocalizationConfig("alliance", "CityBeAttacked");
+	var messageArgs = [stageName];
+	if(_.isEmpty(playerDoc.logicServerId) && !_.isEmpty(playerDoc.apnId)){
+		var message = messageKey[language]
+		if(!_.isString(message)) message = messageKey.en;
+		if(messageArgs.length > 0){
+			message = sprintf.vsprintf(message, messageArgs);
+		}
+		self.pushApnMessage([playerDoc.apnId], message);
+	}
 }
