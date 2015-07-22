@@ -1349,10 +1349,10 @@ pro.onAttackMarchReturnEvents = function(allianceDoc, event, callback){
 		playerData.push(["dragons." + dragonType + ".hp", dragon.hp])
 		playerData.push(["dragons." + dragonType + ".hpRefreshTime", dragon.hpRefreshTime])
 		playerData.push(["dragons." + dragonType + ".status", dragon.status])
-
-		LogicUtils.addPlayerSoldiers(playerDoc, playerData, event.attackPlayerData.soldiers)
-		DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, event.attackPlayerData.woundedSoldiers)
-		DataUtils.refreshPlayerPower(playerDoc, playerData)
+		LogicUtils.removePlayerTroopOut(playerDoc, dragonType);
+		LogicUtils.addPlayerSoldiers(playerDoc, playerData, event.attackPlayerData.soldiers);
+		DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, event.attackPlayerData.woundedSoldiers);
+		DataUtils.refreshPlayerPower(playerDoc, playerData);
 		_.each(event.attackPlayerData.rewards, function(reward){
 			var type = reward.type
 			var name = reward.name

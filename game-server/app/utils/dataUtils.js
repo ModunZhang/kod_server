@@ -888,10 +888,12 @@ Utils.refreshPlayerPower = function(playerDoc, playerData){
 Utils.getPlayerBuildingsPower = function(playerDoc){
 	var totalPower = 0
 	_.each(playerDoc.buildings, function(building){
-		if(building.level >= 1){
-			var config = BuildingFunction[building.type][building.level]
-			totalPower += config.power
-		}
+		(function(){
+			if(building.level >= 1){
+				var config = BuildingFunction[building.type][building.level]
+				totalPower += config.power
+			}
+		})();
 	})
 
 	return totalPower
@@ -905,12 +907,16 @@ Utils.getPlayerBuildingsPower = function(playerDoc){
 Utils.getPlayerHousesPower = function(playerDoc){
 	var totalPower = 0
 	_.each(playerDoc.buildings, function(building){
-		_.each(building.houses, function(house){
-			if(house.level > 0){
-				var config = HouseFunction[house.type][house.level]
-				totalPower += config.power
-			}
-		})
+		(function(){
+			_.each(building.houses, function(house){
+				(function(){
+					if(house.level > 0){
+						var config = HouseFunction[house.type][house.level]
+						totalPower += config.power
+					}
+				})();
+			})
+		})();
 	})
 
 	return totalPower
@@ -925,8 +931,20 @@ Utils.getPlayerSoldiersPower = function(playerDoc){
 	var self = this
 	var totalPower = 0
 	_.each(playerDoc.soldiers, function(soldierCount, soldierName){
-		var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
-		totalPower += config.power * soldierCount
+		(function(){
+			var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
+			totalPower += config.power * soldierCount
+		})();
+	})
+	_.each(playerDoc.troopsOut, function(troopOut){
+		(function(){
+			_.each(troopOut.soldiers, function(soldier){
+				(function(){
+					var config = self.getPlayerSoldierConfig(playerDoc, soldier.name);
+					totalPower += config.power * soldier.count;
+				})();
+			})
+		})();
 	})
 
 	return totalPower
@@ -939,12 +957,16 @@ Utils.getPlayerSoldiersPower = function(playerDoc){
 Utils.getPlayerTechsPower = function(playerDoc){
 	var totalPower = 0
 	_.each(playerDoc.productionTechs, function(tech, name){
-		if(tech.level > 0)
-			totalPower += ProductionTechLevelUp[name][tech.level].power
+		(function(){
+			if(tech.level > 0)
+				totalPower += ProductionTechLevelUp[name][tech.level].power;
+		})();
 	})
 	_.each(playerDoc.militaryTechs, function(tech, name){
-		if(tech.level > 0)
-			totalPower += MilitaryTechLevelUp[name][tech.level].power
+		(function(){
+			if(tech.level > 0)
+				totalPower += MilitaryTechLevelUp[name][tech.level].power;
+		})();
 	})
 	return totalPower
 }

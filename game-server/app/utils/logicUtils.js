@@ -1615,25 +1615,26 @@ Utils.isPlayerDragonLeadershipEnough = function(playerDoc, dragon, soldiers){
  */
 Utils.returnPlayerShrineTroops = function(playerDoc, playerData, allianceDoc, allianceData){
 	var self = this
-	var playerTroops = []
+	var playerTroops = [];
 	_.each(allianceDoc.shrineEvents, function(shrineEvent){
-		var playerTroop = _.find(shrineEvent.playerTroops, function(playerTroop){
-			return _.isEqual(playerDoc._id, playerTroop.id)
-		})
-		if(_.isObject(playerTroop)) playerTroops.push({event:shrineEvent, troop:playerTroop})
+		(function(){
+			var playerTroop = _.find(shrineEvent.playerTroops, function(playerTroop){
+				return _.isEqual(playerDoc._id, playerTroop.id)
+			})
+			if(_.isObject(playerTroop)) playerTroops.push({event:shrineEvent, troop:playerTroop});
+		})();
 	})
 	_.each(playerTroops, function(playerTroop){
-		allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(playerTroop.event) + ".playerTroops." + playerTroop.event.playerTroops.indexOf(playerTroop.troop), null])
-		self.removeItemInArray(playerTroop.event.playerTroops, playerTroop.troop)
+		(function(){
+			allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(playerTroop.event) + ".playerTroops." + playerTroop.event.playerTroops.indexOf(playerTroop.troop), null])
+			self.removeItemInArray(playerTroop.event.playerTroops, playerTroop.troop)
 
-		DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[playerTroop.troop.dragon.type])
-		playerDoc.dragons[playerTroop.troop.dragon.type].status = Consts.DragonStatus.Free
-		playerData.push(["dragons." + playerTroop.troop.dragon.type], playerDoc.dragons[playerTroop.troop.dragon.type])
-
-		_.each(playerTroop.troop.soldiers, function(soldier){
-			playerDoc.soldiers[soldier.name] += soldier.count
-			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
-		})
+			self.removePlayerTroopOut(playerDoc, playerTroop.troop.dragon.type);
+			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[playerTroop.troop.dragon.type])
+			playerDoc.dragons[playerTroop.troop.dragon.type].status = Consts.DragonStatus.Free
+			playerData.push(["dragons." + playerTroop.troop.dragon.type], playerDoc.dragons[playerTroop.troop.dragon.type])
+			self.addPlayerSoldiers(playerDoc, playerData, playerTroop.troop.soldiers);
+		})();
 	})
 }
 
@@ -1647,37 +1648,39 @@ Utils.returnPlayerShrineTroops = function(playerDoc, playerData, allianceDoc, al
  * @param timeEventService
  */
 Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, timeEventService){
+	var self = this
 	var i = allianceDoc.strikeMarchEvents.length
 	var marchEvent = null
 	while(i--){
-		marchEvent = allianceDoc.strikeMarchEvents[i]
-		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
-			allianceData.push(["strikeMarchEvents." + allianceDoc.strikeMarchEvents.indexOf(marchEvent), null])
-			allianceDoc.strikeMarchEvents.splice(i, 1)
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchEvents", marchEvent.id])
+		(function(){
+			marchEvent = allianceDoc.strikeMarchEvents[i]
+			if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
+				allianceData.push(["strikeMarchEvents." + allianceDoc.strikeMarchEvents.indexOf(marchEvent), null])
+				allianceDoc.strikeMarchEvents.splice(i, 1)
+				eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchEvents", marchEvent.id])
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-		}
+				DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+				playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+				playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+			}
+		})();
 	}
 	i = allianceDoc.attackMarchEvents.length
 	while(i--){
-		marchEvent = allianceDoc.attackMarchEvents[i]
-		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
-			allianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(marchEvent), null])
-			allianceDoc.attackMarchEvents.splice(i, 1)
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", marchEvent.id])
+		(function(){
+			marchEvent = allianceDoc.attackMarchEvents[i]
+			if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
+				allianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(marchEvent), null])
+				allianceDoc.attackMarchEvents.splice(i, 1)
+				eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", marchEvent.id])
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-
-			_.each(marchEvent.attackPlayerData.soldiers, function(soldier){
-				playerDoc.soldiers[soldier.name] += soldier.count
-				playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
-			})
-		}
+				self.removePlayerTroopOut(playerDoc, marchEvent.attackPlayerData.dragon.type);
+				DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+				playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+				playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+				self.addPlayerSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.soldiers)
+			}
+		})();
 	}
 }
 
@@ -1695,36 +1698,43 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 	var i = allianceDoc.strikeMarchReturnEvents.length
 	var marchEvent = null
 	while(i--){
-		marchEvent = allianceDoc.strikeMarchReturnEvents[i]
-		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
-			allianceData.push(["strikeMarchReturnEvents." + allianceDoc.strikeMarchReturnEvents.indexOf(marchEvent), null])
-			allianceDoc.strikeMarchReturnEvents.splice(i, 1)
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchReturnEvents", marchEvent.id])
+		(function(){
+			marchEvent = allianceDoc.strikeMarchReturnEvents[i]
+			if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
+				allianceData.push(["strikeMarchReturnEvents." + allianceDoc.strikeMarchReturnEvents.indexOf(marchEvent), null])
+				allianceDoc.strikeMarchReturnEvents.splice(i, 1)
+				eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchReturnEvents", marchEvent.id])
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-		}
+				DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+				playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+				playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+			}
+		})();
 	}
 	i = allianceDoc.attackMarchReturnEvents.length
 	while(i--){
-		marchEvent = allianceDoc.attackMarchReturnEvents[i]
-		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
-			allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchEvent), null])
-			allianceDoc.attackMarchReturnEvents.splice(i, 1)
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchEvent.id])
+		(function(){
+			marchEvent = allianceDoc.attackMarchReturnEvents[i]
+			if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
+				allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchEvent), null])
+				allianceDoc.attackMarchReturnEvents.splice(i, 1)
+				eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchEvent.id])
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-			self.addPlayerSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.soldiers)
-			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.woundedSoldiers)
-			_.each(marchEvent.attackPlayerData.rewards, function(reward){
-				playerDoc[reward.type][reward.name] += reward.count
-				if(!_.isEqual(reward.type, 'resources'))
-					playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
-			})
-		}
+				self.removePlayerTroopOut(playerDoc, marchEvent.attackPlayerData.dragon.type);
+				DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+				playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+				playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+				self.addPlayerSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.soldiers)
+				DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.woundedSoldiers)
+				_.each(marchEvent.attackPlayerData.rewards, function(reward){
+					(function(){
+						playerDoc[reward.type][reward.name] += reward.count;
+						if(!_.isEqual(reward.type, 'resources'))
+							playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]]);
+					})();
+				})
+			}
+		})();
 	}
 }
 
@@ -1743,46 +1753,51 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 	var i = allianceDoc.villageEvents.length
 	var villageEvent = null
 	while(i--){
-		villageEvent = allianceDoc.villageEvents[i]
-		if(_.isEqual(villageEvent.playerData.id, playerDoc._id)){
-			allianceData.push(["villageEvents." + allianceDoc.villageEvents.indexOf(villageEvent), null])
-			allianceDoc.villageEvents.splice(i, 1)
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "villageEvents", villageEvent.id])
+		(function(){
+			villageEvent = allianceDoc.villageEvents[i]
+			if(_.isEqual(villageEvent.playerData.id, playerDoc._id)){
+				allianceData.push(["villageEvents." + allianceDoc.villageEvents.indexOf(villageEvent), null])
+				allianceDoc.villageEvents.splice(i, 1)
+				eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "villageEvents", villageEvent.id])
 
-			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[villageEvent.playerData.dragon.type])
-			playerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + villageEvent.playerData.dragon.type], playerDoc.dragons[villageEvent.playerData.dragon.type])
+				self.removePlayerTroopOut(playerDoc, playerDoc.dragons[villageEvent.playerData.dragon.type]);
+				DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[villageEvent.playerData.dragon.type]);
+				playerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
+				playerData.push(["dragons." + villageEvent.playerData.dragon.type], playerDoc.dragons[villageEvent.playerData.dragon.type])
 
-			self.addPlayerSoldiers(playerDoc, playerData, villageEvent.playerData.soldiers)
-			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, villageEvent.playerData.woundedSoldiers)
+				self.addPlayerSoldiers(playerDoc, playerData, villageEvent.playerData.soldiers)
+				DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, villageEvent.playerData.woundedSoldiers)
 
-			var resourceCollected = Math.floor(villageEvent.villageData.collectTotal
-				* ((Date.now() - villageEvent.startTime)
-				/ (villageEvent.finishTime - villageEvent.startTime))
-			)
-			var village = self.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
-			var originalRewards = villageEvent.playerData.rewards
-			var resourceName = village.name.slice(0, -7)
-			var newRewards = [{
-				type:"resources",
-				name:resourceName,
-				count:resourceCollected
-			}]
-			self.mergeRewards(originalRewards, newRewards)
-			_.each(originalRewards, function(reward){
-				playerDoc[reward.type][reward.name] += reward.count
-				if(!_.isEqual(reward.type, 'resources'))
-					playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
-			})
+				var resourceCollected = Math.floor(villageEvent.villageData.collectTotal
+					* ((Date.now() - villageEvent.startTime)
+					/ (villageEvent.finishTime - villageEvent.startTime))
+				)
+				var village = self.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
+				var originalRewards = villageEvent.playerData.rewards
+				var resourceName = village.name.slice(0, -7)
+				var newRewards = [{
+					type:"resources",
+					name:resourceName,
+					count:resourceCollected
+				}]
+				self.mergeRewards(originalRewards, newRewards)
+				_.each(originalRewards, function(reward){
+					(function(){
+						playerDoc[reward.type][reward.name] += reward.count
+						if(!_.isEqual(reward.type, 'resources'))
+							playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]]);
+					})();
+				})
 
-			var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
-			playerDoc.allianceInfo[resourceName + "Exp"] += collectExp
-			playerData.allianceInfo = playerDoc.allianceInfo
-			village.resource -= resourceCollected
-			allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
-			var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
-			eventFuncs.push([dataService, dataService.sendSysReportAsync, playerDoc._id, collectReport])
-		}
+				var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
+				playerDoc.allianceInfo[resourceName + "Exp"] += collectExp
+				playerData.allianceInfo = playerDoc.allianceInfo
+				village.resource -= resourceCollected
+				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
+				var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
+				eventFuncs.push([dataService, dataService.sendSysReportAsync, playerDoc._id, collectReport])
+			}
+		})();
 	}
 }
 
