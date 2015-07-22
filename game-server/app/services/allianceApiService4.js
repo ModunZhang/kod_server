@@ -27,6 +27,7 @@ var AllianceApiService4 = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
+	this.apnService = app.get('apnService');
 }
 module.exports = AllianceApiService4
 var pro = AllianceApiService4.prototype
