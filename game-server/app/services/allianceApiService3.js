@@ -374,7 +374,7 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 			playerDoc.soldiers[soldier.name] -= soldier.count
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
-		DataUtils.refreshPlayerPower(playerDoc, playerData)
+		LogicUtils.addPlayerTroopOut(playerDoc, dragonType, soldiers);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 
 		var event = MarchUtils.createAttackAllianceShrineMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, shrineEventId)

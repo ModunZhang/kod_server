@@ -87,13 +87,14 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 			playerDoc.soldiers[soldier.name] -= soldier.count
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
-		DataUtils.refreshPlayerPower(playerDoc, playerData)
+		LogicUtils.addPlayerTroopOut(playerDoc, dragonType, soldiers);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 
 		var event = MarchUtils.createHelpDefenceMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, targetPlayerDoc)
 		allianceDoc.attackMarchEvents.push(event)
 		allianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(event), event])
 		enemyAllianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(event), event])
+
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
@@ -355,7 +356,7 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 			attackPlayerDoc.soldiers[soldier.name] -= soldier.count
 			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
 		})
-		DataUtils.refreshPlayerPower(attackPlayerDoc, attackPlayerData)
+		LogicUtils.addPlayerTroopOut(attackPlayerDoc, dragonType, soldiers);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
 
 		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, attackPlayerDoc._id)
@@ -368,6 +369,7 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 		attackAllianceDoc.attackMarchEvents.push(event)
 		attackAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(event), event])
 		defenceAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(event), event])
+
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
@@ -458,7 +460,7 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 			attackPlayerDoc.soldiers[soldier.name] -= soldier.count
 			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
 		})
-		DataUtils.refreshPlayerPower(attackPlayerDoc, attackPlayerData)
+		LogicUtils.addPlayerTroopOut(attackPlayerDoc, dragonType, soldiers);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
 
 		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, attackPlayerDoc._id)
@@ -471,6 +473,7 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 		attackAllianceDoc.attackMarchEvents.push(event)
 		attackAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(event), event])
 		defenceAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(event), event])
+
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
@@ -770,7 +773,7 @@ pro.attackMonster = function(playerId, allianceId, dragonType, soldiers, defence
 			attackPlayerDoc.soldiers[soldier.name] -= soldier.count
 			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
 		})
-		DataUtils.refreshPlayerPower(attackPlayerDoc, attackPlayerData)
+		LogicUtils.addPlayerTroopOut(attackPlayerDoc, dragonType, soldiers);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
 
 		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, attackPlayerDoc._id)
@@ -783,6 +786,7 @@ pro.attackMonster = function(playerId, allianceId, dragonType, soldiers, defence
 		attackAllianceDoc.attackMarchEvents.push(event)
 		attackAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(event), event])
 		defenceAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(event), event])
+
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])

@@ -2362,15 +2362,27 @@ Utils.initPlayerDoc = function(playerDoc){
 
 /**
  * 创建玩家在外行军的部队信息
- * @param eventId
- * @param dragon
+ * @param playerDoc
+ * @param dragonType
  * @param soldiers
  */
-Utils.createPlayerTroopOut = function(eventId, dragon, soldiers){
+Utils.addPlayerTroopOut = function(playerDoc, dragonType, soldiers){
 	var troopOut = {
-		id:eventId,
-		dragon:dragon,
+		id:ShortId.generate(),
+		dragonType:dragonType,
 		soldiers:soldiers
 	}
-	return troopOut;
+	playerDoc.troopsOut.push(troopOut);
+}
+
+/**
+ * 移除玩家外在行军的部队信息
+ * @param playerDoc
+ * @param dragonType
+ */
+Utils.removePlayerTroopOut = function(playerDoc, dragonType){
+	var troopOut = _.find(playerDoc.troopsOut, function(troopOut){
+		return _.isEqual(troopOut.dragonType, dragonType)
+	})
+	if(_.isObject(troopOut)) this.removeItemInArray(playerDoc.troopsOut, troopOut)
 }
