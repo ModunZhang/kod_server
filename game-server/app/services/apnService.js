@@ -112,7 +112,6 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 			if(messageArgs.length > 0){
 				message = sprintf.vsprintf(message, messageArgs)
 			}
-			console.log(apnIds, message, '11111111111111111');
 			self.pushApnMessage(apnIds, message)
 		})();
 	})
@@ -122,7 +121,7 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 	members = {}
 	_.each(defenceAllianceDoc.members, function(member){
 		(function(){
-			if(!member.online && !_.isEmpty(member.apnId) && !!member.apnStatus.onAllianceFightPrepare){
+			if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightPrepare){
 				if(!_.isArray(members[member.language])) members[member.language] = []
 				members[member.language].push(member.apnId)
 			}
@@ -135,7 +134,6 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 			if(messageArgs.length > 0){
 				message = sprintf.vsprintf(message, messageArgs)
 			}
-			console.log(apnIds, message, '11111111111111111');
 			self.pushApnMessage(apnIds, message)
 		})();
 	})
@@ -166,7 +164,6 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 			if(messageArgs.length > 0){
 				message = sprintf.vsprintf(message, messageArgs)
 			}
-			console.log(apnIds, message, '11111111111111111');
 			self.pushApnMessage(apnIds, message)
 		})();
 	})
@@ -189,7 +186,6 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 			if(messageArgs.length > 0){
 				message = sprintf.vsprintf(message, messageArgs)
 			}
-			console.log(apnIds, message, '11111111111111111');
 			self.pushApnMessage(apnIds, message)
 		})();
 	})
@@ -219,7 +215,6 @@ pro.onAllianceShrineEventStart = function(allianceDoc){
 			if(messageArgs.length > 0){
 				message = sprintf.vsprintf(message, messageArgs)
 			}
-			console.log(apnIds, message, '11111111111111111');
 			self.pushApnMessage(apnIds, message)
 		})();
 	})
@@ -239,7 +234,6 @@ pro.onCityBeAttacked = function(playerDoc){
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs);
 		}
-		console.log(playerDoc.apnId, message, '11111111111111111');
 		self.pushApnMessage([playerDoc.apnId], message);
 	}
 }
