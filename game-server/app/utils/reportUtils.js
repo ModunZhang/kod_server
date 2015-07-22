@@ -1677,6 +1677,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 					rewards:[],
 					roundDatas:[]
 				}
+				playerDragons[playerTroop.id] = {type:playerTroop.dragon.type, hpDecreased:0, expAdd:0};
 			}else
 				report.attackTarget.fightStar = fightStar;
 
