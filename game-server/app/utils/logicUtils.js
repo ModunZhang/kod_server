@@ -2359,3 +2359,18 @@ Utils.initPlayerDoc = function(playerDoc){
 
 	DataUtils.refreshPlayerPower(playerDoc, [])
 }
+
+/**
+ * 创建玩家在外行军的部队信息
+ * @param eventId
+ * @param dragon
+ * @param soldiers
+ */
+Utils.createPlayerTroopOut = function(eventId, dragon, soldiers){
+	var troopOut = {
+		id:eventId,
+		dragon:dragon,
+		soldiers:soldiers
+	}
+	return troopOut;
+}
