@@ -51,6 +51,7 @@ pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
+		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceId));
 		var donateLevel = playerDoc.allianceDonate[donateType]
 		var donateConfig = DataUtils.getAllianceDonateConfigByTypeAndLevel(donateType, donateLevel)
 		DataUtils.refreshPlayerResources(playerDoc)
