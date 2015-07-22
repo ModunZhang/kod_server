@@ -234,6 +234,7 @@ pro.onCityBeAttacked = function(playerDoc){
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs);
 		}
+		console.log(playerDoc.apnId, message, '11111111111111111');
 		self.pushApnMessage([playerDoc.apnId], message);
 	}
 }
