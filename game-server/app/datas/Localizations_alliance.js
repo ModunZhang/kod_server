@@ -77,27 +77,27 @@ alliance["HelpDefenceAttackContent"] = {
 }
 alliance["AttackAlliancePrepare"] = {
 	key:"AttackAlliancePrepare",
-	cn:"我方联盟发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
-	en:"这是英文:我方联盟刚刚发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
-	tw:"我方聯盟剛剛發起了一場聯盟會戰，戰鬥將於20分鐘後開始，請做好戰鬥準備！"
+	cn:"我方联盟发起了一场联盟会战，战斗将于15分钟后开始，请做好战斗准备！",
+	en:"这是英文:我方联盟刚刚发起了一场联盟会战，战斗将于15分钟后开始，请做好战斗准备！",
+	tw:"我方聯盟剛剛發起了一場聯盟會戰，戰鬥將於15分鐘後開始，請做好戰鬥準備！"
 }
 alliance["AllianceBeAttackedPrepare"] = {
 	key:"AllianceBeAttackedPrepare",
-	cn:"%s联盟向我方发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
-	en:"这是英文:%s联盟对我方发起了一场联盟会战，战斗将于20分钟后开始，请做好战斗准备！",
-	tw:"%s聯盟向我方發起了一場聯盟會戰，戰鬥將於20分鐘後開始，請做好戰鬥準備！"
+	cn:"%s联盟向我方发起了一场联盟会战，战斗将于15分钟后开始，请做好战斗准备！",
+	en:"这是英文:%s联盟对我方发起了一场联盟会战，战斗将于15分钟后开始，请做好战斗准备！",
+	tw:"%s聯盟向我方發起了一場聯盟會戰，戰鬥將於15分鐘後開始，請做好戰鬥準備！"
 }
 alliance["AttackAllianceStart"] = {
 	key:"AttackAllianceStart",
-	cn:"我方联盟与%s联盟的联盟战已经开始,战斗吧,骚年!",
-	en:"这是英文:我方联盟与%s联盟的联盟战已经开始,战斗吧,骚年!",
-	tw:"我方联盟与%s联盟的联盟战已经开始,战斗吧,骚年!"
+	cn:"与%s联盟的战斗已经开始！",
+	en:"这是英文:与%s联盟的战斗已经开始！",
+	tw:"與%s聯盟的戰鬥已經開始！"
 }
 alliance["AllianceBeAttackedStart"] = {
 	key:"AllianceBeAttackedStart",
-	cn:"%s联盟对我方联盟发起的联盟战已经开始,战斗吧,骚年!",
-	en:"这是英文:%s联盟对我方联盟发起的联盟战已经开始,战斗吧,骚年!",
-	tw:"%s联盟对我方联盟发起的联盟战已经开始,战斗吧,骚年!"
+	cn:"与%s联盟的战斗已经开始！",
+	en:"这是英文:与%s联盟的战斗已经开始！",
+	tw:"與%s聯盟的戰鬥已經開始！"
 }
 alliance["AllianceTitleBeModifyedTitle"] = {
 	key:"AllianceTitleBeModifyedTitle",
@@ -149,13 +149,13 @@ alliance["AllianceFightKillFirstRewardContent"] = {
 }
 alliance["AllianceShrineEventStart"] = {
 	key:"AllianceShrineEventStart",
-	cn:"我方联盟激活了一场圣地战,战斗将于20分钟后开始,请做好战斗准备",
-	en:"这是英文:我方联盟激活了圣地战,战斗将于20分钟后开始,请做好战斗准备",
-	tw:"我方联盟激活了圣地战,战斗将于20分钟后开始,请做好战斗准备"
+	cn:"我方联盟激活了一场圣地战,并将于20分钟后结束,请做好出兵准备！",
+	en:"这是英文:我方联盟激活了一场圣地战,并将于20分钟后结束,请做好出兵准备！",
+	tw:"我方聯盟激活了一場聖地戰,並將於20分鐘後結束,請做好出兵準備！"
 }
 alliance["CityBeAttacked"] = {
 	key:"CityBeAttacked",
-	cn:"主淫,您的城市即将被攻打,请注意啦",
-	en:"这是英文:主淫,您的城市即将被攻打,请注意啦",
-	tw:"主淫,您的城市即将被攻打,请注意啦"
+	cn:"主人，你的城市即将被攻打！",
+	en:"这是英文:主人，你的城市即将被攻打！",
+	tw:"主人，你的城市即將被攻打！"
 }

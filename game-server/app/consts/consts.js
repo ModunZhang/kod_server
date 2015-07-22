@@ -303,7 +303,10 @@ module.exports = {
 		Flag:"flag",//联盟旗帜修改
 		Terrain:"terrain",//联盟地形修改
 		Language:"language",//联盟语言修改
-		Gve:"gve"//联盟圣地事件
+		Gve:"gve",//联盟圣地事件
+		Fight:'fight',//开启联盟战
+		BuildingUpgrade:'buildingUpgrade',//建筑升级
+		VillageUpgrade:'villageUpgrade'//村落升级
 	},
 	AllianceBuildingNames:{
 		Palace:"palace",//联盟宫殿
