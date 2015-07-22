@@ -112,6 +112,7 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 			if(messageArgs.length > 0){
 				message = sprintf.vsprintf(message, messageArgs)
 			}
+			console.log(apnIds, message, '11111111111111111');
 			self.pushApnMessage(apnIds, message)
 		})();
 	})
@@ -134,6 +135,7 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 			if(messageArgs.length > 0){
 				message = sprintf.vsprintf(message, messageArgs)
 			}
+			console.log(apnIds, message, '11111111111111111');
 			self.pushApnMessage(apnIds, message)
 		})();
 	})
@@ -164,6 +166,7 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 			if(messageArgs.length > 0){
 				message = sprintf.vsprintf(message, messageArgs)
 			}
+			console.log(apnIds, message, '11111111111111111');
 			self.pushApnMessage(apnIds, message)
 		})();
 	})
@@ -186,6 +189,7 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 			if(messageArgs.length > 0){
 				message = sprintf.vsprintf(message, messageArgs)
 			}
+			console.log(apnIds, message, '11111111111111111');
 			self.pushApnMessage(apnIds, message)
 		})();
 	})
@@ -215,6 +219,7 @@ pro.onAllianceShrineEventStart = function(allianceDoc){
 			if(messageArgs.length > 0){
 				message = sprintf.vsprintf(message, messageArgs)
 			}
+			console.log(apnIds, message, '11111111111111111');
 			self.pushApnMessage(apnIds, message)
 		})();
 	})
