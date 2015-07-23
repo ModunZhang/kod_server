@@ -480,6 +480,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 			self.cacheService.getAllianceModel().collection.find({
 				_id:{$ne:allianceId},
 				serverId:self.app.get("cacheServerId"),
+				'basicInfo.status':Consts.AllianceStatus.Peace,
 				'basicInfo.power':{$lte:attackAllianceDoc.basicInfo.power}
 			}, {
 				_id:true,
@@ -493,6 +494,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 			self.cacheService.getAllianceModel().collection.find({
 				_id:{$ne:allianceId},
 				serverId:self.app.get("cacheServerId"),
+				'basicInfo.status':Consts.AllianceStatus.Peace,
 				'basicInfo.power':{$gt:attackAllianceDoc.basicInfo.power}
 			}, {
 				_id:true,
