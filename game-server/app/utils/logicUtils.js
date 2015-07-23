@@ -1726,13 +1726,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 				playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 				self.addPlayerSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.soldiers)
 				DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.woundedSoldiers)
-				_.each(marchEvent.attackPlayerData.rewards, function(reward){
-					(function(){
-						playerDoc[reward.type][reward.name] += reward.count;
-						if(!_.isEqual(reward.type, 'resources'))
-							playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]]);
-					})();
-				})
+				self.addPlayerRewards(playerDoc, playerData, marchEvent.attackPlayerData.rewards);
 			}
 		})();
 	}
@@ -1781,13 +1775,7 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 					count:resourceCollected
 				}]
 				self.mergeRewards(originalRewards, newRewards)
-				_.each(originalRewards, function(reward){
-					(function(){
-						playerDoc[reward.type][reward.name] += reward.count
-						if(!_.isEqual(reward.type, 'resources'))
-							playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]]);
-					})();
-				})
+				self.addPlayerRewards(playerDoc, playerData, originalRewards);
 
 				var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
 				playerDoc.allianceInfo[resourceName + "Exp"] += collectExp
@@ -2081,6 +2069,43 @@ Utils.addPlayerSoldiers = function(playerDoc, playerData, soldiers){
 	_.each(soldiers, function(soldier){
 		playerDoc.soldiers[soldier.name] += soldier.count
 		playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
+	})
+}
+
+/**
+ * 为玩家添加奖励
+ * @param playerDoc
+ * @param playerData
+ * @param rewards
+ */
+Utils.addPlayerRewards = function(playerDoc, playerData, rewards){
+	var self = this;
+	_.each(rewards, function(reward){
+		(function(){
+			var type = reward.type
+			var name = reward.name
+			var count = reward.count
+			if(_.isEqual(name, 'marchQueue') && playerDoc.basicInfo.marchQueue >= 2){
+				return;
+			}
+			if(_.isEqual("items", type)){
+				var resp = self.addPlayerItem(playerDoc, name, count);
+				playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+				return;
+			}
+			if(_.isEqual('resources', type)){
+				playerDoc[type][name] += count
+				return;
+			}
+			if(_.contains(Consts.MaterialDepotTypes, type)){
+				DataUtils.addPlayerMaterials(playerDoc, type, [{name:name, count:count}])
+				playerData.push([type + "." + name, playerDoc[type][name]])
+				return;
+			}
+
+			playerDoc[type][name] += count
+			playerData.push([type + "." + name, playerDoc[type][name]])
+		})();
 	})
 }
 

@@ -750,25 +750,8 @@ pro.setPveData = function(playerId, pveData, fightData, rewards, callback){
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, woundedSoldiers)
 		}
 
-		if(_.isArray(rewards)){
-			_.each(rewards, function(reward){
-				var type = reward.type
-				var name = reward.name
-				var count = reward.count
-				if(_.isEqual("items", type)){
-					var resp = LogicUtils.addPlayerItem(playerDoc, name, count)
-					playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-				}else if(_.isEqual('resources', type)){
-					playerDoc[type][name] += count
-				}else if(_.contains(Consts.MaterialDepotTypes, type)){
-					DataUtils.addPlayerMaterials(playerDoc, type, [{name:name, count:count}])
-					playerData.push([type + "." + name, playerDoc[type][name]])
-				}else{
-					playerDoc[type][name] += count
-					playerData.push([type + "." + name, playerDoc[type][name]])
-				}
-			})
-		}
+		if(_.isArray(rewards))
+			LogicUtils.addPlayerRewards(playerDoc, playerData, rewards);
 
 		TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData)
 		DataUtils.refreshPlayerResources(playerDoc)

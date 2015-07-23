@@ -125,13 +125,9 @@ pro.getDay14Reward = function(playerId, callback){
 		if(_.isEqual(playerDoc.countInfo.day14, playerDoc.countInfo.day14RewardsCount)) return Promise.reject(ErrorUtils.wonderAssistanceRewardAlreadyGet(playerId))
 		playerDoc.countInfo.day14RewardsCount = playerDoc.countInfo.day14
 		playerData.push(["countInfo.day14RewardsCount", playerDoc.countInfo.day14RewardsCount])
-
 		var rewards = DataUtils.getDay14Rewards(playerDoc.countInfo.day14)
-		_.each(rewards, function(reward){
-			if(_.isEqual(reward.name, 'marchQueue') && playerDoc.basicInfo.marchQueue >= 2) return;
-			playerDoc[reward.type][reward.name] += reward.count
-			playerData.push([reward.type + "." + reward.name, playerDoc[reward.type][reward.name]])
-		})
+		LogicUtils.addPlayerRewards(playerDoc, playerData, rewards);
+
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
