@@ -2507,13 +2507,13 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, newRewards)
 		pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 
+		LogicUtils.removePlayerTroopOut(attackPlayerDoc, villageEvent.playerData.dragon.type);
 		attackDragon = attackPlayerDoc.dragons[villageEvent.playerData.dragon.type]
 		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
 		attackPlayerDoc.dragons[attackDragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.push(["dragons." + attackDragon.type + ".hp", attackDragon.hp])
 		attackPlayerData.push(["dragons." + attackDragon.type + ".hpRefreshTime", attackDragon.hpRefreshTime])
 		attackPlayerData.push(["dragons." + attackDragon.type + ".status", attackDragon.status])
-
 		LogicUtils.addPlayerSoldiers(attackPlayerDoc, attackPlayerData, villageEvent.playerData.soldiers)
 		DataUtils.addPlayerWoundedSoldiers(attackPlayerDoc, attackPlayerData, villageEvent.playerData.woundedSoldiers)
 		village.resource -= resourceCollected
@@ -2522,34 +2522,29 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	var resolveAttackMarchEvent = function(attackAllianceDoc, attackAllianceData, attackPlayerDoc, attackPlayerData, marchEvent){
 		attackAllianceData.push(["attackMarchEvents." + attackAllianceDoc.attackMarchEvents.indexOf(marchEvent), null])
 		LogicUtils.removeItemInArray(attackAllianceDoc.attackMarchEvents, marchEvent)
+
+		LogicUtils.removePlayerTroopOut(attackPlayerDoc, marchEvent.attackPlayerData.dragon.type);
 		attackDragon = attackPlayerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
 		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
 		attackPlayerDoc.dragons[attackDragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.push(["dragons." + attackDragon.type + ".hp", attackDragon.hp])
 		attackPlayerData.push(["dragons." + attackDragon.type + ".hpRefreshTime", attackDragon.hpRefreshTime])
 		attackPlayerData.push(["dragons." + attackDragon.type + ".status", attackDragon.status])
-
-		if(!_.isObject(attackPlayerData.soldiers)) attackPlayerData.soldiers = {}
-		_.each(marchEvent.attackPlayerData.soldiers, function(soldier){
-			(function(){
-				attackPlayerDoc.soldiers[soldier.name] += soldier.count
-				attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
-			})();
-		})
+		LogicUtils.addPlayerSoldiers(attackPlayerDoc, attackPlayerData, marchEvent.attackPlayerData.soldiers)
 	}
 	var resolveAttackMarchReturnEvent = function(attackAllianceDoc, attackAllianceData, attackPlayerDoc, attackPlayerData, marchReturnEvent){
 		attackAllianceData.push(["attackMarchReturnEvents." + attackAllianceDoc.attackMarchReturnEvents.indexOf(marchReturnEvent), null])
 		LogicUtils.removeItemInArray(attackAllianceDoc.attackMarchReturnEvents, marchReturnEvent)
+
+		LogicUtils.removePlayerTroopOut(attackPlayerDoc, marchReturnEvent.attackPlayerData.dragon.type);
 		attackDragon = attackPlayerDoc.dragons[marchReturnEvent.attackPlayerData.dragon.type]
 		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
 		attackPlayerDoc.dragons[attackDragon.type].status = Consts.DragonStatus.Free
 		attackPlayerData.push(["dragons." + attackDragon.type + ".hp", attackDragon.hp])
 		attackPlayerData.push(["dragons." + attackDragon.type + ".hpRefreshTime", attackDragon.hpRefreshTime])
 		attackPlayerData.push(["dragons." + attackDragon.type + ".status", attackDragon.status])
-
 		LogicUtils.addPlayerSoldiers(attackPlayerDoc, attackPlayerData, marchReturnEvent.attackPlayerData.soldiers)
 		DataUtils.addPlayerWoundedSoldiers(attackPlayerDoc, attackPlayerData, marchReturnEvent.attackPlayerData.woundedSoldiers)
-
 		_.each(marchReturnEvent.attackPlayerData.rewards, function(reward){
 			(function(){
 				attackPlayerDoc[reward.type][reward.name] += reward.count
@@ -2577,14 +2572,6 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		attackPlayerData.push(["dragons." + attackDragon.type + ".hp", attackDragon.hp])
 		attackPlayerData.push(["dragons." + attackDragon.type + ".hpRefreshTime", attackDragon.hpRefreshTime])
 		attackPlayerData.push(["dragons." + attackDragon.type + ".status", attackDragon.status])
-
-		_.each(marchReturnEvent.attackPlayerData.rewards, function(reward){
-			(function(){
-				attackPlayerDoc[reward.type][reward.name] += reward.count
-				if(!_.isEqual(reward.type, 'resources'))
-					attackPlayerData.push([reward.type + "." + reward.name, attackPlayerDoc[reward.type][reward.name]]);
-			})();
-		})
 	}
 
 	pushPlayerIds(attackAllianceDoc, attackAllianceData, defenceAllianceDoc, defenceAllianceData, playerIds)
@@ -2617,6 +2604,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			})
 			DataUtils.refreshPlayerResources(playerDoc)
 			playerData.push(['resources', playerDoc.resources])
+			DataUtils.refreshPlayerPower(playerDoc, playerData);
 			return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
 		}).then(function(){
 			return LogicUtils.excuteAll(eventFuncs);
