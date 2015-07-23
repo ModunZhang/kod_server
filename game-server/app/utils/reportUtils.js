@@ -1519,7 +1519,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	_.each(fightDatas, function(fightData){
 		(function(){
 			var shrineReportRoundDatas = []
-			shrineReportFightDatas.push(shrineReportRoundDatas)
+			shrineReportFightDatas.push({roundDatas:shrineReportRoundDatas});
 			_.each(fightData.roundDatas, function(roundData){
 				(function(){
 					var playerDoc = roundData.playerDoc;
@@ -1677,6 +1677,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 					rewards:[],
 					roundDatas:[]
 				}
+				playerDragons[playerTroop.id] = {type:playerTroop.dragon.type, hpDecreased:0, expAdd:0};
 			}else
 				report.attackTarget.fightStar = fightStar;
 

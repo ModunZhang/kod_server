@@ -22,9 +22,6 @@ var DataService = function(app){
 	this.chatServerId = app.get("chatServerId")
 	this.cacheService = app.get('cacheService')
 	this.pushService = app.get('pushService')
-	this.logicServers = _.filter(app.getServersFromConfig(), function(server){
-		return _.isEqual(server.serverType, "logic") && _.isEqual(server.usedFor, app.get("cacheServerId"))
-	})
 }
 module.exports = DataService
 var pro = DataService.prototype
@@ -79,6 +76,7 @@ pro.removePlayerFromAllianceChannel = function(allianceId, playerDoc, callback){
  * @param callback
  */
 pro.destroyAllianceChatChannel = function(allianceId, callback){
+	var self = this;
 	this.app.rpc.chat.chatRemote.destroyAllianceChannel.toServer(this.chatServerId, allianceId, function(e){
 		self.logService.onEventError("logic.dataService.destroyAllianceChatChannel", {
 			allianceId:allianceId

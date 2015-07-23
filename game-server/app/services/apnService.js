@@ -121,7 +121,7 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 	members = {}
 	_.each(defenceAllianceDoc.members, function(member){
 		(function(){
-			if(!member.online && !_.isEmpty(member.apnId) && !!member.apnStatus.onAllianceFightPrepare){
+			if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightPrepare){
 				if(!_.isArray(members[member.language])) members[member.language] = []
 				members[member.language].push(member.apnId)
 			}
@@ -227,9 +227,9 @@ pro.onAllianceShrineEventStart = function(allianceDoc){
 pro.onCityBeAttacked = function(playerDoc){
 	var self = this
 	var messageKey = DataUtils.getLocalizationConfig("alliance", "CityBeAttacked");
-	var messageArgs = [stageName];
-	if(_.isEmpty(playerDoc.logicServerId) && !_.isEmpty(playerDoc.apnId)){
-		var message = messageKey[language]
+	var messageArgs = [];
+	if(_.isEmpty(playerDoc.logicServerId) && !_.isEmpty(playerDoc.apnId) && !!playerDoc.apnStatus.onCityBeAttacked){
+		var message = messageKey[playerDoc.basicInfo.language];
 		if(!_.isString(message)) message = messageKey.en;
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs);
