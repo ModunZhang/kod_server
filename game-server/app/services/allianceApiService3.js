@@ -136,6 +136,8 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 			var villageTypeConfig = _.sample(DataUtils.getAllianceVillageTypeConfigs());
 			DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, villageTypeConfig.name, totalCount - currentCount);
 		}
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.BuildingUpgrade, playerObject.name, [building.name]);
+
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
@@ -186,6 +188,7 @@ pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callbac
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 		allianceDoc.villageLevels[villageType] += 1
 		allianceData.push(["villageLevels." + villageType, allianceDoc.villageLevels[villageType]])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.VillageUpgrade, playerObject.name, [villageType]);
 
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
@@ -304,6 +307,7 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
 		var event = DataUtils.createAllianceShrineStageEvent(stageName)
 		allianceDoc.shrineEvents.push(event)
 		allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(event), event])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.War, Consts.AllianceEventType.Shrine, playerDoc.basicInfo.name, [stageName]);
 
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "shrineEvents", event.id, event.startTime - Date.now()])
@@ -464,12 +468,13 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 	var attackAllianceData = []
 	var defenceAllianceDoc = null
 	var defenceAllianceData = []
+	var playerObject = null
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		attackAllianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, playerId)
+		playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "findAllianceToFight")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "findAllianceToFight"))
 		}
@@ -532,6 +537,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		attackAllianceData.push(["fightRequests", attackAllianceDoc.fightRequests])
 		defenceAllianceDoc.fightRequests = []
 		defenceAllianceData.push(["fightRequests", defenceAllianceDoc.fightRequests])
+		LogicUtils.AddAllianceEvent(attackAllianceDoc, attackAllianceData, Consts.AllianceEventCategory.War, Consts.AllianceEventType.Fight, playerObject.name, []);
 
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])

@@ -286,26 +286,23 @@ module.exports = {
 		War:"war"
 	},
 	AllianceEventType:{
-		Donate:"donate",//捐赠
-		PromotionUp:"promotionUp",//升级
-		PromotionDown:"promotionDown",//降级
-		Join:"join",//新成员加入
-		Kick:"kick",//踢出玩家
-		Quit:"quit",//玩家退出
-		Notice:"notice",//联盟公告
-		Desc:"desc",//联盟描述
-		HandOver:"handover",//转让盟主
-		Tools:"tools",//补充道具
-		Upgrade:"upgrade",//联盟建筑升级
-		Name:"name",//联盟名字修改
-		Tag:"tag",//联盟Tag修改
-		Flag:"flag",//联盟旗帜修改
-		Terrain:"terrain",//联盟地形修改
-		Language:"language",//联盟语言修改
-		Gve:"gve",//联盟圣地事件
-		Fight:'fight',//开启联盟战
-		BuildingUpgrade:'buildingUpgrade',//建筑升级
-		VillageUpgrade:'villageUpgrade'//村落升级
+		PromotionUp:"promotionUp",//xx xx将其联盟职位提高为xx
+		PromotionDown:"promotionDown",//xx xx将联盟职位降低为xx
+		Join:"join",//xx 一个新的玩家加入
+		Kick:"kick",//xx 被xx踢出联盟
+		Quit:"quit",//xx 退出了联盟
+		Notice:"notice",//xx 发布了一个新的联盟公告
+		Desc:"desc",//xx 编辑了联盟描述
+		HandOver:"handover",//xx 将盟主职位转交给了xx
+		Name:"name",//xx 将联盟名称修改为xx
+		Tag:"tag",//xx 将联盟标签修改为xx
+		Flag:"flag",//xx 修改了联盟旗帜
+		Terrain:"terrain",//xx 将联盟地形修改为xx
+		Language:"language",//xx 将联盟语言修改为xx
+		Shrine:"shrine",//xx 开启了联盟圣地xx关卡
+		Fight:'fight',//xx 开启了联盟战
+		BuildingUpgrade:'buildingUpgrade',//xx 升级了xx建筑
+		VillageUpgrade:'villageUpgrade'//xx 升级了xx村落
 	},
 	AllianceBuildingNames:{
 		Palace:"palace",//联盟宫殿

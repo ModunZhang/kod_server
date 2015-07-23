@@ -779,7 +779,7 @@ pro.buyAllianceArchon = function(playerId, allianceId, callback){
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".title", playerObject.title])
 		archonObject.title = Consts.AllianceTitle.Member
 		allianceData.push(["members." + allianceDoc.members.indexOf(archonObject) + ".title", archonObject.title])
-		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.HandOver, playerDoc.basicInfo.name, [])
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.HandOver, archonObject.name, [playerObject.name]);
 
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
