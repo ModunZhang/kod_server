@@ -134,16 +134,6 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 			playerDoc.soldiers[soldier.name] += soldier.count
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
-	}else if(_.isEqual(eventType, "dragonHatchEvents")){
-		event = LogicUtils.getEventById(playerDoc.dragonHatchEvents, eventId)
-		playerData.push(["dragonHatchEvents." + playerDoc.dragonHatchEvents.indexOf(event), null])
-		LogicUtils.removeItemInArray(playerDoc.dragonHatchEvents, event)
-		dragon = playerDoc.dragons[event.dragonType]
-		dragon.star = 1
-		dragon.level = 1
-		dragon.hp = DataUtils.getDragonMaxHp(dragon)
-		dragon.hpRefreshTime = Date.now()
-		playerData.push(["dragons." + dragon.type, dragon])
 	}else if(_.isEqual(eventType, "dragonDeathEvents")){
 		event = LogicUtils.getEventById(playerDoc.dragonDeathEvents, eventId)
 		playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(event), null])

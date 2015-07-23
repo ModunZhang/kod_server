@@ -983,3 +983,8 @@ errors["canNotBuyYourOwnSellItem"] = {
 	code:695,
 	message:"不能购买自己出售的商品"
 }
+errors["hatchConditionNotMatch"] = {
+	key:"hatchConditionNotMatch",
+	code:696,
+	message:"孵化条件不满足"
+}

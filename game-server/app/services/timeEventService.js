@@ -449,14 +449,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "treatSoldierEvents", event.id, event.finishTime - now))
 		}
 	})
-	var dragonHatchEvents = [].concat(playerDoc.dragonHatchEvents)
-	_.each(dragonHatchEvents, function(event){
-		if(LogicUtils.willFinished(event.finishTime)){
-			playerTimeEventService.onPlayerEvent(playerDoc, [], "dragonHatchEvents", event.id)
-		}else{
-			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dragonHatchEvents", event.id, event.finishTime - now))
-		}
-	})
 	var dragonDeathEvents = [].concat(playerDoc.dragonDeathEvents)
 	_.each(dragonDeathEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){

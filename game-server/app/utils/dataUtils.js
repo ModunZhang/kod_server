@@ -4147,3 +4147,19 @@ Utils.getMonsterRewards = function(monsterLevel){
 Utils.isResourceItem = function(itemName){
 	return _.isObject(Items.resource[itemName]);
 }
+
+/**
+ * 孵化巨龙是否合法
+ * @param playerDoc
+ * @returns {boolean}
+ */
+Utils.isPlayerDragonHatchLegal = function(playerDoc){
+	var dragonCount = 0;
+	_.each(playerDoc.dragons, function(dragon){
+		(function(){
+			if(dragon.star > 0) dragonCount +=1;
+		})();
+	})
+	var building = playerDoc.buildings.location_4;
+	return dragonCount < BuildingFunction.dragonEyrie[building.level].dragonCount;
+}

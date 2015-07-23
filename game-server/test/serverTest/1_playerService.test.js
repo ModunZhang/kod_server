@@ -522,17 +522,20 @@
 //			})
 //		})
 //
-//		it("hatchDragon 正常孵化", function(done){
+//		it("hatchDragon 孵化条件不满足", function(done){
 //			Api.hatchDragon("blueDragon", function(doc){
-//				doc.code.should.equal(200)
+//				doc.code.should.equal(Errors.hatchConditionNotMatch.code);
 //				done()
 //			})
 //		})
 //
-//		it("hatchDragon 已有龙蛋正在孵化", function(done){
-//			Api.hatchDragon("blueDragon", function(doc){
-//				doc.code.should.equal(Errors.dragonEggHatchEventExist.code)
-//				done()
+//		it("hatchDragon 正常孵化", function(done){
+//			Api.sendChat('buildinglevel 4 8', function(doc){
+//				doc.code.should.equal(200);
+//				Api.hatchDragon("blueDragon", function(doc){
+//					doc.code.should.equal(200);
+//					done()
+//				})
 //			})
 //		})
 //
@@ -572,7 +575,7 @@
 //		})
 //
 //		it("setDragonEquipment 龙还未孵化", function(done){
-//			Api.setDragonEquipment("blueDragon", "crown", "blueCrown_s1", function(doc){
+//			Api.setDragonEquipment("greenDragon", "crown", "greenCrown_s1", function(doc){
 //				doc.code.should.equal(Errors.dragonNotHatched.code)
 //				done()
 //			})
@@ -684,7 +687,7 @@
 //		})
 //
 //		it("upgradeDragonSkill 龙还未孵化", function(done){
-//			Api.upgradeDragonDragonSkill("blueDragon", "skill_1", function(doc){
+//			Api.upgradeDragonDragonSkill("greenDragon", "skill_1", function(doc){
 //				doc.code.should.equal(Errors.dragonNotHatched.code)
 //				done()
 //			})
@@ -741,7 +744,7 @@
 //		})
 //
 //		it("upgradeDragonStar 龙还未孵化", function(done){
-//			Api.upgradeDragonStar("blueDragon", function(doc){
+//			Api.upgradeDragonStar("greenDragon", function(doc){
 //				doc.code.should.equal(Errors.dragonNotHatched.code)
 //				done()
 //			})

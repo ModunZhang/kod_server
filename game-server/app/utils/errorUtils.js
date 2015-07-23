@@ -2023,3 +2023,13 @@ Utils.theAllianceDoNotNeedRequestToJoin = function(playerId, allianceId){
 	var config = Errors.theAllianceDoNotNeedRequestToJoin
 	return CreateError(config, {playerId:playerId, allianceId:allianceId})
 }
+
+/**
+ * 孵化条件不满足
+ * @param playerId
+ * @param dragonType
+ */
+Utils.hatchConditionNotMatch = function(playerId, dragonType){
+	var config = Errors.hatchConditionNotMatch;
+	return CreateError(config, {playerId:playerId, dragonType:dragonType});
+}

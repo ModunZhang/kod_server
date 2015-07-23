@@ -80,7 +80,6 @@ module.exports = {
 		"soldierStarEvents",
 		"treatSoldierEvents",
 		"dragonEquipmentEvents",
-		"dragonHatchEvents",
 		"dragonDeathEvents",
 		"buildingEvents",
 		"houseEvents",

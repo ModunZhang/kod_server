@@ -231,11 +231,14 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		var dragons = playerDoc.dragons
 		var dragon = dragons[dragonType]
 		if(dragon.star > 0) return Promise.reject(ErrorUtils.dragonEggAlreadyHatched(playerId, dragonType))
-		if(playerDoc.dragonHatchEvents.length > 0) return Promise.reject(ErrorUtils.dragonEggHatchEventExist(playerId, dragonType))
-		var event = DataUtils.createPlayerHatchDragonEvent(playerDoc, dragon)
-		playerDoc.dragonHatchEvents.push(event)
-		playerData.push(["dragonHatchEvents." + playerDoc.dragonHatchEvents.indexOf(event), event])
-		eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonHatchEvents", event.id, event.finishTime - Date.now()])
+		if(!DataUtils.isPlayerDragonHatchLegal(playerDoc)) return Promise.reject(ErrorUtils.hatchConditionNotMatch(playerId, dragonType))
+		dragon.star = 1
+		dragon.level = 1
+		dragon.status = Consts.DragonStatus.Free;
+		dragon.hp = DataUtils.getDragonMaxHp(dragon)
+		dragon.hpRefreshTime = Date.now()
+		playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
+
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
