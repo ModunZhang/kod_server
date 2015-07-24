@@ -307,7 +307,7 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
 		var event = DataUtils.createAllianceShrineStageEvent(stageName)
 		allianceDoc.shrineEvents.push(event)
 		allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(event), event])
-		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.War, Consts.AllianceEventType.Shrine, playerDoc.basicInfo.name, [stageName]);
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.War, Consts.AllianceEventType.Shrine, playerObject.name, [stageName]);
 
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "shrineEvents", event.id, event.startTime - Date.now()])
