@@ -8,6 +8,8 @@ var Promise = require("bluebird")
 
 var LogService = require("../../services/logService")
 
+var Player = require("../../domains/player")
+
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
@@ -15,6 +17,8 @@ life.beforeStartup = function(app, callback){
 	app.set('allianceFights', {})
 	app.set('allianceFightChats', {})
 	app.set("logService", new LogService(app))
+	app.set("Player", Promise.promisifyAll(Player))
+
 	callback()
 }
 

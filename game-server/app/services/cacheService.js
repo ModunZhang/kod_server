@@ -777,3 +777,19 @@ pro.timeoutAllAlliances = function(callback){
 		}
 	})()
 }
+
+/**
+ * 玩家是否在缓存
+ * @param playerId
+ */
+pro.isPlayerInCache = function(playerId){
+	return _.isObject(this.players[playerId]);
+}
+
+/**
+ * 联盟是否在缓存
+ * @param allianceId
+ */
+pro.isAllianceInCache = function(allianceId){
+	return _.isObject(this.alliances[allianceId]);
+}

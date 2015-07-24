@@ -247,10 +247,12 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, cal
 			isSaved:false
 		}
 
-		if(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
-			var willRemovedMail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
-			playerData.push(["mails." + playerDoc.mails.indexOf(willRemovedMail), null])
-			LogicUtils.removeItemInArray(playerDoc.mails, willRemovedMail)
+		while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
+			(function(){
+				var willRemovedMail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
+				playerData.push(["mails." + playerDoc.mails.indexOf(willRemovedMail), null])
+				LogicUtils.removeItemInArray(playerDoc.mails, willRemovedMail)
+			})();
 		}
 		playerDoc.mails.push(mail)
 		playerData.push(["mails." + playerDoc.mails.indexOf(mail), mail])
@@ -282,10 +284,12 @@ pro.sendSysReport = function(id, report, callback){
 	var playerData = []
 	this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
-		if(playerDoc.reports.length >= Define.PlayerReportsMaxSize){
-			var willRemovedReport = LogicUtils.getPlayerFirstUnSavedReport(playerDoc)
-			playerData.push(["reports." + playerDoc.reports.indexOf(willRemovedReport), null])
-			LogicUtils.removeItemInArray(playerDoc.reports, willRemovedReport)
+		while(playerDoc.reports.length >= Define.PlayerReportsMaxSize){
+			(function(){
+				var willRemovedReport = LogicUtils.getPlayerFirstUnSavedReport(playerDoc)
+				playerData.push(["reports." + playerDoc.reports.indexOf(willRemovedReport), null])
+				LogicUtils.removeItemInArray(playerDoc.reports, willRemovedReport)
+			})();
 		}
 		playerDoc.reports.push(report)
 		playerData.push(["reports." + playerDoc.reports.indexOf(report), report])
@@ -345,10 +349,12 @@ pro.sendPlayerMail = function(id, memberId, title, content, callback){
 			isRead:false,
 			isSaved:false
 		}
-		if(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
-			var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
-			memberData.push(["mails." + memberDoc.mails.indexOf(mail), null])
-			LogicUtils.removeItemInArray(memberDoc.mails, mail)
+		while(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
+			(function(){
+				var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
+				memberData.push(["mails." + memberDoc.mails.indexOf(mail), null])
+				LogicUtils.removeItemInArray(memberDoc.mails, mail)
+			})();
 		}
 		memberDoc.mails.push(mailToMember)
 		memberData.push(["mails." + memberDoc.mails.indexOf(mailToMember), mailToMember])
@@ -364,9 +370,11 @@ pro.sendPlayerMail = function(id, memberId, title, content, callback){
 			content:content,
 			sendTime:Date.now()
 		}
-		if(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
-			playerDoc.sendMails.shift()
-			playerData.push(["sendMails.0", null])
+		while(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
+			(function(){
+				playerDoc.sendMails.shift()
+				playerData.push(["sendMails.0", null])
+			})();
 		}
 		playerDoc.sendMails.push(mailToPlayer)
 		playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mailToPlayer), mailToPlayer])
@@ -452,9 +460,11 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 			isSaved:false
 		}
 
-		if(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
-			playerDoc.sendMails.shift()
-			playerData.push(["sendMails.0", null])
+		while(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
+			(function(){
+				playerDoc.sendMails.shift()
+				playerData.push(["sendMails.0", null])
+			})();
 		}
 		playerDoc.sendMails.push(mailToPlayer)
 		playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mailToPlayer), mailToPlayer])
@@ -472,10 +482,12 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 			var memberData = {}
 			memberData.doc = {_id:memberDoc._id, logicServerId:memberDoc.logicServerId}
 			memberData.data = []
-			if(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
-				var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
-				memberData.data.push(["mails." + memberDoc.mails.indexOf(mail), null])
-				LogicUtils.removeItemInArray(memberDoc.mails, mail)
+			while(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
+				(function(){
+					var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
+					memberData.data.push(["mails." + memberDoc.mails.indexOf(mail), null])
+					LogicUtils.removeItemInArray(memberDoc.mails, mail)
+				})();
 			}
 			memberDoc.mails.push(mailToMember)
 			memberData.data.push(["mails." + memberDoc.mails.indexOf(mailToMember), mailToMember])

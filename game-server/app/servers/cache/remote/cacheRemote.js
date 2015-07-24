@@ -6,9 +6,12 @@
 
 var toobusy = require("toobusy-js")
 var _ = require("underscore")
+var ShortId = require('shortid');
+var Promise = require('bluebird');
 
 var ErrorUtils = require("../../../utils/errorUtils")
 var Consts = require("../../../consts/consts")
+var Define = require("../../../consts/define")
 
 module.exports = function(app){
 	return new CacheRemote(app)
@@ -18,6 +21,9 @@ var CacheRemote = function(app){
 	this.app = app
 	this.logService = app.get('logService');
 	this.channelService = app.get('channelService')
+	this.cacheService = app.get('cacheService');
+	this.pushService = app.get('pushService');
+	this.Player = app.get('Player');
 
 	this.playerApiService = app.get("playerApiService")
 	this.playerApiService2 = app.get("playerApiService2")
@@ -30,6 +36,7 @@ var CacheRemote = function(app){
 	this.allianceApiService3 = app.get("allianceApiService3")
 	this.allianceApiService4 = app.get("allianceApiService4")
 	this.allianceApiService5 = app.get("allianceApiService5")
+	this.cacheServerId = app.get('cacheServerId');
 	this.toobusyMaxLag = 100
 	this.toobusyInterval = 500
 	toobusy.maxLag(this.toobusyMaxLag)
@@ -54,6 +61,100 @@ var CacheRemote = function(app){
 }
 
 var pro = CacheRemote.prototype
+
+/**
+ * 给在线玩家发全服邮件
+ * @param playerIds
+ * @param title
+ * @param content
+ * @param callback
+ */
+var SendInCacheServerMail = function(playerIds, title, content, callback){
+	var self = this;
+	var mail = {
+		id:ShortId.generate(),
+		title:title,
+		fromId:"__system",
+		fromName:"__system",
+		fromIcon:0,
+		fromAllianceTag:"",
+		sendTime:Date.now(),
+		content:content,
+		isRead:false,
+		isSaved:false
+	};
+
+	setImmediate(function(){
+		if(playerIds.length > 0){
+			var playerId = playerIds.shift();
+			var playerDoc = null;
+			var playerData = [];
+			return self.cacheService.findPlayerAsync(playerId).then(function(doc){
+				playerDoc = doc;
+				while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
+					(function(){
+						var willRemovedMail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
+						playerData.push(["mails." + playerDoc.mails.indexOf(willRemovedMail), null])
+						LogicUtils.removeItemInArray(playerDoc.mails, willRemovedMail)
+					})();
+				}
+				playerDoc.mails.push(mail)
+				playerData.push(["mails." + playerDoc.mails.indexOf(mail), mail])
+				return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+			}).then(function(){
+				return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
+			}).then(function(){
+				return SendInCacheServerMail.call(self, playerIds, title, content, callback);
+			}).catch(function(e){
+				self.logService.onEventError('cache.cacheRemote.SendInCacheServerMail', {
+					playerId:playerId,
+					title:title,
+					content:content
+				}, e.stack);
+				var funcs = []
+				if(_.isObject(playerDoc)){
+					funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+				}
+				return Promise.all(funcs).then(function(){
+					return SendInCacheServerMail.call(self, playerIds, title, content, callback);
+				})
+			})
+		}else{
+			callback();
+		}
+	})
+}
+
+/**
+ * 给离线玩家发送全服邮件
+ * @param playerIds
+ * @param title
+ * @param content
+ * @param callback
+ */
+var SendOutCacheServerMail = function(playerIds, title, content, callback){
+	var self = this;
+	var mail = {
+		id:ShortId.generate(),
+		title:title,
+		fromId:"__system",
+		fromName:"__system",
+		fromIcon:0,
+		fromAllianceTag:"",
+		sendTime:Date.now(),
+		content:content,
+		isRead:false,
+		isSaved:false
+	};
+
+	self.Player.collection.update({
+		serverId:self.cacheServerId,
+		_id:{$in:playerIds}
+	}, {$push:{mails:mail}}, {multi:true}, function(e){
+		if(_.isObject(e)) callback(e);
+		else callback()
+	});
+}
 
 /**
  * 将玩家添加到联盟频道
@@ -96,6 +197,54 @@ pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callbac
  */
 pro.getLoginedCount = function(callback){
 	callback(null, this.app.get('loginedCount'))
+}
+
+/**
+ * 发送全服系统邮件
+ * @param ids
+ * @param title
+ * @param content
+ * @param callback
+ */
+pro.sendServerMail = function(ids, title, content, callback){
+	var self = this;
+	var inCacheIds = [];
+	var outCacheIds = [];
+	_.each(ids, function(id){
+		(function(){
+			if(self.cacheService.isPlayerInCache(id)) inCacheIds.push(id);
+			else outCacheIds.push(id);
+		})();
+	})
+	var inCacheIdsLength = inCacheIds.length;
+	var outCacheIdsLength = outCacheIds.length;
+	var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, this);
+	var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, this);
+	SendOutCacheServerMailAsync(outCacheIds, title, content).then(function(){
+		self.logService.onEvent('cache.cacheRemote.SendOutCacheServerMail', {
+			serverId:self.cacheServerId,
+			playerCount:outCacheIdsLength,
+			title:title,
+			content:content
+		});
+		return SendInCacheServerMailAsync(inCacheIds, title, content)
+	}).then(function(){
+		self.logService.onEvent('cache.cacheRemote.SendInCacheServerMail', {
+			serverId:self.cacheServerId,
+			playerCount:inCacheIdsLength,
+			title:title,
+			content:content
+		});
+	}).catch(function(e){
+		self.logService.onEventError('cache.cacheRemote.sendServerMail', {
+			serverId:self.cacheServerId,
+			count:ids.length,
+			title:title,
+			content:content
+		}, e.stack);
+	})
+
+	callback()
 }
 
 /**

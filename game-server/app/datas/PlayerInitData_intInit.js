@@ -153,3 +153,8 @@ intInit["dragonHpRecoverTerrainAddPercent"] = {
 	value:20,
 	desc:"龙在相应地形下的hp回复加成比例"
 }
+intInit["activePlayerNeedHouses"] = {
+	type:"activePlayerNeedHouses",
+	value:72,
+	desc:"定义活跃用户最后登录时间和当前时间的差值"
+}

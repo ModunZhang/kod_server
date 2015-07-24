@@ -5,15 +5,18 @@
  */
 
 var _ = require("underscore")
+var Promise = require('bluebird');
+
+var DataUtils = require('../../../utils/dataUtils')
 
 var Consts = require("../../../consts/consts")
 var Events = require("../../../consts/events")
 
-module.exports = function(app) {
+module.exports = function(app){
 	return new ChatRemote(app)
 }
 
-var ChatRemote = function(app) {
+var ChatRemote = function(app){
 	this.app = app
 	this.logService = app.get('logService');
 	this.channelService = app.get("channelService")
@@ -21,6 +24,7 @@ var ChatRemote = function(app) {
 	this.allianceChats = app.get('allianceChats')
 	this.allianceFights = app.get('allianceFights')
 	this.allianceFightChats = app.get('allianceFightChats')
+	this.Player = app.get('Player');
 }
 
 var pro = ChatRemote.prototype
@@ -69,7 +73,11 @@ pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
 pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 	if(!_.isObject(channel)){
-		this.logService.onEventError('chat.chatRemote.removeFromAllianceChannel', {allianceId:allianceId, playerId:uid, logicServerId:logicServerId})
+		this.logService.onEventError('chat.chatRemote.removeFromAllianceChannel', {
+			allianceId:allianceId,
+			playerId:uid,
+			logicServerId:logicServerId
+		})
 		callback()
 		return
 	}
@@ -128,4 +136,51 @@ pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
 pro.sendNotice = function(type, content, callback){
 	this.globalChatChannel.pushMessage(Events.chat.onNotice, {type:type, content:content}, {}, null)
 	callback()
+}
+
+/**
+ * 发送全服系统邮件
+ * @param title
+ * @param content
+ * @param callback
+ */
+pro.sendServerMail = function(title, content, callback){
+	this.logService.onEvent('chat.chatRemote.sendServerMail', {title:title, content:content});
+
+	var self = this;
+	var lastLoginTime = Date.now() - (DataUtils.getPlayerIntInit('activePlayerNeedHouses') * 60 * 60 * 1000);
+	var serverIds = {};
+	var playerCount = 0;
+	this.Player.collection.find({'countInfo.lastLogoutTime':{$gt:lastLoginTime}}, {
+		_id:true,
+		serverId:true
+	}).toArray(function(e, docs){
+		playerCount = docs.length;
+		_.each(docs, function(doc){
+			(function(){
+				if(!_.isArray(serverIds[doc.serverId])) serverIds[doc.serverId] = [];
+				serverIds[doc.serverId].push(doc._id);
+			})();
+		})
+		var funcs = []
+		_.each(serverIds, function(ids, serverId){
+			(function(){
+				var sendMailAsync = new Promise(function(resolve, reject){
+					self.app.rpc.cache.cacheRemote.sendServerMail.toServer(serverId, ids, title, content, function(e){
+						if(_.isObject(e)) reject(e);
+						else resolve()
+					})
+				})
+				funcs.push(sendMailAsync);
+			})();
+		})
+
+		Promise.all(funcs).catch(function(e){
+			self.logService.onEventError('chat.chatRemote.sendServerMail', {
+				title:title,
+				content:content
+			}, e.stack);
+		})
+	})
+	callback();
 }
