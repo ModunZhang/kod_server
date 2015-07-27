@@ -1557,7 +1557,6 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 						fightResult:soldierFightData.fightResult
 					});
 					var playerReport = playerReports[playerDoc._id];
-					var playerRewards = DataUtils.getRewardsByKillScoreAndTerrain(playerKilledCitizen, allianceDoc.basicInfo.terrain)
 					var playerDragonExpAdd = DataUtils.getPlayerDragonExpAdd(playerDoc, playerKilledCitizen);
 					var playerDragon = playerDragons[playerDoc._id];
 					playerDragon.expAdd += playerDragonExpAdd;
@@ -1583,7 +1582,6 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 						}
 					}
 					playerReport.roundDatas.push(playerRoundData);
-					LogicUtils.mergeRewards(playerReport.rewards, playerRewards);
 				})();
 			})
 		})();
@@ -1627,14 +1625,18 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 				kill:_.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].kill : 0,
 				rewards:_.isObject(playerReports[playerDoc._id]) ? playerReports[playerDoc._id].rewards : []
 			}
-			playerRewards[playerDoc._id] = playerData.rewards;
 			playerKills[playerDoc._id] = playerData.kill;
 			totalDeath += _.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].death : 0;
 			shrineReportPlayerDatas[playerDoc._id] = playerData;
 			if(_.isObject(playerKillAndDeathDatas[playerDoc._id])){
 				var rewards = getPlayerRewards(allianceDoc.basicInfo.terrain, stageConfig, playerData.kill);
+				playerReports[playerDoc._id].rewards = rewards;
+				playerRewards[playerDoc._id] = rewards;
 				LogicUtils.mergeRewards(playerData.rewards, rewards);
 				LogicUtils.mergeRewards(playerReports[playerDoc._id].rewards, rewards);
+			}else{
+				playerRewards[playerDoc._id] = [];
+				playerReports[playerDoc._id].rewards = [];
 			}
 		})();
 	})
