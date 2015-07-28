@@ -244,6 +244,10 @@ GameDatas.ProductionTechLevelUp.mintedCoin = require("./ProductionTechLevelUp_mi
 GameDatas.ProductionTechs = {}
 GameDatas.ProductionTechs.productionTechs = require("./ProductionTechs_productionTechs.js")
 
+GameDatas.PvE = {}
+GameDatas.PvE.sections = require("./PvE_sections.js")
+GameDatas.PvE.stages = require("./PvE_stages.js")
+
 GameDatas.Soldiers = {}
 GameDatas.Soldiers.normal = require("./Soldiers_normal.js")
 GameDatas.Soldiers.special = require("./Soldiers_special.js")

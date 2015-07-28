@@ -988,3 +988,8 @@ errors["hatchConditionNotMatch"] = {
 	code:696,
 	message:"孵化条件不满足"
 }
+errors["pveSecionIsLocked"] = {
+	key:"pveSecionIsLocked",
+	code:697,
+	message:"关卡未解锁"
+}

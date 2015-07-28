@@ -891,7 +891,7 @@ pro.deleteMails = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	for(var i = 0; i < mailIds.length; i ++){
+	for(var i = 0; i < mailIds.length; i++){
 		if(!ShortId.isValid(mailIds[i])){
 			e = new Error("mailIds 不合法")
 			next(e, ErrorUtils.getError(e))
@@ -921,7 +921,7 @@ pro.deleteSendMails = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	for(var i = 0; i < mailIds.length; i ++){
+	for(var i = 0; i < mailIds.length; i++){
 		if(!ShortId.isValid(mailIds[i])){
 			e = new Error("mailIds 不合法")
 			next(e, ErrorUtils.getError(e))
@@ -951,7 +951,7 @@ pro.readReports = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	for(var i = 0; i < reportIds.length; i ++){
+	for(var i = 0; i < reportIds.length; i++){
 		if(!ShortId.isValid(reportIds[i])){
 			e = new Error("reportIds 不合法")
 			next(e, ErrorUtils.getError(e))
@@ -1073,7 +1073,7 @@ pro.deleteReports = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	for(var i = 0; i < reportIds.length; i ++){
+	for(var i = 0; i < reportIds.length; i++){
 		if(!ShortId.isValid(reportIds[i])){
 			e = new Error("reportIds 不合法")
 			next(e, ErrorUtils.getError(e))
@@ -2066,6 +2066,41 @@ pro.setApnStatus = function(msg, session, next){
 	}
 
 	this.request('setApnStatus', [session.uid, type, status]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 进攻PvE关卡
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.attackPveSection = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.attackPveSection", {playerId:session.uid, msg:msg})
+	var sectionName = msg.sectionName;
+	var dragonType = msg.dragonType;
+	var soldiers = msg.soldiers;
+	var e = null
+	if(!DataUtils.isPvESectionExist(sectionName)){
+		e = new Error("sectionName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!DataUtils.isDragonTypeExist(dragonType)){
+		e = new Error("dragonType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isArray(soldiers)){
+		e = new Error("soldiers 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('attackPveSection', [session.uid, sectionName, dragonType, soldiers]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

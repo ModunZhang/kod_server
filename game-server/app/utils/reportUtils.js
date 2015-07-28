@@ -2024,3 +2024,94 @@ Utils.getPlayerHelpDefenceTroopDetail = function(playerDoc, dragon, soldiers){
 
 	return detail
 }
+
+/**
+ * 创建进攻Pve关卡战报
+ * @param playerDoc
+ * @param sectionName
+ * @param dragonFightData
+ * @param soldierFightData
+ * @returns {{playerDragonExpAdd: number, playerDragonHpDecreased: number, playerSoldiers, playerWoundedSoldiers, playerRewards}}
+ */
+Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFightData, soldierFightData){
+	var createSoldiers = function(soldiersAfterFight){
+		var soldiers = []
+		_.each(soldiersAfterFight, function(soldierAfterFight){
+			if(soldierAfterFight.currentCount > 0){
+				var soldier = {
+					name:soldierAfterFight.name,
+					count:soldierAfterFight.currentCount
+				}
+				soldiers.push(soldier)
+			}
+		})
+		return soldiers
+	}
+	var createWoundedSoldiers = function(soldiersAfterFight){
+		var soldiers = []
+		_.each(soldiersAfterFight, function(soldierAfterFight){
+			if(soldierAfterFight.woundedCount > 0){
+				var soldier = {
+					name:soldierAfterFight.name,
+					count:soldierAfterFight.woundedCount
+				}
+				soldiers.push(soldier)
+			}
+		})
+		return soldiers
+	}
+	var getKilledCitizen = function(soldiersForFight){
+		var killed = 0
+		var config = null
+		_.each(soldiersForFight, function(soldierForFight){
+			_.each(soldierForFight.killedSoldiers, function(soldier){
+				if(DataUtils.isNormalSoldier(soldier.name)){
+					var soldierFullKey = soldier.name + "_" + soldier.star
+					config = Soldiers.normal[soldierFullKey]
+					killed += soldier.count * config.killScore
+				}else{
+					config = Soldiers.special[soldier.name]
+					killed += soldier.count * config.killScore
+				}
+			})
+		})
+		return killed
+	}
+
+	var fightStar = 0;
+
+	if(_.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult))
+		fightStar += 1;
+	if(fightStar > 0 && _.isEqual(Consts.FightResult.AttackWin, dragonFightData.fightResult))
+		fightStar += 1;
+	var soldierName = null;
+	var isOnlyOneSoldierType = true;
+	for(var i = 0; i < soldierFightData.attackRoundDatas.length; i ++){
+		(function(){
+			var roundData = soldierFightData.attackRoundDatas[i];
+			if(soldierName == null) soldierName = roundData.soldierName;
+			else if(!_.isEqual(soldierName, roundData.soldierName)){
+				isOnlyOneSoldierType = false;
+				break;
+			}
+		})();
+	}
+	if(isOnlyOneSoldierType)
+		fightStar += 1;
+
+	var playerKilledCitizen = getKilledCitizen(soldierFightData.attackSoldiersAfterFight);
+	var playerDragonExpAdd = DataUtils.getPlayerDragonExpAdd(playerDoc, playerKilledCitizen);
+	var playerDragonHpDecreased = dragonFightData.attackDragonAfterFight.totalHp - dragonFightData.attackDragonAfterFight.currentHp;
+	var playerSoldiers = createSoldiers(soldierFightData.attackSoldiersAfterFight);
+	var playerWoundedSoldiers = createWoundedSoldiers(soldierFightData.attackSoldiersAfterFight);
+	var playerRewards = DataUtils.getPveSectionRewards(sectionName, fightStar);
+
+	return {
+		playerDragonExpAdd:playerDragonExpAdd,
+		playerDragonHpDecreased:playerDragonHpDecreased,
+		playerSoldiers:playerSoldiers,
+		playerWoundedSoldiers:playerWoundedSoldiers,
+		playerRewards:playerRewards,
+		fightStar:fightStar
+	}
+}

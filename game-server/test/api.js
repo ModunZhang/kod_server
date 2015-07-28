@@ -702,6 +702,17 @@ Api.getPlayerWallInfo = function(memberId, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.attackPveSection = function(sectionName, dragonType, soldiers){
+	var info = {
+		sectionName:sectionName,
+		dragonType:dragonType,
+		soldiers:soldiers
+	}
+	var route = "logic.playerHandler.attackPveSection"
+	pomelo.request(route, info, callback)
+}
+
+
 
 
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){

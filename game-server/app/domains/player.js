@@ -1672,21 +1672,10 @@ var PlayerSchema = new Schema({
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
-	pve:{
-		totalStep:{type:Number, default:0},
-		location:{
-			x:{type:Number, required:true, default:12},
-			y:{type:Number, required:true, default:12},
-			z:{type:Number, required:true, default:1}
-		},
-		floors:[{
-			_id:false,
-			level:{type:Number, required:true},
-			fogs:{type:String, required:true},
-			objects:{type:String, required:true}
-		}],
-		rewardedFloors:[Number]
-	},
+	pve:[{
+		sections:[Number],
+		rewarded:[Number]
+	}],
 	dailyTasks:{
 		rewarded:[],
 		empireRise:[],

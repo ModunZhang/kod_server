@@ -2033,3 +2033,13 @@ Utils.hatchConditionNotMatch = function(playerId, dragonType){
 	var config = Errors.hatchConditionNotMatch;
 	return CreateError(config, {playerId:playerId, dragonType:dragonType});
 }
+
+/**
+ * 关卡未解锁
+ * @param playerId
+ * @param sectionName
+ */
+Utils.pveSecionIsLocked = function(playerId, sectionName){
+	var config = Errors.pveSecionIsLocked;
+	return CreateError(config, {playerId:playerId, sectionName:sectionName});
+}

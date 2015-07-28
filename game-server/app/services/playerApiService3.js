@@ -12,6 +12,7 @@ var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var ErrorUtils = require("../utils/errorUtils")
+var ReportUtils = require('../utils/reportUtils')
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -795,4 +796,100 @@ pro.setApnId = function(playerId, apnId, callback){
 			callback(e)
 		})
 	})
+}
+
+/**
+ * 进攻PvE关卡
+ * @param playerId
+ * @param sectionName
+ * @param dragonType
+ * @param soldiers
+ * @param callback
+ */
+pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, callback){
+	var self = this;
+	var playerDoc = null;
+	var playerData = [];
+	var updateFuncs = [];
+	var eventFuncs = [];
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		var playerDragon = playerDoc.dragons[dragonType]
+		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
+		if(_.isEqual(Consts.DragonStatus.March, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
+		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
+		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
+		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
+		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
+		var sectionParams = sectionName.split('_');
+		var stageIndex = parseInt(sectionParams[0]) - 1;
+		var sectionIndex = parseInt(sectionParams[1]) - 1;
+		if(!LogicUtils.isPveSectionUnlocked(sectionName)) return Promise.reject(ErrorUtils.pveSecionIsLocked(playerId, stageIndex, sectionIndex));
+
+		var playerDragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDragon, playerDoc.basicInfo.terrain);
+		var playerSoldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, soldiers, playerDragon, playerDoc.basicInfo.terrain, true);
+		var playerTreatSoldierPercent = DataUtils.getPlayerTreatSoldierPercent(playerDoc, playerDragon);
+		var playerSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(playerDoc, playerDragon);
+		var playerToEnemySoldierMoralDecreasedAddPercent = DataUtils.getEnemySoldierMoraleAddedPercent(playerDoc, playerDragon);
+		var sectionTroopForFight = DataUtils.createPveSecionTroopForFight(sectionName, playerDoc.basicInfo.terrain);
+		var sectionDragonForFight = sectionTroopForFight.dragonForFight;
+		var sectionSoldiersForFight = sectionTroopForFight.soldiersForFight;
+		var dragonFightFixEffect = DataUtils.getDragonFightFixedEffect(playerDragonForFight, sectionSoldiersForFight);
+		var dragonFightData = FightUtils.dragonToDragonFight(playerDragonForFight, sectionDragonForFight, dragonFightFixEffect);
+		var soldierFightData = FightUtils.soldierToSoldierFight(playerSoldiersForFight, playerTreatSoldierPercent, playerSoldierMoraleDecreasedPercent, sectionSoldiersForFight, 0, 1 + playerToEnemySoldierMoralDecreasedAddPercent)
+		var report = ReportUtils.createAttackPveSectionReport(playerDoc, sectionName, dragonFightData, soldierFightData);
+		playerDragon.hp -= report.playerDragonHpDecreased;
+		if(playerDragon.hp <= 0){
+			var deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, playerDragon);
+			playerDoc.dragonDeathEvents.push(deathEvent);
+			playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent]);
+			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()]);
+		}
+		DataUtils.addPlayerDragonExp(playerDoc, playerData, playerDragon, report.playerDragonExpAdd);
+		playerData.push(["dragons." + playerDragon.type + ".hp", playerDragon.hp]);
+		playerData.push(["dragons." + playerDragon.type + ".hpRefreshTime", playerDragon.hpRefreshTime]);
+		LogicUtils.addPlayerSoldiers(playerDoc, playerData, report.playerSoldiers);
+		DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, report.playerWoundedSoldiers);
+		DataUtils.refreshPlayerPower(playerDoc, playerData);
+		//DataUtils.refreshPlayerResources(playerDoc);
+		//playerData.push(["resources", playerDoc.resources]);
+		LogicUtils.addPlayerRewards(playerDoc, playerData, report.playerRewards);
+		LogicUtils.updatePlayerPveData(playerDoc, playerData, stageIndex, sectionIndex, report.fightStar);
+
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc]);
+		return LogicUtils.excuteAll(updateFuncs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs);
+	}).then(function(){
+		callback(null, playerData);
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
+ * 扫荡关卡
+ * @param playerId
+ * @param sectionName
+ * @param count
+ * @param callback
+ */
+pro.sweepPveSection = function(playerId, sectionName, count, callback){
+
+}
+
+/**
+ * 获取关卡星级奖励
+ * @param playerId
+ * @param stageName
+ * @param callback
+ */
+pro.getPveStageReward = function(playerId, stageName, callback){
+
 }

@@ -2081,31 +2081,29 @@ Utils.addPlayerSoldiers = function(playerDoc, playerData, soldiers){
 Utils.addPlayerRewards = function(playerDoc, playerData, rewards){
 	var self = this;
 	_.each(rewards, function(reward){
-		(function(){
-			var type = reward.type
-			var name = reward.name
-			var count = reward.count
-			if(_.isEqual(name, 'marchQueue') && playerDoc.basicInfo.marchQueue >= 2){
-				return;
-			}
-			if(_.isEqual("items", type)){
-				var resp = self.addPlayerItem(playerDoc, name, count);
-				playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-				return;
-			}
-			if(_.isEqual('resources', type)){
-				playerDoc[type][name] += count
-				return;
-			}
-			if(_.contains(Consts.MaterialDepotTypes, type)){
-				DataUtils.addPlayerMaterials(playerDoc, type, [{name:name, count:count}])
-				playerData.push([type + "." + name, playerDoc[type][name]])
-				return;
-			}
-
+		var type = reward.type
+		var name = reward.name
+		var count = reward.count
+		if(_.isEqual(name, 'marchQueue') && playerDoc.basicInfo.marchQueue >= 2){
+			return;
+		}
+		if(_.isEqual("items", type)){
+			var resp = self.addPlayerItem(playerDoc, name, count);
+			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+			return;
+		}
+		if(_.isEqual('resources', type)){
 			playerDoc[type][name] += count
+			return;
+		}
+		if(_.contains(Consts.MaterialDepotTypes, type)){
+			DataUtils.addPlayerMaterials(playerDoc, type, [{name:name, count:count}])
 			playerData.push([type + "." + name, playerDoc[type][name]])
-		})();
+			return;
+		}
+
+		playerDoc[type][name] += count
+		playerData.push([type + "." + name, playerDoc[type][name]])
 	})
 }
 
@@ -2401,4 +2399,40 @@ Utils.removePlayerTroopOut = function(playerDoc, dragonType){
 		return _.isEqual(troopOut.dragonType, dragonType)
 	})
 	if(_.isObject(troopOut)) this.removeItemInArray(playerDoc.troopsOut, troopOut)
+}
+
+/**
+ * Pve关卡是否解锁
+ * @param playerDoc
+ * @param stageIndex
+ * @param sectionIndex
+ * @returns {boolean}
+ */
+Utils.isPveSectionUnlocked = function(playerDoc, stageIndex, sectionIndex){
+	if(stageIndex == playerDoc.pve.length && sectionIndex == 0) return true;
+	return (stageIndex < playerDoc.pve.length && sectionIndex <= playerDoc.pve.sections.length);
+}
+
+/**
+ * 更新玩家Pve进度数据
+ * @param playerDoc
+ * @param playerData
+ * @param stageIndex
+ * @param sectionIndex
+ * @param fightStar
+ */
+Utils.updatePlayerPveData = function(playerDoc, playerData, stageIndex, sectionIndex, fightStar){
+	if(fightStar <= 0) return;
+	var stage = playerDoc.pve[stageIndex]
+	if(!_.isObject(stage)){
+		playerDoc.pve[stageIndex] = stage = {sections:[], rewarded:[]};
+		stage.sections[sectionIndex] = fightStar;
+		playerData.push(['pve.' + stageIndex, stage]);
+	}else{
+		var previousStar = stage.sections[sectionIndex];
+		if(_.isUndefined(previousStar) || previousStar < fightStar){
+			stage.sections[sectionIndex] = fightStar;
+			playerData.push(['pve.' + stageIndex + '.sections.' + sectionIndex, stage.sections[sectionIndex]])
+		}
+	}
 }
