@@ -993,3 +993,13 @@ errors["pveSecionIsLocked"] = {
 	code:697,
 	message:"关卡未解锁"
 }
+errors["canNotGetPvEStarRewardyet"] = {
+	key:"canNotGetPvEStarRewardyet",
+	code:698,
+	message:"还不能领取PvE星级奖励"
+}
+errors["pveStarRewardAlreadyGet"] = {
+	key:"pveStarRewardAlreadyGet",
+	code:699,
+	message:"Pve星级奖励已经领取"
+}

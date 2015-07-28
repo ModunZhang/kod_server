@@ -824,7 +824,7 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		var sectionParams = sectionName.split('_');
 		var stageIndex = parseInt(sectionParams[0]) - 1;
 		var sectionIndex = parseInt(sectionParams[1]) - 1;
-		if(!LogicUtils.isPveSectionUnlocked(sectionName)) return Promise.reject(ErrorUtils.pveSecionIsLocked(playerId, stageIndex, sectionIndex));
+		if(!LogicUtils.isPveSectionUnlocked(playerDoc, stageIndex, sectionIndex)) return Promise.reject(ErrorUtils.pveSecionIsLocked(playerId, stageIndex, sectionIndex));
 
 		var playerDragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDragon, playerDoc.basicInfo.terrain);
 		var playerSoldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, soldiers, playerDragon, playerDoc.basicInfo.terrain, true);
@@ -891,5 +891,37 @@ pro.sweepPveSection = function(playerId, sectionName, count, callback){
  * @param callback
  */
 pro.getPveStageReward = function(playerId, stageName, callback){
+	var self = this;
+	var playerDoc = null;
+	var playerData = [];
+	var updateFuncs = [];
+	this.dataService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		var stageParams = stageName.split('_');
+		var stageIndex = parseInt(stageParams[0]) - 1;
+		var rewardIndex = parseInt(stageParams[1]);
+		if(!_.isObject(playerDoc.pve[stageIndex])) return Promise.reject(ErrorUtils.canNotGetPvEStarRewardyet(playerId, stageName));
+		var rewardedIndex = _.find(playerDoc.pve[stageIndex].rewarded, function(rewardedIndex){
+			return rewardedIndex == rewardIndex;
+		})
+		if(!!rewardedIndex) return Promise.reject(ErrorUtils.pveStarRewardAlreadyGet(playerId, stageName));
+		if(!DataUtils.isPlayerPvEStageRewardStarEnough(playerDoc, stageName)) return Promise.reject(ErrorUtils.canNotGetPvEStarRewardyet(playerId, stageName));
+		var rewards = DataUtils.getPveStageRewards(stageName);
+		LogicUtils.addPlayerRewards(playerDoc, playerData, rewards);
+		playerDoc.pve[stageIndex].rewarded.push(rewardIndex)
+		playerData.push(['pve.' + stageIndex + '.rewarded', playerDoc.pve[stageIndex].rewarded]);
 
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerId, playerDoc]);
+		return LogicUtils.excuteAll(updateFuncs);
+	}).then(function(){
+		callback(null, playerData);
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
 }

@@ -2043,3 +2043,23 @@ Utils.pveSecionIsLocked = function(playerId, sectionName){
 	var config = Errors.pveSecionIsLocked;
 	return CreateError(config, {playerId:playerId, sectionName:sectionName});
 }
+
+/**
+ * 还不能领取星级奖励
+ * @param playerId
+ * @param stageName
+ */
+Utils.canNotGetPvEStarRewardyet = function(playerId, stageName){
+	var config = Errors.canNotGetPvEStarRewardyet;
+	return CreateError(config, {playerId:playerId, stageName:stageName});
+}
+
+/**
+ * Pve星级奖励已经领取
+ * @param playerId
+ * @param stageName
+ */
+Utils.pveStarRewardAlreadyGet = function(playerId, stageName){
+	var config = Errors.pveStarRewardAlreadyGet;
+	return CreateError(config, {playerId:playerId, stageName:stageName});
+}

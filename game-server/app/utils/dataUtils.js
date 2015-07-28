@@ -4174,7 +4174,7 @@ Utils.isPlayerDragonHatchLegal = function(playerDoc){
  * @returns {*}
  */
 Utils.createPveSecionTroopForFight = function(sectionName, terrain){
-	var troopStrings = PvE[sectionName].split(',')
+	var troopStrings = PvE.sections[sectionName].split(',')
 	var dragonStrings = troopStrings.shift().split('_');
 	var dragon = {
 		type:dragonStrings[0],
@@ -4207,7 +4207,7 @@ Utils.getPveSectionRewards = function(sectionName, fightStar){
 	var rewards = [];
 	if(fightStar <= 0) return rewards;
 
-	var rewardStrings = PvE[sectionName].split(',');
+	var rewardStrings = PvE.sections[sectionName].split(',');
 	_.each(rewardStrings, function(rewardString){
 		var rewardParams = rewardString.split(':');
 		var reward = {
@@ -4225,5 +4225,43 @@ Utils.getPveSectionRewards = function(sectionName, fightStar){
  * @param sectionName
  */
 Utils.isPvESectionExist = function(sectionName){
-	return _.isObject(PvE[sectionName]);
+	return _.isObject(PvE.sections[sectionName]);
+}
+
+/**
+ * 领取PvE星级奖励所获得的星星数量是否足够
+ * @param playerDoc
+ * @param stageName
+ * @returns {boolean}
+ */
+Utils.isPlayerPvEStageRewardStarEnough = function(playerDoc, stageName){
+	var starNeed = PvE.stages[stageName].needStar;
+	var stageIndex = parseInt(stageName.split('_')[0] - 1);
+	var starHas = 0;
+	_.each(playerDoc.pve[stageIndex].sections, function(star, index){
+		var sectionName = (stageIndex + 1) + '_' + (index + 1);
+		var starAble = PvE.sections[sectionName].starAble;
+		if(starAble) starHas += star;
+	})
+	return starHas >= starNeed;
+}
+
+/**
+ * 获取PvE关卡星级奖励
+ * @param stageName
+ * @returns {Array}
+ */
+Utils.getPveStageRewards = function(stageName){
+	var rewards = [];
+	var rewardStrings = PvE.stages[stageName].split(',');
+	_.each(rewardStrings, function(rewardString){
+		var rewardParams = rewardString.split(':');
+		var reward = {
+			type:rewardParams[0],
+			name:rewardParams[1],
+			count:parseInt(rewardParams[2])
+		}
+		rewards.push(reward);
+	})
+	return rewards;
 }

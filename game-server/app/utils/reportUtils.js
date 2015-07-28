@@ -1702,7 +1702,11 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 					var soldierWoundedCount = _.isObject(soldierAndWoundedSoldier) ? soldierAndWoundedSoldier.woundedCount : 0;
 					var soldierStar = DataUtils.getPlayerSoldierStar(playerTroop.playerDoc, soldier.name);
 					if(soldierCount > 0)
-						finalPlayerSoldiersAndWoundedSoldiers.soldiers.push({name:soldier.name, star:soldierStar, count:soldierCount});
+						finalPlayerSoldiersAndWoundedSoldiers.soldiers.push({
+							name:soldier.name,
+							star:soldierStar,
+							count:soldierCount
+						});
 					if(soldierWoundedCount > 0)
 						finalPlayerSoldiersAndWoundedSoldiers.woundedSoldiers.push({name:soldier.name, count:soldierWoundedCount});
 				})();
@@ -2086,14 +2090,11 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 		fightStar += 1;
 	var soldierName = null;
 	var isOnlyOneSoldierType = true;
-	for(var i = 0; i < soldierFightData.attackRoundDatas.length; i ++){
+	for(var i = 0; i < soldierFightData.attackRoundDatas.length; i++){
 		(function(){
 			var roundData = soldierFightData.attackRoundDatas[i];
 			if(soldierName == null) soldierName = roundData.soldierName;
-			else if(!_.isEqual(soldierName, roundData.soldierName)){
-				isOnlyOneSoldierType = false;
-				break;
-			}
+			else if(!_.isEqual(soldierName, roundData.soldierName)) isOnlyOneSoldierType = false;
 		})();
 	}
 	if(isOnlyOneSoldierType)
