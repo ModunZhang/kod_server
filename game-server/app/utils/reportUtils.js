@@ -1623,17 +1623,15 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 				name:playerDoc.basicInfo.name,
 				icon:playerDoc.basicInfo.icon,
 				kill:_.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].kill : 0,
-				rewards:_.isObject(playerReports[playerDoc._id]) ? playerReports[playerDoc._id].rewards : []
 			}
 			playerKills[playerDoc._id] = playerData.kill;
 			totalDeath += _.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].death : 0;
 			shrineReportPlayerDatas[playerDoc._id] = playerData;
 			if(_.isObject(playerKillAndDeathDatas[playerDoc._id])){
 				var rewards = getPlayerRewards(allianceDoc.basicInfo.terrain, stageConfig, playerData.kill);
+				playerData.rewards = rewards;
 				playerReports[playerDoc._id].rewards = rewards;
 				playerRewards[playerDoc._id] = rewards;
-				LogicUtils.mergeRewards(playerData.rewards, rewards);
-				LogicUtils.mergeRewards(playerReports[playerDoc._id].rewards, rewards);
 			}else{
 				playerRewards[playerDoc._id] = [];
 				playerReports[playerDoc._id].rewards = [];
@@ -1680,8 +1678,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 					roundDatas:[]
 				}
 				playerDragons[playerTroop.id] = {type:playerTroop.dragon.type, hpDecreased:0, expAdd:0};
-			}else
-				report.attackTarget.fightStar = fightStar;
+			}else report.attackTarget.fightStar = fightStar;
 
 			var fullReport = {
 				id:ShortId.generate(),
