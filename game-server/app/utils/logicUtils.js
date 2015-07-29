@@ -2278,16 +2278,6 @@ Utils.getEnemyAllianceId = function(allianceFight, myAllianceId){
  * @param playerDoc
  */
 Utils.initPlayerDoc = function(playerDoc){
-	playerDoc.pve.floors = [{
-		"level":1,
-		"fogs":"000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000",
-		"objects":"[[9,12,3]]"
-	}]
-	playerDoc.pve.location = {
-		"z":1,
-		"y":12,
-		"x":9
-	}
 	playerDoc.growUpTasks.cityBuild.push({
 		"id":0,
 		"index":1,
