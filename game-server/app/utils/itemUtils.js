@@ -17,8 +17,6 @@ var MapUtils = require("../utils/mapUtils")
 var GameDatas = require("../datas/GameDatas")
 var Items = GameDatas.Items
 var Buildings = GameDatas.Buildings
-var AllianceInitData = GameDatas.AllianceInitData
-var PlayerInitData = GameDatas.PlayerInitData
 
 var Utils = module.exports
 
@@ -400,6 +398,48 @@ var DragonChest = function(playerDoc, playerData, itemConfig){
 }
 
 /**
+ * 扫荡PvE关卡
+ * @param playerDoc
+ * @param playerData
+ * @param sectionName
+ * @param count
+ * @constructor
+ */
+var SweepPveSection = function(playerDoc, playerData, sectionName, count){
+	if(!LogicUtils.isPlayerPvESectionReachMaxStar(playerDoc, sectionName))
+		return Promise.reject(ErrorUtils.currentPvESectionCanNotBeSweepedYet(playerDoc._id, sectionName));
+	var pveFight = _.find(playerDoc.pveFights, function(pveFight){
+		return _.isEqual(pveFight.sectionName, sectionName);
+	})
+	var maxFightCount = DataUtils.getPveMaxFightCount(sectionName);
+	if((count > maxFightCount) || (_.isObject(pveFight) && pveFight.count + count > maxFightCount))
+		return Promise.reject(ErrorUtils.currentSectionReachMaxFightCount(playerDoc._id, sectionName));
+	DataUtils.refreshPlayerResources(playerDoc);
+	playerData.push(["resources", playerDoc.resources])
+	var staminaUsed = DataUtils.getPveSectionStaminaCount(sectionName, count);
+	if(playerDoc.resources.stamina < staminaUsed)
+		return Promise.reject(ErrorUtils.playerStaminaNotEnough(playerDoc._id, playerDoc.resources.stamina, staminaUsed));
+	var rewards = DataUtils.getPveSectionRewards(sectionName, 3);
+	_.each(rewards, function(reward){
+		reward.count *= count;
+	})
+	LogicUtils.addPlayerRewards(playerDoc, playerData, rewards);
+	if(!_.isObject(pveFight)){
+		pveFight = {
+			sectionName:sectionName,
+			count:0
+		}
+		playerDoc.pveFights.push(pveFight);
+		playerData.push(['pveFights.' + playerDoc.pveFights.indexOf(pveFight), pveFight]);
+	}else{
+		pveFight.count += count;
+		playerData.push(['pveFights.' + playerDoc.pveFights.indexOf(pveFight) + '.count', pveFight.count]);
+	}
+	playerDoc.resources.stamina -= staminaUsed;
+	return Promise.resolve();
+}
+
+/**
  * 开宝箱,送道具
  * @param playerDoc
  * @param playerData
@@ -441,7 +481,7 @@ var Chest = function(playerDoc, playerData, itemConfig){
 
 	var items = ParseConfig(itemConfig.effect)
 	items = SortFunc(items)
-	var selectCount = PlayerInitData.intInit.chestSelectCountPerItem.value
+	var selectCount = DataUtils.getPlayerIntInit('chestSelectCountPerItem');
 	for(var i = 0; i < selectCount; i++){
 		var item = items[i]
 		var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
@@ -695,10 +735,12 @@ Utils.isParamsLegal = function(itemName, params){
 		var playerName = itemData.playerName
 		return !(!_.isString(playerName) || playerName.trim().length > Define.InputLength.PlayerName)
 	}
+	var eventType = null;
+	var eventId
 	if(_.isEqual(itemName, "retreatTroop")){
 		if(!_.isObject(itemData)) return false
-		var eventType = itemData.eventType
-		var eventId = itemData.eventId
+		eventType = itemData.eventType
+		eventId = itemData.eventId
 		if(!_.isString(eventType)) return false
 		if(!_.isEqual(eventType, "strikeMarchEvents") && !_.isEqual(eventType, "attackMarchEvents")) return false
 		return _.isString(eventId)
@@ -707,8 +749,8 @@ Utils.isParamsLegal = function(itemName, params){
 		if(!_.isObject(itemData)) return false
 		var locationX = itemData.locationX
 		var locationY = itemData.locationY
-		var locationXMax = AllianceInitData.intInit.allianceRegionMapWidth.value - 1
-		var locationYMax = AllianceInitData.intInit.allianceRegionMapHeight.value - 1
+		var locationXMax = DataUtils.getAllianceIntInit('allianceRegionMapWidth') - 1;
+		var locationYMax = DataUtils.getAllianceIntInit('allianceRegionMapHeight') - 1;
 
 		if(!_.isNumber(locationX) || locationX % 1 !== 0 || locationX < 0 || locationX > locationXMax) return false
 		return !(!_.isNumber(locationY) || locationY % 1 !== 0 || locationY < 0 || locationY > locationYMax)
@@ -740,6 +782,12 @@ Utils.isParamsLegal = function(itemName, params){
 		eventId = itemData.eventId
 		if(!_.contains(_.values(Consts.WarSpeedupEventTypes), eventType)) return false
 		return _.isString(eventId)
+	}
+	if(_.isEqual(itemName, 'sweepScroll')){
+		if(!_.isObject(itemData)) return false
+		var sectionName = itemData.sectionName;
+		if(!DataUtils.isPvESectionSweepAble(sectionName)) return false;
+		if(!_.isNumber(itemData.count) || itemData.count % 1 !== 0 || itemData.count < 1) return false;
 	}
 	if(_.isObject(Items.resource[itemName])){
 		if(!_.isObject(itemData) || !_.isNumber(itemData.count) || itemData.count % 1 !== 0 || itemData.count < 1) return false;
@@ -855,6 +903,11 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 		restoreWall_3:function(){
 			var itemConfig = Items.special.restoreWall_3
 			return RestoreWallHp(playerDoc, playerData, itemConfig)
+		},
+		sweepScroll:function(){
+			var sectionName = itemData.sectionName;
+			var count = itemData.count;
+			return SweepPveSection(playerDoc, playerData, sectionName, count);
 		},
 		dragonChest_1:function(){
 			var itemConfig = Items.special.dragonChest_1

@@ -1539,52 +1539,6 @@
 //			})
 //		})
 //
-//		it("setPveData 正常设置", function(done){
-//			Api.setPveData(
-//				{
-//					staminaUsed:5,
-//					location:{
-//						x:1,
-//						y:1,
-//						z:1
-//					},
-//					floor:{
-//						level:1,
-//						fogs:"asdfasdfasf",
-//						objects:"asdfasdfasfd"
-//					}
-//				},
-//				{
-//					dragon:{
-//						type:"redDragon",
-//						hpDecreased:12,
-//						expAdd:12
-//					},
-//					soldiers:[{
-//						name:"swordsman",
-//						damagedCount:10,
-//						woundedCount:5
-//					}]
-//				},
-//				[{
-//					type:"resources",
-//					name:"wood",
-//					count:12
-//				}, {
-//					type:"resources",
-//					name:"gem",
-//					count:-2
-//				}, {
-//					type:"items",
-//					name:"torch",
-//					count:2
-//				}],
-//				function(doc){
-//					doc.code.should.equal(200)
-//					done()
-//				})
-//		})
-//
 //		it("gacha 正常Gacha1", function(done){
 //			Api.gacha(Consts.GachaType.Normal, function(doc){
 //				doc.code.should.equal(200)
@@ -1900,6 +1854,78 @@
 //		it("getPlayerWallInfo 正常完成", function(done){
 //			Api.getPlayerWallInfo(m_user._id, function(doc){
 //				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("buyAndUseItem sweepScroll 1", function(done){
+//			Api.buyAndUseItem("sweepScroll", {
+//				sweepScroll:{
+//					sectionName:'1_1',
+//					count:10
+//				}
+//			}, function(doc){
+//				doc.code.should.equal(Errors.currentPvESectionCanNotBeSweepedYet.code)
+//				done()
+//			})
+//		})
+//
+//		it("attackPveSection 关卡未解锁", function(done){
+//			Api.sendChat("soldiers 1000", function(doc){
+//				doc.code.should.equal(200)
+//				Api.attackPveSection('1_2', 'blueDragon', [
+//					{name:'swordsman', count:200},
+//					{name:'sentinel', count:200},
+//					{name:'ranger', count:200}
+//				], function(doc){
+//					doc.code.should.equal(Errors.pveSecionIsLocked.code);
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("attackPveSection 正常进攻", function(done){
+//			Api.attackPveSection('1_1', 'blueDragon', [
+//				{name:'swordsman', count:200},
+//				{name:'sentinel', count:200},
+//				{name:'ranger', count:200}
+//			], function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("buyAndUseItem sweepScroll 2", function(done){
+//			Api.buyAndUseItem("sweepScroll", {
+//				sweepScroll:{
+//					sectionName:'1_1',
+//					count:10
+//				}
+//			}, function(doc){
+//				doc.code.should.equal(Errors.currentSectionReachMaxFightCount.code)
+//				done()
+//			})
+//		})
+//
+//		it("buyAndUseItem sweepScroll 3", function(done){
+//			Api.buyAndUseItem("sweepScroll", {
+//				sweepScroll:{
+//					sectionName:'1_1',
+//					count:9
+//				}
+//			}, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("attackPveSection 当前关卡已达最大战斗次数", function(done){
+//			Api.attackPveSection('1_1', 'blueDragon', [
+//				{name:'swordsman', count:200},
+//				{name:'sentinel', count:200},
+//				{name:'ranger', count:200}
+//			], function(doc){
+//				doc.code.should.equal(Errors.currentSectionReachMaxFightCount.code);
 //				done()
 //			})
 //		})

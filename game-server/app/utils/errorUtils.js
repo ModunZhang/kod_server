@@ -2063,3 +2063,34 @@ Utils.pveStarRewardAlreadyGet = function(playerId, stageName){
 	var config = Errors.pveStarRewardAlreadyGet;
 	return CreateError(config, {playerId:playerId, stageName:stageName});
 }
+
+/**
+ * 当前关卡已达最大战斗次数
+ * @param playerId
+ * @param sectionName
+ */
+Utils.currentSectionReachMaxFightCount = function(playerId, sectionName){
+	var config = Errors.currentSectionReachMaxFightCount;
+	return CreateError(config, {playerId:playerId, sectionName:sectionName});
+}
+
+/**
+ * 玩家体力值不足
+ * @param playerId
+ * @param staminaHas
+ * @param staminaNeed
+ */
+Utils.playerStaminaNotEnough = function(playerId, staminaHas, staminaNeed){
+	var config = Errors.playerStaminaNotEnough;
+	return CreateError(config, {playerId:playerId, staminaHas:staminaHas, staminaNeed:staminaNeed});
+}
+
+/**
+ * 当前PvE关卡还不能被扫荡
+ * @param playerId
+ * @param sectionName
+ */
+Utils.currentPvESectionCanNotBeSweepedYet = function(playerId, sectionName){
+	var config = Errors.currentPvESectionCanNotBeSweepedYet;
+	return CreateError(config, {playerId:playerId, sectionName:sectionName});
+}

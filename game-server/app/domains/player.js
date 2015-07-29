@@ -1676,6 +1676,10 @@ var PlayerSchema = new Schema({
 		sections:[Number],
 		rewarded:[Number]
 	}],
+	pveFights:[{
+		sectionName:{type:String, required:true},
+		count:{type:String, required:true}
+	}],
 	dailyTasks:{
 		rewarded:[],
 		empireRise:[],

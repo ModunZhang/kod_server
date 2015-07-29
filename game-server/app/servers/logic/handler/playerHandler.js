@@ -1519,41 +1519,6 @@ pro.buyAndUseItem = function(msg, session, next){
 }
 
 /**
- * 上传玩家PVE数据
- * @param msg
- * @param session
- * @param next
- */
-pro.setPveData = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.setPveData", {playerId:session.uid, msg:msg})
-	var pveData = msg.pveData
-	var fightData = msg.fightData
-	var rewards = msg.rewards
-	var e = null
-	if(!_.isObject(pveData)){
-		e = new Error("pveData 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.isUndefined(fightData) && !_.isObject(fightData)){
-		e = new Error("fightData 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.isUndefined(rewards) && !_.isObject(rewards)){
-		e = new Error("rewards 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	this.request('setPveData', [session.uid, pveData, fightData, rewards]).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * gacha
  * @param msg
  * @param session
@@ -2101,6 +2066,29 @@ pro.attackPveSection = function(msg, session, next){
 	}
 
 	this.request('attackPveSection', [session.uid, sectionName, dragonType, soldiers]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 获取关卡星级奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getPveStageReward = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getPveStageReward", {playerId:session.uid, msg:msg})
+	var stageName = msg.stageName;
+	var e = null
+	if(!DataUtils.isPvEStageExist(stageName)){
+		e = new Error("stageName 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getPveStageReward', [session.uid, stageName]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

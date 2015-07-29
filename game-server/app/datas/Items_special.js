@@ -393,3 +393,13 @@ special["restoreWall_3"] = {
 	buyPriceInAlliance:100000,
 	isAdvancedItem:true
 }
+special["sweepScroll"] = {
+	name:"sweepScroll",
+	effect:"NONE",
+	order:41,
+	isSell:true,
+	price:50,
+	sellPriceInAlliance:250,
+	buyPriceInAlliance:250,
+	isAdvancedItem:false
+}

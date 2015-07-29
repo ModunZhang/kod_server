@@ -13,6 +13,7 @@ var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var ErrorUtils = require("../utils/errorUtils")
 var ReportUtils = require('../utils/reportUtils')
+var FightUtils = require('../utils/fightUtils');
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -815,16 +816,25 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
 		var playerDragon = playerDoc.dragons[dragonType]
-		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
-		if(_.isEqual(Consts.DragonStatus.March, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
-		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
-		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
+		if(playerDragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
+		if(_.isEqual(Consts.DragonStatus.March, playerDragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, playerDragon.type))
+		DataUtils.refreshPlayerDragonsHp(playerDoc, playerDragon)
+		if(playerDragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, playerDragon.type))
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
-		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
+		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, playerDragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, playerDragon.type))
 		var sectionParams = sectionName.split('_');
 		var stageIndex = parseInt(sectionParams[0]) - 1;
 		var sectionIndex = parseInt(sectionParams[1]) - 1;
-		if(!LogicUtils.isPveSectionUnlocked(playerDoc, stageIndex, sectionIndex)) return Promise.reject(ErrorUtils.pveSecionIsLocked(playerId, stageIndex, sectionIndex));
+		if(!LogicUtils.isPlayerPveSectionUnlocked(playerDoc, stageIndex, sectionIndex)) return Promise.reject(ErrorUtils.pveSecionIsLocked(playerId, stageIndex, sectionIndex));
+		var pveFight = _.find(playerDoc.pveFights, function(pveFight){
+			return _.isEqual(pveFight.sectionName, sectionName);
+		})
+		var maxFightCount = DataUtils.getPveMaxFightCount(sectionName)
+		if(_.isObject(pveFight) && pveFight.count >= maxFightCount) return Promise.reject(ErrorUtils.currentSectionReachMaxFightCount(playerId, sectionName));
+		DataUtils.refreshPlayerResources(playerDoc);
+		playerData.push(['resources', playerDoc.resources]);
+		var staminaUsed = DataUtils.getPveSectionStaminaCount(sectionName, 1);
+		if(playerDoc.resources.stamina < staminaUsed) return Promise.reject(ErrorUtils.playerStaminaNotEnough(playerId, playerDoc.resources.stamina, staminaUsed));
 
 		var playerDragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDragon, playerDoc.basicInfo.terrain);
 		var playerSoldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, soldiers, playerDragon, playerDoc.basicInfo.terrain, true);
@@ -851,12 +861,22 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		LogicUtils.addPlayerSoldiers(playerDoc, playerData, report.playerSoldiers);
 		DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, report.playerWoundedSoldiers);
 		DataUtils.refreshPlayerPower(playerDoc, playerData);
-		//DataUtils.refreshPlayerResources(playerDoc);
-		//playerData.push(["resources", playerDoc.resources]);
 		LogicUtils.addPlayerRewards(playerDoc, playerData, report.playerRewards);
 		LogicUtils.updatePlayerPveData(playerDoc, playerData, stageIndex, sectionIndex, report.fightStar);
+		if(!_.isObject(pveFight)){
+			pveFight = {
+				sectionName:sectionName,
+				count:1
+			}
+			playerDoc.pveFights.push(pveFight);
+			playerData.push(['pveFights.' + playerDoc.pveFights.indexOf(pveFight), pveFight]);
+		}else{
+			pveFight.count += 1;
+			playerData.push(['pveFights.' + playerDoc.pveFights.indexOf(pveFight) + '.count', pveFight.count]);
+		}
+		playerDoc.resources.stamina -= staminaUsed;
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerDoc._id, playerDoc]);
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc]);
 		return LogicUtils.excuteAll(updateFuncs);
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs);
@@ -871,17 +891,6 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 			callback(e)
 		})
 	})
-}
-
-/**
- * 扫荡关卡
- * @param playerId
- * @param sectionName
- * @param count
- * @param callback
- */
-pro.sweepPveSection = function(playerId, sectionName, count, callback){
-
 }
 
 /**
@@ -911,7 +920,7 @@ pro.getPveStageReward = function(playerId, stageName, callback){
 		playerDoc.pve[stageIndex].rewarded.push(rewardIndex)
 		playerData.push(['pve.' + stageIndex + '.rewarded', playerDoc.pve[stageIndex].rewarded]);
 
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerAsync, playerId, playerDoc]);
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerId, playerDoc]);
 		return LogicUtils.excuteAll(updateFuncs);
 	}).then(function(){
 		callback(null, playerData);

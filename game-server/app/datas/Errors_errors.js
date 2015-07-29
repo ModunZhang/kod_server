@@ -1003,3 +1003,18 @@ errors["pveStarRewardAlreadyGet"] = {
 	code:699,
 	message:"Pve星级奖励已经领取"
 }
+errors["currentSectionReachMaxFightCount"] = {
+	key:"currentSectionReachMaxFightCount",
+	code:700,
+	message:"当前关卡已达最大战斗次数"
+}
+errors["playerStaminaNotEnough"] = {
+	key:"playerStaminaNotEnough",
+	code:700,
+	message:"玩家体力值不足"
+}
+errors["currentPvESectionCanNotBeSweepedYet"] = {
+	key:"currentPvESectionCanNotBeSweepedYet",
+	code:701,
+	message:"当前PvE关卡还不能被扫荡"
+}

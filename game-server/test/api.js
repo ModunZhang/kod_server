@@ -510,16 +510,6 @@ Api.buyAndUseItem = function(itemName, params, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.setPveData = function(pveData, fightData, rewards, callback){
-	var info = {
-		pveData:pveData,
-		fightData:fightData,
-		rewards:rewards
-	}
-	var route = "logic.playerHandler.setPveData"
-	pomelo.request(route, info, callback)
-}
-
 Api.gacha = function(type, callback){
 	var info = {
 		type:type
@@ -702,7 +692,7 @@ Api.getPlayerWallInfo = function(memberId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.attackPveSection = function(sectionName, dragonType, soldiers){
+Api.attackPveSection = function(sectionName, dragonType, soldiers, callback){
 	var info = {
 		sectionName:sectionName,
 		dragonType:dragonType,
@@ -711,6 +701,15 @@ Api.attackPveSection = function(sectionName, dragonType, soldiers){
 	var route = "logic.playerHandler.attackPveSection"
 	pomelo.request(route, info, callback)
 }
+
+Api.getPveStageReward = function(stageName, callback){
+	var info = {
+		stageName:stageName
+	}
+	var route = "logic.playerHandler.getPveStageReward"
+	pomelo.request(route, info, callback)
+}
+
 
 
 

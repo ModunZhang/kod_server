@@ -119,6 +119,7 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 			playerDoc.countInfo.todayOnLineTimeRewards = []
 			playerDoc.countInfo.todayFreeNormalGachaCount = 0
 			playerDoc.countInfo.todayLoyaltyGet = 0
+			playerDoc.pveFights = [];
 			if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)){
 				if(playerDoc.countInfo.day60 == 60){
 					playerDoc.countInfo.day60 = 1

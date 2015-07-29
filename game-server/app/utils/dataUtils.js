@@ -4174,7 +4174,7 @@ Utils.isPlayerDragonHatchLegal = function(playerDoc){
  * @returns {*}
  */
 Utils.createPveSecionTroopForFight = function(sectionName, terrain){
-	var troopStrings = PvE.sections[sectionName].split(',')
+	var troopStrings = PvE.sections[sectionName].troops.split(',')
 	var dragonStrings = troopStrings.shift().split('_');
 	var dragon = {
 		type:dragonStrings[0],
@@ -4207,7 +4207,7 @@ Utils.getPveSectionRewards = function(sectionName, fightStar){
 	var rewards = [];
 	if(fightStar <= 0) return rewards;
 
-	var rewardStrings = PvE.sections[sectionName].split(',');
+	var rewardStrings = PvE.sections[sectionName].rewards.split(',');
 	_.each(rewardStrings, function(rewardString){
 		var rewardParams = rewardString.split(':');
 		var reward = {
@@ -4226,6 +4226,15 @@ Utils.getPveSectionRewards = function(sectionName, fightStar){
  */
 Utils.isPvESectionExist = function(sectionName){
 	return _.isObject(PvE.sections[sectionName]);
+}
+
+/**
+ * PvE关卡是否能被扫荡
+ * @param sectionName
+ * @returns {boolean}
+ */
+Utils.isPvESectionSweepAble = function(sectionName){
+	return _.isObject(PvE.sections[sectionName]) && !!PvE.sections[sectionName].sweepAble;
 }
 
 /**
@@ -4253,7 +4262,7 @@ Utils.isPlayerPvEStageRewardStarEnough = function(playerDoc, stageName){
  */
 Utils.getPveStageRewards = function(stageName){
 	var rewards = [];
-	var rewardStrings = PvE.stages[stageName].split(',');
+	var rewardStrings = PvE.stages[stageName].rewards.split(',');
 	_.each(rewardStrings, function(rewardString){
 		var rewardParams = rewardString.split(':');
 		var reward = {
@@ -4264,4 +4273,30 @@ Utils.getPveStageRewards = function(stageName){
 		rewards.push(reward);
 	})
 	return rewards;
+}
+
+/**
+ * PvE星级奖励是否存在
+ * @param stageName
+ */
+Utils.isPvEStageExist = function(stageName){
+	return _.isObject(PvE.stages[stageName]);
+}
+
+/**
+ * 获取最大PvE关卡战斗次数
+ * @param sectionName
+ * @returns {*}
+ */
+Utils.getPveMaxFightCount = function(sectionName){
+	return PvE.sections[sectionName].maxFightCount;
+}
+
+/**
+ * 获取PvE关卡所需体力
+ * @param sectionName
+ * @param count
+ */
+Utils.getPveSectionStaminaCount = function(sectionName, count){
+	return PvE.sections[sectionName].staminaUsed * count;
 }

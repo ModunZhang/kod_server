@@ -2408,9 +2408,9 @@ Utils.removePlayerTroopOut = function(playerDoc, dragonType){
  * @param sectionIndex
  * @returns {boolean}
  */
-Utils.isPveSectionUnlocked = function(playerDoc, stageIndex, sectionIndex){
+Utils.isPlayerPveSectionUnlocked = function(playerDoc, stageIndex, sectionIndex){
 	if(stageIndex == playerDoc.pve.length && sectionIndex == 0) return true;
-	return (stageIndex < playerDoc.pve.length && sectionIndex <= playerDoc.pve.sections.length);
+	return (stageIndex < playerDoc.pve.length && sectionIndex <= playerDoc.pve[stageIndex].sections.length);
 }
 
 /**
@@ -2435,4 +2435,17 @@ Utils.updatePlayerPveData = function(playerDoc, playerData, stageIndex, sectionI
 			playerData.push(['pve.' + stageIndex + '.sections.' + sectionIndex, stage.sections[sectionIndex]])
 		}
 	}
+}
+
+/**
+ *
+ * @param playerDoc
+ * @param sectionName
+ * @returns {boolean}
+ */
+Utils.isPlayerPvESectionReachMaxStar = function(playerDoc, sectionName){
+	var sectionParams = sectionName.split('_');
+	var stageIndex = parseInt(sectionParams[0]) - 1;
+	var sectionIndex = parseInt(sectionParams[1]) - 1;
+	return _.isObject(playerDoc.pve[stageIndex]) && playerDoc.pve[stageIndex].sections[sectionIndex] === 3;
 }
