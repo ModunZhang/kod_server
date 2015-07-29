@@ -835,7 +835,9 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		playerData.push(['resources', playerDoc.resources]);
 		var staminaUsed = DataUtils.getPveSectionStaminaCount(sectionName, 1);
 		if(playerDoc.resources.stamina < staminaUsed) return Promise.reject(ErrorUtils.playerStaminaNotEnough(playerId, playerDoc.resources.stamina, staminaUsed));
-
+		_.each(soldiers, function(soldier){
+			playerDoc.soldiers[soldier.name] -= soldier.count
+		})
 		var playerDragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDragon, playerDoc.basicInfo.terrain);
 		var playerSoldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, soldiers, playerDragon, playerDoc.basicInfo.terrain, true);
 		var playerTreatSoldierPercent = DataUtils.getPlayerTreatSoldierPercent(playerDoc, playerDragon);
