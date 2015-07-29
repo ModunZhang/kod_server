@@ -2473,7 +2473,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		}]
 		LogicUtils.mergeRewards(originalRewards, newRewards)
 		DataUtils.refreshPlayerResources(attackPlayerDoc)
-		attackPlayerData.push(["resources." + playerDoc.resources])
+		attackPlayerData.push(["resources." + attackPlayerDoc.resources])
 		LogicUtils.addPlayerRewards(attackPlayerDoc, attackPlayerData, originalRewards);
 
 		var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
