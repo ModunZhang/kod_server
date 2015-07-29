@@ -126,7 +126,8 @@ var PlayerSchema = new Schema({
 		isFirstIAPRewardsGeted:{type:Boolean, required:true, default:false},
 		todayLoyaltyGet:{type:Number, require:true, default:0},
 		firstJoinAllianceRewardGeted:{type:Boolean, require:true, default:false},
-		isFTEFinished:{type:Boolean, required:true, default:false}
+		isFTEFinished:{type:Boolean, required:true, default:false},
+		pveCount:{type:Number, required:true, default:0}
 	},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},

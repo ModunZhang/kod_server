@@ -14,6 +14,7 @@ var LogicUtils = require("../utils/logicUtils")
 var ErrorUtils = require("../utils/errorUtils")
 var ReportUtils = require('../utils/reportUtils')
 var FightUtils = require('../utils/fightUtils');
+var TaskUtils = require('../utils/taskUtils');
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -877,6 +878,9 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 			playerData.push(['pveFights.' + playerDoc.pveFights.indexOf(pveFight) + '.count', pveFight.count]);
 		}
 		playerDoc.resources.stamina -= staminaUsed;
+		playerDoc.countInfo.pveCount += 1;
+		playerData.push(['countInfo.pveCount', playerDoc.countInfo.pveCount]);
+		TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData);
 
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc]);
 		return LogicUtils.excuteAll(updateFuncs);

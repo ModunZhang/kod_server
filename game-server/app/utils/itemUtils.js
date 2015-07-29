@@ -436,6 +436,9 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count){
 		playerData.push(['pveFights.' + playerDoc.pveFights.indexOf(pveFight) + '.count', pveFight.count]);
 	}
 	playerDoc.resources.stamina -= staminaUsed;
+	playerDoc.countInfo.pveCount += count;
+	playerData.push(['countInfo.pveCount', playerDoc.countInfo.pveCount]);
+	TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData);
 	return Promise.resolve();
 }
 
