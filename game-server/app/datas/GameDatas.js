@@ -251,6 +251,7 @@ GameDatas.PvE.stages = require("./PvE_stages.js")
 GameDatas.Soldiers = {}
 GameDatas.Soldiers.normal = require("./Soldiers_normal.js")
 GameDatas.Soldiers.special = require("./Soldiers_special.js")
+GameDatas.Soldiers.fightFix = require("./Soldiers_fightFix.js")
 
 GameDatas.StoreItems = {}
 GameDatas.StoreItems.items = require("./StoreItems_items.js")

@@ -2449,8 +2449,8 @@ Utils.createAllianceMonsterForFight = function(allianceDoc, monster){
  * @param dragon
  * @returns {number}
  */
-Utils.getPlayerTreatSoldierPercent = function(playerDoc, dragon){
-	var basePercent = 0.3
+Utils.getPlayerWoundedSoldierPercent = function(playerDoc, dragon){
+	var basePercent = this.getAllianceIntInit('soldierFightWoundedPercent') / 100;
 	var equipmentBuff = 0
 	var dragonSkillName = "recover"
 	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
@@ -2684,9 +2684,9 @@ Utils.isAllianceRevengeTimeExpired = function(allianceFightReport){
  * 获取龙的力量修正
  * @param attackSoldiersForFight
  * @param defenceSoldiersForFight
- * @returns {{attackDragonEffect, defenceDragonEffect}}
+ * @returns {*}
  */
-Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldiersForFight){
+Utils.getFightFixedEffect = function(attackSoldiersForFight, defenceSoldiersForFight){
 	var getSumPower = function(soldiersForFight){
 		var power = 0
 		_.each(soldiersForFight, function(soldierForFight){
@@ -2694,8 +2694,18 @@ Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldie
 		})
 		return power
 	}
-	var getEffectPercent = function(multiple){
+	var getDragonEffectPercent = function(multiple){
 		var configs = Dragons.fightFix
+		for(var i = configs.length - 1; i >= 0; i--){
+			var config = configs[i]
+			if(multiple > config.multipleMin){
+				return config.effect
+			}
+		}
+		return configs[0].effect
+	}
+	var getSoldierEffectPercent = function(multiple){
+		var configs = Soldiers.fightFix
 		for(var i = configs.length - 1; i >= 0; i--){
 			var config = configs[i]
 			if(multiple > config.multipleMin){
@@ -2707,9 +2717,14 @@ Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldie
 
 	var attackSumPower = getSumPower(attackSoldiersForFight)
 	var defenceSumPower = getSumPower(defenceSoldiersForFight)
-	var attackDragonEffect = getEffectPercent(defenceSumPower / attackSumPower);
-	var defenceDragonEffect = getEffectPercent(attackSumPower / defenceSumPower);
-	return {attackDragonEffect:attackDragonEffect, defenceDragonEffect:defenceDragonEffect};
+	var attackDragonEffect = getDragonEffectPercent(defenceSumPower / attackSumPower);
+	var defenceDragonEffect = getDragonEffectPercent(attackSumPower / defenceSumPower);
+	var attackSoldierEffect = getSoldierEffectPercent(defenceSumPower / attackSumPower);
+	var defenceSoldierEffect = getSoldierEffectPercent(attackSumPower / defenceSumPower);
+	return {
+		soldier:{attackSoldierEffect:attackSoldierEffect, defenceSoldierEffect:defenceSoldierEffect},
+		dragon:{attackDragonEffect:attackDragonEffect, defenceDragonEffect:defenceDragonEffect}
+	}
 }
 
 /**

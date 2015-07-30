@@ -113,3 +113,8 @@ intInit["monstersPerPlayer"] = {
 	value:4,
 	desc:"每个联盟玩家创建多少个野怪"
 }
+intInit["soldierFightWoundedPercent"] = {
+	type:"soldierFightWoundedPercent",
+	value:30,
+	desc:"士兵战斗受伤士兵基础百分比"
+}
