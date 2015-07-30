@@ -2681,10 +2681,10 @@ Utils.isAllianceRevengeTimeExpired = function(allianceFightReport){
 }
 
 /**
- * 获取龙的力量修正  结果大于0,防御方力量降低返回值的百分比, 结果小于0,攻击方防御降低返回值绝对值的百分比
+ * 获取龙的力量修正
  * @param attackSoldiersForFight
  * @param defenceSoldiersForFight
- * @returns {number}
+ * @returns {{attackDragonEffect, defenceDragonEffect}}
  */
 Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldiersForFight){
 	var getSumPower = function(soldiersForFight){
@@ -2696,19 +2696,20 @@ Utils.getDragonFightFixedEffect = function(attackSoldiersForFight, defenceSoldie
 	}
 	var getEffectPercent = function(multiple){
 		var configs = Dragons.fightFix
-		for(var i = 0; i < configs.length; i++){
+		for(var i = configs.length - 1; i >= 0; i--){
 			var config = configs[i]
-			if(config.multipleMax > multiple){
+			if(multiple > config.multipleMin){
 				return config.effect
 			}
 		}
-		return configs[configs.length - 1].effect
+		return configs[0].effect
 	}
 
 	var attackSumPower = getSumPower(attackSoldiersForFight)
 	var defenceSumPower = getSumPower(defenceSoldiersForFight)
-	var effect = attackSumPower >= defenceSumPower ? getEffectPercent(attackSumPower / defenceSumPower) : -getEffectPercent(defenceSumPower / attackSumPower)
-	return effect
+	var attackDragonEffect = getEffectPercent(defenceSumPower / attackSumPower);
+	var defenceDragonEffect = getEffectPercent(attackSumPower / defenceSumPower);
+	return {attackDragonEffect:attackDragonEffect, defenceDragonEffect:defenceDragonEffect};
 }
 
 /**

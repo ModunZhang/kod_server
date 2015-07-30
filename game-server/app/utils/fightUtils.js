@@ -11,7 +11,6 @@ var Consts = require("../consts/consts")
 
 var Utils = module.exports
 
-
 /**
  * 军队战斗
  * @param attackSoldiers
@@ -116,7 +115,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 	else if(defenceSoldiers.length > 0)
 		fightResult = Consts.FightResult.DefenceWin;
 	else{
-		if(attackResults[attackResults.length -1].isWin)
+		if(attackResults[attackResults.length - 1].isWin)
 			fightResult = Consts.FightResult.AttackWin;
 		else
 			fightResult = Consts.FightResult.DefenceWin;
@@ -144,25 +143,17 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
 	defenceDragon = CommonUtils.clone(defenceDragon)
 
 	var attackDragonStrength = attackDragon.strength
-	var attackDragonStrengthFixed = null
 	var defenceDragonStrength = defenceDragon.strength
-	var defenceDragonStrengthFixed = null
-
-	if(effect >= 0){
-		defenceDragonStrengthFixed = defenceDragonStrength * (1 - effect)
-		attackDragonStrengthFixed = attackDragonStrength
-	}else{
-		attackDragonStrengthFixed = attackDragonStrength * (1 - (-effect))
-		defenceDragonStrengthFixed = defenceDragonStrength
-	}
+	var attackDragonEffect = effect.attackDragonEffect;
+	var defenceDragonEffect = effect.defenceDragonEffect;
 	var attackDragonHpDecreased = null
 	var defenceDragonHpDecreased = null
 	if(attackDragonStrength >= defenceDragonStrength){
-		attackDragonHpDecreased = Math.ceil(defenceDragonStrengthFixed * 0.8)
-		defenceDragonHpDecreased = Math.ceil(Math.sqrt(attackDragonStrengthFixed * defenceDragonStrengthFixed) * 0.8)
+		attackDragonHpDecreased = Math.ceil(defenceDragonStrength * 0.8 * attackDragonEffect);
+		defenceDragonHpDecreased = Math.ceil(Math.sqrt(attackDragonStrength * defenceDragonStrength) * 0.8 * defenceDragonEffect);
 	}else{
-		attackDragonHpDecreased = Math.ceil(Math.sqrt(attackDragonStrengthFixed * defenceDragonStrengthFixed) * 0.8)
-		defenceDragonHpDecreased = Math.ceil(attackDragonStrengthFixed * 0.8)
+		attackDragonHpDecreased = Math.ceil(Math.sqrt(attackDragonStrength * defenceDragonStrength) * 0.8 * attackDragonHpDecreased);
+		defenceDragonHpDecreased = Math.ceil(attackDragonStrengthFixed * 0.8 * defenceDragonEffect);
 	}
 	attackDragon.currentHp = attackDragonHpDecreased > attackDragon.currentHp ? 0 : attackDragon.currentHp - attackDragonHpDecreased
 	defenceDragon.currentHp = defenceDragonHpDecreased > defenceDragon.currentHp ? 0 : defenceDragon.currentHp - defenceDragonHpDecreased
