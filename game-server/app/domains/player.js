@@ -1674,12 +1674,14 @@ var PlayerSchema = new Schema({
 		finishTime:{type:Number, required:true}
 	}],
 	pve:[{
+		_id:false,
 		sections:[Number],
 		rewarded:[Number]
 	}],
 	pveFights:[{
+		_id:false,
 		sectionName:{type:String, required:true},
-		count:{type:String, required:true}
+		count:{type:Number, required:true}
 	}],
 	dailyTasks:{
 		rewarded:[],
