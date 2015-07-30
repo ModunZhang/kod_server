@@ -25,6 +25,7 @@ var PlayerApiService3 = function(app){
 	this.pushService = app.get("pushService")
 	this.cacheService = app.get('cacheService');
 	this.dataService = app.get("dataService")
+	this.timeEventService = app.get('timeEventService');
 	this.Deal = app.get("Deal")
 	this.GemUse = app.get("GemUse")
 }
@@ -812,6 +813,7 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 	var self = this;
 	var playerDoc = null;
 	var playerData = [];
+	var fightReport = null;
 	var updateFuncs = [];
 	var eventFuncs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
@@ -851,6 +853,7 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		var dragonFightData = FightUtils.dragonToDragonFight(playerDragonForFight, sectionDragonForFight, dragonFightFixEffect.dragon);
 		var soldierFightData = FightUtils.soldierToSoldierFight(playerSoldiersForFight, playerTreatSoldierPercent + dragonFightFixEffect.soldier.attackSoldierEffect, playerSoldierMoraleDecreasedPercent, sectionSoldiersForFight, 0, 1 + playerToEnemySoldierMoralDecreasedAddPercent)
 		var report = ReportUtils.createAttackPveSectionReport(playerDoc, sectionName, dragonFightData, soldierFightData);
+		fightReport = report.fightReport;
 		playerDragon.hp -= report.playerDragonHpDecreased;
 		if(playerDragon.hp <= 0){
 			var deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, playerDragon);
@@ -887,7 +890,7 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs);
 	}).then(function(){
-		callback(null, playerData);
+		callback(null, [playerData, fightReport]);
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){

@@ -2088,8 +2088,8 @@ pro.getPveStageReward = function(msg, session, next){
 		return
 	}
 
-	this.request('getPveStageReward', [session.uid, stageName]).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
+	this.request('getPveStageReward', [session.uid, stageName]).spread(function(playerData, fightReport){
+		next(null, {code:200, playerData:playerData, fightReport:fightReport})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})

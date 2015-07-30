@@ -2035,6 +2035,16 @@ Utils.getPlayerHelpDefenceTroopDetail = function(playerDoc, dragon, soldiers){
  * @returns {{playerDragonExpAdd: number, playerDragonHpDecreased: number, playerSoldiers, playerWoundedSoldiers, playerRewards}}
  */
 Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFightData, soldierFightData){
+	var createDragonFightData = function(dragonForFight){
+		var data = {
+			type:dragonForFight.type,
+			hpMax:dragonForFight.maxHp,
+			hp:dragonForFight.totalHp,
+			hpDecreased:dragonForFight.totalHp - dragonForFight.currentHp,
+			isWin:dragonForFight.isWin
+		}
+		return data
+	}
 	var createSoldiers = function(soldiersAfterFight){
 		var soldiers = []
 		_.each(soldiersAfterFight, function(soldierAfterFight){
@@ -2097,6 +2107,8 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 	if(isOnlyOneSoldierType)
 		fightStar += 1;
 
+	var playerDragonFightData = createDragonFightData(dragonFightData.attackDragonAfterFight);
+	var sectionDragonFightData = createDragonFightData(dragonFightData.defenceDragonAfterFight);
 	var playerKilledCitizen = getKilledCitizen(soldierFightData.attackSoldiersAfterFight);
 	var playerDragonExpAdd = DataUtils.getPlayerDragonExpAdd(playerDoc, playerKilledCitizen);
 	var playerDragonHpDecreased = dragonFightData.attackDragonAfterFight.totalHp - dragonFightData.attackDragonAfterFight.currentHp;
@@ -2110,6 +2122,12 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 		playerSoldiers:playerSoldiers,
 		playerWoundedSoldiers:playerWoundedSoldiers,
 		playerRewards:playerRewards,
-		fightStar:fightStar
+		fightStar:fightStar,
+		fightReport:{
+			playerDragonFightData:playerDragonFightData,
+			sectionDragonFightData:sectionDragonFightData,
+			playerSoldierRoundDatas:soldierFightData.attackRoundDatas,
+			sectionSoldierRoundDatas:soldierFightData.defenceRoundDatas
+		}
 	}
 }
