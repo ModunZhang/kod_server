@@ -2065,8 +2065,8 @@ pro.attackPveSection = function(msg, session, next){
 		return
 	}
 
-	this.request('attackPveSection', [session.uid, sectionName, dragonType, soldiers]).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
+	this.request('attackPveSection', [session.uid, sectionName, dragonType, soldiers]).spread(function(playerData, fightReport){
+		next(null, {code:200, playerData:playerData, fightReport:fightReport})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})
@@ -2088,8 +2088,8 @@ pro.getPveStageReward = function(msg, session, next){
 		return
 	}
 
-	this.request('getPveStageReward', [session.uid, stageName]).spread(function(playerData, fightReport){
-		next(null, {code:200, playerData:playerData, fightReport:fightReport})
+	this.request('getPveStageReward', [session.uid, stageName]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})
