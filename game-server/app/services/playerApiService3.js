@@ -832,21 +832,22 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		var pveFight = _.find(playerDoc.pveFights, function(pveFight){
 			return _.isEqual(pveFight.sectionName, sectionName);
 		})
-		var maxFightCount = DataUtils.getPveMaxFightCount(sectionName)
+		var maxFightCount = DataUtils.getPvEMaxFightCount(sectionName)
 		if(_.isObject(pveFight) && pveFight.count >= maxFightCount) return Promise.reject(ErrorUtils.currentSectionReachMaxFightCount(playerId, sectionName));
 		DataUtils.refreshPlayerResources(playerDoc);
 		playerData.push(['resources', playerDoc.resources]);
-		var staminaUsed = DataUtils.getPveSectionStaminaCount(sectionName, 1);
+		var staminaUsed = DataUtils.getPvESectionStaminaCount(sectionName, 1);
 		if(playerDoc.resources.stamina < staminaUsed) return Promise.reject(ErrorUtils.playerStaminaNotEnough(playerId, playerDoc.resources.stamina, staminaUsed));
 		_.each(soldiers, function(soldier){
 			playerDoc.soldiers[soldier.name] -= soldier.count
 		})
-		var playerDragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDragon, playerDoc.basicInfo.terrain);
-		var playerSoldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, soldiers, playerDragon, playerDoc.basicInfo.terrain, true);
+		var terrain = DataUtils.getPvESectionTerrain(sectionName);
+		var playerDragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDragon, terrain);
+		var playerSoldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, soldiers, playerDragon, terrain, true);
 		var playerTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(playerDoc, playerDragon);
 		var playerSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(playerDoc, playerDragon);
 		var playerToEnemySoldierMoralDecreasedAddPercent = DataUtils.getEnemySoldierMoraleAddedPercent(playerDoc, playerDragon);
-		var sectionTroopForFight = DataUtils.createPveSecionTroopForFight(sectionName, playerDoc.basicInfo.terrain);
+		var sectionTroopForFight = DataUtils.createPveSecionTroopForFight(sectionName, terrain);
 		var sectionDragonForFight = sectionTroopForFight.dragonForFight;
 		var sectionSoldiersForFight = sectionTroopForFight.soldiersForFight;
 		var dragonFightFixEffect = DataUtils.getFightFixedEffect(playerDragonForFight, sectionSoldiersForFight);

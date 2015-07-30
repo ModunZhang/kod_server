@@ -4304,7 +4304,7 @@ Utils.isPvEStageExist = function(stageName){
  * @param sectionName
  * @returns {*}
  */
-Utils.getPveMaxFightCount = function(sectionName){
+Utils.getPvEMaxFightCount = function(sectionName){
 	return PvE.sections[sectionName].maxFightCount;
 }
 
@@ -4313,6 +4313,15 @@ Utils.getPveMaxFightCount = function(sectionName){
  * @param sectionName
  * @param count
  */
-Utils.getPveSectionStaminaCount = function(sectionName, count){
+Utils.getPvESectionStaminaCount = function(sectionName, count){
 	return PvE.sections[sectionName].staminaUsed * count;
+}
+
+/**
+ * 获取PvE关卡地形
+ * @param sectionName
+ * @returns {*}
+ */
+Utils.getPvESectionTerrain = function(sectionName){
+	return PvE.sections[sectionName].terrain;
 }

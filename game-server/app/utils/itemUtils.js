@@ -411,12 +411,12 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count){
 	var pveFight = _.find(playerDoc.pveFights, function(pveFight){
 		return _.isEqual(pveFight.sectionName, sectionName);
 	})
-	var maxFightCount = DataUtils.getPveMaxFightCount(sectionName);
+	var maxFightCount = DataUtils.getPvEMaxFightCount(sectionName);
 	if((count > maxFightCount) || (_.isObject(pveFight) && pveFight.count + count > maxFightCount))
 		return Promise.reject(ErrorUtils.currentSectionReachMaxFightCount(playerDoc._id, sectionName));
 	DataUtils.refreshPlayerResources(playerDoc);
 	playerData.push(["resources", playerDoc.resources])
-	var staminaUsed = DataUtils.getPveSectionStaminaCount(sectionName, count);
+	var staminaUsed = DataUtils.getPvESectionStaminaCount(sectionName, count);
 	if(playerDoc.resources.stamina < staminaUsed)
 		return Promise.reject(ErrorUtils.playerStaminaNotEnough(playerDoc._id, playerDoc.resources.stamina, staminaUsed));
 	var rewards = DataUtils.getPveSectionRewards(sectionName, 3);
