@@ -4223,8 +4223,8 @@ Utils.createPveSecionTroopForFight = function(sectionName, terrain){
  * @returns {Array}
  */
 Utils.getPveSectionReward = function(sectionName, fightStar){
+	if(fightStar <= 0) return null;
 	var rewards = [];
-	if(fightStar <= 0) return rewards;
 	var rewardStrings = PvE.sections[sectionName].rewards.split(',');
 	_.each(rewardStrings, function(rewardString){
 		var rewardParams = rewardString.split(':');

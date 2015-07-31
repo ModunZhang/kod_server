@@ -2121,7 +2121,7 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 		playerDragonHpDecreased:playerDragonHpDecreased,
 		playerSoldiers:playerSoldiers,
 		playerWoundedSoldiers:playerWoundedSoldiers,
-		playerRewards:[playerReward],
+		playerRewards:_.isObject(playerReward) ? [playerReward] : null,
 		fightStar:fightStar,
 		fightReport:{
 			playerDragonFightData:playerDragonFightData,
