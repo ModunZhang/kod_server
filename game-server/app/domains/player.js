@@ -1793,7 +1793,6 @@ var PlayerSchema = new Schema({
 	}],
 	troopsOut:[{
 		_id:false,
-		id:{type:String, required:true},
 		dragonType:{type:String, required:true},
 		soldiers:[{
 			_id:false,
