@@ -1010,11 +1010,11 @@ errors["currentSectionReachMaxFightCount"] = {
 }
 errors["playerStaminaNotEnough"] = {
 	key:"playerStaminaNotEnough",
-	code:700,
+	code:701,
 	message:"玩家体力值不足"
 }
 errors["currentPvESectionCanNotBeSweepedYet"] = {
 	key:"currentPvESectionCanNotBeSweepedYet",
-	code:701,
+	code:702,
 	message:"当前PvE关卡还不能被扫荡"
 }
