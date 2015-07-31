@@ -3257,9 +3257,11 @@ Utils.getRewardsByKillScoreAndTerrain = function(killScore, terrain){
 		_.each(configArray_1, function(config_1){
 			var configArray_2 = config_1.split(":")
 			var object = {
-				type:configArray_2[0],
-				name:configArray_2[1],
-				count:parseInt(configArray_2[2]),
+				reward:{
+					type:configArray_2[0],
+					name:configArray_2[1],
+					count:parseInt(configArray_2[2])
+				},
 				weight:parseInt(configArray_2[3])
 			}
 			objects.push(object)
@@ -3303,7 +3305,7 @@ Utils.getRewardsByKillScoreAndTerrain = function(killScore, terrain){
 		count:item.count
 	})
 
-	return rewards
+	return [SortFunc(items)[0].reward];
 }
 
 /**
@@ -4132,9 +4134,11 @@ Utils.getMonsterRewards = function(monsterLevel){
 		(function(){
 			var rewardParams = rewardString.split(':');
 			var reward = {
-				type:rewardParams[0],
-				name:rewardParams[1],
-				count:parseInt(rewardParams[2]),
+				reward:{
+					type:rewardParams[0],
+					name:rewardParams[1],
+					count:parseInt(rewardParams[2])
+				},
 				weight:parseInt(rewardParams[3])
 			};
 			rewards.push(reward);
@@ -4155,8 +4159,7 @@ Utils.getMonsterRewards = function(monsterLevel){
 			return -object.weight
 		})
 	}
-	rewards = SortFunc(rewards)
-	return {type:rewards[0].type, name:rewards[0].name, count:rewards[0].count}
+	return SortFunc(rewards)[0].reward;
 }
 
 /**
@@ -4219,21 +4222,38 @@ Utils.createPveSecionTroopForFight = function(sectionName, terrain){
  * @param fightStar
  * @returns {Array}
  */
-Utils.getPveSectionRewards = function(sectionName, fightStar){
+Utils.getPveSectionReward = function(sectionName, fightStar){
 	var rewards = [];
 	if(fightStar <= 0) return rewards;
-
 	var rewardStrings = PvE.sections[sectionName].rewards.split(',');
 	_.each(rewardStrings, function(rewardString){
 		var rewardParams = rewardString.split(':');
 		var reward = {
-			type:rewardParams[0],
-			name:rewardParams[1],
-			count:parseInt(rewardParams[2])
+			reward:{
+				type:rewardParams[0],
+				name:rewardParams[1],
+				count:parseInt(rewardParams[2])
+			},
+			weight:parseInt(rewardParams[3])
 		}
 		rewards.push(reward);
 	})
-	return rewards;
+	var SortFunc = function(objects){
+		var totalWeight = 0
+		_.each(objects, function(object){
+			totalWeight += object.weight + 1
+		})
+
+		_.each(objects, function(object){
+			var weight = object.weight + 1 + (Math.random() * totalWeight << 0)
+			object.weight = weight
+		})
+
+		return _.sortBy(objects, function(object){
+			return -object.weight
+		})
+	}
+	return SortFunc(rewards)[0].reward;
 }
 
 /**

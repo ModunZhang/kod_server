@@ -2114,14 +2114,14 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 	var playerDragonHpDecreased = dragonFightData.attackDragonAfterFight.totalHp - dragonFightData.attackDragonAfterFight.currentHp;
 	var playerSoldiers = createSoldiers(soldierFightData.attackSoldiersAfterFight);
 	var playerWoundedSoldiers = createWoundedSoldiers(soldierFightData.attackSoldiersAfterFight);
-	var playerRewards = DataUtils.getPveSectionRewards(sectionName, fightStar);
+	var playerReward = DataUtils.getPveSectionReward(sectionName, fightStar);
 
 	return {
 		playerDragonExpAdd:playerDragonExpAdd,
 		playerDragonHpDecreased:playerDragonHpDecreased,
 		playerSoldiers:playerSoldiers,
 		playerWoundedSoldiers:playerWoundedSoldiers,
-		playerRewards:playerRewards,
+		playerRewards:[playerReward],
 		fightStar:fightStar,
 		fightReport:{
 			playerDragonFightData:playerDragonFightData,

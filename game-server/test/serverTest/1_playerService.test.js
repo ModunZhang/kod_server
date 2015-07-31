@@ -1858,7 +1858,7 @@
 //			})
 //		})
 //
-//		it("buyAndUseItem sweepScroll 1", function(done){
+//		it("buyAndUseItem sweepScroll 当前PvE关卡还不能被扫荡", function(done){
 //			Api.buyAndUseItem("sweepScroll", {
 //				sweepScroll:{
 //					sectionName:'1_1',
@@ -1895,7 +1895,7 @@
 //			})
 //		})
 //
-//		it("buyAndUseItem sweepScroll 2", function(done){
+//		it("buyAndUseItem sweepScroll 当前关卡已达最大战斗次数", function(done){
 //			Api.buyAndUseItem("sweepScroll", {
 //				sweepScroll:{
 //					sectionName:'1_1',
@@ -1907,7 +1907,7 @@
 //			})
 //		})
 //
-//		it("buyAndUseItem sweepScroll 3", function(done){
+//		it("buyAndUseItem sweepScroll 正常扫荡", function(done){
 //			Api.buyAndUseItem("sweepScroll", {
 //				sweepScroll:{
 //					sectionName:'1_1',

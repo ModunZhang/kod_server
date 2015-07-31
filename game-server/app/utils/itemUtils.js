@@ -419,11 +419,17 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count){
 	var staminaUsed = DataUtils.getPvESectionStaminaCount(sectionName, count);
 	if(playerDoc.resources.stamina < staminaUsed)
 		return Promise.reject(ErrorUtils.playerStaminaNotEnough(playerDoc._id, playerDoc.resources.stamina, staminaUsed));
-	var rewards = DataUtils.getPveSectionRewards(sectionName, 3);
-	_.each(rewards, function(reward){
-		reward.count *= count;
-	})
+	var totalRewards = [];
+	var rewards = [];
+	for(var i = 0; i < count ; i ++){
+		(function(){
+			var reward = DataUtils.getPveSectionReward(sectionName, 3);
+			LogicUtils.mergeRewards(rewards, [reward]);
+			totalRewards.push(reward);
+		})();
+	}
 	LogicUtils.addPlayerRewards(playerDoc, playerData, rewards);
+	playerData.push(['__rewards', totalRewards]);
 	if(!_.isObject(pveFight)){
 		pveFight = {
 			sectionName:sectionName,
