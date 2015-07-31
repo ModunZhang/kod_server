@@ -2104,7 +2104,7 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 			else if(!_.isEqual(soldierName, roundData.soldierName)) isOnlyOneSoldierType = false;
 		})();
 	}
-	if(isOnlyOneSoldierType)
+	if(fightStar > 0 && isOnlyOneSoldierType)
 		fightStar += 1;
 
 	var playerDragonFightData = createDragonFightData(dragonFightData.attackDragonAfterFight);
