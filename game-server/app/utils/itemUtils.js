@@ -171,6 +171,7 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 		var marchDragon = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
 		DataUtils.refreshPlayerDragonsHp(playerDoc, marchDragon)
 		playerDoc.dragons[marchDragon.type].status = Consts.DragonStatus.Free
+		LogicUtils.removePlayerTroopOut(playerDoc, marchDragon.type);
 		playerData.push(["dragons." + marchDragon.type, marchDragon])
 		allianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), null])
 		enemyAllianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), null])

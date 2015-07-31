@@ -2372,7 +2372,6 @@ Utils.initPlayerDoc = function(playerDoc){
  */
 Utils.addPlayerTroopOut = function(playerDoc, dragonType, soldiers){
 	var troopOut = {
-		id:ShortId.generate(),
 		dragonType:dragonType,
 		soldiers:soldiers
 	}
