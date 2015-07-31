@@ -434,7 +434,7 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count){
 	if(!_.isObject(pveFight)){
 		pveFight = {
 			sectionName:sectionName,
-			count:0
+			count:count
 		}
 		playerDoc.pveFights.push(pveFight);
 		playerData.push(['pveFights.' + playerDoc.pveFights.indexOf(pveFight), pveFight]);
