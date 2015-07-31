@@ -1408,12 +1408,12 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 		var defenceMember = null
 		funcs = []
 		funcs.push(self.cacheService.findPlayerAsync(event.attackPlayerData.id))
-		funcs.push(self.cacheService.findAllianceAsync(event.defencePlayerData.alliance.id))
 		funcs.push(self.cacheService.findPlayerAsync(event.defencePlayerData.id))
+		funcs.push(self.cacheService.findAllianceAsync(event.defencePlayerData.alliance.id))
 		Promise.all(funcs).spread(function(doc_1, doc_2, doc_3){
 			attackPlayerDoc = doc_1
-			defenceAllianceDoc = doc_2
-			defencePlayerDoc = doc_3
+			defencePlayerDoc = doc_2
+			defenceAllianceDoc = doc_3
 			if(defencePlayerDoc.helpedByTroops.length > 0){
 				return self.cacheService.findPlayerAsync(defencePlayerDoc.helpedByTroops[0].id).then(function(doc){
 					helpDefencePlayerDoc = doc
@@ -1509,7 +1509,9 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					defenceEnemyAllianceData.push(["strikeMarchReturnEvents." + attackAllianceDoc.strikeMarchReturnEvents.indexOf(strikeMarchReturnEvent), strikeMarchReturnEvent])
 					eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchReturnEvents", strikeMarchReturnEvent.id, strikeMarchReturnEvent.arriveTime - Date.now()])
 					LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
-					updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, defenceAllianceDoc._id, null])
+					updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, null]);
+					updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, defencePlayerDoc._id, null]);
+					updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, defenceAllianceDoc._id, null]);
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
 					return Promise.resolve()
 				}else{
