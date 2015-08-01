@@ -91,6 +91,7 @@ var SendInCacheServerMail = function(playerIds, title, content, callback){
 			var playerData = [];
 			return self.cacheService.findPlayerAsync(playerId).then(function(doc){
 				playerDoc = doc;
+				if(!_.isObject(playerDoc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
 				while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 					(function(){
 						var willRemovedMail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
