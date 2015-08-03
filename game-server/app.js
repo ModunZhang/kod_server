@@ -101,6 +101,17 @@ process.on("uncaughtException", function(e){
 })
 
 app.start();
-//
-//var agent = require('webkit-devtools-agent');
-//agent.start();
+
+var agent = require('webkit-devtools-agent');
+process.on('SIGUSR2', function () {
+	if (agent.server) {
+		agent.stop();
+	} else {
+		agent.start({
+			port: 9999,
+			bind_to: '0.0.0.0',
+			ipc_port: 3333,
+			verbose: true
+		});
+	}
+});
