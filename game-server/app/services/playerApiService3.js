@@ -914,7 +914,7 @@ pro.getPveStageReward = function(playerId, stageName, callback){
 	var playerDoc = null;
 	var playerData = [];
 	var updateFuncs = [];
-	this.dataService.findPlayerAsync(playerId).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
 		var stageParams = stageName.split('_');
 		var stageIndex = parseInt(stageParams[0]) - 1;
