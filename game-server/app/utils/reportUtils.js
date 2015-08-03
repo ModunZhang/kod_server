@@ -1622,7 +1622,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 				id:playerDoc._id,
 				name:playerDoc.basicInfo.name,
 				icon:playerDoc.basicInfo.icon,
-				kill:_.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].kill : 0,
+				kill:_.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].kill : 0
 			}
 			playerKills[playerDoc._id] = playerData.kill;
 			totalDeath += _.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].death : 0;
@@ -1634,7 +1634,18 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 				playerRewards[playerDoc._id] = rewards;
 			}else{
 				playerRewards[playerDoc._id] = [];
-				playerReports[playerDoc._id].rewards = [];
+				playerReports[playerDoc._id] = {
+					attackTarget:{
+						stageName:stageName,
+						location:shrineLocation,
+						alliance:allianceData,
+						terrain:allianceDoc.basicInfo.terrain,
+						isWin:isWin
+					},
+					rewards:[],
+					roundDatas:[]
+				};
+				playerDragons[playerDoc._id] = {type:playerTroop.dragon.type, hpDecreased:0, expAdd:0};
 			}
 		})();
 	})
@@ -1664,22 +1675,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	_.each(playerTroops, function(playerTroop){
 		(function(){
 			var report = playerReports[playerTroop.id];
-			if(!_.isObject(report)){
-				report = {
-					attackTarget:{
-						stageName:stageName,
-						location:shrineLocation,
-						alliance:allianceData,
-						terrain:allianceDoc.basicInfo.terrain,
-						fightStar:fightStar,
-						isWin:isWin
-					},
-					rewards:[],
-					roundDatas:[]
-				}
-				playerDragons[playerTroop.id] = {type:playerTroop.dragon.type, hpDecreased:0, expAdd:0};
-			}else report.attackTarget.fightStar = fightStar;
-
+			report.attackTarget.fightStar = fightStar;
 			var fullReport = {
 				id:ShortId.generate(),
 				type:Consts.PlayerReportType.AttackShrine,
