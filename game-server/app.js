@@ -19,15 +19,13 @@ app.route("logic", RouteUtils.logic)
 app.route("rank", RouteUtils.rank)
 app.route("cache", RouteUtils.cache)
 
-app.configure("local|develop|awschina", function() {
+app.configure("local|develop|awschina", function(){
 	app.set('proxyConfig', {
-		rpcClient: wsrpc.client
+		rpcClient:wsrpc.client
 	})
-
 	app.set('remoteConfig', {
-		rpcServer: wsrpc.server
+		rpcServer:wsrpc.server
 	})
-
 })
 
 app.configure("local|develop|awschina", "gate", function(){
@@ -41,8 +39,8 @@ app.configure("local|develop|awschina", "gate", function(){
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, { server: { socketOptions: { keepAlive: 1 } } })
+	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
 
@@ -64,25 +62,25 @@ app.configure("local|develop|awschina", "logic", function(){
 })
 
 app.configure("local|develop|awschina", "chat", function(){
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
+	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
 
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, { server: { socketOptions: { keepAlive: 1 } } })
+	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
 
 app.configure("local|develop|awschina", "cache", function(){
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, { server: { socketOptions: { keepAlive: 1 } } })
+	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
 
 app.configure("local|develop|awschina", "rank", function(){
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') +"/config.json"))
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, { server: { socketOptions: { keepAlive: 1 } } })
+	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 
 	var filterService = new FilterService(app)
@@ -102,4 +100,7 @@ process.on("uncaughtException", function(e){
 	console.error(e)
 })
 
-app.start()
+app.start();
+//
+//var agent = require('webkit-devtools-agent');
+//agent.start();

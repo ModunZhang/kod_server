@@ -3,16 +3,16 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "pomelo": "1.1.7",
-    "mongoose": "4.0.3",
-    "bluebird": "2.9.26",
+    "pomelo": "1.1.9",
+    "mongoose": "4.1.0",
+    "bluebird": "2.9.34",
     "underscore": "1.8.3",
     "nodemailer": "0.7",
     "sprintf": "0.1.5",
     "shortid": "2.2.2",
     "shelljs": "0.4.0",
-    "apn":"1.7.3",
-    "pomelo-rpc-ws":"0.5.2",
+    "apn":"1.7.4",
+    "pomelo-rpc-ws":"0.5.3",
     "toobusy-js":"0.4.2"
   },
   "devDependencies": {
