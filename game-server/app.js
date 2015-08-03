@@ -109,7 +109,7 @@ process.on('SIGUSR2', function () {
 	} else {
 		agent.start({
 			port: 9999,
-			bind_to: '0.0.0.0',
+			bind_to: '127.0.0.1',
 			ipc_port: 3333,
 			verbose: true
 		});
