@@ -870,16 +870,18 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		DataUtils.refreshPlayerPower(playerDoc, playerData);
 		LogicUtils.addPlayerRewards(playerDoc, playerData, report.playerRewards);
 		LogicUtils.updatePlayerPveData(playerDoc, playerData, stageIndex, sectionIndex, report.fightStar);
-		if(!_.isObject(pveFight)){
-			pveFight = {
-				sectionName:sectionName,
-				count:1
+		if(report.fightStar > 0){
+			if(!_.isObject(pveFight)){
+				pveFight = {
+					sectionName:sectionName,
+					count:1
+				}
+				playerDoc.pveFights.push(pveFight);
+				playerData.push(['pveFights.' + playerDoc.pveFights.indexOf(pveFight), pveFight]);
+			}else{
+				pveFight.count += 1;
+				playerData.push(['pveFights.' + playerDoc.pveFights.indexOf(pveFight) + '.count', pveFight.count]);
 			}
-			playerDoc.pveFights.push(pveFight);
-			playerData.push(['pveFights.' + playerDoc.pveFights.indexOf(pveFight), pveFight]);
-		}else{
-			pveFight.count += 1;
-			playerData.push(['pveFights.' + playerDoc.pveFights.indexOf(pveFight) + '.count', pveFight.count]);
 		}
 		playerDoc.resources.stamina -= staminaUsed;
 		playerDoc.countInfo.pveCount += 1;
