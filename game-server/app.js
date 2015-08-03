@@ -102,16 +102,16 @@ process.on("uncaughtException", function(e){
 
 app.start();
 
-var agent = require('webkit-devtools-agent');
-process.on('SIGUSR2', function () {
-	if (agent.server) {
-		agent.stop();
-	} else {
-		agent.start({
-			port: 9999,
-			bind_to: '127.0.0.1',
-			ipc_port: 3333,
-			verbose: true
-		});
-	}
-});
+//var agent = require('webkit-devtools-agent');
+//process.on('SIGUSR2', function () {
+//	if (agent.server) {
+//		agent.stop();
+//	} else {
+//		agent.start({
+//			port: 9999,
+//			bind_to: '127.0.0.1',
+//			ipc_port: 3333,
+//			verbose: true
+//		});
+//	}
+//});
