@@ -551,14 +551,18 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 pro.getSellItems = function(playerId, type, name, callback){
 	var self = this
 	var itemDocs = null
-	this.Deal.find({
-		"serverId":self.app.get('cacheServerId'),
-		"itemData.type":type, "itemData.name":name
-	}).sort({
-		"itemData.price":1,
-		"addedTime":1
-	}).limit(Define.SellItemsMaxSize).exec()
-		.then(function(docs){
+	new Promise(function(resolve, reject){
+		self.Deal.find({
+			"serverId":self.app.get('cacheServerId'),
+			"itemData.type":type, "itemData.name":name
+		}).sort({
+			"itemData.price":1,
+			"addedTime":1
+		}).limit(Define.SellItemsMaxSize).exec(function(e, docs){
+			if(_.isObject(e)) reject(e);
+			else resolve(docs);
+		})
+	}).then(function(docs){
 			itemDocs = docs
 			return Promise.resolve()
 		}).then(function(){
@@ -581,6 +585,10 @@ pro.buySellItem = function(playerId, itemId, callback){
 	var sellerDoc = null
 	var sellerData = []
 	var itemDoc = null
+	var gemUsed = null;
+	var buyedResources = null;
+	var totalPrice = null;
+	var realCount = null;
 	var pushFuncs = []
 	var updateFuncs = []
 	var funcs = []
@@ -593,13 +601,14 @@ pro.buySellItem = function(playerId, itemId, callback){
 		if(!_.isEqual(itemDoc.serverId, playerDoc.serverId)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
 		if(_.isEqual(itemDoc.playerId, playerDoc._id)) return Promise.reject(ErrorUtils.canNotBuyYourOwnSellItem(playerId, itemId));
 		DataUtils.refreshPlayerResources(playerDoc)
-		var type = itemDoc.itemData.type
-		var count = itemDoc.itemData.count
-		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
-		var totalPrice = itemDoc.itemData.price * count
-		var buyedResources = DataUtils.buyResources(playerDoc, {coin:totalPrice}, playerDoc.resources)
-		var gemUsed = buyedResources.gemUsed
+		realCount = _.isEqual(itemDoc.itemData.type, "resources") ? itemDoc.itemData.count * 1000 : itemDoc.itemData.count
+		totalPrice = itemDoc.itemData.price * itemDoc.itemData.count
+		buyedResources = DataUtils.buyResources(playerDoc, {coin:totalPrice}, playerDoc.resources)
+		gemUsed = buyedResources.gemUsed
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		return self.Deal.removeAsync({_id:itemId})
+	}).then(function(res){
+		if(!res.result.ok || res.result.n !== 1) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId));
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -612,9 +621,9 @@ pro.buySellItem = function(playerId, itemId, callback){
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		playerDoc.resources.coin -= totalPrice
-		playerDoc[type][itemDoc.itemData.name] += realCount
-		if(!_.isEqual(type, "resources"))
-			playerData.push([type + "." + itemDoc.itemData.name, playerDoc[type][itemDoc.itemData.name]])
+		playerDoc[itemDoc.itemData.type][itemDoc.itemData.name] += realCount
+		if(!_.isEqual(itemDoc.itemData.type, "resources"))
+			playerData.push([itemDoc.itemData.type + "." + itemDoc.itemData.name, playerDoc[itemDoc.itemData.type][itemDoc.itemData.name]])
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		return self.cacheService.findPlayerAsync(itemDoc.playerId)
