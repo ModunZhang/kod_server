@@ -845,6 +845,7 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		if(playerDoc.resources.stamina < staminaUsed) return Promise.reject(ErrorUtils.playerStaminaNotEnough(playerId, playerDoc.resources.stamina, staminaUsed));
 		_.each(soldiers, function(soldier){
 			playerDoc.soldiers[soldier.name] -= soldier.count
+			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
 		var terrain = DataUtils.getPvESectionTerrain(sectionName);
 		var playerDragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDragon, terrain);
