@@ -304,6 +304,13 @@ module.exports = {
 		BuildingUpgrade:'buildingUpgrade',//xx 升级了xx建筑
 		VillageUpgrade:'villageUpgrade'//xx 升级了xx村落
 	},
+	AllianceBannerType:{
+		AttackVillage:'attackVillage',//XX正在前往采集Lv XX XX(村落)
+		AttackMonster:'attackMonster',//XX正在前往攻打Lv XX XX(野怪)
+		StrikePlayer:'strikePlayer',//XX向XX发起了侦察
+		AttackPlayer:'attackPlayer',//XX向XX发起了进攻
+		HelpDefence:'helpDefence'//XX正在前往协防XX
+	},
 	AllianceBuildingNames:{
 		Palace:"palace",//联盟宫殿
 		MoonGate:"moonGate",//月门

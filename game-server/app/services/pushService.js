@@ -93,6 +93,28 @@ pro.onAllianceDataChanged = function(allianceId, data, callback){
 }
 
 /**
+ * 联盟内部Banner消息
+ * @param allianceId
+ * @param key
+ * @param params
+ * @param callback
+ */
+pro.onAllianceNotice = function(allianceId, key, params, callback){
+	var self = this
+	var eventName = Events.chat.onAllianceNotice;
+	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
+	var channel = this.channelService.getChannel(channelName, false)
+	if(!_.isObject(channel)){
+		callback()
+		return
+	}
+	channel.pushMessage(eventName, {key:key, params:params}, {}, function(e){
+		if(_.isObject(e)) self.logService.onEventError("logic.pushService.onAllianceDataChanged", {allianceId:allianceId}, e.stack)
+	})
+	callback()
+}
+
+/**
  * 推送给联盟除指定玩家之外的其他玩家
  * @param allianceId
  * @param data
