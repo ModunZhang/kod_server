@@ -98,44 +98,36 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 	var members = {}
 
 	_.each(attackAllianceDoc.members, function(member){
-		(function(){
-			if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightPrepare){
-				if(!_.isArray(members[member.language])) members[member.language] = []
-				members[member.language].push(member.apnId)
-			}
-		})();
+		if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightPrepare){
+			if(!_.isArray(members[member.language])) members[member.language] = []
+			members[member.language].push(member.apnId)
+		}
 	})
 	_.each(members, function(apnIds, language){
-		(function(){
-			var message = messageKey[language]
-			if(!_.isString(message)) message = messageKey.en;
-			if(messageArgs.length > 0){
-				message = sprintf.vsprintf(message, messageArgs)
-			}
-			self.pushApnMessage(apnIds, message)
-		})();
+		var message = messageKey[language]
+		if(!_.isString(message)) message = messageKey.en;
+		if(messageArgs.length > 0){
+			message = sprintf.vsprintf(message, messageArgs)
+		}
+		self.pushApnMessage(apnIds, message)
 	})
 
 	messageKey = DataUtils.getLocalizationConfig("alliance", "AllianceBeAttackedPrepare");
 	messageArgs = [attackAllianceDoc.basicInfo.name];
 	members = {}
 	_.each(defenceAllianceDoc.members, function(member){
-		(function(){
-			if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightPrepare){
-				if(!_.isArray(members[member.language])) members[member.language] = []
-				members[member.language].push(member.apnId)
-			}
-		})();
+		if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightPrepare){
+			if(!_.isArray(members[member.language])) members[member.language] = []
+			members[member.language].push(member.apnId)
+		}
 	})
 	_.each(members, function(apnIds, language){
-		(function(){
-			var message = messageKey[language]
-			if(!_.isString(message)) message = messageKey.en;
-			if(messageArgs.length > 0){
-				message = sprintf.vsprintf(message, messageArgs)
-			}
-			self.pushApnMessage(apnIds, message)
-		})();
+		var message = messageKey[language]
+		if(!_.isString(message)) message = messageKey.en;
+		if(messageArgs.length > 0){
+			message = sprintf.vsprintf(message, messageArgs)
+		}
+		self.pushApnMessage(apnIds, message)
 	})
 }
 
@@ -150,44 +142,36 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 	var messageArgs = [defenceAllianceDoc.basicInfo.name];
 	var members = {}
 	_.each(attackAllianceDoc.members, function(member){
-		(function(){
-			if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus)  && !!member.apnStatus.onAllianceFightStart){
-				if(!_.isArray(members[member.language])) members[member.language] = []
-				members[member.language].push(member.apnId)
-			}
-		})();
+		if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightStart){
+			if(!_.isArray(members[member.language])) members[member.language] = []
+			members[member.language].push(member.apnId)
+		}
 	})
 	_.each(members, function(apnIds, language){
-		(function(){
-			var message = messageKey[language]
-			if(!_.isString(message)) message = messageKey.en;
-			if(messageArgs.length > 0){
-				message = sprintf.vsprintf(message, messageArgs)
-			}
-			self.pushApnMessage(apnIds, message)
-		})();
+		var message = messageKey[language]
+		if(!_.isString(message)) message = messageKey.en;
+		if(messageArgs.length > 0){
+			message = sprintf.vsprintf(message, messageArgs)
+		}
+		self.pushApnMessage(apnIds, message)
 	})
 
 	messageKey = DataUtils.getLocalizationConfig("alliance", "AllianceBeAttackedStart");
 	messageArgs = [attackAllianceDoc.basicInfo.name];
 	members = {}
 	_.each(defenceAllianceDoc.members, function(member){
-		(function(){
-			if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus)  && !!member.apnStatus.onAllianceFightStart){
-				if(!_.isArray(members[member.language])) members[member.language] = []
-				members[member.language].push(member.apnId)
-			}
-		})();
+		if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightStart){
+			if(!_.isArray(members[member.language])) members[member.language] = []
+			members[member.language].push(member.apnId)
+		}
 	})
 	_.each(members, function(apnIds, language){
-		(function(){
-			var message = messageKey[language]
-			if(!_.isString(message)) message = messageKey.en;
-			if(messageArgs.length > 0){
-				message = sprintf.vsprintf(message, messageArgs)
-			}
-			self.pushApnMessage(apnIds, message)
-		})();
+		var message = messageKey[language]
+		if(!_.isString(message)) message = messageKey.en;
+		if(messageArgs.length > 0){
+			message = sprintf.vsprintf(message, messageArgs)
+		}
+		self.pushApnMessage(apnIds, message)
 	})
 }
 
@@ -201,22 +185,18 @@ pro.onAllianceShrineEventStart = function(allianceDoc){
 	var messageArgs = [];
 	var members = {}
 	_.each(allianceDoc.members, function(member){
-		(function(){
-			if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus)  && !!member.apnStatus.onAllianceShrineEventStart){
-				if(!_.isArray(members[member.language])) members[member.language] = []
-				members[member.language].push(member.apnId)
-			}
-		})();
+		if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceShrineEventStart){
+			if(!_.isArray(members[member.language])) members[member.language] = []
+			members[member.language].push(member.apnId)
+		}
 	})
 	_.each(members, function(apnIds, language){
-		(function(){
-			var message = messageKey[language]
-			if(!_.isString(message)) message = messageKey.en;
-			if(messageArgs.length > 0){
-				message = sprintf.vsprintf(message, messageArgs)
-			}
-			self.pushApnMessage(apnIds, message)
-		})();
+		var message = messageKey[language]
+		if(!_.isString(message)) message = messageKey.en;
+		if(messageArgs.length > 0){
+			message = sprintf.vsprintf(message, messageArgs)
+		}
+		self.pushApnMessage(apnIds, message)
 	})
 }
 

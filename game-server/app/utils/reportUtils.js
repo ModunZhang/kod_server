@@ -1435,35 +1435,31 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 		var killed = 0;
 		var config = null;
 		_.each(soldiersForFight, function(soldierForFight){
-			(function(){
-				_.each(soldierForFight.killedSoldiers, function(soldier){
-					(function(){
-						if(DataUtils.isNormalSoldier(soldier.name)){
-							var soldierFullKey = soldier.name + "_" + soldier.star
-							config = Soldiers.normal[soldierFullKey]
-							killed += soldier.count * config.killScore
-						}else{
-							config = Soldiers.special[soldier.name]
-							killed += soldier.count * config.killScore
-						}
-					})();
-				})
-			})();
-		})
+			_.each(soldierForFight.killedSoldiers, function(soldier){
+				(function(){
+					if(DataUtils.isNormalSoldier(soldier.name)){
+						var soldierFullKey = soldier.name + "_" + soldier.star
+						config = Soldiers.normal[soldierFullKey]
+						killed += soldier.count * config.killScore
+					}else{
+						config = Soldiers.special[soldier.name]
+						killed += soldier.count * config.killScore
+					}
+				})();
+			})
+		})();
 		return killed
 	}
 	var createSoldiersDataAfterFight = function(soldiersForFight){
 		var soldiers = []
 		_.each(soldiersForFight, function(soldierForFight){
-			(function(){
-				var soldier = {
-					name:soldierForFight.name,
-					star:soldierForFight.star,
-					count:soldierForFight.totalCount,
-					countDecreased:soldierForFight.totalCount - soldierForFight.currentCount
-				}
-				soldiers.push(soldier)
-			})();
+			var soldier = {
+				name:soldierForFight.name,
+				star:soldierForFight.star,
+				count:soldierForFight.totalCount,
+				countDecreased:soldierForFight.totalCount - soldierForFight.currentCount
+			}
+			soldiers.push(soldier)
 		})
 		return soldiers;
 	}
@@ -1498,12 +1494,10 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	}
 	var updatePlayerSoldiersAndWoundedSoldiers = function(soldiers, soldiersAfterFight){
 		_.each(soldiersAfterFight, function(soldierAfterFight){
-			(function(){
-				if(!_.isObject(soldiers[soldierAfterFight.name])) soldiers[soldierAfterFight.name] = {count:0, woundedCount:0};
-				var soldier = soldiers[soldierAfterFight.name];
-				soldier.count = soldierAfterFight.currentCount;
-				soldier.woundedCount += soldierAfterFight.woundedCount;
-			})();
+			if(!_.isObject(soldiers[soldierAfterFight.name])) soldiers[soldierAfterFight.name] = {count:0, woundedCount:0};
+			var soldier = soldiers[soldierAfterFight.name];
+			soldier.count = soldierAfterFight.currentCount;
+			soldier.woundedCount += soldierAfterFight.woundedCount;
 		})
 	}
 
@@ -1517,74 +1511,70 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	var shrineLocation = shrineMapObject.location;
 	var allianceData = createAllianceData(allianceDoc);
 	_.each(fightDatas, function(fightData){
-		(function(){
-			var shrineReportRoundDatas = []
-			shrineReportFightDatas.push({roundDatas:shrineReportRoundDatas});
-			_.each(fightData.roundDatas, function(roundData){
-				(function(){
-					var playerDoc = roundData.playerDoc;
-					var dragonFightData = roundData.dragonFightData;
-					var soldierFightData = roundData.soldierFightData;
-					if(!_.isObject(playerReports[playerDoc._id])){
-						playerReports[playerDoc._id] = {
-							attackTarget:{
-								stageName:stageName,
-								location:shrineLocation,
-								alliance:allianceData,
-								terrain:allianceDoc.basicInfo.terrain,
-								isWin:isWin
-							},
-							rewards:[],
-							roundDatas:[]
-						}
-						playerKillAndDeathDatas[playerDoc._id] = {kill:0, death:0};
-						playersSoldiersAndWoundedSoldiers[playerDoc._id] = {};
-						playerDragons[playerDoc._id] = {type:dragonFightData.attackDragonAfterFight.type, hpDecreased:0, expAdd:0};
-					}
+		var shrineReportRoundDatas = []
+		shrineReportFightDatas.push({roundDatas:shrineReportRoundDatas});
+		_.each(fightData.roundDatas, function(roundData){
+			var playerDoc = roundData.playerDoc;
+			var dragonFightData = roundData.dragonFightData;
+			var soldierFightData = roundData.soldierFightData;
+			if(!_.isObject(playerReports[playerDoc._id])){
+				playerReports[playerDoc._id] = {
+					attackTarget:{
+						stageName:stageName,
+						location:shrineLocation,
+						alliance:allianceData,
+						terrain:allianceDoc.basicInfo.terrain,
+						isWin:isWin
+					},
+					rewards:[],
+					roundDatas:[]
+				}
+				playerKillAndDeathDatas[playerDoc._id] = {kill:0, death:0};
+				playersSoldiersAndWoundedSoldiers[playerDoc._id] = {};
+				playerDragons[playerDoc._id] = {type:dragonFightData.attackDragonAfterFight.type, hpDecreased:0, expAdd:0};
+			}
 
-					updatePlayerSoldiersAndWoundedSoldiers(playersSoldiersAndWoundedSoldiers[playerDoc._id], soldierFightData.attackSoldiersAfterFight);
-					var playerKillAndDeathData = playerKillAndDeathDatas[playerDoc._id];
-					var playerKilledCitizen = getKilledCitizen(soldierFightData.attackSoldiersAfterFight);
-					var playerDeadedCitizen = getKilledCitizen(soldierFightData.defenceSoldiersAfterFight);
-					playerKillAndDeathData.kill += playerKilledCitizen;
-					playerKillAndDeathData.death += playerDeadedCitizen;
-					shrineReportRoundDatas.push({
-						playerId:playerDoc._id,
-						playerName:playerDoc.basicInfo.name,
-						playerIcon:playerDoc.basicInfo.icon,
-						playerKill:playerKilledCitizen,
-						stageTroopNumber:roundData.stageTroopNumber,
-						fightResult:soldierFightData.fightResult
-					});
-					var playerReport = playerReports[playerDoc._id];
-					var playerDragonExpAdd = DataUtils.getPlayerDragonExpAdd(playerDoc, playerKilledCitizen);
-					var playerDragon = playerDragons[playerDoc._id];
-					playerDragon.expAdd += playerDragonExpAdd;
-					playerDragon.hpDecreased += dragonFightData.attackDragonAfterFight.totalHp - dragonFightData.attackDragonAfterFight.currentHp;
-					var playerRoundData = {
-						attackPlayerData:{
-							id:playerDoc._id,
-							name:playerDoc.basicInfo.name,
-							icon:playerDoc.basicInfo.icon,
-							dragon:createDragonData(dragonFightData.attackDragonAfterFight, playerDragonExpAdd),
-							soldiers:createSoldiersDataAfterFight(soldierFightData.attackSoldiersAfterFight)
-						},
-						defenceTroopData:{
-							stageTroopNumber:roundData.stageTroopNumber,
-							dragon:createDragonData(dragonFightData.defenceDragonAfterFight, 0),
-							soldiers:createSoldiersDataAfterFight(soldierFightData.defenceSoldiersAfterFight)
-						},
-						fightWithDefenceTroopReports:{
-							attackPlayerDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
-							defenceTroopDragonFightData:createDragonFightData(dragonFightData.defenceDragonAfterFight),
-							attackPlayerSoldierRoundDatas:soldierFightData.attackRoundDatas,
-							defenceTroopSoldierRoundDatas:soldierFightData.defenceRoundDatas
-						}
-					}
-					playerReport.roundDatas.push(playerRoundData);
-				})();
-			})
-		})();
+			updatePlayerSoldiersAndWoundedSoldiers(playersSoldiersAndWoundedSoldiers[playerDoc._id], soldierFightData.attackSoldiersAfterFight);
+			var playerKillAndDeathData = playerKillAndDeathDatas[playerDoc._id];
+			var playerKilledCitizen = getKilledCitizen(soldierFightData.attackSoldiersAfterFight);
+			var playerDeadedCitizen = getKilledCitizen(soldierFightData.defenceSoldiersAfterFight);
+			playerKillAndDeathData.kill += playerKilledCitizen;
+			playerKillAndDeathData.death += playerDeadedCitizen;
+			shrineReportRoundDatas.push({
+				playerId:playerDoc._id,
+				playerName:playerDoc.basicInfo.name,
+				playerIcon:playerDoc.basicInfo.icon,
+				playerKill:playerKilledCitizen,
+				stageTroopNumber:roundData.stageTroopNumber,
+				fightResult:soldierFightData.fightResult
+			});
+			var playerReport = playerReports[playerDoc._id];
+			var playerDragonExpAdd = DataUtils.getPlayerDragonExpAdd(playerDoc, playerKilledCitizen);
+			var playerDragon = playerDragons[playerDoc._id];
+			playerDragon.expAdd += playerDragonExpAdd;
+			playerDragon.hpDecreased += dragonFightData.attackDragonAfterFight.totalHp - dragonFightData.attackDragonAfterFight.currentHp;
+			var playerRoundData = {
+				attackPlayerData:{
+					id:playerDoc._id,
+					name:playerDoc.basicInfo.name,
+					icon:playerDoc.basicInfo.icon,
+					dragon:createDragonData(dragonFightData.attackDragonAfterFight, playerDragonExpAdd),
+					soldiers:createSoldiersDataAfterFight(soldierFightData.attackSoldiersAfterFight)
+				},
+				defenceTroopData:{
+					stageTroopNumber:roundData.stageTroopNumber,
+					dragon:createDragonData(dragonFightData.defenceDragonAfterFight, 0),
+					soldiers:createSoldiersDataAfterFight(soldierFightData.defenceSoldiersAfterFight)
+				},
+				fightWithDefenceTroopReports:{
+					attackPlayerDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
+					defenceTroopDragonFightData:createDragonFightData(dragonFightData.defenceDragonAfterFight),
+					attackPlayerSoldierRoundDatas:soldierFightData.attackRoundDatas,
+					defenceTroopSoldierRoundDatas:soldierFightData.defenceRoundDatas
+				}
+			}
+			playerReport.roundDatas.push(playerRoundData);
+		})
 	})
 
 	var getPlayerRewards = function(terrain, stageConfig, playerKill){
@@ -1616,38 +1606,36 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	var playerRewards = {};
 	var playerKills = {};
 	_.each(playerTroops, function(playerTroop){
-		(function(){
-			var playerDoc = playerTroop.playerDoc;
-			var playerData = {
-				id:playerDoc._id,
-				name:playerDoc.basicInfo.name,
-				icon:playerDoc.basicInfo.icon,
-				kill:_.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].kill : 0
-			}
-			playerKills[playerDoc._id] = playerData.kill;
-			totalDeath += _.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].death : 0;
-			shrineReportPlayerDatas[playerDoc._id] = playerData;
-			if(_.isObject(playerKillAndDeathDatas[playerDoc._id])){
-				var rewards = getPlayerRewards(allianceDoc.basicInfo.terrain, stageConfig, playerData.kill);
-				playerData.rewards = rewards;
-				playerReports[playerDoc._id].rewards = rewards;
-				playerRewards[playerDoc._id] = rewards;
-			}else{
-				playerRewards[playerDoc._id] = [];
-				playerReports[playerDoc._id] = {
-					attackTarget:{
-						stageName:stageName,
-						location:shrineLocation,
-						alliance:allianceData,
-						terrain:allianceDoc.basicInfo.terrain,
-						isWin:isWin
-					},
-					rewards:[],
-					roundDatas:[]
-				};
-				playerDragons[playerDoc._id] = {type:playerTroop.dragon.type, hpDecreased:0, expAdd:0};
-			}
-		})();
+		var playerDoc = playerTroop.playerDoc;
+		var playerData = {
+			id:playerDoc._id,
+			name:playerDoc.basicInfo.name,
+			icon:playerDoc.basicInfo.icon,
+			kill:_.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].kill : 0
+		}
+		playerKills[playerDoc._id] = playerData.kill;
+		totalDeath += _.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].death : 0;
+		shrineReportPlayerDatas[playerDoc._id] = playerData;
+		if(_.isObject(playerKillAndDeathDatas[playerDoc._id])){
+			var rewards = getPlayerRewards(allianceDoc.basicInfo.terrain, stageConfig, playerData.kill);
+			playerData.rewards = rewards;
+			playerReports[playerDoc._id].rewards = rewards;
+			playerRewards[playerDoc._id] = rewards;
+		}else{
+			playerRewards[playerDoc._id] = [];
+			playerReports[playerDoc._id] = {
+				attackTarget:{
+					stageName:stageName,
+					location:shrineLocation,
+					alliance:allianceData,
+					terrain:allianceDoc.basicInfo.terrain,
+					isWin:isWin
+				},
+				rewards:[],
+				roundDatas:[]
+			};
+			playerDragons[playerDoc._id] = {type:playerTroop.dragon.type, hpDecreased:0, expAdd:0};
+		}
 	})
 
 	var fightStar = 0;
@@ -1673,38 +1661,34 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	var playerFullReports = {};
 	var finalPlayersSoldiersAndWoundedSoldiers = {};
 	_.each(playerTroops, function(playerTroop){
-		(function(){
-			var report = playerReports[playerTroop.id];
-			report.attackTarget.fightStar = fightStar;
-			var fullReport = {
-				id:ShortId.generate(),
-				type:Consts.PlayerReportType.AttackShrine,
-				createTime:Date.now(),
-				isRead:false,
-				isSaved:false,
-				attackShrine:report
-			}
-			playerFullReports[playerTroop.id] = fullReport;
+		var report = playerReports[playerTroop.id];
+		report.attackTarget.fightStar = fightStar;
+		var fullReport = {
+			id:ShortId.generate(),
+			type:Consts.PlayerReportType.AttackShrine,
+			createTime:Date.now(),
+			isRead:false,
+			isSaved:false,
+			attackShrine:report
+		}
+		playerFullReports[playerTroop.id] = fullReport;
 
-			finalPlayersSoldiersAndWoundedSoldiers[playerTroop.id] = {soldiers:[], woundedSoldiers:[]};
-			var finalPlayerSoldiersAndWoundedSoldiers = finalPlayersSoldiersAndWoundedSoldiers[playerTroop.id];
-			_.each(playerTroop.soldiers, function(soldier){
-				(function(){
-					var soldierAndWoundedSoldier = _.isObject(playersSoldiersAndWoundedSoldiers[playerTroop.id]) ? playersSoldiersAndWoundedSoldiers[playerTroop.id][soldier.name] : null;
-					var soldierCount = _.isObject(soldierAndWoundedSoldier) ? soldierAndWoundedSoldier.count : soldier.count;
-					var soldierWoundedCount = _.isObject(soldierAndWoundedSoldier) ? soldierAndWoundedSoldier.woundedCount : 0;
-					var soldierStar = DataUtils.getPlayerSoldierStar(playerTroop.playerDoc, soldier.name);
-					if(soldierCount > 0)
-						finalPlayerSoldiersAndWoundedSoldiers.soldiers.push({
-							name:soldier.name,
-							star:soldierStar,
-							count:soldierCount
-						});
-					if(soldierWoundedCount > 0)
-						finalPlayerSoldiersAndWoundedSoldiers.woundedSoldiers.push({name:soldier.name, count:soldierWoundedCount});
-				})();
-			})
-		})();
+		finalPlayersSoldiersAndWoundedSoldiers[playerTroop.id] = {soldiers:[], woundedSoldiers:[]};
+		var finalPlayerSoldiersAndWoundedSoldiers = finalPlayersSoldiersAndWoundedSoldiers[playerTroop.id];
+		_.each(playerTroop.soldiers, function(soldier){
+			var soldierAndWoundedSoldier = _.isObject(playersSoldiersAndWoundedSoldiers[playerTroop.id]) ? playersSoldiersAndWoundedSoldiers[playerTroop.id][soldier.name] : null;
+			var soldierCount = _.isObject(soldierAndWoundedSoldier) ? soldierAndWoundedSoldier.count : soldier.count;
+			var soldierWoundedCount = _.isObject(soldierAndWoundedSoldier) ? soldierAndWoundedSoldier.woundedCount : 0;
+			var soldierStar = DataUtils.getPlayerSoldierStar(playerTroop.playerDoc, soldier.name);
+			if(soldierCount > 0)
+				finalPlayerSoldiersAndWoundedSoldiers.soldiers.push({
+					name:soldier.name,
+					star:soldierStar,
+					count:soldierCount
+				});
+			if(soldierWoundedCount > 0)
+				finalPlayerSoldiersAndWoundedSoldiers.woundedSoldiers.push({name:soldier.name, count:soldierWoundedCount});
+		})
 	})
 
 	var allianceHonourGet = fightStar > 0 ? stageConfig['star' + fightStar + 'Honour'] : 0;

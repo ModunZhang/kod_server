@@ -2384,9 +2384,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var maxPlayerKill = null
 		var playerKills = attackAllianceDoc.allianceFight.attackPlayerKills.concat(attackAllianceDoc.allianceFight.defencePlayerKills)
 		_.each(playerKills, function(playerKill){
-			(function(){
-				if(maxPlayerKill == null || maxPlayerKill.kill < playerKill.kill) maxPlayerKill = playerKill
-			})();
+			if(maxPlayerKill == null || maxPlayerKill.kill < playerKill.kill) maxPlayerKill = playerKill
 		})
 		return _.isObject(maxPlayerKill) ? maxPlayerKill : null
 	})();
@@ -2413,51 +2411,41 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			})
 		}
 		_.each(attackAllianceDoc.villageEvents, function(villageEvent){
-			(function(){
-				if(!_.isEqual(villageEvent.villageData.alliance.id, attackAllianceDoc._id)){
-					pushEvent(villageEvent.playerData.id, "villageEvents", villageEvent)
-				}
-			})();
+			if(!_.isEqual(villageEvent.villageData.alliance.id, attackAllianceDoc._id)){
+				pushEvent(villageEvent.playerData.id, "villageEvents", villageEvent)
+			}
 		})
 		_.each(attackAllianceDoc.attackMarchEvents, function(marchEvent){
-			(function(){
-				if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
-					pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
-				}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
-					pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
-				}else if(_.isEqual(Consts.MarchType.Monster, marchEvent.marchType) && !_.isEqual(marchEvent.defenceMonsterData.alliance.id, attackAllianceDoc._id)){
-					pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
-				}
-			})();
+			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
+				pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
+			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+				pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
+			}else if(_.isEqual(Consts.MarchType.Monster, marchEvent.marchType) && !_.isEqual(marchEvent.defenceMonsterData.alliance.id, attackAllianceDoc._id)){
+				pushEvent(marchEvent.attackPlayerData.id, "attackMarchEvents", marchEvent)
+			}
 		})
 		_.each(attackAllianceDoc.attackMarchReturnEvents, function(marchEvent){
-			(function(){
-				if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
-					pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
-				}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
-					pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
-				}else if(_.isEqual(Consts.MarchType.Monster, marchEvent.marchType) && !_.isEqual(marchEvent.defenceMonsterData.alliance.id, attackAllianceDoc._id)){
-					pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
-				}
-			})();
+			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
+				pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
+			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+				pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
+			}else if(_.isEqual(Consts.MarchType.Monster, marchEvent.marchType) && !_.isEqual(marchEvent.defenceMonsterData.alliance.id, attackAllianceDoc._id)){
+				pushEvent(marchEvent.attackPlayerData.id, "attackMarchReturnEvents", marchEvent)
+			}
 		})
 		_.each(attackAllianceDoc.strikeMarchEvents, function(marchEvent){
-			(function(){
-				if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
-					pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
-				}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
-					pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
-				}
-			})();
+			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
+				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
+			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchEvents", marchEvent)
+			}
 		})
 		_.each(attackAllianceDoc.strikeMarchReturnEvents, function(marchEvent){
-			(function(){
-				if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
-					pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
-				}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
-					pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
-				}
-			})();
+			if(_.isEqual(Consts.MarchType.City, marchEvent.marchType)){
+				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
+			}else if(_.isEqual(Consts.MarchType.Village, marchEvent.marchType) && !_.isEqual(marchEvent.defenceVillageData.alliance.id, attackAllianceDoc._id)){
+				pushEvent(marchEvent.attackPlayerData.id, "strikeMarchReturnEvents", marchEvent)
+			}
 		})
 	}
 	var resolveVillageEvent = function(attackAllianceDoc, attackAllianceData, defenceAllianceDoc, defenceAllianceData, attackPlayerDoc, attackPlayerData, villageEvent){
@@ -2705,16 +2693,14 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		attackAllianceDoc.allianceFight = null
 		attackAllianceData.push(["allianceFight", null])
 		_.each(attackAllianceDoc.members, function(member){
-			(function(){
-				if(member.isProtected){
-					member.isProtected = false
-					attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
-				}
-				if(member.lastBeAttackedTime > 0){
-					member.lastBeAttackedTime = 0
-					attackAllianceData.push(['members.' + attackAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
-				}
-			})();
+			if(member.isProtected){
+				member.isProtected = false
+				attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
+			}
+			if(member.lastBeAttackedTime > 0){
+				member.lastBeAttackedTime = 0
+				attackAllianceData.push(['members.' + attackAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
+			}
 		})
 
 		defenceAllianceDoc.basicInfo.honour += defenceAllianceHonourGet
@@ -2729,16 +2715,14 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		defenceAllianceDoc.allianceFight = null
 		defenceAllianceData.push(["allianceFight", null])
 		_.each(defenceAllianceDoc.members, function(member){
-			(function(){
-				if(member.isProtected){
-					member.isProtected = false
-					defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
-				}
-				if(member.lastBeAttackedTime > 0){
-					member.lastBeAttackedTime = 0
-					defenceAllianceData.push(['members.' + defenceAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
-				}
-			})();
+			if(member.isProtected){
+				member.isProtected = false
+				defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
+			}
+			if(member.lastBeAttackedTime > 0){
+				member.lastBeAttackedTime = 0
+				defenceAllianceData.push(['members.' + defenceAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
+			}
 		})
 
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime - Date.now()])

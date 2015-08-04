@@ -157,22 +157,18 @@ pro.sendServerMail = function(title, content, callback){
 	}).toArray(function(e, docs){
 		playerCount = docs.length;
 		_.each(docs, function(doc){
-			(function(){
-				if(!_.isArray(serverIds[doc.serverId])) serverIds[doc.serverId] = [];
-				serverIds[doc.serverId].push(doc._id);
-			})();
+			if(!_.isArray(serverIds[doc.serverId])) serverIds[doc.serverId] = [];
+			serverIds[doc.serverId].push(doc._id);
 		})
 		var funcs = []
 		_.each(serverIds, function(ids, serverId){
-			(function(){
-				var sendMailAsync = new Promise(function(resolve, reject){
-					self.app.rpc.cache.cacheRemote.sendServerMail.toServer(serverId, ids, title, content, function(e){
-						if(_.isObject(e)) reject(e);
-						else resolve()
-					})
+			var sendMailAsync = new Promise(function(resolve, reject){
+				self.app.rpc.cache.cacheRemote.sendServerMail.toServer(serverId, ids, title, content, function(e){
+					if(_.isObject(e)) reject(e);
+					else resolve()
 				})
-				funcs.push(sendMailAsync);
-			})();
+			})
+			funcs.push(sendMailAsync);
 		})
 
 		Promise.all(funcs).catch(function(e){

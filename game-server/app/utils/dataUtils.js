@@ -889,12 +889,10 @@ Utils.refreshPlayerPower = function(playerDoc, playerData){
 Utils.getPlayerBuildingsPower = function(playerDoc){
 	var totalPower = 0
 	_.each(playerDoc.buildings, function(building){
-		(function(){
-			if(building.level >= 1){
-				var config = BuildingFunction[building.type][building.level]
-				totalPower += config.power
-			}
-		})();
+		if(building.level >= 1){
+			var config = BuildingFunction[building.type][building.level]
+			totalPower += config.power
+		}
 	})
 
 	return totalPower
@@ -908,16 +906,12 @@ Utils.getPlayerBuildingsPower = function(playerDoc){
 Utils.getPlayerHousesPower = function(playerDoc){
 	var totalPower = 0
 	_.each(playerDoc.buildings, function(building){
-		(function(){
-			_.each(building.houses, function(house){
-				(function(){
-					if(house.level > 0){
-						var config = HouseFunction[house.type][house.level]
-						totalPower += config.power
-					}
-				})();
-			})
-		})();
+		_.each(building.houses, function(house){
+			if(house.level > 0){
+				var config = HouseFunction[house.type][house.level]
+				totalPower += config.power
+			}
+		})
 	})
 
 	return totalPower
@@ -932,20 +926,14 @@ Utils.getPlayerSoldiersPower = function(playerDoc){
 	var self = this
 	var totalPower = 0
 	_.each(playerDoc.soldiers, function(soldierCount, soldierName){
-		(function(){
-			var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
-			totalPower += config.power * soldierCount
-		})();
+		var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
+		totalPower += config.power * soldierCount
 	})
 	_.each(playerDoc.troopsOut, function(troopOut){
-		(function(){
-			_.each(troopOut.soldiers, function(soldier){
-				(function(){
-					var config = self.getPlayerSoldierConfig(playerDoc, soldier.name);
-					totalPower += config.power * soldier.count;
-				})();
-			})
-		})();
+		_.each(troopOut.soldiers, function(soldier){
+			var config = self.getPlayerSoldierConfig(playerDoc, soldier.name);
+			totalPower += config.power * soldier.count;
+		})
 	})
 
 	return totalPower
@@ -958,16 +946,12 @@ Utils.getPlayerSoldiersPower = function(playerDoc){
 Utils.getPlayerTechsPower = function(playerDoc){
 	var totalPower = 0
 	_.each(playerDoc.productionTechs, function(tech, name){
-		(function(){
-			if(tech.level > 0)
-				totalPower += ProductionTechLevelUp[name][tech.level].power;
-		})();
+		if(tech.level > 0)
+			totalPower += ProductionTechLevelUp[name][tech.level].power;
 	})
 	_.each(playerDoc.militaryTechs, function(tech, name){
-		(function(){
-			if(tech.level > 0)
-				totalPower += MilitaryTechLevelUp[name][tech.level].power;
-		})();
+		if(tech.level > 0)
+			totalPower += MilitaryTechLevelUp[name][tech.level].power;
 	})
 	return totalPower
 }
@@ -2188,46 +2172,44 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 	var self = this
 	var soldiersForFight = []
 	_.each(soldiers, function(soldier){
-		(function(){
-			var soldierName = soldier.name
-			var soldierStar = self.getPlayerSoldierStar(playerDoc, soldierName)
-			var soldierCount = soldier.count
-			var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
-			var atkBuff = self.getPlayerSoldierAtkBuff(playerDoc, soldierName, dragon, terrain, isDragonWin)
-			var atkWallBuff = self.getDragonAtkWallBuff(dragon, isDragonWin)
-			var hpBuff = self.getPlayerSoldierHpBuff(playerDoc, soldierName, dragon, terrain, isDragonWin)
-			var loadBuff = self.getPlayerSoldierLoadBuff(playerDoc, soldierName, dragon, isDragonWin)
-			var techBuffToInfantry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_infantry")
-			var techBuffToArcher = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_archer")
-			var techBuffToCavalry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_cavalry")
-			var techBuffToSiege = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_siege")
-			var techBuffHpAdd = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_hpAdd")
-			var vipAttackBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].soldierAttackPowerAdd
-			var vipHpBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].soldierHpAdd
-			var soldierForFight = {
-				name:soldierName,
-				star:soldierStar,
-				type:config.type,
-				currentCount:soldierCount,
-				totalCount:soldierCount,
-				woundedCount:0,
-				power:config.power,
-				hp:Math.floor(config.hp * (1 + hpBuff + techBuffHpAdd + vipHpBuff)),
-				load:Math.floor(config.load * (1 + loadBuff)),
-				citizen:config.citizen,
-				morale:100,
-				round:1,
-				attackPower:{
-					infantry:Math.floor(config.infantry * (1 + atkBuff + techBuffToInfantry + vipAttackBuff)),
-					archer:Math.floor(config.archer * (1 + atkBuff + techBuffToArcher + vipAttackBuff)),
-					cavalry:Math.floor(config.cavalry * (1 + atkBuff + techBuffToCavalry + vipAttackBuff)),
-					siege:Math.floor(config.siege * (1 + atkBuff + techBuffToSiege + vipAttackBuff)),
-					wall:Math.floor(config.wall * (1 + atkBuff + atkWallBuff + vipAttackBuff))
-				},
-				killedSoldiers:[]
-			}
-			soldiersForFight.push(soldierForFight)
-		})();
+		var soldierName = soldier.name
+		var soldierStar = self.getPlayerSoldierStar(playerDoc, soldierName)
+		var soldierCount = soldier.count
+		var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
+		var atkBuff = self.getPlayerSoldierAtkBuff(playerDoc, soldierName, dragon, terrain, isDragonWin)
+		var atkWallBuff = self.getDragonAtkWallBuff(dragon, isDragonWin)
+		var hpBuff = self.getPlayerSoldierHpBuff(playerDoc, soldierName, dragon, terrain, isDragonWin)
+		var loadBuff = self.getPlayerSoldierLoadBuff(playerDoc, soldierName, dragon, isDragonWin)
+		var techBuffToInfantry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_infantry")
+		var techBuffToArcher = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_archer")
+		var techBuffToCavalry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_cavalry")
+		var techBuffToSiege = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_siege")
+		var techBuffHpAdd = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_hpAdd")
+		var vipAttackBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].soldierAttackPowerAdd
+		var vipHpBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].soldierHpAdd
+		var soldierForFight = {
+			name:soldierName,
+			star:soldierStar,
+			type:config.type,
+			currentCount:soldierCount,
+			totalCount:soldierCount,
+			woundedCount:0,
+			power:config.power,
+			hp:Math.floor(config.hp * (1 + hpBuff + techBuffHpAdd + vipHpBuff)),
+			load:Math.floor(config.load * (1 + loadBuff)),
+			citizen:config.citizen,
+			morale:100,
+			round:1,
+			attackPower:{
+				infantry:Math.floor(config.infantry * (1 + atkBuff + techBuffToInfantry + vipAttackBuff)),
+				archer:Math.floor(config.archer * (1 + atkBuff + techBuffToArcher + vipAttackBuff)),
+				cavalry:Math.floor(config.cavalry * (1 + atkBuff + techBuffToCavalry + vipAttackBuff)),
+				siege:Math.floor(config.siege * (1 + atkBuff + techBuffToSiege + vipAttackBuff)),
+				wall:Math.floor(config.wall * (1 + atkBuff + atkWallBuff + vipAttackBuff))
+			},
+			killedSoldiers:[]
+		}
+		soldiersForFight.push(soldierForFight)
 	})
 	soldiersForFight = _.sortBy(soldiersForFight, function(soldier){
 		return -(soldier.power * soldier.totalCount)
@@ -4131,18 +4113,16 @@ Utils.getMonsterRewards = function(monsterLevel){
 	var rewardStrings = AllianceInitData.monsters[monsterLevel].rewards.split(',');
 	var rewards = [];
 	_.each(rewardStrings, function(rewardString){
-		(function(){
-			var rewardParams = rewardString.split(':');
-			var reward = {
-				reward:{
-					type:rewardParams[0],
-					name:rewardParams[1],
-					count:parseInt(rewardParams[2])
-				},
-				weight:parseInt(rewardParams[3])
-			};
-			rewards.push(reward);
-		})();
+		var rewardParams = rewardString.split(':');
+		var reward = {
+			reward:{
+				type:rewardParams[0],
+				name:rewardParams[1],
+				count:parseInt(rewardParams[2])
+			},
+			weight:parseInt(rewardParams[3])
+		};
+		rewards.push(reward);
 	})
 	var SortFunc = function(objects){
 		var totalWeight = 0
@@ -4178,9 +4158,7 @@ Utils.isResourceItem = function(itemName){
 Utils.isPlayerDragonHatchLegal = function(playerDoc){
 	var dragonCount = 0;
 	_.each(playerDoc.dragons, function(dragon){
-		(function(){
-			if(dragon.star > 0) dragonCount += 1;
-		})();
+		if(dragon.star > 0) dragonCount += 1;
 	})
 	var building = playerDoc.buildings.location_4;
 	return dragonCount < BuildingFunction.dragonEyrie[building.level].dragonCount;

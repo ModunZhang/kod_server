@@ -1617,24 +1617,20 @@ Utils.returnPlayerShrineTroops = function(playerDoc, playerData, allianceDoc, al
 	var self = this
 	var playerTroops = [];
 	_.each(allianceDoc.shrineEvents, function(shrineEvent){
-		(function(){
-			var playerTroop = _.find(shrineEvent.playerTroops, function(playerTroop){
-				return _.isEqual(playerDoc._id, playerTroop.id)
-			})
-			if(_.isObject(playerTroop)) playerTroops.push({event:shrineEvent, troop:playerTroop});
-		})();
+		var playerTroop = _.find(shrineEvent.playerTroops, function(playerTroop){
+			return _.isEqual(playerDoc._id, playerTroop.id)
+		})
+		if(_.isObject(playerTroop)) playerTroops.push({event:shrineEvent, troop:playerTroop});
 	})
 	_.each(playerTroops, function(playerTroop){
-		(function(){
-			allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(playerTroop.event) + ".playerTroops." + playerTroop.event.playerTroops.indexOf(playerTroop.troop), null])
-			self.removeItemInArray(playerTroop.event.playerTroops, playerTroop.troop)
+		allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(playerTroop.event) + ".playerTroops." + playerTroop.event.playerTroops.indexOf(playerTroop.troop), null])
+		self.removeItemInArray(playerTroop.event.playerTroops, playerTroop.troop)
 
-			self.removePlayerTroopOut(playerDoc, playerTroop.troop.dragon.type);
-			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[playerTroop.troop.dragon.type])
-			playerDoc.dragons[playerTroop.troop.dragon.type].status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + playerTroop.troop.dragon.type], playerDoc.dragons[playerTroop.troop.dragon.type])
-			self.addPlayerSoldiers(playerDoc, playerData, playerTroop.troop.soldiers);
-		})();
+		self.removePlayerTroopOut(playerDoc, playerTroop.troop.dragon.type);
+		DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[playerTroop.troop.dragon.type])
+		playerDoc.dragons[playerTroop.troop.dragon.type].status = Consts.DragonStatus.Free
+		playerData.push(["dragons." + playerTroop.troop.dragon.type], playerDoc.dragons[playerTroop.troop.dragon.type])
+		self.addPlayerSoldiers(playerDoc, playerData, playerTroop.troop.soldiers);
 	})
 }
 

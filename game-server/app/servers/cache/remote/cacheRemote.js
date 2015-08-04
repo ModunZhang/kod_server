@@ -212,10 +212,8 @@ pro.sendServerMail = function(ids, title, content, callback){
 	var inCacheIds = [];
 	var outCacheIds = [];
 	_.each(ids, function(id){
-		(function(){
-			if(self.cacheService.isPlayerInCache(id)) inCacheIds.push(id);
-			else outCacheIds.push(id);
-		})();
+		if(self.cacheService.isPlayerInCache(id)) inCacheIds.push(id);
+		else outCacheIds.push(id);
 	})
 	var inCacheIdsLength = inCacheIds.length;
 	var outCacheIdsLength = outCacheIds.length;
