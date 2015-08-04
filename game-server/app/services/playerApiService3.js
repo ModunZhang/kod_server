@@ -550,26 +550,22 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
  */
 pro.getSellItems = function(playerId, type, name, callback){
 	var self = this
-	var playerDoc = null
 	var itemDocs = null
-	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
-		return self.Deal.find({
-			//"playerId":{$ne:playerDoc._id},
-			"serverId":playerDoc.serverId,
-			"itemData.type":type, "itemData.name":name
-		}).sort({
-			"itemData.price":1,
-			"addedTime":1
-		}).limit(Define.SellItemsMaxSize).exec()
-	}).then(function(docs){
-		itemDocs = docs
-		return Promise.resolve()
-	}).then(function(){
-		callback(null, itemDocs)
-	}).catch(function(e){
-		callback(e)
-	})
+	this.Deal.find({
+		"serverId":self.app.get('cacheServerId'),
+		"itemData.type":type, "itemData.name":name
+	}).sort({
+		"itemData.price":1,
+		"addedTime":1
+	}).limit(Define.SellItemsMaxSize).exec()
+		.then(function(docs){
+			itemDocs = docs
+			return Promise.resolve()
+		}).then(function(){
+			callback(null, itemDocs)
+		}).catch(function(e){
+			callback(e)
+		})
 }
 
 /**
@@ -592,8 +588,8 @@ pro.buySellItem = function(playerId, itemId, callback){
 	funcs.push(this.Deal.findOneAsync({_id:itemId}))
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		playerDoc = doc_1
-		if(!_.isObject(doc_2)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
 		itemDoc = doc_2
+		if(!_.isObject(itemDoc)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
 		if(!_.isEqual(itemDoc.serverId, playerDoc.serverId)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
 		if(_.isEqual(itemDoc.playerId, playerDoc._id)) return Promise.reject(ErrorUtils.canNotBuyYourOwnSellItem(playerId, itemId));
 		DataUtils.refreshPlayerResources(playerDoc)

@@ -133,7 +133,7 @@ pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
  * @param content
  * @param callback
  */
-pro.sendNotice = function(type, content, callback){
+pro.sendGlobalNotice = function(type, content, callback){
 	this.globalChatChannel.pushMessage(Events.chat.onNotice, {type:type, content:content}, {}, null)
 	callback()
 }
