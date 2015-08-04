@@ -4167,10 +4167,9 @@ Utils.isPlayerDragonHatchLegal = function(playerDoc){
 /**
  *
  * @param sectionName
- * @param terrain
  * @returns {*}
  */
-Utils.createPveSecionTroopForFight = function(sectionName, terrain){
+Utils.createPveSecionTroopForFight = function(sectionName){
 	var troopStrings = PvE.sections[sectionName].troops.split(',')
 	var dragonStrings = troopStrings.shift().split('_');
 	var dragon = {
@@ -4188,7 +4187,7 @@ Utils.createPveSecionTroopForFight = function(sectionName, terrain){
 		}
 		soldiers.push(soldier);
 	})
-	var dragonForFight = this.createDragonForFight(dragon, terrain);
+	var dragonForFight = this.createDragonForFight(dragon, null);
 	var soldiersForFight = this.createSoldiersForFight(soldiers);
 
 	return {dragonForFight:dragonForFight, soldiersForFight:soldiersForFight};
