@@ -129,7 +129,7 @@ productionTechs["negotiation"] = {
 	unlockBy:13,
 	unlockLevel:2,
 	academyLevel:18,
-	effectPerLevel:0.010000
+	effectPerLevel:0.100000
 }
 productionTechs["logistics"] = {
 	name:"logistics",
