@@ -511,6 +511,8 @@ Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
 	var defencePlayerLocation = LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location
 	var marchTime = _.isEmpty(soldiers) ? getPlayerDragonMarchTime(playerDoc, dragon, defenceAllianceDoc, defencePlayerLocation, allianceDoc, playerLocation)
 		: getPlayerSoldiersMarchTime(playerDoc, dragon, soldiers, defenceAllianceDoc, defencePlayerLocation, allianceDoc, playerLocation)
+	var timeAdd = Math.ceil(marchTime * DataUtils.getPlayerProductionTechBuff(defencePlayerDoc, 'trap'))
+	marchTime += timeAdd;
 
 	var event = {
 		id:ShortId.generate(),

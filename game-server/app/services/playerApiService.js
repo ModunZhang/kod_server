@@ -758,7 +758,7 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 		}
 
 		var gemUsed = 0
-		var makeRequired = DataUtils.getMakeMaterialRequired(type, building.level)
+		var makeRequired = DataUtils.getMakeMaterialRequired(playerDoc, type, building.level)
 		var buyedResources = null
 		DataUtils.refreshPlayerResources(playerDoc)
 		if(finishNow){

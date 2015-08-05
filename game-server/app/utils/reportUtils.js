@@ -309,7 +309,8 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
 		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
 		var attackDragonBuffSubtractPercent = getDragonSkillResourceLootPercentAdd(attackDragon)
-		var finalPercent = basePercent + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent - attackDragonBuffSubtractPercent
+		var productionTechAddPercent = DataUtils.getPlayerProductionTechBuff(defencePlayerDoc, 'hideout');
+		var finalPercent = basePercent + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent + productionTechAddPercent - attackDragonBuffSubtractPercent
 		finalPercent = finalPercent > 0.9 ? 0.9 : finalPercent < 0.1 ? 0.1 : finalPercent
 		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
 	}
@@ -760,7 +761,8 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		var buildingBuffAddPercent = getBuildingBuffForResourceProtectPercent(defencePlayerDoc, resourceName)
 		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
 		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
-		var finalPercent = basePercent + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent
+		var productionTechAddPercent = DataUtils.getPlayerProductionTechBuff(defencePlayerDoc, 'hideout');
+		var finalPercent = basePercent + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent + productionTechAddPercent;
 		finalPercent = finalPercent > 0.9 ? 0.9 : finalPercent < 0.1 ? 0.1 : finalPercent
 		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
 	}
@@ -951,7 +953,8 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		var buildingBuffAddPercent = getBuildingBuffForResourceProtectPercent(defencePlayerDoc, resourceName)
 		var itemBuffAddPercent = getPlayerItemBuffForResourceLootPercentSubtract(defencePlayerDoc)
 		var vipBuffAddPercent = Vip.level[defencePlayerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(defencePlayerDoc) : 0].storageProtectAdd
-		var finalPercent = basePercent + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent
+		var productionTechAddPercent = DataUtils.getPlayerProductionTechBuff(defencePlayerDoc, 'hideout');
+		var finalPercent = basePercent + buildingBuffAddPercent + itemBuffAddPercent + vipBuffAddPercent + productionTechAddPercent;
 		finalPercent = finalPercent > 0.9 ? 0.9 : finalPercent < 0.1 ? 0.1 : finalPercent
 		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
 	}
@@ -2041,10 +2044,11 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 	var createWoundedSoldiers = function(soldiersAfterFight){
 		var soldiers = []
 		_.each(soldiersAfterFight, function(soldierAfterFight){
-			if(soldierAfterFight.woundedCount > 0){
+			var woundedCount = soldierAfterFight.totalCount - soldierAfterFight.currentCount;
+			if(woundedCount){
 				var soldier = {
 					name:soldierAfterFight.name,
-					count:soldierAfterFight.woundedCount
+					count:woundedCount
 				}
 				soldiers.push(soldier)
 			}

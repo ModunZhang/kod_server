@@ -465,7 +465,8 @@ Utils.getPlayerCoin = function(playerDoc){
 	var itemKey = resourceName + "Bonus"
 	var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? Items.buffTypes[itemKey].effect1 : 0
 	var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, resourceName)
-	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + buildingBuff))
+	var techBuff = this.getPlayerProductionTechBuff(playerDoc, 'mintedCoin');
+	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + buildingBuff + techBuff));
 	var totalResource = playerDoc.resources[resourceName] + output
 	return totalResource
 }
@@ -800,28 +801,32 @@ Utils.addPlayerMaterials = function(playerDoc, materialType, materials){
 
 /**
  * 获取制造材料所需的资源
+ * @param playerDoc
  * @param type
  * @param toolShopLevel
  * @returns {{}}
  */
-Utils.getMakeMaterialRequired = function(type, toolShopLevel){
+Utils.getMakeMaterialRequired = function(playerDoc, type, toolShopLevel){
 	var required = {}
 	var config = BuildingFunction["toolShop"][toolShopLevel]
+	var buildTime = null;
 	if(_.isEqual(Consts.MaterialType.BuildingMaterials, type)){
 		required.resources = {
 			wood:config.productBmWood,
 			stone:config.productBmStone,
 			iron:config.productBmIron
 		}
-		required.buildTime = config.productBmtime
+		buildTime = config.productBmtime
 	}else if(_.isEqual(Consts.MaterialType.TechnologyMaterials, type)){
 		required.resources = {
 			wood:config.productAmWood,
 			stone:config.productAmStone,
 			iron:config.productAmIron
 		}
-		required.buildTime = config.productAmtime
+		buildTime = config.productAmtime
 	}
+	buildTime = LogicUtils.getTimeEfffect(buildTime, this.getPlayerProductionTechBuff(playerDoc, 'sketching'));
+	required.buildTime = buildTime;
 	return required
 }
 
@@ -1210,7 +1215,8 @@ Utils.playerHasFreeRecruitQueue = function(playerDoc){
  */
 Utils.getPlayerTreatSoldierTime = function(playerDoc, soldierName, count){
 	var config = this.getPlayerSoldierConfig(playerDoc, soldierName)
-	return config.treatTime * count
+	var time = config.treatTime * count;
+	return Math.ceil(time * (1 - this.getPlayerProductionTechBuff(playerDoc, 'healingAgent')));
 }
 
 /**
@@ -2880,7 +2886,9 @@ Utils.getPlayerCollectResourceInfo = function(playerDoc, soldierLoadTotal, allia
 	var playerCollectLevel = this.getPlayerCollectLevel(playerDoc, resourceType)
 	var collectPerHour = villageResourceMax * PlayerVillageExp[resourceType][playerCollectLevel].percentPerHour
 	var totalHour = collectTotal / collectPerHour
-	return {collectTime:Math.ceil(totalHour * 60 * 60 * 1000), collectTotal:collectTotal}
+	var collectTime = totalHour * 60 * 60 * 1000;
+	collectTime = Math.ceil(collectTime * (1 - this.getPlayerProductionTechBuff(playerDoc, 'colonization')))
+	return {collectTime:collectTime, collectTotal:collectTotal}
 }
 
 /**
@@ -3060,8 +3068,9 @@ Utils.getPlayerCartUsedForSale = function(playerDoc, resourceType, resourceName,
 	}else{
 		resourceCountPerCart = PlayerInitData.intInit.materialsPerCart.value
 	}
-
-	return Math.ceil(resourceCount / resourceCountPerCart)
+	var cardNeed = resourceCount / resourceCountPerCart;
+	cardNeed = Math.ceil(cardNeed * (1 - this.getPlayerProductionTechBuff(playerDoc, 'logistics')))
+	return cardNeed;
 }
 
 /**
