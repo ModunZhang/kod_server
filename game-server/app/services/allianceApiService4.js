@@ -99,7 +99,7 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceNoticeAsync, attackAllianceDoc._id, Consts.AllianceBannerType.HelpDefence, [playerDoc.basicInfo.name, targetPlayerDoc.basicInfo.name]]);
+		pushFuncs.push([self.pushService, self.pushService.onAllianceNoticeAsync, allianceDoc._id, Consts.AllianceBannerType.HelpDefence, [playerDoc.basicInfo.name, targetPlayerDoc.basicInfo.name]]);
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 		return Promise.resolve()
 	}).then(function(){
