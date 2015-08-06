@@ -158,3 +158,8 @@ intInit["activePlayerNeedHouses"] = {
 	value:72,
 	desc:"定义活跃用户最后登录时间和当前时间的差值"
 }
+intInit["techRecruitQueueRefreshMinutes"] = {
+	type:"techRecruitQueueRefreshMinutes",
+	value:1440,
+	desc:"生产科技解锁的造兵队列冷却分钟数"
+}

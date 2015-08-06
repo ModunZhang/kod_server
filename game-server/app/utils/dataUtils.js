@@ -1203,7 +1203,23 @@ Utils.playerHasFreeBuildQueue = function(playerDoc){
  * @param playerDoc
  */
 Utils.playerHasFreeRecruitQueue = function(playerDoc){
-	return playerDoc.basicInfo.recruitQueue - playerDoc.soldierEvents.length > 0
+	var freeQueue = playerDoc.basicInfo.recruitQueue - playerDoc.soldierEvents.length;
+	if(freeQueue > 0) return true;
+	return playerDoc.productionTechs.negotiation.level > 0 && playerDoc.soldiers.techQueueAbleTime <= Date.now();
+}
+
+/**
+ * 招募兵种是否使用了科技造兵队列
+ * @param playerDoc
+ * @param playerData
+ */
+Utils.updatePlayerTechRecruitQueueIfNeed = function(playerDoc, playerData){
+	if(playerDoc.basicInfo.recruitQueue - playerDoc.soldierEvents.length < 0){
+		var techQueueAbleTime = this.getPlayerIntInit('techRecruitQueueRefreshMinutes') * 60 * 1000;
+		techQueueAbleTime = Math.ceil(techQueueAbleTime * (1 - this.getPlayerProductionTechBuff(playerDoc, 'negotiation')));
+		playerDoc.soldiers.techQueueAbleTime = Date.now() + techQueueAbleTime;
+		playerData.push(['soldiers.techQueueAbleTime', playerDoc.soldiers.techQueueAbleTime]);
+	}
 }
 
 /**
