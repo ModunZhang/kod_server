@@ -1205,20 +1205,20 @@ Utils.playerHasFreeBuildQueue = function(playerDoc){
 Utils.playerHasFreeRecruitQueue = function(playerDoc){
 	var freeQueue = playerDoc.basicInfo.recruitQueue - playerDoc.soldierEvents.length;
 	if(freeQueue > 0) return true;
-	return playerDoc.productionTechs.negotiation.level > 0 && playerDoc.soldiers.techQueueAbleTime <= Date.now();
+	return playerDoc.productionTechs.negotiation.level > 0 && playerDoc.countInfo.techRecruitQueueAbleTime <= Date.now();
 }
 
 /**
- * 招募兵种是否使用了科技造兵队列
+ * 更新生产科技开放的第二条造兵队列冷却时间
  * @param playerDoc
  * @param playerData
  */
 Utils.updatePlayerTechRecruitQueueIfNeed = function(playerDoc, playerData){
 	if(playerDoc.basicInfo.recruitQueue - playerDoc.soldierEvents.length < 0){
-		var techQueueAbleTime = this.getPlayerIntInit('techRecruitQueueRefreshMinutes') * 60 * 1000;
-		techQueueAbleTime = Math.ceil(techQueueAbleTime * (1 - this.getPlayerProductionTechBuff(playerDoc, 'negotiation')));
-		playerDoc.soldiers.techQueueAbleTime = Date.now() + techQueueAbleTime;
-		playerData.push(['soldiers.techQueueAbleTime', playerDoc.soldiers.techQueueAbleTime]);
+		var techRecruitQueueAbleTime = this.getPlayerIntInit('techRecruitQueueRefreshMinutes') * 60 * 1000;
+		techRecruitQueueAbleTime = Math.ceil(techRecruitQueueAbleTime * (1 - this.getPlayerProductionTechBuff(playerDoc, 'negotiation')));
+		playerDoc.countInfo.techRecruitQueueAbleTime = Date.now() + techRecruitQueueAbleTime;
+		playerData.push(['countInfo.techRecruitQueueAbleTime', playerDoc.countInfo.techRecruitQueueAbleTime]);
 	}
 }
 
