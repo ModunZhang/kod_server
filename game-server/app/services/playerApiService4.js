@@ -52,7 +52,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		tech = playerDoc.productionTechs[techName]
-		if(tech.index > 9) return Promise.reject(new Error("此科技还未开放"))
+		//if(tech.index > 9) return Promise.reject(new Error("此科技还未开放"))
 		if(DataUtils.isProductionTechReachMaxLevel(tech.level)) return Promise.reject(ErrorUtils.techReachMaxLevel(playerId, techName, tech))
 		if(tech.level == 0 && !DataUtils.isPlayerUnlockProductionTechLegal(playerDoc, techName)) return Promise.reject(ErrorUtils.techUpgradePreConditionNotMatch(playerId, techName, tech))
 
