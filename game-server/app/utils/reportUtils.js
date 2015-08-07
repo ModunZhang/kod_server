@@ -1439,18 +1439,16 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 		var config = null;
 		_.each(soldiersForFight, function(soldierForFight){
 			_.each(soldierForFight.killedSoldiers, function(soldier){
-				(function(){
-					if(DataUtils.isNormalSoldier(soldier.name)){
-						var soldierFullKey = soldier.name + "_" + soldier.star
-						config = Soldiers.normal[soldierFullKey]
-						killed += soldier.count * config.killScore
-					}else{
-						config = Soldiers.special[soldier.name]
-						killed += soldier.count * config.killScore
-					}
-				})();
+				if(DataUtils.isNormalSoldier(soldier.name)){
+					var soldierFullKey = soldier.name + "_" + soldier.star
+					config = Soldiers.normal[soldierFullKey]
+					killed += soldier.count * config.killScore
+				}else{
+					config = Soldiers.special[soldier.name]
+					killed += soldier.count * config.killScore
+				}
 			})
-		})();
+		});
 		return killed
 	}
 	var createSoldiersDataAfterFight = function(soldiersForFight){
