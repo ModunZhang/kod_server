@@ -682,3 +682,25 @@ pro.setApnStatus = function(playerId, type, status, callback){
 		})
 	})
 }
+
+/**
+ * 战报分享
+ * @param playerId
+ * @param memberId
+ * @param reportId
+ * @param callback
+ */
+pro.getReportDetail = function(playerId, memberId, reportId, callback){
+	var memberDoc = null;
+	this.cacheService.directFindPlayerAsync(memberId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId));
+		memberDoc = doc;
+		var report = _.find(memberDoc.reports, function(report){
+			return _.isEqual(report.id, reportId);
+		})
+		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(memberId, reportId));
+		callback(null, report);
+	}).catch(function(e){
+		callback(e)
+	})
+}

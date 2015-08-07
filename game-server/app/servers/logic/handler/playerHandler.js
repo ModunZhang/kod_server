@@ -2094,3 +2094,32 @@ pro.getPveStageReward = function(msg, session, next){
 		next(null, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 获取战报详情
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getReportDetail = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getReportDetail", {playerId:session.uid, msg:msg})
+	var memberId = msg.memberId;
+	var reportId = msg.reportId;
+	var e = null
+	if(!ShortId.isValid(memberId)){
+		e = new Error("memberId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!ShortId.isValid(reportId)){
+		e = new Error("reportId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getReportDetail', [session.uid, memberId, reportId]).then(function(report){
+		next(null, {code:200, report:report})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
