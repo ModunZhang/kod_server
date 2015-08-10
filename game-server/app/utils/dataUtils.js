@@ -574,7 +574,7 @@ Utils.getPlayerCart = function(playerDoc){
 	if(building.level < 1) return playerDoc.resources["cart"]
 
 	var config = BuildingFunction.tradeGuild[building.level]
-	var cartLimit = config.maxCart
+	var cartLimit = Math.ceil(config.maxCart * (1 + this.getPlayerProductionTechBuff(playerDoc, 'logistics')))
 	if(cartLimit <= playerDoc.resources["cart"]){
 		return playerDoc.resources["cart"]
 	}
@@ -3084,9 +3084,7 @@ Utils.getPlayerCartUsedForSale = function(playerDoc, resourceType, resourceName,
 	}else{
 		resourceCountPerCart = PlayerInitData.intInit.materialsPerCart.value
 	}
-	var cardNeed = resourceCount / resourceCountPerCart;
-	cardNeed = Math.ceil(cardNeed * (1 - this.getPlayerProductionTechBuff(playerDoc, 'logistics')))
-	return cardNeed;
+	return Math.ceil(resourceCount / resourceCountPerCart);
 }
 
 /**
