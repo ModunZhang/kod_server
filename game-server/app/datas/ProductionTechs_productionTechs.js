@@ -81,7 +81,7 @@ productionTechs["rescueTent"] = {
 	unlockBy:7,
 	unlockLevel:2,
 	academyLevel:16,
-	effectPerLevel:0.010000
+	effectPerLevel:0.020000
 }
 productionTechs["trap"] = {
 	name:"trap",
@@ -137,7 +137,7 @@ productionTechs["logistics"] = {
 	unlockBy:14,
 	unlockLevel:2,
 	academyLevel:22,
-	effectPerLevel:0.010000
+	effectPerLevel:0.020000
 }
 productionTechs["mintedCoin"] = {
 	name:"mintedCoin",
