@@ -1068,7 +1068,7 @@ Utils.getPlayerRecruitNormalSoldierRequired = function(playerDoc, soldierName, c
 		stone:Math.ceil(config.stone * count * (1 - productionTechBuff)),
 		iron:Math.ceil(config.iron * count * (1 - productionTechBuff)),
 		food:Math.ceil(config.food * count * (1 - productionTechBuff)),
-		citizen:Math.ceil(config.citizen * count * (1 - productionTechBuff))
+		citizen:config.citizen * count
 	}
 	var totalNeed = {
 		resources:resources,
