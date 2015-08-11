@@ -1062,12 +1062,13 @@ Utils.hasSpecialSoldier = function(soldierName){
  */
 Utils.getPlayerRecruitNormalSoldierRequired = function(playerDoc, soldierName, count){
 	var config = this.getPlayerSoldierConfig(playerDoc, soldierName)
+	var productionTechBuff = this.getPlayerProductionTechBuff(playerDoc, 'recruitment');
 	var resources = {
-		wood:config.wood * count,
-		stone:config.stone * count,
-		iron:config.iron * count,
-		food:config.food * count,
-		citizen:config.citizen * count
+		wood:Math.ceil(config.wood * count * (1 - productionTechBuff)),
+		stone:Math.ceil(config.stone * count * (1 - productionTechBuff)),
+		iron:Math.ceil(config.iron * count * (1 - productionTechBuff)),
+		food:Math.ceil(config.food * count * (1 - productionTechBuff)),
+		citizen:Math.ceil(config.citizen * count * (1 - productionTechBuff))
 	}
 	var totalNeed = {
 		resources:resources,
@@ -1203,23 +1204,7 @@ Utils.playerHasFreeBuildQueue = function(playerDoc){
  * @param playerDoc
  */
 Utils.playerHasFreeRecruitQueue = function(playerDoc){
-	var freeQueue = playerDoc.basicInfo.recruitQueue - playerDoc.soldierEvents.length;
-	if(freeQueue > 0) return true;
-	return playerDoc.productionTechs.negotiation.level > 0 && playerDoc.countInfo.techRecruitQueueAbleTime <= Date.now();
-}
-
-/**
- * 更新生产科技开放的第二条造兵队列冷却时间
- * @param playerDoc
- * @param playerData
- */
-Utils.updatePlayerTechRecruitQueueIfNeed = function(playerDoc, playerData){
-	if(playerDoc.basicInfo.recruitQueue - playerDoc.soldierEvents.length < 0){
-		var techRecruitQueueAbleTime = this.getPlayerIntInit('techRecruitQueueRefreshMinutes') * 60 * 1000;
-		techRecruitQueueAbleTime = Math.ceil(techRecruitQueueAbleTime * (1 - this.getPlayerProductionTechBuff(playerDoc, 'negotiation')));
-		playerDoc.countInfo.techRecruitQueueAbleTime = Date.now() + techRecruitQueueAbleTime;
-		playerData.push(['countInfo.techRecruitQueueAbleTime', playerDoc.countInfo.techRecruitQueueAbleTime]);
-	}
+	return playerDoc.basicInfo.recruitQueue - playerDoc.soldierEvents.length > 0;
 }
 
 /**

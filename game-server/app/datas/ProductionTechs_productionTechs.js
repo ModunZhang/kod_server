@@ -123,13 +123,13 @@ productionTechs["sketching"] = {
 	academyLevel:28,
 	effectPerLevel:0.010000
 }
-productionTechs["negotiation"] = {
-	name:"negotiation",
+productionTechs["recruitment"] = {
+	name:"recruitment",
 	index:16,
 	unlockBy:13,
 	unlockLevel:2,
 	academyLevel:18,
-	effectPerLevel:0.100000
+	effectPerLevel:0.010000
 }
 productionTechs["logistics"] = {
 	name:"logistics",

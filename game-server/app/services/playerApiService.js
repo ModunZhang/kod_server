@@ -916,7 +916,6 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			playerDoc.soldierEvents.push(event)
 			playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime - Date.now()])
-			DataUtils.updatePlayerTechRecruitQueueIfNeed(playerDoc, playerData);
 		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
@@ -1009,7 +1008,6 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			playerDoc.soldierEvents.push(event)
 			playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime - Date.now()])
-			DataUtils.updatePlayerTechRecruitQueueIfNeed(playerDoc, playerData);
 		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])

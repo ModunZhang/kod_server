@@ -1891,7 +1891,7 @@ productionTech[144] = {
 productionTech[145] = {
 	id:145,
 	index:1,
-	name:"negotiation",
+	name:"recruitment",
 	level:2,
 	wood:2360,
 	stone:2360,
@@ -1904,7 +1904,7 @@ productionTech[145] = {
 productionTech[146] = {
 	id:146,
 	index:2,
-	name:"negotiation",
+	name:"recruitment",
 	level:3,
 	wood:3760,
 	stone:3760,
@@ -1917,7 +1917,7 @@ productionTech[146] = {
 productionTech[147] = {
 	id:147,
 	index:3,
-	name:"negotiation",
+	name:"recruitment",
 	level:4,
 	wood:6090,
 	stone:6090,
@@ -1930,7 +1930,7 @@ productionTech[147] = {
 productionTech[148] = {
 	id:148,
 	index:4,
-	name:"negotiation",
+	name:"recruitment",
 	level:5,
 	wood:10700,
 	stone:10700,
@@ -1943,7 +1943,7 @@ productionTech[148] = {
 productionTech[149] = {
 	id:149,
 	index:5,
-	name:"negotiation",
+	name:"recruitment",
 	level:6,
 	wood:19820,
 	stone:19820,
@@ -1956,7 +1956,7 @@ productionTech[149] = {
 productionTech[150] = {
 	id:150,
 	index:6,
-	name:"negotiation",
+	name:"recruitment",
 	level:7,
 	wood:37960,
 	stone:37960,
@@ -1969,7 +1969,7 @@ productionTech[150] = {
 productionTech[151] = {
 	id:151,
 	index:7,
-	name:"negotiation",
+	name:"recruitment",
 	level:8,
 	wood:56670,
 	stone:56670,
@@ -1982,7 +1982,7 @@ productionTech[151] = {
 productionTech[152] = {
 	id:152,
 	index:8,
-	name:"negotiation",
+	name:"recruitment",
 	level:9,
 	wood:75500,
 	stone:75500,
@@ -1995,7 +1995,7 @@ productionTech[152] = {
 productionTech[153] = {
 	id:153,
 	index:9,
-	name:"negotiation",
+	name:"recruitment",
 	level:10,
 	wood:95490,
 	stone:95490,
@@ -2008,7 +2008,7 @@ productionTech[153] = {
 productionTech[154] = {
 	id:154,
 	index:10,
-	name:"negotiation",
+	name:"recruitment",
 	level:11,
 	wood:114970,
 	stone:114970,
@@ -2021,7 +2021,7 @@ productionTech[154] = {
 productionTech[155] = {
 	id:155,
 	index:11,
-	name:"negotiation",
+	name:"recruitment",
 	level:12,
 	wood:152650,
 	stone:152650,
@@ -2034,7 +2034,7 @@ productionTech[155] = {
 productionTech[156] = {
 	id:156,
 	index:12,
-	name:"negotiation",
+	name:"recruitment",
 	level:13,
 	wood:190540,
 	stone:190540,
@@ -2047,7 +2047,7 @@ productionTech[156] = {
 productionTech[157] = {
 	id:157,
 	index:13,
-	name:"negotiation",
+	name:"recruitment",
 	level:14,
 	wood:231480,
 	stone:231480,
@@ -2060,7 +2060,7 @@ productionTech[157] = {
 productionTech[158] = {
 	id:158,
 	index:14,
-	name:"negotiation",
+	name:"recruitment",
 	level:15,
 	wood:272320,
 	stone:272320,
@@ -2073,7 +2073,7 @@ productionTech[158] = {
 productionTech[159] = {
 	id:159,
 	index:15,
-	name:"negotiation",
+	name:"recruitment",
 	level:16,
 	wood:313740,
 	stone:313740,
@@ -2086,7 +2086,7 @@ productionTech[159] = {
 productionTech[160] = {
 	id:160,
 	index:16,
-	name:"negotiation",
+	name:"recruitment",
 	level:17,
 	wood:355760,
 	stone:355760,
@@ -2099,7 +2099,7 @@ productionTech[160] = {
 productionTech[161] = {
 	id:161,
 	index:17,
-	name:"negotiation",
+	name:"recruitment",
 	level:18,
 	wood:441840,
 	stone:441840,
@@ -2112,7 +2112,7 @@ productionTech[161] = {
 productionTech[162] = {
 	id:162,
 	index:18,
-	name:"negotiation",
+	name:"recruitment",
 	level:19,
 	wood:522640,
 	stone:522640,
@@ -2125,7 +2125,7 @@ productionTech[162] = {
 productionTech[163] = {
 	id:163,
 	index:19,
-	name:"negotiation",
+	name:"recruitment",
 	level:20,
 	wood:604270,
 	stone:604270,
@@ -2138,7 +2138,7 @@ productionTech[163] = {
 productionTech[164] = {
 	id:164,
 	index:20,
-	name:"negotiation",
+	name:"recruitment",
 	level:21,
 	wood:686890,
 	stone:686890,
@@ -2151,7 +2151,7 @@ productionTech[164] = {
 productionTech[165] = {
 	id:165,
 	index:21,
-	name:"negotiation",
+	name:"recruitment",
 	level:22,
 	wood:784760,
 	stone:784760,
@@ -2164,7 +2164,7 @@ productionTech[165] = {
 productionTech[166] = {
 	id:166,
 	index:22,
-	name:"negotiation",
+	name:"recruitment",
 	level:23,
 	wood:871700,
 	stone:871700,
@@ -2177,7 +2177,7 @@ productionTech[166] = {
 productionTech[167] = {
 	id:167,
 	index:23,
-	name:"negotiation",
+	name:"recruitment",
 	level:24,
 	wood:960030,
 	stone:960030,
@@ -2190,7 +2190,7 @@ productionTech[167] = {
 productionTech[168] = {
 	id:168,
 	index:24,
-	name:"negotiation",
+	name:"recruitment",
 	level:25,
 	wood:1049820,
 	stone:1049820,
@@ -2203,7 +2203,7 @@ productionTech[168] = {
 productionTech[169] = {
 	id:169,
 	index:25,
-	name:"negotiation",
+	name:"recruitment",
 	level:26,
 	wood:1165140,
 	stone:1165140,
@@ -2216,7 +2216,7 @@ productionTech[169] = {
 productionTech[170] = {
 	id:170,
 	index:26,
-	name:"negotiation",
+	name:"recruitment",
 	level:27,
 	wood:1261110,
 	stone:1261110,
@@ -2229,7 +2229,7 @@ productionTech[170] = {
 productionTech[171] = {
 	id:171,
 	index:27,
-	name:"negotiation",
+	name:"recruitment",
 	level:28,
 	wood:1359030,
 	stone:1359030,
@@ -2242,7 +2242,7 @@ productionTech[171] = {
 productionTech[172] = {
 	id:172,
 	index:28,
-	name:"negotiation",
+	name:"recruitment",
 	level:29,
 	wood:1458990,
 	stone:1458990,
@@ -2255,7 +2255,7 @@ productionTech[172] = {
 productionTech[173] = {
 	id:173,
 	index:29,
-	name:"negotiation",
+	name:"recruitment",
 	level:30,
 	wood:1598880,
 	stone:1598880,

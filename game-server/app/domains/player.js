@@ -492,8 +492,8 @@ var PlayerSchema = new Schema({
 			index:{type:Number, required:true, default:ProductionTechs.colonization.index},
 			level:{type:Number, required:true, default:0}
 		},
-		negotiation:{
-			index:{type:Number, required:true, default:ProductionTechs.negotiation.index},
+		recruitment:{
+			index:{type:Number, required:true, default:ProductionTechs.recruitment.index},
 			level:{type:Number, required:true, default:0}
 		},
 		trap:{
