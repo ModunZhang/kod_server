@@ -1,0 +1,39 @@
+{
+  "logic": [
+    {
+      "id": "logic-server-1",
+      "host": "172.31.13.174",
+      "port": 4151,
+      "clientHost":"54.223.178.92",
+      "clientPort": 4011,
+      "frontend": true,
+      "usedFor": "cache-server-1"
+    }
+  ],
+  "chat": [
+    {
+      "id": "chat-server-1",
+      "host": "172.31.13.174",
+      "port": 5151,
+      "usedFor": "cache-server-1"
+    }
+  ],
+  "cache": [
+    {
+      "id": "cache-server-1",
+      "host": "172.31.13.174",
+      "port": 7151,
+      "level": "silver",
+      "isPromoted": "true",
+      "isNew": "true"
+    }
+  ],
+  "rank": [
+    {
+      "id": "rank-server-1",
+      "host": "172.31.13.174",
+      "port": 8151,
+      "usedFor": "cache-server-1"
+    }
+  ]
+}

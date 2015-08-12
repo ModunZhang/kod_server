@@ -1,5 +1,5 @@
 {
-  "mongoHost": "mongodb://127.0.0.1:27017/kod",
+  "mongoHost": "mongodb://172.31.9.24:27017/kod",
   "iapValidateUrl":"sandbox.itunes.apple.com",
   "iapValidatePath":"/verifyReceipt",
   "apnProductionMode":false,
