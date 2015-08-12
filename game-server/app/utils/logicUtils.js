@@ -1629,7 +1629,7 @@ Utils.returnPlayerShrineTroops = function(playerDoc, playerData, allianceDoc, al
 		self.removePlayerTroopOut(playerDoc, playerTroop.troop.dragon.type);
 		DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[playerTroop.troop.dragon.type])
 		playerDoc.dragons[playerTroop.troop.dragon.type].status = Consts.DragonStatus.Free
-		playerData.push(["dragons." + playerTroop.troop.dragon.type], playerDoc.dragons[playerTroop.troop.dragon.type])
+		playerData.push(["dragons." + playerTroop.troop.dragon.type, playerDoc.dragons[playerTroop.troop.dragon.type]])
 		self.addPlayerSoldiers(playerDoc, playerData, playerTroop.troop.soldiers);
 	})
 }
@@ -1656,7 +1656,7 @@ Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, all
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
 		}
 	}
 	i = allianceDoc.attackMarchEvents.length
@@ -1670,7 +1670,7 @@ Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, all
 			self.removePlayerTroopOut(playerDoc, marchEvent.attackPlayerData.dragon.type);
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
 			self.addPlayerSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.soldiers)
 		}
 	}
@@ -1698,7 +1698,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
 		}
 	}
 	i = allianceDoc.attackMarchReturnEvents.length
@@ -1712,7 +1712,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 			self.removePlayerTroopOut(playerDoc, marchEvent.attackPlayerData.dragon.type);
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type], playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
 			self.addPlayerSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.soldiers)
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.woundedSoldiers)
 			self.addPlayerRewards(playerDoc, playerData, marchEvent.attackPlayerData.rewards);
@@ -1744,7 +1744,7 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 			self.removePlayerTroopOut(playerDoc, villageEvent.playerData.dragon.type);
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[villageEvent.playerData.dragon.type]);
 			playerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + villageEvent.playerData.dragon.type], playerDoc.dragons[villageEvent.playerData.dragon.type])
+			playerData.push(["dragons." + villageEvent.playerData.dragon.type, playerDoc.dragons[villageEvent.playerData.dragon.type]])
 
 			self.addPlayerSoldiers(playerDoc, playerData, villageEvent.playerData.soldiers)
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, villageEvent.playerData.woundedSoldiers)
