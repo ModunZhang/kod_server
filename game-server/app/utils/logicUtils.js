@@ -2330,26 +2330,31 @@ Utils.initPlayerDoc = function(playerDoc){
 	}]
 	playerDoc.buildings.location_2.level = 1
 	playerDoc.buildings.location_1.level = 5
-	//playerDoc.soldiers.ranger = 100
-	//playerDoc.soldiers.swordsman = 100
-	//playerDoc.soldiers.skeletonWarrior = 1
-	//playerDoc.resources.citizen = 90
-	//playerDoc.items.push({
-	//	name:'changePlayerName',
-	//	count:1
-	//})
-	//playerDoc.items.push({
-	//	name:'moveTheCity',
-	//	count:1
-	//})
-	//playerDoc.items.push({
-	//	name:'ironBonus_1',
-	//	count:1
-	//})
-	//playerDoc.items.push({
-	//	name:'foodClass_2',
-	//	count:2
-	//})
+	playerDoc.soldiers.ranger = 100
+	playerDoc.soldiers.swordsman = 100
+	playerDoc.soldiers.skeletonWarrior = 1
+	playerDoc.resources.citizen = 90
+	playerDoc.items.push({
+		name:'changePlayerName',
+		count:1
+	})
+	playerDoc.items.push({
+		name:'moveTheCity',
+		count:1
+	})
+	playerDoc.items.push({
+		name:'foodClass_2',
+		count:1
+	})
+	playerDoc.items.push({
+		name:'woodClass_2',
+		count:1
+	})
+	playerDoc.pve.push({
+		"sections":[3, 3, 3],
+		"rewarded":[]
+	})
+	playerDoc.soldierMaterials.deathHand = 2;
 
 	DataUtils.refreshPlayerPower(playerDoc, [])
 }
