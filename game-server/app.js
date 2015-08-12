@@ -13,7 +13,7 @@ var RouteUtils = require("./app/utils/routeUtils")
 
 var app = pomelo.createApp()
 app.set("name", "KODServer")
-
+app.enable('systemMonitor');
 app.route("chat", RouteUtils.chat)
 app.route("logic", RouteUtils.logic)
 app.route("rank", RouteUtils.rank)
