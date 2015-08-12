@@ -11,7 +11,7 @@ online[1] = {
 online[2] = {
 	timePoint:2,
 	onLineMinutes:5,
-	rewards:"special:dragonHp_1:1"
+	rewards:"special:sweepScroll:5"
 }
 online[3] = {
 	timePoint:3,
@@ -36,7 +36,7 @@ online[6] = {
 online[7] = {
 	timePoint:7,
 	onLineMinutes:30,
-	rewards:"special:sweepScroll:10"
+	rewards:"special:sweepScroll:5"
 }
 online[8] = {
 	timePoint:8,
