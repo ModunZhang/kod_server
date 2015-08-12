@@ -19,7 +19,7 @@ app.route("logic", RouteUtils.logic)
 app.route("rank", RouteUtils.rank)
 app.route("cache", RouteUtils.cache)
 
-app.configure("local|develop|awschina", function(){
+app.configure(function(){
 	app.set('proxyConfig', {
 		rpcClient:wsrpc.client
 	})
@@ -28,7 +28,7 @@ app.configure("local|develop|awschina", function(){
 	})
 })
 
-app.configure("local|develop|awschina", "gate", function(){
+app.configure("gate", function(){
 	app.set("connectorConfig", {
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
@@ -40,12 +40,11 @@ app.configure("local|develop|awschina", "gate", function(){
 	app.before(filterService.toobusyFilter())
 
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
-	console.log(app.get('serverConfig'), '111111111111')
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("local|develop|awschina", "logic", function(){
+app.configure("logic", function(){
 	var idParams = app.serverId.split("-")
 	var intId = parseInt(idParams[idParams.length - 1])
 	process.NODE_UNIQUE_ID = intId
@@ -62,7 +61,7 @@ app.configure("local|develop|awschina", "logic", function(){
 	app.before(filterService.loginFilter())
 })
 
-app.configure("local|develop|awschina", "chat", function(){
+app.configure("chat", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
@@ -73,13 +72,13 @@ app.configure("local|develop|awschina", "chat", function(){
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("local|develop|awschina", "cache", function(){
+app.configure("cache", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("local|develop|awschina", "rank", function(){
+app.configure("rank", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
