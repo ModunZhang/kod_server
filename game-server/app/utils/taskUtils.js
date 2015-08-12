@@ -323,7 +323,7 @@ Utils.finishPveCountTaskIfNeed = function(playerDoc, playerData){
 		})
 	}
 	if(!_.isObject(config)) return
-	if(playerDoc.pve.totalStep < config.count) return
+	if(playerDoc.countInfo.pveCount < config.count) return
 
 	task = {
 		id:config.id,
