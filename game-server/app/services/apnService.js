@@ -20,7 +20,6 @@ var DataUtils = require("../utils/dataUtils")
 var ApnService = function(app){
 	this.app = app
 	this.logService = app.get("logService")
-	console.log(app.getCurServer(), '1111111111')
 	this.apnProductionMode = app.get('serverConfig').apnProductionMode;
 	this.apnPushCert = path.join(__dirname, '../../config/' + app.get('serverConfig').apnPushCert);
 	this.apnService = null
