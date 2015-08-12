@@ -74,6 +74,7 @@ app.configure("local|develop|awschina", "chat", function(){
 
 app.configure("local|develop|awschina", "cache", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	console.log(app.get('serverConfig'), path.resolve("./config/" + app.get('env') + "/config.json"), '1111111111111111')
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
