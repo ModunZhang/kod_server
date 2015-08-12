@@ -28,7 +28,7 @@ app.configure(function(){
 	})
 })
 
-app.configure("gate", function(){
+app.configure("local|develop|awschina|hotfix", "gate", function(){
 	app.set("connectorConfig", {
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
@@ -44,7 +44,7 @@ app.configure("gate", function(){
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("logic", function(){
+app.configure("local|develop|awschina|hotfix", "logic", function(){
 	var idParams = app.serverId.split("-")
 	var intId = parseInt(idParams[idParams.length - 1])
 	process.NODE_UNIQUE_ID = intId
@@ -61,7 +61,7 @@ app.configure("logic", function(){
 	app.before(filterService.loginFilter())
 })
 
-app.configure("chat", function(){
+app.configure("local|develop|awschina|hotfix", "chat", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
@@ -72,13 +72,13 @@ app.configure("chat", function(){
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("cache", function(){
+app.configure("local|develop|awschina|hotfix", "cache", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("rank", function(){
+app.configure("local|develop|awschina|hotfix", "rank", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
