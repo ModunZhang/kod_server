@@ -7,5 +7,16 @@
       "clientPort": 3011,
       "frontend": true
     }
+  ],
+  "logic": [
+    {
+      "id": "logic-server-1",
+      "host": "127.0.0.1",
+      "port": 4151,
+      "clientHost":"54.223.202.136",
+      "clientPort": 4011,
+      "frontend": true,
+      "usedFor": "cache-server-1"
+    }
   ]
 }
