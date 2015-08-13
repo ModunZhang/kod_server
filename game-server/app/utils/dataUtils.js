@@ -3904,17 +3904,6 @@ Utils.addPlayerHelpLoyalty = function(playerDoc, playerData, helpCount){
 }
 
 /**
- * 是否允许建造特殊兵种
- * @returns {*}
- */
-Utils.canRecruitSpecialSoldier = function(){
-	var daysInWeek = this.getPlayerIntInit("specialSoldierRecruitAbleDays").toString().split("")
-	var today = new Date().getDay()
-	today = today == 0 ? 7 : today
-	return _.contains(daysInWeek, today.toString())
-}
-
-/**
  * 获取联盟最大人数
  * @param allianceDoc
  * @returns {number}

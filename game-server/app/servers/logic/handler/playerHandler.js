@@ -306,11 +306,6 @@ pro.recruitSpecialSoldier = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!DataUtils.canRecruitSpecialSoldier()){
-		e = new Error("特殊兵种招募未开放")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
 
 	this.request('recruitSpecialSoldier', [session.uid, soldierName, count, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
