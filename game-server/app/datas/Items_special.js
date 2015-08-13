@@ -108,9 +108,9 @@ special["vipActive_1"] = {
 	effect:"30.0",
 	order:11,
 	isSell:false,
-	price:5,
-	sellPriceInAlliance:250,
-	buyPriceInAlliance:250,
+	price:10,
+	sellPriceInAlliance:500,
+	buyPriceInAlliance:500,
 	isAdvancedItem:true
 }
 special["vipActive_2"] = {
@@ -118,9 +118,9 @@ special["vipActive_2"] = {
 	effect:"60.0",
 	order:12,
 	isSell:false,
-	price:10,
-	sellPriceInAlliance:500,
-	buyPriceInAlliance:500,
+	price:20,
+	sellPriceInAlliance:1000,
+	buyPriceInAlliance:1000,
 	isAdvancedItem:true
 }
 special["vipActive_3"] = {
