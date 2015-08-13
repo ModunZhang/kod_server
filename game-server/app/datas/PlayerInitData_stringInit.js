@@ -21,5 +21,5 @@ stringInit["brotherClubDailyTaskRewards"] = {
 }
 stringInit["growUpDailyTaskRewards"] = {
 	type:"growUpDailyTaskRewards",
-	value:"resource:gemClass_2:2"
+	value:"resource:gemClass_2:1"
 }
