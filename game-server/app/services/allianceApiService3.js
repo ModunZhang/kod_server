@@ -515,7 +515,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		var powerSmall = _.isObject(docSmall) ? attackAllianceDoc.basicInfo.power - docSmall.basicInfo.power : null
 		var powerBig = _.isObject(docBig) ? docBig.basicInfo.power - attackAllianceDoc.basicInfo.power : null
 		var finalDoc = _.isNull(docSmall) ? docBig : _.isNull(docBig) ? docSmall : powerBig >= powerSmall ? docSmall : docBig
-		if(attackAllianceDoc.basicInfo.power * 1.9 < finalDoc.basicInfo.power || attackAllianceDoc.basicInfo.power * 0.1 > finalDoc.basicInfo.power)
+		if(attackAllianceDoc.basicInfo.power * 1.6 < finalDoc.basicInfo.power || attackAllianceDoc.basicInfo.power * 0.6 > finalDoc.basicInfo.power)
 			return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
 		return self.cacheService.findAllianceAsync(finalDoc._id)
 	}).then(function(doc){
