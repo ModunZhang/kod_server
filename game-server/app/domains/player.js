@@ -127,8 +127,7 @@ var PlayerSchema = new Schema({
 		todayLoyaltyGet:{type:Number, require:true, default:0},
 		firstJoinAllianceRewardGeted:{type:Boolean, require:true, default:false},
 		isFTEFinished:{type:Boolean, required:true, default:false},
-		pveCount:{type:Number, required:true, default:0},
-		techRecruitQueueAbleTime:{type:Number, required:true, default:Date.now}
+		pveCount:{type:Number, required:true, default:0}
 	},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},
