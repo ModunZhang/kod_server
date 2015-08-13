@@ -553,7 +553,7 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 		_.each(soldiersInTroop, function(soldierInTroop){
 			var soldier = {
 				name:soldierInTroop.name,
-				star:1,
+				star:DataUtils.getPlayerSoldierStar(playerDoc, soldierInTroop.name),
 				count:soldierInTroop.count
 			}
 			soldiers.push(soldier)
@@ -724,7 +724,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 	var getDefenceSoldiers = function(playerDoc){
 		var soldiers = DataUtils.getPlayerDefenceSoldiers(playerDoc)
 		_.each(soldiers, function(soldier){
-			soldier.star = playerDoc.soldierStars[soldier.name]
+			soldier.star = DataUtils.getPlayerSoldierStar(playerDoc, soldier.name)
 		})
 		return soldiers
 	}
