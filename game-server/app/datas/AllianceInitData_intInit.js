@@ -80,7 +80,7 @@ intInit["allianceFightSuccessProtectMinutes"] = {
 }
 intInit["KilledCitizenPerDragonExp"] = {
 	type:"KilledCitizenPerDragonExp",
-	value:1,
+	value:2,
 	desc:"多少击杀积分获得一点龙经验"
 }
 intInit["KilledCitizenPerBlood"] = {
