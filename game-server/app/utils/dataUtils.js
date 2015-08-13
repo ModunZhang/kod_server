@@ -825,7 +825,7 @@ Utils.getMakeMaterialRequired = function(playerDoc, type, toolShopLevel){
 		}
 		buildTime = config.productAmtime
 	}
-	buildTime = LogicUtils.getTimeEfffect(buildTime, this.getPlayerProductionTechBuff(playerDoc, 'sketching'));
+	buildTime = Math.ceil(buildTime * (1 - this.getPlayerProductionTechBuff(playerDoc, 'sketching')));
 	required.buildTime = buildTime;
 	return required
 }
