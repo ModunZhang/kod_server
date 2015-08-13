@@ -2182,7 +2182,9 @@ pro.onVillageCreateEvents = function(allianceDoc, event, callback){
 	var pushFuncs = []
 	var eventFuncs = []
 	LogicUtils.removeItemInArray(allianceDoc.villageCreateEvents, event)
-	DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, event.name, 1);
+	var totalCount = DataUtils.getAllianceVillagesTotalCount(allianceDoc)
+	var currentCount = allianceDoc.villages.length + allianceDoc.villageCreateEvents.length
+	DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, event.name, totalCount - currentCount);
 	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 	LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
 	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
