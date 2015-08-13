@@ -825,9 +825,7 @@ Utils.getMakeMaterialRequired = function(playerDoc, type, toolShopLevel){
 		}
 		buildTime = config.productAmtime
 	}
-	console.log(buildTime, this.getPlayerProductionTechBuff(playerDoc, 'sketching'))
 	buildTime = Math.ceil(buildTime * (1 - this.getPlayerProductionTechBuff(playerDoc, 'sketching')));
-	console.log(buildTime, '11111111111')
 	required.buildTime = buildTime;
 	return required
 }
@@ -836,9 +834,10 @@ Utils.getMakeMaterialRequired = function(playerDoc, type, toolShopLevel){
  * 产生制作材料的事件
  * @param toolShop
  * @param type
+ * @param buildTime
  * @param finishNow
  */
-Utils.createMaterialEvent = function(toolShop, type, finishNow){
+Utils.createMaterialEvent = function(toolShop, type, buildTime, finishNow){
 	var typeConfig = {}
 	typeConfig[Consts.MaterialType.BuildingMaterials] = [
 		"blueprints", "tools", "tiles", "pulley"
@@ -861,7 +860,6 @@ Utils.createMaterialEvent = function(toolShop, type, finishNow){
 		production -= count;
 	}
 
-	var buildTime = _.isEqual(Consts.MaterialType.BuildingMaterials, type) ? config.productBmtime : config.productAmtime
 	var event = {
 		id:ShortId.generate(),
 		type:type,

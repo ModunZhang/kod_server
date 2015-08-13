@@ -783,7 +783,7 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(makeRequired.resources, playerDoc.resources)
 
-		event = DataUtils.createMaterialEvent(building, type, finishNow)
+		event = DataUtils.createMaterialEvent(building, type, makeRequired.buildTime, finishNow)
 		playerDoc.materialEvents.push(event)
 		playerData.push(["materialEvents." + playerDoc.materialEvents.indexOf(event), event])
 		if(_.isEqual(type, Consts.MaterialType.BuildingMaterials)){
