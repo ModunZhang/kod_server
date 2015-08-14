@@ -50,7 +50,7 @@ special["skeletonArcher"] = {
 special["deathKnight"] = {
 	name:"deathKnight",
 	type:"cavalry",
-	specialMaterials:"deathHand_3,heroBones_3,magicBox_3",
+	specialMaterials:"deathHand_3,soulStone_3,magicBox_3",
 	star:2,
 	power:9,
 	infantry:216,
