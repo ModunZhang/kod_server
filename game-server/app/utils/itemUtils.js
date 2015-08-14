@@ -446,6 +446,7 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count){
 	playerDoc.countInfo.pveCount += count;
 	playerData.push(['countInfo.pveCount', playerDoc.countInfo.pveCount]);
 	TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData);
+	TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve);
 	return Promise.resolve();
 }
 
