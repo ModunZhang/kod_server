@@ -727,6 +727,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					if(_.isObject(defenceDragonFightData)){
 						defenceDragon.hp -= defenceDragonForFight.totalHp - defenceDragonForFight.currentHp
 						if(defenceDragon.hp <= 0){
+							defenceDragon.status = Consts.DragonStatus.Free
+							defencePlayerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
 							deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
 							defencePlayerDoc.dragonDeathEvents.push(deathEvent)
 							defencePlayerData.push(["dragonDeathEvents." + defencePlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
