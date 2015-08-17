@@ -16,14 +16,13 @@ var life = module.exports
 life.beforeStartup = function(app, callback){
 	var currentServer = app.getServerFromConfig(app.getServerId())
 	app.set("logicServerId", currentServer.id)
+	app.set('cacheServerId', currentServer.usedFor);
 	var servers = app.getServersFromConfig()
 	_.each(servers, function(server, id){
-		if(_.isEqual(server.serverType, "chat") && _.isEqual(server.usedFor, currentServer.usedFor)){
+		if(_.isEqual(server.serverType, "chat") && _.contains(server.usedFor.split(','), app.get('cacheServerId'))){
 			app.set("chatServerId", id)
-		}else if(_.isEqual(server.serverType, "rank") && _.isEqual(server.usedFor, currentServer.usedFor)){
+		}else if(_.isEqual(server.serverType, "rank") && _.contains(server.usedFor.split(','), app.get('cacheServerId'))){
 			app.set("rankServerId", id)
-		}else if(_.isEqual(server.serverType, "cache") && _.isEqual(server.id, currentServer.usedFor)){
-			app.set("cacheServerId", id)
 		}else if(_.isEqual(server.serverType, "gate")){
 			app.set("gateServerId", id)
 		}

@@ -16,16 +16,7 @@ var life = module.exports
 life.beforeStartup = function(app, callback){
 	var currentServer = app.getServerFromConfig(app.getServerId())
 	app.set("eventServerId", currentServer.id)
-	var servers = app.getServersFromConfig()
-	_.each(servers, function(server, id){
-		if(_.isEqual(server.serverType, "chat") && _.isEqual(server.usedFor, currentServer.usedFor)){
-			app.set("chatServerId", id)
-		}else if(_.isEqual(server.serverType, "cache") && _.isEqual(server.id, currentServer.usedFor)){
-			app.set("cacheServerId", id)
-		}else if(_.isEqual(server.serverType, "gate")){
-			app.set("gateServerId", id)
-		}
-	})
+	app.set('cacheServerId', currentServer.usedFor);
 
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))

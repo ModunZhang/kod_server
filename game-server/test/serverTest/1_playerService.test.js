@@ -1861,7 +1861,7 @@
 //		it("buyAndUseItem sweepScroll 当前PvE关卡还不能被扫荡", function(done){
 //			Api.buyAndUseItem("sweepScroll", {
 //				sweepScroll:{
-//					sectionName:'1_1',
+//					sectionName:'1_4',
 //					count:10
 //				}
 //			}, function(doc){
@@ -1873,7 +1873,7 @@
 //		it("attackPveSection 关卡未解锁", function(done){
 //			Api.sendChat("soldiers 1000", function(doc){
 //				doc.code.should.equal(200)
-//				Api.attackPveSection('1_2', 'blueDragon', [
+//				Api.attackPveSection('1_5', 'blueDragon', [
 //					{name:'swordsman', count:200},
 //					{name:'sentinel', count:200},
 //					{name:'ranger', count:200}

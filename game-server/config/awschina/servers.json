@@ -33,13 +33,7 @@
       "id": "chat-server-1",
       "host": "172.31.13.174",
       "port": 5151,
-      "usedFor": "cache-server-1"
-    },
-    {
-      "id": "chat-server-2",
-      "host": "172.31.13.174",
-      "port": 5152,
-      "usedFor": "cache-server-2"
+      "usedFor": "cache-server-1,cache-server-2"
     }
   ],
   "cache": [
