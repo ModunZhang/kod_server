@@ -7,6 +7,7 @@ var mongoose = require("mongoose")
 var path = require("path")
 var _ = require("underscore")
 var wsrpc = require("pomelo-rpc-ws")
+var httpPlugin = require('pomelo-http-plugin');
 
 var FilterService = require("./app/services/filterService")
 var RouteUtils = require("./app/utils/routeUtils")
@@ -26,6 +27,10 @@ app.configure(function(){
 	app.set('remoteConfig', {
 		rpcServer:wsrpc.server
 	})
+})
+
+app.configure("local|develop|awschina|hotfix", "master", function(){
+
 })
 
 app.configure("local|develop|awschina|hotfix", "gate", function(){
@@ -86,6 +91,13 @@ app.configure("local|develop|awschina|hotfix", "rank", function(){
 	var filterService = new FilterService(app)
 	app.before(filterService.loginFilter())
 })
+
+app.configure('local|develop|awschina|hotfix', 'http', function() {
+	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	app.use(httpPlugin, {
+		http: app.get('serverConfig').http
+	});
+});
 
 app.set('errorHandler', function(e, msg, resp, session, opts, cb){
 	app.get("logService").onRequestError("app.errorHandler", {playerId:session.uid, msg:msg}, e.stack)

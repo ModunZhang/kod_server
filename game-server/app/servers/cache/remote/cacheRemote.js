@@ -207,7 +207,7 @@ pro.getLoginedCount = function(callback){
  * @param content
  * @param callback
  */
-pro.sendServerMail = function(ids, title, content, callback){
+pro.sendGlobalMail = function(ids, title, content, callback){
 	var self = this;
 	var inCacheIds = [];
 	var outCacheIds = [];
@@ -235,7 +235,7 @@ pro.sendServerMail = function(ids, title, content, callback){
 			content:content
 		});
 	}).catch(function(e){
-		self.logService.onEventError('cache.cacheRemote.sendServerMail', {
+		self.logService.onEventError('cache.cacheRemote.sendGlobalMail', {
 			serverId:self.cacheServerId,
 			count:ids.length,
 			title:title,

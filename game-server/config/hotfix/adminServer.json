@@ -1,26 +1,30 @@
 [
   {
     "type": "gate",
-    "token": "yoWfW0diIinyWbNK43Mh"
+    "token": "pFexPxt1xMLBDPpeJq3n"
   },
   {
     "type": "chat",
-    "token": "rEYkUSyiP7tz0rhxzFBT"
+    "token": "LvwXpOkaCqFv5oPQz9Rz"
   },
   {
     "type": "logic",
-    "token": "sCXVQla6ZX7Ur0evguYb"
+    "token": "TQx1qNKudDlx2Ra7sWOR"
   },
   {
     "type": "event",
-    "token": "fojBQSaSRBewzAR7kHHy"
+    "token": "RmkajApRvPOrjKvnhxDw"
   },
   {
     "type": "cache",
-    "token": "8bNhNj48c6PLyfmXpSLn"
+    "token": "AEpCMKlcfazgQO15heYI"
   },
   {
     "type": "rank",
-    "token": "yYOQebfamc4EjD1uzIyX"
+    "token": "v8iQyNPHa4ll1nfLAqFn"
+  },
+  {
+    "type": "http",
+    "token": "UhHWfpTiHJp4AoyQRhq6"
   }
 ]

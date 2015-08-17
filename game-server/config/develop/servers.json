@@ -73,5 +73,10 @@
       "port": 7152,
       "usedFor": "cache-server-2"
     }
-  ]
+  ],
+  "http":[{
+    "id":"http",
+    "host":"172.31.2.115",
+    "port":8151
+  }]
 }

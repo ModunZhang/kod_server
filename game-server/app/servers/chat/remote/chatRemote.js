@@ -134,6 +134,7 @@ pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
  * @param callback
  */
 pro.sendGlobalNotice = function(type, content, callback){
+	this.logService.onEvent('chat.chatRemote.sendGlobalNotice', {type:type, content:content});
 	this.globalChatChannel.pushMessage(Events.chat.onNotice, {type:type, content:content}, {}, null)
 	callback()
 }
@@ -144,8 +145,8 @@ pro.sendGlobalNotice = function(type, content, callback){
  * @param content
  * @param callback
  */
-pro.sendServerMail = function(title, content, callback){
-	this.logService.onEvent('chat.chatRemote.sendServerMail', {title:title, content:content});
+pro.sendGlobalMail = function(title, content, callback){
+	this.logService.onEvent('chat.chatRemote.sendGlobalMail', {title:title, content:content});
 
 	var self = this;
 	var lastLoginTime = Date.now() - (DataUtils.getPlayerIntInit('activePlayerNeedHouses') * 60 * 60 * 1000);
@@ -163,7 +164,7 @@ pro.sendServerMail = function(title, content, callback){
 		var funcs = []
 		_.each(serverIds, function(ids, serverId){
 			var sendMailAsync = new Promise(function(resolve, reject){
-				self.app.rpc.cache.cacheRemote.sendServerMail.toServer(serverId, ids, title, content, function(e){
+				self.app.rpc.cache.cacheRemote.sendGlobalMail.toServer(serverId, ids, title, content, function(e){
 					if(_.isObject(e)) reject(e);
 					else resolve()
 				})
@@ -172,7 +173,7 @@ pro.sendServerMail = function(title, content, callback){
 		})
 
 		Promise.all(funcs).catch(function(e){
-			self.logService.onEventError('chat.chatRemote.sendServerMail', {
+			self.logService.onEventError('chat.chatRemote.sendGlobalMail', {
 				title:title,
 				content:content
 			}, e.stack);

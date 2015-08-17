@@ -13,7 +13,8 @@
     "shelljs": "0.4.0",
     "apn":"1.7.4",
     "pomelo-rpc-ws":"0.5.3",
-    "toobusy-js":"0.4.2"
+    "toobusy-js":"0.4.2",
+    "pomelo-http-plugin ":"0.0.22"
   },
   "devDependencies": {
     "should": ">=0.0.1",
