@@ -374,6 +374,7 @@ pro.send = function(msg, session, next){
 				vipActive:false,
 				allianceId:'',
 				allianceTag:'',
+				serverId:'',
 				channel:channel,
 				text:data,
 				time:Date.now()
@@ -389,6 +390,7 @@ pro.send = function(msg, session, next){
 			vipActive:session.get('isVipActive'),
 			allianceId:session.get("allianceId"),
 			allianceTag:session.get("allianceTag"),
+			serverId:session.get('cacheServerId'),
 			channel:channel,
 			text:text,
 			time:Date.now()
@@ -517,6 +519,7 @@ var PushHelpMessageToPlayer = function(session){
 		vipActive:false,
 		allianceId:'',
 		allianceTag:'',
+		serverId:'',
 		channel:'global',
 		text:commands,
 		time:Date.now()
