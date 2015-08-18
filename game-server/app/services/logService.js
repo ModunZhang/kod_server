@@ -15,6 +15,7 @@ var mailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mai
 
 var LogService = function(app){
 	this.app = app
+	this.serverId = app.getCurServer().id;
 	this.evn = app.get("env")
 }
 module.exports = LogService
@@ -26,7 +27,7 @@ var pro = LogService.prototype
  * @param object
  */
 pro.onRequest = function(api, object){
-	requestLogger.info(api + ":" + " %j", _.isObject(object) ? object : {})
+	requestLogger.info('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 }
 
 /**
@@ -37,15 +38,15 @@ pro.onRequest = function(api, object){
  */
 pro.onRequestError = function(api, object, stack){
 	if(!_.isEqual(this.evn, "local")){
-		errorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+		errorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		errorLogger.error(_.isString(stack) ? stack : '')
-		requestLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+		requestLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		requestLogger.error(_.isString(stack) ? stack : '')
 	}
-	requestErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+	requestErrorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 	requestErrorLogger.error(_.isString(stack) ? stack : '')
 	if(!_.isEqual(this.evn, "local") && !_.isEqual(this.evn, 'develop')){
-		mailLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+		mailLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailLogger.error(_.isString(stack) ? stack : '')
 	}
 }
@@ -56,7 +57,7 @@ pro.onRequestError = function(api, object, stack){
  * @param object
  */
 pro.onEvent = function(api, object){
-	eventLogger.info(api + ":" + " %j", _.isObject(object) ? object : {})
+	eventLogger.info('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 }
 
 /**
@@ -65,7 +66,7 @@ pro.onEvent = function(api, object){
  * @param object
  */
 pro.onFind = function(api, object){
-	findLogger.info(api + ":" + " %j", _.isObject(object) ? object : {})
+	findLogger.info('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 }
 
 /**
@@ -76,15 +77,15 @@ pro.onFind = function(api, object){
  */
 pro.onEventError = function(api, object, stack){
 	if(!_.isEqual(this.evn, "local")){
-		errorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+		errorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		errorLogger.error(_.isString(stack) ? stack : '')
-		eventLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+		eventLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		eventLogger.error(_.isString(stack) ? stack : '')
 	}
-	eventErrorLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+	eventErrorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 	eventErrorLogger.error(_.isString(stack) ? stack : '')
 	if(!_.isEqual(this.evn, "local") && !_.isEqual(this.evn, 'develop')){
-		mailLogger.error(api + ":" + " %j", _.isObject(object) ? object : {})
+		mailLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailLogger.error(_.isString(stack) ? stack : '')
 	}
 }
