@@ -287,6 +287,7 @@ pro.requestToJoinAlliance = function(playerId, allianceId, callback){
 		}
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 		allianceDoc = doc
 		if(!_.isEqual(allianceDoc.basicInfo.joinType, Consts.AllianceJoinType.Audit)) return Promise.reject(ErrorUtils.theAllianceDoNotNeedRequestToJoin(playerId, allianceId))
 		var requestTime = Date.now()
