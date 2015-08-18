@@ -202,12 +202,65 @@ pro.getLoginedCount = function(callback){
 
 /**
  * 发送全服系统邮件
+ * @param title
+ * @param content
+ * @param callback
+ */
+pro.sendGlobalMail = function(title, content, callback){
+	this.logService.onEvent('cache.cacheRemote.sendGlobalMail', {title:title, content:content});
+
+	var self = this
+	var lastLoginTime = Date.now() - (DataUtils.getPlayerIntInit('activePlayerNeedHouses') * 60 * 60 * 1000);
+	this.Player.collection.find({
+		serverId:self.cacheServerId,
+		'countInfo.lastLogoutTime':{$gt:lastLoginTime}
+	}, {
+		_id:true
+	}).toArray(function(e, docs){
+		var inCacheIds = [];
+		var outCacheIds = [];
+		_.each(docs, function(doc){
+			var id = doc._id;
+			if(self.cacheService.isPlayerInCache(id)) inCacheIds.push(id);
+			else outCacheIds.push(id);
+		})
+		var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, this);
+		var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, this);
+		SendOutCacheServerMailAsync(outCacheIds, title, content).then(function(){
+			self.logService.onEvent('cache.cacheRemote.sendGlobalMail.SendOutCacheServerMail', {
+				playerCount:outCacheIds.length,
+				title:title,
+				content:content
+			});
+			return SendInCacheServerMailAsync(inCacheIds, title, content)
+		}).then(function(){
+			self.logService.onEvent('cache.cacheRemote.sendGlobalMail.SendInCacheServerMail', {
+				playerCount:inCacheIds.length,
+				title:title,
+				content:content
+			});
+		}).catch(function(e){
+			self.logService.onEventError('cache.cacheRemote.sendGlobalMail', {
+				playerCount:docs.length,
+				title:title,
+				content:content
+			}, e.stack);
+		})
+	})
+
+	callback();
+}
+
+/**
+ * 向指定玩家发送系统邮件
  * @param ids
  * @param title
  * @param content
  * @param callback
  */
-pro.sendGlobalMail = function(ids, title, content, callback){
+pro.sendMailToPlayers = function(ids, title, content, callback){
+	this.logService.onEvent('cache.cacheRemote.sendMailToPlayers', {ids:ids, title:title, content:content});
+
 	var self = this;
 	var inCacheIds = [];
 	var outCacheIds = [];
@@ -215,28 +268,23 @@ pro.sendGlobalMail = function(ids, title, content, callback){
 		if(self.cacheService.isPlayerInCache(id)) inCacheIds.push(id);
 		else outCacheIds.push(id);
 	})
-	var inCacheIdsLength = inCacheIds.length;
-	var outCacheIdsLength = outCacheIds.length;
 	var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, this);
 	var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, this);
 	SendOutCacheServerMailAsync(outCacheIds, title, content).then(function(){
-		self.logService.onEvent('cache.cacheRemote.SendOutCacheServerMail', {
-			serverId:self.cacheServerId,
-			playerCount:outCacheIdsLength,
+		self.logService.onEvent('cache.cacheRemote.sendMailToPlayers.SendOutCacheServerMail', {
+			playerCount:outCacheIds.length,
 			title:title,
 			content:content
 		});
 		return SendInCacheServerMailAsync(inCacheIds, title, content)
 	}).then(function(){
-		self.logService.onEvent('cache.cacheRemote.SendInCacheServerMail', {
-			serverId:self.cacheServerId,
-			playerCount:inCacheIdsLength,
+		self.logService.onEvent('cache.cacheRemote.sendMailToPlayers.SendInCacheServerMail', {
+			playerCount:inCacheIds.length,
 			title:title,
 			content:content
 		});
 	}).catch(function(e){
-		self.logService.onEventError('cache.cacheRemote.sendGlobalMail', {
-			serverId:self.cacheServerId,
+		self.logService.onEventError('cache.cacheRemote.sendMailToPlayers', {
 			count:ids.length,
 			title:title,
 			content:content

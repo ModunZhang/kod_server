@@ -143,54 +143,43 @@ pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
 
 /**
  * 发送全服通告
+ * @param servers
  * @param type
  * @param content
  * @param callback
  */
-pro.sendGlobalNotice = function(type, content, callback){
-	this.logService.onEvent('chat.chatRemote.sendGlobalNotice', {type:type, content:content});
-	this.globalChatChannel.pushMessage(Events.chat.onNotice, {type:type, content:content}, {}, null)
+pro.sendGlobalNotice = function(servers, type, content, callback){
+	this.logService.onEvent('chat.chatRemote.sendGlobalNotice', {servers:servers, type:type, content:content});
+	var self = this
+	_.each(servers, function(cacheServerId){
+		var channel = self.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, false)
+		if(_.isObject(channel)){
+			channel.pushMessage(Events.chat.onNotice, {type:type, content:content}, {}, null)
+		}
+	})
 	callback()
 }
 
 /**
  * 发送全服系统邮件
+ * @param servers
  * @param title
  * @param content
  * @param callback
  */
-pro.sendGlobalMail = function(title, content, callback){
-	this.logService.onEvent('chat.chatRemote.sendGlobalMail', {title:title, content:content});
+pro.sendGlobalMail = function(servers, title, content, callback){
+	this.logService.onEvent('chat.chatRemote.sendGlobalMail', {servers:servers, title:title, content:content});
 
 	var self = this;
-	var lastLoginTime = Date.now() - (DataUtils.getPlayerIntInit('activePlayerNeedHouses') * 60 * 60 * 1000);
-	var serverIds = {};
-	var playerCount = 0;
-	this.Player.collection.find({'countInfo.lastLogoutTime':{$gt:lastLoginTime}}, {
-		_id:true,
-		serverId:true
-	}).toArray(function(e, docs){
-		playerCount = docs.length;
-		_.each(docs, function(doc){
-			if(!_.isArray(serverIds[doc.serverId])) serverIds[doc.serverId] = [];
-			serverIds[doc.serverId].push(doc._id);
-		})
-		var funcs = []
-		_.each(serverIds, function(ids, serverId){
-			var sendMailAsync = new Promise(function(resolve, reject){
-				self.app.rpc.cache.cacheRemote.sendGlobalMail.toServer(serverId, ids, title, content, function(e){
-					if(_.isObject(e)) reject(e);
-					else resolve()
-				})
-			})
-			funcs.push(sendMailAsync);
-		})
-
-		Promise.all(funcs).catch(function(e){
-			self.logService.onEventError('chat.chatRemote.sendGlobalMail', {
-				title:title,
-				content:content
-			}, e.stack);
+	_.each(servers, function(serverId){
+		self.app.rpc.cache.cacheRemote.sendGlobalMail.toServer(serverId, title, content, function(e){
+			if(_.isObject(e)){
+				self.logService.onEventError('chat.chatRemote.sendGlobalMail', {
+					title:title,
+					content:content,
+					serverId:serverId
+				}, e.stack);
+			}
 		})
 	})
 	callback();
