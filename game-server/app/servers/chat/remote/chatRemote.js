@@ -33,10 +33,12 @@ var pro = ChatRemote.prototype
  * 将玩家添加到聊天频道中
  * @param uid
  * @param logicServerId
+ * @param cacheServerId
  * @param callback
  */
-pro.addToChatChannel = function(uid, logicServerId, callback){
+pro.addToChatChannel = function(uid, logicServerId, cacheServerId, callback){
 	this.globalChatChannel.add(uid, logicServerId)
+	this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, true).add(uid, logicServerId)
 	callback()
 }
 
@@ -44,10 +46,22 @@ pro.addToChatChannel = function(uid, logicServerId, callback){
  * 将玩家从聊天频道中移除
  * @param uid
  * @param logicServerId
+ * @param cacheServerId
  * @param callback
  */
-pro.removeFromChatChannel = function(uid, logicServerId, callback){
+pro.removeFromChatChannel = function(uid, logicServerId, cacheServerId, callback){
 	this.globalChatChannel.leave(uid, logicServerId)
+	var channel = this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, false)
+	if(!_.isObject(channel)){
+		this.logService.onEventError('chat.chatRemote.removeFromChatChannel', {
+			playerId:uid,
+			logicServerId:logicServerId,
+			cacheServerId:cacheServerId
+		})
+		callback()
+		return
+	}
+	channel.leave(uid, logicServerId)
 	callback()
 }
 

@@ -96,7 +96,7 @@ pro.addPlayerToChannels = function(playerDoc, callback){
 	var addToChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.addToAllianceChannel.toServer, this)
 	var addToCacheAllianceChannelAsync = Promise.promisify(this.app.rpc.cache.cacheRemote.addToAllianceChannel.toServer, this)
 	var funcs = []
-	funcs.push(addToChatChannelAsync(this.chatServerId, playerDoc._id, playerDoc.logicServerId))
+	funcs.push(addToChatChannelAsync(this.chatServerId, playerDoc._id, playerDoc.logicServerId, this.cacheServerId));
 	if(_.isString(playerDoc.allianceId)){
 		funcs.push(addToChatAllianceChannelAsync(this.chatServerId, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
 		funcs.push(addToCacheAllianceChannelAsync(this.cacheServerId, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
@@ -118,7 +118,7 @@ pro.removePlayerFromChannels = function(playerDoc, callback){
 	var removeFromChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.removeFromAllianceChannel.toServer, this)
 	var removeFromCacheAllianceChannelAsync = Promise.promisify(this.app.rpc.cache.cacheRemote.removeFromAllianceChannel.toServer, this)
 	var funcs = []
-	funcs.push(removeFromChatChannelAsync(this.chatServerId, playerDoc._id, playerDoc.logicServerId))
+	funcs.push(removeFromChatChannelAsync(this.chatServerId, playerDoc._id, playerDoc.logicServerId, this.cacheServerId));
 	if(_.isString(playerDoc.allianceId)){
 		funcs.push(removeFromChatAllianceChannelAsync(this.chatServerId, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
 		funcs.push(removeFromCacheAllianceChannelAsync(this.cacheServerId, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
