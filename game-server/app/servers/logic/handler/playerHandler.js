@@ -700,13 +700,21 @@ pro.getPlayerInfo = function(msg, session, next){
  */
 pro.sendMail = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.sendMail", {playerId:session.uid, msg:msg})
-	var memberId = msg.memberId
-	var title = msg.title
-	var content = msg.content
+
+	var self = this;
+	var memberId = msg.memberId;
+	var memberName = msg.memberName;
+	var title = msg.title;
+	var content = msg.content;
 	var serverId = msg.serverId;
 	var e = null
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		e = new Error("memberId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(memberName) || memberName.trim().length > Define.InputLength.PlayerName){
+		e = new Error("memberName 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
@@ -731,7 +739,37 @@ pro.sendMail = function(msg, session, next){
 		return
 	}
 
-	this.request('sendMail', [session.uid, memberId, title, content], serverId).then(function(){
+	var playerId = session.uid;
+	var playerName = session.get('name');
+	var playerIcon = session.get('icon');
+	var allianceTag = session.get('allianceTag');
+	var mailToMember = {
+		id:ShortId.generate(),
+		title:title,
+		fromId:playerId,
+		fromName:playerName,
+		fromIcon:playerIcon,
+		fromAllianceTag:allianceTag,
+		content:content,
+		sendTime:Date.now(),
+		isRead:false,
+		isSaved:false
+	}
+	var mailToPlayer = {
+		id:ShortId.generate(),
+		title:title,
+		fromName:playerName,
+		fromIcon:playerIcon,
+		fromAllianceTag:allianceTag,
+		toId:memberId,
+		toName:memberName,
+		content:content,
+		sendTime:Date.now()
+	}
+
+	this.request('addMail', [memberId, mailToMember], serverId).then(function(){
+		return self.request('addSendMail', [playerId, mailToPlayer])
+	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

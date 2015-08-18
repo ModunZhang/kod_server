@@ -202,7 +202,6 @@ pro.isPlayerOnline = function(playerDoc, callback){
 	this.app.rpc.logic.logicRemote.isPlayerOnline.toServer(playerDoc.logicServerId, playerDoc._id, callback)
 }
 
-
 /**
  * 为玩家添加系统邮件
  * @param id
@@ -302,99 +301,6 @@ pro.sendSysReport = function(id, report, callback){
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.cacheService.updatePlayerAsync(id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
-	})
-}
-
-/**
- * 发送玩家邮件
- * @param id
- * @param memberId
- * @param title
- * @param content
- * @param callback
- */
-pro.sendPlayerMail = function(id, memberId, title, content, callback){
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	var memberDoc = null
-	var memberData = []
-	var allianceDoc = null
-	var updateFuncs = []
-	this.cacheService.findPlayerAsync(id).then(function(doc){
-		playerDoc = doc
-		return self.cacheService.findPlayerAsync(memberId)
-	}).then(function(doc){
-		if(_.isEmpty(doc)) return Promise.reject(ErrorUtils.playerNotExist(id, memberId))
-		memberDoc = doc
-		if(!_.isEmpty(playerDoc.allianceId)){
-			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
-				allianceDoc = doc
-			})
-		}else return Promise.resolve()
-	}).then(function(){
-		var mailToMember = {
-			id:ShortId.generate(),
-			title:title,
-			fromId:playerDoc._id,
-			fromName:playerDoc.basicInfo.name,
-			fromIcon:playerDoc.basicInfo.icon,
-			fromAllianceTag:_.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "",
-			content:content,
-			sendTime:Date.now(),
-			isRead:false,
-			isSaved:false
-		}
-		while(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
-			(function(){
-				var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
-				memberData.push(["mails." + memberDoc.mails.indexOf(mail), null])
-				LogicUtils.removeItemInArray(memberDoc.mails, mail)
-			})();
-		}
-		memberDoc.mails.push(mailToMember)
-		memberData.push(["mails." + memberDoc.mails.indexOf(mailToMember), mailToMember])
-
-		var mailToPlayer = {
-			id:ShortId.generate(),
-			title:title,
-			fromName:playerDoc.basicInfo.name,
-			fromIcon:playerDoc.basicInfo.icon,
-			fromAllianceTag:_.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "",
-			toId:memberDoc._id,
-			toName:memberDoc.basicInfo.name,
-			content:content,
-			sendTime:Date.now()
-		}
-		while(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
-			(function(){
-				playerDoc.sendMails.shift()
-				playerData.push(["sendMails.0", null])
-			})();
-		}
-		playerDoc.sendMails.push(mailToPlayer)
-		playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mailToPlayer), mailToPlayer])
-
-		updateFuncs.push(self.cacheService.updatePlayerAsync(id, playerDoc))
-		updateFuncs.push(self.cacheService.updatePlayerAsync(memberId, memberDoc))
-		return Promise.all(updateFuncs)
-	}).then(function(){
-		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
-	}).then(function(){
-		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(id, null))
-		}
-		if(_.isObject(memberDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(memberId, null))
 		}
 		Promise.all(funcs).then(function(){
 			callback(e)

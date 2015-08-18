@@ -231,9 +231,10 @@ Api.getDailyQeustReward = function(questEventId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.getPlayerInfo = function(memberId, callback){
+Api.getPlayerInfo = function(memberId, serverId, callback){
 	var info = {
-		memberId:memberId
+		memberId:memberId,
+		serverId:serverId
 	}
 	var route = "logic.playerHandler.getPlayerInfo"
 	pomelo.request(route, info, callback)
@@ -247,9 +248,13 @@ Api.setPlayerLanguage = function(language, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.sendMail = function(memberId, title, content, callback){
+Api.sendMail = function(memberId, memberName, title, content, serverId, callback){
 	var info = {
-		memberId:memberId, title:title, content:content
+		memberId:memberId,
+		memberName:memberName,
+		title:title,
+		content:content,
+		serverId:serverId
 	}
 	var route = "logic.playerHandler.sendMail"
 	pomelo.request(route, info, callback)
@@ -711,9 +716,6 @@ Api.getPveStageReward = function(stageName, callback){
 }
 
 
-
-
-
 Api.createAlliance = function(name, tag, language, terrain, flag, callback){
 	var info = {
 		name:name, tag:tag, language:language, terrain:terrain, flag:flag
@@ -1141,9 +1143,10 @@ Api.giveLoyaltyToAllianceMember = function(memberId, count, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.getAllianceInfo = function(allianceId, callback){
+Api.getAllianceInfo = function(allianceId, serverId, callback){
 	var info = {
-		allianceId:allianceId
+		allianceId:allianceId,
+		serverId:serverId
 	}
 	var route = "logic.allianceHandler.getAllianceInfo"
 	pomelo.request(route, info, callback)

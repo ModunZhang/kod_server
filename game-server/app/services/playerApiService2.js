@@ -759,18 +759,85 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 }
 
 /**
- * 发送个人邮件
+ * 添加玩家已发送邮件
  * @param playerId
- * @param memberId
- * @param title
- * @param content
+ * @param mail
  * @param callback
  */
-pro.sendMail = function(playerId, memberId, title, content, callback){
-	this.dataService.sendPlayerMailAsync(playerId, memberId, title, content).then(function(){
-		callback(null)
+pro.addSendMail = function(playerId, mail, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
+
+		while(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
+			(function(){
+				playerDoc.sendMails.shift()
+				playerData.push(["sendMails.0", null])
+			})();
+		}
+		playerDoc.sendMails.push(mail)
+		playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mail), mail])
+
+		updateFuncs.push(self.cacheService.updatePlayerAsync(playerId, playerDoc))
+		return Promise.all(updateFuncs)
+	}).then(function(){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
+	}).then(function(){
+		callback()
 	}).catch(function(e){
-		callback(e)
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
+ * 添加玩家邮件
+ * @param playerId
+ * @param mail
+ * @param callback
+ */
+pro.addMail = function(playerId, mail, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
+		playerDoc = doc
+
+		while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
+			(function(){
+				var mail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
+				playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
+				LogicUtils.removeItemInArray(playerDoc.mails, mail)
+			})();
+		}
+		playerDoc.mails.push(mail)
+		playerData.push(["mails." + playerDoc.mails.indexOf(mail), mail])
+
+		updateFuncs.push(self.cacheService.updatePlayerAsync(playerId, playerDoc))
+		return Promise.all(updateFuncs)
+	}).then(function(){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 

@@ -263,6 +263,7 @@ pro.soldiers = function(playerId, count, callback){
 			playerDoc.soldiers[key] = count
 		})
 		playerData.push(["soldiers", playerDoc.soldiers])
+		DataUtils.refreshPlayerPower(playerDoc, playerData);
 		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
