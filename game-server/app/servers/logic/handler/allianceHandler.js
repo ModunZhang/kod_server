@@ -1726,15 +1726,21 @@ pro.giveLoyaltyToAllianceMember = function(msg, session, next){
  */
 pro.getAllianceInfo = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getAllianceInfo", {playerId:session.uid, msg:msg})
-	var allianceId = msg.allianceId
+	var allianceId = msg.allianceId;
+	var serverId = msg.serverId;
 	var e = null
 	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
 		e = new Error("allianceId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
+	if(!_.contains(this.app.get('cacheServerIds'), serverId)){
+		e = new Error("serverId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
-	this.request('getAllianceInfo', [session.uid, allianceId]).then(function(allianceData){
+	this.request('getAllianceInfo', [session.uid, allianceId], serverId).then(function(allianceData){
 		next(null, {code:200, allianceData:allianceData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

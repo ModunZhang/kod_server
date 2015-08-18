@@ -671,15 +671,21 @@ pro.setPlayerLanguage = function(msg, session, next){
  */
 pro.getPlayerInfo = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.getPlayerInfo", {playerId:session.uid, msg:msg})
-	var memberId = msg.memberId
+	var memberId = msg.memberId;
+	var serverId = msg.serverId;
 	var e = null
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		e = new Error("memberId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
+	if(!_.contains(this.app.get('cacheServerIds'), serverId)){
+		e = new Error("serverId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
-	this.request('getPlayerInfo', [session.uid, memberId]).then(function(playerViewData){
+	this.request('getPlayerInfo', [session.uid, memberId], serverId).then(function(playerViewData){
 		next(null, {code:200, playerViewData:playerViewData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -697,6 +703,7 @@ pro.sendMail = function(msg, session, next){
 	var memberId = msg.memberId
 	var title = msg.title
 	var content = msg.content
+	var serverId = msg.serverId;
 	var e = null
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		e = new Error("memberId 不合法")
@@ -718,8 +725,13 @@ pro.sendMail = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
+	if(!_.contains(this.app.get('cacheServerIds'), serverId)){
+		e = new Error("serverId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
-	this.request('sendMail', [session.uid, memberId, title, content]).then(function(){
+	this.request('sendMail', [session.uid, memberId, title, content], serverId).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

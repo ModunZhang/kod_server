@@ -17,6 +17,7 @@ life.beforeStartup = function(app, callback){
 	var currentServer = app.getServerFromConfig(app.getServerId())
 	app.set("logicServerId", currentServer.id)
 	app.set('cacheServerId', currentServer.usedFor);
+	var cacheServerIds = [];
 	var servers = app.getServersFromConfig()
 	_.each(servers, function(server, id){
 		if(_.isEqual(server.serverType, "chat") && _.contains(server.usedFor.split(','), app.get('cacheServerId'))){
@@ -25,14 +26,18 @@ life.beforeStartup = function(app, callback){
 			app.set("rankServerId", id)
 		}else if(_.isEqual(server.serverType, "gate")){
 			app.set("gateServerId", id)
+		}else if(_.isEqual(server.serverType, 'cache')){
+			cacheServerIds.push(id);
 		}
 	})
+	app.set('cacheServerIds', cacheServerIds);
 
 	app.set("logService", new LogService(app))
 
-	var request = function(api, params){
+	var request = function(api, params, serverId){
 		return new Promise(function(resolve, reject){
-			app.rpc.cache.cacheRemote.request.toServer(app.get('cacheServerId'), api, params, function(e, resp){
+			var cacheServerId = !!serverId ? serverId : app.get('cacheServerId');
+			app.rpc.cache.cacheRemote.request.toServer(cacheServerId, api, params, function(e, resp){
 				if(_.isObject(e)) reject(e)
 				else if(resp.code == 200) resolve(resp.data)
 				else reject(ErrorUtils.createError(resp.code, resp.data, false))
