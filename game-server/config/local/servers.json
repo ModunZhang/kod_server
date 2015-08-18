@@ -32,8 +32,7 @@
     {
       "id": "chat-server-1",
       "host": "127.0.0.1",
-      "port": 5151,
-      "usedFor": "cache-server-1,cache-server-2"
+      "port": 5151
     }
   ],
   "cache": [
@@ -69,7 +68,7 @@
     }
   ],
   "http":[{
-    "id":"http",
+    "id":"http-server-1",
     "host":"127.0.0.1",
     "port":8151
   }]

@@ -10,6 +10,8 @@ var requestErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger(
 var eventLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-event")
 var eventErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-event-error")
 var findLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-find")
+var gmLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-gm")
+var gmErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-gm-error")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
 var mailLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail")
 
@@ -84,6 +86,36 @@ pro.onEventError = function(api, object, stack){
 	}
 	eventErrorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 	eventErrorLogger.error(_.isString(stack) ? stack : '')
+	if(!_.isEqual(this.evn, "local") && !_.isEqual(this.evn, 'develop')){
+		mailLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+		mailLogger.error(_.isString(stack) ? stack : '')
+	}
+}
+
+/**
+ * Gm平台Api调用日志
+ * @param api
+ * @param object
+ */
+pro.onGm = function(api, object){
+	gmLogger.info('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+}
+
+/**
+ * Gm平台Api调用错误日志
+ * @param api
+ * @param object
+ * @param stack
+ */
+pro.onGmError = function(api, object, stack){
+	if(!_.isEqual(this.evn, "local")){
+		errorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+		errorLogger.error(_.isString(stack) ? stack : '')
+		gmLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+		gmLogger.error(_.isString(stack) ? stack : '')
+	}
+	gmErrorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+	gmErrorLogger.error(_.isString(stack) ? stack : '')
 	if(!_.isEqual(this.evn, "local") && !_.isEqual(this.evn, 'develop')){
 		mailLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailLogger.error(_.isString(stack) ? stack : '')

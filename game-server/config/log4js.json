@@ -136,6 +136,26 @@
     },
     {
       "type": "file",
+      "filename": "${opts:base}/logs/kod-gm.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-gm"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-gm-error.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-gm-error"
+    },
+    {
+      "type": "file",
       "filename": "${opts:base}/logs/kod-find.log",
       "maxLogSize": 10485760,
       "layout": {
@@ -187,6 +207,8 @@
     "kod-request-error": "DEBUG",
     "kod-event": "DEBUG",
     "kod-event-error": "DEBUG",
+    "kod-gm": "DEBUG",
+    "kod-gm-error": "DEBUG",
     "kod-find": "DEBUG",
     "kod-error": "DEBUG",
     "kod-mail": "DEBUG"

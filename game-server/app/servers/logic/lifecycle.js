@@ -20,7 +20,7 @@ life.beforeStartup = function(app, callback){
 	var cacheServerIds = [];
 	var servers = app.getServersFromConfig()
 	_.each(servers, function(server, id){
-		if(_.isEqual(server.serverType, "chat") && _.contains(server.usedFor.split(','), app.get('cacheServerId'))){
+		if(_.isEqual(server.serverType, "chat")){
 			app.set("chatServerId", id)
 		}else if(_.isEqual(server.serverType, "rank") && _.contains(server.usedFor.split(','), app.get('cacheServerId'))){
 			app.set("rankServerId", id)
