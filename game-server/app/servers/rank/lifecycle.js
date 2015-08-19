@@ -16,27 +16,34 @@ var life = module.exports
 life.beforeStartup = function(app, callback){
 	var currentServer = app.getServerFromConfig(app.getServerId())
 	app.set("eventServerId", currentServer.id)
-	app.set('cacheServerId', currentServer.usedFor);
+	var cacheServerIds = [];
+	_.each(app.getServersFromConfig(), function(server, id){
+		if(_.isEqual(server.serverType, 'cache')){
+			cacheServerIds.push(id);
+		}
+	})
+	app.set('cacheServerIds', cacheServerIds);
 
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
-	app.set("RankService", Promise.promisifyAll(new RankService(app)))
+
 	app.set("logService", new LogService(app))
+	app.set("RankService", Promise.promisifyAll(new RankService(app)))
 
 	callback()
 }
 
 life.afterStartup = function(app, callback){
-	app.get("RankService").start(callback)
+
 }
 
 life.beforeShutdown = function(app, callback){
-	app.get("RankService").stop(function(){
-		app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
-		setTimeout(callback, 1000)
-	})
+	app.get("RankService").stop();
+	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
+	setTimeout(callback, 1000)
 }
 
 life.afterStartAll = function(app){
+	app.get("RankService").start()
 	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
 }

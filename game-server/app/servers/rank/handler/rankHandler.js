@@ -34,7 +34,7 @@ pro.getPlayerRankList = function(msg, session, next){
 	var self = this
 	var rankType = msg.rankType
 	var fromRank = msg.fromRank
-	this.rankService.getPlayerRankListAsync(session.uid, rankType, fromRank).spread(function(myData, datas){
+	this.rankService.getPlayerRankListAsync(session.get('cacheServerId'), session.uid, rankType, fromRank).spread(function(myData, datas){
 		next(null, {code:200, myData:myData, datas:datas})
 	}).catch(function(e){
 		self.logService.onRequestError("rank.rankHandler.getPlayerRankList", {playerId:session.uid, msg:msg}, e.stack)
@@ -54,7 +54,7 @@ pro.getAllianceRankList = function(msg, session, next){
 	var allianceId = msg.allianceId
 	var rankType = msg.rankType
 	var fromRank = msg.fromRank
-	this.rankService.getAllianceRankListAsync(session.uid, allianceId, rankType, fromRank).spread(function(myData, datas){
+	this.rankService.getAllianceRankListAsync(session.get('cacheServerId'), session.uid, allianceId, rankType, fromRank).spread(function(myData, datas){
 		next(null, {code:200, myData:myData, datas:datas})
 	}).catch(function(e){
 		self.logService.onRequestError("rank.rankHandler.getAllianceRankList", {playerId:session.uid, msg:msg}, e.stack)

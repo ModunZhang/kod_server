@@ -13,7 +13,7 @@
       "id": "logic-server-1",
       "host": "127.0.0.1",
       "port": 4151,
-      "clientHost":"192.168.0.30",
+      "clientHost": "192.168.0.30",
       "clientPort": 4011,
       "frontend": true,
       "usedFor": "cache-server-1"
@@ -22,7 +22,7 @@
       "id": "logic-server-2",
       "host": "127.0.0.1",
       "port": 4152,
-      "clientHost":"192.168.0.30",
+      "clientHost": "192.168.0.30",
       "clientPort": 4012,
       "frontend": true,
       "usedFor": "cache-server-2"
@@ -57,19 +57,14 @@
     {
       "id": "rank-server-1",
       "host": "127.0.0.1",
-      "port": 7151,
-      "usedFor": "cache-server-1"
-    },
-    {
-      "id": "rank-server-2",
-      "host": "127.0.0.1",
-      "port": 7152,
-      "usedFor": "cache-server-2"
+      "port": 7151
     }
   ],
-  "http":[{
-    "id":"http-server-1",
-    "host":"127.0.0.1",
-    "port":8151
-  }]
+  "http": [
+    {
+      "id": "http-server-1",
+      "host": "127.0.0.1",
+      "port": 8151
+    }
+  ]
 }
