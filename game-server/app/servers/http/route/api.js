@@ -14,9 +14,10 @@ module.exports = function(app, http){
 		var type = req.body.type;
 		var content = req.body.content;
 		app.rpc.chat.chatRemote.sendGlobalNotice.toServer(chatServerId, servers, type, content, function(e){
-			if(!!e)
+			if(!!e){
 				logService.onGmError('/send-global-notice', req.body, e.stack);
-			else
+				res.json({code:500, data:e.message});
+			}else
 				res.json({code:200, data:null});
 		})
 	})
@@ -28,9 +29,10 @@ module.exports = function(app, http){
 		var title = req.body.title;
 		var content = req.body.content;
 		app.rpc.chat.chatRemote.sendGlobalMail.toServer(chatServerId, servers, title, content, function(e){
-			if(!!e)
+			if(!!e){
 				logService.onGmError('/send-global-mail', req.body, e.stack);
-			else
+				res.json({code:500, data:e.message});
+			}else
 				res.json({code:200, data:null});
 		})
 	})
@@ -43,9 +45,10 @@ module.exports = function(app, http){
 		var title = req.body.title;
 		var content = req.body.content;
 		app.rpc.cache.cacheRemote.sendMailToPlayers.toServer(serverId, ids, title, content, function(e){
-			if(!!e)
+			if(!!e){
 				logService.onGmError('/send-mail-to-players', req.body, e.stack);
-			else
+				res.json({code:500, data:e.message});
+			}else
 				res.json({code:200, data:null});
 		})
 	})
