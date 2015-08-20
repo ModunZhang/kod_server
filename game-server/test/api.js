@@ -581,9 +581,8 @@ Api.getLevelupReward = function(levelupIndex, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.addPlayerBillingData = function(transactionId, receiptData, callback){
+Api.addPlayerBillingData = function(receiptData, callback){
 	var info = {
-		transactionId:transactionId,
 		receiptData:receiptData
 	}
 	var route = "logic.playerHandler.addPlayerBillingData"

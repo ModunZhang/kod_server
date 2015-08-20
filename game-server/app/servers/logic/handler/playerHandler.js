@@ -1761,21 +1761,29 @@ pro.getLevelupReward = function(msg, session, next){
  */
 pro.addPlayerBillingData = function(msg, session, next){
 	this.logService.onRequest("logic.playerHandler.addPlayerBillingData", {playerId:session.uid, msg:msg})
-	var transactionId = msg.transactionId
 	var receiptData = msg.receiptData
 	var e = null
-	if(!_.isString(transactionId)){
-		e = new Error("transactionId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
 	if(!_.isString(receiptData) || _.isEmpty(receiptData.trim())){
 		e = new Error("receiptData 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-
-	this.request('addPlayerBillingData', [session.uid, transactionId, receiptData]).spread(function(playerData, transactionId){
+	var jsonString = new Buffer(receiptData, 'base64').toString();
+	var productIdMathResult = jsonString.match(/"product-id" = "(.*)";/)
+	var transactionIdMathResult = jsonString.match(/"transaction-id" = "(.*)";/)
+	if(!_.isArray(productIdMathResult) || productIdMathResult.length < 2){
+		e = new Error("receiptData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isArray(transactionIdMathResult) || transactionIdMathResult.length < 2){
+		e = new Error("receiptData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	var productId = productIdMathResult[1];
+	var transactionId = transactionIdMathResult[1];
+	this.request('addPlayerBillingData', [session.uid, productId, transactionId, receiptData]).spread(function(playerData, transactionId){
 		next(null, {code:200, playerData:playerData, transactionId:transactionId})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

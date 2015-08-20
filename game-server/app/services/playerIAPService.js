@@ -28,7 +28,7 @@ var PlayerIAPService = function(app){
 	this.cacheService = app.get('cacheService');
 	this.Billing = app.get("Billing")
 	this.GemAdd = app.get("GemAdd")
-	this.billingValidateHost =  app.get('serverConfig').iapValidateUrl
+	this.billingValidateHost = app.get('serverConfig').iapValidateUrl
 	this.billingValidatePath = app.get('serverConfig').iapValidatePath
 }
 
@@ -177,7 +177,11 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerIAPService.SendAllianceMembersRewardsAsync", {senderId:senderId, memberId:memberId, reward:reward}, e.stack)
+		self.logService.onEventError("logic.playerIAPService.SendAllianceMembersRewardsAsync", {
+			senderId:senderId,
+			memberId:memberId,
+			reward:reward
+		}, e.stack)
 		var funcs = []
 		if(_.isObject(memberDoc)){
 			funcs.push(self.cacheService.updatePlayerAsync(memberDoc._id, null))
@@ -191,11 +195,12 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 /**
  * 上传IAP信息
  * @param playerId
+ * @param productId
  * @param transactionId
  * @param receiptData
  * @param callback
  */
-pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callback){
+pro.addPlayerBillingData = function(playerId, productId, transactionId, receiptData, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
@@ -204,6 +209,15 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 	var playerData = []
 	var updateFuncs = []
 	var rewards = null
+
+	var itemConfig = _.find(StoreItems.items, function(item){
+		if(_.isObject(item)){
+			return _.isEqual(item.productId, productId)
+		}
+	})
+	if(!_.isObject(itemConfig))
+		return callback(ErrorUtils.iapProductNotExist(playerId, receiptData));
+
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		return self.Billing.findOneAsync({transactionId:transactionId})
@@ -217,12 +231,6 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 		return self.Billing.createAsync(billing)
 	}).then(function(){
 		var quantity = billing.quantity
-		var itemConfig = _.find(StoreItems.items, function(item){
-			if(_.isObject(item)){
-				return _.isEqual(item.productId, billing.productId)
-			}
-		})
-		if(!_.isObject(itemConfig)) return Promise.reject(ErrorUtils.iapProductNotExist(playerId, responseReceiptData, billing))
 		playerDoc.resources.gem += itemConfig.gem * quantity
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		playerDoc.countInfo.iapCount += 1
@@ -257,7 +265,10 @@ pro.addPlayerBillingData = function(playerId, transactionId, receiptData, callba
 				})
 				return Promise.all(funcs)
 			}).catch(function(e){
-				self.logService.onEventError("logic.playerIAPService.addPlayerBillingData", {playerId:playerId, transactionId:transactionId}, e.stack)
+				self.logService.onEventError("logic.playerIAPService.addPlayerBillingData", {
+					playerId:playerId,
+					transactionId:transactionId
+				}, e.stack)
 			})
 		}
 	}).catch(function(e){
