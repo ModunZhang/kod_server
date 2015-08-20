@@ -140,7 +140,7 @@ sections["1_14"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon_1_2,ballista_1_60,sentinel_1_180,horseArhcer_1_60,ranger_1_60",
+	troops:"blueDragon_1_2,ballista_1_60,sentinel_1_180,horseArcher_1_60,ranger_1_60",
 	rewards:"items:woodClass_2:4:25,items:stoneClass_2:4:25,items:ironClass_2:4:25,items:foodClass_2:4:25"
 }
 sections["1_15"] = {
@@ -340,7 +340,7 @@ sections["2_13"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon_1_4,ballista_1_160,sentinel_1_480,horseArhcer_1_160,ranger_1_160",
+	troops:"blueDragon_1_4,ballista_1_160,sentinel_1_480,horseArcher_1_160,ranger_1_160",
 	rewards:"items:woodClass_2:9:25,items:stoneClass_2:9:25,items:ironClass_2:9:25,items:foodClass_2:9:25"
 }
 sections["2_14"] = {
@@ -380,7 +380,7 @@ sections["2_17"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon_1_4,ballista_1_180,sentinel_1_540,horseArhcer_1_180,crossbowman_1_180",
+	troops:"blueDragon_1_4,ballista_1_180,sentinel_1_540,horseArcher_1_180,crossbowman_1_180",
 	rewards:"items:woodClass_2:10:25,items:stoneClass_2:10:25,items:ironClass_2:10:25,items:foodClass_2:10:25"
 }
 sections["2_18"] = {
@@ -580,7 +580,7 @@ sections["3_16"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon_1_6,ballista_1_280,sentinel_1_840,horseArhcer_1_280,crossbowman_1_280",
+	troops:"greenDragon_1_6,ballista_1_280,sentinel_1_840,horseArcher_1_280,crossbowman_1_280",
 	rewards:"items:woodClass_2:15:25,items:stoneClass_2:15:25,items:ironClass_2:15:25,items:foodClass_2:15:25"
 }
 sections["3_17"] = {
@@ -740,7 +740,7 @@ sections["4_11"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon_1_7,ballista_1_360,sentinel_1_1080,horseArhcer_1_360,ranger_1_360",
+	troops:"greenDragon_1_7,ballista_1_360,sentinel_1_1080,horseArcher_1_360,ranger_1_360",
 	rewards:"items:woodClass_2:19:25,items:stoneClass_2:19:25,items:ironClass_2:19:25,items:foodClass_2:19:25"
 }
 sections["4_12"] = {
@@ -940,7 +940,7 @@ sections["5_10"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon_1_8,ballista_1_460,sentinel_1_1380,horseArhcer_1_460,ranger_1_460",
+	troops:"redDragon_1_8,ballista_1_460,sentinel_1_1380,horseArcher_1_460,ranger_1_460",
 	rewards:"items:woodClass_2:24:25,items:stoneClass_2:24:25,items:ironClass_2:24:25,items:foodClass_2:24:25"
 }
 sections["5_11"] = {
@@ -980,7 +980,7 @@ sections["5_14"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon_1_9,ballista_1_480,sentinel_1_1440,horseArhcer_1_480,crossbowman_1_480",
+	troops:"redDragon_1_9,ballista_1_480,sentinel_1_1440,horseArcher_1_480,crossbowman_1_480",
 	rewards:"items:woodClass_2:25:25,items:stoneClass_2:25:25,items:ironClass_2:25:25,items:foodClass_2:25:25"
 }
 sections["5_15"] = {
@@ -1180,7 +1180,7 @@ sections["6_13"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon_1_10,ballista_1_580,sentinel_1_1740,horseArhcer_1_580,crossbowman_1_580",
+	troops:"redDragon_1_10,ballista_1_580,sentinel_1_1740,horseArcher_1_580,crossbowman_1_580",
 	rewards:"items:woodClass_2:30:25,items:stoneClass_2:30:25,items:ironClass_2:30:25,items:foodClass_2:30:25"
 }
 sections["6_14"] = {
@@ -1340,7 +1340,7 @@ sections["7_8"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon_2_11,ballista_1_660,sentinel_1_1980,horseArhcer_1_660,ranger_1_660",
+	troops:"blueDragon_2_11,ballista_1_660,sentinel_1_1980,horseArcher_1_660,ranger_1_660",
 	rewards:"items:woodClass_2:34:25,items:stoneClass_2:34:25,items:ironClass_2:34:25,items:foodClass_2:34:25"
 }
 sections["7_9"] = {
@@ -1540,7 +1540,7 @@ sections["8_7"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon_2_13,ballista_1_760,sentinel_1_2280,horseArhcer_1_760,ranger_1_760",
+	troops:"blueDragon_2_13,ballista_1_760,sentinel_1_2280,horseArcher_1_760,ranger_1_760",
 	rewards:"items:woodClass_2:39:25,items:stoneClass_2:39:25,items:ironClass_2:39:25,items:foodClass_2:39:25"
 }
 sections["8_8"] = {
@@ -1580,7 +1580,7 @@ sections["8_11"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon_2_13,ballista_1_780,sentinel_1_2340,horseArhcer_1_780,crossbowman_1_780",
+	troops:"blueDragon_2_13,ballista_1_780,sentinel_1_2340,horseArcher_1_780,crossbowman_1_780",
 	rewards:"items:woodClass_2:40:25,items:stoneClass_2:40:25,items:ironClass_2:40:25,items:foodClass_2:40:25"
 }
 sections["8_12"] = {
@@ -1780,7 +1780,7 @@ sections["9_10"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon_2_15,ballista_1_928,sentinel_1_2785,horseArhcer_1_928,crossbowman_1_928",
+	troops:"blueDragon_2_15,ballista_1_928,sentinel_1_2785,horseArcher_1_928,crossbowman_1_928",
 	rewards:"items:woodClass_2:45:25,items:stoneClass_2:45:25,items:ironClass_2:45:25,items:foodClass_2:45:25"
 }
 sections["9_11"] = {
@@ -1940,7 +1940,7 @@ sections["10_5"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon_2_16,ballista_1_1089,sentinel_1_3268,horseArhcer_1_1089,ranger_1_1089",
+	troops:"redDragon_2_16,ballista_1_1089,sentinel_1_3268,horseArcher_1_1089,ranger_1_1089",
 	rewards:"items:woodClass_2:49:25,items:stoneClass_2:49:25,items:ironClass_2:49:25,items:foodClass_2:49:25"
 }
 sections["10_6"] = {
@@ -2140,7 +2140,7 @@ sections["11_4"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon_2_18,ballista_1_1309,sentinel_1_3927,horseArhcer_1_1309,ranger_1_1309",
+	troops:"redDragon_2_18,ballista_1_1309,sentinel_1_3927,horseArcher_1_1309,ranger_1_1309",
 	rewards:"items:woodClass_2:54:25,items:stoneClass_2:54:25,items:ironClass_2:54:25,items:foodClass_2:54:25"
 }
 sections["11_5"] = {
@@ -2180,7 +2180,7 @@ sections["11_8"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon_2_18,ballista_1_1355,sentinel_1_4066,horseArhcer_1_1355,crossbowman_1_1355",
+	troops:"redDragon_2_18,ballista_1_1355,sentinel_1_4066,horseArcher_1_1355,crossbowman_1_1355",
 	rewards:"items:woodClass_2:55:25,items:stoneClass_2:55:25,items:ironClass_2:55:25,items:foodClass_2:55:25"
 }
 sections["11_9"] = {
@@ -2380,7 +2380,7 @@ sections["12_7"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon_2_19,ballista_1_1598,sentinel_1_4796,horseArhcer_1_1598,crossbowman_1_1598",
+	troops:"redDragon_2_19,ballista_1_1598,sentinel_1_4796,horseArcher_1_1598,crossbowman_1_1598",
 	rewards:"items:woodClass_2:60:25,items:stoneClass_2:60:25,items:ironClass_2:60:25,items:foodClass_2:60:25"
 }
 sections["12_8"] = {
@@ -2540,7 +2540,7 @@ sections["13_2"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon_3_21,ballista_1_1808,sentinel_1_5424,horseArhcer_1_1808,ranger_1_1808",
+	troops:"greenDragon_3_21,ballista_1_1808,sentinel_1_5424,horseArcher_1_1808,ranger_1_1808",
 	rewards:"items:woodClass_2:64:25,items:stoneClass_2:64:25,items:ironClass_2:64:25,items:foodClass_2:64:25"
 }
 sections["13_3"] = {
@@ -2740,7 +2740,7 @@ sections["14_1"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon_3_22,ballista_1_2087,sentinel_1_6262,horseArhcer_1_2087,ranger_1_2087",
+	troops:"greenDragon_3_22,ballista_1_2087,sentinel_1_6262,horseArcher_1_2087,ranger_1_2087",
 	rewards:"items:woodClass_2:69:25,items:stoneClass_2:69:25,items:ironClass_2:69:25,items:foodClass_2:69:25"
 }
 sections["14_2"] = {
@@ -2780,7 +2780,7 @@ sections["14_5"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon_3_22,ballista_1_2145,sentinel_1_6437,horseArhcer_1_2145,crossbowman_1_2145",
+	troops:"greenDragon_3_22,ballista_1_2145,sentinel_1_6437,horseArcher_1_2145,crossbowman_1_2145",
 	rewards:"items:woodClass_2:70:25,items:stoneClass_2:70:25,items:ironClass_2:70:25,items:foodClass_2:70:25"
 }
 sections["14_6"] = {
@@ -2980,7 +2980,7 @@ sections["15_4"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon_3_24,ballista_1_2449,sentinel_1_7348,horseArhcer_1_2449,crossbowman_1_2449",
+	troops:"greenDragon_3_24,ballista_1_2449,sentinel_1_7348,horseArcher_1_2449,crossbowman_1_2449",
 	rewards:"items:woodClass_2:75:25,items:stoneClass_2:75:25,items:ironClass_2:75:25,items:foodClass_2:75:25"
 }
 sections["15_5"] = {
@@ -3140,7 +3140,7 @@ sections["15_20"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon_3_25,ballista_1_2706,sentinel_1_8119,horseArhcer_1_2706,ranger_1_2706",
+	troops:"greenDragon_3_25,ballista_1_2706,sentinel_1_8119,horseArcher_1_2706,ranger_1_2706",
 	rewards:"items:woodClass_2:79:25,items:stoneClass_2:79:25,items:ironClass_2:79:25,items:foodClass_2:79:25"
 }
 sections["15_21"] = {
@@ -3340,7 +3340,7 @@ sections["16_19"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon_3_27,ballista_1_3046,sentinel_1_9138,horseArhcer_1_3046,ranger_1_3046",
+	troops:"redDragon_3_27,ballista_1_3046,sentinel_1_9138,horseArcher_1_3046,ranger_1_3046",
 	rewards:"items:woodClass_2:84:25,items:stoneClass_2:84:25,items:ironClass_2:84:25,items:foodClass_2:84:25"
 }
 sections["16_20"] = {
@@ -3380,7 +3380,7 @@ sections["17_2"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon_3_27,ballista_1_3116,sentinel_1_9349,horseArhcer_1_3116,crossbowman_1_3116",
+	troops:"redDragon_3_27,ballista_1_3116,sentinel_1_9349,horseArcher_1_3116,crossbowman_1_3116",
 	rewards:"items:woodClass_2:85:25,items:stoneClass_2:85:25,items:ironClass_2:85:25,items:foodClass_2:85:25"
 }
 sections["17_3"] = {
@@ -3580,7 +3580,7 @@ sections["18_1"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon_3_29,ballista_1_3479,sentinel_1_10439,horseArhcer_1_3479,crossbowman_1_3479",
+	troops:"redDragon_3_29,ballista_1_3479,sentinel_1_10439,horseArcher_1_3479,crossbowman_1_3479",
 	rewards:"items:woodClass_2:90:25,items:stoneClass_2:90:25,items:ironClass_2:90:25,items:foodClass_2:90:25"
 }
 sections["18_2"] = {
@@ -3740,7 +3740,7 @@ sections["18_17"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon_3_30,ballista_1_3850,sentinel_1_11550,horseArhcer_1_3850,ranger_1_3850",
+	troops:"redDragon_3_30,ballista_1_3850,sentinel_1_11550,horseArcher_1_3850,ranger_1_3850",
 	rewards:"items:woodClass_2:94:25,items:stoneClass_2:94:25,items:ironClass_2:94:25,items:foodClass_2:94:25"
 }
 sections["18_18"] = {
@@ -3940,7 +3940,7 @@ sections["19_16"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon_4_31,ballista_1_4449,sentinel_1_13347,horseArhcer_1_4449,ranger_1_4449",
+	troops:"blueDragon_4_31,ballista_1_4449,sentinel_1_13347,horseArcher_1_4449,ranger_1_4449",
 	rewards:"items:woodClass_2:99:25,items:stoneClass_2:99:25,items:ironClass_2:99:25,items:foodClass_2:99:25"
 }
 sections["19_17"] = {
@@ -3980,7 +3980,7 @@ sections["19_20"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon_4_32,ballista_1_4573,sentinel_1_13721,horseArhcer_1_4573,crossbowman_1_4573",
+	troops:"blueDragon_4_32,ballista_1_4573,sentinel_1_13721,horseArcher_1_4573,crossbowman_1_4573",
 	rewards:"items:woodClass_2:100:25,items:stoneClass_2:100:25,items:ironClass_2:100:25,items:foodClass_2:100:25"
 }
 sections["19_21"] = {
@@ -4180,7 +4180,7 @@ sections["20_19"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon_4_33,ballista_1_5220,sentinel_1_15662,horseArhcer_1_5220,crossbowman_1_5220",
+	troops:"blueDragon_4_33,ballista_1_5220,sentinel_1_15662,horseArcher_1_5220,crossbowman_1_5220",
 	rewards:"items:woodClass_2:105:25,items:stoneClass_2:105:25,items:ironClass_2:105:25,items:foodClass_2:105:25"
 }
 sections["20_20"] = {
@@ -4340,7 +4340,7 @@ sections["21_14"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon_4_34,ballista_1_5767,sentinel_1_17301,horseArhcer_1_5767,ranger_1_5767",
+	troops:"blueDragon_4_34,ballista_1_5767,sentinel_1_17301,horseArcher_1_5767,ranger_1_5767",
 	rewards:"items:woodClass_2:109:25,items:stoneClass_2:109:25,items:ironClass_2:109:25,items:foodClass_2:109:25"
 }
 sections["21_15"] = {
@@ -4540,7 +4540,7 @@ sections["22_13"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon_4_36,ballista_1_6486,sentinel_1_19458,horseArhcer_1_6486,ranger_1_6486",
+	troops:"greenDragon_4_36,ballista_1_6486,sentinel_1_19458,horseArcher_1_6486,ranger_1_6486",
 	rewards:"items:woodClass_2:114:25,items:stoneClass_2:114:25,items:ironClass_2:114:25,items:foodClass_2:114:25"
 }
 sections["22_14"] = {
@@ -4580,7 +4580,7 @@ sections["22_17"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon_4_36,ballista_1_6634,sentinel_1_19904,horseArhcer_1_6634,crossbowman_1_6634",
+	troops:"greenDragon_4_36,ballista_1_6634,sentinel_1_19904,horseArcher_1_6634,crossbowman_1_6634",
 	rewards:"items:woodClass_2:115:25,items:stoneClass_2:115:25,items:ironClass_2:115:25,items:foodClass_2:115:25"
 }
 sections["22_18"] = {
@@ -4780,7 +4780,7 @@ sections["23_16"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon_4_38,ballista_1_7401,sentinel_1_22205,horseArhcer_1_7401,crossbowman_1_7401",
+	troops:"greenDragon_4_38,ballista_1_7401,sentinel_1_22205,horseArcher_1_7401,crossbowman_1_7401",
 	rewards:"items:woodClass_2:120:25,items:stoneClass_2:120:25,items:ironClass_2:120:25,items:foodClass_2:120:25"
 }
 sections["23_17"] = {
@@ -4940,7 +4940,7 @@ sections["24_11"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon_4_39,ballista_1_8044,sentinel_1_24132,horseArhcer_1_8044,ranger_1_8044",
+	troops:"greenDragon_4_39,ballista_1_8044,sentinel_1_24132,horseArcher_1_8044,ranger_1_8044",
 	rewards:"items:woodClass_2:124:25,items:stoneClass_2:124:25,items:ironClass_2:124:25,items:foodClass_2:124:25"
 }
 sections["24_12"] = {
