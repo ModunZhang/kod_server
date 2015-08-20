@@ -886,6 +886,11 @@ pro.helpAllianceMemberSpeedUp = function(playerId, allianceId, eventId, callback
 		return self.cacheService.findPlayerAsync(helpEvent.playerData.id)
 	}).then(function(doc){
 		memberDoc = doc
+		if(!_.isObject(memberDoc)){
+			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
+			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+			return Promise.resolve()
+		}
 		DataUtils.addPlayerHelpLoyalty(playerDoc, playerData, 1)
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
 		var memberEvent = LogicUtils.getPlayerEventByTypeAndId(memberDoc, helpEvent.eventData.type, helpEvent.eventData.id)
