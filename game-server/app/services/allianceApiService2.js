@@ -84,6 +84,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		LogicUtils.returnPlayerMarchTroops(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 		LogicUtils.returnPlayerMarchReturnTroops(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 		LogicUtils.returnPlayerVillageTroop(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService, self.dataService)
+		LogicUtils.removePlayerHelpEvents(playerDoc, allianceDoc, allianceData);
 
 		var returnHelpedByMarchTroop = function(marchEvent){
 			var doc = null
@@ -886,11 +887,6 @@ pro.helpAllianceMemberSpeedUp = function(playerId, allianceId, eventId, callback
 		return self.cacheService.findPlayerAsync(helpEvent.playerData.id)
 	}).then(function(doc){
 		memberDoc = doc
-		if(!_.isObject(memberDoc)){
-			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
-			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-			return Promise.resolve()
-		}
 		DataUtils.addPlayerHelpLoyalty(playerDoc, playerData, 1)
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
 		var memberEvent = LogicUtils.getPlayerEventByTypeAndId(memberDoc, helpEvent.eventData.type, helpEvent.eventData.id)

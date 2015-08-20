@@ -1851,6 +1851,23 @@ Utils.returnPlayerHelpedByMarchTroop = function(playerDoc, playerData, marchEven
 }
 
 /**
+ * 移除玩家在联盟中的协助加速信息
+ * @param playerDoc
+ * @param allianceDoc
+ * @param allianceData
+ */
+Utils.removePlayerHelpEvents = function(playerDoc, allianceDoc, allianceData){
+	var self = this;
+	_.each(allianceDoc.helpEvents, function(helpEvent){
+		var memberId = helpEvent.playerData.id
+		if(_.isEqual(memberId, playerDoc._id)){
+			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
+			self.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+		}
+	})
+}
+
+/**
  * 创建一笔交易
  * @param playerDoc
  * @param type

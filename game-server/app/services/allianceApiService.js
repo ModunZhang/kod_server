@@ -727,6 +727,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		LogicUtils.returnPlayerMarchReturnTroops(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, self.timeEventService)
 		LogicUtils.returnPlayerShrineTroops(memberDoc, memberData, allianceDoc, allianceData)
 		LogicUtils.returnPlayerVillageTroop(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, self.timeEventService, self.dataService)
+		LogicUtils.removePlayerHelpEvents(memberDoc, allianceDoc, allianceData);
 
 		var returnHelpedByMarchTroop = function(marchEvent){
 			var doc = null
