@@ -40,12 +40,12 @@ pro.createAlliance = function(msg, session, next){
 	var terrain = msg.terrain
 	var flag = msg.flag
 	var e = null
-	if(!_.isString(name) || name.trim().length > Define.InputLength.AllianceName){
+	if(!_.isString(name) || name.trim().length === 0 || name.trim().length > Define.InputLength.AllianceName){
 		e = new Error("name 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(tag) || tag.trim().length > Define.InputLength.AllianceTag){
+	if(!_.isString(tag) || tag.trim().length === 0 || tag.trim().length > Define.InputLength.AllianceTag){
 		e = new Error("tag 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
@@ -164,7 +164,7 @@ pro.searchAllianceByTag = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.searchAllianceByTag", {playerId:session.uid, msg:msg})
 	var tag = msg.tag
 	var e = null
-	if(!_.isString(tag) || tag.trim().length > Define.InputLength.AllianceTag){
+	if(!_.isString(tag) || tag.trim().length === 0 || tag.trim().length > Define.InputLength.AllianceTag){
 		e = new Error("tag 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
@@ -196,12 +196,12 @@ pro.editAllianceBasicInfo = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(name) || name.trim().length > Define.InputLength.AllianceName){
+	if(!_.isString(name) || name.trim().length === 0 || name.trim().length > Define.InputLength.AllianceName){
 		e = new Error("name 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(tag) || tag.trim().length > Define.InputLength.AllianceTag){
+	if(!_.isString(tag) || tag.trim().length === 0 || tag.trim().length > Define.InputLength.AllianceTag){
 		e = new Error("tag 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
@@ -211,7 +211,7 @@ pro.editAllianceBasicInfo = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(flag) || flag.trim().length > Define.InputLength.AllianceFlag){
+	if(!_.isString(flag) || flag.trim().length === 0 || flag.trim().length > Define.InputLength.AllianceFlag){
 		e = new Error("flag 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
@@ -276,7 +276,7 @@ pro.editAllianceTitleName = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(titleName) || titleName.trim().length > Define.InputLength.AllianceTitleName){
+	if(!_.isString(titleName) || titleName.trim().length === 0 || titleName.trim().length > Define.InputLength.AllianceTitleName){
 		e = new Error("titleName 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
@@ -306,7 +306,7 @@ pro.editAllianceNotice = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(notice) || notice.trim().length > Define.InputLength.AllianceNotice){
+	if(!_.isString(notice) || notice.trim().length === 0 || notice.trim().length > Define.InputLength.AllianceNotice){
 		e = new Error("notice 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
@@ -336,7 +336,7 @@ pro.editAllianceDescription = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(description) || description.trim().length > Define.InputLength.AllianceDesc){
+	if(!_.isString(description) || description.trim().length === 0 || description.trim().length > Define.InputLength.AllianceDesc){
 		e = new Error("description 不合法")
 		next(e, ErrorUtils.getError(e))
 		return

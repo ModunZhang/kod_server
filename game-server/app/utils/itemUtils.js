@@ -744,7 +744,7 @@ Utils.isParamsLegal = function(itemName, params){
 	if(_.isEqual(itemName, "changePlayerName")){
 		if(!_.isObject(itemData)) return false
 		var playerName = itemData.playerName
-		return !(!_.isString(playerName) || playerName.trim().length > Define.InputLength.PlayerName)
+		return !(!_.isString(playerName) || playerName.trim().length === 0 || playerName.trim().length > Define.InputLength.PlayerName)
 	}
 	var eventType = null;
 	var eventId

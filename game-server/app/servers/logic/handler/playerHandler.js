@@ -520,7 +520,7 @@ pro.upgradeDragonSkill = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(skillKey) || skillKey.trim().length > Define.InputLength.DragonSkillKey){
+	if(!_.isString(skillKey) || skillKey.trim().length === 0 || skillKey.trim().length > Define.InputLength.DragonSkillKey){
 		e = new Error("skillKey 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
@@ -716,12 +716,12 @@ pro.sendMail = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(title) || title.trim().length > Define.InputLength.MailTitle){
+	if(!_.isString(title) || title.trim().length === 0 || title.trim().length > Define.InputLength.MailTitle){
 		e = new Error("title 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(content) || content.trim().length > Define.InputLength.MailContent){
+	if(!_.isString(content) || content.trim().length === 0 || content.trim().length > Define.InputLength.MailContent){
 		e = new Error("content 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
