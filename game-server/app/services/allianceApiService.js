@@ -701,13 +701,6 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		var currentMemberLevel = DataUtils.getAllianceTitleLevel(memberObject.title)
 		if(currentMemberLevel <= myMemberLevel) return Promise.reject(ErrorUtils.canNotKickAllianceMemberOffForTitleIsUpperThanMe(playerId, allianceDoc._id, memberId))
 
-		var helpEvents = _.filter(allianceDoc.helpEvents, function(event){
-			return _.isEqual(memberId, event.id)
-		})
-		_.each(helpEvents, function(helpEvent){
-			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
-			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-		})
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject), null])
 		LogicUtils.removeItemInArray(allianceDoc.members, memberObject)
 		var memberMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, memberObject.mapId)
