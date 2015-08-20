@@ -703,18 +703,11 @@ pro.sendMail = function(msg, session, next){
 
 	var self = this;
 	var memberId = msg.memberId;
-	var memberName = msg.memberName;
 	var title = msg.title;
 	var content = msg.content;
-	var serverId = msg.serverId;
 	var e = null
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		e = new Error("memberId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.isString(memberName) || memberName.trim().length > Define.InputLength.PlayerName){
-		e = new Error("memberName 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
@@ -733,45 +726,50 @@ pro.sendMail = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.contains(this.app.get('cacheServerIds'), serverId)){
-		e = new Error("serverId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
+	var Player = this.app.get('Player');
+	Player.findById(memberId, 'serverId basicInfo.name').then(function(doc){
+		if(!_.isObject(doc)){
+			e = ErrorUtils.playerNotExist(memberId, memberId);
+			next(e, ErrorUtils.getError(e));
+			return;
+		}
 
-	var playerId = session.uid;
-	var playerName = session.get('name');
-	var playerIcon = session.get('icon');
-	var allianceTag = session.get('allianceTag');
-	var mailToMember = {
-		id:ShortId.generate(),
-		title:title,
-		fromId:playerId,
-		fromName:playerName,
-		fromIcon:playerIcon,
-		fromAllianceTag:allianceTag,
-		content:content,
-		sendTime:Date.now(),
-		isRead:false,
-		isSaved:false
-	}
-	var mailToPlayer = {
-		id:ShortId.generate(),
-		title:title,
-		fromName:playerName,
-		fromIcon:playerIcon,
-		fromAllianceTag:allianceTag,
-		toId:memberId,
-		toName:memberName,
-		content:content,
-		sendTime:Date.now()
-	}
+		var playerId = session.uid;
+		var playerName = session.get('name');
+		var playerIcon = session.get('icon');
+		var allianceTag = session.get('allianceTag');
+		var mailToMember = {
+			id:ShortId.generate(),
+			title:title,
+			fromId:playerId,
+			fromName:playerName,
+			fromIcon:playerIcon,
+			fromAllianceTag:allianceTag,
+			content:content,
+			sendTime:Date.now(),
+			isRead:false,
+			isSaved:false
+		}
+		var mailToPlayer = {
+			id:ShortId.generate(),
+			title:title,
+			fromName:playerName,
+			fromIcon:playerIcon,
+			fromAllianceTag:allianceTag,
+			toId:memberId,
+			toName:doc.basicInfo.name,
+			content:content,
+			sendTime:Date.now()
+		}
 
-	this.request('addMail', [memberId, mailToMember], serverId).then(function(){
-		return self.request('addSendMail', [playerId, mailToPlayer])
-	}).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
+		self.request('addMail', [memberId, mailToMember], doc.serverId).then(function(){
+			return self.request('addSendMail', [playerId, mailToPlayer])
+		}).then(function(){
+			next(null, {code:200})
+		}).catch(function(e){
+			next(null, ErrorUtils.getError(e))
+		})
+	}, function(e){
 		next(null, ErrorUtils.getError(e))
 	})
 }

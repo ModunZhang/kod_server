@@ -877,14 +877,14 @@
 //		})
 //
 //		it("sendMail 不能给自己发邮件", function(done){
-//			Api.sendMail(m_user._id, m_user.basicInfo.name, "testMail", "this is a testMail", m_user.serverId, function(doc){
+//			Api.sendMail(m_user._id, "testMail", "this is a testMail", function(doc){
 //				doc.code.should.equal(500)
 //				done()
 //			})
 //		})
 //
 //		it("sendMail 玩家不存在", function(done){
-//			Api.sendMail("adfadf", 'asdasdf', "testMail", "this is a testMail", 'cache-server-1', function(doc){
+//			Api.sendMail("adfadf", "testMail", "this is a testMail", function(doc){
 //				doc.code.should.equal(Errors.playerNotExist.code)
 //				done()
 //			})
@@ -893,7 +893,7 @@
 //		it("sendMail 正常发送", function(done){
 //			Api.loginPlayer(Config.deviceId2, function(doc){
 //				doc.code.should.equal(200)
-//				Api.sendMail(m_user._id, m_user.basicInfo.name, "testMail", "this is a testMail", m_user.serverId, function(doc){
+//				Api.sendMail(m_user._id, "testMail", "this is a testMail", function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})

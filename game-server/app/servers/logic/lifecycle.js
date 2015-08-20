@@ -11,6 +11,9 @@ var LogService = require("../../services/logService")
 var ErrorUtils = require("../../utils/errorUtils")
 var Consts = require("../../consts/consts")
 
+var Player = require("../../domains/player")
+var Alliance = require("../../domains/alliance")
+
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
@@ -33,6 +36,9 @@ life.beforeStartup = function(app, callback){
 	app.set('cacheServerIds', cacheServerIds);
 
 	app.set("logService", new LogService(app))
+
+	app.set("Player", Promise.promisifyAll(Player))
+	app.set("Alliance", Promise.promisifyAll(Alliance))
 
 	var request = function(api, params, serverId){
 		return new Promise(function(resolve, reject){

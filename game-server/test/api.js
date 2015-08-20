@@ -248,13 +248,11 @@ Api.setPlayerLanguage = function(language, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.sendMail = function(memberId, memberName, title, content, serverId, callback){
+Api.sendMail = function(memberId, title, content, callback){
 	var info = {
 		memberId:memberId,
-		memberName:memberName,
 		title:title,
-		content:content,
-		serverId:serverId
+		content:content
 	}
 	var route = "logic.playerHandler.sendMail"
 	pomelo.request(route, info, callback)
