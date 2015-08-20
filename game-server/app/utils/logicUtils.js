@@ -340,6 +340,7 @@ Utils.createBuildingEvent = function(playerDoc, location, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		location:location,
+		helped:false,
 		startTime:Date.now(),
 		finishTime:finishTime
 	}
@@ -357,6 +358,7 @@ Utils.createProductionTechEvent = function(playerDoc, techName, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		name:techName,
+		helped:false,
 		startTime:Date.now(),
 		finishTime:finishTime
 	}
@@ -374,6 +376,7 @@ Utils.createMilitaryTechEvent = function(playerDoc, techName, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		name:techName,
+		helped:false,
 		startTime:Date.now(),
 		finishTime:finishTime
 	}
@@ -391,6 +394,7 @@ Utils.createSoldierStarEvent = function(playerDoc, soldierName, finishTime){
 	var event = {
 		id:ShortId.generate(),
 		name:soldierName,
+		helped:false,
 		startTime:Date.now(),
 		finishTime:finishTime
 	}
@@ -410,6 +414,7 @@ Utils.createHouseEvent = function(playerDoc, buildingLocation, houseLocation, fi
 		id:ShortId.generate(),
 		buildingLocation:buildingLocation,
 		houseLocation:houseLocation,
+		helped:false,
 		startTime:Date.now(),
 		finishTime:finishTime
 	}

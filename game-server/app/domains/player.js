@@ -257,6 +257,7 @@ var PlayerSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		name:{type:String, required:true},
+		helped:{type:Boolean, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
@@ -435,6 +436,7 @@ var PlayerSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		location:{type:Number, required:true},
+		helped:{type:Boolean, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
@@ -443,6 +445,7 @@ var PlayerSchema = new Schema({
 		id:{type:String, required:true},
 		buildingLocation:{type:Number, required:true},
 		houseLocation:{type:Number, required:true},
+		helped:{type:Boolean, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
@@ -524,6 +527,7 @@ var PlayerSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		name:{type:String, required:true},
+		helped:{type:Boolean, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
@@ -613,6 +617,7 @@ var PlayerSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		name:{type:String, required:true},
+		helped:{type:Boolean, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true}
 	}],
