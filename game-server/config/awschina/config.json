@@ -8,7 +8,7 @@
   "clientTagCheckEnabled":true,
   "cheatEnabled":false,
   "http": {
-    "host": "54.223.166.65",
+    "host": "172.31.2.115",
     "port": 3001
   }
 }
