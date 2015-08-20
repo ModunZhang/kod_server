@@ -9,6 +9,7 @@ var _ = require("underscore")
 var ShortId = require('shortid');
 var Promise = require('bluebird');
 
+var DataUtils = require("../../../utils/dataUtils")
 var ErrorUtils = require("../../../utils/errorUtils")
 var Consts = require("../../../consts/consts")
 var Define = require("../../../consts/define")
@@ -148,7 +149,7 @@ var SendOutCacheServerMail = function(playerIds, title, content, callback){
 		isSaved:false
 	};
 
-	self.Player.collection.update({
+	this.Player.collection.update({
 		serverId:self.cacheServerId,
 		_id:{$in:playerIds}
 	}, {$push:{mails:mail}}, {multi:true}, function(e){
@@ -224,8 +225,8 @@ pro.sendGlobalMail = function(title, content, callback){
 			if(self.cacheService.isPlayerInCache(id)) inCacheIds.push(id);
 			else outCacheIds.push(id);
 		})
-		var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, this);
-		var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, this);
+		var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, self);
+		var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, self);
 		SendOutCacheServerMailAsync(outCacheIds, title, content).then(function(){
 			self.logService.onEvent('cache.cacheRemote.sendGlobalMail.SendOutCacheServerMail', {
 				playerCount:outCacheIds.length,
