@@ -184,3 +184,26 @@ pro.sendGlobalMail = function(servers, title, content, callback){
 	})
 	callback();
 }
+
+/**
+ * 给指定ID发送邮件
+ * @param ids
+ * @param title
+ * @param content
+ * @param callback
+ */
+pro.sendMailToPlayers = function(ids, title, content, callback){
+	this.logService.onEvent('chat.chatRemote.sendMailToPlayers', {ids:ids, title:title, content:content});
+
+	var serverIds = {};
+	this.Player.collection.find({_id:{$in:ids}}, {serverId:true}).then(function(docs){
+		_.each(docs, function(doc){
+			if(!serverIds[doc.serverId]) serverIds[doc.serverId] = [];
+			serverIds[doc.serverId].push(doc._id);
+		})
+
+	}, function(e){
+
+	});
+	callback()
+}
