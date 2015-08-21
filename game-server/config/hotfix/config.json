@@ -4,7 +4,7 @@
   "iapValidatePath":"/verifyReceipt",
   "apnProductionMode":true,
   "apnPushCert":"alan_aps_production.p12",
-  "clientTagValidateUrl":"http://54.223.172.65:3000/update/res/version.json",
+  "clientTagValidateUrl":"http://54.223.166.65:3000/update/res/version.json",
   "clientTagCheckEnabled":true,
   "cheatEnabled":false,
   "http": {
