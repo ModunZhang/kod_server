@@ -195,15 +195,31 @@ pro.sendGlobalMail = function(servers, title, content, callback){
 pro.sendMailToPlayers = function(ids, title, content, callback){
 	this.logService.onEvent('chat.chatRemote.sendMailToPlayers', {ids:ids, title:title, content:content});
 
+	var self = this;
 	var serverIds = {};
 	this.Player.collection.find({_id:{$in:ids}}, {serverId:true}).then(function(docs){
 		_.each(docs, function(doc){
 			if(!serverIds[doc.serverId]) serverIds[doc.serverId] = [];
 			serverIds[doc.serverId].push(doc._id);
 		})
-
+		_.each(serverIds, function(ids, serverId){
+			self.app.rpc.cache.cacheRemote.sendMailToPlayers.toServer(serverId, ids, title, content, function(e){
+				if(_.isObject(e)){
+					self.logService.onEventError('chat.chatRemote.sendMailToPlayers', {
+						title:title,
+						content:content,
+						serverId:serverId
+					}, e.stack);
+				}
+			})
+		})
 	}, function(e){
-
+		self.logService.onEventError('chat.chatRemote.sendMailToPlayers', {
+			ids:ids,
+			title:title,
+			content:content
+		}, e.stack);
 	});
+
 	callback()
 }

@@ -44,11 +44,10 @@ module.exports = function(app, http){
 	http.post('/send-mail-to-players', function(req, res){
 		req.logService.onGm('/send-mail-to-players', req.body);
 
-		var server = req.body.server;
 		var players = req.body.players;
 		var title = req.body.title;
 		var content = req.body.content;
-		app.rpc.cache.cacheRemote.sendMailToPlayers.toServer(server, players, title, content, function(e){
+		app.rpc.chat.chatRemote.sendMailToPlayers.toServer(req.chatServerId, players, title, content, function(e){
 			if(!!e){
 				req.logService.onGmError('/send-mail-to-players', req.body, e.stack);
 				res.json({code:500, data:e.message});
