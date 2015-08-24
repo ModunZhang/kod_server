@@ -118,3 +118,8 @@ intInit["soldierFightWoundedPercent"] = {
 	value:30,
 	desc:"士兵战斗受伤士兵基础百分比"
 }
+intInit["LootVillagePercent"] = {
+	type:"LootVillagePercent",
+	value:20,
+	desc:"掠夺敌方村落资源比例"
+}
