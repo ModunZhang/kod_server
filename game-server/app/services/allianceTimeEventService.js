@@ -81,13 +81,18 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 				return Promise.resolve()
 			})
-		}else if(_.isEqual(eventType, Consts.MonsterRefreshEvent)){
-			return self.onMonsterRefreshEventAsync(allianceDoc)
+		}else if(eventType === Consts.MonsterRefreshEvent){
+			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+			return self.onMonsterRefreshEventAsync(allianceDoc).then(function(params){
+				updateFuncs = updateFuncs.concat(params.updateFuncs)
+				eventFuncs = eventFuncs.concat(params.eventFuncs)
+				pushFuncs = pushFuncs.concat(params.pushFuncs)
+				return Promise.resolve()
+			})
 		}else{
 			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 			event = LogicUtils.getEventById(allianceDoc[eventType], eventId)
 			if(!_.isObject(event)) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, eventType, eventId))
-
 			var timeEventFuncName = "on" + eventType.charAt(0).toUpperCase() + eventType.slice(1) + "Async"
 			return self[timeEventFuncName](allianceDoc, event).then(function(params){
 				updateFuncs = updateFuncs.concat(params.updateFuncs)
@@ -2262,17 +2267,8 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 	enemyAllianceData.push(['mapObjects', allianceDoc.mapObjects])
 	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
 	LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
-	updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 
-	LogicUtils.excuteAll(updateFuncs).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
+	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 }
 
 /**

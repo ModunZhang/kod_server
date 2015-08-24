@@ -587,10 +587,33 @@ pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
  * @param callback
  */
 pro.restoreAllianceTempTimeEvents = function(allianceDoc, callback){
-	var now = Date.now()
-	var funcs = []
-	funcs.push(this.addAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, allianceDoc.basicInfo.monsterRefreshTime - now))
-	Promise.all(funcs).then(function(){
+	var self = this;
+	var pushFuncs = [];
+	var updateFuncs = [];
+	var eventFuncs = [];
+	var funcs = [];
+
+	(function(){
+		if(allianceDoc.basicInfo.monsterRefreshTime - Date.now() > 0){
+			funcs.push(self.addAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, allianceDoc.basicInfo.monsterRefreshTime - Date.now()))
+			return Promise.resolve();
+		}else{
+			return self.app.get('allianceTimeEventService').onMonsterRefreshEventAsync(allianceDoc).then(function(params){
+				updateFuncs = updateFuncs.concat(params.updateFuncs)
+				eventFuncs = eventFuncs.concat(params.eventFuncs)
+				pushFuncs = pushFuncs.concat(params.pushFuncs)
+				return Promise.resolve();
+			})
+		}
+	})().then(function(){
+		return Promise.all(funcs)
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
 		callback()
 	}).catch(function(e){
 		callback(e)
