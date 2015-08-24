@@ -90,7 +90,7 @@ intInit["KilledCitizenPerBlood"] = {
 }
 intInit["KilledCitizenPerWallHp"] = {
 	type:"KilledCitizenPerWallHp",
-	value:1,
+	value:5,
 	desc:"损失一点城墙血量获得多少击杀积分"
 }
 intInit["villageRefreshMinutes"] = {
