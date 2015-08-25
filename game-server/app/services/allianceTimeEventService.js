@@ -1122,7 +1122,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 						defenceAllianceData.push(["villageEvents." + defenceAllianceDoc.villageEvents.indexOf(villageEvent), null])
 						attackEnemyAllianceData.push(["villageEvents." + defenceAllianceDoc.villageEvents.indexOf(villageEvent), null])
-						LogicUtils.removeItemInArray(defenceAllianceDoc.villageEvents, event)
+						LogicUtils.removeItemInArray(defenceAllianceDoc.villageEvents, villageEvent)
 						defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village), null])
 						attackEnemyAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village), null])
 						LogicUtils.removeItemInArray(defenceAllianceDoc.villages, village)
