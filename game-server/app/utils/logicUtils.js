@@ -1863,13 +1863,16 @@ Utils.returnPlayerHelpedByMarchTroop = function(playerDoc, playerData, marchEven
  */
 Utils.removePlayerHelpEvents = function(playerDoc, allianceDoc, allianceData){
 	var self = this;
-	_.each(allianceDoc.helpEvents, function(helpEvent){
-		var memberId = helpEvent.playerData.id
-		if(_.isEqual(memberId, playerDoc._id)){
-			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
-			self.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-		}
-	})
+	for(var i = allianceDoc.helpEvents - 1; i >= 0; i --){
+		(function(){
+			var helpEvent = allianceDoc.helpEvents[i];
+			var memberId = helpEvent.playerData.id
+			if(_.isEqual(memberId, playerDoc._id)){
+				allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
+				self.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+			}
+		})();
+	}
 }
 
 /**
