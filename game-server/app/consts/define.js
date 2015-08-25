@@ -15,6 +15,9 @@ module.exports = {
 	PlayerMaxReturnRankListSize:20,//单次请求返回的最大排名数量,
 	PlayerIapGiftsMaxSize:20,//联盟玩家赠送的充值礼品最大数量
 	SellItemsMaxSize:30,//
+	MaxChatCount:50,//最大全服聊天数量
+	MaxAllianceChatCount:50,//最大联盟聊天数量
+	MaxAllianceFightChatCount:50,//最大对战聊天数量
 	AllianceEventsMaxSize:20,//联盟事件最大数量
 	AllianceRequestMessageMaxSize:50,//联盟中的入盟申请信息最大数量,
 	AllianceShrineReportsMaxSize:10,//圣地事件报告最大数量

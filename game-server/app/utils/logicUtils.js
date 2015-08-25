@@ -2458,3 +2458,25 @@ Utils.isPlayerPvESectionReachMaxStar = function(playerDoc, sectionName){
 	var sectionIndex = parseInt(sectionParams[1]) - 1;
 	return _.isObject(playerDoc.pve[stageIndex]) && playerDoc.pve[stageIndex].sections[sectionIndex] === 3;
 }
+
+/**
+ * 创建系统聊天消息
+ * @param content
+ * @returns {*}
+ */
+Utils.createSysChatMessage = function(content){
+	var message = {
+		id:"system",
+		icon:'0',
+		name:"System",
+		vip:0,
+		vipActive:false,
+		allianceId:'',
+		allianceTag:'',
+		serverId:'',
+		channel:'global',
+		text:content,
+		time:Date.now()
+	}
+	return message;
+}
