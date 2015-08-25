@@ -8,8 +8,10 @@ var _ = require("underscore")
 var Promise = require("bluebird")
 
 var Consts = require("../../../consts/consts")
+var Define = require("../../../consts/define")
 var Events = require("../../../consts/events")
 var ErrorUtils = require("../../../utils/errorUtils")
+var LogicUtils = require("../../../utils/logicUtils")
 
 module.exports = function(app){
 	return new ChatHandler(app)
@@ -18,15 +20,12 @@ module.exports = function(app){
 var ChatHandler = function(app){
 	this.app = app
 	this.channelService = app.get("channelService")
-	this.chatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, false)
+	this.globalChatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, true)
 	this.logService = app.get("logService")
-	this.chats = []
+	this.chats = app.get('chats');
 	this.allianceChats = app.get('allianceChats')
 	this.allianceFights = app.get('allianceFights')
 	this.allianceFightChats = app.get('allianceFightChats')
-	this.maxChatCount = 50
-	this.maxAllianceChatCount = 50
-	this.maxAllianceFightChatCount = 50
 	this.serverConfig = app.get('serverConfig')
 	this.commands = [
 		{
@@ -366,19 +365,7 @@ pro.send = function(msg, session, next){
 	var message = null
 	filterCommand(text, session).then(function(data){
 		if(!_.isUndefined(data)){
-			message = {
-				id:"system",
-				icon:0,
-				name:"System",
-				vip:0,
-				vipActive:false,
-				allianceId:'',
-				allianceTag:'',
-				serverId:'',
-				channel:channel,
-				text:data,
-				time:Date.now()
-			}
+			message = LogicUtils.createSysChatMessage(data);
 			PushToPlayer.call(self, Events.chat.onChat, session, message)
 			return
 		}
@@ -396,14 +383,14 @@ pro.send = function(msg, session, next){
 			time:Date.now()
 		}
 		if(_.isEqual(Consts.ChannelType.Global, channel)){
-			if(self.chats.length > self.maxChatCount){
+			if(self.chats.length > Define.MaxChatCount){
 				self.chats.shift()
 			}
 			self.chats.push(message)
-			self.chatChannel.pushMessage(Events.chat.onChat, message, {}, null)
+			self.globalChatChannel.pushMessage(Events.chat.onChat, message, {}, null)
 		}else if(_.isEqual(Consts.ChannelType.Alliance, channel)){
 			if(!_.isArray(self.allianceChats[allianceId])) self.allianceChats[allianceId] = []
-			if(self.allianceChats[allianceId].length > self.maxAllianceChatCount){
+			if(self.allianceChats[allianceId].length > Define.MaxAllianceChatCount){
 				self.allianceChats[allianceId].shift()
 			}
 			self.allianceChats[allianceId].push(message)
@@ -413,7 +400,7 @@ pro.send = function(msg, session, next){
 		}else if(_.isEqual(Consts.ChannelType.AllianceFight, channel)){
 			var allianceFightKey = self.allianceFights[allianceId]
 			if(!_.isArray(self.allianceFightChats[allianceFightKey])) self.allianceFightChats[allianceFightKey] = []
-			if(self.allianceFightChats[allianceFightKey].length > self.maxAllianceFightChatCount){
+			if(self.allianceFightChats[allianceFightKey].length > Define.MaxAllianceFightChatCount){
 				self.allianceFightChats[allianceFightKey].shift()
 			}
 			self.allianceFightChats[allianceFightKey].push(message)
@@ -510,21 +497,7 @@ var PushHelpMessageToPlayer = function(session){
 	_.each(this.commands, function(value){
 		commands += value.command + ":" + value.desc + "\n"
 	})
-
-	var message = {
-		id:"system",
-		icon:'0',
-		name:"System",
-		vip:0,
-		vipActive:false,
-		allianceId:'',
-		allianceTag:'',
-		serverId:'',
-		channel:'global',
-		text:commands,
-		time:Date.now()
-	}
-
+	var message = LogicUtils.createSysChatMessage(commands);
 	PushToPlayer.call(this, Events.chat.onChat, session, message)
 }
 

@@ -8,7 +8,9 @@ var _ = require("underscore")
 var Promise = require('bluebird');
 
 var DataUtils = require('../../../utils/dataUtils')
+var LogicUtils = require('../../../utils/logicUtils')
 
+var Define = require("../../../consts/define")
 var Consts = require("../../../consts/consts")
 var Events = require("../../../consts/events")
 
@@ -24,6 +26,7 @@ var ChatRemote = function(app){
 	this.allianceChats = app.get('allianceChats')
 	this.allianceFights = app.get('allianceFights')
 	this.allianceFightChats = app.get('allianceFightChats')
+	this.chats = app.get('chats');
 	this.Player = app.get('Player');
 }
 
@@ -224,4 +227,41 @@ pro.sendMailToPlayers = function(ids, title, content, callback){
 	})
 
 	callback()
+}
+
+/**
+ * 获取聊天记录
+ * @param time
+ * @param callback
+ */
+pro.getGlobalChats = function(time, callback){
+	var self = this;
+	if(time === 0) return callback(null, this.chats);
+
+	var sliceFrom = null;
+	for(var i = this.chats.length - 1; i >=0; i --){
+		var chat = self.chats[i];
+		if(chat.time < time){
+			sliceFrom = i;
+			break;
+		}
+	}
+	if(!!sliceFrom) return callback(null, this.chats.slice(sliceFrom, this.chats.length - 1));
+
+	callback(null, []);
+}
+
+/**
+ * 发送系统聊天
+ * @param content
+ * @param callback
+ */
+pro.sendSysChat = function(content, callback){
+	var message = LogicUtils.createSysChatMessage(content);
+	if(this.chats.length > Define.MaxChatCount){
+		this.chats.shift()
+	}
+	this.chats.push(message)
+	this.globalChatChannel.pushMessage(Events.chat.onChat, message, {}, null)
+	callback(null, message);
 }
