@@ -1120,6 +1120,9 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, rewards)
 						pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 
+						defenceAllianceData.push(["villageEvents." + defenceAllianceDoc.villageEvents.indexOf(villageEvent), null])
+						attackEnemyAllianceData.push(["villageEvents." + defenceAllianceDoc.villageEvents.indexOf(villageEvent), null])
+						LogicUtils.removeItemInArray(defenceAllianceDoc.villageEvents, event)
 						defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village), null])
 						attackEnemyAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village), null])
 						LogicUtils.removeItemInArray(defenceAllianceDoc.villages, village)
