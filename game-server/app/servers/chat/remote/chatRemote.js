@@ -241,12 +241,12 @@ pro.getGlobalChats = function(time, callback){
 	var sliceFrom = null;
 	for(var i = this.chats.length - 1; i >=0; i --){
 		var chat = self.chats[i];
-		if(chat.time < time){
-			sliceFrom = i;
+		if(chat.time <= time){
+			sliceFrom = i + 1;
 			break;
 		}
 	}
-	if(!!sliceFrom) return callback(null, this.chats.slice(sliceFrom, this.chats.length - 1));
+	if(sliceFrom >= 0) return callback(null, this.chats.slice(sliceFrom));
 
 	callback(null, []);
 }
