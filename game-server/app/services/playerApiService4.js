@@ -488,6 +488,9 @@ pro.useItem = function(playerId, itemName, params, callback){
 				playerData.push(["items." + playerDoc.items.indexOf(chestKey) + ".count", chestKey.count])
 			}
 		}
+		if(_.isEqual("changePlayerName", itemName)){
+			eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {name:playerDoc.basicInfo.name}])
+		}
 
 		if(forceSave){
 			updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
@@ -571,6 +574,9 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 			}else{
 				playerData.push(["items." + playerDoc.items.indexOf(chestKey) + ".count", chestKey.count])
 			}
+		}
+		if(_.isEqual("changePlayerName", itemName)){
+			eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {name:playerDoc.basicInfo.name}])
 		}
 
 		if(forceSave){

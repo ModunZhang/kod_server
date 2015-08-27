@@ -784,7 +784,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 	}).then(function(){
 		if(!_.isEmpty(memberDoc.logicServerId)){
 			updateFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, memberDoc])
-			updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, memberDoc, {
+			eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, memberDoc, {
 				allianceId:"",
 				allianceTag:""
 			}])

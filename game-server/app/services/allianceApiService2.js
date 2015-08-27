@@ -139,14 +139,14 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		playerData.push(["resources", playerDoc.resources])
 		return Promise.all(funcs)
 	}).then(function(){
-		updateFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
+		eventFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])
+		eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
 			allianceId:"",
 			allianceTag:""
 		}])
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 		if(allianceDoc.members.length == 0){
-			updateFuncs.push([self.dataService, self.dataService.destroyAllianceChatChannelAsync, allianceDoc._id])
+			eventFuncs.push([self.dataService, self.dataService.destroyAllianceChatChannelAsync, allianceDoc._id])
 			updateFuncs.push([self.cacheService, self.cacheService.deleteAllianceAsync, allianceDoc._id])
 			eventFuncs.push([self.timeEventService, self.timeEventService.clearAllianceTimeEventsAsync, allianceDoc])
 		}else{
@@ -191,6 +191,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 	var enemyAllianceData = []
 	var enemyAllianceViewData = null
 	var updateFuncs = []
+	var eventFuncs = []
 	var pushFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -232,8 +233,8 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		LogicUtils.clearArray(playerDoc.inviteToAllianceEvents)
 		playerData.push(["inviteToAllianceEvents", playerDoc.inviteToAllianceEvents])
 
-		updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
+		eventFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
+		eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
 			allianceId:allianceDoc._id,
 			allianceTag:allianceDoc.basicInfo.tag
 		}])
@@ -244,6 +245,8 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
@@ -480,6 +483,7 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 	var memberDoc = null
 	var memberData = []
 	var updateFuncs = []
+	var eventFuncs = []
 	var pushFuncs = []
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
@@ -534,8 +538,8 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 		memberData.push(["inviteToAllianceEvents", memberDoc.inviteToAllianceEvents])
 
 		if(!_.isEmpty(memberDoc.logicServerId)){
-			updateFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, memberDoc])
-			updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, memberDoc, {
+			eventFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, memberDoc])
+			eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, memberDoc, {
 				allianceId:allianceDoc._id,
 				allianceTag:allianceDoc.basicInfo.tag
 			}])
@@ -548,6 +552,8 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
@@ -647,6 +653,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 	var enemyAllianceViewData = null
 	var inviteEvent = null
 	var pushFuncs = []
+	var eventFuncs = []
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -701,8 +708,8 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
 
-		updateFuncs.unshift([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
+		eventFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
+		eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
 			allianceId:allianceDoc._id,
 			allianceTag:allianceDoc.basicInfo.tag
 		}])
@@ -719,6 +726,8 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
