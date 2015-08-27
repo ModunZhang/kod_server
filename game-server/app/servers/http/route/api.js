@@ -17,7 +17,7 @@ module.exports = function(app, http){
 		var servers = req.body.servers;
 		var type = req.body.type;
 		var content = req.body.content;
-		app.rpc.chat.chatRemote.sendGlobalNotice.toServer(req.chatServerId, servers, type, content, function(e){
+		app.rpc.chat.gmApiRemote.sendGlobalNotice.toServer(req.chatServerId, servers, type, content, function(e){
 			if(!!e){
 				req.logService.onGmError('/send-global-notice', req.body, e.stack);
 				res.json({code:500, data:e.message});
@@ -26,13 +26,38 @@ module.exports = function(app, http){
 		})
 	})
 
+	http.get('/get-global-chats', function(req, res){
+		req.logService.onGm('/get-global-chats', req.query);
+		var time = Number(req.query.time);
+		app.rpc.chat.gmApiRemote.getGlobalChats.toServer(req.chatServerId, time, function(e, resp){
+			if(!!e){
+				req.logService.onGmError('/get-global-chats', req.query, e.stack);
+				res.json({code:500, data:e.message});
+			}else
+				res.json(resp);
+		})
+	})
+
+	http.post('/send-system-chat', function(req, res){
+		req.logService.onGm('/send-system-chat', req.body);
+		var content = req.body.content;
+		app.rpc.chat.gmApiRemote.sendSysChat.toServer(req.chatServerId, content, function(e, resp){
+			if(!!e){
+				req.logService.onGmError('/send-system-chat', req.body, e.stack);
+				res.json({code:500, data:e.message});
+			}else
+				res.json(resp);
+		})
+	})
+
+
 	http.post('/send-global-mail', function(req, res){
 		req.logService.onGm('/send-global-mail', req.body);
 
 		var servers = req.body.servers;
 		var title = req.body.title;
 		var content = req.body.content;
-		app.rpc.chat.chatRemote.sendGlobalMail.toServer(req.chatServerId, servers, title, content, function(e){
+		app.rpc.chat.gmApiRemote.sendGlobalMail.toServer(req.chatServerId, servers, title, content, function(e){
 			if(!!e){
 				req.logService.onGmError('/send-global-mail', req.body, e.stack);
 				res.json({code:500, data:e.message});
@@ -47,7 +72,7 @@ module.exports = function(app, http){
 		var players = req.body.players;
 		var title = req.body.title;
 		var content = req.body.content;
-		app.rpc.chat.chatRemote.sendMailToPlayers.toServer(req.chatServerId, players, title, content, function(e){
+		app.rpc.chat.gmApiRemote.sendMailToPlayers.toServer(req.chatServerId, players, title, content, function(e){
 			if(!!e){
 				req.logService.onGmError('/send-mail-to-players', req.body, e.stack);
 				res.json({code:500, data:e.message});
@@ -56,27 +81,27 @@ module.exports = function(app, http){
 		})
 	})
 
-	http.get('/get-global-chats', function(req, res){
-		req.logService.onGm('/get-global-chats', req.query);
-		var time = Number(req.query.time);
-		app.rpc.chat.chatRemote.getGlobalChats.toServer(req.chatServerId, time, function(e, chats){
+	http.get('/player/find-by-id', function(req, res){
+		req.logService.onGm('/player/find-by-id', req.query);
+		var playerId = req.query.playerId;
+		app.rpc.chat.gmApiRemote.findPlayerById.toServer(req.chatServerId, playerId, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/get-global-chats', req.query, e.stack);
+				req.logService.onGmError('/player/find-by-id', req.query, e.stack);
 				res.json({code:500, data:e.message});
 			}else
-				res.json({code:200, data:chats});
+				res.json(resp);
 		})
-	})
+	});
 
-	http.post('/send-system-chat', function(req, res){
-		req.logService.onGm('/send-system-chat', req.body);
-		var content = req.body.content;
-		app.rpc.chat.chatRemote.sendSysChat.toServer(req.chatServerId, content, function(e, chat){
+	http.get('/player/find-by-name', function(req, res){
+		req.logService.onGm('/player/find-by-name', req.query);
+		var playerName = req.query.playerName;
+		app.rpc.chat.gmApiRemote.findPlayerByName.toServer(req.chatServerId, playerName, function(e, doc){
 			if(!!e){
-				req.logService.onGmError('/send-system-chat', req.body, e.stack);
+				req.logService.onGmError('/player/find-by-name', req.body, e.stack);
 				res.json({code:500, data:e.message});
 			}else
-				res.json({code:200, data:chat});
+				res.json({code:200, data:doc});
 		})
-	})
+	});
 }
