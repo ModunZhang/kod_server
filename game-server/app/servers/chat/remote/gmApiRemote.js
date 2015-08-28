@@ -48,7 +48,7 @@ pro.sendGlobalNotice = function(servers, type, content, callback){
 			channel.pushMessage(Events.chat.onNotice, {type:type, content:content}, {}, null)
 		}
 	})
-	callback()
+	callback(null, {code:200, data:null});
 }
 
 /**
@@ -58,7 +58,7 @@ pro.sendGlobalNotice = function(servers, type, content, callback){
  */
 pro.getGlobalChats = function(time, callback){
 	var self = this;
-	if(time === 0) return callback(null, this.chats);
+	if(time === 0) return callback(null, {code:200, data:this.chats});
 
 	var sliceFrom = null;
 	for(var i = this.chats.length - 1; i >= 0; i--){
@@ -68,9 +68,9 @@ pro.getGlobalChats = function(time, callback){
 			break;
 		}
 	}
-	if(sliceFrom >= 0) return callback(null, this.chats.slice(sliceFrom));
+	if(sliceFrom >= 0) return callback(null, {code:200, data:this.chats.slice(sliceFrom)});
 
-	callback(null, []);
+	callback(null, {code:200, data:[]});
 }
 
 /**
@@ -85,7 +85,7 @@ pro.sendSysChat = function(content, callback){
 	}
 	this.chats.push(message)
 	this.globalChatChannel.pushMessage(Events.chat.onChat, message, {}, null)
-	callback(null, message);
+	callback(null, {code:200, data:null});
 }
 
 /**
@@ -110,7 +110,7 @@ pro.sendGlobalMail = function(servers, title, content, callback){
 			}
 		})
 	})
-	callback();
+	callback(null, {code:200, data:null});
 }
 
 /**
@@ -151,7 +151,7 @@ pro.sendMailToPlayers = function(ids, title, content, callback){
 		}
 	})
 
-	callback()
+	callback(null, {code:200, data:null})
 }
 
 /**
@@ -165,20 +165,19 @@ pro.findPlayerById = function(id, callback){
 		return new Promise(function(resolve, reject){
 			self.Player.findById(id, 'serverId').then(function(doc){
 				if(!doc) return reject(new Error('玩家不存在'));
-				resolve(doc.serverId);
+				resolve(doc);
 			}, function(e){
 				reject(e);
 			})
 		})
-	})().then(function(serverId){
+	})().then(function(doc){
 		return new Promise(function(resolve, reject){
-			self.app.rpc.cache.cacheRemote.findPlayerById.toServer(serverId, id, function(e, doc){
+			self.app.rpc.cache.cacheRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, doc){
 				if(!!e) return reject(e);
 				resolve(doc);
 			})
 		})
 	}).then(function(doc){
-		if(!doc) return Promise.reject(new Error('玩家不存在'));
 		callback(null, {code:200, data:doc});
 	}).catch(function(e){
 		self.logService.onEventError('chat.chatRemote.findPlayerById', {
@@ -194,7 +193,66 @@ pro.findPlayerById = function(id, callback){
  * @param callback
  */
 pro.findPlayerByName = function(name, callback){
+	var self = this;
+	(function(){
+		return new Promise(function(resolve, reject){
+			self.Player.findOne({'basicInfo.name':{$regex:name, $options:"i"}}, 'serverId').then(function(doc){
+				if(!doc) return reject(new Error('玩家不存在'));
+				resolve(doc);
+			}, function(e){
+				reject(e);
+			})
+		})
+	})().then(function(doc){
+		return new Promise(function(resolve, reject){
+			self.app.rpc.cache.cacheRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, doc){
+				if(!!e) return reject(e);
+				resolve(doc);
+			})
+		})
+	}).then(function(doc){
+		callback(null, {code:200, data:doc});
+	}).catch(function(e){
+		self.logService.onEventError('chat.chatRemote.findPlayerById', {
+			name:name
+		}, e.stack);
+		callback(null, {code:500, data:e.message});
+	});
+}
 
+/**
+ * 临时添加玩家宝石
+ * @param id
+ * @param gem
+ * @param callback
+ */
+pro.tempAddPlayerGem = function(id, gem, callback){
+	var self = this;
+	(function(){
+		return new Promise(function(resolve, reject){
+			self.Player.findById(id, 'serverId').then(function(doc){
+				if(!doc) return reject(new Error('玩家不存在'));
+				resolve(doc);
+			}, function(e){
+				reject(e);
+			})
+		})
+	})().then(function(doc){
+		return new Promise(function(resolve, reject){
+			self.app.rpc.cache.cacheRemote.tempAddPlayerGem.toServer(doc.serverId, doc._id, gem, function(e){
+				if(!!e) return reject(e);
+				resolve();
+			})
+		})
+	}).then(function(){
+		callback(null, {code:200, data:null});
+	}).catch(function(e){
+		self.logService.onEventError('chat.chatRemote.tempAddPlayerGem', {
+			id:id,
+			gem:gem
+		}, e.stack);
+		callback(null, {code:500, data:e.message});
+	});
 }
 
 /**

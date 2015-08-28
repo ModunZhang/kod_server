@@ -332,9 +332,44 @@ pro.sendMailToPlayers = function(ids, title, content, callback){
  * @param callback
  */
 pro.findPlayerById = function(id, callback){
-	this.cacheService.findPlayerAsync(id).then(function(doc){
+	this.logService.onEvent('cache.cacheRemote.findPlayerById', {id:id});
+	this.cacheService.directFindPlayerAsync(id).then(function(doc){
 		callback(null, doc);
 	}).catch(function(e){
+		self.logService.onEventError('cache.cacheRemote.findPlayerById', {
+			id:id
+		}, e.stack);
+		callback(e);
+	})
+}
+
+/**
+ * 临时添加宝石
+ * @param id
+ * @param gem
+ * @param callback
+ */
+pro.tempAddPlayerGem = function(id, gem, callback){
+	this.logService.onEvent('cache.cacheRemote.tempAddPlayerGem', {id:id, gem:gem});
+
+	var self = this;
+	var playerDoc = null;
+	var playerData = [];
+	this.cacheService.findPlayerAsync(id).then(function(doc){
+		playerDoc = doc;
+		playerDoc.resources.gem += gem;
+		playerData.push(['resources.gem', playerDoc.resources.gem]);
+
+		return self.cacheService.updatePlayerAsync(id, playerDoc);
+	}).then(function(){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
+	}).then(function(){
+		callback();
+	}).catch(function(e){
+		self.logService.onEventError('cache.cacheRemote.tempAddPlayerGem', {
+			id:id,
+			gem:gem
+		}, e.stack);
 		callback(e);
 	})
 }
