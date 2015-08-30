@@ -481,7 +481,7 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc._id, attackAllianceData])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceNoticeAsync, attackAllianceDoc._id, Consts.AllianceBannerType.AttackVillage, [attackPlayerDoc.basicInfo.name, defenceVillage.level, defenceVillage.name]]);
+		pushFuncs.push([self.pushService, self.pushService.onAllianceNoticeAsync, attackAllianceDoc._id, Consts.AllianceBannerType.AttackVillage, [attackPlayerDoc.basicInfo.name, defenceAllianceId, defenceVillage.level, defenceVillage.name]]);
 		LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceAllianceData, pushFuncs, self.pushService)
 
 		return Promise.resolve()
