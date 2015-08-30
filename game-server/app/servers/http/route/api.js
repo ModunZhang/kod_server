@@ -83,6 +83,32 @@ module.exports = function(app, http){
 		})
 	})
 
+	http.get('/alliance/find-by-id', function(req, res){
+		req.logService.onGm('/alliance/find-by-id', req.query);
+
+		var allianceId = req.query.allianceId;
+		app.rpc.chat.gmApiRemote.findAllianceById.toServer(req.chatServerId, allianceId, function(e, resp){
+			if(!!e){
+				req.logService.onGmError('/alliance/find-by-id', req.query, e.stack);
+				res.json({code:500, data:e.message});
+			}else
+				res.json(resp);
+		})
+	});
+
+	http.get('/alliance/find-by-tag', function(req, res){
+		req.logService.onGm('/alliance/find-by-tag', req.query);
+
+		var allianceTag = req.query.allianceTag;
+		app.rpc.chat.gmApiRemote.findAllianceByTag.toServer(req.chatServerId, allianceTag, function(e, resp){
+			if(!!e){
+				req.logService.onGmError('/alliance/find-by-tag', req.body, e.stack);
+				res.json({code:500, data:e.message});
+			}else
+				res.json(resp);
+		})
+	});
+
 	http.get('/player/find-by-id', function(req, res){
 		req.logService.onGm('/player/find-by-id', req.query);
 

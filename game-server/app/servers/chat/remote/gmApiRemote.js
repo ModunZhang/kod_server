@@ -28,6 +28,7 @@ var GmApiRemote = function(app){
 	this.allianceFightChats = app.get('allianceFightChats')
 	this.chats = app.get('chats');
 	this.Player = app.get('Player');
+	this.Alliance = app.get('Alliance');
 }
 
 var pro = GmApiRemote.prototype
@@ -100,7 +101,7 @@ pro.sendGlobalMail = function(servers, title, content, callback){
 
 	var self = this;
 	_.each(servers, function(serverId){
-		self.app.rpc.cache.cacheRemote.sendGlobalMail.toServer(serverId, title, content, function(e){
+		self.app.rpc.cache.gmApiRemote.sendGlobalMail.toServer(serverId, title, content, function(e){
 			if(_.isObject(e)){
 				self.logService.onEventError('chat.chatRemote.sendGlobalMail', {
 					title:title,
@@ -138,7 +139,7 @@ pro.sendMailToPlayers = function(ids, title, content, callback){
 				serverIds[doc.serverId].push(doc._id);
 			})
 			_.each(serverIds, function(ids, serverId){
-				self.app.rpc.cache.cacheRemote.sendMailToPlayers.toServer(serverId, ids, title, content, function(e){
+				self.app.rpc.cache.gmApiRemote.sendMailToPlayers.toServer(serverId, ids, title, content, function(e){
 					if(_.isObject(e)){
 						self.logService.onEventError('chat.chatRemote.sendMailToPlayers', {
 							title:title,
@@ -160,6 +161,8 @@ pro.sendMailToPlayers = function(ids, title, content, callback){
  * @param callback
  */
 pro.findPlayerById = function(id, callback){
+	this.logService.onEvent('chat.chatRemote.findPlayerById', {id:id});
+
 	var self = this;
 	(function(){
 		return new Promise(function(resolve, reject){
@@ -172,7 +175,7 @@ pro.findPlayerById = function(id, callback){
 		})
 	})().then(function(doc){
 		return new Promise(function(resolve, reject){
-			self.app.rpc.cache.cacheRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, doc){
+			self.app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, doc){
 				if(!!e) return reject(e);
 				resolve(doc);
 			})
@@ -193,6 +196,8 @@ pro.findPlayerById = function(id, callback){
  * @param callback
  */
 pro.findPlayerByName = function(name, callback){
+	this.logService.onEvent('chat.chatRemote.findPlayerByName', {name:name});
+
 	var self = this;
 	(function(){
 		return new Promise(function(resolve, reject){
@@ -205,7 +210,7 @@ pro.findPlayerByName = function(name, callback){
 		})
 	})().then(function(doc){
 		return new Promise(function(resolve, reject){
-			self.app.rpc.cache.cacheRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, doc){
+			self.app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, doc){
 				if(!!e) return reject(e);
 				resolve(doc);
 			})
@@ -227,6 +232,8 @@ pro.findPlayerByName = function(name, callback){
  * @param callback
  */
 pro.tempAddPlayerGem = function(id, gem, callback){
+	this.logService.onEvent('chat.chatRemote.tempAddPlayerGem', {id:id, gem:gem});
+
 	var self = this;
 	(function(){
 		return new Promise(function(resolve, reject){
@@ -239,7 +246,7 @@ pro.tempAddPlayerGem = function(id, gem, callback){
 		})
 	})().then(function(doc){
 		return new Promise(function(resolve, reject){
-			self.app.rpc.cache.cacheRemote.tempAddPlayerGem.toServer(doc.serverId, doc._id, gem, function(e){
+			self.app.rpc.cache.gmApiRemote.tempAddPlayerGem.toServer(doc.serverId, doc._id, gem, function(e){
 				if(!!e) return reject(e);
 				resolve();
 			})
@@ -261,7 +268,33 @@ pro.tempAddPlayerGem = function(id, gem, callback){
  * @param callback
  */
 pro.findAllianceById = function(id, callback){
+	this.logService.onEvent('chat.chatRemote.findAllianceById', {id:id});
 
+	var self = this;
+	(function(){
+		return new Promise(function(resolve, reject){
+			self.Alliance.findById(id, 'serverId').then(function(doc){
+				if(!doc) return reject(new Error('联盟不存在'));
+				resolve(doc);
+			}, function(e){
+				reject(e);
+			})
+		})
+	})().then(function(doc){
+		return new Promise(function(resolve, reject){
+			self.app.rpc.cache.gmApiRemote.findAllianceById.toServer(doc.serverId, doc._id, function(e, doc){
+				if(!!e) return reject(e);
+				resolve(doc);
+			})
+		})
+	}).then(function(doc){
+		callback(null, {code:200, data:doc});
+	}).catch(function(e){
+		self.logService.onEventError('chat.chatRemote.findAllianceById', {
+			id:id
+		}, e.stack);
+		callback(null, {code:500, data:e.message});
+	});
 }
 
 /**
@@ -270,5 +303,31 @@ pro.findAllianceById = function(id, callback){
  * @param callback
  */
 pro.findAllianceByTag = function(tag, callback){
+	this.logService.onEvent('chat.chatRemote.findAllianceByTag', {tag:tag});
 
+	var self = this;
+	(function(){
+		return new Promise(function(resolve, reject){
+			self.Alliance.findOne({'basicInfo.tag':{$regex:tag, $options:"i"}}, 'serverId').then(function(doc){
+				if(!doc) return reject(new Error('联盟不存在'));
+				resolve(doc);
+			}, function(e){
+				reject(e);
+			})
+		})
+	})().then(function(doc){
+		return new Promise(function(resolve, reject){
+			self.app.rpc.cache.gmApiRemote.findAllianceById.toServer(doc.serverId, doc._id, function(e, doc){
+				if(!!e) return reject(e);
+				resolve(doc);
+			})
+		})
+	}).then(function(doc){
+		callback(null, {code:200, data:doc});
+	}).catch(function(e){
+		self.logService.onEventError('chat.chatRemote.findAllianceByTag', {
+			tag:tag
+		}, e.stack);
+		callback(null, {code:500, data:e.message});
+	});
 }
