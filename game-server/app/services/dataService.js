@@ -242,6 +242,8 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, cal
 			fromAllianceTag:"",
 			sendTime:Date.now(),
 			content:content,
+			rewards:[],
+			rewardGetted:false,
 			isRead:false,
 			isSaved:false
 		}
@@ -362,6 +364,8 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 			fromAllianceTag:allianceDoc.basicInfo.tag,
 			content:content,
 			sendTime:Date.now(),
+			rewards:[],
+			rewardGetted:false,
 			isRead:false,
 			isSaved:false
 		}

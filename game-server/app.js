@@ -64,6 +64,7 @@ app.configure("local|develop|awschina|hotfix", "logic", function(){
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
+	app.before(filterService.initFilter());
 
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})

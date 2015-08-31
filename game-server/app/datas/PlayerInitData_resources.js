@@ -10,7 +10,7 @@ resources[1] = {
 	stone:25000,
 	iron:25000,
 	food:25000,
-	citizen:100,
+	citizen:90,
 	coin:50000,
 	cart:20,
 	blood:100,

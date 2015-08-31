@@ -34,7 +34,6 @@ var PlayerApiService4 = function(app){
 module.exports = PlayerApiService4
 var pro = PlayerApiService4.prototype
 
-
 /**
  * 升级生产科技
  * @param playerId
@@ -724,7 +723,6 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 			player.gcId = gcId
 			return self.Player.createAsync(player).then(function(doc){
 				doc = Utils.clone(doc)
-				LogicUtils.initPlayerDoc(doc)
 				var id = doc._id
 				delete doc._id
 				return self.Player.updateAsync({_id:id}, doc).then(function(){

@@ -2289,8 +2289,11 @@ Utils.getEnemyAllianceId = function(allianceFight, myAllianceId){
 /**
  * 初始化玩家数据
  * @param playerDoc
+ * @param playerData
+ * @param terrain
+ * @param language
  */
-Utils.initPlayerDoc = function(playerDoc){
+Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
 	playerDoc.growUpTasks.cityBuild.push({
 		"id":0,
 		"index":1,
@@ -2321,7 +2324,9 @@ Utils.initPlayerDoc = function(playerDoc){
 		"name":"keep",
 		"rewarded":false
 	})
+	playerData.push(['growUpTasks', playerDoc.growUpTasks]);
 	playerDoc.productionTechs.forestation.level = 1
+	playerData.push(['productionTechs.forestation.level', playerDoc.productionTechs.forestation.level]);
 	playerDoc.buildings.location_22.level = 1
 	playerDoc.buildings.location_21.level = 1
 	playerDoc.buildings.location_8.level = 1
@@ -2357,10 +2362,11 @@ Utils.initPlayerDoc = function(playerDoc){
 	}]
 	playerDoc.buildings.location_2.level = 1
 	playerDoc.buildings.location_1.level = 5
+	playerData.push(['buildings', playerDoc.buildings]);
 	playerDoc.soldiers.ranger = 100
 	playerDoc.soldiers.swordsman = 100
 	playerDoc.soldiers.skeletonWarrior = 1
-	playerDoc.resources.citizen = 90
+	playerData.push(['soldiers', playerDoc.soldiers]);
 	playerDoc.items.push({
 		name:'changePlayerName',
 		count:1
@@ -2381,9 +2387,24 @@ Utils.initPlayerDoc = function(playerDoc){
 		"sections":[3, 3, 3],
 		"rewarded":[]
 	})
+	playerData.push(['items', playerDoc.items]);
 	playerDoc.soldierMaterials.deathHand = 2;
+	playerData.push(['soldierMaterials.deathHand', playerDoc.soldierMaterials.deathHand]);
 
-	DataUtils.refreshPlayerPower(playerDoc, [])
+	playerDoc.basicInfo.terrain = terrain
+	playerDoc.basicInfo.language = language
+	playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
+	playerData.push(["basicInfo.language", playerDoc.basicInfo.language])
+	var dragonType = Consts.TerrainDragonMap[terrain]
+	var dragon = playerDoc.dragons[dragonType]
+	dragon.star = 1
+	dragon.level = 2
+	dragon.exp = 42
+	dragon.status = Consts.DragonStatus.Defence
+	dragon.hp = DataUtils.getDragonMaxHp(dragon)
+	dragon.hpRefreshTime = Date.now()
+	playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
+	DataUtils.refreshPlayerPower(playerDoc, playerData);
 }
 
 /**

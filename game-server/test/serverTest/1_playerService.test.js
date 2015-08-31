@@ -893,9 +893,12 @@
 //		it("sendMail 正常发送", function(done){
 //			Api.loginPlayer(Config.deviceId2, function(doc){
 //				doc.code.should.equal(200)
-//				Api.sendMail(m_user._id, "testMail", "this is a testMail", function(doc){
+//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //					doc.code.should.equal(200)
-//					done()
+//					Api.sendMail(m_user._id, "testMail", "this is a testMail", function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
 //				})
 //			})
 //		})
@@ -1604,9 +1607,12 @@
 //		it("switchGcId 切换到老账号", function(done){
 //			Api.loginPlayer(Config.deviceId, function(doc){
 //				doc.code.should.equal(200)
-//				Api.switchGcId(Config.gcId, function(doc){
+//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //					doc.code.should.equal(200)
-//					done()
+//					Api.switchGcId(Config.gcId, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
 //				})
 //			})
 //		})
@@ -1614,9 +1620,12 @@
 //		it("forceSwitchGcId 此GameCenter账号未被其他玩家绑定", function(done){
 //			Api.loginPlayer(Config.deviceId3, function(doc){
 //				doc.code.should.equal(200)
-//				Api.forceSwitchGcId(Config.gcId4, function(doc){
-//					doc.code.should.equal(Errors.theGCIdIsNotBindedByOtherPlayer.code)
-//					done()
+//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
+//					doc.code.should.equal(200)
+//					Api.forceSwitchGcId(Config.gcId4, function(doc){
+//						doc.code.should.equal(Errors.theGCIdIsNotBindedByOtherPlayer.code)
+//						done()
+//					})
 //				})
 //			})
 //		})

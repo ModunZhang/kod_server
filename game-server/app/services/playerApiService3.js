@@ -210,6 +210,43 @@ pro.deleteSendMails = function(playerId, mailIds, callback){
 }
 
 /**
+ * 从邮件获取奖励
+ * @param playerId
+ * @param mailId
+ * @param callback
+ */
+pro.getMailRewards = function(playerId, mailId, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId);
+		if(!mail) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId));
+		if(mail.rewards.length === 0) return Promise.reject(ErrorUtils.thisMailNotContainsRewards(playerId, mailId));
+		if(!!mail.rewardGetted) return Promise.reject(ErrorUtils.theRewardsAlreadyGetedFromThisMail(playerId, mailId));
+		mail.rewardGetted = true;
+		playerData.push(['mails.' + playerDoc.mails.indexOf(mail) + '.rewardGetted', mail.rewardGetted])
+		LogicUtils.addPlayerRewards(playerDoc, playerData, rewards);
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
  * 阅读战报
  * @param playerId
  * @param reportIds

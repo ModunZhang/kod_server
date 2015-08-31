@@ -91,6 +91,7 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 	var self = this
 	session.bind(playerDoc._id)
 	session.set("deviceId", deviceId)
+	session.set('inited', playerDoc.basicInfo.terrain !== Consts.None);
 	session.set("logicServerId", this.logicServerId)
 	session.set("chatServerId", this.chatServerId)
 	session.set("rankServerId", this.rankServerId)

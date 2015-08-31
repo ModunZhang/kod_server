@@ -102,7 +102,6 @@ pro.queryEntry = function(msg, session, next){
 			return self.Device.createAsync(device).then(function(){
 				return self.Player.createAsync(player).then(function(doc){
 					var playerDoc = Utils.clone(doc)
-					LogicUtils.initPlayerDoc(playerDoc)
 					var playerId = playerDoc._id
 					delete playerDoc._id
 					return self.Player.updateAsync({_id:playerId}, playerDoc).then(function(){

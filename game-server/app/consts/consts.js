@@ -236,8 +236,6 @@ module.exports = {
 	},
 
 
-
-
 	AllianceLanguage:{
 		All:"all",
 		Cn:"cn",

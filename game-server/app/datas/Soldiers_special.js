@@ -6,7 +6,7 @@ module.exports = special
 special["skeletonWarrior"] = {
 	name:"skeletonWarrior",
 	type:"infantry",
-	specialMaterials:"deathHand_1,heroBones_1,soulStone_1",
+	specialMaterials:"heroBones_2",
 	star:2,
 	power:5,
 	infantry:150,
@@ -28,7 +28,7 @@ special["skeletonWarrior"] = {
 special["skeletonArcher"] = {
 	name:"skeletonArcher",
 	type:"archer",
-	specialMaterials:"deathHand_1,heroBones_1,magicBox_1",
+	specialMaterials:"deathHand_2",
 	star:2,
 	power:5,
 	infantry:240,
@@ -50,7 +50,7 @@ special["skeletonArcher"] = {
 special["deathKnight"] = {
 	name:"deathKnight",
 	type:"cavalry",
-	specialMaterials:"deathHand_3,soulStone_3,magicBox_3",
+	specialMaterials:"soulStone_6",
 	star:2,
 	power:9,
 	infantry:216,
@@ -72,7 +72,7 @@ special["deathKnight"] = {
 special["meatWagon"] = {
 	name:"meatWagon",
 	type:"siege",
-	specialMaterials:"heroBones_8,soulStone_8,magicBox_8",
+	specialMaterials:"magicBox_16",
 	star:2,
 	power:18,
 	infantry:576,
@@ -94,7 +94,7 @@ special["meatWagon"] = {
 special["priest"] = {
 	name:"priest",
 	type:"infantry",
-	specialMaterials:"confessionHood_1,brightRing_1,holyBook_1",
+	specialMaterials:"holyBook_2",
 	star:3,
 	power:7,
 	infantry:210,
@@ -116,7 +116,7 @@ special["priest"] = {
 special["demonHunter"] = {
 	name:"demonHunter",
 	type:"archer",
-	specialMaterials:"confessionHood_1,brightRing_1,brightAlloy_1",
+	specialMaterials:"confessionHood_2",
 	star:3,
 	power:7,
 	infantry:420,
@@ -138,7 +138,7 @@ special["demonHunter"] = {
 special["paladin"] = {
 	name:"paladin",
 	type:"cavalry",
-	specialMaterials:"confessionHood_3,holyBook_3,brightAlloy_3",
+	specialMaterials:"brightAlloy_6",
 	star:3,
 	power:13,
 	infantry:195,
@@ -160,7 +160,7 @@ special["paladin"] = {
 special["steamTank"] = {
 	name:"steamTank",
 	type:"siege",
-	specialMaterials:"brightRing_8,holyBook_8,brightAlloy_8",
+	specialMaterials:"brightRing_16",
 	star:3,
 	power:25,
 	infantry:500,

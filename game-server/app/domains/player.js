@@ -14,9 +14,6 @@ var GameDatas = require("../datas/GameDatas")
 var Buildings = GameDatas.Buildings.buildings
 var BuildingFunction = GameDatas.BuildingFunction
 var ResourceInitData = GameDatas.PlayerInitData.resources[1]
-var MaterialInitData = GameDatas.PlayerInitData.materials[1]
-var SoldierMaterialInitData = GameDatas.PlayerInitData.soldierMaterials[1]
-var DragonMaterialInitData = GameDatas.PlayerInitData.dragonMaterials[1]
 var ProductionTechs = GameDatas.ProductionTechs.productionTechs
 var Dragons = GameDatas.Dragons.dragons
 
@@ -27,7 +24,7 @@ var createBuildingSchema = function(location){
 		level:{
 			type:Number,
 			required:true,
-			default:location <= 4 || location > 20 ? 1 : 0
+			default:0
 		},
 		location:{type:Number, required:true, default:location},
 		houses:[{
@@ -184,16 +181,16 @@ var PlayerSchema = new Schema({
 		finishTime:{type:Number, required:true}
 	}],
 	buildingMaterials:{
-		blueprints:{type:Number, required:true, default:MaterialInitData.blueprints},
-		tools:{type:Number, required:true, default:MaterialInitData.tools},
-		tiles:{type:Number, required:true, default:MaterialInitData.tiles},
-		pulley:{type:Number, required:true, default:MaterialInitData.pulley}
+		blueprints:{type:Number, required:true, default:0},
+		tools:{type:Number, required:true, default:0},
+		tiles:{type:Number, required:true, default:0},
+		pulley:{type:Number, required:true, default:0}
 	},
 	technologyMaterials:{
-		trainingFigure:{type:Number, required:true, default:MaterialInitData.trainingFigure},
-		bowTarget:{type:Number, required:true, default:MaterialInitData.bowTarget},
-		saddle:{type:Number, required:true, default:MaterialInitData.saddle},
-		ironPart:{type:Number, required:true, default:MaterialInitData.ironPart}
+		trainingFigure:{type:Number, required:true, default:0},
+		bowTarget:{type:Number, required:true, default:0},
+		saddle:{type:Number, required:true, default:0},
+		ironPart:{type:Number, required:true, default:0}
 	},
 	materialEvents:[{
 		_id:false,
@@ -208,14 +205,14 @@ var PlayerSchema = new Schema({
 		finishTime:{type:Number, required:true}
 	}],
 	soldierMaterials:{
-		deathHand:{type:Number, required:true, default:SoldierMaterialInitData.deathHand},
-		heroBones:{type:Number, required:true, default:SoldierMaterialInitData.heroBones},
-		soulStone:{type:Number, required:true, default:SoldierMaterialInitData.soulStone},
-		magicBox:{type:Number, required:true, default:SoldierMaterialInitData.magicBox},
-		confessionHood:{type:Number, required:true, default:SoldierMaterialInitData.confessionHood},
-		brightRing:{type:Number, required:true, default:SoldierMaterialInitData.brightRing},
-		holyBook:{type:Number, required:true, default:SoldierMaterialInitData.holyBook},
-		brightAlloy:{type:Number, required:true, default:SoldierMaterialInitData.brightAlloy}
+		deathHand:{type:Number, required:true, default:0},
+		heroBones:{type:Number, required:true, default:0},
+		soulStone:{type:Number, required:true, default:0},
+		magicBox:{type:Number, required:true, default:0},
+		confessionHood:{type:Number, required:true, default:0},
+		brightRing:{type:Number, required:true, default:0},
+		holyBook:{type:Number, required:true, default:0},
+		brightAlloy:{type:Number, required:true, default:0}
 	},
 	soldiers:{
 		swordsman:{type:Number, required:true, default:0},
@@ -291,35 +288,35 @@ var PlayerSchema = new Schema({
 		finishTime:{type:Number, required:true}
 	}],
 	dragonMaterials:{
-		ingo_1:{type:Number, required:true, default:DragonMaterialInitData.ingo_1},
-		ingo_2:{type:Number, required:true, default:DragonMaterialInitData.ingo_2},
-		ingo_3:{type:Number, required:true, default:DragonMaterialInitData.ingo_3},
-		ingo_4:{type:Number, required:true, default:DragonMaterialInitData.ingo_4},
-		redSoul_2:{type:Number, required:true, default:DragonMaterialInitData.redSoul_2},
-		redSoul_3:{type:Number, required:true, default:DragonMaterialInitData.redSoul_3},
-		redSoul_4:{type:Number, required:true, default:DragonMaterialInitData.redSoul_4},
-		blueSoul_2:{type:Number, required:true, default:DragonMaterialInitData.blueSoul_2},
-		blueSoul_3:{type:Number, required:true, default:DragonMaterialInitData.blueSoul_3},
-		blueSoul_4:{type:Number, required:true, default:DragonMaterialInitData.blueSoul_4},
-		greenSoul_2:{type:Number, required:true, default:DragonMaterialInitData.greenSoul_2},
-		greenSoul_3:{type:Number, required:true, default:DragonMaterialInitData.greenSoul_3},
-		greenSoul_4:{type:Number, required:true, default:DragonMaterialInitData.greenSoul_4},
-		redCrystal_1:{type:Number, required:true, default:DragonMaterialInitData.redCrystal_1},
-		redCrystal_2:{type:Number, required:true, default:DragonMaterialInitData.redCrystal_2},
-		redCrystal_3:{type:Number, required:true, default:DragonMaterialInitData.redCrystal_3},
-		redCrystal_4:{type:Number, required:true, default:DragonMaterialInitData.redCrystal_4},
-		blueCrystal_1:{type:Number, required:true, default:DragonMaterialInitData.blueCrystal_1},
-		blueCrystal_2:{type:Number, required:true, default:DragonMaterialInitData.blueCrystal_2},
-		blueCrystal_3:{type:Number, required:true, default:DragonMaterialInitData.blueCrystal_3},
-		blueCrystal_4:{type:Number, required:true, default:DragonMaterialInitData.blueCrystal_4},
-		greenCrystal_1:{type:Number, required:true, default:DragonMaterialInitData.greenCrystal_1},
-		greenCrystal_2:{type:Number, required:true, default:DragonMaterialInitData.greenCrystal_2},
-		greenCrystal_3:{type:Number, required:true, default:DragonMaterialInitData.greenCrystal_3},
-		greenCrystal_4:{type:Number, required:true, default:DragonMaterialInitData.greenCrystal_4},
-		runes_1:{type:Number, required:true, default:DragonMaterialInitData.runes_1},
-		runes_2:{type:Number, required:true, default:DragonMaterialInitData.runes_2},
-		runes_3:{type:Number, required:true, default:DragonMaterialInitData.runes_3},
-		runes_4:{type:Number, required:true, default:DragonMaterialInitData.runes_4}
+		ingo_1:{type:Number, required:true, default:0},
+		ingo_2:{type:Number, required:true, default:0},
+		ingo_3:{type:Number, required:true, default:0},
+		ingo_4:{type:Number, required:true, default:0},
+		redSoul_2:{type:Number, required:true, default:0},
+		redSoul_3:{type:Number, required:true, default:0},
+		redSoul_4:{type:Number, required:true, default:0},
+		blueSoul_2:{type:Number, required:true, default:0},
+		blueSoul_3:{type:Number, required:true, default:0},
+		blueSoul_4:{type:Number, required:true, default:0},
+		greenSoul_2:{type:Number, required:true, default:0},
+		greenSoul_3:{type:Number, required:true, default:0},
+		greenSoul_4:{type:Number, required:true, default:0},
+		redCrystal_1:{type:Number, required:true, default:0},
+		redCrystal_2:{type:Number, required:true, default:0},
+		redCrystal_3:{type:Number, required:true, default:0},
+		redCrystal_4:{type:Number, required:true, default:0},
+		blueCrystal_1:{type:Number, required:true, default:0},
+		blueCrystal_2:{type:Number, required:true, default:0},
+		blueCrystal_3:{type:Number, required:true, default:0},
+		blueCrystal_4:{type:Number, required:true, default:0},
+		greenCrystal_1:{type:Number, required:true, default:0},
+		greenCrystal_2:{type:Number, required:true, default:0},
+		greenCrystal_3:{type:Number, required:true, default:0},
+		greenCrystal_4:{type:Number, required:true, default:0},
+		runes_1:{type:Number, required:true, default:0},
+		runes_2:{type:Number, required:true, default:0},
+		runes_3:{type:Number, required:true, default:0},
+		runes_4:{type:Number, required:true, default:0}
 	},
 	dragonEquipments:{
 		redCrown_s1:{type:Number, required:true, default:0},
@@ -662,7 +659,12 @@ var PlayerSchema = new Schema({
 		fromIcon:{type:Number, required:true},
 		content:{type:String, required:true},
 		sendTime:{type:Number, required:true},
-
+		rewards:[{
+			type:{type:String, required:true},
+			name:{type:String, required:true},
+			count:{type:Number, required:true}
+		}],
+		rewardGetted:{type:Boolean, required:true},
 		isRead:{type:Boolean, require:true},
 		isSaved:{type:Boolean, require:true}
 	}],

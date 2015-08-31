@@ -1018,3 +1018,13 @@ errors["currentPvESectionCanNotBeSweepedYet"] = {
 	code:702,
 	message:"当前PvE关卡还不能被扫荡"
 }
+errors["thisMailNotContainsRewards"] = {
+	key:"thisMailNotContainsRewards",
+	code:703,
+	message:"此邮件未包含奖励信息"
+}
+errors["theRewardsAlreadyGetedFromThisMail"] = {
+	key:"theRewardsAlreadyGetedFromThisMail",
+	code:704,
+	message:"此邮件的奖励已经领取"
+}

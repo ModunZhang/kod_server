@@ -35,8 +35,28 @@ pro.toobusyFilter = function(){
  */
 pro.loginFilter = function(){
 	var before = function(msg, session, next){
-		if(_.isEqual("logic.entryHandler.login", msg.__route__) || (!_.isEmpty(session.uid) && !_.isEmpty(session.get('logicServerId')))) next()
-		else next(ErrorUtils.illegalRequest(msg))
+		var route = msg.__route__;
+		if(route !== 'logic.entryHandler.login'){
+			if(_.isEmpty(session.uid) || _.isEmpty(session.get('logicServerId')))
+				return next(ErrorUtils.illegalRequest(msg));
+		}
+		next();
+	}
+	return {before:before}
+}
+
+/**
+ * 玩家数据是否初始化
+ * @returns {{before: Function}}
+ */
+pro.initFilter = function(){
+	var before = function(msg, session, next){
+		var route = msg.__route__;
+		if(route !== 'logic.entryHandler.login' && route !== 'logic.playerHandler.initPlayerData'){
+			if(!session.get('inited'))
+				return next(ErrorUtils.illegalRequest(msg));
+		}
+		next();
 	}
 	return {before:before}
 }

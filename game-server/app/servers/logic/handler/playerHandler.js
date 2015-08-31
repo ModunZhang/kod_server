@@ -747,6 +747,8 @@ pro.sendMail = function(msg, session, next){
 			fromAllianceTag:allianceTag,
 			content:content,
 			sendTime:Date.now(),
+			rewards:[],
+			rewardGetted:false,
 			isRead:false,
 			isSaved:false
 		}
@@ -973,6 +975,29 @@ pro.deleteSendMails = function(msg, session, next){
 	}
 
 	this.request('deleteSendMails', [session.uid, mailIds]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 从邮件获取奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getMailRewards = function(msg, session, next){
+	this.logService.onRequest("logic.playerHandler.getMailRewards", {playerId:session.uid, msg:msg})
+	var mailId = msg.mailId
+	var e = null
+	if(!ShortId.isValid(mailId)){
+		e = new Error("mailId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request('getMailRewards', [session.uid, mailId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

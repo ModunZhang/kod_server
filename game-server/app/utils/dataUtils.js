@@ -23,7 +23,6 @@ var GemsPayment = GameDatas.GemsPayment
 var Houses = GameDatas.Houses
 var Buildings = GameDatas.Buildings
 var PlayerInitData = GameDatas.PlayerInitData
-var HouseInit = PlayerInitData.houses[1]
 var Soldiers = GameDatas.Soldiers
 var DragonEquipments = GameDatas.DragonEquipments
 var Dragons = GameDatas.Dragons
@@ -978,7 +977,7 @@ Utils.getPlayerKeepLevel = function(playerDoc){
  */
 Utils.getPlayerHouseMaxCountByType = function(playerDoc, houseType){
 	var limitBy = Consts.HouseBuildingMap[houseType]
-	var totalCount = HouseInit[houseType]
+	var totalCount = this.getPlayerIntInit('eachHouseInitCount');
 	var buildings = LogicUtils.getPlayerBuildingsByType(playerDoc, limitBy)
 	_.each(buildings, function(building){
 		if(building.level >= 1){

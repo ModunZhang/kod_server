@@ -2093,3 +2093,23 @@ Utils.currentPvESectionCanNotBeSweepedYet = function(playerId, sectionName){
 	var config = Errors.currentPvESectionCanNotBeSweepedYet;
 	return CreateError(config, {playerId:playerId, sectionName:sectionName});
 }
+
+/**
+ * 此邮件未包含奖励信息
+ * @param playerId
+ * @param mailId
+ */
+Utils.thisMailNotContainsRewards = function(playerId, mailId){
+	var config = Errors.thisMailNotContainsRewards;
+	return CreateError(config, {playerId:playerId, mailId:mailId});
+}
+
+/**
+ * 此邮件的奖励已经领取
+ * @param playerId
+ * @param mailId
+ */
+Utils.theRewardsAlreadyGetedFromThisMail = function(playerId, mailId){
+	var config = Errors.theRewardsAlreadyGetedFromThisMail;
+	return CreateError(config, {playerId:playerId, mailId:mailId});
+}

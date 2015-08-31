@@ -35,9 +35,10 @@ var pro = CacheRemote.prototype
  * @param playerIds
  * @param title
  * @param content
+ * @param rewards
  * @param callback
  */
-var SendInCacheServerMail = function(playerIds, title, content, callback){
+var SendInCacheServerMail = function(playerIds, title, content, rewards, callback){
 	var self = this;
 	var mail = {
 		id:ShortId.generate(),
@@ -48,6 +49,8 @@ var SendInCacheServerMail = function(playerIds, title, content, callback){
 		fromAllianceTag:"",
 		sendTime:Date.now(),
 		content:content,
+		rewards:rewards,
+		rewardGetted:false,
 		isRead:false,
 		isSaved:false
 	};
@@ -75,7 +78,7 @@ var SendInCacheServerMail = function(playerIds, title, content, callback){
 			}).then(function(){
 				return SendInCacheServerMail.call(self, playerIds, title, content, callback);
 			}).catch(function(e){
-				self.logService.onEventError('cache.cacheRemote.SendInCacheServerMail', {
+				self.logService.onEventError('cache.gmApiRemote.SendInCacheServerMail', {
 					playerId:playerId,
 					title:title,
 					content:content
@@ -99,9 +102,10 @@ var SendInCacheServerMail = function(playerIds, title, content, callback){
  * @param playerIds
  * @param title
  * @param content
+ * @param rewards
  * @param callback
  */
-var SendOutCacheServerMail = function(playerIds, title, content, callback){
+var SendOutCacheServerMail = function(playerIds, title, content, rewards, callback){
 	var self = this;
 	var mail = {
 		id:ShortId.generate(),
@@ -112,6 +116,8 @@ var SendOutCacheServerMail = function(playerIds, title, content, callback){
 		fromAllianceTag:"",
 		sendTime:Date.now(),
 		content:content,
+		rewards:rewards,
+		rewardGetted:false,
 		isRead:false,
 		isSaved:false
 	};
@@ -129,10 +135,11 @@ var SendOutCacheServerMail = function(playerIds, title, content, callback){
  * 发送全服系统邮件
  * @param title
  * @param content
+ * @param rewards
  * @param callback
  */
-pro.sendGlobalMail = function(title, content, callback){
-	this.logService.onEvent('cache.cacheRemote.sendGlobalMail', {title:title, content:content});
+pro.sendGlobalMail = function(title, content, rewards, callback){
+	this.logService.onEvent('cache.gmApiRemote.sendGlobalMail', {title:title, content:content, rewards:rewards});
 
 	var self = this
 	var lastLoginTime = Date.now() - (DataUtils.getPlayerIntInit('activePlayerNeedHouses') * 60 * 60 * 1000);
@@ -151,24 +158,27 @@ pro.sendGlobalMail = function(title, content, callback){
 		})
 		var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, self);
 		var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, self);
-		SendOutCacheServerMailAsync(outCacheIds, title, content).then(function(){
-			self.logService.onEvent('cache.cacheRemote.sendGlobalMail.SendOutCacheServerMail', {
+		SendOutCacheServerMailAsync(outCacheIds, title, content, rewards).then(function(){
+			self.logService.onEvent('cache.gmApiRemote.sendGlobalMail.SendOutCacheServerMail', {
 				playerCount:outCacheIds.length,
 				title:title,
-				content:content
+				content:content,
+				rewards:rewards
 			});
-			return SendInCacheServerMailAsync(inCacheIds, title, content)
+			return SendInCacheServerMailAsync(inCacheIds, title, content, rewards)
 		}).then(function(){
-			self.logService.onEvent('cache.cacheRemote.sendGlobalMail.SendInCacheServerMail', {
+			self.logService.onEvent('cache.gmApiRemote.sendGlobalMail.SendInCacheServerMail', {
 				playerCount:inCacheIds.length,
 				title:title,
-				content:content
+				content:content,
+				rewards:rewards
 			});
 		}).catch(function(e){
-			self.logService.onEventError('cache.cacheRemote.sendGlobalMail', {
+			self.logService.onEventError('cache.gmApiRemote.sendGlobalMail', {
 				playerCount:docs.length,
 				title:title,
-				content:content
+				content:content,
+				rewards:rewards
 			}, e.stack);
 		})
 	})
@@ -181,10 +191,11 @@ pro.sendGlobalMail = function(title, content, callback){
  * @param ids
  * @param title
  * @param content
+ * @param rewards
  * @param callback
  */
-pro.sendMailToPlayers = function(ids, title, content, callback){
-	this.logService.onEvent('cache.cacheRemote.sendMailToPlayers', {ids:ids, title:title, content:content});
+pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
+	this.logService.onEvent('cache.gmApiRemote.sendMailToPlayers', {ids:ids, title:title, content:content, rewards:rewards});
 
 	var self = this;
 	var inCacheIds = [];
@@ -195,24 +206,27 @@ pro.sendMailToPlayers = function(ids, title, content, callback){
 	})
 	var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, this);
 	var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, this);
-	SendOutCacheServerMailAsync(outCacheIds, title, content).then(function(){
-		self.logService.onEvent('cache.cacheRemote.sendMailToPlayers.SendOutCacheServerMail', {
+	SendOutCacheServerMailAsync(outCacheIds, title, content, rewards).then(function(){
+		self.logService.onEvent('cache.gmApiRemote.sendMailToPlayers.SendOutCacheServerMail', {
 			playerCount:outCacheIds.length,
 			title:title,
-			content:content
+			content:content,
+			rewards:rewards
 		});
-		return SendInCacheServerMailAsync(inCacheIds, title, content)
+		return SendInCacheServerMailAsync(inCacheIds, title, content, rewards)
 	}).then(function(){
-		self.logService.onEvent('cache.cacheRemote.sendMailToPlayers.SendInCacheServerMail', {
+		self.logService.onEvent('cache.gmApiRemote.sendMailToPlayers.SendInCacheServerMail', {
 			playerCount:inCacheIds.length,
 			title:title,
-			content:content
+			content:content,
+			rewards:rewards
 		});
 	}).catch(function(e){
-		self.logService.onEventError('cache.cacheRemote.sendMailToPlayers', {
+		self.logService.onEventError('cache.gmApiRemote.sendMailToPlayers', {
 			count:ids.length,
 			title:title,
-			content:content
+			content:content,
+			rewards:rewards
 		}, e.stack);
 	})
 
@@ -225,43 +239,12 @@ pro.sendMailToPlayers = function(ids, title, content, callback){
  * @param callback
  */
 pro.findPlayerById = function(id, callback){
-	this.logService.onEvent('cache.cacheRemote.findPlayerById', {id:id});
+	this.logService.onEvent('cache.gmApiRemote.findPlayerById', {id:id});
 	this.cacheService.directFindPlayerAsync(id).then(function(doc){
 		callback(null, doc);
 	}).catch(function(e){
-		self.logService.onEventError('cache.cacheRemote.findPlayerById', {
+		self.logService.onEventError('cache.gmApiRemote.findPlayerById', {
 			id:id
-		}, e.stack);
-		callback(e);
-	})
-}
-
-/**
- * 临时添加宝石
- * @param id
- * @param gem
- * @param callback
- */
-pro.tempAddPlayerGem = function(id, gem, callback){
-	this.logService.onEvent('cache.cacheRemote.tempAddPlayerGem', {id:id, gem:gem});
-
-	var self = this;
-	var playerDoc = null;
-	var playerData = [];
-	this.cacheService.findPlayerAsync(id).then(function(doc){
-		playerDoc = doc;
-		playerDoc.resources.gem += gem;
-		playerData.push(['resources.gem', playerDoc.resources.gem]);
-
-		return self.cacheService.updatePlayerAsync(id, playerDoc);
-	}).then(function(){
-		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
-	}).then(function(){
-		callback();
-	}).catch(function(e){
-		self.logService.onEventError('cache.cacheRemote.tempAddPlayerGem', {
-			id:id,
-			gem:gem
 		}, e.stack);
 		callback(e);
 	})
@@ -273,11 +256,11 @@ pro.tempAddPlayerGem = function(id, gem, callback){
  * @param callback
  */
 pro.findAllianceById = function(id, callback){
-	this.logService.onEvent('cache.cacheRemote.findAllianceById', {id:id});
+	this.logService.onEvent('cache.gmApiRemote.findAllianceById', {id:id});
 	this.cacheService.directFindAllianceAsync(id).then(function(doc){
 		callback(null, doc);
 	}).catch(function(e){
-		self.logService.onEventError('cache.cacheRemote.findAllianceById', {
+		self.logService.onEventError('cache.gmApiRemote.findAllianceById', {
 			id:id
 		}, e.stack);
 		callback(e);

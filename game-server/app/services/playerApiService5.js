@@ -542,28 +542,19 @@ pro.initPlayerData = function(playerId, terrain, language, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var eventFuncs = [];
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isEqual(playerDoc.basicInfo.terrain, Consts.None)) return Promise.reject(ErrorUtils.playerDataAlreadyInited(playerId))
-		playerDoc.basicInfo.terrain = terrain
-		playerDoc.basicInfo.language = language
-		playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
-		playerData.push(["basicInfo.language", playerDoc.basicInfo.language])
-		var dragonType = Consts.TerrainDragonMap[terrain]
-		var dragon = playerDoc.dragons[dragonType]
-		dragon.star = 1
-		dragon.level = 2
-		dragon.exp = 42
-		dragon.status = Consts.DragonStatus.Defence
-		dragon.hp = DataUtils.getDragonMaxHp(dragon)
-		dragon.hpRefreshTime = Date.now()
-		playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
-
+		LogicUtils.initPlayerData(playerDoc, playerData, terrain, language);
+		eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {inited:playerDoc.basicInfo.terrain !== Consts.None}])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
