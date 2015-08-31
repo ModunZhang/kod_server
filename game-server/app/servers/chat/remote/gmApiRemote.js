@@ -216,7 +216,7 @@ pro.findPlayerByName = function(name, callback){
 	var self = this;
 	(function(){
 		return new Promise(function(resolve, reject){
-			self.Player.findOne({'basicInfo.name':{$regex:name, $options:"i"}}, 'serverId').then(function(doc){
+			self.Player.findOne({'basicInfo.name':name}, 'serverId').then(function(doc){
 				if(!doc) return reject(new Error('玩家不存在'));
 				resolve(doc);
 			}, function(e){
@@ -323,7 +323,7 @@ pro.findAllianceByTag = function(tag, callback){
 	var self = this;
 	(function(){
 		return new Promise(function(resolve, reject){
-			self.Alliance.findOne({'basicInfo.tag':{$regex:tag, $options:"i"}}, 'serverId').then(function(doc){
+			self.Alliance.findOne({'basicInfo.tag':tag}, 'serverId').then(function(doc){
 				if(!doc) return reject(new Error('联盟不存在'));
 				resolve(doc);
 			}, function(e){
