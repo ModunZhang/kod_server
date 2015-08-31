@@ -145,8 +145,9 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 			vipExpAdd = DataUtils.getPlayerVipExpByLoginDaysCount(1)
 			DataUtils.addPlayerVipExp(playerDoc, [], vipExpAdd, eventFuncs, self.timeEventService)
 		}
-		playerDoc.countInfo.lastLoginTime = Date.now()
-		playerDoc.countInfo.loginCount += 1
+		playerDoc.countInfo.lastLoginTime = Date.now();
+		playerDoc.countInfo.loginCount += 1;
+		playerDoc.countInfo.lastDeviceId = deviceId;
 		playerDoc.logicServerId = logicServerId
 		return Promise.resolve()
 	}).then(function(){

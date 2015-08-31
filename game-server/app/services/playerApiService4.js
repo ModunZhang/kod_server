@@ -720,7 +720,7 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 	}).then(function(doc){
 		if(!_.isObject(doc)){
 			var playerId = ShortId.generate()
-			var player = LogicUtils.createPlayer(playerId, playerDoc.serverId)
+			var player = LogicUtils.createPlayer(playerId, deviceId, playerDoc.serverId)
 			player.gcId = gcId
 			return self.Player.createAsync(player).then(function(doc){
 				doc = Utils.clone(doc)

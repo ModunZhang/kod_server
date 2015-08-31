@@ -120,14 +120,14 @@ var PlayerSchema = new Schema({
 		day14RewardsCount:{type:Number, rquired:true, default:0},
 		vipLoginDaysCount:{type:Number, required:true, default:1},
 		levelupRewards:[Number],
-		gemUsed:{type:Number, required:true, default:0},
 		iapCount:{type:Number, required:true, default:0},
 		todayFreeNormalGachaCount:{type:Number, required:true, default:0},
 		isFirstIAPRewardsGeted:{type:Boolean, required:true, default:false},
 		todayLoyaltyGet:{type:Number, require:true, default:0},
 		firstJoinAllianceRewardGeted:{type:Boolean, require:true, default:false},
 		isFTEFinished:{type:Boolean, required:true, default:false},
-		pveCount:{type:Number, required:true, default:0}
+		pveCount:{type:Number, required:true, default:0},
+		lastDeviceId:{type:String, required:true}
 	},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},

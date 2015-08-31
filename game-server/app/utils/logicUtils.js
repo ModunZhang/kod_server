@@ -2207,9 +2207,10 @@ Utils.createDevice = function(deviceId, playerId){
 /**
  * 创建玩家
  * @param playerId
+ * @param deviceId
  * @param serverId
  */
-Utils.createPlayer = function(playerId, serverId){
+Utils.createPlayer = function(playerId, deviceId, serverId){
 	var name = ShortId.generate()
 	var player = {
 		_id:playerId,
@@ -2217,7 +2218,10 @@ Utils.createPlayer = function(playerId, serverId){
 		apnId:null,
 		gcId:null,
 		allianceId:null,
-		basicInfo:{name:"p_" + name}
+		basicInfo:{name:"p_" + name},
+		countInfo:{
+			lastDeviceId:deviceId
+		}
 	}
 	return player
 }

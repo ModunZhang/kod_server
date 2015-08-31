@@ -126,14 +126,6 @@ var SendOutCacheServerMail = function(playerIds, title, content, callback){
 }
 
 /**
- * 获取在线玩家数量
- * @param callback
- */
-pro.getLoginedCount = function(callback){
-	callback(null, this.app.get('loginedCount'))
-}
-
-/**
  * 发送全服系统邮件
  * @param title
  * @param content

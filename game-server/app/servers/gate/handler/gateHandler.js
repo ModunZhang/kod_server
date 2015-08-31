@@ -98,7 +98,7 @@ pro.queryEntry = function(msg, session, next){
 			var playerId = ShortId.generate()
 			device = LogicUtils.createDevice(deviceId, playerId)
 			var serverId = self.gateService.getPromotedServer().id
-			var player = LogicUtils.createPlayer(playerId, serverId)
+			var player = LogicUtils.createPlayer(playerId, deviceId, serverId)
 			return self.Device.createAsync(device).then(function(){
 				return self.Player.createAsync(player).then(function(doc){
 					var playerDoc = Utils.clone(doc)
