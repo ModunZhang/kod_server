@@ -98,6 +98,7 @@ var getPlayerIcon = function(){
 var PlayerSchema = new Schema({
 	_id:{type:String, required:true},
 	serverId:{type:String, required:true},
+	lastDeviceId:{type:String, required:true},
 	apnId:{type:String},
 	gcId:{type:String},
 	allianceId:{type:String},
@@ -126,8 +127,7 @@ var PlayerSchema = new Schema({
 		todayLoyaltyGet:{type:Number, require:true, default:0},
 		firstJoinAllianceRewardGeted:{type:Boolean, require:true, default:false},
 		isFTEFinished:{type:Boolean, required:true, default:false},
-		pveCount:{type:Number, required:true, default:0},
-		lastDeviceId:{type:String, required:true}
+		pveCount:{type:Number, required:true, default:0}
 	},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},
@@ -662,6 +662,7 @@ var PlayerSchema = new Schema({
 		fromIcon:{type:Number, required:true},
 		content:{type:String, required:true},
 		sendTime:{type:Number, required:true},
+
 		isRead:{type:Boolean, require:true},
 		isSaved:{type:Boolean, require:true}
 	}],

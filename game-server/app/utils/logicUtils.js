@@ -2215,13 +2215,11 @@ Utils.createPlayer = function(playerId, deviceId, serverId){
 	var player = {
 		_id:playerId,
 		serverId:serverId,
+		lastDeviceId:deviceId,
 		apnId:null,
 		gcId:null,
 		allianceId:null,
-		basicInfo:{name:"p_" + name},
-		countInfo:{
-			lastDeviceId:deviceId
-		}
+		basicInfo:{name:"p_" + name}
 	}
 	return player
 }
