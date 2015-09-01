@@ -76,7 +76,7 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
 			}).then(function(){
 				return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 			}).then(function(){
-				return SendInCacheServerMail.call(self, playerIds, title, content, callback);
+				return SendInCacheServerMail.call(self, playerIds, title, content, rewards, callback);
 			}).catch(function(e){
 				self.logService.onEventError('cache.gmApiRemote.SendInCacheServerMail', {
 					playerId:playerId,
@@ -88,7 +88,7 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
 					funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
 				}
 				return Promise.all(funcs).then(function(){
-					return SendInCacheServerMail.call(self, playerIds, title, content, callback);
+					return SendInCacheServerMail.call(self, playerIds, title, content, rewards, callback);
 				})
 			})
 		}else{
