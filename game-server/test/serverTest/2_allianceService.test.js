@@ -132,20 +132,16 @@
 //		it("sendAllianceMail 此操作权限不足", function(done){
 //			Api.loginPlayer(Config.deviceId3, function(doc){
 //				doc.code.should.equal(200)
-//				Api.joinAllianceDirectly(m_user.allianceId, function(doc){
+//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //					doc.code.should.equal(200)
-//					Api.sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
-//						doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-//						done()
+//					Api.joinAllianceDirectly(m_user.allianceId, function(doc){
+//						doc.code.should.equal(200)
+//						Api.sendAllianceMail("alliance mail", "this is a alliance mail", function(doc){
+//							doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
+//							done()
+//						})
 //					})
 //				})
-//			})
-//		})
-//
-//		it("initPlayerData 正常初始化3", function(done){
-//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
-//				doc.code.should.equal(200)
-//				done()
 //			})
 //		})
 //
@@ -588,22 +584,17 @@
 //					doc.code.should.equal(200)
 //					Api.loginPlayer(Config.deviceId5, function(doc){
 //						doc.code.should.equal(200)
-//						Api.requestToJoinAlliance(m_user.allianceId, function(doc){
-//							doc.code.should.equal(200)
+//						Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //							Api.requestToJoinAlliance(m_user.allianceId, function(doc){
-//								doc.code.should.equal(Errors.joinTheAllianceRequestAlreadySend.code)
-//								done()
+//								doc.code.should.equal(200)
+//								Api.requestToJoinAlliance(m_user.allianceId, function(doc){
+//									doc.code.should.equal(Errors.joinTheAllianceRequestAlreadySend.code)
+//									done()
+//								})
 //							})
 //						})
 //					})
 //				})
-//			})
-//		})
-//
-//		it("initPlayerData 正常初始化5", function(done){
-//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
-//				doc.code.should.equal(200)
-//				done()
 //			})
 //		})
 //
