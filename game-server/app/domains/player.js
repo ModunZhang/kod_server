@@ -660,6 +660,7 @@ var PlayerSchema = new Schema({
 		content:{type:String, required:true},
 		sendTime:{type:Number, required:true},
 		rewards:[{
+			_id:false,
 			type:{type:String, required:true},
 			name:{type:String, required:true},
 			count:{type:Number, required:true}
