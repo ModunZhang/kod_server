@@ -228,7 +228,7 @@ pro.getMailRewards = function(playerId, mailId, callback){
 		if(!!mail.rewardGetted) return Promise.reject(ErrorUtils.theRewardsAlreadyGetedFromThisMail(playerId, mailId));
 		mail.rewardGetted = true;
 		playerData.push(['mails.' + playerDoc.mails.indexOf(mail) + '.rewardGetted', mail.rewardGetted])
-		LogicUtils.addPlayerRewards(playerDoc, playerData, mail.rewards);
+		LogicUtils.addPlayerRewards(playerDoc, playerData, rewards);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
