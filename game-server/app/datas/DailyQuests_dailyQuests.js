@@ -6,13 +6,13 @@ module.exports = dailyQuests
 dailyQuests[0] = {
 	index:0,
 	name:"repairingCrane",
-	rewards:"resources:wood:1000,resources:stone:1000,resources:iron:1000",
+	rewards:"resources:stone:1500,resources:coin:750",
 	desc:"修复起重机"
 }
 dailyQuests[1] = {
 	index:1,
 	name:"brewingBeer",
-	rewards:"resources:wood:1500,resources:food:1500",
+	rewards:"resources:food:1500,resources:coin:750",
 	desc:"酿造啤酒"
 }
 dailyQuests[2] = {
@@ -48,18 +48,18 @@ dailyQuests[6] = {
 dailyQuests[7] = {
 	index:7,
 	name:"encourageSoldiers",
-	rewards:"resources:iron:1500,resources:food:1500",
+	rewards:"resources:iron:1500,resources:coin:750",
 	desc:"鼓舞士气"
 }
 dailyQuests[8] = {
 	index:8,
 	name:"landFormation",
-	rewards:"resources:wood:1000,resources:stone:1000,resources:food:1000",
+	rewards:"resources:wood:1500,resources:coin:750",
 	desc:"开拓土地"
 }
 dailyQuests[9] = {
 	index:9,
 	name:"heightenMilitaryAlert",
-	rewards:"resources:wood:1000,resources:iron:1000,resources:food:1000",
+	rewards:"resources:iron:1500,resources:food:1500",
 	desc:"加强戒备"
 }

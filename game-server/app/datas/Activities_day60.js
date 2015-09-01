@@ -9,11 +9,11 @@ day60[1] = {
 }
 day60[2] = {
 	day:2,
-	rewards:"resource:woodClass_2:1"
+	rewards:"resource:woodClass_3:1"
 }
 day60[3] = {
 	day:3,
-	rewards:"resource:stoneClass_2:1"
+	rewards:"resource:stoneClass_3:1"
 }
 day60[4] = {
 	day:4,
@@ -25,15 +25,15 @@ day60[5] = {
 }
 day60[6] = {
 	day:6,
-	rewards:"resource:ironClass_2:1"
+	rewards:"resource:ironClass_3:1"
 }
 day60[7] = {
 	day:7,
-	rewards:"resource:foodClass_2:1"
+	rewards:"resource:foodClass_3:1"
 }
 day60[8] = {
 	day:8,
-	rewards:"resource:coinClass_2:1"
+	rewards:"resource:coinClass_3:1"
 }
 day60[9] = {
 	day:9,
@@ -41,7 +41,7 @@ day60[9] = {
 }
 day60[10] = {
 	day:10,
-	rewards:"resource:gemClass_1:1"
+	rewards:"resource:gemClass_1:2"
 }
 day60[11] = {
 	day:11,
@@ -49,15 +49,15 @@ day60[11] = {
 }
 day60[12] = {
 	day:12,
-	rewards:"resource:woodClass_3:1"
+	rewards:"resource:woodClass_4:1"
 }
 day60[13] = {
 	day:13,
-	rewards:"resource:stoneClass_3:1"
+	rewards:"resource:stoneClass_4:1"
 }
 day60[14] = {
 	day:14,
-	rewards:"special:stamina_1:1"
+	rewards:"special:stamina_2:1"
 }
 day60[15] = {
 	day:15,
@@ -65,15 +65,15 @@ day60[15] = {
 }
 day60[16] = {
 	day:16,
-	rewards:"resource:ironClass_3:1"
+	rewards:"resource:ironClass_4:1"
 }
 day60[17] = {
 	day:17,
-	rewards:"resource:foodClass_3:1"
+	rewards:"resource:foodClass_4:1"
 }
 day60[18] = {
 	day:18,
-	rewards:"resource:coinClass_3:1"
+	rewards:"resource:coinClass_4:1"
 }
 day60[19] = {
 	day:19,
@@ -85,19 +85,19 @@ day60[20] = {
 }
 day60[21] = {
 	day:21,
-	rewards:"speedup:speedup_4:1"
+	rewards:"speedup:speedup_4:2"
 }
 day60[22] = {
 	day:22,
-	rewards:"resource:woodClass_4:1"
+	rewards:"resource:woodClass_4:2"
 }
 day60[23] = {
 	day:23,
-	rewards:"resource:stoneClass_4:1"
+	rewards:"resource:stoneClass_4:2"
 }
 day60[24] = {
 	day:24,
-	rewards:"special:stamina_1:1"
+	rewards:"special:stamina_2:2"
 }
 day60[25] = {
 	day:25,
@@ -105,19 +105,19 @@ day60[25] = {
 }
 day60[26] = {
 	day:26,
-	rewards:"resource:ironClass_4:1"
+	rewards:"resource:ironClass_4:2"
 }
 day60[27] = {
 	day:27,
-	rewards:"resource:foodClass_4:1"
+	rewards:"resource:foodClass_4:2"
 }
 day60[28] = {
 	day:28,
-	rewards:"resource:coinClass_4:1"
+	rewards:"resource:coinClass_4:2"
 }
 day60[29] = {
 	day:29,
-	rewards:"speedup:warSpeedupClass_1:1"
+	rewards:"speedup:warSpeedupClass_1:2"
 }
 day60[30] = {
 	day:30,
@@ -141,7 +141,7 @@ day60[34] = {
 }
 day60[35] = {
 	day:35,
-	rewards:"resource:gemClass_1:1"
+	rewards:"resource:gemClass_1:2"
 }
 day60[36] = {
 	day:36,
@@ -181,7 +181,7 @@ day60[44] = {
 }
 day60[45] = {
 	day:45,
-	rewards:"resource:gemClass_1:1"
+	rewards:"special:dragonChest_2:1"
 }
 day60[46] = {
 	day:46,
@@ -221,25 +221,25 @@ day60[54] = {
 }
 day60[55] = {
 	day:55,
-	rewards:"resource:gemClass_1:1"
+	rewards:"special:chest_4:1"
 }
 day60[56] = {
 	day:56,
-	rewards:"speedup:warSpeedupClass_1:1"
+	rewards:"resource:casinoTokenClass_2"
 }
 day60[57] = {
 	day:57,
-	rewards:"resource:citizenClass_1:1"
+	rewards:"resource:ironClass_4:2"
 }
 day60[58] = {
 	day:58,
-	rewards:"buff:citizenBonus_1:1"
+	rewards:"resource:foodClass_4:2"
 }
 day60[59] = {
 	day:59,
-	rewards:"resource:gemClass_1:1"
+	rewards:"resource:coinClass_4:2"
 }
 day60[60] = {
 	day:60,
-	rewards:"special:chest_4:1"
+	rewards:"special:dragonChest_3:1"
 }
