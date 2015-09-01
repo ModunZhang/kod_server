@@ -236,17 +236,7 @@ module.exports = function(app, http){
 		})
 	});
 
-	http.post('/player/temp-add-player-gem', function(req, res){
-		req.logService.onGm('/player/temp-add-player-gem', req.body);
-
-		var playerId = req.body.playerId;
-		var gem = Number(req.body.gem);
-		app.rpc.chat.gmApiRemote.tempAddPlayerGem.toServer(req.chatServerId, playerId, gem, function(e, resp){
-			if(!!e){
-				req.logService.onGmError('/player/temp-add-player-gem', req.body, e.stack);
-				res.json({code:500, data:e.message});
-			}else
-				res.json(resp);
-		})
+	http.get('/get-mail-reward-types', function(req, res){
+		res.json({code:200, data:MailRewardTypes})
 	})
 }
