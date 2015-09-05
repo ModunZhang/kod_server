@@ -225,7 +225,7 @@ day60[55] = {
 }
 day60[56] = {
 	day:56,
-	rewards:"resource:casinoTokenClass_2"
+	rewards:"resource:casinoTokenClass_2:1"
 }
 day60[57] = {
 	day:57,
