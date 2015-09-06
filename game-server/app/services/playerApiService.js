@@ -336,6 +336,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
+		console.log(gemUsed, playerDoc.resources.gem, '111111111111')
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
