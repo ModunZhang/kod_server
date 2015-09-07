@@ -10,6 +10,7 @@ var requestErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger(
 var eventLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-event")
 var eventErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-event-error")
 var findLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-find")
+var timeLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-time");
 var gmLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-gm")
 var gmErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-gm-error")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
@@ -69,6 +70,18 @@ pro.onEvent = function(api, object){
  */
 pro.onFind = function(api, object){
 	findLogger.info('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+}
+
+/**
+ * 请求时间日志
+ * @param api
+ * @param code
+ * @param uid
+ * @param uname
+ * @param time
+ */
+pro.onTime = function(api, code, uid, uname, time){
+	timeLogger.info('[' + this.serverId + '] Code:' + code + ' Api:' + api + ' Uid:' + uid + ' UName:' + uname + ' Time:' + time + 'ms');
 }
 
 /**

@@ -10,5 +10,22 @@
   "http": {
     "host": "172.31.2.115",
     "port": 3001
+  },
+  "mongoBackup": {
+    "mongodb": {
+      "host": "172.31.2.115",
+      "port": 27017,
+      "username": false,
+      "password": false,
+      "db": "kod"
+    },
+    "s3": {
+      "key": "AKIAIP4DMAKM7VTWB73Q",
+      "secret": "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",
+      "bucket": "dragonfall-db-backup-awschina",
+      "destination": "/",
+      "encrypt": true,
+      "region": "ap-northeast-1"
+    }
   }
 }

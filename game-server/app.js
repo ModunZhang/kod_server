@@ -65,6 +65,7 @@ app.configure("local|develop|awschina|hotfix", "logic", function(){
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
 	app.before(filterService.initFilter());
+	app.filter(filterService.requestTimeFilter())
 
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
@@ -76,6 +77,7 @@ app.configure("local|develop|awschina|hotfix", "chat", function(){
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
+	app.filter(filterService.requestTimeFilter())
 
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
@@ -95,6 +97,7 @@ app.configure("local|develop|awschina|hotfix", "rank", function(){
 
 	var filterService = new FilterService(app)
 	app.before(filterService.loginFilter())
+	app.filter(filterService.requestTimeFilter())
 })
 
 app.configure('local|develop|awschina|hotfix', 'http', function() {
