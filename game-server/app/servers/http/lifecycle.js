@@ -39,7 +39,7 @@ life.afterStartAll = function(app){
 				else app.get("logService").onEvent('mongo backup finished');
 				backupMongo();
 			})
-		}, 1000 * 10);//1000 * 60 * 60 * 4);
+		}, 1000 * 60 * 60 * 4);
 		timeout.unref();
 	})();
 }
