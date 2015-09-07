@@ -22,8 +22,8 @@
     "s3": {
       "key": "AKIAIP4DMAKM7VTWB73Q",
       "secret": "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",
-      "bucket": "dragonfall-db-backup",
-      "destination": "/develop",
+      "bucket": "dragonfall-db-backup-develop",
+      "destination": "/",
       "encrypt": true,
       "region": "ap-northeast-1"
     }
