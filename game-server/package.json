@@ -14,7 +14,8 @@
     "apn":"1.7.4",
     "pomelo-rpc-ws":"0.5.3",
     "toobusy-js":"0.4.2",
-    "pomelo-http-plugin ":"0.0.22"
+    "pomelo-http-plugin ":"0.0.22",
+    "mongodb_s3_backup":"0.0.7"
   },
   "devDependencies": {
     "should": ">=0.0.1",
