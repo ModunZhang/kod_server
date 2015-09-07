@@ -166,6 +166,16 @@
     },
     {
       "type": "file",
+      "filename": "${opts:base}/logs/kod-time.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-time"
+    },
+    {
+      "type": "file",
       "filename": "${opts:base}/logs/kod-error.log",
       "maxLogSize": 10485760,
       "layout": {
@@ -210,6 +220,7 @@
     "kod-gm": "DEBUG",
     "kod-gm-error": "DEBUG",
     "kod-find": "DEBUG",
+    "kod-time": "DEBUG",
     "kod-error": "DEBUG",
     "kod-mail": "DEBUG"
   },

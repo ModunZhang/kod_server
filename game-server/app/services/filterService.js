@@ -60,3 +60,21 @@ pro.initFilter = function(){
 	}
 	return {before:before}
 }
+
+/**
+ * 请求处理时间过滤
+ * @returns {{before: Function, after: Function}}
+ */
+pro.requestTimeFilter = function(){
+	var self = this;
+	var before = function(msg, session, next){
+		session.__reqTime = Date.now();
+		next();
+	}
+	var after = function(err, msg, session, resp, next){
+		var timeUsed = Date.now() - session.__reqTime;
+		self.app.get('logService').onTime(msg.__route__, !!resp.code ? resp.code : 500, session.uid, session.get('name'), timeUsed);
+		next();
+	}
+	return {before:before, after:after};
+}
