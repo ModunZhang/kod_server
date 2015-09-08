@@ -147,7 +147,7 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 		}
 		playerDoc.countInfo.lastLoginTime = Date.now();
 		playerDoc.countInfo.loginCount += 1;
-		playerDoc.countInfo.lastDeviceId = deviceId;
+		playerDoc.lastDeviceId = deviceId;
 		playerDoc.logicServerId = logicServerId
 		return Promise.resolve()
 	}).then(function(){
