@@ -126,9 +126,6 @@ pro.sendGlobalMail = function(servers, title, content, rewards, callback){
  * @param callback
  */
 pro.getAllianceChats = function(allianceId, time, callback){
-	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
-	if(!_.isObject(channel)) return callback(null, {code:500, data:'联盟不存在'});
-
 	var chats = this.allianceChats[allianceId];
 	if(!_.isArray(chats)) chats = [];
 	if(time === 0) return callback(null, {code:200, data:chats});
