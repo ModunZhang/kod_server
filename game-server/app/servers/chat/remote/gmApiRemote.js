@@ -24,8 +24,6 @@ var GmApiRemote = function(app){
 	this.channelService = app.get("channelService")
 	this.globalChatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, true)
 	this.allianceChats = app.get('allianceChats')
-	this.allianceFights = app.get('allianceFights')
-	this.allianceFightChats = app.get('allianceFightChats')
 	this.chats = app.get('chats');
 	this.Player = app.get('Player');
 	this.Alliance = app.get('Alliance');
@@ -53,7 +51,7 @@ pro.sendGlobalNotice = function(servers, type, content, callback){
 }
 
 /**
- * 获取聊天记录
+ * 获取公共聊天记录
  * @param time
  * @param callback
  */
@@ -119,6 +117,33 @@ pro.sendGlobalMail = function(servers, title, content, rewards, callback){
 		})
 	})
 	callback(null, {code:200, data:null});
+}
+
+/**
+ * 获取联盟聊天记录
+ * @param allianceId
+ * @param time
+ * @param callback
+ */
+pro.getAllianceChats = function(allianceId, time, callback){
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	if(!_.isObject(channel)) return callback(null, {code:500, data:'联盟不存在'});
+
+	var chats = this.allianceChats[allianceId];
+	if(!_.isArray(chats)) chats = [];
+	if(time === 0) return callback(null, {code:200, data:chats});
+
+	var sliceFrom = null;
+	for(var i = chats.length - 1; i >= 0; i--){
+		var chat = chats[i];
+		if(chat.time <= time){
+			sliceFrom = i + 1;
+			break;
+		}
+	}
+	if(sliceFrom >= 0) return callback(null, {code:200, data:chats.slice(sliceFrom)});
+
+	callback(null, {code:200, data:[]});
 }
 
 /**

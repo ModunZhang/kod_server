@@ -106,6 +106,20 @@ module.exports = function(app, http){
 		})
 	})
 
+	http.get('/get-alliance-chats', function(req, res){
+		req.logService.onGm('/get-alliance-chats', req.query);
+
+		var allianceId = req.query.allianceId;
+		var time = Number(req.query.time);
+		app.rpc.chat.gmApiRemote.getAllianceChats.toServer(req.chatServerId, allianceId, time, function(e, resp){
+			if(!!e){
+				req.logService.onGmError('/get-alliance-chats', req.query, e.stack);
+				res.json({code:500, data:e.message});
+			}else
+				res.json(resp);
+		})
+	})
+
 
 	http.post('/send-global-mail', function(req, res){
 		req.logService.onGm('/send-global-mail', req.body);

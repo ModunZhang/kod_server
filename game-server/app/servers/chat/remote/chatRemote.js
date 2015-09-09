@@ -23,7 +23,6 @@ var ChatRemote = function(app){
 	this.logService = app.get('logService');
 	this.channelService = app.get("channelService")
 	this.globalChatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, true)
-	this.allianceChats = app.get('allianceChats')
 	this.allianceFights = app.get('allianceFights')
 	this.allianceFightChats = app.get('allianceFightChats')
 	this.chats = app.get('chats');
