@@ -24,7 +24,6 @@ var Handler = function(app){
 	this.gateService = app.get("gateService")
 	this.Player = app.get("Player")
 	this.Device = app.get("Device")
-	this.Lock = app.get('Lock');
 	this.serverConfig = app.get('serverConfig')
 }
 

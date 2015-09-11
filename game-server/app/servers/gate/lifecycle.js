@@ -8,7 +8,6 @@ var Promise = require("bluebird")
 
 var Player = require("../../domains/player")
 var Device = require("../../domains/device")
-var Lock = require("../../domains/lock")
 var LogService = require("../../services/logService")
 var GateService = require("../../services/gateService")
 
@@ -17,7 +16,6 @@ var life = module.exports
 life.beforeStartup = function(app, callback){
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Device", Promise.promisifyAll(Device))
-	app.set("Lock", Promise.promisifyAll(Lock))
 	app.set("logService", new LogService(app))
 	app.set("gateService", Promise.promisifyAll(new GateService(app)))
 
