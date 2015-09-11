@@ -91,6 +91,13 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 		LogicUtils.addPlayerTroopOut(playerDoc, dragonType, soldiers);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 
+		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
+		if(playerObject.isProtected){
+			playerObject.isProtected = false
+			allianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
+			enemyAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
+		}
+
 		var event = MarchUtils.createHelpDefenceMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, targetPlayerDoc)
 		allianceDoc.attackMarchEvents.push(event)
 		allianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(event), event])
