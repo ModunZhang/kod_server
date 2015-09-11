@@ -73,26 +73,14 @@ pro.queryEntry = function(msg, session, next){
 	})
 
 	getClientBuildAsync.then(function(){
-		return self.Lock.findOneAsync({type:'device', value:deviceId, finishTime:{$gt:Date.now()}})
-	}).then(function(doc){
-		if(_.isObject(doc)) return Promise.reject(ErrorUtils.deviceLocked(deviceId))
-	}).then(function(){
 		return self.Device.findByIdAsync(deviceId)
 	}).then(function(doc){
 		var device = null
 		if(_.isObject(doc)){
 			device = doc
-			return self.Lock.findOneAsync({
-				type:'player',
-				value:device.playerId,
-				finishTime:{$gt:Date.now()}
-			}).then(function(doc){
-				if(_.isObject(doc)) return Promise.reject(ErrorUtils.playerLocked(device.playerId))
-				else{
-					return self.Player.findByIdAsync(device.playerId, {serverId:true}).then(function(doc){
-						return Promise.resolve(doc.serverId)
-					})
-				}
+			return self.Player.findByIdAsync(device.playerId, {serverId:true, 'countInfo.lockTime':true}).then(function(doc){
+				if(doc.countInfo.lockTime > Date.now()) return Promise.reject(ErrorUtils.playerLocked(device.playerId))
+				return Promise.resolve(doc.serverId)
 			})
 		}else{
 			var playerId = ShortId.generate()

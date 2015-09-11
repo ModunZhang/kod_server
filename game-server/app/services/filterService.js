@@ -73,7 +73,7 @@ pro.requestTimeFilter = function(){
 	}
 	var after = function(err, msg, session, resp, next){
 		var timeUsed = Date.now() - session.__reqTime;
-		self.app.get('logService').onTime(msg.__route__, !!resp.code ? resp.code : 500, session.uid, session.get('name'), timeUsed);
+		self.app.get('logService').onTime(msg.__route__, !!resp && !!resp.code ? resp.code : 500, session.uid, session.get('name'), timeUsed);
 		next();
 	}
 	return {before:before, after:after};

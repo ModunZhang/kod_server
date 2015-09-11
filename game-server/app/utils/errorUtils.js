@@ -2113,3 +2113,13 @@ Utils.theRewardsAlreadyGetedFromThisMail = function(playerId, mailId){
 	var config = Errors.theRewardsAlreadyGetedFromThisMail;
 	return CreateError(config, {playerId:playerId, mailId:mailId});
 }
+
+/**
+ * 玩家被禁止发言
+ * @param playerId
+ * @param muteTime
+ */
+Utils.playerIsForbiddenToSpeak = function(playerId, muteTime){
+	var config = Error.playerIsForbiddenToSpeak;
+	return CreateError(config, {playerId:playerId, muteTime:muteTime});
+}

@@ -102,6 +102,7 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 	session.set("allianceTag", _.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "")
 	session.set("vipExp", playerDoc.basicInfo.vipExp)
 	session.set("isVipActive", playerDoc.vipEvents.length > 0)
+	session.set('muteTime', playerDoc.countInfo.muteTime);
 	session.on("closed", OnSessionClose.bind(this));
 	session.pushAll(function(err){
 		if(_.isObject(err)){

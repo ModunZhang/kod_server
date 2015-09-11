@@ -253,4 +253,6 @@ module.exports = function(app, http){
 	http.get('/get-mail-reward-types', function(req, res){
 		res.json({code:200, data:MailRewardTypes})
 	})
+
+
 }

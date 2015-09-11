@@ -342,6 +342,12 @@ pro.send = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
+	if(session.get('muteTime') > Date.now()){
+		e = ErrorUtils.playerIsForbiddenToSpeak(session.uid, session.get('muteTime'));
+		next(e, ErrorUtils.getError(e))
+	}
+
+
 	var allianceId = session.get("allianceId")
 	if(_.isEqual(Consts.ChannelType.Alliance, channel) && _.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)

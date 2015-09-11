@@ -1028,3 +1028,8 @@ errors["theRewardsAlreadyGetedFromThisMail"] = {
 	code:704,
 	message:"此邮件的奖励已经领取"
 }
+errors["playerIsForbiddenToSpeak"] = {
+	key:"playerIsForbiddenToSpeak",
+	code:705,
+	message:"玩家被禁言"
+}

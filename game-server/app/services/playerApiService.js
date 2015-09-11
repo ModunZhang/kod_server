@@ -42,6 +42,7 @@ var LoginPlayer = function(id){
 	return this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
 		if(_.isEmpty(playerDoc)) return Promise.reject(ErrorUtils.playerNotExist(id, id))
+		if(playerDoc.countInfo.lockTime > Date.now()) return Promise.reject(ErrorUtils.playerLocked(playerDoc._id));
 		if(!_.isEmpty(playerDoc.allianceId)){
 			if(self.cacheService.isAllianceLocked(playerDoc.allianceId))
 				return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {allianceId:playerDoc.allianceId}));
