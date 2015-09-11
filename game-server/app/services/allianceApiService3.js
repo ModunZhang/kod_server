@@ -385,8 +385,8 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
 		if(playerObject.isProtected){
 			playerObject.isProtected = false
-			allianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
-			enemyAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
+			allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
+			enemyAllianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
 		}
 
 		var event = MarchUtils.createAttackAllianceShrineMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, shrineEventId)

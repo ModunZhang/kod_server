@@ -94,8 +94,8 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
 		if(playerObject.isProtected){
 			playerObject.isProtected = false
-			allianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
-			enemyAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
+			allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
+			enemyAllianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
 		}
 
 		var event = MarchUtils.createHelpDefenceMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, targetPlayerDoc)
