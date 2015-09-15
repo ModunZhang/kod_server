@@ -96,6 +96,7 @@ var PlayerSchema = new Schema({
 	_id:{type:String, required:true},
 	serverId:{type:String, required:true},
 	lastDeviceId:{type:String, required:true},
+	lastActiveTime:{type:Number, required:true, index:true},
 	apnId:{type:String},
 	gcId:{type:String},
 	allianceId:{type:String},

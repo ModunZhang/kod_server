@@ -1476,16 +1476,18 @@ Utils.updateAllianceCountInfo = function(attackAllianceDoc, defenceAllianceDoc){
 	var attackAllianceCountInfo = attackAllianceDoc.countInfo
 	var defenceAllianceCountInfo = defenceAllianceDoc.countInfo
 	var allianceFight = attackAllianceDoc.allianceFight
-	attackAllianceCountInfo.kill += allianceFight.attackAllianceCountData.kill
-	attackAllianceCountInfo.beKilled += allianceFight.defenceAllianceCountData.kill
-	attackAllianceCountInfo.routCount += allianceFight.attackAllianceCountData.routCount
-	attackAllianceCountInfo.winCount += allianceFight.attackAllianceCountData.kill >= allianceFight.defenceAllianceCountData.kill ? 1 : 0
-	attackAllianceCountInfo.failedCount += allianceFight.attackAllianceCountData.kill >= allianceFight.defenceAllianceCountData.kill ? 0 : 1
-	defenceAllianceCountInfo.kill += allianceFight.defenceAllianceCountData.kill
-	defenceAllianceCountInfo.beKilled += allianceFight.attackAllianceCountData.kill
-	defenceAllianceCountInfo.routCount += allianceFight.defenceAllianceCountData.routCount
-	defenceAllianceCountInfo.winCount += allianceFight.defenceAllianceCountData.kill >= allianceFight.attackAllianceCountData.kill ? 1 : 0
-	defenceAllianceCountInfo.failedCount += allianceFight.defenceAllianceCountData.kill >= allianceFight.attackAllianceCountData.kill ? 0 : 1
+	var attacker = allianceFight.attacker;
+	var defencer = allianceFight.defencer;
+	attackAllianceCountInfo.kill += attacker.allianceCountData.kill
+	attackAllianceCountInfo.beKilled += defencer.allianceCountData.kill
+	attackAllianceCountInfo.routCount += attacker.allianceCountData.routCount
+	attackAllianceCountInfo.winCount += attacker.allianceCountData.kill >= defencer.allianceCountData.kill ? 1 : 0
+	attackAllianceCountInfo.failedCount += attacker.allianceCountData.kill >= defencer.allianceCountData.kill ? 0 : 1
+	defenceAllianceCountInfo.kill += defencer.allianceCountData.kill
+	defenceAllianceCountInfo.beKilled += attacker.allianceCountData.kill
+	defenceAllianceCountInfo.routCount += defencer.allianceCountData.routCount
+	defenceAllianceCountInfo.winCount += defencer.allianceCountData.kill >= attacker.allianceCountData.kill ? 1 : 0
+	defenceAllianceCountInfo.failedCount += defencer.allianceCountData.kill >= attacker.allianceCountData.kill ? 0 : 1
 }
 
 /**

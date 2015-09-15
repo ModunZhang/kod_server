@@ -16,6 +16,7 @@ var AllianceBuilding = GameDatas.AllianceBuilding
 var AllianceSchema = new Schema({
 	_id:{type:String, required:true},
 	serverId:{type:String, required:true, index:true},
+	lastActiveTime:{type:Number, required:true, index:true},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},
 		tag:{type:String, required:true, unique:true, index:true},
