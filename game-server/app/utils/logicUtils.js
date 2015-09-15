@@ -1438,51 +1438,33 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 		mergeStyle:mergeStyle,
 		attackAllianceId:attackAllianceDoc._id,
 		defenceAllianceId:defenceAllianceDoc._id,
-		attackPlayerKills:[],
-		attackAllianceCountData:{
-			kill:0,
-			routCount:0,
-			strikeCount:0,
-			strikeSuccessCount:0,
-			attackCount:0,
-			attackSuccessCount:0
+		attacker:{
+			playerKills:[],
+			allianceCountData:{
+				kill:0,
+				routCount:0,
+				strikeCount:0,
+				strikeSuccessCount:0,
+				attackCount:0,
+				attackSuccessCount:0
+			}
 		},
-		defencePlayerKills:[],
-		defenceAllianceCountData:{
-			kill:0,
-			routCount:0,
-			strikeCount:0,
-			strikeSuccessCount:0,
-			attackCount:0,
-			attackSuccessCount:0
+		defencer:{
+			playerKills:[],
+			allianceCountData:{
+				kill:0,
+				routCount:0,
+				strikeCount:0,
+				strikeSuccessCount:0,
+				attackCount:0,
+				attackSuccessCount:0
+			}
 		}
 	}
 	defenceAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
 	defenceAllianceDoc.basicInfo.statusStartTime = now
 	defenceAllianceDoc.basicInfo.statusFinishTime = prepareTime
-	defenceAllianceDoc.allianceFight = {
-		mergeStyle:mergeStyle,
-		attackAllianceId:attackAllianceDoc._id,
-		defenceAllianceId:defenceAllianceDoc._id,
-		attackPlayerKills:[],
-		attackAllianceCountData:{
-			kill:0,
-			routCount:0,
-			strikeCount:0,
-			strikeSuccessCount:0,
-			attackCount:0,
-			attackSuccessCount:0
-		},
-		defencePlayerKills:[],
-		defenceAllianceCountData:{
-			kill:0,
-			routCount:0,
-			strikeCount:0,
-			strikeSuccessCount:0,
-			attackCount:0,
-			attackSuccessCount:0
-		}
-	}
+	defenceAllianceDoc.allianceFight = attackAllianceDoc.allianceFight;
 }
 
 /**

@@ -1867,15 +1867,8 @@
 //		//it("attackPlayerCity 无协防玩家,有防守玩家,防守玩家失败", function(done){
 //		//	Api.loginPlayer(Config.deviceId, function(doc){
 //		//		doc.code.should.equal(200)
-//		//		Api.sendChat("dragonstar redDragon 1", function(doc){
+//		//		Api.sendChat("soldiers 20", function(doc){
 //		//			doc.code.should.equal(200)
-//		//			doc.code.should.equal(200)
-//		//			Api.sendChat("soldiers 20", function(doc){
-//		//				doc.code.should.equal(200)
-//		//				Api.setDefenceDragon("redDragon", function(doc){
-//		//					doc.code.should.equal(200)
-//		//				})
-//		//			})
 //		//		})
 //		//	})
 //		//
@@ -1921,7 +1914,7 @@
 //		//		})
 //		//	}, 2 * 1000)
 //		//})
-//		//
+//
 //		//it("getAttackMarchEventDetail 正常获取", function(done){
 //		//	var m_enemyAllianceData = null
 //		//	Api.loginPlayer(Config.deviceId4, function(doc){

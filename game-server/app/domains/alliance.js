@@ -296,31 +296,35 @@ var AllianceSchema = new Schema({
 			mergeStyle:{type:String, required:true},
 			attackAllianceId:{type:String, required:true},
 			defenceAllianceId:{type:String, required:true},
-			attackPlayerKills:[{
-				id:{type:Number, required:true},
-				name:{type:String, required:true},
-				kill:{type:Number, required:true}
-			}],
-			attackAllianceCountData:{
-				kill:{type:Number, required:true},
-				routCount:{type:Number, required:true},
-				strikeCount:{type:Number, required:true},
-				strikeSuccessCount:{type:Number, required:true},
-				attackCount:{type:Number, required:true},
-				attackSuccessCount:{type:Number, required:true}
+			attacker:{
+				playerKills:[{
+					id:{type:Number, required:true},
+					name:{type:String, required:true},
+					kill:{type:Number, required:true}
+				}],
+				allianceCountData:{
+					kill:{type:Number, required:true},
+					routCount:{type:Number, required:true},
+					strikeCount:{type:Number, required:true},
+					strikeSuccessCount:{type:Number, required:true},
+					attackCount:{type:Number, required:true},
+					attackSuccessCount:{type:Number, required:true}
+				}
 			},
-			defencePlayerKills:[{
-				id:{type:Number, required:true},
-				name:{type:String, required:true},
-				kill:{type:Number, required:true}
-			}],
-			defenceAllianceCountData:{
-				kill:{type:Number, required:true},
-				routCount:{type:Number, required:true},
-				strikeCount:{type:Number, required:true},
-				strikeSuccessCount:{type:Number, required:true},
-				attackCount:{type:Number, required:true},
-				attackSuccessCount:{type:Number, required:true}
+			defencer:{
+				playerKills:[{
+					id:{type:Number, required:true},
+					name:{type:String, required:true},
+					kill:{type:Number, required:true}
+				}],
+				allianceCountData:{
+					kill:{type:Number, required:true},
+					routCount:{type:Number, required:true},
+					strikeCount:{type:Number, required:true},
+					strikeSuccessCount:{type:Number, required:true},
+					attackCount:{type:Number, required:true},
+					attackSuccessCount:{type:Number, required:true}
+				}
 			}
 		},
 		required:false
