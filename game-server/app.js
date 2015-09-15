@@ -35,13 +35,21 @@ app.configure("local|develop|awschina|hotfix", "master", function(){
 })
 
 app.configure("local|develop|awschina|hotfix", "gate", function(){
-	app.set("connectorConfig", {
+	var connectorConfig = {
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
 		useDict:true,
 		useProtobuf:false,
 		disconnectOnTimeout:true
-	})
+	}
+	if(app.get('env') !== 'local'){
+		connectorConfig.ssl = {
+			key:fs.readFileSync(path.resolve('./config/keys/ssl.key')),
+			cert:fs.readFileSync(path.resolve('./config/keys/ssl.crt'))
+		}
+	}
+	app.set("connectorConfig", connectorConfig)
+	
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 
@@ -49,29 +57,6 @@ app.configure("local|develop|awschina|hotfix", "gate", function(){
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
-
-//app.configure("local", "logic", function(){
-//	var idParams = app.serverId.split("-")
-//	var intId = parseInt(idParams[idParams.length - 1])
-//	process.NODE_UNIQUE_ID = intId
-//	app.set("connectorConfig", {
-//		connector:pomelo.connectors.hybridconnector,
-//		heartbeat:10,
-//		useDict:true,
-//		useProtobuf:false,
-//		disconnectOnTimeout:true
-//	})
-//
-//	var filterService = new FilterService(app)
-//	app.before(filterService.toobusyFilter())
-//	app.before(filterService.loginFilter())
-//	app.before(filterService.initFilter());
-//	app.filter(filterService.requestTimeFilter())
-//
-//	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
-//	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
-//	app.set("mongoose", mongooseClient)
-//})
 
 app.configure("local|develop|awschina|hotfix", "logic", function(){
 	var idParams = app.serverId.split("-")
