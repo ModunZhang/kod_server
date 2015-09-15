@@ -204,3 +204,15 @@ pro.getItemLogs = function(playerId, allianceId, callback){
 		callback(e)
 	})
 }
+
+pro.enterAlliance = function(playerId, allianceId, callback){
+
+}
+
+pro.amInAlliance = function(playerId, allianceId, callback){
+
+}
+
+pro.leaveAlliance = function(playerId, allianceId, callback){
+
+}

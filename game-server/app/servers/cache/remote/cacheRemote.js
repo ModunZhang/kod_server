@@ -38,6 +38,7 @@ var CacheRemote = function(app){
 	this.allianceApiService4 = app.get("allianceApiService4")
 	this.allianceApiService5 = app.get("allianceApiService5")
 	this.cacheServerId = app.get('cacheServerId');
+	this.allianceViewers = {};
 	this.toobusyMaxLag = 100
 	this.toobusyInterval = 500
 	toobusy.maxLag(this.toobusyMaxLag)
@@ -96,6 +97,27 @@ pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callbac
 	channel.leave(uid, logicServerId)
 	if(channel.getMembers().length == 0) channel.destroy()
 	callback()
+}
+
+pro.enterAllianceChannel = function(allianceId, uid, logicServerId, callback){
+	var viewer = this.allianceViewers[uid];
+	var timer = null;
+	var channel = null;
+	if(!!view){
+		timer = viewer.timer;
+
+		clearTimeout(timer);
+
+
+	}
+}
+
+pro.amInAllianceChannel = function(allianceId, uid, callback){
+
+}
+
+pro.leaveAllianceChannel = function(allianceId, uid, logicServerId, callback){
+
 }
 
 /**
