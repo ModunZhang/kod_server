@@ -263,40 +263,31 @@ pro.findPlayerByName = function(name, callback){
 }
 
 /**
- * 临时添加玩家宝石
- * @param id
- * @param gem
+ * 禁止玩家登陆
+ * @param serverId
+ * @param playerId
+ * @param time
  * @param callback
  */
-pro.tempAddPlayerGem = function(id, gem, callback){
-	this.logService.onEvent('chat.gmApiRemote.tempAddPlayerGem', {id:id, gem:gem});
-
-	var self = this;
-	(function(){
-		return new Promise(function(resolve, reject){
-			self.Player.findById(id, 'serverId').then(function(doc){
-				if(!doc) return reject(new Error('玩家不存在'));
-				resolve(doc);
-			}, function(e){
-				reject(e);
-			})
-		})
-	})().then(function(doc){
-		return new Promise(function(resolve, reject){
-			self.app.rpc.cache.gmApiRemote.tempAddPlayerGem.toServer(doc.serverId, doc._id, gem, function(e){
-				if(!!e) return reject(e);
-				resolve();
-			})
-		})
-	}).then(function(){
+pro.banPlayer = function(serverId, playerId, time, callback){
+	this.app.rpc.cache.gmApiRemote.banPlayer.toServer(serverId, playerId, time, function(e){
+		if(!!e) return callback(null, {code:500, data:e.message});
 		callback(null, {code:200, data:null});
-	}).catch(function(e){
-		self.logService.onEventError('chat.gmApiRemote.tempAddPlayerGem', {
-			id:id,
-			gem:gem
-		}, e.stack);
-		callback(null, {code:500, data:e.message});
-	});
+	})
+}
+
+/**
+ * 禁言玩家
+ * @param serverId
+ * @param playerId
+ * @param time
+ * @param callback
+ */
+pro.mutePlayer = function(serverId, playerId, time, callback){
+	this.app.rpc.cache.gmApiRemote.mutePlayer.toServer(serverId, playerId, time, function(e){
+		if(!!e) return callback(null, {code:500, data:e.message});
+		callback(null, {code:200, data:null});
+	})
 }
 
 /**

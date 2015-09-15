@@ -217,7 +217,7 @@ module.exports = function(app, http){
 		var allianceTag = req.query.allianceTag;
 		app.rpc.chat.gmApiRemote.findAllianceByTag.toServer(req.chatServerId, allianceTag, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/alliance/find-by-tag', req.body, e.stack);
+				req.logService.onGmError('/alliance/find-by-tag', req.query, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
@@ -243,12 +243,48 @@ module.exports = function(app, http){
 		var playerName = req.query.playerName;
 		app.rpc.chat.gmApiRemote.findPlayerByName.toServer(req.chatServerId, playerName, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/player/find-by-name', req.body, e.stack);
+				req.logService.onGmError('/player/find-by-name', req.query, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
 		})
 	});
+
+	http.post('/player/ban', function(req, res){
+		req.logService.onGm('/player/ban', req.body);
+
+		var serverId = req.body.serverId;
+		var playerId = req.body.playerId;
+		var time = Number(req.body.time);
+		if(_.isNaN(time) || time < 0) return res.json({code:500, data:'Time 不合法'});
+		if(time > 0) time += Date.now();
+
+		app.rpc.chat.gmApiRemote.banPlayer.toServer(req.chatServerId, serverId, playerId, time, function(e, resp){
+			if(!!e){
+				req.logService.onGmError('/player/ban', req.body, e.stack);
+				res.json({code:500, data:e.message});
+			}else
+				res.json(resp);
+		})
+	})
+
+	http.post('/player/mute', function(req, res){
+		req.logService.onGm('/player/mute', req.body);
+
+		var serverId = req.body.serverId;
+		var playerId = req.body.playerId;
+		var time = Number(req.body.time);
+		if(_.isNaN(time) || time < 0) return res.json({code:500, data:'Time 不合法'});
+		if(time > 0) time += Date.now();
+
+		app.rpc.chat.gmApiRemote.mutePlayer.toServer(req.chatServerId, serverId, playerId, time, function(e, resp){
+			if(!!e){
+				req.logService.onGmError('/player/mute', req.body, e.stack);
+				res.json({code:500, data:e.message});
+			}else
+				res.json(resp);
+		})
+	})
 
 	http.get('/get-mail-reward-types', function(req, res){
 		res.json({code:200, data:MailRewardTypes})

@@ -23,6 +23,7 @@ var CacheRemote = function(app){
 	this.channelService = app.get('channelService')
 	this.cacheService = app.get('cacheService');
 	this.pushService = app.get('pushService');
+	this.dataService = app.get('dataService');
 	this.Player = app.get('Player');
 	this.Alliance = app.get('Alliance');
 	this.cacheServerId = app.get('cacheServerId');
@@ -195,7 +196,12 @@ pro.sendGlobalMail = function(title, content, rewards, callback){
  * @param callback
  */
 pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
-	this.logService.onEvent('cache.gmApiRemote.sendMailToPlayers', {ids:ids, title:title, content:content, rewards:rewards});
+	this.logService.onEvent('cache.gmApiRemote.sendMailToPlayers', {
+		ids:ids,
+		title:title,
+		content:content,
+		rewards:rewards
+	});
 
 	var self = this;
 	var inCacheIds = [];
@@ -264,5 +270,79 @@ pro.findAllianceById = function(id, callback){
 			id:id
 		}, e.stack);
 		callback(e);
+	})
+}
+
+/**
+ * 禁止玩家登陆
+ * @param playerId
+ * @param time
+ * @param callback
+ */
+pro.banPlayer = function(playerId, time, callback){
+	this.logService.onEvent('cache.gmApiRemote.banPlayer', {playerId:playerId, time:time});
+	var self = this;
+	var playerDoc = null;
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		if(!_.isObject(playerDoc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
+		playerDoc.countInfo.lockTime = time;
+		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		if(!!playerDoc.logicServerId && time > 0){
+			self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "禁止登录");
+		}
+		callback();
+	}).catch(function(e){
+		self.logService.onEventError('cache.gmApiRemote.banPlayer', {
+			playerId:playerId,
+			time:time
+		}, e.stack);
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e);
+		})
+	})
+}
+
+
+/**
+ * 禁言玩家
+ * @param playerId
+ * @param time
+ * @param callback
+ */
+pro.mutePlayer = function(playerId, time, callback){
+	this.logService.onEvent('cache.gmApiRemote.mutePlayer', {playerId:playerId, time:time});
+	var self = this;
+	var playerDoc = null;
+	var playerData = [];
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		if(!_.isObject(playerDoc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
+		playerDoc.countInfo.muteTime = time;
+		playerData.push(['countInfo.muteTime', time]);
+		return self.cacheService.updatePlayerAsync(playerId, playerDoc);
+	}).then(function(){
+		return self.dataService.updatePlayerSessionAsync(playerDoc, {muteTime:time});
+	}).then(function(){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
+	}).then(function(){
+		callback();
+	}).catch(function(e){
+		self.logService.onEventError('cache.gmApiRemote.mutePlayer', {
+			playerId:playerId,
+			time:time
+		}, e.stack);
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e);
+		})
 	})
 }
