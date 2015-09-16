@@ -1826,6 +1826,8 @@ pro.getItemLogs = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getItemLogs", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var e = null
+
+
 	if(_.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
@@ -1834,6 +1836,93 @@ pro.getItemLogs = function(msg, session, next){
 
 	this.request('getItemLogs', [session.uid, allianceId]).then(function(itemLogs){
 		next(null, {code:200, itemLogs:itemLogs})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 进入被观察联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.enterAlliance = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.enterAlliance", {playerId:session.uid, msg:msg})
+	var allianceId = session.get('allianceId');
+	var logicServerId = session.get('logicServerId');
+	var targetAllianceId = msg.targetAllianceId;
+	var e = null
+
+	if(!_.isString(targetAllianceId) || !ShortId.isValid(targetAllianceId)){
+		e = new Error("targetAllianceId 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(allianceId === targetAllianceId){
+		e = ErrorUtils.canNotViewYourOwnAlliance(session.uid, allianceId);
+		return next(e, ErrorUtils.getError(e))
+	}
+
+	this.request('enterAlliance', [logicServerId, session.uid, targetAllianceId]).spread(function(targetAllianceDoc, targetEnemyAllianceDoc){
+		next(null, {code:200, targetAllianceDoc:targetAllianceDoc, targetEnemyAllianceDoc:targetEnemyAllianceDoc})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 进入被观察联盟后的心跳
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.amInAlliance = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.amInAlliance", {playerId:session.uid, msg:msg})
+	var allianceId = session.get('allianceId');
+	var logicServerId = session.get('logicServerId');
+	var targetAllianceId = msg.targetAllianceId;
+	var e = null
+
+	if(!_.isString(targetAllianceId) || !ShortId.isValid(targetAllianceId)){
+		e = new Error("targetAllianceId 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(allianceId === targetAllianceId){
+		e = ErrorUtils.canNotViewYourOwnAlliance(session.uid, allianceId);
+		return next(e, ErrorUtils.getError(e))
+	}
+
+	this.request('amInAlliance', [logicServerId, session.uid, targetAllianceId]).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 玩家离开被观察的联盟
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.leaveAlliance = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.leaveAlliance", {playerId:session.uid, msg:msg})
+	var allianceId = session.get('allianceId');
+	var logicServerId = session.get('logicServerId');
+	var targetAllianceId = msg.targetAllianceId;
+	var e = null
+
+	if(!_.isString(targetAllianceId) || !ShortId.isValid(targetAllianceId)){
+		e = new Error("targetAllianceId 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(allianceId === targetAllianceId){
+		e = ErrorUtils.canNotViewYourOwnAlliance(session.uid, allianceId);
+		return next(e, ErrorUtils.getError(e))
+	}
+
+	this.request('leaveAlliance', [logicServerId, session.uid, targetAllianceId]).then(function(){
+		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})

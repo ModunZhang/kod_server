@@ -140,7 +140,7 @@ var SendOutCacheServerMail = function(playerIds, title, content, rewards, callba
  * @param callback
  */
 pro.sendGlobalMail = function(title, content, rewards, callback){
-	this.logService.onEvent('cache.gmApiRemote.sendGlobalMail', {title:title, content:content, rewards:rewards});
+	this.logService.onRemote('cache.gmApiRemote.sendGlobalMail', {title:title, content:content, rewards:rewards});
 
 	var self = this
 	var lastLoginTime = Date.now() - (DataUtils.getPlayerIntInit('activePlayerNeedHouses') * 60 * 60 * 1000);
@@ -160,7 +160,7 @@ pro.sendGlobalMail = function(title, content, rewards, callback){
 		var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, self);
 		var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, self);
 		SendOutCacheServerMailAsync(outCacheIds, title, content, rewards).then(function(){
-			self.logService.onEvent('cache.gmApiRemote.sendGlobalMail.SendOutCacheServerMail', {
+			self.logService.onRemote('cache.gmApiRemote.sendGlobalMail.SendOutCacheServerMail', {
 				playerCount:outCacheIds.length,
 				title:title,
 				content:content,
@@ -168,14 +168,14 @@ pro.sendGlobalMail = function(title, content, rewards, callback){
 			});
 			return SendInCacheServerMailAsync(inCacheIds, title, content, rewards)
 		}).then(function(){
-			self.logService.onEvent('cache.gmApiRemote.sendGlobalMail.SendInCacheServerMail', {
+			self.logService.onRemote('cache.gmApiRemote.sendGlobalMail.SendInCacheServerMail', {
 				playerCount:inCacheIds.length,
 				title:title,
 				content:content,
 				rewards:rewards
 			});
 		}).catch(function(e){
-			self.logService.onEventError('cache.gmApiRemote.sendGlobalMail', {
+			self.logService.onRemoteError('cache.gmApiRemote.sendGlobalMail', {
 				playerCount:docs.length,
 				title:title,
 				content:content,
@@ -196,7 +196,7 @@ pro.sendGlobalMail = function(title, content, rewards, callback){
  * @param callback
  */
 pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
-	this.logService.onEvent('cache.gmApiRemote.sendMailToPlayers', {
+	this.logService.onRemote('cache.gmApiRemote.sendMailToPlayers', {
 		ids:ids,
 		title:title,
 		content:content,
@@ -213,7 +213,7 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
 	var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, this);
 	var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, this);
 	SendOutCacheServerMailAsync(outCacheIds, title, content, rewards).then(function(){
-		self.logService.onEvent('cache.gmApiRemote.sendMailToPlayers.SendOutCacheServerMail', {
+		self.logService.onRemote('cache.gmApiRemote.sendMailToPlayers.SendOutCacheServerMail', {
 			playerCount:outCacheIds.length,
 			title:title,
 			content:content,
@@ -221,14 +221,14 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
 		});
 		return SendInCacheServerMailAsync(inCacheIds, title, content, rewards)
 	}).then(function(){
-		self.logService.onEvent('cache.gmApiRemote.sendMailToPlayers.SendInCacheServerMail', {
+		self.logService.onRemote('cache.gmApiRemote.sendMailToPlayers.SendInCacheServerMail', {
 			playerCount:inCacheIds.length,
 			title:title,
 			content:content,
 			rewards:rewards
 		});
 	}).catch(function(e){
-		self.logService.onEventError('cache.gmApiRemote.sendMailToPlayers', {
+		self.logService.onRemoteError('cache.gmApiRemote.sendMailToPlayers', {
 			count:ids.length,
 			title:title,
 			content:content,
@@ -245,11 +245,11 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
  * @param callback
  */
 pro.findPlayerById = function(id, callback){
-	this.logService.onEvent('cache.gmApiRemote.findPlayerById', {id:id});
+	this.logService.onRemote('cache.gmApiRemote.findPlayerById', {id:id});
 	this.cacheService.directFindPlayerAsync(id).then(function(doc){
 		callback(null, doc);
 	}).catch(function(e){
-		self.logService.onEventError('cache.gmApiRemote.findPlayerById', {
+		self.logService.onRemoteError('cache.gmApiRemote.findPlayerById', {
 			id:id
 		}, e.stack);
 		callback(e);
@@ -262,11 +262,11 @@ pro.findPlayerById = function(id, callback){
  * @param callback
  */
 pro.findAllianceById = function(id, callback){
-	this.logService.onEvent('cache.gmApiRemote.findAllianceById', {id:id});
+	this.logService.onRemote('cache.gmApiRemote.findAllianceById', {id:id});
 	this.cacheService.directFindAllianceAsync(id).then(function(doc){
 		callback(null, doc);
 	}).catch(function(e){
-		self.logService.onEventError('cache.gmApiRemote.findAllianceById', {
+		self.logService.onRemoteError('cache.gmApiRemote.findAllianceById', {
 			id:id
 		}, e.stack);
 		callback(e);
@@ -280,7 +280,7 @@ pro.findAllianceById = function(id, callback){
  * @param callback
  */
 pro.banPlayer = function(playerId, time, callback){
-	this.logService.onEvent('cache.gmApiRemote.banPlayer', {playerId:playerId, time:time});
+	this.logService.onRemote('cache.gmApiRemote.banPlayer', {playerId:playerId, time:time});
 	var self = this;
 	var playerDoc = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
@@ -294,7 +294,7 @@ pro.banPlayer = function(playerId, time, callback){
 		}
 		callback();
 	}).catch(function(e){
-		self.logService.onEventError('cache.gmApiRemote.banPlayer', {
+		self.logService.onRemoteError('cache.gmApiRemote.banPlayer', {
 			playerId:playerId,
 			time:time
 		}, e.stack);
@@ -308,7 +308,6 @@ pro.banPlayer = function(playerId, time, callback){
 	})
 }
 
-
 /**
  * 禁言玩家
  * @param playerId
@@ -316,7 +315,7 @@ pro.banPlayer = function(playerId, time, callback){
  * @param callback
  */
 pro.mutePlayer = function(playerId, time, callback){
-	this.logService.onEvent('cache.gmApiRemote.mutePlayer', {playerId:playerId, time:time});
+	this.logService.onRemote('cache.gmApiRemote.mutePlayer', {playerId:playerId, time:time});
 	var self = this;
 	var playerDoc = null;
 	var playerData = [];
@@ -333,7 +332,7 @@ pro.mutePlayer = function(playerId, time, callback){
 	}).then(function(){
 		callback();
 	}).catch(function(e){
-		self.logService.onEventError('cache.gmApiRemote.mutePlayer', {
+		self.logService.onRemoteError('cache.gmApiRemote.mutePlayer', {
 			playerId:playerId,
 			time:time
 		}, e.stack);

@@ -25,6 +25,7 @@ var AllianceApiService5 = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
+	this.cacheServiceId = app.get('cacheServerId');
 }
 module.exports = AllianceApiService5
 var pro = AllianceApiService5.prototype
@@ -114,11 +115,6 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
  * @param callback
  */
 pro.getJoinRequestEvents = function(playerId, allianceId, callback){
-	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
-		callback(new Error("allianceId 不合法"))
-		return
-	}
-
 	var allianceDoc = null
 	this.cacheService.directFindAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
@@ -140,11 +136,6 @@ pro.getJoinRequestEvents = function(playerId, allianceId, callback){
  * @param callback
  */
 pro.getShrineReports = function(playerId, allianceId, callback){
-	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
-		callback(new Error("allianceId 不合法"))
-		return
-	}
-
 	var allianceDoc = null
 	this.cacheService.directFindAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
@@ -164,11 +155,6 @@ pro.getShrineReports = function(playerId, allianceId, callback){
  * @param callback
  */
 pro.getAllianceFightReports = function(playerId, allianceId, callback){
-	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
-		callback(new Error("allianceId 不合法"))
-		return
-	}
-
 	var allianceDoc = null
 	this.cacheService.directFindAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
@@ -188,11 +174,6 @@ pro.getAllianceFightReports = function(playerId, allianceId, callback){
  * @param callback
  */
 pro.getItemLogs = function(playerId, allianceId, callback){
-	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
-		callback(new Error("allianceId 不合法"))
-		return
-	}
-
 	var allianceDoc = null
 	this.cacheService.directFindAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
@@ -205,14 +186,68 @@ pro.getItemLogs = function(playerId, allianceId, callback){
 	})
 }
 
-pro.enterAlliance = function(playerId, allianceId, callback){
-
+/**
+ * 进入被观察联盟
+ * @param logicServerId
+ * @param playerId
+ * @param targetAllianceId
+ * @param callback
+ */
+pro.enterAlliance = function(logicServerId, playerId, targetAllianceId, callback){
+	var self = this;
+	var targetAllianceDoc = null;
+	var targetEnemyAllianceDoc = null;
+	this.cacheService.directFindAllianceAsync(targetAllianceId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId));
+		targetAllianceDoc = doc;
+		if(!!targetAllianceDoc.allianceFight){
+			var enemyAllianceId = LogicUtils.getEnemyAllianceId(targetAllianceDoc.allianceFight, targetAllianceDoc._id)
+			return self.cacheService.directFindAllianceAsync(enemyAllianceId).then(function(doc){
+				targetEnemyAllianceDoc = doc
+				return Promise.resolve()
+			})
+		}
+		return Promise.resolve();
+	}).then(function(){
+		return new Promise(function(resolve, reject){
+			self.app.rpc.cache.cacheRemote.enterAllianceChannel.toServer(self.cacheServiceId, targetAllianceId, playerId, logicServerId, function(e){
+				if(!!e) return reject(e);
+				resolve();
+			})
+		})
+	}).then(function(){
+		targetAllianceDoc = _.pick(targetAllianceDoc, Consts.AllianceViewDataKeys);
+		targetEnemyAllianceDoc = !!targetEnemyAllianceDoc ? _.pick(targetEnemyAllianceDoc, Consts.AllianceViewDataKeys) : null;
+		callback(null, [targetAllianceDoc, targetEnemyAllianceDoc]);
+	}).catch(function(e){
+		callback(e);
+	})
 }
 
-pro.amInAlliance = function(playerId, allianceId, callback){
-
+/**
+ * 进入被观察联盟后的心跳
+ * @param logicServerId
+ * @param playerId
+ * @param targetAllianceId
+ * @param callback
+ */
+pro.amInAlliance = function(logicServerId, playerId, targetAllianceId, callback){
+	this.app.rpc.cache.cacheRemote.amInAllianceChannel.toServer(this.cacheServiceId, targetAllianceId, playerId, logicServerId, function(e){
+		if(!!e) return callback(e);
+		callback();
+	})
 }
 
-pro.leaveAlliance = function(playerId, allianceId, callback){
-
+/**
+ * 玩家离开被观察的联盟
+ * @param logicServerId
+ * @param playerId
+ * @param targetAllianceId
+ * @param callback
+ */
+pro.leaveAlliance = function(logicServerId, playerId, targetAllianceId, callback){
+	this.app.rpc.cache.cacheRemote.leaveAllianceChannel.toServer(this.cacheServiceId, targetAllianceId, playerId, logicServerId, function(e){
+		if(!!e) return callback(e);
+		callback();
+	})
 }

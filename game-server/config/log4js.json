@@ -136,6 +136,26 @@
     },
     {
       "type": "file",
+      "filename": "${opts:base}/logs/kod-remote.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-remote"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-remote-error.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-remote-error"
+    },
+    {
+      "type": "file",
       "filename": "${opts:base}/logs/kod-gm.log",
       "maxLogSize": 10485760,
       "layout": {
@@ -217,6 +237,8 @@
     "kod-request-error": "DEBUG",
     "kod-event": "DEBUG",
     "kod-event-error": "DEBUG",
+    "kod-remote": "DEBUG",
+    "kod-remote-error": "DEBUG",
     "kod-gm": "DEBUG",
     "kod-gm-error": "DEBUG",
     "kod-find": "DEBUG",

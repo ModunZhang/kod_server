@@ -4,7 +4,6 @@
  * Created by modun on 14-7-29.
  */
 
-var toobusy = require("toobusy-js")
 var _ = require("underscore")
 var ShortId = require('shortid');
 var Promise = require('bluebird');
@@ -39,10 +38,6 @@ var CacheRemote = function(app){
 	this.allianceApiService5 = app.get("allianceApiService5")
 	this.cacheServerId = app.get('cacheServerId');
 	this.allianceViewers = {};
-	this.toobusyMaxLag = 100
-	this.toobusyInterval = 500
-	toobusy.maxLag(this.toobusyMaxLag)
-	toobusy.interval(this.toobusyInterval)
 	this.apiMap = {}
 	var self = this
 	var services = [this.playerApiService, this.playerApiService2, this.playerApiService3, this.playerApiService4, this.playerApiService5,
@@ -65,59 +60,206 @@ var CacheRemote = function(app){
 var pro = CacheRemote.prototype
 
 /**
+ * 离开被观察的联盟
+ * @param playerId
+ * @param logicServerId
+ * @param channel
+ * @param timeOut
+ */
+var LeaveChannel = function(playerId, logicServerId, channel, timeOut){
+	if(!!timeOut){
+		this.logService.onRemoteError('cache.cacheRemote.LeaveChannel', {
+			playerId:playerId,
+			logicServerId:logicServerId,
+			channel:channel.name
+		}, new Error('未正常发出观察心跳').stack);
+	}
+	channel.leave(playerId, logicServerId);
+	if(channel.getMembers().length == 0) channel.destroy();
+	delete this.allianceViewers[playerId];
+}
+
+
+/**
  * 将玩家添加到联盟频道
  * @param allianceId
- * @param uid
+ * @param playerId
  * @param logicServerId
  * @param callback
  */
-pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
-	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(uid, logicServerId)
+pro.addToAllianceChannel = function(allianceId, playerId, logicServerId, callback){
+	this.logService.onRemote('cache.cacheRemote.addToAllianceChannel', {
+		allianceId:allianceId,
+		playerId:playerId,
+		logicServerId:logicServerId
+	});
+	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(playerId, logicServerId)
 	callback()
 }
 
 /**
  * 将玩家从联盟频道移除
  * @param allianceId
- * @param uid
+ * @param playerId
  * @param logicServerId
  * @param callback
  */
-pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
+pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, callback){
+	this.logService.onRemote('cache.cacheRemote.removeFromAllianceChannel', {
+		allianceId:allianceId,
+		playerId:playerId,
+		logicServerId:logicServerId
+	});
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 	if(!_.isObject(channel)){
-		this.logService.onEventError('cache.cacheRemote.removeFromAllianceChannel', {
+		this.logService.onRemoteError('cache.cacheRemote.removeFromAllianceChannel', {
 			allianceId:allianceId,
-			playerId:uid,
+			playerId:playerId,
 			logicServerId:logicServerId
-		})
+		}, new Error('channel 不存在').stack)
 		callback()
 		return
 	}
-	channel.leave(uid, logicServerId)
+	channel.leave(playerId, logicServerId)
 	if(channel.getMembers().length == 0) channel.destroy()
 	callback()
 }
 
-pro.enterAllianceChannel = function(allianceId, uid, logicServerId, callback){
-	var viewer = this.allianceViewers[uid];
+/**
+ * 从玩家正在观察的联盟退出
+ * @param playerId
+ * @param logicServerId
+ * @param callback
+ */
+pro.removeFromViewedAllianceChannel = function(playerId, logicServerId, callback){
+	this.logService.onRemote('cache.cacheRemote.removeFromViewedAllianceChannel', {
+		playerId:playerId,
+		logicServerId:logicServerId
+	});
+	var viewer = this.allianceViewers[playerId];
+	if(!viewer) return callback();
+	var timer = viewer.timer;
+	var channel = viewer.channel;
+	clearTimeout(timer);
+	LeaveChannel.call(this, playerId, logicServerId, channel, false);
+	callback();
+}
+
+/**
+ * 如果玩家观察的联盟和玩家新加入的联盟相同,将玩家从观察的联盟中移除
+ * @param allianceId
+ * @param playerId
+ * @param logicServerId
+ * @param callback
+ */
+pro.removeFromViewedAllianceChannelIfEqual = function(allianceId, playerId, logicServerId, callback){
+	this.logService.onRemote('cache.cacheRemote.removeFromViewedAllianceChannelIfEqual', {
+		allianceId:allianceId,
+		playerId:playerId,
+		logicServerId:logicServerId
+	});
+	var viewer = this.allianceViewers[playerId];
+	if(!viewer) callback();
+	var timer = viewer.timer;
+	var viewedChannel = viewer.channel;
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	if(channel === viewedChannel){
+		clearTimeout(timer);
+		LeaveChannel.call(this, playerId, logicServerId, viewedChannel, false);
+	}
+	callback();
+}
+
+/**
+ * 进入被观察联盟
+ * @param allianceId
+ * @param playerId
+ * @param logicServerId
+ * @param callback
+ */
+pro.enterAllianceChannel = function(allianceId, playerId, logicServerId, callback){
+	this.logService.onRemote('cache.cacheRemote.enterAllianceChannel', {
+		allianceId:allianceId,
+		playerId:playerId,
+		logicServerId:logicServerId
+	});
+	var viewer = this.allianceViewers[playerId];
 	var timer = null;
 	var channel = null;
-	if(!!view){
+	if(!!viewer){
 		timer = viewer.timer;
-
+		channel = viewer.channel;
 		clearTimeout(timer);
-
-
+		LeaveChannel.call(this, playerId, logicServerId, channel, false);
 	}
+	channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true);
+	channel.add(playerId, logicServerId)
+	viewer = {
+		channel:channel,
+		timer:setTimeout(LeaveChannel.bind(this), 1000 * 20, playerId, logicServerId, channel, true)
+	};
+	this.allianceViewers[playerId] = viewer;
+	callback();
 }
 
-pro.amInAllianceChannel = function(allianceId, uid, callback){
-
+/**
+ * 进入被观察联盟后的心跳
+ * @param allianceId
+ * @param playerId
+ * @param logicServerId
+ * @param callback
+ */
+pro.amInAllianceChannel = function(allianceId, playerId, logicServerId, callback){
+	this.logService.onRemote('cache.cacheRemote.amInAllianceChannel', {
+		allianceId:allianceId,
+		playerId:playerId,
+		logicServerId:logicServerId
+	});
+	var viewer = this.allianceViewers[playerId];
+	if(!viewer){
+		this.logService.onRemoteError('cache.cacheRemote.amInAllianceChannel', {
+			allianceId:allianceId,
+			playerId:playerId,
+			logicServerId:logicServerId
+		}, new Error('玩家未观察此联盟').stack);
+		return callback();
+	}
+	var timer = viewer.timer;
+	var channel = viewer.channel;
+	clearTimeout(timer);
+	timer = setTimeout(LeaveChannel.bind(this), 1000 * 15, playerId, logicServerId, channel, true)
+	viewer.timer = timer;
+	callback();
 }
 
-pro.leaveAllianceChannel = function(allianceId, uid, logicServerId, callback){
-
+/**
+ * 玩家离开被观察的联盟
+ * @param allianceId
+ * @param playerId
+ * @param logicServerId
+ * @param callback
+ * @returns {*}
+ */
+pro.leaveAllianceChannel = function(allianceId, playerId, logicServerId, callback){
+	this.logService.onRemote('cache.cacheRemote.leaveAllianceChannel', {
+		allianceId:allianceId,
+		playerId:playerId,
+		logicServerId:logicServerId
+	});
+	var viewer = this.allianceViewers[playerId];
+	if(!viewer){
+		this.logService.onRemoteError('cache.cacheRemote.leaveAllianceChannel', {
+			allianceId:allianceId,
+			playerId:playerId,
+			logicServerId:logicServerId
+		}, new Error('玩家未观察此联盟').stack);
+		return callback();
+	}
+	var timer = viewer.timer;
+	var channel = viewer.channel;
+	clearTimeout(timer);
+	LeaveChannel.call(this, playerId, logicServerId, channel, false);
+	callback();
 }
 
 /**
@@ -125,6 +267,7 @@ pro.leaveAllianceChannel = function(allianceId, uid, logicServerId, callback){
  * @param callback
  */
 pro.getLoginedCount = function(callback){
+	this.logService.onRemote('cache.cacheRemote.getLoginedCount');
 	callback(null, this.app.get('loginedCount'))
 }
 
@@ -138,12 +281,7 @@ pro.request = function(api, params, callback){
 	var self = this
 	var service = this.apiMap[api]
 	var e = null
-	//if(toobusy() && !_.isEqual(api, 'logout') && !_.isEqual(api, 'addPlayerBillingData')){
-	//	e = ErrorUtils.serverTooBusy(api, params)
-	//	self.logService.onRequestError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
-	//	callback(null, {code:e.code, data:e.message})
-	//	return
-	//}
+
 	if(!_.isObject(service)){
 		e = new Error('后端Api 不存在')
 		self.logService.onRequestError('cache.cacheRemote.request', {api:api, params:params}, e.stack)

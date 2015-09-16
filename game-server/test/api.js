@@ -1180,3 +1180,27 @@ Api.getItemLogs = function(allianceId, callback){
 	var route = "logic.allianceHandler.getItemLogs"
 	pomelo.request(route, info, callback)
 }
+
+Api.enterAlliance = function(targetAllianceId, callback){
+	var info = {
+		targetAllianceId:targetAllianceId
+	}
+	var route = "logic.allianceHandler.enterAlliance"
+	pomelo.request(route, info, callback)
+}
+
+Api.amInAlliance = function(targetAllianceId, callback){
+	var info = {
+		targetAllianceId:targetAllianceId
+	}
+	var route = "logic.allianceHandler.amInAlliance"
+	pomelo.request(route, info, callback)
+}
+
+Api.leaveAlliance = function(targetAllianceId, callback){
+	var info = {
+		targetAllianceId:targetAllianceId
+	}
+	var route = "logic.allianceHandler.leaveAlliance"
+	pomelo.request(route, info, callback)
+}

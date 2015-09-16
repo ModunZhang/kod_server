@@ -28,6 +28,7 @@ var AllianceApiService2 = function(app){
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
 	this.logService = app.get("logService")
+	this.cacheServerId = app.get('cacheServerId');
 	this.GemUse = app.get("GemUse")
 }
 module.exports = AllianceApiService2
@@ -245,6 +246,13 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return new Promise(function(resolve, reject){
+			self.app.rpc.cache.cacheRemote.removeFromViewedAllianceChannelIfEqual.toServer(self.cacheServerId, allianceDoc._id, playerDoc._id, playerDoc.logicServerId, function(e){
+				if(!!e) return reject(e);
+				resolve();
+			})
+		})
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
@@ -553,6 +561,13 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return new Promise(function(resolve, reject){
+			self.app.rpc.cache.cacheRemote.removeFromViewedAllianceChannelIfEqual.toServer(self.cacheServerId, allianceDoc._id, memberDoc._id, memberDoc.logicServerId, function(e){
+				if(!!e) return reject(e);
+				resolve();
+			})
+		})
+	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
@@ -726,6 +741,16 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		if(agree){
+			return new Promise(function(resolve, reject){
+				self.app.rpc.cache.cacheRemote.removeFromViewedAllianceChannelIfEqual.toServer(self.cacheServerId, allianceDoc._id, playerDoc._id, playerDoc.logicServerId, function(e){
+					if(!!e) return reject(e);
+					resolve();
+				})
+			})
+		}
+		return Promise.resolve();
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){

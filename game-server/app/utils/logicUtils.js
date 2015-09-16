@@ -1524,14 +1524,14 @@ Utils.addAllianceFightReport = function(allianceDoc, allianceData, report){
 /**
  * 如果联盟正在战斗,推送我方联盟相关数据变化到敌对联盟
  * @param allianceDoc
- * @param enemyAllianceData
+ * @param allianceData
  * @param pushFuncs
  * @param pushService
  */
-Utils.pushDataToEnemyAlliance = function(allianceDoc, enemyAllianceData, pushFuncs, pushService){
-	if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(enemyAllianceData)){
+Utils.pushDataToEnemyAlliance = function(allianceDoc, allianceData, pushFuncs, pushService){
+	if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(allianceData)){
 		var enemyAllianceId = this.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
-		pushFuncs.push([pushService, pushService.onEnemyAllianceDataChangedAsync, enemyAllianceId, enemyAllianceData])
+		pushFuncs.push([pushService, pushService.onOtherAllianceDataChangedAsync, enemyAllianceId, allianceDoc._id, allianceData])
 	}
 }
 

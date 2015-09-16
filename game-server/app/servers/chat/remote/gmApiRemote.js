@@ -39,7 +39,7 @@ var pro = GmApiRemote.prototype
  * @param callback
  */
 pro.sendGlobalNotice = function(servers, type, content, callback){
-	this.logService.onEvent('chat.chatRemote.sendGlobalNotice', {servers:servers, type:type, content:content});
+	this.logService.onRemote('chat.chatRemote.sendGlobalNotice', {servers:servers, type:type, content:content});
 	var self = this
 	_.each(servers, function(cacheServerId){
 		var channel = self.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, false)
@@ -78,6 +78,7 @@ pro.getGlobalChats = function(time, callback){
  * @param callback
  */
 pro.sendSysChat = function(content, callback){
+	this.logService.onRemote('chat.chatRemote.sendSysChat', {content:content});
 	var message = LogicUtils.createSysChatMessage(content);
 	if(this.chats.length > Define.MaxChatCount){
 		this.chats.shift()
@@ -96,7 +97,7 @@ pro.sendSysChat = function(content, callback){
  * @param callback
  */
 pro.sendGlobalMail = function(servers, title, content, rewards, callback){
-	this.logService.onEvent('chat.chatRemote.sendGlobalMail', {
+	this.logService.onRemote('chat.chatRemote.sendGlobalMail', {
 		servers:servers,
 		title:title,
 		content:content,
@@ -105,16 +106,7 @@ pro.sendGlobalMail = function(servers, title, content, rewards, callback){
 
 	var self = this;
 	_.each(servers, function(serverId){
-		self.app.rpc.cache.gmApiRemote.sendGlobalMail.toServer(serverId, title, content, rewards, function(e){
-			if(_.isObject(e)){
-				self.logService.onEventError('chat.chatRemote.sendGlobalMail', {
-					title:title,
-					content:content,
-					rewards:rewards,
-					serverId:serverId
-				}, e.stack);
-			}
-		})
+		self.app.rpc.cache.gmApiRemote.sendGlobalMail.toServer(serverId, title, content, rewards, function(){})
 	})
 	callback(null, {code:200, data:null});
 }
@@ -152,7 +144,7 @@ pro.getAllianceChats = function(allianceId, time, callback){
  * @param callback
  */
 pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
-	this.logService.onEvent('chat.gmApiRemote.sendMailToPlayers', {
+	this.logService.onRemote('chat.gmApiRemote.sendMailToPlayers', {
 		ids:ids,
 		title:title,
 		content:content,
@@ -163,7 +155,7 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
 	var serverIds = {};
 	this.Player.collection.find({_id:{$in:ids}}, {serverId:true}).toArray(function(e, docs){
 		if(!!e){
-			self.logService.onEventError('chat.gmApiRemote.sendMailToPlayers', {
+			self.logService.onRemoteError('chat.gmApiRemote.sendMailToPlayers', {
 				ids:ids,
 				title:title,
 				content:content,
@@ -175,16 +167,7 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
 				serverIds[doc.serverId].push(doc._id);
 			})
 			_.each(serverIds, function(ids, serverId){
-				self.app.rpc.cache.gmApiRemote.sendMailToPlayers.toServer(serverId, ids, title, content, rewards, function(e){
-					if(_.isObject(e)){
-						self.logService.onEventError('chat.gmApiRemote.sendMailToPlayers', {
-							ids:ids,
-							title:title,
-							content:content,
-							rewards:rewards
-						}, e.stack);
-					}
-				})
+				self.app.rpc.cache.gmApiRemote.sendMailToPlayers.toServer(serverId, ids, title, content, rewards, function(){})
 			})
 		}
 	})
@@ -198,7 +181,7 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
  * @param callback
  */
 pro.findPlayerById = function(id, callback){
-	this.logService.onEvent('chat.gmApiRemote.findPlayerById', {id:id});
+	this.logService.onRemote('chat.gmApiRemote.findPlayerById', {id:id});
 
 	var self = this;
 	(function(){
@@ -220,9 +203,6 @@ pro.findPlayerById = function(id, callback){
 	}).then(function(doc){
 		callback(null, {code:200, data:doc});
 	}).catch(function(e){
-		self.logService.onEventError('chat.gmApiRemote.findPlayerById', {
-			id:id
-		}, e.stack);
 		callback(null, {code:500, data:e.message});
 	});
 }
@@ -233,7 +213,7 @@ pro.findPlayerById = function(id, callback){
  * @param callback
  */
 pro.findPlayerByName = function(name, callback){
-	this.logService.onEvent('chat.gmApiRemote.findPlayerByName', {name:name});
+	this.logService.onRemote('chat.gmApiRemote.findPlayerByName', {name:name});
 
 	var self = this;
 	(function(){
@@ -255,9 +235,6 @@ pro.findPlayerByName = function(name, callback){
 	}).then(function(doc){
 		callback(null, {code:200, data:doc});
 	}).catch(function(e){
-		self.logService.onEventError('chat.gmApiRemote.findPlayerById', {
-			name:name
-		}, e.stack);
 		callback(null, {code:500, data:e.message});
 	});
 }
@@ -270,6 +247,12 @@ pro.findPlayerByName = function(name, callback){
  * @param callback
  */
 pro.banPlayer = function(serverId, playerId, time, callback){
+	this.logService.onRemote('chat.chatRemote.banPlayer', {
+		serverId:serverId,
+		playerId:playerId,
+		time:time
+	});
+
 	this.app.rpc.cache.gmApiRemote.banPlayer.toServer(serverId, playerId, time, function(e){
 		if(!!e) return callback(null, {code:500, data:e.message});
 		callback(null, {code:200, data:null});
@@ -284,6 +267,12 @@ pro.banPlayer = function(serverId, playerId, time, callback){
  * @param callback
  */
 pro.mutePlayer = function(serverId, playerId, time, callback){
+	this.logService.onRemote('chat.chatRemote.mutePlayer', {
+		serverId:serverId,
+		playerId:playerId,
+		time:time
+	});
+
 	this.app.rpc.cache.gmApiRemote.mutePlayer.toServer(serverId, playerId, time, function(e){
 		if(!!e) return callback(null, {code:500, data:e.message});
 		callback(null, {code:200, data:null});
@@ -296,7 +285,7 @@ pro.mutePlayer = function(serverId, playerId, time, callback){
  * @param callback
  */
 pro.findAllianceById = function(id, callback){
-	this.logService.onEvent('chat.gmApiRemote.findAllianceById', {id:id});
+	this.logService.onRemote('chat.gmApiRemote.findAllianceById', {id:id});
 
 	var self = this;
 	(function(){
@@ -318,9 +307,6 @@ pro.findAllianceById = function(id, callback){
 	}).then(function(doc){
 		callback(null, {code:200, data:doc});
 	}).catch(function(e){
-		self.logService.onEventError('chat.gmApiRemote.findAllianceById', {
-			id:id
-		}, e.stack);
 		callback(null, {code:500, data:e.message});
 	});
 }
@@ -331,7 +317,7 @@ pro.findAllianceById = function(id, callback){
  * @param callback
  */
 pro.findAllianceByTag = function(tag, callback){
-	this.logService.onEvent('chat.gmApiRemote.findAllianceByTag', {tag:tag});
+	this.logService.onRemote('chat.gmApiRemote.findAllianceByTag', {tag:tag});
 
 	var self = this;
 	(function(){
@@ -353,9 +339,6 @@ pro.findAllianceByTag = function(tag, callback){
 	}).then(function(doc){
 		callback(null, {code:200, data:doc});
 	}).catch(function(e){
-		self.logService.onEventError('chat.gmApiRemote.findAllianceByTag', {
-			tag:tag
-		}, e.stack);
 		callback(null, {code:500, data:e.message});
 	});
 }

@@ -163,9 +163,8 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
 		}
+		eventFuncs.push([self.dataService, self.dataService.addPlayerToChannelsAsync, playerDoc])
 		return Promise.resolve()
-	}).then(function(){
-		return self.dataService.addPlayerToChannelsAsync(playerDoc)
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){

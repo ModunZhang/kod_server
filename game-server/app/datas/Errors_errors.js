@@ -1033,3 +1033,8 @@ errors["playerIsForbiddenToSpeak"] = {
 	code:705,
 	message:"玩家被禁言"
 }
+errors["canNotViewYourOwnAlliance"] = {
+	key:"canNotViewYourOwnAlliance",
+	code:706,
+	message:"不能观察自己的联盟"
+}

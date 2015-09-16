@@ -72,27 +72,6 @@ pro.onJoinAllianceSuccess = function(playerDoc, playerData, allianceDoc, enemyAl
 }
 
 /**
- * 推送联盟数据给玩家
- * @param allianceId
- * @param data
- * @param callback
- */
-pro.onAllianceDataChanged = function(allianceId, data, callback){
-	var self = this
-	var eventName = Events.alliance.onAllianceDataChanged
-	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
-	var channel = this.channelService.getChannel(channelName, false)
-	if(!_.isObject(channel)){
-		callback()
-		return
-	}
-	channel.pushMessage(eventName, data, {}, function(e){
-		if(_.isObject(e)) self.logService.onEventError("logic.pushService.onAllianceDataChanged", {allianceId:allianceId}, e.stack)
-	})
-	callback()
-}
-
-/**
  * 联盟内部Banner消息
  * @param allianceId
  * @param key
@@ -108,7 +87,28 @@ pro.onAllianceNotice = function(allianceId, key, params, callback){
 		callback()
 		return
 	}
-	channel.pushMessage(eventName, {key:key, params:params}, {}, function(e){
+	channel.pushMessage(eventName, {targetAllianceId:allianceId, data:{key:key, params:params}}, {}, function(e){
+		if(_.isObject(e)) self.logService.onEventError("logic.pushService.onAllianceDataChanged", {allianceId:allianceId}, e.stack)
+	})
+	callback()
+}
+
+/**
+ * 推送联盟数据给玩家
+ * @param allianceId
+ * @param data
+ * @param callback
+ */
+pro.onAllianceDataChanged = function(allianceId, data, callback){
+	var self = this
+	var eventName = Events.alliance.onAllianceDataChanged
+	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
+	var channel = this.channelService.getChannel(channelName, false)
+	if(!_.isObject(channel)){
+		callback()
+		return
+	}
+	channel.pushMessage(eventName, {targetAllianceId:allianceId, data:data}, {}, function(e){
 		if(_.isObject(e)) self.logService.onEventError("logic.pushService.onAllianceDataChanged", {allianceId:allianceId}, e.stack)
 	})
 	callback()
@@ -136,7 +136,7 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceId, data, memberId, c
 		return !_.isEqual(uid.uid, memberId)
 	})
 	if(uids.length > 0){
-		self.channelService.pushMessageByUids(eventName, data, uids, {}, function(e){
+		self.channelService.pushMessageByUids(eventName, {targetAllianceId:allianceId, data:data}, uids, {}, function(e){
 			if(_.isObject(e)) self.logService.onEventError("logic.pushService.onAllianceDataChangedExceptMemberId", {
 				allianceId:allianceId,
 				memberId:memberId
@@ -147,22 +147,23 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceId, data, memberId, c
 }
 
 /**
- * 敌方联盟数据改变
+ * 其他联盟数据改变
  * @param allianceId
+ * @param targetAllianceId
  * @param data
  * @param callback
  */
-pro.onEnemyAllianceDataChanged = function(allianceId, data, callback){
+pro.onOtherAllianceDataChanged = function(allianceId, targetAllianceId, data, callback){
 	var self = this
-	var eventName = Events.alliance.onEnemyAllianceDataChanged
+	var eventName = Events.alliance.onAllianceDataChanged
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
 	var channel = this.channelService.getChannel(channelName, false)
 	if(!_.isObject(channel)){
 		callback()
 		return
 	}
-	channel.pushMessage(eventName, data, {}, function(e){
-		if(_.isObject(e)) self.logService.onEventError("logic.pushService.onEnemyAllianceDataChanged", {allianceId:allianceId}, e.stack)
+	channel.pushMessage(eventName, {targetAllianceId:targetAllianceId, data:data}, {}, function(e){
+		if(_.isObject(e)) self.logService.onEventError("logic.pushService.onOtherAllianceDataChanged", {allianceId:allianceId, targetAllianceId:targetAllianceId}, e.stack)
 	})
 	callback()
 }

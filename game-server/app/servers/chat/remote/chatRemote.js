@@ -33,71 +33,91 @@ var pro = ChatRemote.prototype
 
 /**
  * 将玩家添加到聊天频道中
- * @param uid
+ * @param playerId
  * @param logicServerId
  * @param cacheServerId
  * @param callback
  */
-pro.addToChatChannel = function(uid, logicServerId, cacheServerId, callback){
-	this.globalChatChannel.add(uid, logicServerId)
-	this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, true).add(uid, logicServerId)
+pro.addToChatChannel = function(playerId, logicServerId, cacheServerId, callback){
+	this.logService.onRemote('chat.chatRemote.addToAllianceChannel', {
+		playerId:playerId,
+		logicServerId:logicServerId,
+		cacheServerId:cacheServerId
+	});
+	this.globalChatChannel.add(playerId, logicServerId)
+	this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, true).add(playerId, logicServerId)
 	callback()
 }
 
 /**
  * 将玩家从聊天频道中移除
- * @param uid
+ * @param playerId
  * @param logicServerId
  * @param cacheServerId
  * @param callback
  */
-pro.removeFromChatChannel = function(uid, logicServerId, cacheServerId, callback){
-	this.globalChatChannel.leave(uid, logicServerId)
+pro.removeFromChatChannel = function(playerId, logicServerId, cacheServerId, callback){
+	this.logService.onRemote('chat.chatRemote.removeFromChatChannel', {
+		playerId:playerId,
+		logicServerId:logicServerId,
+		cacheServerId:cacheServerId
+	});
+	this.globalChatChannel.leave(playerId, logicServerId)
 	var channel = this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, false)
 	if(!_.isObject(channel)){
-		this.logService.onEventError('chat.chatRemote.removeFromChatChannel', {
-			playerId:uid,
+		this.logService.onRemoteError('chat.chatRemote.removeFromChatChannel', {
+			playerId:playerId,
 			logicServerId:logicServerId,
 			cacheServerId:cacheServerId
-		})
+		}, new Error('channel 不存在').stack);
 		callback()
 		return
 	}
-	channel.leave(uid, logicServerId)
+	channel.leave(playerId, logicServerId)
 	callback()
 }
 
 /**
  * 将玩家添加到联盟频道
  * @param allianceId
- * @param uid
+ * @param playerId
  * @param logicServerId
  * @param callback
  */
-pro.addToAllianceChannel = function(allianceId, uid, logicServerId, callback){
-	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(uid, logicServerId)
+pro.addToAllianceChannel = function(allianceId, playerId, logicServerId, callback){
+	this.logService.onRemote('chat.chatRemote.addToAllianceChannel', {
+		allianceId:allianceId,
+		playerId:playerId,
+		logicServerId:logicServerId
+	});
+	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(playerId, logicServerId)
 	callback()
 }
 
 /**
  * 将玩家从联盟频道移除
  * @param allianceId
- * @param uid
+ * @param playerId
  * @param logicServerId
  * @param callback
  */
-pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callback){
+pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, callback){
+	this.logService.onRemote('chat.chatRemote.removeFromAllianceChannel', {
+		allianceId:allianceId,
+		playerId:playerId,
+		logicServerId:logicServerId
+	});
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 	if(!_.isObject(channel)){
-		this.logService.onEventError('chat.chatRemote.removeFromAllianceChannel', {
+		this.logService.onRemoteError('chat.chatRemote.removeFromAllianceChannel', {
 			allianceId:allianceId,
-			playerId:uid,
+			playerId:playerId,
 			logicServerId:logicServerId
-		})
+		}, new Error('channel 不存在').stack)
 		callback()
 		return
 	}
-	channel.leave(uid, logicServerId)
+	channel.leave(playerId, logicServerId)
 	callback()
 }
 
@@ -107,9 +127,12 @@ pro.removeFromAllianceChannel = function(allianceId, uid, logicServerId, callbac
  * @param callback
  */
 pro.destroyAllianceChannel = function(allianceId, callback){
+	this.logService.onRemote('chat.chatRemote.destroyAllianceChannel', {allianceId:allianceId});
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 	if(!_.isObject(channel)){
-		this.logService.onEventError('chat.chatRemote.destroyAllianceChannel', {allianceId:allianceId})
+		this.logService.onRemoteError('chat.chatRemote.destroyAllianceChannel', {
+			allianceId:allianceId
+		}, new Error('channel 不存在').stack)
 		callback()
 		return
 	}
@@ -124,6 +147,10 @@ pro.destroyAllianceChannel = function(allianceId, callback){
  * @param callback
  */
 pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
+	this.logService.onRemote('chat.chatRemote.createAllianceFightChannel', {
+		attackAllianceId:attackAllianceId,
+		defenceAllianceId:defenceAllianceId
+	});
 	this.allianceFights[attackAllianceId] = attackAllianceId + '_' + defenceAllianceId
 	this.allianceFights[defenceAllianceId] = attackAllianceId + '_' + defenceAllianceId
 	callback()
@@ -136,6 +163,10 @@ pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
  * @param callback
  */
 pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
+	this.logService.onRemote('chat.chatRemote.deleteAllianceFightChannel', {
+		attackAllianceId:attackAllianceId,
+		defenceAllianceId:defenceAllianceId
+	});
 	var allianceFights = this.app.get('allianceFights')
 	delete allianceFights[attackAllianceId]
 	delete allianceFights[defenceAllianceId]

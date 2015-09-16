@@ -2123,3 +2123,13 @@ Utils.playerIsForbiddenToSpeak = function(playerId, muteTime){
 	var config = Error.playerIsForbiddenToSpeak;
 	return CreateError(config, {playerId:playerId, muteTime:muteTime});
 }
+
+/**
+ * 不能观察自己的联盟
+ * @param playerId
+ * @param allianceId
+ */
+Utils.canNotViewYourOwnAlliance = function(playerId, allianceId){
+	var config = Error.canNotViewYourOwnAlliance;
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+}
