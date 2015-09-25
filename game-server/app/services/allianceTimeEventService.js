@@ -2308,7 +2308,7 @@ pro.onAlliancePrepareStatusFinished = function(attackAllianceDoc, defenceAllianc
 	var updateFuncs = []
 
 	var now = Date.now()
-	var statusFinishTime = now + (DataUtils.getAllianceIntInit("allianceFightTotalFightMinutes") * 60 * 1000)
+	var statusFinishTime = now + (DataUtils.getAllianceIntInit("allianceFightTotalFightMinutes") * 60 * 1000 / 60)
 	attackAllianceDoc.basicInfo.status = Consts.AllianceStatus.Fight
 	attackAllianceData.push(["basicInfo.status", attackAllianceDoc.basicInfo.status])
 	attackAllianceDoc.basicInfo.statusStartTime = now
