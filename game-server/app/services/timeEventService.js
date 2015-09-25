@@ -523,7 +523,7 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
  */
 pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
 	var self = this
-	var cacheService = app.get('cacheService');
+	var cacheService = this.app.get('cacheService');
 	var now = Date.now()
 	var funcs = []
 	if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){

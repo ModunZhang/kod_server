@@ -36,64 +36,30 @@ var AllianceMapSize = {
  * @returns {number}
  */
 var getAllianceLocationDistance = function(fromAllianceDoc, fromLocation, toAllianceDoc, toLocation){
-	var width = 0
-	var height = 0
-
+	var getMapIndexLocation = function(mapIndex){
+		return {
+			x:mapIndex % Define.BigMapWidth,
+			y:Math.floor(mapIndex / Define.BigMapWidth)
+		};
+	}
 	var getDistance = function(width, height){
 		return Math.ceil(Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)))
 	}
 
-	if(fromAllianceDoc == toAllianceDoc){
-		width = Math.abs(fromLocation.x - toLocation.x)
-		height = Math.abs(fromLocation.y - toLocation.y)
-		return getDistance(width, height)
+	var fromMapIndexLocation = getMapIndexLocation(fromAllianceDoc.mapIndex);
+	var toMapIndexLocation = getMapIndexLocation(toAllianceDoc.mapIndex);
+	fromLocation = {
+		x:fromLocation.x + (fromMapIndexLocation.x * AllianceMapSize.width),
+		y:fromLocation.y + (fromMapIndexLocation.y * AllianceMapSize.height)
+	}
+	toLocation = {
+		x:toLocation.x + (toMapIndexLocation.x * AllianceMapSize.width),
+		y:toLocation.y + (toMapIndexLocation.y * AllianceMapSize.height)
 	}
 
-	if(_.isEqual(fromAllianceDoc._id, fromAllianceDoc.allianceFight.attackAllianceId)){
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Left)){
-			width = AllianceMapSize.width - fromLocation.x + toLocation.x
-			height = Math.abs(fromLocation.y - toLocation.y)
-			return getDistance(width, height)
-		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Right)){
-			width = AllianceMapSize.width - toLocation.x + fromLocation.x
-			height = Math.abs(fromLocation.y - toLocation.y)
-			return getDistance(width, height)
-		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Top)){
-			width = Math.abs(fromLocation.x - toLocation.x)
-			height = AllianceMapSize.height - fromLocation.y + toLocation.y
-			return getDistance(width, height)
-		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Bottom)){
-			width = Math.abs(fromLocation.x - toLocation.x)
-			height = AllianceMapSize.height - toLocation.y + fromLocation.y
-			return getDistance(width, height)
-		}
-		return 0
-	}else{
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Left)){
-			width = AllianceMapSize.width - toLocation.x + fromLocation.x
-			height = Math.abs(fromLocation.y - toLocation.y)
-			return getDistance(width, height)
-		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Right)){
-			width = AllianceMapSize.width - fromLocation.x + toLocation.x
-			height = Math.abs(fromLocation.y - toLocation.y)
-			return getDistance(width, height)
-		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Top)){
-			width = Math.abs(fromLocation.x - toLocation.x)
-			height = AllianceMapSize.height - toLocation.y + fromLocation.y
-			return getDistance(width, height)
-		}
-		if(_.isEqual(fromAllianceDoc.allianceFight.mergeStyle, Consts.AllianceMergeStyle.Bottom)){
-			width = Math.abs(fromLocation.x - toLocation.x)
-			height = AllianceMapSize.height - fromLocation.y + toLocation.y
-			return getDistance(width, height)
-		}
-		return 0
-	}
+	var width = Math.abs(fromLocation.x - toLocation.x)
+	var height = Math.abs(fromLocation.y - toLocation.y)
+	return getDistance(width, height)
 }
 
 /**
@@ -245,7 +211,7 @@ var getPlayerSoldiersMarchTime = function(playerDoc, dragon, soldiers, fromAllia
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? DataUtils.getPlayerVipLevel(playerDoc) : 0].marchSpeedAdd
 	var time = Math.ceil(totalSpeed / totalCount * distance * 1000)
 	time = LogicUtils.getTimeEfffect(time, itemBuff + vipBuff)
-	return time//5 * 1000
+	return 5 * 1000
 }
 
 /**
@@ -263,7 +229,7 @@ var getPlayerDragonMarchTime = function(playerDoc, dragon, fromAllianceDoc, from
 	var baseSpeed = 2000
 	var marchSpeed = PlayerInitData.intInit.dragonMarchSpeed.value
 	var time = Math.ceil(baseSpeed / marchSpeed * distance * 1000)
-	return time//5 * 1000
+	return 5 * 1000
 }
 
 

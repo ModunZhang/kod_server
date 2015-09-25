@@ -961,21 +961,11 @@ Api.attackAllianceShrine = function(shrineEventId, dragonType, soldiers, callbac
 	pomelo.request(route, info, callback)
 }
 
-Api.requestAllianceToFight = function(callback){
-	var route = "logic.allianceHandler.requestAllianceToFight"
-	pomelo.request(route, null, callback)
-}
-
-Api.findAllianceToFight = function(callback){
-	var route = "logic.allianceHandler.findAllianceToFight"
-	pomelo.request(route, null, callback)
-}
-
-Api.revengeAlliance = function(reportId, callback){
+Api.attackAlliance = function(targetAllianceId, callback){
+	var route = "logic.allianceHandler.attackAlliance"
 	var info = {
-		reportId:reportId
+		targetAllianceId:targetAllianceId
 	}
-	var route = "logic.allianceHandler.revengeAlliance"
 	pomelo.request(route, info, callback)
 }
 

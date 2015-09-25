@@ -295,7 +295,6 @@ var AllianceSchema = new Schema({
 			collectTotal:{type:Number, required:true}
 		}
 	}],
-	fightRequests:[String],
 	allianceFight:{
 		type:{
 			attacker:{

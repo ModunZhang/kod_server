@@ -414,54 +414,13 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 }
 
 /**
- * 请求联盟进行联盟战
+ * 开启联盟战
  * @param playerId
  * @param allianceId
+ * @param targetAllianceId
  * @param callback
  */
-pro.requestAllianceToFight = function(playerId, allianceId, callback){
-	var self = this
-	var allianceDoc = null
-	var allianceData = []
-	var updateFuncs = []
-	var pushFuncs = []
-	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
-		allianceDoc = doc
-		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id))
-		var findedPlayerId = _.find(allianceDoc.fightRequests, function(thePlayerId){
-			return _.isEqual(thePlayerId, playerId)
-		})
-		if(_.isEqual(playerId, findedPlayerId)) return Promise.reject(ErrorUtils.alreadySendAllianceFightRequest(playerId, allianceDoc._id))
-		allianceDoc.fightRequests.push(playerId)
-		allianceData.push(["fightRequests." + allianceDoc.fightRequests.indexOf(playerId), playerId])
-
-		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
-	})
-}
-
-/**
- * 查找合适的联盟进行战斗
- * @param playerId
- * @param allianceId
- * @param callback
- */
-pro.findAllianceToFight = function(playerId, allianceId, callback){
+pro.attackAlliance = function(playerId, allianceId, targetAllianceId, callback){
 	var self = this
 	var attackAllianceDoc = null
 	var attackAllianceData = []
@@ -474,53 +433,16 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		attackAllianceDoc = doc
 		playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, playerId)
-		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "findAllianceToFight")){
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "findAllianceToFight"))
+		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "attackAlliance")){
+			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "attackAlliance"))
 		}
 		if(_.isObject(attackAllianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, attackAllianceDoc._id))
-
-		var funcs = []
-		funcs.push(new Promise(function(resolve, reject){
-			self.cacheService.getAllianceModel().collection.find({
-				_id:{$ne:allianceId},
-				serverId:self.app.get("cacheServerId"),
-				'basicInfo.status':Consts.AllianceStatus.Peace,
-				'basicInfo.power':{$lte:attackAllianceDoc.basicInfo.power}
-			}, {
-				_id:true,
-				basicInfo:true
-			}).sort({'basicInfo.power':-1}).limit(1).toArray(function(e, docs){
-				if(_.isObject(e)) reject(e)
-				else resolve(docs.length > 0 ? docs[0] : null)
-			})
-		}))
-		funcs.push(new Promise(function(resolve, reject){
-			self.cacheService.getAllianceModel().collection.find({
-				_id:{$ne:allianceId},
-				serverId:self.app.get("cacheServerId"),
-				'basicInfo.status':Consts.AllianceStatus.Peace,
-				'basicInfo.power':{$gt:attackAllianceDoc.basicInfo.power}
-			}, {
-				_id:true,
-				basicInfo:true
-			}).sort({'basicInfo.power':1}).limit(1).toArray(function(e, docs){
-				if(_.isObject(e)) reject(e)
-				else resolve(docs.length > 0 ? docs[0] : null)
-			})
-		}))
-		return Promise.all(funcs)
-	}).spread(function(docSmall, docBig){
-		if(!_.isObject(docSmall) && !_.isObject(docBig)) return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
-		var powerSmall = _.isObject(docSmall) ? attackAllianceDoc.basicInfo.power - docSmall.basicInfo.power : null
-		var powerBig = _.isObject(docBig) ? docBig.basicInfo.power - attackAllianceDoc.basicInfo.power : null
-		var finalDoc = _.isNull(docSmall) ? docBig : _.isNull(docBig) ? docSmall : powerBig >= powerSmall ? docSmall : docBig
-		if(attackAllianceDoc.basicInfo.power * 1.6 < finalDoc.basicInfo.power || attackAllianceDoc.basicInfo.power * 0.6 > finalDoc.basicInfo.power)
-			return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
-		return self.cacheService.findAllianceAsync(finalDoc._id)
+		return self.cacheService.findAllianceAsync(targetAllianceId)
 	}).then(function(doc){
+		if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId));
 		defenceAllianceDoc = doc
 		if(!_.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Peace))
-			return Promise.reject(ErrorUtils.canNotFindAllianceToFight(playerId, attackAllianceDoc._id))
+			return Promise.reject(ErrorUtils.targetAllianceNotInPeaceStatus(playerId, defenceAllianceDoc._id))
 
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent])
@@ -532,93 +454,7 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		attackAllianceData.push(["allianceFight", attackAllianceDoc.allianceFight])
 		defenceAllianceData.push(["basicInfo", defenceAllianceDoc.basicInfo])
 		defenceAllianceData.push(["allianceFight", defenceAllianceDoc.allianceFight])
-		attackAllianceDoc.fightRequests = []
-		attackAllianceData.push(["fightRequests", attackAllianceDoc.fightRequests])
-		defenceAllianceDoc.fightRequests = []
-		defenceAllianceData.push(["fightRequests", defenceAllianceDoc.fightRequests])
 		LogicUtils.AddAllianceEvent(attackAllianceDoc, attackAllianceData, Consts.AllianceEventCategory.War, Consts.AllianceEventType.Fight, playerObject.name, []);
-
-		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
-		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
-		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
-		pushFuncs.push([self.dataService, self.dataService.createAllianceFightChannelAsync, attackAllianceDoc._id, defenceAllianceDoc._id])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		self.apnService.onAllianceFightPrepare(attackAllianceDoc, defenceAllianceDoc);
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(attackAllianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(attackAllianceDoc._id, null))
-		}
-		if(_.isObject(defenceAllianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(defenceAllianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
-	})
-}
-
-/**
- * 复仇其他联盟
- * @param playerId
- * @param allianceId
- * @param reportId
- * @param callback
- */
-pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
-	var self = this
-	var attackAllianceDoc = null
-	var attackAllianceData = []
-	var defenceAllianceDoc = null
-	var defenceAllianceData = []
-	var pushFuncs = []
-	var eventFuncs = []
-	var updateFuncs = []
-	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
-		attackAllianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, playerId)
-		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "revengeAlliance")){
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "revengeAlliance"))
-		}
-		if(_.isObject(attackAllianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, attackAllianceDoc._id))
-
-		var report = _.find(attackAllianceDoc.allianceFightReports, function(report){
-			return _.isEqual(report.id, reportId)
-		})
-		if(!_.isObject(report)) return Promise.reject(ErrorUtils.allianceFightReportNotExist(playerId, attackAllianceDoc._id, reportId))
-		var isWin = _.isEqual(attackAllianceDoc._id, report.attackAllianceId) && _.isEqual(report.fightResult, Consts.FightResult.AttackWin)
-		isWin = isWin ? isWin : _.isEqual(attackAllianceDoc._id, report.defenceAllianceId) && _.isEqual(report.fightResult, Consts.FightResult.DefenceWin)
-		if(isWin) return Promise.reject(ErrorUtils.winnerOfAllianceFightCanNotRevenge(playerId, attackAllianceDoc._id, reportId))
-		if(DataUtils.isAllianceRevengeTimeExpired(report)) return Promise.reject(ErrorUtils.allianceFightRevengeTimeExpired(playerId, attackAllianceDoc._id, reportId))
-		var enemyAllianceId = LogicUtils.getEnemyAllianceId(report, attackAllianceDoc._id)
-		return self.cacheService.findAllianceAsync(enemyAllianceId)
-	}).then(function(doc){
-		defenceAllianceDoc = doc
-		if(!_.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Peace)) return Promise.reject(ErrorUtils.targetAllianceNotInPeaceStatus(playerId, attackAllianceDoc._id, reportId))
-		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
-			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent])
-		}
-		var now = Date.now()
-		var finishTime = now + (DataUtils.getAllianceIntInit("allianceFightPrepareMinutes") * 60 * 1000)
-		LogicUtils.prepareForAllianceFight(attackAllianceDoc, defenceAllianceDoc, finishTime)
-		attackAllianceData.push(["basicInfo", attackAllianceDoc.basicInfo])
-		attackAllianceData.push(["allianceFight", attackAllianceDoc.allianceFight])
-		defenceAllianceData.push(["basicInfo", defenceAllianceDoc.basicInfo])
-		defenceAllianceData.push(["allianceFight", defenceAllianceDoc.allianceFight])
-		attackAllianceDoc.fightRequests = []
-		attackAllianceData.push(["fightRequests", attackAllianceDoc.fightRequests])
-		defenceAllianceDoc.fightRequests = []
-		defenceAllianceData.push(["fightRequests", defenceAllianceDoc.fightRequests])
 
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])

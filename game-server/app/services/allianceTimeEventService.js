@@ -91,7 +91,9 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 			})
 		}else{
 			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-			event = LogicUtils.getEventById(allianceDoc[eventType], eventId)
+			event = _.contains(Consts.AllianceMarchEventTypes, eventType)
+				? LogicUtils.getEventById(allianceDoc.marchEvents[eventType], eventId)
+				: LogicUtils.getEventById(allianceDoc[eventType], eventId);
 			if(!_.isObject(event)) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, eventType, eventId))
 			var timeEventFuncName = "on" + eventType.charAt(0).toUpperCase() + eventType.slice(1) + "Async"
 			return self[timeEventFuncName](allianceDoc, event).then(function(params){

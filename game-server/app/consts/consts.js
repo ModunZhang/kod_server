@@ -301,7 +301,8 @@ module.exports = {
 		Shrine:"shrine",//xx 开启了联盟圣地xx关卡
 		Fight:'fight',//xx 开启了联盟战
 		BuildingUpgrade:'buildingUpgrade',//xx 升级了xx建筑
-		VillageUpgrade:'villageUpgrade'//xx 升级了xx村落
+		VillageUpgrade:'villageUpgrade',//xx 升级了xx村落
+		MoveAlliance:'moveAlliance'//xx 迁移了联盟
 	},
 	AllianceBannerType:{
 		AttackVillage:'attackVillage',//XX正在前往采集Lv XX XX(村落)
@@ -367,5 +368,11 @@ module.exports = {
 	AllianceItemLogType:{
 		AddItem:"addItem",
 		BuyItem:"buyItem"
-	}
+	},
+	AllianceMarchEventTypes:[
+		'strikeMarchEvents',
+		'strikeMarchReturnEvents',
+		'attackMarchEvents',
+		'attackMarchReturnEvents'
+	]
 }

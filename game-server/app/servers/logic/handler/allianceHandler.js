@@ -1015,74 +1015,28 @@ pro.attackAllianceShrine = function(msg, session, next){
 }
 
 /**
- * 请求联盟进行联盟战
- * @param msg
- * @param session
- * @param next
- */
-pro.requestAllianceToFight = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.requestAllianceToFight", {playerId:session.uid, msg:msg})
-	var allianceId = session.get('allianceId');
-	var e = null
-	if(_.isEmpty(allianceId)){
-		e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	this.request('requestAllianceToFight', [session.uid, allianceId]).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * 查找合适的联盟进行战斗
  * @param msg
  * @param session
  * @param next
  */
-pro.findAllianceToFight = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.findAllianceToFight", {playerId:session.uid, msg:msg})
+pro.attackAlliance = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.attackAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
+	var targetAllianceId = msg.targetAllianceId;
 	var e = null
 	if(_.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-
-	this.request('findAllianceToFight', [session.uid, allianceId]).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
-
-/**
- * 复仇其他联盟
- * @param msg
- * @param session
- * @param next
- */
-pro.revengeAlliance = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.revengeAlliance", {playerId:session.uid, msg:msg})
-	var allianceId = session.get('allianceId');
-	var reportId = msg.reportId
-	var e = null
-	if(_.isEmpty(allianceId)){
-		e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.isString(reportId)){
-		e = new Error("reportId 不合法")
+	if(!_.isString(targetAllianceId) || !ShortId.isValid(targetAllianceId) || allianceId === targetAllianceId){
+		e = new Error("targetAllianceId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.request('revengeAlliance', [session.uid, allianceId, reportId]).then(function(){
+	this.request('attackAlliance', [session.uid, allianceId, targetAllianceId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

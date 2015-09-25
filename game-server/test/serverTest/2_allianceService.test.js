@@ -22,6 +22,8 @@ var Errors = GameDatas.Errors.errors
 
 describe("AllianceService", function(){
 	var m_user
+	var m_alliance_1;
+	var m_alliance_2;
 
 	before(function(done){
 		mongoose.connect(Config.mongoAddr, function(){
@@ -60,6 +62,7 @@ describe("AllianceService", function(){
 		it("createAlliance 正常创建", function(done){
 			Api.createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
 				doc.code.should.equal(200)
+				m_alliance_1 = doc.allianceData;
 				done()
 			})
 		})
@@ -131,11 +134,9 @@ describe("AllianceService", function(){
 			})
 		})
 
-		var m_allianceData = null;
 		it("editAllianceBasicInfo 此操作权限不足", function(done){
 			Api.loginPlayer(Config.deviceId3, function(doc){
 				doc.code.should.equal(200)
-				m_allianceData = doc.allianceData;
 				Api.editAllianceBasicInfo(Config.allianceName, Config.allianceTag, "cn", "e", function(doc){
 					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
 					done()
@@ -143,7 +144,6 @@ describe("AllianceService", function(){
 			})
 		})
 
-		var m_myAllianceData = null;
 		it('crateAlliance 正常创建2', function(done){
 			Api.loginPlayer(Config.deviceId4, function(doc){
 				doc.code.should.equal(200)
@@ -153,7 +153,7 @@ describe("AllianceService", function(){
 						doc.code.should.equal(200)
 						Api.createAlliance("31231", Config.allianceTag2, "cn", "grassLand", "e", function(doc){
 							doc.code.should.equal(200)
-							m_myAllianceData = doc.allianceData;
+							m_alliance_2 = doc.allianceData;
 							done();
 						})
 					})
@@ -162,39 +162,39 @@ describe("AllianceService", function(){
 		})
 
 		it('enterMapIndex 正常观察', function(done){
-			Api.enterMapIndex(m_allianceData.mapIndex, function(doc){
+			Api.enterMapIndex(m_alliance_1.mapIndex, function(doc){
 				doc.code.should.equal(200);
 				done();
 			})
 		})
 
 		it('amInMapIndex 正常心跳', function(done){
-			Api.amInMapIndex(m_allianceData.mapIndex, function(doc){
+			Api.amInMapIndex(m_alliance_1.mapIndex, function(doc){
 				doc.code.should.equal(200);
 				done();
 			})
 		})
 
 		it('leaveMapIndex 正常离开', function(done){
-			Api.leaveMapIndex(m_allianceData.mapIndex, function(doc){
+			Api.leaveMapIndex(m_alliance_1.mapIndex, function(doc){
 				doc.code.should.equal(200);
 				done();
 			})
 		})
 
 		it('getMapAllianceDatas 正常获取', function(done){
-			Api.getMapAllianceDatas([m_allianceData.mapIndex], function(doc){
+			Api.getMapAllianceDatas([m_alliance_1.mapIndex], function(doc){
 				doc.code.should.equal(200);
 				done();
 			})
 		})
 
-		it('moveAlliance 正常移动', function(done){
-			Api.moveAlliance(m_myAllianceData.mapIndex + 1, function(doc){
-				doc.code.should.equal(200);
-				done();
-			})
-		})
+		//it('moveAlliance 正常移动', function(done){
+		//	Api.moveAlliance(m_myAllianceData.mapIndex + 1, function(doc){
+		//		doc.code.should.equal(200);
+		//		done();
+		//	})
+		//})
 
 		it("editAllianceBasicInfo 联盟名称已经存在", function(done){
 			Api.editAllianceBasicInfo(Config.allianceName, "adf", "cn", "e", function(doc){
@@ -234,16 +234,6 @@ describe("AllianceService", function(){
 			})
 		})
 
-		it("editAllianceTitleName 此操作权限不足", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.editAllianceTitleName("archon", "老大", function(doc){
-					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-					done()
-				})
-			})
-		})
-
 		it("editTitleName 正常修改", function(done){
 			Api.loginPlayer(Config.deviceId, function(doc){
 				doc.code.should.equal(200)
@@ -254,83 +244,31 @@ describe("AllianceService", function(){
 			})
 		})
 
-		it("editAllianceNotice 此操作权限不足", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.editAllianceNotice("这是第一条公告", function(doc){
-					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-					done()
-				})
-			})
-		})
-
 		it("editAllianceNotice 正常发布公告", function(done){
-			Api.loginPlayer(Config.deviceId, function(doc){
+			Api.editAllianceNotice("这是第一条公告", function(doc){
 				doc.code.should.equal(200)
-				Api.editAllianceNotice("这是第一条公告", function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("editAllianceDescription 此操作权限不足", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.editAllianceDescription("这是第一条描述", function(doc){
-					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-					done()
-				})
+				done()
 			})
 		})
 
 		it("editAllianceDescription 正常修改联盟描述", function(done){
-			Api.loginPlayer(Config.deviceId, function(doc){
+			Api.editAllianceDescription("这是第一条描述", function(doc){
 				doc.code.should.equal(200)
-				Api.editAllianceDescription("这是第一条描述", function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("editAllianceJoinType 此操作权限不足", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.editAllianceJoinType("all", function(doc){
-					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-					done()
-				})
+				done()
 			})
 		})
 
 		it("editAllianceJoinType 正常修改联盟描述", function(done){
-			Api.loginPlayer(Config.deviceId, function(doc){
+			Api.editAllianceJoinType("all", function(doc){
 				doc.code.should.equal(200)
-				Api.editAllianceJoinType("all", function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("editAllianceMemberTitle 此操作权限不足", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.editAllianceMemberTitle("asdfasdf", "member", function(doc){
-					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-					done()
-				})
+				done()
 			})
 		})
 
 		it("editAllianceMemberTitle 联盟没有此玩家", function(done){
-			Api.loginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				Api.editAllianceMemberTitle("asdfasdf", "member", function(doc){
-					doc.code.should.equal(Errors.allianceDoNotHasThisMember.code)
-					done()
-				})
+			Api.editAllianceMemberTitle("asdfasdf", "member", function(doc){
+				doc.code.should.equal(Errors.allianceDoNotHasThisMember.code)
+				done()
 			})
 		})
 
@@ -364,23 +302,10 @@ describe("AllianceService", function(){
 			})
 		})
 
-		it("kickAllianceMemberOff 此操作权限不足", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.kickAllianceMemberOff("asdfasdf", function(doc){
-					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
-					done()
-				})
-			})
-		})
-
 		it("kickAllianceMemberOff 联盟没有此玩家", function(done){
-			Api.loginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				Api.kickAllianceMemberOff("asdfasdf", function(doc){
-					doc.code.should.equal(Errors.allianceDoNotHasThisMember.code)
-					done()
-				})
+			Api.kickAllianceMemberOff("asdfasdf", function(doc){
+				doc.code.should.equal(Errors.allianceDoNotHasThisMember.code)
+				done()
 			})
 		})
 
@@ -442,26 +367,6 @@ describe("AllianceService", function(){
 				doc.code.should.equal(200)
 				Api.quitAlliance(function(doc){
 					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("joinAllianceDirectly 玩家已加入联盟", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.joinAllianceDirectly("asdfasdf", function(doc){
-					doc.code.should.equal(Errors.playerAlreadyJoinAlliance.code)
-					done()
-				})
-			})
-		})
-
-		it("joinAllianceDirectly 联盟不存在", function(done){
-			Api.loginPlayer(Config.deviceId, function(doc){
-				doc.code.should.equal(200)
-				Api.joinAllianceDirectly("asdfasdf", function(doc){
-					doc.code.should.equal(Errors.allianceNotExist.code)
 					done()
 				})
 			})
@@ -645,7 +550,7 @@ describe("AllianceService", function(){
 			})
 		})
 
-		it("buyAllianceArchon 购买盟主职位,正常购买", function(done){
+		it("buyAllianceArchon 购买盟主职位,无法购买", function(done){
 			Api.buyAllianceArchon(function(doc){
 				doc.code.should.equal(Errors.onlyAllianceArchonMoreThanSevenDaysNotOnLinePlayerCanBuyArchonTitle.code)
 				Api.loginPlayer(Config.deviceId5, function(doc){
@@ -841,13 +746,12 @@ describe("AllianceService", function(){
 		})
 
 		it("moveAllianceBuilding 正常移动", function(done){
-			var m_allianceData = null
 			Api.getMyAllianceData(function(doc){
 				doc.code.should.equal(200)
-				m_allianceData = doc.allianceData
-				var map = MapUtils.buildMap(m_allianceData.mapObjects)
+				m_alliance_1 = doc.allianceData
+				var map = MapUtils.buildMap(m_alliance_1.mapObjects)
 				var rect = MapUtils.getRect(map, 3, 3)
-				Api.moveAllianceBuilding(m_allianceData.mapObjects[0].id, rect.x, rect.y, function(doc){
+				Api.moveAllianceBuilding(m_alliance_1.mapObjects[0].id, rect.x, rect.y, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
@@ -927,105 +831,88 @@ describe("AllianceService", function(){
 		})
 
 		it("giveLoyaltyToAllianceMember 正常给予1", function(done){
-			var m_myAllianceData = null
 			Api.loginPlayer(Config.deviceId3, function(doc){
 				doc.code.should.equal(200)
-				Api.getMyAllianceData(function(doc){
-					doc.code.should.equal(200)
-					m_myAllianceData = doc.allianceData
-					Api.giveLoyaltyToAllianceMember(m_myAllianceData.members[0].id, 10, function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-			})
-		})
-
-		it("giveLoyaltyToAllianceMember 正常给予2", function(done){
-			var m_myAllianceData = null
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.getMyAllianceData(function(doc){
-					doc.code.should.equal(200)
-					m_myAllianceData = doc.allianceData
-					Api.giveLoyaltyToAllianceMember(m_myAllianceData.members[1].id, 10, function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-			})
-		})
-
-		var m_myAllianceData = null
-		it("getAllianceInfo 正常查看", function(done){
-			Api.getMyAllianceData(function(doc){
-				doc.code.should.equal(200)
-				m_myAllianceData = doc.allianceData
-				Api.getAllianceInfo(m_myAllianceData._id, m_myAllianceData.serverId, function(doc){
+				m_alliance_1 = doc.allianceData
+				Api.giveLoyaltyToAllianceMember(m_alliance_1.members[0].id, 10, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
 			})
 		})
 
+		it("giveLoyaltyToAllianceMember 正常给予2", function(done){
+			Api.giveLoyaltyToAllianceMember(m_alliance_1.members[1].id, 10, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getAllianceInfo 正常查看", function(done){
+			Api.getAllianceInfo(m_alliance_1._id, m_alliance_1.serverId, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
 		it("getJoinRequestEvents 正常查看", function(done){
-			Api.getJoinRequestEvents(m_myAllianceData._id, function(doc){
+			Api.getJoinRequestEvents(m_alliance_1._id, function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
 		})
 
 		it("getShrineReports 正常查看", function(done){
-			Api.getShrineReports(m_myAllianceData._id, function(doc){
+			Api.getShrineReports(m_alliance_1._id, function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
 		})
 
 		it("getAllianceFightReports 正常查看", function(done){
-			Api.getAllianceFightReports(m_myAllianceData._id, function(doc){
+			Api.getAllianceFightReports(m_alliance_1._id, function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
 		})
 
 		it("getItemLogs 正常查看", function(done){
-			Api.getItemLogs(m_myAllianceData._id, function(doc){
+			Api.getItemLogs(m_alliance_1._id, function(doc){
 				doc.code.should.equal(200)
 				done()
 			})
 		})
 
-		it("activateAllianceShrineStage 联盟感知力不足", function(done){
-			Api.sendChat("allianceperception 0", function(doc){
-				doc.code.should.equal(200)
-				Api.activateAllianceShrineStage("1_1", function(doc){
-					doc.code.should.equal(Errors.alliancePerceptionNotEnough.code)
-					done()
-				})
-			})
-		})
-
-		it("activateAllianceShrineStage 正常激活", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.sendChat("allianceperception 1000", function(doc){
-					doc.code.should.equal(200)
-					Api.activateAllianceShrineStage("1_1", function(doc){
-						doc.code.should.equal(200)
-						done()
-					})
-				})
-			})
-		})
-
-		it("activateAllianceShrineStage 此联盟事件已经激活", function(done){
-			Api.activateAllianceShrineStage("1_1", function(doc){
-				doc.code.should.equal(Errors.theAllianceShrineEventAlreadyActived.code)
-				done()
-			})
-		})
-
+		//it("activateAllianceShrineStage 联盟感知力不足", function(done){
+		//	Api.sendChat("allianceperception 0", function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.activateAllianceShrineStage("1_1", function(doc){
+		//			doc.code.should.equal(Errors.alliancePerceptionNotEnough.code)
+		//			done()
+		//		})
+		//	})
+		//})
+		//
+		//it("activateAllianceShrineStage 正常激活", function(done){
+		//	Api.loginPlayer(Config.deviceId3, function(doc){
+		//		doc.code.should.equal(200)
+		//		Api.sendChat("allianceperception 1000", function(doc){
+		//			doc.code.should.equal(200)
+		//			Api.activateAllianceShrineStage("1_1", function(doc){
+		//				doc.code.should.equal(200)
+		//				done()
+		//			})
+		//		})
+		//	})
+		//})
+		//
+		//it("activateAllianceShrineStage 此联盟事件已经激活", function(done){
+		//	Api.activateAllianceShrineStage("1_1", function(doc){
+		//		doc.code.should.equal(Errors.theAllianceShrineEventAlreadyActived.code)
+		//		done()
+		//	})
+		//})
+		//
 		//it("attackAllianceShrine 正常行军1", function(done){
 		//	var m_allianceData = null
 		//	Api.sendChat("dragonstar blueDragon 1", function(doc){
@@ -1125,58 +1012,42 @@ describe("AllianceService", function(){
 		//	})
 		//})
 
-		it("requestAllianceToFight 正常请求", function(done){
+
+		it("attackAlliance 正常查找", function(done){
 			Api.loginPlayer(Config.deviceId3, function(doc){
 				doc.code.should.equal(200)
-				Api.requestAllianceToFight(function(doc){
-					doc.code.should.equal(200)
-					done()
-				})
-			})
-		})
-
-		it("requestAllianceToFight 已经发送过开战请求", function(done){
-			Api.requestAllianceToFight(function(doc){
-				doc.code.should.equal(Errors.alreadySendAllianceFightRequest.code)
-				done()
-			})
-		})
-
-		it("findAllianceToFight 正常查找", function(done){
-			Api.loginPlayer(Config.deviceId3, function(doc){
-				doc.code.should.equal(200)
-				Api.findAllianceToFight(function(doc){
+				Api.attackAlliance(m_alliance_2._id, function(doc){
 					doc.code.should.equal(200);
 					done()
 				})
 			})
 		})
 
-		//it("getAllianceViewData 正常获取", function(done){
-		//	var m_allianceData = null
-		//	Api.getMyAllianceData(function(doc){
-		//		doc.code.should.equal(200)
-		//		m_allianceData = doc.allianceData
-		//		Api.getAllianceViewData(m_allianceData._id, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("getNearedAllianceInfos 正常获取", function(done){
-		//	Api.getNearedAllianceInfos(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("searchAllianceInfoByTag 正常搜索", function(done){
-		//	Api.searchAllianceInfoByTag("t", function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
+		it("getAllianceViewData 正常获取", function(done){
+			var m_allianceData = null
+			Api.getMyAllianceData(function(doc){
+				doc.code.should.equal(200)
+				m_allianceData = doc.allianceData
+				Api.getAllianceViewData(m_allianceData._id, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("getNearedAllianceInfos 正常获取", function(done){
+			Api.getNearedAllianceInfos(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("searchAllianceInfoByTag 正常搜索", function(done){
+			Api.searchAllianceInfoByTag("t", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
 
 		//it("helpAllianceMemberDefence 正常协助", function(done){
 		//	Api.loginPlayer(Config.deviceId3, function(doc){
@@ -2353,33 +2224,33 @@ describe("AllianceService", function(){
 		//	}, 3 * 1000)
 		//})
 
-		it('sendAllianceChat 正常发送', function(done){
-			Api.sendAllianceChat('test,test', function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it('sendAllianceFightChat 正常发送', function(done){
-			Api.sendAllianceFightChat('test,test', function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it('getAllianceChats 正常获取', function(done){
-			Api.getChats('alliance', function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it('getAllianceFightChats 正常获取', function(done){
-			Api.getChats('allianceFight', function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
+		//it('sendAllianceChat 正常发送', function(done){
+		//	Api.sendAllianceChat('test,test', function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it('sendAllianceFightChat 正常发送', function(done){
+		//	Api.sendAllianceFightChat('test,test', function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it('getAllianceChats 正常获取', function(done){
+		//	Api.getChats('alliance', function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it('getAllianceFightChats 正常获取', function(done){
+		//	Api.getChats('allianceFight', function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
 	})
 
 

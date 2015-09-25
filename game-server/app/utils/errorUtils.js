@@ -1573,14 +1573,13 @@ Utils.allianceFightRevengeTimeExpired = function(playerId, allianceId, reportId)
 }
 
 /**
- * 目标联盟未处于和平期,不能发起复仇
+ * 目标联盟未处于和平期
  * @param playerId
  * @param allianceId
- * @param reportId
  */
-Utils.targetAllianceNotInPeaceStatus = function(playerId, allianceId, reportId){
+Utils.targetAllianceNotInPeaceStatus = function(playerId, allianceId){
 	var config = Errors.targetAllianceNotInPeaceStatus
-	return CreateError(config, {playerId:playerId, allianceId:allianceId, reportId:reportId})
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
 }
 
 /**
