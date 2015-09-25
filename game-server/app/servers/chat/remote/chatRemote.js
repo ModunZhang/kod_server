@@ -122,7 +122,7 @@ pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, ca
 }
 
 /**
- * 删除联盟聊天频道
+ * 删除联盟频道
  * @param allianceId
  * @param callback
  */

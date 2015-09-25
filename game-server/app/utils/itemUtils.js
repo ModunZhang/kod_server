@@ -185,7 +185,7 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 			})
 		}
 		updateFuncs.push([cacheService, cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, pushService)
 
 		return Promise.resolve()
@@ -219,7 +219,7 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, cacheSer
 		var enemyAllianceData = []
 		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
 		var marchEvents = []
-		marchEvents = marchEvents.concat(allianceDoc.attackMarchEvents, allianceDoc.attackMarchReturnEvents, allianceDoc.strikeMarchEvents, allianceDoc.strikeMarchReturnEvents)
+		marchEvents = marchEvents.concat(allianceDoc.marchEvents.attackMarchEvents, allianceDoc.marchEvents.attackMarchReturnEvents, allianceDoc.marchEvents.strikeMarchEvents, allianceDoc.marchEvents.strikeMarchReturnEvents)
 		var hasMarchEvent = _.some(marchEvents, function(marchEvent){
 			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
 		})
@@ -243,7 +243,7 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, cacheSer
 		enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject) + ".location", playerMapObject.location])
 
 		updateFuncs.push([cacheService, cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, pushService)
 
 		return Promise.resolve()
@@ -679,7 +679,6 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 	return cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
-		var enemyAllianceData = []
 		var marchEvent = _.find(allianceDoc[eventType], function(marchEvent){
 			return _.isEqual(marchEvent.id, eventId)
 		})
@@ -693,12 +692,10 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 			marchEvent.startTime -= marchTimeSpeedup
 			marchEvent.arriveTime -= marchTimeSpeedup
 			allianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), marchEvent])
-			enemyAllianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), marchEvent])
 			eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id, marchEvent.arriveTime - Date.now()])
-
-			pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+			pushFuncs.push([cacheService, cacheService.updateMarchEventAsync, eventType, marchEvent])
+			pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 			updateFuncs.push([cacheService, cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-			LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, pushService)
 			return Promise.resolve()
 		}
 	}).catch(function(e){

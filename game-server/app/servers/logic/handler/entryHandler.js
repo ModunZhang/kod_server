@@ -76,7 +76,7 @@ pro.login = function(msg, session, next){
 			playerId:playerDoc._id,
 			logicServerId:self.logicServerId
 		})
-		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc, enemyAllianceData:enemyAllianceDoc})
+		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc})
 	}).catch(function(e){
 		self.logService.onRequestError("logic.entryHandler.login failed", {
 			deviceId:deviceId,

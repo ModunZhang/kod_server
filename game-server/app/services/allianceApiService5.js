@@ -25,7 +25,6 @@ var AllianceApiService5 = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
-	this.cacheServiceId = app.get('cacheServerId');
 }
 module.exports = AllianceApiService5
 var pro = AllianceApiService5.prototype
@@ -77,7 +76,7 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, memberDoc._id, memberDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -187,67 +186,123 @@ pro.getItemLogs = function(playerId, allianceId, callback){
 }
 
 /**
- * 进入被观察联盟
- * @param logicServerId
+ * 移动联盟
  * @param playerId
- * @param targetAllianceId
+ * @param allianceId
+ * @param targetMapIndex
  * @param callback
  */
-pro.enterAlliance = function(logicServerId, playerId, targetAllianceId, callback){
+pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 	var self = this;
-	var targetAllianceDoc = null;
-	var targetEnemyAllianceDoc = null;
-	this.cacheService.directFindAllianceAsync(targetAllianceId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId));
-		targetAllianceDoc = doc;
-		if(!!targetAllianceDoc.allianceFight){
-			var enemyAllianceId = LogicUtils.getEnemyAllianceId(targetAllianceDoc.allianceFight, targetAllianceDoc._id)
-			return self.cacheService.directFindAllianceAsync(enemyAllianceId).then(function(doc){
-				targetEnemyAllianceDoc = doc
-				return Promise.resolve()
-			})
+	var allianceDoc = null;
+	var allianceData = [];
+	var updateFuncs = [];
+	var eventFuncs = [];
+	var pushFuncs = [];
+	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
+		allianceDoc = doc;
+		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "moveAlliance")){
+			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "moveAlliance"))
 		}
+		if(allianceDoc.basicInfo.allianceMoveTime + (DataUtils.getAllianceIntInit('allianceMoveColdMinutes') * 60 * 1000) > Date.now()){
+			return Promise.reject(ErrorUtils.canNotMoveAllianceRightNow(playerId, allianceId));
+		}
+		if(!!allianceDoc.allianceFight){
+			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceId));
+		}
+		if(!!self.cacheService.getMapDataAtIndex(targetMapIndex).allianceData){
+			return Promise.reject(ErrorUtils.canNotMoveToTargetMapIndex(playerId, allianceId, targetMapIndex));
+		}
+		allianceDoc.basicInfo.allianceMoveTime = Date.now();
+		allianceData.push(['basicInfo.allianceMoveTime', allianceDoc.basicInfo.allianceMoveTime]);
+		allianceDoc.mapIndex = targetMapIndex;
+		allianceData.push(['mapIndex', allianceDoc.mapIndex]);
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceId, allianceDoc]);
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData]);
+		pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, allianceDoc.mapIndex, null]);
 		return Promise.resolve();
 	}).then(function(){
-		return new Promise(function(resolve, reject){
-			self.app.rpc.cache.cacheRemote.enterAllianceChannel.toServer(self.cacheServiceId, targetAllianceId, playerId, logicServerId, function(e){
-				if(!!e) return reject(e);
-				resolve();
-			})
-		})
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		targetAllianceDoc = _.pick(targetAllianceDoc, Consts.AllianceViewDataKeys);
-		targetEnemyAllianceDoc = !!targetEnemyAllianceDoc ? _.pick(targetEnemyAllianceDoc, Consts.AllianceViewDataKeys) : null;
-		callback(null, [targetAllianceDoc, targetEnemyAllianceDoc]);
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
+ * 进入被观察地块
+ * @param logicServerId
+ * @param playerId
+ * @param allianceId
+ * @param mapIndex
+ * @param callback
+ */
+pro.enterMapIndex = function(logicServerId, playerId, allianceId, mapIndex, callback){
+	var mapIndexData = this.cacheService.getMapDataAtIndex(mapIndex);
+	if(!!mapIndexData.alliance && mapIndexData.alliance.id === allianceId){
+		return callback(ErrorUtils.canNotViewYourOwnAlliance(playerId, allianceId));
+	}
+	this.cacheService.enterMapIndexChannelAsync(playerId, logicServerId, mapIndex).then(function(data){
+		callback(null, [data.allianceData, data.mapData]);
 	}).catch(function(e){
 		callback(e);
 	})
 }
 
 /**
- * 进入被观察联盟后的心跳
+ * 进入被观察地块后的心跳
  * @param logicServerId
  * @param playerId
- * @param targetAllianceId
+ * @param mapIndex
  * @param callback
  */
-pro.amInAlliance = function(logicServerId, playerId, targetAllianceId, callback){
-	this.app.rpc.cache.cacheRemote.amInAllianceChannel.toServer(this.cacheServiceId, targetAllianceId, playerId, logicServerId, function(e){
-		if(!!e) return callback(e);
+pro.amInMapIndex = function(logicServerId, playerId, mapIndex, callback){
+	this.cacheService.amInMapIndexChannelAsync(playerId, logicServerId, mapIndex).then(function(){
 		callback();
+	}).catch(function(e){
+		callback(e);
 	})
 }
 
 /**
- * 玩家离开被观察的联盟
+ * 玩家离开被观察的地块
  * @param logicServerId
  * @param playerId
- * @param targetAllianceId
+ * @param mapIndex
  * @param callback
  */
-pro.leaveAlliance = function(logicServerId, playerId, targetAllianceId, callback){
-	this.app.rpc.cache.cacheRemote.leaveAllianceChannel.toServer(this.cacheServiceId, targetAllianceId, playerId, logicServerId, function(e){
-		if(!!e) return callback(e);
+pro.leaveMapIndex = function(logicServerId, playerId, mapIndex, callback){
+	this.cacheService.leaveMapIndexChannelAsync(playerId, logicServerId, mapIndex).then(function(){
 		callback();
+	}).catch(function(e){
+		callback(e);
 	})
+}
+
+/**
+ * 在大地图中获取联盟基础信息
+ * @param playerId
+ * @param mapIndexs
+ * @param callback
+ */
+pro.getMapAllianceDatas = function(playerId, mapIndexs, callback){
+	var self = this;
+	var datas = {};
+	_.each(mapIndexs, function(mapIndex){
+			datas[mapIndexs] = self.cacheService.getMapDataAtIndex(mapIndex).allianceData;
+	});
+
+	callback(null, datas);
 }

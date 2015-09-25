@@ -17,6 +17,7 @@ var AllianceSchema = new Schema({
 	_id:{type:String, required:true},
 	serverId:{type:String, required:true, index:true},
 	lastActiveTime:{type:Number, required:true, default:Date.now, index:true},
+	mapIndex:{type:Number, required:true, unique:true, index:true},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},
 		tag:{type:String, required:true, unique:true, index:true},
@@ -33,7 +34,8 @@ var AllianceSchema = new Schema({
 		status:{type:String, required:true, default:Consts.AllianceStatus.Peace, index:true},
 		statusStartTime:{type:Number, required:true, default:Date.now},
 		statusFinishTime:{type:Number, required:true, default:0},
-		monsterRefreshTime:{type:Number, required:true}
+		monsterRefreshTime:{type:Number, required:true},
+		allianceMoveTime:{type:Number, required:true, default:0}//Date.now()}
 	},
 	countInfo:{
 		kill:{type:Number, required:true, default:0},
@@ -243,18 +245,29 @@ var AllianceSchema = new Schema({
 		id:{type:String, required:true},
 		startTime:{type:Number, required:true},
 		finishTime:{type:Number, required:true},
-		playerData:{
+		fromAlliance:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
+			tag:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
 			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
+			mapIndex:{type:Number, required:true}
+		},
+		toAlliance:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			tag:{type:String, required:true},
+			location:{
+				x:{type:Number, required:true},
+				y:{type:Number, required:true}
 			},
+			mapIndex:{type:Number, required:true}
+		},
+		playerData:{
+			id:{type:String, required:true},
+			name:{type:String, required:true},
 			dragon:{
 				type:{type:String, required:true}
 			},
@@ -279,25 +292,19 @@ var AllianceSchema = new Schema({
 			id:{type:String, required:true},
 			name:{type:String, required:true},
 			level:{type:Number, required:true},
-			collectTotal:{type:Number, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
+			collectTotal:{type:Number, required:true}
 		}
 	}],
 	fightRequests:[String],
 	allianceFight:{
 		type:{
-			mergeStyle:{type:String, required:true},
-			attackAllianceId:{type:String, required:true},
-			defenceAllianceId:{type:String, required:true},
 			attacker:{
+				alliance:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					tag:{type:String, required:true},
+					flag:{type:String, required:true}
+				},
 				playerKills:[{
 					id:{type:Number, required:true},
 					name:{type:String, required:true},
@@ -313,6 +320,12 @@ var AllianceSchema = new Schema({
 				}
 			},
 			defencer:{
+				alliance:{
+					id:{type:String, required:true},
+					name:{type:String, required:true},
+					tag:{type:String, required:true},
+					flag:{type:String, required:true}
+				},
 				playerKills:[{
 					id:{type:Number, required:true},
 					name:{type:String, required:true},
@@ -368,280 +381,216 @@ var AllianceSchema = new Schema({
 			attackSuccessCount:{type:Number, required:true}
 		}
 	}],
-	strikeMarchEvents:[{
-		_id:false,
-		id:{type:String, required:true},
-		marchType:{type:String, required:true},
-		startTime:{type:Number, required:true},
-		arriveTime:{type:Number, required:true},
-		attackPlayerData:{
+	marchEvents:{
+		strikeMarchEvents:[{
+			_id:false,
 			id:{type:String, required:true},
-			name:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			dragon:{
-				type:{type:String, required:true}
-			},
-			alliance:{
+			marchType:{type:String, required:true},
+			startTime:{type:Number, required:true},
+			arriveTime:{type:Number, required:true},
+			fromAlliance:{
 				id:{type:String, required:true},
 				name:{type:String, required:true},
-				tag:{type:String, required:true}
+				tag:{type:String, required:true},
+				location:{
+					x:{type:Number, required:true},
+					y:{type:Number, required:true}
+				},
+				mapIndex:{type:Number, required:true}
+			},
+			toAlliance:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				tag:{type:String, required:true},
+				location:{
+					x:{type:Number, required:true},
+					y:{type:Number, required:true}
+				},
+				mapIndex:{type:Number, required:true}
+			},
+			attackPlayerData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				dragon:{
+					type:{type:String, required:true}
+				}
+			},
+			defencePlayerData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true}
+			},
+			defenceVillageData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				level:{type:String, required:true}
 			}
-		},
-		defencePlayerData:{
+		}],
+		strikeMarchReturnEvents:[{
+			_id:false,
 			id:{type:String, required:true},
-			name:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
+			marchType:{type:String, required:true},
+			startTime:{type:Number, required:true},
+			arriveTime:{type:Number, required:true},
+			fromAlliance:{
 				id:{type:String, required:true},
 				name:{type:String, required:true},
-				tag:{type:String, required:true}
+				tag:{type:String, required:true},
+				location:{
+					x:{type:Number, required:true},
+					y:{type:Number, required:true}
+				},
+				mapIndex:{type:Number, required:true}
+			},
+			toAlliance:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				tag:{type:String, required:true},
+				location:{
+					x:{type:Number, required:true},
+					y:{type:Number, required:true}
+				},
+				mapIndex:{type:Number, required:true}
+			},
+			attackPlayerData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				dragon:{
+					type:{type:String, required:true}
+				}
+			},
+			defencePlayerData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true}
+			},
+			defenceVillageData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				level:{type:String, required:true}
 			}
-		},
-		defenceVillageData:{
+		}],
+		attackMarchEvents:[{
+			_id:false,
 			id:{type:String, required:true},
-			name:{type:String, required:true},
-			level:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
+			marchType:{type:String, required:true},
+			startTime:{type:Number, required:true},
+			arriveTime:{type:Number, required:true},
+			fromAlliance:{
 				id:{type:String, required:true},
 				name:{type:String, required:true},
-				tag:{type:String, required:true}
+				tag:{type:String, required:true},
+				location:{
+					x:{type:Number, required:true},
+					y:{type:Number, required:true}
+				},
+				mapIndex:{type:Number, required:true}
+			},
+			toAlliance:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				tag:{type:String, required:true},
+				location:{
+					x:{type:Number, required:true},
+					y:{type:Number, required:true}
+				},
+				mapIndex:{type:Number, required:true}
+			},
+			attackPlayerData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				dragon:{
+					type:{type:String, required:true}
+				},
+				soldiers:[{
+					_id:false,
+					name:{type:String, required:true},
+					star:{type:Number, required:true},
+					count:{type:Number, required:true}
+				}]
+			},
+			defencePlayerData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true}
+			},
+			defenceVillageData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				level:{type:Number, required:true}
+			},
+			defenceMonsterData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				level:{type:Number, required:true}
+			},
+			defenceShrineData:{
+				shrineEventId:{type:String, required:true}
 			}
-		}
-	}],
-	strikeMarchReturnEvents:[{
-		_id:false,
-		id:{type:String, required:true},
-		marchType:{type:String, required:true},
-		startTime:{type:Number, required:true},
-		arriveTime:{type:Number, required:true},
-		attackPlayerData:{
+		}],
+		attackMarchReturnEvents:[{
+			_id:false,
 			id:{type:String, required:true},
-			name:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			dragon:{
-				type:{type:String, required:true}
-			},
-			alliance:{
+			marchType:{type:String, required:true},
+			startTime:{type:Number, required:true},
+			arriveTime:{type:Number, required:true},
+			fromAlliance:{
 				id:{type:String, required:true},
 				name:{type:String, required:true},
-				tag:{type:String, required:true}
+				tag:{type:String, required:true},
+				location:{
+					x:{type:Number, required:true},
+					y:{type:Number, required:true}
+				},
+				mapIndex:{type:Number, required:true}
+			},
+			toAlliance:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				tag:{type:String, required:true},
+				location:{
+					x:{type:Number, required:true},
+					y:{type:Number, required:true}
+				},
+				mapIndex:{type:Number, required:true}
+			},
+			attackPlayerData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				dragon:{
+					type:{type:String, required:true}
+				},
+				soldiers:[{
+					_id:false,
+					name:{type:String, required:true},
+					star:{type:Number, required:true},
+					count:{type:Number, required:true}
+				}],
+				woundedSoldiers:[{
+					_id:false,
+					name:{type:String, required:true},
+					count:{type:Number, required:true}
+				}],
+				rewards:[{
+					_id:false,
+					type:{type:String, required:true},
+					name:{type:String, required:true},
+					count:{type:Number, required:true}
+				}]
+			},
+			defencePlayerData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true}
+			},
+			defenceVillageData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				level:{type:String, required:true}
+			},
+			defenceMonsterData:{
+				id:{type:String, required:true},
+				name:{type:String, required:true},
+				level:{type:String, required:true}
 			}
-		},
-		defencePlayerData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
-		},
-		defenceVillageData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			level:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
-		}
-	}],
-	attackMarchEvents:[{
-		_id:false,
-		id:{type:String, required:true},
-		marchType:{type:String, required:true},
-		startTime:{type:Number, required:true},
-		arriveTime:{type:Number, required:true},
-		attackPlayerData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			dragon:{
-				type:{type:String, required:true}
-			},
-			soldiers:[{
-				_id:false,
-				name:{type:String, required:true},
-				star:{type:Number, required:true},
-				count:{type:Number, required:true}
-			}],
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
-		},
-		defencePlayerData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
-		},
-		defenceVillageData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			level:{type:Number, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
-		},
-		defenceMonsterData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			level:{type:Number, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
-		},
-		defenceShrineData:{
-			shrineEventId:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
-		}
-	}],
-	attackMarchReturnEvents:[{
-		_id:false,
-		id:{type:String, required:true},
-		marchType:{type:String, required:true},
-		startTime:{type:Number, required:true},
-		arriveTime:{type:Number, required:true},
-		attackPlayerData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			dragon:{
-				type:{type:String, required:true}
-			},
-			soldiers:[{
-				_id:false,
-				name:{type:String, required:true},
-				star:{type:Number, required:true},
-				count:{type:Number, required:true}
-			}],
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			},
-			woundedSoldiers:[{
-				_id:false,
-				name:{type:String, required:true},
-				count:{type:Number, required:true}
-			}],
-			rewards:[{
-				_id:false,
-				type:{type:String, required:true},
-				name:{type:String, required:true},
-				count:{type:Number, required:true}
-			}]
-		},
-		defencePlayerData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
-		},
-		defenceVillageData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			level:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
-		},
-		defenceMonsterData:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			level:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
-		},
-		defenceShrineData:{
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			},
-			alliance:{
-				id:{type:String, required:true},
-				name:{type:String, required:true},
-				tag:{type:String, required:true}
-			}
-		}
-	}],
+		}]
+	},
 	items:[{
 		_id:false,
 		name:{type:String, required:true},

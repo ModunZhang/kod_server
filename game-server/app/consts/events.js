@@ -11,7 +11,7 @@ module.exports = {
 	},
 	alliance:{
 		onAllianceDataChanged:"onAllianceDataChanged",
-		onAllianceFight:"onAllianceFight"
+		onMapDataChanged:'onMapDataChanged'
 	},
 	chat:{
 		onChat:"onChat",

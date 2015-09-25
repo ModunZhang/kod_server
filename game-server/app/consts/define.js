@@ -22,7 +22,9 @@ module.exports = {
 	AllianceRequestMessageMaxSize:50,//联盟中的入盟申请信息最大数量,
 	AllianceShrineReportsMaxSize:10,//圣地事件报告最大数量
 	AllianceFightReportsMaxSize:20,//联盟战日志
-	AllianceItemLogsMaxSize:20,//联盟商店商品日志
+	AllianceItemLogsMaxSize:20,//联盟商店商品日志,
+	BigMapWidth:41,//大地图宽度
+	BigMapHeight:41,//大地图高度
 	InputLength:{
 		PlayerName:12,//玩家昵称长度
 		CityName:12,//玩家城市名称长度

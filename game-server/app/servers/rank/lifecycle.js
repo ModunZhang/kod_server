@@ -34,7 +34,7 @@ life.beforeStartup = function(app, callback){
 }
 
 life.afterStartup = function(app, callback){
-
+	callback();
 }
 
 life.beforeShutdown = function(app, callback){

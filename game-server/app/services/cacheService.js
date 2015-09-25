@@ -9,6 +9,8 @@ var _ = require("underscore")
 
 var DataUtils = require("../utils/dataUtils")
 var Consts = require("../consts/consts.js")
+var Define = require('../consts/define.js');
+var Events = require('../consts/events.js');
 var ErrorUtils = require("../utils/errorUtils.js")
 
 var DataService = function(app){
@@ -16,6 +18,7 @@ var DataService = function(app){
 	this.logService = app.get("logService")
 	this.timeEventService = app.get("timeEventService")
 	this.cacheServerId = app.get('cacheServerId');
+	this.pushService = app.get('pushService');
 	this.Player = app.get("Player")
 	this.Alliance = app.get("Alliance")
 	this.players = {}
@@ -24,10 +27,33 @@ var DataService = function(app){
 	this.alliancesQueue = {}
 	this.allianceNameMap = {}
 	this.allianceTagMap = {}
+	this.mapIndexMap = {};
 	this.flushOps = 10
 	this.timeoutInterval = 10 * 60 * 1000
 	this.lockCheckInterval = 5 * 1000
 	this.lockInterval = 10 * 1000
+	this.mapViewers = {};
+	this.bigMap = function(){
+		var channelService = app.get('channelService');
+		var map = [];
+		for(var i = 0; i < Define.BigMapWidth * Define.BigMapHeight; i++){
+			map[i] = {
+				allianceData:null,
+				mapData:{
+					marchEvents:{
+						strikeMarchEvents:{},
+						strikeMarchReturnEvents:{},
+						attackMarchEvents:{},
+						attackMarchReturnEvents:{}
+					},
+					villageEvents:{}
+				},
+				channel:channelService.createChannel(Consts.BigMapChannelPrefix + '_' + i),
+				memberCount:0
+			}
+		}
+		return map;
+	}();
 	setInterval(OnLockCheckInterval.bind(this), this.lockCheckInterval)
 }
 module.exports = DataService
@@ -254,6 +280,70 @@ pro.createAlliance = function(allianceData, callback){
 	this.logService.onFind('cache.cacheService.createAlliance', {id:allianceData._id})
 	var self = this
 	LockAlliance.call(this, allianceData._id, function(){
+		var round = Define.BigMapWidth >= Define.BigMapHeight ? Math.ceil(Define.BigMapHeight / 2) : Math.ceil(Define.BigMapWidth / 2);
+		var hasFound = false;
+		var mapIndex = null;
+		for(var i = 0; i < round; i++){
+			var width = Define.BigMapWidth - (i * 2);
+			var height = Define.BigMapHeight - (i * 2);
+
+			var x = i;
+			var y = i;
+			for(var j = 0; j < width; j++){
+				mapIndex = x + (y * Define.BigMapWidth);
+				if(!self.bigMap[mapIndex].alliance && !self.mapIndexMap[mapIndex]){
+					hasFound = true;
+					break;
+				}
+				x++;
+			}
+			if(hasFound) break;
+
+			x = i;
+			y = height - 1 + i
+			if(x !== y){
+				for(j = 0; j < width; j++){
+					mapIndex = x + (y * Define.BigMapWidth);
+					if(!self.bigMap[mapIndex].alliance && !self.mapIndexMap[mapIndex]){
+						hasFound = true;
+						break;
+					}
+					x++;
+				}
+			}
+			if(hasFound) break;
+
+			x = i;
+			y = i + 1;
+			for(j = 0; j < height - 2; j++){
+				mapIndex = x + (y * Define.BigMapWidth);
+				if(!self.bigMap[mapIndex].alliance && self.mapIndexMap[mapIndex]){
+					hasFound = true;
+					break;
+				}
+				y++;
+			}
+			if(hasFound) break;
+
+			x = width - 1 + i
+			y = i + 1;
+			if(x !== y){
+				for(j = 0; j < height - 2; j++){
+					mapIndex = x + (y * Define.BigMapWidth);
+					if(!self.bigMap[mapIndex].alliance && self.mapIndexMap[mapIndex]){
+						hasFound = true;
+						break;
+					}
+					y++;
+				}
+			}
+			if(hasFound) break;
+		}
+		if(!hasFound){
+			UnlockAlliance.call(self, allianceData._id)
+			callback(ErrorUtils.noFreeMapArea());
+			return
+		}
 		if(self.allianceNameMap[allianceData.basicInfo.name]){
 			UnlockAlliance.call(self, allianceData._id)
 			callback(ErrorUtils.allianceNameExist(null, allianceData.basicInfo.name))
@@ -266,6 +356,8 @@ pro.createAlliance = function(allianceData, callback){
 		}
 		self.allianceNameMap[allianceData.basicInfo.name] = true
 		self.allianceTagMap[allianceData.basicInfo.tag] = true
+		self.mapIndexMap[mapIndex] = true;
+		allianceData.mapIndex = mapIndex;
 		var promise = new Promise(function(resolve, reject){
 			self.Alliance.collection.find({"basicInfo.name":allianceData.basicInfo.name}, {_id:true}).count(function(e, size){
 				if(_.isObject(e)) reject(e)
@@ -286,6 +378,7 @@ pro.createAlliance = function(allianceData, callback){
 		}).then(function(doc){
 			delete self.allianceNameMap[allianceData.basicInfo.name]
 			delete self.allianceTagMap[allianceData.basicInfo.tag]
+			delete self.mapIndexMap[mapIndex];
 			var allianceDoc = doc.toObject()
 			var alliance = {}
 			alliance.doc = allianceDoc
@@ -293,6 +386,7 @@ pro.createAlliance = function(allianceData, callback){
 			alliance.doc.members[0].online = true
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, allianceData._id)
 			self.alliances[allianceData._id] = alliance
+			self.updateMapAlliance(allianceDoc.mapIndex, allianceDoc, null);
 			callback(null, allianceDoc)
 		}).catch(function(e){
 			self.logService.onEventError("cache.cacheService.createAlliance", {
@@ -323,7 +417,7 @@ pro.directFindPlayer = function(id, callback){
 			callback(null, player.doc)
 		}else{
 			var playerDoc = null
-			self.Player.findOneAsync({_id:id, 'serverId': self.cacheServerId}).then(function(doc){
+			self.Player.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 				if(_.isObject(doc)){
 					playerDoc = doc.toObject()
 					player = {}
@@ -362,7 +456,7 @@ pro.directFindAlliance = function(id, callback){
 			callback(null, alliance.doc)
 		}else{
 			var allianceDoc = null
-			self.Alliance.findOneAsync({_id:id, 'serverId': self.cacheServerId}).then(function(doc){
+			self.Alliance.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 				if(_.isObject(doc)){
 					allianceDoc = doc.toObject()
 					alliance = {}
@@ -400,7 +494,7 @@ pro.findPlayer = function(id, callback){
 			callback(null, player.doc)
 		}else{
 			var playerDoc = null
-			self.Player.findOneAsync({_id:id, 'serverId': self.cacheServerId}).then(function(doc){
+			self.Player.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 				if(_.isObject(doc)){
 					playerDoc = doc.toObject()
 					player = {}
@@ -440,7 +534,7 @@ pro.findAlliance = function(id, callback){
 			callback(null, alliance.doc)
 		}else{
 			var allianceDoc = null
-			self.Alliance.findOneAsync({_id:id, 'serverId': self.cacheServerId}).then(function(doc){
+			self.Alliance.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 				if(_.isObject(doc)){
 					allianceDoc = doc.toObject()
 					alliance = {}
@@ -752,7 +846,10 @@ pro.timeoutAllAlliances = function(callback){
 				self.logService.onEvent("cache.cacheService.timeoutAlliance", {id:alliance.doc._id})
 				callback()
 			}).catch(function(e){
-				self.logService.onEventError("cache.cacheService.timeoutAlliance", {id:alliance.doc._id, doc:alliance.doc}, e.stack)
+				self.logService.onEventError("cache.cacheService.timeoutAlliance", {
+					id:alliance.doc._id,
+					doc:alliance.doc
+				}, e.stack)
 				callback()
 			})
 			alliance.ops = 0
@@ -792,4 +889,501 @@ pro.isPlayerInCache = function(playerId){
  */
 pro.isAllianceInCache = function(allianceId){
 	return _.isObject(this.alliances[allianceId]);
+}
+
+/**
+ * 获取地图Map
+ * @param index
+ * @returns {*}
+ */
+pro.getMapDataAtIndex = function(index){
+	return this.bigMap[index];
+}
+
+/**
+ * 更新地图联盟对象
+ * @param index
+ * @param allianceDoc
+ * @param callback
+ */
+pro.updateMapAlliance = function(index, allianceDoc, callback){
+	if(!!allianceDoc){
+		this.bigMap[index].allianceData = {
+			id:allianceDoc._id,
+			name:allianceDoc.basicInfo.name,
+			terrain:allianceDoc.basicInfo.terrain,
+			status:allianceDoc.basicInfo.status
+		};
+	}else{
+		var eventName = Events.alliance.onAllianceDataChanged;
+		var mapIndexData = this.bigMap[index];
+		if(mapIndexData.memberCount > 0){
+			mapIndexData.channel.pushMessage(eventName, {targetAllianceId:allianceDoc._id, data:[['', null]]}, {}, function(e){
+				if(_.isObject(e)) self.logService.onEventError("cache.cacheService.updateMapAlliance", {mapIndex:mapIndex}, e.stack)
+			})
+		}
+	}
+	if(!!callback) callback();
+}
+
+var GetLocationFromEvent = function(event){
+	var from = {
+		x:event.fromAlliance.mapIndex % Define.BigMapWidth,
+		y:Math.floor(event.fromAlliance.mapIndex / Define.BigMapWidth)
+	};
+	var to = {
+		x:event.fromAlliance.mapIndex % Define.BigMapWidth,
+		y:Math.floor(event.fromAlliance.mapIndex / Define.BigMapWidth)
+	}
+	if(from.x > to.x){
+		var tmp = from;
+		from = to;
+		to = tmp;
+	}
+	return {from:from, to:to};
+}
+
+/**
+ * 添加新的地图事件
+ * @param eventType
+ * @param event
+ * @param callback
+ */
+pro.addMarchEvent = function(eventType, event, callback){
+	var self = this;
+	var locations = GetLocationFromEvent(event);
+	var from = locations.from;
+	var to = locations.to;
+
+	var AddEvent = function(mapIndex){
+		if(mapIndex === event.fromAlliance.mapIndex) return;
+		var map = self.bigMap[mapIndex];
+		map.mapData.marchEvents[eventType][event.id] = event;
+		if(map.memberCount > 0){
+			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, event]], {}, function(e){
+				if(_.isObject(e)){
+					self.logService.onEventError("cache.cacheService.addMarchEvent", {
+						eventType:eventType,
+						event:event
+					}, e.stack)
+				}
+			});
+		}
+	}
+
+	var j = null;
+	for(var i = from.x; i <= to.x; i++){
+		if(from.y <= to.y){
+			for(j = from.y; j <= to.y; j++){
+				AddEvent(i + (j * Define.BigMapWidth));
+			}
+		}else{
+			for(j = from.y; j >= to.y; j--){
+				AddEvent(i + (j * Define.BigMapWidth));
+			}
+		}
+	}
+	callback();
+}
+
+/**
+ * 更新地图事件
+ * @param eventType
+ * @param event
+ * @param callback
+ */
+pro.updateMarchEvent = function(eventType, event, callback){
+	var self = this;
+	var locations = GetLocationFromEvent(event);
+	var from = locations.from;
+	var to = locations.to;
+
+	var UpdateEvent = function(mapIndex){
+		if(mapIndex === event.fromAlliance.mapIndex) return;
+		var map = self.bigMap[mapIndex];
+		map.mapData.marchEvents[eventType][event.id] = event;
+		if(map.memberCount > 0){
+			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id + '.arriveTime', event.arriveTime]], {}, function(e){
+				if(_.isObject(e)){
+					self.logService.onEventError("cache.cacheService.updateMarchEvent", {
+						eventType:eventType,
+						event:event
+					}, e.stack)
+				}
+			});
+		}
+	}
+
+	var j = null;
+	for(var i = from.x; i <= to.x; i++){
+		if(from.y <= to.y){
+			for(j = from.y; j <= to.y; j++){
+				UpdateEvent(i + (j * Define.BigMapWidth));
+			}
+		}else{
+			for(j = from.y; j >= to.y; j--){
+				UpdateEvent(i + (j * Define.BigMapWidth));
+			}
+		}
+	}
+
+	callback();
+}
+
+/**
+ * 移除地图事件
+ * @param eventType
+ * @param event
+ * @param callback
+ */
+pro.removeMarchEvent = function(eventType, event, callback){
+	var self = this;
+	var locations = GetLocationFromEvent(event);
+	var from = locations.from;
+	var to = locations.to;
+
+	var RemoveEvent = function(mapIndex){
+		if(mapIndex === event.fromAlliance.mapIndex) return;
+		var map = self.bigMap[mapIndex];
+		delete map.mapData.marchEvents[eventType][event.id];
+		if(map.memberCount > 0){
+			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, null]], {}, function(e){
+				if(_.isObject(e)){
+					self.logService.onEventError("cache.cacheService.removeMarchEvent", {
+						eventType:eventType,
+						event:event
+					}, e.stack)
+				}
+			});
+		}
+	}
+
+	var j = null;
+	for(var i = from.x; i <= to.x; i++){
+		if(from.y <= to.y){
+			for(j = from.y; j <= to.y; j++){
+				RemoveEvent(i + (j * Define.BigMapWidth));
+			}
+		}else{
+			for(j = from.y; j >= to.y; j--){
+				RemoveEvent(i + (j * Define.BigMapWidth));
+			}
+		}
+	}
+
+	callback();
+}
+
+/**
+ * 添加新的采集事件
+ * @param event
+ * @param callback
+ */
+pro.addVillageEvent = function(event, callback){
+	var self = this;
+	var locations = GetLocationFromEvent(event);
+	var from = locations.from;
+	var to = locations.to;
+
+	var AddEvent = function(mapIndex){
+		if(mapIndex === event.fromAlliance.mapIndex) return;
+		var map = self.bigMap[mapIndex];
+		map.mapData.villageEvents[event.id] = event;
+		if(map.memberCount > 0){
+			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, event]], {}, function(e){
+				if(_.isObject(e)){
+					self.logService.onEventError("cache.cacheService.addVillageEvent", {
+						event:event
+					}, e.stack)
+				}
+			});
+		}
+	}
+
+	var j = null;
+	for(var i = from.x; i <= to.x; i++){
+		if(from.y <= to.y){
+			for(j = from.y; j <= to.y; j++){
+				AddEvent(i + (j * Define.BigMapWidth));
+			}
+		}else{
+			for(j = from.y; j >= to.y; j--){
+				AddEvent(i + (j * Define.BigMapWidth));
+			}
+		}
+	}
+	callback();
+}
+
+/**
+ * 更新采集事件
+ * @param event
+ * @param callback
+ */
+pro.updateVillageEvent = function(event, callback){
+	var self = this;
+	var locations = GetLocationFromEvent(event);
+	var from = locations.from;
+	var to = locations.to;
+
+	var UpdateEvent = function(mapIndex){
+		if(mapIndex === event.fromAlliance.mapIndex) return;
+		var map = self.bigMap[mapIndex];
+		map.mapData.villageEvents[event.id] = event;
+		if(map.memberCount > 0){
+			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id + '.finishTime', event.finishTime]], {}, function(e){
+				if(_.isObject(e)){
+					self.logService.onEventError("cache.cacheService.updateVillageEvent", {
+						event:event
+					}, e.stack)
+				}
+			});
+		}
+	}
+
+	var j = null;
+	for(var i = from.x; i <= to.x; i++){
+		if(from.y <= to.y){
+			for(j = from.y; j <= to.y; j++){
+				UpdateEvent(i + (j * Define.BigMapWidth));
+			}
+		}else{
+			for(j = from.y; j >= to.y; j--){
+				UpdateEvent(i + (j * Define.BigMapWidth));
+			}
+		}
+	}
+
+	callback();
+}
+
+/**
+ * 移除采集事件
+ * @param event
+ * @param callback
+ */
+pro.removeVillageEvent = function(event, callback){
+	var self = this;
+	var locations = GetLocationFromEvent(event);
+	var from = locations.from;
+	var to = locations.to;
+
+	var RemoveEvent = function(mapIndex){
+		if(mapIndex === event.fromAlliance.mapIndex) return;
+		var map = self.bigMap[mapIndex];
+		delete map.mapData.villageEvents[event.id];
+		if(map.memberCount > 0){
+			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, null]], {}, function(e){
+				if(_.isObject(e)){
+					self.logService.onEventError("cache.cacheService.removeVillageEvent", {
+						event:event
+					}, e.stack)
+				}
+			});
+		}
+	}
+
+	var j = null;
+	for(var i = from.x; i <= to.x; i++){
+		if(from.y <= to.y){
+			for(j = from.y; j <= to.y; j++){
+				RemoveEvent(i + (j * Define.BigMapWidth));
+			}
+		}else{
+			for(j = from.y; j >= to.y; j--){
+				RemoveEvent(i + (j * Define.BigMapWidth));
+			}
+		}
+	}
+
+	callback();
+}
+
+/**
+ * 将玩家添加到联盟频道
+ * @param allianceId
+ * @param playerId
+ * @param logicServerId
+ * @param callback
+ */
+pro.addToAllianceChannel = function(allianceId, playerId, logicServerId, callback){
+	this.logService.onEvent('cache.cacheRemote.addToAllianceChannel', {
+		allianceId:allianceId,
+		playerId:playerId,
+		logicServerId:logicServerId
+	});
+	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(playerId, logicServerId)
+	callback()
+}
+
+/**
+ * 将玩家从联盟频道移除
+ * @param allianceId
+ * @param playerId
+ * @param logicServerId
+ * @param callback
+ */
+pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, callback){
+	this.logService.onEvent('cache.cacheRemote.removeFromAllianceChannel', {
+		allianceId:allianceId,
+		playerId:playerId,
+		logicServerId:logicServerId
+	});
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	if(!_.isObject(channel)){
+		this.logService.onEventError('cache.cacheRemote.removeFromAllianceChannel', {
+			allianceId:allianceId,
+			playerId:playerId,
+			logicServerId:logicServerId
+		}, new Error('channel 不存在').stack)
+		callback()
+		return
+	}
+	channel.leave(playerId, logicServerId)
+	if(channel.getMembers().length == 0) channel.destroy()
+	callback()
+}
+
+/**
+ * 删除联盟频道
+ * @param allianceId
+ * @param callback
+ */
+pro.destroyAllianceChannel = function(allianceId, callback){
+	this.logService.onEvent('cache.cacheService.destroyAllianceChannel', {allianceId:allianceId});
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	if(!_.isObject(channel)){
+		this.logService.onEventError('cache.cacheService.destroyAllianceChannel', {
+			allianceId:allianceId
+		}, new Error('channel 不存在').stack)
+		return callback()
+	}
+	channel.destroy()
+	callback()
+}
+
+/**
+ * 离开被观察的地块
+ * @param viewer
+ * @param timeout
+ */
+var LeaveChannel = function(viewer, timeout){
+	var playerId = viewer.playerId;
+	var logicServerId = viewer.logicServerId;
+	var timer = viewer.timer;
+	var mapIndex = viewer.mapIndex;
+	var mapIndexData = this.bigMap[mapIndex];
+	var channel = mapIndexData.channel;
+	if(!!timeout){
+		this.logService.onEvent('cache.cacheService.LeaveChannel', {
+			playerId:playerId,
+			logicServerId:logicServerId,
+			channel:channel.name
+		}, new Error('未正常发出观察心跳').stack);
+	}
+	clearTimeout(timer);
+	channel.leave(playerId, logicServerId);
+	mapIndexData.memberCount -= 1;
+	delete this.mapViewers[playerId];
+}
+
+/**
+ * 进入被观察地块
+ * @param playerId
+ * @param logicServerId
+ * @param mapIndex
+ * @param callback
+ */
+pro.enterMapIndexChannel = function(playerId, logicServerId, mapIndex, callback){
+	this.logService.onEvent('cache.cacheService.enterMapIndexChannel', {
+		playerId:playerId,
+		logicServerId:logicServerId,
+		mapIndex:mapIndex
+	});
+
+	var viewer = this.mapViewers[playerId];
+	if(!!viewer) LeaveChannel.call(this, viewer, false);
+
+	var mapIndexData = this.bigMap[mapIndex];
+	var channel = mapIndexData.channel;
+	channel.add(playerId, logicServerId)
+	mapIndexData.memberCount += 1;
+	viewer = {
+		playerId:playerId,
+		logicServerId:logicServerId,
+		mapIndex:mapIndex
+	};
+	viewer.timer = setTimeout(LeaveChannel.bind(this), 1000 * 20, viewer, true);
+	this.mapViewers[playerId] = viewer;
+
+	if(!this.bigMap[mapIndex].alliance){
+		return callback(null, {allianceData:null, mapData:mapIndexData.mapData});
+	}
+
+	var allianceId = this.bigMap[mapIndex].alliance.id;
+	this.directFindAllianceAsync(allianceId).then(function(doc){
+		callback(null, {allianceData:_.pick(doc, Consts.AllianceViewDataKeys), mapData:mapIndexData.mapData});
+	})
+}
+
+/**
+ * 进入被观察地块后的心跳
+ * @param playerId
+ * @param logicServerId
+ * @param mapIndex
+ * @param callback
+ */
+pro.amInMapIndexChannel = function(playerId, logicServerId, mapIndex, callback){
+	this.logService.onEvent('cache.cacheService.amInMapIndexChannel', {
+		playerId:playerId,
+		logicServerId:logicServerId,
+		mapIndex:mapIndex
+	});
+
+	var viewer = this.mapViewers[playerId];
+	if(!viewer || viewer.mapIndex !== mapIndex){
+		return callback(ErrorUtils.playerNotViewThisMapIndex(playerId, mapIndex));
+	}
+	clearTimeout(viewer.timer);
+	viewer.timer = setTimeout(LeaveChannel.bind(this), 1000 * 20, viewer, true)
+	callback();
+}
+
+/**
+ * 玩家离开被观察的地块
+ * @param playerId
+ * @param logicServerId
+ * @param mapIndex
+ * @param callback
+ * @returns {*}
+ */
+pro.leaveMapIndexChannel = function(playerId, logicServerId, mapIndex, callback){
+	this.logService.onEvent('cache.cacheService.leaveAllianceChannel', {
+		playerId:playerId,
+		logicServerId:logicServerId,
+		mapIndex:mapIndex
+	});
+	var viewer = this.mapViewers[playerId];
+	if(!viewer || viewer.mapIndex !== mapIndex){
+		return callback(ErrorUtils.playerNotViewThisMapIndex(playerId, mapIndex));
+	}
+	LeaveChannel.call(this, viewer, false);
+	callback();
+}
+
+/**
+ * 从玩家正在观察的地块移除
+ * @param playerId
+ * @param logicServerId
+ * @param callback
+ */
+pro.removeFromViewedMapIndexChannel = function(playerId, logicServerId, callback){
+	this.logService.onEvent('cache.cacheRemote.removeFromViewedAllianceChannel', {
+		playerId:playerId,
+		logicServerId:logicServerId
+	});
+	var viewer = this.mapViewers[playerId];
+	if(!viewer) return callback();
+	LeaveChannel.call(this, viewer, false);
+	callback();
 }

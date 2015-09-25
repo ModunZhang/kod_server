@@ -26,7 +26,8 @@ right["archon"] = {
 	findAllianceToFight:true,
 	revengeAlliance:true,
 	addItem:true,
-	giveLoyaltyToAllianceMember:true
+	giveLoyaltyToAllianceMember:true,
+	moveAlliance:true
 }
 right["general"] = {
 	title:"general",
@@ -51,7 +52,8 @@ right["general"] = {
 	findAllianceToFight:true,
 	revengeAlliance:true,
 	addItem:true,
-	giveLoyaltyToAllianceMember:true
+	giveLoyaltyToAllianceMember:true,
+	moveAlliance:true
 }
 right["quartermaster"] = {
 	title:"quartermaster",
@@ -76,7 +78,8 @@ right["quartermaster"] = {
 	findAllianceToFight:false,
 	revengeAlliance:false,
 	addItem:true,
-	giveLoyaltyToAllianceMember:false
+	giveLoyaltyToAllianceMember:false,
+	moveAlliance:false
 }
 right["supervisor"] = {
 	title:"supervisor",
@@ -101,7 +104,8 @@ right["supervisor"] = {
 	findAllianceToFight:false,
 	revengeAlliance:false,
 	addItem:false,
-	giveLoyaltyToAllianceMember:false
+	giveLoyaltyToAllianceMember:false,
+	moveAlliance:false
 }
 right["elite"] = {
 	title:"elite",
@@ -126,7 +130,8 @@ right["elite"] = {
 	findAllianceToFight:false,
 	revengeAlliance:false,
 	addItem:false,
-	giveLoyaltyToAllianceMember:false
+	giveLoyaltyToAllianceMember:false,
+	moveAlliance:false
 }
 right["member"] = {
 	title:"member",
@@ -151,5 +156,6 @@ right["member"] = {
 	findAllianceToFight:false,
 	revengeAlliance:false,
 	addItem:false,
-	giveLoyaltyToAllianceMember:false
+	giveLoyaltyToAllianceMember:false,
+	moveAlliance:false
 }

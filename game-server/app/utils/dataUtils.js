@@ -3986,11 +3986,10 @@ Utils.getAllianceVillagesTotalCount = function(allianceDoc){
  * 创建联盟村落
  * @param allianceDoc
  * @param allianceData
- * @param enemyAllianceData
  * @param currentVillageName
  * @param count
  */
-Utils.createAllianceVillage = function(allianceDoc, allianceData, enemyAllianceData, currentVillageName, count){
+Utils.createAllianceVillage = function(allianceDoc, allianceData, currentVillageName, count){
 	var self = this
 	var mapObjects = allianceDoc.mapObjects
 	var map = MapUtils.buildMap(mapObjects)
@@ -4012,10 +4011,8 @@ Utils.createAllianceVillage = function(allianceDoc, allianceData, enemyAllianceD
 			if(_.isObject(rect)){
 				var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
 				allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
-				enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
 				var village = self.addAllianceVillageObject(allianceDoc, villageMapObject)
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
-				enemyAllianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
 			}
 			count--
 			villageTypeIndex++

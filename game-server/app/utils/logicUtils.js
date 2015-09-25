@@ -1312,8 +1312,8 @@ Utils.getPlayerDragonDataFromAllianceShrineStageEvent = function(playerId, event
  * @returns {boolean}
  */
 Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineEvent, playerId){
-	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
-		var marchEvent = allianceDoc.attackMarchEvents[i]
+	for(var i = 0; i < allianceDoc.marchEvents.attackMarchEvents.length; i++){
+		var marchEvent = allianceDoc.marchEvents.attackMarchEvents[i]
 		if(_.isEqual(marchEvent.marchType, Consts.MarchType.Shrine)
 			&& _.isEqual(marchEvent.defenceShrineData.shrineEventId, shrineEvent.id)
 			&& _.isEqual(marchEvent.attackPlayerData.id, playerId)
@@ -1334,8 +1334,8 @@ Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineE
  * @returns {boolean}
  */
 Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlayerId){
-	for(var i = 0; i < allianceDoc.attackMarchEvents.length; i++){
-		var marchEvent = allianceDoc.attackMarchEvents[i]
+	for(var i = 0; i < allianceDoc.marchEvents.attackMarchEvents.length; i++){
+		var marchEvent = allianceDoc.marchEvents.attackMarchEvents[i]
 		if(_.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence)
 			&& _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
 			&& _.isEqual(marchEvent.defencePlayerData.id, targetPlayerId)
@@ -1436,9 +1436,13 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 	attackAllianceDoc.basicInfo.statusFinishTime = prepareTime
 	attackAllianceDoc.allianceFight = {
 		mergeStyle:mergeStyle,
-		attackAllianceId:attackAllianceDoc._id,
-		defenceAllianceId:defenceAllianceDoc._id,
 		attacker:{
+			alliance:{
+				id:attackAllianceDoc._id,
+				name:attackAllianceDoc.basicInfo.name,
+				tag:attackAllianceDoc.basicInfo.tag,
+				flag:attackAllianceDoc.basicInfo.flag
+			},
 			playerKills:[],
 			allianceCountData:{
 				kill:0,
@@ -1450,6 +1454,12 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 			}
 		},
 		defencer:{
+			alliance:{
+				id:defenceAllianceDoc._id,
+				name:defenceAllianceDoc.basicInfo.name,
+				tag:defenceAllianceDoc.basicInfo.tag,
+				flag:defenceAllianceDoc.basicInfo.flag
+			},
 			playerKills:[],
 			allianceCountData:{
 				kill:0,
@@ -1629,18 +1639,21 @@ Utils.returnPlayerShrineTroops = function(playerDoc, playerData, allianceDoc, al
  * @param playerData
  * @param allianceDoc
  * @param allianceData
+ * @param pushFuncs
  * @param eventFuncs
  * @param timeEventService
+ * @param cacheService
  */
-Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, timeEventService){
+Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, pushFuncs, timeEventService, cacheService){
 	var self = this
-	var i = allianceDoc.strikeMarchEvents.length
+	var i = allianceDoc.marchEvents.strikeMarchEvents.length
 	var marchEvent = null
 	while(i--){
-		marchEvent = allianceDoc.strikeMarchEvents[i]
+		marchEvent = allianceDoc.marchEvents.strikeMarchEvents[i]
 		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
-			allianceData.push(["strikeMarchEvents." + allianceDoc.strikeMarchEvents.indexOf(marchEvent), null])
-			allianceDoc.strikeMarchEvents.splice(i, 1)
+			pushFuncs.push([cacheService, cacheService.removeMarchEventAsync, 'strikeMarchEvents', marchEvent]);
+			allianceData.push(["marchEvents.strikeMarchEvents." + allianceDoc.marchEvents.strikeMarchEvents.indexOf(marchEvent), null])
+			allianceDoc.marchEvents.strikeMarchEvents.splice(i, 1)
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchEvents", marchEvent.id])
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
@@ -1648,12 +1661,13 @@ Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, all
 			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
 		}
 	}
-	i = allianceDoc.attackMarchEvents.length
+	i = allianceDoc.marchEvents.attackMarchEvents.length
 	while(i--){
-		marchEvent = allianceDoc.attackMarchEvents[i]
+		marchEvent = allianceDoc.marchEvents.attackMarchEvents[i]
 		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
-			allianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(marchEvent), null])
-			allianceDoc.attackMarchEvents.splice(i, 1)
+			pushFuncs.push([cacheService, cacheService.removeMarchEventAsync, 'attackMarchEvents', marchEvent]);
+			allianceData.push(["marchEvents.attackMarchEvents." + allianceDoc.marchEvents.attackMarchEvents.indexOf(marchEvent), null])
+			allianceDoc.marchEvents.attackMarchEvents.splice(i, 1)
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", marchEvent.id])
 
 			self.removePlayerTroopOut(playerDoc, marchEvent.attackPlayerData.dragon.type);
@@ -1672,17 +1686,20 @@ Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, all
  * @param allianceDoc
  * @param allianceData
  * @param eventFuncs
+ * @param pushFuncs
  * @param timeEventService
+ * @param cacheService
  */
-Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, timeEventService){
+Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, pushFuncs, timeEventService, cacheService){
 	var self = this
-	var i = allianceDoc.strikeMarchReturnEvents.length
+	var i = allianceDoc.marchEvents.strikeMarchReturnEvents.length
 	var marchEvent = null
 	while(i--){
-		marchEvent = allianceDoc.strikeMarchReturnEvents[i]
+		marchEvent = allianceDoc.marchEvents.strikeMarchReturnEvents[i]
 		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
-			allianceData.push(["strikeMarchReturnEvents." + allianceDoc.strikeMarchReturnEvents.indexOf(marchEvent), null])
-			allianceDoc.strikeMarchReturnEvents.splice(i, 1)
+			pushFuncs.push([cacheService, cacheService.removeMarchEventAsync, 'strikeMarchReturnEvents', marchEvent]);
+			allianceData.push(["marchEvents.strikeMarchReturnEvents." + allianceDoc.marchEvents.strikeMarchReturnEvents.indexOf(marchEvent), null])
+			allianceDoc.marchEvents.strikeMarchReturnEvents.splice(i, 1)
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchReturnEvents", marchEvent.id])
 
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
@@ -1690,12 +1707,13 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
 		}
 	}
-	i = allianceDoc.attackMarchReturnEvents.length
+	i = allianceDoc.marchEvents.attackMarchReturnEvents.length
 	while(i--){
-		marchEvent = allianceDoc.attackMarchReturnEvents[i]
+		marchEvent = allianceDoc.marchEvents.attackMarchReturnEvents[i]
 		if(_.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)){
-			allianceData.push(["attackMarchReturnEvents." + allianceDoc.attackMarchReturnEvents.indexOf(marchEvent), null])
-			allianceDoc.attackMarchReturnEvents.splice(i, 1)
+			pushFuncs.push([cacheService, cacheService.removeMarchEventAsync, 'attackMarchReturnEvents', marchEvent]);
+			allianceData.push(["marchEvents.attackMarchReturnEvents." + allianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchEvent), null])
+			allianceDoc.marchEvents.attackMarchReturnEvents.splice(i, 1)
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchEvent.id])
 
 			self.removePlayerTroopOut(playerDoc, marchEvent.attackPlayerData.dragon.type);
@@ -1716,16 +1734,19 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
  * @param allianceDoc
  * @param allianceData
  * @param eventFuncs
+ * @param pushFuncs
  * @param timeEventService
  * @param dataService
+ * @param cacheService
  */
-Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, timeEventService, dataService){
+Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, pushFuncs, timeEventService, dataService, cacheService){
 	var self = this
 	var i = allianceDoc.villageEvents.length
 	var villageEvent = null
 	while(i--){
 		villageEvent = allianceDoc.villageEvents[i]
 		if(_.isEqual(villageEvent.playerData.id, playerDoc._id)){
+			pushFuncs.push([cacheService, cacheService.removeVillageEventAsync, villageEvent]);
 			allianceData.push(["villageEvents." + allianceDoc.villageEvents.indexOf(villageEvent), null])
 			allianceDoc.villageEvents.splice(i, 1)
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "villageEvents", villageEvent.id])
@@ -1815,28 +1836,6 @@ Utils.returnPlayerHelpToTroop = function(allianceDoc, allianceData, playerDoc, p
 	playerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free
 	playerData.push(["dragons." + helpedByTroop.dragon.type, playerDoc.dragons[helpedByTroop.dragon.type]])
 	this.addPlayerSoldiers(playerDoc, playerData, helpedByTroop.soldiers)
-}
-
-/**
- * 退还正在进行协防行军中的玩家数据
- * @param playerDoc
- * @param playerData
- * @param marchEvent
- * @param allianceDoc
- * @param allianceData
- * @param eventFuncs
- * @param timeEventService
- */
-Utils.returnPlayerHelpedByMarchTroop = function(playerDoc, playerData, marchEvent, allianceDoc, allianceData, eventFuncs, timeEventService){
-	allianceData.push(["attackMarchEvents." + allianceDoc.indexOf(marchEvent), null])
-	this.removeItemInArray(allianceDoc.attackMarchEvents, marchEvent)
-	eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", marchEvent.id])
-
-	this.removePlayerTroopOut(playerDoc, marchEvent.attackPlayerData.dragon.type);
-	DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-	playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-	playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
-	this.addPlayerSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.soldiers)
 }
 
 /**
@@ -2109,16 +2108,16 @@ Utils.addPlayerRewards = function(playerDoc, playerData, rewards){
  * @returns {boolean}
  */
 Utils.isPlayerHasFreeMarchQueue = function(playerDoc, allianceDoc){
-	var strikeMarchEvents = _.filter(allianceDoc.strikeMarchEvents, function(event){
+	var strikeMarchEvents = _.filter(allianceDoc.marchEvents.strikeMarchEvents, function(event){
 		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
 	})
-	var strikeMarchReturnEvents = _.filter(allianceDoc.strikeMarchReturnEvents, function(event){
+	var strikeMarchReturnEvents = _.filter(allianceDoc.marchEvents.strikeMarchReturnEvents, function(event){
 		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
 	})
-	var attackMarchEvents = _.filter(allianceDoc.attackMarchEvents, function(event){
+	var attackMarchEvents = _.filter(allianceDoc.marchEvents.attackMarchEvents, function(event){
 		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
 	})
-	var attackMarchReturnEvents = _.filter(allianceDoc.attackMarchReturnEvents, function(event){
+	var attackMarchReturnEvents = _.filter(allianceDoc.marchEvents.attackMarchReturnEvents, function(event){
 		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
 	})
 	var villageEvents = _.filter(allianceDoc.villageEvents, function(event){

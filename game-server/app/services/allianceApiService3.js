@@ -71,7 +71,7 @@ pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".loyalty", playerObject.loyalty])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.DonateToAlliance)
 
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		return Promise.resolve()
@@ -106,7 +106,6 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 	var self = this
 	var allianceDoc = null
 	var allianceData = []
-	var enemyAllianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
@@ -134,13 +133,12 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 			var totalCount = DataUtils.getAllianceVillagesTotalCount(allianceDoc)
 			var currentCount = allianceDoc.villages.length + allianceDoc.villageCreateEvents.length
 			var villageTypeConfig = _.sample(DataUtils.getAllianceVillageTypeConfigs());
-			DataUtils.createAllianceVillage(allianceDoc, allianceData, enemyAllianceData, villageTypeConfig.name, totalCount - currentCount);
+			DataUtils.createAllianceVillage(allianceDoc, allianceData, villageTypeConfig.name, totalCount - currentCount);
 		}
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.BuildingUpgrade, playerObject.name, [building.name]);
 
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -191,7 +189,7 @@ pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callbac
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.VillageUpgrade, playerObject.name, [villageType]);
 
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -223,7 +221,6 @@ pro.moveAllianceBuilding = function(playerId, allianceId, mapObjectId, locationX
 	var self = this
 	var allianceDoc = null
 	var allianceData = []
-	var enemyAllianceData = []
 	var pushFuncs = []
 	var updateFuncs = []
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
@@ -250,13 +247,11 @@ pro.moveAllianceBuilding = function(playerId, allianceId, mapObjectId, locationX
 		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(ErrorUtils.theAllianceBuildingCanNotMoveToTargetPoint(playerId, allianceDoc._id, oldRect, newRect))
 		mapObject.location = {x:newRect.x, y:newRect.y}
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(mapObject) + ".location", mapObject.location])
-		enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(mapObject) + ".location", mapObject.location])
 		allianceDoc.basicInfo.honour -= honourNeeded
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -311,7 +306,7 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
 
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "shrineEvents", event.id, event.startTime - Date.now()])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -349,7 +344,6 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 	var playerData = []
 	var allianceDoc = null
 	var allianceData = []
-	var enemyAllianceData = []
 	var dragon = null
 	var pushFuncs = []
 	var eventFuncs = []
@@ -386,18 +380,16 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 		if(playerObject.isProtected){
 			playerObject.isProtected = false
 			allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
-			enemyAllianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
 		}
 
 		var event = MarchUtils.createAttackAllianceShrineMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, shrineEventId)
-		allianceDoc.attackMarchEvents.push(event)
-		allianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(event), event])
-		enemyAllianceData.push(["attackMarchEvents." + allianceDoc.attackMarchEvents.indexOf(event), event])
+		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchEvents', event]);
+		allianceDoc.marchEvents.attackMarchEvents.push(event)
+		allianceData.push(["marchEvents.attackMarchEvents." + allianceDoc.marchEvents.attackMarchEvents.indexOf(event), event])
 
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
-		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, self.pushService)
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -444,7 +436,7 @@ pro.requestAllianceToFight = function(playerId, allianceId, callback){
 		allianceData.push(["fightRequests." + allianceDoc.fightRequests.indexOf(playerId), playerId])
 
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -549,8 +541,8 @@ pro.findAllianceToFight = function(playerId, allianceId, callback){
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.pick(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.pick(attackAllianceDoc, Consts.AllianceViewDataKeys)])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
 		pushFuncs.push([self.dataService, self.dataService.createAllianceFightChannelAsync, attackAllianceDoc._id, defenceAllianceDoc._id])
 		return Promise.resolve()
 	}).then(function(){
@@ -631,8 +623,8 @@ pro.revengeAlliance = function(playerId, allianceId, reportId, callback){
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, _.pick(defenceAllianceDoc, Consts.AllianceViewDataKeys)])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, _.pick(attackAllianceDoc, Consts.AllianceViewDataKeys)])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
 		pushFuncs.push([self.dataService, self.dataService.createAllianceFightChannelAsync, attackAllianceDoc._id, defenceAllianceDoc._id])
 		return Promise.resolve()
 	}).then(function(){
@@ -821,7 +813,7 @@ pro.addShopItem = function(playerId, playerName, allianceId, itemName, count, ca
 		LogicUtils.addAllianceItemLog(allianceDoc, allianceData, itemLog)
 
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -903,7 +895,7 @@ pro.buyShopItem = function(playerId, allianceId, itemName, count, callback){
 
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc._id, allianceData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

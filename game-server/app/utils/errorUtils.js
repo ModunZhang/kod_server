@@ -2133,3 +2133,42 @@ Utils.canNotViewYourOwnAlliance = function(playerId, allianceId){
 	var config = Error.canNotViewYourOwnAlliance;
 	return CreateError(config, {playerId:playerId, allianceId:allianceId})
 }
+
+/**
+ * 没有空闲的地图区域
+ */
+Utils.noFreeMapArea = function(){
+	var config = Errors.noFreeMapArea;
+	return CreateError(config, {});
+}
+
+/**
+ * 玩家未观察此地块
+ * @param playerId
+ * @param mapIndex
+ */
+Utils.playerNotViewThisMapIndex = function(playerId, mapIndex){
+	var config = Errors.playerNotViewThisMapIndex;
+	return CreateError(config, {playerId:playerId, mapIndex:mapIndex});
+}
+
+/**
+ * 当前还不能移动联盟
+ * @param playerId
+ * @param allianceId
+ */
+Utils.canNotMoveAllianceRightNow = function(playerId, allianceId){
+	var config = Errors.canNotMoveAllianceRightNow;
+	return CreateError(config, {playerId:playerId, allianceId:allianceId});
+}
+
+/**
+ * 不能移动到目标地块
+ * @param playerId
+ * @param allianceId
+ * @param targetMapIndex
+ */
+Utils.canNotMoveToTargetMapIndex = function(playerId, allianceId, targetMapIndex){
+	var config = Errors.canNotMoveToTargetMapIndex;
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, targetMapIndex:targetMapIndex});
+}

@@ -1248,7 +1248,8 @@ pro.strikePlayerCity = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.strikePlayerCity", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var dragonType = msg.dragonType
-	var defencePlayerId = msg.defencePlayerId
+	var defenceAllianceId = msg.defenceAllinceId;
+	var defencePlayerId = msg.defencePlayerId;
 	var e = null
 	if(_.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
@@ -1260,13 +1261,18 @@ pro.strikePlayerCity = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
+	if(!_.isString(defenceAllianceId) || !ShortId.isValid(defenceAllianceId)){
+		e = new Error("defenceAllianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 	if(!_.isString(defencePlayerId) || !ShortId.isValid(defencePlayerId)){
 		e = new Error("defencePlayerId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.request('strikePlayerCity', [session.uid, allianceId, dragonType, defencePlayerId]).then(function(playerData){
+	this.request('strikePlayerCity', [session.uid, allianceId, dragonType, defenceAllianceId, defencePlayerId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1284,7 +1290,8 @@ pro.attackPlayerCity = function(msg, session, next){
 	var allianceId = session.get('allianceId');
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
-	var defencePlayerId = msg.defencePlayerId
+	var defenceAllianceId = msg.defenceAllianceId;
+	var defencePlayerId = msg.defencePlayerId;
 	var e = null
 	if(_.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
@@ -1301,13 +1308,18 @@ pro.attackPlayerCity = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
+	if(!_.isString(defenceAllianceId) || !ShortId.isValid(defenceAllianceId)){
+		e = new Error("defenceAllianceId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 	if(!_.isString(defencePlayerId) || !ShortId.isValid(defencePlayerId)){
 		e = new Error("defencePlayerId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.request('attackPlayerCity', [session.uid, allianceId, dragonType, soldiers, defencePlayerId]).then(function(playerData){
+	this.request('attackPlayerCity', [session.uid, allianceId, dragonType, soldiers, defenceAllianceId, defencePlayerId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1827,7 +1839,6 @@ pro.getItemLogs = function(msg, session, next){
 	var allianceId = session.get('allianceId');
 	var e = null
 
-
 	if(_.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
@@ -1842,57 +1853,27 @@ pro.getItemLogs = function(msg, session, next){
 }
 
 /**
- * 进入被观察联盟
+ * 移动联盟
  * @param msg
  * @param session
  * @param next
  */
-pro.enterAlliance = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.enterAlliance", {playerId:session.uid, msg:msg})
+pro.moveAlliance = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getItemLogs", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
-	var logicServerId = session.get('logicServerId');
-	var targetAllianceId = msg.targetAllianceId;
+	var targetMapIndex = msg.targetMapIndex;
 	var e = null
 
-	if(!_.isString(targetAllianceId) || !ShortId.isValid(targetAllianceId)){
-		e = new Error("targetAllianceId 不合法")
+	if(_.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(allianceId === targetAllianceId){
-		e = ErrorUtils.canNotViewYourOwnAlliance(session.uid, allianceId);
-		return next(e, ErrorUtils.getError(e))
-	}
-
-	this.request('enterAlliance', [logicServerId, session.uid, targetAllianceId]).spread(function(targetAllianceDoc, targetEnemyAllianceDoc){
-		next(null, {code:200, targetAllianceDoc:targetAllianceDoc, targetEnemyAllianceDoc:targetEnemyAllianceDoc})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
-
-/**
- * 进入被观察联盟后的心跳
- * @param msg
- * @param session
- * @param next
- */
-pro.amInAlliance = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.amInAlliance", {playerId:session.uid, msg:msg})
-	var allianceId = session.get('allianceId');
-	var logicServerId = session.get('logicServerId');
-	var targetAllianceId = msg.targetAllianceId;
-	var e = null
-
-	if(!_.isString(targetAllianceId) || !ShortId.isValid(targetAllianceId)){
-		e = new Error("targetAllianceId 不合法")
-		return next(e, ErrorUtils.getError(e))
-	}
-	if(allianceId === targetAllianceId){
-		e = ErrorUtils.canNotViewYourOwnAlliance(session.uid, allianceId);
+	if(!_.isNumber(targetMapIndex) || targetMapIndex < 0 || targetMapIndex > Define.BigMapWidth * Define.BigMapHeight - 1){
+		e = new Error('targetMapIndex 不合法');
 		return next(e, ErrorUtils.getError(e))
 	}
 
-	this.request('amInAlliance', [logicServerId, session.uid, targetAllianceId]).then(function(){
+	this.request('moveAlliance', [session.uid, allianceId, targetMapIndex]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1900,28 +1881,110 @@ pro.amInAlliance = function(msg, session, next){
 }
 
 /**
- * 玩家离开被观察的联盟
+ * 进入被观察地块
  * @param msg
  * @param session
  * @param next
  */
-pro.leaveAlliance = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.leaveAlliance", {playerId:session.uid, msg:msg})
+pro.enterMapIndex = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.enterMapIndex", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var logicServerId = session.get('logicServerId');
-	var targetAllianceId = msg.targetAllianceId;
+	var mapIndex = msg.mapIndex;
 	var e = null
 
-	if(!_.isString(targetAllianceId) || !ShortId.isValid(targetAllianceId)){
-		e = new Error("targetAllianceId 不合法")
+	if(_.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(allianceId === targetAllianceId){
-		e = ErrorUtils.canNotViewYourOwnAlliance(session.uid, allianceId);
+	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapWidth * Define.BigMapHeight - 1){
+		e = new Error('mapIndex 不合法');
 		return next(e, ErrorUtils.getError(e))
 	}
 
-	this.request('leaveAlliance', [logicServerId, session.uid, targetAllianceId]).then(function(){
+	this.request('enterMapIndex', [logicServerId, session.uid, allianceId, mapIndex]).spread(function(allianceData, mapData){
+		next(null, {code:200, allianceData:allianceData, mapData:mapData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 进入被观察地块后的心跳
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.amInMapIndex = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.amInMapIndex", {playerId:session.uid, msg:msg})
+	var allianceId = session.get('allianceId');
+	var logicServerId = session.get('logicServerId');
+	var mapIndex = msg.mapIndex;
+	var e = null
+
+	if(_.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapWidth * Define.BigMapHeight - 1){
+		e = new Error('mapIndex 不合法');
+		return next(e, ErrorUtils.getError(e))
+	}
+
+	this.request('amInMapIndex', [logicServerId, session.uid, mapIndex]).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 玩家离开被观察的地块
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.leaveMapIndex = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.leaveMapIndex", {playerId:session.uid, msg:msg})
+	var allianceId = session.get('allianceId');
+	var logicServerId = session.get('logicServerId');
+	var mapIndex = msg.mapIndex;
+	var e = null
+
+	if(_.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapWidth * Define.BigMapHeight - 1){
+		e = new Error('mapIndex 不合法');
+		return next(e, ErrorUtils.getError(e))
+	}
+
+	this.request('leaveMapIndex', [logicServerId, session.uid, mapIndex]).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+pro.getMapAllianceDatas = function(msg, session, next){
+	this.logService.onRequest("logic.allianceHandler.getMapAllianceDatas", {playerId:session.uid, msg:msg})
+	var mapIndexs = msg.mapIndexs;
+	var e = null
+
+	if(!_.isArray(mapIndexs)){
+		e = new Error('mapIndexs 不合法');
+		return next(e, ErrorUtils.getError(e))
+	}
+	var hasError = _.some(mapIndexs, function(mapIndex){
+		return !_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapWidth * Define.BigMapHeight - 1;
+	})
+	if(hasError){
+		e = new Error('mapIndexs 不合法');
+		return next(e, ErrorUtils.getError(e))
+	}
+
+	this.request('getMapAllianceDatas', [session.uid, mapIndexs]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

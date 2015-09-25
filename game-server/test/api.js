@@ -1181,26 +1181,42 @@ Api.getItemLogs = function(allianceId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.enterAlliance = function(targetAllianceId, callback){
+Api.enterMapIndex = function(mapIndex, callback){
 	var info = {
-		targetAllianceId:targetAllianceId
+		mapIndex:mapIndex
 	}
-	var route = "logic.allianceHandler.enterAlliance"
+	var route = "logic.allianceHandler.enterMapIndex"
 	pomelo.request(route, info, callback)
 }
 
-Api.amInAlliance = function(targetAllianceId, callback){
+Api.amInMapIndex = function(mapIndex, callback){
 	var info = {
-		targetAllianceId:targetAllianceId
+		mapIndex:mapIndex
 	}
-	var route = "logic.allianceHandler.amInAlliance"
+	var route = "logic.allianceHandler.amInMapIndex"
 	pomelo.request(route, info, callback)
 }
 
-Api.leaveAlliance = function(targetAllianceId, callback){
+Api.leaveMapIndex = function(mapIndex, callback){
 	var info = {
-		targetAllianceId:targetAllianceId
+		mapIndex:mapIndex
 	}
-	var route = "logic.allianceHandler.leaveAlliance"
+	var route = "logic.allianceHandler.leaveMapIndex"
 	pomelo.request(route, info, callback)
+}
+
+Api.getMapAllianceDatas = function(mapIndexs, callback){
+	var info = {
+		mapIndexs:mapIndexs
+	}
+	var route = 'logic.allianceHandler.getMapAllianceDatas';
+	pomelo.request(route, info, callback);
+}
+
+Api.moveAlliance = function(targetMapIndex, callback){
+	var info = {
+		targetMapIndex:targetMapIndex
+	}
+	var route = 'logic.allianceHandler.moveAlliance';
+	pomelo.request(route, info, callback);
 }

@@ -523,6 +523,7 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
  */
 pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
 	var self = this
+	var cacheService = app.get('cacheService');
 	var now = Date.now()
 	var funcs = []
 	if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
@@ -550,29 +551,34 @@ pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
 		event.startTime += timeAdd
 		event.finishTime += timeAdd
 		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "villageEvents", event.id, event.finishTime - now))
+		funcs.push(cacheService.addVillageEventAsync('villageEvents', event));
 	})
 	_.each(allianceDoc.villageCreateEvents, function(event){
 		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "villageCreateEvents", event.id, event.finishTime - now))
 	})
-	_.each(allianceDoc.strikeMarchEvents, function(event){
+	_.each(allianceDoc.marchEvents.strikeMarchEvents, function(event){
 		event.startTime += timeAdd
 		event.arriveTime += timeAdd
 		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "strikeMarchEvents", event.id, event.arriveTime - now))
+		funcs.push(cacheService.addMarchEventAsync('strikeMarchEvents', event));
 	})
-	_.each(allianceDoc.strikeMarchReturnEvents, function(event){
+	_.each(allianceDoc.marchEvents.strikeMarchReturnEvents, function(event){
 		event.startTime += timeAdd
 		event.arriveTime += timeAdd
 		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "strikeMarchReturnEvents", event.id, event.arriveTime - now))
+		funcs.push(cacheService.addMarchEventAsync('strikeMarchEvents', event));
 	})
-	_.each(allianceDoc.attackMarchEvents, function(event){
+	_.each(allianceDoc.marchEvents.attackMarchEvents, function(event){
 		event.startTime += timeAdd
 		event.arriveTime += timeAdd
 		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "attackMarchEvents", event.id, event.arriveTime - now))
+		funcs.push(cacheService.addMarchEventAsync('strikeMarchEvents', event));
 	})
-	_.each(allianceDoc.attackMarchReturnEvents, function(event){
+	_.each(allianceDoc.marchEvents.attackMarchReturnEvents, function(event){
 		event.startTime += timeAdd
 		event.arriveTime += timeAdd
 		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "attackMarchReturnEvents", event.id, event.arriveTime - now))
+		funcs.push(cacheService.addMarchEventAsync('strikeMarchEvents', event));
 	})
 	Promise.all(funcs).then(function(){
 		callback()

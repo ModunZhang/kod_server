@@ -36,7 +36,6 @@ var LoginPlayer = function(id){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
-	var enemyAllianceDoc = null
 	if(this.cacheService.isPlayerLocked(id))
 		return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {playerId:id}));
 	return this.cacheService.findPlayerAsync(id).then(function(doc){
@@ -48,19 +47,11 @@ var LoginPlayer = function(id){
 				return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {allianceId:playerDoc.allianceId}));
 			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc
-				if(_.isObject(allianceDoc.allianceFight)){
-					var enemyAllianceId = LogicUtils.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
-					if(self.cacheService.isAllianceLocked(enemyAllianceId))
-						return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {allianceId:enemyAllianceId}));
-					return self.cacheService.directFindAllianceAsync(enemyAllianceId).then(function(doc){
-						enemyAllianceDoc = doc
-						return Promise.resolve()
-					})
-				}else return Promise.resolve()
+				return Promise.resolve()
 			})
 		}else return Promise.resolve()
 	}).then(function(){
-		return Promise.resolve([playerDoc, allianceDoc, enemyAllianceDoc])
+		return Promise.resolve([playerDoc, allianceDoc])
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -87,7 +78,6 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 	var playerDoc = null
 	var allianceDoc = null
 	var allianceData = []
-	var enemyAllianceDoc = null
 	var vipExpAdd = null
 	var updateFuncs = []
 	var eventFuncs = []
@@ -98,10 +88,9 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 		}else{
 			return Promise.reject(ErrorUtils.deviceNotExist(deviceId))
 		}
-	}).spread(function(doc_1, doc_2, doc_3){
+	}).spread(function(doc_1, doc_2){
 		playerDoc = doc_1
 		allianceDoc = doc_2
-		enemyAllianceDoc = doc_3
 		if(_.isEmpty(playerDoc.logicServerId)) return Promise.resolve(false)
 		else return self.dataService.isPlayerOnlineAsync(playerDoc)
 	}).then(function(online){
@@ -188,10 +177,6 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 		var filteredAllianceDoc = null
 		if(_.isObject(allianceDoc))
 			filteredAllianceDoc = _.omit(allianceDoc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs", "villageCreateEvents"]);
-		var filteredEnemyAllianceDoc = null
-		if(_.isObject(enemyAllianceDoc)){
-			filteredEnemyAllianceDoc = _.pick(enemyAllianceDoc, Consts.AllianceViewDataKeys);
-		}
 
 		self.logService.onEvent("logic.playerApiService.login", {
 			playerId:playerDoc._id,
@@ -199,7 +184,7 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 			logicServerId:logicServerId
 		})
 		self.app.set('loginedCount', self.app.get('loginedCount') + 1)
-		callback(null, [filteredPlayerDoc, filteredAllianceDoc, filteredEnemyAllianceDoc])
+		callback(null, [filteredPlayerDoc, filteredAllianceDoc])
 	}).catch(function(e){
 		self.logService.onEventError("logic.playerApiService.login", {
 			deviceId:deviceId,

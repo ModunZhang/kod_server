@@ -123,3 +123,8 @@ intInit["LootVillagePercent"] = {
 	value:20,
 	desc:"掠夺敌方村落资源比例"
 }
+intInit["allianceMoveColdMinutes"] = {
+	type:"allianceMoveColdMinutes",
+	value:360,
+	desc:"移动联盟冷却时间"
+}

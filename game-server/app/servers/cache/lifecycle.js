@@ -122,11 +122,31 @@ life.afterStartAll = function(app){
 	var ServerState = app.get("ServerState")
 	var Alliance = app.get("Alliance")
 	var serverStopTime = null
+	var funcs = [];
 
-	var funcs = []
-	funcs.push(ServerState.findOneAsync({"type":Consts.ServerState.Stop}, null, {"sort":{"time":-1}}))
-	funcs.push(ServerState.findOneAsync({"type":Consts.ServerState.Start}, null, {"sort":{"time":-1}}))
-	Promise.all(funcs).spread(function(stopDoc, startDoc){
+	(function(){
+		return new Promise(function(resolve, reject){
+			var cursor = Alliance.collection.find({
+				serverId:app.get("cacheServerId")
+			}, {
+				_id:true,
+				mapIndex:true,
+				basicInfo:true
+			});
+			(function getNext(){
+				cursor.next(function(e, doc){
+					if(!!e) return reject(e);
+					if(!doc) return resolve();
+					cacheService.updateMapAlliance(doc.mapIndex, doc, null);
+					return getNext();
+				})
+			})();
+		})
+	})().then(function(){
+		funcs.push(ServerState.findOneAsync({"type":Consts.ServerState.Stop}, null, {"sort":{"time":-1}}))
+		funcs.push(ServerState.findOneAsync({"type":Consts.ServerState.Start}, null, {"sort":{"time":-1}}))
+		return Promise.all(funcs)
+	}).spread(function(stopDoc, startDoc){
 		if(!_.isObject(stopDoc)) serverStopTime = 0
 		else if(!_.isObject(startDoc) || startDoc.time >= stopDoc.time) serverStopTime = 0
 		else serverStopTime = Date.now() - stopDoc.time

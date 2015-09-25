@@ -7,6 +7,7 @@
 module.exports = {
 	GlobalChatChannel:"globalChatChannel",
 	AllianceChannelPrefix:"allianceChannel",
+	BigMapChannelPrefix:'bigMapChannelPrefix',
 	PushServiceName:"pushService",
 	AlliancePowerRank:"alliancePowerRank",
 	AllianceKillRank:"allianceKillRank",
