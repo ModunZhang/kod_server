@@ -1532,20 +1532,6 @@ Utils.addAllianceFightReport = function(allianceDoc, allianceData, report){
 }
 
 /**
- * 如果联盟正在战斗,推送我方联盟相关数据变化到敌对联盟
- * @param allianceDoc
- * @param allianceData
- * @param pushFuncs
- * @param pushService
- */
-Utils.pushDataToEnemyAlliance = function(allianceDoc, allianceData, pushFuncs, pushService){
-	if(_.isObject(allianceDoc.allianceFight) && !_.isEmpty(allianceData)){
-		var enemyAllianceId = this.getEnemyAllianceId(allianceDoc.allianceFight, allianceDoc._id)
-		pushFuncs.push([pushService, pushService.onOtherAllianceDataChangedAsync, enemyAllianceId, allianceDoc._id, allianceData])
-	}
-}
-
-/**
  * 合并奖励
  * @param rewards
  * @param rewardsNew

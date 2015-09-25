@@ -94,6 +94,7 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 		}
 
 		var event = MarchUtils.createHelpDefenceMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, targetPlayerDoc)
+		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchEvents', event]);
 		allianceDoc.marchEvents.attackMarchEvents.push(event)
 		allianceData.push(["marchEvents.attackMarchEvents." + allianceDoc.marchEvents.attackMarchEvents.indexOf(event), event])
 
@@ -174,6 +175,7 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedP
 		memberObject.helpedByTroopsCount -= 1
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".helpedByTroopsCount", memberObject.helpedByTroopsCount])
 		var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(allianceDoc, playerDoc, beHelpedPlayerDoc, playerDoc.dragons[helpedByTroop.dragon.type], helpedByTroop.soldiers, [], [])
+		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 		allianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
 		allianceData.push(["marchEvents.attackMarchReturnEvents." + allianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])

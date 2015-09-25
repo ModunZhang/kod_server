@@ -1023,84 +1023,72 @@ describe("AllianceService", function(){
 			})
 		})
 
-		it("getAllianceViewData 正常获取", function(done){
-			var m_allianceData = null
-			Api.getMyAllianceData(function(doc){
+		//it("getAllianceViewData 正常获取", function(done){
+		//	var m_allianceData = null
+		//	Api.getMyAllianceData(function(doc){
+		//		doc.code.should.equal(200)
+		//		m_allianceData = doc.allianceData
+		//		Api.getAllianceViewData(m_allianceData._id, function(doc){
+		//			doc.code.should.equal(200)
+		//			done()
+		//		})
+		//	})
+		//})
+		//
+		//it("getNearedAllianceInfos 正常获取", function(done){
+		//	Api.getNearedAllianceInfos(function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("searchAllianceInfoByTag 正常搜索", function(done){
+		//	Api.searchAllianceInfoByTag("t", function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+
+		it("helpAllianceMemberDefence 正常协助", function(done){
+			Api.sendChat("dragonstar blueDragon 1", function(doc){
 				doc.code.should.equal(200)
-				m_allianceData = doc.allianceData
-				Api.getAllianceViewData(m_allianceData._id, function(doc){
+				Api.sendChat("soldiers 1000", function(doc){
+					doc.code.should.equal(200)
+					Api.helpAllianceMemberDefence(
+						"blueDragon",
+						[
+							{
+								name:"swordsman",
+								count:5
+							},
+							{
+								name:"sentinel",
+								count:5
+							},
+							{
+								name:"ranger",
+								count:5
+							}
+						],
+						m_alliance_1.members[1].id,
+						function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
+				})
+			})
+		})
+
+		it("getHelpDefenceMarchEventDetail 正常获取", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				m_alliance_1 = doc.allianceData;
+				Api.getHelpDefenceMarchEventDetail(m_alliance_1._id, m_alliance_1.marchEvents.attackMarchEvents[0].id, function(doc){
 					doc.code.should.equal(200)
 					done()
 				})
 			})
 		})
-
-		it("getNearedAllianceInfos 正常获取", function(done){
-			Api.getNearedAllianceInfos(function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		it("searchAllianceInfoByTag 正常搜索", function(done){
-			Api.searchAllianceInfoByTag("t", function(doc){
-				doc.code.should.equal(200)
-				done()
-			})
-		})
-
-		//it("helpAllianceMemberDefence 正常协助", function(done){
-		//	Api.loginPlayer(Config.deviceId3, function(doc){
-		//		doc.code.should.equal(200)
-		//		var m_allianceData = null
-		//		Api.getMyAllianceData(function(doc){
-		//			doc.code.should.equal(200)
-		//			m_allianceData = doc.allianceData
-		//			Api.sendChat("dragonstar blueDragon 1", function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.sendChat("soldiers 1000", function(doc){
-		//					doc.code.should.equal(200)
-		//					Api.helpAllianceMemberDefence(
-		//						"blueDragon",
-		//						[
-		//							{
-		//								name:"swordsman",
-		//								count:5
-		//							},
-		//							{
-		//								name:"sentinel",
-		//								count:5
-		//							},
-		//							{
-		//								name:"ranger",
-		//								count:5
-		//							}
-		//						],
-		//						m_allianceData.members[1].id,
-		//						function(doc){
-		//							doc.code.should.equal(200)
-		//							done()
-		//						})
-		//				})
-		//			})
-		//		})
-		//	})
-		//})
-
-		//it("getHelpDefenceMarchEventDetail 正常获取", function(done){
-		//	var m_myAllianceData = null
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.getMyAllianceData(function(doc){
-		//			doc.code.should.equal(200)
-		//			m_myAllianceData = doc.allianceData
-		//			Api.getHelpDefenceMarchEventDetail(m_myAllianceData._id, m_myAllianceData.attackMarchEvents[0].id, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
 
 		//it("useItem retreatTroop", function(done){
 		//	var m_myAllianceData = null

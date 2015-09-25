@@ -162,8 +162,7 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 	return cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
-		var enemyAllianceData = []
-		var marchEvent = _.find(allianceDoc[eventType], function(marchEvent){
+		var marchEvent = _.find(allianceDoc.marchEvents[eventType], function(marchEvent){
 			return _.isEqual(marchEvent.id, eventId)
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerDoc._id, allianceDoc._id, eventType, eventId))
@@ -173,9 +172,9 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 		playerDoc.dragons[marchDragon.type].status = Consts.DragonStatus.Free
 		LogicUtils.removePlayerTroopOut(playerDoc, marchDragon.type);
 		playerData.push(["dragons." + marchDragon.type, marchDragon])
-		allianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), null])
-		enemyAllianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), null])
+		allianceData.push(['marchEvents.' + eventType + "." + allianceDoc[eventType].indexOf(marchEvent), null])
 		LogicUtils.removeItemInArray(allianceDoc[eventType], marchEvent)
+		pushFuncs.push([cacheService, cacheService.removeMarchEventAsync, eventType, marchEvent]);
 		eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id])
 
 		if(_.isEqual(eventType, "attackMarchEvents")){
@@ -186,7 +185,6 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 		}
 		updateFuncs.push([cacheService, cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, pushService)
 
 		return Promise.resolve()
 	}).catch(function(e){
@@ -216,7 +214,6 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, cacheSer
 	return cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
-		var enemyAllianceData = []
 		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
 		var marchEvents = []
 		marchEvents = marchEvents.concat(allianceDoc.marchEvents.attackMarchEvents, allianceDoc.marchEvents.attackMarchReturnEvents, allianceDoc.marchEvents.strikeMarchEvents, allianceDoc.marchEvents.strikeMarchReturnEvents)
@@ -240,11 +237,9 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, cacheSer
 		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(ErrorUtils.canNotMoveToTargetPlace(playerDoc._id, allianceDoc._id, oldRect, newRect))
 		playerMapObject.location = {x:newRect.x, y:newRect.y}
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject) + ".location", playerMapObject.location])
-		enemyAllianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject) + ".location", playerMapObject.location])
 
 		updateFuncs.push([cacheService, cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-		LogicUtils.pushDataToEnemyAlliance(allianceDoc, enemyAllianceData, pushFuncs, pushService)
 
 		return Promise.resolve()
 	}).catch(function(e){
