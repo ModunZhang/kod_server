@@ -126,21 +126,23 @@ life.afterStartAll = function(app){
 
 	(function(){
 		return new Promise(function(resolve, reject){
-			var cursor = Alliance.collection.find({
-				serverId:app.get("cacheServerId")
-			}, {
-				_id:true,
-				mapIndex:true,
-				basicInfo:true
-			});
-			(function getNext(){
-				cursor.next(function(e, doc){
-					if(!!e) return reject(e);
-					if(!doc) return resolve();
-					cacheService.updateMapAlliance(doc.mapIndex, doc, null);
-					return getNext();
-				})
-			})();
+			setTimeout(function(){
+				var cursor = Alliance.collection.find({
+					serverId:app.get("cacheServerId")
+				}, {
+					_id:true,
+					mapIndex:true,
+					basicInfo:true
+				});
+				(function getNext(){
+					cursor.next(function(e, doc){
+						if(!!e) return reject(e);
+						if(!doc) return resolve();
+						cacheService.updateMapAlliance(doc.mapIndex, doc, null);
+						return getNext();
+					})
+				})();
+			}, 1000);
 		})
 	})().then(function(){
 		funcs.push(ServerState.findOneAsync({"type":Consts.ServerState.Stop}, null, {"sort":{"time":-1}}))
