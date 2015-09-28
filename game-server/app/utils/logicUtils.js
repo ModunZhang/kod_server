@@ -1450,7 +1450,8 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 				strikeCount:0,
 				strikeSuccessCount:0,
 				attackCount:0,
-				attackSuccessCount:0
+				attackSuccessCount:0,
+				distroyVillageCount:0
 			}
 		},
 		defencer:{
@@ -1467,7 +1468,8 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 				strikeCount:0,
 				strikeSuccessCount:0,
 				attackCount:0,
-				attackSuccessCount:0
+				attackSuccessCount:0,
+				distroyVillageCount:0
 			}
 		}
 	}
@@ -2252,7 +2254,7 @@ Utils.getPlayerHousesByType = function(playerDoc, houseType){
  * @returns {*}
  */
 Utils.getEnemyAllianceId = function(allianceFight, myAllianceId){
-	return _.isEqual(allianceFight.attackAllianceId, myAllianceId) ? allianceFight.defenceAllianceId : allianceFight.attackAllianceId
+	return _.isEqual(allianceFight.attacker.alliance.id, myAllianceId) ? allianceFight.defencer.alliance.id : allianceFight.attacker.alliance.id;
 }
 
 /**
