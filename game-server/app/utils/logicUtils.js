@@ -1430,12 +1430,10 @@ Utils.fixAllianceShrineStagePlayerData = function(playerTroops, playerDatas){
  */
 Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, prepareTime){
 	var now = Date.now()
-	var mergeStyle = Consts.AllianceMergeStyle[_.keys(Consts.AllianceMergeStyle)[(Math.random() * 4) << 0]]
 	attackAllianceDoc.basicInfo.status = Consts.AllianceStatus.Prepare
 	attackAllianceDoc.basicInfo.statusStartTime = now
 	attackAllianceDoc.basicInfo.statusFinishTime = prepareTime
 	attackAllianceDoc.allianceFight = {
-		mergeStyle:mergeStyle,
 		attacker:{
 			alliance:{
 				id:attackAllianceDoc._id,

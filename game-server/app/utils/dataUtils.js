@@ -1889,7 +1889,8 @@ Utils.initMapVillages = function(allianceDoc, mapObjects, map){
 					id:villageMapObject.id,
 					name:villageMapObject.name,
 					level:1,
-					resource:self.getAllianceVillageProduction(villageMapObject.name, 1)
+					resource:self.getAllianceVillageProduction(villageMapObject.name, 1),
+					villageEvent:null
 				}
 				villages.push(village)
 			}
@@ -1948,7 +1949,8 @@ Utils.addAllianceVillageObject = function(allianceDoc, mapObject){
 		id:mapObject.id,
 		name:villageName,
 		level:villageLevel,
-		resource:this.getAllianceVillageProduction(villageName, villageLevel)
+		resource:this.getAllianceVillageProduction(villageName, villageLevel),
+		villageEvent:null
 	}
 	allianceDoc.villages.push(village)
 	return village
@@ -2008,7 +2010,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
 		id:ShortId.generate(),
 		stageName:stageName,
 		createTime:Date.now(),
-		startTime:Date.now() + this.getAllianceIntInit("activeShrineStageEventMinutes") * 60 * 1000,
+		startTime:Date.now() + this.getAllianceIntInit("activeShrineStageEventMinutes") * 60 * 1000 / 60 / 2,
 		playerTroops:[]
 	}
 	return event
@@ -2647,16 +2649,6 @@ Utils.getAllianceShrineStageFightHonour = function(stageName, fightStar){
 Utils.getDragonMaxHp = function(dragon){
 	var vitality = this.getDragonVitality(dragon)
 	return vitality * 4
-}
-
-/**
- * 联盟协防部队是否已达最大数量
- * @param allianceDoc
- * @param playerDoc
- * @returns {boolean}
- */
-Utils.isAlliancePlayerBeHelpedTroopsReachMax = function(allianceDoc, playerDoc){
-	return playerDoc.helpedByTroops.length >= this.getAllianceIntInit("allianceHelpDefenceTroopsMaxCount")
 }
 
 /**

@@ -174,7 +174,21 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedP
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, beHelpedPlayerId)
 		memberObject.helpedByTroopsCount -= 1
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".helpedByTroopsCount", memberObject.helpedByTroopsCount])
-		var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(allianceDoc, playerDoc, beHelpedPlayerDoc, playerDoc.dragons[helpedByTroop.dragon.type], helpedByTroop.soldiers, [], [])
+		var fromAlliance = {
+			id:allianceDoc._id,
+			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag,
+			location:LogicUtils.getAllianceMemberMapObjectById(allianceDoc, playerId).location,
+			mapIndex:allianceDoc.mapIndex
+		}
+		var toAlliance = {
+			id:allianceDoc._id,
+			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag,
+			location:LogicUtils.getAllianceMemberMapObjectById(allianceDoc, beHelpedPlayerId).location,
+			mapIndex:allianceDoc.mapIndex
+		}
+		var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(playerDoc, playerDoc.dragons[helpedByTroop.dragon.type], helpedByTroop.soldiers, [], [], beHelpedPlayerDoc, fromAlliance, toAlliance);
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 		allianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
 		allianceData.push(["marchEvents.attackMarchReturnEvents." + allianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])

@@ -125,7 +125,14 @@ var AllianceSchema = new Schema({
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		level:{type:Number, required:true},
-		resource:{type:Number, required:true}
+		resource:{type:Number, required:true},
+		villageEvent:{
+			type:{
+				eventId:{type:String, required:true},
+				allianceId:{type:String, required:true}
+			},
+			required:false
+		}
 	}],
 	villageCreateEvents:[{
 		_id:false,

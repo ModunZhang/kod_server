@@ -193,7 +193,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 	var funcs = []
 
 	attackAllianceData.push(["marchEvents.attackMarchEvents." + attackAllianceDoc.marchEvents.attackMarchEvents.indexOf(event), null])
-	defenceEnemyAllianceData.push(["marchEvents.attackMarchEvents." + attackAllianceDoc.marchEvents.attackMarchEvents.indexOf(event), null])
 	LogicUtils.removeItemInArray(attackAllianceDoc.marchEvents.attackMarchEvents, event)
 
 	var createSoldiers = function(soldiersAfterFight){
@@ -250,10 +249,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 				attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
 				attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
-				defenceEnemyAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
-				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
 				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, null])
 			}else{
 				var playerTroop = {
@@ -266,7 +263,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				shrineEvent.playerTroops.push(playerTroop)
 				attackAllianceData.push(["shrineEvents." + attackAllianceDoc.shrineEvents.indexOf(shrineEvent) + ".playerTroops." + shrineEvent.playerTroops.indexOf(playerTroop), playerTroop])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
-				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
 				TaskUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.JoinAllianceShrineEvent)
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
@@ -286,15 +282,14 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		Promise.all(funcs).spread(function(doc_1, doc_2){
 			attackPlayerDoc = doc_1
 			defencePlayerDoc = doc_2
-			if(DataUtils.isAlliancePlayerBeHelpedTroopsReachMax(attackAllianceDoc, defencePlayerDoc)){
-				var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, defencePlayerDoc, attackPlayerDoc.dragons[event.attackPlayerData.dragon.type], event.attackPlayerData.soldiers, [], [])
+			var defencePlayerObject = LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id);
+			if(!defencePlayerObject || !_.isEqual(defencePlayerObject.location, event.toAlliance.location) || defencePlayerDoc.helpedByTroops.length >= 1){
+				var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(attackPlayerDoc, attackPlayerDoc.dragons[event.attackPlayerData.dragon.type], event.attackPlayerData.soldiers, [], [], defencePlayerDoc, event.fromAlliance, event.toAlliance);
 				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 				attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
 				attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
-				defenceEnemyAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
-				LogicUtils.pushDataToEnemyAlliance(attackAllianceDoc, defenceEnemyAllianceData, pushFuncs, self.pushService)
 				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, null])
 				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, defencePlayerDoc._id, null])
 				return Promise.resolve()
@@ -304,7 +299,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					beHelpedPlayerData:{
 						id:defencePlayerDoc._id,
 						name:defencePlayerDoc.basicInfo.name,
-						location:LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id).location
+						location:defencePlayerObject.location
 					}
 				}
 				attackPlayerDoc.helpToTroops.push(helpToTroop)
@@ -324,7 +319,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				var beHelpedMemberInAlliance = LogicUtils.getAllianceMemberById(attackAllianceDoc, defencePlayerDoc._id)
 				beHelpedMemberInAlliance.helpedByTroopsCount += 1
 				attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(beHelpedMemberInAlliance) + ".helpedByTroopsCount", beHelpedMemberInAlliance.helpedByTroopsCount])
-				defenceEnemyAllianceData.push(["members." + attackAllianceDoc.members.indexOf(beHelpedMemberInAlliance) + ".helpedByTroopsCount", beHelpedMemberInAlliance.helpedByTroopsCount])
 				TaskUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberDefence)
 
 				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
@@ -892,6 +886,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					eventData = MarchUtils.createAllianceVillageEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], attackAllianceDoc, village, [])
 					newVillageEvent = eventData.event
 					pushFuncs.push([self.cacheService, self.cacheService.addVillageEventAsync, newVillageEvent]);
+					village.villageEvent = {eventId:newVillageEvent.id, allianceId:newVillageEvent.fromAlliance.id};
 					attackAllianceDoc.villageEvents.push(newVillageEvent)
 					attackAllianceData.push(["villageEvents." + attackAllianceDoc.villageEvents.indexOf(newVillageEvent), newVillageEvent])
 					defenceEnemyAllianceData.push(["villageEvents." + attackAllianceDoc.villageEvents.indexOf(newVillageEvent), newVillageEvent])
@@ -1387,17 +1382,18 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 	var defenceAllianceData = []
 	var helpDefencePlayerDoc = null
 	var helpDefencePlayerData = []
-	var eventFuncs = []
 	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = [];
 	var funcs = null
 	var deathEvent = null
 	var isInAllianceFight = null;
 
 	pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'strikeMarchEvents', event])
-	attackAllianceData.push(["strikeMarchEvents." + attackAllianceDoc.strikeMarchEvents.indexOf(event), null])
+	attackAllianceData.push(["strikeMarchEvents." + attackAllianceDoc.marchEvents.strikeMarchEvents.indexOf(event), null])
 	LogicUtils.removeItemInArray(attackAllianceDoc.marchEvents.strikeMarchEvents, event)
 	if(_.isEqual(event.marchType, Consts.MarchType.City)){
-		var defenceMember = null
+		var defencePlayer = null
 		funcs = []
 		funcs.push(self.cacheService.findPlayerAsync(event.attackPlayerData.id))
 		funcs.push(self.cacheService.findPlayerAsync(event.defencePlayerData.id))
@@ -1406,6 +1402,9 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 			attackPlayerDoc = doc_1
 			defencePlayerDoc = doc_2
 			defenceAllianceDoc = doc_3
+			var defencePlayerObject = LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id);
+			defencePlayer = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
+			if(!defencePlayerObject || !_.isEqual(defencePlayerObject.location, event.toAlliance.location)) return Promise.resolve(false);
 			if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
 				var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
 				isInAllianceFight = enemyAllianceId === defenceAllianceDoc._id
@@ -1414,13 +1413,28 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 			if(defencePlayerDoc.helpedByTroops.length > 0){
 				return self.cacheService.findPlayerAsync(defencePlayerDoc.helpedByTroops[0].id).then(function(doc){
 					helpDefencePlayerDoc = doc
-					return Promise.resolve()
+					return Promise.resolve(true)
 				})
 			}else{
-				defenceMember = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
+				return Promise.resolve(true)
+			}
+		}).then(function(playerObjectExist){
+			var attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
+			DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
+
+			if(!playerObjectExist){
+				strikeMarchReturnEvent = MarchUtils.createStrikePlayerCityMarchReturnEvent(attackPlayerDoc, attackDragon, defencePlayerDoc, event.fromAlliance, event.toAlliance)
+				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchReturnEvents', strikeMarchReturnEvent]);
+				attackAllianceDoc.marchEvents.strikeMarchReturnEvents.push(strikeMarchReturnEvent)
+				attackAllianceData.push(["marchEvents.strikeMarchReturnEvents." + attackAllianceDoc.marchEvents.strikeMarchReturnEvents.indexOf(strikeMarchReturnEvent), strikeMarchReturnEvent])
+				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchReturnEvents", strikeMarchReturnEvent.id, strikeMarchReturnEvent.arriveTime - Date.now()])
+				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, null]);
+				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, defencePlayerDoc._id, null]);
+				updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, defenceAllianceDoc._id, null]);
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
 				return Promise.resolve()
 			}
-		}).then(function(){
+
 			if(isInAllianceFight){
 				var allianceFight = attackAllianceDoc.allianceFight = defenceAllianceDoc.allianceFight;
 				var allianceFightData = [];
@@ -1435,8 +1449,6 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				}
 			}
 
-			var attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
-			DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
 			var report = null
 			var strikeMarchReturnEvent = null
 			if(_.isObject(helpDefencePlayerDoc)){
@@ -1477,8 +1489,8 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				}
 			}
 
-			if(attackDragon.hp <= 0 || defenceMember.isProtected){
-				strikeMarchReturnEvent = MarchUtils.createStrikePlayerCityMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc)
+			if(attackDragon.hp <= 0 || defencePlayer.isProtected){
+				strikeMarchReturnEvent = MarchUtils.createStrikePlayerCityMarchReturnEvent(attackPlayerDoc, attackDragon, defencePlayerDoc, event.fromAlliance, event.toAlliance);
 				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchReturnEvents', strikeMarchReturnEvent]);
 				attackAllianceDoc.marchEvents.strikeMarchReturnEvents.push(strikeMarchReturnEvent)
 				attackAllianceData.push(["marchEvents.strikeMarchReturnEvents." + attackAllianceDoc.marchEvents.strikeMarchReturnEvents.indexOf(strikeMarchReturnEvent), strikeMarchReturnEvent])
@@ -1500,7 +1512,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 					updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, defencePlayerDoc._id, defencePlayerDoc])
 
-					strikeMarchReturnEvent = MarchUtils.createStrikePlayerCityMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc)
+					strikeMarchReturnEvent = MarchUtils.createStrikePlayerCityMarchReturnEvent(attackPlayerDoc, attackDragon, defencePlayerDoc, event.fromAlliance, event.toAlliance);
 					pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchReturnEvents', strikeMarchReturnEvent]);
 					attackAllianceDoc.marchEvents.strikeMarchReturnEvents.push(strikeMarchReturnEvent)
 					attackAllianceData.push(["marchEvents.strikeMarchReturnEvents." + attackAllianceDoc.marchEvents.strikeMarchReturnEvents.indexOf(strikeMarchReturnEvent), strikeMarchReturnEvent])
@@ -1539,7 +1551,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					attackPlayerData.push(["dragons." + attackDragon.type + ".hp", attackDragon.hp])
 					attackPlayerData.push(["dragons." + attackDragon.type + ".hpRefreshTime", attackDragon.hpRefreshTime])
 
-					strikeMarchReturnEvent = MarchUtils.createStrikePlayerCityMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, defencePlayerDoc)
+					strikeMarchReturnEvent = MarchUtils.createStrikePlayerCityMarchReturnEvent(attackPlayerDoc, attackDragon, defencePlayerDoc, event.fromAlliance, event.toAlliance);
 					pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchReturnEvents', strikeMarchReturnEvent]);
 					attackAllianceDoc.marchEvents.strikeMarchReturnEvents.push(strikeMarchReturnEvent)
 					attackAllianceData.push(["marchEvents.strikeMarchReturnEvents." + attackAllianceDoc.marchEvents.strikeMarchReturnEvents.indexOf(strikeMarchReturnEvent), strikeMarchReturnEvent])
@@ -1589,6 +1601,119 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 			}
 		})
 		return
+	}
+	if(_.isEqual(event.marchType, Consts.MarchType.Village)){
+		var villageEvent = null
+		var village = null
+		var report = null
+		var marchReturnEvent = null
+		var villageAllianceDoc = null;
+
+		this.cacheService.findPlayerAsync(event.attackPlayerData.id).then(function(doc){
+			attackPlayerDoc = doc
+			if(event.fromAlliance.id !== event.toAlliance.id){
+				return self.cacheService.findAllianceAsync(event.toAlliance.id).then(function(doc){
+					defenceAllianceDoc = doc
+					return Promise.resolve()
+				})
+			}else{
+				return Promise.resolve()
+			}
+		}).then(function(){
+			village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id)
+			if(!village) return Promise.resolve();
+			if(!village.villageEvent) return Promise.resolve();
+
+			if(village.villageEvent.allianceId === event.fromAlliance.id){
+				return Promise.resolve();
+			}else if(village.villageEvent.allianceId === event.toAlliance.id){
+				villageEvent = _.find(defenceAllianceDoc.villageEvents, function(villageEvent){
+					return villageEvent.id === village.villageEvent.eventId;
+				})
+				return self.cacheService.findPlayerAsync(villageEvent.attackPlayerData.id).then(function(doc){
+					defencePlayerDoc = doc;
+					return Promise.resolve();
+				})
+			}else{
+				return self.cacheService.findAllianceAsync(village.villageEvent.allianceId).then(function(doc){
+					villageAllianceDoc = doc;
+					villageEvent = _.find(villageAllianceDoc.villageEvents, function(villageEvent){
+						return villageEvent.id === village.villageEvent.eventId;
+					})
+					return self.cacheService.findPlayerAsync(villageEvent.attackPlayerData.id).then(function(doc){
+						defencePlayerDoc = doc;
+						return Promise.resolve();
+					})
+				})
+			}
+		}).then(function(){
+			if(!village || !villageEvent){
+				marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackPlayerDoc, event.attackPlayerData.dragon, event.defenceVillageData, event.fromAlliance, event.toAlliance);
+				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchReturnEvents', marchReturnEvent]);
+				attackAllianceDoc.marchEvents.strikeMarchReturnEvents.push(marchReturnEvent)
+				attackAllianceData.push(["marchEvents.strikeMarchReturnEvents." + attackAllianceDoc.marchEvents.strikeMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+				eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
+
+				updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, null])
+				if(_.isObject(defenceAllianceDoc)){
+					updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, defenceAllianceDoc._id, null])
+				}
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
+				return Promise.resolve()
+			}
+
+			var attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
+			var defenceDragon = defencePlayerDoc.dragons[villageEvent.playerData.dragon.type]
+			report = ReportUtils.createStrikeVillageFightWithDefencePlayerDragonReport(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc, village, !!villageAllianceDoc ? villageAllianceDoc : defenceAllianceDoc, villageEvent, defencePlayerDoc, defenceDragon)
+			pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.reportForAttackPlayer])
+			pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
+			attackDragon.hp -= report.reportForAttackPlayer.strikeVillage.attackPlayerData.dragon.hpDecreased
+			if(attackDragon.hp <= 0){
+				deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+				attackPlayerDoc.dragonDeathEvents.push(deathEvent)
+				attackPlayerData.push(["dragonDeathEvents." + attackPlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
+				eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
+			}
+			attackPlayerData.dragons = {}
+			attackPlayerData.dragons[attackDragon.type] = attackPlayerDoc.dragons[attackDragon.type]
+
+			updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
+			pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
+			updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, defencePlayerDoc._id, null])
+
+			marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackPlayerDoc, attackDragon, event.defenceVillageData, event.fromAlliance, event.toAlliance);
+			pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchReturnEvents', marchReturnEvent]);
+			attackAllianceDoc.marchEvents.strikeMarchReturnEvents.push(marchReturnEvent)
+			attackAllianceData.push(["marchEvents.strikeMarchReturnEvents." + attackAllianceDoc.marchEvents.strikeMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
+			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "strikeMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
+
+			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, defenceAllianceDoc._id, null])
+			if(!!villageAllianceDoc){
+				updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, villageAllianceDoc._id, null])
+			}
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
+			return Promise.resolve()
+		}).then(function(){
+			callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+		}).catch(function(e){
+			funcs = []
+			if(_.isObject(attackPlayerDoc)){
+				funcs.push(self.cacheService.updatePlayerAsync(attackPlayerDoc._id, null))
+			}
+			if(_.isObject(defencePlayerDoc)){
+				funcs.push(self.cacheService.updatePlayerAsync(defencePlayerDoc._id, null))
+			}
+			if(_.isObject(defenceAllianceDoc) && attackAllianceDoc != defenceAllianceDoc){
+				funcs.push(self.cacheService.updateAllianceAsync(defenceAllianceDoc._id, null))
+			}
+			if(funcs.length > 0){
+				Promise.all(funcs).then(function(){
+					callback(e)
+				})
+			}else{
+				callback(e)
+			}
+		})
 	}
 }
 
@@ -1894,7 +2019,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 		}]
 		LogicUtils.mergeRewards(event.playerData.rewards, newRewards)
 
-		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.playerData.dragon, event.playerData.soldiers, event.playerData.woundedSoldiers, defenceAllianceDoc, event.villageData, event.playerData.rewards)
+		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackPlayerDoc, event.playerData.dragon, event.playerData.soldiers, event.playerData.woundedSoldiers, event.playerData.rewards, event.villageData, event.fromAlliance, event.toAlliance);
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 		attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
 		attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
@@ -1919,7 +2044,9 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "villageCreateEvents", villageCreateEvent.id, villageCreateEvent.finishTime - Date.now()])
 		}else{
 			village.resource -= event.villageData.collectTotal
+			village.villageEvent = null;
 			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
+			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
 		}
 
 		if(attackAllianceDoc != defenceAllianceDoc){
@@ -2164,40 +2291,38 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		return DataUtils.getAllianceFightInitHonourCount(serverConfig.level)
 	})();
 
-	var promise = new Promise(function(resolve){
-		if(_.isObject(killMaxPlayer)){
-			var memberDoc = null
-			var memberData = []
-			self.cacheService.findPlayerAsync(killMaxPlayer.id).then(function(doc){
-				memberDoc = doc
-				memberDoc.resources.gem += killMaxPlayerGemGet
-				memberData.push(["resources.gem", memberDoc.resources.gem])
-				return self.cacheService.updatePlayerAsync(memberDoc._id, memberDoc)
-			}).then(function(){
-				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
-			}).then(function(){
-				var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardTitle")
-				var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardContent")
-				return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [killMaxPlayerGemGet])
-			}).then(function(){
-				resolve()
-			}).catch(function(e){
-				self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.allianceFightKillFirstGemGet", {
-					playerId:killMaxPlayer.id,
-					gemGet:killMaxPlayerGemGet
-				}, e.stack)
-				if(_.isObject(memberDoc)){
-					return self.cacheService.updatePlayerAsync(memberDoc._id, null).then(function(){
-						resolve()
-					})
-				}else resolve()
-			})
-		}else resolve()
-	})
-
-	promise.then(function(){
-		return Promise.all(funcs)
-	}).then(function(){
+	(function(){
+		return new Promise(function(resolve){
+			if(_.isObject(killMaxPlayer)){
+				var memberDoc = null
+				var memberData = []
+				self.cacheService.findPlayerAsync(killMaxPlayer.id).then(function(doc){
+					memberDoc = doc
+					memberDoc.resources.gem += killMaxPlayerGemGet
+					memberData.push(["resources.gem", memberDoc.resources.gem])
+					return self.cacheService.updatePlayerAsync(memberDoc._id, memberDoc)
+				}).then(function(){
+					return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
+				}).then(function(){
+					var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardTitle")
+					var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardContent")
+					return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [killMaxPlayerGemGet])
+				}).then(function(){
+					resolve()
+				}).catch(function(e){
+					self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.allianceFightKillFirstGemGet", {
+						playerId:killMaxPlayer.id,
+						gemGet:killMaxPlayerGemGet
+					}, e.stack)
+					if(_.isObject(memberDoc)){
+						return self.cacheService.updatePlayerAsync(memberDoc._id, null).then(function(){
+							resolve()
+						})
+					}else resolve()
+				})
+			}else resolve()
+		})
+	})().then(function(){
 		var attackAllianceKill = attackAllianceDoc.allianceFight.attacker.allianceCountData.kill
 		var defenceAllianceKill = attackAllianceDoc.allianceFight.defencer.allianceCountData.kill
 		var allianceFightResult = attackAllianceKill >= defenceAllianceKill ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin
@@ -2302,8 +2427,8 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime - Date.now()])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, defenceAllianceDoc.basicInfo.statusFinishTime - Date.now()])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, attackAllianceDoc._id, attackAllianceData, null])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceFightAsync, defenceAllianceDoc._id, defenceAllianceData, null])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData]);
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData]);
 		pushFuncs.push([self.dataService, self.dataService.deleteAllianceFightChannelAsync, attackAllianceDoc._id, defenceAllianceDoc._id])
 		return Promise.resolve()
 	}).then(function(){

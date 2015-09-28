@@ -172,8 +172,8 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 		playerDoc.dragons[marchDragon.type].status = Consts.DragonStatus.Free
 		LogicUtils.removePlayerTroopOut(playerDoc, marchDragon.type);
 		playerData.push(["dragons." + marchDragon.type, marchDragon])
-		allianceData.push(['marchEvents.' + eventType + "." + allianceDoc[eventType].indexOf(marchEvent), null])
-		LogicUtils.removeItemInArray(allianceDoc[eventType], marchEvent)
+		allianceData.push(['marchEvents.' + eventType + "." + allianceDoc.marchEvents[eventType].indexOf(marchEvent), null])
+		LogicUtils.removeItemInArray(allianceDoc.marchEvents[eventType], marchEvent)
 		pushFuncs.push([cacheService, cacheService.removeMarchEventAsync, eventType, marchEvent]);
 		eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id])
 
@@ -674,7 +674,7 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 	return cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 		allianceDoc = doc
 		var allianceData = []
-		var marchEvent = _.find(allianceDoc[eventType], function(marchEvent){
+		var marchEvent = _.find(allianceDoc.marchEvents[eventType], function(marchEvent){
 			return _.isEqual(marchEvent.id, eventId)
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerDoc._id, allianceDoc._id, eventType, eventId))
@@ -686,7 +686,7 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 			var marchTimeSpeedup = Math.round(marchTimeLeft * speedupPercent)
 			marchEvent.startTime -= marchTimeSpeedup
 			marchEvent.arriveTime -= marchTimeSpeedup
-			allianceData.push([eventType + "." + allianceDoc[eventType].indexOf(marchEvent), marchEvent])
+			allianceData.push(['marchEvents.' + eventType + "." + allianceDoc.marchEvents[eventType].indexOf(marchEvent), marchEvent])
 			eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id, marchEvent.arriveTime - Date.now()])
 			pushFuncs.push([cacheService, cacheService.updateMarchEventAsync, eventType, marchEvent])
 			pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])

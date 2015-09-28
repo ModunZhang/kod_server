@@ -1221,13 +1221,13 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
  * @param attackDragon
  * @param targetAllianceDoc
  * @param defenceAllianceDoc
- * @param defenceVillage
+ * @param targetVillage
  * @param defenceVillageEvent
  * @param defencePlayerDoc
  * @param defenceDragon
  * @returns {*}
  */
-Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragon, targetAllianceDoc, defenceVillage, defenceAllianceDoc, defenceVillageEvent, defencePlayerDoc, defenceDragon){
+Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAllianceDoc, attackPlayerDoc, attackDragon, targetAllianceDoc, targetVillage, defenceAllianceDoc, defenceVillageEvent, defencePlayerDoc, defenceDragon){
 	var getReportLevel = function(powerCompare){
 		var reportLevel = null
 		if(powerCompare < 1) reportLevel = Consts.DragonStrikeReportLevel.D
@@ -1311,9 +1311,9 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 	var strikeVillageReport = {
 		level:getReportLevel(powerCompare),
 		strikeTarget:{
-			name:defenceVillage.name,
-			level:defenceVillage.level,
-			location:LogicUtils.getAllianceMapObjectById(targetAllianceDoc, defenceVillage.id).location,
+			name:targetVillage.name,
+			level:targetVillage.level,
+			location:LogicUtils.getAllianceMapObjectById(targetAllianceDoc, targetVillage.id).location,
 			alliance:createAllianceData(targetAllianceDoc),
 			terrain:targetAllianceDoc.basicInfo.terrain
 		},

@@ -1008,19 +1008,21 @@ Api.retreatFromBeHelpedAllianceMember = function(beHelpedPlayerId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.strikePlayerCity = function(dragonType, defencePlayerId, callback){
+Api.strikePlayerCity = function(dragonType, defenceAllianceId, defencePlayerId, callback){
 	var info = {
 		dragonType:dragonType,
+		defenceAllianceId:defenceAllianceId,
 		defencePlayerId:defencePlayerId
 	}
 	var route = "logic.allianceHandler.strikePlayerCity"
 	pomelo.request(route, info, callback)
 }
 
-Api.attackPlayerCity = function(dragonType, soldiers, defencePlayerId, callback){
+Api.attackPlayerCity = function(dragonType, soldiers, defenceAllianceId, defencePlayerId, callback){
 	var info = {
 		dragonType:dragonType,
 		soldiers:soldiers,
+		defenceAllianceId:defenceAllianceId,
 		defencePlayerId:defencePlayerId
 	}
 	var route = "logic.allianceHandler.attackPlayerCity"

@@ -1202,7 +1202,7 @@ pro.strikePlayerCity = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.strikePlayerCity", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var dragonType = msg.dragonType
-	var defenceAllianceId = msg.defenceAllinceId;
+	var defenceAllianceId = msg.defenceAllianceId;
 	var defencePlayerId = msg.defencePlayerId;
 	var e = null
 	if(_.isEmpty(allianceId)){
