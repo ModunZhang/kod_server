@@ -911,6 +911,8 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 		this.bigMap[index].allianceData = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
+			tag:allianceDoc.basicInfo.tag,
+			flag:allianceDoc.basicInfo.flag,
 			terrain:allianceDoc.basicInfo.terrain,
 			status:allianceDoc.basicInfo.status
 		};
