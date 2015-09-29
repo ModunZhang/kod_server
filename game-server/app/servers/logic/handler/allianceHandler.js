@@ -1921,6 +1921,13 @@ pro.leaveMapIndex = function(msg, session, next){
 	})
 }
 
+/**
+ * 在大地图中获取联盟基础信息
+ * @param msg
+ * @param session
+ * @param next
+ * @returns {*}
+ */
 pro.getMapAllianceDatas = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getMapAllianceDatas", {playerId:session.uid, msg:msg})
 	var mapIndexs = msg.mapIndexs;
@@ -1938,8 +1945,8 @@ pro.getMapAllianceDatas = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e))
 	}
 
-	this.request('getMapAllianceDatas', [session.uid, mapIndexs]).then(function(){
-		next(null, {code:200})
+	this.request('getMapAllianceDatas', [session.uid, mapIndexs]).then(function(datas){
+		next(null, {code:200, datas:datas})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})

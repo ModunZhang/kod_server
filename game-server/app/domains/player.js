@@ -1638,6 +1638,11 @@ var PlayerSchema = new Schema({
 			name:{type:String, required:true},
 			count:{type:Number, required:true}
 		}],
+		woundedSoldiers:[{
+			_id:false,
+			name:{type:String, required:true},
+			count:{type:Number, required:true}
+		}],
 		rewards:[{
 			_id:false,
 			type:{type:String, required:true},
