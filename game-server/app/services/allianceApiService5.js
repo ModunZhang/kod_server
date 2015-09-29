@@ -302,7 +302,7 @@ pro.getMapAllianceDatas = function(playerId, mapIndexs, callback){
 	var self = this;
 	var datas = {};
 	_.each(mapIndexs, function(mapIndex){
-			datas[mapIndexs] = self.cacheService.getMapDataAtIndex(mapIndex).allianceData;
+			datas[mapIndex] = self.cacheService.getMapDataAtIndex(mapIndex).allianceData;
 	});
 
 	callback(null, datas);

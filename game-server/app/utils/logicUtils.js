@@ -1961,12 +1961,11 @@ Utils.getDateString = function(milliseconds){
 /**
  * 添加联盟成员最近3天的击杀数据
  * @param allianceDoc
- * @param memberId
+ * @param memberObject
  * @param kill
  */
-Utils.addAlliancePlayerLastThreeDaysKillData = function(allianceDoc, memberId, kill){
+Utils.addAlliancePlayerLastThreeDaysKillData = function(allianceDoc, memberObject, kill){
 	var todayString = this.getTodayDateString()
-	var memberObject = this.getAllianceMemberById(allianceDoc, memberId)
 	var killData = _.find(memberObject.lastThreeDaysKillData, function(killData){
 		return _.isEqual(killData.date, todayString)
 	})
