@@ -1318,11 +1318,11 @@ pro.enterMapIndexChannel = function(playerId, logicServerId, mapIndex, callback)
 	viewer.timer = setTimeout(LeaveChannel.bind(this), 1000 * 20, viewer, true);
 	this.mapViewers[playerId] = viewer;
 
-	if(!this.bigMap[mapIndex].alliance){
+	if(!this.bigMap[mapIndex].allianceData){
 		return callback(null, {allianceData:null, mapData:mapIndexData.mapData});
 	}
 
-	var allianceId = this.bigMap[mapIndex].alliance.id;
+	var allianceId = this.bigMap[mapIndex].allianceData.id;
 	this.directFindAllianceAsync(allianceId).then(function(doc){
 		callback(null, {allianceData:_.pick(doc, Consts.AllianceViewDataKeys), mapData:mapIndexData.mapData});
 	})
