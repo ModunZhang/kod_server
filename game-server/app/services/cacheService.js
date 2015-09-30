@@ -291,7 +291,7 @@ pro.createAlliance = function(allianceData, callback){
 			var y = i;
 			for(var j = 0; j < width; j++){
 				mapIndex = x + (y * Define.BigMapWidth);
-				if(!self.bigMap[mapIndex].alliance && !self.mapIndexMap[mapIndex]){
+				if(!self.bigMap[mapIndex].allianceData && !self.mapIndexMap[mapIndex]){
 					hasFound = true;
 					break;
 				}
@@ -304,7 +304,7 @@ pro.createAlliance = function(allianceData, callback){
 			if(x !== y){
 				for(j = 0; j < width; j++){
 					mapIndex = x + (y * Define.BigMapWidth);
-					if(!self.bigMap[mapIndex].alliance && !self.mapIndexMap[mapIndex]){
+					if(!self.bigMap[mapIndex].allianceData && !self.mapIndexMap[mapIndex]){
 						hasFound = true;
 						break;
 					}
@@ -317,7 +317,7 @@ pro.createAlliance = function(allianceData, callback){
 			y = i + 1;
 			for(j = 0; j < height - 2; j++){
 				mapIndex = x + (y * Define.BigMapWidth);
-				if(!self.bigMap[mapIndex].alliance && self.mapIndexMap[mapIndex]){
+				if(!self.bigMap[mapIndex].allianceData && self.mapIndexMap[mapIndex]){
 					hasFound = true;
 					break;
 				}
@@ -330,7 +330,7 @@ pro.createAlliance = function(allianceData, callback){
 			if(x !== y){
 				for(j = 0; j < height - 2; j++){
 					mapIndex = x + (y * Define.BigMapWidth);
-					if(!self.bigMap[mapIndex].alliance && self.mapIndexMap[mapIndex]){
+					if(!self.bigMap[mapIndex].allianceData && self.mapIndexMap[mapIndex]){
 						hasFound = true;
 						break;
 					}

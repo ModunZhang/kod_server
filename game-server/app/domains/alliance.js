@@ -17,7 +17,7 @@ var AllianceSchema = new Schema({
 	_id:{type:String, required:true},
 	serverId:{type:String, required:true, index:true},
 	lastActiveTime:{type:Number, required:true, default:Date.now, index:true},
-	mapIndex:{type:Number, required:true, unique:true, index:true},
+	mapIndex:{type:Number, required:true},
 	basicInfo:{
 		name:{type:String, required:true, unique:true, index:true},
 		tag:{type:String, required:true, unique:true, index:true},

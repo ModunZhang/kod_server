@@ -138,7 +138,6 @@ life.afterStartAll = function(app){
 				cursor.next(function(e, doc){
 					if(!!e) return reject(e);
 					if(!doc) return resolve();
-					console.log(doc, '111111111111111')
 					cacheService.updateMapAlliance(doc.mapIndex, doc, null);
 					return getNext();
 				})
