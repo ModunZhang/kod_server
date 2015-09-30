@@ -87,7 +87,7 @@ pro.destroyAllianceChannel = function(allianceId, callback){
 	funcs.push(distroyChatAllianceChannel);
 	funcs.push(self.cacheService.destroyAllianceChannelAsync(allianceId))
 	Promise.all(funcs).catch(function(e){
-		self.logService.onEventError("cache.dataService.destroyAllianceChatChannel", {
+		self.logService.onEventError("cache.dataService.destroyAllianceChannel", {
 			allianceId:allianceId
 		}, e.stack)
 	})
