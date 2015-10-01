@@ -761,7 +761,7 @@ errors["allianceFightRevengeTimeExpired"] = {
 errors["targetAllianceNotInPeaceStatus"] = {
 	key:"targetAllianceNotInPeaceStatus",
 	code:651,
-	message:"目标联盟未处于和平期,不能发起复仇"
+	message:"目标联盟未处于和平期"
 }
 errors["playerAlreadySendHelpDefenceTroopToTargetPlayer"] = {
 	key:"playerAlreadySendHelpDefenceTroopToTargetPlayer",

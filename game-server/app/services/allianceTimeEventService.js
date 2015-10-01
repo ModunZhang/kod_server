@@ -873,41 +873,27 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			if(!!village.villageEvent){
 				if(village.villageEvent.allianceId === event.fromAlliance.id) return Promise.resolve();
 				else if(village.villageEvent.allianceId === event.toAlliance.id){
-
-				}else{
-
-				}
-			}
-			if(village.villageEvent && village.villageEvent.allianceId === event.toAlliance.id){
-				villageEvent = _.find(defenceAllianceDoc.villageEvents, function(villageEvent){
-					return villageEvent.id === village.villageEvent.eventId;
-				})
-				return self.cacheService.findPlayerAsync(villageEvent.attackPlayerData.id).then(function(doc){
-					defencePlayerDoc = doc;
-					return Promise.resolve();
-				})
-			}else{
-				return self.cacheService.findAllianceAsync(village.villageEvent.allianceId).then(function(doc){
-					villageAllianceDoc = doc;
-					villageEvent = _.find(villageAllianceDoc.villageEvents, function(villageEvent){
+					villageEvent = _.find(defenceAllianceDoc.villageEvents, function(villageEvent){
 						return villageEvent.id === village.villageEvent.eventId;
 					})
 					return self.cacheService.findPlayerAsync(villageEvent.attackPlayerData.id).then(function(doc){
 						defencePlayerDoc = doc;
 						return Promise.resolve();
 					})
-				})
+				}else{
+					return self.cacheService.findAllianceAsync(village.villageEvent.allianceId).then(function(doc){
+						villageAllianceDoc = doc;
+						villageEvent = _.find(villageAllianceDoc.villageEvents, function(villageEvent){
+							return villageEvent.id === village.villageEvent.eventId;
+						})
+						return self.cacheService.findPlayerAsync(villageEvent.attackPlayerData.id).then(function(doc){
+							defencePlayerDoc = doc;
+							return Promise.resolve();
+						})
+					})
+				}
 			}
-
-			village = LogicUtils.getAllianceVillageById(targetAllianceDoc, event.defenceVillageData.id)
-			villageEvent = _.find(attackAllianceDoc.villageEvents, function(villageEvent){
-				return _.isEqual(villageEvent.villageData.id, event.defenceVillageData.id)
-			})
-			if(!_.isObject(villageEvent) && _.isObject(defenceAllianceDoc)){
-				villageEvent = _.find(defenceAllianceDoc.villageEvents, function(villageEvent){
-					return _.isEqual(villageEvent.villageData.id, event.defenceVillageData.id)
-				})
-			}
+		}).then(function(){
 			if(!_.isObject(village)){
 				marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], targetAllianceDoc, event.defenceVillageData, [])
 				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
