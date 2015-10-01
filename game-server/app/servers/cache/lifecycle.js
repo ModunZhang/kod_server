@@ -134,6 +134,7 @@ life.afterStartAll = function(app){
 				basicInfo:true
 			});
 			(function getNext(){
+				console.log(!!cursor, '1111111111111')
 				if(!cursor) return setTimeout(getNext, 1000);
 				cursor.next(function(e, doc){
 					if(!!e) return reject(e);
