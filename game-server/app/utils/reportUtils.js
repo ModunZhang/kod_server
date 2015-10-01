@@ -128,7 +128,7 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 			name:defencePlayerDoc.basicInfo.name,
 			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defencePlayerDoc.basicInfo.terrain
+			terrain:defenceAllianceDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,
@@ -417,7 +417,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 			name:defencePlayerDoc.basicInfo.name,
 			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defencePlayerDoc.basicInfo.terrain
+			terrain:defenceAllianceDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,
@@ -568,8 +568,8 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 		return techs
 	}
 
-	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, defencePlayerDoc.basicInfo.terrain)
-	var defenceDragonPower = DataUtils.getDragonStrength(helpDefenceDragon, defencePlayerDoc.basicInfo.terrain)
+	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, defenceAllianceDoc.basicInfo.terrain)
+	var defenceDragonPower = DataUtils.getDragonStrength(helpDefenceDragon, defenceAllianceDoc.basicInfo.terrain)
 	var powerCompare = attackDragonPower / defenceDragonPower
 	var attackDragonMaxHp = DataUtils.getDragonMaxHp(attackDragon)
 	var attackDragonHpDecreasedPercent = AllianceInitData.intInit.dragonStrikeHpDecreasedPercent.value / 100
@@ -585,7 +585,7 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 			name:defencePlayerDoc.basicInfo.name,
 			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defencePlayerDoc.basicInfo.terrain,
+			terrain:defenceAllianceDoc.basicInfo.terrain,
 			fogOfTrick:DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")
 		},
 		attackPlayerData:{
@@ -767,8 +767,8 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
 	}
 
-	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, defencePlayerDoc.basicInfo.terrain)
-	var defenceDragonPower = DataUtils.getDragonStrength(defenceDragon, defencePlayerDoc.basicInfo.terrain)
+	var attackDragonPower = DataUtils.getDragonStrength(attackDragon, defenceAllianceDoc.basicInfo.terrain)
+	var defenceDragonPower = DataUtils.getDragonStrength(defenceDragon, defenceAllianceDoc.basicInfo.terrain)
 	var powerCompare = attackDragonPower / defenceDragonPower
 	var attackDragonMaxHp = DataUtils.getDragonMaxHp(attackDragon)
 	var attackDragonHpDecreasedPercent = AllianceInitData.intInit.dragonStrikeHpDecreasedPercent.value / 100
@@ -803,7 +803,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 			name:defencePlayerDoc.basicInfo.name,
 			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defencePlayerDoc.basicInfo.terrain,
+			terrain:defenceAllianceDoc.basicInfo.terrain,
 			fogOfTrick:DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")
 		},
 		attackPlayerData:{
@@ -981,7 +981,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			name:defencePlayerDoc.basicInfo.name,
 			location:LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id).location,
 			alliance:createAllianceData(defenceAllianceDoc),
-			terrain:defencePlayerDoc.basicInfo.terrain,
+			terrain:defenceAllianceDoc.basicInfo.terrain,
 			fogOfTrick:DataUtils.isPlayerHasItemEvent(defencePlayerDoc, "fogOfTrick")
 		},
 		attackPlayerData:{
@@ -1156,7 +1156,7 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 			level:defenceVillage.level,
 			location:LogicUtils.getAllianceMapObjectById(targetAllianceDoc, defenceVillage.id).location,
 			alliance:createAllianceData(targetAllianceDoc),
-			terrain:defencePlayerDoc.basicInfo.terrain
+			terrain:defenceAllianceDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,

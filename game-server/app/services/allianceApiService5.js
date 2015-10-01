@@ -252,7 +252,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
  */
 pro.enterMapIndex = function(logicServerId, playerId, allianceId, mapIndex, callback){
 	var mapIndexData = this.cacheService.getMapDataAtIndex(mapIndex);
-	if(!!mapIndexData.alliance && mapIndexData.alliance.id === allianceId){
+	if(!!mapIndexData.allianceData && mapIndexData.allianceData.id === allianceId){
 		return callback(ErrorUtils.canNotViewYourOwnAlliance(playerId, allianceId));
 	}
 	this.cacheService.enterMapIndexChannelAsync(playerId, logicServerId, mapIndex).then(function(data){
