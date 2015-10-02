@@ -1133,7 +1133,7 @@ pro.updateVillageEvent = function(event, callback){
 		var map = self.bigMap[mapIndex];
 		map.mapData.villageEvents[event.id] = event;
 		if(map.memberCount > 0){
-			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id + '.finishTime', event.finishTime]], {}, function(e){
+			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, event]], {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.updateVillageEvent", {
 						event:event

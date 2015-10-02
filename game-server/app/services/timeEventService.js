@@ -551,7 +551,7 @@ pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
 		event.startTime += timeAdd
 		event.finishTime += timeAdd
 		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "villageEvents", event.id, event.finishTime - now))
-		funcs.push(cacheService.addVillageEventAsync('villageEvents', event));
+		funcs.push(cacheService.addVillageEventAsync(event));
 	})
 	_.each(allianceDoc.villageCreateEvents, function(event){
 		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "villageCreateEvents", event.id, event.finishTime - now))

@@ -683,12 +683,12 @@ Utils.createStrikeVillageMarchReturnEvent = function(playerDoc, dragon, defenceV
  * @param dragon
  * @param soldiers
  * @param woundedSoldiers
+ * @param rewards
  * @param defenceAllianceDoc
  * @param defenceVillage
- * @param rewards
  * @returns {*}
  */
-Utils.createAllianceVillageEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, defenceAllianceDoc, defenceVillage, rewards){
+Utils.createAllianceVillageEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers,rewards, defenceAllianceDoc, defenceVillage){
 	var soldiersTotalLoad = DataUtils.getPlayerSoldiersTotalLoad(playerDoc, soldiers)
 	var collectInfo = DataUtils.getPlayerCollectResourceInfo(playerDoc, soldiersTotalLoad, defenceVillage)
 	var event = {

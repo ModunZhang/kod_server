@@ -530,8 +530,8 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 		attackAllianceDoc = doc
 		villageEvent = LogicUtils.getEventById(attackAllianceDoc.villageEvents, villageEventId)
 		if(!_.isObject(villageEvent)) return Promise.reject(ErrorUtils.villageCollectEventNotExist(playerId, attackAllianceDoc._id, villageEventId))
-		if(!_.isEqual(attackAllianceDoc._id, villageEvent.villageData.alliance.id)){
-			return self.cacheService.findAllianceAsync(villageEvent.villageData.alliance.id).then(function(doc){
+		if(!_.isEqual(attackAllianceDoc._id, villageEvent.toAlliance.id)){
+			return self.cacheService.findAllianceAsync(villageEvent.toAlliance.id).then(function(doc){
 				defenceAllianceDoc = doc
 				targetAllianceDoc = defenceAllianceDoc
 				targetAllianceData = defenceAllianceData
@@ -553,24 +553,23 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 		village.resource -= resourceCollected
 		targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 
-		var originalRewards = villageEvent.playerData.rewards
 		var resourceName = village.name.slice(0, -7)
-		var newRewards = [{
+		var rewards = [{
 			type:"resources",
 			name:resourceName,
 			count:resourceCollected
 		}]
-		LogicUtils.mergeRewards(originalRewards, newRewards)
-		var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
+		LogicUtils.mergeRewards(villageEvent.playerData.rewards, rewards)
+		var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, rewards[0].count)
 		attackPlayerDoc.allianceInfo[resourceName + "Exp"] += collectExp
 		attackPlayerData.push(["allianceInfo." + resourceName + "Exp", attackPlayerDoc.allianceInfo[resourceName + "Exp"]])
 
-		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, targetAllianceDoc, villageEvent.villageData, originalRewards)
+		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, villageEvent.playerData.rewards, villageEvent.villageData, villageEvent.fromAlliance, villageEvent.toAlliance);
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 		attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
 		attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
-		collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
+		collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, rewards)
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])

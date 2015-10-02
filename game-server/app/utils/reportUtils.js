@@ -1147,8 +1147,8 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 	var defencePlayerRewards = []
 	pushBloodToRewards(attackPlayerGetBlood, attackPlayerRewards)
 	pushBloodToRewards(defencePlayerGetBlood, defencePlayerRewards)
-	LogicUtils.mergeRewards(attackPlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKilledCitizen, defenceAllianceDoc.basicInfo.terrain))
-	LogicUtils.mergeRewards(defencePlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(defencePlayerKilledCitizen, defenceAllianceDoc.basicInfo.terrain))
+	LogicUtils.mergeRewards(attackPlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKilledCitizen, targetAllianceDoc.basicInfo.terrain))
+	LogicUtils.mergeRewards(defencePlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(defencePlayerKilledCitizen, targetAllianceDoc.basicInfo.terrain))
 
 	var attackVillageReport = {
 		attackTarget:{
@@ -1156,7 +1156,7 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 			level:defenceVillage.level,
 			location:LogicUtils.getAllianceMapObjectById(targetAllianceDoc, defenceVillage.id).location,
 			alliance:createAllianceData(targetAllianceDoc),
-			terrain:defenceAllianceDoc.basicInfo.terrain
+			terrain:targetAllianceDoc.basicInfo.terrain
 		},
 		attackPlayerData:{
 			id:attackPlayerDoc._id,
